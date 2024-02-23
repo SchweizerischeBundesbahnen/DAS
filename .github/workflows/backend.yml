@@ -10,8 +10,12 @@ name: Java CI with Maven
 
 on:
   push:
+    paths:
+      - 'playground-backend/**'
     branches: [ "main" ]
   pull_request:
+    paths:
+      - 'playground-backend/**'
     branches: [ "main" ]
 
 jobs:
