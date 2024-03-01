@@ -21,4 +21,3 @@ jobs:
         id: release
         with:
           command: manifest
-          default-branch: main
