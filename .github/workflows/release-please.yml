@@ -1,7 +1,4 @@
-defaults:
-  run:
-    working-directory: playground-backend
-    
+
 on:
   push:
     branches:
