@@ -1,7 +1,8 @@
 {
   "packages": {
     "playground-backend": {
-      "release-type": "maven"
+      "release-type": "maven",
+      "package-name": "playground-backend"
     },
     "das_client": {
       "release-type": "dart"
