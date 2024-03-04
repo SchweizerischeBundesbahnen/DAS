@@ -6,12 +6,11 @@ defaults:
 
 on:
   push:
-# todo enable when working
-#    paths:
-#      - 'webapp/**'
+    paths:
+      - 'webapp/**'
   pull_request:
-#    paths:
-#      - 'webapp/**'
+    paths:
+      - 'webapp/**'
 
 
 concurrency:
