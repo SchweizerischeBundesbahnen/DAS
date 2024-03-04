@@ -96,14 +96,13 @@
           },
           "configurations": {
             "ci": {
-              "browsers": "ChromiumHeadlessCI",
+              "browsers": "ChromeHeadless",
               "codeCoverage": true,
               "sourceMap": true,
               "progress": false,
               "watch": false,
               "reporters": [
-                "dots",
-                "sonarqube"
+                "dots"
               ]
             }
           }
