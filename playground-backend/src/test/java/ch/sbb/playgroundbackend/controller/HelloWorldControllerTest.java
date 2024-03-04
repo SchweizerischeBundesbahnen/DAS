@@ -21,6 +21,6 @@ class HelloWorldControllerTest {
     @Test
     void getShouldReturnDefaultMessage() {
         assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/", String.class))
-            .contains("Hello DAS Playground");
+            .contains("Hello DAS Test");
     }
 }
