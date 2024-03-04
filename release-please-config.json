@@ -1,7 +1,5 @@
 {
   "packages": {
-    "playground-backend": {},
-    "das_client": {},
-    "webapp": {}
+    "path/to/pkg": {}
   }
 }
