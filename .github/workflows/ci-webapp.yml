@@ -6,11 +6,12 @@ defaults:
 
 on:
   push:
-    paths:
-      - 'webapp/**'
+# todo enable when working
+#    paths:
+#      - 'webapp/**'
   pull_request:
-    paths:
-      - 'webapp/**'
+#    paths:
+#      - 'webapp/**'
 
 
 concurrency:
@@ -31,6 +32,7 @@ jobs:
         with:
           node-version-file: 'webapp/.nvmrc'
           cache: 'npm'
+      - run: cd webapp
       - run: npm clean-install
       - run: npm run lint
 
