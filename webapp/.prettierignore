@@ -1,0 +1,10 @@
+**/dist
+**/coverage
+**/.vscode
+**/.nyc_output
+**/node_modules
+
+**/charts
+angular.json
+package-lock.json
+/.angular/cache
