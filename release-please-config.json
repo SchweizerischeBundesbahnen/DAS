@@ -3,7 +3,9 @@
     "playground-backend": {
       "release-type": "maven"
     },
-    "das_client": {},
+    "das_client": {
+      "release-type": "dart"
+    },
     "webapp": {}
   }
 }
