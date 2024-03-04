@@ -1,4 +1,5 @@
 {
+  "separate-pull-requests": true,
   "packages": {
     "playground-backend": {
       "release-type": "maven",
