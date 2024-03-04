@@ -1,5 +1,9 @@
 {
   "packages": {
-    "path/to/pkg": {}
+    "playground-backend": {
+      "release-type": "maven"
+    },
+    "das_client": {},
+    "webapp": {}
   }
 }
