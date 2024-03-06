@@ -13,12 +13,14 @@ name: release-please
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    outputs:
+      das_client--release_created: ${{ steps.release.outputs.das_client--release_created }}
+      das_client--version: ${{ steps.release.outputs.das_client--version }}
+      das_client--tag_name: ${{ steps.release.outputs.das_client--tag_name }}
     steps:
       - uses: google-github-actions/release-please-action@v4
         id: release        
-      - run: echo "${{toJSON(steps.release.outputs)}}"
-      - run: echo "${{ steps.release.outputs.releases_created }}"
-      - run: echo "${{ steps.release.outputs.paths_released }}"
+        
   das-client-release:
     needs: release-please
     if: needs.release-please.outputs.das_client--release_created
