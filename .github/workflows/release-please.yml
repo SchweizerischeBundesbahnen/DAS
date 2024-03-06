@@ -24,7 +24,10 @@ jobs:
   das-client-release:
     needs: release-please
     if: needs.release-please.outputs.das_client--release_created
-    runs-on: macos-latest
+    runs-on: macos-latest    
+    defaults:
+      run:
+        working-directory: das_client
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
