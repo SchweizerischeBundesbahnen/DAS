@@ -16,3 +16,25 @@ jobs:
     steps:
       - uses: google-github-actions/release-please-action@v4
         id: release
+        
+  das-client-release:
+    needs: release-please
+    if: needs.release-please.outputs.das_client--release_created
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.2'
+      - run: flutter pub get
+      - run: flutter test
+      - run: flutter build appbundle
+      - name: Upload Release Artifact
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload ${{ steps.release.outputs.das_client--tag_name }} ./das_client/build/app/outputs/bundle/release/app-release.aab
