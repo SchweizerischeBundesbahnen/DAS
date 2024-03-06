@@ -44,4 +44,4 @@ jobs:
       - name: Upload Release Artifact
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ steps.release.outputs.das_client--tag_name }} ./das_client/build/app/outputs/bundle/release/app-release.aab
+        run: gh release upload ${{ needs.release-please.outputs.das_client--tag_name }} ./das_client/build/app/outputs/bundle/release/app-release.aab
