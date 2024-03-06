@@ -2,13 +2,13 @@ on:
   push:
     # Sequence of patterns matched against refs/tags
     tags:
-    - 'das_client-v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+    - 'das_client-v*.*.*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 defaults:
   run:
     working-directory: das_client
 
-name: Build and Upload Release
+name: Build and Upload Flutter Release
 
 jobs:
   build:
