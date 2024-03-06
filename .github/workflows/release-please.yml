@@ -9,14 +9,15 @@ permissions:
   pull-requests: write
 
 name: release-please
-
+releases_created
 jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
       - uses: google-github-actions/release-please-action@v4
         id: release
-        
+      - run: echo "${{ steps.release.outputs }}"
+      - run: echo "${{ steps.release.outputs.releases_created }}"
   das-client-release:
     needs: release-please
     if: needs.release-please.outputs.das_client--release_created
