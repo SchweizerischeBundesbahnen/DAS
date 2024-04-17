@@ -52,6 +52,9 @@ jobs:
     needs: release-please
     if: needs.release-please.outputs.playground-backend--release_created
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: playground-backend
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v3
