@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/playground-backend-v0.3.0...playground-backend-v0.3.1) (2024-04-17)
+
+
+### Bug Fixes
+
+* **playground-backend:** package permission ([3573f03](https://github.com/SchweizerischeBundesbahnen/DAS/commit/3573f03f9400adae9a9279a43dafe2121d9e5a12))
+
 ## [0.3.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/playground-backend-v0.2.0...playground-backend-v0.3.0) (2024-04-17)
 
 
