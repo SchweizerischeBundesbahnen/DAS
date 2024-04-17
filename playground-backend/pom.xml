@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>ch.sbb</groupId>
 	<artifactId>playground-backend</artifactId>
-	<version>0.3.1-SNAPSHOT</version>
+	<version>0.3.1</version>
 	<name>playground-backend</name>
 	<description>Demo playground project</description>
 	<properties>
