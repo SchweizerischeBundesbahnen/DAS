@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/playground-backend-v0.2.0...playground-backend-v0.3.0) (2024-04-17)
+
+
+### Features
+
+* **playground-backend:** revert ([06f5522](https://github.com/SchweizerischeBundesbahnen/DAS/commit/06f552298a969ac1bca4c03cc810d7db08740e3f))
+
+
+### Bug Fixes
+
+* **playground-backend:** rename ([0ede3c7](https://github.com/SchweizerischeBundesbahnen/DAS/commit/0ede3c762789a6c1a9256524057e59602e2034e3))
+
 ## [0.2.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/playground-backend-v0.1.0...playground-backend-v0.2.0) (2024-04-17)
 
 
