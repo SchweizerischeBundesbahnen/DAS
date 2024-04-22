@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/SchweizerischeBundesbahnen/DAS/compare/playground-backend-v0.3.1...playground-backend-v0.3.2) (2024-04-22)
+
+
+### Bug Fixes
+
+* jvm tool options ([08d55f7](https://github.com/SchweizerischeBundesbahnen/DAS/commit/08d55f7e9fb25b1a3440ddb500c0e7531d3aa40c))
+
 ## [0.3.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/playground-backend-v0.3.0...playground-backend-v0.3.1) (2024-04-17)
 
 
