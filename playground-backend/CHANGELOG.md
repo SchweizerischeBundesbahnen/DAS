@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.3](https://github.com/SchweizerischeBundesbahnen/DAS/compare/playground-backend-v0.3.2...playground-backend-v0.3.3) (2024-04-22)
+
+
+### Bug Fixes
+
+* add actuator ([082e1f1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/082e1f1b51bf836d5594ec9b36b29d6a3a0324dc))
+
 ## [0.3.2](https://github.com/SchweizerischeBundesbahnen/DAS/compare/playground-backend-v0.3.1...playground-backend-v0.3.2) (2024-04-22)
 
 
