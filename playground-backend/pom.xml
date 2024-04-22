@@ -39,7 +39,8 @@
 				<configuration>
 					<image>
 						<env>
-							<BP_OCI_SOURCE>https://github.com/SchweizerischeBundesbahnen/playground-backend</BP_OCI_SOURCE>
+							<BP_OCI_SOURCE>https://github.com/SchweizerischeBundesbahnen/DAS/tree/main/playground-backend</BP_OCI_SOURCE>
+							<JAVA_TOOL_OPTIONS>-XX:InitialRAMPercentage=10.0 -XX:MaxRAMPercentage=70.0</JAVA_TOOL_OPTIONS>
 						</env>
 					</image>
 				</configuration>
