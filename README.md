@@ -1,62 +1,29 @@
 # Driver Advisory System
 
-> **Note:** This is a repository template. This README serves both as an example for your new repository, and also contains information on how to use the repository template.
-
-This repository is a template for creating new open-source repositories. It contains all the necessary files and documents to ensure that your open-source project is well-organized and follows best practices.
-
-#### Table Of Contents
-
-- [Introduction](#Introduction)
-- [Getting Started](#Getting-Started)
-- [Contributing](#Contributing)
-- [Documentation](#Documentation)
-- [Code of Conduct](#code-of-conduct)
-- [Coding Standards](#coding-standards)
-- [License](#License)
-
-<a id="Introduction"></a>
-
 ## Introduction
+Driver Advisory System is an innovative tool designed to assist train drivers in the delivery of efficient and punctual train services. By integrating a wide range of data sources, including live 
+positioning, infrastructure characteristics, and real-time transport plans, the system calculates and presents the ideal driving profile for each journey.
 
-When creating an open-source project, it's important to establish a clear structure and set of guidelines to ensure that the project is maintainable and sustainable. This repository provides a basic template that can be used as a starting point for new projects.
+This repository is dedicated to the railway undertaking (RU) component of the DAS, encompassing all aspects necessary for RU implementation and integration.
 
-The template includes the following features:
+## Structure
 
-- A basic file structure for organizing code, documentation, and related files
-- A CONTRIBUTING.md file with guidelines for contributing to the project
-- A CODE_OF_CONDUCT.md file with guidelines for community behavior
-- A LICENSE.md file with information about the open-source license that applies to the project
+This repository is structured into several key modules, each dedicated to a specific aspect of the system
 
-<a id="Getting-Started"></a>
+- Backend
+  - [Kotlin](https://kotlinlang.org/)
+  - [Spring Framework](https://spring.io/projects/spring-framework)
+    with [Spring Boot](https://spring.io/projects/spring-boot)
+
+- Webapp
+  - [TypeScript](https://www.typescriptlang.org/)
+  - [Angular](https://angular.io/) 
+
+- Mobile App
+  - [Flutter](https://flutter.dev/)
 
 ## Getting-Started
-
-Instructions for getting started with the repository, for e.g.:
-
-- Installation instructions
-- Usage instructions
-
-> To use this template please follow the steps as below:
->
-> - If creating via Self Service Portal (WIP)
-> - If Creating via GitHub Interface
->   - Click the "Use this template" button above, select "Create a new repository"
->   - Give your repository a name, and optionally a description. The owner will always be "SchweizerischeBundesbahnen".
->   - Set the visibility of your repository to "Public".
->   - Do not select "Include all branches".
->   - Click the "Create repository from template" button and you're done!
-
-<a id="Documentation"></a>
-
-## Documentation
-
-Links to all relevant documentation files, including:
-
-- [CODING_STANDARDS.md](CODING_STANDARDS.md)
-- [CONTRIBUTING.md](CONTRIBUTING.md)
-- [LICENSE.md](LICENSE.md)
-
-<a id="License"></a>
+Please refer to the README files in the respective modules for detailed instructions.
 
 ## License
 
@@ -66,15 +33,12 @@ Links to all relevant documentation files, including:
 
 This project is licensed under [INSERT LICENSE].
 
-<a id="Contributing"></a>
-
 ## Contributing
 
 Open-source projects thrive on collaboration and contributions from the community. To encourage others to contribute to your project, you should provide clear guidelines on how to get involved.
 
 This repository includes a [CONTRIBUTING.md](CONTRIBUTING.md) file that outlines how to contribute to the project, including how to submit bug reports, feature requests, and pull requests.
 
-<a id="coding-standards"></a>
 
 ## Coding Standards
 
@@ -82,7 +46,6 @@ To maintain a high level of code quality and consistency across your project, yo
 
 This repository includes a [CODING_STANDARDS.md](CODING_STANDARDS.md) file that outlines the coding standards that you should follow when contributing to the project.
 
-<a id="code-of-conduct"></a>
 
 ## Code of Conduct
 
