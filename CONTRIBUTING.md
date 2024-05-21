@@ -1,14 +1,13 @@
 # Contributing
-> **Note:** This is a template for Contributing.md. Please make necessary changes in the links and content and modify the template as per your needs. 
 
-We appreciate all kinds of contributions. The following is a set of guidelines for contributing to this repository on GitHub. 
+>At this point we do not allow contributions as we are in early development. We will update this once we are live with a first version.
+
+The following is a set of guidelines for contributing to this repository on GitHub. 
 These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
 
 #### Table Of Contents
 
 [Code of Conduct](#code-of-conduct)
-
-[I just have a question!](#i-just-have-a-question)
 
 [What should I know before I get started?](#what-should-i-know-before-i-get-started)
 * [Tools and Packages](#tools-and-packages)
@@ -28,13 +27,6 @@ These are mostly guidelines, not rules. Use your best judgment, and feel free to
 This project and everyone participating in it is governed by the [Code of Conduct](CODE_OF_CONDUCT.md). 
 By participating, you are expected to uphold this code.
 
-<a id="i-just-have-a-question"></a>
-## I just have a question!
-
-Please ask the questions in the discussions page.
-
-* [Github Discussions, the official message board](https://github.com/SchweizerischeBundesbahnen/open-source-repo-template/discussions)
-
 ## <a id="what-should-i-know-before-i-get-started"></a> What should I know before I get started?
 
 ### <a id="tools-and-packages"></a> Tools and Packages
@@ -44,7 +36,7 @@ Information or links about the Design Decisions or Design Architecture.
 
 ## <a id="issue"></a> Found an Issue?
 If you find a bug in the source code or a mistake in the documentation, you can help us by
-[submitting an issue](#submit-issue) to our [GitHub Repository](https://github.com/SchweizerischeBundesbahnen/open-source-repo-template/issues/new). Including an issue
+[submitting an issue](#submit-issue) to our [GitHub Repository](https://github.com/SchweizerischeBundesbahnen/DAS/issues/new). Including an issue
 reproduction (via StackBlitz, JsBin, Plunkr, etc.) is the absolute best way to help the team quickly
 diagnose the problem. Screenshots are also helpful.
 
@@ -53,7 +45,7 @@ You can help the team even more and [submit a Pull Request](#submit-pr) with a f
 
 ## <a id="feature"></a> Want a Feature?
 You can *request* a new feature by [submitting an issue](#submit-issue)
-to our [GitHub Repository](https://github.com/SchweizerischeBundesbahnen/open-source-repo-template/issues/new).
+to our [GitHub Repository](https://github.com/SchweizerischeBundesbahnen/DAS/issues/new).
 If you would like to *implement* a new feature, please submit an issue with
 a proposal for your work first, to be sure that we can use it.
 Please consider what kind of change it is:
@@ -81,7 +73,7 @@ chances of your issue being dealt with quickly:
 * **Suggest a Fix** - if you can't fix the bug yourself, perhaps you can point to what might be
   causing the problem (line of code or commit)
 
-You can file new issues by providing the above information [here](https://github.com/SchweizerischeBundesbahnen/open-source-repo-template/issues/new).
+You can file new issues by providing the above information [here](https://github.com/SchweizerischeBundesbahnen/DAS/issues/new).
 
 
 ### <a id="submit-pr"></a> Submitting a Pull Request (PR)
