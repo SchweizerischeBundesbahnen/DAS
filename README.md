@@ -27,11 +27,7 @@ Please refer to the README files in the respective modules for detailed instruct
 
 ## License
 
-> Choose a license that meets the organization's legal requirements and supports the sharing and modification of the code.
-> Please follow the internal Open Source guidelines while chosing the License.
-> This repository includes two [suggested license texts](./suggested_licenses) (Apache 2.0 and EPL 2.0). Rename the license you prefer to [LICENSE.md](LICENSE.md) and remove the other one.
-
-This project is licensed under [INSERT LICENSE].
+This project is licensed under [GPL v3.0](LICENSE).
 
 ## Contributing
 
