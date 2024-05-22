@@ -104,7 +104,7 @@ Before you submit your Pull Request (PR) consider the following guidelines:
     git push my-fork my-fix-branch
     ```
 
-* In GitHub, send a pull request to `sbb-your-project:main`.
+* In GitHub, send a pull request to `DAS:main`.
   The PR title and message should as well conform to the [commit message conventions](#commit).
 
 ## <a id="rules"></a> Coding Rules
