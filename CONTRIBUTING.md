@@ -119,14 +119,6 @@ To ensure consistency throughout the source code, keep these rules in mind as yo
 This project uses [Conventional Commits](https://www.conventionalcommits.org/) to generate the changelog.
 As an example, please refer to: https://github.com/sbb-design-systems/sbb-angular 
 
-<a id="your-first-code-contribution"></a>
-## Your First Code Contribution
-
-Unsure where to begin contributing to Atom? You can start by looking through these `beginner` and `help-wanted` issues:
-
-* [Beginner issues][beginner] - issues which should only require a few lines of code, and a test or two.
-* [Help wanted issues][help-wanted] - issues which should be a bit more involved than `beginner` issues.
-
 ## Attribution
 
 This CONTRIBUTING guideline is adapted from the [sbb-design-systems/sbb-angular](https://github.com/sbb-design-systems/sbb-angular)
