@@ -30,6 +30,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/@sbb-esta/angular/typography.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -81,7 +82,8 @@
           "options": {
             "polyfills": [
               "zone.js",
-              "zone.js/testing"
+              "zone.js/testing",
+              "@sbb-esta/angular/core/testing/lean-polyfill"
             ],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
@@ -90,6 +92,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/@sbb-esta/angular/typography.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -114,6 +117,20 @@
               "src/**/*.ts",
               "src/**/*.html"
             ]
+          }
+        },
+        "ngsscbuild": {
+          "builder": "angular-server-side-configuration:ngsscbuild",
+          "options": {
+            "additionalEnvironmentVariables": [
+              "n"
+            ],
+            "buildTarget": "webapp:build"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "webapp:build:production"
+            }
           }
         }
       }
