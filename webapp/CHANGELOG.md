@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.2.0...webapp-v0.2.1) (2024-05-29)
+
+
+### Bug Fixes
+
+* bugfix only ([9d01112](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9d011125a562e2461aac86d84e839e75f5fb22cb))
+
 ## [0.2.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.1.0...webapp-v0.2.0) (2024-03-04)
 
 
