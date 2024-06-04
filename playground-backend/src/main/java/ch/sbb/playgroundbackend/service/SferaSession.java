@@ -23,7 +23,7 @@ public class SferaSession {
             replyMessage.setHandshakeAcknowledgement(handshakeRequest(requestMessage));
             // todo or HandshakeReject
             //      or Error
-            log.info("Send handshakeAck correlationId={}", requestMessage.getMessageHeader().getCorrelationID());
+            log.info("Send handshakeAck correlationId={}", requestMessage.getMessageHeader().getMessageID());
         } else if (requestMessage.getB2GRequest() != null) {
             replyMessage.setG2BReplyPayload(b2gRequest(requestMessage));
         }
