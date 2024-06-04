@@ -1,3 +1,7 @@
+on:
+  push:
+    branches: [ "main" ]
+
 permissions:
   packages: write
 
