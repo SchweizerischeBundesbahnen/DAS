@@ -1,7 +1,7 @@
 on:
   push:
     tags:
-      - v**
+      - webapp-v**
 
 permissions:
   packages: write
