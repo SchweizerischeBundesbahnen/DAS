@@ -40,6 +40,7 @@ jobs:
     - name: Login to GitHub Container Registry
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
     - name: Create container image
+      if: github.ref == 'refs/heads/main'
       env:
         IMAGE_ID: ghcr.io/${{ github.repository }}/playground-backend
         VERSION: SNAPSHOT
