@@ -1,0 +1,9 @@
+<jxb:bindings
+        xmlns:jxb="https://jakarta.ee/xml/ns/jaxb"
+        version="3.0">
+    <jxb:bindings schemaLocation="SFERA_2.01.xsd">
+        <jxb:globalBindings >
+            <jxb:javaType name="java.time.Instant" xmlType="xs:dateTime" parseMethod="java.time.Instant.parse"/>
+        </jxb:globalBindings>
+    </jxb:bindings>
+</jxb:bindings>

@@ -10,7 +10,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-class HelloWorldControllerTest {
+class MqControllerTest {
 
     @LocalServerPort
     private int port;
@@ -20,7 +20,7 @@ class HelloWorldControllerTest {
 
     @Test
     void getShouldReturnDefaultMessage() {
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/", String.class))
-            .contains("Hello DAS Test");
+        assertThat(this.restTemplate.postForObject("http://localhost:" + port + "/mq?topic=test&message=Test", null, String.class))
+            .contains("Message sent to Solace topic: test");
     }
 }
