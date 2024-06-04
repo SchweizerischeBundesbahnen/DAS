@@ -9,6 +9,9 @@ name: release webapp
 
 jobs:
   release:
+    defaults:
+      run:
+        working-directory: webapp
     runs-on: ubuntu-latest
     steps:
       - name: Docker meta
@@ -30,9 +33,6 @@ jobs:
 
       - name: Build and push
         uses: docker/build-push-action@v5
-        defaults:
-          run:
-            working-directory: webapp
         with:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
