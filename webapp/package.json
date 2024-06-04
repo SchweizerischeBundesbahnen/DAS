@@ -2,12 +2,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng run webapp:ngsscbuild",
     "watch": "ng build --watch --configuration development",
     "test": "ng test -c ci",
     "lint": "ng lint",
-    "format": "prettier --write .",
-    "build:ngssc": "ng run webapp:ngsscbuild:production"
+    "format": "prettier --write ."
   },
   "name": "webapp",
   "version": "0.1.0",
