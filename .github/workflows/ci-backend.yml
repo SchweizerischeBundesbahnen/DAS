@@ -38,11 +38,11 @@ jobs:
     - name: Run the Maven verify phase
       run: mvn --batch-mode --update-snapshots verify
     - name: Login to GitHub Container Registry
-      run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io --username ${{ github.actor }} --password-stdin
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
     - name: Create container image
       env:
         IMAGE_ID: ghcr.io/${{ github.repository }}/playground-backend
-        VERSION: 0.1.0-SNAPSHOT
+        VERSION: SNAPSHOT
       run: |
         # Convert to lowercase
         IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
