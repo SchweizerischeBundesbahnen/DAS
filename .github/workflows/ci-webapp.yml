@@ -60,8 +60,10 @@ jobs:
           cache-dependency-path: 'webapp/package-lock.json'
       - run: npm clean-install
       - run: npm run build
+      - run: pwd
+      - run: ls -l
       - name: Store build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: build
-          path: dist/webapp/
+          path: webapp/dist/webapp/
