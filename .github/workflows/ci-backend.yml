@@ -38,8 +38,10 @@ jobs:
     - name: Run the Maven verify phase
       run: mvn --batch-mode --update-snapshots verify
     - name: Login to GitHub Container Registry
+      if: github.ref == 'refs/heads/main'
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
     - name: Create container image
+      if: github.ref == 'refs/heads/main'
       env:
         IMAGE_ID: ghcr.io/${{ github.repository }}/playground-backend
         VERSION: SNAPSHOT
