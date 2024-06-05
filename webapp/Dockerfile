@@ -3,7 +3,7 @@ FROM node:20.11.0-alpine as build
 WORKDIR /build
 COPY *.json *.js ./
 RUN npm clean-install
-COPY src/ ./src
+COPY webapp/src/ ./src
 RUN npm run build
 
 FROM ghcr.io/nginxinc/nginx-unprivileged:1.25.3-alpine-slim
