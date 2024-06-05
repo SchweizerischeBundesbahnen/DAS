@@ -1,11 +1,15 @@
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "test-release" ]
 
 permissions:
   packages: write
 
 name: release webapp
+
+defaults:
+  run:
+    working-directory: webapp
 
 jobs:
   release:
