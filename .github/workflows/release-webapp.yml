@@ -31,10 +31,9 @@ jobs:
           IMAGE_REPO=$(echo $IMAGE_REPO | tr '[A-Z]' '[a-z]')
           
           docker build -t $IMAGE_REPO:$IMAGE_TAG .
+          docker push $IMAGE_REPO:$IMAGE_TAG
         env:
           DOCKER_BUILDKIT: 1
-      - name: "Container: Publish image"
-        run: docker push $IMAGE_REPO:$IMAGE_TAG
 #      - name: Docker meta
 #        id: meta
 #        uses: docker/metadata-action@v5
