@@ -26,7 +26,11 @@ jobs:
       - name: Login to GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
       - name: "Container: Build image"
-        run: docker build -t $(echo $IMAGE_REPO | tr '[A-Z]' '[a-z]'):$IMAGE_TAG .
+        run: |
+          # Convert to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          
+          docker build -t IMAGE_ID:$IMAGE_TAG .
         env:
           DOCKER_BUILDKIT: 1
       - name: "Container: Publish image"
