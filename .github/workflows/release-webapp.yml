@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "test-release" ]
 
 permissions:
   packages: write
