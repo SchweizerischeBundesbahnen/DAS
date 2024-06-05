@@ -51,6 +51,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs: lint
+    env:
+      IMAGE_REPO: ghcr.io/${{ github.repository }}/webapp
+      IMAGE_TAG: SNAPSHOT-pr
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -65,3 +68,16 @@ jobs:
         with:
           name: build
           path: webapp/dist/webapp/
+      - name: Login to GitHub Container Registry
+#        if: github.ref == 'refs/heads/main'
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+      - name: Create container image
+#        if: github.ref == 'refs/heads/main'
+        run: |
+          # Convert to lowercase
+          IMAGE_REPO=$(echo $IMAGE_REPO | tr '[A-Z]' '[a-z]')
+
+          docker build -t $IMAGE_REPO:$IMAGE_TAG .
+          docker push $IMAGE_REPO:$IMAGE_TAG
+        env:
+          DOCKER_BUILDKIT: 1

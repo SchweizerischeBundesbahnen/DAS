@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [ "test-release" ]
+    branches: [ "delete-me" ]
 
 permissions:
   packages: write
