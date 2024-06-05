@@ -14,7 +14,7 @@ ADD --chmod=755 https://github.com/kyubisation/angular-server-side-configuration
 ADD --chmod=755 webapp/docker/99-ngssc.sh /docker-entrypoint.d/
 
 # Add nginx configuration
-ADD docker/nginx-angular.conf /etc/nginx/conf.d/default.conf
+ADD webapp/docker/nginx-angular.conf /etc/nginx/conf.d/default.conf
 
 # copy built application from build stage
 COPY --from=build --chown=nginx:nginx --chmod=755 /build/dist/webapp /usr/share/nginx/html
