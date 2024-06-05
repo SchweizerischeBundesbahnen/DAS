@@ -1,7 +1,7 @@
 FROM node:20.11.0-alpine as build
 
 WORKDIR /build
-COPY *.json *.js ./
+COPY webapp/*.json webapp/*.js ./
 RUN pwd
 RUN ls -ls
 RUN npm clean-install
