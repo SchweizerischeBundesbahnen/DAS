@@ -28,9 +28,9 @@ jobs:
       - name: "Container: Build image"
         run: |
           # Convert to lowercase
-          IMAGE_REPO=$(echo IMAGE_REPO | tr '[A-Z]' '[a-z]')
+          IMAGE_REPO=$(echo $IMAGE_REPO | tr '[A-Z]' '[a-z]')
           
-          docker build -t IMAGE_REPO:$IMAGE_TAG .
+          docker build -t $IMAGE_REPO:$IMAGE_TAG .
         env:
           DOCKER_BUILDKIT: 1
       - name: "Container: Publish image"
