@@ -18,7 +18,7 @@ jobs:
       IMAGE_REPO: ghcr.io/${{ github.repository }}/webapp
       IMAGE_TAG: test
     steps:
-      - run: ls -llR ./dist
+      - run: ls -llR
       - name: Login to GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
       - name: "Container: Build image"
