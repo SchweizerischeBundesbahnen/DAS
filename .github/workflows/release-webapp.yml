@@ -18,6 +18,10 @@ jobs:
       IMAGE_REPO: ghcr.io/${{ github.repository }}/webapp
       IMAGE_TAG: test
     steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
       - run: ls -llR .
       - name: Login to GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
