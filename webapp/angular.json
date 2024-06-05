@@ -119,20 +119,6 @@
               "src/**/*.html"
             ]
           }
-        },
-        "ngsscbuild": {
-          "builder": "angular-server-side-configuration:ngsscbuild",
-          "options": {
-            "additionalEnvironmentVariables": [],
-            "buildTarget": "webapp:build",
-            "ngsscEnvironmentFile": "src/environments/environment.ts",
-            "filePattern": "**/index.html"
-          },
-          "configurations": {
-            "production": {
-              "buildTarget": "webapp:build:production"
-            }
-          }
         }
       }
     }
