@@ -35,7 +35,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          build-contexts: project=webapp
+          context: webapp
           file: Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
