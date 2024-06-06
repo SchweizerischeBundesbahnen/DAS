@@ -1,29 +1,32 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { IMqttServiceOptions, MqttService } from "ngx-mqtt";
 import { AuthService } from "./auth.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class MqService {
+export class MqService implements OnDestroy {
+
+  state = this.mqttService.state;
 
   connectionConfig: IMqttServiceOptions = {
     hostname: 'das-poc.messaging.solace.cloud',
     port: 8443,
-    // path: '/AbbaAbbbAbbc',
     clean: true, // Retain session
     connectTimeout: 4000, // Timeout period
     reconnectPeriod: 4000, // Reconnect period
-    // Authentication information
-    clientId: 'webapp',
+    clientId: 'webapp-' + crypto.randomUUID(),
     username: this.authService.preferredUsername,
-    // OAUTH~${environment.oauthProfile}~${this.getAccessToken}
     password: this.authService.oauthAccessTokenString,
     protocol: 'wss',
   }
 
   constructor(private authService: AuthService, private mqttService: MqttService) {
     this.connect();
+  }
+
+  ngOnDestroy(): void {
+    this.mqttService.disconnect();
   }
 
   connect() {
