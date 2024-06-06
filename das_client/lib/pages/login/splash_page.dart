@@ -36,11 +36,13 @@ class SplashPage extends StatelessWidget {
   Widget _loading() {
     return Container(
       alignment: AlignmentDirectional.center,
-      color: Colors.red,
+      color: Colors.blue,
       child: const Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircularProgressIndicator()
+          CircularProgressIndicator(
+            color: Colors.black,
+          )
         ],
       ),
     );

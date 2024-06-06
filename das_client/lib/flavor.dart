@@ -31,7 +31,7 @@ const _authenticatorConfigDev = AuthenticatorConfig(
         'profile',
         'email',
         'offline_access',
-        'User.Read',
+        '6025180f-123b-4f2f-9703-16e08fc221f0/.default'
       ],
     ),
   ]),

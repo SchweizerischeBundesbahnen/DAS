@@ -1,9 +1,15 @@
+import 'dart:convert';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:das_client/auth/auth_cubit.dart';
 import 'package:das_client/auth/authenticator.dart';
+import 'package:das_client/auth/azure_authenticator.dart';
 import 'package:das_client/di.dart';
+import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mqtt_client/mqtt_client.dart';
+import 'package:mqtt_client/mqtt_server_client.dart';
 
 @RoutePage()
 class HomePage extends StatefulWidget {
@@ -14,16 +20,39 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
+  String status = "Connection: None";
 
-  void _incrementCounter() {
+  final client = MqttServerClient.withPort('wss://das-poc.messaging.solace.cloud', 'd1027b71-55ab-4478-838d-85150e2c52f7', 8443); // Replace with your broker's address
+
+  //await client.connect();
+  //client.subscribe('testtopic/flutterapp', MqttQos.atLeastOnce);
+
+  void _connect() async {
+    Authenticator authenticator = DI.get();
+
+    final token = await authenticator.token("T1");
+    client.useWebSocket = true;
+
+    var mqttClientConnectionStatus = await client.connect(
+        "thomas.bomatter@sbb.ch",
+        "OAUTH~azureAd~${token.accessToken}"
+    );
+    Fimber.i("connectionState $mqttClientConnectionStatus");
+
+    var subscribe = client.subscribe("90940/2/G2B/1085/2019-03-21_512/fa6e0e68-63b6-4b13-8e9c-74e9a66dd1f9", MqttQos.exactlyOnce);
+
+    client.updates!.listen((List<MqttReceivedMessage<MqttMessage?>>? c) {
+      Fimber.i(c!.last.payload.toString());
+      final recMess = c.last.payload as MqttPublishMessage;
+      final message = utf8.decode(recMess.payload.message);
+      Fimber.i(message);
+
+      setState(() {
+        status = message;
+      });
+    });
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      status = mqttClientConnectionStatus.toString();
     });
   }
 
@@ -49,34 +78,17 @@ class _HomePageState extends State<HomePage> {
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
             Text(
-              '$_counter',
+              status,
               style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        onPressed: _connect,
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
