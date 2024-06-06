@@ -12,6 +12,8 @@ import generated.Recipient;
 import generated.SFERAB2GRequestMessage;
 import generated.SFERAG2BReplyMessage;
 import generated.Sender;
+import jakarta.xml.bind.JAXBException;
+import java.io.IOException;
 import java.time.Instant;
 import java.util.UUID;
 import org.slf4j.Logger;
@@ -58,17 +60,24 @@ public class SferaHandler {
     }
 
     public String boardToGround(String xmlPayload) {
-        SFERAB2GRequestMessage sferab2GRequestMessage = xmlToObject(xmlPayload, SFERAB2GRequestMessage.class);
+        SFERAB2GRequestMessage sferab2GRequestMessage;
         SFERAG2BReplyMessage replyMessage;
-        if (sferab2GRequestMessage == null) {
-            replyMessage = invalidXmlError();
-        } else {
+        try {
+            sferab2GRequestMessage = xmlToObject(xmlPayload, SFERAB2GRequestMessage.class);
             SferaSession session = new SferaSession();
             log.info("B2G request received companyCode={} trainIdentifier={} clientId={}", companyCode, trainIdentifier, clientId);
             replyMessage = session.request(sferab2GRequestMessage);
+            replyMessage.setMessageHeader(header(sferab2GRequestMessage.getMessageHeader().getMessageID()));
+        } catch (JAXBException | IOException e) {
+            log.error("Could not map xml to object", e);
+            replyMessage = invalidXmlError();
         }
-        replyMessage.setMessageHeader(header(sferab2GRequestMessage.getMessageHeader().getMessageID()));
-        return objectToXml(replyMessage);
+        try {
+            return objectToXml(replyMessage);
+        } catch (JAXBException e) {
+            log.error("Could not map object to xml", e);
+            return null;
+        }
     }
 
     private SFERAG2BReplyMessage invalidXmlError() {

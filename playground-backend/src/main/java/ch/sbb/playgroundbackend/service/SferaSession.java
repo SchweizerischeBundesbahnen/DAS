@@ -7,6 +7,8 @@ import generated.HandshakeAcknowledgement;
 import generated.JourneyProfile;
 import generated.SFERAB2GRequestMessage;
 import generated.SFERAG2BReplyMessage;
+import jakarta.xml.bind.JAXBException;
+import java.io.IOException;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,11 +18,11 @@ public class SferaSession {
     private static final Logger log = LoggerFactory.getLogger(SferaSession.class);
     private static final String XML_RESOURCES_CLASSPATH = "classpath:sfera_example_messages/";
 
-    public SFERAG2BReplyMessage request(SFERAB2GRequestMessage requestMessage) {
+    public SFERAG2BReplyMessage request(SFERAB2GRequestMessage requestMessage) throws JAXBException, IOException {
         SFERAG2BReplyMessage replyMessage = new SFERAG2BReplyMessage();
 
         if (requestMessage.getHandshakeRequest() != null) {
-            replyMessage.setHandshakeAcknowledgement(handshakeRequest(requestMessage));
+            replyMessage.setHandshakeAcknowledgement(handshakeRequest());
             // todo or HandshakeReject
             //      or Error
             log.info("Send handshakeAck correlationId={}", requestMessage.getMessageHeader().getMessageID());
@@ -31,7 +33,7 @@ public class SferaSession {
 
     }
 
-    private G2BReplyPayload b2gRequest(SFERAB2GRequestMessage requestMessage) {
+    private G2BReplyPayload b2gRequest(SFERAB2GRequestMessage requestMessage) throws JAXBException, IOException {
         G2BReplyPayload replyPayload = new G2BReplyPayload();
 
         if (requestMessage.getB2GRequest().getJPRequest() != null) {
@@ -39,7 +41,7 @@ public class SferaSession {
             // todo or G2B_MessageResponse / result = “OK” no more recent JP
             //      or result = “ERROR” / dataFirstAvailable
             //      or result = “ERROR” / errorCode
-            log.info("Send JP for correlationId={}", requestMessage.getMessageHeader().getCorrelationID());
+            log.info("Send JP for correlationId={}", requestMessage.getMessageHeader().getMessageID());
         }
         // todo or TCRequest
         //      or SP Rquest
@@ -53,12 +55,12 @@ public class SferaSession {
         return replyPayload;
     }
 
-    private List<JourneyProfile> exampleJp() {
+    private List<JourneyProfile> exampleJp() throws JAXBException, IOException {
         String filePath = XML_RESOURCES_CLASSPATH + "SFERA_G2B_Reply_JP_request.xml";
         return XmlHelper.xmlFileToObject(filePath, SFERAG2BReplyMessage.class).getG2BReplyPayload().getJourneyProfile();
     }
 
-    private HandshakeAcknowledgement handshakeRequest(SFERAB2GRequestMessage requestMessage) {
+    private HandshakeAcknowledgement handshakeRequest() {
         HandshakeAcknowledgement handshakeAcknowledgement = new HandshakeAcknowledgement();
         DASOperatingModeSelected dasOperatingModeSelected = new DASOperatingModeSelected();
         dasOperatingModeSelected.setDASArchitecture("GroundAdviceCalculation");
