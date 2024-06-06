@@ -2,7 +2,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng run webapp:ngsscbuild",
+    "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test -c ci",
     "lint": "ng lint",
