@@ -1,0 +1,16 @@
+<h2>SFERA Communication</h2>
+<sbb-form-field class="sbb-form-field-long">
+  <sbb-label>Company Code</sbb-label>
+  <input type="text" sbbInput [formControl]="companyControl"/>
+  <small>SBB: 1085</small>
+</sbb-form-field>
+<sbb-form-field class="sbb-form-field-long">
+  <sbb-label>Train Identification</sbb-label>
+  <input type="text" sbbInput [formControl]="trainControl"/>
+  <small>Example: 2024-06-06_512</small>
+</sbb-form-field>
+<sbb-form-field class="sbb-form-field-long">
+  <sbb-label>Client ID</sbb-label>
+  <input type="text" sbbInput [formControl]="clientIdControl"/>
+</sbb-form-field>
+<button type="button" sbb-button (click)="start()">Start journey</button>

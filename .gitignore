@@ -3,6 +3,9 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+playground-backend/src/main/java/generated/**
+playground-backend/src/main/java/META-INF/JAXB/**
+playground-backend/src/main/java/org/w3/_2001/xmlschema/**
 
 ### STS ###
 .apt_generated

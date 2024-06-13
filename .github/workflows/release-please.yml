@@ -21,6 +21,9 @@ jobs:
       playground-backend--release_created: ${{ steps.release.outputs.playground-backend--release_created }}
       playground-backend--version: ${{ steps.release.outputs.playground-backend--version }}
       playground-backend--tag_name: ${{ steps.release.outputs.playground-backend--tag_name }}
+      webapp--release_created: ${{ steps.release.outputs.webapp--release_created }}
+      webapp--version: ${{ steps.release.outputs.webapp--version }}
+      webapp--tag_name: ${{ steps.release.outputs.webapp--tag_name }}
     steps:
       - uses: google-github-actions/release-please-action@v4
         id: release        
@@ -68,7 +71,7 @@ jobs:
         run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io --username ${{ github.actor }} --password-stdin
       - name: Create container image
         env:
-          IMAGE_ID: ghcr.io/${{ github.repository }}
+          IMAGE_ID: ghcr.io/${{ github.repository }}/playground-backend
           VERSION: ${{ needs.release-please.outputs.playground-backend--version }}
         run: |
           # Convert to lowercase
@@ -81,3 +84,33 @@ jobs:
           docker push $IMAGE_ID:$VERSION
           docker tag $IMAGE_ID:$VERSION $IMAGE_ID:latest
           docker push $IMAGE_ID:latest
+  webapp-release:
+    needs: release-please
+    if: needs.release-please.outputs.webapp--release_created
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: webapp
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: 'webapp/.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: 'webapp/package-lock.json'
+      - name: Login to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+      - name: Create container image
+        env:
+          IMAGE_REPO: ghcr.io/${{ github.repository }}/webapp
+          IMAGE_TAG: ${{ needs.release-please.outputs.webapp--version }}
+          DOCKER_BUILDKIT: 1
+        run: |
+          # Convert to lowercase
+          IMAGE_REPO=$(echo $IMAGE_REPO | tr '[A-Z]' '[a-z]')
+  
+          docker build -t $IMAGE_REPO:$IMAGE_TAG .
+          docker push $IMAGE_REPO:$IMAGE_TAG
+          docker tag $IMAGE_REPO:$IMAGE_TAG $IMAGE_REPO:latest
+          docker push $IMAGE_REPO:latest
+          

@@ -1,0 +1,21 @@
+<h2>MQ Playground</h2>
+<div class="status">
+  <span>Status:</span>
+  @if ((mqService.state | async) === MqttConnectionState.CONNECTED) {
+    <sbb-icon svgIcon="circle-tick-small"></sbb-icon>
+  }
+  @if ((mqService.state | async) === MqttConnectionState.CONNECTING) {
+    <sbb-icon svgIcon="arrows-circle-small"></sbb-icon>
+  }
+
+  @if ((mqService.state | async) === MqttConnectionState.CLOSED) {
+    <sbb-icon svgIcon="circle-cross-small"></sbb-icon>
+  }
+</div>
+
+<div class="content">
+  <app-mq-publisher></app-mq-publisher>
+  <app-mq-subscriber></app-mq-subscriber>
+</div>
+
+<app-sfera></app-sfera>
