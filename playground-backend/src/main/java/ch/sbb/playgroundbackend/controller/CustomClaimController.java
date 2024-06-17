@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -63,6 +64,10 @@ public class CustomClaimController {
     @PostMapping
     TokenIssuanceStartResponse tokenIssuanceStartEvent(Authentication authentication, @RequestBody TokenIssuanceStartRequest body) {
         log.info("Received tokenUssuanceStartEvent with authentication: {}", authentication);
+        if (authentication.getPrincipal() instanceof JwtAuthenticationToken) {
+            Map<String, Object> tokenAttributes = ((JwtAuthenticationToken) authentication.getPrincipal()).getTokenAttributes();
+            tokenAttributes.forEach((k, v) -> log.info("{} -> {}", k, v));
+        }
         log.info("Client: {}", body.data().authenticationContext().client());
         log.info("ClientServicePrincipal: {}", body.data().authenticationContext().clientServicePrincipal());
         log.info("ResourceServicePrincipal: {}", body.data().authenticationContext().resourceServicePrincipal());
