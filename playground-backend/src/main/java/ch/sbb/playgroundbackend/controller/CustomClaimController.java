@@ -8,6 +8,7 @@ import ch.sbb.playgroundbackend.model.azure.TokenIssuanceStartResponseData;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -18,6 +19,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,7 +41,7 @@ public class CustomClaimController {
     private final Map<String, Claims> tokenClaimDataMap = new HashMap<>();
 
     @GetMapping("requestToken")
-    String tokenRequest(Authentication authentication, String ru, String train, String role) {
+    String tokenRequest(Authentication authentication, @RequestHeader Map<String, String> headers, String ru, String train, String role) {
 
         String userId = (String) ((Jwt) (authentication.getPrincipal())).getClaims().get("oid");
         log.info("Received token request for {} with ru={} train={} role={}", userId, ru, train, role);
@@ -62,12 +64,15 @@ public class CustomClaimController {
     }
 
     @PostMapping
-    TokenIssuanceStartResponse tokenIssuanceStartEvent(Authentication authentication, @RequestBody TokenIssuanceStartRequest body) {
+    TokenIssuanceStartResponse tokenIssuanceStartEvent(Authentication authentication, @RequestHeader Map<String, String> headers, @RequestBody TokenIssuanceStartRequest body) {
         log.info("Received tokenUssuanceStartEvent with authentication: {}", authentication);
-        if (authentication.getPrincipal() instanceof JwtAuthenticationToken) {
-            Map<String, Object> tokenAttributes = ((JwtAuthenticationToken) authentication.getPrincipal()).getTokenAttributes();
-            tokenAttributes.forEach((k, v) -> log.info("{} -> {}", k, v));
-        }
+
+        log.info("Token:");
+        ((Jwt)authentication.getPrincipal()).getClaims().forEach((k, v) -> log.info("{} -> {}", k, v));
+        
+        log.info("Headers:");
+        headers.forEach((k, v) -> log.info("{} -> {}", k, v));
+
         log.info("Client: {}", body.data().authenticationContext().client());
         log.info("ClientServicePrincipal: {}", body.data().authenticationContext().clientServicePrincipal());
         log.info("ResourceServicePrincipal: {}", body.data().authenticationContext().resourceServicePrincipal());
