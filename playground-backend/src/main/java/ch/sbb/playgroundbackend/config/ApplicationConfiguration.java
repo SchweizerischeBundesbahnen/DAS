@@ -24,6 +24,9 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -33,8 +36,8 @@ public class ApplicationConfiguration {
     private final OAuth2ResourceServerProperties.Jwt properties;
 
     // The audience is important because the JWT token is accepted only if the aud claim in the JWT token received by the server is the same as the client ID of the server.
-    //@Value("${spring.security.oauth2.resourceserver.jwt.audience}")
-    String audience = null;
+    @Value("${spring.security.oauth2.resourceserver.jwt.audience}")
+    String[] audiences;
 
     public ApplicationConfiguration(OAuth2ResourceServerProperties properties) {
         this.properties = properties.getJwt();
@@ -78,21 +81,21 @@ public class ApplicationConfiguration {
         if (StringUtils.hasText(issuerUri)) {
             validators.add(new JwtIssuerValidator(issuerUri));
         }
-        if (StringUtils.hasText(audience)) {
-            validators.add(new JwtClaimValidator<>(JwtClaimNames.AUD, audiencePredicate(audience)));
+        if (audiences != null && audiences.length > 0) {
+            validators.add(new JwtClaimValidator<>(JwtClaimNames.AUD, audiencePredicate()));
         }
         validators.add(new JwtTimestampValidator());
         return new DelegatingOAuth2TokenValidator<>(validators);
     }
 
-    Predicate<Object> audiencePredicate(String audience) {
+    Predicate<Object> audiencePredicate() {
         return aud -> {
             if (aud == null) {
                 return false;
             } else if (aud instanceof String) {
-                return aud.equals(audience);
+                return Arrays.stream(audiences).toList().contains(aud);
             } else if (aud instanceof List) {
-                return ((List<?>) aud).contains(audience);
+                return new HashSet<>(Arrays.stream(audiences).toList()).containsAll((List<?>) aud);
             } else {
                 return false;
             }

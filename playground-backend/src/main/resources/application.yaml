@@ -27,7 +27,7 @@ spring:
         jwt:
           jwk-set-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/discovery/v2.0/keys
           issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
-          #audience: ${CLIENT_ID}
+          audience: ${AUDIENCES}
 
   profiles:
     active: ${STAGE:local}

@@ -23,7 +23,6 @@ public class WebSecurityConfiguration {
                             authConfig.requestMatchers("/v3/api-docs/**").permitAll();
                             authConfig.requestMatchers("/actuator/health/*").permitAll();
                             authConfig.requestMatchers("/actuator/info").permitAll();
-                            authConfig.requestMatchers("/customClaim").permitAll();
                             authConfig.requestMatchers("/**").authenticated();
                         }
                 )
