@@ -40,7 +40,7 @@ public class CustomClaimController {
     @GetMapping("requestToken")
     String tokenRequest(Authentication authentication, String ru, String train, String role) {
 
-        String userId = authentication.getName();
+        String userId = (String) ((Jwt) (authentication.getPrincipal())).getClaims().get("oid");
         log.info("Received token request for {} with ru={} train={} role={}", userId, ru, train, role);
 
         tokenClaimDataMap.put(userId, new Claims(ru, train, role));
@@ -61,18 +61,24 @@ public class CustomClaimController {
     }
 
     @PostMapping
-    TokenIssuanceStartResponse tokenIssuanceStartEvent(@RequestBody TokenIssuanceStartRequest body) {
-        log.info("Received tokenUssuanceStartEvent");
+    TokenIssuanceStartResponse tokenIssuanceStartEvent(Authentication authentication, @RequestBody TokenIssuanceStartRequest body) {
+        log.info("Received tokenUssuanceStartEvent with authentication: {}", authentication);
         log.info("Client: {}", body.data().authenticationContext().client());
         log.info("ClientServicePrincipal: {}", body.data().authenticationContext().clientServicePrincipal());
         log.info("ResourceServicePrincipal: {}", body.data().authenticationContext().resourceServicePrincipal());
         log.info("User: {}", body.data().authenticationContext().user());
 
         String userId = body.data().authenticationContext().user().id();
-        Claims claims = new Claims("1085", "719_2024-06-13", "active");
+
+        Claims claims;
+
         if (tokenClaimDataMap.containsKey(userId)) {
+            log.info("Returning user provided claims");
             claims = tokenClaimDataMap.get(userId);
             tokenClaimDataMap.remove(userId);
+        } else {
+            log.info("Returning default claims");
+            claims = new Claims("1085", "719_2024-06-13", "active");
         }
 
         Action action = new Action("microsoft.graph.tokenIssuanceStart.provideClaimsForToken", claims);
