@@ -28,10 +28,10 @@ public class WebSecurityConfiguration {
                         }
                 )
                 // Disable csrf for now as it makes unauthenticated requests return 401/403
-                .csrf(AbstractHttpConfigurer::disable);
-                /*.oauth2ResourceServer((oauth2) ->
+                .csrf(AbstractHttpConfigurer::disable)
+                .oauth2ResourceServer((oauth2) ->
                         oauth2.jwt(withDefaults())
-                );*/
+                );
         return http.build();
     }
 }

@@ -33,8 +33,8 @@ public class ApplicationConfiguration {
     private final OAuth2ResourceServerProperties.Jwt properties;
 
     // The audience is important because the JWT token is accepted only if the aud claim in the JWT token received by the server is the same as the client ID of the server.
-    @Value("${spring.security.oauth2.resourceserver.jwt.audience}")
-    String audience;
+    //@Value("${spring.security.oauth2.resourceserver.jwt.audience}")
+    String audience = null;
 
     public ApplicationConfiguration(OAuth2ResourceServerProperties properties) {
         this.properties = properties.getJwt();

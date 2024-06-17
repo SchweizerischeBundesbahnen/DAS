@@ -40,7 +40,7 @@ public class CustomClaimController {
     @GetMapping("requestToken")
     String tokenRequest(Authentication authentication, String ru, String train, String role) {
 
-        String userId = (String) ((Jwt) authentication.getPrincipal()).getClaims().get("sub");
+        String userId = authentication.getName();
         log.info("Received token request for {} with ru={} train={} role={}", userId, ru, train, role);
 
         tokenClaimDataMap.put(userId, new Claims(ru, train, role));
