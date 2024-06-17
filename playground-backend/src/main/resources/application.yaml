@@ -1,11 +1,34 @@
+info:
+  app:
+    version: '@project.version@'
+
 management:
   endpoint:
     health:
       probes:
         enabled: true
 
-
 spring:
+  security:
+    oauth2:
+      authorizationUrl: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0
+      client:
+        provider:
+          azure-active-directory:
+            issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
+        registration:
+          sfera-token:
+            provider: azure-active-directory
+            client-id: ${CLIENT_ID}
+            client-secret: ${CLIENT_SECRET}
+            authorization-grant-type: urn:ietf:params:oauth:grant-type:jwt-bearer
+            scope: api://${SFERA_CLIENT_ID}/.default
+      resourceserver:
+        jwt:
+          jwk-set-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/discovery/v2.0/keys
+          issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
+          audience: ${CLIENT_ID}
+
   profiles:
     active: ${STAGE:local}
   cloud:
@@ -34,3 +57,10 @@ spring:
                   SSL_KEY_STORE_FORMAT: JKS
                   SSL_KEY_STORE_PASSWORD: ${SOLACE_KEY_STORE_PASSWORD}
       default-binder: solace
+
+springdoc:
+  swagger-ui:
+    oauth:
+      use-pkce-with-authorization-code-grant: true
+      clientId: ${CLIENT_ID}
+
