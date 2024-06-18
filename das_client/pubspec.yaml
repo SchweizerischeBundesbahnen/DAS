@@ -34,9 +34,9 @@ dependencies:
 
   sbb_oidc:
     git:
-      url: ssh://git@codessh.sbb.ch:7999/kd_flutter/esta_mobile_flutter_oidc.git
+      url: https://github.com/SchweizerischeBundesbahnen/flutter-oidc.git
       path: sbb_oidc
-      ref: 3.1.0
+      ref: 3.3.0
 
   # https://pub.dev/packages/get_it
   get_it: ^7.7.0
