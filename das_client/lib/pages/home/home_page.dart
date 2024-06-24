@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
     );
     Fimber.i("connectionState $mqttClientConnectionStatus");
 
-    var subscribe = client.subscribe("90940/2/G2B/1085/2019-03-21_512/fa6e0e68-63b6-4b13-8e9c-74e9a66dd1f9", MqttQos.exactlyOnce);
+    var subscribe = client.subscribe("90940/2/G2B/1085/2019-03-21_das/fa6e0e68-63b6-4b13-8e9c-74e9a66dd1f9", MqttQos.exactlyOnce);
 
     client.updates!.listen((List<MqttReceivedMessage<MqttMessage?>>? c) {
       Fimber.i(c!.last.payload.toString());
