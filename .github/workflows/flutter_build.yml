@@ -37,6 +37,6 @@ jobs:
     - run: flutter pub get
     - run: flutter pub run build_runner build --delete-conflicting-outputs
     - run: flutter test
-    - run: flutter build apk --flavor dev
-    - run: flutter build appbundle --flavor dev
-    - run: flutter build ios --flavor dev --release --no-codesign
+    - run: flutter build apk --flavor dev -t lib/main_dev.dart
+    - run: flutter build appbundle --flavor dev -t lib/main_dev.dart
+    - run: flutter build ios --flavor dev -t lib/main_dev.dart --release --no-codesign
