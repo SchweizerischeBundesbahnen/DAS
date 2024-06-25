@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.1.0 (2024-06-25)
+
+
+### Bug Fixes
+
+* applicationId updated ([03550df](https://github.com/SchweizerischeBundesbahnen/DAS/commit/03550df09a3ff016bdb0dc2e007a4b2b7875b80e))
+* title ([2681799](https://github.com/SchweizerischeBundesbahnen/DAS/commit/2681799823604597a449a55d1fe9302d44c659c1))
+* title again ([4d01c74](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4d01c74d53a542e728c74ee37931b7da1928ad9d))
+* title change ([a80a33e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a80a33e18eec3ae264224d6b3b10ae38ae45161c))
+* update label ([0d79aa4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/0d79aa47de8fa051156db9cc89bd7d7f874fd78b))
+* update title ([5aae2f1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5aae2f18af4159c5fe634159a3443c5d485da361))
+* update title ([9321e74](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9321e74f2f1696d963f5827aed0c599d977acb0e))
+* update title ([61446f8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/61446f8b9b4ab97bca4be12e0802932318e7fa0e))
+* update title ([084cb7b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/084cb7b413682b4d10b15a15bd0cbd79890696ff))
+
+
+### Miscellaneous Chores
+
+* release 0.1.0 ([e73de8e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e73de8ed6c8f44c533afcc709c822d14f554c065))
+
 ## [0.1.9](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.1.8...das_client-v0.1.9) (2024-03-06)
 
 
