@@ -7,7 +7,6 @@ const authConfig: AuthConfig = {
   // This is required, since Azure AD uses different domains in their issuer configuration
   strictDiscoveryDocumentValidation: false,
   clientId: '6025180f-123b-4f2f-9703-16e08fc221f0',
-  // clientId: 'ccd6f4f5-709a-450e-aeff-1625d5b00525',
   redirectUri: location.origin,
   responseType: 'code',
   scope: `openid profile email offline_access 6025180f-123b-4f2f-9703-16e08fc221f0/.default`,
@@ -17,6 +16,7 @@ export const environment: Environment = {
   production: false,
   label: 'dev',
   oauthProfile: 'azureAd',
+  tokenExchangeUrl: 'https://das-backend-dev.app.sbb.ch/customClaim/requestToken',
   authConfig,
 };
 

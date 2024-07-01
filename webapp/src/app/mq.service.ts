@@ -1,6 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { IMqttServiceOptions, MqttService } from "ngx-mqtt";
 import { AuthService } from "./auth.service";
+import { firstValueFrom } from "rxjs";
+import { environment } from "../environment/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -16,20 +18,24 @@ export class MqService implements OnDestroy {
     connectTimeout: 4000, // Timeout period
     reconnectPeriod: 4000, // Reconnect period
     clientId: 'webapp-' + crypto.randomUUID(),
-    username: this.authService.preferredUsername,
-    password: this.authService.oauthAccessTokenString,
     protocol: 'wss',
   }
 
   constructor(private authService: AuthService, private mqttService: MqttService) {
-    this.connect();
   }
 
   ngOnDestroy(): void {
     this.mqttService.disconnect();
   }
 
-  connect() {
+  async connect(ru: string, train: string, role: string) {
+    const exchangeToken = await firstValueFrom(this.authService.exchange(ru, train, role));
+    this.connectionConfig = {
+      username: this.authService.preferredUsername,
+      password: this.oauthAccessTokenString(exchangeToken),
+      ...this.connectionConfig
+    }
+
     this.mqttService.connect(this.connectionConfig);
     this.mqttService.onConnect.subscribe(() => {
       console.log('Connection succeeded!');
@@ -47,4 +53,8 @@ export class MqService implements OnDestroy {
     this.mqttService.unsafePublish(topic, message);
   }
 
+  // Solace specific oauth access string (used instead of plain "mqttPassword"))
+  private oauthAccessTokenString(token: string): string {
+    return `OAUTH~${environment.oauthProfile}~${token}`;
+  }
 }
