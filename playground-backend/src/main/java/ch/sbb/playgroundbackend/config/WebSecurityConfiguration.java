@@ -18,7 +18,8 @@ public class WebSecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((authConfig) -> {
+                .cors(withDefaults())
+                .authorizeHttpRequests(authConfig -> {
                             authConfig.requestMatchers("/swagger-ui/**").permitAll();
                             authConfig.requestMatchers("/v3/api-docs/**").permitAll();
                             authConfig.requestMatchers("/actuator/health/*").permitAll();
@@ -28,7 +29,7 @@ public class WebSecurityConfiguration {
                 )
                 // Disable csrf for now as it makes unauthenticated requests return 401/403
                 .csrf(AbstractHttpConfigurer::disable)
-                .oauth2ResourceServer((oauth2) ->
+                .oauth2ResourceServer(oauth2 ->
                         oauth2.jwt(withDefaults())
                 );
         return http.build();

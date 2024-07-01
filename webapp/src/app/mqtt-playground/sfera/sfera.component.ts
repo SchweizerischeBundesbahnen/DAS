@@ -51,4 +51,8 @@ export class SferaComponent {
       </SFERA_B2G_RequestMessage>
     `
   }
+
+  connect() {
+    this.mqService.connect(this.companyControl.value!, this.trainControl.value!, this.clientIdControl.value!);
+  }
 }

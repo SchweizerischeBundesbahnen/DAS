@@ -64,3 +64,10 @@ springdoc:
       use-pkce-with-authorization-code-grant: true
       clientId: ${CLIENT_ID}
 
+endpoints:
+  web:
+    cors:
+      path-mappings: /**
+      allowed-origins: ${APPLICATION_ALLOWED_ORIGINS}
+      allowed-methods: GET
+      allowed-headers: "*"
