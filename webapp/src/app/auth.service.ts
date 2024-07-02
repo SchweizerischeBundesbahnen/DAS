@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { OAuthService } from "angular-oauth2-oidc";
 import { Router } from "@angular/router";
-import { first } from "rxjs";
+import { first, Observable } from "rxjs";
 import { Location } from '@angular/common';
 import { environment } from "../environment/environment";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 
 
 @Injectable({
@@ -34,6 +35,7 @@ export class AuthService {
     private oauthService: OAuthService,
     private router: Router,
     location: Location,
+    private httpClient: HttpClient
   ) {
 
     this.oauthService.configure(environment.authConfig);
@@ -85,12 +87,15 @@ export class AuthService {
     return this.oauthService.getAccessToken();
   }
 
-  // Solace specific oauth access string (used instead of plain "mqttPassword"))
-  public get oauthAccessTokenString(): string {
-    return `OAUTH~${environment.oauthProfile}~${this.getAccessToken}`;
-  }
-
   public get preferredUsername(): string {
     return this.oauthService.getIdentityClaims()['preferred_username'];
+  }
+
+  exchange(ru: string, train: string, role: string): Observable<string> {
+    return this.httpClient.get(environment.tokenExchangeUrl, {
+      headers: new HttpHeaders({Authorization: `Bearer ${this.getAccessToken}`}),
+      params: new HttpParams().set('ru', ru).set('train', train).set('role', role),
+      responseType: 'text',
+    })
   }
 }
