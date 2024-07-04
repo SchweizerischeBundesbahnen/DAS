@@ -1,10 +1,10 @@
 import 'package:das_client/model/sfera/enums/xml_enum.dart';
 
-enum DASArchitecture implements XmlEnum {
+enum DasArchitecture implements XmlEnum {
   groundAdviceCalculation(xmlValue: "GroundAdviceCalculation"),
   boardAdviceCalculation(xmlValue: "BoardAdviceCalculation");
 
-  const DASArchitecture({
+  const DasArchitecture({
     required this.xmlValue,
   });
 

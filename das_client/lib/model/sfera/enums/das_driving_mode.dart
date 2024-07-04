@@ -1,4 +1,6 @@
-enum DASDrivingMode {
+import 'package:das_client/model/sfera/enums/xml_enum.dart';
+
+enum DasDrivingMode implements XmlEnum {
   inactive(xmlValue: "Inactive"),
   timetable(xmlValue: "Timetable"),
   readOnly(xmlValue: "Read-Only"),
@@ -8,9 +10,10 @@ enum DASDrivingMode {
   goa3(xmlValue: "GoA3"),
   goa4(xmlValue: "GoA4");
 
-  const DASDrivingMode({
+  const DasDrivingMode({
     required this.xmlValue,
   });
 
+  @override
   final String xmlValue;
 }

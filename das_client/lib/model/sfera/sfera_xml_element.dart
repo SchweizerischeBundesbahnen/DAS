@@ -1,3 +1,4 @@
+import 'package:das_client/model/sfera/enums/xml_enum.dart';
 import 'package:fimber/fimber.dart';
 import 'package:xml/xml.dart';
 
@@ -37,6 +38,18 @@ class SferaXmlElement {
     if (children.whereType<T>().isEmpty) {
       Fimber.w("Validation failed for ${this.type} because it has no child of type ${T.toString()}");
       return false;
+    }
+
+    return true;
+  }
+
+  bool validateHasEnumAttribute<T extends XmlEnum>(List<T> allValues, String attribute) {
+    if (!validateHasAttribute(attribute)) {
+      return false;
+    }
+
+    if (XmlEnum.valueOf(allValues, attributes[attribute]!) == null) {
+      Fimber.w("Validation failed for $type because attribute $attribute could not be mapped to Enum ${T.toString()}");
     }
 
     return true;
