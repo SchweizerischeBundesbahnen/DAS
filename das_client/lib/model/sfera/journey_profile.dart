@@ -4,7 +4,7 @@ import 'package:das_client/model/sfera/sfera_xml_element.dart';
 class JourneyProfile extends SferaXmlElement {
   static const String elementType = "JourneyProfile";
 
-  JourneyProfile({required super.type, super.attributes, super.children, super.value});
+  JourneyProfile({super.type = elementType, super.attributes, super.children, super.value});
 
   SferaXmlElement get trainIdentification => childrenWithType("TrainIdentification").first;
 

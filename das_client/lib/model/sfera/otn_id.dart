@@ -3,7 +3,7 @@ import 'package:das_client/model/sfera/sfera_xml_element.dart';
 class OtnId extends SferaXmlElement {
   static const String elementType = "OTN_ID";
 
-  OtnId({required super.type, super.attributes, super.children, super.value});
+  OtnId({super.type = elementType, super.attributes, super.children, super.value});
 
   String get company => childrenWithType("Company").first.value!;
 

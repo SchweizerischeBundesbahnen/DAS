@@ -2,11 +2,11 @@ import 'package:fimber/fimber.dart';
 
 class SferaXmlElement {
   final String type;
-  final Map<String, dynamic> attributes;
+  final Map<String, String> attributes;
   final List<SferaXmlElement> children;
   final String? value;
 
-  SferaXmlElement({required this.type, Map<String, dynamic>? attributes, List<SferaXmlElement>? children, this.value})
+  SferaXmlElement({required this.type, Map<String, String>? attributes, List<SferaXmlElement>? children, this.value})
       : attributes = attributes ?? {},
         children = children ?? [];
 
@@ -24,7 +24,7 @@ class SferaXmlElement {
   }
 
   bool validateHasChild(String type) {
-    if (children.where((it) => it.type == type).isEmpty) {
+    if (childrenWithType(type).isEmpty) {
       Fimber.w("Validation failed for ${this.type} because it has no child of type $type");
       return false;
     }

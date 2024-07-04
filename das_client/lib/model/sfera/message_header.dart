@@ -3,17 +3,17 @@ import 'package:das_client/model/sfera/sfera_xml_element.dart';
 class MessageHeader extends SferaXmlElement {
   static const String elementType = "MessageHeader";
 
-  MessageHeader({required super.type, super.attributes, super.children, super.value});
+  MessageHeader({super.type = elementType, super.attributes, super.children, super.value});
 
-  String get sferaVersion => attributes["SFERA_version"];
+  String get sferaVersion => attributes["SFERA_version"]!;
 
-  String get messageId => attributes["message_ID"];
+  String get messageId => attributes["message_ID"]!;
 
-  String get correlationId => attributes["correlation_ID"];
+  String get correlationId => attributes["correlation_ID"]!;
 
-  String get timestamp => attributes["timestamp"];
+  String get timestamp => attributes["timestamp"]!;
 
-  String get sourceDevice => attributes["timestamp"];
+  String get sourceDevice => attributes["timestamp"]!;
 
   String get sender => childrenWithType("Sender").first.value!;
 
