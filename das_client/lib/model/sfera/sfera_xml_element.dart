@@ -1,4 +1,5 @@
 import 'package:fimber/fimber.dart';
+import 'package:xml/xml.dart';
 
 class SferaXmlElement {
   final String type;
@@ -43,5 +44,26 @@ class SferaXmlElement {
 
   Iterable<SferaXmlElement> childrenWithType(String type) {
     return children.where((it) => it.type == type);
+  }
+
+  XmlDocument buildDocument() {
+    final builder = XmlBuilder();
+    builder.processing('xml', 'version="1.0"');
+    buildElement(builder);
+    return builder.buildDocument();
+  }
+
+  void buildElement(XmlBuilder builder) {
+    builder.element(type, nest: () {
+      attributes.forEach((k, v) {
+        builder.attribute(k, v);
+      });
+      for (var child in children) {
+        child.buildElement(builder);
+      }
+      if (value != null) {
+        builder.text(value!);
+      }
+    });
   }
 }

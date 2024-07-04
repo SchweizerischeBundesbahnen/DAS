@@ -8,6 +8,16 @@ class SferaB2gRequestMessage extends SferaXmlElement {
 
   SferaB2gRequestMessage({super.type = elementType, super.attributes, super.children, super.value});
 
+  factory SferaB2gRequestMessage.create(MessageHeader header, {HandshakeRequest? handshakeRequest}) {
+    final requestMessage = SferaB2gRequestMessage();
+    requestMessage.children.add(header);
+    if (handshakeRequest != null) {
+      requestMessage.children.add(handshakeRequest);
+    }
+
+    return requestMessage;
+  }
+
   MessageHeader get messageHeader => children.whereType<MessageHeader>().first;
 
   HandshakeRequest? get handshakeRequest => children.whereType<HandshakeRequest>().firstOrNull;

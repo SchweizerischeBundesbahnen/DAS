@@ -5,6 +5,19 @@ class MessageHeader extends SferaXmlElement {
 
   MessageHeader({super.type = elementType, super.attributes, super.children, super.value});
 
+  factory MessageHeader.create(String messageId, String timestamp, String sourceDevice, String destinationDevice,
+      String sender, String recipient) {
+    final messageHeader = MessageHeader();
+    messageHeader.attributes["SFERA_version"] = "2.01";
+    messageHeader.attributes["message_ID"] = messageId;
+    messageHeader.attributes["timestamp"] = timestamp;
+    messageHeader.attributes["sourceDevice"] = sourceDevice;
+    messageHeader.attributes["destinationDevice"] = destinationDevice;
+    messageHeader.children.add(SferaXmlElement(type: "Sender", value: sender));
+    messageHeader.children.add(SferaXmlElement(type: "Recipient", value: recipient));
+    return messageHeader;
+  }
+
   String get sferaVersion => attributes["SFERA_version"]!;
 
   String get messageId => attributes["message_ID"]!;
