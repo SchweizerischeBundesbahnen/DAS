@@ -17,8 +17,7 @@ class AzureAuthenticator implements Authenticator {
   @override
   Future<bool> get isAuthenticated async {
     try {
-      final tokenSpec = tokenSpecs.first;
-      await token(tokenSpec.id);
+      await token();
       return true;
     } catch (e) {
       return false;
@@ -36,7 +35,7 @@ class AzureAuthenticator implements Authenticator {
   }
 
   @override
-  Future<OidcToken> token(String tokenId) async {
+  Future<OidcToken> token({String? tokenId}) async {
     final tokenSpec = tokenSpecs.getById(tokenId);
     if (tokenSpec == null) {
       throw ArgumentError.value(tokenId, 'tokenId', 'Unknown token id.');
@@ -45,8 +44,8 @@ class AzureAuthenticator implements Authenticator {
   }
 
   @override
-  Future<String> userId(String tokenId) async {
-    final oidcToken = await token(tokenId);
+  Future<String> userId({String? tokenId}) async {
+    final oidcToken = await token(tokenId: tokenId);
     final idToken = oidcToken.idToken;
     return idToken.payload['sbbuid'] as String;
   }

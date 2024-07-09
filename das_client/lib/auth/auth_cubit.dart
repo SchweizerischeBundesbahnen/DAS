@@ -30,7 +30,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> _emitAuthenticated() async {
-    final userId = await _authenticator.userId('T1');
+    final userId = await _authenticator.userId();
     emit(Authenticated(userId));
   }
 }

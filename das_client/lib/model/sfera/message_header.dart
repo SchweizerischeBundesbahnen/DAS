@@ -1,4 +1,5 @@
 import 'package:das_client/model/sfera/sfera_xml_element.dart';
+import 'package:das_client/model/sfera/train_identification.dart';
 
 class MessageHeader extends SferaXmlElement {
   static const String elementType = "MessageHeader";
@@ -6,7 +7,7 @@ class MessageHeader extends SferaXmlElement {
   MessageHeader({super.type = elementType, super.attributes, super.children, super.value});
 
   factory MessageHeader.create(String messageId, String timestamp, String sourceDevice, String destinationDevice,
-      String sender, String recipient) {
+      String sender, String recipient, {TrainIdentification? trainIdentification}) {
     final messageHeader = MessageHeader();
     messageHeader.attributes["SFERA_version"] = "2.01";
     messageHeader.attributes["message_ID"] = messageId;
@@ -15,6 +16,11 @@ class MessageHeader extends SferaXmlElement {
     messageHeader.attributes["destinationDevice"] = destinationDevice;
     messageHeader.children.add(SferaXmlElement(type: "Sender", value: sender));
     messageHeader.children.add(SferaXmlElement(type: "Recipient", value: recipient));
+
+    if (trainIdentification != null) {
+      messageHeader.children.add(trainIdentification);
+    }
+
     return messageHeader;
   }
 

@@ -20,9 +20,8 @@ class SferaG2bReplyMessage extends SferaXmlElement {
   @override
   bool validate() {
     return validateHasChildOfType<MessageHeader>() &&
-        (validateHasChildOfType<G2bReplyPayload>() ||
-            validateHasChildOfType<HandshakeAcknowledgement>() ||
-            validateHasChildOfType<HandshakeReject>()) &&
+        validateHasAnyChildOfType(
+            [G2bReplyPayload.elementType, HandshakeAcknowledgement.elementType, HandshakeReject.elementType]) &&
         super.validate();
   }
 }

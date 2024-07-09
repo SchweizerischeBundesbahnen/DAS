@@ -7,7 +7,8 @@ class HandshakeRequest extends SferaXmlElement {
 
   HandshakeRequest({super.type = elementType, super.attributes, super.children, super.value});
 
-  factory HandshakeRequest.create(Iterable<DasOperatingModesSupported> supportedOperatingModes, {bool? statusReportsEnabled, String? additionalInfo, RelatedTrainRequestType? relatedTrainRequestType}) {
+  factory HandshakeRequest.create(Iterable<DasOperatingModesSupported> supportedOperatingModes,
+      {bool? statusReportsEnabled, String? additionalInfo, RelatedTrainRequestType? relatedTrainRequestType}) {
     final request = HandshakeRequest();
     request.children.addAll(supportedOperatingModes);
     if (relatedTrainRequestType != null) {

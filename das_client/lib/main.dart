@@ -1,5 +1,6 @@
 import 'package:das_client/app.dart';
 import 'package:das_client/auth/auth_cubit.dart';
+import 'package:das_client/bloc/fahrbild_cubit.dart';
 import 'package:das_client/di.dart';
 import 'package:das_client/flavor.dart';
 import 'package:fimber/fimber.dart';
@@ -13,6 +14,7 @@ Future<void> start(Flavor flavor) async {
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(create: (context) => AuthCubit(DI.get())..init()),
+      BlocProvider(create: (context) => FahrbildCubit(mqttService: DI.get()))
     ],
     child: App(),
   ));

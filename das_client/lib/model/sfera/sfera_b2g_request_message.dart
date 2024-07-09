@@ -8,11 +8,14 @@ class SferaB2gRequestMessage extends SferaXmlElement {
 
   SferaB2gRequestMessage({super.type = elementType, super.attributes, super.children, super.value});
 
-  factory SferaB2gRequestMessage.create(MessageHeader header, {HandshakeRequest? handshakeRequest}) {
+  factory SferaB2gRequestMessage.create(MessageHeader header, {HandshakeRequest? handshakeRequest, B2gRequest? b2gRequest}) {
     final requestMessage = SferaB2gRequestMessage();
     requestMessage.children.add(header);
     if (handshakeRequest != null) {
       requestMessage.children.add(handshakeRequest);
+    }
+    if (b2gRequest != null) {
+      requestMessage.children.add(b2gRequest);
     }
 
     return requestMessage;
@@ -27,7 +30,7 @@ class SferaB2gRequestMessage extends SferaXmlElement {
   @override
   bool validate() {
     return validateHasChildOfType<MessageHeader>() &&
-        (validateHasChildOfType<B2gRequest>() || validateHasChildOfType<HandshakeRequest>()) &&
+        validateHasAnyChildOfType([B2gRequest.elementType, HandshakeRequest.elementType]) &&
         super.validate();
   }
 }

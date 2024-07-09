@@ -7,9 +7,9 @@ abstract class Authenticator {
 
   Future<OidcToken> login({String? tokenId});
 
-  Future<OidcToken> token(String tokenId);
+  Future<OidcToken> token({String? tokenId});
 
-  Future<String> userId(String tokenId);
+  Future<String> userId({String? tokenId});
 
   Future<UserInfo> userInfo();
 

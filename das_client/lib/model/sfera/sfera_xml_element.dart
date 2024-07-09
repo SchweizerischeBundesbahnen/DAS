@@ -36,7 +36,16 @@ class SferaXmlElement {
 
   bool validateHasChildOfType<T>() {
     if (children.whereType<T>().isEmpty) {
-      Fimber.w("Validation failed for ${this.type} because it has no child of type ${T.toString()}");
+      Fimber.w("Validation failed for $type because it has no child of type ${T.toString()}");
+      return false;
+    }
+
+    return true;
+  }
+
+  bool validateHasAnyChildOfType(List<String> types) {
+    if (!children.map((it) => it.type).any((it) => types.contains(it))) {
+      Fimber.w("Validation failed for $type because it has no child of any type: ${types.join(", ")}");
       return false;
     }
 

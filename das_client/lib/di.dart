@@ -2,6 +2,8 @@ import 'package:das_client/auth/authenticator.dart';
 import 'package:das_client/auth/azure_authenticator.dart';
 import 'package:das_client/auth/token_spec_provider.dart';
 import 'package:das_client/flavor.dart';
+import 'package:das_client/service/backend_service.dart';
+import 'package:das_client/service/mqtt_service.dart';
 import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sbb_oidc/sbb_oidc.dart';
@@ -35,6 +37,7 @@ extension _GetItX on GetIt {
     _registerTokenSpecProvider();
     _registerOidcClient();
     _registerAzureAuthenticator();
+    _registerServices();
     await allReady();
   }
 
@@ -64,6 +67,12 @@ extension _GetItX on GetIt {
     }
 
     registerSingletonAsync<OidcClient>(factoryFunc);
+  }
+
+  void _registerServices() {
+    final flavor = get<Flavor>();
+    registerSingleton<BackendService>(BackendService(authenticator: get(), backendUrl: flavor.backendUrl));
+    registerSingleton<MqttService>(MqttService(mqttUrl: flavor.mqttUrl, backendService: get(), authenticator: get()));
   }
 
   /// Azure Authenticator.

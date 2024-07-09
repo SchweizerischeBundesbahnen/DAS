@@ -4,6 +4,8 @@ import 'package:meta/meta.dart';
 @sealed
 @immutable
 class TokenSpec {
+  static const String defaultTokenId = "T1";
+
   const TokenSpec({
     required this.id,
     required this.displayName,
