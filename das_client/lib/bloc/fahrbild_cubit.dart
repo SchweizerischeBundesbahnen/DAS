@@ -79,7 +79,7 @@ class FahrbildCubit extends Cubit<FahrbildState> {
         var sferaG2bReplyMessage = SferaReplyParser.parse(message);
 
         if (sferaG2bReplyMessage.validate()) {
-          if (sferaG2bReplyMessage.payload != null) {
+          if (sferaG2bReplyMessage.payload != null && sferaG2bReplyMessage.payload!.segmentProfiles.isNotEmpty) {
             Fimber.i("Received G2bReplyPayload response...");
             _journeyProfileSubject.add(sferaG2bReplyMessage.payload!.journeyProfiles.firstOrNull);
             _segmentProfilesSubject.add(sferaG2bReplyMessage.payload!.segmentProfiles.toList());

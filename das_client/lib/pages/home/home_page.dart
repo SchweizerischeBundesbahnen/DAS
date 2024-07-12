@@ -3,6 +3,7 @@ import 'package:das_client/auth/auth_cubit.dart';
 import 'package:das_client/bloc/fahrbild_cubit.dart';
 import 'package:das_client/i18n/src/build_context_x.dart';
 import 'package:das_client/nav/app_router.dart';
+import 'package:das_client/pages/home/widgets/fahrbild.dart';
 import 'package:das_client/pages/home/widgets/train_selection.dart';
 import 'package:das_client/pages/login/login_page.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
@@ -49,7 +50,7 @@ class HomePage extends StatelessWidget {
           if (state is SelectingFahrbildState) {
             return const TrainSelection();
           } else if(state is FahrbildLoadedState) {
-            return const Center(child: Text("Fahrbild loaded"));
+            return const Fahrbild();
           } else {
             return const Center(child: CircularProgressIndicator());
           }
