@@ -2,8 +2,8 @@ import { Environment } from "./environment.model";
 import { AuthConfig } from "angular-oauth2-oidc";
 
 const authConfig: AuthConfig = {
-  // This is the issuer URL for the SBB Azure AD organization
-  issuer: 'https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0',
+  issuer: 'https://login.microsoftonline.com/common/v2.0',
+  skipIssuerCheck: true,
   // This is required, since Azure AD uses different domains in their issuer configuration
   strictDiscoveryDocumentValidation: false,
   clientId: '6025180f-123b-4f2f-9703-16e08fc221f0',
