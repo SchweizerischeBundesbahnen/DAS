@@ -4,10 +4,11 @@ part of 'fahrbild_cubit.dart';
 sealed class FahrbildState {}
 
 final class SelectingFahrbildState extends FahrbildState {
-  SelectingFahrbildState({this.company, this.trainNumber});
+  SelectingFahrbildState({this.company, this.trainNumber, this.errorCode});
 
   final String? trainNumber;
   final String? company;
+  final ErrorCode? errorCode;
 }
 
 abstract class BaseFahrbildState extends FahrbildState {
@@ -32,12 +33,6 @@ final class RequestingJourneyState extends BaseFahrbildState {
 
 final class FahrbildLoadedState extends BaseFahrbildState {
   FahrbildLoadedState(super.company, super.trainNumber, super.date);
-}
-
-final class LoadingFailedState extends BaseFahrbildState {
-  LoadingFailedState(super.company, super.trainNumber, super.date, this.errorCode);
-
-  final ErrorCode errorCode;
 }
 
 

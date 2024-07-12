@@ -64,8 +64,10 @@ class FahrbildCubit extends Cubit<FahrbildState> {
             Fimber.w(
                 "Received handshake reject with reason=${sferaG2bReplyMessage.handshakeReject?.handshakeRejectReason?.toString()}");
             _mqttService.disconnect();
-            emit(LoadingFailedState(
-                currentState.company, currentState.trainNumber, currentState.date, ErrorCode.sferaHandshakeRejected));
+            emit(SelectingFahrbildState(
+                company: currentState.company,
+                trainNumber: currentState.trainNumber,
+                errorCode: ErrorCode.sferaHandshakeRejected));
           } else {
             Fimber.w("Ignoring response because is does not contain handshake");
           }
@@ -101,19 +103,31 @@ class FahrbildCubit extends Cubit<FahrbildState> {
       final currentState = state as BaseFahrbildState;
       Fimber.w("Validation failed for MQTT response");
       _mqttService.disconnect();
-      emit(LoadingFailedState(
-          currentState.company, currentState.trainNumber, currentState.date, ErrorCode.sferaValidationFailed));
+      emit(SelectingFahrbildState(
+          company: currentState.company,
+          trainNumber: currentState.trainNumber,
+          errorCode: ErrorCode.sferaValidationFailed));
     }
   }
 
-  void loadFahrbild(String company, String trainNumber) async {
-    final now = DateTime.now();
-    emit(ConnectingState(company, trainNumber, now));
-    if (await _mqttService.connect(company, _sferaTrain(trainNumber, now))) {
-      _sendHandshakeRequest();
-    } else {
-      Fimber.w("Unable to load fahrbild because mqtt failed to connect");
-      emit(LoadingFailedState(company, trainNumber, now, ErrorCode.connectionFailed));
+  void loadFahrbild() async {
+    final currentState = state;
+    if (currentState is SelectingFahrbildState) {
+      final now = DateTime.now();
+      final company = currentState.company;
+      final trainNumber = currentState.trainNumber;
+      if (company == null || trainNumber == null) {
+        Fimber.i("company or trainNumber null");
+        return;
+      }
+
+      emit(ConnectingState(company, trainNumber, now));
+      if (await _mqttService.connect(company, _sferaTrain(trainNumber, now))) {
+        _sendHandshakeRequest();
+      } else {
+        Fimber.w("Unable to load fahrbild because mqtt failed to connect");
+        emit(SelectingFahrbildState(company: company, trainNumber: trainNumber, errorCode: ErrorCode.connectionFailed));
+      }
     }
   }
 
@@ -166,6 +180,18 @@ class FahrbildCubit extends Cubit<FahrbildState> {
 
   String _sferaTrain(String trainNumber, DateTime date) {
     return "${Format.sferaDate(date)}_$trainNumber";
+  }
+
+  void updateTrainNumber(String? trainNumber) {
+    if (state is SelectingFahrbildState) {
+      emit(SelectingFahrbildState(trainNumber: trainNumber, company: (state as SelectingFahrbildState).company, errorCode: (state as SelectingFahrbildState).errorCode));
+    }
+  }
+
+  void updateCompany(String? company) {
+    if (state is SelectingFahrbildState) {
+      emit(SelectingFahrbildState(trainNumber: (state as SelectingFahrbildState).trainNumber, company: company, errorCode: (state as SelectingFahrbildState).errorCode));
+    }
   }
 
   @override

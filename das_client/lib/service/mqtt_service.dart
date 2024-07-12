@@ -35,6 +35,7 @@ class MqttService {
   void _init() async {
     _deviceId = await DeviceIdInfo.getDeviceId();
     _client = MqttServerClient.withPort(_mqttUrl, _deviceId, 8443);
+    _client.useWebSocket = true;
   }
 
   void disconnect() {
@@ -57,16 +58,20 @@ class MqttService {
     Fimber.i("Using userId=$userId");
 
     if (sferaAuthToken != null && userId != null) {
-      var mqttClientConnectionStatus = await _client.connect(userId, "OAUTH~azureAd~${token.accessToken}");
-      Fimber.i("mqttClientConnectionStatus=$mqttClientConnectionStatus");
+      try {
+        var mqttClientConnectionStatus = await _client.connect(userId, "OAUTH~azureAd~$sferaAuthToken");
+        Fimber.i("mqttClientConnectionStatus=$mqttClientConnectionStatus");
 
-      if (mqttClientConnectionStatus?.state == MqttConnectionState.connected) {
-        _trainSubscription = _client.subscribe("90940/2/G2B/$company/$train/$_deviceId", MqttQos.exactlyOnce);
-        Fimber.i("Established connection to MQTT broker!");
-        _startUpdateListener();
+        if (mqttClientConnectionStatus?.state == MqttConnectionState.connected) {
+          _trainSubscription = _client.subscribe("90940/2/G2B/$company/$train/$_deviceId", MqttQos.exactlyOnce);
+          Fimber.i("Established connection to MQTT broker!");
+          _startUpdateListener();
+          return true;
+        }
+      } catch (e) {
+        Fimber.e("Exception during connect", ex: e);
       }
     }
-
     Fimber.w("Failed to connect to MQTT broker");
     return false;
   }
@@ -79,8 +84,8 @@ class MqttService {
       builder.addString(message);
       _client.publishMessage(topic, MqttQos.exactlyOnce, builder.payload!);
 
-      Fimber.i(
-          "Published MQTT message: topic=$topic message=${message.substring(0, message.length > 50 ? 50 : message.length)}");
+      Fimber.v(
+          "Published MQTT message: topic=$topic message=$message");
       return true;
     } else {
       Fimber.w("Failed to publish MQTT message because it is not connected");
@@ -93,16 +98,16 @@ class MqttService {
     _updateSubscription = _client.updates!.listen((List<MqttReceivedMessage<MqttMessage>>? messageList) {
       if (messageList != null) {
         for (final message in messageList) {
-          Fimber.i(
+          Fimber.v(
               "Received mqtt message with type=${message.runtimeType.toString()} payload=${message.payload.toString()}");
 
-          if (message is MqttPublishMessage) {
+          if (message.payload is MqttPublishMessage) {
             final recMess = message.payload as MqttPublishMessage;
             final decodedMessage = utf8.decode(recMess.payload.message);
-            Fimber.i("Decoded mqtt message: $decodedMessage");
+            Fimber.v("Decoded mqtt message: $decodedMessage");
             _messageSubject.add(decodedMessage);
           } else {
-            Fimber.w("Type ${message.runtimeType.toString()} parsing not implemented");
+            Fimber.w("Type ${message.payload.runtimeType.toString()} parsing not implemented");
           }
         }
       } else {

@@ -15,9 +15,8 @@ class TokenSpecProvider {
   TokenSpec get first => _specs.first;
 
   TokenSpec? getById(String? id) {
-    if (id == null) {
-      return null;
-    }
+    id ??= TokenSpec.defaultTokenId;
+
     for (final spec in _specs) {
       if (spec.id == id) {
         return spec;

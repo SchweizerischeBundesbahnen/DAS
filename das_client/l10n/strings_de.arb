@@ -1,3 +1,8 @@
 {
-    "c_app_name": "DAS Client"
+    "c_app_name": "DAS Client",
+    "p_train_selection_load": "Fahrbild laden",
+    "p_train_selection_trainnumber_description": "Zugnummer",
+    "p_train_selection_trainnumber_placeholder": "z.B. 711",
+    "p_train_selection_company_description": "Company code",
+    "p_train_selection_company_placeholder": "z.B. 0085"
 }

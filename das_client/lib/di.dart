@@ -71,8 +71,8 @@ extension _GetItX on GetIt {
 
   void _registerServices() {
     final flavor = get<Flavor>();
-    registerSingleton<BackendService>(BackendService(authenticator: get(), backendUrl: flavor.backendUrl));
-    registerSingleton<MqttService>(MqttService(mqttUrl: flavor.mqttUrl, backendService: get(), authenticator: get()));
+    registerSingletonWithDependencies<BackendService>(() => BackendService(authenticator: get(), backendUrl: flavor.backendUrl), dependsOn: [Authenticator]);
+    registerSingletonWithDependencies<MqttService>(() => MqttService(mqttUrl: flavor.mqttUrl, backendService: get(), authenticator: get()), dependsOn: [Authenticator]);
   }
 
   /// Azure Authenticator.

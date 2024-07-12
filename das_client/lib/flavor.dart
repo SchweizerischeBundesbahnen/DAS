@@ -6,7 +6,8 @@ import 'package:sbb_oidc/sbb_oidc.dart';
 enum Flavor {
   dev(
     displayName: 'Dev',
-    backendUrl: 'https://das-backend-dev.app.sbb.ch/',
+    //backendUrl: 'http://localhost:8080',
+    backendUrl: 'https://das-backend-dev.app.sbb.ch',
     mqttUrl: 'wss://das-poc.messaging.solace.cloud',
     authenticatorConfig: _authenticatorConfigDev,
   );
@@ -25,7 +26,7 @@ enum Flavor {
 }
 
 const _authenticatorConfigDev = AuthenticatorConfig(
-  discoveryUrl: SBBDiscoveryUrl.prod,
+  discoveryUrl: "https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration",
   clientId: '6025180f-123b-4f2f-9703-16e08fc221f0',
   redirectUrl: 'ch.sbb.das://sbbauth/redirect',
   tokenSpecs: TokenSpecProvider([
