@@ -1,7 +1,16 @@
 package ch.sbb.playgroundbackend.config;
 
+import ch.sbb.playgroundbackend.auth.TenantJwsKeySelector;
+import com.nimbusds.jose.proc.SecurityContext;
+import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
+import com.nimbusds.jwt.proc.DefaultJWTProcessor;
+import com.nimbusds.jwt.proc.JWTProcessor;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.function.Predicate;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.client.JwtBearerOAuth2AuthorizedClientProvider;
@@ -18,36 +27,28 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtClaimNames;
 import org.springframework.security.oauth2.jwt.JwtClaimValidator;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtIssuerValidator;
 import org.springframework.security.oauth2.jwt.JwtTimestampValidator;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.util.StringUtils;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.function.Predicate;
 
 @Configuration
 public class ApplicationConfiguration {
-
-    private final OAuth2ResourceServerProperties.Jwt properties;
 
     // The audience is important because the JWT token is accepted only if the aud claim in the JWT token received by the server is the same as the client ID of the server.
     @Value("${spring.security.oauth2.resourceserver.jwt.audience}")
     String[] audiences;
 
-    public ApplicationConfiguration(OAuth2ResourceServerProperties properties) {
-        this.properties = properties.getJwt();
+    @Bean
+    JwtDecoder jwtDecoder(TenantJwsKeySelector keySelector) {
+        NimbusJwtDecoder nimbusJwtDecoder = new NimbusJwtDecoder(jwtProcessor(keySelector));
+        nimbusJwtDecoder.setJwtValidator(jwtValidator());
+        return nimbusJwtDecoder;
     }
 
     @Bean
-    JwtDecoder jwtDecoder() {
-        NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder.withJwkSetUri(properties.getJwkSetUri()).build();
-        nimbusJwtDecoder.setJwtValidator(jwtValidator());
-        return nimbusJwtDecoder;
+    public JWTProcessor<SecurityContext> jwtProcessor(TenantJwsKeySelector keySelector) {
+        ConfigurableJWTProcessor<SecurityContext> jwtProcessor = new DefaultJWTProcessor<>();
+        jwtProcessor.setJWTClaimsSetAwareJWSKeySelector(keySelector);
+        return jwtProcessor;
     }
 
     @Bean
@@ -77,10 +78,6 @@ public class ApplicationConfiguration {
 
     private OAuth2TokenValidator<Jwt> jwtValidator() {
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
-        String issuerUri = properties.getIssuerUri();
-        if (StringUtils.hasText(issuerUri)) {
-            validators.add(new JwtIssuerValidator(issuerUri));
-        }
         if (audiences != null && audiences.length > 0) {
             validators.add(new JwtClaimValidator<>(JwtClaimNames.AUD, audiencePredicate()));
         }

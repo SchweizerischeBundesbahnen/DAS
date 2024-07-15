@@ -11,7 +11,7 @@ management:
 spring:
   security:
     oauth2:
-      authorizationUrl: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0
+      authorizationUrl: https://login.microsoftonline.com/common/oauth2/v2.0
       client:
         provider:
           azure-active-directory:
@@ -71,3 +71,10 @@ endpoints:
       allowed-origins: ${APPLICATION_ALLOWED_ORIGINS}
       allowed-methods: GET
       allowed-headers: "*"
+
+auth:
+  tenants:
+    # add your tenants
+    - name:
+      issuer-uri:
+      jwk-set-uri:
