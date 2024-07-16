@@ -31,7 +31,7 @@ public class SwaggerConfiguration {
     private String authorizationUrl;
 
     @Bean
-    public OpenAPI gleisspiegelOpenAPIConfiguration() {
+    public OpenAPI openAPIConfiguration() {
         return new OpenAPI()
             .components(new Components().addSecuritySchemes(OAUTH_2, addOAuthSecurityScheme()))
             .security(Collections.singletonList(new SecurityRequirement().addList(OAUTH_2)))
@@ -43,7 +43,7 @@ public class SwaggerConfiguration {
         return new Info()
             .title("Playground Backend" + versionInformation)
             .contact(new Contact()
-                .name("Team Zug")
+                .name("DAS")
                 .url("https://github.com/SchweizerischeBundesbahnen/DAS"));
     }
 
