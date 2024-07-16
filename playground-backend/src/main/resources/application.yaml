@@ -63,10 +63,12 @@ endpoints:
 
 auth:
   tenants:
-    # add your tenants
-    - name:
-      issuer-uri:
-      jwk-set-uri:
+    - name: ${TENANT1_NAME}
+      issuer-uri: ${TENANT1_ISSUER}
+      jwk-set-uri: ${TENANT1_JWK}
+    - name: ${TENANT2_NAME}
+      issuer-uri: ${TENANT2_ISSUER}
+      jwk-set-uri: ${TENANT2_JWK}
   exchange:
     client-id: ${CLIENT_ID}
     client-secret: ${CLIENT_SECRET}
