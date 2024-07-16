@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<SFERA_G2B_ReplyMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="SFERA.xsd">
+	<MessageHeader SFERA_version="1.91" message_ID="591a0400-1438-45ef-b7dd-80e9adedda6b" correlation_ID="a24e63c3-ab2e-4102-9a10-ba058dec5efe" timestamp="2019-09-26T20:07:36Z" sourceDevice="TMS" destinationDevice="DAS">
+	    <Sender>0084</Sender>
+        <Recipient>1084</Recipient>	
+	</MessageHeader>
+	<HandshakeAcknowledgement>
+		<DAS_OperatingModeSelected DAS_architecture="BoardAdviceCalculation" DAS_connectivity="Connected"/>
+	</HandshakeAcknowledgement>
+</SFERA_G2B_ReplyMessage>
