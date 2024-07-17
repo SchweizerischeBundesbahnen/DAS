@@ -3,7 +3,9 @@ import 'package:das_client/auth/azure_authenticator.dart';
 import 'package:das_client/auth/token_spec_provider.dart';
 import 'package:das_client/flavor.dart';
 import 'package:das_client/service/backend_service.dart';
-import 'package:das_client/service/mqtt_service.dart';
+import 'package:das_client/service/mqtt/mqtt_client_connector.dart';
+import 'package:das_client/service/mqtt/mqtt_client_oauth_connector.dart';
+import 'package:das_client/service/mqtt/mqtt_service.dart';
 import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sbb_oidc/sbb_oidc.dart';
@@ -31,21 +33,22 @@ class DI {
 
 // Internal
 
-extension _GetItX on GetIt {
+extension GetItX on GetIt {
   Future<void> init(Flavor flavor) async {
-    _registerFlavor(flavor);
-    _registerTokenSpecProvider();
-    _registerOidcClient();
-    _registerAzureAuthenticator();
-    _registerServices();
+    registerFlavor(flavor);
+    registerTokenSpecProvider();
+    registerOidcClient();
+    registerAzureAuthenticator();
+    registerMqttClientConnector();
+    registerServices();
     await allReady();
   }
 
-  void _registerFlavor(Flavor flavor) {
+  void registerFlavor(Flavor flavor) {
     registerSingleton<Flavor>(flavor);
   }
 
-  void _registerTokenSpecProvider() {
+  void registerTokenSpecProvider() {
     factoryFunc() {
       final flavor = get<Flavor>();
       return flavor.authenticatorConfig.tokenSpecs;
@@ -54,7 +57,7 @@ extension _GetItX on GetIt {
     registerSingleton<TokenSpecProvider>(factoryFunc());
   }
 
-  void _registerOidcClient() {
+  void registerOidcClient() {
     factoryFunc() {
       final flavor = get<Flavor>();
       final authenticatorConfig = flavor.authenticatorConfig;
@@ -69,14 +72,18 @@ extension _GetItX on GetIt {
     registerSingletonAsync<OidcClient>(factoryFunc);
   }
 
-  void _registerServices() {
+  void registerServices() {
     final flavor = get<Flavor>();
-    registerSingletonWithDependencies<BackendService>(() => BackendService(authenticator: get(), backendUrl: flavor.backendUrl), dependsOn: [Authenticator]);
-    registerSingletonWithDependencies<MqttService>(() => MqttService(mqttUrl: flavor.mqttUrl, backendService: get(), authenticator: get()), dependsOn: [Authenticator]);
+    registerSingletonWithDependencies<BackendService>(
+        () => BackendService(authenticator: get(), backendUrl: flavor.backendUrl),
+        dependsOn: [Authenticator]);
+    registerSingletonWithDependencies<MqttService>(
+        () => MqttService(mqttUrl: flavor.mqttUrl, mqttClientConnector: get()),
+        dependsOn: [MqttClientConnector]);
   }
 
   /// Azure Authenticator.
-  void _registerAzureAuthenticator() {
+  void registerAzureAuthenticator() {
     factoryFunc() {
       return AzureAuthenticator(
         oidcClient: get(),
@@ -88,5 +95,11 @@ extension _GetItX on GetIt {
       factoryFunc,
       dependsOn: [OidcClient],
     );
+  }
+
+  void registerMqttClientConnector() {
+    registerSingletonWithDependencies<MqttClientConnector>(
+        () => MqttClientOauthConnector(backendService: get(), authenticator: get()),
+        dependsOn: [Authenticator, BackendService]);
   }
 }
