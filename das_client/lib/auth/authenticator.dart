@@ -11,8 +11,6 @@ abstract class Authenticator {
 
   Future<String> userId({String? tokenId});
 
-  Future<UserInfo> userInfo();
-
   Future<void> logout();
 
   Future<void> endSession();

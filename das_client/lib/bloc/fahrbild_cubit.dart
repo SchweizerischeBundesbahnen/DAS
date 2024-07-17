@@ -16,7 +16,7 @@ import 'package:das_client/model/sfera/segment_profile.dart';
 import 'package:das_client/model/sfera/sfera_b2g_request_message.dart';
 import 'package:das_client/model/sfera/sfera_reply_parser.dart';
 import 'package:das_client/model/sfera/train_identification.dart';
-import 'package:das_client/service/mqtt_service.dart';
+import 'package:das_client/service/mqtt/mqtt_service.dart';
 import 'package:das_client/util/device_id_info.dart';
 import 'package:das_client/util/error_code.dart';
 import 'package:das_client/util/format.dart';
