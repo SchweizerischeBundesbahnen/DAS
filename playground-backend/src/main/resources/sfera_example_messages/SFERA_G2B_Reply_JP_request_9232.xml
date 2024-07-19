@@ -1,0 +1,1963 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SFERA_G2B_ReplyMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../Appendix_D-SFERA_XML_Schema_Definition/SFERA.xsd">
+    <MessageHeader SFERA_version="1.91" message_ID="bfc9754f-2361-49d1-90af-4c4fac7f419f" timestamp="2022-05-06T10:52:46Z" sourceDevice="INFRABEL">
+        <Sender>0088</Sender>
+        <Recipient>1088</Recipient>
+    </MessageHeader>
+    <G2B_ReplyPayload>
+        <JourneyProfile>
+            <TrainIdentification>
+                <OTN_ID>
+                    <Company>1088</Company>
+                    <OperationalTrainNumber>9232</OperationalTrainNumber>
+                    <AdditionalTrainNumber></AdditionalTrainNumber>
+                    <StartDate>2022-05-17</StartDate>
+                </OTN_ID>
+            </TrainIdentification>
+            <SegmentProfileList SP_ID="877-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T10:52:00Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1837"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T10:52:18Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1217"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T10:59:30Z" TP_StopSkipPass="Stopping_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1839"/>
+                    </TimingPointReference>
+                    <StoppingPointInformation departureTime="2022-05-17T11:01:00Z"/>
+                </TimingPointConstraints>
+            </SegmentProfileList>
+            <SegmentProfileList SP_ID="876-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T10:59:30Z" TP_StopSkipPass="Stopping_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1839"/>
+                    </TimingPointReference>
+                    <StoppingPointInformation departureTime="2022-05-17T11:01:00Z"/>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:10:12Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1739"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileList>
+            <SegmentProfileList SP_ID="807-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:10:12Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1739"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:11:12Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="764"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileList>
+            <SegmentProfileList SP_ID="771-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:11:12Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="764"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:16:00Z" arrivalWindow="PT1M" TP_StopSkipPass="Stopping_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="37"/>
+                    </TimingPointReference>
+                    <StoppingPointInformation departureTime="2022-05-17T11:19:00Z"/>
+                </TimingPointConstraints>
+            </SegmentProfileList>
+            <SegmentProfileList SP_ID="889-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:16:00Z" arrivalWindow="PT1M" TP_StopSkipPass="Stopping_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="37"/>
+                    </TimingPointReference>
+                    <StoppingPointInformation departureTime="2022-05-17T11:19:00Z"/>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:20:48Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1840"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileList>
+            <SegmentProfileList SP_ID="888-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:20:48Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1840"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:21:42Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1584"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileList>
+            <SegmentProfileList SP_ID="1030-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:21:42Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1584"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:23:00Z" arrivalWindow="PT1M" TP_StopSkipPass="Stopping_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="139"/>
+                    </TimingPointReference>
+                    <StoppingPointInformation departureTime="2022-05-17T11:25:00Z"/>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:26:06Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1506"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileList>
+            <SegmentProfileList SP_ID="226-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:26:06Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1506"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:26:36Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="864"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:27:18Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="866"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:28:06Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="590"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:29:06Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="644"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileList>
+            <SegmentProfileList SP_ID="64-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:29:06Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="644"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:31:06Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="336"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:32:12Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1083"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:33:42Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="40"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileList>
+            <SegmentProfileList SP_ID="1992-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:33:42Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="40"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:34:12Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="811"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileList>
+            <SegmentProfileList SP_ID="1991-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:34:12Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="811"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:37:00Z" arrivalWindow="PT1M" TP_StopSkipPass="Stopping_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="810"/>
+                    </TimingPointReference>
+                    <StoppingPointInformation departureTime="2022-05-17T11:39:00Z"/>
+                </TimingPointConstraints>
+            </SegmentProfileList>
+            <SegmentProfileList SP_ID="1990-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:37:00Z" arrivalWindow="PT1M" TP_StopSkipPass="Stopping_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="810"/>
+                    </TimingPointReference>
+                    <StoppingPointInformation departureTime="2022-05-17T11:39:00Z"/>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:41:30Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1347"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileList>
+            <SegmentProfileList SP_ID="1229-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:41:30Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1347"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:46:30Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1355"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileList>
+            <SegmentProfileList SP_ID="1241-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:46:30Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1355"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:47:30Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1357"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileList>
+            <SegmentProfileList SP_ID="1238-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:47:30Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1357"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:50:00Z" arrivalWindow="PT2M" TP_StopSkipPass="Stopping_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="219"/>
+                    </TimingPointReference>
+                    <StoppingPointInformation departureTime="2022-05-17T11:53:00Z"/>
+                </TimingPointConstraints>
+            </SegmentProfileList>
+            <SegmentProfileList SP_ID="1504-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:50:00Z" arrivalWindow="PT2M" TP_StopSkipPass="Stopping_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="219"/>
+                    </TimingPointReference>
+                    <StoppingPointInformation departureTime="2022-05-17T11:53:00Z"/>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:55:12Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1736"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileList>
+            <SegmentProfileList SP_ID="1503-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:55:12Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1736"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:56:30Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1641"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileList>
+            <SegmentProfileList SP_ID="1480-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:56:30Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1641"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:57:18Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1260"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:58:36Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="325"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:59:00Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1523"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileList>
+            <SegmentProfileList SP_ID="1214-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:59:00Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1523"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:59:18Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="388"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:00:00Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="521"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:01:54Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1048"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileList>
+            <SegmentProfileList SP_ID="1354-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:01:54Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1048"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:03:30Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="241"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileList>
+            <SegmentProfileList SP_ID="1353-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:03:30Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="241"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:05:00Z" arrivalWindow="PT1M" TP_StopSkipPass="Stopping_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="221"/>
+                    </TimingPointReference>
+                    <StoppingPointInformation departureTime="2022-05-17T12:08:00Z"/>
+                </TimingPointConstraints>
+            </SegmentProfileList>
+            <SegmentProfileList SP_ID="1434-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:05:00Z" arrivalWindow="PT1M" TP_StopSkipPass="Stopping_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="221"/>
+                    </TimingPointReference>
+                    <StoppingPointInformation departureTime="2022-05-17T12:08:00Z"/>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:09:48Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="216"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:11:30Z" arrivalWindow="PT30S" TP_StopSkipPass="Stopping_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="215"/>
+                    </TimingPointReference>
+                    <StoppingPointInformation departureTime="2022-05-17T12:13:00Z"/>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:14:24Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="217"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:15:18Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="305"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileList>
+            <SegmentProfileList SP_ID="1428-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:15:18Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="305"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:17:00Z" TP_StopSkipPass="Stopping_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="220"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileList>
+        </JourneyProfile>
+        <SegmentProfile SP_ID="877-2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="16248">
+            <SP_Zone>
+                <IM_ID>0088</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <TimingPoint TP_ID="1837" location="0">
+                    <TP_Name name="MEER-GRENS"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="1217" location="899">
+                    <TP_Name name="LIJN 4-STOPMERKBORDEN 249X(NL)"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="1839" location="16248">
+                    <TP_Name name="NOORDERKEMPEN"/>
+                </TimingPoint>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="102346" location="843"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100409" location="2560"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100407" location="4096"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="101096" location="5656"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100404" location="7182"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100402" location="8740"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100401" location="10285"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100399" location="11830"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100397" location="13375"/>
+                </Signal>
+                <VirtualBalise location="0">
+                    <VirtualBalisePosition latitude="51.48591" longitude="4.73459"/>
+                </VirtualBalise>
+                <VirtualBalise location="899">
+                    <VirtualBalisePosition latitude="51.477972" longitude="4.730666"/>
+                </VirtualBalise>
+                <VirtualBalise location="16248">
+                    <VirtualBalisePosition latitude="51.358088" longitude="4.633977"/>
+                </VirtualBalise>
+            </SP_Points>
+            <SP_Characteristics>
+                <StaticSpeedProfile>
+                    <StaticSpeedProfileStart SSP_Speed="99"/>
+                    <StaticSpeedProfileChange location="0" SSP_Speed="300"/>
+                </StaticSpeedProfile>
+                <GradientAverage>
+                    <GradientAverageStart gradientValue="0" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="37" gradientValue="2.29" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="1221" gradientValue="0.84" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="6609" gradientValue="4.66" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="6936" gradientValue="0.85" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="8237" gradientValue="6.43" gradientDirection="Uphill"/>
+                </GradientAverage>
+                <Curves>
+                    <CurveStart curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="349" curveRadius="22034" curveDirection="Unknown"/>
+                    <CurveChange location="2383" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="3496" curveRadius="7500" curveDirection="Unknown"/>
+                    <CurveChange location="3921" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="7479" curveRadius="5700" curveDirection="Unknown"/>
+                    <CurveChange location="9942" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="10614" curveRadius="15000" curveDirection="Unknown"/>
+                    <CurveChange location="10823" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="12438" curveRadius="10000" curveDirection="Unknown"/>
+                    <CurveChange location="13055" curveRadius="0" curveDirection="Unknown"/>
+                </Curves>
+                <RatedVoltage>
+                    <RatedVoltageStart voltageValue="25000" frequency="50"/>
+                </RatedVoltage>
+            </SP_Characteristics>
+            <SP_ContextInformation>
+                <LineAndTrackIdentifier>
+                    <LineAndTrackIdentifierStart lineIdentifier="9040" lineName="4" trackIdentifier="877-2"/>
+                </LineAndTrackIdentifier>
+            </SP_ContextInformation>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="876-2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="19695">
+            <SP_Zone>
+                <IM_ID>0088</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <TimingPoint TP_ID="1839" location="0">
+                    <TP_Name name="NOORDERKEMPEN"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="1739" location="19695">
+                    <TP_Name name="Y.LUCHTBAL"/>
+                </TimingPoint>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100394" location="1348"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100393" location="2808"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100391" location="4384"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100389" location="5975"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100387" location="7502"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100385" location="9093"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="101100" location="10667"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100382" location="12107"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100380" location="13691"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100378" location="15380"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100377" location="16951"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100375" location="18522"/>
+                </Signal>
+                <VirtualBalise location="0">
+                    <VirtualBalisePosition latitude="51.358088" longitude="4.633977"/>
+                </VirtualBalise>
+                <VirtualBalise location="19695">
+                    <VirtualBalisePosition latitude="51.253678" longitude="4.425577"/>
+                </VirtualBalise>
+            </SP_Points>
+            <SP_Characteristics>
+                <StaticSpeedProfile>
+                    <StaticSpeedProfileStart SSP_Speed="300"/>
+                    <StaticSpeedProfileChange location="1348" SSP_Speed="300"/>
+                    <StaticSpeedProfileChange location="10655" SSP_Speed="260"/>
+                    <StaticSpeedProfileChange location="12405" SSP_Speed="220"/>
+                    <StaticSpeedProfileChange location="13235" SSP_Speed="200"/>
+                    <StaticSpeedProfileChange location="14060" SSP_Speed="180"/>
+                    <StaticSpeedProfileChange location="15620" SSP_Speed="160"/>
+                    <StaticSpeedProfileChange location="17835" SSP_Speed="130"/>
+                </StaticSpeedProfile>
+                <GradientAverage>
+                    <GradientAverageStart gradientValue="6.43" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="1235" gradientValue="5.57" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="2165" gradientValue="4.46" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="3111" gradientValue="1.3" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="5116" gradientValue="2.86" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="8148" gradientValue="4.11" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="9167" gradientValue="6.5" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="10518" gradientValue="2.46" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="13025" gradientValue="0.76" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="15267" gradientValue="9.21" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="16448" gradientValue="22.58" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="17085" gradientValue="0" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="18019" gradientValue="4.55" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="18680" gradientValue="2.19" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="18906" gradientValue="18.25" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="19071" gradientValue="8.5" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="19271" gradientValue="26" gradientDirection="Uphill"/>
+                </GradientAverage>
+                <Curves>
+                    <CurveStart curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="187" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="1455" curveRadius="11200" curveDirection="Unknown"/>
+                    <CurveChange location="4972" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="6857" curveRadius="10000" curveDirection="Unknown"/>
+                    <CurveChange location="7265" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="8897" curveRadius="9200" curveDirection="Unknown"/>
+                    <CurveChange location="10083" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="10796" curveRadius="3300" curveDirection="Unknown"/>
+                    <CurveChange location="11788" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="12474" curveRadius="4500" curveDirection="Unknown"/>
+                    <CurveChange location="13296" curveRadius="2005" curveDirection="Unknown"/>
+                    <CurveChange location="14095" curveRadius="1520" curveDirection="Unknown"/>
+                    <CurveChange location="14939" curveRadius="3350" curveDirection="Unknown"/>
+                    <CurveChange location="15369" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="15692" curveRadius="1450" curveDirection="Unknown"/>
+                    <CurveChange location="16135" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="17277" curveRadius="1850" curveDirection="Unknown"/>
+                    <CurveChange location="17499" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="17893" curveRadius="850" curveDirection="Unknown"/>
+                    <CurveChange location="18800" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="19151" curveRadius="1850" curveDirection="Unknown"/>
+                </Curves>
+                <RatedVoltage>
+                    <RatedVoltageStart voltageValue="25000" frequency="50"/>
+                </RatedVoltage>
+            </SP_Characteristics>
+            <SP_ContextInformation>
+                <LineAndTrackIdentifier>
+                    <LineAndTrackIdentifierStart lineIdentifier="9040" lineName="4" trackIdentifier="876-2"/>
+                </LineAndTrackIdentifier>
+            </SP_ContextInformation>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="807-2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="1092">
+            <SP_Zone>
+                <IM_ID>0088</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <TimingPoint TP_ID="1739" location="0">
+                    <TP_Name name="Y.LUCHTBAL"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="764" location="1092">
+                    <TP_Name name="ANTWERPEN-LUCHTBAL"/>
+                </TimingPoint>
+                <VirtualBalise location="0">
+                    <VirtualBalisePosition latitude="51.253678" longitude="4.425577"/>
+                </VirtualBalise>
+                <VirtualBalise location="1092">
+                    <VirtualBalisePosition latitude="51.243563" longitude="4.424953"/>
+                </VirtualBalise>
+            </SP_Points>
+            <SP_Characteristics>
+                <StaticSpeedProfile>
+                    <StaticSpeedProfileStart SSP_Speed="130"/>
+                    <StaticSpeedProfileChange location="0" SSP_Speed="130"/>
+                    <StaticSpeedProfileChange location="300" SSP_Speed="130"/>
+                </StaticSpeedProfile>
+                <GradientAverage>
+                    <GradientAverageStart gradientValue="26" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="102" gradientValue="18.74" gradientDirection="Uphill"/>
+                </GradientAverage>
+                <Curves>
+                    <CurveStart curveRadius="1850" curveDirection="Unknown"/>
+                    <CurveChange location="378" curveRadius="1450" curveDirection="Unknown"/>
+                </Curves>
+                <RatedVoltage>
+                    <RatedVoltageStart voltageValue="3000" frequency="0"/>
+                </RatedVoltage>
+            </SP_Characteristics>
+            <SP_ContextInformation>
+                <LineAndTrackIdentifier>
+                    <LineAndTrackIdentifierStart lineIdentifier="250" lineName="25" trackIdentifier="807-2"/>
+                </LineAndTrackIdentifier>
+            </SP_ContextInformation>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="771-2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="3298">
+            <SP_Zone>
+                <IM_ID>0088</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <TimingPoint TP_ID="764" location="0">
+                    <TP_Name name="ANTWERPEN-LUCHTBAL"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="37" location="3298">
+                    <TP_Name name="ANTWERPEN-CENTRAAL"/>
+                </TimingPoint>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="102093" location="925"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="102091" location="2294"/>
+                </Signal>
+                <VirtualBalise location="0">
+                    <VirtualBalisePosition latitude="51.243563" longitude="4.424953"/>
+                </VirtualBalise>
+                <VirtualBalise location="3298">
+                    <VirtualBalisePosition latitude="51.21686" longitude="4.421242"/>
+                </VirtualBalise>
+            </SP_Points>
+            <SP_Characteristics>
+                <StaticSpeedProfile>
+                    <StaticSpeedProfileStart SSP_Speed="130"/>
+                    <StaticSpeedProfileChange location="1442" SSP_Speed="60"/>
+                    <StaticSpeedProfileChange location="3073" SSP_Speed="90"/>
+                </StaticSpeedProfile>
+                <GradientAverage>
+                    <GradientAverageStart gradientValue="18.74" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="97" gradientValue="8.3" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="297" gradientValue="8.5" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="557" gradientValue="6.52" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="672" gradientValue="6.44" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="942" gradientValue="28.97" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="1846" gradientValue="5.68" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="2260" gradientValue="1.01" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="2528" gradientValue="7.09" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="2882" gradientValue="0.16" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="3010" gradientValue="0.19" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="3114" gradientValue="0.31" gradientDirection="Uphill"/>
+                </GradientAverage>
+                <Curves>
+                    <CurveStart curveRadius="1450" curveDirection="Unknown"/>
+                    <CurveChange location="391" curveRadius="7500" curveDirection="Unknown"/>
+                    <CurveChange location="467" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="1248" curveRadius="982" curveDirection="Unknown"/>
+                    <CurveChange location="1367" curveRadius="1210" curveDirection="Unknown"/>
+                    <CurveChange location="1574" curveRadius="1195" curveDirection="Unknown"/>
+                    <CurveChange location="1760" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="1986" curveRadius="1000" curveDirection="Unknown"/>
+                    <CurveChange location="2333" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="2766" curveRadius="1204" curveDirection="Unknown"/>
+                    <CurveChange location="2838" curveRadius="1204" curveDirection="Unknown"/>
+                    <CurveChange location="2912" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="3116" curveRadius="2012" curveDirection="Unknown"/>
+                </Curves>
+                <RatedVoltage>
+                    <RatedVoltageStart voltageValue="3000" frequency="0"/>
+                </RatedVoltage>
+            </SP_Characteristics>
+            <SP_ContextInformation>
+                <LineAndTrackIdentifier>
+                    <LineAndTrackIdentifierStart lineIdentifier="250" lineName="25" trackIdentifier="771-2"/>
+                </LineAndTrackIdentifier>
+            </SP_ContextInformation>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="889-2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="879">
+            <SP_Zone>
+                <IM_ID>0088</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <TimingPoint TP_ID="37" location="0">
+                    <TP_Name name="ANTWERPEN-CENTRAAL"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="1840" location="879">
+                    <TP_Name name="Y.ARENDSTRAAT"/>
+                </TimingPoint>
+                <VirtualBalise location="0">
+                    <VirtualBalisePosition latitude="51.21686" longitude="4.421242"/>
+                </VirtualBalise>
+                <VirtualBalise location="879">
+                    <VirtualBalisePosition latitude="51.206117" longitude="4.426253"/>
+                </VirtualBalise>
+            </SP_Points>
+            <SP_Characteristics>
+                <StaticSpeedProfile>
+                    <StaticSpeedProfileStart SSP_Speed="90"/>
+                    <StaticSpeedProfileChange location="410" SSP_Speed="90"/>
+                </StaticSpeedProfile>
+                <GradientAverage>
+                    <GradientAverageStart gradientValue="0.31" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="219" gradientValue="0.31" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="232" gradientValue="0" gradientDirection="Uphill"/>
+                </GradientAverage>
+                <Curves>
+                    <CurveStart curveRadius="2012" curveDirection="Unknown"/>
+                    <CurveChange location="45" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="142" curveRadius="1160" curveDirection="Unknown"/>
+                    <CurveChange location="288" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="429" curveRadius="860" curveDirection="Unknown"/>
+                    <CurveChange location="577" curveRadius="1115" curveDirection="Unknown"/>
+                </Curves>
+                <RatedVoltage>
+                    <RatedVoltageStart voltageValue="3000" frequency="0"/>
+                </RatedVoltage>
+            </SP_Characteristics>
+            <SP_ContextInformation>
+                <LineAndTrackIdentifier>
+                    <LineAndTrackIdentifierStart lineIdentifier="250" lineName="25" trackIdentifier="889-2"/>
+                </LineAndTrackIdentifier>
+            </SP_ContextInformation>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="888-2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="617">
+            <SP_Zone>
+                <IM_ID>0088</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <TimingPoint TP_ID="1840" location="0">
+                    <TP_Name name="Y.ARENDSTRAAT"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="1584" location="617">
+                    <TP_Name name="Y.NOORD BERCHEM"/>
+                </TimingPoint>
+                <VirtualBalise location="0">
+                    <VirtualBalisePosition latitude="51.206117" longitude="4.426253"/>
+                </VirtualBalise>
+                <VirtualBalise location="617">
+                    <VirtualBalisePosition latitude="51.201516" longitude="4.430263"/>
+                </VirtualBalise>
+            </SP_Points>
+            <SP_Characteristics>
+                <StaticSpeedProfile>
+                    <StaticSpeedProfileStart SSP_Speed="90"/>
+                    <StaticSpeedProfileChange location="71" SSP_Speed="120"/>
+                </StaticSpeedProfile>
+                <GradientAverage>
+                    <GradientAverageStart gradientValue="0" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="106" gradientValue="29.21" gradientDirection="Uphill"/>
+                </GradientAverage>
+                <Curves>
+                    <CurveStart curveRadius="1115" curveDirection="Unknown"/>
+                    <CurveChange location="174" curveRadius="10453" curveDirection="Unknown"/>
+                    <CurveChange location="205" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="335" curveRadius="10000" curveDirection="Unknown"/>
+                    <CurveChange location="465" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="538" curveRadius="2604" curveDirection="Unknown"/>
+                    <CurveChange location="585" curveRadius="0" curveDirection="Unknown"/>
+                </Curves>
+                <RatedVoltage>
+                    <RatedVoltageStart voltageValue="3000" frequency="0"/>
+                </RatedVoltage>
+            </SP_Characteristics>
+            <SP_ContextInformation>
+                <LineAndTrackIdentifier>
+                    <LineAndTrackIdentifierStart lineIdentifier="250" lineName="25" trackIdentifier="888-2"/>
+                </LineAndTrackIdentifier>
+            </SP_ContextInformation>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="1030-2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="1470">
+            <SP_Zone>
+                <IM_ID>0088</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <TimingPoint TP_ID="1584" location="0">
+                    <TP_Name name="Y.NOORD BERCHEM"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="139" location="404">
+                    <TP_Name name="ANTWERPEN-BERCHEM"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="1506" location="1470">
+                    <TP_Name name="Y.BERCHEM-STADION"/>
+                </TimingPoint>
+                <VirtualBalise location="0">
+                    <VirtualBalisePosition latitude="51.201516" longitude="4.430263"/>
+                </VirtualBalise>
+                <VirtualBalise location="404">
+                    <VirtualBalisePosition latitude="51.198914" longitude="4.4332"/>
+                </VirtualBalise>
+                <VirtualBalise location="1470">
+                    <VirtualBalisePosition latitude="51.192747" longitude="4.437943"/>
+                </VirtualBalise>
+            </SP_Points>
+            <SP_Characteristics>
+                <StaticSpeedProfile>
+                    <StaticSpeedProfileStart SSP_Speed="120"/>
+                    <StaticSpeedProfileChange location="189" SSP_Speed="120"/>
+                </StaticSpeedProfile>
+                <GradientAverage>
+                    <GradientAverageStart gradientValue="29.21" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="216" gradientValue="1.62" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="277" gradientValue="0" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="394" gradientValue="12.15" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="459" gradientValue="12.12" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="492" gradientValue="28.5" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="570" gradientValue="0" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="814" gradientValue="2.4" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="847" gradientValue="3.7" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="1063" gradientValue="8.2" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="1145" gradientValue="3.3" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="1310" gradientValue="4.2" gradientDirection="Downhill"/>
+                </GradientAverage>
+                <Curves>
+                    <CurveStart curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="64" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="166" curveRadius="1355" curveDirection="Unknown"/>
+                    <CurveChange location="288" curveRadius="1500" curveDirection="Unknown"/>
+                    <CurveChange location="470" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="699" curveRadius="2000" curveDirection="Unknown"/>
+                    <CurveChange location="827" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="1118" curveRadius="6496" curveDirection="Unknown"/>
+                </Curves>
+                <RatedVoltage>
+                    <RatedVoltageStart voltageValue="3000" frequency="0"/>
+                </RatedVoltage>
+            </SP_Characteristics>
+            <SP_ContextInformation>
+                <LineAndTrackIdentifier>
+                    <LineAndTrackIdentifierStart lineIdentifier="250" lineName="25" trackIdentifier="1030-2"/>
+                </LineAndTrackIdentifier>
+            </SP_ContextInformation>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="226-2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="6834">
+            <SP_Zone>
+                <IM_ID>0088</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <TimingPoint TP_ID="1506" location="0">
+                    <TP_Name name="Y.BERCHEM-STADION"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="864" location="945">
+                    <TP_Name name="MORTSEL-DEURNESTEENWEG"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="866" location="2400">
+                    <TP_Name name="MORTSEL-OUDE GOD"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="590" location="4618">
+                    <TP_Name name="HOVE"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="644" location="6834">
+                    <TP_Name name="KONTICH-LINT"/>
+                </TimingPoint>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="5740" location="472"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="5739" location="1431"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="5738" location="2934"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="5737" location="4424"/>
+                </Signal>
+                <VirtualBalise location="0">
+                    <VirtualBalisePosition latitude="51.192747" longitude="4.437943"/>
+                </VirtualBalise>
+                <VirtualBalise location="945">
+                    <VirtualBalisePosition latitude="51.182331" longitude="4.447229"/>
+                </VirtualBalise>
+                <VirtualBalise location="2400">
+                    <VirtualBalisePosition latitude="51.171914" longitude="4.455511"/>
+                </VirtualBalise>
+                <VirtualBalise location="4618">
+                    <VirtualBalisePosition latitude="51.154114" longitude="4.465469"/>
+                </VirtualBalise>
+                <VirtualBalise location="6834">
+                    <VirtualBalisePosition latitude="51.13395" longitude="4.476673"/>
+                </VirtualBalise>
+            </SP_Points>
+            <SP_Characteristics>
+                <StaticSpeedProfile>
+                    <StaticSpeedProfileStart SSP_Speed="120"/>
+                    <StaticSpeedProfileChange location="64" SSP_Speed="120"/>
+                    <StaticSpeedProfileChange location="284" SSP_Speed="120"/>
+                    <StaticSpeedProfileChange location="504" SSP_Speed="160"/>
+                    <StaticSpeedProfileChange location="6390" SSP_Speed="160"/>
+                </StaticSpeedProfile>
+                <GradientAverage>
+                    <GradientAverageStart gradientValue="4.2" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="13" gradientValue="5.3" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="211" gradientValue="6" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="321" gradientValue="5.52" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="571" gradientValue="2.82" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="723" gradientValue="0" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="1197" gradientValue="0.59" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="2596" gradientValue="3.99" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="4757" gradientValue="1.47" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="5156" gradientValue="0.62" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="5659" gradientValue="5.37" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="5830" gradientValue="2.05" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="6077" gradientValue="1.75" gradientDirection="Downhill"/>
+                </GradientAverage>
+                <Curves>
+                    <CurveStart curveRadius="6496" curveDirection="Unknown"/>
+                    <CurveChange location="68" curveRadius="18004" curveDirection="Unknown"/>
+                    <CurveChange location="173" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="884" curveRadius="5314" curveDirection="Unknown"/>
+                    <CurveChange location="1042" curveRadius="5228" curveDirection="Unknown"/>
+                    <CurveChange location="1182" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="1320" curveRadius="5161" curveDirection="Unknown"/>
+                    <CurveChange location="1420" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="1699" curveRadius="3432" curveDirection="Unknown"/>
+                    <CurveChange location="1950" curveRadius="5043" curveDirection="Unknown"/>
+                    <CurveChange location="2400" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="2995" curveRadius="5667" curveDirection="Unknown"/>
+                    <CurveChange location="3075" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="3456" curveRadius="5464" curveDirection="Unknown"/>
+                    <CurveChange location="3536" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="4322" curveRadius="4868" curveDirection="Unknown"/>
+                    <CurveChange location="4472" curveRadius="5989" curveDirection="Unknown"/>
+                    <CurveChange location="4652" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="4767" curveRadius="4230" curveDirection="Unknown"/>
+                    <CurveChange location="4877" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="5038" curveRadius="3823" curveDirection="Unknown"/>
+                    <CurveChange location="5138" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="5542" curveRadius="4000" curveDirection="Unknown"/>
+                    <CurveChange location="5659" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="5839" curveRadius="4000" curveDirection="Unknown"/>
+                </Curves>
+                <RatedVoltage>
+                    <RatedVoltageStart voltageValue="3000" frequency="0"/>
+                </RatedVoltage>
+            </SP_Characteristics>
+            <SP_ContextInformation>
+                <LineAndTrackIdentifier>
+                    <LineAndTrackIdentifierStart lineIdentifier="250" lineName="25" trackIdentifier="226-2"/>
+                </LineAndTrackIdentifier>
+            </SP_ContextInformation>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="64-2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="10951">
+            <SP_Zone>
+                <IM_ID>0088</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <TimingPoint TP_ID="644" location="0">
+                    <TP_Name name="KONTICH-LINT"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="336" location="4900">
+                    <TP_Name name="DUFFEL"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="1083" location="7300">
+                    <TP_Name name="SINT-KATELIJNE-WAVER"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="40" location="10951">
+                    <TP_Name name="MECHELEN-DIJKSTRAAT"/>
+                </TimingPoint>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="5736" location="2075"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="5734" location="3812"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="5733" location="5812"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="5732" location="7300"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="5731" location="8931"/>
+                </Signal>
+                <VirtualBalise location="0">
+                    <VirtualBalisePosition latitude="51.13395" longitude="4.476673"/>
+                </VirtualBalise>
+                <VirtualBalise location="4900">
+                    <VirtualBalisePosition latitude="51.091633" longitude="4.492194"/>
+                </VirtualBalise>
+                <VirtualBalise location="7300">
+                    <VirtualBalisePosition latitude="51.070931" longitude="4.495481"/>
+                </VirtualBalise>
+                <VirtualBalise location="10951">
+                    <VirtualBalisePosition latitude="51.0365" longitude="4.49087"/>
+                </VirtualBalise>
+            </SP_Points>
+            <SP_Characteristics>
+                <StaticSpeedProfile>
+                    <StaticSpeedProfileStart SSP_Speed="160"/>
+                    <StaticSpeedProfileChange location="972" SSP_Speed="160"/>
+                </StaticSpeedProfile>
+                <GradientAverage>
+                    <GradientAverageStart gradientValue="1.75" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="26" gradientValue="0.82" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="178" gradientValue="0.58" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="752" gradientValue="1.92" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="1036" gradientValue="0" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="1224" gradientValue="1.71" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="2510" gradientValue="4.51" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="2760" gradientValue="2.58" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="2858" gradientValue="1.18" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="2984" gradientValue="2" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="3362" gradientValue="4.28" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="3535" gradientValue="2.23" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="3580" gradientValue="0.46" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="3740" gradientValue="2" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="3868" gradientValue="2.97" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="4179" gradientValue="4.19" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="4350" gradientValue="2.38" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="4399" gradientValue="0.68" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="4542" gradientValue="0.72" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="4927" gradientValue="5.2" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="5188" gradientValue="8.9" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="5449" gradientValue="0" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="5628" gradientValue="5.75" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="6171" gradientValue="4.53" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="6342" gradientValue="4.92" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="6657" gradientValue="0" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="7078" gradientValue="1.26" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="7518" gradientValue="0.95" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="7834" gradientValue="1.83" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="8149" gradientValue="2.27" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="8323" gradientValue="2.8" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="8400" gradientValue="10.9" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="8685" gradientValue="0.32" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="8734" gradientValue="0.15" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="8956" gradientValue="2.33" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="9016" gradientValue="4.48" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="9188" gradientValue="6.06" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="9617" gradientValue="5.18" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="9750" gradientValue="2.02" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="9831" gradientValue="1.2" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="10340" gradientValue="0.34" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="10839" gradientValue="1.04" gradientDirection="Uphill"/>
+                </GradientAverage>
+                <Curves>
+                    <CurveStart curveRadius="4000" curveDirection="Unknown"/>
+                    <CurveChange location="1896" curveRadius="2600" curveDirection="Unknown"/>
+                    <CurveChange location="2355" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="5100" curveRadius="2200" curveDirection="Unknown"/>
+                    <CurveChange location="5419" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="5660" curveRadius="1546" curveDirection="Unknown"/>
+                    <CurveChange location="6040" curveRadius="1426" curveDirection="Unknown"/>
+                    <CurveChange location="6159" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="6400" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="6669" curveRadius="3400" curveDirection="Unknown"/>
+                    <CurveChange location="6762" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="7541" curveRadius="9821" curveDirection="Unknown"/>
+                    <CurveChange location="7700" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="7958" curveRadius="3068" curveDirection="Unknown"/>
+                    <CurveChange location="8327" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="10532" curveRadius="3400" curveDirection="Unknown"/>
+                    <CurveChange location="10768" curveRadius="3806" curveDirection="Unknown"/>
+                </Curves>
+                <RatedVoltage>
+                    <RatedVoltageStart voltageValue="3000" frequency="0"/>
+                </RatedVoltage>
+            </SP_Characteristics>
+            <SP_ContextInformation>
+                <LineAndTrackIdentifier>
+                    <LineAndTrackIdentifierStart lineIdentifier="250" lineName="25" trackIdentifier="64-2"/>
+                </LineAndTrackIdentifier>
+            </SP_ContextInformation>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="1992-2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="849">
+            <SP_Zone>
+                <IM_ID>0088</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <TimingPoint TP_ID="40" location="0">
+                    <TP_Name name="MECHELEN-DIJKSTRAAT"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="811" location="849">
+                    <TP_Name name="MECHELEN-NEKKERSPOEL"/>
+                </TimingPoint>
+                <VirtualBalise location="0">
+                    <VirtualBalisePosition latitude="51.0365" longitude="4.49087"/>
+                </VirtualBalise>
+                <VirtualBalise location="849">
+                    <VirtualBalisePosition latitude="51.030012" longitude="4.489986"/>
+                </VirtualBalise>
+            </SP_Points>
+            <SP_Characteristics>
+                <StaticSpeedProfile>
+                    <StaticSpeedProfileStart SSP_Speed="160"/>
+                    <StaticSpeedProfileChange location="99" SSP_Speed="140"/>
+                    <StaticSpeedProfileChange location="829" SSP_Speed="120"/>
+                </StaticSpeedProfile>
+                <GradientAverage>
+                    <GradientAverageStart gradientValue="1.04" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="202" gradientValue="0.93" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="510" gradientValue="3.44" gradientDirection="Uphill"/>
+                </GradientAverage>
+                <Curves>
+                    <CurveStart curveRadius="3806" curveDirection="Unknown"/>
+                    <CurveChange location="276" curveRadius="2964" curveDirection="Unknown"/>
+                </Curves>
+                <RatedVoltage>
+                    <RatedVoltageStart voltageValue="3000" frequency="0"/>
+                </RatedVoltage>
+            </SP_Characteristics>
+            <SP_ContextInformation>
+                <LineAndTrackIdentifier>
+                    <LineAndTrackIdentifierStart lineIdentifier="250" lineName="25" trackIdentifier="1992-2"/>
+                </LineAndTrackIdentifier>
+            </SP_ContextInformation>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="1991-2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="1500">
+            <SP_Zone>
+                <IM_ID>0088</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <TimingPoint TP_ID="811" location="0">
+                    <TP_Name name="MECHELEN-NEKKERSPOEL"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="810" location="1500">
+                    <TP_Name name="MECHELEN"/>
+                </TimingPoint>
+                <VirtualBalise location="0">
+                    <VirtualBalisePosition latitude="51.030012" longitude="4.489986"/>
+                </VirtualBalise>
+                <VirtualBalise location="1500">
+                    <VirtualBalisePosition latitude="51.01758" longitude="4.48313"/>
+                </VirtualBalise>
+            </SP_Points>
+            <SP_Characteristics>
+                <StaticSpeedProfile>
+                    <StaticSpeedProfileStart SSP_Speed="120"/>
+                    <StaticSpeedProfileChange location="0" SSP_Speed="90"/>
+                    <StaticSpeedProfileChange location="600" SSP_Speed="120"/>
+                </StaticSpeedProfile>
+                <GradientAverage>
+                    <GradientAverageStart gradientValue="3.44" gradientDirection="Uphill"/>
+                </GradientAverage>
+                <Curves>
+                    <CurveStart curveRadius="2964" curveDirection="Unknown"/>
+                </Curves>
+                <RatedVoltage>
+                    <RatedVoltageStart voltageValue="3000" frequency="0"/>
+                </RatedVoltage>
+            </SP_Characteristics>
+            <SP_ContextInformation>
+                <LineAndTrackIdentifier>
+                    <LineAndTrackIdentifierStart lineIdentifier="251" lineName="25N" trackIdentifier="1991-2"/>
+                </LineAndTrackIdentifier>
+            </SP_ContextInformation>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="1990-2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="1460">
+            <SP_Zone>
+                <IM_ID>0088</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <TimingPoint TP_ID="810" location="0">
+                    <TP_Name name="MECHELEN"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="1347" location="1460">
+                    <TP_Name name="Y.ABEELSTRAAT"/>
+                </TimingPoint>
+                <VirtualBalise location="0">
+                    <VirtualBalisePosition latitude="51.01758" longitude="4.48313"/>
+                </VirtualBalise>
+                <VirtualBalise location="1460">
+                    <VirtualBalisePosition latitude="51.004932" longitude="4.475968"/>
+                </VirtualBalise>
+            </SP_Points>
+            <SP_Characteristics>
+                <StaticSpeedProfile>
+                    <StaticSpeedProfileStart SSP_Speed="120"/>
+                    <StaticSpeedProfileChange location="470" SSP_Speed="160"/>
+                </StaticSpeedProfile>
+                <GradientAverage>
+                    <GradientAverageStart gradientValue="3.44" gradientDirection="Uphill"/>
+                </GradientAverage>
+                <Curves>
+                    <CurveStart curveRadius="2964" curveDirection="Unknown"/>
+                </Curves>
+                <RatedVoltage>
+                    <RatedVoltageStart voltageValue="3000" frequency="0"/>
+                </RatedVoltage>
+            </SP_Characteristics>
+            <SP_ContextInformation>
+                <LineAndTrackIdentifier>
+                    <LineAndTrackIdentifierStart lineIdentifier="251" lineName="25N" trackIdentifier="1990-2"/>
+                </LineAndTrackIdentifier>
+            </SP_ContextInformation>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="1229-2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="10244">
+            <SP_Zone>
+                <IM_ID>0088</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <TimingPoint TP_ID="1347" location="0">
+                    <TP_Name name="Y.ABEELSTRAAT"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="1355" location="10244">
+                    <TP_Name name="Y.MACHELEN-NOORD"/>
+                </TimingPoint>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="101389" location="710"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="101385" location="2384"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="101383" location="4028"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="101379" location="5778"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="101375" location="7488"/>
+                </Signal>
+                <VirtualBalise location="0">
+                    <VirtualBalisePosition latitude="51.004932" longitude="4.475968"/>
+                </VirtualBalise>
+                <VirtualBalise location="10244">
+                    <VirtualBalisePosition latitude="50.91727" longitude="4.459891"/>
+                </VirtualBalise>
+            </SP_Points>
+            <SP_Characteristics>
+                <StaticSpeedProfile>
+                    <StaticSpeedProfileStart SSP_Speed="160"/>
+                    <StaticSpeedProfileChange location="560" SSP_Speed="160"/>
+                </StaticSpeedProfile>
+                <GradientAverage>
+                    <GradientAverageStart gradientValue="3.44" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="321" gradientValue="5.97" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="573" gradientValue="0" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="864" gradientValue="8.64" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="1387" gradientValue="9.7" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="2041" gradientValue="14.37" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="2551" gradientValue="2.89" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="3125" gradientValue="6.39" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="3449" gradientValue="0.51" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="4314" gradientValue="0.56" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="6129" gradientValue="1.82" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="7257" gradientValue="5.13" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="8858" gradientValue="0.85" gradientDirection="Downhill"/>
+                </GradientAverage>
+                <Curves>
+                    <CurveStart curveRadius="2964" curveDirection="Unknown"/>
+                    <CurveChange location="17" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="70" curveRadius="1500" curveDirection="Unknown"/>
+                    <CurveChange location="158" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="200" curveRadius="2840" curveDirection="Unknown"/>
+                    <CurveChange location="263" curveRadius="1965" curveDirection="Unknown"/>
+                    <CurveChange location="473" curveRadius="2500" curveDirection="Unknown"/>
+                    <CurveChange location="674" curveRadius="1576" curveDirection="Unknown"/>
+                    <CurveChange location="1127" curveRadius="1282" curveDirection="Unknown"/>
+                    <CurveChange location="2354" curveRadius="2953" curveDirection="Unknown"/>
+                    <CurveChange location="4089" curveRadius="3017" curveDirection="Unknown"/>
+                    <CurveChange location="5134" curveRadius="6504" curveDirection="Unknown"/>
+                    <CurveChange location="5407" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="6257" curveRadius="4504" curveDirection="Unknown"/>
+                    <CurveChange location="7171" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="10020" curveRadius="6000" curveDirection="Unknown"/>
+                </Curves>
+                <RatedVoltage>
+                    <RatedVoltageStart voltageValue="3000" frequency="0"/>
+                </RatedVoltage>
+            </SP_Characteristics>
+            <SP_ContextInformation>
+                <LineAndTrackIdentifier>
+                    <LineAndTrackIdentifierStart lineIdentifier="251" lineName="25N" trackIdentifier="1229-2"/>
+                </LineAndTrackIdentifier>
+            </SP_ContextInformation>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="1241-2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="1361">
+            <SP_Zone>
+                <IM_ID>0088</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <TimingPoint TP_ID="1355" location="0">
+                    <TP_Name name="Y.MACHELEN-NOORD"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="1357" location="1361">
+                    <TP_Name name="Y.BRUCARGO"/>
+                </TimingPoint>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="102513" location="593"/>
+                </Signal>
+                <VirtualBalise location="0">
+                    <VirtualBalisePosition latitude="50.91727" longitude="4.459891"/>
+                </VirtualBalise>
+                <VirtualBalise location="1361">
+                    <VirtualBalisePosition latitude="50.909727" longitude="4.46146"/>
+                </VirtualBalise>
+            </SP_Points>
+            <SP_Characteristics>
+                <StaticSpeedProfile>
+                    <StaticSpeedProfileStart SSP_Speed="160"/>
+                    <StaticSpeedProfileChange location="0" SSP_Speed="90"/>
+                    <StaticSpeedProfileChange location="193" SSP_Speed="90"/>
+                </StaticSpeedProfile>
+                <GradientAverage>
+                    <GradientAverageStart gradientValue="0.85" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="154" gradientValue="12" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="580" gradientValue="0.6" gradientDirection="Downhill"/>
+                </GradientAverage>
+                <Curves>
+                    <CurveStart curveRadius="6000" curveDirection="Unknown"/>
+                    <CurveChange location="142" curveRadius="3000" curveDirection="Unknown"/>
+                    <CurveChange location="222" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="465" curveRadius="650" curveDirection="Unknown"/>
+                    <CurveChange location="809" curveRadius="400" curveDirection="Unknown"/>
+                    <CurveChange location="1253" curveRadius="13650" curveDirection="Unknown"/>
+                </Curves>
+                <RatedVoltage>
+                    <RatedVoltageStart voltageValue="3000" frequency="0"/>
+                </RatedVoltage>
+            </SP_Characteristics>
+            <SP_ContextInformation>
+                <LineAndTrackIdentifier>
+                    <LineAndTrackIdentifierStart lineIdentifier="364" lineName="36C" trackIdentifier="1241-2"/>
+                </LineAndTrackIdentifier>
+            </SP_ContextInformation>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="1238-2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="2007">
+            <SP_Zone>
+                <IM_ID>0088</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <TimingPoint TP_ID="1357" location="0">
+                    <TP_Name name="Y.BRUCARGO"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="219" location="2007">
+                    <TP_Name name="BRUSSELS AIRPORT - ZAVENTEM"/>
+                </TimingPoint>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="102520" location="692"/>
+                </Signal>
+                <VirtualBalise location="0">
+                    <VirtualBalisePosition latitude="50.909727" longitude="4.46146"/>
+                </VirtualBalise>
+                <VirtualBalise location="2007">
+                    <VirtualBalisePosition latitude="50.896821" longitude="4.48549"/>
+                </VirtualBalise>
+            </SP_Points>
+            <SP_Characteristics>
+                <StaticSpeedProfile>
+                    <StaticSpeedProfileStart SSP_Speed="90"/>
+                    <StaticSpeedProfileChange location="32" SSP_Speed="90"/>
+                    <StaticSpeedProfileChange location="1337" SSP_Speed="40"/>
+                    <StaticSpeedProfileChange location="1707" SSP_Speed="60"/>
+                </StaticSpeedProfile>
+                <GradientAverage>
+                    <GradientAverageStart gradientValue="0.6" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="87" gradientValue="0.9" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="337" gradientValue="0.3" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="520" gradientValue="9" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="1158" gradientValue="12.2" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="1758" gradientValue="0.1" gradientDirection="Uphill"/>
+                </GradientAverage>
+                <Curves>
+                    <CurveStart curveRadius="13650" curveDirection="Unknown"/>
+                    <CurveChange location="272" curveRadius="1550" curveDirection="Unknown"/>
+                    <CurveChange location="319" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="332" curveRadius="1550" curveDirection="Unknown"/>
+                    <CurveChange location="378" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="1025" curveRadius="650" curveDirection="Unknown"/>
+                    <CurveChange location="1424" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="1479" curveRadius="1425" curveDirection="Unknown"/>
+                    <CurveChange location="1532" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="1573" curveRadius="650" curveDirection="Unknown"/>
+                    <CurveChange location="1602" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="1734" curveRadius="650" curveDirection="Unknown"/>
+                </Curves>
+                <RatedVoltage>
+                    <RatedVoltageStart voltageValue="3000" frequency="0"/>
+                </RatedVoltage>
+            </SP_Characteristics>
+            <SP_ContextInformation>
+                <LineAndTrackIdentifier>
+                    <LineAndTrackIdentifierStart lineIdentifier="364" lineName="36C" trackIdentifier="1238-2"/>
+                </LineAndTrackIdentifier>
+            </SP_ContextInformation>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="1504-2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="1129">
+            <SP_Zone>
+                <IM_ID>0088</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <TimingPoint TP_ID="219" location="0">
+                    <TP_Name name="BRUSSELS AIRPORT - ZAVENTEM"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="1736" location="1129">
+                    <TP_Name name="Y.LUCHTHAVEN"/>
+                </TimingPoint>
+                <VirtualBalise location="0">
+                    <VirtualBalisePosition latitude="50.896821" longitude="4.48549"/>
+                </VirtualBalise>
+                <VirtualBalise location="1129">
+                    <VirtualBalisePosition latitude="50.88644" longitude="4.488333"/>
+                </VirtualBalise>
+            </SP_Points>
+            <SP_Characteristics>
+                <StaticSpeedProfile>
+                    <StaticSpeedProfileStart SSP_Speed="60"/>
+                    <StaticSpeedProfileChange location="485" SSP_Speed="60"/>
+                </StaticSpeedProfile>
+                <GradientAverage>
+                    <GradientAverageStart gradientValue="0.1" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="461" gradientValue="6.6" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="775" gradientValue="0" gradientDirection="Uphill"/>
+                </GradientAverage>
+                <Curves>
+                    <CurveStart curveRadius="650" curveDirection="Unknown"/>
+                    <CurveChange location="246" curveRadius="357" curveDirection="Unknown"/>
+                    <CurveChange location="651" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="711" curveRadius="300" curveDirection="Unknown"/>
+                </Curves>
+                <RatedVoltage>
+                    <RatedVoltageStart voltageValue="3000" frequency="0"/>
+                </RatedVoltage>
+            </SP_Characteristics>
+            <SP_ContextInformation>
+                <LineAndTrackIdentifier>
+                    <LineAndTrackIdentifierStart lineIdentifier="364" lineName="36C" trackIdentifier="1504-2"/>
+                </LineAndTrackIdentifier>
+            </SP_ContextInformation>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="1503-2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="1046">
+            <SP_Zone>
+                <IM_ID>0088</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <TimingPoint TP_ID="1736" location="0">
+                    <TP_Name name="Y.LUCHTHAVEN"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="1641" location="1046">
+                    <TP_Name name="Y.ZAVENTEM"/>
+                </TimingPoint>
+                <VirtualBalise location="0">
+                    <VirtualBalisePosition latitude="50.88644" longitude="4.488333"/>
+                </VirtualBalise>
+                <VirtualBalise location="1046">
+                    <VirtualBalisePosition latitude="50.8843" longitude="4.4774"/>
+                </VirtualBalise>
+            </SP_Points>
+            <SP_Characteristics>
+                <StaticSpeedProfile>
+                    <StaticSpeedProfileStart SSP_Speed="60"/>
+                </StaticSpeedProfile>
+                <GradientAverage>
+                    <GradientAverageStart gradientValue="0" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="132" gradientValue="0" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="432" gradientValue="20" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="542" gradientValue="16.7" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="639" gradientValue="29.8" gradientDirection="Downhill"/>
+                </GradientAverage>
+                <Curves>
+                    <CurveStart curveRadius="300" curveDirection="Unknown"/>
+                    <CurveChange location="192" curveRadius="196" curveDirection="Unknown"/>
+                    <CurveChange location="657" curveRadius="910" curveDirection="Unknown"/>
+                </Curves>
+                <RatedVoltage>
+                    <RatedVoltageStart voltageValue="3000" frequency="0"/>
+                </RatedVoltage>
+            </SP_Characteristics>
+            <SP_ContextInformation>
+                <LineAndTrackIdentifier>
+                    <LineAndTrackIdentifierStart lineIdentifier="364" lineName="36C" trackIdentifier="1503-2"/>
+                </LineAndTrackIdentifier>
+            </SP_ContextInformation>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="1480-2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="3374">
+            <SP_Zone>
+                <IM_ID>0088</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <TimingPoint TP_ID="1641" location="0">
+                    <TP_Name name="Y.ZAVENTEM"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="1260" location="700">
+                    <TP_Name name="ZAVENTEM"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="325" location="2729">
+                    <TP_Name name="DIEGEM"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="1523" location="3374">
+                    <TP_Name name="Y.DIEGEM"/>
+                </TimingPoint>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100497" location="740"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100493" location="1735"/>
+                </Signal>
+                <VirtualBalise location="0">
+                    <VirtualBalisePosition latitude="50.8843" longitude="4.4774"/>
+                </VirtualBalise>
+                <VirtualBalise location="700">
+                    <VirtualBalisePosition latitude="50.88572" longitude="4.469886"/>
+                </VirtualBalise>
+                <VirtualBalise location="2729">
+                    <VirtualBalisePosition latitude="50.890481" longitude="4.441931"/>
+                </VirtualBalise>
+                <VirtualBalise location="3374">
+                    <VirtualBalisePosition latitude="50.891793" longitude="4.434542"/>
+                </VirtualBalise>
+            </SP_Points>
+            <SP_Characteristics>
+                <StaticSpeedProfile>
+                    <StaticSpeedProfileStart SSP_Speed="60"/>
+                    <StaticSpeedProfileChange location="100" SSP_Speed="120"/>
+                </StaticSpeedProfile>
+                <GradientAverage>
+                    <GradientAverageStart gradientValue="29.8" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="178" gradientValue="0.2" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="781" gradientValue="4" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="1613" gradientValue="4.49" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="2332" gradientValue="0.29" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="2901" gradientValue="6.3" gradientDirection="Downhill"/>
+                </GradientAverage>
+                <Curves>
+                    <CurveStart curveRadius="910" curveDirection="Unknown"/>
+                    <CurveChange location="1031" curveRadius="200000" curveDirection="Unknown"/>
+                    <CurveChange location="1051" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="2113" curveRadius="100000" curveDirection="Unknown"/>
+                    <CurveChange location="2390" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="3131" curveRadius="1935" curveDirection="Unknown"/>
+                </Curves>
+                <RatedVoltage>
+                    <RatedVoltageStart voltageValue="3000" frequency="0"/>
+                </RatedVoltage>
+            </SP_Characteristics>
+            <SP_ContextInformation>
+                <LineAndTrackIdentifier>
+                    <LineAndTrackIdentifierStart lineIdentifier="360" lineName="36" trackIdentifier="1480-2"/>
+                </LineAndTrackIdentifier>
+            </SP_ContextInformation>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="1214-2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="4255">
+            <SP_Zone>
+                <IM_ID>0088</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <TimingPoint TP_ID="1523" location="0">
+                    <TP_Name name="Y.DIEGEM"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="388" location="404">
+                    <TP_Name name="GRENS BRUSSEL-VLAANDEREN L36"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="521" location="1455">
+                    <TP_Name name="HAREN-ZUID"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="1048" location="4255">
+                    <TP_Name name="SCHAARBEEK"/>
+                </TimingPoint>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100489" location="793"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100487" location="2156"/>
+                </Signal>
+                <VirtualBalise location="0">
+                    <VirtualBalisePosition latitude="50.891793" longitude="4.434542"/>
+                </VirtualBalise>
+                <VirtualBalise location="404">
+                    <VirtualBalisePosition latitude="50.89193" longitude="4.42819"/>
+                </VirtualBalise>
+                <VirtualBalise location="1455">
+                    <VirtualBalisePosition latitude="50.889567" longitude="4.415109"/>
+                </VirtualBalise>
+                <VirtualBalise location="4255">
+                    <VirtualBalisePosition latitude="50.878508" longitude="4.378644"/>
+                </VirtualBalise>
+            </SP_Points>
+            <SP_Characteristics>
+                <StaticSpeedProfile>
+                    <StaticSpeedProfileStart SSP_Speed="120"/>
+                    <StaticSpeedProfileChange location="521" SSP_Speed="120"/>
+                    <StaticSpeedProfileChange location="2102" SSP_Speed="120"/>
+                    <StaticSpeedProfileChange location="4150" SSP_Speed="90"/>
+                </StaticSpeedProfile>
+                <GradientAverage>
+                    <GradientAverageStart gradientValue="6.3" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="354" gradientValue="4" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="594" gradientValue="5.4" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="1104" gradientValue="5.3" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="1436" gradientValue="0" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="1890" gradientValue="5.5" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="2351" gradientValue="5.3" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="3115" gradientValue="3.5" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="3682" gradientValue="2.3" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="3791" gradientValue="0" gradientDirection="Uphill"/>
+                </GradientAverage>
+                <Curves>
+                    <CurveStart curveRadius="1935" curveDirection="Unknown"/>
+                    <CurveChange location="394" curveRadius="2080" curveDirection="Unknown"/>
+                    <CurveChange location="836" curveRadius="2045" curveDirection="Unknown"/>
+                    <CurveChange location="1064" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="1633" curveRadius="985" curveDirection="Unknown"/>
+                    <CurveChange location="2040" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="2188" curveRadius="1200" curveDirection="Unknown"/>
+                    <CurveChange location="3122" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="3457" curveRadius="900" curveDirection="Unknown"/>
+                    <CurveChange location="3752" curveRadius="0" curveDirection="Unknown"/>
+                </Curves>
+                <RatedVoltage>
+                    <RatedVoltageStart voltageValue="3000" frequency="0"/>
+                </RatedVoltage>
+            </SP_Characteristics>
+            <SP_ContextInformation>
+                <LineAndTrackIdentifier>
+                    <LineAndTrackIdentifierStart lineIdentifier="360" lineName="36" trackIdentifier="1214-2"/>
+                </LineAndTrackIdentifier>
+            </SP_ContextInformation>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="1354-2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="1600">
+            <SP_Zone>
+                <IM_ID>0088</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <TimingPoint TP_ID="1048" location="0">
+                    <TP_Name name="SCHAARBEEK"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="241" location="1600">
+                    <TP_Name name="BRUSSEL-NOORD-ROOSTER F"/>
+                </TimingPoint>
+                <VirtualBalise location="0">
+                    <VirtualBalisePosition latitude="50.878508" longitude="4.378644"/>
+                </VirtualBalise>
+                <VirtualBalise location="1600">
+                    <VirtualBalisePosition latitude="50.866083" longitude="4.364614"/>
+                </VirtualBalise>
+            </SP_Points>
+            <SP_Characteristics>
+                <StaticSpeedProfile>
+                    <StaticSpeedProfileStart SSP_Speed="90"/>
+                    <StaticSpeedProfileChange location="1083" SSP_Speed="80"/>
+                </StaticSpeedProfile>
+                <GradientAverage>
+                    <GradientAverageStart gradientValue="0" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="163" gradientValue="6.6" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="270" gradientValue="4.6" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="405" gradientValue="1.4" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="453" gradientValue="6.5" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="543" gradientValue="12.9" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="1004" gradientValue="0" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="1070" gradientValue="6.6" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="1333" gradientValue="5.4" gradientDirection="Uphill"/>
+                </GradientAverage>
+                <Curves>
+                    <CurveStart curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="92" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="212" curveRadius="2760" curveDirection="Unknown"/>
+                    <CurveChange location="448" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="1151" curveRadius="728" curveDirection="Unknown"/>
+                    <CurveChange location="1300" curveRadius="520" curveDirection="Unknown"/>
+                </Curves>
+                <RatedVoltage>
+                    <RatedVoltageStart voltageValue="3000" frequency="0"/>
+                </RatedVoltage>
+            </SP_Characteristics>
+            <SP_ContextInformation>
+                <LineAndTrackIdentifier>
+                    <LineAndTrackIdentifierStart lineIdentifier="360" lineName="36" trackIdentifier="1354-2"/>
+                </LineAndTrackIdentifier>
+            </SP_ContextInformation>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="1353-2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="806">
+            <SP_Zone>
+                <IM_ID>0088</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <TimingPoint TP_ID="241" location="0">
+                    <TP_Name name="BRUSSEL-NOORD-ROOSTER F"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="221" location="806">
+                    <TP_Name name="BRUSSEL-NOORD"/>
+                </TimingPoint>
+                <VirtualBalise location="0">
+                    <VirtualBalisePosition latitude="50.866083" longitude="4.364614"/>
+                </VirtualBalise>
+                <VirtualBalise location="806">
+                    <VirtualBalisePosition latitude="50.859658" longitude="4.360854"/>
+                </VirtualBalise>
+            </SP_Points>
+            <SP_Characteristics>
+                <StaticSpeedProfile>
+                    <StaticSpeedProfileStart SSP_Speed="80"/>
+                    <StaticSpeedProfileChange location="358" SSP_Speed="40"/>
+                </StaticSpeedProfile>
+                <GradientAverage>
+                    <GradientAverageStart gradientValue="5.4" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="99" gradientValue="1.6" gradientDirection="Uphill"/>
+                </GradientAverage>
+                <Curves>
+                    <CurveStart curveRadius="520" curveDirection="Unknown"/>
+                    <CurveChange location="66" curveRadius="1000" curveDirection="Unknown"/>
+                    <CurveChange location="136" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="247" curveRadius="1000" curveDirection="Unknown"/>
+                    <CurveChange location="351" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="701" curveRadius="500" curveDirection="Unknown"/>
+                    <CurveChange location="740" curveRadius="500" curveDirection="Unknown"/>
+                </Curves>
+                <RatedVoltage>
+                    <RatedVoltageStart voltageValue="3000" frequency="0"/>
+                </RatedVoltage>
+            </SP_Characteristics>
+            <SP_ContextInformation>
+                <LineAndTrackIdentifier>
+                    <LineAndTrackIdentifierStart lineIdentifier="360" lineName="36" trackIdentifier="1353-2"/>
+                </LineAndTrackIdentifier>
+            </SP_ContextInformation>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="1434-2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="3091">
+            <SP_Zone>
+                <IM_ID>0088</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <TimingPoint TP_ID="221" location="0">
+                    <TP_Name name="BRUSSEL-NOORD"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="216" location="1091">
+                    <TP_Name name="BRUSSEL-CONGRES"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="215" location="1991">
+                    <TP_Name name="BRUSSEL-CENTRAAL"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="217" location="2691">
+                    <TP_Name name="BRUSSEL-KAPELLEKERK"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="305" location="3091">
+                    <TP_Name name="BRUSSEL-ZUID-ROOSTER NZV"/>
+                </TimingPoint>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="102261" location="665"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100047" location="960"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100046" location="1213"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100045" location="1506"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="102404" location="1751"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100044" location="2139"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100043" location="2367"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100042" location="2589"/>
+                </Signal>
+                <Signal>
+                    <Signal_ID signal_ID_Physical="100041" location="2810"/>
+                </Signal>
+                <VirtualBalise location="0">
+                    <VirtualBalisePosition latitude="50.859658" longitude="4.360854"/>
+                </VirtualBalise>
+                <VirtualBalise location="1091">
+                    <VirtualBalisePosition latitude="50.851671" longitude="4.362634"/>
+                </VirtualBalise>
+                <VirtualBalise location="1991">
+                    <VirtualBalisePosition latitude="50.845175" longitude="4.357131"/>
+                </VirtualBalise>
+                <VirtualBalise location="2691">
+                    <VirtualBalisePosition latitude="50.841131" longitude="4.347869"/>
+                </VirtualBalise>
+                <VirtualBalise location="3091">
+                    <VirtualBalisePosition latitude="50.83875" longitude="4.341146"/>
+                </VirtualBalise>
+            </SP_Points>
+            <SP_Characteristics>
+                <StaticSpeedProfile>
+                    <StaticSpeedProfileStart SSP_Speed="40"/>
+                    <StaticSpeedProfileChange location="0" SSP_Speed="40"/>
+                    <StaticSpeedProfileChange location="739" SSP_Speed="50"/>
+                    <StaticSpeedProfileChange location="2860" SSP_Speed="40"/>
+                </StaticSpeedProfile>
+                <GradientAverage>
+                    <GradientAverageStart gradientValue="1.6" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="425" gradientValue="4.7" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="688" gradientValue="4.8" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="819" gradientValue="3.1" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="983" gradientValue="0" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="1087" gradientValue="2.5" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="1189" gradientValue="1.9" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="1296" gradientValue="2.9" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="1471" gradientValue="2.6" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="1611" gradientValue="0.6" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="1763" gradientValue="0" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="2139" gradientValue="0.5" gradientDirection="Downhill"/>
+                    <GradientAverageChange location="2173" gradientValue="1.7" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="2263" gradientValue="3.1" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="2519" gradientValue="3.8" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="2687" gradientValue="3.4" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="2803" gradientValue="8.6" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="2854" gradientValue="0.8" gradientDirection="Uphill"/>
+                </GradientAverage>
+                <Curves>
+                    <CurveStart curveRadius="500" curveDirection="Unknown"/>
+                    <CurveChange location="316" curveRadius="250" curveDirection="Unknown"/>
+                    <CurveChange location="530" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="732" curveRadius="245" curveDirection="Unknown"/>
+                    <CurveChange location="859" curveRadius="238" curveDirection="Unknown"/>
+                    <CurveChange location="966" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="1052" curveRadius="637" curveDirection="Unknown"/>
+                    <CurveChange location="1160" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="1193" curveRadius="522" curveDirection="Unknown"/>
+                    <CurveChange location="1257" curveRadius="433" curveDirection="Unknown"/>
+                    <CurveChange location="1336" curveRadius="421" curveDirection="Unknown"/>
+                    <CurveChange location="1412" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="1491" curveRadius="309" curveDirection="Unknown"/>
+                    <CurveChange location="1703" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="1789" curveRadius="405" curveDirection="Unknown"/>
+                    <CurveChange location="1846" curveRadius="410" curveDirection="Unknown"/>
+                    <CurveChange location="1995" curveRadius="400" curveDirection="Unknown"/>
+                    <CurveChange location="2061" curveRadius="460" curveDirection="Unknown"/>
+                    <CurveChange location="2080" curveRadius="615" curveDirection="Unknown"/>
+                    <CurveChange location="2117" curveRadius="2730" curveDirection="Unknown"/>
+                    <CurveChange location="2172" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="2543" curveRadius="530" curveDirection="Unknown"/>
+                    <CurveChange location="2609" curveRadius="360" curveDirection="Unknown"/>
+                    <CurveChange location="2680" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="2743" curveRadius="1000" curveDirection="Unknown"/>
+                    <CurveChange location="2832" curveRadius="0" curveDirection="Unknown"/>
+                    <CurveChange location="2844" curveRadius="975" curveDirection="Unknown"/>
+                    <CurveChange location="2897" curveRadius="275" curveDirection="Unknown"/>
+                </Curves>
+                <RatedVoltage>
+                    <RatedVoltageStart voltageValue="3000" frequency="0"/>
+                </RatedVoltage>
+            </SP_Characteristics>
+            <SP_ContextInformation>
+                <LineAndTrackIdentifier>
+                    <LineAndTrackIdentifierStart lineIdentifier="40" lineName="0/4" trackIdentifier="1434-2"/>
+                </LineAndTrackIdentifier>
+            </SP_ContextInformation>
+        </SegmentProfile>
+        <SegmentProfile SP_ID="1428-2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="729">
+            <SP_Zone>
+                <IM_ID>0088</IM_ID>
+            </SP_Zone>
+            <SP_Points>
+                <TimingPoint TP_ID="305" location="0">
+                    <TP_Name name="BRUSSEL-ZUID-ROOSTER NZV"/>
+                </TimingPoint>
+                <TimingPoint TP_ID="220" location="729">
+                    <TP_Name name="BRUSSEL-ZUID"/>
+                </TimingPoint>
+                <VirtualBalise location="0">
+                    <VirtualBalisePosition latitude="50.83875" longitude="4.341146"/>
+                </VirtualBalise>
+                <VirtualBalise location="729">
+                    <VirtualBalisePosition latitude="50.836782" longitude="4.336922"/>
+                </VirtualBalise>
+            </SP_Points>
+            <SP_Characteristics>
+                <StaticSpeedProfile>
+                    <StaticSpeedProfileStart SSP_Speed="40"/>
+                </StaticSpeedProfile>
+                <GradientAverage>
+                    <GradientAverageStart gradientValue="0.8" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="159" gradientValue="0" gradientDirection="Uphill"/>
+                    <GradientAverageChange location="255" gradientValue="2.2" gradientDirection="Downhill"/>
+                </GradientAverage>
+                <Curves>
+                    <CurveStart curveRadius="275" curveDirection="Unknown"/>
+                    <CurveChange location="332" curveRadius="600" curveDirection="Unknown"/>
+                    <CurveChange location="380" curveRadius="0" curveDirection="Unknown"/>
+                </Curves>
+                <RatedVoltage>
+                    <RatedVoltageStart voltageValue="3000" frequency="0"/>
+                </RatedVoltage>
+            </SP_Characteristics>
+            <SP_ContextInformation>
+                <LineAndTrackIdentifier>
+                    <LineAndTrackIdentifierStart lineIdentifier="40" lineName="0/4" trackIdentifier="1428-2"/>
+                </LineAndTrackIdentifier>
+            </SP_ContextInformation>
+        </SegmentProfile>
+    </G2B_ReplyPayload>
+</SFERA_G2B_ReplyMessage>

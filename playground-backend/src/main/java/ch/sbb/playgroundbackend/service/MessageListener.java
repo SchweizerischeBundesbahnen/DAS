@@ -11,11 +11,13 @@ import org.springframework.stereotype.Component;
 public class MessageListener {
 
     @Bean
-    public Function<Message<String>, Message<String>> boardToGround() {
+    public Function<Message<String>, Message<String>> boardToGround(SferaHandler sferaHandler) {
         return message -> {
-            SferaHandler sferaHandler = new SferaHandler(message.getHeaders());
-            String respone = sferaHandler.boardToGround(message.getPayload());
-            return MessageBuilder.withPayload(respone).setHeader(BinderHeaders.TARGET_DESTINATION, sferaHandler.replyTopic()).build();
+            String respone = sferaHandler.boardToGround(message);
+            if (respone == null) {
+                return null;
+            }
+            return MessageBuilder.withPayload(respone).setHeader(BinderHeaders.TARGET_DESTINATION, sferaHandler.replyTopic).build();
         };
     }
 }

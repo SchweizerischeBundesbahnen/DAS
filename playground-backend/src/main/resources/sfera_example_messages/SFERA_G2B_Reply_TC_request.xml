@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SFERA_G2B_ReplyMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<MessageHeader SFERA_version="1.91" message_ID="f4601b45-da9a-4333-96ef-61031097cd90" timestamp="2022-04-01T20:13:12Z" sourceDevice="DAS" destinationDevice="TMS">
+		<TrainIdentification>
+			<OTN_ID>
+				<Company>1084</Company>
+				<OperationalTrainNumber>9358</OperationalTrainNumber>
+				<StartDate>2022-04-01</StartDate>
+			</OTN_ID>
+		</TrainIdentification>
+		<Sender>1084</Sender>
+		<Recipient>0084</Recipient>
+	</MessageHeader>
+    <G2B_ReplyPayload>
+        <TrainCharacteristics TC_ID="Train_6" TC_VersionMajor="1" TC_VersionMinor="1">
+            <TC_RU_ID>1084</TC_RU_ID>
+            <TC_Features trainLength="162" trainMaxSpeed="140" trainWeight="391000" comfortableAcceleration="0.5" comfortableBraking="-0.5" maximumRegenerativeBraking="-0.29" enginePower="0" rolloutCoefficientA="2737" rolloutCoefficientB="0" rolloutCoefficientC="10.183" rollingStockType="TREIN" engines="0" wagons="6" trainCategoryCode="TRAIN" displayName="TRAIN 6" />
+        </TrainCharacteristics>
+    </G2B_ReplyPayload>
+</SFERA_G2B_ReplyMessage>
