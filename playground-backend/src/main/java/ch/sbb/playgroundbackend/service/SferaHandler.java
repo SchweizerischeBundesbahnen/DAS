@@ -4,73 +4,41 @@ import static ch.sbb.playgroundbackend.helper.XmlHelper.objectToXml;
 import static ch.sbb.playgroundbackend.helper.XmlHelper.xmlToObject;
 
 import com.solace.spring.cloud.stream.binder.messaging.SolaceHeaders;
-import generated.G2BError;
-import generated.G2BMessageResponse;
-import generated.G2BReplyPayload;
-import generated.MessageHeader;
-import generated.Recipient;
 import generated.SFERAB2GRequestMessage;
 import generated.SFERAG2BReplyMessage;
-import generated.Sender;
 import jakarta.xml.bind.JAXBException;
-import java.io.IOException;
-import java.time.Instant;
-import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.Message;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SferaHandler {
 
     private static final Logger log = LoggerFactory.getLogger(SferaHandler.class);
-    private static final String SFERA_VERSION = "2.01";
-    private static final String SOURCE_DEVICE = "TMS";
-    private static final String SENDER = "0085";
 
-    private final String companyCode;
-    private final String trainIdentifier;
-    private final String clientId;
+    private final StaticSferaService staticSferaService;
 
-    public SferaHandler(MessageHeaders messageHeaders) {
-        String topic = messageHeaders.get(SolaceHeaders.DESTINATION).toString();
-        String[] topicParts = topic.split("/");
-        if (topicParts.length != 6) {
-            log.error("wrong topic format topic={}", topic);
-        }
-        this.companyCode = topicParts[3];
-        this.trainIdentifier = topicParts[4];
-        this.clientId = topicParts[5];
+    public String replyTopic;
+
+    public SferaHandler(StaticSferaService staticSferaService) {
+        this.staticSferaService = staticSferaService;
     }
 
-    public MessageHeader header(String correlationId) {
-        MessageHeader responseHeader = new MessageHeader();
-        responseHeader.setSFERAVersion(SFERA_VERSION);
-        responseHeader.setMessageID(UUID.randomUUID().toString());
-        responseHeader.setTimestamp(Instant.now());
-        responseHeader.setSourceDevice(SOURCE_DEVICE);
-        responseHeader.setCorrelationID(correlationId);
-
-        Recipient recipient = new Recipient();
-        recipient.setValue(companyCode);
-        responseHeader.setRecipient(recipient);
-        Sender sender = new Sender();
-        sender.setValue(SENDER);
-        responseHeader.setSender(sender);
-        return responseHeader;
-    }
-
-    public String boardToGround(String xmlPayload) {
-        SFERAB2GRequestMessage sferab2GRequestMessage;
+    public String boardToGround(Message<String> message) {
+        String inputTopic = message.getHeaders().get(SolaceHeaders.DESTINATION).toString();
         SFERAG2BReplyMessage replyMessage;
+
+        this.replyTopic = replyTopic(inputTopic);
+
+        SFERAB2GRequestMessage sferab2GRequestMessage;
         try {
-            sferab2GRequestMessage = xmlToObject(xmlPayload, SFERAB2GRequestMessage.class);
-            SferaSession session = new SferaSession();
-            log.info("B2G request received companyCode={} trainIdentifier={} clientId={}", companyCode, trainIdentifier, clientId);
-            replyMessage = session.request(sferab2GRequestMessage);
-            replyMessage.setMessageHeader(header(sferab2GRequestMessage.getMessageHeader().getMessageID()));
-        } catch (JAXBException | IOException e) {
+            sferab2GRequestMessage = xmlToObject(message.getPayload(), SFERAB2GRequestMessage.class);
+            log.info("B2G request received");
+            replyMessage = request(sferab2GRequestMessage);
+        } catch (JAXBException e) {
             log.error("Could not map xml to object", e);
-            replyMessage = invalidXmlError();
+            replyMessage = staticSferaService.invalidXmlError();
         }
         try {
             return objectToXml(replyMessage);
@@ -80,32 +48,62 @@ public class SferaHandler {
         }
     }
 
-    private SFERAG2BReplyMessage invalidXmlError() {
-        G2BError error = new G2BError();
-        error.setErrorCode("13");
-        error.setAdditionalInfo("XML Schema Violation");
-        return errorReply(error);
+    private SFERAG2BReplyMessage request(SFERAB2GRequestMessage requestMessage) {
+
+        if (requestMessage.getHandshakeRequest() != null) {
+            log.info("Send handshakeAck");
+            return staticSferaService.handshake();
+            //      or HandshakeReject
+            //      or Error
+        } else if (requestMessage.getB2GRequest() != null) {
+            return b2gRequest(requestMessage);
+        }
+        log.info("Send insufficient data");
+        return staticSferaService.insufficientData();
     }
 
-    private SFERAG2BReplyMessage notImplementedError() {
-        G2BError error = new G2BError();
-        error.setErrorCode("99");
-        error.setAdditionalInfo("Not implemented yet!");
-        return errorReply(error);
+    private SFERAG2BReplyMessage b2gRequest(SFERAB2GRequestMessage requestMessage) {
+        if (requestMessage.getB2GRequest().getJPRequest() != null && !requestMessage.getB2GRequest().getJPRequest().isEmpty()) {
+            // assuming only one jp request
+            var jpRequest = requestMessage.getB2GRequest().getJPRequest().getFirst();
+            var requestedTrainNumber = jpRequest.getTrainIdentification().getOTNID().getOperationalTrainNumber();
+            var jpResult = staticSferaService.journeyProfile(requestedTrainNumber);
+            if (jpResult != null) {
+                log.info("Send JP for trainId={}", requestedTrainNumber);
+                return jpResult;
+            } else {
+                log.info("JP with trainId={} not available", requestedTrainNumber);
+                return staticSferaService.notAvailableError();
+            }
+            // G2B_MessageResponse / result = “OK” no more recent JP
+            //                    or result = “ERROR” / dataFirstAvailable
+            //                    or result = “ERROR” / errorCode
+
+        }
+        if (requestMessage.getB2GRequest().getSPRequest() != null && !requestMessage.getB2GRequest().getSPRequest().isEmpty()) {
+            log.info("Send static SP");
+            return staticSferaService.segmentProfile();
+        }
+        if (requestMessage.getB2GRequest().getTCRequest() != null && !requestMessage.getB2GRequest().getTCRequest().isEmpty()) {
+            log.info("Send static TC");
+            return staticSferaService.trainCharcteristics();
+        }
+        //      combination of SP/TC/JP
+        //      or C_DAS_C_AdviceRequest
+        //      or PlaintextMessageRequest
+        //      or ForceDrivingModeChangeRequest
+        //      or PositionSpeedRequest
+
+        log.info("b2g request not implemented");
+        return staticSferaService.notImplementedError();
     }
 
-    private SFERAG2BReplyMessage errorReply(G2BError error) {
-        SFERAG2BReplyMessage replyMessage = new SFERAG2BReplyMessage();
-        G2BReplyPayload replyPayload = new G2BReplyPayload();
-        G2BMessageResponse messageResponse = new G2BMessageResponse();
-        messageResponse.setResult("ERROR");
-        messageResponse.getG2BError().add(error);
-        replyPayload.setG2BMessageResponse(messageResponse);
-        replyMessage.setG2BReplyPayload(replyPayload);
-        return replyMessage;
-    }
-
-    public String replyTopic() {
+    private String replyTopic(String topic) {
+        log.info("new message on topic={}", topic);
+        String[] topicParts = topic.split("/");
+        String companyCode = topicParts[3];
+        String trainIdentifier = topicParts[4];
+        String clientId = topicParts[5];
         return "90940/2/G2B/" + companyCode + "/" + trainIdentifier + "/" + clientId;
     }
 }

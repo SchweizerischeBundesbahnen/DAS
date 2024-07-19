@@ -44,7 +44,7 @@ jobs:
       if: github.ref == 'refs/heads/main'
       env:
         IMAGE_ID: ghcr.io/${{ github.repository }}/playground-backend
-        VERSION: SNAPSHOT
+        VERSION: main
       run: |
         # Convert to lowercase
         IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
