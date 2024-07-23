@@ -42,6 +42,11 @@ jobs:
         MQTT_PASSWORD: ${{ secrets.MQTT_PASSWORD }}
       run: |
         flutter build apk --flavor dev -t integration_test/app_test.dart --no-tree-shake-icons --debug --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD
+    - name: Build Test Package
+      run: |
+        cd android
+        ./gradlew app:assembleAndroidTest
+        cd ..
     - name: browserstack
       uses: Grodien/browserstack-flutter-action@v1.0
       with:
