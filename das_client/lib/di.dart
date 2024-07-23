@@ -39,8 +39,9 @@ extension GetItX on GetIt {
     registerTokenSpecProvider();
     registerOidcClient();
     registerAzureAuthenticator();
+    registerBackendService();
     registerMqttClientConnector();
-    registerServices();
+    registerMqttService();
     await allReady();
   }
 
@@ -72,14 +73,18 @@ extension GetItX on GetIt {
     registerSingletonAsync<OidcClient>(factoryFunc);
   }
 
-  void registerServices() {
+  void registerMqttService() {
+    final flavor = get<Flavor>();
+    registerSingletonWithDependencies<MqttService>(
+            () => MqttService(mqttUrl: flavor.mqttUrl, mqttClientConnector: get()),
+        dependsOn: [MqttClientConnector]);
+  }
+
+  void registerBackendService() {
     final flavor = get<Flavor>();
     registerSingletonWithDependencies<BackendService>(
-        () => BackendService(authenticator: get(), backendUrl: flavor.backendUrl),
+            () => BackendService(authenticator: get(), backendUrl: flavor.backendUrl),
         dependsOn: [Authenticator]);
-    registerSingletonWithDependencies<MqttService>(
-        () => MqttService(mqttUrl: flavor.mqttUrl, mqttClientConnector: get()),
-        dependsOn: [MqttClientConnector]);
   }
 
   /// Azure Authenticator.

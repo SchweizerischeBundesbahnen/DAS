@@ -17,8 +17,9 @@ class IntegrationTestDI {
     GetIt.I.registerTokenSpecProvider();
     GetIt.I.registerOidcClient();
     _registerIntegrationTestAuthenticator();
+    GetIt.I.registerBackendService();
     _registerMqttClientConnector();
-    GetIt.I.registerServices();
+    GetIt.I.registerMqttService();
     return GetIt.I.allReady();
   }
 
