@@ -45,5 +45,5 @@ jobs:
     - name: browserstack
       uses: Grodien/browserstack-flutter-action@v1.0
       with:
-        browserstackUsername: "asdf"
-        browserstackAccessKey: "asdf"
+        browserstackUsername: "asdfg"
+        browserstackAccessKey: "asdfg"
