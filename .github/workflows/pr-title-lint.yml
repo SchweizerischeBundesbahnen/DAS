@@ -1,7 +1,10 @@
 name: PR Title Linter
 on:
-  pull_request:
-    types: [opened, edited, reopened, unlocked]
+  push:
+    branches: [ "sfera-playground" ]
+#on:
+#  pull_request:
+#    types: [opened, edited, reopened, unlocked]
 
 permissions: read-all
 
