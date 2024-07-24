@@ -1,5 +1,6 @@
 package ch.sbb.playgroundbackend.controller;
 
+import ch.sbb.playgroundbackend.auth.TenantConfig.Tenant;
 import ch.sbb.playgroundbackend.auth.TenantService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -23,11 +24,13 @@ public class InfoController {
             jwt.getClaims().toString());
     }
 
-
     @GetMapping("/admin/info")
     public String admin() {
         return "Welcome admin";
     }
 
-
+    @GetMapping("/admin/tenant")
+    public Tenant tenant(@AuthenticationPrincipal Jwt jwt) {
+        return tenantService.getByIssuerUri(jwt.getIssuer().toString());
+    }
 }
