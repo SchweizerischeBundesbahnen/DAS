@@ -53,7 +53,7 @@ jobs:
     needs: lint
     env:
       IMAGE_REPO: ghcr.io/${{ github.repository }}/webapp
-      IMAGE_TAG: SNAPSHOT
+      IMAGE_TAG: main
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

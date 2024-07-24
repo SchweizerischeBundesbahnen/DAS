@@ -1,1 +1,60 @@
-<app-mqtt-playground></app-mqtt-playground>
+<sbb-header-lean [label]="title" [subtitle]="'Version ' + version" collapseBreakpoint="mobile">
+  <sbb-header-environment>{{ environmentLabel }}</sbb-header-environment>
+  <sbb-usermenu [menu]="menu" [userName]="userData().userData?.preferred_username"
+                [displayName]="userData().userData ? organisation()?.name : undefined" (loginRequest)="login()">
+    <sbb-icon svgIcon="kom:user-small" *sbbIcon></sbb-icon>
+  </sbb-usermenu>
+  <sbb-menu #menu="sbbMenu">
+    <button sbb-menu-item (click)="logout()">
+      <sbb-icon svgIcon="kom:exit-small" class="sbb-icon-fit"></sbb-icon>
+      <span i18n>Logout</span>
+    </button>
+  </sbb-menu>
+  <svg brand style="width: 0"><!-- Optional --></svg>
+</sbb-header-lean>
+@if (userData().userData) {
+  <sbb-icon-sidebar-container class="sbb-icon-sidebar-after-header">
+    <sbb-icon-sidebar expanded>
+      <a
+        sbbIconSidebarItem
+        i18n-label
+        label="SFERA"
+        routerLink="/sfera"
+        routerLinkActive="sbb-active"
+        [routerLinkActiveOptions]="{
+        paths: 'exact',
+        fragment: 'ignored',
+        queryParams: 'ignored',
+        matrixParams: 'ignored',
+      }"
+      >
+        <sbb-icon svgIcon="kom:railway-switch-small"></sbb-icon>
+      </a>
+      <a
+        sbbIconSidebarItem
+        i18n-label
+        label="MQTT"
+        routerLink="/mqtt"
+        routerLinkActive="sbb-active"
+      >
+        <sbb-icon svgIcon="kom:arrows-up-down-small"></sbb-icon>
+      </a>
+      <a
+        sbbIconSidebarItem
+        i18n-label
+        label="Auth insights"
+        routerLink="/auth-insights"
+        routerLinkActive="sbb-active"
+      >
+        <sbb-icon svgIcon="kom:user-key-small"></sbb-icon>
+      </a>
+    </sbb-icon-sidebar>
+    <sbb-icon-sidebar-content role="main" class="app-main-content">
+      <router-outlet></router-outlet>
+    </sbb-icon-sidebar-content>
+  </sbb-icon-sidebar-container>
+} @else {
+  <div class="after-header app-main-content">
+    <router-outlet></router-outlet>
+  </div>
+}

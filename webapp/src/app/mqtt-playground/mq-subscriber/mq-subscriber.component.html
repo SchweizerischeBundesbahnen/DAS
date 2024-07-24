@@ -1,13 +1,18 @@
 <h2>Subscriber</h2>
-<sbb-form-field>
-  <sbb-label>Topic</sbb-label>
-  <input type="text" sbbInput placeholder="Topic" [formControl]="topicControl"/>
-</sbb-form-field>
-<button type="button" sbb-button (click)="subscribe()">Subscribe</button>
-
-@if (topic) {
-  <h3>Subscription: {{ topic }}</h3>
-  @for (message of messages; track message) {
-    <pre>{{ message.payload.toString() }}</pre>
+<div class="sbb-form-group">
+  <sbb-form-field>
+    <sbb-label>Topic</sbb-label>
+    <input type="text" sbbInput placeholder="Topic" [formControl]="topicControl"/>
+  </sbb-form-field>
+  <button type="button" sbb-button (click)="subscribe()">Subscribe</button>
+</div>
+<b>Subscriptions</b>
+<ul>
+  @for (topic of topics; track $index) {
+    <li>{{ topic }}</li>
   }
+</ul>
+@for (message of messages; track $index) {
+  <pre>Topic: {{ message.topic }}</pre>
+  <p>{{ message.payload.toString() }}</p>
 }

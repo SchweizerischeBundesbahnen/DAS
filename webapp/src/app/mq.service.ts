@@ -1,51 +1,37 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { IMqttServiceOptions, MqttService } from "ngx-mqtt";
-import { AuthService } from "./auth.service";
-import { firstValueFrom } from "rxjs";
+import { DestroyRef, inject, Injectable } from '@angular/core';
+import { MqttService } from "ngx-mqtt";
 import { environment } from "../environment/environment";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { SbbNotificationToast } from "@sbb-esta/angular/notification-toast";
 
 @Injectable({
   providedIn: 'root'
 })
-export class MqService implements OnDestroy {
+export class MqService {
 
   state = this.mqttService.state;
+  private _destroyed = inject(DestroyRef);
 
-  connectionConfig: IMqttServiceOptions = {
-    hostname: 'das-poc.messaging.solace.cloud',
-    port: 8443,
-    clean: true, // Retain session
-    connectTimeout: 4000, // Timeout period
-    reconnectPeriod: 4000, // Reconnect period
-    clientId: 'webapp-' + crypto.randomUUID(),
-    protocol: 'wss',
+  constructor(private mqttService: MqttService, private _notification: SbbNotificationToast) {
+    this.mqttService.onError
+      .pipe(takeUntilDestroyed(this._destroyed))
+      .subscribe(val => {
+        this._notification
+          .open(val.message, {
+            type: 'error',
+          })
+        this.mqttService.disconnect();
+      });
   }
 
-  constructor(private authService: AuthService, private mqttService: MqttService) {
-  }
-
-  ngOnDestroy(): void {
-    this.mqttService.disconnect();
-  }
-
-  async connect(ru: string, train: string, role: string) {
-    const exchangeToken = await firstValueFrom(this.authService.exchange(ru, train, role));
-    this.connectionConfig = {
-      username: this.authService.preferredUsername,
-      password: this.oauthAccessTokenString(exchangeToken),
-      ...this.connectionConfig
-    }
-
-    this.mqttService.connect(this.connectionConfig);
-    this.mqttService.onConnect.subscribe(() => {
-      console.log('Connection succeeded!');
+  async connect(username: string, token: string) {
+    this.mqttService.connect({
+      username: username,
+      password: `OAUTH~${environment.oauthProfile}~${token}`
     });
-    this.mqttService.onError.subscribe((error) => {
-      console.log('Connection failed', error)
-    })
   }
 
-  subscribe(topic: string) {
+  observe(topic: string) {
     return this.mqttService.observe(topic);
   }
 
@@ -53,8 +39,11 @@ export class MqService implements OnDestroy {
     this.mqttService.unsafePublish(topic, message);
   }
 
-  // Solace specific oauth access string (used instead of plain "mqttPassword"))
-  private oauthAccessTokenString(token: string): string {
-    return `OAUTH~${environment.oauthProfile}~${token}`;
+  disconnect() {
+    try {
+      this.mqttService.disconnect();
+    } catch (e) {
+      /* no open connection */
+    }
   }
 }

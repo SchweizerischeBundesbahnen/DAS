@@ -1,0 +1,26 @@
+@use '@sbb-esta/angular' as sbb;
+
+.disconnect {
+  margin-bottom: sbb.pxToRem(16);
+}
+
+.messages {
+  .title {
+    display: flex;
+    div {
+      width: 50%;
+    }
+  }
+  .message {
+    display: flex;
+
+    &.left {
+      width: 50%
+    }
+
+    &.right {
+      margin-left: auto;
+      width: 50%
+    }
+  }
+}
