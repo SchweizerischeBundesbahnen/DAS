@@ -2,7 +2,7 @@ import 'angular-server-side-configuration/process';
 import { APP_INITIALIZER, ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { IMqttServiceOptions, MqttModule } from "ngx-mqtt";
+import { MqttModule } from "ngx-mqtt";
 import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from "@angular/common/http";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { authInterceptor, OidcSecurityService, provideAuth } from 'angular-auth-oidc-client';
