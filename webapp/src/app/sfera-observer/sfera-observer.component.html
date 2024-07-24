@@ -1,0 +1,45 @@
+<h2>SFERA Communication</h2>
+@if ((mqService.state | async) !== MqttConnectionState.CONNECTED) {
+  <sbb-form-field class="sbb-form-field-long">
+    <sbb-label>Umgebung</sbb-label>
+    <sbb-select placeholder="Lieblingsessen" [formControl]="environmentControl">
+      @for (environment of environments; track environment) {
+        <sbb-option [value]="environment">{{ environment }}</sbb-option>
+      }
+    </sbb-select>
+  </sbb-form-field>
+  <sbb-form-field class="sbb-form-field-long">
+    <sbb-label>Company Code</sbb-label>
+    <input type="text" sbbInput [formControl]="companyControl"/>
+  </sbb-form-field>
+  <sbb-form-field class="sbb-form-field-long">
+    <sbb-label>Train Identification</sbb-label>
+    <input type="text" sbbInput [formControl]="trainControl"/>
+  </sbb-form-field>
+  <sbb-form-field class="sbb-form-field-long">
+    <sbb-label>Operation date</sbb-label>
+    <input type="text" sbbInput [formControl]="dateControl"/>
+  </sbb-form-field>
+  <sbb-form-field class="sbb-form-field-long">
+    <sbb-label>Client ID</sbb-label>
+    <input type="text" sbbInput [formControl]="clientIdControl"/>
+  </sbb-form-field>
+  <button type="button" sbb-button (click)="observe()">Observe</button>
+} @else {
+  <button type="button" class="disconnect" sbb-button (click)="disconnect()">Disconnect/Change
+  </button>
+
+  <div class="messages">
+    <div class="title">
+      <div><b>B2G</b> {{ b2gTopic }}</div>
+      <div><b>G2B</b> {{ g2bTopic }}</div>
+    </div>
+
+    @for (message of messages; track $index) {
+      <div class="message" [class.left]="message.topic === 'b2g'"
+           [class.right]="message.topic === 'g2b'">
+        <app-simple-xml [xmlString]="message.message"></app-simple-xml>
+      </div>
+    }
+  </div>
+}
