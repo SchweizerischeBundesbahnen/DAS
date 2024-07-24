@@ -14,11 +14,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
+        with:
       - name: Install commitlint
         run: |
           npm install conventional-changelog-conventionalcommits
           npm install commitlint@latest
-          echo "export default { extends: ['@commitlint/config-conventional'] };" > commitlint.config.js
+          echo "module.exports = { extends: ['@commitlint/config-conventional'] };" > commitlint.config.js
       - name: "Lint: Pull request title"
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
