@@ -33,6 +33,9 @@
               "node_modules/@sbb-esta/angular/typography.css",
               "src/styles.scss"
             ],
+            "allowedCommonJsDependencies": [
+              "mqtt-browser"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -41,8 +44,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "1mb",
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
