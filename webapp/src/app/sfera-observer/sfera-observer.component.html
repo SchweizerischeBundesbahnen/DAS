@@ -1,14 +1,6 @@
 <h2>SFERA Communication</h2>
 @if ((mqService.state | async) !== MqttConnectionState.CONNECTED) {
   <sbb-form-field class="sbb-form-field-long">
-    <sbb-label>Umgebung</sbb-label>
-    <sbb-select placeholder="Lieblingsessen" [formControl]="environmentControl">
-      @for (environment of environments; track environment) {
-        <sbb-option [value]="environment">{{ environment }}</sbb-option>
-      }
-    </sbb-select>
-  </sbb-form-field>
-  <sbb-form-field class="sbb-form-field-long">
     <sbb-label>Company Code</sbb-label>
     <input type="text" sbbInput [formControl]="companyControl"/>
   </sbb-form-field>
@@ -24,6 +16,7 @@
     <sbb-label>Client ID</sbb-label>
     <input type="text" sbbInput [formControl]="clientIdControl"/>
   </sbb-form-field>
+  <sbb-checkbox class="checkbox" [formControl]="environmentControl">local</sbb-checkbox>
   <button type="button" sbb-button (click)="observe()">Observe</button>
 } @else {
   <button type="button" class="disconnect" sbb-button (click)="disconnect()">Disconnect/Change

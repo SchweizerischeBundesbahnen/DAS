@@ -10,7 +10,7 @@ import { firstValueFrom, map, Subscription } from "rxjs";
 import { CommonModule } from "@angular/common";
 import { MqttConnectionState } from "ngx-mqtt";
 import { OidcSecurityService } from "angular-auth-oidc-client";
-import { SbbSelectModule } from "@sbb-esta/angular/select";
+import { SbbCheckboxModule } from "@sbb-esta/angular/checkbox";
 
 @Component({
   selector: 'app-sfera-observer',
@@ -21,19 +21,18 @@ import { SbbSelectModule } from "@sbb-esta/angular/select";
     SbbFormFieldModule,
     SbbInputModule,
     SbbButtonModule,
+    SbbCheckboxModule,
     SimpleXmlComponent,
-    SbbSelectModule
   ],
   templateUrl: './sfera-observer.component.html',
   styleUrl: './sfera-observer.component.scss',
 })
 export class SferaObserverComponent implements OnDestroy {
-  environments = ['', 'dev', 'e2e'];
-  environmentControl = new FormControl('', {nonNullable: true});
   companyControl = new FormControl('1088', {nonNullable: true});
   trainControl = new FormControl('9232', {nonNullable: true});
   dateControl = new FormControl(new Date().toISOString().split('T')[0], {nonNullable: true});
   clientIdControl = new FormControl('', {nonNullable: true});
+  environmentControl = new FormControl(false, {nonNullable: true});
   g2bTopic?: string;
   b2gTopic?: string;
   messages: { message: string, topic: string }[] = [];
@@ -49,7 +48,7 @@ export class SferaObserverComponent implements OnDestroy {
   }
 
   async observe() {
-    const env = this.environmentControl.value !== '' ? this.environmentControl.value + '/' : '';
+    const env = this.environmentControl.value ? 'local/' : '';
     const trainOperation = this.dateControl.value + '_' + this.trainControl.value;
     this.g2bTopic = env + '90940/2/G2B/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
     this.b2gTopic = env + '90940/2/B2G/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value

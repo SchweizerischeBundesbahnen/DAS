@@ -9,6 +9,7 @@ import generated.SFERAG2BReplyMessage;
 import jakarta.xml.bind.JAXBException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 
@@ -18,8 +19,9 @@ public class SferaHandler {
     private static final Logger log = LoggerFactory.getLogger(SferaHandler.class);
 
     private final StaticSferaService staticSferaService;
-
     public String replyTopic;
+    @Value("${spring.profiles.active}")
+    private String profile;
 
     public SferaHandler(StaticSferaService staticSferaService) {
         this.staticSferaService = staticSferaService;
@@ -104,6 +106,7 @@ public class SferaHandler {
         String companyCode = topicParts[3];
         String trainIdentifier = topicParts[4];
         String clientId = topicParts[5];
-        return "90940/2/G2B/" + companyCode + "/" + trainIdentifier + "/" + clientId;
+        String env = this.profile.equals("local") ? "local/" : "";
+        return env + "90940/2/G2B/" + companyCode + "/" + trainIdentifier + "/" + clientId;
     }
 }
