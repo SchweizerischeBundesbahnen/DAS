@@ -48,7 +48,13 @@ jobs:
         ./gradlew app:assembleAndroidTest
         cd ..
     - name: Upload and Run on Browserstack
-      uses: Grodien/browserstack-flutter-action@v1.0
+      uses: Grodien/browserstack-flutter-action@v1.1
       with:
         browserstackUsername: ${{ secrets.BROWSERSTACK_USERNAME }}
         browserstackAccessKey: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+        project: das_client
+        customId: das_client_android
+        buildTag: das_client_android
+        appFilePath: build/app/outputs/flutter-apk/app-dev-debug.apk
+        testFilePath: build/app/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk
+        devices: Samsung Galaxy Tab S9-13.0,Samsung Galaxy Tab S8-12.0
