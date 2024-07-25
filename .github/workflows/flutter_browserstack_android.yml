@@ -48,7 +48,7 @@ jobs:
         ./gradlew app:assembleAndroidTest
         cd ..
     - name: Upload and Run on Browserstack
-      uses: Grodien/browserstack-flutter-action@v1.1
+      uses: Grodien/browserstack-flutter-action@v1.2
       with:
         browserstackUsername: ${{ secrets.BROWSERSTACK_USERNAME }}
         browserstackAccessKey: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
