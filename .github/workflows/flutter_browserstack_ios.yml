@@ -1,0 +1,60 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Flutter Browserstack iOS Build
+
+defaults:
+  run:
+    working-directory: das_client
+    
+on:
+  push:
+    paths:
+      - 'das_client/**'
+    branches: [ "feature/das-client-durchstich" ]
+  pull_request:
+    paths:
+      - 'das_client/**'
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.22.2'
+    - run: flutter pub get
+    - run: flutter pub run build_runner build --delete-conflicting-outputs
+    - shell: bash
+      env:
+        MQTT_USERNAME: ${{ secrets.MQTT_USERNAME }}
+        MQTT_PASSWORD: ${{ secrets.MQTT_PASSWORD }}
+      run: |
+        flutter build ios --release --no-codesign -t integration_test/app_test.dart --no-tree-shake-icons --debug --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD
+        pushd ios
+        xcodebuild -workspace Runner.xcworkspace -scheme Runner -config Flutter/Release.xcconfig -derivedDataPath ../build/ios_integration -sdk iphoneos build-for-testing CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+        popd
+        pushd build/ios_integration/Build/Products
+        zip -r "app-integrationtest-release.zip" "Release-iphoneos" "Runner_iphoneos17.5-arm64.xctestrun"
+        popd
+    - name: Upload and Run on Browserstack
+      uses: Grodien/browserstack-flutter-action@v1.2
+      with:
+        browserstackUsername: ${{ secrets.BROWSERSTACK_USERNAME }}
+        browserstackAccessKey: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+        project: das_client
+        customId: das_client_ios
+        buildTag: das_client_ios
+        testPackagePath: ${{ github.workspace }}/das_client/build/ios_integration/Build/Products/app-integrationtest-release.zip
+        devices: iPad 9th-15
