@@ -41,7 +41,7 @@ jobs:
         MQTT_USERNAME: ${{ secrets.MQTT_USERNAME }}
         MQTT_PASSWORD: ${{ secrets.MQTT_PASSWORD }}
       run: |
-        flutter build ios --release --no-codesign -t integration_test/app_test.dart --no-tree-shake-icons --debug --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD
+        flutter build ios --release --no-codesign -t integration_test/app_test.dart --no-tree-shake-icons --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD
         pushd ios
         xcodebuild -workspace Runner.xcworkspace -scheme Runner -config Flutter/Release.xcconfig -derivedDataPath ../build/ios_integration -sdk iphoneos build-for-testing CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
         popd
