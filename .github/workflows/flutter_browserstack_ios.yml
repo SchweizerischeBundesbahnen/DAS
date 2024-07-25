@@ -46,7 +46,7 @@ jobs:
         xcodebuild -workspace Runner.xcworkspace -scheme Runner -config Flutter/Release.xcconfig -derivedDataPath ../build/ios_integration -sdk iphoneos build-for-testing CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
         popd
         pushd build/ios_integration/Build/Products
-        zip -r "app-integrationtest-release.zip" "Release-iphoneos" "Runner_iphoneos17.5-arm64.xctestrun"
+        zip -r "app-integrationtest-release.zip" "Release-iphoneos" "Runner_iphoneos*-arm64.xctestrun"
         popd
     - name: Upload and Run on Browserstack
       uses: Grodien/browserstack-flutter-action@v1.2
