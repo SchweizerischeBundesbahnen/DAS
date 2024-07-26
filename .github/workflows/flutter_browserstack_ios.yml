@@ -16,7 +16,7 @@ on:
   push:
     paths:
       - 'das_client/**'
-    branches: [ "feature/das-client-durchstich" ]
+    branches: [ "main" ]
   pull_request:
     paths:
       - 'das_client/**'
@@ -49,7 +49,7 @@ jobs:
         zip -r app-integrationtest-release.zip Release-iphoneos Runner_iphoneos*-arm64.xctestrun
         popd
     - name: Upload and Run on Browserstack
-      uses: Grodien/browserstack-flutter-action@v1.2
+      uses: Grodien/browserstack-flutter-action@v1.4
       with:
         browserstackUsername: ${{ secrets.BROWSERSTACK_USERNAME }}
         browserstackAccessKey: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
