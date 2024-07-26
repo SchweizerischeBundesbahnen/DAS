@@ -34,8 +34,17 @@ jobs:
     - uses: subosito/flutter-action@v2
       with:
         flutter-version: '3.22.2'
-    - run: flutter pub get
-    - run: flutter pub run build_runner build --delete-conflicting-outputs
+    - name: Prepare Flutter Build
+      env:
+        ANDROID_KEYSTORE_STRING: ${{ secrets.ANDROID_KEYSTORE }}
+        ANDROID_KEYSTORE: ${{ github.workspace }}/das_client/das.keystore
+        ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      run: |
+        echo $ANDROID_KEYSTORE_STRING | base64 -i > $ANDROID_KEYSTORE
+        flutter pub get
+        flutter pub run build_runner build --delete-conflicting-outputs
     - shell: bash
       env:
         MQTT_USERNAME: ${{ secrets.MQTT_USERNAME }}
