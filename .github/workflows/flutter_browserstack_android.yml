@@ -42,7 +42,7 @@ jobs:
         ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
         ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
       run: |
-        echo $ANDROID_KEYSTORE_STRING | base64 -i > $ANDROID_KEYSTORE
+        echo $ANDROID_KEYSTORE_STRING | base64 -d > $ANDROID_KEYSTORE
         flutter pub get
         flutter pub run build_runner build --delete-conflicting-outputs
     - shell: bash
