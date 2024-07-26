@@ -77,6 +77,13 @@ android {
     }
 
     buildTypes {
+        debug
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+
+    signingConfigs {
         release {
             def keystore = System.getenv("ANDROID_KEYSTORE")
             storeFile = file("$keystore")
