@@ -16,7 +16,7 @@ on:
   push:
     paths:
       - 'das_client/**'
-    branches: [ "main" ]
+    branches: [ "feature/ios-signing" ]
   pull_request:
     paths:
       - 'das_client/**'
@@ -41,12 +41,12 @@ jobs:
         MQTT_USERNAME: ${{ secrets.MQTT_USERNAME }}
         MQTT_PASSWORD: ${{ secrets.MQTT_PASSWORD }}
       run: |
-        flutter build ios --release --no-codesign -t integration_test/app_test.dart --no-tree-shake-icons --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD
+        flutter build ios --flavor dev --release --no-codesign -t integration_test/app_test.dart --no-tree-shake-icons --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD
         pushd ios
-        xcodebuild -workspace Runner.xcworkspace -scheme Runner -config Flutter/Release.xcconfig -derivedDataPath ../build/ios_integration -sdk iphoneos build-for-testing CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+        xcodebuild -workspace Runner.xcworkspace -scheme dev -config Flutter/Release.xcconfig -derivedDataPath ../build/ios_integration -sdk iphoneos build-for-testing CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
         popd
         pushd build/ios_integration/Build/Products
-        zip -r app-integrationtest-release.zip Release-iphoneos Runner_iphoneos*-arm64.xctestrun
+        zip -r app-integrationtest-release.zip Release-iphoneos dev_dev_iphoneos*-arm64.xctestrun
         popd
     - name: Upload and Run on Browserstack
       uses: Grodien/browserstack-flutter-action@v1.4
