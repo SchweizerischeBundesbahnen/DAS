@@ -11,6 +11,10 @@ Future<void> start(Flavor flavor) async {
   WidgetsFlutterBinding.ensureInitialized();
   await _initFimber();
   await _initDependencyInjection(flavor);
+  runDasApp();
+}
+
+Future<void> runDasApp() async {
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(create: (context) => AuthCubit(DI.get())..init()),

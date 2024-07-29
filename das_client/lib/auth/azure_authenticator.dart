@@ -51,12 +51,6 @@ class AzureAuthenticator implements Authenticator {
   }
 
   @override
-  Future<UserInfo> userInfo() async {
-    final tokenSpec = tokenSpecs.first;
-    return oidcClient.getUserInfo(scopes: tokenSpec.scopes);
-  }
-
-  @override
   Future<void> logout() {
     return oidcClient.logout();
   }

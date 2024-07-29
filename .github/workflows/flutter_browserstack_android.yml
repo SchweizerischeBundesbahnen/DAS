@@ -16,7 +16,7 @@ on:
   push:
     paths:
       - 'das_client/**'
-    branches: [ "feature/das-client-durchstich" ]
+    branches: [ "main" ]
   pull_request:
     paths:
       - 'das_client/**'
@@ -34,16 +34,40 @@ jobs:
     - uses: subosito/flutter-action@v2
       with:
         flutter-version: '3.22.2'
-    - run: flutter pub get
-    - run: flutter pub run build_runner build --delete-conflicting-outputs
+    - name: Prepare Flutter Build
+      env:
+        ANDROID_KEYSTORE_STRING: ${{ secrets.ANDROID_KEYSTORE }}
+        ANDROID_KEYSTORE: ${{ github.workspace }}/das_client/android/das.keystore
+        ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      run: |
+        echo $ANDROID_KEYSTORE_STRING | base64 -d > $ANDROID_KEYSTORE
+        echo "ANDROID_KEYSTORE=$ANDROID_KEYSTORE" >> "$GITHUB_ENV"
+        echo "ANDROID_KEYSTORE_PASSWORD=$ANDROID_KEYSTORE_PASSWORD" >> "$GITHUB_ENV"
+        echo "ANDROID_KEY_ALIAS=$ANDROID_KEY_ALIAS" >> "$GITHUB_ENV"
+        echo "ANDROID_KEY_PASSWORD=$ANDROID_KEY_PASSWORD" >> "$GITHUB_ENV"
+        flutter pub get
+        flutter pub run build_runner build --delete-conflicting-outputs
     - shell: bash
       env:
         MQTT_USERNAME: ${{ secrets.MQTT_USERNAME }}
         MQTT_PASSWORD: ${{ secrets.MQTT_PASSWORD }}
       run: |
         flutter build apk --flavor dev -t integration_test/app_test.dart --no-tree-shake-icons --debug --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD
-    - name: browserstack
-      uses: Grodien/browserstack-flutter-action@v1.0
+    - name: Build Test Package
+      run: |
+        cd android
+        ./gradlew app:assembleAndroidTest
+        cd ..
+    - name: Upload and Run on Browserstack
+      uses: Grodien/browserstack-flutter-action@v1.4
       with:
-        browserstackUsername: "asdf"
-        browserstackAccessKey: "asdf"
+        browserstackUsername: ${{ secrets.BROWSERSTACK_USERNAME }}
+        browserstackAccessKey: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+        project: das_client
+        customId: das_client_android
+        buildTag: das_client_android
+        appFilePath: ${{ github.workspace }}/das_client/build/app/outputs/flutter-apk/app-dev-debug.apk
+        testFilePath: ${{ github.workspace }}/das_client/build/app/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk
+        devices: Samsung Galaxy Tab S9-13.0,Samsung Galaxy Tab S8-12.0
