@@ -1,23 +1,45 @@
 import { Environment } from "./environment.model";
-import { AuthConfig } from "angular-oauth2-oidc";
+import { PassedInitialConfig } from "angular-auth-oidc-client";
+import { IMqttServiceOptions } from "ngx-mqtt";
 
-const authConfig: AuthConfig = {
-  issuer: 'https://login.microsoftonline.com/common/v2.0',
-  skipIssuerCheck: true,
-  // This is required, since Azure AD uses different domains in their issuer configuration
-  strictDiscoveryDocumentValidation: false,
-  clientId: '6025180f-123b-4f2f-9703-16e08fc221f0',
-  redirectUri: location.origin,
-  responseType: 'code',
-  scope: `openid profile email offline_access 6025180f-123b-4f2f-9703-16e08fc221f0/.default`,
-};
+const backendUrl = 'https://das-backend-dev.app.sbb.ch';
+
+const authConfig: PassedInitialConfig = {
+  config: {
+    authority: 'https://login.microsoftonline.com/common/v2.0',
+    redirectUrl: window.location.origin,
+    clientId: '6025180f-123b-4f2f-9703-16e08fc221f0',
+    scope: 'openid profile email offline_access 6025180f-123b-4f2f-9703-16e08fc221f0/.default',
+    silentRenew: true,
+    useRefreshToken: true,
+    maxIdTokenIatOffsetAllowedInSeconds: 600,
+    issValidationOff: true,
+    autoUserInfo: false,
+    secureRoutes: [backendUrl],
+    customParamsAuthRequest: {
+      prompt: 'select_account',
+    },
+  }
+}
+
+const mqttServiceOptions: IMqttServiceOptions = {
+  hostname: 'das-poc.messaging.solace.cloud',
+  port: 8443,
+  clean: true, // Retain session
+  connectTimeout: 4000, // Timeout period
+  reconnectPeriod: 4000, // Reconnect period
+  clientId: 'webapp-' + crypto.randomUUID(),
+  protocol: 'wss',
+  connectOnCreate: false
+}
 
 export const environment: Environment = {
   production: false,
   label: 'dev',
   oauthProfile: 'azureAd',
-  tokenExchangeUrl: 'https://das-backend-dev.app.sbb.ch/customClaim/requestToken',
+  backendUrl,
   authConfig,
+  mqttServiceOptions,
 };
 
 /*

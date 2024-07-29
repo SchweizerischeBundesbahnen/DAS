@@ -1,12 +1,23 @@
 import 'angular-server-side-configuration/process';
-import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { APP_INITIALIZER, ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { MQTT_SERVICE_OPTIONS, MqttModule } from "ngx-mqtt";
-import { provideOAuthClient } from "angular-oauth2-oidc";
-import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
+import { MqttModule } from "ngx-mqtt";
+import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from "@angular/common/http";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { authInterceptor, OidcSecurityService, provideAuth } from 'angular-auth-oidc-client';
+import { environment } from "../environment/environment";
+import { SbbNotificationToastModule } from "@sbb-esta/angular/notification-toast";
 
+function appInitializerAuthCheck() {
+  return {
+    provide: APP_INITIALIZER,
+    useFactory: (oidcSecurityService: OidcSecurityService) => () =>
+      oidcSecurityService.checkAuthMultiple(),
+    multi: true,
+    deps: [OidcSecurityService],
+  };
+}
 
 /**
  * How to use angular-server-side-configuration:
@@ -24,10 +35,14 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
  * Please note that process.env[variable] cannot be resolved. Please directly use strings.
  */
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes),
-    provideHttpClient(withInterceptorsFromDi()),
-    provideOAuthClient(),
-    importProvidersFrom(MqttModule.forRoot(MQTT_SERVICE_OPTIONS)), provideAnimationsAsync(),
+  providers: [
+    provideRouter(routes),
+    provideAnimationsAsync(),
+    provideAuth(environment.authConfig),
+    appInitializerAuthCheck(),
+    provideHttpClient(withInterceptorsFromDi(), withInterceptors([authInterceptor()])),
+    importProvidersFrom(MqttModule.forRoot(environment.mqttServiceOptions)),
+    importProvidersFrom(SbbNotificationToastModule)
   ],
 
 };

@@ -1,10 +1,12 @@
 <h2>Publisher</h2>
-<sbb-form-field>
-  <sbb-label>Topic</sbb-label>
-  <input type="text" sbbInput placeholder="Topic" [formControl]="topicControl"/>
-</sbb-form-field>
-<sbb-form-field>
-  <sbb-label>Message</sbb-label>
-  <input type="text" sbbInput placeholder="Topic" [formControl]="messageControl"/>
-</sbb-form-field>
-<button type="button" sbb-button (click)="publish()">Publish</button>
+<div class="sbb-form-group">
+  <sbb-form-field>
+    <sbb-label>Topic</sbb-label>
+    <input type="text" sbbInput placeholder="Topic" [formControl]="topicControl"/>
+  </sbb-form-field>
+  <sbb-form-field>
+    <sbb-label>Message</sbb-label>
+    <input type="text" sbbInput placeholder="Topic" [formControl]="messageControl"/>
+  </sbb-form-field>
+  <button type="button" sbb-button (click)="publish()">Publish</button>
+</div>

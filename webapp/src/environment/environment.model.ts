@@ -1,9 +1,11 @@
-import { AuthConfig } from "angular-oauth2-oidc";
+import { PassedInitialConfig } from "angular-auth-oidc-client";
+import { IMqttServiceOptions } from "ngx-mqtt";
 
 export interface Environment {
   production: boolean;
   label: string;
   oauthProfile: string;
-  tokenExchangeUrl: string;
-  authConfig: AuthConfig;
+  backendUrl: string;
+  authConfig:PassedInitialConfig ;
+  mqttServiceOptions:IMqttServiceOptions;
 }
