@@ -53,4 +53,3 @@ jobs:
     - run: flutter build appbundle --flavor dev -t lib/main_dev.dart
     - run: flutter build appbundle --flavor inte -t lib/main_inte.dart
     - run: flutter build appbundle --flavor prod -t lib/main_prod.dart
-    - run: flutter build ios --flavor dev -t lib/main_dev.dart --release --no-codesign

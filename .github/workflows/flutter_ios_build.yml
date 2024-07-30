@@ -67,7 +67,10 @@ jobs:
         cp $PP_DEV_PATH ~/Library/MobileDevice/Provisioning\ Profiles
         cp $PP_INT_PATH ~/Library/MobileDevice/Provisioning\ Profiles
         cp $PP_PROD_PATH ~/Library/MobileDevice/Provisioning\ Profiles
-    - run: flutter pub get
-    - run: flutter pub run build_runner build --delete-conflicting-outputs
+    - run: |
+        flutter pub get
+        flutter pub run build_runner build --delete-conflicting-outputs
     - run: flutter test
     - run: flutter build ios --flavor dev -t lib/main_dev.dart --release
+    - run: flutter build ios --flavor inte -t lib/main_inte.dart --release
+    - run: flutter build ios --flavor prod -t lib/main_prod.dart --release
