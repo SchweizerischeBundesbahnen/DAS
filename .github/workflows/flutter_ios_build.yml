@@ -74,3 +74,16 @@ jobs:
     - run: flutter build ios --flavor dev -t lib/main_dev.dart --release
     - run: flutter build ios --flavor inte -t lib/main_inte.dart --release
     - run: flutter build ios --flavor prod -t lib/main_prod.dart --release
+    - run: xcodebuild -exportArchive -archivePath "build/ios/iphoneos/DAS Dev.app" -exportPath "build/ios/ipa/" -exportOptionsPlist ios/exportOptionsRelease.plist
+    - name: Archive Apps
+      uses: actions/upload-artifact@v4
+      with:
+        name: App
+        path: build/ios/iphoneos/**
+        retention-days: 1
+    - name: Archive IPA
+      uses: actions/upload-artifact@v4
+      with:
+        name: IPA
+        path: build/ios/ipa/**
+        retention-days: 1
