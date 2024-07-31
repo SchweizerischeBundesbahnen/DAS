@@ -1,0 +1,26 @@
+name: Main Image Cleanup
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: '0 4 * * *'
+
+permissions:
+  packages: write
+
+jobs:
+  main-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/delete-package-versions@v5
+        with:
+          package-name: 'das/playground-backend'
+          package-type: 'container'
+          min-versions-to-keep: 3
+          delete-only-untagged-versions: 'true'
+      - uses: actions/delete-package-versions@v5
+        with:
+          package-name: 'das/webapp'
+          package-type: 'container'
+          min-versions-to-keep: 3
+          delete-only-untagged-versions: 'true'
