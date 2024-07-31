@@ -71,13 +71,17 @@ jobs:
         flutter pub get
         flutter pub run build_runner build --delete-conflicting-outputs
     - run: flutter test
-    - run: flutter build ios --flavor dev -t lib/main_dev.dart --release
+    - run: flutter build ipa --flavor dev -t lib/main_dev.dart --release
+#    - run: flutter build ios --flavor dev -t lib/main_dev.dart --release
 #    - run: flutter build ios --flavor inte -t lib/main_inte.dart --release
 #    - run: flutter build ios --flavor prod -t lib/main_prod.dart --release
     - name: Archive Apps
       uses: actions/upload-artifact@v4
       with:
-        name: App
-        path: das_client/build/ios/iphoneos/**
+        name: Build
+#        path: das_client/build/ios/iphoneos/**
+        path: |
+          das_client/build/ios/archive/**
+          das_client/build/ios/ipa/**
         retention-days: 1
 
