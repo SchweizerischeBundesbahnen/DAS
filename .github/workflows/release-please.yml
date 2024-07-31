@@ -108,7 +108,7 @@ jobs:
         run: |
           # Convert to lowercase
           IMAGE_REPO=$(echo $IMAGE_REPO | tr '[A-Z]' '[a-z]')
-  
+
           docker build -t $IMAGE_REPO:$IMAGE_TAG .
           docker push $IMAGE_REPO:$IMAGE_TAG
           docker tag $IMAGE_REPO:$IMAGE_TAG $IMAGE_REPO:latest
