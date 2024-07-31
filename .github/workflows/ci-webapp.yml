@@ -62,12 +62,7 @@ jobs:
           cache: 'npm'
           cache-dependency-path: 'webapp/package-lock.json'
       - run: npm clean-install
-      - run: npm run build
-      - name: Store build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build
-          path: webapp/dist/webapp/
+      - run: npm run build --prod
       - name: Login to GitHub Container Registry
         if: github.ref == 'refs/heads/main'
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
@@ -76,7 +71,7 @@ jobs:
         run: |
           # Convert to lowercase
           IMAGE_REPO=$(echo $IMAGE_REPO | tr '[A-Z]' '[a-z]')
-
+          
           docker build -t $IMAGE_REPO:$IMAGE_TAG .
           docker push $IMAGE_REPO:$IMAGE_TAG
         env:
