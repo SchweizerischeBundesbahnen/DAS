@@ -16,7 +16,7 @@ on:
   push:
     paths:
       - 'das_client/**'
-    branches: [ "feature/ios-signing" ]
+    branches: [ "main" ]
   pull_request:
     paths:
       - 'das_client/**'
