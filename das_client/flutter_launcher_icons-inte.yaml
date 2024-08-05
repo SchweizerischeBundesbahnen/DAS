@@ -1,5 +1,5 @@
 flutter_launcher_icons:
-  android: true
+  android: false
   ios: true
   image_path: "assets/app_icons/ios/int/Icon-App-1024x1024@1x.png"
   #adaptive_icon_foreground: "assets/app_icons/android/int/foreground.svg"
