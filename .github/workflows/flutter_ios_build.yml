@@ -80,7 +80,7 @@ jobs:
         APPSTORE_CONNECT_ISSUER_ID: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
       run: |
         flutter build ipa --flavor dev -t lib/main_dev.dart --release
-        xcodebuild -exportArchive -archivePath "build/ios/archive/DAS Dev.xcarchive" -exportPath "build/ios/ipa/" -exportOptionsPlist ios/exportOptionsRelease.plist -authenticationKeyIssuerID "$APPSTORE_CONNECT_ISSUER_ID" -authenticationKeyID "$APPSTORE_CONNECT_KEY_ID" -authenticationKeyPath ~/AuthKey.p8
+        xcodebuild -exportArchive -archivePath "build/ios/archive/DAS Dev.xcarchive" -exportPath "build/ios/ipa/" -exportOptionsPlist ios/exportOptionsRelease.plist -allowProvisioningUpdates -authenticationKeyIssuerID "$APPSTORE_CONNECT_ISSUER_ID" -authenticationKeyID "$APPSTORE_CONNECT_KEY_ID" -authenticationKeyPath ~/AuthKey.p8
 #    - run: flutter build ios --flavor dev -t lib/main_dev.dart --release
 #    - run: flutter build ios --flavor dev -t lib/main_dev.dart --release
 #    - run: flutter build ios --flavor inte -t lib/main_inte.dart --release
