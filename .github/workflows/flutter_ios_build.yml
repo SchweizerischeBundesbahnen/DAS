@@ -100,7 +100,7 @@ jobs:
         APPSTORE_CONNECT_ISSUER_ID: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
       run: |
         flutter build ipa --flavor prod -t lib/main_prod.dart --release
-        xcodebuild -exportArchive -archivePath "build/ios/archive/DAS Prod.xcarchive" -exportOptionsPlist ios/exportOptionsRelease.plist -authenticationKeyIssuerID "$APPSTORE_CONNECT_ISSUER_ID" -authenticationKeyID "$APPSTORE_CONNECT_KEY_ID" -authenticationKeyPath ~/AuthKey.p8
+        xcodebuild -exportArchive -archivePath "build/ios/archive/DAS.xcarchive" -exportOptionsPlist ios/exportOptionsRelease.plist -authenticationKeyIssuerID "$APPSTORE_CONNECT_ISSUER_ID" -authenticationKeyID "$APPSTORE_CONNECT_KEY_ID" -authenticationKeyPath ~/AuthKey.p8
     - name: Archive Apps
       uses: actions/upload-artifact@v4
       with:
