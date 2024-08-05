@@ -30,29 +30,20 @@ jobs:
     - uses: subosito/flutter-action@v2
       with:
         flutter-version: '3.22.2'
-    - name: Install the Apple certificate and provisioning profile
+    - name: Install the Apple signing certificate and appstore connect key
       env:
         SBB_APPSTORE_BASE64: ${{ secrets.SBB_APPSTORE_BASE64 }}
         SBB_APPSTORE_P12_PASSWORD: ${{ secrets.SBB_APPSTORE_P12_PASSWORD }}
-        DEV_BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.DEV_BUILD_PROVISION_PROFILE_BASE64 }}
-        INT_BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.INT_BUILD_PROVISION_PROFILE_BASE64 }}
-        PROD_BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.PROD_BUILD_PROVISION_PROFILE_BASE64 }}
         KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
         APPSTORE_CONNECT_PRIVATE_KEY_BASE64: ${{ secrets.APPSTORE_CONNECT_PRIVATE_KEY_BASE64 }}
       run: |
         # create variables
         SBB_CERTIFICATE_PATH=$RUNNER_TEMP/sbb_appstore.p12
-        PP_DEV_PATH=$RUNNER_TEMP/build_dev_pp.mobileprovision
-        PP_INT_PATH=$RUNNER_TEMP/build_int_pp.mobileprovision
-        PP_PROD_PATH=$RUNNER_TEMP/build_prod_pp.mobileprovision
         KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
         APPSTORE_CONNECT_PRIVATE_KEY_PATH=~/AuthKey.p8
 
-        # import certificate and provisioning profile from secrets
+        # import certificate and private key from secrets
         echo -n "$SBB_APPSTORE_BASE64" | base64 --decode -o $SBB_CERTIFICATE_PATH
-        echo -n "$DEV_BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o $PP_DEV_PATH
-        echo -n "$INT_BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o $PP_INT_PATH
-        echo -n "$PROD_BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o $PP_PROD_PATH
         echo -n "$APPSTORE_CONNECT_PRIVATE_KEY_BASE64" | base64 --decode -o $APPSTORE_CONNECT_PRIVATE_KEY_PATH
 
         # create temporary keychain
@@ -64,13 +55,7 @@ jobs:
         security import $SBB_CERTIFICATE_PATH -P "$SBB_APPSTORE_P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
         security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
         security list-keychain -d user -s $KEYCHAIN_PATH
-
-        # apply provisioning profile
-        mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-        cp $PP_DEV_PATH ~/Library/MobileDevice/Provisioning\ Profiles
-        cp $PP_INT_PATH ~/Library/MobileDevice/Provisioning\ Profiles
-        cp $PP_PROD_PATH ~/Library/MobileDevice/Provisioning\ Profiles
-    - name: 'Download Provisioning Profiles'
+    - name: 'Download Provisioning Profiles DEV'
       id: provisioning
       uses: apple-actions/download-provisioning-profiles@v1
       with:
@@ -78,21 +63,47 @@ jobs:
         issuer-id: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
         api-key-id: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
         api-private-key: ${{ secrets.APPSTORE_CONNECT_PRIVATE_KEY }}
+    - name: 'Download Provisioning Profiles INTE'
+      id: provisioning
+      uses: apple-actions/download-provisioning-profiles@v1
+      with:
+        bundle-id: 'ch.sbb.das.inte'
+        issuer-id: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
+        api-key-id: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
+        api-private-key: ${{ secrets.APPSTORE_CONNECT_PRIVATE_KEY }}
+    - name: 'Download Provisioning Profiles PROD'
+      id: provisioning
+      uses: apple-actions/download-provisioning-profiles@v1
+      with:
+        bundle-id: 'ch.sbb.das'
+        issuer-id: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
+        api-key-id: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
+        api-private-key: ${{ secrets.APPSTORE_CONNECT_PRIVATE_KEY }}
     - run: |
         flutter pub get
         flutter pub run build_runner build --delete-conflicting-outputs
     - run: flutter test
-    - name: Build and Deploy iOS App
+    - name: Build and Deploy iOS App DEV
       env:
         APPSTORE_CONNECT_KEY_ID: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
         APPSTORE_CONNECT_ISSUER_ID: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
       run: |
         flutter build ipa --flavor dev -t lib/main_dev.dart --release
-        xcodebuild -exportArchive -archivePath "build/ios/archive/DAS Dev.xcarchive" -exportPath "build/ios/ipa/" -exportOptionsPlist ios/exportOptionsRelease.plist -authenticationKeyIssuerID "$APPSTORE_CONNECT_ISSUER_ID" -authenticationKeyID "$APPSTORE_CONNECT_KEY_ID" -authenticationKeyPath ~/AuthKey.p8
-#    - run: flutter build ios --flavor dev -t lib/main_dev.dart --release
-#    - run: flutter build ios --flavor dev -t lib/main_dev.dart --release
-#    - run: flutter build ios --flavor inte -t lib/main_inte.dart --release
-#    - run: flutter build ios --flavor prod -t lib/main_prod.dart --release
+        xcodebuild -exportArchive -archivePath "build/ios/archive/DAS Dev.xcarchive" -exportOptionsPlist ios/exportOptionsRelease.plist -authenticationKeyIssuerID "$APPSTORE_CONNECT_ISSUER_ID" -authenticationKeyID "$APPSTORE_CONNECT_KEY_ID" -authenticationKeyPath ~/AuthKey.p8
+    - name: Build and Deploy iOS App INTE
+      env:
+        APPSTORE_CONNECT_KEY_ID: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
+        APPSTORE_CONNECT_ISSUER_ID: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
+      run: |
+        flutter build ipa --flavor inte -t lib/main_inte.dart --release
+        xcodebuild -exportArchive -archivePath "build/ios/archive/DAS Inte.xcarchive" -exportOptionsPlist ios/exportOptionsRelease.plist -authenticationKeyIssuerID "$APPSTORE_CONNECT_ISSUER_ID" -authenticationKeyID "$APPSTORE_CONNECT_KEY_ID" -authenticationKeyPath ~/AuthKey.p8
+    - name: Build and Deploy iOS App PROD
+      env:
+        APPSTORE_CONNECT_KEY_ID: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
+        APPSTORE_CONNECT_ISSUER_ID: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
+      run: |
+        flutter build ipa --flavor prod -t lib/main_prod.dart --release
+        xcodebuild -exportArchive -archivePath "build/ios/archive/DAS Prod.xcarchive" -exportOptionsPlist ios/exportOptionsRelease.plist -authenticationKeyIssuerID "$APPSTORE_CONNECT_ISSUER_ID" -authenticationKeyID "$APPSTORE_CONNECT_KEY_ID" -authenticationKeyPath ~/AuthKey.p8
     - name: Archive Apps
       uses: actions/upload-artifact@v4
       with:
