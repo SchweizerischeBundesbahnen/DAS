@@ -34,8 +34,8 @@ jobs:
       env:
         APPSTORE_CONNECT_PRIVATE_KEY_BASE64: ${{ secrets.APPSTORE_CONNECT_PRIVATE_KEY_BASE64 }}
       run: |
-        # import certificate and provisioning profile from secrets
-        echo -n "$APPSTORE_CONNECT_PRIVATE_KEY_BASE64" | base64 --decode -o ./AuthKey.p8
+        # decode appstore connect private key
+        echo -n "$APPSTORE_CONNECT_PRIVATE_KEY_BASE64" | base64 --decode -o ~/AuthKey.p8
     - run: |
         flutter pub get
         flutter pub run build_runner build --delete-conflicting-outputs
@@ -46,7 +46,7 @@ jobs:
         APPSTORE_CONNECT_ISSUER_ID: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
       run: |
         flutter build ipa --flavor inte -t lib/main_inte.dart --release --no-codesign
-        xcodebuild -exportArchive -archivePath "build/ios/archive/DAS Inte.xcarchive" -exportOptionsPlist ios/exportOptionsRelease.plist -allowProvisioningUpdates -authenticationKeyIssuerID $APPSTORE_CONNECT_ISSUER_ID -authenticationKeyID $APPSTORE_CONNECT_KEY_ID -authenticationKeyPath ./AuthKey.p8
+        xcodebuild -exportArchive -archivePath "build/ios/archive/DAS Inte.xcarchive" -exportOptionsPlist ios/exportOptionsRelease.plist -allowProvisioningUpdates -authenticationKeyIssuerID $APPSTORE_CONNECT_ISSUER_ID -authenticationKeyID $APPSTORE_CONNECT_KEY_ID -authenticationKeyPath ~/AuthKey.p8
 #    - run: flutter build ios --flavor dev -t lib/main_dev.dart --release
 #    - run: flutter build ios --flavor dev -t lib/main_dev.dart --release
 #    - run: flutter build ios --flavor inte -t lib/main_inte.dart --release
