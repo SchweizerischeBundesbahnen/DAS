@@ -32,25 +32,14 @@ jobs:
         flutter-version: '3.22.2'
     - name: Install the Apple certificate and provisioning profile
       env:
-#        KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
         APPSTORE_CONNECT_PRIVATE_KEY_BASE64: ${{ secrets.APPSTORE_CONNECT_PRIVATE_KEY_BASE64 }}
         APPSTORE_CONNECT_KEY_ID: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
       run: |
         # create variables
-#        KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
         APPSTORE_CONNECT_PRIVATE_KEY_PATH=~/PrivateKeys/AuthKey_$APPSTORE_CONNECT_KEY_ID.p8
 
         # import certificate and provisioning profile from secrets
         echo -n "$APPSTORE_CONNECT_PRIVATE_KEY_BASE64" | base64 --decode -o $APPSTORE_CONNECT_PRIVATE_KEY_PATH
-
-        # create temporary keychain
-#        security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-#        security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
-#        security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-
-        # import certificate to keychain
-#        security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-#        security list-keychain -d user -s $KEYCHAIN_PATH
     - run: |
         flutter pub get
         flutter pub run build_runner build --delete-conflicting-outputs
