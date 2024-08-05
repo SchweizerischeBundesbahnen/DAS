@@ -56,7 +56,6 @@ jobs:
         security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
         security list-keychain -d user -s $KEYCHAIN_PATH
     - name: 'Download Provisioning Profiles DEV'
-      id: provisioning
       uses: apple-actions/download-provisioning-profiles@v1
       with:
         bundle-id: 'ch.sbb.das.dev'
@@ -64,7 +63,6 @@ jobs:
         api-key-id: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
         api-private-key: ${{ secrets.APPSTORE_CONNECT_PRIVATE_KEY }}
     - name: 'Download Provisioning Profiles INTE'
-      id: provisioning
       uses: apple-actions/download-provisioning-profiles@v1
       with:
         bundle-id: 'ch.sbb.das.inte'
@@ -72,7 +70,6 @@ jobs:
         api-key-id: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
         api-private-key: ${{ secrets.APPSTORE_CONNECT_PRIVATE_KEY }}
     - name: 'Download Provisioning Profiles PROD'
-      id: provisioning
       uses: apple-actions/download-provisioning-profiles@v1
       with:
         bundle-id: 'ch.sbb.das'
