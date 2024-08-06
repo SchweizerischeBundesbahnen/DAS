@@ -62,18 +62,18 @@ jobs:
         serviceAccountJsonPlainText: ${{ secrets.ANDROID_SERVICE_ACCOUNT_JSON }}
         packageName: ch.sbb.das.client.dev
         releaseFiles: das_client/build/app/outputs/bundle/devRelease/app-dev-release.aab
-        track: qa
+        track: internal
     - name: Upload INTE App
       uses: r0adkll/upload-google-play@v1.1.3
       with:
         serviceAccountJsonPlainText: ${{ secrets.ANDROID_SERVICE_ACCOUNT_JSON }}
         packageName: ch.sbb.das.client.inte
         releaseFiles: das_client/build/app/outputs/bundle/inteRelease/app-inte-release.aab
-        track: qa
+        track: internal
     - name: Upload PROD App
       uses: r0adkll/upload-google-play@v1.1.3
       with:
         serviceAccountJsonPlainText: ${{ secrets.ANDROID_SERVICE_ACCOUNT_JSON }}
         packageName: ch.sbb.das.client
         releaseFiles: das_client/build/app/outputs/bundle/prodRelease/app-prod-release.aab
-        track: qa
+        track: internal
