@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.2.0...das_client-v0.2.1) (2024-08-06)
+
+
+### Bug Fixes
+
+* allow to close fahrbild ([#154](https://github.com/SchweizerischeBundesbahnen/DAS/issues/154)) ([8d2e9ae](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8d2e9aec97dd69414e75feac0812221c489bd9df))
+
 ## [0.2.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.2.0...das_client-v0.1.0) (2024-08-06)
 
 
