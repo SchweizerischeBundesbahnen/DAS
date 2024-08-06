@@ -11,7 +11,11 @@ name: Flutter iOS Build
 defaults:
   run:
     working-directory: das_client
-    
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 on:
   push:
     paths:

@@ -64,6 +64,7 @@ android {
         }
         inte {
             dimension 'env'
+            applicationIdSuffix '.inte'
             manifestPlaceholders += [
                     'appAuthRedirectScheme': 'ch.sbb.das'
             ]
