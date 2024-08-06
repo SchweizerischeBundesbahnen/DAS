@@ -16,7 +16,10 @@ on:
   push:
     paths:
       - 'das_client/**'
-    branches: [ "feature/ios-signing" ]
+  pull_request:
+    paths:
+      - 'das_client/**'
+    branches: [ "main" ]
 
 jobs:
   build:
