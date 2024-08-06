@@ -62,6 +62,27 @@ jobs:
         security import $SBB_CERTIFICATE_PATH -P "$SBB_APPSTORE_P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
         security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
         security list-keychain -d user -s $KEYCHAIN_PATH
+    - name: 'Download Provisioning Profiles DEV'
+      uses: apple-actions/download-provisioning-profiles@v3
+      with:
+        bundle-id: 'ch.sbb.das.dev'
+        issuer-id: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
+        api-key-id: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
+        api-private-key: ${{ secrets.APPSTORE_CONNECT_PRIVATE_KEY }}
+    - name: 'Download Provisioning Profiles INTE'
+      uses: apple-actions/download-provisioning-profiles@v3
+      with:
+        bundle-id: 'ch.sbb.das.inte'
+        issuer-id: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
+        api-key-id: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
+        api-private-key: ${{ secrets.APPSTORE_CONNECT_PRIVATE_KEY }}
+    - name: 'Download Provisioning Profiles PROD'
+      uses: apple-actions/download-provisioning-profiles@v3
+      with:
+        bundle-id: 'ch.sbb.das'
+        issuer-id: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
+        api-key-id: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
+        api-private-key: ${{ secrets.APPSTORE_CONNECT_PRIVATE_KEY }}
     - run: |
         flutter pub get
         flutter pub run build_runner build --delete-conflicting-outputs
@@ -72,17 +93,17 @@ jobs:
       run: |
         flutter build ipa --flavor dev -t lib/main_dev.dart --release --no-codesign
         xcodebuild -exportArchive -archivePath "build/ios/archive/DAS Dev.xcarchive" -exportOptionsPlist ios/exportOptionsRelease.plist -allowProvisioningUpdates -authenticationKeyIssuerID "$APPSTORE_CONNECT_ISSUER_ID" -authenticationKeyID "$APPSTORE_CONNECT_KEY_ID" -authenticationKeyPath ~/AuthKey.p8
-#    - name: Build and Deploy iOS App INTE
-#      env:
-#        APPSTORE_CONNECT_KEY_ID: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
-#        APPSTORE_CONNECT_ISSUER_ID: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
-#      run: |
-#        flutter build ipa --flavor inte -t lib/main_inte.dart --release --no-codesign
-#        xcodebuild -exportArchive -archivePath "build/ios/archive/DAS Inte.xcarchive" -exportOptionsPlist ios/exportOptionsRelease.plist -authenticationKeyIssuerID "$APPSTORE_CONNECT_ISSUER_ID" -authenticationKeyID "$APPSTORE_CONNECT_KEY_ID" -authenticationKeyPath ~/AuthKey.p8
-#    - name: Build and Deploy iOS App PROD
-#      env:
-#        APPSTORE_CONNECT_KEY_ID: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
-#        APPSTORE_CONNECT_ISSUER_ID: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
-#      run: |
-#        flutter build ipa --flavor prod -t lib/main_prod.dart --release --no-codesign
-#        xcodebuild -exportArchive -archivePath "build/ios/archive/DAS.xcarchive" -exportOptionsPlist ios/exportOptionsRelease.plist -authenticationKeyIssuerID "$APPSTORE_CONNECT_ISSUER_ID" -authenticationKeyID "$APPSTORE_CONNECT_KEY_ID" -authenticationKeyPath ~/AuthKey.p8
+    - name: Build and Deploy iOS App INTE
+      env:
+        APPSTORE_CONNECT_KEY_ID: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
+        APPSTORE_CONNECT_ISSUER_ID: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
+      run: |
+        flutter build ipa --flavor inte -t lib/main_inte.dart --release --no-codesign
+        xcodebuild -exportArchive -archivePath "build/ios/archive/DAS Inte.xcarchive" -exportOptionsPlist ios/exportOptionsRelease.plist -authenticationKeyIssuerID "$APPSTORE_CONNECT_ISSUER_ID" -authenticationKeyID "$APPSTORE_CONNECT_KEY_ID" -authenticationKeyPath ~/AuthKey.p8
+    - name: Build and Deploy iOS App PROD
+      env:
+        APPSTORE_CONNECT_KEY_ID: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
+        APPSTORE_CONNECT_ISSUER_ID: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
+      run: |
+        flutter build ipa --flavor prod -t lib/main_prod.dart --release --no-codesign
+        xcodebuild -exportArchive -archivePath "build/ios/archive/DAS.xcarchive" -exportOptionsPlist ios/exportOptionsRelease.plist -authenticationKeyIssuerID "$APPSTORE_CONNECT_ISSUER_ID" -authenticationKeyID "$APPSTORE_CONNECT_KEY_ID" -authenticationKeyPath ~/AuthKey.p8
