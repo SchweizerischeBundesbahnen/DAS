@@ -85,22 +85,22 @@ jobs:
         APPSTORE_CONNECT_KEY_ID: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
         APPSTORE_CONNECT_ISSUER_ID: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
       run: |
-        flutter build ipa --flavor dev -t lib/main_dev.dart --release
-        xcodebuild -exportArchive -archivePath "build/ios/archive/DAS Dev.xcarchive" -exportOptionsPlist ios/exportOptionsRelease.plist -allowProvisioningUpdates -authenticationKeyIssuerID "$APPSTORE_CONNECT_ISSUER_ID" -authenticationKeyID "$APPSTORE_CONNECT_KEY_ID" -authenticationKeyPath ~/AuthKey.p8
+        flutter build ipa --flavor dev -t lib/main_dev.dart --release --export-options-plist=ios/exportOptionsRelease.plist
+        xcodebuild -exportArchive -archivePath "build/ios/archive/DAS Dev.xcarchive" -exportOptionsPlist ios/exportOptionsRelease.plist -authenticationKeyIssuerID "$APPSTORE_CONNECT_ISSUER_ID" -authenticationKeyID "$APPSTORE_CONNECT_KEY_ID" -authenticationKeyPath ~/AuthKey.p8
     - name: Build and Deploy iOS App INTE
       env:
         APPSTORE_CONNECT_KEY_ID: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
         APPSTORE_CONNECT_ISSUER_ID: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
       run: |
         flutter build ipa --flavor inte -t lib/main_inte.dart --release
-        xcodebuild -exportArchive -archivePath "build/ios/archive/DAS Inte.xcarchive" -exportOptionsPlist ios/exportOptionsRelease.plist -allowProvisioningUpdates -authenticationKeyIssuerID "$APPSTORE_CONNECT_ISSUER_ID" -authenticationKeyID "$APPSTORE_CONNECT_KEY_ID" -authenticationKeyPath ~/AuthKey.p8
+        xcodebuild -exportArchive -archivePath "build/ios/archive/DAS Inte.xcarchive" -exportOptionsPlist ios/exportOptionsRelease.plist -authenticationKeyIssuerID "$APPSTORE_CONNECT_ISSUER_ID" -authenticationKeyID "$APPSTORE_CONNECT_KEY_ID" -authenticationKeyPath ~/AuthKey.p8
     - name: Build and Deploy iOS App PROD
       env:
         APPSTORE_CONNECT_KEY_ID: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
         APPSTORE_CONNECT_ISSUER_ID: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
       run: |
         flutter build ipa --flavor prod -t lib/main_prod.dart --release
-        xcodebuild -exportArchive -archivePath "build/ios/archive/DAS.xcarchive" -exportOptionsPlist ios/exportOptionsRelease.plist -allowProvisioningUpdates -authenticationKeyIssuerID "$APPSTORE_CONNECT_ISSUER_ID" -authenticationKeyID "$APPSTORE_CONNECT_KEY_ID" -authenticationKeyPath ~/AuthKey.p8
+        xcodebuild -exportArchive -archivePath "build/ios/archive/DAS.xcarchive" -exportOptionsPlist ios/exportOptionsRelease.plist -authenticationKeyIssuerID "$APPSTORE_CONNECT_ISSUER_ID" -authenticationKeyID "$APPSTORE_CONNECT_KEY_ID" -authenticationKeyPath ~/AuthKey.p8
     - name: Archive Apps
       uses: actions/upload-artifact@v4
       with:
