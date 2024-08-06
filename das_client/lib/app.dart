@@ -12,7 +12,11 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       themeMode: ThemeMode.system,
-      theme: SBBTheme.light(baseStyle: SBBBaseStyle(primaryColor: SBBColors.blue)),
+      theme: SBBTheme.light(
+          baseStyle: SBBBaseStyle(
+        primaryColor: SBBColors.royal,
+        primaryColorDark: SBBColors.royal125,
+      )),
       //darkTheme: SBBTheme.dark(),
       localizationsDelegates: localizationDelegates,
       supportedLocales: supportedLocales,
