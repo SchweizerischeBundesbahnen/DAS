@@ -27,8 +27,12 @@ class HomePage extends StatelessWidget {
       title: context.l10n.c_app_name,
       actions: [
         IconButton(icon: const Icon(SBBIcons.exit_small), onPressed: () {
-          context.authCubit.logout();
-          context.router.replace(const LoginRoute());
+          if (context.fahrbildCubit.state is SelectingFahrbildState) {
+            context.authCubit.logout();
+            context.router.replace(const LoginRoute());
+          } else {
+            context.fahrbildCubit.reset();
+          }
         },)
       ],
     );

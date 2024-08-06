@@ -17,6 +17,11 @@ abstract class BaseFahrbildState extends FahrbildState {
   final String company;
   final String trainNumber;
   final DateTime date;
+
+  @override
+  String toString() {
+    return "${runtimeType.toString()}(company=$company, trainNumber=$trainNumber, date=$date)";
+  }
 }
 
 final class ConnectingState extends BaseFahrbildState {

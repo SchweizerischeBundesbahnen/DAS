@@ -184,13 +184,27 @@ class FahrbildCubit extends Cubit<FahrbildState> {
 
   void updateTrainNumber(String? trainNumber) {
     if (state is SelectingFahrbildState) {
-      emit(SelectingFahrbildState(trainNumber: trainNumber, company: (state as SelectingFahrbildState).company, errorCode: (state as SelectingFahrbildState).errorCode));
+      emit(SelectingFahrbildState(
+          trainNumber: trainNumber,
+          company: (state as SelectingFahrbildState).company,
+          errorCode: (state as SelectingFahrbildState).errorCode));
     }
   }
 
   void updateCompany(String? company) {
     if (state is SelectingFahrbildState) {
-      emit(SelectingFahrbildState(trainNumber: (state as SelectingFahrbildState).trainNumber, company: company, errorCode: (state as SelectingFahrbildState).errorCode));
+      emit(SelectingFahrbildState(
+          trainNumber: (state as SelectingFahrbildState).trainNumber,
+          company: company,
+          errorCode: (state as SelectingFahrbildState).errorCode));
+    }
+  }
+
+  void reset() {
+    if (state is BaseFahrbildState) {
+      Fimber.i("Reseting fahrbild cubit in state $state");
+      emit(SelectingFahrbildState(
+          trainNumber: (state as BaseFahrbildState).trainNumber, company: (state as BaseFahrbildState).company));
     }
   }
 
