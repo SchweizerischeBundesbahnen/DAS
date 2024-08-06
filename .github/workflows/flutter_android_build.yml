@@ -20,7 +20,6 @@ on:
   push:
     paths:
       - 'das_client/**'
-    branches: [ "main" ]
   pull_request:
     paths:
       - 'das_client/**'
@@ -57,12 +56,3 @@ jobs:
     - run: flutter build appbundle --flavor dev -t lib/main_dev.dart
     - run: flutter build appbundle --flavor inte -t lib/main_inte.dart
     - run: flutter build appbundle --flavor prod -t lib/main_prod.dart
-    - name: Archive Apps
-      uses: actions/upload-artifact@v4
-      with:
-        name: Build
-        path: |
-          das_client/build/app/outputs/bundle/devRelease/**
-          das_client/build/app/outputs/bundle/inteRelease/**
-          das_client/build/app/outputs/bundle/prodRelease/**
-        retention-days: 1

@@ -37,56 +37,14 @@ jobs:
     - uses: subosito/flutter-action@v2
       with:
         flutter-version: '3.22.2'
-    - name: Install the Apple signing certificate
-      env:
-        SBB_APPSTORE_BASE64: ${{ secrets.SBB_APPSTORE_BASE64 }}
-        SBB_APPSTORE_P12_PASSWORD: ${{ secrets.SBB_APPSTORE_P12_PASSWORD }}
-        KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+    - name: Prepare Flutter Build
       run: |
-        # create variables
-        SBB_CERTIFICATE_PATH=$RUNNER_TEMP/sbb_appstore.p12
-        KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
-
-        # import certificate from secrets
-        echo -n "$SBB_APPSTORE_BASE64" | base64 --decode -o $SBB_CERTIFICATE_PATH
-
-        # create temporary keychain
-        security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-        security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
-        security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-
-        # import certificate to keychain
-        security import $SBB_CERTIFICATE_PATH -P "$SBB_APPSTORE_P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
-        security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-        security list-keychain -d user -s $KEYCHAIN_PATH
-    - name: 'Download Provisioning Profiles DEV'
-      uses: apple-actions/download-provisioning-profiles@v3
-      with:
-        bundle-id: 'ch.sbb.das.dev'
-        issuer-id: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
-        api-key-id: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
-        api-private-key: ${{ secrets.APPSTORE_CONNECT_PRIVATE_KEY }}
-    - name: 'Download Provisioning Profiles INTE'
-      uses: apple-actions/download-provisioning-profiles@v3
-      with:
-        bundle-id: 'ch.sbb.das.inte'
-        issuer-id: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
-        api-key-id: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
-        api-private-key: ${{ secrets.APPSTORE_CONNECT_PRIVATE_KEY }}
-    - name: 'Download Provisioning Profiles PROD'
-      uses: apple-actions/download-provisioning-profiles@v3
-      with:
-        bundle-id: 'ch.sbb.das'
-        issuer-id: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
-        api-key-id: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
-        api-private-key: ${{ secrets.APPSTORE_CONNECT_PRIVATE_KEY }}
-    - run: |
         flutter pub get
         flutter pub run build_runner build --delete-conflicting-outputs
     - run: flutter test
     - name: Build iOS App DEV
-      run: flutter build ios --flavor dev -t lib/main_dev.dart --release
+      run: flutter build ipa --flavor dev -t lib/main_dev.dart --release --no-codesign
     - name: Build iOS App INTE
-      run: flutter build ios --flavor inte -t lib/main_inte.dart --release
+      run: flutter build ipa --flavor inte -t lib/main_inte.dart --release --no-codesign
     - name: Build iOS App PROD
-      run: flutter build ios --flavor prod -t lib/main_prod.dart --release
+      run: flutter build ipa --flavor prod -t lib/main_prod.dart --release --no-codesign
