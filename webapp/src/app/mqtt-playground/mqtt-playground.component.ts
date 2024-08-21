@@ -1,8 +1,7 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, OnDestroy } from '@angular/core';
 import { MqSubscriberComponent } from "./mq-subscriber/mq-subscriber.component";
 import { MqPublisherComponent } from "./mq-publisher/mq-publisher.component";
 import { MqService } from "../mq.service";
-import { SbbIcon } from "@sbb-esta/angular/icon";
 import { AsyncPipe } from "@angular/common";
 import { MqttConnectionState } from "ngx-mqtt";
 import { AuthService } from "../auth.service";
@@ -15,9 +14,9 @@ import { OidcSecurityService } from "angular-auth-oidc-client";
   imports: [
     MqSubscriberComponent,
     MqPublisherComponent,
-    SbbIcon,
     AsyncPipe,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './mqtt-playground.component.html',
   styleUrl: './mqtt-playground.component.scss'
 })

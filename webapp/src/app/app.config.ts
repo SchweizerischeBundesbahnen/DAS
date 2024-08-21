@@ -7,7 +7,6 @@ import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from "@an
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { authInterceptor, OidcSecurityService, provideAuth } from 'angular-auth-oidc-client';
 import { environment } from "../environment/environment";
-import { SbbNotificationToastModule } from "@sbb-esta/angular/notification-toast";
 
 function appInitializerAuthCheck() {
   return {
@@ -42,7 +41,6 @@ export const appConfig: ApplicationConfig = {
     appInitializerAuthCheck(),
     provideHttpClient(withInterceptorsFromDi(), withInterceptors([authInterceptor()])),
     importProvidersFrom(MqttModule.forRoot(environment.mqttServiceOptions)),
-    importProvidersFrom(SbbNotificationToastModule)
   ],
 
 };

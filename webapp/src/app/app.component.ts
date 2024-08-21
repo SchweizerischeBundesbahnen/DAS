@@ -1,29 +1,22 @@
-import { Component, signal, Signal } from '@angular/core';
-import { SbbHeaderLeanModule, } from "@sbb-esta/angular/header-lean";
-import { SbbIconModule } from "@sbb-esta/angular/icon";
-import { SbbUsermenuModule } from "@sbb-esta/angular/usermenu";
-import { SbbSidebarModule } from "@sbb-esta/angular/sidebar";
-import { SbbMenuModule } from "@sbb-esta/angular/menu";
-import { SbbButtonModule } from "@sbb-esta/angular/button";
+import { Component, CUSTOM_ELEMENTS_SCHEMA, signal, Signal } from '@angular/core';
 import { Router, RouterModule } from "@angular/router";
 import { environment } from "../environment/environment";
 import packageJson from '../../package.json';
 import { AuthService, Tenant } from "./auth.service";
 import { OidcSecurityService } from "angular-auth-oidc-client";
 import { toSignal } from "@angular/core/rxjs-interop";
+import '@sbb-esta/lyne-elements/menu.js';
+import '@sbb-esta/lyne-elements/navigation.js';
+import '@sbb-esta/lyne-elements/header.js';
+import '@sbb-esta/lyne-elements/link.js';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
     RouterModule,
-    SbbButtonModule,
-    SbbHeaderLeanModule,
-    SbbIconModule,
-    SbbMenuModule,
-    SbbSidebarModule,
-    SbbUsermenuModule,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

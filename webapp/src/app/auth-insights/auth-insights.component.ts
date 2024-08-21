@@ -1,11 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AuthService } from "../auth.service";
 import { CommonModule } from "@angular/common";
-import { SbbButtonModule } from "@sbb-esta/angular/button";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import { firstValueFrom, map } from "rxjs";
 import { OidcSecurityService } from "angular-auth-oidc-client";
-import { SbbInputModule } from "@sbb-esta/angular/input";
 
 @Component({
   selector: 'app-auth-insights',
@@ -13,9 +11,8 @@ import { SbbInputModule } from "@sbb-esta/angular/input";
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    SbbButtonModule,
-    SbbInputModule,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './auth-insights.component.html',
   styleUrl: './auth-insights.component.scss'
 })

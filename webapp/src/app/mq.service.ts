@@ -2,7 +2,6 @@ import { DestroyRef, inject, Injectable } from '@angular/core';
 import { MqttService } from "ngx-mqtt";
 import { environment } from "../environment/environment";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { SbbNotificationToast } from "@sbb-esta/angular/notification-toast";
 
 @Injectable({
   providedIn: 'root'
@@ -12,14 +11,16 @@ export class MqService {
   state = this.mqttService.state;
   private _destroyed = inject(DestroyRef);
 
-  constructor(private mqttService: MqttService, private _notification: SbbNotificationToast) {
+  constructor(private mqttService: MqttService) {
     this.mqttService.onError
       .pipe(takeUntilDestroyed(this._destroyed))
       .subscribe(val => {
-        this._notification
-          .open(val.message, {
-            type: 'error',
-          })
+        alert(val.message)
+        // todo notification
+        // this._notification
+        //   .open(val.message, {
+        //     type: 'error',
+        //   })
         this.mqttService.disconnect();
       });
   }

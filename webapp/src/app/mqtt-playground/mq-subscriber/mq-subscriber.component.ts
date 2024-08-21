@@ -1,11 +1,8 @@
-import { Component, OnDestroy } from '@angular/core';
-import { SbbFormFieldModule } from "@sbb-esta/angular/form-field";
-import { SbbButtonModule } from "@sbb-esta/angular/button";
+import { Component, CUSTOM_ELEMENTS_SCHEMA, OnDestroy } from '@angular/core';
 import { MqService } from "../../mq.service";
 import { Subscription } from "rxjs";
 import { IMqttMessage } from "ngx-mqtt";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
-import { SbbInputModule } from "@sbb-esta/angular/input";
 import { AsyncPipe, JsonPipe } from "@angular/common";
 
 @Component({
@@ -13,12 +10,10 @@ import { AsyncPipe, JsonPipe } from "@angular/common";
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    SbbButtonModule,
-    SbbFormFieldModule,
-    SbbInputModule,
     AsyncPipe,
     JsonPipe
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './mq-subscriber.component.html',
   styleUrl: './mq-subscriber.component.scss'
 })

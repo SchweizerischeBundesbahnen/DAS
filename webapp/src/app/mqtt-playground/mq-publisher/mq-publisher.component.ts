@@ -1,8 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { SbbButtonModule } from "@sbb-esta/angular/button";
-import { SbbFormFieldModule } from "@sbb-esta/angular/form-field";
-import { SbbInputModule } from "@sbb-esta/angular/input";
 import { MqService } from "../../mq.service";
 
 @Component({
@@ -11,10 +8,8 @@ import { MqService } from "../../mq.service";
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    SbbFormFieldModule,
-    SbbInputModule,
-    SbbButtonModule,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './mq-publisher.component.html',
   styleUrl: './mq-publisher.component.scss'
 })

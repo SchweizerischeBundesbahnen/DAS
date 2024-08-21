@@ -1,16 +1,15 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, OnDestroy } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
-import { SbbFormFieldModule } from "@sbb-esta/angular/form-field";
-import { SbbInputModule } from "@sbb-esta/angular/input";
 import { MqService } from "../mq.service";
-import { SbbButtonModule } from "@sbb-esta/angular/button";
 import { SimpleXmlComponent } from "../simple-xml/simple-xml.component";
 import { AuthService } from "../auth.service";
 import { firstValueFrom, map, Subscription } from "rxjs";
 import { CommonModule } from "@angular/common";
 import { MqttConnectionState } from "ngx-mqtt";
 import { OidcSecurityService } from "angular-auth-oidc-client";
-import { SbbCheckboxModule } from "@sbb-esta/angular/checkbox";
+import '@sbb-esta/lyne-elements/button.js';
+import '@sbb-esta/lyne-elements/checkbox.js';
+import '@sbb-esta/lyne-elements/form-field.js';
 
 @Component({
   selector: 'app-sfera-observer',
@@ -18,12 +17,9 @@ import { SbbCheckboxModule } from "@sbb-esta/angular/checkbox";
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    SbbFormFieldModule,
-    SbbInputModule,
-    SbbButtonModule,
-    SbbCheckboxModule,
     SimpleXmlComponent,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './sfera-observer.component.html',
   styleUrl: './sfera-observer.component.scss',
 })

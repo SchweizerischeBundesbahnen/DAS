@@ -31,7 +31,7 @@
     "@angular/platform-browser": "^17.2.0",
     "@angular/platform-browser-dynamic": "^17.2.0",
     "@angular/router": "^17.2.0",
-    "@sbb-esta/angular": "^17.8.2",
+    "@sbb-esta/lyne-elements": "^1.7.0",
     "angular-auth-oidc-client": "18.0.1",
     "angular-server-side-configuration": "^17.0.5",
     "ngx-mqtt": "^17.0.0",

@@ -1,60 +1,74 @@
-<sbb-header-lean [label]="title" [subtitle]="'Version ' + version" collapseBreakpoint="mobile">
-  <sbb-header-environment>{{ environmentLabel }}</sbb-header-environment>
-  <sbb-usermenu [menu]="menu" [userName]="userData().userData?.preferred_username"
-                [displayName]="userData().userData ? organisation()?.name : undefined" (loginRequest)="login()">
-    <sbb-icon svgIcon="kom:user-small" *sbbIcon></sbb-icon>
-  </sbb-usermenu>
-  <sbb-menu #menu="sbbMenu">
-    <button sbb-menu-item (click)="logout()">
-      <sbb-icon svgIcon="kom:exit-small" class="sbb-icon-fit"></sbb-icon>
-      <span i18n>Logout</span>
-    </button>
-  </sbb-menu>
-  <svg brand style="width: 0"><!-- Optional --></svg>
-</sbb-header-lean>
-@if (userData().userData) {
-  <sbb-icon-sidebar-container class="sbb-icon-sidebar-after-header">
-    <sbb-icon-sidebar expanded>
-      <a
-        sbbIconSidebarItem
-        i18n-label
-        label="SFERA"
-        routerLink="/sfera"
-        routerLinkActive="sbb-active"
-        [routerLinkActiveOptions]="{
-        paths: 'exact',
-        fragment: 'ignored',
-        queryParams: 'ignored',
-        matrixParams: 'ignored',
-      }"
+<sbb-header expanded="">
+  <sbb-header-button icon-name="hamburger-menu-small" expand-from="small"
+                     data-testid="navigation-trigger" id="navigation-trigger-1">
+
+  </sbb-header-button>
+  <sbb-navigation data-testid="navigation" id="navigation" trigger="navigation-trigger-1">
+    <sbb-navigation-marker id="nav-marker">
+      <sbb-navigation-button id="nav-1" data-testid="navigation-section-trigger-1"
+                             routerLink="/sfera"
+                             routerLinkActive="sbb-active"
+                             [routerLinkActiveOptions]="{
+                paths: 'exact',
+                fragment: 'ignored',
+                queryParams: 'ignored',
+                matrixParams: 'ignored',
+              }"
       >
-        <sbb-icon svgIcon="kom:railway-switch-small"></sbb-icon>
-      </a>
-      <a
-        sbbIconSidebarItem
-        i18n-label
-        label="MQTT"
-        routerLink="/mqtt"
-        routerLinkActive="sbb-active"
-      >
-        <sbb-icon svgIcon="kom:arrows-up-down-small"></sbb-icon>
-      </a>
-      <a
-        sbbIconSidebarItem
-        i18n-label
-        label="Auth insights"
-        routerLink="/auth-insights"
-        routerLinkActive="sbb-active"
-      >
-        <sbb-icon svgIcon="kom:user-key-small"></sbb-icon>
-      </a>
-    </sbb-icon-sidebar>
-    <sbb-icon-sidebar-content role="main" class="app-main-content">
-      <router-outlet></router-outlet>
-    </sbb-icon-sidebar-content>
-  </sbb-icon-sidebar-container>
-} @else {
-  <div class="after-header app-main-content">
-    <router-outlet></router-outlet>
+        SFERA
+      </sbb-navigation-button>
+      <sbb-navigation-button id="nav-2" data-testid="navigation-section-trigger-2"
+                             routerLink="/mqtt"
+                             routerLinkActive="sbb-active">
+        MQTT
+      </sbb-navigation-button>
+    </sbb-navigation-marker>
+  </sbb-navigation>
+  <div class="header-item">
+    <span class="sbb-text-xs sbb-text--bold ">{{ title }}</span>
+    <span class="sbb-text-xxs left">V. {{ version }}</span>
   </div>
-}
+
+  <sbb-header-link href="#">SFERA</sbb-header-link>
+  <sbb-header-link href="#">MQTT</sbb-header-link>
+  <div class="sbb-header-spacer"></div>
+
+  @if (!userData().userData) {
+    <sbb-header-button icon-name="user-small" class="sbb-header-shrinkable" (click)="login()">
+      Sign in
+    </sbb-header-button>
+  } @else {
+    <sbb-header-button icon-name="user-small" id="user-menu-trigger" data-testid="user-menu-trigger"
+                       class="sbb-header-shrinkable">
+      {{ userData().userData?.name }}
+    </sbb-header-button>
+    <sbb-menu trigger="user-menu-trigger" data-testid="user-menu">
+      <div
+        style="font-weight:bold;font-size:var(--sbb-font-size-text-xs);margin-top:var(--sbb-spacing-fixed-1x);">{{ userData().userData?.preferred_username }}
+      </div>
+      <span
+        style="color:var(--sbb-color-graphite);font-size:var(--sbb-font-size-text-xxs);">{{ userData().userData ? organisation()?.name : undefined }}</span>
+      <sbb-menu-link icon-name="user-small" href="/auth-insights"> Auth insights</sbb-menu-link>
+      <sbb-divider></sbb-divider>
+      <sbb-menu-button (click)="logout()" icon-name="exit-small">Sign out</sbb-menu-button>
+    </sbb-menu>
+  }
+  <sbb-header-button icon-name="globe-small" id="language-menu-trigger" class="last-element">
+    English
+  </sbb-header-button>
+  <sbb-menu trigger="language-menu-trigger">
+    <sbb-menu-button>Deutsch</sbb-menu-button>
+    <sbb-menu-button>Français</sbb-menu-button>
+    <sbb-menu-button>Italiano</sbb-menu-button>
+    <sbb-menu-button icon-name="tick-small">English</sbb-menu-button>
+  </sbb-menu>
+</sbb-header>
+<div class="sbb-page-spacing-expanded">
+  @if (userData().userData) {
+    <router-outlet></router-outlet>
+  } @else {
+    <div class="after-header app-main-content">
+      <router-outlet></router-outlet>
+    </div>
+  }
+</div>
