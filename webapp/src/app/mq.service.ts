@@ -44,6 +44,7 @@ export class MqService {
       this.mqttService.disconnect();
     } catch (e) {
       /* no open connection */
+      console.log(e)
     }
   }
 }
