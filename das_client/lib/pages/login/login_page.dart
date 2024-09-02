@@ -13,7 +13,7 @@ class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -89,12 +89,19 @@ class _LoginPageState extends State<LoginPage> {
       isLoading = true;
     });
 
+    final context = this.context;
     try {
       await authenticator.login();
-      context.router.replace(const HomeRoute());
+      if (context.mounted) {
+        context.router.replace(const HomeRoute());
+      }
     } catch (e) {
       Fimber.d('Login failed', ex: e);
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Login failed"),));
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Login failed"),
+        ));
+      }
     }
 
     setState(() {

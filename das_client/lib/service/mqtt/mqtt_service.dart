@@ -17,7 +17,6 @@ class MqttService {
   late String _deviceId;
 
   StreamSubscription? _updateSubscription;
-  Subscription? _trainSubscription;
 
   final _messageSubject = BehaviorSubject<String>();
 
@@ -45,7 +44,6 @@ class MqttService {
       _client.disconnect();
     }
     if (await _mqttClientConnector.connect(_client, company, train)) {
-      _trainSubscription = _client.subscribe("90940/2/G2B/$company/$train/$_deviceId", MqttQos.exactlyOnce);
       Fimber.i("Subscribed to topic...");
       _startUpdateListener();
       return true;
