@@ -29,7 +29,7 @@ class TokenSpecProvider {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     return other is TokenSpecProvider &&
-        ListEquality().equals(other._specs, _specs);
+        const ListEquality().equals(other._specs, _specs);
   }
 
   @override

@@ -5,7 +5,6 @@ import 'package:das_client/i18n/src/build_context_x.dart';
 import 'package:das_client/nav/app_router.dart';
 import 'package:das_client/pages/home/widgets/fahrbild.dart';
 import 'package:das_client/pages/home/widgets/train_selection.dart';
-import 'package:das_client/pages/login/login_page.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,14 +25,17 @@ class HomePage extends StatelessWidget {
     return SBBHeader(
       title: context.l10n.c_app_name,
       actions: [
-        IconButton(icon: const Icon(SBBIcons.exit_small), onPressed: () {
-          if (context.fahrbildCubit.state is SelectingFahrbildState) {
-            context.authCubit.logout();
-            context.router.replace(const LoginRoute());
-          } else {
-            context.fahrbildCubit.reset();
-          }
-        },)
+        IconButton(
+          icon: const Icon(SBBIcons.exit_small),
+          onPressed: () {
+            if (context.fahrbildCubit.state is SelectingFahrbildState) {
+              context.authCubit.logout();
+              context.router.replace(const LoginRoute());
+            } else {
+              context.fahrbildCubit.reset();
+            }
+          },
+        )
       ],
     );
   }
@@ -53,7 +55,7 @@ class HomePage extends StatelessWidget {
         builder: (context, state) {
           if (state is SelectingFahrbildState) {
             return const TrainSelection();
-          } else if(state is FahrbildLoadedState) {
+          } else if (state is FahrbildLoadedState) {
             return const Fahrbild();
           } else {
             return const Center(child: CircularProgressIndicator());

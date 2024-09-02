@@ -2,7 +2,6 @@ import 'package:das_client/flavor.dart';
 import 'package:das_client/main.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:fimber/fimber.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
@@ -14,7 +13,6 @@ void main() {
 
   group('home screen test', () {
     testWidgets('load fahrbild company=1088, train=9232', (tester) async {
-
       // Load app widget.
       await prepareAndStartApp(tester);
 
@@ -38,7 +36,6 @@ void main() {
 
       // check if station is present
       expect(find.text('MEER-GRENS'), findsOneWidget);
-
     });
   });
 }

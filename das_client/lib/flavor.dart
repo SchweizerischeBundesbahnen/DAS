@@ -1,7 +1,6 @@
 import 'package:das_client/auth/authenticator_config.dart';
 import 'package:das_client/auth/token_spec.dart';
 import 'package:das_client/auth/token_spec_provider.dart';
-import 'package:sbb_oidc/sbb_oidc.dart';
 
 enum Flavor {
   dev(

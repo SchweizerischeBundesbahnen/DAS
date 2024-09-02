@@ -22,7 +22,7 @@ class TokenSpec {
     return other is TokenSpec &&
         other.id == id &&
         other.displayName == displayName &&
-        ListEquality().equals(other.scopes, scopes);
+        const ListEquality().equals(other.scopes, scopes);
   }
 
   @override

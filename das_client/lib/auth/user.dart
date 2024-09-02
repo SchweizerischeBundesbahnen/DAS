@@ -10,12 +10,12 @@ class User {
     String? name,
     String? picture,
     String? sub,
-  })  : this.email = email ?? 'null',
-        this.familyName = familyName ?? 'null',
-        this.givenName = givenName ?? 'null',
-        this.name = name ?? 'null',
-        this.picture = picture ?? 'null',
-        this.sub = sub ?? 'null';
+  })  : email = email ?? 'null',
+        familyName = familyName ?? 'null',
+        givenName = givenName ?? 'null',
+        name = name ?? 'null',
+        picture = picture ?? 'null',
+        sub = sub ?? 'null';
 
   final String email;
   final String familyName;

@@ -1,5 +1,4 @@
 import 'package:das_client/model/sfera/sfera_xml_element.dart';
-import 'package:das_client/model/sfera/tp_name.dart';
 import 'package:das_client/model/sfera/virtual_balise_position.dart';
 
 class VirtualBalise extends SferaXmlElement {

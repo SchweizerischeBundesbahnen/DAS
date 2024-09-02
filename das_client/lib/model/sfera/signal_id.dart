@@ -1,5 +1,4 @@
 import 'package:das_client/model/sfera/sfera_xml_element.dart';
-import 'package:das_client/model/sfera/tp_name.dart';
 
 class SignalId extends SferaXmlElement {
   static const String elementType = "Signal_ID";

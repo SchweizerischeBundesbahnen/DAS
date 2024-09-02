@@ -20,7 +20,7 @@ void main() {
   });
 
   test('Test child elements are unmodifiable', () async {
-    final file = new File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
+    final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
 
     var parsedMessage = SferaReplyParser.parse(file.readAsStringSync());
 
@@ -28,7 +28,7 @@ void main() {
   });
 
   test('Test attributes are unmodifiable', () async {
-    final file = new File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
+    final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
 
     var parsedMessage = SferaReplyParser.parse(file.readAsStringSync());
 
@@ -36,7 +36,7 @@ void main() {
   });
 
   test('Test SferaReplyParser with SFERA_G2B_Reply_JP_request_9232.xml', () async {
-    final file = new File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
+    final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
 
     var sferaG2bReplyMessage = SferaReplyParser.parse(file.readAsStringSync());
     expect(sferaG2bReplyMessage, isA<SferaG2bReplyMessage>());
@@ -89,13 +89,13 @@ void main() {
     var xmlDocument = sferaB2gRequestMessage.buildDocument();
     var sferaB2gRequestMessageString = xmlDocument.toXmlString(pretty: true, newLine: "\r\n", indent: "\t");
 
-    final file = new File('test_resources/SFERA_B2G_RequestMessage_handshake.xml');
+    final file = File('test_resources/SFERA_B2G_RequestMessage_handshake.xml');
     final xmlFileString = file.readAsStringSync();
     expect(sferaB2gRequestMessageString, xmlFileString);
   });
 
   test('Test SferaReplyParser with SFERA_G2B_ReplyMessage_handshake.xml', () async {
-    final file = new File('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
+    final file = File('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
 
     var sferaG2bReplyMessage = SferaReplyParser.parse(file.readAsStringSync());
     expect(sferaG2bReplyMessage, isA<SferaG2bReplyMessage>());
