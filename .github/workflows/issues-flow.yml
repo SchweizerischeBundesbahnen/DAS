@@ -13,13 +13,13 @@ jobs:
         id: status
         with:
           script: |
-            const issue = await github.rest.issues.get({
+            const issueNumber = context.issue.number;
+            const { data: projectCards } = await github.rest.projects.listCards({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number
+              issue_number: issueNumber
             });
-            console.log(issue);
-            return status
+            console.log(projectCards);
 
       - name: Add checkboxes
         if: github.event.action == 'opened'
