@@ -13,8 +13,12 @@ jobs:
         id: status
         with:
           script: |
-            const status = context.payload.issue.state;
-            console.log(context);
+            const issue = await github.issues.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number
+            });
+            console.log(issue);
             return status
 
       - name: Add checkboxes
