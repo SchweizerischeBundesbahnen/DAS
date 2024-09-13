@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<SFERA_G2B_ReplyMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../Appendix_D-SFERA_XML_Schema_Definition/SFERA.xsd">
+<SFERA_G2B_ReplyMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SFERA_2.01.xsd">
 	<MessageHeader SFERA_version="1.91" message_ID="5c495c00-1a4b-4a20-b75b-7323d693cee2" correlation_ID="e21f37f3-9e67-406f-87aa-324a5dc3ddd2" timestamp="2019-09-26T20:50:17Z" sourceDevice="TMS" destinationDevice="DAS">
 		<TrainIdentification>
 			<OTN_ID>
