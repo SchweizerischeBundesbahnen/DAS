@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/delete-package-versions@v5
         with:
-          package-name: 'das/playground-backend'
+          package-name: 'das/sfera-mock'
           package-type: 'container'
           min-versions-to-keep: 3
           delete-only-untagged-versions: 'true'
