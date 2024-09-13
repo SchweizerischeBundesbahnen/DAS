@@ -1,3 +1,38 @@
+info:
+  app:
+    version: '@project.version@'
+
 spring:
   application:
     name: backend
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/discovery/v2.0/keys
+          issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
+      authorizationUrl: https://login.microsoftonline.com/common/oauth2/v2.0
+  jackson:
+    mapper:
+      accept-case-insensitive-enums: true
+    time-zone: CET
+
+springdoc:
+  swagger-ui:
+    oauth:
+      clientId: 6025180f-123b-4f2f-9703-16e08fc221f0
+      use-pkce-with-authorization-code-grant: true
+auth:
+  audience:
+    service-name: 6025180f-123b-4f2f-9703-16e08fc221f0
+  tenants:
+    - name: sbb
+      id: 2cda5d11-f0ac-46b3-967d-af1b2e1bd01a
+      issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
+      jwk-set-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/discovery/v2.0/keys
+      log-destination: console
+    - name: sob
+      id: d653d01f-17a4-48a1-9aab-b780b61b4273
+      issuer-uri: https://login.microsoftonline.com/d653d01f-17a4-48a1-9aab-b780b61b4273/v2.0
+      jwk-set-uri: https://login.microsoftonline.com/d653d01f-17a4-48a1-9aab-b780b61b4273/discovery/v2.0/keys
+      log-destination: splunk

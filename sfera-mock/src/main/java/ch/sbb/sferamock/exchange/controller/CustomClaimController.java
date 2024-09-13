@@ -35,6 +35,7 @@ public class CustomClaimController {
         this.manager = manager;
     }
 
+    @Deprecated(since = "0.1.0", forRemoval = true)
     @GetMapping("requestToken")
     String tokenRequest(Authentication authentication, String ru, String train, String role) {
 
@@ -55,6 +56,7 @@ public class CustomClaimController {
         return client.getAccessToken().getTokenValue();
     }
 
+    @Deprecated(since = "0.1.0", forRemoval = true)
     @PostMapping
     TokenIssuanceStartResponse tokenIssuanceStartEvent(Authentication authentication, @RequestBody TokenIssuanceStartRequest body) {
         log.info("Received tokenUssuanceStartEvent with authentication: {}", authentication);
