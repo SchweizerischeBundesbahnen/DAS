@@ -127,6 +127,14 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxb2-maven-plugin</artifactId>
                 <version>3.2.0</version>
+                <configuration>
+                    <sources>
+                        <source>${basedir}/src/main/resources/SFERA_2.01.xsd</source>
+                    </sources>
+                    <xjbSources>
+                        <xjbSource>${basedir}/src/main/resources/jaxb-bindings.xjb</xjbSource>
+                    </xjbSources>
+                </configuration>
                 <executions>
                     <execution>
                         <id>xjc</id>
@@ -135,16 +143,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <sources>
-                        <source>src/main/resources/SFERA_2.01.xsd</source>
-                    </sources>
-                    <outputDirectory>${basedir}/src/main/java</outputDirectory>
-                    <clearOutputDir>false</clearOutputDir>
-                    <xjbSources>
-                        <xjbSource>src/main/resources/jaxb-bindings.xjb</xjbSource>
-                    </xjbSources>
-                </configuration>
             </plugin>
         </plugins>
     </build>
