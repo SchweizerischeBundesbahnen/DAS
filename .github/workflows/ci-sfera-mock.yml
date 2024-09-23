@@ -15,11 +15,11 @@ defaults:
 on:
   push:
     paths:
-      - '../../sfera-mock/**'
+      - 'sfera-mock/**'
     branches: [ "main" ]
   pull_request:
     paths:
-      - '../../sfera-mock/**'
+      - 'sfera-mock/**'
     branches: [ "main" ]
 
 jobs:
