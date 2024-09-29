@@ -26,10 +26,10 @@ import 'package:xml/xml.dart';
 class SferaReplyParser {
   SferaReplyParser._();
 
-  static SferaG2bReplyMessage parse(String input) {
+  static T parse<T extends SferaXmlElement>(String input) {
     var xmlDocument = XmlDocument.parse(input);
     var xml = _parseXml(xmlDocument.rootElement);
-    return xml as SferaG2bReplyMessage;
+    return xml as T;
   }
 
   static SferaXmlElement _parseXml(XmlElement xmlElement) {

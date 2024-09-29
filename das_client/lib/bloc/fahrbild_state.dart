@@ -28,14 +28,6 @@ final class ConnectingState extends BaseFahrbildState {
   ConnectingState(super.company, super.trainNumber, super.date);
 }
 
-final class RequestingHandshakeState extends BaseFahrbildState {
-  RequestingHandshakeState(super.company, super.trainNumber, super.date);
-}
-
-final class RequestingJourneyState extends BaseFahrbildState {
-  RequestingJourneyState(super.company, super.trainNumber, super.date);
-}
-
 final class FahrbildLoadedState extends BaseFahrbildState {
   FahrbildLoadedState(super.company, super.trainNumber, super.date);
 }

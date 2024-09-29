@@ -16,7 +16,7 @@ class TrainIdentification extends SferaXmlElement {
     return trainIdentification;
   }
 
-  OtnId? get otnId => children.whereType<OtnId>().firstOrNull;
+  OtnId get otnId => children.whereType<OtnId>().first;
 
   @override
   bool validate() {

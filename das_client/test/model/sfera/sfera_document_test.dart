@@ -38,7 +38,7 @@ void main() {
   test('Test SferaReplyParser with SFERA_G2B_Reply_JP_request_9232.xml', () async {
     final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
 
-    var sferaG2bReplyMessage = SferaReplyParser.parse(file.readAsStringSync());
+    var sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
     expect(sferaG2bReplyMessage, isA<SferaG2bReplyMessage>());
     expect(sferaG2bReplyMessage.type, SferaG2bReplyMessage.elementType);
     expect(sferaG2bReplyMessage.validate(), true);
@@ -97,7 +97,7 @@ void main() {
   test('Test SferaReplyParser with SFERA_G2B_ReplyMessage_handshake.xml', () async {
     final file = File('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
 
-    var sferaG2bReplyMessage = SferaReplyParser.parse(file.readAsStringSync());
+    var sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
     expect(sferaG2bReplyMessage, isA<SferaG2bReplyMessage>());
     expect(sferaG2bReplyMessage.type, SferaG2bReplyMessage.elementType);
     expect(sferaG2bReplyMessage.validate(), true);

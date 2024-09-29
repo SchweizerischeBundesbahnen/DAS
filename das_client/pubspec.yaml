@@ -17,6 +17,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
 version: 0.2.1+37
+isar_version: &isar_version 3.1.0
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -72,6 +73,11 @@ dependencies:
   uuid: ^4.4.0
   # https://pub.dev/packages/rxdart
   rxdart: ^0.28.0
+  # https://pub.dev/packages/isar
+  isar: *isar_version
+  isar_flutter_libs: *isar_version
+  # https://pub.dev/packages/path_provider
+  path_provider: ^2.1.3
 
 dev_dependencies:
   integration_test:
@@ -89,6 +95,8 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
   flutter_launcher_icons: ^0.14.0
+
+  isar_generator: *isar_version
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

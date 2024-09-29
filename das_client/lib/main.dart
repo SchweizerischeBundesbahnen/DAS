@@ -18,8 +18,7 @@ Future<void> runDasApp() async {
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(create: (context) => AuthCubit(DI.get())..init()),
-      BlocProvider(create: (context) => FahrbildCubit(mqttService: DI.get()))
-
+      BlocProvider(create: (context) => FahrbildCubit(sferaService: DI.get()))
     ],
     child: App(),
   ));
