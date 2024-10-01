@@ -7,13 +7,14 @@ part 'journey_profile_entity.g.dart';
 @Collection(accessor: "journeyProfile")
 class JourneyProfileEntity {
   JourneyProfileEntity(
-      {this.id = Isar.autoIncrement,
+      {required this.id,
       required this.company,
       required this.operationalTrainNumber,
       required this.startDate,
       required this.xmlData});
 
-  final Id id;
+  @Id()
+  final int id;
   final String company;
   final String operationalTrainNumber;
   final DateTime startDate;
@@ -25,9 +26,9 @@ class JourneyProfileEntity {
 }
 
 extension JourneyProfileMapperX on JourneyProfile {
-  JourneyProfileEntity toEntity({Id? id, DateTime? startDate}) {
+  JourneyProfileEntity toEntity({required int id, DateTime? startDate}) {
     return JourneyProfileEntity(
-      id: id ?? Isar.autoIncrement,
+      id: id,
       company: trainIdentification.otnId.company,
       operationalTrainNumber: trainIdentification.otnId.operationalTrainNumber,
       startDate: startDate ?? trainIdentification.otnId.startDate, // Temporary fix, because our backend does not return correct date in Journey Profile

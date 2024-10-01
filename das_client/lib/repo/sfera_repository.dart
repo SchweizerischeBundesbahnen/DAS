@@ -17,9 +17,10 @@ class SferaRepository {
   Future<void> _init() async {
     Fimber.i('Initializing SferaStore...');
     final dir = await getApplicationDocumentsDirectory();
-    _db = await Isar.open(
-      [JourneyProfileEntitySchema, SegmentProfileEntitySchema],
+    _db = await Isar.openAsync(
+      schemas: [JourneyProfileEntitySchema, SegmentProfileEntitySchema],
       directory: dir.path,
+      name: 'das'
     );
   }
 
@@ -32,14 +33,15 @@ class SferaRepository {
         journeyProfile.trainIdentification.otnId.company,
         journeyProfile.trainIdentification.otnId.operationalTrainNumber,
         today); // Temporary fix, because our backend does not return correct date in Journey Profile
-        //journeyProfile.trainIdentification.otnId.startDate);
+    //journeyProfile.trainIdentification.otnId.startDate);
 
-    final journeyProfileEntity = journeyProfile.toEntity(id: existingProfile?.id, startDate: today);
+    final journeyProfileEntity =
+        journeyProfile.toEntity(id: existingProfile?.id ?? _db.journeyProfile.autoIncrement(), startDate: today);
 
     Fimber.i(
         "Writing journey profile to db company=${journeyProfileEntity.company} operationalTrainNumber=${journeyProfileEntity.operationalTrainNumber} startDate=${journeyProfileEntity.startDate}");
-    await _db.writeTxn(() async {
-      await _db.journeyProfile.put(journeyProfileEntity);
+    await _db.writeAsync((isar) {
+      isar.journeyProfile.put(journeyProfileEntity);
     });
   }
 
@@ -49,11 +51,11 @@ class SferaRepository {
     var existingProfile =
         await findSegmentProfile(segmentProfile.id, segmentProfile.versionMajor, segmentProfile.versionMinor);
     if (existingProfile == null) {
-      final segmentProfileEntity = segmentProfile.toEntity();
+      final segmentProfileEntity = segmentProfile.toEntity(isarId: _db.segmentProfile.autoIncrement());
       Fimber.i(
           "Writing segment profile to db spId=${segmentProfileEntity.spId} majorVersion=${segmentProfileEntity.majorVersion} minorVersion=${segmentProfileEntity.minorVersion}");
-      await _db.writeTxn(() async {
-        await _db.segmentProfile.put(segmentProfileEntity);
+      await _db.writeAsync((isar) {
+        isar.segmentProfile.put(segmentProfileEntity);
       });
     } else {
       Fimber.i(
@@ -66,7 +68,6 @@ class SferaRepository {
     await _initialized;
     return _db.journeyProfile
         .where()
-        .filter()
         .companyEqualTo(company)
         .operationalTrainNumberEqualTo(operationalTrainNumber)
         .startDateEqualTo(startDate)
@@ -77,17 +78,16 @@ class SferaRepository {
     await _initialized;
     return _db.segmentProfile
         .where()
-        .filter()
         .spIdEqualTo(spId)
         .majorVersionEqualTo(majorVersion)
         .minorVersionEqualTo(minorVersion)
         .findFirst();
   }
 
-  Stream<List<JourneyProfileEntity>> observeJourneyProfile(String company, String operationalTrainNumber, DateTime startDate) {
+  Stream<List<JourneyProfileEntity>> observeJourneyProfile(
+      String company, String operationalTrainNumber, DateTime startDate) {
     return _db.journeyProfile
         .where()
-        .filter()
         .companyEqualTo(company)
         .operationalTrainNumberEqualTo(operationalTrainNumber)
         .startDateEqualTo(startDate)

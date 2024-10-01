@@ -7,13 +7,13 @@ part 'segment_profile_entity.g.dart';
 @Collection(accessor: "segmentProfile")
 class SegmentProfileEntity {
   SegmentProfileEntity(
-      {this.id = Isar.autoIncrement,
+      {required this.id,
       required this.spId,
       required this.majorVersion,
       required this.minorVersion,
       required this.xmlData});
 
-  final Id id;
+  final int id;
   final String spId;
   final String majorVersion;
   final String minorVersion;
@@ -25,8 +25,8 @@ class SegmentProfileEntity {
 }
 
 extension SegmentProfileMapperX on SegmentProfile {
-  SegmentProfileEntity toEntity() {
-    return SegmentProfileEntity(
-        spId: id, majorVersion: versionMajor, minorVersion: versionMinor, xmlData: buildDocument().toString());
+  SegmentProfileEntity toEntity({required int isarId}) {
+    return SegmentProfileEntity(id: isarId,
+        spId: this.id, majorVersion: versionMajor, minorVersion: versionMinor, xmlData: buildDocument().toString());
   }
 }
