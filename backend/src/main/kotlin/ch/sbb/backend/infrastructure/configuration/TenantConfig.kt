@@ -9,17 +9,4 @@ import org.springframework.context.annotation.Configuration
 @ConfigurationProperties("auth")
 class TenantConfig {
     var tenants: List<Tenant> = ArrayList()
-
-    class Tenant {
-        var name: String? = null
-        var id: String? = null
-        var jwkSetUri: String? = null
-        var issuerUri: String? = null
-        var logDestination: LogDestination? = null
-
-        enum class LogDestination {
-            CONSOLE,
-            SPLUNK
-        }
-    }
 }

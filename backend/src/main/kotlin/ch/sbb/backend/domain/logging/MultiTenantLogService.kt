@@ -5,14 +5,14 @@ import ch.sbb.backend.application.rest.LogEntryRequest
 import ch.sbb.backend.application.rest.LogLevelRequest
 import ch.sbb.backend.domain.tenancy.ConfigTenantService
 import ch.sbb.backend.domain.tenancy.TenantId
-import ch.sbb.backend.infrastructure.configuration.TenantConfig
+import ch.sbb.backend.infrastructure.configuration.LogDestination
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class MultitenantLogService(private val tenantService: ConfigTenantService) {
-    private val logServices: EnumMap<TenantConfig.Tenant.LogDestination, LogService> =
-        EnumMap(TenantConfig.Tenant.LogDestination::class.java)
+    private val logServices: EnumMap<LogDestination, LogService> =
+        EnumMap(LogDestination::class.java)
 
     fun logs(logs: List<LogEntryRequest>) {
         getLogService(TenantContext.current().tenantId)?.logs(logs.map {
@@ -37,7 +37,7 @@ class MultitenantLogService(private val tenantService: ConfigTenantService) {
         }
     }
 
-    fun getLogService(tenantId: TenantId): LogService? {
+    private fun getLogService(tenantId: TenantId): LogService? {
         val logDestination = tenantService.getById(tenantId).logDestination
         if (logServices[logDestination] != null) {
             return logServices[logDestination]
@@ -47,10 +47,10 @@ class MultitenantLogService(private val tenantService: ConfigTenantService) {
         return logService
     }
 
-    private fun createLogService(logDestination: TenantConfig.Tenant.LogDestination?): LogService {
+    private fun createLogService(logDestination: LogDestination?): LogService {
         return when (logDestination) {
-            TenantConfig.Tenant.LogDestination.CONSOLE -> ConsoleLogService()
-            TenantConfig.Tenant.LogDestination.SPLUNK -> SplunkLogService()
+            LogDestination.CONSOLE -> ConsoleLogService()
+            LogDestination.SPLUNK -> SplunkLogService()
             else -> ConsoleLogService()
         }
     }

@@ -34,7 +34,7 @@ class TenantJWSKeySelector(private val tenantService: ConfigTenantService) :
     }
 
     private fun fromTenant(issuerUri: String): JWSKeySelector<SecurityContext> {
-        val tenant: TenantConfig.Tenant = tenantService.getByIssuerUri(issuerUri)
+        val tenant: Tenant = tenantService.getByIssuerUri(issuerUri)
         return fromUri(tenant.jwkSetUri!!)
     }
 
