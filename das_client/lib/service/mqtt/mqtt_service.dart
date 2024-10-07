@@ -44,6 +44,7 @@ class MqttService {
       _client.disconnect();
     }
     if (await _mqttClientConnector.connect(_client, company, train)) {
+      _client.subscribe("90940/2/G2B/$company/$train", MqttQos.exactlyOnce);
       _client.subscribe("90940/2/G2B/$company/$train/$_deviceId", MqttQos.exactlyOnce);
       Fimber.i("Subscribed to topic...");
       _startUpdateListener();

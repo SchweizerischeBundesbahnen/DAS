@@ -1,6 +1,7 @@
 import 'package:das_client/model/sfera/das_operating_modes_selected.dart';
 import 'package:das_client/model/sfera/g2b_reply_payload.dart';
 import 'package:das_client/model/sfera/handshake_acknowledgement.dart';
+import 'package:das_client/model/sfera/handshake_reject.dart';
 import 'package:das_client/model/sfera/journey_profile.dart';
 import 'package:das_client/model/sfera/message_header.dart';
 import 'package:das_client/model/sfera/otn_id.dart';
@@ -26,10 +27,10 @@ import 'package:xml/xml.dart';
 class SferaReplyParser {
   SferaReplyParser._();
 
-  static SferaG2bReplyMessage parse(String input) {
+  static T parse<T extends SferaXmlElement>(String input) {
     var xmlDocument = XmlDocument.parse(input);
     var xml = _parseXml(xmlDocument.rootElement);
-    return xml as SferaG2bReplyMessage;
+    return xml as T;
   }
 
   static SferaXmlElement _parseXml(XmlElement xmlElement) {
@@ -96,6 +97,8 @@ class SferaReplyParser {
         return VirtualBalisePosition(type: type, attributes: attributes, children: children, value: value);
       case HandshakeAcknowledgement.elementType:
         return HandshakeAcknowledgement(type: type, attributes: attributes, children: children, value: value);
+      case HandshakeReject.elementType:
+        return HandshakeReject(type: type, attributes: attributes, children: children, value: value);
       case DasOperatingModesSelected.elementType:
         return DasOperatingModesSelected(type: type, attributes: attributes, children: children, value: value);
       default:

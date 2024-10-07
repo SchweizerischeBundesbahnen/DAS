@@ -20,6 +20,8 @@ class IntegrationTestDI {
     GetIt.I.registerBackendService();
     _registerMqttClientConnector();
     GetIt.I.registerMqttService();
+    GetIt.I.registerRepositories();
+    GetIt.I.registerServices();
     return GetIt.I.allReady();
   }
 

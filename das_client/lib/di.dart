@@ -2,10 +2,12 @@ import 'package:das_client/auth/authenticator.dart';
 import 'package:das_client/auth/azure_authenticator.dart';
 import 'package:das_client/auth/token_spec_provider.dart';
 import 'package:das_client/flavor.dart';
+import 'package:das_client/repo/sfera_repository.dart';
 import 'package:das_client/service/backend_service.dart';
 import 'package:das_client/service/mqtt/mqtt_client_connector.dart';
 import 'package:das_client/service/mqtt/mqtt_client_oauth_connector.dart';
 import 'package:das_client/service/mqtt/mqtt_service.dart';
+import 'package:das_client/service/sfera/sfera_service.dart';
 import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sbb_oidc/sbb_oidc.dart';
@@ -42,6 +44,8 @@ extension GetItX on GetIt {
     registerBackendService();
     registerMqttClientConnector();
     registerMqttService();
+    registerRepositories();
+    registerServices();
     await allReady();
   }
 
@@ -106,5 +110,15 @@ extension GetItX on GetIt {
     registerSingletonWithDependencies<MqttClientConnector>(
         () => MqttClientOauthConnector(backendService: get(), authenticator: get()),
         dependsOn: [Authenticator, BackendService]);
+  }
+
+  void registerRepositories() {
+    registerSingletonAsync<SferaRepository>(() async => SferaRepository());
+  }
+
+  void registerServices() {
+    registerSingletonWithDependencies<SferaService>(
+            () => SferaService(mqttService: get(), sferaRepository: get()),
+        dependsOn: [MqttService, SferaRepository]);
   }
 }

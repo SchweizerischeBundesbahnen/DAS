@@ -24,7 +24,7 @@ class OtnId extends SferaXmlElement {
 
   String? get additionalTrainNumber => childrenWithType("AdditionalTrainNumber").firstOrNull?.value;
 
-  String get startDate => childrenWithType("StartDate").first.value!;
+  DateTime get startDate => DateTime.parse(childrenWithType("StartDate").first.value!);
 
   @override
   bool validate() {
@@ -32,5 +32,10 @@ class OtnId extends SferaXmlElement {
         validateHasChild("OperationalTrainNumber") &&
         validateHasChild("StartDate") &&
         super.validate();
+  }
+
+  @override
+  toString() {
+    return "OtnId(company: $company, operationalTrainNumber: $operationalTrainNumber, startDate: $startDate, additionalTrainNumber: $additionalTrainNumber)";
   }
 }

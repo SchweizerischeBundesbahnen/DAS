@@ -4,6 +4,7 @@ import 'package:das_client/model/sfera/das_operating_modes_supported.dart';
 import 'package:das_client/model/sfera/enums/das_architecture.dart';
 import 'package:das_client/model/sfera/enums/das_connectivity.dart';
 import 'package:das_client/model/sfera/enums/das_driving_mode.dart';
+import 'package:das_client/model/sfera/enums/handshake_reject_reason.dart';
 import 'package:das_client/model/sfera/enums/related_train_request_type.dart';
 import 'package:das_client/model/sfera/handshake_request.dart';
 import 'package:das_client/model/sfera/message_header.dart';
@@ -38,7 +39,7 @@ void main() {
   test('Test SferaReplyParser with SFERA_G2B_Reply_JP_request_9232.xml', () async {
     final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
 
-    var sferaG2bReplyMessage = SferaReplyParser.parse(file.readAsStringSync());
+    var sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
     expect(sferaG2bReplyMessage, isA<SferaG2bReplyMessage>());
     expect(sferaG2bReplyMessage.type, SferaG2bReplyMessage.elementType);
     expect(sferaG2bReplyMessage.validate(), true);
@@ -97,7 +98,7 @@ void main() {
   test('Test SferaReplyParser with SFERA_G2B_ReplyMessage_handshake.xml', () async {
     final file = File('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
 
-    var sferaG2bReplyMessage = SferaReplyParser.parse(file.readAsStringSync());
+    var sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
     expect(sferaG2bReplyMessage, isA<SferaG2bReplyMessage>());
     expect(sferaG2bReplyMessage.type, SferaG2bReplyMessage.elementType);
     expect(sferaG2bReplyMessage.validate(), true);
@@ -110,5 +111,23 @@ void main() {
 
     expect(handshakeAcknowledgement.operationModeSelected.architecture, DasArchitecture.boardAdviceCalculation);
     expect(handshakeAcknowledgement.operationModeSelected.connectivity, DasConnectivity.connected);
+  });
+
+  test('Test SferaReplyParser with SFERA_G2B_ReplyMessage_handshake_rejected.xml', () async {
+    final file = File('test_resources/SFERA_G2B_ReplyMessage_handshake_rejected.xml');
+
+    var sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+    expect(sferaG2bReplyMessage, isA<SferaG2bReplyMessage>());
+    expect(sferaG2bReplyMessage.type, SferaG2bReplyMessage.elementType);
+    expect(sferaG2bReplyMessage.validate(), true);
+
+    expect(sferaG2bReplyMessage.messageHeader.sender, "0084");
+    expect(sferaG2bReplyMessage.messageHeader.recipient, "1084");
+
+    expect(sferaG2bReplyMessage.handshakeAcknowledgement, isNull);
+    expect(sferaG2bReplyMessage.handshakeReject, isNotNull);
+    var handshakeReject = sferaG2bReplyMessage.handshakeReject!;
+
+    expect(handshakeReject.handshakeRejectReason, HandshakeRejectReason.connectivityNotSupported);
   });
 }
