@@ -10,17 +10,54 @@ This repository is dedicated to the railway undertaking (RU) component of the DA
 
 This repository is structured into several key modules, each dedicated to a specific aspect of the system
 
-- Backend
+### Mobile App
+DAS-OB
+- [mobile-app](das_client/README.md)
+  - [Dart](https://dart.dev/)
+  - [Flutter](https://flutter.dev/)
+
+### Backend
+RU DAS-TS
+- [backend](backend/README.md)
   - [Kotlin](https://kotlinlang.org/)
   - [Spring Framework](https://spring.io/projects/spring-framework)
     with [Spring Boot](https://spring.io/projects/spring-boot)
 
-- Webapp
-  - [TypeScript](https://www.typescriptlang.org/)
-  - [Angular](https://angular.io/) 
+### Admin App
 
-- Mobile App
-  - [Flutter](https://flutter.dev/)
+- [admin-app](webapp/README.md)
+  - [TypeScript](https://www.typescriptlang.org/)
+  - [Angular](https://angular.io/)
+
+### SFERA Mock
+- [sfera-mock](sfera-mock/README.md)
+  - [Java](https://www.java.com/)
+  - [Spring Framework](https://spring.io/projects/spring-framework)
+    with [Spring Boot](https://spring.io/projects/spring-boot)
+
+<!--
+@startuml deploymentDiagram
+
+queue "IM DAS-TS"
+
+frame DAS {
+node "admin-app"
+node "sfera-mock"
+node "mobile-app"
+node "backend"
+}
+
+
+[mobile-app]<-down->[IM DAS-TS] : SFERA
+[backend]<-[IM DAS-TS] : SFERA
+[sfera-mock]<->[mobile-app] : SFERA
+[backend]<->[mobile-app]
+[admin-app]<->[backend]
+
+@enduml
+-->
+
+![](deploymentDiagram.svg)
 
 ## Getting-Started
 Please refer to the README files in the respective modules for detailed instructions.

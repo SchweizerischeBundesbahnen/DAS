@@ -1,9 +1,9 @@
 {
   "separate-pull-requests": true,
   "packages": {
-    "playground-backend": {
+    "sfera-mock": {
       "release-type": "maven",
-      "package-name": "playground-backend"
+      "package-name": "sfera-mock"
     },
     "das_client": {
       "release-type": "dart"
