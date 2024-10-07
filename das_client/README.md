@@ -59,4 +59,4 @@ good reason not to do so. However, this must be approved by all developers.
 This app uses [FVM][1] to configure the Flutter SDK version.
 
 [1]:https://fvm.app/
-[2]:https://github.com/flutter/flutter/wiki/Style-guide-for-Flutter-repo
+[2]:https://github.com/flutter/flutter/blob/master/docs/contributing/Style-guide-for-Flutter-repo.md
