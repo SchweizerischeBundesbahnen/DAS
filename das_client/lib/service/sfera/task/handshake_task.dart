@@ -14,7 +14,9 @@ import 'package:das_client/util/error_code.dart';
 import 'package:fimber/fimber.dart';
 
 class HandshakeTask extends SferaTask {
-  HandshakeTask({required MqttService mqttService, required this.otnId}) : _mqttService = mqttService;
+  HandshakeTask({required MqttService mqttService, required this.otnId, Duration? timeout})
+      : _mqttService = mqttService,
+        super(timeoutDuration: timeout);
 
   final MqttService _mqttService;
   final OtnId otnId;
@@ -23,14 +25,15 @@ class HandshakeTask extends SferaTask {
   late TaskFailed _taskFailedCallback;
 
   @override
-  void execute(TaskCompleted onCompleted, TaskFailed onFailed) {
+  Future<void> execute(TaskCompleted onCompleted, TaskFailed onFailed) async {
+    startTimeout(onFailed);
     _taskCompletedCallback = onCompleted;
     _taskFailedCallback = onFailed;
 
-    _sendHandshakeRequest();
+    await _sendHandshakeRequest();
   }
 
-  void _sendHandshakeRequest() async {
+  Future<void> _sendHandshakeRequest() async {
     var sferaTrain = SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
 
     Fimber.i("Sending handshake request for company=${otnId.company} train=$sferaTrain");
@@ -41,18 +44,24 @@ class HandshakeTask extends SferaTask {
 
     var sferaB2gRequestMessage =
         SferaB2gRequestMessage.create(await SferaService.messageHeader(), handshakeRequest: handshakeRequest);
-    _mqttService.publishMessage(otnId.company, sferaTrain, sferaB2gRequestMessage.buildDocument().toString());
+    var success =
+        _mqttService.publishMessage(otnId.company, sferaTrain, sferaB2gRequestMessage.buildDocument().toString());
+
+    if (!success) {
+      _taskFailedCallback(this, ErrorCode.connectionFailed);
+    }
   }
 
   @override
   Future<bool> handleMessage(SferaG2bReplyMessage message) async {
     if (message.handshakeAcknowledgement != null) {
+      stopTimeout();
       Fimber.i("Received handshake acknowledgment");
       _taskCompletedCallback(this, null);
       return true;
     } else if (message.handshakeReject != null) {
-      Fimber.w(
-          "Received handshake reject with reason=${message.handshakeReject?.handshakeRejectReason?.toString()}");
+      stopTimeout();
+      Fimber.w("Received handshake reject with reason=${message.handshakeReject?.handshakeRejectReason?.toString()}");
       _taskFailedCallback(this, ErrorCode.sferaHandshakeRejected);
       _mqttService.disconnect();
       return true;

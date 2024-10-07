@@ -1,6 +1,7 @@
 import 'package:das_client/model/sfera/das_operating_modes_selected.dart';
 import 'package:das_client/model/sfera/g2b_reply_payload.dart';
 import 'package:das_client/model/sfera/handshake_acknowledgement.dart';
+import 'package:das_client/model/sfera/handshake_reject.dart';
 import 'package:das_client/model/sfera/journey_profile.dart';
 import 'package:das_client/model/sfera/message_header.dart';
 import 'package:das_client/model/sfera/otn_id.dart';
@@ -96,6 +97,8 @@ class SferaReplyParser {
         return VirtualBalisePosition(type: type, attributes: attributes, children: children, value: value);
       case HandshakeAcknowledgement.elementType:
         return HandshakeAcknowledgement(type: type, attributes: attributes, children: children, value: value);
+      case HandshakeReject.elementType:
+        return HandshakeReject(type: type, attributes: attributes, children: children, value: value);
       case DasOperatingModesSelected.elementType:
         return DasOperatingModesSelected(type: type, attributes: attributes, children: children, value: value);
       default:

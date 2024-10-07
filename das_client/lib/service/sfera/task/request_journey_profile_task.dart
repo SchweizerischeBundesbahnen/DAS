@@ -13,9 +13,13 @@ import 'package:fimber/fimber.dart';
 
 class RequestJourneyProfileTask extends SferaTask<JourneyProfile> {
   RequestJourneyProfileTask(
-      {required MqttService mqttService, required SferaRepository sferaRepository, required this.otnId})
+      {required MqttService mqttService,
+      required SferaRepository sferaRepository,
+      required this.otnId,
+      Duration? timeout})
       : _mqttService = mqttService,
-        _sferaRepository = sferaRepository;
+        _sferaRepository = sferaRepository,
+        super(timeoutDuration: timeout);
 
   final MqttService _mqttService;
   final OtnId otnId;
@@ -25,15 +29,15 @@ class RequestJourneyProfileTask extends SferaTask<JourneyProfile> {
   late TaskFailed _taskFailedCallback;
 
   @override
-  void execute(TaskCompleted<JourneyProfile> onCompleted, TaskFailed onFailed) {
+  Future<void> execute(TaskCompleted<JourneyProfile> onCompleted, TaskFailed onFailed) async {
     _taskCompletedCallback = onCompleted;
     _taskFailedCallback = onFailed;
 
-    _requestJourneyProfile();
+    await _requestJourneyProfile();
     startTimeout(_taskFailedCallback);
   }
 
-  void _requestJourneyProfile() async {
+  Future<void> _requestJourneyProfile() async {
     var trainIdentification = TrainIdentification.create(otnId: otnId);
     var jpRequest = JpRequest.create(trainIdentification);
 

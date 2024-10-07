@@ -19,6 +19,8 @@ class DeviceIdInfo {
       return _processAndroidDeviceInfo(await deviceInfoPlugin.androidInfo, await androidId.getId());
     } else if (Platform.isIOS) {
       return _processIosDeviceInfo(await deviceInfoPlugin.iosInfo);
+    } else if (Platform.isMacOS || Platform.isWindows || Platform.isLinux) {
+      return const Uuid().v4();
     }
     return Future.value(null);
   }

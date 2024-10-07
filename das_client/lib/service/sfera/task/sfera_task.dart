@@ -8,14 +8,18 @@ typedef TaskFailed = void Function(SferaTask task, ErrorCode errorCode);
 typedef TaskCompleted<T> = void Function(SferaTask task, T? data);
 
 abstract class SferaTask<T> implements SferaMessageHandler {
-  final Duration _defaultDuration = const Duration(seconds: 30);
+  SferaTask({Duration? timeoutDuration}) : _timeoutDuration = timeoutDuration ?? const Duration(seconds: 10);
+
+  final Duration _timeoutDuration;
   Timer? timeoutTimer;
 
-  void execute(TaskCompleted<T> onCompleted, TaskFailed onFailed);
+  Future<void> execute(TaskCompleted<T> onCompleted, TaskFailed onFailed);
 
-  void startTimeout(TaskFailed onFailed, {Duration? duration}) {
+  void startTimeout(
+    TaskFailed onFailed,
+  ) {
     timeoutTimer?.cancel();
-    timeoutTimer = Timer(duration ?? _defaultDuration, () {
+    timeoutTimer = Timer(_timeoutDuration, () {
       Fimber.e("Timeout reached for task $this");
       onFailed(this, ErrorCode.sferaRequestTimeout);
     });
