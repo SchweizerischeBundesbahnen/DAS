@@ -65,7 +65,7 @@ dependencies:
   # https://pub.dev/packages/http
   http: ^1.2.1
   # https://pub.dev/packages/device_info_plus
-  device_info_plus: ^10.1.0
+  device_info_plus: ^11.0.0
   # https://pub.dev/packages/android_id
   android_id: ^0.4.0
   # https://pub.dev/packages/uuid
