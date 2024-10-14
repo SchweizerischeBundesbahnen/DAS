@@ -10,10 +10,9 @@ import 'di.dart';
 import 'test/fahrbild_test.dart' as FahrbildTests;
 import 'test/navigation_test.dart' as NavigationTests;
 
-void main() async {
+void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   Fimber.plantTree(DebugTree());
-  await IntegrationTestDI.init(Flavor.dev);
 
   group('home screen test', () {
     testWidgets('load fahrbild company=1088, train=9232', (tester) async {
@@ -164,6 +163,7 @@ void main() async {
 }
 
 Future<void> prepareAndStartApp(WidgetTester tester) async {
+  await IntegrationTestDI.init(Flavor.dev);
   runDasApp();
   await tester.pumpAndSettle(const Duration(milliseconds: 500));
 }
