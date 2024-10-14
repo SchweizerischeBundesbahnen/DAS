@@ -14,9 +14,8 @@ import 'package:das_client/util/error_code.dart';
 import 'package:fimber/fimber.dart';
 
 class HandshakeTask extends SferaTask {
-  HandshakeTask({required MqttService mqttService, required this.otnId, Duration? timeout})
-      : _mqttService = mqttService,
-        super(timeoutDuration: timeout);
+  HandshakeTask({required MqttService mqttService, required this.otnId, super.timeout})
+      : _mqttService = mqttService;
 
   final MqttService _mqttService;
   final OtnId otnId;

@@ -3,21 +3,23 @@ import 'package:das_client/auth/auth_cubit.dart';
 import 'package:das_client/bloc/fahrbild_cubit.dart';
 import 'package:das_client/i18n/src/build_context_x.dart';
 import 'package:das_client/nav/app_router.dart';
-import 'package:das_client/pages/home/widgets/fahrbild.dart';
-import 'package:das_client/pages/home/widgets/train_selection.dart';
+import 'package:das_client/nav/das_navigation_drawer.dart';
+import 'package:das_client/pages/fahrt/widgets/fahrbild.dart';
+import 'package:das_client/pages/fahrt/widgets/train_selection.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 @RoutePage()
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class FahrtPage extends StatelessWidget {
+  const FahrtPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar(context),
       body: _body(context),
+      drawer: DASNavigationDrawer(),
     );
   }
 

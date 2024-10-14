@@ -48,6 +48,22 @@ The app is available in three languages:
   <img src="https://img.shields.io/badge/%F0%9F%87%AE%F0%9F%87%B9_italian_(it)-999999?style=for-the-badge" alt="Italian"/>
 </div>
 
+Localization terms/keys conform to the following format:
+
+```
+<PREFIX>_<CONTEXT?>_<LABEL>
+```
+
+The prefix is mandatory and indicates the scope of the term. Valid prefixes are:
+
+| Prefix | Scope  | Description                                    |
+| ---    | ---    | ---                                            |
+| c      | Common | Common terms that can be used in the whole app |
+| p      | Page   | Terms that belong to a specific page           |
+| w      | Widget | Terms that bleong to a specific widget         |
+
+The context is optional and indicate where a localization is used. When a localization is scoped to a page or widget, the context MUST be equal to the name of that page or widget. For example, localizations used on the login page would start with `p_login_`.
+
 ## Code style
 
 This application uses the code style defined in the [Flutter Wiki][2]. The

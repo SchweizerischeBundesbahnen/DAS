@@ -54,7 +54,7 @@ class SferaRepository {
       final segmentProfileEntity = segmentProfile.toEntity(isarId: _db.segmentProfile.autoIncrement());
       Fimber.i(
           "Writing segment profile to db spId=${segmentProfileEntity.spId} majorVersion=${segmentProfileEntity.majorVersion} minorVersion=${segmentProfileEntity.minorVersion}");
-      await _db.writeAsync((isar) {
+      _db.write((isar) {
         isar.segmentProfile.put(segmentProfileEntity);
       });
     } else {
