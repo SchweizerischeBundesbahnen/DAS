@@ -4,5 +4,9 @@
     "p_train_selection_trainnumber_description": "Zugnummer",
     "p_train_selection_trainnumber_placeholder": "z.B. 711",
     "p_train_selection_company_description": "Company code",
-    "p_train_selection_company_placeholder": "z.B. 0085"
+    "p_train_selection_company_placeholder": "z.B. 0085",
+    "w_navigation_drawer_fahrtinfo_title": "Fahrtinfo",
+    "w_navigation_drawer_links_title": "Links",
+    "w_navigation_drawer_settings_title": "Einstellungen",
+    "w_navigation_drawer_profile_title": "Profil"
 }

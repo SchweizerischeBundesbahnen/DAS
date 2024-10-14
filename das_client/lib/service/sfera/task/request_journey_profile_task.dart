@@ -16,10 +16,9 @@ class RequestJourneyProfileTask extends SferaTask<JourneyProfile> {
       {required MqttService mqttService,
       required SferaRepository sferaRepository,
       required this.otnId,
-      Duration? timeout})
+      super.timeout})
       : _mqttService = mqttService,
-        _sferaRepository = sferaRepository,
-        super(timeoutDuration: timeout);
+        _sferaRepository = sferaRepository;
 
   final MqttService _mqttService;
   final OtnId otnId;

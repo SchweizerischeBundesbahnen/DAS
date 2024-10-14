@@ -10,18 +10,24 @@ import 'auth/mqtt_client_user_connector.dart';
 
 class IntegrationTestDI {
   const IntegrationTestDI._();
+  static bool _initialized = false;
 
   static Future<void> init(Flavor flavor) {
-    Fimber.i('Initialize integration test dependency injection');
-    GetIt.I.registerFlavor(flavor);
-    GetIt.I.registerTokenSpecProvider();
-    GetIt.I.registerOidcClient();
-    _registerIntegrationTestAuthenticator();
-    GetIt.I.registerBackendService();
-    _registerMqttClientConnector();
-    GetIt.I.registerMqttService();
-    GetIt.I.registerRepositories();
-    GetIt.I.registerServices();
+    if (_initialized) {
+      return GetIt.I.allReady();
+    } else {
+      Fimber.i('Initialize integration test dependency injection');
+      GetIt.I.registerFlavor(flavor);
+      GetIt.I.registerTokenSpecProvider();
+      GetIt.I.registerOidcClient();
+      _registerIntegrationTestAuthenticator();
+      GetIt.I.registerBackendService();
+      _registerMqttClientConnector();
+      GetIt.I.registerMqttService();
+      GetIt.I.registerRepositories();
+      GetIt.I.registerServices();
+      _initialized = true;
+    }
     return GetIt.I.allReady();
   }
 

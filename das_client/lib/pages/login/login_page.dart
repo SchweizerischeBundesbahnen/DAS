@@ -93,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
     try {
       await authenticator.login();
       if (context.mounted) {
-        context.router.replace(const HomeRoute());
+        context.router.replace(const FahrtRoute());
       }
     } catch (e) {
       Fimber.d('Login failed', ex: e);
