@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>ch.sbb</groupId>
 	<artifactId>playground-backend</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.1.0</version>
 	<name>playground-backend</name>
 	<description>SFERA playground project</description>
 	<properties>
