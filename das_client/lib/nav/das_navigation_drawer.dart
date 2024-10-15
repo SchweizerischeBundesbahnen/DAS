@@ -41,12 +41,10 @@ class _DASNavigationDrawerState extends State<DASNavigationDrawer> {
                   title: context.l10n.w_navigation_drawer_settings_title,
                   route: const SettingsRoute(),
                 ),
-                _navigationTile(
-                  context,
-                  icon: SBBIcons.user_small,
-                  title: context.l10n.w_navigation_drawer_profile_title,
-                  route: const ProfileRoute()
-                ),
+                _navigationTile(context,
+                    icon: SBBIcons.user_small,
+                    title: context.l10n.w_navigation_drawer_profile_title,
+                    route: const ProfileRoute()),
               ],
             ),
           ),
@@ -61,13 +59,26 @@ class _DASNavigationDrawerState extends State<DASNavigationDrawer> {
     bool isActiveRoute = context.router.isRouteActive(route.routeName);
 
     return ListTile(
-      leading: Icon(icon),
-      title: Text(title,
-          style: isActiveRoute ? SBBTextStyles.mediumBold : SBBTextStyles.mediumLight),
+      leading: isActiveRoute ? _activeIcon(icon) : _inactiveIcon(icon),
+      title: Text(title, style: isActiveRoute ? SBBTextStyles.mediumBold : SBBTextStyles.mediumLight),
       onTap: () {
         Navigator.pop(context);
         context.router.replace(route);
       },
+    );
+  }
+
+  Widget _activeIcon(IconData icon) {
+    return CircleAvatar(
+      backgroundColor: SBBColors.black,
+      child: Icon(icon),
+    );
+  }
+
+  Widget _inactiveIcon(IconData icon) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing / 2, 0, sbbDefaultSpacing / 2, 0),
+      child: Icon(icon),
     );
   }
 
