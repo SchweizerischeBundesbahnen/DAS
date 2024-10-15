@@ -5,8 +5,6 @@ import 'package:integration_test/integration_test.dart';
 import '../app_test.dart';
 
 void main() {
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-
   group('home screen test', () {
     testWidgets('load fahrbild company=1088, train=9232', (tester) async {
       // Load app widget.

@@ -1,19 +1,19 @@
-import 'package:design_system_flutter/design_system_flutter.dart';
+import 'package:das_client/pages/fahrt/fahrt_page.dart';
+import 'package:das_client/pages/links/links_page.dart';
+import 'package:das_client/pages/profile/profile_page.dart';
+import 'package:das_client/pages/settings/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
 import '../app_test.dart';
+import '../util/test_utils.dart';
 
 void main() {
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-
   group('navigation drawer tests', () {
     testWidgets('should show navigation drawer', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
-
-      await tester.pump(const Duration(seconds: 1));
 
       // check that there is a drawer
       var scaffold = find.byWidgetPredicate((widget) => widget is Scaffold).first;
@@ -25,12 +25,7 @@ void main() {
       expect(find.text('Einstellungen'), findsNothing);
       expect(find.text('Profil'), findsNothing);
 
-      // open drawer
-      final ScaffoldState scaffoldState = tester.firstState(find.byType(Scaffold));
-      scaffoldState.openDrawer();
-
-      // wait for drawer to open
-      await tester.pumpAndSettle(const Duration(seconds: 1));
+      await openDrawer(tester);
 
       // check if navigation elements are present
       expect(find.text('Fahrtinfo'), findsOneWidget);
@@ -43,67 +38,45 @@ void main() {
       // Load app widget.
       await prepareAndStartApp(tester);
 
-      await tester.pump(const Duration(seconds: 1));
-
-      // open drawer
-      final ScaffoldState scaffoldState = tester.firstState(find.byType(Scaffold));
-      scaffoldState.openDrawer();
-
-      // wait for drawer to open
-      await tester.pumpAndSettle(const Duration(seconds: 1));
+      await openDrawer(tester);
 
       // check if navigation elements are present
       expect(find.text('Links'), findsOneWidget);
 
-      var gestureDetector = find.ancestor(of: find.text('Links'), matching: find.byType(GestureDetector)).first;
-      await tester.tap(gestureDetector);
-
-      await tester.pumpAndSettle(const Duration(seconds: 1));
+      await tapElement(tester, find.text('Links'));
 
       // Check drawer is closed
       expect(find.text('Einstellungen'), findsNothing);
       expect(find.text('Profil'), findsNothing);
 
-      expect(find.text('Links'), findsOneWidget);
+      // Check on LinksPage
+      expect(find.byType(LinksPage), findsOneWidget);
     });
 
     testWidgets('test navigate to settings', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
 
-      await tester.pump(const Duration(seconds: 1));
-
-      // open drawer
-      final ScaffoldState scaffoldState = tester.firstState(find.byType(Scaffold));
-      scaffoldState.openDrawer();
-
-      // wait for drawer to open
-      await tester.pumpAndSettle(const Duration(seconds: 1));
+      await openDrawer(tester);
 
       // check if navigation elements are present
       expect(find.text('Einstellungen'), findsOneWidget);
 
-      var gestureDetector = find.ancestor(of: find.text('Einstellungen'), matching: find.byType(GestureDetector)).first;
-      await tester.tap(gestureDetector);
-
-      await tester.pumpAndSettle(const Duration(seconds: 1));
+      await tapElement(tester, find.text('Einstellungen'));
 
       // Check drawer is closed
       expect(find.text('Link'), findsNothing);
       expect(find.text('Profil'), findsNothing);
 
-      expect(find.text('Einstellungen'), findsOneWidget);
+      // Check on SettingsPage
+      expect(find.byType(SettingsPage), findsOneWidget);
     });
 
     testWidgets('test navigate to profile', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
 
-      await tester.pump(const Duration(seconds: 1));
-
-      // open drawer
-      final ScaffoldState scaffoldState = tester.firstState(find.byType(Scaffold));
-      scaffoldState.openDrawer();
+      await openDrawer(tester);
 
       // wait for drawer to open
       await tester.pumpAndSettle(const Duration(seconds: 1));
@@ -111,16 +84,44 @@ void main() {
       // check if navigation elements are present
       expect(find.text('Profil'), findsOneWidget);
 
-      var gestureDetector = find.ancestor(of: find.text('Profil'), matching: find.byType(GestureDetector)).first;
-      await tester.tap(gestureDetector);
-
-      await tester.pumpAndSettle(const Duration(seconds: 1));
+      await tapElement(tester, find.text('Profil'));
 
       // Check drawer is closed
       expect(find.text('Link'), findsNothing);
       expect(find.text('Einstellungen'), findsNothing);
 
+      // Check on ProfilePage
+      expect(find.byType(ProfilePage), findsOneWidget);
+    });
+
+    testWidgets('test navigate to fahrbild', (tester) async {
+      // Load app widget.
+      await prepareAndStartApp(tester);
+
+      await openDrawer(tester);
+
+      // check if navigation elements are present
       expect(find.text('Profil'), findsOneWidget);
+
+      await tapElement(tester, find.text('Profil'));
+
+      // Check drawer is closed
+      expect(find.text('Link'), findsNothing);
+      expect(find.text('Einstellungen'), findsNothing);
+
+      // Check on ProfilePage
+      expect(find.byType(ProfilePage), findsOneWidget);
+
+      await openDrawer(tester);
+
+      // check if navigation elements are present
+      expect(find.text('Fahrtinfo'), findsOneWidget);
+
+      await tapElement(tester, find.text('Fahrtinfo'));
+
+      // Check on FahrtPage
+      expect(find.byType(FahrtPage), findsOneWidget);
     });
   });
 }
+

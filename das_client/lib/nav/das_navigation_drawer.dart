@@ -55,7 +55,7 @@ class _DASNavigationDrawerState extends State<DASNavigationDrawer> {
   }
 
   Widget _navigationTile(BuildContext context,
-      {required IconData icon, required String title, required PageRouteInfo route, bool active = true}) {
+      {required IconData icon, required String title, required PageRouteInfo route}) {
     bool isActiveRoute = context.router.isRouteActive(route.routeName);
 
     return ListTile(
