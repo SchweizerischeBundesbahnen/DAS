@@ -6,14 +6,9 @@ import 'package:das_client/widgets/device_id_text.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 
-class DASNavigationDrawer extends StatefulWidget {
+class DASNavigationDrawer extends StatelessWidget {
   const DASNavigationDrawer({super.key});
 
-  @override
-  State<DASNavigationDrawer> createState() => _DASNavigationDrawerState();
-}
-
-class _DASNavigationDrawerState extends State<DASNavigationDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
