@@ -1,4 +1,4 @@
-import { Component, signal, Signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { SbbHeaderLeanModule, } from "@sbb-esta/angular/header-lean";
 import { SbbIconModule } from "@sbb-esta/angular/icon";
 import { SbbUsermenuModule } from "@sbb-esta/angular/usermenu";
@@ -8,9 +8,7 @@ import { SbbButtonModule } from "@sbb-esta/angular/button";
 import { Router, RouterModule } from "@angular/router";
 import { environment } from "../environment/environment";
 import packageJson from '../../package.json';
-import { AuthService, Tenant } from "./auth.service";
 import { OidcSecurityService } from "angular-auth-oidc-client";
-import { toSignal } from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-root',
@@ -33,16 +31,11 @@ export class AppComponent {
   title = 'DAS playground';
 
   readonly userData = this.oidcSecurityService.userData;
-  readonly organisation: Signal<Tenant | undefined> = signal(undefined);
 
   constructor(
     private oidcSecurityService: OidcSecurityService,
-    private authService: AuthService,
     private router: Router,
   ) {
-    if (this.userData().userData) {
-      this.organisation = toSignal(this.authService.tenant());
-    }
   }
 
   login() {

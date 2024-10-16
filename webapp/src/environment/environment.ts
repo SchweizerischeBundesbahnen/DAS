@@ -2,7 +2,7 @@ import { Environment } from "./environment.model";
 import { PassedInitialConfig } from "angular-auth-oidc-client";
 import { IMqttServiceOptions } from "ngx-mqtt";
 
-const backendUrl = 'https://das-backend-dev.app.sbb.ch';
+const backendUrl = 'https://sfera-mock.app.sbb.ch';
 
 const authConfig: PassedInitialConfig = {
   config: {
