@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.3.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.2.1...das_client-v0.3.0) (2024-10-18)
+
+
+### Features
+
+* adding navigation drawer ([#299](https://github.com/SchweizerischeBundesbahnen/DAS/issues/299)) ([8890805](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8890805983adf4a26bc1fc141a8836d1c841ed1c))
+* grundaufbau mobile app ([#290](https://github.com/SchweizerischeBundesbahnen/DAS/issues/290)) ([97bfc73](https://github.com/SchweizerischeBundesbahnen/DAS/commit/97bfc73a99a53dd9ecbfa51b1be5f5d2b1abafb2))
+
+
+### Bug Fixes
+
+* **deps:** update dependency device_info_plus to v11 ([#292](https://github.com/SchweizerischeBundesbahnen/DAS/issues/292)) ([5e08abd](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5e08abdd6382babfbc43d19f7b0d62b04c3b49bf))
+* **deps:** update dependency get_it to v8 ([#276](https://github.com/SchweizerischeBundesbahnen/DAS/issues/276)) ([a430702](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a4307022565ed94bb43e03d2d6ed19303a5cd6dd))
+* **deps:** update dependency junit:junit to v4.13.2 ([#178](https://github.com/SchweizerischeBundesbahnen/DAS/issues/178)) ([4bc903c](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4bc903c1c3fc914d94395e3188d0cdc12781a79e))
+
 ## [0.2.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.2.0...das_client-v0.2.1) (2024-08-06)
 
 
