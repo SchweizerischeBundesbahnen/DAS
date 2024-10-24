@@ -4,7 +4,7 @@
               jxb:extensionBindingPrefixes="xjc"
               xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
-    <jxb:bindings schemaLocation="SFERA_2.01.xsd" node="//xsd:schema">
+    <jxb:bindings schemaLocation="SFERA_3.0_custom.xsd" node="//xsd:schema">
         <jxb:schemaBindings>
             <jxb:package name="ch.sbb.sferamock.adapters.sfera.model.v0201"/>
         </jxb:schemaBindings>
