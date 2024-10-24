@@ -75,15 +75,15 @@ export class SferaXmlCreation {
     let headerOptions = options?.header || this.defaultHeader();
     headerOptions = this.fillUndefindeHeaderFields(headerOptions);
 
-    let relatedTrainRequestTag = options?.relatedTrainRequest
+    const relatedTrainRequestTag = options?.relatedTrainRequest
       ? `relatedTrainRequest="${options!.relatedTrainRequest}"`
       : '';
 
-    let statusReportsEnabledTag = options?.statusReportsEnabled
+    const statusReportsEnabledTag = options?.statusReportsEnabled
       ? `statusReportsEnabled="${options!.statusReportsEnabled}"`
       : '';
 
-    let supportedOperationModes = options?.supportedModes?.map(mode => {
+    const supportedOperationModes = options?.supportedModes?.map(mode => {
       return `<DAS_OperatingModesSupported DAS_drivingMode="${mode.drivingMode}" DAS_architecture="${mode.architecture}" DAS_connectivity="${mode.connectivity}"/>`;
     })?.join("");
 
@@ -104,8 +104,8 @@ export class SferaXmlCreation {
     let headerOptions = options?.header || this.defaultHeader();
     headerOptions = this.fillUndefindeHeaderFields(headerOptions);
 
-    let jpRequests = this.createJpRequest(options.jpRequests);
-    let spRequests = this.createSpRequest(options.spRequests);
+    const jpRequests = this.createJpRequest(options.jpRequests);
+    const spRequests = this.createSpRequest(options.spRequests);
 
     return `<?xml version="1.0"?>
                   <SFERA_B2G_RequestMessage>
@@ -122,12 +122,12 @@ export class SferaXmlCreation {
   }
 
   static createJpRequest(jpRequests: JpRequestOptions[] | undefined): string {
-    let strings = jpRequests?.map(jpRequest => {
-      let jpInUseElement = jpRequest?.jpInUse
+    const strings = jpRequests?.map(jpRequest => {
+      const jpInUseElement = jpRequest?.jpInUse
         ? `<JP_InUse JP_Version="${jpRequest.jpInUse}"/>`
         : '';
 
-      let requestFromSegmentProfileElement = jpRequest?.requestFromSegmentProfile
+      const requestFromSegmentProfileElement = jpRequest?.requestFromSegmentProfile
         ? `<RequestFromSegmentProfile SP_ID="${jpRequest.requestFromSegmentProfile.spId}">
                             <SP_Zone>
                                 <IM_ID>${jpRequest.requestFromSegmentProfile.spZone.imId}</IM_ID>
@@ -154,7 +154,7 @@ export class SferaXmlCreation {
   }
 
   static createSpRequest(spRequests: SpRequestOptions[] | undefined): string {
-    let strings = spRequests?.map(spRequest => {
+    const strings = spRequests?.map(spRequest => {
       return `<SP_Request SP_VersionMajor="${spRequest.majorVersion}"
                           SP_VersionMinor="${spRequest.minorVersion}"
                           SP_ID="${spRequest.spId}">

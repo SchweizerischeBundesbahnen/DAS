@@ -96,8 +96,8 @@ export class SferaObserverComponent implements OnDestroy {
   }
 
   addData(xml: string, topic: string) {
-    let document = this.toDom(xml);
-    let row = {
+    const document = this.toDom(xml);
+    const row = {
       direction: topic == "b2g" ? "↑" : "↓",
       topic: topic,
       type: this.getType(document) || '',
@@ -128,7 +128,7 @@ export class SferaObserverComponent implements OnDestroy {
       } else if (this.isHandshakeReject(document)) {
         return `HS-REJECT: ${this.getRejectReason(document)}`;
       } else if (this.isMessageResponse(document)) {
-        let result = this.getMessageResponseResult(document);
+        const result = this.getMessageResponseResult(document);
         if (result == 'OK') {
           return 'OK';
         } else if (result == 'ERROR') {
@@ -145,17 +145,15 @@ export class SferaObserverComponent implements OnDestroy {
       }
 
       const requestTypes = ['JP_Request', 'SP_Request', 'TC_Request']
-      let requestedTypes: string[] = [];
+      const requestedTypes: string[] = [];
 
-      for (let requestType of requestTypes) {
+      for (const requestType of requestTypes) {
         if (this.containsElement(document, requestType)) {
           requestedTypes.push(requestType)
         }
       }
 
       return requestedTypes.join(", ");
-    } else if (type == "SFERA_B2G_ReplyMessage") {
-
     }
     return "unknown";
   }
