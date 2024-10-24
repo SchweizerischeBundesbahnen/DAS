@@ -149,9 +149,15 @@ class SferaService {
     _stateSubject.add(SferaServiceState.disconnected);
   }
 
-  static Future<MessageHeader> messageHeader({TrainIdentification? trainIdentification}) async {
-    return MessageHeader.create(const Uuid().v4(), Format.sferaTimestamp(DateTime.now()),
-        await DeviceIdInfo.getDeviceId(), "TMS", await DeviceIdInfo.getDeviceId(), "TMS",
+  static Future<MessageHeader> messageHeader(
+      {TrainIdentification? trainIdentification}) async {
+    return MessageHeader.create(
+        const Uuid().v4(),
+        Format.sferaTimestamp(DateTime.now()),
+        await DeviceIdInfo.getDeviceId(),
+        "TMS",
+        "1085",
+        "0085",
         trainIdentification: trainIdentification);
   }
 
