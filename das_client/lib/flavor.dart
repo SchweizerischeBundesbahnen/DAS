@@ -6,21 +6,21 @@ enum Flavor {
   dev(
     displayName: 'Dev',
     //backendUrl: 'http://localhost:8080',
-    backendUrl: 'https://das-backend-dev.app.sbb.ch',
+    backendUrl: 'https://sfera-mock.app.sbb.ch',
     mqttUrl: 'wss://das-poc.messaging.solace.cloud',
     authenticatorConfig: _authenticatorConfigDev,
   ),
   inte(
     displayName: 'Inte',
     //backendUrl: 'http://localhost:8080',
-    backendUrl: 'https://das-backend-dev.app.sbb.ch',
+    backendUrl: 'https://sfera-mock.app.sbb.ch',
     mqttUrl: 'wss://das-poc.messaging.solace.cloud',
     authenticatorConfig: _authenticatorConfigInte,
   ),
   prod(
     displayName: 'Prod',
     //backendUrl: 'http://localhost:8080',
-    backendUrl: 'https://das-backend-dev.app.sbb.ch',
+    backendUrl: 'https://sfera-mock.app.sbb.ch',
     mqttUrl: 'wss://das-poc.messaging.solace.cloud',
     authenticatorConfig: _authenticatorConfigProd,
   );

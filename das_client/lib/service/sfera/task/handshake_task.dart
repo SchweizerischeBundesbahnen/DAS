@@ -38,8 +38,8 @@ class HandshakeTask extends SferaTask {
     Fimber.i("Sending handshake request for company=${otnId.company} train=$sferaTrain");
     var handshakeRequest = HandshakeRequest.create([
       DasOperatingModesSupported.create(
-          DasDrivingMode.goa1, DasArchitecture.boardAdviceCalculation, DasConnectivity.connected),
-    ], relatedTrainRequestType: RelatedTrainRequestType.ownTrainAndRelatedTrains, statusReportsEnabled: true);
+          DasDrivingMode.readOnly, DasArchitecture.boardAdviceCalculation, DasConnectivity.connected),
+    ], relatedTrainRequestType: RelatedTrainRequestType.ownTrainAndRelatedTrains, statusReportsEnabled: false);
 
     var sferaB2gRequestMessage =
         SferaB2gRequestMessage.create(await SferaService.messageHeader(), handshakeRequest: handshakeRequest);
