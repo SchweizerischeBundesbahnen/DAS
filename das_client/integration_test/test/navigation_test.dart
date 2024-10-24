@@ -1,7 +1,7 @@
-import 'package:das_client/pages/fahrt/fahrt_page.dart';
 import 'package:das_client/pages/links/links_page.dart';
 import 'package:das_client/pages/profile/profile_page.dart';
 import 'package:das_client/pages/settings/settings_page.dart';
+import 'package:das_client/pages/train_selection/train_selection_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -93,6 +93,7 @@ void main() {
       expect(find.byType(ProfilePage), findsOneWidget);
     });
 
+    // TODO:
     testWidgets('test navigate to fahrbild', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
@@ -118,8 +119,8 @@ void main() {
 
       await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
 
-      // Check on FahrtPage
-      expect(find.byType(FahrtPage), findsOneWidget);
+      // TODO: Handle TrainSelectionPage/FahrbildPage
+      expect(find.byType(TrainSelectionPage), findsOneWidget);
     });
   });
 }

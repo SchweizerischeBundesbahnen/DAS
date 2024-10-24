@@ -7,8 +7,8 @@ import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
-class Fahrbild extends StatelessWidget {
-  const Fahrbild({super.key});
+class TrainJourney extends StatelessWidget {
+  const TrainJourney({super.key});
 
   @override
   Widget build(BuildContext context) {
