@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class TenantService {
 
-    private static final Logger logger = LogManager.getLogger(TenantService.class);
+    private static final Logger log = LogManager.getLogger(TenantService.class);
 
     private final TenantConfig tenantConfig;
 
@@ -25,7 +25,7 @@ public class TenantService {
             ).findAny()
             .orElseThrow(() -> new IllegalArgumentException("unknown tenant"));
 
-        logger.info(String.format("Got tenant '%s' with issuer URI '%s'", tenant.getName(), tenant.getIssuerUri()));
+        log.info(String.format("Got tenant '%s' with issuer URI '%s'", tenant.getName(), tenant.getIssuerUri()));
 
         return tenant;
     }
