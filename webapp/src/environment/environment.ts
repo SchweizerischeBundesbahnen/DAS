@@ -3,6 +3,7 @@ import { PassedInitialConfig } from "angular-auth-oidc-client";
 import { IMqttServiceOptions } from "ngx-mqtt";
 
 const backendUrl = 'https://sfera-mock.app.sbb.ch';
+const customTopicPrefix = '';
 
 const authConfig: PassedInitialConfig = {
   config: {
@@ -28,7 +29,7 @@ const mqttServiceOptions: IMqttServiceOptions = {
   clean: true, // Retain session
   connectTimeout: 4000, // Timeout period
   reconnectPeriod: 4000, // Reconnect period
-  clientId: 'webapp-' + crypto.randomUUID(),
+  clientId: crypto.randomUUID(),
   protocol: 'wss',
   connectOnCreate: false
 }
@@ -37,6 +38,7 @@ export const environment: Environment = {
   production: false,
   label: 'dev',
   oauthProfile: 'azureAd',
+  customTopicPrefix,
   backendUrl,
   authConfig,
   mqttServiceOptions,

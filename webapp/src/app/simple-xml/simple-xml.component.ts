@@ -11,7 +11,7 @@ export class SimpleXmlComponent implements AfterViewInit{
   @Input() xml: Document | undefined;
   @Input() xmlString: string | undefined;
   @Input() collapsedText: string = '...';
-  // todo @Input() collapsed: boolean = false;
+  @Input() collapsed: boolean = false;
 
   constructor(private el: ElementRef, private renderer: Renderer2) { }
 
@@ -33,7 +33,7 @@ export class SimpleXmlComponent implements AfterViewInit{
     const wrapperNode = this.renderer.createElement('span');
     this.renderer.addClass(wrapperNode, 'simpleXML');
     if (xml) {
-      this.showNode(wrapperNode, xml);
+      this.showNode(wrapperNode, xml, this.collapsed);
       this.renderer.appendChild(this.el.nativeElement, wrapperNode);
 
       const expanderHeaders = wrapperNode.querySelectorAll('.simpleXML-expanderHeader');
@@ -64,10 +64,10 @@ export class SimpleXmlComponent implements AfterViewInit{
     }
   }
 
-  private showNode(parent: HTMLElement, xml: Node) {
+  private showNode(parent: HTMLElement, xml: Node, collapsed: boolean) {
     if (xml.nodeType == 9) {
       for (let i = 0; i < xml.childNodes.length; i++) {
-        this.showNode(parent, xml.childNodes[i]);
+        this.showNode(parent, xml.childNodes[i], collapsed);
       }
       return;
     }
@@ -82,7 +82,8 @@ export class SimpleXmlComponent implements AfterViewInit{
 
         const expanderSpan = this.makeSpan('', 'simpleXML-expander');
         if (expandingNode) {
-          this.renderer.addClass(expanderSpan, 'simpleXML-expander-expanded');
+          this.renderer.addClass(expanderSpan, 'simpleXML-expander-collapsed');
+          this.renderer.addClass(expanderSpan, collapsed ? 'collapsed' : 'expanded');
         }
         this.renderer.appendChild(expanderHeader, expanderSpan);
 
@@ -110,13 +111,16 @@ export class SimpleXmlComponent implements AfterViewInit{
             const ulElement = this.renderer.createElement('ul');
             for (let i = 0; i < xml.childNodes.length; i++) {
               const liElement = this.renderer.createElement('li');
-              this.showNode(liElement, xml.childNodes[i]);
+              this.showNode(liElement, xml.childNodes[i], collapsed);
               this.renderer.appendChild(ulElement, liElement);
             }
 
+            const collapsedTextStyle = collapsed ? 'inline' : 'none';
+            const contentStyle = collapsed ? 'none' : '';
             const collapsedTextSpan = this.makeSpan(this.collapsedText, 'simpleXML-collapsedText');
-            collapsedTextSpan.setAttribute('style', 'display: none;');
+            collapsedTextSpan.setAttribute('style', `display: ${collapsedTextStyle};`);
             ulElement.setAttribute('class', 'simpleXML-content');
+            ulElement.setAttribute('style', `display: ${contentStyle};`);
             this.renderer.appendChild(parent, collapsedTextSpan);
             this.renderer.appendChild(parent, ulElement);
 

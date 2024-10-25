@@ -5,6 +5,7 @@ export interface Environment {
   production: boolean;
   label: string;
   oauthProfile: string;
+  customTopicPrefix: string;
   backendUrl: string;
   authConfig:PassedInitialConfig ;
   mqttServiceOptions:IMqttServiceOptions;
