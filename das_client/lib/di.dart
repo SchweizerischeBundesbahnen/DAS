@@ -90,7 +90,10 @@ extension GetItX on GetIt {
   void registerMqttService(bool useTms) {
     final flavor = get<Flavor>();
     registerSingletonWithDependencies<MqttService>(
-        () => MqttService(mqttUrl: useTms ? flavor.tmsMqttUrl! : flavor.mqttUrl, mqttClientConnector: get()),
+        () => MqttService(
+            mqttUrl: useTms ? flavor.tmsMqttUrl! : flavor.mqttUrl,
+            mqttClientConnector: get(),
+            prefix: flavor.mqttTopicPrefix),
         dependsOn: [MqttClientConnector]);
   }
 

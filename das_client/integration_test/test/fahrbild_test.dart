@@ -28,7 +28,7 @@ void main() {
       await tester.pumpAndSettle(const Duration(seconds: 1));
 
       // check if station is present
-      expect(find.text('unkown'), findsExactly(6));
+      expect(find.text('SO_W'), findsOneWidget);
     });
   });
 }

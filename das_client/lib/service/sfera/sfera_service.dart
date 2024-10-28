@@ -16,6 +16,7 @@ import 'package:das_client/service/sfera/handler/sfera_message_handler.dart';
 import 'package:das_client/service/sfera/sfera_service_state.dart';
 import 'package:das_client/service/sfera/task/handshake_task.dart';
 import 'package:das_client/service/sfera/task/request_journey_profile_task.dart';
+import 'package:das_client/service/sfera/task/request_segment_profiles_task.dart';
 import 'package:das_client/service/sfera/task/sfera_task.dart';
 import 'package:das_client/util/device_id_info.dart';
 import 'package:das_client/util/error_code.dart';
@@ -125,6 +126,12 @@ class SferaService {
       _messageHandlers.add(requestJourneyTask);
       requestJourneyTask.execute(onTaskCompleted, onTaskFailed);
     } else if (task is RequestJourneyProfileTask) {
+      _stateSubject.add(SferaServiceState.loadingSegments);
+      var requestSegmentProfilesTask = RequestSegmentProfilesTask(
+          mqttService: _mqttService, sferaRepository: _sferaRepository, otnId: otnId!, journeyProfile: data);
+      _messageHandlers.add(requestSegmentProfilesTask);
+      requestSegmentProfilesTask.execute(onTaskCompleted, onTaskFailed);
+    } else if (task is RequestSegmentProfilesTask) {
       _addMessageHandlers();
       _stateSubject.add(SferaServiceState.connected);
     }
@@ -149,15 +156,9 @@ class SferaService {
     _stateSubject.add(SferaServiceState.disconnected);
   }
 
-  static Future<MessageHeader> messageHeader(
-      {TrainIdentification? trainIdentification}) async {
-    return MessageHeader.create(
-        const Uuid().v4(),
-        Format.sferaTimestamp(DateTime.now()),
-        await DeviceIdInfo.getDeviceId(),
-        "TMS",
-        "1085",
-        "0085",
+  static Future<MessageHeader> messageHeader({TrainIdentification? trainIdentification}) async {
+    return MessageHeader.create(const Uuid().v4(), Format.sferaTimestamp(DateTime.now()),
+        await DeviceIdInfo.getDeviceId(), "TMS", "1085", "0085",
         trainIdentification: trainIdentification);
   }
 

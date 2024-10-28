@@ -11,6 +11,7 @@ enum Flavor {
     tmsMqttUrl: 'wss://tms-vad-imtrackside-dev-mobile.messaging.solace.cloud',
     authenticatorConfig: _authenticatorConfigMockDev,
     tmsAuthenticatorConfig: _authenticatorConfigTmsDev,
+    mqttTopicPrefix: "thomas/",
   ),
   inte(
     displayName: 'Inte',
@@ -33,6 +34,7 @@ enum Flavor {
     this.tmsMqttUrl,
     required this.authenticatorConfig,
     this.tmsAuthenticatorConfig,
+    this.mqttTopicPrefix = ''
   });
 
   final String displayName;
@@ -42,6 +44,7 @@ enum Flavor {
   final String? tmsMqttUrl;
   final AuthenticatorConfig authenticatorConfig;
   final AuthenticatorConfig? tmsAuthenticatorConfig;
+  final String mqttTopicPrefix;
 }
 
 
