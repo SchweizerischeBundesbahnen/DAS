@@ -43,7 +43,7 @@ class FahrtPageContent extends StatelessWidget {
         IconButton(
           icon: const Icon(SBBIcons.exit_small),
           onPressed: () {
-            if (BlocProvider.of<FahrbildCubit>(context).state is SelectingFahrbildState) {
+            if (context.fahrbildCubit.state is SelectingFahrbildState) {
               context.authCubit.logout();
               context.router.replace(const LoginRoute());
             } else {
