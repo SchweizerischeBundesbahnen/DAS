@@ -21,7 +21,7 @@ class DI {
     return GetIt.I.init(flavor);
   }
 
-  static Future<void> reinitialize(bool useTms) async {
+  static Future<void> reinitialize({required bool useTms}) async {
     Fimber.i('Reinitialize dependency injection with useTms=$useTms');
     final flavor = DI.get<Flavor>();
     await GetIt.I.reset();
@@ -48,12 +48,12 @@ class DI {
 extension GetItX on GetIt {
   Future<void> init(Flavor flavor, {bool useTms = false}) async {
     registerFlavor(flavor);
-    registerTokenSpecProvider(useTms);
-    registerOidcClient(useTms);
+    registerTokenSpecProvider(useTms: useTms);
+    registerOidcClient(useTms: useTms);
     registerAzureAuthenticator();
-    registerSferaAuthService(useTms);
-    registerMqttClientConnector(useTms);
-    registerMqttService(useTms);
+    registerSferaAuthService(useTms: useTms);
+    registerMqttClientConnector(useTms: useTms);
+    registerMqttService(useTms: useTms);
     registerRepositories();
     registerSferaService();
     await allReady();
@@ -63,7 +63,7 @@ extension GetItX on GetIt {
     registerSingleton<Flavor>(flavor);
   }
 
-  void registerTokenSpecProvider(bool useTms) {
+  void registerTokenSpecProvider({bool useTms = false}) {
     factoryFunc() {
       final flavor = get<Flavor>();
       return useTms ? flavor.tmsAuthenticatorConfig!.tokenSpecs : flavor.authenticatorConfig.tokenSpecs;
@@ -72,7 +72,7 @@ extension GetItX on GetIt {
     registerSingleton<TokenSpecProvider>(factoryFunc());
   }
 
-  void registerOidcClient(bool useTms) {
+  void registerOidcClient({bool useTms = false}) {
     factoryFunc() {
       final flavor = get<Flavor>();
       final authenticatorConfig = useTms ? flavor.tmsAuthenticatorConfig! : flavor.authenticatorConfig;
@@ -87,7 +87,7 @@ extension GetItX on GetIt {
     registerSingletonAsync<OidcClient>(factoryFunc);
   }
 
-  void registerMqttService(bool useTms) {
+  void registerMqttService({bool useTms = false}) {
     final flavor = get<Flavor>();
     registerSingletonWithDependencies<MqttService>(
         () => MqttService(
@@ -97,7 +97,7 @@ extension GetItX on GetIt {
         dependsOn: [MqttClientConnector]);
   }
 
-  void registerSferaAuthService(bool useTms) {
+  void registerSferaAuthService({bool useTms = false}) {
     final flavor = get<Flavor>();
     registerSingletonWithDependencies<SferaAuthService>(
         () => SferaAuthService(
@@ -120,7 +120,7 @@ extension GetItX on GetIt {
     );
   }
 
-  void registerMqttClientConnector(bool useTms) {
+  void registerMqttClientConnector({bool useTms = false}) {
     if (useTms) {
       registerSingletonWithDependencies<MqttClientConnector>(() => MqttClientTMSOauthConnector(sferaAuthService: get()),
           dependsOn: [SferaAuthService]);

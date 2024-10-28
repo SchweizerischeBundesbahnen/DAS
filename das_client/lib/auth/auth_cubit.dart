@@ -10,12 +10,10 @@ class AuthCubit extends Cubit<AuthState> {
 
   String? get userId => (state is Authenticated) ? (state as Authenticated).userId : null;
 
-  Authenticator _authenticator() {
-    return DI.get<Authenticator>();
-  }
+  Authenticator get _authenticator => DI.get<Authenticator>();
 
   Future<void> init() async {
-    final isAuthenticated = await _authenticator().isAuthenticated;
+    final isAuthenticated = await _authenticator.isAuthenticated;
     if (isAuthenticated) {
       await _emitAuthenticated();
     } else {
@@ -24,17 +22,17 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> login() async {
-    await _authenticator().login();
+    await _authenticator.login();
     await _emitAuthenticated();
   }
 
   Future<void> logout() async {
-    await _authenticator().logout();
+    await _authenticator.logout();
     emit(Unauthenticated());
   }
 
   Future<void> _emitAuthenticated() async {
-    final userId = await _authenticator().userId();
+    final userId = await _authenticator.userId();
     emit(Authenticated(userId));
   }
 }

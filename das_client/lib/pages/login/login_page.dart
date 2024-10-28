@@ -23,6 +23,12 @@ class _LoginPageState extends State<LoginPage> {
   bool isTmsChecked = false;
 
   @override
+  void initState() {
+    DI.reinitialize(useTms: isTmsChecked);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -93,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
               onChanged: (value) {
                 setState(() {
                   isTmsChecked = value ?? false;
-                  DI.reinitialize(isTmsChecked);
+                  DI.reinitialize(useTms: isTmsChecked);
                 });
               },
             ),
