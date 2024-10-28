@@ -61,7 +61,7 @@ export class SferaObserverComponent implements OnDestroy {
 
   async observe() {
     const customTopicPrefix = this.environmentControl.value ? this.customPrefixControl.value : '';
-    const trainOperation = this.dateControl.value + '_' + this.trainControl.value;
+    const trainOperation =  this.trainControl.value + '_' + this.dateControl.value;
     this.g2bTopic = customTopicPrefix + '90940/2/G2B/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
     this.b2gTopic = customTopicPrefix + '90940/2/B2G/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
     this.eventTopic = customTopicPrefix + '90940/2/event/' + this.companyControl.value + '/' + trainOperation;
