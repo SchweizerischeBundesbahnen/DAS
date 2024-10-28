@@ -1,0 +1,232 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../SFERA_3.0_custom.xsd"
+                SP_ID="9" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="5500" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>0085</IM_ID>
+    </SP_Zone>
+    <SP_Points>
+        <TimingPoint TP_ID="Bahnhof_A" location="1000">
+            <TP_Name name="A"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>9991</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Haltestelle_B" location="2000">
+            <TP_Name name="stopping location"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>9992</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Halt_auf_Verlangen_C" location="3000">
+            <TP_Name name="C"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>9993</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Klammerbahnhof_D" location="4000">
+            <TP_Name name="D"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>9994</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="Klammerbahnhof_D1" location="5000">
+            <TP_Name name="D1"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>9995</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <!-- todo: Name des Signals -->
+        <Signal>
+            <Signal_ID signal_ID_Physical="1" location="1030"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="B1"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="2" location="2030"/>
+            <SignalFunction>laneChange</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="S1"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="3" location="3030"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E1"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="4" location="4030"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A1"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="5" location="5030"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="AB1"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="6" location="5100"/>
+            <SignalFunction>protection</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="D1"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="7" location="5200"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="BAB1"/>
+        </Signal>
+<!--    todo    Kurve in Story #82 ohne Infos?-->
+        <NetworkSpecificPoint location="1" identifier="5049F2EC25344A359298DD5C69DC7F49" name="curvePoint">
+            <NetworkSpecificParameter name="curvePointType" value=""/>
+<!--            'begin' or 'end'-->
+            <NetworkSpecificParameter name="curveSpeed_C(B)BB" value=""/>
+            <NetworkSpecificParameter name="curveType" value=""/>
+            <NetworkSpecificParameter name="comment" value=""/>
+
+        </NetworkSpecificPoint>
+    </SP_Points>
+
+    <SP_Areas>
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="A"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>9991</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Bahnhof A"/>
+            <TAF_TAP_Location_NSP name="bracketStation">
+                <NetworkSpecificParameter name="mainStation" value="CH0207"/>
+            </TAF_TAP_Location_NSP>
+<!--       todo: stationSpeed vs stationProperty -->
+            <TAF_TAP_Location_NSP name="stationSpeed">
+                <NetworkSpecificParameter name="" value="140/[60]"/>
+<!--            name:    stationSpeed_R150' or 'stationSpeed_A65'. 'stationSpeed_All' or 'stationSpeed_C' 'stationSpeed_R' -->
+                <NetworkSpecificParameter name="trackGroup" value=""/>
+<!--                e.G: 'N', 'A,B,F,N', '1', '3', 'U,L1-8' -->
+                <NetworkSpecificParameter name="graduatedSpeed_00000_n" value=""/>
+                <NetworkSpecificParameter name="graduatedSpeed_00000_ro" value=""/>
+                <NetworkSpecificParameter name="graduatedSpeed_00000_ad" value=""/>
+                <NetworkSpecificParameter name="graduatedSpeed_00000_s" value=""/>
+                <NetworkSpecificParameter name="graduatedSpeed_00000_txt" value="Einfahrt vom Bahnsteig an, übrige Gleise ab Zentralstellwerk"/>
+            </TAF_TAP_Location_NSP>
+            <TAF_TAP_Location_NSP name="stationProperty_00000">
+                <NetworkSpecificParameter name="stationPropertySpeed_R150" value=""/>
+                <NetworkSpecificParameter name="text" value=""/>
+            </TAF_TAP_Location_NSP>
+
+            <!--
+                Einfahrgeschwindigkeit(en) (nur relevante für die befahrene Strecke)
+                Ausfahrgeschwindigkeit(en) (nur relevante für die befahrene Strecke)
+                Gleisspezifische oder gleisgruppenspezifische Geschwindigkeiten (unabhängig davon, ob sie befahren werden)
+                Kilometrierung für abgestufte Bahnhofsgeschwindigkeiten (sofern vorhanden)
+                Formatierungen zu den Fahrbegriffen werden gemäss RADN dargestellt
+             -->
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="B"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>9992</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Haltestelle B"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="C"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>9993</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Halt auf Verlangen C"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="D"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>9994</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Klammerbahnhof D"/>
+            <TAF_TAP_Location_NSP name="bracketStation">
+                <NetworkSpecificParameter name="mainStation" value="CH9994"/>
+            </TAF_TAP_Location_NSP>
+        </TAF_TAP_Location>
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="D1"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>9995</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Klammerbahnhof D1"/>
+            <TAF_TAP_Location_NSP name="bracketStation">
+                <NetworkSpecificParameter name="mainStation" value="CH9994"/>
+            </TAF_TAP_Location_NSP>
+        </TAF_TAP_Location>
+        <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="0" endLocation="1" name="nonStandardTrackEquipment">
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L1LS-2TracksWithSingleTrackEquipment"/>
+        </NetworkSpecificArea>
+        <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="0" endLocation="1" name="nonStandardTrackEquipment">
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-convSpeedReversingImpossible"/>
+        </NetworkSpecificArea>
+        <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="0" endLocation="1" name="nonStandardTrackEquipment">
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingPossible"/>
+        </NetworkSpecificArea>
+        <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="0" endLocation="1" name="nonStandardTrackEquipment">
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingImpossible"/>
+        </NetworkSpecificArea>
+        <!--
+            'ETCS-L1LS-2TracksWithSingleTrackEquipment' -> zweigleisige Strecke mit Einrichtung für Einspurbetrieb
+            todo: zweigleisige Strecke mit Einrichtung für Einspurbetrieb und quittungspflichtiger Verständigung des LF für Fahrt auf dem rechten Gleis
+            todo: zweigleisige Strecke ohne Einrichtung für Einspurbetrieb
+            'ETCS-L2-convSpeedReversingImpossible'     -> Strecke mit FSS im konventionellen Geschwindigkeitsbereich. «Reversing» nicht möglich
+            todo: Strecke mit FSS, Grenze zwischen konventionellem und erweitertem Geschwindigkeitsbereich
+            'ETCS-L2-extSpeedReversingPossible'        -> Strecke mit FSS im erweiterten Geschwindigkeitsbereich. «Reversing» möglich
+            'ETCS-L2-extSpeedReversingImpossible'      -> Strecke mit FSS im erweiterten Geschwindigkeitsbereich. «Reversing» nicht möglich
+            todo: CAB
+        -->
+    </SP_Areas>
+
+    <SP_ContextInformation>
+        <KilometreReferencePoint location="1000">
+            <KM_Reference kmRef="100.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2000">
+            <KM_Reference kmRef="200.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="3000">
+            <KM_Reference kmRef="300.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="4000">
+            <KM_Reference kmRef="400.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="5000">
+            <KM_Reference kmRef="500.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1030">
+            <KM_Reference kmRef="103.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2030">
+            <KM_Reference kmRef="203.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="4030">
+            <KM_Reference kmRef="403.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="5030">
+            <KM_Reference kmRef="503.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="5100">
+            <KM_Reference kmRef="510.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="5200">
+            <KM_Reference kmRef="520.0"/>
+        </KilometreReferencePoint>
+    </SP_ContextInformation>
+</SegmentProfile>

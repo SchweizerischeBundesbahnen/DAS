@@ -16,8 +16,9 @@
 
 | Train number | Result                   |
 |--------------|--------------------------|
-| 4816         | Zürich HB - Aarau <br/>       |
+| 4816         | Zürich HB - Aarau        |
 | 7839         | Solothurn - Oberdorf SO  |
+| 9999         | Fictional Bahnhof A - D1 |
 
 TODO: 29137 Lenzburg - Luzern https://miro.com/app/board/uXjVKK4zJFk=/?moveToWidget=3458764596975113381&cot=14
 
