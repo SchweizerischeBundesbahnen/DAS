@@ -18,14 +18,14 @@ class IntegrationTestDI {
     } else {
       Fimber.i('Initialize integration test dependency injection');
       GetIt.I.registerFlavor(flavor);
-      GetIt.I.registerTokenSpecProvider();
-      GetIt.I.registerOidcClient();
+      GetIt.I.registerTokenSpecProvider(false);
+      GetIt.I.registerOidcClient(false);
       _registerIntegrationTestAuthenticator();
-      GetIt.I.registerBackendService();
+      GetIt.I.registerSferaAuthService(false);
       _registerMqttClientConnector();
-      GetIt.I.registerMqttService();
+      GetIt.I.registerMqttService(false);
       GetIt.I.registerRepositories();
-      GetIt.I.registerServices();
+      GetIt.I.registerSferaService();
       _initialized = true;
     }
     return GetIt.I.allReady();

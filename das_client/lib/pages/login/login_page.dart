@@ -2,7 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:das_client/auth/authenticator.dart';
 import 'package:das_client/di.dart';
 import 'package:das_client/flavor.dart';
+import 'package:das_client/i18n/i18n.dart';
 import 'package:das_client/nav/app_router.dart';
+import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 
@@ -18,6 +20,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool isLoading = false;
+  bool isTmsChecked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +45,7 @@ class _LoginPageState extends State<LoginPage> {
         const Spacer(),
         _message(context),
         _loginButton(context),
+        _tmsCheckbox(context),
         const Spacer(),
         _flavor(context),
       ],
@@ -52,12 +56,12 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       alignment: AlignmentDirectional.center,
       padding: const EdgeInsets.all(16),
-      child: const Column(
+      child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(height: 32),
+          const SizedBox(height: 32),
           Text(
-            'Login with your account',
+            context.l10n.p_login_login_button_description,
           ),
         ],
       ),
@@ -75,10 +79,37 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Widget _tmsCheckbox(BuildContext context) {
+    var flavor = DI.get<Flavor>();
+
+    if (flavor.tmsAuthenticatorConfig != null && flavor.tmsMqttUrl != null && flavor.tmsTokenExchangeUrl != null) {
+      return Padding(
+        padding: const EdgeInsets.all(sbbDefaultSpacing),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SBBCheckbox(
+              value: isTmsChecked,
+              onChanged: (value) {
+                setState(() {
+                  isTmsChecked = value ?? false;
+                  DI.reinitialize(isTmsChecked);
+                });
+              },
+            ),
+            Text(context.l10n.p_login_connect_to_tms)
+          ],
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
   Widget _loginButton(BuildContext context) {
     return OutlinedButton(
       onPressed: _onLoginPressed,
-      child: const Text('Login'),
+      child: Text(context.l10n.p_login_login_button_text),
     );
   }
 
@@ -98,8 +129,8 @@ class _LoginPageState extends State<LoginPage> {
     } catch (e) {
       Fimber.d('Login failed', ex: e);
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("Login failed"),
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(context.l10n.p_login_login_failed),
         ));
       }
     }

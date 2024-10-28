@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:das_client/auth/auth_cubit.dart';
 import 'package:das_client/bloc/fahrbild_cubit.dart';
+import 'package:das_client/di.dart';
 import 'package:das_client/i18n/src/build_context_x.dart';
 import 'package:das_client/nav/app_router.dart';
 import 'package:das_client/nav/das_navigation_drawer.dart';
@@ -16,10 +17,22 @@ class FahrtPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => FahrbildCubit(sferaService: DI.get()),
+      child: FahrtPageContent(),
+    );
+  }
+}
+
+class FahrtPageContent extends StatelessWidget {
+  const FahrtPageContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar(context),
       body: _body(context),
-      drawer: DASNavigationDrawer(),
+      drawer: const DASNavigationDrawer(),
     );
   }
 
@@ -30,7 +43,7 @@ class FahrtPage extends StatelessWidget {
         IconButton(
           icon: const Icon(SBBIcons.exit_small),
           onPressed: () {
-            if (context.fahrbildCubit.state is SelectingFahrbildState) {
+            if (BlocProvider.of<FahrbildCubit>(context).state is SelectingFahrbildState) {
               context.authCubit.logout();
               context.router.replace(const LoginRoute());
             } else {
