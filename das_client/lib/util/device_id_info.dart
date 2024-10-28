@@ -9,7 +9,7 @@ class DeviceIdInfo {
 
   static Future<String> getDeviceId() async {
     _deviceId ??= await _findDeviceId();
-    return _deviceId!;
+    return _deviceId!.toLowerCase();
   }
 
   static Future<String?> _findDeviceId() async {

@@ -17,7 +17,7 @@ class MqttClientTMSOauthConnector implements MqttClientConnector {
 
     if (sferaAuthToken != null) {
       try {
-        var mqttClientConnectionStatus = await client.connect("JWT", "OPENID~AzureAD_IMTS~$sferaAuthToken");
+        var mqttClientConnectionStatus = await client.connect("JWT", "OPENID~AzureAD_IMTS~~$sferaAuthToken");
         Fimber.i("mqttClientConnectionStatus=$mqttClientConnectionStatus");
 
         if (mqttClientConnectionStatus?.state == MqttConnectionState.connected) {

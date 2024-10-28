@@ -157,6 +157,6 @@ class SferaService {
   }
 
   static String sferaTrain(String trainNumber, DateTime date) {
-    return "${Format.sferaDate(date)}_$trainNumber";
+    return "${trainNumber}_${Format.sferaDate(date)}";
   }
 }
