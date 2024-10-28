@@ -75,6 +75,9 @@ auth:
     - name: ${TENANT2_NAME}
       issuer-uri: ${TENANT2_ISSUER}
       jwk-set-uri: ${TENANT2_JWK}
+    - name: ${TENANT3_NAME}
+      issuer-uri: ${TENANT3_ISSUER}
+      jwk-set-uri: ${TENANT3_JWK}
   exchange:
     client-id: ${CLIENT_ID}
     client-secret: ${CLIENT_SECRET}
