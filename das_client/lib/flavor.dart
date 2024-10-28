@@ -14,13 +14,13 @@ enum Flavor {
   ),
   inte(
     displayName: 'Inte',
-    tokenExchangeUrl: 'https://das-backend-dev.app.sbb.ch',
+    tokenExchangeUrl: 'https://sfera-mock.app.sbb.ch/customClaim/requestToken',
     mqttUrl: 'wss://das-poc.messaging.solace.cloud',
     authenticatorConfig: _authenticatorConfigInte,
   ),
   prod(
     displayName: 'Prod',
-    tokenExchangeUrl: 'https://das-backend-dev.app.sbb.ch',
+    tokenExchangeUrl: 'https://sfera-mock.app.sbb.ch/customClaim/requestToken',
     mqttUrl: 'wss://das-poc.messaging.solace.cloud',
     authenticatorConfig: _authenticatorConfigProd,
   );

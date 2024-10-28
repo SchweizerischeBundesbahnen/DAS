@@ -26,8 +26,4 @@ export class AuthService {
       responseType: 'text',
     })
   }
-
-  tenant(): Observable<Tenant> {
-    return this.httpClient.get<Tenant>(`${environment.backendUrl}/admin/tenant`);
-  }
 }

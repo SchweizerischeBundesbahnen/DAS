@@ -1,0 +1,86 @@
+application:
+  topic:
+    sfera-custom-prefix: ${SFERA_CUSTOM_TOPIC_PREFIX:}
+
+info:
+  app:
+    version: '@project.version@'
+
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+spring:
+  security:
+    oauth2:
+      authorizationUrl: https://login.microsoftonline.com/common/oauth2/v2.0
+      resourceserver:
+        jwt:
+          jwk-set-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/discovery/v2.0/keys
+          issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
+          audience: ${AUDIENCES}
+
+  profiles:
+    active: ${STAGE:local}
+  cloud:
+    function:
+      definition: processB2GMessage
+    stream:
+      bindings:
+        processB2GMessage-in-0:
+          destination: ${application.topic.sfera-custom-prefix}90940/2/B2G/>
+          binder: solace
+        publishG2BReply-out-0:
+          binder: solace
+          destination: ${application.topic.sfera-custom-prefix}90940/2/G2B/
+      binders:
+        solace:
+          type: solace
+          environment:
+            solace:
+              java:
+                host: ${SOLACE_HOST}
+                msgVpn: ${SOLACE_VPN}
+                api-properties:
+                  AUTHENTICATION_SCHEME: AUTHENTICATION_SCHEME_CLIENT_CERTIFICATE
+                  SSL_KEY_STORE: ${SOLACE_KEY_STORE_PATH}
+                  SSL_KEY_STORE_FORMAT: JKS
+                  SSL_KEY_STORE_PASSWORD: ${SOLACE_KEY_STORE_PASSWORD}
+      default-binder: solace
+      default:
+        consumer:
+          maxAttempts: 1
+
+springdoc:
+  swagger-ui:
+    oauth:
+      use-pkce-with-authorization-code-grant: true
+      clientId: ${CLIENT_ID}
+
+endpoints:
+  web:
+    cors:
+      path-mappings: /**
+      allowed-origins: ${APPLICATION_ALLOWED_ORIGINS}
+      allowed-methods: GET
+      allowed-headers: "*"
+
+auth:
+  tenants:
+    - name: ${TENANT1_NAME}
+      issuer-uri: ${TENANT1_ISSUER}
+      jwk-set-uri: ${TENANT1_JWK}
+    - name: ${TENANT2_NAME}
+      issuer-uri: ${TENANT2_ISSUER}
+      jwk-set-uri: ${TENANT2_JWK}
+  exchange:
+    client-id: ${CLIENT_ID}
+    client-secret: ${CLIENT_SECRET}
+    scope: api://${SFERA_CLIENT_ID}/.default
+
+sfera:
+  company-code: '0085'
+  sfera-version: '2.01'
+  source-device: 'TMS'

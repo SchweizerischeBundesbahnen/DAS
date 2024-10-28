@@ -1,0 +1,27 @@
+<jxb:bindings version="3.0"
+              xmlns:jxb="https://jakarta.ee/xml/ns/jaxb"
+              xmlns:xs="http://www.w3.org/2001/XMLSchema"
+              jxb:extensionBindingPrefixes="xjc"
+              xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <jxb:bindings schemaLocation="SFERA_3.0_custom.xsd" node="//xsd:schema">
+        <jxb:schemaBindings>
+            <jxb:package name="ch.sbb.sferamock.adapters.sfera.model.v0201"/>
+        </jxb:schemaBindings>
+        <jxb:bindings node="//xs:attribute[@name='DAS_connectivity']/xs:simpleType">
+            <jxb:typesafeEnumClass name="DASConnectivity"/>
+        </jxb:bindings>
+        <jxb:bindings node="//xs:attribute[@name='DAS_drivingMode']/xs:simpleType">
+            <jxb:typesafeEnumClass name="DASDrivingMode"/>
+        </jxb:bindings>
+        <jxb:bindings node="//xs:attribute[@name='DAS_architecture']/xs:simpleType">
+            <jxb:typesafeEnumClass name="DASArchitecture"/>
+        </jxb:bindings>
+        <jxb:bindings node="//xs:attribute[@name='handshakeRejectReason']/xs:simpleType">
+            <jxb:typesafeEnumClass name="HandshakeRejectReason"/>
+        </jxb:bindings>
+        <jxb:bindings node="//xs:attribute[@name='result']/xs:simpleType">
+            <jxb:typesafeEnumClass name="Result"/>
+        </jxb:bindings>
+    </jxb:bindings>
+</jxb:bindings>

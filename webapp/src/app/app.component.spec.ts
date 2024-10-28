@@ -1,19 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { AuthService, Tenant } from "./auth.service";
+import { AuthService } from "./auth.service";
 import { MqService } from "./mq.service";
 import { OidcSecurityService, UserDataResult } from "angular-auth-oidc-client";
 import { signal } from "@angular/core";
-import { of } from "rxjs";
 import { SbbIconTestingModule } from "@sbb-esta/angular/icon/testing";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { By } from "@angular/platform-browser";
 import { SbbMenuItem } from "@sbb-esta/angular/menu";
 import { RouterTestingModule } from "@angular/router/testing";
 
-const mockAuth: Partial<AuthService> = {
-  tenant: () => of({name: 'Organisation'} as Tenant)
-};
+const mockAuth: Partial<AuthService> = {};
 const mockOidc: Partial<OidcSecurityService> = {
   userData: signal({userData: {name: 'User'}} as UserDataResult),
   logoffLocalMultiple: () => Promise.resolve(true),
@@ -51,10 +48,10 @@ describe('AppComponent', () => {
     ).toContain('DAS playground');
   });
 
-  it('should render organisation', () => {
+  it('should render name', () => {
     expect(
       fixture.nativeElement.querySelector('.sbb-usermenu-user-info-display-name').textContent,
-    ).toContain('Organisation');
+    ).toContain('User');
   });
 
   it('should logout', () => {

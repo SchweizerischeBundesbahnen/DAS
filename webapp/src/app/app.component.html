@@ -1,7 +1,7 @@
 <sbb-header-lean [label]="title" [subtitle]="'Version ' + version" collapseBreakpoint="mobile">
   <sbb-header-environment>{{ environmentLabel }}</sbb-header-environment>
   <sbb-usermenu [menu]="menu" [userName]="userData().userData?.preferred_username"
-                [displayName]="userData().userData ? organisation()?.name : undefined" (loginRequest)="login()">
+                [displayName]="userData().userData.name" (loginRequest)="login()">
     <sbb-icon svgIcon="kom:user-small" *sbbIcon></sbb-icon>
   </sbb-usermenu>
   <sbb-menu #menu="sbbMenu">

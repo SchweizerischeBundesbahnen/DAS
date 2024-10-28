@@ -6,20 +6,20 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java CI with Maven
+name: Backend Java CI with Maven
 
 defaults:
   run:
-    working-directory: playground-backend
+    working-directory: backend
     
 on:
   push:
     paths:
-      - 'playground-backend/**'
+      - 'backend/**'
     branches: [ "main" ]
   pull_request:
     paths:
-      - 'playground-backend/**'
+      - 'backend/**'
     branches: [ "main" ]
 
 jobs:
@@ -43,7 +43,7 @@ jobs:
     - name: Create container image
       if: github.ref == 'refs/heads/main'
       env:
-        IMAGE_ID: ghcr.io/${{ github.repository }}/playground-backend
+        IMAGE_ID: ghcr.io/${{ github.repository }}/backend
         VERSION: main
       run: |
         # Convert to lowercase
@@ -58,4 +58,4 @@ jobs:
     - name: Update dependency graph
       uses: advanced-security/maven-dependency-submission-action@v4
       with:
-        directory: playground-backend
+        directory: backend
