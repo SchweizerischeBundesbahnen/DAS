@@ -12,6 +12,7 @@ import 'package:rxdart/rxdart.dart';
 class MqttService {
   final String _mqttUrl;
   final MqttClientConnector _mqttClientConnector;
+  final String prefix;
 
   late MqttServerClient _client;
   late String _deviceId;
@@ -22,7 +23,7 @@ class MqttService {
 
   Stream<String> get messageStream => _messageSubject.stream;
 
-  MqttService({required String mqttUrl, required MqttClientConnector mqttClientConnector})
+  MqttService({required String mqttUrl, required MqttClientConnector mqttClientConnector, required this.prefix})
       : _mqttUrl = mqttUrl,
         _mqttClientConnector = mqttClientConnector {
     _init();
@@ -44,9 +45,9 @@ class MqttService {
       _client.disconnect();
     }
     if (await _mqttClientConnector.connect(_client, company, train)) {
-      _client.subscribe("90940/2/G2B/$company/$train", MqttQos.exactlyOnce);
-      _client.subscribe("90940/2/G2B/$company/$train/$_deviceId", MqttQos.exactlyOnce);
-      Fimber.i("Subscribed to topic...");
+      _client.subscribe("${prefix}90940/2/event/$company/$train", MqttQos.exactlyOnce);
+      _client.subscribe("${prefix}90940/2/G2B/$company/$train/$_deviceId", MqttQos.exactlyOnce);
+      Fimber.i("Subscribed to topic with prefix='$prefix'...");
       _startUpdateListener();
       return true;
     }
@@ -56,7 +57,7 @@ class MqttService {
 
   bool publishMessage(String company, String train, String message) {
     if (_client.connectionStatus?.state == MqttConnectionState.connected) {
-      final topic = "90940/2/B2G/$company/$train/$_deviceId";
+      final topic = "${prefix}90940/2/B2G/$company/$train/$_deviceId";
 
       final builder = MqttClientPayloadBuilder();
       builder.addString(message);

@@ -16,6 +16,7 @@ import 'package:das_client/service/sfera/handler/sfera_message_handler.dart';
 import 'package:das_client/service/sfera/sfera_service_state.dart';
 import 'package:das_client/service/sfera/task/handshake_task.dart';
 import 'package:das_client/service/sfera/task/request_journey_profile_task.dart';
+import 'package:das_client/service/sfera/task/request_segment_profiles_task.dart';
 import 'package:das_client/service/sfera/task/sfera_task.dart';
 import 'package:das_client/util/device_id_info.dart';
 import 'package:das_client/util/error_code.dart';
@@ -77,7 +78,6 @@ class SferaService {
     _messageHandlers.clear();
     lastErrorCode = null;
     _stateSubject.add(SferaServiceState.connecting);
-    _observeJourneyProfile();
 
     if (await _mqttService.connect(otnId.company, sferaTrain(otnId.operationalTrainNumber, otnId.startDate))) {
       _stateSubject.add(SferaServiceState.handshaking);
@@ -91,31 +91,7 @@ class SferaService {
     }
   }
 
-  void _observeJourneyProfile() {
-    _journeySubscription?.cancel();
-    _journeySubscription = _sferaRepository
-        .observeJourneyProfile(otnId!.company, otnId!.operationalTrainNumber, otnId!.startDate)
-        .listen((journeyProfileList) async {
-      var journeyProfile = journeyProfileList.firstOrNull?.toDomain();
-      if (journeyProfile != null) {
-        var segments = <SegmentProfile>[];
-
-        for (var element in journeyProfile.segmentProfilesLists) {
-          var segmentProfileEntity =
-              await _sferaRepository.findSegmentProfile(element.spId, element.versionMajor, element.versionMinor);
-          if (segmentProfileEntity != null) {
-            segments.add(segmentProfileEntity.toDomain());
-          } else {
-            Fimber.w("Could not find segment profile for ${element.spId}");
-          }
-        }
-        _segmentProfilesSubject.add(segments);
-      }
-      _journeyProfileSubject.add(journeyProfile);
-    });
-  }
-
-  void onTaskCompleted(SferaTask task, dynamic data) {
+  void onTaskCompleted(SferaTask task, dynamic data) async {
     _messageHandlers.remove(task);
     Fimber.i("Task $task completed");
     if (task is HandshakeTask) {
@@ -125,8 +101,33 @@ class SferaService {
       _messageHandlers.add(requestJourneyTask);
       requestJourneyTask.execute(onTaskCompleted, onTaskFailed);
     } else if (task is RequestJourneyProfileTask) {
+      _stateSubject.add(SferaServiceState.loadingSegments);
+      var requestSegmentProfilesTask = RequestSegmentProfilesTask(
+          mqttService: _mqttService, sferaRepository: _sferaRepository, otnId: otnId!, journeyProfile: data);
+      _journeyProfileSubject.add(data);
+      _messageHandlers.add(requestSegmentProfilesTask);
+      requestSegmentProfilesTask.execute(onTaskCompleted, onTaskFailed);
+    } else if (task is RequestSegmentProfilesTask) {
       _addMessageHandlers();
+      await _refreshSegmentProfiles();
       _stateSubject.add(SferaServiceState.connected);
+    }
+  }
+
+  Future<void> _refreshSegmentProfiles() async {
+    if (_journeyProfileSubject.value != null) {
+      var segments = <SegmentProfile>[];
+
+      for (var element in _journeyProfileSubject.value!.segmentProfilesLists) {
+        var segmentProfileEntity =
+            await _sferaRepository.findSegmentProfile(element.spId, element.versionMajor, element.versionMinor);
+        if (segmentProfileEntity != null) {
+          segments.add(segmentProfileEntity.toDomain());
+        } else {
+          Fimber.w("Could not find segment profile for ${element.spId}");
+        }
+      }
+      _segmentProfilesSubject.add(segments);
     }
   }
 
@@ -149,19 +150,13 @@ class SferaService {
     _stateSubject.add(SferaServiceState.disconnected);
   }
 
-  static Future<MessageHeader> messageHeader(
-      {TrainIdentification? trainIdentification}) async {
-    return MessageHeader.create(
-        const Uuid().v4(),
-        Format.sferaTimestamp(DateTime.now()),
-        await DeviceIdInfo.getDeviceId(),
-        "TMS",
-        "1085",
-        "0085",
+  static Future<MessageHeader> messageHeader({TrainIdentification? trainIdentification}) async {
+    return MessageHeader.create(const Uuid().v4(), Format.sferaTimestamp(DateTime.now()),
+        await DeviceIdInfo.getDeviceId(), "TMS", "1085", "0085",
         trainIdentification: trainIdentification);
   }
 
   static String sferaTrain(String trainNumber, DateTime date) {
-    return "${Format.sferaDate(date)}_$trainNumber";
+    return "${trainNumber}_${Format.sferaDate(date)}";
   }
 }
