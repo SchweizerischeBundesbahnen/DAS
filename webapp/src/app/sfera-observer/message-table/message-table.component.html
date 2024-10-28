@@ -1,0 +1,32 @@
+<sbb-table-wrapper>
+  <table sbb-table [dataSource]="dataSource">
+    <ng-container sbbColumnDef="direction">
+      <th sbb-header-cell *sbbHeaderCellDef>Direction</th>
+      <td sbb-cell *sbbCellDef="let element">{{ element.direction }}</td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="topic">
+      <th sbb-header-cell *sbbHeaderCellDef>Topic</th>
+      <td sbb-cell *sbbCellDef="let element">{{ element.topic }}</td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="type">
+      <th sbb-header-cell *sbbHeaderCellDef>Type</th>
+      <td sbb-cell *sbbCellDef="let element">{{ element.type }}</td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="info">
+      <th sbb-header-cell *sbbHeaderCellDef>Info</th>
+      <td sbb-cell *sbbCellDef="let element">{{ element.info }}</td>
+    </ng-container>
+
+    <ng-container sbbColumnDef="message">
+      <th sbb-header-cell *sbbHeaderCellDef>Xml-Message</th>
+      <td sbb-cell *sbbCellDef="let element">
+        <app-simple-xml [xmlString]="element.message" [collapsed]="true"></app-simple-xml>
+      </td>
+    </ng-container>
+    <tr sbb-header-row *sbbHeaderRowDef="displayedColumns"></tr>
+    <tr sbb-row *sbbRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</sbb-table-wrapper>

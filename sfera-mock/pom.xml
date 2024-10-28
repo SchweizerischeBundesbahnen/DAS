@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.4</version>
+		<version>3.3.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ch.sbb</groupId>
@@ -89,6 +89,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-oxm</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
@@ -129,7 +134,7 @@
                 <version>3.2.0</version>
                 <configuration>
                     <sources>
-                        <source>${basedir}/src/main/resources/SFERA_2.01.xsd</source>
+                        <source>${basedir}/src/main/resources/SFERA_3.0_custom.xsd</source>
                     </sources>
                     <xjbSources>
                         <xjbSource>${basedir}/src/main/resources/jaxb-bindings.xjb</xjbSource>

@@ -14,13 +14,11 @@ class MessageHeader extends SferaXmlElement {
     messageHeader.attributes["timestamp"] = timestamp;
     messageHeader.attributes["sourceDevice"] = sourceDevice;
     messageHeader.attributes["destinationDevice"] = destinationDevice;
-    messageHeader.children.add(SferaXmlElement(type: "Sender", value: sender));
-    messageHeader.children.add(SferaXmlElement(type: "Recipient", value: recipient));
-
     if (trainIdentification != null) {
       messageHeader.children.add(trainIdentification);
     }
-
+    messageHeader.children.add(SferaXmlElement(type: "Sender", value: sender));
+    messageHeader.children.add(SferaXmlElement(type: "Recipient", value: recipient));
     return messageHeader;
   }
 

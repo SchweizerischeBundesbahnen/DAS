@@ -9,25 +9,6 @@
   margin-bottom: sbb.pxToRem(16);
 }
 
-.messages {
-  .title {
-    display: flex;
-
-    div {
-      width: 50%;
-    }
-  }
-
-  .message {
-    display: flex;
-
-    &.left {
-      width: 50%
-    }
-
-    &.right {
-      margin-left: auto;
-      width: 50%
-    }
-  }
+.ml-3 {
+  margin-left: sbb.pxToRem(3);
 }

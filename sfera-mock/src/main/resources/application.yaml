@@ -1,3 +1,7 @@
+application:
+  topic:
+    sfera-custom-prefix: ${SFERA_CUSTOM_TOPIC_PREFIX:}
+
 info:
   app:
     version: '@project.version@'
@@ -22,16 +26,15 @@ spring:
     active: ${STAGE:local}
   cloud:
     function:
-      definition: boardToGround
+      definition: processB2GMessage
     stream:
       bindings:
-        boardToGround-out-0:
-          destination: default
-      solace:
-        bindings:
-          boardToGround-in-0:
-            consumer:
-              queue-additional-subscriptions: 90940/2/B2G/*/*/*
+        processB2GMessage-in-0:
+          destination: ${application.topic.sfera-custom-prefix}90940/2/B2G/>
+          binder: solace
+        publishG2BReply-out-0:
+          binder: solace
+          destination: ${application.topic.sfera-custom-prefix}90940/2/G2B/
       binders:
         solace:
           type: solace
@@ -46,6 +49,9 @@ spring:
                   SSL_KEY_STORE_FORMAT: JKS
                   SSL_KEY_STORE_PASSWORD: ${SOLACE_KEY_STORE_PASSWORD}
       default-binder: solace
+      default:
+        consumer:
+          maxAttempts: 1
 
 springdoc:
   swagger-ui:
@@ -73,3 +79,8 @@ auth:
     client-id: ${CLIENT_ID}
     client-secret: ${CLIENT_SECRET}
     scope: api://${SFERA_CLIENT_ID}/.default
+
+sfera:
+  company-code: '0085'
+  sfera-version: '2.01'
+  source-device: 'TMS'
