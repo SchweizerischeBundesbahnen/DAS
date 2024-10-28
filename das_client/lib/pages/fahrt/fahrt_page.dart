@@ -19,7 +19,7 @@ class FahrtPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => FahrbildCubit(sferaService: DI.get()),
-      child: FahrtPageContent(),
+      child: const FahrtPageContent(),
     );
   }
 }

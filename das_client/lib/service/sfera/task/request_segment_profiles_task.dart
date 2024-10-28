@@ -37,7 +37,6 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfile>> {
     _taskFailedCallback = onFailed;
 
     await _requestSegmentProfiles();
-    startTimeout(_taskFailedCallback);
   }
 
   Future<void> _requestSegmentProfiles() async {
@@ -60,6 +59,7 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfile>> {
         b2gRequest: B2gRequest.createSPRequest(spRequests));
     Fimber.i("Sending segment profiles request...");
 
+    startTimeout(_taskFailedCallback);
     _mqttService.publishMessage(otnId.company, SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate),
         sferaB2gRequestMessage.buildDocument().toString());
   }
