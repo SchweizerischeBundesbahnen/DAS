@@ -19,7 +19,7 @@ class _TrainSelectionState extends State<TrainSelection> {
   @override
   void initState() {
     super.initState();
-    _trainNumberController = TextEditingController(text: "4816");
+    _trainNumberController = TextEditingController(text: "7839");
     _companyController = TextEditingController(text: "1085");
 
     context.fahrbildCubit.updateTrainNumber(_trainNumberController.text);
