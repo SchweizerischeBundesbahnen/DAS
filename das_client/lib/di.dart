@@ -5,6 +5,7 @@ import 'package:das_client/flavor.dart';
 import 'package:das_client/repo/sfera_repository.dart';
 import 'package:das_client/service/mqtt/mqtt_client_connector.dart';
 import 'package:das_client/service/mqtt/mqtt_client_oauth_connector.dart';
+import 'package:das_client/service/mqtt/mqtt_client_tms_oauth_connector.dart';
 import 'package:das_client/service/mqtt/mqtt_service.dart';
 import 'package:das_client/service/sfera/sfera_service.dart';
 import 'package:das_client/service/sfera_auth_service.dart';
@@ -51,7 +52,7 @@ extension GetItX on GetIt {
     registerOidcClient(useTms);
     registerAzureAuthenticator();
     registerSferaAuthService(useTms);
-    registerMqttClientConnector();
+    registerMqttClientConnector(useTms);
     registerMqttService(useTms);
     registerRepositories();
     registerSferaService();
@@ -89,7 +90,7 @@ extension GetItX on GetIt {
   void registerMqttService(bool useTms) {
     final flavor = get<Flavor>();
     registerSingletonWithDependencies<MqttService>(
-        () => MqttService(mqttUrl: flavor.mqttUrl, mqttClientConnector: get()),
+        () => MqttService(mqttUrl: useTms ? flavor.tmsMqttUrl! : flavor.mqttUrl, mqttClientConnector: get()),
         dependsOn: [MqttClientConnector]);
   }
 
@@ -116,10 +117,15 @@ extension GetItX on GetIt {
     );
   }
 
-  void registerMqttClientConnector() {
-    registerSingletonWithDependencies<MqttClientConnector>(
-        () => MqttClientOauthConnector(sferaAuthService: get(), authenticator: get()),
-        dependsOn: [Authenticator, SferaAuthService]);
+  void registerMqttClientConnector(bool useTms) {
+    if (useTms) {
+      registerSingletonWithDependencies<MqttClientConnector>(() => MqttClientTMSOauthConnector(sferaAuthService: get()),
+          dependsOn: [SferaAuthService]);
+    } else {
+      registerSingletonWithDependencies<MqttClientConnector>(
+          () => MqttClientOauthConnector(sferaAuthService: get(), authenticator: get()),
+          dependsOn: [Authenticator, SferaAuthService]);
+    }
   }
 
   void registerRepositories() {
