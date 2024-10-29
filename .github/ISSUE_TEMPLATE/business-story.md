@@ -2,7 +2,7 @@
 name: Business Story
 about: eine Story, die auf einen Use Case einzahlt
 title: ''
-labels: ''
+labels: enabler
 assignees: StephanieFrancke
 
 ---
