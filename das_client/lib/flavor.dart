@@ -13,6 +13,7 @@ enum Flavor {
     authenticatorConfig: _authenticatorConfigMockDev,
     tmsAuthenticatorConfig: _authenticatorConfigTmsDev,
     backendUrl: 'https://das-backend-dev.app.sbb.ch',
+    mqttTopicPrefix: '',
   ),
   inte(
     displayName: 'Inte',
@@ -20,6 +21,7 @@ enum Flavor {
     mqttUrl: 'wss://das-poc.messaging.solace.cloud',
     authenticatorConfig: _authenticatorConfigInte,
     backendUrl: 'https://das-backend-dev.app.sbb.ch',
+    mqttTopicPrefix: '',
   ),
   prod(
     displayName: 'Prod',
@@ -27,6 +29,7 @@ enum Flavor {
     mqttUrl: 'wss://das-poc.messaging.solace.cloud',
     authenticatorConfig: _authenticatorConfigProd,
     backendUrl: 'https://das-backend-dev.app.sbb.ch',
+    mqttTopicPrefix: '',
   );
 
   const Flavor({
@@ -37,7 +40,7 @@ enum Flavor {
     this.tmsMqttUrl,
     required this.authenticatorConfig,
     this.tmsAuthenticatorConfig,
-    this.mqttTopicPrefix = '',
+    required this.mqttTopicPrefix,
     required this.backendUrl,
   });
 

@@ -29,6 +29,7 @@ void main() {
     Fimber.plantTree(DebugTree());
     PathProviderPlatform.instance = MockPathProviderPlatform();
     logDirectory = Directory("${(await getApplicationSupportDirectory()).path}/logs");
+    logDirectory.createSync(recursive: true);
     logDirectory.listSync().forEach((element) {
       element.deleteSync();
     });
