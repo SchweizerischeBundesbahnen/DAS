@@ -6,23 +6,27 @@ enum Flavor {
   dev(
     displayName: 'Dev',
     tokenExchangeUrl: 'https://sfera-mock.app.sbb.ch/customClaim/requestToken',
-    tmsTokenExchangeUrl: 'https://imts-token-provider-tms-vad-imtrackside-dev.apps.halon-ocp1-1-t.sbb-aws-test.net/token/exchange',
+    tmsTokenExchangeUrl:
+        'https://imts-token-provider-tms-vad-imtrackside-dev.apps.halon-ocp1-1-t.sbb-aws-test.net/token/exchange',
     mqttUrl: 'wss://das-poc.messaging.solace.cloud',
     tmsMqttUrl: 'wss://tms-vad-imtrackside-dev-mobile.messaging.solace.cloud',
     authenticatorConfig: _authenticatorConfigMockDev,
     tmsAuthenticatorConfig: _authenticatorConfigTmsDev,
+    backendUrl: 'https://das-backend-dev.app.sbb.ch',
   ),
   inte(
     displayName: 'Inte',
     tokenExchangeUrl: 'https://sfera-mock.app.sbb.ch/customClaim/requestToken',
     mqttUrl: 'wss://das-poc.messaging.solace.cloud',
     authenticatorConfig: _authenticatorConfigInte,
+    backendUrl: 'https://das-backend-dev.app.sbb.ch',
   ),
   prod(
     displayName: 'Prod',
     tokenExchangeUrl: 'https://sfera-mock.app.sbb.ch/customClaim/requestToken',
     mqttUrl: 'wss://das-poc.messaging.solace.cloud',
     authenticatorConfig: _authenticatorConfigProd,
+    backendUrl: 'https://das-backend-dev.app.sbb.ch',
   );
 
   const Flavor({
@@ -33,7 +37,8 @@ enum Flavor {
     this.tmsMqttUrl,
     required this.authenticatorConfig,
     this.tmsAuthenticatorConfig,
-    this.mqttTopicPrefix = ''
+    this.mqttTopicPrefix = '',
+    required this.backendUrl,
   });
 
   final String displayName;
@@ -44,11 +49,12 @@ enum Flavor {
   final AuthenticatorConfig authenticatorConfig;
   final AuthenticatorConfig? tmsAuthenticatorConfig;
   final String mqttTopicPrefix;
+  final String backendUrl;
 }
 
-
 const _authenticatorConfigTmsDev = AuthenticatorConfig(
-  discoveryUrl: "https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0/.well-known/openid-configuration",
+  discoveryUrl:
+      "https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0/.well-known/openid-configuration",
   clientId: '8af8281c-4f1d-47b5-ad77-526b1da61b2b',
   redirectUrl: 'ch.sbb.das://sbbauth/redirect',
   tokenSpecs: TokenSpecProvider([

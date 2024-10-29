@@ -3,6 +3,7 @@ import 'package:das_client/auth/azure_authenticator.dart';
 import 'package:das_client/auth/token_spec_provider.dart';
 import 'package:das_client/flavor.dart';
 import 'package:das_client/repo/sfera_repository.dart';
+import 'package:das_client/service/backend_service.dart';
 import 'package:das_client/service/mqtt/mqtt_client_connector.dart';
 import 'package:das_client/service/mqtt/mqtt_client_oauth_connector.dart';
 import 'package:das_client/service/mqtt/mqtt_client_tms_oauth_connector.dart';
@@ -41,6 +42,19 @@ class DI {
       param2: param2,
     );
   }
+
+  static Future<T> readyGet<T extends Object>({
+    String? instanceName,
+    dynamic param1,
+    dynamic param2,
+  }) async {
+    await GetIt.I.isReady<T>();
+    return GetIt.I.get<T>(
+      instanceName: instanceName,
+      param1: param1,
+      param2: param2,
+    );
+  }
 }
 
 // Internal
@@ -56,6 +70,7 @@ extension GetItX on GetIt {
     registerMqttService(useTms: useTms);
     registerRepositories();
     registerSferaService();
+    registerBackendService();
     await allReady();
   }
 
@@ -138,5 +153,11 @@ extension GetItX on GetIt {
   void registerSferaService() {
     registerSingletonWithDependencies<SferaService>(() => SferaService(mqttService: get(), sferaRepository: get()),
         dependsOn: [MqttService, SferaRepository]);
+  }
+
+  void registerBackendService() {
+    final flavor = get<Flavor>();
+    registerSingletonWithDependencies<BackendService>(() => BackendService(authenticator: DI.get(), baseUrl: flavor.backendUrl),
+        dependsOn: [Authenticator]);
   }
 }
