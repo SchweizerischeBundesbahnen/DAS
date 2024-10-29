@@ -20,8 +20,7 @@ Was wurde gemacht, um das Finding zu verursachen? Falls vorhanden, bitte Printsc
 Was wäre das korrekte/erwartete Verhalten gewesen?
 
 **Welches System wurde genutzt?**
-[ ] iOS
-[ ] Android
+Betriebssysem: iOS / Android
 Version:
 
 **Welche Version von DAS wurde genutzt?**
