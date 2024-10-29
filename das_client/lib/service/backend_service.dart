@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:core';
 
 import 'package:das_client/auth/authenticator.dart';
-import 'package:das_client/logging/src/log_entry.dart';
+import 'package:das_client/logging/logging_component.dart';
 import 'package:fimber/fimber.dart';
 import 'package:http/http.dart' as http;
 

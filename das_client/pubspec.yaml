@@ -101,6 +101,11 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  custom_lint:
+    path: ../../dart_custom_lint/packages/custom_lint
+  das_custom_lints:
+    path: ./das_custom_lints
+
   flutter_launcher_icons: ^0.14.0
 
 # For information on the generic Dart part of this file, see the
