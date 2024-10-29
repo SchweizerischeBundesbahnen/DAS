@@ -42,19 +42,6 @@ class DI {
       param2: param2,
     );
   }
-
-  static Future<T> readyGet<T extends Object>({
-    String? instanceName,
-    dynamic param1,
-    dynamic param2,
-  }) async {
-    await GetIt.I.isReady<T>();
-    return GetIt.I.get<T>(
-      instanceName: instanceName,
-      param1: param1,
-      param2: param2,
-    );
-  }
 }
 
 // Internal

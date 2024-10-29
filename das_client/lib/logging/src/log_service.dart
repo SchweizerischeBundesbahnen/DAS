@@ -73,8 +73,9 @@ class LogService {
           Iterable iterable = json.decode(content);
           List<LogEntry> logEntries = List<LogEntry>.from(iterable.map((json) => LogEntry.fromJson(json)));
 
-          final backendService = await DI.readyGet<BackendService>();
+          final backendService = DI.get<BackendService>();
           if (await backendService.sendLogs(logEntries)) {
+            Fimber.d('Deleting ${file.path}');
             file.deleteSync();
           }
         }

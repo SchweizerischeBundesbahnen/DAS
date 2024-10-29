@@ -30,7 +30,6 @@ class SferaService {
   final SferaRepository _sferaRepository;
 
   StreamSubscription? _mqttStreamSubscription;
-  StreamSubscription? _journeySubscription;
   final List<SferaMessageHandler> _messageHandlers = [];
 
   final _stateSubject = BehaviorSubject.seeded(SferaServiceState.disconnected);
@@ -158,5 +157,10 @@ class SferaService {
 
   static String sferaTrain(String trainNumber, DateTime date) {
     return "${trainNumber}_${Format.sferaDate(date)}";
+  }
+
+  void dispose() {
+    _mqttStreamSubscription?.cancel();
+    _mqttStreamSubscription = null;
   }
 }
