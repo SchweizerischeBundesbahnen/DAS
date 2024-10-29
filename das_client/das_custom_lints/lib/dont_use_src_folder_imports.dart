@@ -26,7 +26,7 @@ class DontUseSrcFolderImports extends DartLintRule {
     context.registry.addImportDirective((importDirective) {
       var importUri = importDirective.uri.stringValue;
 
-      if (importUri == null || !importUri.contains('src')) return;
+      if (importUri == null || !importUri.contains('/src/')) return;
 
       var filePath = importDirective.element!.source.fullName;
       if (!filePath.contains("/lib/")) return;
@@ -39,7 +39,11 @@ class DontUseSrcFolderImports extends DartLintRule {
       if (fileParts[0].startsWith(importParts[0])) return;
 
       // report a lint error with the `code` and the respective import directive
-      reporter.atNode(importDirective, _code);
+      reporter.atNode(importDirective, LintCode(
+        name: _code.name,
+        problemMessage: 'Don\'t use source folder imports for importing ${importDirective.uri.stringValue}',
+        errorSeverity: ErrorSeverity.ERROR,
+      ));
     });
   }
 
