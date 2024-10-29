@@ -19,9 +19,9 @@ import 'sfera_handshake_task_test.mocks.dart';
 void main() {
   late MockMqttService mqttService;
   late OtnId otnId;
+  Fimber.plantTree(DebugTree());
 
   setUp(() {
-    Fimber.plantTree(DebugTree());
     mqttService = MockMqttService();
     otnId = OtnId.create("1085", "719", DateTime.now());
   });
