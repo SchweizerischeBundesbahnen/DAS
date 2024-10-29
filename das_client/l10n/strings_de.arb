@@ -11,5 +11,9 @@
     "w_navigation_drawer_links_title": "Links",
     "w_navigation_drawer_settings_title": "Einstellungen",
     "w_navigation_drawer_profile_title": "Profil",
+    "p_login_connect_to_tms": "Mit TMS verbinden",
+    "p_login_login_button_text": "Login",
+    "p_login_login_button_description": "Mit Ihrem Account einloggen",
+    "p_login_login_failed": "Login fehlgeschlagen",
     "w_adl_notification_title": "ADL Meldung"
 }

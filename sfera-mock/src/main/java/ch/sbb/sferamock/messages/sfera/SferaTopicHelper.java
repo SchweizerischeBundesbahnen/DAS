@@ -18,8 +18,8 @@ final class SferaTopicHelper {
 
     private static String formatTrainIdentification(TrainIdentification tid) {
         return tid.additionalNumber().isPresent()
-            ? String.format("%s_%s_%s", tid.date().format(DateTimeFormatter.ISO_DATE), tid.operationalNumber(),
+            ? String.format("%s_%s_%s", tid.operationalNumber(), tid.date().format(DateTimeFormatter.ISO_DATE),
             tid.additionalNumber().get())
-            : String.format("%s_%s", tid.date().format(DateTimeFormatter.ISO_DATE), tid.operationalNumber());
+            : String.format("%s_%s", tid.operationalNumber(), tid.date().format(DateTimeFormatter.ISO_DATE));
     }
 }

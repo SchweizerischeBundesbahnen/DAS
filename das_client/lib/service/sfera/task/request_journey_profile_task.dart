@@ -42,7 +42,7 @@ class RequestJourneyProfileTask extends SferaTask<JourneyProfile> {
 
     var sferaB2gRequestMessage = SferaB2gRequestMessage.create(
         await SferaService.messageHeader(trainIdentification: trainIdentification),
-        b2gRequest: B2gRequest.create(jpRequest: jpRequest));
+        b2gRequest: B2gRequest.createJPRequest(jpRequest));
     Fimber.i("Sending journey profile request...");
     _mqttService.publishMessage(otnId.company, SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate),
         sferaB2gRequestMessage.buildDocument().toString());

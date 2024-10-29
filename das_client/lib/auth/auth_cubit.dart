@@ -1,19 +1,16 @@
 import 'package:das_client/auth/authenticator.dart';
+import 'package:das_client/di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit(
-    Authenticator authenticator,
-  )   :
-        _authenticator = authenticator,
-        super(InitialAuthState());
-
-  final Authenticator _authenticator;
+  AuthCubit() : super(InitialAuthState());
 
   String? get userId => (state is Authenticated) ? (state as Authenticated).userId : null;
+
+  Authenticator get _authenticator => DI.get<Authenticator>();
 
   Future<void> init() async {
     final isAuthenticated = await _authenticator.isAuthenticated;
