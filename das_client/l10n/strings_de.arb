@@ -5,8 +5,11 @@
     "p_train_selection_trainnumber_placeholder": "z.B. 711",
     "p_train_selection_company_description": "Company code",
     "p_train_selection_company_placeholder": "z.B. 0085",
+    "p_fahrbild_header_button_dark_theme": "Nachtmodus",
+    "p_fahrbild_header_button_pause": "Pause",
     "w_navigation_drawer_fahrtinfo_title": "Fahrtinfo",
     "w_navigation_drawer_links_title": "Links",
     "w_navigation_drawer_settings_title": "Einstellungen",
-    "w_navigation_drawer_profile_title": "Profil"
+    "w_navigation_drawer_profile_title": "Profil",
+    "w_adl_notification_title": "ADL Meldung"
 }

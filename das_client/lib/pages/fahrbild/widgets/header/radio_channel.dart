@@ -12,7 +12,7 @@ class RadioChannel extends StatelessWidget {
         children: [
           const Icon(SBBIcons.telephone_gsm_small),
           const SizedBox(width: 8.0),
-          Text('1311', style: SBBTextStyles.largeLight),
+          Text('1311', style: SBBTextStyles.largeLight.copyWith(fontSize: 24.0)),
         ],
       ),
     );
