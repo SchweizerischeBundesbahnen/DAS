@@ -22,9 +22,9 @@ void main() {
   late MockMqttService mqttService;
   late MockSferaRepository sferaRepository;
   late OtnId otnId;
+  Fimber.plantTree(DebugTree());
 
   setUp(() {
-    Fimber.plantTree(DebugTree());
     mqttService = MockMqttService();
     sferaRepository = MockSferaRepository();
     otnId = OtnId.create("1085", "719", DateTime.now());

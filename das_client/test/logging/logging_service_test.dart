@@ -24,15 +24,16 @@ void main() {
   late Directory logDirectory;
   late MockBackendService mockBackendService = MockBackendService();
   GetIt.I.registerSingleton<BackendService>(mockBackendService);
+  Fimber.plantTree(DebugTree());
 
   setUp(() async {
-    Fimber.plantTree(DebugTree());
     PathProviderPlatform.instance = MockPathProviderPlatform();
     logDirectory = Directory("${(await getApplicationSupportDirectory()).path}/logs");
     logDirectory.createSync(recursive: true);
     logDirectory.listSync().forEach((element) {
       element.deleteSync();
     });
+    reset(mockBackendService);
     await GetIt.I.allReady();
   });
 
