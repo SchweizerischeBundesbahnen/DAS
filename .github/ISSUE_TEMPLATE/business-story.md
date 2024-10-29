@@ -21,7 +21,7 @@ Als <Rolle> möchte ich <Funktion>, damit <Nutzen>.
 - ...
 ## Durchführung:
 - ...
-## Team Review
+# Team Review
 - [ ] <!-- check-ba -->BA Review
 - [ ] <!-- check-dev -->DEV Review
 - [ ] <!-- check-po -->PO Review
