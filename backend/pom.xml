@@ -29,6 +29,19 @@
 	<properties>
 		<java.version>21</java.version>
 		<kotlin.version>2.0.21</kotlin.version>
+
+		 <!-- Sonar and JaCoCo -->
+	        <jacoco.version>0.8.12</jacoco.version>
+	        <sonar.projectKey>SchweizerischeBundesbahnen_${project.artifactId}</sonar.projectKey>
+	        <sonar.organization>schweizerischebundesbahnen</sonar.organization>
+	        <sonar.projectName>${project.artifactId}</sonar.projectName>
+	        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+	        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+	        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+	        <sonar.language>java</sonar.language>
+	        <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+	        <sonar.verbose>true</sonar.verbose>
+	        <sonar.qualitygate.wait>true</sonar.qualitygate.wait>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -111,6 +124,41 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+
+			<plugin>
+	                    <groupId>org.jacoco</groupId>
+	                    <artifactId>jacoco-maven-plugin</artifactId>
+	                    <version>${jacoco.version}</version>
+	                    <configuration>
+	                        <excludes>**/*.jar</excludes>
+	                    </configuration>
+	                    <executions>
+	                        <execution>
+	                            <id>prepare-agent</id>
+	                            <goals>
+	                                <goal>prepare-agent</goal>
+	                            </goals>
+	                        </execution>
+	                        <execution>
+	                            <id>report</id>
+	                            <phase>package</phase>
+	                            <goals>
+	                                <goal>report</goal>
+	                            </goals>
+	                            <configuration>
+	                                <formats>
+	                                    <format>XML</format>
+	                                </formats>
+	                            </configuration>
+	                        </execution>
+	                    </executions>
+	                </plugin>
+			
+	                <plugin>
+	                    <groupId>org.sonarsource.scanner.maven</groupId>
+	                    <artifactId>sonar-maven-plugin</artifactId>
+	                    <version>4.0.0.4121</version>
+	                </plugin>
 		</plugins>
 	</build>
 
