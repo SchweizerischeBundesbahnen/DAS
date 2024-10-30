@@ -33,7 +33,7 @@ class FahrbildCubit extends Cubit<FahrbildState> {
       final company = currentState.company;
       final trainNumber = currentState.trainNumber;
       if (company == null || trainNumber == null) {
-        Fimber.i("company or trainNumber null");
+        Fimber.i('company or trainNumber null');
         return;
       }
 
@@ -81,7 +81,7 @@ class FahrbildCubit extends Cubit<FahrbildState> {
 
   void reset() {
     if (state is BaseFahrbildState) {
-      Fimber.i("Reseting fahrbild cubit in state $state");
+      Fimber.i('Reseting fahrbild cubit in state $state');
       emit(SelectingFahrbildState(
           trainNumber: (state as BaseFahrbildState).trainNumber, company: (state as BaseFahrbildState).company));
     }

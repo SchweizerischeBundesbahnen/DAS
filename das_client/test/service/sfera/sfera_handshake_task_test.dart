@@ -23,7 +23,7 @@ void main() {
 
   setUp(() {
     mqttService = MockMqttService();
-    otnId = OtnId.create("1085", "719", DateTime.now());
+    otnId = OtnId.create('1085', '719', DateTime.now());
   });
 
   test('Test handshake successful', () async {

@@ -2,7 +2,7 @@ import 'package:das_client/model/sfera/sfera_xml_element.dart';
 import 'package:das_client/model/sfera/signal_id.dart';
 
 class Signal extends SferaXmlElement {
-  static const String elementType = "Signal";
+  static const String elementType = 'Signal';
 
   Signal({super.type = elementType, super.attributes, super.children, super.value});
 
@@ -10,6 +10,6 @@ class Signal extends SferaXmlElement {
 
   @override
   bool validate() {
-    return validateHasChild("Signal_ID") && super.validate();
+    return validateHasChild('Signal_ID') && super.validate();
   }
 }

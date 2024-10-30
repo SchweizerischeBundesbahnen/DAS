@@ -4,7 +4,7 @@ import 'package:das_client/model/sfera/message_header.dart';
 import 'package:das_client/model/sfera/sfera_xml_element.dart';
 
 class SferaB2gRequestMessage extends SferaXmlElement {
-  static const String elementType = "SFERA_B2G_RequestMessage";
+  static const String elementType = 'SFERA_B2G_RequestMessage';
 
   SferaB2gRequestMessage({super.type = elementType, super.attributes, super.children, super.value});
 

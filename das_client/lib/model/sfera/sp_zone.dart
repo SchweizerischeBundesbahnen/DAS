@@ -1,16 +1,16 @@
 import 'package:das_client/model/sfera/sfera_xml_element.dart';
 
 class SpZone extends SferaXmlElement {
-  static const String elementType = "SP_Zone";
+  static const String elementType = 'SP_Zone';
 
   SpZone({super.type = elementType, super.attributes, super.children, super.value});
 
-  String? get imId => childrenWithType("IM_ID").firstOrNull?.value;
+  String? get imId => childrenWithType('IM_ID').firstOrNull?.value;
 
-  String? get nidC => childrenWithType("NID_C").firstOrNull?.value;
+  String? get nidC => childrenWithType('NID_C').firstOrNull?.value;
 
   @override
   bool validate() {
-    return validateHasChild("IM_ID") || validateHasChild("NID_C");
+    return validateHasChild('IM_ID') || validateHasChild('NID_C');
   }
 }

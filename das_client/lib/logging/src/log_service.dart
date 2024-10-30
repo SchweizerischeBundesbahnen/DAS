@@ -11,8 +11,8 @@ import 'package:synchronized/synchronized.dart';
 class LogService {
   static const _rolloverTimeMinutes = 1;
   static const _maxFileSize = 50 * 1024;
-  static const _prefix = "das-log";
-  static const _lastSavedFileName = "$_prefix-lastSavedFile.json";
+  static const _prefix = 'das-log';
+  static const _lastSavedFileName = '$_prefix-lastSavedFile.json';
   final _lock = Lock();
   final _senderLock = Lock();
 
@@ -31,7 +31,7 @@ class LogService {
   }
 
   Future<String> _getLogPath() async {
-    return "${(await getApplicationSupportDirectory()).path}/logs";
+    return '${(await getApplicationSupportDirectory()).path}/logs';
   }
 
   void save(LogEntry log) {
@@ -41,16 +41,16 @@ class LogService {
   void _saveInternal(LogEntry log) async {
     await _initialized;
     _lock.synchronized(() {
-      var lastSavedFile = File("$_logPath/$_lastSavedFileName");
+      var lastSavedFile = File('$_logPath/$_lastSavedFileName');
       if (!(lastSavedFile.existsSync())) {
         lastSavedFile.createSync(recursive: true);
       }
-      lastSavedFile.writeAsStringSync("${jsonEncode(log)},", mode: FileMode.append);
+      lastSavedFile.writeAsStringSync('${jsonEncode(log)},', mode: FileMode.append);
 
       // Check rollover
       if (lastSavedFile.lengthSync() > _maxFileSize || _nextRolloverTimeStamp.isBefore(DateTime.now())) {
-        Fimber.d("Rolling over log file");
-        lastSavedFile.renameSync("$_logPath/$_prefix-${DateTime.now().millisecondsSinceEpoch}.json");
+        Fimber.d('Rolling over log file');
+        lastSavedFile.renameSync('$_logPath/$_prefix-${DateTime.now().millisecondsSinceEpoch}.json');
         _nextRolloverTimeStamp = DateTime.now().add(const Duration(minutes: _rolloverTimeMinutes));
         _sendLogs();
       }
@@ -64,7 +64,7 @@ class LogService {
       Fimber.d('Found ${files.length} log files in log directory: $_logPath');
 
       for (var file in files) {
-        if (file is File && file.path.endsWith(".json") && !file.path.contains(_lastSavedFileName)) {
+        if (file is File && file.path.endsWith('.json') && !file.path.contains(_lastSavedFileName)) {
           Fimber.d('Sending ${file.path} to backend');
 
           var content = file.readAsStringSync();

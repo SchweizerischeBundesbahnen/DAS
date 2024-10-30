@@ -19,8 +19,8 @@ class _TrainSelectionState extends State<TrainSelection> {
   @override
   void initState() {
     super.initState();
-    _trainNumberController = TextEditingController(text: "7839");
-    _companyController = TextEditingController(text: "1085");
+    _trainNumberController = TextEditingController(text: '7839');
+    _companyController = TextEditingController(text: '1085');
 
     context.fahrbildCubit.updateTrainNumber(_trainNumberController.text);
     context.fahrbildCubit.updateCompany(_companyController.text);
@@ -75,7 +75,7 @@ class _TrainSelectionState extends State<TrainSelection> {
 
   Widget _errorWidget(BuildContext context, FahrbildState state) {
     if (state is SelectingFahrbildState && state.errorCode != null) {
-      return Text("${state.errorCode}", style: SBBTextStyles.mediumBold);
+      return Text('${state.errorCode}', style: SBBTextStyles.mediumBold);
     }
     return Container();
   }

@@ -3,7 +3,7 @@ import 'package:das_client/model/sfera/sfera_xml_element.dart';
 import 'package:das_client/model/sfera/train_identification.dart';
 
 class JourneyProfile extends SferaXmlElement {
-  static const String elementType = "JourneyProfile";
+  static const String elementType = 'JourneyProfile';
 
   JourneyProfile({super.type = elementType, super.attributes, super.children, super.value});
 
@@ -13,6 +13,6 @@ class JourneyProfile extends SferaXmlElement {
 
   @override
   bool validate() {
-    return validateHasChild("TrainIdentification") && super.validate();
+    return validateHasChild('TrainIdentification') && super.validate();
   }
 }

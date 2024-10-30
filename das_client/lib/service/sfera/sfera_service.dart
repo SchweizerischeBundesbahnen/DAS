@@ -57,7 +57,7 @@ class SferaService {
     _mqttStreamSubscription = _mqttService.messageStream.listen((message) async {
       var sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(message);
       if (!sferaG2bReplyMessage.validate()) {
-        Fimber.w("Validation failed for MQTT response");
+        Fimber.w('Validation failed for MQTT response');
       }
 
       var handled = false;
@@ -66,13 +66,13 @@ class SferaService {
       }
 
       if (!handled) {
-        Fimber.w("Could not handle sfera message $message");
+        Fimber.w('Could not handle sfera message $message');
       }
     });
   }
 
   Future<void> connect(OtnId otnId) async {
-    Fimber.i("Starting new connection for $otnId");
+    Fimber.i('Starting new connection for $otnId');
     this.otnId = otnId;
     _messageHandlers.clear();
     lastErrorCode = null;
@@ -92,7 +92,7 @@ class SferaService {
 
   void onTaskCompleted(SferaTask task, dynamic data) async {
     _messageHandlers.remove(task);
-    Fimber.i("Task $task completed");
+    Fimber.i('Task $task completed');
     if (task is HandshakeTask) {
       _stateSubject.add(SferaServiceState.loadingJourney);
       var requestJourneyTask =
@@ -123,7 +123,7 @@ class SferaService {
         if (segmentProfileEntity != null) {
           segments.add(segmentProfileEntity.toDomain());
         } else {
-          Fimber.w("Could not find segment profile for ${element.spId}");
+          Fimber.w('Could not find segment profile for ${element.spId}');
         }
       }
       _segmentProfilesSubject.add(segments);
@@ -138,7 +138,7 @@ class SferaService {
   void onTaskFailed(SferaTask task, ErrorCode errorCode) {
     _messageHandlers.remove(task);
     lastErrorCode = errorCode;
-    Fimber.e("Task $task failed with error code $errorCode");
+    Fimber.e('Task $task failed with error code $errorCode');
     if (task is HandshakeTask) {
       disconnect();
     }
@@ -151,12 +151,12 @@ class SferaService {
 
   static Future<MessageHeader> messageHeader({TrainIdentification? trainIdentification}) async {
     return MessageHeader.create(const Uuid().v4(), Format.sferaTimestamp(DateTime.now()),
-        await DeviceIdInfo.getDeviceId(), "TMS", "1085", "0085",
+        await DeviceIdInfo.getDeviceId(), 'TMS', '1085', '0085',
         trainIdentification: trainIdentification);
   }
 
   static String sferaTrain(String trainNumber, DateTime date) {
-    return "${trainNumber}_${Format.sferaDate(date)}";
+    return '${trainNumber}_${Format.sferaDate(date)}';
   }
 
   void dispose() {

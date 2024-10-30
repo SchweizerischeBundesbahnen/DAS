@@ -3,7 +3,7 @@ import 'package:das_client/logging/src/log_level.dart';
 class LogEntry {
   LogEntry(this.message, this.level, this.metadata)
       : time = DateTime.now().millisecondsSinceEpoch / 1000,
-        source = "das_client";
+        source = 'das_client';
 
   final double time;
   final String source;

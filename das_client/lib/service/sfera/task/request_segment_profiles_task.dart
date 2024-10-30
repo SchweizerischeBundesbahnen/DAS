@@ -42,7 +42,7 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfile>> {
 
     var missingSp = await findMissingSegmentProfiles();
     if (missingSp.isEmpty) {
-      Fimber.i("No missing SegmentProfiles found...");
+      Fimber.i('No missing SegmentProfiles found...');
       _taskCompletedCallback(this, []);
       return;
     }
@@ -56,7 +56,7 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfile>> {
     var sferaB2gRequestMessage = SferaB2gRequestMessage.create(
         await SferaService.messageHeader(trainIdentification: trainIdentification),
         b2gRequest: B2gRequest.createSPRequest(spRequests));
-    Fimber.i("Sending segment profiles request...");
+    Fimber.i('Sending segment profiles request...');
 
     startTimeout(_taskFailedCallback);
     _mqttService.publishMessage(otnId.company, SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate),
@@ -82,7 +82,7 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfile>> {
     if (replyMessage.payload != null && replyMessage.payload!.segmentProfiles.isNotEmpty) {
       stopTimeout();
       Fimber.i(
-        "Received G2bReplyPayload response with ${replyMessage.payload!.segmentProfiles.length} SegmentProfiles...",
+        'Received G2bReplyPayload response with ${replyMessage.payload!.segmentProfiles.length} SegmentProfiles...',
       );
 
       for (var element in replyMessage.payload!.segmentProfiles) {

@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Flutter iOS Build
+name: Flutter Build Test Analyze
 
 defaults:
   run:
@@ -27,7 +27,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-java@v4
@@ -40,10 +40,7 @@ jobs:
     - name: Prepare Flutter Build
       run: |
         flutter pub get
-        flutter pub run build_runner build --delete-conflicting-outputs
-    - name: Build iOS App DEV
-      run: flutter build ipa --flavor dev -t lib/main_dev.dart --release --no-codesign
-    - name: Build iOS App INTE
-      run: flutter build ipa --flavor inte -t lib/main_inte.dart --release --no-codesign
-    - name: Build iOS App PROD
-      run: flutter build ipa --flavor prod -t lib/main_prod.dart --release --no-codesign
+        flutter pub run build_runner build --delete-conflicting-outputs   
+    - run: flutter analyze 
+    - run: flutter pub run custom_lint   
+    - run: flutter test

@@ -33,7 +33,7 @@ class DasLogTree extends LogTree {
   }
 
   void _processAndroidDeviceInfo(AndroidDeviceInfo deviceInfo) {
-    metadata['systemName'] = "android";
+    metadata['systemName'] = 'android';
     metadata['systemVersion'] = deviceInfo.version.sdkInt.toString();
     metadata['model'] = deviceInfo.model;
   }
@@ -46,7 +46,7 @@ class DasLogTree extends LogTree {
 
   @override
   List<String> getLevels() {
-    return ["I", "W", "E"];
+    return ['I', 'W', 'E'];
   }
 
   @override
@@ -57,16 +57,16 @@ class DasLogTree extends LogTree {
   void logInternal(String level, String message, {String? tag, ex, StackTrace? stacktrace}) async {
     await _initialized;
 
-    final messageBuilder = StringBuffer("$tag:\t $message");
+    final messageBuilder = StringBuffer('$tag:\t $message');
 
     if (ex != null) {
-      messageBuilder.write("\n$ex");
+      messageBuilder.write('\n$ex');
     }
     if (stacktrace != null) {
       final tmpStacktrace = stacktrace.toString().split('\n');
       final stackTraceMessage =
-      tmpStacktrace.map((stackLine) => "\t$stackLine").join("\n");
-      messageBuilder.write("\n$stackTraceMessage");
+      tmpStacktrace.map((stackLine) => '\t$stackLine').join('\n');
+      messageBuilder.write('\n$stackTraceMessage');
     }
 
     _logService.save(LogEntry(messageBuilder.toString(), _getLogLevel(level), metadata));
@@ -74,15 +74,15 @@ class DasLogTree extends LogTree {
 
   LogLevel _getLogLevel(String level) {
     switch (level) {
-      case "D":
+      case 'D':
         return LogLevel.debug;
-      case "W":
+      case 'W':
         return LogLevel.warning;
-      case "E":
+      case 'E':
         return LogLevel.error;
-      case "V":
+      case 'V':
         return LogLevel.trace;
-      case "I":
+      case 'I':
       default:
         return LogLevel.info;
     }
