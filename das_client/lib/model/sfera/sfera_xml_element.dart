@@ -18,7 +18,7 @@ class SferaXmlElement {
 
   bool validateHasAttribute(String attribute) {
     if (!attributes.containsKey(attribute)) {
-      Fimber.w("Validation failed for $type because attribute $attribute is missing");
+      Fimber.w('Validation failed for $type because attribute $attribute is missing');
       return false;
     }
 
@@ -27,7 +27,7 @@ class SferaXmlElement {
 
   bool validateHasChild(String type) {
     if (childrenWithType(type).isEmpty) {
-      Fimber.w("Validation failed for ${this.type} because it has no child of type $type");
+      Fimber.w('Validation failed for ${this.type} because it has no child of type $type');
       return false;
     }
 
@@ -36,7 +36,7 @@ class SferaXmlElement {
 
   bool validateHasChildOfType<T>() {
     if (children.whereType<T>().isEmpty) {
-      Fimber.w("Validation failed for $type because it has no child of type ${T.toString()}");
+      Fimber.w('Validation failed for $type because it has no child of type ${T.toString()}');
       return false;
     }
 
@@ -58,7 +58,7 @@ class SferaXmlElement {
     }
 
     if (XmlEnum.valueOf(allValues, attributes[attribute]!) == null) {
-      Fimber.w("Validation failed for $type because attribute $attribute could not be mapped to Enum ${T.toString()}");
+      Fimber.w('Validation failed for $type because attribute $attribute could not be mapped to Enum ${T.toString()}');
     }
 
     return true;

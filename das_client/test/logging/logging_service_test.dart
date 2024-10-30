@@ -28,7 +28,7 @@ void main() {
 
   setUp(() async {
     PathProviderPlatform.instance = MockPathProviderPlatform();
-    logDirectory = Directory("${(await getApplicationSupportDirectory()).path}/logs");
+    logDirectory = Directory('${(await getApplicationSupportDirectory()).path}/logs');
     logDirectory.createSync(recursive: true);
     logDirectory.listSync().forEach((element) {
       element.deleteSync();
@@ -43,7 +43,7 @@ void main() {
     var files = logDirectory.listSync();
     expect(files, hasLength(0));
 
-    var logEntry = LogEntry("Test message", LogLevel.info, {});
+    var logEntry = LogEntry('Test message', LogLevel.info, {});
     loggingService.save(logEntry);
     await Future.delayed(const Duration(milliseconds: 30));
 
@@ -57,13 +57,13 @@ void main() {
     var files = logDirectory.listSync();
     expect(files, hasLength(0));
 
-    var logEntry = LogEntry("Test message", LogLevel.fatal, {});
+    var logEntry = LogEntry('Test message', LogLevel.fatal, {});
     loggingService.save(logEntry);
     await Future.delayed(const Duration(milliseconds: 30));
 
     files = logDirectory.listSync();
     expect(files, hasLength(1));
-    expect((files[0] as File).readAsStringSync(), "${jsonEncode(logEntry)},");
+    expect((files[0] as File).readAsStringSync(), '${jsonEncode(logEntry)},');
   });
 
   test('Test writes multiple logs to same file', () async {
@@ -72,10 +72,10 @@ void main() {
     var files = logDirectory.listSync();
     expect(files, hasLength(0));
 
-    loggingService.save(LogEntry("Test message", LogLevel.info, {}));
-    loggingService.save(LogEntry("Test message 2", LogLevel.error, {}));
-    loggingService.save(LogEntry("Test message 3", LogLevel.warning, {}));
-    loggingService.save(LogEntry("Test message 4", LogLevel.debug, {}));
+    loggingService.save(LogEntry('Test message', LogLevel.info, {}));
+    loggingService.save(LogEntry('Test message 2', LogLevel.error, {}));
+    loggingService.save(LogEntry('Test message 3', LogLevel.warning, {}));
+    loggingService.save(LogEntry('Test message 4', LogLevel.debug, {}));
     await Future.delayed(const Duration(milliseconds: 30));
 
     files = logDirectory.listSync();
@@ -83,7 +83,7 @@ void main() {
   });
 
   test('Test log entry json encode & decode', () async {
-    final logEntry = LogEntry("Test message", LogLevel.info, {'version': "0.1", 'systemName': "unitTests"});
+    final logEntry = LogEntry('Test message', LogLevel.info, {'version': '0.1', 'systemName': 'unitTests'});
     final logEntryDecoded = LogEntry.fromJson(jsonDecode(jsonEncode(logEntry)));
 
     expect(logEntryDecoded.message, logEntry.message);
@@ -99,7 +99,7 @@ void main() {
 
     var files = logDirectory.listSync();
     expect(files, hasLength(0));
-    final logEntry = LogEntry("Test message", LogLevel.info, {'version': "0.1", 'systemName': "unitTests"});
+    final logEntry = LogEntry('Test message', LogLevel.info, {'version': '0.1', 'systemName': 'unitTests'});
     loggingService.save(logEntry);
 
     await Future.delayed(const Duration(milliseconds: 20));
@@ -125,7 +125,7 @@ void main() {
 
     var files = logDirectory.listSync();
     expect(files, hasLength(0));
-    final logEntry = LogEntry("Test message", LogLevel.info, {'version': "0.1", 'systemName': "unitTests"});
+    final logEntry = LogEntry('Test message', LogLevel.info, {'version': '0.1', 'systemName': 'unitTests'});
     loggingService.save(logEntry);
 
     await Future.delayed(const Duration(milliseconds: 20));
@@ -151,7 +151,7 @@ void main() {
 
     var files = logDirectory.listSync();
     expect(files, hasLength(0));
-    final logEntry = LogEntry("Test message", LogLevel.info, {'version': "0.1", 'systemName': "unitTests"});
+    final logEntry = LogEntry('Test message', LogLevel.info, {'version': '0.1', 'systemName': 'unitTests'});
     loggingService.save(logEntry);
 
     await Future.delayed(const Duration(milliseconds: 20));

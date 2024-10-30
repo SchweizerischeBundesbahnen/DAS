@@ -4,7 +4,7 @@ import 'package:isar/isar.dart';
 
 part 'segment_profile_entity.g.dart';
 
-@Collection(accessor: "segmentProfile")
+@Collection(accessor: 'segmentProfile')
 class SegmentProfileEntity {
   SegmentProfileEntity(
       {required this.id,

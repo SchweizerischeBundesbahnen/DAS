@@ -24,7 +24,7 @@ class IntegrationtestAuthenticator implements Authenticator {
 
   @override
   Future<String> userId({String? tokenId}) async {
-    return "tester@testeee.com";
+    return 'tester@testeee.com';
   }
 
   OidcToken _token() {

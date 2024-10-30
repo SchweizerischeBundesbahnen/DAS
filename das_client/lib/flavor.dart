@@ -57,7 +57,7 @@ enum Flavor {
 
 const _authenticatorConfigTmsDev = AuthenticatorConfig(
   discoveryUrl:
-      "https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0/.well-known/openid-configuration",
+      'https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0/.well-known/openid-configuration',
   clientId: '8af8281c-4f1d-47b5-ad77-526b1da61b2b',
   redirectUrl: 'ch.sbb.das://sbbauth/redirect',
   tokenSpecs: TokenSpecProvider([
@@ -70,7 +70,7 @@ const _authenticatorConfigTmsDev = AuthenticatorConfig(
 );
 
 const _authenticatorConfigMockDev = AuthenticatorConfig(
-  discoveryUrl: "https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration",
+  discoveryUrl: 'https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration',
   clientId: '6025180f-123b-4f2f-9703-16e08fc221f0',
   redirectUrl: 'ch.sbb.das://sbbauth/redirect',
   tokenSpecs: TokenSpecProvider([
@@ -83,7 +83,7 @@ const _authenticatorConfigMockDev = AuthenticatorConfig(
 );
 
 const _authenticatorConfigInte = AuthenticatorConfig(
-  discoveryUrl: "https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration",
+  discoveryUrl: 'https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration',
   clientId: '6025180f-123b-4f2f-9703-16e08fc221f0',
   redirectUrl: 'ch.sbb.das://sbbauth/redirect',
   tokenSpecs: TokenSpecProvider([
@@ -96,7 +96,7 @@ const _authenticatorConfigInte = AuthenticatorConfig(
 );
 
 const _authenticatorConfigProd = AuthenticatorConfig(
-  discoveryUrl: "https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration",
+  discoveryUrl: 'https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration',
   clientId: '6025180f-123b-4f2f-9703-16e08fc221f0',
   redirectUrl: 'ch.sbb.das://sbbauth/redirect',
   tokenSpecs: TokenSpecProvider([

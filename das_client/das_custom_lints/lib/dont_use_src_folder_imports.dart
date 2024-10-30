@@ -22,20 +22,20 @@ class DontUseSrcFolderImports extends DartLintRule {
     CustomLintContext context,
   ) {
 
-    // A call back fn that runs on all variable declarations in a file
+    // A call back fn that runs on all import declarations in a file
     context.registry.addImportDirective((importDirective) {
       var importUri = importDirective.uri.stringValue;
 
       if (importUri == null || !importUri.contains('/src/')) return;
 
       var filePath = importDirective.element!.source.fullName;
-      if (!filePath.contains("/lib/")) return;
+      if (!filePath.contains('/lib/')) return;
 
-      importUri = importUri.substring(importUri.indexOf("/") + 1);
-      filePath = filePath.substring(filePath.indexOf("/lib/") + 5);
+      importUri = importUri.substring(importUri.indexOf('/') + 1);
+      filePath = filePath.substring(filePath.indexOf('/lib/') + 5);
 
-      final importParts = importUri.split("/src/");
-      final fileParts = filePath.split("/src/");
+      final importParts = importUri.split('/src/');
+      final fileParts = filePath.split('/src/');
       if (fileParts[0].startsWith(importParts[0])) return;
 
       // report a lint error with the `code` and the respective import directive

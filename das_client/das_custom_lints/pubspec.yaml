@@ -9,4 +9,3 @@ dependencies:
   analyzer: ^6.7.0
   analyzer_plugin: ^0.11.2
   custom_lint_builder: ^0.7.0
-  #  path: ../../../dart_custom_lint/packages/custom_lint_builder

@@ -5,7 +5,7 @@ import 'package:das_client/model/sfera/message_header.dart';
 import 'package:das_client/model/sfera/sfera_xml_element.dart';
 
 class SferaG2bReplyMessage extends SferaXmlElement {
-  static const String elementType = "SFERA_G2B_ReplyMessage";
+  static const String elementType = 'SFERA_G2B_ReplyMessage';
 
   SferaG2bReplyMessage({super.type = elementType, super.attributes, super.children, super.value});
 
