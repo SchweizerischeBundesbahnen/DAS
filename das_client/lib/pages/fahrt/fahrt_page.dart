@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:das_client/auth/auth_cubit.dart';
 import 'package:das_client/bloc/fahrbild_cubit.dart';
 import 'package:das_client/di.dart';
-import 'package:das_client/i18n/src/build_context_x.dart';
+import 'package:das_client/i18n/i18n.dart';
 import 'package:das_client/nav/app_router.dart';
 import 'package:das_client/nav/das_navigation_drawer.dart';
 import 'package:das_client/pages/fahrt/fahrbild/fahrbild.dart';

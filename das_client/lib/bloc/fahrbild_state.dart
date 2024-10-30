@@ -20,7 +20,7 @@ abstract class BaseFahrbildState extends FahrbildState {
 
   @override
   String toString() {
-    return "${runtimeType.toString()}(company=$company, trainNumber=$trainNumber, date=$date)";
+    return '${runtimeType.toString()}(company=$company, trainNumber=$trainNumber, date=$date)';
   }
 }
 

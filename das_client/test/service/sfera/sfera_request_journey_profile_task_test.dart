@@ -27,7 +27,7 @@ void main() {
   setUp(() {
     mqttService = MockMqttService();
     sferaRepository = MockSferaRepository();
-    otnId = OtnId.create("1085", "719", DateTime.now());
+    otnId = OtnId.create('1085', '719', DateTime.now());
   });
 
   test('Test JP request successful', () async {

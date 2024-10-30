@@ -3,7 +3,7 @@ import 'package:das_client/model/sfera/sfera_xml_element.dart';
 import 'package:das_client/model/sfera/sp_request.dart';
 
 class B2gRequest extends SferaXmlElement {
-  static const String elementType = "B2G_Request";
+  static const String elementType = 'B2G_Request';
 
   B2gRequest({super.type = elementType, super.attributes, super.children, super.value});
 

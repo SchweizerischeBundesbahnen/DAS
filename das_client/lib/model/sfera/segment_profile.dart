@@ -3,14 +3,14 @@ import 'package:das_client/model/sfera/sp_points.dart';
 import 'package:das_client/model/sfera/sp_zone.dart';
 
 class SegmentProfile extends SferaXmlElement {
-  static const String elementType = "SegmentProfile";
+  static const String elementType = 'SegmentProfile';
 
   SegmentProfile({super.type = elementType, super.attributes, super.children, super.value});
 
-  String get versionMajor => attributes["SP_VersionMajor"]!;
-  String get versionMinor => attributes["SP_VersionMinor"]!;
-  String get length => attributes["SP_Length"]!;
-  String get id => attributes["SP_ID"]!;
+  String get versionMajor => attributes['SP_VersionMajor']!;
+  String get versionMinor => attributes['SP_VersionMinor']!;
+  String get length => attributes['SP_Length']!;
+  String get id => attributes['SP_ID']!;
 
   SpZone? get zone => children.whereType<SpZone>().firstOrNull;
 
@@ -18,10 +18,10 @@ class SegmentProfile extends SferaXmlElement {
 
   @override
   bool validate() {
-    return validateHasAttribute("SP_VersionMajor") &&
-        validateHasAttribute("SP_VersionMinor") &&
-        validateHasAttribute("SP_Length") &&
-        validateHasAttribute("SP_ID") &&
+    return validateHasAttribute('SP_VersionMajor') &&
+        validateHasAttribute('SP_VersionMinor') &&
+        validateHasAttribute('SP_Length') &&
+        validateHasAttribute('SP_ID') &&
         super.validate();
   }
 }

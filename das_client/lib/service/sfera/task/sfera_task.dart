@@ -20,7 +20,7 @@ abstract class SferaTask<T> implements SferaMessageHandler {
   ) {
     timeoutTimer?.cancel();
     timeoutTimer = Timer(_timeout, () {
-      Fimber.e("Timeout reached for task $this");
+      Fimber.e('Timeout reached for task $this');
       onFailed(this, ErrorCode.sferaRequestTimeout);
     });
   }

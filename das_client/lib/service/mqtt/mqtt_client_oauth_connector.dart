@@ -14,31 +14,31 @@ class MqttClientOauthConnector implements MqttClientConnector {
 
   @override
   Future<bool> connect(MqttClient client, String company, String train) async {
-    Fimber.i("Connecting to mqtt using oauth token");
+    Fimber.i('Connecting to mqtt using oauth token');
 
-    var sferaAuthToken = await _sferaAuthService.retrieveSferaAuthToken(company, train, "active");
+    var sferaAuthToken = await _sferaAuthService.retrieveSferaAuthToken(company, train, 'active');
 
-    Fimber.i("Received sfera token=${sferaAuthToken?.substring(0, 20)}");
+    Fimber.i('Received sfera token=${sferaAuthToken?.substring(0, 20)}');
     var token = await _authenticator.token();
     var jsonWebToken = token.accessToken.toJwt();
-    var userId = jsonWebToken.payload["preferred_username"];
-    Fimber.i("Using userId=$userId");
+    var userId = jsonWebToken.payload['preferred_username'];
+    Fimber.i('Using userId=$userId');
 
     if (sferaAuthToken != null && userId != null) {
       try {
-        var mqttClientConnectionStatus = await client.connect(userId, "OAUTH~azureAd~$sferaAuthToken");
-        Fimber.i("mqttClientConnectionStatus=$mqttClientConnectionStatus");
+        var mqttClientConnectionStatus = await client.connect(userId, 'OAUTH~azureAd~$sferaAuthToken');
+        Fimber.i('mqttClientConnectionStatus=$mqttClientConnectionStatus');
 
         if (mqttClientConnectionStatus?.state == MqttConnectionState.connected) {
-          Fimber.i("Successfully connected to MQTT broker");
+          Fimber.i('Successfully connected to MQTT broker');
           return true;
         }
       } catch (e) {
-        Fimber.e("Exception during connect", ex: e);
+        Fimber.e('Exception during connect', ex: e);
       }
     }
 
-    Fimber.w("Failed to connect to MQTT broker");
+    Fimber.w('Failed to connect to MQTT broker');
     return false;
   }
 }

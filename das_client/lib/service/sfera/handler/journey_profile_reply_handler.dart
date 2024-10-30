@@ -13,7 +13,7 @@ class JourneyProfileReplyHandler implements SferaMessageHandler {
       return false;
     }
 
-    Fimber.i("Updating journey profiles...");
+    Fimber.i('Updating journey profiles...');
     for (var journeyProfile in message.payload!.journeyProfiles) {
       await _sferaRepository.saveJourneyProfile(journeyProfile);
     }

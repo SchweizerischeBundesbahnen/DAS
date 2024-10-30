@@ -4,7 +4,7 @@ import 'package:isar/isar.dart';
 
 part 'journey_profile_entity.g.dart';
 
-@Collection(accessor: "journeyProfile")
+@Collection(accessor: 'journeyProfile')
 class JourneyProfileEntity {
   JourneyProfileEntity(
       {required this.id,

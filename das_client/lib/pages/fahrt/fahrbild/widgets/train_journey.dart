@@ -39,11 +39,11 @@ class TrainJourney extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: [
-                        Text(timingPoint.attributes["TP_PlannedLatestArrivalTime"] ?? ""),
+                        Text(timingPoint.attributes['TP_PlannedLatestArrivalTime'] ?? ''),
                         const SizedBox(
                           width: sbbDefaultSpacing,
                         ),
-                        Text(tp?.names.first.name ?? "unkown"),
+                        Text(tp?.names.first.name ?? 'unkown'),
                       ],
                     ),
                   );

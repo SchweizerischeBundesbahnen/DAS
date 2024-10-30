@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:core';
 
 import 'package:das_client/auth/authenticator.dart';
-import 'package:das_client/logging/src/log_entry.dart';
+import 'package:das_client/logging/logging_component.dart';
 import 'package:fimber/fimber.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,7 +15,7 @@ class BackendService {
         _baseUrl = baseUrl;
 
   Future<bool> sendLogs(List<LogEntry> logs) async {
-    Fimber.i("Trying to send logs to backend...");
+    Fimber.i('Trying to send logs to backend...');
     final url = Uri.parse('$_baseUrl/api/v1/logging/logs');
 
     var authToken = await _authenticator.token();
@@ -29,10 +29,10 @@ class BackendService {
 
     var statusCode = response.statusCode;
     if (statusCode >= 200 && statusCode < 300) {
-      Fimber.i("Successfully sent logs to backend");
+      Fimber.i('Successfully sent logs to backend');
       return true;
     } else {
-      Fimber.w("Failed to send logs to backend. StatusCode=$statusCode");
+      Fimber.w('Failed to send logs to backend. StatusCode=$statusCode');
       return false;
     }
   }

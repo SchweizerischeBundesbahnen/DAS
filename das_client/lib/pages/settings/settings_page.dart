@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:das_client/i18n/src/build_context_x.dart';
+import 'package:das_client/i18n/i18n.dart';
 import 'package:das_client/nav/das_navigation_drawer.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
