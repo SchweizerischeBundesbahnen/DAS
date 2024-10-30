@@ -1,5 +1,5 @@
-import 'package:das_client/pages/fahrbild/widgets/header/abfahrtserlaubnis.dart';
-import 'package:das_client/pages/fahrbild/widgets/header/radio_channel.dart';
+import 'package:das_client/pages/fahrt/fahrbild/widgets/header/abfahrtserlaubnis.dart';
+import 'package:das_client/pages/fahrt/fahrbild/widgets/header/radio_channel.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 

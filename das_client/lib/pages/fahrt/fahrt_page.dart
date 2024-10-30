@@ -5,14 +5,15 @@ import 'package:das_client/di.dart';
 import 'package:das_client/i18n/src/build_context_x.dart';
 import 'package:das_client/nav/app_router.dart';
 import 'package:das_client/nav/das_navigation_drawer.dart';
-import 'package:das_client/pages/train_selection/widgets/train_selection.dart';
+import 'package:das_client/pages/fahrt/fahrbild/fahrbild.dart';
+import 'package:das_client/pages/fahrt/train_selection/train_selection.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 @RoutePage()
-class TrainSelectionPage extends StatelessWidget {
-  const TrainSelectionPage({super.key});
+class FahrtPage extends StatelessWidget {
+  const FahrtPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +39,6 @@ class FahrtPageContent extends StatelessWidget {
   SBBHeader _appBar(BuildContext context) {
     return SBBHeader(
       title: context.l10n.c_app_name,
-      leadingWidget: Builder(
-        builder: (context) => IconButton(
-          icon: const Icon(SBBIcons.hamburger_menu_small),
-          onPressed: () => Scaffold.of(context).openDrawer(),
-        ),
-      ),
       actions: [
         IconButton(
           icon: const Icon(SBBIcons.exit_small),
@@ -69,19 +64,16 @@ class FahrtPageContent extends StatelessWidget {
   }
 
   Widget _content() {
-    return Padding(
-      padding: const EdgeInsets.all(sbbDefaultSpacing),
-      child: BlocBuilder<FahrbildCubit, FahrbildState>(
-        builder: (context, state) {
-          if (state is SelectingFahrbildState) {
-            return const TrainSelection();
-          } else if (state is FahrbildLoadedState) {
-            // TODO: unsexy, as Listener doesn't use initial state.
-            context.router.replace(const FahrbildRoute());
-          }
+    return BlocBuilder<FahrbildCubit, FahrbildState>(
+      builder: (context, state) {
+        if (state is SelectingFahrbildState) {
+          return const TrainSelection();
+        } else if (state is FahrbildLoadedState) {
+          return const Fahrbild();
+        } else {
           return const Center(child: CircularProgressIndicator());
-        },
-      ),
+        }
+      },
     );
   }
 }

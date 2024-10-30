@@ -1,5 +1,5 @@
-import 'package:das_client/pages/fahrbild/widgets/header/main_container.dart';
-import 'package:das_client/pages/fahrbild/widgets/header/time_container.dart';
+import 'package:das_client/pages/fahrt/fahrbild/widgets/header/main_container.dart';
+import 'package:das_client/pages/fahrt/fahrbild/widgets/header/time_container.dart';
 import 'package:flutter/material.dart';
 
 class Header extends StatelessWidget {
