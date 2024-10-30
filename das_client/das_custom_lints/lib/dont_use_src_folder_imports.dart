@@ -29,6 +29,7 @@ class DontUseSrcFolderImports extends DartLintRule {
       if (importUri == null || !importUri.contains('/src/')) return;
 
       var filePath = importDirective.element!.source.fullName;
+      // ignore imports from outside the lib folder (mainly tests)
       if (!filePath.contains('/lib/')) return;
 
       importUri = importUri.substring(importUri.indexOf('/') + 1);
@@ -36,6 +37,8 @@ class DontUseSrcFolderImports extends DartLintRule {
 
       final importParts = importUri.split('/src/');
       final fileParts = filePath.split('/src/');
+
+      // allow it if its part of the same package
       if (fileParts[0].startsWith(importParts[0])) return;
 
       // report a lint error with the `code` and the respective import directive
