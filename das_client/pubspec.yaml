@@ -102,7 +102,6 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
   custom_lint:
-# path: ../../dart_custom_lint/packages/custom_lint
   das_custom_lints:
     path: ./das_custom_lints
 
