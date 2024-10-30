@@ -16,9 +16,7 @@ import 'package:fimber/fimber.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  setUp(() {
-    Fimber.plantTree(DebugTree());
-  });
+  Fimber.plantTree(DebugTree());
 
   test('Test child elements are unmodifiable', () async {
     final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');

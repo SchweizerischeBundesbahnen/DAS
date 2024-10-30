@@ -1,6 +1,5 @@
 import 'package:das_client/model/sfera/b2g_request.dart';
 import 'package:das_client/model/sfera/journey_profile.dart';
-import 'package:das_client/model/sfera/jp_request.dart';
 import 'package:das_client/model/sfera/otn_id.dart';
 import 'package:das_client/model/sfera/segment_profile.dart';
 import 'package:das_client/model/sfera/segment_profile_list.dart';

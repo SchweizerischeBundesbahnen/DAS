@@ -7,8 +7,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
 import 'di.dart';
-import 'test/fahrbild_test.dart' as FahrbildTests;
-import 'test/navigation_test.dart' as NavigationTests;
+import 'test/fahrbild_test.dart' as fahrbild_tests;
+import 'test/navigation_test.dart' as navigation_tests;
 
 AppLocalizations l10n = AppLocalizationsDe();
 
@@ -16,8 +16,8 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   Fimber.plantTree(DebugTree());
 
-  FahrbildTests.main();
-  NavigationTests.main();
+  fahrbild_tests.main();
+  navigation_tests.main();
 }
 
 Future<void> prepareAndStartApp(WidgetTester tester) async {
