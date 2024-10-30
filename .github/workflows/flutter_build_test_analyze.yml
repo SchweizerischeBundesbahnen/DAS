@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Flutter Android Build
+name: Flutter Build Test Analyze
 
 defaults:
   run:
@@ -38,22 +38,9 @@ jobs:
       with:
         flutter-version: '3.24.3'
     - name: Prepare Flutter Build
-      env:
-        ANDROID_KEYSTORE_STRING: ${{ secrets.ANDROID_KEYSTORE }}
-        ANDROID_KEYSTORE: ${{ github.workspace }}/das_client/android/das.keystore
-        ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-        ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
       run: |
-        echo $ANDROID_KEYSTORE_STRING | base64 -d > $ANDROID_KEYSTORE
-        echo "ANDROID_KEYSTORE=$ANDROID_KEYSTORE" >> "$GITHUB_ENV"
-        echo "ANDROID_KEYSTORE_PASSWORD=$ANDROID_KEYSTORE_PASSWORD" >> "$GITHUB_ENV"
-        echo "ANDROID_KEY_ALIAS=$ANDROID_KEY_ALIAS" >> "$GITHUB_ENV"
-        echo "ANDROID_KEY_PASSWORD=$ANDROID_KEY_PASSWORD" >> "$GITHUB_ENV"
         flutter pub get
-        flutter pub run build_runner build --delete-conflicting-outputs
+        flutter pub run build_runner build --delete-conflicting-outputs   
+    - run: flutter analyze 
     - run: flutter pub run custom_lint   
     - run: flutter test
-    - run: flutter build appbundle --flavor dev -t lib/main_dev.dart
-    - run: flutter build appbundle --flavor inte -t lib/main_inte.dart
-    - run: flutter build appbundle --flavor prod -t lib/main_prod.dart
