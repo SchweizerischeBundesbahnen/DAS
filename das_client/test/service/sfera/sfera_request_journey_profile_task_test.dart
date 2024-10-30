@@ -5,7 +5,6 @@ import 'package:das_client/model/sfera/sfera_g2b_reply_message.dart';
 import 'package:das_client/model/sfera/sfera_reply_parser.dart';
 import 'package:das_client/repo/sfera_repository.dart';
 import 'package:das_client/service/mqtt/mqtt_service.dart';
-import 'package:das_client/service/sfera/task/handshake_task.dart';
 import 'package:das_client/service/sfera/task/request_journey_profile_task.dart';
 import 'package:das_client/util/error_code.dart';
 import 'package:fimber/fimber.dart';
@@ -23,9 +22,9 @@ void main() {
   late MockMqttService mqttService;
   late MockSferaRepository sferaRepository;
   late OtnId otnId;
+  Fimber.plantTree(DebugTree());
 
   setUp(() {
-    Fimber.plantTree(DebugTree());
     mqttService = MockMqttService();
     sferaRepository = MockSferaRepository();
     otnId = OtnId.create("1085", "719", DateTime.now());
