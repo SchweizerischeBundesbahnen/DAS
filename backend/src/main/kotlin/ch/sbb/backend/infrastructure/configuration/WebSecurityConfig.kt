@@ -37,6 +37,7 @@ class WebSecurityConfig {
                 authorize("/swagger-ui/**", permitAll)
                 authorize("/v3/api-docs/**", permitAll)
                 authorize("/actuator/health/**", permitAll)
+                authorize("/error", authenticated)
                 authorize("/api/**", hasRole("admin"))
                 authorize("/**", denyAll)
             }
