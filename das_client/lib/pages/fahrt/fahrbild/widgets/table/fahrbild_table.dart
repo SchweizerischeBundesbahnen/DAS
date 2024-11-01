@@ -36,7 +36,7 @@ class FahrbildTable extends StatelessWidget {
       bottomMargin: sbbDefaultSpacing * 2,
       border: const TableBorder(
         bottom: BorderSide(width: 1.0, color: SBBColors.cloud),
-        horizontalInside: BorderSide(width: 1, color: SBBColors.cloud),
+        horizontalInside: BorderSide(width: 0.3, color: SBBColors.cloud),
       ),
       columns: columns,
       rows: rows,

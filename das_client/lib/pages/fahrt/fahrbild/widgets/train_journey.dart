@@ -49,7 +49,7 @@ class TrainJourney extends StatelessWidget {
   ) {
     return FahrbildTable(
       columns: [
-        _dataColumn('', fixedWidth: 10), // Used for height workaround
+        _dataColumn('', fixedWidth: 0), // Used for height workaround
         _dataColumn('km', fixedWidth: 80, centerLabel: false),
         _dataColumn('an/ab', fixedWidth: 100, centerLabel: false),
         _dataColumn('', fixedWidth: 48), // route line
@@ -76,7 +76,7 @@ class TrainJourney extends StatelessWidget {
           active: index == 1,
           km: '10.2',
           bpName: tp?.attributes['TP_ID'] ?? 'Unknown',
-          track: 'E25\nTest\nTest',
+          track: 'E25',
           time: _parseTime(timingPoint),
         );
       }),
