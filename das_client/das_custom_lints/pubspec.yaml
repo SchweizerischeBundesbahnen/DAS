@@ -1,0 +1,11 @@
+name: das_custom_lints
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+
+dependencies:
+  analyzer: ^6.7.0
+  analyzer_plugin: ^0.11.2
+  custom_lint_builder: ^0.7.0

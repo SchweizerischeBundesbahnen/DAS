@@ -1,34 +1,39 @@
+import 'dart:convert';
 import 'dart:core';
 
 import 'package:das_client/auth/authenticator.dart';
+import 'package:das_client/logging/logging_component.dart';
 import 'package:fimber/fimber.dart';
 import 'package:http/http.dart' as http;
 
 class BackendService {
   final Authenticator _authenticator;
-  final String _backendUrl;
+  final String _baseUrl;
 
-  BackendService({required Authenticator authenticator, required String backendUrl})
+  BackendService({required Authenticator authenticator, required String baseUrl})
       : _authenticator = authenticator,
-        _backendUrl = backendUrl;
+        _baseUrl = baseUrl;
 
-  Future<String?> retrieveSferaAuthToken(String ru, String train, String role) async {
-
-    Fimber.i("Trying to fetch sfera auth token for ru=$ru train=$train role=$role...");
-    final url = Uri.parse('$_backendUrl/customClaim/requestToken?ru=$ru&train=$train&role=$role');
+  Future<bool> sendLogs(List<LogEntry> logs) async {
+    Fimber.i('Trying to send logs to backend...');
+    final url = Uri.parse('$_baseUrl/api/v1/logging/logs');
 
     var authToken = await _authenticator.token();
 
-    var response = await http.get(url, headers: {
-      'Authorization': '${authToken.tokenType} ${authToken.accessToken.value}',
-    });
+    var response = await http.post(url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': '${authToken.tokenType} ${authToken.accessToken.value}',
+        },
+        body: jsonEncode(logs));
+
     var statusCode = response.statusCode;
     if (statusCode >= 200 && statusCode < 300) {
-      Fimber.i("Successfully retrieved sfera auth token");
-      return response.body;
+      Fimber.i('Successfully sent logs to backend');
+      return true;
     } else {
-      Fimber.w("Failed to retrieved sfera auth token. StatusCode=$statusCode");
-      return null;
+      Fimber.w('Failed to send logs to backend. StatusCode=$statusCode');
+      return false;
     }
   }
 }

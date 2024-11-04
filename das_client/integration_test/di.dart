@@ -21,11 +21,11 @@ class IntegrationTestDI {
       GetIt.I.registerTokenSpecProvider();
       GetIt.I.registerOidcClient();
       _registerIntegrationTestAuthenticator();
-      GetIt.I.registerBackendService();
+      GetIt.I.registerSferaAuthService();
       _registerMqttClientConnector();
       GetIt.I.registerMqttService();
       GetIt.I.registerRepositories();
-      GetIt.I.registerServices();
+      GetIt.I.registerSferaService();
       _initialized = true;
     }
     return GetIt.I.allReady();

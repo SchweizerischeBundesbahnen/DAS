@@ -13,10 +13,11 @@ class App extends StatelessWidget {
     return MaterialApp.router(
       themeMode: ThemeMode.system,
       theme: SBBTheme.light(
-          baseStyle: SBBBaseStyle(
-        primaryColor: SBBColors.royal,
-        primaryColorDark: SBBColors.royal125,
-      )),
+        baseStyle: SBBBaseStyle(
+          primaryColor: SBBColors.royal,
+          primaryColorDark: SBBColors.royal125,
+        ),
+      ),
       //darkTheme: SBBTheme.dark(),
       localizationsDelegates: localizationDelegates,
       supportedLocales: supportedLocales,

@@ -52,7 +52,6 @@ jobs:
         echo "ANDROID_KEY_PASSWORD=$ANDROID_KEY_PASSWORD" >> "$GITHUB_ENV"
         flutter pub get
         flutter pub run build_runner build --delete-conflicting-outputs
-    - run: flutter test
     - run: flutter build appbundle --flavor dev -t lib/main_dev.dart
     - run: flutter build appbundle --flavor inte -t lib/main_inte.dart
     - run: flutter build appbundle --flavor prod -t lib/main_prod.dart

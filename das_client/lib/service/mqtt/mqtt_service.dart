@@ -12,6 +12,7 @@ import 'package:rxdart/rxdart.dart';
 class MqttService {
   final String _mqttUrl;
   final MqttClientConnector _mqttClientConnector;
+  final String prefix;
 
   late MqttServerClient _client;
   late String _deviceId;
@@ -22,7 +23,7 @@ class MqttService {
 
   Stream<String> get messageStream => _messageSubject.stream;
 
-  MqttService({required String mqttUrl, required MqttClientConnector mqttClientConnector})
+  MqttService({required String mqttUrl, required MqttClientConnector mqttClientConnector, required this.prefix})
       : _mqttUrl = mqttUrl,
         _mqttClientConnector = mqttClientConnector {
     _init();
@@ -35,7 +36,7 @@ class MqttService {
   }
 
   void disconnect() {
-    Fimber.i("Disconnecting from MQTT broker");
+    Fimber.i('Disconnecting from MQTT broker');
     _client.disconnect();
   }
 
@@ -44,9 +45,9 @@ class MqttService {
       _client.disconnect();
     }
     if (await _mqttClientConnector.connect(_client, company, train)) {
-      _client.subscribe("90940/2/G2B/$company/$train", MqttQos.exactlyOnce);
-      _client.subscribe("90940/2/G2B/$company/$train/$_deviceId", MqttQos.exactlyOnce);
-      Fimber.i("Subscribed to topic...");
+      _client.subscribe('${prefix}90940/2/event/$company/$train', MqttQos.exactlyOnce);
+      _client.subscribe('${prefix}90940/2/G2B/$company/$train/$_deviceId', MqttQos.exactlyOnce);
+      Fimber.i("Subscribed to topic with prefix='$prefix'...");
       _startUpdateListener();
       return true;
     }
@@ -56,16 +57,16 @@ class MqttService {
 
   bool publishMessage(String company, String train, String message) {
     if (_client.connectionStatus?.state == MqttConnectionState.connected) {
-      final topic = "90940/2/B2G/$company/$train/$_deviceId";
+      final topic = '${prefix}90940/2/B2G/$company/$train/$_deviceId';
 
       final builder = MqttClientPayloadBuilder();
       builder.addString(message);
       _client.publishMessage(topic, MqttQos.exactlyOnce, builder.payload!);
 
-      Fimber.v("Published MQTT message: topic=$topic message=$message");
+      Fimber.v('Published MQTT message: topic=$topic message=$message');
       return true;
     } else {
-      Fimber.w("Failed to publish MQTT message because it is not connected");
+      Fimber.w('Failed to publish MQTT message because it is not connected');
       return false;
     }
   }
@@ -76,19 +77,19 @@ class MqttService {
       if (messageList != null) {
         for (final message in messageList) {
           Fimber.v(
-              "Received mqtt message with type=${message.runtimeType.toString()} payload=${message.payload.toString()}");
+              'Received mqtt message with type=${message.runtimeType.toString()} payload=${message.payload.toString()}');
 
           if (message.payload is MqttPublishMessage) {
             final recMess = message.payload as MqttPublishMessage;
             final decodedMessage = utf8.decode(recMess.payload.message);
-            Fimber.v("Decoded mqtt message: $decodedMessage");
+            Fimber.v('Decoded mqtt message: $decodedMessage');
             _messageSubject.add(decodedMessage);
           } else {
-            Fimber.w("Type ${message.payload.runtimeType.toString()} parsing not implemented");
+            Fimber.w('Type ${message.payload.runtimeType.toString()} parsing not implemented');
           }
         }
       } else {
-        Fimber.w("received mqtt update with messageList=null");
+        Fimber.w('received mqtt update with messageList=null');
       }
     });
   }

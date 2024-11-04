@@ -35,11 +35,11 @@ class HandshakeTask extends SferaTask {
   Future<void> _sendHandshakeRequest() async {
     var sferaTrain = SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
 
-    Fimber.i("Sending handshake request for company=${otnId.company} train=$sferaTrain");
+    Fimber.i('Sending handshake request for company=${otnId.company} train=$sferaTrain');
     var handshakeRequest = HandshakeRequest.create([
       DasOperatingModesSupported.create(
-          DasDrivingMode.goa1, DasArchitecture.boardAdviceCalculation, DasConnectivity.connected),
-    ], relatedTrainRequestType: RelatedTrainRequestType.ownTrainAndRelatedTrains, statusReportsEnabled: true);
+          DasDrivingMode.readOnly, DasArchitecture.boardAdviceCalculation, DasConnectivity.connected),
+    ], relatedTrainRequestType: RelatedTrainRequestType.ownTrainAndRelatedTrains, statusReportsEnabled: false);
 
     var sferaB2gRequestMessage =
         SferaB2gRequestMessage.create(await SferaService.messageHeader(), handshakeRequest: handshakeRequest);
@@ -55,17 +55,17 @@ class HandshakeTask extends SferaTask {
   Future<bool> handleMessage(SferaG2bReplyMessage message) async {
     if (message.handshakeAcknowledgement != null) {
       stopTimeout();
-      Fimber.i("Received handshake acknowledgment");
+      Fimber.i('Received handshake acknowledgment');
       _taskCompletedCallback(this, null);
       return true;
     } else if (message.handshakeReject != null) {
       stopTimeout();
-      Fimber.w("Received handshake reject with reason=${message.handshakeReject?.handshakeRejectReason?.toString()}");
+      Fimber.w('Received handshake reject with reason=${message.handshakeReject?.handshakeRejectReason?.toString()}');
       _taskFailedCallback(this, ErrorCode.sferaHandshakeRejected);
       _mqttService.disconnect();
       return true;
     } else {
-      Fimber.w("Ignoring response because is does not contain handshake");
+      Fimber.w('Ignoring response because is does not contain handshake');
       return false;
     }
   }

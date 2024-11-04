@@ -8,6 +8,14 @@
       "matchManagers": ["pub"],
       "groupName": "auto_route",
       "matchPackagePrefixes": ["auto_route", "auto_route_generator"]
+    },
+    {
+      "matchPackagePatterns": ["^@angular/"],
+      "matchUpdateTypes": ["patch"],
+      "automerge": true
     }
-  ]
+  ],
+  "schedule": ["before 7am on Thursday"],
+  "prHourlyLimit": 0,
+  "prConcurrentLimit": 0
 }

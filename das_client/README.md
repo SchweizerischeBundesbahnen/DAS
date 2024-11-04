@@ -64,6 +64,12 @@ The prefix is mandatory and indicates the scope of the term. Valid prefixes are:
 
 The context is optional and indicate where a localization is used. When a localization is scoped to a page or widget, the context MUST be equal to the name of that page or widget. For example, localizations used on the login page would start with `p_login_`.
 
+To generate the localization code, run the following command:
+
+```shell
+fvm flutter gen-l10n
+```
+
 ## Code style
 
 This application uses the code style defined in the [Flutter Wiki][2]. The

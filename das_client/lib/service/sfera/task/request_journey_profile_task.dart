@@ -42,8 +42,8 @@ class RequestJourneyProfileTask extends SferaTask<JourneyProfile> {
 
     var sferaB2gRequestMessage = SferaB2gRequestMessage.create(
         await SferaService.messageHeader(trainIdentification: trainIdentification),
-        b2gRequest: B2gRequest.create(jpRequest: jpRequest));
-    Fimber.i("Sending journey profile request...");
+        b2gRequest: B2gRequest.createJPRequest(jpRequest));
+    Fimber.i('Sending journey profile request...');
     _mqttService.publishMessage(otnId.company, SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate),
         sferaB2gRequestMessage.buildDocument().toString());
   }
@@ -53,7 +53,7 @@ class RequestJourneyProfileTask extends SferaTask<JourneyProfile> {
     if (replyMessage.payload != null && replyMessage.payload!.journeyProfiles.isNotEmpty) {
       stopTimeout();
       Fimber.i(
-        "Received G2bReplyPayload response with ${replyMessage.payload!.journeyProfiles.length} JourneyProfiles and ${replyMessage.payload!.segmentProfiles.length} SegmentProfiles...",
+        'Received G2bReplyPayload response with ${replyMessage.payload!.journeyProfiles.length} JourneyProfiles and ${replyMessage.payload!.segmentProfiles.length} SegmentProfiles...',
       );
 
       for (var element in replyMessage.payload!.segmentProfiles) {

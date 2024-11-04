@@ -4,7 +4,7 @@ import 'package:das_client/model/sfera/timing_point.dart';
 import 'package:das_client/model/sfera/virtual_balise.dart';
 
 class SpPoints extends SferaXmlElement {
-  static const String elementType = "SP_Points";
+  static const String elementType = 'SP_Points';
 
   SpPoints({super.type = elementType, super.attributes, super.children, super.value});
 

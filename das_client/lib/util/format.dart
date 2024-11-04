@@ -5,13 +5,13 @@ class Format {
 
   static String sferaDate(DateTime date) {
     final localDate = date.toLocal();
-    final dateFormat = DateFormat("yyyy-MM-dd");
+    final dateFormat = DateFormat('yyyy-MM-dd');
     return dateFormat.format(localDate);
   }
 
   static String sferaTimestamp(DateTime date) {
     final localDate = date.toLocal();
-    final dateFormat = DateFormat("yyyy-MM-ddTHH:mm:ssZ");
+    final dateFormat = DateFormat("yyyy-MM-ddTHH:mm:ss'Z'");
     return dateFormat.format(localDate);
   }
 

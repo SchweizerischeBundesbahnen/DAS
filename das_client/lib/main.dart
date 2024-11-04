@@ -1,15 +1,15 @@
 import 'package:das_client/app.dart';
 import 'package:das_client/auth/auth_cubit.dart';
-import 'package:das_client/bloc/fahrbild_cubit.dart';
 import 'package:das_client/di.dart';
 import 'package:das_client/flavor.dart';
+import 'package:das_client/logging/logging_component.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future<void> start(Flavor flavor) async {
   WidgetsFlutterBinding.ensureInitialized();
-  await _initFimber();
+  await _initLogging();
   await _initDependencyInjection(flavor);
   runDasApp();
 }
@@ -17,16 +17,15 @@ Future<void> start(Flavor flavor) async {
 Future<void> runDasApp() async {
   runApp(MultiBlocProvider(
     providers: [
-      BlocProvider(create: (context) => AuthCubit(DI.get())..init()),
-      BlocProvider(create: (context) => FahrbildCubit(sferaService: DI.get()))
+      BlocProvider(create: (context) => AuthCubit()..init()),
     ],
     child: App(),
   ));
 }
 
-Future<void> _initFimber() async {
-  final tree = DebugTree(useColors: true);
-  Fimber.plantTree(tree);
+Future<void> _initLogging() async {
+  Fimber.plantTree(DebugTree(useColors: false));
+  Fimber.plantTree(LoggingComponent.createDasLogTree());
 }
 
 Future<void> _initDependencyInjection(Flavor flavor) async {
