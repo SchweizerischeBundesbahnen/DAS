@@ -1,9 +1,5 @@
 package ch.sbb.sferamock.messages.common;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import javax.xml.transform.stream.StreamResult;
@@ -12,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ResourceUtils;
 
 @Component
 public class XmlHelper {
@@ -35,10 +30,7 @@ public class XmlHelper {
         }
     }
 
-    public Object xmlToObject(String filePath) throws IOException {
-        File file = ResourceUtils.getFile(filePath);
-        InputStream in = new FileInputStream(file);
-        String xmlPayload = new String(in.readAllBytes());
-        return jaxb2Marshaller.unmarshal(new StreamSource(new StringReader(xmlPayload)));
+    public Object xmlToObject(String xml) {
+        return jaxb2Marshaller.unmarshal(new StreamSource(new StringReader(xml)));
     }
 }

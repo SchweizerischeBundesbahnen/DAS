@@ -22,3 +22,8 @@
 
 TODO: 29137 Lenzburg - Luzern https://miro.com/app/board/uXjVKK4zJFk=/?moveToWidget=3458764596975113381&cot=14
 
+## Add new Scenario
+To create a new scenario some resources need to be added  
+1. add journey profile named `SFERA_JP_<train number>` to `static_sfera_resources/jp`
+2. add corresponding segment profiles named `SFERA_SP_<train number>_<sp id>` to `static_sfera_resources/sp`
+
