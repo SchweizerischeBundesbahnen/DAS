@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
 import 'di.dart';
-import 'test/fahrbild_test.dart' as fahrbild_tests;
+import 'test/train_journey_test.dart' as train_journey_tests;
 import 'test/navigation_test.dart' as navigation_tests;
 
 AppLocalizations l10n = AppLocalizationsDe();
@@ -16,7 +16,7 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   Fimber.plantTree(DebugTree());
 
-  fahrbild_tests.main();
+  train_journey_tests.main();
   navigation_tests.main();
 }
 

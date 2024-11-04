@@ -1,4 +1,4 @@
-import 'package:das_client/bloc/fahrbild_cubit.dart';
+import 'package:das_client/bloc/train_journey_cubit.dart';
 import 'package:das_client/i18n/i18n.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
@@ -22,13 +22,13 @@ class _TrainSelectionState extends State<TrainSelection> {
     _trainNumberController = TextEditingController(text: '7839');
     _companyController = TextEditingController(text: '1085');
 
-    context.fahrbildCubit.updateTrainNumber(_trainNumberController.text);
-    context.fahrbildCubit.updateCompany(_companyController.text);
+    context.trainJourneyCubit.updateTrainNumber(_trainNumberController.text);
+    context.trainJourneyCubit.updateCompany(_companyController.text);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FahrbildCubit, FahrbildState>(
+    return BlocBuilder<TrainJourneyCubit, TrainJourneyState>(
       builder: (context, state) {
         return Align(
           child: SizedBox(
@@ -73,26 +73,29 @@ class _TrainSelectionState extends State<TrainSelection> {
     );
   }
 
-  Widget _errorWidget(BuildContext context, FahrbildState state) {
-    if (state is SelectingFahrbildState && state.errorCode != null) {
+  Widget _errorWidget(BuildContext context, TrainJourneyState state) {
+    if (state is SelectingTrainJourneyState && state.errorCode != null) {
       return Text('${state.errorCode}', style: SBBTextStyles.mediumBold);
     }
     return Container();
   }
 
-  Widget _loadButton(BuildContext context, FahrbildState state) {
+  Widget _loadButton(BuildContext context, TrainJourneyState state) {
     return SBBPrimaryButton(
       label: context.l10n.p_train_selection_load,
       onPressed: _canContinue(state)
           ? () {
-              context.fahrbildCubit.loadFahrbild();
+              final trainJourneyCubit = context.trainJourneyCubit;
+              if (!trainJourneyCubit.isClosed) {
+                trainJourneyCubit.loadTrainJourney();
+              }
             }
           : null,
     );
   }
 
-  bool _canContinue(FahrbildState state) {
-    if (state is SelectingFahrbildState) {
+  bool _canContinue(TrainJourneyState state) {
+    if (state is SelectingTrainJourneyState) {
       return state.trainNumber != null &&
           state.trainNumber!.isNotEmpty &&
           state.company != null &&
@@ -102,10 +105,10 @@ class _TrainSelectionState extends State<TrainSelection> {
   }
 
   void _onTrainNumberChanged(BuildContext context, String value) {
-    context.fahrbildCubit.updateTrainNumber(value);
+    context.trainJourneyCubit.updateTrainNumber(value);
   }
 
   void _onCompanyChanged(BuildContext context, String value) {
-    context.fahrbildCubit.updateCompany(value);
+    context.trainJourneyCubit.updateCompany(value);
   }
 }

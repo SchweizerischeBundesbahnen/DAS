@@ -10,13 +10,13 @@ import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'fahrbild_state.dart';
+part 'train_journey_state.dart';
 
-class FahrbildCubit extends Cubit<FahrbildState> {
-  FahrbildCubit({
+class TrainJourneyCubit extends Cubit<TrainJourneyState> {
+  TrainJourneyCubit({
     required SferaService sferaService,
   })  : _sferaService = sferaService,
-        super(SelectingFahrbildState());
+        super(SelectingTrainJourneyState());
 
   final SferaService _sferaService;
 
@@ -26,9 +26,9 @@ class FahrbildCubit extends Cubit<FahrbildState> {
 
   StreamSubscription? _stateSubscription;
 
-  void loadFahrbild() async {
+  void loadTrainJourney() async {
     final currentState = state;
-    if (currentState is SelectingFahrbildState) {
+    if (currentState is SelectingTrainJourneyState) {
       final now = DateTime.now();
       final company = currentState.company;
       final trainNumber = currentState.trainNumber;
@@ -42,7 +42,7 @@ class FahrbildCubit extends Cubit<FahrbildState> {
       _stateSubscription = _sferaService.stateStream.listen((state) {
         switch (state) {
           case SferaServiceState.connected:
-            emit(FahrbildLoadedState(company, trainNumber, now));
+            emit(TrainJourneyLoadedState(company, trainNumber, now));
             break;
           case SferaServiceState.connecting:
           case SferaServiceState.handshaking:
@@ -52,7 +52,7 @@ class FahrbildCubit extends Cubit<FahrbildState> {
             break;
           case SferaServiceState.disconnected:
           case SferaServiceState.offline:
-            emit(SelectingFahrbildState(
+            emit(SelectingTrainJourneyState(
                 company: company, trainNumber: trainNumber, errorCode: _sferaService.lastErrorCode));
             break;
         }
@@ -62,32 +62,32 @@ class FahrbildCubit extends Cubit<FahrbildState> {
   }
 
   void updateTrainNumber(String? trainNumber) {
-    if (state is SelectingFahrbildState) {
-      emit(SelectingFahrbildState(
+    if (state is SelectingTrainJourneyState) {
+      emit(SelectingTrainJourneyState(
           trainNumber: trainNumber,
-          company: (state as SelectingFahrbildState).company,
-          errorCode: (state as SelectingFahrbildState).errorCode));
+          company: (state as SelectingTrainJourneyState).company,
+          errorCode: (state as SelectingTrainJourneyState).errorCode));
     }
   }
 
   void updateCompany(String? company) {
-    if (state is SelectingFahrbildState) {
-      emit(SelectingFahrbildState(
-          trainNumber: (state as SelectingFahrbildState).trainNumber,
+    if (state is SelectingTrainJourneyState) {
+      emit(SelectingTrainJourneyState(
+          trainNumber: (state as SelectingTrainJourneyState).trainNumber,
           company: company,
-          errorCode: (state as SelectingFahrbildState).errorCode));
+          errorCode: (state as SelectingTrainJourneyState).errorCode));
     }
   }
 
   void reset() {
-    if (state is BaseFahrbildState) {
-      Fimber.i('Reseting fahrbild cubit in state $state');
-      emit(SelectingFahrbildState(
-          trainNumber: (state as BaseFahrbildState).trainNumber, company: (state as BaseFahrbildState).company));
+    if (state is BaseTrainJourneyState) {
+      Fimber.i('Reseting TrainJourney cubit in state $state');
+      emit(SelectingTrainJourneyState(
+          trainNumber: (state as BaseTrainJourneyState).trainNumber, company: (state as BaseTrainJourneyState).company));
     }
   }
 }
 
 extension ContextBlocExtension on BuildContext {
-  FahrbildCubit get fahrbildCubit => read<FahrbildCubit>();
+  TrainJourneyCubit get trainJourneyCubit => read<TrainJourneyCubit>();
 }

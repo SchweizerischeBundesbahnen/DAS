@@ -23,7 +23,7 @@ class SplashPage extends StatelessWidget {
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
         if (state is Authenticated) {
-          context.router.replace(const FahrtRoute());
+          context.router.replace(const JourneyRoute());
         } else if (state is Unauthenticated) {
           context.router.replace(const LoginRoute());
         }
