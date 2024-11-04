@@ -1,13 +1,12 @@
-import 'package:das_client/pages/fahrt/fahrbild/widgets/header/adl_notification.dart';
-import 'package:das_client/pages/fahrt/fahrbild/widgets/header/header.dart';
-import 'package:das_client/pages/fahrt/fahrbild/widgets/train_journey.dart';
+import 'package:das_client/pages/journey/train_journey/widgets/header/adl_notification.dart';
+import 'package:das_client/pages/journey/train_journey/widgets/header/header.dart';
+import 'package:das_client/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:flutter/material.dart';
 
 // TODO: handle extraLarge font sizes (diff to figma) globally.
-// TODO: discuss general naming in DEV team
 // TODO: Add testing
-class Fahrbild extends StatelessWidget {
-  const Fahrbild({super.key});
+class TrainJourneyOverview extends StatelessWidget {
+  const TrainJourneyOverview({super.key});
 
   @override
   Widget build(BuildContext context) {

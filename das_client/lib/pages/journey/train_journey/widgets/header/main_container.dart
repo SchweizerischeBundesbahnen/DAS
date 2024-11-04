@@ -1,5 +1,6 @@
-import 'package:das_client/pages/fahrt/fahrbild/widgets/header/abfahrtserlaubnis.dart';
-import 'package:das_client/pages/fahrt/fahrbild/widgets/header/radio_channel.dart';
+import 'package:das_client/pages/journey/train_journey/widgets/header/departure_authorization.dart';
+import 'package:das_client/pages/journey/train_journey/widgets/header/radio_channel.dart';
+import 'package:das_client/util/widget_extensions.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 
@@ -9,8 +10,13 @@ class MainContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SBBGroup(
-      margin: const EdgeInsetsDirectional.fromSTEB(8, 0, 8, 16),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsetsDirectional.fromSTEB(
+        sbbDefaultSpacing * 0.5,
+        0,
+        sbbDefaultSpacing * 0.5,
+        sbbDefaultSpacing,
+      ),
+      padding: const EdgeInsets.all(sbbDefaultSpacing),
       useShadow: false,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -31,7 +37,7 @@ class MainContainer extends StatelessWidget {
         children: [
           RadioChannel(),
           SizedBox(width: 48.0),
-          Abfahrtserlaubnis(),
+          DepartureAuthorization(),
         ],
       ),
     );
@@ -39,7 +45,7 @@ class MainContainer extends StatelessWidget {
 
   Widget _divider() {
     return const Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.0),
+      padding: EdgeInsets.symmetric(vertical: sbbDefaultSpacing * 0.5),
       child: Divider(height: 1.0, color: SBBColors.cloud),
     );
   }
@@ -53,7 +59,7 @@ class MainContainer extends StatelessWidget {
           const Icon(SBBIcons.route_circle_end_small),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(left: 8.0),
+              padding: const EdgeInsets.only(left: sbbDefaultSpacing * 0.5),
               child: Text('Brugg',
                   style: SBBTextStyles.largeLight.copyWith(fontSize: 24.0)),
             ),
@@ -81,15 +87,7 @@ class MainContainer extends StatelessWidget {
           icon: SBBIcons.context_menu_small,
           onPressed: () {},
         ),
-      ].withSpacing(8.0),
+      ].withSpacing(width: sbbDefaultSpacing * 0.5),
     );
-  }
-}
-
-// extensions
-
-extension _Spacing on List<Widget> {
-  withSpacing(double width) {
-    return expand((x) => [SizedBox(width: width), x]).skip(1).toList();
   }
 }

@@ -1,5 +1,6 @@
-import 'package:das_client/pages/fahrt/fahrbild/widgets/header/main_container.dart';
-import 'package:das_client/pages/fahrt/fahrbild/widgets/header/time_container.dart';
+import 'package:das_client/pages/journey/train_journey/widgets/header/main_container.dart';
+import 'package:das_client/pages/journey/train_journey/widgets/header/time_container.dart';
+import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 
 class Header extends StatelessWidget {
@@ -19,7 +20,7 @@ class Header extends StatelessWidget {
     final primary = Theme.of(context).colorScheme.secondary;
     return Container(
       color: primary,
-      height: 32.0,
+      height: sbbDefaultSpacing * 2,
     );
   }
 

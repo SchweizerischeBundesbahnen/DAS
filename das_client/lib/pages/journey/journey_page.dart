@@ -1,31 +1,31 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:das_client/auth/auth_cubit.dart';
-import 'package:das_client/bloc/fahrbild_cubit.dart';
+import 'package:das_client/bloc/train_journey_cubit.dart';
 import 'package:das_client/di.dart';
 import 'package:das_client/i18n/i18n.dart';
 import 'package:das_client/nav/app_router.dart';
 import 'package:das_client/nav/das_navigation_drawer.dart';
-import 'package:das_client/pages/fahrt/fahrbild/fahrbild.dart';
-import 'package:das_client/pages/fahrt/train_selection/train_selection.dart';
+import 'package:das_client/pages/journey/train_journey/train_journey_overview.dart';
+import 'package:das_client/pages/journey/train_selection/train_selection.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 @RoutePage()
-class FahrtPage extends StatelessWidget {
-  const FahrtPage({super.key});
+class JourneyPage extends StatelessWidget {
+  const JourneyPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => FahrbildCubit(sferaService: DI.get()),
-      child: const FahrtPageContent(),
+      create: (context) => TrainJourneyCubit(sferaService: DI.get()),
+      child: const JourneyPageContent(),
     );
   }
 }
 
-class FahrtPageContent extends StatelessWidget {
-  const FahrtPageContent({super.key});
+class JourneyPageContent extends StatelessWidget {
+  const JourneyPageContent({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,11 +43,11 @@ class FahrtPageContent extends StatelessWidget {
         IconButton(
           icon: const Icon(SBBIcons.exit_small),
           onPressed: () {
-            if (context.fahrbildCubit.state is SelectingFahrbildState) {
+            if (context.trainJourneyCubit.state is SelectingTrainJourneyState) {
               context.authCubit.logout();
               context.router.replace(const LoginRoute());
             } else {
-              context.fahrbildCubit.reset();
+              context.trainJourneyCubit.reset();
             }
           },
         )
@@ -64,12 +64,12 @@ class FahrtPageContent extends StatelessWidget {
   }
 
   Widget _content() {
-    return BlocBuilder<FahrbildCubit, FahrbildState>(
+    return BlocBuilder<TrainJourneyCubit, TrainJourneyState>(
       builder: (context, state) {
-        if (state is SelectingFahrbildState) {
+        if (state is SelectingTrainJourneyState) {
           return const TrainSelection();
-        } else if (state is FahrbildLoadedState) {
-          return const Fahrbild();
+        } else if (state is TrainJourneyLoadedState) {
+          return const TrainJourneyOverview();
         } else {
           return const Center(child: CircularProgressIndicator());
         }

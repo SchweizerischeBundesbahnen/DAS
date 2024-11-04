@@ -5,7 +5,7 @@ import '../app_test.dart';
 
 void main() {
   group('home screen test', () {
-    testWidgets('load fahrbild company=1085, train=7839', (tester) async {
+    testWidgets('load train journey company=1085, train=7839', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
 
@@ -24,7 +24,7 @@ void main() {
       // press load Fahrordnung button
       await tester.tap(primaryButton);
 
-      // wait for fahrbild to load
+      // wait for train journey to load
       await tester.pumpAndSettle(const Duration(seconds: 1));
 
       // check if station is present

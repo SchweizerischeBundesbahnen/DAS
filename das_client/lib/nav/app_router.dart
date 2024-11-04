@@ -4,7 +4,7 @@ import 'package:das_client/pages/profile/profile_page.dart';
 import 'package:das_client/pages/login/login_page.dart';
 import 'package:das_client/pages/login/splash_page.dart';
 import 'package:das_client/pages/settings/settings_page.dart';
-import 'package:das_client/pages/fahrt/fahrt_page.dart';
+import 'package:das_client/pages/journey/journey_page.dart';
 
 part 'app_router.gr.dart';
 
@@ -14,7 +14,7 @@ class AppRouter extends RootStackRouter {
   List<AutoRoute> get routes => [
         _splash,
         _login,
-        _fahrt,
+        _journey,
         _links,
         _settings,
         _profile,
@@ -37,9 +37,9 @@ final _login = AutoRoute(
   page: LoginRoute.page,
 );
 
-final _fahrt = AutoRoute(
-  path: '/fahrt',
-  page: FahrtRoute.page,
+final _journey = AutoRoute(
+  path: '/journey',
+  page: JourneyRoute.page,
 );
 
 final _links = AutoRoute(

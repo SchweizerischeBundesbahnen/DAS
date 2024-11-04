@@ -7,11 +7,11 @@ class RadioChannel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: const BoxConstraints(minWidth: 240.0),
+      constraints: const BoxConstraints(minWidth: 258.0),
       child: Row(
         children: [
           const Icon(SBBIcons.telephone_gsm_small),
-          const SizedBox(width: 8.0),
+          const SizedBox(width: sbbDefaultSpacing * 0.5),
           Text('1311', style: SBBTextStyles.largeLight.copyWith(fontSize: 24.0)),
         ],
       ),

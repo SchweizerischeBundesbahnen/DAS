@@ -14,14 +14,14 @@ class ADLNotification extends StatelessWidget {
       margin: margin,
       decoration: BoxDecoration(
         color: SBBColors.charcoal,
-        borderRadius: BorderRadius.circular(16.0),
+        borderRadius: BorderRadius.circular(sbbDefaultSpacing),
       ),
       padding: const EdgeInsets.symmetric(vertical: 14.0)
-          .copyWith(left: 16.0, right: 4.0),
+          .copyWith(left: sbbDefaultSpacing, right: 4.0),
       child: Row(
         children: [
           const Icon(SBBIcons.circle_information_small, color: SBBColors.white),
-          const SizedBox(width: 8.0),
+          const SizedBox(width: sbbDefaultSpacing * 0.5),
           Text(
             '${context.l10n.w_adl_notification_title}: $message',
             style: SBBTextStyles.mediumBold.copyWith(color: SBBColors.white),

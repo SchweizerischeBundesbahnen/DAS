@@ -7,8 +7,13 @@ class TimeContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SBBGroup(
-      margin: const EdgeInsetsDirectional.fromSTEB(8, 0, 8, 16),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsetsDirectional.fromSTEB(
+        sbbDefaultSpacing * 0.5,
+        0,
+        sbbDefaultSpacing * 0.5,
+        sbbDefaultSpacing,
+      ),
+      padding: const EdgeInsets.all(sbbDefaultSpacing),
       useShadow: false,
       child: SizedBox(
         width: 124.0,
@@ -34,7 +39,7 @@ class TimeContainer extends StatelessWidget {
 
   Widget _divider() {
     return const Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.0),
+      padding: EdgeInsets.symmetric(vertical: sbbDefaultSpacing * 0.5),
       child: Divider(height: 1.0, color: SBBColors.cloud),
     );
   }
