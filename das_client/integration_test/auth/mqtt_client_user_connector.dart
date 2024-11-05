@@ -1,4 +1,4 @@
-import 'package:das_client/service/mqtt/mqtt_client_connector.dart';
+import 'package:das_client/mqtt/mqtt_component.dart';
 import 'package:fimber/fimber.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 

@@ -1,10 +1,6 @@
 import 'dart:async';
 
-import 'package:das_client/model/sfera/journey_profile.dart';
-import 'package:das_client/model/sfera/otn_id.dart';
-import 'package:das_client/model/sfera/segment_profile.dart';
-import 'package:das_client/service/sfera/sfera_service.dart';
-import 'package:das_client/service/sfera/sfera_service_state.dart';
+import 'package:das_client/sfera/sfera_component.dart';
 import 'package:das_client/util/error_code.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
@@ -83,7 +79,8 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
     if (state is BaseTrainJourneyState) {
       Fimber.i('Reseting TrainJourney cubit in state $state');
       emit(SelectingTrainJourneyState(
-          trainNumber: (state as BaseTrainJourneyState).trainNumber, company: (state as BaseTrainJourneyState).company));
+          trainNumber: (state as BaseTrainJourneyState).trainNumber,
+          company: (state as BaseTrainJourneyState).company));
     }
   }
 }

@@ -1,7 +1,7 @@
 import 'package:das_client/auth/authentication_component.dart';
 import 'package:das_client/di.dart';
 import 'package:das_client/flavor.dart';
-import 'package:das_client/service/mqtt/mqtt_client_connector.dart';
+import 'package:das_client/mqtt/mqtt_component.dart';
 import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
 
@@ -22,11 +22,12 @@ class IntegrationTestDI {
       GetIt.I.registerTokenSpecProvider();
       GetIt.I.registerOidcClient();
       _registerIntegrationTestAuthenticator();
-      GetIt.I.registerSferaAuthService();
+      GetIt.I.registerSferaComponents();
+      GetIt.I.registerMqttComponent();
+
+      GetIt.I.unregister<MqttClientConnector>();
       _registerMqttClientConnector();
-      GetIt.I.registerMqttService();
-      GetIt.I.registerRepositories();
-      GetIt.I.registerSferaService();
+
       _initialized = true;
     }
     return GetIt.I.allReady();

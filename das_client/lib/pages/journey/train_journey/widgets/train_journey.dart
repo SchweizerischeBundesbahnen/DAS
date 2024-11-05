@@ -1,9 +1,6 @@
 import 'package:das_client/bloc/train_journey_cubit.dart';
-import 'package:das_client/model/sfera/journey_profile.dart';
-import 'package:das_client/model/sfera/segment_profile.dart';
-import 'package:das_client/model/sfera/timing_point.dart';
-import 'package:das_client/model/sfera/timing_point_constraints.dart';
-import 'package:das_client/model/sfera/tp_id_reference.dart';
+import 'package:das_client/sfera/sfera_component.dart';
+import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
