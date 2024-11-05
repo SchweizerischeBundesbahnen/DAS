@@ -1,6 +1,6 @@
-import 'package:das_client/pages/journey/train_journey/widgets/header/adl_notification.dart';
-import 'package:das_client/pages/journey/train_journey/widgets/header/header.dart';
-import 'package:das_client/pages/journey/train_journey/widgets/train_journey.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/adl_notification.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:flutter/material.dart';
 
 // TODO: handle extraLarge font sizes (diff to figma) globally.

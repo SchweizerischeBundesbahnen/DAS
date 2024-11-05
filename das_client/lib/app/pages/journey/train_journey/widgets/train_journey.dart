@@ -1,4 +1,4 @@
-import 'package:das_client/bloc/train_journey_cubit.dart';
+import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/sfera/sfera_component.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';

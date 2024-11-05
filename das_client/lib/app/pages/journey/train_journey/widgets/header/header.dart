@@ -1,5 +1,5 @@
-import 'package:das_client/pages/journey/train_journey/widgets/header/main_container.dart';
-import 'package:das_client/pages/journey/train_journey/widgets/header/time_container.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/main_container.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/time_container.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 

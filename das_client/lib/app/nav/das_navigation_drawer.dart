@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:das_client/i18n/i18n.dart';
-import 'package:das_client/nav/app_router.dart';
-import 'package:das_client/widgets/app_version_text.dart';
-import 'package:das_client/widgets/device_id_text.dart';
+import 'package:das_client/app/nav/app_router.dart';
+import 'package:das_client/app/widgets/app_version_text.dart';
+import 'package:das_client/app/widgets/device_id_text.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 

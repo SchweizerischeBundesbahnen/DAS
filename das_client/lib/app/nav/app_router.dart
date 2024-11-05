@@ -1,10 +1,10 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:das_client/pages/links/links_page.dart';
-import 'package:das_client/pages/profile/profile_page.dart';
-import 'package:das_client/pages/login/login_page.dart';
-import 'package:das_client/pages/login/splash_page.dart';
-import 'package:das_client/pages/settings/settings_page.dart';
-import 'package:das_client/pages/journey/journey_page.dart';
+import 'package:das_client/app/pages/links/links_page.dart';
+import 'package:das_client/app/pages/profile/profile_page.dart';
+import 'package:das_client/app/pages/login/login_page.dart';
+import 'package:das_client/app/pages/login/splash_page.dart';
+import 'package:das_client/app/pages/settings/settings_page.dart';
+import 'package:das_client/app/pages/journey/journey_page.dart';
 
 part 'app_router.gr.dart';
 

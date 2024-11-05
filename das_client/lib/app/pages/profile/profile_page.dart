@@ -1,12 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:das_client/i18n/i18n.dart';
-import 'package:das_client/nav/das_navigation_drawer.dart';
+import 'package:das_client/app/nav/das_navigation_drawer.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 
 @RoutePage()
-class LinksPage extends StatelessWidget {
-  const LinksPage({super.key});
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +24,6 @@ class LinksPage extends StatelessWidget {
   }
 
   Widget _body(BuildContext context) {
-    return Center(child: Text(context.l10n.w_navigation_drawer_links_title));
+    return Center(child: Text(context.l10n.w_navigation_drawer_profile_title));
   }
 }
