@@ -1,5 +1,5 @@
 import 'package:das_client/flavor.dart';
-import 'package:das_client/i18n/i18n.dart';
+import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/main.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations_de.dart';

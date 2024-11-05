@@ -76,6 +76,8 @@ This application uses the code style defined in the [Flutter Wiki][2]. The
 recommendations are mandatory and should always be followed unless there is a
 good reason not to do so. However, this must be approved by all developers.
 
+Notable difference: Line length is set to 120 characters. Please adapt your IDE configuration accordingly.
+
 ## Flutter SDK version
 
 This app uses [FVM][1] to configure the Flutter SDK version.

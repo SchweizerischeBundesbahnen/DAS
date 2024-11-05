@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:das_client/i18n/i18n.dart';
+import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/nav/app_router.dart';
 import 'package:das_client/app/widgets/app_version_text.dart';
 import 'package:das_client/app/widgets/device_id_text.dart';

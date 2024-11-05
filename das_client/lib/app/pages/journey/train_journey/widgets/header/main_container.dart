@@ -1,6 +1,6 @@
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/departure_authorization.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_channel.dart';
-import 'package:das_client/util/widget_extensions.dart';
+import 'package:das_client/app/widgets/widget_extensions.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 

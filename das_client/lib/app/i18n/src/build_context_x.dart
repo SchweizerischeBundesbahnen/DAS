@@ -1,4 +1,4 @@
-import 'package:das_client/i18n/i18n.dart';
+import 'package:das_client/app/i18n/i18n.dart';
 import 'package:flutter/widgets.dart';
 
 extension BuildContextX on BuildContext {

@@ -1,5 +1,5 @@
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
-import 'package:das_client/i18n/i18n.dart';
+import 'package:das_client/app/i18n/i18n.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
