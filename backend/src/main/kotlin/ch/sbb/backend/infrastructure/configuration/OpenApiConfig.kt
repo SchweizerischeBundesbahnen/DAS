@@ -4,6 +4,10 @@ import io.swagger.v3.oas.models.Components
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.info.Contact
 import io.swagger.v3.oas.models.info.Info
+import io.swagger.v3.oas.models.media.DateTimeSchema
+import io.swagger.v3.oas.models.media.NumberSchema
+import io.swagger.v3.oas.models.media.Schema
+import io.swagger.v3.oas.models.media.StringSchema
 import io.swagger.v3.oas.models.security.*
 import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Value
@@ -29,7 +33,18 @@ class OpenApiConfig {
     @Bean
     fun openAPIConfiguration(): OpenAPI {
         return OpenAPI()
-            .components(Components().addSecuritySchemes(OAUTH_2, addOAuthSecurityScheme()))
+            .components(
+                Components()
+                    .addSecuritySchemes(OAUTH_2, addOAuthSecurityScheme())
+                    .addSchemas(
+                        "ErrorResponse",
+                        Schema<Map<String, Any>>()
+                            .addProperty("timestamp", DateTimeSchema())
+                            .addProperty("status", NumberSchema())
+                            .addProperty("error", StringSchema())
+                            .addProperty("path", StringSchema())
+                    )
+            )
             .security(listOf(SecurityRequirement().addList(OAUTH_2)))
             .info(apiInfo())
     }
