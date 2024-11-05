@@ -22,6 +22,7 @@ class MqttServiceImpl implements MqttService {
 
   final _messageSubject = BehaviorSubject<String>();
 
+  @override
   Stream<String> get messageStream => _messageSubject.stream;
 
   MqttServiceImpl({required String mqttUrl, required MqttClientConnector mqttClientConnector, required this.prefix})
