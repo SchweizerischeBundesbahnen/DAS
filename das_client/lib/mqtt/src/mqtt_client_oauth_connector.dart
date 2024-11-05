@@ -1,6 +1,6 @@
-import 'package:das_client/auth/src/authenticator.dart';
+import 'package:das_client/auth/authentication_component.dart';
 import 'package:das_client/mqtt/src/mqtt_client_connector.dart';
-import 'package:das_client/sfera/src/service/sfera_auth_service.dart';
+import 'package:das_client/sfera/sfera_component.dart';
 import 'package:fimber/fimber.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 

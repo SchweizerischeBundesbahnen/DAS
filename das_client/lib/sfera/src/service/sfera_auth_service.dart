@@ -1,6 +1,6 @@
 import 'dart:core';
 
-import 'package:das_client/auth/src/authenticator.dart';
+import 'package:das_client/auth/authentication_component.dart';
 import 'package:fimber/fimber.dart';
 import 'package:http/http.dart' as http;
 
@@ -13,7 +13,6 @@ class SferaAuthService {
         _tokenExchangeUrl = tokenExchangeUrl;
 
   Future<String?> retrieveSferaAuthToken(String ru, String train, String role) async {
-
     Fimber.i('Trying to fetch sfera auth token for ru=$ru train=$train role=$role...');
     final url = Uri.parse('$_tokenExchangeUrl?ru=$ru&train=$train&role=$role');
 
