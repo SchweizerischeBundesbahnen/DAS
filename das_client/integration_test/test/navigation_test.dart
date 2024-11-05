@@ -1,7 +1,7 @@
-import 'package:das_client/pages/journey/journey_page.dart';
-import 'package:das_client/pages/links/links_page.dart';
-import 'package:das_client/pages/profile/profile_page.dart';
-import 'package:das_client/pages/settings/settings_page.dart';
+import 'package:das_client/app/pages/journey/journey_page.dart';
+import 'package:das_client/app/pages/links/links_page.dart';
+import 'package:das_client/app/pages/profile/profile_page.dart';
+import 'package:das_client/app/pages/settings/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

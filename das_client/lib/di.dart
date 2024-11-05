@@ -1,15 +1,8 @@
-import 'package:das_client/auth/authenticator.dart';
-import 'package:das_client/auth/azure_authenticator.dart';
-import 'package:das_client/auth/token_spec_provider.dart';
+import 'package:das_client/auth/authentication_component.dart';
 import 'package:das_client/flavor.dart';
-import 'package:das_client/repo/sfera_repository.dart';
+import 'package:das_client/mqtt/mqtt_component.dart';
 import 'package:das_client/service/backend_service.dart';
-import 'package:das_client/service/mqtt/mqtt_client_connector.dart';
-import 'package:das_client/service/mqtt/mqtt_client_oauth_connector.dart';
-import 'package:das_client/service/mqtt/mqtt_client_tms_oauth_connector.dart';
-import 'package:das_client/service/mqtt/mqtt_service.dart';
-import 'package:das_client/service/sfera/sfera_service.dart';
-import 'package:das_client/service/sfera_auth_service.dart';
+import 'package:das_client/sfera/sfera_component.dart';
 import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sbb_oidc/sbb_oidc.dart';
@@ -52,11 +45,8 @@ extension GetItX on GetIt {
     registerTokenSpecProvider(useTms: useTms);
     registerOidcClient(useTms: useTms);
     registerAzureAuthenticator();
-    registerSferaAuthService(useTms: useTms);
-    registerMqttClientConnector(useTms: useTms);
-    registerMqttService(useTms: useTms);
-    registerRepositories();
-    registerSferaService();
+    registerMqttComponent(useTms: useTms);
+    registerSferaComponents(useTms: useTms);
     registerBackendService();
     await allReady();
   }
@@ -89,28 +79,22 @@ extension GetItX on GetIt {
     registerSingletonAsync<OidcClient>(factoryFunc);
   }
 
-  void registerMqttService({bool useTms = false}) {
+  void registerMqttComponent({bool useTms = false}) {
     final flavor = get<Flavor>();
-    registerSingletonWithDependencies<MqttService>(
-        () => MqttService(
-            mqttUrl: useTms ? flavor.tmsMqttUrl! : flavor.mqttUrl,
-            mqttClientConnector: get(),
-            prefix: flavor.mqttTopicPrefix),
-        dependsOn: [MqttClientConnector]);
-  }
 
-  void registerSferaAuthService({bool useTms = false}) {
-    final flavor = get<Flavor>();
-    registerSingletonWithDependencies<SferaAuthService>(
-        () => SferaAuthService(
-            authenticator: get(), tokenExchangeUrl: useTms ? flavor.tmsTokenExchangeUrl! : flavor.tokenExchangeUrl),
-        dependsOn: [Authenticator]);
+    registerLazySingleton<MqttClientConnector>(
+        () => MqttComponent.createMqttClientConnector(sfereAuthService: get(), authenticator: get(), useTms: useTms));
+
+    registerLazySingleton<MqttService>(() => MqttComponent.createMqttService(
+        mqttUrl: useTms ? flavor.tmsMqttUrl! : flavor.mqttUrl,
+        mqttClientConnector: get(),
+        prefix: flavor.mqttTopicPrefix));
   }
 
   /// Azure Authenticator.
   void registerAzureAuthenticator() {
     factoryFunc() {
-      return AzureAuthenticator(
+      return AuthenticationComponent.createAzureAuthenticator(
         oidcClient: get(),
         tokenSpecs: get(),
       );
@@ -122,29 +106,21 @@ extension GetItX on GetIt {
     );
   }
 
-  void registerMqttClientConnector({bool useTms = false}) {
-    if (useTms) {
-      registerSingletonWithDependencies<MqttClientConnector>(() => MqttClientTMSOauthConnector(sferaAuthService: get()),
-          dependsOn: [SferaAuthService]);
-    } else {
-      registerSingletonWithDependencies<MqttClientConnector>(
-          () => MqttClientOauthConnector(sferaAuthService: get(), authenticator: get()),
-          dependsOn: [Authenticator, SferaAuthService]);
-    }
-  }
+  void registerSferaComponents({bool useTms = false}) {
+    final flavor = get<Flavor>();
 
-  void registerRepositories() {
-    registerSingletonAsync<SferaRepository>(() async => SferaRepository());
-  }
+    registerLazySingleton<SferaRepository>(() => SferaComponent.createRepository());
+    registerLazySingleton<SferaAuthService>(() => SferaComponent.createSferaAuthService(
+        authenticator: get(), tokenExchangeUrl: useTms ? flavor.tmsTokenExchangeUrl! : flavor.tokenExchangeUrl));
 
-  void registerSferaService() {
-    registerSingletonWithDependencies<SferaService>(() => SferaService(mqttService: get(), sferaRepository: get()),
-        dependsOn: [MqttService, SferaRepository]);
+    registerLazySingleton<SferaService>(
+        () => SferaComponent.createSferaService(mqttService: get(), sferaRepository: get()));
   }
 
   void registerBackendService() {
     final flavor = get<Flavor>();
-    registerSingletonWithDependencies<BackendService>(() => BackendService(authenticator: DI.get(), baseUrl: flavor.backendUrl),
+    registerSingletonWithDependencies<BackendService>(
+        () => BackendService(authenticator: DI.get(), baseUrl: flavor.backendUrl),
         dependsOn: [Authenticator]);
   }
 }

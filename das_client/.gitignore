@@ -19,7 +19,6 @@ migrate_working_dir/
 .idea/
 coverage/
 
-
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
 # is commented out by default.
@@ -52,3 +51,6 @@ app.*.map.json
 *.gr.dart
 *.freezed.dart
 *.mocks.dart
+
+# FVM Version Cache
+.fvm/
