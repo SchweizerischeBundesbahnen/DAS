@@ -9,6 +9,8 @@ SFERA v3 custom
 	- TAF_TAP_location_type
 - TimingPoint
 	- TAF_TAP_LocationReference
+- SignalPhysicalCharacteristics
+	- visualIdentifier
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" xmlns:altova="http://www.altova.com/xml-schema-extensions" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.01" vc:minVersion="1.1">
 	<xs:element name="SFERA_B2G_EventMessage">
@@ -2083,6 +2085,7 @@ SF12	SFERA_G2B_ReplyMessage</xs:documentation>
 			<xs:complexContent>
 				<xs:extension base="PhysicalCharacteristics_ComplexType">
 					<xs:attribute ref="signalType"/>
+					<xs:attribute ref="visualIdentifier"/>
 				</xs:extension>
 			</xs:complexContent>
 		</xs:complexType>
@@ -6021,6 +6024,11 @@ Resolution: 15 min
 	<xs:attribute name="verticalOffset" type="distanceType">
 		<xs:annotation>
 			<xs:documentation>Vertical offset (in m) from the top of the track to the middle of the object.</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="visualIdentifier" type="xs:string">
+		<xs:annotation>
+			<xs:documentation>Visual identifier of the signal. Typically a sign placed over or under the signal itself facilitates the visual identification by the driver.</xs:documentation>
 		</xs:annotation>
 	</xs:attribute>
 	<xs:attribute name="voltageValue" type="voltageType">

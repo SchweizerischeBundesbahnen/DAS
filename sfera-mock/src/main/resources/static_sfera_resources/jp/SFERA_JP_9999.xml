@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<JourneyProfile JP_Status="Valid" JP_Version="1"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd">
+    <TrainIdentification>
+        <OTN_ID>
+            <Company>1085</Company>
+            <OperationalTrainNumber>9999</OperationalTrainNumber>
+            <StartDate>2022-01-04</StartDate>
+        </OTN_ID>
+    </TrainIdentification>
+    <SegmentProfileList SP_ID="9999_1" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>0085</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints>
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Bahnhof_A"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+    <SegmentProfileList SP_ID="9999_2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>0085</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints>
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Haltestelle_B"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+    <SegmentProfileList SP_ID="9999_3" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>0085</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints>
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Halt_auf_Verlangen_C"/>
+            </TimingPointReference>
+            <StoppingPointInformation departureTime="2022-05-17T07:52:00Z">
+                <StopType stopTypePurpose="Commercial" mandatoryStop="false"/>
+            </StoppingPointInformation>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+    <SegmentProfileList SP_ID="9999_4" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>0085</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints>
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Klammerbahnhof_D"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+    <SegmentProfileList SP_ID="9999_5" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>0085</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints>
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Klammerbahnhof_D1"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+</JourneyProfile>
