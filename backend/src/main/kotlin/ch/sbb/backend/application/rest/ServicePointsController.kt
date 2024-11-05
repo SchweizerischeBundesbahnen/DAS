@@ -37,7 +37,7 @@ class ServicePointsController(private val servicePointsService: InMemoryServiceP
         ]
     )
     @PutMapping(consumes = ["application/json"])
-    fun updateServicePoints(@RequestBody servicePoints: List<ServicePointRequest>) {
+    fun updateServicePoints(@RequestBody servicePoints: List<ServicePointDto>) {
         servicePointsService.update(servicePoints)
     }
 
@@ -58,7 +58,7 @@ class ServicePointsController(private val servicePointsService: InMemoryServiceP
     )
     @ResponseBody
     @GetMapping(produces = [APPLICATION_JSON_VALUE])
-    fun getAllServicePoints(): ResponseEntity<List<ServicePointResponse>> {
+    fun getAllServicePoints(): ResponseEntity<List<ServicePointDto>> {
         return ResponseEntity.ok(servicePointsService.getAll())
     }
 
@@ -84,7 +84,7 @@ class ServicePointsController(private val servicePointsService: InMemoryServiceP
     )
     @ResponseBody
     @GetMapping("/{uic}", produces = [APPLICATION_JSON_VALUE])
-    fun getServicePoint(@PathVariable uic: Int): ResponseEntity<ServicePointResponse> {
+    fun getServicePoint(@PathVariable uic: Int): ResponseEntity<ServicePointDto> {
         return servicePointsService.getByUic(uic)?.let { ResponseEntity.ok(it) }
             ?: ResponseEntity.notFound().build()
     }

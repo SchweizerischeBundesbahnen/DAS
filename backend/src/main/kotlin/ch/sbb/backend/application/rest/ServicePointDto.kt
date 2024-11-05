@@ -3,7 +3,7 @@ package ch.sbb.backend.application.rest
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(name = "ServicePoint")
-data class ServicePointRequest(
+data class ServicePointDto(
 
     @Schema(
         description = "UIC-Code, combination of uicCountryCode and numberShort. Size: 7",
