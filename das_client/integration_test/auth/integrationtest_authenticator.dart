@@ -1,4 +1,4 @@
-import 'package:das_client/auth/authenticator.dart';
+import 'package:das_client/auth/authentication_component.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sbb_oidc/sbb_oidc.dart';
 

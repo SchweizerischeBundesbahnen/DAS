@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:das_client/auth/authenticator.dart';
+import 'package:das_client/auth/src/authenticator.dart';
 import 'package:das_client/di.dart';
 import 'package:das_client/flavor.dart';
 import 'package:das_client/i18n/i18n.dart';

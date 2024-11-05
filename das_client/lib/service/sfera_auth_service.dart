@@ -1,6 +1,6 @@
 import 'dart:core';
 
-import 'package:das_client/auth/authenticator.dart';
+import 'package:das_client/auth/src/authenticator.dart';
 import 'package:fimber/fimber.dart';
 import 'package:http/http.dart' as http;
 

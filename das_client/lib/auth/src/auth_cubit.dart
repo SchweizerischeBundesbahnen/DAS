@@ -1,4 +1,4 @@
-import 'package:das_client/auth/authenticator.dart';
+import 'package:das_client/auth/src/authenticator.dart';
 import 'package:das_client/di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

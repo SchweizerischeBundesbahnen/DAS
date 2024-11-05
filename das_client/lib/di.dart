@@ -1,6 +1,4 @@
-import 'package:das_client/auth/authenticator.dart';
-import 'package:das_client/auth/azure_authenticator.dart';
-import 'package:das_client/auth/token_spec_provider.dart';
+import 'package:das_client/auth/authentication_component.dart';
 import 'package:das_client/flavor.dart';
 import 'package:das_client/repo/sfera_repository.dart';
 import 'package:das_client/service/backend_service.dart';
@@ -110,7 +108,7 @@ extension GetItX on GetIt {
   /// Azure Authenticator.
   void registerAzureAuthenticator() {
     factoryFunc() {
-      return AzureAuthenticator(
+      return AuthenticationComponent.createAzureAuthenticator(
         oidcClient: get(),
         tokenSpecs: get(),
       );

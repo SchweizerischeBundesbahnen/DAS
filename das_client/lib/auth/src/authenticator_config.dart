@@ -1,4 +1,4 @@
-import 'package:das_client/auth/token_spec_provider.dart';
+import 'package:das_client/auth/src/token_spec_provider.dart';
 import 'package:meta/meta.dart';
 
 @sealed

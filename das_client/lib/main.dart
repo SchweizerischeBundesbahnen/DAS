@@ -1,5 +1,5 @@
 import 'package:das_client/app.dart';
-import 'package:das_client/auth/auth_cubit.dart';
+import 'package:das_client/auth/authentication_component.dart';
 import 'package:das_client/di.dart';
 import 'package:das_client/flavor.dart';
 import 'package:das_client/logging/logging_component.dart';

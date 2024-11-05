@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:das_client/auth/auth_cubit.dart';
-import 'package:das_client/auth/authenticator.dart';
+import 'package:das_client/auth/authentication_component.dart';
+import 'package:das_client/auth/src/authenticator.dart';
 import 'package:das_client/di.dart';
 import 'package:das_client/nav/app_router.dart';
 import 'package:flutter/material.dart';
