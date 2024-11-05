@@ -1,5 +1,5 @@
 import 'package:das_client/auth/authentication_component.dart';
-import 'package:das_client/mqtt/src/mqtt_service.dart';
+import 'package:das_client/mqtt/mqtt_component.dart';
 import 'package:das_client/sfera/src/repo/sfera_repository.dart';
 import 'package:das_client/sfera/src/repo/sfera_repository_impl.dart';
 import 'package:das_client/sfera/src/service/sfera_auth_service.dart';
