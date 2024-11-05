@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class JourneyProfileRepository implements ApplicationRunner {
+
     private static final String XML_RESOURCES_CLASSPATH = "classpath:static_sfera_resources/jp/*.xml";
     private static final String XML_REGEX = "SFERA_JP_(\\d+)\\.xml";
     private final XmlHelper xmlHelper;
@@ -44,10 +45,11 @@ public class JourneyProfileRepository implements ApplicationRunner {
         for (var resource : resources) {
             File file = resource.getFile();
             var operationalNumber = extractOperationalNumber(file.getName());
-            InputStream in = new FileInputStream(file);
-            String xmlPayload = new String(in.readAllBytes());
-            var journeyProfile = xmlHelper.xmlToObject(xmlPayload);
-            journeyProfiles.put(operationalNumber, (JourneyProfile) journeyProfile);
+            try (InputStream in = new FileInputStream(file)) {
+                String xmlPayload = new String(in.readAllBytes());
+                var journeyProfile = xmlHelper.xmlToObject(xmlPayload);
+                journeyProfiles.put(operationalNumber, (JourneyProfile) journeyProfile);
+            }
         }
     }
 

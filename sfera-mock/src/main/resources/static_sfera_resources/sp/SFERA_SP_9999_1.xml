@@ -65,8 +65,8 @@
             </TAF_TAP_Location_NSP>
 <!--            gleisspezifische Geschwindigkeiten	-->
             <TAF_TAP_Location_NSP name="stationProperty_00000">
-                <NetworkSpecificParameter name="stationPropertySpeed_R150" value=""/>
-                <NetworkSpecificParameter name="text" value=""/>
+                <NetworkSpecificParameter name="stationPropertySpeed_R150" value="30-40"/>
+                <NetworkSpecificParameter name="text" value="&lt;b&gt;31&lt;/b&gt;"/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
     </SP_Areas>
