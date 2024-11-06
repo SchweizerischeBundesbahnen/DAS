@@ -17,6 +17,8 @@ concurrency:
   cancel-in-progress: true
 
 on:
+  schedule:
+    - cron: '0 2 * * *'
   push:
     paths:
       - 'das_client/**'
