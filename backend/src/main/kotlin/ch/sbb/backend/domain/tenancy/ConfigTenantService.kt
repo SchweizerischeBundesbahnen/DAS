@@ -26,7 +26,7 @@ class ConfigTenantService(private val tenantConfig: TenantConfig) : TenantServic
     }
 
     override fun getById(tenantId: TenantId): Tenant {
-        return tenantConfig.tenants.stream().filter { t -> tenantId == TenantId(t.id!!) }
+        return tenantConfig.tenants.stream().filter { t -> tenantId == TenantId(t.id) }
             .findAny()
             .orElseThrow { IllegalArgumentException("unknown tenant") }
     }
