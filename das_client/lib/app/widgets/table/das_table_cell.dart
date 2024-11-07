@@ -1,3 +1,4 @@
+import 'package:das_client/app/widgets/table/das_table_column.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:das_client/app/widgets/table/das_table_theme.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +14,11 @@ class DASTableCell {
     this.border,
     this.color,
     this.padding,
+    this.alignment,
     this.clipBehaviour = Clip.hardEdge,
   });
+
+  const DASTableCell.empty() : this(child: const SizedBox.shrink());
 
   final BoxBorder? border;
   final Widget child;
@@ -22,4 +26,7 @@ class DASTableCell {
   final Color? color;
   final EdgeInsetsGeometry? padding;
   final Clip clipBehaviour;
+
+  /// If provided, wraps child in Align widget. Can also be defined in [DASTableColumn]
+  final Alignment? alignment;
 }

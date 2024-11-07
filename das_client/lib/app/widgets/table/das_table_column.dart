@@ -1,3 +1,4 @@
+import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 
@@ -8,16 +9,17 @@ import 'package:flutter/material.dart';
 @immutable
 class DASTableColumn {
   const DASTableColumn({
-    required this.child,
+    this.child,
     this.border,
     this.color,
     this.padding = const EdgeInsets.all(sbbDefaultSpacing * 0.5),
     this.expanded = false,
     this.width,
+    this.alignment = Alignment.center,
   }) : assert((width != null && width > 0) || expanded);
 
   /// The content of the column header as a widget.
-  final Widget child;
+  final Widget? child;
 
   /// Border style for the heading and data cells
   final BoxBorder? border;
@@ -32,4 +34,7 @@ class DASTableColumn {
 
   /// The fixed width for the column. Must be specified if not expanded.
   final double? width;
+
+  /// If provided, wraps child in Align widget. Can be overridden in [DASTableCell]
+  final Alignment? alignment;
 }

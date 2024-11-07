@@ -19,6 +19,7 @@ class DASTable extends StatelessWidget {
     this.themeData = const DASTableThemeData(
       backgroundColor: SBBColors.white,
       headingTextStyle: SBBTextStyles.smallLight,
+      dataTextStyle: SBBTextStyles.largeLight,
       headingRowBorder: Border(bottom: BorderSide(width: 2, color: SBBColors.cloud)),
       tableBorder: TableBorder(
         horizontalInside: BorderSide(width: 1, color: SBBColors.cloud),
@@ -95,14 +96,18 @@ class DASTable extends StatelessWidget {
         width: column.width,
         child: Container(
           decoration: BoxDecoration(
-            border: column.border ?? tableThemeData?.headingRowBorder,
+            border: tableThemeData?.headingRowBorder ?? column.border,
             color: column.color ?? tableThemeData?.headingRowColor,
           ),
           padding: column.padding,
-          child: DefaultTextStyle(
-            style: DefaultTextStyle.of(context).style.merge(tableThemeData?.headingTextStyle),
-            child: column.child,
-          ),
+          child: column.child == null
+              ? SizedBox.shrink()
+              : DefaultTextStyle(
+                  style: DefaultTextStyle.of(context).style.merge(tableThemeData?.headingTextStyle),
+                  child: column.alignment != null
+                      ? Align(alignment: column.alignment!, child: column.child)
+                      : column.child!,
+                ),
         ),
       );
     });
@@ -112,14 +117,17 @@ class DASTable extends StatelessWidget {
     return _FlexibleHeightRow(
       fixedHeight: row.height,
       children: List.generate(columns.length, (index) {
-        return _dataCell(row.cells[index], columns[index], isLast: columns.length - 1 == index);
+        final cell = row.cells[index];
+        final column = columns[index];
+        return _dataCell(cell, column, row, isLast: columns.length - 1 == index);
       }),
     );
   }
 
-  Widget _dataCell(DASTableCell cell, DASTableColumn column, {isLast = false}) {
+  Widget _dataCell(DASTableCell cell, DASTableColumn column, DASTableRow row, {isLast = false}) {
     return Builder(builder: (context) {
       final tableThemeData = DASTableTheme.of(context)?.data;
+      final effectiveAlignment = cell.alignment ?? column.alignment;
       return _TableCellWrapper(
         expanded: column.expanded,
         width: column.width,
@@ -128,13 +136,13 @@ class DASTable extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               border: cell.border ?? column.border ?? tableThemeData?.tableBorder?.toBoxBorder(isLastCell: isLast),
-              color: cell.color ?? column.color ?? tableThemeData?.dataRowColor,
+              color: cell.color ?? row.color ?? column.color ?? tableThemeData?.dataRowColor,
             ),
             padding: cell.padding ?? column.padding ?? EdgeInsets.all(sbbDefaultSpacing * 0.5),
             clipBehavior: cell.clipBehaviour,
             child: DefaultTextStyle(
               style: DefaultTextStyle.of(context).style.merge(tableThemeData?.dataTextStyle),
-              child: cell.child,
+              child: effectiveAlignment != null ? Align(alignment: effectiveAlignment, child: cell.child) : cell.child,
             ),
           ),
         ),
