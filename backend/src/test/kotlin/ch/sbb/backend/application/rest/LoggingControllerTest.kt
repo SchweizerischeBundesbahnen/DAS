@@ -1,20 +1,21 @@
 package ch.sbb.backend.application.rest
 
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.BeforeEach
+import ch.sbb.backend.domain.logging.LogEntry
+import ch.sbb.backend.domain.logging.LogLevel
+import ch.sbb.backend.domain.logging.SplunkLogService
 import org.junit.jupiter.api.Test
+import org.mockito.Mockito.verify
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import java.io.ByteArrayOutputStream
-import java.io.PrintStream
+import java.time.OffsetDateTime
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -23,18 +24,8 @@ class LoggingControllerTest {
     @Autowired
     private lateinit var mockMvc: MockMvc
 
-    private val originalOut = System.out
-    private val outputStreamCaptor = ByteArrayOutputStream()
-
-    @BeforeEach
-    fun setUp() {
-        System.setOut(PrintStream(outputStreamCaptor))
-    }
-
-    @AfterEach
-    fun tearDown() {
-        System.setOut(originalOut)
-    }
+    @MockBean
+    private lateinit var splunkLogService: SplunkLogService
 
     @Test
     fun `should log messages with seconds since epoch timestamp`() {
@@ -57,7 +48,7 @@ class LoggingControllerTest {
                             jwt.claims { claims ->
                                 claims.put(
                                     "tid",
-                                    "2cda5d11-f0ac-46b3-967d-af1b2e1bd01a"
+                                    "3409e798-d567-49b1-9bae-f0be66427c54"
                                 )
                             }
                         }
@@ -68,8 +59,16 @@ class LoggingControllerTest {
         )
             .andExpect(status().isOk)
 
-        val output = outputStreamCaptor.toString()
-        assertTrue(output.contains("2024-10-05T18:58:19.452+02:00\tINFO\titest\tmy message {}"))
+        val expectedLogs = listOf(
+            LogEntry(
+                OffsetDateTime.parse("2024-10-05T18:58:19.452+02:00"),
+                "itest",
+                "my message",
+                LogLevel.INFO
+            )
+        )
+
+        verify(splunkLogService).logs(expectedLogs)
     }
 
     @Test
@@ -103,7 +102,7 @@ class LoggingControllerTest {
                             jwt.claims { claims ->
                                 claims.put(
                                     "tid",
-                                    "d653d01f-17a4-48a1-9aab-b780b61b4273"
+                                    "3409e798-d567-49b1-9bae-f0be66427c54"
                                 )
                             }
                         }
@@ -114,9 +113,23 @@ class LoggingControllerTest {
         )
             .andExpect(status().isOk)
 
-        val output = outputStreamCaptor.toString()
-        assertTrue(output.lines()[0].contains("SPLUNK: 2024-10-01T14:34:56.789+02:00\tERROR\titest\tmy message {key1=value1, key2=value2}"))
-        assertTrue(output.lines()[1].contains("SPLUNK: 2024-10-01T14:36:12.546+02:00\tWARNING\titest\tmy warning {}"))
+        val expectedLogs = listOf(
+            LogEntry(
+                OffsetDateTime.parse("2024-10-01T14:34:56.789+02:00"),
+                "itest",
+                "my message",
+                LogLevel.ERROR,
+                mapOf("key1" to "value1", "key2" to "value2")
+            ),
+            LogEntry(
+                OffsetDateTime.parse("2024-10-01T14:36:12.546+02:00"),
+                "itest",
+                "my warning",
+                LogLevel.WARNING
+            )
+        )
+
+        verify(splunkLogService).logs(expectedLogs)
     }
 
     @Test
@@ -139,7 +152,7 @@ class LoggingControllerTest {
                             jwt.claims { claims ->
                                 claims.put(
                                     "tid",
-                                    "2cda5d11-f0ac-46b3-967d-af1b2e1bd01a"
+                                    "3409e798-d567-49b1-9bae-f0be66427c54"
                                 )
                             }
                         }

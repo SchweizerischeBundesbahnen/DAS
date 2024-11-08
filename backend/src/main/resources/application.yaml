@@ -30,9 +30,13 @@ auth:
       id: 2cda5d11-f0ac-46b3-967d-af1b2e1bd01a
       issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
       jwk-set-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/discovery/v2.0/keys
-      log-destination: console
+      log-destination: splunk
     - name: sob
       id: d653d01f-17a4-48a1-9aab-b780b61b4273
       issuer-uri: https://login.microsoftonline.com/d653d01f-17a4-48a1-9aab-b780b61b4273/v2.0
       jwk-set-uri: https://login.microsoftonline.com/d653d01f-17a4-48a1-9aab-b780b61b4273/discovery/v2.0/keys
       log-destination: splunk
+
+splunk:
+  url: ${SPLUNK_HEC_URL}
+  token: ${SPLUNK_HEC_TOKEN}
