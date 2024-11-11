@@ -8,7 +8,7 @@ import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  group('train screen tests', () {
+  group('train search screen tests', () {
 
     testWidgets('test default values', (tester) async {
       // Load app widget.
@@ -65,7 +65,7 @@ void main() {
       expect(trainNumberText, findsOneWidget);
 
       await tester.enterText(trainNumberText, '');
-
+      await tester.pump(Duration(milliseconds: 100));
       await tester.pumpAndSettle();
 
       // check that the primary button is disabled
@@ -168,7 +168,7 @@ void main() {
       expect(trainNumberText, findsOneWidget);
 
       await tester.enterText(trainNumberText, '1234');
-
+      await tester.pump(Duration(milliseconds: 100));
       await tester.pumpAndSettle();
 
       // check that the primary button is disabled
