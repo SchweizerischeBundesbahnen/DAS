@@ -83,14 +83,7 @@ class _TrainSelectionState extends State<TrainSelection> {
   Widget _loadButton(BuildContext context, TrainJourneyState state) {
     return SBBPrimaryButton(
       label: context.l10n.p_train_selection_load,
-      onPressed: _canContinue(state)
-          ? () {
-              final trainJourneyCubit = context.trainJourneyCubit;
-              if (!trainJourneyCubit.isClosed) {
-                trainJourneyCubit.loadTrainJourney();
-              }
-            }
-          : null,
+      onPressed: _canContinue(state) ? () => context.trainJourneyCubit.loadTrainJourney() : null,
     );
   }
 

@@ -23,6 +23,11 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
   StreamSubscription? _stateSubscription;
 
   void loadTrainJourney() async {
+    if (isClosed) {
+      Fimber.i('loadTrainJourney() was called after cubit was closed.');
+      return;
+    }
+
     final currentState = state;
     if (currentState is SelectingTrainJourneyState) {
       final now = DateTime.now();
@@ -36,6 +41,8 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
       emit(ConnectingState(company, trainNumber, now));
       _stateSubscription?.cancel();
       _stateSubscription = _sferaService.stateStream.listen((state) {
+        if (isClosed) return;
+
         switch (state) {
           case SferaServiceState.connected:
             emit(TrainJourneyLoadedState(company, trainNumber, now));

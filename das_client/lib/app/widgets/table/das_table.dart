@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:das_client/app/widgets/table/das_table_column.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
@@ -85,7 +86,9 @@ class DASTable extends StatelessWidget {
   }
 
   Widget _headerRow() {
-    return _FlexibleHeightRow(children: columns.map((column) => _headerCell(column)).toList());
+    return _FlexibleHeightRow(
+      children: columns.where((column) => column.isVisible).map((column) => _headerCell(column)).toList(),
+    );
   }
 
   Widget _headerCell(DASTableColumn column) {
@@ -114,12 +117,14 @@ class DASTable extends StatelessWidget {
   }
 
   Widget _dataRow(DASTableRow row) {
+    final visibleColumns = columns.where((column) => column.isVisible).toList(growable: false);
+    final visibleCells = row.cells.whereIndexed((index, _) => columns[index].isVisible).toList(growable: false);
     return _FlexibleHeightRow(
       fixedHeight: row.height,
-      children: List.generate(columns.length, (index) {
-        final cell = row.cells[index];
-        final column = columns[index];
-        return _dataCell(cell, column, row, isLast: columns.length - 1 == index);
+      children: List.generate(visibleColumns.length, (index) {
+        final cell = visibleCells[index];
+        final column = visibleColumns[index];
+        return _dataCell(cell, column, row, isLast: visibleColumns.length - 1 == index);
       }),
     );
   }

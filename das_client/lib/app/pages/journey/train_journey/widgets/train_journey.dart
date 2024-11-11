@@ -51,9 +51,12 @@ class TrainJourney extends StatelessWidget {
             var tp = points.where((point) => point.id == tpId).firstOrNull;
 
             return ServicePointRow(
+              kilometre: 10.2,
               timingPoint: tp,
               timingPointConstraints: timingPoint,
-              active: index == 1,
+              nextStop: index == 1,
+              isServicePointStop: index != 3 && index != 4,
+              isCurrentPosition: index == 0 || index == 3,
             ).build(context);
           })
         ],
@@ -75,16 +78,14 @@ class TrainJourney extends StatelessWidget {
       DASTableColumn(width: 68.0), // icons column
       DASTableColumn(width: 48.0), // icons column
       DASTableColumn(
-        // TODO: how is OG called generally
-        child: Text(context.l10n.p_train_journey_table_og_label),
+        child: Text(context.l10n.p_train_journey_table_graduated_speed_label),
         width: 100.0,
         border: BorderDirectional(
           bottom: BorderSide(color: SBBColors.cloud, width: 1.0),
           end: BorderSide(color: SBBColors.cloud, width: 2.0),
         ),
       ),
-      // TODO: how is R150 called generally
-      DASTableColumn(child: Text(context.l10n.p_train_journey_table_r150_label), width: 62.0),
+      DASTableColumn(child: Text(context.l10n.p_train_journey_table_braked_weight_speed_label), width: 62.0),
       DASTableColumn(child: Text(context.l10n.p_train_journey_table_advised_speed_label), width: 62.0),
       DASTableColumn(width: 40.0), // actions
     ];

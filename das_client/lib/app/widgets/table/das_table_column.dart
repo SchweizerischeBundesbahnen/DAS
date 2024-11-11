@@ -15,6 +15,7 @@ class DASTableColumn {
     this.padding = const EdgeInsets.all(sbbDefaultSpacing * 0.5),
     this.expanded = false,
     this.width,
+    this.hidden = false,
     this.alignment = Alignment.center,
   }) : assert((width != null && width > 0) || expanded);
 
@@ -37,4 +38,9 @@ class DASTableColumn {
 
   /// If provided, wraps child in Align widget. Can be overridden in [DASTableCell]
   final Alignment? alignment;
+
+  /// Whether the column is visible or not.
+  final bool hidden;
+
+  get isVisible => !hidden;
 }
