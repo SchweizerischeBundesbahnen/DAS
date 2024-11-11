@@ -22,6 +22,12 @@ class Format {
     return dateFormat.format(localDate);
   }
 
+  static String date(DateTime date) {
+    final localDate = date.toLocal();
+    final dateFormat = DateFormat('dd.MM.yyyy');
+    return dateFormat.format(localDate);
+  }
+
   static String time(DateTime date, {bool showSeconds = true}) {
     final localDate = date.toLocal();
     final format = showSeconds ? DateFormat.HOUR24_MINUTE_SECOND : DateFormat.HOUR24_MINUTE;

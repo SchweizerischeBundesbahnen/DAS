@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:das_client/app/model/evu.dart';
 import 'package:das_client/sfera/sfera_component.dart';
 import 'package:das_client/util/error_code.dart';
 import 'package:fimber/fimber.dart';
@@ -12,7 +13,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
   TrainJourneyCubit({
     required SferaService sferaService,
   })  : _sferaService = sferaService,
-        super(SelectingTrainJourneyState());
+        super(SelectingTrainJourneyState(date: DateTime.now(), evu: Evu.sbbP));
 
   final SferaService _sferaService;
 
@@ -25,35 +26,35 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
   void loadTrainJourney() async {
     final currentState = state;
     if (currentState is SelectingTrainJourneyState) {
-      final now = DateTime.now();
-      final company = currentState.company;
+      final date = currentState.date;
+      final evu = currentState.evu;
       final trainNumber = currentState.trainNumber;
-      if (company == null || trainNumber == null) {
+      if (evu == null || trainNumber == null) {
         Fimber.i('company or trainNumber null');
         return;
       }
 
-      emit(ConnectingState(company, trainNumber, now));
+      emit(ConnectingState(evu, trainNumber, currentState.date));
       _stateSubscription?.cancel();
       _stateSubscription = _sferaService.stateStream.listen((state) {
         switch (state) {
           case SferaServiceState.connected:
-            emit(TrainJourneyLoadedState(company, trainNumber, now));
+            emit(TrainJourneyLoadedState(evu, trainNumber, date));
             break;
           case SferaServiceState.connecting:
           case SferaServiceState.handshaking:
           case SferaServiceState.loadingJourney:
           case SferaServiceState.loadingSegments:
-            emit(ConnectingState(company, trainNumber, now));
+            emit(ConnectingState(evu, trainNumber, date));
             break;
           case SferaServiceState.disconnected:
           case SferaServiceState.offline:
             emit(SelectingTrainJourneyState(
-                company: company, trainNumber: trainNumber, errorCode: _sferaService.lastErrorCode));
+                evu: evu, trainNumber: trainNumber, date: date, errorCode: _sferaService.lastErrorCode));
             break;
         }
       });
-      _sferaService.connect(OtnId.create(company, trainNumber, now));
+      _sferaService.connect(OtnId.create(evu.companyCode, trainNumber, date));
     }
   }
 
@@ -61,16 +62,28 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
     if (state is SelectingTrainJourneyState) {
       emit(SelectingTrainJourneyState(
           trainNumber: trainNumber,
-          company: (state as SelectingTrainJourneyState).company,
+          evu: (state as SelectingTrainJourneyState).evu,
+          date: (state as SelectingTrainJourneyState).date,
           errorCode: (state as SelectingTrainJourneyState).errorCode));
     }
   }
 
-  void updateCompany(String? company) {
+  void updateCompany(Evu? evu) {
     if (state is SelectingTrainJourneyState) {
       emit(SelectingTrainJourneyState(
           trainNumber: (state as SelectingTrainJourneyState).trainNumber,
-          company: company,
+          evu: evu,
+          date: (state as SelectingTrainJourneyState).date,
+          errorCode: (state as SelectingTrainJourneyState).errorCode));
+    }
+  }
+
+  void updateDate(DateTime date) {
+    if (state is SelectingTrainJourneyState) {
+      emit(SelectingTrainJourneyState(
+          trainNumber: (state as SelectingTrainJourneyState).trainNumber,
+          evu: (state as SelectingTrainJourneyState).evu,
+          date: date,
           errorCode: (state as SelectingTrainJourneyState).errorCode));
     }
   }
@@ -80,7 +93,8 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
       Fimber.i('Reseting TrainJourney cubit in state $state');
       emit(SelectingTrainJourneyState(
           trainNumber: (state as BaseTrainJourneyState).trainNumber,
-          company: (state as BaseTrainJourneyState).company));
+          date: DateTime.now(),
+          evu: (state as BaseTrainJourneyState).evu));
     }
   }
 }

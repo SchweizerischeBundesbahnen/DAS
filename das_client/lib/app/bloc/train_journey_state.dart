@@ -4,23 +4,24 @@ part of 'train_journey_cubit.dart';
 sealed class TrainJourneyState {}
 
 final class SelectingTrainJourneyState extends TrainJourneyState {
-  SelectingTrainJourneyState({this.company, this.trainNumber, this.errorCode});
+  SelectingTrainJourneyState({this.evu, this.trainNumber, required this.date, this.errorCode});
 
   final String? trainNumber;
-  final String? company;
+  final Evu? evu;
+  final DateTime date;
   final ErrorCode? errorCode;
 }
 
 abstract class BaseTrainJourneyState extends TrainJourneyState {
-  BaseTrainJourneyState(this.company, this.trainNumber, this.date);
+  BaseTrainJourneyState(this.evu, this.trainNumber, this.date);
 
-  final String company;
+  final Evu evu;
   final String trainNumber;
   final DateTime date;
 
   @override
   String toString() {
-    return '${runtimeType.toString()}(company=$company, trainNumber=$trainNumber, date=$date)';
+    return '${runtimeType.toString()}(evu=$evu, trainNumber=$trainNumber, date=$date)';
   }
 }
 
