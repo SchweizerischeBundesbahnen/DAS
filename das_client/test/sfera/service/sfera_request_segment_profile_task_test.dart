@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:das_client/mqtt/mqtt_component.dart';
 import 'package:das_client/sfera/sfera_component.dart';
-import 'package:das_client/sfera/src/service/task/request_journey_profile_task.dart';
 import 'package:das_client/sfera/src/service/task/request_segment_profiles_task.dart';
 import 'package:das_client/util/error_code.dart';
 import 'package:fimber/fimber.dart';
@@ -134,7 +133,6 @@ void main() {
     expect(result, false);
   });
 
-
   test('Test request segment profile timeout', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
@@ -142,12 +140,12 @@ void main() {
     var sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
 
     var journeyTask = RequestSegmentProfilesTask(
-        mqttService: mqttService,
-        sferaRepository: sferaRepository,
-        otnId: otnId,
-        journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first,
-        timeout: const Duration(seconds: 1),
-        );
+      mqttService: mqttService,
+      sferaRepository: sferaRepository,
+      otnId: otnId,
+      journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first,
+      timeout: const Duration(seconds: 1),
+    );
 
     var timeoutReached = false;
     await journeyTask.execute((task, data) {
