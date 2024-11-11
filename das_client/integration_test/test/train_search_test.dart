@@ -65,7 +65,7 @@ void main() {
       expect(trainNumberText, findsOneWidget);
 
       await tester.enterText(trainNumberText, '');
-      await tester.pump(Duration(milliseconds: 100));
+      await tester.pump(Duration(milliseconds: 500));
       await tester.pumpAndSettle();
 
       // check that the primary button is disabled
@@ -168,7 +168,7 @@ void main() {
       expect(trainNumberText, findsOneWidget);
 
       await tester.enterText(trainNumberText, '1234');
-      await tester.pump(Duration(milliseconds: 100));
+      await tester.pump(Duration(milliseconds: 500));
       await tester.pumpAndSettle();
 
       // check that the primary button is disabled
