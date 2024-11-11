@@ -25,10 +25,12 @@ void main() {
       await tester.tap(primaryButton);
 
       // wait for train journey to load
-      await tester.pumpAndSettle(const Duration(seconds: 1));
+      await tester.pumpAndSettle();
 
       // check if station is present
       expect(find.text('SO_W'), findsOneWidget);
+
+      await tester.pumpAndSettle();
     });
   });
 }

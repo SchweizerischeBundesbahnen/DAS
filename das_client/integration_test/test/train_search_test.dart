@@ -66,7 +66,7 @@ void main() {
 
       await tester.enterText(trainNumberText, '');
 
-      await tester.pump(const Duration(seconds: 1));
+      await tester.pumpAndSettle();
 
       // check that the primary button is disabled
       var primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
@@ -169,7 +169,7 @@ void main() {
 
       await tester.enterText(trainNumberText, '1234');
 
-      await tester.pump(const Duration(seconds: 1));
+      await tester.pumpAndSettle();
 
       // check that the primary button is disabled
       var primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
