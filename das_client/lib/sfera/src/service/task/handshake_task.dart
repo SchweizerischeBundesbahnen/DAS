@@ -41,7 +41,7 @@ class HandshakeTask extends SferaTask {
     ], relatedTrainRequestType: RelatedTrainRequestType.ownTrainAndRelatedTrains, statusReportsEnabled: false);
 
     var sferaB2gRequestMessage =
-        SferaB2gRequestMessage.create(await SferaService.messageHeader(), handshakeRequest: handshakeRequest);
+        SferaB2gRequestMessage.create(await SferaService.messageHeader(sender: otnId.company), handshakeRequest: handshakeRequest);
     var success =
         _mqttService.publishMessage(otnId.company, sferaTrain, sferaB2gRequestMessage.buildDocument().toString());
 

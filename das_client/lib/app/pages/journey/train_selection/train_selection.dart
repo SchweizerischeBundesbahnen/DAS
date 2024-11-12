@@ -1,8 +1,11 @@
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/i18n/i18n.dart';
+import 'package:das_client/app/model/ru.dart';
+import 'package:das_client/app/widgets/header.dart';
+import 'package:das_client/util/error_code.dart';
+import 'package:das_client/util/format.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TrainSelection extends StatefulWidget {
@@ -14,101 +17,134 @@ class TrainSelection extends StatefulWidget {
 
 class _TrainSelectionState extends State<TrainSelection> {
   late TextEditingController _trainNumberController;
-  late TextEditingController _companyController;
+  late TextEditingController _dateController;
 
   @override
   void initState() {
     super.initState();
     _trainNumberController = TextEditingController(text: '7839');
-    _companyController = TextEditingController(text: '1085');
+    _dateController = TextEditingController();
 
     context.trainJourneyCubit.updateTrainNumber(_trainNumberController.text);
-    context.trainJourneyCubit.updateCompany(_companyController.text);
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TrainJourneyCubit, TrainJourneyState>(
       builder: (context, state) {
-        return Align(
-          child: SizedBox(
-            width: 500,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Spacer(),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, sbbDefaultSpacing, 0),
-                  child: SBBTextField(
-                    onChanged: (value) => _onCompanyChanged(context, value),
-                    controller: _companyController,
-                    labelText: context.l10n.p_train_selection_company_description,
-                    icon: SBBIcons.building_tree_small,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
-                  ),
-                ),
-                const SizedBox(height: sbbDefaultSpacing),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, sbbDefaultSpacing, 0),
-                  child: SBBTextField(
-                    onChanged: (value) => _onTrainNumberChanged(context, value),
-                    controller: _trainNumberController,
-                    labelText: context.l10n.p_train_selection_trainnumber_description,
-                    icon: SBBIcons.train_small,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
-                  ),
-                ),
-                const SizedBox(height: sbbDefaultSpacing * 2),
-                _loadButton(context, state),
-                const SizedBox(height: sbbDefaultSpacing * 2),
-                _errorWidget(context, state),
-                const Spacer(),
-              ],
-            ),
-          ),
-        );
+        if (state is SelectingTrainJourneyState) {
+          return Column(
+            children: [
+              Header(child: _headerWidgets(context, state)),
+              Spacer(),
+              _errorWidget(context, state),
+              Spacer(),
+              _loadButton(context, state)
+            ],
+          );
+        } else {
+          return Container();
+        }
       },
     );
   }
 
-  Widget _errorWidget(BuildContext context, TrainJourneyState state) {
-    if (state is SelectingTrainJourneyState && state.errorCode != null) {
-      return Text('${state.errorCode}', style: SBBTextStyles.mediumBold);
+  Widget _headerWidgets(BuildContext context, SelectingTrainJourneyState state) {
+    return Column(
+      children: [
+        _trainNumberWidget(),
+        _dateDisplayWidget(state),
+        _ruSelectionWidget(context, state),
+      ],
+    );
+  }
+
+  Widget _trainNumberWidget() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, sbbDefaultSpacing, 0, sbbDefaultSpacing / 2),
+      child: SBBTextField(
+        onChanged: (value) => context.trainJourneyCubit.updateTrainNumber(value),
+        controller: _trainNumberController,
+        labelText: context.l10n.p_train_selection_trainnumber_description,
+        keyboardType: TextInputType.number,
+      ),
+    );
+  }
+
+  Widget _dateDisplayWidget(SelectingTrainJourneyState state) {
+    _dateController.text = Format.date(state.date);
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, 0, sbbDefaultSpacing / 2),
+      child: GestureDetector(
+        onTap: () => _showDatePicker(context, state),
+        child: SBBTextField(
+          labelText: context.l10n.p_train_selection_date_description,
+          controller: _dateController,
+          enabled: false,
+        ),
+      ),
+    );
+  }
+
+  Widget _ruSelectionWidget(BuildContext context, SelectingTrainJourneyState state) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, 0, sbbDefaultSpacing),
+      child: SBBSelect<Ru>(
+        label: context.l10n.p_train_selection_ru_description,
+        value: state.ru,
+        items: Ru.values.map((ru) => SelectMenuItem<Ru>(value: ru, label: ru.displayText(context))).toList(),
+        onChanged: (selectedRu) => context.trainJourneyCubit.updateCompany(selectedRu),
+        isLastElement: true,
+      ),
+    );
+  }
+
+  Widget _errorWidget(BuildContext context, SelectingTrainJourneyState state) {
+    if (state.errorCode != null) {
+      return Text(state.errorCode!.displayTextWithErrorCode(context), style: SBBTextStyles.mediumBold);
     }
     return Container();
   }
 
-  Widget _loadButton(BuildContext context, TrainJourneyState state) {
-    return SBBPrimaryButton(
-      label: context.l10n.p_train_selection_load,
-      onPressed: _canContinue(state)
-          ? () {
-              final trainJourneyCubit = context.trainJourneyCubit;
-              if (!trainJourneyCubit.isClosed) {
-                trainJourneyCubit.loadTrainJourney();
+  Widget _loadButton(BuildContext context, SelectingTrainJourneyState state) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing / 2),
+      child: SBBPrimaryButton(
+        label: context.l10n.p_train_selection_load,
+        onPressed: _canContinue(state)
+            ? () {
+                final trainJourneyCubit = context.trainJourneyCubit;
+                if (!trainJourneyCubit.isClosed) {
+                  trainJourneyCubit.loadTrainJourney();
+                }
               }
-            }
-          : null,
+            : null,
+      ),
     );
   }
 
-  bool _canContinue(TrainJourneyState state) {
-    if (state is SelectingTrainJourneyState) {
-      return state.trainNumber != null &&
-          state.trainNumber!.isNotEmpty &&
-          state.company != null &&
-          state.company!.isNotEmpty;
-    }
-    return false;
+  void _showDatePicker(BuildContext context, SelectingTrainJourneyState state) {
+    showSBBModalSheet(
+        context: context, title: context.l10n.p_train_selection_choose_date, child: _datePickerWidget(context, state));
   }
 
-  void _onTrainNumberChanged(BuildContext context, String value) {
-    context.trainJourneyCubit.updateTrainNumber(value);
+  Widget _datePickerWidget(BuildContext context, SelectingTrainJourneyState state) {
+    DateTime now = DateTime.now();
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SBBDatePicker(
+            initialDate: state.date,
+            minimumDate: now.add(Duration(days: -1)),
+            maximumDate: now.add(Duration(hours: 4)),
+            onDateChanged: (value) => context.trainJourneyCubit.updateDate(value)),
+      ],
+    );
   }
 
-  void _onCompanyChanged(BuildContext context, String value) {
-    context.trainJourneyCubit.updateCompany(value);
+  bool _canContinue(SelectingTrainJourneyState state) {
+    return state.trainNumber != null && state.trainNumber!.isNotEmpty && state.ru != null;
   }
 }
