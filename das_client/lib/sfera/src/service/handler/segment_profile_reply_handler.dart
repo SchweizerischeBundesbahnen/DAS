@@ -14,7 +14,7 @@ class SegmentProfileReplyHandler implements SferaMessageHandler {
     }
     
     Fimber.i('Updating segment profiles...');
-    for (var segmentProfile in message.payload!.segmentProfiles) {
+    for (final segmentProfile in message.payload!.segmentProfiles) {
       await _sferaRepository.saveSegmentProfile(segmentProfile);
     }
 

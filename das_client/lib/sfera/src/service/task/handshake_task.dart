@@ -32,17 +32,17 @@ class HandshakeTask extends SferaTask {
   }
 
   Future<void> _sendHandshakeRequest() async {
-    var sferaTrain = SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
+    final sferaTrain = SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
 
     Fimber.i('Sending handshake request for company=${otnId.company} train=$sferaTrain');
-    var handshakeRequest = HandshakeRequest.create([
+    final handshakeRequest = HandshakeRequest.create([
       DasOperatingModesSupported.create(
           DasDrivingMode.readOnly, DasArchitecture.boardAdviceCalculation, DasConnectivity.connected),
     ], relatedTrainRequestType: RelatedTrainRequestType.ownTrainAndRelatedTrains, statusReportsEnabled: false);
 
-    var sferaB2gRequestMessage =
+    final sferaB2gRequestMessage =
         SferaB2gRequestMessage.create(await SferaService.messageHeader(sender: otnId.company), handshakeRequest: handshakeRequest);
-    var success =
+    final success =
         _mqttService.publishMessage(otnId.company, sferaTrain, sferaB2gRequestMessage.buildDocument().toString());
 
     if (!success) {

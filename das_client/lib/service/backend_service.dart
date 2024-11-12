@@ -18,16 +18,16 @@ class BackendService {
     Fimber.i('Trying to send logs to backend...');
     final url = Uri.parse('$_baseUrl/api/v1/logging/logs');
 
-    var authToken = await _authenticator.token();
+    final authToken = await _authenticator.token();
 
-    var response = await http.post(url,
+    final response = await http.post(url,
         headers: {
           'Content-Type': 'application/json',
           'Authorization': '${authToken.tokenType} ${authToken.accessToken.value}',
         },
         body: jsonEncode(logs));
 
-    var statusCode = response.statusCode;
+    final statusCode = response.statusCode;
     if (statusCode >= 200 && statusCode < 300) {
       Fimber.i('Successfully sent logs to backend');
       return true;

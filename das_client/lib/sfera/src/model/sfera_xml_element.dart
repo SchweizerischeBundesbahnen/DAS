@@ -80,7 +80,7 @@ class SferaXmlElement {
       attributes.forEach((k, v) {
         builder.attribute(k, v);
       });
-      for (var child in children) {
+      for (final child in children) {
         child.buildElement(builder);
       }
       if (value != null) {

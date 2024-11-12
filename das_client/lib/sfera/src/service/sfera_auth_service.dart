@@ -16,12 +16,12 @@ class SferaAuthService {
     Fimber.i('Trying to fetch sfera auth token for ru=$ru train=$train role=$role...');
     final url = Uri.parse('$_tokenExchangeUrl?ru=$ru&train=$train&role=$role');
 
-    var authToken = await _authenticator.token();
+    final authToken = await _authenticator.token();
 
-    var response = await http.get(url, headers: {
+    final response = await http.get(url, headers: {
       'Authorization': '${authToken.tokenType} ${authToken.accessToken.value}',
     });
-    var statusCode = response.statusCode;
+    final statusCode = response.statusCode;
     if (statusCode >= 200 && statusCode < 300) {
       Fimber.i('Successfully retrieved sfera auth token');
       return response.body;

@@ -27,34 +27,34 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
     final currentState = state;
     if (currentState is SelectingTrainJourneyState) {
       final date = currentState.date;
-      final evu = currentState.ru;
+      final ru = currentState.ru;
       final trainNumber = currentState.trainNumber;
-      if (evu == null || trainNumber == null) {
+      if (ru == null || trainNumber == null) {
         Fimber.i('company or trainNumber null');
         return;
       }
 
-      emit(ConnectingState(evu, trainNumber, currentState.date));
+      emit(ConnectingState(ru, trainNumber, currentState.date));
       _stateSubscription?.cancel();
       _stateSubscription = _sferaService.stateStream.listen((state) {
         switch (state) {
           case SferaServiceState.connected:
-            emit(TrainJourneyLoadedState(evu, trainNumber, date));
+            emit(TrainJourneyLoadedState(ru, trainNumber, date));
             break;
           case SferaServiceState.connecting:
           case SferaServiceState.handshaking:
           case SferaServiceState.loadingJourney:
           case SferaServiceState.loadingSegments:
-            emit(ConnectingState(evu, trainNumber, date));
+            emit(ConnectingState(ru, trainNumber, date));
             break;
           case SferaServiceState.disconnected:
           case SferaServiceState.offline:
             emit(SelectingTrainJourneyState(
-                ru: evu, trainNumber: trainNumber, date: date, errorCode: _sferaService.lastErrorCode));
+                ru: ru, trainNumber: trainNumber, date: date, errorCode: _sferaService.lastErrorCode));
             break;
         }
       });
-      _sferaService.connect(OtnId.create(evu.companyCode, trainNumber, date));
+      _sferaService.connect(OtnId.create(ru.companyCode, trainNumber, date));
     }
   }
 
@@ -68,11 +68,11 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
     }
   }
 
-  void updateCompany(Ru? evu) {
+  void updateCompany(Ru? ru) {
     if (state is SelectingTrainJourneyState) {
       emit(SelectingTrainJourneyState(
           trainNumber: (state as SelectingTrainJourneyState).trainNumber,
-          ru: evu,
+          ru: ru,
           date: (state as SelectingTrainJourneyState).date,
           errorCode: (state as SelectingTrainJourneyState).errorCode));
     }

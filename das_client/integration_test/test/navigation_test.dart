@@ -15,7 +15,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // check that there is a drawer
-      var scaffold = find.byWidgetPredicate((widget) => widget is Scaffold).first;
+      final scaffold = find.byWidgetPredicate((widget) => widget is Scaffold).first;
       expect(tester.widget<Scaffold>(scaffold).drawer, isNotNull);
 
       // check that drawer is not shown

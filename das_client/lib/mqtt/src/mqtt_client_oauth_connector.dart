@@ -16,17 +16,17 @@ class MqttClientOauthConnector implements MqttClientConnector {
   Future<bool> connect(MqttClient client, String company, String train) async {
     Fimber.i('Connecting to mqtt using oauth token');
 
-    var sferaAuthToken = await _sferaAuthService.retrieveSferaAuthToken(company, train, 'active');
+    final sferaAuthToken = await _sferaAuthService.retrieveSferaAuthToken(company, train, 'active');
 
     Fimber.i('Received sfera token=${sferaAuthToken?.substring(0, 20)}');
-    var token = await _authenticator.token();
-    var jsonWebToken = token.accessToken.toJwt();
-    var userId = jsonWebToken.payload['preferred_username'];
+    final token = await _authenticator.token();
+    final jsonWebToken = token.accessToken.toJwt();
+    final userId = jsonWebToken.payload['preferred_username'];
     Fimber.i('Using userId=$userId');
 
     if (sferaAuthToken != null && userId != null) {
       try {
-        var mqttClientConnectionStatus = await client.connect(userId, 'OAUTH~azureAd~$sferaAuthToken');
+        final mqttClientConnectionStatus = await client.connect(userId, 'OAUTH~azureAd~$sferaAuthToken');
         Fimber.i('mqttClientConnectionStatus=$mqttClientConnectionStatus');
 
         if (mqttClientConnectionStatus?.state == MqttConnectionState.connected) {

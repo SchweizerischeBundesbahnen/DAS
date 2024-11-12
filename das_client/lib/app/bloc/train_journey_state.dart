@@ -21,7 +21,7 @@ abstract class BaseTrainJourneyState extends TrainJourneyState {
 
   @override
   String toString() {
-    return '${runtimeType.toString()}(evu=$ru, trainNumber=$trainNumber, date=$date)';
+    return '${runtimeType.toString()}(ru=$ru, trainNumber=$trainNumber, date=$date)';
   }
 }
 

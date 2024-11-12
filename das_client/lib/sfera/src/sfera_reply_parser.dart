@@ -28,25 +28,25 @@ class SferaReplyParser {
   SferaReplyParser._();
 
   static T parse<T extends SferaXmlElement>(String input) {
-    var xmlDocument = XmlDocument.parse(input);
-    var xml = _parseXml(xmlDocument.rootElement);
+    final xmlDocument = XmlDocument.parse(input);
+    final xml = _parseXml(xmlDocument.rootElement);
     return xml as T;
   }
 
   static SferaXmlElement _parseXml(XmlElement xmlElement) {
-    var attributes = <String, String>{};
-    var children = <SferaXmlElement>[];
+    final attributes = <String, String>{};
+    final children = <SferaXmlElement>[];
 
-    for (var attribute in xmlElement.attributes) {
+    for (final attribute in xmlElement.attributes) {
       attributes[attribute.name.toString()] = attribute.value;
     }
 
-    for (var childElement in xmlElement.childElements) {
-      var child = _parseXml(childElement);
+    for (final childElement in xmlElement.childElements) {
+      final child = _parseXml(childElement);
       children.add(child);
     }
 
-    var xmlTextElements = xmlElement.children.whereType<XmlText>();
+    final xmlTextElements = xmlElement.children.whereType<XmlText>();
 
     return _createResolvedType(xmlElement.name.toString(), Map.unmodifiable(attributes), List.unmodifiable(children),
         xmlTextElements.length == 1 ? xmlTextElements.first.toString() : null);

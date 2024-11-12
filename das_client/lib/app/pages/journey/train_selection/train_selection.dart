@@ -112,14 +112,7 @@ class _TrainSelectionState extends State<TrainSelection> {
       padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing / 2),
       child: SBBPrimaryButton(
         label: context.l10n.p_train_selection_load,
-        onPressed: _canContinue(state)
-            ? () {
-                final trainJourneyCubit = context.trainJourneyCubit;
-                if (!trainJourneyCubit.isClosed) {
-                  trainJourneyCubit.loadTrainJourney();
-                }
-              }
-            : null,
+        onPressed: _canContinue(state) ? () => context.trainJourneyCubit.loadTrainJourney() : null,
       ),
     );
   }
@@ -130,16 +123,17 @@ class _TrainSelectionState extends State<TrainSelection> {
   }
 
   Widget _datePickerWidget(BuildContext context, SelectingTrainJourneyState state) {
-    DateTime now = DateTime.now();
+    final now = DateTime.now();
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         SBBDatePicker(
-            initialDate: state.date,
-            minimumDate: now.add(Duration(days: -1)),
-            maximumDate: now.add(Duration(hours: 4)),
-            onDateChanged: (value) => context.trainJourneyCubit.updateDate(value)),
+          initialDate: state.date,
+          minimumDate: now.add(Duration(days: -1)),
+          maximumDate: now.add(Duration(hours: 4)),
+          onDateChanged: (value) => context.trainJourneyCubit.updateDate(value),
+        ),
       ],
     );
   }

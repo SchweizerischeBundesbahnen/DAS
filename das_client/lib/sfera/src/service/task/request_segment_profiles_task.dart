@@ -42,21 +42,21 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfile>> {
   }
 
   Future<void> _requestSegmentProfiles() async {
-    var missingSp = await findMissingSegmentProfiles();
+    final missingSp = await findMissingSegmentProfiles();
     if (missingSp.isEmpty) {
       Fimber.i('No missing SegmentProfiles found...');
       _taskCompletedCallback(this, []);
       return;
     }
 
-    List<SpRequest> spRequests = [];
-    for (var sp in missingSp) {
+    final List<SpRequest> spRequests = [];
+    for (final sp in missingSp) {
       spRequests.add(SpRequest.create(
           id: sp.spId, versionMajor: sp.versionMajor, versionMinor: sp.versionMinor, spZone: sp.spZone));
     }
 
-    var trainIdentification = TrainIdentification.create(otnId: otnId);
-    var sferaB2gRequestMessage = SferaB2gRequestMessage.create(
+    final trainIdentification = TrainIdentification.create(otnId: otnId);
+    final sferaB2gRequestMessage = SferaB2gRequestMessage.create(
         await SferaService.messageHeader(trainIdentification: trainIdentification, sender: otnId.company),
         b2gRequest: B2gRequest.createSPRequest(spRequests));
     Fimber.i('Sending segment profiles request...');
@@ -67,10 +67,10 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfile>> {
   }
 
   Future<List<SegmentProfileList>> findMissingSegmentProfiles() async {
-    var missingSps = <SegmentProfileList>[];
+    final missingSps = <SegmentProfileList>[];
 
-    for (var segment in journeyProfile.segmentProfilesLists) {
-      var existingProfile =
+    for (final segment in journeyProfile.segmentProfilesLists) {
+      final existingProfile =
           await _sferaRepository.findSegmentProfile(segment.spId, segment.versionMajor, segment.versionMinor);
       if (existingProfile == null) {
         missingSps.add(segment);
@@ -90,7 +90,7 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfile>> {
 
       bool allValid = true;
 
-      for (var element in replyMessage.payload!.segmentProfiles) {
+      for (final element in replyMessage.payload!.segmentProfiles) {
         if (element.status == SpStatus.valid) {
           await _sferaRepository.saveSegmentProfile(element);
         } else {

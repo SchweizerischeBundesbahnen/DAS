@@ -12,12 +12,12 @@ class MqttClientTMSOauthConnector implements MqttClientConnector {
   Future<bool> connect(MqttClient client, String company, String train) async {
     Fimber.i('Connecting to TMS mqtt using oauth token');
 
-    var sferaAuthToken = await _sferaAuthService.retrieveSferaAuthToken(company, train, 'active');
+    final sferaAuthToken = await _sferaAuthService.retrieveSferaAuthToken(company, train, 'active');
     Fimber.i('Received TMS sfera token=${sferaAuthToken?.substring(0, 20)}');
 
     if (sferaAuthToken != null) {
       try {
-        var mqttClientConnectionStatus = await client.connect('JWT', 'OPENID~AzureAD_IMTS~~$sferaAuthToken');
+        final mqttClientConnectionStatus = await client.connect('JWT', 'OPENID~AzureAD_IMTS~~$sferaAuthToken');
         Fimber.i('mqttClientConnectionStatus=$mqttClientConnectionStatus');
 
         if (mqttClientConnectionStatus?.state == MqttConnectionState.connected) {

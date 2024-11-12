@@ -1,3 +1,4 @@
+import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/departure_authorization.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_channel.dart';
 import 'package:das_client/app/widgets/widget_extensions.dart';
@@ -70,23 +71,27 @@ class MainContainer extends StatelessWidget {
   }
 
   Widget _buttonArea() {
-    return Row(
-      children: [
-        SBBTertiaryButtonLarge(
-          label: 'Nachtmodus',
-          icon: SBBIcons.moon_small,
-          onPressed: () {},
-        ),
-        SBBTertiaryButtonLarge(
-          label: 'Pause',
-          icon: SBBIcons.pause_small,
-          onPressed: () {},
-        ),
-        SBBIconButtonLarge(
-          icon: SBBIcons.context_menu_small,
-          onPressed: () {},
-        ),
-      ].withSpacing(width: sbbDefaultSpacing * 0.5),
+    return Builder(
+      builder: (context) {
+        return Row(
+          children: [
+            SBBTertiaryButtonLarge(
+              label: context.l10n.p_train_journey_header_button_dark_theme,
+              icon: SBBIcons.moon_small,
+              onPressed: () {},
+            ),
+            SBBTertiaryButtonLarge(
+              label: context.l10n.p_train_journey_header_button_pause,
+              icon: SBBIcons.pause_small,
+              onPressed: () {},
+            ),
+            SBBIconButtonLarge(
+              icon: SBBIcons.context_menu_small,
+              onPressed: () {},
+            ),
+          ].withSpacing(width: sbbDefaultSpacing * 0.5),
+        );
+      }
     );
   }
 }
