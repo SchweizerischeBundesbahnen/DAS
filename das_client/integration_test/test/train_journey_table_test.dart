@@ -1,3 +1,4 @@
+import 'package:das_client/app/pages/profile/profile_page.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -28,6 +29,7 @@ void main() {
         expect(find.text(header), findsOneWidget);
       }
     });
+
     testWidgets('test scrolling to last train station', (tester) async {
       await prepareAndStartApp(tester);
 
@@ -46,6 +48,28 @@ void main() {
           find.byType(ListView),
           const Offset(0, -300)
       );
+    });
+
+    testWidgets('test fahrbild stays loaded after navigation', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: '4816');
+
+      // check first train station
+      expect(find.text('ZUE'), findsOneWidget);
+
+      await openDrawer(tester);
+      await tapElement(tester, find.text(l10n.w_navigation_drawer_profile_title));
+
+      // Check on ProfilePage
+      expect(find.byType(ProfilePage), findsOneWidget);
+
+      await openDrawer(tester);
+      await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
+
+      // check first train station is still visible
+      expect(find.text('ZUE'), findsOneWidget);
     });
   });
 }

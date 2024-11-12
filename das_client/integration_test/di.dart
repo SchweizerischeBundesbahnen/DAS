@@ -21,6 +21,7 @@ class IntegrationTestDI {
     _registerIntegrationTestAuthenticator();
     GetIt.I.registerSferaComponents();
     GetIt.I.registerMqttComponent();
+    GetIt.I.registerBlocs();
 
     GetIt.I.unregister<MqttClientConnector>();
     _registerMqttClientConnector();

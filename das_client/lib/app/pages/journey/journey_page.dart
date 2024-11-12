@@ -1,12 +1,12 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:das_client/auth/authentication_component.dart';
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
-import 'package:das_client/di.dart';
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/nav/app_router.dart';
 import 'package:das_client/app/nav/das_navigation_drawer.dart';
 import 'package:das_client/app/pages/journey/train_journey/train_journey_overview.dart';
 import 'package:das_client/app/pages/journey/train_selection/train_selection.dart';
+import 'package:das_client/auth/authentication_component.dart';
+import 'package:das_client/di.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,9 +17,9 @@ class JourneyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => TrainJourneyCubit(sferaService: DI.get()),
-      child: const JourneyPageContent(),
+    return BlocProvider.value(
+      value: DI.get<TrainJourneyCubit>(),
+      child: JourneyPageContent(),
     );
   }
 }
