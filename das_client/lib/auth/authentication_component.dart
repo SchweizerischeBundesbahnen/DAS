@@ -8,6 +8,8 @@ export 'package:das_client/auth/src/authenticator.dart';
 export 'package:das_client/auth/src/authenticator_config.dart';
 export 'package:das_client/auth/src/token_spec_provider.dart';
 export 'package:das_client/auth/src/token_spec.dart';
+export 'package:das_client/auth/src/role.dart';
+export 'package:das_client/auth/src/user.dart';
 
 class AuthenticationComponent {
   const AuthenticationComponent._();

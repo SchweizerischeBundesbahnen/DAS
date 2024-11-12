@@ -23,8 +23,8 @@ class IntegrationtestAuthenticator implements Authenticator {
   }
 
   @override
-  Future<String> userId({String? tokenId}) async {
-    return 'tester@testeee.com';
+  Future<User> user({String? tokenId}) async {
+    return User(name: 'tester@testeee.com', roles: []);
   }
 
   OidcToken _token() {

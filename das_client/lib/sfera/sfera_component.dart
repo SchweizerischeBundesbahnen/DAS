@@ -54,7 +54,7 @@ class SferaComponent {
     return SferaAuthService(authenticator: authenticator, tokenExchangeUrl: tokenExchangeUrl);
   }
 
-  static SferaService createSferaService({required MqttService mqttService, required SferaRepository sferaRepository}) {
-    return SferaServiceImpl(mqttService: mqttService, sferaRepository: sferaRepository);
+  static SferaService createSferaService({required MqttService mqttService, required SferaRepository sferaRepository, required Authenticator authenticator}) {
+    return SferaServiceImpl(mqttService: mqttService, sferaRepository: sferaRepository, authenticator: authenticator);
   }
 }

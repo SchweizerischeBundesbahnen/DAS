@@ -8,7 +8,7 @@ final class InitialAuthState extends AuthState {}
 final class Unauthenticated extends AuthState {}
 
 final class Authenticated extends AuthState {
-  Authenticated(this.userId);
+  Authenticated(this.user);
 
-  final String userId;
+  final User user;
 }

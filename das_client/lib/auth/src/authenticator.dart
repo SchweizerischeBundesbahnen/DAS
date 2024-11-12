@@ -1,3 +1,4 @@
+import 'package:das_client/auth/src/user.dart';
 import 'package:sbb_oidc/sbb_oidc.dart';
 
 abstract class Authenticator {
@@ -9,7 +10,7 @@ abstract class Authenticator {
 
   Future<OidcToken> token({String? tokenId});
 
-  Future<String> userId({String? tokenId});
+  Future<User> user({String? tokenId});
 
   Future<void> logout();
 

@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:core';
 
+import 'package:das_client/auth/authentication_component.dart';
 import 'package:das_client/mqtt/mqtt_component.dart';
 import 'package:das_client/sfera/sfera_component.dart';
+import 'package:das_client/sfera/src/model/enums/das_driving_mode.dart';
 import 'package:das_client/sfera/src/service/handler/journey_profile_reply_handler.dart';
 import 'package:das_client/sfera/src/service/handler/segment_profile_reply_handler.dart';
 import 'package:das_client/sfera/src/service/handler/sfera_message_handler.dart';
@@ -17,6 +19,7 @@ import 'package:rxdart/rxdart.dart';
 class SferaServiceImpl implements SferaService {
   final MqttService _mqttService;
   final SferaRepository _sferaRepository;
+  final Authenticator _authenticator;
 
   StreamSubscription? _mqttStreamSubscription;
   final List<SferaMessageHandler> _messageHandlers = [];
@@ -41,9 +44,13 @@ class SferaServiceImpl implements SferaService {
   @override
   ErrorCode? lastErrorCode;
 
-  SferaServiceImpl({required MqttService mqttService, required SferaRepository sferaRepository})
+  SferaServiceImpl(
+      {required MqttService mqttService,
+      required SferaRepository sferaRepository,
+      required Authenticator authenticator})
       : _mqttService = mqttService,
-        _sferaRepository = sferaRepository {
+        _sferaRepository = sferaRepository,
+        _authenticator = authenticator {
     _init();
   }
 
@@ -76,7 +83,10 @@ class SferaServiceImpl implements SferaService {
     if (await _mqttService.connect(
         otnId.company, SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate))) {
       _stateSubject.add(SferaServiceState.handshaking);
-      final handshakeTask = HandshakeTask(mqttService: _mqttService, otnId: otnId);
+      final user = await _authenticator.user();
+      final drivingMode = user.roles.contains(Role.lokpersonal) ? DasDrivingMode.dasNotConnected : DasDrivingMode.readOnly;
+
+      final handshakeTask = HandshakeTask(mqttService: _mqttService, otnId: otnId, dasDrivingMode: drivingMode);
       _messageHandlers.add(handshakeTask);
       handshakeTask.execute(onTaskCompleted, onTaskFailed);
     } else {
