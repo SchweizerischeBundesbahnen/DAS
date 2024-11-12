@@ -60,8 +60,7 @@ class MainContainer extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(left: sbbDefaultSpacing * 0.5),
-              child: Text('Brugg',
-                  style: SBBTextStyles.largeLight.copyWith(fontSize: 24.0)),
+              child: Text('Brugg', style: SBBTextStyles.largeLight.copyWith(fontSize: 24.0)),
             ),
           ),
           _buttonArea(),

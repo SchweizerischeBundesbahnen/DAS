@@ -6,39 +6,31 @@ import ch.sbb.backend.domain.tenancy.ConfigTenantService
 import ch.sbb.backend.domain.tenancy.TenantId
 import ch.sbb.backend.infrastructure.configuration.LogDestination
 import ch.sbb.backend.infrastructure.configuration.Tenant
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito.*
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.oauth2.jwt.Jwt
-import java.io.ByteArrayOutputStream
-import java.io.PrintStream
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.util.*
 
 class MultitenantLogServiceTest {
 
-    private lateinit var tenantService: ConfigTenantService
     private lateinit var sut: MultitenantLogService
-
-    private val originalOut = System.out
-    private val outputStreamCaptor = ByteArrayOutputStream()
+    private lateinit var tenantService: ConfigTenantService
+    private lateinit var splunkLogService: SplunkLogService
 
     private val tid = UUID.randomUUID().toString()
 
     @BeforeEach
     fun setUp() {
         tenantService = mock(ConfigTenantService::class.java)
-        sut = MultitenantLogService(tenantService)
+        splunkLogService = mock(SplunkLogService::class.java)
+        sut = MultitenantLogService(tenantService, splunkLogService)
         val securityContext: SecurityContext = mock(SecurityContext::class.java)
-        System.setOut(PrintStream(outputStreamCaptor))
-
         val jwt = Jwt(
             "token",
             Instant.now(),
@@ -53,26 +45,21 @@ class MultitenantLogServiceTest {
     }
 
     @Test
-    fun `should log messages to console`() {
+    fun `should log messages to splunk`() {
         val tenantId = TenantId(tid)
-        val tenantConfig = Tenant().apply {
-            logDestination = LogDestination.CONSOLE
-        }
+        val tenantConfig = Tenant("test", "10", "", "", LogDestination.SPLUNK)
         `when`(tenantService.getById(tenantId)).thenReturn(tenantConfig)
 
-        val timestamp =  OffsetDateTime.now()
+        val timestamp = OffsetDateTime.now()
         val logEntries = listOf(
             LogEntryRequest(timestamp, "source", "message", LogLevelRequest.INFO)
         )
 
         sut.logs(logEntries)
 
-        val output = outputStreamCaptor.toString()
-        assertTrue(output.contains("${timestamp.toString()}\tINFO\tsource\tmessage {}\n"))
-    }
-
-    @AfterEach
-    fun tearDown() {
-        System.setOut(originalOut)
+        val expectedLogs = listOf(
+            LogEntry(timestamp, "source", "message", LogLevel.INFO)
+        )
+        verify(splunkLogService, times(1)).logs(expectedLogs)
     }
 }

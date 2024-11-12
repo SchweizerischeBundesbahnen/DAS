@@ -1,3 +1,4 @@
+import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -10,10 +11,16 @@ Future<void> openDrawer(WidgetTester tester) async {
 }
 
 Future<void> tapElement(WidgetTester tester, FinderBase<Element> element) async {
-  var gestureDetector = find.ancestor(of: element, matching: find.byType(GestureDetector)).first;
-  await tester.tap(gestureDetector);
-
-  await tester.pumpAndSettle(const Duration(milliseconds: 250));
+  await tester.tap(element);
+  await tester.pumpAndSettle();
 }
 
+Future<void> enterText(WidgetTester tester, FinderBase<Element> element, String text) async {
+  await tester.enterText(element, text);
+  await tester.pumpAndSettle();
+}
 
+Finder findTextFieldByLabel(String label) {
+  var sbbTextField = find.byWidgetPredicate((widget) => widget is SBBTextField && widget.labelText == label);
+  return find.descendant(of: sbbTextField, matching: find.byType(TextField));
+}

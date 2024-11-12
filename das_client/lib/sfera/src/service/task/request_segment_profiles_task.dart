@@ -1,5 +1,6 @@
 import 'package:das_client/mqtt/mqtt_component.dart';
 import 'package:das_client/sfera/src/model/b2g_request.dart';
+import 'package:das_client/sfera/src/model/enums/sp_status.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/otn_id.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
@@ -11,6 +12,7 @@ import 'package:das_client/sfera/src/model/train_identification.dart';
 import 'package:das_client/sfera/src/repo/sfera_repository.dart';
 import 'package:das_client/sfera/src/service/sfera_service.dart';
 import 'package:das_client/sfera/src/service/task/sfera_task.dart';
+import 'package:das_client/util/error_code.dart';
 import 'package:fimber/fimber.dart';
 
 class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfile>> {
@@ -55,7 +57,7 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfile>> {
 
     var trainIdentification = TrainIdentification.create(otnId: otnId);
     var sferaB2gRequestMessage = SferaB2gRequestMessage.create(
-        await SferaService.messageHeader(trainIdentification: trainIdentification),
+        await SferaService.messageHeader(trainIdentification: trainIdentification, sender: otnId.company),
         b2gRequest: B2gRequest.createSPRequest(spRequests));
     Fimber.i('Sending segment profiles request...');
 
@@ -86,11 +88,22 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfile>> {
         'Received G2bReplyPayload response with ${replyMessage.payload!.segmentProfiles.length} SegmentProfiles...',
       );
 
+      bool allValid = true;
+
       for (var element in replyMessage.payload!.segmentProfiles) {
-        await _sferaRepository.saveSegmentProfile(element);
+        if (element.status == SpStatus.valid) {
+          await _sferaRepository.saveSegmentProfile(element);
+        } else {
+          allValid = false;
+        }
       }
 
-      _taskCompletedCallback(this, replyMessage.payload!.segmentProfiles.toList());
+      if (allValid) {
+        _taskCompletedCallback(this, replyMessage.payload!.segmentProfiles.toList());
+      } else {
+        _taskFailedCallback(this, ErrorCode.sferaSpInvalid);
+      }
+
       return true;
     }
     return false;

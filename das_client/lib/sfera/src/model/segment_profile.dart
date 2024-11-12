@@ -1,3 +1,5 @@
+import 'package:das_client/sfera/src/model/enums/sp_status.dart';
+import 'package:das_client/sfera/src/model/enums/xml_enum.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 import 'package:das_client/sfera/src/model/sp_points.dart';
 import 'package:das_client/sfera/src/model/sp_zone.dart';
@@ -14,6 +16,8 @@ class SegmentProfile extends SferaXmlElement {
   String get length => attributes['SP_Length']!;
 
   String get id => attributes['SP_ID']!;
+
+  SpStatus get status => XmlEnum.valueOf<SpStatus>(SpStatus.values, attributes['SP_Status']) ?? SpStatus.valid;
 
   SpZone? get zone => children.whereType<SpZone>().firstOrNull;
 

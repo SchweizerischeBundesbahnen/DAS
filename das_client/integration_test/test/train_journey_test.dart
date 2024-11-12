@@ -9,13 +9,11 @@ void main() {
       // Load app widget.
       await prepareAndStartApp(tester);
 
-      await tester.pump(const Duration(seconds: 1));
-
-      // Verify we have trainnumber with 9232.
+      // Verify we have trainnumber with 7839.
       expect(find.text('7839'), findsOneWidget);
 
-      // Verify we have company with 1088.
-      expect(find.text('1085'), findsOneWidget);
+      // Verify we have ru SBB.
+      expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
 
       // check that the primary button is enabled
       var primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
@@ -25,10 +23,12 @@ void main() {
       await tester.tap(primaryButton);
 
       // wait for train journey to load
-      await tester.pumpAndSettle(const Duration(seconds: 1));
+      await tester.pumpAndSettle();
 
       // check if station is present
       expect(find.text('SO_W'), findsOneWidget);
+
+      await tester.pumpAndSettle();
     });
   });
 }

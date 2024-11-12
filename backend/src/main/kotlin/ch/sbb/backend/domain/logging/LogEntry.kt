@@ -9,7 +9,14 @@ data class LogEntry(
     private val level: LogLevel,
     private val metadata: Map<String, String>? = emptyMap()
 ) {
-    override fun toString(): String {
-        return "${time}\t${level}\t${source}\t${message} ${metadata}"
+    fun toSplunkRequest(): SplunkRequest {
+        val fields = metadata?.toMutableMap() ?: mutableMapOf()
+        fields["level"] = level.name
+        return SplunkRequest(
+            event = message,
+            fields = fields,
+            source = source,
+            time = time,
+        )
     }
 }

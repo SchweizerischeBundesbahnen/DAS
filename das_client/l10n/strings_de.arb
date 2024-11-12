@@ -1,10 +1,10 @@
 {
     "c_app_name": "DAS Client",
-    "p_train_selection_load": "Fahrbild laden",
+    "p_train_selection_load": "Übernehmen",
     "p_train_selection_trainnumber_description": "Zugnummer",
-    "p_train_selection_trainnumber_placeholder": "z.B. 711",
-    "p_train_selection_company_description": "Company code",
-    "p_train_selection_company_placeholder": "z.B. 0085",
+    "p_train_selection_ru_description": "EVU",
+    "p_train_selection_date_description": "Datum",
+    "p_train_selection_choose_date": "Datum wählen",
     "p_train_journey_header_button_dark_theme": "Nachtmodus",
     "p_train_journey_header_button_pause": "Pause",
     "p_train_journey_table_kilometre_label": "km",
@@ -21,5 +21,16 @@
     "p_login_login_button_text": "Login",
     "p_login_login_button_description": "Mit Ihrem Account einloggen",
     "p_login_login_failed": "Login fehlgeschlagen",
-    "w_adl_notification_title": "ADL Meldung"
+    "w_adl_notification_title": "ADL Meldung",
+    "c_ru_sbb_p": "SBB",
+    "c_ru_sbb_c": "SBB Cargo",
+    "c_ru_bls_p": "BLS",
+    "c_ru_bls_c": "BLS Cargo",
+    "c_ru_sob": "SOB",
+    "c_error_connection_failed": "Verbindung fehlgeschlagen",
+    "c_error_sfera_validation_failed": "Validierung der Daten fehlgeschlagen",
+    "c_error_sfera_handshake_rejected": "Server hat die Verbindung abgelehnt",
+    "c_error_sfera_request_timeout": "Timeout bei der Anfrage",
+    "c_error_sfera_jp_unavailable": "Fahrordnung nicht vorhanden",
+    "c_error_sfera_sp_invalid": "Unvollständige Daten erhalten"
 }

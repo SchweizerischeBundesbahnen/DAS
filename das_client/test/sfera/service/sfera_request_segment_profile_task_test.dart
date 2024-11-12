@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:das_client/mqtt/mqtt_component.dart';
 import 'package:das_client/sfera/sfera_component.dart';
-import 'package:das_client/sfera/src/service/task/request_journey_profile_task.dart';
+import 'package:das_client/sfera/src/service/task/request_segment_profiles_task.dart';
 import 'package:das_client/util/error_code.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -27,129 +27,125 @@ void main() {
     otnId = OtnId.create('1085', '719', DateTime.now());
   });
 
-  test('Test JP request successful', () async {
+  test('Test SP request successful', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
     var sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
 
-    var journeyTask = RequestJourneyProfileTask(mqttService: mqttService, sferaRepository: sferaRepository, otnId: otnId);
+    var segmentTask = RequestSegmentProfilesTask(
+        mqttService: mqttService,
+        sferaRepository: sferaRepository,
+        otnId: otnId,
+        journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first);
 
-    await journeyTask.execute((task, data) {
-      expect(task, journeyTask);
-      expect(data, sferaG2bReplyMessage.payload!.journeyProfiles.first);
+    await segmentTask.execute((task, data) {
+      expect(task, segmentTask);
+      expect(data, sferaG2bReplyMessage.payload!.segmentProfiles);
     }, (task, errorCode) {
       fail('Task failed with error code $errorCode');
     });
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
-    var result = await journeyTask.handleMessage(sferaG2bReplyMessage);
+    var result = await segmentTask.handleMessage(sferaG2bReplyMessage);
     expect(result, true);
   });
 
-  test('Test JP request saves to sfera repository', () async {
+  test('Test SP request saves to sfera repository', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
     var sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
 
-    var journeyTask = RequestJourneyProfileTask(mqttService: mqttService, sferaRepository: sferaRepository, otnId: otnId);
+    var segmentTask = RequestSegmentProfilesTask(
+        mqttService: mqttService,
+        sferaRepository: sferaRepository,
+        otnId: otnId,
+        journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first);
 
-    await journeyTask.execute((task, data) {
-      expect(task, journeyTask);
+    await segmentTask.execute((task, data) {
+      expect(task, segmentTask);
     }, (task, errorCode) {
       fail('Task failed with error code $errorCode');
     });
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
-    var result = await journeyTask.handleMessage(sferaG2bReplyMessage);
+    var result = await segmentTask.handleMessage(sferaG2bReplyMessage);
     expect(result, true);
 
-    verify(sferaRepository.saveJourneyProfile(any)).called(1);
+    verifyNever(sferaRepository.saveJourneyProfile(any));
     verify(sferaRepository.saveSegmentProfile(any)).called(23);
   });
 
-  test('Test JP Task fail on JP Invalid', () async {
+  test('Test SP request fail on invalid SP', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232_invalid_jp.xml');
+    final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232_invalid_sp.xml');
     var sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
 
-    var journeyTask = RequestJourneyProfileTask(
+    var segmentTask = RequestSegmentProfilesTask(
         mqttService: mqttService,
         sferaRepository: sferaRepository,
-        otnId: otnId);
+        otnId: otnId,
+        journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first);
 
-    await journeyTask.execute((task, data) {
+    await segmentTask.execute((task, data) {
       fail('Test should not call success');
     }, (task, errorCode) {
-      expect(task, journeyTask);
-      expect(errorCode, ErrorCode.sferaJpUnavailable);
+      expect(task, segmentTask);
+      expect(errorCode, ErrorCode.sferaSpInvalid);
     });
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
-    var result = await journeyTask.handleMessage(sferaG2bReplyMessage);
+    var result = await segmentTask.handleMessage(sferaG2bReplyMessage);
     expect(result, true);
 
     verifyNever(sferaRepository.saveJourneyProfile(any));
-    verifyNever(sferaRepository.saveSegmentProfile(any));
+    verify(sferaRepository.saveSegmentProfile(any)).called(22);
   });
 
-  test('Test JP Task fail on JP Unavailable', () async {
+  test('Test SP request ignores other messages', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232_unavailable_jp.xml');
+    final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
     var sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
 
-    var journeyTask = RequestJourneyProfileTask(
+    var segmentTask = RequestSegmentProfilesTask(
         mqttService: mqttService,
         sferaRepository: sferaRepository,
-        otnId: otnId);
+        otnId: otnId,
+        journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first);
 
-    await journeyTask.execute((task, data) {
+    await segmentTask.execute((task, data) {
       fail('Test should not call success');
     }, (task, errorCode) {
-      expect(task, journeyTask);
-      expect(errorCode, ErrorCode.sferaJpUnavailable);
-    });
-
-    verify(mqttService.publishMessage(any, any, any)).called(1);
-
-    var result = await journeyTask.handleMessage(sferaG2bReplyMessage);
-    expect(result, true);
-
-    verifyNever(sferaRepository.saveJourneyProfile(any));
-    verifyNever(sferaRepository.saveSegmentProfile(any));
-  });
-
-  test('Test JP request ignores other messages', () async {
-    when(mqttService.publishMessage(any, any, any)).thenReturn(true);
-
-    var journeyTask = RequestJourneyProfileTask(mqttService: mqttService, sferaRepository: sferaRepository, otnId: otnId);
-
-    await journeyTask.execute((task, data) {
-      fail('Test should not call success');
-    },(task, errorCode) {
       fail('Test should not call error');
     });
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
-    final file = File('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
-    var sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
-
-    var result = await journeyTask.handleMessage(sferaG2bReplyMessage);
+    final handShakefile = File('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
+    var handshakeSferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(handShakefile.readAsStringSync());
+    var result = await segmentTask.handleMessage(handshakeSferaG2bReplyMessage);
     expect(result, false);
   });
 
-  test('Test request journey profile timeout', () async {
+  test('Test request segment profile timeout', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    var journeyTask = RequestJourneyProfileTask(
-        mqttService: mqttService, sferaRepository: sferaRepository, otnId: otnId, timeout: const Duration(seconds: 1));
+    final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
+    var sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+
+    var journeyTask = RequestSegmentProfilesTask(
+      mqttService: mqttService,
+      sferaRepository: sferaRepository,
+      otnId: otnId,
+      journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first,
+      timeout: const Duration(seconds: 1),
+    );
 
     var timeoutReached = false;
     await journeyTask.execute((task, data) {
