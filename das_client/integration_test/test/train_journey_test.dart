@@ -9,8 +9,6 @@ void main() {
       // Load app widget.
       await prepareAndStartApp(tester);
 
-      await tester.pump(const Duration(seconds: 1));
-
       // Verify we have trainnumber with 7839.
       expect(find.text('7839'), findsOneWidget);
 

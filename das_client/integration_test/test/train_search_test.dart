@@ -14,8 +14,6 @@ void main() {
       // Load app widget.
       await prepareAndStartApp(tester);
 
-      await tester.pump(const Duration(seconds: 1));
-
       // Verify we have ru SBB.
       expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
 
@@ -27,14 +25,10 @@ void main() {
       // Load app widget.
       await prepareAndStartApp(tester);
 
-      await tester.pump(const Duration(seconds: 1));
-
       // Verify we have ru SBB.
       expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
 
       await tapElement(tester, find.text(l10n.c_ru_sbb_p));
-
-      await tester.pumpAndSettle();
 
       expect(find.text(l10n.c_ru_sbb_c), findsOneWidget);
       expect(find.text(l10n.c_ru_bls_p), findsOneWidget);
@@ -43,19 +37,13 @@ void main() {
 
       await tapElement(tester, find.text(l10n.c_ru_sob));
 
-      await tester.pumpAndSettle();
-
       expect(find.text(l10n.c_ru_sob), findsOneWidget);
       expect(find.text(l10n.c_ru_sbb_p), findsNothing);
     });
 
     testWidgets('test load button disabled when validation fails', (tester) async {
-      tester.testTextInput.register();
-
       // Load app widget.
       await prepareAndStartApp(tester);
-
-      await tester.pump(const Duration(seconds: 1));
 
       // Verify we have ru SBB.
       expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
@@ -66,8 +54,7 @@ void main() {
       var trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
       expect(trainNumberText, findsOneWidget);
 
-      await tester.enterText(trainNumberText, '');
-      await tester.pumpAndSettle();
+      await enterText(tester, trainNumberText, '');
 
       // check that the primary button is disabled
       var primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
@@ -78,8 +65,6 @@ void main() {
     testWidgets('test can select yesterday', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
-
-      await tester.pump(const Duration(seconds: 1));
 
       final today = DateTime.now();
       final yesterday = today.add(Duration(days: -1));
@@ -93,19 +78,14 @@ void main() {
 
       await tapElement(tester, todayDateTextFinder);
 
-      await tester.pumpAndSettle();
-
       final sbbDatePickerFinder = find.byWidgetPredicate((widget) => widget is SBBDatePicker);
       final yesterdayFinder = find.descendant(
           of: sbbDatePickerFinder,
           matching: find.byWidgetPredicate((widget) => widget is Text && widget.data == '${(yesterday.day)}.'));
-      await tapAt(tester, yesterdayFinder);
-
-      await tester.pumpAndSettle();
+      await tapElement(tester, yesterdayFinder);
 
       // tap outside dialog
       await tester.tapAt(Offset(200, 200));
-
       await tester.pumpAndSettle();
 
       expect(todayDateTextFinder, findsNothing);
@@ -116,8 +96,6 @@ void main() {
     testWidgets('test can not select day before yesterday', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
-
-      await tester.pump(const Duration(seconds: 1));
 
       final today = DateTime.now();
       final yesterday = today.add(Duration(days: -1));
@@ -133,19 +111,14 @@ void main() {
 
       await tapElement(tester, todayDateTextFinder);
 
-      await tester.pumpAndSettle();
-
       final sbbDatePickerFinder = find.byWidgetPredicate((widget) => widget is SBBDatePicker);
       final yesterdayFinder = find.descendant(
           of: sbbDatePickerFinder,
           matching: find.byWidgetPredicate((widget) => widget is Text && widget.data == '${(dayBeforeYesterday.day)}.'));
-      await tapAt(tester, yesterdayFinder);
-
-      await tester.pumpAndSettle();
+      await tapElement(tester, yesterdayFinder);
 
       // tap outside dialog
       await tester.tapAt(Offset(200, 200));
-
       await tester.pumpAndSettle();
 
       expect(todayDateTextFinder, findsNothing);
@@ -154,12 +127,8 @@ void main() {
     });
 
     testWidgets('test error if JP unavailable', (tester) async {
-      tester.testTextInput.register();
-
       // Load app widget.
       await prepareAndStartApp(tester);
-
-      await tester.pump(const Duration(seconds: 1));
 
       // Verify we have ru SBB.
       expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
@@ -170,17 +139,13 @@ void main() {
       var trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
       expect(trainNumberText, findsOneWidget);
 
-      await tester.enterText(trainNumberText, '1234');
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.pumpAndSettle();
+      await enterText(tester, trainNumberText, '1234');
 
       // check that the primary button is disabled
       var primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
       expect(tester.widget<SBBPrimaryButton>(primaryButton).onPressed, isNotNull);
 
-      await tester.tap(primaryButton);
-
-      await tester.pumpAndSettle();
+      await tapElement(tester, primaryButton);
 
       expect(find.text('${ErrorCode.sferaJpUnavailable.code}: ${l10n.c_error_sfera_jp_unavailable}'), findsOneWidget);
     });

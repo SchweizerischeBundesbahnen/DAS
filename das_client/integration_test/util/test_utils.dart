@@ -11,10 +11,13 @@ Future<void> openDrawer(WidgetTester tester) async {
 }
 
 Future<void> tapElement(WidgetTester tester, FinderBase<Element> element) async {
-  var gestureDetector = find.ancestor(of: element, matching: find.byType(GestureDetector)).first;
-  await tester.tap(gestureDetector);
+  await tester.tap(element);
+  await tester.pumpAndSettle();
+}
 
-  await tester.pumpAndSettle(const Duration(milliseconds: 250));
+Future<void> enterText(WidgetTester tester, FinderBase<Element> element, String text) async {
+  await tester.enterText(element, text);
+  await tester.pumpAndSettle();
 }
 
 Future<void> tapAt(WidgetTester tester, FinderBase<Element> finder) async {
