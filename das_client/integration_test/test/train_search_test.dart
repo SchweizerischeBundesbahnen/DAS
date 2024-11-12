@@ -16,37 +16,37 @@ void main() {
 
       await tester.pump(const Duration(seconds: 1));
 
-      // Verify we have evu SBB.
-      expect(find.text(l10n.c_evu_sbb_p), findsOneWidget);
+      // Verify we have ru SBB.
+      expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
 
       // Verify that today is preselected
       expect(find.text(Format.date(DateTime.now())), findsOneWidget);
     });
 
-    testWidgets('test selecting evu values', (tester) async {
+    testWidgets('test selecting ru values', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
 
       await tester.pump(const Duration(seconds: 1));
 
-      // Verify we have evu SBB.
-      expect(find.text(l10n.c_evu_sbb_p), findsOneWidget);
+      // Verify we have ru SBB.
+      expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
 
-      await tapElement(tester, find.text(l10n.c_evu_sbb_p));
-
-      await tester.pumpAndSettle();
-
-      expect(find.text(l10n.c_evu_sbb_c), findsOneWidget);
-      expect(find.text(l10n.c_evu_bls_p), findsOneWidget);
-      expect(find.text(l10n.c_evu_bls_c), findsOneWidget);
-      expect(find.text(l10n.c_evu_sob), findsOneWidget);
-
-      await tapElement(tester, find.text(l10n.c_evu_sob));
+      await tapElement(tester, find.text(l10n.c_ru_sbb_p));
 
       await tester.pumpAndSettle();
 
-      expect(find.text(l10n.c_evu_sob), findsOneWidget);
-      expect(find.text(l10n.c_evu_sbb_p), findsNothing);
+      expect(find.text(l10n.c_ru_sbb_c), findsOneWidget);
+      expect(find.text(l10n.c_ru_bls_p), findsOneWidget);
+      expect(find.text(l10n.c_ru_bls_c), findsOneWidget);
+      expect(find.text(l10n.c_ru_sob), findsOneWidget);
+
+      await tapElement(tester, find.text(l10n.c_ru_sob));
+
+      await tester.pumpAndSettle();
+
+      expect(find.text(l10n.c_ru_sob), findsOneWidget);
+      expect(find.text(l10n.c_ru_sbb_p), findsNothing);
     });
 
     testWidgets('test load button disabled when validation fails', (tester) async {
@@ -55,8 +55,8 @@ void main() {
 
       await tester.pump(const Duration(seconds: 1));
 
-      // Verify we have evu SBB.
-      expect(find.text(l10n.c_evu_sbb_p), findsOneWidget);
+      // Verify we have ru SBB.
+      expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
 
       // Verify that today is preselected
       expect(find.text(Format.date(DateTime.now())), findsOneWidget);
@@ -158,8 +158,8 @@ void main() {
 
       await tester.pump(const Duration(seconds: 1));
 
-      // Verify we have evu SBB.
-      expect(find.text(l10n.c_evu_sbb_p), findsOneWidget);
+      // Verify we have ru SBB.
+      expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
 
       // Verify that today is preselected
       expect(find.text(Format.date(DateTime.now())), findsOneWidget);
@@ -179,8 +179,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      expect(find.text(ErrorCode.sferaJpUnavailable.toString()), findsOneWidget);
-
+      expect(find.text('${ErrorCode.sferaJpUnavailable.code}: ${l10n.c_error_sfera_jp_unavailable}'), findsOneWidget);
     });
 
   });

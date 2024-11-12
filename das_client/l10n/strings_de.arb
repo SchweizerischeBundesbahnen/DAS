@@ -16,9 +16,15 @@
     "p_login_login_button_description": "Mit Ihrem Account einloggen",
     "p_login_login_failed": "Login fehlgeschlagen",
     "w_adl_notification_title": "ADL Meldung",
-    "c_evu_sbb_p": "SBB",
-    "c_evu_sbb_c": "SBB Cargo",
-    "c_evu_bls_p": "BLS",
-    "c_evu_bls_c": "BLS Cargo",
-    "c_evu_sob": "SOB"
+    "c_ru_sbb_p": "SBB",
+    "c_ru_sbb_c": "SBB Cargo",
+    "c_ru_bls_p": "BLS",
+    "c_ru_bls_c": "BLS Cargo",
+    "c_ru_sob": "SOB",
+    "c_error_connection_failed": "Verbindung fehlgeschlagen",
+    "c_error_sfera_validation_failed": "Validierung der Daten fehlgeschlagen",
+    "c_error_sfera_handshake_rejected": "Server hat die Verbindung abgelehnt",
+    "c_error_sfera_request_timeout": "Timeout bei der Anfrage",
+    "c_error_sfera_jp_unavailable": "Fahrordnung nicht vorhanden",
+    "c_error_sfera_sp_invalid": "Unvollständige Daten erhalten"
 }

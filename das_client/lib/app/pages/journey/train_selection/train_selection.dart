@@ -1,7 +1,8 @@
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/i18n/i18n.dart';
-import 'package:das_client/app/model/evu.dart';
+import 'package:das_client/app/model/ru.dart';
 import 'package:das_client/app/widgets/header.dart';
+import 'package:das_client/util/error_code.dart';
 import 'package:das_client/util/format.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
@@ -89,10 +90,10 @@ class _TrainSelectionState extends State<TrainSelection> {
   Widget _evuSelectionWidget(BuildContext context, SelectingTrainJourneyState state) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, 0, sbbDefaultSpacing),
-      child: SBBSelect<Evu>(
+      child: SBBSelect<Ru>(
         label: context.l10n.p_train_selection_evu_description,
         value: state.evu,
-        items: Evu.values.map((vTyp) => SelectMenuItem<Evu>(value: vTyp, label: vTyp.displayText(context))).toList(),
+        items: Ru.values.map((vTyp) => SelectMenuItem<Ru>(value: vTyp, label: vTyp.displayText(context))).toList(),
         onChanged: (selectedEvu) => context.trainJourneyCubit.updateCompany(selectedEvu),
         isLastElement: true,
       ),
@@ -101,7 +102,7 @@ class _TrainSelectionState extends State<TrainSelection> {
 
   Widget _errorWidget(BuildContext context, SelectingTrainJourneyState state) {
     if (state.errorCode != null) {
-      return Text('${state.errorCode}', style: SBBTextStyles.mediumBold);
+      return Text(state.errorCode!.displayTextWithErrorCode(context), style: SBBTextStyles.mediumBold);
     }
     return Container();
   }

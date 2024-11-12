@@ -7,7 +7,7 @@ final class SelectingTrainJourneyState extends TrainJourneyState {
   SelectingTrainJourneyState({this.evu, this.trainNumber, required this.date, this.errorCode});
 
   final String? trainNumber;
-  final Evu? evu;
+  final Ru? evu;
   final DateTime date;
   final ErrorCode? errorCode;
 }
@@ -15,7 +15,7 @@ final class SelectingTrainJourneyState extends TrainJourneyState {
 abstract class BaseTrainJourneyState extends TrainJourneyState {
   BaseTrainJourneyState(this.evu, this.trainNumber, this.date);
 
-  final Evu evu;
+  final Ru evu;
   final String trainNumber;
   final DateTime date;
 

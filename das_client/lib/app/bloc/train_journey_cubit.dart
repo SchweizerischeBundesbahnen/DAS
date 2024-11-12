@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:das_client/app/model/evu.dart';
+import 'package:das_client/app/model/ru.dart';
 import 'package:das_client/sfera/sfera_component.dart';
 import 'package:das_client/util/error_code.dart';
 import 'package:fimber/fimber.dart';
@@ -13,7 +13,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
   TrainJourneyCubit({
     required SferaService sferaService,
   })  : _sferaService = sferaService,
-        super(SelectingTrainJourneyState(date: DateTime.now(), evu: Evu.sbbP));
+        super(SelectingTrainJourneyState(date: DateTime.now(), evu: Ru.sbbP));
 
   final SferaService _sferaService;
 
@@ -68,7 +68,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
     }
   }
 
-  void updateCompany(Evu? evu) {
+  void updateCompany(Ru? evu) {
     if (state is SelectingTrainJourneyState) {
       emit(SelectingTrainJourneyState(
           trainNumber: (state as SelectingTrainJourneyState).trainNumber,

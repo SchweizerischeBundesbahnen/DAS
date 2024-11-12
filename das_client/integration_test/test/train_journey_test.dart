@@ -14,8 +14,8 @@ void main() {
       // Verify we have trainnumber with 7839.
       expect(find.text('7839'), findsOneWidget);
 
-      // Verify we have evu SBB.
-      expect(find.text(l10n.c_evu_sbb_p), findsOneWidget);
+      // Verify we have ru SBB.
+      expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
 
       // check that the primary button is enabled
       var primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
