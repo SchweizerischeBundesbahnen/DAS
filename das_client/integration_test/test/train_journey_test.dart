@@ -16,7 +16,7 @@ void main() {
       expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
 
       // check that the primary button is enabled
-      var primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
+      final primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
       expect(tester.widget<SBBPrimaryButton>(primaryButton).onPressed, isNotNull);
 
       // press load Fahrordnung button

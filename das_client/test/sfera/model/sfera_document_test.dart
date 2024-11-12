@@ -21,7 +21,7 @@ void main() {
   test('Test child elements are unmodifiable', () async {
     final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
 
-    var parsedMessage = SferaReplyParser.parse(file.readAsStringSync());
+    final parsedMessage = SferaReplyParser.parse(file.readAsStringSync());
 
     expect(() => parsedMessage.children.add(SferaXmlElement(type: 'dummy')), throwsA(isA<UnsupportedError>()));
   });
@@ -29,7 +29,7 @@ void main() {
   test('Test attributes are unmodifiable', () async {
     final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
 
-    var parsedMessage = SferaReplyParser.parse(file.readAsStringSync());
+    final parsedMessage = SferaReplyParser.parse(file.readAsStringSync());
 
     expect(() => parsedMessage.attributes['dummy'] = 'dummy', throwsA(isA<UnsupportedError>()));
   });
@@ -37,7 +37,7 @@ void main() {
   test('Test SferaReplyParser with SFERA_G2B_Reply_JP_request_9232.xml', () async {
     final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
 
-    var sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
     expect(sferaG2bReplyMessage, isA<SferaG2bReplyMessage>());
     expect(sferaG2bReplyMessage.type, SferaG2bReplyMessage.elementType);
     expect(sferaG2bReplyMessage.validate(), true);
@@ -46,7 +46,7 @@ void main() {
     expect(sferaG2bReplyMessage.messageHeader.recipient, '1088');
 
     expect(sferaG2bReplyMessage.payload, isNotNull);
-    var payload = sferaG2bReplyMessage.payload!;
+    final payload = sferaG2bReplyMessage.payload!;
 
     expect(payload.journeyProfiles, hasLength(1));
     expect(payload.journeyProfiles.first.segmentProfilesLists, hasLength(23));
@@ -72,21 +72,21 @@ void main() {
   });
 
   test('Test Sfera HandshakeRequest generation', () async {
-    var handshakeRequest = HandshakeRequest.create([
+    final handshakeRequest = HandshakeRequest.create([
       DasOperatingModesSupported.create(
           DasDrivingMode.goa1, DasArchitecture.boardAdviceCalculation, DasConnectivity.connected),
       DasOperatingModesSupported.create(
           DasDrivingMode.goa1, DasArchitecture.boardAdviceCalculation, DasConnectivity.standalone)
     ], relatedTrainRequestType: RelatedTrainRequestType.ownTrainAndOrRelatedTrains, statusReportsEnabled: true);
 
-    var messageHeader = MessageHeader.create(
+    final messageHeader = MessageHeader.create(
         'a24e63c3-ab2e-4102-9a10-ba058dec5efe', '2019-09-26T20:07:36Z', 'DAS', 'TMS', '1084', '0084');
 
-    var sferaB2gRequestMessage = SferaB2gRequestMessage.create(messageHeader, handshakeRequest: handshakeRequest);
+    final sferaB2gRequestMessage = SferaB2gRequestMessage.create(messageHeader, handshakeRequest: handshakeRequest);
     expect(sferaB2gRequestMessage.validate(), true);
 
-    var xmlDocument = sferaB2gRequestMessage.buildDocument();
-    var sferaB2gRequestMessageString = xmlDocument.toXmlString(pretty: true, newLine: '\r\n', indent: '\t');
+    final xmlDocument = sferaB2gRequestMessage.buildDocument();
+    final sferaB2gRequestMessageString = xmlDocument.toXmlString(pretty: true, newLine: '\r\n', indent: '\t');
 
     final file = File('test_resources/SFERA_B2G_RequestMessage_handshake.xml');
     final xmlFileString = file.readAsStringSync();
@@ -96,7 +96,7 @@ void main() {
   test('Test SferaReplyParser with SFERA_G2B_ReplyMessage_handshake.xml', () async {
     final file = File('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
 
-    var sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
     expect(sferaG2bReplyMessage, isA<SferaG2bReplyMessage>());
     expect(sferaG2bReplyMessage.type, SferaG2bReplyMessage.elementType);
     expect(sferaG2bReplyMessage.validate(), true);
@@ -105,7 +105,7 @@ void main() {
     expect(sferaG2bReplyMessage.messageHeader.recipient, '1084');
 
     expect(sferaG2bReplyMessage.handshakeAcknowledgement, isNotNull);
-    var handshakeAcknowledgement = sferaG2bReplyMessage.handshakeAcknowledgement!;
+    final handshakeAcknowledgement = sferaG2bReplyMessage.handshakeAcknowledgement!;
 
     expect(handshakeAcknowledgement.operationModeSelected.architecture, DasArchitecture.boardAdviceCalculation);
     expect(handshakeAcknowledgement.operationModeSelected.connectivity, DasConnectivity.connected);
@@ -114,7 +114,7 @@ void main() {
   test('Test SferaReplyParser with SFERA_G2B_ReplyMessage_handshake_rejected.xml', () async {
     final file = File('test_resources/SFERA_G2B_ReplyMessage_handshake_rejected.xml');
 
-    var sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
     expect(sferaG2bReplyMessage, isA<SferaG2bReplyMessage>());
     expect(sferaG2bReplyMessage.type, SferaG2bReplyMessage.elementType);
     expect(sferaG2bReplyMessage.validate(), true);
@@ -124,7 +124,7 @@ void main() {
 
     expect(sferaG2bReplyMessage.handshakeAcknowledgement, isNull);
     expect(sferaG2bReplyMessage.handshakeReject, isNotNull);
-    var handshakeReject = sferaG2bReplyMessage.handshakeReject!;
+    final handshakeReject = sferaG2bReplyMessage.handshakeReject!;
 
     expect(handshakeReject.handshakeRejectReason, HandshakeRejectReason.connectivityNotSupported);
   });

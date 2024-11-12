@@ -49,13 +49,13 @@ class SferaServiceImpl implements SferaService {
 
   void _init() {
     _mqttStreamSubscription = _mqttService.messageStream.listen((message) async {
-      var sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(message);
+      final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(message);
       if (!sferaG2bReplyMessage.validate()) {
         Fimber.w('Validation failed for MQTT response');
       }
 
       var handled = false;
-      for (var handler in List.from(_messageHandlers)) {
+      for (final handler in List.from(_messageHandlers)) {
         handled |= await handler.handleMessage(sferaG2bReplyMessage);
       }
 
@@ -76,7 +76,7 @@ class SferaServiceImpl implements SferaService {
     if (await _mqttService.connect(
         otnId.company, SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate))) {
       _stateSubject.add(SferaServiceState.handshaking);
-      var handshakeTask = HandshakeTask(mqttService: _mqttService, otnId: otnId);
+      final handshakeTask = HandshakeTask(mqttService: _mqttService, otnId: otnId);
       _messageHandlers.add(handshakeTask);
       handshakeTask.execute(onTaskCompleted, onTaskFailed);
     } else {
@@ -91,13 +91,13 @@ class SferaServiceImpl implements SferaService {
     Fimber.i('Task $task completed');
     if (task is HandshakeTask) {
       _stateSubject.add(SferaServiceState.loadingJourney);
-      var requestJourneyTask =
+      final requestJourneyTask =
           RequestJourneyProfileTask(mqttService: _mqttService, sferaRepository: _sferaRepository, otnId: otnId!);
       _messageHandlers.add(requestJourneyTask);
       requestJourneyTask.execute(onTaskCompleted, onTaskFailed);
     } else if (task is RequestJourneyProfileTask) {
       _stateSubject.add(SferaServiceState.loadingSegments);
-      var requestSegmentProfilesTask = RequestSegmentProfilesTask(
+      final requestSegmentProfilesTask = RequestSegmentProfilesTask(
           mqttService: _mqttService, sferaRepository: _sferaRepository, otnId: otnId!, journeyProfile: data);
       _journeyProfileSubject.add(data);
       _messageHandlers.add(requestSegmentProfilesTask);
@@ -111,10 +111,10 @@ class SferaServiceImpl implements SferaService {
 
   Future<void> _refreshSegmentProfiles() async {
     if (_journeyProfileSubject.value != null) {
-      var segments = <SegmentProfile>[];
+      final segments = <SegmentProfile>[];
 
-      for (var element in _journeyProfileSubject.value!.segmentProfilesLists) {
-        var segmentProfileEntity =
+      for (final element in _journeyProfileSubject.value!.segmentProfilesLists) {
+        final segmentProfileEntity =
             await _sferaRepository.findSegmentProfile(element.spId, element.versionMajor, element.versionMinor);
         if (segmentProfileEntity != null) {
           segments.add(segmentProfileEntity.toDomain());

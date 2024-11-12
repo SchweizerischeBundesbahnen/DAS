@@ -24,9 +24,9 @@ class SferaRepositoryImpl implements SferaRepository {
   Future<void> saveJourneyProfile(JourneyProfile journeyProfile) async {
     await _initialized;
 
-    var now = DateTime.now();
-    var today = DateTime(now.year, now.month, now.day);
-    var existingProfile = await findJourneyProfile(
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final existingProfile = await findJourneyProfile(
         journeyProfile.trainIdentification.otnId.company,
         journeyProfile.trainIdentification.otnId.operationalTrainNumber,
         today); // Temporary fix, because our backend does not return correct date in Journey Profile
@@ -46,7 +46,7 @@ class SferaRepositoryImpl implements SferaRepository {
   Future<void> saveSegmentProfile(SegmentProfile segmentProfile) async {
     await _initialized;
 
-    var existingProfile =
+    final existingProfile =
         await findSegmentProfile(segmentProfile.id, segmentProfile.versionMajor, segmentProfile.versionMinor);
     if (existingProfile == null) {
       final segmentProfileEntity = segmentProfile.toEntity(isarId: _db.segmentProfile.autoIncrement());

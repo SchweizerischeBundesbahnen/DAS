@@ -51,7 +51,7 @@ class DASNavigationDrawer extends StatelessWidget {
 
   Widget _navigationTile(BuildContext context,
       {required IconData icon, required String title, required PageRouteInfo route}) {
-    bool isActiveRoute = context.router.isRouteActive(route.routeName);
+    final bool isActiveRoute = context.router.isRouteActive(route.routeName);
 
     return ListTile(
       leading: isActiveRoute ? _activeIcon(icon) : _inactiveIcon(icon),

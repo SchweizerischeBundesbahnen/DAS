@@ -51,13 +51,13 @@ void main() {
       // Verify that today is preselected
       expect(find.text(Format.date(DateTime.now())), findsOneWidget);
 
-      var trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
+      final trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
       expect(trainNumberText, findsOneWidget);
 
       await enterText(tester, trainNumberText, '');
 
       // check that the primary button is disabled
-      var primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
+      final primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
       expect(tester.widget<SBBPrimaryButton>(primaryButton).onPressed, isNull);
 
     });
@@ -69,8 +69,8 @@ void main() {
       final today = DateTime.now();
       final yesterday = today.add(Duration(days: -1));
 
-      var todayDateTextFinder = find.text(Format.date(today));
-      var yesterdayDateTextFinder = find.text(Format.date(yesterday));
+      final todayDateTextFinder = find.text(Format.date(today));
+      final yesterdayDateTextFinder = find.text(Format.date(yesterday));
 
       // Verify that today is preselected
       expect(todayDateTextFinder, findsOneWidget);
@@ -101,9 +101,9 @@ void main() {
       final yesterday = today.add(Duration(days: -1));
       final dayBeforeYesterday = today.add(Duration(days: -2));
 
-      var todayDateTextFinder = find.text(Format.date(today));
-      var yesterdayDateTextFinder = find.text(Format.date(yesterday));
-      var dayBeforeYesterdayDateTextFinder = find.text(Format.date(dayBeforeYesterday));
+      final todayDateTextFinder = find.text(Format.date(today));
+      final yesterdayDateTextFinder = find.text(Format.date(yesterday));
+      final dayBeforeYesterdayDateTextFinder = find.text(Format.date(dayBeforeYesterday));
 
       // Verify that today is preselected
       expect(todayDateTextFinder, findsOneWidget);
@@ -136,13 +136,13 @@ void main() {
       // Verify that today is preselected
       expect(find.text(Format.date(DateTime.now())), findsOneWidget);
 
-      var trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
+      final trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
       expect(trainNumberText, findsOneWidget);
 
       await enterText(tester, trainNumberText, '1234');
 
       // check that the primary button is disabled
-      var primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
+      final primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
       expect(tester.widget<SBBPrimaryButton>(primaryButton).onPressed, isNotNull);
 
       await tapElement(tester, primaryButton);

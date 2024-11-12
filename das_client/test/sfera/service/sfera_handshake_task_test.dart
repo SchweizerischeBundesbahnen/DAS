@@ -27,7 +27,7 @@ void main() {
   test('Test handshake successful', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    var handshakeTask = HandshakeTask(mqttService: mqttService, otnId: otnId);
+    final handshakeTask = HandshakeTask(mqttService: mqttService, otnId: otnId);
 
     await handshakeTask.execute((task, data) {
       expect(task, handshakeTask);
@@ -39,16 +39,16 @@ void main() {
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
     final file = File('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
-    var sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
 
-    var result = await handshakeTask.handleMessage(sferaG2bReplyMessage);
+    final result = await handshakeTask.handleMessage(sferaG2bReplyMessage);
     expect(result, true);
   });
 
   test('Test handshake reject', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    var handshakeTask = HandshakeTask(mqttService: mqttService, otnId: otnId);
+    final handshakeTask = HandshakeTask(mqttService: mqttService, otnId: otnId);
 
     await handshakeTask.execute((task, data) {
       fail('Task should not be sucessful');
@@ -59,16 +59,16 @@ void main() {
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
     final file = File('test_resources/SFERA_G2B_ReplyMessage_handshake_rejected.xml');
-    var sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
 
-    var result = await handshakeTask.handleMessage(sferaG2bReplyMessage);
+    final result = await handshakeTask.handleMessage(sferaG2bReplyMessage);
     expect(result, true);
   });
 
   test('Test handshake ignore other messages', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    var handshakeTask = HandshakeTask(mqttService: mqttService, otnId: otnId);
+    final handshakeTask = HandshakeTask(mqttService: mqttService, otnId: otnId);
 
     await handshakeTask.execute((task, data) {
       fail('Test should not call success');
@@ -79,16 +79,16 @@ void main() {
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
     final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
-    var sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
 
-    var result = await handshakeTask.handleMessage(sferaG2bReplyMessage);
+    final result = await handshakeTask.handleMessage(sferaG2bReplyMessage);
     expect(result, false);
   });
 
   test('Test handshake timeout', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    var handshakeTask = HandshakeTask(mqttService: mqttService, otnId: otnId, timeout: const Duration(seconds: 1));
+    final handshakeTask = HandshakeTask(mqttService: mqttService, otnId: otnId, timeout: const Duration(seconds: 1));
 
     var timeoutReached = false;
     await handshakeTask.execute((task, data) {

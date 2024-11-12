@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
+import '../util/test_utils.dart';
 
 void main() {
   group('train journey table test', () {
     testWidgets('check if all table columns with header are present', (tester) async {
       await prepareAndStartApp(tester);
-      await tester.pump(const Duration(seconds: 1));
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: '4816', companyCode: '1085');
+      await _loadTrainJourney(tester, trainNumber: '4816');
 
       // List of expected column headers
       final List<String> expectedHeaders = [
@@ -30,10 +30,9 @@ void main() {
     });
     testWidgets('test scrolling to last train station', (tester) async {
       await prepareAndStartApp(tester);
-      await tester.pump(const Duration(seconds: 1));
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: '4816', companyCode: '1085');
+      await _loadTrainJourney(tester, trainNumber: '4816');
 
       final scrollableFinder = find.byType(ListView);
       expect(scrollableFinder, findsOneWidget);
@@ -51,24 +50,20 @@ void main() {
   });
 }
 
-/// Fills out train selection fields with given [companyCode] and [trainNumber] and loads train journey
-Future<void> _loadTrainJourney(WidgetTester tester, {required String companyCode, required String trainNumber}) async {
-  final companyDescriptionTextField = find.ancestor(
-    of: find.text(l10n.p_train_selection_company_description),
-    matching: find.byType(SBBTextField),
-  );
-  await tester.enterText(companyDescriptionTextField, companyCode);
+/// Verifies, that SBB is selected and loads train journey with [trainNumber]
+Future<void> _loadTrainJourney(WidgetTester tester, {required String trainNumber}) async {
+  // verify we have ru SBB selected.
+  expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
 
-  final trainNumberTextField = find.ancestor(
-    of: find.text(l10n.p_train_selection_trainnumber_description),
-    matching: find.byType(SBBTextField),
-  );
-  await tester.enterText(trainNumberTextField, trainNumber);
+  final trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
+  expect(trainNumberText, findsOneWidget);
+
+  await enterText(tester, trainNumberText, trainNumber);
 
   // load train journey
   final primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
   await tester.tap(primaryButton);
 
   // wait for train journey to load
-  await tester.pumpAndSettle(const Duration(seconds: 1));
+  await tester.pumpAndSettle();
 }

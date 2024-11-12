@@ -22,7 +22,7 @@ import 'logging_service_test.mocks.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   late Directory logDirectory;
-  late MockBackendService mockBackendService = MockBackendService();
+  final mockBackendService = MockBackendService();
   GetIt.I.registerSingleton<BackendService>(mockBackendService);
   Fimber.plantTree(DebugTree());
 
@@ -38,12 +38,12 @@ void main() {
   });
 
   test('Test writes logs to new file in directory', () async {
-    LogService loggingService = LogService();
+    final loggingService = LogService();
 
     var files = logDirectory.listSync();
     expect(files, hasLength(0));
 
-    var logEntry = LogEntry('Test message', LogLevel.info, {});
+    final logEntry = LogEntry('Test message', LogLevel.info, {});
     loggingService.save(logEntry);
     await Future.delayed(const Duration(milliseconds: 30));
 
@@ -52,12 +52,12 @@ void main() {
   });
 
   test('Test writes appends comma after writing log', () async {
-    LogService loggingService = LogService();
+    final loggingService = LogService();
 
     var files = logDirectory.listSync();
     expect(files, hasLength(0));
 
-    var logEntry = LogEntry('Test message', LogLevel.fatal, {});
+    final logEntry = LogEntry('Test message', LogLevel.fatal, {});
     loggingService.save(logEntry);
     await Future.delayed(const Duration(milliseconds: 30));
 
@@ -67,7 +67,7 @@ void main() {
   });
 
   test('Test writes multiple logs to same file', () async {
-    LogService loggingService = LogService();
+    final loggingService = LogService();
 
     var files = logDirectory.listSync();
     expect(files, hasLength(0));
@@ -94,7 +94,7 @@ void main() {
   });
 
   test('Test rolls over files after size limit reached', () async {
-    LogService loggingService = LogService();
+    final loggingService = LogService();
     when(mockBackendService.sendLogs(any)).thenAnswer((input) => Future.value(false));
 
     var files = logDirectory.listSync();
@@ -120,7 +120,7 @@ void main() {
   });
 
   test('Test send logs after rolling over file', () async {
-    LogService loggingService = LogService();
+    final loggingService = LogService();
     when(mockBackendService.sendLogs(any)).thenAnswer((input) => Future.value(false));
 
     var files = logDirectory.listSync();
@@ -146,7 +146,7 @@ void main() {
   });
 
   test('Test file deletion after successful backend request', () async {
-    LogService loggingService = LogService();
+    final loggingService = LogService();
     when(mockBackendService.sendLogs(any)).thenAnswer((input) => Future.value(true));
 
     var files = logDirectory.listSync();

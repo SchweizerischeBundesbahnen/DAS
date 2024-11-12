@@ -17,19 +17,7 @@ class DASTable extends StatelessWidget {
     this.rows = const [],
     this.scrollController,
     this.bottomMargin = 32.0,
-    this.themeData = const DASTableThemeData(
-      backgroundColor: SBBColors.white,
-      headingTextStyle: SBBTextStyles.smallLight,
-      dataTextStyle: SBBTextStyles.largeLight,
-      headingRowBorder: Border(bottom: BorderSide(width: 2, color: SBBColors.cloud)),
-      tableBorder: TableBorder(
-        horizontalInside: BorderSide(width: 1, color: SBBColors.cloud),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(sbbDefaultSpacing),
-          topRight: Radius.circular(sbbDefaultSpacing),
-        ),
-      ),
-    ),
+    this.themeData,
   })  : assert(columns.isNotEmpty),
         assert(!rows.any((DASTableRow row) => row.cells.length != columns.length),
             'All rows must have the same number of cells as there are header cells (${columns.length})');
@@ -41,7 +29,7 @@ class DASTable extends StatelessWidget {
   final List<DASTableColumn> columns;
 
   /// Theme data used to style the table.
-  final DASTableThemeData themeData;
+  final DASTableThemeData? themeData;
 
   /// Scroll controller for managing scrollable content (rows) within the table.
   final ScrollController? scrollController;
@@ -51,17 +39,18 @@ class DASTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tableThemeData = themeData ?? _defaultThemeData(context);
     return DASTableTheme(
-      data: themeData,
+      data: tableThemeData,
       child: Container(
         decoration: BoxDecoration(
-          color: themeData.backgroundColor,
-          borderRadius: themeData.tableBorder?.borderRadius,
+          color: tableThemeData.backgroundColor,
+          borderRadius: tableThemeData.tableBorder?.borderRadius,
           border: BorderDirectional(
-            top: themeData.tableBorder?.top ?? BorderSide.none,
-            start: themeData.tableBorder?.left ?? BorderSide.none,
-            end: themeData.tableBorder?.right ?? BorderSide.none,
-            bottom: themeData.tableBorder?.bottom ?? BorderSide.none,
+            top: tableThemeData.tableBorder?.top ?? BorderSide.none,
+            start: tableThemeData.tableBorder?.left ?? BorderSide.none,
+            end: tableThemeData.tableBorder?.right ?? BorderSide.none,
+            bottom: tableThemeData.tableBorder?.bottom ?? BorderSide.none,
           ),
         ),
         child: Column(
@@ -80,6 +69,24 @@ class DASTable extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  DASTableThemeData _defaultThemeData(BuildContext context) {
+    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
+    final borderColor = isDarkTheme ? SBBColors.iron : SBBColors.cloud;
+    return DASTableThemeData(
+      backgroundColor: isDarkTheme ? SBBColors.charcoal : SBBColors.white,
+      headingTextStyle: SBBTextStyles.smallLight,
+      dataTextStyle: SBBTextStyles.largeLight,
+      headingRowBorder: Border(bottom: BorderSide(width: 2, color: borderColor)),
+      tableBorder: TableBorder(
+        horizontalInside: BorderSide(width: 1, color: borderColor),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(sbbDefaultSpacing),
+          topRight: Radius.circular(sbbDefaultSpacing),
         ),
       ),
     );

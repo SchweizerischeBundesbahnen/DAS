@@ -26,54 +26,63 @@ class RouteCellBody extends StatelessWidget {
       clipBehavior: Clip.none,
       alignment: Alignment.center,
       children: [
-        if (showChevron) _chevron(),
-        if (showCircle) _circle(),
-        _routeLine(),
+        if (showChevron) _chevron(context),
+        if (showCircle) _circle(context),
+        _routeLine(context),
       ],
     );
   }
 
-  Positioned _routeLine() {
+  Positioned _routeLine(BuildContext context) {
+    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
+    final lineColor = isDarkTheme ? SBBColors.white : SBBColors.black;
     return Positioned(
       top: -sbbDefaultSpacing,
       bottom: -sbbDefaultSpacing,
       right: 0,
       left: 0,
-      child: VerticalDivider(thickness: lineThickness, color: SBBColors.black),
+      child: VerticalDivider(thickness: lineThickness, color: lineColor),
     );
   }
 
-  Positioned _circle() {
+  Positioned _circle(BuildContext context) {
+    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
+    final circleColor = isDarkTheme ? SBBColors.sky : SBBColors.black;
     return Positioned(
       bottom: sbbDefaultSpacing,
       child: Container(
         width: circleSize,
         height: circleSize,
         decoration: BoxDecoration(
-          color: SBBColors.black,
+          color: circleColor,
           shape: BoxShape.circle,
         ),
       ),
     );
   }
 
-  Positioned _chevron() {
-    final bottomSpacing = showCircle ? sbbDefaultSpacing + circleSize : sbbDefaultSpacing;
+  Positioned _chevron(BuildContext context) {
+    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
+    final chevronColor = isDarkTheme ? SBBColors.sky : SBBColors.black;
     return Positioned(
-      bottom: bottomSpacing,
+      bottom: showCircle ? sbbDefaultSpacing + circleSize : sbbDefaultSpacing,
       child: CustomPaint(
         size: Size(chevronWidth, chevronHeight),
-        painter: _ChevronPainter(),
+        painter: _ChevronPainter(color: chevronColor),
       ),
     );
   }
 }
 
 class _ChevronPainter extends CustomPainter {
+  _ChevronPainter({this.color = SBBColors.black});
+
+  final Color color;
+
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.black
+      ..color = color
       ..style = PaintingStyle.stroke
       ..strokeWidth = 4;
 

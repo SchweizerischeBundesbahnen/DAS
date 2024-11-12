@@ -21,6 +21,6 @@ Future<void> enterText(WidgetTester tester, FinderBase<Element> element, String 
 }
 
 Finder findTextFieldByLabel(String label) {
-  var sbbTextField = find.byWidgetPredicate((widget) => widget is SBBTextField && widget.labelText == label);
+  final sbbTextField = find.byWidgetPredicate((widget) => widget is SBBTextField && widget.labelText == label);
   return find.descendant(of: sbbTextField, matching: find.byType(TextField));
 }

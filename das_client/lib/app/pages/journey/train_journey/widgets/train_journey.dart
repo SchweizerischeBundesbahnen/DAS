@@ -18,8 +18,8 @@ class TrainJourney extends StatelessWidget {
     return StreamBuilder<List<dynamic>>(
       stream: CombineLatestStream.list([bloc.journeyStream, bloc.segmentStream]),
       builder: (context, snapshot) {
-        JourneyProfile? journeyProfile = snapshot.data?[0];
-        List<SegmentProfile> segmentProfiles = snapshot.data?[1] ?? [];
+        final JourneyProfile? journeyProfile = snapshot.data?[0];
+        final List<SegmentProfile> segmentProfiles = snapshot.data?[1] ?? [];
         if (journeyProfile == null) {
           return Container();
         }
@@ -46,9 +46,9 @@ class TrainJourney extends StatelessWidget {
         columns: _columns(context),
         rows: [
           ...List.generate(timingPoints.length, (index) {
-            var timingPoint = timingPoints[index];
-            var tpId = timingPoint.timingPointReference.children.whereType<TpIdReference>().firstOrNull?.tpId;
-            var tp = points.where((point) => point.id == tpId).firstOrNull;
+            final timingPoint = timingPoints[index];
+            final tpId = timingPoint.timingPointReference.children.whereType<TpIdReference>().firstOrNull?.tpId;
+            final tp = points.where((point) => point.id == tpId).firstOrNull;
 
             return ServicePointRow(
               kilometre: 10.2,

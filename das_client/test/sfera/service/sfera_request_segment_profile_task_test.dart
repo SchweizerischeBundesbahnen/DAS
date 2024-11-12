@@ -31,9 +31,9 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
-    var sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
 
-    var segmentTask = RequestSegmentProfilesTask(
+    final segmentTask = RequestSegmentProfilesTask(
         mqttService: mqttService,
         sferaRepository: sferaRepository,
         otnId: otnId,
@@ -48,7 +48,7 @@ void main() {
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
-    var result = await segmentTask.handleMessage(sferaG2bReplyMessage);
+    final result = await segmentTask.handleMessage(sferaG2bReplyMessage);
     expect(result, true);
   });
 
@@ -56,9 +56,9 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
-    var sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
 
-    var segmentTask = RequestSegmentProfilesTask(
+    final segmentTask = RequestSegmentProfilesTask(
         mqttService: mqttService,
         sferaRepository: sferaRepository,
         otnId: otnId,
@@ -72,7 +72,7 @@ void main() {
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
-    var result = await segmentTask.handleMessage(sferaG2bReplyMessage);
+    final result = await segmentTask.handleMessage(sferaG2bReplyMessage);
     expect(result, true);
 
     verifyNever(sferaRepository.saveJourneyProfile(any));
@@ -83,9 +83,9 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232_invalid_sp.xml');
-    var sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
 
-    var segmentTask = RequestSegmentProfilesTask(
+    final segmentTask = RequestSegmentProfilesTask(
         mqttService: mqttService,
         sferaRepository: sferaRepository,
         otnId: otnId,
@@ -100,7 +100,7 @@ void main() {
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
-    var result = await segmentTask.handleMessage(sferaG2bReplyMessage);
+    final result = await segmentTask.handleMessage(sferaG2bReplyMessage);
     expect(result, true);
 
     verifyNever(sferaRepository.saveJourneyProfile(any));
@@ -111,9 +111,9 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
-    var sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
 
-    var segmentTask = RequestSegmentProfilesTask(
+    final segmentTask = RequestSegmentProfilesTask(
         mqttService: mqttService,
         sferaRepository: sferaRepository,
         otnId: otnId,
@@ -128,8 +128,8 @@ void main() {
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
     final handShakefile = File('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
-    var handshakeSferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(handShakefile.readAsStringSync());
-    var result = await segmentTask.handleMessage(handshakeSferaG2bReplyMessage);
+    final handshakeSferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(handShakefile.readAsStringSync());
+    final result = await segmentTask.handleMessage(handshakeSferaG2bReplyMessage);
     expect(result, false);
   });
 
@@ -137,9 +137,9 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
-    var sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
 
-    var journeyTask = RequestSegmentProfilesTask(
+    final journeyTask = RequestSegmentProfilesTask(
       mqttService: mqttService,
       sferaRepository: sferaRepository,
       otnId: otnId,

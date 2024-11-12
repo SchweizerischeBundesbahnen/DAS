@@ -36,10 +36,10 @@ class RequestJourneyProfileTask extends SferaTask<JourneyProfile> {
   }
 
   Future<void> _requestJourneyProfile() async {
-    var trainIdentification = TrainIdentification.create(otnId: otnId);
-    var jpRequest = JpRequest.create(trainIdentification);
+    final trainIdentification = TrainIdentification.create(otnId: otnId);
+    final jpRequest = JpRequest.create(trainIdentification);
 
-    var sferaB2gRequestMessage = SferaB2gRequestMessage.create(
+    final sferaB2gRequestMessage = SferaB2gRequestMessage.create(
         await SferaService.messageHeader(trainIdentification: trainIdentification, sender: otnId.company),
         b2gRequest: B2gRequest.createJPRequest(jpRequest));
     Fimber.i('Sending journey profile request...');
@@ -64,11 +64,11 @@ class RequestJourneyProfileTask extends SferaTask<JourneyProfile> {
         'Received G2bReplyPayload response with ${replyMessage.payload!.journeyProfiles.length} JourneyProfiles and ${replyMessage.payload!.segmentProfiles.length} SegmentProfiles...',
       );
 
-      for (var element in replyMessage.payload!.segmentProfiles) {
+      for (final element in replyMessage.payload!.segmentProfiles) {
         await _sferaRepository.saveSegmentProfile(element);
       }
 
-      for (var journeyProfile in replyMessage.payload!.journeyProfiles) {
+      for (final journeyProfile in replyMessage.payload!.journeyProfiles) {
         await _sferaRepository.saveJourneyProfile(journeyProfile);
       }
 

@@ -41,7 +41,7 @@ class LogService {
   void _saveInternal(LogEntry log) async {
     await _initialized;
     _lock.synchronized(() {
-      var lastSavedFile = File('$_logPath/$_lastSavedFileName');
+      final lastSavedFile = File('$_logPath/$_lastSavedFileName');
       if (!(lastSavedFile.existsSync())) {
         lastSavedFile.createSync(recursive: true);
       }
@@ -59,19 +59,19 @@ class LogService {
 
   void _sendLogs() async {
     _senderLock.synchronized(() async {
-      var logDir = Directory(_logPath);
-      var files = logDir.listSync();
+      final logDir = Directory(_logPath);
+      final files = logDir.listSync();
       Fimber.d('Found ${files.length} log files in log directory: $_logPath');
 
-      for (var file in files) {
+      for (final file in files) {
         if (file is File && file.path.endsWith('.json') && !file.path.contains(_lastSavedFileName)) {
           Fimber.d('Sending ${file.path} to backend');
 
           var content = file.readAsStringSync();
           content = '[${content.substring(0, content.length - 1)}]'; // Remove trailing comma
 
-          Iterable iterable = json.decode(content);
-          List<LogEntry> logEntries = List<LogEntry>.from(iterable.map((json) => LogEntry.fromJson(json)));
+          final Iterable iterable = json.decode(content);
+          final List<LogEntry> logEntries = List<LogEntry>.from(iterable.map((json) => LogEntry.fromJson(json)));
 
           final backendService = DI.get<BackendService>();
           if (await backendService.sendLogs(logEntries)) {

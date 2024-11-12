@@ -32,8 +32,9 @@ class ServicePointRow extends BaseRowBuilder {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Expanded(child: Text(servicePointName, style: SBBTextStyles.largeBold.copyWith(fontSize: 24.0))),
-          if (true) Text('B12'),
+          Text(servicePointName, style: SBBTextStyles.largeBold.copyWith(fontSize: 24.0)),
+          Spacer(),
+          Text('B12'),
         ],
       ),
     );
