@@ -51,7 +51,7 @@ class RequestJourneyProfileTask extends SferaTask<JourneyProfile> {
   Future<bool> handleMessage(SferaG2bReplyMessage replyMessage) async {
     if (replyMessage.payload != null && replyMessage.payload!.journeyProfiles.isNotEmpty) {
       stopTimeout();
-      var journeyProfile = replyMessage.payload!.journeyProfiles.first;
+      final journeyProfile = replyMessage.payload!.journeyProfiles.first;
       if (journeyProfile.status == JpStatus.invalid || journeyProfile.status == JpStatus.unavailable) {
         Fimber.w(
           'Received JourneyProfile with status=${journeyProfile.status}.',

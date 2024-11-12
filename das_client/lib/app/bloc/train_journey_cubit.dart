@@ -13,7 +13,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
   TrainJourneyCubit({
     required SferaService sferaService,
   })  : _sferaService = sferaService,
-        super(SelectingTrainJourneyState(date: DateTime.now(), evu: Ru.sbbP));
+        super(SelectingTrainJourneyState(date: DateTime.now(), ru: Ru.sbbP));
 
   final SferaService _sferaService;
 
@@ -27,7 +27,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
     final currentState = state;
     if (currentState is SelectingTrainJourneyState) {
       final date = currentState.date;
-      final evu = currentState.evu;
+      final evu = currentState.ru;
       final trainNumber = currentState.trainNumber;
       if (evu == null || trainNumber == null) {
         Fimber.i('company or trainNumber null');
@@ -50,7 +50,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
           case SferaServiceState.disconnected:
           case SferaServiceState.offline:
             emit(SelectingTrainJourneyState(
-                evu: evu, trainNumber: trainNumber, date: date, errorCode: _sferaService.lastErrorCode));
+                ru: evu, trainNumber: trainNumber, date: date, errorCode: _sferaService.lastErrorCode));
             break;
         }
       });
@@ -62,7 +62,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
     if (state is SelectingTrainJourneyState) {
       emit(SelectingTrainJourneyState(
           trainNumber: trainNumber,
-          evu: (state as SelectingTrainJourneyState).evu,
+          ru: (state as SelectingTrainJourneyState).ru,
           date: (state as SelectingTrainJourneyState).date,
           errorCode: (state as SelectingTrainJourneyState).errorCode));
     }
@@ -72,7 +72,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
     if (state is SelectingTrainJourneyState) {
       emit(SelectingTrainJourneyState(
           trainNumber: (state as SelectingTrainJourneyState).trainNumber,
-          evu: evu,
+          ru: evu,
           date: (state as SelectingTrainJourneyState).date,
           errorCode: (state as SelectingTrainJourneyState).errorCode));
     }
@@ -82,7 +82,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
     if (state is SelectingTrainJourneyState) {
       emit(SelectingTrainJourneyState(
           trainNumber: (state as SelectingTrainJourneyState).trainNumber,
-          evu: (state as SelectingTrainJourneyState).evu,
+          ru: (state as SelectingTrainJourneyState).ru,
           date: date,
           errorCode: (state as SelectingTrainJourneyState).errorCode));
     }
@@ -94,7 +94,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
       emit(SelectingTrainJourneyState(
           trainNumber: (state as BaseTrainJourneyState).trainNumber,
           date: DateTime.now(),
-          evu: (state as BaseTrainJourneyState).evu));
+          ru: (state as BaseTrainJourneyState).ru));
     }
   }
 }

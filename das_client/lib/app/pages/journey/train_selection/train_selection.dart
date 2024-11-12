@@ -54,7 +54,7 @@ class _TrainSelectionState extends State<TrainSelection> {
       children: [
         _trainNumberWidget(),
         _dateDisplayWidget(state),
-        _evuSelectionWidget(context, state),
+        _ruSelectionWidget(context, state),
       ],
     );
   }
@@ -87,14 +87,14 @@ class _TrainSelectionState extends State<TrainSelection> {
     );
   }
 
-  Widget _evuSelectionWidget(BuildContext context, SelectingTrainJourneyState state) {
+  Widget _ruSelectionWidget(BuildContext context, SelectingTrainJourneyState state) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, 0, sbbDefaultSpacing),
       child: SBBSelect<Ru>(
-        label: context.l10n.p_train_selection_evu_description,
-        value: state.evu,
-        items: Ru.values.map((vTyp) => SelectMenuItem<Ru>(value: vTyp, label: vTyp.displayText(context))).toList(),
-        onChanged: (selectedEvu) => context.trainJourneyCubit.updateCompany(selectedEvu),
+        label: context.l10n.p_train_selection_ru_description,
+        value: state.ru,
+        items: Ru.values.map((ru) => SelectMenuItem<Ru>(value: ru, label: ru.displayText(context))).toList(),
+        onChanged: (selectedRu) => context.trainJourneyCubit.updateCompany(selectedRu),
         isLastElement: true,
       ),
     );
@@ -131,7 +131,6 @@ class _TrainSelectionState extends State<TrainSelection> {
 
   Widget _datePickerWidget(BuildContext context, SelectingTrainJourneyState state) {
     DateTime now = DateTime.now();
-    now.add(Duration(days: -1));
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -146,6 +145,6 @@ class _TrainSelectionState extends State<TrainSelection> {
   }
 
   bool _canContinue(SelectingTrainJourneyState state) {
-    return state.trainNumber != null && state.trainNumber!.isNotEmpty && state.evu != null;
+    return state.trainNumber != null && state.trainNumber!.isNotEmpty && state.ru != null;
   }
 }

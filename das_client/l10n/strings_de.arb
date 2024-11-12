@@ -2,7 +2,7 @@
     "c_app_name": "DAS Client",
     "p_train_selection_load": "Übernehmen",
     "p_train_selection_trainnumber_description": "Zugnummer",
-    "p_train_selection_evu_description": "EVU",
+    "p_train_selection_ru_description": "EVU",
     "p_train_selection_date_description": "Datum",
     "p_train_selection_choose_date": "Datum wählen",
     "p_train_journey_header_button_dark_theme": "Nachtmodus",
