@@ -50,6 +50,8 @@ void main() {
     });
 
     testWidgets('test load button disabled when validation fails', (tester) async {
+      tester.testTextInput.register();
+
       // Load app widget.
       await prepareAndStartApp(tester);
 
@@ -65,7 +67,6 @@ void main() {
       expect(trainNumberText, findsOneWidget);
 
       await tester.enterText(trainNumberText, '');
-      await tester.pump(Duration(milliseconds: 500));
       await tester.pumpAndSettle();
 
       // check that the primary button is disabled
@@ -153,6 +154,8 @@ void main() {
     });
 
     testWidgets('test error if JP unavailable', (tester) async {
+      tester.testTextInput.register();
+
       // Load app widget.
       await prepareAndStartApp(tester);
 
