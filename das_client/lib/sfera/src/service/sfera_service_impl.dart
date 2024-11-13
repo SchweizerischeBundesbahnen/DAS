@@ -84,7 +84,7 @@ class SferaServiceImpl implements SferaService {
         otnId.company, SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate))) {
       _stateSubject.add(SferaServiceState.handshaking);
       final user = await _authenticator.user();
-      final drivingMode = user.roles.contains(Role.lokpersonal) ? DasDrivingMode.dasNotConnected : DasDrivingMode.readOnly;
+      final drivingMode = user.roles.contains(Role.driver) ? DasDrivingMode.dasNotConnected : DasDrivingMode.readOnly;
 
       final handshakeTask = HandshakeTask(mqttService: _mqttService, otnId: otnId, dasDrivingMode: drivingMode);
       _messageHandlers.add(handshakeTask);

@@ -2,9 +2,9 @@ import 'package:collection/collection.dart';
 
 enum Role {
   admin('admin'),
-  evuAdmin('evu_admin'),
-  beobachter('beobachter'),
-  lokpersonal('lokpersonal');
+  ruAdmin('ru_admin'),
+  observer('observer'),
+  driver('driver');
 
   final String name;
 
