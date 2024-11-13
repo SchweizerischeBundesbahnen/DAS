@@ -72,7 +72,11 @@ class _TrainSelectionState extends State<TrainSelection> {
   }
 
   Widget _dateDisplayWidget(SelectingTrainJourneyState state) {
-    _dateController.text = Format.date(state.date);
+    if (DateUtils.isSameDay(state.date, DateTime.now())) {
+      _dateController.text = Format.date(state.date);
+    } else {
+      _dateController.text = '${Format.date(state.date)} ${context.l10n.p_train_selection_date_not_today_warning}';
+    }
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, 0, sbbDefaultSpacing / 2),

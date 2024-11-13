@@ -97,6 +97,11 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
           ru: (state as BaseTrainJourneyState).ru));
     }
   }
+
+  void dispose() {
+    _stateSubscription?.cancel();
+    _stateSubscription = null;
+  }
 }
 
 extension ContextBlocExtension on BuildContext {

@@ -14,10 +14,12 @@ import 'package:das_client/util/error_code.dart';
 import 'package:fimber/fimber.dart';
 
 class HandshakeTask extends SferaTask {
-  HandshakeTask({required MqttService mqttService, required this.otnId, super.timeout}) : _mqttService = mqttService;
+  HandshakeTask({required MqttService mqttService, required this.otnId, required this.dasDrivingMode, super.timeout})
+      : _mqttService = mqttService;
 
   final MqttService _mqttService;
   final OtnId otnId;
+  final DasDrivingMode dasDrivingMode;
 
   late TaskCompleted _taskCompletedCallback;
   late TaskFailed _taskFailedCallback;
@@ -37,11 +39,12 @@ class HandshakeTask extends SferaTask {
     Fimber.i('Sending handshake request for company=${otnId.company} train=$sferaTrain');
     final handshakeRequest = HandshakeRequest.create([
       DasOperatingModesSupported.create(
-          DasDrivingMode.readOnly, DasArchitecture.boardAdviceCalculation, DasConnectivity.connected),
+          dasDrivingMode, DasArchitecture.boardAdviceCalculation, DasConnectivity.connected),
     ], relatedTrainRequestType: RelatedTrainRequestType.ownTrainAndRelatedTrains, statusReportsEnabled: false);
 
-    final sferaB2gRequestMessage =
-        SferaB2gRequestMessage.create(await SferaService.messageHeader(sender: otnId.company), handshakeRequest: handshakeRequest);
+    final sferaB2gRequestMessage = SferaB2gRequestMessage.create(
+        await SferaService.messageHeader(sender: otnId.company),
+        handshakeRequest: handshakeRequest);
     final success =
         _mqttService.publishMessage(otnId.company, sferaTrain, sferaB2gRequestMessage.buildDocument().toString());
 

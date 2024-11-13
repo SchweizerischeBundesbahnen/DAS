@@ -1,3 +1,4 @@
+import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/auth/authentication_component.dart';
 import 'package:das_client/flavor.dart';
 import 'package:das_client/mqtt/mqtt_component.dart';
@@ -48,6 +49,7 @@ extension GetItX on GetIt {
     registerMqttComponent(useTms: useTms);
     registerSferaComponents(useTms: useTms);
     registerBackendService();
+    registerBlocs();
     await allReady();
   }
 
@@ -114,7 +116,7 @@ extension GetItX on GetIt {
         authenticator: get(), tokenExchangeUrl: useTms ? flavor.tmsTokenExchangeUrl! : flavor.tokenExchangeUrl));
 
     registerLazySingleton<SferaService>(
-        () => SferaComponent.createSferaService(mqttService: get(), sferaRepository: get()));
+        () => SferaComponent.createSferaService(mqttService: get(), sferaRepository: get(), authenticator: get()));
   }
 
   void registerBackendService() {
@@ -122,5 +124,9 @@ extension GetItX on GetIt {
     registerSingletonWithDependencies<BackendService>(
         () => BackendService(authenticator: DI.get(), baseUrl: flavor.backendUrl),
         dependsOn: [Authenticator]);
+  }
+
+  void registerBlocs() {
+    registerLazySingleton<TrainJourneyCubit>(() => TrainJourneyCubit(sferaService: get()));
   }
 }

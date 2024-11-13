@@ -17,7 +17,7 @@ class MqttComponent {
     if (useTms) {
       return MqttClientTMSOauthConnector(sferaAuthService: sfereAuthService);
     } else {
-      return MqttClientOauthConnector(sferaAuthService: sfereAuthService, authenticator: authenticator);
+      return MqttClientOauthConnector(authenticator: authenticator);
     }
   }
 

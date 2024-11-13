@@ -1,8 +1,11 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:das_client/auth/src/authenticator.dart';
+import 'package:das_client/auth/src/role.dart';
 import 'package:das_client/auth/src/token_spec.dart';
 import 'package:das_client/auth/src/token_spec_provider.dart';
+import 'package:das_client/auth/src/user.dart';
 import 'package:sbb_oidc/sbb_oidc.dart';
 
 class AzureAuthenticator implements Authenticator {
@@ -44,10 +47,13 @@ class AzureAuthenticator implements Authenticator {
   }
 
   @override
-  Future<String> userId({String? tokenId}) async {
+  Future<User> user({String? tokenId}) async {
     final oidcToken = await token(tokenId: tokenId);
     final idToken = oidcToken.idToken;
-    return idToken.payload['preferred_username'] as String;
+    final name = idToken.payload['preferred_username'] as String;
+    final roles = idToken.payload['roles'] as List<dynamic>? ?? [];
+
+    return User(name: name, roles: roles.map((it) => Role.fromName(it)).whereNotNull().toList());
   }
 
   @override

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:das_client/mqtt/mqtt_component.dart';
 import 'package:das_client/sfera/sfera_component.dart';
+import 'package:das_client/sfera/src/model/enums/das_driving_mode.dart';
 import 'package:das_client/sfera/src/service/task/handshake_task.dart';
 import 'package:das_client/util/error_code.dart';
 import 'package:fimber/fimber.dart';
@@ -27,7 +28,8 @@ void main() {
   test('Test handshake successful', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    final handshakeTask = HandshakeTask(mqttService: mqttService, otnId: otnId);
+    final handshakeTask =
+        HandshakeTask(mqttService: mqttService, otnId: otnId, dasDrivingMode: DasDrivingMode.readOnly);
 
     await handshakeTask.execute((task, data) {
       expect(task, handshakeTask);
@@ -48,7 +50,8 @@ void main() {
   test('Test handshake reject', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    final handshakeTask = HandshakeTask(mqttService: mqttService, otnId: otnId);
+    final handshakeTask =
+        HandshakeTask(mqttService: mqttService, otnId: otnId, dasDrivingMode: DasDrivingMode.readOnly);
 
     await handshakeTask.execute((task, data) {
       fail('Task should not be sucessful');
@@ -68,7 +71,8 @@ void main() {
   test('Test handshake ignore other messages', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    final handshakeTask = HandshakeTask(mqttService: mqttService, otnId: otnId);
+    final handshakeTask =
+        HandshakeTask(mqttService: mqttService, otnId: otnId, dasDrivingMode: DasDrivingMode.readOnly);
 
     await handshakeTask.execute((task, data) {
       fail('Test should not call success');
@@ -88,7 +92,11 @@ void main() {
   test('Test handshake timeout', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    final handshakeTask = HandshakeTask(mqttService: mqttService, otnId: otnId, timeout: const Duration(seconds: 1));
+    final handshakeTask = HandshakeTask(
+        mqttService: mqttService,
+        otnId: otnId,
+        dasDrivingMode: DasDrivingMode.readOnly,
+        timeout: const Duration(seconds: 1));
 
     var timeoutReached = false;
     await handshakeTask.execute((task, data) {
