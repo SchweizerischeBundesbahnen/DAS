@@ -10,13 +10,11 @@ abstract class BaseRowBuilder extends DASTableRowBuilder {
     this.defaultAlignment = Alignment.centerLeft,
     this.rowColor,
     this.isCurrentPosition = false,
-    this.isServicePointStop = false,
   });
 
   final double? kilometre;
   final Alignment defaultAlignment;
   final Color? rowColor;
-  final bool isServicePointStop;
   final bool isCurrentPosition;
 
   @override
@@ -58,10 +56,7 @@ abstract class BaseRowBuilder extends DASTableRowBuilder {
     return DASTableCell(
       padding: EdgeInsets.all(0.0),
       alignment: null,
-      child: RouteCellBody(
-        showCircle: isServicePointStop,
-        showChevron: isCurrentPosition,
-      ),
+      child: RouteCellBody(isCurrentPosition: isCurrentPosition),
     );
   }
 

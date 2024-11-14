@@ -55,8 +55,11 @@ class TrainJourney extends StatelessWidget {
               timingPoint: tp,
               timingPointConstraints: timingPoint,
               nextStop: index == 1,
-              isServicePointStop: index != 3 && index != 4,
-              isCurrentPosition: index == 0 || index == 3,
+              isRouteStart: index == 0,
+              isRouteEnd: index == timingPoints.length - 1,
+              isStop: index != 3 && index != 4,
+              isCurrentPosition: index == 2,
+              isStopOnRequest: index == 2,
             ).build(context);
           })
         ],
