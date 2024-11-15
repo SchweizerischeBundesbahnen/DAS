@@ -4,8 +4,6 @@ import { SbbFormFieldModule } from "@sbb-esta/angular/form-field";
 import { SbbInputModule } from "@sbb-esta/angular/input";
 import { MqService } from "../mq.service";
 import { SbbButtonModule } from "@sbb-esta/angular/button";
-import { SimpleXmlComponent } from "../simple-xml/simple-xml.component";
-import { AuthService } from "../auth.service";
 import { firstValueFrom, map, Subscription } from "rxjs";
 import { CommonModule } from "@angular/common";
 import { MqttConnectionState } from "ngx-mqtt";
@@ -27,7 +25,6 @@ import { SbbAccordionModule } from "@sbb-esta/angular/accordion";
     SbbInputModule,
     SbbButtonModule,
     SbbCheckboxModule,
-    SimpleXmlComponent,
     MessageTableComponent,
     SbbAccordionModule,
   ],
@@ -55,7 +52,6 @@ export class SferaObserverComponent implements OnDestroy {
   protected readonly MqttConnectionState = MqttConnectionState;
 
   constructor(private oidcSecurityService: OidcSecurityService,
-              private authService: AuthService,
               protected mqService: MqService) {
   }
 
@@ -65,9 +61,9 @@ export class SferaObserverComponent implements OnDestroy {
     this.g2bTopic = customTopicPrefix + '90940/2/G2B/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
     this.b2gTopic = customTopicPrefix + '90940/2/B2G/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
     this.eventTopic = customTopicPrefix + '90940/2/event/' + this.companyControl.value + '/' + trainOperation;
-    const exchangeToken = await firstValueFrom(this.authService.exchange(this.companyControl.value, trainOperation, 'read-only'));
+    const token = await firstValueFrom(this.oidcSecurityService.getAccessToken());
     const username = await firstValueFrom(this.oidcSecurityService.getUserData().pipe(map((data) => data?.preferred_username)));
-    await this.mqService.connect(username, exchangeToken);
+    await this.mqService.connect(username, token);
 
     this.g2bSubscription = this.mqService.observe(this.g2bTopic)
       .subscribe(value => {

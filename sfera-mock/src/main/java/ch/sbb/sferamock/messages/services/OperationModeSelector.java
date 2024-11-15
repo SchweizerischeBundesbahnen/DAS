@@ -30,7 +30,7 @@ public class OperationModeSelector {
             return getObserver(statusReportEnabled);
         }
         if (validModes.contains(driver)) {
-            return Optional.empty();
+            return Optional.of(driver);
         }
         if (validModes.contains(observer)) {
             return getObserver(!statusReportEnabled);

@@ -5,7 +5,6 @@ import { MqService } from "../mq.service";
 import { SbbIcon } from "@sbb-esta/angular/icon";
 import { AsyncPipe } from "@angular/common";
 import { MqttConnectionState } from "ngx-mqtt";
-import { AuthService } from "../auth.service";
 import { firstValueFrom, map } from "rxjs";
 import { OidcSecurityService } from "angular-auth-oidc-client";
 
@@ -23,8 +22,8 @@ import { OidcSecurityService } from "angular-auth-oidc-client";
 })
 export class MqttPlaygroundComponent implements OnDestroy {
 
-  constructor(public mqService: MqService, private authService: AuthService, private oidcSecurityService: OidcSecurityService) {
-    this.authService.exchange().subscribe(async token => {
+  constructor(public mqService: MqService, private oidcSecurityService: OidcSecurityService) {
+    this.oidcSecurityService.getAccessToken().subscribe(async token => {
       const userName = await firstValueFrom(this.oidcSecurityService.getUserData().pipe(map((data) => data?.preferred_username)));
       this.mqService.connect(userName, token)
     });
