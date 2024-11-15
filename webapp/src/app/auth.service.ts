@@ -20,6 +20,9 @@ export class AuthService {
 
   }
 
+  /**
+   * deprecated
+   */
   exchange(ru: string = '', train: string = '', role: string = ''): Observable<string> {
     return this.httpClient.get(`${environment.backendUrl}/customClaim/requestToken`, {
       params: new HttpParams().set('ru', ru).set('train', train).set('role', role),
