@@ -49,13 +49,13 @@
     <SP_ContextInformation>
 
         <KilometreReferencePoint location="100">
-            <KM_Reference kmRef="4.1"/>
+            <KM_Reference kmRef="0.4"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="300">
-            <KM_Reference kmRef="4.3"/>
+            <KM_Reference kmRef="0.6"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="500">
-            <KM_Reference kmRef="4.5"/>
+            <KM_Reference kmRef="0.8"/>
         </KilometreReferencePoint>
     </SP_ContextInformation>
 </SegmentProfile>

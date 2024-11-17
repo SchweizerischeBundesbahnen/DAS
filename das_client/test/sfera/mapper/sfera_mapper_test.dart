@@ -58,11 +58,12 @@ void main() {
 
     expect(journey.valid, true);
     expect(journey.data, hasLength(5));
-    expect(journey.data[0].kilometre, 0.5);
-    expect(journey.data[1].kilometre, 1.5);
-    expect(journey.data[2].kilometre, 2.4);
-    expect(journey.data[3].kilometre, 3.7);
-    expect(journey.data[4].kilometre, 4.3);
+    expect(journey.data[0].kilometre[0], 0.5);
+    expect(journey.data[1].kilometre[0], 1.5);
+    expect(journey.data[2].kilometre[0], 2.4);
+    expect(journey.data[3].kilometre[0], 3.7);
+    expect(journey.data[3].kilometre[1], 0);
+    expect(journey.data[4].kilometre[0], 4.3);
   });
 
   test('Test order is generated correctly', () async {
@@ -77,5 +78,15 @@ void main() {
     expect(journey.data[4].order, 400300);
   });
 
+  test('Test stop on demand is parsed correctly', () async {
+    final journey = getJourney('9999', 5);
 
+    expect(journey.valid, true);
+    expect(journey.data, hasLength(5));
+    expect((journey.data[0] as ServicePoint).mandatoryStop, true);
+    expect((journey.data[1] as ServicePoint).mandatoryStop, true);
+    expect((journey.data[2] as ServicePoint).mandatoryStop, false);
+    expect((journey.data[3] as ServicePoint).mandatoryStop, true);
+    expect((journey.data[4] as ServicePoint).mandatoryStop, true);
+  });
 }

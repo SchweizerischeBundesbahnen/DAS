@@ -19,6 +19,7 @@ import 'package:das_client/sfera/src/model/sp_areas.dart';
 import 'package:das_client/sfera/src/model/sp_context_information.dart';
 import 'package:das_client/sfera/src/model/sp_points.dart';
 import 'package:das_client/sfera/src/model/sp_zone.dart';
+import 'package:das_client/sfera/src/model/stop_type.dart';
 import 'package:das_client/sfera/src/model/stopping_point_information.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location_ident.dart';
@@ -131,6 +132,8 @@ class SferaReplyParser {
         return TafTapLocationName(type: type, attributes: attributes, children: children, value: value);
       case TafTapLocationReference.elementType:
         return TafTapLocationReference(type: type, attributes: attributes, children: children, value: value);
+      case StopType.elementType:
+        return StopType(type: type, attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElement(type: type, attributes: attributes, children: children, value: value);
     }

@@ -44,8 +44,11 @@
         <KilometreReferencePoint location="700">
             <KM_Reference kmRef="3.7"/>
         </KilometreReferencePoint>
+        <KilometreReferencePoint location="700">
+            <KM_Reference kmRef="0"/>
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="900">
-            <KM_Reference kmRef="3.9"/>
+            <KM_Reference kmRef="0.2"/>
         </KilometreReferencePoint>
 
     </SP_ContextInformation>
