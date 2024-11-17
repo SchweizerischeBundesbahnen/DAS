@@ -1,0 +1,5 @@
+
+
+enum Datatype {
+  servicePoint;
+}

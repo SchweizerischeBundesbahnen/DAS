@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
+                SP_ID="9999_5" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="1000" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>0085</IM_ID>
+    </SP_Zone>
+    <SP_Points>
+
+        <TimingPoint TP_ID="Klammerbahnhof_D1" location="300">
+            <TP_Name name="D1"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>9995</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <Signal>
+            <Signal_ID signal_ID_Physical="7" location="100"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="BAB1"/>
+        </Signal>
+
+        <NetworkSpecificPoint location="500" identifier="4" name="curvePoint">
+            <NetworkSpecificParameter name="curvePointType" value="begin"/>
+            <!-- 'curveAfterHalt' (begins at an halt). -->
+            <NetworkSpecificParameter name="curveType" value="curveAfterHalt"/>
+            <NetworkSpecificParameter name="comment" value="Kurve 3"/>
+        </NetworkSpecificPoint>
+    </SP_Points>
+
+    <SP_Areas>
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="D1"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>9995</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Klammerbahnhof D1"/>
+            <TAF_TAP_Location_NSP name="bracketStation">
+                <NetworkSpecificParameter name="mainStation" value="CH9994"/>
+            </TAF_TAP_Location_NSP>
+        </TAF_TAP_Location>
+        <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="400" endLocation="800" name="nonStandardTrackEquipment">
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingImpossible"/>
+        </NetworkSpecificArea>
+    </SP_Areas>
+
+    <SP_ContextInformation>
+
+        <KilometreReferencePoint location="100">
+            <KM_Reference kmRef="4.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="300">
+            <KM_Reference kmRef="4.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="500">
+            <KM_Reference kmRef="4.5"/>
+        </KilometreReferencePoint>
+    </SP_ContextInformation>
+</SegmentProfile>

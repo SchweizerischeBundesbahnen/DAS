@@ -1,0 +1,3 @@
+class Metadata {
+  const Metadata();
+}

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:das_client/app/model/ru.dart';
+import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/sfera/sfera_component.dart';
 import 'package:das_client/util/error_code.dart';
 import 'package:fimber/fimber.dart';
@@ -17,9 +18,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
 
   final SferaService _sferaService;
 
-  Stream<JourneyProfile?> get journeyStream => _sferaService.journeyStream;
-
-  Stream<List<SegmentProfile>> get segmentStream => _sferaService.segmentStream;
+  Stream<Journey?> get journeyStream => _sferaService.journeyStream;
 
   StreamSubscription? _stateSubscription;
 

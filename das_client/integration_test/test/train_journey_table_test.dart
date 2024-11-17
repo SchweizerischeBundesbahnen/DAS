@@ -40,11 +40,11 @@ void main() {
       expect(scrollableFinder, findsOneWidget);
 
       // check first train station
-      expect(find.text('ZUE'), findsOneWidget);
+      expect(find.text('Zürich HB'), findsOneWidget);
 
       // Scroll to last train station
       await tester.dragUntilVisible(
-          find.text('AAR'),
+          find.text('Aarau'),
           find.byType(ListView),
           const Offset(0, -300)
       );
@@ -57,7 +57,7 @@ void main() {
       await _loadTrainJourney(tester, trainNumber: '4816');
 
       // check first train station
-      expect(find.text('ZUE'), findsOneWidget);
+      expect(find.text('Zürich HB'), findsOneWidget);
 
       await openDrawer(tester);
       await tapElement(tester, find.text(l10n.w_navigation_drawer_profile_title));
@@ -69,7 +69,7 @@ void main() {
       await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
 
       // check first train station is still visible
-      expect(find.text('ZUE'), findsOneWidget);
+      expect(find.text('Zürich HB'), findsOneWidget);
     });
   });
 }

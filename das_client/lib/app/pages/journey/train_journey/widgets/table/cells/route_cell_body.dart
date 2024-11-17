@@ -81,7 +81,6 @@ class RouteCellBody extends StatelessWidget {
 
 class _RouteCircle extends StatelessWidget {
   const _RouteCircle({
-    super.key,
     required this.size,
     required this.color,
     this.isStopOnRequest = false,

@@ -10,6 +10,6 @@ class HandshakeAcknowledgement extends SferaXmlElement {
 
   @override
   bool validate() {
-    return validateHasChild('DAS_OperatingModeSelected') && super.validate();
+    return validateHasChildOfType<DasOperatingModesSelected>() && super.validate();
   }
 }

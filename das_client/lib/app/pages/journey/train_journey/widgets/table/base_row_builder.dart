@@ -43,8 +43,7 @@ abstract class BaseRowBuilder extends DASTableRowBuilder {
       return DASTableCell.empty();
     }
 
-    var kilometreAsString = kilometre!.toStringAsFixed(3);
-    kilometreAsString = kilometreAsString.replaceAll(RegExp(r'0*$'), '');
+    final kilometreAsString = kilometre!.toStringAsFixed(1);
     return DASTableCell(child: Text(kilometreAsString), alignment: defaultAlignment);
   }
 

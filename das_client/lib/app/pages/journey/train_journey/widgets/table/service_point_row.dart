@@ -2,7 +2,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_ro
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
-import 'package:das_client/sfera/sfera_component.dart';
+import 'package:das_client/model/journey/service_point.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -12,21 +12,18 @@ class ServicePointRow extends BaseRowBuilder {
   ServicePointRow({
     super.height = 64.0,
     super.defaultAlignment = _defaultAlignment,
-    super.kilometre,
     super.isCurrentPosition,
     this.isStop = true,
     this.isRouteStart = false,
     this.isRouteEnd = false,
     this.isStopOnRequest = false,
-    this.timingPoint,
-    this.timingPointConstraints,
+    required this.servicePoint,
     bool nextStop = false,
   }) : super(
-          rowColor: nextStop ? SBBColors.royal.withOpacity(0.2) : Colors.transparent,
-        );
+            rowColor: nextStop ? SBBColors.royal.withOpacity(0.2) : Colors.transparent,
+            kilometre: servicePoint.kilometre);
 
-  final TimingPoint? timingPoint;
-  final TimingPointConstraints? timingPointConstraints;
+  final ServicePoint servicePoint;
 
   static const Alignment _defaultAlignment = Alignment.bottomCenter;
 
@@ -37,7 +34,7 @@ class ServicePointRow extends BaseRowBuilder {
 
   @override
   DASTableCell informationCell() {
-    final servicePointName = timingPoint?.names.first.name ?? 'Unknown';
+    final servicePointName = servicePoint.name.localized;
     return DASTableCell(
       alignment: _defaultAlignment,
       child: Row(

@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:core';
 
 import 'package:das_client/auth/authentication_component.dart';
+import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/mqtt/mqtt_component.dart';
 import 'package:das_client/sfera/sfera_component.dart';
+import 'package:das_client/sfera/src/mapper/sfera_model_mapper.dart';
 import 'package:das_client/sfera/src/model/enums/das_driving_mode.dart';
 import 'package:das_client/sfera/src/service/handler/journey_profile_reply_handler.dart';
 import 'package:das_client/sfera/src/service/handler/segment_profile_reply_handler.dart';
@@ -28,18 +30,14 @@ class SferaServiceImpl implements SferaService {
 
   @override
   Stream<SferaServiceState> get stateStream => _stateSubject.stream;
-
-  final _journeyProfileSubject = BehaviorSubject<JourneyProfile?>.seeded(null);
-
-  @override
-  Stream<JourneyProfile?> get journeyStream => _journeyProfileSubject.stream;
-
-  final _segmentProfilesSubject = BehaviorSubject<List<SegmentProfile>>();
+  final _journeyProfileSubject = BehaviorSubject<Journey?>.seeded(null);
 
   @override
-  Stream<List<SegmentProfile>> get segmentStream => _segmentProfilesSubject.stream;
+  Stream<Journey?> get journeyStream => _journeyProfileSubject.stream;
 
   OtnId? otnId;
+  JourneyProfile? _journeyProfile;
+  List<SegmentProfile> _segmentProfiles = [];
 
   @override
   ErrorCode? lastErrorCode;
@@ -109,30 +107,37 @@ class SferaServiceImpl implements SferaService {
       _stateSubject.add(SferaServiceState.loadingSegments);
       final requestSegmentProfilesTask = RequestSegmentProfilesTask(
           mqttService: _mqttService, sferaRepository: _sferaRepository, otnId: otnId!, journeyProfile: data);
-      _journeyProfileSubject.add(data);
+      _journeyProfile = data;
       _messageHandlers.add(requestSegmentProfilesTask);
       requestSegmentProfilesTask.execute(onTaskCompleted, onTaskFailed);
     } else if (task is RequestSegmentProfilesTask) {
       _addMessageHandlers();
       await _refreshSegmentProfiles();
+      _updateJourney();
       _stateSubject.add(SferaServiceState.connected);
     }
   }
 
   Future<void> _refreshSegmentProfiles() async {
-    if (_journeyProfileSubject.value != null) {
-      final segments = <SegmentProfile>[];
+    if (_journeyProfile != null) {
+      _segmentProfiles.clear();
 
-      for (final element in _journeyProfileSubject.value!.segmentProfilesLists) {
+      for (final element in _journeyProfile!.segmentProfilesLists) {
         final segmentProfileEntity =
             await _sferaRepository.findSegmentProfile(element.spId, element.versionMajor, element.versionMinor);
         if (segmentProfileEntity != null) {
-          segments.add(segmentProfileEntity.toDomain());
+          _segmentProfiles.add(segmentProfileEntity.toDomain());
         } else {
           Fimber.w('Could not find segment profile for ${element.spId}');
         }
       }
-      _segmentProfilesSubject.add(segments);
+    }
+  }
+
+  void _updateJourney() {
+    if (_journeyProfile != null && _segmentProfiles.isNotEmpty) {
+      Fimber.i('Updating journey stream...');
+      _journeyProfileSubject.add(SferaModelMapper.mapToJourney(_journeyProfile!, _segmentProfiles));
     }
   }
 

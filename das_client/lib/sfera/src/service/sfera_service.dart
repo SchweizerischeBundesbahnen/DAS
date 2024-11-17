@@ -1,5 +1,6 @@
 import 'dart:core';
 
+import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/sfera/sfera_component.dart';
 import 'package:das_client/util/device_id_info.dart';
 import 'package:das_client/util/error_code.dart';
@@ -11,9 +12,7 @@ abstract class SferaService {
 
   Stream<SferaServiceState> get stateStream;
 
-  Stream<JourneyProfile?> get journeyStream;
-
-  Stream<List<SegmentProfile>> get segmentStream;
+  Stream<Journey?> get journeyStream;
 
   ErrorCode? get lastErrorCode;
 

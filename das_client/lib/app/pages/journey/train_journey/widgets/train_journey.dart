@@ -3,10 +3,11 @@ import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:das_client/app/widgets/table/das_table.dart';
 import 'package:das_client/app/widgets/table/das_table_column.dart';
-import 'package:das_client/sfera/sfera_component.dart';
+import 'package:das_client/model/journey/datatype.dart';
+import 'package:das_client/model/journey/journey.dart';
+import 'package:das_client/model/journey/service_point.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:rxdart/rxdart.dart';
 
 class TrainJourney extends StatelessWidget {
   const TrainJourney({super.key});
@@ -15,52 +16,43 @@ class TrainJourney extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = context.trainJourneyCubit;
 
-    return StreamBuilder<List<dynamic>>(
-      stream: CombineLatestStream.list([bloc.journeyStream, bloc.segmentStream]),
+    return StreamBuilder<Journey?>(
+      stream: bloc.journeyStream,
       builder: (context, snapshot) {
-        final JourneyProfile? journeyProfile = snapshot.data?[0];
-        final List<SegmentProfile> segmentProfiles = snapshot.data?[1] ?? [];
-        if (journeyProfile == null) {
+        final Journey? journey = snapshot.data;
+        if (journey == null) {
           return Container();
         }
 
-        return _body(context, journeyProfile, segmentProfiles);
+        return _body(context, journey);
       },
     );
   }
 
   Widget _body(
     BuildContext context,
-    JourneyProfile journeyProfile,
-    List<SegmentProfile> segmentProfiles,
+    Journey journey,
   ) {
-    final timingPoints = journeyProfile.segmentProfilesLists
-        .expand((it) => it.timingPoints.toList().sublist(it == journeyProfile.segmentProfilesLists.first ? 0 : 1))
-        .toList();
-
-    final points = segmentProfiles.expand((it) => it.points?.timingPoints.toList() ?? <TimingPoint>[]);
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
       child: DASTable(
         columns: _columns(context),
         rows: [
-          ...List.generate(timingPoints.length, (index) {
-            final timingPoint = timingPoints[index];
-            final tpId = timingPoint.timingPointReference.children.whereType<TpIdReference>().firstOrNull?.tpId;
-            final tp = points.where((point) => point.id == tpId).firstOrNull;
+          ...List.generate(journey.data.length, (index) {
+            final rowData = journey.data[index];
 
-            return ServicePointRow(
-              kilometre: 10.2,
-              timingPoint: tp,
-              timingPointConstraints: timingPoint,
-              nextStop: index == 1,
-              isRouteStart: index == 0,
-              isRouteEnd: index == timingPoints.length - 1,
-              isStop: index != 3 && index != 4,
-              isCurrentPosition: index == 2,
-              isStopOnRequest: index == 2,
-            ).build(context);
+            switch (rowData.type) {
+              case Datatype.servicePoint:
+                return ServicePointRow(
+                  servicePoint: rowData as ServicePoint,
+                  nextStop: index == 1,
+                  isRouteStart: index == 0,
+                  isRouteEnd: index == journey.data.length - 1,
+                  isStop: index != 3 && index != 4,
+                  isCurrentPosition: index == 2,
+                  isStopOnRequest: index == 2,
+                ).build(context);
+            }
           })
         ],
       ),

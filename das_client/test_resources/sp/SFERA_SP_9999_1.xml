@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    SP_ID="9999_1" SP_Length="1000" SP_Status="Valid"
+    SP_VersionMajor="1" SP_VersionMinor="0" xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd">
+    <SP_Zone>
+        <IM_ID>0085</IM_ID>
+    </SP_Zone>
+    <SP_Points>
+
+        <TimingPoint TP_ID="Bahnhof_A" location="500">
+            <TP_Name name="A" />
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>9991</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <Signal>
+            <Signal_ID location="200" signal_ID_Physical="1" />
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="B1" />
+        </Signal>
+        <Signal>
+            <Signal_ID location="700" signal_ID_Physical="2" />
+            <SignalFunction>laneChange</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="S1" />
+        </Signal>
+
+        <NetworkSpecificPoint name="curvePoint" identifier="1" location="600">
+            <NetworkSpecificParameter name="curvePointType" value="begin" />
+            <NetworkSpecificParameter name="curveType" value="curve" />
+            <NetworkSpecificParameter name="comment" value="Kurve 1" />
+        </NetworkSpecificPoint>
+
+        <!-- Ende der Kurve tbd -->
+        <NetworkSpecificPoint name="curvePoint" identifier="1" location="900">
+            <NetworkSpecificParameter name="curvePointType" value="end" />
+        </NetworkSpecificPoint>
+
+    </SP_Points>
+
+    <SP_Areas>
+        <TAF_TAP_Location TAF_TAP_location_abbreviation="A" TAF_TAP_location_type="station"
+            startEndQualifier="StartsEnds">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>9991</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Bahnhof A" />
+            <TAF_TAP_Location_NSP name="bracketStation">
+                <NetworkSpecificParameter name="mainStation" value="CH0207" />
+            </TAF_TAP_Location_NSP>
+
+            <!-- todo: Geschwindigkeiten NSP tbd  -->
+
+            <!--            Bahnhofsgeschwindigkeiten -->
+            <TAF_TAP_Location_NSP name="stationSpeed">
+                <NetworkSpecificParameter name="" value="140/[60]" />
+                <!--            name:    stationSpeed_R150' or 'stationSpeed_A65'. 'stationSpeed_All' or 'stationSpeed_C' 'stationSpeed_R' -->
+                <NetworkSpecificParameter name="graduatedSpeed_00000_n" value="" />
+                <NetworkSpecificParameter name="graduatedSpeed_00000_ro" value="" />
+                <NetworkSpecificParameter name="graduatedSpeed_00000_ad" value="" />
+                <NetworkSpecificParameter name="graduatedSpeed_00000_s" value="" />
+                <NetworkSpecificParameter name="graduatedSpeed_00000_txt"
+                    value="Einfahrt vom Bahnsteig an, übrige Gleise ab Zentralstellwerk" />
+            </TAF_TAP_Location_NSP>
+            <!--            gleisspezifische Geschwindigkeiten	-->
+            <TAF_TAP_Location_NSP name="stationProperty_00000">
+                <NetworkSpecificParameter name="stationPropertySpeed_R150" value="30-40" />
+                <NetworkSpecificParameter name="text" value="&lt;b&gt;31&lt;/b&gt;" />
+            </TAF_TAP_Location_NSP>
+        </TAF_TAP_Location>
+    </SP_Areas>
+
+    <SP_ContextInformation>
+        <KilometreReferencePoint location="200">
+            <KM_Reference kmRef="0.2" />
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="500">
+            <KM_Reference kmRef="0.5" />
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="600">
+            <KM_Reference kmRef="0.6" />
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="700">
+            <KM_Reference kmRef="0.7" />
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="900">
+            <KM_Reference kmRef="0.9" />
+        </KilometreReferencePoint>
+
+    </SP_ContextInformation>
+</SegmentProfile>
