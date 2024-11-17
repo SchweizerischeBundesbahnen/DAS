@@ -18,7 +18,7 @@
             <TP_Name name="SO_W"/>
             <TAF_TAP_LocationReference>
                 <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>0207</LocationPrimaryCode>
+                <LocationPrimaryCode>0208</LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
@@ -26,7 +26,7 @@
             <TP_Name name="LAN"/>
             <TAF_TAP_LocationReference>
                 <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>0207</LocationPrimaryCode>
+                <LocationPrimaryCode>0209</LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
@@ -34,7 +34,7 @@
             <TP_Name name="LOM"/>
             <TAF_TAP_LocationReference>
                 <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>0207</LocationPrimaryCode>
+                <LocationPrimaryCode>0210</LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
@@ -42,7 +42,7 @@
             <TP_Name name="IM_H"/>
             <TAF_TAP_LocationReference>
                 <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>0207</LocationPrimaryCode>
+                <LocationPrimaryCode>0211</LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
@@ -50,7 +50,7 @@
             <TP_Name name="OB_SO"/>
             <TAF_TAP_LocationReference>
                 <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>0207</LocationPrimaryCode>
+                <LocationPrimaryCode>0212</LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
     </SP_Points>
@@ -72,7 +72,7 @@
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>0207</LocationPrimaryCode>
+                <LocationPrimaryCode>0208</LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
             <TAF_TAP_LocationName language="de" messageString="Solothurn West"/>
             <TAF_TAP_Location_NSP name="bracketStation">
@@ -84,7 +84,7 @@
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>0207</LocationPrimaryCode>
+                <LocationPrimaryCode>0209</LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
             <TAF_TAP_LocationName language="de" messageString="Langendorf"/>
         </TAF_TAP_Location>
@@ -93,7 +93,7 @@
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>0207</LocationPrimaryCode>
+                <LocationPrimaryCode>0210</LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
             <TAF_TAP_LocationName language="de" messageString="Lommiswil"/>
         </TAF_TAP_Location>
@@ -102,7 +102,7 @@
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>0207</LocationPrimaryCode>
+                <LocationPrimaryCode>0211</LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
             <TAF_TAP_LocationName language="de" messageString="Im Holz"/>
         </TAF_TAP_Location>
@@ -111,7 +111,7 @@
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>0207</LocationPrimaryCode>
+                <LocationPrimaryCode>0212</LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
             <TAF_TAP_LocationName language="de" messageString="Oberdorf SO"/>
         </TAF_TAP_Location>
