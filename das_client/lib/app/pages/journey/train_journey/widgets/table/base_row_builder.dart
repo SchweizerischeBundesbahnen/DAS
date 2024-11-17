@@ -12,7 +12,7 @@ abstract class BaseRowBuilder extends DASTableRowBuilder {
     this.isCurrentPosition = false,
   });
 
-  final double? kilometre;
+  final List<double>? kilometre;
   final Alignment defaultAlignment;
   final Color? rowColor;
   final bool isCurrentPosition;
@@ -39,12 +39,17 @@ abstract class BaseRowBuilder extends DASTableRowBuilder {
   }
 
   DASTableCell kilometreCell() {
-    if (kilometre == null) {
+    if (kilometre == null || kilometre!.isEmpty) {
       return DASTableCell.empty();
     }
 
-    final kilometreAsString = kilometre!.toStringAsFixed(1);
-    return DASTableCell(child: Text(kilometreAsString), alignment: defaultAlignment);
+    return DASTableCell(child: Column(
+      children: [
+        Text(kilometre![0].toStringAsFixed(1)),
+        if (kilometre!.length > 1)
+          Text(kilometre![1].toStringAsFixed(1))
+      ],
+    ), alignment: defaultAlignment);
   }
 
   DASTableCell timeCell() {

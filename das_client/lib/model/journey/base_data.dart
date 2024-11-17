@@ -5,5 +5,5 @@ abstract class BaseData {
 
   final Datatype type;
   final int order;
-  final double? kilometre;
+  final List<double> kilometre;
 }

@@ -1,4 +1,5 @@
 import 'package:das_client/model/journey/base_data.dart';
+import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/service_point.dart';
@@ -6,8 +7,6 @@ import 'package:das_client/model/localized_string.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/multilingual_text.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
-import 'package:das_client/sfera/src/model/taf_tap_location.dart';
-import 'package:das_client/sfera/src/model/timing_point.dart';
 import 'package:fimber/fimber.dart';
 
 class SferaModelMapper {
@@ -38,8 +37,8 @@ class SferaModelMapper {
           .first;
 
       final kilometreMap = _parseKilometre(segmentProfile);
-      final tafTapLocations = _parseTafTapLocation(segmentProfile);
-      final timingPoints = _parseTimingPoints(segmentProfile);
+      final tafTapLocations = segmentProfile.areas.expand((it) => it.tafTapLocations).toList();
+      final timingPoints = segmentProfile.points.expand((it) => it.timingPoints).toList();
 
       for (final tpConstraint in segmentProfileList.timingPointsContraints) {
         final tpId = tpConstraint.timingPointReference.tpIdReference.tpId;
@@ -53,11 +52,20 @@ class SferaModelMapper {
         journeyData.add(ServicePoint(
             name: _localizedStringFromMultilingualText(tafTapLocation.locationNames),
             order: _calculateOrder(segmentIndex, timingPoint.location),
-            kilometre: kilometreMap[timingPoint.location]));
+            mandatoryStop: tpConstraint.stoppingPointInformation?.stopType?.mandatoryStop ?? true,
+            isStop: true,
+            // TODO: check how to identify stopping points correctly
+            kilometre: kilometreMap[timingPoint.location] ?? []));
       }
     }
 
-    return Journey(metadata: Metadata(), data: journeyData);
+    journeyData.sort((a, b) => a.order.compareTo(b.order));
+
+    final servicePoints = journeyData.where((it) => it.type == Datatype.servicePoint).toList();
+
+    return Journey(
+        metadata: Metadata(nextStop: servicePoints.length > 1 ? servicePoints[1] as ServicePoint : null),
+        data: journeyData);
   }
 
   static int _calculateOrder(int segmentIndex, double location) {
@@ -72,29 +80,16 @@ class SferaModelMapper {
     );
   }
 
-  static Map<double, double> _parseKilometre(SegmentProfile segmentProfile) {
-    final kilometreMap = <double, double>{};
+  static Map<double, List<double>> _parseKilometre(SegmentProfile segmentProfile) {
+    final kilometreMap = <double, List<double>>{};
     for (final point in segmentProfile.contextInformation) {
       for (final kilometreReferencePoint in point.kilometreReferencePoints) {
-        kilometreMap[kilometreReferencePoint.location] = kilometreReferencePoint.kmReference.kmRef;
+        if (!kilometreMap.containsKey(kilometreReferencePoint.location)) {
+          kilometreMap[kilometreReferencePoint.location] = [];
+        }
+        kilometreMap[kilometreReferencePoint.location]!.add(kilometreReferencePoint.kmReference.kmRef);
       }
     }
     return kilometreMap;
-  }
-
-  static List<TafTapLocation> _parseTafTapLocation(SegmentProfile segmentProfile) {
-    final locations = <TafTapLocation>[];
-    for (final area in segmentProfile.areas) {
-      locations.addAll(area.tafTapLocations);
-    }
-    return locations;
-  }
-
-  static List<TimingPoint> _parseTimingPoints(SegmentProfile segmentProfile) {
-    final timingPoints = <TimingPoint>[];
-    for (final point in segmentProfile.points) {
-      timingPoints.addAll(point.timingPoints);
-    }
-    return timingPoints;
   }
 }

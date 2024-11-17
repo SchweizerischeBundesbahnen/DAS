@@ -2,6 +2,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_ro
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
+import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
@@ -13,24 +14,21 @@ class ServicePointRow extends BaseRowBuilder {
     super.height = 64.0,
     super.defaultAlignment = _defaultAlignment,
     super.isCurrentPosition,
-    this.isStop = true,
     this.isRouteStart = false,
     this.isRouteEnd = false,
-    this.isStopOnRequest = false,
+    required this.metadata,
     required this.servicePoint,
-    bool nextStop = false,
   }) : super(
-            rowColor: nextStop ? SBBColors.royal.withOpacity(0.2) : Colors.transparent,
+            rowColor: metadata.nextStop == servicePoint ? SBBColors.royal.withOpacity(0.2) : Colors.transparent,
             kilometre: servicePoint.kilometre);
 
+  final Metadata metadata;
   final ServicePoint servicePoint;
 
   static const Alignment _defaultAlignment = Alignment.bottomCenter;
 
   final bool isRouteStart;
   final bool isRouteEnd;
-  final bool isStopOnRequest;
-  final bool isStop;
 
   @override
   DASTableCell informationCell() {
@@ -50,7 +48,7 @@ class ServicePointRow extends BaseRowBuilder {
 
   @override
   DASTableCell iconsCell1() {
-    if (isStopOnRequest) {
+    if (!servicePoint.mandatoryStop) {
       return DASTableCell(
         alignment: _defaultAlignment,
         child: SvgPicture.asset(AppAssets.iconStopOnRequest),
@@ -66,11 +64,11 @@ class ServicePointRow extends BaseRowBuilder {
       padding: EdgeInsets.all(0.0),
       alignment: null,
       child: RouteCellBody(
-        isStop: isStop,
+        isStop: servicePoint.isStop,
         isCurrentPosition: isCurrentPosition,
         isRouteStart: isRouteStart,
         isRouteEnd: isRouteEnd,
-        isStopOnRequest: isStopOnRequest,
+        isStopOnRequest: !servicePoint.mandatoryStop,
       ),
     );
   }

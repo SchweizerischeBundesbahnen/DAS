@@ -44,13 +44,11 @@ class TrainJourney extends StatelessWidget {
             switch (rowData.type) {
               case Datatype.servicePoint:
                 return ServicePointRow(
+                  metadata: journey.metadata,
                   servicePoint: rowData as ServicePoint,
-                  nextStop: index == 1,
                   isRouteStart: index == 0,
                   isRouteEnd: index == journey.data.length - 1,
-                  isStop: index != 3 && index != 4,
                   isCurrentPosition: index == 2,
-                  isStopOnRequest: index == 2,
                 ).build(context);
             }
           })

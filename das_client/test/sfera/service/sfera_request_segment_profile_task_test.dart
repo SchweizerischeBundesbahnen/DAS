@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:das_client/mqtt/mqtt_component.dart';
 import 'package:das_client/sfera/sfera_component.dart';
-import 'package:das_client/sfera/src/model/otn_id.dart';
 import 'package:das_client/sfera/src/model/sfera_g2b_reply_message.dart';
 import 'package:das_client/sfera/src/service/task/request_segment_profiles_task.dart';
 import 'package:das_client/util/error_code.dart';
