@@ -7,6 +7,9 @@ import 'package:das_client/mqtt/mqtt_component.dart';
 import 'package:das_client/sfera/sfera_component.dart';
 import 'package:das_client/sfera/src/mapper/sfera_model_mapper.dart';
 import 'package:das_client/sfera/src/model/enums/das_driving_mode.dart';
+import 'package:das_client/sfera/src/model/journey_profile.dart';
+import 'package:das_client/sfera/src/model/segment_profile.dart';
+import 'package:das_client/sfera/src/model/sfera_g2b_reply_message.dart';
 import 'package:das_client/sfera/src/service/handler/journey_profile_reply_handler.dart';
 import 'package:das_client/sfera/src/service/handler/segment_profile_reply_handler.dart';
 import 'package:das_client/sfera/src/service/handler/sfera_message_handler.dart';
@@ -35,9 +38,9 @@ class SferaServiceImpl implements SferaService {
   @override
   Stream<Journey?> get journeyStream => _journeyProfileSubject.stream;
 
-  OtnId? otnId;
+  OtnId? _otnId;
   JourneyProfile? _journeyProfile;
-  List<SegmentProfile> _segmentProfiles = [];
+  final List<SegmentProfile> _segmentProfiles = [];
 
   @override
   ErrorCode? lastErrorCode;
@@ -73,7 +76,7 @@ class SferaServiceImpl implements SferaService {
   @override
   Future<void> connect(OtnId otnId) async {
     Fimber.i('Starting new connection for $otnId');
-    this.otnId = otnId;
+    _otnId = otnId;
     _messageHandlers.clear();
     lastErrorCode = null;
     _stateSubject.add(SferaServiceState.connecting);
@@ -88,7 +91,7 @@ class SferaServiceImpl implements SferaService {
       _messageHandlers.add(handshakeTask);
       handshakeTask.execute(onTaskCompleted, onTaskFailed);
     } else {
-      this.otnId = null;
+      _otnId = null;
       lastErrorCode = ErrorCode.connectionFailed;
       _stateSubject.add(SferaServiceState.disconnected);
     }
@@ -100,13 +103,13 @@ class SferaServiceImpl implements SferaService {
     if (task is HandshakeTask) {
       _stateSubject.add(SferaServiceState.loadingJourney);
       final requestJourneyTask =
-          RequestJourneyProfileTask(mqttService: _mqttService, sferaRepository: _sferaRepository, otnId: otnId!);
+          RequestJourneyProfileTask(mqttService: _mqttService, sferaRepository: _sferaRepository, otnId: _otnId!);
       _messageHandlers.add(requestJourneyTask);
       requestJourneyTask.execute(onTaskCompleted, onTaskFailed);
     } else if (task is RequestJourneyProfileTask) {
       _stateSubject.add(SferaServiceState.loadingSegments);
       final requestSegmentProfilesTask = RequestSegmentProfilesTask(
-          mqttService: _mqttService, sferaRepository: _sferaRepository, otnId: otnId!, journeyProfile: data);
+          mqttService: _mqttService, sferaRepository: _sferaRepository, otnId: _otnId!, journeyProfile: data);
       _journeyProfile = data;
       _messageHandlers.add(requestSegmentProfilesTask);
       requestSegmentProfilesTask.execute(onTaskCompleted, onTaskFailed);

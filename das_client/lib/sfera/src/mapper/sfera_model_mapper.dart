@@ -3,9 +3,11 @@ import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/localized_string.dart';
-import 'package:das_client/sfera/sfera_component.dart';
+import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/multilingual_text.dart';
+import 'package:das_client/sfera/src/model/segment_profile.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location.dart';
+import 'package:das_client/sfera/src/model/timing_point.dart';
 import 'package:fimber/fimber.dart';
 
 class SferaModelMapper {

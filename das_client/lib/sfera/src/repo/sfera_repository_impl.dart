@@ -1,6 +1,8 @@
 import 'package:das_client/sfera/sfera_component.dart';
 import 'package:das_client/sfera/src/db/journey_profile_entity.dart';
 import 'package:das_client/sfera/src/db/segment_profile_entity.dart';
+import 'package:das_client/sfera/src/model/journey_profile.dart';
+import 'package:das_client/sfera/src/model/segment_profile.dart';
 import 'package:fimber/fimber.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';

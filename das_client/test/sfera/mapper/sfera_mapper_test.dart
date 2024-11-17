@@ -4,6 +4,8 @@ import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/sfera/sfera_component.dart';
 import 'package:das_client/sfera/src/mapper/sfera_model_mapper.dart';
+import 'package:das_client/sfera/src/model/journey_profile.dart';
+import 'package:das_client/sfera/src/model/segment_profile.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter_test/flutter_test.dart';
 
