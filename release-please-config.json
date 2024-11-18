@@ -15,12 +15,5 @@
       "package-name": "sfera-mock"
     }
   },
-  "changelog-sections": {
-    "Issues": {
-      "title": "## Issues",
-      "filter": {
-        "labels": ["bug", "enhancement"]
-      }
-    }
-  }
+  "changelog-type": "github"
 }
