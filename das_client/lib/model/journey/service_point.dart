@@ -1,4 +1,5 @@
 import 'package:das_client/model/journey/base_data.dart';
+import 'package:das_client/model/journey/bracket_station.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/localized_string.dart';
 
@@ -8,6 +9,7 @@ class ServicePoint extends BaseData {
       required this.mandatoryStop,
       required this.isStop,
       required this.isHalt,
+      this.bracketStation,
       required super.order,
       required super.kilometre})
       : super(type: Datatype.servicePoint);
@@ -16,4 +18,5 @@ class ServicePoint extends BaseData {
   final bool mandatoryStop;
   final bool isStop;
   final bool isHalt;
+  final BracketStation? bracketStation;
 }

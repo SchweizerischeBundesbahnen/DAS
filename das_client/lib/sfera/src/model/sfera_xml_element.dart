@@ -121,4 +121,9 @@ class SferaXmlElement {
       }
     });
   }
+
+  @override
+  String toString() {
+    return buildDocument().toString();
+  }
 }

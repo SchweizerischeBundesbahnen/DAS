@@ -140,7 +140,13 @@ class SferaServiceImpl implements SferaService {
   void _updateJourney() {
     if (_journeyProfile != null && _segmentProfiles.isNotEmpty) {
       Fimber.i('Updating journey stream...');
-      _journeyProfileSubject.add(SferaModelMapper.mapToJourney(_journeyProfile!, _segmentProfiles));
+      final newJourney = SferaModelMapper.mapToJourney(_journeyProfile!, _segmentProfiles);
+      if (newJourney.valid) {
+        _journeyProfileSubject.add(SferaModelMapper.mapToJourney(_journeyProfile!, _segmentProfiles));
+        Fimber.i('Journey updates successfully.');
+      } else {
+        Fimber.w('Failed to update journey as it is not valid');
+      }
     }
   }
 

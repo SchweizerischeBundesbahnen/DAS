@@ -1,4 +1,5 @@
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_row_builder.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/bracket_station_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
@@ -51,14 +52,21 @@ class ServicePointRow extends BaseRowBuilder {
 
   @override
   DASTableCell iconsCell1() {
-    if (!servicePoint.mandatoryStop) {
-      return DASTableCell(
-        alignment: _defaultAlignment,
-        child: SvgPicture.asset(AppAssets.iconStopOnRequest),
-      );
-    }
-
-    return DASTableCell.empty();
+    return DASTableCell(
+      padding: EdgeInsets.fromLTRB(sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5, 0, sbbDefaultSpacing * 0.5),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          if (servicePoint.bracketStation != null)
+            BracketStationBody(
+              bracketStation: servicePoint.bracketStation!,
+              height: height!,
+            ),
+          if (!servicePoint.mandatoryStop)
+            Align(alignment: Alignment.bottomLeft, child: SvgPicture.asset(AppAssets.iconStopOnRequest))
+        ],
+      ),
+    );
   }
 
   @override

@@ -106,4 +106,19 @@ void main() {
     expect(servicePoints[3].isStop, true);
     expect(servicePoints[4].isStop, true);
   });
+
+  test('Test bracket stations is parsed correctly', () async {
+    final journey = getJourney('9999', 5);
+    final servicePoints = journey.data.where((it) => it.type == Datatype.servicePoint).cast<ServicePoint>().toList();
+
+    expect(journey.valid, true);
+    expect(servicePoints, hasLength(5));
+    expect(servicePoints[0].bracketStation, isNull);
+    expect(servicePoints[1].bracketStation, isNull);
+    expect(servicePoints[2].bracketStation, isNull);
+    expect(servicePoints[3].bracketStation, isNotNull);
+    expect(servicePoints[3].bracketStation!.mainStationAbbreviation, isNull);
+    expect(servicePoints[4].bracketStation, isNotNull);
+    expect(servicePoints[4].bracketStation!.mainStationAbbreviation, 'D');
+  });
 }

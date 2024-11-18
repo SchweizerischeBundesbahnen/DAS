@@ -47,9 +47,6 @@
                 <LocationPrimaryCode>9991</LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
             <TAF_TAP_LocationName language="de" messageString="Bahnhof A"/>
-            <TAF_TAP_Location_NSP name="bracketStation">
-                <NetworkSpecificParameter name="mainStation" value="CH0207"/>
-            </TAF_TAP_Location_NSP>
 
 <!-- todo: Geschwindigkeiten NSP tbd  -->
 
