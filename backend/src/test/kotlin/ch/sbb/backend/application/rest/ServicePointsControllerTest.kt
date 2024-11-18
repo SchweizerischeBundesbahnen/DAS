@@ -1,23 +1,15 @@
 package ch.sbb.backend.application.rest
 
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithMockUser
-import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-@SpringBootTest
-@AutoConfigureMockMvc
-class ServicePointsControllerTest {
 
-    @Autowired
-    private lateinit var mockMvc: MockMvc
+class ServicePointsControllerTest : BaseIT() {
 
     @Test
     @WithMockUser(authorities = ["ROLE_admin"])
@@ -134,12 +126,12 @@ class ServicePointsControllerTest {
         )
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.length()").value(2))
-            .andExpect(jsonPath("$[0].uic").value(8518771))
-            .andExpect(jsonPath("$[0].designation").value("Biel/Bienne Bözingenfeld"))
-            .andExpect(jsonPath("$[0].abbreviation").value("BIBD"))
-            .andExpect(jsonPath("$[1].uic").value(8583629))
-            .andExpect(jsonPath("$[1].designation").value("Hinterhunziken"))
-            .andExpect(jsonPath("$[1].abbreviation").value("HHZ"))
+            .andExpect(jsonPath("$[0].uic").value(8583629))
+            .andExpect(jsonPath("$[0].designation").value("Hinterhunziken"))
+            .andExpect(jsonPath("$[0].abbreviation").value("HHZ"))
+            .andExpect(jsonPath("$[1].uic").value(8518771))
+            .andExpect(jsonPath("$[1].designation").value("Biel/Bienne Bözingenfeld"))
+            .andExpect(jsonPath("$[1].abbreviation").value("BIBD"))
     }
 
     @Test

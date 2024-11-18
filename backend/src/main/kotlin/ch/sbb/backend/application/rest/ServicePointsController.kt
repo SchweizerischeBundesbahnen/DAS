@@ -1,6 +1,6 @@
 package ch.sbb.backend.application.rest
 
-import ch.sbb.backend.domain.servicepoints.InMemoryServicePointsService
+import ch.sbb.backend.infrastructure.services.ServicePointsService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("api/v1/service-points")
 @Tag(name = "Service Points", description = "API for service points")
-class ServicePointsController(private val servicePointsService: InMemoryServicePointsService) {
+class ServicePointsController(private val servicePointsService: ServicePointsService) {
 
     @Operation(summary = "Update service points")
     @ApiResponse(responseCode = "200", description = "Service points successfully updated")

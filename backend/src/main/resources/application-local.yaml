@@ -1,0 +1,7 @@
+spring:
+  docker:
+    compose:
+      file: ./backend/compose.yaml
+  sql:
+    init:
+      mode: always
