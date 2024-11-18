@@ -13,27 +13,27 @@
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
-        <TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Solothurn"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Solothurn_West"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Langendorf"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Lommiswil"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Im_Holz"/>
             </TimingPointReference>
@@ -41,7 +41,7 @@
                 <StopType stopTypePurpose="Commercial" mandatoryStop="false"/>
             </StoppingPointInformation>
         </TimingPointConstraints>
-        <TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="End_of_Journey">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Oberdorf_SO"/>
             </TimingPointReference>
