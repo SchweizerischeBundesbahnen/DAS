@@ -28,7 +28,7 @@ jobs:
       webapp--version: ${{ steps.release.outputs.webapp--version }}
       webapp--tag_name: ${{ steps.release.outputs.webapp--tag_name }}
     steps:
-      - uses: google-github-actions/release-please-action@v4
+      - uses: googleapis/release-please-action@v4
         id: release        
         
   das-client-ios-release:
