@@ -7,7 +7,7 @@ class NetworkSpecificParameter extends SferaXmlElement {
 
   String get name => attributes['name']!;
 
-  String get value => attributes['value']!;
+  String get nspValue => attributes['value']!;
 
   @override
   bool validate() {

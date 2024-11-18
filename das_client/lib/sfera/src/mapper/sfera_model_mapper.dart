@@ -1,4 +1,3 @@
-import 'package:das_client/main_dev.dart';
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/bracket_station.dart';
 import 'package:das_client/model/journey/datatype.dart';
@@ -41,9 +40,9 @@ class SferaModelMapper {
       final segmentProfileList = segmentProfilesLists[segmentIndex];
       final segmentProfile = segmentProfiles
           .where((it) =>
-      it.id == segmentProfileList.spId &&
-          it.versionMajor == segmentProfileList.versionMajor &&
-          it.versionMinor == segmentProfileList.versionMinor)
+              it.id == segmentProfileList.spId &&
+              it.versionMajor == segmentProfileList.versionMajor &&
+              it.versionMinor == segmentProfileList.versionMinor)
           .first;
 
       final kilometreMap = _parseKilometre(segmentProfile);
@@ -51,13 +50,11 @@ class SferaModelMapper {
 
       for (final tpConstraint in segmentProfileList.timingPointsContraints) {
         final tpId = tpConstraint.timingPointReference.tpIdReference.tpId;
-        final timingPoint = timingPoints
-            .where((it) => it.id == tpId)
-            .first;
+        final timingPoint = timingPoints.where((it) => it.id == tpId).first;
         final tafTapLocation = tafTapLocations
             .where((it) =>
-        it.locationIdent.countryCodeISO == timingPoint.locationReference?.countryCodeISO &&
-            it.locationIdent.locationPrimaryCode == timingPoint.locationReference?.locationPrimaryCode)
+                it.locationIdent.countryCodeISO == timingPoint.locationReference?.countryCodeISO &&
+                it.locationIdent.locationPrimaryCode == timingPoint.locationReference?.locationPrimaryCode)
             .first;
 
         journeyData.add(ServicePoint(
@@ -86,18 +83,9 @@ class SferaModelMapper {
 
   static LocalizedString _localizedStringFromMultilingualText(Iterable<MultilingualText> multilingualText) {
     return LocalizedString(
-      de: multilingualText
-          .where((it) => it.language == 'de')
-          .firstOrNull
-          ?.messageString,
-      fr: multilingualText
-          .where((it) => it.language == 'fr')
-          .firstOrNull
-          ?.messageString,
-      it: multilingualText
-          .where((it) => it.language == 'it')
-          .firstOrNull
-          ?.messageString,
+      de: multilingualText.where((it) => it.language == 'de').firstOrNull?.messageString,
+      fr: multilingualText.where((it) => it.language == 'fr').firstOrNull?.messageString,
+      it: multilingualText.where((it) => it.language == 'it').firstOrNull?.messageString,
     );
   }
 
@@ -123,16 +111,17 @@ class SferaModelMapper {
         if (mainStationNsp == null) {
           Fimber.w('Encountered bracket station without main station NSP declaration: $tafTapLocation');
         } else {
-          final countryCode = mainStationNsp.value.substring(0, 2);
-          final primaryCode = int.parse(mainStationNsp.value.substring(2, 6));
+          final countryCode = mainStationNsp.nspValue.substring(0, 2);
+          final primaryCode = int.parse(mainStationNsp.nspValue.substring(2, 6));
           final mainStation = allLocations
               .where((it) =>
-          it.locationIdent.countryCodeISO == countryCode && it.locationIdent.locationPrimaryCode == primaryCode)
+                  it.locationIdent.countryCodeISO == countryCode && it.locationIdent.locationPrimaryCode == primaryCode)
               .firstOrNull;
           if (mainStation == null) {
             Fimber.w('Failed to resolve main station for bracket station: $tafTapLocation');
           } else {
-            return BracketStation(mainStationAbbreviation: mainStation != tafTapLocation ? mainStation.abbreviation : null);
+            return BracketStation(
+                mainStationAbbreviation: mainStation != tafTapLocation ? mainStation.abbreviation : null);
           }
         }
       }
