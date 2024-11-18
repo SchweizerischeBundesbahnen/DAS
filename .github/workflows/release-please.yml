@@ -2,7 +2,7 @@
 on:
   push:
     branches:
-      - db-service-points
+      - main
 
 permissions:
   contents: write
