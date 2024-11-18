@@ -1,3 +1,5 @@
+import 'package:das_client/sfera/src/model/enums/taf_tap_location_type.dart';
+import 'package:das_client/sfera/src/model/enums/xml_enum.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location_ident.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location_name.dart';
@@ -10,6 +12,9 @@ class TafTapLocation extends SferaXmlElement {
   TafTapLocationIdent get locationIdent => children.whereType<TafTapLocationIdent>().first;
 
   Iterable<TafTapLocationName> get locationNames => children.whereType<TafTapLocationName>();
+
+  TafTapLocationType? get locationType =>
+      XmlEnum.valueOf<TafTapLocationType>(TafTapLocationType.values, attributes['TAF_TAP_location_type']);
 
   @override
   bool validate() {

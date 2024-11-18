@@ -7,6 +7,7 @@ class ServicePoint extends BaseData {
       {required this.name,
       required this.mandatoryStop,
       required this.isStop,
+      required this.isHalt,
       required super.order,
       required super.kilometre})
       : super(type: Datatype.servicePoint);
@@ -14,4 +15,5 @@ class ServicePoint extends BaseData {
   final LocalizedString name;
   final bool mandatoryStop;
   final bool isStop;
+  final bool isHalt;
 }

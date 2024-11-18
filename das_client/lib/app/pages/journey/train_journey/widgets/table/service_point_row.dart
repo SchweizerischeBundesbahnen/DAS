@@ -11,16 +11,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 // TODO: Extract real values from SFERA objects.
 class ServicePointRow extends BaseRowBuilder {
   ServicePointRow({
-    super.height = 64.0,
+    super.height = 66.0,
     super.defaultAlignment = _defaultAlignment,
-    super.isCurrentPosition,
     this.isRouteStart = false,
     this.isRouteEnd = false,
     required this.metadata,
     required this.servicePoint,
   }) : super(
             rowColor: metadata.nextStop == servicePoint ? SBBColors.royal.withOpacity(0.2) : Colors.transparent,
-            kilometre: servicePoint.kilometre);
+            kilometre: servicePoint.kilometre,
+            isCurrentPosition: metadata.currentPosition == servicePoint);
 
   final Metadata metadata;
   final ServicePoint servicePoint;
@@ -33,12 +33,15 @@ class ServicePointRow extends BaseRowBuilder {
   @override
   DASTableCell informationCell() {
     final servicePointName = servicePoint.name.localized;
+    final textStyle = servicePoint.isHalt
+        ? SBBTextStyles.largeLight.copyWith(fontSize: 24.0, fontStyle: FontStyle.italic)
+        : SBBTextStyles.largeBold.copyWith(fontSize: 24.0);
     return DASTableCell(
       alignment: _defaultAlignment,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Text(servicePointName, style: SBBTextStyles.largeBold.copyWith(fontSize: 24.0)),
+          Text(servicePointName, style: textStyle),
           Spacer(),
           Text('B12'),
         ],

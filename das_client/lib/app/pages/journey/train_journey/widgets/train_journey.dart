@@ -48,7 +48,6 @@ class TrainJourney extends StatelessWidget {
                   servicePoint: rowData as ServicePoint,
                   isRouteStart: index == 0,
                   isRouteEnd: index == journey.data.length - 1,
-                  isCurrentPosition: index == 2,
                 ).build(context);
             }
           })

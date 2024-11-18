@@ -44,12 +44,14 @@ abstract class BaseRowBuilder extends DASTableRowBuilder {
     }
 
     return DASTableCell(child: Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(kilometre![0].toStringAsFixed(1)),
         if (kilometre!.length > 1)
           Text(kilometre![1].toStringAsFixed(1))
       ],
-    ), alignment: defaultAlignment);
+    ), alignment: Alignment.centerLeft);
   }
 
   DASTableCell timeCell() {

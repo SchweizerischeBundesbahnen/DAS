@@ -4,6 +4,8 @@ import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/localized_string.dart';
+import 'package:das_client/sfera/src/model/enums/stop_skip_pass.dart';
+import 'package:das_client/sfera/src/model/enums/taf_tap_location_type.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/multilingual_text.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
@@ -53,8 +55,8 @@ class SferaModelMapper {
             name: _localizedStringFromMultilingualText(tafTapLocation.locationNames),
             order: _calculateOrder(segmentIndex, timingPoint.location),
             mandatoryStop: tpConstraint.stoppingPointInformation?.stopType?.mandatoryStop ?? true,
-            isStop: true,
-            // TODO: check how to identify stopping points correctly
+            isStop: tpConstraint.stopSkipPass == StopSkipPass.stoppingPoint,
+            isHalt: tafTapLocation.locationType == TafTapLocationType.stoppingLocation,
             kilometre: kilometreMap[timingPoint.location] ?? []));
       }
     }
@@ -64,7 +66,9 @@ class SferaModelMapper {
     final servicePoints = journeyData.where((it) => it.type == Datatype.servicePoint).toList();
 
     return Journey(
-        metadata: Metadata(nextStop: servicePoints.length > 1 ? servicePoints[1] as ServicePoint : null),
+        metadata: Metadata(
+            nextStop: servicePoints.length > 1 ? servicePoints[1] as ServicePoint : null,
+            currentPosition: journeyData.first),
         data: journeyData);
   }
 
