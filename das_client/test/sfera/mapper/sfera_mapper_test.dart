@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/sfera/sfera_component.dart';
@@ -44,13 +45,15 @@ void main() {
   test('Test service point names are resolved correctly', () async {
     final journey = getJourney('9999', 5);
 
+    final servicePoints = journey.data.where((it) => it.type == Datatype.servicePoint).cast<ServicePoint>().toList();
+
     expect(journey.valid, true);
-    expect(journey.data, hasLength(5));
-    expect((journey.data[0] as ServicePoint).name.de, 'Bahnhof A');
-    expect((journey.data[1] as ServicePoint).name.de, 'Haltestelle B');
-    expect((journey.data[2] as ServicePoint).name.de, 'Halt auf Verlangen C');
-    expect((journey.data[3] as ServicePoint).name.de, 'Klammerbahnhof D');
-    expect((journey.data[4] as ServicePoint).name.de, 'Klammerbahnhof D1');
+    expect(servicePoints, hasLength(5));
+    expect(servicePoints[0].name.de, 'Bahnhof A');
+    expect(servicePoints[1].name.de, 'Haltestelle B');
+    expect(servicePoints[2].name.de, 'Halt auf Verlangen C');
+    expect(servicePoints[3].name.de, 'Klammerbahnhof D');
+    expect(servicePoints[4].name.de, 'Klammerbahnhof D1');
   });
 
   test('Test kilometre are parsed correctly', () async {
@@ -63,7 +66,7 @@ void main() {
     expect(journey.data[2].kilometre[0], 2.4);
     expect(journey.data[3].kilometre[0], 3.7);
     expect(journey.data[3].kilometre[1], 0);
-    expect(journey.data[4].kilometre[0], 4.3);
+    expect(journey.data[4].kilometre[0], 0.6);
   });
 
   test('Test order is generated correctly', () async {
@@ -80,13 +83,27 @@ void main() {
 
   test('Test stop on demand is parsed correctly', () async {
     final journey = getJourney('9999', 5);
+    final servicePoints = journey.data.where((it) => it.type == Datatype.servicePoint).cast<ServicePoint>().toList();
 
     expect(journey.valid, true);
-    expect(journey.data, hasLength(5));
-    expect((journey.data[0] as ServicePoint).mandatoryStop, true);
-    expect((journey.data[1] as ServicePoint).mandatoryStop, true);
-    expect((journey.data[2] as ServicePoint).mandatoryStop, false);
-    expect((journey.data[3] as ServicePoint).mandatoryStop, true);
-    expect((journey.data[4] as ServicePoint).mandatoryStop, true);
+    expect(servicePoints, hasLength(5));
+    expect(servicePoints[0].mandatoryStop, true);
+    expect(servicePoints[1].mandatoryStop, true);
+    expect(servicePoints[2].mandatoryStop, false);
+    expect(servicePoints[3].mandatoryStop, true);
+    expect(servicePoints[4].mandatoryStop, true);
+  });
+
+  test('Test passing point is parsed correctly', () async {
+    final journey = getJourney('9999', 5);
+    final servicePoints = journey.data.where((it) => it.type == Datatype.servicePoint).cast<ServicePoint>().toList();
+
+    expect(journey.valid, true);
+    expect(servicePoints, hasLength(5));
+    expect(servicePoints[0].isStop, true);
+    expect(servicePoints[1].isStop, false);
+    expect(servicePoints[2].isStop, true);
+    expect(servicePoints[3].isStop, true);
+    expect(servicePoints[4].isStop, true);
   });
 }
