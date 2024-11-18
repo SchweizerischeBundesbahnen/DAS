@@ -13,12 +13,12 @@
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
-        <TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Zürich_HB"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Hardbrücke"/>
             </TimingPointReference>
@@ -28,72 +28,72 @@
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
-    <TimingPointConstraints>
-            <TimingPointReference>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
+            <TimingPointReference >
                 <TP_ID_Reference TP_ID="Altstetten"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Schlieren"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Glanzenberg"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Dietikon"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Killwangen-S"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Mellingen_Heitersberg"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Mellingen"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Mägenwil"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Othmarsingen"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Gexi"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Lenzburg"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Rupperswil"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Aarau_GB"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="End_of_Journey">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Aarau"/>
             </TimingPointReference>
