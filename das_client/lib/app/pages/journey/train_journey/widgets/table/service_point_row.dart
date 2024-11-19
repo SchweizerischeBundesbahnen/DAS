@@ -11,6 +11,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 // TODO: Extract real values from SFERA objects.
 class ServicePointRow extends BaseRowBuilder {
+  static const Key stopOnRequestKey = Key('stop_on_request_key');
+
   ServicePointRow({
     super.height = 66.0,
     super.defaultAlignment = _defaultAlignment,
@@ -63,7 +65,12 @@ class ServicePointRow extends BaseRowBuilder {
               height: height!,
             ),
           if (!servicePoint.mandatoryStop)
-            Align(alignment: Alignment.bottomLeft, child: SvgPicture.asset(AppAssets.iconStopOnRequest))
+            Align(
+                alignment: Alignment.bottomLeft,
+                child: SvgPicture.asset(
+                  AppAssets.iconStopOnRequest,
+                  key: stopOnRequestKey,
+                ))
         ],
       ),
     );

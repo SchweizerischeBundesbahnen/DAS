@@ -3,6 +3,7 @@ import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 
 class BracketStationBody extends StatelessWidget {
+  static const Key bracketStationKey = Key('bracketStationKey');
   static const double _bracketStationWidth = 16.0;
   static const double _bracketStationFontSize = 12.0;
 
@@ -22,6 +23,7 @@ class BracketStationBody extends StatelessWidget {
       bottom: -sbbDefaultSpacing,
       right: 0,
       child: Container(
+        key: bracketStationKey,
         height: height,
         width: _bracketStationWidth,
         color: SBBColors.black,

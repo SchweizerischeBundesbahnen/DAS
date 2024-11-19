@@ -3,6 +3,11 @@ import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 
 class RouteCellBody extends StatelessWidget {
+  static const Key stopKey = Key('stopRouteCell');
+  static const Key stopOnRequestKey = Key('stopOnRequestRouteCell');
+  static const Key routeStartKey = Key('startRouteCell');
+  static const Key routeEndKey = Key('endRouteCell');
+
   const RouteCellBody({
     super.key,
     this.chevronHeight = 8.0,
@@ -49,6 +54,7 @@ class RouteCellBody extends StatelessWidget {
     final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
     final lineColor = isDarkTheme ? SBBColors.white : SBBColors.black;
     return Positioned(
+      key: isRouteStart ? routeStartKey : isRouteEnd ? routeEndKey : null,
       top: isRouteStart ? height - sbbDefaultSpacing : -sbbDefaultSpacing,
       bottom: isRouteEnd ? sbbDefaultSpacing : -sbbDefaultSpacing,
       right: 0,
@@ -95,6 +101,7 @@ class _RouteCircle extends StatelessWidget {
     final tableThemeData = DASTableTheme.of(context)?.data;
     final tableBackgroundColor = tableThemeData?.backgroundColor ?? SBBColors.white;
     return Container(
+      key: isStopOnRequest ? RouteCellBody.stopOnRequestKey : RouteCellBody.stopKey,
       width: size,
       height: size,
       decoration: isStopOnRequest ? _stopOnRequestDecoration(backgroundColor: tableBackgroundColor) : _stopDecoration(),

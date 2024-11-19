@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 /// The [columns] parameter must not be empty, and all rows must have the same number of cells as columns.
 @immutable
 class DASTable extends StatelessWidget {
+  static const Key rowKey = Key('DAS-Table-row');
+
   DASTable({
     super.key,
     required this.columns,
@@ -180,7 +182,7 @@ class _FlexibleHeightRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final row = Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: children);
+    final row = Row(key: DASTable.rowKey, crossAxisAlignment: CrossAxisAlignment.stretch, children: children);
     if (fixedHeight != null) {
       return SizedBox(height: fixedHeight, child: row);
     }
