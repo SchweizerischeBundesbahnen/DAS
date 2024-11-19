@@ -55,7 +55,7 @@ class ServicePointRow extends BaseRowBuilder {
   @override
   DASTableCell iconsCell1() {
     return DASTableCell(
-      padding: EdgeInsets.fromLTRB(sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5, 0, sbbDefaultSpacing * 0.5),
+      padding: EdgeInsets.fromLTRB(0, sbbDefaultSpacing * 0.5, 0, sbbDefaultSpacing * 0.5),
       child: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -66,7 +66,7 @@ class ServicePointRow extends BaseRowBuilder {
             ),
           if (!servicePoint.mandatoryStop)
             Align(
-                alignment: Alignment.bottomLeft,
+                alignment: Alignment.bottomCenter,
                 child: SvgPicture.asset(
                   AppAssets.iconStopOnRequest,
                   key: stopOnRequestKey,
