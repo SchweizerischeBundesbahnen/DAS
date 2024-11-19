@@ -8,7 +8,7 @@ class ServicePoint extends BaseData {
       {required this.name,
       required this.mandatoryStop,
       required this.isStop,
-      required this.isHalt,
+      required this.isStation,
       this.bracketStation,
       required super.order,
       required super.kilometre})
@@ -17,6 +17,6 @@ class ServicePoint extends BaseData {
   final LocalizedString name;
   final bool mandatoryStop;
   final bool isStop;
-  final bool isHalt;
+  final bool isStation;
   final BracketStation? bracketStation;
 }

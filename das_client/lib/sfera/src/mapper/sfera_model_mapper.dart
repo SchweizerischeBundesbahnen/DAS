@@ -62,7 +62,7 @@ class SferaModelMapper {
             order: _calculateOrder(segmentIndex, timingPoint.location),
             mandatoryStop: tpConstraint.stoppingPointInformation?.stopType?.mandatoryStop ?? true,
             isStop: tpConstraint.stopSkipPass == StopSkipPass.stoppingPoint,
-            isHalt: tafTapLocation.locationType == TafTapLocationType.stoppingLocation,
+            isStation: tafTapLocation.locationType != TafTapLocationType.stoppingLocation,
             bracketStation: _parseBracketStation(tafTapLocations, tafTapLocation),
             kilometre: kilometreMap[timingPoint.location] ?? []));
       }

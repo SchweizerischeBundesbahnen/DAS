@@ -36,9 +36,9 @@ class ServicePointRow extends BaseRowBuilder {
   @override
   DASTableCell informationCell() {
     final servicePointName = servicePoint.name.localized;
-    final textStyle = servicePoint.isHalt
-        ? SBBTextStyles.largeLight.copyWith(fontSize: 24.0, fontStyle: FontStyle.italic)
-        : SBBTextStyles.largeBold.copyWith(fontSize: 24.0);
+    final textStyle = servicePoint.isStation
+        ? SBBTextStyles.largeBold.copyWith(fontSize: 24.0)
+        : SBBTextStyles.largeLight.copyWith(fontSize: 24.0, fontStyle: FontStyle.italic);
     return DASTableCell(
       alignment: _defaultAlignment,
       child: Row(
