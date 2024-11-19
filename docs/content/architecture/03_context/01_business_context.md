@@ -1,10 +1,8 @@
 ---
 title: 3.1 Business Context
-draft: true
 cascade:
   type: docs
 ---
-DRAFT
 
 ![business_context.drawio.svg](business_context.drawio.svg)
 

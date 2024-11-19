@@ -6,3 +6,5 @@ cascade:
 next: /architecture/10_quality_requirements
 prev: /architecture/08_concepts
 ---
+
+{{< adr-overview "adr" "https://github.com/SchweizerischeBundesbahnen/DAS/issues/" >}}
