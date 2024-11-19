@@ -24,7 +24,7 @@ class DASTableCell {
   final Widget child;
   final VoidCallback? onTap;
   final Color? color;
-  final EdgeInsetsGeometry? padding;
+  final EdgeInsets? padding;
   final Clip clipBehaviour;
 
   /// If provided, wraps child in Align widget. Can also be defined in [DASTableColumn]

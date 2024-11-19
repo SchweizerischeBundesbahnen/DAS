@@ -14,7 +14,7 @@ class ServicePointRow extends BaseRowBuilder {
   static const Key stopOnRequestKey = Key('stop_on_request_key');
 
   ServicePointRow({
-    super.height = 66.0,
+    super.height = 64.0,
     super.defaultAlignment = _defaultAlignment,
     this.isRouteStart = false,
     this.isRouteEnd = false,

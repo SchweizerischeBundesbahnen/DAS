@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:collection/collection.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:das_client/app/widgets/table/das_table_column.dart';
@@ -142,6 +144,8 @@ class DASTable extends StatelessWidget {
     return Builder(builder: (context) {
       final tableThemeData = DASTableTheme.of(context)?.data;
       final effectiveAlignment = cell.alignment ?? column.alignment;
+      final BoxBorder? cellBorder =
+          cell.border ?? column.border ?? tableThemeData?.tableBorder?.toBoxBorder(isLastCell: isLast);
       return _TableCellWrapper(
         expanded: column.expanded,
         width: column.width,
@@ -149,10 +153,11 @@ class DASTable extends StatelessWidget {
           onTap: cell.onTap,
           child: Container(
             decoration: BoxDecoration(
-              border: cell.border ?? column.border ?? tableThemeData?.tableBorder?.toBoxBorder(isLastCell: isLast),
+              border: cellBorder,
               color: cell.color ?? row.color ?? column.color ?? tableThemeData?.dataRowColor,
             ),
-            padding: cell.padding ?? column.padding ?? EdgeInsets.all(sbbDefaultSpacing * 0.5),
+            padding: _adjustPaddingToBorder(
+                cell.padding ?? column.padding ?? EdgeInsets.all(sbbDefaultSpacing * 0.5), cellBorder),
             clipBehavior: cell.clipBehaviour,
             child: DefaultTextStyle(
               style: DefaultTextStyle.of(context).style.merge(tableThemeData?.dataTextStyle),
@@ -162,6 +167,18 @@ class DASTable extends StatelessWidget {
         ),
       );
     });
+  }
+
+  EdgeInsets? _adjustPaddingToBorder(EdgeInsets? padding, BoxBorder? border) {
+    if (padding == null || border == null) {
+      return padding;
+    }
+
+    final borderSideStart = border is BorderDirectional ? border.start : (border as Border).left;
+    final borderSideEnd = border is BorderDirectional ? border.end : (border as Border).right;
+
+    return EdgeInsets.fromLTRB(max(padding.left - borderSideStart.width, 0), max(padding.top - border.top.width, 0),
+        max(padding.right - borderSideEnd.width, 0), max(padding.bottom - border.bottom.width, 0));
   }
 }
 
