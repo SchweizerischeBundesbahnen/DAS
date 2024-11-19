@@ -49,7 +49,7 @@ void main() {
       await tester.dragUntilVisible(find.text('Aarau'), find.byType(ListView), const Offset(0, -300));
     });
 
-    testWidgets('test fahrbild stays loaded after navigation', (tester) async {
+    testWidgets('test if train journey stays loaded after navigation', (tester) async {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
@@ -86,7 +86,7 @@ void main() {
       expect(find.descendant(of: hardbruckeRow, matching: find.text('23.5')), findsOneWidget);
     });
 
-    testWidgets('test bracket stations is displayed correcly', (tester) async {
+    testWidgets('test bracket stations is displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
@@ -110,7 +110,7 @@ void main() {
       expect(find.descendant(of: bracketStationD1Widget, matching: find.text('D')), findsOneWidget);
     });
 
-    testWidgets('test halt on request is displayed correcly', (tester) async {
+    testWidgets('test halt on request is displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
@@ -130,22 +130,22 @@ void main() {
       expect(stopRoute, findsNothing);
     });
 
-    testWidgets('test route is displayed correcly', (tester) async {
+    testWidgets('test route is displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
       await _loadTrainJourney(tester, trainNumber: '9999');
 
       final stopRouteRow = findDASTableRowByText('Bahnhof A');
-      final durchfahrtRoutRow = findDASTableRowByText('Haltestelle B');
+      final nonStoppingPassRouteRow = findDASTableRowByText('Haltestelle B');
       expect(stopRouteRow, findsOneWidget);
-      expect(durchfahrtRoutRow, findsOneWidget);
+      expect(nonStoppingPassRouteRow, findsOneWidget);
 
       // check stop circles
       final stopRoute = find.descendant(of: stopRouteRow, matching: find.byKey(RouteCellBody.stopKey));
-      final durchFahrtRoute = find.descendant(of: durchfahrtRoutRow, matching: find.byKey(RouteCellBody.stopKey));
+      final nonStoppingPassRoute = find.descendant(of: nonStoppingPassRouteRow, matching: find.byKey(RouteCellBody.stopKey));
       expect(stopRoute, findsOneWidget);
-      expect(durchFahrtRoute, findsNothing);
+      expect(nonStoppingPassRoute, findsNothing);
 
       // check route start
       final startStationRow = findDASTableRowByText('Bahnhof A');
