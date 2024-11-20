@@ -1,6 +1,8 @@
 import 'package:das_client/sfera/src/model/enums/sp_status.dart';
 import 'package:das_client/sfera/src/model/enums/xml_enum.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
+import 'package:das_client/sfera/src/model/sp_areas.dart';
+import 'package:das_client/sfera/src/model/sp_context_information.dart';
 import 'package:das_client/sfera/src/model/sp_points.dart';
 import 'package:das_client/sfera/src/model/sp_zone.dart';
 
@@ -21,7 +23,11 @@ class SegmentProfile extends SferaXmlElement {
 
   SpZone? get zone => children.whereType<SpZone>().firstOrNull;
 
-  SpPoints? get points => children.whereType<SpPoints>().firstOrNull;
+  Iterable<SpPoints> get points => children.whereType<SpPoints>();
+
+  Iterable<SpContextInformation> get contextInformation => children.whereType<SpContextInformation>();
+
+  Iterable<SpAreas> get areas => children.whereType<SpAreas>();
 
   @override
   bool validate() {

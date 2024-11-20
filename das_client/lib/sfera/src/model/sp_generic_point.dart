@@ -1,0 +1,12 @@
+import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
+
+abstract class SpGenericPoint extends SferaXmlElement {
+  SpGenericPoint({required super.type, super.attributes, super.children, super.value});
+
+  double get location => double.parse(attributes['location']!);
+
+  @override
+  bool validate() {
+    return validateHasAttributeDouble('location') && super.validate();
+  }
+}

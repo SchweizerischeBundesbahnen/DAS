@@ -15,7 +15,7 @@ class SegmentProfileList extends SferaXmlElement {
 
   SpZone get spZone => children.whereType<SpZone>().first;
 
-  Iterable<TimingPointConstraints> get timingPoints => children.whereType<TimingPointConstraints>();
+  Iterable<TimingPointConstraints> get timingPointsContraints => children.whereType<TimingPointConstraints>();
 
   @override
   bool validate() {

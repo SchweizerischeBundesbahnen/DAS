@@ -3,7 +3,12 @@ import 'package:das_client/sfera/src/model/g2b_reply_payload.dart';
 import 'package:das_client/sfera/src/model/handshake_acknowledgement.dart';
 import 'package:das_client/sfera/src/model/handshake_reject.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
+import 'package:das_client/sfera/src/model/kilometre_reference_point.dart';
+import 'package:das_client/sfera/src/model/km_reference.dart';
+import 'package:das_client/sfera/src/model/location_ident.dart';
 import 'package:das_client/sfera/src/model/message_header.dart';
+import 'package:das_client/sfera/src/model/multilingual_text.dart';
+import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
 import 'package:das_client/sfera/src/model/otn_id.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
 import 'package:das_client/sfera/src/model/segment_profile_list.dart';
@@ -11,9 +16,17 @@ import 'package:das_client/sfera/src/model/sfera_g2b_reply_message.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 import 'package:das_client/sfera/src/model/signal.dart';
 import 'package:das_client/sfera/src/model/signal_id.dart';
+import 'package:das_client/sfera/src/model/sp_areas.dart';
+import 'package:das_client/sfera/src/model/sp_context_information.dart';
 import 'package:das_client/sfera/src/model/sp_points.dart';
 import 'package:das_client/sfera/src/model/sp_zone.dart';
+import 'package:das_client/sfera/src/model/stop_type.dart';
 import 'package:das_client/sfera/src/model/stopping_point_information.dart';
+import 'package:das_client/sfera/src/model/taf_tap_location.dart';
+import 'package:das_client/sfera/src/model/taf_tap_location_ident.dart';
+import 'package:das_client/sfera/src/model/taf_tap_location_name.dart';
+import 'package:das_client/sfera/src/model/taf_tap_location_nsp.dart';
+import 'package:das_client/sfera/src/model/taf_tap_location_reference.dart';
 import 'package:das_client/sfera/src/model/timing_point.dart';
 import 'package:das_client/sfera/src/model/timing_point_constraints.dart';
 import 'package:das_client/sfera/src/model/timing_point_reference.dart';
@@ -101,6 +114,32 @@ class SferaReplyParser {
         return HandshakeReject(type: type, attributes: attributes, children: children, value: value);
       case DasOperatingModesSelected.elementType:
         return DasOperatingModesSelected(type: type, attributes: attributes, children: children, value: value);
+      case SpContextInformation.elementType:
+        return SpContextInformation(type: type, attributes: attributes, children: children, value: value);
+      case KilometreReferencePoint.elementType:
+        return KilometreReferencePoint(type: type, attributes: attributes, children: children, value: value);
+      case KmReference.elementType:
+        return KmReference(type: type, attributes: attributes, children: children, value: value);
+      case SpAreas.elementType:
+        return SpAreas(type: type, attributes: attributes, children: children, value: value);
+      case TafTapLocation.elementType:
+        return TafTapLocation(type: type, attributes: attributes, children: children, value: value);
+      case LocationIdent.elementType:
+        return LocationIdent(type: type, attributes: attributes, children: children, value: value);
+      case TafTapLocationIdent.elementType:
+        return TafTapLocationIdent(type: type, attributes: attributes, children: children, value: value);
+      case MultilingualText.elementType:
+        return MultilingualText(type: type, attributes: attributes, children: children, value: value);
+      case TafTapLocationName.elementType:
+        return TafTapLocationName(type: type, attributes: attributes, children: children, value: value);
+      case TafTapLocationReference.elementType:
+        return TafTapLocationReference(type: type, attributes: attributes, children: children, value: value);
+      case StopType.elementType:
+        return StopType(type: type, attributes: attributes, children: children, value: value);
+      case TafTapLocationNsp.elementType:
+        return TafTapLocationNsp(type: type, attributes: attributes, children: children, value: value);
+      case NetworkSpecificParameter.elementType:
+        return NetworkSpecificParameter(type: type, attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElement(type: type, attributes: attributes, children: children, value: value);
     }

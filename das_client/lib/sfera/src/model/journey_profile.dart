@@ -17,6 +17,6 @@ class JourneyProfile extends SferaXmlElement {
 
   @override
   bool validate() {
-    return validateHasChild('TrainIdentification') && super.validate();
+    return validateHasChildOfType<TrainIdentification>() && super.validate();
   }
 }

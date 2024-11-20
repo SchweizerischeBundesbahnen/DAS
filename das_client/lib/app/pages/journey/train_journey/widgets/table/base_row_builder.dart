@@ -10,13 +10,11 @@ abstract class BaseRowBuilder extends DASTableRowBuilder {
     this.defaultAlignment = Alignment.centerLeft,
     this.rowColor,
     this.isCurrentPosition = false,
-    this.isServicePointStop = false,
   });
 
-  final double? kilometre;
+  final List<double>? kilometre;
   final Alignment defaultAlignment;
   final Color? rowColor;
-  final bool isServicePointStop;
   final bool isCurrentPosition;
 
   @override
@@ -41,13 +39,20 @@ abstract class BaseRowBuilder extends DASTableRowBuilder {
   }
 
   DASTableCell kilometreCell() {
-    if (kilometre == null) {
+    if (kilometre == null || kilometre!.isEmpty) {
       return DASTableCell.empty();
     }
 
-    var kilometreAsString = kilometre!.toStringAsFixed(3);
-    kilometreAsString = kilometreAsString.replaceAll(RegExp(r'0*$'), '');
-    return DASTableCell(child: Text(kilometreAsString), alignment: defaultAlignment);
+    return DASTableCell(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(kilometre![0].toStringAsFixed(1)),
+            if (kilometre!.length > 1) Text(kilometre![1].toStringAsFixed(1))
+          ],
+        ),
+        alignment: Alignment.centerLeft);
   }
 
   DASTableCell timeCell() {
@@ -58,10 +63,7 @@ abstract class BaseRowBuilder extends DASTableRowBuilder {
     return DASTableCell(
       padding: EdgeInsets.all(0.0),
       alignment: null,
-      child: RouteCellBody(
-        showCircle: isServicePointStop,
-        showChevron: isCurrentPosition,
-      ),
+      child: RouteCellBody(isCurrentPosition: isCurrentPosition),
     );
   }
 

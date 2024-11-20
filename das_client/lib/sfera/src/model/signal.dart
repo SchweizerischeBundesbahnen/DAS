@@ -10,6 +10,6 @@ class Signal extends SferaXmlElement {
 
   @override
   bool validate() {
-    return validateHasChild('Signal_ID') && super.validate();
+    return validateHasChildOfType<SignalId>() && super.validate();
   }
 }
