@@ -31,7 +31,7 @@
     "@angular/platform-browser": "^18.2.7",
     "@angular/platform-browser-dynamic": "^18.2.7",
     "@angular/router": "^18.2.7",
-    "@sbb-esta/angular": "^18.2.0",
+    "@sbb-esta/angular": "^19.0.0",
     "angular-auth-oidc-client": "18.0.2",
     "angular-server-side-configuration": "^18.1.0",
     "ngx-mqtt": "^17.0.0",
