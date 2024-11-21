@@ -121,20 +121,28 @@ class SferaModelMapper {
           segmentProfile.points?.networkSpecificPoints.where((it) => it.name == _protectionSectionNspName) ?? [];
 
       for (final currentLimitationChange in currentLimitation.currentLimitationChanges) {
-        final protectionSectionNsp =
-            protectionSectionNsps.where((it) => it.location == currentLimitationChange.location).firstOrNull;
+        if (currentLimitationChange.maxCurValue == '0') {
+          final protectionSectionNsp =
+              protectionSectionNsps
+                  .where((it) => it.location == currentLimitationChange.location)
+                  .firstOrNull;
 
-        final isOptional =
-            protectionSectionNsp?.parameters.where((it) => it.name == _protectionSectionNspFacultativeName).firstOrNull;
+          final isOptional =
+              protectionSectionNsp?.parameters
+                  .where((it) => it.name == _protectionSectionNspFacultativeName)
+                  .firstOrNull;
 
-        final isLong =
-            protectionSectionNsp?.parameters.where((it) => it.name == _protectionSectionNspLengthTypeName).firstOrNull;
+          final isLong =
+              protectionSectionNsp?.parameters
+                  .where((it) => it.name == _protectionSectionNspLengthTypeName)
+                  .firstOrNull;
 
-        journeyData.add(ProtectionSection(
-            isOptional: isOptional != null ? bool.parse(isOptional.nspValue) : false,
-            isLong: isLong != null ? XmlEnum.valueOf(LengthType.values, isLong.nspValue) == LengthType.long : false,
-            order: _calculateOrder(segmentIndex, currentLimitationChange.location),
-            kilometre: kilometreMap[currentLimitationChange.location]!));
+          journeyData.add(ProtectionSection(
+              isOptional: isOptional != null ? bool.parse(isOptional.nspValue) : false,
+              isLong: isLong != null ? XmlEnum.valueOf(LengthType.values, isLong.nspValue) == LengthType.long : false,
+              order: _calculateOrder(segmentIndex, currentLimitationChange.location),
+              kilometre: kilometreMap[currentLimitationChange.location]!));
+        }
       }
     }
   }
