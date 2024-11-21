@@ -15,7 +15,6 @@ class ServicePointRow extends BaseRowBuilder {
 
   ServicePointRow({
     super.height = 64.0,
-    super.defaultAlignment = _defaultAlignment,
     this.isRouteStart = false,
     this.isRouteEnd = false,
     required this.metadata,
@@ -28,19 +27,18 @@ class ServicePointRow extends BaseRowBuilder {
   final Metadata metadata;
   final ServicePoint servicePoint;
 
-  static const Alignment _defaultAlignment = Alignment.bottomCenter;
 
   final bool isRouteStart;
   final bool isRouteEnd;
 
   @override
-  DASTableCell informationCell() {
+  DASTableCell informationCell(BuildContext context) {
     final servicePointName = servicePoint.name.localized;
     final textStyle = servicePoint.isStation
         ? SBBTextStyles.largeBold.copyWith(fontSize: 24.0)
         : SBBTextStyles.largeLight.copyWith(fontSize: 24.0, fontStyle: FontStyle.italic);
     return DASTableCell(
-      alignment: _defaultAlignment,
+      alignment: defaultAlignment,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
@@ -53,7 +51,7 @@ class ServicePointRow extends BaseRowBuilder {
   }
 
   @override
-  DASTableCell iconsCell1() {
+  DASTableCell iconsCell1(BuildContext context) {
     return DASTableCell(
       padding: EdgeInsets.fromLTRB(0, sbbDefaultSpacing * 0.5, 0, sbbDefaultSpacing * 0.5),
       child: Stack(
@@ -77,7 +75,7 @@ class ServicePointRow extends BaseRowBuilder {
   }
 
   @override
-  DASTableCell routeCell() {
+  DASTableCell routeCell(BuildContext context) {
     return DASTableCell(
       padding: EdgeInsets.all(0.0),
       alignment: null,

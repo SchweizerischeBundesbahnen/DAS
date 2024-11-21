@@ -1,3 +1,4 @@
+import 'package:das_client/sfera/src/model/network_specific_point.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 import 'package:das_client/sfera/src/model/signal.dart';
 import 'package:das_client/sfera/src/model/timing_point.dart';
@@ -13,4 +14,6 @@ class SpPoints extends SferaXmlElement {
   Iterable<Signal> get signals => children.whereType<Signal>();
 
   Iterable<VirtualBalise> get balise => children.whereType<VirtualBalise>();
+
+  Iterable<NetworkSpecificPoint> get networkSpecificPoints => children.whereType<NetworkSpecificPoint>();
 }

@@ -1,6 +1,6 @@
-import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
+import 'package:das_client/sfera/src/model/sp_generic_point.dart';
 
-class NetworkSpecificParameter extends SferaXmlElement {
+class NetworkSpecificParameter extends SpGenericPoint {
   static const String elementType = 'NetworkSpecificParameter';
 
   NetworkSpecificParameter({super.type = elementType, super.attributes, super.children, super.value});

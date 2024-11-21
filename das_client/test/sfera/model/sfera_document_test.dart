@@ -56,7 +56,7 @@ void main() {
     expect(payload.segmentProfiles.first.zone, isNotNull);
     expect(payload.segmentProfiles.first.zone!.imId, '0088');
 
-    final spPoint = payload.segmentProfiles.first.points.first;
+    final spPoint = payload.segmentProfiles.first.points!;
 
     expect(spPoint.timingPoints, hasLength(3));
     expect(spPoint.timingPoints.first.id, '1837');

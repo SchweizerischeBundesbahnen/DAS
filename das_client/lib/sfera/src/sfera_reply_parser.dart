@@ -1,3 +1,6 @@
+import 'package:das_client/sfera/src/model/current_limitation.dart';
+import 'package:das_client/sfera/src/model/current_limitation_change.dart';
+import 'package:das_client/sfera/src/model/current_limitation_start.dart';
 import 'package:das_client/sfera/src/model/das_operating_modes_selected.dart';
 import 'package:das_client/sfera/src/model/g2b_reply_payload.dart';
 import 'package:das_client/sfera/src/model/handshake_acknowledgement.dart';
@@ -9,6 +12,7 @@ import 'package:das_client/sfera/src/model/location_ident.dart';
 import 'package:das_client/sfera/src/model/message_header.dart';
 import 'package:das_client/sfera/src/model/multilingual_text.dart';
 import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
+import 'package:das_client/sfera/src/model/network_specific_point.dart';
 import 'package:das_client/sfera/src/model/otn_id.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
 import 'package:das_client/sfera/src/model/segment_profile_list.dart';
@@ -17,6 +21,7 @@ import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 import 'package:das_client/sfera/src/model/signal.dart';
 import 'package:das_client/sfera/src/model/signal_id.dart';
 import 'package:das_client/sfera/src/model/sp_areas.dart';
+import 'package:das_client/sfera/src/model/sp_characteristics.dart';
 import 'package:das_client/sfera/src/model/sp_context_information.dart';
 import 'package:das_client/sfera/src/model/sp_points.dart';
 import 'package:das_client/sfera/src/model/sp_zone.dart';
@@ -140,6 +145,16 @@ class SferaReplyParser {
         return TafTapLocationNsp(type: type, attributes: attributes, children: children, value: value);
       case NetworkSpecificParameter.elementType:
         return NetworkSpecificParameter(type: type, attributes: attributes, children: children, value: value);
+      case CurrentLimitation.elementType:
+        return CurrentLimitation(type: type, attributes: attributes, children: children, value: value);
+      case CurrentLimitationStart.elementType:
+        return CurrentLimitationStart(type: type, attributes: attributes, children: children, value: value);
+      case CurrentLimitationChange.elementType:
+        return CurrentLimitationChange(type: type, attributes: attributes, children: children, value: value);
+      case SpCharacteristics.elementType:
+        return SpCharacteristics(type: type, attributes: attributes, children: children, value: value);
+      case NetworkSpecificPoint.elementType:
+        return NetworkSpecificPoint(type: type, attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElement(type: type, attributes: attributes, children: children, value: value);
     }
