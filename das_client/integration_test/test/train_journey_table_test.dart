@@ -1,5 +1,6 @@
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/bracket_station_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/protection_section_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:das_client/app/pages/profile/profile_page.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
@@ -31,6 +32,70 @@ void main() {
       for (final header in expectedHeaders) {
         expect(find.text(header), findsOneWidget);
       }
+    });
+
+    testWidgets('test protection secions are displayed correctly', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: '513');
+
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
+
+      // check first train station
+      expect(find.text('Genève-Aéroport'), findsOneWidget);
+
+      // Scroll to first protection section
+      await tester.dragUntilVisible(find.text('Gilly-Bursinel'), scrollableFinder, const Offset(0, -20));
+
+      var protectionSectionRow = findDASTableRowByText('km 32.2');
+      expect(protectionSectionRow, findsOneWidget);
+      expect(find.descendant(of: protectionSectionRow, matching: find.text('FL')), findsOneWidget);
+      expect(find.descendant(of: protectionSectionRow, matching: find.text('32.2')), findsOneWidget);
+      // Verify icon is displayed
+      expect(find.descendant(of: protectionSectionRow, matching: find.byKey(ProtectionSectionRow.protectionSectionKey)), findsOneWidget);
+
+      // Scroll to next protection section
+      await tester.dragUntilVisible(find.text('Yverdon-les-Bains'), scrollableFinder, const Offset(0, -20));
+      await tester.pumpAndSettle();
+
+      protectionSectionRow = findDASTableRowByText('km 45.8');
+      expect(protectionSectionRow, findsOneWidget);
+      expect(find.descendant(of: protectionSectionRow, matching: find.text('L')), findsOneWidget);
+
+      // Scroll to next protection section
+      await tester.dragUntilVisible(find.text('Lengnau'), scrollableFinder, const Offset(0, -20));
+      await tester.pumpAndSettle();
+
+      protectionSectionRow = findDASTableRowByText('km 86.7');
+      expect(protectionSectionRow, findsOneWidget);
+      expect(find.descendant(of: protectionSectionRow, matching: find.text('FL')), findsOneWidget);
+
+      // Scroll to next protection section
+      await tester.dragUntilVisible(find.text('WANZ'), scrollableFinder, const Offset(0, -20));
+      await tester.pumpAndSettle();
+
+      protectionSectionRow = findDASTableRowByText('km 45.9');
+      expect(protectionSectionRow, findsOneWidget);
+      expect(find.descendant(of: protectionSectionRow, matching: find.text('FL')), findsOneWidget);
+
+      // Scroll to next protection section
+      await tester.dragUntilVisible(find.text('Mellingen Heitersberg'), scrollableFinder, const Offset(0, -20));
+      await tester.pumpAndSettle();
+
+      protectionSectionRow = findDASTableRowByText('km 21.5');
+      expect(protectionSectionRow, findsOneWidget);
+      expect(find.descendant(of: protectionSectionRow, matching: find.text('F')), findsOneWidget);
+
+      // Scroll to next protection section
+      await tester.dragUntilVisible(find.text('Flughafen'), scrollableFinder, const Offset(0, -20));
+      await tester.pumpAndSettle();
+
+      protectionSectionRow = findDASTableRowByText('km 6.6');
+      expect(find.descendant(of: protectionSectionRow, matching: find.text('FL')), findsNothing);
+      expect(find.descendant(of: protectionSectionRow, matching: find.text('F')), findsNothing);
+      expect(find.descendant(of: protectionSectionRow, matching: find.text('L')), findsNothing);
     });
 
     testWidgets('test scrolling to last train station', (tester) async {
@@ -172,6 +237,8 @@ void main() {
           .byWidgetPredicate((it) => it is Text && it.data == 'Schlieren' && it.style?.fontStyle != FontStyle.italic);
       expect(schlierenText, findsOneWidget);
     });
+
+
   });
 }
 

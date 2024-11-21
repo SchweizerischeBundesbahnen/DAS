@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ProtectionSectionRow extends BaseRowBuilder {
-  static const Key stopOnRequestKey = Key('stop_on_request_key');
+  static const Key protectionSectionKey = Key('protection_section_key');
 
   ProtectionSectionRow({
     super.height = 44.0,
@@ -40,7 +40,7 @@ class ProtectionSectionRow extends BaseRowBuilder {
     return DASTableCell(
         child: SvgPicture.asset(
           AppAssets.iconProtectionSection,
-          key: stopOnRequestKey,
+          key: protectionSectionKey,
         ),
         alignment: Alignment.bottomCenter);
   }

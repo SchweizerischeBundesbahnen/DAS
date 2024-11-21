@@ -393,13 +393,19 @@
 
     <SP_Characteristics>
         <CurrentLimitation>
-            <CurrentLimitationStart maxCurValue="0"/>
+            <CurrentLimitationStart maxCurValue="1023"/>
             <CurrentLimitationChange maxCurValue="0" location="1700"/>
+            <CurrentLimitationChange maxCurValue="1023" location="1705"/>
             <CurrentLimitationChange maxCurValue="0" location="3200"/>
+            <CurrentLimitationChange maxCurValue="1023" location="3205"/>
             <CurrentLimitationChange maxCurValue="0" location="5200"/>
+            <CurrentLimitationChange maxCurValue="1023" location="5205"/>
             <CurrentLimitationChange maxCurValue="0" location="6700"/>
+            <CurrentLimitationChange maxCurValue="1023" location="6705"/>
             <CurrentLimitationChange maxCurValue="0" location="8700"/>
+            <CurrentLimitationChange maxCurValue="1023" location="8705"/>
             <CurrentLimitationChange maxCurValue="0" location="10200"/>
+            <CurrentLimitationChange maxCurValue="1023" location="10205"/>
         </CurrentLimitation>
     </SP_Characteristics>
 

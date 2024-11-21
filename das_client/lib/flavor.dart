@@ -11,7 +11,7 @@ enum Flavor {
     authenticatorConfig: _authenticatorConfigMockDev,
     tmsAuthenticatorConfig: _authenticatorConfigTmsDev,
     backendUrl: 'https://das-backend-dev.app.sbb.ch',
-    mqttTopicPrefix: 'thomas/',
+    mqttTopicPrefix: '',
   ),
   inte(
     displayName: 'Inte',
