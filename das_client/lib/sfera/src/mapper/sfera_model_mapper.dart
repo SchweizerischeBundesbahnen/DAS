@@ -23,7 +23,6 @@ class SferaModelMapper {
   static const int _hundredThousand = 100000;
   static const String _bracketStationNspName = 'bracketStation';
   static const String _bracketStationMainStationNspName = 'mainStation';
-  static const String _protectionSectionNspName = 'protectionSection';
   static const String _protectionSectionNspFacultativeName = 'facultative';
   static const String _protectionSectionNspLengthTypeName = 'lengthType';
 
@@ -117,25 +116,20 @@ class SferaModelMapper {
     if (segmentProfile.characteristics?.currentLimitation != null) {
       final currentLimitation = segmentProfile.characteristics!.currentLimitation!;
 
-      final protectionSectionNsps =
-          segmentProfile.points?.networkSpecificPoints.where((it) => it.name == _protectionSectionNspName) ?? [];
+      final protectionSectionNsps = segmentProfile.points?.protectionSectionNsp ?? [];
 
       for (final currentLimitationChange in currentLimitation.currentLimitationChanges) {
         if (currentLimitationChange.maxCurValue == '0') {
           final protectionSectionNsp =
-              protectionSectionNsps
-                  .where((it) => it.location == currentLimitationChange.location)
-                  .firstOrNull;
+              protectionSectionNsps.where((it) => it.location == currentLimitationChange.location).firstOrNull;
 
-          final isOptional =
-              protectionSectionNsp?.parameters
-                  .where((it) => it.name == _protectionSectionNspFacultativeName)
-                  .firstOrNull;
+          final isOptional = protectionSectionNsp?.parameters
+              .where((it) => it.name == _protectionSectionNspFacultativeName)
+              .firstOrNull;
 
-          final isLong =
-              protectionSectionNsp?.parameters
-                  .where((it) => it.name == _protectionSectionNspLengthTypeName)
-                  .firstOrNull;
+          final isLong = protectionSectionNsp?.parameters
+              .where((it) => it.name == _protectionSectionNspLengthTypeName)
+              .firstOrNull;
 
           journeyData.add(ProtectionSection(
               isOptional: isOptional != null ? bool.parse(isOptional.nspValue) : false,
