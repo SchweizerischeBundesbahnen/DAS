@@ -106,7 +106,8 @@ class SferaModelMapper {
 
   static Iterable<Signal> _parseSignals(SegmentProfile segmentProfile, int segmentIndex,
       Map<double, List<double>> kilometreMap, List<TrackEquipment> trackEquipments) {
-    return segmentProfile.points.expand((it) => it.signals).map((signal) {
+    final signals = segmentProfile.points?.signals ?? [];
+    return signals.map((signal) {
       return Signal(
         visualIdentifier: signal.physicalCharacteristics?.visualIdentifier,
         functions: signal.functions.map((function) => SignalFunction.from(function.value!)).toList(),
@@ -118,9 +119,8 @@ class SferaModelMapper {
   }
 
   static List<TrackEquipment> _parseTrackEquipments(SegmentProfile segmentProfile) {
-    return segmentProfile.areas
-        .expand((it) => it.nonStandardTrackEquipments)
-        .map((element) {
+    final nonStandardTrackEquipments = segmentProfile.areas?.nonStandardTrackEquipments ?? [];
+    return nonStandardTrackEquipments.map((element) {
           final trackEquipmentType = TrackEquipmentType.from(element.trackEquipmentType!.nspValue);
           if (trackEquipmentType == null) {
             Fimber.w('Encountered nonStandardTrackEquipment without main station NSP declaration: ${element.trackEquipmentType}');
@@ -228,16 +228,16 @@ class SferaModelMapper {
 
   static List<CurvePoint> _parseCurvePoints(SegmentProfile segmentProfile, int segmentIndex,
       Map<double, List<double>> kilometreMap, List<TrackEquipment> trackEquipments) {
-    final curvePointsNsp = segmentProfile.points.expand((it) => it.curvePointsNsp).toList();
+    final curvePointsNsp = segmentProfile.points?.curvePointsNsp ?? [];
     return curvePointsNsp.map<CurvePoint>((curvePointNsp) {
-      final curvePointTypeValue = curvePointNsp.networkSpecificParameters.withName('curvePointType')?.nspValue;
-      final curveTypeValue = curvePointNsp.networkSpecificParameters.withName('curveType')?.nspValue;
+      final curvePointTypeValue = curvePointNsp.parameters.withName('curvePointType')?.nspValue;
+      final curveTypeValue = curvePointNsp.parameters.withName('curveType')?.nspValue;
       return CurvePoint(
         order: _calculateOrder(segmentIndex, curvePointNsp.location),
         kilometre: kilometreMap[curvePointNsp.location] ?? [],
         curvePointType: curvePointTypeValue != null ? CurvePointType.from(curvePointTypeValue) : null,
         curveType: curveTypeValue != null ? CurveType.from(curveTypeValue) : null,
-        comment: curvePointNsp.networkSpecificParameters.withName('comment')?.nspValue,
+        comment: curvePointNsp.parameters.withName('comment')?.nspValue,
         trackEquipment: trackEquipments.whereOnLocation(curvePointNsp.location).toList(),
       );
     }).toList();

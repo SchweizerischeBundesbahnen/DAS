@@ -6,16 +6,12 @@ class NetworkSpecificPoint extends SpGenericPoint {
 
   NetworkSpecificPoint({required super.type, super.attributes, super.children, super.value});
 
-  String get name => attributes['name']!;
-
-  double get location => double.parse(attributes['location']!);
-
-  int get identifier => int.parse(attributes['identifier']!);
+  String? get name => attributes['name'];
 
   Iterable<NetworkSpecificParameter> get parameters => children.whereType<NetworkSpecificParameter>();
 
   @override
   bool validate() {
-    return validateHasAttribute('name') && validateHasAttributeDouble('location') && validateHasAttributeInt('identifier') && super.validate();
+    return validateHasChildOfType<NetworkSpecificParameter>() && super.validate();
   }
 }
