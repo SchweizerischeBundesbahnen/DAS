@@ -6,6 +6,7 @@ import 'package:das_client/sfera/src/model/virtual_balise.dart';
 
 class SpPoints extends SferaXmlElement {
   static const String elementType = 'SP_Points';
+  static const String _protectionSectionNspName = 'protectionSection';
   static const String _curvePointName = 'curvePoint';
 
   SpPoints({super.type = elementType, super.attributes, super.children, super.value});
@@ -18,4 +19,7 @@ class SpPoints extends SferaXmlElement {
       children.whereType<NetworkSpecificPoint>().where((it) => it.name == _curvePointName);
 
   Iterable<VirtualBalise> get balise => children.whereType<VirtualBalise>();
+
+  Iterable<NetworkSpecificPoint> get protectionSectionNsp =>
+      children.whereType<NetworkSpecificPoint>().where((it) => it.name == SpPoints._protectionSectionNspName);
 }

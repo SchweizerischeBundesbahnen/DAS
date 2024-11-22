@@ -1,11 +1,13 @@
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/i18n/i18n.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/protection_section_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_row_builder.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:das_client/app/widgets/table/das_table.dart';
 import 'package:das_client/app/widgets/table/das_table_column.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/journey.dart';
+import 'package:das_client/model/journey/protection_section.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +52,9 @@ class TrainJourney extends StatelessWidget {
                   isRouteStart: index == 0,
                   isRouteEnd: index == journey.data.length - 1,
                 ).build(context);
+              case Datatype.protectionSection:
+                return ProtectionSectionRow(metadata: journey.metadata, protectionSection: rowData as ProtectionSection)
+                    .build(context);
               case Datatype.curvePoint:
                 // TODO:
                 return BaseRowBuilder().build(context);

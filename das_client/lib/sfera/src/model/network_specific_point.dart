@@ -1,10 +1,10 @@
 import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
-import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
+import 'package:das_client/sfera/src/model/sp_generic_point.dart';
 
-class NetworkSpecificPoint extends SferaXmlElement {
+class NetworkSpecificPoint extends SpGenericPoint {
   static const String elementType = 'NetworkSpecificPoint';
 
-  NetworkSpecificPoint({super.type = elementType, super.attributes, super.children, super.value});
+  NetworkSpecificPoint({required super.type, super.attributes, super.children, super.value});
 
   String get name => attributes['name']!;
 
@@ -12,7 +12,7 @@ class NetworkSpecificPoint extends SferaXmlElement {
 
   int get identifier => int.parse(attributes['identifier']!);
 
-  Iterable<NetworkSpecificParameter> get networkSpecificParameters => children.whereType<NetworkSpecificParameter>();
+  Iterable<NetworkSpecificParameter> get parameters => children.whereType<NetworkSpecificParameter>();
 
   @override
   bool validate() {

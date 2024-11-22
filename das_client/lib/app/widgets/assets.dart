@@ -9,4 +9,5 @@ class AppAssets {
 
   static const iconHeaderStop = '$_iconsDir/icon_header_stop.svg';
   static const iconStopOnRequest = '$_iconsDir/icon_stop_on_request.svg';
+  static const iconProtectionSection = '$_iconsDir/icon_protection_section.svg';
 }

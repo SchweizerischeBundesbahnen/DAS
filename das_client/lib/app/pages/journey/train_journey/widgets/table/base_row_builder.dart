@@ -7,7 +7,7 @@ class BaseRowBuilder extends DASTableRowBuilder {
   const BaseRowBuilder({
     super.height,
     this.kilometre,
-    this.defaultAlignment = Alignment.centerLeft,
+    this.defaultAlignment = Alignment.bottomCenter,
     this.rowColor,
     this.isCurrentPosition = false,
   });
@@ -23,22 +23,22 @@ class BaseRowBuilder extends DASTableRowBuilder {
       height: height,
       color: rowColor,
       cells: [
-        kilometreCell(),
-        timeCell(),
-        routeCell(),
-        iconsCell1(),
-        informationCell(),
-        iconsCell2(),
-        iconsCell3(),
-        graduatedSpeedCell(),
-        brakedWeightSpeedCell(),
-        advisedSpeedCell(),
-        actionsCell(),
+        kilometreCell(context),
+        timeCell(context),
+        routeCell(context),
+        iconsCell1(context),
+        informationCell(context),
+        iconsCell2(context),
+        iconsCell3(context),
+        graduatedSpeedCell(context),
+        brakedWeightSpeedCell(context),
+        advisedSpeedCell(context),
+        actionsCell(context),
       ],
     );
   }
 
-  DASTableCell kilometreCell() {
+  DASTableCell kilometreCell(BuildContext context) {
     if (kilometre == null || kilometre!.isEmpty) {
       return DASTableCell.empty();
     }
@@ -55,11 +55,11 @@ class BaseRowBuilder extends DASTableRowBuilder {
         alignment: Alignment.centerLeft);
   }
 
-  DASTableCell timeCell() {
+  DASTableCell timeCell(BuildContext context) {
     return DASTableCell(child: Text('06:05:52'), alignment: defaultAlignment);
   }
 
-  DASTableCell routeCell() {
+  DASTableCell routeCell(BuildContext context) {
     return DASTableCell(
       padding: EdgeInsets.all(0.0),
       alignment: null,
@@ -67,38 +67,38 @@ class BaseRowBuilder extends DASTableRowBuilder {
     );
   }
 
-  DASTableCell informationCell() {
+  DASTableCell informationCell(BuildContext context) {
     return DASTableCell.empty();
   }
 
-  DASTableCell graduatedSpeedCell() {
+  DASTableCell graduatedSpeedCell(BuildContext context) {
     return DASTableCell(child: Text('85'), alignment: defaultAlignment);
   }
 
-  DASTableCell advisedSpeedCell() {
+  DASTableCell advisedSpeedCell(BuildContext context) {
     return DASTableCell(child: Text('100'), alignment: defaultAlignment);
   }
 
-  DASTableCell brakedWeightSpeedCell() {
+  DASTableCell brakedWeightSpeedCell(BuildContext context) {
     return DASTableCell(child: Text('95'), alignment: defaultAlignment);
   }
 
   // TODO: clarify use of different icon cells and set appropriate name
-  DASTableCell iconsCell1() {
+  DASTableCell iconsCell1(BuildContext context) {
     return DASTableCell.empty();
   }
 
   // TODO: clarify use of different icon cells and set appropriate name
-  DASTableCell iconsCell2() {
+  DASTableCell iconsCell2(BuildContext context) {
     return DASTableCell.empty();
   }
 
   // TODO: clarify use of different icon cells and set appropriate name
-  DASTableCell iconsCell3() {
+  DASTableCell iconsCell3(BuildContext context) {
     return DASTableCell.empty();
   }
 
-  DASTableCell actionsCell() {
+  DASTableCell actionsCell(BuildContext context) {
     return DASTableCell.empty();
   }
 }
