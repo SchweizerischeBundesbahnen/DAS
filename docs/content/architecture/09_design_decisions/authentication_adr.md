@@ -21,9 +21,9 @@ DAS is operated for various RUs and must therefore have an exchangeable or broad
 
 ## Influences on the Decision
 * Azure is the standard technology for IAM at SBB.
-*In order to authenticate other companies/EVUs, a federation of Azure ADs must be created.
+* In order to authenticate other companies/EVUs, a federation of Azure ADs must be created.
 * With Multitenant, the partner RUs must manage the identities and can therefore be delegated.
-*With Crosstenant, all identities would have to be managed by SBB. However, SBB does not know the identities and cannot know which identities should have which access.
+* With Crosstenant, all identities would have to be managed by SBB. However, SBB does not know the identities and cannot know which identities should have which access.
 * If there is no identity federation, each RU would have to operate a DAS itself, which is not currently planned.
 * Exchange with the Beacon Management project has taken place. Azure Multitenant is already used there with many TUs and there is multi-client capability and delegated role management.
 
@@ -32,7 +32,6 @@ DAS is operated for various RUs and must therefore have an exchangeable or broad
 
 
 ## Considered Alternatives
-* Multitenant
 * Crosstenant
 
 ## Decisions
