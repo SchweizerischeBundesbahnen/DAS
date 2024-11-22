@@ -1,5 +1,3 @@
-
-
 class BracketStation {
   BracketStation({this.mainStationAbbreviation});
 

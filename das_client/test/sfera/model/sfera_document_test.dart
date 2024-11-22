@@ -65,7 +65,7 @@ void main() {
 
     expect(spPoint.signals, hasLength(9));
     expect(spPoint.signals.first.id.physicalId, '102346');
-    expect(spPoint.signals.first.id.location, '843');
+    expect(spPoint.signals.first.id.location, 843.0);
 
     expect(spPoint.balise, hasLength(3));
     expect(spPoint.balise.first.location, '0');

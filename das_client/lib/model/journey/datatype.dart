@@ -1,3 +1,5 @@
 enum Datatype {
-  servicePoint;
+  servicePoint,
+  signal,
+  curvePoint;
 }

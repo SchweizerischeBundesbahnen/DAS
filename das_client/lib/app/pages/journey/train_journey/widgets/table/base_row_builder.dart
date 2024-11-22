@@ -3,7 +3,7 @@ import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:flutter/material.dart';
 
-abstract class BaseRowBuilder extends DASTableRowBuilder {
+class BaseRowBuilder extends DASTableRowBuilder {
   const BaseRowBuilder({
     super.height,
     this.kilometre,

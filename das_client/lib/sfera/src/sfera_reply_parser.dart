@@ -8,14 +8,18 @@ import 'package:das_client/sfera/src/model/km_reference.dart';
 import 'package:das_client/sfera/src/model/location_ident.dart';
 import 'package:das_client/sfera/src/model/message_header.dart';
 import 'package:das_client/sfera/src/model/multilingual_text.dart';
+import 'package:das_client/sfera/src/model/network_specific_area.dart';
 import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
+import 'package:das_client/sfera/src/model/network_specific_point.dart';
 import 'package:das_client/sfera/src/model/otn_id.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
 import 'package:das_client/sfera/src/model/segment_profile_list.dart';
 import 'package:das_client/sfera/src/model/sfera_g2b_reply_message.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 import 'package:das_client/sfera/src/model/signal.dart';
+import 'package:das_client/sfera/src/model/signal_function.dart';
 import 'package:das_client/sfera/src/model/signal_id.dart';
+import 'package:das_client/sfera/src/model/signal_physical_characteristics.dart';
 import 'package:das_client/sfera/src/model/sp_areas.dart';
 import 'package:das_client/sfera/src/model/sp_context_information.dart';
 import 'package:das_client/sfera/src/model/sp_points.dart';
@@ -104,6 +108,10 @@ class SferaReplyParser {
         return Signal(type: type, attributes: attributes, children: children, value: value);
       case SignalId.elementType:
         return SignalId(type: type, attributes: attributes, children: children, value: value);
+      case SignalPhysicalCharacteristics.elementType:
+        return SignalPhysicalCharacteristics(type: type, attributes: attributes, children: children, value: value);
+      case SignalFunction.elementType:
+        return SignalFunction(type: type, attributes: attributes, children: children, value: value);
       case VirtualBalise.elementType:
         return VirtualBalise(type: type, attributes: attributes, children: children, value: value);
       case VirtualBalisePosition.elementType:
@@ -140,6 +148,10 @@ class SferaReplyParser {
         return TafTapLocationNsp(type: type, attributes: attributes, children: children, value: value);
       case NetworkSpecificParameter.elementType:
         return NetworkSpecificParameter(type: type, attributes: attributes, children: children, value: value);
+      case NetworkSpecificPoint.elementType:
+        return NetworkSpecificPoint(type: type, attributes: attributes, children: children, value: value);
+      case NetworkSpecificArea.elementType:
+        return NetworkSpecificArea(type: type, attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElement(type: type, attributes: attributes, children: children, value: value);
     }

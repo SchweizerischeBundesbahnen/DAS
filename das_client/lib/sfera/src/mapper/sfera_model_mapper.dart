@@ -1,14 +1,19 @@
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/bracket_station.dart';
+import 'package:das_client/model/journey/curve_point.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/service_point.dart';
+import 'package:das_client/model/journey/signal.dart';
+import 'package:das_client/model/journey/track_equipment.dart';
 import 'package:das_client/model/localized_string.dart';
+import 'package:das_client/sfera/src/model/enums/start_end_qualifier.dart';
 import 'package:das_client/sfera/src/model/enums/stop_skip_pass.dart';
 import 'package:das_client/sfera/src/model/enums/taf_tap_location_type.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/multilingual_text.dart';
+import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location.dart';
 import 'package:fimber/fimber.dart';
@@ -45,9 +50,17 @@ class SferaModelMapper {
               it.versionMinor == segmentProfileList.versionMinor)
           .first;
 
-      final kilometreMap = _parseKilometre(segmentProfile);
-      final timingPoints = segmentProfile.points.expand((it) => it.timingPoints).toList();
+      final trackEquipments = _parseTrackEquipments(segmentProfile);
 
+      final kilometreMap = _parseKilometre(segmentProfile);
+
+      final curvePoints = _parseCurvePoints(segmentProfile, segmentIndex, kilometreMap, trackEquipments);
+      journeyData.addAll(curvePoints);
+
+      final signals = _parseSignals(segmentProfile, segmentIndex, kilometreMap, trackEquipments);
+      journeyData.addAll(signals);
+
+      final timingPoints = segmentProfile.points.expand((it) => it.timingPoints).toList();
       for (final tpConstraint in segmentProfileList.timingPointsContraints) {
         final tpId = tpConstraint.timingPointReference.tpIdReference.tpId;
         final timingPoint = timingPoints.where((it) => it.id == tpId).first;
@@ -58,23 +71,66 @@ class SferaModelMapper {
             .first;
 
         journeyData.add(ServicePoint(
-            name: _localizedStringFromMultilingualText(tafTapLocation.locationNames),
-            order: _calculateOrder(segmentIndex, timingPoint.location),
-            mandatoryStop: tpConstraint.stoppingPointInformation?.stopType?.mandatoryStop ?? true,
-            isStop: tpConstraint.stopSkipPass == StopSkipPass.stoppingPoint,
-            isStation: tafTapLocation.locationType != TafTapLocationType.stoppingLocation,
-            bracketStation: _parseBracketStation(tafTapLocations, tafTapLocation),
-            kilometre: kilometreMap[timingPoint.location] ?? []));
+          name: _localizedStringFromMultilingualText(tafTapLocation.locationNames),
+          order: _calculateOrder(segmentIndex, timingPoint.location),
+          mandatoryStop: tpConstraint.stoppingPointInformation?.stopType?.mandatoryStop ?? true,
+          isStop: tpConstraint.stopSkipPass == StopSkipPass.stoppingPoint,
+          isStation: tafTapLocation.locationType != TafTapLocationType.stoppingLocation,
+          bracketStation: _parseBracketStation(tafTapLocations, tafTapLocation),
+          kilometre: kilometreMap[timingPoint.location] ?? [],
+          trackEquipment: trackEquipments.whereOnLocation(timingPoint.location).toList(),
+        ));
       }
     }
 
     journeyData.sort((a, b) => a.order.compareTo(b.order));
     final servicePoints = journeyData.where((it) => it.type == Datatype.servicePoint).toList();
     return Journey(
-        metadata: Metadata(
-            nextStop: servicePoints.length > 1 ? servicePoints[1] as ServicePoint : null,
-            currentPosition: journeyData.first),
-        data: journeyData);
+      metadata: Metadata(
+        nextStop: servicePoints.length > 1 ? servicePoints[1] as ServicePoint : null,
+        currentPosition: journeyData.first,
+      ),
+      data: journeyData,
+    );
+  }
+
+  static Iterable<Signal> _parseSignals(SegmentProfile segmentProfile, int segmentIndex,
+      Map<double, List<double>> kilometreMap, List<TrackEquipment> trackEquipments) {
+    return segmentProfile.points.expand((it) => it.signals).map((signal) {
+      return Signal(
+        visualIdentifier: signal.physicalCharacteristics?.visualIdentifier,
+        functions: signal.functions.map((function) => SignalFunction.from(function.value!)).toList(),
+        order: _calculateOrder(segmentIndex, signal.id.location),
+        kilometre: kilometreMap[signal.id.location] ?? [],
+        trackEquipment: trackEquipments.whereOnLocation(signal.id.location).toList(),
+      );
+    });
+  }
+
+  static List<TrackEquipment> _parseTrackEquipments(SegmentProfile segmentProfile) {
+    return segmentProfile.areas
+        .expand((it) => it.nonStandardTrackEquipments)
+        .map((element) {
+          final trackEquipmentType = TrackEquipmentType.from(element.trackEquipmentType!.nspValue);
+          if (trackEquipmentType == null) {
+            Fimber.w('Encountered nonStandardTrackEquipment without main station NSP declaration: ${element.trackEquipmentType}');
+            return null;
+          } else {
+            final hasStartLocation = element.startEndQualifier == StartEndQualifier.starts ||
+                element.startEndQualifier == StartEndQualifier.startsEnds;
+            final hasEndLocation = element.startEndQualifier == StartEndQualifier.ends ||
+                element.startEndQualifier == StartEndQualifier.startsEnds;
+            return TrackEquipment(
+              type: trackEquipmentType,
+              startLocation: hasStartLocation ? element.startLocation! : null,
+              endLocation: hasEndLocation ? element.endLocation! : null,
+              appliesToWholeSp: element.startEndQualifier == StartEndQualifier.wholeSp,
+            );
+          }
+        })
+        .where((e) => e != null)
+        .cast<TrackEquipment>()
+        .toList();
   }
 
   static int _calculateOrder(int segmentIndex, double location) {
@@ -128,5 +184,22 @@ class SferaModelMapper {
     }
 
     return null;
+  }
+
+  static List<CurvePoint> _parseCurvePoints(SegmentProfile segmentProfile, int segmentIndex,
+      Map<double, List<double>> kilometreMap, List<TrackEquipment> trackEquipments) {
+    final curvePointsNsp = segmentProfile.points.expand((it) => it.curvePointsNsp).toList();
+    return curvePointsNsp.map<CurvePoint>((curvePointNsp) {
+      final curvePointTypeValue = curvePointNsp.networkSpecificParameters.withName('curvePointType')?.nspValue;
+      final curveTypeValue = curvePointNsp.networkSpecificParameters.withName('curveType')?.nspValue;
+      return CurvePoint(
+        order: _calculateOrder(segmentIndex, curvePointNsp.location),
+        kilometre: kilometreMap[curvePointNsp.location] ?? [],
+        curvePointType: curvePointTypeValue != null ? CurvePointType.from(curvePointTypeValue) : null,
+        curveType: curveTypeValue != null ? CurveType.from(curveTypeValue) : null,
+        comment: curvePointNsp.networkSpecificParameters.withName('comment')?.nspValue,
+        trackEquipment: trackEquipments.whereOnLocation(curvePointNsp.location).toList(),
+      );
+    }).toList();
   }
 }
