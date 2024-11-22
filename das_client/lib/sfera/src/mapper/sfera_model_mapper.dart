@@ -1,12 +1,16 @@
+import 'package:collection/collection.dart';
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/bracket_station.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/metadata.dart';
+import 'package:das_client/model/journey/protection_section.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/localized_string.dart';
+import 'package:das_client/sfera/src/model/enums/length_type.dart';
 import 'package:das_client/sfera/src/model/enums/stop_skip_pass.dart';
 import 'package:das_client/sfera/src/model/enums/taf_tap_location_type.dart';
+import 'package:das_client/sfera/src/model/enums/xml_enum.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/multilingual_text.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
@@ -19,6 +23,8 @@ class SferaModelMapper {
   static const int _hundredThousand = 100000;
   static const String _bracketStationNspName = 'bracketStation';
   static const String _bracketStationMainStationNspName = 'mainStation';
+  static const String _protectionSectionNspFacultativeName = 'facultative';
+  static const String _protectionSectionNspLengthTypeName = 'lengthType';
 
   static Journey mapToJourney(JourneyProfile journeyProfile, List<SegmentProfile> segmentProfiles) {
     try {
@@ -34,7 +40,8 @@ class SferaModelMapper {
 
     final segmentProfilesLists = journeyProfile.segmentProfilesLists.toList();
 
-    final tafTapLocations = segmentProfiles.expand((it) => it.areas).expand((it) => it.tafTapLocations).toList();
+    final tafTapLocations =
+        segmentProfiles.map((it) => it.areas).whereNotNull().expand((it) => it.tafTapLocations).toList();
 
     for (int segmentIndex = 0; segmentIndex < segmentProfilesLists.length; segmentIndex++) {
       final segmentProfileList = segmentProfilesLists[segmentIndex];
@@ -46,7 +53,7 @@ class SferaModelMapper {
           .first;
 
       final kilometreMap = _parseKilometre(segmentProfile);
-      final timingPoints = segmentProfile.points.expand((it) => it.timingPoints).toList();
+      final timingPoints = segmentProfile.points?.timingPoints.toList() ?? [];
 
       for (final tpConstraint in segmentProfileList.timingPointsContraints) {
         final tpId = tpConstraint.timingPointReference.tpIdReference.tpId;
@@ -66,6 +73,8 @@ class SferaModelMapper {
             bracketStation: _parseBracketStation(tafTapLocations, tafTapLocation),
             kilometre: kilometreMap[timingPoint.location] ?? []));
       }
+
+      _parseAndAddProtectionSections(journeyData, segmentIndex, segmentProfile, kilometreMap);
     }
 
     journeyData.sort((a, b) => a.order.compareTo(b.order));
@@ -91,8 +100,8 @@ class SferaModelMapper {
 
   static Map<double, List<double>> _parseKilometre(SegmentProfile segmentProfile) {
     final kilometreMap = <double, List<double>>{};
-    for (final point in segmentProfile.contextInformation) {
-      for (final kilometreReferencePoint in point.kilometreReferencePoints) {
+    if (segmentProfile.contextInformation != null) {
+      for (final kilometreReferencePoint in segmentProfile.contextInformation!.kilometreReferencePoints) {
         if (!kilometreMap.containsKey(kilometreReferencePoint.location)) {
           kilometreMap[kilometreReferencePoint.location] = [];
         }
@@ -100,6 +109,36 @@ class SferaModelMapper {
       }
     }
     return kilometreMap;
+  }
+
+  static void _parseAndAddProtectionSections(List<BaseData> journeyData, int segmentIndex,
+      SegmentProfile segmentProfile, Map<double, List<double>> kilometreMap) {
+    if (segmentProfile.characteristics?.currentLimitation != null) {
+      final currentLimitation = segmentProfile.characteristics!.currentLimitation!;
+
+      final protectionSectionNsps = segmentProfile.points?.protectionSectionNsp ?? [];
+
+      for (final currentLimitationChange in currentLimitation.currentLimitationChanges) {
+        if (currentLimitationChange.maxCurValue == '0') {
+          final protectionSectionNsp =
+              protectionSectionNsps.where((it) => it.location == currentLimitationChange.location).firstOrNull;
+
+          final isOptional = protectionSectionNsp?.parameters
+              .where((it) => it.name == _protectionSectionNspFacultativeName)
+              .firstOrNull;
+
+          final isLong = protectionSectionNsp?.parameters
+              .where((it) => it.name == _protectionSectionNspLengthTypeName)
+              .firstOrNull;
+
+          journeyData.add(ProtectionSection(
+              isOptional: isOptional != null ? bool.parse(isOptional.nspValue) : false,
+              isLong: isLong != null ? XmlEnum.valueOf(LengthType.values, isLong.nspValue) == LengthType.long : false,
+              order: _calculateOrder(segmentIndex, currentLimitationChange.location),
+              kilometre: kilometreMap[currentLimitationChange.location]!));
+        }
+      }
+    }
   }
 
   static BracketStation? _parseBracketStation(List<TafTapLocation> allLocations, TafTapLocation tafTapLocation) {

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/journey.dart';
+import 'package:das_client/model/journey/protection_section.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/sfera/sfera_component.dart';
 import 'package:das_client/sfera/src/mapper/sfera_model_mapper.dart';
@@ -133,5 +134,25 @@ void main() {
     expect(servicePoints[3].bracketStation!.mainStationAbbreviation, isNull);
     expect(servicePoints[4].bracketStation, isNotNull);
     expect(servicePoints[4].bracketStation!.mainStationAbbreviation, 'D');
+  });
+
+  test('Test protection section is parsed correctly', () async {
+    final journey = getJourney('513', 1);
+    final protectionSections = journey.data.where((it) => it.type == Datatype.protectionSection).cast<ProtectionSection>().toList();
+
+    expect(journey.valid, true);
+    expect(protectionSections, hasLength(6));
+    expect(protectionSections[0].isLong, true);
+    expect(protectionSections[0].isOptional, true);
+    expect(protectionSections[1].isLong, true);
+    expect(protectionSections[1].isOptional, false);
+    expect(protectionSections[2].isLong, true);
+    expect(protectionSections[2].isOptional, true);
+    expect(protectionSections[3].isLong, true);
+    expect(protectionSections[3].isOptional, true);
+    expect(protectionSections[4].isLong, false);
+    expect(protectionSections[4].isOptional, true);
+    expect(protectionSections[5].isLong, false);
+    expect(protectionSections[5].isOptional, false);
   });
 }

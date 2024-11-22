@@ -1,3 +1,4 @@
 enum Datatype {
-  servicePoint;
+  servicePoint,
+  protectionSection;
 }

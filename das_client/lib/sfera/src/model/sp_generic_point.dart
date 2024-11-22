@@ -5,6 +5,8 @@ abstract class SpGenericPoint extends SferaXmlElement {
 
   double get location => double.parse(attributes['location']!);
 
+  String? get identifier => attributes['identifier'];
+
   @override
   bool validate() {
     return validateHasAttributeDouble('location') && super.validate();

@@ -59,7 +59,8 @@ class SferaServiceImpl implements SferaService {
     _mqttStreamSubscription = _mqttService.messageStream.listen((message) async {
       final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(message);
       if (!sferaG2bReplyMessage.validate()) {
-        Fimber.w('Validation failed for MQTT response');
+        Fimber.w('Validation failed for MQTT response $message');
+        return;
       }
 
       var handled = false;
