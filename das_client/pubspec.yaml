@@ -77,6 +77,7 @@ dev_dependencies:
   path_provider_platform_interface: any
   plugin_platform_interface: any
   flutter_lints: ^5.0.0
+  
   custom_lint:
   das_custom_lints:
     path: ./das_custom_lints
