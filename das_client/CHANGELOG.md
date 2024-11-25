@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.3.0...das_client-v0.3.1) (2024-11-25)
+
+
+### Bug Fixes
+
+* require fullscreen ([0d37832](https://github.com/SchweizerischeBundesbahnen/DAS/commit/0d3783291e63e1d137f27ec7f975d298a633fbf3))
+
 ## [0.3.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.2.1...das_client-v0.3.0) (2024-11-25)
 
 
