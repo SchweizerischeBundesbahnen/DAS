@@ -70,12 +70,12 @@ class ServicePointsControllerTest : BaseIT() {
         )
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.length()").value(2))
-            .andExpect(jsonPath("$[0].uic").value(8518771))
-            .andExpect(jsonPath("$[0].designation").value("Biel/Bienne Bözingenfeld/Champ"))
-            .andExpect(jsonPath("$[0].abbreviation").value("BIBD"))
-            .andExpect(jsonPath("$[1].uic").value(8583629))
-            .andExpect(jsonPath("$[1].designation").value("Hinterhunziken"))
-            .andExpect(jsonPath("$[1].abbreviation").value("HHZ"))
+            .andExpect(jsonPath("$[0].uic").value(8583629))
+            .andExpect(jsonPath("$[0].designation").value("Hinterhunziken"))
+            .andExpect(jsonPath("$[0].abbreviation").value("HHZ"))
+            .andExpect(jsonPath("$[1].uic").value(8518771))
+            .andExpect(jsonPath("$[1].designation").value("Biel/Bienne Bözingenfeld/Champ"))
+            .andExpect(jsonPath("$[1].abbreviation").value("BIBD"))
     }
 
     @Test

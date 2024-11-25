@@ -1,6 +1,8 @@
 package ch.sbb.backend.application.rest
 
-import ch.sbb.backend.infrastructure.services.ServicePointsService
+import ch.sbb.backend.api.ServicePointDto
+import ch.sbb.backend.application.ServicePointsService
+import ch.sbb.backend.domain.servicepoints.ServicePoint
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -59,7 +61,7 @@ class ServicePointsController(private val servicePointsService: ServicePointsSer
     @ResponseBody
     @GetMapping(produces = [APPLICATION_JSON_VALUE])
     fun getAllServicePoints(): ResponseEntity<List<ServicePointDto>> {
-        return ResponseEntity.ok(servicePointsService.getAll())
+        return ResponseEntity.ok(ServicePoint.toApi(servicePointsService.getAll()))
     }
 
     @Operation(summary = "Get service point by UIC")
@@ -85,7 +87,7 @@ class ServicePointsController(private val servicePointsService: ServicePointsSer
     @ResponseBody
     @GetMapping("/{uic}", produces = [APPLICATION_JSON_VALUE])
     fun getServicePoint(@PathVariable uic: Int): ResponseEntity<ServicePointDto> {
-        return servicePointsService.getByUic(uic)?.let { ResponseEntity.ok(it) }
+        return servicePointsService.findByUic(uic)?.let { ResponseEntity.ok(it.toApi()) }
             ?: ResponseEntity.notFound().build()
     }
 }
