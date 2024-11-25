@@ -15,7 +15,7 @@ jobs:
         run: |
           npm install @commitlint/config-conventional
           npm install commitlint@latest
-          echo "module.exports = { extends: ['@commitlint/config-conventional'], rules: { 'references-empty': [1, 'never'] }};" > commitlint.config.js
+          echo "module.exports = { extends: ['@commitlint/config-conventional'], rules: { 'references-empty': [2, 'never'] }};" > commitlint.config.js
       - name: "Lint: Pull request title"
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
