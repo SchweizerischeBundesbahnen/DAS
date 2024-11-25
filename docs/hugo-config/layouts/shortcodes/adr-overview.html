@@ -1,0 +1,29 @@
+<!-- layouts/shortcodes/adr-overview.html -->
+
+{{ $tag := .Get 0 }}
+{{ $issuesBaseUrl := .Get 1 }}
+{{ with site.RegularPages.RelatedTo (keyVals "tags" $tag) }}
+{{ with where . "Permalink" "ne" $.Page.Permalink }}
+
+<table>
+    <tr>
+        <th>Decision</th>
+        <th>Status</th>
+        <th>Date</th>
+        <th>Result</th>
+        <th>Issue</th>
+    </tr>
+    {{ range .ByDate.Reverse }}
+    <tr>
+        <td><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></td>
+        <td>{{ .Params.Status }}</td>
+        <td>{{ time.Format ":date_long" .Date }}</td>
+        <td>{{ .Params.Result }}</td>
+        <td><a href={{ printf "%s%s" $issuesBaseUrl (.Params.issue | urlize) }}>{{ .Params.issue }}</a></td>
+    </tr>
+    {{ end }}
+</table>
+
+{{ end }}
+{{ end }}
+

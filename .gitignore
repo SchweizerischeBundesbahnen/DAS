@@ -35,3 +35,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Documentation ###
+/docs/hugo-config/public/
+
