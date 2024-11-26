@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
 import 'package:das_client/model/journey/curve_point.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/journey.dart';
@@ -25,13 +26,13 @@ void main() {
     return files;
   }
 
-  Journey getJourney(String trainNumber, int spCount) {
+  Journey getJourney(String trainNumber, int spCount, {String? spTrainNumber}) {
     final journeyFile = File('test_resources/jp/SFERA_JP_$trainNumber.xml');
     final journeyProfile = SferaReplyParser.parse<JourneyProfile>(journeyFile.readAsStringSync());
     expect(journeyProfile.validate(), true);
     final List<SegmentProfile> segmentProfiles = [];
 
-    for (final File file in getFilesForSp('SFERA_SP_$trainNumber', spCount)) {
+    for (final File file in getFilesForSp('SFERA_SP_${spTrainNumber ?? trainNumber}', spCount)) {
       final segmentProfile = SferaReplyParser.parse<SegmentProfile>(file.readAsStringSync());
       expect(segmentProfile.validate(), true);
       segmentProfiles.add(segmentProfile);
@@ -327,5 +328,90 @@ void main() {
     expect(protectionSections[4].isOptional, true);
     expect(protectionSections[5].isLong, false);
     expect(protectionSections[5].isOptional, false);
+  });
+
+  test('Test additional speed restriction is parsed correctly no items between', () async {
+    final journey = getJourney('513', 1);
+    final speedRestrictions = journey.data.where((it) => it.type == Datatype.additionalSpeedRestriction).cast<AdditionalSpeedRestrictionData>().toList();
+
+    expect(journey.valid, true);
+    expect(speedRestrictions, hasLength(1));
+    expect(speedRestrictions[0].restriction.kmFrom, 64.2);
+    expect(speedRestrictions[0].restriction.kmTo, 63.2);
+    expect(speedRestrictions[0].restriction.orderFrom, 700);
+    expect(speedRestrictions[0].restriction.orderTo, 800);
+    expect(speedRestrictions[0].restriction.speed, 60);
+
+    expect(journey.metadata.additionalSpeedRestrictions, hasLength(1));
+    expect(journey.metadata.additionalSpeedRestrictions[0].kmFrom, 64.2);
+    expect(journey.metadata.additionalSpeedRestrictions[0].kmTo, 63.2);
+    expect(journey.metadata.additionalSpeedRestrictions[0].orderFrom, 700);
+    expect(journey.metadata.additionalSpeedRestrictions[0].orderTo, 800);
+    expect(journey.metadata.additionalSpeedRestrictions[0].speed, 60);
+  });
+
+  test('Test additional speed restriction is parsed correctly over multiple segments', () async {
+    final journey = getJourney('500', 3);
+    final speedRestrictions = journey.data.where((it) => it.type == Datatype.additionalSpeedRestriction).cast<AdditionalSpeedRestrictionData>().toList();
+
+    expect(journey.valid, true);
+    expect(speedRestrictions, hasLength(2));
+    expect(speedRestrictions[0].restriction.kmFrom, 64.2);
+    expect(speedRestrictions[0].restriction.kmTo, 47.2);
+    expect(speedRestrictions[0].restriction.orderFrom, 700);
+    expect(speedRestrictions[0].restriction.orderTo, 206800);
+    expect(speedRestrictions[0].restriction.speed, 60);
+    expect(speedRestrictions[0].order, 700);
+    expect(speedRestrictions[1].restriction.kmFrom, 64.2);
+    expect(speedRestrictions[1].restriction.kmTo, 47.2);
+    expect(speedRestrictions[1].restriction.orderFrom, 700);
+    expect(speedRestrictions[1].restriction.orderTo, 206800);
+    expect(speedRestrictions[1].restriction.speed, 60);
+    expect(speedRestrictions[1].order, 206800);
+
+    expect(journey.metadata.additionalSpeedRestrictions, hasLength(1));
+    expect(journey.metadata.additionalSpeedRestrictions[0].kmFrom, 64.2);
+    expect(journey.metadata.additionalSpeedRestrictions[0].kmTo, 47.2);
+    expect(journey.metadata.additionalSpeedRestrictions[0].orderFrom, 700);
+    expect(journey.metadata.additionalSpeedRestrictions[0].orderTo, 206800);
+    expect(journey.metadata.additionalSpeedRestrictions[0].speed, 60);
+  });
+
+  test('Test additional speed restriction without a date', () async {
+    final journey = getJourney('513_asp_no_date', 1, spTrainNumber: '513');
+    final speedRestrictions = journey.data.where((it) => it.type == Datatype.additionalSpeedRestriction).cast<AdditionalSpeedRestrictionData>().toList();
+
+    expect(journey.valid, true);
+    expect(speedRestrictions, hasLength(1));
+    expect(speedRestrictions[0].restriction.kmFrom, 64.2);
+    expect(speedRestrictions[0].restriction.kmTo, 63.2);
+    expect(speedRestrictions[0].restriction.orderFrom, 700);
+    expect(speedRestrictions[0].restriction.orderTo, 800);
+    expect(speedRestrictions[0].restriction.speed, 60);
+
+    expect(journey.metadata.additionalSpeedRestrictions, hasLength(1));
+    expect(journey.metadata.additionalSpeedRestrictions[0].kmFrom, 64.2);
+    expect(journey.metadata.additionalSpeedRestrictions[0].kmTo, 63.2);
+    expect(journey.metadata.additionalSpeedRestrictions[0].orderFrom, 700);
+    expect(journey.metadata.additionalSpeedRestrictions[0].orderTo, 800);
+    expect(journey.metadata.additionalSpeedRestrictions[0].speed, 60);
+  });
+
+  test('Test additional speed restriction with date in the past', () async {
+    final journey = getJourney('513_asp_date_before', 1, spTrainNumber: '513');
+    final speedRestrictions = journey.data.where((it) => it.type == Datatype.additionalSpeedRestriction).cast<AdditionalSpeedRestrictionData>().toList();
+
+    expect(journey.valid, true);
+    expect(speedRestrictions, hasLength(0));
+    expect(journey.metadata.additionalSpeedRestrictions, hasLength(0));
+  });
+
+  test('Test additional speed restriction with date in the future', () async {
+    final journey = getJourney('513_asp_date_after', 1, spTrainNumber: '513');
+    final speedRestrictions = journey.data.where((it) => it.type == Datatype.additionalSpeedRestriction).cast<AdditionalSpeedRestrictionData>().toList();
+
+    expect(journey.valid, true);
+    expect(speedRestrictions, hasLength(0));
+    expect(journey.metadata.additionalSpeedRestrictions, hasLength(0));
   });
 }

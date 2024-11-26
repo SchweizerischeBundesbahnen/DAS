@@ -1,21 +1,24 @@
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
+import 'package:das_client/model/journey/additional_speed_restriction.dart';
+import 'package:das_client/model/journey/base_data.dart';
+import 'package:das_client/model/journey/metadata.dart';
 import 'package:flutter/material.dart';
 
-class BaseRowBuilder extends DASTableRowBuilder {
+class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   const BaseRowBuilder({
     super.height,
-    this.kilometre,
     this.defaultAlignment = Alignment.bottomCenter,
     this.rowColor,
-    this.isCurrentPosition = false,
+    required this.metadata,
+    required this.data,
   });
 
-  final List<double>? kilometre;
   final Alignment defaultAlignment;
   final Color? rowColor;
-  final bool isCurrentPosition;
+  final Metadata metadata;
+  final T data;
 
   @override
   DASTableRow build(BuildContext context) {
@@ -39,7 +42,7 @@ class BaseRowBuilder extends DASTableRowBuilder {
   }
 
   DASTableCell kilometreCell(BuildContext context) {
-    if (kilometre == null || kilometre!.isEmpty) {
+    if (data.kilometre.isEmpty) {
       return DASTableCell.empty();
     }
 
@@ -48,8 +51,8 @@ class BaseRowBuilder extends DASTableRowBuilder {
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(kilometre![0].toStringAsFixed(1)),
-            if (kilometre!.length > 1) Text(kilometre![1].toStringAsFixed(1))
+            Text(data.kilometre[0].toStringAsFixed(1)),
+            if (data.kilometre.length > 1) Text(data.kilometre[1].toStringAsFixed(1))
           ],
         ),
         alignment: Alignment.centerLeft);
@@ -61,9 +64,10 @@ class BaseRowBuilder extends DASTableRowBuilder {
 
   DASTableCell routeCell(BuildContext context) {
     return DASTableCell(
+      color: getRouteCellColor(),
       padding: EdgeInsets.all(0.0),
       alignment: null,
-      child: RouteCellBody(isCurrentPosition: isCurrentPosition),
+      child: RouteCellBody(isCurrentPosition: metadata.currentPosition == data),
     );
   }
 
@@ -100,5 +104,15 @@ class BaseRowBuilder extends DASTableRowBuilder {
 
   DASTableCell actionsCell(BuildContext context) {
     return DASTableCell.empty();
+  }
+
+  Color? getRouteCellColor() {
+    return getAdditionalSpeedRestriction() != null ? Colors.orange : null;
+  }
+
+  AdditionalSpeedRestriction? getAdditionalSpeedRestriction() {
+    return metadata.additionalSpeedRestrictions
+        .where((it) => it.orderFrom <= data.order && it.orderTo >= data.order)
+        .firstOrNull;
   }
 }

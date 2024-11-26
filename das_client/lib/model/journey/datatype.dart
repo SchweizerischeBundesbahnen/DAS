@@ -2,5 +2,6 @@ enum Datatype {
   servicePoint,
   protectionSection,
   signal,
-  curvePoint;
+  curvePoint,
+  additionalSpeedRestriction;
 }

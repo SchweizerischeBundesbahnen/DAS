@@ -1,9 +1,12 @@
+import 'package:das_client/model/journey/additional_speed_restriction.dart';
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/service_point.dart';
 
 class Metadata {
-  const Metadata({this.nextStop, this.currentPosition});
+  Metadata({this.nextStop, this.currentPosition, List<AdditionalSpeedRestriction>? additionalSpeedRestrictions})
+      : additionalSpeedRestrictions = additionalSpeedRestrictions ?? [];
 
   final ServicePoint? nextStop;
   final BaseData? currentPosition;
+  final List<AdditionalSpeedRestriction> additionalSpeedRestrictions;
 }

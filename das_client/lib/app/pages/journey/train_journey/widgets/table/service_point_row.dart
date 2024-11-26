@@ -3,38 +3,29 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/b
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
-import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-// TODO: Extract real values from SFERA objects.
-class ServicePointRow extends BaseRowBuilder {
+class ServicePointRow extends BaseRowBuilder<ServicePoint> {
   static const Key stopOnRequestKey = Key('stop_on_request_key');
 
   ServicePointRow({
     super.height = 64.0,
     this.isRouteStart = false,
     this.isRouteEnd = false,
-    required this.metadata,
-    required this.servicePoint,
-  }) : super(
-            rowColor: metadata.nextStop == servicePoint ? SBBColors.royal.withOpacity(0.2) : Colors.transparent,
-            kilometre: servicePoint.kilometre,
-            isCurrentPosition: metadata.currentPosition == servicePoint);
-
-  final Metadata metadata;
-  final ServicePoint servicePoint;
-
+    required super.metadata,
+    required super.data,
+  }) : super(rowColor: metadata.nextStop == data ? SBBColors.royal.withOpacity(0.2) : Colors.transparent);
 
   final bool isRouteStart;
   final bool isRouteEnd;
 
   @override
   DASTableCell informationCell(BuildContext context) {
-    final servicePointName = servicePoint.name.localized;
-    final textStyle = servicePoint.isStation
+    final servicePointName = data.name.localized;
+    final textStyle = data.isStation
         ? SBBTextStyles.largeBold.copyWith(fontSize: 24.0)
         : SBBTextStyles.largeLight.copyWith(fontSize: 24.0, fontStyle: FontStyle.italic);
     return DASTableCell(
@@ -57,12 +48,12 @@ class ServicePointRow extends BaseRowBuilder {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          if (servicePoint.bracketStation != null)
+          if (data.bracketStation != null)
             BracketStationBody(
-              bracketStation: servicePoint.bracketStation!,
+              bracketStation: data.bracketStation!,
               height: height!,
             ),
-          if (!servicePoint.mandatoryStop)
+          if (!data.mandatoryStop)
             Align(
                 alignment: Alignment.bottomCenter,
                 child: SvgPicture.asset(
@@ -77,14 +68,15 @@ class ServicePointRow extends BaseRowBuilder {
   @override
   DASTableCell routeCell(BuildContext context) {
     return DASTableCell(
+      color: getRouteCellColor(),
       padding: EdgeInsets.all(0.0),
       alignment: null,
       child: RouteCellBody(
-        isStop: servicePoint.isStop,
-        isCurrentPosition: isCurrentPosition,
+        isStop: data.isStop,
+        isCurrentPosition: metadata.currentPosition == data,
         isRouteStart: isRouteStart,
         isRouteEnd: isRouteEnd,
-        isStopOnRequest: !servicePoint.mandatoryStop,
+        isStopOnRequest: !data.mandatoryStop,
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:das_client/sfera/src/model/additional_speed_restriction.dart';
 import 'package:das_client/sfera/src/model/current_limitation.dart';
 import 'package:das_client/sfera/src/model/current_limitation_change.dart';
 import 'package:das_client/sfera/src/model/current_limitation_start.dart';
@@ -35,6 +36,8 @@ import 'package:das_client/sfera/src/model/taf_tap_location_ident.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location_name.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location_nsp.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location_reference.dart';
+import 'package:das_client/sfera/src/model/temporary_constraint_reason.dart';
+import 'package:das_client/sfera/src/model/temporary_constraints.dart';
 import 'package:das_client/sfera/src/model/timing_point.dart';
 import 'package:das_client/sfera/src/model/timing_point_constraints.dart';
 import 'package:das_client/sfera/src/model/timing_point_reference.dart';
@@ -164,6 +167,12 @@ class SferaReplyParser {
         return NetworkSpecificPoint(type: type, attributes: attributes, children: children, value: value);
       case NetworkSpecificArea.elementType:
         return NetworkSpecificArea(type: type, attributes: attributes, children: children, value: value);
+      case AdditionalSpeedRestriction.elementType:
+        return AdditionalSpeedRestriction(type: type, attributes: attributes, children: children, value: value);
+       case TemporaryConstraints.elementType:
+        return TemporaryConstraints(type: type, attributes: attributes, children: children, value: value);
+       case TemporaryConstraintReason.elementType:
+        return TemporaryConstraintReason(type: type, attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElement(type: type, attributes: attributes, children: children, value: value);
     }

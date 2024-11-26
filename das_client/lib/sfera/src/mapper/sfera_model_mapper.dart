@@ -1,4 +1,6 @@
 import 'package:collection/collection.dart';
+import 'package:das_client/model/journey/additional_speed_restriction.dart';
+import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/bracket_station.dart';
 import 'package:das_client/model/journey/curve_point.dart';
@@ -19,6 +21,7 @@ import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/multilingual_text.dart';
 import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
+import 'package:das_client/sfera/src/model/segment_profile_list.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location.dart';
 import 'package:fimber/fimber.dart';
 
@@ -44,7 +47,6 @@ class SferaModelMapper {
     final journeyData = <BaseData>[];
 
     final segmentProfilesLists = journeyProfile.segmentProfilesLists.toList();
-
     final tafTapLocations =
         segmentProfiles.map((it) => it.areas).whereNotNull().expand((it) => it.tafTapLocations).toList();
 
@@ -93,15 +95,110 @@ class SferaModelMapper {
       _parseAndAddProtectionSections(journeyData, segmentIndex, segmentProfile, kilometreMap);
     }
 
+    final additionalSpeedRestrictions = _parseAdditionalSpeedRestrictions(journeyProfile, segmentProfiles);
+    for (final restriction in additionalSpeedRestrictions) {
+      journeyData.add(AdditionalSpeedRestrictionData(
+          restriction: restriction, order: restriction.orderFrom, kilometre: [restriction.kmFrom]));
+
+      if (journeyData.where((it) => it.order >= restriction.orderFrom && it.order <= restriction.orderTo).length > 1) {
+        // Add end if there are elements between
+        journeyData.add(AdditionalSpeedRestrictionData(
+            restriction: restriction, order: restriction.orderTo, kilometre: [restriction.kmTo]));
+      }
+    }
+
     journeyData.sort((a, b) => a.order.compareTo(b.order));
+
     final servicePoints = journeyData.where((it) => it.type == Datatype.servicePoint).toList();
     return Journey(
       metadata: Metadata(
-        nextStop: servicePoints.length > 1 ? servicePoints[1] as ServicePoint : null,
-        currentPosition: journeyData.first,
-      ),
+          nextStop: servicePoints.length > 1 ? servicePoints[1] as ServicePoint : null,
+          currentPosition: journeyData.first,
+          additionalSpeedRestrictions: additionalSpeedRestrictions),
       data: journeyData,
     );
+  }
+
+  static List<AdditionalSpeedRestriction> _parseAdditionalSpeedRestrictions(
+      JourneyProfile journeyProfile, List<SegmentProfile> segmentProfiles) {
+    final List<AdditionalSpeedRestriction> result = [];
+    final now = DateTime.now();
+    final segmentProfilesLists = journeyProfile.segmentProfilesLists.toList();
+
+    int? startSegmentIndex;
+    int? endSegmentIndex;
+    double? startLocation;
+    double? endLocation;
+
+    for (int segmentIndex = 0; segmentIndex < segmentProfilesLists.length; segmentIndex++) {
+      final segmentProfileList = segmentProfilesLists[segmentIndex];
+
+      for (final asrTemporaryConstrain in segmentProfileList.asrTemporaryConstrains) {
+        // TODO: Es werden Langsamfahrstellen von 30min vor Start der Fahrt (betriebliche Zeit) bis 30min nach Ende der Fahrt (betriebliche Zeit) angezeigt.
+        if (asrTemporaryConstrain.startTime != null && asrTemporaryConstrain.startTime!.isAfter(now) ||
+            asrTemporaryConstrain.endTime != null && asrTemporaryConstrain.endTime!.isBefore(now)) {
+          continue;
+        }
+
+        switch (asrTemporaryConstrain.startEndQualifier) {
+          case StartEndQualifier.starts:
+            startLocation = asrTemporaryConstrain.startLocation;
+            startSegmentIndex = segmentIndex;
+            break;
+          case StartEndQualifier.startsEnds:
+            startLocation = asrTemporaryConstrain.startLocation;
+            startSegmentIndex = segmentIndex;
+            continue next;
+          next:case StartEndQualifier.ends:
+            endLocation = asrTemporaryConstrain.endLocation;
+            endSegmentIndex = segmentIndex;
+            break;
+          case StartEndQualifier.wholeSp:
+            break;
+        }
+
+        if (startSegmentIndex != null && endSegmentIndex != null && startLocation != null && endLocation != null) {
+          final startSegment = _findSegmentProfile(segmentProfiles, segmentProfilesLists[startSegmentIndex]);
+          final endSegment = _findSegmentProfile(segmentProfiles, segmentProfilesLists[endSegmentIndex]);
+
+          final startKilometreMap = _parseKilometre(startSegment);
+          final endKilometreMap = _parseKilometre(endSegment);
+
+          final startOrder = _calculateOrder(startSegmentIndex, startLocation);
+          final endOrder = _calculateOrder(endSegmentIndex, endLocation);
+
+          result.add(AdditionalSpeedRestriction(
+              kmFrom: startKilometreMap[startLocation]!.first,
+              kmTo: endKilometreMap[endLocation]!.first,
+              orderFrom: startOrder,
+              orderTo: endOrder,
+              speed: asrTemporaryConstrain.additionalSpeedRestriction?.asrSpeed));
+
+          startSegmentIndex = null;
+          endSegmentIndex = null;
+          startLocation = null;
+          endLocation = null;
+        }
+      }
+    }
+
+    if (startSegmentIndex != null || endSegmentIndex != null || startLocation != null || endLocation != null) {
+      Fimber.w('Incomplete additional speed restriction found: '
+          'startSegmentIndex: $startSegmentIndex, endSegmentIndex: $endSegmentIndex, '
+          'startLocation: $startLocation, endLocation: $endLocation');
+    }
+
+    return result;
+  }
+
+  static SegmentProfile _findSegmentProfile(
+      List<SegmentProfile> segmentProfiles, SegmentProfileList segmentProfileList) {
+    return segmentProfiles
+        .where((it) =>
+            it.id == segmentProfileList.spId &&
+            it.versionMajor == segmentProfileList.versionMajor &&
+            it.versionMinor == segmentProfileList.versionMinor)
+        .first;
   }
 
   static Iterable<Signal> _parseSignals(SegmentProfile segmentProfile, int segmentIndex,
@@ -120,10 +217,12 @@ class SferaModelMapper {
 
   static List<TrackEquipment> _parseTrackEquipments(SegmentProfile segmentProfile) {
     final nonStandardTrackEquipments = segmentProfile.areas?.nonStandardTrackEquipments ?? [];
-    return nonStandardTrackEquipments.map((element) {
+    return nonStandardTrackEquipments
+        .map((element) {
           final trackEquipmentType = TrackEquipmentType.from(element.trackEquipmentType!.nspValue);
           if (trackEquipmentType == null) {
-            Fimber.w('Encountered nonStandardTrackEquipment without main station NSP declaration: ${element.trackEquipmentType}');
+            Fimber.w(
+                'Encountered nonStandardTrackEquipment without main station NSP declaration: ${element.trackEquipmentType}');
             return null;
           } else {
             final hasStartLocation = element.startEndQualifier == StartEndQualifier.starts ||
