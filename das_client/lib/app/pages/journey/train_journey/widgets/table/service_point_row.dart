@@ -68,7 +68,6 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
   @override
   DASTableCell routeCell(BuildContext context) {
     return DASTableCell(
-      color: getRouteCellColor(),
       padding: EdgeInsets.all(0.0),
       alignment: null,
       child: RouteCellBody(
@@ -77,6 +76,7 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
         isRouteStart: isRouteStart,
         isRouteEnd: isRouteEnd,
         isStopOnRequest: !data.mandatoryStop,
+        backgroundColor: getRouteCellColor(),
       ),
     );
   }

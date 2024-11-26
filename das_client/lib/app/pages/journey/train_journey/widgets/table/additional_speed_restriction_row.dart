@@ -9,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class AdditionalSpeedRestrictionRow extends BaseRowBuilder<AdditionalSpeedRestrictionData> {
   static const Key additionalSpeedRestrictionIconKey = Key('addition_speed_restrction_icon_key');
+  static const Color additionalSpeedRestrictionColor = SBBColors.orange;
 
   AdditionalSpeedRestrictionRow({
     super.height = 44.0,
@@ -31,20 +32,30 @@ class AdditionalSpeedRestrictionRow extends BaseRowBuilder<AdditionalSpeedRestri
   }
 
   @override
+  DASTableCell iconsCell3(BuildContext context) {
+    return DASTableCell(child: const SizedBox.shrink(), color: additionalSpeedRestrictionColor);
+  }
+
+  @override
+  DASTableCell iconsCell1(BuildContext context) {
+    return DASTableCell(child: const SizedBox.shrink(), color: additionalSpeedRestrictionColor);
+  }
+
+  @override
   DASTableCell iconsCell2(BuildContext context) {
     return DASTableCell(
-        color: SBBColors.orange,
+        color: additionalSpeedRestrictionColor,
         child: SvgPicture.asset(
           AppAssets.iconAdditionalSpeedRestriction,
           key: additionalSpeedRestrictionIconKey,
         ),
-        alignment: Alignment.bottomCenter);
+        alignment: Alignment.center);
   }
 
   @override
   DASTableCell graduatedSpeedCell(BuildContext context) {
     return DASTableCell(
-      color: SBBColors.orange,
+      color: additionalSpeedRestrictionColor,
       child: Text(data.restriction.speed.toString()),
       alignment: Alignment.center,
     );

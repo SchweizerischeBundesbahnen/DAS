@@ -19,6 +19,7 @@ class RouteCellBody extends StatelessWidget {
     this.isCurrentPosition = false,
     this.isRouteStart = false,
     this.isRouteEnd = false,
+    this.backgroundColor,
   });
 
   final double chevronHeight;
@@ -32,6 +33,8 @@ class RouteCellBody extends StatelessWidget {
   final bool isRouteStart;
   final bool isRouteEnd;
 
+  final Color? backgroundColor;
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -41,6 +44,7 @@ class RouteCellBody extends StatelessWidget {
           clipBehavior: Clip.none,
           alignment: Alignment.center,
           children: [
+            if (backgroundColor != null) _background(),
             _routeLine(context, height),
             if (isCurrentPosition) _chevron(context),
             if (isStop) _circle(context),
@@ -50,8 +54,20 @@ class RouteCellBody extends StatelessWidget {
     );
   }
 
+  Widget _background() {
+    return Positioned(
+      top: -sbbDefaultSpacing,
+      bottom: -sbbDefaultSpacing,
+      right: 0,
+      left: 0,
+      child: Container(color: backgroundColor,),
+    );
+  }
+
   Positioned _routeLine(BuildContext context, double height) {
-    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
+    final isDarkTheme = SBBBaseStyle
+        .of(context)
+        .brightness == Brightness.dark;
     final lineColor = isDarkTheme ? SBBColors.white : SBBColors.black;
     return Positioned(
       key: isRouteStart ? routeStartKey : isRouteEnd ? routeEndKey : null,
@@ -64,7 +80,9 @@ class RouteCellBody extends StatelessWidget {
   }
 
   Positioned _circle(BuildContext context) {
-    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
+    final isDarkTheme = SBBBaseStyle
+        .of(context)
+        .brightness == Brightness.dark;
     final circleColor = isDarkTheme ? SBBColors.sky : SBBColors.black;
     return Positioned(
       bottom: sbbDefaultSpacing,
@@ -73,7 +91,9 @@ class RouteCellBody extends StatelessWidget {
   }
 
   Positioned _chevron(BuildContext context) {
-    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
+    final isDarkTheme = SBBBaseStyle
+        .of(context)
+        .brightness == Brightness.dark;
     final chevronColor = isDarkTheme ? SBBColors.sky : SBBColors.black;
     return Positioned(
       bottom: isStop ? sbbDefaultSpacing + circleSize : sbbDefaultSpacing,
@@ -98,7 +118,9 @@ class _RouteCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tableThemeData = DASTableTheme.of(context)?.data;
+    final tableThemeData = DASTableTheme
+        .of(context)
+        ?.data;
     final tableBackgroundColor = tableThemeData?.backgroundColor ?? SBBColors.white;
     return Container(
       key: isStopOnRequest ? RouteCellBody.stopOnRequestKey : RouteCellBody.stopKey,
@@ -110,13 +132,14 @@ class _RouteCircle extends StatelessWidget {
 
   BoxDecoration _stopDecoration() => BoxDecoration(color: color, shape: BoxShape.circle);
 
-  BoxDecoration _stopOnRequestDecoration({required Color backgroundColor}) => BoxDecoration(
-      color: backgroundColor,
-      shape: BoxShape.circle,
-      border: Border.all(
-        color: color, // Set the border color
-        width: 2.0, // Set the border width
-      ));
+  BoxDecoration _stopOnRequestDecoration({required Color backgroundColor}) =>
+      BoxDecoration(
+          color: backgroundColor,
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: color, // Set the border color
+            width: 2.0, // Set the border width
+          ));
 }
 
 class _ChevronPainter extends CustomPainter {
@@ -133,8 +156,7 @@ class _ChevronPainter extends CustomPainter {
 
     final path = Path()
       ..moveTo(0, 0)
-      ..lineTo(size.width / 2, size.height)
-      ..lineTo(size.width, 0);
+      ..lineTo(size.width / 2, size.height)..lineTo(size.width, 0);
 
     canvas.drawPath(path, paint);
   }
