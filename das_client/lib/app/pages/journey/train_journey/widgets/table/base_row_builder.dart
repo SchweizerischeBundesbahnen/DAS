@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 
 class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   const BaseRowBuilder({
-    super.height,
+    super.height = 44.0,
     this.defaultAlignment = Alignment.bottomCenter,
     this.rowColor,
     required this.metadata,
