@@ -1,7 +1,7 @@
 name: PR Title Linter
 on:
   pull_request:
-    types: [opened, edited, reopened, unlocked, synchronize]
+    branches: [ "main" ]
 
 permissions: read-all
 
