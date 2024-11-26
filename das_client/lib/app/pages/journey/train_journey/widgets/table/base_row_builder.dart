@@ -67,7 +67,11 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
     return DASTableCell(
       padding: EdgeInsets.all(0.0),
       alignment: null,
-      child: RouteCellBody(isCurrentPosition: metadata.currentPosition == data, backgroundColor: getRouteCellColor()),
+      child: RouteCellBody(
+          isCurrentPosition: metadata.currentPosition == data,
+          isRouteStart: metadata.routeStart == data,
+          isRouteEnd: metadata.routeEnd == data,
+          backgroundColor: getRouteCellColor()),
     );
   }
 

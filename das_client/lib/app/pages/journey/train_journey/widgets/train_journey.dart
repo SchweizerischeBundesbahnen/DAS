@@ -51,8 +51,6 @@ class TrainJourney extends StatelessWidget {
                 return ServicePointRow(
                   metadata: journey.metadata,
                   data: rowData as ServicePoint,
-                  isRouteStart: index == 0,
-                  isRouteEnd: index == journey.data.length - 1,
                 ).build(context);
               case Datatype.protectionSection:
                 return ProtectionSectionRow(metadata: journey.metadata, data: rowData as ProtectionSection)

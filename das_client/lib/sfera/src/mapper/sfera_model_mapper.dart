@@ -114,7 +114,9 @@ class SferaModelMapper {
       metadata: Metadata(
           nextStop: servicePoints.length > 1 ? servicePoints[1] as ServicePoint : null,
           currentPosition: journeyData.first,
-          additionalSpeedRestrictions: additionalSpeedRestrictions),
+          additionalSpeedRestrictions: additionalSpeedRestrictions,
+          routeStart: journeyData.firstOrNull,
+          routeEnd: journeyData.lastOrNull),
       data: journeyData,
     );
   }
@@ -149,7 +151,8 @@ class SferaModelMapper {
             startLocation = asrTemporaryConstrain.startLocation;
             startSegmentIndex = segmentIndex;
             continue next;
-          next:case StartEndQualifier.ends:
+          next:
+          case StartEndQualifier.ends:
             endLocation = asrTemporaryConstrain.endLocation;
             endSegmentIndex = segmentIndex;
             break;

@@ -34,6 +34,37 @@ void main() {
       }
     });
 
+    testWidgets('test route is displayed correctly', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: '9999');
+
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
+
+      final stopRouteRow = findDASTableRowByText('Bahnhof A');
+      final nonStoppingPassRouteRow = findDASTableRowByText('Haltestelle B');
+      expect(stopRouteRow, findsOneWidget);
+      expect(nonStoppingPassRouteRow, findsOneWidget);
+
+      // check stop circles
+      final stopRoute = find.descendant(of: stopRouteRow, matching: find.byKey(RouteCellBody.stopKey));
+      final nonStoppingPassRoute = find.descendant(of: nonStoppingPassRouteRow, matching: find.byKey(RouteCellBody.stopKey));
+      expect(stopRoute, findsOneWidget);
+      expect(nonStoppingPassRoute, findsNothing);
+
+      // check route start
+      final routeStart = find.byKey(RouteCellBody.routeStartKey);
+      expect(routeStart, findsOneWidget);
+
+      await tester.dragUntilVisible(find.byKey(RouteCellBody.routeEndKey), scrollableFinder, const Offset(0, -50));
+
+      // check route end
+      final routeEnd = find.byKey(RouteCellBody.routeEndKey);
+      expect(routeEnd, findsOneWidget);
+    });
+
     testWidgets('test protection secions are displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
 
@@ -200,37 +231,7 @@ void main() {
       expect(stopRoute, findsNothing);
     });
 
-    testWidgets('test route is displayed correctly', (tester) async {
-      await prepareAndStartApp(tester);
 
-      // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: '9999');
-
-      final scrollableFinder = find.byType(ListView);
-      expect(scrollableFinder, findsOneWidget);
-
-      final stopRouteRow = findDASTableRowByText('Bahnhof A');
-      final nonStoppingPassRouteRow = findDASTableRowByText('Haltestelle B');
-      expect(stopRouteRow, findsOneWidget);
-      expect(nonStoppingPassRouteRow, findsOneWidget);
-
-      // check stop circles
-      final stopRoute = find.descendant(of: stopRouteRow, matching: find.byKey(RouteCellBody.stopKey));
-      final nonStoppingPassRoute = find.descendant(of: nonStoppingPassRouteRow, matching: find.byKey(RouteCellBody.stopKey));
-      expect(stopRoute, findsOneWidget);
-      expect(nonStoppingPassRoute, findsNothing);
-
-      // check route start
-      final routeStart = find.byKey(RouteCellBody.routeStartKey);
-      expect(routeStart, findsOneWidget);
-
-      await tester.dragUntilVisible(find.text('Klammerbahnhof D1'), scrollableFinder, const Offset(0, -20));
-
-      // check route end
-      final endStationRow = findDASTableRowByText('Klammerbahnhof D1');
-      final routeEnd = find.descendant(of: endStationRow, matching: find.byKey(RouteCellBody.routeEndKey));
-      expect(routeEnd, findsOneWidget);
-    });
 
     testWidgets('test halt is displayed italic', (tester) async {
       await prepareAndStartApp(tester);

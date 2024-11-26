@@ -13,14 +13,9 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
 
   ServicePointRow({
     super.height = 64.0,
-    this.isRouteStart = false,
-    this.isRouteEnd = false,
     required super.metadata,
     required super.data,
   }) : super(rowColor: metadata.nextStop == data ? SBBColors.royal.withOpacity(0.2) : Colors.transparent);
-
-  final bool isRouteStart;
-  final bool isRouteEnd;
 
   @override
   DASTableCell informationCell(BuildContext context) {
@@ -73,8 +68,8 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
       child: RouteCellBody(
         isStop: data.isStop,
         isCurrentPosition: metadata.currentPosition == data,
-        isRouteStart: isRouteStart,
-        isRouteEnd: isRouteEnd,
+        isRouteStart: metadata.routeStart == data,
+        isRouteEnd: metadata.routeEnd == data,
         isStopOnRequest: !data.mandatoryStop,
         backgroundColor: getRouteCellColor(),
       ),
