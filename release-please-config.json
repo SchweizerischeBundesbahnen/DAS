@@ -1,4 +1,5 @@
 {
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
   "separate-pull-requests": true,
   "packages": {
     "das_client": {
@@ -13,5 +14,6 @@
       "release-type": "maven",
       "package-name": "sfera-mock"
     }
-  }
+  },
+  "changelog-type": "github"
 }

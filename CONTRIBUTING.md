@@ -117,7 +117,8 @@ To ensure consistency throughout the source code, keep these rules in mind as yo
 ## <a id="commit"></a> Commit Message Guidelines
 
 This project uses [Conventional Commits](https://www.conventionalcommits.org/) to generate the changelog.
-As an example, please refer to: https://github.com/sbb-design-systems/sbb-angular 
+In addition, an issue reference is required i.e. `feat: add notifications (#99)` 
+
 
 ## Attribution
 
