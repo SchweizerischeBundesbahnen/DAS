@@ -1,0 +1,23 @@
+<!-- layouts/shortcodes/adr-table.html -->
+
+<table>
+    <tr>
+        <th>Status</th><td>{{ .Page.Params.Status }}</td>
+    </tr>
+    <tr>
+        <th>Result</th><td>{{ .Page.Params.Result }}</td>
+    </tr>
+    <tr>
+        <th>Owner</th><td>{{ .Page.Params.Owner }}</td>
+    </tr>
+    <tr>
+        <th>Date</th><td>{{ time.Format ":date_long" .Page.Date }}</td>
+    </tr>
+    <tr>
+        <th>Issue</th><td><a href={{ printf "https://github.com/SchweizerischeBundesbahnen/DAS/issues/%s" (.Page.Params.issue | urlize) }}>{{ .Page.Params.issue }}</a></td>
+    </tr>
+</table>
+
+
+
+

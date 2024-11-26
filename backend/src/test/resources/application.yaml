@@ -10,6 +10,9 @@ spring:
     mapper:
       accept-case-insensitive-enums: true
     time-zone: CET
+  sql:
+    init:
+      mode: always
 
 springdoc:
   swagger-ui:

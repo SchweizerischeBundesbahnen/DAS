@@ -5,24 +5,15 @@ import ch.sbb.backend.domain.logging.LogLevel
 import ch.sbb.backend.domain.logging.SplunkLogService
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.verify
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt
-import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.time.OffsetDateTime
 
-@SpringBootTest
-@AutoConfigureMockMvc
-class LoggingControllerTest {
-
-    @Autowired
-    private lateinit var mockMvc: MockMvc
+class LoggingControllerTest : BaseIT() {
 
     @MockBean
     private lateinit var splunkLogService: SplunkLogService

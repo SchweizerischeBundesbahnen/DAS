@@ -1,7 +1,7 @@
 name: das_client
 description: "DAS (Driver Advisory System) is a mobile application that provides all the required journey data to the train driver."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 0.2.1+37
+version: 0.3.2+40
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -77,6 +77,7 @@ dev_dependencies:
   path_provider_platform_interface: any
   plugin_platform_interface: any
   flutter_lints: ^5.0.0
+  
   custom_lint:
   das_custom_lints:
     path: ./das_custom_lints
