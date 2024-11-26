@@ -1,4 +1,4 @@
-
+import 'package:das_client/model/journey/base_data.dart';
 
 class AdditionalSpeedRestriction {
   AdditionalSpeedRestriction(
@@ -9,4 +9,8 @@ class AdditionalSpeedRestriction {
   final int orderFrom;
   final int orderTo;
   final int? speed;
+
+  bool needsEndMarker(List<BaseData> journeyData) {
+    return journeyData.where((it) => it.order >= orderFrom && it.order <= orderTo).length > 1;
+  }
 }

@@ -100,8 +100,7 @@ class SferaModelMapper {
       journeyData.add(AdditionalSpeedRestrictionData(
           restriction: restriction, order: restriction.orderFrom, kilometre: [restriction.kmFrom]));
 
-      if (journeyData.where((it) => it.order >= restriction.orderFrom && it.order <= restriction.orderTo).length > 1) {
-        // Add end if there are elements between
+      if (restriction.needsEndMarker(journeyData)) {
         journeyData.add(AdditionalSpeedRestrictionData(
             restriction: restriction, order: restriction.orderTo, kilometre: [restriction.kmTo]));
       }

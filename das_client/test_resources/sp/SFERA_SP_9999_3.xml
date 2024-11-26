@@ -39,7 +39,6 @@
             <TAF_TAP_LocationName language="de" messageString="Halt auf Verlangen C"/>
         </TAF_TAP_Location>
 
-        <!-- TODO: Check location for Starts, Ends startEndQualifier -->
         <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="100" endLocation="400" name="nonStandardTrackEquipment">
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-convSpeedReversingImpossible"/>
         </NetworkSpecificArea>

@@ -191,7 +191,7 @@ void main() {
       final scrollableFinder = find.byType(ListView);
       expect(scrollableFinder, findsOneWidget);
 
-      await tester.dragUntilVisible(find.text('Klammerbahnhof D1'), scrollableFinder, const Offset(0, -20));
+      await tester.dragUntilVisible(find.text('Klammerbahnhof D1'), scrollableFinder, const Offset(0, -50));
 
       final bracketStationD = findDASTableRowByText('Klammerbahnhof D');
       final bracketStationD1 = findDASTableRowByText('Klammerbahnhof D1');
@@ -216,6 +216,11 @@ void main() {
 
       // load train journey by filling out train selection page
       await _loadTrainJourney(tester, trainNumber: '9999');
+
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
+
+      await tester.dragUntilVisible(find.text('Halt auf Verlangen C'), scrollableFinder, const Offset(0, -50));
 
       final stopOnDemandRow = findDASTableRowByText('Halt auf Verlangen C');
       expect(stopOnDemandRow, findsOneWidget);
