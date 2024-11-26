@@ -415,6 +415,14 @@
             <KM_Reference kmRef="66.2"/>
         </KilometreReferencePoint>
 
+        <KilometreReferencePoint location="700">
+            <KM_Reference kmRef="64.2"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="800">
+            <KM_Reference kmRef="63.2"/>
+        </KilometreReferencePoint>
+
         <KilometreReferencePoint location="1000">
             <KM_Reference kmRef="60.3"/>
         </KilometreReferencePoint>
