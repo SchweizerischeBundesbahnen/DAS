@@ -157,6 +157,11 @@ void main() {
       // load train journey by filling out train selection page
       await _loadTrainJourney(tester, trainNumber: '9999');
 
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
+
+      await tester.dragUntilVisible(find.text('Klammerbahnhof D1'), scrollableFinder, const Offset(0, -20));
+
       final bracketStationD = findDASTableRowByText('Klammerbahnhof D');
       final bracketStationD1 = findDASTableRowByText('Klammerbahnhof D1');
       expect(bracketStationD, findsOneWidget);
@@ -201,6 +206,9 @@ void main() {
       // load train journey by filling out train selection page
       await _loadTrainJourney(tester, trainNumber: '9999');
 
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
+
       final stopRouteRow = findDASTableRowByText('Bahnhof A');
       final nonStoppingPassRouteRow = findDASTableRowByText('Haltestelle B');
       expect(stopRouteRow, findsOneWidget);
@@ -213,9 +221,10 @@ void main() {
       expect(nonStoppingPassRoute, findsNothing);
 
       // check route start
-      final startStationRow = findDASTableRowByText('Bahnhof A');
-      final routeStart = find.descendant(of: startStationRow, matching: find.byKey(RouteCellBody.routeStartKey));
+      final routeStart = find.byKey(RouteCellBody.routeStartKey);
       expect(routeStart, findsOneWidget);
+
+      await tester.dragUntilVisible(find.text('Klammerbahnhof D1'), scrollableFinder, const Offset(0, -20));
 
       // check route end
       final endStationRow = findDASTableRowByText('Klammerbahnhof D1');
