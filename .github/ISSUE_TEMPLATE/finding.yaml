@@ -1,64 +1,69 @@
 name: Report Finding
-description: File a bug report.
-title: "[Bug]: "
-labels: ["bug", "triage"]
-projects: ["octo-org/1", "octo-org/44"]
+description: Findings aus dem Fachtesting oder produktiven Gebrauch ans DAS Team melden.
+labels: ["finding"]
+projects: ["SchweizerischeBundesbahnen/DAS"]
 assignees:
-  - octocat
+  - marcdettwiler
+  - StephanieFrancke
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this bug report!
-  - type: input
-    id: contact
-    attributes:
-      label: Contact Details
-      description: How can we get in touch with you if we need more info?
-      placeholder: ex. email@example.com
-    validations:
-      required: false
+        Weitere Informationen zum Ausfüllen eines Findings findest du unter [Guideline für die Erfassung von Findings](https://example.com).
   - type: textarea
-    id: what-happened
     attributes:
-      label: What happened?
-      description: Also tell us, what did you expect to happen?
-      placeholder: Tell us what you see!
-      value: "A bug happened!"
+      label: Beschreibung
+      description: Beschreibung vom Finding
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Schritte zum Finding
+      description: Was wurde gemacht, um das Finding zu verursachen? Falls vorhanden, bitte Printscreens einfügen.
+      placeholder: 1. ...
+      2. ...
+      3. ...
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Erwartetes Verhalten
+      description: Was wäre das korrekte/erwartete Verhalten gewesen?
     validations:
       required: true
   - type: dropdown
-    id: version
     attributes:
-      label: Version
-      description: What version of our software are you running?
+      label: Betriebssystem
+      description: Welches Betriebsystem wurde genutzt? Die Version kann über die Systemeinstellungen unter "Info" geprüft werden.
       options:
-        - 1.0.2 (Default)
-        - 1.0.3 (Edge)
-      default: 0
+        - iOS Version xx
+        - iOS Version xy
+        - Android Version xx
+        - Android Version xy
+      default: iOS Version xx
     validations:
       required: true
   - type: dropdown
-    id: browsers
     attributes:
-      label: What browsers are you seeing the problem on?
-      multiple: true
+      label: DAS Umgebung
+      description: In welcher Umgebung wurde das Finding gefunden
       options:
-        - Firefox
-        - Chrome
-        - Safari
-        - Microsoft Edge
+        - Test
+        - Integration
+        - Produktion
+      default: Integration
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: DAS Version
+      description: Welche Version von DAS wurde genutzt?
+      options:
+        - 0.4
+        - 0.3
+      default: 0.4
+    validations:
+      required: true
   - type: textarea
-    id: logs
     attributes:
-      label: Relevant log output
-      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
-      render: shell
-  - type: checkboxes
-    id: terms
-    attributes:
-      label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com). 
-      options:
-        - label: I agree to follow this project's Code of Conduct
-          required: true
+      label: Weitere Anmerkungen
