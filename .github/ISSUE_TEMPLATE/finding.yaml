@@ -41,7 +41,7 @@ body:
         - iOS Version xy
         - Android Version xx
         - Android Version xy
-      default: iOS Version xx
+      default: 0
     validations:
       required: true
   - type: dropdown
@@ -52,7 +52,7 @@ body:
         - Test
         - Integration
         - Produktion
-      default: Integration
+      default: 1
     validations:
       required: true
   - type: dropdown
@@ -62,7 +62,7 @@ body:
       options:
         - 0.4
         - 0.3
-      default: 0.4
+      default: 0
     validations:
       required: true
   - type: textarea
