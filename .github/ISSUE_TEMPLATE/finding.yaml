@@ -1,7 +1,7 @@
 name: Report Finding
 description: Findings aus dem Fachtesting oder produktiven Gebrauch ans DAS Team melden.
 labels: ["finding"]
-projects: ["SchweizerischeBundesbahnen/DAS"]
+projects: ["DAS/1"]
 assignees:
   - marcdettwiler
   - StephanieFrancke
