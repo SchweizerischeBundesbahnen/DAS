@@ -2,15 +2,20 @@ import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_row_builder.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/curve_point_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/protection_section_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/signal_row.dart';
 import 'package:das_client/app/widgets/table/das_table.dart';
 import 'package:das_client/app/widgets/table/das_table_column.dart';
+import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
+import 'package:das_client/model/journey/curve_point.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/protection_section.dart';
 import 'package:das_client/model/journey/service_point.dart';
+import 'package:das_client/model/journey/signal.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 
@@ -34,42 +39,35 @@ class TrainJourney extends StatelessWidget {
     );
   }
 
-  Widget _body(
-    BuildContext context,
-    Journey journey,
-  ) {
+  Widget _body(BuildContext context, Journey journey) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
       child: DASTable(
         columns: _columns(context),
-        rows: [
-          ...List.generate(journey.data.length, (index) {
-            final rowData = journey.data[index];
-
-            switch (rowData.type) {
-              case Datatype.servicePoint:
-                return ServicePointRow(
-                  metadata: journey.metadata,
-                  data: rowData as ServicePoint,
-                ).build(context);
-              case Datatype.protectionSection:
-                return ProtectionSectionRow(metadata: journey.metadata, data: rowData as ProtectionSection)
-                    .build(context);
-              case Datatype.curvePoint:
-                // TODO:
-                return BaseRowBuilder(metadata: journey.metadata, data: rowData).build(context);
-              case Datatype.signal:
-                // TODO:
-                return BaseRowBuilder(metadata: journey.metadata, data: rowData).build(context);
-              case Datatype.additionalSpeedRestriction:
-                return AdditionalSpeedRestrictionRow(
-                        metadata: journey.metadata, data: rowData as AdditionalSpeedRestrictionData)
-                    .build(context);
-            }
-          })
-        ],
+        rows: _rows(context, journey),
       ),
     );
+  }
+
+  List<DASTableRow> _rows(BuildContext context, Journey journey) {
+    return List.generate(journey.data.length, (index) {
+      final rowData = journey.data[index];
+
+      switch (rowData.type) {
+        case Datatype.servicePoint:
+          return ServicePointRow(metadata: journey.metadata, data: rowData as ServicePoint).build(context);
+        case Datatype.protectionSection:
+          return ProtectionSectionRow(metadata: journey.metadata, data: rowData as ProtectionSection).build(context);
+        case Datatype.curvePoint:
+          return CurvePointRow(metadata: journey.metadata, data: rowData as CurvePoint).build(context);
+        case Datatype.signal:
+          return SignalRow(metadata: journey.metadata, data: rowData as Signal).build(context);
+        case Datatype.additionalSpeedRestriction:
+          return AdditionalSpeedRestrictionRow(
+                  metadata: journey.metadata, data: rowData as AdditionalSpeedRestrictionData)
+              .build(context);
+      }
+    });
   }
 
   List<DASTableColumn> _columns(BuildContext context) {

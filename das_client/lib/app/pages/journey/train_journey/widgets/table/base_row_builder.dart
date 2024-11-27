@@ -59,10 +59,6 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
         alignment: Alignment.centerLeft);
   }
 
-  DASTableCell timeCell(BuildContext context) {
-    return DASTableCell(child: Text('06:05:52'), alignment: defaultAlignment);
-  }
-
   DASTableCell routeCell(BuildContext context) {
     return DASTableCell(
       padding: EdgeInsets.all(0.0),
@@ -73,6 +69,10 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
           isRouteEnd: metadata.routeEnd == data,
           backgroundColor: getRouteCellColor()),
     );
+  }
+
+  DASTableCell timeCell(BuildContext context) {
+    return DASTableCell.empty();
   }
 
   DASTableCell informationCell(BuildContext context) {

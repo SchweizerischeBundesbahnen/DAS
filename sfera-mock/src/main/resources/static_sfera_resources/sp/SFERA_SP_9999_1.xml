@@ -22,6 +22,7 @@
         </Signal>
         <Signal>
             <Signal_ID signal_ID_Physical="2" location="700"/>
+            <SignalFunction>block</SignalFunction>
             <SignalFunction>laneChange</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="S1"/>
         </Signal>

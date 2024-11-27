@@ -42,7 +42,7 @@
         <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="100" endLocation="400" name="nonStandardTrackEquipment">
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-convSpeedReversingImpossible"/>
         </NetworkSpecificArea>
-        <NetworkSpecificArea startEndQualifier="Starts" startLocation="0" endLocation="1" name="nonStandardTrackEquipment">
+        <NetworkSpecificArea startEndQualifier="Starts" startLocation="500" name="nonStandardTrackEquipment">
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingPossible"/>
         </NetworkSpecificArea>
     </SP_Areas>
