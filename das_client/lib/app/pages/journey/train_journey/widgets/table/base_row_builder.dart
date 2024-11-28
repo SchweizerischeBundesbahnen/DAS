@@ -48,6 +48,7 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
     }
 
     return DASTableCell(
+        color: getSpecialCellColor(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,18 +61,19 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   }
 
   DASTableCell timeCell(BuildContext context) {
-    return DASTableCell(child: Text('06:05:52'), alignment: defaultAlignment);
+    return DASTableCell(color: getSpecialCellColor(), child: Text('06:05:52'), alignment: defaultAlignment);
   }
 
   DASTableCell routeCell(BuildContext context) {
     return DASTableCell(
+      color: getSpecialCellColor(),
       padding: EdgeInsets.all(0.0),
       alignment: null,
       child: RouteCellBody(
-          isCurrentPosition: metadata.currentPosition == data,
-          isRouteStart: metadata.routeStart == data,
-          isRouteEnd: metadata.routeEnd == data,
-          backgroundColor: getRouteCellColor()),
+        isCurrentPosition: metadata.currentPosition == data,
+        isRouteStart: metadata.routeStart == data,
+        isRouteEnd: metadata.routeEnd == data,
+      ),
     );
   }
 
@@ -110,7 +112,7 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
     return DASTableCell.empty();
   }
 
-  Color? getRouteCellColor() {
+  Color? getSpecialCellColor() {
     return getAdditionalSpeedRestriction() != null
         ? AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor
         : null;

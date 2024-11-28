@@ -15,36 +15,24 @@ class AdditionalSpeedRestrictionRow extends BaseRowBuilder<AdditionalSpeedRestri
     super.height = 44.0,
     required super.metadata,
     required super.data,
-  });
+  }) : super(rowColor: additionalSpeedRestrictionColor);
 
   @override
   DASTableCell informationCell(BuildContext context) {
     return DASTableCell(
-      color: SBBColors.orange,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Text(
-              '${context.l10n.p_train_journey_table_kilometre_label} ${data.restriction.kmFrom.toStringAsFixed(1)}-${data.restriction.kmTo.toStringAsFixed(1)}'),
+          Text('${context.l10n.p_train_journey_table_kilometre_label} ${data.restriction.kmFrom.toStringAsFixed(3)} '
+              '- ${context.l10n.p_train_journey_table_kilometre_label} ${data.restriction.kmTo.toStringAsFixed(3)}'),
         ],
       ),
     );
   }
 
   @override
-  DASTableCell iconsCell3(BuildContext context) {
-    return DASTableCell(child: const SizedBox.shrink(), color: additionalSpeedRestrictionColor);
-  }
-
-  @override
-  DASTableCell iconsCell1(BuildContext context) {
-    return DASTableCell(child: const SizedBox.shrink(), color: additionalSpeedRestrictionColor);
-  }
-
-  @override
   DASTableCell iconsCell2(BuildContext context) {
     return DASTableCell(
-        color: additionalSpeedRestrictionColor,
         child: SvgPicture.asset(
           AppAssets.iconAdditionalSpeedRestriction,
           key: additionalSpeedRestrictionIconKey,
@@ -55,7 +43,6 @@ class AdditionalSpeedRestrictionRow extends BaseRowBuilder<AdditionalSpeedRestri
   @override
   DASTableCell graduatedSpeedCell(BuildContext context) {
     return DASTableCell(
-      color: additionalSpeedRestrictionColor,
       child: Text(data.restriction.speed.toString()),
       alignment: Alignment.center,
     );
