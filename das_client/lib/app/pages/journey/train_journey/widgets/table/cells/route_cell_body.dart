@@ -19,7 +19,6 @@ class RouteCellBody extends StatelessWidget {
     this.isCurrentPosition = false,
     this.isRouteStart = false,
     this.isRouteEnd = false,
-    this.backgroundColor,
   });
 
   final double chevronHeight;
@@ -33,8 +32,6 @@ class RouteCellBody extends StatelessWidget {
   final bool isRouteStart;
   final bool isRouteEnd;
 
-  final Color? backgroundColor;
-
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -44,25 +41,12 @@ class RouteCellBody extends StatelessWidget {
           clipBehavior: Clip.none,
           alignment: Alignment.center,
           children: [
-            if (backgroundColor != null) _background(),
             _routeLine(context, height),
             if (isCurrentPosition) _chevron(context),
             if (isStop) _circle(context),
           ],
         );
       },
-    );
-  }
-
-  Widget _background() {
-    return Positioned(
-      top: -sbbDefaultSpacing,
-      bottom: -sbbDefaultSpacing,
-      right: 0,
-      left: 0,
-      child: Container(
-        color: backgroundColor,
-      ),
     );
   }
 
