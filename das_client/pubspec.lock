@@ -375,18 +375,18 @@ packages:
     dependency: transitive
     description:
       name: flutter_appauth
-      sha256: f2696d4cf437f627fa09bc4864afdd8c80273f2e293fde544b18202a627754b1
+      sha256: "84e8753fe20864da241892823ff7dbd252baa34f1649d6feb48118e8ae829ed1"
       url: "https://pub.dev"
     source: hosted
-    version: "6.0.6"
+    version: "7.0.1"
   flutter_appauth_platform_interface:
     dependency: transitive
     description:
       name: flutter_appauth_platform_interface
-      sha256: "44feaa7058191b5d3cd7c9ff195262725773643121bcada172d49c2ddcff71cb"
+      sha256: "0959824b401f3ee209c869734252bd5d4d4aab804b019c03815c56e3b9a4bc34"
       url: "https://pub.dev"
     source: hosted
-    version: "6.0.0"
+    version: "7.0.1"
   flutter_bloc:
     dependency: "direct main"
     description:
@@ -909,38 +909,38 @@ packages:
     dependency: "direct main"
     description:
       path: sbb_oidc
-      ref: "3.3.0"
-      resolved-ref: "6e3df34cd5a065dac2b5bdc2eb8b5732b30b8ee9"
+      ref: "3.4.0"
+      resolved-ref: "6270f6bc870de03667b07b3d2eb78305a4812351"
       url: "https://github.com/SchweizerischeBundesbahnen/flutter-oidc.git"
     source: git
-    version: "3.3.0"
+    version: "3.4.0"
   sbb_oidc_mobile:
     dependency: transitive
     description:
       path: sbb_oidc_mobile
-      ref: "3.3.0"
-      resolved-ref: "6e3df34cd5a065dac2b5bdc2eb8b5732b30b8ee9"
+      ref: "3.4.0"
+      resolved-ref: "6270f6bc870de03667b07b3d2eb78305a4812351"
       url: "https://github.com/SchweizerischeBundesbahnen/flutter-oidc.git"
     source: git
-    version: "3.3.0"
+    version: "3.4.0"
   sbb_oidc_platform_interface:
     dependency: transitive
     description:
       path: sbb_oidc_platform_interface
-      ref: "3.3.0"
-      resolved-ref: "6e3df34cd5a065dac2b5bdc2eb8b5732b30b8ee9"
+      ref: "3.4.0"
+      resolved-ref: "6270f6bc870de03667b07b3d2eb78305a4812351"
       url: "https://github.com/SchweizerischeBundesbahnen/flutter-oidc.git"
     source: git
-    version: "3.3.0"
+    version: "3.4.0"
   sbb_oidc_web:
     dependency: transitive
     description:
       path: sbb_oidc_web
-      ref: "3.3.0"
-      resolved-ref: "6e3df34cd5a065dac2b5bdc2eb8b5732b30b8ee9"
+      ref: "3.4.0"
+      resolved-ref: "6270f6bc870de03667b07b3d2eb78305a4812351"
       url: "https://github.com/SchweizerischeBundesbahnen/flutter-oidc.git"
     source: git
-    version: "3.3.0"
+    version: "3.4.0"
   shelf:
     dependency: transitive
     description:
@@ -1203,5 +1203,5 @@ packages:
     source: hosted
     version: "3.1.2"
 sdks:
-  dart: ">=3.5.0 <4.0.0"
+  dart: ">=3.5.2 <4.0.0"
   flutter: ">=3.22.0"
