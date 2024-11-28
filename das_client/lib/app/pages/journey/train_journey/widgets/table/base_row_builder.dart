@@ -1,21 +1,25 @@
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
+import 'package:das_client/model/journey/additional_speed_restriction.dart';
+import 'package:das_client/model/journey/base_data.dart';
+import 'package:das_client/model/journey/metadata.dart';
 import 'package:flutter/material.dart';
 
-abstract class BaseRowBuilder extends DASTableRowBuilder {
+class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   const BaseRowBuilder({
-    super.height,
-    this.kilometre,
+    super.height = 44.0,
     this.defaultAlignment = Alignment.bottomCenter,
     this.rowColor,
-    this.isCurrentPosition = false,
+    required this.metadata,
+    required this.data,
   });
 
-  final List<double>? kilometre;
   final Alignment defaultAlignment;
   final Color? rowColor;
-  final bool isCurrentPosition;
+  final Metadata metadata;
+  final T data;
 
   @override
   DASTableRow build(BuildContext context) {
@@ -39,31 +43,37 @@ abstract class BaseRowBuilder extends DASTableRowBuilder {
   }
 
   DASTableCell kilometreCell(BuildContext context) {
-    if (kilometre == null || kilometre!.isEmpty) {
+    if (data.kilometre.isEmpty) {
       return DASTableCell.empty();
     }
 
     return DASTableCell(
+        color: getSpecialCellColor(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(kilometre![0].toStringAsFixed(1)),
-            if (kilometre!.length > 1) Text(kilometre![1].toStringAsFixed(1))
+            Text(data.kilometre[0].toStringAsFixed(1)),
+            if (data.kilometre.length > 1) Text(data.kilometre[1].toStringAsFixed(1))
           ],
         ),
         alignment: Alignment.centerLeft);
   }
 
   DASTableCell timeCell(BuildContext context) {
-    return DASTableCell(child: Text('06:05:52'), alignment: defaultAlignment);
+    return DASTableCell(color: getSpecialCellColor(), child: Text('06:05:52'), alignment: defaultAlignment);
   }
 
   DASTableCell routeCell(BuildContext context) {
     return DASTableCell(
+      color: getSpecialCellColor(),
       padding: EdgeInsets.all(0.0),
       alignment: null,
-      child: RouteCellBody(isCurrentPosition: isCurrentPosition),
+      child: RouteCellBody(
+        isCurrentPosition: metadata.currentPosition == data,
+        isRouteStart: metadata.routeStart == data,
+        isRouteEnd: metadata.routeEnd == data,
+      ),
     );
   }
 
@@ -72,15 +82,15 @@ abstract class BaseRowBuilder extends DASTableRowBuilder {
   }
 
   DASTableCell graduatedSpeedCell(BuildContext context) {
-    return DASTableCell(child: Text('85'), alignment: defaultAlignment);
+    return DASTableCell.empty();
   }
 
   DASTableCell advisedSpeedCell(BuildContext context) {
-    return DASTableCell(child: Text('100'), alignment: defaultAlignment);
+    return DASTableCell.empty();
   }
 
   DASTableCell brakedWeightSpeedCell(BuildContext context) {
-    return DASTableCell(child: Text('95'), alignment: defaultAlignment);
+    return DASTableCell.empty();
   }
 
   // TODO: clarify use of different icon cells and set appropriate name
@@ -100,5 +110,17 @@ abstract class BaseRowBuilder extends DASTableRowBuilder {
 
   DASTableCell actionsCell(BuildContext context) {
     return DASTableCell.empty();
+  }
+
+  Color? getSpecialCellColor() {
+    return getAdditionalSpeedRestriction() != null
+        ? AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor
+        : null;
+  }
+
+  AdditionalSpeedRestriction? getAdditionalSpeedRestriction() {
+    return metadata.additionalSpeedRestrictions
+        .where((it) => it.orderFrom <= data.order && it.orderTo >= data.order)
+        .firstOrNull;
   }
 }

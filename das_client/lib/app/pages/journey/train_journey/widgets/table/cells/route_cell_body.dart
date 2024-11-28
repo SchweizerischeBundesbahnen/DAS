@@ -54,7 +54,11 @@ class RouteCellBody extends StatelessWidget {
     final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
     final lineColor = isDarkTheme ? SBBColors.white : SBBColors.black;
     return Positioned(
-      key: isRouteStart ? routeStartKey : isRouteEnd ? routeEndKey : null,
+      key: isRouteStart
+          ? routeStartKey
+          : isRouteEnd
+              ? routeEndKey
+              : null,
       top: isRouteStart ? height - sbbDefaultSpacing : -sbbDefaultSpacing,
       bottom: isRouteEnd ? sbbDefaultSpacing : -sbbDefaultSpacing,
       right: 0,

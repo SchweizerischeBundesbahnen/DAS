@@ -1,9 +1,13 @@
 import 'dart:io';
 
+import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
+import 'package:das_client/model/journey/curve_point.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/protection_section.dart';
 import 'package:das_client/model/journey/service_point.dart';
+import 'package:das_client/model/journey/signal.dart';
+import 'package:das_client/model/journey/track_equipment.dart';
 import 'package:das_client/sfera/sfera_component.dart';
 import 'package:das_client/sfera/src/mapper/sfera_model_mapper.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
@@ -22,13 +26,13 @@ void main() {
     return files;
   }
 
-  Journey getJourney(String trainNumber, int spCount) {
+  Journey getJourney(String trainNumber, int spCount, {String? spTrainNumber}) {
     final journeyFile = File('test_resources/jp/SFERA_JP_$trainNumber.xml');
     final journeyProfile = SferaReplyParser.parse<JourneyProfile>(journeyFile.readAsStringSync());
     expect(journeyProfile.validate(), true);
     final List<SegmentProfile> segmentProfiles = [];
 
-    for (final File file in getFilesForSp('SFERA_SP_$trainNumber', spCount)) {
+    for (final File file in getFilesForSp('SFERA_SP_${spTrainNumber ?? trainNumber}', spCount)) {
       final segmentProfile = SferaReplyParser.parse<SegmentProfile>(file.readAsStringSync());
       expect(segmentProfile.validate(), true);
       segmentProfiles.add(segmentProfile);
@@ -57,29 +61,199 @@ void main() {
     expect(servicePoints[4].name.de, 'Klammerbahnhof D1');
   });
 
+  test('Test journey data types correctly generated', () async {
+    final journey = getJourney('9999', 5);
+
+    expect(journey.valid, true);
+    expect(journey.data, hasLength(17));
+
+    // segment 1
+    expect(journey.data[0], TypeMatcher<Signal>());
+    expect(journey.data[1], TypeMatcher<ServicePoint>());
+    expect(journey.data[2], TypeMatcher<CurvePoint>());
+    expect(journey.data[3], TypeMatcher<Signal>());
+    expect(journey.data[4], TypeMatcher<CurvePoint>());
+    // segment 2
+    expect(journey.data[5], TypeMatcher<Signal>());
+    expect(journey.data[6], TypeMatcher<ServicePoint>());
+    expect(journey.data[7], TypeMatcher<Signal>());
+    expect(journey.data[8], TypeMatcher<CurvePoint>());
+    // segment 3
+    expect(journey.data[9], TypeMatcher<CurvePoint>());
+    expect(journey.data[10], TypeMatcher<ServicePoint>());
+    expect(journey.data[11], TypeMatcher<Signal>());
+    // segment 4
+    expect(journey.data[12], TypeMatcher<ServicePoint>());
+    expect(journey.data[13], TypeMatcher<Signal>());
+    // segment 5
+    expect(journey.data[14], TypeMatcher<Signal>());
+    expect(journey.data[15], TypeMatcher<ServicePoint>());
+    expect(journey.data[16], TypeMatcher<CurvePoint>());
+  });
+
   test('Test kilometre are parsed correctly', () async {
     final journey = getJourney('9999', 5);
 
     expect(journey.valid, true);
-    expect(journey.data, hasLength(5));
-    expect(journey.data[0].kilometre[0], 0.5);
-    expect(journey.data[1].kilometre[0], 1.5);
-    expect(journey.data[2].kilometre[0], 2.4);
-    expect(journey.data[3].kilometre[0], 3.7);
-    expect(journey.data[3].kilometre[1], 0);
-    expect(journey.data[4].kilometre[0], 0.6);
+    expect(journey.data, hasLength(17));
+
+    // segment 1
+    expect(journey.data[0].kilometre[0], 0.2);
+    expect(journey.data[1].kilometre[0], 0.5);
+    expect(journey.data[2].kilometre[0], 0.6);
+    expect(journey.data[3].kilometre[0], 0.7);
+    expect(journey.data[4].kilometre[0], 0.9);
+    // segment 2
+    expect(journey.data[5].kilometre[0], 1.2);
+    expect(journey.data[6].kilometre[0], 1.5);
+    expect(journey.data[7].kilometre[0], 1.7);
+    expect(journey.data[8].kilometre[0], 1.8);
+    // segment 3
+    expect(journey.data[9].kilometre[0], 2.1);
+    expect(journey.data[10].kilometre[0], 2.4);
+    expect(journey.data[11].kilometre[0], 2.6);
+    // segment 4
+    expect(journey.data[12].kilometre[0], 3.7);
+    expect(journey.data[12].kilometre[1], 0);
+    expect(journey.data[13].kilometre[0], 0.2);
+    // segment 5
+    expect(journey.data[14].kilometre[0], 0.4);
+    expect(journey.data[15].kilometre[0], 0.6);
+    expect(journey.data[16].kilometre[0], 0.8);
   });
 
   test('Test order is generated correctly', () async {
     final journey = getJourney('9999', 5);
 
     expect(journey.valid, true);
-    expect(journey.data, hasLength(5));
-    expect(journey.data[0].order, 000500);
-    expect(journey.data[1].order, 100500);
-    expect(journey.data[2].order, 200400);
-    expect(journey.data[3].order, 300700);
-    expect(journey.data[4].order, 400300);
+    expect(journey.data, hasLength(17));
+
+    // segment 1
+    expect(journey.data[0].order, 000200);
+    expect(journey.data[1].order, 000500);
+    expect(journey.data[2].order, 000600);
+    expect(journey.data[3].order, 000700);
+    expect(journey.data[4].order, 000900);
+    // segment 2
+    expect(journey.data[5].order, 100200);
+    expect(journey.data[6].order, 100500);
+    expect(journey.data[7].order, 100700);
+    expect(journey.data[8].order, 100800);
+    // segment 3
+    expect(journey.data[9].order, 200100);
+    expect(journey.data[10].order, 200400);
+    expect(journey.data[11].order, 200600);
+    // segment 4
+    expect(journey.data[12].order, 300700);
+    expect(journey.data[13].order, 300900);
+    // segment 5
+    expect(journey.data[14].order, 400100);
+    expect(journey.data[15].order, 400300);
+    expect(journey.data[16].order, 400500);
+  });
+
+  test('Test track equipment is generated correctly', () async {
+    final journey = getJourney('9999', 5);
+
+    expect(journey.valid, true);
+    expect(journey.data, hasLength(17));
+
+    // segment 1
+    expect(journey.data[0].trackEquipment, isEmpty);
+    expect(journey.data[1].trackEquipment, isEmpty);
+    expect(journey.data[2].trackEquipment, isEmpty);
+    expect(journey.data[4].trackEquipment, isEmpty);
+    // segment 2
+    expect(journey.data[5].trackEquipment, hasLength(1));
+    expect(journey.data[5].trackEquipment[0].appliesToWholeSp, isTrue);
+    expect(journey.data[5].trackEquipment[0].type, TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment);
+    expect(journey.data[6].trackEquipment, hasLength(1));
+    expect(journey.data[6].trackEquipment[0].type, TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment);
+    expect(journey.data[7].trackEquipment, hasLength(1));
+    expect(journey.data[7].trackEquipment[0].type, TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment);
+    expect(journey.data[8].trackEquipment, hasLength(1));
+    expect(journey.data[8].trackEquipment[0].type, TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment);
+    // segment 3
+    expect(journey.data[9].trackEquipment, hasLength(1));
+    expect(journey.data[9].trackEquipment[0].appliesToWholeSp, isFalse);
+    expect(journey.data[9].trackEquipment[0].startLocation, 100.0);
+    expect(journey.data[9].trackEquipment[0].endLocation, 400.0);
+    expect(journey.data[9].trackEquipment[0].type, TrackEquipmentType.etcsL2ConvSpeedReversingImpossible);
+    expect(journey.data[10].trackEquipment, hasLength(1));
+    expect(journey.data[10].trackEquipment[0].type, TrackEquipmentType.etcsL2ConvSpeedReversingImpossible);
+    expect(journey.data[11].trackEquipment, hasLength(1));
+    expect(journey.data[11].trackEquipment[0].type, TrackEquipmentType.etcsL2ExtSpeedReversingPossible);
+    expect(journey.data[11].trackEquipment[0].appliesToWholeSp, isFalse);
+    expect(journey.data[11].trackEquipment[0].startLocation, 500.0);
+    expect(journey.data[11].trackEquipment[0].endLocation, isNull);
+    // segment 4
+    expect(journey.data[12].trackEquipment, hasLength(1));
+    expect(journey.data[12].trackEquipment[0].type, TrackEquipmentType.etcsL2ExtSpeedReversingPossible);
+    expect(journey.data[12].trackEquipment[0].appliesToWholeSp, isFalse);
+    expect(journey.data[12].trackEquipment[0].startLocation, isNull);
+    expect(journey.data[12].trackEquipment[0].endLocation, 800.0);
+    expect(journey.data[13].trackEquipment, isEmpty);
+    // segment 5
+    expect(journey.data[14].trackEquipment, isEmpty);
+    expect(journey.data[15].trackEquipment, isEmpty);
+    expect(journey.data[16].trackEquipment, hasLength(1));
+    expect(journey.data[16].trackEquipment[0].startLocation, 400.0);
+    expect(journey.data[16].trackEquipment[0].endLocation, 800.0);
+    expect(journey.data[16].trackEquipment[0].type, TrackEquipmentType.etcsL2ExtSpeedReversingImpossible);
+    expect(journey.data[16].trackEquipment[0].appliesToWholeSp, isFalse);
+  });
+
+  test('Test signals are generated correctly', () async {
+    final journey = getJourney('9999', 5);
+    final signals = journey.data.where((it) => it.type == Datatype.signal).cast<Signal>().toList();
+
+    expect(journey.valid, true);
+    expect(signals, hasLength(7));
+    expect(signals[0].visualIdentifier, 'B1');
+    expect(signals[0].functions, hasLength(1));
+    expect(signals[0].functions[0], SignalFunction.block);
+    expect(signals[1].visualIdentifier, 'S1');
+    expect(signals[1].functions, hasLength(1));
+    expect(signals[1].functions[0], SignalFunction.laneChange);
+    expect(signals[2].visualIdentifier, 'E1');
+    expect(signals[2].functions, hasLength(1));
+    expect(signals[2].functions[0], SignalFunction.entry);
+    expect(signals[3].visualIdentifier, 'A1');
+    expect(signals[3].functions, hasLength(1));
+    expect(signals[3].functions[0], SignalFunction.exit);
+    expect(signals[4].visualIdentifier, 'AB1');
+    expect(signals[4].functions, hasLength(1));
+    expect(signals[4].functions[0], SignalFunction.intermediate);
+    expect(signals[5].visualIdentifier, 'D1');
+    expect(signals[5].functions, hasLength(1));
+    expect(signals[5].functions[0], SignalFunction.protection);
+    expect(signals[6].visualIdentifier, 'BAB1');
+    expect(signals[6].functions, hasLength(2));
+    expect(signals[6].functions[0], SignalFunction.block);
+    expect(signals[6].functions[1], SignalFunction.intermediate);
+  });
+
+  test('Test curvePoint are generated correctly', () async {
+    final journey = getJourney('9999', 5);
+    final curvePoints = journey.data.where((it) => it.type == Datatype.curvePoint).cast<CurvePoint>().toList();
+
+    expect(journey.valid, true);
+    expect(curvePoints, hasLength(5));
+    expect(curvePoints[0].curvePointType, CurvePointType.begin);
+    expect(curvePoints[0].curveType, CurveType.curve);
+    expect(curvePoints[0].comment, 'Kurve 1');
+    expect(curvePoints[1].curvePointType, CurvePointType.end);
+    expect(curvePoints[1].curveType, isNull);
+    expect(curvePoints[1].comment, isNull);
+    expect(curvePoints[2].curvePointType, CurvePointType.begin);
+    expect(curvePoints[2].curveType, CurveType.curve);
+    expect(curvePoints[2].comment, 'Kurve 1');
+    expect(curvePoints[3].curvePointType, CurvePointType.begin);
+    expect(curvePoints[3].curveType, CurveType.stationExitCurve);
+    expect(curvePoints[3].comment, 'Kurve 2');
+    expect(curvePoints[4].curvePointType, CurvePointType.begin);
+    expect(curvePoints[4].curveType, CurveType.curveAfterHalt);
+    expect(curvePoints[4].comment, 'Kurve 3');
   });
 
   test('Test stop on demand is parsed correctly', () async {
@@ -154,5 +328,90 @@ void main() {
     expect(protectionSections[4].isOptional, true);
     expect(protectionSections[5].isLong, false);
     expect(protectionSections[5].isOptional, false);
+  });
+
+  test('Test additional speed restriction is parsed correctly no items between', () async {
+    final journey = getJourney('513', 1);
+    final speedRestrictions = journey.data.where((it) => it.type == Datatype.additionalSpeedRestriction).cast<AdditionalSpeedRestrictionData>().toList();
+
+    expect(journey.valid, true);
+    expect(speedRestrictions, hasLength(1));
+    expect(speedRestrictions[0].restriction.kmFrom, 64.2);
+    expect(speedRestrictions[0].restriction.kmTo, 63.2);
+    expect(speedRestrictions[0].restriction.orderFrom, 700);
+    expect(speedRestrictions[0].restriction.orderTo, 800);
+    expect(speedRestrictions[0].restriction.speed, 60);
+
+    expect(journey.metadata.additionalSpeedRestrictions, hasLength(1));
+    expect(journey.metadata.additionalSpeedRestrictions[0].kmFrom, 64.2);
+    expect(journey.metadata.additionalSpeedRestrictions[0].kmTo, 63.2);
+    expect(journey.metadata.additionalSpeedRestrictions[0].orderFrom, 700);
+    expect(journey.metadata.additionalSpeedRestrictions[0].orderTo, 800);
+    expect(journey.metadata.additionalSpeedRestrictions[0].speed, 60);
+  });
+
+  test('Test additional speed restriction is parsed correctly over multiple segments', () async {
+    final journey = getJourney('500', 3);
+    final speedRestrictions = journey.data.where((it) => it.type == Datatype.additionalSpeedRestriction).cast<AdditionalSpeedRestrictionData>().toList();
+
+    expect(journey.valid, true);
+    expect(speedRestrictions, hasLength(2));
+    expect(speedRestrictions[0].restriction.kmFrom, 64.2);
+    expect(speedRestrictions[0].restriction.kmTo, 47.2);
+    expect(speedRestrictions[0].restriction.orderFrom, 700);
+    expect(speedRestrictions[0].restriction.orderTo, 206800);
+    expect(speedRestrictions[0].restriction.speed, 60);
+    expect(speedRestrictions[0].order, 700);
+    expect(speedRestrictions[1].restriction.kmFrom, 64.2);
+    expect(speedRestrictions[1].restriction.kmTo, 47.2);
+    expect(speedRestrictions[1].restriction.orderFrom, 700);
+    expect(speedRestrictions[1].restriction.orderTo, 206800);
+    expect(speedRestrictions[1].restriction.speed, 60);
+    expect(speedRestrictions[1].order, 206800);
+
+    expect(journey.metadata.additionalSpeedRestrictions, hasLength(1));
+    expect(journey.metadata.additionalSpeedRestrictions[0].kmFrom, 64.2);
+    expect(journey.metadata.additionalSpeedRestrictions[0].kmTo, 47.2);
+    expect(journey.metadata.additionalSpeedRestrictions[0].orderFrom, 700);
+    expect(journey.metadata.additionalSpeedRestrictions[0].orderTo, 206800);
+    expect(journey.metadata.additionalSpeedRestrictions[0].speed, 60);
+  });
+
+  test('Test additional speed restriction without a date', () async {
+    final journey = getJourney('513_asp_no_date', 1, spTrainNumber: '513');
+    final speedRestrictions = journey.data.where((it) => it.type == Datatype.additionalSpeedRestriction).cast<AdditionalSpeedRestrictionData>().toList();
+
+    expect(journey.valid, true);
+    expect(speedRestrictions, hasLength(1));
+    expect(speedRestrictions[0].restriction.kmFrom, 64.2);
+    expect(speedRestrictions[0].restriction.kmTo, 63.2);
+    expect(speedRestrictions[0].restriction.orderFrom, 700);
+    expect(speedRestrictions[0].restriction.orderTo, 800);
+    expect(speedRestrictions[0].restriction.speed, 60);
+
+    expect(journey.metadata.additionalSpeedRestrictions, hasLength(1));
+    expect(journey.metadata.additionalSpeedRestrictions[0].kmFrom, 64.2);
+    expect(journey.metadata.additionalSpeedRestrictions[0].kmTo, 63.2);
+    expect(journey.metadata.additionalSpeedRestrictions[0].orderFrom, 700);
+    expect(journey.metadata.additionalSpeedRestrictions[0].orderTo, 800);
+    expect(journey.metadata.additionalSpeedRestrictions[0].speed, 60);
+  });
+
+  test('Test additional speed restriction with date in the past', () async {
+    final journey = getJourney('513_asp_date_before', 1, spTrainNumber: '513');
+    final speedRestrictions = journey.data.where((it) => it.type == Datatype.additionalSpeedRestriction).cast<AdditionalSpeedRestrictionData>().toList();
+
+    expect(journey.valid, true);
+    expect(speedRestrictions, hasLength(0));
+    expect(journey.metadata.additionalSpeedRestrictions, hasLength(0));
+  });
+
+  test('Test additional speed restriction with date in the future', () async {
+    final journey = getJourney('513_asp_date_after', 1, spTrainNumber: '513');
+    final speedRestrictions = journey.data.where((it) => it.type == Datatype.additionalSpeedRestriction).cast<AdditionalSpeedRestrictionData>().toList();
+
+    expect(journey.valid, true);
+    expect(speedRestrictions, hasLength(0));
+    expect(journey.metadata.additionalSpeedRestrictions, hasLength(0));
   });
 }

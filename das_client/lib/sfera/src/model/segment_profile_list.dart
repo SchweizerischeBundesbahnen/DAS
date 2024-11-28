@@ -1,5 +1,7 @@
+import 'package:das_client/sfera/src/model/enums/temporary_constraint_type.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 import 'package:das_client/sfera/src/model/sp_zone.dart';
+import 'package:das_client/sfera/src/model/temporary_constraints.dart';
 import 'package:das_client/sfera/src/model/timing_point_constraints.dart';
 
 class SegmentProfileList extends SferaXmlElement {
@@ -16,6 +18,10 @@ class SegmentProfileList extends SferaXmlElement {
   SpZone get spZone => children.whereType<SpZone>().first;
 
   Iterable<TimingPointConstraints> get timingPointsContraints => children.whereType<TimingPointConstraints>();
+
+  Iterable<TemporaryConstraints> get asrTemporaryConstrains => children
+      .whereType<TemporaryConstraints>()
+      .where((it) => it.temporaryConstraintType == TemporaryConstraintType.asr);
 
   @override
   bool validate() {

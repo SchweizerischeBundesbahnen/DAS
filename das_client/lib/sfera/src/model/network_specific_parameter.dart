@@ -14,3 +14,9 @@ class NetworkSpecificParameter extends SferaXmlElement {
     return validateHasAttribute('name') && validateHasAttribute('value') && super.validate();
   }
 }
+
+// extensions
+
+extension NetworkSpecificParametersExtension on Iterable<NetworkSpecificParameter> {
+  NetworkSpecificParameter? withName(String name) => where((it) => it.name == name).firstOrNull;
+}

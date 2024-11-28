@@ -119,8 +119,8 @@
             </TimingPointReference>
         </TimingPointConstraints>
         <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="700"
-                              endLocation="800" startTime="2022-01-01T00:00:00Z" endTime="2060-01-01T00:00:00Z">
-            <AdditionalSpeedRestriction ASR_Front="true" ASR_Speed="60"/>
+                              endLocation="800" startTime="2060-01-01T00:00:00Z" endTime="2061-01-01T00:00:00Z">
+            <AdditionalSpeedRestriction ASR_Front="true" ASR_Speed="80"/>
         </TemporaryConstraints>
     </SegmentProfileList>
 </JourneyProfile>

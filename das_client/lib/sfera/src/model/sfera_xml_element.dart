@@ -42,6 +42,21 @@ class SferaXmlElement {
     return true;
   }
 
+  bool validateHasAttributeInt(String attribute) {
+    if (!attributes.containsKey(attribute)) {
+      Fimber.w('Validation failed for $type because attribute=$attribute is missing');
+      return false;
+    }
+
+    if (int.tryParse(attributes[attribute]!) == null) {
+      Fimber.w(
+          'Validation failed for $type because attribute=$attribute with value=${attributes[attribute]} could not be parsed to int');
+      return false;
+    }
+
+    return true;
+  }
+
   bool validateHasChild(String type) {
     if (childrenWithType(type).isEmpty) {
       Fimber.w('Validation failed for ${this.type} because it has no child of type $type');
