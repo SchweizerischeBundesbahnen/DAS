@@ -14,6 +14,5 @@
       "release-type": "maven",
       "package-name": "sfera-mock"
     }
-  },
-  "changelog-type": "github"
+  }
 }
