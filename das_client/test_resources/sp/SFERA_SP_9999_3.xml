@@ -27,6 +27,13 @@
             <NetworkSpecificParameter name="comment" value="Kurve 2"/>
         </NetworkSpecificPoint>
 
+        <NetworkSpecificPoint location="500" identifier="4" name="curvePoint">
+            <NetworkSpecificParameter name="curvePointType" value="begin"/>
+            <!-- 'curveAfterHalt' (begins at an halt). -->
+            <NetworkSpecificParameter name="curveType" value="curveAfterHalt"/>
+            <NetworkSpecificParameter name="comment" value="Kurve 3"/>
+        </NetworkSpecificPoint>
+
     </SP_Points>
 
     <SP_Areas>
@@ -53,6 +60,9 @@
         </KilometreReferencePoint>
         <KilometreReferencePoint location="400">
             <KM_Reference kmRef="2.4"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="500">
+            <KM_Reference kmRef="2.5"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="600">
             <KM_Reference kmRef="2.6"/>

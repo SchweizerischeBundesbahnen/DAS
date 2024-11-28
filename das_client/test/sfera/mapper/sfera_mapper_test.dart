@@ -68,8 +68,8 @@ void main() {
     expect(journey.data, hasLength(16));
 
     // segment 1
-    expect(journey.data[0], TypeMatcher<Signal>());
-    expect(journey.data[1], TypeMatcher<ServicePoint>());
+    expect(journey.data[0], TypeMatcher<ServicePoint>());
+    expect(journey.data[1], TypeMatcher<Signal>());
     expect(journey.data[2], TypeMatcher<CurvePoint>());
     expect(journey.data[3], TypeMatcher<Signal>());
     // segment 2
@@ -80,14 +80,14 @@ void main() {
     // segment 3
     expect(journey.data[8], TypeMatcher<CurvePoint>());
     expect(journey.data[9], TypeMatcher<ServicePoint>());
-    expect(journey.data[10], TypeMatcher<Signal>());
+    expect(journey.data[10], TypeMatcher<CurvePoint>());
+    expect(journey.data[11], TypeMatcher<Signal>());
     // segment 4
-    expect(journey.data[11], TypeMatcher<ServicePoint>());
-    expect(journey.data[12], TypeMatcher<Signal>());
-    // segment 5
+    expect(journey.data[12], TypeMatcher<ServicePoint>());
     expect(journey.data[13], TypeMatcher<Signal>());
-    expect(journey.data[14], TypeMatcher<ServicePoint>());
-    expect(journey.data[15], TypeMatcher<CurvePoint>());
+    // segment 5
+    expect(journey.data[14], TypeMatcher<Signal>());
+    expect(journey.data[15], TypeMatcher<ServicePoint>());
   });
 
   test('Test kilometre are parsed correctly', () async {
@@ -109,15 +109,15 @@ void main() {
     // segment 3
     expect(journey.data[8].kilometre[0], 2.1);
     expect(journey.data[9].kilometre[0], 2.4);
-    expect(journey.data[10].kilometre[0], 2.6);
+    expect(journey.data[10].kilometre[0], 2.5);
+    expect(journey.data[11].kilometre[0], 2.6);
     // segment 4
-    expect(journey.data[11].kilometre[0], 3.7);
-    expect(journey.data[11].kilometre[1], 0);
-    expect(journey.data[12].kilometre[0], 0.2);
+    expect(journey.data[12].kilometre[0], 3.7);
+    expect(journey.data[12].kilometre[1], 0);
+    expect(journey.data[13].kilometre[0], 0.2);
     // segment 5
-    expect(journey.data[13].kilometre[0], 0.4);
-    expect(journey.data[14].kilometre[0], 0.6);
-    expect(journey.data[15].kilometre[0], 0.8);
+    expect(journey.data[14].kilometre[0], 0.4);
+    expect(journey.data[15].kilometre[0], 0.6);
   });
 
   test('Test order is generated correctly', () async {
@@ -139,14 +139,14 @@ void main() {
     // segment 3
     expect(journey.data[8].order, 200100);
     expect(journey.data[9].order, 200400);
-    expect(journey.data[10].order, 200600);
+    expect(journey.data[10].order, 200500);
+    expect(journey.data[11].order, 200600);
     // segment 4
-    expect(journey.data[11].order, 300700);
-    expect(journey.data[12].order, 300900);
+    expect(journey.data[12].order, 300700);
+    expect(journey.data[13].order, 300900);
     // segment 5
-    expect(journey.data[13].order, 400100);
-    expect(journey.data[14].order, 400300);
-    expect(journey.data[15].order, 400500);
+    expect(journey.data[14].order, 400100);
+    expect(journey.data[15].order, 400300);
   });
 
   test('Test track equipment is generated correctly', () async {
@@ -159,6 +159,7 @@ void main() {
     expect(journey.data[0].trackEquipment, isEmpty);
     expect(journey.data[1].trackEquipment, isEmpty);
     expect(journey.data[2].trackEquipment, isEmpty);
+    expect(journey.data[3].trackEquipment, isEmpty);
     // segment 2
     expect(journey.data[4].trackEquipment, hasLength(1));
     expect(journey.data[4].trackEquipment[0].appliesToWholeSp, isTrue);
@@ -182,18 +183,19 @@ void main() {
     expect(journey.data[10].trackEquipment[0].appliesToWholeSp, isFalse);
     expect(journey.data[10].trackEquipment[0].startLocation, 500.0);
     expect(journey.data[10].trackEquipment[0].endLocation, isNull);
-    // segment 4
     expect(journey.data[11].trackEquipment, hasLength(1));
     expect(journey.data[11].trackEquipment[0].type, TrackEquipmentType.etcsL2ExtSpeedReversingPossible);
-    expect(journey.data[11].trackEquipment[0].appliesToWholeSp, isFalse);
-    expect(journey.data[11].trackEquipment[0].startLocation, isNull);
-    expect(journey.data[11].trackEquipment[0].endLocation, 800.0);
-    expect(journey.data[12].trackEquipment, isEmpty);
-    // segment 5
+    // segment 4
+    expect(journey.data[12].trackEquipment, hasLength(1));
+    expect(journey.data[12].trackEquipment[0].type, TrackEquipmentType.etcsL2ExtSpeedReversingPossible);
+    expect(journey.data[12].trackEquipment[0].appliesToWholeSp, isFalse);
+    expect(journey.data[12].trackEquipment[0].startLocation, isNull);
+    expect(journey.data[12].trackEquipment[0].endLocation, 800.0);
     expect(journey.data[13].trackEquipment, isEmpty);
+    // segment 5
     expect(journey.data[14].trackEquipment, isEmpty);
     expect(journey.data[15].trackEquipment, hasLength(1));
-    expect(journey.data[15].trackEquipment[0].startLocation, 400.0);
+    expect(journey.data[15].trackEquipment[0].startLocation, 300.0);
     expect(journey.data[15].trackEquipment[0].endLocation, 800.0);
     expect(journey.data[15].trackEquipment[0].type, TrackEquipmentType.etcsL2ExtSpeedReversingImpossible);
     expect(journey.data[15].trackEquipment[0].appliesToWholeSp, isFalse);

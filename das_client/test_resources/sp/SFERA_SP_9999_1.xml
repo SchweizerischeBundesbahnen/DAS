@@ -7,7 +7,7 @@
     </SP_Zone>
     <SP_Points>
 
-        <TimingPoint TP_ID="Bahnhof_A" location="500">
+        <TimingPoint TP_ID="Bahnhof_A" location="200">
             <TP_Name name="A"/>
             <TAF_TAP_LocationReference>
                 <CountryCodeISO>CH</CountryCodeISO>
@@ -16,7 +16,7 @@
         </TimingPoint>
 
         <Signal>
-            <Signal_ID signal_ID_Physical="1" location="200"/>
+            <Signal_ID signal_ID_Physical="1" location="500"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="B1"/>
         </Signal>

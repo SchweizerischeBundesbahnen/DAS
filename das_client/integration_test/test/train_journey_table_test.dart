@@ -1,7 +1,9 @@
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/bracket_station_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/curve_point_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/protection_section_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/signal_row.dart';
 import 'package:das_client/app/pages/profile/profile_page.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +67,7 @@ void main() {
       expect(routeEnd, findsOneWidget);
     });
 
-    testWidgets('test protection secions are displayed correctly', (tester) async {
+    testWidgets('test protection sections are displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
@@ -236,8 +238,6 @@ void main() {
       expect(stopRoute, findsNothing);
     });
 
-
-
     testWidgets('test halt is displayed italic', (tester) async {
       await prepareAndStartApp(tester);
 
@@ -253,7 +253,62 @@ void main() {
       expect(schlierenText, findsOneWidget);
     });
 
+    testWidgets('test curves are displayed correctly', (tester) async {
+      await prepareAndStartApp(tester);
 
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: '9999');
+
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
+
+      await tester.dragUntilVisible(find.text('Kurve').first, scrollableFinder, const Offset(0, -50));
+
+      final curveRows = findDASTableRowByText('Kurve');
+      expect(curveRows, findsAtLeast(1));
+
+      final curveIcon = find.descendant(of: curveRows.first, matching: find.byKey(CurvePointRow.curvePointIconKey));
+      expect(curveIcon, findsOneWidget);
+
+      await tester.dragUntilVisible(find.text('Kurve nach Haltestelle'), scrollableFinder, const Offset(0, -50));
+
+      final curveAfterHaltRow = findDASTableRowByText('Kurve nach Haltestelle');
+      expect(curveAfterHaltRow, findsOneWidget);
+    });
+
+    testWidgets('test signals are displayed correctly', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: '9999');
+
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
+
+      // check if signals with both functions laneChange, block are correct
+      await tester.dragUntilVisible(find.text('S1'), scrollableFinder, const Offset(0, -50));
+      final langeChangeBlockSignalRow = findDASTableRowByText('S1');
+      expect(langeChangeBlockSignalRow, findsOneWidget);
+      expect(find.descendant(of: langeChangeBlockSignalRow, matching: find.text('Block')), findsOneWidget);
+      final laneChangeIcon = find.descendant(of: langeChangeBlockSignalRow, matching: find.byKey(SignalRow.signalLineChangeIconKey));
+      expect(laneChangeIcon, findsOneWidget);
+
+      // check if basic signal is rendered correctly
+      await tester.dragUntilVisible(find.text('Deckungssignal'), scrollableFinder, const Offset(0, -50));
+      final protectionSignalRow = findDASTableRowByText('Deckungssignal');
+      expect(protectionSignalRow, findsOneWidget);
+      expect(find.descendant(of: protectionSignalRow, matching: find.text('D1')), findsOneWidget);
+      final noLaneChangeIcon = find.descendant(of: protectionSignalRow, matching: find.byKey(SignalRow.signalLineChangeIconKey));
+      expect(noLaneChangeIcon, findsNothing);
+
+      // check if signals with multiple functions are rendered correctly
+      await tester.dragUntilVisible(find.text('Block/Abschnittsignal'), scrollableFinder, const Offset(0, -50));
+      final blockIntermediateSignalRow = findDASTableRowByText('Block/Abschnittsignal');
+      expect(blockIntermediateSignalRow, findsOneWidget);
+      expect(find.descendant(of: blockIntermediateSignalRow, matching: find.text('BAB1')), findsOneWidget);
+      final noLaneChangeIcon2 = find.descendant(of: blockIntermediateSignalRow, matching: find.byKey(SignalRow.signalLineChangeIconKey));
+      expect(noLaneChangeIcon2, findsNothing);
+    });
   });
 }
 
