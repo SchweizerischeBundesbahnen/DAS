@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.3.2...das_client-v0.4.0) (2024-11-28)
+
+
+### Features
+
+* implement langsamfahrstellen ([#87](https://github.com/SchweizerischeBundesbahnen/DAS/issues/87)) ([#413](https://github.com/SchweizerischeBundesbahnen/DAS/issues/413)) ([4fd494c](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4fd494cc2a3a6d1d58a5c1a0924ac729801ccbe0))
+
+
+### Bug Fixes
+
+* update dependency to fix android login problem ([2aa4bc0](https://github.com/SchweizerischeBundesbahnen/DAS/commit/2aa4bc054876905d0da7d55b77ebbf0540a52ff8))
+
 ## [0.3.2](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.3.1...das_client-v0.3.2) (2024-11-25)
 
 
