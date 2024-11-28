@@ -1,0 +1,70 @@
+name: Report Finding
+description: Findings aus dem Fachtesting oder produktiven Gebrauch ans DAS Team melden.
+labels: ["finding"]
+projects: ["SchweizerischeBundesbahnen/10"]
+assignees:
+  - marcdettwiler
+  - StephanieFrancke
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Weitere Informationen zum Ausfüllen eines Findings findest du unter [Guideline für die Erfassung von Findings](https://example.com).
+  - type: textarea
+    attributes:
+      label: Beschreibung
+      description: Beschreibung vom Finding
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Schritte zum Finding
+      description: Was wurde gemacht, um das Finding zu verursachen? Falls vorhanden, bitte Printscreens einfügen.
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Erwartetes Verhalten
+      description: Was wäre das korrekte/erwartete Verhalten gewesen?
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Betriebssystem
+      description: Welches Betriebsystem wurde genutzt? Die Version kann über die Systemeinstellungen unter "Info" geprüft werden.
+      options:
+        - iOS Version xx
+        - iOS Version xy
+        - Android Version xx
+        - Android Version xy
+      default: 0
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: DAS Umgebung
+      description: In welcher Umgebung wurde das Finding gefunden
+      options:
+        - Test
+        - Integration
+        - Produktion
+      default: 1
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: DAS Version
+      description: Welche Version von DAS wurde genutzt?
+      options:
+        - 0.4
+        - 0.3
+      default: 0
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Weitere Anmerkungen

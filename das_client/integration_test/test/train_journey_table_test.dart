@@ -1,3 +1,4 @@
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/bracket_station_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/curve_point_row.dart';
@@ -14,6 +15,63 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey table test', () {
+    testWidgets('test additional speed restriction row is displayed correctly', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: '500');
+
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
+
+      final asrRow = findDASTableRowByText('km 64.200 - km 47.200');
+      expect(asrRow, findsOneWidget);
+
+      final asrIcon = find.descendant(
+          of: asrRow, matching: find.byKey(AdditionalSpeedRestrictionRow.additionalSpeedRestrictionIconKey));
+      expect(asrIcon, findsOneWidget);
+
+      final asrSpeed = find.descendant(of: asrRow, matching: find.text('60'));
+      expect(asrSpeed, findsOneWidget);
+
+      // check all cells are colored
+      final coloredCells = find.descendant(
+          of: asrRow,
+          matching: find.byWidgetPredicate((it) =>
+              it is Container &&
+              it.decoration is BoxDecoration &&
+              (it.decoration as BoxDecoration).color == AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor));
+      expect(coloredCells, findsNWidgets(11));
+    });
+
+    testWidgets('test other rows are displayed correctly', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: '500');
+
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
+
+      final testRows = ['Genève', 'km 32.2', 'Lengnau', 'WANZ'];
+
+      for (final rowText in testRows) {
+        await tester.dragUntilVisible(find.text(rowText), scrollableFinder, const Offset(0, -50));
+
+        final testRow = findDASTableRowByText(rowText);
+        expect(testRow, findsOneWidget);
+
+        // check first 3 cells are colored
+        final coloredCells = find.descendant(
+            of: testRow,
+            matching: find.byWidgetPredicate((it) =>
+            it is Container &&
+                it.decoration is BoxDecoration &&
+                (it.decoration as BoxDecoration).color == AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor));
+        expect(coloredCells, findsNWidgets(3));
+      }
+    });
+
     testWidgets('check if all table columns with header are present', (tester) async {
       await prepareAndStartApp(tester);
 
@@ -87,7 +145,8 @@ void main() {
       expect(find.descendant(of: protectionSectionRow, matching: find.text('FL')), findsOneWidget);
       expect(find.descendant(of: protectionSectionRow, matching: find.text('32.2')), findsOneWidget);
       // Verify icon is displayed
-      expect(find.descendant(of: protectionSectionRow, matching: find.byKey(ProtectionSectionRow.protectionSectionKey)), findsOneWidget);
+      expect(find.descendant(of: protectionSectionRow, matching: find.byKey(ProtectionSectionRow.protectionSectionKey)),
+          findsOneWidget);
 
       // Scroll to next protection section
       await tester.dragUntilVisible(find.text('Yverdon-les-Bains'), scrollableFinder, const Offset(0, -20));
