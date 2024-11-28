@@ -44,11 +44,11 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
 
   DASTableCell kilometreCell(BuildContext context) {
     if (data.kilometre.isEmpty) {
-      return DASTableCell.empty();
+      return DASTableCell.empty(color: specialCellColor);
     }
 
     return DASTableCell(
-        color: getSpecialCellColor(),
+        color: specialCellColor,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +62,7 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
 
   DASTableCell routeCell(BuildContext context) {
     return DASTableCell(
-      color: getSpecialCellColor(),
+      color: specialCellColor,
       padding: EdgeInsets.all(0.0),
       alignment: null,
       child: RouteCellBody(
@@ -74,7 +74,7 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   }
 
   DASTableCell timeCell(BuildContext context) {
-    return DASTableCell.empty();
+    return DASTableCell.empty(color: specialCellColor);
   }
 
   DASTableCell informationCell(BuildContext context) {
@@ -112,11 +112,8 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
     return DASTableCell.empty();
   }
 
-  Color? getSpecialCellColor() {
-    return getAdditionalSpeedRestriction() != null
-        ? AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor
-        : null;
-  }
+  Color? get specialCellColor =>
+      getAdditionalSpeedRestriction() != null ? AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor : null;
 
   AdditionalSpeedRestriction? getAdditionalSpeedRestriction() {
     return metadata.additionalSpeedRestrictions
