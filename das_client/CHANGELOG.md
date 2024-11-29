@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.4.0...das_client-v0.5.0) (2024-11-29)
+
+
+### Features
+
+* added curve points and main signals to train journey ([#82](https://github.com/SchweizerischeBundesbahnen/DAS/issues/82)) ([523ecca](https://github.com/SchweizerischeBundesbahnen/DAS/commit/523eccad303bdc1be04f696605152d255df88cdd))
+
+
+### Bug Fixes
+
+* ios build error ([0f8390e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/0f8390edf361f2f61cd1b775ad080ed6bbb81980))
+
 ## [0.4.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.3.2...das_client-v0.4.0) (2024-11-28)
 
 
