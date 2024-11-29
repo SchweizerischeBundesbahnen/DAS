@@ -37,6 +37,11 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
   }
 
   @override
+  DASTableCell timeCell(BuildContext context) {
+    return DASTableCell(child: Text('06:05:52'), alignment: defaultAlignment, color: specialCellColor);
+  }
+
+  @override
   DASTableCell iconsCell1(BuildContext context) {
     return DASTableCell(
       padding: EdgeInsets.fromLTRB(0, sbbDefaultSpacing * 0.5, 0, sbbDefaultSpacing * 0.5),
@@ -63,7 +68,7 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
   @override
   DASTableCell routeCell(BuildContext context) {
     return DASTableCell(
-      color: getSpecialCellColor(),
+      color: specialCellColor,
       padding: EdgeInsets.all(0.0),
       alignment: null,
       child: RouteCellBody(

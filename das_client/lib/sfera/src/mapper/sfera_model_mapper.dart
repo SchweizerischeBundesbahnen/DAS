@@ -64,7 +64,8 @@ class SferaModelMapper {
       final kilometreMap = _parseKilometre(segmentProfile);
 
       final curvePoints = _parseCurvePoints(segmentProfile, segmentIndex, kilometreMap, trackEquipments);
-      journeyData.addAll(curvePoints);
+      final curveBeginPoints = curvePoints.where((curve) => curve.curvePointType == CurvePointType.begin);
+      journeyData.addAll(curveBeginPoints);
 
       final signals = _parseSignals(segmentProfile, segmentIndex, kilometreMap, trackEquipments);
       journeyData.addAll(signals);

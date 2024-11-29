@@ -20,13 +20,6 @@
             <SignalFunction>intermediate</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="BAB1"/>
         </Signal>
-
-        <NetworkSpecificPoint location="500" identifier="4" name="curvePoint">
-            <NetworkSpecificParameter name="curvePointType" value="begin"/>
-            <!-- 'curveAfterHalt' (begins at an halt). -->
-            <NetworkSpecificParameter name="curveType" value="curveAfterHalt"/>
-            <NetworkSpecificParameter name="comment" value="Kurve 3"/>
-        </NetworkSpecificPoint>
     </SP_Points>
 
     <SP_Areas>
@@ -41,7 +34,7 @@
                 <NetworkSpecificParameter name="mainStation" value="CH9994"/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
-        <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="400" endLocation="800" name="nonStandardTrackEquipment">
+        <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="300" endLocation="800" name="nonStandardTrackEquipment">
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingImpossible"/>
         </NetworkSpecificArea>
     </SP_Areas>
@@ -53,9 +46,6 @@
         </KilometreReferencePoint>
         <KilometreReferencePoint location="300">
             <KM_Reference kmRef="0.6"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="500">
-            <KM_Reference kmRef="0.8"/>
         </KilometreReferencePoint>
     </SP_ContextInformation>
 </SegmentProfile>
