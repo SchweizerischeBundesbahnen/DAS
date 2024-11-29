@@ -70,7 +70,7 @@ extension _SignalFunctionExtension on SignalFunction {
       case SignalFunction.protection:
         return context.l10n.c_main_signal_function_protection;
       case SignalFunction.unknown:
-        return 'unknown';
+        return context.l10n.c_unknown;
     }
   }
 }

@@ -31,6 +31,7 @@
     "c_ru_bls_p": "BLS",
     "c_ru_bls_c": "BLS Cargo",
     "c_ru_sob": "SOB",
+    "c_unknown": "Unbekannt",
     "c_main_signal_function_entry": "Einfahrsignal",
     "c_main_signal_function_exit": "Ausfahrsignal",
     "c_main_signal_function_intermediate": "Abschnittsignal",

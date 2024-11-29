@@ -43,7 +43,7 @@ extension _CurveTypeExtension on CurveType {
       case CurveType.stationExitCurve:
         return context.l10n.p_train_journey_table_curve_type_station_exit_curve;
       case CurveType.unknown:
-        return 'unknown';
+        return context.l10n.c_unknown;
     }
   }
 }
