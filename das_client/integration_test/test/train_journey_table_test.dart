@@ -6,6 +6,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/protect
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/signal_row.dart';
 import 'package:das_client/app/pages/profile/profile_page.dart';
+import 'package:das_client/app/widgets/table/das_table.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -53,10 +54,18 @@ void main() {
       final scrollableFinder = find.byType(ListView);
       expect(scrollableFinder, findsOneWidget);
 
+      final tableFinder = find.byType(DASTable);
+      expect(tableFinder, findsOneWidget);
+
       final testRows = ['Genève', 'km 32.2', 'Lengnau', 'WANZ'];
 
+      //Scroll to the table and search inside it
       for (final rowText in testRows) {
-        await tester.dragUntilVisible(find.text(rowText), scrollableFinder, const Offset(0, -50));
+        await tester.dragUntilVisible(
+          find.descendant(of: tableFinder, matching: find.text(rowText)),
+          tableFinder,
+          const Offset(0, -50),
+        );
 
         final testRow = findDASTableRowByText(rowText);
         expect(testRow, findsOneWidget);

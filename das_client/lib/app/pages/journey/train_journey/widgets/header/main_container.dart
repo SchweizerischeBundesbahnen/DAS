@@ -1,3 +1,4 @@
+import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/departure_authorization.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_channel.dart';
@@ -6,6 +7,8 @@ import 'package:das_client/app/widgets/widget_extensions.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:das_client/model/journey/journey.dart';
+import 'package:das_client/util/error_code.dart';
 
 class MainContainer extends StatelessWidget {
   const MainContainer({super.key});
@@ -25,7 +28,7 @@ class MainContainer extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _topHeaderRow(),
+          _topHeaderRow(context),
           _divider(),
           _bottomHeaderRow(),
         ],
@@ -53,7 +56,28 @@ class MainContainer extends StatelessWidget {
     );
   }
 
-  Widget _topHeaderRow() {
+  Widget _nextStopText(BuildContext context) {
+    final bloc = context.trainJourneyCubit;
+
+    return StreamBuilder<Journey?>(
+      stream: bloc.journeyStream,
+      builder: (context, snapshot) {
+        final Journey? journey = snapshot.data;
+        if (journey == null) {
+          return Container();
+        }
+        if (journey.metadata.nextStop != null) {
+          return Text(journey.metadata.nextStop!.name.localized,
+              style: SBBTextStyles.largeLight.copyWith(fontSize: 24.0));
+        }
+        //Return error if NextStop is
+        return Text(context.l10n.c_unknown,
+            style: SBBTextStyles.extraLargeLight.copyWith(fontSize: 24.0));
+      },
+    );
+  }
+
+  Widget _topHeaderRow(BuildContext context) {
     return SizedBox(
       height: 48.0,
       child: Row(
@@ -62,7 +86,7 @@ class MainContainer extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(left: sbbDefaultSpacing * 0.5),
-              child: Text('Brugg', style: SBBTextStyles.largeLight.copyWith(fontSize: 24.0)),
+              child: _nextStopText(context),
             ),
           ),
           _buttonArea(),

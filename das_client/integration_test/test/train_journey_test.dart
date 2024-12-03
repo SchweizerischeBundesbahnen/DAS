@@ -30,5 +30,24 @@ void main() {
 
       await tester.pumpAndSettle();
     });
+
+    testWidgets('show the correct next stop', (tester) async {
+      // Load app widget.
+      await prepareAndStartApp(tester);
+
+      // check that the primary button is enabled
+      final primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
+
+      // press load Fahrordnung button
+      await tester.tap(primaryButton);
+
+      // wait for train journey to load
+      await tester.pumpAndSettle();
+
+      // check if station is present more than once
+      expect(find.text('Lommiswil'), findsNWidgets(2));
+
+      await tester.pumpAndSettle();
+    });
   });
 }
