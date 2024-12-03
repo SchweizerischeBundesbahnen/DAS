@@ -37,8 +37,9 @@ body:
       label: Betriebssystem
       description: Welches Betriebsystem wurde genutzt? Die Version kann über die Systemeinstellungen unter "Info" geprüft werden.
       options:
-        - iOS Version xx
-        - iOS Version xy
+        - iOS Version 18.2
+        - iOS Version 18.1.1
+        - iOS Version 18.1.0
         - Android Version 16
         - Android Version 15
         - Android Version 14
