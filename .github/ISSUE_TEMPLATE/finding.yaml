@@ -39,20 +39,10 @@ body:
       options:
         - iOS Version xx
         - iOS Version xy
-        - Android Version xx
-        - Android Version xy
+        - Android Version 16
+        - Android Version 15
+        - Android Version 14
       default: 0
-    validations:
-      required: true
-  - type: dropdown
-    attributes:
-      label: DAS Umgebung
-      description: In welcher Umgebung wurde das Finding gefunden
-      options:
-        - Test
-        - Integration
-        - Produktion
-      default: 1
     validations:
       required: true
   - type: dropdown
