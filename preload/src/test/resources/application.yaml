@@ -1,0 +1,8 @@
+info:
+  app:
+    version: test
+
+spring:
+  sql:
+    init:
+      mode: always
