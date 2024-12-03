@@ -1,4 +1,5 @@
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
+import 'package:das_client/sfera/src/model/taf_tap_location_reference.dart';
 import 'package:das_client/sfera/src/model/tp_name.dart';
 
 class TimingPoint extends SferaXmlElement {
@@ -8,12 +9,14 @@ class TimingPoint extends SferaXmlElement {
 
   String get id => attributes['TP_ID']!;
 
-  String get location => attributes['location']!;
+  double get location => double.parse(attributes['location']!);
 
   Iterable<TpName> get names => children.whereType<TpName>();
 
+  TafTapLocationReference? get locationReference => children.whereType<TafTapLocationReference>().firstOrNull;
+
   @override
   bool validate() {
-    return validateHasAttribute('TP_ID') && validateHasAttribute('location') && super.validate();
+    return validateHasAttribute('TP_ID') && validateHasAttributeDouble('location') && super.validate();
   }
 }

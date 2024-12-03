@@ -28,7 +28,7 @@ class DASTableColumn {
   /// The background color for the heading and data cells
   final Color? color;
 
-  final EdgeInsetsGeometry? padding;
+  final EdgeInsets? padding;
 
   /// Whether the column should expand to fill available space.
   final bool expanded;

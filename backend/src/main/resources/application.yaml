@@ -3,6 +3,8 @@ info:
     version: '@project.version@'
 
 spring:
+  profiles:
+    active: ${STAGE:local}
   application:
     name: backend
   security:
@@ -16,7 +18,13 @@ spring:
     mapper:
       accept-case-insensitive-enums: true
     time-zone: CET
-
+  datasource:
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    url: ${DB_URL}
+  sql:
+    init:
+      mode: always
 springdoc:
   swagger-ui:
     oauth:

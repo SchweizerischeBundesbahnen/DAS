@@ -1,23 +1,25 @@
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
+import 'package:das_client/model/journey/additional_speed_restriction.dart';
+import 'package:das_client/model/journey/base_data.dart';
+import 'package:das_client/model/journey/metadata.dart';
 import 'package:flutter/material.dart';
 
-abstract class BaseRowBuilder extends DASTableRowBuilder {
+class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   const BaseRowBuilder({
-    super.height,
-    this.kilometre,
-    this.defaultAlignment = Alignment.centerLeft,
+    super.height = 44.0,
+    this.defaultAlignment = Alignment.bottomCenter,
     this.rowColor,
-    this.isCurrentPosition = false,
-    this.isServicePointStop = false,
+    required this.metadata,
+    required this.data,
   });
 
-  final double? kilometre;
   final Alignment defaultAlignment;
   final Color? rowColor;
-  final bool isServicePointStop;
-  final bool isCurrentPosition;
+  final Metadata metadata;
+  final T data;
 
   @override
   DASTableRow build(BuildContext context) {
@@ -25,78 +27,97 @@ abstract class BaseRowBuilder extends DASTableRowBuilder {
       height: height,
       color: rowColor,
       cells: [
-        kilometreCell(),
-        timeCell(),
-        routeCell(),
-        iconsCell1(),
-        informationCell(),
-        iconsCell2(),
-        iconsCell3(),
-        graduatedSpeedCell(),
-        brakedWeightSpeedCell(),
-        advisedSpeedCell(),
-        actionsCell(),
+        kilometreCell(context),
+        timeCell(context),
+        routeCell(context),
+        iconsCell1(context),
+        informationCell(context),
+        iconsCell2(context),
+        iconsCell3(context),
+        graduatedSpeedCell(context),
+        brakedWeightSpeedCell(context),
+        advisedSpeedCell(context),
+        actionsCell(context),
       ],
     );
   }
 
-  DASTableCell kilometreCell() {
-    if (kilometre == null) {
-      return DASTableCell.empty();
+  DASTableCell kilometreCell(BuildContext context) {
+    if (data.kilometre.isEmpty) {
+      return DASTableCell.empty(color: specialCellColor);
     }
 
-    var kilometreAsString = kilometre!.toStringAsFixed(3);
-    kilometreAsString = kilometreAsString.replaceAll(RegExp(r'0*$'), '');
-    return DASTableCell(child: Text(kilometreAsString), alignment: defaultAlignment);
-  }
-
-  DASTableCell timeCell() {
-    return DASTableCell(child: Text('06:05:52'), alignment: defaultAlignment);
-  }
-
-  DASTableCell routeCell() {
     return DASTableCell(
+        color: specialCellColor,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(data.kilometre[0].toStringAsFixed(1)),
+            if (data.kilometre.length > 1) Text(data.kilometre[1].toStringAsFixed(1))
+          ],
+        ),
+        alignment: Alignment.centerLeft);
+  }
+
+  DASTableCell routeCell(BuildContext context) {
+    return DASTableCell(
+      color: specialCellColor,
       padding: EdgeInsets.all(0.0),
       alignment: null,
       child: RouteCellBody(
-        showCircle: isServicePointStop,
-        showChevron: isCurrentPosition,
+        isCurrentPosition: metadata.currentPosition == data,
+        isRouteStart: metadata.routeStart == data,
+        isRouteEnd: metadata.routeEnd == data,
       ),
     );
   }
 
-  DASTableCell informationCell() {
+  DASTableCell timeCell(BuildContext context) {
+    return DASTableCell.empty(color: specialCellColor);
+  }
+
+  DASTableCell informationCell(BuildContext context) {
     return DASTableCell.empty();
   }
 
-  DASTableCell graduatedSpeedCell() {
-    return DASTableCell(child: Text('85'), alignment: defaultAlignment);
-  }
-
-  DASTableCell advisedSpeedCell() {
-    return DASTableCell(child: Text('100'), alignment: defaultAlignment);
-  }
-
-  DASTableCell brakedWeightSpeedCell() {
-    return DASTableCell(child: Text('95'), alignment: defaultAlignment);
-  }
-
-  // TODO: clarify use of different icon cells and set appropriate name
-  DASTableCell iconsCell1() {
+  DASTableCell graduatedSpeedCell(BuildContext context) {
     return DASTableCell.empty();
   }
 
-  // TODO: clarify use of different icon cells and set appropriate name
-  DASTableCell iconsCell2() {
+  DASTableCell advisedSpeedCell(BuildContext context) {
+    return DASTableCell.empty();
+  }
+
+  DASTableCell brakedWeightSpeedCell(BuildContext context) {
     return DASTableCell.empty();
   }
 
   // TODO: clarify use of different icon cells and set appropriate name
-  DASTableCell iconsCell3() {
+  DASTableCell iconsCell1(BuildContext context) {
     return DASTableCell.empty();
   }
 
-  DASTableCell actionsCell() {
+  // TODO: clarify use of different icon cells and set appropriate name
+  DASTableCell iconsCell2(BuildContext context) {
     return DASTableCell.empty();
+  }
+
+  // TODO: clarify use of different icon cells and set appropriate name
+  DASTableCell iconsCell3(BuildContext context) {
+    return DASTableCell.empty();
+  }
+
+  DASTableCell actionsCell(BuildContext context) {
+    return DASTableCell.empty();
+  }
+
+  Color? get specialCellColor =>
+      getAdditionalSpeedRestriction() != null ? AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor : null;
+
+  AdditionalSpeedRestriction? getAdditionalSpeedRestriction() {
+    return metadata.additionalSpeedRestrictions
+        .where((it) => it.orderFrom <= data.order && it.orderTo >= data.order)
+        .firstOrNull;
   }
 }

@@ -1,7 +1,7 @@
 name: PR Title Linter
 on:
   pull_request:
-    types: [opened, edited, reopened, unlocked]
+    types: [opened, edited, reopened, unlocked, synchronize]
 
 permissions: read-all
 
@@ -15,7 +15,7 @@ jobs:
         run: |
           npm install @commitlint/config-conventional
           npm install commitlint@latest
-          echo "module.exports = { extends: ['@commitlint/config-conventional'] };" > commitlint.config.js
+          echo "module.exports = { extends: ['@commitlint/config-conventional'], rules: { 'issue-references': [2, 'always'] }, plugins: [{ rules: { 'issue-references': ({type, references}) => [!(type === 'feat' && references.length === 0), 'Feature must contain issue references'] } } ] };" > commitlint.config.js
       - name: "Lint: Pull request title"
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}

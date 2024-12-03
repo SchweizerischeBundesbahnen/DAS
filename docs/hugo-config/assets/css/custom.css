@@ -1,0 +1,3 @@
+.content :where(img):not(:where([class~=not-prose],[class~=not-prose] *)) {
+    border-radius: 0.0rem;
+}

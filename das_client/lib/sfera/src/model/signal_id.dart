@@ -7,10 +7,10 @@ class SignalId extends SferaXmlElement {
 
   String get physicalId => attributes['signal_ID_Physical']!;
 
-  String get location => attributes['location']!;
+  double get location => double.parse(attributes['location']!);
 
   @override
   bool validate() {
-    return validateHasAttribute('signal_ID_Physical') && validateHasAttribute('location') && super.validate();
+    return validateHasAttribute('signal_ID_Physical') && validateHasAttributeDouble('location') && super.validate();
   }
 }

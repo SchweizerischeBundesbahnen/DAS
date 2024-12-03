@@ -1,15 +1,15 @@
 PODS:
-  - AppAuth (1.7.4):
-    - AppAuth/Core (= 1.7.4)
-    - AppAuth/ExternalUserAgent (= 1.7.4)
-  - AppAuth/Core (1.7.4)
-  - AppAuth/ExternalUserAgent (1.7.4):
+  - AppAuth (1.7.5):
+    - AppAuth/Core (= 1.7.5)
+    - AppAuth/ExternalUserAgent (= 1.7.5)
+  - AppAuth/Core (1.7.5)
+  - AppAuth/ExternalUserAgent (1.7.5):
     - AppAuth/Core
   - device_info_plus (0.0.1):
     - Flutter
   - Flutter (1.0.0)
   - flutter_appauth (0.0.1):
-    - AppAuth (= 1.7.4)
+    - AppAuth (= 1.7.5)
     - Flutter
   - flutter_secure_storage (6.0.0):
     - Flutter
@@ -56,10 +56,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
 
 SPEC CHECKSUMS:
-  AppAuth: 182c5b88630569df5acb672720534756c29b3358
+  AppAuth: 501c04eda8a8d11f179dbe8637b7a91bb7e5d2fa
   device_info_plus: 97af1d7e84681a90d0693e63169a5d50e0839a0d
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_appauth: 1ce438877bc111c5d8f42da47729909290624886
+  flutter_appauth: aef998cfbcc307dff7f2fbe1f59a50323748dc25
   flutter_secure_storage: d33dac7ae2ea08509be337e775f6b59f1ff45f12
   integration_test: 252f60fa39af5e17c3aa9899d35d908a0721b573
   isar_flutter_libs: b69f437aeab9c521821c3f376198c4371fa21073

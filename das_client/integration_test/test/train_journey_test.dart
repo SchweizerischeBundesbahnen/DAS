@@ -26,7 +26,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // check if station is present
-      expect(find.text('SO_W'), findsOneWidget);
+      expect(find.text('Solothurn'), findsOneWidget);
 
       await tester.pumpAndSettle();
     });

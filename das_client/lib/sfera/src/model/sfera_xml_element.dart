@@ -1,5 +1,6 @@
 import 'package:das_client/sfera/src/model/enums/xml_enum.dart';
 import 'package:fimber/fimber.dart';
+import 'package:flutter/material.dart';
 import 'package:xml/xml.dart';
 
 class SferaXmlElement {
@@ -12,6 +13,7 @@ class SferaXmlElement {
       : attributes = attributes ?? {},
         children = children ?? [];
 
+  @mustCallSuper
   bool validate() {
     return children.every((it) => it.validate());
   }
@@ -25,9 +27,55 @@ class SferaXmlElement {
     return true;
   }
 
+  bool validateHasAttributeDouble(String attribute) {
+    if (!attributes.containsKey(attribute)) {
+      Fimber.w('Validation failed for $type because attribute=$attribute is missing');
+      return false;
+    }
+
+    if (double.tryParse(attributes[attribute]!) == null) {
+      Fimber.w(
+          'Validation failed for $type because attribute=$attribute with value=${attributes[attribute]} could not be parsed to double');
+      return false;
+    }
+
+    return true;
+  }
+
+  bool validateHasAttributeInt(String attribute) {
+    if (!attributes.containsKey(attribute)) {
+      Fimber.w('Validation failed for $type because attribute=$attribute is missing');
+      return false;
+    }
+
+    if (int.tryParse(attributes[attribute]!) == null) {
+      Fimber.w(
+          'Validation failed for $type because attribute=$attribute with value=${attributes[attribute]} could not be parsed to int');
+      return false;
+    }
+
+    return true;
+  }
+
   bool validateHasChild(String type) {
     if (childrenWithType(type).isEmpty) {
       Fimber.w('Validation failed for ${this.type} because it has no child of type $type');
+      return false;
+    }
+
+    return true;
+  }
+
+  bool validateHasChildInt(String type) {
+    if (!validateHasChild(type)) {
+      return false;
+    }
+
+    final childValue = childrenWithType(type).first.value;
+
+    if (childValue == null || int.tryParse(childValue) == null) {
+      Fimber.w(
+          'Validation failed for ${this.type} because child of type=$type with value=$childValue could not be parsed to int');
       return false;
     }
 
@@ -87,5 +135,10 @@ class SferaXmlElement {
         builder.text(value!);
       }
     });
+  }
+
+  @override
+  String toString() {
+    return buildDocument().toString();
   }
 }

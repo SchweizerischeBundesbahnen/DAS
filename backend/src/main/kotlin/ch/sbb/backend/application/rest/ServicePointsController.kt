@@ -1,6 +1,8 @@
 package ch.sbb.backend.application.rest
 
-import ch.sbb.backend.domain.servicepoints.InMemoryServicePointsService
+import ch.sbb.backend.api.ServicePointDto
+import ch.sbb.backend.application.ServicePointsService
+import ch.sbb.backend.domain.servicepoints.ServicePoint
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -15,7 +17,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("api/v1/service-points")
 @Tag(name = "Service Points", description = "API for service points")
-class ServicePointsController(private val servicePointsService: InMemoryServicePointsService) {
+class ServicePointsController(private val servicePointsService: ServicePointsService) {
 
     @Operation(summary = "Update service points")
     @ApiResponse(responseCode = "200", description = "Service points successfully updated")
@@ -59,7 +61,7 @@ class ServicePointsController(private val servicePointsService: InMemoryServiceP
     @ResponseBody
     @GetMapping(produces = [APPLICATION_JSON_VALUE])
     fun getAllServicePoints(): ResponseEntity<List<ServicePointDto>> {
-        return ResponseEntity.ok(servicePointsService.getAll())
+        return ResponseEntity.ok(ServicePoint.toApi(servicePointsService.getAll()))
     }
 
     @Operation(summary = "Get service point by UIC")
@@ -85,7 +87,7 @@ class ServicePointsController(private val servicePointsService: InMemoryServiceP
     @ResponseBody
     @GetMapping("/{uic}", produces = [APPLICATION_JSON_VALUE])
     fun getServicePoint(@PathVariable uic: Int): ResponseEntity<ServicePointDto> {
-        return servicePointsService.getByUic(uic)?.let { ResponseEntity.ok(it) }
+        return servicePointsService.findByUic(uic)?.let { ResponseEntity.ok(it.toApi()) }
             ?: ResponseEntity.notFound().build()
     }
 }

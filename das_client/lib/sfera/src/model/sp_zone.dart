@@ -11,6 +11,6 @@ class SpZone extends SferaXmlElement {
 
   @override
   bool validate() {
-    return validateHasChild('IM_ID') || validateHasChild('NID_C');
+    return (validateHasChild('IM_ID') || validateHasChild('NID_C')) && super.validate();
   }
 }

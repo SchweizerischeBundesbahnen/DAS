@@ -7,7 +7,7 @@
     </SP_Zone>
     <SP_Points>
 
-        <TimingPoint TP_ID="Bahnhof_A" location="500">
+        <TimingPoint TP_ID="Bahnhof_A" location="200">
             <TP_Name name="A"/>
             <TAF_TAP_LocationReference>
                 <CountryCodeISO>CH</CountryCodeISO>
@@ -16,12 +16,13 @@
         </TimingPoint>
 
         <Signal>
-            <Signal_ID signal_ID_Physical="1" location="200"/>
+            <Signal_ID signal_ID_Physical="1" location="500"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="B1"/>
         </Signal>
         <Signal>
             <Signal_ID signal_ID_Physical="2" location="700"/>
+            <SignalFunction>block</SignalFunction>
             <SignalFunction>laneChange</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="S1"/>
         </Signal>
@@ -47,23 +48,20 @@
                 <LocationPrimaryCode>9991</LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
             <TAF_TAP_LocationName language="de" messageString="Bahnhof A"/>
-            <TAF_TAP_Location_NSP name="bracketStation">
-                <NetworkSpecificParameter name="mainStation" value="CH0207"/>
-            </TAF_TAP_Location_NSP>
 
-<!-- todo: Geschwindigkeiten NSP tbd  -->
+            <!-- todo: Geschwindigkeiten NSP tbd  -->
 
-<!--            Bahnhofsgeschwindigkeiten -->
+            <!--            Bahnhofsgeschwindigkeiten -->
             <TAF_TAP_Location_NSP name="stationSpeed">
                 <NetworkSpecificParameter name="" value="140/[60]"/>
-<!--            name:    stationSpeed_R150' or 'stationSpeed_A65'. 'stationSpeed_All' or 'stationSpeed_C' 'stationSpeed_R' -->
+                <!--            name:    stationSpeed_R150' or 'stationSpeed_A65'. 'stationSpeed_All' or 'stationSpeed_C' 'stationSpeed_R' -->
                 <NetworkSpecificParameter name="graduatedSpeed_00000_n" value=""/>
                 <NetworkSpecificParameter name="graduatedSpeed_00000_ro" value=""/>
                 <NetworkSpecificParameter name="graduatedSpeed_00000_ad" value=""/>
                 <NetworkSpecificParameter name="graduatedSpeed_00000_s" value=""/>
                 <NetworkSpecificParameter name="graduatedSpeed_00000_txt" value="Einfahrt vom Bahnsteig an, übrige Gleise ab Zentralstellwerk"/>
             </TAF_TAP_Location_NSP>
-<!--            gleisspezifische Geschwindigkeiten	-->
+            <!--            gleisspezifische Geschwindigkeiten	-->
             <TAF_TAP_Location_NSP name="stationProperty_00000">
                 <NetworkSpecificParameter name="stationPropertySpeed_R150" value="30-40"/>
                 <NetworkSpecificParameter name="text" value="&lt;b&gt;31&lt;/b&gt;"/>

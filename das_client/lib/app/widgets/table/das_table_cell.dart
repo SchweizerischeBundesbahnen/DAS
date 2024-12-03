@@ -18,13 +18,13 @@ class DASTableCell {
     this.clipBehaviour = Clip.hardEdge,
   });
 
-  const DASTableCell.empty() : this(child: const SizedBox.shrink());
+  const DASTableCell.empty({Color? color}) : this(child: const SizedBox.shrink(), color: color);
 
   final BoxBorder? border;
   final Widget child;
   final VoidCallback? onTap;
   final Color? color;
-  final EdgeInsetsGeometry? padding;
+  final EdgeInsets? padding;
   final Clip clipBehaviour;
 
   /// If provided, wraps child in Align widget. Can also be defined in [DASTableColumn]

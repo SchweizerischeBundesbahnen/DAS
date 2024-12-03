@@ -56,19 +56,21 @@ void main() {
     expect(payload.segmentProfiles.first.zone, isNotNull);
     expect(payload.segmentProfiles.first.zone!.imId, '0088');
 
-    expect(payload.segmentProfiles.first.points!.timingPoints, hasLength(3));
-    expect(payload.segmentProfiles.first.points!.timingPoints.first.id, '1837');
-    expect(payload.segmentProfiles.first.points!.timingPoints.first.location, '0');
-    expect(payload.segmentProfiles.first.points!.timingPoints.first.names.first.name, 'MEER-GRENS');
+    final spPoint = payload.segmentProfiles.first.points!;
 
-    expect(payload.segmentProfiles.first.points!.signals, hasLength(9));
-    expect(payload.segmentProfiles.first.points!.signals.first.id.physicalId, '102346');
-    expect(payload.segmentProfiles.first.points!.signals.first.id.location, '843');
+    expect(spPoint.timingPoints, hasLength(3));
+    expect(spPoint.timingPoints.first.id, '1837');
+    expect(spPoint.timingPoints.first.location, 0);
+    expect(spPoint.timingPoints.first.names.first.name, 'MEER-GRENS');
 
-    expect(payload.segmentProfiles.first.points!.balise, hasLength(3));
-    expect(payload.segmentProfiles.first.points!.balise.first.location, '0');
-    expect(payload.segmentProfiles.first.points!.balise.first.position.latitude, '51.48591');
-    expect(payload.segmentProfiles.first.points!.balise.first.position.longitude, '4.73459');
+    expect(spPoint.signals, hasLength(9));
+    expect(spPoint.signals.first.id.physicalId, '102346');
+    expect(spPoint.signals.first.id.location, 843.0);
+
+    expect(spPoint.balise, hasLength(3));
+    expect(spPoint.balise.first.location, '0');
+    expect(spPoint.balise.first.position.latitude, '51.48591');
+    expect(spPoint.balise.first.position.longitude, '4.73459');
   });
 
   test('Test Sfera HandshakeRequest generation', () async {
