@@ -1,3 +1,4 @@
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -44,8 +45,12 @@ void main() {
       // wait for train journey to load
       await tester.pumpAndSettle();
 
-      // check if station is present more than once
-      expect(find.text('Lommiswil'), findsNWidgets(2));
+      //find the header and check if it is existent
+      final headerFinder = find.byType(Header);
+      expect(headerFinder, findsOneWidget);
+
+      //Find the text in the header
+      expect(find.descendant(of: headerFinder, matching: find.text('Lommiswil')), findsOneWidget);
 
       await tester.pumpAndSettle();
     });

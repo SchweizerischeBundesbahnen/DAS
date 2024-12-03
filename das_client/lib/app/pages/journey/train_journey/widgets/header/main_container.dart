@@ -8,7 +8,6 @@ import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:das_client/model/journey/journey.dart';
-import 'package:das_client/util/error_code.dart';
 
 class MainContainer extends StatelessWidget {
   const MainContainer({super.key});
@@ -70,7 +69,6 @@ class MainContainer extends StatelessWidget {
           return Text(journey.metadata.nextStop!.name.localized,
               style: SBBTextStyles.largeLight.copyWith(fontSize: 24.0));
         }
-        //Return error if NextStop is
         return Text(context.l10n.c_unknown,
             style: SBBTextStyles.extraLargeLight.copyWith(fontSize: 24.0));
       },
