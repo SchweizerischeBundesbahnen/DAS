@@ -20,6 +20,26 @@
             <SignalPhysicalCharacteristics visualIdentifier="D1"/>
         </Signal>
 
+        <NetworkSpecificPoint location="500" name="newLineSpeed">
+            <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                &lt;lineSpeed text=&quot;Zahn. Anf.&quot;&gt;
+                &lt;speeds&gt;
+                &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;100&quot; speed=&quot;55&quot; reduced=&quot;true&quot;/&gt;
+                &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;30&quot; speed=&quot;50&quot;/&gt;
+                &lt;/speeds&gt;
+                &lt;/lineSpeed&gt;
+            "/>
+        </NetworkSpecificPoint>
+        <NetworkSpecificPoint location="800" name="newLineSpeed">
+            <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                &lt;lineSpeed text=&quot;Zahn. Zahnstangen Ende&quot;&gt;
+                &lt;speeds&gt;
+                &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;100&quot; speed=&quot;80&quot;/&gt;
+                &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;30&quot; speed=&quot;80&quot;/&gt;
+                &lt;/speeds&gt;
+                &lt;/lineSpeed&gt;
+            "/>
+        </NetworkSpecificPoint>
     </SP_Points>
 
     <SP_Areas>
@@ -40,17 +60,21 @@
     </SP_Areas>
 
     <SP_ContextInformation>
-
+        <KilometreReferencePoint location="500">
+            <KM_Reference kmRef="3.5"/>
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="700">
             <KM_Reference kmRef="3.7"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="700">
             <KM_Reference kmRef="0"/>
         </KilometreReferencePoint>
+        <KilometreReferencePoint location="800">
+            <KM_Reference kmRef="0.1"/>
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="900">
             <KM_Reference kmRef="0.2"/>
         </KilometreReferencePoint>
-
 
     </SP_ContextInformation>
 </SegmentProfile>
