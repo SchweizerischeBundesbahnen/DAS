@@ -1,10 +1,19 @@
 import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
+import 'package:das_client/sfera/src/model/new_line_speed_network_specific_point.dart';
+import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 import 'package:das_client/sfera/src/model/sp_generic_point.dart';
 
 class NetworkSpecificPoint extends SpGenericPoint {
   static const String elementType = 'NetworkSpecificPoint';
 
-  NetworkSpecificPoint({required super.type, super.attributes, super.children, super.value});
+  NetworkSpecificPoint({super.type = elementType, super.attributes, super.children, super.value});
+
+  factory NetworkSpecificPoint.from({Map<String, String>? attributes, List<SferaXmlElement>? children, String? value}) {
+    if (attributes?['name'] == NewLineSpeedNetworkSpecificPoint.elementName) {
+      return NewLineSpeedNetworkSpecificPoint(attributes: attributes, children: children, value: value);
+    }
+    return NetworkSpecificPoint(attributes: attributes, children: children, value: value);
+  }
 
   String? get name => attributes['name'];
 

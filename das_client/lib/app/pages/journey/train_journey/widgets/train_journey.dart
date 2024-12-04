@@ -1,6 +1,7 @@
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_row_builder.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/curve_point_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/protection_section_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
@@ -65,6 +66,9 @@ class TrainJourney extends StatelessWidget {
           return AdditionalSpeedRestrictionRow(
                   metadata: journey.metadata, data: rowData as AdditionalSpeedRestrictionData)
               .build(context);
+          case Datatype.connectionTrack:
+        case Datatype.speedChange:
+          return BaseRowBuilder(metadata: journey.metadata, data: rowData).build(context);
       }
     });
   }

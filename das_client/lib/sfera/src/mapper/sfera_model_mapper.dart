@@ -3,6 +3,7 @@ import 'package:das_client/model/journey/additional_speed_restriction.dart';
 import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/bracket_station.dart';
+import 'package:das_client/model/journey/connection_track.dart';
 import 'package:das_client/model/journey/curve_point.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/journey.dart';
@@ -10,7 +11,10 @@ import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/protection_section.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
+import 'package:das_client/model/journey/speed_change.dart';
+import 'package:das_client/model/journey/speed_data.dart';
 import 'package:das_client/model/journey/track_equipment.dart';
+import 'package:das_client/model/journey/velocity.dart';
 import 'package:das_client/model/localized_string.dart';
 import 'package:das_client/sfera/src/model/enums/length_type.dart';
 import 'package:das_client/sfera/src/model/enums/start_end_qualifier.dart';
@@ -22,6 +26,7 @@ import 'package:das_client/sfera/src/model/multilingual_text.dart';
 import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
 import 'package:das_client/sfera/src/model/segment_profile_list.dart';
+import 'package:das_client/sfera/src/model/speeds.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location.dart';
 import 'package:fimber/fimber.dart';
 
@@ -69,6 +74,12 @@ class SferaModelMapper {
 
       final signals = _parseSignals(segmentProfile, segmentIndex, kilometreMap, trackEquipments);
       journeyData.addAll(signals);
+
+      final newLineSpeeds = _parseNewLineSpeed(segmentProfile, segmentIndex, kilometreMap);
+
+      final connectionTracks = _parseConnectionTrack(segmentProfile, segmentIndex, kilometreMap);
+      journeyData.addAll(connectionTracks);
+      journeyData.addAll(newLineSpeeds);
 
       final timingPoints = segmentProfile.points?.timingPoints.toList() ?? [];
 
@@ -343,5 +354,39 @@ class SferaModelMapper {
         trackEquipment: trackEquipments.whereOnLocation(curvePointNsp.location).toList(),
       );
     }).toList();
+  }
+
+  static List<ConnectionTrack> _parseConnectionTrack(
+      SegmentProfile segmentProfile, int segmentIndex, Map<double, List<double>> kilometreMap) {
+    final connectionTracks = segmentProfile.contextInformation?.connectionTracks ?? [];
+    return connectionTracks.map<ConnectionTrack>((connectionTrack) {
+      return ConnectionTrack(
+          text: connectionTrack.connectionTrackDescription,
+          order: _calculateOrder(segmentIndex, connectionTrack.location),
+          kilometre: kilometreMap[connectionTrack.location] ?? []);
+    }).toList();
+  }
+
+  static List<SpeedChange> _parseNewLineSpeed(
+      SegmentProfile segmentProfile, int segmentIndex, Map<double, List<double>> kilometreMap) {
+    final newLineSpeeds = segmentProfile.points?.newLineSpeedsNsp ?? [];
+    return newLineSpeeds.map<SpeedChange>((newLineSpeed) {
+      return SpeedChange(
+          text: newLineSpeed.xmlNewLineSpeed.element.text,
+          speedData: _speedDataFromSpeeds(newLineSpeed.xmlNewLineSpeed.element.speeds),
+          order: _calculateOrder(segmentIndex, newLineSpeed.location),
+          kilometre: kilometreMap[newLineSpeed.location] ?? []);
+    }).toList();
+  }
+
+  static SpeedData _speedDataFromSpeeds(Speeds? speeds) {
+    if (speeds == null) {
+      return SpeedData();
+    }
+    return SpeedData(
+        velocities: speeds.velocities
+            .map((it) => Velocity(
+                trainSeries: it.trainSeries, reduced: it.reduced, speed: it.speed, breakSeries: it.brakeSeries))
+            .toList());
   }
 }

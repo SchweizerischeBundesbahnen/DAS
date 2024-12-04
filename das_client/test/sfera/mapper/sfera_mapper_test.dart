@@ -1,13 +1,16 @@
 import 'dart:io';
 
 import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
+import 'package:das_client/model/journey/connection_track.dart';
 import 'package:das_client/model/journey/curve_point.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/protection_section.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
+import 'package:das_client/model/journey/speed_change.dart';
 import 'package:das_client/model/journey/track_equipment.dart';
+import 'package:das_client/model/journey/train_series.dart';
 import 'package:das_client/sfera/sfera_component.dart';
 import 'package:das_client/sfera/src/mapper/sfera_model_mapper.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
@@ -410,5 +413,54 @@ void main() {
     expect(journey.valid, true);
     expect(speedRestrictions, hasLength(0));
     expect(journey.metadata.additionalSpeedRestrictions, hasLength(0));
+  });
+
+  test('Test speed change is parsed correctly', () async {
+    final journey = getJourney('9999', 5);
+    final speedChanges = journey.data.where((it) => it.type == Datatype.speedChange).cast<SpeedChange>().toList();
+
+    expect(journey.valid, true);
+    expect(speedChanges, hasLength(3));
+    expect(speedChanges[0].text, isNull);
+    expect(speedChanges[0].speedData.velocities, hasLength(2));
+    expect(speedChanges[0].speedData.velocities[0].trainSeries, TrainSeries.R);
+    expect(speedChanges[0].speedData.velocities[0].speed, '45');
+    expect(speedChanges[0].speedData.velocities[0].reduced, false);
+    expect(speedChanges[0].speedData.velocities[0].breakSeries, isNull);
+    expect(speedChanges[0].speedData.velocities[1].trainSeries, TrainSeries.A);
+    expect(speedChanges[0].speedData.velocities[1].speed, '40');
+    expect(speedChanges[0].speedData.velocities[1].reduced, false);
+    expect(speedChanges[0].speedData.velocities[1].breakSeries, isNull);
+    expect(speedChanges[1].text, 'Zahn. Anf.');
+    expect(speedChanges[1].speedData.velocities, hasLength(2));
+    expect(speedChanges[1].speedData.velocities[0].trainSeries, TrainSeries.R);
+    expect(speedChanges[1].speedData.velocities[0].speed, '55');
+    expect(speedChanges[1].speedData.velocities[0].reduced, true);
+    expect(speedChanges[1].speedData.velocities[0].breakSeries, 100);
+    expect(speedChanges[1].speedData.velocities[1].trainSeries, TrainSeries.A);
+    expect(speedChanges[1].speedData.velocities[1].speed, '50');
+    expect(speedChanges[1].speedData.velocities[1].reduced, false);
+    expect(speedChanges[1].speedData.velocities[1].breakSeries, 30);
+    expect(speedChanges[2].text, 'Zahn. Zahnstangen Ende');
+    expect(speedChanges[2].speedData.velocities, hasLength(2));
+    expect(speedChanges[2].speedData.velocities[0].trainSeries, TrainSeries.R);
+    expect(speedChanges[2].speedData.velocities[0].speed, '80');
+    expect(speedChanges[2].speedData.velocities[0].reduced, false);
+    expect(speedChanges[2].speedData.velocities[0].breakSeries, 100);
+    expect(speedChanges[2].speedData.velocities[1].trainSeries, TrainSeries.A);
+    expect(speedChanges[2].speedData.velocities[1].speed, '80');
+    expect(speedChanges[2].speedData.velocities[1].reduced, false);
+    expect(speedChanges[2].speedData.velocities[1].breakSeries, 30);
+  });
+
+  test('Test connection tracks are parsed correctly', () async {
+    final journey = getJourney('9999', 5);
+    final connectionTracks = journey.data.where((it) => it.type == Datatype.connectionTrack).cast<ConnectionTrack>().toList();
+
+    expect(journey.valid, true);
+    expect(connectionTracks, hasLength(3));
+    expect(connectionTracks[0].text, isNull);
+    expect(connectionTracks[1].text, 'AnG. WITZ');
+    expect(connectionTracks[2].text, '22-6 Uhr');
   });
 }
