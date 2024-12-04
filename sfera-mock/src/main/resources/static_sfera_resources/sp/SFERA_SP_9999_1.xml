@@ -70,6 +70,7 @@
     </SP_Areas>
 
     <SP_ContextInformation>
+        <ConnectionTrack location="800" connectionTrackType="Unknown"/>
         <KilometreReferencePoint location="200">
             <KM_Reference kmRef="0.2"/>
         </KilometreReferencePoint>
@@ -81,6 +82,9 @@
         </KilometreReferencePoint>
         <KilometreReferencePoint location="700">
             <KM_Reference kmRef="0.7"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="800">
+            <KM_Reference kmRef="0.8"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="900">
             <KM_Reference kmRef="0.9"/>
