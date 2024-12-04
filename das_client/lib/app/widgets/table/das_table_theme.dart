@@ -97,9 +97,9 @@ class DASTableThemeData {
 /// A widget that provides the theme data for the [DASTable] and its descendants.
 class DASTableTheme extends InheritedWidget {
   const DASTableTheme({
-    super.key,
     required this.data,
     required super.child,
+    super.key,
   });
 
   /// The properties used for all descendant [DASTableTheme] widgets.

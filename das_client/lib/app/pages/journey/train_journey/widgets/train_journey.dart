@@ -1,6 +1,7 @@
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/cab_signaling_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/curve_point_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/protection_section_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
@@ -9,6 +10,7 @@ import 'package:das_client/app/widgets/table/das_table.dart';
 import 'package:das_client/app/widgets/table/das_table_column.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
+import 'package:das_client/model/journey/cab_signaling.dart';
 import 'package:das_client/model/journey/curve_point.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/journey.dart';
@@ -65,6 +67,11 @@ class TrainJourney extends StatelessWidget {
           return AdditionalSpeedRestrictionRow(
                   metadata: journey.metadata, data: rowData as AdditionalSpeedRestrictionData)
               .build(context);
+        case Datatype.cabSignaling:
+          return CABSignalingRow(
+            metadata: journey.metadata,
+            data: rowData as CABSignaling,
+          ).build(context);
       }
     });
   }

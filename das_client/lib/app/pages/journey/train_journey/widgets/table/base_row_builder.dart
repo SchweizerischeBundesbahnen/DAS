@@ -8,12 +8,14 @@ import 'package:das_client/model/journey/metadata.dart';
 import 'package:flutter/material.dart';
 
 class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
+  static const double rowHeight = 44.0;
+
   const BaseRowBuilder({
-    super.height = 44.0,
-    this.defaultAlignment = Alignment.bottomCenter,
-    this.rowColor,
     required this.metadata,
     required this.data,
+    super.height = rowHeight,
+    this.defaultAlignment = Alignment.bottomCenter,
+    this.rowColor,
   });
 
   final Alignment defaultAlignment;

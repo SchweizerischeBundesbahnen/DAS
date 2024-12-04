@@ -154,7 +154,7 @@ class SferaReplyParser {
       case TafTapLocationNsp.elementType:
         return TafTapLocationNsp(type: type, attributes: attributes, children: children, value: value);
       case NetworkSpecificParameter.elementType:
-        return NetworkSpecificParameter(type: type, attributes: attributes, children: children, value: value);
+        return NetworkSpecificParameter.from(attributes: attributes, children: children, value: value);
       case CurrentLimitation.elementType:
         return CurrentLimitation(type: type, attributes: attributes, children: children, value: value);
       case CurrentLimitationStart.elementType:

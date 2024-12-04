@@ -3,5 +3,6 @@ enum Datatype {
   protectionSection,
   signal,
   curvePoint,
+  cabSignaling,
   additionalSpeedRestriction;
 }

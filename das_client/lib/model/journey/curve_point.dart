@@ -5,7 +5,6 @@ class CurvePoint extends BaseData {
   CurvePoint({
     required super.order,
     required super.kilometre,
-    super.trackEquipment,
     this.curvePointType,
     this.curveType,
     this.comment,

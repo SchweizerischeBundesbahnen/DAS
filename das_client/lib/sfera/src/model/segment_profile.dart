@@ -1,5 +1,6 @@
 import 'package:das_client/sfera/src/model/enums/sp_status.dart';
 import 'package:das_client/sfera/src/model/enums/xml_enum.dart';
+import 'package:das_client/sfera/src/model/segment_profile_list.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 import 'package:das_client/sfera/src/model/sp_areas.dart';
 import 'package:das_client/sfera/src/model/sp_characteristics.dart';
@@ -39,5 +40,16 @@ class SegmentProfile extends SferaXmlElement {
         validateHasAttribute('SP_Length') &&
         validateHasAttribute('SP_ID') &&
         super.validate();
+  }
+}
+
+// extensions
+
+extension SegmentProfileListExtension on Iterable<SegmentProfile> {
+  SegmentProfile firstMatch(SegmentProfileList segmentProfileList) {
+    return where((it) =>
+        it.id == segmentProfileList.spId &&
+        it.versionMajor == segmentProfileList.versionMajor &&
+        it.versionMinor == segmentProfileList.versionMinor).first;
   }
 }

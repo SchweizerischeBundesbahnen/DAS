@@ -1,52 +1,67 @@
-import 'package:collection/collection.dart';
-
-class TrackEquipment {
-  TrackEquipment({
+class NonStandardTrackEquipmentSegment {
+  const NonStandardTrackEquipmentSegment({
+    required this.startKm,
+    required this.endKm,
     required this.type,
-    this.startLocation,
-    this.endLocation,
-    this.appliesToWholeSp = false,
+    required this.startOrder,
+    required this.endOrder,
   });
 
-  final double? startLocation;
-  final double? endLocation;
-  final bool appliesToWholeSp;
+  final List<double> startKm;
+  final List<double> endKm;
+  final int startOrder;
+  final int endOrder;
   final TrackEquipmentType type;
 
-  bool isOnLocation(double location) {
-    if (appliesToWholeSp) {
-      return true;
-    } else if (startLocation != null && endLocation != null) {
-      return startLocation! <= location && location <= endLocation!;
-    } else if (startLocation != null) {
-      return startLocation! <= location;
-    } else if (endLocation != null) {
-      return location <= endLocation!;
-    }
-    return false;
-  }
+  bool appliesToOrder(int order) => startOrder <= order && order <= endOrder;
 }
 
 enum TrackEquipmentType {
-  etcsL1ls2TracksWithSingleTrackEquipment('ETCS-L1LS-2TracksWithSingleTrackEquipment'),
-  etcsL2ConvSpeedReversingImpossible('ETCS-L2-convSpeedReversingImpossible'),
-  etcsL2ExtSpeedReversingPossible('ETCS-L2-extSpeedReversingPossible'),
-  etcsL2ExtSpeedReversingImpossible('ETCS-L2-extSpeedReversingImpossible');
+  etcsL1ls2TracksWithSingleTrackEquipment,
+  etcsL2ConvSpeedReversingImpossible,
+  etcsL2ExtSpeedReversingPossible,
+  etcsL2ExtSpeedReversingImpossible;
 
-  const TrackEquipmentType(this.value);
-
-  final String value;
-
-  static TrackEquipmentType? from(String value) {
-    return values.firstWhereOrNull(
-      (e) => e.value.toLowerCase() == value.toLowerCase()
-    );
-  }
+  bool isEtcsL2() => [
+        TrackEquipmentType.etcsL2ConvSpeedReversingImpossible,
+        TrackEquipmentType.etcsL2ExtSpeedReversingPossible,
+        TrackEquipmentType.etcsL2ExtSpeedReversingImpossible
+      ].contains(this);
 }
 
 // extensions
 
-extension TrackEquipmentsExtension on Iterable<TrackEquipment> {
-  Iterable<TrackEquipment> whereOnLocation(double location) =>
-      where((trackEquipment) => trackEquipment.isOnLocation(location));
+extension NonStandardTrackEquipmentSegmentsExtension on List<NonStandardTrackEquipmentSegment> {
+  List<NonStandardTrackEquipmentSegment> appliesToOrder(int order) =>
+      where((segment) => segment.appliesToOrder(order)).toList();
+
+  /// Returns all [NonStandardTrackEquipmentSegment] of this list that mark the start of a ETCS level 2 segment
+  List<NonStandardTrackEquipmentSegment> get withCABSignalingStart {
+    final etcsL2Segments = where((segment) => segment.type.isEtcsL2()).toList();
+    etcsL2Segments.sort((a, b) => a.startOrder.compareTo(b.startOrder));
+    final starts = <NonStandardTrackEquipmentSegment>[];
+
+    for (int i = 0; i < etcsL2Segments.length; i++) {
+      if (i == 0 || etcsL2Segments[i].startOrder != etcsL2Segments[i - 1].endOrder) {
+        starts.add(etcsL2Segments[i]);
+      }
+    }
+
+    return starts;
+  }
+
+  /// Returns all [NonStandardTrackEquipmentSegment] of this list that mark the end of a ETCS level 2 segment
+  List<NonStandardTrackEquipmentSegment> get withCABSignalingEnd {
+    final etcsL2Segments = where((segment) => segment.type.isEtcsL2()).toList();
+    etcsL2Segments.sort((a, b) => a.startOrder.compareTo(b.startOrder));
+    final ends = <NonStandardTrackEquipmentSegment>[];
+
+    for (int i = 0; i < etcsL2Segments.length; i++) {
+      if (i == etcsL2Segments.length - 1 || etcsL2Segments[i].endOrder != etcsL2Segments[i + 1].startOrder) {
+        ends.add(etcsL2Segments[i]);
+      }
+    }
+
+    return ends;
+  }
 }

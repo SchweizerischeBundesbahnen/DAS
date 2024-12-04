@@ -9,10 +9,9 @@ class ServicePoint extends BaseData {
     required this.mandatoryStop,
     required this.isStop,
     required this.isStation,
-    this.bracketStation,
     required super.order,
     required super.kilometre,
-    super.trackEquipment,
+    this.bracketStation,
   }) : super(type: Datatype.servicePoint);
 
   final LocalizedString name;
