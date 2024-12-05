@@ -1,4 +1,3 @@
-import 'package:das_client/model/journey/signal.dart';
 import 'package:das_client/model/journey/speed_data.dart';
 import 'package:das_client/model/journey/train_series.dart';
 import 'package:das_client/model/journey/velocity.dart';
