@@ -1,3 +1,4 @@
+import 'package:das_client/sfera/src/model/connection_track.dart';
 import 'package:das_client/sfera/src/model/kilometre_reference_point.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 
@@ -7,4 +8,6 @@ class SpContextInformation extends SferaXmlElement {
   SpContextInformation({super.type = elementType, super.attributes, super.children, super.value});
 
   Iterable<KilometreReferencePoint> get kilometreReferencePoints => children.whereType<KilometreReferencePoint>();
+
+  Iterable<ConnectionTrack> get connectionTracks => children.whereType<ConnectionTrack>();
 }

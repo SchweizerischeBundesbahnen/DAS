@@ -1,4 +1,3 @@
-import 'package:das_client/sfera/src/model/enums/xml_enum.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:xml/xml.dart';
@@ -18,9 +17,28 @@ class SferaXmlElement {
     return children.every((it) => it.validate());
   }
 
+  bool validateIsNotNull(dynamic object) {
+    if (object == null) {
+      Fimber.w('Validation failed for $type because required object is null');
+      return false;
+    }
+
+    return true;
+  }
+
   bool validateHasAttribute(String attribute) {
     if (!attributes.containsKey(attribute)) {
       Fimber.w('Validation failed for $type because attribute $attribute is missing');
+      return false;
+    }
+
+    return true;
+  }
+
+  bool validateHasAttributeInRange(String attribute, List<String> allValues) {
+    if (allValues.where((it) => it.toLowerCase() == attributes[attribute]?.toLowerCase()).isEmpty) {
+      Fimber.w(
+          'Validation failed for $type because attribute $attribute with value "${attributes[attribute]}" could not be mapped to any of ${allValues.join(",")}');
       return false;
     }
 
@@ -95,18 +113,6 @@ class SferaXmlElement {
     if (!children.map((it) => it.type).any((it) => types.contains(it))) {
       Fimber.w("Validation failed for $type because it has no child of any type: ${types.join(", ")}");
       return false;
-    }
-
-    return true;
-  }
-
-  bool validateHasEnumAttribute<T extends XmlEnum>(List<T> allValues, String attribute) {
-    if (!validateHasAttribute(attribute)) {
-      return false;
-    }
-
-    if (XmlEnum.valueOf(allValues, attributes[attribute]!) == null) {
-      Fimber.w('Validation failed for $type because attribute $attribute could not be mapped to Enum ${T.toString()}');
     }
 
     return true;

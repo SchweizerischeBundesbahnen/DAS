@@ -43,5 +43,6 @@
     "c_error_sfera_handshake_rejected": "Server hat die Verbindung abgelehnt",
     "c_error_sfera_request_timeout": "Timeout bei der Anfrage",
     "c_error_sfera_jp_unavailable": "Fahrordnung nicht vorhanden",
-    "c_error_sfera_sp_invalid": "Unvollständige Daten erhalten"
+    "c_error_sfera_sp_invalid": "Unvollständige Daten erhalten",
+    "c_connection_track_weiche": "Weiche"
 }
