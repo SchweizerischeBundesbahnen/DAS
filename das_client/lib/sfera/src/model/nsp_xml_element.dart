@@ -6,13 +6,18 @@ import 'package:fimber/fimber.dart';
 mixin NspXmlElement<T extends SferaXmlElement> on SferaXmlElement {
   T? _element;
 
-  T get element => _element!;
+  T get element => _element ?? _generateElement();
+
+  T _generateElement() {
+    _element = SferaReplyParser.parse<T>(attributes['value'].unescapedString!);
+    return _element!;
+  }
 
   @override
   bool validate() {
     if (_element == null) {
       try {
-        _element = SferaReplyParser.parse<T>(attributes['value'].unescapedString!);
+        _generateElement();
       } catch (e) {
         Fimber.e('Failed to parse nsp xml element of type ${T.runtimeType.toString()} with value ${attributes['value']}', ex: e);
         return false;

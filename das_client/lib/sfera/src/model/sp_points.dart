@@ -9,7 +9,6 @@ class SpPoints extends SferaXmlElement {
   static const String elementType = 'SP_Points';
   static const String _protectionSectionNspName = 'protectionSection';
   static const String _curvePointName = 'curvePoint';
-  static const String _newLineSpeedPointName = 'newLineSpeed';
 
   SpPoints({super.type = elementType, super.attributes, super.children, super.value});
 

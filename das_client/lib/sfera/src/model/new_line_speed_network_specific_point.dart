@@ -1,6 +1,4 @@
-import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
 import 'package:das_client/sfera/src/model/network_specific_point.dart';
-import 'package:das_client/sfera/src/model/sp_generic_point.dart';
 import 'package:das_client/sfera/src/model/xml_new_line_speed.dart';
 
 class NewLineSpeedNetworkSpecificPoint extends NetworkSpecificPoint {

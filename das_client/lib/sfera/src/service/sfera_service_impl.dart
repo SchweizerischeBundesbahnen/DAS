@@ -117,8 +117,13 @@ class SferaServiceImpl implements SferaService {
     } else if (task is RequestSegmentProfilesTask) {
       _addMessageHandlers();
       await _refreshSegmentProfiles();
-      _updateJourney();
-      _stateSubject.add(SferaServiceState.connected);
+      final success = _updateJourney();
+      if (success) {
+        _stateSubject.add(SferaServiceState.connected);
+      } else {
+        lastErrorCode = ErrorCode.sferaSpInvalid;
+        disconnect();
+      }
     }
   }
 
@@ -129,26 +134,29 @@ class SferaServiceImpl implements SferaService {
       for (final element in _journeyProfile!.segmentProfilesLists) {
         final segmentProfileEntity =
             await _sferaRepository.findSegmentProfile(element.spId, element.versionMajor, element.versionMinor);
-        if (segmentProfileEntity != null) {
-          _segmentProfiles.add(segmentProfileEntity.toDomain());
+        final segmentProfile = segmentProfileEntity?.toDomain();
+        if (segmentProfile != null && segmentProfile.validate()) {
+          _segmentProfiles.add(segmentProfile);
         } else {
-          Fimber.w('Could not find segment profile for ${element.spId}');
+          Fimber.w('Could not find and validate segment profile for ${element.spId}');
         }
       }
     }
   }
 
-  void _updateJourney() {
+  bool _updateJourney() {
     if (_journeyProfile != null && _segmentProfiles.isNotEmpty) {
       Fimber.i('Updating journey stream...');
       final newJourney = SferaModelMapper.mapToJourney(_journeyProfile!, _segmentProfiles);
       if (newJourney.valid) {
         _journeyProfileSubject.add(SferaModelMapper.mapToJourney(_journeyProfile!, _segmentProfiles));
         Fimber.i('Journey updates successfully.');
+        return true;
       } else {
         Fimber.w('Failed to update journey as it is not valid');
       }
     }
+    return false;
   }
 
   void _addMessageHandlers() {

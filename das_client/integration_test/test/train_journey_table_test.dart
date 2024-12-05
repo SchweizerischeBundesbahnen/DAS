@@ -15,6 +15,45 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey table test', () {
+    testWidgets('test connection track is displayed correctly', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: '9999');
+
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
+
+      final weicheRow = findDASTableRowByText('Weiche');
+      expect(weicheRow, findsOneWidget);
+
+      final weicheKilometre = find.descendant(of: weicheRow, matching: find.text('0.8'));
+      expect(weicheKilometre, findsOneWidget);
+
+      await tester.dragUntilVisible(find.text('AnG. WITZ'), scrollableFinder, const Offset(0, -50));
+
+      final connectionTrackRow = findDASTableRowByText('AnG. WITZ');
+      expect(connectionTrackRow, findsOneWidget);
+
+      await tester.dragUntilVisible(find.text('22-6 Uhr'), scrollableFinder, const Offset(0, -50));
+
+      final connectionTrackWithSpeedRow = findDASTableRowByText('22-6 Uhr');
+      expect(connectionTrackWithSpeedRow, findsOneWidget);
+
+      final speedInformation = find.descendant(of: connectionTrackWithSpeedRow, matching: find.text('45'));
+      expect(speedInformation, findsOneWidget);
+
+      await tester.dragUntilVisible(find.text('Zahnstangen Anfang'), scrollableFinder, const Offset(0, -50));
+
+      final zahnstangeAnfangRow = findDASTableRowByText('Zahnstangen Anfang');
+      expect(zahnstangeAnfangRow, findsOneWidget);
+
+      await tester.dragUntilVisible(find.text('Zahnstangen Ende'), scrollableFinder, const Offset(0, -50));
+
+      final zahnstangeEndeRow = findDASTableRowByText('Zahnstangen Ende');
+      expect(zahnstangeEndeRow, findsOneWidget);
+    });
+
     testWidgets('test additional speed restriction row is displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
 
@@ -65,9 +104,10 @@ void main() {
         final coloredCells = find.descendant(
             of: testRow,
             matching: find.byWidgetPredicate((it) =>
-            it is Container &&
+                it is Container &&
                 it.decoration is BoxDecoration &&
-                (it.decoration as BoxDecoration).color == AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor));
+                (it.decoration as BoxDecoration).color ==
+                    AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor));
         expect(coloredCells, findsNWidgets(3));
       }
     });
@@ -110,7 +150,8 @@ void main() {
 
       // check stop circles
       final stopRoute = find.descendant(of: stopRouteRow, matching: find.byKey(RouteCellBody.stopKey));
-      final nonStoppingPassRoute = find.descendant(of: nonStoppingPassRouteRow, matching: find.byKey(RouteCellBody.stopKey));
+      final nonStoppingPassRoute =
+          find.descendant(of: nonStoppingPassRouteRow, matching: find.byKey(RouteCellBody.stopKey));
       expect(stopRoute, findsOneWidget);
       expect(nonStoppingPassRoute, findsNothing);
 
@@ -349,7 +390,8 @@ void main() {
       final langeChangeBlockSignalRow = findDASTableRowByText('S1');
       expect(langeChangeBlockSignalRow, findsOneWidget);
       expect(find.descendant(of: langeChangeBlockSignalRow, matching: find.text('Block')), findsOneWidget);
-      final laneChangeIcon = find.descendant(of: langeChangeBlockSignalRow, matching: find.byKey(SignalRow.signalLineChangeIconKey));
+      final laneChangeIcon =
+          find.descendant(of: langeChangeBlockSignalRow, matching: find.byKey(SignalRow.signalLineChangeIconKey));
       expect(laneChangeIcon, findsOneWidget);
 
       // check if basic signal is rendered correctly
@@ -357,7 +399,8 @@ void main() {
       final protectionSignalRow = findDASTableRowByText('Deckungssignal');
       expect(protectionSignalRow, findsOneWidget);
       expect(find.descendant(of: protectionSignalRow, matching: find.text('D1')), findsOneWidget);
-      final noLaneChangeIcon = find.descendant(of: protectionSignalRow, matching: find.byKey(SignalRow.signalLineChangeIconKey));
+      final noLaneChangeIcon =
+          find.descendant(of: protectionSignalRow, matching: find.byKey(SignalRow.signalLineChangeIconKey));
       expect(noLaneChangeIcon, findsNothing);
 
       // check if signals with multiple functions are rendered correctly
@@ -365,7 +408,8 @@ void main() {
       final blockIntermediateSignalRow = findDASTableRowByText('Block/Abschnittsignal');
       expect(blockIntermediateSignalRow, findsOneWidget);
       expect(find.descendant(of: blockIntermediateSignalRow, matching: find.text('BAB1')), findsOneWidget);
-      final noLaneChangeIcon2 = find.descendant(of: blockIntermediateSignalRow, matching: find.byKey(SignalRow.signalLineChangeIconKey));
+      final noLaneChangeIcon2 =
+          find.descendant(of: blockIntermediateSignalRow, matching: find.byKey(SignalRow.signalLineChangeIconKey));
       expect(noLaneChangeIcon2, findsNothing);
     });
   });

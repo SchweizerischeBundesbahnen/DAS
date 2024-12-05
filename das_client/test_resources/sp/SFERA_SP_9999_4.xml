@@ -22,7 +22,7 @@
 
         <NetworkSpecificPoint location="500" name="newLineSpeed">
             <NetworkSpecificParameter name="xmlNewLineSpeed" value="
-                &lt;lineSpeed text=&quot;Zahn. Anf.&quot;&gt;
+                &lt;lineSpeed text=&quot;Zahnstangen Anfang&quot;&gt;
                 &lt;speeds&gt;
                 &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;100&quot; speed=&quot;55&quot; reduced=&quot;true&quot;/&gt;
                 &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;30&quot; speed=&quot;50&quot;/&gt;
@@ -32,7 +32,7 @@
         </NetworkSpecificPoint>
         <NetworkSpecificPoint location="800" name="newLineSpeed">
             <NetworkSpecificParameter name="xmlNewLineSpeed" value="
-                &lt;lineSpeed text=&quot;Zahn. Zahnstangen Ende&quot;&gt;
+                &lt;lineSpeed text=&quot;Zahnstangen Ende&quot;&gt;
                 &lt;speeds&gt;
                 &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;100&quot; speed=&quot;80&quot;/&gt;
                 &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;30&quot; speed=&quot;80&quot;/&gt;
