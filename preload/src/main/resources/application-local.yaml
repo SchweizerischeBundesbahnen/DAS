@@ -1,0 +1,7 @@
+spring:
+  docker:
+    compose:
+      file: ./preload/compose.yaml
+  sql:
+    init:
+      mode: always

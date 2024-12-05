@@ -7,25 +7,30 @@
 # documentation.
 
 name: Backend Java CI with Maven
-
-defaults:
-  run:
-    working-directory: backend
     
 on:
   push:
     paths:
       - 'backend/**'
+      - 'preload/**'
     branches: [ "main" ]
   pull_request:
     paths:
       - 'backend/**'
+      - 'preload/**'
     branches: [ "main" ]
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        directory: ['backend', 'preload']
+
+    defaults:
+      run:
+        working-directory: ${{ matrix.directory }}
 
     steps:
     - uses: actions/checkout@v4
@@ -43,7 +48,7 @@ jobs:
     - name: Create container image
       if: github.ref == 'refs/heads/main'
       env:
-        IMAGE_ID: ghcr.io/${{ github.repository }}/backend
+        IMAGE_ID: ghcr.io/${{ github.repository }}/${{ matrix.directory }}
         VERSION: main
       run: |
         # Convert to lowercase
@@ -58,4 +63,4 @@ jobs:
     - name: Update dependency graph
       uses: advanced-security/maven-dependency-submission-action@v4
       with:
-        directory: backend
+        directory: ${{ matrix.directory }}
