@@ -18,8 +18,8 @@
         <image.namespace>ghcr.io/schweizerischebundesbahnen</image.namespace>
         <image.version>${project.version}</image.version>
 
-        <spring-cloud.version>2023.0.1</spring-cloud.version>
-        <solace-spring-cloud-bom.version>4.5.0</solace-spring-cloud-bom.version>
+        <spring-cloud.version>2024.0.0</spring-cloud.version>
+        <solace-spring-cloud-bom.version>4.6.0</solace-spring-cloud-bom.version>
     </properties>
 
     <dependencyManagement>
@@ -60,22 +60,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-client</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.6.0</version>
         </dependency>
 
         <dependency>
