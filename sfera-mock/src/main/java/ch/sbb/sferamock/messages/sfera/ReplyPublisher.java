@@ -1,5 +1,7 @@
 package ch.sbb.sferamock.messages.sfera;
 
+import static org.springframework.util.MimeTypeUtils.APPLICATION_XML;
+
 import ch.sbb.sferamock.adapters.sfera.model.v0201.JourneyProfile;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SFERAG2BReplyMessage;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SegmentProfile;
@@ -14,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.stream.function.StreamBridge;
-import org.springframework.http.MediaType;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
@@ -77,6 +78,6 @@ public class ReplyPublisher {
         streamBridge.send(topic, SOLACE_BINDER, MessageBuilder
                 .withPayload(replyMessage)
                 .build(),
-            MediaType.APPLICATION_XML);
+            APPLICATION_XML);
     }
 }
