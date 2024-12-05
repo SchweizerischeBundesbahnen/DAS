@@ -78,6 +78,11 @@ class SferaModelMapper {
       final newLineSpeeds = _parseNewLineSpeed(segmentProfile, segmentIndex, kilometreMap);
 
       final connectionTracks = _parseConnectionTrack(segmentProfile, segmentIndex, kilometreMap, newLineSpeeds);
+
+      // Remove new line speeds that are already present as connection tracks
+      newLineSpeeds.removeWhere((speedChange) =>
+          connectionTracks.firstWhereOrNull((connectionTrack) => connectionTrack.speedData == speedChange.speedData) != null);
+
       journeyData.addAll(connectionTracks);
       journeyData.addAll(newLineSpeeds);
 
@@ -356,16 +361,12 @@ class SferaModelMapper {
     }).toList();
   }
 
-  static List<ConnectionTrack> _parseConnectionTrack(
-      SegmentProfile segmentProfile, int segmentIndex, Map<double, List<double>> kilometreMap, List<SpeedChange> newLineSpeeds) {
+  static List<ConnectionTrack> _parseConnectionTrack(SegmentProfile segmentProfile, int segmentIndex,
+      Map<double, List<double>> kilometreMap, List<SpeedChange> newLineSpeeds) {
     final connectionTracks = segmentProfile.contextInformation?.connectionTracks ?? [];
     return connectionTracks.map<ConnectionTrack>((connectionTrack) {
       final currentOrder = _calculateOrder(segmentIndex, connectionTrack.location);
       final speedChange = newLineSpeeds.firstWhereOrNull((it) => it.order == currentOrder);
-      if (speedChange != null) {
-        newLineSpeeds.remove(speedChange);
-      }
-
       return ConnectionTrack(
           text: connectionTrack.connectionTrackDescription,
           order: _calculateOrder(segmentIndex, connectionTrack.location),
