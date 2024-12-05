@@ -56,9 +56,14 @@
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="End_of_Journey">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Klammerbahnhof_D1"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="End_of_Journey">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Bahnhof_E"/>
             </TimingPointReference>
         </TimingPointConstraints>
     </SegmentProfileList>

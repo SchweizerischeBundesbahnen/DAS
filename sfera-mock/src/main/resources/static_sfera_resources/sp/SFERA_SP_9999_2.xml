@@ -45,14 +45,20 @@
             <TAF_TAP_LocationName language="de" messageString="Haltestelle B"/>
         </TAF_TAP_Location>
 
-        <NetworkSpecificArea startEndQualifier="WholeSP" name="nonStandardTrackEquipment">
-            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L1LS-2TracksWithSingleTrackEquipment"/>
+        <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="100" endLocation="700" name="nonStandardTrackEquipment">
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-convSpeedReversingImpossible"/>
+        </NetworkSpecificArea>
+        <NetworkSpecificArea startEndQualifier="Starts" startLocation="700" name="nonStandardTrackEquipment">
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingPossible"/>
         </NetworkSpecificArea>
 
     </SP_Areas>
 
     <SP_ContextInformation>
         <ConnectionTrack location="900" connectionTrackType="Unknown" connectionTrackDescription="AnG. WITZ"/>
+        <KilometreReferencePoint location="100">
+            <KM_Reference kmRef="1.1"/>
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="200">
             <KM_Reference kmRef="1.2"/>
         </KilometreReferencePoint>

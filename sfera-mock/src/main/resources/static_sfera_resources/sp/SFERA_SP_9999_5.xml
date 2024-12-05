@@ -14,8 +14,15 @@
                 <LocationPrimaryCode>9995</LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
+        <TimingPoint TP_ID="Bahnhof_E" location="800">
+            <TP_Name name="E"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>9996</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
         <Signal>
-            <Signal_ID signal_ID_Physical="7" location="100"/>
+            <Signal_ID signal_ID_Physical="7" location="600"/>
             <SignalFunction>block</SignalFunction>
             <SignalFunction>intermediate</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="BAB1"/>
@@ -34,18 +41,32 @@
                 <NetworkSpecificParameter name="mainStation" value="CH9994"/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
-        <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="300" endLocation="800" name="nonStandardTrackEquipment">
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="E"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>9996</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Bahnhof E"/>
+        </TAF_TAP_Location>
+
+        <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="300" endLocation="700" name="nonStandardTrackEquipment">
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingImpossible"/>
         </NetworkSpecificArea>
     </SP_Areas>
 
     <SP_ContextInformation>
-
-        <KilometreReferencePoint location="100">
-            <KM_Reference kmRef="0.4"/>
-        </KilometreReferencePoint>
         <KilometreReferencePoint location="300">
             <KM_Reference kmRef="0.6"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="600">
+            <KM_Reference kmRef="0.9"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="700">
+            <KM_Reference kmRef="1.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="800">
+            <KM_Reference kmRef="1.1"/>
         </KilometreReferencePoint>
     </SP_ContextInformation>
 </SegmentProfile>
