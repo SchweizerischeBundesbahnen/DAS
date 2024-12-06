@@ -95,8 +95,8 @@ void main() {
     expect(journey.data[17], TypeMatcher<CurvePoint>());
     expect(journey.data[18], TypeMatcher<Signal>());
     // segment 4
-    expect(journey.data[19], TypeMatcher<CABSignaling>());
-    expect(journey.data[20], TypeMatcher<SpeedChange>());
+    expect(journey.data[19], TypeMatcher<SpeedChange>());
+    expect(journey.data[20], TypeMatcher<CABSignaling>());
     expect(journey.data[21], TypeMatcher<ServicePoint>());
     expect(journey.data[22], TypeMatcher<SpeedChange>());
     expect(journey.data[23], TypeMatcher<Signal>());
@@ -139,12 +139,12 @@ void main() {
     expect(journey.data[18].kilometre[0], 2.6);
     // segment 4
     expect(journey.data[19].kilometre[0], 3.5);
-    expect(journey.data[20].kilometre[0], 3.7);
-    expect(journey.data[20].kilometre[1], 0);
-    expect(journey.data[21].kilometre[0], 0.1);
-    expect(journey.data[22].kilometre[0], 0.2);
+    expect(journey.data[20].kilometre[0], 3.5);
+    expect(journey.data[21].kilometre[0], 3.7);
+    expect(journey.data[21].kilometre[1], 0);
+    expect(journey.data[22].kilometre[0], 0.1);
+    expect(journey.data[23].kilometre[0], 0.2);
     // segment 5
-    expect(journey.data[23].kilometre[0], 0.4);
     expect(journey.data[24].kilometre[0], 0.6);
     expect(journey.data[25].kilometre[0], 0.6);
     expect(journey.data[26].kilometre[0], 0.9);
@@ -183,11 +183,11 @@ void main() {
     expect(journey.data[18].order, 200600);
     // segment 4
     expect(journey.data[19].order, 300500);
-    expect(journey.data[20].order, 300700);
-    expect(journey.data[21].order, 300800);
-    expect(journey.data[22].order, 300900);
+    expect(journey.data[20].order, 300500);
+    expect(journey.data[21].order, 300700);
+    expect(journey.data[22].order, 300800);
+    expect(journey.data[23].order, 300900);
     // segment 5
-    expect(journey.data[23].order, 400100);
     expect(journey.data[24].order, 400300);
     expect(journey.data[25].order, 400300);
     expect(journey.data[26].order, 400600);

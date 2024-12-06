@@ -27,7 +27,6 @@ import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/multilingual_text.dart';
 import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
-import 'package:das_client/sfera/src/model/segment_profile_list.dart';
 import 'package:das_client/sfera/src/model/speeds.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location.dart';
 import 'package:fimber/fimber.dart';
@@ -337,11 +336,11 @@ class SferaModelMapper {
       Map<double, List<double>> kilometreMap, List<SpeedChange> newLineSpeeds) {
     final connectionTracks = segmentProfile.contextInformation?.connectionTracks ?? [];
     return connectionTracks.map<ConnectionTrack>((connectionTrack) {
-      final currentOrder = _calculateOrder(segmentIndex, connectionTrack.location);
+      final currentOrder = calculateOrder(segmentIndex, connectionTrack.location);
       final speedChange = newLineSpeeds.firstWhereOrNull((it) => it.order == currentOrder);
       return ConnectionTrack(
           text: connectionTrack.connectionTrackDescription,
-          order: _calculateOrder(segmentIndex, connectionTrack.location),
+          order: calculateOrder(segmentIndex, connectionTrack.location),
           speedData: speedChange?.speedData,
           kilometre: kilometreMap[connectionTrack.location] ?? []);
     }).toList();
@@ -354,7 +353,7 @@ class SferaModelMapper {
       return SpeedChange(
           text: newLineSpeed.xmlNewLineSpeed.element.text,
           speedData: _speedDataFromSpeeds(newLineSpeed.xmlNewLineSpeed.element.speeds),
-          order: _calculateOrder(segmentIndex, newLineSpeed.location),
+          order: calculateOrder(segmentIndex, newLineSpeed.location),
           kilometre: kilometreMap[newLineSpeed.location] ?? []);
     }).toList();
   }

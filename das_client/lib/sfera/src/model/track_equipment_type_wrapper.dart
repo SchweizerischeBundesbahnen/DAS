@@ -11,6 +11,6 @@ class TrackEquipmentTypeWrapper extends NetworkSpecificParameter {
 
   @override
   bool validate() {
-    return validateHasEnumAttribute(SferaTrackEquipmentType.values, 'value') && super.validate();
+    return validateHasAttributeInRange('value', XmlEnum.values(SferaTrackEquipmentType.values)) && super.validate();
   }
 }
