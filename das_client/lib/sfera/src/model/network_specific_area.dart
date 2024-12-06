@@ -2,10 +2,10 @@ import 'package:das_client/sfera/src/model/enums/start_end_qualifier.dart';
 import 'package:das_client/sfera/src/model/enums/xml_enum.dart';
 import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
+import 'package:das_client/sfera/src/model/track_equipment_type_wrapper.dart';
 
 class NetworkSpecificArea extends SferaXmlElement {
   static const String elementType = 'NetworkSpecificArea';
-  static const String _trackEquipmentTypeName = 'trackEquipmentType';
 
   NetworkSpecificArea({super.type = elementType, super.attributes, super.children, super.value});
 
@@ -20,8 +20,7 @@ class NetworkSpecificArea extends SferaXmlElement {
 
   Iterable<NetworkSpecificParameter> get networkSpecificParameters => children.whereType<NetworkSpecificParameter>();
 
-  NetworkSpecificParameter? get trackEquipmentType =>
-      children.whereType<NetworkSpecificParameter>().where((it) => it.name == _trackEquipmentTypeName).firstOrNull;
+  TrackEquipmentTypeWrapper? get trackEquipmentTypeWrapper => children.whereType<TrackEquipmentTypeWrapper>().firstOrNull;
 
   double? _parseOrNull(String? source) {
     return source != null ? double.parse(source) : null;

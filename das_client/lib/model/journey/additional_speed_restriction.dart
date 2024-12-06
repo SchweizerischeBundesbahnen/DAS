@@ -13,4 +13,9 @@ class AdditionalSpeedRestriction {
   bool needsEndMarker(List<BaseData> journeyData) {
     return journeyData.where((it) => it.order >= orderFrom && it.order <= orderTo).length > 1;
   }
+
+  @override
+  String toString() {
+    return 'AdditionalSpeedRestriction(kmFrom: $kmFrom, kmTo: $kmTo, orderFrom: $orderFrom, orderTo: $orderTo, speed: $speed)';
+  }
 }

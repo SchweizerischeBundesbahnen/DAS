@@ -22,7 +22,7 @@ abstract class SferaService {
 
   void disconnect();
 
-  static Future<MessageHeader> messageHeader({TrainIdentification? trainIdentification, required String sender}) async {
+  static Future<MessageHeader> messageHeader({required String sender, TrainIdentification? trainIdentification}) async {
     return MessageHeader.create(const Uuid().v4(), Format.sferaTimestamp(DateTime.now()),
         await DeviceIdInfo.getDeviceId(), 'TMS', sender, '0085',
         trainIdentification: trainIdentification);

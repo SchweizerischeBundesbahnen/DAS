@@ -8,13 +8,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class AdditionalSpeedRestrictionRow extends BaseRowBuilder<AdditionalSpeedRestrictionData> {
-  static const Key additionalSpeedRestrictionIconKey = Key('addition_speed_restrction_icon_key');
+  static const Key additionalSpeedRestrictionIconKey = Key('addition_speed_restriction_icon_key');
   static const Color additionalSpeedRestrictionColor = SBBColors.orange;
+  static const double rowHeight = 44.0;
 
   AdditionalSpeedRestrictionRow({
-    super.height = 44.0,
     required super.metadata,
     required super.data,
+    super.height = rowHeight,
   }) : super(rowColor: additionalSpeedRestrictionColor);
 
   @override
@@ -33,11 +34,12 @@ class AdditionalSpeedRestrictionRow extends BaseRowBuilder<AdditionalSpeedRestri
   @override
   DASTableCell iconsCell2(BuildContext context) {
     return DASTableCell(
-        child: SvgPicture.asset(
-          AppAssets.iconAdditionalSpeedRestriction,
-          key: additionalSpeedRestrictionIconKey,
-        ),
-        alignment: Alignment.center);
+      child: SvgPicture.asset(
+        AppAssets.iconAdditionalSpeedRestriction,
+        key: additionalSpeedRestrictionIconKey,
+      ),
+      alignment: Alignment.center,
+    );
   }
 
   @override

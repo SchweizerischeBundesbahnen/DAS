@@ -1,52 +1,109 @@
-import 'package:collection/collection.dart';
+import 'package:das_client/util/comparators.dart';
 
-class TrackEquipment {
-  TrackEquipment({
+/// Represents a segment with non standard track equipment. Standard is bidirectional ETCS L1LS.
+class NonStandardTrackEquipmentSegment implements Comparable {
+  const NonStandardTrackEquipmentSegment({
+    required this.startKm,
+    required this.endKm,
     required this.type,
-    this.startLocation,
-    this.endLocation,
-    this.appliesToWholeSp = false,
+    required this.startOrder,
+    required this.endOrder,
   });
 
-  final double? startLocation;
-  final double? endLocation;
-  final bool appliesToWholeSp;
+  final List<double> startKm;
+  final List<double> endKm;
   final TrackEquipmentType type;
 
-  bool isOnLocation(double location) {
-    if (appliesToWholeSp) {
-      return true;
-    } else if (startLocation != null && endLocation != null) {
-      return startLocation! <= location && location <= endLocation!;
-    } else if (startLocation != null) {
-      return startLocation! <= location;
-    } else if (endLocation != null) {
-      return location <= endLocation!;
+  /// Start order of this segment. Nullable as it can start in a journey segment that is not part of the train journey.
+  final int? startOrder;
+
+  /// End order of this segment. Nullable as it can end in a journey segment that is not part of the train journey.
+  final int? endOrder;
+
+  bool get isEtcsL2Segment => type.isEtcsL2;
+
+  /// checks if the given order is part of this segment.
+  bool appliesToOrder(int order) {
+    if (startOrder != null && endOrder != null) {
+      return startOrder! <= order && order <= endOrder!;
+    } else if (startOrder != null) {
+      return startOrder! <= order;
+    } else {
+      return order <= endOrder!;
     }
-    return false;
+  }
+
+  @override
+  int compareTo(other) {
+    if (other is! NonStandardTrackEquipmentSegment) return -1;
+
+    final startEnd = (start: startOrder, end: endOrder);
+    final otherStartEnd = (start: other.startOrder, end: other.endOrder);
+    return StartEndIntComparator.compare(startEnd, otherStartEnd);
+  }
+
+  @override
+  String toString() {
+    return 'NonStandardTrackEquipmentSegment(startKm: $startKm, endKm: $endKm, startOrder: $startOrder, endOrder: $endOrder, type: $type)';
   }
 }
 
 enum TrackEquipmentType {
-  etcsL1ls2TracksWithSingleTrackEquipment('ETCS-L1LS-2TracksWithSingleTrackEquipment'),
-  etcsL2ConvSpeedReversingImpossible('ETCS-L2-convSpeedReversingImpossible'),
-  etcsL2ExtSpeedReversingPossible('ETCS-L2-extSpeedReversingPossible'),
-  etcsL2ExtSpeedReversingImpossible('ETCS-L2-extSpeedReversingImpossible');
+  etcsL1ls2TracksWithSingleTrackEquipment,
+  etcsL2ConvSpeedReversingImpossible,
+  etcsL2ExtSpeedReversingPossible,
+  etcsL2ExtSpeedReversingImpossible;
 
-  const TrackEquipmentType(this.value);
-
-  final String value;
-
-  static TrackEquipmentType? from(String value) {
-    return values.firstWhereOrNull(
-      (e) => e.value.toLowerCase() == value.toLowerCase()
-    );
-  }
+  bool get isEtcsL2 => [
+        TrackEquipmentType.etcsL2ConvSpeedReversingImpossible,
+        TrackEquipmentType.etcsL2ExtSpeedReversingPossible,
+        TrackEquipmentType.etcsL2ExtSpeedReversingImpossible
+      ].contains(this);
 }
 
 // extensions
 
-extension TrackEquipmentsExtension on Iterable<TrackEquipment> {
-  Iterable<TrackEquipment> whereOnLocation(double location) =>
-      where((trackEquipment) => trackEquipment.isOnLocation(location));
+extension NonStandardTrackEquipmentSegmentsExtension on Iterable<NonStandardTrackEquipmentSegment> {
+  Iterable<NonStandardTrackEquipmentSegment> appliesToOrder(int order) =>
+      where((segment) => segment.appliesToOrder(order));
+
+  /// Returns all [NonStandardTrackEquipmentSegment] of this list that mark the start of a ETCS level 2 segment
+  Iterable<NonStandardTrackEquipmentSegment> get withCABSignalingStart {
+    final etcsL2Segments = where((segment) => segment.type.isEtcsL2).toList();
+    etcsL2Segments.sort();
+
+    final starts = <NonStandardTrackEquipmentSegment>[];
+    for (int i = 0; i < etcsL2Segments.length; i++) {
+      final segment = etcsL2Segments[i];
+
+      // ignore segments without start
+      if (segment.startOrder == null) continue;
+
+      if (i == 0 || segment.startOrder != etcsL2Segments[i - 1].endOrder) {
+        starts.add(segment);
+      }
+    }
+
+    return starts;
+  }
+
+  /// Returns all [NonStandardTrackEquipmentSegment] of this list that mark the end of a ETCS level 2 segment
+  Iterable<NonStandardTrackEquipmentSegment> get withCABSignalingEnd {
+    final etcsL2Segments = where((segment) => segment.type.isEtcsL2).toList();
+    etcsL2Segments.sort();
+
+    final ends = <NonStandardTrackEquipmentSegment>[];
+    for (int i = 0; i < etcsL2Segments.length; i++) {
+      final segment = etcsL2Segments[i];
+
+      // ignore segments without end
+      if (segment.endOrder == null) continue;
+
+      if (i == etcsL2Segments.length - 1 || segment.endOrder != etcsL2Segments[i + 1].startOrder) {
+        ends.add(segment);
+      }
+    }
+
+    return ends;
+  }
 }

@@ -8,8 +8,8 @@ class AuthenticatorConfig {
     required this.discoveryUrl,
     required this.clientId,
     required this.redirectUrl,
-    this.postLogoutRedirectUrl,
     required this.tokenSpecs,
+    this.postLogoutRedirectUrl,
   });
 
   final String discoveryUrl;

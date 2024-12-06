@@ -7,4 +7,9 @@ class AdditionalSpeedRestrictionData extends BaseData {
       : super(type: Datatype.additionalSpeedRestriction);
 
   final AdditionalSpeedRestriction restriction;
+
+  @override
+  String toString() {
+    return 'AdditionalSpeedRestrictionData(order: $order, kilometre: $kilometre, restriction: $AdditionalSpeedRestriction)';
+  }
 }

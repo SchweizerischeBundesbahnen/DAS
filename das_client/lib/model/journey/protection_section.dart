@@ -7,4 +7,9 @@ class ProtectionSection extends BaseData {
 
   final bool isOptional;
   final bool isLong;
+
+  @override
+  String toString() {
+    return 'ProtectionSection(order: $order, kilometre: $kilometre, isOptional: $isOptional, isLong: $isLong)';
+  }
 }
