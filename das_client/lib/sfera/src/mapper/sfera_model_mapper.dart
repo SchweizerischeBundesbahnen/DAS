@@ -105,7 +105,7 @@ class SferaModelMapper {
     journeyData.addAll(_cabSignalingStart(trackEquipmentSegments));
     journeyData.addAll(_cabSignalingEnd(trackEquipmentSegments));
 
-    journeyData.sort((a, b) => a.order.compareTo(b.order));
+    journeyData.sort();
 
     final servicePoints = journeyData.where((it) => it.type == Datatype.servicePoint).toList();
     return Journey(
@@ -306,13 +306,13 @@ class SferaModelMapper {
     }).toList();
   }
 
-  static Iterable<BaseData> _cabSignalingStart(List<NonStandardTrackEquipmentSegment> trackEquipmentSegments) {
+  static Iterable<CABSignaling> _cabSignalingStart(Iterable<NonStandardTrackEquipmentSegment> trackEquipmentSegments) {
     return trackEquipmentSegments.withCABSignalingStart
-        .map((element) => CABSignaling(isStart: true, order: element.startOrder, kilometre: element.startKm));
+        .map((element) => CABSignaling(isStart: true, order: element.startOrder!, kilometre: element.startKm));
   }
 
-  static Iterable<BaseData> _cabSignalingEnd(List<NonStandardTrackEquipmentSegment> trackEquipmentSegments) {
+  static Iterable<CABSignaling> _cabSignalingEnd(Iterable<NonStandardTrackEquipmentSegment> trackEquipmentSegments) {
     return trackEquipmentSegments.withCABSignalingEnd
-        .map((element) => CABSignaling(isStart: false, order: element.endOrder, kilometre: element.endKm));
+        .map((element) => CABSignaling(isStart: false, order: element.endOrder!, kilometre: element.endKm));
   }
 }

@@ -23,4 +23,9 @@ class LocalizedString {
       return de ?? fr ?? it ?? '<Missing translation>';
     }
   }
+
+  @override
+  String toString() {
+    return "LocalizedString(de: '$de', fr: '$fr', it: '$it')";
+  }
 }

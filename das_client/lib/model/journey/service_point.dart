@@ -19,4 +19,9 @@ class ServicePoint extends BaseData {
   final bool isStop;
   final bool isStation;
   final BracketStation? bracketStation;
+
+  @override
+  String toString() {
+    return 'ServicePoint(order: $order, kilometre: $kilometre, name: $name, mandatoryStop: $mandatoryStop, isStop: $isStop, isStation: $isStation, bracketStation: $bracketStation)';
+  }
 }

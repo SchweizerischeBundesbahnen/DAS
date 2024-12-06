@@ -5,13 +5,14 @@ import 'package:das_client/sfera/src/model/enums/track_equipment_type.dart';
 import 'package:das_client/sfera/src/model/network_specific_area.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
 import 'package:das_client/sfera/src/model/segment_profile_list.dart';
+import 'package:das_client/util/comparators.dart';
 import 'package:fimber/fimber.dart';
 
 class TrackEquipmentMapper {
   TrackEquipmentMapper._();
 
   static List<NonStandardTrackEquipmentSegment> parseNonStandardTrackEquipmentSegment(
-      List<SegmentProfileList> segmentProfilesLists, List<SegmentProfile> segmentProfiles) {
+      Iterable<SegmentProfileList> segmentProfilesLists, Iterable<SegmentProfile> segmentProfiles) {
     final trackEquipments = _parseTrackEquipments(segmentProfilesLists, segmentProfiles);
     trackEquipments.sort((a, b) => a.compareTo(b));
 
@@ -23,6 +24,7 @@ class TrackEquipmentMapper {
         segments.add(_createSegmentFromStartsEnds(trackEquipment));
       } else if (trackEquipment.startLocation != null) {
         if (openStartSegments.containsKey(trackEquipment.type)) {
+          Fimber.w('Found a track equipment with the same type ${trackEquipment.type} that hasn\'t ended yet');
           continue;
         }
         openStartSegments[trackEquipment.type] = trackEquipment;
@@ -30,35 +32,61 @@ class TrackEquipmentMapper {
         final startOfSegment = openStartSegments[trackEquipment.type];
         if (startOfSegment != null) {
           segments.add(_createSegment(startOfSegment, trackEquipment));
-
-          // Clear the pending start after creating a segment
           openStartSegments[trackEquipment.type] = null;
+        } else if (trackEquipment.segmentIndex == 0) {
+          // got end of track equipment with start outside of train journey
+          segments.add(_createSegmentFromEnds(trackEquipment));
+        } else {
+          Fimber.w('Got end of track equipment segment for type ${trackEquipment.type} without start definition');
         }
+      }
+    }
+
+    // check open start segments
+    for (final trackEquipment in openStartSegments.values) {
+      if (trackEquipment == null) continue;
+
+      if (trackEquipment.segmentIndex == segmentProfilesLists.length - 1) {
+        // got end of track equipment with start outside of train journey
+        segments.add(_createSegmentFromStarts(trackEquipment));
+      } else {
+        Fimber.w('Got start of track equipment segment for type ${trackEquipment.type} without end definition');
       }
     }
 
     return segments;
   }
 
+  static NonStandardTrackEquipmentSegment _createSegmentFromStarts(_NonStandardTrackEquipment startTrackEquipment) =>
+      _createSegment(startTrackEquipment, null);
+
+  static NonStandardTrackEquipmentSegment _createSegmentFromEnds(_NonStandardTrackEquipment endTrackEquipment) =>
+      _createSegment(null, endTrackEquipment);
+
   static NonStandardTrackEquipmentSegment _createSegmentFromStartsEnds(_NonStandardTrackEquipment trackEquipment) =>
       _createSegment(trackEquipment, trackEquipment);
 
   static NonStandardTrackEquipmentSegment _createSegment(
-      _NonStandardTrackEquipment start, _NonStandardTrackEquipment end) {
+      _NonStandardTrackEquipment? start, _NonStandardTrackEquipment? end) {
+    if (start == null && end == null) {
+      throw Exception('Can not create track equipment segment without at least start or end information.');
+    }
+
+    final type = start?.type ?? end?.type;
     return NonStandardTrackEquipmentSegment(
-      type: start.type.toTrackEquipmentType(),
-      startOrder: SferaModelMapper.calculateOrder(start.index, start.startLocation!),
-      endOrder: SferaModelMapper.calculateOrder(end.index, end.endLocation!),
-      startKm: start.startKm,
-      endKm: end.endKm,
+      type: type!.trackEquipmentType,
+      startOrder: start != null ? SferaModelMapper.calculateOrder(start.segmentIndex, start.startLocation!) : null,
+      endOrder: end != null ? SferaModelMapper.calculateOrder(end.segmentIndex, end.endLocation!) : null,
+      startKm: start?.startKm ?? [],
+      endKm: end?.endKm ?? [],
     );
   }
 
   static List<_NonStandardTrackEquipment> _parseTrackEquipments(
-      List<SegmentProfileList> segmentProfilesLists, List<SegmentProfile> segmentProfiles) {
+      Iterable<SegmentProfileList> segmentProfilesLists, Iterable<SegmentProfile> segmentProfiles) {
     final trackEquipments = <_NonStandardTrackEquipment>[];
     for (int segmentIndex = 0; segmentIndex < segmentProfilesLists.length; segmentIndex++) {
-      final segmentProfile = segmentProfiles.firstMatch(segmentProfilesLists[segmentIndex]);
+      final segmentProfile = segmentProfiles.firstMatch(segmentProfilesLists.elementAt(segmentIndex));
       final nonStandardTrackEquipments = segmentProfile.areas?.nonStandardTrackEquipments ?? [];
 
       final kilometreMap = SferaModelMapper.parseKilometre(segmentProfile);
@@ -74,14 +102,15 @@ class TrackEquipmentMapper {
     return trackEquipments;
   }
 
-  static _NonStandardTrackEquipment? _mapToNonStandardTrackEquipment(NetworkSpecificArea element, int segmentIndex, Map<double, List<double>> kilometreMap) {
+  static _NonStandardTrackEquipment? _mapToNonStandardTrackEquipment(
+      NetworkSpecificArea element, int segmentIndex, Map<double, List<double>> kilometreMap) {
     if (element.trackEquipmentTypeWrapper == null) {
-      Fimber.w('Encountered nonStandardTrackEquipment track equipment type NSP declaration: ${element.type}');
+      Fimber.w('Encountered invalid nonStandardTrackEquipment track equipment type NSP declaration: ${element.type}');
       return null;
     }
 
     return _NonStandardTrackEquipment(
-      index: segmentIndex,
+      segmentIndex: segmentIndex,
       type: element.trackEquipmentTypeWrapper!.unwrapped,
       startLocation: element.startLocation,
       endLocation: element.endLocation,
@@ -98,7 +127,7 @@ class _NonStandardTrackEquipment implements Comparable {
     required this.startKm,
     required this.endKm,
     required this.type,
-    required this.index,
+    required this.segmentIndex,
     this.startLocation,
     this.endLocation,
     this.appliesToWholeSp = false,
@@ -110,34 +139,17 @@ class _NonStandardTrackEquipment implements Comparable {
   final List<double> startKm;
   final List<double> endKm;
   final bool appliesToWholeSp;
-  final int index;
+  final int segmentIndex;
 
   @override
   int compareTo(other) {
-    final indexComparison = index.compareTo(other.index);
+    if (other is! _NonStandardTrackEquipment) return -1;
+
+    final indexComparison = segmentIndex.compareTo(other.segmentIndex);
     if (indexComparison != 0) return indexComparison;
 
-    // If indexes are equal, compare the startLocation
-    if (startLocation != null && other.startLocation != null) {
-      final startLocationComparison = startLocation!.compareTo(other.startLocation!);
-      if (startLocationComparison != 0) {
-        return startLocationComparison;
-      }
-    } else if (startLocation != null) {
-      return -1;
-    } else if (other.startLocation != null) {
-      return 1;
-    }
-
-    // If both startLocation are equal or not provided, compare the endLocation
-    if (endLocation != null && other.endLocation != null) {
-      return endLocation!.compareTo(other.endLocation!);
-    } else if (endLocation != null) {
-      return -1;
-    } else if (other.endLocation != null) {
-      return 1;
-    }
-
-    return 0;
+    final startEnd = (start: startLocation?.toInt(), end: endLocation?.toInt());
+    final otherStartEnd = (start: other.startLocation?.toInt(), end: other.endLocation?.toInt());
+    return StartEndIntComparator.compare(startEnd, otherStartEnd);
   }
 }

@@ -11,6 +11,11 @@ class Signal extends BaseData {
 
   final List<SignalFunction> functions;
   final String? visualIdentifier;
+
+  @override
+  String toString() {
+    return 'Signal(order: $order, kilometre: $kilometre, functions: $functions, visualIdentifier: $visualIdentifier)';
+  }
 }
 
 enum SignalFunction {

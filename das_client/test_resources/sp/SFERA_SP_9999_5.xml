@@ -50,7 +50,11 @@
             <TAF_TAP_LocationName language="de" messageString="Bahnhof E"/>
         </TAF_TAP_Location>
 
-        <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="300" endLocation="700" name="nonStandardTrackEquipment">
+        <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="300" endLocation="600" name="nonStandardTrackEquipment">
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingImpossible"/>
+        </NetworkSpecificArea>
+
+        <NetworkSpecificArea startEndQualifier="Starts" startLocation="700" name="nonStandardTrackEquipment">
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingImpossible"/>
         </NetworkSpecificArea>
     </SP_Areas>

@@ -68,6 +68,10 @@
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
+        <NetworkSpecificArea startEndQualifier="Ends" endLocation="550" name="nonStandardTrackEquipment">
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingPossible"/>
+        </NetworkSpecificArea>
+
         <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="600" endLocation="900" name="nonStandardTrackEquipment">
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L1LS-2TracksWithSingleTrackEquipment"/>
         </NetworkSpecificArea>
@@ -80,6 +84,9 @@
         </KilometreReferencePoint>
         <KilometreReferencePoint location="500">
             <KM_Reference kmRef="0.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="550">
+            <KM_Reference kmRef="0.55"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="600">
             <KM_Reference kmRef="0.6"/>
