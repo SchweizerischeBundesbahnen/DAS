@@ -4,6 +4,7 @@ import 'package:das_client/model/journey/additional_speed_restriction_data.dart'
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/bracket_station.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
+import 'package:das_client/model/journey/connection_track.dart';
 import 'package:das_client/model/journey/curve_point.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/journey.dart';
@@ -11,7 +12,10 @@ import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/protection_section.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
+import 'package:das_client/model/journey/speed_change.dart';
+import 'package:das_client/model/journey/speed_data.dart';
 import 'package:das_client/model/journey/track_equipment.dart';
+import 'package:das_client/model/journey/velocity.dart';
 import 'package:das_client/model/localized_string.dart';
 import 'package:das_client/sfera/src/mapper/track_equipment_mapper.dart';
 import 'package:das_client/sfera/src/model/enums/length_type.dart';
@@ -23,6 +27,8 @@ import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/multilingual_text.dart';
 import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
+import 'package:das_client/sfera/src/model/segment_profile_list.dart';
+import 'package:das_client/sfera/src/model/speeds.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location.dart';
 import 'package:fimber/fimber.dart';
 
@@ -63,6 +69,17 @@ class SferaModelMapper {
 
       final signals = _parseSignals(segmentProfile, segmentIndex, kilometreMap);
       journeyData.addAll(signals);
+
+      final newLineSpeeds = _parseNewLineSpeed(segmentProfile, segmentIndex, kilometreMap);
+
+      final connectionTracks = _parseConnectionTrack(segmentProfile, segmentIndex, kilometreMap, newLineSpeeds);
+
+      // Remove new line speeds that are already present as connection tracks
+      newLineSpeeds.removeWhere((speedChange) =>
+          connectionTracks.firstWhereOrNull((connectionTrack) => connectionTrack.speedData == speedChange.speedData) != null);
+
+      journeyData.addAll(connectionTracks);
+      journeyData.addAll(newLineSpeeds);
 
       final timingPoints = segmentProfile.points?.timingPoints.toList() ?? [];
 
@@ -314,5 +331,42 @@ class SferaModelMapper {
   static Iterable<CABSignaling> _cabSignalingEnd(Iterable<NonStandardTrackEquipmentSegment> trackEquipmentSegments) {
     return trackEquipmentSegments.withCABSignalingEnd
         .map((element) => CABSignaling(isStart: false, order: element.endOrder!, kilometre: element.endKm));
+  }
+
+  static List<ConnectionTrack> _parseConnectionTrack(SegmentProfile segmentProfile, int segmentIndex,
+      Map<double, List<double>> kilometreMap, List<SpeedChange> newLineSpeeds) {
+    final connectionTracks = segmentProfile.contextInformation?.connectionTracks ?? [];
+    return connectionTracks.map<ConnectionTrack>((connectionTrack) {
+      final currentOrder = _calculateOrder(segmentIndex, connectionTrack.location);
+      final speedChange = newLineSpeeds.firstWhereOrNull((it) => it.order == currentOrder);
+      return ConnectionTrack(
+          text: connectionTrack.connectionTrackDescription,
+          order: _calculateOrder(segmentIndex, connectionTrack.location),
+          speedData: speedChange?.speedData,
+          kilometre: kilometreMap[connectionTrack.location] ?? []);
+    }).toList();
+  }
+
+  static List<SpeedChange> _parseNewLineSpeed(
+      SegmentProfile segmentProfile, int segmentIndex, Map<double, List<double>> kilometreMap) {
+    final newLineSpeeds = segmentProfile.points?.newLineSpeedsNsp ?? [];
+    return newLineSpeeds.map<SpeedChange>((newLineSpeed) {
+      return SpeedChange(
+          text: newLineSpeed.xmlNewLineSpeed.element.text,
+          speedData: _speedDataFromSpeeds(newLineSpeed.xmlNewLineSpeed.element.speeds),
+          order: _calculateOrder(segmentIndex, newLineSpeed.location),
+          kilometre: kilometreMap[newLineSpeed.location] ?? []);
+    }).toList();
+  }
+
+  static SpeedData _speedDataFromSpeeds(Speeds? speeds) {
+    if (speeds == null) {
+      return SpeedData();
+    }
+    return SpeedData(
+        velocities: speeds.velocities
+            .map((it) => Velocity(
+                trainSeries: it.trainSeries, reduced: it.reduced, speed: it.speed, breakSeries: it.brakeSeries))
+            .toList());
   }
 }

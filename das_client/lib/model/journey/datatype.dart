@@ -4,5 +4,7 @@ enum Datatype {
   signal,
   curvePoint,
   cabSignaling,
-  additionalSpeedRestriction;
+  additionalSpeedRestriction,
+  connectionTrack,
+  speedChange;
 }

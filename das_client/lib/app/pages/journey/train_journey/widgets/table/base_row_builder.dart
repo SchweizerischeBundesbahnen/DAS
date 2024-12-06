@@ -84,7 +84,14 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   }
 
   DASTableCell graduatedSpeedCell(BuildContext context) {
-    return DASTableCell.empty();
+    if (data.speedData == null) {
+      return DASTableCell.empty();
+    }
+
+    return DASTableCell(
+      child: Text(data.speedData!.resolvedSpeed(metadata.trainSeries, metadata.breakSeries) ?? ''),
+      alignment: Alignment.center,
+    );
   }
 
   DASTableCell advisedSpeedCell(BuildContext context) {

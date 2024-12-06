@@ -2,13 +2,16 @@ import 'dart:io';
 
 import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
+import 'package:das_client/model/journey/connection_track.dart';
 import 'package:das_client/model/journey/curve_point.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/protection_section.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
+import 'package:das_client/model/journey/speed_change.dart';
 import 'package:das_client/model/journey/track_equipment.dart';
+import 'package:das_client/model/journey/train_series.dart';
 import 'package:das_client/sfera/sfera_component.dart';
 import 'package:das_client/sfera/src/mapper/sfera_model_mapper.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
@@ -67,7 +70,7 @@ void main() {
     final journey = getJourney('9999', 5);
 
     expect(journey.valid, true);
-    expect(journey.data, hasLength(25));
+    expect(journey.data, hasLength(30));
 
     // segment 1
     expect(journey.data[0], TypeMatcher<ServicePoint>());
@@ -75,37 +78,42 @@ void main() {
     expect(journey.data[2], TypeMatcher<CABSignaling>());
     expect(journey.data[3], TypeMatcher<CurvePoint>());
     expect(journey.data[4], TypeMatcher<Signal>());
+    expect(journey.data[5], TypeMatcher<ConnectionTrack>());
     // segment 2
-    expect(journey.data[5], TypeMatcher<CABSignaling>());
-    expect(journey.data[6], TypeMatcher<Signal>());
-    expect(journey.data[7], TypeMatcher<ServicePoint>());
-    expect(journey.data[8], TypeMatcher<CABSignaling>());
-    expect(journey.data[9], TypeMatcher<Signal>());
-    expect(journey.data[10], TypeMatcher<CABSignaling>());
-    expect(journey.data[11], TypeMatcher<CurvePoint>());
-    // segment 3
+    expect(journey.data[6], TypeMatcher<CABSignaling>());
+    expect(journey.data[7], TypeMatcher<Signal>());
+    expect(journey.data[8], TypeMatcher<ServicePoint>());
+    expect(journey.data[9], TypeMatcher<CABSignaling>());
+    expect(journey.data[10], TypeMatcher<Signal>());
+    expect(journey.data[11], TypeMatcher<CABSignaling>());
     expect(journey.data[12], TypeMatcher<CurvePoint>());
-    expect(journey.data[13], TypeMatcher<ServicePoint>());
+    // segment 3
+    expect(journey.data[13], TypeMatcher<ConnectionTrack>());
     expect(journey.data[14], TypeMatcher<CurvePoint>());
-    expect(journey.data[15], TypeMatcher<Signal>());
-    // segment 4
-    expect(journey.data[16], TypeMatcher<CABSignaling>());
-    expect(journey.data[17], TypeMatcher<ServicePoint>());
+    expect(journey.data[15], TypeMatcher<ConnectionTrack>());
+    expect(journey.data[16], TypeMatcher<ServicePoint>());
+    expect(journey.data[17], TypeMatcher<CurvePoint>());
     expect(journey.data[18], TypeMatcher<Signal>());
+    // segment 4
+    expect(journey.data[19], TypeMatcher<CABSignaling>());
+    expect(journey.data[20], TypeMatcher<SpeedChange>());
+    expect(journey.data[21], TypeMatcher<ServicePoint>());
+    expect(journey.data[22], TypeMatcher<SpeedChange>());
+    expect(journey.data[23], TypeMatcher<Signal>());
     // segment 5
-    expect(journey.data[19], TypeMatcher<ServicePoint>());
-    expect(journey.data[20], TypeMatcher<CABSignaling>());
-    expect(journey.data[21], TypeMatcher<Signal>());
-    expect(journey.data[22], TypeMatcher<CABSignaling>());
-    expect(journey.data[23], TypeMatcher<CABSignaling>());
     expect(journey.data[24], TypeMatcher<ServicePoint>());
+    expect(journey.data[25], TypeMatcher<CABSignaling>());
+    expect(journey.data[26], TypeMatcher<Signal>());
+    expect(journey.data[27], TypeMatcher<CABSignaling>());
+    expect(journey.data[28], TypeMatcher<CABSignaling>());
+    expect(journey.data[29], TypeMatcher<ServicePoint>());
   });
 
   test('Test kilometre are parsed correctly', () async {
     final journey = getJourney('9999', 5);
 
     expect(journey.valid, true);
-    expect(journey.data, hasLength(25));
+    expect(journey.data, hasLength(30));
 
     // segment 1
     expect(journey.data[0].kilometre[0], 0.2);
@@ -113,38 +121,43 @@ void main() {
     expect(journey.data[2].kilometre[0], 0.55);
     expect(journey.data[3].kilometre[0], 0.6);
     expect(journey.data[4].kilometre[0], 0.7);
+    expect(journey.data[5].kilometre[0], 0.8);
     // segment 2
-    expect(journey.data[5].kilometre[0], 1.1);
-    expect(journey.data[6].kilometre[0], 1.2);
-    expect(journey.data[7].kilometre[0], 1.5);
+    expect(journey.data[6].kilometre[0], 1.1);
+    expect(journey.data[7].kilometre[0], 1.2);
     expect(journey.data[8].kilometre[0], 1.5);
-    expect(journey.data[9].kilometre[0], 1.7);
+    expect(journey.data[9].kilometre[0], 1.5);
     expect(journey.data[10].kilometre[0], 1.7);
-    expect(journey.data[11].kilometre[0], 1.8);
+    expect(journey.data[11].kilometre[0], 1.7);
+    expect(journey.data[12].kilometre[0], 1.8);
+    expect(journey.data[13].kilometre[0], 1.9);
     // segment 3
-    expect(journey.data[12].kilometre[0], 2.1);
-    expect(journey.data[13].kilometre[0], 2.4);
-    expect(journey.data[14].kilometre[0], 2.5);
-    expect(journey.data[15].kilometre[0], 2.6);
+    expect(journey.data[14].kilometre[0], 2.1);
+    expect(journey.data[15].kilometre[0], 2.2);
+    expect(journey.data[16].kilometre[0], 2.4);
+    expect(journey.data[17].kilometre[0], 2.5);
+    expect(journey.data[18].kilometre[0], 2.6);
     // segment 4
-    expect(journey.data[16].kilometre[0], 3.5);
-    expect(journey.data[17].kilometre[0], 3.7);
-    expect(journey.data[17].kilometre[1], 0);
-    expect(journey.data[18].kilometre[0], 0.2);
+    expect(journey.data[19].kilometre[0], 3.5);
+    expect(journey.data[20].kilometre[0], 3.7);
+    expect(journey.data[20].kilometre[1], 0);
+    expect(journey.data[21].kilometre[0], 0.1);
+    expect(journey.data[22].kilometre[0], 0.2);
     // segment 5
-    expect(journey.data[19].kilometre[0], 0.6);
-    expect(journey.data[20].kilometre[0], 0.6);
-    expect(journey.data[21].kilometre[0], 0.9);
-    expect(journey.data[22].kilometre[0], 0.9);
-    expect(journey.data[23].kilometre[0], 1.0);
-    expect(journey.data[24].kilometre[0], 1.1);
+    expect(journey.data[23].kilometre[0], 0.4);
+    expect(journey.data[24].kilometre[0], 0.6);
+    expect(journey.data[25].kilometre[0], 0.6);
+    expect(journey.data[26].kilometre[0], 0.9);
+    expect(journey.data[27].kilometre[0], 0.9);
+    expect(journey.data[28].kilometre[0], 1.0);
+    expect(journey.data[29].kilometre[0], 1.1);
   });
 
   test('Test order is generated correctly', () async {
     final journey = getJourney('9999', 5);
 
     expect(journey.valid, true);
-    expect(journey.data, hasLength(25));
+    expect(journey.data, hasLength(30));
 
     // segment 1
     expect(journey.data[0].order, 000200);
@@ -152,30 +165,35 @@ void main() {
     expect(journey.data[2].order, 000550);
     expect(journey.data[3].order, 000600);
     expect(journey.data[4].order, 000700);
+    expect(journey.data[5].order, 000800);
     // segment 2
-    expect(journey.data[5].order, 100100);
-    expect(journey.data[6].order, 100200);
-    expect(journey.data[7].order, 100500);
+    expect(journey.data[6].order, 100100);
+    expect(journey.data[7].order, 100200);
     expect(journey.data[8].order, 100500);
-    expect(journey.data[9].order, 100700);
+    expect(journey.data[9].order, 100500);
     expect(journey.data[10].order, 100700);
-    expect(journey.data[11].order, 100800);
+    expect(journey.data[11].order, 100700);
+    expect(journey.data[12].order, 100800);
+    expect(journey.data[13].order, 100900);
     // segment 3
-    expect(journey.data[12].order, 200100);
-    expect(journey.data[13].order, 200400);
-    expect(journey.data[14].order, 200500);
-    expect(journey.data[15].order, 200600);
+    expect(journey.data[14].order, 200100);
+    expect(journey.data[15].order, 200200);
+    expect(journey.data[16].order, 200400);
+    expect(journey.data[17].order, 200500);
+    expect(journey.data[18].order, 200600);
     // segment 4
-    expect(journey.data[16].order, 300500);
-    expect(journey.data[17].order, 300700);
-    expect(journey.data[18].order, 300900);
+    expect(journey.data[19].order, 300500);
+    expect(journey.data[20].order, 300700);
+    expect(journey.data[21].order, 300800);
+    expect(journey.data[22].order, 300900);
     // segment 5
-    expect(journey.data[19].order, 400300);
-    expect(journey.data[20].order, 400300);
-    expect(journey.data[21].order, 400600);
-    expect(journey.data[22].order, 400600);
-    expect(journey.data[23].order, 400700);
-    expect(journey.data[24].order, 400800);
+    expect(journey.data[23].order, 400100);
+    expect(journey.data[24].order, 400300);
+    expect(journey.data[25].order, 400300);
+    expect(journey.data[26].order, 400600);
+    expect(journey.data[27].order, 400600);
+    expect(journey.data[28].order, 400700);
+    expect(journey.data[29].order, 400800);
   });
 
   test('Test track equipment is generated correctly', () async {
@@ -417,5 +435,56 @@ void main() {
     expect(journey.valid, true);
     expect(speedRestrictions, hasLength(0));
     expect(journey.metadata.additionalSpeedRestrictions, hasLength(0));
+  });
+
+  test('Test speed change is parsed correctly', () async {
+    final journey = getJourney('9999', 5);
+    final speedChanges = journey.data.where((it) => it.type == Datatype.speedChange).cast<SpeedChange>().toList();
+
+    expect(journey.valid, true);
+    expect(speedChanges, hasLength(2));
+    expect(speedChanges[0].text, 'Zahnstangen Anfang');
+    expect(speedChanges[0].speedData!.velocities, hasLength(2));
+    expect(speedChanges[0].speedData!.velocities[0].trainSeries, TrainSeries.R);
+    expect(speedChanges[0].speedData!.velocities[0].speed, '55');
+    expect(speedChanges[0].speedData!.velocities[0].reduced, true);
+    expect(speedChanges[0].speedData!.velocities[0].breakSeries, 100);
+    expect(speedChanges[0].speedData!.velocities[1].trainSeries, TrainSeries.A);
+    expect(speedChanges[0].speedData!.velocities[1].speed, '50');
+    expect(speedChanges[0].speedData!.velocities[1].reduced, false);
+    expect(speedChanges[0].speedData!.velocities[1].breakSeries, 30);
+    expect(speedChanges[1].text, 'Zahnstangen Ende');
+    expect(speedChanges[1].speedData!.velocities, hasLength(2));
+    expect(speedChanges[1].speedData!.velocities[0].trainSeries, TrainSeries.R);
+    expect(speedChanges[1].speedData!.velocities[0].speed, '80');
+    expect(speedChanges[1].speedData!.velocities[0].reduced, false);
+    expect(speedChanges[1].speedData!.velocities[0].breakSeries, 100);
+    expect(speedChanges[1].speedData!.velocities[1].trainSeries, TrainSeries.A);
+    expect(speedChanges[1].speedData!.velocities[1].speed, '80');
+    expect(speedChanges[1].speedData!.velocities[1].reduced, false);
+    expect(speedChanges[1].speedData!.velocities[1].breakSeries, 30);
+  });
+
+  test('Test connection tracks are parsed correctly', () async {
+    final journey = getJourney('9999', 5);
+    final connectionTracks = journey.data.where((it) => it.type == Datatype.connectionTrack).cast<ConnectionTrack>().toList();
+
+    expect(journey.valid, true);
+    expect(connectionTracks, hasLength(3));
+    expect(connectionTracks[0].text, isNull);
+    expect(connectionTracks[0].speedData, isNull);
+    expect(connectionTracks[1].text, 'AnG. WITZ');
+    expect(connectionTracks[1].speedData, isNull);
+    expect(connectionTracks[2].text, '22-6 Uhr');
+    expect(connectionTracks[2].speedData, isNotNull);
+    expect(connectionTracks[2].speedData!.velocities, hasLength(2));
+    expect(connectionTracks[2].speedData!.velocities[0].trainSeries, TrainSeries.R);
+    expect(connectionTracks[2].speedData!.velocities[0].speed, '45');
+    expect(connectionTracks[2].speedData!.velocities[0].reduced, false);
+    expect(connectionTracks[2].speedData!.velocities[0].breakSeries, isNull);
+    expect(connectionTracks[2].speedData!.velocities[1].trainSeries, TrainSeries.A);
+    expect(connectionTracks[2].speedData!.velocities[1].speed, '40');
+    expect(connectionTracks[2].speedData!.velocities[1].reduced, false);
+    expect(connectionTracks[2].speedData!.velocities[1].breakSeries, isNull);
   });
 }

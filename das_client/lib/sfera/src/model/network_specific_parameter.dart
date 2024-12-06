@@ -1,4 +1,5 @@
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
+import 'package:das_client/sfera/src/model/xml_new_line_speed.dart';
 import 'package:das_client/sfera/src/model/track_equipment_type_wrapper.dart';
 
 class NetworkSpecificParameter extends SferaXmlElement {
@@ -8,7 +9,9 @@ class NetworkSpecificParameter extends SferaXmlElement {
 
   factory NetworkSpecificParameter.from(
       {Map<String, String>? attributes, List<SferaXmlElement>? children, String? value}) {
-    if (attributes?['name'] == TrackEquipmentTypeWrapper.elementName) {
+    if (attributes?['name'] == XmlNewLineSpeed.elementName) {
+      return XmlNewLineSpeed(attributes: attributes, children: children, value: value);
+    } else  if (attributes?['name'] == TrackEquipmentTypeWrapper.elementName) {
       return TrackEquipmentTypeWrapper(attributes: attributes, children: children, value: value);
     }
     return NetworkSpecificParameter(attributes: attributes, children: children, value: value);

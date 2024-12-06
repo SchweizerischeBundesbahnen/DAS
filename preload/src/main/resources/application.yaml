@@ -1,0 +1,16 @@
+info:
+  app:
+    version: '@project.version@'
+
+spring:
+  profiles:
+    active: ${STAGE:local}
+  application:
+    name: preload
+  datasource:
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    url: ${DB_URL}
+  sql:
+    init:
+      mode: always

@@ -31,8 +31,6 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(servicePointName, style: textStyle),
-          Spacer(),
-          Text('B12'),
         ],
       ),
     );
