@@ -1,4 +1,5 @@
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/cab_signaling_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/bracket_station_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/curve_point_row.dart';
@@ -411,6 +412,59 @@ void main() {
       final noLaneChangeIcon2 =
           find.descendant(of: blockIntermediateSignalRow, matching: find.byKey(SignalRow.signalLineChangeIconKey));
       expect(noLaneChangeIcon2, findsNothing);
+    });
+
+
+
+    testWidgets('test if CAB signaling is displayed correctly', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: '9999');
+
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
+
+      // CAB segment with start outside train journey and end at 0.6 km
+      await tester.dragUntilVisible(find.text('0.6').first, scrollableFinder, const Offset(0, -50));
+      final segment1CABStop = findDASTableRowByText('0.6').first;
+      final segment1CABStopIcon = find.descendant(of: segment1CABStop, matching: find.byKey(CABSignalingRow.cabSignalingEndIconKey));
+      expect(segment1CABStopIcon, findsOneWidget);
+
+      // CAB segment from km 1.1 to 1.5
+      await tester.dragUntilVisible(find.text('1.1'), scrollableFinder, const Offset(0, -50));
+      final segment2CABStart = findDASTableRowByText('1.1');
+      final segment2CABStartIcon = find.descendant(of: segment2CABStart, matching: find.byKey(CABSignalingRow.cabSignalingStartIconKey));
+      expect(segment2CABStartIcon, findsOneWidget);
+      await tester.dragUntilVisible(find.text('1.7'), scrollableFinder, const Offset(0, -50));
+      final segment2CABStop = findDASTableRowByText('1.5').last;
+      final segment2CABStopIcon = find.descendant(of: segment2CABStop, matching: find.byKey(CABSignalingRow.cabSignalingEndIconKey));
+      expect(segment2CABStopIcon, findsOneWidget);
+
+      // CAB segment from km 1.7 to 3.5
+      await tester.dragUntilVisible(find.text('1.8'), scrollableFinder, const Offset(0, -50));
+      final segment3CABStart = findDASTableRowByText('1.7').last;
+      final segment3CABStartIcon = find.descendant(of: segment3CABStart, matching: find.byKey(CABSignalingRow.cabSignalingStartIconKey));
+      expect(segment3CABStartIcon, findsOneWidget);
+      await tester.dragUntilVisible(find.text('3.7'), scrollableFinder, const Offset(0, -50));
+      final segment3CABStop = findDASTableRowByText('3.5').last;
+      final segment3CABStopIcon = find.descendant(of: segment3CABStop, matching: find.byKey(CABSignalingRow.cabSignalingEndIconKey));
+      expect(segment3CABStopIcon, findsOneWidget);
+
+      // CAB segment from km 0.6 to 0.9
+      await tester.dragUntilVisible(find.text('BAB1'), scrollableFinder, const Offset(0, -50));
+      final segment4CABStart = findDASTableRowByText('0.6').last;
+      final segment4CABStartIcon = find.descendant(of: segment4CABStart, matching: find.byKey(CABSignalingRow.cabSignalingStartIconKey));
+      expect(segment4CABStartIcon, findsOneWidget);
+      final segment4CABStop = findDASTableRowByText('0.9').last;
+      final segment4CABStopIcon = find.descendant(of: segment4CABStop, matching: find.byKey(CABSignalingRow.cabSignalingEndIconKey));
+      expect(segment4CABStopIcon, findsOneWidget);
+
+      // CAB segment with end outside train journey and start at 1.0 km
+      await tester.dragUntilVisible(find.text('1.0'), scrollableFinder, const Offset(0, -50));
+      final segment5CABStart = findDASTableRowByText('1.0').first;
+      final segment5CABStartIcon = find.descendant(of: segment5CABStart, matching: find.byKey(CABSignalingRow.cabSignalingStartIconKey));
+      expect(segment5CABStartIcon, findsOneWidget);
     });
   });
 }
