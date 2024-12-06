@@ -14,25 +14,33 @@ class MainContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SBBGroup(
-      margin: const EdgeInsetsDirectional.fromSTEB(
-        sbbDefaultSpacing * 0.5,
-        0,
-        sbbDefaultSpacing * 0.5,
-        sbbDefaultSpacing,
-      ),
-      padding: const EdgeInsets.all(sbbDefaultSpacing),
-      useShadow: false,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _topHeaderRow(context),
-          _divider(),
-          _bottomHeaderRow(),
-        ],
-      ),
-    );
+    final bloc = context.trainJourneyCubit;
+
+    return StreamBuilder<Journey?>(
+        stream: bloc.journeyStream,
+        builder: (context, snapshot) {
+          final Journey? journey = snapshot.data;
+
+          return SBBGroup(
+            margin: const EdgeInsetsDirectional.fromSTEB(
+              sbbDefaultSpacing * 0.5,
+              0,
+              sbbDefaultSpacing * 0.5,
+              sbbDefaultSpacing,
+            ),
+            padding: const EdgeInsets.all(sbbDefaultSpacing),
+            useShadow: false,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _topHeaderRow(context, journey),
+                _divider(),
+                _bottomHeaderRow(),
+              ],
+            ),
+          );
+        });
   }
 
   Widget _bottomHeaderRow() {
@@ -55,27 +63,15 @@ class MainContainer extends StatelessWidget {
     );
   }
 
-  Widget _nextStopText(BuildContext context) {
-    final bloc = context.trainJourneyCubit;
-
-    return StreamBuilder<Journey?>(
-      stream: bloc.journeyStream,
-      builder: (context, snapshot) {
-        final Journey? journey = snapshot.data;
-        if (journey == null) {
-          return Container();
-        }
-        if (journey.metadata.nextStop != null) {
-          return Text(journey.metadata.nextStop!.name.localized,
-              style: SBBTextStyles.largeLight.copyWith(fontSize: 24.0));
-        }
-        return Text(context.l10n.c_unknown,
-            style: SBBTextStyles.extraLargeLight.copyWith(fontSize: 24.0));
-      },
-    );
+  Widget _nextStopText(BuildContext context, Journey? journey) {
+    if (journey == null) {
+      return Container();
+    }
+    return Text(journey.metadata.nextStop?.name.localized ?? context.l10n.c_unknown,
+        style: SBBTextStyles.largeLight.copyWith(fontSize: 24.0));
   }
 
-  Widget _topHeaderRow(BuildContext context) {
+  Widget _topHeaderRow(BuildContext context, Journey? journey) {
     return SizedBox(
       height: 48.0,
       child: Row(
@@ -84,7 +80,7 @@ class MainContainer extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(left: sbbDefaultSpacing * 0.5),
-              child: _nextStopText(context),
+              child: _nextStopText(context, journey),
             ),
           ),
           _buttonArea(),

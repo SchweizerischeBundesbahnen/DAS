@@ -3,6 +3,7 @@ import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
+import '../util/test_utils.dart';
 
 void main() {
   group('home screen test', () {
@@ -36,10 +37,13 @@ void main() {
       // Load app widget.
       await prepareAndStartApp(tester);
 
-      // check that the primary button is enabled
-      final primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
+      //
+      final trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
+      expect(trainNumberText, findsOneWidget);
 
-      // press load Fahrordnung button
+      await enterText(tester, trainNumberText, '4816');
+
+      final primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
       await tester.tap(primaryButton);
 
       // wait for train journey to load
@@ -50,7 +54,7 @@ void main() {
       expect(headerFinder, findsOneWidget);
 
       //Find the text in the header
-      expect(find.descendant(of: headerFinder, matching: find.text('Lommiswil')), findsOneWidget);
+      expect(find.descendant(of: headerFinder, matching: find.text('Hardbrücke')), findsOneWidget);
 
       await tester.pumpAndSettle();
     });

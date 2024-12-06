@@ -61,11 +61,8 @@ void main() {
 
       //Scroll to the table and search inside it
       for (final rowText in testRows) {
-        await tester.dragUntilVisible(
-          find.descendant(of: tableFinder, matching: find.text(rowText)),
-          tableFinder,
-          const Offset(0, -50),
-        );
+        final rowFinder = find.descendant(of: tableFinder, matching: find.text(rowText));
+        await tester.dragUntilVisible(rowFinder, tableFinder, const Offset(0, -50));
 
         final testRow = findDASTableRowByText(rowText);
         expect(testRow, findsOneWidget);
@@ -74,9 +71,10 @@ void main() {
         final coloredCells = find.descendant(
             of: testRow,
             matching: find.byWidgetPredicate((it) =>
-            it is Container &&
+                it is Container &&
                 it.decoration is BoxDecoration &&
-                (it.decoration as BoxDecoration).color == AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor));
+                (it.decoration as BoxDecoration).color ==
+                    AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor));
         expect(coloredCells, findsNWidgets(3));
       }
     });
@@ -119,7 +117,8 @@ void main() {
 
       // check stop circles
       final stopRoute = find.descendant(of: stopRouteRow, matching: find.byKey(RouteCellBody.stopKey));
-      final nonStoppingPassRoute = find.descendant(of: nonStoppingPassRouteRow, matching: find.byKey(RouteCellBody.stopKey));
+      final nonStoppingPassRoute =
+          find.descendant(of: nonStoppingPassRouteRow, matching: find.byKey(RouteCellBody.stopKey));
       expect(stopRoute, findsOneWidget);
       expect(nonStoppingPassRoute, findsNothing);
 
@@ -358,7 +357,8 @@ void main() {
       final langeChangeBlockSignalRow = findDASTableRowByText('S1');
       expect(langeChangeBlockSignalRow, findsOneWidget);
       expect(find.descendant(of: langeChangeBlockSignalRow, matching: find.text('Block')), findsOneWidget);
-      final laneChangeIcon = find.descendant(of: langeChangeBlockSignalRow, matching: find.byKey(SignalRow.signalLineChangeIconKey));
+      final laneChangeIcon =
+          find.descendant(of: langeChangeBlockSignalRow, matching: find.byKey(SignalRow.signalLineChangeIconKey));
       expect(laneChangeIcon, findsOneWidget);
 
       // check if basic signal is rendered correctly
@@ -366,7 +366,8 @@ void main() {
       final protectionSignalRow = findDASTableRowByText('Deckungssignal');
       expect(protectionSignalRow, findsOneWidget);
       expect(find.descendant(of: protectionSignalRow, matching: find.text('D1')), findsOneWidget);
-      final noLaneChangeIcon = find.descendant(of: protectionSignalRow, matching: find.byKey(SignalRow.signalLineChangeIconKey));
+      final noLaneChangeIcon =
+          find.descendant(of: protectionSignalRow, matching: find.byKey(SignalRow.signalLineChangeIconKey));
       expect(noLaneChangeIcon, findsNothing);
 
       // check if signals with multiple functions are rendered correctly
@@ -374,7 +375,8 @@ void main() {
       final blockIntermediateSignalRow = findDASTableRowByText('Block/Abschnittsignal');
       expect(blockIntermediateSignalRow, findsOneWidget);
       expect(find.descendant(of: blockIntermediateSignalRow, matching: find.text('BAB1')), findsOneWidget);
-      final noLaneChangeIcon2 = find.descendant(of: blockIntermediateSignalRow, matching: find.byKey(SignalRow.signalLineChangeIconKey));
+      final noLaneChangeIcon2 =
+          find.descendant(of: blockIntermediateSignalRow, matching: find.byKey(SignalRow.signalLineChangeIconKey));
       expect(noLaneChangeIcon2, findsNothing);
     });
   });
