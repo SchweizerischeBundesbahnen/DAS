@@ -414,8 +414,6 @@ void main() {
       expect(noLaneChangeIcon2, findsNothing);
     });
 
-
-
     testWidgets('test if CAB signaling is displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
 
@@ -443,7 +441,7 @@ void main() {
 
       // CAB segment from km 1.7 to 3.5
       await tester.dragUntilVisible(find.text('1.8'), scrollableFinder, const Offset(0, -50));
-      final segment3CABStart = findDASTableRowByText('1.7').last;
+      final segment3CABStart = findDASTableRowByText('1.7').first;
       final segment3CABStartIcon = find.descendant(of: segment3CABStart, matching: find.byKey(CABSignalingRow.cabSignalingStartIconKey));
       expect(segment3CABStartIcon, findsOneWidget);
       await tester.dragUntilVisible(find.text('3.7'), scrollableFinder, const Offset(0, -50));
@@ -453,7 +451,7 @@ void main() {
 
       // CAB segment from km 0.6 to 0.9
       await tester.dragUntilVisible(find.text('BAB1'), scrollableFinder, const Offset(0, -50));
-      final segment4CABStart = findDASTableRowByText('0.6').last;
+      final segment4CABStart = findDASTableRowByText('0.6').first;
       final segment4CABStartIcon = find.descendant(of: segment4CABStart, matching: find.byKey(CABSignalingRow.cabSignalingStartIconKey));
       expect(segment4CABStartIcon, findsOneWidget);
       final segment4CABStop = findDASTableRowByText('0.9').last;
