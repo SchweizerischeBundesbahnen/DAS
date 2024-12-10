@@ -52,6 +52,7 @@
     </SP_Areas>
 
     <SP_ContextInformation>
+        <ConnectionTrack location="900" connectionTrackType="Unknown" connectionTrackDescription="AnG. WITZ"/>
         <KilometreReferencePoint location="200">
             <KM_Reference kmRef="1.2"/>
         </KilometreReferencePoint>
@@ -63,6 +64,9 @@
         </KilometreReferencePoint>
         <KilometreReferencePoint location="800">
             <KM_Reference kmRef="1.8"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="900">
+            <KM_Reference kmRef="1.9"/>
         </KilometreReferencePoint>
     </SP_ContextInformation>
 </SegmentProfile>

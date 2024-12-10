@@ -49,19 +49,19 @@
             </TAF_TAP_LocationIdent>
             <TAF_TAP_LocationName language="de" messageString="Bahnhof A"/>
 
-<!-- todo: Geschwindigkeiten NSP tbd  -->
+            <!-- todo: Geschwindigkeiten NSP tbd  -->
 
-<!--            Bahnhofsgeschwindigkeiten -->
+            <!--            Bahnhofsgeschwindigkeiten -->
             <TAF_TAP_Location_NSP name="stationSpeed">
                 <NetworkSpecificParameter name="" value="140/[60]"/>
-<!--            name:    stationSpeed_R150' or 'stationSpeed_A65'. 'stationSpeed_All' or 'stationSpeed_C' 'stationSpeed_R' -->
+                <!--            name:    stationSpeed_R150' or 'stationSpeed_A65'. 'stationSpeed_All' or 'stationSpeed_C' 'stationSpeed_R' -->
                 <NetworkSpecificParameter name="graduatedSpeed_00000_n" value=""/>
                 <NetworkSpecificParameter name="graduatedSpeed_00000_ro" value=""/>
                 <NetworkSpecificParameter name="graduatedSpeed_00000_ad" value=""/>
                 <NetworkSpecificParameter name="graduatedSpeed_00000_s" value=""/>
                 <NetworkSpecificParameter name="graduatedSpeed_00000_txt" value="Einfahrt vom Bahnsteig an, übrige Gleise ab Zentralstellwerk"/>
             </TAF_TAP_Location_NSP>
-<!--            gleisspezifische Geschwindigkeiten	-->
+            <!--            gleisspezifische Geschwindigkeiten	-->
             <TAF_TAP_Location_NSP name="stationProperty_00000">
                 <NetworkSpecificParameter name="stationPropertySpeed_R150" value="30-40"/>
                 <NetworkSpecificParameter name="text" value="&lt;b&gt;31&lt;/b&gt;"/>
@@ -70,6 +70,7 @@
     </SP_Areas>
 
     <SP_ContextInformation>
+        <ConnectionTrack location="800" connectionTrackType="Unknown"/>
         <KilometreReferencePoint location="200">
             <KM_Reference kmRef="0.2"/>
         </KilometreReferencePoint>
@@ -81,6 +82,9 @@
         </KilometreReferencePoint>
         <KilometreReferencePoint location="700">
             <KM_Reference kmRef="0.7"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="800">
+            <KM_Reference kmRef="0.8"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="900">
             <KM_Reference kmRef="0.9"/>

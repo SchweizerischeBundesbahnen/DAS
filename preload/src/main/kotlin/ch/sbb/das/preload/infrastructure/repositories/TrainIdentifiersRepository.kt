@@ -6,5 +6,4 @@ import org.springframework.data.repository.ListCrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface TrainIdentifiersRepository : ListCrudRepository<TrainIdentifierEntity, TrainIdentifierId> {
-}
+interface TrainIdentifiersRepository : ListCrudRepository<TrainIdentifierEntity, TrainIdentifierId>

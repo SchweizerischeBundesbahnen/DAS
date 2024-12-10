@@ -9,5 +9,5 @@ import org.springframework.boot.web.servlet.ServletComponentScan
 class PreloadApplication
 
 fun main(args: Array<String>) {
-	runApplication<PreloadApplication>(*args)
+    runApplication<PreloadApplication>(*args)
 }

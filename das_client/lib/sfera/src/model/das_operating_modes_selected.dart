@@ -14,8 +14,8 @@ class DasOperatingModesSelected extends SferaXmlElement {
 
   @override
   bool validate() {
-    return validateHasEnumAttribute(DasArchitecture.values, 'DAS_architecture') &&
-        validateHasEnumAttribute(DasConnectivity.values, 'DAS_connectivity') &&
+    return validateHasAttributeInRange('DAS_architecture', XmlEnum.values(DasArchitecture.values)) &&
+        validateHasAttributeInRange('DAS_connectivity', XmlEnum.values(DasConnectivity.values)) &&
         super.validate();
   }
 }
