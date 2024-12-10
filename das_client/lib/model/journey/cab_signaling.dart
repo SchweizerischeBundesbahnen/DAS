@@ -11,14 +11,7 @@ class CABSignaling extends BaseData {
   final bool isStart;
 
   @override
-  int compareTo(other) {
-    final comparison = super.compareTo(other);
-    if (comparison != 0) {
-      return comparison;
-    }
-
-    return isStart ? -1 : 1;
-  }
+  int get orderPriority => isStart ? -1 : 1;
 
   @override
   String toString() {

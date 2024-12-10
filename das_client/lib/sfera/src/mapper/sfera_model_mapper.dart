@@ -131,7 +131,7 @@ class SferaModelMapper {
         additionalSpeedRestrictions: additionalSpeedRestrictions,
         routeStart: journeyData.firstOrNull,
         routeEnd: journeyData.lastOrNull,
-        nonStandardTrackEquipmentSegment: trackEquipmentSegments,
+        nonStandardTrackEquipmentSegments: trackEquipmentSegments,
       ),
       data: journeyData,
     );

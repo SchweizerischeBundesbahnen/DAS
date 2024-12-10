@@ -13,7 +13,7 @@ class Metadata {
     this.trainSeries = TrainSeries.R,
     this.breakSeries = 150,
     this.additionalSpeedRestrictions = const [],
-    this.nonStandardTrackEquipmentSegment = const [],
+    this.nonStandardTrackEquipmentSegments = const [],
   });
 
   final ServicePoint? nextStop;
@@ -21,7 +21,7 @@ class Metadata {
   final List<AdditionalSpeedRestriction> additionalSpeedRestrictions;
   final BaseData? routeStart;
   final BaseData? routeEnd;
-  final List<NonStandardTrackEquipmentSegment> nonStandardTrackEquipmentSegment;
+  final List<NonStandardTrackEquipmentSegment> nonStandardTrackEquipmentSegments;
   final TrainSeries trainSeries;
   final int breakSeries;
 }

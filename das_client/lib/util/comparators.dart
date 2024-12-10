@@ -23,10 +23,12 @@ class StartEndIntComparator {
     // if end is null, it is considered outside of range and bigger
     if (a.end != null && b.end != null) {
       return a.end!.compareTo(b.end!);
-    } else if (a.end == null && b.end != null) {
+    } else if (a.end == null) {
       return 1;
-    } else {
+    } else if (b.end == null) {
       return -1;
     }
+
+    return 0;
   }
 }

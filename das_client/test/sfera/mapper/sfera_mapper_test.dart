@@ -84,8 +84,8 @@ void main() {
     expect(journey.data[7], TypeMatcher<Signal>());
     expect(journey.data[8], TypeMatcher<ServicePoint>());
     expect(journey.data[9], TypeMatcher<CABSignaling>());
-    expect(journey.data[10], TypeMatcher<Signal>());
-    expect(journey.data[11], TypeMatcher<CABSignaling>());
+    expect(journey.data[10], TypeMatcher<CABSignaling>());
+    expect(journey.data[11], TypeMatcher<Signal>());
     expect(journey.data[12], TypeMatcher<CurvePoint>());
     // segment 3
     expect(journey.data[13], TypeMatcher<ConnectionTrack>());
@@ -101,8 +101,8 @@ void main() {
     expect(journey.data[22], TypeMatcher<SpeedChange>());
     expect(journey.data[23], TypeMatcher<Signal>());
     // segment 5
-    expect(journey.data[24], TypeMatcher<ServicePoint>());
-    expect(journey.data[25], TypeMatcher<CABSignaling>());
+    expect(journey.data[24], TypeMatcher<CABSignaling>());
+    expect(journey.data[25], TypeMatcher<ServicePoint>());
     expect(journey.data[26], TypeMatcher<Signal>());
     expect(journey.data[27], TypeMatcher<CABSignaling>());
     expect(journey.data[28], TypeMatcher<CABSignaling>());
@@ -200,26 +200,26 @@ void main() {
     final journey = getJourney('9999', 5);
 
     expect(journey.valid, true);
-    expect(journey.metadata.nonStandardTrackEquipmentSegment, hasLength(6));
+    expect(journey.metadata.nonStandardTrackEquipmentSegments, hasLength(6));
 
-    expect(journey.metadata.nonStandardTrackEquipmentSegment[0].type, TrackEquipmentType.etcsL2ExtSpeedReversingPossible);
-    expect(journey.metadata.nonStandardTrackEquipmentSegment[0].startOrder, isNull);
-    expect(journey.metadata.nonStandardTrackEquipmentSegment[0].endOrder, 000550);
-    expect(journey.metadata.nonStandardTrackEquipmentSegment[1].type, TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment);
-    expect(journey.metadata.nonStandardTrackEquipmentSegment[1].startOrder, 000600);
-    expect(journey.metadata.nonStandardTrackEquipmentSegment[1].endOrder, 000900);
-    expect(journey.metadata.nonStandardTrackEquipmentSegment[2].type, TrackEquipmentType.etcsL2ConvSpeedReversingImpossible);
-    expect(journey.metadata.nonStandardTrackEquipmentSegment[2].startOrder, 100100);
-    expect(journey.metadata.nonStandardTrackEquipmentSegment[2].endOrder, 100500);
-    expect(journey.metadata.nonStandardTrackEquipmentSegment[3].type, TrackEquipmentType.etcsL2ExtSpeedReversingPossible);
-    expect(journey.metadata.nonStandardTrackEquipmentSegment[3].startOrder, 100700);
-    expect(journey.metadata.nonStandardTrackEquipmentSegment[3].endOrder, 300500);
-    expect(journey.metadata.nonStandardTrackEquipmentSegment[4].type, TrackEquipmentType.etcsL2ExtSpeedReversingImpossible);
-    expect(journey.metadata.nonStandardTrackEquipmentSegment[4].startOrder, 400300);
-    expect(journey.metadata.nonStandardTrackEquipmentSegment[4].endOrder, 400600);
-    expect(journey.metadata.nonStandardTrackEquipmentSegment[5].type, TrackEquipmentType.etcsL2ExtSpeedReversingImpossible);
-    expect(journey.metadata.nonStandardTrackEquipmentSegment[5].startOrder, 400700);
-    expect(journey.metadata.nonStandardTrackEquipmentSegment[5].endOrder, isNull);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[0].type, TrackEquipmentType.etcsL2ExtSpeedReversingPossible);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[0].startOrder, isNull);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[0].endOrder, 000550);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[1].type, TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[1].startOrder, 000600);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[1].endOrder, 000900);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[2].type, TrackEquipmentType.etcsL2ConvSpeedReversingImpossible);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[2].startOrder, 100100);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[2].endOrder, 100500);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[3].type, TrackEquipmentType.etcsL2ExtSpeedReversingPossible);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[3].startOrder, 100700);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[3].endOrder, 300500);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[4].type, TrackEquipmentType.etcsL2ExtSpeedReversingImpossible);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[4].startOrder, 400300);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[4].endOrder, 400600);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[5].type, TrackEquipmentType.etcsL2ExtSpeedReversingImpossible);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[5].startOrder, 400700);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[5].endOrder, isNull);
   });
 
   test('Test signals are generated correctly', () async {

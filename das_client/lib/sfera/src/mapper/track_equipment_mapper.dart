@@ -14,44 +14,40 @@ class TrackEquipmentMapper {
   static List<NonStandardTrackEquipmentSegment> parseNonStandardTrackEquipmentSegment(
       Iterable<SegmentProfileList> segmentProfilesLists, Iterable<SegmentProfile> segmentProfiles) {
     final trackEquipments = _parseTrackEquipments(segmentProfilesLists, segmentProfiles);
-    trackEquipments.sort((a, b) => a.compareTo(b));
+    trackEquipments.sort();
 
-    final openStartSegments = <SferaTrackEquipmentType, _NonStandardTrackEquipment?>{};
+    final openSegments = <SferaTrackEquipmentType, _NonStandardTrackEquipment?>{};
 
     final List<NonStandardTrackEquipmentSegment> segments = [];
     for (final trackEquipment in trackEquipments) {
       if (trackEquipment.startLocation != null && trackEquipment.endLocation != null) {
         segments.add(_createSegmentFromStartsEnds(trackEquipment));
       } else if (trackEquipment.startLocation != null) {
-        if (openStartSegments.containsKey(trackEquipment.type)) {
+        if (openSegments.containsKey(trackEquipment.type)) {
           Fimber.w('Found a track equipment with the same type ${trackEquipment.type} that hasn\'t ended yet');
           continue;
         }
-        openStartSegments[trackEquipment.type] = trackEquipment;
+        openSegments[trackEquipment.type] = trackEquipment;
       } else if (trackEquipment.endLocation != null) {
-        final startOfSegment = openStartSegments[trackEquipment.type];
+        final startOfSegment = openSegments[trackEquipment.type];
         if (startOfSegment != null) {
           segments.add(_createSegment(startOfSegment, trackEquipment));
-          openStartSegments[trackEquipment.type] = null;
+          openSegments.remove(trackEquipment.type);
         } else if (trackEquipment.segmentIndex == 0) {
           // got end of track equipment with start outside of train journey
           segments.add(_createSegmentFromEnds(trackEquipment));
         } else {
           Fimber.w('Got end of track equipment segment for type ${trackEquipment.type} without start definition');
         }
+      } else if(trackEquipment.appliesToWholeSp) {
+        openSegments.putIfAbsent(trackEquipment.type, () => trackEquipment);
       }
     }
 
     // check open start segments
-    for (final trackEquipment in openStartSegments.values) {
+    for (final trackEquipment in openSegments.values) {
       if (trackEquipment == null) continue;
-
-      if (trackEquipment.segmentIndex == segmentProfilesLists.length - 1) {
-        // got end of track equipment with start outside of train journey
-        segments.add(_createSegmentFromStarts(trackEquipment));
-      } else {
-        Fimber.w('Got start of track equipment segment for type ${trackEquipment.type} without end definition');
-      }
+      segments.add(_createSegmentFromStarts(trackEquipment));
     }
 
     return segments;
