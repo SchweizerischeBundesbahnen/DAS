@@ -25,6 +25,8 @@ import 'package:das_client/sfera/src/model/segment_profile_list.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location.dart';
 import 'package:fimber/fimber.dart';
 
+
+//TODO implement DelaySfera here somewhere and parse the data from the mock-backend to Duration format
 class SferaModelMapper {
   SferaModelMapper._();
 
