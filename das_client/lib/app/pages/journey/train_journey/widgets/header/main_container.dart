@@ -20,8 +20,9 @@ class MainContainer extends StatelessWidget {
         stream: bloc.journeyStream,
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.data == null) {
-            //center
-            return SBBLoadingIndicator();
+            return Center(
+              child: SBBLoadingIndicator(),
+            );
           }
           final Journey journey = snapshot.data!;
 
