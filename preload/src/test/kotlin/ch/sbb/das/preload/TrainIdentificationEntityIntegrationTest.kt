@@ -1,8 +1,8 @@
 package ch.sbb.das.preload
 
-import ch.sbb.das.preload.infrastructure.entities.TrainIdentifierEntity
-import ch.sbb.das.preload.infrastructure.entities.TrainIdentifierId
-import ch.sbb.das.preload.infrastructure.repositories.TrainIdentifiersRepository
+import ch.sbb.das.preload.infrastructure.entities.TrainIdentificationEntity
+import ch.sbb.das.preload.infrastructure.entities.TrainIdentificationId
+import ch.sbb.das.preload.infrastructure.repositories.TrainIdentificationRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -18,7 +18,7 @@ import kotlin.test.Test
 
 @DataJpaTest
 @Testcontainers
-class TrainIdentifierEntityIntegrationTest {
+class TrainIdentificationEntityIntegrationTest {
 
     companion object {
         @Container
@@ -28,7 +28,7 @@ class TrainIdentifierEntityIntegrationTest {
     }
 
     @Autowired
-    lateinit var trainIdentifiersRepository: TrainIdentifiersRepository
+    lateinit var trainIdentificationRepository: TrainIdentificationRepository
 
     @Autowired
     lateinit var em: TestEntityManager
@@ -40,12 +40,12 @@ class TrainIdentifierEntityIntegrationTest {
         val ru = "22"
         val startTime = OffsetDateTime.now()
 
-        val train = TrainIdentifierEntity(identifier, operationDate, ru, startTime)
-        trainIdentifiersRepository.save(train)
+        val train = TrainIdentificationEntity(identifier, operationDate, ru, startTime)
+        trainIdentificationRepository.save(train)
 
         val result = em.find(
-            TrainIdentifierEntity::class.java,
-            TrainIdentifierId(identifier, operationDate, ru)
+            TrainIdentificationEntity::class.java,
+            TrainIdentificationId(identifier, operationDate, ru)
         )
         assertThat(result.startDateTime).isEqualTo(startTime)
     }
@@ -57,7 +57,7 @@ class TrainIdentifierEntityIntegrationTest {
         val ru = "22"
         val startTime = OffsetDateTime.now()
 
-        val train = TrainIdentifierEntity(identifier, operationDate, ru, startTime)
+        val train = TrainIdentificationEntity(identifier, operationDate, ru, startTime)
         em.persist(train)
 
         val newStartTime = OffsetDateTime.now()
@@ -65,8 +65,8 @@ class TrainIdentifierEntityIntegrationTest {
         em.persist(train)
 
         val result = em.find(
-            TrainIdentifierEntity::class.java,
-            TrainIdentifierId(identifier, operationDate, ru)
+            TrainIdentificationEntity::class.java,
+            TrainIdentificationId(identifier, operationDate, ru)
         )
         assertThat(result.startDateTime).isEqualTo(newStartTime)
     }
