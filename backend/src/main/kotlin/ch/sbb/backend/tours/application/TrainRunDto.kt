@@ -11,13 +11,13 @@ class TrainRunDto(
     val trainIdentification: TrainIdentificationDto,
 
     @Schema(
-        description = "UIC-Code of the start location, combination of uicCountryCode and numberShort. Size: 7",
+        description = "UIC-Code of the start location, combination of uicCountryCode and numberShort. Length: 7",
         example = "8518771"
     )
     val startUic: String,
 
     @Schema(
-        description = "UIC-Code of the end location, combination of uicCountryCode and numberShort. Size: 7",
+        description = "UIC-Code of the end location, combination of uicCountryCode and numberShort. Length: 7",
         example = "8518771"
     )
     val endUic: String,

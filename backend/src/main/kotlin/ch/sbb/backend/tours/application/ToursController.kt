@@ -65,10 +65,12 @@ class ToursController {
         ]
     )
     @DeleteMapping
-    fun deleteTour(@RequestParam  userId: String,
-                   @RequestParam  tourId:String,
-                   @RequestParam  startDate: LocalDate,
-                   @RequestParam  company:String) {
+    fun deleteTour(
+        @RequestParam userId: String,
+        @RequestParam tourId: String,
+        @RequestParam startDate: LocalDate,
+        @RequestParam company: String
+    ) {
 
     }
 
@@ -92,7 +94,7 @@ class ToursController {
         ]
     )
     @GetMapping("user")
-    fun getUserTour(@RequestParam  startDates: List<LocalDate>): List<TourDto> {
+    fun getUserTour(@RequestParam startDates: List<LocalDate>): List<TourDto> {
         return emptyList()
     }
 }
