@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 public class SegmentProfileRepository implements ApplicationRunner {
 
     private static final String XML_RESOURCES_CLASSPATH = "classpath:static_sfera_resources/sp/*.xml";
-    private static final String XML_REGEX = "SFERA_SP_(\\d+_\\d+)\\.xml";
+    private static final String XML_REGEX = "SFERA_SP_(.+_\\d+)\\.xml";
 
     private final XmlHelper xmlHelper;
 
