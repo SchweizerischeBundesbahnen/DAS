@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.5.0...das_client-v0.6.0) (2024-12-11)
+
+
+### Features
+
+* added next stop ([#200](https://github.com/SchweizerischeBundesbahnen/DAS/issues/200)) ([#438](https://github.com/SchweizerischeBundesbahnen/DAS/issues/438)) ([948373c](https://github.com/SchweizerischeBundesbahnen/DAS/commit/948373c0b6c99f51383fcf6f67387ddb82dfce30))
+* implement anschlussgleise, anschlussweichen und Zahnstangen ([#136](https://github.com/SchweizerischeBundesbahnen/DAS/issues/136)) ([#447](https://github.com/SchweizerischeBundesbahnen/DAS/issues/447)) ([aee3fe1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/aee3fe1ebf226a16198e76f425fd247374a998de))
+
 ## [0.5.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.4.0...das_client-v0.5.0) (2024-11-29)
 
 
