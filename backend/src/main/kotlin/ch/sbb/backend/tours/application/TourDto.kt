@@ -13,16 +13,16 @@ data class TourDto(
     val userId: String,
 
     @Schema(
-        description = "Identification of the tour",
+        description = "Identification of the tour. Unique for day and company",
         example = "123456"
     )
     val tourId: String,
 
     @Schema(
-        description = "Tour date",
+        description = "Start date of the tour",
         example = "2024-12-24"
     )
-    val tourDate: LocalDate,
+    val startDate: LocalDate,
 
 
     @Schema(
