@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 public class JourneyProfileRepository implements ApplicationRunner {
 
     private static final String XML_RESOURCES_CLASSPATH = "classpath:static_sfera_resources/jp/*.xml";
-    private static final String XML_REGEX = "SFERA_JP_(\\d+)\\.xml";
+    private static final String XML_REGEX = "SFERA_JP_(.+)\\.xml";
     private final XmlHelper xmlHelper;
 
     Map<String, JourneyProfile> journeyProfiles = new HashMap<>();
