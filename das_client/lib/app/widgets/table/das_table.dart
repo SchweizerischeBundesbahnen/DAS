@@ -14,10 +14,11 @@ import 'package:flutter/material.dart';
 @immutable
 class DASTable extends StatelessWidget {
   static const Key rowKey = Key('DAS-Table-row');
+  static const double _headerRowHeight = 40.0;
 
   DASTable({
-    super.key,
     required this.columns,
+    super.key,
     this.rows = const [],
     this.scrollController,
     this.bottomMargin = 32.0,
@@ -97,7 +98,8 @@ class DASTable extends StatelessWidget {
   }
 
   Widget _headerRow() {
-    return _FlexibleHeightRow(
+    return _FixedHeightRow(
+      height: _headerRowHeight,
       children: columns.where((column) => column.isVisible).map((column) => _headerCell(column)).toList(),
     );
   }
@@ -130,8 +132,8 @@ class DASTable extends StatelessWidget {
   Widget _dataRow(DASTableRow row) {
     final visibleColumns = columns.where((column) => column.isVisible).toList(growable: false);
     final visibleCells = row.cells.whereIndexed((index, _) => columns[index].isVisible).toList(growable: false);
-    return _FlexibleHeightRow(
-      fixedHeight: row.height,
+    return _FixedHeightRow(
+      height: row.height,
       children: List.generate(visibleColumns.length, (index) {
         final cell = visibleCells[index];
         final column = visibleColumns[index];
@@ -188,28 +190,28 @@ extension _TableBorderExtension on TableBorder {
   }
 }
 
-/// Row that handles height of its children with optional fixed height.
-///
-/// If [fixedHeight] is provided, the row will have that height; otherwise, it will use intrinsic height.
-class _FlexibleHeightRow extends StatelessWidget {
-  const _FlexibleHeightRow({this.fixedHeight, required this.children});
+class _FixedHeightRow extends StatelessWidget {
+  const _FixedHeightRow({required this.height, required this.children});
 
-  final double? fixedHeight;
+  final double height;
   final List<Widget> children;
 
   @override
   Widget build(BuildContext context) {
-    final row = Row(key: DASTable.rowKey, crossAxisAlignment: CrossAxisAlignment.stretch, children: children);
-    if (fixedHeight != null) {
-      return SizedBox(height: fixedHeight, child: row);
-    }
-    return IntrinsicHeight(child: row);
+    return SizedBox(
+      height: height,
+      child: Row(
+        key: DASTable.rowKey,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: children,
+      ),
+    );
   }
 }
 
 /// A wrapper for table cells that allows for optional width and expansion.
 class _TableCellWrapper extends StatelessWidget {
-  const _TableCellWrapper({this.width, this.expanded = false, required this.child});
+  const _TableCellWrapper({required this.child, this.width, this.expanded = false});
 
   /// The fixed width for the cell.
   final double? width;

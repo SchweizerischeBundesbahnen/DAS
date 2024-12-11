@@ -54,7 +54,7 @@
                 <NetworkSpecificParameter name="mainStation" value="CH9994"/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
-        <NetworkSpecificArea startEndQualifier="Ends" endLocation="800" name="nonStandardTrackEquipment">
+        <NetworkSpecificArea startEndQualifier="Ends" endLocation="500" name="nonStandardTrackEquipment">
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingPossible"/>
         </NetworkSpecificArea>
     </SP_Areas>

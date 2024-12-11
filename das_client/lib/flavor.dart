@@ -33,13 +33,13 @@ enum Flavor {
   const Flavor({
     required this.displayName,
     required this.tokenExchangeUrl,
-    this.tmsTokenExchangeUrl,
     required this.mqttUrl,
-    this.tmsMqttUrl,
     required this.authenticatorConfig,
-    this.tmsAuthenticatorConfig,
     required this.mqttTopicPrefix,
     required this.backendUrl,
+    this.tmsTokenExchangeUrl,
+    this.tmsMqttUrl,
+    this.tmsAuthenticatorConfig,
   });
 
   final String displayName;

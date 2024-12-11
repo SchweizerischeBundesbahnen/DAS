@@ -7,11 +7,15 @@ class Signal extends BaseData {
     required super.kilometre,
     this.visualIdentifier,
     this.functions = const [],
-    super.trackEquipment,
   }) : super(type: Datatype.signal);
 
   final List<SignalFunction> functions;
   final String? visualIdentifier;
+
+  @override
+  String toString() {
+    return 'Signal(order: $order, kilometre: $kilometre, functions: $functions, visualIdentifier: $visualIdentifier)';
+  }
 }
 
 enum SignalFunction {

@@ -4,7 +4,7 @@ part of 'train_journey_cubit.dart';
 sealed class TrainJourneyState {}
 
 final class SelectingTrainJourneyState extends TrainJourneyState {
-  SelectingTrainJourneyState({this.ru, this.trainNumber, required this.date, this.errorCode});
+  SelectingTrainJourneyState({required this.date, this.ru, this.trainNumber, this.errorCode});
 
   final String? trainNumber;
   final Ru? ru;
