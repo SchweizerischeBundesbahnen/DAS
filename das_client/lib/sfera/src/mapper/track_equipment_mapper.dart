@@ -71,8 +71,8 @@ class TrackEquipmentMapper {
     final type = start?.type ?? end?.type;
     return NonStandardTrackEquipmentSegment(
       type: type!.trackEquipmentType,
-      startOrder: start != null ? SferaModelMapper.calculateOrder(start.segmentIndex, start.startLocation!) : null,
-      endOrder: end != null ? SferaModelMapper.calculateOrder(end.segmentIndex, end.endLocation!) : null,
+      startOrder: start?.startLocation != null ? SferaModelMapper.calculateOrder(start!.segmentIndex, start.startLocation!) : null,
+      endOrder: end?.endLocation != null ? SferaModelMapper.calculateOrder(end!.segmentIndex, end.endLocation!) : null,
       startKm: start?.startKm ?? [],
       endKm: end?.endKm ?? [],
     );
