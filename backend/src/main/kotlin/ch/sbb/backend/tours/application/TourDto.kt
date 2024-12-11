@@ -31,10 +31,6 @@ data class TourDto(
     )
     val company: String,
 
-
-    @Schema(
-        description = "train runs",
-    )
     val trainRuns: List<TrainRunDto>,
 
     )
