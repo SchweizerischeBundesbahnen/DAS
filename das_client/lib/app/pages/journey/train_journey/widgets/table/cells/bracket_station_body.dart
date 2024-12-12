@@ -8,9 +8,9 @@ class BracketStationBody extends StatelessWidget {
   static const double _bracketStationFontSize = 12.0;
 
   const BracketStationBody({
-    super.key,
     required this.bracketStation,
-    required this.height
+    required this.height,
+    super.key,
   });
 
   final BracketStation bracketStation;

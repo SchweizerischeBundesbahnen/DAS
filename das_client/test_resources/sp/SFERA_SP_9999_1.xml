@@ -67,6 +67,10 @@
                 <NetworkSpecificParameter name="text" value="&lt;b&gt;31&lt;/b&gt;"/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
+
+        <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="600" endLocation="900" name="nonStandardTrackEquipment">
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L1LS-2TracksWithSingleTrackEquipment"/>
+        </NetworkSpecificArea>
     </SP_Areas>
 
     <SP_ContextInformation>

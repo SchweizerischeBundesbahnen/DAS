@@ -89,7 +89,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
 
   void reset() {
     if (state is BaseTrainJourneyState) {
-      Fimber.i('Reseting TrainJourney cubit in state $state');
+      Fimber.i('Resetting TrainJourney cubit in state $state');
       emit(SelectingTrainJourneyState(
           trainNumber: (state as BaseTrainJourneyState).trainNumber,
           date: DateTime.now(),

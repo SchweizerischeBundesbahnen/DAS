@@ -2,7 +2,7 @@ import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 
 class Header extends StatelessWidget {
-  const Header({super.key, required this.child});
+  const Header({required this.child, super.key});
 
   final Widget child;
 

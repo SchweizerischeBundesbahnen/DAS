@@ -1,4 +1,5 @@
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/cab_signaling_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/bracket_station_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/curve_point_row.dart';
@@ -150,8 +151,11 @@ void main() {
       expect(scrollableFinder, findsOneWidget);
 
       final stopRouteRow = findDASTableRowByText('Bahnhof A');
-      final nonStoppingPassRouteRow = findDASTableRowByText('Haltestelle B');
       expect(stopRouteRow, findsOneWidget);
+
+      await tester.dragUntilVisible(findDASTableRowByText('Haltestelle B'), scrollableFinder, const Offset(0, -50));
+
+      final nonStoppingPassRouteRow = findDASTableRowByText('Haltestelle B');
       expect(nonStoppingPassRouteRow, findsOneWidget);
 
       // check stop circles
@@ -417,6 +421,51 @@ void main() {
       final noLaneChangeIcon2 =
           find.descendant(of: blockIntermediateSignalRow, matching: find.byKey(SignalRow.signalLineChangeIconKey));
       expect(noLaneChangeIcon2, findsNothing);
+    });
+
+    testWidgets('test if CAB signaling is displayed correctly', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: 'T1');
+
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
+
+      // CAB segment with start outside train journey and end at 33.8 km
+      await tester.dragUntilVisible(find.text('29.7').first, scrollableFinder, const Offset(0, -50));
+      final rowsAtKm33_8 = findDASTableRowByText('33.8');
+      expect(rowsAtKm33_8, findsExactly(2));
+      final segment1CABStop = rowsAtKm33_8.last; // end should be after other elements at same location
+      final segment1CABStopIcon = find.descendant(of: segment1CABStop, matching: find.byKey(CABSignalingRow.cabSignalingEndIconKey));
+      expect(segment1CABStopIcon, findsOneWidget);
+
+      // Track equipment segment without ETCS level 2 should be ignored
+      await tester.dragUntilVisible(find.text('12.5').first, scrollableFinder, const Offset(0, -50));
+      final etcsL1LSEnd = findDASTableRowByText('10.1');
+      expect(etcsL1LSEnd, findsNothing);
+
+      // CAB segment between km 12.5 - km 39.9
+      final rowsAtKm12_5 = findDASTableRowByText('12.5');
+      expect(rowsAtKm12_5, findsExactly(2));
+      final segment2CABStart = rowsAtKm12_5.first; // start should be before other elements at same location
+      final segment2CABStartIcon = find.descendant(of: segment2CABStart, matching: find.byKey(CABSignalingRow.cabSignalingStartIconKey));
+      expect(segment2CABStartIcon, findsOneWidget);
+      await tester.dragUntilVisible(find.text('75.3'), scrollableFinder, const Offset(0, -50));
+      final trackEquipmentTypeChange = findDASTableRowByText('56.8');
+      expect(trackEquipmentTypeChange, findsNothing); // no CAB signaling at connecting ETCS L2 segments
+      await tester.dragUntilVisible(find.text('41.5'), scrollableFinder, const Offset(0, -50));
+      final rothristServicePointRow = findDASTableRowByText('46.2');
+      expect(rothristServicePointRow, findsOneWidget); // no CAB signaling at connecting ETCS L2 segments
+      final segment2CABEnd = findDASTableRowByText('39.9');
+      final segment2CABEndIcon = find.descendant(of: segment2CABEnd, matching: find.byKey(CABSignalingRow.cabSignalingEndIconKey));
+      expect(segment2CABEndIcon, findsOneWidget);
+
+      // CAB segment with end outside train journey and start at 8.3 km
+      await tester.dragUntilVisible(find.text('9.5'), scrollableFinder, const Offset(0, -50));
+      final segment3CABStart = findDASTableRowByText('8.3');
+      final segment3CABStartIcon = find.descendant(of: segment3CABStart, matching: find.byKey(CABSignalingRow.cabSignalingStartIconKey));
+      expect(segment3CABStartIcon, findsOneWidget);
     });
   });
 }
