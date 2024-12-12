@@ -424,51 +424,46 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: '9999');
+      await _loadTrainJourney(tester, trainNumber: 'T1');
 
       final scrollableFinder = find.byType(ListView);
       expect(scrollableFinder, findsOneWidget);
 
-      // CAB segment with start outside train journey and end at 0.6 km
-      await tester.dragUntilVisible(find.text('0.6').first, scrollableFinder, const Offset(0, -50));
-      final segment1CABStop = findDASTableRowByText('0.6').first;
+      // CAB segment with start outside train journey and end at 33.8 km
+      await tester.dragUntilVisible(find.text('29.7').first, scrollableFinder, const Offset(0, -50));
+      final rowsAtKm33_8 = findDASTableRowByText('33.8');
+      expect(rowsAtKm33_8, findsExactly(2));
+      final segment1CABStop = rowsAtKm33_8.last; // end should be after other elements at same location
       final segment1CABStopIcon = find.descendant(of: segment1CABStop, matching: find.byKey(CABSignalingRow.cabSignalingEndIconKey));
       expect(segment1CABStopIcon, findsOneWidget);
 
-      // CAB segment from km 1.1 to 1.5
-      await tester.dragUntilVisible(find.text('1.1'), scrollableFinder, const Offset(0, -50));
-      final segment2CABStart = findDASTableRowByText('1.1');
+      // Track equipment segment without ETCS level 2 should be ignored
+      await tester.dragUntilVisible(find.text('12.5').first, scrollableFinder, const Offset(0, -50));
+      final etcsL1LSEnd = findDASTableRowByText('10.1');
+      expect(etcsL1LSEnd, findsNothing);
+
+      // CAB segment between km 12.5 - km 39.9
+      await tester.dragUntilVisible(find.text('39.1').first, scrollableFinder, const Offset(0, -50));
+      final rowsAtKm12_5 = findDASTableRowByText('12.5');
+      expect(rowsAtKm12_5, findsExactly(2));
+      final segment2CABStart = rowsAtKm12_5.first; // start should be before other elements at same location
       final segment2CABStartIcon = find.descendant(of: segment2CABStart, matching: find.byKey(CABSignalingRow.cabSignalingStartIconKey));
       expect(segment2CABStartIcon, findsOneWidget);
-      await tester.dragUntilVisible(find.text('1.7'), scrollableFinder, const Offset(0, -50));
-      final segment2CABStop = findDASTableRowByText('1.5').last;
-      final segment2CABStopIcon = find.descendant(of: segment2CABStop, matching: find.byKey(CABSignalingRow.cabSignalingEndIconKey));
-      expect(segment2CABStopIcon, findsOneWidget);
+      await tester.dragUntilVisible(find.text('75.3'), scrollableFinder, const Offset(0, -50));
+      final trackEquipmentTypeChange = findDASTableRowByText('56.8');
+      expect(trackEquipmentTypeChange, findsNothing); // no CAB signaling at connecting ETCS L2 segments
+      await tester.dragUntilVisible(find.text('41.5'), scrollableFinder, const Offset(0, -50));
+      final rothristServicePointRow = findDASTableRowByText('46.2');
+      expect(rothristServicePointRow, findsOneWidget); // no CAB signaling at connecting ETCS L2 segments
+      final segment2CABEnd = findDASTableRowByText('39.9');
+      final segment2CABEndIcon = find.descendant(of: segment2CABEnd, matching: find.byKey(CABSignalingRow.cabSignalingEndIconKey));
+      expect(segment2CABEndIcon, findsOneWidget);
 
-      // CAB segment from km 1.7 to 3.5
-      await tester.dragUntilVisible(find.text('1.8'), scrollableFinder, const Offset(0, -50));
-      final segment3CABStart = findDASTableRowByText('1.7').first;
+      // CAB segment with end outside train journey and start at 8.3 km
+      await tester.dragUntilVisible(find.text('9.5'), scrollableFinder, const Offset(0, -50));
+      final segment3CABStart = findDASTableRowByText('8.3');
       final segment3CABStartIcon = find.descendant(of: segment3CABStart, matching: find.byKey(CABSignalingRow.cabSignalingStartIconKey));
       expect(segment3CABStartIcon, findsOneWidget);
-      await tester.dragUntilVisible(find.text('3.7'), scrollableFinder, const Offset(0, -50));
-      final segment3CABStop = findDASTableRowByText('3.5').last;
-      final segment3CABStopIcon = find.descendant(of: segment3CABStop, matching: find.byKey(CABSignalingRow.cabSignalingEndIconKey));
-      expect(segment3CABStopIcon, findsOneWidget);
-
-      // CAB segment from km 0.6 to 0.9
-      await tester.dragUntilVisible(find.text('BAB1'), scrollableFinder, const Offset(0, -50));
-      final segment4CABStart = findDASTableRowByText('0.6').first;
-      final segment4CABStartIcon = find.descendant(of: segment4CABStart, matching: find.byKey(CABSignalingRow.cabSignalingStartIconKey));
-      expect(segment4CABStartIcon, findsOneWidget);
-      final segment4CABStop = findDASTableRowByText('0.9').last;
-      final segment4CABStopIcon = find.descendant(of: segment4CABStop, matching: find.byKey(CABSignalingRow.cabSignalingEndIconKey));
-      expect(segment4CABStopIcon, findsOneWidget);
-
-      // CAB segment with end outside train journey and start at 1.0 km
-      await tester.dragUntilVisible(find.text('1.0'), scrollableFinder, const Offset(0, -50));
-      final segment5CABStart = findDASTableRowByText('1.0').first;
-      final segment5CABStartIcon = find.descendant(of: segment5CABStart, matching: find.byKey(CABSignalingRow.cabSignalingStartIconKey));
-      expect(segment5CABStartIcon, findsOneWidget);
     });
   });
 }

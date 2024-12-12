@@ -120,7 +120,7 @@
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="9500">
-            <KM_Reference kmRef="200.7"/>
+            <KM_Reference kmRef="3.7"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="10000">
