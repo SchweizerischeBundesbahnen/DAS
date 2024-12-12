@@ -151,8 +151,11 @@ void main() {
       expect(scrollableFinder, findsOneWidget);
 
       final stopRouteRow = findDASTableRowByText('Bahnhof A');
-      final nonStoppingPassRouteRow = findDASTableRowByText('Haltestelle B');
       expect(stopRouteRow, findsOneWidget);
+
+      await tester.dragUntilVisible(find.text('Haltestelle B'), scrollableFinder, const Offset(0, -50));
+
+      final nonStoppingPassRouteRow = findDASTableRowByText('Haltestelle B');
       expect(nonStoppingPassRouteRow, findsOneWidget);
 
       // check stop circles
@@ -443,7 +446,6 @@ void main() {
       expect(etcsL1LSEnd, findsNothing);
 
       // CAB segment between km 12.5 - km 39.9
-      await tester.dragUntilVisible(find.text('39.1').first, scrollableFinder, const Offset(0, -50));
       final rowsAtKm12_5 = findDASTableRowByText('12.5');
       expect(rowsAtKm12_5, findsExactly(2));
       final segment2CABStart = rowsAtKm12_5.first; // start should be before other elements at same location
