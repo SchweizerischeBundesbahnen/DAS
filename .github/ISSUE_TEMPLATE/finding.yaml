@@ -9,7 +9,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Weitere Informationen zum Ausfüllen eines Findings findest du unter [Guideline für die Erfassung von Findings](https://example.com).
+        Weitere Informationen zum Ausfüllen eines Findings findest du unter [Guideline für die Erfassung von Findings](https://confluence.sbb.ch/x/a4l4sw).
   - type: textarea
     attributes:
       label: Beschreibung
@@ -37,9 +37,8 @@ body:
       label: Betriebssystem
       description: Welches Betriebsystem wurde genutzt? Die Version kann über die Systemeinstellungen unter "Info" geprüft werden.
       options:
-        - iOS Version 18.2
-        - iOS Version 18.1.1
-        - iOS Version 18.1.0
+        - iOS Version 18
+        - iOS Version 17
         - Android Version 16
         - Android Version 15
         - Android Version 14
