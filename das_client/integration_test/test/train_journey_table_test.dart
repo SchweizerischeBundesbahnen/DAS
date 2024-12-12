@@ -153,7 +153,7 @@ void main() {
       final stopRouteRow = findDASTableRowByText('Bahnhof A');
       expect(stopRouteRow, findsOneWidget);
 
-      await tester.dragUntilVisible(find.text('Haltestelle B'), scrollableFinder, const Offset(0, -50));
+      await tester.dragUntilVisible(findDASTableRowByText('Haltestelle B'), scrollableFinder, const Offset(0, -50));
 
       final nonStoppingPassRouteRow = findDASTableRowByText('Haltestelle B');
       expect(nonStoppingPassRouteRow, findsOneWidget);
