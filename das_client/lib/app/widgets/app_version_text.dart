@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class AppVersionText extends StatelessWidget {
-  const AppVersionText({super.key, required this.color});
+  const AppVersionText({required this.color, super.key});
 
   final Color color;
 

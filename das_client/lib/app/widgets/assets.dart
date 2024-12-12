@@ -13,4 +13,6 @@ class AppAssets {
   static const iconAdditionalSpeedRestriction = '$_iconsDir/icon_additional_speed_restriction.svg';
   static const iconCurveStart = '$_iconsDir/icon_curve_start.svg';
   static const iconSignalLaneChange = '$_iconsDir/icon_signal_line_change.svg';
+  static const iconCabStart = '$_iconsDir/icon_cab_start.svg';
+  static const iconCabEnd = '$_iconsDir/icon_cab_end.svg';
 }

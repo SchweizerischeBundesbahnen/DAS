@@ -11,10 +11,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 class ServicePointRow extends BaseRowBuilder<ServicePoint> {
   static const Key stopOnRequestKey = Key('stop_on_request_key');
 
+  static const double rowHeight = 64.0;
+
   ServicePointRow({
-    super.height = 64.0,
     required super.metadata,
     required super.data,
+    super.height = rowHeight,
   }) : super(rowColor: metadata.nextStop == data ? SBBColors.royal.withOpacity(0.2) : Colors.transparent);
 
   @override
@@ -49,7 +51,7 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
           if (data.bracketStation != null)
             BracketStationBody(
               bracketStation: data.bracketStation!,
-              height: height!,
+              height: height,
             ),
           if (!data.mandatoryStop)
             Align(

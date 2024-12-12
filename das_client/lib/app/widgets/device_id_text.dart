@@ -3,7 +3,7 @@ import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 
 class DeviceIdText extends StatelessWidget {
-  const DeviceIdText({super.key, required this.color});
+  const DeviceIdText({required this.color, super.key});
 
   final Color color;
 
