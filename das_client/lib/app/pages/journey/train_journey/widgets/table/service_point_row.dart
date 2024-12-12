@@ -16,6 +16,7 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
   ServicePointRow({
     required super.metadata,
     required super.data,
+    required super.settings,
     super.height = rowHeight,
   }) : super(rowColor: metadata.nextStop == data ? SBBColors.royal.withOpacity(0.2) : Colors.transparent);
 

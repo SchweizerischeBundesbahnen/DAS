@@ -12,6 +12,7 @@ class CurvePointRow extends BaseRowBuilder<CurvePoint> {
   CurvePointRow({
     required super.metadata,
     required super.data,
+    required super.settings,
   });
 
   @override

@@ -472,4 +472,14 @@ void main() {
     expect(connectionTracks[2].speedData!.velocities[1].reduced, false);
     expect(connectionTracks[2].speedData!.velocities[1].breakSeries, isNull);
   });
+
+  test('Test available break series are parsed correctly', () async {
+    final journey = getJourney('9999', 5);
+    expect(journey.valid, true);
+    expect(journey.metadata.availableBreakSeries, hasLength(2));
+    expect(journey.metadata.availableBreakSeries.elementAt(0).trainSeries, TrainSeries.R);
+    expect(journey.metadata.availableBreakSeries.elementAt(0).breakSeries, 100);
+    expect(journey.metadata.availableBreakSeries.elementAt(1).trainSeries, TrainSeries.A);
+    expect(journey.metadata.availableBreakSeries.elementAt(1).breakSeries, 30);
+  });
 }

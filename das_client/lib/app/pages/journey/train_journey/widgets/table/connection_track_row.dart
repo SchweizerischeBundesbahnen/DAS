@@ -8,6 +8,7 @@ class ConnectionTrackRow extends BaseRowBuilder<ConnectionTrack> {
   ConnectionTrackRow({
     required super.metadata,
     required super.data,
+    required super.settings,
   });
 
   @override

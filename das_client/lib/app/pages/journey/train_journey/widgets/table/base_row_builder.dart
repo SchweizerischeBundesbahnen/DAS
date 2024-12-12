@@ -1,3 +1,4 @@
+import 'package:das_client/app/model/train_journey_settings.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
@@ -13,6 +14,7 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   const BaseRowBuilder({
     required this.metadata,
     required this.data,
+    required this.settings,
     super.height = rowHeight,
     this.defaultAlignment = Alignment.bottomCenter,
     this.rowColor,
@@ -22,6 +24,7 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   final Color? rowColor;
   final Metadata metadata;
   final T data;
+  final TrainJourneySettings settings;
 
   @override
   DASTableRow build(BuildContext context) {
@@ -84,14 +87,7 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   }
 
   DASTableCell graduatedSpeedCell(BuildContext context) {
-    if (data.speedData == null) {
-      return DASTableCell.empty();
-    }
-
-    return DASTableCell(
-      child: Text(data.speedData!.resolvedSpeed(metadata.trainSeries, metadata.breakSeries) ?? ''),
-      alignment: Alignment.center,
-    );
+    return DASTableCell.empty();
   }
 
   DASTableCell advisedSpeedCell(BuildContext context) {
@@ -99,7 +95,16 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   }
 
   DASTableCell brakedWeightSpeedCell(BuildContext context) {
-    return DASTableCell.empty();
+    if (data.speedData == null) {
+      return DASTableCell.empty();
+    }
+
+    return DASTableCell(
+      child: Text(data.speedData!.resolvedSpeed(settings.selectedBreakSeries?.trainSeries ?? metadata.trainSeries,
+          settings.selectedBreakSeries?.breakSeries ?? metadata.breakSeries) ??
+          ''),
+      alignment: Alignment.center,
+    );
   }
 
   // TODO: clarify use of different icon cells and set appropriate name

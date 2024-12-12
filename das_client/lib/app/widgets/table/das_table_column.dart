@@ -17,6 +17,7 @@ class DASTableColumn {
     this.width,
     this.hidden = false,
     this.alignment = Alignment.center,
+    this.onTap,
   }) : assert((width != null && width > 0) || expanded);
 
   /// The content of the column header as a widget.
@@ -41,6 +42,9 @@ class DASTableColumn {
 
   /// Whether the column is visible or not.
   final bool hidden;
+
+  /// Callback for tap events on the column header.
+  final GestureTapCallback? onTap;
 
   get isVisible => !hidden;
 }

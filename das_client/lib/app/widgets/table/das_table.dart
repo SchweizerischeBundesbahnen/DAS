@@ -107,7 +107,7 @@ class DASTable extends StatelessWidget {
   Widget _headerCell(DASTableColumn column) {
     return Builder(builder: (context) {
       final tableThemeData = DASTableTheme.of(context)?.data;
-      return _TableCellWrapper(
+      final headerCell = _TableCellWrapper(
         expanded: column.expanded,
         width: column.width,
         child: Container(
@@ -126,6 +126,12 @@ class DASTable extends StatelessWidget {
                 ),
         ),
       );
+      return column.onTap != null
+          ? GestureDetector(
+              onTap: column.onTap,
+              child: headerCell,
+            )
+          : headerCell;
     });
   }
 

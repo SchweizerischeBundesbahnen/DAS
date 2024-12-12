@@ -131,7 +131,6 @@ void main() {
         l10n.p_train_journey_table_journey_information_label,
         l10n.p_train_journey_table_time_label,
         l10n.p_train_journey_table_advised_speed_label,
-        l10n.p_train_journey_table_braked_weight_speed_label,
         l10n.p_train_journey_table_graduated_speed_label,
       ];
 

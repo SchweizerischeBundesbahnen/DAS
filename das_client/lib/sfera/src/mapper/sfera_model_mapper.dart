@@ -3,6 +3,7 @@ import 'package:das_client/model/journey/additional_speed_restriction.dart';
 import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/bracket_station.dart';
+import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
 import 'package:das_client/model/journey/connection_track.dart';
 import 'package:das_client/model/journey/curve_point.dart';
@@ -75,7 +76,8 @@ class SferaModelMapper {
 
       // Remove new line speeds that are already present as connection tracks
       newLineSpeeds.removeWhere((speedChange) =>
-          connectionTracks.firstWhereOrNull((connectionTrack) => connectionTrack.speedData == speedChange.speedData) != null);
+          connectionTracks.firstWhereOrNull((connectionTrack) => connectionTrack.speedData == speedChange.speedData) !=
+          null);
 
       journeyData.addAll(connectionTracks);
       journeyData.addAll(newLineSpeeds);
@@ -132,6 +134,7 @@ class SferaModelMapper {
         routeStart: journeyData.firstOrNull,
         routeEnd: journeyData.lastOrNull,
         nonStandardTrackEquipmentSegments: trackEquipmentSegments,
+        availableBreakSeries: _parseAvailableBreakSeries(journeyData),
       ),
       data: journeyData,
     );
@@ -367,5 +370,15 @@ class SferaModelMapper {
             .map((it) => Velocity(
                 trainSeries: it.trainSeries, reduced: it.reduced, speed: it.speed, breakSeries: it.brakeSeries))
             .toList());
+  }
+
+  static Set<BreakSeries> _parseAvailableBreakSeries(List<BaseData> journeyData) {
+    return journeyData
+        .where((it) => it.speedData != null)
+        .map((it) => it.speedData!.velocities)
+        .expand((it) => it)
+        .where((it) => it.breakSeries != null)
+        .map((it) => BreakSeries(trainSeries: it.trainSeries, breakSeries: it.breakSeries!))
+        .toSet();
   }
 }

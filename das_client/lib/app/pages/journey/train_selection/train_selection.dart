@@ -115,7 +115,7 @@ class _TrainSelectionState extends State<TrainSelection> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing / 2),
       child: SBBPrimaryButton(
-        label: context.l10n.p_train_selection_load,
+        label: context.l10n.c_button_confirm,
         onPressed: _canContinue(state) ? () => context.trainJourneyCubit.loadTrainJourney() : null,
       ),
     );
