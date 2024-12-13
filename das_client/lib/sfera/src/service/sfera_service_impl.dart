@@ -199,7 +199,7 @@ class SferaServiceImpl implements SferaService {
     _messageHandlers.remove(task);
     lastErrorCode = errorCode;
     Fimber.e('Task $task failed with error code $errorCode');
-    if (task is HandshakeTask || task is RequestJourneyProfileTask || task is RequestSegmentProfilesTask) {
+    if (_stateSubject.value != SferaServiceState.connected) {
       disconnect();
     }
   }

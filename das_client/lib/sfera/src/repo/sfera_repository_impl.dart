@@ -21,7 +21,9 @@ class SferaRepositoryImpl implements SferaRepository {
     Fimber.i('Initializing SferaStore...');
     final dir = await getApplicationDocumentsDirectory();
     _db = await Isar.openAsync(
-        schemas: [JourneyProfileEntitySchema, SegmentProfileEntitySchema], directory: dir.path, name: 'das');
+        schemas: [JourneyProfileEntitySchema, SegmentProfileEntitySchema, TrainCharacteristicsEntitySchema],
+        directory: dir.path,
+        name: 'das');
   }
 
   @override
@@ -100,7 +102,8 @@ class SferaRepositoryImpl implements SferaRepository {
   }
 
   @override
-  Future<TrainCharacteristicsEntity?> findTrainCharacteristics(String tcId, String majorVersion, String minorVersion) async {
+  Future<TrainCharacteristicsEntity?> findTrainCharacteristics(
+      String tcId, String majorVersion, String minorVersion) async {
     await _initialized;
     return _db.trainCharacteristics
         .where()
@@ -114,10 +117,11 @@ class SferaRepositoryImpl implements SferaRepository {
   Future<void> saveTrainCharacteristics(TrainCharacteristics trainCharacteristics) async {
     await _initialized;
 
-    final existingTrainCharacteristics =
-        await findTrainCharacteristics(trainCharacteristics.tcId, trainCharacteristics.versionMajor, trainCharacteristics.versionMinor);
+    final existingTrainCharacteristics = await findTrainCharacteristics(
+        trainCharacteristics.tcId, trainCharacteristics.versionMajor, trainCharacteristics.versionMinor);
     if (existingTrainCharacteristics == null) {
-      final trainCharacteristicsEntity = trainCharacteristics.toEntity(isarId: _db.trainCharacteristics.autoIncrement());
+      final trainCharacteristicsEntity =
+          trainCharacteristics.toEntity(isarId: _db.trainCharacteristics.autoIncrement());
       Fimber.i(
           'Writing train characteristics to db tcId=${trainCharacteristicsEntity.tcId} majorVersion=${trainCharacteristicsEntity.majorVersion} minorVersion=${trainCharacteristicsEntity.minorVersion}');
       _db.write((isar) {
