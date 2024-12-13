@@ -24,6 +24,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
   Stream<Journey?> get journeyStream => _sferaService.journeyStream;
 
   final _settingsSubject = BehaviorSubject<TrainJourneySettings>.seeded(TrainJourneySettings());
+
   Stream<TrainJourneySettings> get settingsStream => _settingsSubject.stream;
 
   StreamSubscription? _stateSubscription;

@@ -29,7 +29,10 @@
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
             <!-- 'curve' (begins on the line and ends on the line or a station or a halt) -->
             <NetworkSpecificParameter name="curveType" value="curve"/>
-            <NetworkSpecificParameter name="comment" value="Kurve 1"/>
+            <NetworkSpecificParameter name="xmlCurveSpeed" value="
+                &lt;curveSpeed text=&quot;Kurve 1&quot; comment=&quot;Kurve 1&quot;&gt;
+                &lt;/curveSpeed&gt;
+            "/>
         </NetworkSpecificPoint>
 
     </SP_Points>

@@ -30,7 +30,10 @@
         <NetworkSpecificPoint location="600" identifier="1" name="curvePoint">
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
             <NetworkSpecificParameter name="curveType" value="curve"/>
-            <NetworkSpecificParameter name="comment" value="Kurve 1"/>
+            <NetworkSpecificParameter name="xmlCurveSpeed" value="
+                &lt;curveSpeed text=&quot;Kurve 1&quot; comment=&quot;Kurve 1&quot;&gt;
+                &lt;/curveSpeed&gt;
+            "/>
         </NetworkSpecificPoint>
 
         <!-- Ende der Kurve tbd -->
@@ -68,6 +71,10 @@
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
+        <NetworkSpecificArea startEndQualifier="Ends" endLocation="550" name="nonStandardTrackEquipment">
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingPossible"/>
+        </NetworkSpecificArea>
+
         <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="600" endLocation="900" name="nonStandardTrackEquipment">
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L1LS-2TracksWithSingleTrackEquipment"/>
         </NetworkSpecificArea>
@@ -80,6 +87,9 @@
         </KilometreReferencePoint>
         <KilometreReferencePoint location="500">
             <KM_Reference kmRef="0.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="550">
+            <KM_Reference kmRef="0.55"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="600">
             <KM_Reference kmRef="0.6"/>

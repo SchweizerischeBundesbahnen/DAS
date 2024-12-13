@@ -102,7 +102,7 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
     return DASTableCell(
       child: Text(data.speedData!.resolvedSpeed(settings.selectedBreakSeries?.trainSeries ?? metadata.trainSeries,
           settings.selectedBreakSeries?.breakSeries ?? metadata.breakSeries) ??
-          ''),
+          'XX'),
       alignment: Alignment.center,
     );
   }

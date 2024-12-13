@@ -293,15 +293,6 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
-  design_system_flutter:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: "1.4.0"
-      resolved-ref: "13197f60141d0bb0fb4ee512b5ff34e68e6c5e35"
-      url: "https://github.com/SchweizerischeBundesbahnen/design_system_flutter.git"
-    source: git
-    version: "1.4.0"
   device_info_plus:
     dependency: "direct main"
     description:
@@ -905,6 +896,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.28.0"
+  sbb_design_system_mobile:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: c051e3019f7ffb78d6628f1914a92946b810878d
+      url: "https://github.com/SchweizerischeBundesbahnen/design_system_flutter.git"
+    source: git
+    version: "2.0.0"
   sbb_oidc:
     dependency: "direct main"
     description:

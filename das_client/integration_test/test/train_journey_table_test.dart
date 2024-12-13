@@ -8,7 +8,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/service
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/signal_row.dart';
 import 'package:das_client/app/pages/profile/profile_page.dart';
 import 'package:das_client/app/widgets/table/das_table.dart';
-import 'package:design_system_flutter/design_system_flutter.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

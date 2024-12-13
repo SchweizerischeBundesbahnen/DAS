@@ -1,5 +1,5 @@
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
-import 'package:design_system_flutter/design_system_flutter.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 
 /// Represents a column in the [DASTable] with optional styling and width constraints.

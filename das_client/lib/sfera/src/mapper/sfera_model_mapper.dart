@@ -315,12 +315,15 @@ class SferaModelMapper {
     return curvePointsNsp.map<CurvePoint>((curvePointNsp) {
       final curvePointTypeValue = curvePointNsp.parameters.withName('curvePointType')?.nspValue;
       final curveTypeValue = curvePointNsp.parameters.withName('curveType')?.nspValue;
+      final curveSpeed = curvePointNsp.xmlCurveSpeed?.element;
       return CurvePoint(
         order: calculateOrder(segmentIndex, curvePointNsp.location),
         kilometre: kilometreMap[curvePointNsp.location] ?? [],
         curvePointType: curvePointTypeValue != null ? CurvePointType.from(curvePointTypeValue) : null,
         curveType: curveTypeValue != null ? CurveType.from(curveTypeValue) : null,
-        comment: curvePointNsp.parameters.withName('comment')?.nspValue,
+        text: curveSpeed?.text,
+        comment: curveSpeed?.comment,
+        speedData: _speedDataFromSpeeds(curveSpeed?.speeds),
       );
     }).toList();
   }
@@ -361,10 +364,8 @@ class SferaModelMapper {
     }).toList();
   }
 
-  static SpeedData _speedDataFromSpeeds(Speeds? speeds) {
-    if (speeds == null) {
-      return SpeedData();
-    }
+  static SpeedData? _speedDataFromSpeeds(Speeds? speeds) {
+    if (speeds == null) return null;
     return SpeedData(
         velocities: speeds.velocities
             .map((it) => Velocity(

@@ -30,7 +30,10 @@
         <NetworkSpecificPoint location="600" identifier="1" name="curvePoint">
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
             <NetworkSpecificParameter name="curveType" value="curve"/>
-            <NetworkSpecificParameter name="comment" value="Kurve 1"/>
+            <NetworkSpecificParameter name="xmlCurveSpeed" value="
+                &lt;curveSpeed text=&quot;Kurve 1&quot; comment=&quot;Kurve 1&quot;&gt;
+                &lt;/curveSpeed&gt;
+            "/>
         </NetworkSpecificPoint>
 
         <!-- Ende der Kurve tbd -->

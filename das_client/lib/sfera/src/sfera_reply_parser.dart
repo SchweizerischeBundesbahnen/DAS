@@ -3,6 +3,7 @@ import 'package:das_client/sfera/src/model/connection_track.dart';
 import 'package:das_client/sfera/src/model/current_limitation.dart';
 import 'package:das_client/sfera/src/model/current_limitation_change.dart';
 import 'package:das_client/sfera/src/model/current_limitation_start.dart';
+import 'package:das_client/sfera/src/model/curve_speed.dart';
 import 'package:das_client/sfera/src/model/das_operating_modes_selected.dart';
 import 'package:das_client/sfera/src/model/g2b_reply_payload.dart';
 import 'package:das_client/sfera/src/model/handshake_acknowledgement.dart';
@@ -50,6 +51,7 @@ import 'package:das_client/sfera/src/model/train_identification.dart';
 import 'package:das_client/sfera/src/model/velocity.dart';
 import 'package:das_client/sfera/src/model/virtual_balise.dart';
 import 'package:das_client/sfera/src/model/virtual_balise_position.dart';
+import 'package:das_client/sfera/src/model/xml_curve_speed.dart';
 import 'package:xml/xml.dart';
 
 class SferaReplyParser {
@@ -173,18 +175,20 @@ class SferaReplyParser {
         return NetworkSpecificArea(type: type, attributes: attributes, children: children, value: value);
       case AdditionalSpeedRestriction.elementType:
         return AdditionalSpeedRestriction(type: type, attributes: attributes, children: children, value: value);
-       case TemporaryConstraints.elementType:
+      case TemporaryConstraints.elementType:
         return TemporaryConstraints(type: type, attributes: attributes, children: children, value: value);
-       case TemporaryConstraintReason.elementType:
+      case TemporaryConstraintReason.elementType:
         return TemporaryConstraintReason(type: type, attributes: attributes, children: children, value: value);
-       case Velocity.elementType:
+      case Velocity.elementType:
         return Velocity(type: type, attributes: attributes, children: children, value: value);
-       case Speeds.elementType:
+      case Speeds.elementType:
         return Speeds(type: type, attributes: attributes, children: children, value: value);
-       case LineSpeed.elementType:
+      case LineSpeed.elementType:
         return LineSpeed(type: type, attributes: attributes, children: children, value: value);
-       case ConnectionTrack.elementType:
+      case ConnectionTrack.elementType:
         return ConnectionTrack(type: type, attributes: attributes, children: children, value: value);
+      case CurveSpeed.elementType:
+        return CurveSpeed(type: type, attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElement(type: type, attributes: attributes, children: children, value: value);
     }

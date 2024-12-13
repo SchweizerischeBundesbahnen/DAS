@@ -24,7 +24,7 @@ import 'package:das_client/model/journey/protection_section.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
 import 'package:das_client/model/journey/speed_change.dart';
-import 'package:design_system_flutter/design_system_flutter.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -134,9 +134,9 @@ class TrainJourney extends StatelessWidget {
     );
 
     showSBBModalSheet<BreakSeries>(
-            useRootNavigator: false,
             context: context,
             title: context.l10n.p_train_journey_break_series,
+            constraints: BoxConstraints(),
             child: BreakSeriesSelection(
                 availableBreakSeries: journey.metadata.availableBreakSeries, selectedBreakSeries: selectedBreakSeries))
         .then(
