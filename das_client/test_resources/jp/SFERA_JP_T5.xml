@@ -28,5 +28,8 @@
                 <TP_ID_Reference TP_ID="Gland"/>
             </TimingPointReference>
         </TimingPointConstraints>
+        <TrainCharacteristicsRef TC_ID="T5_1" TC_VersionMajor="1" TC_VersionMinor="1" location="0">
+            <TC_RU_ID>1185</TC_RU_ID>
+        </TrainCharacteristicsRef>
     </SegmentProfileList>
 </JourneyProfile>

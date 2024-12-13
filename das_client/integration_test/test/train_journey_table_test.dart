@@ -17,6 +17,18 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey table test', () {
+
+    testWidgets('test breaking series defaults to R150', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: 'T5');
+
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
+
+    });
+
     testWidgets('test connection track is displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
 

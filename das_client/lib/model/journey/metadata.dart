@@ -11,8 +11,7 @@ class Metadata {
     this.currentPosition,
     this.routeStart,
     this.routeEnd,
-    this.trainSeries = TrainSeries.R,
-    this.breakSeries = 150,
+    this.breakSeries,
     this.additionalSpeedRestrictions = const [],
     this.nonStandardTrackEquipmentSegments = const [],
     this.availableBreakSeries = const {},
@@ -24,7 +23,6 @@ class Metadata {
   final BaseData? routeStart;
   final BaseData? routeEnd;
   final List<NonStandardTrackEquipmentSegment> nonStandardTrackEquipmentSegments;
-  final TrainSeries trainSeries;
-  final int breakSeries;
+  final BreakSeries? breakSeries;
   final Set<BreakSeries> availableBreakSeries;
 }

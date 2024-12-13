@@ -24,9 +24,9 @@ import 'package:das_client/model/journey/protection_section.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
 import 'package:das_client/model/journey/speed_change.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class TrainJourney extends StatelessWidget {
   const TrainJourney({super.key});
@@ -97,7 +97,7 @@ class TrainJourney extends StatelessWidget {
   List<DASTableColumn> _columns(BuildContext context, Journey journey, TrainJourneySettings settings) {
     final speedLabel = settings.selectedBreakSeries != null
         ? '${settings.selectedBreakSeries!.trainSeries.name}${settings.selectedBreakSeries!.breakSeries}'
-        : '${journey.metadata.trainSeries.name}${journey.metadata.breakSeries}';
+        : '${journey.metadata.breakSeries?.trainSeries.name}${journey.metadata.breakSeries?.breakSeries}';
 
     return [
       DASTableColumn(child: Text(context.l10n.p_train_journey_table_kilometre_label), width: 64.0),
@@ -119,7 +119,8 @@ class TrainJourney extends StatelessWidget {
           end: BorderSide(color: SBBColors.cloud, width: 2.0),
         ),
       ),
-      DASTableColumn(child: Text(speedLabel), width: 62.0, onTap: () => _onBreakSeriesTap(context, journey, settings)),
+      // TODO: find out what to do when break series is not defined
+      DASTableColumn(child: Text(speedLabel.isNotEmpty ? speedLabel : '??'), width: 62.0, onTap: () => _onBreakSeriesTap(context, journey, settings)),
       DASTableColumn(child: Text(context.l10n.p_train_journey_table_advised_speed_label), width: 62.0),
       DASTableColumn(width: 40.0), // actions
     ];
@@ -128,17 +129,13 @@ class TrainJourney extends StatelessWidget {
   void _onBreakSeriesTap(BuildContext context, Journey journey, TrainJourneySettings settings) {
     final trainJourneyCubit = context.trainJourneyCubit;
 
-    final selectedBreakSeries = BreakSeries(
-      trainSeries: settings.selectedBreakSeries?.trainSeries ?? journey.metadata.trainSeries,
-      breakSeries: settings.selectedBreakSeries?.breakSeries ?? journey.metadata.breakSeries,
-    );
-
     showSBBModalSheet<BreakSeries>(
             context: context,
             title: context.l10n.p_train_journey_break_series,
             constraints: BoxConstraints(),
             child: BreakSeriesSelection(
-                availableBreakSeries: journey.metadata.availableBreakSeries, selectedBreakSeries: selectedBreakSeries))
+                availableBreakSeries: journey.metadata.availableBreakSeries,
+                selectedBreakSeries: settings.selectedBreakSeries ?? journey.metadata.breakSeries))
         .then(
       (newValue) => {
         if (newValue != null) {trainJourneyCubit.updateBreakSeries(newValue)}

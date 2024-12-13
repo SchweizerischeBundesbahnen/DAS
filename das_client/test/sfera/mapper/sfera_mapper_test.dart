@@ -16,6 +16,7 @@ import 'package:das_client/sfera/sfera_component.dart';
 import 'package:das_client/sfera/src/mapper/sfera_model_mapper.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
+import 'package:das_client/sfera/src/model/train_characteristics.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -30,11 +31,20 @@ void main() {
     return files;
   }
 
-  Journey getJourney(String trainNumber, int spCount, {String? spTrainNumber}) {
+  List<File> getFilesForTc(String baseName, int count) {
+    final files = <File>[];
+    for (var i = 1; i <= count; i++) {
+      files.add(File('test_resources/tc/${baseName}_$i.xml'));
+    }
+    return files;
+  }
+
+  Journey getJourney(String trainNumber, int spCount, {String? spTrainNumber, int tcCount = 0}) {
     final journeyFile = File('test_resources/jp/SFERA_JP_$trainNumber.xml');
     final journeyProfile = SferaReplyParser.parse<JourneyProfile>(journeyFile.readAsStringSync());
     expect(journeyProfile.validate(), true);
     final List<SegmentProfile> segmentProfiles = [];
+    final List<TrainCharacteristics> trainCharacteristics = [];
 
     for (final File file in getFilesForSp('SFERA_SP_${spTrainNumber ?? trainNumber}', spCount)) {
       final segmentProfile = SferaReplyParser.parse<SegmentProfile>(file.readAsStringSync());
@@ -42,7 +52,13 @@ void main() {
       segmentProfiles.add(segmentProfile);
     }
 
-    return SferaModelMapper.mapToJourney(journeyProfile, segmentProfiles);
+    for (final File file in getFilesForTc('SFERA_TC_$trainNumber', tcCount)) {
+      final trainCharacteristic = SferaReplyParser.parse<TrainCharacteristics>(file.readAsStringSync());
+      expect(trainCharacteristic.validate(), true);
+      trainCharacteristics.add(trainCharacteristic);
+    }
+
+    return SferaModelMapper.mapToJourney(journeyProfile, segmentProfiles, trainCharacteristics);
   }
 
   test('Test invalid journey on SP missing', () async {
@@ -494,5 +510,35 @@ void main() {
     expect(journey.metadata.availableBreakSeries.elementAt(5).breakSeries, 50);
     expect(journey.metadata.availableBreakSeries.elementAt(15).trainSeries, TrainSeries.D);
     expect(journey.metadata.availableBreakSeries.elementAt(15).breakSeries, 30);
+  });
+
+  test('Test station/curve speeds are parsed correctly', () async {
+    final journey = getJourney('T5', 1);
+    expect(journey.valid, true);
+
+    final curvePoints = journey.data.where((it) => it.type == Datatype.curvePoint).cast<CurvePoint>().toList();
+    expect(curvePoints, hasLength(3));
+    expect(curvePoints[0].speedData, isNotNull);
+    expect(curvePoints[0].speedData!.velocities, hasLength(3));
+    expect(curvePoints[1].speedData, isNotNull);
+    expect(curvePoints[1].speedData!.velocities, hasLength(2));
+    expect(curvePoints[2].speedData, isNull);
+
+    final servicePoints = journey.data.where((it) => it.type == Datatype.servicePoint).cast<ServicePoint>().toList();
+    expect(servicePoints, hasLength(3));
+    expect(servicePoints[0].speedData, isNotNull);
+    expect(servicePoints[0].speedData!.velocities, hasLength(16));
+    expect(servicePoints[1].speedData, isNotNull);
+    expect(servicePoints[1].speedData!.velocities, hasLength(6));
+    expect(servicePoints[2].speedData, isNotNull);
+    expect(servicePoints[2].speedData!.velocities, hasLength(16));
+  });
+
+  test('Test train characterists break series is parsed correctly', () async {
+    final journey = getJourney('T5', 1, tcCount: 1);
+    expect(journey.valid, true);
+    expect(journey.metadata.breakSeries, isNotNull);
+    expect(journey.metadata.breakSeries!.trainSeries, TrainSeries.R);
+    expect(journey.metadata.breakSeries!.breakSeries, 115);
   });
 }

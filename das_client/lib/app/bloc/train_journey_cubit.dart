@@ -51,7 +51,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
           case SferaServiceState.connecting:
           case SferaServiceState.handshaking:
           case SferaServiceState.loadingJourney:
-          case SferaServiceState.loadingSegments:
+          case SferaServiceState.loadingAdditionalData:
             emit(ConnectingState(ru, trainNumber, date));
             break;
           case SferaServiceState.disconnected:

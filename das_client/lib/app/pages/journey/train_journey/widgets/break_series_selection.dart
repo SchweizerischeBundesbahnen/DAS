@@ -10,14 +10,14 @@ class BreakSeriesSelection extends StatefulWidget {
   const BreakSeriesSelection({required this.availableBreakSeries, required this.selectedBreakSeries, super.key});
 
   final Set<BreakSeries> availableBreakSeries;
-  final BreakSeries selectedBreakSeries;
+  final BreakSeries? selectedBreakSeries;
 
   @override
   State<BreakSeriesSelection> createState() => _BreakSeriesSelectionState();
 }
 
 class _BreakSeriesSelectionState extends State<BreakSeriesSelection> {
-  late BreakSeries selectedBreakSeries;
+  BreakSeries? selectedBreakSeries;
 
   @override
   void initState() {

@@ -127,6 +127,28 @@
                 <LocationPrimaryCode>3002</LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
             <TAF_TAP_LocationName language="de" messageString="Genève-Aéroport"/>
+            <TAF_TAP_Location_NSP name="stationSpeed">
+                <NetworkSpecificParameter name="xmlStationSpeed" value="
+                    &lt;stationSpeed&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;55&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;60&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;65&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;70&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;75&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;50&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;55&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;65&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;70&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;80&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;85&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;90&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;95&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;100&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;105&quot;/&gt;
+                    &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;77&quot;/&gt;
+                    &lt;/stationSpeed&gt;
+                "/>
+            </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="GEN"
@@ -136,6 +158,18 @@
                 <LocationPrimaryCode>3003</LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
             <TAF_TAP_LocationName language="de" messageString="Genève"/>
+            <TAF_TAP_Location_NSP name="stationSpeed">
+                <NetworkSpecificParameter name="xmlStationSpeed" value="
+                    &lt;stationSpeed&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;55&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;60&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;65&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;70&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;75&quot;/&gt;
+                    &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;77&quot;/&gt;
+                    &lt;/stationSpeed&gt;
+                "/>
+            </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="GLA"
@@ -145,6 +179,28 @@
                 <LocationPrimaryCode>3004</LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
             <TAF_TAP_LocationName language="de" messageString="Gland"/>
+            <TAF_TAP_Location_NSP name="stationSpeed">
+                <NetworkSpecificParameter name="xmlStationSpeed" value="
+                    &lt;stationSpeed&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;55&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;60&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;65&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;70&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;75&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;50&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;55&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;65&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;70&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;80&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;85&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;90&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;95&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;100&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;105&quot;/&gt;
+                    &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;77&quot;/&gt;
+                    &lt;/stationSpeed&gt;
+                "/>
+            </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
     </SP_Areas>
 

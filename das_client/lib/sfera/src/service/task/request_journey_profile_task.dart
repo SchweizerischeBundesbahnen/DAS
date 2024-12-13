@@ -68,6 +68,10 @@ class RequestJourneyProfileTask extends SferaTask<JourneyProfile> {
         await _sferaRepository.saveSegmentProfile(element);
       }
 
+      for (final trainCharacteristics in replyMessage.payload!.trainCharacteristics) {
+        await _sferaRepository.saveTrainCharacteristics(trainCharacteristics);
+      }
+
       for (final journeyProfile in replyMessage.payload!.journeyProfiles) {
         await _sferaRepository.saveJourneyProfile(journeyProfile);
       }

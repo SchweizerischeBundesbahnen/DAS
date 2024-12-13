@@ -50,6 +50,7 @@ class MqttServiceImpl implements MqttService {
     }
     if (await _mqttClientConnector.connect(_client, company, train)) {
       _client.subscribe('${prefix}90940/2/event/$company/$train', MqttQos.exactlyOnce);
+      _client.subscribe('${prefix}90940/2/event/$company/$train/$_deviceId', MqttQos.exactlyOnce);
       _client.subscribe('${prefix}90940/2/G2B/$company/$train/$_deviceId', MqttQos.exactlyOnce);
       Fimber.i("Subscribed to topic with prefix='$prefix'...");
       _startUpdateListener();

@@ -2,6 +2,7 @@ import 'package:das_client/sfera/src/model/enums/jp_status.dart';
 import 'package:das_client/sfera/src/model/enums/xml_enum.dart';
 import 'package:das_client/sfera/src/model/segment_profile_list.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
+import 'package:das_client/sfera/src/model/train_characteristics_ref.dart';
 import 'package:das_client/sfera/src/model/train_identification.dart';
 
 class JourneyProfile extends SferaXmlElement {
@@ -12,6 +13,9 @@ class JourneyProfile extends SferaXmlElement {
   TrainIdentification get trainIdentification => children.whereType<TrainIdentification>().first;
 
   Iterable<SegmentProfileList> get segmentProfilesLists => children.whereType<SegmentProfileList>();
+
+  Set<TrainCharacteristicsRef> get trainCharactericsRefSet =>
+      children.whereType<SegmentProfileList>().map((it) => it.trainCharacteristicsRef).expand((it) => it).toSet();
 
   JpStatus get status => XmlEnum.valueOf<JpStatus>(JpStatus.values, attributes['JP_Status']) ?? JpStatus.valid;
 

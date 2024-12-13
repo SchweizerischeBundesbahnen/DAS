@@ -2,6 +2,7 @@ import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 import 'package:das_client/sfera/src/model/track_equipment_type_wrapper.dart';
 import 'package:das_client/sfera/src/model/xml_curve_speed.dart';
 import 'package:das_client/sfera/src/model/xml_new_line_speed.dart';
+import 'package:das_client/sfera/src/model/xml_station_speed.dart';
 
 class NetworkSpecificParameter extends SferaXmlElement {
   static const String elementType = 'NetworkSpecificParameter';
@@ -16,6 +17,8 @@ class NetworkSpecificParameter extends SferaXmlElement {
       return TrackEquipmentTypeWrapper(attributes: attributes, children: children, value: value);
     } else if (attributes?['name'] == XmlCurveSpeed.elementName) {
       return XmlCurveSpeed(attributes: attributes, children: children, value: value);
+    } else if (attributes?['name'] == XmlStationSpeed.elementName) {
+      return XmlStationSpeed(attributes: attributes, children: children, value: value);
     }
     return NetworkSpecificParameter(attributes: attributes, children: children, value: value);
   }

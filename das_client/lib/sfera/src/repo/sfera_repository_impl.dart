@@ -1,8 +1,10 @@
 import 'package:das_client/sfera/sfera_component.dart';
 import 'package:das_client/sfera/src/db/journey_profile_entity.dart';
 import 'package:das_client/sfera/src/db/segment_profile_entity.dart';
+import 'package:das_client/sfera/src/db/train_characteristics_entity.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
+import 'package:das_client/sfera/src/model/train_characteristics.dart';
 import 'package:fimber/fimber.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
@@ -95,5 +97,35 @@ class SferaRepositoryImpl implements SferaRepository {
         .operationalTrainNumberEqualTo(operationalTrainNumber)
         .startDateEqualTo(startDate)
         .watch(fireImmediately: true);
+  }
+
+  @override
+  Future<TrainCharacteristicsEntity?> findTrainCharacteristics(String tcId, String majorVersion, String minorVersion) async {
+    await _initialized;
+    return _db.trainCharacteristics
+        .where()
+        .tcIdEqualTo(tcId)
+        .majorVersionEqualTo(majorVersion)
+        .minorVersionEqualTo(minorVersion)
+        .findFirst();
+  }
+
+  @override
+  Future<void> saveTrainCharacteristics(TrainCharacteristics trainCharacteristics) async {
+    await _initialized;
+
+    final existingTrainCharacteristics =
+        await findTrainCharacteristics(trainCharacteristics.tcId, trainCharacteristics.versionMajor, trainCharacteristics.versionMinor);
+    if (existingTrainCharacteristics == null) {
+      final trainCharacteristicsEntity = trainCharacteristics.toEntity(isarId: _db.trainCharacteristics.autoIncrement());
+      Fimber.i(
+          'Writing train characteristics to db tcId=${trainCharacteristicsEntity.tcId} majorVersion=${trainCharacteristicsEntity.majorVersion} minorVersion=${trainCharacteristicsEntity.minorVersion}');
+      _db.write((isar) {
+        isar.trainCharacteristics.put(trainCharacteristicsEntity);
+      });
+    } else {
+      Fimber.i(
+          'train characteristics already exists in db tcId=${existingTrainCharacteristics.tcId} majorVersion=${existingTrainCharacteristics.majorVersion} minorVersion=${existingTrainCharacteristics.minorVersion}');
+    }
   }
 }
