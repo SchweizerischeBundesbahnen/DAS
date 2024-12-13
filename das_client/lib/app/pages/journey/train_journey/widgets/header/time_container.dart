@@ -57,23 +57,14 @@ class TimeContainer extends StatelessWidget {
   }
 
   Widget _punctualityDisplay(Journey journey) {
+    final Duration delay = journey.metadata.delay!;
+    final String formattedDuration =
+        '${delay.isNegative ? '-' : '+'}${delay.inMinutes.abs()}:${(delay.inSeconds.abs() % 60).toString().padLeft(2, '0')}';
 
     return Text(
-      _loadTimeDifference(), style: SBBTextStyles.largeLight.copyWith(fontSize: 24.0),
-    );
-
-    //The code below is for the case when VPro is finally in the model
-    /* final bool hasVPro = journey.metadata.additionalSpeedRestrictions.any((restriction) => restriction.speed != null);
-
-    return Text(
-      hasVPro ? _loadTimeDifference() : '',
+      formattedDuration,
       style: SBBTextStyles.largeLight.copyWith(fontSize: 24.0),
     );
-     */
-  }
-
-  String _loadTimeDifference(){
-    return '00:00';
   }
 }
 

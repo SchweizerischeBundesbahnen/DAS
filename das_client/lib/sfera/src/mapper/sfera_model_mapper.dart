@@ -26,7 +26,6 @@ import 'package:das_client/sfera/src/model/taf_tap_location.dart';
 import 'package:fimber/fimber.dart';
 
 
-//TODO implement DelaySfera here somewhere and parse the data from the mock-backend to Duration format
 class SferaModelMapper {
   SferaModelMapper._();
 
@@ -118,9 +117,29 @@ class SferaModelMapper {
           currentPosition: journeyData.first,
           additionalSpeedRestrictions: additionalSpeedRestrictions,
           routeStart: journeyData.firstOrNull,
-          routeEnd: journeyData.lastOrNull),
+          routeEnd: journeyData.lastOrNull,
+          delay: _stringToDuration('+PT45M30S'),
+      ),
       data: journeyData,
     );
+  }
+
+  static Duration _stringToDuration(String stringToChange){
+    //TODO code in util auslagern und ganz ganz viele tests wie zb -5 stunden
+    //TODO anschauen was mit über einer stunde geschehen sollte (mit UX)
+    final bool isNegative = stringToChange.startsWith('-');
+    final String normalized = stringToChange.replaceAll(RegExp(r'^[+-]'), '');
+
+    final match = RegExp(r'PT(\d+M)?(\d+S)?').firstMatch(normalized);
+    if (match == null) {
+      //Todo change the error-code
+      throw FormatException('Invalid ISO 8601 duration format');
+    }
+    final int minutes = int.tryParse(match.group(1)?.replaceAll('M', '') ?? '0') ?? 0;
+    final int seconds = int.tryParse(match.group(2)?.replaceAll('S', '') ?? '0') ?? 0;
+
+    final Duration parsed = Duration(minutes: minutes, seconds: seconds);
+    return isNegative ? -parsed : parsed;
   }
 
   static List<AdditionalSpeedRestriction> _parseAdditionalSpeedRestrictions(

@@ -1,7 +1,6 @@
 import 'package:das_client/model/journey/additional_speed_restriction.dart';
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/service_point.dart';
-import 'package:das_client/sfera/src/model/delay.dart';
 
 class Metadata {
   Metadata(
@@ -18,5 +17,5 @@ class Metadata {
   final List<AdditionalSpeedRestriction> additionalSpeedRestrictions;
   final BaseData? routeStart;
   final BaseData? routeEnd;
-  final DelaySfera? delay;
+  final Duration? delay;
 }

@@ -3,6 +3,8 @@ import 'package:das_client/sfera/src/model/current_limitation.dart';
 import 'package:das_client/sfera/src/model/current_limitation_change.dart';
 import 'package:das_client/sfera/src/model/current_limitation_start.dart';
 import 'package:das_client/sfera/src/model/das_operating_modes_selected.dart';
+import 'package:das_client/sfera/src/model/delay.dart';
+import 'package:das_client/sfera/src/model/g2b_event_payload.dart';
 import 'package:das_client/sfera/src/model/g2b_reply_payload.dart';
 import 'package:das_client/sfera/src/model/handshake_acknowledgement.dart';
 import 'package:das_client/sfera/src/model/handshake_reject.dart';
@@ -16,8 +18,11 @@ import 'package:das_client/sfera/src/model/network_specific_area.dart';
 import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
 import 'package:das_client/sfera/src/model/network_specific_point.dart';
 import 'package:das_client/sfera/src/model/otn_id.dart';
+import 'package:das_client/sfera/src/model/own_train.dart';
+import 'package:das_client/sfera/src/model/related_train_information.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
 import 'package:das_client/sfera/src/model/segment_profile_list.dart';
+import 'package:das_client/sfera/src/model/sfera_g2b_event_message.dart';
 import 'package:das_client/sfera/src/model/sfera_g2b_reply_message.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 import 'package:das_client/sfera/src/model/signal.dart';
@@ -44,6 +49,7 @@ import 'package:das_client/sfera/src/model/timing_point_reference.dart';
 import 'package:das_client/sfera/src/model/tp_id_reference.dart';
 import 'package:das_client/sfera/src/model/tp_name.dart';
 import 'package:das_client/sfera/src/model/train_identification.dart';
+import 'package:das_client/sfera/src/model/train_location_information.dart';
 import 'package:das_client/sfera/src/model/virtual_balise.dart';
 import 'package:das_client/sfera/src/model/virtual_balise_position.dart';
 import 'package:xml/xml.dart';
@@ -169,10 +175,22 @@ class SferaReplyParser {
         return NetworkSpecificArea(type: type, attributes: attributes, children: children, value: value);
       case AdditionalSpeedRestriction.elementType:
         return AdditionalSpeedRestriction(type: type, attributes: attributes, children: children, value: value);
-       case TemporaryConstraints.elementType:
+      case TemporaryConstraints.elementType:
         return TemporaryConstraints(type: type, attributes: attributes, children: children, value: value);
-       case TemporaryConstraintReason.elementType:
+      case TemporaryConstraintReason.elementType:
         return TemporaryConstraintReason(type: type, attributes: attributes, children: children, value: value);
+      case SferaG2bEventMessage.elementType:
+        return SferaG2bEventMessage(type: type, attributes: attributes, children: children, value: value);
+      case G2bEventPayload.elementType:
+        return G2bEventPayload(type: type, attributes: attributes, children: children, value: value);
+      case RelatedTrainInformation.elementType:
+        return RelatedTrainInformation(type: type, attributes: attributes, children: children, value: value);
+      case OwnTrain.elementType:
+        return OwnTrain(type: type, attributes: attributes, children: children, value: value);
+      case TrainLocationInformation.elementType:
+        return TrainLocationInformation(type: type, attributes: attributes, children: children, value: value);
+      case Delay.elementType:
+        return Delay(type: type, attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElement(type: type, attributes: attributes, children: children, value: value);
     }
