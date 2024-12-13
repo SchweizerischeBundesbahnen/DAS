@@ -3,14 +3,17 @@ package ch.sbb.sferamock.messages.services;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.JourneyProfile;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SPZoneComplexType;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SegmentProfile;
+import ch.sbb.sferamock.adapters.sfera.model.v0201.TrainCharacteristics;
 import ch.sbb.sferamock.messages.common.SferaErrorCodes;
 import ch.sbb.sferamock.messages.model.HandshakeRejectReason;
 import ch.sbb.sferamock.messages.model.OperationMode;
 import ch.sbb.sferamock.messages.model.RequestContext;
 import ch.sbb.sferamock.messages.model.SegmentIdentification;
+import ch.sbb.sferamock.messages.model.TrainCharacteristicsIdentification;
 import ch.sbb.sferamock.messages.model.TrainIdentification;
 import ch.sbb.sferamock.messages.sfera.ReplyPublisher;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import org.slf4j.Logger;
@@ -27,15 +30,18 @@ public class SferaApplicationService {
     private final RegistrationService registrationService;
     private final JourneyProfileRepository journeyProfileRepository;
     private final SegmentProfileRepository segmentProfileRepository;
+    private final TrainCharacteristicsRepository trainCharacteristicsRepository;
 
     public SferaApplicationService(ReplyPublisher replyPublisher, RequestContextRepository requestContextRepository, OperationModeSelector operationModeSelector,
-        RegistrationService registrationService, JourneyProfileRepository journeyProfileRepository, SegmentProfileRepository segmentProfileRepository) {
+        RegistrationService registrationService, JourneyProfileRepository journeyProfileRepository, SegmentProfileRepository segmentProfileRepository,
+        TrainCharacteristicsRepository trainCharacteristicsRepository) {
         this.replyPublisher = replyPublisher;
         this.requestContextRepository = requestContextRepository;
         this.operationModeSelector = operationModeSelector;
         this.registrationService = registrationService;
         this.journeyProfileRepository = journeyProfileRepository;
         this.segmentProfileRepository = segmentProfileRepository;
+        this.trainCharacteristicsRepository = trainCharacteristicsRepository;
     }
 
     private static JourneyProfile unavailableJourneyProfile() {
@@ -98,6 +104,23 @@ public class SferaApplicationService {
         publishSegmentProfile(segmentProfiles, correlationId, requestContext);
     }
 
+    public void processTrainCharacteristicsRequest(List<TrainCharacteristicsIdentification> trainCharacteristicsIdentifications, RequestContext requestContext) {
+        if (!registrationService.isRegistered(requestContext.clientId())) {
+            publishErrorMessageUnregisteredClient(requestContext);
+            return;
+        }
+
+        var correlationId = UUID.randomUUID();
+        requestContextRepository.storeRequestContext(correlationId, requestContext);
+
+        var trainCharacteristics = trainCharacteristicsIdentifications.stream()
+            .map(trainCharacteristicsIdentification -> trainCharacteristicsRepository.getTrainCharacteristics(trainCharacteristicsIdentification)
+                .orElse(null))
+            .filter(Objects::nonNull)
+            .toList();
+        publishTrainCharacteristics(trainCharacteristics, correlationId, requestContext);
+    }
+
     private void publishJourneyProfile(Optional<JourneyProfile> journeyProfile, UUID correlationId, RequestContext requestContext) {
         requestContextRepository.getRequestContext(correlationId)
             .ifPresentOrElse(it -> publishJourneyProfileResponse(journeyProfile, it), () -> replyPublisher.publishErrorMessage(SferaErrorCodes.COULD_NOT_PROCESS_DATA, requestContext));
@@ -116,6 +139,19 @@ public class SferaApplicationService {
     private void publishSegmentProfileResponse(List<SegmentProfile> segmentProfiles, RequestContext requestContext) {
         if (!segmentProfiles.isEmpty()) {
             replyPublisher.publishSegmentProfile(segmentProfiles, requestContext);
+        } else {
+            replyPublisher.publishErrorMessage(SferaErrorCodes.COULD_NOT_PROCESS_DATA, requestContext);
+        }
+    }
+
+    private void publishTrainCharacteristics(List<TrainCharacteristics> trainCharacteristics, UUID correlationId, RequestContext requestContext) {
+        requestContextRepository.getRequestContext(correlationId)
+            .ifPresentOrElse(it -> publishTrainCharacteristicsResponse(trainCharacteristics, it), () -> replyPublisher.publishErrorMessage(SferaErrorCodes.COULD_NOT_PROCESS_DATA, requestContext));
+    }
+
+    private void publishTrainCharacteristicsResponse(List<TrainCharacteristics> trainCharacteristics, RequestContext requestContext) {
+        if (!trainCharacteristics.isEmpty()) {
+            replyPublisher.publishTrainCharacteristics(trainCharacteristics, requestContext);
         } else {
             replyPublisher.publishErrorMessage(SferaErrorCodes.COULD_NOT_PROCESS_DATA, requestContext);
         }
