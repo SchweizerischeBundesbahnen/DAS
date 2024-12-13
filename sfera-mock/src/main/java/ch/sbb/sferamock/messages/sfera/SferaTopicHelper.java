@@ -9,7 +9,7 @@ final class SferaTopicHelper {
     private SferaTopicHelper() {
     }
 
-    public static String getG2BTopic(String publishDestination, RequestContext requestContext) {
+    public static String getTopic(String publishDestination, RequestContext requestContext) {
         return String.format("%s%s/%s/%s", publishDestination, // publishDestination ends with a slash
             requestContext.tid().companyCode().value(),
             formatTrainIdentification(requestContext.tid()),

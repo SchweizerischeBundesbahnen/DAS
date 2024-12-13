@@ -60,7 +60,7 @@ export class SferaObserverComponent implements OnDestroy {
     const trainOperation =  this.trainControl.value + '_' + this.dateControl.value;
     this.g2bTopic = customTopicPrefix + '90940/2/G2B/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
     this.b2gTopic = customTopicPrefix + '90940/2/B2G/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
-    this.eventTopic = customTopicPrefix + '90940/2/event/' + this.companyControl.value + '/' + trainOperation;
+    this.eventTopic = customTopicPrefix + '90940/2/event/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
     const token = await firstValueFrom(this.oidcSecurityService.getAccessToken());
     const username = await firstValueFrom(this.oidcSecurityService.getUserData().pipe(map((data) => data?.preferred_username)));
     await this.mqService.connect(username, token);
@@ -150,6 +150,12 @@ export class SferaObserverComponent implements OnDestroy {
       }
 
       return requestedTypes.join(", ");
+    } else if(type == "SFERA_G2B_EventMessage") {
+      if(this.containsElement(document, 'RelatedTrainInformation'))
+        return 'RelatedTrainInformation';
+      if(this.containsElement(document, 'JourneyProfile')) {
+       return `JP Update: ${this.getJourneyProfileStatus(document)}, #SP: ${this.getJourneyProfileNumberOfSPs(document)}`;
+      }
     }
     return "unknown";
   }
