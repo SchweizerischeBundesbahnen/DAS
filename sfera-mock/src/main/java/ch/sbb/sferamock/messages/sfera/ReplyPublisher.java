@@ -64,6 +64,12 @@ public class ReplyPublisher {
         publishReplyMessage(reply, requestContext);
     }
 
+    public void publishOkMessage(RequestContext requestContext) {
+        var header = sferaMessageCreator.createMessageHeader(UUID.randomUUID(), requestContext.tid(), requestContext.incomingMessageId());
+        var reply = sferaMessageCreator.createOkMessage(header);
+        publishReplyMessage(reply, requestContext);
+    }
+
     public void publishErrorMessage(SferaErrorCodes code, RequestContext requestContext) {
         var replyMessageHeader = sferaMessageCreator.createOutgoingMessageHeader(UUID.randomUUID(),
             requestContext.incomingMessageId(),
@@ -73,7 +79,7 @@ public class ReplyPublisher {
     }
 
     private void publishReplyMessage(SFERAG2BReplyMessage replyMessage, RequestContext requestContext) {
-        String topic = SferaTopicHelper.getTopic(publishDestination, requestContext);
+        String topic = SferaTopicHelper.getG2BTopic(publishDestination, requestContext);
         log.info("Publishing Reply Message: {} to topic {}", xmlHelper.toString(replyMessage), topic);
         streamBridge.send(topic, SOLACE_BINDER, MessageBuilder
                 .withPayload(replyMessage)

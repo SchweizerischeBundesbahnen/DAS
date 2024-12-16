@@ -53,7 +53,6 @@ public class RegistrationService {
                 : existingSetWith(clientIdentifiers, clientId));
         }
         eventService.registerActiveTrain(requestContext);
-
     }
 
     public void deregisterClient(ClientId clientId) {

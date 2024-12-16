@@ -98,6 +98,15 @@ public class SferaApplicationService {
         publishSegmentProfile(segmentProfiles, correlationId, requestContext);
     }
 
+    public void processSessionTermination(RequestContext requestContext) {
+        if (!registrationService.isRegistered(requestContext.clientId())) {
+            publishErrorMessageUnregisteredClient(requestContext);
+            return;
+        }
+        registrationService.deregisterClient(requestContext.clientId());
+        publishOk(requestContext);
+    }
+
     private void publishJourneyProfile(Optional<JourneyProfile> journeyProfile, UUID correlationId, RequestContext requestContext) {
         requestContextRepository.getRequestContext(correlationId)
             .ifPresentOrElse(it -> publishJourneyProfileResponse(journeyProfile, it), () -> replyPublisher.publishErrorMessage(SferaErrorCodes.COULD_NOT_PROCESS_DATA, requestContext));
@@ -119,6 +128,10 @@ public class SferaApplicationService {
         } else {
             replyPublisher.publishErrorMessage(SferaErrorCodes.COULD_NOT_PROCESS_DATA, requestContext);
         }
+    }
+
+    private void publishOk(RequestContext requestContext) {
+        replyPublisher.publishOkMessage(requestContext);
     }
 
     private void publishErrorMessageUnregisteredClient(RequestContext requestContext) {

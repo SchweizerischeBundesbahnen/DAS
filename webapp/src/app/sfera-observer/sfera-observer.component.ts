@@ -57,7 +57,7 @@ export class SferaObserverComponent implements OnDestroy {
 
   async observe() {
     const customTopicPrefix = this.environmentControl.value ? this.customPrefixControl.value : '';
-    const trainOperation =  this.trainControl.value + '_' + this.dateControl.value;
+    const trainOperation = this.trainControl.value + '_' + this.dateControl.value;
     this.g2bTopic = customTopicPrefix + '90940/2/G2B/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
     this.b2gTopic = customTopicPrefix + '90940/2/B2G/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
     this.eventTopic = customTopicPrefix + '90940/2/event/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
@@ -150,12 +150,15 @@ export class SferaObserverComponent implements OnDestroy {
       }
 
       return requestedTypes.join(", ");
-    } else if(type == "SFERA_G2B_EventMessage") {
-      if(this.containsElement(document, 'RelatedTrainInformation'))
+    } else if (type == "SFERA_G2B_EventMessage") {
+      if (this.containsElement(document, 'RelatedTrainInformation'))
         return 'RelatedTrainInformation';
-      if(this.containsElement(document, 'JourneyProfile')) {
-       return `JP Update: ${this.getJourneyProfileStatus(document)}, #SP: ${this.getJourneyProfileNumberOfSPs(document)}`;
+      if (this.containsElement(document, 'JourneyProfile')) {
+        return `JP Update: ${this.getJourneyProfileStatus(document)}, #SP: ${this.getJourneyProfileNumberOfSPs(document)}`;
       }
+    } else if(type == "SFERA_B2G_EventMessage") {
+      if(this.containsElement(document, 'SessionTermination'))
+        return 'SessionTermination';
     }
     return "unknown";
   }
@@ -274,13 +277,13 @@ export class SferaObserverComponent implements OnDestroy {
       const majorVersion = element.getAttribute('SP_VersionMajor');
 
       return {
-          spZone: {
-            imId: imId
-          },
-          spId: spId,
-          majorVersion: majorVersion,
-          minorVersion: minorVersion
-        } as SpRequestOptions;
+        spZone: {
+          imId: imId
+        },
+        spId: spId,
+        majorVersion: majorVersion,
+        minorVersion: minorVersion
+      } as SpRequestOptions;
     });
 
     const spRequest = SferaXmlCreation.createRequest({
@@ -290,6 +293,16 @@ export class SferaObserverComponent implements OnDestroy {
       spRequests: segmentProfiles
     });
     this.mqService.publish(this.b2gTopic!, spRequest);
+  }
+
+  sendSessionTermination() {
+    const sessionTerminationEvent = SferaXmlCreation.createEvent({
+      header: {
+        sourceDevice: this.clientIdControl.value
+      },
+      sessionTermination: true
+    });
+    this.mqService.publish(this.b2gTopic!, sessionTerminationEvent);
   }
 
   sendHSRWrongSferaVersion() {

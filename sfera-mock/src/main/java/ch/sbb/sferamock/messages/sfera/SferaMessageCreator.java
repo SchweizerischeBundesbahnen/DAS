@@ -184,4 +184,15 @@ public class SferaMessageCreator {
         result.setG2BReplyPayload(payload);
         return result;
     }
+
+    public SFERAG2BReplyMessage createOkMessage(MessageHeader header) {
+        var result = new SFERAG2BReplyMessage();
+        result.setMessageHeader(header);
+        var response = new G2BMessageResponse();
+        response.setResult(Result.OK);
+        var payload = new G2BReplyPayload();
+        payload.setG2BMessageResponse(response);
+        result.setG2BReplyPayload(payload);
+        return result;
+    }
 }
