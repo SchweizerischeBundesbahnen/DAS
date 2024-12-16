@@ -35,8 +35,8 @@ class ToursController {
             )
         ]
     )
-    @PutMapping(consumes = ["application/json"])
-    fun updateTours(@RequestBody tours: List<TourDto>) {
+    @PutMapping("bulk", consumes = ["application/json"])
+    fun bulkUpdateTours(@RequestBody tours: List<TourDto>) {
 
     }
 
@@ -66,9 +66,7 @@ class ToursController {
     )
     @DeleteMapping
     fun deleteTour(
-        @RequestParam userId: String,
         @RequestParam tourId: String,
-        @RequestParam startDate: LocalDate,
         @RequestParam company: String
     ) {
 
