@@ -139,7 +139,7 @@ export class SferaObserverComponent implements OnDestroy {
         return `JP: ${this.getJourneyProfileStatus(document)}, #SP: ${this.getJourneyProfileNumberOfSPs(document)}`;
       } else if (this.containsElement(document, 'SegmentProfile')) {
         return this.getSegmentProfiles(document);
-      } else if(this.containsElement(document, 'TrainCharacteristics')) {
+      } else if (this.containsElement(document, 'TrainCharacteristics')) {
         return this.getTrainCharacteristics(document);
       }
     } else if (type == "SFERA_B2G_RequestMessage") {
@@ -163,8 +163,8 @@ export class SferaObserverComponent implements OnDestroy {
       if (this.containsElement(document, 'JourneyProfile')) {
         return `JP Update: ${this.getJourneyProfileStatus(document)}, #SP: ${this.getJourneyProfileNumberOfSPs(document)}`;
       }
-    } else if(type == "SFERA_B2G_EventMessage") {
-      if(this.containsElement(document, 'SessionTermination'))
+    } else if (type == "SFERA_B2G_EventMessage") {
+      if (this.containsElement(document, 'SessionTermination'))
         return 'SessionTermination';
     }
     return "unknown";

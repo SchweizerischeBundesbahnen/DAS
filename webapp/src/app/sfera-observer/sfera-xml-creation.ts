@@ -140,7 +140,7 @@ export class SferaXmlCreation {
     let headerOptions = options?.header || this.defaultHeader();
     headerOptions = this.fillUndefindeHeaderFields(headerOptions);
 
-    const sesssionTermination =  this.createSessionTerminationRequest(options?.sessionTermination);
+    const sesssionTermination = this.createSessionTerminationRequest(options?.sessionTermination);
 
     return `<?xml version="1.0"?>
                 <SFERA_B2G_EventMessage>

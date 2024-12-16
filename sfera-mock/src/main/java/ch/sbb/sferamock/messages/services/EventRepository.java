@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 public class EventRepository implements ApplicationRunner {
 
     private static final String XML_RESOURCES_CLASSPATH = "classpath:static_sfera_resources/*/SFERA_Event_*.xml";
-    private static final String TRAIN_XML_REGEX = "/([a-zA-Z0-9]+)_\\w+/SFERA_Event_([a-zA-Z0-9]+)_\\d+\\.xml";
+    private static final String XML_REGEX = "/([a-zA-Z0-9]+)_\\w+/SFERA_Event_([a-zA-Z0-9]+)_\\d+\\.xml";
     private static final String OFFSET_XML_REGEX = "SFERA_Event_[a-zA-Z0-9]+_(\\d+)\\.xml";
     private final XmlHelper xmlHelper;
 
@@ -58,7 +58,7 @@ public class EventRepository implements ApplicationRunner {
     }
 
     private static String extractOperationalNumber(String filename) {
-        Pattern pattern = Pattern.compile(TRAIN_XML_REGEX);
+        Pattern pattern = Pattern.compile(XML_REGEX);
         Matcher matcher = pattern.matcher(filename);
         if (matcher.find()) {
             String directoryOperationalNumber = matcher.group(1);
