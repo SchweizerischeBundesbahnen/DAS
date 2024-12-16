@@ -43,10 +43,18 @@ export interface SpRequestOptions {
   minorVersion: string;
 }
 
+export interface TcRequestOptions {
+  ruId: string;
+  tcId: string;
+  majorVersion: string;
+  minorVersion: string;
+}
+
 export interface RequestOptions {
   header?: SferaHeaderOptions,
-  jpRequests?: JpRequestOptions[]
-  spRequests?: SpRequestOptions[]
+  jpRequests?: JpRequestOptions[],
+  spRequests?: SpRequestOptions[],
+  tcRequests?: TcRequestOptions[]
 }
 
 export interface EventOptions {
@@ -111,6 +119,7 @@ export class SferaXmlCreation {
 
     const jpRequests = this.createJpRequest(options.jpRequests);
     const spRequests = this.createSpRequest(options.spRequests);
+    const tcRequests = this.createTcRequest(options.tcRequests);
 
     return `<?xml version="1.0"?>
                   <SFERA_B2G_RequestMessage>
@@ -121,6 +130,7 @@ export class SferaXmlCreation {
                     <B2G_Request>
                         ${jpRequests}
                         ${spRequests}
+                        ${tcRequests}
                     </B2G_Request>
                 </SFERA_B2G_RequestMessage>
     `;
@@ -186,6 +196,16 @@ export class SferaXmlCreation {
                         </SP_Request>
       `;
     });
+    return (strings || []).join('');
+  }
+
+  static createTcRequest(tcRequests: TcRequestOptions[] | undefined): string {
+    const strings = tcRequests?.map(tcRequest => {
+      return `<TC_Request TC_ID="${tcRequest.tcId}">
+                <TC_RU_ID>${tcRequest.ruId}</TC_RU_ID>
+      </TC_Request>
+      `;
+    })
     return (strings || []).join('');
   }
 
