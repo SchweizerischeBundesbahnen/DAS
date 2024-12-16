@@ -57,6 +57,11 @@ export interface RequestOptions {
   tcRequests?: TcRequestOptions[]
 }
 
+export interface EventOptions {
+  header?: SferaHeaderOptions,
+  sessionTermination?: boolean,
+}
+
 export interface SupportedOperationModes {
   drivingMode: 'Read-Only' | 'Inactive' | 'DAS not connected to ATP',
   architecture: 'BoardAdviceCalculation' | 'GroundAdviceCalculation',
@@ -131,6 +136,23 @@ export class SferaXmlCreation {
     `;
   }
 
+  static createEvent(options: EventOptions): string {
+    let headerOptions = options?.header || this.defaultHeader();
+    headerOptions = this.fillUndefindeHeaderFields(headerOptions);
+
+    const sesssionTermination = this.createSessionTerminationRequest(options?.sessionTermination);
+
+    return `<?xml version="1.0"?>
+                <SFERA_B2G_EventMessage>
+                  <MessageHeader SFERA_version="${headerOptions.sferaVersion}" message_ID="${headerOptions.messageId}" timestamp="${headerOptions.timestamp}" sourceDevice="${headerOptions.sourceDevice}">
+                        <Sender>${headerOptions.sender}</Sender>
+                        <Recipient>${headerOptions.recipient}</Recipient>
+                  </MessageHeader>
+                  ${sesssionTermination}
+              </SFERA_B2G_EventMessage>
+    `;
+  }
+
   static createJpRequest(jpRequests: JpRequestOptions[] | undefined): string {
     const strings = jpRequests?.map(jpRequest => {
       const jpInUseElement = jpRequest?.jpInUse
@@ -185,6 +207,10 @@ export class SferaXmlCreation {
       `;
     })
     return (strings || []).join('');
+  }
+
+  static createSessionTerminationRequest(sessionTermination: boolean | undefined): string {
+    return sessionTermination ? `<SessionTermination/>` : '';
   }
 
   private static defaultHeader(): SferaHeaderOptions {

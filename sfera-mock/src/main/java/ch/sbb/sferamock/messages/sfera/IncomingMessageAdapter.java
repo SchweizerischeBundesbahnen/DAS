@@ -64,48 +64,56 @@ public class IncomingMessageAdapter {
             return;
         }
         switch (payload) {
-            case SFERAB2GRequestMessage request -> {
-                var requestContext = RequestContext.fromTopic(topic, Optional.of(UUID.fromString(request.getMessageHeader().getMessageID())));
-                log.info("Received SFERAB2GRequestMessage {} on topic {}", xmlHelper.toString(request), topic);
-                var validationMessage = messageHeaderValidator.validate(request.getMessageHeader(), requestContext.tid().companyCode().value());
+            case SFERAB2GRequestMessage request -> processB2GRequest(request, topic);
+            case SFERAB2GEventMessage event -> {
+                var requestContext = RequestContext.fromTopic(topic, Optional.of(UUID.fromString(event.getMessageHeader().getMessageID())));
+                log.info("Received SFERAB2GEventMessage: {} on topic {}", xmlHelper.toString(event), topic);
+                var validationMessage = messageHeaderValidator.validate(event.getMessageHeader(), requestContext.tid().companyCode().value());
                 if (validationMessage.isPresent()) {
                     log.warn("Reject Message with error in message header");
                     replyPublisher.publishErrorMessage(validationMessage.get(), requestContext);
                     return;
                 }
-                if (request.getHandshakeRequest() != null) {
-                    var handshakeRequest = request.getHandshakeRequest();
-                    sferaApplicationService.processHandshakeRequest(
-                        SferaToInternalConverters.convertOperationModes(handshakeRequest.getDASOperatingModesSupported()),
-                        nullSafeBoolean(handshakeRequest.isStatusReportsEnabled()),
-                        requestContext);
-                } else {
-                    B2GRequest b2GRequest = request.getB2GRequest();
-                    if (b2GRequest != null && b2GRequest.getJPRequest() != null && b2GRequest.getJPRequest().size() == 1) {
-                        processJourneyProfileRequest(request.getB2GRequest().getJPRequest().get(0), requestContext);
-                        return;
-                    }
-                    if (b2GRequest != null && b2GRequest.getSPRequest() != null && !b2GRequest.getSPRequest().isEmpty()) {
-                        processSegmentProfileRequest(b2GRequest.getSPRequest(), requestContext);
-                        return;
-                    }
-                    if (b2GRequest != null && b2GRequest.getTCRequest() != null && !b2GRequest.getTCRequest().isEmpty()) {
-                        processTrainCharacteristicsRequest(b2GRequest.getTCRequest(), requestContext);
-                        return;
-                    }
-
-                    log.warn("A B2G Request that is not a handshake should currently have exactly one jp or sp request. Request is ignored.");
+                if (event.getSessionTermination() != null) {
+                    sferaApplicationService.processSessionTermination(requestContext);
                 }
+
             }
-            case SFERAB2GEventMessage event -> {
-                log.info("Received SFERAB2GEventMessage: {} on topic {}",
-                    xmlHelper.toString(event), topic);
-            }
-            case SFERAB2GReplyMessage reply -> {
-                log.info("Received SFERAB2GReplyMessage: {} on topic {}",
-                    xmlHelper.toString(reply), topic);
-            }
+            case SFERAB2GReplyMessage reply -> log.info("Received SFERAB2GReplyMessage: {} on topic {}", xmlHelper.toString(reply), topic);
             default -> log.error("Unknown xml message type received: {} xml string \"{}\"", payload.getClass(), xmlString);
+        }
+    }
+
+    private void processB2GRequest(SFERAB2GRequestMessage request, String topic) {
+        var requestContext = RequestContext.fromTopic(topic, Optional.of(UUID.fromString(request.getMessageHeader().getMessageID())));
+        log.info("Received SFERAB2GRequestMessage {} on topic {}", xmlHelper.toString(request), topic);
+        var validationMessage = messageHeaderValidator.validate(request.getMessageHeader(), requestContext.tid().companyCode().value());
+        if (validationMessage.isPresent()) {
+            log.warn("Reject Message with error in message header");
+            replyPublisher.publishErrorMessage(validationMessage.get(), requestContext);
+            return;
+        }
+        if (request.getHandshakeRequest() != null) {
+            var handshakeRequest = request.getHandshakeRequest();
+            sferaApplicationService.processHandshakeRequest(
+                SferaToInternalConverters.convertOperationModes(handshakeRequest.getDASOperatingModesSupported()),
+                nullSafeBoolean(handshakeRequest.isStatusReportsEnabled()),
+                requestContext);
+        } else {
+            B2GRequest b2GRequest = request.getB2GRequest();
+            if (b2GRequest != null && b2GRequest.getJPRequest() != null && b2GRequest.getJPRequest().size() == 1) {
+                processJourneyProfileRequest(request.getB2GRequest().getJPRequest().get(0), requestContext);
+                return;
+            }
+            if (b2GRequest != null && b2GRequest.getSPRequest() != null && !b2GRequest.getSPRequest().isEmpty()) {
+                processSegmentProfileRequest(b2GRequest.getSPRequest(), requestContext);
+                return;
+            }
+            if (b2GRequest != null && b2GRequest.getTCRequest() != null && !b2GRequest.getTCRequest().isEmpty()) {
+                processTrainCharacteristicsRequest(b2GRequest.getTCRequest(), requestContext);
+                return;
+            }
+            log.warn("A B2G Request that is not a handshake should currently have exactly one jp or sp request. Request is ignored.");
         }
     }
 

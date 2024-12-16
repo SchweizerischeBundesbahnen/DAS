@@ -71,6 +71,12 @@ public class ReplyPublisher {
         publishReplyMessage(reply, requestContext);
     }
 
+    public void publishOkMessage(RequestContext requestContext) {
+        var header = sferaMessageCreator.createMessageHeader(UUID.randomUUID(), requestContext.tid(), requestContext.incomingMessageId());
+        var reply = sferaMessageCreator.createOkMessage(header);
+        publishReplyMessage(reply, requestContext);
+    }
+
     public void publishErrorMessage(SferaErrorCodes code, RequestContext requestContext) {
         var replyMessageHeader = sferaMessageCreator.createOutgoingMessageHeader(UUID.randomUUID(),
             requestContext.incomingMessageId(),
