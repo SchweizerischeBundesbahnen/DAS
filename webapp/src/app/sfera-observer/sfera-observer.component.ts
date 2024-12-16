@@ -141,13 +141,15 @@ export class SferaObserverComponent implements OnDestroy {
         return this.getSegmentProfiles(document);
       } else if (this.containsElement(document, 'TrainCharacteristics')) {
         return this.getTrainCharacteristics(document);
+      } else if (this.containsElement(document, 'RelatedTrainInformation')) {
+        return 'RelatedTrainInformation';
       }
     } else if (type == "SFERA_B2G_RequestMessage") {
       if (this.isHandshakeRequest(document)) {
         return `HS-REQUEST`;
       }
 
-      const requestTypes = ['JP_Request', 'SP_Request', 'TC_Request']
+      const requestTypes = ['JP_Request', 'SP_Request', 'TC_Request', 'RelatedTrainInformationRequest']
       const requestedTypes: string[] = [];
 
       for (const requestType of requestTypes) {

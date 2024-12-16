@@ -36,6 +36,7 @@ public class JourneyProfileRepository implements ApplicationRunner {
         importJps();
     }
 
+    // company and startDate is ignored
     public Optional<JourneyProfile> getJourneyProfile(TrainIdentification trainIdentification) {
         return Optional.ofNullable(journeyProfiles.get(trainIdentification.operationalNumber()));
     }

@@ -12,6 +12,7 @@ import ch.sbb.sferamock.adapters.sfera.model.v0201.JourneyProfile;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.MessageHeader;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.OTNIDComplexType;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.Recipient;
+import ch.sbb.sferamock.adapters.sfera.model.v0201.RelatedTrainInformation;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SFERAG2BEventMessage;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SFERAG2BReplyMessage;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SegmentProfile;
@@ -191,6 +192,16 @@ public class SferaMessageCreator {
         result.setMessageHeader(header);
         var payload = new G2BReplyPayload();
         payload.getTrainCharacteristics().addAll(trainCharacteristics);
+        result.setG2BReplyPayload(payload);
+        return result;
+    }
+
+    public SFERAG2BReplyMessage createRelatedTrainInformationReplyMessage(List<RelatedTrainInformation> relatedTrainInformations, MessageHeader header) {
+        var result = new SFERAG2BReplyMessage();
+        result.setMessageHeader(header);
+        var payload = new G2BReplyPayload();
+        relatedTrainInformations.forEach(relatedTrainInformation -> relatedTrainInformation.getOwnTrain().setTrainIdentification(header.getTrainIdentification()));
+        payload.getRelatedTrainInformation().addAll(relatedTrainInformations);
         result.setG2BReplyPayload(payload);
         return result;
     }

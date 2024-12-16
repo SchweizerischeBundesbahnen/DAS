@@ -3,6 +3,7 @@ package ch.sbb.sferamock.messages.sfera;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_XML;
 
 import ch.sbb.sferamock.adapters.sfera.model.v0201.JourneyProfile;
+import ch.sbb.sferamock.adapters.sfera.model.v0201.RelatedTrainInformation;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SFERAG2BReplyMessage;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SegmentProfile;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.TrainCharacteristics;
@@ -52,6 +53,12 @@ public class ReplyPublisher {
     public void publishTrainCharacteristics(List<TrainCharacteristics> trainCharacteristics, RequestContext requestContext) {
         var header = sferaMessageCreator.createMessageHeader(UUID.randomUUID(), requestContext.tid(), requestContext.incomingMessageId());
         var reply = sferaMessageCreator.createTrainCharacteristicsReplyMessage(trainCharacteristics, header);
+        publishReplyMessage(reply, requestContext);
+    }
+
+    public void publishRelatedTrainInformations(List<RelatedTrainInformation> relatedTrainInformations, RequestContext requestContext) {
+        var header = sferaMessageCreator.createMessageHeader(UUID.randomUUID(), requestContext.tid(), requestContext.incomingMessageId());
+        var reply = sferaMessageCreator.createRelatedTrainInformationReplyMessage(relatedTrainInformations, header);
         publishReplyMessage(reply, requestContext);
     }
 

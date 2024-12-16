@@ -1,7 +1,9 @@
 package ch.sbb.sferamock.messages.services;
 
 import ch.sbb.sferamock.adapters.sfera.model.v0201.G2BEventPayload;
+import ch.sbb.sferamock.adapters.sfera.model.v0201.RelatedTrainInformation;
 import ch.sbb.sferamock.messages.common.XmlHelper;
+import ch.sbb.sferamock.messages.model.TrainIdentification;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -10,6 +12,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.springframework.boot.ApplicationArguments;
@@ -29,6 +33,36 @@ public class EventRepository implements ApplicationRunner {
 
     public EventRepository(XmlHelper xmlHelper) {
         this.xmlHelper = xmlHelper;
+    }
+
+    private static String extractOperationalNumber(String filename) {
+        Pattern pattern = Pattern.compile(XML_REGEX);
+        Matcher matcher = pattern.matcher(filename);
+        if (matcher.find()) {
+            String directoryOperationalNumber = matcher.group(1);
+            String fileOperationalNumber = matcher.group(2);
+            if (directoryOperationalNumber != null && directoryOperationalNumber.equals(fileOperationalNumber)) {
+                return directoryOperationalNumber;
+            }
+        }
+        throw new RuntimeException("Operational number extraction in Event repository failed for file: " + filename);
+    }
+
+    private static int extractOffsetMs(String filename) {
+        Pattern pattern = Pattern.compile(OFFSET_XML_REGEX);
+        Matcher matcher = pattern.matcher(filename);
+        if (matcher.find()) {
+            return Integer.parseInt(matcher.group(1));
+        }
+        throw new RuntimeException("Offset extraction in Event repository failed for file: " + filename);
+    }
+
+    public Optional<RelatedTrainInformation> getRelatedTrainInformation(TrainIdentification trainIdentification) {
+        return Optional.ofNullable(events.get(trainIdentification.operationalNumber()))
+            .flatMap(trainEvents -> trainEvents.stream()
+                .map(event -> event.payload.getRelatedTrainInformation())
+                .filter(Objects::nonNull)
+                .findFirst());
     }
 
     @Override
@@ -55,28 +89,6 @@ public class EventRepository implements ApplicationRunner {
                 events.put(operationalNumber, trainEvents);
             }
         }
-    }
-
-    private static String extractOperationalNumber(String filename) {
-        Pattern pattern = Pattern.compile(XML_REGEX);
-        Matcher matcher = pattern.matcher(filename);
-        if (matcher.find()) {
-            String directoryOperationalNumber = matcher.group(1);
-            String fileOperationalNumber = matcher.group(2);
-            if (directoryOperationalNumber != null && directoryOperationalNumber.equals(fileOperationalNumber)) {
-                return directoryOperationalNumber;
-            }
-        }
-        throw new RuntimeException("Operational number extraction in Event repository failed for file: " + filename);
-    }
-
-    private static int extractOffsetMs(String filename) {
-        Pattern pattern = Pattern.compile(OFFSET_XML_REGEX);
-        Matcher matcher = pattern.matcher(filename);
-        if (matcher.find()) {
-            return Integer.parseInt(matcher.group(1));
-        }
-        throw new RuntimeException("Offset extraction in Event repository failed for file: " + filename);
     }
 
     public record Event(int offsetMs, G2BEventPayload payload) {

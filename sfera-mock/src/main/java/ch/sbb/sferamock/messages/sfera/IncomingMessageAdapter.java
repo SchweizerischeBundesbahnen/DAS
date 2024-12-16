@@ -2,6 +2,7 @@ package ch.sbb.sferamock.messages.sfera;
 
 import ch.sbb.sferamock.adapters.sfera.model.v0201.B2GRequest;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.JPRequest;
+import ch.sbb.sferamock.adapters.sfera.model.v0201.RelatedTrainInformationRequest;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SFERAB2GEventMessage;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SFERAB2GReplyMessage;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SFERAB2GRequestMessage;
@@ -113,6 +114,10 @@ public class IncomingMessageAdapter {
                 processTrainCharacteristicsRequest(b2GRequest.getTCRequest(), requestContext);
                 return;
             }
+            if (b2GRequest != null && b2GRequest.getRelatedTrainInformationRequest() != null && !b2GRequest.getRelatedTrainInformationRequest().isEmpty()) {
+                processRelatedTrainInformationRequest(b2GRequest.getRelatedTrainInformationRequest(), requestContext);
+                return;
+            }
             log.warn("A B2G Request that is not a handshake should currently have exactly one jp or sp request. Request is ignored.");
         }
     }
@@ -162,5 +167,13 @@ public class IncomingMessageAdapter {
             tcRequest.getTCVersionMinor() != null ? tcRequest.getTCVersionMinor().intValue() : 0,
             new CompanyCode(tcRequest.getTCRUID()))).toList();
         sferaApplicationService.processTrainCharacteristicsRequest(trainCharacteristicsIdentifications, requestContext);
+    }
+
+    private void processRelatedTrainInformationRequest(List<RelatedTrainInformationRequest> relatedTrainInformationRequests, RequestContext requestContext) {
+        var trainIdentifications = relatedTrainInformationRequests.stream()
+            .map(relatedTrainInformationRequest -> relatedTrainInformationRequest.getTrainIdentification().getOTNID())
+            .map(otnId -> new TrainIdentification(new CompanyCode(otnId.getCompany()), otnId.getOperationalTrainNumber(), XmlDateHelper.toLocalDate(otnId.getStartDate())))
+            .toList();
+        sferaApplicationService.processRelatedTrainInformationRequest(trainIdentifications, requestContext);
     }
 }
