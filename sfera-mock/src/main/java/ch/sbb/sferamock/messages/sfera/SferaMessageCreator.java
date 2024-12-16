@@ -16,6 +16,7 @@ import ch.sbb.sferamock.adapters.sfera.model.v0201.SFERAG2BEventMessage;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SFERAG2BReplyMessage;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SegmentProfile;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.Sender;
+import ch.sbb.sferamock.adapters.sfera.model.v0201.TrainCharacteristics;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.TrainIdentificationComplexType;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.UnavailableDASOperatingModes;
 import ch.sbb.sferamock.messages.common.XmlDateHelper;
@@ -181,6 +182,15 @@ public class SferaMessageCreator {
         result.setMessageHeader(header);
         var payload = new G2BReplyPayload();
         payload.getSegmentProfile().addAll(segmentProfiles);
+        result.setG2BReplyPayload(payload);
+        return result;
+    }
+
+    public SFERAG2BReplyMessage createTrainCharacteristicsReplyMessage(List<TrainCharacteristics> trainCharacteristics, MessageHeader header) {
+        var result = new SFERAG2BReplyMessage();
+        result.setMessageHeader(header);
+        var payload = new G2BReplyPayload();
+        payload.getTrainCharacteristics().addAll(trainCharacteristics);
         result.setG2BReplyPayload(payload);
         return result;
     }

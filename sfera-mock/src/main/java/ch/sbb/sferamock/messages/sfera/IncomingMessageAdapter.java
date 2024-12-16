@@ -6,12 +6,14 @@ import ch.sbb.sferamock.adapters.sfera.model.v0201.SFERAB2GEventMessage;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SFERAB2GReplyMessage;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SFERAB2GRequestMessage;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SPRequest;
+import ch.sbb.sferamock.adapters.sfera.model.v0201.TCRequest;
 import ch.sbb.sferamock.messages.common.SferaErrorCodes;
 import ch.sbb.sferamock.messages.common.XmlDateHelper;
 import ch.sbb.sferamock.messages.common.XmlHelper;
 import ch.sbb.sferamock.messages.model.CompanyCode;
 import ch.sbb.sferamock.messages.model.RequestContext;
 import ch.sbb.sferamock.messages.model.SegmentIdentification;
+import ch.sbb.sferamock.messages.model.TrainCharacteristicsIdentification;
 import ch.sbb.sferamock.messages.model.TrainIdentification;
 import ch.sbb.sferamock.messages.services.SferaApplicationService;
 import com.solacesystems.jcsmp.impl.TopicImpl;
@@ -107,6 +109,10 @@ public class IncomingMessageAdapter {
                 processSegmentProfileRequest(b2GRequest.getSPRequest(), requestContext);
                 return;
             }
+            if (b2GRequest != null && b2GRequest.getTCRequest() != null && !b2GRequest.getTCRequest().isEmpty()) {
+                processTrainCharacteristicsRequest(b2GRequest.getTCRequest(), requestContext);
+                return;
+            }
             log.warn("A B2G Request that is not a handshake should currently have exactly one jp or sp request. Request is ignored.");
         }
     }
@@ -147,5 +153,14 @@ public class IncomingMessageAdapter {
             spRequest.getSPVersionMinor() != null ? spRequest.getSPVersionMinor().intValue() : 0,
             new CompanyCode(spRequest.getSPZone().getIMID()))).toList();
         sferaApplicationService.processSegmentProfileRequest(segmentIdentifications, requestContext);
+    }
+
+    private void processTrainCharacteristicsRequest(List<TCRequest> tcRequests, RequestContext requestContext) {
+        var trainCharacteristicsIdentifications = tcRequests.stream().map(tcRequest -> new TrainCharacteristicsIdentification(
+            tcRequest.getTCID(),
+            tcRequest.getTCVersionMajor() != null ? tcRequest.getTCVersionMajor().intValue() : 0,
+            tcRequest.getTCVersionMinor() != null ? tcRequest.getTCVersionMinor().intValue() : 0,
+            new CompanyCode(tcRequest.getTCRUID()))).toList();
+        sferaApplicationService.processTrainCharacteristicsRequest(trainCharacteristicsIdentifications, requestContext);
     }
 }
