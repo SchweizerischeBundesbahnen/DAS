@@ -111,6 +111,7 @@ class DASTable extends StatelessWidget {
         expanded: column.expanded,
         width: column.width,
         child: Container(
+          key: column.headerKey,
           decoration: BoxDecoration(
             border: tableThemeData?.headingRowBorder ?? column.border,
             color: column.color ?? tableThemeData?.headingRowColor,

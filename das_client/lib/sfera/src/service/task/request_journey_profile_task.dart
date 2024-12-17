@@ -61,7 +61,9 @@ class RequestJourneyProfileTask extends SferaTask<JourneyProfile> {
       }
 
       Fimber.i(
-        'Received G2bReplyPayload response with ${replyMessage.payload!.journeyProfiles.length} JourneyProfiles and ${replyMessage.payload!.segmentProfiles.length} SegmentProfiles...',
+        'Received G2bReplyPayload response with ${replyMessage.payload!.journeyProfiles.length} JourneyProfiles, '
+        '${replyMessage.payload!.segmentProfiles.length} SegmentProfiles and '
+        '${replyMessage.payload!.trainCharacteristics.length} TrainCharacteristics...',
       );
 
       for (final element in replyMessage.payload!.segmentProfiles) {

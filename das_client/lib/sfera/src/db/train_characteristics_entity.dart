@@ -1,4 +1,3 @@
-import 'package:das_client/sfera/src/model/segment_profile.dart';
 import 'package:das_client/sfera/src/model/train_characteristics.dart';
 import 'package:das_client/sfera/src/sfera_reply_parser.dart';
 import 'package:isar/isar.dart';

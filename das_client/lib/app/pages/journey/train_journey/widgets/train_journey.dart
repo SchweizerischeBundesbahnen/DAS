@@ -31,6 +31,8 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class TrainJourney extends StatelessWidget {
   const TrainJourney({super.key});
 
+  static const Key breakingSeriesHeaderKey = Key('breaking_series_header_key');
+
   @override
   Widget build(BuildContext context) {
     final bloc = context.trainJourneyCubit;
@@ -97,7 +99,7 @@ class TrainJourney extends StatelessWidget {
   List<DASTableColumn> _columns(BuildContext context, Journey journey, TrainJourneySettings settings) {
     final speedLabel = settings.selectedBreakSeries != null
         ? '${settings.selectedBreakSeries!.trainSeries.name}${settings.selectedBreakSeries!.breakSeries}'
-        : '${journey.metadata.breakSeries?.trainSeries.name}${journey.metadata.breakSeries?.breakSeries}';
+        : '${journey.metadata.breakSeries?.trainSeries.name ?? '?'}${journey.metadata.breakSeries?.breakSeries ?? '?'}';
 
     return [
       DASTableColumn(child: Text(context.l10n.p_train_journey_table_kilometre_label), width: 64.0),
@@ -120,7 +122,11 @@ class TrainJourney extends StatelessWidget {
         ),
       ),
       // TODO: find out what to do when break series is not defined
-      DASTableColumn(child: Text(speedLabel.isNotEmpty ? speedLabel : '??'), width: 62.0, onTap: () => _onBreakSeriesTap(context, journey, settings)),
+      DASTableColumn(
+          child: Text(speedLabel),
+          width: 62.0,
+          onTap: () => _onBreakSeriesTap(context, journey, settings),
+          headerKey: breakingSeriesHeaderKey),
       DASTableColumn(child: Text(context.l10n.p_train_journey_table_advised_speed_label), width: 62.0),
       DASTableColumn(width: 40.0), // actions
     ];
