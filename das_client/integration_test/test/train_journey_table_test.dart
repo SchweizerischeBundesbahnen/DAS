@@ -2,6 +2,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/additio
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cab_signaling_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/curve_point_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/protection_section_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
@@ -82,7 +83,7 @@ void main() {
               it is Container &&
               it.decoration is BoxDecoration &&
               (it.decoration as BoxDecoration).color == AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor));
-      expect(coloredCells, findsNWidgets(11));
+      expect(coloredCells, findsNWidgets(12));
     });
 
     testWidgets('test other rows are displayed correctly', (tester) async {
@@ -99,7 +100,7 @@ void main() {
 
       final testRows = ['Genève', 'km 32.2', 'Lengnau', 'WANZ'];
 
-      //Scroll to the table and search inside it
+      // Scroll to the table and search inside it
       for (final rowText in testRows) {
         final rowFinder = find.descendant(of: tableFinder, matching: find.text(rowText));
         await tester.dragUntilVisible(rowFinder, tableFinder, const Offset(0, -50));
@@ -115,7 +116,7 @@ void main() {
                 it.decoration is BoxDecoration &&
                 (it.decoration as BoxDecoration).color ==
                     AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor));
-        expect(coloredCells, findsNWidgets(3));
+        expect(coloredCells, findsNWidgets(4));
       }
     });
 
@@ -437,7 +438,8 @@ void main() {
       final rowsAtKm33_8 = findDASTableRowByText('33.8');
       expect(rowsAtKm33_8, findsExactly(2));
       final segment1CABStop = rowsAtKm33_8.last; // end should be after other elements at same location
-      final segment1CABStopIcon = find.descendant(of: segment1CABStop, matching: find.byKey(CABSignalingRow.cabSignalingEndIconKey));
+      final segment1CABStopIcon =
+          find.descendant(of: segment1CABStop, matching: find.byKey(CABSignalingRow.cabSignalingEndIconKey));
       expect(segment1CABStopIcon, findsOneWidget);
 
       // Track equipment segment without ETCS level 2 should be ignored
@@ -449,7 +451,8 @@ void main() {
       final rowsAtKm12_5 = findDASTableRowByText('12.5');
       expect(rowsAtKm12_5, findsExactly(2));
       final segment2CABStart = rowsAtKm12_5.first; // start should be before other elements at same location
-      final segment2CABStartIcon = find.descendant(of: segment2CABStart, matching: find.byKey(CABSignalingRow.cabSignalingStartIconKey));
+      final segment2CABStartIcon =
+          find.descendant(of: segment2CABStart, matching: find.byKey(CABSignalingRow.cabSignalingStartIconKey));
       expect(segment2CABStartIcon, findsOneWidget);
       await tester.dragUntilVisible(find.text('75.3'), scrollableFinder, const Offset(0, -50));
       final trackEquipmentTypeChange = findDASTableRowByText('56.8');
@@ -458,16 +461,92 @@ void main() {
       final rothristServicePointRow = findDASTableRowByText('46.2');
       expect(rothristServicePointRow, findsOneWidget); // no CAB signaling at connecting ETCS L2 segments
       final segment2CABEnd = findDASTableRowByText('39.9');
-      final segment2CABEndIcon = find.descendant(of: segment2CABEnd, matching: find.byKey(CABSignalingRow.cabSignalingEndIconKey));
+      final segment2CABEndIcon =
+          find.descendant(of: segment2CABEnd, matching: find.byKey(CABSignalingRow.cabSignalingEndIconKey));
       expect(segment2CABEndIcon, findsOneWidget);
 
       // CAB segment with end outside train journey and start at 8.3 km
       await tester.dragUntilVisible(find.text('9.5'), scrollableFinder, const Offset(0, -50));
       final segment3CABStart = findDASTableRowByText('8.3');
-      final segment3CABStartIcon = find.descendant(of: segment3CABStart, matching: find.byKey(CABSignalingRow.cabSignalingStartIconKey));
+      final segment3CABStartIcon =
+          find.descendant(of: segment3CABStart, matching: find.byKey(CABSignalingRow.cabSignalingStartIconKey));
       expect(segment3CABStartIcon, findsOneWidget);
     });
+
+    testWidgets('test if track equipment is displayed correctly', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: 'T1');
+
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
+
+      // check ExtendedSpeedReversingPossible from Genève-Aéroport to Gland
+      _checkTrackEquipmentOnServicePoint('Genève-Aéroport', TrackEquipmentCellBody.extendedSpeedReversingPossibleKey);
+      _checkTrackEquipmentOnServicePoint('Genève', TrackEquipmentCellBody.extendedSpeedReversingPossibleKey);
+      _checkTrackEquipmentOnServicePoint('Gland', TrackEquipmentCellBody.extendedSpeedReversingPossibleKey);
+      final segment1CABStop = findDASTableRowByText('33.8').last;
+      final segment1CABStopTrackEquipment = find.descendant(
+          of: segment1CABStop, matching: find.byKey(TrackEquipmentCellBody.extendedSpeedReversingPossibleKey));
+      expect(segment1CABStopTrackEquipment, findsOneWidget);
+
+      // check ConventionalSpeedReversingImpossible from Morges to Onnens-Bonvillars
+      await tester.dragUntilVisible(find.text('Onnens-Bonvillars'), scrollableFinder, const Offset(0, -50));
+      final segment2CABStart = findDASTableRowByText('12.5').first;
+      final segment2CABStartTrackEquipment = find.descendant(
+          of: segment2CABStart, matching: find.byKey(TrackEquipmentCellBody.conventionalSpeedReversingImpossible));
+      expect(segment2CABStartTrackEquipment, findsOneWidget);
+      _checkTrackEquipmentOnServicePoint('Morges', TrackEquipmentCellBody.conventionalSpeedReversingImpossible);
+      _checkTrackEquipmentOnServicePoint(
+          'Yverdon-les-Bains', TrackEquipmentCellBody.conventionalSpeedReversingImpossible);
+      _checkTrackEquipmentOnServicePoint(
+          'Onnens-Bonvillars', TrackEquipmentCellBody.conventionalSpeedReversingImpossible);
+
+      // check ExtendedSpeedReversingPossibleKey from Neuchâtel to Rothrist
+      await tester.dragUntilVisible(find.text('Grenchen Süd'), scrollableFinder, const Offset(0, -50));
+      _checkTrackEquipmentOnServicePoint('Neuchâtel', TrackEquipmentCellBody.extendedSpeedReversingPossibleKey,
+          hasConvExtSpeedBorder: true);
+      _checkTrackEquipmentOnServicePoint('Biel/Bienne', TrackEquipmentCellBody.extendedSpeedReversingPossibleKey);
+      _checkTrackEquipmentOnServicePoint('Lengnau', TrackEquipmentCellBody.extendedSpeedReversingPossibleKey);
+      _checkTrackEquipmentOnServicePoint('Grenchen Süd', TrackEquipmentCellBody.extendedSpeedReversingPossibleKey);
+      await tester.dragUntilVisible(find.text('Rothrist'), scrollableFinder, const Offset(0, -50));
+      _checkTrackEquipmentOnServicePoint('Solothurn', TrackEquipmentCellBody.extendedSpeedReversingPossibleKey);
+      _checkTrackEquipmentOnServicePoint('WANZ', TrackEquipmentCellBody.extendedSpeedReversingPossibleKey);
+      _checkTrackEquipmentOnServicePoint('Rothrist', TrackEquipmentCellBody.extendedSpeedReversingPossibleKey);
+
+      // check ExtendedSpeedReversingPossibleKey in Olten
+      await tester.dragUntilVisible(find.text('Aarau'), scrollableFinder, const Offset(0, -50));
+      _checkTrackEquipmentOnServicePoint('Olten', TrackEquipmentCellBody.conventionalSpeedReversingImpossible,
+          hasConvExtSpeedBorder: true);
+      final segment2CABEnd = findDASTableRowByText('39.9').first;
+      final segment2CABEndTrackEquipment = find.descendant(
+          of: segment2CABEnd, matching: find.byKey(TrackEquipmentCellBody.conventionalSpeedReversingImpossible));
+      expect(segment2CABEndTrackEquipment, findsOneWidget);
+
+      // check ExtendedSpeedReversingImpossibleKey from Zürich HB to Opfikon Süd
+      await tester.dragUntilVisible(find.text('Flughafen'), scrollableFinder, const Offset(0, -50));
+      final segment3CABStart = findDASTableRowByText('8.3').first;
+      final segment3CABStartTrackEquipment = find.descendant(
+          of: segment3CABStart, matching: find.byKey(TrackEquipmentCellBody.extendedSpeedReversingImpossibleKey));
+      expect(segment3CABStartTrackEquipment, findsOneWidget);
+      _checkTrackEquipmentOnServicePoint('Zürich HB', TrackEquipmentCellBody.extendedSpeedReversingImpossibleKey);
+      _checkTrackEquipmentOnServicePoint('Opfikon Süd', TrackEquipmentCellBody.extendedSpeedReversingImpossibleKey);
+
+      // check ExtendedSpeedReversingImpossibleKey in Flughafen
+      _checkTrackEquipmentOnServicePoint('Flughafen', TrackEquipmentCellBody.extendedSpeedReversingPossibleKey);
+    });
   });
+}
+
+void _checkTrackEquipmentOnServicePoint(String name, Key expectedKey, {bool hasConvExtSpeedBorder = false}) {
+  final servicePointRow = findDASTableRowByText(name);
+  final trackEquipment = find.descendant(of: servicePointRow, matching: find.byKey(expectedKey));
+  expect(trackEquipment, findsOneWidget);
+
+  final convExtSpeedBorder = find.descendant(
+      of: servicePointRow, matching: find.byKey(TrackEquipmentCellBody.conventionalExtendedSpeedBorderKey));
+  expect(convExtSpeedBorder, hasConvExtSpeedBorder ? findsOneWidget : findsNothing);
 }
 
 /// Verifies, that SBB is selected and loads train journey with [trainNumber]
