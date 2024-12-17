@@ -13,6 +13,7 @@
     "p_train_journey_table_advised_speed_label": "FE",
     "p_train_journey_table_graduated_speed_label": "OG",
     "p_train_journey_break_series": "Bremsreihe",
+    "p_train_journey_break_series_empty": "Es sind keine Bremsreihen vorhanden",
     "p_train_journey_table_curve_type_curve": "Kurve",
     "p_train_journey_table_curve_type_station_exit_curve": "Kurve Ausfahrt",
     "p_train_journey_table_curve_type_curve_after_halt": "Kurve nach Haltestelle",

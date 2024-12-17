@@ -99,11 +99,11 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
       return DASTableCell.empty();
     }
 
+    final currentTrainSeries = settings.selectedBreakSeries?.trainSeries ?? metadata.breakSeries?.trainSeries;
+    final currentBreakSeries = settings.selectedBreakSeries?.breakSeries ?? metadata.breakSeries?.breakSeries;
+
     return DASTableCell(
-      child: Text(data.speedData!.resolvedSpeed(
-              settings.selectedBreakSeries?.trainSeries ?? metadata.breakSeries?.trainSeries,
-              settings.selectedBreakSeries?.breakSeries ?? metadata.breakSeries?.breakSeries) ??
-          'XX'),
+      child: Text(data.speedData!.resolvedSpeed(currentTrainSeries, currentBreakSeries) ?? 'XX'),
       alignment: Alignment.center,
     );
   }

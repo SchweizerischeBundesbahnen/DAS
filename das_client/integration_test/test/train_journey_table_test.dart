@@ -79,6 +79,18 @@ void main() {
       }
     });
 
+    testWidgets('test message when no breakseries are defined', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: '7839');
+
+      // Open break series bottom sheet
+      await tapElement(tester, find.byKey(TrainJourney.breakingSeriesHeaderKey));
+
+      expect(find.text(l10n.p_train_journey_break_series_empty), findsOneWidget);
+    });
+
     testWidgets('test speed values of default breakSeries (R115)', (tester) async {
       await prepareAndStartApp(tester);
 

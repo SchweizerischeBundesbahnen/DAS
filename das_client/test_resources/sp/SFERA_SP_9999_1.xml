@@ -59,10 +59,6 @@
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
-        <NetworkSpecificArea startEndQualifier="Ends" endLocation="550" name="nonStandardTrackEquipment">
-            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingPossible"/>
-        </NetworkSpecificArea>
-
         <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="600" endLocation="900" name="nonStandardTrackEquipment">
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L1LS-2TracksWithSingleTrackEquipment"/>
         </NetworkSpecificArea>

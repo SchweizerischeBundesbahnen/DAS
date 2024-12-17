@@ -27,6 +27,17 @@ class _BreakSeriesSelectionState extends State<BreakSeriesSelection> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.availableBreakSeries.isEmpty) {
+      return SizedBox(
+        height: 100,
+        child: Center(
+          child: Text(context.l10n.p_train_journey_break_series_empty),
+        ),
+      );
+    }
+
+    final canConfirm = selectedBreakSeries != null && selectedBreakSeries != widget.selectedBreakSeries;
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, sbbDefaultSpacing, 21),
       child: Column(
@@ -50,9 +61,7 @@ class _BreakSeriesSelectionState extends State<BreakSeriesSelection> {
             padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, sbbDefaultSpacing, 0),
             child: SBBPrimaryButton(
                 label: context.l10n.c_button_confirm,
-                onPressed: () {
-                  context.router.maybePop(selectedBreakSeries);
-                }),
+                onPressed: canConfirm ? () => context.router.maybePop(selectedBreakSeries) : null),
           )
         ],
       ),
