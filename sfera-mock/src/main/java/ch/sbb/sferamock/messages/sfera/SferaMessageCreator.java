@@ -3,6 +3,7 @@ package ch.sbb.sferamock.messages.sfera;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.B2GMessageResponse.Result;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.DASOperatingModeSelected;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.G2BError;
+import ch.sbb.sferamock.adapters.sfera.model.v0201.G2BEventPayload;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.G2BMessageResponse;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.G2BReplyPayload;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.HandshakeAcknowledgement;
@@ -11,9 +12,12 @@ import ch.sbb.sferamock.adapters.sfera.model.v0201.JourneyProfile;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.MessageHeader;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.OTNIDComplexType;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.Recipient;
+import ch.sbb.sferamock.adapters.sfera.model.v0201.RelatedTrainInformation;
+import ch.sbb.sferamock.adapters.sfera.model.v0201.SFERAG2BEventMessage;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SFERAG2BReplyMessage;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SegmentProfile;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.Sender;
+import ch.sbb.sferamock.adapters.sfera.model.v0201.TrainCharacteristics;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.TrainIdentificationComplexType;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.UnavailableDASOperatingModes;
 import ch.sbb.sferamock.messages.common.XmlDateHelper;
@@ -63,6 +67,10 @@ public class SferaMessageCreator {
         return createMessageHeader(messageId, tid, correlationId);
     }
 
+    public MessageHeader createMessageHeader(UUID messageId, TrainIdentification tid) {
+        return createMessageHeader(messageId, tid, Optional.empty());
+    }
+
     public MessageHeader createMessageHeader(UUID messageId, TrainIdentification tid, Optional<UUID> correlationId) {
         var sender = new Sender();
         sender.setValue(companyCode);
@@ -87,6 +95,25 @@ public class SferaMessageCreator {
         dasOperatingModeSelected.setDASArchitecture(toSferaArchitecture(architecture));
         dasOperatingModeSelected.setDASConnectivity(toSferaConnectivity(dasConnectivity));
         result.setDASOperatingModeSelected(dasOperatingModeSelected);
+        return result;
+    }
+
+    public SFERAG2BEventMessage createRelatedTrainInformation(G2BEventPayload eventPayload, MessageHeader header) {
+        eventPayload.getRelatedTrainInformation().getOwnTrain().setTrainIdentification(header.getTrainIdentification());
+        return createEventMessage(eventPayload, header);
+    }
+
+    public SFERAG2BEventMessage createJourneyProfileEventMessage(G2BEventPayload eventPayload, MessageHeader header) {
+        for (JourneyProfile journeyProfile : eventPayload.getJourneyProfile()) {
+            journeyProfile.setTrainIdentification(header.getTrainIdentification());
+        }
+        return createEventMessage(eventPayload, header);
+    }
+
+    public SFERAG2BEventMessage createEventMessage(G2BEventPayload eventPayload, MessageHeader header) {
+        var result = new SFERAG2BEventMessage();
+        result.setMessageHeader(header);
+        result.setG2BEventPayload(eventPayload);
         return result;
     }
 
@@ -156,6 +183,36 @@ public class SferaMessageCreator {
         result.setMessageHeader(header);
         var payload = new G2BReplyPayload();
         payload.getSegmentProfile().addAll(segmentProfiles);
+        result.setG2BReplyPayload(payload);
+        return result;
+    }
+
+    public SFERAG2BReplyMessage createTrainCharacteristicsReplyMessage(List<TrainCharacteristics> trainCharacteristics, MessageHeader header) {
+        var result = new SFERAG2BReplyMessage();
+        result.setMessageHeader(header);
+        var payload = new G2BReplyPayload();
+        payload.getTrainCharacteristics().addAll(trainCharacteristics);
+        result.setG2BReplyPayload(payload);
+        return result;
+    }
+
+    public SFERAG2BReplyMessage createRelatedTrainInformationReplyMessage(List<RelatedTrainInformation> relatedTrainInformations, MessageHeader header) {
+        var result = new SFERAG2BReplyMessage();
+        result.setMessageHeader(header);
+        var payload = new G2BReplyPayload();
+        relatedTrainInformations.forEach(relatedTrainInformation -> relatedTrainInformation.getOwnTrain().setTrainIdentification(header.getTrainIdentification()));
+        payload.getRelatedTrainInformation().addAll(relatedTrainInformations);
+        result.setG2BReplyPayload(payload);
+        return result;
+    }
+
+    public SFERAG2BReplyMessage createOkMessage(MessageHeader header) {
+        var result = new SFERAG2BReplyMessage();
+        result.setMessageHeader(header);
+        var response = new G2BMessageResponse();
+        response.setResult(Result.OK);
+        var payload = new G2BReplyPayload();
+        payload.setG2BMessageResponse(response);
         result.setG2BReplyPayload(payload);
         return result;
     }

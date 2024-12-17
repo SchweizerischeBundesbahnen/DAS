@@ -2,18 +2,21 @@ package ch.sbb.sferamock.messages.sfera;
 
 import ch.sbb.sferamock.adapters.sfera.model.v0201.B2GRequest;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.JPRequest;
+import ch.sbb.sferamock.adapters.sfera.model.v0201.RelatedTrainInformationRequest;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SFERAB2GEventMessage;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SFERAB2GReplyMessage;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SFERAB2GRequestMessage;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SPRequest;
-import ch.sbb.sferamock.messages.services.SferaApplicationService;
+import ch.sbb.sferamock.adapters.sfera.model.v0201.TCRequest;
+import ch.sbb.sferamock.messages.common.SferaErrorCodes;
 import ch.sbb.sferamock.messages.common.XmlDateHelper;
 import ch.sbb.sferamock.messages.common.XmlHelper;
 import ch.sbb.sferamock.messages.model.CompanyCode;
 import ch.sbb.sferamock.messages.model.RequestContext;
-import ch.sbb.sferamock.messages.common.SferaErrorCodes;
-import ch.sbb.sferamock.messages.model.TrainIdentification;
 import ch.sbb.sferamock.messages.model.SegmentIdentification;
+import ch.sbb.sferamock.messages.model.TrainCharacteristicsIdentification;
+import ch.sbb.sferamock.messages.model.TrainIdentification;
+import ch.sbb.sferamock.messages.services.SferaApplicationService;
 import com.solacesystems.jcsmp.impl.TopicImpl;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
@@ -62,43 +65,60 @@ public class IncomingMessageAdapter {
             return;
         }
         switch (payload) {
-            case SFERAB2GRequestMessage request -> {
-                var requestContext = RequestContext.fromTopic(topic, Optional.of(UUID.fromString(request.getMessageHeader().getMessageID())));
-                log.info("Received SFERAB2GRequestMessage {} on topic {}", xmlHelper.toString(request), topic);
-                var validationMessage = messageHeaderValidator.validate(request.getMessageHeader(), requestContext.tid().companyCode().value());
+            case SFERAB2GRequestMessage request -> processB2GRequest(request, topic);
+            case SFERAB2GEventMessage event -> {
+                var requestContext = RequestContext.fromTopic(topic, Optional.of(UUID.fromString(event.getMessageHeader().getMessageID())));
+                log.info("Received SFERAB2GEventMessage: {} on topic {}", xmlHelper.toString(event), topic);
+                var validationMessage = messageHeaderValidator.validate(event.getMessageHeader(), requestContext.tid().companyCode().value());
                 if (validationMessage.isPresent()) {
                     log.warn("Reject Message with error in message header");
                     replyPublisher.publishErrorMessage(validationMessage.get(), requestContext);
                     return;
                 }
-                if (request.getHandshakeRequest() != null) {
-                    var handshakeRequest = request.getHandshakeRequest();
-                    sferaApplicationService.processHandshakeRequest(
-                        SferaToInternalConverters.convertOperationModes(handshakeRequest.getDASOperatingModesSupported()),
-                        nullSafeBoolean(handshakeRequest.isStatusReportsEnabled()),
-                        requestContext);
-                } else {
-                    B2GRequest b2GRequest = request.getB2GRequest();
-                    if (b2GRequest != null && b2GRequest.getJPRequest() != null && b2GRequest.getJPRequest().size() == 1) {
-                        processJourneyProfileRequest(request.getB2GRequest().getJPRequest().get(0), requestContext);
-                        return;
-                    }
-                    if (b2GRequest != null && b2GRequest.getSPRequest() != null && !b2GRequest.getSPRequest().isEmpty()) {
-                        processSegmentProfileRequest(b2GRequest.getSPRequest(), requestContext);
-                        return;
-                    }
-                    log.warn("A B2G Request that is not a handshake should currently have exactly one jp or sp request. Request is ignored.");
+                if (event.getSessionTermination() != null) {
+                    sferaApplicationService.processSessionTermination(requestContext);
                 }
+
             }
-            case SFERAB2GEventMessage event -> {
-                log.info("Received SFERAB2GEventMessage: {} on topic {}",
-                    xmlHelper.toString(event), topic);
-            }
-            case SFERAB2GReplyMessage reply -> {
-                log.info("Received SFERAB2GReplyMessage: {} on topic {}",
-                    xmlHelper.toString(reply), topic);
-            }
+            case SFERAB2GReplyMessage reply -> log.info("Received SFERAB2GReplyMessage: {} on topic {}", xmlHelper.toString(reply), topic);
             default -> log.error("Unknown xml message type received: {} xml string \"{}\"", payload.getClass(), xmlString);
+        }
+    }
+
+    private void processB2GRequest(SFERAB2GRequestMessage request, String topic) {
+        var requestContext = RequestContext.fromTopic(topic, Optional.of(UUID.fromString(request.getMessageHeader().getMessageID())));
+        log.info("Received SFERAB2GRequestMessage {} on topic {}", xmlHelper.toString(request), topic);
+        var validationMessage = messageHeaderValidator.validate(request.getMessageHeader(), requestContext.tid().companyCode().value());
+        if (validationMessage.isPresent()) {
+            log.warn("Reject Message with error in message header");
+            replyPublisher.publishErrorMessage(validationMessage.get(), requestContext);
+            return;
+        }
+        if (request.getHandshakeRequest() != null) {
+            var handshakeRequest = request.getHandshakeRequest();
+            sferaApplicationService.processHandshakeRequest(
+                SferaToInternalConverters.convertOperationModes(handshakeRequest.getDASOperatingModesSupported()),
+                nullSafeBoolean(handshakeRequest.isStatusReportsEnabled()),
+                requestContext);
+        } else {
+            B2GRequest b2GRequest = request.getB2GRequest();
+            if (b2GRequest != null && b2GRequest.getJPRequest() != null && b2GRequest.getJPRequest().size() == 1) {
+                processJourneyProfileRequest(request.getB2GRequest().getJPRequest().get(0), requestContext);
+                return;
+            }
+            if (b2GRequest != null && b2GRequest.getSPRequest() != null && !b2GRequest.getSPRequest().isEmpty()) {
+                processSegmentProfileRequest(b2GRequest.getSPRequest(), requestContext);
+                return;
+            }
+            if (b2GRequest != null && b2GRequest.getTCRequest() != null && !b2GRequest.getTCRequest().isEmpty()) {
+                processTrainCharacteristicsRequest(b2GRequest.getTCRequest(), requestContext);
+                return;
+            }
+            if (b2GRequest != null && b2GRequest.getRelatedTrainInformationRequest() != null && !b2GRequest.getRelatedTrainInformationRequest().isEmpty()) {
+                processRelatedTrainInformationRequest(b2GRequest.getRelatedTrainInformationRequest(), requestContext);
+                return;
+            }
+            log.warn("A B2G Request that is not a handshake should currently have exactly one jp or sp request. Request is ignored.");
         }
     }
 
@@ -138,5 +158,22 @@ public class IncomingMessageAdapter {
             spRequest.getSPVersionMinor() != null ? spRequest.getSPVersionMinor().intValue() : 0,
             new CompanyCode(spRequest.getSPZone().getIMID()))).toList();
         sferaApplicationService.processSegmentProfileRequest(segmentIdentifications, requestContext);
+    }
+
+    private void processTrainCharacteristicsRequest(List<TCRequest> tcRequests, RequestContext requestContext) {
+        var trainCharacteristicsIdentifications = tcRequests.stream().map(tcRequest -> new TrainCharacteristicsIdentification(
+            tcRequest.getTCID(),
+            tcRequest.getTCVersionMajor() != null ? tcRequest.getTCVersionMajor().intValue() : 0,
+            tcRequest.getTCVersionMinor() != null ? tcRequest.getTCVersionMinor().intValue() : 0,
+            new CompanyCode(tcRequest.getTCRUID()))).toList();
+        sferaApplicationService.processTrainCharacteristicsRequest(trainCharacteristicsIdentifications, requestContext);
+    }
+
+    private void processRelatedTrainInformationRequest(List<RelatedTrainInformationRequest> relatedTrainInformationRequests, RequestContext requestContext) {
+        var trainIdentifications = relatedTrainInformationRequests.stream()
+            .map(relatedTrainInformationRequest -> relatedTrainInformationRequest.getTrainIdentification().getOTNID())
+            .map(otnId -> new TrainIdentification(new CompanyCode(otnId.getCompany()), otnId.getOperationalTrainNumber(), XmlDateHelper.toLocalDate(otnId.getStartDate())))
+            .toList();
+        sferaApplicationService.processRelatedTrainInformationRequest(trainIdentifications, requestContext);
     }
 }

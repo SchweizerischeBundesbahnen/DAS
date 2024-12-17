@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.springframework.boot.ApplicationArguments;
@@ -20,8 +21,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class JourneyProfileRepository implements ApplicationRunner {
 
-    private static final String XML_RESOURCES_CLASSPATH = "classpath:static_sfera_resources/jp/*.xml";
-    private static final String XML_REGEX = "SFERA_JP_(.+)\\.xml";
+    private static final String XML_RESOURCES_CLASSPATH = "classpath:static_sfera_resources/*/SFERA_JP_*.xml";
+    private static final String XML_REGEX = "/([a-zA-Z0-9]+)_\\w+/SFERA_JP_([a-zA-Z0-9]+)\\.xml";
     private final XmlHelper xmlHelper;
 
     Map<String, JourneyProfile> journeyProfiles = new HashMap<>();
@@ -35,8 +36,13 @@ public class JourneyProfileRepository implements ApplicationRunner {
         importJps();
     }
 
+    // company and startDate is ignored
     public Optional<JourneyProfile> getJourneyProfile(TrainIdentification trainIdentification) {
         return Optional.ofNullable(journeyProfiles.get(trainIdentification.operationalNumber()));
+    }
+
+    public Set<String> getAvailableJourneyProfiles() {
+        return journeyProfiles.keySet();
     }
 
     private void importJps() throws IOException {
@@ -44,7 +50,7 @@ public class JourneyProfileRepository implements ApplicationRunner {
         var resources = resolver.getResources(XML_RESOURCES_CLASSPATH);
         for (var resource : resources) {
             File file = resource.getFile();
-            var operationalNumber = extractOperationalNumber(file.getName());
+            var operationalNumber = extractOperationalNumber(file.getPath());
             try (InputStream in = new FileInputStream(file)) {
                 String xmlPayload = new String(in.readAllBytes());
                 var journeyProfile = xmlHelper.xmlToObject(xmlPayload);
@@ -53,12 +59,16 @@ public class JourneyProfileRepository implements ApplicationRunner {
         }
     }
 
-    public static String extractOperationalNumber(String filename) {
+    private static String extractOperationalNumber(String filename) {
         Pattern pattern = Pattern.compile(XML_REGEX);
         Matcher matcher = pattern.matcher(filename);
         if (matcher.find()) {
-            return matcher.group(1);
+            String directoryOperationalNumber = matcher.group(1);
+            String fileOperationalNumber = matcher.group(2);
+            if (directoryOperationalNumber != null && directoryOperationalNumber.equals(fileOperationalNumber)) {
+                return directoryOperationalNumber;
+            }
         }
-        return null;
+        throw new RuntimeException("Operational number extraction in JP repository failed for file: " + filename);
     }
 }

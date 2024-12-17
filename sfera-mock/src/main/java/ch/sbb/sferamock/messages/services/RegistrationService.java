@@ -19,6 +19,12 @@ public class RegistrationService {
     private final Map<TrainIdentification, Set<ClientId>> activeTrains = new ConcurrentHashMap<>();
     private final Map<ClientId, Registration> registrationMap = new ConcurrentHashMap<>();
 
+    private final EventService eventService;
+
+    public RegistrationService(EventService eventService) {
+        this.eventService = eventService;
+    }
+
     private static Set<ClientId> existingSetWith(Set<ClientId> clientIdentifiers, ClientId newClientId) {
         clientIdentifiers.add(newClientId);
         return clientIdentifiers;
@@ -46,10 +52,12 @@ public class RegistrationService {
                 ? newSetWith(clientId)
                 : existingSetWith(clientIdentifiers, clientId));
         }
+        eventService.registerActiveTrain(requestContext);
     }
 
     public void deregisterClient(ClientId clientId) {
         deregisterTrainIfLastClient(clientId);
+        eventService.deregisterActiveTrain(clientId);
         registrationMap.remove(clientId);
     }
 

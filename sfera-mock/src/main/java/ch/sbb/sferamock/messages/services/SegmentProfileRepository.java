@@ -20,8 +20,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class SegmentProfileRepository implements ApplicationRunner {
 
-    private static final String XML_RESOURCES_CLASSPATH = "classpath:static_sfera_resources/sp/*.xml";
-    private static final String XML_REGEX = "SFERA_SP_(.+_\\d+)\\.xml";
+    private static final String XML_RESOURCES_CLASSPATH = "classpath:static_sfera_resources/*/SFERA_SP_*.xml";
+    private static final String XML_REGEX = "/([a-zA-Z0-9]+)_\\w+/SFERA_SP_(([a-zA-Z0-9]+)_\\w+)\\.xml";
 
     private final XmlHelper xmlHelper;
 
@@ -36,6 +36,7 @@ public class SegmentProfileRepository implements ApplicationRunner {
         importSps();
     }
 
+    // segment version and company is ignored
     public Optional<SegmentProfile> getSegmentProfile(SegmentIdentification spId) {
         return Optional.ofNullable(segmentProfiles.get(spId.id()));
     }
@@ -45,7 +46,7 @@ public class SegmentProfileRepository implements ApplicationRunner {
         var resources = resolver.getResources(XML_RESOURCES_CLASSPATH);
         for (var resource : resources) {
             File file = resource.getFile();
-            var segmentId = extractSpId(file.getName());
+            var segmentId = extractSpId(file.getPath());
             try (InputStream in = new FileInputStream(file)) {
                 String xmlPayload = new String(in.readAllBytes());
                 var segmentProfile = xmlHelper.xmlToObject(xmlPayload);
@@ -58,8 +59,12 @@ public class SegmentProfileRepository implements ApplicationRunner {
         Pattern pattern = Pattern.compile(XML_REGEX);
         Matcher matcher = pattern.matcher(filename);
         if (matcher.find()) {
-            return matcher.group(1);
+            String directoryOperationalNumber = matcher.group(1);
+            String fileOperationalNumber = matcher.group(3);
+            if (directoryOperationalNumber != null && directoryOperationalNumber.equals(fileOperationalNumber)) {
+                return matcher.group(2);
+            }
         }
-        return null;
+        throw new RuntimeException("SP id extraction failed for file: " + filename);
     }
 }

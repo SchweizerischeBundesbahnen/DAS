@@ -10,6 +10,15 @@ final class SferaTopicHelper {
     }
 
     public static String getG2BTopic(String publishDestination, RequestContext requestContext) {
+        return getTopic(publishDestination, requestContext);
+    }
+
+    // for testing purposes events are sent to a topic with the clientId as suffix (like reply/request)
+    public static String getG2BEventTopic(String publishDestination, RequestContext requestContext) {
+        return getTopic(publishDestination, requestContext);
+    }
+
+    private static String getTopic(String publishDestination, RequestContext requestContext) {
         return String.format("%s%s/%s/%s", publishDestination, // publishDestination ends with a slash
             requestContext.tid().companyCode().value(),
             formatTrainIdentification(requestContext.tid()),
