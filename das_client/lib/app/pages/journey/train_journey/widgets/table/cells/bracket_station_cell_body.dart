@@ -2,12 +2,12 @@ import 'package:das_client/model/journey/bracket_station.dart';
 import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 
-class BracketStationBody extends StatelessWidget {
+class BracketStationCellBody extends StatelessWidget {
   static const Key bracketStationKey = Key('bracketStationKey');
   static const double _bracketStationWidth = 16.0;
   static const double _bracketStationFontSize = 12.0;
 
-  const BracketStationBody({
+  const BracketStationCellBody({
     required this.bracketStation,
     required this.height,
     super.key,
@@ -34,9 +34,10 @@ class BracketStationBody extends StatelessWidget {
             child: Text(
               bracketStation.mainStationAbbreviation ?? '',
               style: SBBTextStyles.extraSmallBold.copyWith(
-                  color: SBBColors.white,
-                  fontSize: _bracketStationFontSize,
-                  height: _bracketStationWidth / _bracketStationFontSize),
+                color: SBBColors.white,
+                fontSize: _bracketStationFontSize,
+                height: _bracketStationWidth / _bracketStationFontSize,
+              ),
             ),
           ),
         ),

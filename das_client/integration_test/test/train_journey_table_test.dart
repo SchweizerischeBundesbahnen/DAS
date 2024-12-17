@@ -1,6 +1,6 @@
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cab_signaling_row.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/bracket_station_body.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/curve_point_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/protection_section_row.dart';
@@ -312,9 +312,9 @@ void main() {
 
       // check if the bracket station widget is displayed
       final bracketStationDWidget =
-          find.descendant(of: bracketStationD, matching: find.byKey(BracketStationBody.bracketStationKey));
+          find.descendant(of: bracketStationD, matching: find.byKey(BracketStationCellBody.bracketStationKey));
       final bracketStationD1Widget =
-          find.descendant(of: bracketStationD1, matching: find.byKey(BracketStationBody.bracketStationKey));
+          find.descendant(of: bracketStationD1, matching: find.byKey(BracketStationCellBody.bracketStationKey));
       expect(bracketStationDWidget, findsOneWidget);
       expect(bracketStationD1Widget, findsOneWidget);
 

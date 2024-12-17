@@ -22,6 +22,10 @@ class NonStandardTrackEquipmentSegment implements Comparable {
 
   bool get isEtcsL2Segment => type.isEtcsL2;
 
+  bool get isConventionalSpeed => type.isConventionalSpeed;
+
+  bool get isExtendedSpeed => type.isExtendedSpeed;
+
   /// checks if the given order is part of this segment.
   bool appliesToOrder(int order) {
     if (startOrder != null && endOrder != null) {
@@ -59,6 +63,13 @@ enum TrackEquipmentType {
         TrackEquipmentType.etcsL2ExtSpeedReversingPossible,
         TrackEquipmentType.etcsL2ExtSpeedReversingImpossible
       ].contains(this);
+
+  bool get isExtendedSpeed => [
+        TrackEquipmentType.etcsL2ExtSpeedReversingPossible,
+        TrackEquipmentType.etcsL2ExtSpeedReversingImpossible
+      ].contains(this);
+
+  bool get isConventionalSpeed => this == etcsL2ConvSpeedReversingImpossible;
 }
 
 // extensions

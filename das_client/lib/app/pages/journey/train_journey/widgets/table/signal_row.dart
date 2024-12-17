@@ -12,6 +12,7 @@ class SignalRow extends BaseRowBuilder<Signal> {
   SignalRow({
     required super.metadata,
     required super.data,
+    super.trackEquipmentRenderData,
   });
 
   @override

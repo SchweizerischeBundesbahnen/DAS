@@ -10,12 +10,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 class AdditionalSpeedRestrictionRow extends BaseRowBuilder<AdditionalSpeedRestrictionData> {
   static const Key additionalSpeedRestrictionIconKey = Key('addition_speed_restriction_icon_key');
   static const Color additionalSpeedRestrictionColor = SBBColors.orange;
-  static const double rowHeight = 44.0;
 
   AdditionalSpeedRestrictionRow({
     required super.metadata,
     required super.data,
-    super.height = rowHeight,
+    super.trackEquipmentRenderData,
   }) : super(rowColor: additionalSpeedRestrictionColor);
 
   @override
