@@ -1,6 +1,7 @@
 package ch.sbb.sferamock.messages.services;
 
 import ch.sbb.sferamock.adapters.sfera.model.v0201.JourneyProfile;
+import ch.sbb.sferamock.adapters.sfera.model.v0201.RelatedTrainInformation;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SPZoneComplexType;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SegmentProfile;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.TrainCharacteristics;
@@ -31,10 +32,11 @@ public class SferaApplicationService {
     private final JourneyProfileRepository journeyProfileRepository;
     private final SegmentProfileRepository segmentProfileRepository;
     private final TrainCharacteristicsRepository trainCharacteristicsRepository;
+    private final EventRepository eventRepository;
 
     public SferaApplicationService(ReplyPublisher replyPublisher, RequestContextRepository requestContextRepository, OperationModeSelector operationModeSelector,
         RegistrationService registrationService, JourneyProfileRepository journeyProfileRepository, SegmentProfileRepository segmentProfileRepository,
-        TrainCharacteristicsRepository trainCharacteristicsRepository) {
+        TrainCharacteristicsRepository trainCharacteristicsRepository, EventRepository eventRepository) {
         this.replyPublisher = replyPublisher;
         this.requestContextRepository = requestContextRepository;
         this.operationModeSelector = operationModeSelector;
@@ -42,6 +44,7 @@ public class SferaApplicationService {
         this.journeyProfileRepository = journeyProfileRepository;
         this.segmentProfileRepository = segmentProfileRepository;
         this.trainCharacteristicsRepository = trainCharacteristicsRepository;
+        this.eventRepository = eventRepository;
     }
 
     private static JourneyProfile unavailableJourneyProfile() {
@@ -130,6 +133,23 @@ public class SferaApplicationService {
         publishTrainCharacteristics(trainCharacteristics, correlationId, requestContext);
     }
 
+    public void processRelatedTrainInformationRequest(List<TrainIdentification> trainIdentifications, RequestContext requestContext) {
+        if (!registrationService.isRegistered(requestContext.clientId())) {
+            publishErrorMessageUnregisteredClient(requestContext);
+            return;
+        }
+
+        var correlationId = UUID.randomUUID();
+        requestContextRepository.storeRequestContext(correlationId, requestContext);
+
+        List<RelatedTrainInformation> relatedTrainInformations = trainIdentifications.stream().map(trainIdentification ->
+                eventRepository.getRelatedTrainInformation(trainIdentification).orElse(null))
+            .filter(Objects::nonNull)
+            .toList();
+
+        publishRelatedTrainInformations(relatedTrainInformations, correlationId, requestContext);
+    }
+
     private void publishJourneyProfile(Optional<JourneyProfile> journeyProfile, UUID correlationId, RequestContext requestContext) {
         requestContextRepository.getRequestContext(correlationId)
             .ifPresentOrElse(it -> publishJourneyProfileResponse(journeyProfile, it), () -> replyPublisher.publishErrorMessage(SferaErrorCodes.COULD_NOT_PROCESS_DATA, requestContext));
@@ -161,6 +181,20 @@ public class SferaApplicationService {
     private void publishTrainCharacteristicsResponse(List<TrainCharacteristics> trainCharacteristics, RequestContext requestContext) {
         if (!trainCharacteristics.isEmpty()) {
             replyPublisher.publishTrainCharacteristics(trainCharacteristics, requestContext);
+        } else {
+            replyPublisher.publishErrorMessage(SferaErrorCodes.COULD_NOT_PROCESS_DATA, requestContext);
+        }
+    }
+
+    private void publishRelatedTrainInformations(List<RelatedTrainInformation> relatedTrainInformations, UUID correlationId, RequestContext requestContext) {
+        requestContextRepository.getRequestContext(correlationId)
+            .ifPresentOrElse(it -> publishRelatedTrainInformationsResponse(relatedTrainInformations, it),
+                () -> replyPublisher.publishErrorMessage(SferaErrorCodes.COULD_NOT_PROCESS_DATA, requestContext));
+    }
+
+    private void publishRelatedTrainInformationsResponse(List<RelatedTrainInformation> relatedTrainInformations, RequestContext requestContext) {
+        if (!relatedTrainInformations.isEmpty()) {
+            replyPublisher.publishRelatedTrainInformations(relatedTrainInformations, requestContext);
         } else {
             replyPublisher.publishErrorMessage(SferaErrorCodes.COULD_NOT_PROCESS_DATA, requestContext);
         }

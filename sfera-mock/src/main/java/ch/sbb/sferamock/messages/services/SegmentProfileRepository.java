@@ -36,6 +36,7 @@ public class SegmentProfileRepository implements ApplicationRunner {
         importSps();
     }
 
+    // segment version and company is ignored
     public Optional<SegmentProfile> getSegmentProfile(SegmentIdentification spId) {
         return Optional.ofNullable(segmentProfiles.get(spId.id()));
     }
