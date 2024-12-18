@@ -119,12 +119,15 @@ class TrainJourney extends StatelessWidget {
                   trackEquipmentRenderData: renderData)
               .build(context);
         case Datatype.cabSignaling:
+          final data = rowData as CABSignaling;
           return CABSignalingRow(
-                  metadata: journey.metadata,
-                  data: rowData as CABSignaling,
-                  settings: settings,
-                  trackEquipmentRenderData: renderData)
-              .build(context);
+              metadata: journey.metadata,
+              data: data,
+              settings: settings,
+              trackEquipmentRenderData: renderData.copyWith(
+                isCABStart: data.isStart,
+                isCABEnd: data.isEnd,
+              )).build(context);
       }
     });
   }
