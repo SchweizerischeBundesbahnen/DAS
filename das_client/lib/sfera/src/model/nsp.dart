@@ -8,7 +8,7 @@ abstract class Nsp extends SferaXmlElement {
 
   String get name => attributes['name']!;
 
-  Iterable<NetworkSpecificParameter> get networkSpecificParameters => children.whereType<NetworkSpecificParameter>();
+  Iterable<NetworkSpecificParameter> get parameters => children.whereType<NetworkSpecificParameter>();
 
   @override
   bool validate() {

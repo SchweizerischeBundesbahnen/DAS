@@ -11,6 +11,7 @@ class ServicePoint extends BaseData {
     required this.isStation,
     required super.order,
     required super.kilometre,
+    super.speedData,
     this.bracketStation,
   }) : super(type: Datatype.servicePoint);
 
@@ -22,6 +23,6 @@ class ServicePoint extends BaseData {
 
   @override
   String toString() {
-    return 'ServicePoint(order: $order, kilometre: $kilometre, name: $name, mandatoryStop: $mandatoryStop, isStop: $isStop, isStation: $isStation, bracketStation: $bracketStation)';
+    return 'ServicePoint(order: $order, kilometre: $kilometre, name: $name, mandatoryStop: $mandatoryStop, isStop: $isStop, isStation: $isStation, bracketStation: $bracketStation, speedData: $speedData)';
   }
 }

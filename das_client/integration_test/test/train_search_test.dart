@@ -1,6 +1,6 @@
 import 'package:das_client/util/error_code.dart';
 import 'package:das_client/util/format.dart';
-import 'package:design_system_flutter/design_system_flutter.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

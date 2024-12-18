@@ -7,7 +7,7 @@ import 'package:das_client/app/pages/journey/train_journey/train_journey_overvie
 import 'package:das_client/app/pages/journey/train_selection/train_selection.dart';
 import 'package:das_client/auth/authentication_component.dart';
 import 'package:das_client/di.dart';
-import 'package:design_system_flutter/design_system_flutter.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

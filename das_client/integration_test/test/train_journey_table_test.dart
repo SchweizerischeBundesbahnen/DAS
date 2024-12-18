@@ -6,17 +6,159 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/curve_p
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/protection_section_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/signal_row.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:das_client/app/pages/profile/profile_page.dart';
 import 'package:das_client/app/widgets/table/das_table.dart';
-import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
   group('train journey table test', () {
+    testWidgets('test breaking series defaults to ??', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: '4816');
+
+      final breakingSeriesHeaderCell = find.byKey(TrainJourney.breakingSeriesHeaderKey);
+      expect(breakingSeriesHeaderCell, findsOneWidget);
+      expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('??')), findsNWidgets(1));
+    });
+
+    testWidgets('test default breaking series is taken from train characteristics (R115)', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: 'T5');
+
+      final breakingSeriesHeaderCell = find.byKey(TrainJourney.breakingSeriesHeaderKey);
+      expect(breakingSeriesHeaderCell, findsOneWidget);
+      expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('R115')), findsNWidgets(1));
+    });
+
+    testWidgets('test all breakseries options are displayed', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: 'T5');
+
+      // Open break series bottom sheet
+      await tapElement(tester, find.byKey(TrainJourney.breakingSeriesHeaderKey));
+
+      final expectedCategories = {'R', 'A', 'D'};
+
+      for (final entry in expectedCategories) {
+        expect(find.text(entry), findsOneWidget);
+      }
+
+      final expectedOptions = {
+        'R105',
+        'R115',
+        'R125',
+        'R135',
+        'R150',
+        'A50',
+        'A60',
+        'A65',
+        'A70',
+        'A75',
+        'A80',
+        'A85',
+        'A95',
+        'A105',
+        'A115',
+        'D30'
+      };
+
+      for (final entry in expectedOptions) {
+        expect(find.text(entry), findsAtLeast(1));
+      }
+    });
+
+    testWidgets('test message when no breakseries are defined', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: '7839');
+
+      // Open break series bottom sheet
+      await tapElement(tester, find.byKey(TrainJourney.breakingSeriesHeaderKey));
+
+      expect(find.text(l10n.p_train_journey_break_series_empty), findsOneWidget);
+    });
+
+    testWidgets('test speed values of default breakSeries (R115)', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: 'T5');
+
+      final expectedSpeeds = {
+        'Genève-Aéroport': '60',
+        '65.3': '44', // 1. Curve
+        'New Line Speed All': '60',
+        'Genève': '60',
+        'New Line Speed A Missing': '60',
+        '42.5': '44', // 2. Curve
+        '40.5': null, // 3. Curve
+        'Gland': '60',
+      };
+
+      for (final entry in expectedSpeeds.entries) {
+        final tableRow = findDASTableRowByText(entry.key);
+        expect(tableRow, findsOneWidget);
+
+        if (entry.value != null) {
+          final speedText = find.descendant(of: tableRow, matching: find.text(entry.value!));
+          expect(speedText, findsOneWidget);
+        } else {
+          final textWidgets = find.descendant(of: tableRow, matching: find.byWidgetPredicate((it) => it is Text));
+          expect(textWidgets, findsNWidgets(2)); // KM and Kurve text widgets
+        }
+      }
+    });
+
+    testWidgets('test speed values of missing break Series', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: 'T5');
+
+      await _selectBreakSeries(tester, breakSeries: 'A85');
+
+      final breakingSeriesHeaderCell = find.byKey(TrainJourney.breakingSeriesHeaderKey);
+      expect(breakingSeriesHeaderCell, findsOneWidget);
+      expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('A85')), findsNWidgets(1));
+
+      final expectedSpeeds = {
+        'Genève-Aéroport': '90',
+        '65.3': '55', // 1. Curve
+        'New Line Speed All': '90',
+        'Genève': 'XX',
+        'New Line Speed A Missing': 'XX',
+        '42.5': 'XX', // 2. Curve
+        '40.5': null, // 3. Curve
+        'Gland': '90',
+      };
+
+      for (final entry in expectedSpeeds.entries) {
+        final tableRow = findDASTableRowByText(entry.key);
+        expect(tableRow, findsOneWidget);
+
+        if (entry.value != null) {
+          final speedText = find.descendant(of: tableRow, matching: find.text(entry.value!));
+          expect(speedText, findsOneWidget);
+        } else {
+          final textWidgets = find.descendant(of: tableRow, matching: find.byWidgetPredicate((it) => it is Text));
+          expect(textWidgets, findsNWidgets(2)); // KM and Kurve text widgets
+        }
+      }
+    });
+
     testWidgets('test connection track is displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
 
@@ -131,7 +273,6 @@ void main() {
         l10n.p_train_journey_table_journey_information_label,
         l10n.p_train_journey_table_time_label,
         l10n.p_train_journey_table_advised_speed_label,
-        l10n.p_train_journey_table_braked_weight_speed_label,
         l10n.p_train_journey_table_graduated_speed_label,
       ];
 
@@ -437,7 +578,8 @@ void main() {
       final rowsAtKm33_8 = findDASTableRowByText('33.8');
       expect(rowsAtKm33_8, findsExactly(2));
       final segment1CABStop = rowsAtKm33_8.last; // end should be after other elements at same location
-      final segment1CABStopIcon = find.descendant(of: segment1CABStop, matching: find.byKey(CABSignalingRow.cabSignalingEndIconKey));
+      final segment1CABStopIcon =
+          find.descendant(of: segment1CABStop, matching: find.byKey(CABSignalingRow.cabSignalingEndIconKey));
       expect(segment1CABStopIcon, findsOneWidget);
 
       // Track equipment segment without ETCS level 2 should be ignored
@@ -449,7 +591,8 @@ void main() {
       final rowsAtKm12_5 = findDASTableRowByText('12.5');
       expect(rowsAtKm12_5, findsExactly(2));
       final segment2CABStart = rowsAtKm12_5.first; // start should be before other elements at same location
-      final segment2CABStartIcon = find.descendant(of: segment2CABStart, matching: find.byKey(CABSignalingRow.cabSignalingStartIconKey));
+      final segment2CABStartIcon =
+          find.descendant(of: segment2CABStart, matching: find.byKey(CABSignalingRow.cabSignalingStartIconKey));
       expect(segment2CABStartIcon, findsOneWidget);
       await tester.dragUntilVisible(find.text('75.3'), scrollableFinder, const Offset(0, -50));
       final trackEquipmentTypeChange = findDASTableRowByText('56.8');
@@ -458,13 +601,15 @@ void main() {
       final rothristServicePointRow = findDASTableRowByText('46.2');
       expect(rothristServicePointRow, findsOneWidget); // no CAB signaling at connecting ETCS L2 segments
       final segment2CABEnd = findDASTableRowByText('39.9');
-      final segment2CABEndIcon = find.descendant(of: segment2CABEnd, matching: find.byKey(CABSignalingRow.cabSignalingEndIconKey));
+      final segment2CABEndIcon =
+          find.descendant(of: segment2CABEnd, matching: find.byKey(CABSignalingRow.cabSignalingEndIconKey));
       expect(segment2CABEndIcon, findsOneWidget);
 
       // CAB segment with end outside train journey and start at 8.3 km
       await tester.dragUntilVisible(find.text('9.5'), scrollableFinder, const Offset(0, -50));
       final segment3CABStart = findDASTableRowByText('8.3');
-      final segment3CABStartIcon = find.descendant(of: segment3CABStart, matching: find.byKey(CABSignalingRow.cabSignalingStartIconKey));
+      final segment3CABStartIcon =
+          find.descendant(of: segment3CABStart, matching: find.byKey(CABSignalingRow.cabSignalingStartIconKey));
       expect(segment3CABStartIcon, findsOneWidget);
     });
   });
@@ -486,4 +631,16 @@ Future<void> _loadTrainJourney(WidgetTester tester, {required String trainNumber
 
   // wait for train journey to load
   await tester.pumpAndSettle();
+}
+
+Future<void> _selectBreakSeries(WidgetTester tester, {required String breakSeries}) async {
+  // Open break series bottom sheet
+  await tapElement(tester, find.byKey(TrainJourney.breakingSeriesHeaderKey));
+
+  // Check if the bottom sheeet is opened
+  expect(find.text(l10n.p_train_journey_break_series), findsOneWidget);
+  await tapElement(tester, find.text(breakSeries));
+
+  // confirm button
+  await tapElement(tester, find.text(l10n.c_button_confirm));
 }

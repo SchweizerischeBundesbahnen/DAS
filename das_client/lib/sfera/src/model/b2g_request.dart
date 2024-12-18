@@ -1,6 +1,7 @@
 import 'package:das_client/sfera/src/model/jp_request.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 import 'package:das_client/sfera/src/model/sp_request.dart';
+import 'package:das_client/sfera/src/model/tc_request.dart';
 
 class B2gRequest extends SferaXmlElement {
   static const String elementType = 'B2G_Request';
@@ -15,9 +16,13 @@ class B2gRequest extends SferaXmlElement {
 
   factory B2gRequest.createSPRequest(List<SpRequest> spRequests) {
     final request = B2gRequest();
-    for (final spRequest in spRequests) {
-      request.children.add(spRequest);
-    }
+    request.children.addAll(spRequests);
+    return request;
+  }
+
+  factory B2gRequest.createTCRequest(List<TcRequest> tcRequests) {
+    final request = B2gRequest();
+    request.children.addAll(tcRequests);
     return request;
   }
 }

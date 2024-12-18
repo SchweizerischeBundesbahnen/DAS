@@ -3,9 +3,9 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_ro
 import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
-import 'package:design_system_flutter/design_system_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class AdditionalSpeedRestrictionRow extends BaseRowBuilder<AdditionalSpeedRestrictionData> {
   static const Key additionalSpeedRestrictionIconKey = Key('addition_speed_restriction_icon_key');
@@ -15,6 +15,7 @@ class AdditionalSpeedRestrictionRow extends BaseRowBuilder<AdditionalSpeedRestri
   AdditionalSpeedRestrictionRow({
     required super.metadata,
     required super.data,
+    required super.settings,
     super.height = rowHeight,
   }) : super(rowColor: additionalSpeedRestrictionColor);
 

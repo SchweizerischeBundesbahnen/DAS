@@ -12,6 +12,7 @@ class CABSignalingRow extends BaseRowBuilder<CABSignaling> {
   CABSignalingRow({
     required super.metadata,
     required super.data,
+    required super.settings,
   });
 
   @override
