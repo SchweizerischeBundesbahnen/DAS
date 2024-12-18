@@ -1,3 +1,4 @@
+import 'package:das_client/app/model/train_journey_settings.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
@@ -15,6 +16,7 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   const BaseRowBuilder({
     required this.metadata,
     required this.data,
+    required this.settings,
     super.height = rowHeight,
     this.trackEquipmentRenderData = const TrackEquipmentRenderData(),
     this.defaultAlignment = Alignment.bottomCenter,
@@ -26,6 +28,7 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   final Metadata metadata;
   final T data;
   final TrackEquipmentRenderData trackEquipmentRenderData;
+  final TrainJourneySettings settings;
 
   @override
   DASTableRow build(BuildContext context) {
@@ -100,14 +103,7 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   }
 
   DASTableCell graduatedSpeedCell(BuildContext context) {
-    if (data.speedData == null) {
-      return DASTableCell.empty();
-    }
-
-    return DASTableCell(
-      child: Text(data.speedData!.resolvedSpeed(metadata.trainSeries, metadata.breakSeries) ?? ''),
-      alignment: Alignment.center,
-    );
+    return DASTableCell.empty();
   }
 
   DASTableCell advisedSpeedCell(BuildContext context) {
@@ -115,7 +111,17 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   }
 
   DASTableCell brakedWeightSpeedCell(BuildContext context) {
-    return DASTableCell.empty();
+    if (data.speedData == null) {
+      return DASTableCell.empty();
+    }
+
+    final currentTrainSeries = settings.selectedBreakSeries?.trainSeries ?? metadata.breakSeries?.trainSeries;
+    final currentBreakSeries = settings.selectedBreakSeries?.breakSeries ?? metadata.breakSeries?.breakSeries;
+
+    return DASTableCell(
+      child: Text(data.speedData!.resolvedSpeed(currentTrainSeries, currentBreakSeries) ?? 'XX'),
+      alignment: Alignment.center,
+    );
   }
 
   // TODO: clarify use of different icon cells and set appropriate name

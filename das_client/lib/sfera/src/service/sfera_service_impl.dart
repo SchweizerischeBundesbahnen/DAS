@@ -10,12 +10,14 @@ import 'package:das_client/sfera/src/model/enums/das_driving_mode.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
 import 'package:das_client/sfera/src/model/sfera_g2b_reply_message.dart';
+import 'package:das_client/sfera/src/model/train_characteristics.dart';
 import 'package:das_client/sfera/src/service/handler/journey_profile_reply_handler.dart';
 import 'package:das_client/sfera/src/service/handler/segment_profile_reply_handler.dart';
 import 'package:das_client/sfera/src/service/handler/sfera_message_handler.dart';
 import 'package:das_client/sfera/src/service/task/handshake_task.dart';
 import 'package:das_client/sfera/src/service/task/request_journey_profile_task.dart';
 import 'package:das_client/sfera/src/service/task/request_segment_profiles_task.dart';
+import 'package:das_client/sfera/src/service/task/request_train_characteristics_task.dart';
 import 'package:das_client/sfera/src/service/task/sfera_task.dart';
 import 'package:das_client/util/error_code.dart';
 import 'package:fimber/fimber.dart';
@@ -41,6 +43,7 @@ class SferaServiceImpl implements SferaService {
   OtnId? _otnId;
   JourneyProfile? _journeyProfile;
   final List<SegmentProfile> _segmentProfiles = [];
+  final List<TrainCharacteristics> _trainCharacteristics = [];
 
   @override
   ErrorCode? lastErrorCode;
@@ -108,15 +111,22 @@ class SferaServiceImpl implements SferaService {
       _messageHandlers.add(requestJourneyTask);
       requestJourneyTask.execute(onTaskCompleted, onTaskFailed);
     } else if (task is RequestJourneyProfileTask) {
-      _stateSubject.add(SferaServiceState.loadingSegments);
+      _stateSubject.add(SferaServiceState.loadingAdditionalData);
       final requestSegmentProfilesTask = RequestSegmentProfilesTask(
+          mqttService: _mqttService, sferaRepository: _sferaRepository, otnId: _otnId!, journeyProfile: data);
+      final requestTrainCharacteristicsTask = RequestTrainCharacteristicsTask(
           mqttService: _mqttService, sferaRepository: _sferaRepository, otnId: _otnId!, journeyProfile: data);
       _journeyProfile = data;
       _messageHandlers.add(requestSegmentProfilesTask);
+      _messageHandlers.add(requestTrainCharacteristicsTask);
       requestSegmentProfilesTask.execute(onTaskCompleted, onTaskFailed);
-    } else if (task is RequestSegmentProfilesTask) {
+      requestTrainCharacteristicsTask.execute(onTaskCompleted, onTaskFailed);
+    }
+
+    if (_stateSubject.value == SferaServiceState.loadingAdditionalData && _allTaskedCompleted()) {
       _addMessageHandlers();
       await _refreshSegmentProfiles();
+      await _refreshTrainCharacteristics();
       final success = _updateJourney();
       if (success) {
         _stateSubject.add(SferaServiceState.connected);
@@ -125,6 +135,10 @@ class SferaServiceImpl implements SferaService {
         disconnect();
       }
     }
+  }
+
+  bool _allTaskedCompleted() {
+    return _messageHandlers.whereType<SferaTask>().isEmpty;
   }
 
   Future<void> _refreshSegmentProfiles() async {
@@ -144,12 +158,29 @@ class SferaServiceImpl implements SferaService {
     }
   }
 
+  Future<void> _refreshTrainCharacteristics() async {
+    if (_journeyProfile != null) {
+      _trainCharacteristics.clear();
+
+      for (final element in _journeyProfile!.trainCharactericsRefSet) {
+        final trainCharactericsEntity =
+        await _sferaRepository.findTrainCharacteristics(element.tcId, element.versionMajor, element.versionMinor);
+        final trainCharacterics = trainCharactericsEntity?.toDomain();
+        if (trainCharacterics != null && trainCharacterics.validate()) {
+          _trainCharacteristics.add(trainCharacterics);
+        } else {
+          Fimber.w('Could not find and validate $element');
+        }
+      }
+    }
+  }
+
   bool _updateJourney() {
     if (_journeyProfile != null && _segmentProfiles.isNotEmpty) {
       Fimber.i('Updating journey stream...');
-      final newJourney = SferaModelMapper.mapToJourney(_journeyProfile!, _segmentProfiles);
+      final newJourney = SferaModelMapper.mapToJourney(_journeyProfile!, _segmentProfiles, _trainCharacteristics);
       if (newJourney.valid) {
-        _journeyProfileSubject.add(SferaModelMapper.mapToJourney(_journeyProfile!, _segmentProfiles));
+        _journeyProfileSubject.add(newJourney);
         Fimber.i('Journey updates successfully.');
         return true;
       } else {
@@ -168,7 +199,7 @@ class SferaServiceImpl implements SferaService {
     _messageHandlers.remove(task);
     lastErrorCode = errorCode;
     Fimber.e('Task $task failed with error code $errorCode');
-    if (task is HandshakeTask || task is RequestJourneyProfileTask || task is RequestSegmentProfilesTask) {
+    if (_stateSubject.value != SferaServiceState.connected) {
       disconnect();
     }
   }

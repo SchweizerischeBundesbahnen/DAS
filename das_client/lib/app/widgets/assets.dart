@@ -15,4 +15,5 @@ class AppAssets {
   static const iconSignalLaneChange = '$_iconsDir/icon_signal_line_change.svg';
   static const iconCabStart = '$_iconsDir/icon_cab_start.svg';
   static const iconCabEnd = '$_iconsDir/icon_cab_end.svg';
+  static const iconIndicatorChecked = '$_iconsDir/icon_indicator_checked.svg';
 }

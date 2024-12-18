@@ -1,12 +1,15 @@
 import 'dart:async';
 
 import 'package:das_client/app/model/ru.dart';
+import 'package:das_client/app/model/train_journey_settings.dart';
+import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/sfera/sfera_component.dart';
 import 'package:das_client/util/error_code.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'train_journey_state.dart';
 
@@ -20,11 +23,16 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
 
   Stream<Journey?> get journeyStream => _sferaService.journeyStream;
 
+  final _settingsSubject = BehaviorSubject<TrainJourneySettings>.seeded(TrainJourneySettings());
+
+  Stream<TrainJourneySettings> get settingsStream => _settingsSubject.stream;
+
   StreamSubscription? _stateSubscription;
 
   void loadTrainJourney() async {
     final currentState = state;
     if (currentState is SelectingTrainJourneyState) {
+      _resetSettings();
       final date = currentState.date;
       final ru = currentState.ru;
       final trainNumber = currentState.trainNumber;
@@ -43,7 +51,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
           case SferaServiceState.connecting:
           case SferaServiceState.handshaking:
           case SferaServiceState.loadingJourney:
-          case SferaServiceState.loadingSegments:
+          case SferaServiceState.loadingAdditionalData:
             emit(ConnectingState(ru, trainNumber, date));
             break;
           case SferaServiceState.disconnected:
@@ -55,6 +63,10 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
       });
       _sferaService.connect(OtnId.create(ru.companyCode, trainNumber, date));
     }
+  }
+
+  void _resetSettings() {
+    _settingsSubject.add(TrainJourneySettings());
   }
 
   void updateTrainNumber(String? trainNumber) {
@@ -100,6 +112,10 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
   void dispose() {
     _stateSubscription?.cancel();
     _stateSubscription = null;
+  }
+
+  void updateBreakSeries(BreakSeries selectedBreakSeries) {
+    _settingsSubject.add(_settingsSubject.value.copyWith(selectedBreakSeries: selectedBreakSeries));
   }
 }
 

@@ -1,6 +1,5 @@
 {
     "c_app_name": "DAS Client",
-    "p_train_selection_load": "Übernehmen",
     "p_train_selection_trainnumber_description": "Zugnummer",
     "p_train_selection_ru_description": "EVU",
     "p_train_selection_date_description": "Datum",
@@ -13,7 +12,8 @@
     "p_train_journey_table_journey_information_label": "Streckeninformationen",
     "p_train_journey_table_advised_speed_label": "FE",
     "p_train_journey_table_graduated_speed_label": "OG",
-    "p_train_journey_table_braked_weight_speed_label": "R150",
+    "p_train_journey_break_series": "Bremsreihe",
+    "p_train_journey_break_series_empty": "Es sind keine Bremsreihen vorhanden",
     "p_train_journey_table_curve_type_curve": "Kurve",
     "p_train_journey_table_curve_type_station_exit_curve": "Kurve Ausfahrt",
     "p_train_journey_table_curve_type_curve_after_halt": "Kurve nach Haltestelle",
@@ -44,5 +44,6 @@
     "c_error_sfera_request_timeout": "Timeout bei der Anfrage",
     "c_error_sfera_jp_unavailable": "Fahrordnung nicht vorhanden",
     "c_error_sfera_sp_invalid": "Unvollständige Daten erhalten",
-    "c_connection_track_weiche": "Weiche"
+    "c_connection_track_weiche": "Weiche",
+    "c_button_confirm": "Übernehmen"
 }

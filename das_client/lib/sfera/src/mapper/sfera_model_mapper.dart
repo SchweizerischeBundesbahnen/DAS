@@ -3,6 +3,7 @@ import 'package:das_client/model/journey/additional_speed_restriction.dart';
 import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/bracket_station.dart';
+import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
 import 'package:das_client/model/journey/connection_track.dart';
 import 'package:das_client/model/journey/curve_point.dart';
@@ -29,6 +30,7 @@ import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
 import 'package:das_client/sfera/src/model/speeds.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location.dart';
+import 'package:das_client/sfera/src/model/train_characteristics.dart';
 import 'package:fimber/fimber.dart';
 
 class SferaModelMapper {
@@ -40,16 +42,18 @@ class SferaModelMapper {
   static const String _protectionSectionNspFacultativeName = 'facultative';
   static const String _protectionSectionNspLengthTypeName = 'lengthType';
 
-  static Journey mapToJourney(JourneyProfile journeyProfile, List<SegmentProfile> segmentProfiles) {
+  static Journey mapToJourney(JourneyProfile journeyProfile, List<SegmentProfile> segmentProfiles,
+      List<TrainCharacteristics> trainCharacteristics) {
     try {
-      return _mapToJourney(journeyProfile, segmentProfiles);
+      return _mapToJourney(journeyProfile, segmentProfiles, trainCharacteristics);
     } catch (e, s) {
       Fimber.e('Error mapping journey-/segment profiles to journey:', ex: e, stacktrace: s);
       return Journey.invalid();
     }
   }
 
-  static Journey _mapToJourney(JourneyProfile journeyProfile, List<SegmentProfile> segmentProfiles) {
+  static Journey _mapToJourney(JourneyProfile journeyProfile, List<SegmentProfile> segmentProfiles,
+      List<TrainCharacteristics> trainCharacteristics) {
     final journeyData = <BaseData>[];
 
     final segmentProfilesLists = journeyProfile.segmentProfilesLists.toList();
@@ -75,7 +79,8 @@ class SferaModelMapper {
 
       // Remove new line speeds that are already present as connection tracks
       newLineSpeeds.removeWhere((speedChange) =>
-          connectionTracks.firstWhereOrNull((connectionTrack) => connectionTrack.speedData == speedChange.speedData) != null);
+          connectionTracks.firstWhereOrNull((connectionTrack) => connectionTrack.speedData == speedChange.speedData) !=
+          null);
 
       journeyData.addAll(connectionTracks);
       journeyData.addAll(newLineSpeeds);
@@ -92,14 +97,14 @@ class SferaModelMapper {
             .first;
 
         journeyData.add(ServicePoint(
-          name: _localizedStringFromMultilingualText(tafTapLocation.locationNames),
-          order: calculateOrder(segmentIndex, timingPoint.location),
-          mandatoryStop: tpConstraint.stoppingPointInformation?.stopType?.mandatoryStop ?? true,
-          isStop: tpConstraint.stopSkipPass == StopSkipPass.stoppingPoint,
-          isStation: tafTapLocation.locationType != TafTapLocationType.stoppingLocation,
-          bracketStation: _parseBracketStation(tafTapLocations, tafTapLocation),
-          kilometre: kilometreMap[timingPoint.location] ?? [],
-        ));
+            name: _localizedStringFromMultilingualText(tafTapLocation.locationNames),
+            order: calculateOrder(segmentIndex, timingPoint.location),
+            mandatoryStop: tpConstraint.stoppingPointInformation?.stopType?.mandatoryStop ?? true,
+            isStop: tpConstraint.stopSkipPass == StopSkipPass.stoppingPoint,
+            isStation: tafTapLocation.locationType != TafTapLocationType.stoppingLocation,
+            bracketStation: _parseBracketStation(tafTapLocations, tafTapLocation),
+            kilometre: kilometreMap[timingPoint.location] ?? [],
+            speedData: _speedDataFromSpeeds(tafTapLocation.stationSpeed?.xmlStationSpeed.element)));
       }
 
       _parseAndAddProtectionSections(journeyData, segmentIndex, segmentProfile, kilometreMap);
@@ -123,6 +128,7 @@ class SferaModelMapper {
 
     journeyData.sort();
 
+    final trainCharacteristic = _resolveFirstTrainCharacteristics(journeyProfile, trainCharacteristics);
     final servicePoints = journeyData.where((it) => it.type == Datatype.servicePoint).toList();
     return Journey(
       metadata: Metadata(
@@ -132,6 +138,13 @@ class SferaModelMapper {
         routeStart: journeyData.firstOrNull,
         routeEnd: journeyData.lastOrNull,
         nonStandardTrackEquipmentSegments: trackEquipmentSegments,
+        availableBreakSeries: _parseAvailableBreakSeries(journeyData),
+        breakSeries: trainCharacteristic?.tcFeatures.trainCategoryCode != null &&
+                trainCharacteristic?.tcFeatures.brakedWeightPercentage != null
+            ? BreakSeries(
+                trainSeries: trainCharacteristic!.tcFeatures.trainCategoryCode!,
+                breakSeries: trainCharacteristic.tcFeatures.brakedWeightPercentage!)
+            : null,
       ),
       data: journeyData,
     );
@@ -281,9 +294,8 @@ class SferaModelMapper {
   static BracketStation? _parseBracketStation(List<TafTapLocation> allLocations, TafTapLocation tafTapLocation) {
     for (final tafTapLocationNsp in tafTapLocation.nsp) {
       if (tafTapLocationNsp.name == _bracketStationNspName) {
-        final mainStationNsp = tafTapLocationNsp.networkSpecificParameters
-            .where((it) => it.name == _bracketStationMainStationNspName)
-            .firstOrNull;
+        final mainStationNsp =
+            tafTapLocationNsp.parameters.where((it) => it.name == _bracketStationMainStationNspName).firstOrNull;
         if (mainStationNsp == null) {
           Fimber.w('Encountered bracket station without main station NSP declaration: $tafTapLocation');
         } else {
@@ -312,12 +324,15 @@ class SferaModelMapper {
     return curvePointsNsp.map<CurvePoint>((curvePointNsp) {
       final curvePointTypeValue = curvePointNsp.parameters.withName('curvePointType')?.nspValue;
       final curveTypeValue = curvePointNsp.parameters.withName('curveType')?.nspValue;
+      final curveSpeed = curvePointNsp.xmlCurveSpeed?.element;
       return CurvePoint(
         order: calculateOrder(segmentIndex, curvePointNsp.location),
         kilometre: kilometreMap[curvePointNsp.location] ?? [],
         curvePointType: curvePointTypeValue != null ? CurvePointType.from(curvePointTypeValue) : null,
         curveType: curveTypeValue != null ? CurveType.from(curveTypeValue) : null,
-        comment: curvePointNsp.parameters.withName('comment')?.nspValue,
+        text: curveSpeed?.text,
+        comment: curveSpeed?.comment,
+        speedData: _speedDataFromSpeeds(curveSpeed?.speeds),
       );
     }).toList();
   }
@@ -358,14 +373,34 @@ class SferaModelMapper {
     }).toList();
   }
 
-  static SpeedData _speedDataFromSpeeds(Speeds? speeds) {
-    if (speeds == null) {
-      return SpeedData();
-    }
+  static SpeedData? _speedDataFromSpeeds(Speeds? speeds) {
+    if (speeds == null) return null;
     return SpeedData(
         velocities: speeds.velocities
             .map((it) => Velocity(
                 trainSeries: it.trainSeries, reduced: it.reduced, speed: it.speed, breakSeries: it.brakeSeries))
             .toList());
+  }
+
+  static Set<BreakSeries> _parseAvailableBreakSeries(List<BaseData> journeyData) {
+    return journeyData
+        .where((it) => it.speedData != null)
+        .map((it) => it.speedData!.velocities)
+        .expand((it) => it)
+        .where((it) => it.breakSeries != null)
+        .map((it) => BreakSeries(trainSeries: it.trainSeries, breakSeries: it.breakSeries!))
+        .toSet();
+  }
+
+  static TrainCharacteristics? _resolveFirstTrainCharacteristics(
+      JourneyProfile journey, List<TrainCharacteristics> trainCharacteristics) {
+    final firstTrainRef = journey.trainCharactericsRefSet.firstOrNull;
+    if (firstTrainRef == null) return null;
+
+    return trainCharacteristics.firstWhereOrNull((it) =>
+        it.tcId == firstTrainRef.tcId &&
+        it.ruId == firstTrainRef.ruId &&
+        it.versionMajor == firstTrainRef.versionMajor &&
+        it.versionMinor == firstTrainRef.versionMinor);
   }
 }

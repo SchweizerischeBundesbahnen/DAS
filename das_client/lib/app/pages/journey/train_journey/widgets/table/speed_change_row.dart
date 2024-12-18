@@ -7,6 +7,7 @@ class SpeedChangeRow extends BaseRowBuilder<SpeedChange> {
   SpeedChangeRow({
     required super.metadata,
     required super.data,
+    required super.settings,
     super.trackEquipmentRenderData,
   });
 

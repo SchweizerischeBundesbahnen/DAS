@@ -3,6 +3,7 @@ import 'package:das_client/sfera/src/model/connection_track.dart';
 import 'package:das_client/sfera/src/model/current_limitation.dart';
 import 'package:das_client/sfera/src/model/current_limitation_change.dart';
 import 'package:das_client/sfera/src/model/current_limitation_start.dart';
+import 'package:das_client/sfera/src/model/curve_speed.dart';
 import 'package:das_client/sfera/src/model/das_operating_modes_selected.dart';
 import 'package:das_client/sfera/src/model/g2b_reply_payload.dart';
 import 'package:das_client/sfera/src/model/handshake_acknowledgement.dart';
@@ -32,6 +33,7 @@ import 'package:das_client/sfera/src/model/sp_context_information.dart';
 import 'package:das_client/sfera/src/model/sp_points.dart';
 import 'package:das_client/sfera/src/model/sp_zone.dart';
 import 'package:das_client/sfera/src/model/speeds.dart';
+import 'package:das_client/sfera/src/model/station_speed.dart';
 import 'package:das_client/sfera/src/model/stop_type.dart';
 import 'package:das_client/sfera/src/model/stopping_point_information.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location.dart';
@@ -39,6 +41,7 @@ import 'package:das_client/sfera/src/model/taf_tap_location_ident.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location_name.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location_nsp.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location_reference.dart';
+import 'package:das_client/sfera/src/model/tc_features.dart';
 import 'package:das_client/sfera/src/model/temporary_constraint_reason.dart';
 import 'package:das_client/sfera/src/model/temporary_constraints.dart';
 import 'package:das_client/sfera/src/model/timing_point.dart';
@@ -46,6 +49,8 @@ import 'package:das_client/sfera/src/model/timing_point_constraints.dart';
 import 'package:das_client/sfera/src/model/timing_point_reference.dart';
 import 'package:das_client/sfera/src/model/tp_id_reference.dart';
 import 'package:das_client/sfera/src/model/tp_name.dart';
+import 'package:das_client/sfera/src/model/train_characteristics.dart';
+import 'package:das_client/sfera/src/model/train_characteristics_ref.dart';
 import 'package:das_client/sfera/src/model/train_identification.dart';
 import 'package:das_client/sfera/src/model/velocity.dart';
 import 'package:das_client/sfera/src/model/virtual_balise.dart';
@@ -156,7 +161,7 @@ class SferaReplyParser {
       case StopType.elementType:
         return StopType(type: type, attributes: attributes, children: children, value: value);
       case TafTapLocationNsp.elementType:
-        return TafTapLocationNsp(type: type, attributes: attributes, children: children, value: value);
+        return TafTapLocationNsp.from(attributes: attributes, children: children, value: value);
       case NetworkSpecificParameter.elementType:
         return NetworkSpecificParameter.from(attributes: attributes, children: children, value: value);
       case CurrentLimitation.elementType:
@@ -173,18 +178,28 @@ class SferaReplyParser {
         return NetworkSpecificArea(type: type, attributes: attributes, children: children, value: value);
       case AdditionalSpeedRestriction.elementType:
         return AdditionalSpeedRestriction(type: type, attributes: attributes, children: children, value: value);
-       case TemporaryConstraints.elementType:
+      case TemporaryConstraints.elementType:
         return TemporaryConstraints(type: type, attributes: attributes, children: children, value: value);
-       case TemporaryConstraintReason.elementType:
+      case TemporaryConstraintReason.elementType:
         return TemporaryConstraintReason(type: type, attributes: attributes, children: children, value: value);
-       case Velocity.elementType:
+      case Velocity.elementType:
         return Velocity(type: type, attributes: attributes, children: children, value: value);
-       case Speeds.elementType:
+      case Speeds.elementType:
         return Speeds(type: type, attributes: attributes, children: children, value: value);
-       case LineSpeed.elementType:
+      case LineSpeed.elementType:
         return LineSpeed(type: type, attributes: attributes, children: children, value: value);
-       case ConnectionTrack.elementType:
+      case ConnectionTrack.elementType:
         return ConnectionTrack(type: type, attributes: attributes, children: children, value: value);
+      case CurveSpeed.elementType:
+        return CurveSpeed(type: type, attributes: attributes, children: children, value: value);
+      case StationSpeed.elementType:
+        return StationSpeed(type: type, attributes: attributes, children: children, value: value);
+      case TrainCharacteristicsRef.elementType:
+        return TrainCharacteristicsRef(type: type, attributes: attributes, children: children, value: value);
+      case TrainCharacteristics.elementType:
+        return TrainCharacteristics(type: type, attributes: attributes, children: children, value: value);
+      case TcFeatures.elementType:
+        return TcFeatures(type: type, attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElement(type: type, attributes: attributes, children: children, value: value);
     }

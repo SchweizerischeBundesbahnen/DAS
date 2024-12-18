@@ -4,7 +4,7 @@ import 'package:das_client/app/model/ru.dart';
 import 'package:das_client/app/widgets/header.dart';
 import 'package:das_client/util/error_code.dart';
 import 'package:das_client/util/format.dart';
-import 'package:design_system_flutter/design_system_flutter.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -115,7 +115,7 @@ class _TrainSelectionState extends State<TrainSelection> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing / 2),
       child: SBBPrimaryButton(
-        label: context.l10n.p_train_selection_load,
+        label: context.l10n.c_button_confirm,
         onPressed: _canContinue(state) ? () => context.trainJourneyCubit.loadTrainJourney() : null,
       ),
     );

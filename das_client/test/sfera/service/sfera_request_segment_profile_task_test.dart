@@ -140,7 +140,7 @@ void main() {
     final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
 
-    final journeyTask = RequestSegmentProfilesTask(
+    final spTask = RequestSegmentProfilesTask(
       mqttService: mqttService,
       sferaRepository: sferaRepository,
       otnId: otnId,
@@ -149,7 +149,7 @@ void main() {
     );
 
     var timeoutReached = false;
-    await journeyTask.execute((task, data) {
+    await spTask.execute((task, data) {
       fail('Test should not call success');
     }, (task, errorCode) {
       expect(errorCode, ErrorCode.sferaRequestTimeout);

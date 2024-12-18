@@ -3,7 +3,7 @@ enum SferaServiceState {
   connecting,
   handshaking,
   loadingJourney,
-  loadingSegments,
+  loadingAdditionalData,
   connected,
   offline
 }

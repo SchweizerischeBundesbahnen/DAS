@@ -1,5 +1,5 @@
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
-import 'package:design_system_flutter/design_system_flutter.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 
 /// Represents a column in the [DASTable] with optional styling and width constraints.
@@ -17,6 +17,8 @@ class DASTableColumn {
     this.width,
     this.hidden = false,
     this.alignment = Alignment.center,
+    this.onTap,
+    this.headerKey,
   }) : assert((width != null && width > 0) || expanded);
 
   /// The content of the column header as a widget.
@@ -41,6 +43,12 @@ class DASTableColumn {
 
   /// Whether the column is visible or not.
   final bool hidden;
+
+  /// Callback for tap events on the column header.
+  final GestureTapCallback? onTap;
+
+  /// Key for the header cell
+  final Key? headerKey;
 
   get isVisible => !hidden;
 }
