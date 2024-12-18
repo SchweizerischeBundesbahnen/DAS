@@ -10,6 +10,7 @@ import 'package:das_client/sfera/src/model/enums/das_driving_mode.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
 import 'package:das_client/sfera/src/model/sfera_g2b_reply_message.dart';
+import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 import 'package:das_client/sfera/src/model/train_characteristics.dart';
 import 'package:das_client/sfera/src/service/handler/journey_profile_reply_handler.dart';
 import 'package:das_client/sfera/src/service/handler/segment_profile_reply_handler.dart';
@@ -59,20 +60,22 @@ class SferaServiceImpl implements SferaService {
   }
 
   void _init() {
-    _mqttStreamSubscription = _mqttService.messageStream.listen((message) async {
-      final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(message);
-      if (!sferaG2bReplyMessage.validate()) {
-        Fimber.w('Validation failed for MQTT response $message');
-        return;
-      }
+    _mqttStreamSubscription = _mqttService.messageStream.listen((xmlMessage) async {
+      final message = SferaReplyParser.parse<SferaXmlElement>(xmlMessage);
+      if (message is SferaG2bReplyMessage) {
+        if (!message.validate()) {
+          Fimber.w('Validation failed for MQTT response $xmlMessage');
+          return;
+        }
 
-      var handled = false;
-      for (final handler in List.from(_messageHandlers)) {
-        handled |= await handler.handleMessage(sferaG2bReplyMessage);
-      }
+        var handled = false;
+        for (final handler in List.from(_messageHandlers)) {
+          handled |= await handler.handleMessage(message);
+        }
 
-      if (!handled) {
-        Fimber.w('Could not handle sfera message $message');
+        if (!handled) {
+          Fimber.w('Could not handle sfera reply message $xmlMessage');
+        }
       }
     });
   }
