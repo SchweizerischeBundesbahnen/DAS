@@ -1,24 +1,27 @@
 import 'package:das_client/model/journey/additional_speed_restriction.dart';
 import 'package:das_client/model/journey/base_data.dart';
+import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/service_point.dart';
-import 'package:das_client/model/journey/train_series.dart';
+import 'package:das_client/model/journey/track_equipment.dart';
 
 class Metadata {
-  Metadata(
-      {this.nextStop,
-      this.currentPosition,
-      this.routeStart,
-      this.routeEnd,
-      List<AdditionalSpeedRestriction>? additionalSpeedRestrictions,
-      this.trainSeries = TrainSeries.R,
-      this.breakSeries = 150})
-      : additionalSpeedRestrictions = additionalSpeedRestrictions ?? [];
+  Metadata({
+    this.nextStop,
+    this.currentPosition,
+    this.routeStart,
+    this.routeEnd,
+    this.breakSeries,
+    this.additionalSpeedRestrictions = const [],
+    this.nonStandardTrackEquipmentSegments = const [],
+    this.availableBreakSeries = const {},
+  });
 
   final ServicePoint? nextStop;
   final BaseData? currentPosition;
   final List<AdditionalSpeedRestriction> additionalSpeedRestrictions;
   final BaseData? routeStart;
   final BaseData? routeEnd;
-  final TrainSeries trainSeries;
-  final int breakSeries;
+  final List<NonStandardTrackEquipmentSegment> nonStandardTrackEquipmentSegments;
+  final BreakSeries? breakSeries;
+  final Set<BreakSeries> availableBreakSeries;
 }

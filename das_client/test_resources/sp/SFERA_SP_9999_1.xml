@@ -30,7 +30,10 @@
         <NetworkSpecificPoint location="600" identifier="1" name="curvePoint">
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
             <NetworkSpecificParameter name="curveType" value="curve"/>
-            <NetworkSpecificParameter name="comment" value="Kurve 1"/>
+            <NetworkSpecificParameter name="xmlCurveSpeed" value="
+                &lt;curveSpeed text=&quot;Kurve 1&quot; comment=&quot;Kurve 1&quot;&gt;
+                &lt;/curveSpeed&gt;
+            "/>
         </NetworkSpecificPoint>
 
         <!-- Ende der Kurve tbd -->
@@ -49,24 +52,16 @@
             </TAF_TAP_LocationIdent>
             <TAF_TAP_LocationName language="de" messageString="Bahnhof A"/>
 
-            <!-- todo: Geschwindigkeiten NSP tbd  -->
-
-            <!--            Bahnhofsgeschwindigkeiten -->
-            <TAF_TAP_Location_NSP name="stationSpeed">
-                <NetworkSpecificParameter name="" value="140/[60]"/>
-                <!--            name:    stationSpeed_R150' or 'stationSpeed_A65'. 'stationSpeed_All' or 'stationSpeed_C' 'stationSpeed_R' -->
-                <NetworkSpecificParameter name="graduatedSpeed_00000_n" value=""/>
-                <NetworkSpecificParameter name="graduatedSpeed_00000_ro" value=""/>
-                <NetworkSpecificParameter name="graduatedSpeed_00000_ad" value=""/>
-                <NetworkSpecificParameter name="graduatedSpeed_00000_s" value=""/>
-                <NetworkSpecificParameter name="graduatedSpeed_00000_txt" value="Einfahrt vom Bahnsteig an, übrige Gleise ab Zentralstellwerk"/>
-            </TAF_TAP_Location_NSP>
             <!--            gleisspezifische Geschwindigkeiten	-->
             <TAF_TAP_Location_NSP name="stationProperty_00000">
                 <NetworkSpecificParameter name="stationPropertySpeed_R150" value="30-40"/>
                 <NetworkSpecificParameter name="text" value="&lt;b&gt;31&lt;/b&gt;"/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
+
+        <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="600" endLocation="900" name="nonStandardTrackEquipment">
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L1LS-2TracksWithSingleTrackEquipment"/>
+        </NetworkSpecificArea>
     </SP_Areas>
 
     <SP_ContextInformation>
@@ -76,6 +71,9 @@
         </KilometreReferencePoint>
         <KilometreReferencePoint location="500">
             <KM_Reference kmRef="0.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="550">
+            <KM_Reference kmRef="0.55"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="600">
             <KM_Reference kmRef="0.6"/>

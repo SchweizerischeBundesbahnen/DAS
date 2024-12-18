@@ -1,5 +1,5 @@
 import 'package:das_client/model/journey/bracket_station.dart';
-import 'package:design_system_flutter/design_system_flutter.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 
 class BracketStationBody extends StatelessWidget {
@@ -8,9 +8,9 @@ class BracketStationBody extends StatelessWidget {
   static const double _bracketStationFontSize = 12.0;
 
   const BracketStationBody({
-    super.key,
     required this.bracketStation,
-    required this.height
+    required this.height,
+    super.key,
   });
 
   final BracketStation bracketStation;

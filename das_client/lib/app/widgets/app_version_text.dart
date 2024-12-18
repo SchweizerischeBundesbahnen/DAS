@@ -1,9 +1,9 @@
-import 'package:design_system_flutter/design_system_flutter.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class AppVersionText extends StatelessWidget {
-  const AppVersionText({super.key, required this.color});
+  const AppVersionText({required this.color, super.key});
 
   final Color color;
 

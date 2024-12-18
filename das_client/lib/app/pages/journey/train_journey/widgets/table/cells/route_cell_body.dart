@@ -1,5 +1,5 @@
 import 'package:das_client/app/widgets/table/das_table_theme.dart';
-import 'package:design_system_flutter/design_system_flutter.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 
 class RouteCellBody extends StatelessWidget {
@@ -54,11 +54,7 @@ class RouteCellBody extends StatelessWidget {
     final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
     final lineColor = isDarkTheme ? SBBColors.white : SBBColors.black;
     return Positioned(
-      key: isRouteStart
-          ? routeStartKey
-          : isRouteEnd
-              ? routeEndKey
-              : null,
+      key: _routeKey(),
       top: isRouteStart ? height - sbbDefaultSpacing : -sbbDefaultSpacing,
       bottom: isRouteEnd ? sbbDefaultSpacing : -sbbDefaultSpacing,
       right: 0,
@@ -86,6 +82,13 @@ class RouteCellBody extends StatelessWidget {
         painter: _ChevronPainter(color: chevronColor),
       ),
     );
+  }
+
+  Key? _routeKey() {
+    if (!isRouteStart && !isRouteEnd) {
+      return null;
+    }
+    return isRouteStart ? routeStartKey : routeEndKey;
   }
 }
 

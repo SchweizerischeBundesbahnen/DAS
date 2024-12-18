@@ -24,14 +24,20 @@
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
             <!-- 'stationExitCurve' (begins in a station) -->
             <NetworkSpecificParameter name="curveType" value="stationExitCurve"/>
-            <NetworkSpecificParameter name="comment" value="Kurve 2"/>
+            <NetworkSpecificParameter name="xmlCurveSpeed" value="
+                &lt;curveSpeed text=&quot;Kurve 1&quot; comment=&quot;Kurve 2&quot;&gt;
+                &lt;/curveSpeed&gt;
+            "/>
         </NetworkSpecificPoint>
 
         <NetworkSpecificPoint location="500" identifier="4" name="curvePoint">
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
             <!-- 'curveAfterHalt' (begins at an halt). -->
             <NetworkSpecificParameter name="curveType" value="curveAfterHalt"/>
-            <NetworkSpecificParameter name="comment" value="Kurve 3"/>
+            <NetworkSpecificParameter name="xmlCurveSpeed" value="
+                &lt;curveSpeed text=&quot;Kurve 1&quot; comment=&quot;Kurve 3&quot;&gt;
+                &lt;/curveSpeed&gt;
+            "/>
         </NetworkSpecificPoint>
 
         <NetworkSpecificPoint location="200" name="newLineSpeed">
@@ -57,11 +63,7 @@
             <TAF_TAP_LocationName language="de" messageString="Halt auf Verlangen C"/>
         </TAF_TAP_Location>
 
-        <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="100" endLocation="400"
-                             name="nonStandardTrackEquipment">
-            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-convSpeedReversingImpossible"/>
-        </NetworkSpecificArea>
-        <NetworkSpecificArea startEndQualifier="Starts" startLocation="500" name="nonStandardTrackEquipment">
+        <NetworkSpecificArea startEndQualifier="WholeSP" name="nonStandardTrackEquipment">
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingPossible"/>
         </NetworkSpecificArea>
     </SP_Areas>

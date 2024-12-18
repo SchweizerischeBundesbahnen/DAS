@@ -1,3 +1,4 @@
+import 'package:das_client/sfera/src/model/curve_point_network_specific_point.dart';
 import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
 import 'package:das_client/sfera/src/model/new_line_speed_network_specific_point.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
@@ -11,6 +12,8 @@ class NetworkSpecificPoint extends SpGenericPoint {
   factory NetworkSpecificPoint.from({Map<String, String>? attributes, List<SferaXmlElement>? children, String? value}) {
     if (attributes?['name'] == NewLineSpeedNetworkSpecificPoint.elementName) {
       return NewLineSpeedNetworkSpecificPoint(attributes: attributes, children: children, value: value);
+    } else if (attributes?['name'] == CurvePointNetworkSpecificPoint.elementName) {
+      return CurvePointNetworkSpecificPoint(attributes: attributes, children: children, value: value);
     }
     return NetworkSpecificPoint(attributes: attributes, children: children, value: value);
   }

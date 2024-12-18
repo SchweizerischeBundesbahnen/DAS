@@ -3,21 +3,16 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('Test track equipment', () {
-    test('Test track equipment on location with start and end location', () {
+    test('Test track equipment applies to order', () {
       // given
-      final trackEquipment = TrackEquipment(
-        type: TrackEquipmentType.etcsL2ExtSpeedReversingPossible,
-        startLocation: 100.0,
-        endLocation: 300.0,
-        appliesToWholeSp: false,
-      );
+      final trackEquipment = _etcsL2ExtSpeedReversingPossible(100, 300);
 
       // when
-      final belowStart = trackEquipment.isOnLocation(50.0);
-      final onStart = trackEquipment.isOnLocation(100.0);
-      final between = trackEquipment.isOnLocation(200.0);
-      final onEnd = trackEquipment.isOnLocation(300.0);
-      final aboveEnd = trackEquipment.isOnLocation(400.0);
+      final belowStart = trackEquipment.appliesToOrder(50);
+      final onStart = trackEquipment.appliesToOrder(100);
+      final between = trackEquipment.appliesToOrder(200);
+      final onEnd = trackEquipment.appliesToOrder(300);
+      final aboveEnd = trackEquipment.appliesToOrder(400);
 
       // then
       expect(belowStart, isFalse);
@@ -26,83 +21,213 @@ void main() {
       expect(onEnd, isTrue);
       expect(aboveEnd, isFalse);
     });
-
-    test('Test track equipment on location that applies whole segment', () async {
-      final trackEquipment = TrackEquipment(
-        type: TrackEquipmentType.etcsL2ExtSpeedReversingPossible,
-        appliesToWholeSp: true,
-      );
-
-      // this combination would normally not happen but should be tested.
-      final trackEquipmentWithStartEnd = TrackEquipment(
-        type: TrackEquipmentType.etcsL2ExtSpeedReversingPossible,
-        startLocation: 100.0,
-        endLocation: 300.0,
-        appliesToWholeSp: true,
-      );
-
-      // when
-      final onLocation1 = trackEquipment.isOnLocation(0);
-      final onLocation2 = trackEquipment.isOnLocation(9999);
-      final belowStart = trackEquipmentWithStartEnd.isOnLocation(50.0);
-      final onStart = trackEquipmentWithStartEnd.isOnLocation(100.0);
-      final between = trackEquipmentWithStartEnd.isOnLocation(200.0);
-      final onEnd = trackEquipmentWithStartEnd.isOnLocation(300.0);
-      final aboveEnd = trackEquipmentWithStartEnd.isOnLocation(400.0);
-
-      // then
-      expect(onLocation1, isTrue);
-      expect(onLocation2, isTrue);
-      expect(belowStart, isTrue);
-      expect(onStart, isTrue);
-      expect(between, isTrue);
-      expect(onEnd, isTrue);
-      expect(aboveEnd, isTrue);
-    });
-
-    test('Test track equipment on location with only start or end location', () async {
-      final trackEquipmentWithStart = TrackEquipment(
-        type: TrackEquipmentType.etcsL2ExtSpeedReversingPossible,
-        startLocation: 300.0,
-      );
-
-      final trackEquipmentWithEnd = TrackEquipment(
-        type: TrackEquipmentType.etcsL2ExtSpeedReversingPossible,
-        endLocation: 400.0,
-      );
+    test('Test track equipment sorting', () {
+      // given
+      final trackEquipment1 = _etcsL2ExtSpeedReversingPossible(null, 200);
+      final trackEquipment2 = _etcsL2ExtSpeedReversingImpossible(300, 500);
+      final trackEquipment3 = _etcsL2ConvSpeedReversingImpossible(500, 800);
+      final trackEquipment4 = _etcsL2ExtSpeedReversingImpossible(800, 900);
+      final trackEquipment5 = _etcsL2ExtSpeedReversingPossible(900, null);
+      final trackEquipments = [
+        trackEquipment1,
+        trackEquipment2,
+        trackEquipment3,
+        trackEquipment4,
+        trackEquipment5,
+      ];
 
       // when
-      final belowStart = trackEquipmentWithStart.isOnLocation(100);
-      final onStart = trackEquipmentWithStart.isOnLocation(300);
-      final aboveStart = trackEquipmentWithStart.isOnLocation(400);
-      final belowEnd = trackEquipmentWithEnd.isOnLocation(100);
-      final onEnd = trackEquipmentWithEnd.isOnLocation(400);
-      final aboveEnd = trackEquipmentWithEnd.isOnLocation(600);
+      trackEquipments.shuffle();
+      trackEquipments.sort();
 
       // then
-      expect(belowStart, isFalse);
-      expect(onStart, isTrue);
-      expect(aboveStart, isTrue);
-      expect(belowEnd, isTrue);
-      expect(onEnd, isTrue);
-      expect(aboveEnd, isFalse);
+      expect(trackEquipments[0], trackEquipment1);
+      expect(trackEquipments[1], trackEquipment2);
+      expect(trackEquipments[2], trackEquipment3);
+      expect(trackEquipments[3], trackEquipment4);
+      expect(trackEquipments[4], trackEquipment5);
     });
   });
 
+  group('Test track equipment CAB signaling', () {
+    test('Test CAB signaling start and end for connected segment', () {
+      // given
+      final trackEquipment1 = _etcsL2ExtSpeedReversingPossible(100, 300);
+      final trackEquipment2 = _etcsL2ExtSpeedReversingImpossible(300, 500);
+      final trackEquipment3 = _etcsL2ConvSpeedReversingImpossible(500, 800);
+      final trackEquipment4 = _etcsL2ExtSpeedReversingImpossible(800, 900);
+      final trackEquipment5 = _etcsL2ExtSpeedReversingPossible(900, 1000);
+
+      final trackEquipments = [
+        trackEquipment1,
+        trackEquipment2,
+        trackEquipment3,
+        trackEquipment4,
+        trackEquipment5,
+      ];
+
+      // when
+      final withCABSignalingStart = trackEquipments.withCABSignalingStart;
+      final withCABSignalingEnd = trackEquipments.withCABSignalingEnd;
+
+      // then
+      expect(withCABSignalingStart, hasLength(1));
+      expect(withCABSignalingStart.first, trackEquipment1);
+      expect(withCABSignalingEnd, hasLength(1));
+      expect(withCABSignalingEnd.first, trackEquipment5);
+    });
+
+    test('Test CAB signaling start and end for separated segments', () {
+      // given
+      final trackEquipment1Segment1 = _etcsL2ExtSpeedReversingPossible(200, 300);
+      final trackEquipment2Segment1 = _etcsL2ExtSpeedReversingImpossible(300, 600);
+
+      final trackEquipment1Segment2 = _etcsL2ConvSpeedReversingImpossible(800, 1000);
+      final trackEquipment2Segment2 = _etcsL2ExtSpeedReversingImpossible(1000, 1200);
+      final trackEquipment3Segment2 = _etcsL2ExtSpeedReversingPossible(1200, 1500);
+
+      final trackEquipments = [
+        trackEquipment1Segment1,
+        trackEquipment2Segment1,
+        trackEquipment1Segment2,
+        trackEquipment2Segment2,
+        trackEquipment3Segment2,
+      ];
+
+      // when
+      final withCABSignalingStart = trackEquipments.withCABSignalingStart;
+      final withCABSignalingEnd = trackEquipments.withCABSignalingEnd;
+
+      // then
+      expect(withCABSignalingStart, hasLength(2));
+      expect(withCABSignalingStart.elementAt(0), trackEquipment1Segment1);
+      expect(withCABSignalingStart.elementAt(1), trackEquipment1Segment2);
+      expect(withCABSignalingEnd, hasLength(2));
+      expect(withCABSignalingEnd.elementAt(0), trackEquipment2Segment1);
+      expect(withCABSignalingEnd.elementAt(1), trackEquipment3Segment2);
+    });
+
+    test('Test CAB signaling start and end with single track equipments and a L1LS in between', () {
+      // given
+      final trackEquipment1 = _etcsL2ExtSpeedReversingPossible(100, 300);
+      final trackEquipment2 = _etcsL1ls2TracksWithSingleTrackEquipment(300, 500);
+      final trackEquipment3 = _etcsL2ConvSpeedReversingImpossible(500, 800);
+
+      final trackEquipments = [
+        trackEquipment1,
+        trackEquipment2,
+        trackEquipment3,
+      ];
+
+      // when
+      final withCABSignalingStart = trackEquipments.withCABSignalingStart;
+      final withCABSignalingEnd = trackEquipments.withCABSignalingEnd;
+
+      // then
+      expect(withCABSignalingStart, hasLength(2));
+      expect(withCABSignalingStart.elementAt(0), trackEquipment1);
+      expect(withCABSignalingStart.elementAt(1), trackEquipment3);
+      expect(withCABSignalingEnd, hasLength(2));
+      expect(withCABSignalingEnd.elementAt(0), trackEquipment1);
+      expect(withCABSignalingEnd.elementAt(1), trackEquipment3);
+    });
+
+    test('Test CAB signaling start and end with single track equipment', () {
+      // given
+      final trackEquipment1 = _etcsL2ExtSpeedReversingPossible(100, 300);
+
+      final trackEquipments = [trackEquipment1];
+
+      // when
+      final withCABSignalingStart = trackEquipments.withCABSignalingStart;
+      final withCABSignalingEnd = trackEquipments.withCABSignalingEnd;
+
+      // then
+      expect(withCABSignalingStart, hasLength(1));
+      expect(withCABSignalingStart.elementAt(0), trackEquipment1);
+      expect(withCABSignalingEnd, hasLength(1));
+      expect(withCABSignalingEnd.elementAt(0), trackEquipment1);
+    });
+
+    test('Test CAB signaling with track equipments that start and end outside train journey', () {
+      // given
+      final startOutsideJourney = _etcsL2ExtSpeedReversingPossible(null, 100);
+      final insideJourney = _etcsL2ExtSpeedReversingPossible(300, 500);
+      final endOutsideJourney = _etcsL2ExtSpeedReversingPossible(700, null);
+
+      final trackEquipments = [
+        startOutsideJourney,
+        insideJourney,
+        endOutsideJourney,
+      ];
+
+      // when
+      final withCABSignalingStart = trackEquipments.withCABSignalingStart;
+      final withCABSignalingEnd = trackEquipments.withCABSignalingEnd;
+
+      // then
+      expect(withCABSignalingStart, hasLength(2));
+      expect(withCABSignalingStart.elementAt(0), insideJourney);
+      expect(withCABSignalingStart.elementAt(1), endOutsideJourney);
+      expect(withCABSignalingEnd, hasLength(2));
+      expect(withCABSignalingEnd.elementAt(0), startOutsideJourney);
+      expect(withCABSignalingEnd.elementAt(1), insideJourney);
+    });
+  });
 
   group('Test track equipment type', () {
-    test('Test string factory for track equipment type', () {
+    test('Test if type is ETCS level 2', () {
       // when
-      final tracksWithSingleTrackEquipment = TrackEquipmentType.from('ETCS-L1LS-2TracksWithSingleTrackEquipment');
-      final convSpeedReversingImpossible = TrackEquipmentType.from('ETCS-L2-convSpeedReversingImpossible');
-      final extSpeedReversingPossible = TrackEquipmentType.from('ETCS-L2-extSpeedReversingPossible');
-      final extSpeedReversingImpossible = TrackEquipmentType.from('ETCS-L2-extSpeedReversingImpossible');
+      final tracksWithSingleTrackEquipment = TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment.isEtcsL2;
+      final convSpeedReversingImpossible = TrackEquipmentType.etcsL2ConvSpeedReversingImpossible.isEtcsL2;
+      final extSpeedReversingPossible = TrackEquipmentType.etcsL2ExtSpeedReversingPossible.isEtcsL2;
+      final extSpeedReversingImpossible = TrackEquipmentType.etcsL2ConvSpeedReversingImpossible.isEtcsL2;
 
       // then
-      expect(tracksWithSingleTrackEquipment, TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment);
-      expect(convSpeedReversingImpossible, TrackEquipmentType.etcsL2ConvSpeedReversingImpossible);
-      expect(extSpeedReversingPossible, TrackEquipmentType.etcsL2ExtSpeedReversingPossible);
-      expect(extSpeedReversingImpossible, TrackEquipmentType.etcsL2ExtSpeedReversingImpossible);
+      expect(tracksWithSingleTrackEquipment, isFalse);
+      expect(convSpeedReversingImpossible, isTrue);
+      expect(extSpeedReversingPossible, isTrue);
+      expect(extSpeedReversingImpossible, isTrue);
     });
   });
+}
+
+NonStandardTrackEquipmentSegment _etcsL2ExtSpeedReversingPossible(int? startOrder, int? endOrder) {
+  return NonStandardTrackEquipmentSegment(
+    type: TrackEquipmentType.etcsL2ExtSpeedReversingPossible,
+    startOrder: startOrder,
+    endOrder: endOrder,
+    startKm: [],
+    endKm: [],
+  );
+}
+
+NonStandardTrackEquipmentSegment _etcsL2ExtSpeedReversingImpossible(int? startOrder, int? endOrder) {
+  return NonStandardTrackEquipmentSegment(
+    type: TrackEquipmentType.etcsL2ExtSpeedReversingImpossible,
+    startOrder: startOrder,
+    endOrder: endOrder,
+    startKm: [],
+    endKm: [],
+  );
+}
+
+NonStandardTrackEquipmentSegment _etcsL2ConvSpeedReversingImpossible(int? startOrder, int? endOrder) {
+  return NonStandardTrackEquipmentSegment(
+    type: TrackEquipmentType.etcsL2ConvSpeedReversingImpossible,
+    startOrder: startOrder,
+    endOrder: endOrder,
+    startKm: [],
+    endKm: [],
+  );
+}
+
+NonStandardTrackEquipmentSegment _etcsL1ls2TracksWithSingleTrackEquipment(int? startOrder, int? endOrder) {
+  return NonStandardTrackEquipmentSegment(
+    type: TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment,
+    startOrder: startOrder,
+    endOrder: endOrder,
+    startKm: [],
+    endKm: [],
+  );
 }

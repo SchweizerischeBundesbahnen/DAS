@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
+                SP_ID="T1_5" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="20000" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>0085</IM_ID>
+    </SP_Zone>
+    <SP_Points>
+        <TimingPoint TP_ID="Mellingen Heitersberg" location="8500">
+            <TP_Name name="Mellingen Heitersberg"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3018</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Killwangen-S." location="9000">
+            <TP_Name name="Killwangen-S."/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3019</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Zürich HB" location="9500">
+            <TP_Name name="Zürich HB"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3020</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Opfikon Süd" location="10000">
+            <TP_Name name="Opfikon Süd"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3021</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Flughafen" location="10500">
+            <TP_Name name="Flughafen"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3022</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+    </SP_Points>
+    <SP_Areas>
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="MLH"
+                          TAF_TAP_location_type="stopping location">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3018</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Mellingen Heitersberg"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="KIL"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3019</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Killwangen-S."/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="ZRH"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3020</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Zürich HB"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="OPF"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3021</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Opfikon Süd"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="ZHF"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3022</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Flughafen"/>
+        </TAF_TAP_Location>
+
+        <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="9200" endLocation="10200" name="nonStandardTrackEquipment">
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingImpossible"/>
+        </NetworkSpecificArea>
+
+        <NetworkSpecificArea startEndQualifier="Starts" startLocation="10200" name="nonStandardTrackEquipment">
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingPossible"/>
+        </NetworkSpecificArea>
+    </SP_Areas>
+
+    <SP_ContextInformation>
+
+        <KilometreReferencePoint location="8500">
+            <KM_Reference kmRef="22.2"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="9000">
+            <KM_Reference kmRef="16.1"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="9200">
+            <KM_Reference kmRef="8.3"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="9500">
+            <KM_Reference kmRef="0.0"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="9500">
+            <KM_Reference kmRef="3.7"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="10000">
+            <KM_Reference kmRef="6.5"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="10200">
+            <KM_Reference kmRef="7.4"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="10500">
+            <KM_Reference kmRef="9.5"/>
+        </KilometreReferencePoint>
+    </SP_ContextInformation>
+</SegmentProfile>

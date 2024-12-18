@@ -1,7 +1,6 @@
 package ch.sbb.backend.tours.application
 
 import io.swagger.v3.oas.annotations.media.Schema
-import java.time.LocalDate
 
 
 @Schema(name = "Tour")
@@ -13,17 +12,10 @@ data class TourDto(
     val userId: String,
 
     @Schema(
-        description = "Identification of the tour",
+        description = "Identification of the tour. Unique per company",
         example = "123456"
     )
     val tourId: String,
-
-    @Schema(
-        description = "Tour date",
-        example = "2024-12-24"
-    )
-    val tourDate: LocalDate,
-
 
     @Schema(
         description = "Company code",
@@ -31,10 +23,6 @@ data class TourDto(
     )
     val company: String,
 
-
-    @Schema(
-        description = "train runs",
-    )
     val trainRuns: List<TrainRunDto>,
 
     )

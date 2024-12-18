@@ -165,4 +165,27 @@ void main() {
     await Future.delayed(const Duration(milliseconds: 1200));
     expect(timeoutReached, true);
   });
+
+  test('Test JP request saves train characteristic to sfera repository', () async {
+    when(mqttService.publishMessage(any, any, any)).thenReturn(true);
+
+    final file = File('test_resources/SFERA_G2B_Reply_TC_request_T5.xml');
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+
+    final journeyTask = RequestJourneyProfileTask(mqttService: mqttService, sferaRepository: sferaRepository, otnId: otnId);
+
+    await journeyTask.execute((task, data) {
+      expect(task, journeyTask);
+    }, (task, errorCode) {
+      fail('Task failed with error code $errorCode');
+    });
+
+    verify(mqttService.publishMessage(any, any, any)).called(1);
+
+    final result = await journeyTask.handleMessage(sferaG2bReplyMessage);
+    expect(result, true);
+
+    verify(sferaRepository.saveJourneyProfile(any)).called(1);
+    verify(sferaRepository.saveTrainCharacteristics(any)).called(1);
+  });
 }

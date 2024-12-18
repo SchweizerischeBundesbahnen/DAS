@@ -9,7 +9,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Weitere Informationen zum Ausfüllen eines Findings findest du unter [Guideline für die Erfassung von Findings](https://example.com).
+        Weitere Informationen zum Ausfüllen eines Findings findest du unter [Guideline für die Erfassung von Findings](https://confluence.sbb.ch/x/a4l4sw).
   - type: textarea
     attributes:
       label: Beschreibung

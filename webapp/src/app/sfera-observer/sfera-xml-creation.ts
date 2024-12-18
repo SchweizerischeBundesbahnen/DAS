@@ -43,10 +43,23 @@ export interface SpRequestOptions {
   minorVersion: string;
 }
 
+export interface TcRequestOptions {
+  ruId: string;
+  tcId: string;
+  majorVersion: string;
+  minorVersion: string;
+}
+
 export interface RequestOptions {
   header?: SferaHeaderOptions,
-  jpRequests?: JpRequestOptions[]
-  spRequests?: SpRequestOptions[]
+  jpRequests?: JpRequestOptions[],
+  spRequests?: SpRequestOptions[],
+  tcRequests?: TcRequestOptions[]
+}
+
+export interface EventOptions {
+  header?: SferaHeaderOptions,
+  sessionTermination?: boolean,
 }
 
 export interface SupportedOperationModes {
@@ -106,6 +119,7 @@ export class SferaXmlCreation {
 
     const jpRequests = this.createJpRequest(options.jpRequests);
     const spRequests = this.createSpRequest(options.spRequests);
+    const tcRequests = this.createTcRequest(options.tcRequests);
 
     return `<?xml version="1.0"?>
                   <SFERA_B2G_RequestMessage>
@@ -116,8 +130,26 @@ export class SferaXmlCreation {
                     <B2G_Request>
                         ${jpRequests}
                         ${spRequests}
+                        ${tcRequests}
                     </B2G_Request>
                 </SFERA_B2G_RequestMessage>
+    `;
+  }
+
+  static createEvent(options: EventOptions): string {
+    let headerOptions = options?.header || this.defaultHeader();
+    headerOptions = this.fillUndefindeHeaderFields(headerOptions);
+
+    const sesssionTermination = this.createSessionTerminationRequest(options?.sessionTermination);
+
+    return `<?xml version="1.0"?>
+                <SFERA_B2G_EventMessage>
+                  <MessageHeader SFERA_version="${headerOptions.sferaVersion}" message_ID="${headerOptions.messageId}" timestamp="${headerOptions.timestamp}" sourceDevice="${headerOptions.sourceDevice}">
+                        <Sender>${headerOptions.sender}</Sender>
+                        <Recipient>${headerOptions.recipient}</Recipient>
+                  </MessageHeader>
+                  ${sesssionTermination}
+              </SFERA_B2G_EventMessage>
     `;
   }
 
@@ -165,6 +197,20 @@ export class SferaXmlCreation {
       `;
     });
     return (strings || []).join('');
+  }
+
+  static createTcRequest(tcRequests: TcRequestOptions[] | undefined): string {
+    const strings = tcRequests?.map(tcRequest => {
+      return `<TC_Request TC_ID="${tcRequest.tcId}">
+                <TC_RU_ID>${tcRequest.ruId}</TC_RU_ID>
+      </TC_Request>
+      `;
+    })
+    return (strings || []).join('');
+  }
+
+  static createSessionTerminationRequest(sessionTermination: boolean | undefined): string {
+    return sessionTermination ? `<SessionTermination/>` : '';
   }
 
   private static defaultHeader(): SferaHeaderOptions {

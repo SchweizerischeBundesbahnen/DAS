@@ -18,11 +18,8 @@ dependencies:
       path: sbb_oidc
       ref: 3.4.0
 
-  design_system_flutter:
-    git:
-      url: https://github.com/SchweizerischeBundesbahnen/design_system_flutter.git
-      ref: 1.4.0
-
+  # https://pub.dev/packages/sbb_design_system_mobile
+  sbb_design_system_mobile: ^2.1.1
   # https://pub.dev/packages/collection
   collection: ^1.18.0
   # https://pub.dev/packages/meta

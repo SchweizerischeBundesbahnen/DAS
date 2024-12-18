@@ -11,6 +11,12 @@ management:
     health:
       probes:
         enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,trains
+
+
 
 spring:
   profiles:
@@ -26,6 +32,9 @@ spring:
         publishG2BReply-out-0:
           binder: solace
           destination: ${application.topic.sfera-custom-prefix}90940/2/G2B/
+        publishEvent-out-0:
+          binder: solace
+          destination: ${application.topic.sfera-custom-prefix}90940/2/event/
       binders:
         solace:
           type: solace

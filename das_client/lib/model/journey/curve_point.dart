@@ -5,15 +5,22 @@ class CurvePoint extends BaseData {
   CurvePoint({
     required super.order,
     required super.kilometre,
-    super.trackEquipment,
+    super.speedData,
     this.curvePointType,
     this.curveType,
+    this.text,
     this.comment,
   }) : super(type: Datatype.curvePoint);
 
   final CurvePointType? curvePointType;
   final CurveType? curveType;
+  final String? text;
   final String? comment;
+
+  @override
+  String toString() {
+    return "CurvePoint(order: $order, kilometre: $kilometre, curvePointType: $curvePointType, curveType: $curveType, text: '$text', comment: '$comment')";
+  }
 }
 
 /// marks the beginning and the end of a curve

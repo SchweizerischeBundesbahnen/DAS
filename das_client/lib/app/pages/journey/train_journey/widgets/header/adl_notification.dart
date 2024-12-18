@@ -1,9 +1,9 @@
 import 'package:das_client/app/i18n/i18n.dart';
-import 'package:design_system_flutter/design_system_flutter.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 
 class ADLNotification extends StatelessWidget {
-  const ADLNotification({super.key, required this.message, this.margin});
+  const ADLNotification({required this.message, super.key, this.margin});
 
   final String message;
   final EdgeInsetsGeometry? margin;

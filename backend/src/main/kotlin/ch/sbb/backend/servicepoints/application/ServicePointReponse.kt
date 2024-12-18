@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 data class ServicePointReponse(
 
     @Schema(
-        description = "UIC-Code, combination of uicCountryCode and numberShort. Size: 7",
+        description = "UIC-Code, combination of uicCountryCode and numberShort. Length: 7",
         example = "8518771"
     )
     val uic: Int,

@@ -12,7 +12,12 @@ import { SbbCheckboxModule } from "@sbb-esta/angular/checkbox";
 import { environment } from "../../environment/environment";
 import { MessageTableComponent, TableData } from "./message-table/message-table.component";
 import { SbbTableDataSource } from "@sbb-esta/angular/table";
-import { READONLY_MODE, SferaXmlCreation, SpRequestOptions } from "./sfera-xml-creation";
+import {
+  READONLY_MODE,
+  SferaXmlCreation,
+  SpRequestOptions,
+  TcRequestOptions
+} from "./sfera-xml-creation";
 import { SbbAccordionModule } from "@sbb-esta/angular/accordion";
 
 @Component({
@@ -57,10 +62,10 @@ export class SferaObserverComponent implements OnDestroy {
 
   async observe() {
     const customTopicPrefix = this.environmentControl.value ? this.customPrefixControl.value : '';
-    const trainOperation =  this.trainControl.value + '_' + this.dateControl.value;
+    const trainOperation = this.trainControl.value + '_' + this.dateControl.value;
     this.g2bTopic = customTopicPrefix + '90940/2/G2B/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
     this.b2gTopic = customTopicPrefix + '90940/2/B2G/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
-    this.eventTopic = customTopicPrefix + '90940/2/event/' + this.companyControl.value + '/' + trainOperation;
+    this.eventTopic = customTopicPrefix + '90940/2/event/' + this.companyControl.value + '/' + trainOperation + '/' + this.clientIdControl.value;
     const token = await firstValueFrom(this.oidcSecurityService.getAccessToken());
     const username = await firstValueFrom(this.oidcSecurityService.getUserData().pipe(map((data) => data?.preferred_username)));
     await this.mqService.connect(username, token);
@@ -134,13 +139,17 @@ export class SferaObserverComponent implements OnDestroy {
         return `JP: ${this.getJourneyProfileStatus(document)}, #SP: ${this.getJourneyProfileNumberOfSPs(document)}`;
       } else if (this.containsElement(document, 'SegmentProfile')) {
         return this.getSegmentProfiles(document);
+      } else if (this.containsElement(document, 'TrainCharacteristics')) {
+        return this.getTrainCharacteristics(document);
+      } else if (this.containsElement(document, 'RelatedTrainInformation')) {
+        return 'RelatedTrainInformation';
       }
     } else if (type == "SFERA_B2G_RequestMessage") {
       if (this.isHandshakeRequest(document)) {
         return `HS-REQUEST`;
       }
 
-      const requestTypes = ['JP_Request', 'SP_Request', 'TC_Request']
+      const requestTypes = ['JP_Request', 'SP_Request', 'TC_Request', 'RelatedTrainInformationRequest']
       const requestedTypes: string[] = [];
 
       for (const requestType of requestTypes) {
@@ -150,6 +159,15 @@ export class SferaObserverComponent implements OnDestroy {
       }
 
       return requestedTypes.join(", ");
+    } else if (type == "SFERA_G2B_EventMessage") {
+      if (this.containsElement(document, 'RelatedTrainInformation'))
+        return 'RelatedTrainInformation';
+      if (this.containsElement(document, 'JourneyProfile')) {
+        return `JP Update: ${this.getJourneyProfileStatus(document)}, #SP: ${this.getJourneyProfileNumberOfSPs(document)}`;
+      }
+    } else if (type == "SFERA_B2G_EventMessage") {
+      if (this.containsElement(document, 'SessionTermination'))
+        return 'SessionTermination';
     }
     return "unknown";
   }
@@ -205,7 +223,12 @@ export class SferaObserverComponent implements OnDestroy {
 
   private getSegmentProfiles(document: Document) {
     const segmentProfiles = Array.from(document.getElementsByTagName("SegmentProfile"));
-    return segmentProfiles.map(segmentProfile => `SP ${this.getSegmentProfileId(segmentProfile)}: ${this.getSegmentProfileStatus(segmentProfile)}, Length: ${this.getSegmentProfileLength(segmentProfile)}`).join('\n')
+    return segmentProfiles.map(segmentProfile => `SP ${this.getSegmentProfileId(segmentProfile)}: ${this.getSegmentProfileStatus(segmentProfile)}, Length: ${this.getSegmentProfileLength(segmentProfile)}`).join(', ')
+  }
+
+  private getTrainCharacteristics(document: Document) {
+    const trainCharacteristics = Array.from(document.getElementsByTagName("TrainCharacteristics"));
+    return trainCharacteristics.map(trainCharacteristic => `TC ${this.getTrainCharacteristicsId(trainCharacteristic)}`).join(', ');
   }
 
   private getSegmentProfileStatus(element: Element) {
@@ -218,6 +241,10 @@ export class SferaObserverComponent implements OnDestroy {
 
   private getSegmentProfileId(element: Element) {
     return element.getAttribute("SP_ID");
+  }
+
+  private getTrainCharacteristicsId(element: Element) {
+    return element.getAttribute("TC_ID");
   }
 
   sendXml() {
@@ -268,13 +295,13 @@ export class SferaObserverComponent implements OnDestroy {
       const majorVersion = element.getAttribute('SP_VersionMajor');
 
       return {
-          spZone: {
-            imId: imId
-          },
-          spId: spId,
-          majorVersion: majorVersion,
-          minorVersion: minorVersion
-        } as SpRequestOptions;
+        spZone: {
+          imId: imId
+        },
+        spId: spId,
+        majorVersion: majorVersion,
+        minorVersion: minorVersion
+      } as SpRequestOptions;
     });
 
     const spRequest = SferaXmlCreation.createRequest({
@@ -284,6 +311,50 @@ export class SferaObserverComponent implements OnDestroy {
       spRequests: segmentProfiles
     });
     this.mqService.publish(this.b2gTopic!, spRequest);
+  }
+
+  sendTCRequest() {
+    const jpReplies = this.data.filter(row => row.type === 'SFERA_G2B_ReplyMessage' && row.info.includes('JP: Valid'))
+    if (jpReplies.length === 0) {
+      alert('No JP request sent')
+      return;
+    }
+
+    const dom = this.toDom(jpReplies[jpReplies.length - 1].message)
+
+    const trainCharacteristicsRefs = Array.from(dom.getElementsByTagName('TrainCharacteristicsRef'));
+
+    const trainCharacteristics = trainCharacteristicsRefs.map(element => {
+      const tcId = element.getAttribute('TC_ID');
+      const ruId = element.getElementsByTagName('TC_RU_ID')[0].textContent;
+      const minorVersion = element.getAttribute('TC_VersionMajor');
+      const majorVersion = element.getAttribute('TC_VersionMinor');
+
+      return {
+        ruId: ruId,
+        tcId: tcId,
+        majorVersion: majorVersion,
+        minorVersion: minorVersion
+      } as TcRequestOptions;
+    });
+
+    const tcRequest = SferaXmlCreation.createRequest({
+      header: {
+        sourceDevice: this.clientIdControl.value
+      },
+      tcRequests: trainCharacteristics
+    });
+    this.mqService.publish(this.b2gTopic!, tcRequest);
+  }
+
+  sendSessionTermination() {
+    const sessionTerminationEvent = SferaXmlCreation.createEvent({
+      header: {
+        sourceDevice: this.clientIdControl.value
+      },
+      sessionTermination: true
+    });
+    this.mqService.publish(this.b2gTopic!, sessionTerminationEvent);
   }
 
   sendHSRWrongSferaVersion() {

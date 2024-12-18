@@ -1,9 +1,9 @@
 import 'package:das_client/util/device_id_info.dart';
-import 'package:design_system_flutter/design_system_flutter.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 
 class DeviceIdText extends StatelessWidget {
-  const DeviceIdText({super.key, required this.color});
+  const DeviceIdText({required this.color, super.key});
 
   final Color color;
 
