@@ -165,21 +165,11 @@ class _CumulativeDashedLinePainter extends CustomPainter {
     final dashPatternLength = dashHeights.reduce((a, b) => a + b) + (dashSpace * (dashHeights.length));
     final offsetInPattern = cumulativeHeight % dashPatternLength;
 
-    // Determine the starting dash index based on the offset
-    int dashIndex = 0;
-    double accumulatedLength = 0;
-    for (int i = 0; i < dashHeights.length; i++) {
-      accumulatedLength += dashHeights[i] + dashSpace;
-      if (accumulatedLength > offsetInPattern) {
-        dashIndex = i + 1;
-        break;
-      }
-    }
-
     final paint = Paint()
       ..color = Colors.black
       ..strokeWidth = width;
 
+    int dashIndex = 0;
     double startY = -offsetInPattern;
     while (startY < size.height) {
       dashIndex = dashIndex % dashHeights.length;
