@@ -4,4 +4,4 @@ import ch.sbb.backend.servicepoints.infrastructure.repositories.SpringDataJpaSer
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 @EnableJpaRepositories(basePackageClasses = [SpringDataJpaServicePointRepository::class])
-class PostgresConfiguration
+class PostgreSQLConfiguration

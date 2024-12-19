@@ -6,7 +6,7 @@ import ch.sbb.backend.servicepoints.infrastructure.entities.ServicePointEntity
 import org.springframework.stereotype.Component
 
 @Component
-class PostresServicePointRepository(private val servicePointRepository: SpringDataJpaServicePointRepository) :
+class PostgreSQLServicePointRepository(private val servicePointRepository: SpringDataJpaServicePointRepository) :
     ServicePointRepository {
     override fun findByUic(uic: Int): ServicePoint? {
         return servicePointRepository.findByUic(uic)?.toServicePoint()

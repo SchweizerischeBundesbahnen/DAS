@@ -1,5 +1,6 @@
 package ch.sbb.backend.preload.infrastructure.entities
 
+import ch.sbb.backend.preload.domain.TrainIdentification
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.IdClass
@@ -16,4 +17,11 @@ class TrainIdentificationEntity(
     @Id
     var company: String,
     var startDateTime: OffsetDateTime
-)
+) {
+    constructor(trainIdentification: TrainIdentification) : this(
+        trainIdentification.operationalTrainNumber,
+        trainIdentification.startDate,
+        trainIdentification.company,
+        trainIdentification.startDateTime
+    )
+}

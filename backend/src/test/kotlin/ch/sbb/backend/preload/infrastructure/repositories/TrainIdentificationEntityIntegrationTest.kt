@@ -1,6 +1,8 @@
 package ch.sbb.backend.preload.infrastructure.repositories
 
 import ch.sbb.backend.BaseTestcontainersTest
+import ch.sbb.backend.preload.domain.TrainIdentification
+import ch.sbb.backend.preload.domain.repository.TrainIdentificationRepository
 import ch.sbb.backend.preload.infrastructure.entities.TrainIdentificationEntity
 import ch.sbb.backend.preload.infrastructure.entities.TrainIdentificationId
 import org.assertj.core.api.Assertions.assertThat
@@ -15,7 +17,7 @@ import kotlin.test.Test
 class TrainIdentificationEntityIntegrationTest : BaseTestcontainersTest() {
 
     @Autowired
-    lateinit var trainIdentificationRepository: TrainIdentificationRepository
+    lateinit var trainIdentificationRepository: SpringDataJpaTrainIdentificationRepository
 
     @Autowired
     lateinit var em: TestEntityManager
