@@ -24,31 +24,19 @@ class TrackEquipmentRenderData {
   final TrackEquipmentType? trackEquipmentType;
 
   factory TrackEquipmentRenderData.from(Journey journey, int index) {
+    final data = journey.data[index];
     final nonStandardTrackEquipmentSegments = journey.metadata.nonStandardTrackEquipmentSegments;
-    final trackEquipment = nonStandardTrackEquipmentSegments.appliesToOrder(journey.data[index].order).firstOrNull;
+    final trackEquipment = nonStandardTrackEquipmentSegments.appliesToOrder(data.order).firstOrNull;
     if (trackEquipment == null || !trackEquipment.isEtcsL2Segment) return TrackEquipmentRenderData();
 
     return TrackEquipmentRenderData(
       trackEquipmentType: trackEquipment.type,
       cumulativeHeight: _calculateTrackEquipmentCumulativeHeight(journey, trackEquipment, index),
       isConventionalExtendedSpeedBorder: _isConventionalExtendedSpeedBorder(journey, index),
+      isCABStart: data is CABSignaling ? data.isStart : false,
+      isCABEnd: data is CABSignaling ? data.isEnd : false,
     );
   }
-
-  TrackEquipmentRenderData copyWith({
-    double? cumulativeHeight,
-    bool? isCABStart,
-    bool? isCABEnd,
-    bool? isConventionalExtendedSpeedBorder,
-    TrackEquipmentType? trackEquipmentType,
-  }) =>
-      TrackEquipmentRenderData(
-        cumulativeHeight: cumulativeHeight ?? this.cumulativeHeight,
-        isCABStart: isCABStart ?? this.isCABStart,
-        isCABEnd: isCABEnd ?? this.isCABEnd,
-        isConventionalExtendedSpeedBorder: isConventionalExtendedSpeedBorder ?? this.isConventionalExtendedSpeedBorder,
-        trackEquipmentType: trackEquipmentType ?? this.trackEquipmentType,
-      );
 
   /// calculates the cumulative height of the track equipment "line" of previous rows with the same type as given [trackEquipment].
   static double _calculateTrackEquipmentCumulativeHeight(
