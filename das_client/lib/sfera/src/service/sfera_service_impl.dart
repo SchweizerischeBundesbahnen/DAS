@@ -135,7 +135,7 @@ class SferaServiceImpl implements SferaService {
       _startSegmentProfileAndTCTask();
     }
 
-    if  (_allTasksCompleted()) {
+    if (_allTasksCompleted()) {
       switch (_stateSubject.value) {
         case SferaServiceState.loadingAdditionalData:
           await _refreshSegmentProfiles();
@@ -158,15 +158,9 @@ class SferaServiceImpl implements SferaService {
 
   void _startSegmentProfileAndTCTask() {
     final requestSegmentProfilesTask = RequestSegmentProfilesTask(
-        mqttService: _mqttService,
-        sferaRepository: _sferaRepository,
-        otnId: _otnId!,
-        journeyProfile: _journeyProfile!);
+        mqttService: _mqttService, sferaRepository: _sferaRepository, otnId: _otnId!, journeyProfile: _journeyProfile!);
     final requestTrainCharacteristicsTask = RequestTrainCharacteristicsTask(
-        mqttService: _mqttService,
-        sferaRepository: _sferaRepository,
-        otnId: _otnId!,
-        journeyProfile: _journeyProfile!);
+        mqttService: _mqttService, sferaRepository: _sferaRepository, otnId: _otnId!, journeyProfile: _journeyProfile!);
     _tasks.add(requestSegmentProfilesTask);
     _tasks.add(requestTrainCharacteristicsTask);
     requestSegmentProfilesTask.execute(onTaskCompleted, onTaskFailed);

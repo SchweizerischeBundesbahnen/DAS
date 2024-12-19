@@ -6,12 +6,12 @@ import 'package:das_client/model/localized_string.dart';
 class ServicePoint extends BaseData {
   ServicePoint({
     required this.name,
-    required this.mandatoryStop,
-    required this.isStop,
-    required this.isStation,
     required super.order,
     required super.kilometre,
     super.speedData,
+    this.mandatoryStop = false,
+    this.isStop = false,
+    this.isStation = false,
     this.bracketStation,
   }) : super(type: Datatype.servicePoint);
 
