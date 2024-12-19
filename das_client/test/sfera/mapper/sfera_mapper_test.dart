@@ -58,7 +58,8 @@ void main() {
       trainCharacteristics.add(trainCharacteristic);
     }
 
-    return SferaModelMapper.mapToJourney(journeyProfile, segmentProfiles, trainCharacteristics);
+    return SferaModelMapper.mapToJourney(
+        journeyProfile: journeyProfile, segmentProfiles: segmentProfiles, trainCharacteristics: trainCharacteristics);
   }
 
   test('Test invalid journey on SP missing', () async {
@@ -200,25 +201,32 @@ void main() {
     expect(journey.valid, true);
     expect(journey.metadata.nonStandardTrackEquipmentSegments, hasLength(7));
 
-    expect(journey.metadata.nonStandardTrackEquipmentSegments[0].type, TrackEquipmentType.etcsL2ExtSpeedReversingPossible);
+    expect(
+        journey.metadata.nonStandardTrackEquipmentSegments[0].type, TrackEquipmentType.etcsL2ExtSpeedReversingPossible);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[0].startOrder, isNull);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[0].endOrder, 1500);
-    expect(journey.metadata.nonStandardTrackEquipmentSegments[1].type, TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[1].type,
+        TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[1].startOrder, isNull);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[1].endOrder, 102300);
-    expect(journey.metadata.nonStandardTrackEquipmentSegments[2].type, TrackEquipmentType.etcsL2ConvSpeedReversingImpossible);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[2].type,
+        TrackEquipmentType.etcsL2ConvSpeedReversingImpossible);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[2].startOrder, 102500);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[2].endOrder, 103700);
-    expect(journey.metadata.nonStandardTrackEquipmentSegments[3].type, TrackEquipmentType.etcsL2ExtSpeedReversingPossible);
+    expect(
+        journey.metadata.nonStandardTrackEquipmentSegments[3].type, TrackEquipmentType.etcsL2ExtSpeedReversingPossible);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[3].startOrder, 103700);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[3].endOrder, 307000);
-    expect(journey.metadata.nonStandardTrackEquipmentSegments[4].type, TrackEquipmentType.etcsL2ConvSpeedReversingImpossible);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[4].type,
+        TrackEquipmentType.etcsL2ConvSpeedReversingImpossible);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[4].startOrder, 307000);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[4].endOrder, 307800);
-    expect(journey.metadata.nonStandardTrackEquipmentSegments[5].type, TrackEquipmentType.etcsL2ExtSpeedReversingImpossible);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[5].type,
+        TrackEquipmentType.etcsL2ExtSpeedReversingImpossible);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[5].startOrder, 409200);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[5].endOrder, 410200);
-    expect(journey.metadata.nonStandardTrackEquipmentSegments[6].type, TrackEquipmentType.etcsL2ExtSpeedReversingPossible);
+    expect(
+        journey.metadata.nonStandardTrackEquipmentSegments[6].type, TrackEquipmentType.etcsL2ExtSpeedReversingPossible);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[6].startOrder, 410200);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[6].endOrder, isNull);
   });
@@ -335,7 +343,8 @@ void main() {
 
   test('Test protection section is parsed correctly', () async {
     final journey = getJourney('513', 1);
-    final protectionSections = journey.data.where((it) => it.type == Datatype.protectionSection).cast<ProtectionSection>().toList();
+    final protectionSections =
+        journey.data.where((it) => it.type == Datatype.protectionSection).cast<ProtectionSection>().toList();
 
     expect(journey.valid, true);
     expect(protectionSections, hasLength(6));
@@ -355,7 +364,10 @@ void main() {
 
   test('Test additional speed restriction is parsed correctly no items between', () async {
     final journey = getJourney('513', 1);
-    final speedRestrictions = journey.data.where((it) => it.type == Datatype.additionalSpeedRestriction).cast<AdditionalSpeedRestrictionData>().toList();
+    final speedRestrictions = journey.data
+        .where((it) => it.type == Datatype.additionalSpeedRestriction)
+        .cast<AdditionalSpeedRestrictionData>()
+        .toList();
 
     expect(journey.valid, true);
     expect(speedRestrictions, hasLength(1));
@@ -375,7 +387,10 @@ void main() {
 
   test('Test additional speed restriction is parsed correctly over multiple segments', () async {
     final journey = getJourney('500', 3);
-    final speedRestrictions = journey.data.where((it) => it.type == Datatype.additionalSpeedRestriction).cast<AdditionalSpeedRestrictionData>().toList();
+    final speedRestrictions = journey.data
+        .where((it) => it.type == Datatype.additionalSpeedRestriction)
+        .cast<AdditionalSpeedRestrictionData>()
+        .toList();
 
     expect(journey.valid, true);
     expect(speedRestrictions, hasLength(2));
@@ -402,7 +417,10 @@ void main() {
 
   test('Test additional speed restriction without a date', () async {
     final journey = getJourney('513_asp_no_date', 1, spTrainNumber: '513');
-    final speedRestrictions = journey.data.where((it) => it.type == Datatype.additionalSpeedRestriction).cast<AdditionalSpeedRestrictionData>().toList();
+    final speedRestrictions = journey.data
+        .where((it) => it.type == Datatype.additionalSpeedRestriction)
+        .cast<AdditionalSpeedRestrictionData>()
+        .toList();
 
     expect(journey.valid, true);
     expect(speedRestrictions, hasLength(1));
@@ -422,7 +440,10 @@ void main() {
 
   test('Test additional speed restriction with date in the past', () async {
     final journey = getJourney('513_asp_date_before', 1, spTrainNumber: '513');
-    final speedRestrictions = journey.data.where((it) => it.type == Datatype.additionalSpeedRestriction).cast<AdditionalSpeedRestrictionData>().toList();
+    final speedRestrictions = journey.data
+        .where((it) => it.type == Datatype.additionalSpeedRestriction)
+        .cast<AdditionalSpeedRestrictionData>()
+        .toList();
 
     expect(journey.valid, true);
     expect(speedRestrictions, hasLength(0));
@@ -431,7 +452,10 @@ void main() {
 
   test('Test additional speed restriction with date in the future', () async {
     final journey = getJourney('513_asp_date_after', 1, spTrainNumber: '513');
-    final speedRestrictions = journey.data.where((it) => it.type == Datatype.additionalSpeedRestriction).cast<AdditionalSpeedRestrictionData>().toList();
+    final speedRestrictions = journey.data
+        .where((it) => it.type == Datatype.additionalSpeedRestriction)
+        .cast<AdditionalSpeedRestrictionData>()
+        .toList();
 
     expect(journey.valid, true);
     expect(speedRestrictions, hasLength(0));
@@ -468,7 +492,8 @@ void main() {
 
   test('Test connection tracks are parsed correctly', () async {
     final journey = getJourney('9999', 5);
-    final connectionTracks = journey.data.where((it) => it.type == Datatype.connectionTrack).cast<ConnectionTrack>().toList();
+    final connectionTracks =
+        journey.data.where((it) => it.type == Datatype.connectionTrack).cast<ConnectionTrack>().toList();
 
     expect(journey.valid, true);
     expect(connectionTracks, hasLength(3));

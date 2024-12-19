@@ -1,4 +1,5 @@
 import 'package:das_client/sfera/src/model/journey_profile.dart';
+import 'package:das_client/sfera/src/model/related_train_information.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 import 'package:das_client/sfera/src/model/train_characteristics.dart';
@@ -13,4 +14,6 @@ class G2bReplyPayload extends SferaXmlElement {
   Iterable<SegmentProfile> get segmentProfiles => children.whereType<SegmentProfile>();
 
   Iterable<TrainCharacteristics> get trainCharacteristics => children.whereType<TrainCharacteristics>();
+
+  Iterable<RelatedTrainInformation> get relatedTrainInformation => children.whereType<RelatedTrainInformation>();
 }

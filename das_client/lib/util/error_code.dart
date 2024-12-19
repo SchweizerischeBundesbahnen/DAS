@@ -9,7 +9,7 @@ enum ErrorCode {
   sferaHandshakeRejected(code: 10001),
   sferaRequestTimeout(code: 10002),
   sferaJpUnavailable(code: 10003),
-  sferaSpInvalid(code: 10004);
+  sferaInvalid(code: 10004);
 
   const ErrorCode({
     required this.code,
@@ -36,8 +36,8 @@ extension ErrorCodeExtension on ErrorCode {
         return context.l10n.c_error_sfera_request_timeout;
       case ErrorCode.sferaJpUnavailable:
         return context.l10n.c_error_sfera_jp_unavailable;
-      case ErrorCode.sferaSpInvalid:
-        return context.l10n.c_error_sfera_sp_invalid;
+      case ErrorCode.sferaInvalid:
+        return context.l10n.c_error_sfera_invalid;
     }
   }
 }

@@ -96,7 +96,7 @@ void main() {
       fail('Test should not call success');
     }, (task, errorCode) {
       expect(task, segmentTask);
-      expect(errorCode, ErrorCode.sferaSpInvalid);
+      expect(errorCode, ErrorCode.sferaInvalid);
     });
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
