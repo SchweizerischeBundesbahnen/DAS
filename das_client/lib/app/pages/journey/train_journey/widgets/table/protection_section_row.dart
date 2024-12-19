@@ -9,13 +9,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class ProtectionSectionRow extends BaseRowBuilder<ProtectionSection> {
   static const Key protectionSectionKey = Key('protection_section_key');
-  static const double rowHeight = 44.0;
 
   ProtectionSectionRow({
     required super.metadata,
     required super.data,
     required super.settings,
-    super.height = rowHeight,
+    super.trackEquipmentRenderData,
   }) : super(rowColor: SBBColors.peach);
 
   @override

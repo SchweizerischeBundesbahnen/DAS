@@ -13,6 +13,7 @@ class CurvePointRow extends BaseRowBuilder<CurvePoint> {
     required super.metadata,
     required super.data,
     required super.settings,
+    super.trackEquipmentRenderData,
   });
 
   @override

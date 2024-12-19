@@ -13,6 +13,7 @@ class CABSignalingRow extends BaseRowBuilder<CABSignaling> {
     required super.metadata,
     required super.data,
     required super.settings,
+    super.trackEquipmentRenderData,
   });
 
   @override

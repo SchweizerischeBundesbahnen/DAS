@@ -9,6 +9,7 @@ class ConnectionTrackRow extends BaseRowBuilder<ConnectionTrack> {
     required super.metadata,
     required super.data,
     required super.settings,
+    super.trackEquipmentRenderData,
   });
 
   @override

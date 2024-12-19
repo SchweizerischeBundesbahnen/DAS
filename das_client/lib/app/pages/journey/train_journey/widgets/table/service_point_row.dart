@@ -1,6 +1,7 @@
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_row_builder.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/bracket_station_body.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:das_client/model/journey/service_point.dart';
@@ -18,7 +19,8 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
     required super.data,
     required super.settings,
     super.height = rowHeight,
-  }) : super(rowColor: metadata.nextStop == data ? SBBColors.royal.withOpacity(0.2) : Colors.transparent);
+    super.trackEquipmentRenderData,
+  }) : super(rowColor: metadata.nextStop == data ? SBBColors.royal.withOpacity(0.2) : null);
 
   @override
   DASTableCell informationCell(BuildContext context) {
@@ -50,7 +52,7 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
         clipBehavior: Clip.none,
         children: [
           if (data.bracketStation != null)
-            BracketStationBody(
+            BracketStationCellBody(
               bracketStation: data.bracketStation!,
               height: height,
             ),
@@ -78,6 +80,18 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
         isRouteStart: metadata.routeStart == data,
         isRouteEnd: metadata.routeEnd == data,
         isStopOnRequest: !data.mandatoryStop,
+      ),
+    );
+  }
+
+  @override
+  DASTableCell trackEquipment(BuildContext context) {
+    return DASTableCell(
+      color: specialCellColor,
+      padding: const EdgeInsets.all(0.0),
+      alignment: null,
+      child: TrackEquipmentCellBody(
+        renderData: trackEquipmentRenderData,
       ),
     );
   }

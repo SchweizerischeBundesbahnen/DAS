@@ -37,11 +37,12 @@ class RouteCellBody extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final height = constraints.maxHeight;
+        final width = constraints.maxWidth;
         return Stack(
           clipBehavior: Clip.none,
           alignment: Alignment.center,
           children: [
-            _routeLine(context, height),
+            _routeLine(context, height, width),
             if (isCurrentPosition) _chevron(context),
             if (isStop) _circle(context),
           ],
@@ -50,15 +51,16 @@ class RouteCellBody extends StatelessWidget {
     );
   }
 
-  Positioned _routeLine(BuildContext context, double height) {
+  Widget _routeLine(BuildContext context, double height, double width) {
     final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
     final lineColor = isDarkTheme ? SBBColors.white : SBBColors.black;
+    final horizontalBorderWidth =
+        DASTableTheme.of(context)?.data.tableBorder?.horizontalInside.width ?? sbbDefaultSpacing;
     return Positioned(
       key: _routeKey(),
-      top: isRouteStart ? height - sbbDefaultSpacing : -sbbDefaultSpacing,
-      bottom: isRouteEnd ? sbbDefaultSpacing : -sbbDefaultSpacing,
-      right: 0,
-      left: 0,
+      top: isRouteStart ? height - sbbDefaultSpacing : 0,
+      bottom: isRouteEnd ? sbbDefaultSpacing : -horizontalBorderWidth,
+      left: (width / 2) - (lineThickness / 2),
       child: VerticalDivider(thickness: lineThickness, color: lineColor),
     );
   }

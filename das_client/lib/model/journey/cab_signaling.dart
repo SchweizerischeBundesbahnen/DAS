@@ -10,6 +10,8 @@ class CABSignaling extends BaseData {
 
   final bool isStart;
 
+  bool get isEnd => !isStart;
+
   @override
   int get orderPriority => isStart ? -1 : 1;
 

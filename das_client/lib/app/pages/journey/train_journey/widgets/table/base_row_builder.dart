@@ -1,6 +1,8 @@
 import 'package:das_client/app/model/train_journey_settings.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/track_equipment_render_data.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:das_client/model/journey/additional_speed_restriction.dart';
@@ -16,6 +18,7 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
     required this.data,
     required this.settings,
     super.height = rowHeight,
+    this.trackEquipmentRenderData = const TrackEquipmentRenderData(),
     this.defaultAlignment = Alignment.bottomCenter,
     this.rowColor,
   });
@@ -24,6 +27,7 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   final Color? rowColor;
   final Metadata metadata;
   final T data;
+  final TrackEquipmentRenderData trackEquipmentRenderData;
   final TrainJourneySettings settings;
 
   @override
@@ -35,6 +39,7 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
         kilometreCell(context),
         timeCell(context),
         routeCell(context),
+        trackEquipment(context),
         iconsCell1(context),
         informationCell(context),
         iconsCell2(context),
@@ -74,6 +79,17 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
         isCurrentPosition: metadata.currentPosition == data,
         isRouteStart: metadata.routeStart == data,
         isRouteEnd: metadata.routeEnd == data,
+      ),
+    );
+  }
+
+  DASTableCell trackEquipment(BuildContext context) {
+    return DASTableCell(
+      color: specialCellColor,
+      padding: EdgeInsets.all(0.0),
+      alignment: null,
+      child: TrackEquipmentCellBody(
+        renderData: trackEquipmentRenderData,
       ),
     );
   }
