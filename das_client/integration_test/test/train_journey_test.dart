@@ -11,7 +11,7 @@ void main() {
       // Load app widget.
       await prepareAndStartApp(tester);
 
-      // Verify we have trainnumber with T9999.
+      // Verify we have train number with T9999.
       expect(find.text('T9999'), findsOneWidget);
 
       // Verify we have ru SBB.
@@ -21,14 +21,14 @@ void main() {
       final primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
       expect(tester.widget<SBBPrimaryButton>(primaryButton).onPressed, isNotNull);
 
-      // press load Fahrordnung button
+      // press load train journey button
       await tester.tap(primaryButton);
 
       // wait for train journey to load
       await tester.pumpAndSettle();
 
       // check if station is present
-      expect(find.text('Solothurn'), findsOneWidget);
+      expect(find.text('Bahnhof A'), findsOneWidget);
 
       await tester.pumpAndSettle();
     });
