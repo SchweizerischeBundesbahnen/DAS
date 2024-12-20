@@ -60,6 +60,7 @@ dependencies:
   synchronized: ^3.3.0
   # https://pub.dev/packages/flutter_svg
   flutter_svg: ^2.0.14
+  iso_duration: ^0.1.1
 
 dev_dependencies:
   integration_test:

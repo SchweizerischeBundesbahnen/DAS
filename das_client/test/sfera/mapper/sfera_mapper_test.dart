@@ -74,7 +74,8 @@ void main() {
       trainCharacteristics.add(trainCharacteristic);
     }
 
-    return SferaModelMapper.mapToJourney(journeyProfile, segmentProfiles, trainCharacteristics);
+    return SferaModelMapper.mapToJourney(
+        journeyProfile: journeyProfile, segmentProfiles: segmentProfiles, trainCharacteristics: trainCharacteristics);
   }
 
   test('Test invalid journey on SP missing', () async {
