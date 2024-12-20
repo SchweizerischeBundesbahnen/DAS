@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<G2B_EventPayload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd">
+	<RelatedTrainInformation>
+		<OwnTrain>
+			<TrainIdentification>
+				<OTN_ID>
+					<Company>1085</Company>
+					<OperationalTrainNumber>T9999</OperationalTrainNumber>
+					<StartDate>2022-01-04</StartDate>
+				</OTN_ID>
+			</TrainIdentification>
+			<TrainLocationInformation>
+				<PositionSpeed SP_ID="T9999_1" location="500">
+					<SP_Zone>
+						<IM_ID >0085</IM_ID>
+					</SP_Zone>
+				</PositionSpeed>
+				<Delay Delay="PT30S"/>
+			</TrainLocationInformation>					
+		</OwnTrain>
+	</RelatedTrainInformation>
+</G2B_EventPayload>

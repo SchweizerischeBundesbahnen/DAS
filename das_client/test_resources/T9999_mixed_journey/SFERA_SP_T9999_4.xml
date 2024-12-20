@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
+                SP_ID="T9999_4" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="1000" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>0085</IM_ID>
+    </SP_Zone>
+    <SP_Points>
+        <TimingPoint TP_ID="Klammerbahnhof_D" location="700">
+            <TP_Name name="D"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>9994</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="6" location="900"/>
+            <SignalFunction>protection</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="D1"/>
+        </Signal>
+
+        <NetworkSpecificPoint location="500" name="newLineSpeed">
+            <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                &lt;lineSpeed text=&quot;Zahnstangen Anfang&quot;&gt;
+                &lt;speeds&gt;
+                &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;100&quot; speed=&quot;55&quot; reduced=&quot;true&quot;/&gt;
+                &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;30&quot; speed=&quot;50&quot;/&gt;
+                &lt;/speeds&gt;
+                &lt;/lineSpeed&gt;
+            "/>
+        </NetworkSpecificPoint>
+        <NetworkSpecificPoint location="800" name="newLineSpeed">
+            <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                &lt;lineSpeed text=&quot;Zahnstangen Ende&quot;&gt;
+                &lt;speeds&gt;
+                &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;100&quot; speed=&quot;80&quot;/&gt;
+                &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;30&quot; speed=&quot;80&quot;/&gt;
+                &lt;/speeds&gt;
+                &lt;/lineSpeed&gt;
+            "/>
+        </NetworkSpecificPoint>
+    </SP_Points>
+
+    <SP_Areas>
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="D"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>9994</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Klammerbahnhof D"/>
+            <TAF_TAP_Location_NSP name="bracketStation">
+                <NetworkSpecificParameter name="mainStation" value="CH9994"/>
+            </TAF_TAP_Location_NSP>
+        </TAF_TAP_Location>
+        <NetworkSpecificArea startEndQualifier="Ends" endLocation="500" name="nonStandardTrackEquipment">
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingPossible"/>
+        </NetworkSpecificArea>
+    </SP_Areas>
+
+    <SP_ContextInformation>
+        <KilometreReferencePoint location="500">
+            <KM_Reference kmRef="3.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="700">
+            <KM_Reference kmRef="3.7"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="700">
+            <KM_Reference kmRef="0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="800">
+            <KM_Reference kmRef="0.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="900">
+            <KM_Reference kmRef="0.2"/>
+        </KilometreReferencePoint>
+
+    </SP_ContextInformation>
+</SegmentProfile>

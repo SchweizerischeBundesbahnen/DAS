@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
+                SP_ID="T9999_3" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="1000" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>0085</IM_ID>
+    </SP_Zone>
+    <SP_Points>
+        <TimingPoint TP_ID="Halt_auf_Verlangen_C" location="400">
+            <TP_Name name="C"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>9993</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="5" location="600"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="AB1"/>
+        </Signal>
+
+        <NetworkSpecificPoint location="100" identifier="3" name="curvePoint">
+            <NetworkSpecificParameter name="curvePointType" value="begin"/>
+            <!-- 'stationExitCurve' (begins in a station) -->
+            <NetworkSpecificParameter name="curveType" value="stationExitCurve"/>
+            <NetworkSpecificParameter name="xmlCurveSpeed" value="
+                &lt;curveSpeed text=&quot;Kurve 1&quot; comment=&quot;Kurve 2&quot;&gt;
+                &lt;/curveSpeed&gt;
+            "/>
+        </NetworkSpecificPoint>
+
+        <NetworkSpecificPoint location="500" identifier="4" name="curvePoint">
+            <NetworkSpecificParameter name="curvePointType" value="begin"/>
+            <!-- 'curveAfterHalt' (begins at an halt). -->
+            <NetworkSpecificParameter name="curveType" value="curveAfterHalt"/>
+            <NetworkSpecificParameter name="xmlCurveSpeed" value="
+                &lt;curveSpeed text=&quot;Kurve 1&quot; comment=&quot;Kurve 3&quot;&gt;
+                &lt;/curveSpeed&gt;
+            "/>
+        </NetworkSpecificPoint>
+
+        <NetworkSpecificPoint location="200" name="newLineSpeed">
+            <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                &lt;lineSpeed&gt;
+                &lt;speeds&gt;
+                &lt;v trainSeries=&quot;R&quot; speed=&quot;45&quot;/&gt;
+                &lt;v trainSeries=&quot;A&quot; speed=&quot;40&quot;/&gt;
+                &lt;/speeds&gt;
+                &lt;/lineSpeed&gt;
+            "/>
+        </NetworkSpecificPoint>
+
+    </SP_Points>
+
+    <SP_Areas>
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="C"
+                          TAF_TAP_location_type="stopping location">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>9993</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Halt auf Verlangen C"/>
+        </TAF_TAP_Location>
+
+        <NetworkSpecificArea startEndQualifier="WholeSP" name="nonStandardTrackEquipment">
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingPossible"/>
+        </NetworkSpecificArea>
+    </SP_Areas>
+
+    <SP_ContextInformation>
+        <ConnectionTrack location="200" connectionTrackType="Unknown" connectionTrackDescription="22-6 Uhr"/>
+        <KilometreReferencePoint location="100">
+            <KM_Reference kmRef="2.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="200">
+            <KM_Reference kmRef="2.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="400">
+            <KM_Reference kmRef="2.4"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="500">
+            <KM_Reference kmRef="2.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="600">
+            <KM_Reference kmRef="2.6"/>
+        </KilometreReferencePoint>
+
+    </SP_ContextInformation>
+</SegmentProfile>
