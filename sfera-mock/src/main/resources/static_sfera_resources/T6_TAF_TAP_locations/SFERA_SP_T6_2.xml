@@ -1,0 +1,312 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
+                SP_ID="T6_2" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="41500" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>0085</IM_ID>
+    </SP_Zone>
+    <SP_Points>
+        <TimingPoint TP_ID="Altstetten" location="4100">
+            <TP_Name name="ALT"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3002</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Schlieren" location="7500">
+            <TP_Name name="SCH"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3003</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Glanzenberg" location="9500">
+            <TP_Name name="GLA"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3004</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Dietikon" location="10900">
+            <TP_Name name="DIE"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3005</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Killwangen-S" location="16100">
+            <TP_Name name="KIL"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3006</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Mellingen_Heitersberg" location="22200">
+            <TP_Name name="MEL"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3007</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Mellingen" location="22800">
+            <TP_Name name="MEL"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3008</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Mägenwil" location="25900">
+            <TP_Name name="MAG"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3009</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Othmarsingen" location="27700">
+            <TP_Name name="OTH"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3010</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Gexi" location="30200">
+            <TP_Name name="GEX"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3011</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Lenzburg" location="31900">
+            <TP_Name name="LEN"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3012</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Rupperswil" location="35600">
+            <TP_Name name="RUP"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3013</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Aarau_GB" location="40800">
+            <TP_Name name="AAG"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3014</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Aarau" location="41500">
+            <TP_Name name="AAR"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3015</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+    </SP_Points>
+    <SP_Areas>
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="ALT"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3002</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Altstetten"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="SCH"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3003</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Schlieren"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="GLA"
+                          TAF_TAP_location_type="stopping location">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3004</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Glanzenberg"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="DIE"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3005</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Dietikon"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="KIL"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3006</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Killwangen-S"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="MEL"
+                          TAF_TAP_location_type="stopping location">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3007</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Mellingen Heitersberg"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="MEL"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3008</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Mellingen"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="MAG"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3009</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Mägenwil"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="OTH"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3010</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Othmarsingen"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="GEX"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3011</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Gexi"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="LEN"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3012</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Lenzburg"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="RUP"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3013</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Rupperswil"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="AAG"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3014</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Aarau GB"/>
+            <TAF_TAP_Location_NSP name="bracketStation">
+                <NetworkSpecificParameter name="mainStation" value="CH3015"/>
+            </TAF_TAP_Location_NSP>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="AAR"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3015</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Aarau"/>
+            <TAF_TAP_Location_NSP name="bracketStation">
+                <NetworkSpecificParameter name="mainStation" value="CH3015"/>
+            </TAF_TAP_Location_NSP>
+        </TAF_TAP_Location>
+    </SP_Areas>
+    <SP_ContextInformation>
+
+        <KilometreReferencePoint location="4100">
+            <KM_Reference kmRef="4.1"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="7500">
+            <KM_Reference kmRef="7.5"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="9500">
+            <KM_Reference kmRef="9.5"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="10900">
+            <KM_Reference kmRef="10.9"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="16100">
+            <KM_Reference kmRef="16.1"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="22200">
+            <KM_Reference kmRef="22.2"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="22800">
+            <KM_Reference kmRef="22.8"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="25900">
+            <KM_Reference kmRef="25.9"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="27700">
+            <KM_Reference kmRef="27.7"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="30200">
+            <KM_Reference kmRef="30.2"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="31900">
+            <KM_Reference kmRef="31.9"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="35600">
+            <KM_Reference kmRef="35.6"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="40800">
+            <KM_Reference kmRef="40.8"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="41500">
+            <KM_Reference kmRef="41.5"/>
+        </KilometreReferencePoint>
+    </SP_ContextInformation>
+</SegmentProfile>

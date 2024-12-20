@@ -1,0 +1,546 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
+                SP_ID="T3_1" SP_VersionMajor="1" SP_VersionMinor="4" SP_Length="90000" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>0085</IM_ID>
+    </SP_Zone>
+    <SP_Points>
+        <TimingPoint TP_ID="Genève-Aéroport" location="500">
+            <TP_Name name="Genève-Aéroport"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3002</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Genève" location="1000">
+            <TP_Name name="Genève"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3003</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Gland" location="1500">
+            <TP_Name name="Gland"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3004</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Gilly-Bursinel" location="2000">
+            <TP_Name name="Gilly-Bursinel"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3005</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Morges" location="2500">
+            <TP_Name name="Morges"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3006</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Yverdon-les-Bains" location="3000">
+            <TP_Name name="Yverdon-les-Bains"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3007</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Onnens-Bonvillars" location="3500">
+            <TP_Name name="Onnens-Bonvillars"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3008</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Neuchâtel" location="4000">
+            <TP_Name name="Neuchâtel"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3009</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Biel/Bienne" location="4500">
+            <TP_Name name="Biel/Bienne"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3010</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Lengnau" location="5000">
+            <TP_Name name="Lengnau"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3011</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Grenchen Süd" location="5500">
+            <TP_Name name="Grenchen Süd"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3012</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Solothurn" location="6000">
+            <TP_Name name="Solothurn"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3013</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="WANZ" location="6500">
+            <TP_Name name="WANZ"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3014</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Rothrist" location="7000">
+            <TP_Name name="Rothrist"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3015</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Olten" location="7500">
+            <TP_Name name="Olten"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3016</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Aarau" location="8000">
+            <TP_Name name="Aarau"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3017</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Mellingen Heitersberg" location="8500">
+            <TP_Name name="Mellingen Heitersberg"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3018</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Killwangen-S." location="9000">
+            <TP_Name name="Killwangen-S."/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3019</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Zürich HB" location="9500">
+            <TP_Name name="Zürich HB"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3020</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Opfikon Süd" location="10000">
+            <TP_Name name="Opfikon Süd"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3021</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Flughafen" location="10500">
+            <TP_Name name="Flughafen"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3022</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <NetworkSpecificPoint location="1700" name="protectionSection">
+            <NetworkSpecificParameter name="lengthType" value="long"/>
+            <NetworkSpecificParameter name="facultative" value="true"/>
+        </NetworkSpecificPoint>
+        <NetworkSpecificPoint location="3200" name="protectionSection">
+            <NetworkSpecificParameter name="lengthType" value="long"/>
+            <NetworkSpecificParameter name="facultative" value="false"/>
+        </NetworkSpecificPoint>
+        <NetworkSpecificPoint location="5200" name="protectionSection">
+            <NetworkSpecificParameter name="lengthType" value="long"/>
+            <NetworkSpecificParameter name="facultative" value="true"/>
+        </NetworkSpecificPoint>
+        <NetworkSpecificPoint location="6700" name="protectionSection">
+            <NetworkSpecificParameter name="lengthType" value="long"/>
+            <NetworkSpecificParameter name="facultative" value="true"/>
+        </NetworkSpecificPoint>
+        <NetworkSpecificPoint location="8700" name="protectionSection">
+            <NetworkSpecificParameter name="lengthType" value="short"/>
+            <NetworkSpecificParameter name="facultative" value="true"/>
+        </NetworkSpecificPoint>
+        <NetworkSpecificPoint location="10200" name="protectionSection">
+            <NetworkSpecificParameter name="lengthType" value="short"/>
+            <NetworkSpecificParameter name="facultative" value="false"/>
+        </NetworkSpecificPoint>
+
+    </SP_Points>
+    <SP_Areas>
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="GENA"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3002</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Genève-Aéroport"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="GEN"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3003</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Genève"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="GLA"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3004</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Gland"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="GIL"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3005</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Gilly-Bursinel"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="MO"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3006</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Morges"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="YLB"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3007</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Yverdon-les-Bains"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="ONN"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3008</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Onnens-Bonvillars"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="NEU"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3009</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Neuchâtel"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="BI"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3010</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Biel/Bienne"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="LEN"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3011</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Lengnau"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="GRN"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3012</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Grenchen Süd"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="SOLO"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3013</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Solothurn"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="WANZ"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3014</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="WANZ"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="ROTH"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3015</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Rothrist"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="OL"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3016</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Olten"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="AAR"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3017</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Aarau"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="MLH"
+                          TAF_TAP_location_type="stopping location">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3018</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Mellingen Heitersberg"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="KIL"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3019</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Killwangen-S."/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="ZRH"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3020</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Zürich HB"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="OPF"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3021</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Opfikon Süd"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="ZHF"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3022</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Flughafen"/>
+        </TAF_TAP_Location>
+    </SP_Areas>
+
+    <SP_Characteristics>
+        <CurrentLimitation>
+            <CurrentLimitationStart maxCurValue="1023"/>
+            <CurrentLimitationChange maxCurValue="0" location="1700"/>
+            <CurrentLimitationChange maxCurValue="1023" location="1705"/>
+            <CurrentLimitationChange maxCurValue="0" location="3200"/>
+            <CurrentLimitationChange maxCurValue="1023" location="3205"/>
+            <CurrentLimitationChange maxCurValue="0" location="5200"/>
+            <CurrentLimitationChange maxCurValue="1023" location="5205"/>
+            <CurrentLimitationChange maxCurValue="0" location="6700"/>
+            <CurrentLimitationChange maxCurValue="1023" location="6705"/>
+            <CurrentLimitationChange maxCurValue="0" location="8700"/>
+            <CurrentLimitationChange maxCurValue="1023" location="8705"/>
+            <CurrentLimitationChange maxCurValue="0" location="10200"/>
+            <CurrentLimitationChange maxCurValue="1023" location="10205"/>
+        </CurrentLimitation>
+    </SP_Characteristics>
+
+    <SP_ContextInformation>
+
+        <KilometreReferencePoint location="500">
+            <KM_Reference kmRef="66.2"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="700">
+            <KM_Reference kmRef="64.2"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="800">
+            <KM_Reference kmRef="63.2"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="1000">
+            <KM_Reference kmRef="60.3"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="1500">
+            <KM_Reference kmRef="33.8"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="1700">
+            <KM_Reference kmRef="32.2"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="2000">
+            <KM_Reference kmRef="29.7"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="2500">
+            <KM_Reference kmRef="12.5"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="3000">
+            <KM_Reference kmRef="39.1"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="3200">
+            <KM_Reference kmRef="45.8"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="3500">
+            <KM_Reference kmRef="47.5"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="4000">
+            <KM_Reference kmRef="75.3"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="4500">
+            <KM_Reference kmRef="99.3"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="5000">
+            <KM_Reference kmRef="88.0"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="5200">
+            <KM_Reference kmRef="86.7"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="5500">
+            <KM_Reference kmRef="85.3"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="6000">
+            <KM_Reference kmRef="73.8"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="6000">
+            <KM_Reference kmRef="79.4"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="6500">
+            <KM_Reference kmRef="68.5"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="6500">
+            <KM_Reference kmRef="36.4"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="6700">
+            <KM_Reference kmRef="45.9"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="7000">
+            <KM_Reference kmRef="55.2"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="7000">
+            <KM_Reference kmRef="46.2"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="7500">
+            <KM_Reference kmRef="39.3"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="8000">
+            <KM_Reference kmRef="41.5"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="8500">
+            <KM_Reference kmRef="22.2"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="8700">
+            <KM_Reference kmRef="21.5"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="9000">
+            <KM_Reference kmRef="16.1"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="9500">
+            <KM_Reference kmRef="0.0"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="9500">
+            <KM_Reference kmRef="200.7"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="10000">
+            <KM_Reference kmRef="6.5"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="10200">
+            <KM_Reference kmRef="6.6"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="10500">
+            <KM_Reference kmRef="9.5"/>
+        </KilometreReferencePoint>
+    </SP_ContextInformation>
+</SegmentProfile>

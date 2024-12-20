@@ -7,12 +7,12 @@ import '../util/test_utils.dart';
 
 void main() {
   group('home screen test', () {
-    testWidgets('load train journey company=1085, train=7839', (tester) async {
+    testWidgets('load train journey company=1085, train=T9999', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
 
-      // Verify we have trainnumber with 7839.
-      expect(find.text('7839'), findsOneWidget);
+      // Verify we have trainnumber with T9999.
+      expect(find.text('T9999'), findsOneWidget);
 
       // Verify we have ru SBB.
       expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
@@ -41,7 +41,7 @@ void main() {
       final trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
       expect(trainNumberText, findsOneWidget);
 
-      await enterText(tester, trainNumberText, '4816');
+      await enterText(tester, trainNumberText, 'T6');
 
       final primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
       await tester.tap(primaryButton);
