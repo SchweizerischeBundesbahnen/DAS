@@ -1,9 +1,11 @@
 package ch.sbb.backend.servicepoints.domain.repository
 
 import ch.sbb.backend.servicepoints.domain.ServicePoint
+import ch.sbb.backend.servicepoints.domain.service.DomainServicePointService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.*
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.verify
 
 
 class DomainServicePointServiceTest {
