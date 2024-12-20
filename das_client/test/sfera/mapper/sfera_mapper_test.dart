@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
 import 'package:das_client/model/journey/connection_track.dart';
@@ -23,36 +24,51 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   Fimber.plantTree(DebugTree());
 
-  List<File> getFilesForSp(String baseName, int count) {
+  List<File> getFilesForSp(String path, String baseName, int count) {
     final files = <File>[];
     for (var i = 1; i <= count; i++) {
-      files.add(File('test_resources/sp/${baseName}_$i.xml'));
+      files.add(File('$path/${baseName}_$i.xml'));
     }
     return files;
   }
 
-  List<File> getFilesForTc(String baseName, int count) {
+  List<File> getFilesForTc(String path, String baseName, int count) {
     final files = <File>[];
     for (var i = 1; i <= count; i++) {
-      files.add(File('test_resources/tc/${baseName}_$i.xml'));
+      files.add(File('$path/${baseName}_$i.xml'));
     }
     return files;
   }
 
-  Journey getJourney(String trainNumber, int spCount, {String? spTrainNumber, int tcCount = 0}) {
-    final journeyFile = File('test_resources/jp/SFERA_JP_$trainNumber.xml');
+  Journey getJourney(String trainNumber, int spCount,
+      {String? spPostfix, String? jpPostfix, String? tcPostfix, int tcCount = 0}) {
+    final resourceDir = Directory('test_resources');
+    expect(resourceDir.existsSync(), true);
+
+    // Filter files that match the regex
+    final directoryRegex = RegExp('${trainNumber}_.+');
+    final testDirectory = resourceDir.listSync().firstWhereOrNull((entry) {
+      final baseName = entry.path.split(Platform.pathSeparator).last;
+      return entry is Directory && directoryRegex.hasMatch(baseName);
+    });
+    expect(testDirectory, isNotNull);
+
+    final baseJPFileName = 'SFERA_JP_$trainNumber${jpPostfix != null ? '_$jpPostfix' : ''}';
+    final journeyFile = File('${testDirectory!.path}/$baseJPFileName.xml');
     final journeyProfile = SferaReplyParser.parse<JourneyProfile>(journeyFile.readAsStringSync());
     expect(journeyProfile.validate(), true);
-    final List<SegmentProfile> segmentProfiles = [];
-    final List<TrainCharacteristics> trainCharacteristics = [];
 
-    for (final File file in getFilesForSp('SFERA_SP_${spTrainNumber ?? trainNumber}', spCount)) {
+    final List<SegmentProfile> segmentProfiles = [];
+    final baseSPFileName = 'SFERA_SP_$trainNumber${spPostfix != null ? '_$spPostfix' : ''}';
+    for (final File file in getFilesForSp(testDirectory.path, baseSPFileName, spCount)) {
       final segmentProfile = SferaReplyParser.parse<SegmentProfile>(file.readAsStringSync());
       expect(segmentProfile.validate(), true);
       segmentProfiles.add(segmentProfile);
     }
 
-    for (final File file in getFilesForTc('SFERA_TC_$trainNumber', tcCount)) {
+    final List<TrainCharacteristics> trainCharacteristics = [];
+    final baseTCFileName = 'SFERA_TC_$trainNumber${tcPostfix != null ? '_$tcPostfix' : ''}';
+    for (final File file in getFilesForTc(testDirectory.path, baseTCFileName, tcCount)) {
       final trainCharacteristic = SferaReplyParser.parse<TrainCharacteristics>(file.readAsStringSync());
       expect(trainCharacteristic.validate(), true);
       trainCharacteristics.add(trainCharacteristic);
@@ -63,13 +79,13 @@ void main() {
   }
 
   test('Test invalid journey on SP missing', () async {
-    final journey = getJourney('9999', 4);
+    final journey = getJourney('T9999', 4);
 
     expect(journey.valid, false);
   });
 
   test('Test service point names are resolved correctly', () async {
-    final journey = getJourney('9999', 5);
+    final journey = getJourney('T9999', 5);
 
     final servicePoints = journey.data.where((it) => it.type == Datatype.servicePoint).cast<ServicePoint>().toList();
 
@@ -84,7 +100,7 @@ void main() {
   });
 
   test('Test journey data types correctly generated', () async {
-    final journey = getJourney('9999', 5);
+    final journey = getJourney('T9999', 5);
 
     expect(journey.valid, true);
     expect(journey.data, hasLength(24));
@@ -121,7 +137,7 @@ void main() {
   });
 
   test('Test kilometre are parsed correctly', () async {
-    final journey = getJourney('9999', 5);
+    final journey = getJourney('T9999', 5);
 
     expect(journey.valid, true);
     expect(journey.data, hasLength(24));
@@ -159,7 +175,7 @@ void main() {
   });
 
   test('Test order is generated correctly', () async {
-    final journey = getJourney('9999', 5);
+    final journey = getJourney('T9999', 5);
 
     expect(journey.valid, true);
     expect(journey.data, hasLength(24));
@@ -232,7 +248,7 @@ void main() {
   });
 
   test('Test signals are generated correctly', () async {
-    final journey = getJourney('9999', 5);
+    final journey = getJourney('T9999', 5);
     final signals = journey.data.where((it) => it.type == Datatype.signal).cast<Signal>().toList();
 
     expect(journey.valid, true);
@@ -263,7 +279,7 @@ void main() {
   });
 
   test('Test curvePoint are generated correctly', () async {
-    final journey = getJourney('9999', 5);
+    final journey = getJourney('T9999', 5);
     final curvePoints = journey.data.where((it) => it.type == Datatype.curvePoint).cast<CurvePoint>().toList();
 
     expect(journey.valid, true);
@@ -284,7 +300,7 @@ void main() {
   });
 
   test('Test stop on demand is parsed correctly', () async {
-    final journey = getJourney('9999', 5);
+    final journey = getJourney('T9999', 5);
     final servicePoints = journey.data.where((it) => it.type == Datatype.servicePoint).cast<ServicePoint>().toList();
 
     expect(journey.valid, true);
@@ -298,7 +314,7 @@ void main() {
   });
 
   test('Test passing point is parsed correctly', () async {
-    final journey = getJourney('9999', 5);
+    final journey = getJourney('T9999', 5);
     final servicePoints = journey.data.where((it) => it.type == Datatype.servicePoint).cast<ServicePoint>().toList();
 
     expect(journey.valid, true);
@@ -312,7 +328,7 @@ void main() {
   });
 
   test('Test station point is parsed correctly', () async {
-    final journey = getJourney('9999', 5);
+    final journey = getJourney('T9999', 5);
     final servicePoints = journey.data.where((it) => it.type == Datatype.servicePoint).cast<ServicePoint>().toList();
 
     expect(journey.valid, true);
@@ -326,7 +342,7 @@ void main() {
   });
 
   test('Test bracket stations is parsed correctly', () async {
-    final journey = getJourney('9999', 5);
+    final journey = getJourney('T9999', 5);
     final servicePoints = journey.data.where((it) => it.type == Datatype.servicePoint).cast<ServicePoint>().toList();
 
     expect(journey.valid, true);
@@ -342,7 +358,7 @@ void main() {
   });
 
   test('Test protection section is parsed correctly', () async {
-    final journey = getJourney('513', 1);
+    final journey = getJourney('T3', 1);
     final protectionSections =
         journey.data.where((it) => it.type == Datatype.protectionSection).cast<ProtectionSection>().toList();
 
@@ -363,7 +379,7 @@ void main() {
   });
 
   test('Test additional speed restriction is parsed correctly no items between', () async {
-    final journey = getJourney('513', 1);
+    final journey = getJourney('T3', 1);
     final speedRestrictions = journey.data
         .where((it) => it.type == Datatype.additionalSpeedRestriction)
         .cast<AdditionalSpeedRestrictionData>()
@@ -386,7 +402,7 @@ void main() {
   });
 
   test('Test additional speed restriction is parsed correctly over multiple segments', () async {
-    final journey = getJourney('500', 3);
+    final journey = getJourney('T2', 3);
     final speedRestrictions = journey.data
         .where((it) => it.type == Datatype.additionalSpeedRestriction)
         .cast<AdditionalSpeedRestrictionData>()
@@ -416,7 +432,7 @@ void main() {
   });
 
   test('Test additional speed restriction without a date', () async {
-    final journey = getJourney('513_asp_no_date', 1, spTrainNumber: '513');
+    final journey = getJourney('T3', 1, jpPostfix: 'asp_no_date');
     final speedRestrictions = journey.data
         .where((it) => it.type == Datatype.additionalSpeedRestriction)
         .cast<AdditionalSpeedRestrictionData>()
@@ -439,7 +455,7 @@ void main() {
   });
 
   test('Test additional speed restriction with date in the past', () async {
-    final journey = getJourney('513_asp_date_before', 1, spTrainNumber: '513');
+    final journey = getJourney('T3', 1, jpPostfix: 'asp_date_before');
     final speedRestrictions = journey.data
         .where((it) => it.type == Datatype.additionalSpeedRestriction)
         .cast<AdditionalSpeedRestrictionData>()
@@ -451,7 +467,7 @@ void main() {
   });
 
   test('Test additional speed restriction with date in the future', () async {
-    final journey = getJourney('513_asp_date_after', 1, spTrainNumber: '513');
+    final journey = getJourney('T3', 1, jpPostfix: 'asp_date_after');
     final speedRestrictions = journey.data
         .where((it) => it.type == Datatype.additionalSpeedRestriction)
         .cast<AdditionalSpeedRestrictionData>()
@@ -463,7 +479,7 @@ void main() {
   });
 
   test('Test speed change is parsed correctly', () async {
-    final journey = getJourney('9999', 5);
+    final journey = getJourney('T9999', 5);
     final speedChanges = journey.data.where((it) => it.type == Datatype.speedChange).cast<SpeedChange>().toList();
 
     expect(journey.valid, true);
@@ -491,7 +507,7 @@ void main() {
   });
 
   test('Test connection tracks are parsed correctly', () async {
-    final journey = getJourney('9999', 5);
+    final journey = getJourney('T9999', 5);
     final connectionTracks =
         journey.data.where((it) => it.type == Datatype.connectionTrack).cast<ConnectionTrack>().toList();
 
@@ -515,7 +531,7 @@ void main() {
   });
 
   test('Test available break series are parsed correctly', () async {
-    var journey = getJourney('9999', 5);
+    var journey = getJourney('T9999', 5);
     expect(journey.valid, true);
     expect(journey.metadata.availableBreakSeries, hasLength(2));
     expect(journey.metadata.availableBreakSeries.elementAt(0).trainSeries, TrainSeries.R);
