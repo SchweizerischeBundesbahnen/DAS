@@ -19,6 +19,7 @@ import 'package:das_client/model/journey/track_equipment.dart';
 import 'package:das_client/model/journey/velocity.dart';
 import 'package:das_client/model/localized_string.dart';
 import 'package:das_client/sfera/src/mapper/track_equipment_mapper.dart';
+import 'package:das_client/sfera/src/model/delay.dart';
 import 'package:das_client/sfera/src/model/enums/length_type.dart';
 import 'package:das_client/sfera/src/model/enums/start_end_qualifier.dart';
 import 'package:das_client/sfera/src/model/enums/stop_skip_pass.dart';
@@ -33,7 +34,6 @@ import 'package:das_client/sfera/src/model/speeds.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location.dart';
 import 'package:das_client/sfera/src/model/train_characteristics.dart';
 import 'package:fimber/fimber.dart';
-import 'package:iso_duration/iso_duration.dart';
 
 class SferaModelMapper {
   SferaModelMapper._();
@@ -143,9 +143,7 @@ class SferaModelMapper {
         additionalSpeedRestrictions: additionalSpeedRestrictions,
         routeStart: journeyData.firstOrNull,
         routeEnd: journeyData.lastOrNull,
-        delay: _stringToDuration(relatedTrainInformation == null
-            ? '+PT0M0S' //Base Value for when the information is Null
-            : relatedTrainInformation.ownTrain.trainLocationInformation.delay.delay),
+        delay: Delay.toDuration(relatedTrainInformation?.ownTrain.trainLocationInformation.delay.delay),
         nonStandardTrackEquipmentSegments: trackEquipmentSegments,
         availableBreakSeries: _parseAvailableBreakSeries(journeyData),
         breakSeries: trainCharacteristic?.tcFeatures.trainCategoryCode != null &&
@@ -157,20 +155,6 @@ class SferaModelMapper {
       ),
       data: journeyData,
     );
-  }
-
-  static Duration _stringToDuration(String stringToChange) {
-    //'-PT41M30S'
-
-    //TODO code in util auslagern und ganz ganz viele tests wie zb -5 stunden
-    //TODO anschauen was mit über einer stunde geschehen sollte (mit UX)
-    final Duration? delay = tryParseIso8601Duration(stringToChange);
-
-    if (delay == null) {
-      //Todo change the error-code
-      throw FormatException('Invalid ISO 8601 duration format');
-    }
-    return delay;
   }
 
   static List<AdditionalSpeedRestriction> _parseAdditionalSpeedRestrictions(

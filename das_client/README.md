@@ -35,9 +35,23 @@ fvm flutter test --flavor dev --dart-define=MQTT_USERNAME=${MQTT_USERNAME} --dar
 
 ## Architecture
 
-TODO
-
+### Test file structure
+To prevent confusion, fictive train numbers with the prefix `T` are used for the test scenarios. It is desired to create new train journeys for different features.  
+The file structure in [test_resources](test_resources) for a test scenario looks as follows:
+* base directory named `<train number>_<optional description>`
+* journey profile named `SFERA_JP_<train number>_<optional postfix>`
+* corresponding segment profiles named `SFERA_SP_<train number>_<segment number>`
+* corresponding train characteristics named `SFERA_TC_<train number>_<tc number>`  
+  An example test scenario for train number T1 could look like this:
+* T1_demo_journey/
+    * SFERA_JP_T1
+    * SFERA_JP_T1_without_stop
+    * SFERA_SP_T1_1
+    * SFERA_SP_T1_2
+    * SFERA_TC_T1_1
 <a name="localization"></a>
+
+
 ## Localization
 
 The app is available in three languages:
