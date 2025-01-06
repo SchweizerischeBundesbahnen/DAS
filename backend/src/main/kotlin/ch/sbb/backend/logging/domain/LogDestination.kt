@@ -1,5 +1,6 @@
 package ch.sbb.backend.logging.domain
 
 enum class LogDestination {
-    SPLUNK
+    SPLUNK,
+    CONSOLE
 }

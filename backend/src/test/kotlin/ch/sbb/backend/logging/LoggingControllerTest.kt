@@ -12,12 +12,19 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import java.io.ByteArrayOutputStream
+import java.io.PrintStream
 import java.time.OffsetDateTime
+import kotlin.test.assertEquals
 
 class LoggingControllerTest : BaseIT() {
 
     @MockitoBean
     private lateinit var splunkHecClient: SplunkHecClient
+
+    private val standardOut: PrintStream = System.out
+    private val outputStreamCaptor: ByteArrayOutputStream = ByteArrayOutputStream()
+
 
     @Test
     fun `should log messages with seconds since epoch timestamp`() {
@@ -154,5 +161,53 @@ class LoggingControllerTest : BaseIT() {
                 .content(logEntriesJson)
         )
             .andExpect(status().isBadRequest)
+    }
+
+    @Test
+    fun `should log messages with other tenant config`() {
+        System.setOut(PrintStream(outputStreamCaptor))
+
+        val logEntriesJson = """
+            [
+                {
+                    "time": "2025-01-06T15:09:00.000Z",
+                    "source": "tenant",
+                    "message": "my message from other tenant",
+                    "level": "warning",
+                    "metadata": {
+                        "key1": "value1",
+                        "key2": "value2"
+                    }
+                }
+            ]
+        """.trimIndent()
+
+        mockMvc.perform(
+            post("/api/v1/logging/logs")
+                .with(
+                    jwt()
+                        .jwt { jwt ->
+                            jwt.claims { claims ->
+                                claims.put(
+                                    "tid",
+                                    "60631a54-4f57-4907-a3e4-d97112e95596"
+                                )
+                            }
+                        }
+                        .authorities(SimpleGrantedAuthority("ROLE_admin"))
+                )
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(logEntriesJson)
+        )
+            .andExpect(status().isOk)
+
+
+        val expectedOut =
+            "LogEntry(time=2025-01-06T16:09+01:00, source=tenant, message=my message from other tenant, level=LogLevel(value=WARNING), metadata={key1=value1, key2=value2})"
+        val consoleRes = outputStreamCaptor.toString().split("\n")
+
+        assertEquals(expectedOut, consoleRes[0])
+
+        System.setOut(standardOut)
     }
 }

@@ -1,11 +1,12 @@
 package ch.sbb.backend.logging.infrastructure.config
 
-import ch.sbb.backend.logging.domain.repository.LoggingRepository
+import ch.sbb.backend.logging.domain.MultitenantLoggingService
 import ch.sbb.backend.logging.domain.repository.TenantRepository
 import ch.sbb.backend.logging.domain.service.DomainLoggingService
 import ch.sbb.backend.logging.domain.service.DomainTenantService
-import ch.sbb.backend.logging.domain.service.LoggingService
 import ch.sbb.backend.logging.domain.service.TenantService
+import ch.sbb.backend.logging.infrastructure.ConsoleLoggingRepository
+import ch.sbb.backend.logging.infrastructure.SplunkLoggingRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -13,8 +14,12 @@ import org.springframework.context.annotation.Configuration
 class LoggingBeanConfiguration {
 
     @Bean
-    fun logService(loggingRepository: LoggingRepository): LoggingService {
-        return DomainLoggingService(loggingRepository)
+    fun multitenantLoggingService(
+        tenantService: TenantService,
+        splunkLoggingRepository: SplunkLoggingRepository,
+        consoleLoggingRepository: ConsoleLoggingRepository
+    ): MultitenantLoggingService {
+        return MultitenantLoggingService(tenantService, DomainLoggingService(splunkLoggingRepository), DomainLoggingService(consoleLoggingRepository))
     }
 
     @Bean

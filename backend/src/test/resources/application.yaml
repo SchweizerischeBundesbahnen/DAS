@@ -28,6 +28,11 @@ auth:
       issuer-uri: https://login.microsoftonline.com/3409e798-d567-49b1-9bae-f0be66427c54/v2.0
       jwk-set-uri: https://login.microsoftonline.com/3409e798-d567-49b1-9bae-f0be66427c54/discovery/v2.0/keys
       log-destination: splunk
+    - name: tenant
+      id: 60631a54-4f57-4907-a3e4-d97112e95596
+      issuer-uri: https://login.microsoftonline.com/60631a54-4f57-4907-a3e4-d97112e95596/v2.0
+      jwk-set-uri: https://login.microsoftonline.com/60631a54-4f57-4907-a3e4-d97112e95596/discovery/v2.0/keys
+      log-destination: console
 
 splunk:
   url: "url"

@@ -1,6 +1,6 @@
 package ch.sbb.backend.logging.application.rest
 
-import ch.sbb.backend.logging.domain.service.LoggingService
+import ch.sbb.backend.logging.domain.MultitenantLoggingService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("api/v1/logging")
 @Tag(name = "Logging", description = "API for logging")
-class LoggingController(private val loggingService: LoggingService) {
+class LoggingController(
+    private val loggingService: MultitenantLoggingService
+) {
 
     @Operation(summary = "Log messages from clients")
     @ApiResponse(responseCode = "200", description = "Logs successfully saved")
