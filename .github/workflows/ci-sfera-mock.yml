@@ -54,8 +54,3 @@ jobs:
           -Dspring-boot.build-image.imageName=$IMAGE_ID:$VERSION
         
         docker push $IMAGE_ID:$VERSION
-    # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
-    - name: Update dependency graph
-      uses: advanced-security/maven-dependency-submission-action@v4
-      with:
-        directory: sfera-mock
