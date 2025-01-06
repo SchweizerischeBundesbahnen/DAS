@@ -1,6 +1,8 @@
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
-import 'package:analyzer/error/error.dart';
+import 'package:analyzer/error/error.dart' hide
+  // ignore: undefined_hidden_name, necessary to support lower analyzer versions
+  LintCode;
 
 // Lint rule to use src folder imports
 class DontUseSrcFolderImports extends DartLintRule {

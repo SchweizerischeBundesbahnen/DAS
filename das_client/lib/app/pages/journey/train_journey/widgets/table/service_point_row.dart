@@ -20,7 +20,7 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
     required super.settings,
     super.height = rowHeight,
     super.trackEquipmentRenderData,
-  }) : super(rowColor: metadata.nextStop == data ? SBBColors.royal.withOpacity(0.2) : null);
+  }) : super(rowColor: metadata.nextStop == data ? SBBColors.royal.withAlpha((255.0 * 0.2).round()) : null);
 
   @override
   DASTableCell informationCell(BuildContext context) {
