@@ -8,6 +8,7 @@ import 'package:das_client/model/journey/cab_signaling.dart';
 import 'package:das_client/model/journey/connection_track.dart';
 import 'package:das_client/model/journey/curve_point.dart';
 import 'package:das_client/model/journey/datatype.dart';
+import 'package:das_client/model/journey/graduated_station_speeds.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/protection_section.dart';
@@ -15,7 +16,9 @@ import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
 import 'package:das_client/model/journey/speed_change.dart';
 import 'package:das_client/model/journey/speed_data.dart';
+import 'package:das_client/model/journey/station_speed_data.dart';
 import 'package:das_client/model/journey/track_equipment.dart';
+import 'package:das_client/model/journey/train_series.dart';
 import 'package:das_client/model/journey/velocity.dart';
 import 'package:das_client/model/localized_string.dart';
 import 'package:das_client/sfera/src/mapper/track_equipment_mapper.dart';
@@ -24,6 +27,7 @@ import 'package:das_client/sfera/src/model/enums/start_end_qualifier.dart';
 import 'package:das_client/sfera/src/model/enums/stop_skip_pass.dart';
 import 'package:das_client/sfera/src/model/enums/taf_tap_location_type.dart';
 import 'package:das_client/sfera/src/model/enums/xml_enum.dart';
+import 'package:das_client/sfera/src/model/graduated_speed_info.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/multilingual_text.dart';
 import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
@@ -96,14 +100,17 @@ class SferaModelMapper {
             .first;
 
         journeyData.add(ServicePoint(
-            name: _localizedStringFromMultilingualText(tafTapLocation.locationNames),
-            order: calculateOrder(segmentIndex, timingPoint.location),
-            mandatoryStop: tpConstraint.stoppingPointInformation?.stopType?.mandatoryStop ?? true,
-            isStop: tpConstraint.stopSkipPass == StopSkipPass.stoppingPoint,
-            isStation: tafTapLocation.locationType != TafTapLocationType.stoppingLocation,
-            bracketStation: _parseBracketStation(tafTapLocations, tafTapLocation),
-            kilometre: kilometreMap[timingPoint.location] ?? [],
-            speedData: _speedDataFromSpeeds(tafTapLocation.stationSpeed?.xmlStationSpeed.element)));
+          name: _localizedStringFromMultilingualText(tafTapLocation.locationNames),
+          order: calculateOrder(segmentIndex, timingPoint.location),
+          mandatoryStop: tpConstraint.stoppingPointInformation?.stopType?.mandatoryStop ?? true,
+          isStop: tpConstraint.stopSkipPass == StopSkipPass.stoppingPoint,
+          isStation: tafTapLocation.locationType != TafTapLocationType.stoppingLocation,
+          bracketStation: _parseBracketStation(tafTapLocations, tafTapLocation),
+          kilometre: kilometreMap[timingPoint.location] ?? [],
+          speedData: _speedDataFromSpeeds(tafTapLocation.stationSpeed?.xmlStationSpeed.element),
+          stationSpeedData:
+              _stationSpeedDataFromGraduatedSpeedInfo(tafTapLocation.stationSpeed?.xmlGraduatedSpeedInfo?.element),
+        ));
       }
 
       _parseAndAddProtectionSections(journeyData, segmentIndex, segmentProfile, kilometreMap);
@@ -381,11 +388,36 @@ class SferaModelMapper {
             .toList());
   }
 
+  static StationSpeedData? _stationSpeedDataFromGraduatedSpeedInfo(GraduatedSpeedInfo? graduatedSpeedInfo) {
+    if (graduatedSpeedInfo == null) return null;
+
+    final graduatedStationSpeeds = <GraduatedStationSpeeds>[];
+    for (final entity in graduatedSpeedInfo.entities) {
+      if (entity.adSpeed != null) {
+        final speeds = GraduatedStationSpeeds.from([TrainSeries.A, TrainSeries.D], entity.adSpeed!, text: entity.text);
+        graduatedStationSpeeds.add(speeds);
+      }
+      if (entity.nSpeed != null) {
+        final speeds = GraduatedStationSpeeds.from([TrainSeries.N], entity.nSpeed!, text: entity.text);
+        graduatedStationSpeeds.add(speeds);
+      }
+      if (entity.sSpeed != null) {
+        final speeds = GraduatedStationSpeeds.from([TrainSeries.S], entity.sSpeed!, text: entity.text);
+        graduatedStationSpeeds.add(speeds);
+      }
+      if (entity.roSpeed != null) {
+        final speeds = GraduatedStationSpeeds.from([TrainSeries.R, TrainSeries.O], entity.roSpeed!, text: entity.text);
+        graduatedStationSpeeds.add(speeds);
+      }
+    }
+
+    return StationSpeedData(graduatedStationSpeeds: graduatedStationSpeeds);
+  }
+
   static Set<BreakSeries> _parseAvailableBreakSeries(List<BaseData> journeyData) {
     return journeyData
         .where((it) => it.speedData != null)
-        .map((it) => it.speedData!.velocities)
-        .expand((it) => it)
+        .expand((it) => it.speedData!.velocities)
         .where((it) => it.breakSeries != null)
         .map((it) => BreakSeries(trainSeries: it.trainSeries, breakSeries: it.breakSeries!))
         .toSet();

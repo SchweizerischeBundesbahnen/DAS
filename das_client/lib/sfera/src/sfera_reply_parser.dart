@@ -6,6 +6,8 @@ import 'package:das_client/sfera/src/model/current_limitation_start.dart';
 import 'package:das_client/sfera/src/model/curve_speed.dart';
 import 'package:das_client/sfera/src/model/das_operating_modes_selected.dart';
 import 'package:das_client/sfera/src/model/g2b_reply_payload.dart';
+import 'package:das_client/sfera/src/model/graduated_speed_info.dart';
+import 'package:das_client/sfera/src/model/graduated_speed_info_entity.dart';
 import 'package:das_client/sfera/src/model/handshake_acknowledgement.dart';
 import 'package:das_client/sfera/src/model/handshake_reject.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
@@ -200,6 +202,10 @@ class SferaReplyParser {
         return TrainCharacteristics(type: type, attributes: attributes, children: children, value: value);
       case TcFeatures.elementType:
         return TcFeatures(type: type, attributes: attributes, children: children, value: value);
+      case GraduatedSpeedInfoEntity.elementType:
+        return GraduatedSpeedInfoEntity(type: type, attributes: attributes, children: children, value: value);
+      case GraduatedSpeedInfo.elementType:
+        return GraduatedSpeedInfo(type: type, attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElement(type: type, attributes: attributes, children: children, value: value);
     }
