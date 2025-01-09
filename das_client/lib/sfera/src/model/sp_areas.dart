@@ -5,6 +5,7 @@ import 'package:das_client/sfera/src/model/taf_tap_location.dart';
 class SpAreas extends SferaXmlElement {
   static const String elementType = 'SP_Areas';
   static const String _nonStandardTrackEquipmentName = 'nonStandardTrackEquipment';
+  static const String _tramAreaName = 'tramArea';
 
   SpAreas({super.type = elementType, super.attributes, super.children, super.value});
 
@@ -12,4 +13,7 @@ class SpAreas extends SferaXmlElement {
 
   Iterable<NetworkSpecificArea> get nonStandardTrackEquipments =>
       children.whereType<NetworkSpecificArea>().where((it) => it.name == _nonStandardTrackEquipmentName);
+
+  Iterable<NetworkSpecificArea> get tramAreas =>
+      children.whereType<NetworkSpecificArea>().where((it) => it.name == _tramAreaName);
 }

@@ -2,17 +2,21 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
+import 'package:das_client/model/journey/balise.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
 import 'package:das_client/model/journey/connection_track.dart';
 import 'package:das_client/model/journey/curve_point.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/journey.dart';
+import 'package:das_client/model/journey/level_crossing.dart';
 import 'package:das_client/model/journey/protection_section.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
 import 'package:das_client/model/journey/speed_change.dart';
 import 'package:das_client/model/journey/track_equipment.dart';
 import 'package:das_client/model/journey/train_series.dart';
+import 'package:das_client/model/journey/tram_area.dart';
+import 'package:das_client/model/journey/whistle.dart';
 import 'package:das_client/sfera/sfera_component.dart';
 import 'package:das_client/sfera/src/mapper/sfera_model_mapper.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
@@ -577,5 +581,77 @@ void main() {
     expect(journey.metadata.breakSeries, isNotNull);
     expect(journey.metadata.breakSeries!.trainSeries, TrainSeries.R);
     expect(journey.metadata.breakSeries!.breakSeries, 115);
+  });
+
+  test('Test tram area parsed correctly', () async {
+    final journey = getJourney('T7', 1, tcCount: 1);
+    expect(journey.valid, true);
+
+    final tramAreas = journey.data.where((it) => it.type == Datatype.tramArea).cast<TramArea>().toList();
+    expect(tramAreas, hasLength(1));
+    expect(tramAreas[0].order, 900);
+    expect(tramAreas[0].kilometre[0], 37.8);
+    expect(tramAreas[0].amountTramSignals, 6);
+    expect(tramAreas[0].endKilometre, 36.8);
+  });
+
+  test('Test whistle parsed correctly', () async {
+    final journey = getJourney('T7', 1, tcCount: 1);
+    expect(journey.valid, true);
+
+    final whistles = journey.data.where((it) => it.type == Datatype.whistle).cast<Whistle>().toList();
+    expect(whistles, hasLength(1));
+    expect(whistles[0].order, 610);
+    expect(whistles[0].kilometre[0], 39.600);
+  });
+
+  test('Test balise parsed correctly', () async {
+    final journey = getJourney('T7', 1, tcCount: 1);
+    expect(journey.valid, true);
+
+    final balises = journey.data.where((it) => it.type == Datatype.balise).cast<Balise>().toList();
+    expect(balises, hasLength(8));
+    expect(balises[0].order, 600);
+    expect(balises[0].kilometre[0], 41.552);
+    expect(balises[0].amountLevelCrossings, 1);
+    expect(balises[1].order, 602);
+    expect(balises[1].kilometre[0], 41.190);
+    expect(balises[1].amountLevelCrossings, 1);
+
+    expect(balises[2].order, 604);
+    expect(balises[2].amountLevelCrossings, 1);
+    expect(balises[3].order, 606);
+    expect(balises[3].amountLevelCrossings, 1);
+    expect(balises[4].order, 608);
+    expect(balises[4].amountLevelCrossings, 1);
+
+    expect(balises[5].order, 611);
+    expect(balises[5].amountLevelCrossings, 1);
+    expect(balises[6].order, 613);
+    expect(balises[6].amountLevelCrossings, 2);
+    expect(balises[7].order, 616);
+    expect(balises[7].amountLevelCrossings, 1);
+  });
+
+  test('Test level crossing parsed correctly', () async {
+    final journey = getJourney('T7', 1, tcCount: 1);
+    expect(journey.valid, true);
+
+    final levelCrossings = journey.data.where((it) => it.type == Datatype.levelCrossing).cast<LevelCrossing>().toList();
+    expect(levelCrossings, hasLength(12));
+    expect(levelCrossings[0].order, 601);
+    expect(levelCrossings[0].kilometre[0], 41.492);
+    expect(levelCrossings[1].order, 603);
+    expect(levelCrossings[1].kilometre[0], 41.155);
+    expect(levelCrossings[2].order, 605);
+    expect(levelCrossings[3].order, 607);
+    expect(levelCrossings[4].order, 609);
+    expect(levelCrossings[5].order, 612);
+    expect(levelCrossings[6].order, 614);
+    expect(levelCrossings[7].order, 615);
+    expect(levelCrossings[8].order, 617);
+    expect(levelCrossings[9].order, 1600);
+    expect(levelCrossings[10].order, 1601);
+    expect(levelCrossings[11].order, 1602);
   });
 }

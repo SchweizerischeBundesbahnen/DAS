@@ -16,4 +16,8 @@ class AppAssets {
   static const iconCabStart = '$_iconsDir/icon_cab_start.svg';
   static const iconCabEnd = '$_iconsDir/icon_cab_end.svg';
   static const iconIndicatorChecked = '$_iconsDir/icon_indicator_checked.svg';
+  static const iconBalise = '$_iconsDir/icon_balise.svg';
+  static const iconKilometertafel = '$_iconsDir/icon_kilometertafel.svg';
+  static const iconPfeiftafel = '$_iconsDir/icon_pfeiftafel.svg';
+  static const iconStrassenbereich = '$_iconsDir/icon_strassenbereich.svg';
 }

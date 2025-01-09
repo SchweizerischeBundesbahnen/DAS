@@ -6,5 +6,9 @@ enum Datatype {
   cabSignaling,
   additionalSpeedRestriction,
   connectionTrack,
-  speedChange;
+  speedChange,
+  whistle,
+  levelCrossing,
+  tramArea,
+  balise;
 }
