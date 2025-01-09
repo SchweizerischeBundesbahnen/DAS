@@ -16,7 +16,7 @@ import 'package:das_client/model/journey/speed_change.dart';
 import 'package:das_client/model/journey/track_equipment.dart';
 import 'package:das_client/model/journey/train_series.dart';
 import 'package:das_client/model/journey/tram_area.dart';
-import 'package:das_client/model/journey/whistle.dart';
+import 'package:das_client/model/journey/whistles.dart';
 import 'package:das_client/sfera/sfera_component.dart';
 import 'package:das_client/sfera/src/mapper/sfera_model_mapper.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';

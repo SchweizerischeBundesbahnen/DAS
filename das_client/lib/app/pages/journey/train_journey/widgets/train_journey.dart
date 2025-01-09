@@ -3,29 +3,36 @@ import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/model/train_journey_settings.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/break_series_selection.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_row_builder.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cab_signaling_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/track_equipment_render_data.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/connection_track_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/curve_point_row.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/level_crossing_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/protection_section_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/signal_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/speed_change_row.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/tram_area_row.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/whistle_row.dart';
 import 'package:das_client/app/widgets/table/das_table.dart';
 import 'package:das_client/app/widgets/table/das_table_column.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
+import 'package:das_client/model/journey/whistles.dart';
 import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
+import 'package:das_client/model/journey/balise.dart';
 import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
 import 'package:das_client/model/journey/connection_track.dart';
 import 'package:das_client/model/journey/curve_point.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/journey.dart';
+import 'package:das_client/model/journey/level_crossing.dart';
 import 'package:das_client/model/journey/protection_section.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
 import 'package:das_client/model/journey/speed_change.dart';
+import 'package:das_client/model/journey/tram_area.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -126,8 +133,34 @@ class TrainJourney extends StatelessWidget {
                   settings: settings,
                   trackEquipmentRenderData: renderData)
               .build(context);
-        default:
-          return BaseRowBuilder(metadata: journey.metadata, data: rowData, settings: settings).build(context);
+        case Datatype.balise:
+          return BaliseRow(
+                  metadata: journey.metadata,
+                  data: rowData as Balise,
+                  settings: settings,
+                  trackEquipmentRenderData: renderData)
+              .build(context);
+        case Datatype.whistle:
+          return WhistleRow(
+                  metadata: journey.metadata,
+                  data: rowData as Whistle,
+                  settings: settings,
+                  trackEquipmentRenderData: renderData)
+              .build(context);
+        case Datatype.levelCrossing:
+          return LevelCrossingRow(
+                  metadata: journey.metadata,
+                  data: rowData as LevelCrossing,
+                  settings: settings,
+                  trackEquipmentRenderData: renderData)
+              .build(context);
+        case Datatype.tramArea:
+          return TramAreaRow(
+                  metadata: journey.metadata,
+                  data: rowData as TramArea,
+                  settings: settings,
+                  trackEquipmentRenderData: renderData)
+              .build(context);
       }
     });
   }

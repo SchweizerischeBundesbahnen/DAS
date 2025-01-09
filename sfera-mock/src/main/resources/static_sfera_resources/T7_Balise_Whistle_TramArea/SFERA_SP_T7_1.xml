@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
-                SP_ID="T7_1" SP_VersionMajor="1" SP_VersionMinor="2" SP_Length="2000" SP_Status="Valid">
+                SP_ID="T7_1" SP_VersionMajor="1" SP_VersionMinor="3" SP_Length="2000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -183,11 +183,11 @@
             <KM_Reference kmRef="39.086"/>
         </KilometreReferencePoint>
 
-        <KilometreReferencePoint location="116">
+        <KilometreReferencePoint location="616">
             <KM_Reference kmRef="38.736"/>
         </KilometreReferencePoint>
 
-        <KilometreReferencePoint location="117">
+        <KilometreReferencePoint location="617">
             <KM_Reference kmRef="38.646"/>
         </KilometreReferencePoint>
 

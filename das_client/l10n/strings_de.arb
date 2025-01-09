@@ -17,6 +17,8 @@
     "p_train_journey_table_curve_type_curve": "Kurve",
     "p_train_journey_table_curve_type_station_exit_curve": "Kurve Ausfahrt",
     "p_train_journey_table_curve_type_curve_after_halt": "Kurve nach Haltestelle",
+    "p_train_journey_table_level_crossing": "BUe",
+    "p_train_journey_table_tram_area": "TS",
     "w_navigation_drawer_fahrtinfo_title": "Fahrtinfo",
     "w_navigation_drawer_links_title": "Links",
     "w_navigation_drawer_settings_title": "Einstellungen",

@@ -20,7 +20,7 @@ import 'package:das_client/model/journey/speed_data.dart';
 import 'package:das_client/model/journey/track_equipment.dart';
 import 'package:das_client/model/journey/tram_area.dart';
 import 'package:das_client/model/journey/velocity.dart';
-import 'package:das_client/model/journey/whistle.dart';
+import 'package:das_client/model/journey/whistles.dart';
 import 'package:das_client/model/localized_string.dart';
 import 'package:das_client/sfera/src/mapper/track_equipment_mapper.dart';
 import 'package:das_client/sfera/src/model/enums/length_type.dart';
