@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
-                SP_ID="T7_1" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="2000" SP_Status="Valid">
+                SP_ID="T7_1" SP_VersionMajor="1" SP_VersionMinor="2" SP_Length="2000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -39,16 +39,16 @@
         </TimingPoint>
 
         <Balise location="600" levelCrossingGuarding="true" amountLevelCrossings="1"/>
-        <Balise location="601" levelCrossingGuarding="true" amountLevelCrossings="1"/>
         <Balise location="602" levelCrossingGuarding="true" amountLevelCrossings="1"/>
-        <Balise location="603" levelCrossingGuarding="true" amountLevelCrossings="1"/>
         <Balise location="604" levelCrossingGuarding="true" amountLevelCrossings="1"/>
-
         <Balise location="606" levelCrossingGuarding="true" amountLevelCrossings="1"/>
-        <Balise location="607" levelCrossingGuarding="true" amountLevelCrossings="1"/>
         <Balise location="608" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+
+        <Balise location="611" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+        <Balise location="613" levelCrossingGuarding="true" amountLevelCrossings="2"/>
+        <Balise location="616" levelCrossingGuarding="true" amountLevelCrossings="1"/>
         
-        <NetworkSpecificPoint location="605" name="whistle">
+        <NetworkSpecificPoint location="610" name="whistle">
             <NetworkSpecificParameter name="amount" value="1"/>
         </NetworkSpecificPoint>
         
@@ -101,6 +101,16 @@
     </SP_Areas>
 
     <SP_ContextInformation>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="601" endLocation="601" />
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="603" endLocation="603" />
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="605" endLocation="605" />
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="607" endLocation="607" />
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="609" endLocation="609" />
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="612" endLocation="612" />
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="614" endLocation="614" />
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="615" endLocation="615" />
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="617" endLocation="617" />
+
         <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="1600" endLocation="1600" />
         <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="1601" endLocation="1601" />
         <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="1602" endLocation="1602" />
@@ -114,35 +124,71 @@
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="601">
-            <KM_Reference kmRef="41.155"/>
+            <KM_Reference kmRef="41.492"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="602">
-            <KM_Reference kmRef="40.777"/>
+            <KM_Reference kmRef="41.190"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="603">
-            <KM_Reference kmRef="40.401"/>
+            <KM_Reference kmRef="41.155"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="604">
-            <KM_Reference kmRef="39.989"/>
+            <KM_Reference kmRef="40.777"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="605">
-            <KM_Reference kmRef="39.600"/>
+            <KM_Reference kmRef="40.698"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="606">
-            <KM_Reference kmRef="39.453"/>
+            <KM_Reference kmRef="40.401"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="607">
-            <KM_Reference kmRef="38.736"/>
+            <KM_Reference kmRef="40.322"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="608">
-            <KM_Reference kmRef="37.957"/>
+            <KM_Reference kmRef="39.989"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="609">
+            <KM_Reference kmRef="39.833"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="610">
+            <KM_Reference kmRef="39.600"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="611">
+            <KM_Reference kmRef="39.453"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="612">
+            <KM_Reference kmRef="39.361"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="613">
+            <KM_Reference kmRef="39.133"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="614">
+            <KM_Reference kmRef="39.122"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="615">
+            <KM_Reference kmRef="39.086"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="116">
+            <KM_Reference kmRef="38.736"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="117">
+            <KM_Reference kmRef="38.646"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="900">
