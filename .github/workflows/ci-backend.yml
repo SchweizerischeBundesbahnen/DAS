@@ -7,30 +7,25 @@
 # documentation.
 
 name: Backend Java CI with Maven
-    
+
+defaults:
+  run:
+    working-directory: backend
+
 on:
   push:
     paths:
       - 'backend/**'
-      - 'preload/**'
     branches: [ "main" ]
   pull_request:
     paths:
       - 'backend/**'
-      - 'preload/**'
     branches: [ "main" ]
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        directory: ['backend', 'preload']
-
-    defaults:
-      run:
-        working-directory: ${{ matrix.directory }}
 
     steps:
     - uses: actions/checkout@v4
@@ -48,7 +43,7 @@ jobs:
     - name: Create container image
       if: github.ref == 'refs/heads/main'
       env:
-        IMAGE_ID: ghcr.io/${{ github.repository }}/${{ matrix.directory }}
+        IMAGE_ID: ghcr.io/${{ github.repository }}/backend
         VERSION: main
       run: |
         # Convert to lowercase
@@ -59,8 +54,3 @@ jobs:
           -Dspring-boot.build-image.imageName=$IMAGE_ID:$VERSION
         
         docker push $IMAGE_ID:$VERSION
-    # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
-    - name: Update dependency graph
-      uses: advanced-security/maven-dependency-submission-action@v4
-      with:
-        directory: ${{ matrix.directory }}
