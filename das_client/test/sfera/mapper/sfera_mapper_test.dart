@@ -532,11 +532,13 @@ void main() {
   test('Test available break series are parsed correctly', () async {
     var journey = getJourney('T9999', 5);
     expect(journey.valid, true);
-    expect(journey.metadata.availableBreakSeries, hasLength(2));
+    expect(journey.metadata.availableBreakSeries, hasLength(3));
     expect(journey.metadata.availableBreakSeries.elementAt(0).trainSeries, TrainSeries.R);
-    expect(journey.metadata.availableBreakSeries.elementAt(0).breakSeries, 100);
-    expect(journey.metadata.availableBreakSeries.elementAt(1).trainSeries, TrainSeries.A);
-    expect(journey.metadata.availableBreakSeries.elementAt(1).breakSeries, 30);
+    expect(journey.metadata.availableBreakSeries.elementAt(0).breakSeries, 150);
+    expect(journey.metadata.availableBreakSeries.elementAt(1).trainSeries, TrainSeries.R);
+    expect(journey.metadata.availableBreakSeries.elementAt(1).breakSeries, 100);
+    expect(journey.metadata.availableBreakSeries.elementAt(2).trainSeries, TrainSeries.A);
+    expect(journey.metadata.availableBreakSeries.elementAt(2).breakSeries, 30);
 
     journey = getJourney('T5', 1);
     expect(journey.valid, true);
