@@ -581,7 +581,7 @@ void main() {
   });
 
   test('Test graduated station speeds are parsed correctly', () async {
-    final journey = getJourney('T4', 1);
+    final journey = getJourney('T8', 1);
     expect(journey.valid, true);
 
     final servicePoints = journey.data.where((it) => it.type == Datatype.servicePoint).cast<ServicePoint>().toList();

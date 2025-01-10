@@ -90,6 +90,7 @@ class MainContainer extends StatelessWidget {
   Widget _buttonArea() {
     return Builder(builder: (context) {
       return Row(
+        spacing: sbbDefaultSpacing * 0.5,
         children: [
           SBBTertiaryButtonLarge(
             label: context.l10n.p_train_journey_header_button_dark_theme,
@@ -105,7 +106,7 @@ class MainContainer extends StatelessWidget {
             icon: SBBIcons.context_menu_small,
             onPressed: () {},
           ),
-        ].withSpacing(width: sbbDefaultSpacing * 0.5),
+        ],
       );
     });
   }

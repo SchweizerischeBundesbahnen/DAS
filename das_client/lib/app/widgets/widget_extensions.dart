@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-extension SpacingExtension on List<Widget> {
-  withSpacing({double? width, double? height}) {
-    return expand((x) => [SizedBox(width: width, height: height), x])
+extension WidgetListExtension on Iterable<Widget> {
+  withDivider(final Widget divider) {
+    return expand((x) => [divider, x])
         .skip(1)
         .toList();
   }
