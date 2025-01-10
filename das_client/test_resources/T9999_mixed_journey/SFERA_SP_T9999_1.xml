@@ -54,7 +54,7 @@
             <TAF_TAP_Location_NSP name="stationSpeed">
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
                     &lt;stationSpeed&gt;
-                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;100&quot; speed=&quot;60&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;60&quot;/&gt;
                     &lt;/stationSpeed&gt;
                 "/>
                 <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="

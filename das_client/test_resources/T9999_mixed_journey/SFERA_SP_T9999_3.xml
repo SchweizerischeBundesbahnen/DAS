@@ -61,16 +61,18 @@
                 <LocationPrimaryCode>9993</LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
             <TAF_TAP_LocationName language="de" messageString="Halt auf Verlangen C"/>
-            <NetworkSpecificParameter name="xmlStationSpeed" value="
+            <TAF_TAP_Location_NSP name="stationSpeed">
+                <NetworkSpecificParameter name="xmlStationSpeed" value="
                     &lt;stationSpeed&gt;
-                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;100&quot; speed=&quot;60&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;60&quot;/&gt;
                     &lt;/stationSpeed&gt;
                 "/>
-            <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
+                <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
                     &lt;entries&gt;
                     &lt;entry roSpeed=&quot;70-60&quot;/&gt;
                     &lt;/entries&gt;
                 "/>
+            </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
         <NetworkSpecificArea startEndQualifier="WholeSP" name="nonStandardTrackEquipment">
