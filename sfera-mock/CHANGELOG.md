@@ -1,2 +1,43 @@
 # Changelog
 
+## 0.1.0 (2025-01-10)
+
+
+### Features
+
+* add connection track and lineChange mock data to 9999 ([#136](https://github.com/SchweizerischeBundesbahnen/DAS/issues/136)) ([#439](https://github.com/SchweizerischeBundesbahnen/DAS/issues/439)) ([37405ce](https://github.com/SchweizerischeBundesbahnen/DAS/commit/37405ce2d9ef9620645182b04dc17fbd06f9c748))
+* add mock data for additional speed restrictions ([#87](https://github.com/SchweizerischeBundesbahnen/DAS/issues/87)) ([#412](https://github.com/SchweizerischeBundesbahnen/DAS/issues/412)) ([4e06906](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4e06906777d3b53c896c03e27aa86aa74cfedfc0))
+* add mockdate for balise, pfeiftafeln, levelcrossing and strassenbahn ([#224](https://github.com/SchweizerischeBundesbahnen/DAS/issues/224)) ([#480](https://github.com/SchweizerischeBundesbahnen/DAS/issues/480)) ([7358ab5](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7358ab5e105d916e32661ff0e9b5446e7e18e8e5))
+* add test data for protection section ([#405](https://github.com/SchweizerischeBundesbahnen/DAS/issues/405)) ([319de6b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/319de6b759413b2182ae16923384a1fd0ca3893c))
+* add TMS Connection, add Prefix to flavor, implement SP Request ([#331](https://github.com/SchweizerischeBundesbahnen/DAS/issues/331)) ([25270ee](https://github.com/SchweizerischeBundesbahnen/DAS/commit/25270eeed6384bb13168ffbc8481fb366c879cc1))
+* added CAB start and end signaling ([#82](https://github.com/SchweizerischeBundesbahnen/DAS/issues/82)) ([#442](https://github.com/SchweizerischeBundesbahnen/DAS/issues/442)) ([151f24e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/151f24e1d76c2911c2061fbbc0f95f414a634903))
+* added curve points and main signals to train journey ([#82](https://github.com/SchweizerischeBundesbahnen/DAS/issues/82)) ([523ecca](https://github.com/SchweizerischeBundesbahnen/DAS/commit/523eccad303bdc1be04f696605152d255df88cdd))
+* backend base with logging api ([#282](https://github.com/SchweizerischeBundesbahnen/DAS/issues/282)) ([dc29b19](https://github.com/SchweizerischeBundesbahnen/DAS/commit/dc29b19d19d662e5053afbdd90ee01aecc4a23c0))
+* implement anschlussgleise, anschlussweichen und Zahnstangen ([#136](https://github.com/SchweizerischeBundesbahnen/DAS/issues/136)) ([#447](https://github.com/SchweizerischeBundesbahnen/DAS/issues/447)) ([aee3fe1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/aee3fe1ebf226a16198e76f425fd247374a998de))
+* implement betriebspunktabfolge ([#388](https://github.com/SchweizerischeBundesbahnen/DAS/issues/388)) ([9f36786](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9f367865190ffc91cc492891a84a9fa24f0c3a1a))
+* implement break series selection and speed display ([#89](https://github.com/SchweizerischeBundesbahnen/DAS/issues/89)) ([#469](https://github.com/SchweizerischeBundesbahnen/DAS/issues/469)) ([cd84c85](https://github.com/SchweizerischeBundesbahnen/DAS/commit/cd84c854df7dbf001294317e28673b4301a7075b))
+* implement protection section ([#407](https://github.com/SchweizerischeBundesbahnen/DAS/issues/407)) ([731b2ad](https://github.com/SchweizerischeBundesbahnen/DAS/commit/731b2ad7b7ccdf66622d411165640a8df4e51559))
+* mock sfera communication and add example JP and SP ([#323](https://github.com/SchweizerischeBundesbahnen/DAS/issues/323)) ([d44a434](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d44a43469a722e6381465358c0308c58174433ed))
+* passing or stopping point information ([#386](https://github.com/SchweizerischeBundesbahnen/DAS/issues/386)) ([fc564a3](https://github.com/SchweizerischeBundesbahnen/DAS/commit/fc564a3f07ec6d4984f52995b718863fcfa38e88))
+* prepare sp with mock signals, track equipment, station speeds and curves ([#353](https://github.com/SchweizerischeBundesbahnen/DAS/issues/353)) ([d53ca8c](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d53ca8c2bd4dbf1adfbae46f3ebe8c1731206fa1))
+* publish sfera events ([#216](https://github.com/SchweizerischeBundesbahnen/DAS/issues/216)) ([#464](https://github.com/SchweizerischeBundesbahnen/DAS/issues/464)) ([b72d505](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b72d50545b2001b8229b766676800e235c2174ca))
+* relatedTrainInformationRequest ([#216](https://github.com/SchweizerischeBundesbahnen/DAS/issues/216)) ([#468](https://github.com/SchweizerischeBundesbahnen/DAS/issues/468)) ([50bedbb](https://github.com/SchweizerischeBundesbahnen/DAS/commit/50bedbb221d3a82ffdb0a8aeea7734209811047e))
+* remove exchange and support active driving mode ([#381](https://github.com/SchweizerischeBundesbahnen/DAS/issues/381)) ([ba8f9a2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ba8f9a232cc817da5e3c00f186612df8ea4815fd))
+* train characteristics request/reply ([#216](https://github.com/SchweizerischeBundesbahnen/DAS/issues/216)) ([#465](https://github.com/SchweizerischeBundesbahnen/DAS/issues/465)) ([557a144](https://github.com/SchweizerischeBundesbahnen/DAS/commit/557a14427357928c0f4990ee003b034367e42b17))
+* updated mock data for track equipment ([#82](https://github.com/SchweizerischeBundesbahnen/DAS/issues/82)) ([#441](https://github.com/SchweizerischeBundesbahnen/DAS/issues/441)) ([56bd01f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/56bd01f9da4e6af31cb436655510bd0573b6b6e1))
+* webapp tc request ([#216](https://github.com/SchweizerischeBundesbahnen/DAS/issues/216)) ([#466](https://github.com/SchweizerischeBundesbahnen/DAS/issues/466)) ([25d357d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/25d357de01a095e4bee0f0ba0c1f4b486604f985))
+
+
+### Bug Fixes
+
+* **deps:** update dependency org.springframework.boot:spring-boot-starter-parent to v3.3.5 ([#325](https://github.com/SchweizerischeBundesbahnen/DAS/issues/325)) ([11ed6ce](https://github.com/SchweizerischeBundesbahnen/DAS/commit/11ed6ce945a5619dc1bd1ff0cff2cc462fdf77d1))
+* **deps:** update dependency org.springframework.boot:spring-boot-starter-parent to v3.4.0 ([#424](https://github.com/SchweizerischeBundesbahnen/DAS/issues/424)) ([e325263](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e325263012fe6417f337ba951d7d5136ae4c2de7))
+* **deps:** update dependency org.springframework.boot:spring-boot-starter-parent to v3.4.1 ([#476](https://github.com/SchweizerischeBundesbahnen/DAS/issues/476)) ([07adf7d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/07adf7dbe81844325950c91de6ed3b7e2e09e2e2))
+* spring cloud dependencies ([#448](https://github.com/SchweizerischeBundesbahnen/DAS/issues/448)) ([ab17b62](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ab17b6247503d6bcee182828ac1ca5823b3e5d17))
+
+
+### Miscellaneous Chores
+
+* release 0.1.0 ([e73de8e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e73de8ed6c8f44c533afcc709c822d14f554c065))
+
+## Changelog
