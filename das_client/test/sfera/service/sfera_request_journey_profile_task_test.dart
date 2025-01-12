@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:das_client/mqtt/mqtt_component.dart';
 import 'package:das_client/sfera/sfera_component.dart';
+import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/sfera_g2b_reply_message.dart';
 import 'package:das_client/sfera/src/service/task/request_journey_profile_task.dart';
 import 'package:das_client/util/error_code.dart';
@@ -38,7 +39,7 @@ void main() {
 
     await journeyTask.execute((task, data) {
       expect(task, journeyTask);
-      expect(data, sferaG2bReplyMessage.payload!.journeyProfiles.first);
+      expect(data!.whereType<JourneyProfile>().first, sferaG2bReplyMessage.payload!.journeyProfiles.first);
     }, (task, errorCode) {
       fail('Task failed with error code $errorCode');
     });

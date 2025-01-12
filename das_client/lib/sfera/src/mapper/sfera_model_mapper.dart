@@ -19,6 +19,7 @@ import 'package:das_client/model/journey/track_equipment.dart';
 import 'package:das_client/model/journey/velocity.dart';
 import 'package:das_client/model/localized_string.dart';
 import 'package:das_client/sfera/src/mapper/track_equipment_mapper.dart';
+import 'package:das_client/sfera/src/model/delay.dart';
 import 'package:das_client/sfera/src/model/enums/length_type.dart';
 import 'package:das_client/sfera/src/model/enums/start_end_qualifier.dart';
 import 'package:das_client/sfera/src/model/enums/stop_skip_pass.dart';
@@ -27,6 +28,7 @@ import 'package:das_client/sfera/src/model/enums/xml_enum.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/multilingual_text.dart';
 import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
+import 'package:das_client/sfera/src/model/related_train_information.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
 import 'package:das_client/sfera/src/model/speeds.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location.dart';
@@ -42,10 +44,13 @@ class SferaModelMapper {
   static const String _protectionSectionNspFacultativeName = 'facultative';
   static const String _protectionSectionNspLengthTypeName = 'lengthType';
 
-  static Journey mapToJourney(JourneyProfile journeyProfile, List<SegmentProfile> segmentProfiles,
-      List<TrainCharacteristics> trainCharacteristics) {
+  static Journey mapToJourney(
+      {required JourneyProfile journeyProfile,
+      List<SegmentProfile> segmentProfiles = const [],
+      List<TrainCharacteristics> trainCharacteristics = const [],
+      RelatedTrainInformation? relatedTrainInformation}) {
     try {
-      return _mapToJourney(journeyProfile, segmentProfiles, trainCharacteristics);
+      return _mapToJourney(journeyProfile, segmentProfiles, trainCharacteristics, relatedTrainInformation);
     } catch (e, s) {
       Fimber.e('Error mapping journey-/segment profiles to journey:', ex: e, stacktrace: s);
       return Journey.invalid();
@@ -53,7 +58,7 @@ class SferaModelMapper {
   }
 
   static Journey _mapToJourney(JourneyProfile journeyProfile, List<SegmentProfile> segmentProfiles,
-      List<TrainCharacteristics> trainCharacteristics) {
+      List<TrainCharacteristics> trainCharacteristics, RelatedTrainInformation? relatedTrainInformation) {
     final journeyData = <BaseData>[];
 
     final segmentProfilesLists = journeyProfile.segmentProfilesLists.toList();
@@ -129,6 +134,7 @@ class SferaModelMapper {
 
     final trainCharacteristic = _resolveFirstTrainCharacteristics(journeyProfile, trainCharacteristics);
     final servicePoints = journeyData.where((it) => it.type == Datatype.servicePoint).toList();
+
     return Journey(
       metadata: Metadata(
         nextStop: servicePoints.length > 1 ? servicePoints[1] as ServicePoint : null,
@@ -136,6 +142,7 @@ class SferaModelMapper {
         additionalSpeedRestrictions: additionalSpeedRestrictions,
         routeStart: journeyData.firstOrNull,
         routeEnd: journeyData.lastOrNull,
+        delay: Delay.toDuration(relatedTrainInformation?.ownTrain.trainLocationInformation.delay.delay),
         nonStandardTrackEquipmentSegments: trackEquipmentSegments,
         availableBreakSeries: _parseAvailableBreakSeries(journeyData),
         breakSeries: trainCharacteristic?.tcFeatures.trainCategoryCode != null &&
