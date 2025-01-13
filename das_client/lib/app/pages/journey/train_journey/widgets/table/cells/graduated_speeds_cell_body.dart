@@ -26,7 +26,10 @@ class GraduatedSpeedsCellBody extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           _visualizedSpeeds(key: incomingSpeedsKey, speeds: incomingSpeeds),
-          Divider(color: Theme.of(context).colorScheme.onSurface, height: 1.0),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 2.0),
+            child: Divider(color: Theme.of(context).colorScheme.onSurface, height: 1.0),
+          ),
           _visualizedSpeeds(key: outgoingSpeedsKey, speeds: outgoingSpeeds),
         ],
       );
@@ -36,7 +39,7 @@ class GraduatedSpeedsCellBody extends StatelessWidget {
   }
 
   Widget _visualizedSpeeds({required List<Speed> speeds, Key? key}) {
-    if (speeds.hasSquaredOrCircled()) {
+    if (speeds.hasSquaredOrCircled) {
       return Row(
         key: key,
         mainAxisSize: MainAxisSize.min,
@@ -51,8 +54,7 @@ class GraduatedSpeedsCellBody extends StatelessWidget {
       final squaredOrCircled = speed.isCircled || speed.isSquared;
       return Container(
         key: squaredOrCircled ? (speed.isCircled ? circledSpeedKey : squaredSpeedKey) : null,
-        margin: EdgeInsets.symmetric(vertical: 1.0),
-        padding: EdgeInsets.symmetric(horizontal: 1.0),
+        padding: EdgeInsets.all(1.0),
         decoration: squaredOrCircled
             ? BoxDecoration(
                 border: Border.all(color: Theme.of(context).colorScheme.onSurface),
@@ -73,5 +75,5 @@ class GraduatedSpeedsCellBody extends StatelessWidget {
 extension _SpeedIterableX on Iterable<Speed> {
   String toJoinedString({String divider = '-'}) => map((it) => it.speed.toString()).join(divider);
 
-  bool hasSquaredOrCircled() => any((it) => it.isSquared || it.isCircled);
+  bool get hasSquaredOrCircled => any((it) => it.isSquared || it.isCircled);
 }

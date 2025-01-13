@@ -1,6 +1,7 @@
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cab_signaling_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/curve_point_row.dart';
@@ -676,6 +677,65 @@ void main() {
 
       // check ExtendedSpeedReversingImpossibleKey in Flughafen
       _checkTrackEquipmentOnServicePoint('Flughafen', TrackEquipmentCellBody.extendedSpeedReversingPossibleKey);
+    });
+
+    testWidgets('test if station speeds are displayed correctly', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: 'T8');
+
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
+
+      // check station speeds for Bern
+
+      final bernStationRow = findDASTableRowByText('Bern');
+      expect(bernStationRow, findsOneWidget);
+      final bernIncomingSpeeds = find.descendant(of: bernStationRow, matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey));
+      expect(bernIncomingSpeeds, findsOneWidget);
+      final bernIncomingSpeedsText = find.descendant(of: bernStationRow, matching: find.text('75-70-60'));
+      expect(bernIncomingSpeedsText, findsOneWidget);
+      final bernOutgoingSpeeds = find.descendant(of: bernStationRow, matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey));
+      expect(bernOutgoingSpeeds, findsNothing);
+
+      // check station speeds for Wankdorf, no station speeds given
+
+      final wankdorfStationRow = findDASTableRowByText('Wankdorf');
+      expect(wankdorfStationRow, findsOneWidget);
+      final wankdorfIncomingSpeeds = find.descendant(of: wankdorfStationRow, matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey));
+      expect(wankdorfIncomingSpeeds, findsNothing);
+      final wankdorfOutgoingSpeeds = find.descendant(of: wankdorfStationRow, matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey));
+      expect(wankdorfOutgoingSpeeds, findsNothing);
+
+      // check station speeds for Burgdorf
+
+      final burgdorfStationRow = findDASTableRowByText('Burgdorf');
+      expect(burgdorfStationRow, findsOneWidget);
+      final burgdorfIncomingSpeeds = find.descendant(of: burgdorfStationRow, matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey));
+      expect(burgdorfIncomingSpeeds, findsOneWidget);
+      final burgdorfIncomingSpeeds75 = find.descendant(of: burgdorfIncomingSpeeds, matching: find.text('75'));
+      expect(burgdorfIncomingSpeeds75, findsOneWidget);
+      final burgdorfIncomingSpeeds70 = find.descendant(of: burgdorfIncomingSpeeds, matching: find.text('70'));
+      expect(burgdorfIncomingSpeeds70, findsOneWidget);
+      final burgdorfIncomingSpeeds70Circled = find.ancestor(of: burgdorfIncomingSpeeds70, matching: find.byKey(GraduatedSpeedsCellBody.circledSpeedKey));
+      expect(burgdorfIncomingSpeeds70Circled, findsOneWidget);
+      final burgdorfOutgoingSpeeds = find.descendant(of: burgdorfStationRow, matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey));
+      expect(burgdorfOutgoingSpeeds, findsOneWidget);
+      final burgdorfOutgoingSpeeds60 = find.descendant(of: burgdorfOutgoingSpeeds, matching: find.text('60'));
+      expect(burgdorfOutgoingSpeeds60, findsOneWidget);
+      final burgdorfOutgoingSpeeds60Squared = find.ancestor(of: burgdorfOutgoingSpeeds60, matching: find.byKey(GraduatedSpeedsCellBody.squaredSpeedKey));
+      expect(burgdorfOutgoingSpeeds60Squared, findsOneWidget);
+
+      // check station speeds for Olten, no graduated speed for train series R
+
+      final oltenStationRow = findDASTableRowByText('Olten');
+      expect(oltenStationRow, findsOneWidget);
+      final oltenIncomingSpeeds = find.descendant(of: oltenStationRow, matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey));
+      expect(oltenIncomingSpeeds, findsNothing);
+      final oltenOutgoingSpeeds = find.descendant(of: oltenStationRow, matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey));
+      expect(oltenOutgoingSpeeds, findsNothing);
+
     });
   });
 }

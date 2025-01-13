@@ -44,7 +44,7 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
         informationCell(context),
         iconsCell2(context),
         iconsCell3(context),
-        graduatedSpeedCell(context),
+        localSpeedCell(context),
         brakedWeightSpeedCell(context),
         advisedSpeedCell(context),
         actionsCell(context),
@@ -58,16 +58,17 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
     }
 
     return DASTableCell(
-        color: specialCellColor,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(data.kilometre[0].toStringAsFixed(1)),
-            if (data.kilometre.length > 1) Text(data.kilometre[1].toStringAsFixed(1))
-          ],
-        ),
-        alignment: Alignment.centerLeft);
+      color: specialCellColor,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(data.kilometre[0].toStringAsFixed(1)),
+          if (data.kilometre.length > 1) Text(data.kilometre[1].toStringAsFixed(1))
+        ],
+      ),
+      alignment: Alignment.centerLeft,
+    );
   }
 
   DASTableCell routeCell(BuildContext context) {
@@ -102,7 +103,7 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
     return DASTableCell.empty();
   }
 
-  DASTableCell graduatedSpeedCell(BuildContext context) {
+  DASTableCell localSpeedCell(BuildContext context) {
     return DASTableCell.empty();
   }
 
@@ -124,17 +125,14 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
     );
   }
 
-  // TODO: clarify use of different icon cells and set appropriate name
   DASTableCell iconsCell1(BuildContext context) {
     return DASTableCell.empty();
   }
 
-  // TODO: clarify use of different icon cells and set appropriate name
   DASTableCell iconsCell2(BuildContext context) {
     return DASTableCell.empty();
   }
 
-  // TODO: clarify use of different icon cells and set appropriate name
   DASTableCell iconsCell3(BuildContext context) {
     return DASTableCell.empty();
   }

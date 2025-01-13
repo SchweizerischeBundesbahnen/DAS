@@ -3,11 +3,10 @@ import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/departure_authorization.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_channel.dart';
 import 'package:das_client/app/widgets/assets.dart';
-import 'package:das_client/app/widgets/widget_extensions.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:das_client/model/journey/journey.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:das_client/model/journey/journey.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class MainContainer extends StatelessWidget {
   const MainContainer({super.key});
