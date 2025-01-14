@@ -1,4 +1,5 @@
 import 'package:das_client/app/i18n/i18n.dart';
+import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +26,7 @@ class ADLNotification extends StatelessWidget {
           const SizedBox(width: sbbDefaultSpacing * 0.5),
           Text(
             '${context.l10n.w_adl_notification_title}: $message',
-            style: SBBTextStyles.mediumBold.copyWith(color: fontColor),
+            style: DASTextStyles.mediumBold.copyWith(color: fontColor),
           ),
         ],
       ),
