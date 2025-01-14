@@ -24,7 +24,11 @@ class LevelCrossingRow extends BaseRowBuilder<LevelCrossing> {
       return DASTableCell.empty();
     }
 
-    return DASTableCell(color: specialCellColor, child: Text(data.kilometre[0].toStringAsFixed(3)));
+    if (data.kilometre.isEmpty) {
+      return DASTableCell.empty(color: specialCellColor);
+    } else {
+      return DASTableCell(color: specialCellColor, child: Text(data.kilometre[0].toStringAsFixed(3)));
+    }
   }
 
   @override
