@@ -1,3 +1,4 @@
+import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 
@@ -22,15 +23,9 @@ class TimeContainer extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              '05:43:00',
-              style: SBBTextStyles.largeBold.copyWith(fontSize: 24.0),
-            ),
+            Text('05:43:00', style: DASTextStyles.xLargeBold),
             _divider(),
-            Text(
-              '+00:01:30',
-              style: SBBTextStyles.largeLight.copyWith(fontSize: 24.0),
-            ),
+            Text('+00:01:30', style: DASTextStyles.xLargeLight),
           ],
         ),
       ),
