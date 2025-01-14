@@ -392,22 +392,28 @@ class SferaModelMapper {
     if (graduatedSpeedInfo == null) return null;
 
     final graduatedStationSpeeds = <GraduatedStationSpeeds>[];
+
+    void addSpeed(List<TrainSeries> trainSeries, String speedString, String? text) {
+      try {
+        final speeds = GraduatedStationSpeeds.from(trainSeries, speedString, text: text);
+        graduatedStationSpeeds.add(speeds);
+      } catch (e) {
+        Fimber.w('Could not parse graduated station speed with "$speedString"', ex: e);
+      }
+    }
+
     for (final entity in graduatedSpeedInfo.entities) {
       if (entity.adSpeed != null) {
-        final speeds = GraduatedStationSpeeds.from([TrainSeries.A, TrainSeries.D], entity.adSpeed!, text: entity.text);
-        graduatedStationSpeeds.add(speeds);
+        addSpeed([TrainSeries.A, TrainSeries.D], entity.adSpeed!, entity.text);
       }
       if (entity.nSpeed != null) {
-        final speeds = GraduatedStationSpeeds.from([TrainSeries.N], entity.nSpeed!, text: entity.text);
-        graduatedStationSpeeds.add(speeds);
+        addSpeed([TrainSeries.N], entity.nSpeed!, entity.text);
       }
       if (entity.sSpeed != null) {
-        final speeds = GraduatedStationSpeeds.from([TrainSeries.S], entity.sSpeed!, text: entity.text);
-        graduatedStationSpeeds.add(speeds);
+        addSpeed([TrainSeries.S], entity.sSpeed!, entity.text);
       }
       if (entity.roSpeed != null) {
-        final speeds = GraduatedStationSpeeds.from([TrainSeries.R, TrainSeries.O], entity.roSpeed!, text: entity.text);
-        graduatedStationSpeeds.add(speeds);
+        addSpeed([TrainSeries.R, TrainSeries.O], entity.roSpeed!, entity.text);
       }
     }
 
