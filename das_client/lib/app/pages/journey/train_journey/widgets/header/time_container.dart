@@ -46,34 +46,30 @@ Widget _punctualityDisplay(BuildContext context) {
   final bloc = context.trainJourneyCubit;
 
   return StreamBuilder<Journey?>(
-      stream: bloc.journeyStream,
-      builder: (context, snapshot) {
-        if (!snapshot.hasData ||
-            snapshot.data == null ||
-            snapshot.data!.metadata.delay == null) {
-          return Center(
-            //SBBLoadingIndicator doesn't work here. It is not being showed
-            child: CircularProgressIndicator(),
-          );
-        }
-        final Journey journey = snapshot.data!;
+    stream: bloc.journeyStream,
+    builder: (context, snapshot) {
+      if (!snapshot.hasData || snapshot.data == null || snapshot.data!.metadata.delay == null) {
+        return Text('+00:00', style: SBBTextStyles.largeLight.copyWith(fontSize: 24.0));
+      }
 
-        final Duration delay = journey.metadata.delay!;
+      final Journey journey = snapshot.data!;
+      final Duration delay = journey.metadata.delay!;
 
-        final String minutes = (delay.inMinutes.abs() % 60).toString();
-        final String seconds = (delay.inSeconds.abs() % 60).toString();
-        final String hours = delay.inHours.abs().toString();
-        final String formattedDuration = '${delay.isNegative ? '-' : '+'}$hours:$minutes:${seconds.padLeft(2, '0')}';
-        return Text(
-          formattedDuration,
-          style: SBBTextStyles.largeLight.copyWith(fontSize: 24.0),
-        );
-      });
+      final String minutes = NumberFormat('00').format(delay.inMinutes.abs() % 60);
+      final String seconds = NumberFormat('00').format(delay.inSeconds.abs() % 60);
+      final String formattedDuration = '${delay.isNegative ? '-' : '+'}$minutes:$seconds';
+
+      return Text(
+        formattedDuration,
+        style: SBBTextStyles.largeLight.copyWith(fontSize: 24.0),
+      );
+    },
+  );
 }
 
 StreamBuilder _currentTime() {
   return StreamBuilder(
-    stream: Stream.periodic(const Duration(seconds: 1)),
+    stream: Stream.periodic(const Duration(milliseconds: 200)),
     builder: (context, snapshot) {
       return Text(
         DateFormat('HH:mm:ss').format(DateTime.now().toLocal()),

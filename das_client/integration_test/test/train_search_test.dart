@@ -9,7 +9,6 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train search screen tests', () {
-
     testWidgets('test default values', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
@@ -59,7 +58,6 @@ void main() {
       // check that the primary button is disabled
       final primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
       expect(tester.widget<SBBPrimaryButton>(primaryButton).onPressed, isNull);
-
     });
 
     testWidgets('test can select yesterday', (tester) async {
@@ -70,7 +68,8 @@ void main() {
       final yesterday = today.add(Duration(days: -1));
 
       final todayDateTextFinder = find.text(Format.date(today));
-      final yesterdayDateTextFinder = find.text('${Format.date(yesterday)} ${l10n.p_train_selection_date_not_today_warning}');
+      final yesterdayDateTextFinder =
+          find.text('${Format.date(yesterday)} ${l10n.p_train_selection_date_not_today_warning}');
 
       // Verify that today is preselected
       expect(todayDateTextFinder, findsOneWidget);
@@ -90,7 +89,6 @@ void main() {
 
       expect(todayDateTextFinder, findsNothing);
       expect(yesterdayDateTextFinder, findsOneWidget);
-
     });
 
     testWidgets('test can not select day before yesterday', (tester) async {
@@ -102,7 +100,8 @@ void main() {
       final dayBeforeYesterday = today.add(Duration(days: -2));
 
       final todayDateTextFinder = find.text(Format.date(today));
-      final yesterdayDateTextFinder = find.text('${Format.date(yesterday)} ${l10n.p_train_selection_date_not_today_warning}');
+      final yesterdayDateTextFinder =
+          find.text('${Format.date(yesterday)} ${l10n.p_train_selection_date_not_today_warning}');
       final dayBeforeYesterdayDateTextFinder = find.text(Format.date(dayBeforeYesterday));
 
       // Verify that today is preselected
@@ -114,7 +113,8 @@ void main() {
       final sbbDatePickerFinder = find.byWidgetPredicate((widget) => widget is SBBDatePicker);
       final yesterdayFinder = find.descendant(
           of: sbbDatePickerFinder,
-          matching: find.byWidgetPredicate((widget) => widget is Text && widget.data == '${(dayBeforeYesterday.day)}.'));
+          matching:
+              find.byWidgetPredicate((widget) => widget is Text && widget.data == '${(dayBeforeYesterday.day)}.'));
       await tapElement(tester, yesterdayFinder);
 
       // tap outside dialog
@@ -149,6 +149,5 @@ void main() {
 
       expect(find.text('${ErrorCode.sferaJpUnavailable.code}: ${l10n.c_error_sfera_jp_unavailable}'), findsOneWidget);
     });
-
   });
 }
