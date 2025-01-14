@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/nav/app_router.dart';
 import 'package:das_client/app/widgets/app_version_text.dart';
+import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/app/widgets/device_id_text.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +56,7 @@ class DASNavigationDrawer extends StatelessWidget {
 
     return ListTile(
       leading: isActiveRoute ? _activeIcon(icon) : _inactiveIcon(icon),
-      title: Text(title, style: isActiveRoute ? SBBTextStyles.mediumBold : SBBTextStyles.mediumLight),
+      title: Text(title, style: isActiveRoute ? DASTextStyles.mediumBold : DASTextStyles.mediumLight),
       onTap: () {
         Navigator.pop(context);
         context.router.replace(route);

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:collection/collection.dart';
+import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:das_client/app/widgets/table/das_table_column.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
@@ -84,8 +85,8 @@ class DASTable extends StatelessWidget {
     final borderColor = isDarkTheme ? SBBColors.iron : SBBColors.cloud;
     return DASTableThemeData(
       backgroundColor: isDarkTheme ? SBBColors.charcoal : SBBColors.white,
-      headingTextStyle: SBBTextStyles.smallLight,
-      dataTextStyle: SBBTextStyles.largeLight,
+      headingTextStyle: DASTextStyles.smallLight,
+      dataTextStyle: DASTextStyles.largeRoman,
       headingRowBorder: Border(bottom: BorderSide(width: 2, color: borderColor)),
       tableBorder: TableBorder(
         horizontalInside: BorderSide(width: 1, color: borderColor),
