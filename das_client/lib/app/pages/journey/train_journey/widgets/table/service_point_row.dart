@@ -3,6 +3,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/b
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:das_client/app/widgets/assets.dart';
+import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -25,9 +26,8 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
   @override
   DASTableCell informationCell(BuildContext context) {
     final servicePointName = data.name.localized;
-    final textStyle = data.isStation
-        ? SBBTextStyles.largeBold.copyWith(fontSize: 24.0)
-        : SBBTextStyles.largeLight.copyWith(fontSize: 24.0, fontStyle: FontStyle.italic);
+    final textStyle =
+        data.isStation ? DASTextStyles.xLargeBold : DASTextStyles.xLargeLight.copyWith(fontStyle: FontStyle.italic);
     return DASTableCell(
       alignment: defaultAlignment,
       child: Row(

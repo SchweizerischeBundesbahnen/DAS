@@ -1,5 +1,5 @@
+import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/util/device_id_info.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 
 class DeviceIdText extends StatelessWidget {
@@ -14,7 +14,7 @@ class DeviceIdText extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
           final deviceId = snapshot.data as String? ?? '';
-          return Text(deviceId, style: SBBTextStyles.smallLight.copyWith(color: color));
+          return Text(deviceId, style: DASTextStyles.smallLight.copyWith(color: color));
         } else {
           return const SizedBox.shrink();
         }

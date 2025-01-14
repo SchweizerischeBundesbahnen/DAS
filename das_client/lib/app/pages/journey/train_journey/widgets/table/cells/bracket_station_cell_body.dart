@@ -1,3 +1,4 @@
+import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/model/journey/bracket_station.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class BracketStationCellBody extends StatelessWidget {
             quarterTurns: -1,
             child: Text(
               bracketStation.mainStationAbbreviation ?? '',
-              style: SBBTextStyles.extraSmallBold.copyWith(
+              style: DASTextStyles.extraSmallBold.copyWith(
                 color: SBBColors.white,
                 fontSize: _bracketStationFontSize,
                 height: _bracketStationWidth / _bracketStationFontSize,

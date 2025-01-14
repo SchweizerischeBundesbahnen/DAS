@@ -1,15 +1,17 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/i18n/i18n.dart';
+import 'package:das_client/app/model/ru.dart';
 import 'package:das_client/app/nav/app_router.dart';
 import 'package:das_client/app/nav/das_navigation_drawer.dart';
 import 'package:das_client/app/pages/journey/train_journey/train_journey_overview.dart';
 import 'package:das_client/app/pages/journey/train_selection/train_selection.dart';
 import 'package:das_client/auth/authentication_component.dart';
 import 'package:das_client/di.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:das_client/util/format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 @RoutePage()
 class JourneyPage extends StatelessWidget {
@@ -36,22 +38,20 @@ class JourneyPageContent extends StatelessWidget {
     );
   }
 
-  SBBHeader _appBar(BuildContext context) {
-    return SBBHeader(
-      title: context.l10n.c_app_name,
-      actions: [
-        IconButton(
-          icon: const Icon(SBBIcons.exit_small),
-          onPressed: () {
-            if (context.trainJourneyCubit.state is SelectingTrainJourneyState) {
-              context.authCubit.logout();
-              context.router.replace(const LoginRoute());
-            } else {
-              context.trainJourneyCubit.reset();
-            }
-          },
-        )
-      ],
+  PreferredSizeWidget _appBar(BuildContext context) {
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(kToolbarHeight),
+      child: BlocBuilder<TrainJourneyCubit, TrainJourneyState>(
+        builder: (context, state) {
+          return SBBHeader(
+            title: _headerTitle(context, state),
+            actions: [
+              if (state is SelectingTrainJourneyState) _logoutButton(context),
+              if (state is! SelectingTrainJourneyState) _trainSelectionButton(context)
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -75,5 +75,32 @@ class JourneyPageContent extends StatelessWidget {
         }
       },
     );
+  }
+
+  IconButton _logoutButton(BuildContext context) {
+    return IconButton(
+      icon: const Icon(SBBIcons.exit_small),
+      onPressed: () {
+        context.authCubit.logout();
+        context.router.replace(const LoginRoute());
+      },
+    );
+  }
+
+  IconButton _trainSelectionButton(BuildContext context) {
+    return IconButton(
+      icon: const Icon(SBBIcons.train_small),
+      onPressed: () => context.trainJourneyCubit.reset(),
+    );
+  }
+
+  String _headerTitle(BuildContext context, TrainJourneyState state) {
+    if (state is TrainJourneyLoadedState) {
+      final trainNumber = '${context.l10n.c_train_number} ${state.trainNumber}';
+      final ru = state.ru.displayText(context);
+      final date = Format.dateWithAbbreviatedDay(state.date);
+      return '$trainNumber - $ru - $date';
+    }
+    return context.l10n.c_app_name;
   }
 }
