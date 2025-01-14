@@ -10,5 +10,6 @@ enum Datatype {
   whistle,
   levelCrossing,
   tramArea,
-  balise;
+  balise,
+  baliseLevelCrossingGroup;
 }

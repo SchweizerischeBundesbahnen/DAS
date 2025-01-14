@@ -1,5 +1,6 @@
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/datatype.dart';
+import 'package:das_client/model/journey/level_crossing.dart';
 
 class Balise extends BaseData {
   Balise({
@@ -10,4 +11,18 @@ class Balise extends BaseData {
   }) : super(type: Datatype.balise);
 
   final int amountLevelCrossings;
+
+  @override
+  bool get canGroup => true;
+
+  @override
+  bool canGroupWith(BaseData other) {
+    if (other is LevelCrossing) {
+      return true;
+    } else if (other is Balise) {
+      return amountLevelCrossings == 1 && other.amountLevelCrossings == 1;
+    } else {
+      return false;
+    }
+  }
 }

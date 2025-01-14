@@ -27,4 +27,10 @@ abstract class BaseData implements Comparable {
   /// Used for comparing if [order] is equal.
   /// If [orderPriority] is smaller, this is ordered before other, a bigger value is ordered after other.
   int get orderPriority => 0;
+
+  bool get canGroup => false;
+
+  bool canGroupWith(BaseData other) {
+    return false;
+  }
 }

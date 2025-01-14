@@ -10,13 +10,28 @@ class LevelCrossingRow extends BaseRowBuilder<LevelCrossing> {
     required super.data,
     required super.settings,
     super.trackEquipmentRenderData,
+    super.isGrouped,
   });
+
+  @override
+  DASTableCell kilometreCell(BuildContext context) {
+    return isGrouped ? DASTableCell.empty() : super.kilometreCell(context);
+  }
+
+  @override
+  DASTableCell timeCell(BuildContext context) {
+    if (!isGrouped) {
+      return DASTableCell.empty();
+    }
+
+    return DASTableCell(color: specialCellColor, child: Text(data.kilometre[0].toStringAsFixed(3)));
+  }
 
   @override
   DASTableCell informationCell(BuildContext context) {
     return DASTableCell(
       child: Text(context.l10n.p_train_journey_table_level_crossing),
-      alignment: Alignment.centerRight,
+      alignment: Alignment.centerLeft,
     );
   }
 }

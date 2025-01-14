@@ -85,7 +85,7 @@ class DASTable extends StatelessWidget {
     return DASTableThemeData(
       backgroundColor: isDarkTheme ? SBBColors.charcoal : SBBColors.white,
       headingTextStyle: SBBTextStyles.smallLight,
-      dataTextStyle: SBBTextStyles.largeLight,
+      dataTextStyle: SBBTextStyles.largeLight.copyWith(fontWeight: FontWeight.w400),
       headingRowBorder: Border(bottom: BorderSide(width: 2, color: borderColor)),
       tableBorder: TableBorder(
         horizontalInside: BorderSide(width: 1, color: borderColor),
@@ -139,13 +139,16 @@ class DASTable extends StatelessWidget {
   Widget _dataRow(DASTableRow row) {
     final visibleColumns = columns.where((column) => column.isVisible).toList(growable: false);
     final visibleCells = row.cells.whereIndexed((index, _) => columns[index].isVisible).toList(growable: false);
-    return _FixedHeightRow(
-      height: row.height,
-      children: List.generate(visibleColumns.length, (index) {
-        final cell = visibleCells[index];
-        final column = visibleColumns[index];
-        return _dataCell(cell, column, row, isLast: visibleColumns.length - 1 == index);
-      }),
+    return InkWell(
+      onTap: row.onTap,
+      child: _FixedHeightRow(
+        height: row.height,
+        children: List.generate(visibleColumns.length, (index) {
+          final cell = visibleCells[index];
+          final column = visibleColumns[index];
+          return _dataCell(cell, column, row, isLast: visibleColumns.length - 1 == index);
+        }),
+      ),
     );
   }
 

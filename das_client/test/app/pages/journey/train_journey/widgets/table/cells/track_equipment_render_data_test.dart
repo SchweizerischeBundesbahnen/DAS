@@ -29,9 +29,9 @@ void main() {
     );
 
     // WHEN
-    final cabSignalingStart = TrackEquipmentRenderData.from(journey, 0);
-    final signal = TrackEquipmentRenderData.from(journey, 1);
-    final cabSignalingEnd = TrackEquipmentRenderData.from(journey, 2);
+    final cabSignalingStart = TrackEquipmentRenderData.from(journey.data, journey.metadata, 0);
+    final signal = TrackEquipmentRenderData.from(journey.data, journey.metadata, 1);
+    final cabSignalingEnd = TrackEquipmentRenderData.from(journey.data, journey.metadata, 2);
 
     // THEN
     expect(cabSignalingStart.isCABStart, isTrue);
@@ -59,11 +59,11 @@ void main() {
     );
 
     // WHEN
-    final curvePoint = TrackEquipmentRenderData.from(journey, 0);
-    final cabSignalingStart = TrackEquipmentRenderData.from(journey, 1);
-    final servicePoint = TrackEquipmentRenderData.from(journey, 2);
-    final cabSignalingEnd = TrackEquipmentRenderData.from(journey, 3);
-    final signal = TrackEquipmentRenderData.from(journey, 4);
+    final curvePoint = TrackEquipmentRenderData.from(journey.data, journey.metadata, 0);
+    final cabSignalingStart = TrackEquipmentRenderData.from(journey.data, journey.metadata, 1);
+    final servicePoint = TrackEquipmentRenderData.from(journey.data, journey.metadata, 2);
+    final cabSignalingEnd = TrackEquipmentRenderData.from(journey.data, journey.metadata, 3);
+    final signal = TrackEquipmentRenderData.from(journey.data, journey.metadata, 4);
 
     // THEN
     var expectedHeight = 0.0;
@@ -92,11 +92,11 @@ void main() {
     );
 
     // WHEN
-    final curvePoint = TrackEquipmentRenderData.from(journey, 0);
-    final cabSignaling = TrackEquipmentRenderData.from(journey, 1);
-    final servicePoint = TrackEquipmentRenderData.from(journey, 2);
-    final signal = TrackEquipmentRenderData.from(journey, 3);
-    final connectionTrack = TrackEquipmentRenderData.from(journey, 4);
+    final curvePoint = TrackEquipmentRenderData.from(journey.data, journey.metadata, 0);
+    final cabSignaling = TrackEquipmentRenderData.from(journey.data, journey.metadata, 1);
+    final servicePoint = TrackEquipmentRenderData.from(journey.data, journey.metadata, 2);
+    final signal = TrackEquipmentRenderData.from(journey.data, journey.metadata, 3);
+    final connectionTrack = TrackEquipmentRenderData.from(journey.data, journey.metadata, 4);
 
     // THEN
     expect(curvePoint.trackEquipmentType, isNull);
@@ -127,12 +127,12 @@ void main() {
     );
 
     // WHEN
-    final curvePoint = TrackEquipmentRenderData.from(journey, 0);
-    final cabSignaling = TrackEquipmentRenderData.from(journey, 1);
-    final servicePoint = TrackEquipmentRenderData.from(journey, 2);
-    final signal = TrackEquipmentRenderData.from(journey, 3);
-    final connectionTrack = TrackEquipmentRenderData.from(journey, 4);
-    final servicePoint2 = TrackEquipmentRenderData.from(journey, 5);
+    final curvePoint = TrackEquipmentRenderData.from(journey.data, journey.metadata, 0);
+    final cabSignaling = TrackEquipmentRenderData.from(journey.data, journey.metadata, 1);
+    final servicePoint = TrackEquipmentRenderData.from(journey.data, journey.metadata, 2);
+    final signal = TrackEquipmentRenderData.from(journey.data, journey.metadata, 3);
+    final connectionTrack = TrackEquipmentRenderData.from(journey.data, journey.metadata, 4);
+    final servicePoint2 = TrackEquipmentRenderData.from(journey.data, journey.metadata, 5);
 
     // THEN
     expect(curvePoint.isConventionalExtendedSpeedBorder, isFalse);

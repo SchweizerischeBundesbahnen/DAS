@@ -3,6 +3,7 @@ import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/model/train_journey_settings.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/break_series_selection.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_level_crossing_group_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cab_signaling_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/track_equipment_render_data.dart';
@@ -18,9 +19,10 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/whistle
 import 'package:das_client/app/widgets/table/das_table.dart';
 import 'package:das_client/app/widgets/table/das_table_column.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
-import 'package:das_client/model/journey/whistles.dart';
 import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
 import 'package:das_client/model/journey/balise.dart';
+import 'package:das_client/model/journey/balise_level_crossing_group.dart';
+import 'package:das_client/model/journey/base_data_extension.dart';
 import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
 import 'package:das_client/model/journey/connection_track.dart';
@@ -33,6 +35,7 @@ import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
 import 'package:das_client/model/journey/speed_change.dart';
 import 'package:das_client/model/journey/tram_area.dart';
+import 'package:das_client/model/journey/whistles.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -72,10 +75,15 @@ class TrainJourney extends StatelessWidget {
   }
 
   List<DASTableRow> _rows(BuildContext context, Journey journey, TrainJourneySettings settings) {
-    return List.generate(journey.data.length, (index) {
-      final rowData = journey.data[index];
+    final rows = journey.data.groupBaliseAndLeveLCrossings(settings);
 
-      final renderData = TrackEquipmentRenderData.from(journey, index);
+    final groupedRows =
+        rows.whereType<BaliseLevelCrossingGroup>().map((it) => it.groupedElements).expand((it) => it).toList();
+
+    return List.generate(rows.length, (index) {
+      final rowData = rows[index];
+
+      final renderData = TrackEquipmentRenderData.from(rows, journey.metadata, index);
       switch (rowData.type) {
         case Datatype.servicePoint:
           return ServicePointRow(
@@ -138,7 +146,8 @@ class TrainJourney extends StatelessWidget {
                   metadata: journey.metadata,
                   data: rowData as Balise,
                   settings: settings,
-                  trackEquipmentRenderData: renderData)
+                  trackEquipmentRenderData: renderData,
+                  isGrouped: groupedRows.contains(rowData))
               .build(context);
         case Datatype.whistle:
           return WhistleRow(
@@ -152,7 +161,8 @@ class TrainJourney extends StatelessWidget {
                   metadata: journey.metadata,
                   data: rowData as LevelCrossing,
                   settings: settings,
-                  trackEquipmentRenderData: renderData)
+                  trackEquipmentRenderData: renderData,
+                  isGrouped: groupedRows.contains(rowData))
               .build(context);
         case Datatype.tramArea:
           return TramAreaRow(
@@ -161,6 +171,14 @@ class TrainJourney extends StatelessWidget {
                   settings: settings,
                   trackEquipmentRenderData: renderData)
               .build(context);
+        case Datatype.baliseLevelCrossingGroup:
+          return BaliseLevelCrossingGroupRow(
+            metadata: journey.metadata,
+            data: rowData as BaliseLevelCrossingGroup,
+            settings: settings,
+            trackEquipmentRenderData: renderData,
+            onTap: () => _onBaliseLevelCrossingGroupTap(context, rowData, settings),
+          ).build(context);
       }
     });
   }
@@ -200,6 +218,20 @@ class TrainJourney extends StatelessWidget {
       DASTableColumn(child: Text(context.l10n.p_train_journey_table_advised_speed_label), width: 62.0),
       DASTableColumn(width: 40.0), // actions
     ];
+  }
+
+  void _onBaliseLevelCrossingGroupTap(
+      BuildContext context, BaliseLevelCrossingGroup group, TrainJourneySettings settings) {
+    final trainJourneyCubit = context.trainJourneyCubit;
+
+    final newList = List<int>.from(settings.expandedGroups);
+    if (settings.expandedGroups.contains(group.order)) {
+      newList.remove(group.order);
+    } else {
+      newList.add(group.order);
+    }
+
+    trainJourneyCubit.updateExpandedGroups(newList);
   }
 
   void _onBreakSeriesTap(BuildContext context, Journey journey, TrainJourneySettings settings) {
