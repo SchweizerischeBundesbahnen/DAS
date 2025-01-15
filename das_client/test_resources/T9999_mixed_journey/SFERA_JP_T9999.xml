@@ -69,5 +69,8 @@
                 <TP_ID_Reference TP_ID="Bahnhof_E"/>
             </TimingPointReference>
         </TimingPointConstraints>
+        <TrainCharacteristicsRef TC_ID="T9999_1" TC_VersionMajor="1" TC_VersionMinor="1" location="0">
+            <TC_RU_ID>1185</TC_RU_ID>
+        </TrainCharacteristicsRef>
     </SegmentProfileList>
 </JourneyProfile>

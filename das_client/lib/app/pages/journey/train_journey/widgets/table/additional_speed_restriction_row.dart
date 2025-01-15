@@ -43,7 +43,7 @@ class AdditionalSpeedRestrictionRow extends BaseRowBuilder<AdditionalSpeedRestri
   }
 
   @override
-  DASTableCell graduatedSpeedCell(BuildContext context) {
+  DASTableCell localSpeedCell(BuildContext context) {
     return DASTableCell(
       child: Text(data.restriction.speed.toString()),
       alignment: Alignment.center,

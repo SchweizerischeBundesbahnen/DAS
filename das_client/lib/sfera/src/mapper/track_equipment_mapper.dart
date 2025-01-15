@@ -39,7 +39,7 @@ class TrackEquipmentMapper {
         } else {
           Fimber.w('Got end of track equipment segment for type ${trackEquipment.type} without start definition');
         }
-      } else if(trackEquipment.appliesToWholeSp) {
+      } else if (trackEquipment.appliesToWholeSp) {
         openSegments.putIfAbsent(trackEquipment.type, () => trackEquipment);
       }
     }
@@ -71,7 +71,9 @@ class TrackEquipmentMapper {
     final type = start?.type ?? end?.type;
     return NonStandardTrackEquipmentSegment(
       type: type!.trackEquipmentType,
-      startOrder: start?.startLocation != null ? SferaModelMapper.calculateOrder(start!.segmentIndex, start.startLocation!) : null,
+      startOrder: start?.startLocation != null
+          ? SferaModelMapper.calculateOrder(start!.segmentIndex, start.startLocation!)
+          : null,
       endOrder: end?.endLocation != null ? SferaModelMapper.calculateOrder(end!.segmentIndex, end.endLocation!) : null,
       startKm: start?.startKm ?? [],
       endKm: end?.endKm ?? [],

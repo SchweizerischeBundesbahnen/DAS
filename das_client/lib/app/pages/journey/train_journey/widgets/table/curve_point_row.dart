@@ -17,6 +17,16 @@ class CurvePointRow extends BaseRowBuilder<CurvePoint> {
   });
 
   @override
+  DASTableCell brakedWeightSpeedCell(BuildContext context) {
+    return DASTableCell.empty();
+  }
+
+  @override
+  DASTableCell localSpeedCell(BuildContext context) {
+    return super.brakedWeightSpeedCell(context);
+  }
+
+  @override
   DASTableCell informationCell(BuildContext context) {
     return DASTableCell(
       child: Text(data.curveType?.localizedName(context) ?? ''),
