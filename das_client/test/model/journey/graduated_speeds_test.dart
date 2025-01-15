@@ -1,4 +1,4 @@
-import 'package:das_client/model/journey/graduated_station_speeds.dart';
+import 'package:das_client/model/journey/graduated_speeds.dart';
 import 'package:das_client/model/journey/speed.dart';
 import 'package:das_client/model/journey/train_series.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -6,9 +6,9 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   test('test with only incoming station speeds', () {
     // GIVEN WHEN
-    final speed1 = GraduatedStationSpeeds.from([TrainSeries.R], '100');
-    final speed2 = GraduatedStationSpeeds.from([TrainSeries.R], '100-90');
-    final speed3 = GraduatedStationSpeeds.from([TrainSeries.R], '100-90-80');
+    final speed1 = GraduatedSpeeds.from(TrainSeries.R, '100');
+    final speed2 = GraduatedSpeeds.from(TrainSeries.R, '100-90');
+    final speed3 = GraduatedSpeeds.from(TrainSeries.R, '100-90-80');
 
     // THEN
     expect(speed1.incomingSpeeds, hasLength(1));
@@ -28,15 +28,15 @@ void main() {
   });
   test('test with incoming and outgoing station speeds', () {
     // GIVEN WHEN
-    final speed1 = GraduatedStationSpeeds.from([TrainSeries.R], '100/70');
-    final speed2 = GraduatedStationSpeeds.from([TrainSeries.R], '100-90/70');
-    final speed3 = GraduatedStationSpeeds.from([TrainSeries.R], '100-90-80/70');
-    final speed4 = GraduatedStationSpeeds.from([TrainSeries.R], '100/70-60');
-    final speed5 = GraduatedStationSpeeds.from([TrainSeries.R], '100-90/70-60');
-    final speed6 = GraduatedStationSpeeds.from([TrainSeries.R], '100-90-80/70-60');
-    final speed7 = GraduatedStationSpeeds.from([TrainSeries.R], '100/70-60-50');
-    final speed8 = GraduatedStationSpeeds.from([TrainSeries.R], '100-90/70-60-50');
-    final speed9 = GraduatedStationSpeeds.from([TrainSeries.R], '100-90-80/70-60-50');
+    final speed1 = GraduatedSpeeds.from(TrainSeries.R, '100/70');
+    final speed2 = GraduatedSpeeds.from(TrainSeries.R, '100-90/70');
+    final speed3 = GraduatedSpeeds.from(TrainSeries.R, '100-90-80/70');
+    final speed4 = GraduatedSpeeds.from(TrainSeries.R, '100/70-60');
+    final speed5 = GraduatedSpeeds.from(TrainSeries.R, '100-90/70-60');
+    final speed6 = GraduatedSpeeds.from(TrainSeries.R, '100-90-80/70-60');
+    final speed7 = GraduatedSpeeds.from(TrainSeries.R, '100/70-60-50');
+    final speed8 = GraduatedSpeeds.from(TrainSeries.R, '100-90/70-60-50');
+    final speed9 = GraduatedSpeeds.from(TrainSeries.R, '100-90-80/70-60-50');
 
     // THEN
     expect(speed1.incomingSpeeds, hasLength(1));
@@ -104,9 +104,9 @@ void main() {
   });
   test('test station speeds with circled or squared values', () {
     // GIVEN WHEN
-    final speed1 = GraduatedStationSpeeds.from([TrainSeries.R], '100-{90}/70');
-    final speed2 = GraduatedStationSpeeds.from([TrainSeries.R], '100/70-[60]');
-    final speed3 = GraduatedStationSpeeds.from([TrainSeries.R], '[100]-90/{70}-[60]');
+    final speed1 = GraduatedSpeeds.from(TrainSeries.R, '100-{90}/70');
+    final speed2 = GraduatedSpeeds.from(TrainSeries.R, '100/70-[60]');
+    final speed3 = GraduatedSpeeds.from(TrainSeries.R, '[100]-90/{70}-[60]');
 
     // THEN
     expect(speed1.incomingSpeeds, hasLength(2));
@@ -130,11 +130,11 @@ void main() {
   });
 
   test('test invalid speed format', () {
-    expect(() => GraduatedStationSpeeds.from([TrainSeries.R], 'ABC'), throwsArgumentError);
-    expect(() => GraduatedStationSpeeds.from([TrainSeries.R], '1A-{90}/70'), throwsArgumentError);
-    expect(() => GraduatedStationSpeeds.from([TrainSeries.R], '100--20'), throwsArgumentError);
-    expect(() => GraduatedStationSpeeds.from([TrainSeries.R], '100-{{90}'), throwsArgumentError);
-    expect(() => GraduatedStationSpeeds.from([TrainSeries.R], '100-{90}//70'), throwsArgumentError);
+    expect(() => GraduatedSpeeds.from(TrainSeries.R, 'ABC'), throwsArgumentError);
+    expect(() => GraduatedSpeeds.from(TrainSeries.R, '1A-{90}/70'), throwsArgumentError);
+    expect(() => GraduatedSpeeds.from(TrainSeries.R, '100--20'), throwsArgumentError);
+    expect(() => GraduatedSpeeds.from(TrainSeries.R, '100-{{90}'), throwsArgumentError);
+    expect(() => GraduatedSpeeds.from(TrainSeries.R, '100-{90}//70'), throwsArgumentError);
   });
 }
 

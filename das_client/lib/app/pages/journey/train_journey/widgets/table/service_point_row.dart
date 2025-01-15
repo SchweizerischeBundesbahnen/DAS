@@ -80,8 +80,9 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
     if (data.stationSpeedData == null) return DASTableCell.empty();
 
     final currentTrainSeries = settings.selectedBreakSeries?.trainSeries ?? metadata.breakSeries?.trainSeries;
+    final currentBreakSeries = settings.selectedBreakSeries?.breakSeries ?? metadata.breakSeries?.breakSeries;
 
-    final graduatedSpeeds = data.stationSpeedData!.graduatedSpeedsFor(currentTrainSeries);
+    final graduatedSpeeds = data.stationSpeedData!.graduatedSpeedsFor(currentTrainSeries, currentBreakSeries);
     if (graduatedSpeeds == null) return DASTableCell.empty();
 
     return DASTableCell(

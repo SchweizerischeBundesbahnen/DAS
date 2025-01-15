@@ -40,11 +40,11 @@
             <TAF_TAP_Location_NSP name="bracketStation">
                 <NetworkSpecificParameter name="mainStation" value="CH9994"/>
             </TAF_TAP_Location_NSP>
-            <TAF_TAP_Location_NSP name="stationSpeed">
-                <NetworkSpecificParameter name="xmlStationSpeed" value="
-                    &lt;stationSpeed&gt;
+            <TAF_TAP_Location_NSP name="newLineSpeed">
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                    &lt;lineSpeed&gt;
                     &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;80&quot;/&gt;
-                    &lt;/stationSpeed&gt;
+                    &lt;/lineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
@@ -55,10 +55,18 @@
                 <LocationPrimaryCode>9996</LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
             <TAF_TAP_LocationName language="de" messageString="Bahnhof E"/>
+            <TAF_TAP_Location_NSP name="newLineSpeed">
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                    &lt;lineSpeed&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;100&quot;/&gt;
+                    &lt;/lineSpeed&gt;
+                "/>
+            </TAF_TAP_Location_NSP>
             <TAF_TAP_Location_NSP name="stationSpeed">
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
                     &lt;stationSpeed&gt;
-                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;100&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; speed=&quot;100/100-125&quot;/&gt;
+                    &lt;v trainSeries=&quot;O&quot; speed=&quot;100/100-125&quot;/&gt;
                     &lt;/stationSpeed&gt;
                 "/>
                 <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
