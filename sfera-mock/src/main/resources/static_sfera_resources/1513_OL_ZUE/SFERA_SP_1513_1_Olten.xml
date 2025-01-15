@@ -34,36 +34,11 @@
             <NetworkSpecificParameter name="curvePointType" value="end"/>
 		</NetworkSpecificPoint>
 
-		<NetworkSpecificPoint location="0" name="newLineSpeed">
-			<NetworkSpecificParameter name="xmlNewLineSpeed" value="
-				&lt;lineSpeed&gt;
-					&lt;speeds&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;105&quot;/&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;105&quot;/&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;125&quot;/&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;125&quot;/&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;125&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;75&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;80&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;80&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;85&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;85&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;95&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;100&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;105&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;115&quot;/&gt;
-						&lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;100&quot;/&gt;
-					&lt;/speeds&gt;
-				&lt;/lineSpeed&gt;
-			"/>
-		</NetworkSpecificPoint>
-
     </SP_Points>
 
     <SP_Areas>
 		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="4.0" gradientDirection="Downhill" directionOfApplicationOnSP="Nominal"/>
 		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="1.0" gradientDirection="Uphill" directionOfApplicationOnSP="Nominal"/>
-
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="OL" TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
@@ -90,6 +65,28 @@
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;90&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;90&quot;/&gt;
 					&lt;/stationSpeed&gt;
+				"/>
+			</TAF_TAP_Location_NSP>
+
+			<TAF_TAP_Location_NSP name="newLineSpeed">
+				<NetworkSpecificParameter name="xmlNewLineSpeed" value="
+					&lt;lineSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;105&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;105&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;125&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;125&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;125&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;75&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;80&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;80&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;85&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;85&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;95&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;100&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;105&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;115&quot;/&gt;
+						&lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;100&quot;/&gt;
+					&lt;/lineSpeed&gt;
 				"/>
 			</TAF_TAP_Location_NSP>
 			

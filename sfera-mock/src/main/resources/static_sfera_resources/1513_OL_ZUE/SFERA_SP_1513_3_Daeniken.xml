@@ -22,18 +22,6 @@
             <SignalPhysicalCharacteristics visualIdentifier="P856"/>
         </Signal>
 
-		<NetworkSpecificPoint location="0" name="newLineSpeed">
-			<NetworkSpecificParameter name="xmlNewLineSpeed" value="
-				&lt;lineSpeed&gt;
-					&lt;speeds&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;130&quot;/&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;130&quot;/&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;130&quot;/&gt;
-					&lt;/speeds&gt;
-				&lt;/lineSpeed&gt;
-			"/>
-		</NetworkSpecificPoint>
-
     </SP_Points>
 
     <SP_Areas>
@@ -58,6 +46,17 @@
 					&lt;/stationSpeed&gt;
 				"/>
 			</TAF_TAP_Location_NSP>
+
+			<TAF_TAP_Location_NSP name="newLineSpeed">
+				<NetworkSpecificParameter name="xmlNewLineSpeed" value="
+					&lt;lineSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;130&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;130&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;130&quot;/&gt;
+					&lt;/lineSpeed&gt;
+				"/>
+			</TAF_TAP_Location_NSP>
+
 						
         </TAF_TAP_Location>
 

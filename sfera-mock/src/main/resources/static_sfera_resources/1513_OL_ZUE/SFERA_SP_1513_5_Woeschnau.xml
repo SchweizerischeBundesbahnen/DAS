@@ -15,11 +15,23 @@
                 <LocationPrimaryCode>2125</LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
+      
+    </SP_Points>
 
-		<NetworkSpecificPoint location="0" name="newLineSpeed">
-			<NetworkSpecificParameter name="xmlNewLineSpeed" value="
-				&lt;lineSpeed&gt;
-					&lt;speeds&gt;
+    <SP_Areas>
+		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="9.0" gradientDirection="Uphill" directionOfApplicationOnSP="Nominal"/>
+
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="WOES" TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>2125</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Wöschnau"/>
+			
+			<TAF_TAP_Location_NSP name="newLineSpeed">
+				<NetworkSpecificParameter name="xmlNewLineSpeed" value="
+					&lt;lineSpeed&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;130&quot;/&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;135&quot;/&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;150&quot;/&gt;
@@ -33,24 +45,10 @@
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;110&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;110&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;115&quot;/&gt;
-					&lt;/speeds&gt;
-				&lt;/lineSpeed&gt;
-			"/>
-		</NetworkSpecificPoint>
+					&lt;/lineSpeed&gt;
+				"/>
+			</TAF_TAP_Location_NSP>
 
-      
-    </SP_Points>
-
-    <SP_Areas>
-		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="9.0" gradientDirection="Uphill" directionOfApplicationOnSP="Nominal"/>
-
-
-        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="WOES" TAF_TAP_location_type="station">
-            <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>2125</LocationPrimaryCode>
-            </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Däniken"/>
 			
         </TAF_TAP_Location>
 

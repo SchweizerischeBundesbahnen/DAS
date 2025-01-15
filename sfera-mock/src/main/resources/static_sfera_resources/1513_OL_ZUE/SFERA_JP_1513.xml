@@ -28,7 +28,7 @@
 		</TemporaryConstraints>
         
 		<TrainCharacteristicsRef TC_ID="1513_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
-            <TC_RU_ID>1185</TC_RU_ID>
+            <TC_RU_ID>1285</TC_RU_ID>
         </TrainCharacteristicsRef>
     </SegmentProfileList>
 
@@ -74,6 +74,17 @@
         <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2022-05-17T15:34:24Z" TP_PlannedLatestArrivalTime="2022-05-17T15:34:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Woeschnau"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1513_6_Aarau" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2022-05-17T15:34:24Z" TP_PlannedLatestArrivalTime="2022-05-17T15:34:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Aarau"/>
             </TimingPointReference>
         </TimingPointConstraints>
     </SegmentProfileList>

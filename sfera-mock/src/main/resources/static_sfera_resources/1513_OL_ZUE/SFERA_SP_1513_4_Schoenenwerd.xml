@@ -22,25 +22,6 @@
             <SignalPhysicalCharacteristics visualIdentifier="P854"/>
         </Signal>
 
-		<NetworkSpecificPoint location="0" name="newLineSpeed">
-			<NetworkSpecificParameter name="xmlNewLineSpeed" value="
-				&lt;lineSpeed&gt;
-					&lt;speeds&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;120&quot;/&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;130&quot;/&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;140&quot;/&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;140&quot;/&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;140&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;90&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;95&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;105&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;115&quot;/&gt;
-					&lt;/speeds&gt;
-				&lt;/lineSpeed&gt;
-			"/>
-		</NetworkSpecificPoint>
-
-
     </SP_Points>
 
     <SP_Areas>
@@ -52,7 +33,7 @@
                 <CountryCodeISO>CH</CountryCodeISO>
                 <LocationPrimaryCode>02112</LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Däniken"/>
+            <TAF_TAP_LocationName language="de" messageString="Schönenwerd"/>
 
 			<TAF_TAP_Location_NSP name="stationSpeed">
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
@@ -74,6 +55,23 @@
 					&lt;/stationSpeed&gt;
 				"/>
 			</TAF_TAP_Location_NSP>
+			
+			<TAF_TAP_Location_NSP name="newLineSpeed">
+				<NetworkSpecificParameter name="xmlNewLineSpeed" value="
+					&lt;lineSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;120&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;130&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;140&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;140&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;140&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;90&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;95&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;105&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;115&quot;/&gt;
+					&lt;/lineSpeed&gt;
+				"/>
+			</TAF_TAP_Location_NSP>
+
 						
         </TAF_TAP_Location>
 
