@@ -1,3 +1,4 @@
+import 'package:das_client/sfera/src/model/balise.dart';
 import 'package:das_client/sfera/src/model/curve_point_network_specific_point.dart';
 import 'package:das_client/sfera/src/model/network_specific_point.dart';
 import 'package:das_client/sfera/src/model/new_line_speed_network_specific_point.dart';
@@ -5,6 +6,7 @@ import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 import 'package:das_client/sfera/src/model/signal.dart';
 import 'package:das_client/sfera/src/model/timing_point.dart';
 import 'package:das_client/sfera/src/model/virtual_balise.dart';
+import 'package:das_client/sfera/src/model/whistle_network_specific_point.dart';
 
 class SpPoints extends SferaXmlElement {
   static const String elementType = 'SP_Points';
@@ -16,7 +18,9 @@ class SpPoints extends SferaXmlElement {
 
   Iterable<Signal> get signals => children.whereType<Signal>();
 
-  Iterable<VirtualBalise> get balise => children.whereType<VirtualBalise>();
+  Iterable<VirtualBalise> get virtualBalise => children.whereType<VirtualBalise>();
+
+  Iterable<Balise> get balise => children.whereType<Balise>();
 
   Iterable<NetworkSpecificPoint> get protectionSectionNsp =>
       children.whereType<NetworkSpecificPoint>().where((it) => it.name == _protectionSectionNspName);
@@ -24,6 +28,7 @@ class SpPoints extends SferaXmlElement {
   Iterable<NewLineSpeedNetworkSpecificPoint> get newLineSpeedsNsp =>
       children.whereType<NewLineSpeedNetworkSpecificPoint>();
 
-  Iterable<CurvePointNetworkSpecificPoint> get curvePointsNsp =>
-      children.whereType<CurvePointNetworkSpecificPoint>();
+  Iterable<CurvePointNetworkSpecificPoint> get curvePointsNsp => children.whereType<CurvePointNetworkSpecificPoint>();
+
+  Iterable<WhistleNetworkSpecificPoint> get whistleNsp => children.whereType<WhistleNetworkSpecificPoint>();
 }

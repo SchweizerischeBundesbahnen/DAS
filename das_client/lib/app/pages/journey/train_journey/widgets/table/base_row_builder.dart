@@ -21,6 +21,8 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
     this.trackEquipmentRenderData = const TrackEquipmentRenderData(),
     this.defaultAlignment = Alignment.bottomCenter,
     this.rowColor,
+    this.onTap,
+    this.isGrouped = false,
   });
 
   final Alignment defaultAlignment;
@@ -29,12 +31,15 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   final T data;
   final TrackEquipmentRenderData trackEquipmentRenderData;
   final TrainJourneySettings settings;
+  final VoidCallback? onTap;
+  final bool isGrouped;
 
   @override
   DASTableRow build(BuildContext context) {
     return DASTableRow(
       height: height,
       color: rowColor,
+      onTap: onTap,
       cells: [
         kilometreCell(context),
         timeCell(context),

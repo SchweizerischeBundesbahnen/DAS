@@ -1,3 +1,4 @@
+import 'package:das_client/sfera/src/model/amount_tram_signals.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 import 'package:das_client/sfera/src/model/track_equipment_type_wrapper.dart';
 import 'package:das_client/sfera/src/model/xml_curve_speed.dart';
@@ -22,6 +23,8 @@ class NetworkSpecificParameter extends SferaXmlElement {
       return XmlStationSpeed(attributes: attributes, children: children, value: value);
     } else if (attributes?['name'] == XmlGraduatedSpeedInfo.elementName) {
       return XmlGraduatedSpeedInfo(attributes: attributes, children: children, value: value);
+    } else if (attributes?['name'] == AmountTramSignals.elementName) {
+      return AmountTramSignals(attributes: attributes, children: children, value: value);
     }
     return NetworkSpecificParameter(attributes: attributes, children: children, value: value);
   }
