@@ -8,7 +8,7 @@
 	
     <SP_Points>
 
-        <TimingPoint TP_ID="Däniken" location="0">
+        <TimingPoint TP_ID="Daeniken" location="0">
             <TP_Name name="DK"/>
             <TAF_TAP_LocationReference>
                 <CountryCodeISO>CH</CountryCodeISO>
