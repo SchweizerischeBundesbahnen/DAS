@@ -1,4 +1,5 @@
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cab_signaling_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
@@ -7,6 +8,8 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/curve_p
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/protection_section_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/signal_row.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/tram_area_row.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/whistle_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:das_client/app/pages/profile/profile_page.dart';
 import 'package:das_client/app/widgets/table/das_table.dart';
@@ -19,6 +22,94 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey table test', () {
+
+    testWidgets('test balise multiple level crossings', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: 'T7');
+
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
+
+      final baliseMultiLevelCrossing = findDASTableRowByText('(2 ${l10n.p_train_journey_table_level_crossing})');
+      expect(baliseMultiLevelCrossing, findsOneWidget);
+
+      final baliseIcon = find.descendant(of: baliseMultiLevelCrossing, matching: find.byKey(BaliseRow.baliseIconKey));
+      expect(baliseIcon, findsOneWidget);
+    });
+
+    testWidgets('test whistle and tram area', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: 'T7');
+
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
+
+      final whistleRow = findDASTableRowByText('39.6');
+      expect(whistleRow, findsOneWidget);
+
+      final whistleIcon = find.descendant(of: whistleRow, matching: find.byKey(WhistleRow.whistleIconKey));
+      expect(whistleIcon, findsOneWidget);
+
+      final tramAreaRow = findDASTableRowByText('km 37.8-36.8');
+      expect(tramAreaRow, findsOneWidget);
+
+      final tramAreaIcon = find.descendant(of: tramAreaRow, matching: find.byKey(TramAreaRow.tramAreaIconKey));
+      expect(tramAreaIcon, findsOneWidget);
+
+      final tramAreaDescription = find.descendant(of: tramAreaRow, matching: find.text('6 TS'));
+      expect(tramAreaDescription, findsOneWidget);
+    });
+
+    testWidgets('test balise and level crossing groups expand / collapse', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: 'T7');
+
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
+
+      final groupOf5BaliseRow = findDASTableRowByText('41.6');
+      expect(groupOf5BaliseRow, findsOneWidget);
+
+      final countText = find.descendant(of: groupOf5BaliseRow, matching: find.text('5'));
+      expect(countText, findsOneWidget);
+
+      final levelCrossingText = find.descendant(of: groupOf5BaliseRow, matching: find.text(l10n.p_train_journey_table_level_crossing));
+      expect(levelCrossingText, findsOneWidget);
+
+      var detailRowBalise = findDASTableRowByText('41.552');
+      var detailRowLevelCrossing = findDASTableRowByText('41.492');
+
+      expect(detailRowLevelCrossing, findsNothing);
+      expect(detailRowBalise, findsNothing);
+
+      // expand group
+      await tapElement(tester, groupOf5BaliseRow);
+
+      detailRowBalise = findDASTableRowByText('41.552');
+      detailRowLevelCrossing = findDASTableRowByText('41.492');
+
+      expect(detailRowLevelCrossing, findsOneWidget);
+      expect(detailRowBalise, findsOneWidget);
+
+      expect(find.descendant(of: detailRowBalise, matching: find.byKey(BaliseRow.baliseIconKey)), findsOneWidget);
+      expect(find.descendant(of: detailRowLevelCrossing, matching: find.text(l10n.p_train_journey_table_level_crossing)), findsOneWidget);
+
+      // collapse group
+      await tapElement(tester, groupOf5BaliseRow);
+
+      detailRowBalise = findDASTableRowByText('41.552');
+      detailRowLevelCrossing = findDASTableRowByText('41.492');
+
+      expect(detailRowLevelCrossing, findsNothing);
+      expect(detailRowBalise, findsNothing);
+    });
+
     testWidgets('test breaking series defaults to ??', (tester) async {
       await prepareAndStartApp(tester);
 
