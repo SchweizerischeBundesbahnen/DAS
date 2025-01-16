@@ -1,5 +1,6 @@
 import 'package:das_client/app/model/train_journey_settings.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/track_equipment_render_data.dart';
@@ -8,7 +9,9 @@ import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:das_client/model/journey/additional_speed_restriction.dart';
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/metadata.dart';
+import 'package:das_client/model/journey/speed_data.dart';
 import 'package:flutter/material.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   static const double rowHeight = 44.0;
@@ -109,7 +112,7 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   }
 
   DASTableCell localSpeedCell(BuildContext context) {
-    return DASTableCell.empty();
+    return speedCell(data.localSpeedData, DASTableCell.empty());
   }
 
   DASTableCell advisedSpeedCell(BuildContext context) {
@@ -117,16 +120,29 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   }
 
   DASTableCell brakedWeightSpeedCell(BuildContext context) {
-    if (data.speedData == null) {
+    return speedCell(data.speedData, DASTableCell(child: Text('XX'), alignment: Alignment.center));
+  }
+
+  DASTableCell speedCell(SpeedData? speedData, DASTableCell defaultCell) {
+    if (speedData == null) {
       return DASTableCell.empty();
     }
 
     final currentTrainSeries = settings.selectedBreakSeries?.trainSeries ?? metadata.breakSeries?.trainSeries;
     final currentBreakSeries = settings.selectedBreakSeries?.breakSeries ?? metadata.breakSeries?.breakSeries;
 
+    final graduatedSpeeds = speedData.speedsFor(currentTrainSeries, currentBreakSeries);
+    if (graduatedSpeeds == null) {
+      return defaultCell;
+    }
+
     return DASTableCell(
-      child: Text(data.speedData!.resolvedSpeed(currentTrainSeries, currentBreakSeries) ?? 'XX'),
       alignment: Alignment.center,
+      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
+      child: GraduatedSpeedsCellBody(
+        incomingSpeeds: graduatedSpeeds.incomingSpeeds,
+        outgoingSpeeds: graduatedSpeeds.outgoingSpeeds,
+      ),
     );
   }
 

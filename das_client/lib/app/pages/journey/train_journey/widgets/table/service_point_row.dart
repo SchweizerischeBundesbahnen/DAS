@@ -77,11 +77,12 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
 
   @override
   DASTableCell localSpeedCell(BuildContext context) {
-    if (data.stationSpeedData == null) return DASTableCell.empty();
+    if (data.localSpeedData == null) return DASTableCell.empty();
 
     final currentTrainSeries = settings.selectedBreakSeries?.trainSeries ?? metadata.breakSeries?.trainSeries;
+    final currentBreakSeries = settings.selectedBreakSeries?.breakSeries ?? metadata.breakSeries?.breakSeries;
 
-    final graduatedSpeeds = data.stationSpeedData!.graduatedSpeedsFor(currentTrainSeries);
+    final graduatedSpeeds = data.localSpeedData!.speedsFor(currentTrainSeries, currentBreakSeries);
     if (graduatedSpeeds == null) return DASTableCell.empty();
 
     return DASTableCell(
