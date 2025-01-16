@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.6.0...das_client-v0.7.0) (2025-01-16)
+
+
+### Features
+
+* add whistle, balise, tram area and levelcrossing ([#224](https://github.com/SchweizerischeBundesbahnen/DAS/issues/224)) ([#485](https://github.com/SchweizerischeBundesbahnen/DAS/issues/485)) ([27379a2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/27379a2bbdd991db8736f57f19eadddfb3dbaf7d))
+* added graduated station speed. ([#82](https://github.com/SchweizerischeBundesbahnen/DAS/issues/82)) ([#484](https://github.com/SchweizerischeBundesbahnen/DAS/issues/484)) ([8af6cf9](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8af6cf91a9ea22082f39df2ff73fcce215cfaea9))
+
 ## [0.6.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.5.0...das_client-v0.6.0) (2025-01-06)
 
 
