@@ -1,4 +1,5 @@
-import 'package:das_client/model/journey/graduated_speeds.dart';
+import 'package:das_client/model/journey/speed_data.dart';
+import 'package:das_client/model/journey/speeds.dart';
 import 'package:das_client/model/journey/speed.dart';
 import 'package:das_client/model/journey/train_series.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -6,9 +7,9 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   test('test with only incoming station speeds', () {
     // GIVEN WHEN
-    final speed1 = GraduatedSpeeds.from(TrainSeries.R, '100');
-    final speed2 = GraduatedSpeeds.from(TrainSeries.R, '100-90');
-    final speed3 = GraduatedSpeeds.from(TrainSeries.R, '100-90-80');
+    final speed1 = Speeds.from(TrainSeries.R, '100');
+    final speed2 = Speeds.from(TrainSeries.R, '100-90');
+    final speed3 = Speeds.from(TrainSeries.R, '100-90-80');
 
     // THEN
     expect(speed1.incomingSpeeds, hasLength(1));
@@ -28,15 +29,15 @@ void main() {
   });
   test('test with incoming and outgoing station speeds', () {
     // GIVEN WHEN
-    final speed1 = GraduatedSpeeds.from(TrainSeries.R, '100/70');
-    final speed2 = GraduatedSpeeds.from(TrainSeries.R, '100-90/70');
-    final speed3 = GraduatedSpeeds.from(TrainSeries.R, '100-90-80/70');
-    final speed4 = GraduatedSpeeds.from(TrainSeries.R, '100/70-60');
-    final speed5 = GraduatedSpeeds.from(TrainSeries.R, '100-90/70-60');
-    final speed6 = GraduatedSpeeds.from(TrainSeries.R, '100-90-80/70-60');
-    final speed7 = GraduatedSpeeds.from(TrainSeries.R, '100/70-60-50');
-    final speed8 = GraduatedSpeeds.from(TrainSeries.R, '100-90/70-60-50');
-    final speed9 = GraduatedSpeeds.from(TrainSeries.R, '100-90-80/70-60-50');
+    final speed1 = Speeds.from(TrainSeries.R, '100/70');
+    final speed2 = Speeds.from(TrainSeries.R, '100-90/70');
+    final speed3 = Speeds.from(TrainSeries.R, '100-90-80/70');
+    final speed4 = Speeds.from(TrainSeries.R, '100/70-60');
+    final speed5 = Speeds.from(TrainSeries.R, '100-90/70-60');
+    final speed6 = Speeds.from(TrainSeries.R, '100-90-80/70-60');
+    final speed7 = Speeds.from(TrainSeries.R, '100/70-60-50');
+    final speed8 = Speeds.from(TrainSeries.R, '100-90/70-60-50');
+    final speed9 = Speeds.from(TrainSeries.R, '100-90-80/70-60-50');
 
     // THEN
     expect(speed1.incomingSpeeds, hasLength(1));
@@ -104,9 +105,9 @@ void main() {
   });
   test('test station speeds with circled or squared values', () {
     // GIVEN WHEN
-    final speed1 = GraduatedSpeeds.from(TrainSeries.R, '100-{90}/70');
-    final speed2 = GraduatedSpeeds.from(TrainSeries.R, '100/70-[60]');
-    final speed3 = GraduatedSpeeds.from(TrainSeries.R, '[100]-90/{70}-[60]');
+    final speed1 = Speeds.from(TrainSeries.R, '100-{90}/70');
+    final speed2 = Speeds.from(TrainSeries.R, '100/70-[60]');
+    final speed3 = Speeds.from(TrainSeries.R, '[100]-90/{70}-[60]');
 
     // THEN
     expect(speed1.incomingSpeeds, hasLength(2));
@@ -130,11 +131,54 @@ void main() {
   });
 
   test('test invalid speed format', () {
-    expect(() => GraduatedSpeeds.from(TrainSeries.R, 'ABC'), throwsArgumentError);
-    expect(() => GraduatedSpeeds.from(TrainSeries.R, '1A-{90}/70'), throwsArgumentError);
-    expect(() => GraduatedSpeeds.from(TrainSeries.R, '100--20'), throwsArgumentError);
-    expect(() => GraduatedSpeeds.from(TrainSeries.R, '100-{{90}'), throwsArgumentError);
-    expect(() => GraduatedSpeeds.from(TrainSeries.R, '100-{90}//70'), throwsArgumentError);
+    expect(() => Speeds.from(TrainSeries.R, 'ABC'), throwsArgumentError);
+    expect(() => Speeds.from(TrainSeries.R, '1A-{90}/70'), throwsArgumentError);
+    expect(() => Speeds.from(TrainSeries.R, '100--20'), throwsArgumentError);
+    expect(() => Speeds.from(TrainSeries.R, '100-{{90}'), throwsArgumentError);
+    expect(() => Speeds.from(TrainSeries.R, '100-{90}//70'), throwsArgumentError);
+  });
+
+  test('Test resolved speed no velocities', () {
+    final speedData = SpeedData();
+
+    expect(speedData.speedsFor(TrainSeries.R, 150), isNull);
+    expect(speedData.speedsFor(TrainSeries.A, 150), isNull);
+  });
+
+  test('Test resolved speed exact match', () {
+    final speedData = SpeedData(speeds: [
+      Speeds(
+          trainSeries: TrainSeries.R, breakSeries: 100, incomingSpeeds: [Speed.from('100')], reduced: false),
+      Speeds(
+          trainSeries: TrainSeries.R, breakSeries: 150, incomingSpeeds: [Speed.from('150')], reduced: false),
+      Speeds(
+          trainSeries: TrainSeries.A, breakSeries: 100, incomingSpeeds: [Speed.from('200')], reduced: false),
+      Speeds(
+          trainSeries: TrainSeries.A, breakSeries: 150, incomingSpeeds: [Speed.from('250')], reduced: false),
+    ]);
+
+    expect(speedData.speedsFor(TrainSeries.R, 100)!.incomingSpeeds[0].speed, 100);
+    expect(speedData.speedsFor(TrainSeries.R, 150)!.incomingSpeeds[0].speed, 150);
+    expect(speedData.speedsFor(TrainSeries.A, 100)!.incomingSpeeds[0].speed, 200);
+    expect(speedData.speedsFor(TrainSeries.A, 150)!.incomingSpeeds[0].speed, 250);
+  });
+
+  test('Test resolved speed default break series', () {
+    final speedData = SpeedData(speeds: [
+      Speeds(
+          trainSeries: TrainSeries.R, breakSeries: 100, incomingSpeeds: [Speed.from('100')], reduced: false),
+      Speeds(trainSeries: TrainSeries.R, incomingSpeeds: [Speed.from('150')], reduced: false),
+      Speeds(trainSeries: TrainSeries.A, incomingSpeeds: [Speed.from('200')], reduced: false),
+      Speeds(
+          trainSeries: TrainSeries.A, breakSeries: 150, incomingSpeeds: [Speed.from('250')], reduced: false),
+    ]);
+
+    expect(speedData.speedsFor(TrainSeries.R, 100)!.incomingSpeeds[0].speed, 100);
+    expect(speedData.speedsFor(TrainSeries.R, 150)!.incomingSpeeds[0].speed, 150);
+    expect(speedData.speedsFor(TrainSeries.R, 50)!.incomingSpeeds[0].speed, 150);
+    expect(speedData.speedsFor(TrainSeries.A, 100)!.incomingSpeeds[0].speed, 200);
+    expect(speedData.speedsFor(TrainSeries.A, 150)!.incomingSpeeds[0].speed, 250);
+    expect(speedData.speedsFor(TrainSeries.A, 80)!.incomingSpeeds[0].speed, 200);
   });
 }
 

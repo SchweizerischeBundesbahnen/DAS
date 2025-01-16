@@ -5,7 +5,7 @@ class CurvePoint extends BaseData {
   CurvePoint({
     required super.order,
     required super.kilometre,
-    super.speedData,
+    super.localSpeedData,
     this.curvePointType,
     this.curveType,
     this.text,

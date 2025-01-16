@@ -1,18 +1,18 @@
 import 'package:collection/collection.dart';
+import 'package:das_client/model/journey/speeds.dart';
 import 'package:das_client/model/journey/train_series.dart';
-import 'package:das_client/model/journey/velocity.dart';
 
 class SpeedData {
-  SpeedData({this.velocities = const []});
+  SpeedData({this.speeds = const []});
 
-  final List<Velocity> velocities;
+  final List<Speeds> speeds;
 
-  String? resolvedSpeed(TrainSeries? trainSeries, int? breakSeries) {
+  Speeds? speedsFor(TrainSeries? trainSeries, int? breakSeries) {
     if (trainSeries == null) return null;
 
-    final trainSeriesVelocities = velocities.where((it) => it.trainSeries == trainSeries);
-    final exactMatchingVelocity = trainSeriesVelocities.firstWhereOrNull((it) => it.breakSeries == breakSeries);
-    return exactMatchingVelocity?.speed ??
-        trainSeriesVelocities.firstWhereOrNull((it) => it.breakSeries == null)?.speed;
+    final trainSeriesSpeeds = speeds.where((it) => it.trainSeries == trainSeries);
+    final exactMatchingVelocity = trainSeriesSpeeds.firstWhereOrNull((it) => it.breakSeries == breakSeries);
+    return exactMatchingVelocity ??
+        trainSeriesSpeeds.firstWhereOrNull((it) => it.breakSeries == null);
   }
 }

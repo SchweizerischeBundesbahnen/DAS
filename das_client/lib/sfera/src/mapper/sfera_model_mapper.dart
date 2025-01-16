@@ -9,8 +9,8 @@ import 'package:das_client/model/journey/cab_signaling.dart';
 import 'package:das_client/model/journey/connection_track.dart';
 import 'package:das_client/model/journey/curve_point.dart';
 import 'package:das_client/model/journey/datatype.dart';
-import 'package:das_client/model/journey/graduated_speed_data.dart';
-import 'package:das_client/model/journey/graduated_speeds.dart';
+import 'package:das_client/model/journey/speed_data.dart';
+import 'package:das_client/model/journey/speeds.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/level_crossing.dart';
 import 'package:das_client/model/journey/metadata.dart';
@@ -18,11 +18,9 @@ import 'package:das_client/model/journey/protection_section.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
 import 'package:das_client/model/journey/speed_change.dart';
-import 'package:das_client/model/journey/speed_data.dart';
 import 'package:das_client/model/journey/track_equipment.dart';
 import 'package:das_client/model/journey/train_series.dart';
 import 'package:das_client/model/journey/tram_area.dart';
-import 'package:das_client/model/journey/velocity.dart' as journey_velocity;
 import 'package:das_client/model/journey/whistles.dart';
 import 'package:das_client/model/localized_string.dart';
 import 'package:das_client/sfera/src/mapper/track_equipment_mapper.dart';
@@ -36,7 +34,6 @@ import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/multilingual_text.dart';
 import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
-import 'package:das_client/sfera/src/model/station_speed.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location.dart';
 import 'package:das_client/sfera/src/model/train_characteristics.dart';
 import 'package:das_client/sfera/src/model/velocity.dart';
@@ -121,9 +118,10 @@ class SferaModelMapper {
           isStation: tafTapLocation.locationType != TafTapLocationType.stoppingLocation,
           bracketStation: _parseBracketStation(tafTapLocations, tafTapLocation),
           kilometre: kilometreMap[timingPoint.location] ?? [],
-          speedData: _speedDataFromVelocities(tafTapLocation.newLineSpeed?.xmlNewLineSpeed.element.velocities),
-          stationSpeedData: _graduatedSpeedDataFromStationSpeed(tafTapLocation.stationSpeed?.xmlStationSpeed.element),
-          graduatedSpeedData:
+          speedData: _graduatedSpeedDataFromVelocities(tafTapLocation.newLineSpeed?.xmlNewLineSpeed.element.velocities),
+          localSpeedData:
+              _graduatedSpeedDataFromVelocities(tafTapLocation.stationSpeed?.xmlStationSpeed.element.velocities),
+          graduatedSpeedInfo:
               _graduatedSpeedDataFromGraduatedSpeedInfo(tafTapLocation.stationSpeed?.xmlGraduatedSpeedInfo?.element),
         ));
       }
@@ -356,7 +354,7 @@ class SferaModelMapper {
         curveType: curveTypeValue != null ? CurveType.from(curveTypeValue) : null,
         text: curveSpeed?.text,
         comment: curveSpeed?.comment,
-        speedData: _speedDataFromVelocities(curveSpeed?.speeds?.velocities),
+        localSpeedData: _graduatedSpeedDataFromVelocities(curveSpeed?.speeds?.velocities),
       );
     }).toList();
   }
@@ -391,52 +389,43 @@ class SferaModelMapper {
     return newLineSpeeds.map<SpeedChange>((newLineSpeed) {
       return SpeedChange(
           text: newLineSpeed.xmlNewLineSpeed.element.text,
-          speedData: _speedDataFromVelocities(newLineSpeed.xmlNewLineSpeed.element.speeds?.velocities),
+          speedData: _graduatedSpeedDataFromVelocities(newLineSpeed.xmlNewLineSpeed.element.speeds?.velocities),
           order: calculateOrder(segmentIndex, newLineSpeed.location),
           kilometre: kilometreMap[newLineSpeed.location] ?? []);
     }).toList();
   }
 
-  static SpeedData? _speedDataFromVelocities(Iterable<Velocity>? velocities) {
+  static SpeedData? _graduatedSpeedDataFromVelocities(Iterable<Velocity>? velocities) {
     if (velocities == null) return null;
-    return SpeedData(
-        velocities: velocities
-            .map((it) => journey_velocity.Velocity(
-                trainSeries: it.trainSeries, reduced: it.reduced, speed: it.speed, breakSeries: it.brakeSeries))
-            .toList());
-  }
 
-  static GraduatedSpeedData? _graduatedSpeedDataFromStationSpeed(StationSpeed? stationSpeed) {
-    if (stationSpeed == null) return null;
+    final graduatedSpeeds = <Speeds>[];
 
-    final graduatedSpeeds = <GraduatedSpeeds>[];
-
-    void addSpeed(TrainSeries trainSeries, int? breakSeries, String speedString) {
+    void addSpeed(TrainSeries trainSeries, int? breakSeries, String speedString, bool recuced) {
       try {
-        final speeds = GraduatedSpeeds.from(trainSeries, speedString, breakSeries: breakSeries);
+        final speeds = Speeds.from(trainSeries, speedString, breakSeries: breakSeries, reduced: recuced);
         graduatedSpeeds.add(speeds);
       } catch (e) {
         Fimber.w('Could not parse station speed with "$speedString"', ex: e);
       }
     }
 
-    for (final velocity in stationSpeed.velocities) {
+    for (final velocity in velocities) {
       if (velocity.speed != null) {
-        addSpeed(velocity.trainSeries, velocity.brakeSeries, velocity.speed!);
+        addSpeed(velocity.trainSeries, velocity.brakeSeries, velocity.speed!, velocity.reduced);
       }
     }
 
-    return GraduatedSpeedData(graduatedSpeeds: graduatedSpeeds);
+    return SpeedData(speeds: graduatedSpeeds);
   }
 
-  static GraduatedSpeedData? _graduatedSpeedDataFromGraduatedSpeedInfo(GraduatedSpeedInfo? graduatedSpeedInfo) {
+  static SpeedData? _graduatedSpeedDataFromGraduatedSpeedInfo(GraduatedSpeedInfo? graduatedSpeedInfo) {
     if (graduatedSpeedInfo == null) return null;
 
-    final graduatedStationSpeeds = <GraduatedSpeeds>[];
+    final graduatedStationSpeeds = <Speeds>[];
 
     void addSpeed(TrainSeries trainSeries, String speedString, String? text) {
       try {
-        final speeds = GraduatedSpeeds.from(trainSeries, speedString, text: text);
+        final speeds = Speeds.from(trainSeries, speedString, text: text);
         graduatedStationSpeeds.add(speeds);
       } catch (e) {
         Fimber.w('Could not parse graduated station speed with "$speedString"', ex: e);
@@ -460,25 +449,15 @@ class SferaModelMapper {
       }
     }
 
-    return GraduatedSpeedData(graduatedSpeeds: graduatedStationSpeeds);
+    return SpeedData(speeds: graduatedStationSpeeds);
   }
 
   static Set<BreakSeries> _parseAvailableBreakSeries(List<BaseData> journeyData) {
-    final breakSeriesSet = journeyData
-        .where((it) => it.speedData != null)
-        .expand((it) => it.speedData!.velocities)
+    return journeyData
+        .expand((it) => [...it.speedData?.speeds ?? [], ...it.localSpeedData?.speeds ?? []])
         .where((it) => it.breakSeries != null)
         .map((it) => BreakSeries(trainSeries: it.trainSeries, breakSeries: it.breakSeries!))
         .toSet();
-
-    breakSeriesSet.addAll(journeyData
-        .whereType<ServicePoint>()
-        .expand((it) => it.stationSpeedData?.graduatedSpeeds ?? <GraduatedSpeeds>[])
-        .where((it) => it.breakSeries != null)
-        .map((it) => BreakSeries(trainSeries: it.trainSeries, breakSeries: it.breakSeries!))
-        .toSet());
-
-    return breakSeriesSet;
   }
 
   static TrainCharacteristics? _resolveFirstTrainCharacteristics(

@@ -1,14 +1,14 @@
-import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/speed.dart';
 import 'package:das_client/model/journey/train_series.dart';
 
-class GraduatedSpeeds {
-  GraduatedSpeeds({
+class Speeds {
+  Speeds({
     required this.trainSeries,
     this.text,
     this.breakSeries,
     this.incomingSpeeds = const [],
     this.outgoingSpeeds = const [],
+    this.reduced = false,
   });
 
   final TrainSeries trainSeries;
@@ -16,8 +16,9 @@ class GraduatedSpeeds {
   final int? breakSeries;
   final List<Speed> incomingSpeeds;
   final List<Speed> outgoingSpeeds;
+  final bool reduced;
 
-  factory GraduatedSpeeds.from(TrainSeries trainSeries, String speedString, {String? text, int? breakSeries}) {
+  factory Speeds.from(TrainSeries trainSeries, String speedString, {String? text, int? breakSeries, bool reduced = false}) {
     final parts = speedString.split('/');
     final incomingSpeeds = parts[0].split('-');
     final outgoingSpeeds = parts.length > 1 ? parts[1].split('-') : [];
@@ -29,10 +30,11 @@ class GraduatedSpeeds {
       throw ArgumentError('Invalid graduated station speed format: $speedString');
     }
 
-    return GraduatedSpeeds(
+    return Speeds(
       trainSeries: trainSeries,
       text: text,
       breakSeries: breakSeries,
+      reduced: reduced,
       incomingSpeeds: incomingSpeeds.map((speed) => Speed.from(speed)).toList(),
       outgoingSpeeds: outgoingSpeeds.map((speed) => Speed.from(speed)).toList(),
     );
@@ -40,6 +42,6 @@ class GraduatedSpeeds {
 
   @override
   String toString() {
-    return 'GraduatedStationSpeeds(trainSeries: $trainSeries, incomingSpeeds: $incomingSpeeds, outgoingSpeeds: $outgoingSpeeds)';
+    return 'GraduatedSpeeds(trainSeries: $trainSeries, breakSeries: $breakSeries, incomingSpeeds: $incomingSpeeds, outgoingSpeeds: $outgoingSpeeds, text: $text)';
   }
 }
