@@ -1,5 +1,5 @@
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_row_builder.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/track_equipment_render_data.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/render_data/track_equipment_render_data.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
 import 'package:das_client/model/journey/connection_track.dart';
@@ -8,7 +8,7 @@ import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
-import 'package:das_client/model/journey/track_equipment.dart';
+import 'package:das_client/model/journey/track_equipment_segment.dart';
 import 'package:das_client/model/localized_string.dart';
 import 'package:flutter_test/flutter_test.dart';
 

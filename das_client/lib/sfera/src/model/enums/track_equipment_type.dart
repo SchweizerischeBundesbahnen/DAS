@@ -1,4 +1,4 @@
-import 'package:das_client/model/journey/track_equipment.dart';
+import 'package:das_client/model/journey/track_equipment_segment.dart';
 import 'package:das_client/sfera/src/model/enums/xml_enum.dart';
 
 enum SferaTrackEquipmentType implements XmlEnum {

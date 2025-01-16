@@ -3,7 +3,7 @@ import 'package:das_client/model/journey/graduated_station_speeds.dart';
 import 'package:das_client/model/journey/train_series.dart';
 
 class StationSpeedData {
-  StationSpeedData({this.graduatedStationSpeeds = const []});
+  const StationSpeedData({this.graduatedStationSpeeds = const []});
 
   final List<GraduatedStationSpeeds> graduatedStationSpeeds;
 

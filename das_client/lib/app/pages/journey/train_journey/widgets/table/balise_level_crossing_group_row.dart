@@ -12,11 +12,10 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class BaliseLevelCrossingGroupRow extends BaseRowBuilder<BaliseLevelCrossingGroup> {
   static const Key baliseIconKey = Key('balise_icon_key');
 
-  BaliseLevelCrossingGroupRow({
+  const BaliseLevelCrossingGroupRow({
     required super.metadata,
     required super.data,
-    required super.settings,
-    super.trackEquipmentRenderData,
+    super.renderData,
     super.onTap,
   });
 

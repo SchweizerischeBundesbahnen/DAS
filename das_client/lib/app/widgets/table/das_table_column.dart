@@ -19,7 +19,7 @@ class DASTableColumn {
     this.alignment = Alignment.center,
     this.onTap,
     this.headerKey,
-  }) : assert((width != null && width > 0) || expanded);
+  }) : assert(width != null || expanded);
 
   /// The content of the column header as a widget.
   final Widget? child;

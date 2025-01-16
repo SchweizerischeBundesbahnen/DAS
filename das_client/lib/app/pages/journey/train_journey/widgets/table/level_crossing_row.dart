@@ -5,11 +5,10 @@ import 'package:das_client/model/journey/level_crossing.dart';
 import 'package:flutter/material.dart';
 
 class LevelCrossingRow extends BaseRowBuilder<LevelCrossing> {
-  LevelCrossingRow({
+  const LevelCrossingRow({
     required super.metadata,
     required super.data,
-    required super.settings,
-    super.trackEquipmentRenderData,
+    super.renderData,
     super.isGrouped,
   });
 

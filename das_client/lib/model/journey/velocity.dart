@@ -1,7 +1,7 @@
 import 'package:das_client/model/journey/train_series.dart';
 
 class Velocity {
-  Velocity({
+  const Velocity({
     required this.trainSeries,
     required this.reduced,
     this.breakSeries,

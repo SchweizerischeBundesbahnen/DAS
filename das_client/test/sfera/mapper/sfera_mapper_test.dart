@@ -14,7 +14,7 @@ import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
 import 'package:das_client/model/journey/speed.dart';
 import 'package:das_client/model/journey/speed_change.dart';
-import 'package:das_client/model/journey/track_equipment.dart';
+import 'package:das_client/model/journey/track_equipment_segment.dart';
 import 'package:das_client/model/journey/train_series.dart';
 import 'package:das_client/model/journey/tram_area.dart';
 import 'package:das_client/model/journey/whistles.dart';
@@ -351,14 +351,14 @@ void main() {
 
     expect(journey.valid, true);
     expect(servicePoints, hasLength(6));
-    expect(servicePoints[0].bracketStation, isNull);
-    expect(servicePoints[1].bracketStation, isNull);
-    expect(servicePoints[2].bracketStation, isNull);
-    expect(servicePoints[3].bracketStation, isNotNull);
-    expect(servicePoints[3].bracketStation!.mainStationAbbreviation, isNull);
-    expect(servicePoints[4].bracketStation, isNotNull);
-    expect(servicePoints[4].bracketStation!.mainStationAbbreviation, 'D');
-    expect(servicePoints[5].bracketStation, isNull);
+    expect(servicePoints[0].bracketMainStation, isNull);
+    expect(servicePoints[1].bracketMainStation, isNull);
+    expect(servicePoints[2].bracketMainStation, isNull);
+    expect(servicePoints[3].bracketMainStation, isNotNull);
+    expect(servicePoints[3].bracketMainStation!.abbreviation, isNull);
+    expect(servicePoints[4].bracketMainStation, isNotNull);
+    expect(servicePoints[4].bracketMainStation!.abbreviation, 'D');
+    expect(servicePoints[5].bracketMainStation, isNull);
   });
 
   test('Test protection section is parsed correctly', () async {

@@ -9,11 +9,10 @@ class CABSignalingRow extends BaseRowBuilder<CABSignaling> {
   static const Key cabSignalingStartIconKey = Key('cab_signaling_start_icon_key');
   static const Key cabSignalingEndIconKey = Key('cab_signaling_end_icon_key');
 
-  CABSignalingRow({
+  const CABSignalingRow({
     required super.metadata,
     required super.data,
-    required super.settings,
-    super.trackEquipmentRenderData,
+    super.renderData,
   });
 
   @override

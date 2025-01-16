@@ -2,7 +2,7 @@ import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/datatype.dart';
 
 class BaliseLevelCrossingGroup extends BaseData {
-  BaliseLevelCrossingGroup({
+  const BaliseLevelCrossingGroup({
     required super.order,
     required super.kilometre,
     required this.groupedElements,

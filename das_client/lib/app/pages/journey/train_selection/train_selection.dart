@@ -24,8 +24,6 @@ class _TrainSelectionState extends State<TrainSelection> {
     super.initState();
     _trainNumberController = TextEditingController();
     _dateController = TextEditingController();
-
-    context.trainJourneyCubit.updateTrainNumber(_trainNumberController.text);
   }
 
   @override
@@ -56,7 +54,7 @@ class _TrainSelectionState extends State<TrainSelection> {
           : null,
       child: Column(
         children: [
-          _trainNumberInput(),
+          _trainNumberInput(state),
           _dateInput(state),
           _ruSelection(context, state),
         ],
@@ -64,7 +62,11 @@ class _TrainSelectionState extends State<TrainSelection> {
     );
   }
 
-  Widget _trainNumberInput() {
+  Widget _trainNumberInput(SelectingTrainJourneyState state) {
+    if (state.errorCode != null && state.trainNumber != null) {
+      _trainNumberController.text = state.trainNumber!;
+    }
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, sbbDefaultSpacing, 0, sbbDefaultSpacing / 2),
       child: SBBTextField(

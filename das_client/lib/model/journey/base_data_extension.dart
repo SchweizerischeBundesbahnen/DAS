@@ -1,4 +1,4 @@
-import 'package:das_client/app/model/train_journey_settings.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/render_data/train_journey_settings.dart';
 import 'package:das_client/model/journey/balise_level_crossing_group.dart';
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/datatype.dart';
