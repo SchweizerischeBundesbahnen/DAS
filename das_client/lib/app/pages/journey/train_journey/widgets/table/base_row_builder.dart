@@ -9,6 +9,7 @@ import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:das_client/model/journey/additional_speed_restriction.dart';
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/metadata.dart';
+import 'package:das_client/model/journey/speed_data.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -111,7 +112,7 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   }
 
   DASTableCell localSpeedCell(BuildContext context) {
-    return DASTableCell.empty();
+    return speedCell(data.localSpeedData, DASTableCell.empty());
   }
 
   DASTableCell advisedSpeedCell(BuildContext context) {
@@ -119,16 +120,20 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   }
 
   DASTableCell brakedWeightSpeedCell(BuildContext context) {
-    if (data.speedData == null) {
+    return speedCell(data.speedData, DASTableCell(child: Text('XX'), alignment: Alignment.center));
+  }
+
+  DASTableCell speedCell(SpeedData? speedData, DASTableCell defaultCell) {
+    if (speedData == null) {
       return DASTableCell.empty();
     }
 
     final currentTrainSeries = settings.selectedBreakSeries?.trainSeries ?? metadata.breakSeries?.trainSeries;
     final currentBreakSeries = settings.selectedBreakSeries?.breakSeries ?? metadata.breakSeries?.breakSeries;
 
-    final graduatedSpeeds = data.speedData!.speedsFor(currentTrainSeries, currentBreakSeries);
+    final graduatedSpeeds = speedData.speedsFor(currentTrainSeries, currentBreakSeries);
     if (graduatedSpeeds == null) {
-      return DASTableCell(child: Text('XX'), alignment: Alignment.center);
+      return defaultCell;
     }
 
     return DASTableCell(
