@@ -5,7 +5,7 @@ class CurvePoint extends BaseData {
   const CurvePoint({
     required super.order,
     required super.kilometre,
-    super.speedData,
+    super.localSpeedData,
     this.curvePointType,
     this.curveType,
     this.text,

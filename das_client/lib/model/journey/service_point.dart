@@ -1,7 +1,7 @@
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/bracket_station.dart';
 import 'package:das_client/model/journey/datatype.dart';
-import 'package:das_client/model/journey/station_speed_data.dart';
+import 'package:das_client/model/journey/speed_data.dart';
 import 'package:das_client/model/localized_string.dart';
 
 class ServicePoint extends BaseData {
@@ -10,11 +10,12 @@ class ServicePoint extends BaseData {
     required super.order,
     required super.kilometre,
     super.speedData,
+    super.localSpeedData,
     this.mandatoryStop = false,
     this.isStop = false,
     this.isStation = false,
     this.bracketMainStation,
-    this.stationSpeedData,
+    this.graduatedSpeedInfo,
   }) : super(type: Datatype.servicePoint);
 
   final LocalizedString name;
@@ -22,10 +23,10 @@ class ServicePoint extends BaseData {
   final bool isStop;
   final bool isStation;
   final BracketMainStation? bracketMainStation;
-  final StationSpeedData? stationSpeedData;
+  final SpeedData? graduatedSpeedInfo;
 
   @override
   String toString() {
-    return 'ServicePoint(order: $order, kilometre: $kilometre, name: $name, mandatoryStop: $mandatoryStop, isStop: $isStop, isStation: $isStation, bracketMainStation: $bracketMainStation, speedData: $speedData, stationSpeedData: $stationSpeedData)';
+    return 'ServicePoint(order: $order, kilometre: $kilometre, name: $name, mandatoryStop: $mandatoryStop, isStop: $isStop, isStation: $isStation, bracketMainStation: $bracketMainStation, speedData: $speedData, localSpeedData: $localSpeedData)';
   }
 }

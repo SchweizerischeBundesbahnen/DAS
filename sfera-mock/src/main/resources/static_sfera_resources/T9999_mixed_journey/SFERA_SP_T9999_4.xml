@@ -53,11 +53,11 @@
             <TAF_TAP_Location_NSP name="bracketStation">
                 <NetworkSpecificParameter name="mainStation" value="CH9994"/>
             </TAF_TAP_Location_NSP>
-            <TAF_TAP_Location_NSP name="stationSpeed">
-                <NetworkSpecificParameter name="xmlStationSpeed" value="
-                    &lt;stationSpeed&gt;
+            <TAF_TAP_Location_NSP name="newLineSpeed">
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                    &lt;lineSpeed&gt;
                     &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;90&quot;/&gt;
-                    &lt;/stationSpeed&gt;
+                    &lt;/lineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>

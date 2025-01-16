@@ -784,7 +784,7 @@ void main() {
       final bernStationRow = findDASTableRowByText('Bern');
       expect(bernStationRow, findsOneWidget);
       final bernIncomingSpeeds = find.descendant(of: bernStationRow, matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey));
-      expect(bernIncomingSpeeds, findsOneWidget);
+      expect(bernIncomingSpeeds, findsNWidgets(2));
       final bernIncomingSpeedsText = find.descendant(of: bernStationRow, matching: find.text('75-70-60'));
       expect(bernIncomingSpeedsText, findsOneWidget);
       final bernOutgoingSpeeds = find.descendant(of: bernStationRow, matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey));
@@ -804,7 +804,7 @@ void main() {
       final burgdorfStationRow = findDASTableRowByText('Burgdorf');
       expect(burgdorfStationRow, findsOneWidget);
       final burgdorfIncomingSpeeds = find.descendant(of: burgdorfStationRow, matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey));
-      expect(burgdorfIncomingSpeeds, findsOneWidget);
+      expect(burgdorfIncomingSpeeds, findsNWidgets(2));
       final burgdorfIncomingSpeeds75 = find.descendant(of: burgdorfIncomingSpeeds, matching: find.text('75'));
       expect(burgdorfIncomingSpeeds75, findsOneWidget);
       final burgdorfIncomingSpeeds70 = find.descendant(of: burgdorfIncomingSpeeds, matching: find.text('70'));
@@ -823,7 +823,7 @@ void main() {
       final oltenStationRow = findDASTableRowByText('Olten');
       expect(oltenStationRow, findsOneWidget);
       final oltenIncomingSpeeds = find.descendant(of: oltenStationRow, matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey));
-      expect(oltenIncomingSpeeds, findsNothing);
+      expect(oltenIncomingSpeeds, findsOneWidget);
       final oltenOutgoingSpeeds = find.descendant(of: oltenStationRow, matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey));
       expect(oltenOutgoingSpeeds, findsNothing);
 

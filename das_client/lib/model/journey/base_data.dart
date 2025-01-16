@@ -8,12 +8,14 @@ abstract class BaseData implements Comparable {
     required this.order,
     required this.kilometre,
     this.speedData,
+    this.localSpeedData,
   });
 
   final Datatype type;
   final int order;
   final List<double> kilometre;
   final SpeedData? speedData;
+  final SpeedData? localSpeedData;
 
   @override
   int compareTo(other) {
