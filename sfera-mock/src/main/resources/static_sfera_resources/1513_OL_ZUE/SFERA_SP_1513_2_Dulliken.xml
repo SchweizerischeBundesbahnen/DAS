@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
-                SP_ID="1513_2_Dulliken" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="4800" SP_Status="Valid">
+                SP_ID="1513_2_Dulliken" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="3600" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -17,10 +17,29 @@
         </TimingPoint>
 
 		<Signal>
+            <Signal_ID signal_ID_Physical="E1" location="200"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E1"/>
+        </Signal>
+
+		<Signal>
             <Signal_ID signal_ID_Physical="P603" location="800"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="P603"/>
         </Signal>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="A604" location="1400"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A604"/>
+        </Signal>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="C44" location="2100"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="C44"/>
+        </Signal>
+
 
     </SP_Points>
 
@@ -61,9 +80,20 @@
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="42.9"/>
         </KilometreReferencePoint>
+        <KilometreReferencePoint location="200">
+            <KM_Reference kmRef="43.1"/>
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="800">
             <KM_Reference kmRef="43.7"/>
         </KilometreReferencePoint>
+        <KilometreReferencePoint location="1400">
+            <KM_Reference kmRef="44.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2100">
+            <KM_Reference kmRef="45.0"/>
+        </KilometreReferencePoint>
+
+
     </SP_ContextInformation>
 	
 </SegmentProfile>

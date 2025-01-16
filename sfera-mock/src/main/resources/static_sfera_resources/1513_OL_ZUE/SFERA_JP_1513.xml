@@ -10,6 +10,7 @@
         </OTN_ID>
     </TrainIdentification>
 
+	<!-- SegmentProfileList neu SegmentProfileReference mit JP_ContextInformation -->
     <SegmentProfileList SP_ID="1513_1_Olten" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
@@ -23,6 +24,7 @@
             </StoppingPointInformation>
         </TimingPointConstraints>
 		
+		<!-- nur noch für ADL, VPro neu JP_ContextInformation > JP_ContextInformation_NSPs > JP_ContextInformation_NSP_Constraints > startEndQualifier = StartsEnds und location = BP und name = "VProSpeed" und newSpeed="Geschwindigkeit" -->
 		<TemporaryConstraints startEndQualifier="Starts" startLocation="0" temporaryConstraintType="AdvisedSpeed">
 			<AdvisedSpeed speed="80" reasonText="VPro" />
 		</TemporaryConstraints>

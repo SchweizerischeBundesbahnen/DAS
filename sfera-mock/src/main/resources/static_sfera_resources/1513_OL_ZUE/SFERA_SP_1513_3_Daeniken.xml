@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
-                SP_ID="1513_3_Daeniken" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="4800" SP_Status="Valid">
+                SP_ID="1513_3_Daeniken" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="2400" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -15,11 +15,29 @@
                 <LocationPrimaryCode>02111</LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="E4" location="200"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E4"/>
+        </Signal>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="G114" location="700"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="G114"/>
+        </Signal>
       
 		<Signal>
             <Signal_ID signal_ID_Physical="P856" location="1300"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="P856"/>
+        </Signal>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="A855" location="1800"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A855"/>
         </Signal>
 
     </SP_Points>
@@ -72,9 +90,19 @@
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="45.7"/>
         </KilometreReferencePoint>
+        <KilometreReferencePoint location="200">
+            <KM_Reference kmRef="45.9"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="700">
+            <KM_Reference kmRef="46.4"/>
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="1300">
             <KM_Reference kmRef="47.0"/>
         </KilometreReferencePoint>
+        <KilometreReferencePoint location="1800">
+            <KM_Reference kmRef="47.5"/>
+        </KilometreReferencePoint>
+
     </SP_ContextInformation>
 	
 </SegmentProfile>

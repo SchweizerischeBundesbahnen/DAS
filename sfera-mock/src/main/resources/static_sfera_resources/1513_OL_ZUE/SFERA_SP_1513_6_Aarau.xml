@@ -16,7 +16,7 @@
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
-        <TimingPoint TP_ID="Aarau GB" location="700">
+        <TimingPoint TP_ID="Aarau GB" location="800">
             <TP_Name name="AAGB"/>
             <TAF_TAP_LocationReference>
                 <CountryCodeISO>CH</CountryCodeISO>
@@ -24,6 +24,35 @@
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
+		<Signal>
+            <Signal_ID signal_ID_Physical="F2" location="200"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="F2"/>
+        </Signal>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="D163" location="900"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="D163"/>
+        </Signal>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="39W" location="1800"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="39W"/>
+        </Signal>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="38W" location="3300"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="38W"/>
+        </Signal>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="F93" location="4800"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="F93"/>
+        </Signal>
       
     </SP_Points>
 
@@ -122,9 +151,25 @@
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="41.5"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="700">
+		<KilometreReferencePoint location="200">
+            <KM_Reference kmRef="41.3"/>
+        </KilometreReferencePoint>
+		<KilometreReferencePoint location="800">
             <KM_Reference kmRef="40.8"/>
         </KilometreReferencePoint>
+		<KilometreReferencePoint location="900">
+            <KM_Reference kmRef="40.7"/>
+        </KilometreReferencePoint>
+		<KilometreReferencePoint location="1800">
+            <KM_Reference kmRef="39.8"/>
+        </KilometreReferencePoint>
+		<KilometreReferencePoint location="3300">
+            <KM_Reference kmRef="39.3"/>
+        </KilometreReferencePoint>
+		<KilometreReferencePoint location="4800">
+            <KM_Reference kmRef="36.8"/>
+        </KilometreReferencePoint>
+
     </SP_ContextInformation>
 	
 </SegmentProfile>

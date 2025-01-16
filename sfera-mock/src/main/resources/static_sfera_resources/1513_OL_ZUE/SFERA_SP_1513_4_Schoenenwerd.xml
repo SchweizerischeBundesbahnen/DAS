@@ -15,11 +15,35 @@
                 <LocationPrimaryCode>02112</LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="C2" location="100"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="C2"/>
+        </Signal>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="E72" location="600"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E72"/>
+        </Signal>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="G102" location="1400"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="G102"/>
+        </Signal>
       
 		<Signal>
             <Signal_ID signal_ID_Physical="P854" location="2100"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="P854"/>
+        </Signal>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="A852" location="2700"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A852"/>
         </Signal>
 
     </SP_Points>
@@ -87,9 +111,22 @@
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="48.1"/>
         </KilometreReferencePoint>
+        <KilometreReferencePoint location="100">
+            <KM_Reference kmRef="48.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="600">
+            <KM_Reference kmRef="48.7"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1400">
+            <KM_Reference kmRef="49.5"/>
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="2100">
             <KM_Reference kmRef="50.2"/>
         </KilometreReferencePoint>
+        <KilometreReferencePoint location="2700">
+            <KM_Reference kmRef="50.8"/> 
+        </KilometreReferencePoint>
+
     </SP_ContextInformation>
 	
 </SegmentProfile>
