@@ -1,20 +1,23 @@
+import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/speed.dart';
 import 'package:das_client/model/journey/train_series.dart';
 
-class GraduatedStationSpeeds {
-  GraduatedStationSpeeds({
+class GraduatedSpeeds {
+  GraduatedSpeeds({
     required this.trainSeries,
     this.text,
+    this.breakSeries,
     this.incomingSpeeds = const [],
     this.outgoingSpeeds = const [],
-  }) : assert(trainSeries.isNotEmpty);
+  });
 
-  final List<TrainSeries> trainSeries;
+  final TrainSeries trainSeries;
   final String? text;
+  final int? breakSeries;
   final List<Speed> incomingSpeeds;
   final List<Speed> outgoingSpeeds;
 
-  factory GraduatedStationSpeeds.from(List<TrainSeries> trainSeries, String speedString, {String? text}) {
+  factory GraduatedSpeeds.from(TrainSeries trainSeries, String speedString, {String? text, int? breakSeries}) {
     final parts = speedString.split('/');
     final incomingSpeeds = parts[0].split('-');
     final outgoingSpeeds = parts.length > 1 ? parts[1].split('-') : [];
@@ -26,9 +29,10 @@ class GraduatedStationSpeeds {
       throw ArgumentError('Invalid graduated station speed format: $speedString');
     }
 
-    return GraduatedStationSpeeds(
+    return GraduatedSpeeds(
       trainSeries: trainSeries,
       text: text,
+      breakSeries: breakSeries,
       incomingSpeeds: incomingSpeeds.map((speed) => Speed.from(speed)).toList(),
       outgoingSpeeds: outgoingSpeeds.map((speed) => Speed.from(speed)).toList(),
     );

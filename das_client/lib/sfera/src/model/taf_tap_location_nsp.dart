@@ -1,3 +1,4 @@
+import 'package:das_client/sfera/src/model/new_line_speed_taf_tap_location.dart';
 import 'package:das_client/sfera/src/model/nsp.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 import 'package:das_client/sfera/src/model/station_speed_nsp.dart';
@@ -10,6 +11,8 @@ class TafTapLocationNsp extends Nsp {
   factory TafTapLocationNsp.from({Map<String, String>? attributes, List<SferaXmlElement>? children, String? value}) {
     if (attributes?['name'] == StationSpeedNsp.elementName) {
       return StationSpeedNsp(attributes: attributes, children: children, value: value);
+    } else if (attributes?['name'] == NewLineSpeedTafTapLocation.elementName) {
+      return NewLineSpeedTafTapLocation(attributes: attributes, children: children, value: value);
     }
     return TafTapLocationNsp(attributes: attributes, children: children, value: value);
   }
