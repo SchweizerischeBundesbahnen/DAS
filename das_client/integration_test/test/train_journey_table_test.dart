@@ -26,6 +26,57 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey table test', () {
+    testWidgets('check if update sent is correct', (tester) async {
+      // Load app widget.
+      await prepareAndStartApp(tester);
+
+      // Select the correct train number
+      final trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
+      expect(trainNumberText, findsOneWidget);
+
+      await enterText(tester, trainNumberText, 'T9999');
+
+      // Log into the journey
+      final primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
+      await tester.tap(primaryButton);
+
+      // Wait for train journey to load
+      await tester.pumpAndSettle();
+
+      // Find the header and check if it is existent
+      final headerFinder = find.byType(Header);
+      expect(headerFinder, findsOneWidget);
+
+      // Timer logic: increase timer every second, rerun the base every 100 ms and check if the UI changed
+      int counter = 0;
+
+      final completer = Completer<void>();
+
+      expect(find.descendant(of: headerFinder, matching: find.text('+00:00')), findsOneWidget);
+
+      while (!completer.isCompleted) {
+        await tester.pumpAndSettle();
+
+        if (!find.descendant(of: headerFinder, matching: find.text('+00:00')).evaluate().isNotEmpty) {
+          expect(find.descendant(of: headerFinder, matching: find.text('+00:30')), findsOneWidget);
+          completer.complete();
+          break;
+        }
+
+        // cancel after 10 seconds
+        if (counter++ > 10 * 10) {
+          completer
+              .completeError(Exception('UI did not change from the base value to the updated value (+00:00 -> +00:30)'));
+          break;
+        }
+
+        await Future.delayed(const Duration(milliseconds: 100));
+      }
+
+      await completer.future;
+
+      await tester.pumpAndSettle();
+    });
 
     testWidgets('test balise multiple level crossings', (tester) async {
       await prepareAndStartApp(tester);
@@ -892,64 +943,6 @@ void main() {
       } else {
         expect(find.descendant(of: headerFinder, matching: find.text(currentWholeTime)), findsOneWidget);
       }
-
-      await tester.pumpAndSettle();
-    });
-
-    testWidgets('check if update sent is correct', (tester) async {
-      // Load app widget.
-      await prepareAndStartApp(tester);
-
-      // Select the correct train number
-      final trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
-      expect(trainNumberText, findsOneWidget);
-
-      await enterText(tester, trainNumberText, 'T9999');
-
-      // Log into the journey
-      final primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
-      await tester.tap(primaryButton);
-
-      // Wait for train journey to load
-      await tester.pumpAndSettle();
-
-      // Find the header and check if it is existent
-      final headerFinder = find.byType(Header);
-      expect(headerFinder, findsOneWidget);
-
-      // Timer logic: increase timer every second, rerun the base every 100 ms and check if the UI changed
-      int timer = 0;
-      const maxTime = 10;
-      int millisecondsCounter = 0;
-
-      final completer = Completer<void>();
-
-      expect(find.descendant(of: headerFinder, matching: find.text('+00:00')), findsOneWidget);
-
-      while (!completer.isCompleted) {
-        await tester.pumpAndSettle();
-
-        if (!find.descendant(of: headerFinder, matching: find.text('+00:00')).evaluate().isNotEmpty) {
-          expect(find.descendant(of: headerFinder, matching: find.text('+00:30')), findsOneWidget);
-          completer.complete();
-          break;
-        }
-
-        millisecondsCounter += 100;
-        if (millisecondsCounter % 1000 == 0) {
-          timer++;
-        }
-
-        if (timer > maxTime) {
-          completer
-              .completeError(Exception('UI did not change from the base value to the updated value (+00:00 -> +00:30)'));
-          break;
-        }
-
-        await Future.delayed(const Duration(milliseconds: 100));
-      }
-
-      await completer.future;
 
       await tester.pumpAndSettle();
     });
