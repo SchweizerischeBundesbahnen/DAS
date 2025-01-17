@@ -101,7 +101,7 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfile>> {
       if (allValid) {
         _taskCompletedCallback(this, replyMessage.payload!.segmentProfiles.toList());
       } else {
-        _taskFailedCallback(this, ErrorCode.sferaSpInvalid);
+        _taskFailedCallback(this, ErrorCode.sferaInvalid);
       }
 
       return true;
