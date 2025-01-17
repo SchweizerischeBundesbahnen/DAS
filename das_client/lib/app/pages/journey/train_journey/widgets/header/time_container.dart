@@ -24,7 +24,7 @@ class TimeContainer extends StatelessWidget {
         height: 112.0,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Flexible(child: _currentTime()),
             _divider(),
@@ -50,7 +50,10 @@ Widget _punctualityDisplay(BuildContext context) {
     stream: bloc.journeyStream,
     builder: (context, snapshot) {
       if (!snapshot.hasData || snapshot.data == null || snapshot.data!.metadata.delay == null) {
-        return Text('+00:00', style: DASTextStyles.xLargeLight);
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
+          child: Text('+00:00', style: DASTextStyles.xLargeLight),
+        );
       }
 
       final Journey journey = snapshot.data!;
@@ -60,9 +63,9 @@ Widget _punctualityDisplay(BuildContext context) {
       final String seconds = NumberFormat('00').format(delay.inSeconds.abs() % 60);
       final String formattedDuration = '${delay.isNegative ? '-' : '+'}$minutes:$seconds';
 
-      return Text(
-        formattedDuration,
-        style: DASTextStyles.xLargeLight,
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
+        child: Text(formattedDuration, style: DASTextStyles.xLargeLight),
       );
     },
   );
@@ -72,9 +75,12 @@ StreamBuilder _currentTime() {
   return StreamBuilder(
     stream: Stream.periodic(const Duration(milliseconds: 200)),
     builder: (context, snapshot) {
-      return Text(
-        DateFormat('HH:mm:ss').format(DateTime.now().toLocal()),
-        style: DASTextStyles.xLargeBold,
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0.0),
+        child: Text(
+          DateFormat('HH:mm:ss').format(DateTime.now().toLocal()),
+          style: DASTextStyles.xLargeBold,
+        ),
       );
     },
   );
