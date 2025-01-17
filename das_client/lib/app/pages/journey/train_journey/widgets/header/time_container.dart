@@ -64,7 +64,8 @@ Widget _punctualityDisplay(BuildContext context) {
       final String formattedDuration = '${delay.isNegative ? '-' : '+'}$minutes:$seconds';
 
       return Padding(
-        padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
+        padding:
+            const EdgeInsets.fromLTRB(sbbDefaultSpacing * 0.5, 0.0, sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5),
         child: Text(formattedDuration, style: DASTextStyles.xLargeLight),
       );
     },
@@ -76,7 +77,8 @@ StreamBuilder _currentTime() {
     stream: Stream.periodic(const Duration(milliseconds: 200)),
     builder: (context, snapshot) {
       return Padding(
-        padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0.0),
+        padding:
+            const EdgeInsets.fromLTRB(sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5, 0),
         child: Text(
           DateFormat('HH:mm:ss').format(DateTime.now().toLocal()),
           style: DASTextStyles.xLargeBold,
