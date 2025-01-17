@@ -51,7 +51,8 @@ Widget _punctualityDisplay(BuildContext context) {
     builder: (context, snapshot) {
       if (!snapshot.hasData || snapshot.data == null || snapshot.data!.metadata.delay == null) {
         return Padding(
-          padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
+          padding:
+              const EdgeInsets.fromLTRB(sbbDefaultSpacing * 0.5, 0.0, sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5),
           child: Text('+00:00', style: DASTextStyles.xLargeLight),
         );
       }
