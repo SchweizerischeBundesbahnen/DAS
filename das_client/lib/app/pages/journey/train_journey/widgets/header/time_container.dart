@@ -4,7 +4,6 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:intl/intl.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class TimeContainer extends StatelessWidget {
   const TimeContainer({super.key});
@@ -63,7 +62,7 @@ Widget _punctualityDisplay(BuildContext context) {
 
       return Text(
         formattedDuration,
-        style: DASTextStyles.xLargeLight),
+        style: DASTextStyles.xLargeLight,
       );
     },
   );
