@@ -109,10 +109,10 @@ void main() {
 
     final DateTime currentTime = DateTime.now();
     final String currentHour = currentTime.hour <= 9 ? '0${currentTime.hour}' : (currentTime.hour).toString();
-    final String currentMinutes = currentTime.hour <= 9 ? '0${currentTime.minute}' : (currentTime.minute).toString();
-    final String currentSeconds = currentTime.hour <= 9 ? '0${currentTime.second}' : (currentTime.second).toString();
+    final String currentMinutes = currentTime.minute <= 9 ? '0${currentTime.minute}' : (currentTime.minute).toString();
+    final String currentSeconds = currentTime.second <= 9 ? '0${currentTime.second}' : (currentTime.second).toString();
     final String nextSecond =
-        currentTime.hour <= 9 ? '0${currentTime.second + 1}' : (currentTime.second + 1).toString();
+        currentTime.second <= 9 ? '0${currentTime.second + 1}' : (currentTime.second + 1).toString();
     final String currentWholeTime = '$currentHour:$currentMinutes:$currentSeconds';
     final String nextSecondWholeTime = '$currentHour:$currentMinutes:$nextSecond';
 

@@ -19,7 +19,6 @@ import 'package:das_client/model/journey/track_equipment.dart';
 import 'package:das_client/model/journey/velocity.dart';
 import 'package:das_client/model/localized_string.dart';
 import 'package:das_client/sfera/src/mapper/track_equipment_mapper.dart';
-import 'package:das_client/sfera/src/model/delay.dart';
 import 'package:das_client/sfera/src/model/enums/length_type.dart';
 import 'package:das_client/sfera/src/model/enums/start_end_qualifier.dart';
 import 'package:das_client/sfera/src/model/enums/stop_skip_pass.dart';
@@ -143,14 +142,14 @@ class SferaModelMapper {
         additionalSpeedRestrictions: additionalSpeedRestrictions,
         routeStart: journeyData.firstOrNull,
         routeEnd: journeyData.lastOrNull,
-        delay: Delay.toDuration(relatedTrainInformation?.ownTrain.trainLocationInformation.delay.delay),
+        delay: relatedTrainInformation?.ownTrain.trainLocationInformation.delay.delayAsDuration,
         nonStandardTrackEquipmentSegments: trackEquipmentSegments,
         availableBreakSeries: _parseAvailableBreakSeries(journeyData),
         breakSeries: trainCharacteristic?.tcFeatures.trainCategoryCode != null &&
-                trainCharacteristic?.tcFeatures.brakedWeightPercentage != null
+            trainCharacteristic?.tcFeatures.brakedWeightPercentage != null
             ? BreakSeries(
-                trainSeries: trainCharacteristic!.tcFeatures.trainCategoryCode!,
-                breakSeries: trainCharacteristic.tcFeatures.brakedWeightPercentage!)
+            trainSeries: trainCharacteristic!.tcFeatures.trainCategoryCode!,
+            breakSeries: trainCharacteristic.tcFeatures.brakedWeightPercentage!)
             : null,
       ),
       data: journeyData,
