@@ -50,7 +50,7 @@ Widget _punctualityDisplay(BuildContext context) {
     stream: bloc.journeyStream,
     builder: (context, snapshot) {
       if (!snapshot.hasData || snapshot.data == null || snapshot.data!.metadata.delay == null) {
-        return Text('+00:00', style: SBBTextStyles.largeLight.copyWith(fontSize: 24.0));
+        return Text('+00:00', style: DASTextStyles.xLargeLight);
       }
 
       final Journey journey = snapshot.data!;
