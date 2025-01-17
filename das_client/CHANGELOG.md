@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.6.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.5.0...das_client-v0.6.0) (2025-01-06)
+
+
+### Features
+
+* added CAB start and end signaling ([#82](https://github.com/SchweizerischeBundesbahnen/DAS/issues/82)) ([#442](https://github.com/SchweizerischeBundesbahnen/DAS/issues/442)) ([151f24e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/151f24e1d76c2911c2061fbbc0f95f414a634903))
+* added next stop ([#200](https://github.com/SchweizerischeBundesbahnen/DAS/issues/200)) ([#438](https://github.com/SchweizerischeBundesbahnen/DAS/issues/438)) ([948373c](https://github.com/SchweizerischeBundesbahnen/DAS/commit/948373c0b6c99f51383fcf6f67387ddb82dfce30))
+* added visualization of non standard track equipment ([#82](https://github.com/SchweizerischeBundesbahnen/DAS/issues/82)) ([#470](https://github.com/SchweizerischeBundesbahnen/DAS/issues/470)) ([c4f83eb](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c4f83ebc8a55929e9e38bb86837633cc901dd1cf))
+* implement anschlussgleise, anschlussweichen und Zahnstangen ([#136](https://github.com/SchweizerischeBundesbahnen/DAS/issues/136)) ([#447](https://github.com/SchweizerischeBundesbahnen/DAS/issues/447)) ([aee3fe1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/aee3fe1ebf226a16198e76f425fd247374a998de))
+* implement break series selection and speed display ([#89](https://github.com/SchweizerischeBundesbahnen/DAS/issues/89)) ([#469](https://github.com/SchweizerischeBundesbahnen/DAS/issues/469)) ([cd84c85](https://github.com/SchweizerischeBundesbahnen/DAS/commit/cd84c854df7dbf001294317e28673b4301a7075b))
+
 ## [0.5.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.4.0...das_client-v0.5.0) (2024-11-29)
 
 

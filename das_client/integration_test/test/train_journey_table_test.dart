@@ -1,12 +1,19 @@
+import 'dart:async';
+
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cab_signaling_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/curve_point_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/protection_section_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/signal_row.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/tram_area_row.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/whistle_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:das_client/app/pages/profile/profile_page.dart';
 import 'package:das_client/app/widgets/table/das_table.dart';
@@ -19,6 +26,94 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey table test', () {
+
+    testWidgets('test balise multiple level crossings', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: 'T7');
+
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
+
+      final baliseMultiLevelCrossing = findDASTableRowByText('(2 ${l10n.p_train_journey_table_level_crossing})');
+      expect(baliseMultiLevelCrossing, findsOneWidget);
+
+      final baliseIcon = find.descendant(of: baliseMultiLevelCrossing, matching: find.byKey(BaliseRow.baliseIconKey));
+      expect(baliseIcon, findsOneWidget);
+    });
+
+    testWidgets('test whistle and tram area', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: 'T7');
+
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
+
+      final whistleRow = findDASTableRowByText('39.6');
+      expect(whistleRow, findsOneWidget);
+
+      final whistleIcon = find.descendant(of: whistleRow, matching: find.byKey(WhistleRow.whistleIconKey));
+      expect(whistleIcon, findsOneWidget);
+
+      final tramAreaRow = findDASTableRowByText('km 37.8-36.8');
+      expect(tramAreaRow, findsOneWidget);
+
+      final tramAreaIcon = find.descendant(of: tramAreaRow, matching: find.byKey(TramAreaRow.tramAreaIconKey));
+      expect(tramAreaIcon, findsOneWidget);
+
+      final tramAreaDescription = find.descendant(of: tramAreaRow, matching: find.text('6 TS'));
+      expect(tramAreaDescription, findsOneWidget);
+    });
+
+    testWidgets('test balise and level crossing groups expand / collapse', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: 'T7');
+
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
+
+      final groupOf5BaliseRow = findDASTableRowByText('41.6');
+      expect(groupOf5BaliseRow, findsOneWidget);
+
+      final countText = find.descendant(of: groupOf5BaliseRow, matching: find.text('5'));
+      expect(countText, findsOneWidget);
+
+      final levelCrossingText = find.descendant(of: groupOf5BaliseRow, matching: find.text(l10n.p_train_journey_table_level_crossing));
+      expect(levelCrossingText, findsOneWidget);
+
+      var detailRowBalise = findDASTableRowByText('41.552');
+      var detailRowLevelCrossing = findDASTableRowByText('41.492');
+
+      expect(detailRowLevelCrossing, findsNothing);
+      expect(detailRowBalise, findsNothing);
+
+      // expand group
+      await tapElement(tester, groupOf5BaliseRow);
+
+      detailRowBalise = findDASTableRowByText('41.552');
+      detailRowLevelCrossing = findDASTableRowByText('41.492');
+
+      expect(detailRowLevelCrossing, findsOneWidget);
+      expect(detailRowBalise, findsOneWidget);
+
+      expect(find.descendant(of: detailRowBalise, matching: find.byKey(BaliseRow.baliseIconKey)), findsOneWidget);
+      expect(find.descendant(of: detailRowLevelCrossing, matching: find.text(l10n.p_train_journey_table_level_crossing)), findsOneWidget);
+
+      // collapse group
+      await tapElement(tester, groupOf5BaliseRow);
+
+      detailRowBalise = findDASTableRowByText('41.552');
+      detailRowLevelCrossing = findDASTableRowByText('41.492');
+
+      expect(detailRowLevelCrossing, findsNothing);
+      expect(detailRowBalise, findsNothing);
+    });
+
     testWidgets('test breaking series defaults to ??', (tester) async {
       await prepareAndStartApp(tester);
 
@@ -676,6 +771,187 @@ void main() {
 
       // check ExtendedSpeedReversingImpossibleKey in Flughafen
       _checkTrackEquipmentOnServicePoint('Flughafen', TrackEquipmentCellBody.extendedSpeedReversingPossibleKey);
+    });
+
+    testWidgets('test if station speeds are displayed correctly', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await _loadTrainJourney(tester, trainNumber: 'T8');
+
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
+
+      // check station speeds for Bern
+
+      final bernStationRow = findDASTableRowByText('Bern');
+      expect(bernStationRow, findsOneWidget);
+      final bernIncomingSpeeds = find.descendant(of: bernStationRow, matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey));
+      expect(bernIncomingSpeeds, findsNWidgets(2));
+      final bernIncomingSpeedsText = find.descendant(of: bernStationRow, matching: find.text('75-70-60'));
+      expect(bernIncomingSpeedsText, findsOneWidget);
+      final bernOutgoingSpeeds = find.descendant(of: bernStationRow, matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey));
+      expect(bernOutgoingSpeeds, findsNothing);
+
+      // check station speeds for Wankdorf, no station speeds given
+
+      final wankdorfStationRow = findDASTableRowByText('Wankdorf');
+      expect(wankdorfStationRow, findsOneWidget);
+      final wankdorfIncomingSpeeds = find.descendant(of: wankdorfStationRow, matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey));
+      expect(wankdorfIncomingSpeeds, findsNothing);
+      final wankdorfOutgoingSpeeds = find.descendant(of: wankdorfStationRow, matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey));
+      expect(wankdorfOutgoingSpeeds, findsNothing);
+
+      // check station speeds for Burgdorf
+
+      final burgdorfStationRow = findDASTableRowByText('Burgdorf');
+      expect(burgdorfStationRow, findsOneWidget);
+      final burgdorfIncomingSpeeds = find.descendant(of: burgdorfStationRow, matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey));
+      expect(burgdorfIncomingSpeeds, findsNWidgets(2));
+      final burgdorfIncomingSpeeds75 = find.descendant(of: burgdorfIncomingSpeeds, matching: find.text('75'));
+      expect(burgdorfIncomingSpeeds75, findsOneWidget);
+      final burgdorfIncomingSpeeds70 = find.descendant(of: burgdorfIncomingSpeeds, matching: find.text('70'));
+      expect(burgdorfIncomingSpeeds70, findsOneWidget);
+      final burgdorfIncomingSpeeds70Circled = find.ancestor(of: burgdorfIncomingSpeeds70, matching: find.byKey(GraduatedSpeedsCellBody.circledSpeedKey));
+      expect(burgdorfIncomingSpeeds70Circled, findsOneWidget);
+      final burgdorfOutgoingSpeeds = find.descendant(of: burgdorfStationRow, matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey));
+      expect(burgdorfOutgoingSpeeds, findsOneWidget);
+      final burgdorfOutgoingSpeeds60 = find.descendant(of: burgdorfOutgoingSpeeds, matching: find.text('60'));
+      expect(burgdorfOutgoingSpeeds60, findsOneWidget);
+      final burgdorfOutgoingSpeeds60Squared = find.ancestor(of: burgdorfOutgoingSpeeds60, matching: find.byKey(GraduatedSpeedsCellBody.squaredSpeedKey));
+      expect(burgdorfOutgoingSpeeds60Squared, findsOneWidget);
+
+      // check station speeds for Olten, no graduated speed for train series R
+
+      final oltenStationRow = findDASTableRowByText('Olten');
+      expect(oltenStationRow, findsOneWidget);
+      final oltenIncomingSpeeds = find.descendant(of: oltenStationRow, matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey));
+      expect(oltenIncomingSpeeds, findsOneWidget);
+      final oltenOutgoingSpeeds = find.descendant(of: oltenStationRow, matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey));
+      expect(oltenOutgoingSpeeds, findsNothing);
+
+    });
+
+    testWidgets('find base value when no punctuality update comes', (tester) async {
+      // Load app widget.
+      await prepareAndStartApp(tester);
+
+      final trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
+      expect(trainNumberText, findsOneWidget);
+
+      await enterText(tester, trainNumberText, 'T6');
+
+      final primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
+      await tester.tap(primaryButton);
+
+      // wait for train journey to load
+      await tester.pumpAndSettle();
+
+      //find the header and check if it is existent
+      final headerFinder = find.byType(Header);
+      expect(headerFinder, findsOneWidget);
+
+      //Find the text in the header
+      expect(find.descendant(of: headerFinder, matching: find.text('+00:00')), findsOneWidget);
+
+      await tester.pumpAndSettle();
+    });
+
+    testWidgets('check if the displayed current time is correct', (tester) async {
+      // Load app widget.
+      await prepareAndStartApp(tester);
+
+      //Select the correct train number
+      final trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
+      expect(trainNumberText, findsOneWidget);
+
+      await enterText(tester, trainNumberText, 'T6');
+
+      //Log into the journey
+      final primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
+      await tester.tap(primaryButton);
+
+      // wait for train journey to load
+      await tester.pumpAndSettle();
+
+      //find the header and check if it is existent
+      final headerFinder = find.byType(Header);
+      expect(headerFinder, findsOneWidget);
+
+      final DateTime currentTime = DateTime.now();
+      final String currentHour = currentTime.hour <= 9 ? '0${currentTime.hour}' : (currentTime.hour).toString();
+      final String currentMinutes = currentTime.minute <= 9 ? '0${currentTime.minute}' : (currentTime.minute).toString();
+      final String currentSeconds = currentTime.second <= 9 ? '0${currentTime.second}' : (currentTime.second).toString();
+      final String nextSecond =
+      currentTime.second <= 9 ? '0${currentTime.second + 1}' : (currentTime.second + 1).toString();
+      final String currentWholeTime = '$currentHour:$currentMinutes:$currentSeconds';
+      final String nextSecondWholeTime = '$currentHour:$currentMinutes:$nextSecond';
+
+      if (!find.descendant(of: headerFinder, matching: find.text(currentWholeTime)).evaluate().isNotEmpty) {
+        expect(find.descendant(of: headerFinder, matching: find.text(nextSecondWholeTime)), findsOneWidget);
+      } else {
+        expect(find.descendant(of: headerFinder, matching: find.text(currentWholeTime)), findsOneWidget);
+      }
+
+      await tester.pumpAndSettle();
+    });
+
+    testWidgets('check if update sent is correct', (tester) async {
+      // Load app widget.
+      await prepareAndStartApp(tester);
+
+      // Select the correct train number
+      final trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
+      expect(trainNumberText, findsOneWidget);
+
+      await enterText(tester, trainNumberText, 'T9999');
+
+      // Log into the journey
+      final primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
+      await tester.tap(primaryButton);
+
+      // Wait for train journey to load
+      await tester.pumpAndSettle();
+
+      // Find the header and check if it is existent
+      final headerFinder = find.byType(Header);
+      expect(headerFinder, findsOneWidget);
+
+      // Timer logic: increase timer every second, rerun the base every 100 ms and check if the UI changed
+      int timer = 0;
+      const maxTime = 10;
+      int millisecondsCounter = 0;
+
+      final completer = Completer<void>();
+
+      expect(find.descendant(of: headerFinder, matching: find.text('+00:00')), findsOneWidget);
+
+      while (!completer.isCompleted) {
+        await tester.pumpAndSettle();
+
+        if (!find.descendant(of: headerFinder, matching: find.text('+00:00')).evaluate().isNotEmpty) {
+          expect(find.descendant(of: headerFinder, matching: find.text('+00:30')), findsOneWidget);
+          completer.complete();
+          break;
+        }
+
+        millisecondsCounter += 100;
+        if (millisecondsCounter % 1000 == 0) {
+          timer++;
+        }
+
+        if (timer > maxTime) {
+          completer
+              .completeError(Exception('UI did not change from the base value to the updated value (+00:00 -> +00:30)'));
+          break;
+        }
+
+        await Future.delayed(const Duration(milliseconds: 100));
+      }
+
+      await completer.future;
+
+      await tester.pumpAndSettle();
     });
   });
 }

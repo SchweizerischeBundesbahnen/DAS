@@ -1,7 +1,7 @@
 name: das_client
 description: "DAS (Driver Advisory System) is a mobile application that provides all the required journey data to the train driver."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 0.5.0+42
+version: 0.6.0+43
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -21,9 +21,9 @@ dependencies:
   # https://pub.dev/packages/sbb_design_system_mobile
   sbb_design_system_mobile: ^2.1.1
   # https://pub.dev/packages/collection
-  collection: ^1.18.0
+  collection: ^1.19.0
   # https://pub.dev/packages/meta
-  meta: ^1.12.0
+  meta: ^1.15.0
   # https://pub.dev/packages/get_it
   get_it: ^8.0.0
   # https://pub.dev/packages/auto_route
@@ -35,7 +35,7 @@ dependencies:
   # https://pub.dev/packages/intl
   intl: ^0.19.0
   # https://pub.dev/packages/mqtt_client
-  mqtt_client: ^10.2.1
+  mqtt_client: ^10.5.1
   # https://pub.dev/packages/xml
   xml: ^6.5.0
   # https://pub.dev/packages/http

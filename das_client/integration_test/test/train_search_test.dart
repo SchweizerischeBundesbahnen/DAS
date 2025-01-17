@@ -68,8 +68,7 @@ void main() {
       final yesterday = today.add(Duration(days: -1));
 
       final todayDateTextFinder = find.text(Format.date(today));
-      final yesterdayDateTextFinder =
-          find.text('${Format.date(yesterday)} ${l10n.p_train_selection_date_not_today_warning}');
+      final yesterdayDateTextFinder = find.text(Format.date(yesterday));
 
       // Verify that today is preselected
       expect(todayDateTextFinder, findsOneWidget);
@@ -89,6 +88,9 @@ void main() {
 
       expect(todayDateTextFinder, findsNothing);
       expect(yesterdayDateTextFinder, findsOneWidget);
+      final warningMessage = find.text(l10n.p_train_selection_date_not_today_warning);
+      expect(warningMessage, findsOneWidget);
+
     });
 
     testWidgets('test can not select day before yesterday', (tester) async {
@@ -100,8 +102,7 @@ void main() {
       final dayBeforeYesterday = today.add(Duration(days: -2));
 
       final todayDateTextFinder = find.text(Format.date(today));
-      final yesterdayDateTextFinder =
-          find.text('${Format.date(yesterday)} ${l10n.p_train_selection_date_not_today_warning}');
+      final yesterdayDateTextFinder = find.text(Format.date(yesterday));
       final dayBeforeYesterdayDateTextFinder = find.text(Format.date(dayBeforeYesterday));
 
       // Verify that today is preselected
@@ -123,6 +124,8 @@ void main() {
 
       expect(todayDateTextFinder, findsNothing);
       expect(yesterdayDateTextFinder, findsOneWidget);
+      final warningMessage = find.text(l10n.p_train_selection_date_not_today_warning);
+      expect(warningMessage, findsOneWidget);
       expect(dayBeforeYesterdayDateTextFinder, findsNothing);
     });
 
@@ -147,7 +150,8 @@ void main() {
 
       await tapElement(tester, primaryButton);
 
-      expect(find.text('${ErrorCode.sferaJpUnavailable.code}: ${l10n.c_error_sfera_jp_unavailable}'), findsOneWidget);
+      expect(find.text('${l10n.c_error_code}: ${ErrorCode.sferaJpUnavailable.code}'), findsOneWidget);
+      expect(find.text(l10n.c_error_sfera_jp_unavailable), findsOneWidget);
     });
   });
 }

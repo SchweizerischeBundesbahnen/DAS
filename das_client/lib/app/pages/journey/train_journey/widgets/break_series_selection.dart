@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/break_series_selection_button.dart';
+import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/train_series.dart';
 import 'package:flutter/material.dart';
@@ -86,7 +87,7 @@ class _BreakSeriesSelectionState extends State<BreakSeriesSelection> {
         padding: const EdgeInsets.fromLTRB(0, sbbDefaultSpacing, 0, sbbDefaultSpacing),
         child: Text(
           trainSeries.name,
-          style: SBBTextStyles.mediumBold,
+          style: DASTextStyles.mediumBold,
         ),
       ),
       Padding(

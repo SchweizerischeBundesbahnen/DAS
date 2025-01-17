@@ -1,4 +1,6 @@
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
+import 'package:das_client/app/widgets/das_text_styles.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:intl/intl.dart';
@@ -61,7 +63,7 @@ Widget _punctualityDisplay(BuildContext context) {
 
       return Text(
         formattedDuration,
-        style: SBBTextStyles.largeLight.copyWith(fontSize: 24.0),
+        style: DASTextStyles.xLargeLight),
       );
     },
   );
@@ -73,7 +75,7 @@ StreamBuilder _currentTime() {
     builder: (context, snapshot) {
       return Text(
         DateFormat('HH:mm:ss').format(DateTime.now().toLocal()),
-        style: SBBTextStyles.largeBold.copyWith(fontSize: 24.0),
+        style: DASTextStyles.xLargeBold,
       );
     },
   );

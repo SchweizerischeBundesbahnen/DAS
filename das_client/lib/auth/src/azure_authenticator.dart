@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:collection/collection.dart';
 import 'package:das_client/auth/src/authenticator.dart';
 import 'package:das_client/auth/src/role.dart';
 import 'package:das_client/auth/src/token_spec.dart';
@@ -53,7 +52,7 @@ class AzureAuthenticator implements Authenticator {
     final name = idToken.payload['preferred_username'] as String;
     final roles = idToken.payload['roles'] as List<dynamic>? ?? [];
 
-    return User(name: name, roles: roles.map((it) => Role.fromName(it)).whereNotNull().toList());
+    return User(name: name, roles: roles.map((it) => Role.fromName(it)).nonNulls.toList());
   }
 
   @override

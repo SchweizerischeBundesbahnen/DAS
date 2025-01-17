@@ -117,6 +117,10 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
   void updateBreakSeries(BreakSeries selectedBreakSeries) {
     _settingsSubject.add(_settingsSubject.value.copyWith(selectedBreakSeries: selectedBreakSeries));
   }
+
+  void updateExpandedGroups(List<int> expandedGroups) {
+    _settingsSubject.add(_settingsSubject.value.copyWith(expandedGroups: expandedGroups));
+  }
 }
 
 extension ContextBlocExtension on BuildContext {

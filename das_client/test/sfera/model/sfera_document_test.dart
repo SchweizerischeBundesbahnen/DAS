@@ -67,10 +67,10 @@ void main() {
     expect(spPoint.signals.first.id.physicalId, '102346');
     expect(spPoint.signals.first.id.location, 843.0);
 
-    expect(spPoint.balise, hasLength(3));
-    expect(spPoint.balise.first.location, '0');
-    expect(spPoint.balise.first.position.latitude, '51.48591');
-    expect(spPoint.balise.first.position.longitude, '4.73459');
+    expect(spPoint.virtualBalise, hasLength(3));
+    expect(spPoint.virtualBalise.first.location, '0');
+    expect(spPoint.virtualBalise.first.position.latitude, '51.48591');
+    expect(spPoint.virtualBalise.first.position.longitude, '4.73459');
   });
 
   test('Test Sfera HandshakeRequest generation', () async {

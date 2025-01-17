@@ -5,7 +5,7 @@ class CurvePoint extends BaseData {
   CurvePoint({
     required super.order,
     required super.kilometre,
-    super.speedData,
+    super.localSpeedData,
     this.curvePointType,
     this.curveType,
     this.text,
@@ -37,7 +37,7 @@ enum CurvePointType {
   }
 }
 
-/// Type of curve. Is provided only if curvePointType = 'begin'
+/// Type of curve. Is provided only if type is [CurvePointType.begin]
 enum CurveType {
   /// begins on the line and ends on the line or a station or a halt
   curve,

@@ -22,7 +22,7 @@ class _TrainSelectionState extends State<TrainSelection> {
   @override
   void initState() {
     super.initState();
-    _trainNumberController = TextEditingController(text: 'T9999');
+    _trainNumberController = TextEditingController();
     _dateController = TextEditingController();
 
     context.trainJourneyCubit.updateTrainNumber(_trainNumberController.text);
@@ -35,9 +35,9 @@ class _TrainSelectionState extends State<TrainSelection> {
         if (state is SelectingTrainJourneyState) {
           return Column(
             children: [
-              Header(child: _headerWidgets(context, state)),
+              _header(context, state),
               Spacer(),
-              _errorWidget(context, state),
+              _errorMessage(context, state),
               Spacer(),
               _loadButton(context, state)
             ],
@@ -49,17 +49,22 @@ class _TrainSelectionState extends State<TrainSelection> {
     );
   }
 
-  Widget _headerWidgets(BuildContext context, SelectingTrainJourneyState state) {
-    return Column(
-      children: [
-        _trainNumberWidget(),
-        _dateDisplayWidget(state),
-        _ruSelectionWidget(context, state),
-      ],
+  Widget _header(BuildContext context, SelectingTrainJourneyState state) {
+    return Header(
+      information: !DateUtils.isSameDay(state.date, DateTime.now())
+          ? context.l10n.p_train_selection_date_not_today_warning
+          : null,
+      child: Column(
+        children: [
+          _trainNumberInput(),
+          _dateInput(state),
+          _ruSelection(context, state),
+        ],
+      ),
     );
   }
 
-  Widget _trainNumberWidget() {
+  Widget _trainNumberInput() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, sbbDefaultSpacing, 0, sbbDefaultSpacing / 2),
       child: SBBTextField(
@@ -71,12 +76,8 @@ class _TrainSelectionState extends State<TrainSelection> {
     );
   }
 
-  Widget _dateDisplayWidget(SelectingTrainJourneyState state) {
-    if (DateUtils.isSameDay(state.date, DateTime.now())) {
-      _dateController.text = Format.date(state.date);
-    } else {
-      _dateController.text = '${Format.date(state.date)} ${context.l10n.p_train_selection_date_not_today_warning}';
-    }
+  Widget _dateInput(SelectingTrainJourneyState state) {
+    _dateController.text = Format.date(state.date);
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, 0, sbbDefaultSpacing / 2),
@@ -91,7 +92,7 @@ class _TrainSelectionState extends State<TrainSelection> {
     );
   }
 
-  Widget _ruSelectionWidget(BuildContext context, SelectingTrainJourneyState state) {
+  Widget _ruSelection(BuildContext context, SelectingTrainJourneyState state) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, 0, sbbDefaultSpacing),
       child: SBBSelect<Ru>(
@@ -104,9 +105,14 @@ class _TrainSelectionState extends State<TrainSelection> {
     );
   }
 
-  Widget _errorWidget(BuildContext context, SelectingTrainJourneyState state) {
+  Widget _errorMessage(BuildContext context, SelectingTrainJourneyState state) {
     if (state.errorCode != null) {
-      return Text(state.errorCode!.displayTextWithErrorCode(context), style: SBBTextStyles.mediumBold);
+      return SBBMessage(
+        illustration: MessageIllustration.Display,
+        title: context.l10n.c_something_went_wrong,
+        description: state.errorCode!.displayText(context),
+        messageCode: '${context.l10n.c_error_code}: ${state.errorCode!.code.toString()}',
+      );
     }
     return Container();
   }

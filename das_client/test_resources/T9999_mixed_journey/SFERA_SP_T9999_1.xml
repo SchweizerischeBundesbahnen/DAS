@@ -51,6 +51,26 @@
                 <LocationPrimaryCode>9991</LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
             <TAF_TAP_LocationName language="de" messageString="Bahnhof A"/>
+            <TAF_TAP_Location_NSP name="newLineSpeed">
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                    &lt;lineSpeed&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;60&quot;/&gt;
+                    &lt;/lineSpeed&gt;
+                "/>
+            </TAF_TAP_Location_NSP>
+            <TAF_TAP_Location_NSP name="stationSpeed">
+                <NetworkSpecificParameter name="xmlStationSpeed" value="
+                    &lt;stationSpeed&gt;
+                    &lt;v trainSeries=&quot;R&quot; speed=&quot;105/[60]&quot;/&gt;
+                    &lt;v trainSeries=&quot;O&quot; speed=&quot;105/[60]&quot;/&gt;
+                    &lt;/stationSpeed&gt;
+                "/>
+                <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
+                    &lt;entries&gt;
+                    &lt;entry roSpeed=&quot;105/[60]&quot;/&gt;
+                    &lt;/entries&gt;
+                "/>
+            </TAF_TAP_Location_NSP>
 
             <!--            gleisspezifische Geschwindigkeiten	-->
             <TAF_TAP_Location_NSP name="stationProperty_00000">

@@ -53,6 +53,13 @@
             <TAF_TAP_Location_NSP name="bracketStation">
                 <NetworkSpecificParameter name="mainStation" value="CH9994"/>
             </TAF_TAP_Location_NSP>
+            <TAF_TAP_Location_NSP name="newLineSpeed">
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                    &lt;lineSpeed&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;90&quot;/&gt;
+                    &lt;/lineSpeed&gt;
+                "/>
+            </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
         <NetworkSpecificArea startEndQualifier="Ends" endLocation="500" name="nonStandardTrackEquipment">
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingPossible"/>

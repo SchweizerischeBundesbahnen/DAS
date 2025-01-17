@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:das_client/model/journey/additional_speed_restriction.dart';
 import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
+import 'package:das_client/model/journey/balise.dart' as journey_balise;
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/bracket_station.dart';
 import 'package:das_client/model/journey/break_series.dart';
@@ -8,15 +9,19 @@ import 'package:das_client/model/journey/cab_signaling.dart';
 import 'package:das_client/model/journey/connection_track.dart';
 import 'package:das_client/model/journey/curve_point.dart';
 import 'package:das_client/model/journey/datatype.dart';
+import 'package:das_client/model/journey/speed_data.dart';
+import 'package:das_client/model/journey/speeds.dart';
 import 'package:das_client/model/journey/journey.dart';
+import 'package:das_client/model/journey/level_crossing.dart';
 import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/protection_section.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
 import 'package:das_client/model/journey/speed_change.dart';
-import 'package:das_client/model/journey/speed_data.dart';
 import 'package:das_client/model/journey/track_equipment.dart';
-import 'package:das_client/model/journey/velocity.dart';
+import 'package:das_client/model/journey/train_series.dart';
+import 'package:das_client/model/journey/tram_area.dart';
+import 'package:das_client/model/journey/whistles.dart';
 import 'package:das_client/model/localized_string.dart';
 import 'package:das_client/sfera/src/mapper/track_equipment_mapper.dart';
 import 'package:das_client/sfera/src/model/enums/length_type.dart';
@@ -24,14 +29,15 @@ import 'package:das_client/sfera/src/model/enums/start_end_qualifier.dart';
 import 'package:das_client/sfera/src/model/enums/stop_skip_pass.dart';
 import 'package:das_client/sfera/src/model/enums/taf_tap_location_type.dart';
 import 'package:das_client/sfera/src/model/enums/xml_enum.dart';
+import 'package:das_client/sfera/src/model/graduated_speed_info.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/multilingual_text.dart';
 import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
 import 'package:das_client/sfera/src/model/related_train_information.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
-import 'package:das_client/sfera/src/model/speeds.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location.dart';
 import 'package:das_client/sfera/src/model/train_characteristics.dart';
+import 'package:das_client/sfera/src/model/velocity.dart';
 import 'package:fimber/fimber.dart';
 
 class SferaModelMapper {
@@ -61,8 +67,7 @@ class SferaModelMapper {
     final journeyData = <BaseData>[];
 
     final segmentProfilesLists = journeyProfile.segmentProfilesLists.toList();
-    final tafTapLocations =
-        segmentProfiles.map((it) => it.areas).whereNotNull().expand((it) => it.tafTapLocations).toList();
+    final tafTapLocations = segmentProfiles.map((it) => it.areas).nonNulls.expand((it) => it.tafTapLocations).toList();
 
     for (int segmentIndex = 0; segmentIndex < segmentProfilesLists.length; segmentIndex++) {
       final segmentProfileList = segmentProfilesLists[segmentIndex];
@@ -89,6 +94,15 @@ class SferaModelMapper {
       journeyData.addAll(connectionTracks);
       journeyData.addAll(newLineSpeeds);
 
+      final balises = _parseBalise(segmentProfile, segmentIndex, kilometreMap);
+      journeyData.addAll(balises);
+
+      final whistles = _parseWhistle(segmentProfile, segmentIndex, kilometreMap);
+      journeyData.addAll(whistles);
+
+      final levelCrossings = _parseLevelCrossings(segmentProfile, segmentIndex, kilometreMap);
+      journeyData.addAll(levelCrossings);
+
       final timingPoints = segmentProfile.points?.timingPoints.toList() ?? [];
 
       for (final tpConstraint in segmentProfileList.timingPointsContraints) {
@@ -101,18 +115,26 @@ class SferaModelMapper {
             .first;
 
         journeyData.add(ServicePoint(
-            name: _localizedStringFromMultilingualText(tafTapLocation.locationNames),
-            order: calculateOrder(segmentIndex, timingPoint.location),
-            mandatoryStop: tpConstraint.stoppingPointInformation?.stopType?.mandatoryStop ?? true,
-            isStop: tpConstraint.stopSkipPass == StopSkipPass.stoppingPoint,
-            isStation: tafTapLocation.locationType != TafTapLocationType.stoppingLocation,
-            bracketStation: _parseBracketStation(tafTapLocations, tafTapLocation),
-            kilometre: kilometreMap[timingPoint.location] ?? [],
-            speedData: _speedDataFromSpeeds(tafTapLocation.stationSpeed?.xmlStationSpeed.element)));
+          name: _localizedStringFromMultilingualText(tafTapLocation.locationNames),
+          order: calculateOrder(segmentIndex, timingPoint.location),
+          mandatoryStop: tpConstraint.stoppingPointInformation?.stopType?.mandatoryStop ?? true,
+          isStop: tpConstraint.stopSkipPass == StopSkipPass.stoppingPoint,
+          isStation: tafTapLocation.locationType != TafTapLocationType.stoppingLocation,
+          bracketStation: _parseBracketStation(tafTapLocations, tafTapLocation),
+          kilometre: kilometreMap[timingPoint.location] ?? [],
+          speedData: _graduatedSpeedDataFromVelocities(tafTapLocation.newLineSpeed?.xmlNewLineSpeed.element.velocities),
+          localSpeedData:
+              _graduatedSpeedDataFromVelocities(tafTapLocation.stationSpeed?.xmlStationSpeed.element.velocities),
+          graduatedSpeedInfo:
+              _graduatedSpeedDataFromGraduatedSpeedInfo(tafTapLocation.stationSpeed?.xmlGraduatedSpeedInfo?.element),
+        ));
       }
 
       _parseAndAddProtectionSections(journeyData, segmentIndex, segmentProfile, kilometreMap);
     }
+
+    final tramAreas = _parseTramAreas(segmentProfiles);
+    journeyData.addAll(tramAreas);
 
     final additionalSpeedRestrictions = _parseAdditionalSpeedRestrictions(journeyProfile, segmentProfiles);
     for (final restriction in additionalSpeedRestrictions) {
@@ -338,7 +360,7 @@ class SferaModelMapper {
         curveType: curveTypeValue != null ? CurveType.from(curveTypeValue) : null,
         text: curveSpeed?.text,
         comment: curveSpeed?.comment,
-        speedData: _speedDataFromSpeeds(curveSpeed?.speeds),
+        localSpeedData: _graduatedSpeedDataFromVelocities(curveSpeed?.speeds?.velocities),
       );
     }).toList();
   }
@@ -373,26 +395,72 @@ class SferaModelMapper {
     return newLineSpeeds.map<SpeedChange>((newLineSpeed) {
       return SpeedChange(
           text: newLineSpeed.xmlNewLineSpeed.element.text,
-          speedData: _speedDataFromSpeeds(newLineSpeed.xmlNewLineSpeed.element.speeds),
+          speedData: _graduatedSpeedDataFromVelocities(newLineSpeed.xmlNewLineSpeed.element.speeds?.velocities),
           order: calculateOrder(segmentIndex, newLineSpeed.location),
           kilometre: kilometreMap[newLineSpeed.location] ?? []);
     }).toList();
   }
 
-  static SpeedData? _speedDataFromSpeeds(Speeds? speeds) {
-    if (speeds == null) return null;
-    return SpeedData(
-        velocities: speeds.velocities
-            .map((it) => Velocity(
-                trainSeries: it.trainSeries, reduced: it.reduced, speed: it.speed, breakSeries: it.brakeSeries))
-            .toList());
+  static SpeedData? _graduatedSpeedDataFromVelocities(Iterable<Velocity>? velocities) {
+    if (velocities == null) return null;
+
+    final graduatedSpeeds = <Speeds>[];
+
+    void addSpeed(TrainSeries trainSeries, int? breakSeries, String speedString, bool recuced) {
+      try {
+        final speeds = Speeds.from(trainSeries, speedString, breakSeries: breakSeries, reduced: recuced);
+        graduatedSpeeds.add(speeds);
+      } catch (e) {
+        Fimber.w('Could not parse station speed with "$speedString"', ex: e);
+      }
+    }
+
+    for (final velocity in velocities) {
+      if (velocity.speed != null) {
+        addSpeed(velocity.trainSeries, velocity.brakeSeries, velocity.speed!, velocity.reduced);
+      }
+    }
+
+    return SpeedData(speeds: graduatedSpeeds);
+  }
+
+  static SpeedData? _graduatedSpeedDataFromGraduatedSpeedInfo(GraduatedSpeedInfo? graduatedSpeedInfo) {
+    if (graduatedSpeedInfo == null) return null;
+
+    final graduatedStationSpeeds = <Speeds>[];
+
+    void addSpeed(TrainSeries trainSeries, String speedString, String? text) {
+      try {
+        final speeds = Speeds.from(trainSeries, speedString, text: text);
+        graduatedStationSpeeds.add(speeds);
+      } catch (e) {
+        Fimber.w('Could not parse graduated station speed with "$speedString"', ex: e);
+      }
+    }
+
+    for (final entity in graduatedSpeedInfo.entities) {
+      if (entity.adSpeed != null) {
+        addSpeed(TrainSeries.A, entity.adSpeed!, entity.text);
+        addSpeed(TrainSeries.D, entity.adSpeed!, entity.text);
+      }
+      if (entity.nSpeed != null) {
+        addSpeed(TrainSeries.N, entity.nSpeed!, entity.text);
+      }
+      if (entity.sSpeed != null) {
+        addSpeed(TrainSeries.S, entity.sSpeed!, entity.text);
+      }
+      if (entity.roSpeed != null) {
+        addSpeed(TrainSeries.R, entity.roSpeed!, entity.text);
+        addSpeed(TrainSeries.O, entity.roSpeed!, entity.text);
+      }
+    }
+
+    return SpeedData(speeds: graduatedStationSpeeds);
   }
 
   static Set<BreakSeries> _parseAvailableBreakSeries(List<BaseData> journeyData) {
     return journeyData
-        .where((it) => it.speedData != null)
-        .map((it) => it.speedData!.velocities)
-        .expand((it) => it)
+        .expand((it) => [...it.speedData?.speeds ?? [], ...it.localSpeedData?.speeds ?? []])
         .where((it) => it.breakSeries != null)
         .map((it) => BreakSeries(trainSeries: it.trainSeries, breakSeries: it.breakSeries!))
         .toSet();
@@ -408,5 +476,113 @@ class SferaModelMapper {
         it.ruId == firstTrainRef.ruId &&
         it.versionMajor == firstTrainRef.versionMajor &&
         it.versionMinor == firstTrainRef.versionMinor);
+  }
+
+  static Iterable<journey_balise.Balise> _parseBalise(
+      SegmentProfile segmentProfile, int segmentIndex, Map<double, List<double>> kilometreMap) {
+    final balises = segmentProfile.points?.balise ?? [];
+    return balises.map((balise) {
+      return journey_balise.Balise(
+        order: calculateOrder(segmentIndex, balise.location),
+        kilometre: kilometreMap[balise.location] ?? [],
+        amountLevelCrossings: balise.amountLevelCrossings,
+      );
+    });
+  }
+
+  static Iterable<Whistle> _parseWhistle(
+      SegmentProfile segmentProfile, int segmentIndex, Map<double, List<double>> kilometreMap) {
+    final whistleNsps = segmentProfile.points?.whistleNsp ?? [];
+    return whistleNsps.map((whistle) {
+      return Whistle(
+        order: calculateOrder(segmentIndex, whistle.location),
+        kilometre: kilometreMap[whistle.location] ?? [],
+      );
+    });
+  }
+
+  static Iterable<LevelCrossing> _parseLevelCrossings(
+      SegmentProfile segmentProfile, int segmentIndex, Map<double, List<double>> kilometreMap) {
+    final levelCrossings = segmentProfile.contextInformation?.levelCrossings ?? [];
+    return levelCrossings.map((levelCrossing) {
+      return LevelCrossing(
+        order: calculateOrder(segmentIndex, levelCrossing.startLocation),
+        kilometre: kilometreMap[levelCrossing.startLocation] ?? [],
+      );
+    });
+  }
+
+  static List<TramArea> _parseTramAreas(List<SegmentProfile> segmentProfiles) {
+    final List<TramArea> result = [];
+
+    int? startSegmentIndex;
+    int? endSegmentIndex;
+    double? startLocation;
+    double? endLocation;
+    int? amountTramSignals;
+
+    for (int segmentIndex = 0; segmentIndex < segmentProfiles.length; segmentIndex++) {
+      final segmentProfile = segmentProfiles[segmentIndex];
+
+      if (segmentProfile.areas == null) continue;
+
+      for (final tramArea in segmentProfile.areas!.tramAreas) {
+        switch (tramArea.startEndQualifier) {
+          case StartEndQualifier.starts:
+            startLocation = tramArea.startLocation;
+            startSegmentIndex = segmentIndex;
+            amountTramSignals = tramArea.amountTramSignals?.amountTramSignals;
+            break;
+          case StartEndQualifier.startsEnds:
+            startLocation = tramArea.startLocation;
+            startSegmentIndex = segmentIndex;
+            amountTramSignals = tramArea.amountTramSignals?.amountTramSignals;
+            continue next;
+          next:
+          case StartEndQualifier.ends:
+            endLocation = tramArea.endLocation;
+            endSegmentIndex = segmentIndex;
+            break;
+          case StartEndQualifier.wholeSp:
+            break;
+          case null:
+            Fimber.w('Received tramArea with startEndQualifier=null');
+            break;
+        }
+
+        if (startSegmentIndex != null &&
+            endSegmentIndex != null &&
+            startLocation != null &&
+            endLocation != null &&
+            amountTramSignals != null) {
+          final startSegment = segmentProfiles[startSegmentIndex];
+          final endSegment = segmentProfiles[endSegmentIndex];
+
+          final startKilometreMap = parseKilometre(startSegment);
+          final endKilometreMap = parseKilometre(endSegment);
+
+          result.add(TramArea(
+            order: calculateOrder(startSegmentIndex, startLocation),
+            kilometre: startKilometreMap[startLocation]!,
+            endKilometre: endKilometreMap[endLocation]!.first,
+            amountTramSignals: amountTramSignals,
+          ));
+
+          startSegmentIndex = null;
+          endSegmentIndex = null;
+          startLocation = null;
+          endLocation = null;
+          amountTramSignals = null;
+        }
+      }
+    }
+
+    if (startSegmentIndex != null || endSegmentIndex != null || startLocation != null || endLocation != null) {
+      Fimber.w('Incomplete tram area found: '
+          'startSegmentIndex: $startSegmentIndex, endSegmentIndex: $endSegmentIndex, '
+          'startLocation: $startLocation, endLocation: $endLocation, amountTramSignals: $amountTramSignals');
+    }
+
+    return result;
   }
 }

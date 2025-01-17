@@ -1,4 +1,5 @@
 import 'package:das_client/sfera/src/model/additional_speed_restriction.dart';
+import 'package:das_client/sfera/src/model/balise.dart';
 import 'package:das_client/sfera/src/model/connection_track.dart';
 import 'package:das_client/sfera/src/model/current_limitation.dart';
 import 'package:das_client/sfera/src/model/current_limitation_change.dart';
@@ -8,11 +9,14 @@ import 'package:das_client/sfera/src/model/das_operating_modes_selected.dart';
 import 'package:das_client/sfera/src/model/delay.dart';
 import 'package:das_client/sfera/src/model/g2b_event_payload.dart';
 import 'package:das_client/sfera/src/model/g2b_reply_payload.dart';
+import 'package:das_client/sfera/src/model/graduated_speed_info.dart';
+import 'package:das_client/sfera/src/model/graduated_speed_info_entity.dart';
 import 'package:das_client/sfera/src/model/handshake_acknowledgement.dart';
 import 'package:das_client/sfera/src/model/handshake_reject.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/kilometre_reference_point.dart';
 import 'package:das_client/sfera/src/model/km_reference.dart';
+import 'package:das_client/sfera/src/model/level_crossing_area.dart';
 import 'package:das_client/sfera/src/model/line_speed.dart';
 import 'package:das_client/sfera/src/model/location_ident.dart';
 import 'package:das_client/sfera/src/model/message_header.dart';
@@ -218,6 +222,14 @@ class SferaReplyParser {
         return TrainLocationInformation(type: type, attributes: attributes, children: children, value: value);
       case Delay.elementType:
         return Delay(type: type, attributes: attributes, children: children, value: value);
+      case GraduatedSpeedInfoEntity.elementType:
+        return GraduatedSpeedInfoEntity(type: type, attributes: attributes, children: children, value: value);
+      case GraduatedSpeedInfo.elementType:
+        return GraduatedSpeedInfo(type: type, attributes: attributes, children: children, value: value);
+      case Balise.elementType:
+        return Balise(type: type, attributes: attributes, children: children, value: value);
+      case LevelCrossingArea.elementType:
+        return LevelCrossingArea(type: type, attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElement(type: type, attributes: attributes, children: children, value: value);
     }
