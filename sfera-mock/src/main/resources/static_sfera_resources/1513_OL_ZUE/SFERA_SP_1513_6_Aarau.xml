@@ -69,7 +69,7 @@
             </TAF_TAP_LocationIdent>
             <TAF_TAP_LocationName language="de" messageString="Aarau"/>
 			<TAF_TAP_Location_NSP name="bracketStation">
-                <NetworkSpecificParameter name="mainStation" value="AA2113"/>
+                <NetworkSpecificParameter name="mainStation" value="CH2113"/>
             </TAF_TAP_Location_NSP>
 			
 			<TAF_TAP_Location_NSP name="stationSpeed">
