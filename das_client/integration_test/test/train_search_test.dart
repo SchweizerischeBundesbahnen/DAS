@@ -9,7 +9,6 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train search screen tests', () {
-
     testWidgets('test default values', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
@@ -59,7 +58,6 @@ void main() {
       // check that the primary button is disabled
       final primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
       expect(tester.widget<SBBPrimaryButton>(primaryButton).onPressed, isNull);
-
     });
 
     testWidgets('test can select yesterday', (tester) async {
@@ -116,7 +114,8 @@ void main() {
       final sbbDatePickerFinder = find.byWidgetPredicate((widget) => widget is SBBDatePicker);
       final yesterdayFinder = find.descendant(
           of: sbbDatePickerFinder,
-          matching: find.byWidgetPredicate((widget) => widget is Text && widget.data == '${(dayBeforeYesterday.day)}.'));
+          matching:
+              find.byWidgetPredicate((widget) => widget is Text && widget.data == '${(dayBeforeYesterday.day)}.'));
       await tapElement(tester, yesterdayFinder);
 
       // tap outside dialog
@@ -154,6 +153,5 @@ void main() {
       expect(find.text('${l10n.c_error_code}: ${ErrorCode.sferaJpUnavailable.code}'), findsOneWidget);
       expect(find.text(l10n.c_error_sfera_jp_unavailable), findsOneWidget);
     });
-
   });
 }

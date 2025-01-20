@@ -73,7 +73,7 @@ class _TrainSelectionState extends State<TrainSelection> {
         onChanged: (value) => context.trainJourneyCubit.updateTrainNumber(value),
         controller: _trainNumberController,
         labelText: context.l10n.p_train_selection_trainnumber_description,
-        keyboardType: TextInputType.number,
+        keyboardType: TextInputType.text,
       ),
     );
   }

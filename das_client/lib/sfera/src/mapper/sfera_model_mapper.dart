@@ -33,6 +33,7 @@ import 'package:das_client/sfera/src/model/graduated_speed_info.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/multilingual_text.dart';
 import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
+import 'package:das_client/sfera/src/model/related_train_information.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location.dart';
 import 'package:das_client/sfera/src/model/train_characteristics.dart';
@@ -48,10 +49,13 @@ class SferaModelMapper {
   static const String _protectionSectionNspFacultativeName = 'facultative';
   static const String _protectionSectionNspLengthTypeName = 'lengthType';
 
-  static Journey mapToJourney(JourneyProfile journeyProfile, List<SegmentProfile> segmentProfiles,
-      List<TrainCharacteristics> trainCharacteristics) {
+  static Journey mapToJourney(
+      {required JourneyProfile journeyProfile,
+      List<SegmentProfile> segmentProfiles = const [],
+      List<TrainCharacteristics> trainCharacteristics = const [],
+      RelatedTrainInformation? relatedTrainInformation}) {
     try {
-      return _mapToJourney(journeyProfile, segmentProfiles, trainCharacteristics);
+      return _mapToJourney(journeyProfile, segmentProfiles, trainCharacteristics, relatedTrainInformation);
     } catch (e, s) {
       Fimber.e('Error mapping journey-/segment profiles to journey:', ex: e, stacktrace: s);
       return Journey.invalid();
@@ -59,7 +63,7 @@ class SferaModelMapper {
   }
 
   static Journey _mapToJourney(JourneyProfile journeyProfile, List<SegmentProfile> segmentProfiles,
-      List<TrainCharacteristics> trainCharacteristics) {
+      List<TrainCharacteristics> trainCharacteristics, RelatedTrainInformation? relatedTrainInformation) {
     final journeyData = <BaseData>[];
 
     final segmentProfilesLists = journeyProfile.segmentProfilesLists.toList();
@@ -159,14 +163,15 @@ class SferaModelMapper {
         additionalSpeedRestrictions: additionalSpeedRestrictions,
         routeStart: journeyData.firstOrNull,
         routeEnd: journeyData.lastOrNull,
+        delay: relatedTrainInformation?.ownTrain.trainLocationInformation.delay.delayAsDuration,
         nonStandardTrackEquipmentSegments: trackEquipmentSegments,
         bracketStationSegments: _parseBracketStationSegments(servicePoints),
         availableBreakSeries: _parseAvailableBreakSeries(journeyData),
         breakSeries: trainCharacteristic?.tcFeatures.trainCategoryCode != null &&
-                trainCharacteristic?.tcFeatures.brakedWeightPercentage != null
+            trainCharacteristic?.tcFeatures.brakedWeightPercentage != null
             ? BreakSeries(
-                trainSeries: trainCharacteristic!.tcFeatures.trainCategoryCode!,
-                breakSeries: trainCharacteristic.tcFeatures.brakedWeightPercentage!)
+            trainSeries: trainCharacteristic!.tcFeatures.trainCategoryCode!,
+            breakSeries: trainCharacteristic.tcFeatures.brakedWeightPercentage!)
             : null,
       ),
       data: journeyData,
