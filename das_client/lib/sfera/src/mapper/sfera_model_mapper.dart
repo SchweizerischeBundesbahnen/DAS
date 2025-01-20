@@ -588,26 +588,26 @@ class SferaModelMapper {
   }
 
   static List<BracketStationSegment> _parseBracketStationSegments(Iterable<ServicePoint> servicePoints) {
-    final Map<BracketMainStation, List<ServicePoint>> bracketStationPairs = {};
+    final Map<BracketMainStation, List<ServicePoint>> combinedBracketStations = {};
 
     for (final servicePoint in servicePoints) {
       final mainStation = servicePoint.bracketMainStation;
       if (mainStation != null) {
-        if (!bracketStationPairs.containsKey(mainStation)) {
-          bracketStationPairs[mainStation] = [];
+        if (!combinedBracketStations.containsKey(mainStation)) {
+          combinedBracketStations[mainStation] = [];
         }
-        bracketStationPairs[mainStation]!.add(servicePoint);
+        combinedBracketStations[mainStation]!.add(servicePoint);
       }
     }
 
-    return bracketStationPairs.values.map((pair) {
-      if (pair.length != 2) {
-        Fimber.w('No pair found for bracket station segment. Found service points: $pair');
+    return combinedBracketStations.values.map((bracketStations) {
+      if (bracketStations.length < 2) {
+        Fimber.w('There should at least be two bracket stations for a segment. Found service points: $bracketStations');
       }
 
-      final orders = pair.map((it) => it.order);
+      final orders = bracketStations.map((it) => it.order);
       return BracketStationSegment(
-        mainStationAbbreviation: pair.first.bracketMainStation!.abbreviation,
+        mainStationAbbreviation: bracketStations.first.bracketMainStation!.abbreviation,
         startOrder: orders.min,
         endOrder: orders.max,
       );
