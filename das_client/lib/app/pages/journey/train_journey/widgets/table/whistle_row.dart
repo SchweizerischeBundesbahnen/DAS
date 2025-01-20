@@ -9,11 +9,10 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class WhistleRow extends BaseRowBuilder<Whistle> {
   static const Key whistleIconKey = Key('whistle_icon_key');
 
-  WhistleRow({
+  const WhistleRow({
     required super.metadata,
     required super.data,
-    required super.settings,
-    super.trackEquipmentRenderData,
+    super.config,
   });
 
   @override

@@ -3,7 +3,7 @@ import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/speed_data.dart';
 
 abstract class BaseData implements Comparable {
-  BaseData({
+  const BaseData({
     required this.type,
     required this.order,
     required this.kilometre,

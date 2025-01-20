@@ -5,7 +5,7 @@ import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/metadata.dart';
-import 'package:das_client/model/journey/track_equipment.dart';
+import 'package:das_client/model/journey/track_equipment_segment.dart';
 
 /// Data class to hold all the information to visualize the track equipment.
 class TrackEquipmentRenderData {
@@ -23,11 +23,11 @@ class TrackEquipmentRenderData {
   final bool isConventionalExtendedSpeedBorder;
   final TrackEquipmentType? trackEquipmentType;
 
-  factory TrackEquipmentRenderData.from(List<BaseData> rowData, Metadata metadata, int index) {
+  static TrackEquipmentRenderData? from(List<BaseData> rowData, Metadata metadata, int index) {
     final data = rowData[index];
     final nonStandardTrackEquipmentSegments = metadata.nonStandardTrackEquipmentSegments;
     final trackEquipment = nonStandardTrackEquipmentSegments.appliesToOrder(data.order).firstOrNull;
-    if (trackEquipment == null || !trackEquipment.isEtcsL2Segment) return TrackEquipmentRenderData();
+    if (trackEquipment == null || !trackEquipment.isEtcsL2Segment) return null;
 
     return TrackEquipmentRenderData(
       trackEquipmentType: trackEquipment.type,

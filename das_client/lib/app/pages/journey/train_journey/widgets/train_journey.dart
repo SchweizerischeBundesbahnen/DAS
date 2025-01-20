@@ -1,12 +1,14 @@
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/i18n/i18n.dart';
-import 'package:das_client/app/model/train_journey_settings.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/bracket_station_render_data.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_config.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/break_series_selection.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_level_crossing_group_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cab_signaling_row.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/track_equipment_render_data.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/track_equipment_render_data.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/connection_track_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/curve_point_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/level_crossing_row.dart';
@@ -75,7 +77,7 @@ class TrainJourney extends StatelessWidget {
   }
 
   List<DASTableRow> _rows(BuildContext context, Journey journey, TrainJourneySettings settings) {
-    final rows = journey.data.groupBaliseAndLeveLCrossings(settings);
+    final rows = journey.data.groupBaliseAndLeveLCrossings(settings.expandedGroups);
 
     final groupedRows =
         rows.whereType<BaliseLevelCrossingGroup>().map((it) => it.groupedElements).expand((it) => it).toList();
@@ -83,100 +85,91 @@ class TrainJourney extends StatelessWidget {
     return List.generate(rows.length, (index) {
       final rowData = rows[index];
 
-      final renderData = TrackEquipmentRenderData.from(rows, journey.metadata, index);
+      final trainJourneyConfig = TrainJourneyConfig(
+        settings: settings,
+        trackEquipmentRenderData: TrackEquipmentRenderData.from(rows, journey.metadata, index),
+        bracketStationRenderData: BracketStationRenderData.from(rowData, journey.metadata),
+      );
       switch (rowData.type) {
         case Datatype.servicePoint:
           return ServicePointRow(
-                  metadata: journey.metadata,
-                  data: rowData as ServicePoint,
-                  settings: settings,
-                  trackEquipmentRenderData: renderData)
-              .build(context);
+            metadata: journey.metadata,
+            data: rowData as ServicePoint,
+            config: trainJourneyConfig,
+          ).build(context);
         case Datatype.protectionSection:
           return ProtectionSectionRow(
-                  metadata: journey.metadata,
-                  data: rowData as ProtectionSection,
-                  settings: settings,
-                  trackEquipmentRenderData: renderData)
-              .build(context);
+            metadata: journey.metadata,
+            data: rowData as ProtectionSection,
+            config: trainJourneyConfig,
+          ).build(context);
         case Datatype.curvePoint:
           return CurvePointRow(
-                  metadata: journey.metadata,
-                  data: rowData as CurvePoint,
-                  settings: settings,
-                  trackEquipmentRenderData: renderData)
-              .build(context);
+            metadata: journey.metadata,
+            data: rowData as CurvePoint,
+            config: trainJourneyConfig,
+          ).build(context);
         case Datatype.signal:
           return SignalRow(
-                  metadata: journey.metadata,
-                  data: rowData as Signal,
-                  settings: settings,
-                  trackEquipmentRenderData: renderData)
-              .build(context);
+            metadata: journey.metadata,
+            data: rowData as Signal,
+            config: trainJourneyConfig,
+          ).build(context);
         case Datatype.additionalSpeedRestriction:
           return AdditionalSpeedRestrictionRow(
-                  metadata: journey.metadata,
-                  data: rowData as AdditionalSpeedRestrictionData,
-                  settings: settings,
-                  trackEquipmentRenderData: renderData)
-              .build(context);
+            metadata: journey.metadata,
+            data: rowData as AdditionalSpeedRestrictionData,
+            config: trainJourneyConfig,
+          ).build(context);
         case Datatype.connectionTrack:
           return ConnectionTrackRow(
-                  metadata: journey.metadata,
-                  data: rowData as ConnectionTrack,
-                  settings: settings,
-                  trackEquipmentRenderData: renderData)
-              .build(context);
+            metadata: journey.metadata,
+            data: rowData as ConnectionTrack,
+            config: trainJourneyConfig,
+          ).build(context);
         case Datatype.speedChange:
           return SpeedChangeRow(
-                  metadata: journey.metadata,
-                  data: rowData as SpeedChange,
-                  settings: settings,
-                  trackEquipmentRenderData: renderData)
-              .build(context);
+            metadata: journey.metadata,
+            data: rowData as SpeedChange,
+            config: trainJourneyConfig,
+          ).build(context);
         case Datatype.cabSignaling:
           return CABSignalingRow(
-                  metadata: journey.metadata,
-                  data: rowData as CABSignaling,
-                  settings: settings,
-                  trackEquipmentRenderData: renderData)
-              .build(context);
+            metadata: journey.metadata,
+            data: rowData as CABSignaling,
+            config: trainJourneyConfig,
+          ).build(context);
         case Datatype.balise:
           return BaliseRow(
-                  metadata: journey.metadata,
-                  data: rowData as Balise,
-                  settings: settings,
-                  trackEquipmentRenderData: renderData,
-                  isGrouped: groupedRows.contains(rowData))
-              .build(context);
+            metadata: journey.metadata,
+            data: rowData as Balise,
+            config: trainJourneyConfig,
+            isGrouped: groupedRows.contains(rowData),
+          ).build(context);
         case Datatype.whistle:
           return WhistleRow(
-                  metadata: journey.metadata,
-                  data: rowData as Whistle,
-                  settings: settings,
-                  trackEquipmentRenderData: renderData)
-              .build(context);
+            metadata: journey.metadata,
+            data: rowData as Whistle,
+            config: trainJourneyConfig,
+          ).build(context);
         case Datatype.levelCrossing:
           return LevelCrossingRow(
-                  metadata: journey.metadata,
-                  data: rowData as LevelCrossing,
-                  settings: settings,
-                  trackEquipmentRenderData: renderData,
-                  isGrouped: groupedRows.contains(rowData))
-              .build(context);
+            metadata: journey.metadata,
+            data: rowData as LevelCrossing,
+            config: trainJourneyConfig,
+            isGrouped: groupedRows.contains(rowData),
+          ).build(context);
         case Datatype.tramArea:
           return TramAreaRow(
-                  metadata: journey.metadata,
-                  data: rowData as TramArea,
-                  settings: settings,
-                  trackEquipmentRenderData: renderData)
-              .build(context);
+            metadata: journey.metadata,
+            data: rowData as TramArea,
+            config: trainJourneyConfig,
+          ).build(context);
         case Datatype.baliseLevelCrossingGroup:
           return BaliseLevelCrossingGroupRow(
             metadata: journey.metadata,
             data: rowData as BaliseLevelCrossingGroup,
-            settings: settings,
-            trackEquipmentRenderData: renderData,
+            config: trainJourneyConfig,
             onTap: () => _onBaliseLevelCrossingGroupTap(context, rowData, settings),
           ).build(context);
       }
@@ -194,6 +187,7 @@ class TrainJourney extends StatelessWidget {
       DASTableColumn(width: 48.0), // route column
       DASTableColumn(width: 20.0), // track equipment column
       DASTableColumn(width: 64.0), // icons column
+      DASTableColumn(width: 0.0), // bracket station column
       DASTableColumn(
         child: Text(context.l10n.p_train_journey_table_journey_information_label),
         expanded: true,

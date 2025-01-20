@@ -1,5 +1,4 @@
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_row_builder.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
@@ -19,22 +18,24 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
   ServicePointRow({
     required super.metadata,
     required super.data,
-    required super.settings,
     super.height = rowHeight,
-    super.trackEquipmentRenderData,
+    super.config,
   }) : super(rowColor: metadata.nextStop == data ? SBBColors.royal.withAlpha((255.0 * 0.2).round()) : null);
 
   @override
   DASTableCell informationCell(BuildContext context) {
     final servicePointName = data.name.localized;
-    final textStyle =
-        data.isStation ? DASTextStyles.xLargeBold : DASTextStyles.xLargeLight.copyWith(fontStyle: FontStyle.italic);
     return DASTableCell(
       alignment: defaultAlignment,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Text(servicePointName, style: textStyle),
+          Text(
+            servicePointName,
+            style: data.isStation
+                ? DASTextStyles.xLargeBold
+                : DASTextStyles.xLargeLight.copyWith(fontStyle: FontStyle.italic),
+          ),
         ],
       ),
     );
@@ -47,14 +48,13 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
 
   @override
   DASTableCell iconsCell1(BuildContext context) {
+    if (data.mandatoryStop) return DASTableCell.empty();
+
     return DASTableCell(
-      padding: EdgeInsets.fromLTRB(0, sbbDefaultSpacing * 0.5, 0, sbbDefaultSpacing * 0.5),
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          if (data.bracketStation != null) _bracketStationCell(),
-          if (!data.mandatoryStop) _stopOnRequestIcon()
-        ],
+      alignment: Alignment.bottomCenter,
+      child: SvgPicture.asset(
+        AppAssets.iconStopOnRequest,
+        key: stopOnRequestKey,
       ),
     );
   }
@@ -79,8 +79,10 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
   DASTableCell localSpeedCell(BuildContext context) {
     if (data.localSpeedData == null) return DASTableCell.empty();
 
-    final currentTrainSeries = settings.selectedBreakSeries?.trainSeries ?? metadata.breakSeries?.trainSeries;
-    final currentBreakSeries = settings.selectedBreakSeries?.breakSeries ?? metadata.breakSeries?.breakSeries;
+    final currentTrainSeries =
+        config.settings.selectedBreakSeries?.trainSeries ?? metadata.breakSeries?.trainSeries;
+    final currentBreakSeries =
+        config.settings.selectedBreakSeries?.breakSeries ?? metadata.breakSeries?.breakSeries;
 
     final graduatedSpeeds = data.localSpeedData!.speedsFor(currentTrainSeries, currentBreakSeries);
     if (graduatedSpeeds == null) return DASTableCell.empty();
@@ -97,30 +99,17 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
 
   @override
   DASTableCell trackEquipment(BuildContext context) {
+    if (config.trackEquipmentRenderData == null) {
+      return DASTableCell.empty(color: specialCellColor);
+    }
+
     return DASTableCell(
       color: specialCellColor,
       padding: const EdgeInsets.all(0.0),
       alignment: null,
       child: TrackEquipmentCellBody(
-        renderData: trackEquipmentRenderData,
+        renderData: config.trackEquipmentRenderData!,
       ),
-    );
-  }
-
-  Widget _stopOnRequestIcon() {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: SvgPicture.asset(
-        AppAssets.iconStopOnRequest,
-        key: stopOnRequestKey,
-      ),
-    );
-  }
-
-  Widget _bracketStationCell() {
-    return BracketStationCellBody(
-      bracketStation: data.bracketStation!,
-      height: height,
     );
   }
 }

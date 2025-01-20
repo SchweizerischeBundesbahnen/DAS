@@ -3,7 +3,7 @@ import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/level_crossing.dart';
 
 class Balise extends BaseData {
-  Balise({
+  const Balise({
     required super.order,
     required super.kilometre,
     required this.amountLevelCrossings,

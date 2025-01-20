@@ -4,13 +4,11 @@ import 'package:das_client/model/journey/additional_speed_restriction_data.dart'
 import 'package:das_client/model/journey/balise.dart' as journey_balise;
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/bracket_station.dart';
+import 'package:das_client/model/journey/bracket_station_segment.dart';
 import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
 import 'package:das_client/model/journey/connection_track.dart';
 import 'package:das_client/model/journey/curve_point.dart';
-import 'package:das_client/model/journey/datatype.dart';
-import 'package:das_client/model/journey/speed_data.dart';
-import 'package:das_client/model/journey/speeds.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/level_crossing.dart';
 import 'package:das_client/model/journey/metadata.dart';
@@ -18,7 +16,9 @@ import 'package:das_client/model/journey/protection_section.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
 import 'package:das_client/model/journey/speed_change.dart';
-import 'package:das_client/model/journey/track_equipment.dart';
+import 'package:das_client/model/journey/speed_data.dart';
+import 'package:das_client/model/journey/speeds.dart';
+import 'package:das_client/model/journey/track_equipment_segment.dart';
 import 'package:das_client/model/journey/train_series.dart';
 import 'package:das_client/model/journey/tram_area.dart';
 import 'package:das_client/model/journey/whistles.dart';
@@ -120,7 +120,7 @@ class SferaModelMapper {
           mandatoryStop: tpConstraint.stoppingPointInformation?.stopType?.mandatoryStop ?? true,
           isStop: tpConstraint.stopSkipPass == StopSkipPass.stoppingPoint,
           isStation: tafTapLocation.locationType != TafTapLocationType.stoppingLocation,
-          bracketStation: _parseBracketStation(tafTapLocations, tafTapLocation),
+          bracketMainStation: _parseBracketMainStation(tafTapLocations, tafTapLocation),
           kilometre: kilometreMap[timingPoint.location] ?? [],
           speedData: _graduatedSpeedDataFromVelocities(tafTapLocation.newLineSpeed?.xmlNewLineSpeed.element.velocities),
           localSpeedData:
@@ -155,17 +155,17 @@ class SferaModelMapper {
     journeyData.sort();
 
     final trainCharacteristic = _resolveFirstTrainCharacteristics(journeyProfile, trainCharacteristics);
-    final servicePoints = journeyData.where((it) => it.type == Datatype.servicePoint).toList();
-
+    final servicePoints = journeyData.whereType<ServicePoint>();
     return Journey(
       metadata: Metadata(
-        nextStop: servicePoints.length > 1 ? servicePoints[1] as ServicePoint : null,
+        nextStop: servicePoints.skip(1).firstWhereOrNull((data) => data.isStop),
         currentPosition: journeyData.first,
         additionalSpeedRestrictions: additionalSpeedRestrictions,
         routeStart: journeyData.firstOrNull,
         routeEnd: journeyData.lastOrNull,
         delay: relatedTrainInformation?.ownTrain.trainLocationInformation.delay.delayAsDuration,
         nonStandardTrackEquipmentSegments: trackEquipmentSegments,
+        bracketStationSegments: _parseBracketStationSegments(servicePoints),
         availableBreakSeries: _parseAvailableBreakSeries(journeyData),
         breakSeries: trainCharacteristic?.tcFeatures.trainCategoryCode != null &&
             trainCharacteristic?.tcFeatures.brakedWeightPercentage != null
@@ -319,7 +319,8 @@ class SferaModelMapper {
     }
   }
 
-  static BracketStation? _parseBracketStation(List<TafTapLocation> allLocations, TafTapLocation tafTapLocation) {
+  static BracketMainStation? _parseBracketMainStation(
+      List<TafTapLocation> allLocations, TafTapLocation tafTapLocation) {
     for (final tafTapLocationNsp in tafTapLocation.nsp) {
       if (tafTapLocationNsp.name == _bracketStationNspName) {
         final mainStationNsp =
@@ -336,8 +337,8 @@ class SferaModelMapper {
           if (mainStation == null) {
             Fimber.w('Failed to resolve main station for bracket station: $tafTapLocation');
           } else {
-            return BracketStation(
-                mainStationAbbreviation: mainStation != tafTapLocation ? mainStation.abbreviation : null);
+            return BracketMainStation(
+                abbreviation: mainStation.abbreviation, countryCode: countryCode, primaryCode: primaryCode);
           }
         }
       }
@@ -584,5 +585,32 @@ class SferaModelMapper {
     }
 
     return result;
+  }
+
+  static List<BracketStationSegment> _parseBracketStationSegments(Iterable<ServicePoint> servicePoints) {
+    final Map<BracketMainStation, List<ServicePoint>> combinedBracketStations = {};
+
+    for (final servicePoint in servicePoints) {
+      final mainStation = servicePoint.bracketMainStation;
+      if (mainStation != null) {
+        if (!combinedBracketStations.containsKey(mainStation)) {
+          combinedBracketStations[mainStation] = [];
+        }
+        combinedBracketStations[mainStation]!.add(servicePoint);
+      }
+    }
+
+    return combinedBracketStations.values.map((bracketStations) {
+      if (bracketStations.length < 2) {
+        Fimber.w('There should at least be two bracket stations for a segment. Found service points: $bracketStations');
+      }
+
+      final orders = bracketStations.map((it) => it.order);
+      return BracketStationSegment(
+        mainStationAbbreviation: bracketStations.first.bracketMainStation!.abbreviation,
+        startOrder: orders.min,
+        endOrder: orders.max,
+      );
+    }).toList();
   }
 }

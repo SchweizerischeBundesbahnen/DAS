@@ -1,7 +1,7 @@
 import 'package:das_client/model/journey/train_series.dart';
 
 class BreakSeries {
-  BreakSeries({
+  const BreakSeries({
     required this.trainSeries,
     required this.breakSeries,
   });

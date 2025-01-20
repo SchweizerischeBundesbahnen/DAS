@@ -1,4 +1,4 @@
-import 'package:das_client/model/journey/track_equipment.dart';
+import 'package:das_client/model/journey/track_equipment_segment.dart';
 import 'package:das_client/sfera/src/mapper/sfera_model_mapper.dart';
 import 'package:das_client/sfera/src/model/enums/start_end_qualifier.dart';
 import 'package:das_client/sfera/src/model/enums/track_equipment_type.dart';

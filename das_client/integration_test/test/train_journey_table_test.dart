@@ -134,7 +134,8 @@ void main() {
       final countText = find.descendant(of: groupOf5BaliseRow, matching: find.text('5'));
       expect(countText, findsOneWidget);
 
-      final levelCrossingText = find.descendant(of: groupOf5BaliseRow, matching: find.text(l10n.p_train_journey_table_level_crossing));
+      final levelCrossingText =
+          find.descendant(of: groupOf5BaliseRow, matching: find.text(l10n.p_train_journey_table_level_crossing));
       expect(levelCrossingText, findsOneWidget);
 
       var detailRowBalise = findDASTableRowByText('41.552');
@@ -153,7 +154,9 @@ void main() {
       expect(detailRowBalise, findsOneWidget);
 
       expect(find.descendant(of: detailRowBalise, matching: find.byKey(BaliseRow.baliseIconKey)), findsOneWidget);
-      expect(find.descendant(of: detailRowLevelCrossing, matching: find.text(l10n.p_train_journey_table_level_crossing)), findsOneWidget);
+      expect(
+          find.descendant(of: detailRowLevelCrossing, matching: find.text(l10n.p_train_journey_table_level_crossing)),
+          findsOneWidget);
 
       // collapse group
       await tapElement(tester, groupOf5BaliseRow);
@@ -371,7 +374,7 @@ void main() {
               it is Container &&
               it.decoration is BoxDecoration &&
               (it.decoration as BoxDecoration).color == AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor));
-      expect(coloredCells, findsNWidgets(12));
+      expect(coloredCells, findsNWidgets(13));
     });
 
     testWidgets('test other rows are displayed correctly', (tester) async {
@@ -594,21 +597,33 @@ void main() {
       await tester.dragUntilVisible(find.text('Klammerbahnhof D1'), scrollableFinder, const Offset(0, -50));
 
       final bracketStationD = findDASTableRowByText('Klammerbahnhof D');
+      final zahnstangenEnde = findDASTableRowByText('Zahnstangen Ende');
+      final deckungssignal = findDASTableRowByText('Deckungssignal');
       final bracketStationD1 = findDASTableRowByText('Klammerbahnhof D1');
       expect(bracketStationD, findsOneWidget);
+      expect(zahnstangenEnde, findsOneWidget);
+      expect(deckungssignal, findsOneWidget);
       expect(bracketStationD1, findsOneWidget);
 
       // check if the bracket station widget is displayed
       final bracketStationDWidget =
           find.descendant(of: bracketStationD, matching: find.byKey(BracketStationCellBody.bracketStationKey));
+      final zahnstangenEndeWidget =
+          find.descendant(of: zahnstangenEnde, matching: find.byKey(BracketStationCellBody.bracketStationKey));
+      final deckungssignalWidget =
+          find.descendant(of: deckungssignal, matching: find.byKey(BracketStationCellBody.bracketStationKey));
       final bracketStationD1Widget =
           find.descendant(of: bracketStationD1, matching: find.byKey(BracketStationCellBody.bracketStationKey));
       expect(bracketStationDWidget, findsOneWidget);
+      expect(zahnstangenEndeWidget, findsOneWidget);
+      expect(deckungssignalWidget, findsOneWidget);
       expect(bracketStationD1Widget, findsOneWidget);
 
       // check that the abbreviation is displayed correctly
-      expect(find.descendant(of: bracketStationDWidget, matching: find.text('D')), findsNothing);
-      expect(find.descendant(of: bracketStationD1Widget, matching: find.text('D')), findsOneWidget);
+      expect(find.descendant(of: bracketStationDWidget, matching: find.text('D')), findsOneWidget);
+      expect(find.descendant(of: zahnstangenEndeWidget, matching: find.text('D')), findsNothing);
+      expect(find.descendant(of: deckungssignalWidget, matching: find.text('D')), findsNothing);
+      expect(find.descendant(of: bracketStationD1Widget, matching: find.text('D')), findsNothing);
     });
 
     testWidgets('test halt on request is displayed correctly', (tester) async {
@@ -620,7 +635,7 @@ void main() {
       final scrollableFinder = find.byType(ListView);
       expect(scrollableFinder, findsOneWidget);
 
-      await tester.dragUntilVisible(find.text('Halt auf Verlangen C'), scrollableFinder, const Offset(0, -50));
+      await tester.dragUntilVisible(find.text('Klammerbahnhof D'), scrollableFinder, const Offset(0, -50));
 
       final stopOnDemandRow = findDASTableRowByText('Halt auf Verlangen C');
       expect(stopOnDemandRow, findsOneWidget);
@@ -837,48 +852,58 @@ void main() {
 
       final bernStationRow = findDASTableRowByText('Bern');
       expect(bernStationRow, findsOneWidget);
-      final bernIncomingSpeeds = find.descendant(of: bernStationRow, matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey));
+      final bernIncomingSpeeds =
+          find.descendant(of: bernStationRow, matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey));
       expect(bernIncomingSpeeds, findsNWidgets(2));
       final bernIncomingSpeedsText = find.descendant(of: bernStationRow, matching: find.text('75-70-60'));
       expect(bernIncomingSpeedsText, findsOneWidget);
-      final bernOutgoingSpeeds = find.descendant(of: bernStationRow, matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey));
+      final bernOutgoingSpeeds =
+          find.descendant(of: bernStationRow, matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey));
       expect(bernOutgoingSpeeds, findsNothing);
 
       // check station speeds for Wankdorf, no station speeds given
 
       final wankdorfStationRow = findDASTableRowByText('Wankdorf');
       expect(wankdorfStationRow, findsOneWidget);
-      final wankdorfIncomingSpeeds = find.descendant(of: wankdorfStationRow, matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey));
+      final wankdorfIncomingSpeeds =
+          find.descendant(of: wankdorfStationRow, matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey));
       expect(wankdorfIncomingSpeeds, findsNothing);
-      final wankdorfOutgoingSpeeds = find.descendant(of: wankdorfStationRow, matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey));
+      final wankdorfOutgoingSpeeds =
+          find.descendant(of: wankdorfStationRow, matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey));
       expect(wankdorfOutgoingSpeeds, findsNothing);
 
       // check station speeds for Burgdorf
 
       final burgdorfStationRow = findDASTableRowByText('Burgdorf');
       expect(burgdorfStationRow, findsOneWidget);
-      final burgdorfIncomingSpeeds = find.descendant(of: burgdorfStationRow, matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey));
+      final burgdorfIncomingSpeeds =
+          find.descendant(of: burgdorfStationRow, matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey));
       expect(burgdorfIncomingSpeeds, findsNWidgets(2));
       final burgdorfIncomingSpeeds75 = find.descendant(of: burgdorfIncomingSpeeds, matching: find.text('75'));
       expect(burgdorfIncomingSpeeds75, findsOneWidget);
       final burgdorfIncomingSpeeds70 = find.descendant(of: burgdorfIncomingSpeeds, matching: find.text('70'));
       expect(burgdorfIncomingSpeeds70, findsOneWidget);
-      final burgdorfIncomingSpeeds70Circled = find.ancestor(of: burgdorfIncomingSpeeds70, matching: find.byKey(GraduatedSpeedsCellBody.circledSpeedKey));
+      final burgdorfIncomingSpeeds70Circled =
+          find.ancestor(of: burgdorfIncomingSpeeds70, matching: find.byKey(GraduatedSpeedsCellBody.circledSpeedKey));
       expect(burgdorfIncomingSpeeds70Circled, findsOneWidget);
-      final burgdorfOutgoingSpeeds = find.descendant(of: burgdorfStationRow, matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey));
+      final burgdorfOutgoingSpeeds =
+          find.descendant(of: burgdorfStationRow, matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey));
       expect(burgdorfOutgoingSpeeds, findsOneWidget);
       final burgdorfOutgoingSpeeds60 = find.descendant(of: burgdorfOutgoingSpeeds, matching: find.text('60'));
       expect(burgdorfOutgoingSpeeds60, findsOneWidget);
-      final burgdorfOutgoingSpeeds60Squared = find.ancestor(of: burgdorfOutgoingSpeeds60, matching: find.byKey(GraduatedSpeedsCellBody.squaredSpeedKey));
+      final burgdorfOutgoingSpeeds60Squared =
+          find.ancestor(of: burgdorfOutgoingSpeeds60, matching: find.byKey(GraduatedSpeedsCellBody.squaredSpeedKey));
       expect(burgdorfOutgoingSpeeds60Squared, findsOneWidget);
 
       // check station speeds for Olten, no graduated speed for train series R
 
       final oltenStationRow = findDASTableRowByText('Olten');
       expect(oltenStationRow, findsOneWidget);
-      final oltenIncomingSpeeds = find.descendant(of: oltenStationRow, matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey));
+      final oltenIncomingSpeeds =
+          find.descendant(of: oltenStationRow, matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey));
       expect(oltenIncomingSpeeds, findsOneWidget);
-      final oltenOutgoingSpeeds = find.descendant(of: oltenStationRow, matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey));
+      final oltenOutgoingSpeeds =
+          find.descendant(of: oltenStationRow, matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey));
       expect(oltenOutgoingSpeeds, findsNothing);
 
     });

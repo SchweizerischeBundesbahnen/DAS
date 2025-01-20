@@ -1,7 +1,7 @@
 import 'package:das_client/app/widgets/das_text_styles.dart';
-import 'package:das_client/model/journey/bracket_station.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:das_client/app/widgets/table/das_table_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class BracketStationCellBody extends StatelessWidget {
   static const Key bracketStationKey = Key('bracketStationKey');
@@ -9,40 +9,47 @@ class BracketStationCellBody extends StatelessWidget {
   static const double _bracketStationFontSize = 12.0;
 
   const BracketStationCellBody({
-    required this.bracketStation,
+    required this.stationAbbreviation,
     required this.height,
     super.key,
   });
 
-  final BracketStation bracketStation;
+  final String? stationAbbreviation;
   final double height;
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: -sbbDefaultSpacing,
-      bottom: -sbbDefaultSpacing,
-      right: 0,
-      child: Container(
-        key: bracketStationKey,
-        height: height,
-        width: _bracketStationWidth,
-        color: SBBColors.black,
-        child: Align(
-          alignment: Alignment.center,
-          child: RotatedBox(
-            quarterTurns: -1,
-            child: Text(
-              bracketStation.mainStationAbbreviation ?? '',
-              style: DASTextStyles.extraSmallBold.copyWith(
-                color: SBBColors.white,
-                fontSize: _bracketStationFontSize,
-                height: _bracketStationWidth / _bracketStationFontSize,
+    final tableBorder = DASTableTheme.of(context)?.data.tableBorder;
+    final bottomBorder = -(tableBorder?.horizontalInside.width ?? 0);
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Positioned(
+          top: 0,
+          bottom: bottomBorder,
+          left: -_bracketStationWidth,
+          child: Container(
+            key: bracketStationKey,
+            height: height,
+            width: _bracketStationWidth,
+            color: SBBColors.black,
+            child: Align(
+              alignment: Alignment.center,
+              child: RotatedBox(
+                quarterTurns: -1,
+                child: Text(
+                  stationAbbreviation ?? '',
+                  style: DASTextStyles.extraSmallBold.copyWith(
+                    color: SBBColors.white,
+                    fontSize: _bracketStationFontSize,
+                    height: _bracketStationWidth / _bracketStationFontSize,
+                  ),
+                ),
               ),
             ),
           ),
         ),
-      ),
+      ],
     );
   }
 }

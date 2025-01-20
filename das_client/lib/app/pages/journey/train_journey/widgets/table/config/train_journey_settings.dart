@@ -1,7 +1,7 @@
 import 'package:das_client/model/journey/break_series.dart';
 
 class TrainJourneySettings {
-  TrainJourneySettings({
+  const TrainJourneySettings({
     this.selectedBreakSeries,
     this.expandedGroups = const [],
   });

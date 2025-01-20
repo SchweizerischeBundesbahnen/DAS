@@ -9,11 +9,10 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class SpeedChangeRow extends BaseRowBuilder<SpeedChange> {
   static const Key kmIndicatorKey = Key('km_indicator_key');
 
-  SpeedChangeRow({
+  const SpeedChangeRow({
     required super.metadata,
     required super.data,
-    required super.settings,
-    super.trackEquipmentRenderData,
+    super.config,
   });
 
   @override
