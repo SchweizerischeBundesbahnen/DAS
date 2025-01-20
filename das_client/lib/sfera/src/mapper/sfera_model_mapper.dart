@@ -9,9 +9,6 @@ import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
 import 'package:das_client/model/journey/connection_track.dart';
 import 'package:das_client/model/journey/curve_point.dart';
-import 'package:das_client/model/journey/datatype.dart';
-import 'package:das_client/model/journey/speed_data.dart';
-import 'package:das_client/model/journey/speeds.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/level_crossing.dart';
 import 'package:das_client/model/journey/metadata.dart';
@@ -19,6 +16,8 @@ import 'package:das_client/model/journey/protection_section.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
 import 'package:das_client/model/journey/speed_change.dart';
+import 'package:das_client/model/journey/speed_data.dart';
+import 'package:das_client/model/journey/speeds.dart';
 import 'package:das_client/model/journey/track_equipment_segment.dart';
 import 'package:das_client/model/journey/train_series.dart';
 import 'package:das_client/model/journey/tram_area.dart';
@@ -152,8 +151,7 @@ class SferaModelMapper {
     journeyData.sort();
 
     final trainCharacteristic = _resolveFirstTrainCharacteristics(journeyProfile, trainCharacteristics);
-    final servicePoints =
-        journeyData.where((it) => it.type == Datatype.servicePoint).map((data) => data as ServicePoint);
+    final servicePoints = journeyData.whereType<ServicePoint>();
     return Journey(
       metadata: Metadata(
         nextStop: servicePoints.skip(1).firstWhereOrNull((data) => data.isStop),

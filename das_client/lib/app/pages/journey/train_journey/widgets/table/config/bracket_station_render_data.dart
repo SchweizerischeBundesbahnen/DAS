@@ -7,23 +7,19 @@ class BracketStationRenderData {
   const BracketStationRenderData({
     this.stationAbbreviation,
     this.isStart = false,
-    this.isWithin = false,
   });
 
   final String? stationAbbreviation;
   final bool isStart;
-  final bool isWithin;
 
-  factory BracketStationRenderData.from(List<BaseData> rowData, Metadata metadata, int index) {
-    final data = rowData[index];
+  static BracketStationRenderData? from(BaseData data, Metadata metadata) {
     final bracketStationSegments = metadata.bracketStationSegments;
     final segment = bracketStationSegments.appliesToOrder(data.order);
-    if (segment == null) return BracketStationRenderData();
+    if (segment == null) return null;
 
     return BracketStationRenderData(
       stationAbbreviation: segment.mainStationAbbreviation,
       isStart: data.order == segment.startOrder,
-      isWithin: true,
     );
   }
 }

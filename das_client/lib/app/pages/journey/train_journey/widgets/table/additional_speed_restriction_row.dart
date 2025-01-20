@@ -14,7 +14,7 @@ class AdditionalSpeedRestrictionRow extends BaseRowBuilder<AdditionalSpeedRestri
   const AdditionalSpeedRestrictionRow({
     required super.metadata,
     required super.data,
-    super.renderData,
+    super.config,
   }) : super(rowColor: additionalSpeedRestrictionColor);
 
   @override

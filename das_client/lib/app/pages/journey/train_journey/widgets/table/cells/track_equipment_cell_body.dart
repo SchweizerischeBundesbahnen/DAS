@@ -1,4 +1,4 @@
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/render_data/track_equipment_render_data.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/track_equipment_render_data.dart';
 import 'package:das_client/app/widgets/table/das_table_theme.dart';
 import 'package:das_client/model/journey/track_equipment_segment.dart';
 import 'package:flutter/material.dart';

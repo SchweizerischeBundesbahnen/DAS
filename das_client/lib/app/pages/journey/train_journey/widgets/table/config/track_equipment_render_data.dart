@@ -23,11 +23,11 @@ class TrackEquipmentRenderData {
   final bool isConventionalExtendedSpeedBorder;
   final TrackEquipmentType? trackEquipmentType;
 
-  factory TrackEquipmentRenderData.from(List<BaseData> rowData, Metadata metadata, int index) {
+  static TrackEquipmentRenderData? from(List<BaseData> rowData, Metadata metadata, int index) {
     final data = rowData[index];
     final nonStandardTrackEquipmentSegments = metadata.nonStandardTrackEquipmentSegments;
     final trackEquipment = nonStandardTrackEquipmentSegments.appliesToOrder(data.order).firstOrNull;
-    if (trackEquipment == null || !trackEquipment.isEtcsL2Segment) return TrackEquipmentRenderData();
+    if (trackEquipment == null || !trackEquipment.isEtcsL2Segment) return null;
 
     return TrackEquipmentRenderData(
       trackEquipmentType: trackEquipment.type,

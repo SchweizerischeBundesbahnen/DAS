@@ -3,7 +3,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/g
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/render_data/train_journey_render_data.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_config.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:das_client/model/journey/additional_speed_restriction.dart';
@@ -20,7 +20,7 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
     required this.metadata,
     required this.data,
     super.height = rowHeight,
-    this.renderData = const TrainJourneyRenderData(),
+    this.config = const TrainJourneyConfig(),
     this.defaultAlignment = Alignment.bottomCenter,
     this.rowColor,
     this.onTap,
@@ -31,7 +31,7 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   final Color? rowColor;
   final Metadata metadata;
   final T data;
-  final TrainJourneyRenderData renderData;
+  final TrainJourneyConfig config;
   final VoidCallback? onTap;
   final bool isGrouped;
 
@@ -92,12 +92,16 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   }
 
   DASTableCell trackEquipment(BuildContext context) {
+    if (config.trackEquipmentRenderData == null) {
+      return DASTableCell.empty(color: specialCellColor);
+    }
+
     return DASTableCell(
       color: specialCellColor,
       padding: EdgeInsets.all(0.0),
       alignment: null,
       child: TrackEquipmentCellBody(
-        renderData: renderData.trackEquipmentRenderData,
+        renderData: config.trackEquipmentRenderData!,
       ),
     );
   }
@@ -128,9 +132,9 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
     }
 
     final currentTrainSeries =
-        renderData.settings.selectedBreakSeries?.trainSeries ?? metadata.breakSeries?.trainSeries;
+        config.settings.selectedBreakSeries?.trainSeries ?? metadata.breakSeries?.trainSeries;
     final currentBreakSeries =
-        renderData.settings.selectedBreakSeries?.breakSeries ?? metadata.breakSeries?.breakSeries;
+        config.settings.selectedBreakSeries?.breakSeries ?? metadata.breakSeries?.breakSeries;
 
     final graduatedSpeeds = speedData.speedsFor(currentTrainSeries, currentBreakSeries);
     if (graduatedSpeeds == null) {
@@ -152,15 +156,15 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   }
 
   DASTableCell bracketStation(BuildContext context) {
-    final bracketStationRenderData = renderData.bracketStationRenderData;
-    if (!bracketStationRenderData.isWithin) return DASTableCell.empty();
+    final bracketStationRenderData = config.bracketStationRenderData;
+    if (bracketStationRenderData == null) return DASTableCell.empty();
 
     return DASTableCell(
       padding: EdgeInsets.all(0.0),
       clipBehaviour: Clip.none,
       child: BracketStationCellBody(
         stationAbbreviation:
-            renderData.bracketStationRenderData.isStart ? bracketStationRenderData.stationAbbreviation : null,
+            config.bracketStationRenderData!.isStart ? bracketStationRenderData.stationAbbreviation : null,
         height: height,
       ),
     );

@@ -355,7 +355,7 @@ void main() {
     expect(servicePoints[1].bracketMainStation, isNull);
     expect(servicePoints[2].bracketMainStation, isNull);
     expect(servicePoints[3].bracketMainStation, isNotNull);
-    expect(servicePoints[3].bracketMainStation!.abbreviation, isNull);
+    expect(servicePoints[3].bracketMainStation!.abbreviation, 'D');
     expect(servicePoints[4].bracketMainStation, isNotNull);
     expect(servicePoints[4].bracketMainStation!.abbreviation, 'D');
     expect(servicePoints[5].bracketMainStation, isNull);

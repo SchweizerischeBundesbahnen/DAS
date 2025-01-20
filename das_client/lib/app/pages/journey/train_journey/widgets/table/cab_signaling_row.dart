@@ -12,7 +12,7 @@ class CABSignalingRow extends BaseRowBuilder<CABSignaling> {
   const CABSignalingRow({
     required super.metadata,
     required super.data,
-    super.renderData,
+    super.config,
   });
 
   @override

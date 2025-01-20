@@ -13,7 +13,7 @@ class TramAreaRow extends BaseRowBuilder<TramArea> {
   const TramAreaRow({
     required super.metadata,
     required super.data,
-    super.renderData,
+    super.config,
   });
 
   @override

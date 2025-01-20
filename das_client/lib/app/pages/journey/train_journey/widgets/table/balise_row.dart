@@ -13,7 +13,7 @@ class BaliseRow extends BaseRowBuilder<Balise> {
   const BaliseRow({
     required super.metadata,
     required super.data,
-    super.renderData,
+    super.config,
     super.isGrouped,
   });
 

@@ -8,7 +8,7 @@ class ConnectionTrackRow extends BaseRowBuilder<ConnectionTrack> {
   const ConnectionTrackRow({
     required super.metadata,
     required super.data,
-    super.renderData,
+    super.config,
   });
 
   @override

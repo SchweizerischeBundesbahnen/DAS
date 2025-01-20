@@ -1,5 +1,5 @@
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_row_builder.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/render_data/track_equipment_render_data.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/track_equipment_render_data.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
 import 'package:das_client/model/journey/connection_track.dart';
@@ -34,11 +34,14 @@ void main() {
     final cabSignalingEnd = TrackEquipmentRenderData.from(journey.data, journey.metadata, 2);
 
     // THEN
-    expect(cabSignalingStart.isCABStart, isTrue);
+    expect(cabSignalingStart, isNotNull);
+    expect(cabSignalingStart!.isCABStart, isTrue);
     expect(cabSignalingStart.isCABEnd, isFalse);
-    expect(signal.isCABStart, isFalse);
+    expect(signal, isNotNull);
+    expect(signal!.isCABStart, isFalse);
     expect(signal.isCABEnd, isFalse);
-    expect(cabSignalingEnd.isCABStart, isFalse);
+    expect(cabSignalingEnd, isNotNull);
+    expect(cabSignalingEnd!.isCABStart, isFalse);
     expect(cabSignalingEnd.isCABEnd, isTrue);
   });
   test('test cumulativeHeight calculation', () {
@@ -67,11 +70,16 @@ void main() {
 
     // THEN
     var expectedHeight = 0.0;
-    expect(curvePoint.cumulativeHeight, expectedHeight);
-    expect(cabSignalingStart.cumulativeHeight, expectedHeight += BaseRowBuilder.rowHeight);
-    expect(servicePoint.cumulativeHeight, expectedHeight += (BaseRowBuilder.rowHeight / 2));
-    expect(cabSignalingEnd.cumulativeHeight, expectedHeight += ServicePointRow.rowHeight);
-    expect(signal.cumulativeHeight, expectedHeight += BaseRowBuilder.rowHeight);
+    expect(curvePoint, isNotNull);
+    expect(curvePoint!.cumulativeHeight, expectedHeight);
+    expect(cabSignalingStart, isNotNull);
+    expect(cabSignalingStart!.cumulativeHeight, expectedHeight += BaseRowBuilder.rowHeight);
+    expect(servicePoint, isNotNull);
+    expect(servicePoint!.cumulativeHeight, expectedHeight += (BaseRowBuilder.rowHeight / 2));
+    expect(cabSignalingEnd, isNotNull);
+    expect(cabSignalingEnd!.cumulativeHeight, expectedHeight += ServicePointRow.rowHeight);
+    expect(signal, isNotNull);
+    expect(signal!.cumulativeHeight, expectedHeight += BaseRowBuilder.rowHeight);
   });
   test('test trackEquipmentType mapping', () {
     // GIVEN
@@ -99,11 +107,14 @@ void main() {
     final connectionTrack = TrackEquipmentRenderData.from(journey.data, journey.metadata, 4);
 
     // THEN
-    expect(curvePoint.trackEquipmentType, isNull);
-    expect(cabSignaling.trackEquipmentType, TrackEquipmentType.etcsL2ExtSpeedReversingPossible);
-    expect(servicePoint.trackEquipmentType, TrackEquipmentType.etcsL2ConvSpeedReversingImpossible);
-    expect(signal.trackEquipmentType, TrackEquipmentType.etcsL2ExtSpeedReversingImpossible);
-    expect(connectionTrack.trackEquipmentType, isNull); // non ETCS level 2 are ignored
+    expect(curvePoint, isNull);
+    expect(cabSignaling, isNotNull);
+    expect(cabSignaling!.trackEquipmentType, TrackEquipmentType.etcsL2ExtSpeedReversingPossible);
+    expect(servicePoint, isNotNull);
+    expect(servicePoint!.trackEquipmentType, TrackEquipmentType.etcsL2ConvSpeedReversingImpossible);
+    expect(signal, isNotNull);
+    expect(signal!.trackEquipmentType, TrackEquipmentType.etcsL2ExtSpeedReversingImpossible);
+    expect(connectionTrack, isNull); // non ETCS level 2 are ignored
   });
 
   test('test conventional extended speed border', () {
@@ -135,12 +146,16 @@ void main() {
     final servicePoint2 = TrackEquipmentRenderData.from(journey.data, journey.metadata, 5);
 
     // THEN
-    expect(curvePoint.isConventionalExtendedSpeedBorder, isFalse);
-    expect(cabSignaling.isConventionalExtendedSpeedBorder, isFalse);
-    expect(servicePoint.isConventionalExtendedSpeedBorder, isTrue);
-    expect(signal.isConventionalExtendedSpeedBorder, isFalse);
-    expect(connectionTrack.isConventionalExtendedSpeedBorder, isFalse);
-    expect(servicePoint2.isConventionalExtendedSpeedBorder, isTrue);
+    expect(curvePoint, isNull);
+    expect(cabSignaling, isNotNull);
+    expect(cabSignaling!.isConventionalExtendedSpeedBorder, isFalse);
+    expect(servicePoint, isNotNull);
+    expect(servicePoint!.isConventionalExtendedSpeedBorder, isTrue);
+    expect(signal, isNull);
+    expect(connectionTrack, isNotNull);
+    expect(connectionTrack!.isConventionalExtendedSpeedBorder, isFalse);
+    expect(servicePoint2, isNotNull);
+    expect(servicePoint2!.isConventionalExtendedSpeedBorder, isTrue);
   });
 }
 

@@ -15,7 +15,7 @@ class BaliseLevelCrossingGroupRow extends BaseRowBuilder<BaliseLevelCrossingGrou
   const BaliseLevelCrossingGroupRow({
     required super.metadata,
     required super.data,
-    super.renderData,
+    super.config,
     super.onTap,
   });
 

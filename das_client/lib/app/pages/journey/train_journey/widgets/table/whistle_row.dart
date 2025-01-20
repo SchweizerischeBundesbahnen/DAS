@@ -12,7 +12,7 @@ class WhistleRow extends BaseRowBuilder<Whistle> {
   const WhistleRow({
     required super.metadata,
     required super.data,
-    super.renderData,
+    super.config,
   });
 
   @override

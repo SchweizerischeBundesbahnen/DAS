@@ -12,7 +12,7 @@ class SpeedChangeRow extends BaseRowBuilder<SpeedChange> {
   const SpeedChangeRow({
     required super.metadata,
     required super.data,
-    super.renderData,
+    super.config,
   });
 
   @override

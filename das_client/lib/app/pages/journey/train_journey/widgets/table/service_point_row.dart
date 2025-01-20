@@ -19,7 +19,7 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
     required super.metadata,
     required super.data,
     super.height = rowHeight,
-    super.renderData,
+    super.config,
   }) : super(rowColor: metadata.nextStop == data ? SBBColors.royal.withAlpha((255.0 * 0.2).round()) : null);
 
   @override
@@ -80,9 +80,9 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
     if (data.localSpeedData == null) return DASTableCell.empty();
 
     final currentTrainSeries =
-        renderData.settings.selectedBreakSeries?.trainSeries ?? metadata.breakSeries?.trainSeries;
+        config.settings.selectedBreakSeries?.trainSeries ?? metadata.breakSeries?.trainSeries;
     final currentBreakSeries =
-        renderData.settings.selectedBreakSeries?.breakSeries ?? metadata.breakSeries?.breakSeries;
+        config.settings.selectedBreakSeries?.breakSeries ?? metadata.breakSeries?.breakSeries;
 
     final graduatedSpeeds = data.localSpeedData!.speedsFor(currentTrainSeries, currentBreakSeries);
     if (graduatedSpeeds == null) return DASTableCell.empty();
@@ -99,12 +99,16 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
 
   @override
   DASTableCell trackEquipment(BuildContext context) {
+    if (config.trackEquipmentRenderData == null) {
+      return DASTableCell.empty(color: specialCellColor);
+    }
+
     return DASTableCell(
       color: specialCellColor,
       padding: const EdgeInsets.all(0.0),
       alignment: null,
       child: TrackEquipmentCellBody(
-        renderData: renderData.trackEquipmentRenderData,
+        renderData: config.trackEquipmentRenderData!,
       ),
     );
   }

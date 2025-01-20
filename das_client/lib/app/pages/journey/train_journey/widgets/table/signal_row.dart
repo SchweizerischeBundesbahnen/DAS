@@ -12,7 +12,7 @@ class SignalRow extends BaseRowBuilder<Signal> {
   const SignalRow({
     required super.metadata,
     required super.data,
-    super.renderData,
+    super.config,
   });
 
   @override

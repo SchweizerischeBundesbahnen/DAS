@@ -13,7 +13,7 @@ class ProtectionSectionRow extends BaseRowBuilder<ProtectionSection> {
   const ProtectionSectionRow({
     required super.metadata,
     required super.data,
-    super.renderData,
+    super.config,
   }) : super(rowColor: SBBColors.peach);
 
   @override

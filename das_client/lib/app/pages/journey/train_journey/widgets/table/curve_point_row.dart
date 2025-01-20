@@ -12,7 +12,7 @@ class CurvePointRow extends BaseRowBuilder<CurvePoint> {
   const CurvePointRow({
     required super.metadata,
     required super.data,
-    super.renderData,
+    super.config,
   });
 
   @override

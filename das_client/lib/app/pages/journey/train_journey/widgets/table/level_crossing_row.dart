@@ -8,7 +8,7 @@ class LevelCrossingRow extends BaseRowBuilder<LevelCrossing> {
   const LevelCrossingRow({
     required super.metadata,
     required super.data,
-    super.renderData,
+    super.config,
     super.isGrouped,
   });
 
