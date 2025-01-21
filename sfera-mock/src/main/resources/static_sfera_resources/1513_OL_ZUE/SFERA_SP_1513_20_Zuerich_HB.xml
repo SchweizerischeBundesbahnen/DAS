@@ -5,7 +5,7 @@
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
-	
+
     <SP_Points>
 
         <TimingPoint TP_ID="Zuerich_HB" location="0">
@@ -15,7 +15,7 @@
                 <LocationPrimaryCode>3000</LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
-     
+
     </SP_Points>
 
     <SP_Areas>
@@ -38,14 +38,16 @@
 				<NetworkSpecificParameter name="text" value="&lt;b&gt;A"/>
             </TAF_TAP_Location_NSP>
 
-			<NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
+
+            <TAF_TAP_Location_NSP name="stationSpeed">
+                <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
                     &lt;entries&gt;
 						&lt;entry nSpeed=&quot;30&quot; roSpeed=&quot;30&quot; adSpeed=&quot;30&quot; text=&quot;Einfahrt ab Höhe Negrellisteg&quot;/&gt;
 						&lt;entry nSpeed=&quot;---&quot; roSpeed=&quot;---&quot; adSpeed=&quot;---&quot; text=&quot;Fahrt auf Sicht&lt;br&gt;&#10;Einfahrt bei beleuchtetem Besetztsignal ab Anfang Bahnsteig&quot;/&gt;
                     &lt;/entries&gt;
                 "/>
 			</TAF_TAP_Location_NSP>
-			
+
         </TAF_TAP_Location>
 
     </SP_Areas>
@@ -60,11 +62,11 @@
 			<Contact contactType="phone" mainContact="false" contactRole="Felder H, J: Fahrdienstleiter" contactIdentifier="1321" />
 
 		</ContactList>
-		
+
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="0.0"/>
         </KilometreReferencePoint>
 
     </SP_ContextInformation>
-	
+
 </SegmentProfile>
