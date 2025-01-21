@@ -1,3 +1,4 @@
+<?xml version="1.0" ?>
 <!-- Out of Scope
 - Structure for SPs (would be way more)
 - real signal_ID_Physical not known
@@ -8,7 +9,6 @@
 - events (one example included)
 -->
 
-<?xml version="1.0" ?>
 <JourneyProfile JP_Status="Valid" JP_Version="1"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd">

@@ -54,6 +54,11 @@
             <TAF_TAP_LocationName language="de" messageString="Rupperswil"/>
 
 			<TAF_TAP_Location_NSP name="stationSpeed">
+                <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
+                    &lt;entries&gt;
+						&lt;entry roSpeed=&quot;120&quot; adSpeed=&quot;120&quot; text=&quot;Ausfahrt Gleis 1 nach Wildegg: Bei V-Ausführung 120 km/h am Gleissignal D1 bis Ausfahrsignal C31&quot;/&gt;
+                    &lt;/entries&gt;
+                "/>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
 					&lt;stationSpeed&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;160/140&quot;/&gt;
@@ -65,13 +70,6 @@
 				"/>
 			</TAF_TAP_Location_NSP>
 
-			<NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
-                    &lt;entries&gt;
-						&lt;entry roSpeed=&quot;120&quot; adSpeed=&quot;120&quot; text=&quot;Ausfahrt Gleis 1 nach Wildegg: Bei V-Ausführung 120 km/h am Gleissignal D1 bis Ausfahrsignal C31&quot;/&gt;
-                    &lt;/entries&gt;
-                "/>
-			</TAF_TAP_Location_NSP>
-			
 			<TAF_TAP_Location_NSP name="newLineSpeed">
 				<NetworkSpecificParameter name="xmlNewLineSpeed" value="
 					&lt;lineSpeed&gt;
