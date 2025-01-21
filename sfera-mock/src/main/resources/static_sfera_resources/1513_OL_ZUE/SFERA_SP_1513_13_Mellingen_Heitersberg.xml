@@ -98,6 +98,14 @@
 
     </SP_Areas>
 
+    <SP_Characteristics>
+        <CurrentLimitation>
+            <CurrentLimitationStart maxCurValue="1023"/>
+            <CurrentLimitationChange maxCurValue="0" location="700"/>
+            <CurrentLimitationChange maxCurValue="1023" location="701"/>
+        </CurrentLimitation>
+    </SP_Characteristics>
+
     <SP_ContextInformation>
 		
         <KilometreReferencePoint location="0">
