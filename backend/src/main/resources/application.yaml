@@ -25,6 +25,11 @@ spring:
   sql:
     init:
       mode: always
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
 springdoc:
   swagger-ui:
     oauth:
