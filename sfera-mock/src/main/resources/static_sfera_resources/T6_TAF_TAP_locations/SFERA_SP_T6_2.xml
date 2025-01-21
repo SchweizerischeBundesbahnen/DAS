@@ -138,7 +138,7 @@
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="GLA"
-                          TAF_TAP_location_type="stopping location">
+                          TAF_TAP_location_type="halt">
             <TAF_TAP_LocationIdent>
                 <CountryCodeISO>CH</CountryCodeISO>
                 <LocationPrimaryCode>3004</LocationPrimaryCode>
@@ -165,7 +165,7 @@
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="MEL"
-                          TAF_TAP_location_type="stopping location">
+                          TAF_TAP_location_type="halt">
             <TAF_TAP_LocationIdent>
                 <CountryCodeISO>CH</CountryCodeISO>
                 <LocationPrimaryCode>3007</LocationPrimaryCode>
