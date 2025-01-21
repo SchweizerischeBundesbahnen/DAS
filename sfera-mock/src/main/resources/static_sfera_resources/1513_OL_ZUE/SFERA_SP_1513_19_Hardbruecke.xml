@@ -45,7 +45,7 @@
                 <CountryCodeISO>CH</CountryCodeISO>
                 <LocationPrimaryCode>3020</LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Othmarsingen"/>
+            <TAF_TAP_LocationName language="de" messageString="Hardbrücke"/>
 
 			<TAF_TAP_Location_NSP name="stationSpeed">
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
@@ -80,13 +80,19 @@
 		</ContactList>
 		
         <KilometreReferencePoint location="0">
-            <KM_Reference kmRef="27.7"/>
+            <KM_Reference kmRef="1.9"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="100">
-            <KM_Reference kmRef="27.6"/>
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="0.2"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="1100">
-            <KM_Reference kmRef="26.6"/>
+		<KilometreReferencePoint location="200">
+            <KM_Reference kmRef="1.7"/>
+        </KilometreReferencePoint>
+		<KilometreReferencePoint location="600">
+            <KM_Reference kmRef="1.3"/>
+        </KilometreReferencePoint>
+		<KilometreReferencePoint location="900">
+            <KM_Reference kmRef="1.0"/>
         </KilometreReferencePoint>
 
     </SP_ContextInformation>

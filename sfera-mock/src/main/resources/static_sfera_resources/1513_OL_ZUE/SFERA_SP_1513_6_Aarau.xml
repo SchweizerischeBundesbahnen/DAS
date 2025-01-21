@@ -16,7 +16,7 @@
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
-        <TimingPoint TP_ID="Aarau GB" location="800">
+        <TimingPoint TP_ID="Aarau_GB" location="800">
             <TP_Name name="AAGB"/>
             <TAF_TAP_LocationReference>
                 <CountryCodeISO>CH</CountryCodeISO>
