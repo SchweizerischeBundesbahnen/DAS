@@ -38,4 +38,4 @@ build/
 
 ### Documentation ###
 /docs/hugo-config/public/
-
+**/.DS_STORE
