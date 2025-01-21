@@ -2,7 +2,7 @@ import 'package:das_client/sfera/src/model/enums/xml_enum.dart';
 
 enum TafTapLocationType implements XmlEnum {
   station(xmlValue: 'station'),
-  stoppingLocation(xmlValue: 'stopping location');
+  halt(xmlValue: 'halt');
 
   const TafTapLocationType({
     required this.xmlValue,
