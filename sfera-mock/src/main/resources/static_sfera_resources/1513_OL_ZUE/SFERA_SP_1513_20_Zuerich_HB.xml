@@ -37,17 +37,6 @@
                 <NetworkSpecificParameter name="stationPropertySpeed_N180" value="40-30"/>
 				<NetworkSpecificParameter name="text" value="&lt;b&gt;A"/>
             </TAF_TAP_Location_NSP>
-
-
-            <TAF_TAP_Location_NSP name="stationSpeed">
-                <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
-                    &lt;entries&gt;
-						&lt;entry nSpeed=&quot;30&quot; roSpeed=&quot;30&quot; adSpeed=&quot;30&quot; text=&quot;Einfahrt ab Höhe Negrellisteg&quot;/&gt;
-						&lt;entry nSpeed=&quot;---&quot; roSpeed=&quot;---&quot; adSpeed=&quot;---&quot; text=&quot;Fahrt auf Sicht&lt;br&gt;&#10;Einfahrt bei beleuchtetem Besetztsignal ab Anfang Bahnsteig&quot;/&gt;
-                    &lt;/entries&gt;
-                "/>
-			</TAF_TAP_Location_NSP>
-
         </TAF_TAP_Location>
 
     </SP_Areas>
