@@ -1,3 +1,13 @@
+<!-- Out of Scope
+- Structure for SPs (would be way more)
+- real signal_ID_Physical not known
+- hidden locations
+- VPro (structure will change with 3.0)
+- foot notes
+- local regulations
+- events (one example included)
+-->
+
 <?xml version="1.0" ?>
 <JourneyProfile JP_Status="Valid" JP_Version="1"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -16,18 +26,19 @@
             <IM_ID>1285</IM_ID>
         </SP_Zone>
 		
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2022-05-17T08:57:24Z" TP_PlannedLatestArrivalTime="2022-05-17T08:57:00Z" >
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:57:24Z" TP_PlannedLatestArrivalTime="2025-05-17T08:57:00Z" >
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Olten"/>
             </TimingPointReference>
-			<StoppingPointInformation departureTime="2022-05-17T08:59:00Z" plannedDepartureTime="2022-05-17T08:59:00Z" >
+			<StoppingPointInformation departureTime="2025-05-17T08:59:00Z" plannedDepartureTime="2025-05-17T08:59:00Z" >
             </StoppingPointInformation>
         </TimingPointConstraints>
 		
-		<!-- nur noch für ADL, VPro neu JP_ContextInformation > JP_ContextInformation_NSPs > JP_ContextInformation_NSP_Constraints > startEndQualifier = StartsEnds und location = BP und name = "VProSpeed" und newSpeed="Geschwindigkeit" -->
+		<!-- nur noch für ADL, VPro neu JP_ContextInformation > JP_ContextInformation_NSPs > JP_ContextInformation_NSP_Constraints > startEndQualifier = StartsEnds und location = BP und name = "VProSpeed" und newSpeed="Geschwindigkeit" 
 		<TemporaryConstraints startEndQualifier="Starts" startLocation="0" temporaryConstraintType="AdvisedSpeed">
 			<AdvisedSpeed speed="80" reasonText="VPro" />
 		</TemporaryConstraints>
+		-->
         
 		<TrainCharacteristicsRef TC_ID="1513_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
             <TC_RU_ID>1285</TC_RU_ID>
@@ -39,7 +50,7 @@
             <IM_ID>1285</IM_ID>
         </SP_Zone>
 		
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2022-05-17T09:03:00Z" TP_PlannedLatestArrivalTime="2022-05-17T09:03:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T09:03:00Z" TP_PlannedLatestArrivalTime="2025-05-17T09:03:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Dulliken"/>
             </TimingPointReference>
@@ -51,7 +62,7 @@
             <IM_ID>1285</IM_ID>
         </SP_Zone>
 		
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2022-05-17T15:34:24Z" TP_PlannedLatestArrivalTime="2022-05-17T15:34:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T09:04:00Z" TP_PlannedLatestArrivalTime="2025-05-17T09:04:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Daeniken"/>
             </TimingPointReference>
@@ -62,7 +73,7 @@
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2022-05-17T15:34:24Z" TP_PlannedLatestArrivalTime="2022-05-17T15:34:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T09:05:00Z" TP_PlannedLatestArrivalTime="2025-05-17T09:05:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Schoenenwerd"/>
             </TimingPointReference>
@@ -73,7 +84,7 @@
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2022-05-17T15:34:24Z" TP_PlannedLatestArrivalTime="2022-05-17T15:34:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T09:06:00Z" TP_PlannedLatestArrivalTime="2025-05-17T09:06:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Woeschnau"/>
             </TimingPointReference>
@@ -84,11 +95,166 @@
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2022-05-17T15:34:24Z" TP_PlannedLatestArrivalTime="2022-05-17T15:34:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T09:07:00Z" TP_PlannedLatestArrivalTime="2025-05-17T09:07:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Aarau"/>
             </TimingPointReference>
         </TimingPointConstraints>
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1513_7_Rupperswil" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T09:10:00Z" TP_PlannedLatestArrivalTime="2025-05-17T09:10:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Rupperswil"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1513_8_Lenzburg" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T09:12:00Z" TP_PlannedLatestArrivalTime="2025-05-17T09:12:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Lenzburg"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+	
+    <SegmentProfileList SP_ID="1513_9_Gexi" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T09:13:00Z" TP_PlannedLatestArrivalTime="2025-05-17T09:13:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Gexi"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1513_10_Othmarsingen" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T09:14:00Z" TP_PlannedLatestArrivalTime="2025-05-17T09:14:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Othmarsingen"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1513_11_Maegenswil" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T09:15:00Z" TP_PlannedLatestArrivalTime="2025-05-17T09:15:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Maegenswil"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1513_12_Mellingen" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T09:16:00Z" TP_PlannedLatestArrivalTime="2025-05-17T09:16:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Mellingen"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1513_13_Mellingen_Heitersberg" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T09:17:00Z" TP_PlannedLatestArrivalTime="2025-05-17T09:17:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Mellingen_Heitersberg"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1513_14_Killwangen_Spreitenbach" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T09:20:00Z" TP_PlannedLatestArrivalTime="2025-05-17T09:20:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Killwangen_Spreitenbach"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1513_15_Dietikon" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T09:22:00Z" TP_PlannedLatestArrivalTime="2025-05-17T09:22:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Dietikon"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1513_16_Glanzenberg" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T09:23:00Z" TP_PlannedLatestArrivalTime="2025-05-17T09:23:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Glanzenberg"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1513_17_Schlieren" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T09:24:00Z" TP_PlannedLatestArrivalTime="2025-05-17T09:24:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Schlieren"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1513_18_Altstetten" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T09:26:00Z" TP_PlannedLatestArrivalTime="2025-05-17T09:26:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Altstetten"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>	
+
+    <SegmentProfileList SP_ID="1513_19_Hardbruecke" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T09:27:00Z" TP_PlannedLatestArrivalTime="2025-05-17T09:27:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Hardbruecke"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>	
+
+    <SegmentProfileList SP_ID="1513_20_Zuerich_HB" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+		
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="End_of_Journey" TP_latestArrivalTime="2025-05-17T09:30:00Z" TP_PlannedLatestArrivalTime="2025-05-17T09:30:00Z" >
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Zuerich_HB"/>
+            </TimingPointReference>
+        </TimingPointConstraints>		
     </SegmentProfileList>
 	
 </JourneyProfile>

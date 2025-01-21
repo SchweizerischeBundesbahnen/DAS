@@ -75,6 +75,9 @@
 				"/>
 			</TAF_TAP_Location_NSP>
 
+			<TAF_TAP_Location_NSP name="departureAuth">
+				<NetworkSpecificParameter name="departureAuth" value="false"/>
+			</TAF_TAP_Location_NSP>
 						
         </TAF_TAP_Location>
 
@@ -82,11 +85,9 @@
 
     <SP_ContextInformation>
 		<ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
-			<Contact contactType="GSM-R" mainContact="true" contactIdentifier="(1312)" />
+			<Contact contactType="phone" mainContact="true" contactIdentifier="(1312)" />
 		</ContactList>
 		
-		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R" />
-
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="45.7"/>
         </KilometreReferencePoint>

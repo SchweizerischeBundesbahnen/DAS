@@ -59,22 +59,21 @@
             <SignalPhysicalCharacteristics visualIdentifier="C31"/>
         </Signal>	
 
-<!-- GUID verwenden bei identifier -->
-        <NetworkSpecificPoint location="2300" identifier="KN_1884646" name="curvePoint">
+        <NetworkSpecificPoint location="2300" identifier="0FD2F5B19CD34442860DE034C8A4EA69" name="curvePoint">
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
             <NetworkSpecificParameter name="curveType" value="stationExitCurve"/>
             <NetworkSpecificParameter name="xmlCurveSpeed" value="
                 &lt;curveSpeed &gt;
 					&lt;speeds&gt;
-					&lt;v trainSeries=&quot;R&quot; speed=&quot;110&quot;/&gt;
-					&lt;v trainSeries=&quot;A&quot; speed=&quot;110&quot;/&gt;
-					&lt;v trainSeries=&quot;D&quot; speed=&quot;110&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; speed=&quot;110&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; speed=&quot;110&quot;/&gt;
+						&lt;v trainSeries=&quot;D&quot; speed=&quot;110&quot;/&gt;
 					&lt;/speeds&gt;
                 &lt;/curveSpeed&gt;
             "/>
         </NetworkSpecificPoint>
 
-		<NetworkSpecificPoint location="2380" identifier="KN_1884646" name="curvePoint">
+		<NetworkSpecificPoint location="2380" identifier="0FD2F5B19CD34442860DE034C8A4EA69" name="curvePoint">
             <NetworkSpecificParameter name="curvePointType" value="end"/>
 		</NetworkSpecificPoint>
 
@@ -134,10 +133,8 @@
 				"/>
 			</TAF_TAP_Location_NSP>
 			
-			<!-- wird immer angegeben -->
 			<TAF_TAP_Location_NSP name="departureAuth">
-				<NetworkSpecificParameter name="departureAuth" value="true"/>
-				<NetworkSpecificParameter name="departureAuthText" value="sms"/>
+				<NetworkSpecificParameter name="departureAuth" value="false"/>
 			</TAF_TAP_Location_NSP>
 			
         </TAF_TAP_Location>
@@ -173,7 +170,10 @@
             <KM_Reference kmRef="41.1"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="2300">
-            <KM_Reference kmRef="41.6"/>
+            <KM_Reference kmRef="41.62"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2380">
+            <KM_Reference kmRef="41.7"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="2400">
             <KM_Reference kmRef="41.7"/>
