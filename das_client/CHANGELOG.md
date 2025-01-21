@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.7.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.6.0...das_client-v0.7.0) (2025-01-20)
+
+
+### Features
+
+* add whistle, balise, tram area and levelcrossing ([#224](https://github.com/SchweizerischeBundesbahnen/DAS/issues/224)) ([#485](https://github.com/SchweizerischeBundesbahnen/DAS/issues/485)) ([27379a2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/27379a2bbdd991db8736f57f19eadddfb3dbaf7d))
+* added graduated station speed. ([#82](https://github.com/SchweizerischeBundesbahnen/DAS/issues/82)) ([#484](https://github.com/SchweizerischeBundesbahnen/DAS/issues/484)) ([8af6cf9](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8af6cf91a9ea22082f39df2ff73fcce215cfaea9))
+* added punctuality display ([#122](https://github.com/SchweizerischeBundesbahnen/DAS/issues/122)) ([#473](https://github.com/SchweizerischeBundesbahnen/DAS/issues/473)) ([f9646b0](https://github.com/SchweizerischeBundesbahnen/DAS/commit/f9646b0a72915d1f6dbc2b57e530c84f14fe5762))
+
+
+### Bug Fixes
+
+* **deps:** update dependency flutter_bloc to v9 ([#496](https://github.com/SchweizerischeBundesbahnen/DAS/issues/496)) ([1b74d01](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1b74d01697c5401c2cd9f02795eae0948204a9be))
+* fix station speed parsing ([#491](https://github.com/SchweizerischeBundesbahnen/DAS/issues/491)) ([00f9a81](https://github.com/SchweizerischeBundesbahnen/DAS/commit/00f9a816c6d0d20140c02a7f37bf85aeb0846457))
+* fixed the padding in the punctuality display ([#122](https://github.com/SchweizerischeBundesbahnen/DAS/issues/122)) ([#501](https://github.com/SchweizerischeBundesbahnen/DAS/issues/501)) ([17511ff](https://github.com/SchweizerischeBundesbahnen/DAS/commit/17511ffa1cf48472df2d46a31e912349b181006e))
+
 ## [0.6.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.5.0...das_client-v0.6.0) (2025-01-06)
 
 

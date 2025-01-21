@@ -1,4 +1,3 @@
-import 'package:das_client/app/model/train_journey_settings.dart';
 import 'package:das_client/model/journey/balise.dart';
 import 'package:das_client/model/journey/balise_level_crossing_group.dart';
 import 'package:das_client/model/journey/base_data.dart';
@@ -16,15 +15,13 @@ void main() {
       LevelCrossing(order: 202, kilometre: [0.22]),
     ];
 
-    final notExpandedSettings = TrainJourneySettings();
-    final groupedRowsNotExpanded = originalRows.groupBaliseAndLeveLCrossings(notExpandedSettings);
+    final groupedRowsNotExpanded = originalRows.groupBaliseAndLeveLCrossings([]);
 
     expect(groupedRowsNotExpanded, hasLength(1));
     expect(groupedRowsNotExpanded[0], isA<BaliseLevelCrossingGroup>());
     expect((groupedRowsNotExpanded[0] as BaliseLevelCrossingGroup).groupedElements, hasLength(4));
 
-    final expandedSettings = TrainJourneySettings(expandedGroups: [100]);
-    final groupedRowsExpanded = originalRows.groupBaliseAndLeveLCrossings(expandedSettings);
+    final groupedRowsExpanded = originalRows.groupBaliseAndLeveLCrossings([100]);
 
     expect(groupedRowsExpanded, hasLength(5));
     expect(groupedRowsExpanded[0], isA<BaliseLevelCrossingGroup>());
@@ -44,8 +41,7 @@ void main() {
       LevelCrossing(order: 203, kilometre: [0.23]),
     ];
 
-    final notExpandedSettings = TrainJourneySettings();
-    final groupedRowsNotExpanded = originalRows.groupBaliseAndLeveLCrossings(notExpandedSettings);
+    final groupedRowsNotExpanded = originalRows.groupBaliseAndLeveLCrossings([]);
 
     expect(groupedRowsNotExpanded, hasLength(2));
     expect(groupedRowsNotExpanded[0], isA<BaliseLevelCrossingGroup>());
@@ -53,8 +49,7 @@ void main() {
     expect(groupedRowsNotExpanded[1], isA<BaliseLevelCrossingGroup>());
     expect((groupedRowsNotExpanded[1] as BaliseLevelCrossingGroup).groupedElements, hasLength(3));
 
-    final expandedSettings = TrainJourneySettings(expandedGroups: [200]);
-    final groupedRowsExpanded = originalRows.groupBaliseAndLeveLCrossings(expandedSettings);
+    final groupedRowsExpanded = originalRows.groupBaliseAndLeveLCrossings([200]);
 
     expect(groupedRowsExpanded, hasLength(5));
     expect(groupedRowsExpanded[0], isA<BaliseLevelCrossingGroup>());
@@ -76,8 +71,7 @@ void main() {
       LevelCrossing(order: 202, kilometre: [0.22]),
     ];
 
-    final notExpandedSettings = TrainJourneySettings();
-    final groupedRowsNotExpanded = originalRows.groupBaliseAndLeveLCrossings(notExpandedSettings);
+    final groupedRowsNotExpanded = originalRows.groupBaliseAndLeveLCrossings([]);
 
     expect(groupedRowsNotExpanded, hasLength(3));
     expect(groupedRowsNotExpanded[0], isA<BaliseLevelCrossingGroup>());
@@ -94,8 +88,7 @@ void main() {
       LevelCrossing(order: 303, kilometre: [0.33]),
     ];
 
-    final notExpandedSettings = TrainJourneySettings();
-    final groupedRowsNotExpanded = originalRows.groupBaliseAndLeveLCrossings(notExpandedSettings);
+    final groupedRowsNotExpanded = originalRows.groupBaliseAndLeveLCrossings([]);
 
     expect(groupedRowsNotExpanded, hasLength(1));
     expect(groupedRowsNotExpanded[0], isA<BaliseLevelCrossingGroup>());

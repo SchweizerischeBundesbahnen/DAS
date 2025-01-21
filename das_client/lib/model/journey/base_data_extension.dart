@@ -1,10 +1,9 @@
-import 'package:das_client/app/model/train_journey_settings.dart';
 import 'package:das_client/model/journey/balise_level_crossing_group.dart';
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/datatype.dart';
 
 extension BaseDataExtension on List<BaseData> {
-  List<BaseData> groupBaliseAndLeveLCrossings(TrainJourneySettings settings) {
+  List<BaseData> groupBaliseAndLeveLCrossings(List<int> expandedGroups) {
     final List<BaseData> resultList = [];
 
     for (int i = 0; i < length; i++) {
@@ -34,7 +33,7 @@ extension BaseDataExtension on List<BaseData> {
         resultList.add(group);
 
         // Add all the elements if the group is currently expanded
-        if (settings.expandedGroups.contains(group.order)) {
+        if (expandedGroups.contains(group.order)) {
           resultList.addAll(groupedElements);
         }
 

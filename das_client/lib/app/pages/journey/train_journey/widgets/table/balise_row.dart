@@ -10,11 +10,10 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class BaliseRow extends BaseRowBuilder<Balise> {
   static const Key baliseIconKey = Key('balise_icon_key');
 
-  BaliseRow({
+  const BaliseRow({
     required super.metadata,
     required super.data,
-    required super.settings,
-    super.trackEquipmentRenderData,
+    super.config,
     super.isGrouped,
   });
 

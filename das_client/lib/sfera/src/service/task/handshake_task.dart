@@ -54,15 +54,15 @@ class HandshakeTask extends SferaTask {
   }
 
   @override
-  Future<bool> handleMessage(SferaG2bReplyMessage message) async {
-    if (message.handshakeAcknowledgement != null) {
+  Future<bool> handleMessage(SferaG2bReplyMessage replyMessage) async {
+    if (replyMessage.handshakeAcknowledgement != null) {
       stopTimeout();
       Fimber.i('Received handshake acknowledgment');
       _taskCompletedCallback(this, null);
       return true;
-    } else if (message.handshakeReject != null) {
+    } else if (replyMessage.handshakeReject != null) {
       stopTimeout();
-      Fimber.w('Received handshake reject with reason=${message.handshakeReject?.handshakeRejectReason?.toString()}');
+      Fimber.w('Received handshake reject with reason=${replyMessage.handshakeReject?.handshakeRejectReason?.toString()}');
       _taskFailedCallback(this, ErrorCode.sferaHandshakeRejected);
       _mqttService.disconnect();
       return true;

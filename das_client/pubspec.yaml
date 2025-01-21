@@ -1,7 +1,7 @@
 name: das_client
 description: "DAS (Driver Advisory System) is a mobile application that provides all the required journey data to the train driver."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 0.6.0+43
+version: 0.7.0+44
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -29,7 +29,7 @@ dependencies:
   # https://pub.dev/packages/auto_route
   auto_route: ^9.2.2
   # https://pub.dev/packages/flutter_bloc
-  flutter_bloc: ^8.1.5
+  flutter_bloc: ^9.0.0
   # https://pub.dev/packages/fimber
   fimber: ^0.7.0
   # https://pub.dev/packages/intl
@@ -60,6 +60,8 @@ dependencies:
   synchronized: ^3.3.0
   # https://pub.dev/packages/flutter_svg
   flutter_svg: ^2.0.14
+  # https://pub.dev/packages/iso_duration
+  iso_duration: ^0.1.1
 
 dev_dependencies:
   integration_test:

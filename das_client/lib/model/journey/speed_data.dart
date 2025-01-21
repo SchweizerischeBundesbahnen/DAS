@@ -3,7 +3,7 @@ import 'package:das_client/model/journey/speeds.dart';
 import 'package:das_client/model/journey/train_series.dart';
 
 class SpeedData {
-  SpeedData({this.speeds = const []});
+  const SpeedData({this.speeds = const []});
 
   final List<Speeds> speeds;
 

@@ -11,11 +11,10 @@ class AdditionalSpeedRestrictionRow extends BaseRowBuilder<AdditionalSpeedRestri
   static const Key additionalSpeedRestrictionIconKey = Key('addition_speed_restriction_icon_key');
   static const Color additionalSpeedRestrictionColor = SBBColors.orange;
 
-  AdditionalSpeedRestrictionRow({
+  const AdditionalSpeedRestrictionRow({
     required super.metadata,
     required super.data,
-    required super.settings,
-    super.trackEquipmentRenderData,
+    super.config,
   }) : super(rowColor: additionalSpeedRestrictionColor);
 
   @override

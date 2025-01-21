@@ -9,11 +9,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 class SignalRow extends BaseRowBuilder<Signal> {
   static const Key signalLineChangeIconKey = Key('signal_line_change_icon_key');
 
-  SignalRow({
+  const SignalRow({
     required super.metadata,
     required super.data,
-    required super.settings,
-    super.trackEquipmentRenderData,
+    super.config,
   });
 
   @override
