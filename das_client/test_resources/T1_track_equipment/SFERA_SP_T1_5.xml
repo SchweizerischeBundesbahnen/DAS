@@ -48,7 +48,7 @@
     </SP_Points>
     <SP_Areas>
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="MLH"
-                          TAF_TAP_location_type="stopping location">
+                          TAF_TAP_location_type="halt">
             <TAF_TAP_LocationIdent>
                 <CountryCodeISO>CH</CountryCodeISO>
                 <LocationPrimaryCode>3018</LocationPrimaryCode>
