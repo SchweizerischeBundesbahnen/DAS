@@ -101,10 +101,26 @@
 			<TAF_TAP_Location_NSP name="departureAuth">
 				<NetworkSpecificParameter name="departureAuth" value="false"/>
 			</TAF_TAP_Location_NSP>
-
-            <TAF_TAP_Location_NSP name="stationProperty_00000">
-                <NetworkSpecificParameter name="text" value="&lt;i&gt;via Stammlinie"/>
+			
+            <TAF_TAP_Location_NSP name="stationProperty">
+                <NetworkSpecificParameter name="xmlStationProperty" value="
+				&lt;stationProperty&gt; 
+					&lt;stationProperty1 text=&quot;&lt;i&gt;via Stammlinie&quot;&gt; 
+					&lt;/stationProperty1&gt; 
+				&lt;/stationProperty&gt;
+				"/>
             </TAF_TAP_Location_NSP>
+			
+			<TAF_TAP_Location_NSP name="lineFootNotes">
+				<NetworkSpecificParameter name="xmlLineFootNotes" value="
+				&lt;lineFootNotes&gt;
+					&lt;footNote&gt;
+						&lt;text&gt;Zugelassen nur für&lt;b&gt; RABDe 500&lt;/text&gt;
+						&lt;trainSeries>N&lt;/trainSeries&gt;
+					&lt;/footNote&gt;
+				&lt;/lineFootNotes&gt;
+				" />
+			</TAF_TAP_Location_NSP>
 			
         </TAF_TAP_Location>
 

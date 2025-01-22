@@ -69,7 +69,8 @@
             </TAF_TAP_LocationIdent>
             <TAF_TAP_LocationName language="de" messageString="Aarau"/>
 			<TAF_TAP_Location_NSP name="bracketStation">
-                <NetworkSpecificParameter name="mainStation" value="CH2113"/>
+                <NetworkSpecificParameter name="mainStation" value="CH2113" />
+				<NetworkSpecificParameter name="text" value="AA" />
             </TAF_TAP_Location_NSP>
 			
 			<TAF_TAP_Location_NSP name="stationSpeed">
@@ -107,6 +108,16 @@
 				<NetworkSpecificParameter name="departureAuthText" value="sms"/>
 			</TAF_TAP_Location_NSP>
 
+			<TAF_TAP_Location_NSP name="lineFootNotes">
+				<NetworkSpecificParameter name="xmlLineFootNotes" value="
+				&lt;lineFootNotes&gt;
+					&lt;footNote&gt;
+						&lt;text&gt;Zugelassen nur für&lt;b&gt; RABDe 500&lt;/text&gt;
+						&lt;trainSeries>N&lt;/trainSeries&gt;
+					&lt;/footNote&gt;
+				&lt;/lineFootNotes&gt;
+				" />
+			</TAF_TAP_Location_NSP>
 			
         </TAF_TAP_Location>
 
@@ -118,6 +129,7 @@
             <TAF_TAP_LocationName language="de" messageString="Aarau GB"/>
 			<TAF_TAP_Location_NSP name="bracketStation">
                 <NetworkSpecificParameter name="mainStation" value="CH2113"/>
+				<NetworkSpecificParameter name="text" value="AA" />
             </TAF_TAP_Location_NSP>
 			
 			<TAF_TAP_Location_NSP name="stationSpeed">

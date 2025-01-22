@@ -31,11 +31,19 @@
 			<TAF_TAP_Location_NSP name="departureAuth">
 				<NetworkSpecificParameter name="departureAuth" value="false"/>
 			</TAF_TAP_Location_NSP>
-
-            <TAF_TAP_Location_NSP name="stationProperty_00000">
-                <NetworkSpecificParameter name="stationPropertySpeed_N150" value="40-30"/>
-                <NetworkSpecificParameter name="stationPropertySpeed_N180" value="40-30"/>
-				<NetworkSpecificParameter name="text" value="&lt;b&gt;A"/>
+			
+			<!-- SFERA-Struktur wird noch gemäss untenstehender Struktur in Spez angepasst -->
+			<TAF_TAP_Location_NSP name="stationProperty">
+                <NetworkSpecificParameter name="xmlStationProperty" value="
+				&lt;stationProperty&gt; 
+					&lt;stationProperty1 text=&quot;&lt;b&gt;A&quot;&gt; sign=&quot;Q&quot;&gt;
+						&lt;speeds&gt; 
+							&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;40-30&quot;/&gt; 
+							&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;40-30&quot;/&gt; 
+						&lt;/speeds&gt; 
+					&lt;/stationProperty1&gt; 
+				&lt;/stationProperty&gt;
+				"/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
