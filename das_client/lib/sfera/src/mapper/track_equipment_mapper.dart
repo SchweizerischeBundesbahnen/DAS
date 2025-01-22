@@ -1,5 +1,5 @@
 import 'package:das_client/model/journey/track_equipment_segment.dart';
-import 'package:das_client/sfera/src/mapper/sfera_model_mapper.dart';
+import 'package:das_client/sfera/src/mapper/mapper_utils.dart';
 import 'package:das_client/sfera/src/model/enums/start_end_qualifier.dart';
 import 'package:das_client/sfera/src/model/enums/track_equipment_type.dart';
 import 'package:das_client/sfera/src/model/network_specific_area.dart';
@@ -8,6 +8,7 @@ import 'package:das_client/sfera/src/model/segment_profile_list.dart';
 import 'package:das_client/util/comparators.dart';
 import 'package:fimber/fimber.dart';
 
+/// used to map SFERA data to [NonStandardTrackEquipmentSegment]
 class TrackEquipmentMapper {
   TrackEquipmentMapper._();
 
@@ -71,10 +72,8 @@ class TrackEquipmentMapper {
     final type = start?.type ?? end?.type;
     return NonStandardTrackEquipmentSegment(
       type: type!.trackEquipmentType,
-      startOrder: start?.startLocation != null
-          ? SferaModelMapper.calculateOrder(start!.segmentIndex, start.startLocation!)
-          : null,
-      endOrder: end?.endLocation != null ? SferaModelMapper.calculateOrder(end!.segmentIndex, end.endLocation!) : null,
+      startOrder: start?.startLocation != null ? calculateOrder(start!.segmentIndex, start.startLocation!) : null,
+      endOrder: end?.endLocation != null ? calculateOrder(end!.segmentIndex, end.endLocation!) : null,
       startKm: start?.startKm ?? [],
       endKm: end?.endKm ?? [],
     );
@@ -87,7 +86,7 @@ class TrackEquipmentMapper {
       final segmentProfile = segmentProfiles.firstMatch(segmentProfilesLists.elementAt(segmentIndex));
       final nonStandardTrackEquipments = segmentProfile.areas?.nonStandardTrackEquipments ?? [];
 
-      final kilometreMap = SferaModelMapper.parseKilometre(segmentProfile);
+      final kilometreMap = parseKilometre(segmentProfile);
 
       trackEquipments.addAll(
         nonStandardTrackEquipments
@@ -101,7 +100,7 @@ class TrackEquipmentMapper {
   }
 
   static _NonStandardTrackEquipment? _mapToNonStandardTrackEquipment(
-      NetworkSpecificArea element, int segmentIndex, Map<double, List<double>> kilometreMap) {
+      NetworkSpecificArea element, int segmentIndex, KilometreMap kilometreMap) {
     if (element.trackEquipmentTypeWrapper == null) {
       Fimber.w('Encountered invalid nonStandardTrackEquipment track equipment type NSP declaration: ${element.type}');
       return null;
