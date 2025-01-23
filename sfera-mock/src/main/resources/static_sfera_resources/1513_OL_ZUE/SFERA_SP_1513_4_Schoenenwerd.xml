@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
+                SP_ID="1513_4_Schoenenwerd" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="3200" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>1285</IM_ID>
+    </SP_Zone>
+	
+    <SP_Points>
+
+        <TimingPoint TP_ID="Schoenenwerd" location="0">
+            <TP_Name name="SCOE"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>02112</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="C2" location="100"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="C2"/>
+        </Signal>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="E72" location="600"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E72"/>
+        </Signal>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="G102" location="1400"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="G102"/>
+        </Signal>
+      
+		<Signal>
+            <Signal_ID signal_ID_Physical="P854" location="2100"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="P854"/>
+        </Signal>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="A852" location="2700"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A852"/>
+        </Signal>
+
+    </SP_Points>
+
+    <SP_Areas>
+		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="6.0" gradientDirection="Downhill" directionOfApplicationOnSP="Nominal"/>
+
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="SCOE" TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>02112</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Schönenwerd"/>
+
+			<TAF_TAP_Location_NSP name="stationSpeed">
+                <NetworkSpecificParameter name="xmlStationSpeed" value="
+					&lt;stationSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;130&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;130&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;130&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;130&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;130&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;110&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;110&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;110&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;110&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;110&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;110&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;110&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;110&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;110&quot;/&gt;
+					&lt;/stationSpeed&gt;
+				"/>
+			</TAF_TAP_Location_NSP>
+			
+			<TAF_TAP_Location_NSP name="newLineSpeed">
+				<NetworkSpecificParameter name="xmlNewLineSpeed" value="
+					&lt;lineSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;120&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;130&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;140&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;140&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;140&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;90&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;95&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;105&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;115&quot;/&gt;
+					&lt;/lineSpeed&gt;
+				"/>
+			</TAF_TAP_Location_NSP>
+
+			<TAF_TAP_Location_NSP name="departureAuth">
+				<NetworkSpecificParameter name="departureAuth" value="false"/>
+			</TAF_TAP_Location_NSP>
+
+			<TAF_TAP_Location_NSP name="lineFootNotes">
+				<NetworkSpecificParameter name="xmlLineFootNotes" value="
+				&lt;lineFootNotes&gt;
+					&lt;footNote&gt;
+						&lt;text&gt;Zugelassen nur für&lt;b&gt; RABDe 500&lt;/text&gt;
+						&lt;trainSeries>N&lt;/trainSeries&gt;
+					&lt;/footNote&gt;
+				&lt;/lineFootNotes&gt;
+				" />
+			</TAF_TAP_Location_NSP>
+						
+        </TAF_TAP_Location>
+
+    </SP_Areas>
+
+    <SP_ContextInformation>
+		
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="48.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="100">
+            <KM_Reference kmRef="48.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="600">
+            <KM_Reference kmRef="48.7"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1400">
+            <KM_Reference kmRef="49.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2100">
+            <KM_Reference kmRef="50.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2700">
+            <KM_Reference kmRef="50.8"/> 
+        </KilometreReferencePoint>
+
+    </SP_ContextInformation>
+	
+</SegmentProfile>
