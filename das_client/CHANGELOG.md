@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.7.0...das_client-v0.7.1) (2025-01-23)
+
+
+### Bug Fixes
+
+* rename stopping location to halt to match newest spec ([#503](https://github.com/SchweizerischeBundesbahnen/DAS/issues/503)) ([b01331d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b01331d071e03bb7b617207b6f6cf660d5c0ecae))
+
 ## [0.7.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.6.0...das_client-v0.7.0) (2025-01-20)
 
 
