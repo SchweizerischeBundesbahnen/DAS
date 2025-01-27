@@ -38,6 +38,7 @@ class SegmentProfileMapper {
 
   static const String _bracketStationNspName = 'bracketStation';
   static const String _bracketStationMainStationNspName = 'mainStation';
+  static const String _bracketStationTextNspName = 'text';
   static const String _protectionSectionNspFacultativeName = 'facultative';
   static const String _protectionSectionNspLengthTypeName = 'lengthType';
 
@@ -161,6 +162,7 @@ class SegmentProfileMapper {
     for (final tafTapLocationNsp in tafTapLocation.nsp) {
       if (tafTapLocationNsp.name == _bracketStationNspName) {
         final mainStationNsp = tafTapLocationNsp.parameters.withName(_bracketStationMainStationNspName);
+        final textNsp = tafTapLocationNsp.parameters.withName(_bracketStationTextNspName);
         if (mainStationNsp == null) {
           Fimber.w('Encountered bracket station without main station NSP declaration: $tafTapLocation');
         } else {
@@ -172,10 +174,10 @@ class SegmentProfileMapper {
               .firstOrNull;
           if (mainStation == null) {
             Fimber.w('Failed to resolve main station for bracket station: $tafTapLocation');
-          } else {
-            return BracketMainStation(
-                abbreviation: mainStation.abbreviation, countryCode: countryCode, primaryCode: primaryCode);
           }
+
+          return BracketMainStation(
+              abbreviation: textNsp?.nspValue ?? '', countryCode: countryCode, primaryCode: primaryCode);
         }
       }
     }

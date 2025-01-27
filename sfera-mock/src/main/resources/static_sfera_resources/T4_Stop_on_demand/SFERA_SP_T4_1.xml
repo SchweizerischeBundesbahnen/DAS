@@ -65,6 +65,7 @@
             <TAF_TAP_LocationName language="de" messageString="Solothurn"/>
             <TAF_TAP_Location_NSP name="bracketStation">
                 <NetworkSpecificParameter name="mainStation" value="CH0207"/>
+                <NetworkSpecificParameter name="text" value="SO" />
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
@@ -77,6 +78,7 @@
             <TAF_TAP_LocationName language="de" messageString="Solothurn West"/>
             <TAF_TAP_Location_NSP name="bracketStation">
                 <NetworkSpecificParameter name="mainStation" value="CH0207"/>
+                <NetworkSpecificParameter name="text" value="SO" />
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
