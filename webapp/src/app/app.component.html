@@ -46,10 +46,10 @@
       <div
         style="font-weight:bold;font-size:var(--sbb-font-size-text-xs);margin-top:var(--sbb-spacing-fixed-1x);">{{ userData().userData?.preferred_username }}
       </div>
-      <span
-        style="color:var(--sbb-color-graphite);font-size:var(--sbb-font-size-text-xxs);">{{ userData().userData ? organisation()?.name : undefined }}</span>
+<!--      <span-->
+<!--        style="color:var(&#45;&#45;sbb-color-graphite);font-size:var(&#45;&#45;sbb-font-size-text-xxs);">{{ userData().userData ? organisation()?.name : undefined }}</span>-->
       <sbb-menu-link icon-name="user-small" href="/auth-insights"> Auth insights</sbb-menu-link>
-      <sbb-divider></sbb-divider>
+<!--      <sbb-divider></sbb-divider>-->
       <sbb-menu-button (click)="logout()" icon-name="exit-small">Sign out</sbb-menu-button>
     </sbb-menu>
   }

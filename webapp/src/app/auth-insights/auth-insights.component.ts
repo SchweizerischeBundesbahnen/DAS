@@ -4,14 +4,15 @@ import { CommonModule } from "@angular/common";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import { firstValueFrom, map } from "rxjs";
 import { OidcSecurityService } from "angular-auth-oidc-client";
+import { SbbFormFieldDirective } from "@sbb-esta/lyne-angular/form-field/form-field";
 
 @Component({
     selector: 'app-auth-insights',
     imports: [
         CommonModule,
         ReactiveFormsModule,
+      SbbFormFieldDirective
     ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
     templateUrl: './auth-insights.component.html',
     styleUrl: './auth-insights.component.scss'
 })

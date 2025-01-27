@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import { MqService } from "../mq.service";
 import { SimpleXmlComponent } from "../simple-xml/simple-xml.component";
@@ -7,9 +7,9 @@ import { firstValueFrom, map, Subscription } from "rxjs";
 import { CommonModule } from "@angular/common";
 import { MqttConnectionState } from "ngx-mqtt";
 import { OidcSecurityService } from "angular-auth-oidc-client";
-import '@sbb-esta/lyne-elements/button.js';
-import '@sbb-esta/lyne-elements/checkbox.js';
-import '@sbb-esta/lyne-elements/form-field.js';
+import { SbbButtonDirective } from "@sbb-esta/lyne-angular/button/button";
+import { SbbCheckboxDirective } from "@sbb-esta/lyne-angular/checkbox/checkbox";
+import { SbbFormFieldDirective } from "@sbb-esta/lyne-angular/form-field/form-field";
 
 @Component({
     selector: 'app-sfera-observer',
@@ -17,8 +17,10 @@ import '@sbb-esta/lyne-elements/form-field.js';
         CommonModule,
         ReactiveFormsModule,
         SimpleXmlComponent,
+      SbbButtonDirective,
+      SbbCheckboxDirective,
+      SbbFormFieldDirective
     ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
     templateUrl: './sfera-observer.component.html',
     styleUrl: './sfera-observer.component.scss'
 })

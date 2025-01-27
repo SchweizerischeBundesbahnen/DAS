@@ -1,10 +1,13 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component } from '@angular/core';
+import { SbbNotificationDirective } from "@sbb-esta/lyne-angular/notification";
 
 
 @Component({
   selector: 'app-unauthorized',
   standalone: true,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
+    SbbNotificationDirective
+  ],
   templateUrl: './unauthorized.component.html',
   styleUrl: './unauthorized.component.scss'
 })

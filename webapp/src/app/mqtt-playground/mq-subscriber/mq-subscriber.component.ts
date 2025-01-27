@@ -3,16 +3,14 @@ import { MqService } from "../../mq.service";
 import { Subscription } from "rxjs";
 import { IMqttMessage } from "ngx-mqtt";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
-import { AsyncPipe, JsonPipe } from "@angular/common";
+import { SbbFormFieldDirective } from "@sbb-esta/lyne-angular/form-field/form-field";
 
 @Component({
     selector: 'app-mq-subscriber',
     imports: [
         ReactiveFormsModule,
-        AsyncPipe,
-        JsonPipe
+      SbbFormFieldDirective
     ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
     templateUrl: './mq-subscriber.component.html',
     styleUrl: './mq-subscriber.component.scss'
 })

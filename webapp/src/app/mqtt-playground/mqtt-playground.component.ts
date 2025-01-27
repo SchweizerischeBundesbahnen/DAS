@@ -7,6 +7,7 @@ import { MqttConnectionState } from "ngx-mqtt";
 import { AuthService } from "../auth.service";
 import { firstValueFrom, map } from "rxjs";
 import { OidcSecurityService } from "angular-auth-oidc-client";
+import { SbbIconDirective } from "@sbb-esta/lyne-angular/icon";
 
 @Component({
     selector: 'app-mqtt-playground',
@@ -14,8 +15,9 @@ import { OidcSecurityService } from "angular-auth-oidc-client";
         MqSubscriberComponent,
         MqPublisherComponent,
         AsyncPipe,
+      SbbIconDirective,
+
     ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
     templateUrl: './mqtt-playground.component.html',
     styleUrl: './mqtt-playground.component.scss'
 })

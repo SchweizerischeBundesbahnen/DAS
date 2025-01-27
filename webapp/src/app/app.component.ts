@@ -2,20 +2,31 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, signal, Signal } from '@angular/core
 import { Router, RouterModule } from "@angular/router";
 import { environment } from "../environment/environment";
 import packageJson from '../../package.json';
-import { AuthService, Tenant } from "./auth.service";
 import { OidcSecurityService } from "angular-auth-oidc-client";
-import { toSignal } from "@angular/core/rxjs-interop";
-import '@sbb-esta/lyne-elements/menu.js';
-import '@sbb-esta/lyne-elements/navigation.js';
-import '@sbb-esta/lyne-elements/header.js';
-import '@sbb-esta/lyne-elements/link.js';
+import { SbbMenuDirective } from "@sbb-esta/lyne-angular/menu/menu";
+import { SbbNavigationDirective } from "@sbb-esta/lyne-angular/navigation/navigation";
+import { SbbHeaderDirective } from "@sbb-esta/lyne-angular/header/header";
+import { SbbLinkDirective } from "@sbb-esta/lyne-angular/link/link";
+import { SbbMenuButtonDirective } from "@sbb-esta/lyne-angular/menu/menu-button";
+import { SbbHeaderButtonDirective } from "@sbb-esta/lyne-angular/header/header-button";
+import { SbbMenuLinkDirective } from "@sbb-esta/lyne-angular/menu/menu-link";
+import { SbbNavigationMarkerDirective } from "@sbb-esta/lyne-angular/navigation/navigation-marker";
+import { SbbHeaderLinkDirective } from "@sbb-esta/lyne-angular/header/header-link";
 
 @Component({
     selector: 'app-root',
     imports: [
         RouterModule,
+      SbbMenuDirective,
+      SbbNavigationDirective,
+      SbbHeaderDirective,
+      SbbMenuButtonDirective,
+      SbbHeaderButtonDirective,
+      SbbMenuLinkDirective,
+      SbbNavigationMarkerDirective,
+      SbbHeaderLinkDirective
+
     ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })
@@ -25,16 +36,11 @@ export class AppComponent {
   title = 'DAS playground';
 
   readonly userData = this.oidcSecurityService.userData;
-  readonly organisation: Signal<Tenant | undefined> = signal(undefined);
 
   constructor(
     private oidcSecurityService: OidcSecurityService,
-    private authService: AuthService,
     private router: Router,
   ) {
-    if (this.userData().userData) {
-      this.organisation = toSignal(this.authService.tenant());
-    }
   }
 
   login() {
