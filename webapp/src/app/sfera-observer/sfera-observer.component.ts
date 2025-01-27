@@ -12,16 +12,15 @@ import '@sbb-esta/lyne-elements/checkbox.js';
 import '@sbb-esta/lyne-elements/form-field.js';
 
 @Component({
-  selector: 'app-sfera-observer',
-  standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    SimpleXmlComponent,
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  templateUrl: './sfera-observer.component.html',
-  styleUrl: './sfera-observer.component.scss',
+    selector: 'app-sfera-observer',
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        SimpleXmlComponent,
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    templateUrl: './sfera-observer.component.html',
+    styleUrl: './sfera-observer.component.scss'
 })
 export class SferaObserverComponent implements OnDestroy {
   companyControl = new FormControl('1088', {nonNullable: true});

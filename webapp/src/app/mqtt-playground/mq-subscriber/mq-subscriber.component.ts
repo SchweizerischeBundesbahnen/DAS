@@ -6,16 +6,15 @@ import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import { AsyncPipe, JsonPipe } from "@angular/common";
 
 @Component({
-  selector: 'app-mq-subscriber',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    AsyncPipe,
-    JsonPipe
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  templateUrl: './mq-subscriber.component.html',
-  styleUrl: './mq-subscriber.component.scss'
+    selector: 'app-mq-subscriber',
+    imports: [
+        ReactiveFormsModule,
+        AsyncPipe,
+        JsonPipe
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    templateUrl: './mq-subscriber.component.html',
+    styleUrl: './mq-subscriber.component.scss'
 })
 export class MqSubscriberComponent implements OnDestroy {
   subscriptions: Subscription[] = [];

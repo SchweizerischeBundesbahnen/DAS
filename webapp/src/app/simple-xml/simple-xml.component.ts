@@ -1,11 +1,10 @@
 import { AfterViewInit, Component, ElementRef, Input, Renderer2 } from '@angular/core';
 
 @Component({
-  selector: 'app-simple-xml',
-  standalone: true,
-  imports: [],
-  templateUrl: './simple-xml.component.html',
-  styleUrl: './simple-xml.component.scss'
+    selector: 'app-simple-xml',
+    imports: [],
+    templateUrl: './simple-xml.component.html',
+    styleUrl: './simple-xml.component.scss'
 })
 export class SimpleXmlComponent implements AfterViewInit{
   @Input() xml: Document | undefined;

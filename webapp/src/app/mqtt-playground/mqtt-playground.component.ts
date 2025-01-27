@@ -9,16 +9,15 @@ import { firstValueFrom, map } from "rxjs";
 import { OidcSecurityService } from "angular-auth-oidc-client";
 
 @Component({
-  selector: 'app-mqtt-playground',
-  standalone: true,
-  imports: [
-    MqSubscriberComponent,
-    MqPublisherComponent,
-    AsyncPipe,
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  templateUrl: './mqtt-playground.component.html',
-  styleUrl: './mqtt-playground.component.scss'
+    selector: 'app-mqtt-playground',
+    imports: [
+        MqSubscriberComponent,
+        MqPublisherComponent,
+        AsyncPipe,
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    templateUrl: './mqtt-playground.component.html',
+    styleUrl: './mqtt-playground.component.scss'
 })
 export class MqttPlaygroundComponent implements OnDestroy {
 

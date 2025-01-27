@@ -6,15 +6,14 @@ import { firstValueFrom, map } from "rxjs";
 import { OidcSecurityService } from "angular-auth-oidc-client";
 
 @Component({
-  selector: 'app-auth-insights',
-  standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  templateUrl: './auth-insights.component.html',
-  styleUrl: './auth-insights.component.scss'
+    selector: 'app-auth-insights',
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    templateUrl: './auth-insights.component.html',
+    styleUrl: './auth-insights.component.scss'
 })
 export class AuthInsightsComponent {
 

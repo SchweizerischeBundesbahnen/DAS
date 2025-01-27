@@ -1,5 +1,5 @@
 import 'angular-server-side-configuration/process';
-import { APP_INITIALIZER, ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, inject, provideAppInitializer } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { MqttModule } from "ngx-mqtt";
@@ -9,13 +9,11 @@ import { authInterceptor, OidcSecurityService, provideAuth } from 'angular-auth-
 import { environment } from "../environment/environment";
 
 function appInitializerAuthCheck() {
-  return {
-    provide: APP_INITIALIZER,
-    useFactory: (oidcSecurityService: OidcSecurityService) => () =>
-      oidcSecurityService.checkAuthMultiple(),
-    multi: true,
-    deps: [OidcSecurityService],
-  };
+  return provideAppInitializer(() => {
+        const initializerFn = ((oidcSecurityService: OidcSecurityService) => () =>
+      oidcSecurityService.checkAuthMultiple())(inject(OidcSecurityService));
+        return initializerFn();
+      });
 }
 
 /**
