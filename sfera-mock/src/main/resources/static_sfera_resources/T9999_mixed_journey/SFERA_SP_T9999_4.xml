@@ -52,6 +52,7 @@
             <TAF_TAP_LocationName language="de" messageString="Klammerbahnhof D"/>
             <TAF_TAP_Location_NSP name="bracketStation">
                 <NetworkSpecificParameter name="mainStation" value="CH9994"/>
+                <NetworkSpecificParameter name="text" value="D" />
             </TAF_TAP_Location_NSP>
             <TAF_TAP_Location_NSP name="newLineSpeed">
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="

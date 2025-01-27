@@ -236,6 +236,7 @@
             <TAF_TAP_LocationName language="de" messageString="Aarau GB"/>
             <TAF_TAP_Location_NSP name="bracketStation">
                 <NetworkSpecificParameter name="mainStation" value="CH3015"/>
+                <NetworkSpecificParameter name="text" value="AA" />
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
@@ -248,6 +249,7 @@
             <TAF_TAP_LocationName language="de" messageString="Aarau"/>
             <TAF_TAP_Location_NSP name="bracketStation">
                 <NetworkSpecificParameter name="mainStation" value="CH3015"/>
+                <NetworkSpecificParameter name="text" value="AAR" />
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
     </SP_Areas>
