@@ -38,7 +38,7 @@ class BaliseRow extends BaseRowBuilder<Balise> {
   @override
   DASTableCell informationCell(BuildContext context) {
     return DASTableCell(
-      child: Text(data.amountLevelCrossings > 1
+      child: Text(data.amountLevelCrossings > 1 && !isGrouped
           ? '(${data.amountLevelCrossings} ${context.l10n.p_train_journey_table_level_crossing})'
           : ''),
       alignment: Alignment.centerRight,
