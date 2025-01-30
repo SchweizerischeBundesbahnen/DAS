@@ -1,23 +1,31 @@
 package ch.sbb.backend.logging
 
-import ch.sbb.backend.BaseIT
 import ch.sbb.backend.TestContainerConfiguration
 import ch.sbb.backend.logging.domain.LogEntry
 import ch.sbb.backend.logging.domain.LogLevel
 import ch.sbb.backend.logging.infrastructure.rest.SplunkHecClient
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.verify
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
 import org.springframework.http.MediaType
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt
 import org.springframework.test.context.bean.override.mockito.MockitoBean
+import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.time.OffsetDateTime
 
+@SpringBootTest
+@AutoConfigureMockMvc
 @Import(TestContainerConfiguration::class)
-class LoggingControllerTest : BaseIT() {
+class LoggingControllerTest {
+
+    @Autowired
+    protected lateinit var mockMvc: MockMvc
 
     @MockitoBean
     private lateinit var splunkHecClient: SplunkHecClient
