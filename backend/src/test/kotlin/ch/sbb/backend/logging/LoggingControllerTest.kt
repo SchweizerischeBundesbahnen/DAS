@@ -1,11 +1,13 @@
 package ch.sbb.backend.logging
 
 import ch.sbb.backend.BaseIT
+import ch.sbb.backend.TestContainerConfiguration
 import ch.sbb.backend.logging.domain.LogEntry
 import ch.sbb.backend.logging.domain.LogLevel
 import ch.sbb.backend.logging.infrastructure.rest.SplunkHecClient
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.verify
+import org.springframework.context.annotation.Import
 import org.springframework.http.MediaType
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt
@@ -14,6 +16,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.time.OffsetDateTime
 
+@Import(TestContainerConfiguration::class)
 class LoggingControllerTest : BaseIT() {
 
     @MockitoBean

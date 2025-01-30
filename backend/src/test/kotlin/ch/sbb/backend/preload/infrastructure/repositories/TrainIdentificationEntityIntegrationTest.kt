@@ -1,20 +1,20 @@
 package ch.sbb.backend.preload.infrastructure.repositories
 
-import ch.sbb.backend.BaseTestcontainersTest
-import ch.sbb.backend.preload.domain.TrainIdentification
-import ch.sbb.backend.preload.domain.repository.TrainIdentificationRepository
+import ch.sbb.backend.TestContainerConfiguration
 import ch.sbb.backend.preload.infrastructure.entities.TrainIdentificationEntity
 import ch.sbb.backend.preload.infrastructure.entities.TrainIdentificationId
 import org.assertj.core.api.Assertions.assertThat
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
+import org.springframework.context.annotation.Import
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import kotlin.test.Test
 
 @DataJpaTest
-class TrainIdentificationEntityIntegrationTest : BaseTestcontainersTest() {
+@Import(TestContainerConfiguration::class)
+class TrainIdentificationEntityIntegrationTest {
 
     @Autowired
     lateinit var trainIdentificationRepository: SpringDataJpaTrainIdentificationRepository

@@ -7,7 +7,7 @@ import org.springframework.test.web.servlet.MockMvc
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class BaseIT: BaseTestcontainersTest() {
+class BaseIT {
 
     @Autowired
     protected lateinit var mockMvc: MockMvc

@@ -1,11 +1,14 @@
 package ch.sbb.backend.logging
 
 import ch.sbb.backend.BaseIT
+import ch.sbb.backend.TestContainerConfiguration
 import ch.sbb.backend.logging.infrastructure.config.TenantConfig
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Import
 
+@Import(TestContainerConfiguration::class)
 class TenantConfigTest: BaseIT() {
 
     @Autowired
