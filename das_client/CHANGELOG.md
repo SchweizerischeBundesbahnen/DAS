@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.8.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.7.0...das_client-v0.8.0) (2025-02-03)
+
+
+### Features
+
+* added visualization for two track with single track equipment. ([#82](https://github.com/SchweizerischeBundesbahnen/DAS/issues/82)) ([#536](https://github.com/SchweizerischeBundesbahnen/DAS/issues/536)) ([c20ac78](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c20ac78904c43826b3d283160940761b69ffb0e6))
+
+
+### Bug Fixes
+
+* do not show BU count on expanded balises ([#532](https://github.com/SchweizerischeBundesbahnen/DAS/issues/532)) ([a5852db](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a5852db88b8b945549fea31bac5643ef8212ccf0))
+* rename stopping location to halt to match newest spec ([#503](https://github.com/SchweizerischeBundesbahnen/DAS/issues/503)) ([b01331d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b01331d071e03bb7b617207b6f6cf660d5c0ecae))
+* use nsp value for bracket station text ([#508](https://github.com/SchweizerischeBundesbahnen/DAS/issues/508)) ([#509](https://github.com/SchweizerischeBundesbahnen/DAS/issues/509)) ([04d1034](https://github.com/SchweizerischeBundesbahnen/DAS/commit/04d1034105fde62dc9c7ed66f920f4946cc500a9))
+
 ## [0.7.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.6.0...das_client-v0.7.0) (2025-01-20)
 
 
