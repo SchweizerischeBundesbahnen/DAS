@@ -6,6 +6,10 @@ enum SferaTrackEquipmentType implements XmlEnum {
     xmlValue: 'ETCS-L1LS-2TracksWithSingleTrackEquipment',
     trackEquipmentType: TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment,
   ),
+  etcsL1lsSingleTrackNoBlock(
+    xmlValue: 'ETCS-L1LS-singleTrackNoBlock',
+    trackEquipmentType: TrackEquipmentType.etcsL1lsSingleTrackNoBlock,
+  ),
   etcsL2ConvSpeedReversingImpossible(
     xmlValue: 'ETCS-L2-convSpeedReversingImpossible',
     trackEquipmentType: TrackEquipmentType.etcsL2ConvSpeedReversingImpossible,

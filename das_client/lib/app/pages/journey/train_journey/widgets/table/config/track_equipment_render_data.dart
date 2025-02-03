@@ -11,47 +11,71 @@ import 'package:das_client/model/journey/track_equipment_segment.dart';
 class TrackEquipmentRenderData {
   const TrackEquipmentRenderData({
     this.cumulativeHeight = 0.0,
-    this.isCABStart = false,
-    this.isCABEnd = false,
+    this.isStart = false,
+    this.isEnd = false,
     this.isConventionalExtendedSpeedBorder = false,
     this.trackEquipmentType,
   });
 
   final double cumulativeHeight;
-  final bool isCABStart;
-  final bool isCABEnd;
+  final bool isStart;
+  final bool isEnd;
   final bool isConventionalExtendedSpeedBorder;
   final TrackEquipmentType? trackEquipmentType;
 
   static TrackEquipmentRenderData? from(List<BaseData> rowData, Metadata metadata, int index) {
     final data = rowData[index];
     final nonStandardTrackEquipmentSegments = metadata.nonStandardTrackEquipmentSegments;
-    final trackEquipment = nonStandardTrackEquipmentSegments.appliesToOrder(data.order).firstOrNull;
-    if (trackEquipment == null || !trackEquipment.isEtcsL2Segment) return null;
+    final matchingSegment = nonStandardTrackEquipmentSegments.appliesToOrder(data.order).firstOrNull;
+    if (matchingSegment == null) return null;
 
     return TrackEquipmentRenderData(
-      trackEquipmentType: trackEquipment.type,
-      cumulativeHeight: _calculateTrackEquipmentCumulativeHeight(rowData, metadata, trackEquipment, index),
+      trackEquipmentType: matchingSegment.type,
+      cumulativeHeight: _calculateTrackEquipmentCumulativeHeight(rowData, metadata, matchingSegment, index),
       isConventionalExtendedSpeedBorder: _isConventionalExtendedSpeedBorder(rowData, metadata, index),
-      isCABStart: data is CABSignaling ? data.isStart : false,
-      isCABEnd: data is CABSignaling ? data.isEnd : false,
+      isStart: _isStart(data, matchingSegment, rowData),
+      isEnd: _isEnd(data, matchingSegment, rowData),
     );
   }
 
-  /// calculates the cumulative height of the track equipment "line" of previous rows with the same type as given [trackEquipment].
+  /// checks if current data is the end of the [NonStandardTrackEquipmentSegment] for the given rowData
+  static bool _isEnd(BaseData data, NonStandardTrackEquipmentSegment segment, List<BaseData> rowData) {
+    if (data is CABSignaling && data.isEnd) {
+      return true;
+    } else if (segment.isEtcsL2Segment) {
+      // ETCS level 2 end is marked by CABSignaling
+      return false;
+    }
+
+    return rowData.inNonStandardTrackEquipmentSegment(segment).last == data;
+  }
+
+  /// checks if current data is the start of the [NonStandardTrackEquipmentSegment] for the given rowData
+  static bool _isStart(BaseData data, NonStandardTrackEquipmentSegment segment, List<BaseData> rowData) {
+    if (data is CABSignaling && data.isStart) {
+      return true;
+    } else if (segment.isEtcsL2Segment) {
+      // ETCS level 2 start is marked by CABSignaling
+      return false;
+    }
+
+    return rowData.inNonStandardTrackEquipmentSegment(segment).first == data;
+  }
+
+  /// calculates the cumulative height of the track equipment "line" of previous rows with the same type as given [segment].
   static double _calculateTrackEquipmentCumulativeHeight(
-      List<BaseData> rowData, Metadata metadata, NonStandardTrackEquipmentSegment trackEquipment, int index) {
+      List<BaseData> rowData, Metadata metadata, NonStandardTrackEquipmentSegment segment, int index) {
     var cumulativeHeight = 0.0;
     var searchIndex = index - 1;
     while (searchIndex >= 0) {
       final data = rowData[searchIndex];
-      final testTrackEquipment = metadata.nonStandardTrackEquipmentSegments.appliesToOrder(data.order).firstOrNull;
+      final segment = metadata.nonStandardTrackEquipmentSegments.appliesToOrder(data.order).firstOrNull;
 
-      if (testTrackEquipment == null || testTrackEquipment.type != trackEquipment.type) {
+      if (segment == null || segment.type != segment.type) {
         break;
       }
 
-      cumulativeHeight += _rowHeight(data);
+      cumulativeHeight += _rowHeight(data, segment, rowData);
 
       // if is conventional extended speed border, reduce by it's height as it is not part of the dashed line.
       if (_isConventionalExtendedSpeedBorder(rowData, metadata, searchIndex)) {
@@ -64,15 +88,19 @@ class TrackEquipmentRenderData {
   }
 
   /// returns height of track equipment "line" for given row
-  static double _rowHeight(BaseData data) {
+  static double _rowHeight(BaseData data, NonStandardTrackEquipmentSegment segment, List<BaseData> rowData) {
+    late double rowHeight;
     switch (data.type) {
       case Datatype.servicePoint:
-        return ServicePointRow.rowHeight;
-      case Datatype.cabSignaling:
-        return (data as CABSignaling).isStart ? BaseRowBuilder.rowHeight / 2 : BaseRowBuilder.rowHeight;
+        rowHeight = ServicePointRow.rowHeight;
+        break;
       default:
-        return BaseRowBuilder.rowHeight;
+        rowHeight = BaseRowBuilder.rowHeight;
     }
+
+    final isStartOrEnd = _isStart(data, segment, rowData) || _isEnd(data, segment, rowData);
+
+    return isStartOrEnd ? rowHeight / 2 : rowHeight;
   }
 
   /// checks if between current and previous track equipment is a border between extended and conventional speed.
