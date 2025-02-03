@@ -1,3 +1,4 @@
+import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/util/comparators.dart';
 
 /// Represents a segment with non standard track equipment. Standard is bidirectional ETCS L1LS.
@@ -28,7 +29,9 @@ class NonStandardTrackEquipmentSegment implements Comparable {
 
   /// checks if the given order is part of this segment.
   bool appliesToOrder(int order) {
-    if (startOrder != null && endOrder != null) {
+    if(startOrder == null && endOrder == null) {
+      return true; // applies for whole journey
+    } else if (startOrder != null && endOrder != null) {
       return startOrder! <= order && order <= endOrder!;
     } else if (startOrder != null) {
       return startOrder! <= order;
@@ -54,6 +57,7 @@ class NonStandardTrackEquipmentSegment implements Comparable {
 
 enum TrackEquipmentType {
   etcsL1ls2TracksWithSingleTrackEquipment,
+  etcsL1lsSingleTrackNoBlock,
   etcsL2ConvSpeedReversingImpossible,
   etcsL2ExtSpeedReversingPossible,
   etcsL2ExtSpeedReversingImpossible;
@@ -73,6 +77,14 @@ enum TrackEquipmentType {
 }
 
 // extensions
+
+extension BaseDataListSegmentExtension on Iterable<BaseData> {
+  Iterable<BaseData> inNonStandardTrackEquipmentSegment(NonStandardTrackEquipmentSegment segment) {
+    final dataInsideSegment = where((data) => segment.appliesToOrder(data.order)).toList();
+    dataInsideSegment.sort();
+    return dataInsideSegment;
+  }
+}
 
 extension NonStandardTrackEquipmentSegmentsExtension on Iterable<NonStandardTrackEquipmentSegment> {
   Iterable<NonStandardTrackEquipmentSegment> appliesToOrder(int order) =>

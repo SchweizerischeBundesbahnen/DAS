@@ -793,6 +793,9 @@ void main() {
           of: segment1CABStop, matching: find.byKey(TrackEquipmentCellBody.extendedSpeedReversingPossibleKey));
       expect(segment1CABStopTrackEquipment, findsOneWidget);
 
+      // check two tracks with single track equipment on Gilly-Bursinel
+      _checkTrackEquipmentOnServicePoint('Gilly-Bursinel', TrackEquipmentCellBody.twoTracksWithSingleTrackEquipmentKey);
+
       // check ConventionalSpeedReversingImpossible from Morges to Onnens-Bonvillars
       await tester.dragUntilVisible(find.text('Onnens-Bonvillars'), scrollableFinder, const Offset(0, -50));
       final segment2CABStart = findDASTableRowByText('12.5').first;

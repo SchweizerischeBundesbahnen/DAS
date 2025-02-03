@@ -229,8 +229,8 @@ void main() {
     expect(journey.metadata.nonStandardTrackEquipmentSegments[0].endOrder, 1500);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[1].type,
         TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment);
-    expect(journey.metadata.nonStandardTrackEquipmentSegments[1].startOrder, isNull);
-    expect(journey.metadata.nonStandardTrackEquipmentSegments[1].endOrder, 102300);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[1].startOrder, 1700);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[1].endOrder, 2300);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[2].type,
         TrackEquipmentType.etcsL2ConvSpeedReversingImpossible);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[2].startOrder, 102500);
