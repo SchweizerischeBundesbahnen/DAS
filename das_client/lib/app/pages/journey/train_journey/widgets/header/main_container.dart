@@ -1,5 +1,6 @@
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/i18n/i18n.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/battery_status.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/departure_authorization.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_channel.dart';
 import 'package:das_client/app/widgets/assets.dart';
@@ -52,10 +53,17 @@ class MainContainer extends StatelessWidget {
     return const SizedBox(
       height: 48.0,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          RadioChannel(),
-          SizedBox(width: 48.0),
-          DepartureAuthorization(),
+          Row(
+            children: [
+              RadioChannel(),
+              SizedBox(width: 48.0),
+              DepartureAuthorization(),
+            ],
+          ),
+          BatteryStatus(),
+          //Add the Text here
         ],
       ),
     );
