@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>ch.sbb</groupId>
 	<artifactId>sfera-mock</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.1.0</version>
 	<name>sfera-mock</name>
 	<description>Backend to mock SFERA messages for end-to-end tests</description>
 	<properties>
