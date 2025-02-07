@@ -7,6 +7,7 @@
     "p_train_selection_date_not_today_warning": "Das gewählte Datum entspricht nicht dem aktuellen Datum.",
     "p_train_journey_header_button_dark_theme": "Nachtmodus",
     "p_train_journey_header_button_pause": "Pause",
+    "p_train_journey_header_button_start": "Start",
     "p_train_journey_table_kilometre_label": "km",
     "p_train_journey_table_time_label": "an/ab",
     "p_train_journey_table_journey_information_label": "Streckeninformationen",

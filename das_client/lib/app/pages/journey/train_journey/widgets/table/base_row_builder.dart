@@ -1,13 +1,15 @@
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_config.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:das_client/model/journey/additional_speed_restriction.dart';
 import 'package:das_client/model/journey/base_data.dart';
+import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/speed_data.dart';
 import 'package:flutter/material.dart';
@@ -134,10 +136,8 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
       return DASTableCell.empty();
     }
 
-    final currentTrainSeries =
-        config.settings.selectedBreakSeries?.trainSeries ?? metadata.breakSeries?.trainSeries;
-    final currentBreakSeries =
-        config.settings.selectedBreakSeries?.breakSeries ?? metadata.breakSeries?.breakSeries;
+    final currentTrainSeries = config.settings.selectedBreakSeries?.trainSeries ?? metadata.breakSeries?.trainSeries;
+    final currentBreakSeries = config.settings.selectedBreakSeries?.breakSeries ?? metadata.breakSeries?.breakSeries;
 
     final graduatedSpeeds = speedData.speedsFor(currentTrainSeries, currentBreakSeries);
     if (graduatedSpeeds == null) {
@@ -192,5 +192,14 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
     return metadata.additionalSpeedRestrictions
         .where((it) => it.orderFrom <= data.order && it.orderTo >= data.order)
         .firstOrNull;
+  }
+
+  static double rowHeightForData(BaseData data) {
+    switch (data.type) {
+      case Datatype.servicePoint:
+        return ServicePointRow.rowHeight;
+      default:
+        return BaseRowBuilder.rowHeight;
+    }
   }
 }

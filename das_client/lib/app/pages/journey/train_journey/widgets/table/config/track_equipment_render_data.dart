@@ -89,14 +89,7 @@ class TrackEquipmentRenderData {
 
   /// returns height of track equipment "line" for given row
   static double _rowHeight(BaseData data, NonStandardTrackEquipmentSegment segment, List<BaseData> rowData) {
-    late double rowHeight;
-    switch (data.type) {
-      case Datatype.servicePoint:
-        rowHeight = ServicePointRow.rowHeight;
-        break;
-      default:
-        rowHeight = BaseRowBuilder.rowHeight;
-    }
+    final rowHeight = BaseRowBuilder.rowHeightForData(data);
 
     final isStartOrEnd = _isStart(data, segment, rowData) || _isEnd(data, segment, rowData);
 
