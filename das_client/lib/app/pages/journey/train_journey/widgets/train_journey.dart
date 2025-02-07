@@ -21,11 +21,9 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/tram_ar
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/whistle_row.dart';
 import 'package:das_client/app/widgets/table/das_table.dart';
 import 'package:das_client/app/widgets/table/das_table_column.dart';
-import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
 import 'package:das_client/model/journey/balise.dart';
 import 'package:das_client/model/journey/balise_level_crossing_group.dart';
-import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/base_data_extension.dart';
 import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
@@ -253,9 +251,5 @@ class TrainJourney extends StatelessWidget {
         if (newValue != null) {trainJourneyCubit.updateBreakSeries(newValue)}
       },
     );
-  }
-
-  void _scrollToRow(BuildContext context, List<DASTableRow> rows, BaseData targetRow) {
-    final trainJourneyCubit = context.trainJourneyCubit;
   }
 }

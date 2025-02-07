@@ -1,4 +1,3 @@
-import 'package:das_client/sfera/src/model/delay.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 
 class PositionSpeed extends SferaXmlElement {
