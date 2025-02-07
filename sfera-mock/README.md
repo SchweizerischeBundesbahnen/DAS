@@ -5,7 +5,10 @@
 - for SFERA e2e tests of mobile app
 
 ## Getting-Started
-
+1. Add environment variables
+    1. either by run configuration
+    2. or a .env file
+2. Run `SferaMockApplication`
 
 ## Scenarios
 
