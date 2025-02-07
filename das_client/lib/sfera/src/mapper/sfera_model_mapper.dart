@@ -18,6 +18,7 @@ import 'package:das_client/sfera/src/model/enums/start_end_qualifier.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/related_train_information.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
+import 'package:das_client/sfera/src/model/segment_profile_list.dart';
 import 'package:das_client/sfera/src/model/train_characteristics.dart';
 import 'package:fimber/fimber.dart';
 
@@ -72,12 +73,14 @@ class SferaModelMapper {
 
     journeyData.sort();
 
+    final currentPosition = _calculateCurrentPosition(journeyData, segmentProfilesLists, relatedTrainInformation);
     final trainCharacteristic = _resolveFirstTrainCharacteristics(journeyProfile, trainCharacteristics);
     final servicePoints = journeyData.whereType<ServicePoint>();
+
     return Journey(
       metadata: Metadata(
-        nextStop: servicePoints.skip(1).firstWhereOrNull((data) => data.isStop),
-        currentPosition: journeyData.first,
+        nextStop: _calculateNextStop(servicePoints, currentPosition),
+        currentPosition: currentPosition,
         additionalSpeedRestrictions: additionalSpeedRestrictions,
         routeStart: journeyData.firstOrNull,
         routeEnd: journeyData.lastOrNull,
@@ -94,6 +97,34 @@ class SferaModelMapper {
       ),
       data: journeyData,
     );
+  }
+
+  static BaseData? _calculateCurrentPosition(List<BaseData> journeyData, List<SegmentProfileList> segmentProfilesLists,
+      RelatedTrainInformation? relatedTrainInformation) {
+    if (relatedTrainInformation == null ||
+        relatedTrainInformation.ownTrain.trainLocationInformation.positionSpeed == null) {
+      // Return first element as we have no information yet
+      return journeyData.first;
+    }
+
+    final positionSegmentIndex = segmentProfilesLists
+        .indexWhere((it) => it.spId == relatedTrainInformation.ownTrain.trainLocationInformation.positionSpeed!.spId);
+    if (positionSegmentIndex == -1) {
+      Fimber.w(
+          'Received position on unknown segment with spId: ${relatedTrainInformation.ownTrain.trainLocationInformation.positionSpeed?.spId}');
+      return null;
+    } else {
+      final positionOrder = calculateOrder(
+          positionSegmentIndex, relatedTrainInformation.ownTrain.trainLocationInformation.positionSpeed!.location);
+      final currentPositionData = journeyData.lastWhereOrNull((it) => it.order <= positionOrder);
+      return currentPositionData ?? journeyData.first;
+    }
+  }
+
+  static ServicePoint? _calculateNextStop(Iterable<ServicePoint> servicePoints, BaseData? currentPosition) {
+    return servicePoints
+        .skip(1)
+        .firstWhereOrNull((data) => data.isStop && (currentPosition == null || data.order > currentPosition.order));
   }
 
   static List<AdditionalSpeedRestriction> _parseAdditionalSpeedRestrictions(

@@ -26,6 +26,7 @@ import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
 import 'package:das_client/sfera/src/model/network_specific_point.dart';
 import 'package:das_client/sfera/src/model/otn_id.dart';
 import 'package:das_client/sfera/src/model/own_train.dart';
+import 'package:das_client/sfera/src/model/position_speed.dart';
 import 'package:das_client/sfera/src/model/related_train_information.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
 import 'package:das_client/sfera/src/model/segment_profile_list.dart';
@@ -230,6 +231,8 @@ class SferaReplyParser {
         return Balise(type: type, attributes: attributes, children: children, value: value);
       case LevelCrossingArea.elementType:
         return LevelCrossingArea(type: type, attributes: attributes, children: children, value: value);
+      case PositionSpeed.elementType:
+        return PositionSpeed(type: type, attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElement(type: type, attributes: attributes, children: children, value: value);
     }

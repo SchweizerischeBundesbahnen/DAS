@@ -309,6 +309,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.2"
+  easy_sticky_header:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: main
+      resolved-ref: b04e13fe7dacd6fbfc84e7a3c9070afd6aa61297
+      url: "https://github.com/SchweizerischeBundesbahnen/easy_sticky_header.git"
+    source: git
+    version: "1.1.1"
   event_bus:
     dependency: transitive
     description:

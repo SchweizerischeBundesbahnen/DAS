@@ -25,6 +25,7 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
     this.rowColor,
     this.onTap,
     this.isGrouped = false,
+    this.isSticky = false,
   });
 
   final Alignment defaultAlignment;
@@ -34,6 +35,7 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   final TrainJourneyConfig config;
   final VoidCallback? onTap;
   final bool isGrouped;
+  final bool isSticky;
 
   @override
   DASTableRow build(BuildContext context) {
@@ -41,6 +43,7 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
       height: height,
       color: rowColor,
       onTap: onTap,
+      isSticky: isSticky,
       cells: [
         kilometreCell(context),
         timeCell(context),

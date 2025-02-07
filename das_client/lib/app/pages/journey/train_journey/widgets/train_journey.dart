@@ -1,14 +1,15 @@
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/i18n/i18n.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/bracket_station_render_data.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_config.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/break_series_selection.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_level_crossing_group_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_row.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_row_builder.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cab_signaling_row.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/bracket_station_render_data.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/track_equipment_render_data.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_config.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/connection_track_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/curve_point_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/level_crossing_row.dart';
@@ -24,6 +25,7 @@ import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
 import 'package:das_client/model/journey/balise.dart';
 import 'package:das_client/model/journey/balise_level_crossing_group.dart';
+import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/base_data_extension.dart';
 import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
@@ -70,6 +72,7 @@ class TrainJourney extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
       child: DASTable(
+        scrollController: context.trainJourneyCubit.scrollController,
         columns: _columns(context, journey, settings),
         rows: _rows(context, journey, settings),
       ),
@@ -243,5 +246,10 @@ class TrainJourney extends StatelessWidget {
         if (newValue != null) {trainJourneyCubit.updateBreakSeries(newValue)}
       },
     );
+  }
+
+  void _scrollToRow(BuildContext context, List<DASTableRow> rows, BaseData targetRow) {
+    final trainJourneyCubit = context.trainJourneyCubit;
+
   }
 }

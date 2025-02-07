@@ -13,7 +13,7 @@ abstract class DASTableRowBuilder {
 /// Represents a row in the [DASTable] containing cells.
 @immutable
 class DASTableRow {
-  const DASTableRow({required this.cells, required this.height, this.color, this.onTap});
+  const DASTableRow({required this.cells, required this.height, this.color, this.onTap, this.isSticky = false});
 
   /// Height of the row
   final double height;
@@ -24,4 +24,6 @@ class DASTableRow {
   final List<DASTableCell> cells;
 
   final VoidCallback? onTap;
+
+  final bool isSticky;
 }

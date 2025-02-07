@@ -29,6 +29,8 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
 
   StreamSubscription? _stateSubscription;
 
+  ScrollController scrollController = ScrollController();
+
   void loadTrainJourney() async {
     final currentState = state;
     if (currentState is SelectingTrainJourneyState) {
@@ -46,6 +48,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
       _stateSubscription = _sferaService.stateStream.listen((state) {
         switch (state) {
           case SferaServiceState.connected:
+            scrollController = ScrollController();
             emit(TrainJourneyLoadedState(ru, trainNumber, date));
             break;
           case SferaServiceState.connecting:
@@ -120,6 +123,10 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
 
   void updateExpandedGroups(List<int> expandedGroups) {
     _settingsSubject.add(_settingsSubject.value.copyWith(expandedGroups: expandedGroups));
+  }
+
+  void setAutomaticAdvancement(bool active) {
+    _settingsSubject.add(_settingsSubject.value.copyWith(automaticAdvancementActive: active));
   }
 }
 
