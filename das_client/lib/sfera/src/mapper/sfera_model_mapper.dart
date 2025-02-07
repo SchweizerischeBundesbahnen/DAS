@@ -31,17 +31,22 @@ class SferaModelMapper {
     List<SegmentProfile> segmentProfiles = const [],
     List<TrainCharacteristics> trainCharacteristics = const [],
     RelatedTrainInformation? relatedTrainInformation,
+    Journey? lastJourney,
   }) {
     try {
-      return _mapToJourney(journeyProfile, segmentProfiles, trainCharacteristics, relatedTrainInformation);
+      return _mapToJourney(journeyProfile, segmentProfiles, trainCharacteristics, relatedTrainInformation, lastJourney);
     } catch (e, s) {
       Fimber.e('Error mapping journey-/segment profiles to journey:', ex: e, stacktrace: s);
       return Journey.invalid();
     }
   }
 
-  static Journey _mapToJourney(JourneyProfile journeyProfile, List<SegmentProfile> segmentProfiles,
-      List<TrainCharacteristics> trainCharacteristics, RelatedTrainInformation? relatedTrainInformation) {
+  static Journey _mapToJourney(
+      JourneyProfile journeyProfile,
+      List<SegmentProfile> segmentProfiles,
+      List<TrainCharacteristics> trainCharacteristics,
+      RelatedTrainInformation? relatedTrainInformation,
+      Journey? lastJourney) {
     final journeyData = <BaseData>[];
 
     final segmentProfilesLists = journeyProfile.segmentProfilesLists.toList();
@@ -73,7 +78,8 @@ class SferaModelMapper {
 
     journeyData.sort();
 
-    final currentPosition = _calculateCurrentPosition(journeyData, segmentProfilesLists, relatedTrainInformation);
+    final currentPosition =
+        _calculateCurrentPosition(journeyData, segmentProfilesLists, relatedTrainInformation, lastJourney);
     final trainCharacteristic = _resolveFirstTrainCharacteristics(journeyProfile, trainCharacteristics);
     final servicePoints = journeyData.whereType<ServicePoint>();
 
@@ -100,7 +106,7 @@ class SferaModelMapper {
   }
 
   static BaseData? _calculateCurrentPosition(List<BaseData> journeyData, List<SegmentProfileList> segmentProfilesLists,
-      RelatedTrainInformation? relatedTrainInformation) {
+      RelatedTrainInformation? relatedTrainInformation, Journey? lastJourney) {
     if (relatedTrainInformation == null ||
         relatedTrainInformation.ownTrain.trainLocationInformation.positionSpeed == null) {
       // Return first element as we have no information yet
@@ -112,7 +118,7 @@ class SferaModelMapper {
     if (positionSegmentIndex == -1) {
       Fimber.w(
           'Received position on unknown segment with spId: ${relatedTrainInformation.ownTrain.trainLocationInformation.positionSpeed?.spId}');
-      return null;
+      return journeyData.firstWhereOrNull((it) => it.order == lastJourney?.metadata.currentPosition?.order);
     } else {
       final positionOrder = calculateOrder(
           positionSegmentIndex, relatedTrainInformation.ownTrain.trainLocationInformation.positionSpeed!.location);
@@ -134,9 +140,9 @@ class SferaModelMapper {
   }
 
   static ServicePoint? _calculateNextStop(Iterable<ServicePoint> servicePoints, BaseData? currentPosition) {
-    return servicePoints
-        .skip(1)
-        .firstWhereOrNull((data) => data.isStop && (currentPosition == null || data.order > currentPosition.order));
+    return servicePoints.skip(1).firstWhereOrNull(
+            (data) => data.isStop && (currentPosition == null || data.order > currentPosition.order)) ??
+        servicePoints.last;
   }
 
   static List<AdditionalSpeedRestriction> _parseAdditionalSpeedRestrictions(

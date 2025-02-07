@@ -38,7 +38,9 @@ class AutomaticAdvancementController {
   }
 
   void scrollToCurrentPosition() {
-    if (_lastJourney == null || scrollController.positions.isEmpty) return;
+    if (_lastJourney == null || _lastJourney?.metadata.currentPosition == null || scrollController.positions.isEmpty) {
+      return;
+    }
 
     var stickyRowHeight = 0.0;
     var targetScrollPosition = 0.0;
