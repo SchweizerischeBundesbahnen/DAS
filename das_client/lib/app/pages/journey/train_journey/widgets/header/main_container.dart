@@ -63,7 +63,6 @@ class MainContainer extends StatelessWidget {
             ],
           ),
           BatteryStatus(),
-          //Add the Text here
         ],
       ),
     );
