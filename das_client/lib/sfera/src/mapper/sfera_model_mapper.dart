@@ -117,8 +117,20 @@ class SferaModelMapper {
       final positionOrder = calculateOrder(
           positionSegmentIndex, relatedTrainInformation.ownTrain.trainLocationInformation.positionSpeed!.location);
       final currentPositionData = journeyData.lastWhereOrNull((it) => it.order <= positionOrder);
-      return currentPositionData ?? journeyData.first;
+      return _adjustCurrentPositionToServicePoint(journeyData, currentPositionData ?? journeyData.first);
     }
+  }
+
+  static BaseData? _adjustCurrentPositionToServicePoint(List<BaseData> journeyData, BaseData currentPosition) {
+    final positionIndex = journeyData.indexOf(currentPosition);
+    if (journeyData.length > positionIndex + 1) {
+      final nextData = journeyData[positionIndex + 1];
+      if (nextData is ServicePoint) {
+        return nextData;
+      }
+    }
+
+    return currentPosition;
   }
 
   static ServicePoint? _calculateNextStop(Iterable<ServicePoint> servicePoints, BaseData? currentPosition) {

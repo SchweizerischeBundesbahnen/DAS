@@ -127,6 +127,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
   }
 
   void setAutomaticAdvancement(bool active) {
+    Fimber.i('Automatic advancement state changed to active=$active');
     if (active) {
       automaticAdvancementController.scrollToCurrentPosition();
     }
