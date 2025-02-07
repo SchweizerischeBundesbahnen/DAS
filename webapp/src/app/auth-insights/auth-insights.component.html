@@ -4,19 +4,3 @@
 <pre>{{ claims  |async | json }}</pre>
 <h3 i18n>Scopes</h3>
 <pre>{{ scopes |async }}</pre>
-
-<h3 i18n>Exchange token</h3>
-<div class="sbb-form-group">
-  <sbb-form-field>
-    <sbb-label>ru</sbb-label>
-    <input type="text" sbbInput [formControl]="ruControl"/>
-  </sbb-form-field>
-  <sbb-form-field>
-    <sbb-label>train</sbb-label>
-    <input type="text" sbbInput [formControl]="trainControl"/>
-  </sbb-form-field>
-  <sbb-form-field>
-    <sbb-label>role</sbb-label>
-    <input type="text" sbbInput [formControl]="roleControl"/>
-  </sbb-form-field>
-</div>

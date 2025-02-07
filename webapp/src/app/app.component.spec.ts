@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { AuthService } from "./auth.service";
 import { MqService } from "./mq.service";
 import { OidcSecurityService, UserDataResult } from "angular-auth-oidc-client";
 import { signal } from "@angular/core";
@@ -10,7 +9,6 @@ import { By } from "@angular/platform-browser";
 import { SbbMenuItem } from "@sbb-esta/angular/menu";
 import { RouterTestingModule } from "@angular/router/testing";
 
-const mockAuth: Partial<AuthService> = {};
 const mockOidc: Partial<OidcSecurityService> = {
   userData: signal({userData: {name: 'User'}} as UserDataResult),
   logoffLocalMultiple: () => Promise.resolve(true),
@@ -25,7 +23,6 @@ describe('AppComponent', () => {
     await TestBed.configureTestingModule({
       imports: [NoopAnimationsModule, RouterTestingModule, SbbIconTestingModule, AppComponent,],
       providers: [
-        {provide: AuthService, useValue: mockAuth},
         {provide: OidcSecurityService, useValue: mockOidc},
         {provide: MqService, useValue: mockMq},
       ]
