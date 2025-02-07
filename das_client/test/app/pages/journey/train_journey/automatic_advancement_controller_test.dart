@@ -210,4 +210,75 @@ void main() {
         duration: anyNamed('duration'), curve: anyNamed('curve')))
         .called(1);
   });
+
+  test('test scrolls with delay after touch', () async {
+    final List<BaseData> journeyData = [
+      Signal(order: 0, kilometre: []),
+      Signal(order: 100, kilometre: []),
+      Signal(order: 200, kilometre: []),
+      Signal(order: 300, kilometre: []),
+      Signal(order: 400, kilometre: []),
+    ];
+    final journeyRows = journeyData.map((data) => SignalRow(metadata: Metadata(), data: data as Signal)).toList();
+    final journey = Journey(
+      metadata: Metadata(currentPosition: journeyData[2]),
+      data: journeyData,
+    );
+
+    final scrollControllerMock = MockScrollController();
+    final scrollPositionMock = MockScrollPosition();
+    when(scrollControllerMock.positions).thenReturn([scrollPositionMock]);
+    when(scrollControllerMock.position).thenReturn(scrollPositionMock);
+    when(scrollPositionMock.maxScrollExtent).thenReturn(BaseRowBuilder.rowHeight * 4);
+
+    final testee = AutomaticAdvancementController(controller: scrollControllerMock);
+
+    testee.updateRenderedRows(journeyRows);
+    testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: true));
+    testee.onTouch();
+
+    await Future.delayed(const Duration(seconds: 11));
+
+    verify(scrollControllerMock.animateTo(BaseRowBuilder.rowHeight * 2,
+        duration: anyNamed('duration'), curve: anyNamed('curve')))
+        .called(2);
+  });
+
+  test('test does not scroll with delay after touch if disabled', () async {
+    final List<BaseData> journeyData = [
+      Signal(order: 0, kilometre: []),
+      Signal(order: 100, kilometre: []),
+      Signal(order: 200, kilometre: []),
+      Signal(order: 300, kilometre: []),
+      Signal(order: 400, kilometre: []),
+    ];
+    final journeyRows = journeyData.map((data) => SignalRow(metadata: Metadata(), data: data as Signal)).toList();
+    final journey = Journey(
+      metadata: Metadata(currentPosition: journeyData[2]),
+      data: journeyData,
+    );
+
+    final scrollControllerMock = MockScrollController();
+    final scrollPositionMock = MockScrollPosition();
+    when(scrollControllerMock.positions).thenReturn([scrollPositionMock]);
+    when(scrollControllerMock.position).thenReturn(scrollPositionMock);
+    when(scrollPositionMock.maxScrollExtent).thenReturn(BaseRowBuilder.rowHeight * 4);
+
+    final testee = AutomaticAdvancementController(controller: scrollControllerMock);
+
+    testee.updateRenderedRows(journeyRows);
+    testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: true));
+
+    verify(scrollControllerMock.animateTo(BaseRowBuilder.rowHeight * 2,
+        duration: anyNamed('duration'), curve: anyNamed('curve')))
+        .called(1);
+
+    testee.onTouch();
+
+    testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: false));
+
+    await Future.delayed(const Duration(seconds: 11));
+
+    verifyNever(scrollControllerMock.animateTo(any, duration: anyNamed('duration'), curve: anyNamed('curve')));
+  });
 }
