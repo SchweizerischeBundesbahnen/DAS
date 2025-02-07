@@ -25,14 +25,15 @@ class AutomaticAdvancementController {
   }
 
   void handleJourneyUpdate(Journey journey, TrainJourneySettings settings) {
+    final lastJourney = _lastJourney;
     _settings = settings;
+    _lastJourney = journey;
+
     if (!settings.automaticAdvancementActive) {
-      _lastJourney = journey;
       return;
     }
 
-    if (_lastJourney?.metadata.currentPosition?.order != journey.metadata.currentPosition?.order) {
-      _lastJourney = journey;
+    if (lastJourney?.metadata.currentPosition?.order != journey.metadata.currentPosition?.order) {
       scrollToCurrentPosition();
     }
   }
