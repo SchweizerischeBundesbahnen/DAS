@@ -4,6 +4,3 @@ spring:
       file: ./backend/compose.yaml
   config:
     import: optional:file:./backend/.env[.properties]
-  sql:
-    init:
-      mode: always
