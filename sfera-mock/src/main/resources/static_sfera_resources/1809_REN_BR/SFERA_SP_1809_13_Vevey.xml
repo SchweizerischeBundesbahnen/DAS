@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
+                SP_ID="1809_13_Vevey" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="1500" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>1285</IM_ID>
+    </SP_Zone>
+	
+    <SP_Points>
+
+        <TimingPoint TP_ID="Vevey" location="0">
+            <TP_Name name="VV"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>1200</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="VV2P" location="100"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="VV2P"/>
+        </Signal>
+		
+		<Signal>
+            <Signal_ID signal_ID_Physical="VV82P" location="400"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="VV82P"/>
+        </Signal>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="VV522P" location="1200"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="VV522P"/>
+        </Signal>	
+
+    </SP_Points>
+
+    <SP_Areas>
+		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="4.0" gradientDirection="Uphill" directionOfApplicationOnSP="Nominal"/>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="VV" TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>1200</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Vevey"/>
+			
+			<TAF_TAP_Location_NSP name="departureAuth">
+				<NetworkSpecificParameter name="departureAuth" value="true"/>
+				<NetworkSpecificParameter name="departureAuthText" value="sms"/>
+			</TAF_TAP_Location_NSP>
+
+			<TAF_TAP_Location_NSP name="oPFootNotes">
+				<NetworkSpecificParameter name="xmlOPFootNotes" value="
+				&lt;oPFootNotes&gt; 
+					&lt;footNote type=&quot;contact&quot; refText=&quot;1)&quot;&gt; 
+						&lt;text&gt;+41 512 800 506 RBC Lavaux&lt;/text&gt; 
+					&lt;/footNote&gt; 
+				&lt;/oPFootNotes&gt;
+				" />
+			</TAF_TAP_Location_NSP>
+			
+        </TAF_TAP_Location>
+
+        <NetworkSpecificArea startEndQualifier="WholeSP" name="nonStandardTrackEquipment">
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2convSpeedReversingImpossible"/>
+        </NetworkSpecificArea>
+
+    </SP_Areas>
+
+    <SP_ContextInformation>
+
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="18.4"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="100">
+            <KM_Reference kmRef="18.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="400">
+            <KM_Reference kmRef="18.8"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1200">
+            <KM_Reference kmRef="19.6"/>
+        </KilometreReferencePoint>
+
+    </SP_ContextInformation>
+	
+</SegmentProfile>

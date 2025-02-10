@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
+                SP_ID="1809_16_Tunnel_des_Cretes" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="1100" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>1285</IM_ID>
+    </SP_Zone>
+	
+    <SP_Points>
+
+        <TimingPoint TP_ID="Tunnel_des_Cretes" location="0">
+            <TP_Name name="CRTT"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>19440</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="VV528P" location="400"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="VV528P"/>
+        </Signal>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="VV530P" location="900"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="VV530P"/>
+        </Signal>
+
+    </SP_Points>
+
+    <SP_Areas>
+		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="2.0" gradientDirection="Uphill" directionOfApplicationOnSP="Nominal"/>
+		
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="CRTT" TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>19440</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Tunnel des Crêtes"/>
+
+			<TAF_TAP_Location_NSP name="departureAuth">
+				<NetworkSpecificParameter name="departureAuth" value="false"/>
+			</TAF_TAP_Location_NSP>
+
+        </TAF_TAP_Location>
+
+        <NetworkSpecificArea startEndQualifier="WholeSP" name="nonStandardTrackEquipment">
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2convSpeedReversingImpossible"/>
+        </NetworkSpecificArea>
+
+    </SP_Areas>
+
+    <SP_ContextInformation>
+
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="22.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="400">
+            <KM_Reference kmRef="22.4"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="900">
+            <KM_Reference kmRef="22.9"/>
+        </KilometreReferencePoint>
+		
+    </SP_ContextInformation>
+	
+</SegmentProfile>

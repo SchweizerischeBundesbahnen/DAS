@@ -1,0 +1,343 @@
+<?xml version="1.0" ?>
+<!-- Out of Scope
+- amount of SPs (would be way more)
+- real signal_ID_Physical not known
+- hidden locations (routeTableDataRelevant: true = ist in RADN sichtbar, false = ist in RADN unsichtbar, unlisted = ist nur in Operational Plan)
+- VPro (structure will change with 3.0)
+- local regulations
+- events (one example included)
+- some renamings and missing attributes which will be added with 3.0
+-->
+
+<JourneyProfile JP_Status="Valid" JP_Version="1"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd">
+    <TrainIdentification>
+        <OTN_ID>
+            <Company>1285</Company>
+            <OperationalTrainNumber>1809</OperationalTrainNumber>
+            <StartDate>2025-05-17</StartDate>
+        </OTN_ID>
+    </TrainIdentification>
+
+	<!-- SegmentProfileList neu SegmentProfileReference mit JP_ContextInformation -->
+    <SegmentProfileList SP_ID="1809_1_Renens_VD" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+		
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:37:00Z" TP_PlannedLatestArrivalTime="2025-05-17T07:37:00Z" >
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Renens_VD"/>
+            </TimingPointReference>
+			<StoppingPointInformation departureTime="2025-05-17T07:38:00Z" plannedDepartureTime="2025-05-17T07:38:00Z" >
+            </StoppingPointInformation>
+        </TimingPointConstraints>
+        
+		<TrainCharacteristicsRef TC_ID="1809_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
+            <TC_RU_ID>1285</TC_RU_ID>
+        </TrainCharacteristicsRef>
+	
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1809_2_Prilly_Malley" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+		
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:40:00Z" TP_PlannedLatestArrivalTime="2025-05-17T07:40:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Prilly_Malley"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1809_3_Lausanne" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+		
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:44:00Z" TP_PlannedLatestArrivalTime="2025-05-17T07:44:00Z" >
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Lausanne"/>
+            </TimingPointReference>
+			<StoppingPointInformation departureTime="2025-05-17T07:48:00Z" plannedDepartureTime="2025-05-17T07:48:00Z" >
+            </StoppingPointInformation>
+        </TimingPointConstraints>	
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1809_4_Pully" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+		
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:51:00Z" TP_PlannedLatestArrivalTime="2025-05-17T07:51:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Pully"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1809_5_Taillepied" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+		
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:52:00Z" TP_PlannedLatestArrivalTime="2025-05-17T07:52:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Taillepied"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1809_6_Lutry" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+		
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:52:00Z" TP_PlannedLatestArrivalTime="2025-05-17T07:52:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Lutry"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1809_7_Villette_VD" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+		
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:53:00Z" TP_PlannedLatestArrivalTime="2025-05-17T07:53:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Villette_VD"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1809_8_Cully" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+		
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:55:00Z" TP_PlannedLatestArrivalTime="2025-05-17T07:55:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Cully"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+	
+    <SegmentProfileList SP_ID="1809_9_Epesses" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+		
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:56:00Z" TP_PlannedLatestArrivalTime="2025-05-17T07:56:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Epesses"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>	
+
+    <SegmentProfileList SP_ID="1809_10_En_Grillon" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+		
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:58:00Z" TP_PlannedLatestArrivalTime="2025-05-17T07:58:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="En_Grillon"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>	
+
+    <SegmentProfileList SP_ID="1809_11_Rivaz" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+		
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:58:00Z" TP_PlannedLatestArrivalTime="2025-05-17T07:58:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Rivaz"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1809_12_St_Saphorin" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+		
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:58:00Z" TP_PlannedLatestArrivalTime="2025-05-17T07:58:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="St_Saphorin"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1809_13_Vevey" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+		
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:02:00Z" TP_PlannedLatestArrivalTime="2025-05-17T08:02:00Z" >
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Vevey"/>
+            </TimingPointReference>
+			<StoppingPointInformation departureTime="2025-05-17T08:03:00Z" plannedDepartureTime="2025-05-17T08:03:00Z" >
+            </StoppingPointInformation>
+        </TimingPointConstraints>	
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1809_14_La_Tour_de_Peilz" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+		
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:05:00Z" TP_PlannedLatestArrivalTime="2025-05-17T08:05:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="La_Tour_de_Peilz"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1809_15_Burier" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+		
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:06:00Z" TP_PlannedLatestArrivalTime="2025-05-17T08:06:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Burier"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1809_16_Tunnel_des_Cretes" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+		
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:07:00Z" TP_PlannedLatestArrivalTime="2025-05-17T08:07:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Tunnel_des_Cretes"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>
+	
+    <SegmentProfileList SP_ID="1809_17_Clarens" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+		
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:07:00Z" TP_PlannedLatestArrivalTime="2025-05-17T08:07:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Clarens"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileList>	
+
+    <SegmentProfileList SP_ID="1809_18_Vernex" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+		
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:07:00Z" TP_PlannedLatestArrivalTime="2025-05-17T08:07:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Vernex"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+		
+		<TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="ASR" startLocation="500">
+            <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
+			<TemporaryConstraintReason messageString="Umbau" language="DE" />
+        </TemporaryConstraints>
+		
+    </SegmentProfileList>	
+
+    <SegmentProfileList SP_ID="1809_19_Montreux" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+		
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:09:00Z" TP_PlannedLatestArrivalTime="2025-05-17T08:09:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Montreux"/>
+            </TimingPointReference>
+			<StoppingPointInformation departureTime="2025-05-17T08:10:00Z" plannedDepartureTime="2025-05-17T08:10:00Z" >
+            </StoppingPointInformation>
+        </TimingPointConstraints>
+		
+		<TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="ASR" startLocation="50">
+            <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
+        </TemporaryConstraints>
+		
+    </SegmentProfileList>	
+
+    <SegmentProfileList SP_ID="1809_20_Territet" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+		
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:12:00Z" TP_PlannedLatestArrivalTime="2025-05-17T08:12:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Territet"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+		
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1809_21_Veytaux_Chillon" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+		
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:13:00Z" TP_PlannedLatestArrivalTime="2025-05-17T08:13:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Veytaux_Chillon"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+		
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1809_22_Villeneuve" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+		
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:14:00Z" TP_PlannedLatestArrivalTime="2025-05-17T08:14:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Villeneuve"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+		
+    </SegmentProfileList>
+	
+    <SegmentProfileList SP_ID="1809_23_Roche_VD" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+		
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:16:00Z" TP_PlannedLatestArrivalTime="2025-05-17T08:16:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Roche_VD"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+		
+    </SegmentProfileList>
+
+    <SegmentProfileList SP_ID="1809_24_Aigle" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+		
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:21:00Z" TP_PlannedLatestArrivalTime="2025-05-17T08:21:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Aigle"/>
+            </TimingPointReference>
+			<StoppingPointInformation departureTime="2025-05-17T08:22:00Z" plannedDepartureTime="2025-05-17T08:22:00Z" >
+            </StoppingPointInformation>
+        </TimingPointConstraints>
+		
+    </SegmentProfileList>		
+	
+</JourneyProfile>
