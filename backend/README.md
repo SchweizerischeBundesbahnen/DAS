@@ -1,13 +1,12 @@
 # Backend
 
 ## Introduction
-SpringBoot application (needs PostgreSQL DB dockerized, s. _compose.yml_)
+SpringBoot application (needs PostgreSQL DB dockerized, s. [compose.yaml](compose.yaml))
 
 ## Getting-Started
 ### Run on localhost
 1. Run a Docker Daemon (for e.g. by Windows: [Podman Desktop](https://podman-desktop.io/) needs VM 'WSL 2' from Microsoft Store)
-2. Add environment variables (according to _src/main/resources/application.yml_) and specify concrete values
-2. Add environment variables
+2. Add environment variables (according to [application.yml](src/main/resources/application.yaml)) and specify concrete values
    - either by run configuration
-   - or a .env file
+   - or an .env file
 3. Run `BackendApplication`

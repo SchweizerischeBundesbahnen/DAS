@@ -2,12 +2,12 @@
 
 ## Introduction
 - solace
-- generates SFERA model out of sfera_*.xsd
+- generates SFERA model out of `sfera_*.xsd`
 - for SFERA e2e tests of mobile app
 
 ## Getting-Started
 ### Run on localhost
-1. Add environment variables (according to _src/main/resources/application.yml_) and specify concrete values
+1. Add environment variables (according to [application.yaml](src/main/resources/application.yaml) and specify concrete values
    - either by run configuration
    - or an .env file
 2. Run `SferaMockApplication`
@@ -19,7 +19,7 @@
 - architecture: BoardAdviceCalculation
 - connectivity: Connected
 
-see journeys [src/main/resources/static_sfera_resources](src/main/resources/static_sfera_resources)
+see journeys [static_sfera_resources](src/main/resources/static_sfera_resources)
 
 ## Add new Scenario
 To create a new scenario some resources need to be added
