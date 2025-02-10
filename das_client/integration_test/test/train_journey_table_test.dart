@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_row.dart';
@@ -882,7 +880,6 @@ void main() {
       final oltenOutgoingSpeeds =
           find.descendant(of: oltenStationRow, matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey));
       expect(oltenOutgoingSpeeds, findsNothing);
-
     });
 
     testWidgets('find base value when no punctuality update comes', (tester) async {
@@ -933,10 +930,12 @@ void main() {
 
       final DateTime currentTime = DateTime.now();
       final String currentHour = currentTime.hour <= 9 ? '0${currentTime.hour}' : (currentTime.hour).toString();
-      final String currentMinutes = currentTime.minute <= 9 ? '0${currentTime.minute}' : (currentTime.minute).toString();
-      final String currentSeconds = currentTime.second <= 9 ? '0${currentTime.second}' : (currentTime.second).toString();
+      final String currentMinutes =
+          currentTime.minute <= 9 ? '0${currentTime.minute}' : (currentTime.minute).toString();
+      final String currentSeconds =
+          currentTime.second <= 9 ? '0${currentTime.second}' : (currentTime.second).toString();
       final String nextSecond =
-      currentTime.second <= 9 ? '0${currentTime.second + 1}' : (currentTime.second + 1).toString();
+          currentTime.second <= 9 ? '0${currentTime.second + 1}' : (currentTime.second + 1).toString();
       final String currentWholeTime = '$currentHour:$currentMinutes:$currentSeconds';
       final String nextSecondWholeTime = '$currentHour:$currentMinutes:$nextSecond';
 
