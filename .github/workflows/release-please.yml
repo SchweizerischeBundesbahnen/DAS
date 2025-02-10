@@ -262,6 +262,8 @@ jobs:
           node-version-file: 'webapp/.nvmrc'
           cache: 'npm'
           cache-dependency-path: 'webapp/package-lock.json'
+      - run: npm clean-install
+      - run: npm run build --prod
       - name: Login to GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
       - name: Create container image

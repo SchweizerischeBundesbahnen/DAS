@@ -41,7 +41,7 @@
     </SP_Points>
     <SP_Areas>
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="MO"
-            TAF_TAP_location_type="station">
+                          TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <CountryCodeISO>CH</CountryCodeISO>
                 <LocationPrimaryCode>3006</LocationPrimaryCode>
@@ -76,11 +76,6 @@
             <TAF_TAP_LocationName language="de" messageString="Neuchâtel"/>
         </TAF_TAP_Location>
 
-
-        <NetworkSpecificArea startEndQualifier="Ends" endLocation="2300" name="nonStandardTrackEquipment">
-            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L1LS-2TracksWithSingleTrackEquipment"/>
-        </NetworkSpecificArea>
-
         <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="2500" endLocation="3700" name="nonStandardTrackEquipment">
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-convSpeedReversingImpossible"/>
         </NetworkSpecificArea>
@@ -90,10 +85,6 @@
     </SP_Areas>
 
     <SP_ContextInformation>
-
-        <KilometreReferencePoint location="2300">
-            <KM_Reference kmRef="10.1"/>
-        </KilometreReferencePoint>
 
         <KilometreReferencePoint location="2500">
             <KM_Reference kmRef="12.5"/>

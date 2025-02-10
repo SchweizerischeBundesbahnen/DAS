@@ -7,8 +7,10 @@
 
 ## Getting-Started
 ### Run on localhost
-1. Add environment variables (according to _src/main/resources/application.yml_) and specify concrete values in _.env_
-
+1. Add environment variables (according to _src/main/resources/application.yml_) and specify concrete values
+    1. either by run configuration
+    2. or an .env file
+2. Run `SferaMockApplication`
 
 ## Scenarios
 

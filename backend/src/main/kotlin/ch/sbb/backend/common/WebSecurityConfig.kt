@@ -37,7 +37,7 @@ class WebSecurityConfig {
                 authorize("/v3/api-docs/**", permitAll)
                 authorize("/actuator/health/**", permitAll)
                 authorize("/error", authenticated)
-                authorize("/api/**", hasRole("admin"))
+                authorize("/api/**", authenticated)
                 authorize("/**", denyAll)
             }
             csrf { disable() }

@@ -5,6 +5,7 @@ import 'package:das_client/model/journey/cab_signaling.dart';
 import 'package:das_client/model/journey/connection_track.dart';
 import 'package:das_client/model/journey/curve_point.dart';
 import 'package:das_client/model/journey/journey.dart';
+import 'package:das_client/model/journey/level_crossing.dart';
 import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
@@ -35,14 +36,14 @@ void main() {
 
     // THEN
     expect(cabSignalingStart, isNotNull);
-    expect(cabSignalingStart!.isCABStart, isTrue);
-    expect(cabSignalingStart.isCABEnd, isFalse);
+    expect(cabSignalingStart!.isStart, isTrue);
+    expect(cabSignalingStart.isEnd, isFalse);
     expect(signal, isNotNull);
-    expect(signal!.isCABStart, isFalse);
-    expect(signal.isCABEnd, isFalse);
+    expect(signal!.isStart, isFalse);
+    expect(signal.isEnd, isFalse);
     expect(cabSignalingEnd, isNotNull);
-    expect(cabSignalingEnd!.isCABStart, isFalse);
-    expect(cabSignalingEnd.isCABEnd, isTrue);
+    expect(cabSignalingEnd!.isStart, isFalse);
+    expect(cabSignalingEnd.isEnd, isTrue);
   });
   test('test cumulativeHeight calculation', () {
     // GIVEN
@@ -79,7 +80,36 @@ void main() {
     expect(cabSignalingEnd, isNotNull);
     expect(cabSignalingEnd!.cumulativeHeight, expectedHeight += ServicePointRow.rowHeight);
     expect(signal, isNotNull);
-    expect(signal!.cumulativeHeight, expectedHeight += BaseRowBuilder.rowHeight);
+    expect(signal!.cumulativeHeight, expectedHeight += (BaseRowBuilder.rowHeight / 2));
+  });
+  test('test cumulativeHeight calculation without start', () {
+    // GIVEN
+    final journey = Journey(
+      metadata: Metadata(
+        nonStandardTrackEquipmentSegments: [
+          _trackEquipmentSegment(TrackEquipmentType.etcsL1lsSingleTrackNoBlock, null, 9000),
+        ],
+      ),
+      data: [
+        CurvePoint(order: 100, kilometre: []),
+        ServicePoint(name: LocalizedString(), order: 200, kilometre: []),
+        Signal(order: 300, kilometre: []),
+      ],
+    );
+
+    // WHEN
+    final curvePoint = TrackEquipmentRenderData.from(journey.data, journey.metadata, 0);
+    final servicePoint = TrackEquipmentRenderData.from(journey.data, journey.metadata, 1);
+    final signal = TrackEquipmentRenderData.from(journey.data, journey.metadata, 2);
+
+    // THEN
+    var expectedHeight = 0.0;
+    expect(curvePoint, isNotNull);
+    expect(curvePoint!.cumulativeHeight, expectedHeight);
+    expect(servicePoint, isNotNull);
+    expect(servicePoint!.cumulativeHeight, expectedHeight += (BaseRowBuilder.rowHeight / 2));
+    expect(signal, isNotNull);
+    expect(signal!.cumulativeHeight, expectedHeight += ServicePointRow.rowHeight);
   });
   test('test trackEquipmentType mapping', () {
     // GIVEN
@@ -89,6 +119,7 @@ void main() {
         _trackEquipmentSegment(TrackEquipmentType.etcsL2ConvSpeedReversingImpossible, 250, 350),
         _trackEquipmentSegment(TrackEquipmentType.etcsL2ExtSpeedReversingImpossible, 350, 450),
         _trackEquipmentSegment(TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment, 450, 550),
+        _trackEquipmentSegment(TrackEquipmentType.etcsL1lsSingleTrackNoBlock, 550, 650),
       ]),
       data: [
         CurvePoint(order: 100, kilometre: []),
@@ -96,6 +127,7 @@ void main() {
         ServicePoint(name: LocalizedString(), order: 300, kilometre: []),
         Signal(order: 400, kilometre: []),
         ConnectionTrack(order: 500, kilometre: []),
+        LevelCrossing(order: 600, kilometre: []),
       ],
     );
 
@@ -105,6 +137,7 @@ void main() {
     final servicePoint = TrackEquipmentRenderData.from(journey.data, journey.metadata, 2);
     final signal = TrackEquipmentRenderData.from(journey.data, journey.metadata, 3);
     final connectionTrack = TrackEquipmentRenderData.from(journey.data, journey.metadata, 4);
+    final levelCrossing = TrackEquipmentRenderData.from(journey.data, journey.metadata, 5);
 
     // THEN
     expect(curvePoint, isNull);
@@ -114,7 +147,10 @@ void main() {
     expect(servicePoint!.trackEquipmentType, TrackEquipmentType.etcsL2ConvSpeedReversingImpossible);
     expect(signal, isNotNull);
     expect(signal!.trackEquipmentType, TrackEquipmentType.etcsL2ExtSpeedReversingImpossible);
-    expect(connectionTrack, isNull); // non ETCS level 2 are ignored
+    expect(connectionTrack, isNotNull);
+    expect(connectionTrack!.trackEquipmentType, TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment);
+    expect(levelCrossing, isNotNull);
+    expect(levelCrossing!.trackEquipmentType, TrackEquipmentType.etcsL1lsSingleTrackNoBlock);
   });
 
   test('test conventional extended speed border', () {
@@ -151,7 +187,8 @@ void main() {
     expect(cabSignaling!.isConventionalExtendedSpeedBorder, isFalse);
     expect(servicePoint, isNotNull);
     expect(servicePoint!.isConventionalExtendedSpeedBorder, isTrue);
-    expect(signal, isNull);
+    expect(signal, isNotNull);
+    expect(signal!.isConventionalExtendedSpeedBorder, isFalse);
     expect(connectionTrack, isNotNull);
     expect(connectionTrack!.isConventionalExtendedSpeedBorder, isFalse);
     expect(servicePoint2, isNotNull);
@@ -159,7 +196,7 @@ void main() {
   });
 }
 
-NonStandardTrackEquipmentSegment _trackEquipmentSegment(TrackEquipmentType type, int startOrder, int endOrder) {
+NonStandardTrackEquipmentSegment _trackEquipmentSegment(TrackEquipmentType type, int? startOrder, int? endOrder) {
   return NonStandardTrackEquipmentSegment(
     startKm: [],
     endKm: [],
