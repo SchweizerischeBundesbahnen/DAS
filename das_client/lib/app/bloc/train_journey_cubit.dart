@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:das_client/app/model/ru.dart';
+import 'package:das_client/app/pages/journey/train_journey/automatic_advancement_controller.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/journey.dart';
@@ -29,6 +30,8 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
 
   StreamSubscription? _stateSubscription;
 
+  AutomaticAdvancementController automaticAdvancementController = AutomaticAdvancementController();
+
   void loadTrainJourney() async {
     final currentState = state;
     if (currentState is SelectingTrainJourneyState) {
@@ -46,6 +49,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
       _stateSubscription = _sferaService.stateStream.listen((state) {
         switch (state) {
           case SferaServiceState.connected:
+            automaticAdvancementController = AutomaticAdvancementController();
             emit(TrainJourneyLoadedState(ru, trainNumber, date));
             break;
           case SferaServiceState.connecting:
@@ -120,6 +124,14 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
 
   void updateExpandedGroups(List<int> expandedGroups) {
     _settingsSubject.add(_settingsSubject.value.copyWith(expandedGroups: expandedGroups));
+  }
+
+  void setAutomaticAdvancement(bool active) {
+    Fimber.i('Automatic advancement state changed to active=$active');
+    if (active) {
+      automaticAdvancementController.scrollToCurrentPosition();
+    }
+    _settingsSubject.add(_settingsSubject.value.copyWith(automaticAdvancementActive: active));
   }
 }
 

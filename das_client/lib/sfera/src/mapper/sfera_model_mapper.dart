@@ -18,6 +18,7 @@ import 'package:das_client/sfera/src/model/enums/start_end_qualifier.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/related_train_information.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
+import 'package:das_client/sfera/src/model/segment_profile_list.dart';
 import 'package:das_client/sfera/src/model/train_characteristics.dart';
 import 'package:fimber/fimber.dart';
 
@@ -30,17 +31,22 @@ class SferaModelMapper {
     List<SegmentProfile> segmentProfiles = const [],
     List<TrainCharacteristics> trainCharacteristics = const [],
     RelatedTrainInformation? relatedTrainInformation,
+    Journey? lastJourney,
   }) {
     try {
-      return _mapToJourney(journeyProfile, segmentProfiles, trainCharacteristics, relatedTrainInformation);
+      return _mapToJourney(journeyProfile, segmentProfiles, trainCharacteristics, relatedTrainInformation, lastJourney);
     } catch (e, s) {
       Fimber.e('Error mapping journey-/segment profiles to journey:', ex: e, stacktrace: s);
       return Journey.invalid();
     }
   }
 
-  static Journey _mapToJourney(JourneyProfile journeyProfile, List<SegmentProfile> segmentProfiles,
-      List<TrainCharacteristics> trainCharacteristics, RelatedTrainInformation? relatedTrainInformation) {
+  static Journey _mapToJourney(
+      JourneyProfile journeyProfile,
+      List<SegmentProfile> segmentProfiles,
+      List<TrainCharacteristics> trainCharacteristics,
+      RelatedTrainInformation? relatedTrainInformation,
+      Journey? lastJourney) {
     final journeyData = <BaseData>[];
 
     final segmentProfilesLists = journeyProfile.segmentProfilesLists.toList();
@@ -72,12 +78,15 @@ class SferaModelMapper {
 
     journeyData.sort();
 
+    final currentPosition =
+        _calculateCurrentPosition(journeyData, segmentProfilesLists, relatedTrainInformation, lastJourney);
     final trainCharacteristic = _resolveFirstTrainCharacteristics(journeyProfile, trainCharacteristics);
     final servicePoints = journeyData.whereType<ServicePoint>();
+
     return Journey(
       metadata: Metadata(
-        nextStop: servicePoints.skip(1).firstWhereOrNull((data) => data.isStop),
-        currentPosition: journeyData.first,
+        nextStop: _calculateNextStop(servicePoints, currentPosition),
+        currentPosition: currentPosition,
         additionalSpeedRestrictions: additionalSpeedRestrictions,
         routeStart: journeyData.firstOrNull,
         routeEnd: journeyData.lastOrNull,
@@ -94,6 +103,47 @@ class SferaModelMapper {
       ),
       data: journeyData,
     );
+  }
+
+  static BaseData? _calculateCurrentPosition(List<BaseData> journeyData, List<SegmentProfileList> segmentProfilesLists,
+      RelatedTrainInformation? relatedTrainInformation, Journey? lastJourney) {
+    final positionSpeed = relatedTrainInformation?.ownTrain.trainLocationInformation.positionSpeed;
+
+    if (relatedTrainInformation == null || positionSpeed == null) {
+      // Return first element as we have no information yet
+      return journeyData.first;
+    }
+
+    final positionSegmentIndex = segmentProfilesLists
+        .indexWhere((it) => it.spId == positionSpeed.spId);
+    if (positionSegmentIndex == -1) {
+      Fimber.w(
+          'Received position on unknown segment with spId: ${positionSpeed.spId}');
+      return journeyData.firstWhereOrNull((it) => it.order == lastJourney?.metadata.currentPosition?.order);
+    } else {
+      final positionOrder = calculateOrder(
+          positionSegmentIndex, positionSpeed.location);
+      final currentPositionData = journeyData.lastWhereOrNull((it) => it.order <= positionOrder);
+      return _adjustCurrentPositionToServicePoint(journeyData, currentPositionData ?? journeyData.first);
+    }
+  }
+
+  static BaseData? _adjustCurrentPositionToServicePoint(List<BaseData> journeyData, BaseData currentPosition) {
+    final positionIndex = journeyData.indexOf(currentPosition);
+    if (journeyData.length > positionIndex + 1) {
+      final nextData = journeyData[positionIndex + 1];
+      if (nextData is ServicePoint) {
+        return nextData;
+      }
+    }
+
+    return currentPosition;
+  }
+
+  static ServicePoint? _calculateNextStop(Iterable<ServicePoint> servicePoints, BaseData? currentPosition) {
+    return servicePoints.skip(1).firstWhereOrNull(
+            (data) => data.isStop && (currentPosition == null || data.order > currentPosition.order)) ??
+        servicePoints.last;
   }
 
   static List<AdditionalSpeedRestriction> _parseAdditionalSpeedRestrictions(

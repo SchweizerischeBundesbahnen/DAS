@@ -7,6 +7,7 @@ class RouteCellBody extends StatelessWidget {
   static const Key stopOnRequestKey = Key('stopOnRequestRouteCell');
   static const Key routeStartKey = Key('startRouteCell');
   static const Key routeEndKey = Key('endRouteCell');
+  static const Key chevronKey = Key('chevronCell');
 
   const RouteCellBody({
     super.key,
@@ -80,6 +81,7 @@ class RouteCellBody extends StatelessWidget {
     return Positioned(
       bottom: isStop ? sbbDefaultSpacing + circleSize : sbbDefaultSpacing,
       child: CustomPaint(
+        key: chevronKey,
         size: Size(chevronWidth, chevronHeight),
         painter: _ChevronPainter(color: chevronColor),
       ),

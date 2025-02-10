@@ -3,6 +3,8 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../app_test.dart';
+
 Future<void> openDrawer(WidgetTester tester) async {
   final ScaffoldState scaffoldState = tester.firstState(find.byType(Scaffold));
   scaffoldState.openDrawer();
@@ -28,4 +30,64 @@ Finder findTextFieldByLabel(String label) {
 
 Finder findDASTableRowByText(String text) {
   return find.ancestor(of: find.text(text), matching: find.byKey(DASTable.rowKey));
+}
+
+/// Verifies, that SBB is selected and loads train journey with [trainNumber]
+Future<void> loadTrainJourney(WidgetTester tester, {required String trainNumber}) async {
+  // verify we have ru SBB selected.
+  expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
+
+  final trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
+  expect(trainNumberText, findsOneWidget);
+
+  await enterText(tester, trainNumberText, trainNumber);
+
+  // load train journey
+  final primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
+  await tester.tap(primaryButton);
+
+  // wait for train journey to load
+  await tester.pumpAndSettle();
+}
+
+Future<void> waitUntilExists(WidgetTester tester, FinderBase<Element> element, {int maxWaitSeconds = 5}) async {
+  int counter = 0;
+  while (true) {
+    await tester.pumpAndSettle();
+
+    element.reset();
+    if (element.evaluate().isNotEmpty) {
+      break;
+    }
+
+    // cancel after maxWaitSeconds seconds
+    if (counter++ > maxWaitSeconds * 10) {
+      // makes the test fail
+      expect(element, findsAny);
+      break;
+    }
+
+    await Future.delayed(const Duration(milliseconds: 100));
+  }
+}
+
+Future<void> waitUntilNotExists(WidgetTester tester, FinderBase<Element> element, {int maxWaitSeconds = 5}) async {
+  int counter = 0;
+  while (true) {
+    await tester.pumpAndSettle();
+
+    element.reset();
+    if (element.evaluate().isEmpty) {
+      break;
+    }
+
+    // cancel after maxWaitSeconds seconds
+    if (counter++ > maxWaitSeconds * 10) {
+      // makes the test fail
+      expect(element, findsNothing);
+      break;
+    }
+
+    await Future.delayed(const Duration(milliseconds: 100));
+  }
 }

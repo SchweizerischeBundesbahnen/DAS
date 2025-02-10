@@ -21,7 +21,9 @@ import 'package:das_client/model/journey/whistles.dart';
 import 'package:das_client/sfera/sfera_component.dart';
 import 'package:das_client/sfera/src/mapper/sfera_model_mapper.dart';
 import 'package:das_client/sfera/src/model/delay.dart';
+import 'package:das_client/sfera/src/model/g2b_event_payload.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
+import 'package:das_client/sfera/src/model/related_train_information.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
 import 'package:das_client/sfera/src/model/train_characteristics.dart';
 import 'package:fimber/fimber.dart';
@@ -47,7 +49,12 @@ void main() {
   }
 
   Journey getJourney(String trainNumber, int spCount,
-      {String? spPostfix, String? jpPostfix, String? tcPostfix, int tcCount = 0}) {
+      {String? spPostfix,
+      String? jpPostfix,
+      String? tcPostfix,
+      int tcCount = 0,
+      int? relatedTrainInfoEventId,
+      Journey? lastJourney}) {
     final resourceDir = Directory('test_resources');
     expect(resourceDir.existsSync(), true);
 
@@ -80,8 +87,19 @@ void main() {
       trainCharacteristics.add(trainCharacteristic);
     }
 
+    RelatedTrainInformation? relatedTrainInformation;
+    if (relatedTrainInfoEventId != null) {
+      final file = File('${testDirectory.path}/SFERA_Event_${trainNumber}_$relatedTrainInfoEventId.xml');
+      final g2bEventPayload = SferaReplyParser.parse<G2bEventPayload>(file.readAsStringSync());
+      relatedTrainInformation = g2bEventPayload.relatedTrainInformation;
+    }
+
     return SferaModelMapper.mapToJourney(
-        journeyProfile: journeyProfile, segmentProfiles: segmentProfiles, trainCharacteristics: trainCharacteristics);
+        journeyProfile: journeyProfile,
+        segmentProfiles: segmentProfiles,
+        trainCharacteristics: trainCharacteristics,
+        relatedTrainInformation: relatedTrainInformation,
+        lastJourney: lastJourney);
   }
 
   test('Test invalid journey on SP missing', () async {
@@ -966,6 +984,65 @@ void main() {
     _checkSpeed(sSpeedEntry3.incomingSpeeds[1], 60);
     expect(sSpeedEntry3.outgoingSpeeds, hasLength(1));
     _checkSpeed(sSpeedEntry3.outgoingSpeeds[0], 50);
+  });
+
+  test('Test current position is start when nothing is given ', () async {
+    var journey = getJourney('T9', 1, tcCount: 1);
+    expect(journey.valid, true);
+    expect(journey.metadata.currentPosition, journey.data.first);
+
+    journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 0);
+    expect(journey.valid, true);
+    expect(journey.metadata.currentPosition, journey.data.first);
+  });
+
+  test('Test current position is set to signal', () async {
+    var journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 1000);
+    expect(journey.valid, true);
+    expect(journey.metadata.currentPosition, journey.data[5]);
+
+    journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 3000);
+    expect(journey.valid, true);
+    expect(journey.metadata.currentPosition, journey.data[18]);
+  });
+
+  test('Test current position is set to service point on last signal', () async {
+    var journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 2000);
+    expect(journey.valid, true);
+    expect(journey.metadata.currentPosition, journey.data.whereType<ServicePoint>().toList()[1]);
+
+    journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 4000);
+    expect(journey.valid, true);
+    expect(journey.metadata.currentPosition, journey.data.whereType<ServicePoint>().toList()[2]);
+  });
+
+  test('Test next station is calculated correctly with non position infos ', () async {
+    final journey = getJourney('T9', 1, tcCount: 1);
+    expect(journey.valid, true);
+    expect(journey.metadata.nextStop, journey.data.whereType<ServicePoint>().toList()[1]);
+  });
+
+  test('Test next station is calculated correctly with related train info', () async {
+    final journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 2000);
+    expect(journey.valid, true);
+    expect(journey.metadata.nextStop, journey.data.whereType<ServicePoint>().toList()[2]);
+  });
+
+  test('Test use last position on invalid position update', () async {
+    final journey1 = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 1000);
+    expect(journey1.valid, true);
+    expect(journey1.metadata.currentPosition, journey1.data[5]);
+    expect(journey1.metadata.nextStop, journey1.data.whereType<ServicePoint>().toList()[1]);
+
+    final journey2 = getJourney(
+      'T9',
+      1,
+      tcCount: 1,
+      relatedTrainInfoEventId: -1,
+      lastJourney: journey1,
+    );
+    expect(journey2.metadata.currentPosition, journey2.data[5]);
+    expect(journey2.metadata.nextStop, journey2.data.whereType<ServicePoint>().toList()[1]);
   });
 }
 

@@ -1,9 +1,7 @@
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_row_builder.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
-import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/track_equipment_segment.dart';
 
@@ -89,14 +87,7 @@ class TrackEquipmentRenderData {
 
   /// returns height of track equipment "line" for given row
   static double _rowHeight(BaseData data, NonStandardTrackEquipmentSegment segment, List<BaseData> rowData) {
-    late double rowHeight;
-    switch (data.type) {
-      case Datatype.servicePoint:
-        rowHeight = ServicePointRow.rowHeight;
-        break;
-      default:
-        rowHeight = BaseRowBuilder.rowHeight;
-    }
+    final rowHeight = BaseRowBuilder.rowHeightForData(data);
 
     final isStartOrEnd = _isStart(data, segment, rowData) || _isEnd(data, segment, rowData);
 
