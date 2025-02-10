@@ -3,8 +3,11 @@
 ## Introduction
 - solace
 - for SFERA e2e tests of mobile app
+- generates SFERA model out of sfera_*.xsd
 
 ## Getting-Started
+### Run on localhost
+1. Add environment variables (according to _src/main/resources/application.yml_) and specify concrete values in _.env_
 
 
 ## Scenarios
