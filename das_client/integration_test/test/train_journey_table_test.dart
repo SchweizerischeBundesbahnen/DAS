@@ -47,42 +47,16 @@ void main() {
       final headerFinder = find.byType(Header);
       expect(headerFinder, findsOneWidget);
 
-      // Timer logic: increase timer every second, rerun the base every 100 ms and check if the UI changed
-      int counter = 0;
+      await waitUntilNotExists(tester, find.descendant(of: headerFinder, matching: find.text('+00:00')));
 
-      final completer = Completer<void>();
-
-      expect(find.descendant(of: headerFinder, matching: find.text('+00:00')), findsOneWidget);
-
-      while (!completer.isCompleted) {
-        await tester.pumpAndSettle();
-
-        if (!find.descendant(of: headerFinder, matching: find.text('+00:00')).evaluate().isNotEmpty) {
-          expect(find.descendant(of: headerFinder, matching: find.text('+00:30')), findsOneWidget);
-          completer.complete();
-          break;
-        }
-
-        // cancel after 10 seconds
-        if (counter++ > 10 * 10) {
-          completer
-              .completeError(Exception('UI did not change from the base value to the updated value (+00:00 -> +00:30)'));
-          break;
-        }
-
-        await Future.delayed(const Duration(milliseconds: 100));
-      }
-
-      await completer.future;
-
-      await tester.pumpAndSettle();
+      expect(find.descendant(of: headerFinder, matching: find.text('+00:30')), findsOneWidget);
     });
 
     testWidgets('test balise multiple level crossings', (tester) async {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: 'T7');
+      await loadTrainJourney(tester, trainNumber: 'T7');
 
       final scrollableFinder = find.byType(ListView);
       expect(scrollableFinder, findsOneWidget);
@@ -98,7 +72,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: 'T7');
+      await loadTrainJourney(tester, trainNumber: 'T7');
 
       final scrollableFinder = find.byType(ListView);
       expect(scrollableFinder, findsOneWidget);
@@ -123,7 +97,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: 'T7');
+      await loadTrainJourney(tester, trainNumber: 'T7');
 
       final scrollableFinder = find.byType(ListView);
       expect(scrollableFinder, findsOneWidget);
@@ -172,7 +146,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: 'T6');
+      await loadTrainJourney(tester, trainNumber: 'T6');
 
       final breakingSeriesHeaderCell = find.byKey(TrainJourney.breakingSeriesHeaderKey);
       expect(breakingSeriesHeaderCell, findsOneWidget);
@@ -183,7 +157,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: 'T5');
+      await loadTrainJourney(tester, trainNumber: 'T5');
 
       final breakingSeriesHeaderCell = find.byKey(TrainJourney.breakingSeriesHeaderKey);
       expect(breakingSeriesHeaderCell, findsOneWidget);
@@ -194,7 +168,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: 'T5');
+      await loadTrainJourney(tester, trainNumber: 'T5');
 
       // Open break series bottom sheet
       await tapElement(tester, find.byKey(TrainJourney.breakingSeriesHeaderKey));
@@ -233,7 +207,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: 'T4');
+      await loadTrainJourney(tester, trainNumber: 'T4');
 
       // Open break series bottom sheet
       await tapElement(tester, find.byKey(TrainJourney.breakingSeriesHeaderKey));
@@ -245,7 +219,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: 'T5');
+      await loadTrainJourney(tester, trainNumber: 'T5');
 
       final expectedSpeeds = {
         'Genève-Aéroport': '60',
@@ -276,7 +250,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: 'T5');
+      await loadTrainJourney(tester, trainNumber: 'T5');
 
       await _selectBreakSeries(tester, breakSeries: 'A85');
 
@@ -313,7 +287,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: 'T9999');
+      await loadTrainJourney(tester, trainNumber: 'T9999');
 
       final scrollableFinder = find.byType(ListView);
       expect(scrollableFinder, findsOneWidget);
@@ -352,7 +326,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: 'T2');
+      await loadTrainJourney(tester, trainNumber: 'T2');
 
       final scrollableFinder = find.byType(ListView);
       expect(scrollableFinder, findsOneWidget);
@@ -381,7 +355,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: 'T2');
+      await loadTrainJourney(tester, trainNumber: 'T2');
 
       final scrollableFinder = find.byType(ListView);
       expect(scrollableFinder, findsOneWidget);
@@ -415,7 +389,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: 'T6');
+      await loadTrainJourney(tester, trainNumber: 'T6');
 
       // List of expected column headers
       final List<String> expectedHeaders = [
@@ -436,7 +410,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: 'T9999');
+      await loadTrainJourney(tester, trainNumber: 'T9999');
 
       final scrollableFinder = find.byType(ListView);
       expect(scrollableFinder, findsOneWidget);
@@ -471,7 +445,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: 'T3');
+      await loadTrainJourney(tester, trainNumber: 'T3');
 
       final scrollableFinder = find.byType(ListView);
       expect(scrollableFinder, findsOneWidget);
@@ -536,7 +510,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: 'T6');
+      await loadTrainJourney(tester, trainNumber: 'T6');
 
       final scrollableFinder = find.byType(ListView);
       expect(scrollableFinder, findsOneWidget);
@@ -552,7 +526,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: 'T6');
+      await loadTrainJourney(tester, trainNumber: 'T6');
 
       // check first train station
       expect(find.text('Zürich HB'), findsOneWidget);
@@ -574,7 +548,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: 'T6');
+      await loadTrainJourney(tester, trainNumber: 'T6');
 
       final scrollableFinder = find.byType(ListView);
       expect(scrollableFinder, findsOneWidget);
@@ -589,7 +563,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: 'T9999');
+      await loadTrainJourney(tester, trainNumber: 'T9999');
 
       final scrollableFinder = find.byType(ListView);
       expect(scrollableFinder, findsOneWidget);
@@ -630,7 +604,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: 'T9999');
+      await loadTrainJourney(tester, trainNumber: 'T9999');
 
       final scrollableFinder = find.byType(ListView);
       expect(scrollableFinder, findsOneWidget);
@@ -655,7 +629,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: 'T6');
+      await loadTrainJourney(tester, trainNumber: 'T6');
 
       final glanzenbergText = find
           .byWidgetPredicate((it) => it is Text && it.data == 'Glanzenberg' && it.style?.fontStyle == FontStyle.italic);
@@ -670,7 +644,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: 'T9999');
+      await loadTrainJourney(tester, trainNumber: 'T9999');
 
       final scrollableFinder = find.byType(ListView);
       expect(scrollableFinder, findsOneWidget);
@@ -693,7 +667,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: 'T9999');
+      await loadTrainJourney(tester, trainNumber: 'T9999');
 
       final scrollableFinder = find.byType(ListView);
       expect(scrollableFinder, findsOneWidget);
@@ -730,7 +704,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: 'T1');
+      await loadTrainJourney(tester, trainNumber: 'T1');
 
       final scrollableFinder = find.byType(ListView);
       expect(scrollableFinder, findsOneWidget);
@@ -779,7 +753,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: 'T1');
+      await loadTrainJourney(tester, trainNumber: 'T1');
 
       final scrollableFinder = find.byType(ListView);
       expect(scrollableFinder, findsOneWidget);
@@ -846,7 +820,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await _loadTrainJourney(tester, trainNumber: 'T8');
+      await loadTrainJourney(tester, trainNumber: 'T8');
 
       final scrollableFinder = find.byType(ListView);
       expect(scrollableFinder, findsOneWidget);
@@ -980,29 +954,11 @@ void main() {
 void _checkTrackEquipmentOnServicePoint(String name, Key expectedKey, {bool hasConvExtSpeedBorder = false}) {
   final servicePointRow = findDASTableRowByText(name);
   final trackEquipment = find.descendant(of: servicePointRow, matching: find.byKey(expectedKey));
-  expect(trackEquipment, findsOneWidget);
+  expect(trackEquipment, findsAny);
 
   final convExtSpeedBorder = find.descendant(
       of: servicePointRow, matching: find.byKey(TrackEquipmentCellBody.conventionalExtendedSpeedBorderKey));
-  expect(convExtSpeedBorder, hasConvExtSpeedBorder ? findsOneWidget : findsNothing);
-}
-
-/// Verifies, that SBB is selected and loads train journey with [trainNumber]
-Future<void> _loadTrainJourney(WidgetTester tester, {required String trainNumber}) async {
-  // verify we have ru SBB selected.
-  expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
-
-  final trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
-  expect(trainNumberText, findsOneWidget);
-
-  await enterText(tester, trainNumberText, trainNumber);
-
-  // load train journey
-  final primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
-  await tester.tap(primaryButton);
-
-  // wait for train journey to load
-  await tester.pumpAndSettle();
+  expect(convExtSpeedBorder, hasConvExtSpeedBorder ? findsAny : findsNothing);
 }
 
 Future<void> _selectBreakSeries(WidgetTester tester, {required String breakSeries}) async {

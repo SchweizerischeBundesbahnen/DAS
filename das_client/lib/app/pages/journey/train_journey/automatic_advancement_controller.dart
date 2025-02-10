@@ -15,39 +15,40 @@ class AutomaticAdvancementController {
   AutomaticAdvancementController({ScrollController? controller}) : scrollController = controller ?? ScrollController();
 
   final ScrollController scrollController;
-  Journey? _lastJourney;
+  Journey? _currentJourney;
   TrainJourneySettings? _settings;
   List<BaseRowBuilder> _renderedRows = [];
   Timer? _scrollTimer;
+  double? _lastScrollPosition;
 
   void updateRenderedRows(List<BaseRowBuilder> rows) {
     _renderedRows = rows;
   }
 
   void handleJourneyUpdate(Journey journey, TrainJourneySettings settings) {
-    final lastJourney = _lastJourney;
+    _currentJourney = journey;
     _settings = settings;
-    _lastJourney = journey;
 
     if (!settings.automaticAdvancementActive) {
       return;
     }
 
-    if (lastJourney?.metadata.currentPosition?.order != journey.metadata.currentPosition?.order) {
-      scrollToCurrentPosition();
+    final targetScrollPosition = _calculateScrollPosition();
+    if (_lastScrollPosition != targetScrollPosition && targetScrollPosition != null) {
+      _scrollToPosition(targetScrollPosition);
     }
   }
 
-  void scrollToCurrentPosition() {
-    if (_lastJourney == null || _lastJourney?.metadata.currentPosition == null || scrollController.positions.isEmpty) {
-      return;
+  double? _calculateScrollPosition() {
+    if (_currentJourney == null || _currentJourney?.metadata.currentPosition == null || scrollController.positions.isEmpty) {
+      return null;
     }
 
     var stickyRowHeight = 0.0;
     var targetScrollPosition = 0.0;
 
     for (final row in _renderedRows) {
-      if (_lastJourney!.metadata.currentPosition == row.data) {
+      if (_currentJourney!.metadata.currentPosition == row.data) {
         if (!row.isSticky) {
           // remove the sticky header height
           targetScrollPosition -= stickyRowHeight;
@@ -56,13 +57,7 @@ class AutomaticAdvancementController {
         // Adjust to maxScrollExtent so we don't overscroll
         targetScrollPosition = min(targetScrollPosition, scrollController.position.maxScrollExtent);
 
-        Fimber.i('Scrolling to position $targetScrollPosition');
-        scrollController.animateTo(
-          targetScrollPosition,
-          duration: _calculateDuration(targetScrollPosition, 1),
-          curve: Curves.easeInOut,
-        );
-        break;
+        return targetScrollPosition;
       }
 
       if (row.isSticky) {
@@ -70,6 +65,26 @@ class AutomaticAdvancementController {
       }
       targetScrollPosition += row.height;
     }
+
+    return null;
+  }
+
+  void scrollToCurrentPosition() {
+    final targetScrollPosition = _calculateScrollPosition();
+    if (targetScrollPosition != null) {
+      _scrollToPosition(targetScrollPosition);
+    }
+  }
+
+  void _scrollToPosition(double targetScrollPosition) {
+    _lastScrollPosition = targetScrollPosition;
+
+    Fimber.i('Scrolling to position $targetScrollPosition');
+    scrollController.animateTo(
+      targetScrollPosition,
+      duration: _calculateDuration(targetScrollPosition, 1),
+      curve: Curves.easeInOut,
+    );
   }
 
   void onTouch() {

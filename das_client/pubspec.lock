@@ -314,7 +314,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: b04e13fe7dacd6fbfc84e7a3c9070afd6aa61297
+      resolved-ref: "86c097b39cc96e3bf7531061383c83d4c45e5f95"
       url: "https://github.com/SchweizerischeBundesbahnen/easy_sticky_header.git"
     source: git
     version: "1.1.1"

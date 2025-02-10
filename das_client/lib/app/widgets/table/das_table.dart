@@ -70,6 +70,14 @@ class DASTable extends StatelessWidget {
                   BoxShadow(
                       color: SBBColors.black.withAlpha((255.0 * 0.2).round()), blurRadius: 5, offset: Offset(0, -5))
                 ]),
+                footerBuilder: (context, afterIndex) {
+                  for (var i = afterIndex + 1; i < rows.length; i++) {
+                    if (rows[i].isSticky) {
+                      return _dataRow(rows[i], i);
+                    }
+                  }
+                  return null;
+                },
                 child: ListView.builder(
                   controller: scrollController,
                   itemCount: rows.length + 1, // + 1 for bottom spacer
@@ -77,7 +85,7 @@ class DASTable extends StatelessWidget {
                     if (index == rows.length) {
                       return SizedBox(height: bottomMargin);
                     }
-                    return _dataRow(rows[index], index);
+                    return _dataRowSticky(rows[index], index);
                   },
                 ),
               ),
@@ -145,11 +153,16 @@ class DASTable extends StatelessWidget {
     });
   }
 
+  Widget _dataRowSticky(DASTableRow row, int index) {
+    final dataRow = _dataRow(row, index);
+    return row.isSticky ? StickyContainerWidget(index: index, child: dataRow) : dataRow;
+  }
+
   Widget _dataRow(DASTableRow row, int index) {
     final visibleColumns = columns.where((column) => column.isVisible).toList(growable: false);
     final visibleCells = row.cells.whereIndexed((index, _) => columns[index].isVisible).toList(growable: false);
 
-    final dataRow = InkWell(
+    return InkWell(
       onTap: row.onTap,
       child: _FixedHeightRow(
         height: row.height,
@@ -160,8 +173,6 @@ class DASTable extends StatelessWidget {
         }),
       ),
     );
-
-    return row.isSticky ? StickyContainerWidget(index: index, child: dataRow) : dataRow;
   }
 
   Widget _dataCell(DASTableCell cell, DASTableColumn column, DASTableRow row, {isLast = false}) {

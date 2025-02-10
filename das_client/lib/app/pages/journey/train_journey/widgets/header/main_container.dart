@@ -103,13 +103,13 @@ class MainContainer extends StatelessWidget {
             onPressed: () {},
           ),
           if (settings.automaticAdvancementActive)
-          SBBTertiaryButtonLarge(
-            label: context.l10n.p_train_journey_header_button_pause,
-            icon: SBBIcons.pause_small,
-            onPressed: () {
-              context.trainJourneyCubit.setAutomaticAdvancement(false);
-            },
-          ),
+            SBBTertiaryButtonLarge(
+              label: context.l10n.p_train_journey_header_button_pause,
+              icon: SBBIcons.pause_small,
+              onPressed: () {
+                context.trainJourneyCubit.setAutomaticAdvancement(false);
+              },
+            ),
           if (!settings.automaticAdvancementActive)
             SBBTertiaryButtonLarge(
               label: context.l10n.p_train_journey_header_button_start,

@@ -107,21 +107,22 @@ class SferaModelMapper {
 
   static BaseData? _calculateCurrentPosition(List<BaseData> journeyData, List<SegmentProfileList> segmentProfilesLists,
       RelatedTrainInformation? relatedTrainInformation, Journey? lastJourney) {
-    if (relatedTrainInformation == null ||
-        relatedTrainInformation.ownTrain.trainLocationInformation.positionSpeed == null) {
+    final positionSpeed = relatedTrainInformation?.ownTrain.trainLocationInformation.positionSpeed;
+
+    if (relatedTrainInformation == null || positionSpeed == null) {
       // Return first element as we have no information yet
       return journeyData.first;
     }
 
     final positionSegmentIndex = segmentProfilesLists
-        .indexWhere((it) => it.spId == relatedTrainInformation.ownTrain.trainLocationInformation.positionSpeed!.spId);
+        .indexWhere((it) => it.spId == positionSpeed.spId);
     if (positionSegmentIndex == -1) {
       Fimber.w(
-          'Received position on unknown segment with spId: ${relatedTrainInformation.ownTrain.trainLocationInformation.positionSpeed?.spId}');
+          'Received position on unknown segment with spId: ${positionSpeed.spId}');
       return journeyData.firstWhereOrNull((it) => it.order == lastJourney?.metadata.currentPosition?.order);
     } else {
       final positionOrder = calculateOrder(
-          positionSegmentIndex, relatedTrainInformation.ownTrain.trainLocationInformation.positionSpeed!.location);
+          positionSegmentIndex, positionSpeed.location);
       final currentPositionData = journeyData.lastWhereOrNull((it) => it.order <= positionOrder);
       return _adjustCurrentPositionToServicePoint(journeyData, currentPositionData ?? journeyData.first);
     }

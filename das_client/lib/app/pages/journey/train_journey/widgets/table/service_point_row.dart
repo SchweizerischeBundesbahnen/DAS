@@ -21,8 +21,9 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
     super.height = rowHeight,
     super.config,
   }) : super(
-            rowColor: metadata.nextStop == data ? Color(0xFFCDD6E8) : SBBColors.white,
-            isSticky: true,);
+          rowColor: metadata.nextStop == data ? Color(0xFFCDD6E8) : SBBColors.white,
+          isSticky: true,
+        );
 
   @override
   DASTableCell informationCell(BuildContext context) {
