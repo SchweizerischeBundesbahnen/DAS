@@ -974,6 +974,10 @@ void main() {
 
       await tester.pumpAndSettle();
     });
+
+    testWidgets('find low battery icon when battery is beneath 30%', (tester) async {
+
+    });
   });
 }
 
