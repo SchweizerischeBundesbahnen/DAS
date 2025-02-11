@@ -1,4 +1,5 @@
 import 'package:das_client/sfera/src/model/delay.dart';
+import 'package:das_client/sfera/src/model/position_speed.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 
 class TrainLocationInformation extends SferaXmlElement {
@@ -7,6 +8,8 @@ class TrainLocationInformation extends SferaXmlElement {
   TrainLocationInformation({super.type = elementType, super.attributes, super.children, super.value});
 
   Delay get delay => children.whereType<Delay>().first;
+
+  PositionSpeed? get positionSpeed => children.whereType<PositionSpeed>().firstOrNull;
 
   @override
   bool validate() {

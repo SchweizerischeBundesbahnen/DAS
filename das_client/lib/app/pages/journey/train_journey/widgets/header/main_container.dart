@@ -2,11 +2,13 @@ import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/departure_authorization.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_channel.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class MainContainer extends StatelessWidget {
@@ -16,15 +18,16 @@ class MainContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = context.trainJourneyCubit;
 
-    return StreamBuilder<Journey?>(
-        stream: bloc.journeyStream,
+    return StreamBuilder<List<dynamic>>(
+        stream: CombineLatestStream.list([bloc.journeyStream, bloc.settingsStream]),
         builder: (context, snapshot) {
-          if (!snapshot.hasData || snapshot.data == null) {
+          if (!snapshot.hasData || snapshot.data?[0] == null || snapshot.data?[1] == null) {
             return Center(
               child: SBBLoadingIndicator(),
             );
           }
-          final Journey journey = snapshot.data!;
+          final journey = snapshot.data![0] as Journey;
+          final settings = snapshot.data![1] as TrainJourneySettings;
 
           return SBBGroup(
             margin: const EdgeInsetsDirectional.fromSTEB(
@@ -39,7 +42,7 @@ class MainContainer extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _topHeaderRow(context, journey),
+                _topHeaderRow(context, journey, settings),
                 _divider(),
                 _bottomHeaderRow(),
               ],
@@ -68,7 +71,7 @@ class MainContainer extends StatelessWidget {
     );
   }
 
-  Widget _topHeaderRow(BuildContext context, Journey journey) {
+  Widget _topHeaderRow(BuildContext context, Journey journey, TrainJourneySettings settings) {
     return SizedBox(
       height: 48.0,
       child: Row(
@@ -83,13 +86,13 @@ class MainContainer extends StatelessWidget {
               ),
             ),
           ),
-          _buttonArea(),
+          _buttonArea(settings),
         ],
       ),
     );
   }
 
-  Widget _buttonArea() {
+  Widget _buttonArea(TrainJourneySettings settings) {
     return Builder(builder: (context) {
       return Row(
         spacing: sbbDefaultSpacing * 0.5,
@@ -99,11 +102,22 @@ class MainContainer extends StatelessWidget {
             icon: SBBIcons.moon_small,
             onPressed: () {},
           ),
-          SBBTertiaryButtonLarge(
-            label: context.l10n.p_train_journey_header_button_pause,
-            icon: SBBIcons.pause_small,
-            onPressed: () {},
-          ),
+          if (settings.automaticAdvancementActive)
+            SBBTertiaryButtonLarge(
+              label: context.l10n.p_train_journey_header_button_pause,
+              icon: SBBIcons.pause_small,
+              onPressed: () {
+                context.trainJourneyCubit.setAutomaticAdvancement(false);
+              },
+            ),
+          if (!settings.automaticAdvancementActive)
+            SBBTertiaryButtonLarge(
+              label: context.l10n.p_train_journey_header_button_start,
+              icon: SBBIcons.play_small,
+              onPressed: () {
+                context.trainJourneyCubit.setAutomaticAdvancement(true);
+              },
+            ),
           SBBIconButtonLarge(
             icon: SBBIcons.context_menu_small,
             onPressed: () {},

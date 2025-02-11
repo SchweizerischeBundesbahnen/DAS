@@ -11,14 +11,14 @@ enum Flavor {
     authenticatorConfig: _authenticatorConfigMockDev,
     tmsAuthenticatorConfig: _authenticatorConfigTmsDev,
     backendUrl: 'https://das-backend-dev.app.sbb.ch',
-    mqttTopicPrefix: '',
+    mqttTopicPrefix: 'dev/',
   ),
   inte(
     displayName: 'Inte',
     tokenExchangeUrl: 'https://sfera-mock.app.sbb.ch/customClaim/requestToken',
     mqttUrl: 'wss://das-poc.messaging.solace.cloud',
     authenticatorConfig: _authenticatorConfigInte,
-    backendUrl: 'https://das-backend-dev.app.sbb.ch',
+    backendUrl: 'https://das-backend-int.app.sbb.ch',
     mqttTopicPrefix: '',
   ),
   prod(

@@ -20,7 +20,10 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
     required super.data,
     super.height = rowHeight,
     super.config,
-  }) : super(rowColor: metadata.nextStop == data ? SBBColors.royal.withAlpha((255.0 * 0.2).round()) : null);
+  }) : super(
+          rowColor: metadata.nextStop == data ? Color(0xFFCDD6E8) : SBBColors.white,
+          isSticky: true,
+        );
 
   @override
   DASTableCell informationCell(BuildContext context) {
@@ -79,10 +82,8 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
   DASTableCell localSpeedCell(BuildContext context) {
     if (data.localSpeedData == null) return DASTableCell.empty();
 
-    final currentTrainSeries =
-        config.settings.selectedBreakSeries?.trainSeries ?? metadata.breakSeries?.trainSeries;
-    final currentBreakSeries =
-        config.settings.selectedBreakSeries?.breakSeries ?? metadata.breakSeries?.breakSeries;
+    final currentTrainSeries = config.settings.selectedBreakSeries?.trainSeries ?? metadata.breakSeries?.trainSeries;
+    final currentBreakSeries = config.settings.selectedBreakSeries?.breakSeries ?? metadata.breakSeries?.breakSeries;
 
     final graduatedSpeeds = data.localSpeedData!.speedsFor(currentTrainSeries, currentBreakSeries);
     if (graduatedSpeeds == null) return DASTableCell.empty();

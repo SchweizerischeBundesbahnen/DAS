@@ -6,8 +6,9 @@ import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:das_client/app/widgets/table/das_table_column.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:das_client/app/widgets/table/das_table_theme.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:easy_sticky_header/easy_sticky_header.dart';
 import 'package:flutter/material.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 /// [DASTable] provides a the basic structure for a train journey table.
 ///
@@ -63,15 +64,30 @@ class DASTable extends StatelessWidget {
           children: [
             _headerRow(),
             Expanded(
-              child: ListView.builder(
-                controller: scrollController,
-                itemCount: rows.length + 1, // + 1 for bottom spacer
-                itemBuilder: (context, index) {
-                  if (index == rows.length) {
-                    return SizedBox(height: bottomMargin);
+              child: StickyHeader(
+                showFooter: true,
+                footerDecoration: BoxDecoration(boxShadow: [
+                  BoxShadow(
+                      color: SBBColors.black.withAlpha((255.0 * 0.2).round()), blurRadius: 5, offset: Offset(0, -5))
+                ]),
+                footerBuilder: (context, afterIndex) {
+                  for (var i = afterIndex + 1; i < rows.length; i++) {
+                    if (rows[i].isSticky) {
+                      return _dataRow(rows[i], i);
+                    }
                   }
-                  return _dataRow(rows[index]);
+                  return null;
                 },
+                child: ListView.builder(
+                  controller: scrollController,
+                  itemCount: rows.length + 1, // + 1 for bottom spacer
+                  itemBuilder: (context, index) {
+                    if (index == rows.length) {
+                      return SizedBox(height: bottomMargin);
+                    }
+                    return _dataRowSticky(rows[index], index);
+                  },
+                ),
               ),
             ),
           ],
@@ -137,9 +153,15 @@ class DASTable extends StatelessWidget {
     });
   }
 
-  Widget _dataRow(DASTableRow row) {
+  Widget _dataRowSticky(DASTableRow row, int index) {
+    final dataRow = _dataRow(row, index);
+    return row.isSticky ? StickyContainerWidget(index: index, child: dataRow) : dataRow;
+  }
+
+  Widget _dataRow(DASTableRow row, int index) {
     final visibleColumns = columns.where((column) => column.isVisible).toList(growable: false);
     final visibleCells = row.cells.whereIndexed((index, _) => columns[index].isVisible).toList(growable: false);
+
     return InkWell(
       onTap: row.onTap,
       child: _FixedHeightRow(

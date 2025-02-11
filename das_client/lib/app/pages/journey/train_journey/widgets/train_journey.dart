@@ -1,14 +1,15 @@
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/i18n/i18n.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/bracket_station_render_data.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_config.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/break_series_selection.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_level_crossing_group_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_row.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_row_builder.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cab_signaling_row.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/bracket_station_render_data.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/track_equipment_render_data.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_config.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/connection_track_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/curve_point_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/level_crossing_row.dart';
@@ -20,7 +21,6 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/tram_ar
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/whistle_row.dart';
 import 'package:das_client/app/widgets/table/das_table.dart';
 import 'package:das_client/app/widgets/table/das_table_column.dart';
-import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
 import 'package:das_client/model/journey/balise.dart';
 import 'package:das_client/model/journey/balise_level_crossing_group.dart';
@@ -61,22 +61,30 @@ class TrainJourney extends StatelessWidget {
         final journey = snapshot.data![0] as Journey;
         final settings = snapshot.data![1] as TrainJourneySettings;
 
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          context.trainJourneyCubit.automaticAdvancementController.handleJourneyUpdate(journey, settings);
+        });
+
         return _body(context, journey, settings);
       },
     );
   }
 
   Widget _body(BuildContext context, Journey journey, TrainJourneySettings settings) {
+    final tableRows = _rows(context, journey, settings);
+    context.trainJourneyCubit.automaticAdvancementController.updateRenderedRows(tableRows);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
       child: DASTable(
+        scrollController: context.trainJourneyCubit.automaticAdvancementController.scrollController,
         columns: _columns(context, journey, settings),
-        rows: _rows(context, journey, settings),
+        rows: tableRows.map((it) => it.build(context)).toList(),
       ),
     );
   }
 
-  List<DASTableRow> _rows(BuildContext context, Journey journey, TrainJourneySettings settings) {
+  List<BaseRowBuilder> _rows(BuildContext context, Journey journey, TrainJourneySettings settings) {
     final rows = journey.data.groupBaliseAndLeveLCrossings(settings.expandedGroups);
 
     final groupedRows =
@@ -96,82 +104,82 @@ class TrainJourney extends StatelessWidget {
             metadata: journey.metadata,
             data: rowData as ServicePoint,
             config: trainJourneyConfig,
-          ).build(context);
+          );
         case Datatype.protectionSection:
           return ProtectionSectionRow(
             metadata: journey.metadata,
             data: rowData as ProtectionSection,
             config: trainJourneyConfig,
-          ).build(context);
+          );
         case Datatype.curvePoint:
           return CurvePointRow(
             metadata: journey.metadata,
             data: rowData as CurvePoint,
             config: trainJourneyConfig,
-          ).build(context);
+          );
         case Datatype.signal:
           return SignalRow(
             metadata: journey.metadata,
             data: rowData as Signal,
             config: trainJourneyConfig,
-          ).build(context);
+          );
         case Datatype.additionalSpeedRestriction:
           return AdditionalSpeedRestrictionRow(
             metadata: journey.metadata,
             data: rowData as AdditionalSpeedRestrictionData,
             config: trainJourneyConfig,
-          ).build(context);
+          );
         case Datatype.connectionTrack:
           return ConnectionTrackRow(
             metadata: journey.metadata,
             data: rowData as ConnectionTrack,
             config: trainJourneyConfig,
-          ).build(context);
+          );
         case Datatype.speedChange:
           return SpeedChangeRow(
             metadata: journey.metadata,
             data: rowData as SpeedChange,
             config: trainJourneyConfig,
-          ).build(context);
+          );
         case Datatype.cabSignaling:
           return CABSignalingRow(
             metadata: journey.metadata,
             data: rowData as CABSignaling,
             config: trainJourneyConfig,
-          ).build(context);
+          );
         case Datatype.balise:
           return BaliseRow(
             metadata: journey.metadata,
             data: rowData as Balise,
             config: trainJourneyConfig,
             isGrouped: groupedRows.contains(rowData),
-          ).build(context);
+          );
         case Datatype.whistle:
           return WhistleRow(
             metadata: journey.metadata,
             data: rowData as Whistle,
             config: trainJourneyConfig,
-          ).build(context);
+          );
         case Datatype.levelCrossing:
           return LevelCrossingRow(
             metadata: journey.metadata,
             data: rowData as LevelCrossing,
             config: trainJourneyConfig,
             isGrouped: groupedRows.contains(rowData),
-          ).build(context);
+          );
         case Datatype.tramArea:
           return TramAreaRow(
             metadata: journey.metadata,
             data: rowData as TramArea,
             config: trainJourneyConfig,
-          ).build(context);
+          );
         case Datatype.baliseLevelCrossingGroup:
           return BaliseLevelCrossingGroupRow(
             metadata: journey.metadata,
             data: rowData as BaliseLevelCrossingGroup,
             config: trainJourneyConfig,
             onTap: () => _onBaliseLevelCrossingGroupTap(context, rowData, settings),
-          ).build(context);
+          );
       }
     });
   }

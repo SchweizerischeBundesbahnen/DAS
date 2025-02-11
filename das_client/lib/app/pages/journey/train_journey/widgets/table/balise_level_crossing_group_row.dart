@@ -37,7 +37,7 @@ class BaliseLevelCrossingGroupRow extends BaseRowBuilder<BaliseLevelCrossingGrou
           children: [
             Text(_levelCrossingCount > 0 ? context.l10n.p_train_journey_table_level_crossing : ''),
             Spacer(),
-            Text(_baliseCount.toString()),
+            Text(_baliseCount > 1 ? _baliseCount.toString() : ''),
           ],
         ),
         alignment: Alignment.centerRight,
