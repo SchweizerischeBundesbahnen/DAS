@@ -34,6 +34,9 @@ class _BatteryStatusState extends State<BatteryStatus> {
     }, onError: (error) {
       Fimber.w('Battery state stream error: $error');
     });
+
+
+    //Das mit alle Minute
   }
 
   @override
