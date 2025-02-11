@@ -38,7 +38,7 @@ public class JourneyProfileRepository implements ApplicationRunner {
 
     // company and startDate is ignored
     public Optional<JourneyProfile> getJourneyProfile(TrainIdentification trainIdentification) {
-        return Optional.ofNullable(journeyProfiles.get(trainIdentification.operationalNumber()));
+        return Optional.ofNullable(journeyProfiles.get(trainIdentification.baseOperationalNumber()));
     }
 
     public Set<String> getAvailableJourneyProfiles() {

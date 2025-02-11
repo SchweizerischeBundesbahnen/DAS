@@ -14,9 +14,11 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,trains
-
-
+        include: health,trains,sessions
+      cors:
+        allowed-origins: ${ALLOWED_ORIGINS}
+        allowed-methods: 'GET,POST,OPTIONS'
+        allowed-headers: '*'
 
 spring:
   profiles:

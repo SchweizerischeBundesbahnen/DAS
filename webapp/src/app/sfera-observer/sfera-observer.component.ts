@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import { SbbFormFieldModule } from "@sbb-esta/angular/form-field";
 import { SbbInputModule } from "@sbb-esta/angular/input";
@@ -19,6 +19,8 @@ import {
   TcRequestOptions
 } from "./sfera-xml-creation";
 import { SbbAccordionModule } from "@sbb-esta/angular/accordion";
+import { SessionsService } from "../sfera-discover/sessions.service";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: 'app-sfera-observer',
@@ -36,9 +38,9 @@ import { SbbAccordionModule } from "@sbb-esta/angular/accordion";
   templateUrl: './sfera-observer.component.html',
   styleUrl: './sfera-observer.component.scss',
 })
-export class SferaObserverComponent implements OnDestroy {
+export class SferaObserverComponent implements OnInit, OnDestroy {
   companyControl = new FormControl('1085', {nonNullable: true});
-  trainControl = new FormControl('4816', {nonNullable: true});
+  trainControl = new FormControl('1513', {nonNullable: true});
   dateControl = new FormControl(new Date().toISOString().split('T')[0], {nonNullable: true});
   clientIdControl = new FormControl(environment.mqttServiceOptions.clientId, {nonNullable: true});
   environmentControl = new FormControl(environment.customTopicPrefix.length > 0, {nonNullable: true});
@@ -57,7 +59,24 @@ export class SferaObserverComponent implements OnDestroy {
   protected readonly MqttConnectionState = MqttConnectionState;
 
   constructor(private oidcSecurityService: OidcSecurityService,
-              protected mqService: MqService) {
+              protected mqService: MqService,
+              private sessionsService: SessionsService,
+              private route: ActivatedRoute) {
+  }
+
+  ngOnInit() {
+    const params = this.route.snapshot.paramMap;
+    const operationNumber = params.get('operationNumber');
+    if (operationNumber) this.trainControl.setValue(operationNumber);
+    const companyCode = params.get('companyCode');
+    if (companyCode) this.companyControl.setValue(companyCode);
+    const clientId = params.get('clientId');
+    if (clientId) this.clientIdControl.setValue(clientId);
+    const date = params.get('date');
+    if (date) this.dateControl.setValue(date);
+    if (params.keys.length > 0) {
+      this.observe()
+    }
   }
 
   async observe() {
@@ -453,5 +472,14 @@ export class SferaObserverComponent implements OnDestroy {
       }]
     });
     this.mqService.publish(this.b2gTopic!, jpRequest);
+  }
+
+  nextLocation() {
+    this.sessionsService.nextLocation({
+      operationalNumber: this.trainControl.value,
+      clientId: this.clientIdControl.value!,
+      companyCode: this.companyControl.value,
+      date: this.dateControl.value,
+    }).subscribe()
   }
 }

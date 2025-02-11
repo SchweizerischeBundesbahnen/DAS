@@ -33,7 +33,9 @@
   <button type="button" class="ml-3" sbb-button (click)="sendJPRequest()">Send JP request</button>
   <button type="button" class="ml-3" sbb-button (click)="sendSPRequest()">Send SP request</button>
   <button type="button" class="ml-3" sbb-button (click)="sendTCRequest()">Send TC request</button>
-  <button type="button" class="ml-3" sbb-button (click)="sendSessionTermination()">Send Session termination</button>
+  <button type="button" class="ml-3" sbb-button (click)="sendSessionTermination()">Send Session
+    termination
+  </button>
 
   <div class="info">
     @if (environmentControl.value) {
@@ -43,6 +45,10 @@
     <p>Train operation: {{ this.dateControl.value + '_' + this.trainControl.value }}</p>
     <p>Client ID: {{ this.clientIdControl.value }}</p>
   </div>
+
+  @if (trainControl.value.endsWith('M')) {
+    <button type="button" sbb-alt-button (click)="nextLocation()">Next Location</button>
+  }
 
   <sbb-expansion-panel>
     <sbb-expansion-panel-header> Send custom XML message to B2G-Topic</sbb-expansion-panel-header>

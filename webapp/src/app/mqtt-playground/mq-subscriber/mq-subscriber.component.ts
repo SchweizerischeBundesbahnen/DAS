@@ -6,7 +6,6 @@ import { Subscription } from "rxjs";
 import { IMqttMessage } from "ngx-mqtt";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import { SbbInputModule } from "@sbb-esta/angular/input";
-import { AsyncPipe, JsonPipe } from "@angular/common";
 
 @Component({
   selector: 'app-mq-subscriber',
@@ -15,9 +14,7 @@ import { AsyncPipe, JsonPipe } from "@angular/common";
     ReactiveFormsModule,
     SbbButtonModule,
     SbbFormFieldModule,
-    SbbInputModule,
-    AsyncPipe,
-    JsonPipe
+    SbbInputModule
   ],
   templateUrl: './mq-subscriber.component.html',
   styleUrl: './mq-subscriber.component.scss'

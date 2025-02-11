@@ -4,6 +4,7 @@ import ch.sbb.sferamock.messages.model.ClientId;
 import ch.sbb.sferamock.messages.model.OperationMode;
 import ch.sbb.sferamock.messages.model.RequestContext;
 import ch.sbb.sferamock.messages.model.TrainIdentification;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -52,13 +53,20 @@ public class RegistrationService {
                 ? newSetWith(clientId)
                 : existingSetWith(clientIdentifiers, clientId));
         }
-        eventService.registerActiveTrain(requestContext);
+
+        if (!trainIdentification.isManualLocation()) {
+            eventService.registerActiveTrain(requestContext);
+        }
     }
 
     public void deregisterClient(ClientId clientId) {
         deregisterTrainIfLastClient(clientId);
         eventService.deregisterActiveTrain(clientId);
         registrationMap.remove(clientId);
+    }
+
+    public Map<ClientId, Registration> getRegistrations() {
+        return this.registrationMap;
     }
 
     private void deregisterTrainIfLastClient(ClientId clientId) {
@@ -84,7 +92,20 @@ public class RegistrationService {
         activeTrains.clear();
     }
 
-    public record Registration(TrainIdentification trainIdentification, OperationMode operationMode) {
+    public void nextLocationEvent(ClientId clientId) {
+        if (isRegistered(clientId)) {
+            var registration = registrationMap.get(clientId);
+            if (registration.trainIdentification.isManualLocation()) {
+                eventService.nextLocationEvent(new RequestContext(registration.trainIdentification, clientId), registration.manualLoactionIndex);
+                registrationMap.put(clientId, new Registration(registration.trainIdentification, registration.operationMode, registration.timestamp, registration.manualLoactionIndex + 1));
+            }
+        }
+    }
 
+    public record Registration(TrainIdentification trainIdentification, OperationMode operationMode, LocalDateTime timestamp, int manualLoactionIndex) {
+
+        public Registration(TrainIdentification trainIdentification, OperationMode operationMode) {
+            this(trainIdentification, operationMode, LocalDateTime.now(), 0);
+        }
     }
 }

@@ -45,6 +45,11 @@ public class EventService {
         scheduledTasks.put(requestContext.clientId(), futures);
     }
 
+    public void nextLocationEvent(RequestContext requestContext, int manualLocationIndex) {
+        var event = this.eventRepository.events.get(requestContext.tid().baseOperationalNumber()).get(manualLocationIndex);
+        eventPublisher.publishRelatedTrainInformation(event.payload(), requestContext);
+    }
+
     public void deregisterActiveTrain(ClientId clientId) {
         List<ScheduledFuture<?>> futures = scheduledTasks.remove(clientId);
         if (futures != null) {
