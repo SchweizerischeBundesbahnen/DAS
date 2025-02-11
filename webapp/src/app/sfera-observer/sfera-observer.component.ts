@@ -66,7 +66,7 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const params = this.route.snapshot.paramMap;
-    const operationNumber = params.get('operationNumber');
+    const operationNumber = params.get('operationalNumber');
     if (operationNumber) this.trainControl.setValue(operationNumber);
     const companyCode = params.get('companyCode');
     if (companyCode) this.companyControl.setValue(companyCode);

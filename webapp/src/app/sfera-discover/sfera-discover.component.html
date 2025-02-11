@@ -14,7 +14,7 @@
     <tbody>
       @for (session of sessions; track session) {
         <tr (click)="openObserver(session)">
-          <td>{{ session.timestamp | date:'hh:mm:ss' }}</td>
+          <td>{{ session.timestamp | date:'HH:mm:ss' }}</td>
           <td>{{ session.operationalNumber }}</td>
           <td>{{ session.clientId }}</td>
           <td>{{ session.companyCode }}</td>
