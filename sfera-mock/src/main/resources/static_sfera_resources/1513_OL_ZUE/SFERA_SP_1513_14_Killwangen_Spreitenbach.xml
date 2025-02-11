@@ -58,7 +58,7 @@
                 <CountryCodeISO>CH</CountryCodeISO>
                 <LocationPrimaryCode>3506</LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Killwangen Spreitenbach"/>
+            <TAF_TAP_LocationName language="de" messageString="Killwangen-Spreitenbach"/>
 
 			<TAF_TAP_Location_NSP name="stationSpeed">
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
@@ -79,21 +79,22 @@
 			<TAF_TAP_Location_NSP name="newLineSpeed">
 				<NetworkSpecificParameter name="xmlNewLineSpeed" value="
 					&lt;lineSpeed&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;140/[60]&quot;/&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;140/[60]&quot;/&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;140/[60]&quot;/&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;140/[60]&quot;/&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;140/[60]&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;70/[60]&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;110/[60]&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;110/[60]&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;110/[60]&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;110/[60]&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;110/[60]&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;110/[60]&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;110/[60]&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;110/[60]&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;110/[60]&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;115&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;125&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;135&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;140&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;140&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;75&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;80&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;85&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;85&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;110&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;115&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;120&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;120&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;120&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;120&quot;/&gt;
+						&lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;100&quot;/&gt;
 					&lt;/lineSpeed&gt;
 				"/>
 			</TAF_TAP_Location_NSP>

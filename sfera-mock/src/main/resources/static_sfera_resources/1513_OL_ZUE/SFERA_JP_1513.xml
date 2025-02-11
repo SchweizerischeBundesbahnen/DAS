@@ -16,7 +16,7 @@
         <OTN_ID>
             <Company>1285</Company>
             <OperationalTrainNumber>1513</OperationalTrainNumber>
-            <StartDate>2022-01-04</StartDate>
+            <StartDate>2025-05-17</StartDate>
         </OTN_ID>
     </TrainIdentification>
 
@@ -152,13 +152,13 @@
         </TimingPointConstraints>
     </SegmentProfileList>
 
-    <SegmentProfileList SP_ID="1513_11_Maegenswil" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileList SP_ID="1513_11_Maegenwil" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
         <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T09:15:10Z" TP_PlannedLatestArrivalTime="2025-05-17T09:15:00Z">
             <TimingPointReference>
-                <TP_ID_Reference TP_ID="Maegenswil"/>
+                <TP_ID_Reference TP_ID="Maegenwil"/>
             </TimingPointReference>
         </TimingPointConstraints>
     </SegmentProfileList>

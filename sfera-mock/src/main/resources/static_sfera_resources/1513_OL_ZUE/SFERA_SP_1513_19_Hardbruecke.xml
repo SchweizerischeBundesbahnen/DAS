@@ -45,7 +45,7 @@
                 <CountryCodeISO>CH</CountryCodeISO>
                 <LocationPrimaryCode>3020</LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Hardbrücke"/>
+            <TAF_TAP_LocationName language="de" messageString="Zürich Hardbrücke"/>
 
 			<TAF_TAP_Location_NSP name="stationSpeed">
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
