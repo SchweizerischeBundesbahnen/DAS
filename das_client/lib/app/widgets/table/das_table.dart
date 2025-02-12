@@ -17,18 +17,21 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class DASTable extends StatelessWidget {
   static const Key rowKey = Key('DAS-Table-row');
   static const double _headerRowHeight = 40.0;
+  static const Duration snapScrollDuration = Duration(milliseconds: 300);
 
   DASTable({
     required this.columns,
     super.key,
     this.rows = const [],
-    this.scrollController,
+    ScrollController? scrollController,
     this.minBottomMargin = 32.0,
     this.bottomMarginAdjustment = 0,
     this.themeData,
+    this.alignToItem = true,
   })  : assert(columns.isNotEmpty),
         assert(!rows.any((DASTableRow row) => row.cells.length != columns.length),
-            'All rows must have the same number of cells as there are header cells (${columns.length})');
+            'All rows must have the same number of cells as there are header cells (${columns.length})'),
+        scrollController = scrollController ?? ScrollController();
 
   /// List of rows to be displayed in the table.
   final List<DASTableRow> rows;
@@ -40,13 +43,16 @@ class DASTable extends StatelessWidget {
   final DASTableThemeData? themeData;
 
   /// Scroll controller for managing scrollable content (rows) within the table.
-  final ScrollController? scrollController;
+  final ScrollController scrollController;
 
   /// The bottom margin to be applied at the end of the scrollable content of the table.
   final double minBottomMargin;
 
   /// bottom margin can be adjusted to handle sticky headers
   final double bottomMarginAdjustment;
+
+  /// defines if the listview should always align the scroll position to an item after scrolling
+  final bool alignToItem;
 
   @override
   Widget build(BuildContext context) {
@@ -83,18 +89,26 @@ class DASTable extends StatelessWidget {
                     }
                     return null;
                   },
-                  child: ListView.builder(
-                    controller: scrollController,
-                    itemCount: rows.length + 1, // + 1 for bottom spacer
-                    itemBuilder: (context, index) {
-                      if (index == rows.length) {
-                        return SizedBox(
-                            height: max(
-                                constraints.maxHeight - _headerRowHeight - bottomMarginAdjustment - sbbDefaultSpacing,
-                                minBottomMargin));
-                      }
-                      return _dataRowSticky(rows[index], index);
+                  child: NotificationListener<ScrollEndNotification>(
+                    onNotification: (scrollEnd) {
+                      if (!alignToItem) return true;
+
+                      alignToElement(scrollEnd);
+                      return true;
                     },
+                    child: ListView.builder(
+                      controller: scrollController,
+                      itemCount: rows.length + 1, // + 1 for bottom spacer
+                      itemBuilder: (context, index) {
+                        if (index == rows.length) {
+                          return SizedBox(
+                              height: max(
+                                  constraints.maxHeight - _headerRowHeight - bottomMarginAdjustment - sbbDefaultSpacing,
+                                  minBottomMargin));
+                        }
+                        return _dataRowSticky(rows[index], index);
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -103,6 +117,34 @@ class DASTable extends StatelessWidget {
         ),
       );
     });
+  }
+
+  void alignToElement(ScrollEndNotification scrollEnd) {
+    final currentPosition = scrollEnd.metrics.pixels;
+    var itemStart = 0.0;
+    var stickyHeaderHeightAdjustment = 0.0;
+    for (var i = 0; i < rows.length; i++) {
+      final item = rows[i];
+    
+      final itemEnd = itemStart + item.height;
+      final adjustedCurrentPosition = currentPosition + stickyHeaderHeightAdjustment;
+      if (adjustedCurrentPosition >= itemStart && adjustedCurrentPosition < itemEnd) {
+        final targetPosition = itemStart - stickyHeaderHeightAdjustment;
+        if (currentPosition != targetPosition) {
+          // Somehow scroll controller does not work if the scroll is done in the same frame
+          Future.delayed(Duration(milliseconds: 1), () {
+            scrollController.animateTo(targetPosition,
+                duration: snapScrollDuration, curve: Curves.easeInOut);
+          });
+        }
+        break;
+      }
+
+      if (item.isSticky) {
+        stickyHeaderHeightAdjustment = item.height;
+      }
+      itemStart = itemEnd;
+    }
   }
 
   DASTableThemeData _defaultThemeData(BuildContext context) {
