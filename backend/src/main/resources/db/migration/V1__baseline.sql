@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS service_points
+CREATE TABLE IF NOT EXISTS service_point
 (
     uic          INTEGER PRIMARY KEY,
     designation  TEXT NOT NULL,

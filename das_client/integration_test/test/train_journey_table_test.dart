@@ -772,13 +772,13 @@ void main() {
       await tester.dragUntilVisible(find.text('Onnens-Bonvillars'), scrollableFinder, const Offset(0, -50));
       final segment2CABStart = findDASTableRowByText('12.5').first;
       final segment2CABStartTrackEquipment = find.descendant(
-          of: segment2CABStart, matching: find.byKey(TrackEquipmentCellBody.conventionalSpeedReversingImpossible));
+          of: segment2CABStart, matching: find.byKey(TrackEquipmentCellBody.conventionalSpeedReversingImpossibleKey));
       expect(segment2CABStartTrackEquipment, findsOneWidget);
-      _checkTrackEquipmentOnServicePoint('Morges', TrackEquipmentCellBody.conventionalSpeedReversingImpossible);
+      _checkTrackEquipmentOnServicePoint('Morges', TrackEquipmentCellBody.conventionalSpeedReversingImpossibleKey);
       _checkTrackEquipmentOnServicePoint(
-          'Yverdon-les-Bains', TrackEquipmentCellBody.conventionalSpeedReversingImpossible);
+          'Yverdon-les-Bains', TrackEquipmentCellBody.conventionalSpeedReversingImpossibleKey);
       _checkTrackEquipmentOnServicePoint(
-          'Onnens-Bonvillars', TrackEquipmentCellBody.conventionalSpeedReversingImpossible);
+          'Onnens-Bonvillars', TrackEquipmentCellBody.conventionalSpeedReversingImpossibleKey);
 
       // check ExtendedSpeedReversingPossibleKey from Neuchâtel to Rothrist
       await tester.dragUntilVisible(find.text('Grenchen Süd'), scrollableFinder, const Offset(0, -50));
@@ -794,11 +794,11 @@ void main() {
 
       // check ExtendedSpeedReversingPossibleKey in Olten
       await tester.dragUntilVisible(find.text('Aarau'), scrollableFinder, const Offset(0, -50));
-      _checkTrackEquipmentOnServicePoint('Olten', TrackEquipmentCellBody.conventionalSpeedReversingImpossible,
+      _checkTrackEquipmentOnServicePoint('Olten', TrackEquipmentCellBody.conventionalSpeedReversingImpossibleKey,
           hasConvExtSpeedBorder: true);
       final segment2CABEnd = findDASTableRowByText('39.9').first;
       final segment2CABEndTrackEquipment = find.descendant(
-          of: segment2CABEnd, matching: find.byKey(TrackEquipmentCellBody.conventionalSpeedReversingImpossible));
+          of: segment2CABEnd, matching: find.byKey(TrackEquipmentCellBody.conventionalSpeedReversingImpossibleKey));
       expect(segment2CABEndTrackEquipment, findsOneWidget);
 
       // check ExtendedSpeedReversingImpossibleKey from Zürich HB to Opfikon Süd
@@ -812,6 +812,24 @@ void main() {
 
       // check ExtendedSpeedReversingImpossibleKey in Flughafen
       _checkTrackEquipmentOnServicePoint('Flughafen', TrackEquipmentCellBody.extendedSpeedReversingPossibleKey);
+    });
+
+    testWidgets('test if single track without block track equipment is displayed correctly', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T10');
+
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
+
+      // check ExtendedSpeedReversingPossible from Genève-Aéroport to Gland
+      _checkTrackEquipmentOnServicePoint('Meiringen', TrackEquipmentCellBody.singleTrackNoBlockKey);
+      _checkTrackEquipmentOnServicePoint('Meiringen Alpbach', TrackEquipmentCellBody.singleTrackNoBlockKey);
+      _checkTrackEquipmentOnServicePoint('Aareschlucht West', TrackEquipmentCellBody.singleTrackNoBlockKey);
+      _checkTrackEquipmentOnServicePoint('Innertkirchen Unterwasser', TrackEquipmentCellBody.singleTrackNoBlockKey);
+      _checkTrackEquipmentOnServicePoint('Innertkirchen Grimseltor', TrackEquipmentCellBody.singleTrackNoBlockKey);
+      _checkTrackEquipmentOnServicePoint('Innertkirchen Kraftwerk (Bahn)', TrackEquipmentCellBody.singleTrackNoBlockKey);
     });
 
     testWidgets('test if station speeds are displayed correctly', (tester) async {

@@ -4,7 +4,7 @@ import ch.sbb.backend.servicepoints.domain.ServicePoint
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 
-@Entity(name = "service_points")
+@Entity(name = "service_point")
 class ServicePointEntity(
     @Id
     var uic: Int,

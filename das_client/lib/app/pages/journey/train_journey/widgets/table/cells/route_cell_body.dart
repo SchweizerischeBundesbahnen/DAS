@@ -11,12 +11,13 @@ class RouteCellBody extends StatelessWidget {
   static const Key routeStartKey = Key('startRouteCell');
   static const Key routeEndKey = Key('endRouteCell');
 
+  static const double routeCircleSize = 14.0;
+
   const RouteCellBody({
     required this.metadata,
     super.key,
     this.chevronHeight = 8.0,
     this.chevronWidth = 16.0,
-    this.circleSize = 14.0,
     this.lineThickness = 2.0,
     this.isStop = false,
     this.isStopOnRequest = false,
@@ -30,7 +31,6 @@ class RouteCellBody extends StatelessWidget {
 
   final double chevronHeight;
   final double chevronWidth;
-  final double circleSize;
   final double lineThickness;
 
   final bool isCurrentPosition;
@@ -56,7 +56,7 @@ class RouteCellBody extends StatelessWidget {
               RouteChevron(
                   metadata: metadata,
                   isStop: isStop,
-                  circleSize: circleSize,
+                  circleSize: routeCircleSize,
                   chevronWidth: chevronWidth,
                   chevronAnimationData: chevronAnimationData,
                   chevronHeight: chevronHeight),
@@ -86,7 +86,7 @@ class RouteCellBody extends StatelessWidget {
     final circleColor = isDarkTheme ? SBBColors.sky : SBBColors.black;
     return Positioned(
       bottom: sbbDefaultSpacing,
-      child: _RouteCircle(size: circleSize, color: circleColor, isStopOnRequest: isStopOnRequest),
+      child: _RouteCircle(size: routeCircleSize, color: circleColor, isStopOnRequest: isStopOnRequest),
     );
   }
 
