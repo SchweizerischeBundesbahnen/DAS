@@ -54,9 +54,6 @@ class AutomaticAdvancementController {
           targetScrollPosition -= stickyRowHeight;
         }
 
-        // Adjust to maxScrollExtent so we don't overscroll
-        targetScrollPosition = min(targetScrollPosition, scrollController.position.maxScrollExtent);
-
         return targetScrollPosition;
       }
 
