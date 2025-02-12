@@ -68,12 +68,15 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
       color: specialCellColor,
       padding: EdgeInsets.all(0.0),
       alignment: null,
+      clipBehaviour: Clip.none,
       child: RouteCellBody(
+        metadata: metadata,
         isStop: data.isStop,
         isCurrentPosition: metadata.currentPosition == data,
         isRouteStart: metadata.routeStart == data,
         isRouteEnd: metadata.routeEnd == data,
         isStopOnRequest: !data.mandatoryStop,
+        chevronAnimationData: config.chevronAnimationData,
       ),
     );
   }

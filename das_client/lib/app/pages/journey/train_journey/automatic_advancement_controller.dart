@@ -8,7 +8,7 @@ import 'package:fimber/fimber.dart';
 import 'package:flutter/cupertino.dart';
 
 class AutomaticAdvancementController {
-  static const int _minScrollDuration = 500;
+  static const int _minScrollDuration = 1000;
   static const int _maxScrollDuration = 2000;
   static const int _screenIdleTimeSeconds = 10;
 

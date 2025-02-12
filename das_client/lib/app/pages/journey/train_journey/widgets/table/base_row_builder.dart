@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
@@ -88,10 +90,13 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
       color: specialCellColor,
       padding: EdgeInsets.all(0.0),
       alignment: null,
+      clipBehaviour: Clip.none,
       child: RouteCellBody(
+        metadata: metadata,
         isCurrentPosition: metadata.currentPosition == data,
         isRouteStart: metadata.routeStart == data,
         isRouteEnd: metadata.routeEnd == data,
+        chevronAnimationData: config.chevronAnimationData,
       ),
     );
   }

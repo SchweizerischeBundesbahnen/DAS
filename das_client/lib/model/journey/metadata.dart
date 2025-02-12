@@ -6,8 +6,10 @@ import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/track_equipment_segment.dart';
 
 class Metadata {
-  const Metadata({
+  Metadata({
+    DateTime? timestamp,
     this.nextStop,
+    this.lastPosition,
     this.currentPosition,
     this.routeStart,
     this.routeEnd,
@@ -17,9 +19,11 @@ class Metadata {
     this.nonStandardTrackEquipmentSegments = const [],
     this.bracketStationSegments = const [],
     this.availableBreakSeries = const {},
-  });
+  }) : timestamp = timestamp ?? DateTime.now();
 
+  final DateTime timestamp;
   final ServicePoint? nextStop;
+  final BaseData? lastPosition;
   final BaseData? currentPosition;
   final List<AdditionalSpeedRestriction> additionalSpeedRestrictions;
   final BaseData? routeStart;

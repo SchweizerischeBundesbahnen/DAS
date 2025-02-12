@@ -209,10 +209,12 @@ class SferaServiceImpl implements SferaService {
     if (_journeyProfile != null && _segmentProfiles.isNotEmpty) {
       Fimber.i('Updating journey stream...');
       final newJourney = SferaModelMapper.mapToJourney(
-          journeyProfile: _journeyProfile!,
-          segmentProfiles: _segmentProfiles,
-          trainCharacteristics: _trainCharacteristics,
-          relatedTrainInformation: _relatedTrainInformation);
+        journeyProfile: _journeyProfile!,
+        segmentProfiles: _segmentProfiles,
+        trainCharacteristics: _trainCharacteristics,
+        relatedTrainInformation: _relatedTrainInformation,
+        lastJourney: _journeyProfileSubject.value,
+      );
       if (newJourney.valid) {
         _journeyProfileSubject.add(newJourney);
         Fimber.i('Journey updates successfully.');

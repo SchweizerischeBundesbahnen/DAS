@@ -1,15 +1,18 @@
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/chevron_animation_data.dart';
 import 'package:das_client/app/widgets/table/das_table_theme.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:das_client/model/journey/metadata.dart';
 import 'package:flutter/material.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class RouteCellBody extends StatelessWidget {
   static const Key stopKey = Key('stopRouteCell');
   static const Key stopOnRequestKey = Key('stopOnRequestRouteCell');
   static const Key routeStartKey = Key('startRouteCell');
   static const Key routeEndKey = Key('endRouteCell');
-  static const Key chevronKey = Key('chevronCell');
 
   const RouteCellBody({
+    required this.metadata,
     super.key,
     this.chevronHeight = 8.0,
     this.chevronWidth = 16.0,
@@ -20,7 +23,10 @@ class RouteCellBody extends StatelessWidget {
     this.isCurrentPosition = false,
     this.isRouteStart = false,
     this.isRouteEnd = false,
+    this.chevronAnimationData,
   });
+
+  final Metadata metadata;
 
   final double chevronHeight;
   final double chevronWidth;
@@ -33,6 +39,8 @@ class RouteCellBody extends StatelessWidget {
   final bool isRouteStart;
   final bool isRouteEnd;
 
+  final ChevronAnimationData? chevronAnimationData;
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -44,7 +52,14 @@ class RouteCellBody extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             _routeLine(context, height, width),
-            if (isCurrentPosition) _chevron(context),
+            if (isCurrentPosition)
+              RouteChevron(
+                  metadata: metadata,
+                  isStop: isStop,
+                  circleSize: circleSize,
+                  chevronWidth: chevronWidth,
+                  chevronAnimationData: chevronAnimationData,
+                  chevronHeight: chevronHeight),
             if (isStop) _circle(context),
           ],
         );
@@ -72,19 +87,6 @@ class RouteCellBody extends StatelessWidget {
     return Positioned(
       bottom: sbbDefaultSpacing,
       child: _RouteCircle(size: circleSize, color: circleColor, isStopOnRequest: isStopOnRequest),
-    );
-  }
-
-  Positioned _chevron(BuildContext context) {
-    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
-    final chevronColor = isDarkTheme ? SBBColors.sky : SBBColors.black;
-    return Positioned(
-      bottom: isStop ? sbbDefaultSpacing + circleSize : sbbDefaultSpacing,
-      child: CustomPaint(
-        key: chevronKey,
-        size: Size(chevronWidth, chevronHeight),
-        painter: _ChevronPainter(color: chevronColor),
-      ),
     );
   }
 
@@ -128,28 +130,4 @@ class _RouteCircle extends StatelessWidget {
         color: color, // Set the border color
         width: 2.0, // Set the border width
       ));
-}
-
-class _ChevronPainter extends CustomPainter {
-  _ChevronPainter({this.color = SBBColors.black});
-
-  final Color color;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 4;
-
-    final path = Path()
-      ..moveTo(0, 0)
-      ..lineTo(size.width / 2, size.height)
-      ..lineTo(size.width, 0);
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
