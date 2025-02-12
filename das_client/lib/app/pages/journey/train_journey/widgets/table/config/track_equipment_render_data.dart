@@ -1,9 +1,12 @@
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_row_builder.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
 import 'package:das_client/model/journey/metadata.dart';
+import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/track_equipment_segment.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 /// Data class to hold all the information to visualize the track equipment.
 class TrackEquipmentRenderData {
@@ -13,6 +16,7 @@ class TrackEquipmentRenderData {
     this.isEnd = false,
     this.isConventionalExtendedSpeedBorder = false,
     this.trackEquipmentType,
+    this.dataType,
   });
 
   final double cumulativeHeight;
@@ -20,6 +24,7 @@ class TrackEquipmentRenderData {
   final bool isEnd;
   final bool isConventionalExtendedSpeedBorder;
   final TrackEquipmentType? trackEquipmentType;
+  final Type? dataType;
 
   static TrackEquipmentRenderData? from(List<BaseData> rowData, Metadata metadata, int index) {
     final data = rowData[index];
@@ -28,6 +33,7 @@ class TrackEquipmentRenderData {
     if (matchingSegment == null) return null;
 
     return TrackEquipmentRenderData(
+      dataType: data.runtimeType,
       trackEquipmentType: matchingSegment.type,
       cumulativeHeight: _calculateTrackEquipmentCumulativeHeight(rowData, metadata, matchingSegment, index),
       isConventionalExtendedSpeedBorder: _isConventionalExtendedSpeedBorder(rowData, metadata, index),
@@ -89,9 +95,17 @@ class TrackEquipmentRenderData {
   static double _rowHeight(BaseData data, NonStandardTrackEquipmentSegment segment, List<BaseData> rowData) {
     final rowHeight = BaseRowBuilder.rowHeightForData(data);
 
-    final isStartOrEnd = _isStart(data, segment, rowData) || _isEnd(data, segment, rowData);
+    final isStart = _isStart(data, segment, rowData);
+    final isEnd = _isEnd(data, segment, rowData);
 
-    return isStartOrEnd ? rowHeight / 2 : rowHeight;
+    // handle positioning of stop circle on route
+    if (isStart && data is ServicePoint) {
+      return sbbDefaultSpacing + RouteCellBody.routeCircleSize / 2;
+    } else if (isEnd && data is ServicePoint) {
+      return rowHeight - sbbDefaultSpacing - RouteCellBody.routeCircleSize / 2;
+    }
+
+    return isStart || isEnd ? rowHeight / 2 : rowHeight;
   }
 
   /// checks if between current and previous track equipment is a border between extended and conventional speed.
