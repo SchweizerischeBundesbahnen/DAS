@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
+                SP_ID="1809_12_St_Saphorin" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="3900" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>1285</IM_ID>
+    </SP_Zone>
+	
+    <SP_Points>
+
+        <TimingPoint TP_ID="St_Saphorin" location="0">
+            <TP_Name name="STSA"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>1127</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="VV517P" location="600"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="VV517P"/>
+        </Signal>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="VV518P" location="1800"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="VV518P"/>
+        </Signal>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="VV520P" location="2900"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="VV520P"/>
+        </Signal>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="VV22P" location="3500"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="VV22P"/>
+        </Signal>
+
+    </SP_Points>
+
+    <SP_Areas>
+		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="1.0" gradientDirection="Downhill" directionOfApplicationOnSP="Nominal"/>
+		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="6.0" gradientDirection="Uphill" directionOfApplicationOnSP="Nominal"/>
+		
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="STSA" TAF_TAP_location_type="halt">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>1127</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="St-Saphorin"/>
+
+			<TAF_TAP_Location_NSP name="departureAuth">
+				<NetworkSpecificParameter name="departureAuth" value="false"/>
+			</TAF_TAP_Location_NSP>
+
+			<TAF_TAP_Location_NSP name="oPFootNotes">
+				<NetworkSpecificParameter name="xmlOPFootNotes" value="
+				&lt;oPFootNotes&gt; 
+					&lt;footNote type=&quot;contact&quot; refText=&quot;1)&quot;&gt; 
+						&lt;text&gt;+41 512 800 506 RBC Lavaux&lt;/text&gt; 
+					&lt;/footNote&gt; 
+				&lt;/oPFootNotes&gt;
+				" />
+			</TAF_TAP_Location_NSP>
+
+        </TAF_TAP_Location>
+
+        <NetworkSpecificArea startEndQualifier="WholeSP" name="nonStandardTrackEquipment">
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2convSpeedReversingImpossible"/>
+        </NetworkSpecificArea>
+
+    </SP_Areas>
+
+    <SP_ContextInformation>
+
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="14.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="600">
+            <KM_Reference kmRef="15.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1800">
+            <KM_Reference kmRef="16.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2900">
+            <KM_Reference kmRef="17.4"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="3500">
+            <KM_Reference kmRef="18.0"/>
+        </KilometreReferencePoint>
+		
+    </SP_ContextInformation>
+	
+</SegmentProfile>

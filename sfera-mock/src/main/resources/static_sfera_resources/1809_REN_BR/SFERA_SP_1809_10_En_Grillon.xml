@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
+                SP_ID="1809_10_En_Grillon" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="400" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>1285</IM_ID>
+    </SP_Zone>
+	
+    <SP_Points>
+
+        <TimingPoint TP_ID="En_Grillon" location="0">
+            <TP_Name name="GRIL"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>19694</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+    </SP_Points>
+
+    <SP_Areas>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="GRIL" TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>19694</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="En Grillon"/>
+
+			<TAF_TAP_Location_NSP name="departureAuth">
+				<NetworkSpecificParameter name="departureAuth" value="false"/>
+			</TAF_TAP_Location_NSP>
+
+			<TAF_TAP_Location_NSP name="oPFootNotes">
+				<NetworkSpecificParameter name="xmlOPFootNotes" value="
+				&lt;oPFootNotes&gt; 
+					&lt;footNote type=&quot;contact&quot; refText=&quot;1)&quot;&gt; 
+						&lt;text&gt;+41 512 800 506 RBC Lavaux&lt;/text&gt; 
+					&lt;/footNote&gt; 
+				&lt;/oPFootNotes&gt;
+				" />
+			</TAF_TAP_Location_NSP>
+
+        </TAF_TAP_Location>
+
+        <NetworkSpecificArea startEndQualifier="WholeSP" name="nonStandardTrackEquipment">
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2convSpeedReversingImpossible"/>
+        </NetworkSpecificArea>
+
+    </SP_Areas>
+
+    <SP_ContextInformation>
+
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="13.1"/>
+        </KilometreReferencePoint>
+		
+    </SP_ContextInformation>
+	
+</SegmentProfile>

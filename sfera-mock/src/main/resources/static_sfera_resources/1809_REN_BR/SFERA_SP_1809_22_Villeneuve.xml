@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
+                SP_ID="1809_22_Villeneuve" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="4500" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>1285</IM_ID>
+    </SP_Zone>
+	
+    <SP_Points>
+
+        <TimingPoint TP_ID="Villeneuve" location="0">
+            <TP_Name name="VIL"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>1303</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="VIL2P" location="200"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="VIL2P"/>
+        </Signal>
+		
+		<Signal>
+            <Signal_ID signal_ID_Physical="P539" location="1800"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="P539"/>
+        </Signal>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="21A" location="3200"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="21A"/>
+        </Signal>
+
+		<NetworkSpecificPoint name="newLineSpeed" location="1600">
+			<NetworkSpecificParameter name="xmlNewLineSpeed" value="
+				&lt;lineSpeed&gt;
+					&lt;speeds&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;140&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;140&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;140&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;140&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;140&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;105&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;115&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;120&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;120&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;120&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;120&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;120&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;120&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;120&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;120&quot;/&gt;
+						&lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;100&quot;/&gt;
+						&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;140&quot;/&gt;
+						&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;140&quot;/&gt;
+					&lt;/speeds&gt;
+				&lt;/lineSpeed&gt;
+			"/>
+		</NetworkSpecificPoint>
+
+    </SP_Points>
+
+    <SP_Areas>
+		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="3.0" gradientDirection="Uphill" directionOfApplicationOnSP="Nominal"/>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="VIL" TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>1303</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Villeneuve"/>
+			
+			<TAF_TAP_Location_NSP name="departureAuth">
+				<NetworkSpecificParameter name="departureAuth" value="false"/>
+			</TAF_TAP_Location_NSP>
+
+			<TAF_TAP_Location_NSP name="oPFootNotes">
+				<NetworkSpecificParameter name="xmlOPFootNotes" value="
+				&lt;oPFootNotes&gt; 
+					&lt;footNote type=&quot;contact&quot; refText=&quot;1)&quot;&gt; 
+						&lt;text&gt;+41 512 800 506 RBC Lavaux&lt;/text&gt; 
+					&lt;/footNote&gt; 
+				&lt;/oPFootNotes&gt;
+				" />
+			</TAF_TAP_Location_NSP>
+			
+        </TAF_TAP_Location>
+
+        <NetworkSpecificArea startEndQualifier="Ends" startLocation="1600" name="nonStandardTrackEquipment">
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2convSpeedReversingImpossible"/>
+        </NetworkSpecificArea>
+
+    </SP_Areas>
+
+    <SP_ContextInformation>
+
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="29.4"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="200">
+            <KM_Reference kmRef="29.6"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1600">
+            <KM_Reference kmRef="31.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1800">
+            <KM_Reference kmRef="31.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="3200">
+            <KM_Reference kmRef="32.6"/>
+        </KilometreReferencePoint>		
+    </SP_ContextInformation>
+	
+</SegmentProfile>
