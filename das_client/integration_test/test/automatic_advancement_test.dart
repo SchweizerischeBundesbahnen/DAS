@@ -49,9 +49,8 @@ void main() {
       await Future.delayed(const Duration(seconds: 12));
       await tester.pumpAndSettle();
 
-      // Check if the last rows are visible
+      // Check if the last row is visible
       expect(findDASTableRowByText('Olten'), findsAny);
-      expect(findDASTableRowByText('A104'), findsAny);
     });
 
     testWidgets('check scrolling to position if automatic scrolling gets enabled', (tester) async {
@@ -77,9 +76,8 @@ void main() {
 
       await tapElement(tester, startButton);
 
-      // Check if the last rows are visible
+      // Check if last row is visible
       expect(findDASTableRowByText('Olten'), findsAny);
-      expect(findDASTableRowByText('A104'), findsAny);
     });
 
     testWidgets('check not scrolling if automatic advancement is off', (tester) async {

@@ -131,10 +131,12 @@ class DASTable extends StatelessWidget {
       if (adjustedCurrentPosition >= itemStart && adjustedCurrentPosition < itemEnd) {
         final targetPosition = itemStart - stickyHeaderHeightAdjustment;
         if (currentPosition != targetPosition) {
-          // Somehow scroll controller does not work if the scroll is done in the same frame
+          // Somehow scrollController does nothing if the scroll is done without delay
           Future.delayed(Duration(milliseconds: 1), () {
-            scrollController.animateTo(targetPosition,
-                duration: snapScrollDuration, curve: Curves.easeInOut);
+            if (scrollController.positions.isNotEmpty) {
+              scrollController.animateTo(targetPosition,
+                  duration: snapScrollDuration, curve: Curves.easeInOut);
+            }
           });
         }
         break;
