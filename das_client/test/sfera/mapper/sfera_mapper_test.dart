@@ -271,6 +271,17 @@ void main() {
     expect(journey.metadata.nonStandardTrackEquipmentSegments[6].endOrder, isNull);
   });
 
+  test('Test single track without block is generated correctly', () async {
+    final journey = getJourney('T10', 1);
+
+    expect(journey.valid, true);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments, hasLength(1));
+
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[0].type, TrackEquipmentType.etcsL1lsSingleTrackNoBlock);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[0].startOrder, 0);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[0].endOrder, 5000);
+  });
+
   test('Test signals are generated correctly', () async {
     final journey = getJourney('T9999', 5);
     final signals = journey.data.where((it) => it.type == Datatype.signal).cast<Signal>().toList();
