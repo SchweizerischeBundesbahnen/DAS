@@ -1,3 +1,4 @@
+import 'package:battery_plus/battery_plus.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_row.dart';
@@ -15,15 +16,57 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/whistle
 import 'package:das_client/app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:das_client/app/pages/profile/profile_page.dart';
 import 'package:das_client/app/widgets/table/das_table.dart';
+import 'package:das_client/di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
+import '../mocks/battery_mock.dart';
 import '../util/test_utils.dart';
 
 void main() {
   group('train journey table test', () {
+    testWidgets('test battery over 30% and not show icon', (tester) async {
+      await prepareAndStartApp(tester);
+
+      final battery = DI.get<Battery>() as BatteryMock;
+
+      battery.currentBatteryLevel = 80;
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T7');
+
+      // Find the header and check if it is existent
+      final headerFinder = find.byType(Header);
+      expect(headerFinder, findsOneWidget);
+
+      expect(battery.currentBatteryLevel, 80);
+
+      final iconPlace = find.byKey(Key('battery_status_low_key'));
+      expect(iconPlace, findsNothing);
+    });
+
+    testWidgets('test battery under 30% and show icon', (tester) async {
+      await prepareAndStartApp(tester);
+
+      final battery = DI.get<Battery>() as BatteryMock;
+
+      battery.currentBatteryLevel = 15;
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T7');
+
+      // Find the header and check if it is existent
+      final headerFinder = find.byType(Header);
+      expect(headerFinder, findsOneWidget);
+
+      expect(battery.currentBatteryLevel, 15);
+
+      final iconPlace = find.byKey(Key('battery_status_low_key'));
+      expect(iconPlace, findsOneWidget);
+    });
+
     testWidgets('check if update sent is correct', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
