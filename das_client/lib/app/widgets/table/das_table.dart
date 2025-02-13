@@ -7,6 +7,7 @@ import 'package:das_client/app/widgets/table/das_table_column.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:das_client/app/widgets/table/das_table_theme.dart';
 import 'package:easy_sticky_header/easy_sticky_header.dart';
+import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -122,20 +123,20 @@ class DASTable extends StatelessWidget {
   void alignToElement(ScrollEndNotification scrollEnd) {
     final currentPosition = scrollEnd.metrics.pixels;
     var itemStart = 0.0;
-    var stickyHeaderHeightAdjustment = 0.0;
+    var stickyHeaderHeightAdjustment = rows.firstWhereOrNull((it) => it.isSticky)?.height ?? 0;
     for (var i = 0; i < rows.length; i++) {
       final item = rows[i];
-    
+
       final itemEnd = itemStart + item.height;
       final adjustedCurrentPosition = currentPosition + stickyHeaderHeightAdjustment;
       if (adjustedCurrentPosition >= itemStart && adjustedCurrentPosition < itemEnd) {
         final targetPosition = itemStart - stickyHeaderHeightAdjustment;
         if (currentPosition != targetPosition) {
+          Fimber.d('Aligning to item with index=$i, targetPosition=$targetPosition, currentPosition=$currentPosition');
           // Somehow scrollController does nothing if the scroll is done without delay
           Future.delayed(Duration(milliseconds: 1), () {
             if (scrollController.positions.isNotEmpty) {
-              scrollController.animateTo(targetPosition,
-                  duration: snapScrollDuration, curve: Curves.easeInOut);
+              scrollController.animateTo(targetPosition, duration: snapScrollDuration, curve: Curves.easeInOut);
             }
           });
         }

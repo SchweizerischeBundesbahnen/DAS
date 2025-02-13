@@ -2,7 +2,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_ro
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/journey.dart';
 
-/// Data class to hold all the information to visualize bracket stations.
+/// Data class to hold all the information to chevron animation.
 class ChevronAnimationData {
   const ChevronAnimationData({
     required this.offset,
@@ -13,7 +13,7 @@ class ChevronAnimationData {
   final int durationMs;
 
   static ChevronAnimationData? from(List<BaseData> rows, Journey journey, BaseData currentRow) {
-    if ( journey.metadata.currentPosition != currentRow ||
+    if (journey.metadata.currentPosition != currentRow ||
         journey.metadata.lastPosition == null ||
         journey.metadata.currentPosition == null ||
         journey.metadata.lastPosition == journey.metadata.currentPosition) {
