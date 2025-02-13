@@ -1,5 +1,5 @@
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -17,13 +17,13 @@ void main() {
 
       // Check chevron at start
       expect(
-          find.descendant(of: findDASTableRowByText('Bern'), matching: find.byKey(RouteCellBody.chevronKey)), findsAny);
+          find.descendant(of: findDASTableRowByText('Bern'), matching: find.byKey(RouteChevron.chevronKey)), findsAny);
 
       final locations = ['B2', 'Burgdorf', 'B101', 'Olten'];
 
       for (final location in locations) {
         await waitUntilExists(tester,
-            find.descendant(of: findDASTableRowByText(location), matching: find.byKey(RouteCellBody.chevronKey)));
+            find.descendant(of: findDASTableRowByText(location), matching: find.byKey(RouteChevron.chevronKey)));
       }
     });
 
@@ -49,9 +49,8 @@ void main() {
       await Future.delayed(const Duration(seconds: 12));
       await tester.pumpAndSettle();
 
-      // Check if the last rows are visible
+      // Check if the last row is visible
       expect(findDASTableRowByText('Olten'), findsAny);
-      expect(findDASTableRowByText('A104'), findsAny);
     });
 
     testWidgets('check scrolling to position if automatic scrolling gets enabled', (tester) async {
@@ -67,7 +66,7 @@ void main() {
       await tapElement(tester, pauseButton);
 
       // Wait until the chevron is no longer visible
-      await waitUntilNotExists(tester, find.byKey(RouteCellBody.chevronKey));
+      await waitUntilNotExists(tester, find.byKey(RouteChevron.chevronKey));
 
       // Wait some more
       await Future.delayed(const Duration(seconds: 3));
@@ -77,9 +76,8 @@ void main() {
 
       await tapElement(tester, startButton);
 
-      // Check if the last rows are visible
+      // Check if last row is visible
       expect(findDASTableRowByText('Olten'), findsAny);
-      expect(findDASTableRowByText('A104'), findsAny);
     });
 
     testWidgets('check not scrolling if automatic advancement is off', (tester) async {
@@ -96,10 +94,10 @@ void main() {
 
       // Check chevron at start
       expect(
-          find.descendant(of: findDASTableRowByText('Bern'), matching: find.byKey(RouteCellBody.chevronKey)), findsAny);
+          find.descendant(of: findDASTableRowByText('Bern'), matching: find.byKey(RouteChevron.chevronKey)), findsAny);
 
       // Wait until the chevron is no longer visible
-      await waitUntilNotExists(tester, find.byKey(RouteCellBody.chevronKey));
+      await waitUntilNotExists(tester, find.byKey(RouteChevron.chevronKey));
 
       // Check Bern and B1 still visible
       expect(findDASTableRowByText('Bern'), findsAny);

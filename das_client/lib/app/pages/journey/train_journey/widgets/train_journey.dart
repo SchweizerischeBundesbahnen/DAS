@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/break_series_selection.dart';
@@ -7,6 +8,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_row_builder.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cab_signaling_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/bracket_station_render_data.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/chevron_animation_data.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/track_equipment_render_data.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_config.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
@@ -80,6 +82,7 @@ class TrainJourney extends StatelessWidget {
         scrollController: context.trainJourneyCubit.automaticAdvancementController.scrollController,
         columns: _columns(context, journey, settings),
         rows: tableRows.map((it) => it.build(context)).toList(),
+        bottomMarginAdjustment: tableRows.lastWhereOrNull((it) => it.isSticky)?.height ?? 0,
       ),
     );
   }
@@ -97,6 +100,7 @@ class TrainJourney extends StatelessWidget {
         settings: settings,
         trackEquipmentRenderData: TrackEquipmentRenderData.from(rows, journey.metadata, index),
         bracketStationRenderData: BracketStationRenderData.from(rowData, journey.metadata),
+        chevronAnimationData: ChevronAnimationData.from(rows, journey, rowData),
       );
       switch (rowData.type) {
         case Datatype.servicePoint:

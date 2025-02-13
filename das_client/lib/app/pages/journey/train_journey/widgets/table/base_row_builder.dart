@@ -88,10 +88,13 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
       color: specialCellColor,
       padding: EdgeInsets.all(0.0),
       alignment: null,
+      clipBehaviour: Clip.none,
       child: RouteCellBody(
+        metadata: metadata,
         isCurrentPosition: metadata.currentPosition == data,
         isRouteStart: metadata.routeStart == data,
         isRouteEnd: metadata.routeEnd == data,
+        chevronAnimationData: config.chevronAnimationData,
       ),
     );
   }

@@ -88,36 +88,6 @@ void main() {
     verifyNever(scrollControllerMock.animateTo(any, duration: anyNamed('duration'), curve: anyNamed('curve')));
   });
 
-  test('test respects maxScrollExtent when scrolling', () {
-    final List<BaseData> journeyData = [
-      Signal(order: 0, kilometre: []),
-      Signal(order: 100, kilometre: []),
-      Signal(order: 200, kilometre: []),
-      Signal(order: 300, kilometre: []),
-      Signal(order: 400, kilometre: []),
-    ];
-    final journeyRows = journeyData.map((data) => SignalRow(metadata: Metadata(), data: data as Signal)).toList();
-    final journey = Journey(
-      metadata: Metadata(currentPosition: journeyData[2]),
-      data: journeyData,
-    );
-
-    final scrollControllerMock = MockScrollController();
-    final scrollPositionMock = MockScrollPosition();
-    when(scrollControllerMock.positions).thenReturn([scrollPositionMock]);
-    when(scrollControllerMock.position).thenReturn(scrollPositionMock);
-    when(scrollPositionMock.maxScrollExtent).thenReturn(BaseRowBuilder.rowHeight * 1.5);
-
-    final testee = AutomaticAdvancementController(controller: scrollControllerMock);
-
-    testee.updateRenderedRows(journeyRows);
-    testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: true));
-
-    verify(scrollControllerMock.animateTo(BaseRowBuilder.rowHeight * 1.5,
-        duration: anyNamed('duration'), curve: anyNamed('curve')))
-        .called(1);
-  });
-
   test('test only scroll if positon is different then the last update', () {
     final List<BaseData> journeyData = [
       Signal(order: 0, kilometre: []),

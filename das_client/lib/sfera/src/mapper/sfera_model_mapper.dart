@@ -86,6 +86,7 @@ class SferaModelMapper {
     return Journey(
       metadata: Metadata(
         nextStop: _calculateNextStop(servicePoints, currentPosition),
+        lastPosition: journeyData.firstWhereOrNull((it) => it.order == lastJourney?.metadata.currentPosition?.order),
         currentPosition: currentPosition,
         additionalSpeedRestrictions: additionalSpeedRestrictions,
         routeStart: journeyData.firstOrNull,
@@ -114,15 +115,12 @@ class SferaModelMapper {
       return journeyData.first;
     }
 
-    final positionSegmentIndex = segmentProfilesLists
-        .indexWhere((it) => it.spId == positionSpeed.spId);
+    final positionSegmentIndex = segmentProfilesLists.indexWhere((it) => it.spId == positionSpeed.spId);
     if (positionSegmentIndex == -1) {
-      Fimber.w(
-          'Received position on unknown segment with spId: ${positionSpeed.spId}');
+      Fimber.w('Received position on unknown segment with spId: ${positionSpeed.spId}');
       return journeyData.firstWhereOrNull((it) => it.order == lastJourney?.metadata.currentPosition?.order);
     } else {
-      final positionOrder = calculateOrder(
-          positionSegmentIndex, positionSpeed.location);
+      final positionOrder = calculateOrder(positionSegmentIndex, positionSpeed.location);
       final currentPositionData = journeyData.lastWhereOrNull((it) => it.order <= positionOrder);
       return _adjustCurrentPositionToServicePoint(journeyData, currentPositionData ?? journeyData.first);
     }
