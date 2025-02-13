@@ -1,3 +1,4 @@
+import 'package:battery_plus/battery_plus.dart';
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/auth/authentication_component.dart';
 import 'package:das_client/flavor.dart';
@@ -50,6 +51,7 @@ extension GetItX on GetIt {
     registerSferaComponents(useTms: useTms);
     registerBackendService();
     registerBlocs();
+    registerBattery();
     await allReady();
   }
 
@@ -128,5 +130,9 @@ extension GetItX on GetIt {
 
   void registerBlocs() {
     registerLazySingleton<TrainJourneyCubit>(() => TrainJourneyCubit(sferaService: get()));
+  }
+
+  void registerBattery() {
+    registerLazySingleton<Battery>(() => Battery());
   }
 }
