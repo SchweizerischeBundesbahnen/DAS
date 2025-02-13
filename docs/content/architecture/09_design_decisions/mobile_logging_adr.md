@@ -3,7 +3,6 @@ title: Mobile Logging
 draft: true
 status: DECIDED
 result: Delivery via backend
-owner: Thomas Bomatter, Marco Ghilardelli
 date: 2024-09-23
 issue: 209
 tags:
@@ -22,7 +21,7 @@ Splunk is in use at SBB.
 None.
 
 ## Considered Alternatives
-None.
+1. Deliver via direct API
 
 ## Decisions
 Delivery via backend.

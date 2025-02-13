@@ -1,11 +1,10 @@
 ---
-title: Messaging
+title: template - change me
 draft: true
-status: IN PROGRESS
+status: IN PROGRESS | DECIDED
 result: 
-owner: Marco Ghilardelli
-date: 2024-04-29
-issue: 
+date: 1970-01-01
+issue: 1
 tags:
   - adr
 ---
@@ -13,14 +12,13 @@ tags:
 {{< adr-table "adr" >}}
 
 ## Problem Background
-How to get the SFERA data?
+
 
 ## Influences on the Decision
-* Cost.
-* Ops.
+
 
 ## Assumptions
-* TMS / IM is running a broker anyways.
+
 
 ## Considered Alternatives
 
