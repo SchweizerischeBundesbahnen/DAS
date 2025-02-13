@@ -8,7 +8,7 @@
 	
     <SP_Points>
 
-        <TimingPoint TP_ID="Maegenswil" location="0">
+        <TimingPoint TP_ID="Maegenwil" location="0">
             <TP_Name name="MAEG"/>
             <TAF_TAP_LocationReference>
                 <CountryCodeISO>CH</CountryCodeISO>
@@ -51,7 +51,7 @@
                 <CountryCodeISO>CH</CountryCodeISO>
                 <LocationPrimaryCode>2106</LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Mägenswil"/>
+            <TAF_TAP_LocationName language="de" messageString="Mägenwil"/>
 
 			<TAF_TAP_Location_NSP name="newLineSpeed">
 				<NetworkSpecificParameter name="xmlNewLineSpeed" value="
