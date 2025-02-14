@@ -16,7 +16,7 @@ const authConfig: PassedInitialConfig = {
     maxIdTokenIatOffsetAllowedInSeconds: 600,
     issValidationOff: true,
     autoUserInfo: false,
-    secureRoutes: [backendUrl],
+    secureRoutes: [],
     customParamsAuthRequest: {
       prompt: 'select_account',
     },

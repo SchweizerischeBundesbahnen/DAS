@@ -9,7 +9,7 @@ import { CommonModule } from "@angular/common";
 import { MqttConnectionState } from "ngx-mqtt";
 import { OidcSecurityService } from "angular-auth-oidc-client";
 import { SbbCheckboxModule } from "@sbb-esta/angular/checkbox";
-import { environment } from "../../environment/environment";
+import { environment } from "../../environments/environment";
 import { MessageTableComponent, TableData } from "./message-table/message-table.component";
 import { SbbTableDataSource } from "@sbb-esta/angular/table";
 import {
