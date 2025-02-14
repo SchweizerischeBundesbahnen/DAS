@@ -6,7 +6,7 @@ import { SbbSidebarModule } from "@sbb-esta/angular/sidebar";
 import { SbbMenuModule } from "@sbb-esta/angular/menu";
 import { SbbButtonModule } from "@sbb-esta/angular/button";
 import { Router, RouterModule } from "@angular/router";
-import { environment } from "../environment/environment";
+import { environment } from "../environments/environment";
 import packageJson from '../../package.json';
 import { OidcSecurityService } from "angular-auth-oidc-client";
 

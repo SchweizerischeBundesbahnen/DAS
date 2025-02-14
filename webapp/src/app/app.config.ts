@@ -6,7 +6,7 @@ import { MqttModule } from "ngx-mqtt";
 import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from "@angular/common/http";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { authInterceptor, OidcSecurityService, provideAuth } from 'angular-auth-oidc-client';
-import { environment } from "../environment/environment";
+import { environment } from "../environments/environment";
 import { SbbNotificationToastModule } from "@sbb-esta/angular/notification-toast";
 
 function appInitializerAuthCheck() {

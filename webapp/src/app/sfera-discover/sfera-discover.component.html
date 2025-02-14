@@ -1,0 +1,26 @@
+<h2>SFERA discover</h2>
+<sbb-table-wrapper>
+  <table class="sbb-table">
+    <thead>
+    <tr>
+      <th scope="col">Start timestamp</th>
+      <th scope="col">Operational number</th>
+      <th scope="col">Client ID</th>
+      <th scope="col">Company code</th>
+      <th scope="col">Operational date</th>
+    </tr>
+    </thead>
+
+    <tbody>
+      @for (session of sessions; track session) {
+        <tr (click)="openObserver(session)">
+          <td>{{ session.timestamp | date:'HH:mm:ss' }}</td>
+          <td>{{ session.operationalNumber }}</td>
+          <td>{{ session.clientId }}</td>
+          <td>{{ session.companyCode }}</td>
+          <td>{{ session.date }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</sbb-table-wrapper>

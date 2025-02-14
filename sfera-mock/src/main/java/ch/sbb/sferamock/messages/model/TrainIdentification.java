@@ -23,4 +23,15 @@ public record TrainIdentification(@NonNull CompanyCode companyCode, @NonNull Str
         }
         throw new IllegalArgumentException("Illegal train id string: " + tid);
     }
+
+    public boolean isManualLocation() {
+        return operationalNumber.substring(operationalNumber.length() - 1).equalsIgnoreCase("M");
+    }
+
+    public String baseOperationalNumber() {
+        if(isManualLocation()) {
+            return operationalNumber.substring(0, operationalNumber.length() - 1);
+        }
+        return operationalNumber;
+    }
 }

@@ -61,7 +61,7 @@ public class IncomingMessageAdapter {
             payload = unmarshallPayload(xmlString);
         } catch (Exception e) {
             var errorMessage = getRootMessage(e);
-            publishXmlValidationErrorMessage(xmlString, errorMessage, RequestContext.fromTopic(topic, Optional.empty()));
+            publishXmlValidationErrorMessage(xmlString, errorMessage, RequestContext.fromTopic(topic));
             return;
         }
         switch (payload) {

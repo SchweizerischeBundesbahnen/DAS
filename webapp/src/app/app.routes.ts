@@ -16,6 +16,10 @@ export const routes: Routes = [
         loadComponent: () => import('./sfera-observer/sfera-observer.component').then((m) => m.SferaObserverComponent),
       },
       {
+        path: 'sfera-discover',
+        loadComponent: () => import('./sfera-discover/sfera-discover.component').then((m) => m.SferaDiscoverComponent),
+      },
+      {
         path: 'mqtt',
         loadComponent: () =>
           import('./mqtt-playground/mqtt-playground.component').then((m) => m.MqttPlaygroundComponent),

@@ -7,6 +7,7 @@ import ch.sbb.sferamock.messages.services.EventRepository.Event;
 import ch.sbb.sferamock.messages.sfera.EventPublisher;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -43,6 +44,14 @@ public class EventService {
             futures.add(future);
         }
         scheduledTasks.put(requestContext.clientId(), futures);
+    }
+
+    public void nextLocationEvent(RequestContext requestContext, int manualLocationIndex) {
+        var event = this.eventRepository.events.get(requestContext.tid().baseOperationalNumber()).stream()
+            .sorted(Comparator.comparingInt(Event::offsetMs))
+            .toList()
+            .get(manualLocationIndex);
+        eventPublisher.publishRelatedTrainInformation(event.payload(), requestContext);
     }
 
     public void deregisterActiveTrain(ClientId clientId) {

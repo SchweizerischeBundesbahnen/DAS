@@ -33,6 +33,21 @@
       <a
         sbbIconSidebarItem
         i18n-label
+        label="SFERA discover"
+        routerLink="/sfera-discover"
+        routerLinkActive="sbb-active"
+        [routerLinkActiveOptions]="{
+        paths: 'exact',
+        fragment: 'ignored',
+        queryParams: 'ignored',
+        matrixParams: 'ignored',
+      }"
+      >
+        <sbb-icon svgIcon="kom:lighthouse-small"></sbb-icon>
+      </a>
+      <a
+        sbbIconSidebarItem
+        i18n-label
         label="MQTT"
         routerLink="/mqtt"
         routerLinkActive="sbb-active"

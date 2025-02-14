@@ -1,6 +1,6 @@
 import { DestroyRef, inject, Injectable } from '@angular/core';
 import { MqttService } from "ngx-mqtt";
-import { environment } from "../environment/environment";
+import { environment } from "../environments/environment";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { SbbNotificationToast } from "@sbb-esta/angular/notification-toast";
 

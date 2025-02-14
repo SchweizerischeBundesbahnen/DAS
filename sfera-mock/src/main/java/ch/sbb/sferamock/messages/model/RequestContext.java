@@ -8,6 +8,14 @@ public record RequestContext(@NonNull TrainIdentification tid, @NonNull ClientId
 
     private static final int MINIMAL_TOPIC_ELEMENTS = 6;
 
+    public RequestContext(@NonNull TrainIdentification tid, @NonNull ClientId clientId) {
+        this(tid, clientId, Optional.empty());
+    }
+
+    public static RequestContext fromTopic(String topic) {
+        return RequestContext.fromTopic(topic, Optional.empty());
+    }
+
     public static RequestContext fromTopic(String topic, Optional<UUID> incomingMessageId) {
         String[] elements = topic.split("/");
         var length = elements.length;

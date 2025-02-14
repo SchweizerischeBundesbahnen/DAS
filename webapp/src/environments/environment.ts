@@ -2,7 +2,7 @@ import { Environment } from "./environment.model";
 import { PassedInitialConfig } from "angular-auth-oidc-client";
 import { IMqttServiceOptions } from "ngx-mqtt";
 
-const backendUrl = 'https://sfera-mock.app.sbb.ch';
+const backendUrl = 'http://localhost:8080';
 const customTopicPrefix = '';
 
 const authConfig: PassedInitialConfig = {
@@ -16,7 +16,7 @@ const authConfig: PassedInitialConfig = {
     maxIdTokenIatOffsetAllowedInSeconds: 600,
     issValidationOff: true,
     autoUserInfo: false,
-    secureRoutes: [backendUrl],
+    secureRoutes: [],
     customParamsAuthRequest: {
       prompt: 'select_account',
     },

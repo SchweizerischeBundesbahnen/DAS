@@ -6,7 +6,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test -c ci",
     "lint": "ng lint",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "build:ngssc": "ng run webapp:ngsscbuild:production"
   },
   "name": "webapp",
   "version": "0.1.0",
@@ -33,7 +34,7 @@
     "@angular/router": "^18.2.7",
     "@sbb-esta/angular": "^18.2.0",
     "angular-auth-oidc-client": "18.0.2",
-    "angular-server-side-configuration": "^18.1.0",
+    "angular-server-side-configuration": "^18.2.0",
     "ngx-mqtt": "^17.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
