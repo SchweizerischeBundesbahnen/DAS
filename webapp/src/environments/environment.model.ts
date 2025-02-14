@@ -7,6 +7,6 @@ export interface Environment {
   oauthProfile: string;
   customTopicPrefix: string;
   backendUrl: string;
-  authConfig:PassedInitialConfig ;
-  mqttServiceOptions:IMqttServiceOptions;
+  authConfig: PassedInitialConfig;
+  mqttServiceOptions: IMqttServiceOptions;
 }
