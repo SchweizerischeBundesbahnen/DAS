@@ -30,6 +30,7 @@ void main() {
     testWidgets('test battery over 30% and not show icon', (tester) async {
       await prepareAndStartApp(tester);
 
+      // Set Battery to a mocked version
       final battery = DI.get<Battery>() as BatteryMock;
 
       // Set current Battery-Level to 80 % so it is over 30%
@@ -51,6 +52,7 @@ void main() {
     testWidgets('test battery under 30% and show icon', (tester) async {
       await prepareAndStartApp(tester);
 
+      // Set Battery to a mocked version
       final battery = DI.get<Battery>() as BatteryMock;
 
       // Set current Battery-Level to 15% so it is under 30%
