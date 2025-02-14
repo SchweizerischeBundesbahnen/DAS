@@ -52,7 +52,8 @@ class RouteCellBody extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             _routeLine(context, height, width),
-            if (isCurrentPosition)
+            if (isCurrentPosition ||
+                (chevronAnimationData != null && chevronAnimationData!.shouldShow(metadata.timestamp)))
               RouteChevron(
                   metadata: metadata,
                   isStop: isStop,
