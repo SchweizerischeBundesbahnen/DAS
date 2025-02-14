@@ -32,6 +32,7 @@ void main() {
 
       final battery = DI.get<Battery>() as BatteryMock;
 
+      // Set current Battery-Level to 80 % so it is over 30%
       battery.currentBatteryLevel = 80;
 
       // load train journey by filling out train selection page
@@ -52,6 +53,7 @@ void main() {
 
       final battery = DI.get<Battery>() as BatteryMock;
 
+      // Set current Battery-Level to 15% so it is under 30%
       battery.currentBatteryLevel = 15;
 
       // load train journey by filling out train selection page
