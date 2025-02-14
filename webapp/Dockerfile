@@ -1,4 +1,4 @@
-FROM nginxinc/nginx-unprivileged:stable
+FROM nginxinc/nginx-unprivileged:alpine-slim
 
 # Copy nginx configuration
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
