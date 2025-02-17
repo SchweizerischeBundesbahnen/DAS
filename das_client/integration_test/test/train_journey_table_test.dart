@@ -429,8 +429,9 @@ void main() {
       expect(nonStoppingPassRoute, findsNothing);
 
       // check route start
-      final routeStart = find.byKey(RouteCellBody.routeStartKey);
-      expect(routeStart, findsOneWidget);
+      final routeStart =
+          find.descendant(of: find.byKey(DASTable.tableKey), matching: find.byKey(RouteCellBody.routeStartKey));
+      expect(routeStart, findsAny);
 
       await tester.dragUntilVisible(find.byKey(RouteCellBody.routeEndKey), scrollableFinder, const Offset(0, -50));
 
@@ -449,7 +450,7 @@ void main() {
       expect(scrollableFinder, findsOneWidget);
 
       // check first train station
-      expect(find.text('Genève-Aéroport'), findsOneWidget);
+      expect(findDASTableRowByText('Genève-Aéroport'), findsOneWidget);
 
       // Scroll to first protection section
       await tester.dragUntilVisible(find.text('Gilly-Bursinel'), scrollableFinder, const Offset(0, -20));
@@ -514,7 +515,7 @@ void main() {
       expect(scrollableFinder, findsOneWidget);
 
       // check first train station
-      expect(find.text('Zürich HB'), findsOneWidget);
+      expect(findDASTableRowByText('Zürich HB'), findsOneWidget);
 
       // Scroll to last train station
       await tester.dragUntilVisible(find.text('Aarau'), find.byType(ListView), const Offset(0, -300));
@@ -527,7 +528,7 @@ void main() {
       await loadTrainJourney(tester, trainNumber: 'T6');
 
       // check first train station
-      expect(find.text('Zürich HB'), findsOneWidget);
+      expect(findDASTableRowByText('Zürich HB'), findsOneWidget);
 
       await openDrawer(tester);
       await tapElement(tester, find.text(l10n.w_navigation_drawer_profile_title));
@@ -539,7 +540,7 @@ void main() {
       await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
 
       // check first train station is still visible
-      expect(find.text('Zürich HB'), findsOneWidget);
+      expect(findDASTableRowByText('Zürich HB'), findsOneWidget);
     });
 
     testWidgets('test both kilometres are displayed', (tester) async {
@@ -829,7 +830,8 @@ void main() {
       _checkTrackEquipmentOnServicePoint('Aareschlucht West', TrackEquipmentCellBody.singleTrackNoBlockKey);
       _checkTrackEquipmentOnServicePoint('Innertkirchen Unterwasser', TrackEquipmentCellBody.singleTrackNoBlockKey);
       _checkTrackEquipmentOnServicePoint('Innertkirchen Grimseltor', TrackEquipmentCellBody.singleTrackNoBlockKey);
-      _checkTrackEquipmentOnServicePoint('Innertkirchen Kraftwerk (Bahn)', TrackEquipmentCellBody.singleTrackNoBlockKey);
+      _checkTrackEquipmentOnServicePoint(
+          'Innertkirchen Kraftwerk (Bahn)', TrackEquipmentCellBody.singleTrackNoBlockKey);
     });
 
     testWidgets('test if station speeds are displayed correctly', (tester) async {

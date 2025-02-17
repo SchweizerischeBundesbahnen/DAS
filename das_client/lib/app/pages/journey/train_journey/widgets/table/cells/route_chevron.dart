@@ -1,8 +1,9 @@
 import 'dart:math';
 
+import 'package:das_client/app/pages/journey/train_journey/chevron_animation_controller.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/chevron_animation_wrapper.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/chevron_animation_data.dart';
 import 'package:das_client/model/journey/metadata.dart';
-import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -31,48 +32,34 @@ class RouteChevron extends StatefulWidget {
   State<RouteChevron> createState() => _RouteChevronState();
 }
 
-class _RouteChevronState extends State<RouteChevron> with SingleTickerProviderStateMixin {
-  late Animation<double> animation;
-  AnimationController? controller;
+class _RouteChevronState extends State<RouteChevron> {
   double currentOffsetValue = 0;
+  ChevronAnimationController? controller;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    controller?.removeListener(_animationListener);
+    controller = ChevronAnimationWrapper.of(context);
+    controller?.addListener(_animationListener);
+    _animationListener();
+  }
 
   @override
   void didUpdateWidget(covariant RouteChevron oldWidget) {
     super.didUpdateWidget(oldWidget);
-    initAnimation();
+    _animationListener();
   }
 
-  @override
-  void initState() {
-    super.initState();
-    initAnimation();
-  }
-
-  void initAnimation() {
-    // Only animate if the position update came in the last second, otherwise it will be repeated on every scroll
-    if (widget.chevronAnimationData != null && widget.chevronAnimationData!.shouldShow(widget.metadata.timestamp)) {
-      currentOffsetValue = widget.chevronAnimationData!.offset;
-
-      final adjustedAnimationDuration = widget.chevronAnimationData!.adjustedDuration(widget.metadata.timestamp);
-      Fimber.d("adjusted duration $adjustedAnimationDuration");
-      controller ??= AnimationController(duration: adjustedAnimationDuration, vsync: this);
-
-      var start = min(widget.chevronAnimationData!.offset, 0.0);
+  void _animationListener() {
+    if (widget.chevronAnimationData != null && controller?.animation != null) {
+      final start = min(widget.chevronAnimationData!.offset, 0.0);
       final end = max(widget.chevronAnimationData!.offset, 0.0);
-
-      Fimber.d("before adjustment $start $end");
       final diff = (start - end).abs();
-      start += diff - (diff * adjustedAnimationDuration.inMilliseconds / widget.chevronAnimationData!.durationMs);
-      Fimber.d("after adjustment $start");
 
-      animation = Tween<double>(begin: start, end: end).animate(controller!)
-        ..addListener(() {
-          setState(() {
-            currentOffsetValue = animation.value;
-          });
-        });
-      controller!.reset();
-      controller!.forward();
+      setState(() {
+        currentOffsetValue = start + (diff * controller!.animation!.value);
+      });
     }
   }
 
@@ -93,8 +80,8 @@ class _RouteChevronState extends State<RouteChevron> with SingleTickerProviderSt
   }
 
   @override
-  dispose() {
-    controller?.dispose();
+  void dispose() {
+    controller?.removeListener(_animationListener);
     super.dispose();
   }
 }

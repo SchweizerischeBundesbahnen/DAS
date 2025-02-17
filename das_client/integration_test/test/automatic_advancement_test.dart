@@ -104,7 +104,6 @@ void main() {
       expect(findDASTableRowByText('B1'), findsAny);
     });
 
-    /*
     testWidgets('check sticky footer is displayed', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
@@ -119,10 +118,8 @@ void main() {
 
       // Check Bern & Burgdorf are displayed
       expect(findDASTableRowByText('Bern'), findsAny);
-      expect(findDASTableRowByText('Burgdorf'), findsAny);
+      expect(find.text('Burgdorf'), findsAny);
     });
-    
-     */
 
     testWidgets('check if automatic advancement is enabled by default', (tester) async {
       // Load app widget.

@@ -16,6 +16,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 /// The [columns] parameter must not be empty, and all rows must have the same number of cells as columns.
 @immutable
 class DASTable extends StatelessWidget {
+  static const Key tableKey = Key('DAS-Table');
   static const Key rowKey = Key('DAS-Table-row');
   static const double _headerRowHeight = 40.0;
   static const Duration snapScrollDuration = Duration(milliseconds: 300);
@@ -100,6 +101,7 @@ class DASTable extends StatelessWidget {
                       return true;
                     },
                     child: ListView.builder(
+                      key: tableKey,
                       controller: scrollController,
                       itemCount: rows.length + 1, // + 1 for bottom spacer
                       itemBuilder: (context, index) {

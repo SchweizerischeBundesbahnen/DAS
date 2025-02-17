@@ -49,7 +49,7 @@ class StickyHeaderController with ChangeNotifier {
   int _calculateHeader(int startIndex, double currentPixels) {
     for (int i = startIndex; i >= 0; i--) {
       if (_rows[i].isSticky) {
-        return rowOffsets[i] != currentPixels ? i : -1;
+        return i;
       }
     }
     return -1;
@@ -70,16 +70,17 @@ class StickyHeaderController with ChangeNotifier {
   }
 
   int _calculateFooter(int startIndex, double currentPixels) {
-    var nextStickyIndex = _findNextSticky(startIndex);
+    var stickyFooterIndex = _findNextSticky(startIndex);
 
-    if (nextStickyIndex != -1) {
-      final stickyOffset = rowOffsets[nextStickyIndex];
-      if (currentPixels + scrollController.position.viewportDimension > stickyOffset + _rows[nextStickyIndex].height) {
+    if (stickyFooterIndex != -1) {
+      final stickyOffset = rowOffsets[stickyFooterIndex];
+      if (currentPixels + scrollController.position.viewportDimension >
+          stickyOffset + _rows[stickyFooterIndex].height) {
         // Footer is already on screen
-        nextStickyIndex = -1;
+        stickyFooterIndex = -1;
       }
     }
-    return nextStickyIndex;
+    return stickyFooterIndex;
   }
 
   int _findNextSticky(int startIndex) {
@@ -90,7 +91,7 @@ class StickyHeaderController with ChangeNotifier {
   }
 
   void updateRowData(List<DASTableRow> rows) {
-    this._rows = rows;
+    _rows = rows;
     rowOffsets.clear();
     _initialize();
     _scrollListener();

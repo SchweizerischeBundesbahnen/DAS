@@ -17,10 +17,10 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   //Fimber.plantTree(DebugTree());
 
+  automatic_advancement_tests.main();
   train_journey_table_tests.main();
   navigation_tests.main();
   train_search_tests.main();
-  automatic_advancement_tests.main();
 }
 
 Future<void> prepareAndStartApp(WidgetTester tester) async {
