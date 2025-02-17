@@ -30,6 +30,17 @@
                 &lt;/lineSpeed&gt;
             "/>
         </NetworkSpecificPoint>
+
+        <NetworkSpecificPoint location="600" name="newLineSpeed">
+            <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                &lt;lineSpeed&gt;
+                &lt;speeds&gt;
+                &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;70&quot;/&gt;
+                &lt;/speeds&gt;
+                &lt;/lineSpeed&gt;
+            "/>
+        </NetworkSpecificPoint>
+
         <NetworkSpecificPoint location="800" name="newLineSpeed">
             <NetworkSpecificParameter name="xmlNewLineSpeed" value="
                 &lt;lineSpeed text=&quot;Zahnstangen Ende&quot;&gt;
@@ -62,7 +73,7 @@
                 "/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
-        <NetworkSpecificArea startEndQualifier="Ends" endLocation="500" name="nonStandardTrackEquipment">
+        <NetworkSpecificArea startEndQualifier="Ends" endLocation="600" name="nonStandardTrackEquipment">
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingPossible"/>
         </NetworkSpecificArea>
     </SP_Areas>
@@ -70,6 +81,9 @@
     <SP_ContextInformation>
         <KilometreReferencePoint location="500">
             <KM_Reference kmRef="3.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="600">
+            <KM_Reference kmRef="3.6"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="700">
             <KM_Reference kmRef="3.7"/>

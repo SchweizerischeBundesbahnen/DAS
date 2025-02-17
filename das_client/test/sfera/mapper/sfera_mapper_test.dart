@@ -187,7 +187,7 @@ void main() {
     expect(journey.data[15].kilometre[0], 2.6);
     // segment 4
     expect(journey.data[16].kilometre[0], 3.5);
-    expect(journey.data[17].kilometre[0], 3.5);
+    expect(journey.data[17].kilometre[0], 3.6);
     expect(journey.data[18].kilometre[0], 3.7);
     expect(journey.data[18].kilometre[1], 0);
     expect(journey.data[19].kilometre[0], 0.1);
@@ -225,7 +225,7 @@ void main() {
     expect(journey.data[15].order, 200600);
     // segment 4
     expect(journey.data[16].order, 300500);
-    expect(journey.data[17].order, 300500);
+    expect(journey.data[17].order, 300600);
     expect(journey.data[18].order, 300700);
     expect(journey.data[19].order, 300800);
     expect(journey.data[20].order, 300900);
@@ -244,7 +244,7 @@ void main() {
     expect(
         journey.metadata.nonStandardTrackEquipmentSegments[0].type, TrackEquipmentType.etcsL2ExtSpeedReversingPossible);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[0].startOrder, isNull);
-    expect(journey.metadata.nonStandardTrackEquipmentSegments[0].endOrder, 1500);
+    expect(journey.metadata.nonStandardTrackEquipmentSegments[0].endOrder, 1600);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[1].type,
         TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[1].startOrder, 1700);
@@ -269,6 +269,25 @@ void main() {
         journey.metadata.nonStandardTrackEquipmentSegments[6].type, TrackEquipmentType.etcsL2ExtSpeedReversingPossible);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[6].startOrder, 410200);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[6].endOrder, isNull);
+  });
+
+  test('Test speed change on CAB signaling end is generated correctly', () async {
+    final journey = getJourney('T1', 5);
+
+    expect(journey.valid, true);
+
+    final cabSignaling = journey.data.where((it) => it.type == Datatype.cabSignaling).cast<CABSignaling>();
+    final endSignaling = cabSignaling.where((signaling) => signaling.isEnd).toList();
+
+    expect(endSignaling, hasLength(2));
+    expect(endSignaling[0].speedData, isNotNull);
+    expect(endSignaling[0].speedData!.speeds[0].trainSeries, TrainSeries.R);
+    expect(endSignaling[0].speedData!.speeds[0].incomingSpeeds[0].speed, 55);
+    expect(endSignaling[0].speedData!.speeds[0].breakSeries, 115);
+    expect(endSignaling[1].speedData, isNotNull);
+    expect(endSignaling[1].speedData!.speeds[0].trainSeries, TrainSeries.R);
+    expect(endSignaling[1].speedData!.speeds[0].incomingSpeeds[0].speed, 80);
+    expect(endSignaling[1].speedData!.speeds[0].breakSeries, 115);
   });
 
   test('Test single track without block is generated correctly', () async {

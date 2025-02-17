@@ -37,6 +37,16 @@
                 <LocationPrimaryCode>3017</LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
+
+        <NetworkSpecificPoint location="7800" name="newLineSpeed">
+            <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                &lt;lineSpeed&gt;
+                &lt;speeds&gt;
+                &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;80&quot;/&gt;
+                &lt;/speeds&gt;
+                &lt;/lineSpeed&gt;
+            "/>
+        </NetworkSpecificPoint>
     </SP_Points>
     <SP_Areas>
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="WANZ"
