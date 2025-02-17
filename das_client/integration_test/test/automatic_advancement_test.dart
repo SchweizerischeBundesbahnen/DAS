@@ -1,4 +1,5 @@
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
@@ -25,7 +26,6 @@ void main() {
       }
     });
 
-    /*
     testWidgets('check scrolling after idle time', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
@@ -51,6 +51,8 @@ void main() {
       // Check if the last row is visible
       expect(findDASTableRowByText('Olten'), findsAny);
     });
+
+    /*
 
     testWidgets('check scrolling to position if automatic scrolling gets enabled', (tester) async {
       // Load app widget.
