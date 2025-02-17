@@ -13,19 +13,19 @@ tags:
 
 ## Problem Background
 
-Managing multiple repositories for the backend, web, and mobile applications presents challenges. 
+Managing multiple repositories for the backend, web, and mobile applications presents challenges.
 Each project operates in isolation, complicating coordination of changes across modules and leading
 to versioning inconsistencies, duplicated documentation, and complex CI/CD processes.
 
 ## Influences on the Decision
 
-- Atomic Commits: The ability to make changes that affect multiple projects in a single commit
+- The ability to make changes that affect multiple projects in a single commit
   enhances clarity and tracking of related changes.
-- Centralized Documentation: Maintaining documentation in one location reduces the risk of
+- Maintaining documentation in one location reduces the risk of
   inconsistencies and the need for duplication across different projects.
-- Tooling Support: The analysis of GitHub Actions revealed that it provides excellent support for
+- The analysis of GitHub Actions revealed that it provides excellent support for
   CI/CD processes in a monorepo setup.
-- Consistent Versioning: With all projects housed in a single repository, we can apply versioning
+- With all projects housed in a single repository, we can apply versioning
   strategies uniformly, minimizing the risk of incompatibility among dependent projects.
 
 ## Assumptions
