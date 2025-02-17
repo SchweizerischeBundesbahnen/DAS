@@ -8,6 +8,7 @@ import ch.sbb.sferamock.adapters.sfera.model.v0201.G2BMessageResponse;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.G2BReplyPayload;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.HandshakeAcknowledgement;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.HandshakeReject;
+import ch.sbb.sferamock.adapters.sfera.model.v0201.HandshakeRejectReason;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.JourneyProfile;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.MessageHeader;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.MultilingualTextComplexType;
@@ -22,7 +23,6 @@ import ch.sbb.sferamock.adapters.sfera.model.v0201.TrainCharacteristics;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.TrainIdentificationComplexType;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.UnavailableDASOperatingModes;
 import ch.sbb.sferamock.messages.common.XmlDateHelper;
-import ch.sbb.sferamock.messages.model.HandshakeRejectReason;
 import ch.sbb.sferamock.messages.model.OperationMode;
 import ch.sbb.sferamock.messages.model.TrainIdentification;
 import java.time.LocalDateTime;
@@ -133,14 +133,8 @@ public class SferaMessageCreator {
 
     public HandshakeReject createSferaHandshakeReject(HandshakeRejectReason rejectReason) {
         var result = new HandshakeReject();
-        result.getHandshakeRejectReason().add(toSferaRejectReason(rejectReason).toString());
+        result.getHandshakeRejectReason().add(rejectReason);
         return result;
-    }
-
-    private HandshakeRejectReason toSferaRejectReason(HandshakeRejectReason rejectReason) {
-        return switch (rejectReason) {
-            case architectureNotSupported -> HandshakeRejectReason.architectureNotSupported;
-        };
     }
 
     public SFERAG2BReplyMessage createSferaReplyMessage(MessageHeader header, HandshakeAcknowledgement acknowledgement) {

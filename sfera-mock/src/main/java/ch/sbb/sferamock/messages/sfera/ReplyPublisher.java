@@ -2,6 +2,7 @@ package ch.sbb.sferamock.messages.sfera;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_XML;
 
+import ch.sbb.sferamock.adapters.sfera.model.v0201.HandshakeRejectReason;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.JourneyProfile;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.RelatedTrainInformation;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SFERAG2BReplyMessage;
@@ -9,7 +10,6 @@ import ch.sbb.sferamock.adapters.sfera.model.v0201.SegmentProfile;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.TrainCharacteristics;
 import ch.sbb.sferamock.messages.common.SferaErrorCodes;
 import ch.sbb.sferamock.messages.common.XmlHelper;
-import ch.sbb.sferamock.messages.model.HandshakeRejectReason;
 import ch.sbb.sferamock.messages.model.OperationMode;
 import ch.sbb.sferamock.messages.model.RequestContext;
 import java.util.List;

@@ -17,6 +17,9 @@
         <jxb:bindings node="//xs:attribute[@name='DAS_architecture']/xs:simpleType">
             <jxb:typesafeEnumClass name="DASArchitecture"/>
         </jxb:bindings>
+        <jxb:bindings node="//xs:element[@name='HandshakeRejectReason']/xs:simpleType">
+            <jxb:typesafeEnumClass name="HandshakeRejectReason"/>
+        </jxb:bindings>
         <jxb:bindings node="//xs:attribute[@name='result']/xs:simpleType">
             <jxb:typesafeEnumClass name="Result"/>
         </jxb:bindings>
