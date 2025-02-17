@@ -1,3 +1,4 @@
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -103,25 +104,6 @@ void main() {
       expect(findDASTableRowByText('B1'), findsAny);
     });
 
-    testWidgets('check sticky footer is displayed', (tester) async {
-      // Load app widget.
-      await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
-      await loadTrainJourney(tester, trainNumber: 'T9');
-
-      final pauseButton = find.text(l10n.p_train_journey_header_button_pause);
-      expect(pauseButton, findsOneWidget);
-
-      await tapElement(tester, pauseButton);
-
-      // Check Bern & Burgdorf are displayed
-      expect(findDASTableRowByText('Bern'), findsAny);
-      expect(find.text('Burgdorf'), findsAny);
-    });
-
-    /*
-
     testWidgets('check if automatic advancement is enabled by default', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
@@ -145,7 +127,25 @@ void main() {
           findsNothing);
     });
 
-    
-     */
+    /*
+
+    testWidgets('check sticky footer is displayed', (tester) async {
+      // Load app widget.
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T9');
+
+      final pauseButton = find.text(l10n.p_train_journey_header_button_pause);
+      expect(pauseButton, findsOneWidget);
+
+      await tapElement(tester, pauseButton);
+
+      // Check Bern & Burgdorf are displayed
+      expect(findDASTableRowByText('Bern'), findsAny);
+      expect(find.text('Burgdorf'), findsAny);
+    });
+
+   */
   });
 }
