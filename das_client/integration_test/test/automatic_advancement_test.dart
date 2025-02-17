@@ -1,3 +1,4 @@
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -104,7 +105,6 @@ void main() {
     });
 
     /*
-
     testWidgets('check sticky footer is displayed', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
@@ -121,6 +121,8 @@ void main() {
       expect(findDASTableRowByText('Bern'), findsAny);
       expect(findDASTableRowByText('Burgdorf'), findsAny);
     });
+    
+     */
 
     testWidgets('check if automatic advancement is enabled by default', (tester) async {
       // Load app widget.
@@ -144,7 +146,5 @@ void main() {
       expect(find.descendant(of: headerFinder, matching: find.text(l10n.p_train_journey_header_button_pause)),
           findsNothing);
     });
-    
-     */
   });
 }
