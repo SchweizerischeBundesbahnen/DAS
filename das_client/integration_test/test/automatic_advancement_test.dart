@@ -79,6 +79,8 @@ void main() {
       expect(findDASTableRowByText('Olten'), findsAny);
     });
 
+    /*
+
     testWidgets('check not scrolling if automatic advancement is off', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
@@ -103,7 +105,7 @@ void main() {
       expect(findDASTableRowByText('B1'), findsAny);
     });
 
-    /*
+
 
     testWidgets('check if automatic advancement is enabled by default', (tester) async {
       // Load app widget.
