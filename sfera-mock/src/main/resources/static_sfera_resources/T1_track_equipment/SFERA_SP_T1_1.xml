@@ -38,6 +38,16 @@
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
+        <NetworkSpecificPoint location="1600" name="newLineSpeed">
+            <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                &lt;lineSpeed&gt;
+                &lt;speeds&gt;
+                &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;55&quot;/&gt;
+                &lt;/speeds&gt;
+                &lt;/lineSpeed&gt;
+            "/>
+        </NetworkSpecificPoint>
+
     </SP_Points>
     <SP_Areas>
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="GENA"
@@ -76,7 +86,7 @@
             <TAF_TAP_LocationName language="de" messageString="Gilly-Bursinel"/>
         </TAF_TAP_Location>
 
-        <NetworkSpecificArea startEndQualifier="Ends" endLocation="1500" name="nonStandardTrackEquipment">
+        <NetworkSpecificArea startEndQualifier="Ends" endLocation="1600" name="nonStandardTrackEquipment">
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingPossible"/>
         </NetworkSpecificArea>
 
@@ -96,6 +106,10 @@
 
         <KilometreReferencePoint location="1500">
             <KM_Reference kmRef="33.8"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="1600">
+            <KM_Reference kmRef="33.2"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="1700">
