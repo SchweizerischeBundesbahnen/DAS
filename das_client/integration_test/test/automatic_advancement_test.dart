@@ -52,8 +52,6 @@ void main() {
       expect(findDASTableRowByText('Olten'), findsAny);
     });
 
-    /*
-
     testWidgets('check scrolling to position if automatic scrolling gets enabled', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
@@ -80,6 +78,8 @@ void main() {
       // Check if last row is visible
       expect(findDASTableRowByText('Olten'), findsAny);
     });
+
+    /*
 
     testWidgets('check not scrolling if automatic advancement is off', (tester) async {
       // Load app widget.
