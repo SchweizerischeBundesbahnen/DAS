@@ -1,41 +1,41 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
                 SP_ID="T8_1" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="2000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
     <SP_Points>
         <TimingPoint TP_ID="Bern" location="500">
-            <TP_Name name="Bern"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>3001</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3001</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="Bern"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Wankdorf" location="1000">
-            <TP_Name name="Wankdorf"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>3002</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3002</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="Wankdorf"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Burgdorf" location="1500">
-            <TP_Name name="Burgdorf"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>3003</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3003</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="Burgdorf"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Olten" location="2000">
-            <TP_Name name="Olten"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>3004</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3004</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="Olten"/>
         </TimingPoint>
 
     </SP_Points>
@@ -43,18 +43,22 @@
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="BE"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>3001</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3001</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Bern"/>
-            <TAF_TAP_Location_NSP name="newLineSpeed">
+            <TAF_TAP_LocationName language="de" text="Bern"/>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
                     &lt;lineSpeed&gt;
                     &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;90&quot;/&gt;
                     &lt;/lineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
-            <TAF_TAP_Location_NSP name="stationSpeed">
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
                     &lt;stationSpeed&gt;
                     &lt;v trainSeries=&quot;R&quot; speed=&quot;75-70-60&quot;/&gt;
@@ -75,27 +79,31 @@
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="WKD"
             TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>3002</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3002</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Wankdorf"/>
+            <TAF_TAP_LocationName language="de" text="Wankdorf"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="BDF"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>3003</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3003</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Burgdorf"/>
-            <TAF_TAP_Location_NSP name="newLineSpeed">
+            <TAF_TAP_LocationName language="de" text="Burgdorf"/>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
                     &lt;lineSpeed&gt;
                     &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;80&quot;/&gt;
                     &lt;/lineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
-            <TAF_TAP_Location_NSP name="stationSpeed">
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
                     &lt;stationSpeed&gt;
                     &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;75-{70}/[60]&quot;/&gt;
@@ -118,18 +126,22 @@
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="OL"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>3004</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3004</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Olten"/>
-            <TAF_TAP_Location_NSP name="newLineSpeed">
+            <TAF_TAP_LocationName language="de" text="Olten"/>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
                     &lt;lineSpeed&gt;
                     &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;80&quot;/&gt;
                     &lt;/lineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
-            <TAF_TAP_Location_NSP name="stationSpeed">
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
                     &lt;stationSpeed&gt;
                     &lt;v trainSeries=&quot;N&quot; speed=&quot;80/70-60&quot;/&gt;

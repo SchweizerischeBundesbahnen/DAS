@@ -118,7 +118,7 @@
                 <version>3.2.0</version>
                 <configuration>
                     <sources>
-                        <source>${basedir}/src/main/resources/SFERA_3.0_custom.xsd</source>
+                        <source>${basedir}/src/main/resources/SFERA_v3.00.xsd</source>
                     </sources>
                     <xjbSources>
                         <xjbSource>${basedir}/src/main/resources/jaxb-bindings.xjb</xjbSource>

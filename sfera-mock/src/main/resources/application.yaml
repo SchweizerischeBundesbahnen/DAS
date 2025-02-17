@@ -57,5 +57,5 @@ spring:
 
 sfera:
   company-code: '0085'
-  sfera-version: '2.01'
+  sfera-version: '3.00'
   source-device: 'TMS'

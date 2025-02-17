@@ -75,7 +75,7 @@ public class IncomingMessageAdapter {
                     replyPublisher.publishErrorMessage(validationMessage.get(), requestContext);
                     return;
                 }
-                if (event.getSessionTermination() != null) {
+                if (event.getB2GEventPayload() != null && event.getB2GEventPayload().getSessionTermination() != null) {
                     sferaApplicationService.processSessionTermination(requestContext);
                 }
 
@@ -147,15 +147,15 @@ public class IncomingMessageAdapter {
 
     private void processJourneyProfileRequest(JPRequest jpRequest, RequestContext requestContext) {
         var otnId = jpRequest.getTrainIdentification().getOTNID();
-        var tid = new TrainIdentification(new CompanyCode(otnId.getCompany()), otnId.getOperationalTrainNumber(), XmlDateHelper.toLocalDate(otnId.getStartDate()));
+        var tid = new TrainIdentification(new CompanyCode(otnId.getTeltsiCompany()), otnId.getTeltsiOperationalTrainNumber(), XmlDateHelper.toLocalDate(otnId.getTeltsiStartDate()));
         sferaApplicationService.processJourneyProfileRequest(tid, requestContext);
     }
 
     private void processSegmentProfileRequest(List<SPRequest> spRequests, RequestContext requestContext) {
         var segmentIdentifications = spRequests.stream().map(spRequest -> new SegmentIdentification(
             spRequest.getSPID(),
-            spRequest.getSPVersionMajor() != null ? spRequest.getSPVersionMajor().intValue() : 0,
-            spRequest.getSPVersionMinor() != null ? spRequest.getSPVersionMinor().intValue() : 0,
+            spRequest.getSPVersionMajor(),
+            spRequest.getSPVersionMinor(),
             new CompanyCode(spRequest.getSPZone().getIMID()))).toList();
         sferaApplicationService.processSegmentProfileRequest(segmentIdentifications, requestContext);
     }
@@ -163,8 +163,8 @@ public class IncomingMessageAdapter {
     private void processTrainCharacteristicsRequest(List<TCRequest> tcRequests, RequestContext requestContext) {
         var trainCharacteristicsIdentifications = tcRequests.stream().map(tcRequest -> new TrainCharacteristicsIdentification(
             tcRequest.getTCID(),
-            tcRequest.getTCVersionMajor() != null ? tcRequest.getTCVersionMajor().intValue() : 0,
-            tcRequest.getTCVersionMinor() != null ? tcRequest.getTCVersionMinor().intValue() : 0,
+            tcRequest.getTCVersionMajor(),
+            tcRequest.getTCVersionMinor(),
             new CompanyCode(tcRequest.getTCRUID()))).toList();
         sferaApplicationService.processTrainCharacteristicsRequest(trainCharacteristicsIdentifications, requestContext);
     }
@@ -172,7 +172,7 @@ public class IncomingMessageAdapter {
     private void processRelatedTrainInformationRequest(List<RelatedTrainInformationRequest> relatedTrainInformationRequests, RequestContext requestContext) {
         var trainIdentifications = relatedTrainInformationRequests.stream()
             .map(relatedTrainInformationRequest -> relatedTrainInformationRequest.getTrainIdentification().getOTNID())
-            .map(otnId -> new TrainIdentification(new CompanyCode(otnId.getCompany()), otnId.getOperationalTrainNumber(), XmlDateHelper.toLocalDate(otnId.getStartDate())))
+            .map(otnId -> new TrainIdentification(new CompanyCode(otnId.getTeltsiCompany()), otnId.getTeltsiOperationalTrainNumber(), XmlDateHelper.toLocalDate(otnId.getTeltsiStartDate())))
             .toList();
         sferaApplicationService.processRelatedTrainInformationRequest(trainIdentifications, requestContext);
     }
