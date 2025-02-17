@@ -79,8 +79,6 @@ void main() {
       expect(findDASTableRowByText('Olten'), findsAny);
     });
 
-    /*
-
     testWidgets('check not scrolling if automatic advancement is off', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
@@ -104,6 +102,8 @@ void main() {
       expect(findDASTableRowByText('Bern'), findsAny);
       expect(findDASTableRowByText('B1'), findsAny);
     });
+
+    /*
 
     testWidgets('check sticky footer is displayed', (tester) async {
       // Load app widget.
