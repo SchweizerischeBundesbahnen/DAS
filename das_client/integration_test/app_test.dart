@@ -18,8 +18,8 @@ void main() {
   //Fimber.plantTree(DebugTree());
 
   automatic_advancement_tests.main();
-  train_journey_table_tests.main();
   navigation_tests.main();
+  train_journey_table_tests.main();
   train_search_tests.main();
 }
 
