@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/break_series_selection.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/chevron_animation_wrapper.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_level_crossing_group_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_row.dart';
@@ -78,11 +79,14 @@ class TrainJourney extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
-      child: DASTable(
-        scrollController: context.trainJourneyCubit.automaticAdvancementController.scrollController,
-        columns: _columns(context, journey, settings),
-        rows: tableRows.map((it) => it.build(context)).toList(),
-        bottomMarginAdjustment: tableRows.lastWhereOrNull((it) => it.isSticky)?.height ?? 0,
+      child: ChevronAnimationWrapper(
+        journey: journey,
+        child: DASTable(
+          scrollController: context.trainJourneyCubit.automaticAdvancementController.scrollController,
+          columns: _columns(context, journey, settings),
+          rows: tableRows.map((it) => it.build(context)).toList(),
+          bottomMarginAdjustment: tableRows.lastWhereOrNull((it) => it.isSticky)?.height ?? 0,
+        ),
       ),
     );
   }
