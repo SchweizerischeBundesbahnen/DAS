@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.2.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera-mock-v0.1.0...sfera-mock-v0.2.0) (2025-02-17)
+
+
+### Features
+
+* added visualization for single track without block equipment. ([#230](https://github.com/SchweizerischeBundesbahnen/DAS/issues/230)) ([#569](https://github.com/SchweizerischeBundesbahnen/DAS/issues/569)) ([45d2925](https://github.com/SchweizerischeBundesbahnen/DAS/commit/45d29253495367e25c8ec140ec154ad2103a8b99))
+* automatische fortschaltung ([#94](https://github.com/SchweizerischeBundesbahnen/DAS/issues/94)) ([#553](https://github.com/SchweizerischeBundesbahnen/DAS/issues/553)) ([4642825](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4642825132bc223c1ce0203deaac84702c1fb8ea))
+* manual train location trigger ([#513](https://github.com/SchweizerischeBundesbahnen/DAS/issues/513)) ([#575](https://github.com/SchweizerischeBundesbahnen/DAS/issues/575)) ([0d25f36](https://github.com/SchweizerischeBundesbahnen/DAS/commit/0d25f3650a309c9294cac7a3460ee18627731f32))
+
+
+### Documentation
+
+* fix names and speed in testdata OL-ZUE ([#565](https://github.com/SchweizerischeBundesbahnen/DAS/issues/565)) ([7ab56c2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7ab56c26ce40a9c087a1ba8f1a5dca3d249970ff))
+* readme for backend and sfera-mock updated ([#561](https://github.com/SchweizerischeBundesbahnen/DAS/issues/561)) ([df53294](https://github.com/SchweizerischeBundesbahnen/DAS/commit/df53294d4256a240e97ec5e668d9bbfa5cce37c8))
+
 ## 0.1.0 (2025-02-07)
 
 
