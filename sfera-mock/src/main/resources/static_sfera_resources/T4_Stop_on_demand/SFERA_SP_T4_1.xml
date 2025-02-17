@@ -1,57 +1,57 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
                 SP_ID="T4_1" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="41500" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
     <SP_Points>
         <TimingPoint TP_ID="Solothurn" location="73800">
-            <TP_Name name="SO"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>0207</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>0207</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="SO"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Solothurn_West" location="74800">
-            <TP_Name name="SO_W"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>0208</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>0208</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="SO_W"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Langendorf" location="1900">
-            <TP_Name name="LAN"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>0209</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>0209</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="LAN"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Lommiswil" location="5300">
-            <TP_Name name="LOM"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>0210</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>0210</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="LOM"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Im_Holz" location="8000">
-            <TP_Name name="IM_H"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>0211</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>0211</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="IM_H"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Oberdorf_SO" location="9600">
-            <TP_Name name="OB_SO"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>0212</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>0212</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="OB_SO"/>
         </TimingPoint>
     </SP_Points>
 
@@ -59,11 +59,13 @@
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="SO"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>0207</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>0207</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Solothurn"/>
-            <TAF_TAP_Location_NSP name="bracketStation">
+            <TAF_TAP_LocationName language="de" text="Solothurn"/>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>bracketStation</NSP_GroupName>
                 <NetworkSpecificParameter name="mainStation" value="CH0207"/>
                 <NetworkSpecificParameter name="text" value="SO" />
             </TAF_TAP_Location_NSP>
@@ -72,11 +74,13 @@
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="SO_W"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>0208</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>0208</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Solothurn West"/>
-            <TAF_TAP_Location_NSP name="bracketStation">
+            <TAF_TAP_LocationName language="de" text="Solothurn West"/>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>bracketStation</NSP_GroupName>
                 <NetworkSpecificParameter name="mainStation" value="CH0207"/>
                 <NetworkSpecificParameter name="text" value="SO" />
             </TAF_TAP_Location_NSP>
@@ -85,37 +89,37 @@
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="LAN"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>0209</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>0209</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Langendorf"/>
+            <TAF_TAP_LocationName language="de" text="Langendorf"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="LOM"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>0210</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>0210</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Lommiswil"/>
+            <TAF_TAP_LocationName language="de" text="Lommiswil"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="IM_H"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>0211</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>0211</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Im Holz"/>
+            <TAF_TAP_LocationName language="de" text="Im Holz"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="OB_SO"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>0212</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>0212</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Oberdorf SO"/>
+            <TAF_TAP_LocationName language="de" text="Oberdorf SO"/>
         </TAF_TAP_Location>
     </SP_Areas>
     <SP_ContextInformation>

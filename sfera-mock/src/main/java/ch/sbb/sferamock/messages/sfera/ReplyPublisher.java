@@ -40,7 +40,7 @@ public class ReplyPublisher {
 
     public void publishJourneyProfile(JourneyProfile journeyProfile, RequestContext requestContext) {
         var header = sferaMessageCreator.createMessageHeader(UUID.randomUUID(), requestContext.tid(), requestContext.incomingMessageId());
-        var reply = sferaMessageCreator.createJourneyProfileReplyMessage(journeyProfile, header);
+        var reply = sferaMessageCreator.createJourneyProfileReplyMessage(journeyProfile, header, requestContext.tid());
         publishReplyMessage(reply, requestContext);
     }
 
@@ -58,7 +58,7 @@ public class ReplyPublisher {
 
     public void publishRelatedTrainInformations(List<RelatedTrainInformation> relatedTrainInformations, RequestContext requestContext) {
         var header = sferaMessageCreator.createMessageHeader(UUID.randomUUID(), requestContext.tid(), requestContext.incomingMessageId());
-        var reply = sferaMessageCreator.createRelatedTrainInformationReplyMessage(relatedTrainInformations, header);
+        var reply = sferaMessageCreator.createRelatedTrainInformationReplyMessage(relatedTrainInformations, header, requestContext.tid());
         publishReplyMessage(reply, requestContext);
     }
 

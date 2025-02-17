@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
                 SP_ID="1513_11_Maegenswil" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="3100" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -9,11 +9,11 @@
     <SP_Points>
 
         <TimingPoint TP_ID="Maegenwil" location="0">
-            <TP_Name name="MAEG"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>2106</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>2106</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="MAEG"/>
         </TimingPoint>
 
 		<Signal>
@@ -43,17 +43,17 @@
     </SP_Points>
 
     <SP_Areas>
-		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="10.0" gradientDirection="Downhill" directionOfApplicationOnSP="Nominal"/>
-
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="MAEG" TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>2106</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>2106</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Mägenwil"/>
+            <TAF_TAP_LocationName language="de" text="Mägenwil"/>
 
-			<TAF_TAP_Location_NSP name="newLineSpeed">
+			<TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
 				<NetworkSpecificParameter name="xmlNewLineSpeed" value="
 					&lt;lineSpeed&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;130&quot;/&gt;
@@ -63,11 +63,15 @@
 				"/>
 			</TAF_TAP_Location_NSP>
 
-			<TAF_TAP_Location_NSP name="departureAuth">
+			<TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>departureAuth</NSP_GroupName>
 				<NetworkSpecificParameter name="departureAuth" value="false"/>
 			</TAF_TAP_Location_NSP>
 
-			<TAF_TAP_Location_NSP name="lineFootNotes">
+			<TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>lineFootNotes</NSP_GroupName>
 				<NetworkSpecificParameter name="xmlLineFootNotes" value="
 				&lt;lineFootNotes&gt;
 					&lt;footNote&gt;
@@ -99,7 +103,9 @@
 		<KilometreReferencePoint location="2800">
             <KM_Reference kmRef="23.1"/>
         </KilometreReferencePoint>
-		
+
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="10.0" gradientDirection="Downhill" directionOfApplicationOnSP="Nominal"/>
+
     </SP_ContextInformation>
 	
 </SegmentProfile>

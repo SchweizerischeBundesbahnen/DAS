@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <JourneyProfile JP_Status="Valid" JP_Version="1"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd">
+                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
     <TrainIdentification>
         <OTN_ID>
-            <Company>1085</Company>
-            <OperationalTrainNumber>T9999</OperationalTrainNumber>
-            <StartDate>2022-01-04</StartDate>
+            <teltsi_Company>1085</teltsi_Company>
+            <teltsi_OperationalTrainNumber>T9999</teltsi_OperationalTrainNumber>
+            <teltsi_StartDate>2022-01-04</teltsi_StartDate>
         </OTN_ID>
     </TrainIdentification>
-    <SegmentProfileList SP_ID="T9999_1" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T9999_1" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -21,8 +21,8 @@
         <TrainCharacteristicsRef TC_ID="T9999_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
             <TC_RU_ID>1085</TC_RU_ID>
         </TrainCharacteristicsRef>
-    </SegmentProfileList>
-    <SegmentProfileList SP_ID="T9999_2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    </SegmentProfileReference>
+    <SegmentProfileReference SP_ID="T9999_2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -31,8 +31,8 @@
                 <TP_ID_Reference TP_ID="Haltestelle_B"/>
             </TimingPointReference>
         </TimingPointConstraints>
-    </SegmentProfileList>
-    <SegmentProfileList SP_ID="T9999_3" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    </SegmentProfileReference>
+    <SegmentProfileReference SP_ID="T9999_3" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -40,12 +40,21 @@
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Halt_auf_Verlangen_C"/>
             </TimingPointReference>
-            <StoppingPointInformation departureTime="2022-05-17T07:52:00Z">
-                <StopType stopTypePurpose="Commercial" mandatoryStop="false"/>
+            <StoppingPointInformation>
+                <StopType mandatoryStop="false">
+                    <teltsi_TrainActivityType>0001</teltsi_TrainActivityType>
+                </StopType>
             </StoppingPointInformation>
+            <StoppingPointDepartureDetails departureTime="2022-05-17T07:52:00Z"/>
+            <TimingPointConstraints_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>sbbSpecific</NSP_GroupName>
+<!--                todo shouldnt we use the teltsi_TrainActivityType -->
+                <NetworkSpecificParameter name="sbbType" value="commercialStop"/>
+            </TimingPointConstraints_NSPs>
         </TimingPointConstraints>
-    </SegmentProfileList>
-    <SegmentProfileList SP_ID="T9999_4" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    </SegmentProfileReference>
+    <SegmentProfileReference SP_ID="T9999_4" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -54,8 +63,8 @@
                 <TP_ID_Reference TP_ID="Klammerbahnhof_D"/>
             </TimingPointReference>
         </TimingPointConstraints>
-    </SegmentProfileList>
-    <SegmentProfileList SP_ID="T9999_5" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    </SegmentProfileReference>
+    <SegmentProfileReference SP_ID="T9999_5" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -69,5 +78,5 @@
                 <TP_ID_Reference TP_ID="Bahnhof_E"/>
             </TimingPointReference>
         </TimingPointConstraints>
-    </SegmentProfileList>
+    </SegmentProfileReference>
 </JourneyProfile>

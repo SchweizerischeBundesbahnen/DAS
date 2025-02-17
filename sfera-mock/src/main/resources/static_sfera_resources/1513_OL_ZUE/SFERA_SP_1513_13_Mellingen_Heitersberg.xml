@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
                 SP_ID="1513_13_Mellingen_Heitersberg" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="6100" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -9,11 +9,11 @@
     <SP_Points>
 
         <TimingPoint TP_ID="Mellingen_Heitersberg" location="0">
-            <TP_Name name="MELH"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>16219</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>16219</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="MELH"/>
         </TimingPoint>
 
 		<Signal>
@@ -59,7 +59,9 @@
             <SignalPhysicalCharacteristics visualIdentifier="F87"/>
         </Signal>	
 
-        <NetworkSpecificPoint location="700" name="protectionSection">
+        <NetworkSpecificPoint location="700">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>protectionSection</NSP_GroupName>
             <NetworkSpecificParameter name="lengthType" value="short"/>
             <NetworkSpecificParameter name="facultative" value="true"/>
         </NetworkSpecificPoint>
@@ -67,17 +69,17 @@
     </SP_Points>
 
     <SP_Areas>
-		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="8.0" gradientDirection="Downhill" directionOfApplicationOnSP="Nominal"/>
-		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="3.0" gradientDirection="Uphill" directionOfApplicationOnSP="Nominal"/>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="MELH" TAF_TAP_location_type="halt">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>16219</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>16219</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Mellingen Heitersberg"/>
+            <TAF_TAP_LocationName language="de" text="Mellingen Heitersberg"/>
 
-			<TAF_TAP_Location_NSP name="newLineSpeed">
+			<TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
 				<NetworkSpecificParameter name="xmlNewLineSpeed" value="
 					&lt;lineSpeed&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;70&quot;/&gt;
@@ -90,11 +92,15 @@
 				"/>
 			</TAF_TAP_Location_NSP>
 
-			<TAF_TAP_Location_NSP name="departureAuth">
+			<TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>departureAuth</NSP_GroupName>
 				<NetworkSpecificParameter name="departureAuth" value="false"/>
 			</TAF_TAP_Location_NSP>
 
-			<TAF_TAP_Location_NSP name="lineFootNotes">
+			<TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>lineFootNotes</NSP_GroupName>
 				<NetworkSpecificParameter name="xmlLineFootNotes" value="
 				&lt;lineFootNotes&gt;
 					&lt;footNote&gt;
@@ -146,6 +152,9 @@
 		<KilometreReferencePoint location="5700">
             <KM_Reference kmRef="16.7"/>
         </KilometreReferencePoint>
+
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="8.0" gradientDirection="Downhill" directionOfApplicationOnSP="Nominal"/>
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="3.0" gradientDirection="Uphill" directionOfApplicationOnSP="Nominal"/>
 
     </SP_ContextInformation>
 	

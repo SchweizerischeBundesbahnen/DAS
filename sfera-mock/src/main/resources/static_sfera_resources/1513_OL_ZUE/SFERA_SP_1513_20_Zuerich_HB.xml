@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
                 SP_ID="1513_20_Zuerich_HB" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="200" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
@@ -9,31 +9,34 @@
     <SP_Points>
 
         <TimingPoint TP_ID="Zuerich_HB" location="0">
-            <TP_Name name="ZUE"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>3000</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3000</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="ZUE"/>
         </TimingPoint>
 
     </SP_Points>
 
     <SP_Areas>
-		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="3.0" gradientDirection="Uphill" directionOfApplicationOnSP="Nominal"/>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="ZUE" TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>3000</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3000</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Zürich HB"/>
+            <TAF_TAP_LocationName language="de" text="Zürich HB"/>
 
-			<TAF_TAP_Location_NSP name="departureAuth">
+			<TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>departureAuth</NSP_GroupName>
 				<NetworkSpecificParameter name="departureAuth" value="false"/>
 			</TAF_TAP_Location_NSP>
 			
 			<!-- SFERA-Struktur wird noch gemäss untenstehender Struktur in Spez angepasst -->
-			<TAF_TAP_Location_NSP name="stationProperty">
+			<TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationProperty</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationProperty" value="
 				&lt;stationProperty&gt; 
 					&lt;stationProperty1 text=&quot;&lt;b&gt;A&quot;&gt; sign=&quot;Q&quot;&gt;
@@ -51,18 +54,31 @@
 
     <SP_ContextInformation>
 
+<!--        todo contactType="phone" -->
 		<ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
-			<Contact contactType="phone" mainContact="true" contactIdentifier="1310" />
-			<Contact contactType="phone" mainContact="false" contactRole="Felder M, O, K Seite Halle: Fahrdienstleiter" contactIdentifier="1310" />
-			<Contact contactType="phone" mainContact="false" contactRole="Felder M, O, K Seite ZAS und Felder E, Z: Fahrdienstleiter" contactIdentifier="1313" />
-			<Contact contactType="phone" mainContact="false" contactRole="Felder R, U übrige Gleise: Fahrdienstleiter" contactIdentifier="1312" />
-			<Contact contactType="phone" mainContact="false" contactRole="Felder H, J: Fahrdienstleiter" contactIdentifier="1321" />
+			<Contact mainContact="true">
+                <OtherContactType contactIdentifier="1310" />
+            </Contact>
+			<Contact mainContact="false" contactRole="Felder M, O, K Seite Halle: Fahrdienstleiter">
+                <OtherContactType contactIdentifier="1310" />
+            </Contact>
+			<Contact mainContact="false" contactRole="Felder M, O, K Seite ZAS und Felder E, Z: Fahrdienstleiter">
+                <OtherContactType contactIdentifier="1313" />
+            </Contact>
+			<Contact mainContact="false" contactRole="Felder R, U übrige Gleise: Fahrdienstleiter">
+                <OtherContactType contactIdentifier="1312" />
+            </Contact>
+			<Contact mainContact="false" contactRole="Felder H, J: Fahrdienstleiter">
+                <OtherContactType contactIdentifier="1321" />
+            </Contact>
 
 		</ContactList>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="0.0"/>
         </KilometreReferencePoint>
+
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="3.0" gradientDirection="Uphill" directionOfApplicationOnSP="Nominal"/>
 
     </SP_ContextInformation>
 
