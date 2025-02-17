@@ -10,6 +10,7 @@ import ch.sbb.sferamock.adapters.sfera.model.v0201.HandshakeAcknowledgement;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.HandshakeReject;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.JourneyProfile;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.MessageHeader;
+import ch.sbb.sferamock.adapters.sfera.model.v0201.MultilingualTextComplexType;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.OTNIDComplexType;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.Recipient;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.RelatedTrainInformation;
@@ -46,18 +47,18 @@ public class SferaMessageCreator {
     private static TrainIdentificationComplexType createTrainIdentification(TrainIdentification tid) {
         var result = new TrainIdentificationComplexType();
         var otnId = new OTNIDComplexType();
-        otnId.setOperationalTrainNumber(tid.operationalNumber());
-        otnId.setCompany(tid.companyCode().value());
-        otnId.setStartDate(XmlDateHelper.toGregorianCalender(tid.date()));
+        otnId.setTeltsiOperationalTrainNumber(tid.operationalNumber());
+        otnId.setTeltsiCompany(tid.companyCode().value());
+        otnId.setTeltsiStartDate(XmlDateHelper.toGregorianCalender(tid.date()));
         result.setOTNID(otnId);
         return result;
     }
 
-    public SFERAG2BReplyMessage createJourneyProfileReplyMessage(JourneyProfile journeyProfile, MessageHeader header) {
+    public SFERAG2BReplyMessage createJourneyProfileReplyMessage(JourneyProfile journeyProfile, MessageHeader header, TrainIdentification tid) {
         var result = new SFERAG2BReplyMessage();
         result.setMessageHeader(header);
         var payload = new G2BReplyPayload();
-        journeyProfile.setTrainIdentification(header.getTrainIdentification());
+        journeyProfile.setTrainIdentification(createTrainIdentification(tid));
         payload.getJourneyProfile().add(journeyProfile);
         result.setG2BReplyPayload(payload);
         return result;
@@ -85,7 +86,6 @@ public class SferaMessageCreator {
         result.setSender(sender);
         result.setRecipient(recipient);
         result.setTimestamp(XmlDateHelper.toGregorianCalender(LocalDateTime.now()));
-        result.setTrainIdentification(createTrainIdentification(tid));
         return result;
     }
 
@@ -98,14 +98,14 @@ public class SferaMessageCreator {
         return result;
     }
 
-    public SFERAG2BEventMessage createRelatedTrainInformation(G2BEventPayload eventPayload, MessageHeader header) {
-        eventPayload.getRelatedTrainInformation().getOwnTrain().setTrainIdentification(header.getTrainIdentification());
+    public SFERAG2BEventMessage createRelatedTrainInformation(G2BEventPayload eventPayload, MessageHeader header, TrainIdentification tid) {
+        eventPayload.getRelatedTrainInformation().getOwnTrain().setTrainIdentification(createTrainIdentification(tid));
         return createEventMessage(eventPayload, header);
     }
 
-    public SFERAG2BEventMessage createJourneyProfileEventMessage(G2BEventPayload eventPayload, MessageHeader header) {
+    public SFERAG2BEventMessage createJourneyProfileEventMessage(G2BEventPayload eventPayload, MessageHeader header, TrainIdentification tid) {
         for (JourneyProfile journeyProfile : eventPayload.getJourneyProfile()) {
-            journeyProfile.setTrainIdentification(header.getTrainIdentification());
+            journeyProfile.setTrainIdentification(createTrainIdentification(tid));
         }
         return createEventMessage(eventPayload, header);
     }
@@ -133,13 +133,13 @@ public class SferaMessageCreator {
 
     public HandshakeReject createSferaHandshakeReject(HandshakeRejectReason rejectReason) {
         var result = new HandshakeReject();
-        result.setHandshakeRejectReason(toSferaRejectReason(rejectReason));
+        result.getHandshakeRejectReason().add(toSferaRejectReason(rejectReason).toString());
         return result;
     }
 
-    private HandshakeReject.HandshakeRejectReason toSferaRejectReason(HandshakeRejectReason rejectReason) {
+    private HandshakeRejectReason toSferaRejectReason(HandshakeRejectReason rejectReason) {
         return switch (rejectReason) {
-            case architectureNotSupported -> HandshakeReject.HandshakeRejectReason.ARCHITECTURE_NOT_SUPPORTED;
+            case architectureNotSupported -> HandshakeRejectReason.architectureNotSupported;
         };
     }
 
@@ -157,7 +157,12 @@ public class SferaMessageCreator {
         var messageResponse = new G2BMessageResponse();
         G2BError g2BError = new G2BError();
         g2BError.setErrorCode(errorCode);
-        additionalInfo.ifPresent(g2BError::setAdditionalInfo);
+        additionalInfo.ifPresent(value -> {
+            var text = new MultilingualTextComplexType();
+            text.setText(value);
+            text.setLanguage("de");
+            g2BError.getAdditionalInfo().add(text);
+        });
         messageResponse.getG2BError().add(g2BError);
         messageResponse.setResult(Result.ERROR);
 
@@ -196,11 +201,11 @@ public class SferaMessageCreator {
         return result;
     }
 
-    public SFERAG2BReplyMessage createRelatedTrainInformationReplyMessage(List<RelatedTrainInformation> relatedTrainInformations, MessageHeader header) {
+    public SFERAG2BReplyMessage createRelatedTrainInformationReplyMessage(List<RelatedTrainInformation> relatedTrainInformations, MessageHeader header, TrainIdentification tid) {
         var result = new SFERAG2BReplyMessage();
         result.setMessageHeader(header);
         var payload = new G2BReplyPayload();
-        relatedTrainInformations.forEach(relatedTrainInformation -> relatedTrainInformation.getOwnTrain().setTrainIdentification(header.getTrainIdentification()));
+        relatedTrainInformations.forEach(relatedTrainInformation -> relatedTrainInformation.getOwnTrain().setTrainIdentification(createTrainIdentification(tid)));
         payload.getRelatedTrainInformation().addAll(relatedTrainInformations);
         result.setG2BReplyPayload(payload);
         return result;
