@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.1.0...backend-v0.2.0) (2025-02-17)
+
+
+### Features
+
+* db migration ([#390](https://github.com/SchweizerischeBundesbahnen/DAS/issues/390)) ([#562](https://github.com/SchweizerischeBundesbahnen/DAS/issues/562)) ([fbe580f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/fbe580ff40d7edc075ab340b73676cc614a4bacc))
+
+
+### Documentation
+
+* readme for backend and sfera-mock updated ([#561](https://github.com/SchweizerischeBundesbahnen/DAS/issues/561)) ([df53294](https://github.com/SchweizerischeBundesbahnen/DAS/commit/df53294d4256a240e97ec5e668d9bbfa5cce37c8))
+
 ## 0.1.0 (2025-02-07)
 
 
