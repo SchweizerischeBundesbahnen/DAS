@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
+                SP_ID="1513_16_Glanzenberg" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="2000" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>1285</IM_ID>
+    </SP_Zone>
+	
+    <SP_Points>
+
+        <TimingPoint TP_ID="Glanzenberg" location="0">
+            <TP_Name name="GLZB"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3512</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="E85" location="800"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E85"/>
+        </Signal>
+ 
+    </SP_Points>
+
+    <SP_Areas>
+		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="3.0" gradientDirection="Uphill" directionOfApplicationOnSP="Nominal"/>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="GLZB" TAF_TAP_location_type="halt">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>3512</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Glanzenberg"/>
+
+			<TAF_TAP_Location_NSP name="departureAuth">
+				<NetworkSpecificParameter name="departureAuth" value="false"/>
+			</TAF_TAP_Location_NSP>
+			
+        </TAF_TAP_Location>
+
+    </SP_Areas>
+
+    <SP_ContextInformation>
+		
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="9.5"/>
+        </KilometreReferencePoint>
+		<KilometreReferencePoint location="800">
+            <KM_Reference kmRef="8.7"/>
+        </KilometreReferencePoint>
+
+    </SP_ContextInformation>
+	
+</SegmentProfile>

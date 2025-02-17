@@ -1,6 +1,6 @@
 baseURL: 'http://localhost:1313/'
 languageCode: en
-title: OpenDAS
+title: DAS
 cleanDestinationDir: true
 menu:
   main:
