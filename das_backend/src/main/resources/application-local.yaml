@@ -1,6 +1,6 @@
 spring:
   docker:
     compose:
-      file: ./backend/compose.yaml
+      file: ./das_backend/compose.yaml
   config:
-    import: optional:file:./backend/.env[.properties]
+    import: optional:file:./das_backend/.env[.properties]

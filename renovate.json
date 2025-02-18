@@ -5,16 +5,25 @@
   ],
   "packageRules": [
     {
-      "matchManagers": ["pub"],
+      "matchManagers": [
+        "pub"
+      ],
       "groupName": "auto_route",
-      "matchPackagePrefixes": ["auto_route", "auto_route_generator"]
+      "matchPackagePrefixes": [
+        "auto_route",
+        "auto_route_generator"
+      ]
     },
     {
-      "matchPaths": ["webapp/**"],
+      "matchPaths": [
+        "das_playground/**"
+      ],
       "enabled": false
     }
   ],
-  "schedule": ["before 7am on Thursday"],
+  "schedule": [
+    "before 7am on Thursday"
+  ],
   "prHourlyLimit": 0,
   "prConcurrentLimit": 0
 }

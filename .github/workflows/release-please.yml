@@ -17,15 +17,15 @@ jobs:
       das_client--release_created: ${{ steps.release.outputs.das_client--release_created }}
       das_client--version: ${{ steps.release.outputs.das_client--version }}
       das_client--tag_name: ${{ steps.release.outputs.das_client--tag_name }}
-      sfera-mock--release_created: ${{ steps.release.outputs.sfera-mock--release_created }}
-      sfera-mock--version: ${{ steps.release.outputs.sfera-mock--version }}
-      sfera-mock--tag_name: ${{ steps.release.outputs.sfera-mock--tag_name }}
-      backend--release_created: ${{ steps.release.outputs.backend--release_created }}
-      backend--version: ${{ steps.release.outputs.backend--version }}
-      backend--tag_name: ${{ steps.release.outputs.backend--tag_name }}
-      webapp--release_created: ${{ steps.release.outputs.webapp--release_created }}
-      webapp--version: ${{ steps.release.outputs.webapp--version }}
-      webapp--tag_name: ${{ steps.release.outputs.webapp--tag_name }}
+      sfera_mock--release_created: ${{ steps.release.outputs.sfera_mock--release_created }}
+      sfera_mock--version: ${{ steps.release.outputs.sfera_mock--version }}
+      sfera_mock--tag_name: ${{ steps.release.outputs.sfera_mock--tag_name }}
+      das_backend--release_created: ${{ steps.release.outputs.das_backend--release_created }}
+      das_backend--version: ${{ steps.release.outputs.das_backend--version }}
+      das_backend--tag_name: ${{ steps.release.outputs.das_backend--tag_name }}
+      das_playground--release_created: ${{ steps.release.outputs.das_playground--release_created }}
+      das_playground--version: ${{ steps.release.outputs.das_playground--version }}
+      das_playground--tag_name: ${{ steps.release.outputs.das_playground--tag_name }}
     steps:
       - uses: googleapis/release-please-action@v4
         id: release
@@ -183,9 +183,9 @@ jobs:
           track: internal
           status: draft
 
-  sfera-mock-release:
+  sfera_mock-release:
     needs: release-please
-    if: needs.release-please.outputs.sfera-mock--release_created
+    if: needs.release-please.outputs.sfera_mock--release_created
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -203,7 +203,7 @@ jobs:
       - name: Create container image
         env:
           IMAGE_ID: ghcr.io/${{ github.repository }}/sfera-mock
-          VERSION: ${{ needs.release-please.outputs.sfera-mock--version }}
+          VERSION: ${{ needs.release-please.outputs.sfera_mock--version }}
         run: |
           # Convert to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
@@ -215,9 +215,9 @@ jobs:
           docker push $IMAGE_ID:$VERSION
           docker tag $IMAGE_ID:$VERSION $IMAGE_ID:latest
           docker push $IMAGE_ID:latest
-  backend-release:
+  das_backend-release:
     needs: release-please
-    if: needs.release-please.outputs.backend--release_created
+    if: needs.release-please.outputs.das_backend--release_created
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -235,7 +235,7 @@ jobs:
       - name: Create container image
         env:
           IMAGE_ID: ghcr.io/${{ github.repository }}/backend
-          VERSION: ${{ needs.release-please.outputs.backend--version }}
+          VERSION: ${{ needs.release-please.outputs.das_backend--version }}
         run: |
           # Convert to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
@@ -247,9 +247,9 @@ jobs:
           docker push $IMAGE_ID:$VERSION
           docker tag $IMAGE_ID:$VERSION $IMAGE_ID:latest
           docker push $IMAGE_ID:latest
-  webapp-release:
+  das_playground-release:
     needs: release-please
-    if: needs.release-please.outputs.webapp--release_created
+    if: needs.release-please.outputs.das_playground--release_created
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -268,7 +268,7 @@ jobs:
       - name: Create container image
         env:
           IMAGE_REPO: ghcr.io/${{ github.repository }}/webapp
-          IMAGE_TAG: ${{ needs.release-please.outputs.webapp--version }}
+          IMAGE_TAG: ${{ needs.release-please.outputs.das_playground--version }}
           DOCKER_BUILDKIT: 1
         run: |
           # Convert to lowercase
