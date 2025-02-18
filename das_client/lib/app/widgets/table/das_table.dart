@@ -2,11 +2,11 @@ import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
+import 'package:das_client/app/widgets/stickyheader/sticky_header.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:das_client/app/widgets/table/das_table_column.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:das_client/app/widgets/table/das_table_theme.dart';
-import 'package:easy_sticky_header/easy_sticky_header.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -16,6 +16,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 /// The [columns] parameter must not be empty, and all rows must have the same number of cells as columns.
 @immutable
 class DASTable extends StatelessWidget {
+  static const Key tableKey = Key('DAS-Table');
   static const Key rowKey = Key('DAS-Table-row');
   static const double _headerRowHeight = 40.0;
   static const Duration snapScrollDuration = Duration(milliseconds: 300);
@@ -77,19 +78,21 @@ class DASTable extends StatelessWidget {
               _headerRow(),
               Expanded(
                 child: StickyHeader(
-                  showFooter: true,
-                  footerDecoration: BoxDecoration(boxShadow: [
-                    BoxShadow(
-                        color: SBBColors.black.withAlpha((255.0 * 0.2).round()), blurRadius: 5, offset: Offset(0, -5))
-                  ]),
-                  footerBuilder: (context, afterIndex) {
-                    for (var i = afterIndex + 1; i < rows.length; i++) {
-                      if (rows[i].isSticky) {
-                        return _dataRow(rows[i], i);
-                      }
-                    }
-                    return null;
+                  footerBuilder: (context, index) {
+                    return Container(
+                        decoration: BoxDecoration(boxShadow: [
+                          BoxShadow(
+                              color: SBBColors.black.withAlpha((255.0 * 0.2).round()),
+                              blurRadius: 5,
+                              offset: Offset(0, -5))
+                        ]),
+                        child: ClipRect(child: _dataRow(rows[index], index)));
                   },
+                  headerBuilder: (BuildContext context, int index) {
+                    return ClipRect(child: _dataRow(rows[index], index));
+                  },
+                  scrollController: scrollController,
+                  rows: rows,
                   child: NotificationListener<ScrollEndNotification>(
                     onNotification: (scrollEnd) {
                       if (!alignToItem) return true;
@@ -98,6 +101,7 @@ class DASTable extends StatelessWidget {
                       return true;
                     },
                     child: ListView.builder(
+                      key: tableKey,
                       controller: scrollController,
                       itemCount: rows.length + 1, // + 1 for bottom spacer
                       itemBuilder: (context, index) {
@@ -107,7 +111,7 @@ class DASTable extends StatelessWidget {
                                   constraints.maxHeight - _headerRowHeight - bottomMarginAdjustment - sbbDefaultSpacing,
                                   minBottomMargin));
                         }
-                        return _dataRowSticky(rows[index], index);
+                        return _dataRow(rows[index], index);
                       },
                     ),
                   ),
@@ -205,11 +209,6 @@ class DASTable extends StatelessWidget {
             )
           : headerCell;
     });
-  }
-
-  Widget _dataRowSticky(DASTableRow row, int index) {
-    final dataRow = _dataRow(row, index);
-    return row.isSticky ? StickyContainerWidget(index: index, child: dataRow) : dataRow;
   }
 
   Widget _dataRow(DASTableRow row, int index) {
