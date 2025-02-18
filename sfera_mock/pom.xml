@@ -107,7 +107,7 @@
                     <image>
                         <env>
                             <BP_OCI_SOURCE>
-                                https://github.com/SchweizerischeBundesbahnen/DAS/tree/main/sfera-mock
+                                https://github.com/SchweizerischeBundesbahnen/DAS/tree/main/sfera_mock
                             </BP_OCI_SOURCE>
                         </env>
                     </image>

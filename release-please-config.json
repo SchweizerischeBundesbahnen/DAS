@@ -5,12 +5,12 @@
     "das_client": {
       "release-type": "dart"
     },
-    "backend": {
+    "das_backend": {
       "release-type": "maven",
       "package-name": "backend"
     },
-    "webapp": {},
-    "sfera-mock": {
+    "das_playground": {},
+    "sfera_mock": {
       "release-type": "maven",
       "package-name": "sfera-mock"
     }
