@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.10.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.9.0...das_client-v0.10.0) (2025-02-18)
+
+
+### Features
+
+* battery-status [#123](https://github.com/SchweizerischeBundesbahnen/DAS/issues/123) ([#574](https://github.com/SchweizerischeBundesbahnen/DAS/issues/574)) ([95ccf99](https://github.com/SchweizerischeBundesbahnen/DAS/commit/95ccf993644c5eb3ab136c2d749b17ab09954f91))
+* hide line speed and ASR above 40km/h on ETCS L2 segment. ([#120](https://github.com/SchweizerischeBundesbahnen/DAS/issues/120)) ([#586](https://github.com/SchweizerischeBundesbahnen/DAS/issues/586)) ([e197542](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e197542142c262455b9b45159d5288816974c2c2))
+
 ## [0.9.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.8.0...das_client-v0.9.0) (2025-02-14)
 
 
