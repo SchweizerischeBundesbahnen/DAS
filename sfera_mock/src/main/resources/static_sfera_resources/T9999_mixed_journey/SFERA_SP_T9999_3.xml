@@ -1,17 +1,17 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
                 SP_ID="T9999_3" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="1000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
     <SP_Points>
         <TimingPoint TP_ID="Halt_auf_Verlangen_C" location="400">
-            <TP_Name name="C"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>9993</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>9993</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="C"/>
         </TimingPoint>
 
         <Signal>
@@ -20,7 +20,9 @@
             <SignalPhysicalCharacteristics visualIdentifier="AB1"/>
         </Signal>
 
-        <NetworkSpecificPoint location="100" identifier="3" name="curvePoint">
+        <NetworkSpecificPoint location="100" identifier="3">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
             <!-- 'stationExitCurve' (begins in a station) -->
             <NetworkSpecificParameter name="curveType" value="stationExitCurve"/>
@@ -30,7 +32,9 @@
             "/>
         </NetworkSpecificPoint>
 
-        <NetworkSpecificPoint location="500" identifier="4" name="curvePoint">
+        <NetworkSpecificPoint location="500" identifier="4">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
             <!-- 'curveAfterHalt' (begins at an halt). -->
             <NetworkSpecificParameter name="curveType" value="curveAfterHalt"/>
@@ -40,7 +44,9 @@
             "/>
         </NetworkSpecificPoint>
 
-        <NetworkSpecificPoint location="200" name="newLineSpeed">
+        <NetworkSpecificPoint location="200">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>newLineSpeed</NSP_GroupName>
             <NetworkSpecificParameter name="xmlNewLineSpeed" value="
                 &lt;lineSpeed&gt;
                 &lt;speeds&gt;
@@ -57,18 +63,22 @@
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="C"
                           TAF_TAP_location_type="halt">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>9993</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>9993</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Halt auf Verlangen C"/>
-            <TAF_TAP_Location_NSP name="newLineSpeed">
+            <TAF_TAP_LocationName language="de" text="Halt auf Verlangen C"/>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
                     &lt;lineSpeed&gt;
                     &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;60&quot;/&gt;
                     &lt;/lineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
-            <TAF_TAP_Location_NSP name="stationSpeed">
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
                     &lt;stationSpeed&gt;
                     &lt;v trainSeries=&quot;R&quot; speed=&quot;70-60&quot;/&gt;
@@ -83,13 +93,17 @@
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
-        <NetworkSpecificArea startEndQualifier="WholeSP" name="nonStandardTrackEquipment">
+        <NetworkSpecificArea startEndQualifier="WholeSP">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingPossible"/>
         </NetworkSpecificArea>
     </SP_Areas>
 
     <SP_ContextInformation>
-        <ConnectionTrack location="200" connectionTrackType="Unknown" connectionTrackDescription="22-6 Uhr"/>
+        <ConnectionTrack location="200" connectionTrackType="Unknown">
+            <ConnectionTrackDescription language="de" text="22-6 Uhr"/>
+        </ConnectionTrack>
         <KilometreReferencePoint location="100">
             <KM_Reference kmRef="2.1"/>
         </KilometreReferencePoint>
