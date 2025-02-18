@@ -6,11 +6,13 @@ cascade:
 next: /architecture/01_introduction
 ---
 
-{{< callout type="info" >}} 
-This Software Architecture Documentation (SAD) orients itself according to the [arc42](https://arc42.org/) template. To improve readability, the numbering adheres to the template but (yet) empty chapters have been left out to improve readability.
+{{< callout type="info" >}}
+This Software Architecture Documentation (SAD) orients itself according to
+the [arc42](https://arc42.org/) template. To improve readability, the numbering adheres to the
+template but (yet) empty chapters have been left out to improve readability.
 {{< /callout >}}
 
-Explore the following sections to learn about the architecture of OpenDAS:
+Explore the following sections to learn about the architecture of DAS:
 
 {{< cards cols="2">}}
 {{< card link="01_introduction" title="1. Introduction and Goals" icon="presentation-chart-bar" >}}
