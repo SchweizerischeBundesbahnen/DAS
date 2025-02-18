@@ -6,6 +6,7 @@ import 'package:das_client/model/journey/bracket_station.dart';
 import 'package:das_client/model/journey/bracket_station_segment.dart';
 import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
+import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/service_point.dart';
@@ -60,8 +61,13 @@ class SferaModelMapper {
     final tramAreas = _parseTramAreas(segmentProfiles);
     journeyData.addAll(tramAreas);
 
+    final trackEquipmentSegments =
+        TrackEquipmentMapper.parseNonStandardTrackEquipmentSegment(segmentProfilesLists, segmentProfiles);
+    journeyData.addAll(_cabSignalingStart(trackEquipmentSegments));
+    journeyData.addAll(_cabSignalingEnd(trackEquipmentSegments, journeyData));
+
     final additionalSpeedRestrictions = _parseAdditionalSpeedRestrictions(journeyProfile, segmentProfiles);
-    for (final restriction in additionalSpeedRestrictions) {
+    for (final restriction in additionalSpeedRestrictions.where((asr) => asr.isDisplayed(trackEquipmentSegments))) {
       journeyData.add(AdditionalSpeedRestrictionData(
           restriction: restriction, order: restriction.orderFrom, kilometre: [restriction.kmFrom]));
 
@@ -70,11 +76,6 @@ class SferaModelMapper {
             restriction: restriction, order: restriction.orderTo, kilometre: [restriction.kmTo]));
       }
     }
-
-    final trackEquipmentSegments =
-        TrackEquipmentMapper.parseNonStandardTrackEquipmentSegment(segmentProfilesLists, segmentProfiles);
-    journeyData.addAll(_cabSignalingStart(trackEquipmentSegments));
-    journeyData.addAll(_cabSignalingEnd(trackEquipmentSegments));
 
     journeyData.sort();
 
@@ -222,9 +223,36 @@ class SferaModelMapper {
         .map((element) => CABSignaling(isStart: true, order: element.startOrder!, kilometre: element.startKm));
   }
 
-  static Iterable<CABSignaling> _cabSignalingEnd(Iterable<NonStandardTrackEquipmentSegment> trackEquipmentSegments) {
-    return trackEquipmentSegments.withCABSignalingEnd
-        .map((element) => CABSignaling(isStart: false, order: element.endOrder!, kilometre: element.endKm));
+  /// Returns CAB signaling end for ETCS level 2 segments.
+  ///
+  /// NewLineSpeed is delivered by TMS VAD at the end location of an ETCS level 2 segment.
+  /// NewLineSpeed needs to be added to [journeyData] first to get speedData for CAB signaling end.
+  ///
+  /// Used NewLineSpeed for CAB signaling end will be removed from [journeyData]
+  static Iterable<CABSignaling> _cabSignalingEnd(
+      Iterable<NonStandardTrackEquipmentSegment> trackEquipmentSegments, List<BaseData> journeyData) {
+    final cabEndSpeedChanges = <BaseData>[];
+    final cabSignalingEnds = <CABSignaling>[];
+    for (final segment in trackEquipmentSegments.withCABSignalingEnd) {
+      final speedChange =
+          journeyData.firstWhereOrNull((data) => data.type == Datatype.speedChange && data.order == segment.endOrder);
+      if (speedChange != null) {
+        cabEndSpeedChanges.add(speedChange);
+      }
+      cabSignalingEnds.add(CABSignaling(
+        isStart: false,
+        order: segment.endOrder!,
+        kilometre: segment.endKm,
+        speedData: speedChange?.speedData,
+      ));
+    }
+
+    // remove SpeedChange that were used for CAB signaling end
+    for (final speedChange in cabEndSpeedChanges) {
+      journeyData.remove(speedChange);
+    }
+
+    return cabSignalingEnds;
   }
 
   static Set<BreakSeries> _parseAvailableBreakSeries(List<BaseData> journeyData) {
