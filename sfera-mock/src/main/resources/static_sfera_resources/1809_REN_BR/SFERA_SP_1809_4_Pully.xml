@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
+                SP_ID="1809_4_Pully" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="1800" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>1285</IM_ID>
+    </SP_Zone>
+	
+    <SP_Points>
+
+        <TimingPoint TP_ID="Pully" location="0">
+            <TP_Name name="PU"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>1121</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="CU503P" location="600"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="CU503P"/>
+        </Signal>
+		
+		<Signal>
+            <Signal_ID signal_ID_Physical="CU504P" location="1200"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="CU504P"/>
+        </Signal>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="CU121P" location="1700"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="CU121P"/>
+        </Signal>
+
+    </SP_Points>
+
+    <SP_Areas>
+		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="11.0" gradientDirection="Downhill" directionOfApplicationOnSP="Nominal"/>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="PU" TAF_TAP_location_type="halt">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>1121</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Pully"/>
+
+			<TAF_TAP_Location_NSP name="departureAuth">
+				<NetworkSpecificParameter name="departureAuth" value="false"/>
+			</TAF_TAP_Location_NSP>
+
+			<TAF_TAP_Location_NSP name="oPFootNotes">
+				<NetworkSpecificParameter name="xmlOPFootNotes" value="
+				&lt;oPFootNotes&gt; 
+					&lt;footNote type=&quot;contact&quot; refText=&quot;1)&quot;&gt; 
+						&lt;text&gt;+41 512 800 506 RBC Lavaux&lt;/text&gt; 
+					&lt;/footNote&gt; 
+				&lt;/oPFootNotes&gt;
+				" />
+			</TAF_TAP_Location_NSP>
+
+
+        </TAF_TAP_Location>
+
+        <NetworkSpecificArea startEndQualifier="WholeSP" name="nonStandardTrackEquipment">
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2convSpeedReversingImpossible"/>
+        </NetworkSpecificArea>
+
+    </SP_Areas>
+
+    <SP_ContextInformation>
+
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="2.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="600">
+            <KM_Reference kmRef="3.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1200">
+            <KM_Reference kmRef="3.7"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1700">
+            <KM_Reference kmRef="4.2"/>
+        </KilometreReferencePoint>
+		
+    </SP_ContextInformation>
+	
+</SegmentProfile>
