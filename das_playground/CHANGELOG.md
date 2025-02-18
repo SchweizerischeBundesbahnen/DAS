@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.1.0...webapp-v0.2.0) (2025-02-17)
+
+
+### Features
+
+* manual train location trigger ([#513](https://github.com/SchweizerischeBundesbahnen/DAS/issues/513)) ([#575](https://github.com/SchweizerischeBundesbahnen/DAS/issues/575)) ([0d25f36](https://github.com/SchweizerischeBundesbahnen/DAS/commit/0d25f3650a309c9294cac7a3460ee18627731f32))
+
+
+### Bug Fixes
+
+* base image ([747359c](https://github.com/SchweizerischeBundesbahnen/DAS/commit/747359c676ac0216ec43f3881e8db6735a140a30))
+* Dockerfile ([7dbdd27](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7dbdd2730c759434673585cf0c6fbfad52cd3271))
+
 ## [0.1.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.1.0...webapp-v0.1.0) (2025-02-07)
 
 
