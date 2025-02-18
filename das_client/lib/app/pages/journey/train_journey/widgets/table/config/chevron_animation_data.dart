@@ -8,11 +8,9 @@ import 'package:das_client/model/journey/service_point.dart';
 class ChevronAnimationData {
   const ChevronAnimationData({
     required this.offset,
-    required this.durationMs,
   });
 
   final double offset;
-  final int durationMs;
 
   static ChevronAnimationData? from(List<BaseData> rows, Journey journey, BaseData currentRow) {
     if (journey.metadata.currentPosition != currentRow && journey.metadata.lastPosition != currentRow) {
@@ -33,11 +31,13 @@ class ChevronAnimationData {
       offset += BaseRowBuilder.rowHeightForData(rows[i]);
     }
 
+    // Adjust for stopping point circle on start row
     final startRow = rows[fromIndex];
     if (startRow is ServicePoint && startRow.isStop) {
       offset += RouteCellBody.routeCircleSize;
     }
 
+    // Adjust for stopping point circle on start end
     final endRow = rows[toIndex];
     if (endRow is ServicePoint && endRow.isStop) {
       offset -= RouteCellBody.routeCircleSize;
@@ -47,14 +47,6 @@ class ChevronAnimationData {
       offset *= -1;
     }
 
-    return ChevronAnimationData(offset: offset, durationMs: 500);
-  }
-
-  bool shouldShow(DateTime timestamp) {
-    return DateTime.now().compareTo(timestamp.add(Duration(milliseconds: durationMs))) < 0;
-  }
-
-  Duration adjustedDuration(DateTime timestamp) {
-    return Duration(milliseconds: durationMs) - DateTime.now().difference(timestamp);
+    return ChevronAnimationData(offset: offset);
   }
 }
