@@ -1,4 +1,6 @@
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
@@ -6,7 +8,6 @@ import '../util/test_utils.dart';
 
 void main() {
   group('automatic advancement tests', () {
-    /*
     testWidgets('check if automatic advancement is scrolling automatically', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
@@ -51,7 +52,8 @@ void main() {
       // Check if the last row is visible
       expect(findDASTableRowByText('Olten'), findsAny);
     });
-    */
+
+    /*
 
     testWidgets('check scrolling to position if automatic scrolling gets enabled', (tester) async {
       // Load app widget.
@@ -80,7 +82,7 @@ void main() {
       expect(findDASTableRowByText('Olten'), findsAny);
     });
 
-    /*
+    */
 
     testWidgets('check not scrolling if automatic advancement is off', (tester) async {
       // Load app widget.
@@ -106,8 +108,6 @@ void main() {
       expect(findDASTableRowByText('B1'), findsAny);
     });
 
-
-
     testWidgets('check if automatic advancement is enabled by default', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
@@ -131,8 +131,6 @@ void main() {
           findsNothing);
     });
 
-
-
     testWidgets('check sticky footer is displayed', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
@@ -149,7 +147,5 @@ void main() {
       expect(findDASTableRowByText('Bern'), findsAny);
       expect(find.text('Burgdorf'), findsAny);
     });
-
-   */
   });
 }
