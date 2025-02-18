@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.9.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.8.0...das_client-v0.9.0) (2025-02-14)
+
+
+### Features
+
+* added visualization for single track without block equipment. ([#230](https://github.com/SchweizerischeBundesbahnen/DAS/issues/230)) ([#569](https://github.com/SchweizerischeBundesbahnen/DAS/issues/569)) ([45d2925](https://github.com/SchweizerischeBundesbahnen/DAS/commit/45d29253495367e25c8ec140ec154ad2103a8b99))
+* automatische fortschaltung ([#94](https://github.com/SchweizerischeBundesbahnen/DAS/issues/94)) ([#553](https://github.com/SchweizerischeBundesbahnen/DAS/issues/553)) ([4642825](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4642825132bc223c1ce0203deaac84702c1fb8ea))
+* improve fahrbild with chevron animation, item alignment and bottom spacing ([#94](https://github.com/SchweizerischeBundesbahnen/DAS/issues/94)) ([#570](https://github.com/SchweizerischeBundesbahnen/DAS/issues/570)) ([853ddd2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/853ddd233f3c4a3aaecd7cf4d2be2abc2f6d30fd))
+
 ## [0.8.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.7.0...das_client-v0.8.0) (2025-02-03)
 
 
