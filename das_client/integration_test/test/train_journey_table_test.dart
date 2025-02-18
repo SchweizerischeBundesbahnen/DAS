@@ -24,6 +24,25 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey table test', () {
+    testWidgets('test not find any curves without speed', (tester) async {
+
+      //TODO implement test
+
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T7');
+
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
+
+      final baliseMultiLevelCrossing = findDASTableRowByText('(2 ${l10n.p_train_journey_table_level_crossing})');
+      expect(baliseMultiLevelCrossing, findsOneWidget);
+
+      final baliseIcon = find.descendant(of: baliseMultiLevelCrossing, matching: find.byKey(BaliseRow.baliseIconKey));
+      expect(baliseIcon, findsOneWidget);
+    });
+
     testWidgets('check if update sent is correct', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
