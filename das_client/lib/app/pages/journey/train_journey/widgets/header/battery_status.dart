@@ -11,33 +11,33 @@ class BatteryStatus extends StatefulWidget {
 
   @override
   State<BatteryStatus> createState() => _BatteryStatusState();
+
+  static const Key batteryLevelLowIconKey = Key('battery_status_low_key');
 }
 
 class _BatteryStatusState extends State<BatteryStatus> {
   final Battery _battery = DI.get<Battery>();
-  static const Key batteryLevelLowIconKey = Key('battery_status_low_key');
-  int? _batteryLevel;
 
+  static const Duration batteryCheckInterval = Duration(minutes: 1);
   Timer? _batteryTimer;
+  int? _batteryLevel;
 
   @override
   void initState() {
     super.initState();
-
-    _battery.batteryLevel.then((level) => setState(() => _batteryLevel = level)).catchError((error) {
-      Fimber.w('Battery is unavailable: $error');
-    });
-
+    _setBatteryLevel();
     _startBatteryCheck();
   }
 
   void _startBatteryCheck() {
-    _batteryTimer = Timer.periodic(const Duration(minutes: 1), (timer) {
-      _battery.batteryLevel.then((level) {
-        setState(() => _batteryLevel = level);
-      }).catchError((error) {
-        Fimber.w('Battery is unavailable: $error');
-      });
+    _batteryTimer = Timer.periodic(batteryCheckInterval, (timer) {
+      _setBatteryLevel();
+    });
+  }
+
+  void _setBatteryLevel() {
+    _battery.batteryLevel.then((level) => setState(() => _batteryLevel = level)).catchError((error) {
+      Fimber.w('Battery is unavailable: $error');
     });
   }
 
@@ -49,13 +49,11 @@ class _BatteryStatusState extends State<BatteryStatus> {
 
   @override
   Widget build(BuildContext context) {
-    return _batteryLevel != null
-        ? _batteryLevel! <= 30
-            ? SvgPicture.asset(
-                key: batteryLevelLowIconKey,
-                AppAssets.iconBatteryStatusLow,
-              )
-            : Container()
+    return _batteryLevel != null && _batteryLevel! <= 30
+        ? SvgPicture.asset(
+            key: BatteryStatus.batteryLevelLowIconKey,
+            AppAssets.iconBatteryStatusLow,
+          )
         : Container();
   }
 }

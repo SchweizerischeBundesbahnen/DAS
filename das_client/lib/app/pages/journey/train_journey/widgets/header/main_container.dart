@@ -56,15 +56,11 @@ class MainContainer extends StatelessWidget {
     return const SizedBox(
       height: 48.0,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              RadioChannel(),
-              SizedBox(width: 48.0),
-              DepartureAuthorization(),
-            ],
-          ),
+          RadioChannel(),
+          SizedBox(width: 48.0),
+          DepartureAuthorization(),
+          Spacer(),
           BatteryStatus(),
         ],
       ),

@@ -1,4 +1,5 @@
 import 'package:battery_plus/battery_plus.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/battery_status.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_row.dart';
@@ -45,8 +46,8 @@ void main() {
 
       expect(battery.currentBatteryLevel, 80);
 
-      final iconPlace = find.byKey(Key('battery_status_low_key'));
-      expect(iconPlace, findsNothing);
+      final batteryIcon = find.descendant(of: headerFinder, matching: find.byKey(BatteryStatus.batteryLevelLowIconKey));
+      expect(batteryIcon, findsNothing);
     });
 
     testWidgets('test battery under 30% and show icon', (tester) async {
@@ -67,8 +68,8 @@ void main() {
 
       expect(battery.currentBatteryLevel, 15);
 
-      final iconPlace = find.byKey(Key('battery_status_low_key'));
-      expect(iconPlace, findsOneWidget);
+      final batteryIcon = find.descendant(of: headerFinder, matching: find.byKey(BatteryStatus.batteryLevelLowIconKey));
+      expect(batteryIcon, findsOneWidget);
     });
 
     testWidgets('check if update sent is correct', (tester) async {
