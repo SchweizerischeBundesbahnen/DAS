@@ -5,16 +5,16 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:das_client/app/widgets/stickyheader/sticky_header.dart';
-import 'package:das_client/app/widgets/stickyheader/sticky_header_controller.dart';
+import 'package:das_client/app/widgets/stickyheader/sticky_widget_controller.dart';
 import 'package:flutter/material.dart';
 
-/// Sticky Header Widget.
+/// Sticky Widget.
 ///
 /// Adjusts the position and visibility of the widget in real time according to
 /// the scrolling changes, while covering the lower widget to achieve the effect
 /// of sticky header.
 class StickyWidget extends StatefulWidget {
-  final StickyHeaderController controller;
+  final StickyWidgetController controller;
   final StickyWidgetBuilder widgetBuilder;
   final bool isHeader;
 
@@ -89,9 +89,7 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
     setState(() {});
   }
 
-  /// The sticky header widget should be scrollable, and the scrolling widget
-  /// scrolls in sync when the sticky header widget scrolls,
-  /// it feels like part of the scrolling widget.
+  /// The sticky widget should be scrollable so it feels like part of the scrolling widget.
   void _onPanUpdate(DragUpdateDetails details) {
     if (widget.controller.scrollController.positions.isNotEmpty) {
       widget.controller.scrollController.position
@@ -99,8 +97,7 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
     }
   }
 
-  /// After the user stops dragging the sticky header widget, keep the same
-  /// physics animation as the scrolling widget.
+  /// After the user stops dragging the sticky header widget, keep the same physics animation as the scrolling widget.
   void _onPanEnd(DragEndDetails details) {
     if (widget.controller.scrollController.positions.isNotEmpty) {
       final scrollPosition = widget.controller.scrollController.position;

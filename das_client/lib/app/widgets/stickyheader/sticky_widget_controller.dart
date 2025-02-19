@@ -1,8 +1,8 @@
 import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:flutter/material.dart';
 
-class StickyHeaderController with ChangeNotifier {
-  StickyHeaderController({required this.scrollController, required List<DASTableRow> rows}) : _rows = rows {
+class StickyWidgetController with ChangeNotifier {
+  StickyWidgetController({required this.scrollController, required List<DASTableRow> rows}) : _rows = rows {
     scrollController.addListener(_scrollListener);
     _initialize();
   }

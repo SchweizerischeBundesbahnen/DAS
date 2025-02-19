@@ -37,7 +37,7 @@ class ChevronAnimationData {
       offset += RouteCellBody.routeCircleSize;
     }
 
-    // Adjust for stopping point circle on start end
+    // Adjust for stopping point circle on end row
     final endRow = rows[toIndex];
     if (endRow is ServicePoint && endRow.isStop) {
       offset -= RouteCellBody.routeCircleSize;

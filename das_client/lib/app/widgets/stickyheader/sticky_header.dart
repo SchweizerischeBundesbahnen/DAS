@@ -4,8 +4,8 @@
 // that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import 'package:das_client/app/widgets/stickyheader/sticky_header_controller.dart';
 import 'package:das_client/app/widgets/stickyheader/sticky_widget.dart';
+import 'package:das_client/app/widgets/stickyheader/sticky_widget_controller.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:flutter/material.dart';
 
@@ -32,12 +32,12 @@ class StickyHeader extends StatefulWidget {
 }
 
 class _StickyHeaderState extends State<StickyHeader> {
-  late StickyHeaderController _controller;
+  late StickyWidgetController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = StickyHeaderController(
+    _controller = StickyWidgetController(
       scrollController: widget.scrollController,
       rows: widget.rows,
     );
