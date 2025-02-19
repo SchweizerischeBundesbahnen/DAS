@@ -1,0 +1,61 @@
+application:
+  topic:
+    sfera-custom-prefix: ${SFERA_CUSTOM_TOPIC_PREFIX:}
+
+info:
+  app:
+    version: '@project.version@'
+
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,trains,sessions
+      cors:
+        allowed-origins: ${ALLOWED_ORIGINS}
+        allowed-methods: 'GET,POST,OPTIONS'
+        allowed-headers: '*'
+
+spring:
+  profiles:
+    active: ${STAGE:local}
+  cloud:
+    function:
+      definition: processB2GMessage
+    stream:
+      bindings:
+        processB2GMessage-in-0:
+          destination: ${application.topic.sfera-custom-prefix}90940/2/B2G/>
+          binder: solace
+        publishG2BReply-out-0:
+          binder: solace
+          destination: ${application.topic.sfera-custom-prefix}90940/2/G2B/
+        publishEvent-out-0:
+          binder: solace
+          destination: ${application.topic.sfera-custom-prefix}90940/2/event/
+      binders:
+        solace:
+          type: solace
+          environment:
+            solace:
+              java:
+                host: ${SOLACE_HOST}
+                msgVpn: ${SOLACE_VPN}
+                api-properties:
+                  AUTHENTICATION_SCHEME: AUTHENTICATION_SCHEME_CLIENT_CERTIFICATE
+                  SSL_KEY_STORE: ${SOLACE_KEY_STORE_PATH}
+                  SSL_KEY_STORE_FORMAT: JKS
+                  SSL_KEY_STORE_PASSWORD: ${SOLACE_KEY_STORE_PASSWORD}
+      default-binder: solace
+      default:
+        consumer:
+          maxAttempts: 1
+
+sfera:
+  company-code: '0085'
+  sfera-version: '2.01'
+  source-device: 'TMS'

@@ -2,16 +2,16 @@ name: Continuous Integration Webapp
 
 defaults:
   run:
-    working-directory: webapp
+    working-directory: das_playground
 
 on:
   push:
     paths:
-      - 'webapp/**'
+      - 'das_playground/**'
     branches: [ "main" ]
   pull_request:
     paths:
-      - 'webapp/**'
+      - 'das_playground/**'
     branches: [ "main" ]
 
 
@@ -29,9 +29,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version-file: 'webapp/.nvmrc'
+          node-version-file: 'das_playground/.nvmrc'
           cache: 'npm'
-          cache-dependency-path: 'webapp/package-lock.json'
+          cache-dependency-path: 'das_playground/package-lock.json'
       - run: npm clean-install
       - run: npm run lint
 
@@ -42,9 +42,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version-file: 'webapp/.nvmrc'
+          node-version-file: 'das_playground/.nvmrc'
           cache: 'npm'
-          cache-dependency-path: 'webapp/package-lock.json'
+          cache-dependency-path: 'das_playground/package-lock.json'
       - run: npm clean-install
       - run: npm test
 
@@ -58,11 +58,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version-file: 'webapp/.nvmrc'
+          node-version-file: 'das_playground/.nvmrc'
           cache: 'npm'
-          cache-dependency-path: 'webapp/package-lock.json'
+          cache-dependency-path: 'das_playground/package-lock.json'
       - run: npm clean-install
-      - run: npm run build --prod
+      - run: npm run build:ngssc
       - name: Login to GitHub Container Registry
         if: github.ref == 'refs/heads/main'
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
