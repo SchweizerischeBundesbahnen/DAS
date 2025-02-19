@@ -92,9 +92,26 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
   /// The sticky header widget should be scrollable, and the scrolling widget
   /// scrolls in sync when the sticky header widget scrolls,
   /// it feels like part of the scrolling widget.
-  void _onPanUpdate(DragUpdateDetails details) {}
+  void _onPanUpdate(DragUpdateDetails details) {
+    if (widget.controller.scrollController.positions.isNotEmpty) {
+      widget.controller.scrollController.position
+          .jumpTo(widget.controller.scrollController.position.pixels - details.delta.dy);
+    }
+  }
 
   /// After the user stops dragging the sticky header widget, keep the same
   /// physics animation as the scrolling widget.
-  void _onPanEnd(DragEndDetails details) {}
+  void _onPanEnd(DragEndDetails details) {
+    if (widget.controller.scrollController.positions.isNotEmpty) {
+      final scrollPosition = widget.controller.scrollController.position;
+      // Velocity limit.
+      final velocity = details.velocity.clampMagnitude(0, 1000).pixelsPerSecond.dy;
+      final simulation = scrollPosition.physics.createBallisticSimulation(scrollPosition, velocity);
+      // In some cases, physical animation is not required, for example,
+      // the velocity is already 0.0 at this time.
+      if (simulation != null) {
+        _animationController.animateWith(simulation);
+      }
+    }
+  }
 }
