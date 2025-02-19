@@ -76,7 +76,7 @@ class DASTable extends StatelessWidget {
             children: [
               _headerRow(),
               Expanded(
-                child: buildStickyHeaderList(constraints),
+                child: _buildStickyHeaderList(constraints),
               ),
             ],
           ),
@@ -85,7 +85,7 @@ class DASTable extends StatelessWidget {
     });
   }
 
-  Widget buildStickyHeaderList(BoxConstraints constraints) {
+  Widget _buildStickyHeaderList(BoxConstraints constraints) {
     final stickyHeaderList = StickyHeader(
       footerBuilder: (context, index) {
         return Container(
