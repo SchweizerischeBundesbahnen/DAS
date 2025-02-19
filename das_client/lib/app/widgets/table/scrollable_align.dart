@@ -15,7 +15,7 @@ class ScrollableAlign extends StatefulWidget {
 }
 
 class _ScrollableAlignState extends State<ScrollableAlign> {
-  static const Duration alignScrollDuration = Duration(milliseconds: 3000);
+  static const Duration alignScrollDuration = Duration(milliseconds: 300);
   bool isTouching = false;
   bool isAnimating = false;
 
