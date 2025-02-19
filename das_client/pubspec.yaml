@@ -62,12 +62,7 @@ dependencies:
   flutter_svg: ^2.0.14
   # https://pub.dev/packages/iso_duration
   iso_duration: ^0.1.1
-
-  # https://pub.dev/packages/easy_sticky_header (fork)
-  easy_sticky_header:
-    git:
-      url: https://github.com/SchweizerischeBundesbahnen/easy_sticky_header.git
-      ref: main
+  # https://pub.dev/packages/battery_plus
   battery_plus: ^6.2.1
 
 

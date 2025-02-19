@@ -104,23 +104,6 @@ void main() {
       expect(findDASTableRowByText('B1'), findsAny);
     });
 
-    testWidgets('check sticky footer is displayed', (tester) async {
-      // Load app widget.
-      await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
-      await loadTrainJourney(tester, trainNumber: 'T9');
-
-      final pauseButton = find.text(l10n.p_train_journey_header_button_pause);
-      expect(pauseButton, findsOneWidget);
-
-      await tapElement(tester, pauseButton);
-
-      // Check Bern & Burgdorf are displayed
-      expect(findDASTableRowByText('Bern'), findsAny);
-      expect(findDASTableRowByText('Burgdorf'), findsAny);
-    });
-
     testWidgets('check if automatic advancement is enabled by default', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
@@ -142,6 +125,23 @@ void main() {
           findsOneWidget);
       expect(find.descendant(of: headerFinder, matching: find.text(l10n.p_train_journey_header_button_pause)),
           findsNothing);
+    });
+
+    testWidgets('check sticky footer is displayed', (tester) async {
+      // Load app widget.
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T9');
+
+      final pauseButton = find.text(l10n.p_train_journey_header_button_pause);
+      expect(pauseButton, findsOneWidget);
+
+      await tapElement(tester, pauseButton);
+
+      // Check Bern & Burgdorf are displayed
+      expect(findDASTableRowByText('Bern'), findsAny);
+      expect(find.text('Burgdorf'), findsAny);
     });
   });
 }
