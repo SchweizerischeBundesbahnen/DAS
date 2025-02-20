@@ -93,7 +93,7 @@ void main() {
     final file = File('test_resources/SFERA_B2G_RequestMessage_handshake.xml');
     var xmlFileString = file.readAsStringSync();
     xmlFileString = xmlFileString.replaceAll(RegExp(r'<SFERA_B2G_RequestMessage.*>'), '<SFERA_B2G_RequestMessage>');
-    expect(sferaB2gRequestMessageString, xmlFileString);
+    expect(sferaB2gRequestMessageString.normalize, xmlFileString.normalize);
   });
 
   test('Test SferaReplyParser with SFERA_G2B_ReplyMessage_handshake.xml', () async {
@@ -131,4 +131,8 @@ void main() {
 
     expect(handshakeReject.handshakeRejectReason, HandshakeRejectReason.connectivityNotSupported);
   });
+}
+
+extension _XmlExtension on String {
+  String get normalize => replaceAll(RegExp(r'\s+'), '');
 }

@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd"
-                SP_ID="T7_1" SP_VersionMajor="1" SP_VersionMinor="3" SP_Length="2000" SP_Status="Valid">
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd" SP_ID="T7_1" SP_VersionMajor="1"
+                SP_VersionMinor="3" SP_Length="2000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -55,7 +54,7 @@
             <NSP_GroupName>whistle</NSP_GroupName>
             <NetworkSpecificParameter name="amount" value="1"/>
         </NetworkSpecificPoint>
-        
+
     </SP_Points>
     <SP_Areas>
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="LENZ"
@@ -95,11 +94,11 @@
         </TAF_TAP_Location>
 
         <NetworkSpecificArea startEndQualifier="Starts" startLocation="1450">
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-convSpeedReversingImpossible"/>
         </NetworkSpecificArea>
-        
+
         <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="900" endLocation="1400">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>tramArea</NSP_GroupName>
@@ -109,19 +108,19 @@
     </SP_Areas>
 
     <SP_ContextInformation>
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="601" endLocation="601" />
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="603" endLocation="603" />
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="605" endLocation="605" />
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="607" endLocation="607" />
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="609" endLocation="609" />
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="612" endLocation="612" />
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="614" endLocation="614" />
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="615" endLocation="615" />
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="617" endLocation="617" />
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="601" endLocation="601"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="603" endLocation="603"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="605" endLocation="605"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="607" endLocation="607"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="609" endLocation="609"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="612" endLocation="612"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="614" endLocation="614"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="615" endLocation="615"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="617" endLocation="617"/>
 
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="1600" endLocation="1600" />
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="1601" endLocation="1601" />
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="1602" endLocation="1602" />
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="1600" endLocation="1600"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="1601" endLocation="1601"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="1602" endLocation="1602"/>
 
         <KilometreReferencePoint location="500">
             <KM_Reference kmRef="42.2"/>

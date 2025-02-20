@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd"
-                SP_ID="T2_2" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="20000" SP_Status="Valid">
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd" SP_ID="T2_2" SP_VersionMajor="1"
+                SP_VersionMinor="1" SP_Length="20000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -62,15 +61,15 @@
             <TP_Name name="Solothurn"/>
         </TimingPoint>
 
-        <NetworkSpecificPoint location="3200" >
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>protectionSection</NSP_GroupName>
+        <NetworkSpecificPoint location="3200">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>protectionSection</NSP_GroupName>
             <NetworkSpecificParameter name="lengthType" value="long"/>
             <NetworkSpecificParameter name="facultative" value="false"/>
         </NetworkSpecificPoint>
         <NetworkSpecificPoint location="5200">
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>protectionSection</NSP_GroupName>
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>protectionSection</NSP_GroupName>
             <NetworkSpecificParameter name="lengthType" value="long"/>
             <NetworkSpecificParameter name="facultative" value="true"/>
         </NetworkSpecificPoint>

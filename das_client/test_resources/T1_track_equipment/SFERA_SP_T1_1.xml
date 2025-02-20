@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd"
-                SP_ID="T1_1" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="90000" SP_Status="Valid">
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd" SP_ID="T1_1" SP_VersionMajor="1"
+                SP_VersionMinor="1" SP_Length="90000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -47,7 +46,7 @@
                 &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;55&quot;/&gt;
                 &lt;/speeds&gt;
                 &lt;/lineSpeed&gt;
-            " />
+            "/>
         </NetworkSpecificPoint>
 
     </SP_Points>
@@ -89,45 +88,45 @@
         </TAF_TAP_Location>
 
         <NetworkSpecificArea startEndQualifier="Ends" endLocation="1600">
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingPossible"/>
         </NetworkSpecificArea>
 
         <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="1700" endLocation="2300">
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L1LS-2TracksWithSingleTrackEquipment"/>
         </NetworkSpecificArea>
     </SP_Areas>
 
     <SP_ContextInformation>
         <KilometreReferencePoint location="500">
-            <KM_Reference kmRef="66.2" />
+            <KM_Reference kmRef="66.2"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="1000">
-            <KM_Reference kmRef="60.3" />
+            <KM_Reference kmRef="60.3"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="1500">
-            <KM_Reference kmRef="33.8" />
+            <KM_Reference kmRef="33.8"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="1600">
-            <KM_Reference kmRef="33.2" />
+            <KM_Reference kmRef="33.2"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="1700">
-            <KM_Reference kmRef="31.2" />
+            <KM_Reference kmRef="31.2"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="2000">
-            <KM_Reference kmRef="29.7" />
+            <KM_Reference kmRef="29.7"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="2300">
-            <KM_Reference kmRef="24.3" />
+            <KM_Reference kmRef="24.3"/>
         </KilometreReferencePoint>
     </SP_ContextInformation>
 </SegmentProfile>

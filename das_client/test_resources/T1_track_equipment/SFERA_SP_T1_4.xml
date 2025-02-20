@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd"
-                SP_ID="T1_4" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="20000" SP_Status="Valid">
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd" SP_ID="T1_4" SP_VersionMajor="1"
+                SP_VersionMinor="1" SP_Length="20000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -47,7 +46,7 @@
                 &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;80&quot;/&gt;
                 &lt;/speeds&gt;
                 &lt;/lineSpeed&gt;
-            " />
+            "/>
         </NetworkSpecificPoint>
     </SP_Points>
     <SP_Areas>
@@ -89,14 +88,14 @@
 
 
         <NetworkSpecificArea startEndQualifier="Ends" endLocation="7000">
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingPossible"/>
         </NetworkSpecificArea>
 
         <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="7000" endLocation="7800">
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-convSpeedReversingImpossible"/>
         </NetworkSpecificArea>
     </SP_Areas>
@@ -104,23 +103,23 @@
     <SP_ContextInformation>
 
         <KilometreReferencePoint location="6500">
-            <KM_Reference kmRef="36.4" />
+            <KM_Reference kmRef="36.4"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="7000">
-            <KM_Reference kmRef="46.2" />
+            <KM_Reference kmRef="46.2"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="7500">
-            <KM_Reference kmRef="39.3" />
+            <KM_Reference kmRef="39.3"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="7800">
-            <KM_Reference kmRef="39.9" />
+            <KM_Reference kmRef="39.9"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="8000">
-            <KM_Reference kmRef="41.5" />
+            <KM_Reference kmRef="41.5"/>
         </KilometreReferencePoint>
 
     </SP_ContextInformation>
