@@ -10,9 +10,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ch.sbb</groupId>
-    <artifactId>sfera-mock</artifactId>
+    <artifactId>sfera_mock</artifactId>
     <version>0.1.1-SNAPSHOT</version>
-    <name>sfera-mock</name>
+    <name>sfera_mock</name>
     <description>Backend to mock SFERA messages for end-to-end tests</description>
     <properties>
         <java.version>21</java.version>
