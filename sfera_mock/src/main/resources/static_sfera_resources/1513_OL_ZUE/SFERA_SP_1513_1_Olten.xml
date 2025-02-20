@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
-                SP_ID="1513_1_Olten" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="3600" SP_Status="Valid">
+                SP_ID="1513_1_Olten" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="3600"
+                SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
-	
+
     <SP_Points>
 
         <TimingPoint TP_ID="Olten" location="0">
@@ -16,48 +17,48 @@
             <TP_Name name="OL"/>
         </TimingPoint>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="M2" location="200"/>
             <SignalFunction>intermediate</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="M2"/>
         </Signal>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="G361" location="600"/>
             <SignalFunction>intermediate</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="G361"/>
         </Signal>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="L312" location="1200"/>
             <SignalFunction>intermediate</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="L312"/>
         </Signal>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="J283" location="1600"/>
             <SignalFunction>intermediate</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="J283"/>
         </Signal>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="K265" location="1800"/>
             <SignalFunction>intermediate</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="K265"/>
-        </Signal>		
+        </Signal>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="A601" location="2400"/>
             <SignalFunction>exit</SignalFunction>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="A601"/>
-        </Signal>	
+        </Signal>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="C31" location="3200"/>
             <SignalFunction>intermediate</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="C31"/>
-        </Signal>	
+        </Signal>
 
         <NetworkSpecificPoint location="2300" identifier="0FD2F5B19CD34442860DE034C8A4EA69">
             <teltsi_Company>0085</teltsi_Company>
@@ -75,24 +76,25 @@
             "/>
         </NetworkSpecificPoint>
 
-		<NetworkSpecificPoint location="2380" identifier="0FD2F5B19CD34442860DE034C8A4EA69">
+        <NetworkSpecificPoint location="2380" identifier="0FD2F5B19CD34442860DE034C8A4EA69">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="end"/>
-		</NetworkSpecificPoint>
+        </NetworkSpecificPoint>
 
     </SP_Points>
 
     <SP_Areas>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="OL" TAF_TAP_location_type="station">
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
+                          TAF_TAP_location_abbreviation="OL" TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00218</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
             <TAF_TAP_LocationName language="de" text="Olten"/>
 
-			<TAF_TAP_Location_NSP>
+            <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
@@ -113,12 +115,12 @@
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;90&quot;/&gt;
 					&lt;/stationSpeed&gt;
 				"/>
-			</TAF_TAP_Location_NSP>
+            </TAF_TAP_Location_NSP>
 
-			<TAF_TAP_Location_NSP>
+            <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
-				<NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
 					&lt;lineSpeed&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;105&quot;/&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;105&quot;/&gt;
@@ -137,50 +139,50 @@
 						&lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;100&quot;/&gt;
 					&lt;/lineSpeed&gt;
 				"/>
-			</TAF_TAP_Location_NSP>
-			
-			<TAF_TAP_Location_NSP>
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>departureAuth</NSP_GroupName>
-				<NetworkSpecificParameter name="departureAuth" value="false"/>
-			</TAF_TAP_Location_NSP>
+                <NetworkSpecificParameter name="departureAuth" value="false"/>
+            </TAF_TAP_Location_NSP>
 
-			<TAF_TAP_Location_NSP>
+            <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>lineFootNotes</NSP_GroupName>
-				<NetworkSpecificParameter name="xmlLineFootNotes" value="
+                <NetworkSpecificParameter name="xmlLineFootNotes" value="
 				&lt;lineFootNotes&gt;
 					&lt;footNote&gt;
 						&lt;text&gt;Zugelassen nur für&lt;b&gt; RABDe 500&lt;/text&gt;
 						&lt;trainSeries>N&lt;/trainSeries&gt;
 					&lt;/footNote&gt;
 				&lt;/lineFootNotes&gt;
-				" />
-			</TAF_TAP_Location_NSP>
-			
+				"/>
+            </TAF_TAP_Location_NSP>
+
         </TAF_TAP_Location>
 
     </SP_Areas>
 
     <SP_ContextInformation>
 
-<!--           todo  contactType="phone"-->
         <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
-			<Contact mainContact="true">
+            <Contact mainContact="true">
                 <OtherContactType contactIdentifier="1304"/>
             </Contact>
-			<Contact mainContact="false" contactRole="Richtung Süd: Fahrdienstleiter">
+            <Contact mainContact="false" contactRole="Richtung Süd: Fahrdienstleiter">
                 <OtherContactType contactIdentifier="1302"/>
             </Contact>
-			<Contact mainContact="false" contactRole="Richtung Nord: Fahrdienstleiter">
+            <Contact mainContact="false" contactRole="Richtung Nord: Fahrdienstleiter">
                 <OtherContactType contactIdentifier="1304"/>
             </Contact>
-			<Contact mainContact="false" contactRole="Rangierbahnhof: Fahrdienstleiter Stellwerk 3">
+            <Contact mainContact="false" contactRole="Rangierbahnhof: Fahrdienstleiter Stellwerk 3">
                 <OtherContactType contactIdentifier="1310"/>
             </Contact>
-		</ContactList>
+        </ContactList>
 
-		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R" />
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
+                              communicationNetworkType="GSM-R"/>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="39.3"/>
@@ -213,9 +215,13 @@
             <KM_Reference kmRef="42.5"/>
         </KilometreReferencePoint>
 
-        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="4.0" gradientDirection="Downhill" directionOfApplicationOnSP="Nominal"/>
-        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="1.0" gradientDirection="Uphill" directionOfApplicationOnSP="Nominal"/>
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
+                              gradientValue="4.0" gradientDirection="Downhill"
+                              directionOfApplicationOnSP="Nominal"/>
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
+                              gradientValue="1.0" gradientDirection="Uphill"
+                              directionOfApplicationOnSP="Nominal"/>
 
     </SP_ContextInformation>
-	
+
 </SegmentProfile>

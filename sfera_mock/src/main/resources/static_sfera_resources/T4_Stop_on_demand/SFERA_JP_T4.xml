@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<JourneyProfile JP_Status="Valid" JP_Version="1"
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid"
+                JP_Version="1"
                 xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
     <TrainIdentification>
         <OTN_ID>
@@ -9,7 +9,8 @@
             <teltsi_StartDate>2022-01-04</teltsi_StartDate>
         </OTN_ID>
     </TrainIdentification>
-    <SegmentProfileReference SP_ID="T4_1" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T4_1" SP_VersionMajor="1" SP_VersionMinor="1"
+                             SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -43,12 +44,6 @@
                 </StopType>
             </StoppingPointInformation>
             <StoppingPointDepartureDetails departureTime="2022-05-17T07:52:00Z"/>
-            <TimingPointConstraints_NSPs>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>sbbSpecific</NSP_GroupName>
-                <NetworkSpecificParameter name="sbbType" value="commercialStop"/>
-            </TimingPointConstraints_NSPs>
-
         </TimingPointConstraints>
         <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="End_of_Journey">
             <TimingPointReference>

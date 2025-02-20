@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
-                SP_ID="1513_14_Killwangen_Spreitenbach" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="5200" SP_Status="Valid">
+                SP_ID="1513_14_Killwangen_Spreitenbach" SP_VersionMajor="1" SP_VersionMinor="0"
+                SP_Length="5200" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
-	
+
     <SP_Points>
 
         <TimingPoint TP_ID="Killwangen_Spreitenbach" location="0">
@@ -16,49 +17,50 @@
             <TP_Name name="KLW"/>
         </TimingPoint>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="C6" location="200"/>
             <SignalFunction>intermediate</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="C6"/>
         </Signal>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="S26" location="900"/>
             <SignalFunction>exit</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="S26"/>
         </Signal>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="S610" location="1600"/>
             <SignalFunction>block</SignalFunction>
             <SignalFunction>laneChange</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="S610"/>
         </Signal>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="S609" location="2900"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="S609"/>
         </Signal>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="F608" location="4200"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="F608"/>
         </Signal>
-     
+
     </SP_Points>
 
     <SP_Areas>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="KLW" TAF_TAP_location_type="station">
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
+                          TAF_TAP_location_abbreviation="KLW" TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3506</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
             <TAF_TAP_LocationName language="de" text="Killwangen-Spreitenbach"/>
 
-			<TAF_TAP_Location_NSP>
+            <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
@@ -74,12 +76,12 @@
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;110&quot;/&gt;
 					&lt;/stationSpeed&gt;
 				"/>
-			</TAF_TAP_Location_NSP>
-			
-			<TAF_TAP_Location_NSP>
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
-				<NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
 					&lt;lineSpeed&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;115&quot;/&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;125&quot;/&gt;
@@ -99,14 +101,14 @@
 						&lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;100&quot;/&gt;
 					&lt;/lineSpeed&gt;
 				"/>
-			</TAF_TAP_Location_NSP>
+            </TAF_TAP_Location_NSP>
 
-			<TAF_TAP_Location_NSP>
+            <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>departureAuth</NSP_GroupName>
-				<NetworkSpecificParameter name="departureAuth" value="false"/>
-			</TAF_TAP_Location_NSP>
-			
+                <NetworkSpecificParameter name="departureAuth" value="false"/>
+            </TAF_TAP_Location_NSP>
+
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>stationProperty</NSP_GroupName>
@@ -117,55 +119,58 @@
 				&lt;/stationProperty&gt;
 				"/>
             </TAF_TAP_Location_NSP>
-			
-			<TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>lineFootNotes</NSP_GroupName>
-				<NetworkSpecificParameter name="xmlLineFootNotes" value="
+                <NetworkSpecificParameter name="xmlLineFootNotes" value="
 				&lt;lineFootNotes&gt;
 					&lt;footNote&gt;
 						&lt;text&gt;Zugelassen nur für&lt;b&gt; RABDe 500&lt;/text&gt;
 						&lt;trainSeries>N&lt;/trainSeries&gt;
 					&lt;/footNote&gt;
 				&lt;/lineFootNotes&gt;
-				" />
-			</TAF_TAP_Location_NSP>
-			
+				"/>
+            </TAF_TAP_Location_NSP>
+
         </TAF_TAP_Location>
 
     </SP_Areas>
 
     <SP_ContextInformation>
 
-<!--		todo contactType="phone" -->
-		<ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
-			<Contact mainContact="true">
-				<OtherContactType contactIdentifier="1307"/>
-			</Contact>
-		</ContactList>
-		
+        <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1307"/>
+            </Contact>
+        </ContactList>
+
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="16.1"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="200">
+        <KilometreReferencePoint location="200">
             <KM_Reference kmRef="15.9"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="900">
+        <KilometreReferencePoint location="900">
             <KM_Reference kmRef="15.2"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="1600">
+        <KilometreReferencePoint location="1600">
             <KM_Reference kmRef="14.5"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="2900">
+        <KilometreReferencePoint location="2900">
             <KM_Reference kmRef="13.2"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="4200">
+        <KilometreReferencePoint location="4200">
             <KM_Reference kmRef="11.9"/>
         </KilometreReferencePoint>
 
-		<DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="12.0" gradientDirection="Downhill" directionOfApplicationOnSP="Nominal"/>
-		<DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="7.0" gradientDirection="Uphill" directionOfApplicationOnSP="Nominal"/>
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
+                              gradientValue="12.0" gradientDirection="Downhill"
+                              directionOfApplicationOnSP="Nominal"/>
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
+                              gradientValue="7.0" gradientDirection="Uphill"
+                              directionOfApplicationOnSP="Nominal"/>
 
     </SP_ContextInformation>
-	
+
 </SegmentProfile>

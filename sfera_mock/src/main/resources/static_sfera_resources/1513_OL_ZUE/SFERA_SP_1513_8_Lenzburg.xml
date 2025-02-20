@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
-                SP_ID="1513_8_Lenzburg" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="1700" SP_Status="Valid">
+                SP_ID="1513_8_Lenzburg" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="1700"
+                SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
-	
+
     <SP_Points>
 
         <TimingPoint TP_ID="Lenzburg" location="0">
@@ -16,33 +17,34 @@
             <TP_Name name="LB"/>
         </TimingPoint>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="E2" location="100"/>
             <SignalFunction>intermediate</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="E2"/>
         </Signal>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="F92" location="1000"/>
             <SignalFunction>exit</SignalFunction>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="F92"/>
         </Signal>
-     
+
     </SP_Points>
 
     <SP_Areas>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="LB" TAF_TAP_location_type="station">
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
+                          TAF_TAP_location_abbreviation="LB" TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>2119</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
             <TAF_TAP_LocationName language="de" text="Lenzburg"/>
 
-			<TAF_TAP_Location_NSP>
-				<teltsi_Company>0085</teltsi_Company>
-				<NSP_GroupName>stationSpeed</NSP_GroupName>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
 					&lt;stationSpeed&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;140/125&quot;/&gt;
@@ -52,12 +54,12 @@
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;140/125&quot;/&gt;
 					&lt;/stationSpeed&gt;
 				"/>
-			</TAF_TAP_Location_NSP>
-			
-			<TAF_TAP_Location_NSP>
-				<teltsi_Company>0085</teltsi_Company>
-				<NSP_GroupName>newLineSpeed</NSP_GroupName>
-				<NetworkSpecificParameter name="xmlNewLineSpeed" value="
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
 					&lt;lineSpeed&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;130&quot;/&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;130&quot;/&gt;
@@ -66,52 +68,53 @@
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;120&quot;/&gt;
 					&lt;/lineSpeed&gt;
 				"/>
-			</TAF_TAP_Location_NSP>
+            </TAF_TAP_Location_NSP>
 
-			<TAF_TAP_Location_NSP>
-				<teltsi_Company>0085</teltsi_Company>
-				<NSP_GroupName>departureAuth</NSP_GroupName>
-				<NetworkSpecificParameter name="departureAuth" value="true"/>
-				<NetworkSpecificParameter name="departureAuthText" value="sms"/>
-			</TAF_TAP_Location_NSP>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>departureAuth</NSP_GroupName>
+                <NetworkSpecificParameter name="departureAuth" value="true"/>
+                <NetworkSpecificParameter name="departureAuthText" value="sms"/>
+            </TAF_TAP_Location_NSP>
 
-			<TAF_TAP_Location_NSP>
-				<teltsi_Company>0085</teltsi_Company>
-				<NSP_GroupName>lineFootNotes</NSP_GroupName>
-				<NetworkSpecificParameter name="xmlLineFootNotes" value="
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>lineFootNotes</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlLineFootNotes" value="
 				&lt;lineFootNotes&gt;
 					&lt;footNote&gt;
 						&lt;text&gt;Zugelassen nur für&lt;b&gt; RABDe 500&lt;/text&gt;
 						&lt;trainSeries>N&lt;/trainSeries&gt;
 					&lt;/footNote&gt;
 				&lt;/lineFootNotes&gt;
-				" />
-			</TAF_TAP_Location_NSP>
-			
+				"/>
+            </TAF_TAP_Location_NSP>
+
         </TAF_TAP_Location>
 
     </SP_Areas>
 
     <SP_ContextInformation>
-<!--		todo contactType="phone"  -->
-		<ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
-			<Contact mainContact="true">
-				<OtherContactType contactIdentifier="1304"/>
-			</Contact>
-		</ContactList>
-		
+        <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1304"/>
+            </Contact>
+        </ContactList>
+
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="31.9"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="100">
+        <KilometreReferencePoint location="100">
             <KM_Reference kmRef="31.8"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="1000">
+        <KilometreReferencePoint location="1000">
             <KM_Reference kmRef="30.9"/>
         </KilometreReferencePoint>
 
-		<DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="10.0" gradientDirection="Uphill" directionOfApplicationOnSP="Nominal"/>
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
+                              gradientValue="10.0" gradientDirection="Uphill"
+                              directionOfApplicationOnSP="Nominal"/>
 
     </SP_ContextInformation>
-	
+
 </SegmentProfile>
