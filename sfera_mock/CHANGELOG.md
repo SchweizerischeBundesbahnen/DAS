@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.1.0...sfera_mock-v0.2.0) (2025-02-20)
+
+
+### Features
+
+* hide line speed and ASR above 40km/h on ETCS L2 segment. ([#120](https://github.com/SchweizerischeBundesbahnen/DAS/issues/120)) ([#586](https://github.com/SchweizerischeBundesbahnen/DAS/issues/586)) ([e197542](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e197542142c262455b9b45159d5288816974c2c2))
+
+
+### Documentation
+
+* monorepo structure and docs ([#585](https://github.com/SchweizerischeBundesbahnen/DAS/issues/585)) ([4e0b70f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4e0b70f93280618ed3abea084c1ada40c7f15c08))
+
 ## 0.1.0 (2025-02-07)
 
 
