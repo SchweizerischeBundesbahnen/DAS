@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <JourneyProfile JP_Status="Valid" JP_Version="1"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd">
+                xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd">
     <TrainIdentification>
         <OTN_ID>
-            <Company>1085</Company>
-            <OperationalTrainNumber>T2</OperationalTrainNumber>
-            <StartDate>2022-01-04</StartDate>
+            <teltsi_Company>1085</teltsi_Company>
+            <teltsi_OperationalTrainNumber>T2</teltsi_OperationalTrainNumber>
+            <teltsi_StartDate>2022-01-04</teltsi_StartDate>
         </OTN_ID>
     </TrainIdentification>
-    <SegmentProfileList SP_ID="T2_1" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T2_1" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -39,10 +39,10 @@
             </TimingPointReference>
         </TimingPointConstraints>
         <TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="ASR" startLocation="700">
-            <AdditionalSpeedRestriction ASR_Front="true" ASR_Speed="60"/>
+            <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="60"/>
         </TemporaryConstraints>
-    </SegmentProfileList>
-    <SegmentProfileList SP_ID="T2_2" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    </SegmentProfileReference>
+    <SegmentProfileReference SP_ID="T2_2" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -82,10 +82,10 @@
             </TimingPointReference>
         </TimingPointConstraints>
         <TemporaryConstraints startEndQualifier="WholeSP" temporaryConstraintType="ASR">
-            <AdditionalSpeedRestriction ASR_Front="true" ASR_Speed="60"/>
+            <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="60"/>
         </TemporaryConstraints>
-    </SegmentProfileList>
-    <SegmentProfileList SP_ID="T2_3" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    </SegmentProfileReference>
+    <SegmentProfileReference SP_ID="T2_3" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -135,7 +135,7 @@
             </TimingPointReference>
         </TimingPointConstraints>
         <TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="ASR" endLocation="6800">
-            <AdditionalSpeedRestriction ASR_Front="true" ASR_Speed="60"/>
+            <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="60"/>
         </TemporaryConstraints>
-    </SegmentProfileList>
+    </SegmentProfileReference>
 </JourneyProfile>

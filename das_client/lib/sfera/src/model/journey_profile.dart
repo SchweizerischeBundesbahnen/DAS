@@ -12,10 +12,10 @@ class JourneyProfile extends SferaXmlElement {
 
   TrainIdentification get trainIdentification => children.whereType<TrainIdentification>().first;
 
-  Iterable<SegmentProfileList> get segmentProfilesLists => children.whereType<SegmentProfileList>();
+  Iterable<SegmentProfileReference> get segmentProfileReferences => children.whereType<SegmentProfileReference>();
 
-  Set<TrainCharacteristicsRef> get trainCharactericsRefSet =>
-      children.whereType<SegmentProfileList>().map((it) => it.trainCharacteristicsRef).expand((it) => it).toSet();
+  Set<TrainCharacteristicsRef> get trainCharacteristicsRefSet =>
+      children.whereType<SegmentProfileReference>().map((it) => it.trainCharacteristicsRef).expand((it) => it).toSet();
 
   JpStatus get status => XmlEnum.valueOf<JpStatus>(JpStatus.values, attributes['JP_Status']) ?? JpStatus.valid;
 

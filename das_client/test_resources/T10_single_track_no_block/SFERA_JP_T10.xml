@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <JourneyProfile JP_Status="Valid" JP_Version="1"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd">
+                xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd">
     <TrainIdentification>
         <OTN_ID>
-            <Company>1085</Company>
-            <OperationalTrainNumber>T10</OperationalTrainNumber>
-            <StartDate>2025-02-11</StartDate>
+            <teltsi_Company>1085</teltsi_Company>
+            <teltsi_OperationalTrainNumber>T10</teltsi_OperationalTrainNumber>
+            <teltsi_StartDate>2025-02-11</teltsi_StartDate>
         </OTN_ID>
     </TrainIdentification>
-    <SegmentProfileList SP_ID="T10_1" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T10_1" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -22,17 +22,23 @@
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Meiringen_Alpbach"/>
             </TimingPointReference>
-            <StoppingPointInformation departureTime="2025-02-11T09:46:00Z">
-                <StopType stopTypePurpose="Commercial" mandatoryStop="false"/>
+            <StoppingPointInformation>
+                <StopType mandatoryStop="false">
+                    <teltsi_TrainActivityType>0001</teltsi_TrainActivityType>
+                </StopType>
             </StoppingPointInformation>
+            <StoppingPointDepartureDetails departureTime="2025-02-11T09:46:00Z"/>
         </TimingPointConstraints>
         <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Aareschlucht_West"/>
             </TimingPointReference>
-            <StoppingPointInformation departureTime="2025-02-11T09:47:00Z">
-                <StopType stopTypePurpose="Commercial" mandatoryStop="false"/>
+            <StoppingPointInformation >
+                <StopType mandatoryStop="false">
+                    <teltsi_TrainActivityType>0001</teltsi_TrainActivityType>
+                </StopType>
             </StoppingPointInformation>
+            <StoppingPointDepartureDetails departureTime="2025-02-11T09:47:00Z"/>
         </TimingPointConstraints>
         <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
             <TimingPointReference>
@@ -49,5 +55,5 @@
                 <TP_ID_Reference TP_ID="Innertkirchen_Kraftwerk"/>
             </TimingPointReference>
         </TimingPointConstraints>
-    </SegmentProfileList>
+    </SegmentProfileReference>
 </JourneyProfile>

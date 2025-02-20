@@ -1,6 +1,8 @@
 import 'package:das_client/sfera/src/model/additional_speed_restriction.dart';
 import 'package:das_client/sfera/src/model/balise.dart';
+import 'package:das_client/sfera/src/model/balise_group.dart';
 import 'package:das_client/sfera/src/model/connection_track.dart';
+import 'package:das_client/sfera/src/model/connection_track_description.dart';
 import 'package:das_client/sfera/src/model/current_limitation.dart';
 import 'package:das_client/sfera/src/model/current_limitation_change.dart';
 import 'package:das_client/sfera/src/model/current_limitation_start.dart';
@@ -45,6 +47,7 @@ import 'package:das_client/sfera/src/model/sp_zone.dart';
 import 'package:das_client/sfera/src/model/speeds.dart';
 import 'package:das_client/sfera/src/model/station_speed.dart';
 import 'package:das_client/sfera/src/model/stop_type.dart';
+import 'package:das_client/sfera/src/model/stopping_point_departure_details.dart';
 import 'package:das_client/sfera/src/model/stopping_point_information.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location_ident.dart';
@@ -107,8 +110,8 @@ class SferaReplyParser {
         return MessageHeader(type: type, attributes: attributes, children: children, value: value);
       case JourneyProfile.elementType:
         return JourneyProfile(type: type, attributes: attributes, children: children, value: value);
-      case SegmentProfileList.elementType:
-        return SegmentProfileList(type: type, attributes: attributes, children: children, value: value);
+      case SegmentProfileReference.elementType:
+        return SegmentProfileReference(type: type, attributes: attributes, children: children, value: value);
       case OtnId.elementType:
         return OtnId(type: type, attributes: attributes, children: children, value: value);
       case TrainIdentification.elementType:
@@ -123,10 +126,14 @@ class SferaReplyParser {
         return TpIdReference(type: type, attributes: attributes, children: children, value: value);
       case StoppingPointInformation.elementType:
         return StoppingPointInformation(type: type, attributes: attributes, children: children, value: value);
+      case StoppingPointDepartureDetails.elementType:
+        return StoppingPointDepartureDetails(type: type, attributes: attributes, children: children, value: value);
       case SegmentProfile.elementType:
         return SegmentProfile(type: type, attributes: attributes, children: children, value: value);
       case SpPoints.elementType:
         return SpPoints(type: type, attributes: attributes, children: children, value: value);
+      case BaliseGroup.elementType:
+        return BaliseGroup(type: type, attributes: attributes, children: children, value: value);
       case TimingPoint.elementType:
         return TimingPoint(type: type, attributes: attributes, children: children, value: value);
       case TpName.elementType:
@@ -201,6 +208,8 @@ class SferaReplyParser {
         return LineSpeed(type: type, attributes: attributes, children: children, value: value);
       case ConnectionTrack.elementType:
         return ConnectionTrack(type: type, attributes: attributes, children: children, value: value);
+      case ConnectionTrackDescription.elementType:
+        return ConnectionTrackDescription(type: type, attributes: attributes, children: children, value: value);
       case CurveSpeed.elementType:
         return CurveSpeed(type: type, attributes: attributes, children: children, value: value);
       case StationSpeed.elementType:

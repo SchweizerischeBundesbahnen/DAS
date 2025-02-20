@@ -49,7 +49,7 @@ void main() {
     final payload = sferaG2bReplyMessage.payload!;
 
     expect(payload.journeyProfiles, hasLength(1));
-    expect(payload.journeyProfiles.first.segmentProfilesLists, hasLength(23));
+    expect(payload.journeyProfiles.first.segmentProfileReferences, hasLength(23));
 
     expect(payload.segmentProfiles, hasLength(23));
     expect(payload.segmentProfiles.first.points, isNotNull);
@@ -91,7 +91,8 @@ void main() {
     final sferaB2gRequestMessageString = xmlDocument.toXmlString(pretty: true, newLine: '\r\n', indent: '\t');
 
     final file = File('test_resources/SFERA_B2G_RequestMessage_handshake.xml');
-    final xmlFileString = file.readAsStringSync();
+    var xmlFileString = file.readAsStringSync();
+    xmlFileString = xmlFileString.replaceAll(RegExp(r'<SFERA_B2G_RequestMessage.*>'), '<SFERA_B2G_RequestMessage>');
     expect(sferaB2gRequestMessageString, xmlFileString);
   });
 
