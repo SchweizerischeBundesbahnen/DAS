@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
-                SP_ID="T1_1" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="90000" SP_Status="Valid">
+                SP_ID="T1_1" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="90000"
+                SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -37,6 +38,18 @@
             </TAF_TAP_LocationReference>
             <TP_Name name="Gilly-Bursinel"/>
         </TimingPoint>
+
+        <NetworkSpecificPoint location="1600">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>newLineSpeed</NSP_GroupName>
+            <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                &lt;lineSpeed&gt;
+                &lt;speeds&gt;
+                &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;55&quot;/&gt;
+                &lt;/speeds&gt;
+                &lt;/lineSpeed&gt;
+            "/>
+        </NetworkSpecificPoint>
 
     </SP_Points>
     <SP_Areas>
@@ -76,16 +89,18 @@
             <TAF_TAP_LocationName language="de" text="Gilly-Bursinel"/>
         </TAF_TAP_Location>
 
-        <NetworkSpecificArea startEndQualifier="Ends" endLocation="1500">
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
-            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingPossible"/>
+        <NetworkSpecificArea startEndQualifier="Ends" endLocation="1600">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
+            <NetworkSpecificParameter name="trackEquipmentType"
+                                      value="ETCS-L2-extSpeedReversingPossible"/>
         </NetworkSpecificArea>
 
         <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="1700" endLocation="2300">
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
-            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L1LS-2TracksWithSingleTrackEquipment"/>
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
+            <NetworkSpecificParameter name="trackEquipmentType"
+                                      value="ETCS-L1LS-2TracksWithSingleTrackEquipment"/>
         </NetworkSpecificArea>
     </SP_Areas>
 
@@ -100,6 +115,10 @@
 
         <KilometreReferencePoint location="1500">
             <KM_Reference kmRef="33.8"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="1600">
+            <KM_Reference kmRef="33.2"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="1700">

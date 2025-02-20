@@ -1,3 +1,4 @@
+import 'package:battery_plus/battery_plus.dart';
 import 'package:das_client/auth/authentication_component.dart';
 import 'package:das_client/di.dart';
 import 'package:das_client/flavor.dart';
@@ -7,6 +8,7 @@ import 'package:get_it/get_it.dart';
 
 import 'auth/integrationtest_authenticator.dart';
 import 'auth/mqtt_client_user_connector.dart';
+import 'mocks/battery_mock.dart';
 
 class IntegrationTestDI {
   const IntegrationTestDI._();
@@ -22,6 +24,7 @@ class IntegrationTestDI {
     GetIt.I.registerSferaComponents();
     GetIt.I.registerMqttComponent();
     GetIt.I.registerBlocs();
+    _registerBattery();
 
     GetIt.I.unregister<MqttClientConnector>();
     _registerMqttClientConnector();
@@ -35,5 +38,9 @@ class IntegrationTestDI {
 
   static void _registerMqttClientConnector() {
     GetIt.I.registerSingletonAsync<MqttClientConnector>(() async => MqttClientUserConnector());
+  }
+
+  static void _registerBattery(){
+    GetIt.I.registerSingletonAsync<Battery>(() async => BatteryMock());
   }
 }

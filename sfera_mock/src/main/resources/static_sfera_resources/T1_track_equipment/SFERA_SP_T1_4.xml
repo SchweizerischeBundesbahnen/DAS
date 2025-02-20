@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
-                SP_ID="T1_4" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="20000" SP_Status="Valid">
+                SP_ID="T1_4" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="20000"
+                SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -37,6 +38,18 @@
             </TAF_TAP_LocationReference>
             <TP_Name name="Aarau"/>
         </TimingPoint>
+
+        <NetworkSpecificPoint location="7800">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>newLineSpeed</NSP_GroupName>
+            <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                &lt;lineSpeed&gt;
+                &lt;speeds&gt;
+                &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;80&quot;/&gt;
+                &lt;/speeds&gt;
+                &lt;/lineSpeed&gt;
+            "/>
+        </NetworkSpecificPoint>
     </SP_Points>
     <SP_Areas>
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="WANZ"
@@ -77,15 +90,17 @@
 
 
         <NetworkSpecificArea startEndQualifier="Ends" endLocation="7000">
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
-            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingPossible"/>
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
+            <NetworkSpecificParameter name="trackEquipmentType"
+                                      value="ETCS-L2-extSpeedReversingPossible"/>
         </NetworkSpecificArea>
 
         <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="7000" endLocation="7800">
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
-            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-convSpeedReversingImpossible"/>
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
+            <NetworkSpecificParameter name="trackEquipmentType"
+                                      value="ETCS-L2-convSpeedReversingImpossible"/>
         </NetworkSpecificArea>
     </SP_Areas>
 

@@ -33,6 +33,9 @@
                 <TP_ID_Reference TP_ID="Gilly-Bursinel"/>
             </TimingPointReference>
         </TimingPointConstraints>
+        <TrainCharacteristicsRef TC_ID="T1_1" TC_VersionMajor="1" TC_VersionMinor="1" location="0">
+            <TC_RU_ID>1185</TC_RU_ID>
+        </TrainCharacteristicsRef>
     </SegmentProfileList>
     <SegmentProfileList SP_ID="T1_2" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
