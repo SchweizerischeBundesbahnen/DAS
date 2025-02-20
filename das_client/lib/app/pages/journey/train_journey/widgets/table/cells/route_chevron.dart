@@ -1,3 +1,7 @@
+import 'dart:math';
+
+import 'package:das_client/app/pages/journey/train_journey/chevron_animation_controller.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/chevron_animation_wrapper.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/chevron_animation_data.dart';
 import 'package:das_client/model/journey/metadata.dart';
 import 'package:flutter/material.dart';
@@ -28,28 +32,34 @@ class RouteChevron extends StatefulWidget {
   State<RouteChevron> createState() => _RouteChevronState();
 }
 
-class _RouteChevronState extends State<RouteChevron> with SingleTickerProviderStateMixin {
-  late Animation<double> animation;
-  AnimationController? controller;
+class _RouteChevronState extends State<RouteChevron> {
   double currentOffsetValue = 0;
+  ChevronAnimationController? controller;
 
   @override
-  void initState() {
-    super.initState();
-    // Only animate if the position update came in the last second, otherwise it will be repeated on every scroll
-    if (widget.chevronAnimationData != null &&
-        DateTime.now().compareTo(widget.metadata.timestamp.add(Duration(seconds: 1))) < 0) {
-      currentOffsetValue = widget.chevronAnimationData!.offset;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    controller?.removeListener(_animationListener);
+    controller = ChevronAnimationWrapper.of(context);
+    controller?.addListener(_animationListener);
+    _animationListener();
+  }
 
-      controller =
-          AnimationController(duration: Duration(milliseconds: widget.chevronAnimationData!.durationMs), vsync: this);
-      animation = Tween<double>(begin: widget.chevronAnimationData!.offset, end: 0).animate(controller!)
-        ..addListener(() {
-          setState(() {
-            currentOffsetValue = animation.value;
-          });
-        });
-      controller!.forward();
+  @override
+  void didUpdateWidget(covariant RouteChevron oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _animationListener();
+  }
+
+  void _animationListener() {
+    if (widget.chevronAnimationData != null && controller?.animation != null) {
+      final start = min(widget.chevronAnimationData!.offset, 0.0);
+      final end = max(widget.chevronAnimationData!.offset, 0.0);
+      final diff = (start - end).abs();
+
+      setState(() {
+        currentOffsetValue = start + (diff * controller!.animation!.value);
+      });
     }
   }
 
@@ -59,8 +69,8 @@ class _RouteChevronState extends State<RouteChevron> with SingleTickerProviderSt
     final chevronColor = isDarkTheme ? SBBColors.sky : SBBColors.black;
     return Positioned(
       bottom: widget.isStop
-          ? sbbDefaultSpacing + widget.circleSize + currentOffsetValue
-          : sbbDefaultSpacing + currentOffsetValue,
+          ? sbbDefaultSpacing + widget.circleSize - currentOffsetValue
+          : sbbDefaultSpacing - currentOffsetValue,
       child: CustomPaint(
         key: RouteChevron.chevronKey,
         size: Size(widget.chevronWidth, widget.chevronHeight),
@@ -70,8 +80,8 @@ class _RouteChevronState extends State<RouteChevron> with SingleTickerProviderSt
   }
 
   @override
-  dispose() {
-    controller?.dispose();
+  void dispose() {
+    controller?.removeListener(_animationListener);
     super.dispose();
   }
 }

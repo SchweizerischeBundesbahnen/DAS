@@ -12,7 +12,7 @@
     "das_playground": {},
     "sfera_mock": {
       "release-type": "maven",
-      "package-name": "sfera-mock"
+      "package-name": "sfera_mock"
     }
   }
 }
