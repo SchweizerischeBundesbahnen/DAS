@@ -1,65 +1,65 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
                 SP_ID="1809_27_St_Maurice" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="6300" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
-	
+
     <SP_Points>
 
         <TimingPoint TP_ID="St_Maurice" location="0">
-            <TP_Name name="SM"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>1403</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>1403</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="SM"/>
         </TimingPoint>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="E1" location="400"/>
             <SignalFunction>exit</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="E1"/>
         </Signal>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="P130" location="1800"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="P130"/>
         </Signal>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="P131" location="3100"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="P131"/>
         </Signal>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="P132" location="4500"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="P132"/>
         </Signal>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="A133" location="5700"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="A133"/>
-        </Signal>		
+        </Signal>
 
     </SP_Points>
 
     <SP_Areas>
-		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="4.0" gradientDirection="Downhill" directionOfApplicationOnSP="Nominal"/>
-		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="10.0" gradientDirection="Uphill" directionOfApplicationOnSP="Nominal"/>		
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="SM" TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>1403</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>1403</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="St-Maurice"/>
+            <TAF_TAP_LocationName language="de" text="St-Maurice"/>
 
-			<TAF_TAP_Location_NSP name="stationSpeed">
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
 					&lt;stationSpeed&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;115-105/95&quot;/&gt;
@@ -81,10 +81,12 @@
 						&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;125-120/110&quot;/&gt;
 					&lt;/stationSpeed&gt;
 				"/>
-			</TAF_TAP_Location_NSP>
+            </TAF_TAP_Location_NSP>
 
-			<TAF_TAP_Location_NSP name="newLineSpeed">
-				<NetworkSpecificParameter name="xmlNewLineSpeed" value="
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
 					&lt;lineSpeed&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;125&quot;/&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;125&quot;/&gt;
@@ -100,23 +102,27 @@
 						&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;145&quot;/&gt;
 					&lt;/lineSpeed&gt;
 				"/>
-			</TAF_TAP_Location_NSP>
+            </TAF_TAP_Location_NSP>
 
-			<TAF_TAP_Location_NSP name="departureAuth">
-				<NetworkSpecificParameter name="departureAuth" value="true"/>
-				<NetworkSpecificParameter name="departureAuthText" value="sms&lt;br&gt;1-4"/>
-			</TAF_TAP_Location_NSP>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>departureAuth</NSP_GroupName>
+                <NetworkSpecificParameter name="departureAuth" value="true"/>
+                <NetworkSpecificParameter name="departureAuthText" value="sms&lt;br&gt;1-4"/>
+            </TAF_TAP_Location_NSP>
 
-			<TAF_TAP_Location_NSP name="lineFootNotes">
-				<NetworkSpecificParameter name="xmlLineFootNotes" value="
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>lineFootNotes</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlLineFootNotes" value="
 				&lt;lineFootNotes&gt; 
 					&lt;footNote&gt; 
 						&lt;text&gt;admis seulement pour &lt;b&gt;RABe 503, ETR 610&lt;/text&gt; 
 						&lt;trainSeries&gt;N&lt;/trainSeries&gt; 
 					&lt;/footNote&gt; 
 				&lt;/lineFootNotes&gt;
-				" />
-			</TAF_TAP_Location_NSP>
+				"/>
+            </TAF_TAP_Location_NSP>
 
         </TAF_TAP_Location>
 
@@ -124,9 +130,11 @@
 
     <SP_ContextInformation>
 
-		<ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
-			<Contact contactType="phone" mainContact="true" contactIdentifier="1302" />
-		</ContactList>
+        <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1302"/>
+            </Contact>
+        </ContactList>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="51.6"/>
@@ -146,7 +154,12 @@
         <KilometreReferencePoint location="5700">
             <KM_Reference kmRef="57.3"/>
         </KilometreReferencePoint>
-		
+
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="4.0" gradientDirection="Downhill"
+                              directionOfApplicationOnSP="Nominal"/>
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="10.0" gradientDirection="Uphill"
+                              directionOfApplicationOnSP="Nominal"/>
+
     </SP_ContextInformation>
-	
+
 </SegmentProfile>

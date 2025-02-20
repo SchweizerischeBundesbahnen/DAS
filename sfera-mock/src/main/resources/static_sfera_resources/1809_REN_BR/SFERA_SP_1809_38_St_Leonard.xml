@@ -1,22 +1,23 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
-                SP_ID="1809_38_St_Leonard" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="4400" SP_Status="Valid">
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="1809_38_St_Leonard"
+                SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="4400" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
-	
+
     <SP_Points>
 
         <TimingPoint TP_ID="St_Leonard" location="0">
-            <TP_Name name="SL"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>1507</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>1507</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="SL"/>
         </TimingPoint>
 
-        <NetworkSpecificPoint location="2000" name="protectionSection">
+        <NetworkSpecificPoint location="2000">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>protectionSection</NSP_GroupName>
             <NetworkSpecificParameter name="lengthType" value="long"/>
             <NetworkSpecificParameter name="facultative" value="false"/>
         </NetworkSpecificPoint>
@@ -24,33 +25,37 @@
     </SP_Points>
 
     <SP_Areas>
-		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="6.0" gradientDirection="Downhill" directionOfApplicationOnSP="Nominal"/>
-		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="10.0" gradientDirection="Uphill" directionOfApplicationOnSP="Nominal"/>
-		
+
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="SL" TAF_TAP_location_type="halt">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>1507</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>1507</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="St-Léonard"/>
+            <TAF_TAP_LocationName language="de" text="St-Léonard"/>
 
-			<TAF_TAP_Location_NSP name="departureAuth">
-				<NetworkSpecificParameter name="departureAuth" value="false"/>
-			</TAF_TAP_Location_NSP>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>departureAuth</NSP_GroupName>
+                <NetworkSpecificParameter name="departureAuth" value="false"/>
+            </TAF_TAP_Location_NSP>
 
-			<TAF_TAP_Location_NSP name="oPFootNotes">
-				<NetworkSpecificParameter name="xmlOPFootNotes" value="
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>oPFootNotes</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlOPFootNotes" value="
 				&lt;oPFootNotes&gt; 
 					&lt;footNote type=&quot;contact&quot; refText=&quot;1)&quot;&gt; 
 						&lt;text&gt;+41 512 800 508 RBC Valais Lavaux&lt;/text&gt; 
 					&lt;/footNote&gt; 
 				&lt;/oPFootNotes&gt;
-				" />
-			</TAF_TAP_Location_NSP>
+				"/>
+            </TAF_TAP_Location_NSP>
 
         </TAF_TAP_Location>
 
-        <NetworkSpecificArea startEndQualifier="WholeSP" name="nonStandardTrackEquipment">
+        <NetworkSpecificArea startEndQualifier="WholeSP">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2convSpeedReversingImpossible"/>
         </NetworkSpecificArea>
 
@@ -72,7 +77,12 @@
         <KilometreReferencePoint location="2000">
             <KM_Reference kmRef="100.2"/>
         </KilometreReferencePoint>
-		
+
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="6.0" gradientDirection="Downhill"
+                              directionOfApplicationOnSP="Nominal"/>
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="10.0" gradientDirection="Uphill"
+                              directionOfApplicationOnSP="Nominal"/>
+
     </SP_ContextInformation>
-	
+
 </SegmentProfile>

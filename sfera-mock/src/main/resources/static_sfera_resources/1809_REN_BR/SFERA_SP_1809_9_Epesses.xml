@@ -1,51 +1,56 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
                 SP_ID="1809_9_Epesses" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="3100" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
-	
+
     <SP_Points>
 
         <TimingPoint TP_ID="Epesses" location="0">
-            <TP_Name name="EPS"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>1125</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>1125</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="EPS"/>
         </TimingPoint>
 
     </SP_Points>
 
     <SP_Areas>
-		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="6.0" gradientDirection="Uphill" directionOfApplicationOnSP="Nominal"/>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="EPS" TAF_TAP_location_type="halt">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>1125</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>1125</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Epesses"/>
+            <TAF_TAP_LocationName language="de" text="Epesses"/>
 
-			<TAF_TAP_Location_NSP name="departureAuth">
-				<NetworkSpecificParameter name="departureAuth" value="false"/>
-			</TAF_TAP_Location_NSP>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>departureAuth</NSP_GroupName>
+                <NetworkSpecificParameter name="departureAuth" value="false"/>
+            </TAF_TAP_Location_NSP>
 
-			<TAF_TAP_Location_NSP name="lineFootNotes">
-				<NetworkSpecificParameter name="xmlLineFootNotes" value="
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>lineFootNotes</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlLineFootNotes" value="
 				&lt;lineFootNotes&gt; 
 					&lt;footNote&gt; 
 						&lt;text&gt;admis seulement pour &lt;b&gt;RABe 503, ETR 610&lt;/text&gt; 
 						&lt;trainSeries&gt;N&lt;/trainSeries&gt; 
 					&lt;/footNote&gt; 
 				&lt;/lineFootNotes&gt;
-				" />
-			</TAF_TAP_Location_NSP>
+				"/>
+            </TAF_TAP_Location_NSP>
 
         </TAF_TAP_Location>
 
-        <NetworkSpecificArea startEndQualifier="WholeSP" name="nonStandardTrackEquipment">
+        <NetworkSpecificArea startEndQualifier="WholeSP">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2convSpeedReversingImpossible"/>
         </NetworkSpecificArea>
 
@@ -53,8 +58,8 @@
 
     <SP_ContextInformation>
 
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="900" endLocation="900" />
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="1000" endLocation="1000" />
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="900" endLocation="900"/>
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="1000" endLocation="1000"/>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="10.0"/>
@@ -65,6 +70,10 @@
         <KilometreReferencePoint location="1000">
             <KM_Reference kmRef="11.0"/>
         </KilometreReferencePoint>
+
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="6.0" gradientDirection="Uphill"
+                              directionOfApplicationOnSP="Nominal"/>
+
     </SP_ContextInformation>
-	
+
 </SegmentProfile>

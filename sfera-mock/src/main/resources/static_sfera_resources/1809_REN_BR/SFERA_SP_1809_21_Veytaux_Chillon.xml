@@ -1,51 +1,55 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
                 SP_ID="1809_21_Veytaux_Chillon" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="2300" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
-	
+
     <SP_Points>
 
         <TimingPoint TP_ID="Veytaux_Chillon" location="0">
-            <TP_Name name="VEY"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>1302</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>1302</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="VEY"/>
         </TimingPoint>
 
     </SP_Points>
 
     <SP_Areas>
-		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="3.0" gradientDirection="Downhill" directionOfApplicationOnSP="Nominal"/>
-
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="VEY" TAF_TAP_location_type="halt">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>1302</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>1302</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Veytaux Chillon"/>
+            <TAF_TAP_LocationName language="de" text="Veytaux Chillon"/>
 
-			<TAF_TAP_Location_NSP name="departureAuth">
-				<NetworkSpecificParameter name="departureAuth" value="false"/>
-			</TAF_TAP_Location_NSP>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>departureAuth</NSP_GroupName>
+                <NetworkSpecificParameter name="departureAuth" value="false"/>
+            </TAF_TAP_Location_NSP>
 
-			<TAF_TAP_Location_NSP name="lineFootNotes">
-				<NetworkSpecificParameter name="xmlLineFootNotes" value="
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>lineFootNotes</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlLineFootNotes" value="
 				&lt;lineFootNotes&gt; 
 					&lt;footNote&gt; 
 						&lt;text&gt;admis seulement pour &lt;b&gt;RABe 503, ETR 610&lt;/text&gt; 
 						&lt;trainSeries&gt;N&lt;/trainSeries&gt; 
 					&lt;/footNote&gt; 
 				&lt;/lineFootNotes&gt;
-				" />
-			</TAF_TAP_Location_NSP>
+				"/>
+            </TAF_TAP_Location_NSP>
 
         </TAF_TAP_Location>
 
-        <NetworkSpecificArea startEndQualifier="WholeSP" name="nonStandardTrackEquipment">
+        <NetworkSpecificArea startEndQualifier="WholeSP">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2convSpeedReversingImpossible"/>
         </NetworkSpecificArea>
 
@@ -56,7 +60,11 @@
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="27.1"/>
         </KilometreReferencePoint>
-	
+
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="3.0" gradientDirection="Downhill"
+                              directionOfApplicationOnSP="Nominal"/>
+
+
     </SP_ContextInformation>
-	
+
 </SegmentProfile>

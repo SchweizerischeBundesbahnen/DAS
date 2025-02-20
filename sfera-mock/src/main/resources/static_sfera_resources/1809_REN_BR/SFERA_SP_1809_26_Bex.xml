@@ -1,40 +1,42 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
+                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
                 SP_ID="1809_26_Bex" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="4000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
-	
+
     <SP_Points>
 
         <TimingPoint TP_ID="Bex" location="0">
-            <TP_Name name="BEX"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>1402</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>1402</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="BEX"/>
         </TimingPoint>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="30C1" location="200"/>
             <SignalFunction>exit</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="30C1"/>
         </Signal>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="A129" location="2100"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="A129"/>
-        </Signal>		
+        </Signal>
 
-		<Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="C121" location="3400"/>
             <SignalFunction>intermediate</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="C121"/>
         </Signal>
 
-        <NetworkSpecificPoint location="350" identifier="A8B726A8C3ED426CB8CF509DF33A2392" name="curvePoint">
+        <NetworkSpecificPoint location="350" identifier="A8B726A8C3ED426CB8CF509DF33A2392">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
             <NetworkSpecificParameter name="curveType" value="stationExitCurve"/>
             <NetworkSpecificParameter name="xmlCurveSpeed" value="
@@ -48,24 +50,26 @@
             "/>
         </NetworkSpecificPoint>
 
-		<NetworkSpecificPoint location="610" identifier="A8B726A8C3ED426CB8CF509DF33A2392" name="curvePoint">
+        <NetworkSpecificPoint location="610" identifier="A8B726A8C3ED426CB8CF509DF33A2392">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="end"/>
-		</NetworkSpecificPoint>		
+        </NetworkSpecificPoint>
 
     </SP_Points>
 
     <SP_Areas>
-		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="4.0" gradientDirection="Downhill" directionOfApplicationOnSP="Nominal"/>
-		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="8.0" gradientDirection="Uphill" directionOfApplicationOnSP="Nominal"/>		
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="BEX" TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>1402</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>1402</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Bex"/>
+            <TAF_TAP_LocationName language="de" text="Bex"/>
 
-			<TAF_TAP_Location_NSP name="stationSpeed">
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
 					&lt;stationSpeed&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;110/105&quot;/&gt;
@@ -87,10 +91,12 @@
 						&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;120&quot;/&gt;
 					&lt;/stationSpeed&gt;
 				"/>
-			</TAF_TAP_Location_NSP>
+            </TAF_TAP_Location_NSP>
 
-			<TAF_TAP_Location_NSP name="newLineSpeed">
-				<NetworkSpecificParameter name="xmlNewLineSpeed" value="
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
 					&lt;lineSpeed&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;115&quot;/&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;115&quot;/&gt;
@@ -107,23 +113,27 @@
 						&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;125&quot;/&gt;
 					&lt;/lineSpeed&gt;
 				"/>
-			</TAF_TAP_Location_NSP>
+            </TAF_TAP_Location_NSP>
 
-			<TAF_TAP_Location_NSP name="departureAuth">
-				<NetworkSpecificParameter name="departureAuth" value="true"/>
-				<NetworkSpecificParameter name="departureAuthText" value="sms"/>
-			</TAF_TAP_Location_NSP>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>departureAuth</NSP_GroupName>
+                <NetworkSpecificParameter name="departureAuth" value="true"/>
+                <NetworkSpecificParameter name="departureAuthText" value="sms"/>
+            </TAF_TAP_Location_NSP>
 
-			<TAF_TAP_Location_NSP name="lineFootNotes">
-				<NetworkSpecificParameter name="xmlLineFootNotes" value="
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>lineFootNotes</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlLineFootNotes" value="
 				&lt;lineFootNotes&gt; 
 					&lt;footNote&gt; 
 						&lt;text&gt;admis seulement pour &lt;b&gt;RABe 503, ETR 610&lt;/text&gt; 
 						&lt;trainSeries&gt;N&lt;/trainSeries&gt; 
 					&lt;/footNote&gt; 
 				&lt;/lineFootNotes&gt;
-				" />
-			</TAF_TAP_Location_NSP>
+				"/>
+            </TAF_TAP_Location_NSP>
 
         </TAF_TAP_Location>
 
@@ -131,9 +141,11 @@
 
     <SP_ContextInformation>
 
-		<ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
-			<Contact contactType="phone" mainContact="true" contactIdentifier="(1307)" />
-		</ContactList>
+        <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="(1307)"/>
+            </Contact>
+        </ContactList>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="47.6"/>
@@ -153,7 +165,12 @@
         <KilometreReferencePoint location="3400">
             <KM_Reference kmRef="51.0"/>
         </KilometreReferencePoint>
-		
+
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="4.0" gradientDirection="Downhill"
+                              directionOfApplicationOnSP="Nominal"/>
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="8.0" gradientDirection="Uphill"
+                              directionOfApplicationOnSP="Nominal"/>
+
     </SP_ContextInformation>
-	
+
 </SegmentProfile>
