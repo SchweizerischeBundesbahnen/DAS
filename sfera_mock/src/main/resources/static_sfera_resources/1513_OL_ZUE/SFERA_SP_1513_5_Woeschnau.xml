@@ -81,7 +81,7 @@
     <SP_ContextInformation>
         <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
             <Contact mainContact="true">
-                <OtherContactType contactIdentifier="(1312)"/>
+                <OtherContactType contactIdentifier="1308"/>
             </Contact>
         </ContactList>
 
