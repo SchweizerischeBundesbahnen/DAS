@@ -93,14 +93,14 @@
         </TAF_TAP_Location>
 
         <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="9200" endLocation="10200">
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingImpossible"/>
         </NetworkSpecificArea>
 
         <NetworkSpecificArea startEndQualifier="Starts" startLocation="10200">
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingPossible"/>
         </NetworkSpecificArea>
     </SP_Areas>

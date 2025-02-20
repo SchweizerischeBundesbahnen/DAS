@@ -29,7 +29,7 @@ public record TrainIdentification(@NonNull CompanyCode companyCode, @NonNull Str
     }
 
     public String baseOperationalNumber() {
-        if(isManualLocation()) {
+        if (isManualLocation()) {
             return operationalNumber.substring(0, operationalNumber.length() - 1);
         }
         return operationalNumber;

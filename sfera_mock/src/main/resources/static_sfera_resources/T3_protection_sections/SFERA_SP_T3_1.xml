@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
-                SP_ID="T3_1" SP_VersionMajor="1" SP_VersionMinor="4" SP_Length="90000" SP_Status="Valid">
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T3_1" SP_VersionMajor="1"
+                SP_VersionMinor="4" SP_Length="90000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -175,38 +174,38 @@
         </TimingPoint>
 
         <NetworkSpecificPoint location="1700">
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>protectionSection</NSP_GroupName>
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>protectionSection</NSP_GroupName>
             <NetworkSpecificParameter name="lengthType" value="long"/>
             <NetworkSpecificParameter name="facultative" value="true"/>
         </NetworkSpecificPoint>
         <NetworkSpecificPoint location="3200">
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>protectionSection</NSP_GroupName>
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>protectionSection</NSP_GroupName>
             <NetworkSpecificParameter name="lengthType" value="long"/>
             <NetworkSpecificParameter name="facultative" value="false"/>
         </NetworkSpecificPoint>
         <NetworkSpecificPoint location="5200">
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>protectionSection</NSP_GroupName>
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>protectionSection</NSP_GroupName>
             <NetworkSpecificParameter name="lengthType" value="long"/>
             <NetworkSpecificParameter name="facultative" value="true"/>
         </NetworkSpecificPoint>
         <NetworkSpecificPoint location="6700">
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>protectionSection</NSP_GroupName>
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>protectionSection</NSP_GroupName>
             <NetworkSpecificParameter name="lengthType" value="long"/>
             <NetworkSpecificParameter name="facultative" value="true"/>
         </NetworkSpecificPoint>
         <NetworkSpecificPoint location="8700">
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>protectionSection</NSP_GroupName>
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>protectionSection</NSP_GroupName>
             <NetworkSpecificParameter name="lengthType" value="short"/>
             <NetworkSpecificParameter name="facultative" value="true"/>
         </NetworkSpecificPoint>
         <NetworkSpecificPoint location="10200">
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>protectionSection</NSP_GroupName>
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>protectionSection</NSP_GroupName>
             <NetworkSpecificParameter name="lengthType" value="short"/>
             <NetworkSpecificParameter name="facultative" value="false"/>
         </NetworkSpecificPoint>
