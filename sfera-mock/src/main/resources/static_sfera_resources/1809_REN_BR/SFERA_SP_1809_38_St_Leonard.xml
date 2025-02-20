@@ -1,33 +1,39 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
-                SP_ID="1809_18_Vernex" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="1600" SP_Status="Valid">
+                SP_ID="1809_38_St_Leonard" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="4400" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
 	
     <SP_Points>
 
-        <TimingPoint TP_ID="Vernex" location="0">
-            <TP_Name name="VERX"/>
+        <TimingPoint TP_ID="St_Leonard" location="0">
+            <TP_Name name="SL"/>
             <TAF_TAP_LocationReference>
                 <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>19695</LocationPrimaryCode>
+                <LocationPrimaryCode>1507</LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
+
+        <NetworkSpecificPoint location="2000" name="protectionSection">
+            <NetworkSpecificParameter name="lengthType" value="long"/>
+            <NetworkSpecificParameter name="facultative" value="false"/>
+        </NetworkSpecificPoint>
 
     </SP_Points>
 
     <SP_Areas>
 		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="6.0" gradientDirection="Downhill" directionOfApplicationOnSP="Nominal"/>
-
-        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="VERX" TAF_TAP_location_type="station">
+		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="10.0" gradientDirection="Uphill" directionOfApplicationOnSP="Nominal"/>
+		
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="SL" TAF_TAP_location_type="halt">
             <TAF_TAP_LocationIdent>
                 <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>19695</LocationPrimaryCode>
+                <LocationPrimaryCode>1507</LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Vernex"/>
-			
+            <TAF_TAP_LocationName language="de" messageString="St-Léonard"/>
+
 			<TAF_TAP_Location_NSP name="departureAuth">
 				<NetworkSpecificParameter name="departureAuth" value="false"/>
 			</TAF_TAP_Location_NSP>
@@ -36,23 +42,12 @@
 				<NetworkSpecificParameter name="xmlOPFootNotes" value="
 				&lt;oPFootNotes&gt; 
 					&lt;footNote type=&quot;contact&quot; refText=&quot;1)&quot;&gt; 
-						&lt;text&gt;+41 512 800 506 RBC Lavaux&lt;/text&gt; 
+						&lt;text&gt;+41 512 800 508 RBC Valais Lavaux&lt;/text&gt; 
 					&lt;/footNote&gt; 
 				&lt;/oPFootNotes&gt;
 				" />
 			</TAF_TAP_Location_NSP>
 
-			<TAF_TAP_Location_NSP name="lineFootNotes">
-				<NetworkSpecificParameter name="xmlLineFootNotes" value="
-				&lt;lineFootNotes&gt; 
-					&lt;footNote&gt; 
-						&lt;text&gt;admis seulement pour &lt;b&gt;RABe 503, ETR 610&lt;/text&gt; 
-						&lt;trainSeries&gt;N&lt;/trainSeries&gt; 
-					&lt;/footNote&gt; 
-				&lt;/lineFootNotes&gt;
-				" />
-			</TAF_TAP_Location_NSP>
-			
         </TAF_TAP_Location>
 
         <NetworkSpecificArea startEndQualifier="WholeSP" name="nonStandardTrackEquipment">
@@ -61,12 +56,23 @@
 
     </SP_Areas>
 
+    <SP_Characteristics>
+        <CurrentLimitation>
+            <CurrentLimitationStart maxCurValue="1023"/>
+            <CurrentLimitationChange maxCurValue="0" location="700"/>
+            <CurrentLimitationChange maxCurValue="1023" location="701"/>
+        </CurrentLimitation>
+    </SP_Characteristics>
+
     <SP_ContextInformation>
 
         <KilometreReferencePoint location="0">
-            <KM_Reference kmRef="23.9"/>
+            <KM_Reference kmRef="98.2"/>
         </KilometreReferencePoint>
-
+        <KilometreReferencePoint location="2000">
+            <KM_Reference kmRef="100.2"/>
+        </KilometreReferencePoint>
+		
     </SP_ContextInformation>
 	
 </SegmentProfile>

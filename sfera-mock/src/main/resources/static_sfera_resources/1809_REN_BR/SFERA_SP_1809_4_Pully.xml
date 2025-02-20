@@ -16,24 +16,6 @@
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
-		<Signal>
-            <Signal_ID signal_ID_Physical="CU503P" location="600"/>
-            <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="CU503P"/>
-        </Signal>
-		
-		<Signal>
-            <Signal_ID signal_ID_Physical="CU504P" location="1200"/>
-            <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="CU504P"/>
-        </Signal>
-
-		<Signal>
-            <Signal_ID signal_ID_Physical="CU121P" location="1700"/>
-            <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="CU121P"/>
-        </Signal>
-
     </SP_Points>
 
     <SP_Areas>
@@ -60,6 +42,16 @@
 				" />
 			</TAF_TAP_Location_NSP>
 
+			<TAF_TAP_Location_NSP name="lineFootNotes">
+				<NetworkSpecificParameter name="xmlLineFootNotes" value="
+				&lt;lineFootNotes&gt; 
+					&lt;footNote&gt; 
+						&lt;text&gt;admis seulement pour &lt;b&gt;RABe 503, ETR 610&lt;/text&gt; 
+						&lt;trainSeries&gt;N&lt;/trainSeries&gt; 
+					&lt;/footNote&gt; 
+				&lt;/lineFootNotes&gt;
+				" />
+			</TAF_TAP_Location_NSP>
 
         </TAF_TAP_Location>
 
@@ -71,17 +63,12 @@
 
     <SP_ContextInformation>
 
+		<ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+			<Contact contactType="phone" mainContact="true" contactIdentifier="1314" />
+		</ContactList>
+
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="2.5"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="600">
-            <KM_Reference kmRef="3.1"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="1200">
-            <KM_Reference kmRef="3.7"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="1700">
-            <KM_Reference kmRef="4.2"/>
         </KilometreReferencePoint>
 		
     </SP_ContextInformation>

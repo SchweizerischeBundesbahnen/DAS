@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
+                SP_ID="1809_30_Martigny" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="4500" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>1285</IM_ID>
+    </SP_Zone>
+	
+    <SP_Points>
+
+        <TimingPoint TP_ID="Martigny" location="0">
+            <TP_Name name="MA"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>1500</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="40E2" location="400"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="40E2"/>
+        </Signal>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="41P" location="1800"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="41P"/>
+        </Signal>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="42P" location="1900"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="42P"/>
+        </Signal>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="43P" location="3200"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalFunction>laneChange</SignalFunction>			
+            <SignalPhysicalCharacteristics visualIdentifier="43P"/>
+        </Signal>	
+
+    </SP_Points>
+
+    <SP_Areas>
+		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="6.0" gradientDirection="Downhill" directionOfApplicationOnSP="Nominal"/>	
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="MA" TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>1500</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Martigny"/>
+
+			<TAF_TAP_Location_NSP name="stationSpeed">
+                <NetworkSpecificParameter name="xmlStationSpeed" value="
+					&lt;stationSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;110&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;110&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;110&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;110&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;110&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;105&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;105&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;105&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;105&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;105&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;105&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;105&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;105&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;105&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;105&quot;/&gt;
+						&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;110&quot;/&gt;
+						&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;110&quot;/&gt;
+					&lt;/stationSpeed&gt;
+				"/>
+			</TAF_TAP_Location_NSP>
+
+			<TAF_TAP_Location_NSP name="newLineSpeed">
+				<NetworkSpecificParameter name="xmlNewLineSpeed" value="
+					&lt;lineSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;120&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;130&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;160&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;160&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;85&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;90&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;110&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;110&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;115&quot;/&gt;
+						&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;160&quot;/&gt;
+						&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;160&quot;/&gt;
+					&lt;/lineSpeed&gt;
+				"/>
+			</TAF_TAP_Location_NSP>
+
+			<TAF_TAP_Location_NSP name="departureAuth">
+				<NetworkSpecificParameter name="departureAuth" value="true"/>
+				<NetworkSpecificParameter name="departureAuthText" value="sms&lt;br&gt;1-3"/>
+			</TAF_TAP_Location_NSP>
+
+			<TAF_TAP_Location_NSP name="lineFootNotes">
+				<NetworkSpecificParameter name="xmlLineFootNotes" value="
+				&lt;lineFootNotes&gt; 
+					&lt;footNote&gt; 
+						&lt;text&gt;admis seulement pour &lt;b&gt;RABe 503, ETR 610&lt;/text&gt; 
+						&lt;trainSeries&gt;N&lt;/trainSeries&gt; 
+					&lt;/footNote&gt; 
+				&lt;/lineFootNotes&gt;
+				" />
+			</TAF_TAP_Location_NSP>
+
+        </TAF_TAP_Location>
+
+    </SP_Areas>
+
+    <SP_ContextInformation>
+
+		<ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+			<Contact contactType="phone" mainContact="true" contactIdentifier="(1303)" />
+		</ContactList>
+
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="66.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="400">
+            <KM_Reference kmRef="66.9"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1800">
+            <KM_Reference kmRef="67.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1900">
+            <KM_Reference kmRef="68.4"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="3200">
+            <KM_Reference kmRef="69.7"/>
+        </KilometreReferencePoint>
+		
+    </SP_ContextInformation>
+	
+</SegmentProfile>

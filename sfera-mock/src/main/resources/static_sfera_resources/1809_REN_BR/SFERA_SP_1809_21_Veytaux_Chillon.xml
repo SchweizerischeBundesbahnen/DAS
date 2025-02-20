@@ -16,18 +16,6 @@
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
-		<Signal>
-            <Signal_ID signal_ID_Physical="VIL535P" location="300"/>
-            <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="VIL535P"/>
-        </Signal>
-
-		<Signal>
-            <Signal_ID signal_ID_Physical="VIL537P" location="1400"/>
-            <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="VIL537P"/>
-        </Signal>
-
     </SP_Points>
 
     <SP_Areas>
@@ -44,6 +32,16 @@
 				<NetworkSpecificParameter name="departureAuth" value="false"/>
 			</TAF_TAP_Location_NSP>
 
+			<TAF_TAP_Location_NSP name="lineFootNotes">
+				<NetworkSpecificParameter name="xmlLineFootNotes" value="
+				&lt;lineFootNotes&gt; 
+					&lt;footNote&gt; 
+						&lt;text&gt;admis seulement pour &lt;b&gt;RABe 503, ETR 610&lt;/text&gt; 
+						&lt;trainSeries&gt;N&lt;/trainSeries&gt; 
+					&lt;/footNote&gt; 
+				&lt;/lineFootNotes&gt;
+				" />
+			</TAF_TAP_Location_NSP>
 
         </TAF_TAP_Location>
 
@@ -55,19 +53,10 @@
 
     <SP_ContextInformation>
 
-		<ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
-			<Contact contactType="phone" mainContact="true" contactIdentifier="1309" />
-		</ContactList>
-
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="27.1"/>
         </KilometreReferencePoint>
-        <KilometreReferencePoint location="400">
-            <KM_Reference kmRef="27.4"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="1400">
-            <KM_Reference kmRef="28.5"/>
-        </KilometreReferencePoint>		
+	
     </SP_ContextInformation>
 	
 </SegmentProfile>

@@ -14,25 +14,7 @@
                 <CountryCodeISO>CH</CountryCodeISO>
                 <LocationPrimaryCode>1200</LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-        </TimingPoint>
-
-		<Signal>
-            <Signal_ID signal_ID_Physical="VV2P" location="100"/>
-            <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="VV2P"/>
-        </Signal>
-		
-		<Signal>
-            <Signal_ID signal_ID_Physical="VV82P" location="400"/>
-            <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="VV82P"/>
-        </Signal>
-
-		<Signal>
-            <Signal_ID signal_ID_Physical="VV522P" location="1200"/>
-            <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="VV522P"/>
-        </Signal>	
+        </TimingPoint>	
 
     </SP_Points>
 
@@ -60,6 +42,17 @@
 				&lt;/oPFootNotes&gt;
 				" />
 			</TAF_TAP_Location_NSP>
+
+			<TAF_TAP_Location_NSP name="lineFootNotes">
+				<NetworkSpecificParameter name="xmlLineFootNotes" value="
+				&lt;lineFootNotes&gt; 
+					&lt;footNote&gt; 
+						&lt;text&gt;admis seulement pour &lt;b&gt;RABe 503, ETR 610&lt;/text&gt; 
+						&lt;trainSeries&gt;N&lt;/trainSeries&gt; 
+					&lt;/footNote&gt; 
+				&lt;/lineFootNotes&gt;
+				" />
+			</TAF_TAP_Location_NSP>
 			
         </TAF_TAP_Location>
 
@@ -73,15 +66,6 @@
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="18.4"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="100">
-            <KM_Reference kmRef="18.5"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="400">
-            <KM_Reference kmRef="18.8"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="1200">
-            <KM_Reference kmRef="19.6"/>
         </KilometreReferencePoint>
 
     </SP_ContextInformation>

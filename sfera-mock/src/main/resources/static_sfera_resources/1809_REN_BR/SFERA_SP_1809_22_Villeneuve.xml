@@ -16,24 +16,6 @@
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
-		<Signal>
-            <Signal_ID signal_ID_Physical="VIL2P" location="200"/>
-            <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="VIL2P"/>
-        </Signal>
-		
-		<Signal>
-            <Signal_ID signal_ID_Physical="P539" location="1800"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="P539"/>
-        </Signal>
-
-		<Signal>
-            <Signal_ID signal_ID_Physical="21A" location="3200"/>
-            <SignalFunction>entry</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="21A"/>
-        </Signal>
-
 		<NetworkSpecificPoint name="newLineSpeed" location="1600">
 			<NetworkSpecificParameter name="xmlNewLineSpeed" value="
 				&lt;lineSpeed&gt;
@@ -86,6 +68,17 @@
 				&lt;/oPFootNotes&gt;
 				" />
 			</TAF_TAP_Location_NSP>
+
+			<TAF_TAP_Location_NSP name="lineFootNotes">
+				<NetworkSpecificParameter name="xmlLineFootNotes" value="
+				&lt;lineFootNotes&gt; 
+					&lt;footNote&gt; 
+						&lt;text&gt;admis seulement pour &lt;b&gt;RABe 503, ETR 610&lt;/text&gt; 
+						&lt;trainSeries&gt;N&lt;/trainSeries&gt; 
+					&lt;/footNote&gt; 
+				&lt;/lineFootNotes&gt;
+				" />
+			</TAF_TAP_Location_NSP>
 			
         </TAF_TAP_Location>
 
@@ -100,18 +93,9 @@
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="29.4"/>
         </KilometreReferencePoint>
-        <KilometreReferencePoint location="200">
-            <KM_Reference kmRef="29.6"/>
-        </KilometreReferencePoint>
         <KilometreReferencePoint location="1600">
             <KM_Reference kmRef="31.0"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="1800">
-            <KM_Reference kmRef="31.2"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="3200">
-            <KM_Reference kmRef="32.6"/>
-        </KilometreReferencePoint>		
+        </KilometreReferencePoint>	
     </SP_ContextInformation>
 	
 </SegmentProfile>

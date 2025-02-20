@@ -16,18 +16,6 @@
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
-		<Signal>
-            <Signal_ID signal_ID_Physical="VV528P" location="400"/>
-            <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="VV528P"/>
-        </Signal>
-
-		<Signal>
-            <Signal_ID signal_ID_Physical="VV530P" location="900"/>
-            <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="VV530P"/>
-        </Signal>
-
     </SP_Points>
 
     <SP_Areas>
@@ -44,6 +32,17 @@
 				<NetworkSpecificParameter name="departureAuth" value="false"/>
 			</TAF_TAP_Location_NSP>
 
+			<TAF_TAP_Location_NSP name="lineFootNotes">
+				<NetworkSpecificParameter name="xmlLineFootNotes" value="
+				&lt;lineFootNotes&gt; 
+					&lt;footNote&gt; 
+						&lt;text&gt;admis seulement pour &lt;b&gt;RABe 503, ETR 610&lt;/text&gt; 
+						&lt;trainSeries&gt;N&lt;/trainSeries&gt; 
+					&lt;/footNote&gt; 
+				&lt;/lineFootNotes&gt;
+				" />
+			</TAF_TAP_Location_NSP>
+
         </TAF_TAP_Location>
 
         <NetworkSpecificArea startEndQualifier="WholeSP" name="nonStandardTrackEquipment">
@@ -56,12 +55,6 @@
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="22.0"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="400">
-            <KM_Reference kmRef="22.4"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="900">
-            <KM_Reference kmRef="22.9"/>
         </KilometreReferencePoint>
 		
     </SP_ContextInformation>

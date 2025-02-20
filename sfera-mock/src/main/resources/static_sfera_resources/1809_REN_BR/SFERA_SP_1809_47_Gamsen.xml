@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
+                SP_ID="1809_47_Gamsen" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="6600" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>1285</IM_ID>
+    </SP_Zone>
+	
+    <SP_Points>
+
+        <TimingPoint TP_ID="Gamsen" location="0">
+            <TP_Name name="GAMS"/>
+            <TAF_TAP_LocationReference>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>1606</LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="C812" location="600"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="C812"/>
+        </Signal>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="P196" location="2200"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="P196"/>
+        </Signal>
+		
+		<Signal>
+            <Signal_ID signal_ID_Physical="P198" location="3200"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="P198"/>
+        </Signal>		
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="A199" location="3500"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A199"/>
+        </Signal>
+
+        <NetworkSpecificPoint location="3530" identifier="7AE114E96F774CE1A491331AA411C77A" name="curvePoint">
+            <NetworkSpecificParameter name="curvePointType" value="begin"/>
+            <NetworkSpecificParameter name="curveType" value="curve"/>
+            <NetworkSpecificParameter name="xmlCurveSpeed" value="
+                &lt;curveSpeed &gt;
+					&lt;speeds&gt;
+						&lt;v trainSeries=&quot;R&quot; speed=&quot;60&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; speed=&quot;55&quot;/&gt;
+						&lt;v trainSeries=&quot;D&quot; speed=&quot;55&quot;/&gt;
+					&lt;/speeds&gt;
+                &lt;/curveSpeed&gt;
+            "/>
+        </NetworkSpecificPoint>
+
+		<NetworkSpecificPoint location="3620" identifier="7AE114E96F774CE1A491331AA411C77A" name="curvePoint">
+            <NetworkSpecificParameter name="curvePointType" value="end"/>
+		</NetworkSpecificPoint>	
+		
+    </SP_Points>
+
+    <SP_Areas>
+		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="9.0" gradientDirection="Uphill" directionOfApplicationOnSP="Nominal"/>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="GAMS" TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <CountryCodeISO>CH</CountryCodeISO>
+                <LocationPrimaryCode>1606</LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" messageString="Gamsen"/>
+
+			<TAF_TAP_Location_NSP name="newLineSpeed">
+				<NetworkSpecificParameter name="xmlNewLineSpeed" value="
+					&lt;lineSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;125&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;130&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;135&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;100&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;100&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;105&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;110&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;110&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;115&quot;/&gt;
+					&lt;/lineSpeed&gt;
+				"/>
+			</TAF_TAP_Location_NSP>
+
+			<TAF_TAP_Location_NSP name="departureAuth">
+				<NetworkSpecificParameter name="departureAuth" value="false"/>
+			</TAF_TAP_Location_NSP>
+			
+        </TAF_TAP_Location>
+
+    </SP_Areas>
+
+    <SP_ContextInformation>
+
+		<ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+			<Contact contactType="phone" mainContact="true" contactIdentifier="1301" />
+		</ContactList>
+		
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="141.4"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="600">
+            <KM_Reference kmRef="142.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2200">
+            <KM_Reference kmRef="143.6"/>
+        </KilometreReferencePoint>	
+        <KilometreReferencePoint location="3200">
+            <KM_Reference kmRef="144.6"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="3500">
+            <KM_Reference kmRef="144.9"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="3530">
+            <KM_Reference kmRef="144.93"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="3620">
+            <KM_Reference kmRef="145.02"/>
+        </KilometreReferencePoint>
+		
+    </SP_ContextInformation>
+	
+</SegmentProfile>

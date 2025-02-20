@@ -16,12 +16,6 @@
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
-		<Signal>
-            <Signal_ID signal_ID_Physical="CU516P" location="500"/>
-            <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="CU516P"/>
-        </Signal>
-
     </SP_Points>
 
     <SP_Areas>
@@ -38,6 +32,16 @@
 				<NetworkSpecificParameter name="departureAuth" value="false"/>
 			</TAF_TAP_Location_NSP>
 
+			<TAF_TAP_Location_NSP name="lineFootNotes">
+				<NetworkSpecificParameter name="xmlLineFootNotes" value="
+				&lt;lineFootNotes&gt; 
+					&lt;footNote&gt; 
+						&lt;text&gt;admis seulement pour &lt;b&gt;RABe 503, ETR 610&lt;/text&gt; 
+						&lt;trainSeries&gt;N&lt;/trainSeries&gt; 
+					&lt;/footNote&gt; 
+				&lt;/lineFootNotes&gt;
+				" />
+			</TAF_TAP_Location_NSP>
 
         </TAF_TAP_Location>
 
@@ -51,9 +55,6 @@
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="13.5"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="500">
-            <KM_Reference kmRef="14.0"/>
         </KilometreReferencePoint>
 		
     </SP_ContextInformation>

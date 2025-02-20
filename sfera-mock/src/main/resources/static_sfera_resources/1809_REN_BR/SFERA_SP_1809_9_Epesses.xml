@@ -16,30 +16,6 @@
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
-		<Signal>
-            <Signal_ID signal_ID_Physical="CU511P" location="500"/>
-            <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="CU511P"/>
-        </Signal>
-		
-		<Signal>
-            <Signal_ID signal_ID_Physical="CU512P" location="1100"/>
-            <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="CU512P"/>
-        </Signal>
-
-		<Signal>
-            <Signal_ID signal_ID_Physical="CU513P" location="2300"/>
-            <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="CU513P"/>
-        </Signal>
-
-		<Signal>
-            <Signal_ID signal_ID_Physical="CU514P" location="2800"/>
-            <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="CU514P"/>
-        </Signal>
-
     </SP_Points>
 
     <SP_Areas>
@@ -54,6 +30,17 @@
 
 			<TAF_TAP_Location_NSP name="departureAuth">
 				<NetworkSpecificParameter name="departureAuth" value="false"/>
+			</TAF_TAP_Location_NSP>
+
+			<TAF_TAP_Location_NSP name="lineFootNotes">
+				<NetworkSpecificParameter name="xmlLineFootNotes" value="
+				&lt;lineFootNotes&gt; 
+					&lt;footNote&gt; 
+						&lt;text&gt;admis seulement pour &lt;b&gt;RABe 503, ETR 610&lt;/text&gt; 
+						&lt;trainSeries&gt;N&lt;/trainSeries&gt; 
+					&lt;/footNote&gt; 
+				&lt;/lineFootNotes&gt;
+				" />
 			</TAF_TAP_Location_NSP>
 
         </TAF_TAP_Location>
@@ -72,24 +59,12 @@
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="10.0"/>
         </KilometreReferencePoint>
-        <KilometreReferencePoint location="500">
-            <KM_Reference kmRef="10.5"/>
-        </KilometreReferencePoint>
         <KilometreReferencePoint location="900">
             <KM_Reference kmRef="10.9"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="1000">
             <KM_Reference kmRef="11.0"/>
         </KilometreReferencePoint>
-        <KilometreReferencePoint location="1100">
-            <KM_Reference kmRef="11.1"/>
-        </KilometreReferencePoint>		
-        <KilometreReferencePoint location="2300">
-            <KM_Reference kmRef="12.3"/>
-        </KilometreReferencePoint>	
-        <KilometreReferencePoint location="2800">
-            <KM_Reference kmRef="12.8"/>
-        </KilometreReferencePoint>	
     </SP_ContextInformation>
 	
 </SegmentProfile>

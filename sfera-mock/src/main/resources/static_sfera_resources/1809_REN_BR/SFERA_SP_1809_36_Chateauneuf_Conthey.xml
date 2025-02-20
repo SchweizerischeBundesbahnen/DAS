@@ -1,36 +1,46 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
-                SP_ID="1809_19_Montreux" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="1500" SP_Status="Valid">
+                SP_ID="1809_36_Chateauneuf_Conthey" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="4400" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
 	
     <SP_Points>
 
-        <TimingPoint TP_ID="Montreux" location="0">
-            <TP_Name name="MX"/>
+        <TimingPoint TP_ID="Chateauneuf_Conthey" location="0">
+            <TP_Name name="CHF"/>
             <TAF_TAP_LocationReference>
                 <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>1300</LocationPrimaryCode>
+                <LocationPrimaryCode>1510</LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
     </SP_Points>
 
     <SP_Areas>
-		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="9.0" gradientDirection="Downhill" directionOfApplicationOnSP="Nominal"/>
-
-        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="MX" TAF_TAP_location_type="halt">
+		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="7.0" gradientDirection="Downhill" directionOfApplicationOnSP="Nominal"/>
+		<DecisiveGradient startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="7.0" gradientDirection="Uphill" directionOfApplicationOnSP="Nominal"/>
+		
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="CHF" TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>1300</LocationPrimaryCode>
+                <LocationPrimaryCode>1510</LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Montreux"/>
-			
+            <TAF_TAP_LocationName language="de" messageString="Châteauneuf-Conthey"/>
+
 			<TAF_TAP_Location_NSP name="departureAuth">
-				<NetworkSpecificParameter name="departureAuth" value="true"/>
-				<NetworkSpecificParameter name="departureAuthText" value="sms"/>
+				<NetworkSpecificParameter name="departureAuth" value="false"/>
+			</TAF_TAP_Location_NSP>
+
+			<TAF_TAP_Location_NSP name="oPFootNotes">
+				<NetworkSpecificParameter name="xmlOPFootNotes" value="
+				&lt;oPFootNotes&gt; 
+					&lt;footNote type=&quot;contact&quot; refText=&quot;1)&quot;&gt; 
+						&lt;text&gt;+41 512 800 508 RBC Valais Lavaux&lt;/text&gt; 
+					&lt;/footNote&gt; 
+				&lt;/oPFootNotes&gt;
+				" />
 			</TAF_TAP_Location_NSP>
 
 			<TAF_TAP_Location_NSP name="lineFootNotes">
@@ -42,8 +52,8 @@
 					&lt;/footNote&gt; 
 				&lt;/lineFootNotes&gt;
 				" />
-			</TAF_TAP_Location_NSP>			
-			
+			</TAF_TAP_Location_NSP>
+
         </TAF_TAP_Location>
 
         <NetworkSpecificArea startEndQualifier="WholeSP" name="nonStandardTrackEquipment">
@@ -55,9 +65,9 @@
     <SP_ContextInformation>
 
         <KilometreReferencePoint location="0">
-            <KM_Reference kmRef="24.5"/>
+            <KM_Reference kmRef="88.1"/>
         </KilometreReferencePoint>
-
+		
     </SP_ContextInformation>
 	
 </SegmentProfile>
