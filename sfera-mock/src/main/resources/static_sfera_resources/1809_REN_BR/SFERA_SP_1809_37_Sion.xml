@@ -39,7 +39,7 @@
         <NetworkSpecificArea startEndQualifier="WholeSP">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
-            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2convSpeedReversingImpossible"/>
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-convSpeedReversingImpossible"/>
         </NetworkSpecificArea>
 
     </SP_Areas>

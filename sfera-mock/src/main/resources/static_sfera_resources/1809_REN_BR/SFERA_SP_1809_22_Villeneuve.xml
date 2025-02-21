@@ -88,10 +88,10 @@
 
         </TAF_TAP_Location>
 
-        <NetworkSpecificArea startEndQualifier="Ends" startLocation="1600">
+        <NetworkSpecificArea startEndQualifier="Ends" endLocation="1600">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
-            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2convSpeedReversingImpossible"/>
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-convSpeedReversingImpossible"/>
         </NetworkSpecificArea>
 
     </SP_Areas>
@@ -107,7 +107,7 @@
 
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="3.0" gradientDirection="Uphill"
                               directionOfApplicationOnSP="Nominal"/>
-        
+
     </SP_ContextInformation>
 
 </SegmentProfile>

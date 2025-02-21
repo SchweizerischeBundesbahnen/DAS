@@ -56,7 +56,7 @@
         <NetworkSpecificArea startEndQualifier="WholeSP">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
-            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2convSpeedReversingImpossible"/>
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-convSpeedReversingImpossible"/>
         </NetworkSpecificArea>
 
     </SP_Areas>
@@ -73,6 +73,14 @@
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="98.2"/>
+        </KilometreReferencePoint>
+        <!-- todo: kmRef -->
+        <KilometreReferencePoint location="700">
+            <KM_Reference kmRef="xx.xx"/>
+        </KilometreReferencePoint>
+        <!-- todo: kmRef -->
+        <KilometreReferencePoint location="701">
+            <KM_Reference kmRef="xx.xx"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="2000">
             <KM_Reference kmRef="100.2"/>
