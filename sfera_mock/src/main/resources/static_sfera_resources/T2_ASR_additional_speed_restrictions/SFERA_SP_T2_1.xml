@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
-                SP_ID="T2_1" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="90000" SP_Status="Valid">
+                SP_ID="T2_1" SP_VersionMajor="2" SP_VersionMinor="0" SP_Length="90000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
