@@ -1,18 +1,17 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
-                SP_ID="T9999_1" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="1000" SP_Status="Valid">
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd" SP_ID="T9999_1" SP_VersionMajor="2"
+                SP_VersionMinor="0" SP_Length="1000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
     <SP_Points>
 
         <TimingPoint TP_ID="Bahnhof_A" location="200">
-            <TP_Name name="A"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>9991</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>9991</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="A"/>
         </TimingPoint>
 
         <Signal>
@@ -27,7 +26,9 @@
             <SignalPhysicalCharacteristics visualIdentifier="S1"/>
         </Signal>
 
-        <NetworkSpecificPoint location="600" identifier="1" name="curvePoint">
+        <NetworkSpecificPoint location="600" identifier="1">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
             <NetworkSpecificParameter name="curveType" value="curve"/>
             <NetworkSpecificParameter name="xmlCurveSpeed" value="
@@ -37,7 +38,9 @@
         </NetworkSpecificPoint>
 
         <!-- Ende der Kurve tbd -->
-        <NetworkSpecificPoint location="900" identifier="1" name="curvePoint">
+        <NetworkSpecificPoint location="900" identifier="1">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="end"/>
         </NetworkSpecificPoint>
 
@@ -47,18 +50,22 @@
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="A"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>9991</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>9991</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Bahnhof A"/>
-            <TAF_TAP_Location_NSP name="newLineSpeed">
+            <TAF_TAP_LocationName language="de" text="Bahnhof A"/>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
                     &lt;lineSpeed&gt;
                     &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;60&quot;/&gt;
                     &lt;/lineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
-            <TAF_TAP_Location_NSP name="stationSpeed">
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
                     &lt;stationSpeed&gt;
                     &lt;v trainSeries=&quot;R&quot; speed=&quot;105/[60]&quot;/&gt;
@@ -73,13 +80,17 @@
             </TAF_TAP_Location_NSP>
 
             <!--            gleisspezifische Geschwindigkeiten	-->
-            <TAF_TAP_Location_NSP name="stationProperty_00000">
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationProperty_00000</NSP_GroupName>
                 <NetworkSpecificParameter name="stationPropertySpeed_R150" value="30-40"/>
                 <NetworkSpecificParameter name="text" value="&lt;b&gt;31&lt;/b&gt;"/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
-        <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="600" endLocation="900" name="nonStandardTrackEquipment">
+        <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="600" endLocation="900">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L1LS-2TracksWithSingleTrackEquipment"/>
         </NetworkSpecificArea>
     </SP_Areas>

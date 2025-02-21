@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<SFERA_G2B_ReplyMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../Appendix_D-SFERA_XML_Schema_Definition/SFERA.xsd">
+<SFERA_G2B_ReplyMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="SFERA_v3.00.xsd">
     <MessageHeader SFERA_version="1.91" message_ID="bfc9754f-2361-49d1-90af-4c4fac7f419f" timestamp="2022-05-06T10:52:46Z" sourceDevice="INFRABEL">
         <Sender>0088</Sender>
         <Recipient>1088</Recipient>
@@ -8,13 +8,13 @@
         <JourneyProfile>
             <TrainIdentification>
                 <OTN_ID>
-                    <Company>1088</Company>
-                    <OperationalTrainNumber>9232</OperationalTrainNumber>
+                    <teltsi_Company>1088</teltsi_Company>
+                    <teltsi_OperationalTrainNumber>9232</teltsi_OperationalTrainNumber>
                     <AdditionalTrainNumber></AdditionalTrainNumber>
-                    <StartDate>2022-05-17</StartDate>
+                    <teltsi_StartDate>2022-05-17</teltsi_StartDate>
                 </OTN_ID>
             </TrainIdentification>
-            <SegmentProfileList SP_ID="877-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            <SegmentProfileReference SP_ID="877-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -32,10 +32,10 @@
                     <TimingPointReference>
                         <TP_ID_Reference TP_ID="1839"/>
                     </TimingPointReference>
-                    <StoppingPointInformation departureTime="2022-05-17T11:01:00Z"/>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T11:01:00Z"/>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="876-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="876-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -43,15 +43,15 @@
                     <TimingPointReference>
                         <TP_ID_Reference TP_ID="1839"/>
                     </TimingPointReference>
-                    <StoppingPointInformation departureTime="2022-05-17T11:01:00Z"/>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T11:01:00Z"/>
                 </TimingPointConstraints>
                 <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:10:12Z" TP_StopSkipPass="Passing_Point">
                     <TimingPointReference>
                         <TP_ID_Reference TP_ID="1739"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="807-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="807-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -65,8 +65,8 @@
                         <TP_ID_Reference TP_ID="764"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="771-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="771-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -79,10 +79,10 @@
                     <TimingPointReference>
                         <TP_ID_Reference TP_ID="37"/>
                     </TimingPointReference>
-                    <StoppingPointInformation departureTime="2022-05-17T11:19:00Z"/>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T11:19:00Z"/>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="889-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="889-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -90,15 +90,15 @@
                     <TimingPointReference>
                         <TP_ID_Reference TP_ID="37"/>
                     </TimingPointReference>
-                    <StoppingPointInformation departureTime="2022-05-17T11:19:00Z"/>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T11:19:00Z"/>
                 </TimingPointConstraints>
                 <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:20:48Z" TP_StopSkipPass="Passing_Point">
                     <TimingPointReference>
                         <TP_ID_Reference TP_ID="1840"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="888-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="888-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -112,8 +112,8 @@
                         <TP_ID_Reference TP_ID="1584"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="1030-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1030-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -126,15 +126,15 @@
                     <TimingPointReference>
                         <TP_ID_Reference TP_ID="139"/>
                     </TimingPointReference>
-                    <StoppingPointInformation departureTime="2022-05-17T11:25:00Z"/>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T11:25:00Z"/>
                 </TimingPointConstraints>
                 <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:26:06Z" TP_StopSkipPass="Passing_Point">
                     <TimingPointReference>
                         <TP_ID_Reference TP_ID="1506"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="226-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="226-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -163,8 +163,8 @@
                         <TP_ID_Reference TP_ID="644"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="64-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="64-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -188,8 +188,8 @@
                         <TP_ID_Reference TP_ID="40"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="1992-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1992-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -203,8 +203,8 @@
                         <TP_ID_Reference TP_ID="811"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="1991-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1991-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -217,10 +217,10 @@
                     <TimingPointReference>
                         <TP_ID_Reference TP_ID="810"/>
                     </TimingPointReference>
-                    <StoppingPointInformation departureTime="2022-05-17T11:39:00Z"/>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T11:39:00Z"/>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="1990-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1990-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -228,15 +228,15 @@
                     <TimingPointReference>
                         <TP_ID_Reference TP_ID="810"/>
                     </TimingPointReference>
-                    <StoppingPointInformation departureTime="2022-05-17T11:39:00Z"/>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T11:39:00Z"/>
                 </TimingPointConstraints>
                 <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:41:30Z" TP_StopSkipPass="Passing_Point">
                     <TimingPointReference>
                         <TP_ID_Reference TP_ID="1347"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="1229-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1229-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -250,8 +250,8 @@
                         <TP_ID_Reference TP_ID="1355"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="1241-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1241-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -265,8 +265,8 @@
                         <TP_ID_Reference TP_ID="1357"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="1238-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1238-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -279,10 +279,10 @@
                     <TimingPointReference>
                         <TP_ID_Reference TP_ID="219"/>
                     </TimingPointReference>
-                    <StoppingPointInformation departureTime="2022-05-17T11:53:00Z"/>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T11:53:00Z"/>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="1504-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1504-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -290,15 +290,15 @@
                     <TimingPointReference>
                         <TP_ID_Reference TP_ID="219"/>
                     </TimingPointReference>
-                    <StoppingPointInformation departureTime="2022-05-17T11:53:00Z"/>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T11:53:00Z"/>
                 </TimingPointConstraints>
                 <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:55:12Z" TP_StopSkipPass="Passing_Point">
                     <TimingPointReference>
                         <TP_ID_Reference TP_ID="1736"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="1503-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1503-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -312,8 +312,8 @@
                         <TP_ID_Reference TP_ID="1641"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="1480-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1480-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -337,8 +337,8 @@
                         <TP_ID_Reference TP_ID="1523"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="1214-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1214-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -362,8 +362,8 @@
                         <TP_ID_Reference TP_ID="1048"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="1354-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1354-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -377,8 +377,8 @@
                         <TP_ID_Reference TP_ID="241"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="1353-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1353-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -391,10 +391,10 @@
                     <TimingPointReference>
                         <TP_ID_Reference TP_ID="221"/>
                     </TimingPointReference>
-                    <StoppingPointInformation departureTime="2022-05-17T12:08:00Z"/>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T12:08:00Z"/>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="1434-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1434-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -402,7 +402,7 @@
                     <TimingPointReference>
                         <TP_ID_Reference TP_ID="221"/>
                     </TimingPointReference>
-                    <StoppingPointInformation departureTime="2022-05-17T12:08:00Z"/>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T12:08:00Z"/>
                 </TimingPointConstraints>
                 <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:09:48Z" TP_StopSkipPass="Passing_Point">
                     <TimingPointReference>
@@ -413,7 +413,7 @@
                     <TimingPointReference>
                         <TP_ID_Reference TP_ID="215"/>
                     </TimingPointReference>
-                    <StoppingPointInformation departureTime="2022-05-17T12:13:00Z"/>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T12:13:00Z"/>
                 </TimingPointConstraints>
                 <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:14:24Z" TP_StopSkipPass="Passing_Point">
                     <TimingPointReference>
@@ -425,8 +425,8 @@
                         <TP_ID_Reference TP_ID="305"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="1428-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1428-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -440,7 +440,7 @@
                         <TP_ID_Reference TP_ID="220"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
+            </SegmentProfileReference>
         </JourneyProfile>
         <SegmentProfile SP_ID="877-2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="16248">
             <SP_Zone>
@@ -498,14 +498,6 @@
                     <StaticSpeedProfileStart SSP_Speed="99"/>
                     <StaticSpeedProfileChange location="0" SSP_Speed="300"/>
                 </StaticSpeedProfile>
-                <GradientAverage>
-                    <GradientAverageStart gradientValue="0" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="37" gradientValue="2.29" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="1221" gradientValue="0.84" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="6609" gradientValue="4.66" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="6936" gradientValue="0.85" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="8237" gradientValue="6.43" gradientDirection="Uphill"/>
-                </GradientAverage>
                 <Curves>
                     <CurveStart curveRadius="0" curveDirection="Unknown"/>
                     <CurveChange location="349" curveRadius="22034" curveDirection="Unknown"/>
@@ -594,25 +586,6 @@
                     <StaticSpeedProfileChange location="15620" SSP_Speed="160"/>
                     <StaticSpeedProfileChange location="17835" SSP_Speed="130"/>
                 </StaticSpeedProfile>
-                <GradientAverage>
-                    <GradientAverageStart gradientValue="6.43" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="1235" gradientValue="5.57" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="2165" gradientValue="4.46" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="3111" gradientValue="1.3" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="5116" gradientValue="2.86" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="8148" gradientValue="4.11" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="9167" gradientValue="6.5" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="10518" gradientValue="2.46" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="13025" gradientValue="0.76" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="15267" gradientValue="9.21" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="16448" gradientValue="22.58" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="17085" gradientValue="0" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="18019" gradientValue="4.55" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="18680" gradientValue="2.19" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="18906" gradientValue="18.25" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="19071" gradientValue="8.5" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="19271" gradientValue="26" gradientDirection="Uphill"/>
-                </GradientAverage>
                 <Curves>
                     <CurveStart curveRadius="0" curveDirection="Unknown"/>
                     <CurveChange location="187" curveRadius="0" curveDirection="Unknown"/>
@@ -671,10 +644,6 @@
                     <StaticSpeedProfileChange location="0" SSP_Speed="130"/>
                     <StaticSpeedProfileChange location="300" SSP_Speed="130"/>
                 </StaticSpeedProfile>
-                <GradientAverage>
-                    <GradientAverageStart gradientValue="26" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="102" gradientValue="18.74" gradientDirection="Uphill"/>
-                </GradientAverage>
                 <Curves>
                     <CurveStart curveRadius="1850" curveDirection="Unknown"/>
                     <CurveChange location="378" curveRadius="1450" curveDirection="Unknown"/>
@@ -719,20 +688,6 @@
                     <StaticSpeedProfileChange location="1442" SSP_Speed="60"/>
                     <StaticSpeedProfileChange location="3073" SSP_Speed="90"/>
                 </StaticSpeedProfile>
-                <GradientAverage>
-                    <GradientAverageStart gradientValue="18.74" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="97" gradientValue="8.3" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="297" gradientValue="8.5" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="557" gradientValue="6.52" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="672" gradientValue="6.44" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="942" gradientValue="28.97" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="1846" gradientValue="5.68" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="2260" gradientValue="1.01" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="2528" gradientValue="7.09" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="2882" gradientValue="0.16" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="3010" gradientValue="0.19" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="3114" gradientValue="0.31" gradientDirection="Uphill"/>
-                </GradientAverage>
                 <Curves>
                     <CurveStart curveRadius="1450" curveDirection="Unknown"/>
                     <CurveChange location="391" curveRadius="7500" curveDirection="Unknown"/>
@@ -781,11 +736,6 @@
                     <StaticSpeedProfileStart SSP_Speed="90"/>
                     <StaticSpeedProfileChange location="410" SSP_Speed="90"/>
                 </StaticSpeedProfile>
-                <GradientAverage>
-                    <GradientAverageStart gradientValue="0.31" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="219" gradientValue="0.31" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="232" gradientValue="0" gradientDirection="Uphill"/>
-                </GradientAverage>
                 <Curves>
                     <CurveStart curveRadius="2012" curveDirection="Unknown"/>
                     <CurveChange location="45" curveRadius="0" curveDirection="Unknown"/>
@@ -827,10 +777,6 @@
                     <StaticSpeedProfileStart SSP_Speed="90"/>
                     <StaticSpeedProfileChange location="71" SSP_Speed="120"/>
                 </StaticSpeedProfile>
-                <GradientAverage>
-                    <GradientAverageStart gradientValue="0" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="106" gradientValue="29.21" gradientDirection="Uphill"/>
-                </GradientAverage>
                 <Curves>
                     <CurveStart curveRadius="1115" curveDirection="Unknown"/>
                     <CurveChange location="174" curveRadius="10453" curveDirection="Unknown"/>
@@ -879,20 +825,6 @@
                     <StaticSpeedProfileStart SSP_Speed="120"/>
                     <StaticSpeedProfileChange location="189" SSP_Speed="120"/>
                 </StaticSpeedProfile>
-                <GradientAverage>
-                    <GradientAverageStart gradientValue="29.21" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="216" gradientValue="1.62" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="277" gradientValue="0" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="394" gradientValue="12.15" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="459" gradientValue="12.12" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="492" gradientValue="28.5" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="570" gradientValue="0" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="814" gradientValue="2.4" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="847" gradientValue="3.7" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="1063" gradientValue="8.2" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="1145" gradientValue="3.3" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="1310" gradientValue="4.2" gradientDirection="Downhill"/>
-                </GradientAverage>
                 <Curves>
                     <CurveStart curveRadius="0" curveDirection="Unknown"/>
                     <CurveChange location="64" curveRadius="0" curveDirection="Unknown"/>
@@ -969,21 +901,6 @@
                     <StaticSpeedProfileChange location="504" SSP_Speed="160"/>
                     <StaticSpeedProfileChange location="6390" SSP_Speed="160"/>
                 </StaticSpeedProfile>
-                <GradientAverage>
-                    <GradientAverageStart gradientValue="4.2" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="13" gradientValue="5.3" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="211" gradientValue="6" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="321" gradientValue="5.52" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="571" gradientValue="2.82" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="723" gradientValue="0" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="1197" gradientValue="0.59" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="2596" gradientValue="3.99" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="4757" gradientValue="1.47" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="5156" gradientValue="0.62" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="5659" gradientValue="5.37" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="5830" gradientValue="2.05" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="6077" gradientValue="1.75" gradientDirection="Downhill"/>
-                </GradientAverage>
                 <Curves>
                     <CurveStart curveRadius="6496" curveDirection="Unknown"/>
                     <CurveChange location="68" curveRadius="18004" curveDirection="Unknown"/>
@@ -1071,50 +988,6 @@
                     <StaticSpeedProfileStart SSP_Speed="160"/>
                     <StaticSpeedProfileChange location="972" SSP_Speed="160"/>
                 </StaticSpeedProfile>
-                <GradientAverage>
-                    <GradientAverageStart gradientValue="1.75" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="26" gradientValue="0.82" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="178" gradientValue="0.58" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="752" gradientValue="1.92" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="1036" gradientValue="0" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="1224" gradientValue="1.71" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="2510" gradientValue="4.51" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="2760" gradientValue="2.58" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="2858" gradientValue="1.18" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="2984" gradientValue="2" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="3362" gradientValue="4.28" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="3535" gradientValue="2.23" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="3580" gradientValue="0.46" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="3740" gradientValue="2" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="3868" gradientValue="2.97" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="4179" gradientValue="4.19" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="4350" gradientValue="2.38" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="4399" gradientValue="0.68" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="4542" gradientValue="0.72" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="4927" gradientValue="5.2" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="5188" gradientValue="8.9" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="5449" gradientValue="0" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="5628" gradientValue="5.75" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="6171" gradientValue="4.53" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="6342" gradientValue="4.92" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="6657" gradientValue="0" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="7078" gradientValue="1.26" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="7518" gradientValue="0.95" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="7834" gradientValue="1.83" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="8149" gradientValue="2.27" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="8323" gradientValue="2.8" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="8400" gradientValue="10.9" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="8685" gradientValue="0.32" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="8734" gradientValue="0.15" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="8956" gradientValue="2.33" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="9016" gradientValue="4.48" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="9188" gradientValue="6.06" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="9617" gradientValue="5.18" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="9750" gradientValue="2.02" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="9831" gradientValue="1.2" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="10340" gradientValue="0.34" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="10839" gradientValue="1.04" gradientDirection="Uphill"/>
-                </GradientAverage>
                 <Curves>
                     <CurveStart curveRadius="4000" curveDirection="Unknown"/>
                     <CurveChange location="1896" curveRadius="2600" curveDirection="Unknown"/>
@@ -1168,11 +1041,6 @@
                     <StaticSpeedProfileChange location="99" SSP_Speed="140"/>
                     <StaticSpeedProfileChange location="829" SSP_Speed="120"/>
                 </StaticSpeedProfile>
-                <GradientAverage>
-                    <GradientAverageStart gradientValue="1.04" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="202" gradientValue="0.93" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="510" gradientValue="3.44" gradientDirection="Uphill"/>
-                </GradientAverage>
                 <Curves>
                     <CurveStart curveRadius="3806" curveDirection="Unknown"/>
                     <CurveChange location="276" curveRadius="2964" curveDirection="Unknown"/>
@@ -1211,9 +1079,6 @@
                     <StaticSpeedProfileChange location="0" SSP_Speed="90"/>
                     <StaticSpeedProfileChange location="600" SSP_Speed="120"/>
                 </StaticSpeedProfile>
-                <GradientAverage>
-                    <GradientAverageStart gradientValue="3.44" gradientDirection="Uphill"/>
-                </GradientAverage>
                 <Curves>
                     <CurveStart curveRadius="2964" curveDirection="Unknown"/>
                 </Curves>
@@ -1250,9 +1115,6 @@
                     <StaticSpeedProfileStart SSP_Speed="120"/>
                     <StaticSpeedProfileChange location="470" SSP_Speed="160"/>
                 </StaticSpeedProfile>
-                <GradientAverage>
-                    <GradientAverageStart gradientValue="3.44" gradientDirection="Uphill"/>
-                </GradientAverage>
                 <Curves>
                     <CurveStart curveRadius="2964" curveDirection="Unknown"/>
                 </Curves>
@@ -1304,21 +1166,6 @@
                     <StaticSpeedProfileStart SSP_Speed="160"/>
                     <StaticSpeedProfileChange location="560" SSP_Speed="160"/>
                 </StaticSpeedProfile>
-                <GradientAverage>
-                    <GradientAverageStart gradientValue="3.44" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="321" gradientValue="5.97" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="573" gradientValue="0" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="864" gradientValue="8.64" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="1387" gradientValue="9.7" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="2041" gradientValue="14.37" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="2551" gradientValue="2.89" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="3125" gradientValue="6.39" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="3449" gradientValue="0.51" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="4314" gradientValue="0.56" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="6129" gradientValue="1.82" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="7257" gradientValue="5.13" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="8858" gradientValue="0.85" gradientDirection="Downhill"/>
-                </GradientAverage>
                 <Curves>
                     <CurveStart curveRadius="2964" curveDirection="Unknown"/>
                     <CurveChange location="17" curveRadius="0" curveDirection="Unknown"/>
@@ -1374,11 +1221,6 @@
                     <StaticSpeedProfileChange location="0" SSP_Speed="90"/>
                     <StaticSpeedProfileChange location="193" SSP_Speed="90"/>
                 </StaticSpeedProfile>
-                <GradientAverage>
-                    <GradientAverageStart gradientValue="0.85" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="154" gradientValue="12" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="580" gradientValue="0.6" gradientDirection="Downhill"/>
-                </GradientAverage>
                 <Curves>
                     <CurveStart curveRadius="6000" curveDirection="Unknown"/>
                     <CurveChange location="142" curveRadius="3000" curveDirection="Unknown"/>
@@ -1425,14 +1267,6 @@
                     <StaticSpeedProfileChange location="1337" SSP_Speed="40"/>
                     <StaticSpeedProfileChange location="1707" SSP_Speed="60"/>
                 </StaticSpeedProfile>
-                <GradientAverage>
-                    <GradientAverageStart gradientValue="0.6" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="87" gradientValue="0.9" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="337" gradientValue="0.3" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="520" gradientValue="9" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="1158" gradientValue="12.2" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="1758" gradientValue="0.1" gradientDirection="Uphill"/>
-                </GradientAverage>
                 <Curves>
                     <CurveStart curveRadius="13650" curveDirection="Unknown"/>
                     <CurveChange location="272" curveRadius="1550" curveDirection="Unknown"/>
@@ -1480,11 +1314,6 @@
                     <StaticSpeedProfileStart SSP_Speed="60"/>
                     <StaticSpeedProfileChange location="485" SSP_Speed="60"/>
                 </StaticSpeedProfile>
-                <GradientAverage>
-                    <GradientAverageStart gradientValue="0.1" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="461" gradientValue="6.6" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="775" gradientValue="0" gradientDirection="Uphill"/>
-                </GradientAverage>
                 <Curves>
                     <CurveStart curveRadius="650" curveDirection="Unknown"/>
                     <CurveChange location="246" curveRadius="357" curveDirection="Unknown"/>
@@ -1523,13 +1352,6 @@
                 <StaticSpeedProfile>
                     <StaticSpeedProfileStart SSP_Speed="60"/>
                 </StaticSpeedProfile>
-                <GradientAverage>
-                    <GradientAverageStart gradientValue="0" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="132" gradientValue="0" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="432" gradientValue="20" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="542" gradientValue="16.7" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="639" gradientValue="29.8" gradientDirection="Downhill"/>
-                </GradientAverage>
                 <Curves>
                     <CurveStart curveRadius="300" curveDirection="Unknown"/>
                     <CurveChange location="192" curveRadius="196" curveDirection="Unknown"/>
@@ -1586,19 +1408,11 @@
                     <StaticSpeedProfileStart SSP_Speed="60"/>
                     <StaticSpeedProfileChange location="100" SSP_Speed="120"/>
                 </StaticSpeedProfile>
-                <GradientAverage>
-                    <GradientAverageStart gradientValue="29.8" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="178" gradientValue="0.2" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="781" gradientValue="4" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="1613" gradientValue="4.49" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="2332" gradientValue="0.29" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="2901" gradientValue="6.3" gradientDirection="Downhill"/>
-                </GradientAverage>
                 <Curves>
                     <CurveStart curveRadius="910" curveDirection="Unknown"/>
-                    <CurveChange location="1031" curveRadius="200000" curveDirection="Unknown"/>
+                    <CurveChange location="1031" curveRadius="2000" curveDirection="Unknown"/>
                     <CurveChange location="1051" curveRadius="0" curveDirection="Unknown"/>
-                    <CurveChange location="2113" curveRadius="100000" curveDirection="Unknown"/>
+                    <CurveChange location="2113" curveRadius="1000" curveDirection="Unknown"/>
                     <CurveChange location="2390" curveRadius="0" curveDirection="Unknown"/>
                     <CurveChange location="3131" curveRadius="1935" curveDirection="Unknown"/>
                 </Curves>
@@ -1655,18 +1469,6 @@
                     <StaticSpeedProfileChange location="2102" SSP_Speed="120"/>
                     <StaticSpeedProfileChange location="4150" SSP_Speed="90"/>
                 </StaticSpeedProfile>
-                <GradientAverage>
-                    <GradientAverageStart gradientValue="6.3" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="354" gradientValue="4" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="594" gradientValue="5.4" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="1104" gradientValue="5.3" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="1436" gradientValue="0" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="1890" gradientValue="5.5" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="2351" gradientValue="5.3" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="3115" gradientValue="3.5" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="3682" gradientValue="2.3" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="3791" gradientValue="0" gradientDirection="Uphill"/>
-                </GradientAverage>
                 <Curves>
                     <CurveStart curveRadius="1935" curveDirection="Unknown"/>
                     <CurveChange location="394" curveRadius="2080" curveDirection="Unknown"/>
@@ -1712,17 +1514,6 @@
                     <StaticSpeedProfileStart SSP_Speed="90"/>
                     <StaticSpeedProfileChange location="1083" SSP_Speed="80"/>
                 </StaticSpeedProfile>
-                <GradientAverage>
-                    <GradientAverageStart gradientValue="0" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="163" gradientValue="6.6" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="270" gradientValue="4.6" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="405" gradientValue="1.4" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="453" gradientValue="6.5" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="543" gradientValue="12.9" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="1004" gradientValue="0" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="1070" gradientValue="6.6" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="1333" gradientValue="5.4" gradientDirection="Uphill"/>
-                </GradientAverage>
                 <Curves>
                     <CurveStart curveRadius="0" curveDirection="Unknown"/>
                     <CurveChange location="92" curveRadius="0" curveDirection="Unknown"/>
@@ -1764,10 +1555,6 @@
                     <StaticSpeedProfileStart SSP_Speed="80"/>
                     <StaticSpeedProfileChange location="358" SSP_Speed="40"/>
                 </StaticSpeedProfile>
-                <GradientAverage>
-                    <GradientAverageStart gradientValue="5.4" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="99" gradientValue="1.6" gradientDirection="Uphill"/>
-                </GradientAverage>
                 <Curves>
                     <CurveStart curveRadius="520" curveDirection="Unknown"/>
                     <CurveChange location="66" curveRadius="1000" curveDirection="Unknown"/>
@@ -1857,26 +1644,6 @@
                     <StaticSpeedProfileChange location="739" SSP_Speed="50"/>
                     <StaticSpeedProfileChange location="2860" SSP_Speed="40"/>
                 </StaticSpeedProfile>
-                <GradientAverage>
-                    <GradientAverageStart gradientValue="1.6" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="425" gradientValue="4.7" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="688" gradientValue="4.8" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="819" gradientValue="3.1" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="983" gradientValue="0" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="1087" gradientValue="2.5" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="1189" gradientValue="1.9" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="1296" gradientValue="2.9" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="1471" gradientValue="2.6" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="1611" gradientValue="0.6" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="1763" gradientValue="0" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="2139" gradientValue="0.5" gradientDirection="Downhill"/>
-                    <GradientAverageChange location="2173" gradientValue="1.7" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="2263" gradientValue="3.1" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="2519" gradientValue="3.8" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="2687" gradientValue="3.4" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="2803" gradientValue="8.6" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="2854" gradientValue="0.8" gradientDirection="Uphill"/>
-                </GradientAverage>
                 <Curves>
                     <CurveStart curveRadius="500" curveDirection="Unknown"/>
                     <CurveChange location="316" curveRadius="250" curveDirection="Unknown"/>
@@ -1939,11 +1706,6 @@
                 <StaticSpeedProfile>
                     <StaticSpeedProfileStart SSP_Speed="40"/>
                 </StaticSpeedProfile>
-                <GradientAverage>
-                    <GradientAverageStart gradientValue="0.8" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="159" gradientValue="0" gradientDirection="Uphill"/>
-                    <GradientAverageChange location="255" gradientValue="2.2" gradientDirection="Downhill"/>
-                </GradientAverage>
                 <Curves>
                     <CurveStart curveRadius="275" curveDirection="Unknown"/>
                     <CurveChange location="332" curveRadius="600" curveDirection="Unknown"/>

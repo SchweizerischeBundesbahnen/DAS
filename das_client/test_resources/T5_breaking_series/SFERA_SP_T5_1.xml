@@ -1,36 +1,37 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
-                SP_ID="T5_1" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="2000" SP_Status="Valid">
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd" SP_ID="T5_1" SP_VersionMajor="2"
+                SP_VersionMinor="0" SP_Length="2000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
     <SP_Points>
         <TimingPoint TP_ID="Genève-Aéroport" location="500">
-            <TP_Name name="Genève-Aéroport"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>3002</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3002</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="Genève-Aéroport"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Genève" location="1000">
-            <TP_Name name="Genève"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>3003</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3003</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="Genève"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Gland" location="1500">
-            <TP_Name name="Gland"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>3004</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3004</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="Gland"/>
         </TimingPoint>
 
-        <NetworkSpecificPoint location="600" identifier="1" name="curvePoint">
+        <NetworkSpecificPoint location="600" identifier="1">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
             <NetworkSpecificParameter name="curveType" value="curve"/>
             <NetworkSpecificParameter name="xmlCurveSpeed" value="
@@ -44,11 +45,15 @@
             "/>
         </NetworkSpecificPoint>
 
-        <NetworkSpecificPoint location="650" identifier="1" name="curvePoint">
+        <NetworkSpecificPoint location="650" identifier="1">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="end"/>
         </NetworkSpecificPoint>
 
-        <NetworkSpecificPoint location="700" name="newLineSpeed">
+        <NetworkSpecificPoint location="700">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>newLineSpeed</NSP_GroupName>
             <NetworkSpecificParameter name="xmlNewLineSpeed" value="
                 &lt;lineSpeed text=&quot;New Line Speed All&quot;&gt;
                 &lt;speeds&gt;
@@ -73,7 +78,9 @@
             "/>
         </NetworkSpecificPoint>
 
-        <NetworkSpecificPoint location="1200" name="newLineSpeed">
+        <NetworkSpecificPoint location="1200">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>newLineSpeed</NSP_GroupName>
             <NetworkSpecificParameter name="xmlNewLineSpeed" value="
                 &lt;lineSpeed text=&quot;New Line Speed A Missing&quot;&gt;
                 &lt;speeds&gt;
@@ -88,7 +95,9 @@
             "/>
         </NetworkSpecificPoint>
 
-        <NetworkSpecificPoint location="1300" identifier="2" name="curvePoint">
+        <NetworkSpecificPoint location="1300" identifier="2">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
             <NetworkSpecificParameter name="curveType" value="curve"/>
             <NetworkSpecificParameter name="xmlCurveSpeed" value="
@@ -101,11 +110,15 @@
             "/>
         </NetworkSpecificPoint>
 
-        <NetworkSpecificPoint location="1350" identifier="2" name="curvePoint">
+        <NetworkSpecificPoint location="1350" identifier="2">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="end"/>
         </NetworkSpecificPoint>
 
-        <NetworkSpecificPoint location="1400" identifier="3" name="curvePoint">
+        <NetworkSpecificPoint location="1400" identifier="3">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
             <NetworkSpecificParameter name="curveType" value="curve"/>
             <NetworkSpecificParameter name="xmlCurveSpeed" value="
@@ -114,7 +127,9 @@
             "/>
         </NetworkSpecificPoint>
 
-        <NetworkSpecificPoint location="1450" identifier="3" name="curvePoint">
+        <NetworkSpecificPoint location="1450" identifier="3">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="end"/>
         </NetworkSpecificPoint>
 
@@ -123,11 +138,13 @@
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="GENA"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>3002</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3002</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Genève-Aéroport"/>
-            <TAF_TAP_Location_NSP name="newLineSpeed">
+            <TAF_TAP_LocationName language="de" text="Genève-Aéroport"/>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
                     &lt;lineSpeed&gt;
                     &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;55&quot;/&gt;
@@ -154,11 +171,13 @@
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="GEN"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>3003</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3003</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Genève"/>
-            <TAF_TAP_Location_NSP name="newLineSpeed">
+            <TAF_TAP_LocationName language="de" text="Genève"/>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
                     &lt;lineSpeed&gt;
                     &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;55&quot;/&gt;
@@ -175,11 +194,13 @@
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="GLA"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>3004</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3004</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Gland"/>
-            <TAF_TAP_Location_NSP name="newLineSpeed">
+            <TAF_TAP_LocationName language="de" text="Gland"/>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
                     &lt;lineSpeed&gt;
                     &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;55&quot;/&gt;

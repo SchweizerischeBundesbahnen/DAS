@@ -46,10 +46,10 @@ class SegmentProfile extends SferaXmlElement {
 // extensions
 
 extension SegmentProfileListExtension on Iterable<SegmentProfile> {
-  SegmentProfile firstMatch(SegmentProfileList segmentProfileList) {
+  SegmentProfile firstMatch(SegmentProfileReference segmentProfileReference) {
     return where((it) =>
-        it.id == segmentProfileList.spId &&
-        it.versionMajor == segmentProfileList.versionMajor &&
-        it.versionMinor == segmentProfileList.versionMinor).first;
+        it.id == segmentProfileReference.spId &&
+        it.versionMajor == segmentProfileReference.versionMajor &&
+        it.versionMinor == segmentProfileReference.versionMinor).first;
   }
 }

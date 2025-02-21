@@ -8,7 +8,6 @@ import 'package:das_client/sfera/src/model/segment_profile_list.dart';
 import 'package:das_client/sfera/src/model/sfera_b2g_request_message.dart';
 import 'package:das_client/sfera/src/model/sfera_g2b_reply_message.dart';
 import 'package:das_client/sfera/src/model/sp_request.dart';
-import 'package:das_client/sfera/src/model/train_identification.dart';
 import 'package:das_client/sfera/src/repo/sfera_repository.dart';
 import 'package:das_client/sfera/src/service/sfera_service.dart';
 import 'package:das_client/sfera/src/service/task/sfera_task.dart';
@@ -55,9 +54,8 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfile>> {
           id: sp.spId, versionMajor: sp.versionMajor, versionMinor: sp.versionMinor, spZone: sp.spZone));
     }
 
-    final trainIdentification = TrainIdentification.create(otnId: otnId);
     final sferaB2gRequestMessage = SferaB2gRequestMessage.create(
-        await SferaService.messageHeader(trainIdentification: trainIdentification, sender: otnId.company),
+        await SferaService.messageHeader(sender: otnId.company),
         b2gRequest: B2gRequest.createSPRequest(spRequests));
     Fimber.i('Sending segment profiles request...');
 
@@ -66,10 +64,10 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfile>> {
         sferaB2gRequestMessage.buildDocument().toString());
   }
 
-  Future<List<SegmentProfileList>> findMissingSegmentProfiles() async {
-    final missingSps = <SegmentProfileList>[];
+  Future<List<SegmentProfileReference>> findMissingSegmentProfiles() async {
+    final missingSps = <SegmentProfileReference>[];
 
-    for (final segment in journeyProfile.segmentProfilesLists) {
+    for (final segment in journeyProfile.segmentProfileReferences) {
       final existingProfile =
           await _sferaRepository.findSegmentProfile(segment.spId, segment.versionMajor, segment.versionMinor);
       if (existingProfile == null) {

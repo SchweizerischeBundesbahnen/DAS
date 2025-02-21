@@ -1,8 +1,6 @@
 <?xml version="1.0"?>
-<TrainCharacteristics xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                      xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
-                      TC_ID="T7_1" TC_VersionMajor="1" TC_VersionMinor="1">
+<TrainCharacteristics xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd" TC_ID="T7_1" TC_VersionMajor="1"
+                      TC_VersionMinor="1">
     <TC_RU_ID>1185</TC_RU_ID>
-    <TC_Features trainCategoryCode="R" brakedWeightPercentage="115">
-    </TC_Features>
+    <TC_Features trainCategoryCode="R" brakedWeightPercentage="115"/>
 </TrainCharacteristics>

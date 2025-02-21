@@ -13,5 +13,10 @@ class HandshakeReject extends SferaXmlElement {
   String? get atotsId => attributes['ATOTS_ID'];
 
   HandshakeRejectReason? get handshakeRejectReason =>
-      XmlEnum.valueOf(HandshakeRejectReason.values, attributes['handshakeRejectReason']);
+      XmlEnum.valueOf(HandshakeRejectReason.values, childrenWithType('HandshakeRejectReason').first.value);
+
+  @override
+  bool validate() {
+    return validateHasChild('HandshakeRejectReason') && super.validate();
+  }
 }

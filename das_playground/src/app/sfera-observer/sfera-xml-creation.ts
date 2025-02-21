@@ -148,7 +148,10 @@ export class SferaXmlCreation {
                         <Sender>${headerOptions.sender}</Sender>
                         <Recipient>${headerOptions.recipient}</Recipient>
                   </MessageHeader>
-                  ${sesssionTermination}
+                  <B2G_EventPayload>
+                        ${sesssionTermination}
+                  </B2G_EventPayload>
+
               </SFERA_B2G_EventMessage>
     `;
   }
@@ -171,9 +174,9 @@ export class SferaXmlCreation {
       return `<JP_Request>
                             <TrainIdentification>
                                 <OTN_ID>
-                                    <Company>${jpRequest.trainIdentification.company}</Company>
-                                    <OperationalTrainNumber>${jpRequest.trainIdentification.operationalTrainNumber}</OperationalTrainNumber>
-                                    <StartDate>${jpRequest.trainIdentification.startDate}</StartDate>
+                                    <teltsi_Company>${jpRequest.trainIdentification.company}</teltsi_Company>
+                                    <teltsi_OperationalTrainNumber>${jpRequest.trainIdentification.operationalTrainNumber}</teltsi_OperationalTrainNumber>
+                                    <teltsi_StartDate>${jpRequest.trainIdentification.startDate}</teltsi_StartDate>
                                 </OTN_ID>
                             </TrainIdentification>
                             ${requestFromSegmentProfileElement}
@@ -215,7 +218,7 @@ export class SferaXmlCreation {
 
   private static defaultHeader(): SferaHeaderOptions {
     return {
-      sferaVersion: '2.01',
+      sferaVersion: '3.00',
       messageId: crypto.randomUUID(),
       timestamp: this.currentTimestampSferaFormat(),
       sourceDevice: 'DAS',
@@ -230,7 +233,7 @@ export class SferaXmlCreation {
   }
 
   private static fillUndefindeHeaderFields(headerOptions: SferaHeaderOptions) {
-    headerOptions.sferaVersion = headerOptions.sferaVersion || '2.01';
+    headerOptions.sferaVersion = headerOptions.sferaVersion || '3.00';
     headerOptions.timestamp = headerOptions.timestamp || this.currentTimestampSferaFormat()
     headerOptions.sender = headerOptions.sender || '1085';
     headerOptions.recipient = headerOptions.recipient || '0085';

@@ -37,14 +37,16 @@ class HandshakeTask extends SferaTask {
     final sferaTrain = SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
 
     Fimber.i('Sending handshake request for company=${otnId.company} train=$sferaTrain');
-    final handshakeRequest = HandshakeRequest.create([
-      DasOperatingModesSupported.create(
-          dasDrivingMode, DasArchitecture.boardAdviceCalculation, DasConnectivity.connected),
-    ], relatedTrainRequestType: RelatedTrainRequestType.ownTrainAndRelatedTrains, statusReportsEnabled: false);
+    final operationMode = DasOperatingModesSupported.create(
+        dasDrivingMode, DasArchitecture.boardAdviceCalculation, DasConnectivity.connected);
+    final handshakeRequest = HandshakeRequest.create(
+      [operationMode],
+      relatedTrainRequestType: RelatedTrainRequestType.ownTrainAndRelatedTrains,
+      statusReportsEnabled: false,
+    );
 
-    final sferaB2gRequestMessage = SferaB2gRequestMessage.create(
-        await SferaService.messageHeader(sender: otnId.company),
-        handshakeRequest: handshakeRequest);
+    final messageHeader = await SferaService.messageHeader(sender: otnId.company);
+    final sferaB2gRequestMessage = SferaB2gRequestMessage.create(messageHeader, handshakeRequest: handshakeRequest);
     final success =
         _mqttService.publishMessage(otnId.company, sferaTrain, sferaB2gRequestMessage.buildDocument().toString());
 
@@ -62,7 +64,8 @@ class HandshakeTask extends SferaTask {
       return true;
     } else if (replyMessage.handshakeReject != null) {
       stopTimeout();
-      Fimber.w('Received handshake reject with reason=${replyMessage.handshakeReject?.handshakeRejectReason?.toString()}');
+      Fimber.w(
+          'Received handshake reject with reason=${replyMessage.handshakeReject?.handshakeRejectReason?.toString()}');
       _taskFailedCallback(this, ErrorCode.sferaHandshakeRejected);
       _mqttService.disconnect();
       return true;

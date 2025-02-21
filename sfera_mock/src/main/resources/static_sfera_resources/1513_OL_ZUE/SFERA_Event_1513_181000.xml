@@ -1,22 +1,22 @@
 <?xml version="1.0"?>
-<G2B_EventPayload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd">
-	<RelatedTrainInformation>
-		<OwnTrain>
-			<TrainIdentification>
-				<OTN_ID>
-					<Company>1285</Company>
-					<OperationalTrainNumber>1513</OperationalTrainNumber>
-					<StartDate>2025-05-17</StartDate>
-				</OTN_ID>
-			</TrainIdentification>
-			<TrainLocationInformation>
-				<PositionSpeed SP_ID="1513_18_Altstetten" location="900">
-					<SP_Zone>
-						<IM_ID >1285</IM_ID>
-					</SP_Zone>
-				</PositionSpeed>
-				<Delay Delay="PT2M30S"/>
-			</TrainLocationInformation>					
-		</OwnTrain>
-	</RelatedTrainInformation>
+<G2B_EventPayload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+    <RelatedTrainInformation>
+        <OwnTrain>
+            <TrainIdentification>
+                <OTN_ID>
+                    <teltsi_Company>1285</teltsi_Company>
+                    <teltsi_OperationalTrainNumber>1513</teltsi_OperationalTrainNumber>
+                    <teltsi_StartDate>2025-05-17</teltsi_StartDate>
+                </OTN_ID>
+            </TrainIdentification>
+            <TrainLocationInformation>
+                <PositionSpeed SP_ID="1513_18_Altstetten" location="900">
+                    <SP_Zone>
+                        <IM_ID>1285</IM_ID>
+                    </SP_Zone>
+                </PositionSpeed>
+                <Delay Delay="PT2M30S"/>
+            </TrainLocationInformation>
+        </OwnTrain>
+    </RelatedTrainInformation>
 </G2B_EventPayload>

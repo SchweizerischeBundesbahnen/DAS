@@ -12,7 +12,11 @@ class SpeedData {
 
     final trainSeriesSpeeds = speeds.where((it) => it.trainSeries == trainSeries);
     final exactMatchingVelocity = trainSeriesSpeeds.firstWhereOrNull((it) => it.breakSeries == breakSeries);
-    return exactMatchingVelocity ??
-        trainSeriesSpeeds.firstWhereOrNull((it) => it.breakSeries == null);
+    return exactMatchingVelocity ?? trainSeriesSpeeds.firstWhereOrNull((it) => it.breakSeries == null);
+  }
+
+  @override
+  String toString() {
+    return 'SpeedData(speeds: $speeds)';
   }
 }

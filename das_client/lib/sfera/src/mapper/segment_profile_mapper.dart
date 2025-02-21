@@ -43,8 +43,8 @@ class SegmentProfileMapper {
   static const String _protectionSectionNspLengthTypeName = 'lengthType';
 
   static List<BaseData> parseSegmentProfile(
-      SegmentProfileList segmentProfileList, int segmentIndex, List<SegmentProfile> segmentProfiles) {
-    final segmentProfile = segmentProfiles.firstMatch(segmentProfileList);
+      SegmentProfileReference segmentProfileReference, int segmentIndex, List<SegmentProfile> segmentProfiles) {
+    final segmentProfile = segmentProfiles.firstMatch(segmentProfileReference);
     final kilometreMap = parseKilometre(segmentProfile);
     final mapperData = _MapperData(segmentProfile, segmentIndex, kilometreMap);
 
@@ -54,7 +54,7 @@ class SegmentProfileMapper {
     journeyData.addAll(_parseWhistle(mapperData));
     journeyData.addAll(_parseLevelCrossings(mapperData));
     journeyData.addAll(_parseProtectionSections(mapperData));
-    journeyData.addAll(_parseServicePoint(mapperData, segmentProfiles, segmentProfileList));
+    journeyData.addAll(_parseServicePoint(mapperData, segmentProfiles, segmentProfileReference));
 
     final curvePoints = _parseCurvePoints(mapperData);
     final curveBeginPoints = curvePoints.where((curve) => curve.curvePointType == CurvePointType.begin);
@@ -75,13 +75,13 @@ class SegmentProfileMapper {
   }
 
   static List<ServicePoint> _parseServicePoint(
-      _MapperData mapperData, List<SegmentProfile> segmentProfiles, SegmentProfileList segmentProfileList) {
+      _MapperData mapperData, List<SegmentProfile> segmentProfiles, SegmentProfileReference segmentProfileReference) {
     final servicePoints = <ServicePoint>[];
 
     final timingPoints = mapperData.segmentProfile.points?.timingPoints.toList() ?? [];
     final tafTapLocations = segmentProfiles.map((it) => it.areas).nonNulls.expand((it) => it.tafTapLocations).toList();
 
-    for (final tpConstraint in segmentProfileList.timingPointsContraints) {
+    for (final tpConstraint in segmentProfileReference.timingPointsConstraints) {
       final tpId = tpConstraint.timingPointReference.tpIdReference.tpId;
       final timingPoint = timingPoints.where((it) => it.id == tpId).first;
       final tafTapLocation = tafTapLocations
@@ -126,9 +126,9 @@ class SegmentProfileMapper {
 
   static LocalizedString _localizedStringFromMultilingualText(Iterable<MultilingualText> multilingualText) {
     return LocalizedString(
-      de: multilingualText.messageFor('de'),
-      fr: multilingualText.messageFor('fr'),
-      it: multilingualText.messageFor('it'),
+      de: multilingualText.textFor('de'),
+      fr: multilingualText.textFor('fr'),
+      it: multilingualText.textFor('it'),
     );
   }
 
@@ -160,7 +160,7 @@ class SegmentProfileMapper {
   static BracketMainStation? _parseBracketMainStation(
       List<TafTapLocation> allLocations, TafTapLocation tafTapLocation) {
     for (final tafTapLocationNsp in tafTapLocation.nsp) {
-      if (tafTapLocationNsp.name == _bracketStationNspName) {
+      if (tafTapLocationNsp.groupName == _bracketStationNspName) {
         final mainStationNsp = tafTapLocationNsp.parameters.withName(_bracketStationMainStationNspName);
         final textNsp = tafTapLocationNsp.parameters.withName(_bracketStationTextNspName);
         if (mainStationNsp == null) {
@@ -188,14 +188,13 @@ class SegmentProfileMapper {
   static List<CurvePoint> _parseCurvePoints(_MapperData mapperData) {
     final curvePointsNsp = mapperData.segmentProfile.points?.curvePointsNsp ?? [];
     return curvePointsNsp.map<CurvePoint>((curvePointNsp) {
-      final curvePointTypeValue = curvePointNsp.parameters.withName('curvePointType')?.nspValue;
-      final curveTypeValue = curvePointNsp.parameters.withName('curveType')?.nspValue;
       final curveSpeed = curvePointNsp.xmlCurveSpeed?.element;
       return CurvePoint(
         order: calculateOrder(mapperData.segmentIndex, curvePointNsp.location),
         kilometre: mapperData.kilometreMap[curvePointNsp.location] ?? [],
-        curvePointType: curvePointTypeValue != null ? CurvePointType.from(curvePointTypeValue) : null,
-        curveType: curveTypeValue != null ? CurveType.from(curveTypeValue) : null,
+        curvePointType:
+            curvePointNsp.curvePointType != null ? CurvePointType.from(curvePointNsp.curvePointType!) : null,
+        curveType: curvePointNsp.curveType != null ? CurveType.from(curvePointNsp.curveType!) : null,
         text: curveSpeed?.text,
         comment: curveSpeed?.comment,
         localSpeedData: GraduatedSpeedDataMapper.fromVelocities(curveSpeed?.speeds?.velocities),
@@ -209,7 +208,7 @@ class SegmentProfileMapper {
       final currentOrder = calculateOrder(mapperData.segmentIndex, connectionTrack.location);
       final speedChange = newLineSpeeds.firstWhereOrNull((it) => it.order == currentOrder);
       return ConnectionTrack(
-          text: connectionTrack.connectionTrackDescription,
+          text: connectionTrack.connectionTrackDescription?.text,
           order: calculateOrder(mapperData.segmentIndex, connectionTrack.location),
           speedData: speedChange?.speedData,
           kilometre: mapperData.kilometreMap[connectionTrack.location] ?? []);
@@ -229,7 +228,7 @@ class SegmentProfileMapper {
   }
 
   static Iterable<Balise> _parseBalise(_MapperData mapperData) {
-    final balises = mapperData.segmentProfile.points?.balise ?? [];
+    final balises = mapperData.segmentProfile.points?.balises ?? [];
     return balises.map((balise) {
       return Balise(
         order: calculateOrder(mapperData.segmentIndex, balise.location),

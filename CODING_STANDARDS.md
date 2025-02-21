@@ -11,3 +11,7 @@ or for [IntelliJ](https://www.jetbrains.com/help/idea/eslint.html).
 
 This project follows the Dart [code style](https://dart.dev/effective-dart):
 - Exception: Line length is extended to 120 characters
+
+## Mock XML Files
+
+- Line length is extended to 160 characters

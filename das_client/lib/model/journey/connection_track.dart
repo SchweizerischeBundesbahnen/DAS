@@ -6,4 +6,9 @@ class ConnectionTrack extends BaseData {
       : super(type: Datatype.connectionTrack);
 
   final String? text;
+
+  @override
+  String toString() {
+    return 'ConnectionTrack(text: $text)';
+  }
 }

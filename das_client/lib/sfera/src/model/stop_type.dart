@@ -5,7 +5,7 @@ class StopType extends SferaXmlElement {
 
   StopType({super.type = elementType, super.attributes, super.children, super.value});
 
-  String get stopTypePurpose => attributes['stopTypePurpose']!;
+  String get trainActivityType => childrenWithType('teltsi_TrainActivityType').first.value!;
 
   String? get stopTypeDetails => attributes['stopTypeDetails'];
 
@@ -15,6 +15,6 @@ class StopType extends SferaXmlElement {
 
   @override
   bool validate() {
-    return validateHasAttribute('stopTypePurpose') && super.validate();
+    return validateHasChild('teltsi_TrainActivityType') && super.validate();
   }
 }

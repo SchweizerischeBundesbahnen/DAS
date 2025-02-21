@@ -5,10 +5,10 @@ import 'package:das_client/sfera/src/model/temporary_constraints.dart';
 import 'package:das_client/sfera/src/model/timing_point_constraints.dart';
 import 'package:das_client/sfera/src/model/train_characteristics_ref.dart';
 
-class SegmentProfileList extends SferaXmlElement {
-  static const String elementType = 'SegmentProfileList';
+class SegmentProfileReference extends SferaXmlElement {
+  static const String elementType = 'SegmentProfileReference';
 
-  SegmentProfileList({super.type = elementType, super.attributes, super.children, super.value});
+  SegmentProfileReference({super.type = elementType, super.attributes, super.children, super.value});
 
   String get spId => attributes['SP_ID']!;
 
@@ -18,7 +18,7 @@ class SegmentProfileList extends SferaXmlElement {
 
   SpZone get spZone => children.whereType<SpZone>().first;
 
-  Iterable<TimingPointConstraints> get timingPointsContraints => children.whereType<TimingPointConstraints>();
+  Iterable<TimingPointConstraints> get timingPointsConstraints => children.whereType<TimingPointConstraints>();
 
   Iterable<TrainCharacteristicsRef> get trainCharacteristicsRef => children.whereType<TrainCharacteristicsRef>();
 

@@ -7,16 +7,16 @@ class MultilingualText extends SferaXmlElement {
 
   String get language => attributes['language']!;
 
-  String get messageString => attributes['messageString']!;
+  String get text => attributes['text']!;
 
   @override
   bool validate() {
-    return validateHasAttribute('language') && validateHasAttribute('messageString') && super.validate();
+    return validateHasAttribute('language') && validateHasAttribute('text') && super.validate();
   }
 }
 
 // extensions
 
 extension MultilingualTextsExtension on Iterable<MultilingualText> {
-  String? messageFor(String locale) => where((it) => it.language == locale).firstOrNull?.messageString;
+  String? textFor(String locale) => where((it) => it.language == locale).firstOrNull?.text;
 }

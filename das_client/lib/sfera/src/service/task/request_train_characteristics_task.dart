@@ -7,7 +7,6 @@ import 'package:das_client/sfera/src/model/sfera_g2b_reply_message.dart';
 import 'package:das_client/sfera/src/model/tc_request.dart';
 import 'package:das_client/sfera/src/model/train_characteristics.dart';
 import 'package:das_client/sfera/src/model/train_characteristics_ref.dart';
-import 'package:das_client/sfera/src/model/train_identification.dart';
 import 'package:das_client/sfera/src/repo/sfera_repository.dart';
 import 'package:das_client/sfera/src/service/sfera_service.dart';
 import 'package:das_client/sfera/src/service/task/sfera_task.dart';
@@ -56,9 +55,8 @@ class RequestTrainCharacteristicsTask extends SferaTask<List<TrainCharacteristic
           ruId: missingTrainRef.ruId));
     }
 
-    final trainIdentification = TrainIdentification.create(otnId: otnId);
     final sferaB2gRequestMessage = SferaB2gRequestMessage.create(
-        await SferaService.messageHeader(trainIdentification: trainIdentification, sender: otnId.company),
+        await SferaService.messageHeader(sender: otnId.company),
         b2gRequest: B2gRequest.createTCRequest(tcRequests));
     Fimber.i('Sending train characteristics request...');
 
@@ -70,7 +68,7 @@ class RequestTrainCharacteristicsTask extends SferaTask<List<TrainCharacteristic
   Future<Set<TrainCharacteristicsRef>> findMissingTrainCharacteristics() async {
     final missingTrainCharacteristics = <TrainCharacteristicsRef>{};
 
-    for (final trainRef in journeyProfile.trainCharactericsRefSet) {
+    for (final trainRef in journeyProfile.trainCharacteristicsRefSet) {
       final existingTrainCharacteristic =
           await _sferaRepository.findTrainCharacteristics(trainRef.tcId, trainRef.versionMajor, trainRef.versionMinor);
       if (existingTrainCharacteristic == null) {

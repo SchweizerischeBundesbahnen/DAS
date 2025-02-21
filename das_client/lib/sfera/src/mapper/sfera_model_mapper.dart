@@ -50,11 +50,10 @@ class SferaModelMapper {
       Journey? lastJourney) {
     final journeyData = <BaseData>[];
 
-    final segmentProfilesLists = journeyProfile.segmentProfilesLists.toList();
+    final segmentProfileReferences = journeyProfile.segmentProfileReferences.toList();
 
-    final segmentJourneyData = segmentProfilesLists
-        .mapIndexed((index, segmentProfileList) =>
-            SegmentProfileMapper.parseSegmentProfile(segmentProfileList, index, segmentProfiles))
+    final segmentJourneyData = segmentProfileReferences
+        .mapIndexed((index, reference) => SegmentProfileMapper.parseSegmentProfile(reference, index, segmentProfiles))
         .flattenedToList;
     journeyData.addAll(segmentJourneyData);
 
@@ -62,7 +61,7 @@ class SferaModelMapper {
     journeyData.addAll(tramAreas);
 
     final trackEquipmentSegments =
-        TrackEquipmentMapper.parseNonStandardTrackEquipmentSegment(segmentProfilesLists, segmentProfiles);
+        TrackEquipmentMapper.parseNonStandardTrackEquipmentSegment(segmentProfileReferences, segmentProfiles);
     journeyData.addAll(_cabSignalingStart(trackEquipmentSegments));
     journeyData.addAll(_cabSignalingEnd(trackEquipmentSegments, journeyData));
 
@@ -80,7 +79,7 @@ class SferaModelMapper {
     journeyData.sort();
 
     final currentPosition =
-        _calculateCurrentPosition(journeyData, segmentProfilesLists, relatedTrainInformation, lastJourney);
+        _calculateCurrentPosition(journeyData, segmentProfileReferences, relatedTrainInformation, lastJourney);
     final trainCharacteristic = _resolveFirstTrainCharacteristics(journeyProfile, trainCharacteristics);
     final servicePoints = journeyData.whereType<ServicePoint>();
 
@@ -107,8 +106,11 @@ class SferaModelMapper {
     );
   }
 
-  static BaseData? _calculateCurrentPosition(List<BaseData> journeyData, List<SegmentProfileList> segmentProfilesLists,
-      RelatedTrainInformation? relatedTrainInformation, Journey? lastJourney) {
+  static BaseData? _calculateCurrentPosition(
+      List<BaseData> journeyData,
+      List<SegmentProfileReference> segmentProfilesLists,
+      RelatedTrainInformation? relatedTrainInformation,
+      Journey? lastJourney) {
     final positionSpeed = relatedTrainInformation?.ownTrain.trainLocationInformation.positionSpeed;
 
     if (relatedTrainInformation == null || positionSpeed == null) {
@@ -149,17 +151,17 @@ class SferaModelMapper {
       JourneyProfile journeyProfile, List<SegmentProfile> segmentProfiles) {
     final List<AdditionalSpeedRestriction> result = [];
     final now = DateTime.now();
-    final segmentProfilesLists = journeyProfile.segmentProfilesLists.toList();
+    final segmentProfilesReferences = journeyProfile.segmentProfileReferences.toList();
 
     int? startSegmentIndex;
     int? endSegmentIndex;
     double? startLocation;
     double? endLocation;
 
-    for (int segmentIndex = 0; segmentIndex < segmentProfilesLists.length; segmentIndex++) {
-      final segmentProfileList = segmentProfilesLists[segmentIndex];
+    for (int segmentIndex = 0; segmentIndex < segmentProfilesReferences.length; segmentIndex++) {
+      final segmentProfileReference = segmentProfilesReferences[segmentIndex];
 
-      for (final asrTemporaryConstrain in segmentProfileList.asrTemporaryConstrains) {
+      for (final asrTemporaryConstrain in segmentProfileReference.asrTemporaryConstrains) {
         // TODO: Es werden Langsamfahrstellen von 30min vor Start der Fahrt (betriebliche Zeit) bis 30min nach Ende der Fahrt (betriebliche Zeit) angezeigt.
         if (asrTemporaryConstrain.startTime != null && asrTemporaryConstrain.startTime!.isAfter(now) ||
             asrTemporaryConstrain.endTime != null && asrTemporaryConstrain.endTime!.isBefore(now)) {
@@ -185,8 +187,8 @@ class SferaModelMapper {
         }
 
         if (startSegmentIndex != null && endSegmentIndex != null && startLocation != null && endLocation != null) {
-          final startSegment = segmentProfiles.firstMatch(segmentProfilesLists[startSegmentIndex]);
-          final endSegment = segmentProfiles.firstMatch(segmentProfilesLists[endSegmentIndex]);
+          final startSegment = segmentProfiles.firstMatch(segmentProfilesReferences[startSegmentIndex]);
+          final endSegment = segmentProfiles.firstMatch(segmentProfilesReferences[endSegmentIndex]);
 
           final startKilometreMap = parseKilometre(startSegment);
           final endKilometreMap = parseKilometre(endSegment);
@@ -265,7 +267,7 @@ class SferaModelMapper {
 
   static TrainCharacteristics? _resolveFirstTrainCharacteristics(
       JourneyProfile journey, List<TrainCharacteristics> trainCharacteristics) {
-    final firstTrainRef = journey.trainCharactericsRefSet.firstOrNull;
+    final firstTrainRef = journey.trainCharacteristicsRefSet.firstOrNull;
     if (firstTrainRef == null) return null;
 
     return trainCharacteristics.firstWhereOrNull((it) =>

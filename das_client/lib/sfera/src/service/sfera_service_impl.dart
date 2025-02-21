@@ -175,7 +175,7 @@ class SferaServiceImpl implements SferaService {
     if (_journeyProfile != null) {
       _segmentProfiles.clear();
 
-      for (final element in _journeyProfile!.segmentProfilesLists) {
+      for (final element in _journeyProfile!.segmentProfileReferences) {
         final segmentProfileEntity =
             await _sferaRepository.findSegmentProfile(element.spId, element.versionMajor, element.versionMinor);
         final segmentProfile = segmentProfileEntity?.toDomain();
@@ -192,7 +192,7 @@ class SferaServiceImpl implements SferaService {
     if (_journeyProfile != null) {
       _trainCharacteristics.clear();
 
-      for (final element in _journeyProfile!.trainCharactericsRefSet) {
+      for (final element in _journeyProfile!.trainCharacteristicsRefSet) {
         final trainCharactericsEntity =
             await _sferaRepository.findTrainCharacteristics(element.tcId, element.versionMajor, element.versionMinor);
         final trainCharacterics = trainCharactericsEntity?.toDomain();

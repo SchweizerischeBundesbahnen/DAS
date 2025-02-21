@@ -12,8 +12,8 @@ class SpAreas extends SferaXmlElement {
   Iterable<TafTapLocation> get tafTapLocations => children.whereType<TafTapLocation>();
 
   Iterable<NetworkSpecificArea> get nonStandardTrackEquipments =>
-      children.whereType<NetworkSpecificArea>().where((it) => it.name == _nonStandardTrackEquipmentName);
+      children.whereType<NetworkSpecificArea>().where((it) => it.groupName == _nonStandardTrackEquipmentName);
 
   Iterable<NetworkSpecificArea> get tramAreas =>
-      children.whereType<NetworkSpecificArea>().where((it) => it.name == _tramAreaName);
+      children.whereType<NetworkSpecificArea>().where((it) => it.groupName == _tramAreaName);
 }

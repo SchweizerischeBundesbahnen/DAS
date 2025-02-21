@@ -1,17 +1,16 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
-                SP_ID="T9999_4" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="1000" SP_Status="Valid">
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T9999_4" SP_VersionMajor="2"
+                SP_VersionMinor="0" SP_Length="1000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
     <SP_Points>
         <TimingPoint TP_ID="Klammerbahnhof_D" location="700">
-            <TP_Name name="D"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>9994</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>9994</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="D"/>
         </TimingPoint>
 
         <Signal>
@@ -20,7 +19,9 @@
             <SignalPhysicalCharacteristics visualIdentifier="D1"/>
         </Signal>
 
-        <NetworkSpecificPoint location="500" name="newLineSpeed">
+        <NetworkSpecificPoint location="500">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>newLineSpeed</NSP_GroupName>
             <NetworkSpecificParameter name="xmlNewLineSpeed" value="
                 &lt;lineSpeed text=&quot;Zahnstangen Anfang&quot;&gt;
                 &lt;speeds&gt;
@@ -31,7 +32,9 @@
             "/>
         </NetworkSpecificPoint>
 
-        <NetworkSpecificPoint location="600" name="newLineSpeed">
+        <NetworkSpecificPoint location="600">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>newLineSpeed</NSP_GroupName>
             <NetworkSpecificParameter name="xmlNewLineSpeed" value="
                 &lt;lineSpeed&gt;
                 &lt;speeds&gt;
@@ -41,7 +44,9 @@
             "/>
         </NetworkSpecificPoint>
 
-        <NetworkSpecificPoint location="800" name="newLineSpeed">
+        <NetworkSpecificPoint location="800">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>newLineSpeed</NSP_GroupName>
             <NetworkSpecificParameter name="xmlNewLineSpeed" value="
                 &lt;lineSpeed text=&quot;Zahnstangen Ende&quot;&gt;
                 &lt;speeds&gt;
@@ -57,15 +62,19 @@
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="D"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>9994</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>9994</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Klammerbahnhof D"/>
-            <TAF_TAP_Location_NSP name="bracketStation">
+            <TAF_TAP_LocationName language="de" text="Klammerbahnhof D"/>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>bracketStation</NSP_GroupName>
                 <NetworkSpecificParameter name="mainStation" value="CH9994"/>
-                <NetworkSpecificParameter name="text" value="D" />
+                <NetworkSpecificParameter name="text" value="D"/>
             </TAF_TAP_Location_NSP>
-            <TAF_TAP_Location_NSP name="newLineSpeed">
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
                     &lt;lineSpeed&gt;
                     &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;90&quot;/&gt;
@@ -73,8 +82,11 @@
                 "/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
-        <NetworkSpecificArea startEndQualifier="Ends" endLocation="600" name="nonStandardTrackEquipment">
-            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingPossible"/>
+        <NetworkSpecificArea startEndQualifier="Ends" endLocation="600">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
+            <NetworkSpecificParameter name="trackEquipmentType"
+                                      value="ETCS-L2-extSpeedReversingPossible"/>
         </NetworkSpecificArea>
     </SP_Areas>
 
