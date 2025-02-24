@@ -3,6 +3,8 @@
   "extends": [
     "config:recommended"
   ],
+  "additionalBranchPrefix": "{{parentDir}}-",
+  "semanticCommitScope": "{{baseDir}}",
   "packageRules": [
     {
       "matchManagers": [

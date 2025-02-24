@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.10.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.10.0...das_client-v0.10.1) (2025-02-24)
+
+
+### Bug Fixes
+
+* android bottom padding ([e276798](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e276798edcb920c9b358ee998a46571bfd0f7808))
+
+## [0.10.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.9.0...das_client-v0.10.0) (2025-02-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* upgrade to SFERA v3 ([#578](https://github.com/SchweizerischeBundesbahnen/DAS/issues/578)) (#577)
+
+### Features
+
+* battery-status [#123](https://github.com/SchweizerischeBundesbahnen/DAS/issues/123) ([#574](https://github.com/SchweizerischeBundesbahnen/DAS/issues/574)) ([95ccf99](https://github.com/SchweizerischeBundesbahnen/DAS/commit/95ccf993644c5eb3ab136c2d749b17ab09954f91))
+* hide line speed and ASR above 40km/h on ETCS L2 segment. ([#120](https://github.com/SchweizerischeBundesbahnen/DAS/issues/120)) ([#586](https://github.com/SchweizerischeBundesbahnen/DAS/issues/586)) ([e197542](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e197542142c262455b9b45159d5288816974c2c2))
+* sticky header improvement ([#572](https://github.com/SchweizerischeBundesbahnen/DAS/issues/572)) ([#580](https://github.com/SchweizerischeBundesbahnen/DAS/issues/580)) ([9d941dc](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9d941dc4183d304580e994ba526e23123e5c3294))
+* upgrade to SFERA v3 ([#578](https://github.com/SchweizerischeBundesbahnen/DAS/issues/578)) ([#577](https://github.com/SchweizerischeBundesbahnen/DAS/issues/577)) ([df1d74c](https://github.com/SchweizerischeBundesbahnen/DAS/commit/df1d74c614f8ca16d1abbef9e9a52c55e3a3f689))
+
 ## [0.9.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.8.0...das_client-v0.9.0) (2025-02-14)
 
 

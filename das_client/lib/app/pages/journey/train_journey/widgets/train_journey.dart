@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:collection/collection.dart';
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/i18n/i18n.dart';
@@ -84,6 +86,9 @@ class TrainJourney extends StatelessWidget {
     final tableRows = _rows(context, journey, settings);
     context.trainJourneyCubit.automaticAdvancementController.updateRenderedRows(tableRows);
 
+    final marginAdjustment =
+        Platform.isIOS ? tableRows.lastWhereOrNull((it) => it.isSticky)?.height ?? BaseRowBuilder.rowHeight : 0.0;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
       child: ChevronAnimationWrapper(
@@ -92,7 +97,7 @@ class TrainJourney extends StatelessWidget {
           scrollController: context.trainJourneyCubit.automaticAdvancementController.scrollController,
           columns: _columns(context, journey, settings),
           rows: tableRows.map((it) => it.build(context)).toList(),
-          bottomMarginAdjustment: tableRows.lastWhereOrNull((it) => it.isSticky)?.height ?? 0,
+          bottomMarginAdjustment: marginAdjustment,
         ),
       ),
     );
