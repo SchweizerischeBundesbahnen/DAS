@@ -18,8 +18,8 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 })
 export class SferaDiscoverComponent implements OnInit, OnDestroy {
 
-  private _destroyed = inject(DestroyRef);
   protected sessions?: Session[];
+  private _destroyed = inject(DestroyRef);
   private interval?: NodeJS.Timeout;
 
   constructor(private sessionsService: SessionsService, private router: Router) {
@@ -39,7 +39,12 @@ export class SferaDiscoverComponent implements OnInit, OnDestroy {
   fetchSessions() {
     this.sessionsService.getSessions()
       .pipe(takeUntilDestroyed(this._destroyed))
-      .subscribe(sessions => this.sessions = sessions);
+      .subscribe(sessions => this.sessions = sessions
+        .sort((a, b) => {
+          const timeA = a.timestamp ? new Date(a.timestamp).getTime() : Number.NEGATIVE_INFINITY;
+          const timeB = b.timestamp ? new Date(b.timestamp).getTime() : Number.NEGATIVE_INFINITY;
+          return timeB - timeA;
+        }));
   }
 
   openObserver(session: Session) {
