@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.3.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.2.0...webapp-v0.3.0) (2025-02-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* upgrade to SFERA v3 ([#578](https://github.com/SchweizerischeBundesbahnen/DAS/issues/578)) (#577)
+
+### Features
+
+* upgrade to SFERA v3 ([#578](https://github.com/SchweizerischeBundesbahnen/DAS/issues/578)) ([#577](https://github.com/SchweizerischeBundesbahnen/DAS/issues/577)) ([df1d74c](https://github.com/SchweizerischeBundesbahnen/DAS/commit/df1d74c614f8ca16d1abbef9e9a52c55e3a3f689))
+
+
+### Bug Fixes
+
+* session sort ([0dde3e6](https://github.com/SchweizerischeBundesbahnen/DAS/commit/0dde3e6574de27569ea858a89d7c8d05265e3ad3))
+
 ## [0.2.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.1.0...webapp-v0.2.0) (2025-02-17)
 
 
