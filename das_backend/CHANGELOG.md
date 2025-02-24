@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.1.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.1.1...backend-v0.1.0) (2025-02-24)
+
+
+### Bug Fixes
+
+* **das_backend:** update dependency org.springframework.boot:spring-boot-starter-parent to v3.4.3 ([#608](https://github.com/SchweizerischeBundesbahnen/DAS/issues/608)) ([28cea2b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/28cea2baa75cb56faeb0a00455e548f93f872225))
+* **deps:** update dependency org.springdoc:springdoc-openapi-starter-webmvc-ui to v2.8.5 ([#595](https://github.com/SchweizerischeBundesbahnen/DAS/issues/595)) ([0735bd2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/0735bd2d32c68bf00452086364024cbefe1563f0))
+
+
+### Documentation
+
+* monorepo structure and docs ([#585](https://github.com/SchweizerischeBundesbahnen/DAS/issues/585)) ([4e0b70f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4e0b70f93280618ed3abea084c1ada40c7f15c08))
+
+
+### Miscellaneous Chores
+
+* release 0.1.0 ([e73de8e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e73de8ed6c8f44c533afcc709c822d14f554c065))
+
 ## [0.1.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.1.0...backend-v0.1.1) (2025-02-24)
 
 
