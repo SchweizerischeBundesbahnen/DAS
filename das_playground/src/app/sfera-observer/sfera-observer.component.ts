@@ -237,7 +237,7 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
 
 
   private getJourneyProfileNumberOfSPs(document: Document) {
-    return document.getElementsByTagName("SegmentProfileList")?.length || undefined;
+    return document.getElementsByTagName("SegmentProfileReference")?.length || undefined;
   }
 
   private getSegmentProfiles(document: Document) {
@@ -306,8 +306,8 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
 
     const dom = this.toDom(jpReplies[jpReplies.length - 1].message)
 
-    const segmentProfileLists = Array.from(dom.getElementsByTagName('SegmentProfileList'));
-    const segmentProfiles = segmentProfileLists.map(element => {
+    const segmentProfileReference = Array.from(dom.getElementsByTagName('SegmentProfileReference'));
+    const segmentProfiles = segmentProfileReference.map(element => {
       const spId = element.getAttribute('SP_ID');
       const imId = element.getElementsByTagName('IM_ID')[0].textContent;
       const minorVersion = element.getAttribute('SP_VersionMinor');
@@ -379,7 +379,7 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
   sendHSRWrongSferaVersion() {
     const handshakeRequest = SferaXmlCreation.createHandshakeRequest({
       header: {
-        sferaVersion: '2.00',
+        sferaVersion: '3.00',
         sourceDevice: this.clientIdControl.value
       },
       supportedModes: READONLY_MODE

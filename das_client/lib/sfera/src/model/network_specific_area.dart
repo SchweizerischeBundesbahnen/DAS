@@ -8,10 +8,13 @@ import 'package:das_client/util/util.dart';
 
 class NetworkSpecificArea extends SferaXmlElement {
   static const String elementType = 'NetworkSpecificArea';
+  static const String groupNameElement = 'NSP_GroupName';
 
   NetworkSpecificArea({super.type = elementType, super.attributes, super.children, super.value});
 
-  String get name => attributes['name']!;
+  String? get groupName => childrenWithType(groupNameElement).firstOrNull?.value;
+
+  String get company => childrenWithType('teltsi_Company').first.value!;
 
   StartEndQualifier? get startEndQualifier =>
       XmlEnum.valueOf<StartEndQualifier>(StartEndQualifier.values, attributes['startEndQualifier']);
@@ -25,11 +28,10 @@ class NetworkSpecificArea extends SferaXmlElement {
   TrackEquipmentTypeWrapper? get trackEquipmentTypeWrapper =>
       children.whereType<TrackEquipmentTypeWrapper>().firstOrNull;
 
-  AmountTramSignals? get amountTramSignals =>
-      children.whereType<AmountTramSignals>().firstOrNull;
+  AmountTramSignals? get amountTramSignals => children.whereType<AmountTramSignals>().firstOrNull;
 
   @override
   bool validate() {
-    return validateHasAttribute('name') && validateHasAttribute('startEndQualifier') && super.validate();
+    return validateHasChild('teltsi_Company') && validateHasAttribute('startEndQualifier') && super.validate();
   }
 }
