@@ -4,7 +4,7 @@
     "config:recommended"
   ],
   "additionalBranchPrefix": "{{parentDir}}-",
-  "semanticCommitScope": "{{parentDir}}",
+  "semanticCommitScope": "{{baseDir}}",
   "packageRules": [
     {
       "matchManagers": [
