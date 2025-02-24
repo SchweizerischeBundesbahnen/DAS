@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.2.0...sfera_mock-v0.2.1) (2025-02-24)
+
+
+### Bug Fixes
+
+* mock train 1809 path ([77d30fa](https://github.com/SchweizerischeBundesbahnen/DAS/commit/77d30fa56d6924dfd8a2d89507abacf90b4943bf))
+
 ## [0.2.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.1.0...sfera_mock-v0.2.0) (2025-02-24)
 
 
