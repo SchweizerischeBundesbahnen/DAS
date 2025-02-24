@@ -33,13 +33,13 @@ public class EventPublisher {
 
     public void publishRelatedTrainInformation(G2BEventPayload eventPayload, RequestContext requestContext) {
         var header = sferaMessageCreator.createMessageHeader(UUID.randomUUID(), requestContext.tid());
-        var event = sferaMessageCreator.createRelatedTrainInformation(eventPayload, header);
+        var event = sferaMessageCreator.createRelatedTrainInformation(eventPayload, header, requestContext.tid());
         publishEvent(event, requestContext);
     }
 
     public void publishJourneyProfile(G2BEventPayload eventPayload, RequestContext requestContext) {
         var header = sferaMessageCreator.createMessageHeader(UUID.randomUUID(), requestContext.tid());
-        var event = sferaMessageCreator.createJourneyProfileEventMessage(eventPayload, header);
+        var event = sferaMessageCreator.createJourneyProfileEventMessage(eventPayload, header, requestContext.tid());
         publishEvent(event, requestContext);
     }
 

@@ -1043,7 +1043,7 @@ void main() {
     await tester.dragUntilVisible(find.text('Lengnau'), scrollableFinder, const Offset(0, -50));
 
     // ASR from 40km/h should not be displayed
-    final asrRow3 = findDASTableRowByText('km 29.000 - km 39.000');
+    final asrRow3 = findDASTableRowByText('km 41.000 - km 46.000');
     expect(asrRow3, findsNothing);
 
     await tester.dragUntilVisible(find.text('Solothurn'), scrollableFinder, const Offset(0, -50));

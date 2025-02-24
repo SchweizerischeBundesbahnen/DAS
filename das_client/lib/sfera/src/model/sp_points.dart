@@ -1,4 +1,6 @@
+import 'package:collection/collection.dart';
 import 'package:das_client/sfera/src/model/balise.dart';
+import 'package:das_client/sfera/src/model/balise_group.dart';
 import 'package:das_client/sfera/src/model/curve_point_network_specific_point.dart';
 import 'package:das_client/sfera/src/model/network_specific_point.dart';
 import 'package:das_client/sfera/src/model/new_line_speed_network_specific_point.dart';
@@ -20,10 +22,12 @@ class SpPoints extends SferaXmlElement {
 
   Iterable<VirtualBalise> get virtualBalise => children.whereType<VirtualBalise>();
 
-  Iterable<Balise> get balise => children.whereType<Balise>();
+  Iterable<BaliseGroup> get baliseGroupes => children.whereType<BaliseGroup>();
+
+  Iterable<Balise> get balises => baliseGroupes.map((group) => group.balise).flattened;
 
   Iterable<NetworkSpecificPoint> get protectionSectionNsp =>
-      children.whereType<NetworkSpecificPoint>().where((it) => it.name == _protectionSectionNspName);
+      children.whereType<NetworkSpecificPoint>().where((it) => it.groupName == _protectionSectionNspName);
 
   Iterable<NewLineSpeedNetworkSpecificPoint> get newLineSpeedsNsp =>
       children.whereType<NewLineSpeedNetworkSpecificPoint>();

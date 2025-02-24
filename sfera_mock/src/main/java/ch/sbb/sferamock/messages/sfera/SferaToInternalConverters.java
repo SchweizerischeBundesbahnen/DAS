@@ -1,9 +1,8 @@
 package ch.sbb.sferamock.messages.sfera;
 
-import ch.sbb.sferamock.adapters.sfera.model.v0201.B2GStatusReport;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.UnavailableDASOperatingModes;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.DASModesComplexType;
-
+import ch.sbb.sferamock.adapters.sfera.model.v0201.ReportedDASDrivingMode;
+import ch.sbb.sferamock.adapters.sfera.model.v0201.UnavailableDASOperatingModes;
 import ch.sbb.sferamock.messages.model.OperationMode;
 import java.util.List;
 
@@ -14,15 +13,15 @@ public final class SferaToInternalConverters {
 
     public static List<OperationMode> convertOperationModes(List<DASModesComplexType> dasOperatingModesSupported) {
         return dasOperatingModesSupported.stream()
-                .map(SferaToInternalConverters::convertOperationMode)
-                .toList();
+            .map(SferaToInternalConverters::convertOperationMode)
+            .toList();
     }
 
     private static OperationMode convertOperationMode(DASModesComplexType dasModesComplexType) {
         return new OperationMode(
-                convertDrivingMode(dasModesComplexType.getDASDrivingMode()),
-                convertConnectivity(dasModesComplexType.getDASConnectivity()),
-                convertArchitecture(dasModesComplexType.getDASArchitecture())
+            convertDrivingMode(dasModesComplexType.getDASDrivingMode()),
+            convertConnectivity(dasModesComplexType.getDASConnectivity()),
+            convertArchitecture(dasModesComplexType.getDASArchitecture())
         );
     }
 
@@ -40,7 +39,7 @@ public final class SferaToInternalConverters {
         };
     }
 
-    private static OperationMode.DrivingMode convertDrivingMode(B2GStatusReport.DASDrivingMode dasDrivingMode) {
+    private static OperationMode.DrivingMode convertDrivingMode(ReportedDASDrivingMode.DASDrivingMode dasDrivingMode) {
         return switch (dasDrivingMode) {
             case READ_ONLY -> OperationMode.DrivingMode.readOnly;
             case DAS_NOT_CONNECTED_TO_ATP -> OperationMode.DrivingMode.dasNotConnectedToAtp;

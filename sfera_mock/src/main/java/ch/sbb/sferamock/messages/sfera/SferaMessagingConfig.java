@@ -24,7 +24,7 @@ public class SferaMessagingConfig {
     public Jaxb2Marshaller jaxb2Marshaller() {
         var marshaller = new Jaxb2Marshaller();
         marshaller.setContextPath(ObjectFactory.class.getPackageName());
-        marshaller.setSchemas(new ClassPathResource("SFERA_3.0_custom.xsd"));
+        marshaller.setSchemas(new ClassPathResource("SFERA_v3.00.xsd"));
         marshaller.setMarshallerProperties(Map.of(Marshaller.JAXB_FRAGMENT, true)); // suppress xml prolog
         return marshaller;
     }

@@ -1,15 +1,13 @@
 <?xml version="1.0"?>
-<JourneyProfile JP_Status="Valid" JP_Version="1"
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd">
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="2" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
     <TrainIdentification>
         <OTN_ID>
-            <Company>1085</Company>
-            <OperationalTrainNumber>T3</OperationalTrainNumber>
-            <StartDate>2022-01-04</StartDate>
+            <teltsi_Company>1085</teltsi_Company>
+            <teltsi_OperationalTrainNumber>T3</teltsi_OperationalTrainNumber>
+            <teltsi_StartDate>2022-01-04</teltsi_StartDate>
         </OTN_ID>
     </TrainIdentification>
-    <SegmentProfileList SP_ID="T3_1" SP_VersionMajor="1" SP_VersionMinor="4" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T3_1" SP_VersionMajor="2" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -122,5 +120,5 @@
                               endLocation="800" startTime="2022-01-01T00:00:00Z" endTime="2060-01-01T00:00:00Z">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="60"/>
         </TemporaryConstraints>
-    </SegmentProfileList>
+    </SegmentProfileReference>
 </JourneyProfile>

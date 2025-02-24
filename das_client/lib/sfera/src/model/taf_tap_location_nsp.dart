@@ -9,9 +9,10 @@ class TafTapLocationNsp extends Nsp {
   TafTapLocationNsp({super.type = elementType, super.attributes, super.children, super.value});
 
   factory TafTapLocationNsp.from({Map<String, String>? attributes, List<SferaXmlElement>? children, String? value}) {
-    if (attributes?['name'] == StationSpeedNsp.elementName) {
+    final groupName = children?.where((it) => it.type == Nsp.groupNameElement).firstOrNull;
+    if (groupName?.value == StationSpeedNsp.elementName) {
       return StationSpeedNsp(attributes: attributes, children: children, value: value);
-    } else if (attributes?['name'] == NewLineSpeedTafTapLocation.elementName) {
+    } else if (groupName?.value == NewLineSpeedTafTapLocation.elementName) {
       return NewLineSpeedTafTapLocation(attributes: attributes, children: children, value: value);
     }
     return TafTapLocationNsp(attributes: attributes, children: children, value: value);
