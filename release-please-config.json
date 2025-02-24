@@ -3,16 +3,19 @@
   "separate-pull-requests": true,
   "packages": {
     "das_client": {
-      "release-type": "dart"
+      "release-type": "dart",
+      "bump-minor-pre-major": true
     },
     "das_backend": {
       "release-type": "maven",
-      "package-name": "backend"
+      "package-name": "backend",
+      "bump-minor-pre-major": true
     },
     "das_playground": {},
     "sfera_mock": {
       "release-type": "maven",
-      "package-name": "sfera_mock"
+      "package-name": "sfera_mock",
+      "bump-minor-pre-major": true
     }
   }
 }
