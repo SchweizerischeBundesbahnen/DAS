@@ -1026,10 +1026,11 @@ void main() {
     final scrollableFinder = find.byType(ListView);
     expect(scrollableFinder, findsOneWidget);
 
+    // ASR from 40km/h should be displayed if not completely inside ETCS L2
     final asrRow1 = findDASTableRowByText('km 9.000 - km 26.000');
     expect(asrRow1, findsExactly(2));
 
-    final asrSpeed1 = find.descendant(of: asrRow1.first, matching: find.text('20'));
+    final asrSpeed1 = find.descendant(of: asrRow1.first, matching: find.text('50'));
     expect(asrSpeed1, findsOneWidget);
 
     await tester.dragUntilVisible(find.text('Neuchâtel'), scrollableFinder, const Offset(0, -50));
@@ -1042,16 +1043,17 @@ void main() {
 
     await tester.dragUntilVisible(find.text('Lengnau'), scrollableFinder, const Offset(0, -50));
 
-    // ASR from 40km/h should not be displayed
+    // ASR from 40km/h should not be displayed inside ETCS L2
     final asrRow3 = findDASTableRowByText('km 41.000 - km 46.000');
     expect(asrRow3, findsNothing);
 
     await tester.dragUntilVisible(find.text('Solothurn'), scrollableFinder, const Offset(0, -50));
 
+    // ASR from 40km/h should be displayed if not completely inside ETCS L2
     final asrRow4 = findDASTableRowByText('km 51.000 - km 59.000');
     expect(asrRow4, findsExactly(2));
 
-    final asrSpeed4 = find.descendant(of: asrRow4.first, matching: find.text('10'));
+    final asrSpeed4 = find.descendant(of: asrRow4.first, matching: find.text('40'));
     expect(asrSpeed4, findsOneWidget);
   });
 

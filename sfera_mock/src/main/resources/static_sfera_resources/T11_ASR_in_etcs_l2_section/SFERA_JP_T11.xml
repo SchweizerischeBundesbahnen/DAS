@@ -73,10 +73,10 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
-        <!-- ASR under 40km/h with start outside of ETCS level 2 -->
+        <!-- ASR from 40km/h with start outside of ETCS level 2 -->
         <TemporaryConstraints startLocation="900" endLocation="2600" startEndQualifier="StartsEnds"
                               temporaryConstraintType="ASR">
-            <AdditionalSpeedRestriction ASR_Front="true" ASR_Speed="20"/>
+            <AdditionalSpeedRestriction ASR_Front="true" ASR_Speed="50"/>
         </TemporaryConstraints>
 
         <!-- ASR under 40km/h inside of ETCS level 2 -->
@@ -91,10 +91,10 @@
             <AdditionalSpeedRestriction ASR_Front="true" ASR_Speed="60"/>
         </TemporaryConstraints>
 
-        <!-- ASR under 40km/h end outside of ETCS level 2 -->
+        <!-- ASR from 40km/h end outside of ETCS level 2 -->
         <TemporaryConstraints startLocation="5100" endLocation="5900" startEndQualifier="StartsEnds"
                               temporaryConstraintType="ASR">
-            <AdditionalSpeedRestriction ASR_Front="true" ASR_Speed="10"/>
+            <AdditionalSpeedRestriction ASR_Front="true" ASR_Speed="40"/>
         </TemporaryConstraints>
 
         <TrainCharacteristicsRef TC_ID="T11_1" TC_VersionMajor="1" TC_VersionMinor="1" location="0">
