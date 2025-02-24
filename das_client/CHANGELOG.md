@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.10.0...das_client-v0.10.1) (2025-02-24)
+
+
+### Bug Fixes
+
+* android bottom padding ([e276798](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e276798edcb920c9b358ee998a46571bfd0f7808))
+
 ## [0.10.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.9.0...das_client-v0.10.0) (2025-02-24)
 
 
