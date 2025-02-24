@@ -81,13 +81,11 @@
         <KilometreReferencePoint location="3500">
             <KM_Reference kmRef="121.1"/>
         </KilometreReferencePoint>
-        <!-- todo: kmRef -->
         <KilometreReferencePoint location="3733">
-            <KM_Reference kmRef="xx.xx"/>
+            <KM_Reference kmRef="121.333"/>
         </KilometreReferencePoint>
-        <!-- todo: kmRef -->
         <KilometreReferencePoint location="3849">
-            <KM_Reference kmRef="xx.xx"/>
+            <KM_Reference kmRef="121.449"/>
         </KilometreReferencePoint>
 
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="5.0" gradientDirection="Downhill"

@@ -64,8 +64,7 @@
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="50">
-            <!-- todo: kmRef -->
-            <KM_Reference kmRef="xx.xx"/>
+            <KM_Reference kmRef="24.55"/>
         </KilometreReferencePoint>
 
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="9.0" gradientDirection="Downhill"

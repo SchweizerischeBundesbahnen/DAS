@@ -74,13 +74,11 @@
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="98.2"/>
         </KilometreReferencePoint>
-        <!-- todo: kmRef -->
         <KilometreReferencePoint location="700">
-            <KM_Reference kmRef="xx.xx"/>
+            <KM_Reference kmRef="100.2"/>
         </KilometreReferencePoint>
-        <!-- todo: kmRef -->
         <KilometreReferencePoint location="701">
-            <KM_Reference kmRef="xx.xx"/>
+            <KM_Reference kmRef="100.2"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="2000">
             <KM_Reference kmRef="100.2"/>
