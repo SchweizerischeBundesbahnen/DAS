@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.1.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.1.1...backend-v0.1.0) (2025-02-24)
+## [0.1.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.1.1...backend-v0.1.0) (2025-02-24)
 
 
 ### Bug Fixes
