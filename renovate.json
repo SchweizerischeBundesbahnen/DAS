@@ -3,6 +3,7 @@
   "extends": [
     "config:recommended"
   ],
+  "additionalBranchPrefix": "{{parentDir}}-",
   "packageRules": [
     {
       "matchManagers": [
