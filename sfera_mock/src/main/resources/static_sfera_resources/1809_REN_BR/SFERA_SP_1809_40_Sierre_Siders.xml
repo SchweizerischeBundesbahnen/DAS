@@ -51,7 +51,7 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>1509</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" text="Villeneuve"/>
+            <TAF_TAP_LocationName language="de" text="Sierre/Siders"/>
 
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
@@ -62,7 +62,7 @@
 
         </TAF_TAP_Location>
 
-        <NetworkSpecificArea startEndQualifier="Ends" startLocation="1600">
+        <NetworkSpecificArea startEndQualifier="Ends" endLocation="1600">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-convSpeedReversingImpossible"/>
