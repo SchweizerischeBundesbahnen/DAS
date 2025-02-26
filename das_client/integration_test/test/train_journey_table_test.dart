@@ -48,6 +48,8 @@ void main() {
 
       final batteryIcon = find.descendant(of: headerFinder, matching: find.byKey(BatteryStatus.batteryLevelLowIconKey));
       expect(batteryIcon, findsNothing);
+
+      await disconnect(tester);
     });
 
     testWidgets('test battery under 30% and show icon', (tester) async {
@@ -70,6 +72,8 @@ void main() {
 
       final batteryIcon = find.descendant(of: headerFinder, matching: find.byKey(BatteryStatus.batteryLevelLowIconKey));
       expect(batteryIcon, findsOneWidget);
+
+      await disconnect(tester);
     });
 
     testWidgets('check if update sent is correct', (tester) async {
@@ -96,6 +100,8 @@ void main() {
       await waitUntilNotExists(tester, find.descendant(of: headerFinder, matching: find.text('+00:00')));
 
       expect(find.descendant(of: headerFinder, matching: find.text('+00:30')), findsOneWidget);
+
+      await disconnect(tester);
     });
 
     testWidgets('test balise multiple level crossings', (tester) async {
@@ -112,6 +118,8 @@ void main() {
 
       final baliseIcon = find.descendant(of: baliseMultiLevelCrossing, matching: find.byKey(BaliseRow.baliseIconKey));
       expect(baliseIcon, findsOneWidget);
+
+      await disconnect(tester);
     });
 
     testWidgets('test whistle and tram area', (tester) async {
@@ -137,6 +145,8 @@ void main() {
 
       final tramAreaDescription = find.descendant(of: tramAreaRow, matching: find.text('6 TS'));
       expect(tramAreaDescription, findsOneWidget);
+
+      await disconnect(tester);
     });
 
     testWidgets('test balise and level crossing groups expand / collapse', (tester) async {
@@ -186,6 +196,8 @@ void main() {
 
       expect(detailRowLevelCrossing, findsNothing);
       expect(detailRowBalise, findsNothing);
+
+      await disconnect(tester);
     });
 
     testWidgets('test breaking series defaults to ??', (tester) async {
@@ -197,6 +209,8 @@ void main() {
       final breakingSeriesHeaderCell = find.byKey(TrainJourney.breakingSeriesHeaderKey);
       expect(breakingSeriesHeaderCell, findsOneWidget);
       expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('??')), findsNWidgets(1));
+
+      await disconnect(tester);
     });
 
     testWidgets('test default breaking series is taken from train characteristics (R115)', (tester) async {
@@ -208,6 +222,8 @@ void main() {
       final breakingSeriesHeaderCell = find.byKey(TrainJourney.breakingSeriesHeaderKey);
       expect(breakingSeriesHeaderCell, findsOneWidget);
       expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('R115')), findsNWidgets(1));
+
+      await disconnect(tester);
     });
 
     testWidgets('test all breakseries options are displayed', (tester) async {
@@ -247,6 +263,8 @@ void main() {
       for (final entry in expectedOptions) {
         expect(find.text(entry), findsAtLeast(1));
       }
+
+      await disconnect(tester);
     });
 
     testWidgets('test message when no breakseries are defined', (tester) async {
@@ -259,6 +277,8 @@ void main() {
       await tapElement(tester, find.byKey(TrainJourney.breakingSeriesHeaderKey));
 
       expect(find.text(l10n.p_train_journey_break_series_empty), findsOneWidget);
+
+      await disconnect(tester);
     });
 
     testWidgets('test speed values of default breakSeries (R115)', (tester) async {
@@ -290,6 +310,8 @@ void main() {
           expect(textWidgets, findsNWidgets(2)); // KM and Kurve text widgets
         }
       }
+
+      await disconnect(tester);
     });
 
     testWidgets('test speed values of missing break Series', (tester) async {
@@ -327,6 +349,8 @@ void main() {
           expect(textWidgets, findsNWidgets(2)); // KM and Kurve text widgets
         }
       }
+
+      await disconnect(tester);
     });
 
     testWidgets('test connection track is displayed correctly', (tester) async {
@@ -363,6 +387,8 @@ void main() {
 
       final zahnstangeEndeRow = findDASTableRowByText('Zahnstangen Ende');
       expect(zahnstangeEndeRow, findsOneWidget);
+
+      await disconnect(tester);
     });
 
     testWidgets('test additional speed restriction row is displayed correctly', (tester) async {
@@ -392,6 +418,8 @@ void main() {
               it.decoration is BoxDecoration &&
               (it.decoration as BoxDecoration).color == AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor));
       expect(coloredCells, findsNWidgets(13));
+
+      await disconnect(tester);
     });
 
     testWidgets('test other rows are displayed correctly', (tester) async {
@@ -426,6 +454,8 @@ void main() {
                     AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor));
         expect(coloredCells, findsNWidgets(4));
       }
+
+      await disconnect(tester);
     });
 
     testWidgets('check if all table columns with header are present', (tester) async {
@@ -447,6 +477,8 @@ void main() {
       for (final header in expectedHeaders) {
         expect(find.text(header), findsOneWidget);
       }
+
+      await disconnect(tester);
     });
 
     testWidgets('test route is displayed correctly', (tester) async {
@@ -483,6 +515,8 @@ void main() {
       // check route end
       final routeEnd = find.byKey(RouteCellBody.routeEndKey);
       expect(routeEnd, findsOneWidget);
+
+      await disconnect(tester);
     });
 
     testWidgets('test protection sections are displayed correctly', (tester) async {
@@ -548,6 +582,8 @@ void main() {
       expect(find.descendant(of: protectionSectionRow, matching: find.text('FL')), findsNothing);
       expect(find.descendant(of: protectionSectionRow, matching: find.text('F')), findsNothing);
       expect(find.descendant(of: protectionSectionRow, matching: find.text('L')), findsNothing);
+
+      await disconnect(tester);
     });
 
     testWidgets('test scrolling to last train station', (tester) async {
@@ -564,6 +600,8 @@ void main() {
 
       // Scroll to last train station
       await tester.dragUntilVisible(find.text('Aarau'), find.byType(ListView), const Offset(0, -300));
+
+      await disconnect(tester);
     });
 
     testWidgets('test if train journey stays loaded after navigation', (tester) async {
@@ -586,6 +624,8 @@ void main() {
 
       // check first train station is still visible
       expect(findDASTableRowByText('Zürich HB'), findsOneWidget);
+
+      await disconnect(tester);
     });
 
     testWidgets('test both kilometres are displayed', (tester) async {
@@ -601,6 +641,8 @@ void main() {
       expect(hardbruckeRow, findsOneWidget);
       expect(find.descendant(of: hardbruckeRow, matching: find.text('1.9')), findsOneWidget);
       expect(find.descendant(of: hardbruckeRow, matching: find.text('23.5')), findsOneWidget);
+
+      await disconnect(tester);
     });
 
     testWidgets('test bracket stations is displayed correctly', (tester) async {
@@ -642,6 +684,8 @@ void main() {
       expect(find.descendant(of: zahnstangenEndeWidget, matching: find.text('D')), findsNothing);
       expect(find.descendant(of: deckungssignalWidget, matching: find.text('D')), findsNothing);
       expect(find.descendant(of: bracketStationD1Widget, matching: find.text('D')), findsNothing);
+
+      await disconnect(tester);
     });
 
     testWidgets('test halt on request is displayed correctly', (tester) async {
@@ -667,6 +711,8 @@ void main() {
       final stopRoute = find.descendant(of: stopOnDemandRow, matching: find.byKey(RouteCellBody.stopKey));
       expect(stopOnRequestRoute, findsOneWidget);
       expect(stopRoute, findsNothing);
+
+      await disconnect(tester);
     });
 
     testWidgets('test halt is displayed italic', (tester) async {
@@ -682,6 +728,8 @@ void main() {
       final schlierenText = find
           .byWidgetPredicate((it) => it is Text && it.data == 'Schlieren' && it.style?.fontStyle != FontStyle.italic);
       expect(schlierenText, findsOneWidget);
+
+      await disconnect(tester);
     });
 
     testWidgets('test curves are displayed correctly', (tester) async {
@@ -705,6 +753,8 @@ void main() {
 
       final curveAfterHaltRow = findDASTableRowByText('Kurve nach Haltestelle');
       expect(curveAfterHaltRow, findsOneWidget);
+
+      await disconnect(tester);
     });
 
     testWidgets('test signals are displayed correctly', (tester) async {
@@ -742,6 +792,8 @@ void main() {
       final noLaneChangeIcon2 =
           find.descendant(of: blockIntermediateSignalRow, matching: find.byKey(SignalRow.signalLineChangeIconKey));
       expect(noLaneChangeIcon2, findsNothing);
+
+      await disconnect(tester);
     });
 
     testWidgets('test if CAB signaling is displayed correctly', (tester) async {
@@ -794,6 +846,8 @@ void main() {
       final segment3CABStartIcon =
           find.descendant(of: segment3CABStart, matching: find.byKey(CABSignalingRow.cabSignalingStartIconKey));
       expect(segment3CABStartIcon, findsOneWidget);
+
+      await disconnect(tester);
     });
 
     testWidgets('test if track equipment is displayed correctly', (tester) async {
@@ -861,6 +915,8 @@ void main() {
 
       // check ExtendedSpeedReversingImpossibleKey in Flughafen
       _checkTrackEquipmentOnServicePoint('Flughafen', TrackEquipmentCellBody.extendedSpeedReversingPossibleKey);
+
+      await disconnect(tester);
     });
 
     testWidgets('test if single track without block track equipment is displayed correctly', (tester) async {
@@ -880,6 +936,8 @@ void main() {
       _checkTrackEquipmentOnServicePoint('Innertkirchen Grimseltor', TrackEquipmentCellBody.singleTrackNoBlockKey);
       _checkTrackEquipmentOnServicePoint(
           'Innertkirchen Kraftwerk (Bahn)', TrackEquipmentCellBody.singleTrackNoBlockKey);
+
+      await disconnect(tester);
     });
 
     testWidgets('test if station speeds are displayed correctly', (tester) async {
@@ -948,6 +1006,8 @@ void main() {
       final oltenOutgoingSpeeds =
           find.descendant(of: oltenStationRow, matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey));
       expect(oltenOutgoingSpeeds, findsNothing);
+
+      await disconnect(tester);
     });
 
     testWidgets('find base value when no punctuality update comes', (tester) async {
@@ -973,6 +1033,8 @@ void main() {
       expect(find.descendant(of: headerFinder, matching: find.text('+00:00')), findsOneWidget);
 
       await tester.pumpAndSettle();
+
+      await disconnect(tester);
     });
 
     testWidgets('check if the displayed current time is correct', (tester) async {
@@ -1014,6 +1076,8 @@ void main() {
       }
 
       await tester.pumpAndSettle();
+
+      await disconnect(tester);
     });
   });
 
@@ -1055,6 +1119,8 @@ void main() {
 
     final asrSpeed4 = find.descendant(of: asrRow4.first, matching: find.text('40'));
     expect(asrSpeed4, findsOneWidget);
+
+    await disconnect(tester);
   });
 
   testWidgets('test line speed is hidden on ETCS level 2 section', (tester) async {
@@ -1073,6 +1139,8 @@ void main() {
 
     final speedChangeRowSpeed = find.descendant(of: speedChangeRow, matching: find.text('50'));
     expect(speedChangeRowSpeed, findsNothing);
+
+    await disconnect(tester);
   });
 }
 

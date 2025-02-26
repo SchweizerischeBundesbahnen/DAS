@@ -1,4 +1,5 @@
 import 'package:das_client/sfera/src/model/additional_speed_restriction.dart';
+import 'package:das_client/sfera/src/model/b2g_event_payload.dart';
 import 'package:das_client/sfera/src/model/balise.dart';
 import 'package:das_client/sfera/src/model/balise_group.dart';
 import 'package:das_client/sfera/src/model/connection_track.dart';
@@ -32,6 +33,8 @@ import 'package:das_client/sfera/src/model/position_speed.dart';
 import 'package:das_client/sfera/src/model/related_train_information.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
 import 'package:das_client/sfera/src/model/segment_profile_list.dart';
+import 'package:das_client/sfera/src/model/session_termination.dart';
+import 'package:das_client/sfera/src/model/sfera_b2g_event_message.dart';
 import 'package:das_client/sfera/src/model/sfera_g2b_event_message.dart';
 import 'package:das_client/sfera/src/model/sfera_g2b_reply_message.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
@@ -242,6 +245,12 @@ class SferaReplyParser {
         return LevelCrossingArea(type: type, attributes: attributes, children: children, value: value);
       case PositionSpeed.elementType:
         return PositionSpeed(type: type, attributes: attributes, children: children, value: value);
+      case SferaB2gEventMessage.elementType:
+        return SferaB2gEventMessage(type: type, attributes: attributes, children: children, value: value);
+      case SessionTermination.elementType:
+        return SessionTermination(type: type, attributes: attributes, children: children, value: value);
+      case B2gEventPayload.elementType:
+        return B2gEventPayload(type: type, attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElement(type: type, attributes: attributes, children: children, value: value);
     }
