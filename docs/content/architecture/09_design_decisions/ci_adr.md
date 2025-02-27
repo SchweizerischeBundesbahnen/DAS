@@ -14,16 +14,16 @@ tags:
 ## Problem Background
 CI is essential for our development process.
 
-## Influences on the Decision
+## Basic conditions
 The decision is influenced by SBB's established use of GitHub for its Open Source projects, which provides a familiar environment for our development teams.
 
 ## Assumptions
 None.
 
-## Considered Alternatives
+## Alternatives
 None.
 
-## Decisions
+## Decision
 ### GitHub Actions
 We have decided to implement CI using GitHub Actions wherever feasible.
 
