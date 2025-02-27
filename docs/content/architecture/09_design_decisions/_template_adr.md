@@ -6,10 +6,10 @@ result:
 date: 2024-01-01
 issue: 1
 tags:
-  - 
+  - template
 ---
 
-<!-- {{< adr-table "adr" >}} -->
+{{< adr-table "adr" >}}
 
 ## Problem Background
 
