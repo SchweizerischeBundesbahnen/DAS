@@ -4,6 +4,7 @@ import { Session, SessionsService } from "./sessions.service";
 import { DatePipe } from "@angular/common";
 import { Router } from "@angular/router";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { SbbNotification } from "@sbb-esta/angular/notification";
 
 
 @Component({
@@ -11,7 +12,8 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
   standalone: true,
   imports: [
     SbbTableWrapper,
-    DatePipe
+    DatePipe,
+    SbbNotification
   ],
   templateUrl: './sfera-discover.component.html',
   styleUrl: './sfera-discover.component.scss'
@@ -19,6 +21,8 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 export class SferaDiscoverComponent implements OnInit, OnDestroy {
 
   protected sessions?: Session[];
+  protected refreshedAt?: Date;
+  protected isError = false;
   private _destroyed = inject(DestroyRef);
   private interval?: NodeJS.Timeout;
 
@@ -39,12 +43,19 @@ export class SferaDiscoverComponent implements OnInit, OnDestroy {
   fetchSessions() {
     this.sessionsService.getSessions()
       .pipe(takeUntilDestroyed(this._destroyed))
-      .subscribe(sessions => this.sessions = sessions
-        .sort((a, b) => {
-          const timeA = a.timestamp ? new Date(a.timestamp).getTime() : Number.NEGATIVE_INFINITY;
-          const timeB = b.timestamp ? new Date(b.timestamp).getTime() : Number.NEGATIVE_INFINITY;
-          return timeB - timeA;
-        }));
+      .subscribe({
+        next: (sessions) => {
+          this.sessions = sessions
+            .sort((a, b) => {
+              const timeA = a.timestamp ? new Date(a.timestamp).getTime() : Number.NEGATIVE_INFINITY;
+              const timeB = b.timestamp ? new Date(b.timestamp).getTime() : Number.NEGATIVE_INFINITY;
+              return timeB - timeA;
+            });
+          this.refreshedAt = new Date();
+          this.isError = false;
+        },
+        error: () => this.isError = true
+      });
   }
 
   openObserver(session: Session) {

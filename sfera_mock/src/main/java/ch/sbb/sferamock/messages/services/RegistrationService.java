@@ -4,7 +4,7 @@ import ch.sbb.sferamock.messages.model.ClientId;
 import ch.sbb.sferamock.messages.model.OperationMode;
 import ch.sbb.sferamock.messages.model.RequestContext;
 import ch.sbb.sferamock.messages.model.TrainIdentification;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -102,10 +102,10 @@ public class RegistrationService {
         }
     }
 
-    public record Registration(TrainIdentification trainIdentification, OperationMode operationMode, LocalDateTime timestamp, int manualLoactionIndex) {
+    public record Registration(TrainIdentification trainIdentification, OperationMode operationMode, ZonedDateTime timestamp, int manualLoactionIndex) {
 
         public Registration(TrainIdentification trainIdentification, OperationMode operationMode) {
-            this(trainIdentification, operationMode, LocalDateTime.now(), 0);
+            this(trainIdentification, operationMode, ZonedDateTime.now(), 0);
         }
     }
 }
