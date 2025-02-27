@@ -33,7 +33,7 @@ dependencies:
   # https://pub.dev/packages/fimber
   fimber: ^0.7.0
   # https://pub.dev/packages/intl
-  intl: ^0.19.0
+  intl: ^0.20.0
   # https://pub.dev/packages/mqtt_client
   mqtt_client: ^10.5.1
   # https://pub.dev/packages/xml
