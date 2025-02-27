@@ -1,4 +1,9 @@
 <h2>SFERA discover</h2>
+@if (isError) {
+  <sbb-notification type="error">Error: Could not fetch sessions! Is VPN turned on?
+  </sbb-notification>
+}
+<p>refreshed at: {{ refreshedAt | date:'dd.MM.yyyy HH:mm:ss' }}</p>
 <sbb-table-wrapper>
   <table class="sbb-table">
     <thead>
