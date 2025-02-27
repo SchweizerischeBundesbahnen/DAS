@@ -6,6 +6,7 @@ result:
 date: 2024-01-01
 issue: 1
 tags:
+  - 
 ---
 
 <!-- {{< adr-table "adr" >}} -->
