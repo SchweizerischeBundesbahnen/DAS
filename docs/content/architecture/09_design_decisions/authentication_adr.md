@@ -18,7 +18,7 @@ Check again, how are smaller RUs supported? How does the detailed solution look 
 ## Problem Background
 DAS is operated for various RUs and must therefore have an exchangeable or broadly supported authorisation or identity concept.
 
-## Influences on the Decision
+## Basic conditions
 * Azure is the standard technology for IAM in all the participating organizations.
 * In order to authenticate other companies/EVUs, a federation of Azure ADs must be created.
 * With Multitenant, the participating organizations must manage the identities and can therefore be delegated.
@@ -30,8 +30,8 @@ DAS is operated for various RUs and must therefore have an exchangeable or broad
 ## Assumptions
 
 
-## Considered Alternatives
+## Alternatives
 * Crosstenant
 
-## Decisions
+## Decision
 Because all cooperation partners use Azure AD, the authentication and role management of DAS is implemented with Azure AD (Multitenant).

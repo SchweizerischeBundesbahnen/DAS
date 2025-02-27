@@ -18,7 +18,7 @@ or support case and to ensure continuous monitoring of the systems. This concept
 all relevant data can be recorded, stored and analysed. As a result, errors can be recognised and
 rectified at an early stage and events can be fully traced.
 
-## Influences on the Decision
+## Basic conditions
 
 * We can choose different logging services for each tenant.
 * It’s easier to update backend APIs than to change the mobile client.
@@ -27,10 +27,10 @@ rectified at an early stage and events can be fully traced.
 
 None.
 
-## Considered Alternatives
+## Alternatives
 
 1. Deliver via direct API
 
-## Decisions
+## Decision
 
 Delivery via backend.
