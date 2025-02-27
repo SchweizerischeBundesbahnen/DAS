@@ -3,24 +3,29 @@ title: template - change me
 draft: true
 status: IN PROGRESS | DECIDED
 result: 
-date: 1970-01-01
+date: 2024-01-01
 issue: 1
 tags:
-  - adr
 ---
 
-{{< adr-table "adr" >}}
+<!-- {{< adr-table "adr" >}} -->
 
 ## Problem Background
 
 
-## Influences on the Decision
+## Basic conditions
 
 
 ## Assumptions
 
 
-## Considered Alternatives
+## Alternatives
+(options considered)
 
 
-## Decisions
+## Decision
+(reason)
+
+Who:
+- (persons)
+
