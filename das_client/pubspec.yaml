@@ -27,7 +27,7 @@ dependencies:
   # https://pub.dev/packages/get_it
   get_it: ^8.0.0
   # https://pub.dev/packages/auto_route
-  auto_route: ^9.2.2
+  auto_route: ^10.0.0
   # https://pub.dev/packages/flutter_bloc
   flutter_bloc: ^9.0.0
   # https://pub.dev/packages/fimber
@@ -73,7 +73,7 @@ dev_dependencies:
     sdk: flutter
 
   build_runner: ^2.4.9
-  auto_route_generator: ^9.0.0
+  auto_route_generator: ^10.0.0
   mockito: ^5.4.4
 
   path_provider_platform_interface: any
