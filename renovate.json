@@ -10,13 +10,13 @@
         "pub"
       ],
       "groupName": "auto_route",
-      "matchPackagePrefixes": [
-        "auto_route",
-        "auto_route_generator"
+      "matchPackageNames": [
+        "auto_route{/,}**",
+        "auto_route_generator{/,}**"
       ]
     },
     {
-      "matchPaths": [
+      "matchFileNames": [
         "das_playground/**"
       ],
       "enabled": false
