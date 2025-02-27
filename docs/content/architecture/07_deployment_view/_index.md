@@ -6,3 +6,9 @@ cascade:
 next: /architecture/08_concepts
 prev: /architecture/06_runtime_view
 ---
+
+{{< callout type="info" >}}
+Technical infrastructure such as:
+* Hosting plattforms
+* Component deployment
+{{< /callout >}}
