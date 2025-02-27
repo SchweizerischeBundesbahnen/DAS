@@ -6,3 +6,7 @@ cascade:
 next: /architecture/12_glossary
 prev: /architecture/10_quality_requirements
 ---
+
+{{< callout type="info" >}}
+Architectural risks or technical depths.
+{{< /callout >}}

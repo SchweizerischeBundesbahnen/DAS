@@ -6,3 +6,7 @@ cascade:
 next: /architecture/09_design_decisions
 prev: /architecture/07_deployment_view
 ---
+
+{{< callout type="info" >}}
+Prinicipal rules, design ideas, cross aspects, exploring thoughts, etc.
+{{< /callout >}}

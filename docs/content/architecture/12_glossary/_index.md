@@ -6,6 +6,19 @@ cascade:
 prev: /architecture/11_risks
 ---
 
+{{< callout type="info" >}}
+Terminology, abbreviations and its translations.
+{{< /callout >}}
+
+Most relevant terms are specified by the [SFERA 3](https://www.uic.org/projects-99/article/sfera-smart-communications-for-efficient-rail-activities) protocol.
+
+Be aware, the project deals heavily with SFERA 3 object translations in german, french and italian for locomotive personnel (mainly engine drivers) and its represenation to a Tablet user-interface. 
+Therefore, this page contains only a very small subset of expressions.
+
+Remarks:
+* [SBB internal Glossary](https://glossar.sbb.ch/UI7/index.xsl#Terminology)
+* Unfortunately there is no public railyway glossary easy to use and extend yet.
+
 | English                               | German                                   | Definition                                                                                                                                                                                     |
 |:--------------------------------------|:-----------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Driver Advisory System (DAS)          | Fahrassistenzsystem                      | System which provides necessary information to engine drivers while operating the train.                                                                                                       |
