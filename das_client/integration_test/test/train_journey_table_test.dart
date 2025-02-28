@@ -28,13 +28,13 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey table test', () {
-    testWidgets('test battery over 30% and not show icon', (tester) async {
+    testWidgets('test battery over 15% and not show icon', (tester) async {
       await prepareAndStartApp(tester);
 
       // Set Battery to a mocked version
       final battery = DI.get<Battery>() as BatteryMock;
 
-      // Set current Battery-Level to 80 % so it is over 30%
+      // Set current Battery-Level to 80 % so it is over 15%
       battery.currentBatteryLevel = 80;
 
       // load train journey by filling out train selection page
@@ -52,14 +52,14 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test battery under 30% and show icon', (tester) async {
+    testWidgets('test battery under 15% and show icon', (tester) async {
       await prepareAndStartApp(tester);
 
       // Set Battery to a mocked version
       final battery = DI.get<Battery>() as BatteryMock;
 
-      // Set current Battery-Level to 15% so it is under 30%
-      battery.currentBatteryLevel = 15;
+      // Set current Battery-Level to 10% so it is under 15%
+      battery.currentBatteryLevel = 10;
 
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T7');
@@ -68,7 +68,7 @@ void main() {
       final headerFinder = find.byType(Header);
       expect(headerFinder, findsOneWidget);
 
-      expect(battery.currentBatteryLevel, 15);
+      expect(battery.currentBatteryLevel, 10);
 
       final batteryIcon = find.descendant(of: headerFinder, matching: find.byKey(BatteryStatus.batteryLevelLowIconKey));
       expect(batteryIcon, findsOneWidget);
