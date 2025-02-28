@@ -13,7 +13,7 @@ class TrackEquipmentMapper {
   TrackEquipmentMapper._();
 
   static List<NonStandardTrackEquipmentSegment> parseNonStandardTrackEquipmentSegment(
-      Iterable<SegmentProfileList> segmentProfilesLists, Iterable<SegmentProfile> segmentProfiles) {
+      Iterable<SegmentProfileReference> segmentProfilesLists, Iterable<SegmentProfile> segmentProfiles) {
     final trackEquipments = _parseTrackEquipments(segmentProfilesLists, segmentProfiles);
     trackEquipments.sort();
 
@@ -80,7 +80,7 @@ class TrackEquipmentMapper {
   }
 
   static List<_NonStandardTrackEquipment> _parseTrackEquipments(
-      Iterable<SegmentProfileList> segmentProfilesLists, Iterable<SegmentProfile> segmentProfiles) {
+      Iterable<SegmentProfileReference> segmentProfilesLists, Iterable<SegmentProfile> segmentProfiles) {
     final trackEquipments = <_NonStandardTrackEquipment>[];
     for (int segmentIndex = 0; segmentIndex < segmentProfilesLists.length; segmentIndex++) {
       final segmentProfile = segmentProfiles.firstMatch(segmentProfilesLists.elementAt(segmentIndex));

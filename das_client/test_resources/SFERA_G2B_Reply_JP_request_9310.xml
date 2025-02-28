@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<SFERA_G2B_ReplyMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../Appendix_D-SFERA_XML_Schema_Definition/SFERA.xsd">
+<SFERA_G2B_ReplyMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="SFERA_v3.00.xsd">
     <MessageHeader SFERA_version="1.91" message_ID="cb787cb3-f3a7-4aad-9242-4d9aa92e1247" timestamp="2022-05-06T10:52:59Z" sourceDevice="INFRABEL">
         <Sender>0088</Sender>
         <Recipient>1088</Recipient>
@@ -8,13 +8,13 @@
         <JourneyProfile>
             <TrainIdentification>
                 <OTN_ID>
-                    <Company>1088</Company>
-                    <OperationalTrainNumber>9310</OperationalTrainNumber>
+                    <teltsi_Company>1088</teltsi_Company>
+                    <teltsi_OperationalTrainNumber>9310</teltsi_OperationalTrainNumber>
                     <AdditionalTrainNumber></AdditionalTrainNumber>
-                    <StartDate>2022-05-17</StartDate>
+                    <teltsi_StartDate>2022-05-17</teltsi_StartDate>
                 </OTN_ID>
             </TrainIdentification>
-            <SegmentProfileList SP_ID="877-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            <SegmentProfileReference SP_ID="877-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -33,8 +33,8 @@
                         <TP_ID_Reference TP_ID="1839"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="876-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="876-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -48,8 +48,8 @@
                         <TP_ID_Reference TP_ID="1739"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="807-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="807-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -63,8 +63,8 @@
                         <TP_ID_Reference TP_ID="764"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="771-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="771-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -77,10 +77,10 @@
                     <TimingPointReference>
                         <TP_ID_Reference TP_ID="37"/>
                     </TimingPointReference>
-                    <StoppingPointInformation departureTime="2022-05-17T05:34:00Z"/>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T05:34:00Z"/>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="889-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="889-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -88,15 +88,15 @@
                     <TimingPointReference>
                         <TP_ID_Reference TP_ID="37"/>
                     </TimingPointReference>
-                    <StoppingPointInformation departureTime="2022-05-17T05:34:00Z"/>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T05:34:00Z"/>
                 </TimingPointConstraints>
                 <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T05:35:12Z" TP_StopSkipPass="Passing_Point">
                     <TimingPointReference>
                         <TP_ID_Reference TP_ID="1840"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="888-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="888-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -110,8 +110,8 @@
                         <TP_ID_Reference TP_ID="1584"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="1030-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1030-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -130,8 +130,8 @@
                         <TP_ID_Reference TP_ID="1506"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="226-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="226-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -160,8 +160,8 @@
                         <TP_ID_Reference TP_ID="644"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="64-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="64-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -185,8 +185,8 @@
                         <TP_ID_Reference TP_ID="40"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="1992-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1992-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -200,8 +200,8 @@
                         <TP_ID_Reference TP_ID="811"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="1991-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1991-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -215,8 +215,8 @@
                         <TP_ID_Reference TP_ID="810"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="1990-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1990-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -230,8 +230,8 @@
                         <TP_ID_Reference TP_ID="1347"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="1229-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1229-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -245,8 +245,8 @@
                         <TP_ID_Reference TP_ID="1355"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="1222-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1222-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -260,8 +260,8 @@
                         <TP_ID_Reference TP_ID="1354"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="1221-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1221-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -280,8 +280,8 @@
                         <TP_ID_Reference TP_ID="1352"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="1274-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1274-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -295,8 +295,8 @@
                         <TP_ID_Reference TP_ID="1048"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="159-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="159-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -310,8 +310,8 @@
                         <TP_ID_Reference TP_ID="241"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="151-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="151-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -325,8 +325,8 @@
                         <TP_ID_Reference TP_ID="221"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="1432-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1432-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -355,8 +355,8 @@
                         <TP_ID_Reference TP_ID="305"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="1426-2" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1426-2" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -369,10 +369,10 @@
                     <TimingPointReference>
                         <TP_ID_Reference TP_ID="220"/>
                     </TimingPointReference>
-                    <StoppingPointInformation departureTime="2022-05-17T06:13:00Z"/>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T06:13:00Z"/>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="864-1" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="864-1" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -380,7 +380,7 @@
                     <TimingPointReference>
                         <TP_ID_Reference TP_ID="220"/>
                     </TimingPointReference>
-                    <StoppingPointInformation departureTime="2022-05-17T06:13:00Z"/>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T06:13:00Z"/>
                 </TimingPointConstraints>
                 <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T06:17:06Z" TP_StopSkipPass="Passing_Point">
                     <TimingPointReference>
@@ -392,8 +392,8 @@
                         <TP_ID_Reference TP_ID="1611"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="865-1" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="865-1" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -407,8 +407,8 @@
                         <TP_ID_Reference TP_ID="505"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="867-1" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="867-1" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -427,8 +427,8 @@
                         <TP_ID_Reference TP_ID="503"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="868-1" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="868-1" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -447,8 +447,8 @@
                         <TP_ID_Reference TP_ID="1698"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="870-1" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="870-1" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -462,8 +462,8 @@
                         <TP_ID_Reference TP_ID="1699"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="871-1" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="871-1" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -477,8 +477,8 @@
                         <TP_ID_Reference TP_ID="1701"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="872-1" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="872-1" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -492,8 +492,8 @@
                         <TP_ID_Reference TP_ID="1649"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
-            <SegmentProfileList SP_ID="842-1" SP_VersionMajor="1" SP_VersionMinor="0">
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="842-1" SP_VersionMajor="1" SP_VersionMinor="0">
                 <SP_Zone>
                     <IM_ID>0088</IM_ID>
                 </SP_Zone>
@@ -507,7 +507,7 @@
                         <TP_ID_Reference TP_ID="373"/>
                     </TimingPointReference>
                 </TimingPointConstraints>
-            </SegmentProfileList>
+            </SegmentProfileReference>
         </JourneyProfile>
         <SegmentProfile SP_ID="877-2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="16248">
             <SP_Zone>

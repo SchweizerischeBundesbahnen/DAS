@@ -10,6 +10,7 @@ import 'package:das_client/sfera/src/model/enums/das_driving_mode.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/related_train_information.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
+import 'package:das_client/sfera/src/model/sfera_b2g_event_message.dart';
 import 'package:das_client/sfera/src/model/sfera_g2b_event_message.dart';
 import 'package:das_client/sfera/src/model/sfera_g2b_reply_message.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
@@ -175,7 +176,7 @@ class SferaServiceImpl implements SferaService {
     if (_journeyProfile != null) {
       _segmentProfiles.clear();
 
-      for (final element in _journeyProfile!.segmentProfilesLists) {
+      for (final element in _journeyProfile!.segmentProfileReferences) {
         final segmentProfileEntity =
             await _sferaRepository.findSegmentProfile(element.spId, element.versionMajor, element.versionMinor);
         final segmentProfile = segmentProfileEntity?.toDomain();
@@ -192,7 +193,7 @@ class SferaServiceImpl implements SferaService {
     if (_journeyProfile != null) {
       _trainCharacteristics.clear();
 
-      for (final element in _journeyProfile!.trainCharactericsRefSet) {
+      for (final element in _journeyProfile!.trainCharacteristicsRefSet) {
         final trainCharactericsEntity =
             await _sferaRepository.findTrainCharacteristics(element.tcId, element.versionMajor, element.versionMinor);
         final trainCharacterics = trainCharactericsEntity?.toDomain();
@@ -252,7 +253,16 @@ class SferaServiceImpl implements SferaService {
   }
 
   @override
-  void disconnect() {
+  Future<void> disconnect() async {
+    final otnId = _otnId;
+    if (_stateSubject.value == SferaServiceState.connected && otnId != null) {
+      Fimber.i('Sending session termination request for $otnId...');
+      final header = await SferaService.messageHeader(sender: otnId.company);
+      final sessionTerminationMessage = SferaB2gEventMessage.createSessionTermination(messageHeader: header);
+      _mqttService.publishMessage(otnId.company, SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate),
+          sessionTerminationMessage.buildDocument().toString());
+    }
+
     _mqttService.disconnect();
     _stateSubject.add(SferaServiceState.disconnected);
   }

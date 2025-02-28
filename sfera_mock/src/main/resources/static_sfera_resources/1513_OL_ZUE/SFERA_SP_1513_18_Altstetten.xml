@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="1513_18_Altstetten"
+                SP_VersionMajor="2" SP_VersionMinor="0" SP_Length="2200" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>1285</IM_ID>
+    </SP_Zone>
+    <SP_Points>
+        <TimingPoint TP_ID="Altstetten" location="0">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3001</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+            <TP_Name name="ZAS"/>
+        </TimingPoint>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="H6" location="100"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="H6"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="S603" location="900"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalFunction>laneChange</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="S603"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="D702" location="2000"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="D702"/>
+        </Signal>
+
+    </SP_Points>
+
+    <SP_Areas>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
+                          TAF_TAP_location_abbreviation="ZAS" TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3001</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" text="Zürich Altstetten"/>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlStationSpeed" value="
+					&lt;stationSpeed&gt;
+						&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;125/120&quot;/&gt;
+						&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;125/120&quot;/&gt;
+					&lt;/stationSpeed&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+					&lt;lineSpeed&gt;
+						&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;120&quot;/&gt;
+						&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;120&quot;/&gt;
+					&lt;/lineSpeed&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>departureAuth</NSP_GroupName>
+                <NetworkSpecificParameter name="departureAuth" value="true"/>
+                <NetworkSpecificParameter name="departureAuthText"
+                                          value="sms&lt;br&gt;2-4&lt;br&gt;6,7"/>
+            </TAF_TAP_Location_NSP>
+
+        </TAF_TAP_Location>
+
+    </SP_Areas>
+
+    <SP_ContextInformation>
+        <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1311"/>
+            </Contact>
+        </ContactList>
+
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="4.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="100">
+            <KM_Reference kmRef="4.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="900">
+            <KM_Reference kmRef="3.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2000">
+            <KM_Reference kmRef="2.1"/>
+        </KilometreReferencePoint>
+
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
+                              gradientValue="3.0" gradientDirection="Uphill"
+                              directionOfApplicationOnSP="Nominal"/>
+
+    </SP_ContextInformation>
+
+</SegmentProfile>

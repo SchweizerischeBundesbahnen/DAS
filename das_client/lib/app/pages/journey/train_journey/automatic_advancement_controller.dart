@@ -20,6 +20,7 @@ class AutomaticAdvancementController {
   List<BaseRowBuilder> _renderedRows = [];
   Timer? _scrollTimer;
   double? _lastScrollPosition;
+  DateTime? _lastTouch;
 
   void updateRenderedRows(List<BaseRowBuilder> rows) {
     _renderedRows = rows;
@@ -34,13 +35,18 @@ class AutomaticAdvancementController {
     }
 
     final targetScrollPosition = _calculateScrollPosition();
-    if (_lastScrollPosition != targetScrollPosition && targetScrollPosition != null) {
+    if (_lastScrollPosition != targetScrollPosition &&
+        targetScrollPosition != null &&
+        (_lastTouch == null ||
+            _lastTouch!.add(Duration(seconds: _screenIdleTimeSeconds)).compareTo(DateTime.now()) < 0)) {
       _scrollToPosition(targetScrollPosition);
     }
   }
 
   double? _calculateScrollPosition() {
-    if (_currentJourney == null || _currentJourney?.metadata.currentPosition == null || scrollController.positions.isEmpty) {
+    if (_currentJourney == null ||
+        _currentJourney?.metadata.currentPosition == null ||
+        scrollController.positions.isEmpty) {
       return null;
     }
 
@@ -85,6 +91,7 @@ class AutomaticAdvancementController {
   }
 
   void onTouch() {
+    _lastTouch = DateTime.now();
     if (_settings?.automaticAdvancementActive == true) {
       _scrollTimer?.cancel();
       _scrollTimer = Timer(const Duration(seconds: _screenIdleTimeSeconds), () {

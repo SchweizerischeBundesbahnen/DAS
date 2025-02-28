@@ -29,7 +29,7 @@ class NonStandardTrackEquipmentSegment implements Comparable {
 
   /// checks if the given order is part of this segment.
   bool appliesToOrder(int order) {
-    if(startOrder == null && endOrder == null) {
+    if (startOrder == null && endOrder == null) {
       return true; // applies for whole journey
     } else if (startOrder != null && endOrder != null) {
       return startOrder! <= order && order <= endOrder!;
@@ -87,8 +87,13 @@ extension BaseDataListSegmentExtension on Iterable<BaseData> {
 }
 
 extension NonStandardTrackEquipmentSegmentsExtension on Iterable<NonStandardTrackEquipmentSegment> {
+  bool isInEtcsLevel2Segment(int order) => where((segment) => segment.type.isEtcsL2).appliesToOrder(order).isNotEmpty;
+
   Iterable<NonStandardTrackEquipmentSegment> appliesToOrder(int order) =>
       where((segment) => segment.appliesToOrder(order));
+
+  Iterable<NonStandardTrackEquipmentSegment> appliesToOrderRange(int start, int end) =>
+      where((segment) => segment.appliesToOrder(start) && segment.appliesToOrder(end));
 
   /// Returns all [NonStandardTrackEquipmentSegment] of this list that mark the start of a ETCS level 2 segment
   Iterable<NonStandardTrackEquipmentSegment> get withCABSignalingStart {

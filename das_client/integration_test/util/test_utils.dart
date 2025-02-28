@@ -1,7 +1,8 @@
+import 'package:das_client/app/pages/journey/journey_page.dart';
 import 'package:das_client/app/widgets/table/das_table.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
 
@@ -29,7 +30,9 @@ Finder findTextFieldByLabel(String label) {
 }
 
 Finder findDASTableRowByText(String text) {
-  return find.ancestor(of: find.text(text), matching: find.byKey(DASTable.rowKey));
+  return find.descendant(
+      of: find.byKey(DASTable.tableKey),
+      matching: find.ancestor(of: find.text(text), matching: find.byKey(DASTable.rowKey)));
 }
 
 /// Verifies, that SBB is selected and loads train journey with [trainNumber]
@@ -48,6 +51,12 @@ Future<void> loadTrainJourney(WidgetTester tester, {required String trainNumber}
 
   // wait for train journey to load
   await tester.pumpAndSettle();
+}
+
+Future<void> disconnect(WidgetTester tester) async {
+  final disconnectButton = find.byKey(JourneyPageContent.disconnectKey);
+  await tapElement(tester, disconnectButton);
+  await Future.delayed(const Duration(milliseconds: 50));
 }
 
 Future<void> waitUntilExists(WidgetTester tester, FinderBase<Element> element, {int maxWaitSeconds = 5}) async {
