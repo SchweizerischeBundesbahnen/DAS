@@ -17,7 +17,7 @@ Managing multiple repositories for the backend, web, and mobile applications pre
 Each project operates in isolation, complicating coordination of changes across modules and leading
 to versioning inconsistencies, duplicated documentation, and complex CI/CD processes.
 
-## Influences on the Decision
+## Basic conditions
 
 - The ability to make changes that affect multiple projects in a single commit
   enhances clarity and tracking of related changes.
@@ -35,7 +35,7 @@ to versioning inconsistencies, duplicated documentation, and complex CI/CD proce
 - The tooling used (e.g., GitHub Actions) will continue to evolve to support monorepo practices
   effectively.
 
-## Considered Alternatives
+## Alternatives
 
 ### Multiple Repositories
 
@@ -50,7 +50,7 @@ Clear separation of concerns, easier to manage access control.
 Increased overhead in managing dependencies, potential for versioning conflicts, and scattered
 documentation.
 
-## Decisions
+## Decision
 
 We have decided to implement a monorepo strategy for the backend, web, and mobile applications
 within a single GitHub repository. This structure will facilitate atomic commits, centralized

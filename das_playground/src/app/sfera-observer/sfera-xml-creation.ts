@@ -77,10 +77,17 @@ export const READONLY_MODE: SupportedOperationModes[] = [{
 }];
 
 export const ACTIVE_MODE: SupportedOperationModes[] = [{
-  drivingMode: 'DAS not connected to ATP', connectivity: 'Connected', architecture: 'BoardAdviceCalculation'
+  drivingMode: 'DAS not connected to ATP',
+  connectivity: 'Connected',
+  architecture: 'BoardAdviceCalculation'
 }, {
   drivingMode: 'Read-Only', connectivity: 'Connected', architecture: 'BoardAdviceCalculation'
 }];
+
+export interface G2BEventNSPOptions {
+  warn?: boolean,
+  koa?: 'wait' | 'waitCancelled' | 'waitHide',
+}
 
 export class SferaXmlCreation {
 
@@ -216,6 +223,41 @@ export class SferaXmlCreation {
     return sessionTermination ? `<SessionTermination/>` : '';
   }
 
+  static currentTimestampSferaFormat(date?: Date): string {
+    const millisecondsRemoveRegex = /\.[0-9]*/i;
+    return (date || new Date()).toISOString().replace(millisecondsRemoveRegex, '');
+  }
+
+  static createG2BEventNsp(options: G2BEventNSPOptions): string {
+    const header = this.defaultG2BHeader();
+
+    const warnNsp = options.warn ? this.createNsp('warn') : '';
+    const koaNsp = options.koa ? this.createNsp('koa', options.koa) : '';
+
+
+    return `<?xml version="1.0"?>
+                <SFERA_G2B_EventMessage>
+                  <MessageHeader SFERA_version="${header.sferaVersion}" message_ID="${header.messageId}" timestamp="${header.timestamp}" sourceDevice="${header.sourceDevice}">
+                        <Sender>${header.sender}</Sender>
+                        <Recipient>${header.recipient}</Recipient>
+                  </MessageHeader>
+                  <G2B_EventPayload>
+                    <NetworkSpecificEvent>
+                      <teltsi_Company>1085</teltsi_Company>
+                      <NSP_GroupName>uxTesting</NSP_GroupName>
+                      ${warnNsp}
+                      ${koaNsp}
+                    </NetworkSpecificEvent>
+                  </G2B_EventPayload>
+
+              </SFERA_G2B_EventMessage>
+    `;
+  }
+
+  private static createNsp(name: string, value?: string) {
+    return `<NetworkSpecificParameter name="${name}" value="${value ?? ''}"/>`
+  }
+
   private static defaultHeader(): SferaHeaderOptions {
     return {
       sferaVersion: '3.00',
@@ -227,9 +269,15 @@ export class SferaXmlCreation {
     }
   }
 
-  static currentTimestampSferaFormat(date?: Date): string {
-    const millisecondsRemoveRegex = /\.[0-9]*/i;
-    return (date || new Date()).toISOString().replace(millisecondsRemoveRegex, '');
+  private static defaultG2BHeader(): SferaHeaderOptions {
+    return {
+      sferaVersion: '3.00',
+      messageId: crypto.randomUUID(),
+      timestamp: this.currentTimestampSferaFormat(),
+      sourceDevice: 'TMS',
+      sender: '0085',
+      recipient: '1085',
+    }
   }
 
   private static fillUndefindeHeaderFields(headerOptions: SferaHeaderOptions) {
@@ -241,6 +289,5 @@ export class SferaXmlCreation {
     headerOptions.sourceDevice = headerOptions.sourceDevice || 'DAS';
     return headerOptions;
   }
-
 }
 

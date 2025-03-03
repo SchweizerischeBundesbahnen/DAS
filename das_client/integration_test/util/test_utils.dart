@@ -1,3 +1,4 @@
+import 'package:das_client/app/pages/journey/journey_page.dart';
 import 'package:das_client/app/widgets/table/das_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -50,6 +51,12 @@ Future<void> loadTrainJourney(WidgetTester tester, {required String trainNumber}
 
   // wait for train journey to load
   await tester.pumpAndSettle();
+}
+
+Future<void> disconnect(WidgetTester tester) async {
+  final disconnectButton = find.byKey(JourneyPageContent.disconnectKey);
+  await tapElement(tester, disconnectButton);
+  await Future.delayed(const Duration(milliseconds: 50));
 }
 
 Future<void> waitUntilExists(WidgetTester tester, FinderBase<Element> element, {int maxWaitSeconds = 5}) async {

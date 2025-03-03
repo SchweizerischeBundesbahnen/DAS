@@ -19,7 +19,7 @@ abstract class SferaService {
 
   Future<void> connect(OtnId otnId);
 
-  void disconnect();
+  Future<void> disconnect();
 
   static Future<MessageHeader> messageHeader({required String sender}) async {
     return MessageHeader.create(const Uuid().v4(), Format.sferaTimestamp(DateTime.now()),

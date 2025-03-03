@@ -29,6 +29,8 @@ class JourneyPage extends StatelessWidget {
 class JourneyPageContent extends StatelessWidget {
   const JourneyPageContent({super.key});
 
+  static const disconnectKey = Key('disconnect_button');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,6 +91,7 @@ class JourneyPageContent extends StatelessWidget {
 
   IconButton _trainSelectionButton(BuildContext context) {
     return IconButton(
+      key: disconnectKey,
       icon: const Icon(SBBIcons.train_small),
       onPressed: () => context.trainJourneyCubit.reset(),
     );

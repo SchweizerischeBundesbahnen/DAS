@@ -50,7 +50,7 @@ class _BatteryStatusState extends State<BatteryStatus> {
 
   @override
   Widget build(BuildContext context) {
-    return _batteryLevel != null && _batteryLevel! <= 30
+    return _batteryLevel != null && _batteryLevel! <= 15
         ? SvgPicture.asset(
             key: BatteryStatus.batteryLevelLowIconKey,
             AppAssets.iconBatteryStatusLow,

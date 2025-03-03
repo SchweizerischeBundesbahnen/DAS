@@ -13,6 +13,7 @@ import { environment } from "../../environments/environment";
 import { MessageTableComponent, TableData } from "./message-table/message-table.component";
 import { SbbTableDataSource } from "@sbb-esta/angular/table";
 import {
+  G2BEventNSPOptions,
   READONLY_MODE,
   SferaXmlCreation,
   SpRequestOptions,
@@ -132,138 +133,6 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
   toDom(xmlString: string) {
     const parser = new DOMParser();
     return parser.parseFromString(xmlString, 'text/xml');
-  }
-
-  private getType(document: Document) {
-    return document.firstChild?.nodeName || '';
-  }
-
-  private getInfo(document: Document) {
-
-    const type = this.getType(document);
-
-    if (type == "SFERA_G2B_ReplyMessage") {
-      if (this.isHandshakeAcknowledgement(document)) {
-        return `HS-ACK: ${this.getSelectedArchitecture(document)}, ${this.getSelectedConnectivity(document)}`;
-      } else if (this.isHandshakeReject(document)) {
-        return `HS-REJECT: ${this.getRejectReason(document)}`;
-      } else if (this.isMessageResponse(document)) {
-        const result = this.getMessageResponseResult(document);
-        if (result == 'OK') {
-          return 'OK';
-        } else if (result == 'ERROR') {
-          return `ERROR: ${this.getErrorCode(document)}`;
-        }
-      } else if (this.containsElement(document, 'JourneyProfile')) {
-        return `JP: ${this.getJourneyProfileStatus(document)}, #SP: ${this.getJourneyProfileNumberOfSPs(document)}`;
-      } else if (this.containsElement(document, 'SegmentProfile')) {
-        return this.getSegmentProfiles(document);
-      } else if (this.containsElement(document, 'TrainCharacteristics')) {
-        return this.getTrainCharacteristics(document);
-      } else if (this.containsElement(document, 'RelatedTrainInformation')) {
-        return 'RelatedTrainInformation';
-      }
-    } else if (type == "SFERA_B2G_RequestMessage") {
-      if (this.isHandshakeRequest(document)) {
-        return `HS-REQUEST`;
-      }
-
-      const requestTypes = ['JP_Request', 'SP_Request', 'TC_Request', 'RelatedTrainInformationRequest']
-      const requestedTypes: string[] = [];
-
-      for (const requestType of requestTypes) {
-        if (this.containsElement(document, requestType)) {
-          requestedTypes.push(requestType)
-        }
-      }
-
-      return requestedTypes.join(", ");
-    } else if (type == "SFERA_G2B_EventMessage") {
-      if (this.containsElement(document, 'RelatedTrainInformation'))
-        return 'RelatedTrainInformation';
-      if (this.containsElement(document, 'JourneyProfile')) {
-        return `JP Update: ${this.getJourneyProfileStatus(document)}, #SP: ${this.getJourneyProfileNumberOfSPs(document)}`;
-      }
-    } else if (type == "SFERA_B2G_EventMessage") {
-      if (this.containsElement(document, 'SessionTermination'))
-        return 'SessionTermination';
-    }
-    return "unknown";
-  }
-
-  private isMessageResponse(document: Document) {
-    return document.getElementsByTagName("G2B_MessageResponse")?.length > 0;
-  }
-
-  private getMessageResponseResult(document: Document) {
-    return document.getElementsByTagName("G2B_MessageResponse").item(0)?.getAttribute("result") || undefined;
-  }
-
-  private getErrorCode(document: Document) {
-    return document.getElementsByTagName("G2B_Error").item(0)?.getAttribute("errorCode") || undefined;
-  }
-
-  private isHandshakeReject(document: Document): boolean {
-    return document.getElementsByTagName("HandshakeReject")?.length > 0;
-  }
-
-  private isHandshakeAcknowledgement(document: Document): boolean {
-    return document.getElementsByTagName("HandshakeAcknowledgement")?.length > 0;
-  }
-
-  private isHandshakeRequest(document: Document) {
-    return document.getElementsByTagName("HandshakeRequest")?.length > 0;
-  }
-
-  private getSelectedArchitecture(document: Document) {
-    return document.getElementsByTagName("DAS_OperatingModeSelected").item(0)?.getAttribute("DAS_architecture") || undefined;
-  }
-
-  private getSelectedConnectivity(document: Document) {
-    return document.getElementsByTagName("DAS_OperatingModeSelected").item(0)?.getAttribute("DAS_connectivity") || undefined;
-  }
-
-  private getRejectReason(document: Document) {
-    return document.getElementsByTagName("HandshakeReject").item(0)?.getAttribute("handshakeRejectReason") || undefined;
-  }
-
-  private containsElement(document: Document, elementName: string) {
-    return document.getElementsByTagName(elementName)?.length > 0;
-  }
-
-  private getJourneyProfileStatus(document: Document) {
-    return document.getElementsByTagName("JourneyProfile").item(0)?.getAttribute("JP_Status") || undefined;
-  }
-
-
-  private getJourneyProfileNumberOfSPs(document: Document) {
-    return document.getElementsByTagName("SegmentProfileReference")?.length || undefined;
-  }
-
-  private getSegmentProfiles(document: Document) {
-    const segmentProfiles = Array.from(document.getElementsByTagName("SegmentProfile"));
-    return segmentProfiles.map(segmentProfile => `SP ${this.getSegmentProfileId(segmentProfile)}: ${this.getSegmentProfileStatus(segmentProfile)}, Length: ${this.getSegmentProfileLength(segmentProfile)}`).join(', ')
-  }
-
-  private getTrainCharacteristics(document: Document) {
-    const trainCharacteristics = Array.from(document.getElementsByTagName("TrainCharacteristics"));
-    return trainCharacteristics.map(trainCharacteristic => `TC ${this.getTrainCharacteristicsId(trainCharacteristic)}`).join(', ');
-  }
-
-  private getSegmentProfileStatus(element: Element) {
-    return element.getAttribute("SP_Status") || undefined;
-  }
-
-  private getSegmentProfileLength(element: Element) {
-    return element.getAttribute("SP_Length") || undefined;
-  }
-
-  private getSegmentProfileId(element: Element) {
-    return element.getAttribute("SP_ID");
-  }
-
-  private getTrainCharacteristicsId(element: Element) {
-    return element.getAttribute("TC_ID");
   }
 
   sendXml() {
@@ -481,5 +350,141 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
       companyCode: this.companyControl.value,
       date: this.dateControl.value,
     }).subscribe()
+  }
+
+  sendG2BEvent(options: G2BEventNSPOptions) {
+    const event = SferaXmlCreation.createG2BEventNsp(options);
+    this.mqService.publish(this.eventTopic!, event);
+  }
+
+  private getType(document: Document) {
+    return document.firstChild?.nodeName || '';
+  }
+
+  private getInfo(document: Document) {
+
+    const type = this.getType(document);
+
+    if (type == "SFERA_G2B_ReplyMessage") {
+      if (this.isHandshakeAcknowledgement(document)) {
+        return `HS-ACK: ${this.getSelectedArchitecture(document)}, ${this.getSelectedConnectivity(document)}`;
+      } else if (this.isHandshakeReject(document)) {
+        return `HS-REJECT: ${this.getRejectReason(document)}`;
+      } else if (this.isMessageResponse(document)) {
+        const result = this.getMessageResponseResult(document);
+        if (result == 'OK') {
+          return 'OK';
+        } else if (result == 'ERROR') {
+          return `ERROR: ${this.getErrorCode(document)}`;
+        }
+      } else if (this.containsElement(document, 'JourneyProfile')) {
+        return `JP: ${this.getJourneyProfileStatus(document)}, #SP: ${this.getJourneyProfileNumberOfSPs(document)}`;
+      } else if (this.containsElement(document, 'SegmentProfile')) {
+        return this.getSegmentProfiles(document);
+      } else if (this.containsElement(document, 'TrainCharacteristics')) {
+        return this.getTrainCharacteristics(document);
+      } else if (this.containsElement(document, 'RelatedTrainInformation')) {
+        return 'RelatedTrainInformation';
+      }
+    } else if (type == "SFERA_B2G_RequestMessage") {
+      if (this.isHandshakeRequest(document)) {
+        return `HS-REQUEST`;
+      }
+
+      const requestTypes = ['JP_Request', 'SP_Request', 'TC_Request', 'RelatedTrainInformationRequest']
+      const requestedTypes: string[] = [];
+
+      for (const requestType of requestTypes) {
+        if (this.containsElement(document, requestType)) {
+          requestedTypes.push(requestType)
+        }
+      }
+
+      return requestedTypes.join(", ");
+    } else if (type == "SFERA_G2B_EventMessage") {
+      if (this.containsElement(document, 'RelatedTrainInformation'))
+        return 'RelatedTrainInformation';
+      if (this.containsElement(document, 'JourneyProfile')) {
+        return `JP Update: ${this.getJourneyProfileStatus(document)}, #SP: ${this.getJourneyProfileNumberOfSPs(document)}`;
+      }
+    } else if (type == "SFERA_B2G_EventMessage") {
+      if (this.containsElement(document, 'SessionTermination'))
+        return 'SessionTermination';
+    }
+    return "unknown";
+  }
+
+  private isMessageResponse(document: Document) {
+    return document.getElementsByTagName("G2B_MessageResponse")?.length > 0;
+  }
+
+  private getMessageResponseResult(document: Document) {
+    return document.getElementsByTagName("G2B_MessageResponse").item(0)?.getAttribute("result") || undefined;
+  }
+
+  private getErrorCode(document: Document) {
+    return document.getElementsByTagName("G2B_Error").item(0)?.getAttribute("errorCode") || undefined;
+  }
+
+  private isHandshakeReject(document: Document): boolean {
+    return document.getElementsByTagName("HandshakeReject")?.length > 0;
+  }
+
+  private isHandshakeAcknowledgement(document: Document): boolean {
+    return document.getElementsByTagName("HandshakeAcknowledgement")?.length > 0;
+  }
+
+  private isHandshakeRequest(document: Document) {
+    return document.getElementsByTagName("HandshakeRequest")?.length > 0;
+  }
+
+  private getSelectedArchitecture(document: Document) {
+    return document.getElementsByTagName("DAS_OperatingModeSelected").item(0)?.getAttribute("DAS_architecture") || undefined;
+  }
+
+  private getSelectedConnectivity(document: Document) {
+    return document.getElementsByTagName("DAS_OperatingModeSelected").item(0)?.getAttribute("DAS_connectivity") || undefined;
+  }
+
+  private getRejectReason(document: Document) {
+    return document.getElementsByTagName("HandshakeReject").item(0)?.getAttribute("handshakeRejectReason") || undefined;
+  }
+
+  private containsElement(document: Document, elementName: string) {
+    return document.getElementsByTagName(elementName)?.length > 0;
+  }
+
+  private getJourneyProfileStatus(document: Document) {
+    return document.getElementsByTagName("JourneyProfile").item(0)?.getAttribute("JP_Status") || undefined;
+  }
+
+  private getJourneyProfileNumberOfSPs(document: Document) {
+    return document.getElementsByTagName("SegmentProfileReference")?.length || undefined;
+  }
+
+  private getSegmentProfiles(document: Document) {
+    const segmentProfiles = Array.from(document.getElementsByTagName("SegmentProfile"));
+    return segmentProfiles.map(segmentProfile => `SP ${this.getSegmentProfileId(segmentProfile)}: ${this.getSegmentProfileStatus(segmentProfile)}, Length: ${this.getSegmentProfileLength(segmentProfile)}`).join(', ')
+  }
+
+  private getTrainCharacteristics(document: Document) {
+    const trainCharacteristics = Array.from(document.getElementsByTagName("TrainCharacteristics"));
+    return trainCharacteristics.map(trainCharacteristic => `TC ${this.getTrainCharacteristicsId(trainCharacteristic)}`).join(', ');
+  }
+
+  private getSegmentProfileStatus(element: Element) {
+    return element.getAttribute("SP_Status") || undefined;
+  }
+
+  private getSegmentProfileLength(element: Element) {
+    return element.getAttribute("SP_Length") || undefined;
+  }
+
+  private getSegmentProfileId(element: Element) {
+    return element.getAttribute("SP_ID");
+  }
+
+  private getTrainCharacteristicsId(element: Element) {
+    return element.getAttribute("TC_ID");
   }
 }

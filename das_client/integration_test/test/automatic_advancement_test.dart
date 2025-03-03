@@ -25,6 +25,8 @@ void main() {
         await waitUntilExists(tester,
             find.descendant(of: findDASTableRowByText(location), matching: find.byKey(RouteChevron.chevronKey)));
       }
+
+      await disconnect(tester);
     });
 
     testWidgets('check scrolling after idle time', (tester) async {
@@ -51,6 +53,8 @@ void main() {
 
       // Check if the last row is visible
       expect(findDASTableRowByText('Olten'), findsAny);
+
+      await disconnect(tester);
     });
 
     testWidgets('check scrolling to position if automatic scrolling gets enabled', (tester) async {
@@ -78,6 +82,8 @@ void main() {
 
       // Check if last row is visible
       expect(findDASTableRowByText('Olten'), findsAny);
+
+      await disconnect(tester);
     });
 
     testWidgets('check not scrolling if automatic advancement is off', (tester) async {
@@ -102,6 +108,8 @@ void main() {
       // Check Bern and B1 still visible
       expect(findDASTableRowByText('Bern'), findsAny);
       expect(findDASTableRowByText('B1'), findsAny);
+
+      await disconnect(tester);
     });
 
     testWidgets('check if automatic advancement is enabled by default', (tester) async {
@@ -125,6 +133,8 @@ void main() {
           findsOneWidget);
       expect(find.descendant(of: headerFinder, matching: find.text(l10n.p_train_journey_header_button_pause)),
           findsNothing);
+
+      await disconnect(tester);
     });
 
     testWidgets('check sticky footer is displayed', (tester) async {
@@ -142,6 +152,8 @@ void main() {
       // Check Bern & Burgdorf are displayed
       expect(findDASTableRowByText('Bern'), findsAny);
       expect(find.text('Burgdorf'), findsAny);
+
+      await disconnect(tester);
     });
   });
 }
