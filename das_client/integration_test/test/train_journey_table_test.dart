@@ -30,7 +30,7 @@ void main() {
   group('train journey table test', () {
     testWidgets('test not find any curves without speed', (tester) async {
 
-      //TODO implement test
+      //TODO implement test and test if finally all is merged together.
 
       await prepareAndStartApp(tester);
 
