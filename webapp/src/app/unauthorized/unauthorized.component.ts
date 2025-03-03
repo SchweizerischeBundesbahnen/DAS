@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { SbbNotificationDirective } from "@sbb-esta/lyne-angular/notification";
+import { SbbNotification } from "@sbb-esta/lyne-angular/notification";
 
 
 @Component({
   selector: 'app-unauthorized',
   standalone: true,
   imports: [
-    SbbNotificationDirective
+    SbbNotification
   ],
   templateUrl: './unauthorized.component.html',
   styleUrl: './unauthorized.component.scss'

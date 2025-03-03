@@ -7,22 +7,22 @@ import { firstValueFrom, map, Subscription } from "rxjs";
 import { CommonModule } from "@angular/common";
 import { MqttConnectionState } from "ngx-mqtt";
 import { OidcSecurityService } from "angular-auth-oidc-client";
-import { SbbButtonDirective } from "@sbb-esta/lyne-angular/button/button";
-import { SbbCheckboxDirective } from "@sbb-esta/lyne-angular/checkbox/checkbox";
-import { SbbFormFieldDirective } from "@sbb-esta/lyne-angular/form-field/form-field";
+import { SbbButton } from "@sbb-esta/lyne-angular/button/button";
+import { SbbCheckbox } from "@sbb-esta/lyne-angular/checkbox/checkbox";
+import { SbbFormField } from "@sbb-esta/lyne-angular/form-field/form-field";
 
 @Component({
-    selector: 'app-sfera-observer',
-    imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        SimpleXmlComponent,
-      SbbButtonDirective,
-      SbbCheckboxDirective,
-      SbbFormFieldDirective
-    ],
-    templateUrl: './sfera-observer.component.html',
-    styleUrl: './sfera-observer.component.scss'
+  selector: 'app-sfera-observer',
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    SimpleXmlComponent,
+    SbbButton,
+    SbbCheckbox,
+    SbbFormField
+  ],
+  templateUrl: './sfera-observer.component.html',
+  styleUrl: './sfera-observer.component.scss'
 })
 export class SferaObserverComponent implements OnDestroy {
   companyControl = new FormControl('1088', {nonNullable: true});

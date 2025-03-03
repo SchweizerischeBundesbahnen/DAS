@@ -1,23 +1,23 @@
-<sbb-header expanded="">
-  <sbb-header-button icon-name="hamburger-menu-small" expand-from="small"
-                     data-testid="navigation-trigger" id="navigation-trigger-1">
+<sbb-header expanded>
+  <sbb-header-button data-testid="navigation-trigger" expand-from="small"
+                     icon-name="hamburger-menu-small" id="navigation-trigger-1">
 
   </sbb-header-button>
   <sbb-navigation data-testid="navigation" id="navigation" trigger="navigation-trigger-1">
     <sbb-navigation-marker id="nav-marker">
-      <sbb-navigation-button id="nav-1" data-testid="navigation-section-trigger-1"
-                             routerLink="/sfera"
-                             routerLinkActive="sbb-active"
-                             [routerLinkActiveOptions]="{
+      <sbb-navigation-button [routerLinkActiveOptions]="{
                 paths: 'exact',
                 fragment: 'ignored',
                 queryParams: 'ignored',
                 matrixParams: 'ignored',
-              }"
+              }" data-testid="navigation-section-trigger-1"
+                             id="nav-1"
+                             routerLink="/sfera"
+                             routerLinkActive="sbb-active"
       >
         SFERA
       </sbb-navigation-button>
-      <sbb-navigation-button id="nav-2" data-testid="navigation-section-trigger-2"
+      <sbb-navigation-button data-testid="navigation-section-trigger-2" id="nav-2"
                              routerLink="/mqtt"
                              routerLinkActive="sbb-active">
         MQTT
@@ -53,7 +53,7 @@
       <sbb-menu-button (click)="logout()" icon-name="exit-small">Sign out</sbb-menu-button>
     </sbb-menu>
   }
-  <sbb-header-button icon-name="globe-small" id="language-menu-trigger" class="last-element">
+  <sbb-header-button class="last-element" icon-name="globe-small" id="language-menu-trigger">
     English
   </sbb-header-button>
   <sbb-menu trigger="language-menu-trigger">

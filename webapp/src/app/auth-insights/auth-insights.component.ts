@@ -1,20 +1,20 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from "../auth.service";
 import { CommonModule } from "@angular/common";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import { firstValueFrom, map } from "rxjs";
 import { OidcSecurityService } from "angular-auth-oidc-client";
-import { SbbFormFieldDirective } from "@sbb-esta/lyne-angular/form-field/form-field";
+import { SbbFormField } from "@sbb-esta/lyne-angular/form-field/form-field";
 
 @Component({
-    selector: 'app-auth-insights',
-    imports: [
-        CommonModule,
-        ReactiveFormsModule,
-      SbbFormFieldDirective
-    ],
-    templateUrl: './auth-insights.component.html',
-    styleUrl: './auth-insights.component.scss'
+  selector: 'app-auth-insights',
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    SbbFormField
+  ],
+  templateUrl: './auth-insights.component.html',
+  styleUrl: './auth-insights.component.scss'
 })
 export class AuthInsightsComponent {
 
@@ -24,15 +24,15 @@ export class AuthInsightsComponent {
 
   exchangeClaims?: string;
 
+  constructor(private oidcSecurityService: OidcSecurityService, private authService: AuthService) {
+  }
+
   get claims() {
     return this.oidcSecurityService.getUserData();
   }
 
   get scopes() {
     return this.oidcSecurityService.getAuthenticationResult().pipe(map((data) => data?.scope));
-  }
-
-  constructor(private oidcSecurityService: OidcSecurityService, private authService: AuthService) {
   }
 
   async exchange() {

@@ -1,34 +1,32 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, signal, Signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, RouterModule } from "@angular/router";
 import { environment } from "../environment/environment";
 import packageJson from '../../package.json';
 import { OidcSecurityService } from "angular-auth-oidc-client";
-import { SbbMenuDirective } from "@sbb-esta/lyne-angular/menu/menu";
-import { SbbNavigationDirective } from "@sbb-esta/lyne-angular/navigation/navigation";
-import { SbbHeaderDirective } from "@sbb-esta/lyne-angular/header/header";
-import { SbbLinkDirective } from "@sbb-esta/lyne-angular/link/link";
-import { SbbMenuButtonDirective } from "@sbb-esta/lyne-angular/menu/menu-button";
-import { SbbHeaderButtonDirective } from "@sbb-esta/lyne-angular/header/header-button";
-import { SbbMenuLinkDirective } from "@sbb-esta/lyne-angular/menu/menu-link";
-import { SbbNavigationMarkerDirective } from "@sbb-esta/lyne-angular/navigation/navigation-marker";
-import { SbbHeaderLinkDirective } from "@sbb-esta/lyne-angular/header/header-link";
+import { SbbHeader } from "@sbb-esta/lyne-angular/header/header";
+import { SbbMenuButton } from "@sbb-esta/lyne-angular/menu/menu-button";
+import { SbbMenu } from "@sbb-esta/lyne-angular/menu/menu";
+import { SbbHeaderButton } from "@sbb-esta/lyne-angular/header/header-button";
+import { SbbMenuLink } from "@sbb-esta/lyne-angular/menu/menu-link";
+import { SbbHeaderLink } from "@sbb-esta/lyne-angular/header/header-link";
+import { SbbNavigationMarker } from "@sbb-esta/lyne-angular/navigation/navigation-marker";
+import { SbbNavigation } from "@sbb-esta/lyne-angular/navigation/navigation";
 
 @Component({
-    selector: 'app-root',
-    imports: [
-        RouterModule,
-      SbbMenuDirective,
-      SbbNavigationDirective,
-      SbbHeaderDirective,
-      SbbMenuButtonDirective,
-      SbbHeaderButtonDirective,
-      SbbMenuLinkDirective,
-      SbbNavigationMarkerDirective,
-      SbbHeaderLinkDirective
-
-    ],
-    templateUrl: './app.component.html',
-    styleUrl: './app.component.scss'
+  selector: 'app-root',
+  imports: [
+    RouterModule,
+    SbbHeader,
+    SbbMenuButton,
+    SbbMenu,
+    SbbHeaderButton,
+    SbbMenuLink,
+    SbbHeaderLink,
+    SbbNavigationMarker,
+    SbbNavigation
+  ],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.scss'
 })
 export class AppComponent {
   version = packageJson.version;
