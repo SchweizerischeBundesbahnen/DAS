@@ -87,7 +87,7 @@ public class SferaApplicationService {
 
         var correlationId = UUID.randomUUID();
         requestContextRepository.storeRequestContext(correlationId, requestContext);
-        var journeyProfile = journeyProfileRepository.getJourneyProfile(trainIdentification);
+        var journeyProfile = journeyProfileRepository.getJourneyProfile(trainIdentification, registrationService.getTimestamp(requestContext.clientId()));
         publishJourneyProfile(journeyProfile, correlationId, requestContext);
     }
 
