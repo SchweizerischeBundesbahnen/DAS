@@ -1,81 +1,82 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd"
-                SP_ID="T1_3" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="20000" SP_Status="Valid">
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd" SP_ID="T1_3" SP_VersionMajor="2"
+                SP_VersionMinor="0" SP_Length="20000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
     <SP_Points>
         <TimingPoint TP_ID="Biel/Bienne" location="4500">
-            <TP_Name name="Biel/Bienne"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>3010</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3010</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="Biel/Bienne"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Lengnau" location="5000">
-            <TP_Name name="Lengnau"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>3011</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3011</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="Lengnau"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Grenchen Süd" location="5500">
-            <TP_Name name="Grenchen Süd"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>3012</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3012</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="Grenchen Süd"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Solothurn" location="6000">
-            <TP_Name name="Solothurn"/>
             <TAF_TAP_LocationReference>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>3013</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3013</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="Solothurn"/>
         </TimingPoint>
     </SP_Points>
     <SP_Areas>
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="BI"
-            TAF_TAP_location_type="station">
+                          TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>3010</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3010</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Biel/Bienne"/>
+            <TAF_TAP_LocationName language="de" text="Biel/Bienne"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="LEN"
-            TAF_TAP_location_type="station">
+                          TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>3011</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3011</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Lengnau"/>
+            <TAF_TAP_LocationName language="de" text="Lengnau"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="GRN"
-            TAF_TAP_location_type="station">
+                          TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>3012</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3012</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Grenchen Süd"/>
+            <TAF_TAP_LocationName language="de" text="Grenchen Süd"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="SOLO"
-            TAF_TAP_location_type="station">
+                          TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
-                <CountryCodeISO>CH</CountryCodeISO>
-                <LocationPrimaryCode>3013</LocationPrimaryCode>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3013</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" messageString="Solothurn"/>
+            <TAF_TAP_LocationName language="de" text="Solothurn"/>
         </TAF_TAP_Location>
 
-        <NetworkSpecificArea startEndQualifier="WholeSP" name="nonStandardTrackEquipment">
+        <NetworkSpecificArea startEndQualifier="WholeSP">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
             <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingPossible"/>
         </NetworkSpecificArea>
     </SP_Areas>

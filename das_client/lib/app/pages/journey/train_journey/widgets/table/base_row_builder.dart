@@ -12,6 +12,7 @@ import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/speed_data.dart';
+import 'package:das_client/model/journey/track_equipment_segment.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -131,6 +132,11 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   }
 
   DASTableCell brakedWeightSpeedCell(BuildContext context) {
+    final inEtcsLevel2Segment = metadata.nonStandardTrackEquipmentSegments.isInEtcsLevel2Segment(data.order);
+    if (inEtcsLevel2Segment && data.type != Datatype.cabSignaling) {
+      return DASTableCell.empty();
+    }
+
     return speedCell(data.speedData, DASTableCell(child: Text('XX'), alignment: Alignment.center));
   }
 
@@ -193,7 +199,10 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
 
   AdditionalSpeedRestriction? getAdditionalSpeedRestriction() {
     return metadata.additionalSpeedRestrictions
-        .where((it) => it.orderFrom <= data.order && it.orderTo >= data.order)
+        .where((it) =>
+            it.orderFrom <= data.order &&
+            it.orderTo >= data.order &&
+            it.isDisplayed(metadata.nonStandardTrackEquipmentSegments))
         .firstOrNull;
   }
 

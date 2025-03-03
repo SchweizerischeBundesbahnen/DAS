@@ -1,15 +1,13 @@
 <?xml version="1.0"?>
-<JourneyProfile JP_Status="Valid" JP_Version="1"
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:noNamespaceSchemaLocation="../../SFERA_3.0_custom.xsd">
+<JourneyProfile JP_Status="Valid" JP_Version="2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd">
     <TrainIdentification>
         <OTN_ID>
-            <Company>1085</Company>
-            <OperationalTrainNumber>T1</OperationalTrainNumber>
-            <StartDate>2024-12-11</StartDate>
+            <teltsi_Company>1085</teltsi_Company>
+            <teltsi_OperationalTrainNumber>T1</teltsi_OperationalTrainNumber>
+            <teltsi_StartDate>2024-12-11</teltsi_StartDate>
         </OTN_ID>
     </TrainIdentification>
-    <SegmentProfileList SP_ID="T1_1" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T1_1" SP_VersionMajor="2" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -33,8 +31,11 @@
                 <TP_ID_Reference TP_ID="Gilly-Bursinel"/>
             </TimingPointReference>
         </TimingPointConstraints>
-    </SegmentProfileList>
-    <SegmentProfileList SP_ID="T1_2" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <TrainCharacteristicsRef TC_ID="T1_1" TC_VersionMajor="1" TC_VersionMinor="1" location="0">
+            <TC_RU_ID>1185</TC_RU_ID>
+        </TrainCharacteristicsRef>
+    </SegmentProfileReference>
+    <SegmentProfileReference SP_ID="T1_2" SP_VersionMajor="2" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -58,8 +59,8 @@
                 <TP_ID_Reference TP_ID="Neuchâtel"/>
             </TimingPointReference>
         </TimingPointConstraints>
-    </SegmentProfileList>
-    <SegmentProfileList SP_ID="T1_3" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    </SegmentProfileReference>
+    <SegmentProfileReference SP_ID="T1_3" SP_VersionMajor="2" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -83,8 +84,8 @@
                 <TP_ID_Reference TP_ID="Solothurn"/>
             </TimingPointReference>
         </TimingPointConstraints>
-    </SegmentProfileList>
-    <SegmentProfileList SP_ID="T1_4" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    </SegmentProfileReference>
+    <SegmentProfileReference SP_ID="T1_4" SP_VersionMajor="2" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -108,8 +109,8 @@
                 <TP_ID_Reference TP_ID="Aarau"/>
             </TimingPointReference>
         </TimingPointConstraints>
-    </SegmentProfileList>
-    <SegmentProfileList SP_ID="T1_5" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    </SegmentProfileReference>
+    <SegmentProfileReference SP_ID="T1_5" SP_VersionMajor="2" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -138,5 +139,5 @@
                 <TP_ID_Reference TP_ID="Flughafen"/>
             </TimingPointReference>
         </TimingPointConstraints>
-    </SegmentProfileList>
+    </SegmentProfileReference>
 </JourneyProfile>

@@ -1,4 +1,5 @@
 import 'package:das_client/model/journey/base_data.dart';
+import 'package:das_client/model/journey/track_equipment_segment.dart';
 
 class AdditionalSpeedRestriction {
   const AdditionalSpeedRestriction(
@@ -12,6 +13,22 @@ class AdditionalSpeedRestriction {
 
   bool needsEndMarker(List<BaseData> journeyData) {
     return journeyData.where((it) => it.order >= orderFrom && it.order <= orderTo).length > 1;
+  }
+
+  /// Checks if this ASR should be displayed in the train journey.
+  ///
+  /// returns false if ASR from 40km/h is completely in the ETCS Level 2 area. Otherwise true
+  bool isDisplayed(List<NonStandardTrackEquipmentSegment> trackEquipmentSegments) {
+    final insideEtcsL2Segments = trackEquipmentSegments
+        .where((segment) => segment.type.isEtcsL2)
+        .appliesToOrderRange(orderFrom, orderTo)
+        .isNotEmpty;
+
+    if (insideEtcsL2Segments && speed != null && speed! >= 40) {
+      return false;
+    }
+
+    return true;
   }
 
   @override

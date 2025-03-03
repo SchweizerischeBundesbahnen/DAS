@@ -1,0 +1,31 @@
+<h2>SFERA discover</h2>
+@if (isError) {
+  <sbb-notification type="error">Error: Could not fetch sessions! Is VPN turned on?
+  </sbb-notification>
+}
+<p>refreshed at: {{ refreshedAt | date:'dd.MM.yyyy HH:mm:ss' }}</p>
+<sbb-table-wrapper>
+  <table class="sbb-table">
+    <thead>
+    <tr>
+      <th scope="col">Start timestamp</th>
+      <th scope="col">Operational number</th>
+      <th scope="col">Client ID</th>
+      <th scope="col">Company code</th>
+      <th scope="col">Operational date</th>
+    </tr>
+    </thead>
+
+    <tbody>
+      @for (session of sessions; track session) {
+        <tr (click)="openObserver(session)">
+          <td>{{ session.timestamp | date:'dd.MM.yyyy HH:mm:ss' }}</td>
+          <td>{{ session.operationalNumber }}</td>
+          <td>{{ session.clientId }}</td>
+          <td>{{ session.companyCode }}</td>
+          <td>{{ session.date }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</sbb-table-wrapper>

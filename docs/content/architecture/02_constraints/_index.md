@@ -6,3 +6,7 @@ cascade:
 next: /architecture/03_context
 prev: /architecture/01_introduction
 ---
+
+{{< callout type="info" >}}
+Restrictions and guidelines for design, implementation and development process.
+{{< /callout >}}

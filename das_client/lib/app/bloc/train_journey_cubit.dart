@@ -106,6 +106,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
   void reset() {
     if (state is BaseTrainJourneyState) {
       Fimber.i('Resetting TrainJourney cubit in state $state');
+      _sferaService.disconnect();
       emit(SelectingTrainJourneyState(
           trainNumber: (state as BaseTrainJourneyState).trainNumber,
           date: DateTime.now(),

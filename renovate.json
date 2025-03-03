@@ -3,18 +3,28 @@
   "extends": [
     "config:recommended"
   ],
+  "additionalBranchPrefix": "{{parentDir}}-",
   "packageRules": [
     {
-      "matchManagers": ["pub"],
+      "matchManagers": [
+        "pub"
+      ],
       "groupName": "auto_route",
-      "matchPackagePrefixes": ["auto_route", "auto_route_generator"]
+      "matchPackageNames": [
+        "auto_route{/,}**",
+        "auto_route_generator{/,}**"
+      ]
     },
     {
-      "matchPaths": ["webapp/**"],
+      "matchFileNames": [
+        "das_playground/**"
+      ],
       "enabled": false
     }
   ],
-  "schedule": ["before 7am on Thursday"],
+  "schedule": [
+    "before 7am on Thursday"
+  ],
   "prHourlyLimit": 0,
   "prConcurrentLimit": 0
 }

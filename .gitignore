@@ -2,9 +2,9 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-sfera-mock/src/main/java/generated/**
-sfera-mock/src/main/java/META-INF/JAXB/**
-sfera-mock/src/main/java/org/w3/_2001/xmlschema/**
+sfera_mock/src/main/java/generated/**
+sfera_mock/src/main/java/META-INF/JAXB/**
+sfera_mock/src/main/java/org/w3/_2001/xmlschema/**
 *.p12
 *.env
 
