@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CABSignalingRow extends BaseRowBuilder<CABSignaling> {
-  static const Key cabSignalingStartIconKey = Key('cab_signaling_start_icon_key');
-  static const Key cabSignalingEndIconKey = Key('cab_signaling_end_icon_key');
+  static const Key cabSignalingStartIconKey = Key('cabSignalingStartIcon');
+  static const Key cabSignalingEndIconKey = Key('cabSignalingEndIcon');
 
   const CABSignalingRow({
     required super.metadata,

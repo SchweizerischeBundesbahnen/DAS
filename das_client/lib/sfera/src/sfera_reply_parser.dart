@@ -1,6 +1,7 @@
 import 'package:das_client/sfera/src/model/additional_speed_restriction.dart';
 import 'package:das_client/sfera/src/model/balise.dart';
 import 'package:das_client/sfera/src/model/balise_group.dart';
+import 'package:das_client/sfera/src/model/communication_network.dart';
 import 'package:das_client/sfera/src/model/connection_track.dart';
 import 'package:das_client/sfera/src/model/connection_track_description.dart';
 import 'package:das_client/sfera/src/model/current_limitation.dart';
@@ -242,6 +243,8 @@ class SferaReplyParser {
         return LevelCrossingArea(type: type, attributes: attributes, children: children, value: value);
       case PositionSpeed.elementType:
         return PositionSpeed(type: type, attributes: attributes, children: children, value: value);
+      case CommunicationNetwork.elementType:
+        return CommunicationNetwork(type: type, attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElement(type: type, attributes: attributes, children: children, value: value);
     }

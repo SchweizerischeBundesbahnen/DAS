@@ -6,6 +6,7 @@ import 'package:das_client/model/journey/bracket_station.dart';
 import 'package:das_client/model/journey/bracket_station_segment.dart';
 import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
+import 'package:das_client/model/journey/communication_network_change.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/metadata.dart';
@@ -95,6 +96,7 @@ class SferaModelMapper {
         nonStandardTrackEquipmentSegments: trackEquipmentSegments,
         bracketStationSegments: _parseBracketStationSegments(servicePoints),
         availableBreakSeries: _parseAvailableBreakSeries(journeyData),
+        communicationNetworkChanges: _parseCommunicationNetworkChanges(segmentProfileReferences, segmentProfiles),
         breakSeries: trainCharacteristic?.tcFeatures.trainCategoryCode != null &&
                 trainCharacteristic?.tcFeatures.brakedWeightPercentage != null
             ? BreakSeries(
@@ -257,6 +259,29 @@ class SferaModelMapper {
     return cabSignalingEnds;
   }
 
+  static List<CommunicationNetworkChange> _parseCommunicationNetworkChanges(
+      List<SegmentProfileReference> segmentProfileReferences, List<SegmentProfile> segmentProfiles) {
+    return segmentProfileReferences
+        .mapIndexed((index, reference) {
+          final segmentProfile = segmentProfiles.firstMatch(reference);
+          final communicationNetworks = segmentProfile.contextInformation?.communicationNetworks;
+          return communicationNetworks?.map((element) {
+            if (element.startLocation != element.endLocation) {
+              Fimber.w(
+                  'CommunicationNetwork found without identical location (start=${element.startLocation} end=${element.endLocation}).');
+            }
+
+            return CommunicationNetworkChange(
+              type: element.communicationNetworkType.communicationNetworkType,
+              order: calculateOrder(index, element.startLocation),
+            );
+          });
+        })
+        .nonNulls
+        .flattened
+        .toList();
+  }
+
   static Set<BreakSeries> _parseAvailableBreakSeries(List<BaseData> journeyData) {
     return journeyData
         .expand((it) => [...it.speedData?.speeds ?? [], ...it.localSpeedData?.speeds ?? []])
@@ -309,9 +334,6 @@ class SferaModelMapper {
             endSegmentIndex = segmentIndex;
             break;
           case StartEndQualifier.wholeSp:
-            break;
-          case null:
-            Fimber.w('Received tramArea with startEndQualifier=null');
             break;
         }
 

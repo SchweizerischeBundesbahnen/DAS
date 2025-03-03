@@ -1,4 +1,5 @@
 import 'package:das_client/model/journey/base_data.dart';
+import 'package:das_client/model/journey/segment.dart';
 import 'package:das_client/model/journey/track_equipment_segment.dart';
 
 class AdditionalSpeedRestriction {

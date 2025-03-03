@@ -1,6 +1,6 @@
 import 'package:das_client/app/widgets/das_text_styles.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class DepartureAuthorization extends StatelessWidget {
   const DepartureAuthorization({super.key});
@@ -11,7 +11,7 @@ class DepartureAuthorization extends StatelessWidget {
       children: [
         const Icon(SBBIcons.circle_tick_small),
         const SizedBox(width: sbbDefaultSpacing * 0.5),
-        Text('SMS', style: DASTextStyles.largeRoman),
+        Text('SMS', style: DASTextStyles.xLargeRoman),
       ],
     );
   }
