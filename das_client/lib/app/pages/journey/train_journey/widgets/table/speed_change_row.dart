@@ -7,7 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class SpeedChangeRow extends BaseRowBuilder<SpeedChange> {
-  static const Key kmIndicatorKey = Key('km_indicator_key');
+  static const Key kmIndicatorKey = Key('kmIndicator');
 
   const SpeedChangeRow({
     required super.metadata,

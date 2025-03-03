@@ -4,6 +4,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/t
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
 import 'package:das_client/model/journey/metadata.dart';
+import 'package:das_client/model/journey/segment.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/track_equipment_segment.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';

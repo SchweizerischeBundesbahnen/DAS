@@ -8,7 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class TramAreaRow extends BaseRowBuilder<TramArea> {
-  static const Key tramAreaIconKey = Key('tram_area_icon_key');
+  static const Key tramAreaIconKey = Key('tramAreaIcon');
 
   const TramAreaRow({
     required super.metadata,

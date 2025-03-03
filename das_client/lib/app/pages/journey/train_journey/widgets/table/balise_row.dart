@@ -8,7 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class BaliseRow extends BaseRowBuilder<Balise> {
-  static const Key baliseIconKey = Key('balise_icon_key');
+  static const Key baliseIconKey = Key('baliseIcon');
 
   const BaliseRow({
     required super.metadata,

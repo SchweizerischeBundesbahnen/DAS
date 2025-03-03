@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SignalRow extends BaseRowBuilder<Signal> {
-  static const Key signalLineChangeIconKey = Key('signal_line_change_icon_key');
+  static const Key signalLineChangeIconKey = Key('signalLineChangeIcon');
 
   const SignalRow({
     required super.metadata,

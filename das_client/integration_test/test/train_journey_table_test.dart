@@ -1,6 +1,3 @@
-import 'package:battery_plus/battery_plus.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/header/battery_status.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cab_signaling_row.dart';
@@ -17,93 +14,14 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/whistle
 import 'package:das_client/app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:das_client/app/pages/profile/profile_page.dart';
 import 'package:das_client/app/widgets/table/das_table.dart';
-import 'package:das_client/di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
-import '../mocks/battery_mock.dart';
 import '../util/test_utils.dart';
 
 void main() {
   group('train journey table test', () {
-    testWidgets('test battery over 15% and not show icon', (tester) async {
-      await prepareAndStartApp(tester);
-
-      // Set Battery to a mocked version
-      final battery = DI.get<Battery>() as BatteryMock;
-
-      // Set current Battery-Level to 80 % so it is over 15%
-      battery.currentBatteryLevel = 80;
-
-      // load train journey by filling out train selection page
-      await loadTrainJourney(tester, trainNumber: 'T7');
-
-      // Find the header and check if it is existent
-      final headerFinder = find.byType(Header);
-      expect(headerFinder, findsOneWidget);
-
-      expect(battery.currentBatteryLevel, 80);
-
-      final batteryIcon = find.descendant(of: headerFinder, matching: find.byKey(BatteryStatus.batteryLevelLowIconKey));
-      expect(batteryIcon, findsNothing);
-
-      await disconnect(tester);
-    });
-
-    testWidgets('test battery under 15% and show icon', (tester) async {
-      await prepareAndStartApp(tester);
-
-      // Set Battery to a mocked version
-      final battery = DI.get<Battery>() as BatteryMock;
-
-      // Set current Battery-Level to 10% so it is under 15%
-      battery.currentBatteryLevel = 10;
-
-      // load train journey by filling out train selection page
-      await loadTrainJourney(tester, trainNumber: 'T7');
-
-      // Find the header and check if it is existent
-      final headerFinder = find.byType(Header);
-      expect(headerFinder, findsOneWidget);
-
-      expect(battery.currentBatteryLevel, 10);
-
-      final batteryIcon = find.descendant(of: headerFinder, matching: find.byKey(BatteryStatus.batteryLevelLowIconKey));
-      expect(batteryIcon, findsOneWidget);
-
-      await disconnect(tester);
-    });
-
-    testWidgets('check if update sent is correct', (tester) async {
-      // Load app widget.
-      await prepareAndStartApp(tester);
-
-      // Select the correct train number
-      final trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
-      expect(trainNumberText, findsOneWidget);
-
-      await enterText(tester, trainNumberText, 'T9999');
-
-      // Log into the journey
-      final primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
-      await tester.tap(primaryButton);
-
-      // Wait for train journey to load
-      await tester.pumpAndSettle();
-
-      // Find the header and check if it is existent
-      final headerFinder = find.byType(Header);
-      expect(headerFinder, findsOneWidget);
-
-      await waitUntilNotExists(tester, find.descendant(of: headerFinder, matching: find.text('+00:00')));
-
-      expect(find.descendant(of: headerFinder, matching: find.text('+00:30')), findsOneWidget);
-
-      await disconnect(tester);
-    });
-
     testWidgets('test balise multiple level crossings', (tester) async {
       await prepareAndStartApp(tester);
 
@@ -1010,137 +928,68 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('find base value when no punctuality update comes', (tester) async {
-      // Load app widget.
+    testWidgets('test additional speed restriction row are displayed correctly on ETCS level 2 section',
+        (tester) async {
       await prepareAndStartApp(tester);
 
-      final trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
-      expect(trainNumberText, findsOneWidget);
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T11');
 
-      await enterText(tester, trainNumberText, 'T6');
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
 
-      final primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
-      await tester.tap(primaryButton);
+      // ASR from 40km/h should be displayed if not completely inside ETCS L2
+      final asrRow1 = findDASTableRowByText('km 9.000 - km 26.000');
+      expect(asrRow1, findsExactly(2));
 
-      // wait for train journey to load
-      await tester.pumpAndSettle();
+      final asrSpeed1 = find.descendant(of: asrRow1.first, matching: find.text('50'));
+      expect(asrSpeed1, findsOneWidget);
 
-      //find the header and check if it is existent
-      final headerFinder = find.byType(Header);
-      expect(headerFinder, findsOneWidget);
+      await tester.dragUntilVisible(find.text('Neuchâtel'), scrollableFinder, const Offset(0, -50));
 
-      //Find the text in the header
-      expect(find.descendant(of: headerFinder, matching: find.text('+00:00')), findsOneWidget);
+      final asrRow2 = findDASTableRowByText('km 29.000 - km 39.000');
+      expect(asrRow2, findsExactly(2));
 
-      await tester.pumpAndSettle();
+      final asrSpeed2 = find.descendant(of: asrRow2.first, matching: find.text('30'));
+      expect(asrSpeed2, findsOneWidget);
+
+      await tester.dragUntilVisible(find.text('Lengnau'), scrollableFinder, const Offset(0, -50));
+
+      // ASR from 40km/h should not be displayed inside ETCS L2
+      final asrRow3 = findDASTableRowByText('km 41.000 - km 46.000');
+      expect(asrRow3, findsNothing);
+
+      await tester.dragUntilVisible(find.text('Solothurn'), scrollableFinder, const Offset(0, -50));
+
+      // ASR from 40km/h should be displayed if not completely inside ETCS L2
+      final asrRow4 = findDASTableRowByText('km 51.000 - km 59.000');
+      expect(asrRow4, findsExactly(2));
+
+      final asrSpeed4 = find.descendant(of: asrRow4.first, matching: find.text('40'));
+      expect(asrSpeed4, findsOneWidget);
 
       await disconnect(tester);
     });
 
-    testWidgets('check if the displayed current time is correct', (tester) async {
-      // Load app widget.
+    testWidgets('test line speed is hidden on ETCS level 2 section', (tester) async {
       await prepareAndStartApp(tester);
 
-      //Select the correct train number
-      final trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
-      expect(trainNumberText, findsOneWidget);
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T11');
 
-      await enterText(tester, trainNumberText, 'T6');
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
 
-      //Log into the journey
-      final primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
-      await tester.tap(primaryButton);
+      final speedChangeText = 'Speed Hidden ETCSL2';
+      await tester.dragUntilVisible(find.text(speedChangeText), scrollableFinder, const Offset(0, -50));
+      final speedChangeRow = findDASTableRowByText(speedChangeText);
+      expect(speedChangeRow, findsOneWidget);
 
-      // wait for train journey to load
-      await tester.pumpAndSettle();
-
-      //find the header and check if it is existent
-      final headerFinder = find.byType(Header);
-      expect(headerFinder, findsOneWidget);
-
-      final DateTime currentTime = DateTime.now();
-      final String currentHour = currentTime.hour <= 9 ? '0${currentTime.hour}' : (currentTime.hour).toString();
-      final String currentMinutes =
-          currentTime.minute <= 9 ? '0${currentTime.minute}' : (currentTime.minute).toString();
-      final String currentSeconds =
-          currentTime.second <= 9 ? '0${currentTime.second}' : (currentTime.second).toString();
-      final String nextSecond =
-          currentTime.second <= 9 ? '0${currentTime.second + 1}' : (currentTime.second + 1).toString();
-      final String currentWholeTime = '$currentHour:$currentMinutes:$currentSeconds';
-      final String nextSecondWholeTime = '$currentHour:$currentMinutes:$nextSecond';
-
-      if (!find.descendant(of: headerFinder, matching: find.text(currentWholeTime)).evaluate().isNotEmpty) {
-        expect(find.descendant(of: headerFinder, matching: find.text(nextSecondWholeTime)), findsOneWidget);
-      } else {
-        expect(find.descendant(of: headerFinder, matching: find.text(currentWholeTime)), findsOneWidget);
-      }
-
-      await tester.pumpAndSettle();
+      final speedChangeRowSpeed = find.descendant(of: speedChangeRow, matching: find.text('50'));
+      expect(speedChangeRowSpeed, findsNothing);
 
       await disconnect(tester);
     });
-  });
-
-  testWidgets('test additional speed restriction row are displayed correctly on ETCS level 2 section', (tester) async {
-    await prepareAndStartApp(tester);
-
-    // load train journey by filling out train selection page
-    await loadTrainJourney(tester, trainNumber: 'T11');
-
-    final scrollableFinder = find.byType(ListView);
-    expect(scrollableFinder, findsOneWidget);
-
-    // ASR from 40km/h should be displayed if not completely inside ETCS L2
-    final asrRow1 = findDASTableRowByText('km 9.000 - km 26.000');
-    expect(asrRow1, findsExactly(2));
-
-    final asrSpeed1 = find.descendant(of: asrRow1.first, matching: find.text('50'));
-    expect(asrSpeed1, findsOneWidget);
-
-    await tester.dragUntilVisible(find.text('Neuchâtel'), scrollableFinder, const Offset(0, -50));
-
-    final asrRow2 = findDASTableRowByText('km 29.000 - km 39.000');
-    expect(asrRow2, findsExactly(2));
-
-    final asrSpeed2 = find.descendant(of: asrRow2.first, matching: find.text('30'));
-    expect(asrSpeed2, findsOneWidget);
-
-    await tester.dragUntilVisible(find.text('Lengnau'), scrollableFinder, const Offset(0, -50));
-
-    // ASR from 40km/h should not be displayed inside ETCS L2
-    final asrRow3 = findDASTableRowByText('km 41.000 - km 46.000');
-    expect(asrRow3, findsNothing);
-
-    await tester.dragUntilVisible(find.text('Solothurn'), scrollableFinder, const Offset(0, -50));
-
-    // ASR from 40km/h should be displayed if not completely inside ETCS L2
-    final asrRow4 = findDASTableRowByText('km 51.000 - km 59.000');
-    expect(asrRow4, findsExactly(2));
-
-    final asrSpeed4 = find.descendant(of: asrRow4.first, matching: find.text('40'));
-    expect(asrSpeed4, findsOneWidget);
-
-    await disconnect(tester);
-  });
-
-  testWidgets('test line speed is hidden on ETCS level 2 section', (tester) async {
-    await prepareAndStartApp(tester);
-
-    // load train journey by filling out train selection page
-    await loadTrainJourney(tester, trainNumber: 'T11');
-
-    final scrollableFinder = find.byType(ListView);
-    expect(scrollableFinder, findsOneWidget);
-
-    final speedChangeText = 'Speed Hidden ETCSL2';
-    await tester.dragUntilVisible(find.text(speedChangeText), scrollableFinder, const Offset(0, -50));
-    final speedChangeRow = findDASTableRowByText(speedChangeText);
-    expect(speedChangeRow, findsOneWidget);
-
-    final speedChangeRowSpeed = find.descendant(of: speedChangeRow, matching: find.text('50'));
-    expect(speedChangeRowSpeed, findsNothing);
-
-    await disconnect(tester);
   });
 }
 

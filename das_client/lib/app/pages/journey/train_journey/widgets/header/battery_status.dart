@@ -1,10 +1,11 @@
 import 'dart:async';
+
+import 'package:battery_plus/battery_plus.dart';
 import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/di.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:battery_plus/battery_plus.dart';
 
 class BatteryStatus extends StatefulWidget {
   const BatteryStatus({super.key});
@@ -12,7 +13,7 @@ class BatteryStatus extends StatefulWidget {
   @override
   State<BatteryStatus> createState() => _BatteryStatusState();
 
-  static const Key batteryLevelLowIconKey = Key('battery_status_low_key');
+  static const Key batteryLevelLowIconKey = Key('batteryStatusLow');
 }
 
 class _BatteryStatusState extends State<BatteryStatus> {

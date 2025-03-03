@@ -9,12 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class TrackEquipmentCellBody extends StatelessWidget {
-  static const Key conventionalExtendedSpeedBorderKey = Key('conventional_extended_speed_border_key');
-  static const Key twoTracksWithSingleTrackEquipmentKey = Key('two_tracks_with_single_track_equipment_key');
-  static const Key conventionalSpeedReversingImpossibleKey = Key('conventional_speed_reversing_impossible_key');
-  static const Key extendedSpeedReversingPossibleKey = Key('extended_speed_reversing_possible_key');
-  static const Key extendedSpeedReversingImpossibleKey = Key('extended_speed_reversing_impossible_key');
-  static const Key singleTrackNoBlockKey = Key('single_track_no_block_key');
+  static const Key conventionalExtendedSpeedBorderKey = Key('conventionalExtendedSpeedBorder');
+  static const Key twoTracksWithSingleTrackEquipmentKey = Key('twoTracksWithSingleTrackEquipment');
+  static const Key conventionalSpeedReversingImpossibleKey = Key('conventionalSpeedReversingImpossible');
+  static const Key extendedSpeedReversingPossibleKey = Key('extendedSpeedReversingPossible');
+  static const Key extendedSpeedReversingImpossibleKey = Key('extendedSpeedReversingImpossible');
+  static const Key singleTrackNoBlockKey = Key('singleTrackNoBlock');
 
   const TrackEquipmentCellBody({
     this.renderData = const TrackEquipmentRenderData(),
