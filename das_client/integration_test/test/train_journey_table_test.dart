@@ -989,6 +989,7 @@ void main() {
       expect(speedChangeRowSpeed, findsNothing);
 
       await disconnect(tester);
+    });
   });
 }
 

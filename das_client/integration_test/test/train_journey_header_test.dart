@@ -11,13 +11,13 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey header test', () {
-    testWidgets('test battery over 30% and not show icon', (tester) async {
+    testWidgets('test battery over 15% and not show icon', (tester) async {
       await prepareAndStartApp(tester);
 
       // Set Battery to a mocked version
       final battery = DI.get<Battery>() as BatteryMock;
 
-      // Set current Battery-Level to 80 % so it is over 30%
+      // Set current Battery-Level to 80 % so it is over 15%
       battery.currentBatteryLevel = 80;
 
       // load train journey by filling out train selection page
@@ -31,16 +31,18 @@ void main() {
 
       final batteryIcon = find.descendant(of: header, matching: find.byKey(BatteryStatus.batteryLevelLowIconKey));
       expect(batteryIcon, findsNothing);
+
+      await disconnect(tester);
     });
 
-    testWidgets('test battery under 30% and show icon', (tester) async {
+    testWidgets('test battery under 15% and show icon', (tester) async {
       await prepareAndStartApp(tester);
 
       // Set Battery to a mocked version
       final battery = DI.get<Battery>() as BatteryMock;
 
-      // Set current Battery-Level to 15% so it is under 30%
-      battery.currentBatteryLevel = 15;
+      // Set current Battery-Level to 10% so it is under 15%
+      battery.currentBatteryLevel = 10;
 
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T7');
@@ -49,10 +51,12 @@ void main() {
       final header = find.byType(Header);
       expect(header, findsOneWidget);
 
-      expect(battery.currentBatteryLevel, 15);
+      expect(battery.currentBatteryLevel, 10);
 
       final batteryIcon = find.descendant(of: header, matching: find.byKey(BatteryStatus.batteryLevelLowIconKey));
       expect(batteryIcon, findsOneWidget);
+
+      await disconnect(tester);
     });
 
     testWidgets('check if punctuality update sent is correct', (tester) async {
@@ -69,6 +73,8 @@ void main() {
       await waitUntilNotExists(tester, find.descendant(of: header, matching: find.text('+00:00')));
 
       expect(find.descendant(of: header, matching: find.text('+00:30')), findsOneWidget);
+
+      await disconnect(tester);
     });
 
     testWidgets('find base value when no punctuality update comes', (tester) async {
@@ -86,6 +92,8 @@ void main() {
       expect(find.descendant(of: header, matching: find.text('+00:00')), findsOneWidget);
 
       await tester.pumpAndSettle();
+
+      await disconnect(tester);
     });
 
     testWidgets('check if the displayed current time is correct', (tester) async {
@@ -117,6 +125,8 @@ void main() {
       }
 
       await tester.pumpAndSettle();
+
+      await disconnect(tester);
     });
 
     testWidgets('test display of communication network in header', (tester) async {
@@ -151,6 +161,8 @@ void main() {
       await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Zürich')));
       final zuerichGsmRIcon = find.descendant(of: header, matching: find.byKey(RadioChannel.gsmRKey));
       expect(zuerichGsmRIcon, findsOneWidget);
+
+      await disconnect(tester);
     });
   });
 }
