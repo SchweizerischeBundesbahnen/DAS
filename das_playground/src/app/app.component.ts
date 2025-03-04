@@ -12,7 +12,6 @@ import { OidcSecurityService } from "angular-auth-oidc-client";
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   imports: [
     RouterModule,
     SbbButtonModule,
@@ -23,7 +22,7 @@ import { OidcSecurityService } from "angular-auth-oidc-client";
     SbbUsermenuModule,
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+  styleUrl: './app.component.scss'
 })
 export class AppComponent {
   version = packageJson.version;

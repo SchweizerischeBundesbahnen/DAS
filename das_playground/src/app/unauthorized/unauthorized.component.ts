@@ -3,7 +3,6 @@ import { SbbNotificationModule } from "@sbb-esta/angular/notification";
 
 @Component({
   selector: 'app-unauthorized',
-  standalone: true,
   imports: [
     SbbNotificationModule
   ],

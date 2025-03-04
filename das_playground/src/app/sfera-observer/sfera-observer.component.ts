@@ -25,7 +25,6 @@ import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: 'app-sfera-observer',
-  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -37,7 +36,7 @@ import { ActivatedRoute } from "@angular/router";
     SbbAccordionModule,
   ],
   templateUrl: './sfera-observer.component.html',
-  styleUrl: './sfera-observer.component.scss',
+  styleUrl: './sfera-observer.component.scss'
 })
 export class SferaObserverComponent implements OnInit, OnDestroy {
   companyControl = new FormControl('1085', {nonNullable: true});
