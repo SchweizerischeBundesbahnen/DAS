@@ -15,13 +15,15 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/webapp",
+            "outputPath": {
+              "base": "dist/webapp"
+            },
             "index": "src/index.html",
-            "main": "src/main.ts",
             "polyfills": [
-              "zone.js"
+              "zone.js",
+              "@angular/localize/init"
             ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
@@ -36,11 +38,14 @@
             "allowedCommonJsDependencies": [
               "mqtt-browser"
             ],
-            "scripts": []
+            "scripts": [],
+            "browser": "src/main.ts"
           },
           "configurations": {
             "production": {
-              "outputPath": "dist/webapp",
+              "outputPath": {
+                "base": "dist/webapp"
+              },
               "budgets": [
                 {
                   "type": "initial",
@@ -93,7 +98,8 @@
             "polyfills": [
               "zone.js",
               "zone.js/testing",
-              "@sbb-esta/angular/core/testing/lean-polyfill"
+              "@sbb-esta/angular/core/testing/lean-polyfill",
+              "@angular/localize/init"
             ],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
