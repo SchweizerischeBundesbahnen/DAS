@@ -104,15 +104,31 @@ class TrainJourney extends StatelessWidget {
   }
 
   List<BaseRowBuilder> _rows(BuildContext context, Journey journey, TrainJourneySettings settings) {
-    final rows = journey.data.groupBaliseAndLeveLCrossings(settings.expandedGroups);
+    settings.selectedBreakSeries != null
+        ? '${settings.selectedBreakSeries!.trainSeries.name}${settings.selectedBreakSeries!.breakSeries}'
+        : '${journey.metadata.breakSeries?.trainSeries.name ?? '?'}${journey.metadata.breakSeries?.breakSeries ?? '?'}';
+
+    final curveExceptions = journey.data
+        .where((it) =>
+            it.type == Datatype.curvePoint &&
+            (it.localSpeedData == null ||
+                it.localSpeedData!.speedsFor(
+                        settings.selectedBreakSeries != null
+                            ? settings.selectedBreakSeries?.trainSeries
+                            : journey.metadata.breakSeries!.trainSeries,
+                        settings.selectedBreakSeries != null
+                            ? settings.selectedBreakSeries?.breakSeries
+                            : journey.metadata.breakSeries!.breakSeries) ==
+                    null))
+        .toList();
+
+    final rows = journey.data
+        .where((it) => !curveExceptions.contains(it))
+        .toList()
+        .groupBaliseAndLeveLCrossings(settings.expandedGroups);
 
     final groupedRows =
-    rows.whereType<BaliseLevelCrossingGroup>().map((it) => it.groupedElements).expand((it) => it).where((it) {
-      if (it.type == Datatype.curvePoint && it.speedData == null) {
-        return false;
-      }
-      return true;
-    }).toList();
+        rows.whereType<BaliseLevelCrossingGroup>().map((it) => it.groupedElements).expand((it) => it).toList();
 
     return List.generate(rows.length, (index) {
       final rowData = rows[index];
