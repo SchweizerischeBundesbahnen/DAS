@@ -3,8 +3,8 @@
 <JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="2" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
     <TrainIdentification>
         <OTN_ID>
-            <teltsi_Company>1671</teltsi_Company>
-            <teltsi_OperationalTrainNumber>1513</teltsi_OperationalTrainNumber>
+            <teltsi_Company>1285</teltsi_Company>
+            <teltsi_OperationalTrainNumber>1617</teltsi_OperationalTrainNumber>
             <teltsi_StartDate>2025-05-17</teltsi_StartDate>
         </OTN_ID>
     </TrainIdentification>
