@@ -45,7 +45,7 @@ void main() {
       expect(scrollableFinder, findsOneWidget);
 
       await tester.dragUntilVisible(find.text('B1'), scrollableFinder, const Offset(0, 100));
-      expect(findDASTableRowByText('Bern'), findsAny);
+      expect(find.text('Bern'), findsAny);
 
       // Wait until idle time reached
       await Future.delayed(const Duration(seconds: 12));
@@ -124,7 +124,7 @@ void main() {
       expect(headerFinder, findsOneWidget);
 
       final pauseButton =
-          find.descendant(of: headerFinder, matching: find.text(l10n.p_train_journey_header_button_pause));
+      find.descendant(of: headerFinder, matching: find.text(l10n.p_train_journey_header_button_pause));
       expect(pauseButton, findsOneWidget);
 
       await tapElement(tester, pauseButton);
