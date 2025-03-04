@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="SP_1671"
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="SP_1671_1"
                 SP_VersionMajor="2" SP_VersionMinor="0" SP_Length="36000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
 
-<!--
-	Graftal bis Twinn: Block und Deckung
-	Graftal bis Twinn: keine Signale
-	ab Twinn: alle Signale
--->
+    <!--
+        Graftal bis Twinn: Block und Deckung
+        Graftal bis Twinn: keine Signale
+        ab Twinn: alle Signale
+    -->
 
     <SP_Points>
 
@@ -207,7 +207,7 @@
             <Balise location="25140" levelCrossingGuarding="true" amountLevelCrossings="1"/>
             <Balise location="28590" levelCrossingGuarding="true" amountLevelCrossings="1"/>
             <Balise location="32100" levelCrossingGuarding="true" amountLevelCrossings="1"/>
-            <Balise location="34100" levelCrossingGuarding="true" amountLevelCrossings="1"/>			
+            <Balise location="34100" levelCrossingGuarding="true" amountLevelCrossings="1"/>
         </BaliseGroup>
 
 
@@ -396,7 +396,7 @@
             </TAF_TAP_Location_NSP>
 
         </TAF_TAP_Location>
-		
+
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="11200" endLocation="11200"
                           TAF_TAP_location_abbreviation="HO" TAF_TAP_location_type="halt">
@@ -434,7 +434,7 @@
 				"/>
             </TAF_TAP_Location_NSP>
 
-        </TAF_TAP_Location>		
+        </TAF_TAP_Location>
 
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="14700" endLocation="14700"
@@ -523,7 +523,7 @@
             </TAF_TAP_Location_NSP>
 
         </TAF_TAP_Location>
-		
+
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="20600" endLocation="20600"
                           TAF_TAP_location_abbreviation="SE" TAF_TAP_location_type="station">
@@ -549,7 +549,7 @@
                 <NetworkSpecificParameter name="departureAuth" value="false"/>
             </TAF_TAP_Location_NSP>
 
-        </TAF_TAP_Location>		
+        </TAF_TAP_Location>
 
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="23900" endLocation="23900"
@@ -576,7 +576,7 @@
                 <NetworkSpecificParameter name="departureAuth" value="false"/>
             </TAF_TAP_Location_NSP>
 
-        </TAF_TAP_Location>		
+        </TAF_TAP_Location>
 
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="28800" endLocation="28800"
@@ -613,7 +613,7 @@
                 <NetworkSpecificParameter name="departureAuth" value="false"/>
             </TAF_TAP_Location_NSP>
 
-        </TAF_TAP_Location>	
+        </TAF_TAP_Location>
 
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="31000" endLocation="31000"
@@ -640,7 +640,7 @@
                 <NetworkSpecificParameter name="departureAuth" value="false"/>
             </TAF_TAP_Location_NSP>
 
-        </TAF_TAP_Location>	
+        </TAF_TAP_Location>
 
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="33800" endLocation="33800"
@@ -677,7 +677,7 @@
                 <NetworkSpecificParameter name="departureAuth" value="false"/>
             </TAF_TAP_Location_NSP>
 
-        </TAF_TAP_Location>	
+        </TAF_TAP_Location>
 
     </SP_Areas>
 
@@ -688,11 +688,11 @@
         <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="10870" endLocation="10870"/>
         <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="20510" endLocation="20510"/>
         <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="20610" endLocation="20610"/>
-        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="25140" endLocation="25140"/>		
+        <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="25140" endLocation="25140"/>
         <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="28590" endLocation="28590"/>
         <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="32100" endLocation="32100"/>
         <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="34100" endLocation="34100"/>
-		
+
 
         <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
             <Contact mainContact="true">
@@ -712,7 +712,7 @@
         <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
                               communicationNetworkType="GSM-R"/>
         <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="17600" endLocation="17600"
-                              communicationNetworkType="GSM-P"/>							  
+                              communicationNetworkType="GSM-P"/>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="42.1"/>
@@ -726,7 +726,7 @@
         <KilometreReferencePoint location="9240">
             <KM_Reference kmRef="32.86"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="10117">
+        <KilometreReferencePoint location="10117">
             <KM_Reference kmRef="31.983"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="10120">
@@ -738,7 +738,7 @@
         <KilometreReferencePoint location="10290">
             <KM_Reference kmRef="31.81"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="10311">
+        <KilometreReferencePoint location="10311">
             <KM_Reference kmRef="31.789"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="10870">
@@ -855,7 +855,7 @@
         <KilometreReferencePoint location="33800">
             <KM_Reference kmRef="8.3"/>
         </KilometreReferencePoint>
-		
+
 
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
                               gradientValue="3.0" gradientDirection="Downhill"
