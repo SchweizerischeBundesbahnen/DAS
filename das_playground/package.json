@@ -36,7 +36,7 @@
     "angular-auth-oidc-client": "19.0.0",
     "angular-server-side-configuration": "^19.0.1",
     "ngx-mqtt": "^17.0.0",
-    "rxjs": "~7.8.0",
+    "rxjs": "~7.8.2",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },
@@ -50,18 +50,18 @@
     "@angular/cli": "^19.2.0",
     "@angular/compiler-cli": "^19.2.0",
     "@angular/localize": "^19.2.0",
-    "@types/jasmine": "~5.1.0",
+    "@types/jasmine": "~5.1.7",
     "@typescript-eslint/eslint-plugin": "8.26.0",
     "@typescript-eslint/parser": "8.26.0",
-    "eslint": "^9.0.0",
-    "eslint-config-prettier": "^9.1.0",
-    "jasmine-core": "~5.4.0",
+    "eslint": "^9.21.0",
+    "eslint-config-prettier": "^10.0.2",
+    "jasmine-core": "~5.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "prettier": "^3.2.5",
-    "typescript": "~5.5.4"
+    "prettier": "^3.5.3",
+    "typescript": "~5.8.2"
   }
 }
