@@ -109,6 +109,12 @@
         </Signal>
 
         <Signal>
+            <Signal_ID signal_ID_Physical="A1" location="11100"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A1"/>
+        </Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="P15" location="10120"/>
             <SignalFunction>protection</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="P15"/>
@@ -121,9 +127,21 @@
         </Signal>
 
         <Signal>
+            <Signal_ID signal_ID_Physical="A2" location="13600"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A2"/>
+        </Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="D28" location="13860"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="D28"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="A3" location="14300"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A3"/>
         </Signal>
 
         <Signal>
@@ -136,6 +154,12 @@
             <Signal_ID signal_ID_Physical="B14" location="15230"/>
             <SignalFunction>exit</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="B14"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="A4" location="15600"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A4"/>
         </Signal>
 
         <Signal>
@@ -157,6 +181,18 @@
         </Signal>
 
         <Signal>
+            <Signal_ID signal_ID_Physical="A5" location="18300"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A5"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="A6" location="18900"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A6"/>
+        </Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="D507" location="19780"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="D507"/>
@@ -169,9 +205,21 @@
         </Signal>
 
         <Signal>
+            <Signal_ID signal_ID_Physical="A7" location="21200"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A7"/>
+        </Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="D505" location="22920"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="D505"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="A8" location="23400"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A8"/>
         </Signal>
 
         <Signal>
@@ -750,6 +798,9 @@
         <KilometreReferencePoint location="10880">
             <KM_Reference kmRef="31.22"/>
         </KilometreReferencePoint>
+        <KilometreReferencePoint location="11100">
+            <KM_Reference kmRef="31.0"/>
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="11200">
             <KM_Reference kmRef="30.9"/>
         </KilometreReferencePoint>
@@ -759,8 +810,14 @@
         <KilometreReferencePoint location="12800">
             <KM_Reference kmRef="29.3"/>
         </KilometreReferencePoint>
+        <KilometreReferencePoint location="13600">
+            <KM_Reference kmRef="28.5"/>
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="13860">
             <KM_Reference kmRef="28.24"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="14300">
+            <KM_Reference kmRef="27.8"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="14700">
             <KM_Reference kmRef="27.4"/>
@@ -770,6 +827,9 @@
         </KilometreReferencePoint>
         <KilometreReferencePoint location="15230">
             <KM_Reference kmRef="26.87"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="15600">
+            <KM_Reference kmRef="26.5"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="16100">
             <KM_Reference kmRef="26.0"/>
@@ -783,6 +843,12 @@
         <KilometreReferencePoint location="18020">
             <KM_Reference kmRef="24.08"/>
         </KilometreReferencePoint>
+        <KilometreReferencePoint location="18300">
+            <KM_Reference kmRef="23.8"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="18900">
+            <KM_Reference kmRef="23.2"/>
+        </KilometreReferencePoint>        
         <KilometreReferencePoint location="19100">
             <KM_Reference kmRef="23.0"/>
         </KilometreReferencePoint>
@@ -810,6 +876,9 @@
         <KilometreReferencePoint location="20620">
             <KM_Reference kmRef="21.48"/>
         </KilometreReferencePoint>
+        <KilometreReferencePoint location="21200">
+            <KM_Reference kmRef="20.9"/>
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="21610">
             <KM_Reference kmRef="20.49"/>
         </KilometreReferencePoint>
@@ -818,6 +887,9 @@
         </KilometreReferencePoint>
         <KilometreReferencePoint location="22920">
             <KM_Reference kmRef="19.18"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="23400">
+            <KM_Reference kmRef="18.7"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="23900">
             <KM_Reference kmRef="18.2"/>
