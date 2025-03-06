@@ -2,6 +2,7 @@ import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/battery_status.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/departure_authorization.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/extended_menu.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_channel.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:das_client/app/widgets/assets.dart';
@@ -126,10 +127,7 @@ class MainContainer extends StatelessWidget {
                 context.trainJourneyCubit.setAutomaticAdvancement(true);
               },
             ),
-          SBBIconButtonLarge(
-            icon: SBBIcons.context_menu_small,
-            onPressed: () {},
-          ),
+          ExtendedMenu(),
         ],
       );
     });
