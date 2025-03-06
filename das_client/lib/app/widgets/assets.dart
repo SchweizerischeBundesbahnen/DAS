@@ -21,4 +21,6 @@ class AppAssets {
   static const iconWhistle = '$_iconsDir/icon_whistle.svg';
   static const iconTramArea = '$_iconsDir/icon_tram_area.svg';
   static const iconBatteryStatusLow = '$_iconsDir/icon_battery_status_low.svg';
+
+  static const shapeMenuArrow = '$_iconsDir/shape_menu_arrow.svg';
 }

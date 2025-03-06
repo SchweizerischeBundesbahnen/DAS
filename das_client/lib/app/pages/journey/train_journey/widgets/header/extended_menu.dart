@@ -1,8 +1,10 @@
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
+import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/di.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class ExtendedMenu extends StatefulWidget {
@@ -14,6 +16,9 @@ class ExtendedMenu extends StatefulWidget {
 
 class _ExtendedMenuState extends State<ExtendedMenu> {
   static const extendedMenuContentWidth = 360.0;
+  static const arrowShapeWidth = 30.0;
+  static const extendedMenuContentHeightOffset = 10;
+  static const arrowShapeHeigth = 10.0;
 
   OverlayEntry? overlayEntry;
 
@@ -49,12 +54,22 @@ class _ExtendedMenuState extends State<ExtendedMenu> {
               color: SBBColors.iron.withAlpha((255.0 * 0.6).round()),
             ),
           ),
+          // Arrow shape on top
+          Positioned(
+            // Position center of button
+            left: positionOffset.dx - arrowShapeWidth / 2 + size.width / 2,
+            // Position below the button
+            top: positionOffset.dy + size.height + extendedMenuContentHeightOffset,
+            child: SvgPicture.asset(
+              AppAssets.shapeMenuArrow,
+            ),
+          ),
           // Positioned overlay
           Positioned(
             // Position center of button
             left: positionOffset.dx - extendedMenuContentWidth / 2 + size.width / 2,
             // Position below the button
-            top: positionOffset.dy + size.height + sbbDefaultSpacing / 2,
+            top: positionOffset.dy + size.height + extendedMenuContentHeightOffset + arrowShapeHeigth,
             child: _menuContent(
               context,
             ),
