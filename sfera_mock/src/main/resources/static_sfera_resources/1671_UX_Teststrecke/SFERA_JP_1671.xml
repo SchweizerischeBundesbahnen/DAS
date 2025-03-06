@@ -59,11 +59,12 @@
             <StoppingPointDepartureDetails departureTime="2025-05-17T12:16:00Z" plannedDepartureTime="2025-05-17T12:16:00Z"/>
         </TimingPointConstraints>
 
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:19:20Z"
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:19:20Z"
                                 TP_PlannedLatestArrivalTime="2025-05-17T12:19:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Sennbach"/>
             </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T12:20:00Z" plannedDepartureTime="2025-05-17T12:20:00Z"/>
         </TimingPointConstraints>
 
         <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:22:00Z"
