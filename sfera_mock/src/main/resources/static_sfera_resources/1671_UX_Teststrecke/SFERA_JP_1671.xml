@@ -106,6 +106,7 @@
         <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>operationalIndication</NSP_GroupName>
                 <NetworkSpecificParameter name="type" value="uncoded"/>
                 <NetworkSpecificParameter name="uncodedText" value="Lüthisberg: Halt an Halteort 2"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="23900" endLocation="23900"/>
