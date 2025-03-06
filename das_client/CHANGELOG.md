@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.11.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.10.1...das_client-v0.11.0) (2025-03-06)
+
+
+### Features
+
+* added communication network change. ([#372](https://github.com/SchweizerischeBundesbahnen/DAS/issues/372)) ([#658](https://github.com/SchweizerischeBundesbahnen/DAS/issues/658)) ([a0ef624](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a0ef62444b73ca30bfc3f85b94d34ba13bc527ad))
+* implement session termination. ([#406](https://github.com/SchweizerischeBundesbahnen/DAS/issues/406)) ([#628](https://github.com/SchweizerischeBundesbahnen/DAS/issues/628)) ([4d0239d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4d0239d74c8681a8058220c9daf119f12c46eaba))
+
+
+### Bug Fixes
+
+* correctly adjust current position to service point ([#676](https://github.com/SchweizerischeBundesbahnen/DAS/issues/676)) ([a3a3c8e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a3a3c8ec6e5280b13f4ca9dcdf4584655d987f8f))
+
 ## [0.10.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.10.0...das_client-v0.10.1) (2025-02-24)
 
 
