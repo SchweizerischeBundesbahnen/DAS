@@ -475,7 +475,7 @@
                 <NSP_GroupName>lineFootNotes</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlLineFootNotes" value="
 				&lt;lineFootNotes&gt; 
-					&lt;footNote&gt; 
+					&lt;footNote identifier=&quot;8D289607429F44C9A7FF4C8D037832F1&quot;&gt; 
 						&lt;text&gt;fak. LFS gemäss R I-30111 Kap. 6.4&lt;/text&gt; 
 					&lt;/footNote&gt; 
 				&lt;/lineFootNotes&gt;
@@ -514,7 +514,7 @@
                 <NSP_GroupName>lineFootNotes</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlLineFootNotes" value="
 				&lt;lineFootNotes&gt; 
-					&lt;footNote&gt; 
+					&lt;footNote identifier=&quot;8D289607429F44C9A7FF4C8D037832F1&quot;&gt;  
 						&lt;text&gt;fak. LFS gemäss R I-30111 Kap. 6.4&lt;/text&gt; 
 					&lt;/footNote&gt; 
 				&lt;/lineFootNotes&gt;
@@ -563,7 +563,7 @@
                 <NSP_GroupName>lineFootNotes</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlLineFootNotes" value="
 				&lt;lineFootNotes&gt; 
-					&lt;footNote&gt; 
+					&lt;footNote identifier=&quot;8D289607429F44C9A7FF4C8D037832F1&quot;&gt;  
 						&lt;text&gt;fak. LFS gemäss R I-30111 Kap. 6.4&lt;/text&gt; 
 					&lt;/footNote&gt; 
 				&lt;/lineFootNotes&gt;
