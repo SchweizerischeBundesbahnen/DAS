@@ -1,8 +1,10 @@
 import 'dart:core';
 
 import 'package:das_client/model/journey/journey.dart';
+import 'package:das_client/model/journey/ux_testing.dart';
 import 'package:das_client/sfera/sfera_component.dart';
 import 'package:das_client/sfera/src/model/message_header.dart';
+import 'package:das_client/util/annotations/non_production.dart';
 import 'package:das_client/util/device_id_info.dart';
 import 'package:das_client/util/error_code.dart';
 import 'package:das_client/util/format.dart';
@@ -14,6 +16,9 @@ abstract class SferaService {
   Stream<SferaServiceState> get stateStream;
 
   Stream<Journey?> get journeyStream;
+
+  @nonProduction
+  Stream<UxTesting?> get uxTestingStream;
 
   ErrorCode? get lastErrorCode;
 

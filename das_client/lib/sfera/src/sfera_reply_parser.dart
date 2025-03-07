@@ -26,6 +26,7 @@ import 'package:das_client/sfera/src/model/location_ident.dart';
 import 'package:das_client/sfera/src/model/message_header.dart';
 import 'package:das_client/sfera/src/model/multilingual_text.dart';
 import 'package:das_client/sfera/src/model/network_specific_area.dart';
+import 'package:das_client/sfera/src/model/network_specific_event.dart';
 import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
 import 'package:das_client/sfera/src/model/network_specific_point.dart';
 import 'package:das_client/sfera/src/model/otn_id.dart';
@@ -254,6 +255,8 @@ class SferaReplyParser {
         return SessionTermination(type: type, attributes: attributes, children: children, value: value);
       case B2gEventPayload.elementType:
         return B2gEventPayload(type: type, attributes: attributes, children: children, value: value);
+      case NetworkSpecificEvent.elementType:
+        return NetworkSpecificEvent.from(attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElement(type: type, attributes: attributes, children: children, value: value);
     }
