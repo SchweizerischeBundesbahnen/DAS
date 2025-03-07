@@ -1,3 +1,6 @@
+import 'package:battery_plus/battery_plus.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/battery_status.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cab_signaling_row.dart';
@@ -14,10 +17,13 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/whistle
 import 'package:das_client/app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:das_client/app/pages/profile/profile_page.dart';
 import 'package:das_client/app/widgets/table/das_table.dart';
+import 'package:das_client/di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
+import '../mocks/battery_mock.dart';
 import '../util/test_utils.dart';
 
 void main() {
@@ -62,6 +68,7 @@ void main() {
       final scrollableFinder = find.byType(ListView);
       expect(scrollableFinder, findsOneWidget);
 
+      // find and check if the default breakseries is chosen
       final breakingSeriesHeaderCell = find.byKey(TrainJourney.breakingSeriesHeaderKey);
       expect(breakingSeriesHeaderCell, findsOneWidget);
       expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('R115')), findsNWidgets(1));
@@ -71,7 +78,7 @@ void main() {
 
       final curveIcon = find.descendant(of: curveName, matching: find.byKey(CurvePointRow.curvePointIconKey));
       expect(curveIcon, findsAtLeast(2));
-      
+
       await disconnect(tester);
     });
 
@@ -348,13 +355,8 @@ void main() {
         final tableRow = findDASTableRowByText(entry.key);
         expect(tableRow, findsOneWidget);
 
-        //if (entry.value != null) {
-          final speedText = find.descendant(of: tableRow, matching: find.text(entry.value));
-          expect(speedText, findsOneWidget);
-        /*} else {
-          final textWidgets = find.descendant(of: tableRow, matching: find.byWidgetPredicate((it) => it is Text));
-          expect(textWidgets, findsNWidgets(2)); // KM and Kurve text widgets
-        }*/
+        final speedText = find.descendant(of: tableRow, matching: find.text(entry.value));
+        expect(speedText, findsOneWidget);
       }
 
       await disconnect(tester);
@@ -385,13 +387,8 @@ void main() {
         final tableRow = findDASTableRowByText(entry.key);
         expect(tableRow, findsOneWidget);
 
-        //if (entry.value != null) {
-          final speedText = find.descendant(of: tableRow, matching: find.text(entry.value));
-          expect(speedText, findsOneWidget);
-        /*} else {
-          final textWidgets = find.descendant(of: tableRow, matching: find.byWidgetPredicate((it) => it is Text));
-          expect(textWidgets, findsNWidgets(2)); // KM and Kurve text widgets
-        }*/
+        final speedText = find.descendant(of: tableRow, matching: find.text(entry.value));
+        expect(speedText, findsOneWidget);
       }
 
       await disconnect(tester);
@@ -1133,7 +1130,7 @@ Future<void> _selectBreakSeries(WidgetTester tester, {required String breakSerie
   // Open break series bottom sheet
   await tapElement(tester, find.byKey(TrainJourney.breakingSeriesHeaderKey));
 
-  // Check if the bottom sheeet is opened
+  // Check if the bottom sheet is opened
   expect(find.text(l10n.p_train_journey_break_series), findsOneWidget);
   await tapElement(tester, find.text(breakSeries));
 
