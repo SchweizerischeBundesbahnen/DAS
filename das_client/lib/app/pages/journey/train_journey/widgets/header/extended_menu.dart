@@ -9,6 +9,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class ExtendedMenu extends StatefulWidget {
+  static const Key menuButtonKey = Key('extendedMenuButton');
+  static const Key menuButtonCloseKey = Key('closeExtendedMenuButton');
+  static const Key maneuverSwitchKey = Key('maneuverSwitch');
+
   const ExtendedMenu({super.key});
 
   @override
@@ -26,6 +30,7 @@ class _ExtendedMenuState extends State<ExtendedMenu> {
   @override
   Widget build(BuildContext context) {
     return SBBIconButtonLarge(
+      key: ExtendedMenu.menuButtonKey,
       icon: SBBIcons.context_menu_small,
       onPressed: () {
         _showOverlay(context);
@@ -131,6 +136,7 @@ class _ExtendedMenuState extends State<ExtendedMenu> {
           ),
         ),
         SBBIconButtonSmall(
+          key: ExtendedMenu.menuButtonCloseKey,
           onPressed: () {
             _removeOverlay();
           },
@@ -211,6 +217,7 @@ class _ExtendedMenuState extends State<ExtendedMenu> {
               if (!snapshot.hasData) return Container();
 
               return SBBSwitch(
+                key: ExtendedMenu.maneuverSwitchKey,
                 value: snapshot.data?.maneuverMode ?? false,
                 onChanged: (bool value) {
                   trainJourneyCubit.setManeuverMode(value);
