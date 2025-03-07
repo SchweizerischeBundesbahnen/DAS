@@ -9,7 +9,6 @@ import { SbbInputModule } from "@sbb-esta/angular/input";
 
 @Component({
   selector: 'app-mq-subscriber',
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     SbbButtonModule,

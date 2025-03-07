@@ -12,7 +12,6 @@ export interface TableData {
 
 @Component({
   selector: 'app-message-table',
-  standalone: true,
   imports: [SbbTableModule, SimpleXmlComponent],
   templateUrl: './message-table.component.html',
   styleUrl: './message-table.component.scss'

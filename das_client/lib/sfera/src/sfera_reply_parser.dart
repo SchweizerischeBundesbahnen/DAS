@@ -2,6 +2,7 @@ import 'package:das_client/sfera/src/model/additional_speed_restriction.dart';
 import 'package:das_client/sfera/src/model/b2g_event_payload.dart';
 import 'package:das_client/sfera/src/model/balise.dart';
 import 'package:das_client/sfera/src/model/balise_group.dart';
+import 'package:das_client/sfera/src/model/communication_network.dart';
 import 'package:das_client/sfera/src/model/connection_track.dart';
 import 'package:das_client/sfera/src/model/connection_track_description.dart';
 import 'package:das_client/sfera/src/model/current_limitation.dart';
@@ -245,6 +246,8 @@ class SferaReplyParser {
         return LevelCrossingArea(type: type, attributes: attributes, children: children, value: value);
       case PositionSpeed.elementType:
         return PositionSpeed(type: type, attributes: attributes, children: children, value: value);
+      case CommunicationNetwork.elementType:
+        return CommunicationNetwork(type: type, attributes: attributes, children: children, value: value);
       case SferaB2gEventMessage.elementType:
         return SferaB2gEventMessage(type: type, attributes: attributes, children: children, value: value);
       case SessionTermination.elementType:

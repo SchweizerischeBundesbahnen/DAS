@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class GraduatedSpeedsCellBody extends StatelessWidget {
-  static const Key incomingSpeedsKey = Key('incoming-speeds');
-  static const Key outgoingSpeedsKey = Key('outgoing-speeds');
-  static const Key circledSpeedKey = Key('graduated-speed-circled');
-  static const Key squaredSpeedKey = Key('graduated-speed-squared');
+  static const Key incomingSpeedsKey = Key('incomingSpeeds');
+  static const Key outgoingSpeedsKey = Key('outgoingSpeeds');
+  static const Key circledSpeedKey = Key('graduatedSpeedCircled');
+  static const Key squaredSpeedKey = Key('graduatedSpeedSquared');
 
   const GraduatedSpeedsCellBody({
     this.incomingSpeeds = const [],

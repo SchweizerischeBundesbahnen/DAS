@@ -11,7 +11,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class ServicePointRow extends BaseRowBuilder<ServicePoint> {
-  static const Key stopOnRequestKey = Key('stop_on_request_key');
+  static const Key stopOnRequestKey = Key('stopOnRequest');
 
   static const double rowHeight = 64.0;
 

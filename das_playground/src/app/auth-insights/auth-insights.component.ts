@@ -5,7 +5,6 @@ import { OidcSecurityService } from "angular-auth-oidc-client";
 
 @Component({
   selector: 'app-auth-insights',
-  standalone: true,
   imports: [
     CommonModule,
   ],
@@ -14,14 +13,14 @@ import { OidcSecurityService } from "angular-auth-oidc-client";
 })
 export class AuthInsightsComponent {
 
+  constructor(private oidcSecurityService: OidcSecurityService) {
+  }
+
   get claims() {
     return this.oidcSecurityService.getUserData();
   }
 
   get scopes() {
     return this.oidcSecurityService.getAuthenticationResult().pipe(map((data) => data?.scope));
-  }
-
-  constructor(private oidcSecurityService: OidcSecurityService) {
   }
 }

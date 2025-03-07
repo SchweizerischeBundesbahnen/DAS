@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
 import 'package:das_client/model/journey/balise.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
+import 'package:das_client/model/journey/communication_network_change.dart';
 import 'package:das_client/model/journey/connection_track.dart';
 import 'package:das_client/model/journey/curve_point.dart';
 import 'package:das_client/model/journey/datatype.dart';
@@ -1073,6 +1074,20 @@ void main() {
     );
     expect(journey2.metadata.currentPosition, journey2.data[5]);
     expect(journey2.metadata.nextStop, journey2.data.whereType<ServicePoint>().toList()[1]);
+  });
+
+  test('Test CommunicationNetworks parsed correctly', () async {
+    final journey = getJourney('T12', 1);
+    expect(journey.valid, true);
+
+    final networkChanges = journey.metadata.communicationNetworkChanges;
+    expect(networkChanges, hasLength(3));
+    expect(networkChanges[0].order, 1500);
+    expect(networkChanges[0].type, CommunicationNetworkType.gsmP);
+    expect(networkChanges[1].order, 2000);
+    expect(networkChanges[1].type, CommunicationNetworkType.sim);
+    expect(networkChanges[2].order, 2500);
+    expect(networkChanges[2].type, CommunicationNetworkType.gsmR);
   });
 }
 

@@ -7,8 +7,7 @@
             <teltsi_StartDate>2022-01-04</teltsi_StartDate>
         </OTN_ID>
     </TrainIdentification>
-    <SegmentProfileReference SP_ID="T9999_1" SP_VersionMajor="2" SP_VersionMinor="0"
-                             SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T9999_1" SP_VersionMajor="2" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -17,13 +16,11 @@
                 <TP_ID_Reference TP_ID="Bahnhof_A"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TrainCharacteristicsRef TC_ID="T9999_1" TC_VersionMajor="1" TC_VersionMinor="0"
-                                 location="0">
+        <TrainCharacteristicsRef TC_ID="T9999_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
             <TC_RU_ID>1085</TC_RU_ID>
         </TrainCharacteristicsRef>
     </SegmentProfileReference>
-    <SegmentProfileReference SP_ID="T9999_2" SP_VersionMajor="2" SP_VersionMinor="0"
-                             SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T9999_2" SP_VersionMajor="2" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -33,8 +30,7 @@
             </TimingPointReference>
         </TimingPointConstraints>
     </SegmentProfileReference>
-    <SegmentProfileReference SP_ID="T9999_3" SP_VersionMajor="2" SP_VersionMinor="0"
-                             SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T9999_3" SP_VersionMajor="2" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -50,8 +46,7 @@
             <StoppingPointDepartureDetails departureTime="2022-05-17T07:52:00Z"/>
         </TimingPointConstraints>
     </SegmentProfileReference>
-    <SegmentProfileReference SP_ID="T9999_4" SP_VersionMajor="2" SP_VersionMinor="0"
-                             SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T9999_4" SP_VersionMajor="2" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -61,8 +56,7 @@
             </TimingPointReference>
         </TimingPointConstraints>
     </SegmentProfileReference>
-    <SegmentProfileReference SP_ID="T9999_5" SP_VersionMajor="2" SP_VersionMinor="0"
-                             SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T9999_5" SP_VersionMajor="2" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>

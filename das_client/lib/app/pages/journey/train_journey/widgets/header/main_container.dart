@@ -6,7 +6,9 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
+import 'package:das_client/model/journey/communication_network_change.dart';
 import 'package:das_client/model/journey/journey.dart';
+import 'package:das_client/model/journey/metadata.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rxdart/rxdart.dart';
@@ -45,20 +47,23 @@ class MainContainer extends StatelessWidget {
               children: [
                 _topHeaderRow(context, journey, settings),
                 _divider(),
-                _bottomHeaderRow(),
+                _bottomHeaderRow(journey.metadata),
               ],
             ),
           );
         });
   }
 
-  Widget _bottomHeaderRow() {
-    return const SizedBox(
+  Widget _bottomHeaderRow(Metadata metadata) {
+    final communicationNetworkType = metadata.nextStop != null
+        ? metadata.communicationNetworkChanges.appliesToOrder(metadata.nextStop!.order)
+        : null;
+    return SizedBox(
       height: 48.0,
       child: Row(
         children: [
-          RadioChannel(),
-          SizedBox(width: 48.0),
+          RadioChannel(communicationNetworkType: communicationNetworkType),
+          SizedBox(width: sbbDefaultSpacing * 0.5),
           DepartureAuthorization(),
           Spacer(),
           BatteryStatus(),

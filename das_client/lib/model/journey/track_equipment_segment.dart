@@ -1,53 +1,25 @@
 import 'package:das_client/model/journey/base_data.dart';
-import 'package:das_client/util/comparators.dart';
+import 'package:das_client/model/journey/segment.dart';
 
 /// Represents a segment with non standard track equipment. Standard is bidirectional ETCS L1LS.
-class NonStandardTrackEquipmentSegment implements Comparable {
+class NonStandardTrackEquipmentSegment extends Segment implements Comparable {
   const NonStandardTrackEquipmentSegment({
     required this.startKm,
     required this.endKm,
     required this.type,
-    required this.startOrder,
-    required this.endOrder,
+    super.startOrder,
+    super.endOrder,
   });
 
   final List<double> startKm;
   final List<double> endKm;
   final TrackEquipmentType type;
 
-  /// Start order of this segment. Nullable as it can start in a journey segment that is not part of the train journey.
-  final int? startOrder;
-
-  /// End order of this segment. Nullable as it can end in a journey segment that is not part of the train journey.
-  final int? endOrder;
-
   bool get isEtcsL2Segment => type.isEtcsL2;
 
   bool get isConventionalSpeed => type.isConventionalSpeed;
 
   bool get isExtendedSpeed => type.isExtendedSpeed;
-
-  /// checks if the given order is part of this segment.
-  bool appliesToOrder(int order) {
-    if (startOrder == null && endOrder == null) {
-      return true; // applies for whole journey
-    } else if (startOrder != null && endOrder != null) {
-      return startOrder! <= order && order <= endOrder!;
-    } else if (startOrder != null) {
-      return startOrder! <= order;
-    } else {
-      return order <= endOrder!;
-    }
-  }
-
-  @override
-  int compareTo(other) {
-    if (other is! NonStandardTrackEquipmentSegment) return -1;
-
-    final startEnd = (start: startOrder, end: endOrder);
-    final otherStartEnd = (start: other.startOrder, end: other.endOrder);
-    return StartEndIntComparator.compare(startEnd, otherStartEnd);
-  }
 
   @override
   String toString() {
@@ -88,12 +60,6 @@ extension BaseDataListSegmentExtension on Iterable<BaseData> {
 
 extension NonStandardTrackEquipmentSegmentsExtension on Iterable<NonStandardTrackEquipmentSegment> {
   bool isInEtcsLevel2Segment(int order) => where((segment) => segment.type.isEtcsL2).appliesToOrder(order).isNotEmpty;
-
-  Iterable<NonStandardTrackEquipmentSegment> appliesToOrder(int order) =>
-      where((segment) => segment.appliesToOrder(order));
-
-  Iterable<NonStandardTrackEquipmentSegment> appliesToOrderRange(int start, int end) =>
-      where((segment) => segment.appliesToOrder(start) && segment.appliesToOrder(end));
 
   /// Returns all [NonStandardTrackEquipmentSegment] of this list that mark the start of a ETCS level 2 segment
   Iterable<NonStandardTrackEquipmentSegment> get withCABSignalingStart {

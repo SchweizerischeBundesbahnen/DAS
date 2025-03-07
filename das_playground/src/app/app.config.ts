@@ -1,5 +1,10 @@
 import 'angular-server-side-configuration/process';
-import { APP_INITIALIZER, ApplicationConfig, importProvidersFrom } from '@angular/core';
+import {
+  ApplicationConfig,
+  importProvidersFrom,
+  inject,
+  provideAppInitializer
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { MqttModule } from "ngx-mqtt";
@@ -10,13 +15,10 @@ import { environment } from "../environments/environment";
 import { SbbNotificationToastModule } from "@sbb-esta/angular/notification-toast";
 
 function appInitializerAuthCheck() {
-  return {
-    provide: APP_INITIALIZER,
-    useFactory: (oidcSecurityService: OidcSecurityService) => () =>
-      oidcSecurityService.checkAuthMultiple(),
-    multi: true,
-    deps: [OidcSecurityService],
-  };
+  return provideAppInitializer(() => {
+    const oidcSecurityService = inject(OidcSecurityService);
+    return oidcSecurityService.checkAuthMultiple();
+  });
 }
 
 /**

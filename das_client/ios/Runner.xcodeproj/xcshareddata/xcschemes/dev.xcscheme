@@ -36,8 +36,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "72A377012C4FA89600E1957A"
-               BuildableName = "IntegrationTests.xctest"
-               BlueprintName = "IntegrationTests"
+               BuildableName = "RunnerTests.xctest"
+               BlueprintName = "RunnerTests"
                ReferencedContainer = "container:Runner.xcodeproj">
             </BuildableReference>
          </TestableReference>

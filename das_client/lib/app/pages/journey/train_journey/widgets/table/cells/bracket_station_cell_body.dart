@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class BracketStationCellBody extends StatelessWidget {
-  static const Key bracketStationKey = Key('bracketStationKey');
+  static const Key bracketStationKey = Key('bracketStation');
   static const double _bracketStationWidth = 16.0;
   static const double _bracketStationFontSize = 12.0;
 
