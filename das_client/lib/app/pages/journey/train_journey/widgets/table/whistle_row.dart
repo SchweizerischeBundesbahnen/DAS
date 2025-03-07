@@ -7,7 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class WhistleRow extends BaseRowBuilder<Whistle> {
-  static const Key whistleIconKey = Key('whistle_icon_key');
+  static const Key whistleIconKey = Key('whistleIcon');
 
   const WhistleRow({
     required super.metadata,

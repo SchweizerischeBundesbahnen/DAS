@@ -5,7 +5,7 @@ Please see the [content/architecture/](content/architecture) folder for the arch
 
 ## Technical details
 * Documentation is written in Markdown.
-* Diagrams are created in [diagrams.net/draw.io](https://www.drawio.com/) format and stored as SVG. Editors are available online or as a plugin for your favourite IDE.
+* Diagrams are created in [diagrams.net/draw.io](https://www.drawio.com/) format and stored as SVG. Editors are available online or as a plugin for your favourite IDE (for e.g. [Intellij Diagram.net Integration](https://plugins.jetbrains.com/plugin/15635-diagrams-net-integration)).
 * The documentation is using the [HUGO](https://gohugo.io/) framework for site generation. 
 * The theme is based on [hextra](https://github.com/imfing/hextra). See the [documentation](https://imfing.github.io/hextra/docs/) to learn more about advanced features.
 

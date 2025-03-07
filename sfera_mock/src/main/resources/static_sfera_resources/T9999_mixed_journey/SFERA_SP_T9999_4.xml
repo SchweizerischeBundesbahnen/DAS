@@ -85,8 +85,7 @@
         <NetworkSpecificArea startEndQualifier="Ends" endLocation="600">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
-            <NetworkSpecificParameter name="trackEquipmentType"
-                                      value="ETCS-L2-extSpeedReversingPossible"/>
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L2-extSpeedReversingPossible"/>
         </NetworkSpecificArea>
     </SP_Areas>
 

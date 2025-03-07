@@ -9,7 +9,6 @@ import { SbbNotification } from "@sbb-esta/angular/notification";
 
 @Component({
   selector: 'app-sfera-discover',
-  standalone: true,
   imports: [
     SbbTableWrapper,
     DatePipe,

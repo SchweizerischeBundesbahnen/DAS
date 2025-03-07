@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Component;
 
 @Component
-class RequestContextRepository {
+public class RequestContextRepository {
 
     private final Map<UUID, RequestContext> requestMetadataMap = new ConcurrentHashMap<>();
 

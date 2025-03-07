@@ -50,7 +50,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class TrainJourney extends StatelessWidget {
   const TrainJourney({super.key});
 
-  static const Key breakingSeriesHeaderKey = Key('breaking_series_header_key');
+  static const Key breakingSeriesHeaderKey = Key('breakingSeriesHeader');
 
   @override
   Widget build(BuildContext context) {

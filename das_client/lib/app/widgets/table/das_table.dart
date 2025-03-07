@@ -16,8 +16,8 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 /// The [columns] parameter must not be empty, and all rows must have the same number of cells as columns.
 @immutable
 class DASTable extends StatelessWidget {
-  static const Key tableKey = Key('DAS-Table');
-  static const Key rowKey = Key('DAS-Table-row');
+  static const Key tableKey = Key('dasTable');
+  static const Key rowKey = Key('dasTableRow');
   static const double _headerRowHeight = 40.0;
 
   DASTable({

@@ -8,7 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class AdditionalSpeedRestrictionRow extends BaseRowBuilder<AdditionalSpeedRestrictionData> {
-  static const Key additionalSpeedRestrictionIconKey = Key('addition_speed_restriction_icon_key');
+  static const Key additionalSpeedRestrictionIconKey = Key('additionSpeedRestrictionIcon');
   static const Color additionalSpeedRestrictionColor = SBBColors.orange;
 
   const AdditionalSpeedRestrictionRow({
