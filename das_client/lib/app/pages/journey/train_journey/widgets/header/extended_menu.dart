@@ -2,6 +2,7 @@ import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:das_client/app/widgets/assets.dart';
+import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -126,7 +127,7 @@ class _ExtendedMenuState extends State<ExtendedMenu> {
         Expanded(
           child: Text(
             context.l10n.w_extended_menu_title,
-            style: SBBTextStyles.largeLight,
+            style: DASTextStyles.largeLight,
           ),
         ),
         SBBIconButtonSmall(
@@ -149,7 +150,7 @@ class _ExtendedMenuState extends State<ExtendedMenu> {
           width: double.infinity,
           child: Text(
             context.l10n.w_extended_menu_breaking_slip_action,
-            style: SBBTextStyles.mediumLight,
+            style: DASTextStyles.mediumLight,
           ),
         ),
       ),
@@ -166,7 +167,7 @@ class _ExtendedMenuState extends State<ExtendedMenu> {
           width: double.infinity,
           child: Text(
             context.l10n.w_extended_menu_transport_document_action,
-            style: SBBTextStyles.mediumLight,
+            style: DASTextStyles.mediumLight,
           ),
         ),
       ),
@@ -183,7 +184,7 @@ class _ExtendedMenuState extends State<ExtendedMenu> {
           width: double.infinity,
           child: Text(
             context.l10n.w_extended_menu_journey_overview_action,
-            style: SBBTextStyles.mediumLight,
+            style: DASTextStyles.mediumLight,
           ),
         ),
       ),
@@ -194,19 +195,21 @@ class _ExtendedMenuState extends State<ExtendedMenu> {
     final trainJourneyCubit = DI.get<TrainJourneyCubit>();
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing, vertical: 7),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
             child: Text(
               context.l10n.w_extended_menu_maneuver_mode,
-              style: SBBTextStyles.mediumLight,
+              style: DASTextStyles.mediumLight,
             ),
           ),
           StreamBuilder<TrainJourneySettings>(
             stream: trainJourneyCubit.settingsStream,
             builder: (context, snapshot) {
+              if (!snapshot.hasData) return Container();
+
               return SBBSwitch(
                 value: snapshot.data?.maneuverMode ?? false,
                 onChanged: (bool value) {
@@ -223,7 +226,7 @@ class _ExtendedMenuState extends State<ExtendedMenu> {
   Widget _divider() => Divider(height: 1.0, color: SBBColors.cloud);
 
   Widget _itemPadding({required Widget child}) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing, vertical: 12),
         child: child,
       );
 }

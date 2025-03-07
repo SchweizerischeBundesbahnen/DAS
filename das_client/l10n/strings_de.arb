@@ -34,6 +34,8 @@
   "w_extended_menu_breaking_slip_action": "Brems- und Lastzettel öffnen",
   "w_extended_menu_transport_document_action": "Beförderungspapier öffnen",
   "w_extended_menu_journey_overview_action": "Fahrtübersicht öffnen",
+  "w_maneuver_notification_text": "Du befindest dich im Manövermodus. Warnfunktion geschlossenes Signal ist deaktiviert.",
+  "w_maneuver_notification_wara_action": "WaRa",
   "c_ru_sbb_p": "SBB",
   "c_ru_sbb_c": "SBB Cargo",
   "c_ru_bls_p": "BLS",

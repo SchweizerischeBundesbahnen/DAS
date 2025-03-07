@@ -38,7 +38,7 @@ class MainContainer extends StatelessWidget {
               sbbDefaultSpacing * 0.5,
               0,
               sbbDefaultSpacing * 0.5,
-              sbbDefaultSpacing,
+              sbbDefaultSpacing / 2,
             ),
             padding: const EdgeInsets.all(sbbDefaultSpacing),
             useShadow: false,
