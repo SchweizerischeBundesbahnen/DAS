@@ -134,6 +134,11 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
     }
     _settingsSubject.add(_settingsSubject.value.copyWith(automaticAdvancementActive: active));
   }
+
+  void setManeuverMode(bool active) {
+    Fimber.i('Maneuver mode state changed to active=$active');
+    _settingsSubject.add(_settingsSubject.value.copyWith(maneuverMode: active));
+  }
 }
 
 extension ContextBlocExtension on BuildContext {

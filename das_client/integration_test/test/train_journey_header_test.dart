@@ -1,5 +1,6 @@
 import 'package:battery_plus/battery_plus.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/battery_status.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/extended_menu.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_channel.dart';
 import 'package:das_client/di.dart';
@@ -11,6 +12,46 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey header test', () {
+    testWidgets('test extended menu opening', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T9999');
+
+      await openExtendedMenu(tester);
+
+      expect(find.byKey(ExtendedMenu.menuButtonCloseKey), findsAny);
+
+      await dismissExtendedMenu(tester);
+
+      expect(find.byKey(ExtendedMenu.menuButtonCloseKey), findsNothing);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('test extended meneuver mode', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T9999');
+
+      await openExtendedMenu(tester);
+
+      expect(find.byKey(ExtendedMenu.menuButtonCloseKey), findsAny);
+
+      await tapElement(tester, find.byKey(ExtendedMenu.maneuverSwitchKey));
+
+      expect(find.text(l10n.w_maneuver_notification_text), findsOneWidget);
+
+      await tapElement(tester, find.byKey(ExtendedMenu.maneuverSwitchKey));
+
+      expect(find.text(l10n.w_maneuver_notification_text), findsNothing);
+
+      await dismissExtendedMenu(tester);
+
+      await disconnect(tester);
+    });
+
     testWidgets('test battery over 15% and not show icon', (tester) async {
       await prepareAndStartApp(tester);
 
