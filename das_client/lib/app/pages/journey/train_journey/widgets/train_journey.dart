@@ -104,7 +104,24 @@ class TrainJourney extends StatelessWidget {
   }
 
   List<BaseRowBuilder> _rows(BuildContext context, Journey journey, TrainJourneySettings settings) {
-    final rows = journey.data.groupBaliseAndLeveLCrossings(settings.expandedGroups);
+    final curveExceptions = journey.data
+        .where((it) =>
+            it.type == Datatype.curvePoint &&
+            (it.localSpeedData == null ||
+                it.localSpeedData!.speedsFor(
+                        settings.selectedBreakSeries != null
+                            ? settings.selectedBreakSeries?.trainSeries
+                            : journey.metadata.breakSeries!.trainSeries,
+                        settings.selectedBreakSeries != null
+                            ? settings.selectedBreakSeries?.breakSeries
+                            : journey.metadata.breakSeries!.breakSeries) ==
+                    null))
+        .toList();
+
+    final rows = journey.data
+        .where((it) => !curveExceptions.contains(it))
+        .toList()
+        .groupBaliseAndLeveLCrossings(settings.expandedGroups);
 
     final groupedRows =
         rows.whereType<BaliseLevelCrossingGroup>().map((it) => it.groupedElements).expand((it) => it).toList();
