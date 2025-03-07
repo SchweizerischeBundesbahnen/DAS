@@ -1,5 +1,6 @@
 import 'package:battery_plus/battery_plus.dart';
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
+import 'package:das_client/app/bloc/ux_testing_cubit.dart';
 import 'package:das_client/auth/authentication_component.dart';
 import 'package:das_client/flavor.dart';
 import 'package:das_client/mqtt/mqtt_component.dart';
@@ -130,6 +131,7 @@ extension GetItX on GetIt {
 
   void registerBlocs() {
     registerLazySingleton<TrainJourneyCubit>(() => TrainJourneyCubit(sferaService: get()));
+    registerLazySingleton<UxTestingCubit>(() => UxTestingCubit(sferaService: get()));
   }
 
   void registerBattery() {

@@ -3,11 +3,13 @@ import 'dart:core';
 
 import 'package:das_client/auth/authentication_component.dart';
 import 'package:das_client/model/journey/journey.dart';
+import 'package:das_client/model/journey/ux_testing.dart';
 import 'package:das_client/mqtt/mqtt_component.dart';
 import 'package:das_client/sfera/sfera_component.dart';
 import 'package:das_client/sfera/src/mapper/sfera_model_mapper.dart';
 import 'package:das_client/sfera/src/model/enums/das_driving_mode.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
+import 'package:das_client/sfera/src/model/network_specific_event.dart';
 import 'package:das_client/sfera/src/model/related_train_information.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
 import 'package:das_client/sfera/src/model/sfera_b2g_event_message.dart';
@@ -15,7 +17,9 @@ import 'package:das_client/sfera/src/model/sfera_g2b_event_message.dart';
 import 'package:das_client/sfera/src/model/sfera_g2b_reply_message.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 import 'package:das_client/sfera/src/model/train_characteristics.dart';
+import 'package:das_client/sfera/src/model/ux_testing_nse.dart';
 import 'package:das_client/sfera/src/service/event/journey_profile_event_handler.dart';
+import 'package:das_client/sfera/src/service/event/network_specific_event_handler.dart';
 import 'package:das_client/sfera/src/service/event/related_train_information_event_handler.dart';
 import 'package:das_client/sfera/src/service/event/sfera_event_message_handler.dart';
 import 'package:das_client/sfera/src/service/task/handshake_task.dart';
@@ -37,13 +41,17 @@ class SferaServiceImpl implements SferaService {
   final List<SferaEventMessageHandler> _eventMessageHandler = [];
 
   final _stateSubject = BehaviorSubject.seeded(SferaServiceState.disconnected);
+  final _journeyProfileSubject = BehaviorSubject<Journey?>.seeded(null);
+  final _uxTestingSubject = BehaviorSubject<UxTesting?>.seeded(null);
 
   @override
   Stream<SferaServiceState> get stateStream => _stateSubject.stream;
-  final _journeyProfileSubject = BehaviorSubject<Journey?>.seeded(null);
 
   @override
   Stream<Journey?> get journeyStream => _journeyProfileSubject.stream;
+
+  @override
+  Stream<UxTesting?> get uxTestingStream => _uxTestingSubject.stream;
 
   OtnId? _otnId;
   JourneyProfile? _journeyProfile;
@@ -231,6 +239,7 @@ class SferaServiceImpl implements SferaService {
   void _addEventMessageHandlers() {
     _eventMessageHandler.add(JourneyProfileEventHandler(onJourneyProfileUpdated, _sferaRepository));
     _eventMessageHandler.add(RelatedTrainInformationEventHandler(onRelatedTrainInformationUpdated));
+    _eventMessageHandler.add(NetworkSpecificEventHandler(onNetworkSpecificEvent));
   }
 
   void onJourneyProfileUpdated(SferaEventMessageHandler handler, JourneyProfile data) async {
@@ -241,6 +250,20 @@ class SferaServiceImpl implements SferaService {
   void onRelatedTrainInformationUpdated(SferaEventMessageHandler handler, RelatedTrainInformation data) async {
     _relatedTrainInformation = data;
     _updateJourney();
+  }
+
+  void onNetworkSpecificEvent(SferaEventMessageHandler handler, NetworkSpecificEvent data) async {
+    if (data is UxTestingNse) {
+      if (data.koa != null) {
+        final uxTesting = UxTesting(name: data.koa!.name, value: data.koa!.nspValue);
+        _uxTestingSubject.add(uxTesting);
+      }
+
+      if (data.warn != null) {
+        final uxTesting = UxTesting(name: data.warn!.name, value: data.warn!.nspValue);
+        _uxTestingSubject.add(uxTesting);
+      }
+    }
   }
 
   void onTaskFailed(SferaTask task, ErrorCode errorCode) {
