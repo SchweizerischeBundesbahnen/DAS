@@ -32,9 +32,7 @@ class _ExtendedMenuState extends State<ExtendedMenu> {
     return SBBIconButtonLarge(
       key: ExtendedMenu.menuButtonKey,
       icon: SBBIcons.context_menu_small,
-      onPressed: () {
-        _showOverlay(context);
-      },
+      onPressed: () => _showOverlay(context),
     );
   }
 
@@ -109,11 +107,8 @@ class _ExtendedMenuState extends State<ExtendedMenu> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _breakSlipItem(context),
-                    _divider(),
                     _transportDocumentItem(context),
-                    _divider(),
                     _journeyOverviewItem(context),
-                    _divider(),
                     _maneuverItem(context),
                   ],
                 ),
@@ -137,9 +132,7 @@ class _ExtendedMenuState extends State<ExtendedMenu> {
         ),
         SBBIconButtonSmall(
           key: ExtendedMenu.menuButtonCloseKey,
-          onPressed: () {
-            _removeOverlay();
-          },
+          onPressed: () => _removeOverlay(),
           icon: SBBIcons.cross_small,
         ),
       ],
@@ -147,93 +140,54 @@ class _ExtendedMenuState extends State<ExtendedMenu> {
   }
 
   Widget _breakSlipItem(BuildContext context) {
-    return InkWell(
-      onTap: () {
+    return SBBListItem(
+      title: context.l10n.w_extended_menu_breaking_slip_action,
+      onPressed: () {
         // Placeholder
       },
-      child: _itemPadding(
-        child: SizedBox(
-          width: double.infinity,
-          child: Text(
-            context.l10n.w_extended_menu_breaking_slip_action,
-            style: DASTextStyles.mediumLight,
-          ),
-        ),
-      ),
     );
   }
 
   Widget _transportDocumentItem(BuildContext context) {
-    return InkWell(
-      onTap: () {
+    return SBBListItem(
+      title: context.l10n.w_extended_menu_transport_document_action,
+      onPressed: () {
         // Placeholder
       },
-      child: _itemPadding(
-        child: SizedBox(
-          width: double.infinity,
-          child: Text(
-            context.l10n.w_extended_menu_transport_document_action,
-            style: DASTextStyles.mediumLight,
-          ),
-        ),
-      ),
     );
   }
 
   Widget _journeyOverviewItem(BuildContext context) {
-    return InkWell(
-      onTap: () {
+    return SBBListItem(
+      title: context.l10n.w_extended_menu_journey_overview_action,
+      onPressed: () {
         // Placeholder
       },
-      child: _itemPadding(
-        child: SizedBox(
-          width: double.infinity,
-          child: Text(
-            context.l10n.w_extended_menu_journey_overview_action,
-            style: DASTextStyles.mediumLight,
-          ),
-        ),
-      ),
     );
   }
 
   Widget _maneuverItem(BuildContext context) {
     final trainJourneyCubit = DI.get<TrainJourneyCubit>();
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing, vertical: 7),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Text(
-              context.l10n.w_extended_menu_maneuver_mode,
-              style: DASTextStyles.mediumLight,
-            ),
-          ),
-          StreamBuilder<TrainJourneySettings>(
-            stream: trainJourneyCubit.settingsStream,
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) return Container();
+    return SBBListItem.custom(
+      title: context.l10n.w_extended_menu_maneuver_mode,
+      isLastElement: true,
+      onPressed: () => trainJourneyCubit.setManeuverMode(!trainJourneyCubit.settings.maneuverMode),
+      trailingWidget: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 0, sbbDefaultSpacing * 0.5, 0),
+        child: StreamBuilder<TrainJourneySettings>(
+          stream: trainJourneyCubit.settingsStream,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) return Container();
 
-              return SBBSwitch(
-                key: ExtendedMenu.maneuverSwitchKey,
-                value: snapshot.data?.maneuverMode ?? false,
-                onChanged: (bool value) {
-                  trainJourneyCubit.setManeuverMode(value);
-                },
-              );
-            },
-          ),
-        ],
+            return SBBSwitch(
+              key: ExtendedMenu.maneuverSwitchKey,
+              value: snapshot.data?.maneuverMode ?? false,
+              onChanged: (bool value) => trainJourneyCubit.setManeuverMode(value),
+            );
+          },
+        ),
       ),
     );
   }
-
-  Widget _divider() => Divider(height: 1.0, color: SBBColors.cloud);
-
-  Widget _itemPadding({required Widget child}) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing, vertical: 12),
-        child: child,
-      );
 }

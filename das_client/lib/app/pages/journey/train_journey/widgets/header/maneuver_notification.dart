@@ -20,7 +20,8 @@ class ManeuverNotification extends StatelessWidget {
 
         return showNotification
             ? Container(
-                margin: EdgeInsets.fromLTRB(sbbDefaultSpacing * 0.5, 0, sbbDefaultSpacing * 0.5, sbbDefaultSpacing / 2),
+                margin:
+                    EdgeInsets.fromLTRB(sbbDefaultSpacing * 0.5, 0, sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5),
                 child: NotificationBox(
                   style: NotificationBoxStyle.warning,
                   text: context.l10n.w_maneuver_notification_text,

@@ -28,6 +28,8 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
 
   Stream<TrainJourneySettings> get settingsStream => _settingsSubject.stream;
 
+  TrainJourneySettings get settings => _settingsSubject.value;
+
   StreamSubscription? _stateSubscription;
 
   AutomaticAdvancementController automaticAdvancementController = AutomaticAdvancementController();

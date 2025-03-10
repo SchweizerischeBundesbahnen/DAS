@@ -15,7 +15,7 @@ class TimeContainer extends StatelessWidget {
         sbbDefaultSpacing * 0.5,
         0,
         sbbDefaultSpacing * 0.5,
-        sbbDefaultSpacing / 2,
+        sbbDefaultSpacing * 0.5,
       ),
       padding: const EdgeInsets.all(sbbDefaultSpacing),
       useShadow: false,
