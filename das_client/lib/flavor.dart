@@ -1,4 +1,6 @@
 import 'package:das_client/auth/authentication_component.dart';
+import 'package:flutter/material.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 enum Flavor {
   dev(
@@ -12,6 +14,8 @@ enum Flavor {
     tmsAuthenticatorConfig: _authenticatorConfigTmsDev,
     backendUrl: 'https://das-backend-dev.app.sbb.ch',
     mqttTopicPrefix: 'dev/',
+    color: SBBColors.peach,
+    showBanner: true,
   ),
   inte(
     displayName: 'Inte',
@@ -20,6 +24,8 @@ enum Flavor {
     authenticatorConfig: _authenticatorConfigInte,
     backendUrl: 'https://das-backend-int.app.sbb.ch',
     mqttTopicPrefix: '',
+    color: SBBColors.black,
+    showBanner: true,
   ),
   prod(
     displayName: 'Prod',
@@ -37,6 +43,8 @@ enum Flavor {
     required this.authenticatorConfig,
     required this.mqttTopicPrefix,
     required this.backendUrl,
+    this.color = SBBColors.transparent,
+    this.showBanner = false,
     this.tmsTokenExchangeUrl,
     this.tmsMqttUrl,
     this.tmsAuthenticatorConfig,
@@ -51,6 +59,8 @@ enum Flavor {
   final AuthenticatorConfig? tmsAuthenticatorConfig;
   final String mqttTopicPrefix;
   final String backendUrl;
+  final bool showBanner;
+  final Color color;
 }
 
 const _authenticatorConfigTmsDev = AuthenticatorConfig(

@@ -116,9 +116,12 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
     }
   }
 
-  void dispose() {
+  @override
+  Future<void> close() {
     _stateSubscription?.cancel();
     _stateSubscription = null;
+
+    return super.close();
   }
 
   void updateBreakSeries(BreakSeries selectedBreakSeries) {

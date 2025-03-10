@@ -19,13 +19,39 @@ class ExtendedMenu extends StatefulWidget {
   State<ExtendedMenu> createState() => _ExtendedMenuState();
 }
 
-class _ExtendedMenuState extends State<ExtendedMenu> {
+class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderStateMixin {
   static const extendedMenuContentWidth = 360.0;
-  static const arrowShapeWidth = 30.0;
   static const extendedMenuContentHeightOffset = 10;
-  static const arrowShapeHeigth = 10.0;
 
   OverlayEntry? overlayEntry;
+  late AnimationController _controller;
+  late Animation<double> _opacityAnimation;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 100),
+      vsync: this,
+    );
+
+    _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    ));
+
+    _scaleAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +63,11 @@ class _ExtendedMenuState extends State<ExtendedMenu> {
   }
 
   void _removeOverlay() {
-    overlayEntry?.remove();
-    overlayEntry?.dispose();
-    overlayEntry = null;
+    _controller.reverse().then((_) {
+      overlayEntry?.remove();
+      overlayEntry?.dispose();
+      overlayEntry = null;
+    });
   }
 
   void _showOverlay(BuildContext context) {
@@ -49,7 +77,7 @@ class _ExtendedMenuState extends State<ExtendedMenu> {
     final size = renderBox.size;
 
     overlayEntry = OverlayEntry(
-      builder: (BuildContext context) => Stack(
+      builder: (context) => Stack(
         children: [
           // Fullscreen background
           GestureDetector(
@@ -58,25 +86,11 @@ class _ExtendedMenuState extends State<ExtendedMenu> {
               color: SBBColors.iron.withAlpha((255.0 * 0.6).round()),
             ),
           ),
-          // Arrow shape on top
+          // Positioned extended menu
           Positioned(
-            // Position center of button
-            left: positionOffset.dx - arrowShapeWidth / 2 + size.width / 2,
-            // Position below the button
-            top: positionOffset.dy + size.height + extendedMenuContentHeightOffset,
-            child: SvgPicture.asset(
-              AppAssets.shapeMenuArrow,
-            ),
-          ),
-          // Positioned overlay
-          Positioned(
-            // Position center of button
             left: positionOffset.dx - extendedMenuContentWidth / 2 + size.width / 2,
-            // Position below the button
-            top: positionOffset.dy + size.height + extendedMenuContentHeightOffset + arrowShapeHeigth,
-            child: _menuContent(
-              context,
-            ),
+            top: positionOffset.dy + size.height + extendedMenuContentHeightOffset,
+            child: _menu(context),
           ),
         ],
       ),
@@ -84,6 +98,22 @@ class _ExtendedMenuState extends State<ExtendedMenu> {
 
     // Insert the overlay entry into the Overlay
     overlayState.insert(overlayEntry!);
+    _controller.forward(); // Start the animation
+  }
+
+  Widget _menu(BuildContext context) {
+    return FadeTransition(
+      opacity: _opacityAnimation,
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: Column(
+          children: [
+            SvgPicture.asset(AppAssets.shapeMenuArrow),
+            _menuContent(context),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _menuContent(BuildContext context) {
@@ -183,7 +213,7 @@ class _ExtendedMenuState extends State<ExtendedMenu> {
             return SBBSwitch(
               key: ExtendedMenu.maneuverSwitchKey,
               value: snapshot.data?.maneuverMode ?? false,
-              onChanged: (bool value) => trainJourneyCubit.setManeuverMode(value),
+              onChanged: (value) => trainJourneyCubit.setManeuverMode(value),
             );
           },
         ),
