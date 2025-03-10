@@ -28,7 +28,7 @@ DAS-OB
 RU DAS-TS
 
 - [das_backend](das_backend/README.md)
-    - [Kotlin](https://kotlinlang.org/)
+    - [Java](https://www.java.com/de/), [openJDK](https://openjdk.org/)
     - [Spring Framework](https://spring.io/projects/spring-framework)
       with [Spring Boot](https://spring.io/projects/spring-boot)
 
