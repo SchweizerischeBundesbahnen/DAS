@@ -2,12 +2,12 @@ import 'package:das_client/model/journey/balise_level_crossing_group.dart';
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/datatype.dart';
 
-extension BaseDataExtension on List<BaseData> {
+extension BaseDataExtension on Iterable<BaseData> {
   List<BaseData> groupBaliseAndLeveLCrossings(List<int> expandedGroups) {
     final List<BaseData> resultList = [];
 
     for (int i = 0; i < length; i++) {
-      final currentElement = this[i];
+      final currentElement = toList()[i];
       if (!currentElement.canGroup) {
         // Just add elements to the result that are unable to be grouped
         resultList.add(currentElement);
@@ -17,7 +17,7 @@ extension BaseDataExtension on List<BaseData> {
       final groupedElements = [currentElement];
       // check the next elements if they can be grouped with the currentElement.
       for (int j = i + 1; j < length; j++) {
-        final nextElement = this[j];
+        final nextElement = toList()[j];
         if (nextElement.canGroup && currentElement.canGroupWith(nextElement)) {
           groupedElements.add(nextElement);
         } else {
