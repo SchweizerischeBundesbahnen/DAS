@@ -27,6 +27,7 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
   Color getRowColor(BuildContext context) {
     final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
 
+    //TODO access data better
     return metadata.nextStop == data
         ? isDarkTheme
             ? const Color(0x06348B99)
