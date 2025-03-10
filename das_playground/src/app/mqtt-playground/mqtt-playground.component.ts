@@ -10,7 +10,6 @@ import { OidcSecurityService } from "angular-auth-oidc-client";
 
 @Component({
   selector: 'app-mqtt-playground',
-  standalone: true,
   imports: [
     MqSubscriberComponent,
     MqPublisherComponent,
@@ -22,6 +21,8 @@ import { OidcSecurityService } from "angular-auth-oidc-client";
 })
 export class MqttPlaygroundComponent implements OnDestroy {
 
+  protected readonly MqttConnectionState = MqttConnectionState;
+
   constructor(public mqService: MqService, private oidcSecurityService: OidcSecurityService) {
     this.oidcSecurityService.getAccessToken().subscribe(async token => {
       const userName = await firstValueFrom(this.oidcSecurityService.getUserData().pipe(map((data) => data?.preferred_username)));
@@ -32,6 +33,4 @@ export class MqttPlaygroundComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.mqService.disconnect()
   }
-
-  protected readonly MqttConnectionState = MqttConnectionState;
 }

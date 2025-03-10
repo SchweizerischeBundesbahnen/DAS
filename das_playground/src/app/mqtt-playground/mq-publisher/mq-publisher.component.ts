@@ -7,7 +7,6 @@ import { MqService } from "../../mq.service";
 
 @Component({
   selector: 'app-mq-publisher',
-  standalone: true,
   imports: [
     FormsModule,
     ReactiveFormsModule,

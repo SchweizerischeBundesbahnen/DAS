@@ -1,5 +1,6 @@
 import 'package:das_client/app/bloc/ux_testing_cubit.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/maneuver_notification.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/warn_function_modal_sheet.dart';
 import 'package:das_client/di.dart';
@@ -22,6 +23,7 @@ class TrainJourneyOverview extends StatelessWidget {
         child: const Column(
           children: [
             Header(),
+            ManeuverNotification(),
             Expanded(child: TrainJourney()),
           ],
         ),

@@ -102,6 +102,10 @@ public class RegistrationService {
         }
     }
 
+    public ZonedDateTime getTimestamp(ClientId clientId) {
+        return registrationMap.get(clientId).timestamp;
+    }
+
     public record Registration(TrainIdentification trainIdentification, OperationMode operationMode, ZonedDateTime timestamp, int manualLoactionIndex) {
 
         public Registration(TrainIdentification trainIdentification, OperationMode operationMode) {

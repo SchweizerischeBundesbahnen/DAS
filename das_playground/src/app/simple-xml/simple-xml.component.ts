@@ -2,18 +2,18 @@ import { AfterViewInit, Component, ElementRef, Input, Renderer2 } from '@angular
 
 @Component({
   selector: 'app-simple-xml',
-  standalone: true,
   imports: [],
   templateUrl: './simple-xml.component.html',
   styleUrl: './simple-xml.component.scss'
 })
-export class SimpleXmlComponent implements AfterViewInit{
+export class SimpleXmlComponent implements AfterViewInit {
   @Input() xml: Document | undefined;
   @Input() xmlString: string | undefined;
   @Input() collapsedText: string = '...';
   @Input() collapsed: boolean = false;
 
-  constructor(private el: ElementRef, private renderer: Renderer2) { }
+  constructor(private el: ElementRef, private renderer: Renderer2) {
+  }
 
   ngAfterViewInit() {
     if (this.xml === undefined && this.xmlString === undefined) {
@@ -73,8 +73,7 @@ export class SimpleXmlComponent implements AfterViewInit{
     }
 
     switch (xml.nodeType) {
-      case Node.ELEMENT_NODE:
-      {
+      case Node.ELEMENT_NODE: {
         const hasChildNodes = xml.childNodes.length > 0;
         const expandingNode = hasChildNodes && (xml.childNodes.length > 1 || xml.childNodes[0].nodeType != 3);
 
@@ -140,8 +139,7 @@ export class SimpleXmlComponent implements AfterViewInit{
       }
         break;
 
-      case 3:
-      {
+      case 3: {
         if (xml.nodeValue && xml.nodeValue.trim() !== '') {
           this.renderer.appendChild(parent, this.makeSpan('', 'simpleXML-expander'));
           this.renderer.appendChild(parent, this.makeSpan(xml.nodeValue));
@@ -149,8 +147,7 @@ export class SimpleXmlComponent implements AfterViewInit{
       }
         break;
 
-      case 4:
-      {
+      case 4: {
         this.renderer.appendChild(parent, this.makeSpan('', 'simpleXML-expander'));
         this.renderer.appendChild(parent, this.makeSpan('<![CDATA[', 'simpleXML-tagHeader'));
         this.renderer.appendChild(parent, this.makeSpan(xml.nodeValue!, 'simpleXML-cdata'));
@@ -158,15 +155,13 @@ export class SimpleXmlComponent implements AfterViewInit{
       }
         break;
 
-      case 8:
-      {
+      case 8: {
         this.renderer.appendChild(parent, this.makeSpan('', 'simpleXML-expander'));
         this.renderer.appendChild(parent, this.makeSpan(`<!--${xml.nodeValue}-->`, 'simpleXML-comment'));
       }
         break;
 
-      default:
-      {
+      default: {
         const item = this.renderer.createElement('span');
         item.innerText = `${xml.nodeType} - ${xml.nodeName}`;
         this.renderer.appendChild(parent, item);

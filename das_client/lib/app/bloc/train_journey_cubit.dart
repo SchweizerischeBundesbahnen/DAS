@@ -28,6 +28,8 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
 
   Stream<TrainJourneySettings> get settingsStream => _settingsSubject.stream;
 
+  TrainJourneySettings get settings => _settingsSubject.value;
+
   StreamSubscription? _stateSubscription;
 
   AutomaticAdvancementController automaticAdvancementController = AutomaticAdvancementController();
@@ -136,6 +138,11 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
       automaticAdvancementController.scrollToCurrentPosition();
     }
     _settingsSubject.add(_settingsSubject.value.copyWith(automaticAdvancementActive: active));
+  }
+
+  void setManeuverMode(bool active) {
+    Fimber.i('Maneuver mode state changed to active=$active');
+    _settingsSubject.add(_settingsSubject.value.copyWith(maneuverMode: active));
   }
 }
 

@@ -25,7 +25,7 @@ import ch.sbb.sferamock.adapters.sfera.model.v0201.UnavailableDASOperatingModes;
 import ch.sbb.sferamock.messages.common.XmlDateHelper;
 import ch.sbb.sferamock.messages.model.OperationMode;
 import ch.sbb.sferamock.messages.model.TrainIdentification;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -85,7 +85,7 @@ public class SferaMessageCreator {
         correlationId.map(UUID::toString).ifPresent(result::setCorrelationID);
         result.setSender(sender);
         result.setRecipient(recipient);
-        result.setTimestamp(XmlDateHelper.toGregorianCalender(LocalDateTime.now()));
+        result.setTimestamp(XmlDateHelper.toGregorianCalender(ZonedDateTime.now()));
         return result;
     }
 

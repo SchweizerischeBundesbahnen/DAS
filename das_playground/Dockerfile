@@ -4,7 +4,7 @@ FROM nginxinc/nginx-unprivileged:alpine-slim
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy webapp
-COPY ./dist/webapp /usr/share/nginx/html
+COPY ./dist/webapp/browser /usr/share/nginx/html
 
 USER root
 
@@ -12,7 +12,7 @@ USER root
 RUN chmod a+w /usr/share/nginx/html/index.html
 
 # Install ngssc binary
-ADD https://github.com/kyubisation/angular-server-side-configuration/releases/download/v18.2.0/ngssc_64bit /usr/sbin/ngssc
+ADD https://github.com/kyubisation/angular-server-side-configuration/releases/download/v19.0.1/ngssc_64bit /usr/sbin/ngssc
 RUN chmod +x /usr/sbin/ngssc
 
 # Copy insert key script and assign execute permission
