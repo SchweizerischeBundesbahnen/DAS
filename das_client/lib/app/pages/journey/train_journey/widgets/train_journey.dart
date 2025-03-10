@@ -71,13 +71,10 @@ class TrainJourney extends StatelessWidget {
         });
 
         return Listener(
-            onPointerDown: (_) {
-              bloc.automaticAdvancementController.onTouch();
-            },
-            onPointerUp: (_) {
-              bloc.automaticAdvancementController.onTouch();
-            },
-            child: _body(context, journey, settings));
+          onPointerDown: (_) => bloc.automaticAdvancementController.onTouch(),
+          onPointerUp: (_) => bloc.automaticAdvancementController.onTouch(),
+          child: _body(context, journey, settings),
+        );
       },
     );
   }
@@ -233,10 +230,11 @@ class TrainJourney extends StatelessWidget {
       ),
       // TODO: find out what to do when break series is not defined
       DASTableColumn(
-          child: Text(speedLabel),
-          width: 62.0,
-          onTap: () => _onBreakSeriesTap(context, journey, settings),
-          headerKey: breakingSeriesHeaderKey),
+        child: Text(speedLabel),
+        width: 62.0,
+        onTap: () => _onBreakSeriesTap(context, journey, settings),
+        headerKey: breakingSeriesHeaderKey,
+      ),
       DASTableColumn(child: Text(context.l10n.p_train_journey_table_advised_speed_label), width: 62.0),
       DASTableColumn(width: 40.0), // actions
     ];
@@ -244,8 +242,6 @@ class TrainJourney extends StatelessWidget {
 
   void _onBaliseLevelCrossingGroupTap(
       BuildContext context, BaliseLevelCrossingGroup group, TrainJourneySettings settings) {
-    final trainJourneyCubit = context.trainJourneyCubit;
-
     final newList = List<int>.from(settings.expandedGroups);
     if (settings.expandedGroups.contains(group.order)) {
       newList.remove(group.order);
@@ -253,23 +249,24 @@ class TrainJourney extends StatelessWidget {
       newList.add(group.order);
     }
 
-    trainJourneyCubit.updateExpandedGroups(newList);
+    context.trainJourneyCubit.updateExpandedGroups(newList);
   }
 
-  void _onBreakSeriesTap(BuildContext context, Journey journey, TrainJourneySettings settings) {
+  Future<void> _onBreakSeriesTap(BuildContext context, Journey journey, TrainJourneySettings settings) async {
     final trainJourneyCubit = context.trainJourneyCubit;
 
-    showSBBModalSheet<BreakSeries>(
-            context: context,
-            title: context.l10n.p_train_journey_break_series,
-            constraints: BoxConstraints(),
-            child: BreakSeriesSelection(
-                availableBreakSeries: journey.metadata.availableBreakSeries,
-                selectedBreakSeries: settings.selectedBreakSeries ?? journey.metadata.breakSeries))
-        .then(
-      (newValue) => {
-        if (newValue != null) {trainJourneyCubit.updateBreakSeries(newValue)}
-      },
+    final selectedBreakSeries = await showSBBModalSheet<BreakSeries>(
+      context: context,
+      title: context.l10n.p_train_journey_break_series,
+      constraints: BoxConstraints(),
+      child: BreakSeriesSelection(
+        availableBreakSeries: journey.metadata.availableBreakSeries,
+        selectedBreakSeries: settings.selectedBreakSeries ?? journey.metadata.breakSeries,
+      ),
     );
+
+    if (selectedBreakSeries != null) {
+      trainJourneyCubit.updateBreakSeries(selectedBreakSeries);
+    }
   }
 }

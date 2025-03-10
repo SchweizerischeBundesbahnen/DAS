@@ -6,7 +6,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-Future<T?> showWarnFunctionModalSheet<T>(BuildContext context) => showDASModalSheet<T>(
+typedef ActivateManoeuvre = bool;
+
+Future<ActivateManoeuvre?> showWarnFunctionModalSheet(BuildContext context) => showDASModalSheet<ActivateManoeuvre>(
       context: context,
       backgroundColor: SBBColors.charcoal,
       padding: EdgeInsets.fromLTRB(sbbDefaultSpacing, 64.0, sbbDefaultSpacing, sbbDefaultSpacing * 2),
@@ -41,10 +43,7 @@ class WarnFunctionModalSheet extends StatelessWidget {
             Expanded(
               child: SBBSecondaryButton(
                 label: context.l10n.w_modal_sheet_warn_function_manoeuvre_button,
-                onPressed: () {
-                  // TODO: Activate manoeuvre
-                  Navigator.of(context).pop();
-                },
+                onPressed: () => Navigator.of(context).pop<ActivateManoeuvre>(true),
               ),
             ),
             Expanded(
