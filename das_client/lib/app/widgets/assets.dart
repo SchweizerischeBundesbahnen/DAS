@@ -6,7 +6,7 @@ class AppAssets {
 
   static const String _dir = 'assets';
   static const String _iconsDir = '$_dir/icons';
-  static const String _imagesDir = '$_dir/others';
+  static const String _othersDir = '$_dir/others';
 
   // icons
   static const iconHeaderStop = '$_iconsDir/icon_header_stop.svg';
@@ -25,6 +25,6 @@ class AppAssets {
   static const iconBatteryStatusLow = '$_iconsDir/icon_battery_status_low.svg';
 
   // others
-  static const imageTypeNSignalStop = '$_imagesDir/type_n_signal_stop.svg';
-  static const shapeMenuArrow = '$_iconsDir/shape_menu_arrow.svg';
+  static const imageTypeNSignalStop = '$_othersDir/type_n_signal_stop.svg';
+  static const shapeMenuArrow = '$_othersDir/shape_menu_arrow.svg';
 }

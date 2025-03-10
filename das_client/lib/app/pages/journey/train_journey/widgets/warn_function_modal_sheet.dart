@@ -1,14 +1,14 @@
+import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/app/widgets/das_modal_bottom_sheet.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
+import 'package:das_client/di.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-typedef ActivateManoeuvre = bool;
-
-Future<ActivateManoeuvre?> showWarnFunctionModalSheet(BuildContext context) => showDASModalSheet<ActivateManoeuvre>(
+Future<void> showWarnFunctionModalSheet(BuildContext context) => showDASModalSheet(
       context: context,
       backgroundColor: SBBColors.charcoal,
       padding: EdgeInsets.fromLTRB(sbbDefaultSpacing, 64.0, sbbDefaultSpacing, sbbDefaultSpacing * 2),
@@ -43,7 +43,10 @@ class WarnFunctionModalSheet extends StatelessWidget {
             Expanded(
               child: SBBSecondaryButton(
                 label: context.l10n.w_modal_sheet_warn_function_manoeuvre_button,
-                onPressed: () => Navigator.of(context).pop<ActivateManoeuvre>(true),
+                onPressed: () {
+                  DI.get<TrainJourneyCubit>().setManeuverMode(true);
+                  Navigator.of(context).pop();
+                },
               ),
             ),
             Expanded(

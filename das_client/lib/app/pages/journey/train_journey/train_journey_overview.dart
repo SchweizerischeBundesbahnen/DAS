@@ -1,4 +1,3 @@
-import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/bloc/ux_testing_cubit.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/maneuver_notification.dart';
@@ -18,7 +17,7 @@ class TrainJourneyOverview extends StatelessWidget {
       child: BlocListener<UxTestingCubit, UxTestingState>(
         listener: (context, state) {
           if (state is UxTestingEventReceived && state.event.isWarn) {
-            _handleWarnEvent(context);
+            showWarnFunctionModalSheet(context);
           }
         },
         child: const Column(
@@ -30,13 +29,5 @@ class TrainJourneyOverview extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Future<void> _handleWarnEvent(BuildContext context) async {
-    final trainJourneyCubit = context.trainJourneyCubit;
-    final activateManeuver = await showWarnFunctionModalSheet(context);
-    if (activateManeuver == true) {
-      trainJourneyCubit.setManeuverMode(true);
-    }
   }
 }
