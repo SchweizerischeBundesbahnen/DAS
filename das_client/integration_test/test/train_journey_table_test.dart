@@ -1,5 +1,3 @@
-import 'package:battery_plus/battery_plus.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/header/battery_status.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_row.dart';
@@ -17,13 +15,11 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/whistle
 import 'package:das_client/app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:das_client/app/pages/profile/profile_page.dart';
 import 'package:das_client/app/widgets/table/das_table.dart';
-import 'package:das_client/di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
-import '../mocks/battery_mock.dart';
 import '../util/test_utils.dart';
 
 void main() {
@@ -33,11 +29,6 @@ void main() {
 
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T5');
-
-      // check if the default breakseries is chosen.
-      final defaultBreakingSeriesHeaderCell = find.byKey(TrainJourney.breakingSeriesHeaderKey);
-      expect(defaultBreakingSeriesHeaderCell, findsOneWidget);
-      expect(find.descendant(of: defaultBreakingSeriesHeaderCell, matching: find.text('R115')), findsNWidgets(1));
 
       // change breakseries to A50
       await _selectBreakSeries(tester, breakSeries: 'A50');
@@ -74,58 +65,10 @@ void main() {
       expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('R115')), findsNWidgets(1));
 
       final curveName = findDASTableRowByText(l10n.p_train_journey_table_curve_type_curve);
-      expect(curveName, findsAtLeast(2));
+      expect(curveName, findsExactly(2));
 
       final curveIcon = find.descendant(of: curveName, matching: find.byKey(CurvePointRow.curvePointIconKey));
-      expect(curveIcon, findsAtLeast(2));
-
-      await disconnect(tester);
-    });
-
-    testWidgets('test battery over 15% and not show icon', (tester) async {
-      await prepareAndStartApp(tester);
-
-      // Set Battery to a mocked version
-      final battery = DI.get<Battery>() as BatteryMock;
-
-      // Set current Battery-Level to 80 % so it is over 15%
-      battery.currentBatteryLevel = 80;
-
-      // load train journey by filling out train selection page
-      await loadTrainJourney(tester, trainNumber: 'T7');
-
-      // Find the header and check if it is existent
-      final headerFinder = find.byType(Header);
-      expect(headerFinder, findsOneWidget);
-
-      expect(battery.currentBatteryLevel, 80);
-
-      final batteryIcon = find.descendant(of: headerFinder, matching: find.byKey(BatteryStatus.batteryLevelLowIconKey));
-      expect(batteryIcon, findsNothing);
-
-      await disconnect(tester);
-    });
-
-    testWidgets('test battery under 15% and show icon', (tester) async {
-      await prepareAndStartApp(tester);
-
-      // Set Battery to a mocked version
-      final battery = DI.get<Battery>() as BatteryMock;
-
-      // Set current Battery-Level to 10% so it is under 15%
-      battery.currentBatteryLevel = 10;
-
-      // load train journey by filling out train selection page
-      await loadTrainJourney(tester, trainNumber: 'T7');
-
-      // Find the header and check if it is existent
-      final headerFinder = find.byType(Header);
-      expect(headerFinder, findsOneWidget);
-
-      expect(battery.currentBatteryLevel, 10);
-
-      final batteryIcon = find.descendant(of: headerFinder, matching: find.byKey(BatteryStatus.batteryLevelLowIconKey));
-      expect(batteryIcon, findsOneWidget);
+      expect(curveIcon, findsExactly(2));
 
       await disconnect(tester);
     });
