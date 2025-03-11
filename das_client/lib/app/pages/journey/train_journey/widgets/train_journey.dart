@@ -88,9 +88,7 @@ class TrainJourney extends StatelessWidget {
     context.trainJourneyCubit.automaticAdvancementController.updateRenderedRows(tableRows);
 
     final marginAdjustment =
-    Platform.isIOS ? tableRows
-        .lastWhereOrNull((it) => it.isSticky)
-        ?.height ?? BaseRowBuilder.rowHeight : 0.0;
+        Platform.isIOS ? tableRows.lastWhereOrNull((it) => it.isSticky)?.height ?? BaseRowBuilder.rowHeight : 0.0;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
@@ -111,7 +109,7 @@ class TrainJourney extends StatelessWidget {
         .whereNot((it) => _isCurvePointWithoutSpeed(it, journey, settings))
         .groupBaliseAndLeveLCrossings(settings.expandedGroups);
 
-        final groupedRows =
+    final groupedRows =
         rows.whereType<BaliseLevelCrossingGroup>().map((it) => it.groupedElements).expand((it) => it).toList();
 
     return List.generate(rows.length, (index) {
@@ -247,8 +245,8 @@ class TrainJourney extends StatelessWidget {
     ];
   }
 
-  void _onBaliseLevelCrossingGroupTap(BuildContext context, BaliseLevelCrossingGroup group,
-      TrainJourneySettings settings) {
+  void _onBaliseLevelCrossingGroupTap(
+      BuildContext context, BaliseLevelCrossingGroup group, TrainJourneySettings settings) {
     final trainJourneyCubit = context.trainJourneyCubit;
 
     final newList = List<int>.from(settings.expandedGroups);
@@ -265,15 +263,14 @@ class TrainJourney extends StatelessWidget {
     final trainJourneyCubit = context.trainJourneyCubit;
 
     showSBBModalSheet<BreakSeries>(
-        context: context,
-        title: context.l10n.p_train_journey_break_series,
-        constraints: BoxConstraints(),
-        child: BreakSeriesSelection(
-            availableBreakSeries: journey.metadata.availableBreakSeries,
-            selectedBreakSeries: settings.selectedBreakSeries ?? journey.metadata.breakSeries))
+            context: context,
+            title: context.l10n.p_train_journey_break_series,
+            constraints: BoxConstraints(),
+            child: BreakSeriesSelection(
+                availableBreakSeries: journey.metadata.availableBreakSeries,
+                selectedBreakSeries: settings.selectedBreakSeries ?? journey.metadata.breakSeries))
         .then(
-          (newValue) =>
-      {
+      (newValue) => {
         if (newValue != null) {trainJourneyCubit.updateBreakSeries(newValue)}
       },
     );
