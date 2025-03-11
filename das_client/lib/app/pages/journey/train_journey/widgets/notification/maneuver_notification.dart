@@ -30,7 +30,7 @@ class ManeuverNotification extends StatelessWidget {
                   action: Row(
                     children: [
                       SBBTertiaryButtonSmall(
-                        icon: DasIcons.app_icon_warnfunktion_rangier,
+                        icon: DasIcons.appIconWarnfunktionRangier,
                         label: context.l10n.w_maneuver_notification_wara_action,
                         onPressed: () {
                           // TODO open Wara
