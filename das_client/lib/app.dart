@@ -5,7 +5,6 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:das_client/app/widgets/flavor_banner.dart';
 import 'package:das_client/di.dart';
 import 'package:flutter/material.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class App extends StatefulWidget {
   App({super.key});
@@ -26,29 +25,32 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return ThemeManager(
-        themeMode: _themeMode,
-        toggleTheme: _toggleTheme,
-        child: Builder(builder: (context) {
-          final themeMode = ThemeManager.of(context)!.themeMode;
-          return MaterialApp.router(
-            themeMode: themeMode,
-            theme: SBBTheme.light(
-              baseStyle: SBBBaseStyle(
-                primaryColor: SBBColors.royal,
-                primaryColorDark: SBBColors.royal125,
+    return FlavorBanner(
+      flavor: DI.get(),
+      child: ThemeManager(
+          themeMode: _themeMode,
+          toggleTheme: _toggleTheme,
+          child: Builder(builder: (context) {
+            final themeMode = ThemeManager.of(context)!.themeMode;
+            return MaterialApp.router(
+              themeMode: themeMode,
+              theme: SBBTheme.light(
+                baseStyle: SBBBaseStyle(
+                  primaryColor: SBBColors.royal,
+                  primaryColorDark: SBBColors.royal125,
+                ),
               ),
-            ),
-            darkTheme: SBBTheme.dark(
-              baseStyle: SBBBaseStyle(
-                primaryColor: SBBColors.royal,
-                primaryColorDark: SBBColors.royal125,
+              darkTheme: SBBTheme.dark(
+                baseStyle: SBBBaseStyle(
+                  primaryColor: SBBColors.royal,
+                  primaryColorDark: SBBColors.royal125,
+                ),
               ),
-            ),
-            localizationsDelegates: localizationDelegates,
-            supportedLocales: supportedLocales,
-            routerConfig: _appRouter.config(),
-          );
-        }));
+              localizationsDelegates: localizationDelegates,
+              supportedLocales: supportedLocales,
+              routerConfig: _appRouter.config(),
+            );
+          })),
+    );
   }
 }

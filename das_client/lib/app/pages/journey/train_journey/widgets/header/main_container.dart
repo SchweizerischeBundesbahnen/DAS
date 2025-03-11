@@ -82,11 +82,17 @@ class MainContainer extends StatelessWidget {
   }
 
   Widget _topHeaderRow(BuildContext context, Journey journey, TrainJourneySettings settings) {
+    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
+    final color = isDarkTheme ? SBBColors.white : SBBColors.black;
+
     return SizedBox(
       height: 48.0,
       child: Row(
         children: [
-          SvgPicture.asset(AppAssets.iconHeaderStop),
+          SvgPicture.asset(
+            AppAssets.iconHeaderStop,
+            colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(left: sbbDefaultSpacing * 0.5),
@@ -112,8 +118,9 @@ class MainContainer extends StatelessWidget {
         spacing: sbbDefaultSpacing * 0.5,
         children: [
           SBBTertiaryButtonLarge(
-            //TODO Tagmodus should be added to localization
-            label: isDarkMode ? 'Tagmodus' : context.l10n.p_train_journey_header_button_dark_theme,
+            label: isDarkMode
+                ? context.l10n.p_train_journey_header_button_light_theme
+                : context.l10n.p_train_journey_header_button_dark_theme,
             icon: isDarkMode ? SBBIcons.sunshine_small : SBBIcons.moon_small,
             onPressed: themeManager.toggleTheme,
           ),

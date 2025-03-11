@@ -63,6 +63,9 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
 
   @override
   DASTableCell iconsCell1(BuildContext context) {
+    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
+    final color = isDarkTheme ? SBBColors.white : SBBColors.black;
+
     if (data.mandatoryStop) return DASTableCell.empty();
 
     return DASTableCell(
@@ -70,6 +73,7 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
       child: SvgPicture.asset(
         AppAssets.iconStopOnRequest,
         key: stopOnRequestKey,
+        colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
       ),
     );
   }

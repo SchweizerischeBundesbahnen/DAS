@@ -46,20 +46,31 @@ class Header extends StatelessWidget {
             useShadow: false,
             child: child,
           ),
-          if (information != null) _information(),
+          if (information != null) _information(context),
         ],
       ),
     );
   }
 
-  Widget _information() {
+  Widget _information(BuildContext context) {
+    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing, vertical: sbbDefaultSpacing * 0.5),
       child: Row(
         spacing: sbbDefaultSpacing * 0.5,
         children: [
-          Icon(SBBIcons.circle_information_small, size: 20.0),
-          Text(information!, style: DASTextStyles.smallLight),
+          Icon(
+            SBBIcons.circle_information_small,
+            size: 20.0,
+            color: isDarkTheme ? SBBColors.charcoal : SBBColors.white,
+          ),
+          Text(
+            information!,
+            style: DASTextStyles.smallLight.copyWith(
+              color: isDarkTheme ? SBBColors.charcoal : SBBColors.white,
+            ),
+          ),
         ],
       ),
     );

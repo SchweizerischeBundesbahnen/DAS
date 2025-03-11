@@ -209,6 +209,9 @@ class TrainJourney extends StatelessWidget {
         ? '${settings.selectedBreakSeries!.trainSeries.name}${settings.selectedBreakSeries!.breakSeries}'
         : '${journey.metadata.breakSeries?.trainSeries.name ?? '?'}${journey.metadata.breakSeries?.breakSeries ?? '?'}';
 
+    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
+    final borderColor = isDarkTheme ? SBBColors.iron : SBBColors.cloud;
+
     return [
       DASTableColumn(child: Text(context.l10n.p_train_journey_table_kilometre_label), width: 64.0),
       DASTableColumn(child: Text(context.l10n.p_train_journey_table_time_label), width: 100.0),
@@ -227,8 +230,8 @@ class TrainJourney extends StatelessWidget {
         child: Text(context.l10n.p_train_journey_table_graduated_speed_label),
         width: 100.0,
         border: BorderDirectional(
-          bottom: BorderSide(color: SBBColors.cloud, width: 1.0),
-          end: BorderSide(color: SBBColors.cloud, width: 2.0),
+          bottom: BorderSide(color: borderColor, width: 1.0),
+          end: BorderSide(color: borderColor, width: 2.0),
         ),
       ),
       // TODO: find out what to do when break series is not defined
