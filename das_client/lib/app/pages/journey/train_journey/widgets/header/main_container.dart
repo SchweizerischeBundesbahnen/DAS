@@ -10,6 +10,7 @@ import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/model/journey/communication_network_change.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/metadata.dart';
+import 'package:das_client/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rxdart/rxdart.dart';
@@ -81,11 +82,17 @@ class MainContainer extends StatelessWidget {
   }
 
   Widget _topHeaderRow(BuildContext context, Journey journey, TrainJourneySettings settings) {
+    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
+    final color = isDarkTheme ? SBBColors.white : SBBColors.black;
+
     return SizedBox(
       height: 48.0,
       child: Row(
         children: [
-          SvgPicture.asset(AppAssets.iconHeaderStop),
+          SvgPicture.asset(
+            AppAssets.iconHeaderStop,
+            colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(left: sbbDefaultSpacing * 0.5),
@@ -95,21 +102,27 @@ class MainContainer extends StatelessWidget {
               ),
             ),
           ),
-          _buttonArea(settings),
+          _buttonArea(settings, context),
         ],
       ),
     );
   }
 
-  Widget _buttonArea(TrainJourneySettings settings) {
+  Widget _buttonArea(TrainJourneySettings settings, BuildContext context) {
+    //TODO maybe with SBBBaseStyle.of(context).brightness == Brightness.dark instead of thememanager
+    final themeManager = ThemeManager.of(context)!;
+    final isDarkMode = themeManager.themeMode == ThemeMode.dark;
+
     return Builder(builder: (context) {
       return Row(
         spacing: sbbDefaultSpacing * 0.5,
         children: [
           SBBTertiaryButtonLarge(
-            label: context.l10n.p_train_journey_header_button_dark_theme,
-            icon: SBBIcons.moon_small,
-            onPressed: () {},
+            label: isDarkMode
+                ? context.l10n.p_train_journey_header_button_light_theme
+                : context.l10n.p_train_journey_header_button_dark_theme,
+            icon: isDarkMode ? SBBIcons.sunshine_small : SBBIcons.moon_small,
+            onPressed: themeManager.toggleTheme,
           ),
           if (settings.automaticAdvancementActive)
             SBBTertiaryButtonLarge(

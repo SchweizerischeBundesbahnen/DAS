@@ -17,11 +17,15 @@ class WhistleRow extends BaseRowBuilder<Whistle> {
 
   @override
   DASTableCell iconsCell2(BuildContext context) {
+    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
+    final color = isDarkTheme ? SBBColors.white : SBBColors.black;
+
     return DASTableCell(
       padding: EdgeInsets.all(sbbDefaultSpacing * 0.25),
       child: SvgPicture.asset(
         AppAssets.iconWhistle,
         key: whistleIconKey,
+        colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
       ),
       alignment: Alignment.centerLeft,
     );

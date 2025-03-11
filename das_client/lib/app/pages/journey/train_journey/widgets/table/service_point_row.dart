@@ -21,9 +21,21 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
     super.height = rowHeight,
     super.config,
   }) : super(
-          rowColor: metadata.nextStop == data ? Color(0xFFCDD6E8) : SBBColors.white,
           isSticky: true,
         );
+
+  Color getRowColor(BuildContext context) {
+    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
+
+    //TODO access data better
+    return metadata.nextStop == data
+        ? isDarkTheme
+            ? const Color(0x06348B99)
+            : const Color(0xFFCDD6E8)
+        : isDarkTheme
+            ? SBBColors.black
+            : SBBColors.white;
+  }
 
   @override
   DASTableCell informationCell(BuildContext context) {
@@ -51,6 +63,9 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
 
   @override
   DASTableCell iconsCell1(BuildContext context) {
+    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
+    final color = isDarkTheme ? SBBColors.white : SBBColors.black;
+
     if (data.mandatoryStop) return DASTableCell.empty();
 
     return DASTableCell(
@@ -58,6 +73,7 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
       child: SvgPicture.asset(
         AppAssets.iconStopOnRequest,
         key: stopOnRequestKey,
+        colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
       ),
     );
   }

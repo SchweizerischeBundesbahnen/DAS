@@ -4,6 +4,7 @@ import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class CABSignalingRow extends BaseRowBuilder<CABSignaling> {
   static const Key cabSignalingStartIconKey = Key('cabSignalingStartIcon');
@@ -17,10 +18,14 @@ class CABSignalingRow extends BaseRowBuilder<CABSignaling> {
 
   @override
   DASTableCell iconsCell1(BuildContext context) {
+    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
+    final color = isDarkTheme ? SBBColors.white : SBBColors.black;
+
     return DASTableCell(
       child: SvgPicture.asset(
         key: data.isStart ? cabSignalingStartIconKey : cabSignalingEndIconKey,
         data.isStart ? AppAssets.iconCabStart : AppAssets.iconCabEnd,
+        colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
       ),
       alignment: Alignment.center,
     );
