@@ -8,7 +8,7 @@ class Sound {
   static const _defaultVolume = 0.5;
 
   static Future<void> play(String soundAsset, {double? volume}) async {
-    VolumeController.instance.setVolume(_defaultVolume).then((_) {
+    VolumeController.instance.setVolume(volume ?? _defaultVolume).then((_) {
       DI.get<AudioPlayer>().play(AssetSource(soundAsset));
     }); // Play the audio asset.
   }
