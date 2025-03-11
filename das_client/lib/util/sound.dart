@@ -9,7 +9,8 @@ class Sound {
 
   static Future<void> play(String soundAsset, {double? volume}) async {
     await VolumeController.instance.setVolume(volume ?? _defaultVolume);
-    await DI.get<AudioPlayer>().stop();
-    await DI.get<AudioPlayer>().play(AssetSource(soundAsset));
+    final audioPlayer = DI.get<AudioPlayer>();
+    await audioPlayer.stop();
+    await audioPlayer.play(AssetSource(soundAsset));
   }
 }
