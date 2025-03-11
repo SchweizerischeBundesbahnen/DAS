@@ -7,7 +7,7 @@ extension BaseDataExtension on Iterable<BaseData> {
     final List<BaseData> resultList = [];
 
     for (int i = 0; i < length; i++) {
-      final currentElement = toList()[i];
+      final currentElement = elementAt(i);
       if (!currentElement.canGroup) {
         // Just add elements to the result that are unable to be grouped
         resultList.add(currentElement);
@@ -17,7 +17,7 @@ extension BaseDataExtension on Iterable<BaseData> {
       final groupedElements = [currentElement];
       // check the next elements if they can be grouped with the currentElement.
       for (int j = i + 1; j < length; j++) {
-        final nextElement = toList()[j];
+        final nextElement = elementAt(j);
         if (nextElement.canGroup && currentElement.canGroupWith(nextElement)) {
           groupedElements.add(nextElement);
         } else {

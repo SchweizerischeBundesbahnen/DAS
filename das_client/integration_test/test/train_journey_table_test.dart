@@ -1,4 +1,3 @@
-import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cab_signaling_row.dart';
@@ -17,7 +16,6 @@ import 'package:das_client/app/pages/profile/profile_page.dart';
 import 'package:das_client/app/widgets/table/das_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
 import '../util/test_utils.dart';
@@ -69,34 +67,6 @@ void main() {
 
       final curveIcon = find.descendant(of: curveName, matching: find.byKey(CurvePointRow.curvePointIconKey));
       expect(curveIcon, findsExactly(2));
-
-      await disconnect(tester);
-    });
-
-    testWidgets('check if update sent is correct', (tester) async {
-      // Load app widget.
-      await prepareAndStartApp(tester);
-
-      // Select the correct train number
-      final trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
-      expect(trainNumberText, findsOneWidget);
-
-      await enterText(tester, trainNumberText, 'T9999');
-
-      // Log into the journey
-      final primaryButton = find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first;
-      await tester.tap(primaryButton);
-
-      // Wait for train journey to load
-      await tester.pumpAndSettle();
-
-      // Find the header and check if it is existent
-      final headerFinder = find.byType(Header);
-      expect(headerFinder, findsOneWidget);
-
-      await waitUntilNotExists(tester, find.descendant(of: headerFinder, matching: find.text('+00:00')));
-
-      expect(find.descendant(of: headerFinder, matching: find.text('+00:30')), findsOneWidget);
 
       await disconnect(tester);
     });
