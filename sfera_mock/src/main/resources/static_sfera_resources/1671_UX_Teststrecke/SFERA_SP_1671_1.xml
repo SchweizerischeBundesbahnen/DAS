@@ -5,29 +5,7 @@
         <IM_ID>1285</IM_ID>
     </SP_Zone>
 
-    <!--
-        Graftal bis Twinn: Block und Deckung
-        Graftal bis Twinn: keine Signale
-        ab Twinn: alle Signale
-    -->
-
     <SP_Points>
-
-        <TimingPoint TP_ID="Graftal" location="0">
-            <TAF_TAP_LocationReference>
-                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
-                <teltsi_LocationPrimaryCode>00001</teltsi_LocationPrimaryCode>
-            </TAF_TAP_LocationReference>
-            <TP_Name name="GR"/>
-        </TimingPoint>
-
-        <TimingPoint TP_ID="Fischerz" location="5300">
-            <TAF_TAP_LocationReference>
-                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
-                <teltsi_LocationPrimaryCode>00002</teltsi_LocationPrimaryCode>
-            </TAF_TAP_LocationReference>
-            <TP_Name name="FI"/>
-        </TimingPoint>
 
         <TimingPoint TP_ID="Twinn" location="9100">
             <TAF_TAP_LocationReference>
@@ -354,60 +332,6 @@
     </SP_Points>
 
     <SP_Areas>
-
-        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
-                          TAF_TAP_location_abbreviation="GR" TAF_TAP_location_type="station">
-            <TAF_TAP_LocationIdent>
-                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
-                <teltsi_LocationPrimaryCode>00001</teltsi_LocationPrimaryCode>
-            </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" text="Graftal"/>
-
-            <TAF_TAP_Location_NSP>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>newLineSpeed</NSP_GroupName>
-                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
-					&lt;lineSpeed&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;130&quot;/&gt;
-					&lt;/lineSpeed&gt;
-				"/>
-            </TAF_TAP_Location_NSP>
-
-            <TAF_TAP_Location_NSP>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>departureAuth</NSP_GroupName>
-                <NetworkSpecificParameter name="departureAuth" value="false"/>
-            </TAF_TAP_Location_NSP>
-
-        </TAF_TAP_Location>
-
-
-        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="5300" endLocation="5300"
-                          TAF_TAP_location_abbreviation="FI" TAF_TAP_location_type="station">
-            <TAF_TAP_LocationIdent>
-                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
-                <teltsi_LocationPrimaryCode>00002</teltsi_LocationPrimaryCode>
-            </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" text="Fischerz"/>
-
-            <TAF_TAP_Location_NSP>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>newLineSpeed</NSP_GroupName>
-                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
-					&lt;lineSpeed&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;130&quot;/&gt;
-					&lt;/lineSpeed&gt;
-				"/>
-            </TAF_TAP_Location_NSP>
-
-            <TAF_TAP_Location_NSP>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>departureAuth</NSP_GroupName>
-                <NetworkSpecificParameter name="departureAuth" value="false"/>
-            </TAF_TAP_Location_NSP>
-
-        </TAF_TAP_Location>
-
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="9100" endLocation="9100"
                           TAF_TAP_location_abbreviation="TW" TAF_TAP_location_type="station">
@@ -742,7 +666,7 @@
         <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="33430" endLocation="33430"/>
 
 
-        <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+        <ContactList startEndQualifier="StartsEnds" startLocation="9100" endLocation="9100">
             <Contact mainContact="true">
                 <OtherContactType contactIdentifier="1304"/>
             </Contact>
@@ -757,17 +681,11 @@
             </Contact>
         </ContactList>
 
-        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="9100" endLocation="9100"
                               communicationNetworkType="GSM-R"/>
         <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="17600" endLocation="17600"
                               communicationNetworkType="GSM-P"/>
 
-        <KilometreReferencePoint location="0">
-            <KM_Reference kmRef="42.1"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="5300">
-            <KM_Reference kmRef="36.8"/>
-        </KilometreReferencePoint>
         <KilometreReferencePoint location="9100">
             <KM_Reference kmRef="33.0"/>
         </KilometreReferencePoint>
@@ -953,16 +871,6 @@
         </KilometreReferencePoint>
 
 
-        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
-                              gradientValue="3.0" gradientDirection="Downhill"
-                              directionOfApplicationOnSP="Nominal"/>
-        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
-                              gradientValue="2.0" gradientDirection="Uphill"
-                              directionOfApplicationOnSP="Nominal"/>
-
-        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="5300" endLocation="5300"
-                              gradientValue="1.0" gradientDirection="Downhill"
-                              directionOfApplicationOnSP="Nominal"/>
 
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="9100" endLocation="9100"
                               gradientValue="1.0" gradientDirection="Downhill"

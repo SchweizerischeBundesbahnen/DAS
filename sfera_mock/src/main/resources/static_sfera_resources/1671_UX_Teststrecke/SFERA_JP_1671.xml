@@ -14,21 +14,6 @@
             <IM_ID>1285</IM_ID>
         </SP_Zone>
 
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:00:00Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T12:00:00Z">
-            <TimingPointReference>
-                <TP_ID_Reference TP_ID="Graftal"/>
-            </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="2025-05-17T12:00:00Z" plannedDepartureTime="2025-05-17T12:00:00Z"/>
-        </TimingPointConstraints>
-
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:04:20Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T12:04:00Z">
-            <TimingPointReference>
-                <TP_ID_Reference TP_ID="Fischerz"/>
-            </TimingPointReference>
-        </TimingPointConstraints>
-
         <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:07:00Z"
                                 TP_PlannedLatestArrivalTime="2025-05-17T12:07:00Z">
             <TimingPointReference>
