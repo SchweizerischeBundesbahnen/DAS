@@ -37,6 +37,11 @@ class NetworkSpecificParameter extends SferaXmlElement {
   bool validate() {
     return validateHasAttribute('name') && validateHasAttribute('value') && super.validate();
   }
+
+  @override
+  String toString() {
+    return 'NetworkSpecificParameter{name: $name, nspValue: $nspValue}';
+  }
 }
 
 // extensions
