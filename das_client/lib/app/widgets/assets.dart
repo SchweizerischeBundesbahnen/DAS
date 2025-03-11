@@ -7,6 +7,7 @@ class AppAssets {
   static const String _dir = 'assets';
   static const String _iconsDir = '$_dir/icons';
   static const String _othersDir = '$_dir/others';
+  static const String _soundsDir = 'sounds';
 
   // icons
   static const iconHeaderStop = '$_iconsDir/icon_header_stop.svg';
@@ -24,8 +25,12 @@ class AppAssets {
   static const iconTramArea = '$_iconsDir/icon_tram_area.svg';
   static const iconBatteryStatusLow = '$_iconsDir/icon_battery_status_low.svg';
   static const iconKoaWait = '$_iconsDir/icon_koa_wait.svg';
+  static const iconWara = '$_iconsDir/icon_wara.svg';
 
   // others
   static const imageTypeNSignalStop = '$_othersDir/type_n_signal_stop.svg';
   static const shapeMenuArrow = '$_othersDir/shape_menu_arrow.svg';
+
+  // audio
+  static const soundKoaWaitCanceled = '$_soundsDir/koa_wait_canceled.mp3';
 }

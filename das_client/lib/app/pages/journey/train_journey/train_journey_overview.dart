@@ -4,7 +4,10 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/notification/
 import 'package:das_client/app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/warn_function_modal_sheet.dart';
+import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/di.dart';
+import 'package:das_client/model/journey/koa_state.dart';
+import 'package:das_client/util/sound.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,8 +20,12 @@ class TrainJourneyOverview extends StatelessWidget {
       value: DI.get<UxTestingCubit>(),
       child: BlocListener<UxTestingCubit, UxTestingState>(
         listener: (context, state) {
-          if (state is UxTestingEventReceived && state.event.isWarn) {
-            showWarnFunctionModalSheet(context);
+          if (state is UxTestingEventReceived) {
+            if (state.event.isWarn) {
+              showWarnFunctionModalSheet(context);
+            } else if (state.event.isKoa && state.event.value == KoaState.waitCancelled.name) {
+              Sound.play(AppAssets.soundKoaWaitCanceled);
+            }
           }
         },
         child: const Column(
