@@ -27,10 +27,9 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return ThemeManager(
-      themeMode: _themeMode,
-      toggleTheme: _toggleTheme,
-      child: Builder(
-        builder: (context) {
+        themeMode: _themeMode,
+        toggleTheme: _toggleTheme,
+        child: Builder(builder: (context) {
           final themeMode = ThemeManager.of(context)!.themeMode;
           return MaterialApp.router(
             themeMode: themeMode,
@@ -49,6 +48,7 @@ class _AppState extends State<App> {
             localizationsDelegates: localizationDelegates,
             supportedLocales: supportedLocales,
             routerConfig: _appRouter.config(),
-    );
+          );
+        }));
   }
 }
