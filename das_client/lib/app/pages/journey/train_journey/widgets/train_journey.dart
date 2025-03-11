@@ -29,6 +29,7 @@ import 'package:das_client/app/widgets/table/das_table_column.dart';
 import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
 import 'package:das_client/model/journey/balise.dart';
 import 'package:das_client/model/journey/balise_level_crossing_group.dart';
+import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/base_data_extension.dart';
 import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
@@ -101,7 +102,9 @@ class TrainJourney extends StatelessWidget {
   }
 
   List<BaseRowBuilder> _rows(BuildContext context, Journey journey, TrainJourneySettings settings) {
-    final rows = journey.data.groupBaliseAndLeveLCrossings(settings.expandedGroups);
+    final rows = journey.data
+        .whereNot((it) => _isCurvePointWithoutSpeed(it, journey, settings))
+        .groupBaliseAndLeveLCrossings(settings.expandedGroups);
 
     final groupedRows =
         rows.whereType<BaliseLevelCrossingGroup>().map((it) => it.groupedElements).expand((it) => it).toList();
@@ -268,5 +271,13 @@ class TrainJourney extends StatelessWidget {
     if (selectedBreakSeries != null) {
       trainJourneyCubit.updateBreakSeries(selectedBreakSeries);
     }
+  }
+
+  bool _isCurvePointWithoutSpeed(BaseData data, Journey journey, TrainJourneySettings settings) {
+    final currentTrainSeries = settings.selectedBreakSeries?.trainSeries ?? journey.metadata.breakSeries?.trainSeries;
+    final currentBreakSeries = settings.selectedBreakSeries?.breakSeries ?? journey.metadata.breakSeries?.breakSeries;
+
+    return data.type == Datatype.curvePoint &&
+        data.localSpeedData?.speedsFor(currentTrainSeries, currentBreakSeries) == null;
   }
 }

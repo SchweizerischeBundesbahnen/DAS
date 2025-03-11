@@ -32,7 +32,11 @@
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
             <NetworkSpecificParameter name="curveType" value="curve"/>
             <NetworkSpecificParameter name="xmlCurveSpeed" value="
-                &lt;curveSpeed text=&quot;Kurve 1&quot; comment=&quot;Kurve 1&quot;&gt;
+                &lt;curveSpeed text=&quot;Kurve 1&quot; comment=&quot;Kurve 1 comment&quot;&gt;
+                &lt;speeds&gt;
+                &lt;v trainSeries=&quot;R&quot; speed=&quot;44&quot;/&gt;
+                &lt;v trainSeries=&quot;A&quot; speed=&quot;55&quot;/&gt;
+                &lt;/speeds&gt;
                 &lt;/curveSpeed&gt;
             "/>
         </NetworkSpecificPoint>

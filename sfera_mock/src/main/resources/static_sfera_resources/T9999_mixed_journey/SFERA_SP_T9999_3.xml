@@ -26,7 +26,11 @@
             <!-- 'stationExitCurve' (begins in a station) -->
             <NetworkSpecificParameter name="curveType" value="stationExitCurve"/>
             <NetworkSpecificParameter name="xmlCurveSpeed" value="
-                &lt;curveSpeed text=&quot;Kurve 1&quot; comment=&quot;Kurve 2&quot;&gt;
+                &lt;curveSpeed text=&quot;Kurve 5&quot; comment=&quot;Kurve 5 after stop&quot;&gt;
+                &lt;speeds&gt;
+                &lt;v trainSeries=&quot;R&quot; speed=&quot;44&quot;/&gt;
+                &lt;v trainSeries=&quot;A&quot; speed=&quot;55&quot;/&gt;
+                &lt;/speeds&gt;
                 &lt;/curveSpeed&gt;
             "/>
         </NetworkSpecificPoint>
@@ -38,7 +42,11 @@
             <!-- 'curveAfterHalt' (begins at an halt). -->
             <NetworkSpecificParameter name="curveType" value="curveAfterHalt"/>
             <NetworkSpecificParameter name="xmlCurveSpeed" value="
-                &lt;curveSpeed text=&quot;Kurve 1&quot; comment=&quot;Kurve 3&quot;&gt;
+                &lt;curveSpeed text=&quot;Kurve 5&quot; comment=&quot;Kurve 5 after stop&quot;&gt;
+                &lt;speeds&gt;
+                &lt;v trainSeries=&quot;R&quot; speed=&quot;44&quot;/&gt;
+                &lt;v trainSeries=&quot;A&quot; speed=&quot;55&quot;/&gt;
+                &lt;/speeds&gt;
                 &lt;/curveSpeed&gt;
             "/>
         </NetworkSpecificPoint>
