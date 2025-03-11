@@ -29,7 +29,7 @@ class JourneyPage extends StatelessWidget {
 class JourneyPageContent extends StatelessWidget {
   const JourneyPageContent({super.key});
 
-  static const disconnectKey = Key('disconnect_button');
+  static const disconnectKey = Key('disconnectButton');
 
   @override
   Widget build(BuildContext context) {

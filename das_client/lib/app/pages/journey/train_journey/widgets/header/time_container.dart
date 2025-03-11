@@ -1,9 +1,9 @@
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
-import 'package:flutter/material.dart';
 import 'package:das_client/model/journey/journey.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class TimeContainer extends StatelessWidget {
   const TimeContainer({super.key});
@@ -15,7 +15,7 @@ class TimeContainer extends StatelessWidget {
         sbbDefaultSpacing * 0.5,
         0,
         sbbDefaultSpacing * 0.5,
-        sbbDefaultSpacing,
+        sbbDefaultSpacing * 0.5,
       ),
       padding: const EdgeInsets.all(sbbDefaultSpacing),
       useShadow: false,

@@ -29,6 +29,7 @@ import 'package:das_client/app/widgets/table/das_table_column.dart';
 import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
 import 'package:das_client/model/journey/balise.dart';
 import 'package:das_client/model/journey/balise_level_crossing_group.dart';
+import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/base_data_extension.dart';
 import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
@@ -71,13 +72,10 @@ class TrainJourney extends StatelessWidget {
         });
 
         return Listener(
-            onPointerDown: (_) {
-              bloc.automaticAdvancementController.onTouch();
-            },
-            onPointerUp: (_) {
-              bloc.automaticAdvancementController.onTouch();
-            },
-            child: _body(context, journey, settings));
+          onPointerDown: (_) => bloc.automaticAdvancementController.onTouch(),
+          onPointerUp: (_) => bloc.automaticAdvancementController.onTouch(),
+          child: _body(context, journey, settings),
+        );
       },
     );
   }
@@ -104,7 +102,9 @@ class TrainJourney extends StatelessWidget {
   }
 
   List<BaseRowBuilder> _rows(BuildContext context, Journey journey, TrainJourneySettings settings) {
-    final rows = journey.data.groupBaliseAndLeveLCrossings(settings.expandedGroups);
+    final rows = journey.data
+        .whereNot((it) => _isCurvePointWithoutSpeed(it, journey, settings))
+        .groupBaliseAndLeveLCrossings(settings.expandedGroups);
 
     final groupedRows =
         rows.whereType<BaliseLevelCrossingGroup>().map((it) => it.groupedElements).expand((it) => it).toList();
@@ -233,10 +233,11 @@ class TrainJourney extends StatelessWidget {
       ),
       // TODO: find out what to do when break series is not defined
       DASTableColumn(
-          child: Text(speedLabel),
-          width: 62.0,
-          onTap: () => _onBreakSeriesTap(context, journey, settings),
-          headerKey: breakingSeriesHeaderKey),
+        child: Text(speedLabel),
+        width: 62.0,
+        onTap: () => _onBreakSeriesTap(context, journey, settings),
+        headerKey: breakingSeriesHeaderKey,
+      ),
       DASTableColumn(child: Text(context.l10n.p_train_journey_table_advised_speed_label), width: 62.0),
       DASTableColumn(width: 40.0), // actions
     ];
@@ -244,8 +245,6 @@ class TrainJourney extends StatelessWidget {
 
   void _onBaliseLevelCrossingGroupTap(
       BuildContext context, BaliseLevelCrossingGroup group, TrainJourneySettings settings) {
-    final trainJourneyCubit = context.trainJourneyCubit;
-
     final newList = List<int>.from(settings.expandedGroups);
     if (settings.expandedGroups.contains(group.order)) {
       newList.remove(group.order);
@@ -253,23 +252,32 @@ class TrainJourney extends StatelessWidget {
       newList.add(group.order);
     }
 
-    trainJourneyCubit.updateExpandedGroups(newList);
+    context.trainJourneyCubit.updateExpandedGroups(newList);
   }
 
-  void _onBreakSeriesTap(BuildContext context, Journey journey, TrainJourneySettings settings) {
+  Future<void> _onBreakSeriesTap(BuildContext context, Journey journey, TrainJourneySettings settings) async {
     final trainJourneyCubit = context.trainJourneyCubit;
 
-    showSBBModalSheet<BreakSeries>(
-            context: context,
-            title: context.l10n.p_train_journey_break_series,
-            constraints: BoxConstraints(),
-            child: BreakSeriesSelection(
-                availableBreakSeries: journey.metadata.availableBreakSeries,
-                selectedBreakSeries: settings.selectedBreakSeries ?? journey.metadata.breakSeries))
-        .then(
-      (newValue) => {
-        if (newValue != null) {trainJourneyCubit.updateBreakSeries(newValue)}
-      },
+    final selectedBreakSeries = await showSBBModalSheet<BreakSeries>(
+      context: context,
+      title: context.l10n.p_train_journey_break_series,
+      constraints: BoxConstraints(),
+      child: BreakSeriesSelection(
+        availableBreakSeries: journey.metadata.availableBreakSeries,
+        selectedBreakSeries: settings.selectedBreakSeries ?? journey.metadata.breakSeries,
+      ),
     );
+
+    if (selectedBreakSeries != null) {
+      trainJourneyCubit.updateBreakSeries(selectedBreakSeries);
+    }
+  }
+
+  bool _isCurvePointWithoutSpeed(BaseData data, Journey journey, TrainJourneySettings settings) {
+    final currentTrainSeries = settings.selectedBreakSeries?.trainSeries ?? journey.metadata.breakSeries?.trainSeries;
+    final currentBreakSeries = settings.selectedBreakSeries?.breakSeries ?? journey.metadata.breakSeries?.breakSeries;
+
+    return data.type == Datatype.curvePoint &&
+        data.localSpeedData?.speedsFor(currentTrainSeries, currentBreakSeries) == null;
   }
 }
