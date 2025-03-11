@@ -939,11 +939,12 @@ packages:
   sbb_design_system_mobile:
     dependency: "direct main"
     description:
-      name: sbb_design_system_mobile
-      sha256: "9231baa5e51b5bda186e3bdfe2949ea932141557793ffb7aeb2062a9d88b790e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.1"
+      path: "."
+      ref: "feature/promotion-box-improvement"
+      resolved-ref: "10a4f384f4c1d7f00d703b7c25aaf25f010deea9"
+      url: "https://github.com/SchweizerischeBundesbahnen/design_system_flutter.git"
+    source: git
+    version: "2.3.0"
   sbb_oidc:
     dependency: "direct main"
     description:

@@ -131,7 +131,7 @@ extension GetItX on GetIt {
 
   void registerBlocs() {
     registerLazySingleton<TrainJourneyCubit>(() => TrainJourneyCubit(sferaService: get()));
-    registerLazySingleton<UxTestingCubit>(() => UxTestingCubit(sferaService: get()));
+    registerLazySingleton<UxTestingCubit>(() => UxTestingCubit(sferaService: get())..initialize());
   }
 
   void registerBattery() {

@@ -19,7 +19,12 @@ dependencies:
       ref: 3.4.0
 
   # https://pub.dev/packages/sbb_design_system_mobile
-  sbb_design_system_mobile: ^2.1.1
+  # will revert to pub dev once promotion box changes are released
+  sbb_design_system_mobile:
+    git:
+      url: https://github.com/SchweizerischeBundesbahnen/design_system_flutter.git
+      ref: feature/promotion-box-improvement
+
   # https://pub.dev/packages/collection
   collection: ^1.19.0
   # https://pub.dev/packages/meta

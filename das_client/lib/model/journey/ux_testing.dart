@@ -8,4 +8,6 @@ class UxTesting {
   final String value;
 
   bool get isWarn => name == 'warn';
+
+  bool get isKoa => name == 'koa';
 }
