@@ -24,6 +24,7 @@ class IntegrationTestDI {
     GetIt.I.registerSferaComponents();
     GetIt.I.registerMqttComponent();
     GetIt.I.registerBlocs();
+    GetIt.I.registerAudioPlayer();
     _registerBattery();
 
     GetIt.I.unregister<MqttClientConnector>();
@@ -40,7 +41,7 @@ class IntegrationTestDI {
     GetIt.I.registerSingletonAsync<MqttClientConnector>(() async => MqttClientUserConnector());
   }
 
-  static void _registerBattery(){
+  static void _registerBattery() {
     GetIt.I.registerSingletonAsync<Battery>(() async => BatteryMock());
   }
 }

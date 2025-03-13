@@ -12,14 +12,23 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final sbbBaseStyle = SBBBaseStyle(
+      primaryColor: SBBColors.royal,
+      primaryColorDark: SBBColors.royal125,
+      brightness: Brightness.light,
+    );
+
     return FlavorBanner(
       flavor: DI.get(),
       child: MaterialApp.router(
         themeMode: ThemeMode.system,
         theme: SBBTheme.light(
-          baseStyle: SBBBaseStyle(
-            primaryColor: SBBColors.royal,
-            primaryColorDark: SBBColors.royal125,
+          baseStyle: sbbBaseStyle,
+          controlStyles: SBBControlStyles(
+            promotionBox: PromotionBoxStyle.$default(baseStyle: sbbBaseStyle).copyWith(
+              badgeColor: SBBColors.royal,
+              badgeShadowColor: SBBColors.royal.withAlpha((255.0 * 0.2).round()),
+            ),
           ),
         ),
         //darkTheme: SBBTheme.dark(),

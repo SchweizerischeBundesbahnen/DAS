@@ -11,4 +11,9 @@ class UxTestingNse extends NetworkSpecificEvent {
   NetworkSpecificParameter? get koa => parameters.withName('koa');
 
   NetworkSpecificParameter? get warn => parameters.withName('warn');
+
+  @override
+  String toString() {
+    return 'UxTestingNse{koa: $koa, warn: $warn}';
+  }
 }

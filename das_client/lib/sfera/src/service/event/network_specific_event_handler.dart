@@ -12,7 +12,7 @@ class NetworkSpecificEventHandler extends SferaEventMessageHandler<NetworkSpecif
       return false;
     }
 
-    Fimber.i('Received new network specific event... ${eventMessage.payload!.networkSpecificEvent!.groupName}');
+    Fimber.i('Received new network specific event: ${eventMessage.payload!.networkSpecificEvent!}');
     onMessageHandled(this, eventMessage.payload!.networkSpecificEvent!);
     return true;
   }
