@@ -1,29 +1,23 @@
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_row_builder.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/reduced_overview/table/reduced_base_row_builder.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
-import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-class ServicePointRow extends BaseRowBuilder<ServicePoint> {
+class ReducedServicePointRow extends ReducedBaseRowBuilder<ServicePoint> {
   static const Key stopOnRequestKey = Key('stopOnRequest');
 
   static const double rowHeight = 64.0;
 
-  ServicePointRow({
+  ReducedServicePointRow({
     required super.metadata,
     required super.data,
     super.height = rowHeight,
     super.config,
-  }) : super(
-          rowColor: metadata.nextStop == data ? Color(0xFFCDD6E8) : SBBColors.white,
-          isSticky: true,
-        );
+  });
 
   @override
   DASTableCell informationCell(BuildContext context) {
@@ -50,38 +44,24 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
   }
 
   @override
-  DASTableCell iconsCell1(BuildContext context) {
-    if (data.mandatoryStop) return DASTableCell.empty();
-
-    return DASTableCell(
-      alignment: Alignment.bottomCenter,
-      child: SvgPicture.asset(
-        AppAssets.iconStopOnRequest,
-        key: stopOnRequestKey,
-      ),
-    );
-  }
-
-  @override
   DASTableCell routeCell(BuildContext context) {
     return DASTableCell(
       color: specialCellColor,
-      padding: EdgeInsets.all(0.0),
+      padding: EdgeInsets.all(0.0).copyWith(right: sbbDefaultSpacing),
       alignment: null,
       clipBehaviour: Clip.none,
       child: RouteCellBody(
         isStop: data.isStop,
-        isCurrentPosition: metadata.currentPosition == data,
         isRouteStart: metadata.routeStart == data,
         isRouteEnd: metadata.routeEnd == data,
         isStopOnRequest: !data.mandatoryStop,
-        chevronAnimationData: config.chevronAnimationData,
       ),
     );
   }
 
+  // TODO: Check if local speed is needed for reduced overview
   @override
-  DASTableCell localSpeedCell(BuildContext context) {
+  DASTableCell speedCell(BuildContext context) {
     if (data.localSpeedData == null) return DASTableCell.empty();
 
     final currentTrainSeries = config.settings.selectedBreakSeries?.trainSeries ?? metadata.breakSeries?.trainSeries;
@@ -96,22 +76,6 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
       child: GraduatedSpeedsCellBody(
         incomingSpeeds: graduatedSpeeds.incomingSpeeds,
         outgoingSpeeds: graduatedSpeeds.outgoingSpeeds,
-      ),
-    );
-  }
-
-  @override
-  DASTableCell trackEquipment(BuildContext context) {
-    if (config.trackEquipmentRenderData == null) {
-      return DASTableCell.empty(color: specialCellColor);
-    }
-
-    return DASTableCell(
-      color: specialCellColor,
-      padding: const EdgeInsets.all(0.0),
-      alignment: null,
-      child: TrackEquipmentCellBody(
-        renderData: config.trackEquipmentRenderData!,
       ),
     );
   }

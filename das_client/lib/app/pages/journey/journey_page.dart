@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
+import 'package:das_client/app/extension/ru_extension.dart';
 import 'package:das_client/app/i18n/i18n.dart';
-import 'package:das_client/app/model/ru.dart';
 import 'package:das_client/app/nav/app_router.dart';
 import 'package:das_client/app/nav/das_navigation_drawer.dart';
 import 'package:das_client/app/pages/journey/train_journey/train_journey_overview.dart';
@@ -99,9 +99,10 @@ class JourneyPageContent extends StatelessWidget {
 
   String _headerTitle(BuildContext context, TrainJourneyState state) {
     if (state is TrainJourneyLoadedState) {
-      final trainNumber = '${context.l10n.c_train_number} ${state.trainNumber}';
-      final ru = state.ru.displayText(context);
-      final date = Format.dateWithAbbreviatedDay(state.date);
+      final trainIdentification = state.trainIdentification;
+      final trainNumber = '${context.l10n.c_train_number} ${trainIdentification.trainNumber}';
+      final ru = trainIdentification.ru.displayText(context);
+      final date = Format.dateWithAbbreviatedDay(trainIdentification.date);
       return '$trainNumber - $ru - $date';
     }
     return context.l10n.c_app_name;

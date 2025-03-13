@@ -91,7 +91,6 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
       alignment: null,
       clipBehaviour: Clip.none,
       child: RouteCellBody(
-        metadata: metadata,
         isCurrentPosition: metadata.currentPosition == data,
         isRouteStart: metadata.routeStart == data,
         isRouteEnd: metadata.routeEnd == data,

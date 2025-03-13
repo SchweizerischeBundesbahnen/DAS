@@ -1,7 +1,10 @@
 import 'package:collection/collection.dart';
+import 'package:meta/meta.dart';
 
+@sealed
+@immutable
 class CommunicationNetworkChange implements Comparable {
-  CommunicationNetworkChange({required this.type, required this.order});
+  const CommunicationNetworkChange({required this.type, required this.order});
 
   final CommunicationNetworkType type;
 

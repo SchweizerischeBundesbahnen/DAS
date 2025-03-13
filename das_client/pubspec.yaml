@@ -64,6 +64,8 @@ dependencies:
   iso_duration: ^0.1.1
   # https://pub.dev/packages/battery_plus
   battery_plus: ^6.2.1
+  # https://pub.dev/packages/provider
+  provider: ^6.1.2
 
 
 dev_dependencies:

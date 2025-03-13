@@ -1,4 +1,5 @@
 import 'package:das_client/mqtt/mqtt_component.dart';
+import 'package:das_client/sfera/src/db/repo/sfera_database_repository.dart';
 import 'package:das_client/sfera/src/model/b2g_request.dart';
 import 'package:das_client/sfera/src/model/enums/sp_status.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
@@ -8,25 +9,24 @@ import 'package:das_client/sfera/src/model/segment_profile_list.dart';
 import 'package:das_client/sfera/src/model/sfera_b2g_request_message.dart';
 import 'package:das_client/sfera/src/model/sfera_g2b_reply_message.dart';
 import 'package:das_client/sfera/src/model/sp_request.dart';
-import 'package:das_client/sfera/src/repo/sfera_repository.dart';
-import 'package:das_client/sfera/src/service/sfera_service.dart';
-import 'package:das_client/sfera/src/service/task/sfera_task.dart';
+import 'package:das_client/sfera/src/service/remote/sfera_service.dart';
+import 'package:das_client/sfera/src/service/remote/task/sfera_task.dart';
 import 'package:das_client/util/error_code.dart';
 import 'package:fimber/fimber.dart';
 
 class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfile>> {
-  RequestSegmentProfilesTask(
-      {required MqttService mqttService,
-      required SferaRepository sferaRepository,
-      required this.otnId,
-      required this.journeyProfile,
-      super.timeout})
-      : _mqttService = mqttService,
-        _sferaRepository = sferaRepository;
+  RequestSegmentProfilesTask({
+    required MqttService mqttService,
+    required SferaDatabaseRepository sferaDatabaseRepository,
+    required this.otnId,
+    required this.journeyProfile,
+    super.timeout,
+  })  : _mqttService = mqttService,
+        _sferaDatabaseRepository = sferaDatabaseRepository;
 
   final MqttService _mqttService;
   final OtnId otnId;
-  final SferaRepository _sferaRepository;
+  final SferaDatabaseRepository _sferaDatabaseRepository;
   final JourneyProfile journeyProfile;
 
   late TaskCompleted<List<SegmentProfile>> _taskCompletedCallback;
@@ -69,7 +69,7 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfile>> {
 
     for (final segment in journeyProfile.segmentProfileReferences) {
       final existingProfile =
-          await _sferaRepository.findSegmentProfile(segment.spId, segment.versionMajor, segment.versionMinor);
+          await _sferaDatabaseRepository.findSegmentProfile(segment.spId, segment.versionMajor, segment.versionMinor);
       if (existingProfile == null) {
         missingSps.add(segment);
       }
@@ -90,7 +90,7 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfile>> {
 
       for (final element in replyMessage.payload!.segmentProfiles) {
         if (element.status == SpStatus.valid) {
-          await _sferaRepository.saveSegmentProfile(element);
+          await _sferaDatabaseRepository.saveSegmentProfile(element);
         } else {
           allValid = false;
         }

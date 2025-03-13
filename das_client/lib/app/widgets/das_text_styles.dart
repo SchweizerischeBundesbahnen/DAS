@@ -58,6 +58,14 @@ class DASTextStyles {
 
   static const TextStyle mediumBold = SBBTextStyles.mediumBold;
 
+  static const TextStyle mediumRoman = TextStyle(
+    fontSize: SBBTextStyles.mediumFontSize,
+    height: SBBTextStyles.mediumFontHeight,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    fontFamily: sbbWebFont,
+  );
+
   static const TextStyle mediumLight = SBBTextStyles.mediumLight;
 
   static const TextStyle smallLight = SBBTextStyles.smallLight;

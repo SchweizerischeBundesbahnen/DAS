@@ -1,5 +1,6 @@
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/i18n/i18n.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/reduced_overview/reduced_overview_modal_sheet.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
@@ -62,12 +63,11 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
     );
   }
 
-  void _removeOverlay() {
-    _controller.reverse().then((_) {
-      overlayEntry?.remove();
-      overlayEntry?.dispose();
-      overlayEntry = null;
-    });
+  Future<void> _removeOverlay() async {
+    await _controller.reverse();
+    overlayEntry?.remove();
+    overlayEntry?.dispose();
+    overlayEntry = null;
   }
 
   void _showOverlay(BuildContext context) {
@@ -190,8 +190,11 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
   Widget _journeyOverviewItem(BuildContext context) {
     return SBBListItem(
       title: context.l10n.w_extended_menu_journey_overview_action,
-      onPressed: () {
-        // Placeholder
+      onPressed: () async {
+        await _removeOverlay();
+        if (context.mounted) {
+          showReducedOverviewModalSheet(context);
+        }
       },
     );
   }
