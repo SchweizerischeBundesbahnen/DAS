@@ -9,6 +9,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class ManeuverNotification extends StatelessWidget {
+  static const Key maneuverNotificationSwitchKey = Key('maneuverNotificationSwitch');
+
   const ManeuverNotification({super.key});
 
   @override
@@ -40,6 +42,7 @@ class ManeuverNotification extends StatelessWidget {
                       Text(context.l10n.w_maneuver_notification_maneuver, style: DASTextStyles.mediumLight),
                       const SizedBox(width: sbbDefaultSpacing * 0.5),
                       SBBSwitch(
+                          key: maneuverNotificationSwitchKey,
                           value: snapshot.data?.maneuverMode ?? false,
                           onChanged: (value) => trainJourneyCubit.setManeuverMode(value)),
                     ],
