@@ -114,7 +114,7 @@ extension GetItX on GetIt {
   void registerSferaComponents({bool useTms = false}) {
     final flavor = get<Flavor>();
 
-    registerLazySingleton<SferaDatabaseRepository>(() => SferaComponent.createRepository());
+    registerLazySingleton<SferaDatabaseRepository>(() => SferaComponent.createDatabaseRepository());
     registerLazySingleton<SferaAuthService>(() => SferaComponent.createSferaAuthService(
         authenticator: get(), tokenExchangeUrl: useTms ? flavor.tmsTokenExchangeUrl! : flavor.tokenExchangeUrl));
 

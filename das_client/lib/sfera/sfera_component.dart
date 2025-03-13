@@ -19,7 +19,7 @@ export 'package:das_client/sfera/src/sfera_reply_parser.dart';
 class SferaComponent {
   const SferaComponent._();
 
-  static SferaDatabaseRepository createRepository() {
+  static SferaDatabaseRepository createDatabaseRepository() {
     return SferaDatabaseRepositoryImpl();
   }
 

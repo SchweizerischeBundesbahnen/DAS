@@ -101,6 +101,7 @@ class ReducedBaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   Color? get specialCellColor =>
       getAdditionalSpeedRestriction() != null ? AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor : null;
 
+  // TODO: Should ASR in ETCs Level 2 also be hidden? --> see ASR.isDisplayed
   AdditionalSpeedRestriction? getAdditionalSpeedRestriction() {
     return metadata.additionalSpeedRestrictions
         .where((it) =>
