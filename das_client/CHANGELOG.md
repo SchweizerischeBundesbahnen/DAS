@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.11.0...das_client-v0.12.0) (2025-03-13)
+
+
+### Features
+
+* added koa notification ([#624](https://github.com/SchweizerischeBundesbahnen/DAS/issues/624)) ([#688](https://github.com/SchweizerischeBundesbahnen/DAS/issues/688)) ([164b557](https://github.com/SchweizerischeBundesbahnen/DAS/commit/164b557ac3f824af3a1d77ce516f7c42847b9e67))
+
 ## [0.11.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.10.1...das_client-v0.11.0) (2025-03-11)
 
 
