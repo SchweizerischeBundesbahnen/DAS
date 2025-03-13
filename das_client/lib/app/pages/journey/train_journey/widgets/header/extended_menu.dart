@@ -140,6 +140,7 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
                     _transportDocumentItem(context),
                     _journeyOverviewItem(context),
                     _maneuverItem(context),
+                    _waraItem(context),
                   ],
                 ),
               ),
@@ -199,12 +200,22 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
     );
   }
 
+  Widget _waraItem(BuildContext context) {
+    return SBBListItem(
+      title: context.l10n.w_extended_menu_journey_wara_action,
+      trailingIcon: SBBIcons.link_external_medium,
+      isLastElement: true,
+      onPressed: () {
+        // Placeholder
+      },
+    );
+  }
+
   Widget _maneuverItem(BuildContext context) {
     final trainJourneyCubit = DI.get<TrainJourneyCubit>();
 
     return SBBListItem.custom(
       title: context.l10n.w_extended_menu_maneuver_mode,
-      isLastElement: true,
       onPressed: () => trainJourneyCubit.setManeuverMode(!trainJourneyCubit.settings.maneuverMode),
       trailingWidget: Padding(
         padding: const EdgeInsets.fromLTRB(0, 0, sbbDefaultSpacing * 0.5, 0),

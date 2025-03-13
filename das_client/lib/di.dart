@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/bloc/ux_testing_cubit.dart';
@@ -53,6 +54,7 @@ extension GetItX on GetIt {
     registerBackendService();
     registerBlocs();
     registerBattery();
+    registerAudioPlayer();
     await allReady();
   }
 
@@ -134,10 +136,14 @@ extension GetItX on GetIt {
 
   void registerBlocs() {
     registerLazySingleton<TrainJourneyCubit>(() => TrainJourneyCubit(sferaService: get()));
-    registerLazySingleton<UxTestingCubit>(() => UxTestingCubit(sferaService: get()));
+    registerLazySingleton<UxTestingCubit>(() => UxTestingCubit(sferaService: get())..initialize());
   }
 
   void registerBattery() {
     registerLazySingleton<Battery>(() => Battery());
+  }
+
+  void registerAudioPlayer() {
+    registerLazySingleton<AudioPlayer>(() => AudioPlayer());
   }
 }
