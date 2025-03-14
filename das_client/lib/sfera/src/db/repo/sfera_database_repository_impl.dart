@@ -1,7 +1,7 @@
-import 'package:das_client/sfera/sfera_component.dart';
-import 'package:das_client/sfera/src/db/journey_profile_entity.dart';
-import 'package:das_client/sfera/src/db/segment_profile_entity.dart';
-import 'package:das_client/sfera/src/db/train_characteristics_entity.dart';
+import 'package:das_client/sfera/src/db/entity/journey_profile_entity.dart';
+import 'package:das_client/sfera/src/db/entity/segment_profile_entity.dart';
+import 'package:das_client/sfera/src/db/entity/train_characteristics_entity.dart';
+import 'package:das_client/sfera/src/db/repo/sfera_database_repository.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
 import 'package:das_client/sfera/src/model/train_characteristics.dart';
@@ -9,11 +9,11 @@ import 'package:fimber/fimber.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
-class SferaRepositoryImpl implements SferaRepository {
+class SferaDatabaseRepositoryImpl implements SferaDatabaseRepository {
   late final Future<void> _initialized;
   late final Isar _db;
 
-  SferaRepositoryImpl() {
+  SferaDatabaseRepositoryImpl() {
     _initialized = _init();
   }
 
@@ -33,10 +33,11 @@ class SferaRepositoryImpl implements SferaRepository {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final existingProfile = await findJourneyProfile(
-        journeyProfile.trainIdentification.otnId.company,
-        journeyProfile.trainIdentification.otnId.operationalTrainNumber,
-        today); // Temporary fix, because our backend does not return correct date in Journey Profile
-    //journeyProfile.trainIdentification.otnId.startDate);
+      journeyProfile.trainIdentification.otnId.company,
+      journeyProfile.trainIdentification.otnId.operationalTrainNumber,
+      today, // TODO: Temporary fix, because our backend does not return correct date in Journey Profile
+      //journeyProfile.trainIdentification.otnId.startDate);
+    );
 
     final journeyProfileEntity =
         journeyProfile.toEntity(id: existingProfile?.id ?? _db.journeyProfile.autoIncrement(), startDate: today);
@@ -58,9 +59,7 @@ class SferaRepositoryImpl implements SferaRepository {
       final segmentProfileEntity = segmentProfile.toEntity(isarId: _db.segmentProfile.autoIncrement());
       Fimber.i(
           'Writing segment profile to db spId=${segmentProfileEntity.spId} majorVersion=${segmentProfileEntity.majorVersion} minorVersion=${segmentProfileEntity.minorVersion}');
-      _db.write((isar) {
-        isar.segmentProfile.put(segmentProfileEntity);
-      });
+      _db.write((isar) => isar.segmentProfile.put(segmentProfileEntity));
     } else {
       Fimber.i(
           'Segment profile already exists in db spId=${segmentProfile.id} majorVersion=${segmentProfile.versionMajor} minorVersion=${segmentProfile.versionMinor}');
@@ -91,14 +90,17 @@ class SferaRepositoryImpl implements SferaRepository {
   }
 
   @override
-  Stream<List<JourneyProfileEntity>> observeJourneyProfile(
-      String company, String operationalTrainNumber, DateTime startDate) {
-    return _db.journeyProfile
+  Stream<JourneyProfileEntity?> observeJourneyProfile(
+      String company, String operationalTrainNumber, DateTime startDate) async* {
+    await _initialized;
+
+    yield* _db.journeyProfile
         .where()
         .companyEqualTo(company)
         .operationalTrainNumberEqualTo(operationalTrainNumber)
         .startDateEqualTo(startDate)
-        .watch(fireImmediately: true);
+        .watch(fireImmediately: true)
+        .map((journeyProfiles) => journeyProfiles.firstOrNull);
   }
 
   @override
@@ -124,9 +126,7 @@ class SferaRepositoryImpl implements SferaRepository {
           trainCharacteristics.toEntity(isarId: _db.trainCharacteristics.autoIncrement());
       Fimber.i(
           'Writing train characteristics to db tcId=${trainCharacteristicsEntity.tcId} majorVersion=${trainCharacteristicsEntity.majorVersion} minorVersion=${trainCharacteristicsEntity.minorVersion}');
-      _db.write((isar) {
-        isar.trainCharacteristics.put(trainCharacteristicsEntity);
-      });
+      _db.write((isar) => isar.trainCharacteristics.put(trainCharacteristicsEntity));
     } else {
       Fimber.i(
           'train characteristics already exists in db tcId=${existingTrainCharacteristics.tcId} majorVersion=${existingTrainCharacteristics.majorVersion} minorVersion=${existingTrainCharacteristics.minorVersion}');

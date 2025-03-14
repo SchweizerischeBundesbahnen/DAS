@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T12_1" SP_VersionMajor="1"
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T14_1" SP_VersionMajor="1"
                 SP_VersionMinor="0" SP_Length="3000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
@@ -45,6 +45,11 @@
             <TP_Name name="Zuerich"/>
         </TimingPoint>
 
+        <Signal>
+            <Signal_ID signal_ID_Physical="1" location="650"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="B1"/>
+        </Signal>
     </SP_Points>
     <SP_Areas>
         <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="BE"
@@ -99,6 +104,18 @@
         <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="2000" endLocation="2000" communicationNetworkType="GSM-R"/>
         <KilometreReferencePoint location="500">
             <KM_Reference kmRef="30.2"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="600">
+            <KM_Reference kmRef="31.5"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="650">
+            <KM_Reference kmRef="32.0"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="700">
+            <KM_Reference kmRef="32.4"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="1000">

@@ -26,4 +26,28 @@ main() {
     expect(gsmR1, CommunicationNetworkType.gsmR);
     expect(gsmR2, CommunicationNetworkType.gsmR);
   });
+
+  test('test changeAtOrder of CommunicationNetworkChange list', () {
+    // GIVEN
+    final networkChanges = [
+      CommunicationNetworkChange(type: CommunicationNetworkType.gsmP, order: 100),
+      CommunicationNetworkChange(type: CommunicationNetworkType.gsmP, order: 200),
+      CommunicationNetworkChange(type: CommunicationNetworkType.sim, order: 300),
+      CommunicationNetworkChange(type: CommunicationNetworkType.gsmR, order: 400),
+    ];
+
+    // WHEN
+    final gsmP1 = networkChanges.changeAtOrder(100);
+    final noChange1 = networkChanges.changeAtOrder(200);
+    final gsmPSimIgnored = networkChanges.changeAtOrder(300);
+    final gsmR1 = networkChanges.changeAtOrder(400);
+    final notGiven = networkChanges.changeAtOrder(500);
+
+    // THEN
+    expect(gsmP1, CommunicationNetworkType.gsmP);
+    expect(noChange1, isNull);
+    expect(gsmPSimIgnored, isNull);
+    expect(gsmR1, CommunicationNetworkType.gsmR);
+    expect(notGiven, isNull);
+  });
 }

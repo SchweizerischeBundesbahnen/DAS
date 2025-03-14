@@ -1,5 +1,8 @@
 import 'package:das_client/model/journey/train_series.dart';
+import 'package:meta/meta.dart';
 
+@sealed
+@immutable
 class BreakSeries {
   const BreakSeries({
     required this.trainSeries,

@@ -6,12 +6,13 @@ part 'journey_profile_entity.g.dart';
 
 @Collection(accessor: 'journeyProfile')
 class JourneyProfileEntity {
-  JourneyProfileEntity(
-      {required this.id,
-      required this.company,
-      required this.operationalTrainNumber,
-      required this.startDate,
-      required this.xmlData});
+  JourneyProfileEntity({
+    required this.id,
+    required this.company,
+    required this.operationalTrainNumber,
+    required this.startDate,
+    required this.xmlData,
+  });
 
   @Id()
   final int id;
@@ -31,7 +32,8 @@ extension JourneyProfileMapperX on JourneyProfile {
       id: id,
       company: trainIdentification.otnId.company,
       operationalTrainNumber: trainIdentification.otnId.operationalTrainNumber,
-      startDate: startDate ?? trainIdentification.otnId.startDate, // Temporary fix, because our backend does not return correct date in Journey Profile
+      startDate: startDate ?? trainIdentification.otnId.startDate,
+      // Temporary fix, because our backend does not return correct date in Journey Profile
       xmlData: buildDocument().toString(),
     );
   }

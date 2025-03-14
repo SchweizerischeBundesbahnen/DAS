@@ -56,8 +56,8 @@ class MainContainer extends StatelessWidget {
   }
 
   Widget _bottomHeaderRow(Metadata metadata) {
-    final communicationNetworkType = metadata.nextStop != null
-        ? metadata.communicationNetworkChanges.appliesToOrder(metadata.nextStop!.order)
+    final communicationNetworkType = metadata.currentPosition != null
+        ? metadata.communicationNetworkChanges.appliesToOrder(metadata.currentPosition!.order)
         : null;
     return SizedBox(
       height: 48.0,

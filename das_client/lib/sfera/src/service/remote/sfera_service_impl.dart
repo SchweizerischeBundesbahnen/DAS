@@ -18,22 +18,32 @@ import 'package:das_client/sfera/src/model/sfera_g2b_reply_message.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 import 'package:das_client/sfera/src/model/train_characteristics.dart';
 import 'package:das_client/sfera/src/model/ux_testing_nse.dart';
-import 'package:das_client/sfera/src/service/event/journey_profile_event_handler.dart';
-import 'package:das_client/sfera/src/service/event/network_specific_event_handler.dart';
-import 'package:das_client/sfera/src/service/event/related_train_information_event_handler.dart';
-import 'package:das_client/sfera/src/service/event/sfera_event_message_handler.dart';
-import 'package:das_client/sfera/src/service/task/handshake_task.dart';
-import 'package:das_client/sfera/src/service/task/request_journey_profile_task.dart';
-import 'package:das_client/sfera/src/service/task/request_segment_profiles_task.dart';
-import 'package:das_client/sfera/src/service/task/request_train_characteristics_task.dart';
-import 'package:das_client/sfera/src/service/task/sfera_task.dart';
+import 'package:das_client/sfera/src/service/remote/event/journey_profile_event_handler.dart';
+import 'package:das_client/sfera/src/service/remote/event/network_specific_event_handler.dart';
+import 'package:das_client/sfera/src/service/remote/event/related_train_information_event_handler.dart';
+import 'package:das_client/sfera/src/service/remote/event/sfera_event_message_handler.dart';
+import 'package:das_client/sfera/src/service/remote/task/handshake_task.dart';
+import 'package:das_client/sfera/src/service/remote/task/request_journey_profile_task.dart';
+import 'package:das_client/sfera/src/service/remote/task/request_segment_profiles_task.dart';
+import 'package:das_client/sfera/src/service/remote/task/request_train_characteristics_task.dart';
+import 'package:das_client/sfera/src/service/remote/task/sfera_task.dart';
 import 'package:das_client/util/error_code.dart';
 import 'package:fimber/fimber.dart';
 import 'package:rxdart/rxdart.dart';
 
 class SferaServiceImpl implements SferaService {
+  SferaServiceImpl({
+    required MqttService mqttService,
+    required SferaDatabaseRepository sferaDatabaseRepository,
+    required Authenticator authenticator,
+  })  : _mqttService = mqttService,
+        _sferaDatabaseRepository = sferaDatabaseRepository,
+        _authenticator = authenticator {
+    _init();
+  }
+
   final MqttService _mqttService;
-  final SferaRepository _sferaRepository;
+  final SferaDatabaseRepository _sferaDatabaseRepository;
   final Authenticator _authenticator;
 
   StreamSubscription? _mqttStreamSubscription;
@@ -61,16 +71,6 @@ class SferaServiceImpl implements SferaService {
 
   @override
   ErrorCode? lastErrorCode;
-
-  SferaServiceImpl(
-      {required MqttService mqttService,
-      required SferaRepository sferaRepository,
-      required Authenticator authenticator})
-      : _mqttService = mqttService,
-        _sferaRepository = sferaRepository,
-        _authenticator = authenticator {
-    _init();
-  }
 
   void _init() {
     _addEventMessageHandlers();
@@ -132,8 +132,8 @@ class SferaServiceImpl implements SferaService {
     Fimber.i('Task $task completed');
     if (task is HandshakeTask) {
       _stateSubject.add(SferaServiceState.loadingJourney);
-      final requestJourneyTask =
-          RequestJourneyProfileTask(mqttService: _mqttService, sferaRepository: _sferaRepository, otnId: _otnId!);
+      final requestJourneyTask = RequestJourneyProfileTask(
+          mqttService: _mqttService, sferaDatabaseRepository: _sferaDatabaseRepository, otnId: _otnId!);
       _tasks.add(requestJourneyTask);
       requestJourneyTask.execute(onTaskCompleted, onTaskFailed);
     } else if (task is RequestJourneyProfileTask) {
@@ -167,9 +167,15 @@ class SferaServiceImpl implements SferaService {
 
   void _startSegmentProfileAndTCTask() {
     final requestSegmentProfilesTask = RequestSegmentProfilesTask(
-        mqttService: _mqttService, sferaRepository: _sferaRepository, otnId: _otnId!, journeyProfile: _journeyProfile!);
+        mqttService: _mqttService,
+        sferaDatabaseRepository: _sferaDatabaseRepository,
+        otnId: _otnId!,
+        journeyProfile: _journeyProfile!);
     final requestTrainCharacteristicsTask = RequestTrainCharacteristicsTask(
-        mqttService: _mqttService, sferaRepository: _sferaRepository, otnId: _otnId!, journeyProfile: _journeyProfile!);
+        mqttService: _mqttService,
+        sferaDatabaseRepository: _sferaDatabaseRepository,
+        otnId: _otnId!,
+        journeyProfile: _journeyProfile!);
     _tasks.add(requestSegmentProfilesTask);
     _tasks.add(requestTrainCharacteristicsTask);
     requestSegmentProfilesTask.execute(onTaskCompleted, onTaskFailed);
@@ -186,7 +192,7 @@ class SferaServiceImpl implements SferaService {
 
       for (final element in _journeyProfile!.segmentProfileReferences) {
         final segmentProfileEntity =
-            await _sferaRepository.findSegmentProfile(element.spId, element.versionMajor, element.versionMinor);
+            await _sferaDatabaseRepository.findSegmentProfile(element.spId, element.versionMajor, element.versionMinor);
         final segmentProfile = segmentProfileEntity?.toDomain();
         if (segmentProfile != null && segmentProfile.validate()) {
           _segmentProfiles.add(segmentProfile);
@@ -202,11 +208,11 @@ class SferaServiceImpl implements SferaService {
       _trainCharacteristics.clear();
 
       for (final element in _journeyProfile!.trainCharacteristicsRefSet) {
-        final trainCharactericsEntity =
-            await _sferaRepository.findTrainCharacteristics(element.tcId, element.versionMajor, element.versionMinor);
-        final trainCharacterics = trainCharactericsEntity?.toDomain();
-        if (trainCharacterics != null && trainCharacterics.validate()) {
-          _trainCharacteristics.add(trainCharacterics);
+        final trainCharacteristicsEntity = await _sferaDatabaseRepository.findTrainCharacteristics(
+            element.tcId, element.versionMajor, element.versionMinor);
+        final trainCharacteristics = trainCharacteristicsEntity?.toDomain();
+        if (trainCharacteristics != null && trainCharacteristics.validate()) {
+          _trainCharacteristics.add(trainCharacteristics);
         } else {
           Fimber.w('Could not find and validate $element');
         }
@@ -237,7 +243,7 @@ class SferaServiceImpl implements SferaService {
   }
 
   void _addEventMessageHandlers() {
-    _eventMessageHandler.add(JourneyProfileEventHandler(onJourneyProfileUpdated, _sferaRepository));
+    _eventMessageHandler.add(JourneyProfileEventHandler(onJourneyProfileUpdated, _sferaDatabaseRepository));
     _eventMessageHandler.add(RelatedTrainInformationEventHandler(onRelatedTrainInformationUpdated));
     _eventMessageHandler.add(NetworkSpecificEventHandler(onNetworkSpecificEvent));
   }

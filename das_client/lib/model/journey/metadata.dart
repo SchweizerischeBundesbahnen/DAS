@@ -5,7 +5,10 @@ import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/communication_network_change.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/track_equipment_segment.dart';
+import 'package:meta/meta.dart';
 
+@sealed
+@immutable
 class Metadata {
   Metadata({
     DateTime? timestamp,

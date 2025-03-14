@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:das_client/mqtt/mqtt_component.dart';
 import 'package:das_client/sfera/sfera_component.dart';
 import 'package:das_client/sfera/src/model/sfera_g2b_reply_message.dart';
-import 'package:das_client/sfera/src/service/task/request_train_characteristics_task.dart';
+import 'package:das_client/sfera/src/service/remote/task/request_train_characteristics_task.dart';
 import 'package:das_client/util/error_code.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -14,17 +14,17 @@ import 'sfera_request_train_characteristic_task_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<MqttService>(),
-  MockSpec<SferaRepository>(),
+  MockSpec<SferaDatabaseRepository>(),
 ])
 void main() {
   late MockMqttService mqttService;
-  late MockSferaRepository sferaRepository;
+  late MockSferaDatabaseRepository sferaRepository;
   late OtnId otnId;
   Fimber.plantTree(DebugTree());
 
   setUp(() {
     mqttService = MockMqttService();
-    sferaRepository = MockSferaRepository();
+    sferaRepository = MockSferaDatabaseRepository();
     otnId = OtnId.create('1085', '719', DateTime.now());
   });
 
@@ -36,7 +36,7 @@ void main() {
 
     final tcTask = RequestTrainCharacteristicsTask(
         mqttService: mqttService,
-        sferaRepository: sferaRepository,
+        sferaDatabaseRepository: sferaRepository,
         otnId: otnId,
         journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first);
 
@@ -61,7 +61,7 @@ void main() {
 
     final tcTask = RequestTrainCharacteristicsTask(
         mqttService: mqttService,
-        sferaRepository: sferaRepository,
+        sferaDatabaseRepository: sferaRepository,
         otnId: otnId,
         journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first);
 
@@ -87,7 +87,7 @@ void main() {
 
     final tcTask = RequestTrainCharacteristicsTask(
         mqttService: mqttService,
-        sferaRepository: sferaRepository,
+        sferaDatabaseRepository: sferaRepository,
         otnId: otnId,
         journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first);
 
@@ -100,7 +100,8 @@ void main() {
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
     final handShakefile = File('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
-    final handshakeSferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(handShakefile.readAsStringSync());
+    final handshakeSferaG2bReplyMessage =
+        SferaReplyParser.parse<SferaG2bReplyMessage>(handShakefile.readAsStringSync());
     final result = await tcTask.handleMessage(handshakeSferaG2bReplyMessage);
     expect(result, false);
   });
@@ -113,7 +114,7 @@ void main() {
 
     final tcTask = RequestTrainCharacteristicsTask(
       mqttService: mqttService,
-      sferaRepository: sferaRepository,
+      sferaDatabaseRepository: sferaRepository,
       otnId: otnId,
       journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first,
       timeout: const Duration(seconds: 1),

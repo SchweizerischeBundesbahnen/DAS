@@ -8,8 +8,8 @@ import 'package:das_client/sfera/src/model/handshake_request.dart';
 import 'package:das_client/sfera/src/model/otn_id.dart';
 import 'package:das_client/sfera/src/model/sfera_b2g_request_message.dart';
 import 'package:das_client/sfera/src/model/sfera_g2b_reply_message.dart';
-import 'package:das_client/sfera/src/service/sfera_service.dart';
-import 'package:das_client/sfera/src/service/task/sfera_task.dart';
+import 'package:das_client/sfera/src/service/remote/sfera_service.dart';
+import 'package:das_client/sfera/src/service/remote/task/sfera_task.dart';
 import 'package:das_client/util/error_code.dart';
 import 'package:fimber/fimber.dart';
 

@@ -1,7 +1,10 @@
 import 'package:das_client/model/journey/base_data_extension.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/speed_data.dart';
+import 'package:meta/meta.dart';
 
+@sealed
+@immutable
 abstract class BaseData implements Comparable {
   const BaseData({
     required this.type,

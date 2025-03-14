@@ -1,7 +1,10 @@
 import 'package:collection/collection.dart';
+import 'package:meta/meta.dart';
 
+@sealed
+@immutable
 class CommunicationNetworkChange implements Comparable {
-  CommunicationNetworkChange({required this.type, required this.order});
+  const CommunicationNetworkChange({required this.type, required this.order});
 
   final CommunicationNetworkType type;
 
@@ -33,5 +36,18 @@ extension CommunicationNetworkChangeListExtension on Iterable<CommunicationNetwo
     return sortedList.reversed
         .firstWhereOrNull((network) => network.order <= order && network.type != CommunicationNetworkType.sim)
         ?.type;
+  }
+
+  /// Return the network type that changes at given [order].
+  CommunicationNetworkType? changeAtOrder(int order) {
+    final sortedList = where((it) => it.type != CommunicationNetworkType.sim).toList()..sort();
+    final change = sortedList.firstWhereOrNull((it) => it.order == order);
+    if (change == null) return null;
+    final index = sortedList.indexOf(change);
+    if (index == 0) {
+      return change.type;
+    } else {
+      return sortedList[index - 1].type != change.type ? change.type : null;
+    }
   }
 }

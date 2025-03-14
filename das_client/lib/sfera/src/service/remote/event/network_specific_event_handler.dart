@@ -1,6 +1,6 @@
 import 'package:das_client/sfera/src/model/network_specific_event.dart';
 import 'package:das_client/sfera/src/model/sfera_g2b_event_message.dart';
-import 'package:das_client/sfera/src/service/event/sfera_event_message_handler.dart';
+import 'package:das_client/sfera/src/service/remote/event/sfera_event_message_handler.dart';
 import 'package:fimber/fimber.dart';
 
 class NetworkSpecificEventHandler extends SferaEventMessageHandler<NetworkSpecificEvent> {

@@ -1,8 +1,11 @@
 import 'package:das_client/model/journey/speed.dart';
 import 'package:das_client/model/journey/train_series.dart';
+import 'package:meta/meta.dart';
 
+@sealed
+@immutable
 class Speeds {
-  Speeds({
+  const Speeds({
     required this.trainSeries,
     this.text,
     this.breakSeries,
@@ -18,7 +21,8 @@ class Speeds {
   final List<Speed> outgoingSpeeds;
   final bool reduced;
 
-  factory Speeds.from(TrainSeries trainSeries, String speedString, {String? text, int? breakSeries, bool reduced = false}) {
+  factory Speeds.from(TrainSeries trainSeries, String speedString,
+      {String? text, int? breakSeries, bool reduced = false}) {
     final parts = speedString.split('/');
     final incomingSpeeds = parts[0].split('-');
     final outgoingSpeeds = parts.length > 1 ? parts[1].split('-') : [];

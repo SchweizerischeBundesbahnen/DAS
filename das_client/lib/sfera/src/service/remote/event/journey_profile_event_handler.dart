@@ -1,13 +1,13 @@
+import 'package:das_client/sfera/src/db/repo/sfera_database_repository.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/sfera_g2b_event_message.dart';
-import 'package:das_client/sfera/src/repo/sfera_repository.dart';
-import 'package:das_client/sfera/src/service/event/sfera_event_message_handler.dart';
+import 'package:das_client/sfera/src/service/remote/event/sfera_event_message_handler.dart';
 import 'package:fimber/fimber.dart';
 
 class JourneyProfileEventHandler extends SferaEventMessageHandler<JourneyProfile> {
-  final SferaRepository _sferaRepository;
+  final SferaDatabaseRepository _sferaDatabaseRepository;
 
-  JourneyProfileEventHandler(super.onMessageHandled, this._sferaRepository);
+  JourneyProfileEventHandler(super.onMessageHandled, this._sferaDatabaseRepository);
 
   @override
   Future<bool> handleMessage(SferaG2bEventMessage eventMessage) async {
@@ -17,7 +17,7 @@ class JourneyProfileEventHandler extends SferaEventMessageHandler<JourneyProfile
 
     Fimber.i('Updating journey profiles...');
     for (final journeyProfile in eventMessage.payload!.journeyProfiles) {
-      await _sferaRepository.saveJourneyProfile(journeyProfile);
+      await _sferaDatabaseRepository.saveJourneyProfile(journeyProfile);
     }
 
     if (eventMessage.payload!.journeyProfiles.length > 1) {

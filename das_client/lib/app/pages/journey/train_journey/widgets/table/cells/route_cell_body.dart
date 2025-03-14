@@ -1,7 +1,6 @@
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/chevron_animation_data.dart';
 import 'package:das_client/app/widgets/table/das_table_theme.dart';
-import 'package:das_client/model/journey/metadata.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -14,7 +13,6 @@ class RouteCellBody extends StatelessWidget {
   static const double routeCircleSize = 14.0;
 
   const RouteCellBody({
-    required this.metadata,
     super.key,
     this.chevronHeight = 8.0,
     this.chevronWidth = 16.0,
@@ -26,8 +24,6 @@ class RouteCellBody extends StatelessWidget {
     this.isRouteEnd = false,
     this.chevronAnimationData,
   });
-
-  final Metadata metadata;
 
   final double chevronHeight;
   final double chevronWidth;
@@ -54,7 +50,6 @@ class RouteCellBody extends StatelessWidget {
             _routeLine(context, height, width),
             if (isCurrentPosition || chevronAnimationData != null)
               RouteChevron(
-                  metadata: metadata,
                   isStop: isStop,
                   circleSize: routeCircleSize,
                   chevronWidth: chevronWidth,
