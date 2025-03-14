@@ -1,5 +1,6 @@
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/extension/ru_extension.dart';
+import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/reduced_overview/reduced_overview_view_model.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/reduced_overview/reduced_train_journey.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
@@ -16,7 +17,7 @@ Future<void> showReducedOverviewModalSheet(BuildContext context) async {
   if (state is TrainJourneyLoadedState) {
     showSBBModalSheet(
       context: context,
-      title: 'Fahrtübersicht',
+      title: context.l10n.w_reduced_train_journey_title,
       constraints: BoxConstraints(),
       child: Provider(
         create: (_) => ReducedOverviewViewModel(

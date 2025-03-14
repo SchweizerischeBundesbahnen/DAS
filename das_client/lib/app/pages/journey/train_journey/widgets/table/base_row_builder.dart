@@ -1,14 +1,18 @@
+import 'package:collection/collection.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/column_definition.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_config.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
+import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:das_client/model/journey/additional_speed_restriction.dart';
 import 'package:das_client/model/journey/base_data.dart';
+import 'package:das_client/model/journey/communication_network_change.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/speed_data.dart';
@@ -47,21 +51,22 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
       color: rowColor,
       onTap: onTap,
       isSticky: isSticky,
-      cells: [
-        kilometreCell(context),
-        timeCell(context),
-        routeCell(context),
-        trackEquipment(context),
-        iconsCell1(context),
-        bracketStation(context),
-        informationCell(context),
-        iconsCell2(context),
-        iconsCell3(context),
-        localSpeedCell(context),
-        brakedWeightSpeedCell(context),
-        advisedSpeedCell(context),
-        actionsCell(context),
-      ],
+      cells: {
+        ColumnDefinition.kilometre.index: kilometreCell(context),
+        ColumnDefinition.time.index: timeCell(context),
+        ColumnDefinition.route.index: routeCell(context),
+        ColumnDefinition.trackEquipment.index: trackEquipment(context),
+        ColumnDefinition.icons1.index: iconsCell1(context),
+        ColumnDefinition.bracketStation.index: bracketStation(context),
+        ColumnDefinition.informationCell.index: informationCell(context),
+        ColumnDefinition.icons1.index: iconsCell2(context),
+        ColumnDefinition.icons2.index: iconsCell3(context),
+        ColumnDefinition.localSpeed.index: localSpeedCell(context),
+        ColumnDefinition.brakedWeightSpeed.index: brakedWeightSpeedCell(context),
+        ColumnDefinition.advisedSpeed.index: advisedSpeedCell(context),
+        ColumnDefinition.actionsCell.index: actionsCell(context),
+        ColumnDefinition.communicationNetwork.index: communicationNetworkCell(context),
+      },
     );
   }
 
@@ -191,6 +196,36 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
 
   DASTableCell actionsCell(BuildContext context) {
     return DASTableCell.empty();
+  }
+
+  DASTableCell communicationNetworkCell(BuildContext context) {
+    final filteredNetworkChanges =
+        metadata.communicationNetworkChanges.where((it) => it.type != CommunicationNetworkType.sim).toList();
+    final networkChange = filteredNetworkChanges.firstWhereOrNull((it) => it.order == data.order);
+    if (networkChange == null) return DASTableCell.empty();
+
+    final index = filteredNetworkChanges.indexOf(networkChange);
+    if (index > 0 && filteredNetworkChanges[index - 1].type == networkChange.type) {
+      // Don't repeat if previous type is equal to the current
+      return DASTableCell.empty();
+    }
+
+    return DASTableCell(
+      alignment: Alignment.bottomCenter,
+      child: _communicationNetworkIcon(networkChange.type),
+    );
+  }
+
+  Widget _communicationNetworkIcon(CommunicationNetworkType communicationNetworkType) {
+    final isGsmP = communicationNetworkType == CommunicationNetworkType.gsmP;
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: SBBColors.black, width: 1.0),
+        borderRadius: BorderRadius.circular(sbbDefaultSpacing),
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 15.0),
+      child: Text(isGsmP ? 'P' : 'R', style: DASTextStyles.largeRoman),
+    );
   }
 
   Color? get specialCellColor =>

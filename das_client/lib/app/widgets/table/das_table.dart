@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:collection/collection.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/app/widgets/stickyheader/sticky_header.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
@@ -30,8 +29,6 @@ class DASTable extends StatelessWidget {
     this.themeData,
     this.alignToItem = true,
   })  : assert(columns.isNotEmpty),
-        assert(!rows.any((DASTableRow row) => row.cells.length != columns.length),
-            'All rows must have the same number of cells as there are header cells (${columns.length})'),
         scrollController = scrollController ?? ScrollController();
 
   /// List of rows to be displayed in the table.
@@ -140,7 +137,7 @@ class DASTable extends StatelessWidget {
   Widget _headerRow() {
     return _FixedHeightRow(
       height: _headerRowHeight,
-      children: columns.where((column) => column.isVisible).map((column) => _headerCell(column)).toList(),
+      children: columns.map((column) => _headerCell(column)).toList(),
     );
   }
 
@@ -177,17 +174,14 @@ class DASTable extends StatelessWidget {
   }
 
   Widget _dataRow(DASTableRow row, int index) {
-    final visibleColumns = columns.where((column) => column.isVisible).toList(growable: false);
-    final visibleCells = row.cells.whereIndexed((index, _) => columns[index].isVisible).toList(growable: false);
-
     return InkWell(
       onTap: row.onTap,
       child: _FixedHeightRow(
         height: row.height,
-        children: List.generate(visibleColumns.length, (index) {
-          final cell = visibleCells[index];
-          final column = visibleColumns[index];
-          return _dataCell(cell, column, row, isLast: visibleColumns.length - 1 == index);
+        children: List.generate(columns.length, (index) {
+          final column = columns[index];
+          final cell = row.cells[column.id] ?? DASTableCell.empty();
+          return _dataCell(cell, column, row, isLast: columns.length - 1 == index);
         }),
       ),
     );

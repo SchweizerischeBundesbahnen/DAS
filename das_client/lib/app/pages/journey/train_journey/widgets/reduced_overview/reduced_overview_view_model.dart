@@ -58,15 +58,19 @@ class ReducedOverviewViewModel {
 
   Future<void> _initRxJourneyData() async {
     final subscription = _rxJourney.stream
-        .map((journey) => journey.data)
-        .map((journeyData) => journeyData.where((data) => _relevantForReducedOverview(data)).toList())
+        .map((journey) => _relevantDataForReducedOverview(journey).toList())
         .listen(_rxJourneyData.add, onError: _rxJourneyData.addError);
     _subscriptions.add(subscription);
   }
 
-  bool _relevantForReducedOverview(BaseData data) {
+  Iterable<BaseData> _relevantDataForReducedOverview(Journey journey) {
+    return journey.data.where((it) => _relevantForReducedOverview(it, journey.metadata));
+  }
+
+  bool _relevantForReducedOverview(BaseData data, Metadata metadata) {
     final isServicePointWithStop = data.type == Datatype.servicePoint && (data as ServicePoint).isStop;
-    return isServicePointWithStop || data.type == Datatype.additionalSpeedRestriction;
+    final isNetworkChange = metadata.communicationNetworkChanges.any((it) => it.order == data.order);
+    return isServicePointWithStop || isNetworkChange || data.type == Datatype.additionalSpeedRestriction;
   }
 
   void dispose() {

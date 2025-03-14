@@ -1,0 +1,16 @@
+enum ColumnDefinition {
+  kilometre,
+  time,
+  route,
+  trackEquipment,
+  icons1,
+  bracketStation,
+  informationCell,
+  icons2,
+  icons3,
+  localSpeed,
+  brakedWeightSpeed,
+  advisedSpeed,
+  actionsCell,
+  communicationNetwork,
+}

@@ -21,7 +21,7 @@ class DASTableRow {
   /// The background color for all cells of the row if not overridden by cell style.
   final Color? color;
 
-  final List<DASTableCell> cells;
+  final Map<int, DASTableCell> cells;
 
   final VoidCallback? onTap;
 
