@@ -4,4 +4,4 @@ draft: true
 cascade:
   type: docs
 ---
-DRAFT
+Operations is part of SBB internal documentation and limited to the public space.
