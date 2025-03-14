@@ -199,20 +199,14 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   }
 
   DASTableCell communicationNetworkCell(BuildContext context) {
-    final filteredNetworkChanges =
-        metadata.communicationNetworkChanges.where((it) => it.type != CommunicationNetworkType.sim).toList();
-    final networkChange = filteredNetworkChanges.firstWhereOrNull((it) => it.order == data.order);
-    if (networkChange == null) return DASTableCell.empty();
-
-    final index = filteredNetworkChanges.indexOf(networkChange);
-    if (index > 0 && filteredNetworkChanges[index - 1].type == networkChange.type) {
-      // Don't repeat if previous type is equal to the current
+    final networkChange = metadata.communicationNetworkChanges.changeAtOrder(data.order);
+    if (networkChange == null) {
       return DASTableCell.empty();
     }
 
     return DASTableCell(
       alignment: Alignment.bottomCenter,
-      child: _communicationNetworkIcon(networkChange.type),
+      child: _communicationNetworkIcon(networkChange),
     );
   }
 

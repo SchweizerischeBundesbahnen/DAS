@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:das_client/model/journey/base_data.dart';
+import 'package:das_client/model/journey/communication_network_change.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/metadata.dart';
@@ -69,7 +70,7 @@ class ReducedOverviewViewModel {
 
   bool _relevantForReducedOverview(BaseData data, Metadata metadata) {
     final isServicePointWithStop = data.type == Datatype.servicePoint && (data as ServicePoint).isStop;
-    final isNetworkChange = metadata.communicationNetworkChanges.any((it) => it.order == data.order);
+    final isNetworkChange = metadata.communicationNetworkChanges.changeAtOrder(data.order) != null;
     return isServicePointWithStop || isNetworkChange || data.type == Datatype.additionalSpeedRestriction;
   }
 

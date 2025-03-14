@@ -37,4 +37,17 @@ extension CommunicationNetworkChangeListExtension on Iterable<CommunicationNetwo
         .firstWhereOrNull((network) => network.order <= order && network.type != CommunicationNetworkType.sim)
         ?.type;
   }
+
+  /// Return the network type that changes at given [order].
+  CommunicationNetworkType? changeAtOrder(int order) {
+    final sortedList = where((it) => it.type != CommunicationNetworkType.sim).toList()..sort();
+    final change = sortedList.firstWhereOrNull((it) => it.order == order);
+    if (change == null) return null;
+    final index = sortedList.indexOf(change);
+    if (index == 0) {
+      return change.type;
+    } else {
+      return sortedList[index - 1].type != change.type ? change.type : null;
+    }
+  }
 }
