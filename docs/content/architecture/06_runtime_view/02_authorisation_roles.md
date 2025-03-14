@@ -22,7 +22,7 @@ Remark:
 * Every RU has its own authentication and MDM and is therefore not controlled centrally.
 
 ## DAS Role comparison to TMS::VAD Roles
-Roles within DAS remain conistent over all vehicle-journeys. However, per train instance needs the currently active driver additionally:
+Roles within DAS remain consistent over all vehicle-journeys. However, per train instance the currently active driver is needed additionally:
 
 |Role DAS | Role assigned to TMS::VAD        |
 |--------|----------------------------------|
@@ -30,4 +30,4 @@ Roles within DAS remain conistent over all vehicle-journeys. However, per train 
 |`Driver` - NOT active person on train nr: 1234| `Observer` on train nr: 1234      |  
 |`Observer`| `Observer` on train nr: 1234     |  
 
-A `Driver` is also an `Observer`, therefore a distinction for non-active `Driver` is not necessary.
+A `Driver` is also an `Observer`, therefore an explicite distinction for non-active `Driver` is not necessary.
