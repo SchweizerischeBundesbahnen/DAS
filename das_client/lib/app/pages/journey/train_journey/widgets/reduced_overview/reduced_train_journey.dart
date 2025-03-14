@@ -40,7 +40,6 @@ class ReducedTrainJourney extends StatelessWidget {
   }
 
   Widget _body(BuildContext context, Metadata metadata, List<BaseData> data) {
-    // TODO: Currently has full bottom margin for sticky header. Makes no sense here. Should only scroll so last rows are visible
     return DASTable(
       columns: _columns(context),
       rows: _rows(context, metadata, data).map((it) => it.build(context)).toList(),
