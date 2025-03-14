@@ -44,6 +44,7 @@ class ReducedTrainJourney extends StatelessWidget {
     return DASTable(
       columns: _columns(context),
       rows: _rows(context, metadata, data).map((it) => it.build(context)).toList(),
+      addBottomSpacer: false,
     );
   }
 

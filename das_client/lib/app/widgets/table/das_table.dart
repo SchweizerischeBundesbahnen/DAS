@@ -28,6 +28,7 @@ class DASTable extends StatelessWidget {
     this.bottomMarginAdjustment = 0,
     this.themeData,
     this.alignToItem = true,
+    this.addBottomSpacer = true,
   })  : assert(columns.isNotEmpty),
         scrollController = scrollController ?? ScrollController();
 
@@ -51,6 +52,9 @@ class DASTable extends StatelessWidget {
 
   /// defines if the listview should always align the scroll position to an item after scrolling
   final bool alignToItem;
+
+  /// If true, a bottom spacer is added to the table to ensure the last row can be scrolled to the top.
+  final bool addBottomSpacer;
 
   @override
   Widget build(BuildContext context) {
@@ -99,9 +103,9 @@ class DASTable extends StatelessWidget {
       child: ListView.builder(
         key: tableKey,
         controller: scrollController,
-        itemCount: rows.length + 1, // + 1 for bottom spacer
+        itemCount: rows.length + (addBottomSpacer ? 1 : 0),
         itemBuilder: (context, index) {
-          if (index == rows.length) {
+          if (index == rows.length && addBottomSpacer) {
             return SizedBox(
                 height: max(constraints.maxHeight - _headerRowHeight - bottomMarginAdjustment - sbbDefaultSpacing,
                     minBottomMargin));
