@@ -4,5 +4,4 @@ draft: true
 cascade:
   type: docs
 ---
-
-Since the final deployment is delegated to SBB operatively, no further info is provided yet.
+Operations is part of SBB internal documentation and limited to the public space.
