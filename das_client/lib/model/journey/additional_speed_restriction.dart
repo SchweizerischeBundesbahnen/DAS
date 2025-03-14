@@ -44,4 +44,18 @@ class AdditionalSpeedRestriction {
   String toString() {
     return 'AdditionalSpeedRestriction(kmFrom: $kmFrom, kmTo: $kmTo, orderFrom: $orderFrom, orderTo: $orderTo, speed: $speed)';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AdditionalSpeedRestriction &&
+          runtimeType == other.runtimeType &&
+          kmFrom == other.kmFrom &&
+          kmTo == other.kmTo &&
+          orderFrom == other.orderFrom &&
+          orderTo == other.orderTo &&
+          speed == other.speed;
+
+  @override
+  int get hashCode => kmFrom.hashCode ^ kmTo.hashCode ^ orderFrom.hashCode ^ orderTo.hashCode ^ speed.hashCode;
 }

@@ -22,6 +22,8 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   static const double rowHeight = 44.0;
+  static const Key gsmRCellKey = Key('gsmPCell');
+  static const Key gsmPCellKey = Key('gsmRCell');
 
   const BaseRowBuilder({
     required this.metadata,
@@ -59,8 +61,8 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
         ColumnDefinition.icons1.index: iconsCell1(context),
         ColumnDefinition.bracketStation.index: bracketStation(context),
         ColumnDefinition.informationCell.index: informationCell(context),
-        ColumnDefinition.icons1.index: iconsCell2(context),
-        ColumnDefinition.icons2.index: iconsCell3(context),
+        ColumnDefinition.icons2.index: iconsCell2(context),
+        ColumnDefinition.icons3.index: iconsCell3(context),
         ColumnDefinition.localSpeed.index: localSpeedCell(context),
         ColumnDefinition.brakedWeightSpeed.index: brakedWeightSpeedCell(context),
         ColumnDefinition.advisedSpeed.index: advisedSpeedCell(context),
@@ -213,6 +215,7 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   Widget _communicationNetworkIcon(CommunicationNetworkType communicationNetworkType) {
     final isGsmP = communicationNetworkType == CommunicationNetworkType.gsmP;
     return Container(
+      key: isGsmP ? gsmPCellKey : gsmRCellKey,
       decoration: BoxDecoration(
         border: Border.all(color: SBBColors.black, width: 1.0),
         borderRadius: BorderRadius.circular(sbbDefaultSpacing),

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/communication_network_change.dart';
 import 'package:das_client/model/journey/datatype.dart';
@@ -59,13 +60,28 @@ class ReducedOverviewViewModel {
 
   Future<void> _initRxJourneyData() async {
     final subscription = _rxJourney.stream
-        .map((journey) => _relevantDataForReducedOverview(journey).toList())
+        .map((journey) => _relevantDataForReducedOverview(journey))
         .listen(_rxJourneyData.add, onError: _rxJourneyData.addError);
     _subscriptions.add(subscription);
   }
 
-  Iterable<BaseData> _relevantDataForReducedOverview(Journey journey) {
-    return journey.data.where((it) => _relevantForReducedOverview(it, journey.metadata));
+  List<BaseData> _relevantDataForReducedOverview(Journey journey) {
+    final relevantData = journey.data.where((it) => _relevantForReducedOverview(it, journey.metadata)).toList();
+    _removeDuplicatedASR(relevantData);
+    return relevantData;
+  }
+
+  void _removeDuplicatedASR(List<BaseData> data) {
+    for (int i = 1; i < data.length; i++) {
+      final current = data[i];
+      final previous = data[i - 1];
+      if (current is AdditionalSpeedRestrictionData && previous is AdditionalSpeedRestrictionData) {
+        if (current.restriction == previous.restriction) {
+          data.removeAt(i);
+          i--;
+        }
+      }
+    }
   }
 
   bool _relevantForReducedOverview(BaseData data, Metadata metadata) {
