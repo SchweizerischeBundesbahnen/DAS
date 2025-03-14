@@ -1,6 +1,7 @@
-import 'package:das_client/app/pages/journey/journey_page.dart';
+import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/extended_menu.dart';
 import 'package:das_client/app/widgets/table/das_table.dart';
+import 'package:das_client/di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -55,8 +56,7 @@ Future<void> loadTrainJourney(WidgetTester tester, {required String trainNumber}
 }
 
 Future<void> disconnect(WidgetTester tester) async {
-  final disconnectButton = find.byKey(JourneyPageContent.disconnectKey);
-  await tapElement(tester, disconnectButton);
+  DI.get<TrainJourneyCubit>().reset();
   await Future.delayed(const Duration(milliseconds: 50));
 }
 
