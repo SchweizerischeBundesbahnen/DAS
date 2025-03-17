@@ -8,7 +8,8 @@ cascade:
 ## Blueprint by UIC "IRS-90940:2022 Ed.2" Specification
 
 ![SFERA Architecture: Data exchange layer (chapter 6.1)](IRSE90940_ed2_SFERA-DataExchangeLayer.png)
-Some Abbreviations from the Specification:
+
+Some abbreviations from the Specification:
 * DAS-OB: DAS OnBoard
 * DAS-TS: DAS Trackside
 * G2B: Ground to Board
