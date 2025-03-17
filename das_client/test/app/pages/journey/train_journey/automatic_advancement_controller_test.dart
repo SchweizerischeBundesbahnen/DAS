@@ -9,7 +9,7 @@ import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
 import 'package:das_client/model/localized_string.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -115,7 +115,7 @@ void main() {
     testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: true));
 
     verify(scrollControllerMock.animateTo(BaseRowBuilder.rowHeight * 2,
-        duration: anyNamed('duration'), curve: anyNamed('curve')))
+            duration: anyNamed('duration'), curve: anyNamed('curve')))
         .called(1);
   });
 
@@ -147,16 +147,17 @@ void main() {
     verifyNever(scrollControllerMock.animateTo(any, duration: anyNamed('duration'), curve: anyNamed('curve')));
   });
 
-  test('test scrolling adjust to sticky header', () {
+  testWidgets('test scrolling adjust to sticky header', (WidgetTester tester) async {
     final signalData = Signal(order: 100, kilometre: []);
     final targetSignalData = Signal(order: 300, kilometre: []);
     final servicePointData = ServicePoint(order: 0, kilometre: [], name: LocalizedString());
+
     final List<BaseRowBuilder> rows = [
-      ServicePointRow(metadata: Metadata(), data: servicePointData),
+      ServicePointRow(metadata: Metadata(), data: servicePointData, context: null),
       SignalRow(metadata: Metadata(), data: signalData),
       SignalRow(metadata: Metadata(), data: signalData),
       SignalRow(metadata: Metadata(), data: signalData),
-      ServicePointRow(metadata: Metadata(), data: servicePointData),
+      ServicePointRow(metadata: Metadata(), data: servicePointData, context: null),
       SignalRow(metadata: Metadata(), data: targetSignalData),
     ];
 
@@ -176,9 +177,11 @@ void main() {
     testee.updateRenderedRows(rows);
     testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: true));
 
-    verify(scrollControllerMock.animateTo(BaseRowBuilder.rowHeight * 3 + ServicePointRow.rowHeight,
-        duration: anyNamed('duration'), curve: anyNamed('curve')))
-        .called(1);
+    verify(scrollControllerMock.animateTo(
+      BaseRowBuilder.rowHeight * 3 + ServicePointRow.rowHeight,
+      duration: anyNamed('duration'),
+      curve: anyNamed('curve'),
+    )).called(1);
   });
 
   test('test scrolls with delay after touch', () async {
@@ -210,7 +213,7 @@ void main() {
     await Future.delayed(const Duration(seconds: 11));
 
     verify(scrollControllerMock.animateTo(BaseRowBuilder.rowHeight * 2,
-        duration: anyNamed('duration'), curve: anyNamed('curve')))
+            duration: anyNamed('duration'), curve: anyNamed('curve')))
         .called(2);
   });
 
@@ -240,7 +243,7 @@ void main() {
     testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: true));
 
     verify(scrollControllerMock.animateTo(BaseRowBuilder.rowHeight * 2,
-        duration: anyNamed('duration'), curve: anyNamed('curve')))
+            duration: anyNamed('duration'), curve: anyNamed('curve')))
         .called(1);
 
     testee.onTouch();

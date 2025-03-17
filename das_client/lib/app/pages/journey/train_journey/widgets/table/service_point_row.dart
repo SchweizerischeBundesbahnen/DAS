@@ -18,24 +18,23 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
   ServicePointRow({
     required super.metadata,
     required super.data,
+    BuildContext? context,
     super.height = rowHeight,
     super.config,
   }) : super(
           isSticky: true,
+          rowColor: metadata.nextStop == data
+              ? (context != null
+                  ? SBBBaseStyle.of(context).brightness == Brightness.dark
+                      ? const Color(0xFF06348B)
+                      : const Color(0xFFCDD6E8)
+                  : Color(0xFFCDD6E8))
+              : (context != null
+                  ? SBBBaseStyle.of(context).brightness == Brightness.dark
+                      ? SBBColors.charcoal
+                      : SBBColors.white
+                  : SBBColors.white),
         );
-
-  Color getRowColor(BuildContext context) {
-    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
-
-    //TODO access data better
-    return metadata.nextStop == data
-        ? isDarkTheme
-            ? const Color(0x06348B99)
-            : const Color(0xFFCDD6E8)
-        : isDarkTheme
-            ? SBBColors.black
-            : SBBColors.white;
-  }
 
   @override
   DASTableCell informationCell(BuildContext context) {

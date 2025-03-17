@@ -124,6 +124,7 @@ class TrainJourney extends StatelessWidget {
             metadata: journey.metadata,
             data: rowData as ServicePoint,
             config: trainJourneyConfig,
+            context: context,
           );
         case Datatype.protectionSection:
           return ProtectionSectionRow(

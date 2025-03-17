@@ -47,12 +47,16 @@ class BaliseLevelCrossingGroupRow extends BaseRowBuilder<BaliseLevelCrossingGrou
 
   @override
   DASTableCell iconsCell2(BuildContext context) {
+    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
+    final color = isDarkTheme ? SBBColors.white : SBBColors.white;
+
     if (_baliseCount > 0) {
       return DASTableCell(
         padding: EdgeInsets.all(sbbDefaultSpacing * 0.25),
         child: SvgPicture.asset(
           AppAssets.iconBalise,
           key: baliseIconKey,
+          colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
         ),
         alignment: Alignment.centerLeft,
       );

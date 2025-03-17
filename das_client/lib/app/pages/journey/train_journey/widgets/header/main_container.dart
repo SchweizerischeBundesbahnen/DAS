@@ -109,9 +109,8 @@ class MainContainer extends StatelessWidget {
   }
 
   Widget _buttonArea(TrainJourneySettings settings, BuildContext context) {
-    //TODO maybe with SBBBaseStyle.of(context).brightness == Brightness.dark instead of thememanager
     final themeManager = ThemeManager.of(context)!;
-    final isDarkMode = themeManager.themeMode == ThemeMode.dark;
+    final isDarkMode = SBBBaseStyle.of(context).brightness == Brightness.dark;
 
     return Builder(builder: (context) {
       return Row(
