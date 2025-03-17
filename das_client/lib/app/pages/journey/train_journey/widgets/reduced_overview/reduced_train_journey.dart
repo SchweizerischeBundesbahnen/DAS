@@ -19,6 +19,8 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class ReducedTrainJourney extends StatelessWidget {
+  static const Key reducedJourneyTableKey = Key('reducedJourneyTable');
+
   const ReducedTrainJourney({super.key});
 
   @override
@@ -41,6 +43,7 @@ class ReducedTrainJourney extends StatelessWidget {
 
   Widget _body(BuildContext context, Metadata metadata, List<BaseData> data) {
     return DASTable(
+      key: reducedJourneyTableKey,
       columns: _columns(context),
       rows: _rows(context, metadata, data).map((it) => it.build(context)).toList(),
       addBottomSpacer: false,

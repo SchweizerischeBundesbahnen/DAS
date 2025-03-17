@@ -10,7 +10,6 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-// TODO: Add integration tests
 Future<void> showReducedOverviewModalSheet(BuildContext context) async {
   final cubit = DI.get<TrainJourneyCubit>();
   final state = cubit.state;

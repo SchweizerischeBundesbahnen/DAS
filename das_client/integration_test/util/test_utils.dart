@@ -66,6 +66,12 @@ Future<void> openExtendedMenu(WidgetTester tester) async {
   await Future.delayed(const Duration(milliseconds: 250));
 }
 
+Future<void> openReducedJourneyMenu(WidgetTester tester) async {
+  await openExtendedMenu(tester);
+  await tapElement(tester, find.text(l10n.w_extended_menu_journey_overview_action));
+  await Future.delayed(const Duration(milliseconds: 100));
+}
+
 Future<void> dismissExtendedMenu(WidgetTester tester) async {
   final closeButton = find.byKey(ExtendedMenu.menuButtonCloseKey);
   await tapElement(tester, closeButton.first);
