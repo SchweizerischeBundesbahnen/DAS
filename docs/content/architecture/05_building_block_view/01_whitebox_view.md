@@ -8,7 +8,8 @@ cascade:
 ## Blueprint by UIC "IRS-90940:2022 Ed.2" Specification
 
 ![SFERA Architecture: Data exchange layer (chapter 6.1)](IRSE90940_ed2_SFERA-DataExchangeLayer.png)
-Some Abbreviations from the Specification:
+
+Some abbreviations from the Specification:
 * DAS-OB: DAS OnBoard
 * DAS-TS: DAS Trackside
 * G2B: Ground to Board
@@ -24,10 +25,12 @@ At SBB the **IM-Train setup** respectively `IM DAS-TS` to many `RU DAS-OB[n]` in
 
 
 ## SBB Component Architecture
-The architecture of the SBB implementation keeps exactly to the blueprint variant **IM-Train setup** by IRS-90940 above, where the following naming is used:  
+The architecture of the SBB implementation of `DAS-Client` and `SFERA protocol` keeps exactly to the blueprint variant **IM-Train setup** by IRS-90940 above, where the following naming is used:  
 | IRS Component | SBB Component |  
 | ------------- | ------------- |  
 | IM DAS-TS     | TMS::VAD      |  
 | RU DAS-OB     | DAS-Client    |  
+
+Other blue components represent a best known goal in the near future and may be concretised over time.
 
 ![Building blocks (whitebox overview)](das-buildingBlocks_whiteboxOverview.drawio.svg)
