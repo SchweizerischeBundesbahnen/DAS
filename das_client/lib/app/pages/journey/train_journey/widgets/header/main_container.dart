@@ -1,5 +1,6 @@
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/i18n/i18n.dart';
+import 'package:das_client/app/model/ru.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/battery_status.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/departure_authorization.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/extended_menu.dart';
@@ -48,27 +49,41 @@ class MainContainer extends StatelessWidget {
               children: [
                 _topHeaderRow(context, journey, settings),
                 _divider(),
-                _bottomHeaderRow(journey.metadata),
+                _bottomHeaderRow(context, journey.metadata),
               ],
             ),
           );
         });
   }
 
-  Widget _bottomHeaderRow(Metadata metadata) {
+  Widget _bottomHeaderRow(BuildContext context, Metadata metadata) {
     final communicationNetworkType = metadata.nextStop != null
         ? metadata.communicationNetworkChanges.appliesToOrder(metadata.nextStop!.order)
         : null;
     return SizedBox(
       height: 48.0,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           RadioChannel(communicationNetworkType: communicationNetworkType),
           SizedBox(width: sbbDefaultSpacing * 0.5),
           DepartureAuthorization(),
           Spacer(),
+          _trainJourneyText(context),
           BatteryStatus(),
         ],
+      ),
+    );
+  }
+
+  Widget _trainJourneyText(BuildContext context) {
+    final state = context.trainJourneyCubit.state;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
+      child: Text(
+        state is TrainJourneyLoadedState ? '${state.trainNumber} ${state.ru.displayText(context)}' : '',
+        style: DASTextStyles.mediumRoman,
       ),
     );
   }

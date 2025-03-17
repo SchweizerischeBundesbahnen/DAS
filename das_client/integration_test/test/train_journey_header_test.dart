@@ -5,6 +5,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/header/header
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_channel.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
 import 'package:das_client/di.dart';
+import 'package:das_client/util/format.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
@@ -13,6 +14,27 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey header test', () {
+    testWidgets('test app bar is hiding while train is active', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T9999');
+
+      final date = Format.dateWithAbbreviatedDay(DateTime.now());
+      final appbarText = '${l10n.p_train_journey_appbar_text} - $date';
+
+      expect(find.text(appbarText).hitTestable(), findsNothing);
+
+      final pauseButton = find.text(l10n.p_train_journey_header_button_pause);
+      expect(pauseButton, findsOneWidget);
+
+      await tapElement(tester, pauseButton);
+
+      expect(find.text(appbarText).hitTestable(), findsOneWidget);
+
+      await disconnect(tester);
+    });
+
     testWidgets('test extended menu opening', (tester) async {
       await prepareAndStartApp(tester);
 
