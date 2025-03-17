@@ -14,7 +14,7 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey header test', () {
-    testWidgets('test app bar ist hiding while train is active', (tester) async {
+    testWidgets('test app bar is hiding while train is active', (tester) async {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page

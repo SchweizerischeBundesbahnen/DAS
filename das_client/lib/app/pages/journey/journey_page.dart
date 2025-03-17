@@ -36,6 +36,8 @@ class JourneyPageContent extends StatefulWidget {
 }
 
 class _JourneyPageContentState extends State<JourneyPageContent> with SingleTickerProviderStateMixin {
+  static const _toolbarHideAnimationDuration = 400;
+
   late final AnimationController _controller;
   late final Animation<double> _animation;
   double _toolbarHeight = kToolbarHeight;
@@ -45,7 +47,7 @@ class _JourneyPageContentState extends State<JourneyPageContent> with SingleTick
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 400),
+      duration: Duration(milliseconds: _toolbarHideAnimationDuration),
     );
     _animation = Tween<double>(begin: kToolbarHeight, end: 0.0).animate(_controller)
       ..addListener(() {
