@@ -25,6 +25,12 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
+    final sbbBaseStyle = SBBBaseStyle(
+      primaryColor: SBBColors.royal,
+      primaryColorDark: SBBColors.royal125,
+      brightness: Brightness.light,
+    );
+
     return FlavorBanner(
       flavor: DI.get(),
       child: ThemeManager(
@@ -35,20 +41,21 @@ class _AppState extends State<App> {
             return MaterialApp.router(
               themeMode: themeMode,
               theme: SBBTheme.light(
-                baseStyle: SBBBaseStyle(
-                  primaryColor: SBBColors.royal,
-                  primaryColorDark: SBBColors.royal125,
-                ),
-              ),
+          baseStyle: sbbBaseStyle,
+          controlStyles: SBBControlStyles(
+            promotionBox: PromotionBoxStyle.$default(baseStyle: sbbBaseStyle).copyWith(
+              badgeColor: SBBColors.royal,
+              badgeShadowColor: SBBColors.royal.withAlpha((255.0 * 0.2).round()),
+            ),
+          ),
+        ),
               darkTheme: SBBTheme.dark(
-                baseStyle: SBBBaseStyle(
-                  primaryColor: SBBColors.royal,
-                  primaryColorDark: SBBColors.royal125,
-                ),
+                baseStyle: sbbBaseStyle,
               ),
               localizationsDelegates: localizationDelegates,
               supportedLocales: supportedLocales,
               routerConfig: _appRouter.config(),
+              debugShowCheckedModeBanner: false,
             );
           })),
     );

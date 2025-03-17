@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-const String sbbWebFont = 'packages/sbb_design_system_mobile/SBBWeb';
-
 class DASTextStyles {
   DASTextStyles._();
 
@@ -17,7 +15,7 @@ class DASTextStyles {
     height: xxLargeFontHeight,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w700,
-    fontFamily: sbbWebFont,
+    fontFamily: SBBFontFamily.sbbFontBold,
   );
 
   static const TextStyle xLargeBold = TextStyle(
@@ -25,7 +23,7 @@ class DASTextStyles {
     height: xLargeFontHeight,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w700,
-    fontFamily: sbbWebFont,
+    fontFamily: SBBFontFamily.sbbFontBold,
   );
 
   static const TextStyle xLargeRoman = TextStyle(
@@ -33,7 +31,7 @@ class DASTextStyles {
     height: xLargeFontHeight,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w400,
-    fontFamily: sbbWebFont,
+    fontFamily: SBBFontFamily.sbbFontRoman,
   );
 
   static const TextStyle xLargeLight = TextStyle(
@@ -41,7 +39,7 @@ class DASTextStyles {
     height: xLargeFontHeight,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w300,
-    fontFamily: sbbWebFont,
+    fontFamily: SBBFontFamily.sbbFontLight,
   );
 
   static const TextStyle largeBold = SBBTextStyles.largeBold;
@@ -51,12 +49,20 @@ class DASTextStyles {
     height: SBBTextStyles.largeFontHeight,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w400,
-    fontFamily: sbbWebFont,
+    fontFamily: SBBFontFamily.sbbFontRoman,
   );
 
   static const TextStyle largeLight = SBBTextStyles.largeLight;
 
   static const TextStyle mediumBold = SBBTextStyles.mediumBold;
+
+  static const TextStyle mediumRoman = TextStyle(
+    fontSize: SBBTextStyles.mediumFontSize,
+    height: SBBTextStyles.mediumFontHeight,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    fontFamily: SBBFontFamily.sbbFontRoman,
+  );
 
   static const TextStyle mediumLight = SBBTextStyles.mediumLight;
 

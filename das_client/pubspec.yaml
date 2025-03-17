@@ -1,7 +1,7 @@
 name: das_client
 description: "DAS (Driver Advisory System) is a mobile application that provides all the required journey data to the train driver."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 0.10.1+48
+version: 0.11.0+49
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -19,7 +19,12 @@ dependencies:
       ref: 3.4.0
 
   # https://pub.dev/packages/sbb_design_system_mobile
-  sbb_design_system_mobile: ^2.1.1
+  # will revert to pub dev once promotion box changes are released
+  sbb_design_system_mobile:
+    git:
+      url: https://github.com/SchweizerischeBundesbahnen/design_system_flutter.git
+      ref: feature/promotion-box-improvement
+
   # https://pub.dev/packages/collection
   collection: ^1.19.0
   # https://pub.dev/packages/meta
@@ -64,7 +69,10 @@ dependencies:
   iso_duration: ^0.1.1
   # https://pub.dev/packages/battery_plus
   battery_plus: ^6.2.1
-
+  # https://pub.dev/packages/audioplayers
+  audioplayers: 5.2.1
+  # https://pub.dev/packages/volume_controller
+  volume_controller: ^3.3.1
 
 dev_dependencies:
   integration_test:
@@ -93,3 +101,9 @@ flutter:
     - assets/
     - assets/icons/
     - assets/others/
+    - assets/fonts/
+    - assets/sounds/
+  fonts:
+    - family: DasIcons
+      fonts:
+        - asset: assets/fonts/DasIcons.ttf

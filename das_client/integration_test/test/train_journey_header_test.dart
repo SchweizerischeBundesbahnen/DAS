@@ -3,6 +3,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/header/batter
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/extended_menu.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_channel.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
 import 'package:das_client/di.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -48,6 +49,29 @@ void main() {
       expect(find.text(l10n.w_maneuver_notification_text), findsNothing);
 
       await dismissExtendedMenu(tester);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('test maneuver mode notification switch button', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T9999');
+
+      await openExtendedMenu(tester);
+
+      expect(find.byKey(ExtendedMenu.menuButtonCloseKey), findsAny);
+
+      await tapElement(tester, find.byKey(ExtendedMenu.maneuverSwitchKey));
+
+      expect(find.text(l10n.w_maneuver_notification_text), findsOneWidget);
+
+      await dismissExtendedMenu(tester);
+
+      await tapElement(tester, find.byKey(ManeuverNotification.maneuverNotificationSwitchKey));
+
+      expect(find.text(l10n.w_maneuver_notification_text), findsNothing);
 
       await disconnect(tester);
     });

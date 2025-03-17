@@ -4,12 +4,12 @@
     <TrainIdentification>
         <OTN_ID>
             <teltsi_Company>1285</teltsi_Company>
-            <teltsi_OperationalTrainNumber>1617</teltsi_OperationalTrainNumber>
+            <teltsi_OperationalTrainNumber>1672</teltsi_OperationalTrainNumber>
             <teltsi_StartDate>2025-05-17</teltsi_StartDate>
         </OTN_ID>
     </TrainIdentification>
 
-    <SegmentProfileReference SP_ID="1671_1" SP_VersionMajor="2" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1672_1" SP_VersionMajor="2" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -29,11 +29,12 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:07:00Z"
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:07:00Z"
                                 TP_PlannedLatestArrivalTime="2025-05-17T12:07:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Twinn"/>
             </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T12:07:30Z" plannedDepartureTime="2025-05-17T12:07:30Z"/>
         </TimingPointConstraints>
 
         <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:08:40Z"
@@ -58,11 +59,12 @@
             <StoppingPointDepartureDetails departureTime="2025-05-17T12:16:00Z" plannedDepartureTime="2025-05-17T12:16:00Z"/>
         </TimingPointConstraints>
 
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:19:20Z"
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:19:20Z"
                                 TP_PlannedLatestArrivalTime="2025-05-17T12:19:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Sennbach"/>
             </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T12:20:00Z" plannedDepartureTime="2025-05-17T12:20:00Z"/>
         </TimingPointConstraints>
 
         <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:22:00Z"
@@ -99,13 +101,14 @@
             <TemporaryConstraintReason text="Umbau" language="DE"/>
         </TemporaryConstraints>
 
-        <TrainCharacteristicsRef TC_ID="1671_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
+        <TrainCharacteristicsRef TC_ID="1672_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
             <TC_RU_ID>1285</TC_RU_ID>
         </TrainCharacteristicsRef>
 
         <JP_ContextInformation>
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>operationalIndication</NSP_GroupName>
                 <NetworkSpecificParameter name="type" value="uncoded"/>
                 <NetworkSpecificParameter name="uncodedText" value="Lüthisberg: Halt an Halteort 2"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="23900" endLocation="23900"/>
