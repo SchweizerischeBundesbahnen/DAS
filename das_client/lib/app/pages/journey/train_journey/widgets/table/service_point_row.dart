@@ -24,15 +24,11 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
   }) : super(
           isSticky: true,
           rowColor: metadata.nextStop == data
-              ? (context != null
-                  ? SBBBaseStyle.of(context).brightness == Brightness.dark
-                      ? const Color(0xFF06348B)
-                      : const Color(0xFFCDD6E8)
-                  : Color(0xFFCDD6E8))
-              : (context != null
-                  ? SBBBaseStyle.of(context).brightness == Brightness.dark
-                      ? SBBColors.charcoal
-                      : SBBColors.white
+              ? (context != null && SBBBaseStyle.of(context).brightness == Brightness.dark
+                  ? const Color(0xFF06348B)
+                  : const Color(0xFFCDD6E8))
+              : (context != null && SBBBaseStyle.of(context).brightness == Brightness.dark
+                  ? SBBColors.charcoal
                   : SBBColors.white),
         );
 

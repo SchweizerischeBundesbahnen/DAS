@@ -147,7 +147,7 @@ void main() {
     verifyNever(scrollControllerMock.animateTo(any, duration: anyNamed('duration'), curve: anyNamed('curve')));
   });
 
-  testWidgets('test scrolling adjust to sticky header', (WidgetTester tester) async {
+  test('test scrolling adjust to sticky header', () {
     final signalData = Signal(order: 100, kilometre: []);
     final targetSignalData = Signal(order: 300, kilometre: []);
     final servicePointData = ServicePoint(order: 0, kilometre: [], name: LocalizedString());

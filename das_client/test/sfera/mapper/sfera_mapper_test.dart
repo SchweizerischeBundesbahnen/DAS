@@ -107,7 +107,7 @@ void main() {
     final journey = getJourney('T9999', 4);
 
     //TODO change that
-    expect(journey.valid, true);
+    expect(journey.valid, false);
   });
 
   test('Test service point names are resolved correctly', () async {

@@ -54,6 +54,7 @@ class Header extends StatelessWidget {
 
   Widget _information(BuildContext context) {
     final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
+    final color = isDarkTheme ? SBBColors.charcoal : SBBColors.white;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing, vertical: sbbDefaultSpacing * 0.5),
@@ -63,12 +64,12 @@ class Header extends StatelessWidget {
           Icon(
             SBBIcons.circle_information_small,
             size: 20.0,
-            color: isDarkTheme ? SBBColors.charcoal : SBBColors.white,
+            color: color,
           ),
           Text(
             information!,
             style: DASTextStyles.smallLight.copyWith(
-              color: isDarkTheme ? SBBColors.charcoal : SBBColors.white,
+              color: color,
             ),
           ),
         ],
