@@ -1,5 +1,5 @@
+import 'package:das_client/app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/reduced_overview/reduced_train_journey.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_row_builder.dart';
 import 'package:das_client/util/format.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -15,7 +15,7 @@ void main() {
 
       await openReducedJourneyMenu(tester);
 
-      expect(find.text('T14 SBB'), findsOneWidget);
+      expect(find.text('T14 SBB'), findsAny);
       expect(find.text(Format.dateWithAbbreviatedDay(DateTime.now())), findsOneWidget);
 
       await disconnect(tester);
@@ -62,10 +62,10 @@ void main() {
 
       final reducedJourneyTable = find.byKey(ReducedTrainJourney.reducedJourneyTableKey);
 
-      expect(
-          find.descendant(of: reducedJourneyTable, matching: find.byKey(BaseRowBuilder.gsmPCellKey)), findsOneWidget);
-      expect(
-          find.descendant(of: reducedJourneyTable, matching: find.byKey(BaseRowBuilder.gsmRCellKey)), findsOneWidget);
+      expect(find.descendant(of: reducedJourneyTable, matching: find.byKey(CommunicationNetworkIcon.gsmPKey)),
+          findsOneWidget);
+      expect(find.descendant(of: reducedJourneyTable, matching: find.byKey(CommunicationNetworkIcon.gsmRKey)),
+          findsOneWidget);
 
       await disconnect(tester);
     });

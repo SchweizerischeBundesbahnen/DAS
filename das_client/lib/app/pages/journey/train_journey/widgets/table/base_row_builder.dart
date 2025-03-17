@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
@@ -7,7 +8,6 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/t
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/column_definition.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_config.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
-import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:das_client/model/journey/additional_speed_restriction.dart';
@@ -22,8 +22,6 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
   static const double rowHeight = 44.0;
-  static const Key gsmRCellKey = Key('gsmPCell');
-  static const Key gsmPCellKey = Key('gsmRCell');
 
   const BaseRowBuilder({
     required this.metadata,
@@ -208,20 +206,7 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
 
     return DASTableCell(
       alignment: Alignment.bottomCenter,
-      child: _communicationNetworkIcon(networkChange),
-    );
-  }
-
-  Widget _communicationNetworkIcon(CommunicationNetworkType communicationNetworkType) {
-    final isGsmP = communicationNetworkType == CommunicationNetworkType.gsmP;
-    return Container(
-      key: isGsmP ? gsmPCellKey : gsmRCellKey,
-      decoration: BoxDecoration(
-        border: Border.all(color: SBBColors.black, width: 1.0),
-        borderRadius: BorderRadius.circular(sbbDefaultSpacing),
-      ),
-      padding: EdgeInsets.symmetric(horizontal: 15.0),
-      child: Text(isGsmP ? 'P' : 'R', style: DASTextStyles.largeRoman),
+      child: CommunicationNetworkIcon(networkType: networkChange),
     );
   }
 
