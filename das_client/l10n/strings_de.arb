@@ -21,6 +21,7 @@
   "p_train_journey_table_curve_type_curve_after_halt": "Kurve nach Haltestelle",
   "p_train_journey_table_level_crossing": "BUe",
   "p_train_journey_table_tram_area": "TS",
+  "p_train_journey_appbar_text": "Fahrtinfo",
   "w_reduced_train_journey_title": "Fahrtübersicht",
   "w_navigation_drawer_fahrtinfo_title": "Fahrtinfo",
   "w_navigation_drawer_links_title": "Links",
