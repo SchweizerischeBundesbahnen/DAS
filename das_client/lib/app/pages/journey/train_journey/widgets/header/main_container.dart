@@ -12,7 +12,7 @@ import 'package:das_client/model/journey/communication_network_change.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/theme/theme_provider.dart';
-import 'package:das_client/util/util.dart';
+import 'package:das_client/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -109,7 +109,7 @@ class MainContainer extends StatelessWidget {
         children: [
           SvgPicture.asset(
             AppAssets.iconHeaderStop,
-            colorFilter: ColorFilter.mode(Util.getColor(context), BlendMode.srcIn),
+            colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
           ),
           Expanded(
             child: Padding(

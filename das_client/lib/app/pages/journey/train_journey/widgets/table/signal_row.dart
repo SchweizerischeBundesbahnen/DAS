@@ -3,7 +3,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_ro
 import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:das_client/model/journey/signal.dart';
-import 'package:das_client/util/util.dart';
+import 'package:das_client/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -46,7 +46,7 @@ class SignalRow extends BaseRowBuilder<Signal> {
         child: SvgPicture.asset(
           key: signalLineChangeIconKey,
           AppAssets.iconSignalLaneChange,
-          colorFilter: ColorFilter.mode(Util.getColor(context), BlendMode.srcIn),
+          colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
         ),
         alignment: Alignment.center,
       );

@@ -13,6 +13,7 @@ import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/service_point.dart';
+import 'package:das_client/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
@@ -60,10 +61,7 @@ class ReducedTrainJourney extends StatelessWidget {
       switch (rowData.type) {
         case Datatype.servicePoint:
           return ReducedServicePointRow(
-            metadata: metadata,
-            data: rowData as ServicePoint,
-            config: trainJourneyConfig,
-          );
+              metadata: metadata, data: rowData as ServicePoint, config: trainJourneyConfig, context: context);
         case Datatype.additionalSpeedRestriction:
           return AdditionalSpeedRestrictionRow(
             metadata: metadata,
@@ -95,8 +93,8 @@ class ReducedTrainJourney extends StatelessWidget {
         id: ColumnDefinition.localSpeed.index,
         width: 100.0,
         border: BorderDirectional(
-          bottom: BorderSide(color: SBBColors.cloud, width: 1.0),
-          end: BorderSide(color: SBBColors.cloud, width: 2.0),
+          bottom: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 1.0),
+          end: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 2.0),
         ),
       ),
       DASTableColumn(

@@ -4,8 +4,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class ThemeManager extends ChangeNotifier {
   ThemeMode _themeMode;
 
-  ThemeManager(BuildContext context)
-      : _themeMode = ThemeMode.system;
+  ThemeManager(BuildContext context) : _themeMode = ThemeMode.system;
 
   ThemeMode get themeMode => _themeMode;
 

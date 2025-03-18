@@ -6,7 +6,7 @@ import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:das_client/model/journey/service_point.dart';
-import 'package:das_client/util/util.dart';
+import 'package:das_client/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -22,16 +22,15 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
     BuildContext? context,
     super.height = rowHeight,
     super.config,
-    Color? rowColor,
   }) : super(
           rowColor: metadata.nextStop == data
-              ? (context != null && SBBBaseStyle.of(context).brightness == Brightness.dark
-                  ? const Color(0xFF06348B)
-                  : const Color(0xFFCDD6E8))
-              : (context != null && SBBBaseStyle.of(context).brightness == Brightness.dark
-                  ? SBBColors.charcoal
-                  : SBBColors.white),
-    isSticky: true,
+              ? context != null
+                  ? ThemeUtil.getColor(context, Color(0xFFCDD6E8), Color(0xFF06348B))
+                  : Color(0xFF06348B)
+              : context != null
+                  ? ThemeUtil.getDASTableColor(context)
+                  : SBBColors.white,
+          isSticky: true,
         );
 
   @override
@@ -67,7 +66,7 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
       child: SvgPicture.asset(
         AppAssets.iconStopOnRequest,
         key: stopOnRequestKey,
-        colorFilter: ColorFilter.mode(Util.getColor(context), BlendMode.srcIn),
+        colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
       ),
     );
   }

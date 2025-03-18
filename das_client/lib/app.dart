@@ -1,6 +1,7 @@
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/nav/app_router.dart';
 import 'package:das_client/theme/theme_provider.dart';
+import 'package:das_client/theme/theme_util.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:das_client/app/widgets/flavor_banner.dart';
 import 'package:das_client/di.dart';
@@ -39,7 +40,7 @@ class _AppState extends State<App> {
                   baseStyle: SBBBaseStyle(
                     primaryColor: SBBColors.royal,
                     primaryColorDark: SBBColors.royal125,
-                    brightness: themeManager.themeMode == ThemeMode.light ? Brightness.light : Brightness.dark,
+                    brightness: ThemeUtil.getBrightnessSystem(themeManager.themeMode),
                   ),
                 ).copyWith(
                   badgeColor: SBBColors.royal,
@@ -47,12 +48,23 @@ class _AppState extends State<App> {
                 ),
               ),
             ),
-            //promotion box
             darkTheme: SBBTheme.dark(
               baseStyle: SBBBaseStyle(
                 primaryColor: SBBColors.royal,
                 primaryColorDark: SBBColors.royal125,
                 brightness: Brightness.dark,
+              ),
+              controlStyles: SBBControlStyles(
+                promotionBox: PromotionBoxStyle.$default(
+                  baseStyle: SBBBaseStyle(
+                    primaryColor: SBBColors.royal,
+                    primaryColorDark: SBBColors.royal125,
+                    brightness: Brightness.dark,
+                  ),
+                ).copyWith(
+                  badgeColor: SBBColors.royal,
+                  badgeShadowColor: SBBColors.royal.withAlpha((255.0 * 0.2).round()),
+                ),
               ),
             ),
             localizationsDelegates: localizationDelegates,
