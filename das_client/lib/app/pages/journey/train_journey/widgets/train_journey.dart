@@ -10,6 +10,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_row_builder.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cab_signaling_row.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/column_definition.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/bracket_station_render_data.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/chevron_animation_data.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/track_equipment_render_data.dart';
@@ -214,20 +215,26 @@ class TrainJourney extends StatelessWidget {
     final borderColor = isDarkTheme ? SBBColors.iron : SBBColors.cloud;
 
     return [
-      DASTableColumn(child: Text(context.l10n.p_train_journey_table_kilometre_label), width: 64.0),
-      DASTableColumn(child: Text(context.l10n.p_train_journey_table_time_label), width: 100.0),
-      DASTableColumn(width: 48.0), // route column
-      DASTableColumn(width: 20.0), // track equipment column
-      DASTableColumn(width: 64.0), // icons column
-      DASTableColumn(width: 0.0), // bracket station column
       DASTableColumn(
+          id: ColumnDefinition.kilometre.index,
+          child: Text(context.l10n.p_train_journey_table_kilometre_label),
+          width: 64.0),
+      DASTableColumn(
+          id: ColumnDefinition.time.index, child: Text(context.l10n.p_train_journey_table_time_label), width: 100.0),
+      DASTableColumn(id: ColumnDefinition.route.index, width: 48.0), // route column
+      DASTableColumn(id: ColumnDefinition.trackEquipment.index, width: 20.0), // track equipment column
+      DASTableColumn(id: ColumnDefinition.icons1.index, width: 64.0), // icons column
+      DASTableColumn(id: ColumnDefinition.bracketStation.index, width: 0.0), // bracket station column
+      DASTableColumn(
+        id: ColumnDefinition.informationCell.index,
         child: Text(context.l10n.p_train_journey_table_journey_information_label),
         expanded: true,
         alignment: Alignment.centerLeft,
       ),
-      DASTableColumn(width: 68.0), // icons column
-      DASTableColumn(width: 48.0), // icons column
+      DASTableColumn(id: ColumnDefinition.icons2.index, width: 68.0), // icons column
+      DASTableColumn(id: ColumnDefinition.icons3.index, width: 48.0), // icons column
       DASTableColumn(
+        id: ColumnDefinition.localSpeed.index,
         child: Text(context.l10n.p_train_journey_table_graduated_speed_label),
         width: 100.0,
         border: BorderDirectional(
@@ -235,15 +242,18 @@ class TrainJourney extends StatelessWidget {
           end: BorderSide(color: borderColor, width: 2.0),
         ),
       ),
-      // TODO: find out what to do when break series is not defined
       DASTableColumn(
+        id: ColumnDefinition.brakedWeightSpeed.index,
         child: Text(speedLabel),
         width: 62.0,
         onTap: () => _onBreakSeriesTap(context, journey, settings),
         headerKey: breakingSeriesHeaderKey,
       ),
-      DASTableColumn(child: Text(context.l10n.p_train_journey_table_advised_speed_label), width: 62.0),
-      DASTableColumn(width: 40.0), // actions
+      DASTableColumn(
+          id: ColumnDefinition.advisedSpeed.index,
+          child: Text(context.l10n.p_train_journey_table_advised_speed_label),
+          width: 62.0),
+      DASTableColumn(id: ColumnDefinition.actionsCell.index, width: 40.0), // actions
     ];
   }
 

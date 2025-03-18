@@ -1,4 +1,5 @@
 import 'package:das_client/mqtt/mqtt_component.dart';
+import 'package:das_client/sfera/src/db/repo/sfera_database_repository.dart';
 import 'package:das_client/sfera/src/model/b2g_request.dart';
 import 'package:das_client/sfera/src/model/enums/jp_status.dart';
 import 'package:das_client/sfera/src/model/jp_request.dart';
@@ -6,21 +7,23 @@ import 'package:das_client/sfera/src/model/otn_id.dart';
 import 'package:das_client/sfera/src/model/sfera_b2g_request_message.dart';
 import 'package:das_client/sfera/src/model/sfera_g2b_reply_message.dart';
 import 'package:das_client/sfera/src/model/train_identification.dart';
-import 'package:das_client/sfera/src/repo/sfera_repository.dart';
-import 'package:das_client/sfera/src/service/sfera_service.dart';
-import 'package:das_client/sfera/src/service/task/sfera_task.dart';
+import 'package:das_client/sfera/src/service/remote/sfera_service.dart';
+import 'package:das_client/sfera/src/service/remote/task/sfera_task.dart';
 import 'package:das_client/util/error_code.dart';
 import 'package:fimber/fimber.dart';
 
 class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
-  RequestJourneyProfileTask(
-      {required MqttService mqttService, required SferaRepository sferaRepository, required this.otnId, super.timeout})
-      : _mqttService = mqttService,
-        _sferaRepository = sferaRepository;
+  RequestJourneyProfileTask({
+    required MqttService mqttService,
+    required SferaDatabaseRepository sferaDatabaseRepository,
+    required this.otnId,
+    super.timeout,
+  })  : _mqttService = mqttService,
+        _sferaDatabaseRepository = sferaDatabaseRepository;
 
   final MqttService _mqttService;
   final OtnId otnId;
-  final SferaRepository _sferaRepository;
+  final SferaDatabaseRepository _sferaDatabaseRepository;
 
   late TaskCompleted<List<dynamic>> _taskCompletedCallback;
   late TaskFailed _taskFailedCallback;
@@ -66,15 +69,15 @@ class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
       );
 
       for (final element in replyMessage.payload!.segmentProfiles) {
-        await _sferaRepository.saveSegmentProfile(element);
+        await _sferaDatabaseRepository.saveSegmentProfile(element);
       }
 
       for (final trainCharacteristics in replyMessage.payload!.trainCharacteristics) {
-        await _sferaRepository.saveTrainCharacteristics(trainCharacteristics);
+        await _sferaDatabaseRepository.saveTrainCharacteristics(trainCharacteristics);
       }
 
       for (final journeyProfile in replyMessage.payload!.journeyProfiles) {
-        await _sferaRepository.saveJourneyProfile(journeyProfile);
+        await _sferaDatabaseRepository.saveJourneyProfile(journeyProfile);
       }
 
       final result = [];
