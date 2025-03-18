@@ -1,14 +1,18 @@
+import 'package:collection/collection.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/column_definition.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_config.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:das_client/model/journey/additional_speed_restriction.dart';
 import 'package:das_client/model/journey/base_data.dart';
+import 'package:das_client/model/journey/communication_network_change.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/speed_data.dart';
@@ -47,21 +51,22 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
       color: rowColor,
       onTap: onTap,
       isSticky: isSticky,
-      cells: [
-        kilometreCell(context),
-        timeCell(context),
-        routeCell(context),
-        trackEquipment(context),
-        iconsCell1(context),
-        bracketStation(context),
-        informationCell(context),
-        iconsCell2(context),
-        iconsCell3(context),
-        localSpeedCell(context),
-        brakedWeightSpeedCell(context),
-        advisedSpeedCell(context),
-        actionsCell(context),
-      ],
+      cells: {
+        ColumnDefinition.kilometre.index: kilometreCell(context),
+        ColumnDefinition.time.index: timeCell(context),
+        ColumnDefinition.route.index: routeCell(context),
+        ColumnDefinition.trackEquipment.index: trackEquipment(context),
+        ColumnDefinition.icons1.index: iconsCell1(context),
+        ColumnDefinition.bracketStation.index: bracketStation(context),
+        ColumnDefinition.informationCell.index: informationCell(context),
+        ColumnDefinition.icons2.index: iconsCell2(context),
+        ColumnDefinition.icons3.index: iconsCell3(context),
+        ColumnDefinition.localSpeed.index: localSpeedCell(context),
+        ColumnDefinition.brakedWeightSpeed.index: brakedWeightSpeedCell(context),
+        ColumnDefinition.advisedSpeed.index: advisedSpeedCell(context),
+        ColumnDefinition.actionsCell.index: actionsCell(context),
+        ColumnDefinition.communicationNetwork.index: communicationNetworkCell(context),
+      },
     );
   }
 
@@ -91,7 +96,6 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
       alignment: null,
       clipBehaviour: Clip.none,
       child: RouteCellBody(
-        metadata: metadata,
         isCurrentPosition: metadata.currentPosition == data,
         isRouteStart: metadata.routeStart == data,
         isRouteEnd: metadata.routeEnd == data,
@@ -192,6 +196,18 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
 
   DASTableCell actionsCell(BuildContext context) {
     return DASTableCell.empty();
+  }
+
+  DASTableCell communicationNetworkCell(BuildContext context) {
+    final networkChange = metadata.communicationNetworkChanges.changeAtOrder(data.order);
+    if (networkChange == null) {
+      return DASTableCell.empty();
+    }
+
+    return DASTableCell(
+      alignment: Alignment.bottomCenter,
+      child: CommunicationNetworkIcon(networkType: networkChange),
+    );
   }
 
   Color? get specialCellColor =>

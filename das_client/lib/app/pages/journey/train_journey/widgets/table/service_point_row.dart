@@ -20,8 +20,9 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
     required super.data,
     super.height = rowHeight,
     super.config,
+    Color? rowColor,
   }) : super(
-          rowColor: metadata.nextStop == data ? Color(0xFFCDD6E8) : SBBColors.white,
+          rowColor: rowColor ?? (metadata.nextStop == data ? Color(0xFFCDD6E8) : SBBColors.white),
           isSticky: true,
         );
 
@@ -70,7 +71,6 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
       alignment: null,
       clipBehaviour: Clip.none,
       child: RouteCellBody(
-        metadata: metadata,
         isStop: data.isStop,
         isCurrentPosition: metadata.currentPosition == data,
         isRouteStart: metadata.routeStart == data,

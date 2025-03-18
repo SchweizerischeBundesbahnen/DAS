@@ -1,8 +1,8 @@
 import 'package:battery_plus/battery_plus.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/battery_status.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/extended_menu.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_channel.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
 import 'package:das_client/di.dart';
 import 'package:das_client/util/format.dart';
@@ -229,24 +229,24 @@ void main() {
       // check network type for Wankdorf
       final wankdorf = find.descendant(of: header, matching: find.text('Wankdorf'));
       expect(wankdorf, findsOneWidget);
-      final wankdorfGsmRIcon = find.descendant(of: header, matching: find.byKey(RadioChannel.gsmRKey));
+      final wankdorfGsmRIcon = find.descendant(of: header, matching: find.byKey(CommunicationNetworkIcon.gsmRKey));
       expect(wankdorfGsmRIcon, findsNothing);
-      final wankdorfGsmPIcon = find.descendant(of: header, matching: find.byKey(RadioChannel.gsmPKey));
+      final wankdorfGsmPIcon = find.descendant(of: header, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
       expect(wankdorfGsmPIcon, findsNothing);
 
       // check network type for Burgdorf
       await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Burgdorf')));
-      final burgdorfGsmPIcon = find.descendant(of: header, matching: find.byKey(RadioChannel.gsmPKey));
+      final burgdorfGsmPIcon = find.descendant(of: header, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
       expect(burgdorfGsmPIcon, findsOneWidget);
 
       // check network type for Olten
       await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Olten')));
-      final oltenGsmPIcon = find.descendant(of: header, matching: find.byKey(RadioChannel.gsmPKey));
+      final oltenGsmPIcon = find.descendant(of: header, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
       expect(oltenGsmPIcon, findsOneWidget);
 
       // check network type for Zürich
       await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Zürich')));
-      final zuerichGsmRIcon = find.descendant(of: header, matching: find.byKey(RadioChannel.gsmRKey));
+      final zuerichGsmRIcon = find.descendant(of: header, matching: find.byKey(CommunicationNetworkIcon.gsmRKey));
       expect(zuerichGsmRIcon, findsOneWidget);
 
       await disconnect(tester);

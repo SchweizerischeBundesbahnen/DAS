@@ -94,9 +94,9 @@
     </SP_Areas>
 
     <SP_ContextInformation>
-        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="1500" endLocation="1500" communicationNetworkType="GSM-P"/>
-        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="2000" endLocation="2000" communicationNetworkType="SIM"/>
-        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="2500" endLocation="2500" communicationNetworkType="GSM-R"/>
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="1000" endLocation="1000" communicationNetworkType="GSM-P"/>
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="1500" endLocation="1500" communicationNetworkType="SIM"/>
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="2000" endLocation="2000" communicationNetworkType="GSM-R"/>
         <KilometreReferencePoint location="500">
             <KM_Reference kmRef="30.2"/>
         </KilometreReferencePoint>

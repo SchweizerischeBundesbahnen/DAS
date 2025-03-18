@@ -1,3 +1,7 @@
+import 'package:meta/meta.dart';
+
+@sealed
+@immutable
 class Speed {
   const Speed({
     required this.speed,

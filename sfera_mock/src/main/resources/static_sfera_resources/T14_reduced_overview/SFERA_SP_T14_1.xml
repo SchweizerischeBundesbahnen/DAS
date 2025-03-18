@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T14_1" SP_VersionMajor="1"
+                SP_VersionMinor="0" SP_Length="3000" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>0085</IM_ID>
+    </SP_Zone>
+    <SP_Points>
+        <TimingPoint TP_ID="Bern" location="500">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3001</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+            <TP_Name name="Bern"/>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Wankdorf" location="1000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3002</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+            <TP_Name name="Wankdorf"/>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Burgdorf" location="1500">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3003</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+            <TP_Name name="Burgdorf"/>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Olten" location="2000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3004</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+            <TP_Name name="Olten"/>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Zuerich" location="2500">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3005</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+            <TP_Name name="Zuerich"/>
+        </TimingPoint>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="1" location="650"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="B1"/>
+        </Signal>
+    </SP_Points>
+    <SP_Areas>
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="BE"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3001</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" text="Bern"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="WKD"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3002</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" text="Wankdorf"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="BDF"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3003</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" text="Burgdorf"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="OL"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3004</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" text="Olten"/>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="ZUE"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3005</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_LocationName language="de" text="Zürich"/>
+        </TAF_TAP_Location>
+    </SP_Areas>
+
+    <SP_ContextInformation>
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="1000" endLocation="1000" communicationNetworkType="GSM-P"/>
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="1500" endLocation="1500" communicationNetworkType="SIM"/>
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="2000" endLocation="2000" communicationNetworkType="GSM-R"/>
+        <KilometreReferencePoint location="500">
+            <KM_Reference kmRef="30.2"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="600">
+            <KM_Reference kmRef="31.5"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="650">
+            <KM_Reference kmRef="32.0"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="700">
+            <KM_Reference kmRef="32.4"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="1000">
+            <KM_Reference kmRef="33.5"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="1500">
+            <KM_Reference kmRef="54.7"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="2000">
+            <KM_Reference kmRef="84.9"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="2500">
+            <KM_Reference kmRef="105.3"/>
+        </KilometreReferencePoint>
+    </SP_ContextInformation>
+</SegmentProfile>

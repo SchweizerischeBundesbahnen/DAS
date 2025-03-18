@@ -1,4 +1,5 @@
 import 'package:das_client/mqtt/mqtt_component.dart';
+import 'package:das_client/sfera/src/db/repo/sfera_database_repository.dart';
 import 'package:das_client/sfera/src/model/b2g_request.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/otn_id.dart';
@@ -7,24 +8,23 @@ import 'package:das_client/sfera/src/model/sfera_g2b_reply_message.dart';
 import 'package:das_client/sfera/src/model/tc_request.dart';
 import 'package:das_client/sfera/src/model/train_characteristics.dart';
 import 'package:das_client/sfera/src/model/train_characteristics_ref.dart';
-import 'package:das_client/sfera/src/repo/sfera_repository.dart';
-import 'package:das_client/sfera/src/service/sfera_service.dart';
-import 'package:das_client/sfera/src/service/task/sfera_task.dart';
+import 'package:das_client/sfera/src/service/remote/sfera_service.dart';
+import 'package:das_client/sfera/src/service/remote/task/sfera_task.dart';
 import 'package:fimber/fimber.dart';
 
 class RequestTrainCharacteristicsTask extends SferaTask<List<TrainCharacteristics>> {
-  RequestTrainCharacteristicsTask(
-      {required MqttService mqttService,
-      required SferaRepository sferaRepository,
-      required this.otnId,
-      required this.journeyProfile,
-      super.timeout})
-      : _mqttService = mqttService,
-        _sferaRepository = sferaRepository;
+  RequestTrainCharacteristicsTask({
+    required MqttService mqttService,
+    required SferaDatabaseRepository sferaDatabaseRepository,
+    required this.otnId,
+    required this.journeyProfile,
+    super.timeout,
+  })  : _mqttService = mqttService,
+        _sferaDatabaseRepository = sferaDatabaseRepository;
 
   final MqttService _mqttService;
   final OtnId otnId;
-  final SferaRepository _sferaRepository;
+  final SferaDatabaseRepository _sferaDatabaseRepository;
   final JourneyProfile journeyProfile;
 
   late TaskCompleted<List<TrainCharacteristics>> _taskCompletedCallback;
@@ -69,8 +69,8 @@ class RequestTrainCharacteristicsTask extends SferaTask<List<TrainCharacteristic
     final missingTrainCharacteristics = <TrainCharacteristicsRef>{};
 
     for (final trainRef in journeyProfile.trainCharacteristicsRefSet) {
-      final existingTrainCharacteristic =
-          await _sferaRepository.findTrainCharacteristics(trainRef.tcId, trainRef.versionMajor, trainRef.versionMinor);
+      final existingTrainCharacteristic = await _sferaDatabaseRepository.findTrainCharacteristics(
+          trainRef.tcId, trainRef.versionMajor, trainRef.versionMinor);
       if (existingTrainCharacteristic == null) {
         missingTrainCharacteristics.add(trainRef);
       }
@@ -88,7 +88,7 @@ class RequestTrainCharacteristicsTask extends SferaTask<List<TrainCharacteristic
       );
 
       for (final element in replyMessage.payload!.trainCharacteristics) {
-        await _sferaRepository.saveTrainCharacteristics(element);
+        await _sferaDatabaseRepository.saveTrainCharacteristics(element);
       }
 
       _taskCompletedCallback(this, replyMessage.payload!.trainCharacteristics.toList());

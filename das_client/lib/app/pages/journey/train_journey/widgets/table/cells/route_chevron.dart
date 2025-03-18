@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:das_client/app/pages/journey/train_journey/chevron_animation_controller.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/chevron_animation_wrapper.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/chevron_animation_data.dart';
-import 'package:das_client/model/journey/metadata.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -11,7 +10,6 @@ class RouteChevron extends StatefulWidget {
   static const Key chevronKey = Key('chevronCell');
 
   const RouteChevron({
-    required this.metadata,
     required this.isStop,
     required this.circleSize,
     required this.chevronWidth,
@@ -20,7 +18,6 @@ class RouteChevron extends StatefulWidget {
     super.key,
   });
 
-  final Metadata metadata;
   final bool isStop;
   final double circleSize;
   final double chevronWidth;
