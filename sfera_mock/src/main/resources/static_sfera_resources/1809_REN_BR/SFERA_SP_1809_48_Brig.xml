@@ -46,6 +46,8 @@
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;55&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;55&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;55&quot;/&gt;
+                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;60&quot;/&gt;
+                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;60&quot;/&gt;
 					&lt;/stationSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>

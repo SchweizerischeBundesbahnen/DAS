@@ -28,7 +28,7 @@
             <SignalPhysicalCharacteristics visualIdentifier="23A"/>
         </Signal>
 
-        <NetworkSpecificPoint location="400" identifier="5282EE49E77F4450B90B6A80EE57331E">
+        <NetworkSpecificPoint location="400" identifier="94F5AA3FE6B04C48830B0878FABBE9E3">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
@@ -36,16 +36,16 @@
             <NetworkSpecificParameter name="xmlCurveSpeed" value="
                 &lt;curveSpeed &gt;
 					&lt;speeds&gt;
-						&lt;v trainSeries=&quot;R&quot; speed=&quot;50&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; speed=&quot;50&quot;/&gt;
-						&lt;v trainSeries=&quot;D&quot; speed=&quot;50&quot;/&gt;
-						&lt;v trainSeries=&quot;N&quot; speed=&quot;50&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; speed=&quot;105&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; speed=&quot;100&quot;/&gt;
+						&lt;v trainSeries=&quot;D&quot; speed=&quot;100&quot;/&gt;
+						&lt;v trainSeries=&quot;N&quot; speed=&quot;135&quot;/&gt;
 					&lt;/speeds&gt;
                 &lt;/curveSpeed&gt;
             "/>
         </NetworkSpecificPoint>
 
-        <NetworkSpecificPoint location="610" identifier="5282EE49E77F4450B90B6A80EE57331E">
+        <NetworkSpecificPoint location="610" identifier="94F5AA3FE6B04C48830B0878FABBE9E3">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="end"/>

@@ -36,6 +36,7 @@
                 &lt;curveSpeed &gt;
 					&lt;speeds&gt;
 						&lt;v trainSeries=&quot;R&quot; speed=&quot;125&quot;/&gt;
+                        &lt;v trainSeries=&quot;N&quot; speed=&quot;135&quot;/&gt;
 					&lt;/speeds&gt;
                 &lt;/curveSpeed&gt;
             "/>
@@ -68,6 +69,8 @@
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;140&quot;/&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;160&quot;/&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;160&quot;/&gt;
+                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;160&quot;/&gt;
+						&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;160&quot;/&gt;
 					&lt;/lineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>

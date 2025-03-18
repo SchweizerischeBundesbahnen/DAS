@@ -50,6 +50,7 @@
 						&lt;v trainSeries=&quot;R&quot; speed=&quot;60&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; speed=&quot;55&quot;/&gt;
 						&lt;v trainSeries=&quot;D&quot; speed=&quot;55&quot;/&gt;
+                        &lt;v trainSeries=&quot;N&quot; speed=&quot;60&quot;/&gt;
 					&lt;/speeds&gt;
                 &lt;/curveSpeed&gt;
             "/>
