@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.12.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.11.0...das_client-v0.12.0) (2025-03-18)
+
+
+### Features
+
+* added koa notification ([#624](https://github.com/SchweizerischeBundesbahnen/DAS/issues/624)) ([#688](https://github.com/SchweizerischeBundesbahnen/DAS/issues/688)) ([164b557](https://github.com/SchweizerischeBundesbahnen/DAS/commit/164b557ac3f824af3a1d77ce516f7c42847b9e67))
+* added reduced journey overview ([#626](https://github.com/SchweizerischeBundesbahnen/DAS/issues/626)) ([#691](https://github.com/SchweizerischeBundesbahnen/DAS/issues/691)) ([49adc47](https://github.com/SchweizerischeBundesbahnen/DAS/commit/49adc475b0bedfabf07730523145fcc69c91f369))
+* hide header while train is active ([#670](https://github.com/SchweizerischeBundesbahnen/DAS/issues/670)) ([#696](https://github.com/SchweizerischeBundesbahnen/DAS/issues/696)) ([57f2bd7](https://github.com/SchweizerischeBundesbahnen/DAS/commit/57f2bd7921e0546966010b9e7f13ff52127c1e0c))
+* updated koa sound ([dc1bdb6](https://github.com/SchweizerischeBundesbahnen/DAS/commit/dc1bdb6b4fac4343dc4edbded1c9f2d03242a4ee))
+
+
+### Bug Fixes
+
+* add sound to warnapp ([#708](https://github.com/SchweizerischeBundesbahnen/DAS/issues/708)) ([82d40b3](https://github.com/SchweizerischeBundesbahnen/DAS/commit/82d40b32fa1755199718cbcc1d9951269c1ce3c8))
+
 ## [0.11.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.10.1...das_client-v0.11.0) (2025-03-11)
 
 
