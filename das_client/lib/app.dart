@@ -5,6 +5,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:das_client/app/widgets/flavor_banner.dart';
 import 'package:das_client/di.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -15,56 +16,52 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   final _appRouter = AppRouter();
-  ThemeMode _themeMode = ThemeMode.system;
-
-  void _toggleTheme() {
-    setState(() {
-      _themeMode = _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    return FlavorBanner(
-      flavor: DI.get(),
-      child: ThemeManager(
-          themeMode: _themeMode,
-          toggleTheme: _toggleTheme,
-          child: Builder(builder: (context) {
-            final themeMode = ThemeManager.of(context)!.themeMode;
-            return MaterialApp.router(
-              themeMode: themeMode,
-              theme: SBBTheme.light(
-                baseStyle: SBBBaseStyle(
-                  primaryColor: SBBColors.royal,
-                  primaryColorDark: SBBColors.royal125,
-                  brightness: Brightness.light,
-                ),
-                controlStyles: SBBControlStyles(
-                  promotionBox: PromotionBoxStyle.$default(
-                      baseStyle: SBBBaseStyle(
+    return ChangeNotifierProvider(
+      create: (_) => ThemeManager(context),
+      child: FlavorBanner(
+        flavor: DI.get(),
+        child: Builder(builder: (context) {
+          final themeManager = context.watch<ThemeManager>();
+
+          return MaterialApp.router(
+            themeMode: themeManager.themeMode,
+            theme: SBBTheme.light(
+              baseStyle: SBBBaseStyle(
+                primaryColor: SBBColors.royal,
+                primaryColorDark: SBBColors.royal125,
+                brightness: Brightness.light,
+              ),
+              controlStyles: SBBControlStyles(
+                promotionBox: PromotionBoxStyle.$default(
+                  baseStyle: SBBBaseStyle(
                     primaryColor: SBBColors.royal,
                     primaryColorDark: SBBColors.royal125,
-                    brightness: themeMode == ThemeMode.light ? Brightness.light : Brightness.dark,
-                  )).copyWith(
-                    badgeColor: SBBColors.royal,
-                    badgeShadowColor: SBBColors.royal.withAlpha((255.0 * 0.2).round()),
+                    brightness: themeManager.themeMode == ThemeMode.light ? Brightness.light : Brightness.dark,
                   ),
+                ).copyWith(
+                  badgeColor: SBBColors.royal,
+                  badgeShadowColor: SBBColors.royal.withAlpha((255.0 * 0.2).round()),
                 ),
               ),
-              darkTheme: SBBTheme.dark(
-                baseStyle: SBBBaseStyle(
-                  primaryColor: SBBColors.royal,
-                  primaryColorDark: SBBColors.royal125,
-                  brightness: Brightness.dark,
-                ),
+            ),
+            //promotion box
+            darkTheme: SBBTheme.dark(
+              baseStyle: SBBBaseStyle(
+                primaryColor: SBBColors.royal,
+                primaryColorDark: SBBColors.royal125,
+                brightness: Brightness.dark,
               ),
-              localizationsDelegates: localizationDelegates,
-              supportedLocales: supportedLocales,
-              routerConfig: _appRouter.config(),
-              debugShowCheckedModeBanner: false,
-            );
-          })),
+            ),
+            localizationsDelegates: localizationDelegates,
+            supportedLocales: supportedLocales,
+            routerConfig: _appRouter.config(),
+            debugShowCheckedModeBanner: false,
+          );
+        }),
+      ),
     );
   }
 }

@@ -11,7 +11,9 @@ import 'package:das_client/model/journey/communication_network_change.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/theme/theme_provider.dart';
+import 'package:das_client/util/util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -82,8 +84,7 @@ class MainContainer extends StatelessWidget {
   }
 
   Widget _topHeaderRow(BuildContext context, Journey journey, TrainJourneySettings settings) {
-    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
-    final color = isDarkTheme ? SBBColors.white : SBBColors.black;
+
 
     return SizedBox(
       height: 48.0,
@@ -91,7 +92,7 @@ class MainContainer extends StatelessWidget {
         children: [
           SvgPicture.asset(
             AppAssets.iconHeaderStop,
-            colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+            colorFilter: ColorFilter.mode(Util.getColor(context), BlendMode.srcIn),
           ),
           Expanded(
             child: Padding(
@@ -109,7 +110,7 @@ class MainContainer extends StatelessWidget {
   }
 
   Widget _buttonArea(TrainJourneySettings settings, BuildContext context) {
-    final themeManager = ThemeManager.of(context)!;
+    final themeManager = context.watch<ThemeManager>();
     final isDarkMode = SBBBaseStyle.of(context).brightness == Brightness.dark;
 
     return Builder(builder: (context) {
@@ -121,7 +122,7 @@ class MainContainer extends StatelessWidget {
                 ? context.l10n.p_train_journey_header_button_light_theme
                 : context.l10n.p_train_journey_header_button_dark_theme,
             icon: isDarkMode ? SBBIcons.sunshine_small : SBBIcons.moon_small,
-            onPressed: themeManager.toggleTheme,
+            onPressed: () => themeManager.toggleTheme(context),
           ),
           if (settings.automaticAdvancementActive)
             SBBTertiaryButtonLarge(

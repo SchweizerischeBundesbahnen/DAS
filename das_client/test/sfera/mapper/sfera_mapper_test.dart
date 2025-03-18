@@ -106,7 +106,6 @@ void main() {
   test('Test invalid journey on SP missing', () async {
     final journey = getJourney('T9999', 4);
 
-    //TODO change that
     expect(journey.valid, false);
   });
 

@@ -5,7 +5,9 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/header/header
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_channel.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
 import 'package:das_client/di.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
 import '../mocks/battery_mock.dart';
@@ -13,6 +15,42 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey header test', () {
+    testWidgets('test check if switch theme is possible', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // Load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T9999');
+
+      final header = find.byType(Header);
+      expect(header, findsOneWidget);
+
+      final context = tester.element(header);
+
+      final brightness = SBBBaseStyle.of(context).brightness;
+
+      if(brightness != Brightness.dark){
+        final nightMode = find.descendant(
+          of: header,
+          matching: find.widgetWithText(SBBTertiaryButtonLarge, 'Nachtmodus'),
+        );
+        expect(nightMode, findsOneWidget);
+
+        await tester.tap(nightMode);
+        await tester.pumpAndSettle();
+      } else {
+        final dayMode = find.descendant(
+          of: header,
+          matching: find.widgetWithText(SBBTertiaryButtonLarge, 'Tagmodus'),
+        );
+        expect(dayMode, findsOneWidget);
+
+        await tester.tap(dayMode);
+        await tester.pumpAndSettle();
+      }
+
+      expect(SBBBaseStyle.of(context).brightness != brightness, true);
+    });
+
     testWidgets('test extended menu opening', (tester) async {
       await prepareAndStartApp(tester);
 

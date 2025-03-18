@@ -1,4 +1,5 @@
 import 'package:das_client/app/widgets/das_text_styles.dart';
+import 'package:das_client/util/util.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 
@@ -53,9 +54,6 @@ class Header extends StatelessWidget {
   }
 
   Widget _information(BuildContext context) {
-    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
-    final color = isDarkTheme ? SBBColors.charcoal : SBBColors.white;
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing, vertical: sbbDefaultSpacing * 0.5),
       child: Row(
@@ -64,12 +62,12 @@ class Header extends StatelessWidget {
           Icon(
             SBBIcons.circle_information_small,
             size: 20.0,
-            color: color,
+            color: Util.getColor(context),
           ),
           Text(
             information!,
             style: DASTextStyles.smallLight.copyWith(
-              color: color,
+              color: Util.getColor(context),
             ),
           ),
         ],

@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-class ThemeManager extends InheritedWidget {
-  final ThemeMode themeMode;
-  final VoidCallback toggleTheme;
+class ThemeManager extends ChangeNotifier {
+  ThemeMode _themeMode;
 
-  const ThemeManager({
-    required this.themeMode, required this.toggleTheme, required super.child, super.key,
-  });
+  ThemeManager(BuildContext context)
+      : _themeMode = ThemeMode.system;
 
-  static ThemeManager? of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<ThemeManager>();
-  }
+  ThemeMode get themeMode => _themeMode;
 
-  @override
-  bool updateShouldNotify(ThemeManager oldWidget) {
-    return oldWidget.themeMode != themeMode;
+  void toggleTheme(BuildContext context) {
+    if (_themeMode == ThemeMode.system) {
+      final currentBrightness = SBBBaseStyle.of(context).brightness;
+      _themeMode = currentBrightness == Brightness.light ? ThemeMode.dark : ThemeMode.light;
+    } else {
+      _themeMode = _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+    }
+    notifyListeners();
   }
 }
