@@ -9,7 +9,7 @@
         </OTN_ID>
     </TrainIdentification>
 
-    <SegmentProfileReference SP_ID="1809_1_Renens_VD" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1809_1_Renens_VD" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -41,7 +41,7 @@
         </TimingPointConstraints>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="1809_3_Lausanne" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1809_3_Lausanne" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -304,7 +304,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="1809_22_Villeneuve" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1809_22_Villeneuve" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -332,7 +332,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="1809_24_Aigle" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1809_24_Aigle" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -560,7 +560,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="1809_40_Sierre_Siders" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1809_40_Sierre_Siders" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -575,7 +575,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="1809_41_Salgesch" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1809_41_Salgesch" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -650,7 +650,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="1809_46_Visp" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1809_46_Visp" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -665,7 +665,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="1809_47_Gamsen" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1809_47_Gamsen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -679,7 +679,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="1809_48_Brig" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1809_48_Brig" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
