@@ -11,7 +11,7 @@ class DepartureAuthorization extends StatelessWidget {
       children: [
         const Icon(SBBIcons.circle_tick_small),
         const SizedBox(width: sbbDefaultSpacing * 0.5),
-        Text('SMS', style: DASTextStyles.xLargeRoman),
+        Text('', style: DASTextStyles.xLargeRoman),
       ],
     );
   }

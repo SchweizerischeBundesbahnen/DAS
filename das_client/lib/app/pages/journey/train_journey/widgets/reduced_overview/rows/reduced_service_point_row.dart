@@ -17,6 +17,11 @@ class ReducedServicePointRow extends ServicePointRow {
   }
 
   @override
+  DASTableCell timeCell(BuildContext context) {
+    return DASTableCell(child: Text('06:05'), alignment: defaultAlignment, color: specialCellColor);
+  }
+
+  @override
   DASTableCell routeCell(BuildContext context) {
     return DASTableCell(
       color: specialCellColor,
