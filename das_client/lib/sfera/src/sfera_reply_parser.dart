@@ -21,6 +21,7 @@ import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/kilometre_reference_point.dart';
 import 'package:das_client/sfera/src/model/km_reference.dart';
 import 'package:das_client/sfera/src/model/level_crossing_area.dart';
+import 'package:das_client/sfera/src/model/line_foot_notes.dart';
 import 'package:das_client/sfera/src/model/line_speed.dart';
 import 'package:das_client/sfera/src/model/location_ident.dart';
 import 'package:das_client/sfera/src/model/message_header.dart';
@@ -29,6 +30,7 @@ import 'package:das_client/sfera/src/model/network_specific_area.dart';
 import 'package:das_client/sfera/src/model/network_specific_event.dart';
 import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
 import 'package:das_client/sfera/src/model/network_specific_point.dart';
+import 'package:das_client/sfera/src/model/op_foot_notes.dart';
 import 'package:das_client/sfera/src/model/otn_id.dart';
 import 'package:das_client/sfera/src/model/own_train.dart';
 import 'package:das_client/sfera/src/model/position_speed.dart';
@@ -257,6 +259,10 @@ class SferaReplyParser {
         return B2gEventPayload(type: type, attributes: attributes, children: children, value: value);
       case NetworkSpecificEvent.elementType:
         return NetworkSpecificEvent.from(attributes: attributes, children: children, value: value);
+      case LineFootNotes.elementType:
+        return LineFootNotes(attributes: attributes, children: children, value: value);
+      case OpFootNotes.elementType:
+        return OpFootNotes(attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElement(type: type, attributes: attributes, children: children, value: value);
     }

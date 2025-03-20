@@ -201,6 +201,8 @@ class TrainJourney extends StatelessWidget {
             config: trainJourneyConfig,
             onTap: () => _onBaliseLevelCrossingGroupTap(context, rowData, settings),
           );
+        default:
+          return BaseRowBuilder(metadata: journey.metadata, data: rowData, config: trainJourneyConfig);
       }
     });
   }

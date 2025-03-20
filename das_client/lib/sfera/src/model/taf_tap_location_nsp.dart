@@ -1,5 +1,7 @@
+import 'package:das_client/sfera/src/model/line_foot_notes_nsp.dart';
 import 'package:das_client/sfera/src/model/new_line_speed_taf_tap_location.dart';
 import 'package:das_client/sfera/src/model/nsp.dart';
+import 'package:das_client/sfera/src/model/op_foot_notes_nsp.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 import 'package:das_client/sfera/src/model/station_speed_nsp.dart';
 
@@ -14,6 +16,10 @@ class TafTapLocationNsp extends Nsp {
       return StationSpeedNsp(attributes: attributes, children: children, value: value);
     } else if (groupName?.value == NewLineSpeedTafTapLocation.elementName) {
       return NewLineSpeedTafTapLocation(attributes: attributes, children: children, value: value);
+    } else if (groupName?.value == LineFootNotesNsp.elementName) {
+      return LineFootNotesNsp(attributes: attributes, children: children, value: value);
+    } else if (groupName?.value == LineFootNotesNsp.elementName) {
+      return OpFootNotesNsp(attributes: attributes, children: children, value: value);
     }
     return TafTapLocationNsp(attributes: attributes, children: children, value: value);
   }

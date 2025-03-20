@@ -11,5 +11,6 @@ enum Datatype {
   levelCrossing,
   tramArea,
   balise,
-  baliseLevelCrossingGroup;
+  baliseLevelCrossingGroup,
+  footNotes;
 }
