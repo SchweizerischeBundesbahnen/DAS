@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="1809_3_Lausanne"
-                SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="2500" SP_Status="Valid">
+                SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="2500" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -86,15 +86,15 @@
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;75-40/40&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;75-40/40&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;75-40/40&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;75-40/40&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;75-40/40&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;75-40/40&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;75-40/40&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;75-40/40&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;75-40/40&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;75-40/40&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;75-40/50&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;75-40/50&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;75-40/50&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;75-40/50&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;75-40/50&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;75-40/50&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;75-40/50&quot;/&gt;
 						&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;80-50/40&quot;/&gt;
-						&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;80-50/40&quot;/&gt;
+						&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;80-50/50&quot;/&gt;
 					&lt;/stationSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
@@ -112,6 +112,29 @@
 						&lt;/speeds&gt; 
 					&lt;/stationProperty1&gt; 
 				&lt;/stationProperty&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+					&lt;lineSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;105&quot;/&gt;
+                        &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;105&quot;/&gt;
+                        &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;105&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;105&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;105&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;70&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;75&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;75&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;80&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;80&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;85&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;85&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;95&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;95&quot;/&gt;
+					&lt;/lineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
 
