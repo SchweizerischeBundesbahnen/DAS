@@ -101,8 +101,6 @@ class MainContainer extends StatelessWidget {
   }
 
   Widget _topHeaderRow(BuildContext context, Journey journey, TrainJourneySettings settings) {
-
-
     return SizedBox(
       height: 48.0,
       child: Row(

@@ -5,6 +5,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/reduced_overv
 import 'package:das_client/app/pages/journey/train_journey/widgets/reduced_overview/reduced_train_journey.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/di.dart';
+import 'package:das_client/theme/theme_util.dart';
 import 'package:das_client/util/format.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -59,7 +60,13 @@ class _ReducedOverviewModalSheet extends StatelessWidget {
           Spacer(),
           Text(
             '${trainIdentification.trainNumber} ${trainIdentification.ru.displayText(context)}',
-            style: DASTextStyles.mediumRoman.copyWith(color: SBBColors.granite),
+            style: DASTextStyles.mediumRoman.copyWith(
+              color: ThemeUtil.getColor(
+                context,
+                SBBColors.granite,
+                SBBColors.white,
+              ),
+            ),
           ),
         ],
       ),
