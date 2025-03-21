@@ -18,7 +18,7 @@ class TafTapLocationNsp extends Nsp {
       return NewLineSpeedTafTapLocation(attributes: attributes, children: children, value: value);
     } else if (groupName?.value == LineFootNotesNsp.elementName) {
       return LineFootNotesNsp(attributes: attributes, children: children, value: value);
-    } else if (groupName?.value == LineFootNotesNsp.elementName) {
+    } else if (groupName?.value == OpFootNotesNsp.elementName) {
       return OpFootNotesNsp(attributes: attributes, children: children, value: value);
     }
     return TafTapLocationNsp(attributes: attributes, children: children, value: value);

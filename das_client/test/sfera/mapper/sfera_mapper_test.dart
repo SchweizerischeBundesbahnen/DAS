@@ -8,6 +8,8 @@ import 'package:das_client/model/journey/communication_network_change.dart';
 import 'package:das_client/model/journey/connection_track.dart';
 import 'package:das_client/model/journey/curve_point.dart';
 import 'package:das_client/model/journey/datatype.dart';
+import 'package:das_client/model/journey/foot_note.dart';
+import 'package:das_client/model/journey/foot_notes.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/level_crossing.dart';
 import 'package:das_client/model/journey/protection_section.dart';
@@ -1088,6 +1090,23 @@ void main() {
     expect(networkChanges[1].type, CommunicationNetworkType.sim);
     expect(networkChanges[2].order, 2500);
     expect(networkChanges[2].type, CommunicationNetworkType.gsmR);
+  });
+
+  test('Test opFootNotes parsed correctly', () async {
+    final journey = getJourney('T15', 4);
+    expect(journey.valid, true);
+
+    final footNotes = journey.data.whereType<OpFootNotes>().toList();
+    expect(footNotes, hasLength(3));
+    expect(footNotes[0].footNotes[0].type, FootNoteType.decisiveGradientDown);
+    expect(footNotes[0].footNotes[0].text, 'Renens - Lausanne <i>"via saut-de-mouton"</i> 0‰');
+    expect(footNotes[0].footNotes[0].refText, '1)');
+    expect(footNotes[1].footNotes[0].type, FootNoteType.contact);
+    expect(footNotes[1].footNotes[0].text, '+41 512 800 506 RBC Lavaux');
+    expect(footNotes[1].footNotes[0].refText, '1)');
+    expect(footNotes[2].footNotes[0].type, FootNoteType.contact);
+    expect(footNotes[2].footNotes[0].text, '+41 512 800 506 RBC Lavaux');
+    expect(footNotes[2].footNotes[0].refText, '1)');
   });
 }
 

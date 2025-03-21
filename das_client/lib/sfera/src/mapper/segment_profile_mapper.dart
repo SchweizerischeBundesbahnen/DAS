@@ -4,6 +4,8 @@ import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/bracket_station.dart';
 import 'package:das_client/model/journey/connection_track.dart';
 import 'package:das_client/model/journey/curve_point.dart';
+import 'package:das_client/model/journey/foot_note.dart';
+import 'package:das_client/model/journey/foot_notes.dart';
 import 'package:das_client/model/journey/level_crossing.dart';
 import 'package:das_client/model/journey/protection_section.dart';
 import 'package:das_client/model/journey/service_point.dart';
@@ -54,6 +56,7 @@ class SegmentProfileMapper {
     journeyData.addAll(_parseWhistle(mapperData));
     journeyData.addAll(_parseLevelCrossings(mapperData));
     journeyData.addAll(_parseProtectionSections(mapperData));
+    journeyData.addAll(_parseOpFootNotes(mapperData));
     journeyData.addAll(_parseServicePoint(mapperData, segmentProfiles, segmentProfileReference));
 
     final curvePoints = _parseCurvePoints(mapperData);
@@ -256,5 +259,27 @@ class SegmentProfileMapper {
         kilometre: mapperData.kilometreMap[levelCrossing.startLocation] ?? [],
       );
     });
+  }
+
+  static Iterable<OpFootNotes> _parseOpFootNotes(_MapperData mapperData) {
+    final locations = mapperData.segmentProfile.areas?.tafTapLocations ?? [];
+    return locations.map((location) {
+      if (location.opFootNotes == null) {
+        return null;
+      }
+
+      if (location.startLocation == null) {
+        Fimber.w('Failed to parse footNote because TafTapLocation has no startLocation: $location');
+        return null;
+      }
+
+      return OpFootNotes(
+        order: calculateOrder(mapperData.segmentIndex, location.startLocation!),
+        footNotes: location.opFootNotes!.xmlOpFootNotes.element.footNotes.map((note) {
+          note.childrenWithType('text').first;
+          return FootNote(text: note.text, type: note.footNoteType?.footNoteType, refText: note.refText);
+        }).toList(),
+      );
+    }).nonNulls;
   }
 }

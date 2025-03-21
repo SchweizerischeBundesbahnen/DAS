@@ -1,16 +1,22 @@
 import 'package:das_client/sfera/src/model/enums/taf_tap_location_type.dart';
 import 'package:das_client/sfera/src/model/enums/xml_enum.dart';
 import 'package:das_client/sfera/src/model/new_line_speed_taf_tap_location.dart';
+import 'package:das_client/sfera/src/model/op_foot_notes_nsp.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 import 'package:das_client/sfera/src/model/station_speed_nsp.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location_ident.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location_name.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location_nsp.dart';
+import 'package:das_client/util/util.dart';
 
 class TafTapLocation extends SferaXmlElement {
   static const String elementType = 'TAF_TAP_Location';
 
   TafTapLocation({super.type = elementType, super.attributes, super.children, super.value});
+
+  double? get startLocation => Util.tryParseDouble(attributes['startLocation']);
+
+  double? get endLocation => Util.tryParseDouble(attributes['endLocation']);
 
   TafTapLocationIdent get locationIdent => children.whereType<TafTapLocationIdent>().first;
 
@@ -26,6 +32,8 @@ class TafTapLocation extends SferaXmlElement {
   StationSpeedNsp? get stationSpeed => children.whereType<StationSpeedNsp>().firstOrNull;
 
   NewLineSpeedTafTapLocation? get newLineSpeed => children.whereType<NewLineSpeedTafTapLocation>().firstOrNull;
+
+  OpFootNotesNsp? get opFootNotes => children.whereType<OpFootNotesNsp>().firstOrNull;
 
   @override
   bool validate() {

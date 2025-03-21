@@ -1,15 +1,15 @@
 import 'package:das_client/sfera/src/model/taf_tap_location_nsp.dart';
-import 'package:das_client/sfera/src/model/xml_line_foot_notes.dart';
+import 'package:das_client/sfera/src/model/xml_op_foot_notes.dart';
 
 class OpFootNotesNsp extends TafTapLocationNsp {
   static const String elementName = 'oPFootNotes';
 
   OpFootNotesNsp({super.type, super.attributes, super.children, super.value});
 
-  XmlLineFootNotes get xmlLineFootNotes => parameters.whereType<XmlLineFootNotes>().first;
+  XmlOpFootNotes get xmlOpFootNotes => parameters.whereType<XmlOpFootNotes>().first;
 
   @override
   bool validate() {
-    return validateHasChildOfType<XmlLineFootNotes>() && super.validate();
+    return validateHasChildOfType<XmlOpFootNotes>() && super.validate();
   }
 }
