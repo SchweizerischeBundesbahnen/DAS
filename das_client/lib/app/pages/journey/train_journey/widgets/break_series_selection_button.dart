@@ -1,5 +1,6 @@
 import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
+import 'package:das_client/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -22,14 +23,24 @@ class BreakSeriesSelectionButton extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              color: currentlySelected ? SBBColors.granite : SBBColors.cloud,
+              color: currentlySelected
+                  ? ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite)
+                  : ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.iron),
             ),
             width: 72,
             height: 48,
             child: Center(
               child: Text(
                 label,
-                style: DASTextStyles.mediumBold.copyWith(color: currentlySelected ? SBBColors.white : SBBColors.black),
+                style: DASTextStyles.mediumBold.copyWith(
+                  color: currentlySelected
+                      ? ThemeUtil.getFontColor(context)
+                      : ThemeUtil.getColor(
+                          context,
+                          SBBColors.black,
+                          SBBColors.white,
+                        ),
+                ),
               ),
             ),
           ),

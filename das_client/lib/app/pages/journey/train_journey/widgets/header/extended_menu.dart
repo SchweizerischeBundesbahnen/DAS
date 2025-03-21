@@ -109,7 +109,13 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
         scale: _scaleAnimation,
         child: Column(
           children: [
-            SvgPicture.asset(AppAssets.shapeMenuArrow),
+            SvgPicture.asset(
+              AppAssets.shapeMenuArrow,
+              colorFilter: ColorFilter.mode(
+                ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
+                BlendMode.srcIn,
+              ),
+            ),
             _menuContent(context),
           ],
         ),
@@ -122,7 +128,7 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
       color: Colors.transparent,
       child: Container(
         decoration: BoxDecoration(
-          color: ThemeUtil.getDASTableColor(context),
+          color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
           borderRadius: BorderRadius.circular(sbbDefaultSpacing),
         ),
         width: extendedMenuContentWidth,

@@ -38,7 +38,7 @@ class Header extends StatelessWidget {
         sbbDefaultSpacing,
       ),
       decoration: BoxDecoration(
-        color: SBBColors.cloud,
+        color: ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.granite),
         borderRadius: BorderRadius.all(Radius.circular(sbbDefaultSpacing)),
       ),
       child: Column(
@@ -62,12 +62,12 @@ class Header extends StatelessWidget {
           Icon(
             SBBIcons.circle_information_small,
             size: 20.0,
-            color: ThemeUtil.getFontColor(context),
+            color: ThemeUtil.getColor(context, SBBColors.black, SBBColors.white),
           ),
           Text(
             information!,
             style: DASTextStyles.smallLight.copyWith(
-              color: ThemeUtil.getFontColor(context),
+              color: ThemeUtil.getColor(context, SBBColors.black, SBBColors.white),
             ),
           ),
         ],
