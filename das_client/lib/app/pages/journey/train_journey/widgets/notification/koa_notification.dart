@@ -34,6 +34,7 @@ class KoaNotification extends StatelessWidget {
     return SBBPromotionBox.custom(
       leading: SvgPicture.asset(
         AppAssets.iconKoaWait,
+        colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
       ),
       content: Text(
         context.l10n.w_koa_notification_wait,
@@ -48,12 +49,12 @@ class KoaNotification extends StatelessWidget {
     return SBBPromotionBox.custom(
       leading: Icon(
         SBBIcons.circle_tick_medium,
-        color: ThemeUtil.getFontColor(context),
+        color: SBBColors.black
       ),
       content: Text(
         context.l10n.w_koa_notification_wait_canceled,
         style:
-            DASTextStyles.mediumRoman.copyWith(color: ThemeUtil.getFontColor(context)),
+            DASTextStyles.mediumRoman.copyWith(color: SBBColors.black),
       ),
       badgeText: context.l10n.w_koa_notification_title,
       trailing: _trailingButton(context),

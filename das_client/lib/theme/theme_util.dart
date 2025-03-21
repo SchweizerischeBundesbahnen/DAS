@@ -14,10 +14,6 @@ class ThemeUtil {
     return SBBBaseStyle.of(context).brightness ?? Brightness.light;
   }
 
-  static Brightness getBrightnessSystem(ThemeMode themeMode){
-    return themeMode == ThemeMode.light ? Brightness.light : Brightness.dark;
-  }
-
   static Color getDASTableColor(BuildContext context){
     return SBBBaseStyle.of(context).themeValue(SBBColors.white, SBBColors.charcoal);
   }
