@@ -109,7 +109,13 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
         scale: _scaleAnimation,
         child: Column(
           children: [
-            SvgPicture.asset(AppAssets.shapeMenuArrow),
+            SvgPicture.asset(
+              AppAssets.shapeMenuArrow,
+              colorFilter: ColorFilter.mode(
+                ThemeUtil.getDASTableColor(context),
+                BlendMode.srcIn,
+              ),
+            ),
             _menuContent(context),
           ],
         ),
