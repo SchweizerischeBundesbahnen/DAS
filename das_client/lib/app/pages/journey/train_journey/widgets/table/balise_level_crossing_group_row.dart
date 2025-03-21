@@ -5,6 +5,7 @@ import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:das_client/model/journey/balise.dart';
 import 'package:das_client/model/journey/balise_level_crossing_group.dart';
 import 'package:das_client/model/journey/level_crossing.dart';
+import 'package:das_client/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -53,6 +54,7 @@ class BaliseLevelCrossingGroupRow extends BaseRowBuilder<BaliseLevelCrossingGrou
         child: SvgPicture.asset(
           AppAssets.iconBalise,
           key: baliseIconKey,
+          colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
         ),
         alignment: Alignment.centerLeft,
       );

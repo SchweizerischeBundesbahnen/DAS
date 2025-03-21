@@ -66,6 +66,8 @@
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;160/140&quot;/&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;160/140&quot;/&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;160/140&quot;/&gt;
+                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;160/140&quot;/&gt;
+                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;160/140&quot;/&gt;
 					&lt;/stationSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
@@ -80,6 +82,8 @@
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;95&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;105&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;120&quot;/&gt;
+                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;145&quot;/&gt;
+                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;145&quot;/&gt;
 					&lt;/lineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>

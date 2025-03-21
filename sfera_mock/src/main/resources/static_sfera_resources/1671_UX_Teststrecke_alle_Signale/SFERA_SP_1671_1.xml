@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="1671_1"
-                SP_VersionMajor="2" SP_VersionMinor="0" SP_Length="36000" SP_Status="Valid">
+                SP_VersionMajor="2" SP_VersionMinor="1" SP_Length="36000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -183,9 +183,15 @@
         </Signal>
 
         <Signal>
-            <Signal_ID signal_ID_Physical="A7" location="21200"/>
-            <SignalFunction>block</SignalFunction>
+            <Signal_ID signal_ID_Physical="A7" location="20580"/>
+            <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="A7"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="A8" location="21200"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A8"/>
         </Signal>
 
         <Signal>
@@ -195,9 +201,9 @@
         </Signal>
 
         <Signal>
-            <Signal_ID signal_ID_Physical="A8" location="23400"/>
+            <Signal_ID signal_ID_Physical="A9" location="23400"/>
             <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A8"/>
+            <SignalPhysicalCharacteristics visualIdentifier="A9"/>
         </Signal>
 
         <Signal>
@@ -784,6 +790,9 @@
         </KilometreReferencePoint>
         <KilometreReferencePoint location="20520">
             <KM_Reference kmRef="21.58"/>
+        </KilometreReferencePoint>        
+        <KilometreReferencePoint location="20580">
+            <KM_Reference kmRef="21.5"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="20600">
             <KM_Reference kmRef="21.5"/>

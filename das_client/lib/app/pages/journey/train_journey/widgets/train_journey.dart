@@ -45,6 +45,7 @@ import 'package:das_client/model/journey/signal.dart';
 import 'package:das_client/model/journey/speed_change.dart';
 import 'package:das_client/model/journey/tram_area.dart';
 import 'package:das_client/model/journey/whistles.dart';
+import 'package:das_client/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -125,6 +126,7 @@ class TrainJourney extends StatelessWidget {
             metadata: journey.metadata,
             data: rowData as ServicePoint,
             config: trainJourneyConfig,
+            context: context,
           );
         case Datatype.protectionSection:
           return ProtectionSectionRow(
@@ -236,8 +238,8 @@ class TrainJourney extends StatelessWidget {
         child: Text(context.l10n.p_train_journey_table_graduated_speed_label),
         width: 100.0,
         border: BorderDirectional(
-          bottom: BorderSide(color: SBBColors.cloud, width: 1.0),
-          end: BorderSide(color: SBBColors.cloud, width: 2.0),
+          bottom: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 1.0),
+          end: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 2.0),
         ),
       ),
       DASTableColumn(

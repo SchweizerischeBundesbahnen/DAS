@@ -1,5 +1,6 @@
 import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/model/journey/communication_network_change.dart';
+import 'package:das_client/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -20,7 +21,7 @@ class CommunicationNetworkIcon extends StatelessWidget {
     return Container(
       key: isGsmP ? gsmPKey : gsmRKey,
       decoration: BoxDecoration(
-        border: Border.all(color: SBBColors.black, width: 1.0),
+        border: Border.all(color: ThemeUtil.getIconColor(context), width: 1.0),
         borderRadius: BorderRadius.circular(sbbDefaultSpacing),
       ),
       padding: EdgeInsets.symmetric(horizontal: 15.0),

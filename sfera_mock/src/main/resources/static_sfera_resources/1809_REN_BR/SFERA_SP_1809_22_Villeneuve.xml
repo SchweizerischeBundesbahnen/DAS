@@ -22,14 +22,14 @@
             <NetworkSpecificParameter name="xmlNewLineSpeed" value="
 				&lt;lineSpeed&gt;
 					&lt;speeds&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;140&quot;/&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;140&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;125&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;135&quot;/&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;140&quot;/&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;140&quot;/&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;140&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;105&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;100&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;115&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;120&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;115&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;120&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;120&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;120&quot;/&gt;

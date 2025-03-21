@@ -5,6 +5,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/
 import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/di.dart';
+import 'package:das_client/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -108,7 +109,13 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
         scale: _scaleAnimation,
         child: Column(
           children: [
-            SvgPicture.asset(AppAssets.shapeMenuArrow),
+            SvgPicture.asset(
+              AppAssets.shapeMenuArrow,
+              colorFilter: ColorFilter.mode(
+                ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
+                BlendMode.srcIn,
+              ),
+            ),
             _menuContent(context),
           ],
         ),
@@ -121,7 +128,7 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
       color: Colors.transparent,
       child: Container(
         decoration: BoxDecoration(
-          color: SBBColors.milk,
+          color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
           borderRadius: BorderRadius.circular(sbbDefaultSpacing),
         ),
         width: extendedMenuContentWidth,
@@ -216,7 +223,10 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
 
     return SBBListItem.custom(
       title: context.l10n.w_extended_menu_maneuver_mode,
-      onPressed: () => trainJourneyCubit.setManeuverMode(!trainJourneyCubit.settings.maneuverMode),
+      onPressed: () async {
+        await _removeOverlay();
+        trainJourneyCubit.setManeuverMode(!trainJourneyCubit.settings.maneuverMode);
+      },
       trailingWidget: Padding(
         padding: const EdgeInsets.fromLTRB(0, 0, sbbDefaultSpacing * 0.5, 0),
         child: StreamBuilder<TrainJourneySettings>(
@@ -227,7 +237,10 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
             return SBBSwitch(
               key: ExtendedMenu.maneuverSwitchKey,
               value: snapshot.data?.maneuverMode ?? false,
-              onChanged: (value) => trainJourneyCubit.setManeuverMode(value),
+              onChanged: (value) async {
+                await _removeOverlay();
+                trainJourneyCubit.setManeuverMode(value);
+              },
             );
           },
         ),

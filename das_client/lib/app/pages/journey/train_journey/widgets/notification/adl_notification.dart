@@ -1,5 +1,6 @@
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
+import 'package:das_client/theme/theme_util.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 
@@ -11,12 +12,11 @@ class ADLNotification extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
-    final fontColor = isDarkTheme ? SBBColors.charcoal : SBBColors.white;
+    final fontColor = ThemeUtil.getFontColor(context);
     return Container(
       margin: margin,
       decoration: BoxDecoration(
-        color: isDarkTheme ? SBBColors.cloud : SBBColors.charcoal,
+        color: fontColor,
         borderRadius: BorderRadius.circular(sbbDefaultSpacing),
       ),
       padding: const EdgeInsets.symmetric(vertical: 14.0).copyWith(left: sbbDefaultSpacing, right: 4.0),
