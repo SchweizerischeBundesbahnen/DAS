@@ -9,7 +9,7 @@ import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
 import 'package:das_client/model/localized_string.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -19,6 +19,7 @@ import 'automatic_advancement_controller_test.mocks.dart';
 @GenerateNiceMocks([
   MockSpec<ScrollController>(),
   MockSpec<ScrollPosition>(),
+  MockSpec<ServicePointRow>(),
 ])
 void main() {
   test('test does nothing without anything provided', () {
@@ -153,11 +154,11 @@ void main() {
     final servicePointData = ServicePoint(order: 0, kilometre: [], name: LocalizedString());
 
     final List<BaseRowBuilder> rows = [
-      ServicePointRow(metadata: Metadata(), data: servicePointData, context: null),
+      mockServicePointRow(servicePointData),
       SignalRow(metadata: Metadata(), data: signalData),
       SignalRow(metadata: Metadata(), data: signalData),
       SignalRow(metadata: Metadata(), data: signalData),
-      ServicePointRow(metadata: Metadata(), data: servicePointData, context: null),
+      mockServicePointRow(servicePointData),
       SignalRow(metadata: Metadata(), data: targetSignalData),
     ];
 
@@ -254,4 +255,12 @@ void main() {
 
     verifyNever(scrollControllerMock.animateTo(any, duration: anyNamed('duration'), curve: anyNamed('curve')));
   });
+}
+
+ServicePointRow mockServicePointRow(ServicePoint data) {
+  final servicePointRow = MockServicePointRow();
+  when(servicePointRow.data).thenReturn(data);
+  when(servicePointRow.height).thenReturn(ServicePointRow.rowHeight);
+  when(servicePointRow.isSticky).thenReturn(true);
+  return servicePointRow;
 }

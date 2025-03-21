@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:das_client/app/pages/journey/train_journey/chevron_animation_controller.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/chevron_animation_wrapper.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/chevron_animation_data.dart';
+import 'package:das_client/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -62,8 +63,6 @@ class _RouteChevronState extends State<RouteChevron> {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
-    final chevronColor = isDarkTheme ? SBBColors.sky : SBBColors.black;
     return Positioned(
       bottom: widget.isStop
           ? sbbDefaultSpacing + widget.circleSize - currentOffsetValue
@@ -71,7 +70,7 @@ class _RouteChevronState extends State<RouteChevron> {
       child: CustomPaint(
         key: RouteChevron.chevronKey,
         size: Size(widget.chevronWidth, widget.chevronHeight),
-        painter: _ChevronPainter(color: chevronColor),
+        painter: _ChevronPainter(color: ThemeUtil.getColor(context, SBBColors.black, SBBColors.sky)),
       ),
     );
   }

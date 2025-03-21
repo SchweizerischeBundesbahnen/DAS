@@ -19,17 +19,13 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
   ServicePointRow({
     required super.metadata,
     required super.data,
-    BuildContext? context,
+    required BuildContext context,
     super.height = rowHeight,
     super.config,
   }) : super(
           rowColor: metadata.nextStop == data
-              ? context != null
-                  ? ThemeUtil.getColor(context, Color(0xFFCDD6E8), Color(0xFF06348B))
-                  : Color(0xFF06348B)
-              : context != null
-                  ? ThemeUtil.getDASTableColor(context)
-                  : SBBColors.white,
+              ? ThemeUtil.getColor(context, Color(0xFFCDD6E8), SBBColors.royal)
+              : ThemeUtil.getDASTableColor(context),
           isSticky: true,
         );
 
