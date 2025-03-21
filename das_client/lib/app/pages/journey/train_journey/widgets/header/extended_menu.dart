@@ -217,7 +217,10 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
 
     return SBBListItem.custom(
       title: context.l10n.w_extended_menu_maneuver_mode,
-      onPressed: () => trainJourneyCubit.setManeuverMode(!trainJourneyCubit.settings.maneuverMode),
+      onPressed: () async {
+        await _removeOverlay();
+        trainJourneyCubit.setManeuverMode(!trainJourneyCubit.settings.maneuverMode);
+      },
       trailingWidget: Padding(
         padding: const EdgeInsets.fromLTRB(0, 0, sbbDefaultSpacing * 0.5, 0),
         child: StreamBuilder<TrainJourneySettings>(
@@ -228,7 +231,10 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
             return SBBSwitch(
               key: ExtendedMenu.maneuverSwitchKey,
               value: snapshot.data?.maneuverMode ?? false,
-              onChanged: (value) => trainJourneyCubit.setManeuverMode(value),
+              onChanged: (value) async {
+                await _removeOverlay();
+                trainJourneyCubit.setManeuverMode(value);
+              },
             );
           },
         ),

@@ -15,7 +15,7 @@ class DepartureAuthorization extends StatelessWidget {
           color: ThemeUtil.getIconColor(context),
         ),
         const SizedBox(width: sbbDefaultSpacing * 0.5),
-        Text('SMS', style: DASTextStyles.xLargeRoman),
+        Text('', style: DASTextStyles.xLargeRoman),
       ],
     );
   }

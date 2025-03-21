@@ -104,11 +104,11 @@ void main() {
 
       expect(find.text(l10n.w_maneuver_notification_text), findsOneWidget);
 
+      await openExtendedMenu(tester);
+
       await tapElement(tester, find.byKey(ExtendedMenu.maneuverSwitchKey));
 
       expect(find.text(l10n.w_maneuver_notification_text), findsNothing);
-
-      await dismissExtendedMenu(tester);
 
       await disconnect(tester);
     });
@@ -126,8 +126,6 @@ void main() {
       await tapElement(tester, find.byKey(ExtendedMenu.maneuverSwitchKey));
 
       expect(find.text(l10n.w_maneuver_notification_text), findsOneWidget);
-
-      await dismissExtendedMenu(tester);
 
       await tapElement(tester, find.byKey(ManeuverNotification.maneuverNotificationSwitchKey));
 
