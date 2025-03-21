@@ -1,4 +1,5 @@
 import 'package:das_client/app/widgets/das_text_styles.dart';
+import 'package:das_client/theme/theme_util.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 
@@ -37,7 +38,7 @@ class Header extends StatelessWidget {
         sbbDefaultSpacing,
       ),
       decoration: BoxDecoration(
-        color: SBBColors.cloud,
+        color: ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.granite),
         borderRadius: BorderRadius.all(Radius.circular(sbbDefaultSpacing)),
       ),
       child: Column(
@@ -61,12 +62,12 @@ class Header extends StatelessWidget {
           Icon(
             SBBIcons.circle_information_small,
             size: 20.0,
-            color: SBBColors.black,
+            color: ThemeUtil.getColor(context, SBBColors.black, SBBColors.white),
           ),
           Text(
             information!,
             style: DASTextStyles.smallLight.copyWith(
-              color: SBBColors.black,
+              color: ThemeUtil.getColor(context, SBBColors.black, SBBColors.white),
             ),
           ),
         ],
