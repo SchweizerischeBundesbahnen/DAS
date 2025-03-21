@@ -1,5 +1,4 @@
 import 'package:das_client/app/widgets/das_text_styles.dart';
-import 'package:das_client/theme/theme_util.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 
@@ -62,12 +61,12 @@ class Header extends StatelessWidget {
           Icon(
             SBBIcons.circle_information_small,
             size: 20.0,
-            color: ThemeUtil.getFontColor(context),
+            color: SBBColors.black,
           ),
           Text(
             information!,
             style: DASTextStyles.smallLight.copyWith(
-              color: ThemeUtil.getFontColor(context),
+              color: SBBColors.black,
             ),
           ),
         ],
