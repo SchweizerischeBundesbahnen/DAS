@@ -76,7 +76,6 @@ dependencies:
   # https://pub.dev/packages/provider
   provider: ^6.1.2
 
-
 dev_dependencies:
   integration_test:
     sdk: flutter

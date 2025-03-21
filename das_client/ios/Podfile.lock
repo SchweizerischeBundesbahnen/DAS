@@ -72,17 +72,17 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AppAuth: 501c04eda8a8d11f179dbe8637b7a91bb7e5d2fa
-  audioplayers_darwin: 877d9a4d06331c5c374595e46e16453ac7eafa40
-  battery_plus: 34f72fa2afeeea83bbae306c72a25828d3ec727a
-  device_info_plus: bf2e3232933866d73fe290f2942f2156cdd10342
+  audioplayers_darwin: ccf9c770ee768abb07e26d90af093f7bab1c12ab
+  battery_plus: b42253f6d2dde71712f8c36fef456d99121c5977
+  device_info_plus: 21fcca2080fbcd348be798aa36c3e5ed849eefbe
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_appauth: aef998cfbcc307dff7f2fbe1f59a50323748dc25
-  flutter_secure_storage: d33dac7ae2ea08509be337e775f6b59f1ff45f12
-  integration_test: 252f60fa39af5e17c3aa9899d35d908a0721b573
-  isar_flutter_libs: b69f437aeab9c521821c3f376198c4371fa21073
-  package_info_plus: c0502532a26c7662a62a356cebe2692ec5fe4ec4
-  path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
-  volume_controller: 2e3de73d6e7e81a0067310d17fb70f2f86d71ac7
+  flutter_appauth: 273bf736e38f7d85000b1a9ac15ace5800c277f2
+  flutter_secure_storage: 1ed9476fba7e7a782b22888f956cce43e2c62f13
+  integration_test: 4a889634ef21a45d28d50d622cf412dc6d9f586e
+  isar_flutter_libs: 9fc2cfb928c539e1b76c481ba5d143d556d94920
+  package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
+  path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
+  volume_controller: 3657a1f65bedb98fa41ff7dc5793537919f31b12
 
 PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796
 

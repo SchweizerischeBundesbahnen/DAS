@@ -5,6 +5,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/
 import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/di.dart';
+import 'package:das_client/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -121,7 +122,7 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
       color: Colors.transparent,
       child: Container(
         decoration: BoxDecoration(
-          color: SBBColors.milk,
+          color: ThemeUtil.getDASTableColor(context),
           borderRadius: BorderRadius.circular(sbbDefaultSpacing),
         ),
         width: extendedMenuContentWidth,

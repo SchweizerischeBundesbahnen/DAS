@@ -1,4 +1,5 @@
 import 'package:das_client/app/widgets/das_text_styles.dart';
+import 'package:das_client/theme/theme_util.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 
@@ -46,20 +47,29 @@ class Header extends StatelessWidget {
             useShadow: false,
             child: child,
           ),
-          if (information != null) _information(),
+          if (information != null) _information(context),
         ],
       ),
     );
   }
 
-  Widget _information() {
+  Widget _information(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing, vertical: sbbDefaultSpacing * 0.5),
       child: Row(
         spacing: sbbDefaultSpacing * 0.5,
         children: [
-          Icon(SBBIcons.circle_information_small, size: 20.0),
-          Text(information!, style: DASTextStyles.smallLight),
+          Icon(
+            SBBIcons.circle_information_small,
+            size: 20.0,
+            color: ThemeUtil.getFontColor(context),
+          ),
+          Text(
+            information!,
+            style: DASTextStyles.smallLight.copyWith(
+              color: ThemeUtil.getFontColor(context),
+            ),
+          ),
         ],
       ),
     );
