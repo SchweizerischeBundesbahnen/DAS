@@ -29,4 +29,8 @@ class ThemeUtil {
   static Color getFontColor(BuildContext context){
     return SBBBaseStyle.of(context).themeValue(SBBColors.white, SBBColors.charcoal);
   }
+
+  static bool isDarkMode(BuildContext context){
+    return SBBBaseStyle.of(context).brightness == Brightness.dark;
+  }
 }

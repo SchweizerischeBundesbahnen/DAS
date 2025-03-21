@@ -1,7 +1,6 @@
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/nav/app_router.dart';
 import 'package:das_client/theme/theme_provider.dart';
-import 'package:das_client/theme/theme_util.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:das_client/app/widgets/flavor_banner.dart';
 import 'package:das_client/di.dart';
@@ -21,11 +20,11 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => ThemeManager(context),
+      create: (_) => ThemeProvider(context),
       child: FlavorBanner(
         flavor: DI.get(),
         child: Builder(builder: (context) {
-          final themeManager = context.watch<ThemeManager>();
+          final themeManager = context.watch<ThemeProvider>();
 
           return MaterialApp.router(
             themeMode: themeManager.themeMode,
@@ -40,7 +39,7 @@ class _AppState extends State<App> {
                   baseStyle: SBBBaseStyle(
                     primaryColor: SBBColors.royal,
                     primaryColorDark: SBBColors.royal125,
-                    brightness: ThemeUtil.getBrightnessSystem(themeManager.themeMode),
+                    brightness: Brightness.light,
                   ),
                 ).copyWith(
                   badgeColor: SBBColors.royal,

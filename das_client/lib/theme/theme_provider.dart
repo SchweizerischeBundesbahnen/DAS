@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-class ThemeManager extends ChangeNotifier {
+class ThemeProvider extends ChangeNotifier {
   ThemeMode _themeMode;
 
-  ThemeManager(BuildContext context) : _themeMode = ThemeMode.system;
+  ThemeProvider(BuildContext context) : _themeMode = ThemeMode.system;
 
   ThemeMode get themeMode => _themeMode;
 
