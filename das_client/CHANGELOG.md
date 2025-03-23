@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.13.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.12.0...das_client-v0.13.0) (2025-03-21)
+
+
+### Features
+
+* day and night mode [#102](https://github.com/SchweizerischeBundesbahnen/DAS/issues/102) ([#682](https://github.com/SchweizerischeBundesbahnen/DAS/issues/682)) ([6f34475](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6f34475f528c9f96418eacc7764d4b418a9b0fad))
+
+
+### Bug Fixes
+
+* ux requested changes ([#725](https://github.com/SchweizerischeBundesbahnen/DAS/issues/725)) ([8b494fd](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8b494fda5626dda83a020d1b613f66aa84c63818))
+
 ## [0.12.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.11.0...das_client-v0.12.0) (2025-03-18)
 
 
