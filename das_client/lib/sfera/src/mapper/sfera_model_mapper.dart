@@ -131,8 +131,13 @@ class SferaModelMapper {
     }
   }
 
+  /// returns element at next position, if it is a [ServicePoint] and the current position is not already one.
   static BaseData? _adjustCurrentPositionToServicePoint(List<BaseData> journeyData, BaseData currentPosition) {
     final positionIndex = journeyData.indexOf(currentPosition);
+    if (currentPosition is ServicePoint) {
+      return currentPosition;
+    }
+
     if (journeyData.length > positionIndex + 1) {
       final nextData = journeyData[positionIndex + 1];
       if (nextData is ServicePoint) {

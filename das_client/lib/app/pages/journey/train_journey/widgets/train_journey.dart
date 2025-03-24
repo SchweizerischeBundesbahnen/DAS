@@ -10,6 +10,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_row_builder.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cab_signaling_row.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/column_definition.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/bracket_station_render_data.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/chevron_animation_data.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/track_equipment_render_data.dart';
@@ -29,6 +30,7 @@ import 'package:das_client/app/widgets/table/das_table_column.dart';
 import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
 import 'package:das_client/model/journey/balise.dart';
 import 'package:das_client/model/journey/balise_level_crossing_group.dart';
+import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/base_data_extension.dart';
 import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
@@ -43,6 +45,7 @@ import 'package:das_client/model/journey/signal.dart';
 import 'package:das_client/model/journey/speed_change.dart';
 import 'package:das_client/model/journey/tram_area.dart';
 import 'package:das_client/model/journey/whistles.dart';
+import 'package:das_client/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -71,13 +74,10 @@ class TrainJourney extends StatelessWidget {
         });
 
         return Listener(
-            onPointerDown: (_) {
-              bloc.automaticAdvancementController.onTouch();
-            },
-            onPointerUp: (_) {
-              bloc.automaticAdvancementController.onTouch();
-            },
-            child: _body(context, journey, settings));
+          onPointerDown: (_) => bloc.automaticAdvancementController.onTouch(),
+          onPointerUp: (_) => bloc.automaticAdvancementController.onTouch(),
+          child: _body(context, journey, settings),
+        );
       },
     );
   }
@@ -104,7 +104,9 @@ class TrainJourney extends StatelessWidget {
   }
 
   List<BaseRowBuilder> _rows(BuildContext context, Journey journey, TrainJourneySettings settings) {
-    final rows = journey.data.groupBaliseAndLeveLCrossings(settings.expandedGroups);
+    final rows = journey.data
+        .whereNot((it) => _isCurvePointWithoutSpeed(it, journey, settings))
+        .groupBaliseAndLeveLCrossings(settings.expandedGroups);
 
     final groupedRows =
         rows.whereType<BaliseLevelCrossingGroup>().map((it) => it.groupedElements).expand((it) => it).toList();
@@ -124,6 +126,7 @@ class TrainJourney extends StatelessWidget {
             metadata: journey.metadata,
             data: rowData as ServicePoint,
             config: trainJourneyConfig,
+            context: context,
           );
         case Datatype.protectionSection:
           return ProtectionSectionRow(
@@ -210,42 +213,50 @@ class TrainJourney extends StatelessWidget {
         : '${journey.metadata.breakSeries?.trainSeries.name ?? '?'}${journey.metadata.breakSeries?.breakSeries ?? '?'}';
 
     return [
-      DASTableColumn(child: Text(context.l10n.p_train_journey_table_kilometre_label), width: 64.0),
-      DASTableColumn(child: Text(context.l10n.p_train_journey_table_time_label), width: 100.0),
-      DASTableColumn(width: 48.0), // route column
-      DASTableColumn(width: 20.0), // track equipment column
-      DASTableColumn(width: 64.0), // icons column
-      DASTableColumn(width: 0.0), // bracket station column
       DASTableColumn(
+          id: ColumnDefinition.kilometre.index,
+          child: Text(context.l10n.p_train_journey_table_kilometre_label),
+          width: 64.0),
+      DASTableColumn(
+          id: ColumnDefinition.time.index, child: Text(context.l10n.p_train_journey_table_time_label), width: 100.0),
+      DASTableColumn(id: ColumnDefinition.route.index, width: 48.0), // route column
+      DASTableColumn(id: ColumnDefinition.trackEquipment.index, width: 20.0), // track equipment column
+      DASTableColumn(id: ColumnDefinition.icons1.index, width: 64.0), // icons column
+      DASTableColumn(id: ColumnDefinition.bracketStation.index, width: 0.0), // bracket station column
+      DASTableColumn(
+        id: ColumnDefinition.informationCell.index,
         child: Text(context.l10n.p_train_journey_table_journey_information_label),
         expanded: true,
         alignment: Alignment.centerLeft,
       ),
-      DASTableColumn(width: 68.0), // icons column
-      DASTableColumn(width: 48.0), // icons column
+      DASTableColumn(id: ColumnDefinition.icons2.index, width: 68.0), // icons column
+      DASTableColumn(id: ColumnDefinition.icons3.index, width: 48.0), // icons column
       DASTableColumn(
+        id: ColumnDefinition.localSpeed.index,
         child: Text(context.l10n.p_train_journey_table_graduated_speed_label),
         width: 100.0,
         border: BorderDirectional(
-          bottom: BorderSide(color: SBBColors.cloud, width: 1.0),
-          end: BorderSide(color: SBBColors.cloud, width: 2.0),
+          bottom: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 1.0),
+          end: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 2.0),
         ),
       ),
-      // TODO: find out what to do when break series is not defined
       DASTableColumn(
-          child: Text(speedLabel),
-          width: 62.0,
-          onTap: () => _onBreakSeriesTap(context, journey, settings),
-          headerKey: breakingSeriesHeaderKey),
-      DASTableColumn(child: Text(context.l10n.p_train_journey_table_advised_speed_label), width: 62.0),
-      DASTableColumn(width: 40.0), // actions
+        id: ColumnDefinition.brakedWeightSpeed.index,
+        child: Text(speedLabel),
+        width: 62.0,
+        onTap: () => _onBreakSeriesTap(context, journey, settings),
+        headerKey: breakingSeriesHeaderKey,
+      ),
+      DASTableColumn(
+          id: ColumnDefinition.advisedSpeed.index,
+          child: Text(context.l10n.p_train_journey_table_advised_speed_label),
+          width: 62.0),
+      DASTableColumn(id: ColumnDefinition.actionsCell.index, width: 40.0), // actions
     ];
   }
 
   void _onBaliseLevelCrossingGroupTap(
       BuildContext context, BaliseLevelCrossingGroup group, TrainJourneySettings settings) {
-    final trainJourneyCubit = context.trainJourneyCubit;
-
     final newList = List<int>.from(settings.expandedGroups);
     if (settings.expandedGroups.contains(group.order)) {
       newList.remove(group.order);
@@ -253,23 +264,32 @@ class TrainJourney extends StatelessWidget {
       newList.add(group.order);
     }
 
-    trainJourneyCubit.updateExpandedGroups(newList);
+    context.trainJourneyCubit.updateExpandedGroups(newList);
   }
 
-  void _onBreakSeriesTap(BuildContext context, Journey journey, TrainJourneySettings settings) {
+  Future<void> _onBreakSeriesTap(BuildContext context, Journey journey, TrainJourneySettings settings) async {
     final trainJourneyCubit = context.trainJourneyCubit;
 
-    showSBBModalSheet<BreakSeries>(
-            context: context,
-            title: context.l10n.p_train_journey_break_series,
-            constraints: BoxConstraints(),
-            child: BreakSeriesSelection(
-                availableBreakSeries: journey.metadata.availableBreakSeries,
-                selectedBreakSeries: settings.selectedBreakSeries ?? journey.metadata.breakSeries))
-        .then(
-      (newValue) => {
-        if (newValue != null) {trainJourneyCubit.updateBreakSeries(newValue)}
-      },
+    final selectedBreakSeries = await showSBBModalSheet<BreakSeries>(
+      context: context,
+      title: context.l10n.p_train_journey_break_series,
+      constraints: BoxConstraints(),
+      child: BreakSeriesSelection(
+        availableBreakSeries: journey.metadata.availableBreakSeries,
+        selectedBreakSeries: settings.selectedBreakSeries ?? journey.metadata.breakSeries,
+      ),
     );
+
+    if (selectedBreakSeries != null) {
+      trainJourneyCubit.updateBreakSeries(selectedBreakSeries);
+    }
+  }
+
+  bool _isCurvePointWithoutSpeed(BaseData data, Journey journey, TrainJourneySettings settings) {
+    final currentTrainSeries = settings.selectedBreakSeries?.trainSeries ?? journey.metadata.breakSeries?.trainSeries;
+    final currentBreakSeries = settings.selectedBreakSeries?.breakSeries ?? journey.metadata.breakSeries?.breakSeries;
+
+    return data.type == Datatype.curvePoint &&
+        data.localSpeedData?.speedsFor(currentTrainSeries, currentBreakSeries) == null;
   }
 }

@@ -22,6 +22,55 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey table test', () {
+    testWidgets('test find one curve is found when breakingSeries A50 is chosen', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T5');
+
+      // change breakseries to A50
+      await _selectBreakSeries(tester, breakSeries: 'A50');
+
+      // check if the breakseries A50 is chosen.
+      final breakingSeriesHeaderCell = find.byKey(TrainJourney.breakingSeriesHeaderKey);
+      expect(breakingSeriesHeaderCell, findsOneWidget);
+      expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('A50')), findsNWidgets(1));
+
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
+
+      final curveName = findDASTableRowByText(l10n.p_train_journey_table_curve_type_curve);
+      expect(curveName, findsOneWidget);
+
+      final curveIcon = find.descendant(of: curveName, matching: find.byKey(CurvePointRow.curvePointIconKey));
+      expect(curveIcon, findsOneWidget);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('test find two curves when breakingSeries R115 is chosen', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T5');
+
+      final scrollableFinder = find.byType(ListView);
+      expect(scrollableFinder, findsOneWidget);
+
+      // find and check if the default breakseries is chosen
+      final breakingSeriesHeaderCell = find.byKey(TrainJourney.breakingSeriesHeaderKey);
+      expect(breakingSeriesHeaderCell, findsOneWidget);
+      expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('R115')), findsNWidgets(1));
+
+      final curveName = findDASTableRowByText(l10n.p_train_journey_table_curve_type_curve);
+      expect(curveName, findsExactly(2));
+
+      final curveIcon = find.descendant(of: curveName, matching: find.byKey(CurvePointRow.curvePointIconKey));
+      expect(curveIcon, findsExactly(2));
+
+      await disconnect(tester);
+    });
+
     testWidgets('test balise multiple level crossings', (tester) async {
       await prepareAndStartApp(tester);
 
@@ -212,7 +261,6 @@ void main() {
         'Genève': '60',
         'New Line Speed A Missing': '60',
         '42.5': '44', // 2. Curve
-        '40.5': null, // 3. Curve
         'Gland': '60',
       };
 
@@ -220,13 +268,8 @@ void main() {
         final tableRow = findDASTableRowByText(entry.key);
         expect(tableRow, findsOneWidget);
 
-        if (entry.value != null) {
-          final speedText = find.descendant(of: tableRow, matching: find.text(entry.value!));
-          expect(speedText, findsOneWidget);
-        } else {
-          final textWidgets = find.descendant(of: tableRow, matching: find.byWidgetPredicate((it) => it is Text));
-          expect(textWidgets, findsNWidgets(2)); // KM and Kurve text widgets
-        }
+        final speedText = find.descendant(of: tableRow, matching: find.text(entry.value));
+        expect(speedText, findsOneWidget);
       }
 
       await disconnect(tester);
@@ -250,8 +293,6 @@ void main() {
         'New Line Speed All': '90',
         'Genève': 'XX',
         'New Line Speed A Missing': 'XX',
-        '42.5': 'XX', // 2. Curve
-        '40.5': null, // 3. Curve
         'Gland': '90',
       };
 
@@ -259,13 +300,8 @@ void main() {
         final tableRow = findDASTableRowByText(entry.key);
         expect(tableRow, findsOneWidget);
 
-        if (entry.value != null) {
-          final speedText = find.descendant(of: tableRow, matching: find.text(entry.value!));
-          expect(speedText, findsOneWidget);
-        } else {
-          final textWidgets = find.descendant(of: tableRow, matching: find.byWidgetPredicate((it) => it is Text));
-          expect(textWidgets, findsNWidgets(2)); // KM and Kurve text widgets
-        }
+        final speedText = find.descendant(of: tableRow, matching: find.text(entry.value));
+        expect(speedText, findsOneWidget);
       }
 
       await disconnect(tester);
@@ -1007,7 +1043,7 @@ Future<void> _selectBreakSeries(WidgetTester tester, {required String breakSerie
   // Open break series bottom sheet
   await tapElement(tester, find.byKey(TrainJourney.breakingSeriesHeaderKey));
 
-  // Check if the bottom sheeet is opened
+  // Check if the bottom sheet is opened
   expect(find.text(l10n.p_train_journey_break_series), findsOneWidget);
   await tapElement(tester, find.text(breakSeries));
 

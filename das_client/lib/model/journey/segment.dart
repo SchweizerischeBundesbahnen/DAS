@@ -1,5 +1,8 @@
 import 'package:das_client/util/comparators.dart';
+import 'package:meta/meta.dart';
 
+@sealed
+@immutable
 abstract class Segment implements Comparable {
   const Segment({
     this.startOrder,

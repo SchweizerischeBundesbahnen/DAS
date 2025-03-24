@@ -1,5 +1,48 @@
 # Changelog
 
+## [0.13.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.12.0...das_client-v0.13.0) (2025-03-21)
+
+
+### Features
+
+* day and night mode [#102](https://github.com/SchweizerischeBundesbahnen/DAS/issues/102) ([#682](https://github.com/SchweizerischeBundesbahnen/DAS/issues/682)) ([6f34475](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6f34475f528c9f96418eacc7764d4b418a9b0fad))
+
+
+### Bug Fixes
+
+* ux requested changes ([#725](https://github.com/SchweizerischeBundesbahnen/DAS/issues/725)) ([8b494fd](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8b494fda5626dda83a020d1b613f66aa84c63818))
+
+## [0.12.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.11.0...das_client-v0.12.0) (2025-03-18)
+
+
+### Features
+
+* added koa notification ([#624](https://github.com/SchweizerischeBundesbahnen/DAS/issues/624)) ([#688](https://github.com/SchweizerischeBundesbahnen/DAS/issues/688)) ([164b557](https://github.com/SchweizerischeBundesbahnen/DAS/commit/164b557ac3f824af3a1d77ce516f7c42847b9e67))
+* added reduced journey overview ([#626](https://github.com/SchweizerischeBundesbahnen/DAS/issues/626)) ([#691](https://github.com/SchweizerischeBundesbahnen/DAS/issues/691)) ([49adc47](https://github.com/SchweizerischeBundesbahnen/DAS/commit/49adc475b0bedfabf07730523145fcc69c91f369))
+* hide header while train is active ([#670](https://github.com/SchweizerischeBundesbahnen/DAS/issues/670)) ([#696](https://github.com/SchweizerischeBundesbahnen/DAS/issues/696)) ([57f2bd7](https://github.com/SchweizerischeBundesbahnen/DAS/commit/57f2bd7921e0546966010b9e7f13ff52127c1e0c))
+* updated koa sound ([dc1bdb6](https://github.com/SchweizerischeBundesbahnen/DAS/commit/dc1bdb6b4fac4343dc4edbded1c9f2d03242a4ee))
+
+
+### Bug Fixes
+
+* add sound to warnapp ([#708](https://github.com/SchweizerischeBundesbahnen/DAS/issues/708)) ([82d40b3](https://github.com/SchweizerischeBundesbahnen/DAS/commit/82d40b32fa1755199718cbcc1d9951269c1ce3c8))
+
+## [0.11.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.10.1...das_client-v0.11.0) (2025-03-11)
+
+
+### Features
+
+* added communication network change. ([#372](https://github.com/SchweizerischeBundesbahnen/DAS/issues/372)) ([#658](https://github.com/SchweizerischeBundesbahnen/DAS/issues/658)) ([a0ef624](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a0ef62444b73ca30bfc3f85b94d34ba13bc527ad))
+* added warn function modal sheet for ux testing. ([#623](https://github.com/SchweizerischeBundesbahnen/DAS/issues/623)) ([#679](https://github.com/SchweizerischeBundesbahnen/DAS/issues/679)) ([3d074d9](https://github.com/SchweizerischeBundesbahnen/DAS/commit/3d074d94a8823e36584a8088a408963404710f13))
+* curves and km-board without speed data ([#478](https://github.com/SchweizerischeBundesbahnen/DAS/issues/478)) ([#656](https://github.com/SchweizerischeBundesbahnen/DAS/issues/656)) ([2020764](https://github.com/SchweizerischeBundesbahnen/DAS/commit/2020764a51185a7de8a550a372ec16365422ef07))
+* implement session termination. ([#406](https://github.com/SchweizerischeBundesbahnen/DAS/issues/406)) ([#628](https://github.com/SchweizerischeBundesbahnen/DAS/issues/628)) ([4d0239d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4d0239d74c8681a8058220c9daf119f12c46eaba))
+* maneuver mode ([#646](https://github.com/SchweizerischeBundesbahnen/DAS/issues/646)) ([#680](https://github.com/SchweizerischeBundesbahnen/DAS/issues/680)) ([e4122a2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e4122a202545be307fe720d17fc2e1e38b0bcf3f))
+
+
+### Bug Fixes
+
+* correctly adjust current position to service point ([#676](https://github.com/SchweizerischeBundesbahnen/DAS/issues/676)) ([a3a3c8e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a3a3c8ec6e5280b13f4ca9dcdf4584655d987f8f))
+
 ## [0.10.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.10.0...das_client-v0.10.1) (2025-02-24)
 
 

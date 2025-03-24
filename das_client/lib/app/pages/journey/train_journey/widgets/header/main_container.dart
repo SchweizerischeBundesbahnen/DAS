@@ -1,7 +1,9 @@
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
+import 'package:das_client/app/extension/ru_extension.dart';
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/battery_status.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/departure_authorization.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/extended_menu.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_channel.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:das_client/app/widgets/assets.dart';
@@ -9,7 +11,10 @@ import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/model/journey/communication_network_change.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/metadata.dart';
+import 'package:das_client/theme/theme_provider.dart';
+import 'package:das_client/theme/theme_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -37,7 +42,7 @@ class MainContainer extends StatelessWidget {
               sbbDefaultSpacing * 0.5,
               0,
               sbbDefaultSpacing * 0.5,
-              sbbDefaultSpacing,
+              sbbDefaultSpacing / 2,
             ),
             padding: const EdgeInsets.all(sbbDefaultSpacing),
             useShadow: false,
@@ -47,27 +52,43 @@ class MainContainer extends StatelessWidget {
               children: [
                 _topHeaderRow(context, journey, settings),
                 _divider(),
-                _bottomHeaderRow(journey.metadata),
+                _bottomHeaderRow(context, journey.metadata),
               ],
             ),
           );
         });
   }
 
-  Widget _bottomHeaderRow(Metadata metadata) {
-    final communicationNetworkType = metadata.nextStop != null
-        ? metadata.communicationNetworkChanges.appliesToOrder(metadata.nextStop!.order)
+  Widget _bottomHeaderRow(BuildContext context, Metadata metadata) {
+    final communicationNetworkType = metadata.currentPosition != null
+        ? metadata.communicationNetworkChanges.appliesToOrder(metadata.currentPosition!.order)
         : null;
     return SizedBox(
       height: 48.0,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           RadioChannel(communicationNetworkType: communicationNetworkType),
           SizedBox(width: sbbDefaultSpacing * 0.5),
           DepartureAuthorization(),
           Spacer(),
+          _trainJourneyText(context),
           BatteryStatus(),
         ],
+      ),
+    );
+  }
+
+  Widget _trainJourneyText(BuildContext context) {
+    final state = context.trainJourneyCubit.state;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
+      child: Text(
+        state is TrainJourneyLoadedState
+            ? '${state.trainIdentification.trainNumber} ${state.trainIdentification.ru.displayText(context)}'
+            : '',
+        style: DASTextStyles.mediumRoman,
       ),
     );
   }
@@ -84,7 +105,10 @@ class MainContainer extends StatelessWidget {
       height: 48.0,
       child: Row(
         children: [
-          SvgPicture.asset(AppAssets.iconHeaderStop),
+          SvgPicture.asset(
+            AppAssets.iconHeaderStop,
+            colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
+          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(left: sbbDefaultSpacing * 0.5),
@@ -94,21 +118,26 @@ class MainContainer extends StatelessWidget {
               ),
             ),
           ),
-          _buttonArea(settings),
+          _buttonArea(settings, context),
         ],
       ),
     );
   }
 
-  Widget _buttonArea(TrainJourneySettings settings) {
+  Widget _buttonArea(TrainJourneySettings settings, BuildContext context) {
+    final themeManager = context.watch<ThemeProvider>();
+    final isDarkMode = ThemeUtil.isDarkMode(context);
+
     return Builder(builder: (context) {
       return Row(
         spacing: sbbDefaultSpacing * 0.5,
         children: [
           SBBTertiaryButtonLarge(
-            label: context.l10n.p_train_journey_header_button_dark_theme,
-            icon: SBBIcons.moon_small,
-            onPressed: () {},
+            label: isDarkMode
+                ? context.l10n.p_train_journey_header_button_light_theme
+                : context.l10n.p_train_journey_header_button_dark_theme,
+            icon: isDarkMode ? SBBIcons.sunshine_small : SBBIcons.moon_small,
+            onPressed: () => themeManager.toggleTheme(context),
           ),
           if (settings.automaticAdvancementActive)
             SBBTertiaryButtonLarge(
@@ -126,10 +155,7 @@ class MainContainer extends StatelessWidget {
                 context.trainJourneyCubit.setAutomaticAdvancement(true);
               },
             ),
-          SBBIconButtonLarge(
-            icon: SBBIcons.context_menu_small,
-            onPressed: () {},
-          ),
+          ExtendedMenu(),
         ],
       );
     });

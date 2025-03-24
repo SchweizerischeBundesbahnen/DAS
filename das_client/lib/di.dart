@@ -1,5 +1,7 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
+import 'package:das_client/app/bloc/ux_testing_cubit.dart';
 import 'package:das_client/auth/authentication_component.dart';
 import 'package:das_client/flavor.dart';
 import 'package:das_client/mqtt/mqtt_component.dart';
@@ -52,6 +54,7 @@ extension GetItX on GetIt {
     registerBackendService();
     registerBlocs();
     registerBattery();
+    registerAudioPlayer();
     await allReady();
   }
 
@@ -113,12 +116,15 @@ extension GetItX on GetIt {
   void registerSferaComponents({bool useTms = false}) {
     final flavor = get<Flavor>();
 
-    registerLazySingleton<SferaRepository>(() => SferaComponent.createRepository());
+    registerLazySingleton<SferaDatabaseRepository>(() => SferaComponent.createDatabaseRepository());
     registerLazySingleton<SferaAuthService>(() => SferaComponent.createSferaAuthService(
         authenticator: get(), tokenExchangeUrl: useTms ? flavor.tmsTokenExchangeUrl! : flavor.tokenExchangeUrl));
 
-    registerLazySingleton<SferaService>(
-        () => SferaComponent.createSferaService(mqttService: get(), sferaRepository: get(), authenticator: get()));
+    registerLazySingleton<SferaService>(() =>
+        SferaComponent.createSferaService(mqttService: get(), sferaDatabaseRepository: get(), authenticator: get()));
+
+    registerLazySingleton<SferaLocalService>(
+        () => SferaComponent.createSferaLocalService(sferaDatabaseRepository: get()));
   }
 
   void registerBackendService() {
@@ -130,9 +136,14 @@ extension GetItX on GetIt {
 
   void registerBlocs() {
     registerLazySingleton<TrainJourneyCubit>(() => TrainJourneyCubit(sferaService: get()));
+    registerLazySingleton<UxTestingCubit>(() => UxTestingCubit(sferaService: get())..initialize());
   }
 
   void registerBattery() {
     registerLazySingleton<Battery>(() => Battery());
+  }
+
+  void registerAudioPlayer() {
+    registerLazySingleton<AudioPlayer>(() => AudioPlayer());
   }
 }

@@ -1,3 +1,7 @@
+import 'package:meta/meta.dart';
+
+@sealed
+@immutable
 class BracketMainStation {
   const BracketMainStation({
     required this.countryCode,

@@ -13,24 +13,20 @@ final class SelectingTrainJourneyState extends TrainJourneyState {
 }
 
 abstract class BaseTrainJourneyState extends TrainJourneyState {
-  BaseTrainJourneyState(this.ru, this.trainNumber, this.date);
+  BaseTrainJourneyState(this.trainIdentification);
 
-  final Ru ru;
-  final String trainNumber;
-  final DateTime date;
+  final TrainIdentification trainIdentification;
 
   @override
   String toString() {
-    return '${runtimeType.toString()}(ru=$ru, trainNumber=$trainNumber, date=$date)';
+    return '${runtimeType.toString()}(trainIdentification=$trainIdentification)';
   }
 }
 
 final class ConnectingState extends BaseTrainJourneyState {
-  ConnectingState(super.ru, super.trainNumber, super.date);
+  ConnectingState(super.trainIdentification);
 }
 
 final class TrainJourneyLoadedState extends BaseTrainJourneyState {
-  TrainJourneyLoadedState(super.ru, super.trainNumber, super.date);
+  TrainJourneyLoadedState(super.trainIdentification);
 }
-
-

@@ -5,6 +5,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/
 import 'package:das_client/app/widgets/table/das_table_theme.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/track_equipment_segment.dart';
+import 'package:das_client/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -59,9 +60,9 @@ class TrackEquipmentCellBody extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _extSpeedLine(),
+          _extSpeedLine(context),
           SizedBox(width: 2.0),
-          _extSpeedLine(),
+          _extSpeedLine(context),
         ],
       ),
     );
@@ -73,7 +74,7 @@ class TrackEquipmentCellBody extends StatelessWidget {
       top: 0.0,
       left: 0.0,
       child: CustomPaint(
-        painter: _ConventionalExtendedSpeedBorderPainter(),
+        painter: _ConventionalExtendedSpeedBorderPainter(context: context),
       ),
     );
   }
@@ -84,14 +85,15 @@ class TrackEquipmentCellBody extends StatelessWidget {
       top: _calculateTop(height),
       bottom: _calculateBottom(context, height),
       left: 2.0,
-      child: _extSpeedLine(),
+      child: _extSpeedLine(context),
     );
   }
 
-  CustomPaint _extSpeedLine() {
+  CustomPaint _extSpeedLine(BuildContext context) {
     final width = 3.0;
     return CustomPaint(
       painter: _CumulativeDashedLinePainter(
+        context: context,
         cumulativeHeight: renderData.cumulativeHeight,
         dashHeights: [7.0],
         dashSpace: 5.0,
@@ -110,6 +112,7 @@ class TrackEquipmentCellBody extends StatelessWidget {
       left: 2.0,
       child: CustomPaint(
         painter: _CumulativeDashedLinePainter(
+          context: context,
           cumulativeHeight: renderData.cumulativeHeight,
           dashHeights: [3.0, 7.0],
           dashSpace: 5.0,
@@ -131,6 +134,7 @@ class TrackEquipmentCellBody extends StatelessWidget {
       child: CustomPaint(
         key: TrackEquipmentCellBody.conventionalSpeedReversingImpossibleKey,
         painter: _CumulativeDashedLinePainter(
+          context: context,
           cumulativeHeight: renderData.cumulativeHeight,
           dashHeights: [7.0],
           dashSpace: 5.0,
@@ -151,7 +155,7 @@ class TrackEquipmentCellBody extends StatelessWidget {
       left: 1.0,
       child: CustomPaint(
         key: TrackEquipmentCellBody.conventionalSpeedReversingImpossibleKey,
-        painter: _SingleTrackNoBlockPainter(cumulativeHeight: renderData.cumulativeHeight),
+        painter: _SingleTrackNoBlockPainter(cumulativeHeight: renderData.cumulativeHeight, context: context),
         child: SizedBox(height: double.infinity, width: width),
       ),
     );
@@ -188,13 +192,17 @@ class TrackEquipmentCellBody extends StatelessWidget {
 }
 
 class _ConventionalExtendedSpeedBorderPainter extends CustomPainter {
+  const _ConventionalExtendedSpeedBorderPainter({required this.context});
+
+  final BuildContext context;
+
   static const double height = 3.0;
   static const double width = 10.0;
 
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.black
+      ..color = ThemeUtil.getIconColor(context)
       ..style = PaintingStyle.fill;
 
     final rect = Rect.fromLTWH(0, 0, width, height);
@@ -209,6 +217,7 @@ class _ConventionalExtendedSpeedBorderPainter extends CustomPainter {
 
 class _CumulativeDashedLinePainter extends CustomPainter {
   _CumulativeDashedLinePainter({
+    required this.context,
     required this.cumulativeHeight,
     this.dashHeights = const [4.0],
     this.dashSpace = 4.0,
@@ -216,6 +225,7 @@ class _CumulativeDashedLinePainter extends CustomPainter {
     this.borderWidth,
   }) : assert(dashHeights.isNotEmpty);
 
+  final BuildContext context;
   final double cumulativeHeight;
   final List<double> dashHeights;
   final double dashSpace;
@@ -229,7 +239,7 @@ class _CumulativeDashedLinePainter extends CustomPainter {
     final offsetInPattern = cumulativeHeight % dashPatternLength;
 
     final paint = Paint()
-      ..color = Colors.black
+      ..color = ThemeUtil.getIconColor(context)
       ..strokeWidth = width;
 
     int dashIndex = 0;
@@ -253,7 +263,7 @@ class _CumulativeDashedLinePainter extends CustomPainter {
 
   void _drawBorder(Canvas canvas, Size size, double patternEndY) {
     final borderPaint = Paint()
-      ..color = Colors.black
+      ..color = ThemeUtil.getIconColor(context)
       ..strokeWidth = borderWidth!;
 
     final endY = max(size.height, patternEndY);
@@ -274,9 +284,10 @@ class _CumulativeDashedLinePainter extends CustomPainter {
 }
 
 class _SingleTrackNoBlockPainter extends CustomPainter {
-  _SingleTrackNoBlockPainter({required this.cumulativeHeight});
+  _SingleTrackNoBlockPainter({required this.cumulativeHeight, required this.context});
 
   final double cumulativeHeight;
+  final BuildContext context;
   static const double _strokeWidth = 3.0;
   static const double _dashHeight = 6.0;
   static const double _crossSize = 9.0;
@@ -289,7 +300,7 @@ class _SingleTrackNoBlockPainter extends CustomPainter {
     final offsetInPattern = cumulativeHeight % patternLength;
 
     final paint = Paint()
-      ..color = Colors.black
+      ..color = ThemeUtil.getIconColor(context)
       ..strokeWidth = _strokeWidth;
 
     var drawCross = false;

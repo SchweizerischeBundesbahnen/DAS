@@ -6,6 +6,7 @@ import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:das_client/model/journey/service_point.dart';
+import 'package:das_client/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -18,10 +19,13 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
   ServicePointRow({
     required super.metadata,
     required super.data,
+    required BuildContext context,
     super.height = rowHeight,
     super.config,
   }) : super(
-          rowColor: metadata.nextStop == data ? Color(0xFFCDD6E8) : SBBColors.white,
+          rowColor: metadata.nextStop == data
+              ? ThemeUtil.getColor(context, Color(0xFFCDD6E8), SBBColors.royal)
+              : ThemeUtil.getDASTableColor(context),
           isSticky: true,
         );
 
@@ -58,6 +62,7 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
       child: SvgPicture.asset(
         AppAssets.iconStopOnRequest,
         key: stopOnRequestKey,
+        colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
       ),
     );
   }
@@ -70,7 +75,6 @@ class ServicePointRow extends BaseRowBuilder<ServicePoint> {
       alignment: null,
       clipBehaviour: Clip.none,
       child: RouteCellBody(
-        metadata: metadata,
         isStop: data.isStop,
         isCurrentPosition: metadata.currentPosition == data,
         isRouteStart: metadata.routeStart == data,

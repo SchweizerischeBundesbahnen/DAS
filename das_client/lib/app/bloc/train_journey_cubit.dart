@@ -1,10 +1,11 @@
 import 'dart:async';
 
-import 'package:das_client/app/model/ru.dart';
 import 'package:das_client/app/pages/journey/train_journey/automatic_advancement_controller.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/journey.dart';
+import 'package:das_client/model/ru.dart';
+import 'package:das_client/model/train_identification.dart';
 import 'package:das_client/sfera/sfera_component.dart';
 import 'package:das_client/util/error_code.dart';
 import 'package:fimber/fimber.dart';
@@ -28,6 +29,8 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
 
   Stream<TrainJourneySettings> get settingsStream => _settingsSubject.stream;
 
+  TrainJourneySettings get settings => _settingsSubject.value;
+
   StreamSubscription? _stateSubscription;
 
   AutomaticAdvancementController automaticAdvancementController = AutomaticAdvancementController();
@@ -44,19 +47,20 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
         return;
       }
 
-      emit(ConnectingState(ru, trainNumber, currentState.date));
+      final trainIdentification = TrainIdentification(ru: ru, trainNumber: trainNumber, date: date);
+      emit(ConnectingState(trainIdentification));
       _stateSubscription?.cancel();
       _stateSubscription = _sferaService.stateStream.listen((state) {
         switch (state) {
           case SferaServiceState.connected:
             automaticAdvancementController = AutomaticAdvancementController();
-            emit(TrainJourneyLoadedState(ru, trainNumber, date));
+            emit(TrainJourneyLoadedState(trainIdentification));
             break;
           case SferaServiceState.connecting:
           case SferaServiceState.handshaking:
           case SferaServiceState.loadingJourney:
           case SferaServiceState.loadingAdditionalData:
-            emit(ConnectingState(ru, trainNumber, date));
+            emit(ConnectingState(trainIdentification));
             break;
           case SferaServiceState.disconnected:
           case SferaServiceState.offline:
@@ -107,16 +111,21 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
     if (state is BaseTrainJourneyState) {
       Fimber.i('Resetting TrainJourney cubit in state $state');
       _sferaService.disconnect();
+      final trainIdentification = (state as BaseTrainJourneyState).trainIdentification;
       emit(SelectingTrainJourneyState(
-          trainNumber: (state as BaseTrainJourneyState).trainNumber,
-          date: DateTime.now(),
-          ru: (state as BaseTrainJourneyState).ru));
+        trainNumber: trainIdentification.trainNumber,
+        date: DateTime.now(),
+        ru: trainIdentification.ru,
+      ));
     }
   }
 
-  void dispose() {
+  @override
+  Future<void> close() {
     _stateSubscription?.cancel();
     _stateSubscription = null;
+
+    return super.close();
   }
 
   void updateBreakSeries(BreakSeries selectedBreakSeries) {
@@ -133,6 +142,11 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
       automaticAdvancementController.scrollToCurrentPosition();
     }
     _settingsSubject.add(_settingsSubject.value.copyWith(automaticAdvancementActive: active));
+  }
+
+  void setManeuverMode(bool active) {
+    Fimber.i('Maneuver mode state changed to active=$active');
+    _settingsSubject.add(_settingsSubject.value.copyWith(maneuverMode: active));
   }
 }
 

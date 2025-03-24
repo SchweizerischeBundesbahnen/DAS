@@ -1,5 +1,6 @@
 import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/app/widgets/table/das_table_theme.dart';
+import 'package:das_client/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -32,7 +33,11 @@ class BracketStationCellBody extends StatelessWidget {
             key: bracketStationKey,
             height: height,
             width: _bracketStationWidth,
-            color: SBBColors.black,
+            color: ThemeUtil.getColor(
+              context,
+              SBBColors.black,
+              SBBColors.white,
+            ),
             child: Align(
               alignment: Alignment.center,
               child: RotatedBox(
@@ -40,7 +45,7 @@ class BracketStationCellBody extends StatelessWidget {
                 child: Text(
                   stationAbbreviation ?? '',
                   style: DASTextStyles.extraSmallBold.copyWith(
-                    color: SBBColors.white,
+                    color: ThemeUtil.getFontColor(context),
                     fontSize: _bracketStationFontSize,
                     height: _bracketStationWidth / _bracketStationFontSize,
                   ),
