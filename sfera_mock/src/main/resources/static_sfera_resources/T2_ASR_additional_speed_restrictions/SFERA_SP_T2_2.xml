@@ -74,7 +74,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3007</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Yverdon-les-Bains</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Yverdon-les-Bains"/>
         </TAF_TAP_Location>
 
@@ -83,7 +85,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3008</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Onnens-Bonvillars</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Onnens-Bonvillars"/>
         </TAF_TAP_Location>
 
@@ -92,7 +96,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3009</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Neuchâtel</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Neuchâtel"/>
         </TAF_TAP_Location>
 
@@ -101,7 +107,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3010</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Biel/Bienne</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Biel/Bienne"/>
         </TAF_TAP_Location>
 
@@ -110,7 +118,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3011</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Lengnau</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Lengnau"/>
         </TAF_TAP_Location>
 
@@ -119,7 +129,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3012</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Grenchen Süd</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Grenchen Süd"/>
         </TAF_TAP_Location>
 
@@ -128,7 +140,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3013</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Solothurn</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Solothurn"/>
         </TAF_TAP_Location>
     </SP_Areas>

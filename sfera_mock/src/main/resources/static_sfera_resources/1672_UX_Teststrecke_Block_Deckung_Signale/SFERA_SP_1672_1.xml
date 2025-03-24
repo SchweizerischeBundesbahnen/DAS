@@ -271,7 +271,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00001</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Graftal</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!-- todo: remove -->
             <TAF_TAP_LocationName language="de" text="Graftal"/>
 
             <TAF_TAP_Location_NSP>
@@ -298,7 +300,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00002</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Fischerz</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!-- todo: remove -->
             <TAF_TAP_LocationName language="de" text="Fischerz"/>
 
             <TAF_TAP_Location_NSP>
@@ -325,7 +329,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00003</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Twinn</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!-- todo: remove -->
             <TAF_TAP_LocationName language="de" text="Twinn"/>
 
             <TAF_TAP_Location_NSP>
@@ -362,7 +368,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00004</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Hoferz</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!-- todo: remove -->
             <TAF_TAP_LocationName language="de" text="Hoferz"/>
 
             <TAF_TAP_Location_NSP>
@@ -401,7 +409,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00005</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Schonberg</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!-- todo: remove -->
             <TAF_TAP_LocationName language="de" text="Schonberg"/>
 
             <TAF_TAP_Location_NSP>
@@ -440,7 +450,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00006</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Baumen</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!-- todo: remove -->
             <TAF_TAP_LocationName language="de" text="Baumen"/>
 
             <TAF_TAP_Location_NSP>
@@ -489,7 +501,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00007</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Sennbach</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!-- todo: remove -->
             <TAF_TAP_LocationName language="de" text="Sennbach"/>
 
             <TAF_TAP_Location_NSP>
@@ -516,7 +530,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00008</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Lüthisberg</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!-- todo: remove -->
             <TAF_TAP_LocationName language="de" text="Lüthisberg"/>
 
             <TAF_TAP_Location_NSP>
@@ -543,7 +559,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00009</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Helmaiche</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!-- todo: remove -->
             <TAF_TAP_LocationName language="de" text="Helmaiche"/>
 
             <TAF_TAP_Location_NSP>
@@ -580,7 +598,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00010</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Haenniez</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!-- todo: remove -->
             <TAF_TAP_LocationName language="de" text="Haenniez"/>
 
             <TAF_TAP_Location_NSP>
@@ -607,7 +627,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00011</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Schmidigen</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!-- todo: remove -->
             <TAF_TAP_LocationName language="de" text="Schmidigen"/>
 
             <TAF_TAP_Location_NSP>

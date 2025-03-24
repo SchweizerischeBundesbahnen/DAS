@@ -54,7 +54,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>8308</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Meiringen</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Meiringen"/>
         </TAF_TAP_Location>
 
@@ -63,7 +65,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>0799</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Meiringen Alpbach</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Meiringen Alpbach"/>
         </TAF_TAP_Location>
 
@@ -72,7 +76,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>0209</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Aareschlucht West</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Aareschlucht West"/>
         </TAF_TAP_Location>
 
@@ -81,7 +87,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>0800</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Innertkirchen Unterwasser</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Innertkirchen Unterwasser"/>
         </TAF_TAP_Location>
 

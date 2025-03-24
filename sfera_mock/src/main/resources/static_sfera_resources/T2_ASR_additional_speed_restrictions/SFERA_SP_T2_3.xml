@@ -95,7 +95,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3014</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>WANZ</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="WANZ"/>
         </TAF_TAP_Location>
 
@@ -104,7 +106,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3015</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Rothrist</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Rothrist"/>
         </TAF_TAP_Location>
 
@@ -113,7 +117,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3016</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Olten</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Olten"/>
         </TAF_TAP_Location>
 
@@ -122,7 +128,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3017</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Aarau</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Aarau"/>
         </TAF_TAP_Location>
 
@@ -131,7 +139,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3018</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Mellingen Heitersberg</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Mellingen Heitersberg"/>
         </TAF_TAP_Location>
 
@@ -140,7 +150,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3019</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Killwangen-S.</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Killwangen-S."/>
         </TAF_TAP_Location>
 
@@ -149,7 +161,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3020</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Zürich HB</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Zürich HB"/>
         </TAF_TAP_Location>
 
@@ -158,7 +172,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3021</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Opfikon Süd</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Opfikon Süd"/>
         </TAF_TAP_Location>
 
@@ -167,7 +183,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3022</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Flughafen</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Flughafen"/>
         </TAF_TAP_Location>
     </SP_Areas>

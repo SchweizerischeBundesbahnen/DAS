@@ -29,7 +29,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>2125</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Wöschnau</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!-- todo: remove -->
             <TAF_TAP_LocationName language="de" text="Wöschnau"/>
 
             <TAF_TAP_Location_NSP>

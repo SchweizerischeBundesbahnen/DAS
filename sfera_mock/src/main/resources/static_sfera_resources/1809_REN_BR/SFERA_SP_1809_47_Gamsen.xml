@@ -69,7 +69,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>1606</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Gamsen</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Gamsen"/>
 
             <TAF_TAP_Location_NSP>

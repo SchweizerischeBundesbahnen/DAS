@@ -25,7 +25,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3000</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Zürich HB</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Zürich HB"/>
         </TAF_TAP_Location>
 
@@ -34,7 +36,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3001</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Hardbrücke</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Hardbrücke"/>
         </TAF_TAP_Location>
     </SP_Areas>

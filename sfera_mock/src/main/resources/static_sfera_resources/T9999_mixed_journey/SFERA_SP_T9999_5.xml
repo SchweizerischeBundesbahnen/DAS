@@ -32,7 +32,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>9995</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Klammerbahnhof D1</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Klammerbahnhof D1"/>
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
@@ -55,7 +57,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>9996</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Bahnhof E</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Bahnhof E"/>
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>

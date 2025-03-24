@@ -36,7 +36,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>2119</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Lenzburg</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Lenzburg"/>
 
             <TAF_TAP_Location_NSP>

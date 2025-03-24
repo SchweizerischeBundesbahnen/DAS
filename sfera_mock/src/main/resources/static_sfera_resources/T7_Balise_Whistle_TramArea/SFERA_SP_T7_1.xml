@@ -57,7 +57,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3002</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Lenzburg</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Lenzburg"/>
         </TAF_TAP_Location>
 
@@ -66,7 +68,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3003</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Seon Nord</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Seon Nord"/>
         </TAF_TAP_Location>
 
@@ -75,7 +79,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3004</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>WANZ</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="WANZ"/>
         </TAF_TAP_Location>
 
@@ -84,7 +90,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3005</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Rothrist</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Rothrist"/>
         </TAF_TAP_Location>
 

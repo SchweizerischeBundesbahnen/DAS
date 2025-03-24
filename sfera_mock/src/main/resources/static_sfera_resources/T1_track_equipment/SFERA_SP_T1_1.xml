@@ -52,7 +52,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3002</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Genève-Aéroport</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Genève-Aéroport"/>
         </TAF_TAP_Location>
 
@@ -61,7 +63,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3003</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Genève</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Genève"/>
         </TAF_TAP_Location>
 
@@ -70,7 +74,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3004</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Gland</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Gland"/>
         </TAF_TAP_Location>
 
@@ -79,7 +85,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3005</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Gilly-Bursinel</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Gilly-Bursinel"/>
         </TAF_TAP_Location>
 

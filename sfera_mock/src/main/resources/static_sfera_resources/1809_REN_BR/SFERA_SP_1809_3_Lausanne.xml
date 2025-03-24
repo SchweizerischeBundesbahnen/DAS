@@ -69,7 +69,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>1120</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Lausanne</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Lausanne"/>
 
             <TAF_TAP_Location_NSP>

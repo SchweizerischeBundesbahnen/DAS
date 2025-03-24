@@ -40,7 +40,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3006</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Morges</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Morges"/>
         </TAF_TAP_Location>
 
@@ -49,7 +51,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3007</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Yverdon-les-Bains</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Yverdon-les-Bains"/>
         </TAF_TAP_Location>
 
@@ -58,7 +62,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3008</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Onnens-Bonvillars</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Onnens-Bonvillars"/>
         </TAF_TAP_Location>
 
@@ -67,7 +73,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3009</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Neuchâtel</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Neuchâtel"/>
         </TAF_TAP_Location>
 

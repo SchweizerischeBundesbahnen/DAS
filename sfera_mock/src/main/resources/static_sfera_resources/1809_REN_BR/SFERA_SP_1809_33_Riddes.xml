@@ -35,7 +35,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>1503</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Riddes</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Riddes"/>
 
             <TAF_TAP_Location_NSP>

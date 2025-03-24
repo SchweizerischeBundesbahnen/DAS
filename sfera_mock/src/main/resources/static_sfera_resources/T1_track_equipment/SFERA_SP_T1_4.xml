@@ -51,7 +51,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3014</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>WANZ</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="WANZ"/>
         </TAF_TAP_Location>
 
@@ -60,7 +62,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3015</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Rothrist</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Rothrist"/>
         </TAF_TAP_Location>
 
@@ -69,7 +73,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3016</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Olten</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Olten"/>
         </TAF_TAP_Location>
 
@@ -78,7 +84,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3017</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Aarau</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Aarau"/>
         </TAF_TAP_Location>
 

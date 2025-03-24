@@ -54,7 +54,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>0207</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Solothurn</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Solothurn"/>
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
@@ -69,7 +71,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>0208</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Solothurn West</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Solothurn West"/>
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
@@ -84,7 +88,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>0209</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Langendorf</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Langendorf"/>
         </TAF_TAP_Location>
 
@@ -93,7 +99,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>0210</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Lommiswil</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Lommiswil"/>
         </TAF_TAP_Location>
 
@@ -102,7 +110,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>0211</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Im Holz</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Im Holz"/>
         </TAF_TAP_Location>
 
@@ -111,7 +121,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>0212</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Oberdorf SO</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Oberdorf SO"/>
         </TAF_TAP_Location>
     </SP_Areas>

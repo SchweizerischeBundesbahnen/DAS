@@ -47,7 +47,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3018</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Mellingen Heitersberg</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Mellingen Heitersberg"/>
         </TAF_TAP_Location>
 
@@ -56,7 +58,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3019</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Killwangen-S.</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Killwangen-S."/>
         </TAF_TAP_Location>
 
@@ -65,7 +69,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3020</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Zürich HB</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Zürich HB"/>
         </TAF_TAP_Location>
 
@@ -74,7 +80,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3021</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Opfikon Süd</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Opfikon Süd"/>
         </TAF_TAP_Location>
 
@@ -83,7 +91,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3022</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Flughafen</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Flughafen"/>
         </TAF_TAP_Location>
 
