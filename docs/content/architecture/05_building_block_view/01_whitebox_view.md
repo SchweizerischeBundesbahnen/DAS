@@ -31,6 +31,5 @@ The architecture of the SBB implementation of `DAS-Client` and `SFERA protocol` 
 | IM DAS-TS     | TMS::VAD      |  
 | RU DAS-OB     | DAS-Client    |  
 
-Other blue components represent a best known goal in the near future and may be concretised over time.
-
-![Building blocks (whitebox overview)](das-buildingBlocks_whiteboxOverview.drawio.svg)
+Other blue components represent a best known goal in the near future and may be concretised over time:
+![Building blocks (whitebox overview)](das-buildingBlocks_whiteboxOverview.png)
