@@ -10,7 +10,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3001</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Bern"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Wankdorf" location="1000">
@@ -18,7 +17,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3002</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Wankdorf"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Burgdorf" location="1500">
@@ -26,7 +24,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3003</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Burgdorf"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Olten" location="2000">
@@ -34,7 +31,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3004</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Olten"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Zuerich" location="2500">
@@ -42,7 +38,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3005</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Zuerich"/>
         </TimingPoint>
 
     </SP_Points>

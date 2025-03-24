@@ -12,7 +12,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>2113</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="AA"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Aarau_GB" location="800">
@@ -20,7 +19,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>2136</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="AAGB"/>
         </TimingPoint>
 
         <Signal>

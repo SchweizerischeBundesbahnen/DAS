@@ -10,7 +10,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>8308</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="MR"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Meiringen_Alpbach" location="1000">
@@ -18,7 +17,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>0799</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="MRAB"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Aareschlucht_West" location="1500">
@@ -26,7 +24,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>0209</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="MRSS"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Innertkirchen_Unterwasser" location="2000">
@@ -34,7 +31,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>0800</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="INUN"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Innertkirchen_Grimseltor" location="2500">
@@ -42,7 +38,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>8395</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="INNP"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Innertkirchen_Kraftwerk" location="3000">
@@ -50,7 +45,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>8359</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="INN"/>
         </TimingPoint>
     </SP_Points>
 

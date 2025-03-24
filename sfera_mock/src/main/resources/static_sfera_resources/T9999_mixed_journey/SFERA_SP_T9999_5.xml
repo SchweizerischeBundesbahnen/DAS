@@ -11,14 +11,12 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>9995</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="D1"/>
         </TimingPoint>
         <TimingPoint TP_ID="Bahnhof_E" location="800">
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>9996</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="E"/>
         </TimingPoint>
         <Signal>
             <Signal_ID signal_ID_Physical="7" location="600"/>

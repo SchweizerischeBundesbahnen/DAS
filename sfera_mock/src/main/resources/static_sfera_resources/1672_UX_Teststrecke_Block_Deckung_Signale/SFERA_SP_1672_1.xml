@@ -12,7 +12,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00001</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="GR"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Fischerz" location="5300">
@@ -20,7 +19,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00002</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="FI"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Twinn" location="9100">
@@ -28,7 +26,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00003</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="TW"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Hoferz" location="11200">
@@ -36,7 +33,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00004</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="HO"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Schonberg" location="14700">
@@ -44,7 +40,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00005</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="SC"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Baumen" location="17600">
@@ -52,7 +47,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00006</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="BA"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Sennbach" location="20600">
@@ -60,7 +54,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00007</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="SE"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Luethisberg" location="23900">
@@ -68,7 +61,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00008</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="LU"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Helmaiche" location="28800">
@@ -76,7 +68,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00009</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="HE"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Haenniez" location="31000">
@@ -84,7 +75,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00010</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="HA"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Schmidigen" location="33800">
@@ -92,9 +82,7 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00011</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="SD"/>
         </TimingPoint>
-
 
 
         <Signal>
@@ -102,7 +90,7 @@
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="S24"/>
         </Signal>
-		
+
         <Signal>
             <Signal_ID signal_ID_Physical="S23" location="2170"/>
             <SignalFunction>block</SignalFunction>
@@ -113,7 +101,7 @@
             <Signal_ID signal_ID_Physical="S22" location="3350"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="S22"/>
-        </Signal>		
+        </Signal>
 
         <Signal>
             <Signal_ID signal_ID_Physical="A1" location="11100"/>
@@ -696,7 +684,7 @@
         </KilometreReferencePoint>
         <KilometreReferencePoint location="3350">
             <KM_Reference kmRef="38.75"/>
-        </KilometreReferencePoint>		
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="5300">
             <KM_Reference kmRef="36.8"/>
         </KilometreReferencePoint>
@@ -780,7 +768,7 @@
         </KilometreReferencePoint>
         <KilometreReferencePoint location="18900">
             <KM_Reference kmRef="23.2"/>
-        </KilometreReferencePoint>        
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="19100">
             <KM_Reference kmRef="23.0"/>
         </KilometreReferencePoint>

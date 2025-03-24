@@ -10,7 +10,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3002</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Genève-Aéroport"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Genève" location="1000">
@@ -18,7 +17,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3003</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Genève"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Gland" location="1500">
@@ -26,7 +24,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3004</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Gland"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Gilly-Bursinel" location="2000">
@@ -34,7 +31,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3005</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Gilly-Bursinel"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Morges" location="2500">
@@ -42,7 +38,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3006</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Morges"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Yverdon-les-Bains" location="3000">
@@ -50,7 +45,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3007</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Yverdon-les-Bains"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Onnens-Bonvillars" location="3500">
@@ -58,7 +52,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3008</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Onnens-Bonvillars"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Neuchâtel" location="4000">
@@ -66,7 +59,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3009</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Neuchâtel"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Biel/Bienne" location="4500">
@@ -74,7 +66,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3010</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Biel/Bienne"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Lengnau" location="5000">
@@ -82,7 +73,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3011</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Lengnau"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Grenchen Süd" location="5500">
@@ -90,7 +80,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3012</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Grenchen Süd"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Solothurn" location="6000">
@@ -98,7 +87,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3013</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Solothurn"/>
         </TimingPoint>
 
         <NetworkSpecificPoint location="4400">
