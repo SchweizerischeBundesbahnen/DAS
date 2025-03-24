@@ -48,6 +48,7 @@ class ReducedTrainJourney extends StatelessWidget {
       columns: _columns(context),
       rows: _rows(context, metadata, data).map((it) => it.build(context)).toList(),
       addBottomSpacer: false,
+      alignToItem: false,
     );
   }
 
