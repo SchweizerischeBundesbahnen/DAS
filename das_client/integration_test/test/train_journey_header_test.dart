@@ -50,7 +50,7 @@ void main() {
 
       final brightness = SBBBaseStyle.of(context).brightness;
 
-      if(brightness != Brightness.dark){
+      if (brightness != Brightness.dark) {
         final nightMode = find.descendant(
           of: header,
           matching: find.widgetWithText(SBBTertiaryButtonLarge, 'Nachtmodus'),

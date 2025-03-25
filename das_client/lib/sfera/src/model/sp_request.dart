@@ -6,7 +6,8 @@ class SpRequest extends SferaXmlElement {
 
   SpRequest({super.type = elementType, super.attributes, super.children, super.value});
 
-  factory SpRequest.create({required String id, required String versionMajor, required String versionMinor, required SpZone spZone}) {
+  factory SpRequest.create(
+      {required String id, required String versionMajor, required String versionMinor, required SpZone spZone}) {
     final request = SpRequest();
     request.attributes['SP_ID'] = id;
     request.attributes['SP_VersionMajor'] = versionMajor;

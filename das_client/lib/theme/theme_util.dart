@@ -10,19 +10,19 @@ class ThemeUtil {
     return SBBBaseStyle.of(context).themeValue(bright, dark);
   }
 
-  static Color getDASTableColor(BuildContext context){
+  static Color getDASTableColor(BuildContext context) {
     return SBBBaseStyle.of(context).themeValue(SBBColors.white, SBBColors.charcoal);
   }
 
-  static Color getDASTableBorderColor(BuildContext context){
+  static Color getDASTableBorderColor(BuildContext context) {
     return SBBBaseStyle.of(context).themeValue(SBBColors.cloud, SBBColors.iron);
   }
 
-  static Color getFontColor(BuildContext context){
+  static Color getFontColor(BuildContext context) {
     return SBBBaseStyle.of(context).themeValue(SBBColors.white, SBBColors.charcoal);
   }
 
-  static bool isDarkMode(BuildContext context){
+  static bool isDarkMode(BuildContext context) {
     return SBBBaseStyle.of(context).brightness == Brightness.dark;
   }
 }

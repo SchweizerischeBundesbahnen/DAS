@@ -29,20 +29,35 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+
     - uses: actions/checkout@v4
+
     - uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
         java-version: '17'
         cache: 'gradle'
+
     - uses: subosito/flutter-action@v2
       with:
         flutter-version: '3.27.1'
         cache: true
-    - name: Prepare Flutter Build
-      run: |
-        flutter pub get
-        flutter pub run build_runner build --delete-conflicting-outputs   
-    - run: flutter analyze 
-    - run: flutter pub run custom_lint --no-fatal-infos
-    - run: flutter test
+
+    - name: Get dependencies
+      run: flutter pub get
+
+    - name: Src generation
+      run: flutter pub run build_runner build --delete-conflicting-outputs
+
+    - name: Format check with line length 120
+      run: dart format -l 120 -o none --set-exit-if-changed .
+
+    - name: Flutter analyze
+      run: flutter analyze
+
+    - name: Custom linter
+      run: flutter pub run custom_lint --no-fatal-infos
+
+    - name: Flutter test
+      run: flutter test
+

@@ -90,7 +90,6 @@ void main() {
       expect(yesterdayDateTextFinder, findsOneWidget);
       final warningMessage = find.text(l10n.p_train_selection_date_not_today_warning);
       expect(warningMessage, findsOneWidget);
-
     });
 
     testWidgets('test can not select day before yesterday', (tester) async {

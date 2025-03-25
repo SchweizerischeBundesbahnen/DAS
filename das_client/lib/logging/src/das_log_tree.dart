@@ -64,8 +64,7 @@ class DasLogTree extends LogTree {
     }
     if (stacktrace != null) {
       final tmpStacktrace = stacktrace.toString().split('\n');
-      final stackTraceMessage =
-      tmpStacktrace.map((stackLine) => '\t$stackLine').join('\n');
+      final stackTraceMessage = tmpStacktrace.map((stackLine) => '\t$stackLine').join('\n');
       messageBuilder.write('\n$stackTraceMessage');
     }
 
