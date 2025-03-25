@@ -87,12 +87,6 @@
         </Signal>
 
         <Signal>
-            <Signal_ID signal_ID_Physical="A1" location="11100"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A1"/>
-        </Signal>
-
-        <Signal>
             <Signal_ID signal_ID_Physical="P15" location="10120"/>
             <SignalFunction>protection</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="P15"/>
@@ -105,21 +99,9 @@
         </Signal>
 
         <Signal>
-            <Signal_ID signal_ID_Physical="A2" location="13600"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A2"/>
-        </Signal>
-
-        <Signal>
             <Signal_ID signal_ID_Physical="D28" location="13860"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="D28"/>
-        </Signal>
-
-        <Signal>
-            <Signal_ID signal_ID_Physical="A3" location="14300"/>
-            <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A3"/>
         </Signal>
 
         <Signal>
@@ -132,12 +114,6 @@
             <Signal_ID signal_ID_Physical="B14" location="15230"/>
             <SignalFunction>exit</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="B14"/>
-        </Signal>
-
-        <Signal>
-            <Signal_ID signal_ID_Physical="A4" location="15600"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A4"/>
         </Signal>
 
         <Signal>
@@ -159,18 +135,6 @@
         </Signal>
 
         <Signal>
-            <Signal_ID signal_ID_Physical="A5" location="18300"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A5"/>
-        </Signal>
-
-        <Signal>
-            <Signal_ID signal_ID_Physical="A6" location="18900"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A6"/>
-        </Signal>
-
-        <Signal>
             <Signal_ID signal_ID_Physical="D507" location="19780"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="D507"/>
@@ -189,21 +153,9 @@
         </Signal>
 
         <Signal>
-            <Signal_ID signal_ID_Physical="A8" location="21200"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A8"/>
-        </Signal>
-
-        <Signal>
             <Signal_ID signal_ID_Physical="D505" location="22920"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="D505"/>
-        </Signal>
-
-        <Signal>
-            <Signal_ID signal_ID_Physical="A9" location="23400"/>
-            <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A9"/>
         </Signal>
 
         <Signal>
