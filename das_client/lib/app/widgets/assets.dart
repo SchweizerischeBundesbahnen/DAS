@@ -29,7 +29,6 @@ class AppAssets {
   // others
   static const imageTypeNSignalStop = '$_othersDir/type_n_signal_stop.svg';
   static const shapeMenuArrow = '$_othersDir/shape_menu_arrow.svg';
-  static const staffFemaleLight = '$_othersDir/staff_female_light.svg';
 
   // audio
   static const soundKoaWaitCanceled = '$_soundsDir/koa_wait_canceled.mp3';
