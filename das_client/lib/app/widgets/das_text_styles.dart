@@ -68,5 +68,15 @@ class DASTextStyles {
 
   static const TextStyle smallLight = SBBTextStyles.smallLight;
 
+  static const TextStyle smallBold = SBBTextStyles.smallBold;
+
+  static const TextStyle smallRoman = TextStyle(
+    fontSize: SBBTextStyles.smallFontSize,
+    height: SBBTextStyles.smallFontHeight,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    fontFamily: SBBFontFamily.sbbFontRoman,
+  );
+
   static const TextStyle extraSmallBold = SBBTextStyles.extraSmallBold;
 }

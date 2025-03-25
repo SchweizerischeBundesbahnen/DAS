@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_row_builder.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
+import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,12 +17,12 @@ class AutomaticAdvancementController {
   final ScrollController scrollController;
   Journey? _currentJourney;
   TrainJourneySettings? _settings;
-  List<BaseRowBuilder> _renderedRows = [];
+  List<DASTableRowBuilder> _renderedRows = [];
   Timer? _scrollTimer;
   double? _lastScrollPosition;
   DateTime? _lastTouch;
 
-  void updateRenderedRows(List<BaseRowBuilder> rows) {
+  void updateRenderedRows(List<DASTableRowBuilder> rows) {
     _renderedRows = rows;
   }
 

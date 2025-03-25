@@ -20,33 +20,31 @@ import 'package:das_client/model/journey/track_equipment_segment.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
+class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
   static const double rowHeight = 44.0;
 
-  const BaseRowBuilder({
+  const CellRowBuilder({
     required this.metadata,
-    required this.data,
+    required super.data,
     super.height = rowHeight,
+    super.isSticky = false,
     this.config = const TrainJourneyConfig(),
     this.defaultAlignment = Alignment.bottomCenter,
     this.rowColor,
     this.onTap,
     this.isGrouped = false,
-    this.isSticky = false,
   });
 
   final Alignment defaultAlignment;
   final Color? rowColor;
   final Metadata metadata;
-  final T data;
   final TrainJourneyConfig config;
   final VoidCallback? onTap;
   final bool isGrouped;
-  final bool isSticky;
 
   @override
   DASTableRow build(BuildContext context) {
-    return DASTableRow(
+    return DASTableCellRow(
       height: height,
       color: rowColor,
       onTap: onTap,
@@ -227,7 +225,7 @@ class BaseRowBuilder<T extends BaseData> extends DASTableRowBuilder {
       case Datatype.servicePoint:
         return ServicePointRow.rowHeight;
       default:
-        return BaseRowBuilder.rowHeight;
+        return CellRowBuilder.rowHeight;
     }
   }
 }
