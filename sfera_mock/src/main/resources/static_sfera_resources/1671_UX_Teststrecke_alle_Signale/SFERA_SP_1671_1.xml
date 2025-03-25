@@ -147,12 +147,6 @@
         </Signal>
 
         <Signal>
-            <Signal_ID signal_ID_Physical="A7" location="20580"/>
-            <SignalFunction>entry</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A7"/>
-        </Signal>
-
-        <Signal>
             <Signal_ID signal_ID_Physical="D505" location="22920"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="D505"/>
