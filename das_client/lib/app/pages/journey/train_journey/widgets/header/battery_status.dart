@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:battery_plus/battery_plus.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/battery_modal_sheet.dart';
 import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/di.dart';
 import 'package:fimber/fimber.dart';
@@ -50,11 +51,20 @@ class _BatteryStatusState extends State<BatteryStatus> {
 
   @override
   Widget build(BuildContext context) {
-    return _batteryLevel != null && _batteryLevel! <= 15
-        ? SvgPicture.asset(
-            key: BatteryStatus.batteryLevelLowIconKey,
-            AppAssets.iconBatteryStatusLow,
-          )
-        : Container();
+    return _batteryLevel != null && _batteryLevel! <= 15 ? _batteryIcon() : Container();
+  }
+
+  Widget _batteryIcon() {
+    return GestureDetector(
+      onTap: () => _openBatteryBottomSheet(context),
+      child: SvgPicture.asset(
+        key: BatteryStatus.batteryLevelLowIconKey,
+        AppAssets.iconBatteryStatusLow,
+      ),
+    );
+  }
+
+  void _openBatteryBottomSheet(BuildContext context) async {
+    await showBatteryModalSheet(context);
   }
 }

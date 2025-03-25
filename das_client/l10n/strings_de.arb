@@ -73,5 +73,7 @@
   "c_button_confirm": "Übernehmen",
   "w_modal_sheet_warn_function_stop_message": "Halt!",
   "w_modal_sheet_warn_function_manoeuvre_button": "Manövrieren",
-  "w_modal_sheet_warn_function_confirm_button": "Bestätigen & Schliessen"
+  "w_modal_sheet_warn_function_confirm_button": "Bestätigen & Schliessen",
+  "w_modal_sheet_battery_status_battery_almost_empty": "Batterie fast leer.",
+  "w_modal_sheet_battery_status_plug_in_device": "Bitte schliesse dein Gerät am Stromnetz an."
 }
