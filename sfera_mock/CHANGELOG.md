@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.3.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.2.2...sfera_mock-v0.3.0) (2025-03-25)
+
+
+### Features
+
+* added communication network change. ([#372](https://github.com/SchweizerischeBundesbahnen/DAS/issues/372)) ([#658](https://github.com/SchweizerischeBundesbahnen/DAS/issues/658)) ([a0ef624](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a0ef62444b73ca30bfc3f85b94d34ba13bc527ad))
+* added koa notification ([#624](https://github.com/SchweizerischeBundesbahnen/DAS/issues/624)) ([#688](https://github.com/SchweizerischeBundesbahnen/DAS/issues/688)) ([164b557](https://github.com/SchweizerischeBundesbahnen/DAS/commit/164b557ac3f824af3a1d77ce516f7c42847b9e67))
+* added reduced journey overview ([#626](https://github.com/SchweizerischeBundesbahnen/DAS/issues/626)) ([#691](https://github.com/SchweizerischeBundesbahnen/DAS/issues/691)) ([49adc47](https://github.com/SchweizerischeBundesbahnen/DAS/commit/49adc475b0bedfabf07730523145fcc69c91f369))
+* curves and km-board without speed data ([#478](https://github.com/SchweizerischeBundesbahnen/DAS/issues/478)) ([#656](https://github.com/SchweizerischeBundesbahnen/DAS/issues/656)) ([2020764](https://github.com/SchweizerischeBundesbahnen/DAS/commit/2020764a51185a7de8a550a372ec16365422ef07))
+* dynamic timestamps in JP ([#512](https://github.com/SchweizerischeBundesbahnen/DAS/issues/512)) ([#664](https://github.com/SchweizerischeBundesbahnen/DAS/issues/664)) ([8d19230](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8d19230f989d53ae835da85bfb5a306ec86f5694))
+* implement session termination. ([#406](https://github.com/SchweizerischeBundesbahnen/DAS/issues/406)) ([#628](https://github.com/SchweizerischeBundesbahnen/DAS/issues/628)) ([4d0239d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4d0239d74c8681a8058220c9daf119f12c46eaba))
+* manual triggers ([#622](https://github.com/SchweizerischeBundesbahnen/DAS/issues/622)) ([#650](https://github.com/SchweizerischeBundesbahnen/DAS/issues/650)) ([87e4811](https://github.com/SchweizerischeBundesbahnen/DAS/commit/87e48115803e36542bbdd2329de6c709a38415db))
+
+
+### Bug Fixes
+
+* **deps:** update dependency org.springframework.boot:spring-boot-starter-parent to v3.4.4 ([#736](https://github.com/SchweizerischeBundesbahnen/DAS/issues/736)) ([d47ad4b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d47ad4b5d8b3083ad1600bbe56210a782a70ad55))
+* **deps:** update dependency org.springframework.cloud:spring-cloud-dependencies to v2024.0.1 ([#719](https://github.com/SchweizerischeBundesbahnen/DAS/issues/719)) ([293f6f3](https://github.com/SchweizerischeBundesbahnen/DAS/commit/293f6f35e8a9f7ae4a14fb738bf6ddd31ac43d71))
+
+
+### Documentation
+
+* 1809 add velocities ([#711](https://github.com/SchweizerischeBundesbahnen/DAS/issues/711)) ([986fe40](https://github.com/SchweizerischeBundesbahnen/DAS/commit/986fe403a5ab1f7a060aa026bb83fc454c236750))
+* fix 1671 and add 1670 & 1672 ([#675](https://github.com/SchweizerischeBundesbahnen/DAS/issues/675)) ([caecafd](https://github.com/SchweizerischeBundesbahnen/DAS/commit/caecafddbdd5e9f292a356fb7d3061013b728ddb))
+* fix 1672 and 1671 ([#718](https://github.com/SchweizerischeBundesbahnen/DAS/issues/718)) ([8e6b97f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8e6b97f62dc70fd6f77038a7ceb0de094a0881a8))
+* testdata for UX tests ([#669](https://github.com/SchweizerischeBundesbahnen/DAS/issues/669)) ([c018e5a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c018e5a19c7db0d3da350e58aa99429f203ad479))
+
 ## [0.2.2](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.2.1...sfera_mock-v0.2.2) (2025-02-25)
 
 
