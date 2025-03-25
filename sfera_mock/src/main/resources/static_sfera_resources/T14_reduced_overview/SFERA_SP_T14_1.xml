@@ -47,7 +47,7 @@
         </Signal>
     </SP_Points>
     <SP_Areas>
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="BE"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="500" endLocation="500" TAF_TAP_location_abbreviation="BE"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
@@ -58,7 +58,7 @@
             <TAF_TAP_LocationName language="de" text="Bern"/>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="WKD"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1000" endLocation="1000" TAF_TAP_location_abbreviation="WKD"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
@@ -69,7 +69,7 @@
             <TAF_TAP_LocationName language="de" text="Wankdorf"/>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="BDF"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1500" endLocation="1500" TAF_TAP_location_abbreviation="BDF"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
@@ -80,7 +80,7 @@
             <TAF_TAP_LocationName language="de" text="Burgdorf"/>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="OL"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="2000" endLocation="2000" TAF_TAP_location_abbreviation="OL"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
@@ -91,7 +91,7 @@
             <TAF_TAP_LocationName language="de" text="Olten"/>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="ZUE"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="2500" endLocation="2500" TAF_TAP_location_abbreviation="ZUE"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>

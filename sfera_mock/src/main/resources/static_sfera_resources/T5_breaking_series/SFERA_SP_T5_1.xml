@@ -132,7 +132,7 @@
 
     </SP_Points>
     <SP_Areas>
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="GENA"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="500" endLocation="500" TAF_TAP_location_abbreviation="GENA"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
@@ -167,7 +167,7 @@
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="GEN"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1000" endLocation="1000" TAF_TAP_location_abbreviation="GEN"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
@@ -192,12 +192,14 @@
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="GLA"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1500" endLocation="1500" TAF_TAP_location_abbreviation="GLA"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3004</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Gland</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!-- todo: remove -->
             <TAF_TAP_LocationName language="de" text="Gland"/>
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>

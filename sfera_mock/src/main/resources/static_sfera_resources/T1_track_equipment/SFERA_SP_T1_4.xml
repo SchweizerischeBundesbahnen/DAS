@@ -46,7 +46,7 @@
         </NetworkSpecificPoint>
     </SP_Points>
     <SP_Areas>
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="WANZ"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="6500" endLocation="6500" TAF_TAP_location_abbreviation="WANZ"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
@@ -57,7 +57,7 @@
             <TAF_TAP_LocationName language="de" text="WANZ"/>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="ROTH"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="7000" endLocation="7000" TAF_TAP_location_abbreviation="ROTH"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
@@ -68,7 +68,7 @@
             <TAF_TAP_LocationName language="de" text="Rothrist"/>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="OL"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="7500" endLocation="7500" TAF_TAP_location_abbreviation="OL"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
@@ -79,7 +79,7 @@
             <TAF_TAP_LocationName language="de" text="Olten"/>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="AAR"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="8000" endLocation="8000" TAF_TAP_location_abbreviation="AAR"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>

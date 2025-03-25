@@ -49,7 +49,7 @@
     </SP_Points>
 
     <SP_Areas>
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="SO"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="73800" endLocation="73800" TAF_TAP_location_abbreviation="SO"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
@@ -66,7 +66,7 @@
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="SO_W"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="74800" endLocation="74800" TAF_TAP_location_abbreviation="SO_W"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
@@ -83,7 +83,7 @@
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="LAN"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1900" endLocation="1900" TAF_TAP_location_abbreviation="LAN"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
@@ -94,7 +94,7 @@
             <TAF_TAP_LocationName language="de" text="Langendorf"/>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="LOM"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="5300" endLocation="5300" TAF_TAP_location_abbreviation="LOM"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
@@ -105,7 +105,7 @@
             <TAF_TAP_LocationName language="de" text="Lommiswil"/>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="IM_H"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="8000" endLocation="8000" TAF_TAP_location_abbreviation="IM_H"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
@@ -116,7 +116,7 @@
             <TAF_TAP_LocationName language="de" text="Im Holz"/>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="OB_SO"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="9600" endLocation="9600" TAF_TAP_location_abbreviation="OB_SO"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
