@@ -26,6 +26,8 @@ abstract class SferaService {
 
   Future<void> disconnect();
 
+  void dispose();
+
   static Future<MessageHeader> messageHeader({required String sender}) async {
     return MessageHeader.create(const Uuid().v4(), Format.sferaTimestamp(DateTime.now()),
         await DeviceIdInfo.getDeviceId(), 'TMS', sender, '0085');

@@ -12,8 +12,8 @@ class RelatedTrainInformationEventHandler extends SferaEventMessageHandler<Relat
       return false;
     }
 
-    Fimber.i(
-        'Received new related train information... ${eventMessage.payload!.relatedTrainInformation?.ownTrain.trainLocationInformation.delay.delay}');
+    final delay = eventMessage.payload!.relatedTrainInformation?.ownTrain.trainLocationInformation.delay.delay;
+    Fimber.i('Received new related train information... delay=$delay');
     onMessageHandled(this, eventMessage.payload!.relatedTrainInformation!);
     return true;
   }
