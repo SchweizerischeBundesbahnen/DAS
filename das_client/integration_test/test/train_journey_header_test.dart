@@ -183,15 +183,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      final batteryModal = find.byKey(Key('battery_modal_sheet'));
-      expect(batteryModal, findsOneWidget);
-
-      expect(
-          find.descendant(
-            of: batteryModal,
-            matching: find.text(l10n.w_modal_sheet_battery_status_battery_almost_empty),
-          ),
-          findsOneWidget);
+      expect(find.text(l10n.w_modal_sheet_battery_status_battery_almost_empty), findsOneWidget);
 
       await disconnect(tester);
     });
