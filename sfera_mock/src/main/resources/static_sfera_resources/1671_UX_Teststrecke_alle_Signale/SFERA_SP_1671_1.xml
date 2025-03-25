@@ -224,12 +224,26 @@
 
         <BaliseGroup>
             <Balise location="10190" levelCrossingGuarding="true" amountLevelCrossings="3"/>
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="10870" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="20510" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="20610" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="25140" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="28590" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="32100" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="33420" levelCrossingGuarding="true" amountLevelCrossings="1"/>
         </BaliseGroup>
 

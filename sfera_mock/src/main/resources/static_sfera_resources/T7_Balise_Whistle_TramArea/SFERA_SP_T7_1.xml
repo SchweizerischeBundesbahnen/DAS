@@ -35,13 +35,26 @@
 
         <BaliseGroup>
             <Balise location="600" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="602" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="604" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="606" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="608" levelCrossingGuarding="true" amountLevelCrossings="1"/>
-
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="611" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="613" levelCrossingGuarding="true" amountLevelCrossings="2"/>
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="616" levelCrossingGuarding="true" amountLevelCrossings="1"/>
         </BaliseGroup>
         <NetworkSpecificPoint location="610">
