@@ -12,13 +12,13 @@ Future<void> showBatteryModalSheet(BuildContext context) => showDASModalSheet(
       context: context,
       backgroundColor: ThemeUtil.getBackgroundColor(context),
       padding: EdgeInsets.fromLTRB(sbbDefaultSpacing, sbbDefaultSpacing, sbbDefaultSpacing, sbbDefaultSpacing * 2),
-      child: ShowBatteryModalSheet(),
+      child: ShowBatteryModalSheet(
+        key: Key('battery_modal_sheet'),
+      ),
     );
 
 class ShowBatteryModalSheet extends StatelessWidget {
-  const ShowBatteryModalSheet({
-    super.key,
-  });
+  const ShowBatteryModalSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
