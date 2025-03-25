@@ -74,7 +74,6 @@ class MainContainer extends StatelessWidget {
           Spacer(),
           _trainJourneyText(context),
           BatteryStatus(),
-          //TODO add the wifi part
         ],
       ),
     );
@@ -84,7 +83,7 @@ class MainContainer extends StatelessWidget {
     final state = context.trainJourneyCubit.state;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * (5 / 4)),
+      padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
       child: Text(
         state is TrainJourneyLoadedState
             ? '${state.trainIdentification.trainNumber} ${state.trainIdentification.ru.displayText(context)}'
