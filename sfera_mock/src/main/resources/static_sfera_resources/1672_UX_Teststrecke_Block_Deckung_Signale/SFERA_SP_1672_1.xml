@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="1672_1"
-                SP_VersionMajor="2" SP_VersionMinor="0" SP_Length="36000" SP_Status="Valid">
+                SP_VersionMajor="2" SP_VersionMinor="1" SP_Length="36000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -116,12 +116,6 @@
         </Signal>		
 
         <Signal>
-            <Signal_ID signal_ID_Physical="A1" location="11100"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A1"/>
-        </Signal>
-
-        <Signal>
             <Signal_ID signal_ID_Physical="P15" location="10120"/>
             <SignalFunction>protection</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="P15"/>
@@ -134,39 +128,9 @@
         </Signal>
 
         <Signal>
-            <Signal_ID signal_ID_Physical="A2" location="13600"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A2"/>
-        </Signal>
-
-        <Signal>
-            <Signal_ID signal_ID_Physical="A4" location="15600"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A4"/>
-        </Signal>
-
-        <Signal>
-            <Signal_ID signal_ID_Physical="A5" location="18300"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A5"/>
-        </Signal>
-
-        <Signal>
-            <Signal_ID signal_ID_Physical="A6" location="18900"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A6"/>
-        </Signal>
-
-        <Signal>
             <Signal_ID signal_ID_Physical="B1" location="20400"/>
             <SignalFunction>protection</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="B1"/>
-        </Signal>
-
-        <Signal>
-            <Signal_ID signal_ID_Physical="A7" location="21200"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A7"/>
         </Signal>
 
 
