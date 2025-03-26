@@ -35,10 +35,9 @@ class _TrainSelectionState extends State<TrainSelection> {
           return Column(
             children: [
               _header(context, state),
-              Spacer(),
               _errorMessage(context, state),
               Spacer(),
-              _loadButton(context, state)
+              _loadButton(context, state),
             ],
           );
         } else {
@@ -122,7 +121,7 @@ class _TrainSelectionState extends State<TrainSelection> {
 
   Widget _loadButton(BuildContext context, SelectingTrainJourneyState state) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing / 2),
+      padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, sbbDefaultSpacing, sbbDefaultSpacing * 0.5),
       child: SBBPrimaryButton(
         label: context.l10n.c_button_confirm,
         onPressed: _canContinue(state) ? () => context.trainJourneyCubit.loadTrainJourney() : null,
