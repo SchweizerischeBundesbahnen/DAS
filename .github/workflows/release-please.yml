@@ -64,7 +64,7 @@ jobs:
           VERSION: ${{ needs.release-please.outputs.sfera_mock--version }}
         run: |
           # Convert to lowercase
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[:upper:]' '[:lower:]')
           
           mvn spring-boot:build-image \
             -Dmaven.test.skip=true \
@@ -96,7 +96,7 @@ jobs:
           VERSION: ${{ needs.release-please.outputs.das_backend--version }}
         run: |
           # Convert to lowercase
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[:upper:]' '[:lower:]')
 
           mvn spring-boot:build-image \
             -Dmaven.test.skip=true \
@@ -130,7 +130,7 @@ jobs:
           DOCKER_BUILDKIT: 1
         run: |
           # Convert to lowercase
-          IMAGE_REPO=$(echo $IMAGE_REPO | tr '[A-Z]' '[a-z]')
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[:upper:]' '[:lower:]')
 
           docker build -t $IMAGE_REPO:$IMAGE_TAG .
           docker push $IMAGE_REPO:$IMAGE_TAG
