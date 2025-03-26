@@ -48,6 +48,7 @@ jobs:
 
   release:
     needs: [prepare]
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: das_client
@@ -67,7 +68,6 @@ jobs:
             packageName: 'ch.sbb.das.client'
             app-root: 'lib/main_prod.dart'
             release-dir: 'prodRelease/app-prod-release.aab'
-
 
 
     steps:
