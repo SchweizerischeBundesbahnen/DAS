@@ -1,8 +1,9 @@
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
-import 'package:analyzer/error/error.dart' hide
-  // ignore: undefined_hidden_name, necessary to support lower analyzer versions
-  LintCode;
+import 'package:analyzer/error/error.dart'
+    hide
+        // ignore: undefined_hidden_name, necessary to support lower analyzer versions
+        LintCode;
 
 // Lint rule to use src folder imports
 class DontUseSrcFolderImports extends DartLintRule {
@@ -23,7 +24,6 @@ class DontUseSrcFolderImports extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) {
-
     // A call back fn that runs on all import declarations in a file
     context.registry.addImportDirective((importDirective) {
       var importUri = importDirective.uri.stringValue;
@@ -44,11 +44,13 @@ class DontUseSrcFolderImports extends DartLintRule {
       if (fileParts[0].startsWith(importParts[0])) return;
 
       // report a lint error with the `code` and the respective import directive
-      reporter.atNode(importDirective, LintCode(
-        name: _code.name,
-        problemMessage: 'Don\'t use source folder imports for importing ${importDirective.uri.stringValue}',
-        errorSeverity: ErrorSeverity.ERROR,
-      ));
+      reporter.atNode(
+          importDirective,
+          LintCode(
+            name: _code.name,
+            problemMessage: 'Don\'t use source folder imports for importing ${importDirective.uri.stringValue}',
+            errorSeverity: ErrorSeverity.ERROR,
+          ));
     });
   }
 

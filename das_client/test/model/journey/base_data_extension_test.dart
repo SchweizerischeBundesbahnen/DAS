@@ -61,7 +61,6 @@ void main() {
     expect(groupedRowsExpanded[4], isA<LevelCrossing>());
   });
 
-
   test('Test balise and level crossing grouping with elements between', () {
     final originalRows = <BaseData>[
       Balise(order: 100, kilometre: [0.1], amountLevelCrossings: 1),

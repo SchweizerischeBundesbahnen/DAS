@@ -19,7 +19,9 @@ mixin NspXmlElement<T extends SferaXmlElement> on SferaXmlElement {
       try {
         _generateElement();
       } catch (e) {
-        Fimber.e('Failed to parse nsp xml element of type ${T.runtimeType.toString()} with value ${attributes['value']}', ex: e);
+        Fimber.e(
+            'Failed to parse nsp xml element of type ${T.runtimeType.toString()} with value ${attributes['value']}',
+            ex: e);
         return false;
       }
     }
