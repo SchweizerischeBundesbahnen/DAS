@@ -158,7 +158,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test battery under 15% and show icon', (tester) async {
+    testWidgets('test battery under 15% icon and modal are showing or opening', (tester) async {
       await prepareAndStartApp(tester);
 
       // Set Battery to a mocked version
@@ -178,6 +178,12 @@ void main() {
 
       final batteryIcon = find.descendant(of: header, matching: find.byKey(BatteryStatus.batteryLevelLowIconKey));
       expect(batteryIcon, findsOneWidget);
+
+      await tester.tap(batteryIcon);
+
+      await tester.pumpAndSettle();
+
+      expect(find.text(l10n.w_modal_sheet_battery_status_battery_almost_empty), findsOneWidget);
 
       await disconnect(tester);
     });

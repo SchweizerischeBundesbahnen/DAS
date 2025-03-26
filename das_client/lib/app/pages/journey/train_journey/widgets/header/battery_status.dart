@@ -1,11 +1,12 @@
 import 'dart:async';
-
 import 'package:battery_plus/battery_plus.dart';
+import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/di.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class BatteryStatus extends StatefulWidget {
   const BatteryStatus({super.key});
@@ -50,11 +51,31 @@ class _BatteryStatusState extends State<BatteryStatus> {
 
   @override
   Widget build(BuildContext context) {
-    return _batteryLevel != null && _batteryLevel! <= 15
-        ? SvgPicture.asset(
-            key: BatteryStatus.batteryLevelLowIconKey,
-            AppAssets.iconBatteryStatusLow,
-          )
-        : Container();
+    return _batteryLevel != null && _batteryLevel! <= 15 ? _batteryIcon() : Container();
+  }
+
+  Widget _batteryIcon() {
+    return GestureDetector(
+      onTap: () => _openBatteryBottomSheet(context),
+      child: SvgPicture.asset(
+        key: BatteryStatus.batteryLevelLowIconKey,
+        AppAssets.iconBatteryStatusLow,
+      ),
+    );
+  }
+
+  void _openBatteryBottomSheet(BuildContext context) async {
+    await showSBBModalSheet(
+      context: context,
+      title: '',
+      constraints: BoxConstraints(minWidth: double.infinity),
+      child: Padding(
+        padding: const EdgeInsets.all(sbbDefaultSpacing),
+        child: SBBMessage(
+          title: context.l10n.w_modal_sheet_battery_status_battery_almost_empty,
+          description: context.l10n.w_modal_sheet_battery_status_plug_in_device,
+        ),
+      ),
+    );
   }
 }

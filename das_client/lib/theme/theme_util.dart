@@ -22,6 +22,10 @@ class ThemeUtil {
     return SBBBaseStyle.of(context).themeValue(SBBColors.white, SBBColors.charcoal);
   }
 
+  static Color getBackgroundColor(BuildContext context) {
+    return SBBBaseStyle.of(context).themeValue(SBBColors.white, SBBColors.black);
+  }
+
   static bool isDarkMode(BuildContext context) {
     return SBBBaseStyle.of(context).brightness == Brightness.dark;
   }
