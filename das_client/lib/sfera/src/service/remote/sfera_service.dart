@@ -10,6 +10,7 @@ import 'package:das_client/util/error_code.dart';
 import 'package:das_client/util/format.dart';
 import 'package:uuid/uuid.dart';
 
+/// Handles connection and message exchange with SFERA broker
 abstract class SferaService {
   const SferaService._();
 
@@ -22,18 +23,20 @@ abstract class SferaService {
 
   ErrorCode? get lastErrorCode;
 
+  /// Connect to the SFERA broker with the given [OtnId] train identification
   Future<void> connect(OtnId otnId);
 
+  /// Disconnects from SFERA broker
   Future<void> disconnect();
 
   void dispose();
 
   static Future<MessageHeader> messageHeader({required String sender}) async {
-    return MessageHeader.create(const Uuid().v4(), Format.sferaTimestamp(DateTime.now()),
-        await DeviceIdInfo.getDeviceId(), 'TMS', sender, '0085');
+    final deviceId = await DeviceIdInfo.getDeviceId();
+    final timestamp = Format.sferaTimestamp(DateTime.now());
+    return MessageHeader.create(const Uuid().v4(), timestamp, deviceId, 'TMS', sender, '0085');
   }
 
-  static String sferaTrain(String trainNumber, DateTime date) {
-    return '${trainNumber}_${Format.sferaDate(date)}';
-  }
+  /// Returns formatted sfera train. Example: 1513_2025-10-10
+  static String sferaTrain(String trainNumber, DateTime date) => '${trainNumber}_${Format.sferaDate(date)}';
 }

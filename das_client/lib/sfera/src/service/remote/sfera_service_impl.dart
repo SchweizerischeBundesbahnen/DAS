@@ -31,6 +31,7 @@ import 'package:das_client/util/error_code.dart';
 import 'package:fimber/fimber.dart';
 import 'package:rxdart/rxdart.dart';
 
+/// Implementation of [SferaService] to handle connection and message exchange with a MQTT SFERA broker
 class SferaServiceImpl implements SferaService {
   SferaServiceImpl({
     required MqttService mqttService,
@@ -72,6 +73,8 @@ class SferaServiceImpl implements SferaService {
   @override
   ErrorCode? lastErrorCode;
 
+  /// Connects to SFERA broker and initiate Handshake with [HandshakeTask].
+  /// Other tasks like loading SP, JPs and TCs are triggered on completion.
   @override
   Future<void> connect(OtnId otnId) async {
     Fimber.i('Starting new connection for $otnId');
@@ -91,6 +94,9 @@ class SferaServiceImpl implements SferaService {
     }
   }
 
+  /// Sends [SessionTermination] and disconnects from SFERA broker.
+  ///
+  /// Disconnect is either called by the user or when one of the [SferaTask] fails and no journey was loaded yet - i.e. the service is not in the [SferaServiceState.connected].
   @override
   Future<void> disconnect() async {
     final otnId = _otnId;
@@ -98,8 +104,8 @@ class SferaServiceImpl implements SferaService {
       Fimber.i('Sending session termination request for $otnId...');
       final header = await SferaService.messageHeader(sender: otnId.company);
       final sessionTerminationMessage = SferaB2gEventMessage.createSessionTermination(messageHeader: header);
-      _mqttService.publishMessage(otnId.company, SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate),
-          sessionTerminationMessage.buildDocument().toString());
+      final sferaTrain = SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
+      _mqttService.publishMessage(otnId.company, sferaTrain, sessionTerminationMessage.buildDocument().toString());
     }
 
     _mqttService.disconnect();
