@@ -26,7 +26,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'reduced_overview_view_model.mocks.dart';
+import 'reduced_overview_view_model_test.mocks.dart';
 
 final trainIdentification = TrainIdentification(ru: Ru.sbbP, trainNumber: '1234', date: DateTime.now());
 
