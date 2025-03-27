@@ -127,7 +127,7 @@
                 <NSP_GroupName>lineFootNotes</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlLineFootNotes" value="
 				&lt;lineFootNotes&gt; 
-					&lt;footNote&gt; 
+					&lt;footNote identifier=&quot;072869607d536b607a61111cf910784a&quot;&gt;
 						&lt;text&gt;admis seulement pour &lt;b&gt;RABe 503, ETR 610&lt;/b&gt;&lt;/text&gt;
 						&lt;trainSeries&gt;N&lt;/trainSeries&gt; 
 					&lt;/footNote&gt; 

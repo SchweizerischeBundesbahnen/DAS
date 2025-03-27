@@ -5,12 +5,14 @@ import 'package:das_client/model/journey/bracket_station.dart';
 import 'package:das_client/model/journey/connection_track.dart';
 import 'package:das_client/model/journey/curve_point.dart';
 import 'package:das_client/model/journey/foot_note.dart';
-import 'package:das_client/model/journey/foot_notes.dart';
 import 'package:das_client/model/journey/level_crossing.dart';
+import 'package:das_client/model/journey/line_foot_note.dart';
+import 'package:das_client/model/journey/op_foot_note.dart';
 import 'package:das_client/model/journey/protection_section.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
 import 'package:das_client/model/journey/speed_change.dart';
+import 'package:das_client/model/journey/train_series.dart';
 import 'package:das_client/model/journey/whistles.dart';
 import 'package:das_client/model/localized_string.dart';
 import 'package:das_client/sfera/src/mapper/graduated_speed_data_mapper.dart';
@@ -19,6 +21,7 @@ import 'package:das_client/sfera/src/model/enums/length_type.dart';
 import 'package:das_client/sfera/src/model/enums/stop_skip_pass.dart';
 import 'package:das_client/sfera/src/model/enums/taf_tap_location_type.dart';
 import 'package:das_client/sfera/src/model/enums/xml_enum.dart';
+import 'package:das_client/sfera/src/model/foot_note.dart';
 import 'package:das_client/sfera/src/model/multilingual_text.dart';
 import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
@@ -57,6 +60,7 @@ class SegmentProfileMapper {
     journeyData.addAll(_parseLevelCrossings(mapperData));
     journeyData.addAll(_parseProtectionSections(mapperData));
     journeyData.addAll(_parseOpFootNotes(mapperData));
+    journeyData.addAll(_parseLineFootNotes(mapperData));
     journeyData.addAll(_parseServicePoint(mapperData, segmentProfiles, segmentProfileReference));
 
     final curvePoints = _parseCurvePoints(mapperData);
@@ -261,25 +265,73 @@ class SegmentProfileMapper {
     });
   }
 
-  static Iterable<OpFootNotes> _parseOpFootNotes(_MapperData mapperData) {
+  static Iterable<OpFootNote> _parseOpFootNotes(_MapperData mapperData) {
     final locations = mapperData.segmentProfile.areas?.tafTapLocations ?? [];
-    return locations.map((location) {
-      if (location.opFootNotes == null) {
-        return null;
-      }
+    return locations
+        .map((location) {
+          if (location.opFootNotes == null) {
+            return null;
+          }
 
-      if (location.startLocation == null) {
-        Fimber.w('Failed to parse footNote because TafTapLocation has no startLocation: $location');
-        return null;
-      }
+          if (location.startLocation == null) {
+            Fimber.w('Failed to parse opFootNote because TafTapLocation has no startLocation: $location');
+            return null;
+          }
 
-      return OpFootNotes(
-        order: calculateOrder(mapperData.segmentIndex, location.startLocation!),
-        footNotes: location.opFootNotes!.xmlOpFootNotes.element.footNotes.map((note) {
-          note.childrenWithType('text').first;
-          return FootNote(text: note.text, type: note.footNoteType?.footNoteType, refText: note.refText);
-        }).toList(),
-      );
-    }).nonNulls;
+          final footNotes = _parseFootNotes(location.opFootNotes!.xmlOpFootNotes.element.footNotes);
+
+          return footNotes.map(
+            (note) => OpFootNote(
+              order: calculateOrder(mapperData.segmentIndex, location.startLocation!),
+              footNote: note,
+            ),
+          );
+        })
+        .nonNulls
+        .flattenedToList
+        .nonNulls;
+  }
+
+  static Iterable<LineFootNote> _parseLineFootNotes(_MapperData mapperData) {
+    final locations = mapperData.segmentProfile.areas?.tafTapLocations ?? [];
+    return locations
+        .map((location) {
+          if (location.lineFootNotes == null) {
+            return null;
+          }
+
+          if (location.startLocation == null) {
+            Fimber.w('Failed to parse lineFootNote because TafTapLocation has no startLocation: $location');
+            return null;
+          }
+
+          final footNotes = _parseFootNotes(location.lineFootNotes!.xmlLineFootNotes.element.footNotes);
+
+          return footNotes.map(
+            (note) => LineFootNote(
+              locationName: _localizedStringFromMultilingualText(location.locationNames),
+              order: calculateOrder(mapperData.segmentIndex, location.startLocation!),
+              footNote: note,
+            ),
+          );
+        })
+        .nonNulls
+        .flattenedToList
+        .nonNulls;
+  }
+
+  static List<FootNote> _parseFootNotes(Iterable<SferaFootNote> footNotes) {
+    return footNotes.map((note) {
+      return FootNote(
+          text: note.text,
+          type: note.footNoteType?.footNoteType,
+          refText: note.refText,
+          identifier: note.identifier,
+          trainSeries: _parseTrainSeries(note.trainSeries));
+    }).toList();
+  }
+
+  static List<TrainSeries> _parseTrainSeries(String? trainSeries) {
+    return trainSeries?.split(',').map((it) => TrainSeries.fromOptional(it)).nonNulls.toList() ?? [];
   }
 }

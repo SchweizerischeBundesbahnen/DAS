@@ -19,6 +19,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/connection_track_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/curve_point_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/level_crossing_row.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/line_foot_note_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/op_foot_note_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/protection_section_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
@@ -34,14 +35,16 @@ import 'package:das_client/model/journey/balise.dart';
 import 'package:das_client/model/journey/balise_level_crossing_group.dart';
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/base_data_extension.dart';
+import 'package:das_client/model/journey/base_foot_note.dart';
 import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
 import 'package:das_client/model/journey/connection_track.dart';
 import 'package:das_client/model/journey/curve_point.dart';
 import 'package:das_client/model/journey/datatype.dart';
-import 'package:das_client/model/journey/foot_notes.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/level_crossing.dart';
+import 'package:das_client/model/journey/line_foot_note.dart';
+import 'package:das_client/model/journey/op_foot_note.dart';
 import 'package:das_client/model/journey/protection_section.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
@@ -206,12 +209,20 @@ class TrainJourney extends StatelessWidget {
             config: trainJourneyConfig,
             onTap: () => _onBaliseLevelCrossingGroupTap(context, rowData, settings),
           );
-        case Datatype.opFootNotes:
+        case Datatype.opFootNote:
           return OpFootNoteRow(
             metadata: journey.metadata,
-            data: rowData as OpFootNotes,
+            data: rowData as OpFootNote,
             config: trainJourneyConfig,
-            isExpanded: settings.expandedGroups.contains(rowData.order),
+            isExpanded: !settings.collapsedFootNotes.contains(rowData.identifier),
+            accordionCallback: (isExpanded) => _onFootNoteExpanded(context, rowData, settings),
+          );
+        case Datatype.lineFootNote:
+          return LineFootNoteRow(
+            metadata: journey.metadata,
+            data: rowData as LineFootNote,
+            config: trainJourneyConfig,
+            isExpanded: !settings.collapsedFootNotes.contains(rowData.identifier),
             accordionCallback: (isExpanded) => _onFootNoteExpanded(context, rowData, settings),
           );
         default:
@@ -268,15 +279,15 @@ class TrainJourney extends StatelessWidget {
     ];
   }
 
-  void _onFootNoteExpanded(BuildContext context, OpFootNotes footNote, TrainJourneySettings settings) {
-    final newList = List<int>.from(settings.expandedGroups);
-    if (settings.expandedGroups.contains(footNote.order)) {
-      newList.remove(footNote.order);
+  void _onFootNoteExpanded(BuildContext context, BaseFootNote footNote, TrainJourneySettings settings) {
+    final newList = List<String>.from(settings.collapsedFootNotes);
+    if (settings.collapsedFootNotes.contains(footNote.identifier)) {
+      newList.remove(footNote.identifier);
     } else {
-      newList.add(footNote.order);
+      newList.add(footNote.identifier);
     }
 
-    context.trainJourneyCubit.updateExpandedGroups(newList);
+    context.trainJourneyCubit.updateCollapsedGroups(newList);
   }
 
   void _onBaliseLevelCrossingGroupTap(

@@ -6,5 +6,5 @@ class LineFootNotes extends SferaXmlElement {
 
   LineFootNotes({super.type = elementType, super.attributes, super.children, super.value});
 
-  Iterable<FootNote> get footNotes => children.whereType<FootNote>();
+  Iterable<SferaFootNote> get footNotes => children.whereType<SferaFootNote>();
 }

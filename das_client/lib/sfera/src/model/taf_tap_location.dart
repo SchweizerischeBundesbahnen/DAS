@@ -1,5 +1,6 @@
 import 'package:das_client/sfera/src/model/enums/taf_tap_location_type.dart';
 import 'package:das_client/sfera/src/model/enums/xml_enum.dart';
+import 'package:das_client/sfera/src/model/line_foot_notes_nsp.dart';
 import 'package:das_client/sfera/src/model/new_line_speed_taf_tap_location.dart';
 import 'package:das_client/sfera/src/model/op_foot_notes_nsp.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
@@ -34,6 +35,8 @@ class TafTapLocation extends SferaXmlElement {
   NewLineSpeedTafTapLocation? get newLineSpeed => children.whereType<NewLineSpeedTafTapLocation>().firstOrNull;
 
   OpFootNotesNsp? get opFootNotes => children.whereType<OpFootNotesNsp>().firstOrNull;
+
+  LineFootNotesNsp? get lineFootNotes => children.whereType<LineFootNotesNsp>().firstOrNull;
 
   @override
   bool validate() {

@@ -136,6 +136,10 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
     _settingsSubject.add(_settingsSubject.value.copyWith(expandedGroups: expandedGroups));
   }
 
+  void updateCollapsedGroups(List<String> collapsedGroups) {
+    _settingsSubject.add(_settingsSubject.value.copyWith(collapsedFootNotes: collapsedGroups));
+  }
+
   void setAutomaticAdvancement(bool active) {
     Fimber.i('Automatic advancement state changed to active=$active');
     if (active) {

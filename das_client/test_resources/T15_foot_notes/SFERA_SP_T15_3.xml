@@ -39,7 +39,7 @@
                 <NetworkSpecificParameter name="xmlOPFootNotes" value="
 				&lt;oPFootNotes&gt; 
 					&lt;footNote type=&quot;contact&quot; refText=&quot;1)&quot;&gt; 
-						&lt;text&gt;+41 512 800 506 RBC Lavaux&lt;/text&gt; 
+						&lt;text&gt;Das ist &lt;b&gt;fett &lt;i&gt;und kursiv&lt;/i&gt;&lt;/b&gt; &lt;br&gt;und das ist &lt;br/&gt;&lt;i&gt;noch kursiv&lt;/i&gt;.&lt;/text&gt;
 					&lt;/footNote&gt; 
 				&lt;/oPFootNotes&gt;
 				"/>
@@ -50,7 +50,7 @@
                 <NSP_GroupName>lineFootNotes</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlLineFootNotes" value="
 				&lt;lineFootNotes&gt; 
-					&lt;footNote&gt; 
+					&lt;footNote identifier=&quot;072869607d536b607a61111cf910784a&quot;&gt;
 						&lt;text&gt;admis seulement pour &lt;b&gt;RABe 503, ETR 610&lt;/b&gt;&lt;/text&gt;
 						&lt;trainSeries&gt;N&lt;/trainSeries&gt; 
 					&lt;/footNote&gt; 

@@ -9,9 +9,10 @@ import 'package:das_client/model/journey/connection_track.dart';
 import 'package:das_client/model/journey/curve_point.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/foot_note.dart';
-import 'package:das_client/model/journey/foot_notes.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/level_crossing.dart';
+import 'package:das_client/model/journey/line_foot_note.dart';
+import 'package:das_client/model/journey/op_foot_note.dart';
 import 'package:das_client/model/journey/protection_section.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
@@ -1092,21 +1093,51 @@ void main() {
     expect(networkChanges[2].type, CommunicationNetworkType.gsmR);
   });
 
-  test('Test opFootNotes parsed correctly', () async {
+  test('Test opFootNote parsed correctly', () async {
     final journey = getJourney('T15', 4);
     expect(journey.valid, true);
 
-    final footNotes = journey.data.whereType<OpFootNotes>().toList();
-    expect(footNotes, hasLength(3));
-    expect(footNotes[0].footNotes[0].type, FootNoteType.decisiveGradientDown);
-    expect(footNotes[0].footNotes[0].text, 'Renens - Lausanne <i>"via saut-de-mouton"</i> 0‰');
-    expect(footNotes[0].footNotes[0].refText, '1)');
-    expect(footNotes[1].footNotes[0].type, FootNoteType.contact);
-    expect(footNotes[1].footNotes[0].text, '+41 512 800 506 RBC Lavaux');
-    expect(footNotes[1].footNotes[0].refText, '1)');
-    expect(footNotes[2].footNotes[0].type, FootNoteType.contact);
-    expect(footNotes[2].footNotes[0].text, '+41 512 800 506 RBC Lavaux');
-    expect(footNotes[2].footNotes[0].refText, '1)');
+    final opFootNotes = journey.data.whereType<OpFootNote>().toList();
+    expect(opFootNotes, hasLength(3));
+    expect(opFootNotes[0].footNote.type, FootNoteType.decisiveGradientDown);
+    expect(opFootNotes[0].footNote.text, 'Renens - Lausanne <i>"via saut-de-mouton"</i> 0‰');
+    expect(opFootNotes[0].footNote.refText, '1)');
+    expect(opFootNotes[1].footNote.type, FootNoteType.contact);
+    expect(opFootNotes[1].footNote.text,
+        'Das ist <b>fett <i>und kursiv</i></b> <br/>und das ist <br/><i>noch kursiv</i>.');
+    expect(opFootNotes[1].footNote.refText, '1)');
+    expect(opFootNotes[2].footNote.type, FootNoteType.contact);
+    expect(opFootNotes[2].footNote.text, '+41 512 800 506 RBC Lavaux');
+    expect(opFootNotes[2].footNote.refText, '1)');
+  });
+
+  test('Test lineFootNote parsed correctly', () async {
+    final journey = getJourney('T15', 4);
+    expect(journey.valid, true);
+
+    final lineFootNotes = journey.data.whereType<LineFootNote>().toList();
+    expect(lineFootNotes, hasLength(3));
+    expect(lineFootNotes[0].footNote.type, isNull);
+    expect(lineFootNotes[0].footNote.identifier, '072869607d536b607a61111cf910784a');
+    expect(lineFootNotes[0].footNote.text, 'admis seulement pour <b>RABe 503, ETR 610</b>');
+    expect(lineFootNotes[0].footNote.trainSeries, [TrainSeries.N]);
+    expect(lineFootNotes[0].locationName.de, 'Lausanne');
+    expect(lineFootNotes[1].footNote.type, isNull);
+    expect(lineFootNotes[1].footNote.identifier, '072869607d536b607a61111cf910784a');
+    expect(lineFootNotes[1].footNote.text, 'admis seulement pour <b>RABe 503, ETR 610</b>');
+    expect(lineFootNotes[1].footNote.trainSeries, [TrainSeries.N]);
+    expect(lineFootNotes[1].locationName.de, 'Pully');
+    expect(lineFootNotes[2].footNote.type, isNull);
+    expect(lineFootNotes[2].footNote.identifier, '072869607d536b607a61111cf910784a');
+    expect(lineFootNotes[2].footNote.text, 'admis seulement pour <b>RABe 503, ETR 610</b>');
+    expect(lineFootNotes[2].footNote.trainSeries, [TrainSeries.N]);
+    expect(lineFootNotes[2].locationName.de, 'Taillepied');
+
+    expect(journey.metadata.lineFootNoteLocations, hasLength(1));
+    expect(journey.metadata.lineFootNoteLocations['072869607d536b607a61111cf910784a'], hasLength(3));
+    expect(journey.metadata.lineFootNoteLocations['072869607d536b607a61111cf910784a']![0].de, 'Lausanne');
+    expect(journey.metadata.lineFootNoteLocations['072869607d536b607a61111cf910784a']![1].de, 'Pully');
+    expect(journey.metadata.lineFootNoteLocations['072869607d536b607a61111cf910784a']![2].de, 'Taillepied');
   });
 }
 

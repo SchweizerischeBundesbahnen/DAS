@@ -10,6 +10,7 @@ extension XmlStringExtension on String {
         .replaceAll('&gt;', '>')
         .replaceAll('&amp;', '&')
         .replaceAll('&apos;', "'")
-        .replaceAll('&quot;', '"');
+        .replaceAll('&quot;', '"')
+        .replaceAll('<br>', '<br/>');
   }
 }

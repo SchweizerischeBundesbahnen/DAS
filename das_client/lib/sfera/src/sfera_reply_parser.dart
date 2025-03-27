@@ -266,8 +266,8 @@ class SferaReplyParser {
         return LineFootNotes(attributes: attributes, children: children, value: value);
       case OpFootNotes.elementType:
         return OpFootNotes(attributes: attributes, children: children, value: value);
-      case FootNote.elementType:
-        return FootNote(attributes: attributes, children: children, value: value);
+      case SferaFootNote.elementType:
+        return SferaFootNote(attributes: attributes, children: children, value: value);
       case Text.elementType:
         return Text(attributes: attributes, children: children, value: value, xmlValue: xmlElement.innerXml);
       default:
