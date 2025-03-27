@@ -226,8 +226,6 @@ class TrainJourney extends StatelessWidget {
             isExpanded: !settings.collapsedFootNotes.contains(rowData.identifier),
             accordionCallback: (isExpanded) => _onFootNoteExpanded(context, rowData, settings),
           );
-        default:
-          return CellRowBuilder(metadata: journey.metadata, data: rowData, config: trainJourneyConfig);
       }
     });
   }
