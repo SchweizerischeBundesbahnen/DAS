@@ -288,7 +288,7 @@ class TrainJourney extends StatelessWidget {
       newList.add(footNote.identifier);
     }
 
-    context.trainJourneyCubit.updateCollapsedGroups(newList);
+    context.trainJourneyCubit.updateCollapsedFootnotes(newList);
   }
 
   void _onBaliseLevelCrossingGroupTap(

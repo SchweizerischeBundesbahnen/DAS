@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:das_client/app/pages/journey/train_journey/automatic_advancement_controller.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
+import 'package:das_client/model/journey/base_foot_note.dart';
 import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/ru.dart';
@@ -32,6 +33,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
   TrainJourneySettings get settings => _settingsSubject.value;
 
   StreamSubscription? _stateSubscription;
+  StreamSubscription? _journeySubscription;
 
   AutomaticAdvancementController automaticAdvancementController = AutomaticAdvancementController();
 
@@ -54,6 +56,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
         switch (state) {
           case SferaServiceState.connected:
             automaticAdvancementController = AutomaticAdvancementController();
+            _listenToJourneyUpdates();
             emit(TrainJourneyLoadedState(trainIdentification));
             break;
           case SferaServiceState.connecting:
@@ -122,6 +125,8 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
 
   @override
   Future<void> close() {
+    _journeySubscription?.cancel();
+    _journeySubscription = null;
     _stateSubscription?.cancel();
     _stateSubscription = null;
 
@@ -136,7 +141,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
     _settingsSubject.add(_settingsSubject.value.copyWith(expandedGroups: expandedGroups));
   }
 
-  void updateCollapsedGroups(List<String> collapsedGroups) {
+  void updateCollapsedFootnotes(List<String> collapsedGroups) {
     _settingsSubject.add(_settingsSubject.value.copyWith(collapsedFootNotes: collapsedGroups));
   }
 
@@ -151,6 +156,38 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
   void setManeuverMode(bool active) {
     Fimber.i('Maneuver mode state changed to active=$active');
     _settingsSubject.add(_settingsSubject.value.copyWith(maneuverMode: active));
+  }
+
+  void _listenToJourneyUpdates() {
+    _journeySubscription?.cancel();
+    _journeySubscription = _sferaService.journeyStream.listen((journey) {
+      if (journey != null) {
+        _collapsePassedFootNotes(journey);
+      }
+    });
+  }
+
+  void _collapsePassedFootNotes(Journey journey) {
+    if (journey.metadata.currentPosition == journey.metadata.lastPosition) return;
+
+    final fromIndex = journey.data.indexOf(journey.metadata.lastPosition!);
+    final toIndex = journey.data.indexOf(journey.metadata.currentPosition!);
+
+    final passedFootNotes = journey.data.sublist(fromIndex, toIndex).whereType<BaseFootNote>();
+
+    final newList = List.of(settings.collapsedFootNotes);
+
+    for (final footNote in passedFootNotes) {
+      if (settings.collapsedFootNotes.contains(footNote.identifier)) continue;
+
+      if (journey.data.lastIndexWhere((it) => it is BaseFootNote && it.identifier == footNote.identifier) <= toIndex) {
+        newList.add(footNote.identifier);
+      }
+    }
+
+    if (newList.length != settings.collapsedFootNotes.length) {
+      updateCollapsedFootnotes(newList);
+    }
   }
 }
 
