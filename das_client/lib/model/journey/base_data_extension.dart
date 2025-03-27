@@ -1,6 +1,8 @@
 import 'package:das_client/model/journey/balise_level_crossing_group.dart';
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/datatype.dart';
+import 'package:das_client/model/journey/line_foot_note.dart';
+import 'package:das_client/model/journey/metadata.dart';
 
 extension BaseDataExtension on Iterable<BaseData> {
   List<BaseData> groupBaliseAndLeveLCrossings(List<int> expandedGroups) {
@@ -41,6 +43,40 @@ extension BaseDataExtension on Iterable<BaseData> {
         i += groupedElements.length - 1;
       } else {
         resultList.add(currentElement);
+      }
+    }
+
+    return resultList;
+  }
+
+  List<BaseData> hideRepeatedLineFootNotes(Metadata metadata) {
+    final resultList = List.of(this);
+
+    final currentPositionIndex = resultList.indexOf(metadata.currentPosition ?? resultList.first);
+    final displayedFootNoteIdentifiers = [];
+
+    for (int i = currentPositionIndex; i < resultList.length; i++) {
+      final currentElement = resultList[i];
+      if (currentElement.type == Datatype.lineFootNote) {
+        final lineFootNote = currentElement as LineFootNote;
+        if (displayedFootNoteIdentifiers.contains(lineFootNote.identifier)) {
+          resultList.removeAt(i);
+          i--;
+        } else {
+          displayedFootNoteIdentifiers.add(lineFootNote.identifier);
+        }
+      }
+    }
+
+    for (int i = currentPositionIndex; i >= 0; i--) {
+      final currentElement = resultList[i];
+      if (currentElement.type == Datatype.lineFootNote) {
+        final lineFootNote = currentElement as LineFootNote;
+        if (displayedFootNoteIdentifiers.contains(lineFootNote.identifier)) {
+          resultList.removeAt(i);
+        } else {
+          displayedFootNoteIdentifiers.add(lineFootNote.identifier);
+        }
       }
     }
 

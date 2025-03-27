@@ -112,7 +112,8 @@ class TrainJourney extends StatelessWidget {
   List<DASTableRowBuilder> _rows(BuildContext context, Journey journey, TrainJourneySettings settings) {
     final rows = journey.data
         .whereNot((it) => _isCurvePointWithoutSpeed(it, journey, settings))
-        .groupBaliseAndLeveLCrossings(settings.expandedGroups);
+        .groupBaliseAndLeveLCrossings(settings.expandedGroups)
+        .hideRepeatedLineFootNotes(journey.metadata);
 
     final groupedRows =
         rows.whereType<BaliseLevelCrossingGroup>().map((it) => it.groupedElements).expand((it) => it).toList();

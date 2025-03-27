@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:das_client/model/journey/additional_speed_restriction.dart';
 import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
 import 'package:das_client/model/journey/base_data.dart';
+import 'package:das_client/model/journey/base_foot_note.dart';
 import 'package:das_client/model/journey/bracket_station.dart';
 import 'package:das_client/model/journey/bracket_station_segment.dart';
 import 'package:das_client/model/journey/break_series.dart';
@@ -129,7 +130,7 @@ class SferaModelMapper {
       return journeyData.firstWhereOrNull((it) => it.order == lastJourney?.metadata.currentPosition?.order);
     } else {
       final positionOrder = calculateOrder(positionSegmentIndex, positionSpeed.location);
-      final currentPositionData = journeyData.lastWhereOrNull((it) => it.order <= positionOrder);
+      final currentPositionData = journeyData.lastWhereOrNull((it) => it.order <= positionOrder && it is! BaseFootNote);
       return _adjustCurrentPositionToServicePoint(journeyData, currentPositionData ?? journeyData.first);
     }
   }
