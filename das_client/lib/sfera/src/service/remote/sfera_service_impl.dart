@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:core';
+import 'dart:ui';
 
 import 'package:das_client/auth/authentication_component.dart';
 import 'package:das_client/model/journey/journey.dart';
@@ -31,7 +32,6 @@ import 'package:das_client/util/error_code.dart';
 import 'package:fimber/fimber.dart';
 import 'package:rxdart/rxdart.dart';
 
-/// Implementation of [SferaService] to handle connection and message exchange with a MQTT SFERA broker
 class SferaServiceImpl implements SferaService {
   SferaServiceImpl({
     required MqttService mqttService,
@@ -166,10 +166,11 @@ class SferaServiceImpl implements SferaService {
   void _onTaskCompleted(SferaTask task, dynamic data) async {
     _tasks.remove(task);
     Fimber.i('Task $task completed');
-    if (task is HandshakeTask) {
-      await _handleHandshakeTaskCompleted();
-    } else if (task is RequestJourneyProfileTask) {
-      await _handleRequestJourneyProfileTaskCompleted(data);
+    switch (task) {
+      case HandshakeTask _:
+        await _handleHandshakeTaskCompleted();
+      case RequestJourneyProfileTask _:
+        await _handleRequestJourneyProfileTaskCompleted(data);
     }
 
     if (_allTasksCompleted()) {
@@ -177,11 +178,10 @@ class SferaServiceImpl implements SferaService {
         case SferaServiceState.loadingAdditionalData:
           await _refreshSegmentProfiles();
           await _refreshTrainCharacteristics();
-          if (_updateJourney()) {
-            _stateSubject.add(SferaServiceState.connected);
-          } else {
-            disconnect();
-          }
+          _updateJourney(
+            onSuccess: () => _stateSubject.add(SferaServiceState.connected),
+            onInvalid: () => disconnect(),
+          );
           break;
         case SferaServiceState.connected:
           await _refreshSegmentProfiles();
@@ -268,7 +268,7 @@ class SferaServiceImpl implements SferaService {
     }
   }
 
-  bool _updateJourney() {
+  void _updateJourney({VoidCallback? onSuccess, VoidCallback? onInvalid}) {
     if (_journeyProfile != null && _segmentProfiles.isNotEmpty) {
       Fimber.i('Updating journey stream...');
       final newJourney = SferaModelMapper.mapToJourney(
@@ -281,13 +281,13 @@ class SferaServiceImpl implements SferaService {
       if (newJourney.valid) {
         _journeyProfileSubject.add(newJourney);
         Fimber.i('Journey updates successfully.');
-        return true;
+        onSuccess?.call();
       } else {
         Fimber.w('Failed to update journey as it is not valid');
         lastErrorCode = ErrorCode.sferaInvalid;
+        onInvalid?.call();
       }
     }
-    return false;
   }
 
   void _addEventMessageHandlers() {
