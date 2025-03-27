@@ -5,6 +5,8 @@ import 'package:das_client/sfera/src/model/balise_group.dart';
 import 'package:das_client/sfera/src/model/communication_network.dart';
 import 'package:das_client/sfera/src/model/connection_track.dart';
 import 'package:das_client/sfera/src/model/connection_track_description.dart';
+import 'package:das_client/sfera/src/model/contact.dart';
+import 'package:das_client/sfera/src/model/contact_list.dart';
 import 'package:das_client/sfera/src/model/current_limitation.dart';
 import 'package:das_client/sfera/src/model/current_limitation_change.dart';
 import 'package:das_client/sfera/src/model/current_limitation_start.dart';
@@ -29,6 +31,7 @@ import 'package:das_client/sfera/src/model/network_specific_area.dart';
 import 'package:das_client/sfera/src/model/network_specific_event.dart';
 import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
 import 'package:das_client/sfera/src/model/network_specific_point.dart';
+import 'package:das_client/sfera/src/model/other_contact_type.dart';
 import 'package:das_client/sfera/src/model/otn_id.dart';
 import 'package:das_client/sfera/src/model/own_train.dart';
 import 'package:das_client/sfera/src/model/position_speed.dart';
@@ -257,6 +260,12 @@ class SferaReplyParser {
         return B2gEventPayload(type: type, attributes: attributes, children: children, value: value);
       case NetworkSpecificEvent.elementType:
         return NetworkSpecificEvent.from(attributes: attributes, children: children, value: value);
+      case ContactList.elementType:
+        return ContactList(type: type, attributes: attributes, children: children, value: value);
+      case Contact.elementType:
+        return Contact(type: type, attributes: attributes, children: children, value: value);
+      case OtherContactType.elementType:
+        return OtherContactType(type: type, attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElement(type: type, attributes: attributes, children: children, value: value);
     }

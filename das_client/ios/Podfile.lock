@@ -7,40 +7,21 @@ PODS:
     - AppAuth/Core
   - audioplayers_darwin (0.0.1):
     - Flutter
-  - battery_plus (1.0.0):
-    - Flutter
-  - device_info_plus (0.0.1):
-    - Flutter
   - Flutter (1.0.0)
   - flutter_appauth (0.0.1):
     - AppAuth (= 1.7.5)
     - Flutter
   - flutter_secure_storage (6.0.0):
     - Flutter
-  - integration_test (0.0.1):
-    - Flutter
   - isar_flutter_libs (1.0.0):
-    - Flutter
-  - package_info_plus (0.4.5):
-    - Flutter
-  - path_provider_foundation (0.0.1):
-    - Flutter
-    - FlutterMacOS
-  - volume_controller (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - audioplayers_darwin (from `.symlinks/plugins/audioplayers_darwin/ios`)
-  - battery_plus (from `.symlinks/plugins/battery_plus/ios`)
-  - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - Flutter (from `Flutter`)
   - flutter_appauth (from `.symlinks/plugins/flutter_appauth/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
-  - integration_test (from `.symlinks/plugins/integration_test/ios`)
   - isar_flutter_libs (from `.symlinks/plugins/isar_flutter_libs/ios`)
-  - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
-  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
-  - volume_controller (from `.symlinks/plugins/volume_controller/ios`)
 
 SPEC REPOS:
   trunk:
@@ -49,40 +30,22 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   audioplayers_darwin:
     :path: ".symlinks/plugins/audioplayers_darwin/ios"
-  battery_plus:
-    :path: ".symlinks/plugins/battery_plus/ios"
-  device_info_plus:
-    :path: ".symlinks/plugins/device_info_plus/ios"
   Flutter:
     :path: Flutter
   flutter_appauth:
     :path: ".symlinks/plugins/flutter_appauth/ios"
   flutter_secure_storage:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
-  integration_test:
-    :path: ".symlinks/plugins/integration_test/ios"
   isar_flutter_libs:
     :path: ".symlinks/plugins/isar_flutter_libs/ios"
-  package_info_plus:
-    :path: ".symlinks/plugins/package_info_plus/ios"
-  path_provider_foundation:
-    :path: ".symlinks/plugins/path_provider_foundation/darwin"
-  volume_controller:
-    :path: ".symlinks/plugins/volume_controller/ios"
 
 SPEC CHECKSUMS:
   AppAuth: 501c04eda8a8d11f179dbe8637b7a91bb7e5d2fa
-  audioplayers_darwin: ccf9c770ee768abb07e26d90af093f7bab1c12ab
-  battery_plus: b42253f6d2dde71712f8c36fef456d99121c5977
-  device_info_plus: 21fcca2080fbcd348be798aa36c3e5ed849eefbe
+  audioplayers_darwin: 877d9a4d06331c5c374595e46e16453ac7eafa40
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_appauth: 273bf736e38f7d85000b1a9ac15ace5800c277f2
-  flutter_secure_storage: 1ed9476fba7e7a782b22888f956cce43e2c62f13
-  integration_test: 4a889634ef21a45d28d50d622cf412dc6d9f586e
-  isar_flutter_libs: 9fc2cfb928c539e1b76c481ba5d143d556d94920
-  package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
-  path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
-  volume_controller: 3657a1f65bedb98fa41ff7dc5793537919f31b12
+  flutter_appauth: aef998cfbcc307dff7f2fbe1f59a50323748dc25
+  flutter_secure_storage: d33dac7ae2ea08509be337e775f6b59f1ff45f12
+  isar_flutter_libs: b69f437aeab9c521821c3f376198c4371fa21073
 
 PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796
 
