@@ -168,7 +168,11 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
   }
 
   void _collapsePassedFootNotes(Journey journey) {
-    if (journey.metadata.currentPosition == journey.metadata.lastPosition) return;
+    if (journey.metadata.currentPosition == journey.metadata.lastPosition ||
+        journey.metadata.lastPosition == null ||
+        journey.metadata.currentPosition == null) {
+      return;
+    }
 
     final fromIndex = journey.data.indexOf(journey.metadata.lastPosition!);
     final toIndex = journey.data.indexOf(journey.metadata.currentPosition!);
