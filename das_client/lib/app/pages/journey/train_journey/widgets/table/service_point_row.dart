@@ -22,10 +22,12 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     required BuildContext context,
     super.height = rowHeight,
     super.config,
+    Color? rowColor,
   }) : super(
-          rowColor: metadata.nextStop == data
-              ? ThemeUtil.getColor(context, Color(0xFFCDD6E8), SBBColors.royal)
-              : ThemeUtil.getDASTableColor(context),
+          rowColor: rowColor ??
+              ((metadata.nextStop == data)
+                  ? ThemeUtil.getColor(context, Color(0xFFCDD6E8), SBBColors.royal)
+                  : ThemeUtil.getDASTableColor(context)),
           isSticky: true,
         );
 

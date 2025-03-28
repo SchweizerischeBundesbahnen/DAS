@@ -98,7 +98,6 @@ extension GetItX on GetIt {
         prefix: flavor.mqttTopicPrefix));
   }
 
-  /// Azure Authenticator.
   void registerAzureAuthenticator() {
     factoryFunc() {
       return AuthenticationComponent.createAzureAuthenticator(
@@ -120,8 +119,10 @@ extension GetItX on GetIt {
     registerLazySingleton<SferaAuthService>(() => SferaComponent.createSferaAuthService(
         authenticator: get(), tokenExchangeUrl: useTms ? flavor.tmsTokenExchangeUrl! : flavor.tokenExchangeUrl));
 
-    registerLazySingleton<SferaService>(() =>
-        SferaComponent.createSferaService(mqttService: get(), sferaDatabaseRepository: get(), authenticator: get()));
+    registerLazySingleton<SferaService>(
+      () => SferaComponent.createSferaService(mqttService: get(), sferaDatabaseRepository: get(), authenticator: get()),
+      dispose: (service) => service.dispose(),
+    );
 
     registerLazySingleton<SferaLocalService>(
         () => SferaComponent.createSferaLocalService(sferaDatabaseRepository: get()));

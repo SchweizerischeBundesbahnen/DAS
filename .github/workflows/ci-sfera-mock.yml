@@ -47,7 +47,7 @@ jobs:
           VERSION: main
         run: |
           # Convert to lowercase
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[:upper:]' '[:lower:]')
           
           mvn spring-boot:build-image \
             -Dmaven.test.skip=true \

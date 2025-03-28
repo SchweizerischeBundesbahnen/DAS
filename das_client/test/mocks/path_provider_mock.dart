@@ -11,10 +11,7 @@ const String applicationDocumentsPath = 'applicationDocumentsPath';
 const String externalCachePath = 'externalCachePath';
 const String externalStoragePath = 'externalStoragePath';
 
-class MockPathProviderPlatform extends Mock
-    with MockPlatformInterfaceMixin
-    implements PathProviderPlatform {
-
+class MockPathProviderPlatform extends Mock with MockPlatformInterfaceMixin implements PathProviderPlatform {
   @override
   Future<String> getTemporaryPath() async {
     return temporaryPath;

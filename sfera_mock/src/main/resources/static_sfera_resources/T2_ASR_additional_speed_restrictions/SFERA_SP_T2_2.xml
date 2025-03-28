@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
-                SP_ID="T2_2" SP_VersionMajor="2" SP_VersionMinor="0" SP_Length="20000" SP_Status="Valid">
+                SP_ID="T2_2" SP_VersionMajor="2" SP_VersionMinor="1" SP_Length="20000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -11,7 +11,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3007</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Yverdon-les-Bains"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Onnens-Bonvillars" location="3500">
@@ -19,7 +18,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3008</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Onnens-Bonvillars"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Neuchâtel" location="4000">
@@ -27,7 +25,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3009</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Neuchâtel"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Biel/Bienne" location="4500">
@@ -35,7 +32,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3010</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Biel/Bienne"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Lengnau" location="5000">
@@ -43,7 +39,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3011</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Lengnau"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Grenchen Süd" location="5500">
@@ -51,7 +46,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3012</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Grenchen Süd"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Solothurn" location="6000">
@@ -59,7 +53,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3013</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Solothurn"/>
         </TimingPoint>
 
         <NetworkSpecificPoint location="3200">
@@ -76,66 +69,80 @@
         </NetworkSpecificPoint>
     </SP_Points>
     <SP_Areas>
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="YLB"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="3000" endLocation="3000" TAF_TAP_location_abbreviation="YLB"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3007</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Yverdon-les-Bains</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Yverdon-les-Bains"/>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="ONN"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="3500" endLocation="3500" TAF_TAP_location_abbreviation="ONN"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3008</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Onnens-Bonvillars</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Onnens-Bonvillars"/>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="NEU"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="4000" endLocation="4000" TAF_TAP_location_abbreviation="NEU"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3009</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Neuchâtel</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Neuchâtel"/>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="BI"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="4500" endLocation="4500" TAF_TAP_location_abbreviation="BI"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3010</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Biel/Bienne</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Biel/Bienne"/>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="LEN"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="5000" endLocation="5000" TAF_TAP_location_abbreviation="LEN"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3011</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Lengnau</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Lengnau"/>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="GRN"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="5500" endLocation="5500" TAF_TAP_location_abbreviation="GRN"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3012</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Grenchen Süd</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Grenchen Süd"/>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="SOLO"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="6000" endLocation="6000" TAF_TAP_location_abbreviation="SOLO"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3013</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Solothurn</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Solothurn"/>
         </TAF_TAP_Location>
     </SP_Areas>

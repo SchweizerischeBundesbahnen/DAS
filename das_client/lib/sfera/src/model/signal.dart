@@ -10,7 +10,8 @@ class Signal extends SferaXmlElement {
 
   SignalId get id => children.whereType<SignalId>().first;
 
-  SignalPhysicalCharacteristics? get physicalCharacteristics => children.whereType<SignalPhysicalCharacteristics>().firstOrNull;
+  SignalPhysicalCharacteristics? get physicalCharacteristics =>
+      children.whereType<SignalPhysicalCharacteristics>().firstOrNull;
 
   Iterable<SignalFunction> get functions => children.whereType<SignalFunction>();
 
