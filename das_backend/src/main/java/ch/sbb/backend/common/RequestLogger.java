@@ -28,17 +28,19 @@ public class RequestLogger {
 
     public void log(HttpServletRequest request, Integer httpStatusCode) {
         stopWatch.stop();
-        String params = request != null ?
-            request.getParameterMap().entrySet().stream()
-                .map(entry -> entry.getKey() + ":" + String.join(",", entry.getValue()))
-                .collect(Collectors.joining("&")) : null;
+        if (request == null) {
+            return;
+        }
+        String params = request.getParameterMap().entrySet().stream()
+            .map(entry -> entry.getKey() + ":" + String.join(",", entry.getValue()))
+            .collect(Collectors.joining("&"));
 
         var loggingEventBuilder = log.atLevel(level);
-        loggingEventBuilder.log("Request path=" + (request != null ? request.getRequestURI() : null) + ", " +
-            "requestId=" + (request != null ? request.getRequestId() : null) + ", " +
-            "method=" + (request != null ? request.getMethod() : null) + ", " +
+        loggingEventBuilder.log("Request path=" + request.getRequestURI() + ", " +
+            "requestId=" + request.getRequestId() + ", " +
+            "method=" + request.getMethod() + ", " +
             "query=" + params + ", " +
-            "user_agent=" + (request != null ? request.getHeader(HttpHeaders.USER_AGENT) : null) + ", " +
+            "user_agent=" + request.getHeader(HttpHeaders.USER_AGENT) + ", " +
             "responseStatusCode=" + httpStatusCode + ", " +
             "runTimeMs=" + stopWatch.getTotalTimeMillis());
     }
