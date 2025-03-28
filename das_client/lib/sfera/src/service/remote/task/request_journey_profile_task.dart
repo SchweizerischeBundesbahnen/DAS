@@ -51,44 +51,45 @@ class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
 
   @override
   Future<bool> handleMessage(SferaG2bReplyMessage replyMessage) async {
-    if (replyMessage.payload != null && replyMessage.payload!.journeyProfiles.isNotEmpty) {
-      stopTimeout();
-      final journeyProfile = replyMessage.payload!.journeyProfiles.first;
-      if (journeyProfile.status == JpStatus.invalid || journeyProfile.status == JpStatus.unavailable) {
-        Fimber.w(
-          'Received JourneyProfile with status=${journeyProfile.status}.',
-        );
-        _taskFailedCallback(this, ErrorCode.sferaJpUnavailable);
-        return true;
-      }
+    if (replyMessage.payload == null || replyMessage.payload!.journeyProfiles.isEmpty) {
+      return false;
+    }
 
-      Fimber.i(
-        'Received G2bReplyPayload response with ${replyMessage.payload!.journeyProfiles.length} JourneyProfiles, '
-        '${replyMessage.payload!.segmentProfiles.length} SegmentProfiles and '
-        '${replyMessage.payload!.trainCharacteristics.length} TrainCharacteristics...',
+    stopTimeout();
+    final journeyProfile = replyMessage.payload!.journeyProfiles.first;
+    if (journeyProfile.status == JpStatus.invalid || journeyProfile.status == JpStatus.unavailable) {
+      Fimber.w(
+        'Received JourneyProfile with status=${journeyProfile.status}.',
       );
-
-      for (final element in replyMessage.payload!.segmentProfiles) {
-        await _sferaDatabaseRepository.saveSegmentProfile(element);
-      }
-
-      for (final trainCharacteristics in replyMessage.payload!.trainCharacteristics) {
-        await _sferaDatabaseRepository.saveTrainCharacteristics(trainCharacteristics);
-      }
-
-      for (final journeyProfile in replyMessage.payload!.journeyProfiles) {
-        await _sferaDatabaseRepository.saveJourneyProfile(journeyProfile);
-      }
-
-      final result = [];
-      result.addAll(replyMessage.payload!.journeyProfiles);
-      result.addAll(replyMessage.payload!.segmentProfiles);
-      result.addAll(replyMessage.payload!.trainCharacteristics);
-      result.addAll(replyMessage.payload!.relatedTrainInformation);
-
-      _taskCompletedCallback(this, result);
+      _taskFailedCallback(this, ErrorCode.sferaJpUnavailable);
       return true;
     }
-    return false;
+
+    Fimber.i(
+      'Received G2bReplyPayload response with ${replyMessage.payload!.journeyProfiles.length} JourneyProfiles, '
+      '${replyMessage.payload!.segmentProfiles.length} SegmentProfiles and '
+      '${replyMessage.payload!.trainCharacteristics.length} TrainCharacteristics...',
+    );
+
+    for (final element in replyMessage.payload!.segmentProfiles) {
+      await _sferaDatabaseRepository.saveSegmentProfile(element);
+    }
+
+    for (final trainCharacteristics in replyMessage.payload!.trainCharacteristics) {
+      await _sferaDatabaseRepository.saveTrainCharacteristics(trainCharacteristics);
+    }
+
+    for (final journeyProfile in replyMessage.payload!.journeyProfiles) {
+      await _sferaDatabaseRepository.saveJourneyProfile(journeyProfile);
+    }
+
+    final result = [];
+    result.addAll(replyMessage.payload!.journeyProfiles);
+    result.addAll(replyMessage.payload!.segmentProfiles);
+    result.addAll(replyMessage.payload!.trainCharacteristics);
+    result.addAll(replyMessage.payload!.relatedTrainInformation);
+
+    _taskCompletedCallback(this, result);
+    return true;
   }
 }

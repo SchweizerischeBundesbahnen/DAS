@@ -55,13 +55,14 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfile>> {
     }
 
     final sferaB2gRequestMessage = SferaB2gRequestMessage.create(
-        await SferaService.messageHeader(sender: otnId.company),
-        b2gRequest: B2gRequest.createSPRequest(spRequests));
+      await SferaService.messageHeader(sender: otnId.company),
+      b2gRequest: B2gRequest.createSPRequest(spRequests),
+    );
     Fimber.i('Sending segment profiles request...');
 
     startTimeout(_taskFailedCallback);
-    _mqttService.publishMessage(otnId.company, SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate),
-        sferaB2gRequestMessage.buildDocument().toString());
+    final sferaTrain = SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
+    _mqttService.publishMessage(otnId.company, sferaTrain, sferaB2gRequestMessage.buildDocument().toString());
   }
 
   Future<List<SegmentProfileReference>> findMissingSegmentProfiles() async {
@@ -80,30 +81,31 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfile>> {
 
   @override
   Future<bool> handleMessage(SferaG2bReplyMessage replyMessage) async {
-    if (replyMessage.payload != null && replyMessage.payload!.segmentProfiles.isNotEmpty) {
-      stopTimeout();
-      Fimber.i(
-        'Received G2bReplyPayload response with ${replyMessage.payload!.segmentProfiles.length} SegmentProfiles...',
-      );
-
-      bool allValid = true;
-
-      for (final element in replyMessage.payload!.segmentProfiles) {
-        if (element.status == SpStatus.valid) {
-          await _sferaDatabaseRepository.saveSegmentProfile(element);
-        } else {
-          allValid = false;
-        }
-      }
-
-      if (allValid) {
-        _taskCompletedCallback(this, replyMessage.payload!.segmentProfiles.toList());
-      } else {
-        _taskFailedCallback(this, ErrorCode.sferaInvalid);
-      }
-
-      return true;
+    if (replyMessage.payload == null || replyMessage.payload!.segmentProfiles.isEmpty) {
+      return false;
     }
-    return false;
+
+    stopTimeout();
+    Fimber.i(
+      'Received G2bReplyPayload response with ${replyMessage.payload!.segmentProfiles.length} SegmentProfiles...',
+    );
+
+    bool allValid = true;
+
+    for (final element in replyMessage.payload!.segmentProfiles) {
+      if (element.status == SpStatus.valid) {
+        await _sferaDatabaseRepository.saveSegmentProfile(element);
+      } else {
+        allValid = false;
+      }
+    }
+
+    if (allValid) {
+      _taskCompletedCallback(this, replyMessage.payload!.segmentProfiles.toList());
+    } else {
+      _taskFailedCallback(this, ErrorCode.sferaInvalid);
+    }
+
+    return true;
   }
 }
