@@ -34,20 +34,25 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI openApiConfiguration() {
-        return new OpenAPI().components(new Components().addSecuritySchemes(OAUTH_2, addOAuthSecurityScheme()).addSchemas("ErrorResponse",
-            new Schema<Map<String, Object>>().addProperty("timestamp", new DateTimeSchema()).addProperty("status", new NumberSchema()).addProperty("error", new StringSchema())
-                .addProperty("path", new StringSchema()))
+        return new OpenAPI().components(
+            new Components().addSecuritySchemes(OAUTH_2, addOAuthSecurityScheme())
+                .addSchemas("ErrorResponse",
+                    new Schema<Map<String, Object>>()
+                        .addProperty("timestamp", new DateTimeSchema())
+                        .addProperty("status", new NumberSchema())
+                        .addProperty("error", new StringSchema())
+                        .addProperty("path", new StringSchema()))
 
         ).security(List.of(new SecurityRequirement().addList(OAUTH_2))).info(apiInfo());
     }
 
     private Info apiInfo() {
-        String versionInformation = StringUtils.isNotBlank(applicationVersion) ? " v" + applicationVersion : "";
+        final String versionInformation = StringUtils.isNotBlank(applicationVersion) ? " v" + applicationVersion : "";
         return new Info().title("DAS Backend API").version(versionInformation).contact(new Contact().name("DAS").url("https://github.com/SchweizerischeBundesbahnen/DAS"));
     }
 
     private SecurityScheme addOAuthSecurityScheme() {
-        var scopes = new Scopes().addString(clientId + "/.default", "Global access");
+        final Scopes scopes = new Scopes().addString(clientId + "/.default", "Global access");
 
         final OAuthFlows flowAuthorizationCode = new OAuthFlows().authorizationCode(
             new OAuthFlow().authorizationUrl(authorizationUrl + "/authorize").tokenUrl(authorizationUrl + "/token").scopes(scopes));

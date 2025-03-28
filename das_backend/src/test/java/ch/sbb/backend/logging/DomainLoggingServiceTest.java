@@ -1,9 +1,9 @@
 package ch.sbb.backend.logging;
 
-import ch.sbb.backend.logging.domain.LogDestination;
-import ch.sbb.backend.logging.domain.LogEntry;
-import ch.sbb.backend.logging.domain.LogLevel;
-import ch.sbb.backend.logging.domain.Tenant;
+import ch.sbb.backend.logging.domain.model.LogEntry;
+import ch.sbb.backend.logging.domain.model.LogLevel;
+import ch.sbb.backend.logging.domain.model.LogTarget;
+import ch.sbb.backend.logging.domain.model.Tenant;
 import ch.sbb.backend.logging.domain.repository.TenantRepository;
 import ch.sbb.backend.logging.domain.service.DomainLoggingService;
 import ch.sbb.backend.logging.infrastructure.SplunkLoggingRepository;
@@ -29,7 +29,7 @@ class DomainLoggingServiceTest {
 
     @Test
     void shouldLogMessagesToSplunk() {
-        Tenant tenantConfig = new Tenant("test", "10", "", "", LogDestination.SPLUNK);
+        Tenant tenantConfig = new Tenant("test", "10", "", "", LogTarget.SPLUNK);
         Mockito.when(tenantRepository.current()).thenReturn(tenantConfig);
 
         OffsetDateTime timestamp = OffsetDateTime.now();

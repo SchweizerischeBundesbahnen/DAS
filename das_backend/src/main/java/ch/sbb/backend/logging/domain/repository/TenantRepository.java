@@ -1,6 +1,6 @@
 package ch.sbb.backend.logging.domain.repository;
 
-import ch.sbb.backend.logging.domain.Tenant;
+import ch.sbb.backend.logging.domain.model.Tenant;
 
 public interface TenantRepository {
 

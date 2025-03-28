@@ -1,6 +1,6 @@
 package ch.sbb.backend.logging.infrastructure.config;
 
-import ch.sbb.backend.logging.domain.Tenant;
+import ch.sbb.backend.logging.domain.model.Tenant;
 import java.util.List;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

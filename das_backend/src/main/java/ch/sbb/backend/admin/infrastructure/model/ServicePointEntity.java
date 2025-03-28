@@ -1,6 +1,6 @@
-package ch.sbb.backend.admin.infrastructure.entities;
+package ch.sbb.backend.admin.infrastructure.model;
 
-import ch.sbb.backend.admin.domain.ServicePoint;
+import ch.sbb.backend.admin.domain.model.ServicePoint;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
@@ -21,7 +21,7 @@ public class ServicePointEntity {
     }
 
     public ServicePointEntity() {
-        
+
     }
 
     public ServicePoint toServicePoint() {

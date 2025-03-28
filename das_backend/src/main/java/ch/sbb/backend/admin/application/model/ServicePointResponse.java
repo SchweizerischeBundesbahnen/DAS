@@ -1,4 +1,4 @@
-package ch.sbb.backend.admin.application;
+package ch.sbb.backend.admin.application.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

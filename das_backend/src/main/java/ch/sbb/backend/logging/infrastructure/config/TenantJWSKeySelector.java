@@ -1,6 +1,6 @@
 package ch.sbb.backend.logging.infrastructure.config;
 
-import ch.sbb.backend.logging.domain.Tenant;
+import ch.sbb.backend.logging.domain.model.Tenant;
 import ch.sbb.backend.logging.domain.repository.TenantRepository;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.KeySourceException;
@@ -25,6 +25,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TenantJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<SecurityContext> {
 
+    public static final String ISSUER_CLAIM = "iss";
     private final TenantRepository tenantRepository;
     private final Map<String, JWSKeySelector<SecurityContext>> selectors = new ConcurrentHashMap<>();
 
@@ -39,7 +40,7 @@ public class TenantJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<Sec
     }
 
     private String toTenant(JWTClaimsSet claimSet) {
-        return (String) claimSet.getClaim("iss");
+        return (String) claimSet.getClaim(ISSUER_CLAIM);
     }
 
     private JWSKeySelector<SecurityContext> fromTenant(String issuerUri) {

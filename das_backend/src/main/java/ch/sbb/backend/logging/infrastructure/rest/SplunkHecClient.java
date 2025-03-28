@@ -1,6 +1,6 @@
 package ch.sbb.backend.logging.infrastructure.rest;
 
-import ch.sbb.backend.logging.domain.LogEntry;
+import ch.sbb.backend.logging.domain.model.LogEntry;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

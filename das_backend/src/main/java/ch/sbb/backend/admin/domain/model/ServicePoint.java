@@ -1,4 +1,4 @@
-package ch.sbb.backend.admin.domain;
+package ch.sbb.backend.admin.domain.model;
 
 public record ServicePoint(
     Integer uic,

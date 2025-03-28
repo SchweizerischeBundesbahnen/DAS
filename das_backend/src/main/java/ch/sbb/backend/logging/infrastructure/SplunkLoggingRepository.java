@@ -1,6 +1,6 @@
 package ch.sbb.backend.logging.infrastructure;
 
-import ch.sbb.backend.logging.domain.LogEntry;
+import ch.sbb.backend.logging.domain.model.LogEntry;
 import ch.sbb.backend.logging.domain.repository.LoggingRepository;
 import ch.sbb.backend.logging.infrastructure.rest.SplunkHecClient;
 import java.util.List;

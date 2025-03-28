@@ -1,8 +1,8 @@
 package ch.sbb.backend.logging.infrastructure;
 
 import ch.sbb.backend.logging.application.TenantContext;
-import ch.sbb.backend.logging.domain.Tenant;
-import ch.sbb.backend.logging.domain.TenantId;
+import ch.sbb.backend.logging.domain.model.Tenant;
+import ch.sbb.backend.logging.domain.model.TenantId;
 import ch.sbb.backend.logging.domain.repository.TenantRepository;
 import ch.sbb.backend.logging.infrastructure.config.TenantConfig;
 import org.slf4j.Logger;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class ConfigTenantRepository implements TenantRepository {
 
     private static final Logger log = LoggerFactory.getLogger(ConfigTenantRepository.class);
-    
+
     private final TenantConfig tenantConfig;
 
     public ConfigTenantRepository(TenantConfig tenantConfig) {
@@ -33,7 +33,7 @@ public class ConfigTenantRepository implements TenantRepository {
     }
 
     private Tenant getById(TenantId tenantId) {
-        return tenantConfig.getTenants().stream().filter(t -> tenantId == new TenantId(t.id()))
+        return tenantConfig.getTenants().stream().filter(t -> new TenantId(t.id()).equals(tenantId))
             .findAny()
             .orElseThrow(() -> new IllegalArgumentException("unknown tenant"));
     }

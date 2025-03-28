@@ -1,6 +1,6 @@
 package ch.sbb.backend.logging.application;
 
-import ch.sbb.backend.logging.domain.TenantId;
+import ch.sbb.backend.logging.domain.model.TenantId;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 

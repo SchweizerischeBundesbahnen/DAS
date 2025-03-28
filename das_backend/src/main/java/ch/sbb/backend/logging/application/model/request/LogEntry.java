@@ -1,7 +1,5 @@
-package ch.sbb.backend.logging.application.rest;
+package ch.sbb.backend.logging.application.model.request;
 
-import ch.sbb.backend.logging.domain.LogEntry;
-import ch.sbb.backend.logging.domain.LogLevel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,7 +8,7 @@ import java.util.Collections;
 import java.util.Map;
 
 @Schema(name = "LogEntry")
-public class LogEntryRequest {
+public class LogEntry {
 
     @NotNull
     @Schema(
@@ -22,7 +20,7 @@ public class LogEntryRequest {
     public OffsetDateTime time;
 
     @NotBlank
-    @Schema(description = "Source of the log entry", example = "mobile_flutter")
+    @Schema(description = "Source of the log entry", example = "das_client")
     public String source;
 
     @NotBlank
@@ -34,7 +32,7 @@ public class LogEntryRequest {
 
     @NotNull
     @Schema(description = "Level of the log entry", example = "ERROR")
-    public LogLevelRequest level;
+    public LogLevel level;
 
     @Schema(
         description = "Metadata of the log entry",
@@ -42,7 +40,7 @@ public class LogEntryRequest {
     )
     public Map<String, String> metadata = Collections.emptyMap();
 
-    LogEntry toLogEntry() {
-        return new LogEntry(time, source, message, new LogLevel(level.name()), metadata);
+    public ch.sbb.backend.logging.domain.model.LogEntry toLogEntry() {
+        return new ch.sbb.backend.logging.domain.model.LogEntry(time, source, message, new ch.sbb.backend.logging.domain.model.LogLevel(level.name()), metadata);
     }
 }

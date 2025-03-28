@@ -3,7 +3,7 @@ package ch.sbb.backend.admin.domain.repository;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import ch.sbb.backend.admin.domain.ServicePoint;
+import ch.sbb.backend.admin.domain.model.ServicePoint;
 import ch.sbb.backend.admin.domain.service.DomainServicePointService;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;

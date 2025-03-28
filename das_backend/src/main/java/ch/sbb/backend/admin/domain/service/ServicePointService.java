@@ -1,6 +1,6 @@
 package ch.sbb.backend.admin.domain.service;
 
-import ch.sbb.backend.admin.domain.ServicePoint;
+import ch.sbb.backend.admin.domain.model.ServicePoint;
 import java.util.List;
 import java.util.Optional;
 

@@ -14,11 +14,11 @@ import java.io.IOException;
 public class RequestLoggingFilter implements Filter {
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse res = (HttpServletResponse) response;
-        RequestLogger requestLogger = RequestLogger.from(req);
-        chain.doFilter(request, response);
-        requestLogger.log(req, res.getStatus());
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+        HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
+        RequestLogger requestLogger = RequestLogger.from(httpServletRequest);
+        filterChain.doFilter(servletRequest, servletResponse);
+        requestLogger.log(httpServletRequest, httpServletResponse.getStatus());
     }
 }

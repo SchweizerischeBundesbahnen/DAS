@@ -1,5 +1,6 @@
 package ch.sbb.backend.admin.application;
 
+import ch.sbb.backend.admin.application.model.ServicePointResponse;
 import ch.sbb.backend.admin.domain.service.ServicePointService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

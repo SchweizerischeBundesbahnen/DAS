@@ -1,4 +1,4 @@
-package ch.sbb.backend.logging.domain;
+package ch.sbb.backend.logging.domain.model;
 
 import java.util.UUID;
 

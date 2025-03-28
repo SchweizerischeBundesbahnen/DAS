@@ -1,8 +1,8 @@
 package ch.sbb.backend.admin.infrastructure.repositories;
 
-import ch.sbb.backend.admin.domain.ServicePoint;
+import ch.sbb.backend.admin.domain.model.ServicePoint;
 import ch.sbb.backend.admin.domain.repository.ServicePointRepository;
-import ch.sbb.backend.admin.infrastructure.entities.ServicePointEntity;
+import ch.sbb.backend.admin.infrastructure.model.ServicePointEntity;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Component;

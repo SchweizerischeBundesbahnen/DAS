@@ -6,10 +6,10 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 
 @ServletComponentScan
 @SpringBootApplication
-public class BackendApplication {
+public class DASBackendApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BackendApplication.class, args);
+        SpringApplication.run(DASBackendApplication.class, args);
     }
 
 }

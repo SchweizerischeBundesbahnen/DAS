@@ -1,5 +1,6 @@
 package ch.sbb.backend.logging.application.rest;
 
+import ch.sbb.backend.logging.application.model.request.LogEntry;
 import ch.sbb.backend.logging.domain.service.LoggingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/v1/logging")
+@RequestMapping(value = "api/v1/logging")
 @Tag(name = "Logging", description = "API for logging")
 class LoggingController {
 
@@ -32,7 +33,7 @@ class LoggingController {
     @ApiResponse(responseCode = "500", description = "Internal server error",
         content = {@Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/ErrorResponse"))})
     @PostMapping(value = "/logs", consumes = "application/json")
-    void logs(@RequestBody List<@Valid LogEntryRequest> logs) {
-        loggingService.saveAll(logs.stream().map(LogEntryRequest::toLogEntry).toList());
+    void logs(@RequestBody List<@Valid LogEntry> logs) {
+        loggingService.saveAll(logs.stream().map(LogEntry::toLogEntry).toList());
     }
 }

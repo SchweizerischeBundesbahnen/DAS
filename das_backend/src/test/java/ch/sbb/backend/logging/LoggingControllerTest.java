@@ -7,8 +7,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.backend.TestcontainersConfiguration;
-import ch.sbb.backend.logging.domain.LogEntry;
-import ch.sbb.backend.logging.domain.LogLevel;
+import ch.sbb.backend.logging.domain.model.LogEntry;
+import ch.sbb.backend.logging.domain.model.LogLevel;
 import ch.sbb.backend.logging.infrastructure.rest.SplunkHecClient;
 import java.time.OffsetDateTime;
 import java.util.Collections;
