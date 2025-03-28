@@ -8,7 +8,8 @@ class SferaB2gRequestMessage extends SferaXmlElement {
 
   SferaB2gRequestMessage({super.type = elementType, super.attributes, super.children, super.value});
 
-  factory SferaB2gRequestMessage.create(MessageHeader header, {HandshakeRequest? handshakeRequest, B2gRequest? b2gRequest}) {
+  factory SferaB2gRequestMessage.create(MessageHeader header,
+      {HandshakeRequest? handshakeRequest, B2gRequest? b2gRequest}) {
     final requestMessage = SferaB2gRequestMessage();
     requestMessage.children.add(header);
     if (handshakeRequest != null) {

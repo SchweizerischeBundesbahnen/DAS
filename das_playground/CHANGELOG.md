@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.4.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.3.0...webapp-v0.4.0) (2025-03-25)
+
+
+### Features
+
+* dynamic timestamps in JP ([#512](https://github.com/SchweizerischeBundesbahnen/DAS/issues/512)) ([#664](https://github.com/SchweizerischeBundesbahnen/DAS/issues/664)) ([8d19230](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8d19230f989d53ae835da85bfb5a306ec86f5694))
+* manual triggers ([#622](https://github.com/SchweizerischeBundesbahnen/DAS/issues/622)) ([#650](https://github.com/SchweizerischeBundesbahnen/DAS/issues/650)) ([87e4811](https://github.com/SchweizerischeBundesbahnen/DAS/commit/87e48115803e36542bbdd2329de6c709a38415db))
+
+
+### Bug Fixes
+
+* Dockerfile dist directory ([e6273e2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e6273e2a0e0043f797858cb681fa314d50498e9a))
+* update angular ([#740](https://github.com/SchweizerischeBundesbahnen/DAS/issues/740)) ([a4e48e0](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a4e48e09a77cd54ec020fc6c54026199ffab388f))
+* update angular v19 ([#667](https://github.com/SchweizerischeBundesbahnen/DAS/issues/667)) ([e2e7ed2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e2e7ed2571e0b1b28c7727f7ee17c35f548ace69))
+
 ## [0.3.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.2.0...webapp-v0.3.0) (2025-02-24)
 
 

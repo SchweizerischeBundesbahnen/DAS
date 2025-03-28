@@ -47,14 +47,10 @@ class KoaNotification extends StatelessWidget {
 
   Widget _waitCanceledWidget(BuildContext context) {
     return SBBPromotionBox.custom(
-      leading: Icon(
-        SBBIcons.circle_tick_medium,
-        color: SBBColors.black
-      ),
+      leading: Icon(SBBIcons.circle_tick_medium, color: SBBColors.black),
       content: Text(
         context.l10n.w_koa_notification_wait_canceled,
-        style:
-            DASTextStyles.mediumRoman.copyWith(color: SBBColors.black),
+        style: DASTextStyles.mediumRoman.copyWith(color: SBBColors.black),
       ),
       badgeText: context.l10n.w_koa_notification_title,
       trailing: _trailingButton(context),

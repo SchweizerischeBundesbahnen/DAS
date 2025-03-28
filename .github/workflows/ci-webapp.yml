@@ -70,7 +70,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           # Convert to lowercase
-          IMAGE_REPO=$(echo $IMAGE_REPO | tr '[A-Z]' '[a-z]')
+          IMAGE_REPO=$(echo $IMAGE_REPO | tr '[:upper:]' '[:lower:]')
           
           docker build -t $IMAGE_REPO:$IMAGE_TAG .
           docker push $IMAGE_REPO:$IMAGE_TAG

@@ -124,7 +124,7 @@ void main() {
       expect(headerFinder, findsOneWidget);
 
       final pauseButton =
-      find.descendant(of: headerFinder, matching: find.text(l10n.p_train_journey_header_button_pause));
+          find.descendant(of: headerFinder, matching: find.text(l10n.p_train_journey_header_button_pause));
       expect(pauseButton, findsOneWidget);
 
       await tapElement(tester, pauseButton);

@@ -29,7 +29,7 @@ enum SignalFunction {
 
   factory SignalFunction.from(String value) {
     return values.firstWhere(
-          (e) => e.name.toLowerCase() == value.toLowerCase(),
+      (e) => e.name.toLowerCase() == value.toLowerCase(),
       orElse: () => SignalFunction.unknown,
     );
   }

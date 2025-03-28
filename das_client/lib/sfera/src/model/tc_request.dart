@@ -5,7 +5,8 @@ class TcRequest extends SferaXmlElement {
 
   TcRequest({super.type = elementType, super.attributes, super.children, super.value});
 
-  factory TcRequest.create({required String id, required String versionMajor, required String versionMinor, required String ruId}) {
+  factory TcRequest.create(
+      {required String id, required String versionMajor, required String versionMinor, required String ruId}) {
     final request = TcRequest();
     request.attributes['TC_ID'] = id;
     request.attributes['TC_VersionMajor'] = versionMajor;

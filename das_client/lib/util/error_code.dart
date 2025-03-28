@@ -1,4 +1,3 @@
-
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +18,6 @@ enum ErrorCode {
 }
 
 extension ErrorCodeExtension on ErrorCode {
-
   String displayTextWithErrorCode(BuildContext context) {
     return '$code: ${displayText(context)}';
   }
