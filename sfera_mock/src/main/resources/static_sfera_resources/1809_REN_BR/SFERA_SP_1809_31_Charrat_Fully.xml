@@ -43,6 +43,7 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>1501</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Charrat-Fully</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
             <TAF_TAP_LocationName language="de" text="Charrat-Fully"/>
 

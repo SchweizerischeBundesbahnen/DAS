@@ -48,6 +48,7 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>1500</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Martigny</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
             <TAF_TAP_LocationName language="de" text="Martigny"/>
 

@@ -23,6 +23,7 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>1302</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Veytaux Chillon</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
             <TAF_TAP_LocationName language="de" text="Veytaux Chillon"/>
 
