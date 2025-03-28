@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.14.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.13.0...das_client-v0.14.0) (2025-03-28)
+
+
+### Features
+
+* add RADN footnotes ([#625](https://github.com/SchweizerischeBundesbahnen/DAS/issues/625)) ([#762](https://github.com/SchweizerischeBundesbahnen/DAS/issues/762)) ([3c4324f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/3c4324f13b0c2c5f79fab687f55cbffa152d18f7))
+* changed battery status design ([#590](https://github.com/SchweizerischeBundesbahnen/DAS/issues/590)) ([#747](https://github.com/SchweizerischeBundesbahnen/DAS/issues/747)) ([9f9e563](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9f9e56330d47718e70106e65020d58debec5d917))
+
+
+### Bug Fixes
+
+* bug of not showing last item in reduced_train_journey fixed ([#738](https://github.com/SchweizerischeBundesbahnen/DAS/issues/738)) ([2fc2f32](https://github.com/SchweizerischeBundesbahnen/DAS/commit/2fc2f323c5a917a17974988324abe69f06f81427))
+
 ## [0.13.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.12.0...das_client-v0.13.0) (2025-03-21)
 
 
