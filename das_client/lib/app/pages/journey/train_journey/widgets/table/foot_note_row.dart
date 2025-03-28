@@ -14,13 +14,13 @@ abstract class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
     required super.metadata,
     required super.data,
     required this.isExpanded,
-    required this.accordionCallback,
+    required this.accordionToggleCallback,
     double? height,
     super.config,
   }) : super(height: height ?? _calculateHeight(data, isExpanded));
 
   final bool isExpanded;
-  final AccordionExpandedCallback accordionCallback;
+  final AccordionToggleCallback accordionToggleCallback;
 
   @override
   Widget buildRowWidget(BuildContext context) {
@@ -40,7 +40,7 @@ abstract class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
             child: contentText(data),
           ),
           isExpanded: isExpanded,
-          accordionCallback: accordionCallback,
+          accordionToggleCallback: accordionToggleCallback,
           icon: SBBIcons.form_small,
           backgroundColor: SBBColors.cloud,
         ),

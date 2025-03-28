@@ -2,7 +2,7 @@ import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-typedef AccordionExpandedCallback = void Function(bool isExpanded);
+typedef AccordionToggleCallback = void Function();
 
 /// The Accordion - heavily inspired be the material expansion panel list.
 /// Use according to documentation.
@@ -15,7 +15,7 @@ class Accordion extends StatefulWidget {
     required this.title,
     required this.body,
     required this.isExpanded,
-    required this.accordionCallback,
+    required this.accordionToggleCallback,
     super.key,
     this.backgroundColor,
     this.borderColor,
@@ -25,7 +25,7 @@ class Accordion extends StatefulWidget {
   final String title;
   final Widget body;
   final bool isExpanded;
-  final AccordionExpandedCallback accordionCallback;
+  final AccordionToggleCallback accordionToggleCallback;
   final Color? backgroundColor;
   final Color? borderColor;
   final IconData? icon;
@@ -41,72 +41,72 @@ class _AccordionState extends State<Accordion> {
 
     return Material(
       color: widget.backgroundColor ?? style.accordionBackgroundColor,
-      child: _buildAccordionChildren(context),
+      child: _buildAccordion(context),
     );
   }
 
-  Widget _buildAccordionChildren(BuildContext context) {
+  Widget _buildAccordion(BuildContext context) {
     return Container(
       decoration: BoxDecoration(border: Border.all(color: widget.borderColor ?? SBBColors.transparent)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          MergeSemantics(
-            child: InkWell(
-              onTap: () => widget.accordionCallback(!widget.isExpanded),
-              child: Row(
-                children: <Widget>[
-                  const SizedBox(width: sbbDefaultSpacing * 0.5),
-                  if (widget.icon != null)
-                    Padding(
-                      padding: const EdgeInsets.only(right: sbbDefaultSpacing * 0.5),
-                      child: Icon(widget.icon),
-                    ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing * 0.25),
-                      child: Text(
-                        widget.title,
-                        style: DASTextStyles.smallBold,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsetsDirectional.only(
-                      end: sbbDefaultSpacing / 2,
-                    ),
-                    child: _ExpandIcon(
-                      widget.isExpanded,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          AnimatedCrossFade(
-            firstChild: Container(height: 0.0),
-            secondChild: SizedBox(
-              width: double.infinity,
-              child: widget.body,
-            ),
-            firstCurve: const Interval(
-              0.0,
-              0.6,
-              curve: Curves.fastOutSlowIn,
-            ),
-            secondCurve: const Interval(
-              0.4,
-              1.0,
-              curve: Curves.fastOutSlowIn,
-            ),
-            sizeCurve: Curves.fastOutSlowIn,
-            crossFadeState: widget.isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-            duration: kThemeAnimationDuration,
-          ),
+          _accordionHeader(),
+          _accordionBody(),
         ],
       ),
+    );
+  }
+
+  MergeSemantics _accordionHeader() {
+    return MergeSemantics(
+      child: InkWell(
+        onTap: () => widget.accordionToggleCallback(),
+        child: Row(
+          children: <Widget>[
+            const SizedBox(width: sbbDefaultSpacing * 0.5),
+            if (widget.icon != null)
+              Padding(
+                padding: const EdgeInsets.only(right: sbbDefaultSpacing * 0.5),
+                child: Icon(widget.icon),
+              ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing * 0.25),
+                child: Text(
+                  widget.title,
+                  style: DASTextStyles.smallBold,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsetsDirectional.only(
+                end: sbbDefaultSpacing / 2,
+              ),
+              child: _ExpandIcon(
+                widget.isExpanded,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  AnimatedCrossFade _accordionBody() {
+    return AnimatedCrossFade(
+      firstChild: Container(height: 0.0),
+      secondChild: SizedBox(
+        width: double.infinity,
+        child: widget.body,
+      ),
+      firstCurve: const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
+      secondCurve: const Interval(0.4, 1.0, curve: Curves.fastOutSlowIn),
+      sizeCurve: Curves.fastOutSlowIn,
+      crossFadeState: widget.isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+      duration: kThemeAnimationDuration,
     );
   }
 }

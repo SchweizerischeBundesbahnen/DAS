@@ -7,7 +7,7 @@ class TextUtil {
   }
 
   static String replaceHtmlLineBreaks(String text) {
-    return text.replaceAll('<br>', '\n').replaceAll('<br />', '\n').replaceAll('<br/>', '\n');
+    return text.replaceAll(RegExp(r'<br\s*/?>'), '\n');
   }
 
   static TextSpan _parseHtmlTextTags(String text, TextStyle baseTextStyle) {

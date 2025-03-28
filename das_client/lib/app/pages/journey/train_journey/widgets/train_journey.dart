@@ -216,7 +216,7 @@ class TrainJourney extends StatelessWidget {
             data: rowData as OpFootNote,
             config: trainJourneyConfig,
             isExpanded: !settings.collapsedFootNotes.contains(rowData.identifier),
-            accordionCallback: (isExpanded) => _onFootNoteExpanded(context, rowData, settings),
+            accordionToggleCallback: () => _onFootNoteExpanded(context, rowData, settings),
           );
         case Datatype.lineFootNote:
           return LineFootNoteRow(
@@ -224,7 +224,7 @@ class TrainJourney extends StatelessWidget {
             data: rowData as LineFootNote,
             config: trainJourneyConfig,
             isExpanded: !settings.collapsedFootNotes.contains(rowData.identifier),
-            accordionCallback: (isExpanded) => _onFootNoteExpanded(context, rowData, settings),
+            accordionToggleCallback: () => _onFootNoteExpanded(context, rowData, settings),
           );
       }
     });

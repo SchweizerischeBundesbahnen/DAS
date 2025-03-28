@@ -1,5 +1,6 @@
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/datatype.dart';
+import 'package:das_client/model/journey/order_priority.dart';
 
 class CABSignaling extends BaseData {
   const CABSignaling({
@@ -14,7 +15,7 @@ class CABSignaling extends BaseData {
   bool get isEnd => !isStart;
 
   @override
-  int get orderPriority => isStart ? -1 : 1;
+  OrderPriority get orderPriority => isStart ? OrderPriority.cabSignalingStart : OrderPriority.cabSignalingEnd;
 
   @override
   String toString() {

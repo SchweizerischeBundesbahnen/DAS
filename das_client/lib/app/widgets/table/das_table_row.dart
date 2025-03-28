@@ -1,7 +1,7 @@
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
 
-/// Interface for a class that builds [DASTableCellRow]
+/// Interface for a class that builds [DASTableRow]
 abstract class DASTableRowBuilder<T> {
   const DASTableRowBuilder({required this.height, required this.data, this.isSticky = false});
 

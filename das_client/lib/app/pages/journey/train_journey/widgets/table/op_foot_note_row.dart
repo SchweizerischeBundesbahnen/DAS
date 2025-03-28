@@ -8,7 +8,7 @@ class OpFootNoteRow extends FootNoteRow<OpFootNote> {
     required super.metadata,
     required super.data,
     required super.isExpanded,
-    required super.accordionCallback,
+    required super.accordionToggleCallback,
     super.config,
   });
 
