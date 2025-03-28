@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+// todo: remove api path when using APIM (#361)
 @RequestMapping(value = "api/v1/logging")
 @Tag(name = "Logging", description = "API for logging")
 class LoggingController {

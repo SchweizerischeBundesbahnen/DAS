@@ -7,16 +7,18 @@ import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
 
-@Schema(name = "LogEntry")
+// todo: check model from popular libs like slf4j-api (#769)
 public class LogEntry {
 
     @NotNull
     @Schema(
         type = "number",
         format = "double",
-        description = "Timestamp of the log entry in seconds since epoch or timestamp",
+        description = "Timestamp of the log entry in seconds since epoch or ISO-8601 timestamp",
         example = "1727188352.001"
     )
+    // todo: define dateTime format on API spec/doc --> @DateTimeFormat(iso = ISO.DATE_TIME) (#768)
+    // todo: rename into dateTime (#769)
     public OffsetDateTime time;
 
     @NotBlank
