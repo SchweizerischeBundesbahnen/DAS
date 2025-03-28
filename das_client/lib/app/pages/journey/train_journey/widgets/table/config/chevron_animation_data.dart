@@ -1,52 +1,67 @@
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_row_builder.dart';
+import 'package:collection/collection.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:das_client/model/journey/base_data.dart';
+import 'package:das_client/model/journey/base_foot_note.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/service_point.dart';
 
 /// Data class to hold all the information to chevron animation.
 class ChevronAnimationData {
   const ChevronAnimationData({
-    required this.offset,
+    required this.startOffset,
+    required this.endOffset,
   });
 
-  final double offset;
+  final double startOffset;
+  final double endOffset;
 
   static ChevronAnimationData? from(List<BaseData> rows, Journey journey, BaseData currentRow) {
-    if (journey.metadata.currentPosition != currentRow && journey.metadata.lastPosition != currentRow) {
-      return null;
-    }
-
     if (journey.metadata.lastPosition == null ||
         journey.metadata.currentPosition == null ||
         journey.metadata.lastPosition == journey.metadata.currentPosition) {
       return null;
     }
 
-    final fromIndex = rows.indexOf(journey.metadata.lastPosition!);
-    final toIndex = rows.indexOf(journey.metadata.currentPosition!);
+    // Footnotes are not part of the animation
+    final filteredRows = rows.whereNot((it) => it is BaseFootNote).toList();
 
-    var offset = 0.0;
-    for (var i = fromIndex + 1; i <= toIndex; i++) {
-      offset += BaseRowBuilder.rowHeightForData(rows[i]);
+    final fromIndex = filteredRows.indexOf(journey.metadata.lastPosition!);
+    final toIndex = filteredRows.indexOf(journey.metadata.currentPosition!);
+
+    final currentIndex = filteredRows.indexOf(currentRow);
+    if (currentIndex < fromIndex || currentIndex > toIndex) {
+      return null;
     }
 
+    var startOffset = 0.0;
+    var endOffset = 0.0;
+
     // Adjust for stopping point circle on start row
-    final startRow = rows[fromIndex];
+    final startRow = filteredRows[fromIndex];
     if (startRow is ServicePoint && startRow.isStop) {
-      offset += RouteCellBody.routeCircleSize;
+      endOffset += RouteCellBody.routeCircleSize;
+    }
+
+    for (var i = fromIndex + 1; i <= toIndex; i++) {
+      endOffset += CellRowBuilder.rowHeightForData(filteredRows[i]);
+      if (currentIndex == i) {
+        startOffset = endOffset * -1;
+        endOffset = 0.0;
+      }
     }
 
     // Adjust for stopping point circle on end row
-    final endRow = rows[toIndex];
+    final endRow = filteredRows[toIndex];
     if (endRow is ServicePoint && endRow.isStop) {
-      offset -= RouteCellBody.routeCircleSize;
+      endOffset -= RouteCellBody.routeCircleSize;
     }
 
     if (currentRow == journey.metadata.currentPosition) {
-      offset *= -1;
+      startOffset -= endOffset;
+      endOffset = 0.0;
     }
 
-    return ChevronAnimationData(offset: offset);
+    return ChevronAnimationData(startOffset: startOffset, endOffset: endOffset);
   }
 }

@@ -1,5 +1,6 @@
 import 'package:das_client/model/journey/base_data_extension.dart';
 import 'package:das_client/model/journey/datatype.dart';
+import 'package:das_client/model/journey/order_priority.dart';
 import 'package:das_client/model/journey/speed_data.dart';
 import 'package:meta/meta.dart';
 
@@ -25,14 +26,14 @@ abstract class BaseData implements Comparable {
     if (other is! BaseData) return -1;
     final orderCompare = order.compareTo(other.order);
     if (orderCompare == 0) {
-      return orderPriority.compareTo(other.orderPriority);
+      return orderPriority.index.compareTo(other.orderPriority.index);
     }
     return orderCompare;
   }
 
   /// Used for comparing if [order] is equal.
   /// If [orderPriority] is smaller, this is ordered before other, a bigger value is ordered after other.
-  int get orderPriority => 0;
+  OrderPriority get orderPriority => OrderPriority.baseData;
 
   /// Used to indicate that this element can be grouped together
   /// [canGroup] and [canGroupWith] needs to be overridden for elements to be able to be grouped

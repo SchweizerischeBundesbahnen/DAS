@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="1809_32_Saxon"
-                SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="4300" SP_Status="Valid">
+                SP_VersionMajor="2" SP_VersionMinor="0" SP_Length="4300" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -12,6 +12,7 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>1502</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
+            <TP_Name name="SAX"/>
         </TimingPoint>
 
 
@@ -43,7 +44,6 @@
                 <teltsi_LocationPrimaryCode>1502</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Saxon</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Saxon"/>
 
             <TAF_TAP_Location_NSP>
@@ -69,7 +69,7 @@
                 <NetworkSpecificParameter name="xmlLineFootNotes" value="
 				&lt;lineFootNotes&gt; 
 					&lt;footNote&gt; 
-						&lt;text&gt;admis seulement pour &lt;b&gt;RABe 503, ETR 610&lt;/text&gt; 
+						&lt;text&gt;admis seulement pour &lt;b&gt;RABe 503, ETR 610&lt;/b&gt;&lt;/text&gt;
 						&lt;trainSeries&gt;N&lt;/trainSeries&gt; 
 					&lt;/footNote&gt; 
 				&lt;/lineFootNotes&gt;
