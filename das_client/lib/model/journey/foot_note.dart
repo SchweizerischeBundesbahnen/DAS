@@ -17,11 +17,10 @@ class FootNote {
           text == other.text &&
           type == other.type &&
           refText == other.refText &&
-          identifier == other.identifier &&
-          trainSeries == other.trainSeries;
+          identifier == other.identifier;
 
   @override
-  int get hashCode => text.hashCode ^ type.hashCode ^ refText.hashCode ^ identifier.hashCode ^ trainSeries.hashCode;
+  int get hashCode => text.hashCode ^ type.hashCode ^ refText.hashCode ^ identifier.hashCode;
 }
 
 enum FootNoteType { trackSpeed, decisiveGradientUp, decisiveGradientDown, contact, networkType, journey }
