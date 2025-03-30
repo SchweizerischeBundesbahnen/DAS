@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.14.0...das_client-v0.14.1) (2025-03-30)
+
+
+### Bug Fixes
+
+* footnotes ([4b814d8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4b814d8093be877c2210bbed9270f32826f3b3a0))
+
 ## [0.14.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.13.0...das_client-v0.14.0) (2025-03-28)
 
 
