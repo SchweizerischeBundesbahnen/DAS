@@ -44,6 +44,7 @@ jobs:
           name: gen_srcs
           path: |
             **/*.g.dart
+            **/*.gr.dart
             **/*.mocks.dart
 
   release:
