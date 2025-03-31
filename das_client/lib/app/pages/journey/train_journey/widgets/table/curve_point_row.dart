@@ -23,7 +23,10 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
   @override
   DASTableCell informationCell(BuildContext context) {
     return DASTableCell(
-      child: Text(data.curveType?.localizedName(context) ?? ''),
+      child: Text(
+        data.curveType?.localizedName(context) ?? '',
+        overflow: TextOverflow.ellipsis,
+      ),
     );
   }
 

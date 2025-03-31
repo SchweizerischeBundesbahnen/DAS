@@ -27,36 +27,35 @@ class MainContainer extends StatelessWidget {
     final bloc = context.trainJourneyCubit;
 
     return StreamBuilder<List<dynamic>>(
-        stream: CombineLatestStream.list([bloc.journeyStream, bloc.settingsStream]),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData || snapshot.data?[0] == null || snapshot.data?[1] == null) {
-            return Center(
-              child: SBBLoadingIndicator(),
-            );
-          }
-          final journey = snapshot.data![0] as Journey;
-          final settings = snapshot.data![1] as TrainJourneySettings;
+      stream: CombineLatestStream.list([bloc.journeyStream, bloc.settingsStream]),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData || snapshot.data?[0] == null || snapshot.data?[1] == null) {
+          return Center(child: SBBLoadingIndicator());
+        }
+        final journey = snapshot.data![0] as Journey;
+        final settings = snapshot.data![1] as TrainJourneySettings;
 
-          return SBBGroup(
-            margin: const EdgeInsetsDirectional.fromSTEB(
-              sbbDefaultSpacing * 0.5,
-              0,
-              sbbDefaultSpacing * 0.5,
-              sbbDefaultSpacing / 2,
-            ),
-            padding: const EdgeInsets.all(sbbDefaultSpacing),
-            useShadow: false,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _topHeaderRow(context, journey, settings),
-                _divider(),
-                _bottomHeaderRow(context, journey.metadata),
-              ],
-            ),
-          );
-        });
+        return SBBGroup(
+          margin: const EdgeInsetsDirectional.fromSTEB(
+            sbbDefaultSpacing * 0.5,
+            0,
+            sbbDefaultSpacing * 0.5,
+            sbbDefaultSpacing * 0.5,
+          ),
+          padding: const EdgeInsets.all(sbbDefaultSpacing),
+          useShadow: false,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _topHeaderRow(context, journey, settings),
+              _divider(),
+              _bottomHeaderRow(context, journey.metadata),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Widget _bottomHeaderRow(BuildContext context, Metadata metadata) {
@@ -115,6 +114,7 @@ class MainContainer extends StatelessWidget {
               child: Text(
                 journey.metadata.nextStop?.name.localized ?? context.l10n.c_unknown,
                 style: DASTextStyles.xLargeLight,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ),

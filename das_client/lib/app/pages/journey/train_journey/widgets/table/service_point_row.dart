@@ -35,17 +35,13 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   DASTableCell informationCell(BuildContext context) {
     final servicePointName = data.name.localized;
     return DASTableCell(
-      alignment: defaultAlignment,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Text(
-            servicePointName,
-            style: data.isStation
-                ? DASTextStyles.xLargeBold
-                : DASTextStyles.xLargeLight.copyWith(fontStyle: FontStyle.italic),
-          ),
-        ],
+      alignment: Alignment.bottomLeft,
+      child: Text(
+        servicePointName,
+        textAlign: TextAlign.start,
+        overflow: TextOverflow.ellipsis,
+        style:
+            data.isStation ? DASTextStyles.xLargeBold : DASTextStyles.xLargeLight.copyWith(fontStyle: FontStyle.italic),
       ),
     );
   }
