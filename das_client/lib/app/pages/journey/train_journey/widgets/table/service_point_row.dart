@@ -1,4 +1,4 @@
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_row_builder.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-class ServicePointRow extends BaseRowBuilder<ServicePoint> {
+class ServicePointRow extends CellRowBuilder<ServicePoint> {
   static const Key stopOnRequestKey = Key('stopOnRequest');
 
   static const double rowHeight = 64.0;

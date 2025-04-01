@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="1671_1"
-                SP_VersionMajor="2" SP_VersionMinor="1" SP_Length="36000" SP_Status="Valid">
+                SP_VersionMajor="2" SP_VersionMinor="2" SP_Length="36000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -12,7 +12,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00003</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="TW"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Hoferz" location="11200">
@@ -20,7 +19,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00004</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="HO"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Schonberg" location="14700">
@@ -28,7 +26,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00005</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="SC"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Baumen" location="17600">
@@ -36,7 +33,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00006</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="BA"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Sennbach" location="20600">
@@ -44,7 +40,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00007</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="SE"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Luethisberg" location="23900">
@@ -52,7 +47,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00008</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="LU"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Helmaiche" location="28800">
@@ -60,7 +54,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00009</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="HE"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Haenniez" location="31000">
@@ -68,7 +61,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00010</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="HA"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Schmidigen" location="33800">
@@ -76,7 +68,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00011</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="SD"/>
         </TimingPoint>
 
 
@@ -84,12 +75,6 @@
             <Signal_ID signal_ID_Physical="G16" location="9240"/>
             <SignalFunction>exit</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="G16"/>
-        </Signal>
-
-        <Signal>
-            <Signal_ID signal_ID_Physical="A1" location="11100"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A1"/>
         </Signal>
 
         <Signal>
@@ -105,21 +90,9 @@
         </Signal>
 
         <Signal>
-            <Signal_ID signal_ID_Physical="A2" location="13600"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A2"/>
-        </Signal>
-
-        <Signal>
             <Signal_ID signal_ID_Physical="D28" location="13860"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="D28"/>
-        </Signal>
-
-        <Signal>
-            <Signal_ID signal_ID_Physical="A3" location="14300"/>
-            <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A3"/>
         </Signal>
 
         <Signal>
@@ -132,12 +105,6 @@
             <Signal_ID signal_ID_Physical="B14" location="15230"/>
             <SignalFunction>exit</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="B14"/>
-        </Signal>
-
-        <Signal>
-            <Signal_ID signal_ID_Physical="A4" location="15600"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A4"/>
         </Signal>
 
         <Signal>
@@ -159,18 +126,6 @@
         </Signal>
 
         <Signal>
-            <Signal_ID signal_ID_Physical="A5" location="18300"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A5"/>
-        </Signal>
-
-        <Signal>
-            <Signal_ID signal_ID_Physical="A6" location="18900"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A6"/>
-        </Signal>
-
-        <Signal>
             <Signal_ID signal_ID_Physical="D507" location="19780"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="D507"/>
@@ -183,27 +138,9 @@
         </Signal>
 
         <Signal>
-            <Signal_ID signal_ID_Physical="A7" location="20580"/>
-            <SignalFunction>entry</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A7"/>
-        </Signal>
-
-        <Signal>
-            <Signal_ID signal_ID_Physical="A8" location="21200"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A8"/>
-        </Signal>
-
-        <Signal>
             <Signal_ID signal_ID_Physical="D505" location="22920"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="D505"/>
-        </Signal>
-
-        <Signal>
-            <Signal_ID signal_ID_Physical="A9" location="23400"/>
-            <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A9"/>
         </Signal>
 
         <Signal>
@@ -233,12 +170,26 @@
 
         <BaliseGroup>
             <Balise location="10190" levelCrossingGuarding="true" amountLevelCrossings="3"/>
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="10870" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="20510" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="20610" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="25140" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="28590" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="32100" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="33420" levelCrossingGuarding="true" amountLevelCrossings="1"/>
         </BaliseGroup>
 
@@ -344,7 +295,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00003</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Twinn</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!-- todo: remove -->
             <TAF_TAP_LocationName language="de" text="Twinn"/>
 
             <TAF_TAP_Location_NSP>
@@ -381,7 +334,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00004</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Hoferz</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!-- todo: remove -->
             <TAF_TAP_LocationName language="de" text="Hoferz"/>
 
             <TAF_TAP_Location_NSP>
@@ -420,7 +375,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00005</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Schonberg</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!-- todo: remove -->
             <TAF_TAP_LocationName language="de" text="Schonberg"/>
 
             <TAF_TAP_Location_NSP>
@@ -459,7 +416,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00006</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Baumen</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!-- todo: remove -->
             <TAF_TAP_LocationName language="de" text="Baumen"/>
 
             <TAF_TAP_Location_NSP>
@@ -508,7 +467,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00007</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Sennbach</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!-- todo: remove -->
             <TAF_TAP_LocationName language="de" text="Sennbach"/>
 
             <TAF_TAP_Location_NSP>
@@ -535,7 +496,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00008</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Lüthisberg</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!-- todo: remove -->
             <TAF_TAP_LocationName language="de" text="Lüthisberg"/>
 
             <TAF_TAP_Location_NSP>
@@ -562,7 +525,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00009</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Helmaiche</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!-- todo: remove -->
             <TAF_TAP_LocationName language="de" text="Helmaiche"/>
 
             <TAF_TAP_Location_NSP>
@@ -599,7 +564,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00010</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Haenniez</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!-- todo: remove -->
             <TAF_TAP_LocationName language="de" text="Haenniez"/>
 
             <TAF_TAP_Location_NSP>
@@ -626,7 +593,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>00011</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Schmidigen</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!-- todo: remove -->
             <TAF_TAP_LocationName language="de" text="Schmidigen"/>
 
             <TAF_TAP_Location_NSP>
@@ -772,7 +741,7 @@
         </KilometreReferencePoint>
         <KilometreReferencePoint location="18900">
             <KM_Reference kmRef="23.2"/>
-        </KilometreReferencePoint>        
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="19100">
             <KM_Reference kmRef="23.0"/>
         </KilometreReferencePoint>
@@ -790,7 +759,7 @@
         </KilometreReferencePoint>
         <KilometreReferencePoint location="20520">
             <KM_Reference kmRef="21.58"/>
-        </KilometreReferencePoint>        
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="20580">
             <KM_Reference kmRef="21.5"/>
         </KilometreReferencePoint>
@@ -878,7 +847,6 @@
         <KilometreReferencePoint location="33800">
             <KM_Reference kmRef="8.3"/>
         </KilometreReferencePoint>
-
 
 
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="9100" endLocation="9100"

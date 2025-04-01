@@ -1,5 +1,5 @@
 import 'package:das_client/app/pages/journey/train_journey/automatic_advancement_controller.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_row_builder.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/signal_row.dart';
@@ -49,14 +49,14 @@ void main() {
     final scrollPositionMock = MockScrollPosition();
     when(scrollControllerMock.positions).thenReturn([scrollPositionMock]);
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
-    when(scrollPositionMock.maxScrollExtent).thenReturn(BaseRowBuilder.rowHeight * 4);
+    when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
     final testee = AutomaticAdvancementController(controller: scrollControllerMock);
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: true));
 
-    verify(scrollControllerMock.animateTo(BaseRowBuilder.rowHeight * 2,
+    verify(scrollControllerMock.animateTo(CellRowBuilder.rowHeight * 2,
             duration: anyNamed('duration'), curve: anyNamed('curve')))
         .called(1);
   });
@@ -79,7 +79,7 @@ void main() {
     final scrollPositionMock = MockScrollPosition();
     when(scrollControllerMock.positions).thenReturn([scrollPositionMock]);
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
-    when(scrollPositionMock.maxScrollExtent).thenReturn(BaseRowBuilder.rowHeight * 4);
+    when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
     final testee = AutomaticAdvancementController(controller: scrollControllerMock);
 
@@ -107,7 +107,7 @@ void main() {
     final scrollPositionMock = MockScrollPosition();
     when(scrollControllerMock.positions).thenReturn([scrollPositionMock]);
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
-    when(scrollPositionMock.maxScrollExtent).thenReturn(BaseRowBuilder.rowHeight * 4);
+    when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
     final testee = AutomaticAdvancementController(controller: scrollControllerMock);
 
@@ -115,7 +115,7 @@ void main() {
     testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: true));
     testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: true));
 
-    verify(scrollControllerMock.animateTo(BaseRowBuilder.rowHeight * 2,
+    verify(scrollControllerMock.animateTo(CellRowBuilder.rowHeight * 2,
             duration: anyNamed('duration'), curve: anyNamed('curve')))
         .called(1);
   });
@@ -138,7 +138,7 @@ void main() {
     final scrollPositionMock = MockScrollPosition();
     when(scrollControllerMock.positions).thenReturn([]);
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
-    when(scrollPositionMock.maxScrollExtent).thenReturn(BaseRowBuilder.rowHeight * 4);
+    when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
     final testee = AutomaticAdvancementController(controller: scrollControllerMock);
 
@@ -153,7 +153,7 @@ void main() {
     final targetSignalData = Signal(order: 300, kilometre: []);
     final servicePointData = ServicePoint(order: 0, kilometre: [], name: LocalizedString());
 
-    final List<BaseRowBuilder> rows = [
+    final List<CellRowBuilder> rows = [
       mockServicePointRow(servicePointData),
       SignalRow(metadata: Metadata(), data: signalData),
       SignalRow(metadata: Metadata(), data: signalData),
@@ -171,7 +171,7 @@ void main() {
     final scrollPositionMock = MockScrollPosition();
     when(scrollControllerMock.positions).thenReturn([scrollPositionMock]);
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
-    when(scrollPositionMock.maxScrollExtent).thenReturn(BaseRowBuilder.rowHeight * 10);
+    when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 10);
 
     final testee = AutomaticAdvancementController(controller: scrollControllerMock);
 
@@ -179,7 +179,7 @@ void main() {
     testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: true));
 
     verify(scrollControllerMock.animateTo(
-      BaseRowBuilder.rowHeight * 3 + ServicePointRow.rowHeight,
+      CellRowBuilder.rowHeight * 3 + ServicePointRow.rowHeight,
       duration: anyNamed('duration'),
       curve: anyNamed('curve'),
     )).called(1);
@@ -203,7 +203,7 @@ void main() {
     final scrollPositionMock = MockScrollPosition();
     when(scrollControllerMock.positions).thenReturn([scrollPositionMock]);
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
-    when(scrollPositionMock.maxScrollExtent).thenReturn(BaseRowBuilder.rowHeight * 4);
+    when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
     final testee = AutomaticAdvancementController(controller: scrollControllerMock);
 
@@ -213,7 +213,7 @@ void main() {
 
     await Future.delayed(const Duration(seconds: 11));
 
-    verify(scrollControllerMock.animateTo(BaseRowBuilder.rowHeight * 2,
+    verify(scrollControllerMock.animateTo(CellRowBuilder.rowHeight * 2,
             duration: anyNamed('duration'), curve: anyNamed('curve')))
         .called(2);
   });
@@ -236,14 +236,14 @@ void main() {
     final scrollPositionMock = MockScrollPosition();
     when(scrollControllerMock.positions).thenReturn([scrollPositionMock]);
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
-    when(scrollPositionMock.maxScrollExtent).thenReturn(BaseRowBuilder.rowHeight * 4);
+    when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
     final testee = AutomaticAdvancementController(controller: scrollControllerMock);
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: true));
 
-    verify(scrollControllerMock.animateTo(BaseRowBuilder.rowHeight * 2,
+    verify(scrollControllerMock.animateTo(CellRowBuilder.rowHeight * 2,
             duration: anyNamed('duration'), curve: anyNamed('curve')))
         .called(1);
 

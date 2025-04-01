@@ -26,7 +26,11 @@ class SegmentProfileEntity {
 
 extension SegmentProfileMapperX on SegmentProfile {
   SegmentProfileEntity toEntity({required int isarId}) {
-    return SegmentProfileEntity(id: isarId,
-        spId: this.id, majorVersion: versionMajor, minorVersion: versionMinor, xmlData: buildDocument().toString());
+    return SegmentProfileEntity(
+        id: isarId,
+        spId: this.id,
+        majorVersion: versionMajor,
+        minorVersion: versionMinor,
+        xmlData: buildDocument().toString());
   }
 }

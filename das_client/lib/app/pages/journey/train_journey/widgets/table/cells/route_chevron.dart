@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:das_client/app/pages/journey/train_journey/chevron_animation_controller.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/chevron_animation_wrapper.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/chevron_animation_data.dart';
@@ -51,8 +49,8 @@ class _RouteChevronState extends State<RouteChevron> {
 
   void _animationListener() {
     if (widget.chevronAnimationData != null && controller?.animation != null) {
-      final start = min(widget.chevronAnimationData!.offset, 0.0);
-      final end = max(widget.chevronAnimationData!.offset, 0.0);
+      final start = widget.chevronAnimationData!.startOffset;
+      final end = widget.chevronAnimationData!.endOffset;
       final diff = (start - end).abs();
 
       setState(() {
@@ -63,15 +61,21 @@ class _RouteChevronState extends State<RouteChevron> {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      bottom: widget.isStop
-          ? sbbDefaultSpacing + widget.circleSize - currentOffsetValue
-          : sbbDefaultSpacing - currentOffsetValue,
-      child: CustomPaint(
-        key: RouteChevron.chevronKey,
-        size: Size(widget.chevronWidth, widget.chevronHeight),
-        painter: _ChevronPainter(color: ThemeUtil.getColor(context, SBBColors.black, SBBColors.white)),
-      ),
+    return Stack(
+      clipBehavior: Clip.hardEdge,
+      alignment: Alignment.center,
+      children: [
+        Positioned(
+          bottom: widget.isStop
+              ? sbbDefaultSpacing + widget.circleSize - currentOffsetValue
+              : sbbDefaultSpacing - currentOffsetValue,
+          child: CustomPaint(
+            key: RouteChevron.chevronKey,
+            size: Size(widget.chevronWidth, widget.chevronHeight),
+            painter: _ChevronPainter(color: ThemeUtil.getColor(context, SBBColors.black, SBBColors.white)),
+          ),
+        ),
+      ],
     );
   }
 

@@ -11,6 +11,7 @@ import 'package:das_client/sfera/src/model/current_limitation_start.dart';
 import 'package:das_client/sfera/src/model/curve_speed.dart';
 import 'package:das_client/sfera/src/model/das_operating_modes_selected.dart';
 import 'package:das_client/sfera/src/model/delay.dart';
+import 'package:das_client/sfera/src/model/foot_note.dart';
 import 'package:das_client/sfera/src/model/g2b_event_payload.dart';
 import 'package:das_client/sfera/src/model/g2b_reply_payload.dart';
 import 'package:das_client/sfera/src/model/graduated_speed_info.dart';
@@ -21,6 +22,7 @@ import 'package:das_client/sfera/src/model/journey_profile.dart';
 import 'package:das_client/sfera/src/model/kilometre_reference_point.dart';
 import 'package:das_client/sfera/src/model/km_reference.dart';
 import 'package:das_client/sfera/src/model/level_crossing_area.dart';
+import 'package:das_client/sfera/src/model/line_foot_notes.dart';
 import 'package:das_client/sfera/src/model/line_speed.dart';
 import 'package:das_client/sfera/src/model/location_ident.dart';
 import 'package:das_client/sfera/src/model/message_header.dart';
@@ -29,6 +31,7 @@ import 'package:das_client/sfera/src/model/network_specific_area.dart';
 import 'package:das_client/sfera/src/model/network_specific_event.dart';
 import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
 import 'package:das_client/sfera/src/model/network_specific_point.dart';
+import 'package:das_client/sfera/src/model/op_foot_notes.dart';
 import 'package:das_client/sfera/src/model/otn_id.dart';
 import 'package:das_client/sfera/src/model/own_train.dart';
 import 'package:das_client/sfera/src/model/position_speed.dart';
@@ -62,6 +65,7 @@ import 'package:das_client/sfera/src/model/taf_tap_location_reference.dart';
 import 'package:das_client/sfera/src/model/tc_features.dart';
 import 'package:das_client/sfera/src/model/temporary_constraint_reason.dart';
 import 'package:das_client/sfera/src/model/temporary_constraints.dart';
+import 'package:das_client/sfera/src/model/text.dart';
 import 'package:das_client/sfera/src/model/timing_point.dart';
 import 'package:das_client/sfera/src/model/timing_point_constraints.dart';
 import 'package:das_client/sfera/src/model/timing_point_reference.dart';
@@ -98,14 +102,15 @@ class SferaReplyParser {
       children.add(child);
     }
 
-    final xmlTextElements = xmlElement.children.whereType<XmlText>();
-
-    return _createResolvedType(xmlElement.name.toString(), Map.unmodifiable(attributes), List.unmodifiable(children),
-        xmlTextElements.length == 1 ? xmlTextElements.first.toString() : null);
+    return _createResolvedType(
+        xmlElement.name.toString(), Map.unmodifiable(attributes), List.unmodifiable(children), xmlElement);
   }
 
   static SferaXmlElement _createResolvedType(
-      String type, Map<String, String> attributes, List<SferaXmlElement> children, String? value) {
+      String type, Map<String, String> attributes, List<SferaXmlElement> children, XmlElement xmlElement) {
+    final xmlTextElements = xmlElement.children.whereType<XmlText>();
+    final value = xmlTextElements.length == 1 ? xmlTextElements.first.toString() : null;
+
     switch (type) {
       case SferaG2bReplyMessage.elementType:
         return SferaG2bReplyMessage(type: type, attributes: attributes, children: children, value: value);
@@ -257,6 +262,14 @@ class SferaReplyParser {
         return B2gEventPayload(type: type, attributes: attributes, children: children, value: value);
       case NetworkSpecificEvent.elementType:
         return NetworkSpecificEvent.from(attributes: attributes, children: children, value: value);
+      case LineFootNotes.elementType:
+        return LineFootNotes(attributes: attributes, children: children, value: value);
+      case OpFootNotes.elementType:
+        return OpFootNotes(attributes: attributes, children: children, value: value);
+      case SferaFootNote.elementType:
+        return SferaFootNote(attributes: attributes, children: children, value: value);
+      case Text.elementType:
+        return Text(attributes: attributes, children: children, value: value, xmlValue: xmlElement.innerXml);
       default:
         return SferaXmlElement(type: type, attributes: attributes, children: children, value: value);
     }

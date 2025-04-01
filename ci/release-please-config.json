@@ -1,0 +1,24 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "separate-pull-requests": true,
+  "packages": {
+    "das_client": {
+      "release-type": "dart",
+      "bump-minor-pre-major": true,
+      "extra-label": "autorelease:das_client"
+    },
+    "das_backend": {
+      "release-type": "maven",
+      "package-name": "backend",
+      "bump-minor-pre-major": true
+    },
+    "das_playground": {
+      "bump-minor-pre-major": true
+    },
+    "sfera_mock": {
+      "release-type": "maven",
+      "package-name": "sfera_mock",
+      "bump-minor-pre-major": true
+    }
+  }
+}

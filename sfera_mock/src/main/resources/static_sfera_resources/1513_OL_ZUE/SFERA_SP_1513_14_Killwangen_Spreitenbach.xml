@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
-                SP_ID="1513_14_Killwangen_Spreitenbach" SP_VersionMajor="2" SP_VersionMinor="0" SP_Length="5200" SP_Status="Valid">
+                SP_ID="1513_14_Killwangen_Spreitenbach" SP_VersionMajor="3" SP_VersionMinor="1" SP_Length="5200" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -12,7 +12,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3506</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="KLW"/>
         </TimingPoint>
 
         <Signal>
@@ -55,7 +54,9 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3506</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Killwangen-Spreitenbach</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Killwangen-Spreitenbach"/>
 
             <TAF_TAP_Location_NSP>
@@ -124,7 +125,7 @@
                 <NetworkSpecificParameter name="xmlLineFootNotes" value="
 				&lt;lineFootNotes&gt;
 					&lt;footNote&gt;
-						&lt;text&gt;Zugelassen nur für&lt;b&gt; RABDe 500&lt;/text&gt;
+						&lt;text&gt;Zugelassen nur für&lt;b&gt; RABDe 500&lt;/b&gt;&lt;/text&gt;
 						&lt;trainSeries>N&lt;/trainSeries&gt;
 					&lt;/footNote&gt;
 				&lt;/lineFootNotes&gt;

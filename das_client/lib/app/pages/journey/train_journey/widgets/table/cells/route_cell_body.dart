@@ -39,6 +39,9 @@ class RouteCellBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final horizontalBorderWidth =
+        DASTableTheme.of(context)?.data.tableBorder?.horizontalInside.width ?? sbbDefaultSpacing;
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final height = constraints.maxHeight;
@@ -49,12 +52,18 @@ class RouteCellBody extends StatelessWidget {
           children: [
             _routeLine(context, height, width),
             if (isCurrentPosition || chevronAnimationData != null)
-              RouteChevron(
-                  isStop: isStop,
-                  circleSize: routeCircleSize,
-                  chevronWidth: chevronWidth,
-                  chevronAnimationData: chevronAnimationData,
-                  chevronHeight: chevronHeight),
+              Positioned(
+                top: -horizontalBorderWidth,
+                bottom: -horizontalBorderWidth,
+                left: 0,
+                right: 0,
+                child: RouteChevron(
+                    isStop: isStop,
+                    circleSize: routeCircleSize,
+                    chevronWidth: chevronWidth,
+                    chevronAnimationData: chevronAnimationData,
+                    chevronHeight: chevronHeight),
+              ),
             if (isStop) _circle(context),
           ],
         );

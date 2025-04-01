@@ -178,20 +178,24 @@ class DASTable extends StatelessWidget {
   }
 
   Widget _dataRow(DASTableRow row, int index) {
-    return InkWell(
-      onTap: row.onTap,
-      child: _FixedHeightRow(
-        height: row.height,
-        children: List.generate(columns.length, (index) {
-          final column = columns[index];
-          final cell = row.cells[column.id] ?? DASTableCell.empty();
-          return _dataCell(cell, column, row, isLast: columns.length - 1 == index);
-        }),
-      ),
-    );
+    if (row is DASTableCellRow) {
+      return InkWell(
+        onTap: row.onTap,
+        child: _FixedHeightRow(
+          height: row.height,
+          children: List.generate(columns.length, (index) {
+            final column = columns[index];
+            final cell = row.cells[column.id] ?? DASTableCell.empty();
+            return _dataCell(cell, column, row, isLast: columns.length - 1 == index);
+          }),
+        ),
+      );
+    } else {
+      return (row as DASTableWidgetRow).widget;
+    }
   }
 
-  Widget _dataCell(DASTableCell cell, DASTableColumn column, DASTableRow row, {isLast = false}) {
+  Widget _dataCell(DASTableCell cell, DASTableColumn column, DASTableCellRow row, {isLast = false}) {
     return Builder(builder: (context) {
       final tableThemeData = DASTableTheme.of(context)?.data;
       final effectiveAlignment = cell.alignment ?? column.alignment;

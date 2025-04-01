@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
-                SP_ID="1809_20_Territet" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="1100" SP_Status="Valid">
+                SP_ID="1809_20_Territet" SP_VersionMajor="2" SP_VersionMinor="0" SP_Length="1100" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -23,6 +23,7 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>1309</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Territet</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
             <TAF_TAP_LocationName language="de" text="Territet"/>
 
@@ -50,7 +51,7 @@
                 <NetworkSpecificParameter name="xmlLineFootNotes" value="
 				&lt;lineFootNotes&gt; 
 					&lt;footNote&gt; 
-						&lt;text&gt;admis seulement pour &lt;b&gt;RABe 503, ETR 610&lt;/text&gt; 
+						&lt;text&gt;admis seulement pour &lt;b&gt;RABe 503, ETR 610&lt;/b&gt;&lt;/text&gt;
 						&lt;trainSeries&gt;N&lt;/trainSeries&gt; 
 					&lt;/footNote&gt; 
 				&lt;/lineFootNotes&gt;

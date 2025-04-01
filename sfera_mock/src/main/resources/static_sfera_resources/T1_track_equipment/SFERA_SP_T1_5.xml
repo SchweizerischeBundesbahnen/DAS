@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
-                SP_ID="T1_5" SP_VersionMajor="2" SP_VersionMinor="0" SP_Length="20000" SP_Status="Valid">
+                SP_ID="T1_5" SP_VersionMajor="2" SP_VersionMinor="1" SP_Length="20000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -11,7 +11,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3018</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Mellingen Heitersberg"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Killwangen-S." location="9000">
@@ -19,7 +18,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3019</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Killwangen-S."/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Zürich HB" location="9500">
@@ -27,7 +25,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3020</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Zürich HB"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Opfikon Süd" location="10000">
@@ -35,7 +32,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3021</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Opfikon Süd"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Flughafen" location="10500">
@@ -43,52 +39,61 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3022</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Flughafen"/>
         </TimingPoint>
     </SP_Points>
     <SP_Areas>
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="MLH"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="8500" endLocation="8500" TAF_TAP_location_abbreviation="MLH"
                           TAF_TAP_location_type="halt">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3018</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Mellingen Heitersberg</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Mellingen Heitersberg"/>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="KIL"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="9000" endLocation="9000" TAF_TAP_location_abbreviation="KIL"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3019</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Killwangen-S.</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Killwangen-S."/>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="ZRH"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="9500" endLocation="9500" TAF_TAP_location_abbreviation="ZRH"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3020</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Zürich HB</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Zürich HB"/>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="OPF"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="10000" endLocation="10000" TAF_TAP_location_abbreviation="OPF"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3021</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Opfikon Süd</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Opfikon Süd"/>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="ZHF"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="10500" endLocation="10500" TAF_TAP_location_abbreviation="ZHF"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3022</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Flughafen</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+            <!--todo: remove-->
             <TAF_TAP_LocationName language="de" text="Flughafen"/>
         </TAF_TAP_Location>
 

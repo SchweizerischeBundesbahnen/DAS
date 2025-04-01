@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 /// Represents a cell in the [DASTable] with optional styling and behavior.
 ///
-/// If no styling is provided, it may be provided by [DASTableRow] or [DASTableTheme]
+/// If no styling is provided, it may be provided by [DASTableCellRow] or [DASTableTheme]
 @immutable
 class DASTableCell {
   const DASTableCell({

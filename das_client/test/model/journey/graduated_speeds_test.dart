@@ -147,14 +147,10 @@ void main() {
 
   test('Test resolved speed exact match', () {
     final speedData = SpeedData(speeds: [
-      Speeds(
-          trainSeries: TrainSeries.R, breakSeries: 100, incomingSpeeds: [Speed.from('100')], reduced: false),
-      Speeds(
-          trainSeries: TrainSeries.R, breakSeries: 150, incomingSpeeds: [Speed.from('150')], reduced: false),
-      Speeds(
-          trainSeries: TrainSeries.A, breakSeries: 100, incomingSpeeds: [Speed.from('200')], reduced: false),
-      Speeds(
-          trainSeries: TrainSeries.A, breakSeries: 150, incomingSpeeds: [Speed.from('250')], reduced: false),
+      Speeds(trainSeries: TrainSeries.R, breakSeries: 100, incomingSpeeds: [Speed.from('100')], reduced: false),
+      Speeds(trainSeries: TrainSeries.R, breakSeries: 150, incomingSpeeds: [Speed.from('150')], reduced: false),
+      Speeds(trainSeries: TrainSeries.A, breakSeries: 100, incomingSpeeds: [Speed.from('200')], reduced: false),
+      Speeds(trainSeries: TrainSeries.A, breakSeries: 150, incomingSpeeds: [Speed.from('250')], reduced: false),
     ]);
 
     expect(speedData.speedsFor(TrainSeries.R, 100)!.incomingSpeeds[0].speed, 100);
@@ -165,12 +161,10 @@ void main() {
 
   test('Test resolved speed default break series', () {
     final speedData = SpeedData(speeds: [
-      Speeds(
-          trainSeries: TrainSeries.R, breakSeries: 100, incomingSpeeds: [Speed.from('100')], reduced: false),
+      Speeds(trainSeries: TrainSeries.R, breakSeries: 100, incomingSpeeds: [Speed.from('100')], reduced: false),
       Speeds(trainSeries: TrainSeries.R, incomingSpeeds: [Speed.from('150')], reduced: false),
       Speeds(trainSeries: TrainSeries.A, incomingSpeeds: [Speed.from('200')], reduced: false),
-      Speeds(
-          trainSeries: TrainSeries.A, breakSeries: 150, incomingSpeeds: [Speed.from('250')], reduced: false),
+      Speeds(trainSeries: TrainSeries.A, breakSeries: 150, incomingSpeeds: [Speed.from('250')], reduced: false),
     ]);
 
     expect(speedData.speedsFor(TrainSeries.R, 100)!.incomingSpeeds[0].speed, 100);

@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:das_client/model/journey/additional_speed_restriction.dart';
 import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
 import 'package:das_client/model/journey/base_data.dart';
+import 'package:das_client/model/journey/base_foot_note.dart';
 import 'package:das_client/model/journey/bracket_station.dart';
 import 'package:das_client/model/journey/bracket_station_segment.dart';
 import 'package:das_client/model/journey/break_series.dart';
@@ -9,10 +10,12 @@ import 'package:das_client/model/journey/cab_signaling.dart';
 import 'package:das_client/model/journey/communication_network_change.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/journey.dart';
+import 'package:das_client/model/journey/line_foot_note.dart';
 import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/track_equipment_segment.dart';
 import 'package:das_client/model/journey/tram_area.dart';
+import 'package:das_client/model/localized_string.dart';
 import 'package:das_client/sfera/src/mapper/mapper_utils.dart';
 import 'package:das_client/sfera/src/mapper/segment_profile_mapper.dart';
 import 'package:das_client/sfera/src/mapper/track_equipment_mapper.dart';
@@ -103,6 +106,7 @@ class SferaModelMapper {
                 trainSeries: trainCharacteristic!.tcFeatures.trainCategoryCode!,
                 breakSeries: trainCharacteristic.tcFeatures.brakedWeightPercentage!)
             : null,
+        lineFootNoteLocations: _generateLineFootNoteLocationMap(journeyData.whereType<LineFootNote>()),
       ),
       data: journeyData,
     );
@@ -126,7 +130,7 @@ class SferaModelMapper {
       return journeyData.firstWhereOrNull((it) => it.order == lastJourney?.metadata.currentPosition?.order);
     } else {
       final positionOrder = calculateOrder(positionSegmentIndex, positionSpeed.location);
-      final currentPositionData = journeyData.lastWhereOrNull((it) => it.order <= positionOrder);
+      final currentPositionData = journeyData.lastWhereOrNull((it) => it.order <= positionOrder && it is! BaseFootNote);
       return _adjustCurrentPositionToServicePoint(journeyData, currentPositionData ?? journeyData.first);
     }
   }
@@ -403,5 +407,19 @@ class SferaModelMapper {
         endOrder: orders.max,
       );
     }).toList();
+  }
+
+  static Map<String, List<LocalizedString>> _generateLineFootNoteLocationMap(Iterable<LineFootNote> footNotes) {
+    final lineFootNoteLocations = <String, List<LocalizedString>>{};
+    for (final lineNote in footNotes) {
+      if (lineNote.footNote.identifier == null) continue;
+
+      if (lineFootNoteLocations.containsKey(lineNote.footNote.identifier)) {
+        lineFootNoteLocations[lineNote.footNote.identifier]!.add(lineNote.locationName);
+      } else {
+        lineFootNoteLocations[lineNote.footNote.identifier!] = [lineNote.locationName];
+      }
+    }
+    return lineFootNoteLocations;
   }
 }
