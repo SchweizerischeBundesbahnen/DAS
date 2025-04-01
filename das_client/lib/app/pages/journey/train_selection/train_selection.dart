@@ -32,13 +32,28 @@ class _TrainSelectionState extends State<TrainSelection> {
     return BlocBuilder<TrainJourneyCubit, TrainJourneyState>(
       builder: (context, state) {
         if (state is SelectingTrainJourneyState) {
-          return Column(
-            children: [
-              _header(context, state),
-              _errorMessage(context, state),
-              Spacer(),
-              _loadButton(context, state),
-            ],
+          return SafeArea(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight,
+                    ),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        children: [
+                          _header(context, state),
+                          _errorMessage(context, state),
+                          Spacer(),
+                          _loadButton(context, state),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
           );
         } else {
           return Container();
@@ -121,7 +136,7 @@ class _TrainSelectionState extends State<TrainSelection> {
 
   Widget _loadButton(BuildContext context, SelectingTrainJourneyState state) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, sbbDefaultSpacing, sbbDefaultSpacing * 0.5),
+      padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing / 2),
       child: SBBPrimaryButton(
         label: context.l10n.c_button_confirm,
         onPressed: _canContinue(state) ? () => context.trainJourneyCubit.loadTrainJourney() : null,

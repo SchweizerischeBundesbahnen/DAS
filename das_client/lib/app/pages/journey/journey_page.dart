@@ -59,12 +59,14 @@ class _JourneyPageContentState extends State<JourneyPageContent> with SingleTick
 
   @override
   Widget build(BuildContext context) {
+    final double screenHeight = MediaQuery.of(context).size.height;
     return BlocBuilder<TrainJourneyCubit, TrainJourneyState>(
       builder: (context, state) {
         return StreamBuilder<TrainJourneySettings>(
             stream: context.trainJourneyCubit.settingsStream,
             builder: (context, snapshot) {
               return Scaffold(
+                resizeToAvoidBottomInset: screenHeight <= 830 ? true : null,
                 appBar: _appBar(context, state, snapshot.data),
                 body: _body(context, state),
                 drawer: const DASNavigationDrawer(),
