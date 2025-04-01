@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   prepare:
-    if: (github.event.pull_request.merged && contains( github.event.pull_request.labels.*.name, 'autorelease:das_client'))
+    if: (github.event.pull_request.merged && contains( github.event.pull_request.labels.*.name, 'release:das_client'))
     runs-on: macos-latest
     concurrency:
       group: release-das-client-ios
