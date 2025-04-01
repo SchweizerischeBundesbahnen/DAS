@@ -7,6 +7,7 @@ import 'package:das_client/model/journey/bracket_station_segment.dart';
 import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
 import 'package:das_client/model/journey/communication_network_change.dart';
+import 'package:das_client/model/journey/contact_list.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/metadata.dart';
@@ -36,14 +37,15 @@ class SferaModelMapper {
     Journey? lastJourney,
   }) {
     try {
-      return _mapToJourney(journeyProfile, segmentProfiles, trainCharacteristics, relatedTrainInformation, lastJourney);
+      return _tryMapToJourney(
+          journeyProfile, segmentProfiles, trainCharacteristics, relatedTrainInformation, lastJourney);
     } catch (e, s) {
       Fimber.e('Error mapping journey-/segment profiles to journey:', ex: e, stacktrace: s);
       return Journey.invalid();
     }
   }
 
-  static Journey _mapToJourney(
+  static Journey _tryMapToJourney(
       JourneyProfile journeyProfile,
       List<SegmentProfile> segmentProfiles,
       List<TrainCharacteristics> trainCharacteristics,
@@ -262,6 +264,26 @@ class SferaModelMapper {
     }
 
     return cabSignalingEnds;
+  }
+
+  static List<ContactList> _parseContactLists(
+      List<SegmentProfileReference> segmentProfileReferences, List<SegmentProfile> segmentProfiles) {
+    return segmentProfileReferences
+        .mapIndexed((index, reference) {
+          final segmentProfile = segmentProfiles.firstMatch(reference);
+
+          final contactLists = segmentProfile.contextInformation?.contactLists;
+
+          return contactLists?.map((element) {
+            return ContactList(
+              contacts: [],
+              order: calculateOrder(index, element.startLocation),
+            );
+          });
+        })
+        .nonNulls
+        .flattened
+        .toList();
   }
 
   static List<CommunicationNetworkChange> _parseCommunicationNetworkChanges(

@@ -103,6 +103,11 @@
         <ConnectionTrack location="200" connectionTrackType="Unknown">
             <ConnectionTrackDescription language="de" text="22-6 Uhr"/>
         </ConnectionTrack>
+        <ContactList startEndQualifier="StartsEnds" startLocation="400" endLocation="400">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="(1305)"/>
+            </Contact>
+        </ContactList>
         <KilometreReferencePoint location="100">
             <KM_Reference kmRef="2.1"/>
         </KilometreReferencePoint>

@@ -1089,6 +1089,11 @@ void main() {
     expect(networkChanges[2].order, 2500);
     expect(networkChanges[2].type, CommunicationNetworkType.gsmR);
   });
+
+  test('Test ContactList parsed correctly', () async {
+    final journey = getJourney('T9999', 5);
+    expect(journey.valid, true);
+  });
 }
 
 void _checkSpeed(Speed speed, int speedValue, {bool isCircled = false, bool isSquared = false}) {

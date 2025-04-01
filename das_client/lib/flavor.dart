@@ -13,7 +13,7 @@ enum Flavor {
     authenticatorConfig: _authenticatorConfigMockDev,
     tmsAuthenticatorConfig: _authenticatorConfigTmsDev,
     backendUrl: 'https://das-backend-dev.app.sbb.ch',
-    mqttTopicPrefix: 'dev/',
+    mqttTopicPrefix: 'localnico/',
     color: SBBColors.peach,
     showBanner: true,
   ),

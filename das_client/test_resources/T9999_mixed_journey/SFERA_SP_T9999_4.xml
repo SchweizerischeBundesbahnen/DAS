@@ -90,6 +90,20 @@
     </SP_Areas>
 
     <SP_ContextInformation>
+        <ContactList startEndQualifier="StartsEnds" startLocation="700" endLocation="700">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1304"/>
+            </Contact>
+            <Contact mainContact="false" contactRole="Richtung Süd: Fahrdienstleiter">
+                <OtherContactType contactIdentifier="1302"/>
+            </Contact>
+            <Contact mainContact="false" contactRole="Richtung Nord: Fahrdienstleiter">
+                <OtherContactType contactIdentifier="1304"/>
+            </Contact>
+            <Contact mainContact="false" contactRole="Rangierbahnhof: Fahrdienstleiter Stellwerk 3">
+                <OtherContactType contactIdentifier="1310"/>
+            </Contact>
+        </ContactList>
         <KilometreReferencePoint location="500">
             <KM_Reference kmRef="3.5"/>
         </KilometreReferencePoint>
