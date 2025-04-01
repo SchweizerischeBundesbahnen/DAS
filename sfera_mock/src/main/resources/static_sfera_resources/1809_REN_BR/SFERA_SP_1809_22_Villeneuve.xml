@@ -16,6 +16,18 @@
             <TP_Name name="VIL"/>
         </TimingPoint>
 
+        <Signal>
+            <Signal_ID signal_ID_Physical="P539" location="1800"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="P539"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="21A" location="3200"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="21A"/>
+        </Signal>
+
         <NetworkSpecificPoint location="1600">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>newLineSpeed</NSP_GroupName>
@@ -79,7 +91,7 @@
                 <NSP_GroupName>lineFootNotes</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlLineFootNotes" value="
 				&lt;lineFootNotes&gt; 
-					&lt;footNote&gt; 
+					&lt;footNote identifier=&quot;A9885ECB03FC4C9AB97FBDD2407CB48F&quot;&gt; 
 						&lt;text&gt;admis seulement pour &lt;b&gt;RABe 503, ETR 610&lt;/b&gt;&lt;/text&gt;
 						&lt;trainSeries&gt;N&lt;/trainSeries&gt; 
 					&lt;/footNote&gt; 
@@ -104,6 +116,12 @@
         </KilometreReferencePoint>
         <KilometreReferencePoint location="1600">
             <KM_Reference kmRef="31.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1800">
+            <KM_Reference kmRef="31.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="3200">
+            <KM_Reference kmRef="32.6"/>
         </KilometreReferencePoint>
 
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="3.0" gradientDirection="Uphill"
