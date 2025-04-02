@@ -11,6 +11,8 @@ class Contact extends SferaXmlElement {
 
   String? get contactRole => attributes['contactRole'];
 
+  OtherContactType? get otherContactType => children.whereType<OtherContactType>().firstOrNull;
+
   @override
   bool validate() => validateHasChildOfType<OtherContactType>() && super.validate();
 }

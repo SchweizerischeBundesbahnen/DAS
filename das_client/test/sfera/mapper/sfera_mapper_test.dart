@@ -1143,6 +1143,20 @@ void main() {
   test('Test ContactList parsed correctly', () async {
     final journey = getJourney('T9999', 5);
     expect(journey.valid, true);
+
+    final servicePoints = journey.data.where((it) => it.type == Datatype.servicePoint).cast<ServicePoint>().toList();
+
+    expect(servicePoints[0].contactList, isNull);
+    expect(servicePoints[1].contactList?.mainContacts.length, 1);
+    expect(servicePoints[1].contactList!.selectiveContacts.length, 0);
+    expect(servicePoints[1].contactList!.mainContacts.first.contactIdentifier, '1304');
+    expect(servicePoints[2].contactList!.mainContacts.first.contactIdentifier, '(1305)');
+    expect(servicePoints[3].contactList!.mainContacts.first.contactIdentifier, '1304');
+    expect(servicePoints[3].contactList!.selectiveContacts.length, 3);
+    expect(servicePoints[3].contactList!.selectiveContacts.first.contactIdentifier, '1302');
+    expect(servicePoints[3].contactList!.selectiveContacts.first.contactRole, 'Richtung Süd: Fahrdienstleiter');
+    expect(servicePoints[4].contactList!.mainContacts.first.contactIdentifier, '1304');
+    expect(servicePoints[5].contactList!.mainContacts.first.contactIdentifier, '(1305)');
   });
 }
 

@@ -270,26 +270,6 @@ class SferaModelMapper {
     return cabSignalingEnds;
   }
 
-  static List<ContactList> _parseContactLists(
-      List<SegmentProfileReference> segmentProfileReferences, List<SegmentProfile> segmentProfiles) {
-    return segmentProfileReferences
-        .mapIndexed((index, reference) {
-          final segmentProfile = segmentProfiles.firstMatch(reference);
-
-          final contactLists = segmentProfile.contextInformation?.contactLists;
-
-          return contactLists?.map((element) {
-            return ContactList(
-              contacts: [],
-              order: calculateOrder(index, element.startLocation),
-            );
-          });
-        })
-        .nonNulls
-        .flattened
-        .toList();
-  }
-
   static List<CommunicationNetworkChange> _parseCommunicationNetworkChanges(
       List<SegmentProfileReference> segmentProfileReferences, List<SegmentProfile> segmentProfiles) {
     return segmentProfileReferences

@@ -18,5 +18,5 @@ class SpContextInformation extends SferaXmlElement {
 
   Iterable<LevelCrossingArea> get levelCrossings => children.whereType<LevelCrossingArea>();
 
-  Iterable<ContactList> get contactLists => children.whereType<ContactList>();
+  Iterable<SferaContactList> get contactLists => children.whereType<SferaContactList>();
 }

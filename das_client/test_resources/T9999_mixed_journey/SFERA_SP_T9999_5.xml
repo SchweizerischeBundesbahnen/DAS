@@ -87,6 +87,16 @@
     </SP_Areas>
 
     <SP_ContextInformation>
+        <ContactList startEndQualifier="StartsEnds" startLocation="300" endLocation="300">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1304"/>
+            </Contact>
+        </ContactList>
+        <ContactList startEndQualifier="StartsEnds" startLocation="800" endLocation="800">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="(1305)"/>
+            </Contact>
+        </ContactList>
         <KilometreReferencePoint location="300">
             <KM_Reference kmRef="0.6"/>
         </KilometreReferencePoint>
