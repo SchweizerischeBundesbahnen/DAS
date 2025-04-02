@@ -27,7 +27,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
     required this.metadata,
     required super.data,
     super.height = rowHeight,
-    super.isSticky = false,
+    super.stickyLevel,
     this.config = const TrainJourneyConfig(),
     this.defaultAlignment = Alignment.bottomCenter,
     this.rowColor,
@@ -48,7 +48,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
       height: height,
       color: rowColor,
       onTap: onTap,
-      isSticky: isSticky,
+      stickyLevel: stickyLevel,
       cells: {
         ColumnDefinition.kilometre.index: kilometreCell(context),
         ColumnDefinition.time.index: timeCell(context),

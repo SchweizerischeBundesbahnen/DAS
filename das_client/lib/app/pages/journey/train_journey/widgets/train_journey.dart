@@ -92,8 +92,9 @@ class TrainJourney extends StatelessWidget {
     final tableRows = _rows(context, journey, settings);
     context.trainJourneyCubit.automaticAdvancementController.updateRenderedRows(tableRows);
 
-    final marginAdjustment =
-        Platform.isIOS ? tableRows.lastWhereOrNull((it) => it.isSticky)?.height ?? CellRowBuilder.rowHeight : 0.0;
+    final marginAdjustment = Platform.isIOS
+        ? tableRows.lastWhereOrNull((it) => it.stickyLevel == 0)?.height ?? CellRowBuilder.rowHeight
+        : 0.0;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),

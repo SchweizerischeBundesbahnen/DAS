@@ -3,6 +3,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/cell_ro
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/signal_row.dart';
+import 'package:das_client/app/widgets/stickyheader/sticky_level.dart';
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/metadata.dart';
@@ -261,6 +262,6 @@ ServicePointRow mockServicePointRow(ServicePoint data) {
   final servicePointRow = MockServicePointRow();
   when(servicePointRow.data).thenReturn(data);
   when(servicePointRow.height).thenReturn(ServicePointRow.rowHeight);
-  when(servicePointRow.isSticky).thenReturn(true);
+  when(servicePointRow.stickyLevel).thenReturn(StickyLevel.first);
   return servicePointRow;
 }

@@ -16,6 +16,7 @@ abstract class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
     required this.isExpanded,
     required this.accordionToggleCallback,
     double? height,
+    super.stickyLevel,
     super.config,
   }) : super(height: height ?? _calculateHeight(data, isExpanded));
 
