@@ -1,5 +1,5 @@
 import 'package:battery_plus/battery_plus.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/communication_network_icon.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/communication_network_icon.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/battery_status.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/extended_menu.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
