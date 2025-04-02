@@ -1,7 +1,7 @@
 enum OrderPriority {
   cabSignalingStart,
   baseData,
-  opFootNote,
   lineFootNotes,
+  opFootNote,
   cabSignalingEnd,
 }

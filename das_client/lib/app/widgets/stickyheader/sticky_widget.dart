@@ -5,6 +5,7 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:das_client/app/widgets/stickyheader/sticky_header.dart';
+import 'package:das_client/app/widgets/stickyheader/sticky_level.dart';
 import 'package:das_client/app/widgets/stickyheader/sticky_widget_controller.dart';
 import 'package:flutter/material.dart';
 
@@ -63,22 +64,45 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
     return GestureDetector(
       onPanUpdate: _onPanUpdate,
       onPanEnd: _onPanEnd,
-      child: _buildSticky(context),
+      child: widget.isHeader ? _buildHeaders(context) : _buildFooter(context),
     );
   }
 
-  Widget _buildSticky(BuildContext context) {
-    final indexToBuild = widget.isHeader ? widget.controller.headerIndex : widget.controller.footerIndex;
+  Widget _buildHeaders(BuildContext context) {
+    final indexesToBuild = widget.controller.headerIndexes;
 
+    return Stack(
+      children: [
+        if (indexesToBuild[StickyLevel.second] != -1)
+          Positioned(
+            left: 0,
+            top: widget.controller.widgetHeight(indexesToBuild[StickyLevel.first]!) +
+                widget.controller.headerOffsets[StickyLevel.second]!,
+            right: 0,
+            child: widget.widgetBuilder(context, indexesToBuild[StickyLevel.second]!),
+          ),
+        if (indexesToBuild[StickyLevel.first] != -1)
+          Positioned(
+            left: 0,
+            top: widget.controller.headerOffsets[StickyLevel.first],
+            right: 0,
+            child: widget.widgetBuilder(context, indexesToBuild[StickyLevel.first]!),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildFooter(BuildContext context) {
+    final indexToBuild = widget.controller.footerIndex;
     if (indexToBuild != -1) {
       return Stack(
         children: [
           Positioned(
-              left: 0,
-              top: widget.isHeader ? widget.controller.headerOffset : null,
-              right: 0,
-              bottom: widget.isHeader ? null : 0,
-              child: widget.widgetBuilder(context, indexToBuild)),
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: widget.widgetBuilder(context, indexToBuild),
+          ),
         ],
       );
     }
