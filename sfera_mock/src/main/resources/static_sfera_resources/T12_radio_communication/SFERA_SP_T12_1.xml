@@ -99,6 +99,33 @@
     </SP_Areas>
 
     <SP_ContextInformation>
+        <ContactList startEndQualifier="StartsEnds" startLocation="1000" endLocation="1000">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1407"/>
+            </Contact>
+        </ContactList>
+        <ContactList startEndQualifier="StartsEnds" startLocation="1500" endLocation="1500">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1608"/>
+            </Contact>
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="(1609)"/>
+            </Contact>
+        </ContactList>
+        <ContactList startEndQualifier="StartsEnds" startLocation="2000" endLocation="2000">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1102"/>
+            </Contact>
+            <Contact mainContact="false" contactRole="Richtung Süd: Fahrdienstleiter">
+                <OtherContactType contactIdentifier="1103"/>
+            </Contact>
+            <Contact mainContact="false" contactRole="Richtung Nord: Fahrdienstleiter">
+                <OtherContactType contactIdentifier="1104"/>
+            </Contact>
+            <Contact mainContact="false" contactRole="Rangierbahnhof: Fahrdienstleiter Stellwerk 3">
+                <OtherContactType contactIdentifier="1105"/>
+            </Contact>
+        </ContactList>
         <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="1000" endLocation="1000" communicationNetworkType="GSM-P"/>
         <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="1500" endLocation="1500" communicationNetworkType="SIM"/>
         <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="2000" endLocation="2000" communicationNetworkType="GSM-R"/>
