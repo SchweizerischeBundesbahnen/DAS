@@ -3,8 +3,6 @@ import 'package:das_client/model/journey/balise.dart';
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/bracket_station.dart';
 import 'package:das_client/model/journey/connection_track.dart';
-import 'package:das_client/model/journey/contact.dart';
-import 'package:das_client/model/journey/contact_list.dart';
 import 'package:das_client/model/journey/curve_point.dart';
 import 'package:das_client/model/journey/foot_note.dart';
 import 'package:das_client/model/journey/level_crossing.dart';
@@ -19,7 +17,6 @@ import 'package:das_client/model/journey/whistles.dart';
 import 'package:das_client/model/localized_string.dart';
 import 'package:das_client/sfera/src/mapper/graduated_speed_data_mapper.dart';
 import 'package:das_client/sfera/src/mapper/mapper_utils.dart';
-import 'package:das_client/sfera/src/model/contact_list.dart';
 import 'package:das_client/sfera/src/model/enums/length_type.dart';
 import 'package:das_client/sfera/src/model/enums/stop_skip_pass.dart';
 import 'package:das_client/sfera/src/model/enums/taf_tap_location_type.dart';
@@ -115,7 +112,6 @@ class SegmentProfileMapper {
               GraduatedSpeedDataMapper.fromVelocities(tafTapLocation.stationSpeed?.xmlStationSpeed.element.velocities),
           graduatedSpeedInfo: GraduatedSpeedDataMapper.fromGraduatedSpeedInfo(
               tafTapLocation.stationSpeed?.xmlGraduatedSpeedInfo?.element),
-          contactList: _parseContactList(mapperData, timingPoint.location),
         ),
       );
     }
@@ -334,47 +330,6 @@ class SegmentProfileMapper {
           trainSeries: _parseTrainSeries(note.trainSeries));
     }).toList();
   }
-
-  static ContactList? _parseContactList(_MapperData data, double location) {
-    final contactLists = data.segmentProfile.contextInformation?.contactLists;
-    if (contactLists == null) return null;
-
-    final contactList = contactLists.firstWhereOrNull((sferaList) => sferaList.startLocation == location);
-    if (contactList == null) return null;
-
-    final identifiableContacts =
-        contactList.contacts.where((c) => c.otherContactType != null && c.otherContactType!.contactIdentifier != null);
-
-    return ContactList(
-      order: calculateOrder(data.segmentIndex, location),
-      contacts: identifiableContacts.map(
-        (e) => switch (e.mainContact) {
-          true => MainContact(contactIdentifier: e.otherContactType!.contactIdentifier!, contactRole: e.contactRole),
-          false =>
-            SelectiveContact(contactIdentifier: e.otherContactType!.contactIdentifier!, contactRole: e.contactRole)
-        },
-      ),
-    );
-  }
-
-  // static List<ContactList> _parseContactLists() {
-  //   return segmentProfileReferences
-  //       .mapIndexed((index, reference) {
-  //         final segmentProfile = segmentProfiles.firstMatch(reference);
-  //
-  //         final contactLists = segmentProfile.contextInformation?.contactLists;
-  //
-  //         return contactLists?.map((element) {
-  //           return ContactList(
-  //             order: calculateOrder(, contactLists)
-  //             contacts: [],
-  //           );
-  //         });
-  //       })
-  //       .nonNulls
-  //       .flattened
-  //       .toList();
-  // }
 
   static List<TrainSeries> _parseTrainSeries(String? trainSeries) {
     return trainSeries?.split(',').map((it) => TrainSeries.fromOptional(it)).nonNulls.toList() ?? [];

@@ -1144,19 +1144,19 @@ void main() {
     final journey = getJourney('T9999', 5);
     expect(journey.valid, true);
 
-    final servicePoints = journey.data.where((it) => it.type == Datatype.servicePoint).cast<ServicePoint>().toList();
+    final radioContactLists = journey.metadata.radioContactLists.toList();
 
-    expect(servicePoints[0].contactList, isNull);
-    expect(servicePoints[1].contactList?.mainContacts.length, 1);
-    expect(servicePoints[1].contactList!.selectiveContacts.length, 0);
-    expect(servicePoints[1].contactList!.mainContacts.first.contactIdentifier, '1304');
-    expect(servicePoints[2].contactList!.mainContacts.first.contactIdentifier, '(1305)');
-    expect(servicePoints[3].contactList!.mainContacts.first.contactIdentifier, '1304');
-    expect(servicePoints[3].contactList!.selectiveContacts.length, 3);
-    expect(servicePoints[3].contactList!.selectiveContacts.first.contactIdentifier, '1302');
-    expect(servicePoints[3].contactList!.selectiveContacts.first.contactRole, 'Richtung Süd: Fahrdienstleiter');
-    expect(servicePoints[4].contactList!.mainContacts.first.contactIdentifier, '1304');
-    expect(servicePoints[5].contactList!.mainContacts.first.contactIdentifier, '(1305)');
+    expect(radioContactLists.length, 5);
+    expect(radioContactLists[0].mainContacts.length, 1);
+    expect(radioContactLists[0].mainContacts.first.contactIdentifier, '1304');
+    expect(radioContactLists[1].mainContacts.length, 1);
+    expect(radioContactLists[1].mainContacts.first.contactIdentifier, '(1305)');
+    expect(radioContactLists[2].mainContacts.length, 1);
+    expect(radioContactLists[2].selectiveContacts.length, 3);
+    expect(radioContactLists[2].selectiveContacts.first.contactIdentifier, '1302');
+    expect(radioContactLists[2].selectiveContacts.first.contactRole, 'Richtung Süd: Fahrdienstleiter');
+    expect(radioContactLists[3].mainContacts.first.contactIdentifier, '1304');
+    expect(radioContactLists[4].mainContacts.first.contactIdentifier, '(1305)');
   });
 }
 

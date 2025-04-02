@@ -8,6 +8,7 @@ import 'package:das_client/model/journey/bracket_station_segment.dart';
 import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
 import 'package:das_client/model/journey/communication_network_change.dart';
+import 'package:das_client/model/journey/contact.dart';
 import 'package:das_client/model/journey/contact_list.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/journey.dart';
@@ -109,6 +110,7 @@ class SferaModelMapper {
                 breakSeries: trainCharacteristic.tcFeatures.brakedWeightPercentage!)
             : null,
         lineFootNoteLocations: _generateLineFootNoteLocationMap(journeyData.whereType<LineFootNote>()),
+        radioContactLists: _parseContactLists(segmentProfileReferences, segmentProfiles),
       ),
       data: journeyData,
     );
@@ -286,6 +288,38 @@ class SferaModelMapper {
               type: element.communicationNetworkType.communicationNetworkType,
               order: calculateOrder(index, element.startLocation),
             );
+          });
+        })
+        .nonNulls
+        .flattened
+        .toList();
+  }
+
+  static Iterable<RadioContactList> _parseContactLists(
+      List<SegmentProfileReference> segmentProfileReferences, List<SegmentProfile> segmentProfiles) {
+    return segmentProfileReferences
+        .mapIndexed((index, reference) {
+          final segmentProfile = segmentProfiles.firstMatch(reference);
+
+          final contactLists = segmentProfile.contextInformation?.contactLists;
+          return contactLists?.map((contactList) {
+            if (contactList.startLocation != contactList.endLocation) {
+              Fimber.w(
+                  'ContactList found without identical location (start=${contactList.startLocation} end=${contactList.endLocation}).');
+            }
+
+            final identifiableContacts = contactList.contacts
+                .where((c) => c.otherContactType != null && c.otherContactType!.contactIdentifier != null);
+            return RadioContactList(
+                order: calculateOrder(index, contactList.startLocation!),
+                contacts: identifiableContacts.map(
+                  (e) => switch (e.mainContact) {
+                    true => MainContact(
+                        contactIdentifier: e.otherContactType!.contactIdentifier!, contactRole: e.contactRole),
+                    false => SelectiveContact(
+                        contactIdentifier: e.otherContactType!.contactIdentifier!, contactRole: e.contactRole)
+                  },
+                ));
           });
         })
         .nonNulls

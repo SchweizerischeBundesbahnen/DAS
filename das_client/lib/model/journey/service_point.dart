@@ -17,7 +17,6 @@ class ServicePoint extends BaseData {
     this.isStation = false,
     this.bracketMainStation,
     this.graduatedSpeedInfo,
-    this.contactList,
   }) : super(type: Datatype.servicePoint);
 
   final LocalizedString name;
@@ -26,10 +25,9 @@ class ServicePoint extends BaseData {
   final bool isStation;
   final BracketMainStation? bracketMainStation;
   final SpeedData? graduatedSpeedInfo;
-  final ContactList? contactList;
 
   @override
   String toString() {
-    return 'ServicePoint(order: $order, kilometre: $kilometre, name: $name, mandatoryStop: $mandatoryStop, isStop: $isStop, isStation: $isStation, bracketMainStation: $bracketMainStation, speedData: $speedData, localSpeedData: $localSpeedData, contactList: $contactList)';
+    return 'ServicePoint(order: $order, kilometre: $kilometre, name: $name, mandatoryStop: $mandatoryStop, isStop: $isStop, isStation: $isStation, bracketMainStation: $bracketMainStation, speedData: $speedData, localSpeedData: $localSpeedData)';
   }
 }

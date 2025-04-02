@@ -27,7 +27,7 @@ class Metadata {
     this.availableBreakSeries = const {},
     this.communicationNetworkChanges = const [],
     this.lineFootNoteLocations = const {},
-    this.contactLists = const [],
+    this.radioContactLists = const [],
   }) : timestamp = timestamp ?? DateTime.now();
 
   final DateTime timestamp;
@@ -44,5 +44,5 @@ class Metadata {
   final BreakSeries? breakSeries;
   final Set<BreakSeries> availableBreakSeries;
   final Map<String, List<LocalizedString>> lineFootNoteLocations;
-  final List<ContactList> contactLists;
+  final Iterable<RadioContactList> radioContactLists;
 }

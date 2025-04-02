@@ -273,8 +273,8 @@ class SferaReplyParser {
         return SferaFootNote(attributes: attributes, children: children, value: value);
       case Text.elementType:
         return Text(attributes: attributes, children: children, value: value, xmlValue: xmlElement.innerXml);
-      case SferaContactList.elementType:
-        return SferaContactList(type: type, attributes: attributes, children: children, value: value);
+      case ContactList.elementType:
+        return ContactList(type: type, attributes: attributes, children: children, value: value);
       case Contact.elementType:
         return Contact(type: type, attributes: attributes, children: children, value: value);
       case OtherContactType.elementType:
