@@ -11,7 +11,7 @@ class LineFootNoteRow extends FootNoteRow<LineFootNote> {
     required super.isExpanded,
     required super.accordionToggleCallback,
     super.config,
-  }) : super(stickyLevel: StickyLevel.second);
+  }) : super(stickyLevel: StickyLevel.second, identifier: data.identifier);
 
   @override
   String title(BuildContext context) {
