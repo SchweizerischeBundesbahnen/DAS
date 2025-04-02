@@ -1,6 +1,5 @@
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/bracket_station.dart';
-import 'package:das_client/model/journey/contact_list.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/speed_data.dart';
 import 'package:das_client/model/localized_string.dart';
