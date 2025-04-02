@@ -2,7 +2,7 @@ import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/reduced_overview/reduced_overview_view_model.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/reduced_overview/rows/reduced_service_point_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_row_builder.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/column_definition.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/bracket_station_render_data.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_config.dart';
@@ -52,8 +52,8 @@ class ReducedTrainJourney extends StatelessWidget {
     );
   }
 
-  List<BaseRowBuilder> _rows(BuildContext context, Metadata metadata, List<BaseData> data) {
-    final List<BaseRowBuilder?> builders = List.generate(data.length, (index) {
+  List<CellRowBuilder> _rows(BuildContext context, Metadata metadata, List<BaseData> data) {
+    final List<CellRowBuilder?> builders = List.generate(data.length, (index) {
       final rowData = data[index];
       final trainJourneyConfig = TrainJourneyConfig(
         bracketStationRenderData: BracketStationRenderData.from(rowData, metadata),

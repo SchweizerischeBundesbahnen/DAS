@@ -3,7 +3,9 @@ import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 import 'package:das_client/sfera/src/model/track_equipment_type_wrapper.dart';
 import 'package:das_client/sfera/src/model/xml_curve_speed.dart';
 import 'package:das_client/sfera/src/model/xml_graduated_speed_info.dart';
+import 'package:das_client/sfera/src/model/xml_line_foot_notes.dart';
 import 'package:das_client/sfera/src/model/xml_new_line_speed.dart';
+import 'package:das_client/sfera/src/model/xml_op_foot_notes.dart';
 import 'package:das_client/sfera/src/model/xml_station_speed.dart';
 
 class NetworkSpecificParameter extends SferaXmlElement {
@@ -25,6 +27,10 @@ class NetworkSpecificParameter extends SferaXmlElement {
       return XmlGraduatedSpeedInfo(attributes: attributes, children: children, value: value);
     } else if (attributes?['name'] == AmountTramSignals.elementName) {
       return AmountTramSignals(attributes: attributes, children: children, value: value);
+    } else if (attributes?['name'] == XmlLineFootNotes.elementName) {
+      return XmlLineFootNotes(attributes: attributes, children: children, value: value);
+    } else if (attributes?['name'] == XmlOpFootNotes.elementName) {
+      return XmlOpFootNotes(attributes: attributes, children: children, value: value);
     }
     return NetworkSpecificParameter(attributes: attributes, children: children, value: value);
   }

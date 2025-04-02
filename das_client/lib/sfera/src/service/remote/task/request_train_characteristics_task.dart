@@ -81,20 +81,21 @@ class RequestTrainCharacteristicsTask extends SferaTask<List<TrainCharacteristic
 
   @override
   Future<bool> handleMessage(SferaG2bReplyMessage replyMessage) async {
-    if (replyMessage.payload != null && replyMessage.payload!.trainCharacteristics.isNotEmpty) {
-      stopTimeout();
-      Fimber.i(
-        'Received G2bReplyPayload response with ${replyMessage.payload!.trainCharacteristics.length} TrainCharacteristics...',
-      );
-
-      for (final element in replyMessage.payload!.trainCharacteristics) {
-        await _sferaDatabaseRepository.saveTrainCharacteristics(element);
-      }
-
-      _taskCompletedCallback(this, replyMessage.payload!.trainCharacteristics.toList());
-
-      return true;
+    if (replyMessage.payload == null || replyMessage.payload!.trainCharacteristics.isEmpty) {
+      return false;
     }
-    return false;
+
+    stopTimeout();
+    Fimber.i(
+      'Received G2bReplyPayload response with ${replyMessage.payload!.trainCharacteristics.length} TrainCharacteristics...',
+    );
+
+    for (final element in replyMessage.payload!.trainCharacteristics) {
+      await _sferaDatabaseRepository.saveTrainCharacteristics(element);
+    }
+
+    _taskCompletedCallback(this, replyMessage.payload!.trainCharacteristics.toList());
+
+    return true;
   }
 }

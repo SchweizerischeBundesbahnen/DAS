@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:core';
+import 'dart:ui';
 
 import 'package:das_client/auth/authentication_component.dart';
 import 'package:das_client/model/journey/journey.dart';
@@ -39,7 +40,7 @@ class SferaServiceImpl implements SferaService {
   })  : _mqttService = mqttService,
         _sferaDatabaseRepository = sferaDatabaseRepository,
         _authenticator = authenticator {
-    _init();
+    _initialize();
   }
 
   final MqttService _mqttService;
@@ -48,7 +49,7 @@ class SferaServiceImpl implements SferaService {
 
   StreamSubscription? _mqttStreamSubscription;
   final List<SferaTask> _tasks = [];
-  final List<SferaEventMessageHandler> _eventMessageHandler = [];
+  final List<SferaEventMessageHandler> _eventMessageHandlers = [];
 
   final _stateSubject = BehaviorSubject.seeded(SferaServiceState.disconnected);
   final _journeyProfileSubject = BehaviorSubject<Journey?>.seeded(null);
@@ -72,37 +73,8 @@ class SferaServiceImpl implements SferaService {
   @override
   ErrorCode? lastErrorCode;
 
-  void _init() {
-    _addEventMessageHandlers();
-    _mqttStreamSubscription = _mqttService.messageStream.listen((xmlMessage) async {
-      final message = SferaReplyParser.parse<SferaXmlElement>(xmlMessage);
-      if (!message.validate()) {
-        Fimber.w('Validation failed for MQTT response $xmlMessage');
-        return;
-      }
-
-      if (message is SferaG2bReplyMessage) {
-        var handled = false;
-        for (final handler in List.from(_tasks)) {
-          handled |= await handler.handleMessage(message);
-        }
-
-        if (!handled) {
-          Fimber.w('Could not handle sfera reply message $xmlMessage');
-        }
-      } else if (message is SferaG2bEventMessage) {
-        var handled = false;
-        for (final handler in List.from(_eventMessageHandler)) {
-          handled |= await handler.handleMessage(message);
-        }
-
-        if (!handled) {
-          Fimber.w('Could not handle sfera event message $xmlMessage');
-        }
-      }
-    });
-  }
-
+  /// Connects to SFERA broker and initiate Handshake with [HandshakeTask].
+  /// Other tasks like loading SP, JPs and TCs are triggered on completion.
   @override
   Future<void> connect(OtnId otnId) async {
     Fimber.i('Starting new connection for $otnId');
@@ -111,15 +83,10 @@ class SferaServiceImpl implements SferaService {
     lastErrorCode = null;
     _stateSubject.add(SferaServiceState.connecting);
 
-    if (await _mqttService.connect(
-        otnId.company, SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate))) {
-      _stateSubject.add(SferaServiceState.handshaking);
-      final user = await _authenticator.user();
-      final drivingMode = user.roles.contains(Role.driver) ? DasDrivingMode.dasNotConnected : DasDrivingMode.readOnly;
-
-      final handshakeTask = HandshakeTask(mqttService: _mqttService, otnId: otnId, dasDrivingMode: drivingMode);
-      _tasks.add(handshakeTask);
-      handshakeTask.execute(onTaskCompleted, onTaskFailed);
+    final sferaTrain = SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
+    final isConnected = await _mqttService.connect(otnId.company, sferaTrain);
+    if (isConnected) {
+      await _initiateHandshake(otnId);
     } else {
       _otnId = null;
       lastErrorCode = ErrorCode.connectionFailed;
@@ -127,21 +94,83 @@ class SferaServiceImpl implements SferaService {
     }
   }
 
-  void onTaskCompleted(SferaTask task, dynamic data) async {
+  /// Sends [SessionTermination] and disconnects from SFERA broker.
+  ///
+  /// Disconnect is either called by the user or when one of the [SferaTask] fails and no journey was loaded yet - i.e. the service is not in the [SferaServiceState.connected].
+  @override
+  Future<void> disconnect() async {
+    final otnId = _otnId;
+    if (_stateSubject.value == SferaServiceState.connected && otnId != null) {
+      Fimber.i('Sending session termination request for $otnId...');
+      final header = await SferaService.messageHeader(sender: otnId.company);
+      final sessionTerminationMessage = SferaB2gEventMessage.createSessionTermination(messageHeader: header);
+      final sferaTrain = SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
+      _mqttService.publishMessage(otnId.company, sferaTrain, sessionTerminationMessage.buildDocument().toString());
+    }
+
+    _mqttService.disconnect();
+    _stateSubject.add(SferaServiceState.disconnected);
+  }
+
+  void _initialize() {
+    _addEventMessageHandlers();
+    _mqttStreamSubscription = _mqttService.messageStream.listen(_handleMqttMessage);
+  }
+
+  void _handleMqttMessage(String xmlMessage) async {
+    final message = SferaReplyParser.parse<SferaXmlElement>(xmlMessage);
+    if (!message.validate()) {
+      Fimber.w('Validation failed for MQTT response $xmlMessage');
+      return;
+    }
+
+    if (message is SferaG2bReplyMessage) {
+      await _handleReplyMessage(message, xmlMessage);
+    } else if (message is SferaG2bEventMessage) {
+      await _handleEventMessage(message, xmlMessage);
+    }
+  }
+
+  Future<void> _handleReplyMessage(SferaG2bReplyMessage message, String xmlMessage) async {
+    var handled = false;
+    for (final handler in List.from(_tasks)) {
+      handled |= await handler.handleMessage(message);
+    }
+
+    if (!handled) {
+      Fimber.w('Could not handle Sfera reply message $xmlMessage');
+    }
+  }
+
+  Future<void> _handleEventMessage(SferaG2bEventMessage message, String xmlMessage) async {
+    var handled = false;
+    for (final handler in List.from(_eventMessageHandlers)) {
+      handled |= await handler.handleMessage(message);
+    }
+
+    if (!handled) {
+      Fimber.w('Could not handle Sfera event message $xmlMessage');
+    }
+  }
+
+  Future<void> _initiateHandshake(OtnId otnId) async {
+    _stateSubject.add(SferaServiceState.handshaking);
+    final user = await _authenticator.user();
+    final drivingMode = user.roles.contains(Role.driver) ? DasDrivingMode.dasNotConnected : DasDrivingMode.readOnly;
+
+    final handshakeTask = HandshakeTask(mqttService: _mqttService, otnId: otnId, dasDrivingMode: drivingMode);
+    _tasks.add(handshakeTask);
+    handshakeTask.execute(_onTaskCompleted, _onTaskFailed);
+  }
+
+  void _onTaskCompleted(SferaTask task, dynamic data) async {
     _tasks.remove(task);
     Fimber.i('Task $task completed');
-    if (task is HandshakeTask) {
-      _stateSubject.add(SferaServiceState.loadingJourney);
-      final requestJourneyTask = RequestJourneyProfileTask(
-          mqttService: _mqttService, sferaDatabaseRepository: _sferaDatabaseRepository, otnId: _otnId!);
-      _tasks.add(requestJourneyTask);
-      requestJourneyTask.execute(onTaskCompleted, onTaskFailed);
-    } else if (task is RequestJourneyProfileTask) {
-      _stateSubject.add(SferaServiceState.loadingAdditionalData);
-      final dataList = data as List;
-      _journeyProfile = dataList.whereType<JourneyProfile>().first;
-      _relatedTrainInformation = dataList.whereType<RelatedTrainInformation>().firstOrNull;
-      _startSegmentProfileAndTCTask();
+    switch (task) {
+      case HandshakeTask _:
+        await _handleHandshakeTaskCompleted();
+      case RequestJourneyProfileTask _:
+        await _handleRequestJourneyProfileTaskCompleted(data);
     }
 
     if (_allTasksCompleted()) {
@@ -149,78 +178,97 @@ class SferaServiceImpl implements SferaService {
         case SferaServiceState.loadingAdditionalData:
           await _refreshSegmentProfiles();
           await _refreshTrainCharacteristics();
-          final success = _updateJourney();
-          if (success) {
-            _stateSubject.add(SferaServiceState.connected);
-          } else {
-            disconnect();
-          }
+          _updateJourney(
+            onSuccess: () => _stateSubject.add(SferaServiceState.connected),
+            onInvalid: () => disconnect(),
+          );
           break;
         case SferaServiceState.connected:
           await _refreshSegmentProfiles();
           await _refreshTrainCharacteristics();
           _updateJourney();
+          break;
         default:
       }
     }
   }
 
+  Future<void> _handleHandshakeTaskCompleted() async {
+    _stateSubject.add(SferaServiceState.loadingJourney);
+    final requestJourneyTask = RequestJourneyProfileTask(
+      mqttService: _mqttService,
+      sferaDatabaseRepository: _sferaDatabaseRepository,
+      otnId: _otnId!,
+    );
+    _tasks.add(requestJourneyTask);
+    requestJourneyTask.execute(_onTaskCompleted, _onTaskFailed);
+  }
+
+  Future<void> _handleRequestJourneyProfileTaskCompleted(dynamic data) async {
+    _stateSubject.add(SferaServiceState.loadingAdditionalData);
+    final dataList = data as List;
+    _journeyProfile = dataList.whereType<JourneyProfile>().first;
+    _relatedTrainInformation = dataList.whereType<RelatedTrainInformation>().firstOrNull;
+    _startSegmentProfileAndTCTask();
+  }
+
   void _startSegmentProfileAndTCTask() {
     final requestSegmentProfilesTask = RequestSegmentProfilesTask(
-        mqttService: _mqttService,
-        sferaDatabaseRepository: _sferaDatabaseRepository,
-        otnId: _otnId!,
-        journeyProfile: _journeyProfile!);
-    final requestTrainCharacteristicsTask = RequestTrainCharacteristicsTask(
-        mqttService: _mqttService,
-        sferaDatabaseRepository: _sferaDatabaseRepository,
-        otnId: _otnId!,
-        journeyProfile: _journeyProfile!);
+      mqttService: _mqttService,
+      sferaDatabaseRepository: _sferaDatabaseRepository,
+      otnId: _otnId!,
+      journeyProfile: _journeyProfile!,
+    );
     _tasks.add(requestSegmentProfilesTask);
+    requestSegmentProfilesTask.execute(_onTaskCompleted, _onTaskFailed);
+
+    final requestTrainCharacteristicsTask = RequestTrainCharacteristicsTask(
+      mqttService: _mqttService,
+      sferaDatabaseRepository: _sferaDatabaseRepository,
+      otnId: _otnId!,
+      journeyProfile: _journeyProfile!,
+    );
     _tasks.add(requestTrainCharacteristicsTask);
-    requestSegmentProfilesTask.execute(onTaskCompleted, onTaskFailed);
-    requestTrainCharacteristicsTask.execute(onTaskCompleted, onTaskFailed);
+    requestTrainCharacteristicsTask.execute(_onTaskCompleted, _onTaskFailed);
   }
 
-  bool _allTasksCompleted() {
-    return _tasks.whereType<SferaTask>().isEmpty;
-  }
+  bool _allTasksCompleted() => _tasks.whereType<SferaTask>().isEmpty;
 
   Future<void> _refreshSegmentProfiles() async {
-    if (_journeyProfile != null) {
-      _segmentProfiles.clear();
+    if (_journeyProfile == null) return;
 
-      for (final element in _journeyProfile!.segmentProfileReferences) {
-        final segmentProfileEntity =
-            await _sferaDatabaseRepository.findSegmentProfile(element.spId, element.versionMajor, element.versionMinor);
-        final segmentProfile = segmentProfileEntity?.toDomain();
-        if (segmentProfile != null && segmentProfile.validate()) {
-          _segmentProfiles.add(segmentProfile);
-        } else {
-          Fimber.w('Could not find and validate segment profile for ${element.spId}');
-        }
+    _segmentProfiles.clear();
+
+    for (final element in _journeyProfile!.segmentProfileReferences) {
+      final segmentProfileEntity =
+          await _sferaDatabaseRepository.findSegmentProfile(element.spId, element.versionMajor, element.versionMinor);
+      final segmentProfile = segmentProfileEntity?.toDomain();
+      if (segmentProfile != null && segmentProfile.validate()) {
+        _segmentProfiles.add(segmentProfile);
+      } else {
+        Fimber.w('Could not find and validate segment profile for ${element.spId}');
       }
     }
   }
 
   Future<void> _refreshTrainCharacteristics() async {
-    if (_journeyProfile != null) {
-      _trainCharacteristics.clear();
+    if (_journeyProfile == null) return;
 
-      for (final element in _journeyProfile!.trainCharacteristicsRefSet) {
-        final trainCharacteristicsEntity = await _sferaDatabaseRepository.findTrainCharacteristics(
-            element.tcId, element.versionMajor, element.versionMinor);
-        final trainCharacteristics = trainCharacteristicsEntity?.toDomain();
-        if (trainCharacteristics != null && trainCharacteristics.validate()) {
-          _trainCharacteristics.add(trainCharacteristics);
-        } else {
-          Fimber.w('Could not find and validate $element');
-        }
+    _trainCharacteristics.clear();
+
+    for (final element in _journeyProfile!.trainCharacteristicsRefSet) {
+      final trainCharacteristicsEntity = await _sferaDatabaseRepository.findTrainCharacteristics(
+          element.tcId, element.versionMajor, element.versionMinor);
+      final trainCharacteristics = trainCharacteristicsEntity?.toDomain();
+      if (trainCharacteristics != null && trainCharacteristics.validate()) {
+        _trainCharacteristics.add(trainCharacteristics);
+      } else {
+        Fimber.w('Could not find and validate $element');
       }
     }
   }
 
-  bool _updateJourney() {
+  void _updateJourney({VoidCallback? onSuccess, VoidCallback? onInvalid}) {
     if (_journeyProfile != null && _segmentProfiles.isNotEmpty) {
       Fimber.i('Updating journey stream...');
       final newJourney = SferaModelMapper.mapToJourney(
@@ -233,32 +281,32 @@ class SferaServiceImpl implements SferaService {
       if (newJourney.valid) {
         _journeyProfileSubject.add(newJourney);
         Fimber.i('Journey updates successfully.');
-        return true;
+        onSuccess?.call();
       } else {
         Fimber.w('Failed to update journey as it is not valid');
         lastErrorCode = ErrorCode.sferaInvalid;
+        onInvalid?.call();
       }
     }
-    return false;
   }
 
   void _addEventMessageHandlers() {
-    _eventMessageHandler.add(JourneyProfileEventHandler(onJourneyProfileUpdated, _sferaDatabaseRepository));
-    _eventMessageHandler.add(RelatedTrainInformationEventHandler(onRelatedTrainInformationUpdated));
-    _eventMessageHandler.add(NetworkSpecificEventHandler(onNetworkSpecificEvent));
+    _eventMessageHandlers.add(JourneyProfileEventHandler(_onJourneyProfileUpdated, _sferaDatabaseRepository));
+    _eventMessageHandlers.add(RelatedTrainInformationEventHandler(_onRelatedTrainInformationUpdated));
+    _eventMessageHandlers.add(NetworkSpecificEventHandler(_onNetworkSpecificEvent));
   }
 
-  void onJourneyProfileUpdated(SferaEventMessageHandler handler, JourneyProfile data) async {
+  void _onJourneyProfileUpdated(SferaEventMessageHandler handler, JourneyProfile data) async {
     _journeyProfile = data;
     _startSegmentProfileAndTCTask();
   }
 
-  void onRelatedTrainInformationUpdated(SferaEventMessageHandler handler, RelatedTrainInformation data) async {
+  void _onRelatedTrainInformationUpdated(SferaEventMessageHandler handler, RelatedTrainInformation data) async {
     _relatedTrainInformation = data;
     _updateJourney();
   }
 
-  void onNetworkSpecificEvent(SferaEventMessageHandler handler, NetworkSpecificEvent data) async {
+  void _onNetworkSpecificEvent(SferaEventMessageHandler handler, NetworkSpecificEvent data) async {
     if (data is UxTestingNse) {
       if (data.koa != null) {
         final uxTesting = UxTesting(name: data.koa!.name, value: data.koa!.nspValue);
@@ -272,30 +320,16 @@ class SferaServiceImpl implements SferaService {
     }
   }
 
-  void onTaskFailed(SferaTask task, ErrorCode errorCode) {
+  void _onTaskFailed(SferaTask task, ErrorCode errorCode) {
+    Fimber.e('Task $task failed with error code $errorCode');
     _tasks.remove(task);
     lastErrorCode = errorCode;
-    Fimber.e('Task $task failed with error code $errorCode');
     if (_stateSubject.value != SferaServiceState.connected) {
       disconnect();
     }
   }
 
   @override
-  Future<void> disconnect() async {
-    final otnId = _otnId;
-    if (_stateSubject.value == SferaServiceState.connected && otnId != null) {
-      Fimber.i('Sending session termination request for $otnId...');
-      final header = await SferaService.messageHeader(sender: otnId.company);
-      final sessionTerminationMessage = SferaB2gEventMessage.createSessionTermination(messageHeader: header);
-      _mqttService.publishMessage(otnId.company, SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate),
-          sessionTerminationMessage.buildDocument().toString());
-    }
-
-    _mqttService.disconnect();
-    _stateSubject.add(SferaServiceState.disconnected);
-  }
-
   void dispose() {
     _mqttStreamSubscription?.cancel();
     _mqttStreamSubscription = null;

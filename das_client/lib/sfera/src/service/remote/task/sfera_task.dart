@@ -17,9 +17,7 @@ abstract class SferaTask<T> {
 
   Future<bool> handleMessage(SferaG2bReplyMessage replyMessage);
 
-  void startTimeout(
-    TaskFailed onFailed,
-  ) {
+  void startTimeout(TaskFailed onFailed) {
     timeoutTimer?.cancel();
     timeoutTimer = Timer(_timeout, () {
       Fimber.e('Timeout reached for task $this');

@@ -1,4 +1,4 @@
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/base_row_builder.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/track_equipment_render_data.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
@@ -74,13 +74,13 @@ void main() {
     expect(curvePoint, isNotNull);
     expect(curvePoint!.cumulativeHeight, expectedHeight);
     expect(cabSignalingStart, isNotNull);
-    expect(cabSignalingStart!.cumulativeHeight, expectedHeight += BaseRowBuilder.rowHeight);
+    expect(cabSignalingStart!.cumulativeHeight, expectedHeight += CellRowBuilder.rowHeight);
     expect(servicePoint, isNotNull);
-    expect(servicePoint!.cumulativeHeight, expectedHeight += (BaseRowBuilder.rowHeight / 2));
+    expect(servicePoint!.cumulativeHeight, expectedHeight += (CellRowBuilder.rowHeight / 2));
     expect(cabSignalingEnd, isNotNull);
     expect(cabSignalingEnd!.cumulativeHeight, expectedHeight += ServicePointRow.rowHeight);
     expect(signal, isNotNull);
-    expect(signal!.cumulativeHeight, expectedHeight += (BaseRowBuilder.rowHeight / 2));
+    expect(signal!.cumulativeHeight, expectedHeight += (CellRowBuilder.rowHeight / 2));
   });
   test('test cumulativeHeight calculation without start', () {
     // GIVEN
@@ -107,7 +107,7 @@ void main() {
     expect(curvePoint, isNotNull);
     expect(curvePoint!.cumulativeHeight, expectedHeight);
     expect(servicePoint, isNotNull);
-    expect(servicePoint!.cumulativeHeight, expectedHeight += (BaseRowBuilder.rowHeight / 2));
+    expect(servicePoint!.cumulativeHeight, expectedHeight += (CellRowBuilder.rowHeight / 2));
     expect(signal, isNotNull);
     expect(signal!.cumulativeHeight, expectedHeight += ServicePointRow.rowHeight);
   });

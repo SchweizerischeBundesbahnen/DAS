@@ -5,6 +5,7 @@ import 'package:das_client/sfera/src/db/repo/sfera_database_repository_impl.dart
 import 'package:das_client/sfera/src/service/local/sfera_local_service.dart';
 import 'package:das_client/sfera/src/service/local/sfera_local_service_impl.dart';
 import 'package:das_client/sfera/src/service/remote/sfera_auth_service.dart';
+import 'package:das_client/sfera/src/service/remote/sfera_auth_service_impl.dart';
 import 'package:das_client/sfera/src/service/remote/sfera_service.dart';
 import 'package:das_client/sfera/src/service/remote/sfera_service_impl.dart';
 
@@ -27,7 +28,7 @@ class SferaComponent {
     required Authenticator authenticator,
     required String tokenExchangeUrl,
   }) {
-    return SferaAuthService(authenticator: authenticator, tokenExchangeUrl: tokenExchangeUrl);
+    return SferaAuthServiceImpl(authenticator: authenticator, tokenExchangeUrl: tokenExchangeUrl);
   }
 
   static SferaService createSferaService({

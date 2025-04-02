@@ -71,6 +71,7 @@
   "c_error_sfera_invalid": "Unvollständige Daten erhalten",
   "c_connection_track_weiche": "Weiche",
   "c_button_confirm": "Übernehmen",
+  "c_radn": "RADN",
   "w_modal_sheet_warn_function_stop_message": "Halt!",
   "w_modal_sheet_warn_function_manoeuvre_button": "Manövrieren",
   "w_modal_sheet_warn_function_confirm_button": "Bestätigen & Schliessen",
