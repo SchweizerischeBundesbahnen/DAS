@@ -17,7 +17,7 @@ class RadioContactList implements Comparable {
   }
 
   String? get mainContactsIdentifier =>
-      mainContacts.isNotEmpty ? mainContacts.map((c) => c.contactIdentifier).join(' ') : null;
+      mainContacts.isNotEmpty ? mainContacts.map((c) => c.contactIdentifier).take(2).join(' ') : null;
 }
 
 extension RadioContactListExtension on Iterable<RadioContactList> {

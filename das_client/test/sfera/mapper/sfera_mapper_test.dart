@@ -1085,11 +1085,11 @@ void main() {
 
     final networkChanges = journey.metadata.communicationNetworkChanges;
     expect(networkChanges, hasLength(3));
-    expect(networkChanges[0].order, 1500);
+    expect(networkChanges[0].order, 1000);
     expect(networkChanges[0].type, CommunicationNetworkType.gsmP);
-    expect(networkChanges[1].order, 2000);
+    expect(networkChanges[1].order, 1500);
     expect(networkChanges[1].type, CommunicationNetworkType.sim);
-    expect(networkChanges[2].order, 2500);
+    expect(networkChanges[2].order, 2000);
     expect(networkChanges[2].type, CommunicationNetworkType.gsmR);
   });
 
@@ -1140,7 +1140,7 @@ void main() {
     expect(journey.metadata.lineFootNoteLocations['072869607d536b607a61111cf910784a']![2].de, 'Taillepied');
   });
 
-  test('Test ContactList parsed correctly', () async {
+  test('Test ContactList T9999 parsed correctly', () async {
     final journey = getJourney('T9999', 5);
     expect(journey.valid, true);
 
@@ -1157,6 +1157,23 @@ void main() {
     expect(radioContactLists[2].selectiveContacts.first.contactRole, 'Richtung Süd: Fahrdienstleiter');
     expect(radioContactLists[3].mainContacts.first.contactIdentifier, '1304');
     expect(radioContactLists[4].mainContacts.first.contactIdentifier, '(1305)');
+  });
+
+  test('Test ContactList T12 parsed correctly', () async {
+    final journey = getJourney('T12', 1);
+    expect(journey.valid, true);
+
+    final radioContactLists = journey.metadata.radioContactLists.toList();
+
+    expect(radioContactLists.length, 3);
+    expect(radioContactLists[0].mainContacts.length, 1);
+    expect(radioContactLists[0].mainContacts.first.contactIdentifier, '1407');
+    expect(radioContactLists[1].mainContacts.length, 3);
+    expect(radioContactLists[1].mainContacts.first.contactIdentifier, '1608');
+    expect(radioContactLists[2].mainContacts.length, 1);
+    expect(radioContactLists[2].selectiveContacts.length, 3);
+    expect(radioContactLists[2].selectiveContacts.first.contactIdentifier, '1103');
+    expect(radioContactLists[2].selectiveContacts.first.contactRole, 'Richtung Süd: Fahrdienstleiter');
   });
 }
 
