@@ -52,30 +52,42 @@ extension BaseDataExtension on Iterable<BaseData> {
   List<BaseData> hideRepeatedLineFootNotes(Metadata metadata) {
     final resultList = List.of(this);
 
-    final currentPositionIndex = resultList.indexOf(metadata.currentPosition ?? resultList.first);
+    final currentPosition = metadata.currentPosition ?? resultList.first;
     final displayedFootNoteIdentifiers = [];
 
-    for (int i = currentPositionIndex; i < resultList.length; i++) {
+    var currentPositionIndex = resultList.indexOf(currentPosition);
+
+    // Current position lineFootNotes have priority
+    resultList
+        .where((it) => it.order == currentPosition.order)
+        .whereType<LineFootNote>()
+        .forEach((it) => displayedFootNoteIdentifiers.add(it.identifier));
+
+    // Search upwards
+    for (int i = currentPositionIndex; i >= 0; i--) {
       final currentElement = resultList[i];
-      if (currentElement.type == Datatype.lineFootNote) {
-        final lineFootNote = currentElement as LineFootNote;
-        if (displayedFootNoteIdentifiers.contains(lineFootNote.identifier)) {
+      if (currentElement is LineFootNote) {
+        if (displayedFootNoteIdentifiers.contains(currentElement.identifier)) {
           resultList.removeAt(i);
-          i--;
         } else {
-          displayedFootNoteIdentifiers.add(lineFootNote.identifier);
+          displayedFootNoteIdentifiers.add(currentElement.identifier);
         }
       }
     }
 
-    for (int i = currentPositionIndex; i >= 0; i--) {
-      final currentElement = resultList[i];
-      if (currentElement.type == Datatype.lineFootNote) {
-        final lineFootNote = currentElement as LineFootNote;
-        if (displayedFootNoteIdentifiers.contains(lineFootNote.identifier)) {
-          resultList.removeAt(i);
-        } else {
-          displayedFootNoteIdentifiers.add(lineFootNote.identifier);
+    // Search downwards starting from the next element with higher order
+    currentPositionIndex = resultList.indexWhere((it) => it.order > currentPosition.order);
+    if (currentPositionIndex != -1) {
+      for (int i = currentPositionIndex; i < resultList.length; i++) {
+        final currentElement = resultList[i];
+
+        if (currentElement is LineFootNote) {
+          if (displayedFootNoteIdentifiers.contains(currentElement.identifier)) {
+            resultList.removeAt(i);
+            i--;
+          } else {
+            displayedFootNoteIdentifiers.add(currentElement.identifier);
+          }
         }
       }
     }
