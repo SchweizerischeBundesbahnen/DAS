@@ -1,7 +1,7 @@
 name: das_client
 description: "DAS (Driver Advisory System) is a mobile application that provides all the required journey data to the train driver."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 0.14.2+54
+version: 0.15.0+55
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
