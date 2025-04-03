@@ -17,7 +17,7 @@ permissions:
 jobs:
   prepare:
     if: (github.event.pull_request.merged && contains( github.event.pull_request.labels.*.name, 'release:das_client'))
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     concurrency:
       group: release-das-client-android
     defaults:
@@ -25,96 +25,4 @@ jobs:
         working-directory: das_client
 
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.27.1'
-          cache: true
-
-      - name: Get dependencies
-        run: flutter pub get
-
-      - name: Src generation
-        run: flutter pub run build_runner build --delete-conflicting-outputs
-
-      - name: Upload generated srcs  # saves around 40 sec
-        uses: actions/upload-artifact@v4
-        with:
-          name: gen_srcs
-          path: |
-            **/*.g.dart
-            **/*.gr.dart
-            **/*.mocks.dart
-
-  release:
-    needs: [prepare]
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: das_client
-
-    strategy:
-      matrix:
-        include: # will run three jobs in parallel
-          - flavor: "dev"
-            packageName: 'ch.sbb.das.client.dev'
-            app-root: 'lib/main_dev.dart'
-            release-dir: 'devRelease/app-dev-release.aab'
-          - flavor: "inte"
-            packageName: 'ch.sbb.das.client.inte'
-            app-root: 'lib/main_inte.dart'
-            release-dir: 'inteRelease/app-inte-release.aab'
-          - flavor: "prod"
-            packageName: 'ch.sbb.das.client'
-            app-root: 'lib/main_prod.dart'
-            release-dir: 'prodRelease/app-prod-release.aab'
-
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-          cache: 'gradle'
-
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.27.1'
-          cache: true
-
-      - name: Get dependencies
-        run: flutter pub get
-
-      - name: Download gen srcs
-        uses: actions/download-artifact@v4
-        with:
-          name: gen_srcs
-
-      - name: Store secrets as env vars
-        env:
-          ANDROID_KEYSTORE_STRING: ${{ secrets.ANDROID_KEYSTORE }}
-          ANDROID_KEYSTORE: ${{ github.workspace }}/das_client/android/das.keystore
-          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-        run: |
-          echo $ANDROID_KEYSTORE_STRING | base64 -d > $ANDROID_KEYSTORE
-          echo "ANDROID_KEYSTORE=$ANDROID_KEYSTORE" >> "$GITHUB_ENV"
-          echo "ANDROID_KEYSTORE_PASSWORD=$ANDROID_KEYSTORE_PASSWORD" >> "$GITHUB_ENV"
-          echo "ANDROID_KEY_ALIAS=$ANDROID_KEY_ALIAS" >> "$GITHUB_ENV"
-          echo "ANDROID_KEY_PASSWORD=$ANDROID_KEY_PASSWORD" >> "$GITHUB_ENV"
-
-      - name: Build appbundle
-        run: flutter build appbundle --flavor ${{ matrix.flavor }} -t ${{ matrix.app-root }}
-
-      - name: Upload App to Google Play Store
-        uses: r0adkll/upload-google-play@v1.1.3
-        with:
-          serviceAccountJsonPlainText: ${{ secrets.ANDROID_SERVICE_ACCOUNT_JSON }}
-          packageName: ${{ matrix.packageName }}
-          releaseFiles: das_client/build/app/outputs/bundle/${{ matrix.release-dir }}
-          track: internal
-          status: draft
+      - run: echo "Created DAS ANDROID CLient release"

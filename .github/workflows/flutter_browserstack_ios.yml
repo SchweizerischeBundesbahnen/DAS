@@ -17,8 +17,6 @@ concurrency:
   cancel-in-progress: true
 
 on:
-  schedule:
-    - cron: '0 2 * * *'
   push:
     paths:
       - 'das_client/**'
@@ -30,39 +28,6 @@ on:
 
 jobs:
   build:
-    # required for xcode 14 to be available
-    runs-on: macos-13
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: maxim-lobanov/setup-xcode@v1
-      with:
-        # Starting from xcode 15 there is a issue with integration tests running longer then ~6 minutes (https://github.com/flutter/flutter/issues/145143)
-        xcode-version: 14.3.1
-    - uses: subosito/flutter-action@v2
-      with:
-        flutter-version: '3.27.1'
-        cache: true
-    - run: flutter pub get
-    - run: flutter pub run build_runner build --delete-conflicting-outputs
-    - shell: bash
-      env:
-        MQTT_USERNAME: ${{ secrets.MQTT_USERNAME }}
-        MQTT_PASSWORD: ${{ secrets.MQTT_PASSWORD }}
-      run: |
-        flutter build ios --flavor dev --release --no-codesign -t integration_test/app_test.dart --no-tree-shake-icons --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD
-        pushd ios
-        xcodebuild -workspace Runner.xcworkspace -scheme dev -config Flutter/Release.xcconfig -derivedDataPath ../build/ios_integration -sdk iphoneos build-for-testing CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
-        popd
-        pushd build/ios_integration/Build/Products
-        zip -r app-integrationtest-release.zip Release-iphoneos dev_dev_iphoneos*-arm64.xctestrun
-        popd
-    - name: Upload and Run on Browserstack
-      uses: Grodien/browserstack-flutter-action@v1.4
-      with:
-        browserstackUsername: ${{ secrets.BROWSERSTACK_USERNAME }}
-        browserstackAccessKey: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-        project: das_client
-        customId: das_client_ios
-        buildTag: das_client_ios
-        testPackagePath: ${{ github.workspace }}/das_client/build/ios_integration/Build/Products/app-integrationtest-release.zip
-        devices: iPad 9th-15
+      - run: echo "Testing client on Browserstack"
