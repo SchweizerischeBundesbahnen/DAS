@@ -23,7 +23,11 @@ permissions:
   packages: write
 
 jobs:
-  random:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - run: echo CI das playground
+      - name: bashCmd
+        shell: bash
+        run: |
+          echo "GH_REPO: $GH_REPO"
+          echo "CI Webapp"

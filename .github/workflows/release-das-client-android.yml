@@ -25,4 +25,8 @@ jobs:
         working-directory: das_client
 
     steps:
-      - run: echo "Created DAS ANDROID CLient release"
+      - name: bashCmd
+        shell: bash
+        run: |
+          echo "GH_REPO: $GH_REPO"
+          echo "release android"

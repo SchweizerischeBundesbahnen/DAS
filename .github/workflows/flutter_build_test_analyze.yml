@@ -29,4 +29,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Testing client"
+      - name: bashCmd
+        shell: bash
+        run: |
+          echo "GH_REPO: $GH_REPO"
+          echo "client testing"

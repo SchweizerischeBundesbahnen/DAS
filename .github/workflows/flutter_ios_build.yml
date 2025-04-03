@@ -29,4 +29,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - run: "Building iOS App"
+      - name: bashCmd
+        shell: bash
+        run: |
+          echo "GH_REPO: $GH_REPO"
+          echo "ios build client"
