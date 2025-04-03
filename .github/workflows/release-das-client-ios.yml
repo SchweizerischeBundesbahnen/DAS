@@ -113,7 +113,7 @@ jobs:
           security list-keychain -d user -s $KEYCHAIN_PATH
 
       - name: Download Provisioning Profiles
-        uses: apple-actions/download-provisioning-profiles@v3
+        uses: apple-actions/download-provisioning-profiles@v4
         with:
           bundle-id: ${{ matrix.bundle-id }}
           issuer-id: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
