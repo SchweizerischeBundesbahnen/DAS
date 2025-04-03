@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="DAS" pattern="!file[das_client]:.fvm//*&amp;&amp;!file[das_client]:.idea//*&amp;&amp;!file[das_client]:android/gradle//*&amp;&amp;!file[das_client]:ios/Pods//*&amp;&amp;!file[das_client]:ios/.symlinks//*&amp;&amp;!file[das_client]:*.g.dart&amp;&amp;!file[das_client]:*.gr.dart&amp;&amp;!file[das_client]:*.mocks.dart&amp;&amp;!ext:*/&amp;&amp;!file[das_client]:web//*" />
+</component>

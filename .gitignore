@@ -18,7 +18,8 @@ sfera_mock/src/main/java/org/w3/_2001/xmlschema/**
 .sts4-cache
 
 ### IntelliJ IDEA ###
-.idea
+**/.idea/*
+!**/.idea/scopes
 *.iws
 *.iml
 *.ipr
