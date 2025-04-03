@@ -7,6 +7,7 @@ import 'package:das_client/app/widgets/table/das_table_column.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:das_client/app/widgets/table/das_table_theme.dart';
 import 'package:das_client/app/widgets/table/scrollable_align.dart';
+import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -15,9 +16,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 /// The [columns] parameter must not be empty, and all rows must have the same number of cells as columns.
 @immutable
 class DASTable extends StatefulWidget {
-  static GlobalKey<AnimatedListState> tableKey = GlobalKey<AnimatedListState>();
-
-  //static const Key tableKey = Key('dasTable');
+  static const Key tableKey = Key('dasTable');
   static const Key rowKey = Key('dasTableRow');
   static const double _headerRowHeight = 40.0;
 
@@ -63,25 +62,37 @@ class DASTable extends StatefulWidget {
 }
 
 class _DASTableState extends State<DASTable> {
+  final _animatedListKey = GlobalKey<AnimatedListState>();
   static const _tableInsertRemoveAnimationDurationMs = 500;
 
   @override
   void didUpdateWidget(DASTable oldWidget) {
     super.didUpdateWidget(oldWidget);
+    updateItemCount(oldWidget);
+    _calculateInsertAndRemoveAnimation(oldWidget);
+  }
 
-    for (int i = 0; i < oldWidget.rows.length; i++) {
+  void updateItemCount(DASTable oldWidget) {
+    if (oldWidget.rows.length != widget.rows.length) {
+      _animatedListKey.currentState!.removeAllItems((context, animation) => Container(), duration: Duration.zero);
+      _animatedListKey.currentState!.insertAllItems(0, widget.rows.length, duration: Duration.zero);
+    }
+  }
+
+  void _calculateInsertAndRemoveAnimation(DASTable oldWidget) {
+    for (int i = 0; i < oldWidget.rows.length && i < widget.rows.length; i++) {
       final oldRow = oldWidget.rows[i];
       if (oldRow.identifier != null && widget.rows[i].identifier != oldRow.identifier) {
-        DASTable.tableKey.currentState!.removeItem(i, (context, animation) {
+        _animatedListKey.currentState!.removeItem(i, (context, animation) {
           return SizeTransition(sizeFactor: animation, child: _dataRow(oldRow));
         }, duration: Duration(milliseconds: _tableInsertRemoveAnimationDurationMs));
       }
     }
 
-    for (int i = 0; i < widget.rows.length; i++) {
+    for (int i = 0; i < widget.rows.length && i < oldWidget.rows.length; i++) {
       final newRow = widget.rows[i];
       if (newRow.identifier != null && oldWidget.rows[i].identifier != newRow.identifier) {
-        DASTable.tableKey.currentState!
+        _animatedListKey.currentState!
             .insertItem(i, duration: Duration(milliseconds: _tableInsertRemoveAnimationDurationMs));
       }
     }
@@ -131,22 +142,26 @@ class _DASTableState extends State<DASTable> {
       },
       scrollController: widget.scrollController,
       rows: widget.rows,
-      child: AnimatedList(
+      child: SizedBox(
         key: DASTable.tableKey,
-        controller: widget.scrollController,
-        initialItemCount: widget.rows.length + (widget.addBottomSpacer ? 1 : 0),
-        itemBuilder: (context, index, animation) {
-          if (index == widget.rows.length && widget.addBottomSpacer) {
-            return SizedBox(
-                height: max(
-                    constraints.maxHeight -
-                        DASTable._headerRowHeight -
-                        widget.bottomMarginAdjustment -
-                        sbbDefaultSpacing,
-                    widget.minBottomMargin));
-          }
-          return SizeTransition(sizeFactor: animation, child: _dataRow(widget.rows[index]));
-        },
+        child: AnimatedList(
+          key: _animatedListKey,
+          controller: widget.scrollController,
+          initialItemCount: widget.rows.length + (widget.addBottomSpacer ? 1 : 0),
+          itemBuilder: (context, index, animation) {
+            Fimber.d('Building table row with index $index');
+            if (index == widget.rows.length && widget.addBottomSpacer) {
+              return SizedBox(
+                  height: max(
+                      constraints.maxHeight -
+                          DASTable._headerRowHeight -
+                          widget.bottomMarginAdjustment -
+                          sbbDefaultSpacing,
+                      widget.minBottomMargin));
+            }
+            return SizeTransition(sizeFactor: animation, child: _dataRow(widget.rows[index]));
+          },
+        ),
       ),
     );
 

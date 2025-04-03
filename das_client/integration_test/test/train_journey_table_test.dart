@@ -36,7 +36,7 @@ void main() {
       expect(breakingSeriesHeaderCell, findsOneWidget);
       expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('A50')), findsNWidgets(1));
 
-      final scrollableFinder = find.byType(ListView);
+      final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
       final curveName = findDASTableRowByText(l10n.p_train_journey_table_curve_type_curve);
@@ -54,7 +54,7 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T5');
 
-      final scrollableFinder = find.byType(ListView);
+      final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
       // find and check if the default breakseries is chosen
@@ -77,7 +77,7 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T7');
 
-      final scrollableFinder = find.byType(ListView);
+      final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
       final baliseMultiLevelCrossing = findDASTableRowByText('(2 ${l10n.p_train_journey_table_level_crossing})');
@@ -95,7 +95,7 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T7');
 
-      final scrollableFinder = find.byType(ListView);
+      final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
       final whistleRow = findDASTableRowByText('39.6');
@@ -122,7 +122,7 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T7');
 
-      final scrollableFinder = find.byType(ListView);
+      final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
       final groupOf5BaliseRow = findDASTableRowByText('41.6');
@@ -313,7 +313,7 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999');
 
-      final scrollableFinder = find.byType(ListView);
+      final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
       final weicheRow = findDASTableRowByText('Weiche');
@@ -351,7 +351,7 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T2');
 
-      final scrollableFinder = find.byType(ListView);
+      final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
       final asrRow = findDASTableRowByText('km 64.200 - km 47.200');
@@ -382,7 +382,7 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T2');
 
-      final scrollableFinder = find.byType(ListView);
+      final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
       final tableFinder = find.byType(DASTable);
@@ -441,7 +441,7 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999');
 
-      final scrollableFinder = find.byType(ListView);
+      final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
       final stopRouteRow = findDASTableRowByText('Bahnhof A');
@@ -479,7 +479,7 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T3');
 
-      final scrollableFinder = find.byType(ListView);
+      final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
       // check first train station
@@ -546,14 +546,14 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T6');
 
-      final scrollableFinder = find.byType(ListView);
+      final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
       // check first train station
       expect(findDASTableRowByText('Zürich HB'), findsOneWidget);
 
       // Scroll to last train station
-      await tester.dragUntilVisible(find.text('Aarau'), find.byType(ListView), const Offset(0, -300));
+      await tester.dragUntilVisible(find.text('Aarau'), find.byType(AnimatedList), const Offset(0, -300));
 
       await disconnect(tester);
     });
@@ -588,7 +588,7 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T6');
 
-      final scrollableFinder = find.byType(ListView);
+      final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
       final hardbruckeRow = findDASTableRowByText('Hardbrücke');
@@ -605,7 +605,7 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999');
 
-      final scrollableFinder = find.byType(ListView);
+      final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
       await tester.dragUntilVisible(find.text('Klammerbahnhof D1'), scrollableFinder, const Offset(0, -50));
@@ -648,7 +648,7 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999');
 
-      final scrollableFinder = find.byType(ListView);
+      final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
       await tester.dragUntilVisible(find.text('Klammerbahnhof D'), scrollableFinder, const Offset(0, -50));
@@ -692,7 +692,7 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999');
 
-      final scrollableFinder = find.byType(ListView);
+      final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
       await tester.dragUntilVisible(find.text('Kurve').first, scrollableFinder, const Offset(0, -50));
@@ -717,7 +717,7 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999');
 
-      final scrollableFinder = find.byType(ListView);
+      final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
       // check if signals with both functions laneChange, block are correct
@@ -756,7 +756,7 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T1');
 
-      final scrollableFinder = find.byType(ListView);
+      final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
       // CAB segment with start outside train journey and end at 33.2 km
@@ -810,7 +810,7 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T1');
 
-      final scrollableFinder = find.byType(ListView);
+      final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
       // check ExtendedSpeedReversingPossible from Genève-Aéroport to Gland
@@ -879,7 +879,7 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T10');
 
-      final scrollableFinder = find.byType(ListView);
+      final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
       // check ExtendedSpeedReversingPossible from Genève-Aéroport to Gland
@@ -900,7 +900,7 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T8');
 
-      final scrollableFinder = find.byType(ListView);
+      final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
       // check station speeds for Bern
@@ -971,7 +971,7 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T11');
 
-      final scrollableFinder = find.byType(ListView);
+      final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
       // ASR from 40km/h should be displayed if not completely inside ETCS L2
@@ -1013,7 +1013,7 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T11');
 
-      final scrollableFinder = find.byType(ListView);
+      final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
       final speedChangeText = 'Speed Hidden ETCSL2';
