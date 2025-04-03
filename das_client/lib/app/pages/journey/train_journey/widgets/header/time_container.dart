@@ -11,12 +11,6 @@ class TimeContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SBBGroup(
-      margin: const EdgeInsetsDirectional.fromSTEB(
-        sbbDefaultSpacing * 0.5,
-        0,
-        sbbDefaultSpacing * 0.5,
-        sbbDefaultSpacing * 0.5,
-      ),
       padding: const EdgeInsets.all(sbbDefaultSpacing),
       useShadow: false,
       child: SizedBox(

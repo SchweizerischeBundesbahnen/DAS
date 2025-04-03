@@ -36,12 +36,6 @@ class MainContainer extends StatelessWidget {
         final settings = snapshot.data![1] as TrainJourneySettings;
 
         return SBBGroup(
-          margin: const EdgeInsetsDirectional.fromSTEB(
-            sbbDefaultSpacing * 0.5,
-            0,
-            sbbDefaultSpacing * 0.5,
-            sbbDefaultSpacing * 0.5,
-          ),
           padding: const EdgeInsets.all(sbbDefaultSpacing),
           useShadow: false,
           child: Column(
