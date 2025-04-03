@@ -10,7 +10,7 @@ Remarks:
 * The RU Device-Management system (MDM) may depend on IAM rights/roles (for e.g. Mobile-App distribution per trusted user).
 
 ## Roles
-For users using the DAS App.
+For users using the DAS-Client App.
 
 ### Driver
 de: Lokpersonal
