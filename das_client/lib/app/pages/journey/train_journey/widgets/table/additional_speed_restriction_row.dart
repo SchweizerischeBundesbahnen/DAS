@@ -11,7 +11,7 @@ class AdditionalSpeedRestrictionRow extends CellRowBuilder<AdditionalSpeedRestri
   static const Key additionalSpeedRestrictionIconKey = Key('additionSpeedRestrictionIcon');
   static const Color additionalSpeedRestrictionColor = SBBColors.orange;
 
-  const AdditionalSpeedRestrictionRow({
+  AdditionalSpeedRestrictionRow({
     required super.metadata,
     required super.data,
     super.config,

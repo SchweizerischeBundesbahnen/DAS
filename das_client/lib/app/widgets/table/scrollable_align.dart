@@ -1,6 +1,6 @@
-import 'package:collection/collection.dart';
-import 'package:das_client/app/widgets/stickyheader/sticky_level.dart';
+import 'package:das_client/app/widgets/stickyheader/sticky_header.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
+import 'package:das_client/util/widget_util.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -17,12 +17,14 @@ class ScrollableAlign extends StatefulWidget {
 
 class _ScrollableAlignState extends State<ScrollableAlign> {
   static const Duration alignScrollDuration = Duration(milliseconds: 300);
+  final GlobalKey key = GlobalKey();
   bool isTouching = false;
   bool isAnimating = false;
 
   @override
   Widget build(BuildContext context) {
     return Listener(
+      key: key,
       onPointerDown: (_) {
         isTouching = true;
       },
@@ -44,11 +46,38 @@ class _ScrollableAlignState extends State<ScrollableAlign> {
   }
 
   void alignToElement() async {
-    if (widget.scrollController.positions.isEmpty) {
+    final widgetOffset = WidgetUtil.findOffsetOfKey(key);
+    final stickyHeaderState = StickyHeader.of(context);
+
+    if (widget.scrollController.positions.isEmpty || widgetOffset == null || stickyHeaderState == null) {
       return;
     }
 
+    final stickyHeaderHeight = stickyHeaderState.controller.stickyHeaderHeight;
     final currentPosition = widget.scrollController.position.pixels;
+
+    for (int i = 0; i < widget.rows.length; i++) {
+      final row = widget.rows[i];
+      if (row.key.currentContext != null) {
+        final renderObject = row.key.currentContext?.findRenderObject() as RenderBox?;
+        if (renderObject != null) {
+          final offset = renderObject.localToGlobal(Offset.zero) - widgetOffset;
+          final visibleArea = offset.dy + row.height - stickyHeaderHeight;
+
+          if (visibleArea == row.height) {
+            break;
+          }
+
+          if (visibleArea > 0) {
+            _scrollToTarget(currentPosition - (row.height - visibleArea));
+            break;
+          }
+        }
+      }
+    }
+
+    /*
+
     final stickyHeaderHeightAdjustment = {StickyLevel.first: 0.0, StickyLevel.second: 0.0};
     var itemStart = 0.0;
 
@@ -80,6 +109,8 @@ class _ScrollableAlignState extends State<ScrollableAlign> {
       }
       itemStart = itemEnd;
     }
+
+     */
   }
 
   Future<void> _scrollToTarget(double targetPosition) async {

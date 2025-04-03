@@ -28,16 +28,22 @@ class StickyHeader extends StatefulWidget {
   });
 
   @override
-  State<StickyHeader> createState() => _StickyHeaderState();
+  State<StickyHeader> createState() => StickyHeaderState();
+
+  static StickyHeaderState? of(BuildContext context) {
+    return context.findAncestorStateOfType<StickyHeaderState>();
+  }
 }
 
-class _StickyHeaderState extends State<StickyHeader> {
-  late StickyWidgetController _controller;
+class StickyHeaderState extends State<StickyHeader> {
+  late StickyWidgetController controller;
+  final GlobalKey key = GlobalKey();
 
   @override
   void initState() {
     super.initState();
-    _controller = StickyWidgetController(
+    controller = StickyWidgetController(
+      stickyHeaderKey: key,
       scrollController: widget.scrollController,
       rows: widget.rows,
     );
@@ -47,23 +53,24 @@ class _StickyHeaderState extends State<StickyHeader> {
   void didUpdateWidget(covariant StickyHeader oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.rows != oldWidget.rows) {
-      _controller.updateRowData(widget.rows);
+      controller.updateRowData(widget.rows);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
+      key: key,
       clipBehavior: Clip.hardEdge,
       children: <Widget>[
         widget.child,
         StickyWidget(
-          controller: _controller,
+          controller: controller,
           widgetBuilder: widget.headerBuilder,
         ),
         if (widget.footerBuilder != null)
           StickyWidget(
-            controller: _controller,
+            controller: controller,
             widgetBuilder: widget.footerBuilder!,
             isHeader: false,
           )

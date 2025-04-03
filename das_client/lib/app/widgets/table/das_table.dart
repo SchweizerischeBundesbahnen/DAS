@@ -128,7 +128,7 @@ class _DASTableState extends State<DASTable> {
   }
 
   Widget _buildStickyHeaderList(BoxConstraints constraints) {
-    final stickyHeaderList = StickyHeader(
+    return StickyHeader(
       footerBuilder: (context, index) {
         return Container(
             decoration: BoxDecoration(boxShadow: [
@@ -141,31 +141,29 @@ class _DASTableState extends State<DASTable> {
       },
       scrollController: widget.scrollController,
       rows: widget.rows,
-      child: SizedBox(
-        key: DASTable.tableKey,
-        child: AnimatedList(
-          key: _animatedListKey,
-          controller: widget.scrollController,
-          initialItemCount: widget.rows.length + (widget.addBottomSpacer ? 1 : 0),
-          itemBuilder: (context, index, animation) {
-            if (index == widget.rows.length && widget.addBottomSpacer) {
-              return SizedBox(
-                  height: max(
-                      constraints.maxHeight -
-                          DASTable._headerRowHeight -
-                          widget.bottomMarginAdjustment -
-                          sbbDefaultSpacing,
-                      widget.minBottomMargin));
-            }
-            return SizeTransition(sizeFactor: animation, child: _dataRow(widget.rows[index]));
-          },
-        ),
-      ),
+      child: SizedBox(key: DASTable.tableKey, child: _buildAnimatedList(constraints)),
+    );
+  }
+
+  Widget _buildAnimatedList(BoxConstraints constraints) {
+    final list = AnimatedList(
+      key: _animatedListKey,
+      controller: widget.scrollController,
+      initialItemCount: widget.rows.length + (widget.addBottomSpacer ? 1 : 0),
+      itemBuilder: (context, index, animation) {
+        if (index == widget.rows.length && widget.addBottomSpacer) {
+          return SizedBox(
+              height: max(
+                  constraints.maxHeight - DASTable._headerRowHeight - widget.bottomMarginAdjustment - sbbDefaultSpacing,
+                  widget.minBottomMargin));
+        }
+        return SizeTransition(key: widget.rows[index].key, sizeFactor: animation, child: _dataRow(widget.rows[index]));
+      },
     );
 
     return widget.alignToItem
-        ? ScrollableAlign(scrollController: widget.scrollController, rows: widget.rows, child: stickyHeaderList)
-        : stickyHeaderList;
+        ? ScrollableAlign(scrollController: widget.scrollController, rows: widget.rows, child: list)
+        : list;
   }
 
   DASTableThemeData _defaultThemeData(BuildContext context) {

@@ -10,7 +10,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class SpeedChangeRow extends CellRowBuilder<SpeedChange> {
   static const Key kmIndicatorKey = Key('kmIndicator');
 
-  const SpeedChangeRow({
+  SpeedChangeRow({
     required super.metadata,
     required super.data,
     super.config,

@@ -11,7 +11,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class TramAreaRow extends CellRowBuilder<TramArea> {
   static const Key tramAreaIconKey = Key('tramAreaIcon');
 
-  const TramAreaRow({
+  TramAreaRow({
     required super.metadata,
     required super.data,
     super.config,
