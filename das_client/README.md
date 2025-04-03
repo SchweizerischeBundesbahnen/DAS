@@ -2,6 +2,8 @@
 
 DAS (Driver Advisory System) is a mobile application that provides all the required journey data to the train driver.
 
+Big feature change!
+
 ## Supported platforms
 
 <div id="supported_platforms">
@@ -27,7 +29,8 @@ fvm flutter run --flavor prod -t lib/main_prod.dart
 
 ## Running Integration Tests
 
-Instrumentation Tests do not use user authentication. Therefore the credentials must be provided as environment variables.
+Instrumentation Tests do not use user authentication. Therefore the credentials must be provided as environment
+variables.
 
 ```shell
 fvm flutter test --flavor dev --dart-define=MQTT_USERNAME=${MQTT_USERNAME} --dart-define=MQTT_PASSWORD=${MQTT_PASSWORD} integration_test/app_test.dart
@@ -36,8 +39,11 @@ fvm flutter test --flavor dev --dart-define=MQTT_USERNAME=${MQTT_USERNAME} --dar
 ## Architecture
 
 ### Test file structure
-To prevent confusion, fictive train numbers with the prefix `T` are used for the test scenarios. It is desired to create new train journeys for different features.  
+
+To prevent confusion, fictive train numbers with the prefix `T` are used for the test scenarios. It is desired to create
+new train journeys for different features.  
 The file structure in [test_resources](test_resources) for a test scenario looks as follows:
+
 * base directory named `<train number>_<optional description>`
 * journey profile named `SFERA_JP_<train number>_<optional postfix>`
 * corresponding segment profiles named `SFERA_SP_<train number>_<segment number>`
@@ -49,8 +55,7 @@ The file structure in [test_resources](test_resources) for a test scenario looks
     * SFERA_SP_T1_1
     * SFERA_SP_T1_2
     * SFERA_TC_T1_1
-<a name="localization"></a>
-
+      <a name="localization"></a>
 
 ## Localization
 
@@ -71,12 +76,14 @@ Localization terms/keys conform to the following format:
 The prefix is mandatory and indicates the scope of the term. Valid prefixes are:
 
 | Prefix | Scope  | Description                                    |
-| ---    | ---    | ---                                            |
+|--------|--------|------------------------------------------------|
 | c      | Common | Common terms that can be used in the whole app |
 | p      | Page   | Terms that belong to a specific page           |
 | w      | Widget | Terms that bleong to a specific widget         |
 
-The context is optional and indicate where a localization is used. When a localization is scoped to a page or widget, the context MUST be equal to the name of that page or widget. For example, localizations used on the login page would start with `p_login_`.
+The context is optional and indicate where a localization is used. When a localization is scoped to a page or widget,
+the context MUST be equal to the name of that page or widget. For example, localizations used on the login page would
+start with `p_login_`.
 
 To generate the localization code, run the following command:
 
@@ -97,4 +104,5 @@ Notable difference: Line length is set to 120 characters. Please adapt your IDE 
 This app uses [FVM][1] to configure the Flutter SDK version.
 
 [1]:https://fvm.app/
+
 [2]:https://github.com/flutter/flutter/blob/master/docs/contributing/Style-guide-for-Flutter-repo.md
