@@ -1,4 +1,4 @@
-import 'package:das_client/app/pages/journey/train_journey/widgets/header/communication_network_icon.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_contact.dart';
 import 'package:das_client/model/journey/communication_network_change.dart';
 import 'package:das_client/model/journey/contact_list.dart';

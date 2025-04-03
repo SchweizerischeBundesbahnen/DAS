@@ -1,4 +1,4 @@
-import 'package:das_client/app/pages/journey/train_journey/widgets/header/communication_network_icon.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/reduced_overview/reduced_train_journey.dart';
 import 'package:das_client/util/format.dart';
 import 'package:flutter_test/flutter_test.dart';
