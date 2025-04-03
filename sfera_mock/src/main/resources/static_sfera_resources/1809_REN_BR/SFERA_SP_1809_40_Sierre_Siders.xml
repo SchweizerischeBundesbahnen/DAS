@@ -77,6 +77,9 @@
 
         <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
             <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1304"/>
+            </Contact>
+            <Contact mainContact="true">
                 <OtherContactType contactIdentifier="(1305)"/>
             </Contact>
         </ContactList>
