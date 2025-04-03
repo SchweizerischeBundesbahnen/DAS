@@ -7,7 +7,6 @@ import 'package:das_client/app/widgets/table/das_table_column.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:das_client/app/widgets/table/das_table_theme.dart';
 import 'package:das_client/app/widgets/table/scrollable_align.dart';
-import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -149,7 +148,6 @@ class _DASTableState extends State<DASTable> {
           controller: widget.scrollController,
           initialItemCount: widget.rows.length + (widget.addBottomSpacer ? 1 : 0),
           itemBuilder: (context, index, animation) {
-            Fimber.d('Building table row with index $index');
             if (index == widget.rows.length && widget.addBottomSpacer) {
               return SizedBox(
                   height: max(
