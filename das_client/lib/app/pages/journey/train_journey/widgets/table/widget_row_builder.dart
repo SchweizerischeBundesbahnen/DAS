@@ -9,6 +9,8 @@ abstract class WidgetRowBuilder<T extends BaseData> extends DASTableRowBuilder<T
     required this.metadata,
     required super.data,
     required super.height,
+    super.stickyLevel,
+    super.identifier,
     this.config = const TrainJourneyConfig(),
   });
 
@@ -17,7 +19,8 @@ abstract class WidgetRowBuilder<T extends BaseData> extends DASTableRowBuilder<T
 
   @override
   DASTableRow build(BuildContext context) {
-    return DASTableWidgetRow(widget: buildRowWidget(context), height: height);
+    return DASTableWidgetRow(
+        widget: buildRowWidget(context), height: height, stickyLevel: stickyLevel, identifier: identifier);
   }
 
   Widget buildRowWidget(BuildContext context);

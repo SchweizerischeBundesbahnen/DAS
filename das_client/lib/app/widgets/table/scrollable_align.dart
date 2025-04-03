@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:das_client/app/widgets/stickyheader/sticky_level.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/cupertino.dart';
@@ -48,29 +49,46 @@ class _ScrollableAlignState extends State<ScrollableAlign> {
     }
 
     final currentPosition = widget.scrollController.position.pixels;
+    final stickyHeaderHeightAdjustment = {StickyLevel.first: 0.0, StickyLevel.second: 0.0};
     var itemStart = 0.0;
-    var stickyHeaderHeightAdjustment = widget.rows.firstWhereOrNull((it) => it.isSticky)?.height ?? 0;
+
     for (var i = 0; i < widget.rows.length; i++) {
       final item = widget.rows[i];
 
+      if (item.stickyLevel == StickyLevel.first) {
+        stickyHeaderHeightAdjustment[StickyLevel.first] = item.height;
+      } else if (item.stickyLevel == StickyLevel.second) {
+        stickyHeaderHeightAdjustment[StickyLevel.second] = item.height;
+      }
+
       final itemEnd = itemStart + item.height;
-      final adjustedCurrentPosition = currentPosition + stickyHeaderHeightAdjustment;
+      var adjustedCurrentPosition = currentPosition + stickyHeaderHeightAdjustment.values.sum;
       if (adjustedCurrentPosition >= itemStart && adjustedCurrentPosition < itemEnd) {
-        final targetPosition = itemStart - stickyHeaderHeightAdjustment;
-        if (currentPosition != targetPosition) {
-          Fimber.d('Aligning to item with index=$i, targetPosition=$targetPosition, currentPosition=$currentPosition');
-          isAnimating = true;
-          await widget.scrollController
-              .animateTo(targetPosition, duration: alignScrollDuration, curve: Curves.easeInOut);
-          isAnimating = false;
-        }
+        _scrollToTarget(itemStart - stickyHeaderHeightAdjustment.values.sum);
         break;
       }
 
-      if (item.isSticky) {
-        stickyHeaderHeightAdjustment = item.height;
+      if (item.stickyLevel == StickyLevel.first) {
+        stickyHeaderHeightAdjustment[StickyLevel.second] = 0;
+
+        // Need to check alignment again once second sticky header is removed
+        adjustedCurrentPosition = currentPosition + stickyHeaderHeightAdjustment.values.sum;
+        if (adjustedCurrentPosition >= itemStart && adjustedCurrentPosition < itemEnd) {
+          _scrollToTarget(itemStart - stickyHeaderHeightAdjustment.values.sum);
+          break;
+        }
       }
       itemStart = itemEnd;
+    }
+  }
+
+  Future<void> _scrollToTarget(double targetPosition) async {
+    if (widget.scrollController.position.pixels != targetPosition) {
+      Fimber.d(
+          'Scrolling to targetPosition=$targetPosition, currentPosition=${widget.scrollController.position.pixels}');
+      isAnimating = true;
+      await widget.scrollController.animateTo(targetPosition, duration: alignScrollDuration, curve: Curves.easeInOut);
+      isAnimating = false;
     }
   }
 }

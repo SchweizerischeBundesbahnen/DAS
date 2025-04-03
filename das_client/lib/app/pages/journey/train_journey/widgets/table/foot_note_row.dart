@@ -16,7 +16,9 @@ abstract class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
     required this.isExpanded,
     required this.accordionToggleCallback,
     double? height,
+    super.stickyLevel,
     super.config,
+    super.identifier,
   }) : super(height: height ?? _calculateHeight(data, isExpanded));
 
   final bool isExpanded;
@@ -29,6 +31,7 @@ abstract class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
       child: SBBGroup(
         margin: EdgeInsets.symmetric(vertical: sbbDefaultSpacing / 2),
         child: Accordion(
+          key: ObjectKey(data.identifier),
           title: title(context),
           body: Padding(
             padding: EdgeInsets.fromLTRB(

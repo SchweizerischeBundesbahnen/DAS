@@ -4,6 +4,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/r
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
+import 'package:das_client/app/widgets/stickyheader/sticky_level.dart';
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/theme/theme_util.dart';
@@ -28,7 +29,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
               ((metadata.nextStop == data)
                   ? ThemeUtil.getColor(context, Color(0xFFCDD6E8), SBBColors.royal150)
                   : ThemeUtil.getDASTableColor(context)),
-          isSticky: true,
+          stickyLevel: StickyLevel.first,
         );
 
   @override
