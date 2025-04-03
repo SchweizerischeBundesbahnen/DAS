@@ -8,7 +8,7 @@
             <teltsi_StartDate>2025-01-01</teltsi_StartDate>
         </OTN_ID>
     </TrainIdentification>
-    <SegmentProfileReference SP_ID="T12_1" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T12_1" SP_VersionMajor="2" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -37,7 +37,7 @@
                 <TP_ID_Reference TP_ID="Zuerich"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TrainCharacteristicsRef TC_ID="T12_1" TC_VersionMajor="1" TC_VersionMinor="1" location="0">
+        <TrainCharacteristicsRef TC_ID="T12_1" TC_VersionMajor="2" TC_VersionMinor="0" location="0">
             <TC_RU_ID>1185</TC_RU_ID>
         </TrainCharacteristicsRef>
     </SegmentProfileReference>
