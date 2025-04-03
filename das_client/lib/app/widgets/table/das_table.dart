@@ -67,11 +67,11 @@ class _DASTableState extends State<DASTable> {
   @override
   void didUpdateWidget(DASTable oldWidget) {
     super.didUpdateWidget(oldWidget);
-    updateItemCount(oldWidget);
+    _updateItemCount(oldWidget);
     _calculateInsertAndRemoveAnimation(oldWidget);
   }
 
-  void updateItemCount(DASTable oldWidget) {
+  void _updateItemCount(DASTable oldWidget) {
     if (oldWidget.rows.length != widget.rows.length) {
       _animatedListKey.currentState!.removeAllItems((context, animation) => Container(), duration: Duration.zero);
       _animatedListKey.currentState!.insertAllItems(0, widget.rows.length, duration: Duration.zero);
