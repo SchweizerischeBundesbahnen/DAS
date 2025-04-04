@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.1.2...backend-v0.2.0) (2025-04-04)
+
+
+### Features
+
+* port kotlin to java ([#660](https://github.com/SchweizerischeBundesbahnen/DAS/issues/660)) ([#730](https://github.com/SchweizerischeBundesbahnen/DAS/issues/730)) ([c66955b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c66955b8e4ff148c5cf6ee2b3db06fc0d5ebd499))
+
 ## [0.1.2](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.1.1...backend-v0.1.2) (2025-03-25)
 
 
