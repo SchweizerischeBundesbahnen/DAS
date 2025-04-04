@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.16.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.15.0...das_client-v0.16.0) (2025-04-04)
+
+
+### Features
+
+* radio channels get contactList ([#125](https://github.com/SchweizerischeBundesbahnen/DAS/issues/125)) ([#780](https://github.com/SchweizerischeBundesbahnen/DAS/issues/780)) ([43ccebe](https://github.com/SchweizerischeBundesbahnen/DAS/commit/43ccebe70ebee24cb55cd908093245c42c0ec9db))
+
+
+### Bug Fixes
+
+* browserstack tests and overview ([#791](https://github.com/SchweizerischeBundesbahnen/DAS/issues/791)) ([5a3832b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5a3832bccbe6e3c550df25aa4f3d50e039275fd1))
+
 ## [0.15.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.14.2...das_client-v0.15.0) (2025-04-02)
 
 
