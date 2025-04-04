@@ -62,6 +62,12 @@
         <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="900" endLocation="900"/>
         <LevelCrossingArea startEndQualifier="StartsEnds" startLocation="1000" endLocation="1000"/>
 
+        <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1314"/>
+            </Contact>
+        </ContactList>
+
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="10.0"/>
         </KilometreReferencePoint>

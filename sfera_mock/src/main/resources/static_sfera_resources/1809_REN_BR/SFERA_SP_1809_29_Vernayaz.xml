@@ -116,6 +116,12 @@
 
     <SP_ContextInformation>
 
+        <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1302"/>
+            </Contact>
+        </ContactList>
+
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="61.5"/>
         </KilometreReferencePoint>
