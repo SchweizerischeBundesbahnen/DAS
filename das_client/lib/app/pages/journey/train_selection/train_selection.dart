@@ -32,14 +32,28 @@ class _TrainSelectionState extends State<TrainSelection> {
     return BlocBuilder<TrainJourneyCubit, TrainJourneyState>(
       builder: (context, state) {
         if (state is SelectingTrainJourneyState) {
-          return Column(
-            children: [
-              _header(context, state),
-              Spacer(),
-              _errorMessage(context, state),
-              Spacer(),
-              _loadButton(context, state)
-            ],
+          return SafeArea(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight,
+                    ),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        children: [
+                          _header(context, state),
+                          _errorMessage(context, state),
+                          Spacer(),
+                          _loadButton(context, state),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
           );
         } else {
           return Container();
