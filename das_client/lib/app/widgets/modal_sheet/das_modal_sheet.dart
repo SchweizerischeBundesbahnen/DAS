@@ -1,15 +1,18 @@
 import 'dart:math';
 
 import 'package:das_client/app/widgets/extended_header_container.dart';
+import 'package:extra_hittest_area/extra_hittest_area.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+
+enum _ControllerState { closed, open, fullOpen }
 
 /// Used to open and close the [DasModalSheet] and handle animation.
 class DASModalSheetController {
   DASModalSheetController({
     this.animationDuration = const Duration(milliseconds: 150),
     this.maxExtensionWidth = 300.0,
-  });
+  }) : _state = _ControllerState.closed;
 
   /// defines animation duration for opening and full-width extension of modal sheet.
   final Duration animationDuration;
@@ -17,7 +20,8 @@ class DASModalSheetController {
   /// sets the maximum extension width for the non-overlapping modal sheet.
   final double maxExtensionWidth;
 
-  bool _isOpen = false;
+  _ControllerState _state;
+  bool _initialized = false;
 
   late AnimationController _controller;
   late Animation<double> _widthAnimation;
@@ -32,29 +36,42 @@ class DASModalSheetController {
     _fullWidthController = AnimationController(vsync: vsync, duration: animationDuration);
     _fullWidthAnimation = Tween<double>(begin: 0, end: 1).animate(_fullWidthController)
       ..addListener(() => onUpdate?.call());
+
+    _initialized = true;
   }
 
   void open() async {
-    await _controller.forward();
-    _isOpen = true;
+    if (_initialized && _state != _ControllerState.open) {
+      await _controller.forward();
+      _state = _ControllerState.open;
+    }
   }
 
   void close() async {
-    _controller.reverse();
-    _fullWidthController.reverse();
-    _isOpen = false;
+    if (_initialized && _state != _ControllerState.closed) {
+      _controller.reverse();
+      _fullWidthController.reverse();
+      _state = _ControllerState.closed;
+    }
   }
 
-  void fullOpen() {
-    _isOpen = true;
-    _fullWidthController.forward();
+  void fullOpen() async {
+    if (_initialized && _state != _ControllerState.fullOpen) {
+      await _fullWidthController.forward();
+      _state = _ControllerState.fullOpen;
+    }
+  }
+
+  void dispose() {
+    _controller.dispose();
+    _fullWidthController.dispose();
   }
 
   double get width => _widthAnimation.value;
 
   double get fullWidth => _fullWidthAnimation.value;
 
-  bool get isOpen => _isOpen;
+  bool get isOpen => _state == _ControllerState.open || _state == _ControllerState.fullOpen;
 }
 
 /// Modal sheet that that can extend to a certain width and occupy this space but also overlap to the full screen width.
@@ -66,15 +83,15 @@ class DasModalSheet extends StatefulWidget {
     required this.controller,
     super.key,
     this.header,
-    this.onClose,
-    this.onOpen,
+    this.leftMargin = 0.0,
   });
 
-  final VoidCallback? onClose;
-  final VoidCallback? onOpen;
   final Widget child;
   final Widget? header;
   final DASModalSheetController controller;
+
+  /// margin used in full-screen on the left side of the modal sheet.
+  final double leftMargin;
 
   @override
   State<DasModalSheet> createState() => _DASModalSheetState();
@@ -90,7 +107,8 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
   @override
   Widget build(BuildContext context) {
     final modalWidth = _calculateModalWidth(context);
-    return Stack(
+    // Flutter stack can't handle hits outside bounds: https://github.com/flutter/flutter/issues/31728
+    return StackHitTestWithoutSizeLimit(
       clipBehavior: Clip.none,
       children: [
         // invisible widget used to extend stack width
@@ -102,13 +120,14 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
   }
 
   Widget _modalSheet(double width) {
+    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
     return ExtendedAppBarWrapper(
       child: Container(
         width: width,
         padding: EdgeInsets.all(sbbDefaultSpacing),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(topLeft: Radius.circular(sbbDefaultSpacing * 2)),
-          color: SBBColors.white, // TODO: Dark Theme
+          color: isDarkTheme ? SBBColors.charcoal : SBBColors.white,
         ),
         child: widget.controller.isOpen ? _body() : SizedBox(height: double.infinity),
       ),
@@ -137,10 +156,11 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
     );
   }
 
+  /// Returns width of modal with a max with of screen width - leftMargin
   double _calculateModalWidth(BuildContext context) {
-    final screenWidth = MediaQuery.sizeOf(context).width;
-    final animatedWidthOfController = widget.controller.width + (widget.controller.fullWidth * screenWidth);
-    return min(animatedWidthOfController, screenWidth);
+    final maxWidth = MediaQuery.sizeOf(context).width - widget.leftMargin;
+    final animatedWidthOfController = widget.controller.width + (widget.controller.fullWidth * maxWidth);
+    return min(animatedWidthOfController, maxWidth);
   }
 }
 
