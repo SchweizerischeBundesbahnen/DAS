@@ -9,6 +9,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/
 import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/model/journey/communication_network_change.dart';
+import 'package:das_client/model/journey/contact_list.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/theme/theme_provider.dart';
@@ -63,12 +64,15 @@ class MainContainer extends StatelessWidget {
     final communicationNetworkType = metadata.currentPosition != null
         ? metadata.communicationNetworkChanges.appliesToOrder(metadata.currentPosition!.order)
         : null;
+    final radioContactList = metadata.currentPosition != null
+        ? metadata.radioContactLists.lastLowerThan(metadata.currentPosition!.order)
+        : null;
     return SizedBox(
       height: 48.0,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          RadioChannel(communicationNetworkType: communicationNetworkType),
+          RadioChannel(communicationNetworkType: communicationNetworkType, radioContactList: radioContactList),
           SizedBox(width: sbbDefaultSpacing * 0.5),
           DepartureAuthorization(),
           Spacer(),

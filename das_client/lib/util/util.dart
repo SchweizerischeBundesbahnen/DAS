@@ -10,4 +10,8 @@ class Util {
   static DateTime? tryParseDateTime(String? value) {
     return value != null ? DateTime.tryParse(value) : null;
   }
+
+  static bool? tryParseBool(String? value) {
+    return value != null ? bool.tryParse(value) : null;
+  }
 }

@@ -5,6 +5,9 @@ import 'package:das_client/sfera/src/model/balise_group.dart';
 import 'package:das_client/sfera/src/model/communication_network.dart';
 import 'package:das_client/sfera/src/model/connection_track.dart';
 import 'package:das_client/sfera/src/model/connection_track_description.dart';
+import 'package:das_client/sfera/src/model/contact.dart';
+import 'package:das_client/sfera/src/model/contact_list.dart';
+import 'package:das_client/sfera/src/model/other_contact_type.dart';
 import 'package:das_client/sfera/src/model/current_limitation.dart';
 import 'package:das_client/sfera/src/model/current_limitation_change.dart';
 import 'package:das_client/sfera/src/model/current_limitation_start.dart';
@@ -270,6 +273,12 @@ class SferaReplyParser {
         return SferaFootNote(attributes: attributes, children: children, value: value);
       case Text.elementType:
         return Text(attributes: attributes, children: children, value: value, xmlValue: xmlElement.innerXml);
+      case ContactList.elementType:
+        return ContactList(type: type, attributes: attributes, children: children, value: value);
+      case Contact.elementType:
+        return Contact(type: type, attributes: attributes, children: children, value: value);
+      case OtherContactType.elementType:
+        return OtherContactType(type: type, attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElement(type: type, attributes: attributes, children: children, value: value);
     }

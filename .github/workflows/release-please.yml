@@ -14,6 +14,9 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     outputs:
+      das_client--release_created: ${{ steps.release.outputs.das_client--release_created }}
+      das_client--version: ${{ steps.release.outputs.das_client--version }}
+      das_client--tag_name: ${{ steps.release.outputs.das_client--tag_name }}
       sfera_mock--release_created: ${{ steps.release.outputs.sfera_mock--release_created }}
       sfera_mock--version: ${{ steps.release.outputs.sfera_mock--version }}
       sfera_mock--tag_name: ${{ steps.release.outputs.sfera_mock--tag_name }}
@@ -24,19 +27,21 @@ jobs:
       das_playground--version: ${{ steps.release.outputs.das_playground--version }}
       das_playground--tag_name: ${{ steps.release.outputs.das_playground--tag_name }}
     steps:
-      - name: Generate token for SBB DAS Github app # allows triggering subsequent workflows
-        id: app-token
-        uses: actions/create-github-app-token@v1
-        with:
-          app-id: ${{ vars.DASGITHUBAPP_APPID }}
-          private-key: ${{ secrets.DASGITHUBAPP_PRIVATKEY }}
-
       - uses: googleapis/release-please-action@v4
         id: release
         with:
           config-file: ci/release-please-config.json
           manifest-file: ci/.release-please-manifest.json
-          token: ${{ steps.app-token.outputs.token }}
+
+  das_client-release-android:
+    needs: release-please
+    if: needs.release-please.outputs.das_client--release_created
+    uses: ./.github/workflows/release-das-client-android.yml
+
+  das_client-release-ios:
+    needs: release-please
+    if: needs.release-please.outputs.das_client--release_created
+    uses: ./.github/workflows/release-das-client-ios.yml
 
   sfera_mock-release:
     needs: release-please

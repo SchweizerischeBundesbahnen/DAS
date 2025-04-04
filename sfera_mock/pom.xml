@@ -19,7 +19,7 @@
         <image.version>${project.version}</image.version>
 
         <spring-cloud.version>2024.0.1</spring-cloud.version>
-        <solace-spring-cloud-bom.version>4.7.0</solace-spring-cloud-bom.version>
+        <solace-spring-cloud-bom.version>4.8.0</solace-spring-cloud-bom.version>
     </properties>
 
     <dependencyManagement>
@@ -115,7 +115,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxb2-maven-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.3.0</version>
                 <configuration>
                     <sources>
                         <source>${basedir}/src/main/resources/SFERA_v3.00.xsd</source>

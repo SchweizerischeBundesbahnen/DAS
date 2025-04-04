@@ -17,9 +17,6 @@ concurrency:
   cancel-in-progress: true
 
 on:
-  push:
-    paths:
-      - 'das_client/**'
   pull_request:
     paths:
       - 'das_client/**'

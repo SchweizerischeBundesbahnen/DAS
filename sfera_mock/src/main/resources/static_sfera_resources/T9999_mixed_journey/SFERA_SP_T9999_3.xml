@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T9999_3" SP_VersionMajor="2"
-                SP_VersionMinor="1" SP_Length="1000" SP_Status="Valid">
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T9999_3" SP_VersionMajor="3"
+                SP_VersionMinor="0" SP_Length="1000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -66,7 +67,8 @@
     </SP_Points>
 
     <SP_Areas>
-        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="400" endLocation="400" TAF_TAP_location_abbreviation="C"
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="400" endLocation="400"
+                          TAF_TAP_location_abbreviation="C"
                           TAF_TAP_location_type="halt">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
@@ -112,6 +114,11 @@
         <ConnectionTrack location="200" connectionTrackType="Unknown">
             <ConnectionTrackDescription language="de" text="22-6 Uhr"/>
         </ConnectionTrack>
+        <ContactList startEndQualifier="StartsEnds" startLocation="400" endLocation="400">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="(1305)"/>
+            </Contact>
+        </ContactList>
         <KilometreReferencePoint location="100">
             <KM_Reference kmRef="2.1"/>
         </KilometreReferencePoint>

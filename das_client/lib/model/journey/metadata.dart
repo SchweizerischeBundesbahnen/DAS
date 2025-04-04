@@ -3,6 +3,7 @@ import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/bracket_station_segment.dart';
 import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/communication_network_change.dart';
+import 'package:das_client/model/journey/contact_list.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/track_equipment_segment.dart';
 import 'package:das_client/model/localized_string.dart';
@@ -26,6 +27,7 @@ class Metadata {
     this.availableBreakSeries = const {},
     this.communicationNetworkChanges = const [],
     this.lineFootNoteLocations = const {},
+    this.radioContactLists = const [],
   }) : timestamp = timestamp ?? DateTime.now();
 
   final DateTime timestamp;
@@ -42,4 +44,5 @@ class Metadata {
   final BreakSeries? breakSeries;
   final Set<BreakSeries> availableBreakSeries;
   final Map<String, List<LocalizedString>> lineFootNoteLocations;
+  final Iterable<RadioContactList> radioContactLists;
 }

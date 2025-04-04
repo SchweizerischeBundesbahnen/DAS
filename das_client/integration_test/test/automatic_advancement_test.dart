@@ -41,7 +41,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      final scrollableFinder = find.byType(ListView);
+      final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
       await tester.dragUntilVisible(find.text('B1'), scrollableFinder, const Offset(0, 100));

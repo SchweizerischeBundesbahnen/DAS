@@ -100,15 +100,11 @@ class _JourneyPageContentState extends State<JourneyPageContent> with SingleTick
     );
   }
 
-  Widget _content(TrainJourneyState state) {
-    if (state is SelectingTrainJourneyState) {
-      return const TrainSelection();
-    } else if (state is TrainJourneyLoadedState) {
-      return const TrainJourneyOverview();
-    } else {
-      return const Center(child: CircularProgressIndicator());
-    }
-  }
+  Widget _content(TrainJourneyState state) => switch (state) {
+        SelectingTrainJourneyState() => const TrainSelection(),
+        TrainJourneyLoadedState() => const TrainJourneyOverview(),
+        _ => const Center(child: CircularProgressIndicator()),
+      };
 
   IconButton _logoutButton(BuildContext context) {
     return IconButton(
