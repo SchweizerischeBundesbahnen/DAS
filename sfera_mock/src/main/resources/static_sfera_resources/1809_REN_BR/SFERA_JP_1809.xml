@@ -517,7 +517,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="1809_37_Sion" SP_VersionMajor="2" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1809_37_Sion" SP_VersionMajor="2" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
