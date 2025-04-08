@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="1809_40_Sierre_Siders"
-                SP_VersionMajor="2" SP_VersionMinor="1" SP_Length="4200" SP_Status="Valid">
+                SP_VersionMajor="2" SP_VersionMinor="2" SP_Length="4200" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
