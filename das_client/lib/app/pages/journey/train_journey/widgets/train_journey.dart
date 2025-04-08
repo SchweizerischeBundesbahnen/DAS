@@ -27,6 +27,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/signal_
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/speed_change_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/tram_area_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/whistle_row.dart';
+import 'package:das_client/app/widgets/stickyheader/sticky_level.dart';
 import 'package:das_client/app/widgets/table/das_table.dart';
 import 'package:das_client/app/widgets/table/das_table_column.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
@@ -92,8 +93,9 @@ class TrainJourney extends StatelessWidget {
     final tableRows = _rows(context, journey, settings);
     context.trainJourneyCubit.automaticAdvancementController.updateRenderedRows(tableRows);
 
-    final marginAdjustment =
-        Platform.isIOS ? tableRows.lastWhereOrNull((it) => it.isSticky)?.height ?? CellRowBuilder.rowHeight : 0.0;
+    final marginAdjustment = Platform.isIOS
+        ? tableRows.lastWhereOrNull((it) => it.stickyLevel == StickyLevel.first)?.height ?? CellRowBuilder.rowHeight
+        : 0.0;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),

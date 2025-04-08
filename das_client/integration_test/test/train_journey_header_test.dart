@@ -3,6 +3,8 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/communication
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/battery_status.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/extended_menu.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_channel.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_contact.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
 import 'package:das_client/di.dart';
 import 'package:das_client/util/format.dart';
@@ -290,6 +292,44 @@ void main() {
       await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Zürich')));
       final zuerichGsmRIcon = find.descendant(of: header, matching: find.byKey(CommunicationNetworkIcon.gsmRKey));
       expect(zuerichGsmRIcon, findsOneWidget);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('test display of radio contactList channels in header', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T12');
+
+      // find the header and check if it is existent
+      final header = find.byType(Header);
+      expect(header, findsOneWidget);
+      // find the radioChannel and check if it is existent
+      final radioChannel = find.descendant(of: header, matching: find.byType(RadioChannel));
+      expect(radioChannel, findsOneWidget);
+
+      // check empty radio contactList for Wankdorf
+      final wankdorf = find.descendant(of: header, matching: find.text('Wankdorf'));
+      expect(wankdorf, findsOneWidget);
+      final mainContactsWankdorf =
+          find.descendant(of: radioChannel, matching: find.byKey(RadioContactChannels.radioContactChannelsKey));
+      expect(mainContactsWankdorf, findsNothing);
+
+      // check mainContacts for Burgdorf
+      await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Burgdorf')));
+      final mainContactsBurgdorf = find.descendant(of: radioChannel, matching: find.text('1407'));
+      expect(mainContactsBurgdorf, findsOneWidget);
+
+      // check mainContacts for Olten
+      await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Olten')));
+      final mainContactsOlten = find.descendant(of: radioChannel, matching: find.text('1608 (1609)'));
+      expect(mainContactsOlten, findsOneWidget);
+
+      // check mainContacts for Zürich
+      await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Zürich')));
+      final mainContactsZurich = find.descendant(of: radioChannel, matching: find.text('1102'));
+      expect(mainContactsZurich, findsOneWidget);
 
       await disconnect(tester);
     });

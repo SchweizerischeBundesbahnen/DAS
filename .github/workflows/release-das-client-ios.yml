@@ -4,11 +4,7 @@
 name: release-das-client-ios
 
 on:
-  pull_request_target:
-    types:
-      - closed
-    branches:
-      - main
+  workflow_call:
 
 permissions:
   contents: write
@@ -16,7 +12,6 @@ permissions:
 
 jobs:
   prepare:
-    if: (github.event.pull_request.merged && contains( github.event.pull_request.labels.*.name, 'autorelease:das_client'))
     runs-on: macos-latest
     concurrency:
       group: release-das-client-ios

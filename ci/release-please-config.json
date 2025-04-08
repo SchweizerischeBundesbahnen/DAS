@@ -4,8 +4,7 @@
   "packages": {
     "das_client": {
       "release-type": "dart",
-      "bump-minor-pre-major": true,
-      "extra-label": "autorelease:das_client"
+      "bump-minor-pre-major": true
     },
     "das_backend": {
       "release-type": "maven",

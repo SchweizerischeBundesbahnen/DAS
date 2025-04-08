@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:collection/collection.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
+import 'package:das_client/app/widgets/stickyheader/sticky_level.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:fimber/fimber.dart';
@@ -50,22 +52,28 @@ class AutomaticAdvancementController {
       return null;
     }
 
-    var stickyRowHeight = 0.0;
+    final stickyHeaderHeights = {StickyLevel.first: 0.0, StickyLevel.second: 0.0};
     var targetScrollPosition = 0.0;
 
     for (final row in _renderedRows) {
       if (_currentJourney!.metadata.currentPosition == row.data) {
-        if (!row.isSticky) {
-          // remove the sticky header height
-          targetScrollPosition -= stickyRowHeight;
+        // remove the sticky header heights
+        if (row.stickyLevel == StickyLevel.none) {
+          targetScrollPosition -= stickyHeaderHeights.values.sum;
+        } else if (row.stickyLevel == StickyLevel.second) {
+          targetScrollPosition -= stickyHeaderHeights[StickyLevel.first]!;
         }
 
         return targetScrollPosition;
       }
 
-      if (row.isSticky) {
-        stickyRowHeight = row.height;
+      if (row.stickyLevel == StickyLevel.first) {
+        stickyHeaderHeights[StickyLevel.first] = row.height;
+        stickyHeaderHeights[StickyLevel.second] = 0.0;
+      } else if (row.stickyLevel == StickyLevel.second) {
+        stickyHeaderHeights[StickyLevel.second] = row.height;
       }
+
       targetScrollPosition += row.height;
     }
 

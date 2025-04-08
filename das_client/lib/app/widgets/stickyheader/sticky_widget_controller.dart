@@ -1,3 +1,4 @@
+import 'package:das_client/app/widgets/stickyheader/sticky_level.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:flutter/material.dart';
 
@@ -11,8 +12,14 @@ class StickyWidgetController with ChangeNotifier {
   final List<double> rowOffsets = [];
   List<DASTableRow> _rows;
 
-  var headerOffset = 0.0;
-  var headerIndex = -1;
+  Map<StickyLevel, double> headerOffsets = {
+    StickyLevel.first: 0.0,
+    StickyLevel.second: 0.0,
+  };
+  Map<StickyLevel, int> headerIndexes = {
+    StickyLevel.first: -1,
+    StickyLevel.second: -1,
+  };
   var footerIndex = -1;
 
   void _initialize() {
@@ -28,16 +35,19 @@ class StickyWidgetController with ChangeNotifier {
   }
 
   void _scrollListener() {
-    headerIndex = -1;
+    headerIndexes = {
+      StickyLevel.first: -1,
+      StickyLevel.second: -1,
+    };
     footerIndex = -1;
 
     if (scrollController.positions.isNotEmpty) {
       final currentPixels = scrollController.position.pixels;
       for (int i = 0; i < rowOffsets.length; i++) {
         if (currentPixels >= rowOffsets[i] && currentPixels < rowOffsets[i] + _rows[i].height) {
-          headerIndex = _calculateHeader(i, currentPixels);
-          headerOffset = _calculateHeaderOffset(headerIndex, currentPixels);
-          footerIndex = _calculateFooter(headerIndex + 1, currentPixels);
+          _calculateHeaders(i, currentPixels);
+          _calculateHeaderOffsets(currentPixels);
+          footerIndex = _calculateFooter(headerIndexes[StickyLevel.first]! + 1, currentPixels);
           break;
         }
       }
@@ -46,17 +56,42 @@ class StickyWidgetController with ChangeNotifier {
     notifyListeners();
   }
 
-  int _calculateHeader(int startIndex, double currentPixels) {
+  void _calculateHeaders(int startIndex, double currentPixels) {
     for (int i = startIndex; i >= 0; i--) {
-      if (_rows[i].isSticky) {
-        return i;
+      final stickyLevel = _rows[i].stickyLevel;
+      if (stickyLevel == StickyLevel.first) {
+        headerIndexes[stickyLevel] = i;
+        break;
       }
     }
-    return -1;
+
+    final firstHeaderIndex = headerIndexes[StickyLevel.first]!;
+    if (firstHeaderIndex != -1) {
+      for (int i = startIndex + 1; i >= firstHeaderIndex; i--) {
+        if (i < _rows.length) {
+          final stickyLevel = _rows[i].stickyLevel;
+          if (stickyLevel == StickyLevel.second) {
+            headerIndexes[stickyLevel] = i;
+            break;
+          }
+        }
+      }
+    }
   }
 
-  double _calculateHeaderOffset(int headerIndex, double currentPixels) {
-    final nextStickyIndex = _findNextSticky(headerIndex + 1);
+  void _calculateHeaderOffsets(double currentPixels) {
+    final firstHeaderHeight =
+        headerIndexes[StickyLevel.first] != -1 ? _rows[headerIndexes[StickyLevel.first]!].height : 0.0;
+
+    headerOffsets = {
+      StickyLevel.first: _calculateHeaderOffset(headerIndexes[StickyLevel.first]!, currentPixels, StickyLevel.first),
+      StickyLevel.second: _calculateHeaderOffset(
+          headerIndexes[StickyLevel.second]!, currentPixels + firstHeaderHeight, StickyLevel.second),
+    };
+  }
+
+  double _calculateHeaderOffset(int headerIndex, double currentPixels, StickyLevel stickyLevel) {
+    final nextStickyIndex = _findNextStickyBelowLevel(headerIndex + 1, stickyLevel);
     if (headerIndex != -1 && nextStickyIndex != -1) {
       final headerHeight = _rows[headerIndex].height;
       final nextStickyOffset = rowOffsets[nextStickyIndex];
@@ -70,7 +105,7 @@ class StickyWidgetController with ChangeNotifier {
   }
 
   int _calculateFooter(int startIndex, double currentPixels) {
-    var stickyFooterIndex = _findNextSticky(startIndex);
+    var stickyFooterIndex = _findNextStickyBelowLevel(startIndex, StickyLevel.first);
 
     if (stickyFooterIndex != -1) {
       final stickyOffset = rowOffsets[stickyFooterIndex];
@@ -83,11 +118,16 @@ class StickyWidgetController with ChangeNotifier {
     return stickyFooterIndex;
   }
 
-  int _findNextSticky(int startIndex) {
+  int _findNextStickyBelowLevel(int startIndex, StickyLevel stickyLevel) {
     for (int i = startIndex; i < _rows.length; i++) {
-      if (_rows[i].isSticky) return i;
+      if (_rows[i].stickyLevel != StickyLevel.none && _rows[i].stickyLevel.index <= stickyLevel.index) return i;
     }
     return -1;
+  }
+
+  double widgetHeight(int index) {
+    if (index < 0 || index >= _rows.length) return 0.0;
+    return _rows[index].height;
   }
 
   void updateRowData(List<DASTableRow> rows) {
