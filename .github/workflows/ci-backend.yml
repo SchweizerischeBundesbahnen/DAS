@@ -13,6 +13,10 @@ defaults:
     working-directory: das_backend
 
 on:
+  push:
+    paths:
+      - 'das_backend/**'
+    branches: [ "main" ]
   pull_request:
     paths:
       - 'das_backend/**'

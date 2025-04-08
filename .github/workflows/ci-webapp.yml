@@ -5,6 +5,10 @@ defaults:
     working-directory: das_playground
 
 on:
+  push:
+    paths:
+      - 'das_playground/**'
+    branches: [ "main" ]
   pull_request:
     paths:
       - 'das_playground/**'
