@@ -5,7 +5,7 @@ import 'package:extra_hittest_area/extra_hittest_area.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-enum _ControllerState { closed, open, fullOpen }
+enum _ControllerState { closed, expanded, maximized }
 
 /// Used to open and close the [DasModalSheet] and handle animation.
 class DASModalSheetController {
@@ -40,25 +40,28 @@ class DASModalSheetController {
     _initialized = true;
   }
 
-  void open() async {
-    if (_initialized && _state != _ControllerState.open) {
+  /// expands or reduces width of modal sheet to [maxExtensionWidth] if not already in expanded state
+  void expand() async {
+    if (_initialized && _state != _ControllerState.expanded) {
       await _controller.forward();
-      _state = _ControllerState.open;
+      _state = _ControllerState.expanded;
     }
   }
 
+  /// maximizes modal sheet to fill the full screen width
+  void maximize() async {
+    if (_initialized && _state != _ControllerState.maximized) {
+      await _fullWidthController.forward();
+      _state = _ControllerState.maximized;
+    }
+  }
+
+  /// closes the modal sheet if not already closed
   void close() async {
     if (_initialized && _state != _ControllerState.closed) {
       _controller.reverse();
       _fullWidthController.reverse();
       _state = _ControllerState.closed;
-    }
-  }
-
-  void fullOpen() async {
-    if (_initialized && _state != _ControllerState.fullOpen) {
-      await _fullWidthController.forward();
-      _state = _ControllerState.fullOpen;
     }
   }
 
@@ -71,7 +74,7 @@ class DASModalSheetController {
 
   double get fullWidth => _fullWidthAnimation.value;
 
-  bool get isOpen => _state == _ControllerState.open || _state == _ControllerState.fullOpen;
+  bool get isOpen => _state == _ControllerState.expanded || _state == _ControllerState.maximized;
 }
 
 /// Modal sheet that that can extend to a certain width and occupy this space but also overlap to the full screen width.
