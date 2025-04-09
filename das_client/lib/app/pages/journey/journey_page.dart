@@ -126,7 +126,8 @@ class _JourneyPageContentState extends State<JourneyPageContent> with SingleTick
 
   String _headerTitle(BuildContext context, TrainJourneyState state) {
     if (state is TrainJourneyLoadedState) {
-      final date = Format.dateWithAbbreviatedDay(state.trainIdentification.date);
+      final locale = Localizations.localeOf(context);
+      final date = Format.dateWithAbbreviatedDay(state.trainIdentification.date, locale);
       return '${context.l10n.p_train_journey_appbar_text} - $date';
     }
     return context.l10n.c_app_name;

@@ -278,9 +278,7 @@ void main() {
     testWidgets('test speed values of missing break Series', (tester) async {
       await prepareAndStartApp(tester);
 
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T5');
-
       await _selectBreakSeries(tester, breakSeries: 'A85');
 
       final breakingSeriesHeaderCell = find.byKey(TrainJourney.breakingSeriesHeaderKey);
@@ -289,10 +287,10 @@ void main() {
 
       final expectedSpeeds = {
         'Genève-Aéroport': '90',
-        '65.3': '55', // 1. Curve
+        '65.3': '55',
         'New Line Speed All': '90',
         'Genève': 'XX',
-        'New Line Speed A Missing': 'XX',
+        'New Line Speed A Missing': null,
         'Gland': '90',
       };
 
@@ -300,8 +298,16 @@ void main() {
         final tableRow = findDASTableRowByText(entry.key);
         expect(tableRow, findsOneWidget);
 
-        final speedText = find.descendant(of: tableRow, matching: find.text(entry.value));
-        expect(speedText, findsOneWidget);
+        if (entry.value != null) {
+          final speedText = find.descendant(of: tableRow, matching: find.text(entry.value!));
+          expect(speedText, findsOneWidget);
+        } else {
+          final emptyCellContent = find.descendant(
+              of: tableRow,
+              matching: find.byWidgetPredicate((widget) => widget is SizedBox && widget == SizedBox.shrink()));
+
+          expect(emptyCellContent, findsOneWidget);
+        }
       }
 
       await disconnect(tester);
@@ -691,6 +697,8 @@ void main() {
 
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999');
+
+      await _selectBreakSeries(tester, breakSeries: 'R150');
 
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
