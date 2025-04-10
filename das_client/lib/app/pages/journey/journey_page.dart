@@ -67,6 +67,7 @@ class _JourneyPageContentState extends State<JourneyPageContent> with SingleTick
             builder: (context, snapshot) {
               return Scaffold(
                 resizeToAvoidBottomInset: screenHeight <= 830 ? true : null,
+                //830 is the height of the iPad 11 which is tall enough for the journey page
                 appBar: _appBar(context, state, snapshot.data),
                 body: _body(context, state),
                 drawer: const DASNavigationDrawer(),
