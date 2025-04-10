@@ -12,6 +12,8 @@ class DASModalSheetController {
   DASModalSheetController({
     this.animationDuration = const Duration(milliseconds: 150),
     this.maxExtensionWidth = 300.0,
+    this.onClose,
+    this.onOpen,
   }) : _state = _ControllerState.closed;
 
   /// defines animation duration for opening and full-width extension of modal sheet.
@@ -19,6 +21,9 @@ class DASModalSheetController {
 
   /// sets the maximum extension width for the non-overlapping modal sheet.
   final double maxExtensionWidth;
+
+  final VoidCallback? onClose;
+  final VoidCallback? onOpen;
 
   _ControllerState _state;
   bool _initialized = false;
@@ -28,6 +33,7 @@ class DASModalSheetController {
   late AnimationController _fullWidthController;
   late Animation<double> _fullWidthAnimation;
 
+  /// will be called by [DasModalSheet] to get [TickerProvider]
   void _initialize({required TickerProvider vsync, VoidCallback? onUpdate}) {
     _controller = AnimationController(vsync: vsync, duration: animationDuration);
     _widthAnimation = Tween<double>(begin: 0.0, end: maxExtensionWidth).animate(_controller)
@@ -41,24 +47,36 @@ class DASModalSheetController {
   }
 
   /// expands or reduces width of modal sheet to [maxExtensionWidth] if not already in expanded state
-  void expand() async {
-    if (_initialized && _state != _ControllerState.expanded) {
+  Future<void> expand() async {
+    if (!_initialized) return;
+
+    if (_state == _ControllerState.closed) {
+      onOpen?.call();
       await _controller.forward();
+      _state = _ControllerState.expanded;
+    } else if (_state == _ControllerState.maximized) {
+      _fullWidthController.reverse();
       _state = _ControllerState.expanded;
     }
   }
 
   /// maximizes modal sheet to fill the full screen width
-  void maximize() async {
-    if (_initialized && _state != _ControllerState.maximized) {
+  Future<void> maximize() async {
+    if (!_initialized) return;
+
+    if (_state != _ControllerState.maximized) {
+      onOpen?.call();
       await _fullWidthController.forward();
       _state = _ControllerState.maximized;
     }
   }
 
   /// closes the modal sheet if not already closed
-  void close() async {
-    if (_initialized && _state != _ControllerState.closed) {
+  void close() {
+    if (!_initialized) return;
+
+    if (_state != _ControllerState.closed) {
+      onClose?.call();
       _controller.reverse();
       _fullWidthController.reverse();
       _state = _ControllerState.closed;

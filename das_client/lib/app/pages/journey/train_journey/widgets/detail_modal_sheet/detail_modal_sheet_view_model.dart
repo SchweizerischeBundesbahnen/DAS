@@ -5,16 +5,26 @@ import 'package:das_client/app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:rxdart/rxdart.dart';
 
 class DetailModalSheetViewModel {
-  DetailModalSheetViewModel({
-    required this.controller,
-  });
+  DetailModalSheetViewModel() {
+    _init();
+  }
 
-  final DASModalSheetController controller;
+  late DASModalSheetController controller;
 
+  final _rxIsModalSheetOpen = BehaviorSubject.seeded(false);
   final _rxSelectedTab = BehaviorSubject.seeded(DetailModalSheetTab.values.first);
   final _subscriptions = <StreamSubscription>[];
 
   Stream<DetailModalSheetTab> get selectedTab => _rxSelectedTab.stream;
+
+  Stream<bool> get isModalSheetOpen => _rxIsModalSheetOpen.stream;
+
+  void _init() {
+    controller = DASModalSheetController(
+      onClose: () => _rxIsModalSheetOpen.add(false),
+      onOpen: () => _rxIsModalSheetOpen.add(true),
+    );
+  }
 
   void open({DetailModalSheetTab? tab}) {
     if (tab != null) {
@@ -28,15 +38,14 @@ class DetailModalSheetViewModel {
     }
   }
 
-  void close() {
-    controller.close();
-  }
+  void close() => controller.close();
 
   void dispose() {
     for (final subscription in _subscriptions) {
       subscription.cancel();
     }
     _rxSelectedTab.close();
+    _rxIsModalSheetOpen.close();
     controller.dispose();
   }
 }

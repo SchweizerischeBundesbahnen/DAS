@@ -1,10 +1,14 @@
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/extension/ru_extension.dart';
 import 'package:das_client/app/i18n/i18n.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_tab.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_view_model.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/battery_status.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/departure_authorization.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/extended_menu.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_channel.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/theme_button.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
@@ -12,11 +16,10 @@ import 'package:das_client/model/journey/communication_network_change.dart';
 import 'package:das_client/model/journey/contact_list.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/metadata.dart';
-import 'package:das_client/theme/theme_provider.dart';
 import 'package:das_client/theme/theme_util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -106,56 +109,38 @@ class MainContainer extends StatelessWidget {
             AppAssets.iconHeaderStop,
             colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
           ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(left: sbbDefaultSpacing * 0.5),
-              child: Text(
-                journey.metadata.nextStop?.name.localized ?? context.l10n.c_unknown,
-                style: DASTextStyles.xLargeLight,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ),
-          _buttonArea(settings, context),
+          Expanded(child: _servicePointName(context, journey)),
+          _buttonArea(settings),
         ],
       ),
     );
   }
 
-  Widget _buttonArea(TrainJourneySettings settings, BuildContext context) {
-    final themeManager = context.watch<ThemeProvider>();
-    final isDarkMode = ThemeUtil.isDarkMode(context);
+  Widget _servicePointName(BuildContext context, Journey journey) {
+    return GestureDetector(
+      onTap: () {
+        final detailModalSheetViewModel = context.read<DetailModalSheetViewModel>();
+        detailModalSheetViewModel.open(tab: DetailModalSheetTab.radioChannels);
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(left: sbbDefaultSpacing * 0.5),
+        child: Text(
+          journey.metadata.nextStop?.name.localized ?? context.l10n.c_unknown,
+          style: DASTextStyles.xLargeLight,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+    );
+  }
 
-    return Builder(builder: (context) {
-      return Row(
-        spacing: sbbDefaultSpacing * 0.5,
-        children: [
-          SBBTertiaryButtonLarge(
-            label: isDarkMode
-                ? context.l10n.p_train_journey_header_button_light_theme
-                : context.l10n.p_train_journey_header_button_dark_theme,
-            icon: isDarkMode ? SBBIcons.sunshine_small : SBBIcons.moon_small,
-            onPressed: () => themeManager.toggleTheme(context),
-          ),
-          if (settings.automaticAdvancementActive)
-            SBBTertiaryButtonLarge(
-              label: context.l10n.p_train_journey_header_button_pause,
-              icon: SBBIcons.pause_small,
-              onPressed: () {
-                context.trainJourneyCubit.setAutomaticAdvancement(false);
-              },
-            ),
-          if (!settings.automaticAdvancementActive)
-            SBBTertiaryButtonLarge(
-              label: context.l10n.p_train_journey_header_button_start,
-              icon: SBBIcons.play_small,
-              onPressed: () {
-                context.trainJourneyCubit.setAutomaticAdvancement(true);
-              },
-            ),
-          ExtendedMenu(),
-        ],
-      );
-    });
+  Widget _buttonArea(TrainJourneySettings settings) {
+    return Row(
+      spacing: sbbDefaultSpacing * 0.5,
+      children: [
+        ThemeButton(),
+        StartPauseButton(automaticAdvancementActive: settings.automaticAdvancementActive),
+        ExtendedMenu(),
+      ],
+    );
   }
 }

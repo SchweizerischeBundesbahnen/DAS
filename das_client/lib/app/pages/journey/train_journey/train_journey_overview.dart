@@ -1,6 +1,5 @@
 import 'package:das_client/app/bloc/ux_testing_cubit.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_tab.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_view_model.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/notification/koa_notification.dart';
@@ -8,14 +7,12 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/notification/
 import 'package:das_client/app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/warn_function_modal_sheet.dart';
 import 'package:das_client/app/widgets/assets.dart';
-import 'package:das_client/app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:das_client/di.dart';
 import 'package:das_client/model/journey/koa_state.dart';
 import 'package:das_client/util/sound.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class TrainJourneyOverview extends StatelessWidget {
   const TrainJourneyOverview({super.key});
@@ -23,7 +20,7 @@ class TrainJourneyOverview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Provider(
-      create: (_) => DetailModalSheetViewModel(controller: DASModalSheetController()),
+      create: (_) => DetailModalSheetViewModel(),
       dispose: (context, vm) => vm.dispose(),
       builder: (context, child) => BlocProvider.value(
         value: DI.get<UxTestingCubit>(),
@@ -31,7 +28,7 @@ class TrainJourneyOverview extends StatelessWidget {
           listener: _handleUxEvents,
           child: Row(
             children: [
-              Expanded(child: _body(context)),
+              Expanded(child: _body()),
               DetailModalSheet(),
             ],
           ),
@@ -40,22 +37,10 @@ class TrainJourneyOverview extends StatelessWidget {
     );
   }
 
-  Widget _body(BuildContext context) {
-    return Column(
+  Widget _body() {
+    return const Column(
       children: [
         Header(),
-        SBBSecondaryButton(
-          label: 'Radio Channels',
-          onPressed: () {
-            context.read<DetailModalSheetViewModel>().open(tab: DetailModalSheetTab.radioChannels);
-          },
-        ),
-        SBBSecondaryButton(
-          label: 'Local Regulations',
-          onPressed: () {
-            context.read<DetailModalSheetViewModel>().open(tab: DetailModalSheetTab.localRegulations);
-          },
-        ),
         ManeuverNotification(),
         KoaNotification(),
         Expanded(child: TrainJourney()),

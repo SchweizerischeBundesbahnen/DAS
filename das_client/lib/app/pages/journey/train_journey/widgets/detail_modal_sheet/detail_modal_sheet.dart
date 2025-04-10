@@ -6,9 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-/// TODO: Hide kilometre from train journey table
-/// TODO: Allow open for certain tab
-/// TODO: Change buttons to IconButtons in Header
+/// TODO: Schliessen? -> Das Modal bleibt dann mindestens 10 Sekunden geöffnet, nachdem der Bildschirm nicht mehr berührt wurde.
+/// TODO: Im reduzierten Fahrbild-Ansicht logik wie folgt: obald das Modal geöffnet wird, positioniert sich das Fahrbild neu an die Stelle, an der gerade gefahren wird, falls die automatische Fortschaltung aktiviert ist.
 class DetailModalSheet extends StatelessWidget {
   const DetailModalSheet({super.key});
 
@@ -16,25 +15,21 @@ class DetailModalSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.read<DetailModalSheetViewModel>();
     return StreamBuilder(
-        stream: viewModel.selectedTab,
-        builder: (context, snapshot) {
-          // TODO: Should not happen, better doc?
-          if (!snapshot.hasData) {
-            return Container();
-          }
-
-          final selectedTab = snapshot.data!;
-          return DasModalSheet(
-            controller: viewModel.controller,
-            leftMargin: sbbDefaultSpacing * 0.5,
-            header: _header(
-              // TODO: Add current BP
-              title: 'Bern',
-              subtitle: selectedTab.localized(context),
-            ),
-            child: _body(context, selectedTab),
-          );
-        });
+      stream: viewModel.selectedTab,
+      builder: (context, snapshot) {
+        final selectedTab = snapshot.data ?? DetailModalSheetTab.values.first;
+        return DasModalSheet(
+          controller: viewModel.controller,
+          leftMargin: sbbDefaultSpacing * 0.5,
+          header: _header(
+            // TODO: Add current BP
+            title: 'Bern',
+            subtitle: selectedTab.localized(context),
+          ),
+          child: _body(context, selectedTab),
+        );
+      },
+    );
   }
 
   Widget _body(BuildContext context, DetailModalSheetTab selectedTab) {

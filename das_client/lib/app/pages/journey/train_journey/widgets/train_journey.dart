@@ -5,6 +5,8 @@ import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/break_series_selection.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/chevron_animation_wrapper.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_tab.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_view_model.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_level_crossing_group_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_row.dart';
@@ -54,6 +56,7 @@ import 'package:das_client/model/journey/tram_area.dart';
 import 'package:das_client/model/journey/whistles.dart';
 import 'package:das_client/theme/theme_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -99,14 +102,20 @@ class TrainJourney extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
-      child: ChevronAnimationWrapper(
-        journey: journey,
-        child: DASTable(
-          scrollController: context.trainJourneyCubit.automaticAdvancementController.scrollController,
-          columns: _columns(context, journey, settings),
-          rows: tableRows.map((it) => it.build(context)).toList(),
-          bottomMarginAdjustment: marginAdjustment,
-        ),
+      child: StreamBuilder<bool>(
+        stream: context.read<DetailModalSheetViewModel>().isModalSheetOpen,
+        builder: (context, snapshot) {
+          final isDetailModelSheetOpen = snapshot.data ?? false;
+          return ChevronAnimationWrapper(
+            journey: journey,
+            child: DASTable(
+              scrollController: context.trainJourneyCubit.automaticAdvancementController.scrollController,
+              columns: _columns(context, journey, settings, isDetailModelSheetOpen),
+              rows: tableRows.map((it) => it.build(context)).toList(),
+              bottomMarginAdjustment: marginAdjustment,
+            ),
+          );
+        },
       ),
     );
   }
@@ -232,18 +241,28 @@ class TrainJourney extends StatelessWidget {
     });
   }
 
-  List<DASTableColumn> _columns(BuildContext context, Journey journey, TrainJourneySettings settings) {
+  List<DASTableColumn> _columns(
+    BuildContext context,
+    Journey journey,
+    TrainJourneySettings settings,
+    bool isDetailModelSheetOpen,
+  ) {
     final speedLabel = settings.selectedBreakSeries != null
         ? '${settings.selectedBreakSeries!.trainSeries.name}${settings.selectedBreakSeries!.breakSeries}'
         : '${journey.metadata.breakSeries?.trainSeries.name ?? '?'}${journey.metadata.breakSeries?.breakSeries ?? '?'}';
 
     return [
-      DASTableColumn(
+      if (!isDetailModelSheetOpen)
+        DASTableColumn(
           id: ColumnDefinition.kilometre.index,
           child: Text(context.l10n.p_train_journey_table_kilometre_label),
-          width: 64.0),
+          width: 64.0,
+        ),
       DASTableColumn(
-          id: ColumnDefinition.time.index, child: Text(context.l10n.p_train_journey_table_time_label), width: 100.0),
+        id: ColumnDefinition.time.index,
+        child: Text(context.l10n.p_train_journey_table_time_label),
+        width: 100.0,
+      ),
       DASTableColumn(id: ColumnDefinition.route.index, width: 48.0), // route column
       DASTableColumn(id: ColumnDefinition.trackEquipment.index, width: 20.0), // track equipment column
       DASTableColumn(id: ColumnDefinition.icons1.index, width: 64.0), // icons column
@@ -259,6 +278,7 @@ class TrainJourney extends StatelessWidget {
       DASTableColumn(
         id: ColumnDefinition.localSpeed.index,
         child: Text(context.l10n.p_train_journey_table_graduated_speed_label),
+        onTap: () => _onGraduatedSpeedsTap(context),
         width: 100.0,
         border: BorderDirectional(
           bottom: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 1.0),
@@ -273,9 +293,10 @@ class TrainJourney extends StatelessWidget {
         headerKey: breakingSeriesHeaderKey,
       ),
       DASTableColumn(
-          id: ColumnDefinition.advisedSpeed.index,
-          child: Text(context.l10n.p_train_journey_table_advised_speed_label),
-          width: 62.0),
+        id: ColumnDefinition.advisedSpeed.index,
+        child: Text(context.l10n.p_train_journey_table_advised_speed_label),
+        width: 62.0,
+      ),
       DASTableColumn(id: ColumnDefinition.actionsCell.index, width: 40.0), // actions
     ];
   }
@@ -319,6 +340,11 @@ class TrainJourney extends StatelessWidget {
     if (selectedBreakSeries != null) {
       trainJourneyCubit.updateBreakSeries(selectedBreakSeries);
     }
+  }
+
+  void _onGraduatedSpeedsTap(BuildContext context) async {
+    final viewModel = context.read<DetailModalSheetViewModel>();
+    viewModel.open(tab: DetailModalSheetTab.graduatedSpeeds);
   }
 
   bool _isCurvePointWithoutSpeed(BaseData data, Journey journey, TrainJourneySettings settings) {
