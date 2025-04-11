@@ -1,4 +1,3 @@
-import 'package:das_client/app/pages/journey/train_journey/magic_secret_shhh/pages/flappy_screen.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/main_container.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/time_container.dart';
 import 'package:flutter/material.dart';
@@ -26,17 +25,11 @@ class Header extends StatelessWidget {
   }
 
   Widget _containers(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onLongPress: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => FlappyScreen()));
-      },
-      child: const Row(
-        children: [
-          Expanded(child: MainContainer()),
-          TimeContainer(),
-        ],
-      ),
+    return Row(
+      children: [
+        Expanded(child: MainContainer()),
+        TimeContainer(),
+      ],
     );
   }
 }
