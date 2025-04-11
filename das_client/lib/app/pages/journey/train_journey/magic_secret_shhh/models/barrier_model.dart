@@ -18,7 +18,7 @@ class BarrierModel {
   void update(double velocity, Random rand) {
     x -= velocity;
     if (velocity > 0.03 && rand.nextBool()) {
-      double offsetChange = 0.5;
+      final double offsetChange = 0.5;
       if (movingDown) {
         offset += offsetChange;
         if (offset > 30) movingDown = false;
