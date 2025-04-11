@@ -6,7 +6,8 @@ class Bird extends StatelessWidget {
   final String? evu;
 
   const Bird({
-    required this.evu, super.key,
+    required this.evu,
+    super.key,
   });
 
   @override
