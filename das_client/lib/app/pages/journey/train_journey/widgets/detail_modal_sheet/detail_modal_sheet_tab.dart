@@ -1,10 +1,11 @@
 import 'package:das_client/app/i18n/i18n.dart';
+import 'package:das_client/app/widgets/das_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 enum DetailModalSheetTab {
   radioChannels(icon: SBBIcons.telephone_gsm_small),
-  graduatedSpeeds(icon: SBBIcons.question_mark_small),
+  graduatedSpeeds(icon: DasIcons.appIconSmallTempo),
   localRegulations(icon: SBBIcons.location_pin_surrounding_area_small);
 
   const DetailModalSheetTab({required this.icon});
