@@ -66,8 +66,8 @@ class _JourneyPageContentState extends State<JourneyPageContent> with SingleTick
             stream: context.trainJourneyCubit.settingsStream,
             builder: (context, snapshot) {
               return Scaffold(
+                //Handling overflow issues in train selection when tablet is too small
                 resizeToAvoidBottomInset: screenHeight <= 830 ? true : null,
-                //830 is the height of the iPad 11 which is tall enough for the journey page
                 appBar: _appBar(context, state, snapshot.data),
                 body: _body(context, state),
                 drawer: const DASNavigationDrawer(),
