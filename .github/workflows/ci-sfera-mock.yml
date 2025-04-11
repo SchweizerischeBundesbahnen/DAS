@@ -13,6 +13,10 @@ defaults:
     working-directory: sfera_mock
 
 on:
+  push:
+    paths:
+      - 'sfera_mock/**'
+    branches: [ "main" ]
   pull_request:
     paths:
       - 'sfera_mock/**'

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
-                SP_ID="1809_1_Renens_VD" SP_VersionMajor="2" SP_VersionMinor="2" SP_Length="2200" SP_Status="Valid">
+                SP_ID="1809_1_Renens_VD" SP_VersionMajor="2" SP_VersionMinor="3" SP_Length="2200" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -125,6 +125,9 @@
 
     <SP_ContextInformation>
         <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1301"/>
+            </Contact>
             <Contact mainContact="true">
                 <OtherContactType contactIdentifier="(1312)"/>
             </Contact>
