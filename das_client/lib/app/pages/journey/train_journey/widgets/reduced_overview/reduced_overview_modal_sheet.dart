@@ -50,13 +50,14 @@ class _ReducedOverviewModalSheet extends StatelessWidget {
   }
 
   Widget _header(BuildContext context) {
+    final locale = Localizations.localeOf(context);
     final trainIdentification = context.read<ReducedOverviewViewModel>().trainIdentification;
     return SBBGroup(
       padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: sbbDefaultSpacing),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
-          Text(Format.dateWithAbbreviatedDay(trainIdentification.date), style: DASTextStyles.largeRoman),
+          Text(Format.dateWithAbbreviatedDay(trainIdentification.date, locale), style: DASTextStyles.largeRoman),
           Spacer(),
           Text(
             '${trainIdentification.trainNumber} ${trainIdentification.ru.displayText(context)}',

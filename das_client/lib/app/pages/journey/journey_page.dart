@@ -59,12 +59,15 @@ class _JourneyPageContentState extends State<JourneyPageContent> with SingleTick
 
   @override
   Widget build(BuildContext context) {
+    final double screenHeight = MediaQuery.of(context).size.height;
     return BlocBuilder<TrainJourneyCubit, TrainJourneyState>(
       builder: (context, state) {
         return StreamBuilder<TrainJourneySettings>(
             stream: context.trainJourneyCubit.settingsStream,
             builder: (context, snapshot) {
               return Scaffold(
+                resizeToAvoidBottomInset: screenHeight <= 830 ? true : null,
+                //830 is the height of the iPad 11 which is tall enough for the journey page
                 appBar: _appBar(context, state, snapshot.data),
                 body: _body(context, state),
                 drawer: const DASNavigationDrawer(),
@@ -124,7 +127,8 @@ class _JourneyPageContentState extends State<JourneyPageContent> with SingleTick
 
   String _headerTitle(BuildContext context, TrainJourneyState state) {
     if (state is TrainJourneyLoadedState) {
-      final date = Format.dateWithAbbreviatedDay(state.trainIdentification.date);
+      final locale = Localizations.localeOf(context);
+      final date = Format.dateWithAbbreviatedDay(state.trainIdentification.date, locale);
       return '${context.l10n.p_train_journey_appbar_text} - $date';
     }
     return context.l10n.c_app_name;

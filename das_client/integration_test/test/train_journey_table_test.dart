@@ -105,13 +105,13 @@ void main() {
       expect(whistleIcon, findsOneWidget);
 
       final tramAreaRow = findDASTableRowByText('km 37.8-36.8');
-      expect(tramAreaRow, findsOneWidget);
+      expect(tramAreaRow, findsNWidgets(2));
 
       final tramAreaIcon = find.descendant(of: tramAreaRow, matching: find.byKey(TramAreaRow.tramAreaIconKey));
-      expect(tramAreaIcon, findsOneWidget);
+      expect(tramAreaIcon, findsNWidgets(2));
 
       final tramAreaDescription = find.descendant(of: tramAreaRow, matching: find.text('6 TS'));
-      expect(tramAreaDescription, findsOneWidget);
+      expect(tramAreaDescription, findsNWidgets(2));
 
       await disconnect(tester);
     });
@@ -278,9 +278,7 @@ void main() {
     testWidgets('test speed values of missing break Series', (tester) async {
       await prepareAndStartApp(tester);
 
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T5');
-
       await _selectBreakSeries(tester, breakSeries: 'A85');
 
       final breakingSeriesHeaderCell = find.byKey(TrainJourney.breakingSeriesHeaderKey);
@@ -289,13 +287,13 @@ void main() {
 
       final expectedSpeeds = {
         'Genève-Aéroport': '90',
-        '65.3': '55', // 1. Curve
+        '65.3': '55',
         'New Line Speed All': '90',
         'Genève': 'XX',
-        'New Line Speed A Missing': 'XX',
         'Gland': '90',
       };
 
+      // Check all expected values (excluding the exception)
       for (final entry in expectedSpeeds.entries) {
         final tableRow = findDASTableRowByText(entry.key);
         expect(tableRow, findsOneWidget);
@@ -303,6 +301,12 @@ void main() {
         final speedText = find.descendant(of: tableRow, matching: find.text(entry.value));
         expect(speedText, findsOneWidget);
       }
+
+      final specialRow = findDASTableRowByText('New Line Speed A Missing');
+      expect(specialRow, findsOneWidget);
+
+      final forbiddenSpeed = find.descendant(of: specialRow, matching: find.text('XX'));
+      expect(forbiddenSpeed, findsNothing);
 
       await disconnect(tester);
     });
@@ -691,6 +695,8 @@ void main() {
 
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999');
+
+      await _selectBreakSeries(tester, breakSeries: 'R150');
 
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
