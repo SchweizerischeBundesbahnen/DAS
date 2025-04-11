@@ -19,12 +19,14 @@ import '../util/test_utils.dart';
 void main() {
   group('train journey header test', () {
     testWidgets('test app bar is hiding while train is active', (tester) async {
+      final testLocale = const Locale('de', 'CH');
+
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999');
 
-      final date = Format.dateWithAbbreviatedDay(DateTime.now());
+      final date = Format.dateWithAbbreviatedDay(DateTime.now(), testLocale);
       final appbarText = '${l10n.p_train_journey_appbar_text} - $date';
 
       expect(find.text(appbarText).hitTestable(), findsNothing);
