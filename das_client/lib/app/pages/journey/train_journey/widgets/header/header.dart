@@ -25,7 +25,7 @@ class Header extends StatelessWidget {
   }
 
   Widget _containers(BuildContext context) {
-    return Row(
+    return const Row(
       children: [
         Expanded(child: MainContainer()),
         TimeContainer(),
