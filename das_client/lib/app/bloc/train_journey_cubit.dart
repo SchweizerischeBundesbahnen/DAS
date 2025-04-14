@@ -130,6 +130,8 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
     _stateSubscription?.cancel();
     _stateSubscription = null;
 
+    automaticAdvancementController.dispose();
+
     return super.close();
   }
 

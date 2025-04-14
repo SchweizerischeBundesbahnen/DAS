@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-/// TODO: Schliessen? -> Das Modal bleibt dann mindestens 10 Sekunden geöffnet, nachdem der Bildschirm nicht mehr berührt wurde.
-/// TODO: Im reduzierten Fahrbild-Ansicht logik wie folgt: obald das Modal geöffnet wird, positioniert sich das Fahrbild neu an die Stelle, an der gerade gefahren wird, falls die automatische Fortschaltung aktiviert ist.
 class DetailModalSheet extends StatelessWidget {
   const DetailModalSheet({super.key});
 

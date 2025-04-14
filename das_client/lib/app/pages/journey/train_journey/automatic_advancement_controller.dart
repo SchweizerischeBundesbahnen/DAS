@@ -7,7 +7,8 @@ import 'package:das_client/app/widgets/stickyheader/sticky_level.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:fimber/fimber.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 
 class AutomaticAdvancementController {
   static const int _minScrollDuration = 1000;
@@ -18,20 +19,18 @@ class AutomaticAdvancementController {
 
   final ScrollController scrollController;
   Journey? _currentJourney;
-  TrainJourneySettings? _settings;
   List<DASTableRowBuilder> _renderedRows = [];
   Timer? _scrollTimer;
   double? _lastScrollPosition;
   DateTime? _lastTouch;
 
-  void updateRenderedRows(List<DASTableRowBuilder> rows) {
-    _renderedRows = rows;
-  }
+  final _rxIsAutomaticAdvancementActive = BehaviorSubject.seeded(false);
+
+  void updateRenderedRows(List<DASTableRowBuilder> rows) => _renderedRows = rows;
 
   void handleJourneyUpdate(Journey journey, TrainJourneySettings settings) {
     _currentJourney = journey;
-    _settings = settings;
-
+    _rxIsAutomaticAdvancementActive.add(settings.automaticAdvancementActive);
     if (!settings.automaticAdvancementActive) {
       return;
     }
@@ -98,18 +97,27 @@ class AutomaticAdvancementController {
     );
   }
 
-  void onTouch() {
+  void resetScrollTimer() {
     _lastTouch = DateTime.now();
-    if (_settings?.automaticAdvancementActive == true) {
+    if (_rxIsAutomaticAdvancementActive.value) {
       _scrollTimer?.cancel();
       _scrollTimer = Timer(const Duration(seconds: _screenIdleTimeSeconds), () {
-        if (_settings?.automaticAdvancementActive == true) {
-          Fimber.i('Screen idle time of $_screenIdleTimeSeconds seconds reached. Scrolling to current position');
+        if (_rxIsAutomaticAdvancementActive.value) {
+          Fimber.d('Screen idle time of $_screenIdleTimeSeconds seconds reached. Scrolling to current position');
           scrollToCurrentPosition();
         }
       });
     }
   }
+
+  void dispose() {
+    _rxIsAutomaticAdvancementActive.close();
+    _scrollTimer?.cancel();
+  }
+
+  Stream<bool> get automaticAdvancementActiveStream => _rxIsAutomaticAdvancementActive.stream;
+
+  bool get automaticAdvancementActive => _rxIsAutomaticAdvancementActive.value;
 
   Duration _calculateDuration(double targetPosition, double velocity) {
     if (velocity <= 0.0) {

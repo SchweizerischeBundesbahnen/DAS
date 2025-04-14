@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:das_client/app/widgets/extended_header_container.dart';
 import 'package:extra_hittest_area/extra_hittest_area.dart';
+import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -11,16 +13,21 @@ enum _ControllerState { closed, expanded, maximized }
 class DASModalSheetController {
   DASModalSheetController({
     this.animationDuration = const Duration(milliseconds: 150),
-    this.maxExtensionWidth = 300.0,
+    this.maxExpandedWidth = 300.0,
+    this.automaticCloseAfterSeconds = 10,
+    this.isAutomaticCloseActive = false,
     this.onClose,
     this.onOpen,
   }) : _state = _ControllerState.closed;
 
+  bool isAutomaticCloseActive;
+  final int automaticCloseAfterSeconds;
+
   /// defines animation duration for opening and full-width extension of modal sheet.
   final Duration animationDuration;
 
-  /// sets the maximum extension width for the non-overlapping modal sheet.
-  final double maxExtensionWidth;
+  /// sets the maximum expanded width for the non-overlapping modal sheet.
+  final double maxExpandedWidth;
 
   final VoidCallback? onClose;
   final VoidCallback? onOpen;
@@ -33,10 +40,12 @@ class DASModalSheetController {
   late AnimationController _fullWidthController;
   late Animation<double> _fullWidthAnimation;
 
+  Timer? _idleTimer;
+
   /// will be called by [DasModalSheet] to get [TickerProvider]
   void _initialize({required TickerProvider vsync, VoidCallback? onUpdate}) {
     _controller = AnimationController(vsync: vsync, duration: animationDuration);
-    _widthAnimation = Tween<double>(begin: 0.0, end: maxExtensionWidth).animate(_controller)
+    _widthAnimation = Tween<double>(begin: 0.0, end: maxExpandedWidth).animate(_controller)
       ..addListener(() => onUpdate?.call());
 
     _fullWidthController = AnimationController(vsync: vsync, duration: animationDuration);
@@ -46,7 +55,7 @@ class DASModalSheetController {
     _initialized = true;
   }
 
-  /// expands or reduces width of modal sheet to [maxExtensionWidth] if not already in expanded state
+  /// expands or reduces width of modal sheet to [maxExpandedWidth] if not already in expanded state
   Future<void> expand() async {
     if (!_initialized) return;
 
@@ -58,6 +67,7 @@ class DASModalSheetController {
       _fullWidthController.reverse();
       _state = _ControllerState.expanded;
     }
+    resetAutomaticClose();
   }
 
   /// maximizes modal sheet to fill the full screen width
@@ -69,6 +79,7 @@ class DASModalSheetController {
       await _fullWidthController.forward();
       _state = _ControllerState.maximized;
     }
+    resetAutomaticClose();
   }
 
   /// closes the modal sheet if not already closed
@@ -81,9 +92,30 @@ class DASModalSheetController {
       _fullWidthController.reverse();
       _state = _ControllerState.closed;
     }
+    resetAutomaticClose();
+  }
+
+  /// activates or deactivates automatic close. Internally calls [resetAutomaticClose].
+  void setAutomaticClose({required bool isActivated}) {
+    isAutomaticCloseActive = isActivated;
+    resetAutomaticClose();
+  }
+
+  /// resets timer for automatic close when activated and modal sheet is open
+  void resetAutomaticClose() {
+    _idleTimer?.cancel();
+    if (isAutomaticCloseActive && isOpen) {
+      _idleTimer = Timer(Duration(seconds: automaticCloseAfterSeconds), () {
+        if (isAutomaticCloseActive) {
+          Fimber.d('Screen idle time of $automaticCloseAfterSeconds seconds reached. Close DAS modal sheet.');
+          close();
+        }
+      });
+    }
   }
 
   void dispose() {
+    _idleTimer?.cancel();
     _controller.dispose();
     _fullWidthController.dispose();
   }
@@ -133,7 +165,7 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
       clipBehavior: Clip.none,
       children: [
         // invisible widget used to extend stack width
-        Container(width: min(widget.controller.maxExtensionWidth, modalWidth)),
+        Container(width: min(widget.controller.maxExpandedWidth, modalWidth)),
         // visible modal sheet that can overlap stack and extend to full width
         Positioned(right: 0, top: 0, bottom: 0, child: _modalSheet(modalWidth)),
       ],

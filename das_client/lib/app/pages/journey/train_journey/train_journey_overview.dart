@@ -1,3 +1,4 @@
+import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/bloc/ux_testing_cubit.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_view_model.dart';
@@ -19,26 +20,38 @@ class TrainJourneyOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = context.trainJourneyCubit;
     return Provider(
-      create: (_) => DetailModalSheetViewModel(),
+      create: (_) => DetailModalSheetViewModel(
+        automaticAdvancementController: bloc.automaticAdvancementController,
+      ),
       dispose: (context, vm) => vm.dispose(),
       builder: (context, child) => BlocProvider.value(
         value: DI.get<UxTestingCubit>(),
         child: BlocListener<UxTestingCubit, UxTestingState>(
           listener: _handleUxEvents,
-          child: Row(
-            children: [
-              Expanded(child: _body()),
-              DetailModalSheet(),
-            ],
-          ),
+          child: _body(context),
         ),
       ),
     );
   }
 
-  Widget _body() {
-    return const Column(
+  Widget _body(BuildContext context) {
+    final detailModalSheetController = context.read<DetailModalSheetViewModel>().controller;
+    return Listener(
+      onPointerDown: (_) => detailModalSheetController.resetAutomaticClose(),
+      onPointerUp: (_) => detailModalSheetController.resetAutomaticClose(),
+      child: Row(
+        children: [
+          Expanded(child: _content()),
+          DetailModalSheet(),
+        ],
+      ),
+    );
+  }
+
+  Widget _content() {
+    return Column(
       children: [
         Header(),
         ManeuverNotification(),

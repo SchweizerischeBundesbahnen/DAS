@@ -79,13 +79,13 @@ class TrainJourney extends StatelessWidget {
         final journey = snapshot.data![0] as Journey;
         final settings = snapshot.data![1] as TrainJourneySettings;
 
-        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
           bloc.automaticAdvancementController.handleJourneyUpdate(journey, settings);
         });
 
         return Listener(
-          onPointerDown: (_) => bloc.automaticAdvancementController.onTouch(),
-          onPointerUp: (_) => bloc.automaticAdvancementController.onTouch(),
+          onPointerDown: (_) => bloc.automaticAdvancementController.resetScrollTimer(),
+          onPointerUp: (_) => bloc.automaticAdvancementController.resetScrollTimer(),
           child: _body(context, journey, settings),
         );
       },

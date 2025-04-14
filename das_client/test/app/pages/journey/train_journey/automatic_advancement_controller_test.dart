@@ -210,7 +210,7 @@ void main() {
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: true));
-    testee.onTouch();
+    testee.resetScrollTimer();
 
     await Future.delayed(const Duration(seconds: 11));
 
@@ -248,7 +248,7 @@ void main() {
             duration: anyNamed('duration'), curve: anyNamed('curve')))
         .called(1);
 
-    testee.onTouch();
+    testee.resetScrollTimer();
 
     testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: false));
 
