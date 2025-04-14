@@ -2,6 +2,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/widget_
 import 'package:das_client/app/widgets/accordion/accordion.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/model/journey/base_foot_note.dart';
+import 'package:das_client/theme/theme_util.dart';
 import 'package:das_client/util/text_util.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -27,7 +28,7 @@ abstract class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
   @override
   Widget buildRowWidget(BuildContext context) {
     return Container(
-      color: SBBColors.milk,
+      color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
       child: SBBGroup(
         margin: EdgeInsets.symmetric(vertical: sbbDefaultSpacing / 2),
         child: Accordion(
@@ -45,7 +46,7 @@ abstract class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
           isExpanded: isExpanded,
           accordionToggleCallback: accordionToggleCallback,
           icon: SBBIcons.form_small,
-          backgroundColor: SBBColors.cloud,
+          backgroundColor: ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.iron),
         ),
       ),
     );
