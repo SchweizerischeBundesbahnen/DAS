@@ -19,11 +19,7 @@ class DetailModalSheet extends StatelessWidget {
         return DasModalSheet(
           controller: viewModel.controller,
           leftMargin: sbbDefaultSpacing * 0.5,
-          header: _header(
-            // TODO: Add current BP
-            title: 'Bern',
-            subtitle: selectedTab.localized(context),
-          ),
+          header: _header(viewModel, subtitle: selectedTab.localized(context)),
           child: _body(context, selectedTab),
         );
       },
@@ -40,11 +36,17 @@ class DetailModalSheet extends StatelessWidget {
     );
   }
 
-  Widget _header({required String title, required String subtitle}) {
+  Widget _header(DetailModalSheetViewModel viewModel, {required String subtitle}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: DASTextStyles.largeRoman),
+        StreamBuilder(
+          stream: viewModel.servicePoint,
+          builder: (context, snapshot) {
+            final name = snapshot.data?.name.localized ?? '';
+            return Text(name, style: DASTextStyles.largeRoman);
+          },
+        ),
         Text(subtitle, style: DASTextStyles.extraSmallRoman),
       ],
     );

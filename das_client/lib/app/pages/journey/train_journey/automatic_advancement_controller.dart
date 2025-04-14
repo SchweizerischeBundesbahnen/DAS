@@ -2,10 +2,9 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:collection/collection.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:das_client/app/widgets/stickyheader/sticky_level.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
-import 'package:das_client/model/journey/journey.dart';
+import 'package:das_client/model/journey/base_data.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
@@ -18,7 +17,7 @@ class AutomaticAdvancementController {
   AutomaticAdvancementController({ScrollController? controller}) : scrollController = controller ?? ScrollController();
 
   final ScrollController scrollController;
-  Journey? _currentJourney;
+  BaseData? _currentPosition;
   List<DASTableRowBuilder> _renderedRows = [];
   Timer? _scrollTimer;
   double? _lastScrollPosition;
@@ -28,10 +27,10 @@ class AutomaticAdvancementController {
 
   void updateRenderedRows(List<DASTableRowBuilder> rows) => _renderedRows = rows;
 
-  void handleJourneyUpdate(Journey journey, TrainJourneySettings settings) {
-    _currentJourney = journey;
-    _rxIsAutomaticAdvancementActive.add(settings.automaticAdvancementActive);
-    if (!settings.automaticAdvancementActive) {
+  void handleJourneyUpdate({BaseData? currentPosition, bool automaticAdvancementActive = false}) {
+    _currentPosition = currentPosition;
+    _rxIsAutomaticAdvancementActive.add(automaticAdvancementActive);
+    if (!automaticAdvancementActive) {
       return;
     }
 
@@ -45,9 +44,7 @@ class AutomaticAdvancementController {
   }
 
   double? _calculateScrollPosition() {
-    if (_currentJourney == null ||
-        _currentJourney?.metadata.currentPosition == null ||
-        scrollController.positions.isEmpty) {
+    if (_currentPosition == null || scrollController.positions.isEmpty) {
       return null;
     }
 
@@ -55,7 +52,7 @@ class AutomaticAdvancementController {
     var targetScrollPosition = 0.0;
 
     for (final row in _renderedRows) {
-      if (_currentJourney!.metadata.currentPosition == row.data) {
+      if (_currentPosition == row.data) {
         // remove the sticky header heights
         if (row.stickyLevel == StickyLevel.none) {
           targetScrollPosition -= stickyHeaderHeights.values.sum;
@@ -89,7 +86,7 @@ class AutomaticAdvancementController {
   void _scrollToPosition(double targetScrollPosition) {
     _lastScrollPosition = targetScrollPosition;
 
-    Fimber.i('Scrolling to position $targetScrollPosition');
+    Fimber.d('Scrolling to position $targetScrollPosition');
     scrollController.animateTo(
       targetScrollPosition,
       duration: _calculateDuration(targetScrollPosition, 1),
@@ -115,9 +112,9 @@ class AutomaticAdvancementController {
     _scrollTimer?.cancel();
   }
 
-  Stream<bool> get automaticAdvancementActiveStream => _rxIsAutomaticAdvancementActive.stream;
+  Stream<bool> get isActiveStream => _rxIsAutomaticAdvancementActive.distinct();
 
-  bool get automaticAdvancementActive => _rxIsAutomaticAdvancementActive.value;
+  bool get isActive => _rxIsAutomaticAdvancementActive.value;
 
   Duration _calculateDuration(double targetPosition, double velocity) {
     if (velocity <= 0.0) {

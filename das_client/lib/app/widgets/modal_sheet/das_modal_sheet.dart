@@ -107,7 +107,7 @@ class DASModalSheetController {
     if (isAutomaticCloseActive && isOpen) {
       _idleTimer = Timer(Duration(seconds: automaticCloseAfterSeconds), () {
         if (isAutomaticCloseActive) {
-          Fimber.d('Screen idle time of $automaticCloseAfterSeconds seconds reached. Close DAS modal sheet.');
+          Fimber.d('Screen idle time of $automaticCloseAfterSeconds seconds reached. Closing DAS modal sheet.');
           close();
         }
       });
@@ -131,6 +131,9 @@ class DASModalSheetController {
 ///
 /// Modal sheet is controlled by [DASModalSheetController]
 class DasModalSheet extends StatefulWidget {
+  static const Key modalSheetClosedKey = Key('dasModalSheetClosed');
+  static const Key modalSheetOpenKey = Key('dasModalSheetOpen');
+
   const DasModalSheet({
     required this.child,
     required this.controller,
@@ -182,13 +185,16 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
           borderRadius: BorderRadius.only(topLeft: Radius.circular(sbbDefaultSpacing * 2)),
           color: isDarkTheme ? SBBColors.charcoal : SBBColors.white,
         ),
-        child: widget.controller.isOpen ? _body() : SizedBox(height: double.infinity),
+        child: widget.controller.isOpen
+            ? _body()
+            : SizedBox(key: DasModalSheet.modalSheetClosedKey, height: double.infinity),
       ),
     );
   }
 
   Widget _body() {
     return Column(
+      key: DasModalSheet.modalSheetOpenKey,
       mainAxisSize: MainAxisSize.max,
       children: [
         _header(),

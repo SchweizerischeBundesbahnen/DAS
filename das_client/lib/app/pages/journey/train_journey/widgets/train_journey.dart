@@ -5,7 +5,6 @@ import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/break_series_selection.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/chevron_animation_wrapper.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_tab.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_view_model.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_level_crossing_group_row.dart';
@@ -47,6 +46,7 @@ import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/level_crossing.dart';
 import 'package:das_client/model/journey/line_foot_note.dart';
+import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/op_foot_note.dart';
 import 'package:das_client/model/journey/protection_section.dart';
 import 'package:das_client/model/journey/service_point.dart';
@@ -80,7 +80,10 @@ class TrainJourney extends StatelessWidget {
         final settings = snapshot.data![1] as TrainJourneySettings;
 
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          bloc.automaticAdvancementController.handleJourneyUpdate(journey, settings);
+          bloc.automaticAdvancementController.handleJourneyUpdate(
+            currentPosition: journey.metadata.currentPosition,
+            automaticAdvancementActive: settings.automaticAdvancementActive,
+          );
         });
 
         return Listener(
@@ -110,7 +113,7 @@ class TrainJourney extends StatelessWidget {
             journey: journey,
             child: DASTable(
               scrollController: context.trainJourneyCubit.automaticAdvancementController.scrollController,
-              columns: _columns(context, journey, settings, isDetailModelSheetOpen),
+              columns: _columns(context, journey.metadata, settings, isDetailModelSheetOpen),
               rows: tableRows.map((it) => it.build(context)).toList(),
               bottomMarginAdjustment: marginAdjustment,
             ),
@@ -243,13 +246,13 @@ class TrainJourney extends StatelessWidget {
 
   List<DASTableColumn> _columns(
     BuildContext context,
-    Journey journey,
+    Metadata metadata,
     TrainJourneySettings settings,
     bool isDetailModelSheetOpen,
   ) {
     final speedLabel = settings.selectedBreakSeries != null
         ? '${settings.selectedBreakSeries!.trainSeries.name}${settings.selectedBreakSeries!.breakSeries}'
-        : '${journey.metadata.breakSeries?.trainSeries.name ?? '?'}${journey.metadata.breakSeries?.breakSeries ?? '?'}';
+        : '${metadata.breakSeries?.trainSeries.name ?? '?'}${metadata.breakSeries?.breakSeries ?? '?'}';
 
     return [
       if (!isDetailModelSheetOpen)
@@ -278,7 +281,6 @@ class TrainJourney extends StatelessWidget {
       DASTableColumn(
         id: ColumnDefinition.localSpeed.index,
         child: Text(context.l10n.p_train_journey_table_graduated_speed_label),
-        onTap: () => _onGraduatedSpeedsTap(context),
         width: 100.0,
         border: BorderDirectional(
           bottom: BorderSide(color: ThemeUtil.getDASTableBorderColor(context), width: 1.0),
@@ -289,7 +291,7 @@ class TrainJourney extends StatelessWidget {
         id: ColumnDefinition.brakedWeightSpeed.index,
         child: Text(speedLabel),
         width: 62.0,
-        onTap: () => _onBreakSeriesTap(context, journey, settings),
+        onTap: () => _onBreakSeriesTap(context, metadata, settings),
         headerKey: breakingSeriesHeaderKey,
       ),
       DASTableColumn(
@@ -324,7 +326,7 @@ class TrainJourney extends StatelessWidget {
     context.trainJourneyCubit.updateExpandedGroups(newList);
   }
 
-  Future<void> _onBreakSeriesTap(BuildContext context, Journey journey, TrainJourneySettings settings) async {
+  Future<void> _onBreakSeriesTap(BuildContext context, Metadata metadata, TrainJourneySettings settings) async {
     final trainJourneyCubit = context.trainJourneyCubit;
 
     final selectedBreakSeries = await showSBBModalSheet<BreakSeries>(
@@ -332,19 +334,14 @@ class TrainJourney extends StatelessWidget {
       title: context.l10n.p_train_journey_break_series,
       constraints: BoxConstraints(),
       child: BreakSeriesSelection(
-        availableBreakSeries: journey.metadata.availableBreakSeries,
-        selectedBreakSeries: settings.selectedBreakSeries ?? journey.metadata.breakSeries,
+        availableBreakSeries: metadata.availableBreakSeries,
+        selectedBreakSeries: settings.selectedBreakSeries ?? metadata.breakSeries,
       ),
     );
 
     if (selectedBreakSeries != null) {
       trainJourneyCubit.updateBreakSeries(selectedBreakSeries);
     }
-  }
-
-  void _onGraduatedSpeedsTap(BuildContext context) async {
-    final viewModel = context.read<DetailModalSheetViewModel>();
-    viewModel.open(tab: DetailModalSheetTab.graduatedSpeeds);
   }
 
   bool _isCurvePointWithoutSpeed(BaseData data, Journey journey, TrainJourneySettings settings) {

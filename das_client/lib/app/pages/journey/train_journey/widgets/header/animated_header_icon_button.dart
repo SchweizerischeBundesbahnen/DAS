@@ -24,7 +24,7 @@ class AnimatedHeaderIconButton extends StatelessWidget {
         return AnimatedSwitcher(
           duration: const Duration(milliseconds: 400),
           child: isDetailModalSheetOpen
-              ? SBBIconButtonLarge(icon: icon, onPressed: () => onPressed)
+              ? SBBIconButtonLarge(icon: icon, onPressed: onPressed)
               : SBBTertiaryButtonLarge(label: label, icon: icon, onPressed: onPressed),
         );
       },
