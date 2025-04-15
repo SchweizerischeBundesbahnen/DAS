@@ -22,11 +22,11 @@ import 'package:das_client/sfera/src/model/enums/stop_skip_pass.dart';
 import 'package:das_client/sfera/src/model/enums/taf_tap_location_type.dart';
 import 'package:das_client/sfera/src/model/enums/xml_enum.dart';
 import 'package:das_client/sfera/src/model/foot_note.dart';
-import 'package:das_client/sfera/src/model/multilingual_text.dart';
 import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
 import 'package:das_client/sfera/src/model/segment_profile_list.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location.dart';
+import 'package:das_client/sfera/src/model/teltsi_primary_location_name.dart';
 import 'package:fimber/fimber.dart';
 
 class _MapperData {
@@ -99,7 +99,7 @@ class SegmentProfileMapper {
 
       servicePoints.add(
         ServicePoint(
-          name: _localizedStringFromMultilingualText(tafTapLocation.locationNames),
+          name: _localizedStringFromPrimaryLocationName(tafTapLocation.locationNames),
           order: calculateOrder(mapperData.segmentIndex, timingPoint.location),
           mandatoryStop: tpConstraint.stoppingPointInformation?.stopType?.mandatoryStop ?? true,
           isStop: tpConstraint.stopSkipPass == StopSkipPass.stoppingPoint,
@@ -131,12 +131,9 @@ class SegmentProfileMapper {
     });
   }
 
-  static LocalizedString _localizedStringFromMultilingualText(Iterable<MultilingualText> multilingualText) {
-    return LocalizedString(
-      de: multilingualText.textFor('de'),
-      fr: multilingualText.textFor('fr'),
-      it: multilingualText.textFor('it'),
-    );
+  static LocalizedString _localizedStringFromPrimaryLocationName(Iterable<TeltsiPrimaryLocationName> names) {
+    final name = names.firstOrNull?.value ?? '';
+    return LocalizedString(de: name, fr: name, it: name); // oder nur `de: name`, je nach Bedarf
   }
 
   static List<ProtectionSection> _parseProtectionSections(_MapperData mapperData) {
@@ -309,7 +306,7 @@ class SegmentProfileMapper {
 
           return footNotes.map(
             (note) => LineFootNote(
-              locationName: _localizedStringFromMultilingualText(location.locationNames),
+              locationName: _localizedStringFromPrimaryLocationName(location.locationNames),
               order: calculateOrder(mapperData.segmentIndex, location.startLocation!),
               footNote: note,
             ),

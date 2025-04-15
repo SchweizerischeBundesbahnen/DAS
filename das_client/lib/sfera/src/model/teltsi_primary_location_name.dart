@@ -1,7 +1,12 @@
-import 'package:das_client/sfera/src/model/multilingual_text.dart';
+import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 
-class TeltsiPrimaryLocationName extends MultilingualText {
+class TeltsiPrimaryLocationName extends SferaXmlElement {
   static const String elementType = 'teltsi_PrimaryLocationName';
 
-  TeltsiPrimaryLocationName({super.type = elementType, super.attributes, super.children, super.value});
+  TeltsiPrimaryLocationName({
+    super.type = elementType,
+    super.attributes,
+    super.children,
+    super.value,
+  });
 }

@@ -16,7 +16,7 @@ class TafTapLocation extends SferaSegmentXmlElement {
 
   TafTapLocationIdent get locationIdent => children.whereType<TafTapLocationIdent>().first;
 
-  Iterable<TeltsiPrimaryLocationName> get locationNames => children.whereType<TeltsiPrimaryLocationName>();
+  Iterable<TeltsiPrimaryLocationName> get locationNames => locationIdent.locationNames;
 
   TafTapLocationType? get locationType =>
       XmlEnum.valueOf<TafTapLocationType>(TafTapLocationType.values, attributes['TAF_TAP_location_type']);
