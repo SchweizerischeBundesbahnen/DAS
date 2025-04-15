@@ -1,3 +1,4 @@
+import 'package:das_client/app/pages/magic_secret_shhh/pages/flappy_screen.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ class AppVersionText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int counter = 0;
     return FutureBuilder(
       future: PackageInfo.fromPlatform(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -24,7 +26,24 @@ class AppVersionText extends StatelessWidget {
               const SizedBox(
                 width: sbbDefaultSpacing / 2,
               ),
-              Text(info.version, style: DASTextStyles.smallLight.copyWith(color: color)),
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  counter++;
+                  if (counter == 5) {
+                    counter = 0;
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const FlappyScreen(),
+                      ),
+                    );
+                  }
+                },
+                child: Text(
+                  info.version,
+                  style: DASTextStyles.smallLight.copyWith(color: color),
+                ),
+              ),
             ],
           );
         } else {

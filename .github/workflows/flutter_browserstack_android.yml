@@ -19,10 +19,6 @@ concurrency:
 on:
   schedule:
     - cron: '0 2 * * *'
-  push:
-    paths:
-      - 'das_client/**'
-    branches: [ "main" ]
   pull_request:
     paths:
       - 'das_client/**'
