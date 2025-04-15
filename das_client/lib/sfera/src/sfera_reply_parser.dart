@@ -62,7 +62,7 @@ import 'package:das_client/sfera/src/model/stopping_point_departure_details.dart
 import 'package:das_client/sfera/src/model/stopping_point_information.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location_ident.dart';
-import 'package:das_client/sfera/src/model/taf_tap_location_name.dart';
+import 'package:das_client/sfera/src/model/teltsi_primary_location_name.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location_nsp.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location_reference.dart';
 import 'package:das_client/sfera/src/model/tc_features.dart';
@@ -185,8 +185,8 @@ class SferaReplyParser {
         return TafTapLocationIdent(type: type, attributes: attributes, children: children, value: value);
       case MultilingualText.elementType:
         return MultilingualText(type: type, attributes: attributes, children: children, value: value);
-      case TafTapLocationName.elementType:
-        return TafTapLocationName(type: type, attributes: attributes, children: children, value: value);
+      case TeltsiPrimaryLocationName.elementType:
+        return TeltsiPrimaryLocationName(type: type, attributes: attributes, children: children, value: value);
       case TafTapLocationReference.elementType:
         return TafTapLocationReference(type: type, attributes: attributes, children: children, value: value);
       case StopType.elementType:
