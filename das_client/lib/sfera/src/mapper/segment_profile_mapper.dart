@@ -99,7 +99,7 @@ class SegmentProfileMapper {
 
       servicePoints.add(
         ServicePoint(
-          name: _localizedStringFromPrimaryLocationName(tafTapLocation.locationNames),
+          name: _localizedStringFromPrimaryLocationName(tafTapLocation.locationIdent.locationNames),
           order: calculateOrder(mapperData.segmentIndex, timingPoint.location),
           mandatoryStop: tpConstraint.stoppingPointInformation?.stopType?.mandatoryStop ?? true,
           isStop: tpConstraint.stopSkipPass == StopSkipPass.stoppingPoint,
@@ -306,7 +306,7 @@ class SegmentProfileMapper {
 
           return footNotes.map(
             (note) => LineFootNote(
-              locationName: _localizedStringFromPrimaryLocationName(location.locationNames),
+              locationName: _localizedStringFromPrimaryLocationName(location.locationIdent.locationNames),
               order: calculateOrder(mapperData.segmentIndex, location.startLocation!),
               footNote: note,
             ),

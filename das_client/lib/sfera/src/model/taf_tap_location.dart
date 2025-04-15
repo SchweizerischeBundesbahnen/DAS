@@ -6,7 +6,6 @@ import 'package:das_client/sfera/src/model/op_foot_notes_nsp.dart';
 import 'package:das_client/sfera/src/model/sfera_segment_xml_element.dart';
 import 'package:das_client/sfera/src/model/station_speed_nsp.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location_ident.dart';
-import 'package:das_client/sfera/src/model/teltsi_primary_location_name.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location_nsp.dart';
 
 class TafTapLocation extends SferaSegmentXmlElement {
@@ -15,8 +14,6 @@ class TafTapLocation extends SferaSegmentXmlElement {
   TafTapLocation({super.type = elementType, super.attributes, super.children, super.value});
 
   TafTapLocationIdent get locationIdent => children.whereType<TafTapLocationIdent>().first;
-
-  Iterable<TeltsiPrimaryLocationName> get locationNames => locationIdent.locationNames;
 
   TafTapLocationType? get locationType =>
       XmlEnum.valueOf<TafTapLocationType>(TafTapLocationType.values, attributes['TAF_TAP_location_type']);
