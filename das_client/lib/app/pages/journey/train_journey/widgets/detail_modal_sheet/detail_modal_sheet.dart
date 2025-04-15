@@ -1,3 +1,4 @@
+import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_tab.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_view_model.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
@@ -43,7 +44,7 @@ class DetailModalSheet extends StatelessWidget {
         StreamBuilder(
           stream: viewModel.servicePoint,
           builder: (context, snapshot) {
-            final name = snapshot.data?.name.localized ?? '';
+            final name = snapshot.data?.name.localized ?? context.l10n.c_unknown;
             return Text(name, style: DASTextStyles.largeRoman);
           },
         ),

@@ -76,7 +76,12 @@ class AutomaticAdvancementController {
     return null;
   }
 
-  void scrollToCurrentPosition() {
+  /// Scrolls to current position. If [resetAutomaticAdvancement] is true, automatic advancement is started. Otherwise it waits till idle time is over.
+  void scrollToCurrentPosition({bool resetAutomaticAdvancement = false}) {
+    if (resetAutomaticAdvancement) {
+      _lastTouch = null;
+    }
+
     final targetScrollPosition = _calculateScrollPosition();
     if (targetScrollPosition != null) {
       _scrollToPosition(targetScrollPosition);
