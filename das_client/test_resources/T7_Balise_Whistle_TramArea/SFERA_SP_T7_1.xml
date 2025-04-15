@@ -10,7 +10,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3002</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Lenzburg"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="SeonNord" location="1000">
@@ -18,7 +17,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3003</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Seon Nord"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="WANZ" location="1500">
@@ -26,7 +24,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3004</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="WANZ"/>
         </TimingPoint>
 
         <TimingPoint TP_ID="Rothrist" location="2000">
@@ -34,21 +31,32 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3005</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="Rothrist"/>
         </TimingPoint>
 
         <BaliseGroup>
             <Balise location="600" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="602" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="604" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="606" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="608" levelCrossingGuarding="true" amountLevelCrossings="1"/>
-
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="611" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="613" levelCrossingGuarding="true" amountLevelCrossings="2"/>
+        </BaliseGroup>
+        <BaliseGroup>
             <Balise location="616" levelCrossingGuarding="true" amountLevelCrossings="1"/>
         </BaliseGroup>
-
         <NetworkSpecificPoint location="610">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>whistle</NSP_GroupName>
@@ -57,40 +65,40 @@
 
     </SP_Points>
     <SP_Areas>
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="LENZ"
-                          TAF_TAP_location_type="station">
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="500" endLocation="500" TAF_TAP_location_abbreviation="LENZ"
+            TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3002</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Lenzburg</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" text="Lenzburg"/>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="SENO"
-                          TAF_TAP_location_type="station">
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1000" endLocation="1000" TAF_TAP_location_abbreviation="SENO"
+            TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3003</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Seon Nord</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" text="Seon Nord"/>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="WANZ"
-                          TAF_TAP_location_type="station">
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1500" endLocation="1500" TAF_TAP_location_abbreviation="WANZ"
+            TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3004</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>WANZ</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" text="WANZ"/>
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="RO"
-                          TAF_TAP_location_type="station">
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="2000" endLocation="2000" TAF_TAP_location_abbreviation="RO"
+            TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3005</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Rothrist</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" text="Rothrist"/>
         </TAF_TAP_Location>
 
         <NetworkSpecificArea startEndQualifier="Starts" startLocation="1450">

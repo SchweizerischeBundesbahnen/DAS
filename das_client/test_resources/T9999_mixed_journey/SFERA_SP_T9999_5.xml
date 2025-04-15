@@ -11,14 +11,12 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>9995</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="D1"/>
         </TimingPoint>
         <TimingPoint TP_ID="Bahnhof_E" location="800">
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>9996</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="E"/>
         </TimingPoint>
         <Signal>
             <Signal_ID signal_ID_Physical="7" location="600"/>
@@ -29,13 +27,14 @@
     </SP_Points>
 
     <SP_Areas>
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="D1"
-                          TAF_TAP_location_type="station">
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="300" endLocation="300"
+            TAF_TAP_location_abbreviation="D1"
+            TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>9995</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Klammerbahnhof D1</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" text="Klammerbahnhof D1"/>
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>bracketStation</NSP_GroupName>
@@ -52,13 +51,14 @@
                 "/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="E"
-                          TAF_TAP_location_type="station">
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="800" endLocation="800"
+            TAF_TAP_location_abbreviation="E"
+            TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>9996</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Bahnhof E</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" text="Bahnhof E"/>
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
