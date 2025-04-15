@@ -33,6 +33,10 @@ class StickyWidget extends StatefulWidget {
 class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
 
+  Widget? stickyHeader1;
+  Widget? stickyHeader2;
+  Widget? stickyFooter;
+
   @override
   void initState() {
     super.initState();
@@ -69,39 +73,66 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
   }
 
   Widget _buildHeaders(BuildContext context) {
-    final indexesToBuild = widget.controller.headerIndexes;
+    _buildHeaderWidgets(context);
 
     return Stack(
       children: [
-        if (indexesToBuild[StickyLevel.second] != -1)
-          Positioned(
-            left: 0,
-            top: widget.controller.widgetHeight(indexesToBuild[StickyLevel.first]!) +
-                widget.controller.headerOffsets[StickyLevel.second]!,
-            right: 0,
-            child: widget.widgetBuilder(context, indexesToBuild[StickyLevel.second]!),
-          ),
-        if (indexesToBuild[StickyLevel.first] != -1)
-          Positioned(
-            left: 0,
-            top: widget.controller.headerOffsets[StickyLevel.first],
-            right: 0,
-            child: widget.widgetBuilder(context, indexesToBuild[StickyLevel.first]!),
-          ),
+        if (stickyHeader1 != null) stickyHeader1!,
+        if (stickyHeader2 != null) stickyHeader2!,
       ],
     );
   }
 
-  Widget _buildFooter(BuildContext context) {
+  void _buildHeaderWidgets(BuildContext context) {
+    final indexesToBuild = widget.controller.headerIndexes;
+    if (!widget.controller.isRecalculating) {
+      if (indexesToBuild[StickyLevel.first] != -1) {
+        stickyHeader1 = Positioned(
+          left: 0,
+          top: widget.controller.headerOffsets[StickyLevel.first],
+          right: 0,
+          child: widget.widgetBuilder(context, indexesToBuild[StickyLevel.first]!),
+        );
+      } else {
+        stickyHeader1 = null;
+      }
+
+      if (indexesToBuild[StickyLevel.second] != -1) {
+        stickyHeader2 = Positioned(
+          left: 0,
+          top: widget.controller.widgetHeight(indexesToBuild[StickyLevel.first]!) +
+              widget.controller.headerOffsets[StickyLevel.second]!,
+          right: 0,
+          child: widget.widgetBuilder(context, indexesToBuild[StickyLevel.second]!),
+        );
+      } else {
+        stickyHeader2 = null;
+      }
+    }
+  }
+
+  void _buildFooterWidget(BuildContext context) {
     final indexToBuild = widget.controller.footerIndex;
-    if (indexToBuild != -1) {
+    if (!widget.controller.isRecalculating) {
+      if (indexToBuild != -1) {
+        stickyFooter = widget.widgetBuilder(context, indexToBuild);
+      } else {
+        stickyFooter = null;
+      }
+    }
+  }
+
+  Widget _buildFooter(BuildContext context) {
+    _buildFooterWidget(context);
+
+    if (stickyFooter != null) {
       return Stack(
         children: [
           Positioned(
             left: 0,
             right: 0,
             bottom: 0,
-            child: widget.widgetBuilder(context, indexToBuild),
+            child: stickyFooter!,
           ),
         ],
       );

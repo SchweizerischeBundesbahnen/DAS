@@ -28,6 +28,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
     required super.data,
     super.height = rowHeight,
     super.stickyLevel,
+    super.key,
     this.config = const TrainJourneyConfig(),
     this.defaultAlignment = Alignment.bottomCenter,
     this.rowColor,

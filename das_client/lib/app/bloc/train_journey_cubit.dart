@@ -69,6 +69,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
           case SferaServiceState.offline:
             emit(SelectingTrainJourneyState(
                 ru: ru, trainNumber: trainNumber, date: date, errorCode: _sferaService.lastErrorCode));
+            _journeySubscription?.cancel();
             break;
         }
       });

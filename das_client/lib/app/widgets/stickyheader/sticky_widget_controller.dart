@@ -18,6 +18,7 @@ class StickyWidgetController with ChangeNotifier {
   final ScrollController scrollController;
   final List<double> rowOffsets = [];
   List<DASTableRow> _rows;
+  bool _recalculating = false;
 
   Map<StickyLevel, double> headerOffsets = {
     StickyLevel.first: 0.0,
@@ -28,6 +29,8 @@ class StickyWidgetController with ChangeNotifier {
     StickyLevel.second: -1,
   };
   var footerIndex = -1;
+
+  bool get isRecalculating => _recalculating;
 
   void _initialize() {
     var offset = 0.0;
@@ -44,6 +47,7 @@ class StickyWidgetController with ChangeNotifier {
   void _scrollListener() {
     final firstVisibleIndex = findFirstVisibleRowIndex();
     if (firstVisibleIndex == -1) {
+      _recalculating = true;
       return;
     }
 
@@ -61,6 +65,7 @@ class StickyWidgetController with ChangeNotifier {
       footerIndex = _calculateFooter(headerIndexes[StickyLevel.first]! + 1, currentPixels);
     }
 
+    _recalculating = false;
     notifyListeners();
   }
 

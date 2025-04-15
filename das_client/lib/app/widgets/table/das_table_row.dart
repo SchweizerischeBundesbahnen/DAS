@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 
 /// Interface for a class that builds [DASTableRow]
 abstract class DASTableRowBuilder<T> {
-  DASTableRowBuilder({required this.height, required this.data, this.stickyLevel = StickyLevel.none, this.identifier})
-      : key = GlobalKey();
+  DASTableRowBuilder(
+      {required this.height, required this.data, this.stickyLevel = StickyLevel.none, this.identifier, GlobalKey? key})
+      : key = key ?? GlobalKey();
 
   DASTableRow build(BuildContext context);
 

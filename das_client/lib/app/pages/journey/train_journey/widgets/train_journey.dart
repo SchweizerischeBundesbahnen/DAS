@@ -102,6 +102,7 @@ class TrainJourney extends StatelessWidget {
       child: ChevronAnimationWrapper(
         journey: journey,
         child: DASTable(
+          key: context.trainJourneyCubit.automaticAdvancementController.tableKey,
           scrollController: context.trainJourneyCubit.automaticAdvancementController.scrollController,
           columns: _columns(context, journey, settings),
           rows: tableRows.map((it) => it.build(context)).toList(),

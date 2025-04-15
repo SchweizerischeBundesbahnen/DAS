@@ -14,6 +14,7 @@ class SignalRow extends CellRowBuilder<Signal> {
     required super.metadata,
     required super.data,
     super.config,
+    super.key,
   });
 
   @override
