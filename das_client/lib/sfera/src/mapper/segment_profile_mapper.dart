@@ -133,7 +133,7 @@ class SegmentProfileMapper {
 
   static LocalizedString _localizedStringFromPrimaryLocationName(Iterable<TeltsiPrimaryLocationName> names) {
     final name = names.firstOrNull?.value ?? '';
-    return LocalizedString(de: name, fr: name, it: name); // oder nur `de: name`, je nach Bedarf
+    return LocalizedString(de: name, fr: name, it: name);
   }
 
   static List<ProtectionSection> _parseProtectionSections(_MapperData mapperData) {
