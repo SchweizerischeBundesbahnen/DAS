@@ -4,6 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class AnimatedHeaderIconButton extends StatelessWidget {
+  static const headerIconButtonKey = Key('headerIconButton');
+  static const headerIconWithLabelButtonKey = Key('headerIconWithLabelButton');
+
   const AnimatedHeaderIconButton({
     required this.label,
     required this.icon,
@@ -23,11 +26,14 @@ class AnimatedHeaderIconButton extends StatelessWidget {
         final isDetailModalSheetOpen = snapshot.data ?? false;
         return AnimatedSwitcher(
           duration: const Duration(milliseconds: 400),
-          child: isDetailModalSheetOpen
-              ? SBBIconButtonLarge(icon: icon, onPressed: onPressed)
-              : SBBTertiaryButtonLarge(label: label, icon: icon, onPressed: onPressed),
+          child: isDetailModalSheetOpen ? _iconButton : _iconWithLabelButton,
         );
       },
     );
   }
+
+  Widget get _iconWithLabelButton =>
+      SBBTertiaryButtonLarge(key: headerIconWithLabelButtonKey, label: label, icon: icon, onPressed: onPressed);
+
+  Widget get _iconButton => SBBIconButtonLarge(key: headerIconButtonKey, icon: icon, onPressed: onPressed);
 }

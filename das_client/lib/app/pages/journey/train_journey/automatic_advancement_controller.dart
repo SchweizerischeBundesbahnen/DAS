@@ -76,9 +76,9 @@ class AutomaticAdvancementController {
     return null;
   }
 
-  /// Scrolls to current position. If [resetAutomaticAdvancement] is true, automatic advancement is started. Otherwise it waits till idle time is over.
-  void scrollToCurrentPosition({bool resetAutomaticAdvancement = false}) {
-    if (resetAutomaticAdvancement) {
+  /// Scrolls to current position. If [resetAutomaticAdvancementTimer] is true, automatic advancement is started. Otherwise it waits till idle time is over.
+  void scrollToCurrentPosition({bool resetAutomaticAdvancementTimer = false}) {
+    if (resetAutomaticAdvancementTimer) {
       _lastTouch = null;
     }
 

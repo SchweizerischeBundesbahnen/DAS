@@ -124,7 +124,11 @@ class DASModalSheetController {
 
   double get fullWidth => _fullWidthAnimation.value;
 
-  bool get isOpen => _state == _ControllerState.expanded || _state == _ControllerState.maximized;
+  bool get isOpen => isExpanded || isMaximized;
+
+  bool get isExpanded => _state == _ControllerState.expanded;
+
+  bool get isMaximized => _state == _ControllerState.maximized;
 }
 
 /// Modal sheet that that can extend to a certain width and occupy this space but also overlap to the full screen width.
@@ -132,7 +136,9 @@ class DASModalSheetController {
 /// Modal sheet is controlled by [DASModalSheetController]
 class DasModalSheet extends StatefulWidget {
   static const Key modalSheetClosedKey = Key('dasModalSheetClosed');
-  static const Key modalSheetOpenKey = Key('dasModalSheetOpen');
+  static const Key modalSheetExtendedKey = Key('dasModalSheetExtended');
+  static const Key modalSheetMaximizedKey = Key('dasModalSheetMaximized');
+  static const Key modalSheetCloseButtonKey = Key('dasModalSheetCloseButton');
 
   const DasModalSheet({
     required this.child,
@@ -194,7 +200,7 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
 
   Widget _body() {
     return Column(
-      key: DasModalSheet.modalSheetOpenKey,
+      key: widget.controller.isExpanded ? DasModalSheet.modalSheetExtendedKey : DasModalSheet.modalSheetMaximizedKey,
       mainAxisSize: MainAxisSize.max,
       children: [
         _header(),
@@ -210,7 +216,11 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
         Expanded(
           child: widget.header != null ? widget.header! : SizedBox(),
         ),
-        _CloseButton(onClose: () => widget.controller.close()),
+        SBBIconButtonLarge(
+          key: DasModalSheet.modalSheetCloseButtonKey,
+          onPressed: () => widget.controller.close(),
+          icon: SBBIcons.cross_small,
+        ),
       ],
     );
   }
@@ -220,19 +230,5 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
     final maxWidth = MediaQuery.sizeOf(context).width - widget.leftMargin;
     final animatedWidthOfController = widget.controller.width + (widget.controller.fullWidth * maxWidth);
     return min(animatedWidthOfController, maxWidth);
-  }
-}
-
-class _CloseButton extends StatelessWidget {
-  const _CloseButton({this.onClose});
-
-  final VoidCallback? onClose;
-
-  @override
-  Widget build(BuildContext context) {
-    return SBBIconButtonLarge(
-      onPressed: onClose,
-      icon: SBBIcons.cross_small,
-    );
   }
 }

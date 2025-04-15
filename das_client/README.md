@@ -1,7 +1,6 @@
 # DAS Client
 
-DAS (Driver Advisory System) is a mobile application that provides all the required journey data to
-the train driver.
+DAS (Driver Advisory System) is a mobile application that provides all the required journey data to the train driver.
 
 ## Supported platforms
 
@@ -28,8 +27,7 @@ fvm flutter run --flavor prod -t lib/main_prod.dart
 
 ## Running Integration Tests
 
-Instrumentation Tests do not use user authentication. Therefore the credentials must be provided as
-environment variables.
+Instrumentation Tests do not use user authentication. Therefore the credentials must be provided as environment variables.
 
 ```shell
 fvm flutter test --flavor dev --dart-define=MQTT_USERNAME=${MQTT_USERNAME} --dart-define=MQTT_PASSWORD=${MQTT_PASSWORD} integration_test/app_test.dart
@@ -39,8 +37,7 @@ fvm flutter test --flavor dev --dart-define=MQTT_USERNAME=${MQTT_USERNAME} --dar
 
 ### Test file structure
 
-To prevent confusion, fictive train numbers with the prefix `T` are used for the test scenarios. It
-is desired to create new train journeys for different features.  
+To prevent confusion, fictive train numbers with the prefix `T` are used for the test scenarios. It is desired to create new train journeys for different features.  
 The file structure in [test_resources](test_resources) for a test scenario looks as follows:
 
 * base directory named `<train number>_<optional description>`
@@ -49,17 +46,16 @@ The file structure in [test_resources](test_resources) for a test scenario looks
 * corresponding train characteristics named `SFERA_TC_<train number>_<tc number>`  
   An example test scenario for train number T1 could look like this:
 * T1_demo_journey/
-    * SFERA_JP_T1
-    * SFERA_JP_T1_without_stop
-    * SFERA_SP_T1_1
-    * SFERA_SP_T1_2
-    * SFERA_TC_T1_1
-      <a name="localization"></a>
+  * SFERA_JP_T1
+  * SFERA_JP_T1_without_stop
+  * SFERA_SP_T1_1
+  * SFERA_SP_T1_2
+  * SFERA_TC_T1_1
+    <a name="localization"></a>
 
 ## Custom Icons
 
-To add custom icons, you can upload [font_config.json](font_config.json) to [fluttericon][3] and add
-your icon. Use [SVG Strokes to Fills Converter][4] if SVG is not compatible with fonts.
+To add custom icons, you can upload [font_config.json](font_config.json) to [fluttericon][3] and add your icon. Use [SVG Strokes to Fills Converter][4] if SVG is not compatible with fonts.
 
 ## Localization
 
@@ -85,8 +81,7 @@ The prefix is mandatory and indicates the scope of the term. Valid prefixes are:
 | p      | Page   | Terms that belong to a specific page           |
 | w      | Widget | Terms that bleong to a specific widget         |
 
-The context is optional and indicate where a localization is used. When a localization is scoped to
-a page or widget, the context MUST be equal to the name of that page or widget.
+The context is optional and indicate where a localization is used. When a localization is scoped to a page or widget, the context MUST be equal to the name of that page or widget.
 For example, localizations used on the login page would start with `p_login_`.
 
 To generate the localization code, run the following command:
@@ -101,8 +96,7 @@ This application uses the code style defined in the [Flutter Wiki][2]. The
 recommendations are mandatory and should always be followed unless there is a
 good reason not to do so. However, this must be approved by all developers.
 
-Notable difference: Line length is set to 120 characters. Please adapt your IDE configuration
-accordingly.
+Notable difference: Line length is set to 120 characters. Please adapt your IDE configuration accordingly.
 
 For formatting XML test files, contact a developer for custom Android Studio XML formatting setup.
 

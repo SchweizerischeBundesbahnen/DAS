@@ -25,7 +25,7 @@ class ReducedServicePointRow extends ServicePointRow {
   DASTableCell routeCell(BuildContext context) {
     return DASTableCell(
       color: specialCellColor,
-      padding: EdgeInsets.all(0.0).copyWith(right: sbbDefaultSpacing),
+      padding: EdgeInsets.only(right: sbbDefaultSpacing),
       alignment: null,
       clipBehaviour: Clip.none,
       child: RouteCellBody(

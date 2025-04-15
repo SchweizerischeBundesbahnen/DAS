@@ -1,6 +1,9 @@
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_tab.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_view_model.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_tab_graduated_speeds.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_tab_local_regulations.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_tab_radio_channels.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +11,8 @@ import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class DetailModalSheet extends StatelessWidget {
+  static const segmentedButtonKey = Key('detailModalSheetSegmentedButton');
+
   const DetailModalSheet({super.key});
 
   @override
@@ -56,21 +61,21 @@ class DetailModalSheet extends StatelessWidget {
   Widget _segmentedIconButton(BuildContext context, DetailModalSheetTab selectedTab) {
     final viewModel = context.read<DetailModalSheetViewModel>();
     return SBBSegmentedButton.icon(
+      key: segmentedButtonKey,
       icons: {for (final tab in DetailModalSheetTab.values) tab.icon: tab.localized(context)},
       selectedStateIndex: selectedTab.index,
       selectedIndexChanged: (index) => viewModel.open(tab: DetailModalSheetTab.values[index]),
     );
   }
 
-  // TODO: add implementation for tab views
   Widget _tabContent(BuildContext context, DetailModalSheetTab selectedTab) {
     switch (selectedTab) {
       case DetailModalSheetTab.radioChannels:
-        return Center(child: Text(selectedTab.localized(context)));
+        return DetailTabRadioChannels();
       case DetailModalSheetTab.graduatedSpeeds:
-        return Center(child: Text(selectedTab.localized(context)));
+        return DetailTabGraduatedSpeeds();
       case DetailModalSheetTab.localRegulations:
-        return Center(child: Text(selectedTab.localized(context)));
+        return DetailTabLocalRegulations();
     }
   }
 }

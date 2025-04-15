@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class StartPauseButton extends StatelessWidget {
+  static const startButtonKey = Key('startAutomaticAdvancementButton');
+  static const pauseButtonKey = Key('pauseAutomaticAdvancementButton');
+
   const StartPauseButton({super.key, this.automaticAdvancementActive = false});
 
   final bool automaticAdvancementActive;
@@ -12,6 +15,7 @@ class StartPauseButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedHeaderIconButton(
+      key: automaticAdvancementActive ? pauseButtonKey : startButtonKey,
       label: automaticAdvancementActive
           ? context.l10n.p_train_journey_header_button_pause
           : context.l10n.p_train_journey_header_button_start,
