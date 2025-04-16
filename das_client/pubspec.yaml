@@ -4,7 +4,9 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 0.15.0+55
 
 environment:
-  sdk: ^3.7.0
+  # TODO: Currently set below sdk 3.7.0 as new formatter removes trailing commas which generates unreadable code.
+  # This should be improved in future releases. See: https://github.com/dart-lang/dart_style/issues/1652
+  sdk: ^3.6.2
 
 dependencies:
   flutter:
