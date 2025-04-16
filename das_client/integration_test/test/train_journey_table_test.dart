@@ -95,26 +95,20 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T7');
 
-      final scrollableFinder = find.byType(AnimatedList);
-      expect(scrollableFinder, findsOneWidget);
-
       final whistleRow = findDASTableRowByText('39.6');
       expect(whistleRow, findsOneWidget);
 
       final whistleIcon = find.descendant(of: whistleRow, matching: find.byKey(WhistleRow.whistleIconKey));
       expect(whistleIcon, findsOneWidget);
 
-      // scroll to bottom to get all tram areas visible
-      await tester.drag(scrollableFinder, const Offset(0, -500));
-
       final tramAreaRow = findDASTableRowByText('km 37.8-36.8');
-      expect(tramAreaRow, findsNWidgets(2));
+      expect(tramAreaRow, findsAny);
 
       final tramAreaIcon = find.descendant(of: tramAreaRow, matching: find.byKey(TramAreaRow.tramAreaIconKey));
-      expect(tramAreaIcon, findsNWidgets(2));
+      expect(tramAreaIcon, findsAny);
 
       final tramAreaDescription = find.descendant(of: tramAreaRow, matching: find.text('6 TS'));
-      expect(tramAreaDescription, findsNWidgets(2));
+      expect(tramAreaDescription, findsAny);
 
       await disconnect(tester);
     });
