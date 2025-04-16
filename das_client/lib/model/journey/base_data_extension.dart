@@ -1,11 +1,13 @@
 import 'package:das_client/model/journey/balise_level_crossing_group.dart';
 import 'package:das_client/model/journey/base_data.dart';
+import 'package:das_client/model/journey/base_foot_note.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/line_foot_note.dart';
 import 'package:das_client/model/journey/metadata.dart';
+import 'package:das_client/model/journey/train_series.dart';
 
 extension BaseDataExtension on Iterable<BaseData> {
-  List<BaseData> groupBaliseAndLeveLCrossings(List<int> expandedGroups) {
+  Iterable<BaseData> groupBaliseAndLeveLCrossings(List<int> expandedGroups) {
     final List<BaseData> resultList = [];
 
     for (int i = 0; i < length; i++) {
@@ -49,7 +51,7 @@ extension BaseDataExtension on Iterable<BaseData> {
     return resultList;
   }
 
-  List<BaseData> hideRepeatedLineFootNotes(Metadata metadata) {
+  Iterable<BaseData> hideRepeatedLineFootNotes(Metadata metadata) {
     final resultList = List.of(this);
 
     final currentPosition = metadata.currentPosition ?? resultList.first;
@@ -91,6 +93,21 @@ extension BaseDataExtension on Iterable<BaseData> {
         }
       }
     }
+
+    return resultList;
+  }
+
+  Iterable<BaseData> hideFootNotesForNotSelectedTrainSeries(TrainSeries? selectedTrainSeries) {
+    if (selectedTrainSeries == null) {
+      return this;
+    }
+
+    final resultList = List.of(this);
+
+    resultList.removeWhere((it) =>
+        it is BaseFootNote &&
+        it.footNote.trainSeries.isNotEmpty &&
+        !it.footNote.trainSeries.contains(selectedTrainSeries));
 
     return resultList;
   }
