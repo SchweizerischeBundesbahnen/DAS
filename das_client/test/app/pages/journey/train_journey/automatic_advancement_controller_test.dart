@@ -7,7 +7,6 @@ import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
-import 'package:das_client/model/localized_string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -154,7 +153,7 @@ void main() {
   test('test scrolling adjust to sticky header', () {
     final signalData = Signal(order: 100, kilometre: []);
     final targetSignalData = Signal(order: 300, kilometre: []);
-    final servicePointData = ServicePoint(order: 0, kilometre: [], name: LocalizedString());
+    final servicePointData = ServicePoint(order: 0, kilometre: [], name: '');
 
     final List<CellRowBuilder> rows = [
       mockServicePointRow(servicePointData, Offset(0, 0)),

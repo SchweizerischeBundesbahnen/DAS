@@ -4,7 +4,6 @@ import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
-import 'package:das_client/model/localized_string.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -18,10 +17,10 @@ void main() {
       ),
       data: [
         Signal(order: 0, kilometre: []),
-        ServicePoint(name: LocalizedString(), order: 100, kilometre: []),
+        ServicePoint(name: '', order: 100, kilometre: []),
         Signal(order: 200, kilometre: []),
-        ServicePoint(name: LocalizedString(), order: 300, kilometre: []),
-        ServicePoint(name: LocalizedString(), order: 400, kilometre: []),
+        ServicePoint(name: '', order: 300, kilometre: []),
+        ServicePoint(name: '', order: 400, kilometre: []),
       ],
     );
 

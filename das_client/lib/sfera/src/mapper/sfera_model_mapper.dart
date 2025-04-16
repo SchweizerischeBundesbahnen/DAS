@@ -17,7 +17,6 @@ import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/track_equipment_segment.dart';
 import 'package:das_client/model/journey/tram_area.dart';
-import 'package:das_client/model/localized_string.dart';
 import 'package:das_client/sfera/src/mapper/mapper_utils.dart';
 import 'package:das_client/sfera/src/mapper/segment_profile_mapper.dart';
 import 'package:das_client/sfera/src/mapper/track_equipment_mapper.dart';
@@ -445,8 +444,8 @@ class SferaModelMapper {
     }).toList();
   }
 
-  static Map<String, List<LocalizedString>> _generateLineFootNoteLocationMap(Iterable<LineFootNote> footNotes) {
-    final lineFootNoteLocations = <String, List<LocalizedString>>{};
+  static Map<String, List<String>> _generateLineFootNoteLocationMap(Iterable<LineFootNote> footNotes) {
+    final lineFootNoteLocations = <String, List<String>>{};
     for (final lineNote in footNotes) {
       if (lineNote.footNote.identifier == null) continue;
 
