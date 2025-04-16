@@ -1,4 +1,5 @@
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -64,7 +65,7 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9');
 
-      final pauseButton = find.text(l10n.p_train_journey_header_button_pause);
+      final pauseButton = find.byKey(StartPauseButton.pauseButtonKey);
       expect(pauseButton, findsOneWidget);
 
       await tapElement(tester, pauseButton);
@@ -75,7 +76,7 @@ void main() {
       // Wait some more
       await Future.delayed(const Duration(seconds: 3));
 
-      final startButton = find.text(l10n.p_train_journey_header_button_start);
+      final startButton = find.byKey(StartPauseButton.startButtonKey);
       expect(startButton, findsOneWidget);
 
       await tapElement(tester, startButton);
@@ -93,7 +94,7 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9');
 
-      final pauseButton = find.text(l10n.p_train_journey_header_button_pause);
+      final pauseButton = find.byKey(StartPauseButton.pauseButtonKey);
       expect(pauseButton, findsOneWidget);
 
       await tapElement(tester, pauseButton);
@@ -123,16 +124,13 @@ void main() {
       final headerFinder = find.byType(Header);
       expect(headerFinder, findsOneWidget);
 
-      final pauseButton =
-          find.descendant(of: headerFinder, matching: find.text(l10n.p_train_journey_header_button_pause));
+      final pauseButton = find.descendant(of: headerFinder, matching: find.byKey(StartPauseButton.pauseButtonKey));
       expect(pauseButton, findsOneWidget);
 
       await tapElement(tester, pauseButton);
 
-      expect(find.descendant(of: headerFinder, matching: find.text(l10n.p_train_journey_header_button_start)),
-          findsOneWidget);
-      expect(find.descendant(of: headerFinder, matching: find.text(l10n.p_train_journey_header_button_pause)),
-          findsNothing);
+      expect(find.descendant(of: headerFinder, matching: find.byKey(StartPauseButton.startButtonKey)), findsOneWidget);
+      expect(find.descendant(of: headerFinder, matching: find.byKey(StartPauseButton.pauseButtonKey)), findsNothing);
 
       await disconnect(tester);
     });
@@ -144,7 +142,7 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9');
 
-      final pauseButton = find.text(l10n.p_train_journey_header_button_pause);
+      final pauseButton = find.byKey(StartPauseButton.pauseButtonKey);
       expect(pauseButton, findsOneWidget);
 
       await tapElement(tester, pauseButton);

@@ -117,20 +117,8 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
     );
   }
 
-  DASTableCell timeCell(BuildContext context) {
-    return DASTableCell.empty(color: specialCellColor);
-  }
-
-  DASTableCell informationCell(BuildContext context) {
-    return DASTableCell.empty();
-  }
-
   DASTableCell localSpeedCell(BuildContext context) {
     return speedCell(data.localSpeedData, DASTableCell.empty());
-  }
-
-  DASTableCell advisedSpeedCell(BuildContext context) {
-    return DASTableCell.empty();
   }
 
   DASTableCell brakedWeightSpeedCell(BuildContext context) {
@@ -165,10 +153,6 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
     );
   }
 
-  DASTableCell iconsCell1(BuildContext context) {
-    return DASTableCell.empty();
-  }
-
   DASTableCell bracketStation(BuildContext context) {
     final bracketStationRenderData = config.bracketStationRenderData;
     if (bracketStationRenderData == null) return DASTableCell.empty();
@@ -184,18 +168,6 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
     );
   }
 
-  DASTableCell iconsCell2(BuildContext context) {
-    return DASTableCell.empty();
-  }
-
-  DASTableCell iconsCell3(BuildContext context) {
-    return DASTableCell.empty();
-  }
-
-  DASTableCell actionsCell(BuildContext context) {
-    return DASTableCell.empty();
-  }
-
   DASTableCell communicationNetworkCell(BuildContext context) {
     final networkChange = metadata.communicationNetworkChanges.changeAtOrder(data.order);
     if (networkChange == null) {
@@ -207,6 +179,20 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
       child: CommunicationNetworkIcon(networkType: networkChange),
     );
   }
+
+  DASTableCell timeCell(BuildContext context) => DASTableCell.empty(color: specialCellColor);
+
+  DASTableCell informationCell(BuildContext context) => DASTableCell.empty();
+
+  DASTableCell advisedSpeedCell(BuildContext context) => DASTableCell.empty();
+
+  DASTableCell iconsCell1(BuildContext context) => DASTableCell.empty();
+
+  DASTableCell iconsCell2(BuildContext context) => DASTableCell.empty();
+
+  DASTableCell iconsCell3(BuildContext context) => DASTableCell.empty();
+
+  DASTableCell actionsCell(BuildContext context) => DASTableCell.empty();
 
   Color? get specialCellColor =>
       getAdditionalSpeedRestriction() != null ? AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor : null;

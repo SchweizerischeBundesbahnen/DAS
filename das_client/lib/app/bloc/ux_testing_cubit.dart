@@ -23,7 +23,7 @@ class UxTestingCubit extends Cubit<UxTestingState> {
 
   final _koaStateSubject = BehaviorSubject.seeded(KoaState.waitHide);
 
-  Stream<KoaState> get koaStateStream => _koaStateSubject.stream;
+  Stream<KoaState> get koaStateStream => _koaStateSubject.distinct();
 
   void initialize() {
     _eventSubscription = _sferaService.uxTestingStream.listen((data) {

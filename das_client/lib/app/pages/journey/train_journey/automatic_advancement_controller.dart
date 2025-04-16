@@ -2,12 +2,12 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:collection/collection.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:das_client/app/widgets/stickyheader/sticky_level.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
-import 'package:das_client/model/journey/journey.dart';
+import 'package:das_client/model/journey/base_data.dart';
 import 'package:fimber/fimber.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 
 class AutomaticAdvancementController {
   static const int _minScrollDuration = 1000;
@@ -17,22 +17,20 @@ class AutomaticAdvancementController {
   AutomaticAdvancementController({ScrollController? controller}) : scrollController = controller ?? ScrollController();
 
   final ScrollController scrollController;
-  Journey? _currentJourney;
-  TrainJourneySettings? _settings;
+  BaseData? _currentPosition;
   List<DASTableRowBuilder> _renderedRows = [];
   Timer? _scrollTimer;
   double? _lastScrollPosition;
   DateTime? _lastTouch;
 
-  void updateRenderedRows(List<DASTableRowBuilder> rows) {
-    _renderedRows = rows;
-  }
+  final _rxIsAutomaticAdvancementActive = BehaviorSubject.seeded(false);
 
-  void handleJourneyUpdate(Journey journey, TrainJourneySettings settings) {
-    _currentJourney = journey;
-    _settings = settings;
+  void updateRenderedRows(List<DASTableRowBuilder> rows) => _renderedRows = rows;
 
-    if (!settings.automaticAdvancementActive) {
+  void handleJourneyUpdate({BaseData? currentPosition, bool automaticAdvancementActive = false}) {
+    _currentPosition = currentPosition;
+    _rxIsAutomaticAdvancementActive.add(automaticAdvancementActive);
+    if (!automaticAdvancementActive) {
       return;
     }
 
@@ -46,9 +44,7 @@ class AutomaticAdvancementController {
   }
 
   double? _calculateScrollPosition() {
-    if (_currentJourney == null ||
-        _currentJourney?.metadata.currentPosition == null ||
-        scrollController.positions.isEmpty) {
+    if (_currentPosition == null || scrollController.positions.isEmpty) {
       return null;
     }
 
@@ -56,7 +52,7 @@ class AutomaticAdvancementController {
     var targetScrollPosition = 0.0;
 
     for (final row in _renderedRows) {
-      if (_currentJourney!.metadata.currentPosition == row.data) {
+      if (_currentPosition == row.data) {
         // remove the sticky header heights
         if (row.stickyLevel == StickyLevel.none) {
           targetScrollPosition -= stickyHeaderHeights.values.sum;
@@ -80,7 +76,12 @@ class AutomaticAdvancementController {
     return null;
   }
 
-  void scrollToCurrentPosition() {
+  /// Scrolls to current position. If [resetAutomaticAdvancementTimer] is true, automatic advancement is started. Otherwise it waits till idle time is over.
+  void scrollToCurrentPosition({bool resetAutomaticAdvancementTimer = false}) {
+    if (resetAutomaticAdvancementTimer) {
+      _lastTouch = null;
+    }
+
     final targetScrollPosition = _calculateScrollPosition();
     if (targetScrollPosition != null) {
       _scrollToPosition(targetScrollPosition);
@@ -90,7 +91,7 @@ class AutomaticAdvancementController {
   void _scrollToPosition(double targetScrollPosition) {
     _lastScrollPosition = targetScrollPosition;
 
-    Fimber.i('Scrolling to position $targetScrollPosition');
+    Fimber.d('Scrolling to position $targetScrollPosition');
     scrollController.animateTo(
       targetScrollPosition,
       duration: _calculateDuration(targetScrollPosition, 1),
@@ -98,18 +99,27 @@ class AutomaticAdvancementController {
     );
   }
 
-  void onTouch() {
+  void resetScrollTimer() {
     _lastTouch = DateTime.now();
-    if (_settings?.automaticAdvancementActive == true) {
+    if (_rxIsAutomaticAdvancementActive.value) {
       _scrollTimer?.cancel();
       _scrollTimer = Timer(const Duration(seconds: _screenIdleTimeSeconds), () {
-        if (_settings?.automaticAdvancementActive == true) {
-          Fimber.i('Screen idle time of $_screenIdleTimeSeconds seconds reached. Scrolling to current position');
+        if (_rxIsAutomaticAdvancementActive.value) {
+          Fimber.d('Screen idle time of $_screenIdleTimeSeconds seconds reached. Scrolling to current position');
           scrollToCurrentPosition();
         }
       });
     }
   }
+
+  void dispose() {
+    _rxIsAutomaticAdvancementActive.close();
+    _scrollTimer?.cancel();
+  }
+
+  Stream<bool> get isActiveStream => _rxIsAutomaticAdvancementActive.distinct();
+
+  bool get isActive => _rxIsAutomaticAdvancementActive.value;
 
   Duration _calculateDuration(double targetPosition, double velocity) {
     if (velocity <= 0.0) {

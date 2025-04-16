@@ -19,7 +19,7 @@ class SpeedChangeRow extends CellRowBuilder<SpeedChange> {
   @override
   DASTableCell informationCell(BuildContext context) {
     return DASTableCell(
-      child: Text(data.text ?? ''),
+      child: Text(data.text ?? '', overflow: TextOverflow.ellipsis),
     );
   }
 

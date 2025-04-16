@@ -16,8 +16,8 @@ Future<void> openDrawer(WidgetTester tester) async {
   await tester.pumpAndSettle(const Duration(milliseconds: 250));
 }
 
-Future<void> tapElement(WidgetTester tester, FinderBase<Element> element) async {
-  await tester.tap(element);
+Future<void> tapElement(WidgetTester tester, FinderBase<Element> element, {bool warnIfMissed = true}) async {
+  await tester.tap(element, warnIfMissed: warnIfMissed);
   await tester.pumpAndSettle();
 }
 

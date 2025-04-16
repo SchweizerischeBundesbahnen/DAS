@@ -75,6 +75,8 @@ dependencies:
   volume_controller: ^3.3.1
   # https://pub.dev/packages/provider
   provider: ^6.1.2
+  # https://pub.dev/packages/extra_hittest_area
+  extra_hittest_area: ^1.0.0
 
 dev_dependencies:
   integration_test:
