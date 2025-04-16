@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:das_client/app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/reduced_overview/reduced_train_journey.dart';
+import 'package:das_client/app/widgets/table/das_table.dart';
 import 'package:das_client/util/format.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -32,12 +33,11 @@ void main() {
 
       await openReducedJourneyMenu(tester);
 
-      final reducedJourneyTable = find.byKey(ReducedTrainJourney.reducedJourneyTableKey);
+      final reducedJourneyTable = _findTableOfReducedJourney();
 
       expect(find.descendant(of: reducedJourneyTable, matching: find.text('Burgdorf')), findsNothing);
 
-      // Will find 2 'Bern' because of Sticky header
-      expect(find.descendant(of: reducedJourneyTable, matching: find.text('Bern')), findsNWidgets(2));
+      expect(find.descendant(of: reducedJourneyTable, matching: find.text('Bern')), findsOneWidget);
       expect(find.descendant(of: reducedJourneyTable, matching: find.text('Zürich')), findsOneWidget);
 
       await disconnect(tester);
@@ -50,7 +50,7 @@ void main() {
 
       await openReducedJourneyMenu(tester);
 
-      final reducedJourneyTable = find.byKey(ReducedTrainJourney.reducedJourneyTableKey);
+      final reducedJourneyTable = _findTableOfReducedJourney();
 
       expect(find.descendant(of: reducedJourneyTable, matching: find.text('km 31.500 - km 32.400')), findsOneWidget);
 
@@ -64,7 +64,7 @@ void main() {
 
       await openReducedJourneyMenu(tester);
 
-      final reducedJourneyTable = find.byKey(ReducedTrainJourney.reducedJourneyTableKey);
+      final reducedJourneyTable = _findTableOfReducedJourney();
 
       expect(find.descendant(of: reducedJourneyTable, matching: find.byKey(CommunicationNetworkIcon.gsmPKey)),
           findsOneWidget);
@@ -74,4 +74,9 @@ void main() {
       await disconnect(tester);
     });
   });
+}
+
+Finder _findTableOfReducedJourney() {
+  final reducedJourneyTable = find.byKey(ReducedTrainJourney.reducedJourneyTableKey);
+  return find.descendant(of: reducedJourneyTable, matching: find.byKey(DASTable.tableKey));
 }

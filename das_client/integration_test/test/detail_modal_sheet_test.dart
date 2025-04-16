@@ -36,6 +36,8 @@ void main() {
     // test tap on service point name without closing modal sheet
     await _openByTapOnCellWithText(tester, 'Olten');
     _checkOpenModalSheet(DetailTabRadioChannels.radioChannelsTabKey, 'Olten');
+
+    await disconnect(tester);
   });
   testWidgets('test header button collapsed on if detail model sheet open', (tester) async {
     await prepareAndStartApp(tester);
@@ -51,6 +53,8 @@ void main() {
     // check labeled buttons after close
     await _closeModalSheet(tester);
     expect(find.byKey(AnimatedHeaderIconButton.headerIconWithLabelButtonKey), findsExactly(2));
+
+    await disconnect(tester);
   });
   testWidgets('test change of detail modal sheet page with segmented button', (tester) async {
     await prepareAndStartApp(tester);
@@ -71,6 +75,8 @@ void main() {
     // change back to tab radio channels
     await _selectTab(tester, DetailModalSheetTab.radioChannels);
     _checkOpenModalSheet(DetailTabRadioChannels.radioChannelsTabKey, 'Olten');
+
+    await disconnect(tester);
   });
   testWidgets('test modal sheet closes after 10s without touch on screen', (tester) async {
     await prepareAndStartApp(tester);
@@ -86,6 +92,8 @@ void main() {
 
     // check if modal sheet is closed
     expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
+
+    await disconnect(tester);
   });
   testWidgets('test modal sheet does not close after 10s with automatic advancement paused', (tester) async {
     await prepareAndStartApp(tester);
@@ -106,6 +114,8 @@ void main() {
 
     // check if modal sheet is still open
     _checkOpenModalSheet(DetailTabRadioChannels.radioChannelsTabKey, 'Bern');
+
+    await disconnect(tester);
   });
 }
 

@@ -34,7 +34,7 @@ void main() {
       // check if the breakseries A50 is chosen.
       final breakingSeriesHeaderCell = find.byKey(TrainJourney.breakingSeriesHeaderKey);
       expect(breakingSeriesHeaderCell, findsOneWidget);
-      expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('A50')), findsNWidgets(1));
+      expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('A50')), findsOneWidget);
 
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
@@ -57,10 +57,10 @@ void main() {
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
-      // find and check if the default breakseries is chosen
+      // find and check if the default break series is chosen
       final breakingSeriesHeaderCell = find.byKey(TrainJourney.breakingSeriesHeaderKey);
       expect(breakingSeriesHeaderCell, findsOneWidget);
-      expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('R115')), findsNWidgets(1));
+      expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('R115')), findsOneWidget);
 
       final curveName = findDASTableRowByText(l10n.p_train_journey_table_curve_type_curve);
       expect(curveName, findsExactly(2));
@@ -103,6 +103,9 @@ void main() {
 
       final whistleIcon = find.descendant(of: whistleRow, matching: find.byKey(WhistleRow.whistleIconKey));
       expect(whistleIcon, findsOneWidget);
+
+      // scroll to bottom to get all tram areas visible
+      await tester.drag(scrollableFinder, const Offset(0, 300));
 
       final tramAreaRow = findDASTableRowByText('km 37.8-36.8');
       expect(tramAreaRow, findsNWidgets(2));
@@ -175,7 +178,7 @@ void main() {
 
       final breakingSeriesHeaderCell = find.byKey(TrainJourney.breakingSeriesHeaderKey);
       expect(breakingSeriesHeaderCell, findsOneWidget);
-      expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('??')), findsNWidgets(1));
+      expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('??')), findsOneWidget);
 
       await disconnect(tester);
     });
@@ -188,7 +191,7 @@ void main() {
 
       final breakingSeriesHeaderCell = find.byKey(TrainJourney.breakingSeriesHeaderKey);
       expect(breakingSeriesHeaderCell, findsOneWidget);
-      expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('R115')), findsNWidgets(1));
+      expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('R115')), findsOneWidget);
 
       await disconnect(tester);
     });
@@ -283,7 +286,7 @@ void main() {
 
       final breakingSeriesHeaderCell = find.byKey(TrainJourney.breakingSeriesHeaderKey);
       expect(breakingSeriesHeaderCell, findsOneWidget);
-      expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('A85')), findsNWidgets(1));
+      expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('A85')), findsOneWidget);
 
       final expectedSpeeds = {
         'Genève-Aéroport': '90',
