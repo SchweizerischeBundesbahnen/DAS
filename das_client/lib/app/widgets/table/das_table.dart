@@ -162,6 +162,7 @@ class _DASTableState extends State<DASTable> {
 
   Widget _buildAnimatedList(BoxConstraints constraints) {
     final list = AnimatedList(
+      physics: ClampingScrollPhysics(),
       key: _animatedListKey,
       controller: widget.scrollController,
       initialItemCount: widget.rows.length + (widget.addBottomSpacer ? 1 : 0),

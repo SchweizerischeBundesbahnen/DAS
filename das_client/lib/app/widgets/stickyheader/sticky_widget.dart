@@ -4,6 +4,8 @@
 // that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+import 'dart:math';
+
 import 'package:das_client/app/widgets/stickyheader/sticky_header.dart';
 import 'package:das_client/app/widgets/stickyheader/sticky_level.dart';
 import 'package:das_client/app/widgets/stickyheader/sticky_widget_controller.dart';
@@ -148,7 +150,7 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
   void _onPanUpdate(DragUpdateDetails details) {
     if (widget.controller.scrollController.positions.isNotEmpty) {
       widget.controller.scrollController.position
-          .jumpTo(widget.controller.scrollController.position.pixels - details.delta.dy);
+          .jumpTo(max(widget.controller.scrollController.position.pixels - details.delta.dy, 0));
     }
   }
 
