@@ -7,6 +7,7 @@ import 'package:das_client/sfera/src/model/xml_line_foot_notes.dart';
 import 'package:das_client/sfera/src/model/xml_new_line_speed.dart';
 import 'package:das_client/sfera/src/model/xml_op_foot_notes.dart';
 import 'package:das_client/sfera/src/model/xml_station_speed.dart';
+import 'package:das_client/sfera/src/model/xml_track_foot_notes.dart';
 
 class NetworkSpecificParameter extends SferaXmlElement {
   static const String elementType = 'NetworkSpecificParameter';
@@ -31,6 +32,8 @@ class NetworkSpecificParameter extends SferaXmlElement {
       return XmlLineFootNotes(attributes: attributes, children: children, value: value);
     } else if (attributes?['name'] == XmlOpFootNotes.elementName) {
       return XmlOpFootNotes(attributes: attributes, children: children, value: value);
+    } else if (attributes?['name'] == XmlTrackFootNotes.elementName) {
+      return XmlTrackFootNotes(attributes: attributes, children: children, value: value);
     }
     return NetworkSpecificParameter(attributes: attributes, children: children, value: value);
   }

@@ -7,7 +7,6 @@ import 'package:das_client/sfera/src/model/connection_track.dart';
 import 'package:das_client/sfera/src/model/connection_track_description.dart';
 import 'package:das_client/sfera/src/model/contact.dart';
 import 'package:das_client/sfera/src/model/contact_list.dart';
-import 'package:das_client/sfera/src/model/other_contact_type.dart';
 import 'package:das_client/sfera/src/model/current_limitation.dart';
 import 'package:das_client/sfera/src/model/current_limitation_change.dart';
 import 'package:das_client/sfera/src/model/current_limitation_start.dart';
@@ -35,6 +34,7 @@ import 'package:das_client/sfera/src/model/network_specific_event.dart';
 import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
 import 'package:das_client/sfera/src/model/network_specific_point.dart';
 import 'package:das_client/sfera/src/model/op_foot_notes.dart';
+import 'package:das_client/sfera/src/model/other_contact_type.dart';
 import 'package:das_client/sfera/src/model/otn_id.dart';
 import 'package:das_client/sfera/src/model/own_train.dart';
 import 'package:das_client/sfera/src/model/position_speed.dart';
@@ -74,6 +74,7 @@ import 'package:das_client/sfera/src/model/timing_point_constraints.dart';
 import 'package:das_client/sfera/src/model/timing_point_reference.dart';
 import 'package:das_client/sfera/src/model/tp_id_reference.dart';
 import 'package:das_client/sfera/src/model/tp_name.dart';
+import 'package:das_client/sfera/src/model/track_foot_notes.dart';
 import 'package:das_client/sfera/src/model/train_characteristics.dart';
 import 'package:das_client/sfera/src/model/train_characteristics_ref.dart';
 import 'package:das_client/sfera/src/model/train_identification.dart';
@@ -279,6 +280,8 @@ class SferaReplyParser {
         return Contact(type: type, attributes: attributes, children: children, value: value);
       case OtherContactType.elementType:
         return OtherContactType(type: type, attributes: attributes, children: children, value: value);
+      case TrackFootNotes.elementType:
+        return TrackFootNotes(type: type, attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElement(type: type, attributes: attributes, children: children, value: value);
     }
