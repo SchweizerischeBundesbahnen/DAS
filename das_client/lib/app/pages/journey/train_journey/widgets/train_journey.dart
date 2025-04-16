@@ -132,7 +132,7 @@ class TrainJourney extends StatelessWidget {
     final rows = journey.data
         .whereNot((it) => _isCurvePointWithoutSpeed(it, journey, settings))
         .groupBaliseAndLeveLCrossings(settings.expandedGroups)
-        .hideRepeatedLineFootNotes(journey.metadata)
+        .hideRepeatedLineFootNotes(journey.metadata.currentPosition)
         .hideFootNotesForNotSelectedTrainSeries(currentTrainSeries)
         .toList();
 

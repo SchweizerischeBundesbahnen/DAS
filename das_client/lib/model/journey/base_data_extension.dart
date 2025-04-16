@@ -3,7 +3,6 @@ import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/base_foot_note.dart';
 import 'package:das_client/model/journey/datatype.dart';
 import 'package:das_client/model/journey/line_foot_note.dart';
-import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/train_series.dart';
 
 extension BaseDataExtension on Iterable<BaseData> {
@@ -51,10 +50,10 @@ extension BaseDataExtension on Iterable<BaseData> {
     return resultList;
   }
 
-  Iterable<BaseData> hideRepeatedLineFootNotes(Metadata metadata) {
+  Iterable<BaseData> hideRepeatedLineFootNotes(BaseData? position) {
     final resultList = List.of(this);
 
-    final currentPosition = metadata.currentPosition ?? resultList.first;
+    final currentPosition = position ?? resultList.first;
     final displayedFootNoteIdentifiers = [];
 
     var currentPositionIndex = resultList.indexOf(currentPosition);
@@ -66,6 +65,7 @@ extension BaseDataExtension on Iterable<BaseData> {
         .forEach((it) => displayedFootNoteIdentifiers.add(it.identifier));
 
     // Search upwards
+    currentPositionIndex = resultList.lastIndexWhere((it) => it.order < currentPosition.order);
     for (int i = currentPositionIndex; i >= 0; i--) {
       final currentElement = resultList[i];
       if (currentElement is LineFootNote) {
