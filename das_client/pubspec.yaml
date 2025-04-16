@@ -1,6 +1,6 @@
 name: das_client
-description: "DAS (Driver Advisory System) is a mobile application that provides all the required journey data to the train driver."
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+description: "das (driver advisory system) is a mobile application that provides all the required journey data to the train driver."
+publish_to: 'none' # remove this line if you wish to publish to pub.dev
 version: 0.15.0+55
 
 environment:
@@ -14,7 +14,7 @@ dependencies:
 
   sbb_oidc:
     git:
-      url: https://github.com/SchweizerischeBundesbahnen/flutter-oidc.git
+      url: https://github.com/schweizerischebundesbahnen/flutter-oidc.git
       path: sbb_oidc
       ref: 3.4.0
 
@@ -22,7 +22,7 @@ dependencies:
   # will revert to pub dev once promotion box changes are released
   sbb_design_system_mobile:
     git:
-      url: https://github.com/SchweizerischeBundesbahnen/design_system_flutter.git
+      url: https://github.com/schweizerischebundesbahnen/design_system_flutter.git
       ref: feature/promotion-box-improvement
 
   # https://pub.dev/packages/collection
@@ -75,6 +75,8 @@ dependencies:
   volume_controller: ^3.3.1
   # https://pub.dev/packages/provider
   provider: ^6.1.2
+  #https://pub.dev/packages/screen_brightness
+  screen_brightness: ^2.1.2
 
 dev_dependencies:
   integration_test:
@@ -89,7 +91,7 @@ dev_dependencies:
   path_provider_platform_interface: any
   plugin_platform_interface: any
   flutter_lints: ^5.0.0
-  
+
   custom_lint:
   das_custom_lints:
     path: ./das_custom_lints
@@ -106,6 +108,6 @@ flutter:
     - assets/fonts/
     - assets/sounds/
   fonts:
-    - family: DasIcons
+    - family: dasicons
       fonts:
-        - asset: assets/fonts/DasIcons.ttf
+        - asset: assets/fonts/dasicons.ttf
