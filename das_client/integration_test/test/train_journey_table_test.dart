@@ -105,7 +105,7 @@ void main() {
       expect(whistleIcon, findsOneWidget);
 
       // scroll to bottom to get all tram areas visible
-      await tester.drag(scrollableFinder, const Offset(0, 300));
+      await tester.drag(scrollableFinder, const Offset(0, -500));
 
       final tramAreaRow = findDASTableRowByText('km 37.8-36.8');
       expect(tramAreaRow, findsNWidgets(2));
