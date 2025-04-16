@@ -24,8 +24,8 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>1121</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Pully</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" text="Pully"/>
 
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
@@ -81,7 +81,7 @@
         </KilometreReferencePoint>
 
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="11.0" gradientDirection="Downhill"
-                              directionOfApplicationOnSP="Nominal"/>
+            directionOfApplicationOnSP="Nominal"/>
 
     </SP_ContextInformation>
 

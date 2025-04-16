@@ -109,7 +109,7 @@ class MainContainer extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: sbbDefaultSpacing * 0.5),
       child: Text(
-        metadata.nextStop?.name.localized ?? context.l10n.c_unknown,
+        metadata.nextStop?.name ?? context.l10n.c_unknown,
         style: DASTextStyles.xLargeLight,
         overflow: TextOverflow.ellipsis,
       ),
