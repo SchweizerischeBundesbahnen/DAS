@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd"
-                SP_ID="T15_1" SP_VersionMajor="2" SP_VersionMinor="1" SP_Length="2200" SP_Status="Valid">
+                SP_ID="T15_1" SP_VersionMajor="3" SP_VersionMinor="1" SP_Length="2200" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -40,6 +40,18 @@
             <SignalPhysicalCharacteristics visualIdentifier="B814"/>
         </Signal>
 
+        <NetworkSpecificPoint location="350">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>trackFootNotes</NSP_GroupName>
+            <NetworkSpecificParameter name="xmlTrackFootNotes" value="
+				&lt;trackFootNotes&gt;
+					&lt;footNote  type=&quot;journey&quot; refText=&quot;1)&quot;&gt;
+						&lt;text&gt;TrackFootNote nur für R&lt;/text&gt;
+						&lt;trainSeries&gt;R&lt;/trainSeries&gt;
+					&lt;/footNote&gt;
+				&lt;/trackFootNotes&gt;
+            "/>
+        </NetworkSpecificPoint>
     </SP_Points>
 
     <SP_Areas>
@@ -127,6 +139,9 @@
         </KilometreReferencePoint>
         <KilometreReferencePoint location="200">
             <KM_Reference kmRef="4.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="350">
+            <KM_Reference kmRef="4.1"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="500">
             <KM_Reference kmRef="4.0"/>

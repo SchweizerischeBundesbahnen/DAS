@@ -4,6 +4,8 @@
 // that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+import 'dart:math';
+
 import 'package:das_client/app/widgets/stickyheader/sticky_header.dart';
 import 'package:das_client/app/widgets/stickyheader/sticky_level.dart';
 import 'package:das_client/app/widgets/stickyheader/sticky_widget_controller.dart';
@@ -32,6 +34,10 @@ class StickyWidget extends StatefulWidget {
 
 class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+
+  Widget? _stickyHeader1;
+  Widget? _stickyHeader2;
+  Widget? _stickyFooter;
 
   @override
   void initState() {
@@ -69,39 +75,66 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
   }
 
   Widget _buildHeaders(BuildContext context) {
-    final indexesToBuild = widget.controller.headerIndexes;
+    _buildHeaderWidgets(context);
 
     return Stack(
       children: [
-        if (indexesToBuild[StickyLevel.second] != -1)
-          Positioned(
-            left: 0,
-            top: widget.controller.widgetHeight(indexesToBuild[StickyLevel.first]!) +
-                widget.controller.headerOffsets[StickyLevel.second]!,
-            right: 0,
-            child: widget.widgetBuilder(context, indexesToBuild[StickyLevel.second]!),
-          ),
-        if (indexesToBuild[StickyLevel.first] != -1)
-          Positioned(
-            left: 0,
-            top: widget.controller.headerOffsets[StickyLevel.first],
-            right: 0,
-            child: widget.widgetBuilder(context, indexesToBuild[StickyLevel.first]!),
-          ),
+        if (_stickyHeader2 != null) _stickyHeader2!,
+        if (_stickyHeader1 != null) _stickyHeader1!,
       ],
     );
   }
 
-  Widget _buildFooter(BuildContext context) {
+  void _buildHeaderWidgets(BuildContext context) {
+    final indexesToBuild = widget.controller.headerIndexes;
+    if (!widget.controller.isRecalculating) {
+      if (indexesToBuild[StickyLevel.first] != -1) {
+        _stickyHeader1 = Positioned(
+          left: 0,
+          top: widget.controller.headerOffsets[StickyLevel.first],
+          right: 0,
+          child: widget.widgetBuilder(context, indexesToBuild[StickyLevel.first]!),
+        );
+      } else {
+        _stickyHeader1 = null;
+      }
+
+      if (indexesToBuild[StickyLevel.second] != -1) {
+        _stickyHeader2 = Positioned(
+          left: 0,
+          top: widget.controller.widgetHeight(indexesToBuild[StickyLevel.first]!) +
+              widget.controller.headerOffsets[StickyLevel.second]!,
+          right: 0,
+          child: widget.widgetBuilder(context, indexesToBuild[StickyLevel.second]!),
+        );
+      } else {
+        _stickyHeader2 = null;
+      }
+    }
+  }
+
+  void _buildFooterWidget(BuildContext context) {
     final indexToBuild = widget.controller.footerIndex;
-    if (indexToBuild != -1) {
+    if (!widget.controller.isRecalculating) {
+      if (indexToBuild != -1) {
+        _stickyFooter = widget.widgetBuilder(context, indexToBuild);
+      } else {
+        _stickyFooter = null;
+      }
+    }
+  }
+
+  Widget _buildFooter(BuildContext context) {
+    _buildFooterWidget(context);
+
+    if (_stickyFooter != null) {
       return Stack(
         children: [
           Positioned(
             left: 0,
             right: 0,
             bottom: 0,
-            child: widget.widgetBuilder(context, indexToBuild),
+            child: _stickyFooter!,
           ),
         ],
       );
@@ -117,7 +150,7 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
   void _onPanUpdate(DragUpdateDetails details) {
     if (widget.controller.scrollController.positions.isNotEmpty) {
       widget.controller.scrollController.position
-          .jumpTo(widget.controller.scrollController.position.pixels - details.delta.dy);
+          .jumpTo(max(widget.controller.scrollController.position.pixels - details.delta.dy, 0));
     }
   }
 

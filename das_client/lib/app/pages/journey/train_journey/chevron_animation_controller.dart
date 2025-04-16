@@ -1,3 +1,4 @@
+import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:flutter/material.dart';
 
@@ -12,8 +13,14 @@ class ChevronAnimationController with ChangeNotifier {
   final AnimationController animationController;
   Animation<double>? animation;
 
+  BaseData? currentPosition;
+  BaseData? lastPosition;
+
   void onJourneyUpdate(Journey journey) {
     if (journey.metadata.currentPosition != journey.metadata.lastPosition) {
+      currentPosition = journey.metadata.currentPosition;
+      lastPosition = journey.metadata.lastPosition;
+
       animation = Tween<double>(begin: 0.0, end: 1.0).animate(animationController)
         ..addListener(() {
           notifyListeners();

@@ -13,7 +13,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class BaliseLevelCrossingGroupRow extends CellRowBuilder<BaliseLevelCrossingGroup> {
   static const Key baliseIconKey = Key('baliseIcon');
 
-  const BaliseLevelCrossingGroupRow({
+  BaliseLevelCrossingGroupRow({
     required super.metadata,
     required super.data,
     super.config,

@@ -12,6 +12,7 @@ import 'package:das_client/model/journey/protection_section.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
 import 'package:das_client/model/journey/speed_change.dart';
+import 'package:das_client/model/journey/track_foot_note.dart';
 import 'package:das_client/model/journey/train_series.dart';
 import 'package:das_client/model/journey/whistles.dart';
 import 'package:das_client/sfera/src/mapper/graduated_speed_data_mapper.dart';
@@ -59,6 +60,7 @@ class SegmentProfileMapper {
     journeyData.addAll(_parseProtectionSections(mapperData));
     journeyData.addAll(_parseOpFootNotes(mapperData));
     journeyData.addAll(_parseLineFootNotes(mapperData));
+    journeyData.addAll(_parseTrackFootNotes(mapperData));
     journeyData.addAll(_parseServicePoint(mapperData, segmentProfiles, segmentProfileReference));
 
     final curvePoints = _parseCurvePoints(mapperData);
@@ -253,6 +255,20 @@ class SegmentProfileMapper {
         kilometre: mapperData.kilometreMap[levelCrossing.startLocation] ?? [],
       );
     });
+  }
+
+  static Iterable<TrackFootNote> _parseTrackFootNotes(_MapperData mapperData) {
+    final trackFootNotesNsp = mapperData.segmentProfile.points?.trackFootNotesNsp ?? [];
+    return trackFootNotesNsp.map((trackFootNoteNsp) {
+      final footNotes = _parseFootNotes(trackFootNoteNsp.xmlTrackFootNotes.element.footNotes);
+
+      return footNotes.map(
+        (note) => TrackFootNote(
+          order: calculateOrder(mapperData.segmentIndex, trackFootNoteNsp.location),
+          footNote: note,
+        ),
+      );
+    }).flattenedToList;
   }
 
   static Iterable<OpFootNote> _parseOpFootNotes(_MapperData mapperData) {

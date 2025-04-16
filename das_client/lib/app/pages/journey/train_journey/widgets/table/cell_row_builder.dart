@@ -23,11 +23,12 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
   static const double rowHeight = 44.0;
 
-  const CellRowBuilder({
+  CellRowBuilder({
     required this.metadata,
     required super.data,
     super.height = rowHeight,
     super.stickyLevel,
+    super.key,
     this.config = const TrainJourneyConfig(),
     this.defaultAlignment = Alignment.bottomCenter,
     this.rowColor,
@@ -45,6 +46,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
   @override
   DASTableRow build(BuildContext context) {
     return DASTableCellRow(
+      key: key,
       height: height,
       color: rowColor,
       onTap: onTap,

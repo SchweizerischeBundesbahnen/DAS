@@ -5,7 +5,7 @@ import 'package:das_client/model/journey/level_crossing.dart';
 import 'package:flutter/material.dart';
 
 class LevelCrossingRow extends CellRowBuilder<LevelCrossing> {
-  const LevelCrossingRow({
+  LevelCrossingRow({
     required super.metadata,
     required super.data,
     super.config,
