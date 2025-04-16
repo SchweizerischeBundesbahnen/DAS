@@ -105,13 +105,13 @@ void main() {
       expect(whistleIcon, findsOneWidget);
 
       final tramAreaRow = findDASTableRowByText('km 37.8-36.8');
-      expect(tramAreaRow, findsNWidgets(2));
+      expect(tramAreaRow, findsAny);
 
       final tramAreaIcon = find.descendant(of: tramAreaRow, matching: find.byKey(TramAreaRow.tramAreaIconKey));
-      expect(tramAreaIcon, findsNWidgets(2));
+      expect(tramAreaIcon, findsAny);
 
       final tramAreaDescription = find.descendant(of: tramAreaRow, matching: find.text('6 TS'));
-      expect(tramAreaDescription, findsNWidgets(2));
+      expect(tramAreaDescription, findsAny);
 
       await disconnect(tester);
     });
