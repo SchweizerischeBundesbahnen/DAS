@@ -14,7 +14,6 @@ import 'package:das_client/model/journey/signal.dart';
 import 'package:das_client/model/journey/speed_change.dart';
 import 'package:das_client/model/journey/train_series.dart';
 import 'package:das_client/model/journey/whistles.dart';
-import 'package:das_client/model/localized_string.dart';
 import 'package:das_client/sfera/src/mapper/graduated_speed_data_mapper.dart';
 import 'package:das_client/sfera/src/mapper/mapper_utils.dart';
 import 'package:das_client/sfera/src/model/enums/length_type.dart';
@@ -22,7 +21,6 @@ import 'package:das_client/sfera/src/model/enums/stop_skip_pass.dart';
 import 'package:das_client/sfera/src/model/enums/taf_tap_location_type.dart';
 import 'package:das_client/sfera/src/model/enums/xml_enum.dart';
 import 'package:das_client/sfera/src/model/foot_note.dart';
-import 'package:das_client/sfera/src/model/multilingual_text.dart';
 import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
 import 'package:das_client/sfera/src/model/segment_profile_list.dart';
@@ -99,7 +97,7 @@ class SegmentProfileMapper {
 
       servicePoints.add(
         ServicePoint(
-          name: _localizedStringFromMultilingualText(tafTapLocation.locationNames),
+          name: tafTapLocation.locationIdent.primaryLocationName?.value ?? '',
           order: calculateOrder(mapperData.segmentIndex, timingPoint.location),
           mandatoryStop: tpConstraint.stoppingPointInformation?.stopType?.mandatoryStop ?? true,
           isStop: tpConstraint.stopSkipPass == StopSkipPass.stoppingPoint,
@@ -129,14 +127,6 @@ class SegmentProfileMapper {
         kilometre: mapperData.kilometreMap[signal.id.location] ?? [],
       );
     });
-  }
-
-  static LocalizedString _localizedStringFromMultilingualText(Iterable<MultilingualText> multilingualText) {
-    return LocalizedString(
-      de: multilingualText.textFor('de'),
-      fr: multilingualText.textFor('fr'),
-      it: multilingualText.textFor('it'),
-    );
   }
 
   static List<ProtectionSection> _parseProtectionSections(_MapperData mapperData) {
@@ -309,7 +299,7 @@ class SegmentProfileMapper {
 
           return footNotes.map(
             (note) => LineFootNote(
-              locationName: _localizedStringFromMultilingualText(location.locationNames),
+              locationName: location.locationIdent.primaryLocationName?.value ?? '',
               order: calculateOrder(mapperData.segmentIndex, location.startLocation!),
               footNote: note,
             ),
