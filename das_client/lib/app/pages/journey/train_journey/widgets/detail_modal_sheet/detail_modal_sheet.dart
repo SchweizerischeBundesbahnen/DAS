@@ -49,7 +49,7 @@ class DetailModalSheet extends StatelessWidget {
         StreamBuilder(
           stream: viewModel.servicePoint,
           builder: (context, snapshot) {
-            final name = snapshot.data?.name.localized ?? context.l10n.c_unknown;
+            final name = snapshot.data?.name ?? context.l10n.c_unknown;
             return Text(name, style: DASTextStyles.largeRoman);
           },
         ),
