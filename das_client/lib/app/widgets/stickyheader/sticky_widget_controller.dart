@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:collection/collection.dart';
 import 'package:das_client/app/widgets/stickyheader/sticky_level.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:das_client/util/widget_util.dart';
@@ -168,9 +167,6 @@ class StickyWidgetController with ChangeNotifier {
     _initialize();
     _scrollListener();
   }
-
-  double get stickyHeaderHeight =>
-      headerIndexes.entries.where((it) => it.value != -1).map((it) => _rows[it.value].height).sum;
 
   @override
   void dispose() {

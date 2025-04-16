@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:das_client/app/widgets/stickyheader/sticky_header.dart';
+import 'package:das_client/app/widgets/stickyheader/sticky_level.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:das_client/util/widget_util.dart';
 import 'package:fimber/fimber.dart';
@@ -53,8 +56,28 @@ class _ScrollableAlignState extends State<ScrollableAlign> {
       return;
     }
 
-    final stickyHeaderHeight = stickyHeaderState.controller.stickyHeaderHeight;
+    var stickyHeaderHeight = 0.0;
+    var stickyHeader2Offset = 0.0;
+    final headerIndexes = stickyHeaderState.controller.headerIndexes;
+    if (headerIndexes[StickyLevel.first] != -1) {
+      stickyHeaderHeight += widget.rows[headerIndexes[StickyLevel.first]!].height;
+    }
+    if (headerIndexes[StickyLevel.second] != -1) {
+      final rowHeight = widget.rows[headerIndexes[StickyLevel.second]!].height;
+      final stickyOffset = stickyHeaderState.controller.headerOffsets[StickyLevel.second]!.abs();
+      if (rowHeight >= stickyOffset) {
+        stickyHeader2Offset = min(stickyOffset, rowHeight);
+        stickyHeaderHeight += rowHeight - stickyOffset;
+      }
+    }
+    stickyHeaderHeight = stickyHeaderHeight.roundToDouble();
+
     final currentPosition = widget.scrollController.position.pixels;
+
+    if (stickyHeader2Offset > 0) {
+      _scrollToTarget((currentPosition - stickyHeader2Offset).roundToDouble());
+      return;
+    }
 
     for (int i = 0; i < widget.rows.length; i++) {
       final row = widget.rows[i];
@@ -69,7 +92,7 @@ class _ScrollableAlignState extends State<ScrollableAlign> {
           }
 
           if (visibleArea > 0) {
-            _scrollToTarget(currentPosition - (row.height - visibleArea));
+            _scrollToTarget((currentPosition - (row.height - visibleArea)).roundToDouble());
             break;
           }
         }
