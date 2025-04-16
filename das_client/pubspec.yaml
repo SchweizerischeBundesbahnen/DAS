@@ -23,7 +23,7 @@ dependencies:
   sbb_design_system_mobile:
     git:
       url: https://github.com/SchweizerischeBundesbahnen/design_system_flutter.git
-      ref: feature/promotion-box-improvement
+      ref: 2579f84
 
   # https://pub.dev/packages/collection
   collection: ^1.19.0
@@ -77,6 +77,7 @@ dependencies:
   provider: ^6.1.2
   # https://pub.dev/packages/extra_hittest_area
   extra_hittest_area: ^1.0.0
+  screen_brightness: ^2.1.2
 
 dev_dependencies:
   integration_test:

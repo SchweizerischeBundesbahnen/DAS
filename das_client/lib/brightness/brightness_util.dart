@@ -14,7 +14,7 @@ class BrightnessUtil {
     try {
       return await ScreenBrightness().application;
     } catch (e) {
-      return 0.5;
+      return 0.1;
     }
   }
 }

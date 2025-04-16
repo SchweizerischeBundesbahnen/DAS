@@ -1004,8 +1004,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "feature/promotion-box-improvement"
-      resolved-ref: "10a4f384f4c1d7f00d703b7c25aaf25f010deea9"
+      ref: "2579f84"
+      resolved-ref: "2579f845d1bbb19ee25f86f5e12332eedd6696cf"
       url: "https://github.com/SchweizerischeBundesbahnen/design_system_flutter.git"
     source: git
     version: "2.3.0"
