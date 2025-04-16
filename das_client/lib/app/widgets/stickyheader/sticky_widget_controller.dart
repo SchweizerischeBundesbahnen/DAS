@@ -15,7 +15,6 @@ class StickyWidgetController with ChangeNotifier {
 
   final GlobalKey stickyHeaderKey;
   final ScrollController scrollController;
-  final List<double> rowOffsets = [];
   List<DASTableRow> _rows;
   bool _recalculating = false;
 
@@ -32,12 +31,6 @@ class StickyWidgetController with ChangeNotifier {
   bool get isRecalculating => _recalculating;
 
   void _initialize() {
-    var offset = 0.0;
-    for (var i = 0; i < _rows.length; i++) {
-      rowOffsets.add(offset);
-      offset += _rows[i].height;
-    }
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollListener();
     });
@@ -139,9 +132,10 @@ class StickyWidgetController with ChangeNotifier {
     var stickyFooterIndex = _findNextStickyBelowLevel(startIndex, StickyLevel.first);
 
     if (stickyFooterIndex != -1) {
-      final stickyOffset = rowOffsets[stickyFooterIndex];
-      if (currentPixels + scrollController.position.viewportDimension >
-          stickyOffset + _rows[stickyFooterIndex].height) {
+      final stickyOffset = WidgetUtil.findOffsetOfKey(stickyHeaderKey);
+      final offset = WidgetUtil.findOffsetOfKey(_rows[stickyFooterIndex].key);
+      if (offset != null &&
+          (offset - stickyOffset!).dy + _rows[stickyFooterIndex].height < scrollController.position.viewportDimension) {
         // Footer is already on screen
         stickyFooterIndex = -1;
       }
@@ -163,7 +157,6 @@ class StickyWidgetController with ChangeNotifier {
 
   void updateRowData(List<DASTableRow> rows) {
     _rows = rows;
-    rowOffsets.clear();
     _initialize();
     _scrollListener();
   }

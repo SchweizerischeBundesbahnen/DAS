@@ -72,13 +72,28 @@ class _DASTableState extends State<DASTable> {
   }
 
   void _updateItemCount(DASTable oldWidget) {
-    if (oldWidget.rows.length != widget.rows.length) {
-      _animatedListKey.currentState!.removeAllItems((context, animation) => Container(), duration: Duration.zero);
-      _animatedListKey.currentState!.insertAllItems(0, widget.rows.length, duration: Duration.zero);
+    final oldLength = oldWidget.rows.length;
+    final newLength = widget.rows.length;
+    final diff = (oldLength - newLength).abs();
+
+    if (oldLength < newLength) {
+      for (int i = 0; i < diff; i++) {
+        _animatedListKey.currentState!.insertItem(oldLength + i, duration: Duration.zero);
+      }
+    } else if (oldLength > newLength) {
+      for (int i = 0; i < diff; i++) {
+        _animatedListKey.currentState!
+            .removeItem(oldLength - i, (context, animation) => Container(), duration: Duration.zero);
+      }
     }
   }
 
   void _calculateInsertAndRemoveAnimation(DASTable oldWidget) {
+    if (oldWidget.rows.length != widget.rows.length) {
+      // we only animate if the number of rows is the same (line foot notes moving)
+      return;
+    }
+
     for (int i = 0; i < oldWidget.rows.length && i < widget.rows.length; i++) {
       final oldRow = oldWidget.rows[i];
       if (oldRow.identifier != null && widget.rows[i].identifier != oldRow.identifier) {

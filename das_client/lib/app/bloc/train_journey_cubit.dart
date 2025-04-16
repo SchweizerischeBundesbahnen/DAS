@@ -138,6 +138,12 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
 
   void updateBreakSeries(BreakSeries selectedBreakSeries) {
     _settingsSubject.add(_settingsSubject.value.copyWith(selectedBreakSeries: selectedBreakSeries));
+
+    if (_settingsSubject.value.automaticAdvancementActive) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        automaticAdvancementController.scrollToCurrentPosition(resetAutomaticAdvancementTimer: true);
+      });
+    }
   }
 
   void updateExpandedGroups(List<int> expandedGroups) {
@@ -151,7 +157,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
   void setAutomaticAdvancement(bool active) {
     Fimber.i('Automatic advancement state changed to active=$active');
     if (active) {
-      automaticAdvancementController.scrollToCurrentPosition();
+      automaticAdvancementController.scrollToCurrentPosition(resetAutomaticAdvancementTimer: true);
     }
     _settingsSubject.add(_settingsSubject.value.copyWith(automaticAdvancementActive: active));
   }
