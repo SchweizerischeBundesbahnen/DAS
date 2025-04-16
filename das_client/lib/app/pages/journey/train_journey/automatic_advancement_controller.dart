@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:collection/collection.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:das_client/app/widgets/stickyheader/sticky_level.dart';
+import 'package:das_client/app/widgets/table/das_table.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/journey.dart';
@@ -15,7 +16,6 @@ class AutomaticAdvancementController {
   static const int _minScrollDuration = 1000;
   static const int _maxScrollDuration = 2000;
   static const int _screenIdleTimeSeconds = 10;
-  static const double _dasTableHeaderHeight = 40.0;
 
   AutomaticAdvancementController({ScrollController? controller, GlobalKey? tableKey})
       : scrollController = controller ?? ScrollController(),
@@ -96,7 +96,7 @@ class AutomaticAdvancementController {
       return null;
     }
 
-    final renderedDiff = firstRowOffset.dy - listOffset.dy - _dasTableHeaderHeight;
+    final renderedDiff = firstRowOffset.dy - listOffset.dy - DASTable.headerRowHeight;
     final stickyHeight = _calculateStickyHeight(_currentJourney!.metadata.currentPosition!);
 
     Fimber.d(

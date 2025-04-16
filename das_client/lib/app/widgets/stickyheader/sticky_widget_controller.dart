@@ -45,7 +45,7 @@ class StickyWidgetController with ChangeNotifier {
   }
 
   void _scrollListener() {
-    final firstVisibleIndex = findFirstVisibleRowIndex();
+    final firstVisibleIndex = _findFirstVisibleRowIndex();
     if (firstVisibleIndex == -1) {
       _recalculating = true;
       return;
@@ -69,19 +69,17 @@ class StickyWidgetController with ChangeNotifier {
     notifyListeners();
   }
 
-  int findFirstVisibleRowIndex() {
+  int _findFirstVisibleRowIndex() {
     final stickyOffset = WidgetUtil.findOffsetOfKey(stickyHeaderKey);
     if (stickyOffset == null) return -1;
 
     for (int i = 0; i < _rows.length; i++) {
       final row = _rows[i];
-      if (row.key.currentContext != null) {
-        final renderObject = row.key.currentContext?.findRenderObject() as RenderBox?;
-        if (renderObject != null) {
-          final offset = renderObject.localToGlobal(Offset.zero) - stickyOffset;
-          if (offset.dy + row.height > 0) {
-            return i;
-          }
+      final renderObject = row.key.currentContext?.findRenderObject() as RenderBox?;
+      if (renderObject != null) {
+        final offset = renderObject.localToGlobal(Offset.zero) - stickyOffset;
+        if (offset.dy + row.height > 0) {
+          return i;
         }
       }
     }

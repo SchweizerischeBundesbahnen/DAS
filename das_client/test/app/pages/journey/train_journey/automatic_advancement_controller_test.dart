@@ -26,7 +26,7 @@ import 'automatic_advancement_controller_test.mocks.dart';
   MockSpec<RenderBox>(),
 ])
 void main() {
-  const double _dasTableHeaderOffset = -40;
+  const double dasTableHeaderOffset = -40;
 
   test('test does nothing without anything provided', () {
     final scrollControllerMock = MockScrollController();
@@ -60,7 +60,7 @@ void main() {
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
     final testee = AutomaticAdvancementController(
-        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, _dasTableHeaderOffset)));
+        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: true));
@@ -93,7 +93,7 @@ void main() {
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
     final testee = AutomaticAdvancementController(
-        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, _dasTableHeaderOffset)));
+        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: false));
@@ -124,7 +124,7 @@ void main() {
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
     final testee = AutomaticAdvancementController(
-        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, _dasTableHeaderOffset)));
+        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: true));
@@ -156,7 +156,7 @@ void main() {
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
     final testee = AutomaticAdvancementController(
-        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, _dasTableHeaderOffset)));
+        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: true));
@@ -190,7 +190,7 @@ void main() {
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 10);
 
     final testee = AutomaticAdvancementController(
-        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, _dasTableHeaderOffset)));
+        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(rows);
     testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: true));
@@ -225,7 +225,7 @@ void main() {
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
     final testee = AutomaticAdvancementController(
-        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, _dasTableHeaderOffset)));
+        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: true));
@@ -261,7 +261,7 @@ void main() {
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
     final testee = AutomaticAdvancementController(
-        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, _dasTableHeaderOffset)));
+        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: true));

@@ -75,42 +75,6 @@ class _ScrollableAlignState extends State<ScrollableAlign> {
         }
       }
     }
-
-    /*
-
-    final stickyHeaderHeightAdjustment = {StickyLevel.first: 0.0, StickyLevel.second: 0.0};
-    var itemStart = 0.0;
-
-    for (var i = 0; i < widget.rows.length; i++) {
-      final item = widget.rows[i];
-
-      if (item.stickyLevel == StickyLevel.first) {
-        stickyHeaderHeightAdjustment[StickyLevel.first] = item.height;
-      } else if (item.stickyLevel == StickyLevel.second) {
-        stickyHeaderHeightAdjustment[StickyLevel.second] = item.height;
-      }
-
-      final itemEnd = itemStart + item.height;
-      var adjustedCurrentPosition = currentPosition + stickyHeaderHeightAdjustment.values.sum;
-      if (adjustedCurrentPosition >= itemStart && adjustedCurrentPosition < itemEnd) {
-        _scrollToTarget(itemStart - stickyHeaderHeightAdjustment.values.sum);
-        break;
-      }
-
-      if (item.stickyLevel == StickyLevel.first) {
-        stickyHeaderHeightAdjustment[StickyLevel.second] = 0;
-
-        // Need to check alignment again once second sticky header is removed
-        adjustedCurrentPosition = currentPosition + stickyHeaderHeightAdjustment.values.sum;
-        if (adjustedCurrentPosition >= itemStart && adjustedCurrentPosition < itemEnd) {
-          _scrollToTarget(itemStart - stickyHeaderHeightAdjustment.values.sum);
-          break;
-        }
-      }
-      itemStart = itemEnd;
-    }
-
-     */
   }
 
   Future<void> _scrollToTarget(double targetPosition) async {

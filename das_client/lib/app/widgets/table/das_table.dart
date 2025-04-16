@@ -17,7 +17,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class DASTable extends StatefulWidget {
   static const Key tableKey = Key('dasTable');
   static const Key rowKey = Key('dasTableRow');
-  static const double _headerRowHeight = 40.0;
+  static const double headerRowHeight = 40.0;
 
   DASTable({
     required this.columns,
@@ -154,7 +154,7 @@ class _DASTableState extends State<DASTable> {
         if (index == widget.rows.length && widget.addBottomSpacer) {
           return SizedBox(
               height: max(
-                  constraints.maxHeight - DASTable._headerRowHeight - widget.bottomMarginAdjustment - sbbDefaultSpacing,
+                  constraints.maxHeight - DASTable.headerRowHeight - widget.bottomMarginAdjustment - sbbDefaultSpacing,
                   widget.minBottomMargin));
         }
         return SizeTransition(key: widget.rows[index].key, sizeFactor: animation, child: _dataRow(widget.rows[index]));
@@ -186,7 +186,7 @@ class _DASTableState extends State<DASTable> {
 
   Widget _headerRow() {
     return _FixedHeightRow(
-      height: DASTable._headerRowHeight,
+      height: DASTable.headerRowHeight,
       children: widget.columns.map((column) => _headerCell(column)).toList(),
     );
   }
