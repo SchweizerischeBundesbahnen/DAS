@@ -56,7 +56,7 @@ class SferaServiceImpl implements SferaService {
   final _uxTestingSubject = BehaviorSubject<UxTesting?>.seeded(null);
 
   @override
-  Stream<SferaServiceState> get stateStream => _stateSubject.stream;
+  Stream<SferaServiceState> get stateStream => _stateSubject.distinct();
 
   @override
   Stream<Journey?> get journeyStream => _journeyProfileSubject.stream;

@@ -1,3 +1,5 @@
+import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_tab.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_view_model.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
@@ -10,6 +12,7 @@ import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class ServicePointRow extends CellRowBuilder<ServicePoint> {
@@ -36,17 +39,17 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   DASTableCell informationCell(BuildContext context) {
     final servicePointName = data.name.localized;
     return DASTableCell(
-      alignment: defaultAlignment,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Text(
-            servicePointName,
-            style: data.isStation
-                ? DASTextStyles.xLargeBold
-                : DASTextStyles.xLargeLight.copyWith(fontStyle: FontStyle.italic),
-          ),
-        ],
+      onTap: () {
+        final viewModel = context.read<DetailModalSheetViewModel>();
+        viewModel.open(tab: DetailModalSheetTab.radioChannels, servicePoint: data);
+      },
+      alignment: Alignment.bottomLeft,
+      child: Text(
+        servicePointName,
+        textAlign: TextAlign.start,
+        overflow: TextOverflow.ellipsis,
+        style:
+            data.isStation ? DASTextStyles.xLargeBold : DASTextStyles.xLargeLight.copyWith(fontStyle: FontStyle.italic),
       ),
     );
   }
@@ -99,6 +102,10 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     if (graduatedSpeeds == null) return DASTableCell.empty();
 
     return DASTableCell(
+      onTap: () {
+        final viewModel = context.read<DetailModalSheetViewModel>();
+        viewModel.open(tab: DetailModalSheetTab.graduatedSpeeds, servicePoint: data);
+      },
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
       child: GraduatedSpeedsCellBody(

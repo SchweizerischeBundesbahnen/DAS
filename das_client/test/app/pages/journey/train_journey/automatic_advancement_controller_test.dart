@@ -1,11 +1,9 @@
 import 'package:das_client/app/pages/journey/train_journey/automatic_advancement_controller.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/signal_row.dart';
 import 'package:das_client/app/widgets/stickyheader/sticky_level.dart';
 import 'package:das_client/model/journey/base_data.dart';
-import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
@@ -41,10 +39,7 @@ void main() {
       Signal(order: 400, kilometre: []),
     ];
     final journeyRows = journeyData.map((data) => SignalRow(metadata: Metadata(), data: data as Signal)).toList();
-    final journey = Journey(
-      metadata: Metadata(currentPosition: journeyData[2]),
-      data: journeyData,
-    );
+    final currentPosition = journeyData[2];
 
     final scrollControllerMock = MockScrollController();
     final scrollPositionMock = MockScrollPosition();
@@ -55,7 +50,7 @@ void main() {
     final testee = AutomaticAdvancementController(controller: scrollControllerMock);
 
     testee.updateRenderedRows(journeyRows);
-    testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: true));
+    testee.handleJourneyUpdate(currentPosition: currentPosition, automaticAdvancementActive: true);
 
     verify(scrollControllerMock.animateTo(CellRowBuilder.rowHeight * 2,
             duration: anyNamed('duration'), curve: anyNamed('curve')))
@@ -71,10 +66,7 @@ void main() {
       Signal(order: 400, kilometre: []),
     ];
     final journeyRows = journeyData.map((data) => SignalRow(metadata: Metadata(), data: data as Signal)).toList();
-    final journey = Journey(
-      metadata: Metadata(currentPosition: journeyData[2]),
-      data: journeyData,
-    );
+    final currentPosition = journeyData[2];
 
     final scrollControllerMock = MockScrollController();
     final scrollPositionMock = MockScrollPosition();
@@ -85,12 +77,12 @@ void main() {
     final testee = AutomaticAdvancementController(controller: scrollControllerMock);
 
     testee.updateRenderedRows(journeyRows);
-    testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: false));
+    testee.handleJourneyUpdate(currentPosition: currentPosition, automaticAdvancementActive: false);
 
     verifyNever(scrollControllerMock.animateTo(any, duration: anyNamed('duration'), curve: anyNamed('curve')));
   });
 
-  test('test only scroll if positon is different then the last update', () {
+  test('test only scroll if position is different then the last update', () {
     final List<BaseData> journeyData = [
       Signal(order: 0, kilometre: []),
       Signal(order: 100, kilometre: []),
@@ -99,10 +91,7 @@ void main() {
       Signal(order: 400, kilometre: []),
     ];
     final journeyRows = journeyData.map((data) => SignalRow(metadata: Metadata(), data: data as Signal)).toList();
-    final journey = Journey(
-      metadata: Metadata(currentPosition: journeyData[2]),
-      data: journeyData,
-    );
+    final currentPosition = journeyData[2];
 
     final scrollControllerMock = MockScrollController();
     final scrollPositionMock = MockScrollPosition();
@@ -113,8 +102,8 @@ void main() {
     final testee = AutomaticAdvancementController(controller: scrollControllerMock);
 
     testee.updateRenderedRows(journeyRows);
-    testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: true));
-    testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: true));
+    testee.handleJourneyUpdate(currentPosition: currentPosition, automaticAdvancementActive: true);
+    testee.handleJourneyUpdate(currentPosition: currentPosition, automaticAdvancementActive: true);
 
     verify(scrollControllerMock.animateTo(CellRowBuilder.rowHeight * 2,
             duration: anyNamed('duration'), curve: anyNamed('curve')))
@@ -130,10 +119,7 @@ void main() {
       Signal(order: 400, kilometre: []),
     ];
     final journeyRows = journeyData.map((data) => SignalRow(metadata: Metadata(), data: data as Signal)).toList();
-    final journey = Journey(
-      metadata: Metadata(currentPosition: journeyData[2]),
-      data: journeyData,
-    );
+    final currentPosition = journeyData[2];
 
     final scrollControllerMock = MockScrollController();
     final scrollPositionMock = MockScrollPosition();
@@ -144,7 +130,7 @@ void main() {
     final testee = AutomaticAdvancementController(controller: scrollControllerMock);
 
     testee.updateRenderedRows(journeyRows);
-    testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: true));
+    testee.handleJourneyUpdate(currentPosition: currentPosition, automaticAdvancementActive: true);
 
     verifyNever(scrollControllerMock.animateTo(any, duration: anyNamed('duration'), curve: anyNamed('curve')));
   });
@@ -163,11 +149,6 @@ void main() {
       SignalRow(metadata: Metadata(), data: targetSignalData),
     ];
 
-    final journey = Journey(
-      metadata: Metadata(currentPosition: targetSignalData),
-      data: [],
-    );
-
     final scrollControllerMock = MockScrollController();
     final scrollPositionMock = MockScrollPosition();
     when(scrollControllerMock.positions).thenReturn([scrollPositionMock]);
@@ -177,7 +158,7 @@ void main() {
     final testee = AutomaticAdvancementController(controller: scrollControllerMock);
 
     testee.updateRenderedRows(rows);
-    testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: true));
+    testee.handleJourneyUpdate(currentPosition: targetSignalData, automaticAdvancementActive: true);
 
     verify(scrollControllerMock.animateTo(
       CellRowBuilder.rowHeight * 3 + ServicePointRow.rowHeight,
@@ -195,10 +176,7 @@ void main() {
       Signal(order: 400, kilometre: []),
     ];
     final journeyRows = journeyData.map((data) => SignalRow(metadata: Metadata(), data: data as Signal)).toList();
-    final journey = Journey(
-      metadata: Metadata(currentPosition: journeyData[2]),
-      data: journeyData,
-    );
+    final currentPosition = journeyData[2];
 
     final scrollControllerMock = MockScrollController();
     final scrollPositionMock = MockScrollPosition();
@@ -209,8 +187,8 @@ void main() {
     final testee = AutomaticAdvancementController(controller: scrollControllerMock);
 
     testee.updateRenderedRows(journeyRows);
-    testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: true));
-    testee.onTouch();
+    testee.handleJourneyUpdate(currentPosition: currentPosition, automaticAdvancementActive: true);
+    testee.resetScrollTimer();
 
     await Future.delayed(const Duration(seconds: 11));
 
@@ -228,10 +206,7 @@ void main() {
       Signal(order: 400, kilometre: []),
     ];
     final journeyRows = journeyData.map((data) => SignalRow(metadata: Metadata(), data: data as Signal)).toList();
-    final journey = Journey(
-      metadata: Metadata(currentPosition: journeyData[2]),
-      data: journeyData,
-    );
+    final currentPosition = journeyData[2];
 
     final scrollControllerMock = MockScrollController();
     final scrollPositionMock = MockScrollPosition();
@@ -242,15 +217,15 @@ void main() {
     final testee = AutomaticAdvancementController(controller: scrollControllerMock);
 
     testee.updateRenderedRows(journeyRows);
-    testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: true));
+    testee.handleJourneyUpdate(currentPosition: currentPosition, automaticAdvancementActive: true);
 
     verify(scrollControllerMock.animateTo(CellRowBuilder.rowHeight * 2,
             duration: anyNamed('duration'), curve: anyNamed('curve')))
         .called(1);
 
-    testee.onTouch();
+    testee.resetScrollTimer();
 
-    testee.handleJourneyUpdate(journey, TrainJourneySettings(automaticAdvancementActive: false));
+    testee.handleJourneyUpdate(currentPosition: currentPosition, automaticAdvancementActive: false);
 
     await Future.delayed(const Duration(seconds: 11));
 

@@ -14,7 +14,10 @@ class ConnectionTrackRow extends CellRowBuilder<ConnectionTrack> {
   @override
   DASTableCell informationCell(BuildContext context) {
     return DASTableCell(
-      child: Text(data.text ?? context.l10n.c_connection_track_weiche),
+      child: Text(
+        data.text ?? context.l10n.c_connection_track_weiche,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
   }
 }

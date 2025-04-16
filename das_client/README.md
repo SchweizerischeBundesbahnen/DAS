@@ -53,6 +53,10 @@ The file structure in [test_resources](test_resources) for a test scenario looks
   * SFERA_TC_T1_1
     <a name="localization"></a>
 
+## Custom Icons
+
+To add custom icons, you can upload [font_config.json](font_config.json) to [fluttericon][3] and add your icon. Use [SVG Strokes to Fills Converter][4] if SVG is not compatible with fonts.
+
 ## Localization
 
 The app is available in three languages:
@@ -103,3 +107,7 @@ This app uses [FVM][1] to configure the Flutter SDK version.
 [1]:https://fvm.app/
 
 [2]:https://github.com/flutter/flutter/blob/master/docs/contributing/Style-guide-for-Flutter-repo.md
+
+[3]:https://www.fluttericon.com/
+
+[4]:https://iconly.io/tools/svg-convert-stroke-to-fill

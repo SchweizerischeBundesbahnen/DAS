@@ -94,7 +94,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test extended meneuver mode', (tester) async {
+    testWidgets('test extended maneuver mode', (tester) async {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page

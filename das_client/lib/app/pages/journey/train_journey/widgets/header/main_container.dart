@@ -5,17 +5,15 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/header/batter
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/departure_authorization.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/extended_menu.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_channel.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/theme_button.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
-import 'package:das_client/model/journey/communication_network_change.dart';
-import 'package:das_client/model/journey/contact_list.dart';
 import 'package:das_client/model/journey/journey.dart';
 import 'package:das_client/model/journey/metadata.dart';
-import 'package:das_client/theme/theme_provider.dart';
 import 'package:das_client/theme/theme_util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -27,52 +25,39 @@ class MainContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = context.trainJourneyCubit;
 
-    return StreamBuilder<List<dynamic>>(
-        stream: CombineLatestStream.list([bloc.journeyStream, bloc.settingsStream]),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData || snapshot.data?[0] == null || snapshot.data?[1] == null) {
-            return Center(
-              child: SBBLoadingIndicator(),
-            );
-          }
-          final journey = snapshot.data![0] as Journey;
-          final settings = snapshot.data![1] as TrainJourneySettings;
+    return StreamBuilder(
+      stream: CombineLatestStream.list([bloc.journeyStream, bloc.settingsStream]),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData || snapshot.data?[0] == null || snapshot.data?[1] == null) {
+          return Center(child: SBBLoadingIndicator());
+        }
+        final journey = snapshot.data![0] as Journey;
+        final settings = snapshot.data![1] as TrainJourneySettings;
 
-          return SBBGroup(
-            margin: const EdgeInsetsDirectional.fromSTEB(
-              sbbDefaultSpacing * 0.5,
-              0,
-              sbbDefaultSpacing * 0.5,
-              sbbDefaultSpacing / 2,
-            ),
-            padding: const EdgeInsets.all(sbbDefaultSpacing),
-            useShadow: false,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _topHeaderRow(context, journey, settings),
-                _divider(),
-                _bottomHeaderRow(context, journey.metadata),
-              ],
-            ),
-          );
-        });
+        return SBBGroup(
+          padding: const EdgeInsets.all(sbbDefaultSpacing),
+          useShadow: false,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _topHeaderRow(context, journey.metadata, settings),
+              _divider(),
+              _bottomHeaderRow(context, journey.metadata),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Widget _bottomHeaderRow(BuildContext context, Metadata metadata) {
-    final communicationNetworkType = metadata.currentPosition != null
-        ? metadata.communicationNetworkChanges.appliesToOrder(metadata.currentPosition!.order)
-        : null;
-    final radioContactList = metadata.currentPosition != null
-        ? metadata.radioContactLists.lastLowerThan(metadata.currentPosition!.order)
-        : null;
     return SizedBox(
       height: 48.0,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          RadioChannel(communicationNetworkType: communicationNetworkType, radioContactList: radioContactList),
+          RadioChannel(metadata: metadata),
           SizedBox(width: sbbDefaultSpacing * 0.5),
           DepartureAuthorization(),
           Spacer(),
@@ -104,7 +89,7 @@ class MainContainer extends StatelessWidget {
     );
   }
 
-  Widget _topHeaderRow(BuildContext context, Journey journey, TrainJourneySettings settings) {
+  Widget _topHeaderRow(BuildContext context, Metadata metadata, TrainJourneySettings settings) {
     return SizedBox(
       height: 48.0,
       child: Row(
@@ -113,55 +98,32 @@ class MainContainer extends StatelessWidget {
             AppAssets.iconHeaderStop,
             colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
           ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(left: sbbDefaultSpacing * 0.5),
-              child: Text(
-                journey.metadata.nextStop?.name.localized ?? context.l10n.c_unknown,
-                style: DASTextStyles.xLargeLight,
-              ),
-            ),
-          ),
-          _buttonArea(settings, context),
+          Expanded(child: _servicePointName(context, metadata)),
+          _buttonArea(settings),
         ],
       ),
     );
   }
 
-  Widget _buttonArea(TrainJourneySettings settings, BuildContext context) {
-    final themeManager = context.watch<ThemeProvider>();
-    final isDarkMode = ThemeUtil.isDarkMode(context);
+  Widget _servicePointName(BuildContext context, Metadata metadata) {
+    return Padding(
+      padding: const EdgeInsets.only(left: sbbDefaultSpacing * 0.5),
+      child: Text(
+        metadata.nextStop?.name.localized ?? context.l10n.c_unknown,
+        style: DASTextStyles.xLargeLight,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+  }
 
-    return Builder(builder: (context) {
-      return Row(
-        spacing: sbbDefaultSpacing * 0.5,
-        children: [
-          SBBTertiaryButtonLarge(
-            label: isDarkMode
-                ? context.l10n.p_train_journey_header_button_light_theme
-                : context.l10n.p_train_journey_header_button_dark_theme,
-            icon: isDarkMode ? SBBIcons.sunshine_small : SBBIcons.moon_small,
-            onPressed: () => themeManager.toggleTheme(context),
-          ),
-          if (settings.automaticAdvancementActive)
-            SBBTertiaryButtonLarge(
-              label: context.l10n.p_train_journey_header_button_pause,
-              icon: SBBIcons.pause_small,
-              onPressed: () {
-                context.trainJourneyCubit.setAutomaticAdvancement(false);
-              },
-            ),
-          if (!settings.automaticAdvancementActive)
-            SBBTertiaryButtonLarge(
-              label: context.l10n.p_train_journey_header_button_start,
-              icon: SBBIcons.play_small,
-              onPressed: () {
-                context.trainJourneyCubit.setAutomaticAdvancement(true);
-              },
-            ),
-          ExtendedMenu(),
-        ],
-      );
-    });
+  Widget _buttonArea(TrainJourneySettings settings) {
+    return Row(
+      spacing: sbbDefaultSpacing * 0.5,
+      children: [
+        ThemeButton(),
+        StartPauseButton(automaticAdvancementActive: settings.automaticAdvancementActive),
+        ExtendedMenu(),
+      ],
+    );
   }
 }

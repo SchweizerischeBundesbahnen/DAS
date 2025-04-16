@@ -397,6 +397,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  extra_hittest_area:
+    dependency: "direct main"
+    description:
+      name: extra_hittest_area
+      sha256: bd606a0ab10220efb4d2d7a09e11cfa04e987b056043dbf1150bd50cd6c40bff
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   fake_async:
     dependency: transitive
     description:
