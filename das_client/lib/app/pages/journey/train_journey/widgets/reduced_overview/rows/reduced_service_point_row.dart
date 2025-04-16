@@ -3,6 +3,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/service
 import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:das_client/theme/theme_util.dart';
 import 'package:flutter/material.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class ReducedServicePointRow extends ServicePointRow {
   ReducedServicePointRow({required super.metadata, required super.data, required this.context, super.config})
@@ -24,7 +25,7 @@ class ReducedServicePointRow extends ServicePointRow {
   DASTableCell routeCell(BuildContext context) {
     return DASTableCell(
       color: specialCellColor,
-      padding: EdgeInsets.all(0.0),
+      padding: EdgeInsets.only(right: sbbDefaultSpacing),
       alignment: null,
       clipBehaviour: Clip.none,
       child: RouteCellBody(

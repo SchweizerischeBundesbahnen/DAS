@@ -22,8 +22,7 @@ class SignalRow extends CellRowBuilder<Signal> {
     return DASTableCell(
       child: Row(
         children: [
-          _signalFunctions(context),
-          Spacer(),
+          Expanded(child: _signalFunctions(context)),
           if (data.visualIdentifier != null) Text(data.visualIdentifier!),
         ],
       ),
@@ -37,7 +36,10 @@ class SignalRow extends CellRowBuilder<Signal> {
       signalFunctions = signalFunctions
           .where((function) => function != SignalFunction.laneChange && function != SignalFunction.unknown);
     }
-    return Text(signalFunctions.map((function) => function.localizedName(context)).join('/'));
+    return Text(
+      signalFunctions.map((function) => function.localizedName(context)).join('/'),
+      overflow: TextOverflow.ellipsis,
+    );
   }
 
   @override
