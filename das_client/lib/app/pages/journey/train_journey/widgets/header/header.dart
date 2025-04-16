@@ -24,18 +24,14 @@ class _HeaderState extends State<Header> {
 
   void _startDimming() async {
     _dimmingTimer?.cancel();
-
     final value = await BrightnessUtil.getCurrentBrightness();
-    final bool shouldDim = value >= 0.5;
+    final shouldDim = value >= 0.5;
 
-    _dimmingTimer = Timer.periodic(const Duration(milliseconds: 100), (timer) async {
+    _dimmingTimer = Timer.periodic(const Duration(milliseconds: 50), (timer) async {
       final current = await BrightnessUtil.getCurrentBrightness();
       final newValue = shouldDim ? (current - 0.05).clamp(0.0, 1.0) : (current + 0.05).clamp(0.0, 1.0);
       await BrightnessUtil.setBrightness(newValue);
-
-      if (newValue == 0.0 || newValue == 1.0) {
-        timer.cancel();
-      }
+      if (newValue == 0.0 || newValue == 1.0) timer.cancel();
     });
   }
 
@@ -51,40 +47,36 @@ class _HeaderState extends State<Header> {
 
   void _onHorizontalDragUpdate(DragUpdateDetails details) async {
     double value = await BrightnessUtil.getCurrentBrightness();
-    if (details.delta.dx > 0) {
-      value = (value + 0.01).clamp(0.0, 1.0);
-    } else if (details.delta.dx < 0) {
-      value = (value - 0.01).clamp(0.0, 1.0);
-    }
-    await BrightnessUtil.setBrightness(value);
+    value += details.delta.dx > 0 ? 0.01 : -0.01;
+    await BrightnessUtil.setBrightness(value.clamp(0.0, 1.0));
   }
 
   void _onVerticalDragUpdate(DragUpdateDetails details) async {
     double value = await BrightnessUtil.getCurrentBrightness();
-    if (details.delta.dy < 0) {
-      value = (value + 0.01).clamp(0.0, 1.0);
-    } else if (details.delta.dy > 0) {
-      value = (value - 0.01).clamp(0.0, 1.0);
-    }
-    await BrightnessUtil.setBrightness(value);
+    value += details.delta.dy < 0 ? 0.01 : -0.01;
+    await BrightnessUtil.setBrightness(value.clamp(0.0, 1.0));
   }
 
   @override
   Widget build(BuildContext context) {
     return ExtendedAppBarWrapper(
-      child: Padding(
-        padding: const EdgeInsets.all(sbbDefaultSpacing * 0.5).copyWith(top: 0),
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onLongPressStart: (_) => _startDimming(),
-          onLongPressEnd: (_) => _stopDimming(),
-          onDoubleTap: _doubleTap,
-          onHorizontalDragUpdate: _onHorizontalDragUpdate,
-          onVerticalDragUpdate: _onVerticalDragUpdate,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onHorizontalDragUpdate: _onHorizontalDragUpdate,
+        onVerticalDragUpdate: _onVerticalDragUpdate,
+        child: Padding(
+          padding: const EdgeInsets.all(sbbDefaultSpacing * 0.5).copyWith(top: 0),
           child: Row(
+            spacing: sbbDefaultSpacing * 0.5,
             children: [
               Expanded(child: MainContainer()),
-              TimeContainer(),
+              GestureDetector(
+                onLongPressStart: (_) => _startDimming(),
+                onLongPressEnd: (_) => _stopDimming(),
+                onDoubleTap: _doubleTap,
+                behavior: HitTestBehavior.translucent,
+                child: TimeContainer(),
+              ),
             ],
           ),
         ),
