@@ -117,7 +117,7 @@ class MainContainer extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(left: sbbDefaultSpacing * 0.5),
               child: Text(
-                journey.metadata.nextStop?.name.localized ?? context.l10n.c_unknown,
+                journey.metadata.nextStop?.name ?? context.l10n.c_unknown,
                 style: DASTextStyles.xLargeLight,
               ),
             ),

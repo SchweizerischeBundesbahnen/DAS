@@ -14,7 +14,6 @@ import 'package:das_client/model/journey/signal.dart';
 import 'package:das_client/model/journey/speed_change.dart';
 import 'package:das_client/model/journey/train_series.dart';
 import 'package:das_client/model/journey/whistles.dart';
-import 'package:das_client/model/localized_string.dart';
 import 'package:das_client/sfera/src/mapper/graduated_speed_data_mapper.dart';
 import 'package:das_client/sfera/src/mapper/mapper_utils.dart';
 import 'package:das_client/sfera/src/model/enums/length_type.dart';
@@ -26,7 +25,6 @@ import 'package:das_client/sfera/src/model/network_specific_parameter.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
 import 'package:das_client/sfera/src/model/segment_profile_list.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location.dart';
-import 'package:das_client/sfera/src/model/teltsi_primary_location_name.dart';
 import 'package:fimber/fimber.dart';
 
 class _MapperData {
@@ -99,7 +97,7 @@ class SegmentProfileMapper {
 
       servicePoints.add(
         ServicePoint(
-          name: _localizedStringFromPrimaryLocationName(tafTapLocation.locationIdent.locationNames),
+          name: tafTapLocation.locationIdent.primaryLocationName?.value ?? '',
           order: calculateOrder(mapperData.segmentIndex, timingPoint.location),
           mandatoryStop: tpConstraint.stoppingPointInformation?.stopType?.mandatoryStop ?? true,
           isStop: tpConstraint.stopSkipPass == StopSkipPass.stoppingPoint,
@@ -129,11 +127,6 @@ class SegmentProfileMapper {
         kilometre: mapperData.kilometreMap[signal.id.location] ?? [],
       );
     });
-  }
-
-  static LocalizedString _localizedStringFromPrimaryLocationName(Iterable<TeltsiPrimaryLocationName> names) {
-    final name = names.firstOrNull?.value ?? '';
-    return LocalizedString(de: name, fr: name, it: name);
   }
 
   static List<ProtectionSection> _parseProtectionSections(_MapperData mapperData) {
@@ -306,7 +299,7 @@ class SegmentProfileMapper {
 
           return footNotes.map(
             (note) => LineFootNote(
-              locationName: _localizedStringFromPrimaryLocationName(location.locationIdent.locationNames),
+              locationName: location.locationIdent.primaryLocationName?.value ?? '',
               order: calculateOrder(mapperData.segmentIndex, location.startLocation!),
               footNote: note,
             ),
