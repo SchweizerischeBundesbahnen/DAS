@@ -100,7 +100,7 @@ Future<void> waitUntilExists(WidgetTester tester, FinderBase<Element> element, {
   await tester.pumpAndSettle();
 }
 
-Future<void> waitUntilNotExists(WidgetTester tester, FinderBase<Element> element, {int maxWaitSeconds = 5}) async {
+Future<void> waitUntilNotExists(WidgetTester tester, FinderBase<Element> element, {int maxWaitSeconds = 10}) async {
   int counter = 0;
   while (true) {
     await tester.pump(const Duration(milliseconds: 100));

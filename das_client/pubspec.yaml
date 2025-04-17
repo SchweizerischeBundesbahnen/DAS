@@ -68,7 +68,8 @@ dependencies:
   # https://pub.dev/packages/battery_plus
   battery_plus: ^6.2.1
   # https://pub.dev/packages/audioplayers
-  audioplayers: ^6.4.0
+  # TODO: Fixed to 5.2.1 as there is a problem with XCode 14 on higher versions.
+  audioplayers: 5.2.1
   # https://pub.dev/packages/volume_controller
   volume_controller: ^3.3.3
   # https://pub.dev/packages/provider

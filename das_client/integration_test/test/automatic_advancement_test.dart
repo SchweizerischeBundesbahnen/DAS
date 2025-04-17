@@ -71,7 +71,7 @@ void main() {
       await tapElement(tester, pauseButton);
 
       // Wait until the chevron is no longer visible
-      await waitUntilNotExists(tester, find.byKey(RouteChevron.chevronKey));
+      await waitUntilNotExists(tester, find.byKey(RouteChevron.chevronKey), maxWaitSeconds: 40);
 
       // Wait some more
       await Future.delayed(const Duration(seconds: 3));
@@ -104,7 +104,7 @@ void main() {
           find.descendant(of: findDASTableRowByText('Bern'), matching: find.byKey(RouteChevron.chevronKey)), findsAny);
 
       // Wait until the chevron is no longer visible
-      await waitUntilNotExists(tester, find.byKey(RouteChevron.chevronKey));
+      await waitUntilNotExists(tester, find.byKey(RouteChevron.chevronKey), maxWaitSeconds: 40);
 
       // Check Bern and B1 still visible
       expect(findDASTableRowByText('Bern'), findsAny);

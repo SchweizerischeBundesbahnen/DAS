@@ -1,3 +1,7 @@
+// TODO: There is currently a problem with the format check in ci with this generated file
+// TODO: This will be solved here: https://github.com/flutter/flutter/pull/167029
+// TODO: Format this code before commiting
+
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
