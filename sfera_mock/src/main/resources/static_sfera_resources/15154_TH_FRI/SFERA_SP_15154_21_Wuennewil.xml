@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                SP_ID="15154_21_Wuennewil" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="2400" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>1285</IM_ID>
+    </SP_Zone>
+
+    <SP_Points>
+
+        <TimingPoint TP_ID="Wuennewil" location="0">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>4113</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+            <TP_Name name="WUE"/>
+        </TimingPoint>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="S955" location="600"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="S955"/>
+        </Signal>
+
+		<Signal>
+            <Signal_ID signal_ID_Physical="D954" location="1900"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="D954"/>
+        </Signal>
+		
+		<NetworkSpecificPoint location="1000">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>protectionSection</NSP_GroupName>
+            <NetworkSpecificParameter name="lengthType" value="long"/>
+            <NetworkSpecificParameter name="facultative" value="true"/>
+        </NetworkSpecificPoint>
+		
+		<NetworkSpecificPoint location="1720" identifier="E95E82E6EC01440BA6021BCD56D71F9C">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
+            <NetworkSpecificParameter name="curvePointType" value="begin"/>
+            <NetworkSpecificParameter name="curveType" value="curve"/>
+            <NetworkSpecificParameter name="xmlCurveSpeed" value="
+                &lt;curveSpeed &gt;
+					&lt;speeds&gt;
+						&lt;v trainSeries=&quot;R&quot; speed=&quot;100&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; speed=&quot;90&quot;/&gt;
+						&lt;v trainSeries=&quot;D&quot; speed=&quot;90&quot;/&gt;
+					&lt;/speeds&gt;
+                &lt;/curveSpeed&gt;
+            "/>
+        </NetworkSpecificPoint>
+
+        <NetworkSpecificPoint location="2250" identifier="E95E82E6EC01440BA6021BCD56D71F9C">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
+            <NetworkSpecificParameter name="curvePointType" value="end"/>
+        </NetworkSpecificPoint>
+
+    </SP_Points>
+
+    <SP_Areas>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="WUE" TAF_TAP_location_type="halt">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>4113</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Wünnewil</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+					&lt;lineSpeed&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;85&quot;/&gt;
+					&lt;/lineSpeed&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>departureAuth</NSP_GroupName>
+                <NetworkSpecificParameter name="departureAuth" value="false"/>
+            </TAF_TAP_Location_NSP>
+
+        </TAF_TAP_Location>
+
+    </SP_Areas>
+
+	<SP_Characteristics>
+        <CurrentLimitation>
+            <CurrentLimitationStart maxCurValue="1023"/>
+            <CurrentLimitationChange maxCurValue="0" location="1000"/>
+            <CurrentLimitationChange maxCurValue="1023" location="1001"/>
+        </CurrentLimitation>
+    </SP_Characteristics>
+
+    <SP_ContextInformation>
+        <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1301"/>
+            </Contact>
+        </ContactList>
+		
+		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
+
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="80.3"/>
+        </KilometreReferencePoint>
+		<KilometreReferencePoint location="600">
+            <KM_Reference kmRef="79.7"/>
+        </KilometreReferencePoint>
+		<KilometreReferencePoint location="1000">
+            <KM_Reference kmRef="79.3"/>
+        </KilometreReferencePoint>
+		<KilometreReferencePoint location="1720">
+            <KM_Reference kmRef="78.58"/>
+        </KilometreReferencePoint>
+		<KilometreReferencePoint location="1900">
+            <KM_Reference kmRef="78.398"/>
+        </KilometreReferencePoint>
+		<KilometreReferencePoint location="2250">
+            <KM_Reference kmRef="78.05"/>
+        </KilometreReferencePoint>
+		
+    </SP_ContextInformation>
+
+</SegmentProfile>
