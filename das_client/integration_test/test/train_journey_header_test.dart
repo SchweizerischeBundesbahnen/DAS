@@ -5,7 +5,9 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/header/extend
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_channel.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_contact.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/time_container.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
+import 'package:das_client/brightness/brightness_util_factory.dart';
 import 'package:das_client/di.dart';
 import 'package:das_client/util/format.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +16,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
 import '../mocks/battery_mock.dart';
+import '../mocks/brightness_mock.dart';
 import '../util/test_utils.dart';
 
 void main() {
@@ -334,6 +337,93 @@ void main() {
       expect(mainContactsZurich, findsOneWidget);
 
       await disconnect(tester);
+    });
+
+    // can be removed based on what option to change the brightness will be chosen
+    testWidgets('double tap sets brightness to 0.1 if current is 1.0', (tester) async {
+      final mockBrightness = MockBrightnessUtil();
+      mockBrightness.currentBrightness = 1.0;
+
+      //Adjust BrightnessUtil to use the mock version
+      BrightnessUtilFactory.instance = mockBrightness;
+
+      // load journey with the track T6
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T6');
+
+      // find the header and check if it is existent
+      final header = find.byType(Header);
+      expect(header, findsOneWidget);
+
+      // find the time container and check if it is existent
+      final timeContainer = find.byType(TimeContainer);
+      expect(timeContainer, findsOneWidget);
+
+      // simulate a double tap on the time container
+      await tester.tap(timeContainer);
+      await tester.pump(const Duration(milliseconds: 50));
+      await tester.tap(timeContainer);
+      await tester.pumpAndSettle();
+
+      expect(mockBrightness.calledWith.contains(0.1), true);
+    });
+
+    // can be removed based on what option to change the brightness will be chosen
+    testWidgets('long press dims brightness from 1.0 to 0.0', (tester) async {
+      final mockBrightness = MockBrightnessUtil();
+      mockBrightness.currentBrightness = 1.0;
+
+      BrightnessUtilFactory.instance = mockBrightness;
+
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T6');
+
+      final timeContainer = find.byType(TimeContainer);
+      expect(timeContainer, findsOneWidget);
+
+      await tester.longPress(timeContainer);
+
+      await tester.pump(const Duration(seconds: 2));
+
+      expect(mockBrightness.calledWith.any((val) => val < 1.0), true);
+    });
+
+    // can be removed based on what option to change the brightness will be chosen
+    testWidgets('horizontal drag right increases brightness', (tester) async {
+      final mockBrightness = MockBrightnessUtil();
+      mockBrightness.currentBrightness = 0.5;
+
+      BrightnessUtilFactory.instance = mockBrightness;
+
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T6');
+
+      final header = find.byType(Header);
+      expect(header, findsOneWidget);
+
+      await tester.drag(header, const Offset(100, 0));
+      await tester.pumpAndSettle();
+
+      expect(mockBrightness.calledWith.any((val) => val > 0.5), true);
+    });
+
+    // can be removed based on what option to change the brightness will be chosen
+    testWidgets('vertical drag up increases brightness', (tester) async {
+      final mockBrightness = MockBrightnessUtil();
+      mockBrightness.currentBrightness = 0.5;
+
+      BrightnessUtilFactory.instance = mockBrightness;
+
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T6');
+
+      final header = find.byType(Header);
+      expect(header, findsOneWidget);
+
+      await tester.drag(header, const Offset(0, -100));
+      await tester.pumpAndSettle();
+
+      expect(mockBrightness.calledWith.any((val) => val > 0.5), true);
     });
   });
 }
