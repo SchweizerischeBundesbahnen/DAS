@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import ch.sbb.backend.JpaAuditingConfiguration;
 import ch.sbb.backend.TestcontainersConfiguration;
 import ch.sbb.backend.admin.infrastructure.model.RuFeatureEntity;
 import java.time.LocalDateTime;
@@ -17,7 +18,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
 
 @DataJpaTest
-@Import({TestcontainersConfiguration.class})
+@Import({TestcontainersConfiguration.class, JpaAuditingConfiguration.class})
 class SpringDataJpaRuFeatureRepositoryTest {
 
     @Autowired

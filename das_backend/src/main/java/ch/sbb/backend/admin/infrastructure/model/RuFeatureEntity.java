@@ -37,10 +37,6 @@ public class RuFeatureEntity {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public String getCompanyCode() {
         return companyCode;
     }
