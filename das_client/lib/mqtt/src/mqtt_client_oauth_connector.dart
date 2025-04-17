@@ -2,6 +2,7 @@ import 'package:das_client/auth/authentication_component.dart';
 import 'package:das_client/mqtt/src/mqtt_client_connector.dart';
 import 'package:fimber/fimber.dart';
 import 'package:mqtt_client/mqtt_client.dart';
+import 'package:sbb_oidc/sbb_oidc.dart';
 
 class MqttClientOauthConnector implements MqttClientConnector {
   final Authenticator _authenticator;
@@ -13,7 +14,7 @@ class MqttClientOauthConnector implements MqttClientConnector {
     Fimber.i('Connecting to mqtt using oauth token');
 
     final token = await _authenticator.token();
-    final jsonWebToken = token.accessToken.toJwt();
+    final jsonWebToken = JsonWebToken.decode(token.accessToken);
     final userId = jsonWebToken.payload['preferred_username'];
     Fimber.i('Using userId=$userId');
 

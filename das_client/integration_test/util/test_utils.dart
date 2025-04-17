@@ -81,7 +81,7 @@ Future<void> dismissExtendedMenu(WidgetTester tester) async {
 Future<void> waitUntilExists(WidgetTester tester, FinderBase<Element> element, {int maxWaitSeconds = 5}) async {
   int counter = 0;
   while (true) {
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 100));
 
     element.reset();
     if (element.evaluate().isNotEmpty) {
@@ -94,15 +94,16 @@ Future<void> waitUntilExists(WidgetTester tester, FinderBase<Element> element, {
       expect(element, findsAny);
       break;
     }
-
-    await Future.delayed(const Duration(milliseconds: 100));
   }
+
+  // wait till all animations are finished
+  await tester.pumpAndSettle();
 }
 
-Future<void> waitUntilNotExists(WidgetTester tester, FinderBase<Element> element, {int maxWaitSeconds = 5}) async {
+Future<void> waitUntilNotExists(WidgetTester tester, FinderBase<Element> element, {int maxWaitSeconds = 10}) async {
   int counter = 0;
   while (true) {
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 100));
 
     element.reset();
     if (element.evaluate().isEmpty) {
@@ -115,7 +116,8 @@ Future<void> waitUntilNotExists(WidgetTester tester, FinderBase<Element> element
       expect(element, findsNothing);
       break;
     }
-
-    await Future.delayed(const Duration(milliseconds: 100));
   }
+
+  // wait till all animations are finished
+  await tester.pumpAndSettle();
 }

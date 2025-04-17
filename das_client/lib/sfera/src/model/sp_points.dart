@@ -7,6 +7,7 @@ import 'package:das_client/sfera/src/model/new_line_speed_network_specific_point
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
 import 'package:das_client/sfera/src/model/signal.dart';
 import 'package:das_client/sfera/src/model/timing_point.dart';
+import 'package:das_client/sfera/src/model/track_foot_notes_nsp.dart';
 import 'package:das_client/sfera/src/model/virtual_balise.dart';
 import 'package:das_client/sfera/src/model/whistle_network_specific_point.dart';
 
@@ -35,4 +36,6 @@ class SpPoints extends SferaXmlElement {
   Iterable<CurvePointNetworkSpecificPoint> get curvePointsNsp => children.whereType<CurvePointNetworkSpecificPoint>();
 
   Iterable<WhistleNetworkSpecificPoint> get whistleNsp => children.whereType<WhistleNetworkSpecificPoint>();
+
+  Iterable<TrackFootNotesNsp> get trackFootNotesNsp => children.whereType<TrackFootNotesNsp>();
 }

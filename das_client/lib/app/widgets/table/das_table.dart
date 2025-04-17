@@ -17,7 +17,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class DASTable extends StatefulWidget {
   static const Key tableKey = Key('dasTable');
   static const Key rowKey = Key('dasTableRow');
-  static const double _headerRowHeight = 40.0;
+  static const double headerRowHeight = 40.0;
 
   DASTable({
     required this.columns,
@@ -72,13 +72,28 @@ class _DASTableState extends State<DASTable> {
   }
 
   void _updateItemCount(DASTable oldWidget) {
-    if (oldWidget.rows.length != widget.rows.length) {
-      _animatedListKey.currentState!.removeAllItems((context, animation) => Container(), duration: Duration.zero);
-      _animatedListKey.currentState!.insertAllItems(0, widget.rows.length, duration: Duration.zero);
+    final oldLength = oldWidget.rows.length;
+    final newLength = widget.rows.length;
+    final diff = (oldLength - newLength).abs();
+
+    if (oldLength < newLength) {
+      for (int i = 0; i < diff; i++) {
+        _animatedListKey.currentState!.insertItem(oldLength + i, duration: Duration.zero);
+      }
+    } else if (oldLength > newLength) {
+      for (int i = 0; i < diff; i++) {
+        _animatedListKey.currentState!
+            .removeItem(oldLength - i, (context, animation) => Container(), duration: Duration.zero);
+      }
     }
   }
 
   void _calculateInsertAndRemoveAnimation(DASTable oldWidget) {
+    if (oldWidget.rows.length != widget.rows.length) {
+      // we only animate if the number of rows is the same (line foot notes moving)
+      return;
+    }
+
     for (int i = 0; i < oldWidget.rows.length && i < widget.rows.length; i++) {
       final oldRow = oldWidget.rows[i];
       if (oldRow.identifier != null && widget.rows[i].identifier != oldRow.identifier) {
@@ -128,7 +143,7 @@ class _DASTableState extends State<DASTable> {
   }
 
   Widget _buildStickyHeaderList(BoxConstraints constraints) {
-    final stickyHeaderList = StickyHeader(
+    return StickyHeader(
       footerBuilder: (context, index) {
         return Container(
             decoration: BoxDecoration(boxShadow: [
@@ -141,31 +156,30 @@ class _DASTableState extends State<DASTable> {
       },
       scrollController: widget.scrollController,
       rows: widget.rows,
-      child: SizedBox(
-        key: DASTable.tableKey,
-        child: AnimatedList(
-          key: _animatedListKey,
-          controller: widget.scrollController,
-          initialItemCount: widget.rows.length + (widget.addBottomSpacer ? 1 : 0),
-          itemBuilder: (context, index, animation) {
-            if (index == widget.rows.length && widget.addBottomSpacer) {
-              return SizedBox(
-                  height: max(
-                      constraints.maxHeight -
-                          DASTable._headerRowHeight -
-                          widget.bottomMarginAdjustment -
-                          sbbDefaultSpacing,
-                      widget.minBottomMargin));
-            }
-            return SizeTransition(sizeFactor: animation, child: _dataRow(widget.rows[index]));
-          },
-        ),
-      ),
+      child: SizedBox(key: DASTable.tableKey, child: _buildAnimatedList(constraints)),
+    );
+  }
+
+  Widget _buildAnimatedList(BoxConstraints constraints) {
+    final list = AnimatedList(
+      physics: ClampingScrollPhysics(),
+      key: _animatedListKey,
+      controller: widget.scrollController,
+      initialItemCount: widget.rows.length + (widget.addBottomSpacer ? 1 : 0),
+      itemBuilder: (context, index, animation) {
+        if (index == widget.rows.length && widget.addBottomSpacer) {
+          return SizedBox(
+              height: max(
+                  constraints.maxHeight - DASTable.headerRowHeight - widget.bottomMarginAdjustment - sbbDefaultSpacing,
+                  widget.minBottomMargin));
+        }
+        return SizeTransition(key: widget.rows[index].key, sizeFactor: animation, child: _dataRow(widget.rows[index]));
+      },
     );
 
     return widget.alignToItem
-        ? ScrollableAlign(scrollController: widget.scrollController, rows: widget.rows, child: stickyHeaderList)
-        : stickyHeaderList;
+        ? ScrollableAlign(scrollController: widget.scrollController, rows: widget.rows, child: list)
+        : list;
   }
 
   DASTableThemeData _defaultThemeData(BuildContext context) {
@@ -188,7 +202,7 @@ class _DASTableState extends State<DASTable> {
 
   Widget _headerRow() {
     return _FixedHeightRow(
-      height: DASTable._headerRowHeight,
+      height: DASTable.headerRowHeight,
       children: widget.columns.map((column) => _headerCell(column)).toList(),
     );
   }

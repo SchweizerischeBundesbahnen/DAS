@@ -10,7 +10,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class ProtectionSectionRow extends CellRowBuilder<ProtectionSection> {
   static const Key protectionSectionKey = Key('protectionSection');
 
-  const ProtectionSectionRow({
+  ProtectionSectionRow({
     required super.metadata,
     required super.data,
     super.config,

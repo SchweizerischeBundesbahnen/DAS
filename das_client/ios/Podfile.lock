@@ -1,9 +1,9 @@
 PODS:
-  - AppAuth (1.7.5):
-    - AppAuth/Core (= 1.7.5)
-    - AppAuth/ExternalUserAgent (= 1.7.5)
-  - AppAuth/Core (1.7.5)
-  - AppAuth/ExternalUserAgent (1.7.5):
+  - AppAuth (1.7.6):
+    - AppAuth/Core (= 1.7.6)
+    - AppAuth/ExternalUserAgent (= 1.7.6)
+  - AppAuth/Core (1.7.6)
+  - AppAuth/ExternalUserAgent (1.7.6):
     - AppAuth/Core
   - audioplayers_darwin (0.0.1):
     - Flutter
@@ -13,7 +13,7 @@ PODS:
     - Flutter
   - Flutter (1.0.0)
   - flutter_appauth (0.0.1):
-    - AppAuth (= 1.7.5)
+    - AppAuth (= 1.7.6)
     - Flutter
   - flutter_secure_storage (6.0.0):
     - Flutter
@@ -76,12 +76,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/volume_controller/ios"
 
 SPEC CHECKSUMS:
-  AppAuth: 501c04eda8a8d11f179dbe8637b7a91bb7e5d2fa
+  AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
   audioplayers_darwin: ccf9c770ee768abb07e26d90af093f7bab1c12ab
   battery_plus: b42253f6d2dde71712f8c36fef456d99121c5977
   device_info_plus: 21fcca2080fbcd348be798aa36c3e5ed849eefbe
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_appauth: 273bf736e38f7d85000b1a9ac15ace5800c277f2
+  flutter_appauth: 914057fda669db5073d3ca9d94ea932e7df3c964
   flutter_secure_storage: 1ed9476fba7e7a782b22888f956cce43e2c62f13
   integration_test: 4a889634ef21a45d28d50d622cf412dc6d9f586e
   isar_flutter_libs: 9fc2cfb928c539e1b76c481ba5d143d556d94920

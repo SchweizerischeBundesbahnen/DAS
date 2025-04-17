@@ -5,7 +5,7 @@ import 'package:das_client/model/journey/metadata.dart';
 import 'package:flutter/material.dart';
 
 abstract class WidgetRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
-  const WidgetRowBuilder({
+  WidgetRowBuilder({
     required this.metadata,
     required super.data,
     required super.height,
@@ -20,7 +20,12 @@ abstract class WidgetRowBuilder<T extends BaseData> extends DASTableRowBuilder<T
   @override
   DASTableRow build(BuildContext context) {
     return DASTableWidgetRow(
-        widget: buildRowWidget(context), height: height, stickyLevel: stickyLevel, identifier: identifier);
+      key: key,
+      widget: buildRowWidget(context),
+      height: height,
+      stickyLevel: stickyLevel,
+      identifier: identifier,
+    );
   }
 
   Widget buildRowWidget(BuildContext context);

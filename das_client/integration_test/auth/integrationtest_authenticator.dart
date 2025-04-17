@@ -1,8 +1,7 @@
 import 'package:das_client/auth/authentication_component.dart';
-import 'package:flutter/foundation.dart';
 import 'package:sbb_oidc/sbb_oidc.dart';
 
-class IntegrationtestAuthenticator implements Authenticator {
+class IntegrationTestAuthenticator implements Authenticator {
   @override
   Future<void> endSession() async {}
 
@@ -27,11 +26,5 @@ class IntegrationtestAuthenticator implements Authenticator {
     return User(name: 'tester@testeee.com', roles: []);
   }
 
-  OidcToken _token() {
-    return OidcToken(
-        tokenType: '',
-        accessToken: const AccessToken(''),
-        idToken: JsonWebToken(
-            header: const <String, dynamic>{}, payload: const <String, dynamic>{}, signature: Uint8List.fromList([])));
-  }
+  OidcToken _token() => OidcToken(tokenType: '', accessToken: '', idToken: '');
 }

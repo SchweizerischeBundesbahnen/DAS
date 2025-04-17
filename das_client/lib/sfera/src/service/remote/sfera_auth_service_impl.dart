@@ -21,7 +21,7 @@ class SferaAuthServiceImpl implements SferaAuthService {
     final authToken = await _authenticator.token();
 
     final response = await http.get(url, headers: {
-      'Authorization': '${authToken.tokenType} ${authToken.accessToken.value}',
+      'Authorization': '${authToken.tokenType} ${authToken.accessToken}',
     });
     final statusCode = response.statusCode;
     if (statusCode >= 200 && statusCode < 300) {

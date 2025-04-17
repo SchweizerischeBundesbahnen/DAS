@@ -9,7 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 class CurvePointRow extends CellRowBuilder<CurvePoint> {
   static const Key curvePointIconKey = Key('curvePointIcon');
 
-  const CurvePointRow({
+  CurvePointRow({
     required super.metadata,
     required super.data,
     super.config,

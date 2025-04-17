@@ -19,6 +19,7 @@ import 'package:das_client/model/journey/signal.dart';
 import 'package:das_client/model/journey/speed.dart';
 import 'package:das_client/model/journey/speed_change.dart';
 import 'package:das_client/model/journey/track_equipment_segment.dart';
+import 'package:das_client/model/journey/track_foot_note.dart';
 import 'package:das_client/model/journey/train_series.dart';
 import 'package:das_client/model/journey/tram_area.dart';
 import 'package:das_client/model/journey/whistles.dart';
@@ -1138,6 +1139,19 @@ void main() {
     expect(journey.metadata.lineFootNoteLocations['072869607d536b607a61111cf910784a']![0], 'Lausanne');
     expect(journey.metadata.lineFootNoteLocations['072869607d536b607a61111cf910784a']![1], 'Pully');
     expect(journey.metadata.lineFootNoteLocations['072869607d536b607a61111cf910784a']![2], 'Taillepied');
+  });
+
+  test('Test trackFootNote parsed correctly', () async {
+    final journey = getJourney('T15', 4);
+    expect(journey.valid, true);
+
+    final trackFootNotes = journey.data.whereType<TrackFootNote>().toList();
+    expect(trackFootNotes, hasLength(1));
+    expect(trackFootNotes[0].footNote.type, FootNoteType.journey);
+    expect(trackFootNotes[0].footNote.text, 'TrackFootNote nur für R');
+    expect(trackFootNotes[0].footNote.trainSeries, hasLength(1));
+    expect(trackFootNotes[0].footNote.trainSeries[0], TrainSeries.R);
+    expect(trackFootNotes[0].footNote.refText, '1)');
   });
 
   test('Test ContactList T9999 parsed correctly', () async {

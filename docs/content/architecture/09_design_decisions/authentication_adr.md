@@ -19,19 +19,20 @@ Check again, how are smaller RUs supported? How does the detailed solution look 
 DAS is operated for various RUs and must therefore have an exchangeable or broadly supported authorisation or identity concept.
 
 ## Basic conditions
-* Azure is the standard technology for IAM in all the participating organizations.
-* In order to authenticate other companies/EVUs, a federation of Azure ADs must be created.
-* With Multitenant, the participating organizations must manage the identities and can therefore be delegated.
+* Microsoft Identity Platform Entra (aka `Entra ID`, `Azure AD`) is the standard technology for IAM in all the participating organizations.
+* In order to authenticate other companies/EVUs, a federation of `Entra IDs` must be created.
+* With **Multi-tenant**, the participating organizations must manage the identities and can therefore be delegated.
 * With Crosstenant, all identities would have to be managed by one company. However, the one company does not know the identities and cannot know which identities should have which access.
 * If there is no identity federation, each RU would have to operate a DAS itself, which is not currently planned.
 * Other multi organization projects on swiss railway have already Azure Multinancy in place
 
 
 ## Assumptions
-
+* [Authorization code flow (with OAuth2)](https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-auth-code-flow) for User Logins is sufficient for trusted Mobile- and Web-App authentication
+* [Client credentials flow (with OAuth2)](https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-client-creds-grant-flow) for machine-to-machine authentication is sufficient
 
 ## Alternatives
 * Crosstenant
 
 ## Decision
-Because all cooperation partners use Azure AD, the authentication and role management of DAS is implemented with Azure AD (Multitenant).
+Because all cooperation partners use `Entra ID`, the authentication and role management of DAS is implemented with `Entra ID` (multi-tenant).
