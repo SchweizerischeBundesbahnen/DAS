@@ -13,7 +13,7 @@ DRAFT
   up-to-date and precise information for their task of running a train. The assistance system
   processes and displays the necessary data in an optimal and consistent manner in order to ensure
   robust, stable and safe railway operations.
-* DAS is based on the SFERA standard "IRS-90940:2022 Ed.2" and can therefore be used by railway undertakings (RU) running
+* DAS is based on the SFERA standard [IRS-90940:2022 Ed.2](https://uic.org/events/uic-irs-90940-edition-2-sfera-protocol) and can therefore be used by railway undertakings (RU) running
   on rail networks where infrastructure managers (IM) provide information through SFERA.
   * _The DAS constantly recalculates conflict-free and energy-optimised driving-profile from real-time information about a train's path, infrastructure constraints, timing targets, etc._
 
