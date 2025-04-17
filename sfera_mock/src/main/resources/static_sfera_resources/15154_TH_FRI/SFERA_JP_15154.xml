@@ -9,7 +9,7 @@
         </OTN_ID>
     </TrainIdentification>
 
-    <SegmentProfileReference SP_ID="15154_1_Thun" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_1_Thun" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -28,7 +28,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_2_Uttigen" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_2_Uttigen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -48,7 +48,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_3_Kiesen" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_3_Kiesen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -63,7 +63,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_4_Wichtrach" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_4_Wichtrach" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -78,7 +78,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_5_Muensingen" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_5_Muensingen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -93,7 +93,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_6_Rubigen" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_6_Rubigen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -108,7 +108,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_7_Guemligen" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_7_Guemligen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -128,7 +128,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_8_Ostermundigen" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_8_Ostermundigen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -151,7 +151,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_9_Wankdorf" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_9_Wankdorf" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -164,7 +164,7 @@
         </TimingPointConstraints>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_10_Bern_Wankdorf" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_10_Bern_Wankdorf" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -179,7 +179,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_11_Bern_Wyler" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_11_Bern_Wyler" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -192,7 +192,7 @@
         </TimingPointConstraints>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_12_Bern" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_12_Bern" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -207,7 +207,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_13_Bern_Whaus" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_13_Bern_Whaus" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -220,7 +220,7 @@
         </TimingPointConstraints>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_14_Bern_Europaplatz" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_14_Bern_Europaplatz" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -235,7 +235,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_15_Buempliz_Sued" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_15_Buempliz_Sued" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -250,7 +250,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_16_Niederwangen" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_16_Niederwangen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -265,7 +265,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_17_Oberwangen" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_17_Oberwangen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -278,7 +278,7 @@
         </TimingPointConstraints>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_18_Thoerishaus" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_18_Thoerishaus" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -291,7 +291,7 @@
         </TimingPointConstraints>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_19_Thoerishaus_Dorf" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_19_Thoerishaus_Dorf" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -306,7 +306,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_20_Flamatt" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_20_Flamatt" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -321,7 +321,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_21_Wuennewil" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_21_Wuennewil" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -336,7 +336,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_22_Schmitten" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_22_Schmitten" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -351,7 +351,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_23_Duedingen" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_23_Duedingen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -366,7 +366,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_24_Fribourg_Freiburg_Poya" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_24_Fribourg_Freiburg_Poya" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -381,7 +381,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_25_Fribourg_Freiburg" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_25_Fribourg_Freiburg" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
