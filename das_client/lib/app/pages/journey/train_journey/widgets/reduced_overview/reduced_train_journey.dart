@@ -82,6 +82,7 @@ class ReducedTrainJourney extends StatelessWidget {
       DASTableColumn(
           id: ColumnDefinition.time.index, width: 100.0, child: Text(context.l10n.p_train_journey_table_time_label)),
       DASTableColumn(id: ColumnDefinition.route.index, width: 48.0), // route column
+      DASTableColumn(width: 10.0), // spacer column so bracketStation does not overlap
       DASTableColumn(id: ColumnDefinition.bracketStation.index, width: 0.0), // bracket station column
       DASTableColumn(
         id: ColumnDefinition.informationCell.index,
