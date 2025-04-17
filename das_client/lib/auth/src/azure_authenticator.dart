@@ -22,6 +22,8 @@ class AzureAuthenticator implements Authenticator {
       await token();
       return true;
     } catch (e) {
+      // Delete all existing tokens. They are invalid and might cause issues.
+      await logout();
       return false;
     }
   }
@@ -48,7 +50,7 @@ class AzureAuthenticator implements Authenticator {
   @override
   Future<User> user({String? tokenId}) async {
     final oidcToken = await token(tokenId: tokenId);
-    final idToken = oidcToken.idToken;
+    final idToken = JsonWebToken.decode(oidcToken.idToken);
     final name = idToken.payload['preferred_username'] as String;
     final roles = idToken.payload['roles'] as List<dynamic>? ?? [];
 

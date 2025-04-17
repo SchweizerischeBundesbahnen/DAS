@@ -1,5 +1,8 @@
 include: package:flutter_lints/flutter.yaml
 
+formatter:
+  page_width: 120
+
 linter:
   rules:
     always_use_package_imports: true
@@ -16,4 +19,5 @@ analyzer:
     - custom_lint
   exclude:
     - lib/**.g.dart
+    - lib/app/i18n/gen/**
     - test/**.mocks.dart

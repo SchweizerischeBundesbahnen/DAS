@@ -34,7 +34,7 @@ class IntegrationTestDI {
   }
 
   static void _registerIntegrationTestAuthenticator() {
-    GetIt.I.registerSingletonAsync<Authenticator>(() async => IntegrationtestAuthenticator());
+    GetIt.I.registerSingletonAsync<Authenticator>(() async => IntegrationTestAuthenticator());
   }
 
   static void _registerMqttClientConnector() {

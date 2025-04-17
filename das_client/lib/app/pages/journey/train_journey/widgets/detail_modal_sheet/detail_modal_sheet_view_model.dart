@@ -31,7 +31,9 @@ class DetailModalSheetViewModel {
       onClose: () => _rxIsModalSheetOpen.add(false),
       onOpen: () {
         _rxIsModalSheetOpen.add(true);
-        automaticAdvancementController.scrollToCurrentPosition(resetAutomaticAdvancementTimer: true);
+        if (automaticAdvancementController.isActive) {
+          automaticAdvancementController.scrollToCurrentPosition(resetAutomaticAdvancementTimer: true);
+        }
       },
     );
 

@@ -24,14 +24,14 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.27.1'
+          flutter-version: '3.29.3'
           cache: true
 
       - name: Get dependencies
         run: flutter pub get
 
       - name: Src generation
-        run: flutter pub run build_runner build --delete-conflicting-outputs
+        run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Upload generated srcs  # saves around 40 sec
         uses: actions/upload-artifact@v4
@@ -70,7 +70,7 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.27.1'
+          flutter-version: '3.29.3'
           cache: true
 
       - name: Get dependencies
