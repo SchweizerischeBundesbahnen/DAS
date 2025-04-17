@@ -7,7 +7,6 @@ import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
-import 'package:das_client/model/localized_string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -19,8 +18,13 @@ import 'automatic_advancement_controller_test.mocks.dart';
   MockSpec<ScrollController>(),
   MockSpec<ScrollPosition>(),
   MockSpec<ServicePointRow>(),
+  MockSpec<GlobalKey>(),
+  MockSpec<BuildContext>(),
+  MockSpec<RenderBox>(),
 ])
 void main() {
+  const double dasTableHeaderOffset = -40;
+
   test('test does nothing without anything provided', () {
     final scrollControllerMock = MockScrollController();
     final testee = AutomaticAdvancementController(controller: scrollControllerMock);
@@ -38,7 +42,10 @@ void main() {
       Signal(order: 300, kilometre: []),
       Signal(order: 400, kilometre: []),
     ];
-    final journeyRows = journeyData.map((data) => SignalRow(metadata: Metadata(), data: data as Signal)).toList();
+
+    final journeyRows = journeyData
+        .map((data) => SignalRow(metadata: Metadata(), data: data as Signal, key: mockGlobalKeyOffset(Offset(0, 0))))
+        .toList();
     final currentPosition = journeyData[2];
 
     final scrollControllerMock = MockScrollController();
@@ -47,7 +54,8 @@ void main() {
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
-    final testee = AutomaticAdvancementController(controller: scrollControllerMock);
+    final testee = AutomaticAdvancementController(
+        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(currentPosition: currentPosition, automaticAdvancementActive: true);
@@ -65,7 +73,9 @@ void main() {
       Signal(order: 300, kilometre: []),
       Signal(order: 400, kilometre: []),
     ];
-    final journeyRows = journeyData.map((data) => SignalRow(metadata: Metadata(), data: data as Signal)).toList();
+    final journeyRows = journeyData
+        .map((data) => SignalRow(metadata: Metadata(), data: data as Signal, key: mockGlobalKeyOffset(Offset(0, 0))))
+        .toList();
     final currentPosition = journeyData[2];
 
     final scrollControllerMock = MockScrollController();
@@ -74,7 +84,8 @@ void main() {
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
-    final testee = AutomaticAdvancementController(controller: scrollControllerMock);
+    final testee = AutomaticAdvancementController(
+        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(currentPosition: currentPosition, automaticAdvancementActive: false);
@@ -90,7 +101,9 @@ void main() {
       Signal(order: 300, kilometre: []),
       Signal(order: 400, kilometre: []),
     ];
-    final journeyRows = journeyData.map((data) => SignalRow(metadata: Metadata(), data: data as Signal)).toList();
+    final journeyRows = journeyData
+        .map((data) => SignalRow(metadata: Metadata(), data: data as Signal, key: mockGlobalKeyOffset(Offset(0, 0))))
+        .toList();
     final currentPosition = journeyData[2];
 
     final scrollControllerMock = MockScrollController();
@@ -99,7 +112,8 @@ void main() {
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
-    final testee = AutomaticAdvancementController(controller: scrollControllerMock);
+    final testee = AutomaticAdvancementController(
+        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(currentPosition: currentPosition, automaticAdvancementActive: true);
@@ -127,7 +141,8 @@ void main() {
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
-    final testee = AutomaticAdvancementController(controller: scrollControllerMock);
+    final testee = AutomaticAdvancementController(
+        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(currentPosition: currentPosition, automaticAdvancementActive: true);
@@ -138,14 +153,14 @@ void main() {
   test('test scrolling adjust to sticky header', () {
     final signalData = Signal(order: 100, kilometre: []);
     final targetSignalData = Signal(order: 300, kilometre: []);
-    final servicePointData = ServicePoint(order: 0, kilometre: [], name: LocalizedString());
+    final servicePointData = ServicePoint(order: 0, kilometre: [], name: '');
 
     final List<CellRowBuilder> rows = [
-      mockServicePointRow(servicePointData),
+      mockServicePointRow(servicePointData, Offset(0, 0)),
       SignalRow(metadata: Metadata(), data: signalData),
       SignalRow(metadata: Metadata(), data: signalData),
       SignalRow(metadata: Metadata(), data: signalData),
-      mockServicePointRow(servicePointData),
+      mockServicePointRow(servicePointData, Offset(0, 196)),
       SignalRow(metadata: Metadata(), data: targetSignalData),
     ];
 
@@ -155,7 +170,8 @@ void main() {
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 10);
 
-    final testee = AutomaticAdvancementController(controller: scrollControllerMock);
+    final testee = AutomaticAdvancementController(
+        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(rows);
     testee.handleJourneyUpdate(currentPosition: targetSignalData, automaticAdvancementActive: true);
@@ -175,7 +191,10 @@ void main() {
       Signal(order: 300, kilometre: []),
       Signal(order: 400, kilometre: []),
     ];
-    final journeyRows = journeyData.map((data) => SignalRow(metadata: Metadata(), data: data as Signal)).toList();
+
+    final journeyRows = journeyData
+        .map((data) => SignalRow(metadata: Metadata(), data: data as Signal, key: mockGlobalKeyOffset(Offset(0, 0))))
+        .toList();
     final currentPosition = journeyData[2];
 
     final scrollControllerMock = MockScrollController();
@@ -184,7 +203,8 @@ void main() {
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
-    final testee = AutomaticAdvancementController(controller: scrollControllerMock);
+    final testee = AutomaticAdvancementController(
+        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(currentPosition: currentPosition, automaticAdvancementActive: true);
@@ -205,7 +225,10 @@ void main() {
       Signal(order: 300, kilometre: []),
       Signal(order: 400, kilometre: []),
     ];
-    final journeyRows = journeyData.map((data) => SignalRow(metadata: Metadata(), data: data as Signal)).toList();
+
+    final journeyRows = journeyData
+        .map((data) => SignalRow(metadata: Metadata(), data: data as Signal, key: mockGlobalKeyOffset(Offset(0, 0))))
+        .toList();
     final currentPosition = journeyData[2];
 
     final scrollControllerMock = MockScrollController();
@@ -214,7 +237,8 @@ void main() {
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
-    final testee = AutomaticAdvancementController(controller: scrollControllerMock);
+    final testee = AutomaticAdvancementController(
+        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(currentPosition: currentPosition, automaticAdvancementActive: true);
@@ -233,10 +257,22 @@ void main() {
   });
 }
 
-ServicePointRow mockServicePointRow(ServicePoint data) {
+ServicePointRow mockServicePointRow(ServicePoint data, Offset offset) {
   final servicePointRow = MockServicePointRow();
+  final mockKey = mockGlobalKeyOffset(offset);
   when(servicePointRow.data).thenReturn(data);
   when(servicePointRow.height).thenReturn(ServicePointRow.rowHeight);
   when(servicePointRow.stickyLevel).thenReturn(StickyLevel.first);
+  when(servicePointRow.key).thenReturn(mockKey);
   return servicePointRow;
+}
+
+GlobalKey mockGlobalKeyOffset(Offset offset) {
+  final mockDasTableKey = MockGlobalKey();
+  final mockDasTableContext = MockBuildContext();
+  final mockRenderBox = MockRenderBox();
+  when(mockDasTableKey.currentContext).thenReturn(mockDasTableContext);
+  when(mockDasTableContext.findRenderObject()).thenReturn(mockRenderBox);
+  when(mockRenderBox.localToGlobal(any)).thenReturn(offset);
+  return mockDasTableKey;
 }

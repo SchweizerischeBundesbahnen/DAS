@@ -10,7 +10,7 @@ class CABSignalingRow extends CellRowBuilder<CABSignaling> {
   static const Key cabSignalingStartIconKey = Key('cabSignalingStartIcon');
   static const Key cabSignalingEndIconKey = Key('cabSignalingEndIcon');
 
-  const CABSignalingRow({
+  CABSignalingRow({
     required super.metadata,
     required super.data,
     super.config,

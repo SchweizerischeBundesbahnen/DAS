@@ -10,10 +10,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 class SignalRow extends CellRowBuilder<Signal> {
   static const Key signalLineChangeIconKey = Key('signalLineChangeIcon');
 
-  const SignalRow({
+  SignalRow({
     required super.metadata,
     required super.data,
     super.config,
+    super.key,
   });
 
   @override

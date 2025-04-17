@@ -26,6 +26,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/protect
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/signal_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/speed_change_row.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/track_foot_note_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/tram_area_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/whistle_row.dart';
 import 'package:das_client/app/widgets/stickyheader/sticky_level.dart';
@@ -52,6 +53,7 @@ import 'package:das_client/model/journey/protection_section.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/signal.dart';
 import 'package:das_client/model/journey/speed_change.dart';
+import 'package:das_client/model/journey/track_foot_note.dart';
 import 'package:das_client/model/journey/tram_area.dart';
 import 'package:das_client/model/journey/whistles.dart';
 import 'package:das_client/theme/theme_util.dart';
@@ -112,6 +114,7 @@ class TrainJourney extends StatelessWidget {
           return ChevronAnimationWrapper(
             journey: journey,
             child: DASTable(
+              key: context.trainJourneyCubit.automaticAdvancementController.tableKey,
               scrollController: context.trainJourneyCubit.automaticAdvancementController.scrollController,
               columns: _columns(context, journey.metadata, settings, isDetailModelSheetOpen),
               rows: tableRows.map((it) => it.build(context)).toList(),
@@ -124,10 +127,14 @@ class TrainJourney extends StatelessWidget {
   }
 
   List<DASTableRowBuilder> _rows(BuildContext context, Journey journey, TrainJourneySettings settings) {
+    final currentTrainSeries = settings.selectedBreakSeries?.trainSeries ?? journey.metadata.breakSeries?.trainSeries;
+
     final rows = journey.data
         .whereNot((it) => _isCurvePointWithoutSpeed(it, journey, settings))
         .groupBaliseAndLeveLCrossings(settings.expandedGroups)
-        .hideRepeatedLineFootNotes(journey.metadata);
+        .hideRepeatedLineFootNotes(journey.metadata.currentPosition)
+        .hideFootNotesForNotSelectedTrainSeries(currentTrainSeries)
+        .toList();
 
     final groupedRows =
         rows.whereType<BaliseLevelCrossingGroup>().map((it) => it.groupedElements).expand((it) => it).toList();
@@ -236,6 +243,14 @@ class TrainJourney extends StatelessWidget {
           return LineFootNoteRow(
             metadata: journey.metadata,
             data: rowData as LineFootNote,
+            config: trainJourneyConfig,
+            isExpanded: !settings.collapsedFootNotes.contains(rowData.identifier),
+            accordionToggleCallback: () => _onFootNoteExpanded(context, rowData, settings),
+          );
+        case Datatype.trackFootNote:
+          return TrackFootNoteRow(
+            metadata: journey.metadata,
+            data: rowData as TrackFootNote,
             config: trainJourneyConfig,
             isExpanded: !settings.collapsedFootNotes.contains(rowData.identifier),
             accordionToggleCallback: () => _onFootNoteExpanded(context, rowData, settings),

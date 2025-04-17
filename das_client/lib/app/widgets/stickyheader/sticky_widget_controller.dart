@@ -1,16 +1,22 @@
+import 'dart:math';
+
 import 'package:das_client/app/widgets/stickyheader/sticky_level.dart';
 import 'package:das_client/app/widgets/table/das_table_row.dart';
+import 'package:das_client/util/widget_util.dart';
 import 'package:flutter/material.dart';
 
 class StickyWidgetController with ChangeNotifier {
-  StickyWidgetController({required this.scrollController, required List<DASTableRow> rows}) : _rows = rows {
+  StickyWidgetController(
+      {required this.stickyHeaderKey, required this.scrollController, required List<DASTableRow> rows})
+      : _rows = rows {
     scrollController.addListener(_scrollListener);
     _initialize();
   }
 
+  final GlobalKey stickyHeaderKey;
   final ScrollController scrollController;
-  final List<double> rowOffsets = [];
   List<DASTableRow> _rows;
+  bool _recalculating = false;
 
   Map<StickyLevel, double> headerOffsets = {
     StickyLevel.first: 0.0,
@@ -22,19 +28,21 @@ class StickyWidgetController with ChangeNotifier {
   };
   var footerIndex = -1;
 
-  void _initialize() {
-    var offset = 0.0;
-    for (var i = 0; i < _rows.length; i++) {
-      rowOffsets.add(offset);
-      offset += _rows[i].height;
-    }
+  bool get isRecalculating => _recalculating;
 
+  void _initialize() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollListener();
     });
   }
 
   void _scrollListener() {
+    final firstVisibleIndex = _findFirstVisibleRowIndex();
+    if (firstVisibleIndex == -1) {
+      _recalculating = true;
+      return;
+    }
+
     headerIndexes = {
       StickyLevel.first: -1,
       StickyLevel.second: -1,
@@ -43,20 +51,34 @@ class StickyWidgetController with ChangeNotifier {
 
     if (scrollController.positions.isNotEmpty) {
       final currentPixels = scrollController.position.pixels;
-      for (int i = 0; i < rowOffsets.length; i++) {
-        if (currentPixels >= rowOffsets[i] && currentPixels < rowOffsets[i] + _rows[i].height) {
-          _calculateHeaders(i, currentPixels);
-          _calculateHeaderOffsets(currentPixels);
-          footerIndex = _calculateFooter(headerIndexes[StickyLevel.first]! + 1, currentPixels);
-          break;
-        }
-      }
+
+      _calculateHeaders(firstVisibleIndex);
+      _calculateHeaderOffsets();
+      footerIndex = _calculateFooter(headerIndexes[StickyLevel.first]! + 1, currentPixels);
     }
 
+    _recalculating = false;
     notifyListeners();
   }
 
-  void _calculateHeaders(int startIndex, double currentPixels) {
+  int _findFirstVisibleRowIndex() {
+    final stickyOffset = WidgetUtil.findOffsetOfKey(stickyHeaderKey);
+    if (stickyOffset == null) return -1;
+
+    for (int i = 0; i < _rows.length; i++) {
+      final row = _rows[i];
+      final renderObject = row.key.currentContext?.findRenderObject() as RenderBox?;
+      if (renderObject != null) {
+        final offset = renderObject.localToGlobal(Offset.zero) - stickyOffset;
+        if (offset.dy + row.height > 0) {
+          return i;
+        }
+      }
+    }
+    return -1;
+  }
+
+  void _calculateHeaders(int startIndex) {
     for (int i = startIndex; i >= 0; i--) {
       final stickyLevel = _rows[i].stickyLevel;
       if (stickyLevel == StickyLevel.first) {
@@ -79,25 +101,27 @@ class StickyWidgetController with ChangeNotifier {
     }
   }
 
-  void _calculateHeaderOffsets(double currentPixels) {
+  void _calculateHeaderOffsets() {
     final firstHeaderHeight =
         headerIndexes[StickyLevel.first] != -1 ? _rows[headerIndexes[StickyLevel.first]!].height : 0.0;
 
     headerOffsets = {
-      StickyLevel.first: _calculateHeaderOffset(headerIndexes[StickyLevel.first]!, currentPixels, StickyLevel.first),
-      StickyLevel.second: _calculateHeaderOffset(
-          headerIndexes[StickyLevel.second]!, currentPixels + firstHeaderHeight, StickyLevel.second),
+      StickyLevel.first: _calculateHeaderOffset(headerIndexes[StickyLevel.first]!, StickyLevel.first, 0.0),
+      StickyLevel.second:
+          _calculateHeaderOffset(headerIndexes[StickyLevel.second]!, StickyLevel.second, firstHeaderHeight),
     };
   }
 
-  double _calculateHeaderOffset(int headerIndex, double currentPixels, StickyLevel stickyLevel) {
+  double _calculateHeaderOffset(int headerIndex, StickyLevel stickyLevel, double additionalHeaderHeight) {
+    final stickyOffset = WidgetUtil.findOffsetOfKey(stickyHeaderKey);
+    if (stickyOffset == null) return 0.0;
+
     final nextStickyIndex = _findNextStickyBelowLevel(headerIndex + 1, stickyLevel);
     if (headerIndex != -1 && nextStickyIndex != -1) {
-      final headerHeight = _rows[headerIndex].height;
-      final nextStickyOffset = rowOffsets[nextStickyIndex];
-
-      if (currentPixels + headerHeight > nextStickyOffset) {
-        return nextStickyOffset - currentPixels - headerHeight;
+      final offset = WidgetUtil.findOffsetOfKey(_rows[nextStickyIndex].key);
+      if (offset != null) {
+        final localOffset = offset - stickyOffset;
+        return min(0.0, localOffset.dy - _rows[headerIndex].height - additionalHeaderHeight);
       }
     }
 
@@ -108,9 +132,10 @@ class StickyWidgetController with ChangeNotifier {
     var stickyFooterIndex = _findNextStickyBelowLevel(startIndex, StickyLevel.first);
 
     if (stickyFooterIndex != -1) {
-      final stickyOffset = rowOffsets[stickyFooterIndex];
-      if (currentPixels + scrollController.position.viewportDimension >
-          stickyOffset + _rows[stickyFooterIndex].height) {
+      final stickyOffset = WidgetUtil.findOffsetOfKey(stickyHeaderKey);
+      final offset = WidgetUtil.findOffsetOfKey(_rows[stickyFooterIndex].key);
+      if (offset != null &&
+          (offset - stickyOffset!).dy + _rows[stickyFooterIndex].height < scrollController.position.viewportDimension) {
         // Footer is already on screen
         stickyFooterIndex = -1;
       }
@@ -132,7 +157,6 @@ class StickyWidgetController with ChangeNotifier {
 
   void updateRowData(List<DASTableRow> rows) {
     _rows = rows;
-    rowOffsets.clear();
     _initialize();
     _scrollListener();
   }

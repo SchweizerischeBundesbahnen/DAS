@@ -2,6 +2,7 @@ import 'package:das_client/sfera/src/model/curve_point_network_specific_point.da
 import 'package:das_client/sfera/src/model/new_line_speed_network_specific_point.dart';
 import 'package:das_client/sfera/src/model/nsp.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
+import 'package:das_client/sfera/src/model/track_foot_notes_nsp.dart';
 import 'package:das_client/sfera/src/model/whistle_network_specific_point.dart';
 
 class NetworkSpecificPoint extends Nsp {
@@ -19,6 +20,8 @@ class NetworkSpecificPoint extends Nsp {
       return CurvePointNetworkSpecificPoint(attributes: attributes, children: children, value: value);
     } else if (groupName?.value == WhistleNetworkSpecificPoint.elementName) {
       return WhistleNetworkSpecificPoint(attributes: attributes, children: children, value: value);
+    } else if (groupName?.value == TrackFootNotesNsp.elementName) {
+      return TrackFootNotesNsp(attributes: attributes, children: children, value: value);
     }
     return NetworkSpecificPoint(attributes: attributes, children: children, value: value);
   }

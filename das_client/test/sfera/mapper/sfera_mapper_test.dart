@@ -19,6 +19,7 @@ import 'package:das_client/model/journey/signal.dart';
 import 'package:das_client/model/journey/speed.dart';
 import 'package:das_client/model/journey/speed_change.dart';
 import 'package:das_client/model/journey/track_equipment_segment.dart';
+import 'package:das_client/model/journey/track_foot_note.dart';
 import 'package:das_client/model/journey/train_series.dart';
 import 'package:das_client/model/journey/tram_area.dart';
 import 'package:das_client/model/journey/whistles.dart';
@@ -119,12 +120,12 @@ void main() {
 
     expect(journey.valid, true);
     expect(servicePoints, hasLength(6));
-    expect(servicePoints[0].name.de, 'Bahnhof A');
-    expect(servicePoints[1].name.de, 'Haltestelle B');
-    expect(servicePoints[2].name.de, 'Halt auf Verlangen C');
-    expect(servicePoints[3].name.de, 'Klammerbahnhof D');
-    expect(servicePoints[4].name.de, 'Klammerbahnhof D1');
-    expect(servicePoints[5].name.de, 'Bahnhof E');
+    expect(servicePoints[0].name, 'Bahnhof A');
+    expect(servicePoints[1].name, 'Haltestelle B');
+    expect(servicePoints[2].name, 'Halt auf Verlangen C');
+    expect(servicePoints[3].name, 'Klammerbahnhof D');
+    expect(servicePoints[4].name, 'Klammerbahnhof D1');
+    expect(servicePoints[5].name, 'Bahnhof E');
   });
 
   test('Test journey data types correctly generated', () async {
@@ -1121,23 +1122,36 @@ void main() {
     expect(lineFootNotes[0].footNote.identifier, '072869607d536b607a61111cf910784a');
     expect(lineFootNotes[0].footNote.text, 'admis seulement pour <b>RABe 503, ETR 610</b>');
     expect(lineFootNotes[0].footNote.trainSeries, [TrainSeries.N]);
-    expect(lineFootNotes[0].locationName.de, 'Lausanne');
+    expect(lineFootNotes[0].locationName, 'Lausanne');
     expect(lineFootNotes[1].footNote.type, isNull);
     expect(lineFootNotes[1].footNote.identifier, '072869607d536b607a61111cf910784a');
     expect(lineFootNotes[1].footNote.text, 'admis seulement pour <b>RABe 503, ETR 610</b>');
     expect(lineFootNotes[1].footNote.trainSeries, [TrainSeries.N]);
-    expect(lineFootNotes[1].locationName.de, 'Pully');
+    expect(lineFootNotes[1].locationName, 'Pully');
     expect(lineFootNotes[2].footNote.type, isNull);
     expect(lineFootNotes[2].footNote.identifier, '072869607d536b607a61111cf910784a');
     expect(lineFootNotes[2].footNote.text, 'admis seulement pour <b>RABe 503, ETR 610</b>');
     expect(lineFootNotes[2].footNote.trainSeries, [TrainSeries.N]);
-    expect(lineFootNotes[2].locationName.de, 'Taillepied');
+    expect(lineFootNotes[2].locationName, 'Taillepied');
 
     expect(journey.metadata.lineFootNoteLocations, hasLength(1));
     expect(journey.metadata.lineFootNoteLocations['072869607d536b607a61111cf910784a'], hasLength(3));
-    expect(journey.metadata.lineFootNoteLocations['072869607d536b607a61111cf910784a']![0].de, 'Lausanne');
-    expect(journey.metadata.lineFootNoteLocations['072869607d536b607a61111cf910784a']![1].de, 'Pully');
-    expect(journey.metadata.lineFootNoteLocations['072869607d536b607a61111cf910784a']![2].de, 'Taillepied');
+    expect(journey.metadata.lineFootNoteLocations['072869607d536b607a61111cf910784a']![0], 'Lausanne');
+    expect(journey.metadata.lineFootNoteLocations['072869607d536b607a61111cf910784a']![1], 'Pully');
+    expect(journey.metadata.lineFootNoteLocations['072869607d536b607a61111cf910784a']![2], 'Taillepied');
+  });
+
+  test('Test trackFootNote parsed correctly', () async {
+    final journey = getJourney('T15', 4);
+    expect(journey.valid, true);
+
+    final trackFootNotes = journey.data.whereType<TrackFootNote>().toList();
+    expect(trackFootNotes, hasLength(1));
+    expect(trackFootNotes[0].footNote.type, FootNoteType.journey);
+    expect(trackFootNotes[0].footNote.text, 'TrackFootNote nur für R');
+    expect(trackFootNotes[0].footNote.trainSeries, hasLength(1));
+    expect(trackFootNotes[0].footNote.trainSeries[0], TrainSeries.R);
+    expect(trackFootNotes[0].footNote.refText, '1)');
   });
 
   test('Test ContactList T9999 parsed correctly', () async {

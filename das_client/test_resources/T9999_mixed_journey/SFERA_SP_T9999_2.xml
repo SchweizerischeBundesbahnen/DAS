@@ -10,7 +10,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>9992</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="stopping location"/>
         </TimingPoint>
 
         <Signal>
@@ -32,6 +31,10 @@
             <NetworkSpecificParameter name="curveType" value="curve"/>
             <NetworkSpecificParameter name="xmlCurveSpeed" value="
                 &lt;curveSpeed text=&quot;Kurve 1&quot; comment=&quot;Kurve 1&quot;&gt;
+                &lt;speeds&gt;
+                &lt;v trainSeries=&quot;R&quot; speed=&quot;44&quot;/&gt;
+                &lt;v trainSeries=&quot;A&quot; speed=&quot;55&quot;/&gt;
+                &lt;/speeds&gt;
                 &lt;/curveSpeed&gt;
             "/>
         </NetworkSpecificPoint>
@@ -39,13 +42,14 @@
     </SP_Points>
 
     <SP_Areas>
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="B"
-                          TAF_TAP_location_type="station" startLocation="500" endLocation="500">
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="500" endLocation="500"
+            TAF_TAP_location_abbreviation="B"
+            TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>9992</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Haltestelle B</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" text="Haltestelle B"/>
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>

@@ -54,7 +54,12 @@ class _RouteChevronState extends State<RouteChevron> {
       final diff = (start - end).abs();
 
       setState(() {
-        currentOffsetValue = start + (diff * controller!.animation!.value);
+        if (controller?.currentPosition == widget.chevronAnimationData?.currenPosition &&
+            controller?.lastPosition == widget.chevronAnimationData?.lastPosition) {
+          currentOffsetValue = start + (diff * controller!.animation!.value);
+        } else {
+          currentOffsetValue = end;
+        }
       });
     }
   }

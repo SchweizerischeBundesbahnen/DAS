@@ -10,7 +10,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>9993</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="C"/>
         </TimingPoint>
 
         <Signal>
@@ -26,7 +25,11 @@
             <!-- 'stationExitCurve' (begins in a station) -->
             <NetworkSpecificParameter name="curveType" value="stationExitCurve"/>
             <NetworkSpecificParameter name="xmlCurveSpeed" value="
-                &lt;curveSpeed text=&quot;Kurve 1&quot; comment=&quot;Kurve 2&quot;&gt;
+                &lt;curveSpeed text=&quot;Kurve 5&quot; comment=&quot;Kurve 2&quot;&gt;
+                &lt;speeds&gt;
+                &lt;v trainSeries=&quot;R&quot; speed=&quot;44&quot;/&gt;
+                &lt;v trainSeries=&quot;A&quot; speed=&quot;55&quot;/&gt;
+                &lt;/speeds&gt;
                 &lt;/curveSpeed&gt;
             "/>
         </NetworkSpecificPoint>
@@ -38,7 +41,11 @@
             <!-- 'curveAfterHalt' (begins at an halt). -->
             <NetworkSpecificParameter name="curveType" value="curveAfterHalt"/>
             <NetworkSpecificParameter name="xmlCurveSpeed" value="
-                &lt;curveSpeed text=&quot;Kurve 1&quot; comment=&quot;Kurve 3&quot;&gt;
+                &lt;curveSpeed text=&quot;Kurve 5&quot; comment=&quot;Kurve 3&quot;&gt;
+                &lt;speeds&gt;
+                &lt;v trainSeries=&quot;R&quot; speed=&quot;44&quot;/&gt;
+                &lt;v trainSeries=&quot;A&quot; speed=&quot;55&quot;/&gt;
+                &lt;/speeds&gt;
                 &lt;/curveSpeed&gt;
             "/>
         </NetworkSpecificPoint>
@@ -59,13 +66,14 @@
     </SP_Points>
 
     <SP_Areas>
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="C"
-                          TAF_TAP_location_type="halt">
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="400" endLocation="400"
+            TAF_TAP_location_abbreviation="C"
+            TAF_TAP_location_type="halt">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>9993</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Halt auf Verlangen C</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" text="Halt auf Verlangen C"/>
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>

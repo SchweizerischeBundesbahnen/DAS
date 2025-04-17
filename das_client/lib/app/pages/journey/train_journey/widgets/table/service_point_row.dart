@@ -37,7 +37,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   @override
   DASTableCell informationCell(BuildContext context) {
-    final servicePointName = data.name.localized;
+    final servicePointName = data.name;
     return DASTableCell(
       onTap: () {
         final viewModel = context.read<DetailModalSheetViewModel>();

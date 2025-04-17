@@ -5,7 +5,7 @@ import 'package:das_client/model/journey/connection_track.dart';
 import 'package:flutter/material.dart';
 
 class ConnectionTrackRow extends CellRowBuilder<ConnectionTrack> {
-  const ConnectionTrackRow({
+  ConnectionTrackRow({
     required super.metadata,
     required super.data,
     super.config,
