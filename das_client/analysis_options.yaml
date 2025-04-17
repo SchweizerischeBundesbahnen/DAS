@@ -19,4 +19,5 @@ analyzer:
     - custom_lint
   exclude:
     - lib/**.g.dart
+    - lib/app/i18n/gen/**
     - test/**.mocks.dart
