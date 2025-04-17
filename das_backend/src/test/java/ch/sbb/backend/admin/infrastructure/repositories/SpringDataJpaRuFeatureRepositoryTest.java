@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.sbb.backend.JpaAuditingConfiguration;
-import ch.sbb.backend.TestcontainersConfiguration;
+import ch.sbb.backend.TestContainerConfiguration;
 import ch.sbb.backend.admin.infrastructure.model.RuFeatureEntity;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
 
 @DataJpaTest
-@Import({TestcontainersConfiguration.class, JpaAuditingConfiguration.class})
+@Import({TestContainerConfiguration.class, JpaAuditingConfiguration.class})
 class SpringDataJpaRuFeatureRepositoryTest {
 
     @Autowired
@@ -35,7 +35,7 @@ class SpringDataJpaRuFeatureRepositoryTest {
         assertEquals(1, entity.getId());
         assertEquals("1345", entity.getCompanyCode());
         assertEquals("RUFEATURE", entity.getName());
-        assertTrue(entity.getEnabled());
+        assertTrue(entity.isEnabled());
         assertEquals("unit_test", entity.getLastModifiedBy());
         assertEquals(LocalDateTime.parse("2025-04-17T10:18:34"), entity.getLastModifiedAt());
     }
@@ -54,7 +54,7 @@ class SpringDataJpaRuFeatureRepositoryTest {
         assertEquals(1, entity.getId());
         assertEquals("1345", entity.getCompanyCode());
         assertEquals("RUFEATURE", entity.getName());
-        assertFalse(entity.getEnabled());
+        assertFalse(entity.isEnabled());
         assertEquals("unit_test", entity.getLastModifiedBy());
         assertTrue(entity.getLastModifiedAt().isAfter(LocalDateTime.parse("2025-04-17T10:18:34")));
     }
@@ -74,7 +74,7 @@ class SpringDataJpaRuFeatureRepositoryTest {
         assertEquals(2, entity.getId());
         assertEquals("1185", entity.getCompanyCode());
         assertEquals("FEATURE2", entity.getName());
-        assertTrue(entity.getEnabled());
+        assertTrue(entity.isEnabled());
         assertEquals("unit_test", entity.getLastModifiedBy());
         assertNotNull(entity.getLastModifiedAt());
     }

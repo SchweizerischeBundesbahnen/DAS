@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import ch.sbb.backend.TestcontainersConfiguration;
+import ch.sbb.backend.TestContainerConfiguration;
 import ch.sbb.backend.logging.domain.model.Tenant;
 import ch.sbb.backend.logging.infrastructure.config.TenantConfig;
 import java.util.List;
@@ -14,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
 @SpringBootTest
-@Import(TestcontainersConfiguration.class)
+@Import(TestContainerConfiguration.class)
 class TenantConfigTest {
 
     @Autowired
