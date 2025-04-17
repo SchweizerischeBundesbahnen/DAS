@@ -121,7 +121,7 @@
             <StoppingPointDepartureDetails departureTime="2025-05-17T15:03:00Z" plannedDepartureTime="2025-05-17T15:03:00Z"/>
         </TimingPointConstraints>
 
-		<TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="ASR" startLocation="2200">
+		<TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="2200">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
             <TemporaryConstraintReason text="Umbau" language="DE"/>
         </TemporaryConstraints>
@@ -141,12 +141,8 @@
             <StoppingPointDepartureDetails departureTime="2025-05-17T15:06:00Z" plannedDepartureTime="2025-05-17T15:06:00Z"/>
         </TimingPointConstraints>
 		
-		<TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="ASR" startLocation="0">
+		<TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="ASR" endLocation="450">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
-        </TemporaryConstraints>
-		<TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="0" endLocation="450">
-            <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
-            <TemporaryConstraintReason text="Umbau" language="DE"/>
         </TemporaryConstraints>
 
     </SegmentProfileReference>
