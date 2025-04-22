@@ -5,6 +5,7 @@ name: release-das-client-android
 
 on:
   workflow_call:
+  workflow_dispatch:
 
 permissions:
   contents: write
