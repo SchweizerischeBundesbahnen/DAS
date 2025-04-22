@@ -9,7 +9,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 @immutable
 class DASTableColumn {
   const DASTableColumn({
-    required this.id,
+    this.id,
     this.child,
     this.border,
     this.color,
@@ -22,7 +22,7 @@ class DASTableColumn {
   }) : assert(width != null || expanded);
 
   /// The unique identifier for the column.
-  final int id;
+  final int? id;
 
   /// The content of the column header as a widget.
   final Widget? child;
