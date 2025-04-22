@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.4.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.3.0...sfera_mock-v0.4.0) (2025-04-22)
+
+
+### Features
+
+* add RADN footnotes ([#625](https://github.com/SchweizerischeBundesbahnen/DAS/issues/625)) ([#762](https://github.com/SchweizerischeBundesbahnen/DAS/issues/762)) ([3c4324f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/3c4324f13b0c2c5f79fab687f55cbffa152d18f7))
+* radio channels get contactList ([#125](https://github.com/SchweizerischeBundesbahnen/DAS/issues/125)) ([#780](https://github.com/SchweizerischeBundesbahnen/DAS/issues/780)) ([43ccebe](https://github.com/SchweizerischeBundesbahnen/DAS/commit/43ccebe70ebee24cb55cd908093245c42c0ec9db))
+
+
+### Bug Fixes
+
+* **deps:** update dependency com.solace.spring.cloud:solace-spring-cloud-bom to v4.8.0 ([#787](https://github.com/SchweizerischeBundesbahnen/DAS/issues/787)) ([4205fbe](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4205fbe9e2126cc67df253ec2ae0036f1a151dfd))
+* footnotes ([4b814d8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4b814d8093be877c2210bbed9270f32826f3b3a0))
+* review of SFERA API ([#751](https://github.com/SchweizerischeBundesbahnen/DAS/issues/751)) ([b2e005f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b2e005f007c1b3f896b5a094e2b2446ee187bacc))
+* sticky header and automatic advancement with footnotes ([#809](https://github.com/SchweizerischeBundesbahnen/DAS/issues/809)) ([850fbdc](https://github.com/SchweizerischeBundesbahnen/DAS/commit/850fbdc4df0d5ed951419d634884a03490c5f048))
+
+
+### Documentation
+
+* 1671 and 1672 remove fake signals ([#745](https://github.com/SchweizerischeBundesbahnen/DAS/issues/745)) ([8b82a95](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8b82a950b86c5f6e3317caefaeaf261acc27a5ca))
+* 1809 fix foot notes add events ([#776](https://github.com/SchweizerischeBundesbahnen/DAS/issues/776)) ([bd7c850](https://github.com/SchweizerischeBundesbahnen/DAS/commit/bd7c85074a1dfe3da453e20268654114dd9d7d8a))
+* fix contact info and footnote ([#790](https://github.com/SchweizerischeBundesbahnen/DAS/issues/790)) ([87ae130](https://github.com/SchweizerischeBundesbahnen/DAS/commit/87ae13039a7b20df791da8c51314d593dd415df4))
+* testdata 15154 TH-FRI ([#814](https://github.com/SchweizerischeBundesbahnen/DAS/issues/814)) ([f263ad2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/f263ad219034b2c34417e85ea53b3f361805d7eb))
+
 ## [0.3.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.2.2...sfera_mock-v0.3.0) (2025-03-25)
 
 
