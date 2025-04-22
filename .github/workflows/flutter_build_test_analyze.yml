@@ -49,6 +49,9 @@ jobs:
     - name: Src generation
       run: dart run build_runner build --delete-conflicting-outputs
 
+    - name: Generate localization files
+      run:  flutter gen-l10n
+
     - name: Flutter analyze
       run: flutter analyze
 
