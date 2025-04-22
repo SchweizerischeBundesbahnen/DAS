@@ -25,7 +25,6 @@ public class RuFeatureEntity {
     @LastModifiedDate
     private LocalDateTime lastModifiedAt;
 
-    public Boolean getEnabled() {
     public Boolean isEnabled() {
         return enabled;
     }
