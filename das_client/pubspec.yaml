@@ -76,6 +76,7 @@ dependencies:
   provider: ^6.1.4
   # https://pub.dev/packages/extra_hittest_area
   extra_hittest_area: ^1.0.0
+  # https://pub.dev/packages/screen_brightness
   screen_brightness: ^2.1.2
 
 dev_dependencies:
