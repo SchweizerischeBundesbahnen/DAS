@@ -19,17 +19,17 @@ public class RuFeatureEntity {
     private Integer id;
     private String companyCode;
     private String name;
-    private Boolean enabled;
+    private boolean enabled;
     @LastModifiedBy
     private String lastModifiedBy;
     @LastModifiedDate
     private LocalDateTime lastModifiedAt;
 
-    public Boolean isEnabled() {
+    public boolean isEnabled() {
         return enabled;
     }
 
-    public void setEnabled(Boolean enabled) {
+    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
