@@ -12,6 +12,7 @@ import 'package:das_client/util/format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 @RoutePage()
 class JourneyPage extends StatelessWidget {
@@ -121,7 +122,10 @@ class _JourneyPageContentState extends State<JourneyPageContent> with SingleTick
     return IconButton(
       key: JourneyPageContent.disconnectKey,
       icon: const Icon(SBBIcons.train_small),
-      onPressed: () => context.trainJourneyCubit.reset(),
+      onPressed: () {
+        WakelockPlus.disable();
+        context.trainJourneyCubit.reset();
+      },
     );
   }
 

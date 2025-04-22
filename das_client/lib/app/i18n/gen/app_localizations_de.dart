@@ -1,7 +1,3 @@
-// TODO: There is currently a problem with the format check in ci with this generated file
-// TODO: This will be solved here: https://github.com/flutter/flutter/pull/167029
-// TODO: Format this code before commiting
-
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
@@ -133,8 +129,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get w_extended_menu_journey_wara_action => 'WaRa öffnen';
 
   @override
-  String get w_maneuver_notification_text =>
-      'Du befindest dich im Manövermodus. Warnfunktion geschlossenes Signal ist deaktiviert.';
+  String get w_maneuver_notification_text => 'Du befindest dich im Manövermodus. Warnfunktion geschlossenes Signal ist deaktiviert.';
 
   @override
   String get w_maneuver_notification_wara_action => 'WaRa';
@@ -158,8 +153,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get w_departure_process_modal_sheet_title => 'Checkliste Abfahrprozess.';
 
   @override
-  String get w_departure_process_modal_sheet_content =>
-      '1. Zustimmung\n2. Zugbeeinflussung\n3. Abfahrtszeit\n4. Türverriegelung\n5. Zustimmung';
+  String get w_departure_process_modal_sheet_content => '1. Zustimmung\n2. Zugbeeinflussung\n3. Abfahrtszeit\n4. Türverriegelung\n5. Zustimmung';
 
   @override
   String get w_detail_modal_sheet_radio_channel_label => 'Funkkanal';
