@@ -62,7 +62,6 @@ class DetailModalSheetViewModel {
   void _initController() {
     controller = DASModalSheetController(
       isAutomaticCloseActive: automaticAdvancementController.isActive,
-      automaticCloseAfterSeconds: 100000, // TODO:
       onClose: () => _rxIsModalSheetOpen.add(false),
       onOpen: () {
         _rxIsModalSheetOpen.add(true);

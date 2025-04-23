@@ -9,7 +9,8 @@ import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class DetailTabCommunication extends StatelessWidget {
-  static const communicationTabKey = Key('communicationTabKey');
+  static const communicationTabKey = Key('communicationTab');
+  static const radioChannelListKey = Key('communicationTabRadioChannelList');
 
   const DetailTabCommunication({super.key});
 
@@ -38,7 +39,7 @@ class DetailTabCommunication extends StatelessWidget {
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing, vertical: 10.0),
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
             child: Text(context.l10n.w_detail_modal_sheet_communication_radio_channels_not_found),
           );
         }
@@ -46,6 +47,7 @@ class DetailTabCommunication extends StatelessWidget {
         final contactList = snapshot.data!;
         final contacts = [...contactList.mainContacts, ...contactList.selectiveContacts];
         return ListView.separated(
+          key: radioChannelListKey,
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemCount: contacts.length,
