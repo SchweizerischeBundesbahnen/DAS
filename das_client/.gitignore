@@ -55,6 +55,7 @@ app.*.map.json
 *.gr.dart
 *.freezed.dart
 *.mocks.dart
+**/i18n/gen
 
 # FVM Version Cache
 .fvm/
