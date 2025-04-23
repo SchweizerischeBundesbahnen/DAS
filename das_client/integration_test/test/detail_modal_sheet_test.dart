@@ -1,8 +1,8 @@
 import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_tab.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_tab_communication.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_tab_graduated_speeds.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_tab_local_regulations.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_tab_radio_channels.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/animated_header_icon_button.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
@@ -23,7 +23,7 @@ void main() {
 
     // open and check modal sheet over radio channel tap in header
     await _openRadioChannelByHeaderTap(tester);
-    _checkOpenModalSheet(DetailTabRadioChannels.radioChannelsTabKey, 'Burgdorf');
+    _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Burgdorf');
 
     // close modal sheet
     await _closeModalSheet(tester);
@@ -35,7 +35,7 @@ void main() {
 
     // test tap on service point name without closing modal sheet
     await _openByTapOnCellWithText(tester, 'Olten');
-    _checkOpenModalSheet(DetailTabRadioChannels.radioChannelsTabKey, 'Olten');
+    _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Olten');
 
     await disconnect(tester);
   });
@@ -62,7 +62,7 @@ void main() {
 
     // open modal sheet with tap on service point name
     await _openByTapOnCellWithText(tester, 'Olten');
-    _checkOpenModalSheet(DetailTabRadioChannels.radioChannelsTabKey, 'Olten');
+    _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Olten');
 
     // change tab to graduated speeds
     await _selectTab(tester, DetailModalSheetTab.graduatedSpeeds);
@@ -73,8 +73,8 @@ void main() {
     _checkOpenModalSheet(DetailTabLocalRegulations.localRegulationsTabKey, 'Olten', isMaximized: true);
 
     // change back to tab radio channels
-    await _selectTab(tester, DetailModalSheetTab.radioChannels);
-    _checkOpenModalSheet(DetailTabRadioChannels.radioChannelsTabKey, 'Olten');
+    await _selectTab(tester, DetailModalSheetTab.communication);
+    _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Olten');
 
     await disconnect(tester);
   });
@@ -84,7 +84,7 @@ void main() {
 
     // open modal sheet with tap on service point name
     await _openByTapOnCellWithText(tester, 'Bern');
-    _checkOpenModalSheet(DetailTabRadioChannels.radioChannelsTabKey, 'Bern');
+    _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
 
     // wait till 10s idle time have passed
     await Future.delayed(const Duration(seconds: 11));
@@ -101,7 +101,7 @@ void main() {
 
     // open modal sheet with tap on service point name
     await _openByTapOnCellWithText(tester, 'Bern');
-    _checkOpenModalSheet(DetailTabRadioChannels.radioChannelsTabKey, 'Bern');
+    _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
 
     // pause automatic advancement
     final pauseButton = find.byKey(StartPauseButton.pauseButtonKey);
@@ -113,7 +113,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // check if modal sheet is still open
-    _checkOpenModalSheet(DetailTabRadioChannels.radioChannelsTabKey, 'Bern');
+    _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
 
     await disconnect(tester);
   });
