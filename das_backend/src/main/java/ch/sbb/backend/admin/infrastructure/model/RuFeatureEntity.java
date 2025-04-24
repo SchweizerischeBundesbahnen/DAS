@@ -5,6 +5,9 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import java.time.LocalDateTime;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -15,13 +18,21 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class RuFeatureEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ru_feature_id_seq")
+    @SequenceGenerator(name = "ru_feature_id_seq", allocationSize = 1)
     private Integer id;
-    private String companyCode;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private CompanyEntity company;
+
     private String name;
+
     private boolean enabled;
+
     @LastModifiedBy
     private String lastModifiedBy;
+    
     @LastModifiedDate
     private LocalDateTime lastModifiedAt;
 
@@ -37,12 +48,12 @@ public class RuFeatureEntity {
         return id;
     }
 
-    public String getCompanyCode() {
-        return companyCode;
+    public CompanyEntity getCompany() {
+        return company;
     }
 
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
+    public void setCompany(CompanyEntity company) {
+        this.company = company;
     }
 
     public String getName() {
