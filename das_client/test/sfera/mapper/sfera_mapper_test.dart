@@ -613,11 +613,13 @@ void main() {
 
     journey = getJourney('T8', 1);
     expect(journey.valid, true);
-    expect(journey.metadata.availableBreakSeries, hasLength(2));
+    expect(journey.metadata.availableBreakSeries, hasLength(3));
     expect(journey.metadata.availableBreakSeries.elementAt(0).trainSeries, TrainSeries.R);
     expect(journey.metadata.availableBreakSeries.elementAt(0).breakSeries, 115);
-    expect(journey.metadata.availableBreakSeries.elementAt(1).trainSeries, TrainSeries.R);
-    expect(journey.metadata.availableBreakSeries.elementAt(1).breakSeries, 150);
+    expect(journey.metadata.availableBreakSeries.elementAt(1).trainSeries, TrainSeries.N);
+    expect(journey.metadata.availableBreakSeries.elementAt(1).breakSeries, 50);
+    expect(journey.metadata.availableBreakSeries.elementAt(2).trainSeries, TrainSeries.R);
+    expect(journey.metadata.availableBreakSeries.elementAt(2).breakSeries, 150);
   });
 
   test('Test station/curve speeds are parsed correctly', () async {
