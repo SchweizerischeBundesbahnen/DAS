@@ -37,11 +37,13 @@ jobs:
     needs: release-please
     if: needs.release-please.outputs.das_client--release_created
     uses: ./.github/workflows/release-das-client-android.yml
+    secrets: inherit
 
   das_client-release-ios:
     needs: release-please
     if: needs.release-please.outputs.das_client--release_created
     uses: ./.github/workflows/release-das-client-ios.yml
+    secrets: inherit
 
   sfera_mock-release:
     needs: release-please
