@@ -40,7 +40,7 @@ jobs:
       - name: Upload generated srcs  # saves around 40 sec
         uses: actions/upload-artifact@v4
         with:
-          name: gen_srcs
+          name: gen_srcs_ios
           path: |
             **/*.g.dart
             **/*.gr.dart
@@ -84,7 +84,7 @@ jobs:
       - name: Download gen srcs
         uses: actions/download-artifact@v4
         with:
-          name: gen_srcs
+          name: gen_srcs_ios
 
       - name: Install Apple signing certificate and appstore connect key
         env:
