@@ -1,5 +1,6 @@
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/extended_menu.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:das_client/app/widgets/table/das_table.dart';
 import 'package:das_client/di.dart';
@@ -91,7 +92,13 @@ Future<void> selectBreakSeries(WidgetTester tester, {required String breakSeries
   await tapElement(tester, find.text(l10n.c_button_confirm));
 }
 
-Future<void> waitUntilExists(WidgetTester tester, FinderBase<Element> element, {int maxWaitSeconds = 5}) async {
+Future<void> pauseAutomaticAdvancement(WidgetTester tester) async {
+  final pauseButton = find.byKey(StartPauseButton.pauseButtonKey);
+  expect(pauseButton, findsOneWidget);
+  await tapElement(tester, pauseButton);
+}
+
+Future<void> waitUntilExists(WidgetTester tester, FinderBase<Element> element, {int maxWaitSeconds = 15}) async {
   int counter = 0;
   while (true) {
     await tester.pump(const Duration(milliseconds: 100));

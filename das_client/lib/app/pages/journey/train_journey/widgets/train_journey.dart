@@ -88,6 +88,8 @@ class TrainJourney extends StatelessWidget {
           );
         });
 
+        context.read<DetailModalSheetViewModel>().updateMetadata(journey.metadata);
+
         return Listener(
           onPointerDown: (_) => bloc.automaticAdvancementController.resetScrollTimer(),
           onPointerUp: (_) => bloc.automaticAdvancementController.resetScrollTimer(),
