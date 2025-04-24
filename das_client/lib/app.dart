@@ -1,11 +1,12 @@
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/nav/app_router.dart';
-import 'package:das_client/theme/theme_provider.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:das_client/app/widgets/flavor_banner.dart';
 import 'package:das_client/di.dart';
+import 'package:das_client/theme/theme_provider.dart';
+import 'package:das_client/util/color_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -30,6 +31,7 @@ class _AppState extends State<App> {
             themeMode: themeManager.themeMode,
             theme: SBBTheme.light(
               baseStyle: SBBBaseStyle(
+                primarySwatch: _singleMaterialColor(SBBColors.royal),
                 primaryColor: SBBColors.royal,
                 primaryColorDark: SBBColors.royal125,
                 brightness: Brightness.light,
@@ -49,6 +51,7 @@ class _AppState extends State<App> {
             ),
             darkTheme: SBBTheme.dark(
               baseStyle: SBBBaseStyle(
+                primarySwatch: _singleMaterialColor(SBBColors.royal),
                 primaryColor: SBBColors.royal,
                 primaryColorDark: SBBColors.royal125,
                 brightness: Brightness.dark,
@@ -73,6 +76,24 @@ class _AppState extends State<App> {
           );
         }),
       ),
+    );
+  }
+
+  MaterialColor _singleMaterialColor(Color color) {
+    return MaterialColor(
+      color.toInt(),
+      <int, Color>{
+        50: color,
+        100: color,
+        200: color,
+        300: color,
+        400: color,
+        500: color,
+        600: color,
+        700: color,
+        800: color,
+        900: color,
+      },
     );
   }
 }

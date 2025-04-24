@@ -50,6 +50,8 @@
   "w_departure_process_modal_sheet_content": "1. Zustimmung\n2. Zugbeeinflussung\n3. Abfahrtszeit\n4. Türverriegelung\n5. Zustimmung",
   "w_detail_modal_sheet_radio_channel_label": "Funkkanal",
   "w_detail_modal_sheet_graduated_speed_label": "Abgestufte Geschwindigkeiten",
+  "w_detail_modal_sheet_graduated_speed_break_series_title": "Zug- und Bremsreihe: ",
+  "w_detail_modal_sheet_graduated_speed_no_information": "Keine Informationen",
   "w_detail_modal_sheet_local_regulations_label": "Lokale Bestimmungen",
   "c_ru_sbb_p": "SBB",
   "c_ru_sbb_c": "SBB Cargo",

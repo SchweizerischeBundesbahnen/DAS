@@ -1,3 +1,4 @@
+import 'package:das_client/app/widgets/indicator_painter.dart';
 import 'package:das_client/app/widgets/table/das_table_theme.dart';
 import 'package:das_client/app/widgets/widget_extensions.dart';
 import 'package:das_client/model/journey/speed.dart';
@@ -9,18 +10,46 @@ class GraduatedSpeedsCellBody extends StatelessWidget {
   static const Key outgoingSpeedsKey = Key('outgoingSpeeds');
   static const Key circledSpeedKey = Key('graduatedSpeedCircled');
   static const Key squaredSpeedKey = Key('graduatedSpeedSquared');
+  static const Key indicatorKey = Key('indicatorKey');
+  static const double _indicatorSize = 8.0;
 
   const GraduatedSpeedsCellBody({
     this.incomingSpeeds = const [],
     this.outgoingSpeeds = const [],
+    this.hasAdditionalInformation = false,
     super.key,
   });
 
   final List<Speed> incomingSpeeds;
   final List<Speed> outgoingSpeeds;
+  final bool hasAdditionalInformation;
 
   @override
   Widget build(BuildContext context) {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.center,
+            child: _buildSpeeds(context),
+          ),
+        ),
+        if (hasAdditionalInformation)
+          Positioned(
+            top: 0,
+            right: 0,
+            child: CustomPaint(
+              key: indicatorKey,
+              painter: IndicatorPainter(color: Theme.of(context).colorScheme.primary),
+              size: Size(_indicatorSize, _indicatorSize),
+            ),
+          )
+      ],
+    );
+  }
+
+  Widget _buildSpeeds(BuildContext context) {
     if (outgoingSpeeds.isNotEmpty) {
       return Column(
         mainAxisSize: MainAxisSize.min,

@@ -127,13 +127,13 @@ class TrainJourney extends StatelessWidget {
   }
 
   List<DASTableRowBuilder> _rows(BuildContext context, Journey journey, TrainJourneySettings settings) {
-    final currentTrainSeries = settings.selectedBreakSeries?.trainSeries ?? journey.metadata.breakSeries?.trainSeries;
+    final currentBreakSeries = settings.resolvedBreakSeries(journey.metadata);
 
     final rows = journey.data
         .whereNot((it) => _isCurvePointWithoutSpeed(it, journey, settings))
         .groupBaliseAndLeveLCrossings(settings.expandedGroups)
         .hideRepeatedLineFootNotes(journey.metadata.currentPosition)
-        .hideFootNotesForNotSelectedTrainSeries(currentTrainSeries)
+        .hideFootNotesForNotSelectedTrainSeries(currentBreakSeries?.trainSeries)
         .toList();
 
     final groupedRows =
@@ -265,9 +265,9 @@ class TrainJourney extends StatelessWidget {
     TrainJourneySettings settings,
     bool isDetailModelSheetOpen,
   ) {
-    final speedLabel = settings.selectedBreakSeries != null
-        ? '${settings.selectedBreakSeries!.trainSeries.name}${settings.selectedBreakSeries!.breakSeries}'
-        : '${metadata.breakSeries?.trainSeries.name ?? '?'}${metadata.breakSeries?.breakSeries ?? '?'}';
+    final currentBreakSeries = settings.resolvedBreakSeries(metadata);
+    final speedLabel =
+        currentBreakSeries != null ? '${currentBreakSeries.trainSeries.name}${currentBreakSeries.breakSeries}' : '??';
 
     return [
       if (!isDetailModelSheetOpen)
@@ -350,7 +350,7 @@ class TrainJourney extends StatelessWidget {
       constraints: BoxConstraints(),
       child: BreakSeriesSelection(
         availableBreakSeries: metadata.availableBreakSeries,
-        selectedBreakSeries: settings.selectedBreakSeries ?? metadata.breakSeries,
+        selectedBreakSeries: settings.resolvedBreakSeries(metadata),
       ),
     );
 
@@ -360,10 +360,9 @@ class TrainJourney extends StatelessWidget {
   }
 
   bool _isCurvePointWithoutSpeed(BaseData data, Journey journey, TrainJourneySettings settings) {
-    final currentTrainSeries = settings.selectedBreakSeries?.trainSeries ?? journey.metadata.breakSeries?.trainSeries;
-    final currentBreakSeries = settings.selectedBreakSeries?.breakSeries ?? journey.metadata.breakSeries?.breakSeries;
+    final breakSeries = settings.resolvedBreakSeries(journey.metadata);
 
     return data.type == Datatype.curvePoint &&
-        data.localSpeedData?.speedsFor(currentTrainSeries, currentBreakSeries) == null;
+        data.localSpeedData?.speedsFor(breakSeries?.trainSeries, breakSeries?.breakSeries) == null;
   }
 }

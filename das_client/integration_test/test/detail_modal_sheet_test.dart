@@ -6,6 +6,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/animated_header_icon_button.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
 import 'package:das_client/app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -117,6 +118,28 @@ void main() {
 
     await disconnect(tester);
   });
+
+  testWidgets('test graduated speed info details', (tester) async {
+    await prepareAndStartApp(tester);
+    await loadTrainJourney(tester, trainNumber: 'T8');
+
+    final tableRowBern = findDASTableRowByText('75-70-60');
+    final indicator = find.descendant(of: tableRowBern, matching: find.byKey(GraduatedSpeedsCellBody.indicatorKey));
+    expect(indicator, findsOneWidget);
+
+    // open and check modal sheet with tap on graduated speeds
+    await _openByTapOnCellWithText(tester, '75-70-60');
+    _checkOpenModalSheet(DetailTabGraduatedSpeeds.graduatedSpeedsTabKey, 'Bern');
+
+    expect(find.text('Zusatzinformation A'), findsOneWidget);
+
+    await selectBreakSeries(tester, breakSeries: 'N50');
+
+    expect(find.text('Zusatzinformation A'), findsNothing);
+    expect(find.text('Zusatzinformation B'), findsOneWidget);
+
+    await disconnect(tester);
+  });
 }
 
 Future<void> _openRadioChannelByHeaderTap(WidgetTester tester) async {
@@ -125,8 +148,8 @@ Future<void> _openRadioChannelByHeaderTap(WidgetTester tester) async {
 }
 
 Future<void> _openByTapOnCellWithText(WidgetTester tester, String cellText) async {
-  final tableRowBern = findDASTableRowByText(cellText);
-  final cell = find.descendant(of: tableRowBern, matching: find.text(cellText));
+  final tableRow = findDASTableRowByText(cellText);
+  final cell = find.descendant(of: tableRow, matching: find.text(cellText));
   await tapElement(tester, cell, warnIfMissed: false);
 }
 

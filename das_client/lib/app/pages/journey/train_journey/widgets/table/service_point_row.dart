@@ -95,11 +95,13 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   DASTableCell localSpeedCell(BuildContext context) {
     if (data.localSpeedData == null) return DASTableCell.empty();
 
-    final currentTrainSeries = config.settings.selectedBreakSeries?.trainSeries ?? metadata.breakSeries?.trainSeries;
-    final currentBreakSeries = config.settings.selectedBreakSeries?.breakSeries ?? metadata.breakSeries?.breakSeries;
+    final currentBreakSeries = config.settings.resolvedBreakSeries(metadata);
 
-    final graduatedSpeeds = data.localSpeedData!.speedsFor(currentTrainSeries, currentBreakSeries);
+    final graduatedSpeeds =
+        data.localSpeedData!.speedsFor(currentBreakSeries?.trainSeries, currentBreakSeries?.breakSeries);
     if (graduatedSpeeds == null) return DASTableCell.empty();
+
+    final relevantGraduatedSpeedInfo = data.relevantGraduatedSpeedInfo(currentBreakSeries);
 
     return DASTableCell(
       onTap: () {
@@ -111,6 +113,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       child: GraduatedSpeedsCellBody(
         incomingSpeeds: graduatedSpeeds.incomingSpeeds,
         outgoingSpeeds: graduatedSpeeds.outgoingSpeeds,
+        hasAdditionalInformation: relevantGraduatedSpeedInfo.isNotEmpty,
       ),
     );
   }

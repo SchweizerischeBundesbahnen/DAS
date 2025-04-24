@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
 import 'package:das_client/model/journey/balise.dart';
+import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
 import 'package:das_client/model/journey/communication_network_change.dart';
 import 'package:das_client/model/journey/connection_track.dart';
@@ -949,6 +950,12 @@ void main() {
     _checkSpeed(nSpeedEntry1.incomingSpeeds[0], 70);
     expect(nSpeedEntry1.outgoingSpeeds, hasLength(1));
     _checkSpeed(nSpeedEntry1.outgoingSpeeds[0], 60);
+
+    final relevantSpeedInfo =
+        servicePoints[0].relevantGraduatedSpeedInfo(BreakSeries(trainSeries: TrainSeries.N, breakSeries: 50));
+    expect(relevantSpeedInfo, hasLength(1));
+    expect(relevantSpeedInfo[0].text, 'Zusatzinformation B');
+    expect(relevantSpeedInfo[0].trainSeries, TrainSeries.N);
 
     // check ServicePoint Wankdorf
 

@@ -1,5 +1,6 @@
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/extended_menu.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:das_client/app/widgets/table/das_table.dart';
 import 'package:das_client/di.dart';
 import 'package:flutter/material.dart';
@@ -76,6 +77,18 @@ Future<void> dismissExtendedMenu(WidgetTester tester) async {
   final closeButton = find.byKey(ExtendedMenu.menuButtonCloseKey);
   await tapElement(tester, closeButton.first);
   await Future.delayed(const Duration(milliseconds: 100));
+}
+
+Future<void> selectBreakSeries(WidgetTester tester, {required String breakSeries}) async {
+  // Open break series bottom sheet
+  await tapElement(tester, find.byKey(TrainJourney.breakingSeriesHeaderKey));
+
+  // Check if the bottom sheet is opened
+  expect(find.text(l10n.p_train_journey_break_series), findsOneWidget);
+  await tapElement(tester, find.text(breakSeries));
+
+  // confirm button
+  await tapElement(tester, find.text(l10n.c_button_confirm));
 }
 
 Future<void> waitUntilExists(WidgetTester tester, FinderBase<Element> element, {int maxWaitSeconds = 5}) async {
