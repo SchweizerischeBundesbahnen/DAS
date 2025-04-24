@@ -44,7 +44,7 @@ class DetailTabCommunication extends StatelessWidget {
           );
         }
 
-        final contactList = snapshot.data!;
+        final contactList = snapshot.requireData!;
         final contacts = [...contactList.mainContacts, ...contactList.selectiveContacts];
         return ListView.separated(
           key: radioChannelListKey,
