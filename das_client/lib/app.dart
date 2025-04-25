@@ -31,7 +31,7 @@ class _AppState extends State<App> {
             themeMode: themeManager.themeMode,
             theme: SBBTheme.light(
               baseStyle: SBBBaseStyle(
-                primarySwatch: _singleMaterialColor(SBBColors.royal),
+                primarySwatch: SBBColors.royal.toSingleMaterialColor(),
                 primaryColor: SBBColors.royal,
                 primaryColorDark: SBBColors.royal125,
                 brightness: Brightness.light,
@@ -51,7 +51,7 @@ class _AppState extends State<App> {
             ),
             darkTheme: SBBTheme.dark(
               baseStyle: SBBBaseStyle(
-                primarySwatch: _singleMaterialColor(SBBColors.royal),
+                primarySwatch: SBBColors.royal.toSingleMaterialColor(),
                 primaryColor: SBBColors.royal,
                 primaryColorDark: SBBColors.royal125,
                 brightness: Brightness.dark,
@@ -76,24 +76,6 @@ class _AppState extends State<App> {
           );
         }),
       ),
-    );
-  }
-
-  MaterialColor _singleMaterialColor(Color color) {
-    return MaterialColor(
-      color.toInt(),
-      <int, Color>{
-        50: color,
-        100: color,
-        200: color,
-        300: color,
-        400: color,
-        500: color,
-        600: color,
-        700: color,
-        800: color,
-        900: color,
-      },
     );
   }
 }
