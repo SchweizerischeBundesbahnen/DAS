@@ -58,8 +58,8 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
           case SferaServiceState.connected:
             automaticAdvancementController = AutomaticAdvancementController();
             _listenToJourneyUpdates();
-            emit(TrainJourneyLoadedState(trainIdentification));
             WakelockPlus.enable();
+            emit(TrainJourneyLoadedState(trainIdentification));
             break;
           case SferaServiceState.connecting:
           case SferaServiceState.handshaking:
@@ -69,6 +69,9 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
             break;
           case SferaServiceState.disconnected:
             WakelockPlus.disable();
+            emit(SelectingTrainJourneyState(
+                ru: ru, trainNumber: trainNumber, date: date, errorCode: _sferaService.lastErrorCode));
+            _journeySubscription?.cancel();
             break;
           case SferaServiceState.offline:
             emit(SelectingTrainJourneyState(
