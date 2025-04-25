@@ -58,19 +58,12 @@ class _HeaderState extends State<Header> {
     await _brightnessUtil.setBrightness(value.clamp(0.0, 1.0));
   }
 
-  void _onVerticalDragUpdate(DragUpdateDetails details) async {
-    double value = await _brightnessUtil.getCurrentBrightness();
-    value += details.delta.dy < 0 ? 0.01 : -0.01;
-    await _brightnessUtil.setBrightness(value.clamp(0.0, 1.0));
-  }
-
   @override
   Widget build(BuildContext context) {
     return ExtendedAppBarWrapper(
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onHorizontalDragUpdate: _onHorizontalDragUpdate,
-        onVerticalDragUpdate: _onVerticalDragUpdate,
         child: Padding(
           padding: const EdgeInsets.all(sbbDefaultSpacing * 0.5).copyWith(top: 0),
           child: Row(
