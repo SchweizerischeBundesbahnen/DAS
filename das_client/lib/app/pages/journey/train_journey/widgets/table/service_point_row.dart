@@ -41,7 +41,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     return DASTableCell(
       onTap: () {
         final viewModel = context.read<DetailModalSheetViewModel>();
-        viewModel.open(tab: DetailModalSheetTab.radioChannels, servicePoint: data);
+        viewModel.open(tab: DetailModalSheetTab.communication, servicePoint: data);
       },
       alignment: Alignment.bottomLeft,
       child: Text(

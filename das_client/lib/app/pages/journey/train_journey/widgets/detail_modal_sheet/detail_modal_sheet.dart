@@ -3,7 +3,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_
 import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_view_model.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_tab_graduated_speeds.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_tab_local_regulations.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_tab_radio_channels.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_tab_communication.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:flutter/material.dart';
@@ -70,8 +70,8 @@ class DetailModalSheet extends StatelessWidget {
 
   Widget _tabContent(BuildContext context, DetailModalSheetTab selectedTab) {
     switch (selectedTab) {
-      case DetailModalSheetTab.radioChannels:
-        return DetailTabRadioChannels();
+      case DetailModalSheetTab.communication:
+        return DetailTabCommunication();
       case DetailModalSheetTab.graduatedSpeeds:
         return DetailTabGraduatedSpeeds();
       case DetailModalSheetTab.localRegulations:
