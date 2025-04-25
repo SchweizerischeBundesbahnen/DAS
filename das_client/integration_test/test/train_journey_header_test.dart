@@ -406,24 +406,5 @@ void main() {
 
       expect(mockBrightness.calledWith.any((val) => val > 0.5), true);
     });
-
-    // can be removed based on what option to change the brightness will be chosen
-    testWidgets('vertical drag up increases brightness', (tester) async {
-      final mockBrightness = MockBrightnessUtil();
-      mockBrightness.currentBrightness = 0.5;
-
-      BrightnessUtilFactory.instance = mockBrightness;
-
-      await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T6');
-
-      final header = find.byType(Header);
-      expect(header, findsOneWidget);
-
-      await tester.drag(header, const Offset(0, -100));
-      await tester.pumpAndSettle();
-
-      expect(mockBrightness.calledWith.any((val) => val > 0.5), true);
-    });
   });
 }
