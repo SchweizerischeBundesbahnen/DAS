@@ -53,6 +53,7 @@ jobs:
         echo "ANDROID_KEY_PASSWORD=$ANDROID_KEY_PASSWORD" >> "$GITHUB_ENV"
         flutter pub get
         dart run build_runner build --delete-conflicting-outputs
+        flutter gen-l10n
     - shell: bash
       env:
         MQTT_USERNAME: ${{ secrets.MQTT_USERNAME }}

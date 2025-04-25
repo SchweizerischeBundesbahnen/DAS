@@ -1,5 +1,6 @@
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/datatype.dart';
+import 'package:das_client/model/journey/order_priority.dart';
 
 class CurvePoint extends BaseData {
   const CurvePoint({
@@ -16,6 +17,9 @@ class CurvePoint extends BaseData {
   final CurveType? curveType;
   final String? text;
   final String? comment;
+
+  @override
+  OrderPriority get orderPriority => OrderPriority.curve;
 
   @override
   String toString() {
