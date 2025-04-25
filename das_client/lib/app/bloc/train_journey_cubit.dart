@@ -68,12 +68,8 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
             emit(ConnectingState(trainIdentification));
             break;
           case SferaServiceState.disconnected:
-            WakelockPlus.disable();
-            emit(SelectingTrainJourneyState(
-                ru: ru, trainNumber: trainNumber, date: date, errorCode: _sferaService.lastErrorCode));
-            _journeySubscription?.cancel();
-            break;
           case SferaServiceState.offline:
+            WakelockPlus.disable();
             emit(SelectingTrainJourneyState(
                 ru: ru, trainNumber: trainNumber, date: date, errorCode: _sferaService.lastErrorCode));
             _journeySubscription?.cancel();
