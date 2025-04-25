@@ -121,9 +121,7 @@ class _JourneyPageContentState extends State<JourneyPageContent> with SingleTick
     return IconButton(
       key: JourneyPageContent.disconnectKey,
       icon: const Icon(SBBIcons.train_small),
-      onPressed: () {
-        context.trainJourneyCubit.reset();
-      },
+      onPressed: () => context.trainJourneyCubit.reset(),
     );
   }
 
