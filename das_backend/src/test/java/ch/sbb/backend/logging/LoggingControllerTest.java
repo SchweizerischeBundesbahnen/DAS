@@ -6,7 +6,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.backend.TestcontainersConfiguration;
+import ch.sbb.backend.TestContainerConfiguration;
 import ch.sbb.backend.logging.domain.model.LogEntry;
 import ch.sbb.backend.logging.domain.model.LogLevel;
 import ch.sbb.backend.logging.infrastructure.rest.SplunkHecClient;
@@ -26,7 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Import(TestcontainersConfiguration.class)
+@Import(TestContainerConfiguration.class)
 class LoggingControllerTest {
 
     @Autowired
