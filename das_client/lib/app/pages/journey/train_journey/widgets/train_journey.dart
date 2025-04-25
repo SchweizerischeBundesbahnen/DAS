@@ -61,7 +61,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
-import 'package:wakelock_plus/wakelock_plus.dart';
 
 class TrainJourney extends StatelessWidget {
   const TrainJourney({super.key});
@@ -71,8 +70,6 @@ class TrainJourney extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.trainJourneyCubit;
-
-    WakelockPlus.enable();
 
     return StreamBuilder<List<dynamic>>(
       stream: CombineLatestStream.list([bloc.journeyStream, bloc.settingsStream]),

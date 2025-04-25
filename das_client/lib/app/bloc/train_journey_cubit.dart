@@ -13,6 +13,7 @@ import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 part 'train_journey_state.dart';
 
@@ -58,6 +59,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
             automaticAdvancementController = AutomaticAdvancementController();
             _listenToJourneyUpdates();
             emit(TrainJourneyLoadedState(trainIdentification));
+            WakelockPlus.enable();
             break;
           case SferaServiceState.connecting:
           case SferaServiceState.handshaking:
@@ -66,6 +68,8 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
             emit(ConnectingState(trainIdentification));
             break;
           case SferaServiceState.disconnected:
+            WakelockPlus.disable();
+            break;
           case SferaServiceState.offline:
             emit(SelectingTrainJourneyState(
                 ru: ru, trainNumber: trainNumber, date: date, errorCode: _sferaService.lastErrorCode));
