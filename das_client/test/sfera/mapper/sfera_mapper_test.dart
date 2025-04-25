@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:das_client/model/journey/additional_speed_restriction_data.dart';
 import 'package:das_client/model/journey/balise.dart';
+import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/cab_signaling.dart';
 import 'package:das_client/model/journey/communication_network_change.dart';
 import 'package:das_client/model/journey/connection_track.dart';
@@ -612,11 +613,13 @@ void main() {
 
     journey = getJourney('T8', 1);
     expect(journey.valid, true);
-    expect(journey.metadata.availableBreakSeries, hasLength(2));
+    expect(journey.metadata.availableBreakSeries, hasLength(3));
     expect(journey.metadata.availableBreakSeries.elementAt(0).trainSeries, TrainSeries.R);
     expect(journey.metadata.availableBreakSeries.elementAt(0).breakSeries, 115);
-    expect(journey.metadata.availableBreakSeries.elementAt(1).trainSeries, TrainSeries.R);
-    expect(journey.metadata.availableBreakSeries.elementAt(1).breakSeries, 150);
+    expect(journey.metadata.availableBreakSeries.elementAt(1).trainSeries, TrainSeries.N);
+    expect(journey.metadata.availableBreakSeries.elementAt(1).breakSeries, 50);
+    expect(journey.metadata.availableBreakSeries.elementAt(2).trainSeries, TrainSeries.R);
+    expect(journey.metadata.availableBreakSeries.elementAt(2).breakSeries, 150);
   });
 
   test('Test station/curve speeds are parsed correctly', () async {
@@ -949,6 +952,12 @@ void main() {
     _checkSpeed(nSpeedEntry1.incomingSpeeds[0], 70);
     expect(nSpeedEntry1.outgoingSpeeds, hasLength(1));
     _checkSpeed(nSpeedEntry1.outgoingSpeeds[0], 60);
+
+    final relevantSpeedInfo =
+        servicePoints[0].relevantGraduatedSpeedInfo(BreakSeries(trainSeries: TrainSeries.N, breakSeries: 50));
+    expect(relevantSpeedInfo, hasLength(1));
+    expect(relevantSpeedInfo[0].text, 'Zusatzinformation B');
+    expect(relevantSpeedInfo[0].trainSeries, TrainSeries.N);
 
     // check ServicePoint Wankdorf
 
