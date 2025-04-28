@@ -17,11 +17,13 @@ import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/service_point.dart';
 import 'package:das_client/model/journey/track_equipment_segment.dart';
 import 'package:das_client/model/journey/tram_area.dart';
+import 'package:das_client/model/localized_string.dart';
 import 'package:das_client/sfera/src/mapper/mapper_utils.dart';
 import 'package:das_client/sfera/src/mapper/segment_profile_mapper.dart';
 import 'package:das_client/sfera/src/mapper/track_equipment_mapper.dart';
 import 'package:das_client/sfera/src/model/enums/start_end_qualifier.dart';
 import 'package:das_client/sfera/src/model/journey_profile.dart';
+import 'package:das_client/sfera/src/model/multilingual_text.dart';
 import 'package:das_client/sfera/src/model/related_train_information.dart';
 import 'package:das_client/sfera/src/model/segment_profile.dart';
 import 'package:das_client/sfera/src/model/segment_profile_list.dart';
@@ -211,11 +213,13 @@ class SferaModelMapper {
           final endOrder = calculateOrder(endSegmentIndex, endLocation);
 
           result.add(AdditionalSpeedRestriction(
-              kmFrom: startKilometreMap[startLocation]!.first,
-              kmTo: endKilometreMap[endLocation]!.first,
-              orderFrom: startOrder,
-              orderTo: endOrder,
-              speed: asrTemporaryConstrain.additionalSpeedRestriction?.asrSpeed));
+            kmFrom: startKilometreMap[startLocation]!.first,
+            kmTo: endKilometreMap[endLocation]!.first,
+            orderFrom: startOrder,
+            orderTo: endOrder,
+            speed: asrTemporaryConstrain.additionalSpeedRestriction?.asrSpeed,
+            reason: _localizedStringFromMultilingualText(asrTemporaryConstrain.temporaryConstraintReasons),
+          ));
 
           startSegmentIndex = null;
           endSegmentIndex = null;
@@ -456,5 +460,17 @@ class SferaModelMapper {
       }
     }
     return lineFootNoteLocations;
+  }
+
+  static LocalizedString? _localizedStringFromMultilingualText(Iterable<MultilingualText> multilingualTexts) {
+    if (multilingualTexts.isEmpty) {
+      return null;
+    }
+
+    return LocalizedString(
+      de: multilingualTexts.textFor('de'),
+      fr: multilingualTexts.textFor('fr'),
+      it: multilingualTexts.textFor('it'),
+    );
   }
 }

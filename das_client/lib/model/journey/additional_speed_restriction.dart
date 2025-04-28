@@ -1,6 +1,7 @@
 import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/segment.dart';
 import 'package:das_client/model/journey/track_equipment_segment.dart';
+import 'package:das_client/model/localized_string.dart';
 import 'package:meta/meta.dart';
 
 @sealed
@@ -11,6 +12,7 @@ class AdditionalSpeedRestriction {
     required this.kmTo,
     required this.orderFrom,
     required this.orderTo,
+    this.reason,
     this.speed,
   });
 
@@ -19,10 +21,10 @@ class AdditionalSpeedRestriction {
   final int orderFrom;
   final int orderTo;
   final int? speed;
+  final LocalizedString? reason;
 
-  bool needsEndMarker(List<BaseData> journeyData) {
-    return journeyData.where((it) => it.order >= orderFrom && it.order <= orderTo).length > 1;
-  }
+  bool needsEndMarker(List<BaseData> journeyData) =>
+      journeyData.where((it) => it.order >= orderFrom && it.order <= orderTo).length > 1;
 
   /// Checks if this ASR should be displayed in the train journey.
   ///
@@ -42,7 +44,7 @@ class AdditionalSpeedRestriction {
 
   @override
   String toString() {
-    return 'AdditionalSpeedRestriction(kmFrom: $kmFrom, kmTo: $kmTo, orderFrom: $orderFrom, orderTo: $orderTo, speed: $speed)';
+    return 'AdditionalSpeedRestriction(kmFrom: $kmFrom, kmTo: $kmTo, orderFrom: $orderFrom, orderTo: $orderTo, speed: $speed, reasons: $reason)';
   }
 
   @override
@@ -54,8 +56,10 @@ class AdditionalSpeedRestriction {
           kmTo == other.kmTo &&
           orderFrom == other.orderFrom &&
           orderTo == other.orderTo &&
+          reason == other.reason &&
           speed == other.speed;
 
   @override
-  int get hashCode => kmFrom.hashCode ^ kmTo.hashCode ^ orderFrom.hashCode ^ orderTo.hashCode ^ speed.hashCode;
+  int get hashCode =>
+      kmFrom.hashCode ^ kmTo.hashCode ^ orderFrom.hashCode ^ orderTo.hashCode ^ speed.hashCode ^ reason.hashCode;
 }
