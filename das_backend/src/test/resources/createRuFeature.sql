@@ -6,5 +6,5 @@ VALUES (nextval('company_id_seq'), '1111', 'SHORT1'),
        (nextval('company_id_seq'), '2222', 'SHORT2');
 
 INSERT INTO ru_feature(id, company_id, name, enabled, last_modified_at, last_modified_by)
-VALUES (nextval('ru_feature_id_seq'), 1, 'RUFEATURE', TRUE, '2025-04-17 10:18:34',
+VALUES (nextval('ru_feature_id_seq'), 1, 'GESTES', TRUE, '2025-04-17 10:18:34',
         'unit_test');

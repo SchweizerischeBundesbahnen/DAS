@@ -26,7 +26,7 @@ class LoggingController {
         this.loggingService = loggingService;
     }
 
-    @Operation(summary = "Log messages from clients")
+    @Operation(summary = "Log messages from clients", deprecated = true)
     @ApiResponse(responseCode = "200", description = "Logs successfully saved")
     @ApiResponse(responseCode = "400", description = "Invalid input",
         content = {@Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/ErrorResponse"))})

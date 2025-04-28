@@ -41,9 +41,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/swagger-ui/**").permitAll()
                 .requestMatchers("/v3/api-docs/**").permitAll()
                 .requestMatchers("/actuator/health/**").permitAll()
-                .requestMatchers("/error").authenticated()
-                .requestMatchers("/api/**").authenticated()
-                .anyRequest().denyAll()
+                .anyRequest().authenticated()
             )
             .csrf(AbstractHttpConfigurer::disable)
             .oauth2ResourceServer(oauth2 -> oauth2
