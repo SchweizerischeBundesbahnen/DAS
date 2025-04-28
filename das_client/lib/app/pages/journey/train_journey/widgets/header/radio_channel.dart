@@ -26,7 +26,7 @@ class RadioChannel extends StatelessWidget {
 
     final showIndicator = radioContactList != null &&
         (radioContactList.mainContacts.length > 1 || radioContactList.selectiveContacts.isNotEmpty);
-    
+
     return GestureDetector(
       onTap: () {
         final viewModel = context.read<DetailModalSheetViewModel>();
