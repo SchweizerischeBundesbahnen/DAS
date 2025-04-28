@@ -12,6 +12,7 @@ import 'package:das_client/sfera/src/model/current_limitation_change.dart';
 import 'package:das_client/sfera/src/model/current_limitation_start.dart';
 import 'package:das_client/sfera/src/model/curve_speed.dart';
 import 'package:das_client/sfera/src/model/das_operating_modes_selected.dart';
+import 'package:das_client/sfera/src/model/decisive_gradient_area.dart';
 import 'package:das_client/sfera/src/model/delay.dart';
 import 'package:das_client/sfera/src/model/foot_note.dart';
 import 'package:das_client/sfera/src/model/g2b_event_payload.dart';
@@ -62,10 +63,10 @@ import 'package:das_client/sfera/src/model/stopping_point_departure_details.dart
 import 'package:das_client/sfera/src/model/stopping_point_information.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location_ident.dart';
-import 'package:das_client/sfera/src/model/teltsi_primary_location_name.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location_nsp.dart';
 import 'package:das_client/sfera/src/model/taf_tap_location_reference.dart';
 import 'package:das_client/sfera/src/model/tc_features.dart';
+import 'package:das_client/sfera/src/model/teltsi_primary_location_name.dart';
 import 'package:das_client/sfera/src/model/temporary_constraint_reason.dart';
 import 'package:das_client/sfera/src/model/temporary_constraints.dart';
 import 'package:das_client/sfera/src/model/text.dart';
@@ -282,6 +283,8 @@ class SferaReplyParser {
         return OtherContactType(type: type, attributes: attributes, children: children, value: value);
       case TrackFootNotes.elementType:
         return TrackFootNotes(type: type, attributes: attributes, children: children, value: value);
+      case DecisiveGradientArea.elementType:
+        return DecisiveGradientArea(type: type, attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElement(type: type, attributes: attributes, children: children, value: value);
     }

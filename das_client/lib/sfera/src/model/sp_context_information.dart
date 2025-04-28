@@ -1,6 +1,7 @@
 import 'package:das_client/sfera/src/model/communication_network.dart';
 import 'package:das_client/sfera/src/model/connection_track.dart';
 import 'package:das_client/sfera/src/model/contact_list.dart';
+import 'package:das_client/sfera/src/model/decisive_gradient_area.dart';
 import 'package:das_client/sfera/src/model/kilometre_reference_point.dart';
 import 'package:das_client/sfera/src/model/level_crossing_area.dart';
 import 'package:das_client/sfera/src/model/sfera_xml_element.dart';
@@ -19,4 +20,6 @@ class SpContextInformation extends SferaXmlElement {
   Iterable<LevelCrossingArea> get levelCrossings => children.whereType<LevelCrossingArea>();
 
   Iterable<ContactList> get contactLists => children.whereType<ContactList>();
+
+  Iterable<DecisiveGradientArea> get decisiveGradientAreas => children.whereType<DecisiveGradientArea>();
 }
