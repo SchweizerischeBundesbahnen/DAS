@@ -1,3 +1,4 @@
+import 'package:das_client/app/widgets/indicator_wrapper.dart';
 import 'package:das_client/app/widgets/table/das_table_theme.dart';
 import 'package:das_client/app/widgets/widget_extensions.dart';
 import 'package:das_client/model/journey/speed.dart';
@@ -13,14 +14,24 @@ class GraduatedSpeedsCellBody extends StatelessWidget {
   const GraduatedSpeedsCellBody({
     this.incomingSpeeds = const [],
     this.outgoingSpeeds = const [],
+    this.hasAdditionalInformation = false,
     super.key,
   });
 
   final List<Speed> incomingSpeeds;
   final List<Speed> outgoingSpeeds;
+  final bool hasAdditionalInformation;
 
   @override
   Widget build(BuildContext context) {
+    return IndicatorWrapper(
+      show: hasAdditionalInformation,
+      offset: outgoingSpeeds.isEmpty ? const Offset(0, -sbbDefaultSpacing * 0.5) : const Offset(0, 0),
+      child: _buildSpeeds(context),
+    );
+  }
+
+  Widget _buildSpeeds(BuildContext context) {
     if (outgoingSpeeds.isNotEmpty) {
       return Column(
         mainAxisSize: MainAxisSize.min,

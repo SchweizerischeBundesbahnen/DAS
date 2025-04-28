@@ -33,9 +33,9 @@ class ReducedOverviewViewModel {
   Stream<Metadata> get journeyMetadata => _rxJourneyMetadata.stream;
 
   Future<void> _init() async {
-    _initRxJourney();
-    _initRxJourneyData();
-    _initRxJourneyMetadata();
+    await _initRxJourney();
+    await _initRxJourneyData();
+    await _initRxJourneyMetadata();
   }
 
   Future<void> _initRxJourney() async {

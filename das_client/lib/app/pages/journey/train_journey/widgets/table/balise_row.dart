@@ -11,7 +11,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class BaliseRow extends CellRowBuilder<Balise> {
   static const Key baliseIconKey = Key('baliseIcon');
 
-  const BaliseRow({
+  BaliseRow({
     required super.metadata,
     required super.data,
     super.config,
@@ -38,10 +38,9 @@ class BaliseRow extends CellRowBuilder<Balise> {
 
   @override
   DASTableCell informationCell(BuildContext context) {
+    final levelCrossingCount = '(${data.amountLevelCrossings} ${context.l10n.p_train_journey_table_level_crossing})';
     return DASTableCell(
-      child: Text(data.amountLevelCrossings > 1 && !isGrouped
-          ? '(${data.amountLevelCrossings} ${context.l10n.p_train_journey_table_level_crossing})'
-          : ''),
+      child: Text(data.amountLevelCrossings > 1 && !isGrouped ? levelCrossingCount : ''),
       alignment: Alignment.centerRight,
     );
   }

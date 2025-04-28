@@ -11,7 +11,7 @@ class AdditionalSpeedRestrictionRow extends CellRowBuilder<AdditionalSpeedRestri
   static const Key additionalSpeedRestrictionIconKey = Key('additionSpeedRestrictionIcon');
   static const Color additionalSpeedRestrictionColor = SBBColors.orange;
 
-  const AdditionalSpeedRestrictionRow({
+  AdditionalSpeedRestrictionRow({
     required super.metadata,
     required super.data,
     super.config,
@@ -19,13 +19,13 @@ class AdditionalSpeedRestrictionRow extends CellRowBuilder<AdditionalSpeedRestri
 
   @override
   DASTableCell informationCell(BuildContext context) {
+    final kilometreLabel = context.l10n.p_train_journey_table_kilometre_label;
+    final fromKilometre = data.restriction.kmFrom.toStringAsFixed(3);
+    final endKilometre = data.restriction.kmTo.toStringAsFixed(3);
     return DASTableCell(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Text('${context.l10n.p_train_journey_table_kilometre_label} ${data.restriction.kmFrom.toStringAsFixed(3)} '
-              '- ${context.l10n.p_train_journey_table_kilometre_label} ${data.restriction.kmTo.toStringAsFixed(3)}'),
-        ],
+      child: Text(
+        '$kilometreLabel $fromKilometre - $kilometreLabel $endKilometre',
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }

@@ -9,7 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 class CurvePointRow extends CellRowBuilder<CurvePoint> {
   static const Key curvePointIconKey = Key('curvePointIcon');
 
-  const CurvePointRow({
+  CurvePointRow({
     required super.metadata,
     required super.data,
     super.config,
@@ -23,7 +23,10 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
   @override
   DASTableCell informationCell(BuildContext context) {
     return DASTableCell(
-      child: Text(data.curveType?.localizedName(context) ?? ''),
+      child: Text(
+        data.curveType?.localizedName(context) ?? '',
+        overflow: TextOverflow.ellipsis,
+      ),
     );
   }
 

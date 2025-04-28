@@ -11,7 +11,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class TramAreaRow extends CellRowBuilder<TramArea> {
   static const Key tramAreaIconKey = Key('tramAreaIcon');
 
-  const TramAreaRow({
+  TramAreaRow({
     required super.metadata,
     required super.data,
     super.config,
@@ -22,13 +22,24 @@ class TramAreaRow extends CellRowBuilder<TramArea> {
     return DASTableCell(
       child: Row(
         children: [
-          Text(
-              '${context.l10n.p_train_journey_table_kilometre_label} ${data.kilometre[0].toStringAsFixed(1)}-${data.endKilometre.toStringAsFixed(1)}'),
-          Spacer(),
-          Text(
-              '${data.amountTramSignals > 1 ? data.amountTramSignals : ''} ${context.l10n.p_train_journey_table_tram_area}'),
+          Expanded(child: _kilometreText(context)),
+          tramSignalText(context),
         ],
       ),
+    );
+  }
+
+  Widget tramSignalText(BuildContext context) {
+    final amount = data.amountTramSignals > 1 ? data.amountTramSignals : '';
+    return Text('$amount ${context.l10n.p_train_journey_table_tram_area}');
+  }
+
+  Widget _kilometreText(BuildContext context) {
+    final startKilometre = data.kilometre[0].toStringAsFixed(1);
+    final endKilometre = data.endKilometre.toStringAsFixed(1);
+    return Text(
+      '${context.l10n.p_train_journey_table_kilometre_label} $startKilometre-$endKilometre',
+      overflow: TextOverflow.ellipsis,
     );
   }
 

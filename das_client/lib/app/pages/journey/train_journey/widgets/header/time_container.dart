@@ -11,12 +11,6 @@ class TimeContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SBBGroup(
-      margin: const EdgeInsetsDirectional.fromSTEB(
-        sbbDefaultSpacing * 0.5,
-        0,
-        sbbDefaultSpacing * 0.5,
-        sbbDefaultSpacing * 0.5,
-      ),
       padding: const EdgeInsets.all(sbbDefaultSpacing),
       useShadow: false,
       child: SizedBox(
@@ -34,57 +28,48 @@ class TimeContainer extends StatelessWidget {
       ),
     );
   }
-}
 
-Widget _divider() {
-  return const Padding(
-    padding: EdgeInsets.symmetric(vertical: sbbDefaultSpacing * 0.5),
-    child: Divider(height: 1.0, color: SBBColors.cloud),
-  );
-}
+  Widget _divider() {
+    return const Padding(
+      padding: EdgeInsets.symmetric(vertical: sbbDefaultSpacing * 0.5),
+      child: Divider(height: 1.0, color: SBBColors.cloud),
+    );
+  }
 
-Widget _punctualityDisplay(BuildContext context) {
-  final bloc = context.trainJourneyCubit;
+  Widget _punctualityDisplay(BuildContext context) {
+    return StreamBuilder<Journey?>(
+      stream: context.trainJourneyCubit.journeyStream,
+      builder: (context, snapshot) {
+        var punctualityString = '+00:00';
+        final delay = snapshot.data?.metadata.delay;
+        if (delay != null) {
+          final String minutes = NumberFormat('00').format(delay.inMinutes.abs() % 60);
+          final String seconds = NumberFormat('00').format(delay.inSeconds.abs() % 60);
+          punctualityString = '${delay.isNegative ? '-' : '+'}$minutes:$seconds';
+        }
 
-  return StreamBuilder<Journey?>(
-    stream: bloc.journeyStream,
-    builder: (context, snapshot) {
-      if (!snapshot.hasData || snapshot.data == null || snapshot.data!.metadata.delay == null) {
         return Padding(
           padding:
               const EdgeInsets.fromLTRB(sbbDefaultSpacing * 0.5, 0.0, sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5),
-          child: Text('+00:00', style: DASTextStyles.xLargeLight),
+          child: Text(punctualityString, style: DASTextStyles.xLargeLight),
         );
-      }
+      },
+    );
+  }
 
-      final Journey journey = snapshot.data!;
-      final Duration delay = journey.metadata.delay!;
-
-      final String minutes = NumberFormat('00').format(delay.inMinutes.abs() % 60);
-      final String seconds = NumberFormat('00').format(delay.inSeconds.abs() % 60);
-      final String formattedDuration = '${delay.isNegative ? '-' : '+'}$minutes:$seconds';
-
-      return Padding(
-        padding:
-            const EdgeInsets.fromLTRB(sbbDefaultSpacing * 0.5, 0.0, sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5),
-        child: Text(formattedDuration, style: DASTextStyles.xLargeLight),
-      );
-    },
-  );
-}
-
-StreamBuilder _currentTime() {
-  return StreamBuilder(
-    stream: Stream.periodic(const Duration(milliseconds: 200)),
-    builder: (context, snapshot) {
-      return Padding(
-        padding:
-            const EdgeInsets.fromLTRB(sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5, 0),
-        child: Text(
-          DateFormat('HH:mm:ss').format(DateTime.now().toLocal()),
-          style: DASTextStyles.xLargeBold,
-        ),
-      );
-    },
-  );
+  Widget _currentTime() {
+    return StreamBuilder(
+      stream: Stream.periodic(const Duration(milliseconds: 200)),
+      builder: (context, snapshot) {
+        return Padding(
+          padding:
+              const EdgeInsets.fromLTRB(sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5, 0),
+          child: Text(
+            DateFormat('HH:mm:ss').format(DateTime.now().toLocal()),
+            style: DASTextStyles.xLargeBold,
+          ),
+        );
+      },
+    );
+  }
 }

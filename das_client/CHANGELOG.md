@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.17.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.16.0...das_client-v0.17.0) (2025-04-25)
+
+
+### Features
+
+* add always-on display when train_journey is opened ([#591](https://github.com/SchweizerischeBundesbahnen/DAS/issues/591)) ([#820](https://github.com/SchweizerischeBundesbahnen/DAS/issues/820)) ([5eaf631](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5eaf63147db3f74738e61c323b948b497c719886))
+* added communication network and radio channels to detail modal sheet ([#229](https://github.com/SchweizerischeBundesbahnen/DAS/issues/229)) ([#824](https://github.com/SchweizerischeBundesbahnen/DAS/issues/824)) ([93b47b2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/93b47b27a876836d0b8ee715af63f710bcb3ffba))
+* implement graduated speed info ([#231](https://github.com/SchweizerischeBundesbahnen/DAS/issues/231)) ([#831](https://github.com/SchweizerischeBundesbahnen/DAS/issues/831)) ([bfab300](https://github.com/SchweizerischeBundesbahnen/DAS/commit/bfab30046b2ba4893f121016ad2fb896c63551d1))
+
+## [0.16.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.15.0...das_client-v0.16.0) (2025-04-22)
+
+
+### Features
+
+* basic modal sheet in train journey ([#497](https://github.com/SchweizerischeBundesbahnen/DAS/issues/497)) ([#807](https://github.com/SchweizerischeBundesbahnen/DAS/issues/807)) ([ca2d5b2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ca2d5b252f35bc86a484887c837bd4ca6e00a376))
+* radio channels get contactList ([#125](https://github.com/SchweizerischeBundesbahnen/DAS/issues/125)) ([#780](https://github.com/SchweizerischeBundesbahnen/DAS/issues/780)) ([43ccebe](https://github.com/SchweizerischeBundesbahnen/DAS/commit/43ccebe70ebee24cb55cd908093245c42c0ec9db))
+
+
+### Bug Fixes
+
+* browserstack tests and overview ([#791](https://github.com/SchweizerischeBundesbahnen/DAS/issues/791)) ([5a3832b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5a3832bccbe6e3c550df25aa4f3d50e039275fd1))
+* curve order and reduced overview screen ([#817](https://github.com/SchweizerischeBundesbahnen/DAS/issues/817)) ([dc8d71c](https://github.com/SchweizerischeBundesbahnen/DAS/commit/dc8d71c361e85357506b101419d9a9d662f7acda))
+* fixing bugs from select journey and departure procedure ([#754](https://github.com/SchweizerischeBundesbahnen/DAS/issues/754)) ([e279ddd](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e279ddd886b1177086cddba2a28c5e28b5892160))
+* sticky header and automatic advancement with footnotes ([#809](https://github.com/SchweizerischeBundesbahnen/DAS/issues/809)) ([850fbdc](https://github.com/SchweizerischeBundesbahnen/DAS/commit/850fbdc4df0d5ed951419d634884a03490c5f048))
+
 ## [0.15.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.14.2...das_client-v0.15.0) (2025-04-02)
 
 

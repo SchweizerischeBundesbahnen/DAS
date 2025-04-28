@@ -7,4 +7,5 @@ class DasIcons {
   static const String? _kFontPkg = null;
 
   static const IconData appIconWarnfunktionRangier = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData appIconSmallTempo = IconData(0xe807, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

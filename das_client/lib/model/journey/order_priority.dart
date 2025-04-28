@@ -3,5 +3,6 @@ enum OrderPriority {
   baseData,
   lineFootNotes,
   opFootNote,
+  curve,
   cabSignalingEnd,
 }

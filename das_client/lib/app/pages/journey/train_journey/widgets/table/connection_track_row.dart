@@ -5,7 +5,7 @@ import 'package:das_client/model/journey/connection_track.dart';
 import 'package:flutter/material.dart';
 
 class ConnectionTrackRow extends CellRowBuilder<ConnectionTrack> {
-  const ConnectionTrackRow({
+  ConnectionTrackRow({
     required super.metadata,
     required super.data,
     super.config,
@@ -14,7 +14,10 @@ class ConnectionTrackRow extends CellRowBuilder<ConnectionTrack> {
   @override
   DASTableCell informationCell(BuildContext context) {
     return DASTableCell(
-      child: Text(data.text ?? context.l10n.c_connection_track_weiche),
+      child: Text(
+        data.text ?? context.l10n.c_connection_track_weiche,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
   }
 }

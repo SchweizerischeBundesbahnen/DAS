@@ -23,11 +23,12 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
   static const double rowHeight = 44.0;
 
-  const CellRowBuilder({
+  CellRowBuilder({
     required this.metadata,
     required super.data,
     super.height = rowHeight,
     super.stickyLevel,
+    super.key,
     this.config = const TrainJourneyConfig(),
     this.defaultAlignment = Alignment.bottomCenter,
     this.rowColor,
@@ -45,6 +46,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
   @override
   DASTableRow build(BuildContext context) {
     return DASTableCellRow(
+      key: key,
       height: height,
       color: rowColor,
       onTap: onTap,
@@ -117,20 +119,8 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
     );
   }
 
-  DASTableCell timeCell(BuildContext context) {
-    return DASTableCell.empty(color: specialCellColor);
-  }
-
-  DASTableCell informationCell(BuildContext context) {
-    return DASTableCell.empty();
-  }
-
   DASTableCell localSpeedCell(BuildContext context) {
     return speedCell(data.localSpeedData, DASTableCell.empty());
-  }
-
-  DASTableCell advisedSpeedCell(BuildContext context) {
-    return DASTableCell.empty();
   }
 
   DASTableCell brakedWeightSpeedCell(BuildContext context) {
@@ -147,10 +137,9 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
       return DASTableCell.empty();
     }
 
-    final currentTrainSeries = config.settings.selectedBreakSeries?.trainSeries ?? metadata.breakSeries?.trainSeries;
-    final currentBreakSeries = config.settings.selectedBreakSeries?.breakSeries ?? metadata.breakSeries?.breakSeries;
+    final currentBreakSeries = config.settings.resolvedBreakSeries(metadata);
 
-    final graduatedSpeeds = speedData.speedsFor(currentTrainSeries, currentBreakSeries);
+    final graduatedSpeeds = speedData.speedsFor(currentBreakSeries?.trainSeries, currentBreakSeries?.breakSeries);
     if (graduatedSpeeds == null) {
       return defaultCell;
     }
@@ -163,10 +152,6 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
         outgoingSpeeds: graduatedSpeeds.outgoingSpeeds,
       ),
     );
-  }
-
-  DASTableCell iconsCell1(BuildContext context) {
-    return DASTableCell.empty();
   }
 
   DASTableCell bracketStation(BuildContext context) {
@@ -184,18 +169,6 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
     );
   }
 
-  DASTableCell iconsCell2(BuildContext context) {
-    return DASTableCell.empty();
-  }
-
-  DASTableCell iconsCell3(BuildContext context) {
-    return DASTableCell.empty();
-  }
-
-  DASTableCell actionsCell(BuildContext context) {
-    return DASTableCell.empty();
-  }
-
   DASTableCell communicationNetworkCell(BuildContext context) {
     final networkChange = metadata.communicationNetworkChanges.changeAtOrder(data.order);
     if (networkChange == null) {
@@ -207,6 +180,20 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
       child: CommunicationNetworkIcon(networkType: networkChange),
     );
   }
+
+  DASTableCell timeCell(BuildContext context) => DASTableCell.empty(color: specialCellColor);
+
+  DASTableCell informationCell(BuildContext context) => DASTableCell.empty();
+
+  DASTableCell advisedSpeedCell(BuildContext context) => DASTableCell.empty();
+
+  DASTableCell iconsCell1(BuildContext context) => DASTableCell.empty();
+
+  DASTableCell iconsCell2(BuildContext context) => DASTableCell.empty();
+
+  DASTableCell iconsCell3(BuildContext context) => DASTableCell.empty();
+
+  DASTableCell actionsCell(BuildContext context) => DASTableCell.empty();
 
   Color? get specialCellColor =>
       getAdditionalSpeedRestriction() != null ? AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor : null;

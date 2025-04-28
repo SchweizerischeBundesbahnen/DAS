@@ -11,10 +11,14 @@ class ChevronAnimationData {
   const ChevronAnimationData({
     required this.startOffset,
     required this.endOffset,
+    required this.lastPosition,
+    required this.currenPosition,
   });
 
   final double startOffset;
   final double endOffset;
+  final BaseData lastPosition;
+  final BaseData currenPosition;
 
   static ChevronAnimationData? from(List<BaseData> rows, Journey journey, BaseData currentRow) {
     if (journey.metadata.lastPosition == null ||
@@ -62,6 +66,10 @@ class ChevronAnimationData {
       endOffset = 0.0;
     }
 
-    return ChevronAnimationData(startOffset: startOffset, endOffset: endOffset);
+    return ChevronAnimationData(
+        startOffset: startOffset,
+        endOffset: endOffset,
+        lastPosition: journey.metadata.lastPosition!,
+        currenPosition: journey.metadata.currentPosition!);
   }
 }

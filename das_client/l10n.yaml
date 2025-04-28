@@ -2,3 +2,5 @@ arb-dir: l10n
 template-arb-file: strings_de.arb
 output-localization-file: app_localizations.dart
 output-class: AppLocalizations
+output-dir: lib/app/i18n/gen
+synthetic-package: false

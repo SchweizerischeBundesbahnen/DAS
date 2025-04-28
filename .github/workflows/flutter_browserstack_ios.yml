@@ -36,10 +36,11 @@ jobs:
         xcode-version: 14.3.1
     - uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.27.1'
+        flutter-version: '3.29.3'
         cache: true
     - run: flutter pub get
-    - run: flutter pub run build_runner build --delete-conflicting-outputs
+    - run: dart run build_runner build --delete-conflicting-outputs
+    - run: flutter gen-l10n
     - shell: bash
       env:
         MQTT_USERNAME: ${{ secrets.MQTT_USERNAME }}

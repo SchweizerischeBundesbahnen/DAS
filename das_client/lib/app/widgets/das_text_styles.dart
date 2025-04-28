@@ -79,4 +79,12 @@ class DASTextStyles {
   );
 
   static const TextStyle extraSmallBold = SBBTextStyles.extraSmallBold;
+
+  static const TextStyle extraSmallRoman = TextStyle(
+    fontSize: SBBTextStyles.xSmallFontSize,
+    height: SBBTextStyles.xSmallFontHeight,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    fontFamily: SBBFontFamily.sbbFontRoman,
+  );
 }

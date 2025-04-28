@@ -24,7 +24,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-java@v4
@@ -34,7 +34,7 @@ jobs:
         cache: 'gradle'
     - uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.27.1'
+        flutter-version: '3.29.3'
         cache: true
     - name: Prepare Flutter Build
       env:
@@ -50,7 +50,8 @@ jobs:
         echo "ANDROID_KEY_ALIAS=$ANDROID_KEY_ALIAS" >> "$GITHUB_ENV"
         echo "ANDROID_KEY_PASSWORD=$ANDROID_KEY_PASSWORD" >> "$GITHUB_ENV"
         flutter pub get
-        flutter pub run build_runner build --delete-conflicting-outputs
+        dart run build_runner build --delete-conflicting-outputs
+        flutter gen-l10n
     - run: flutter build appbundle --flavor dev -t lib/main_dev.dart
     - run: flutter build appbundle --flavor inte -t lib/main_inte.dart
     - run: flutter build appbundle --flavor prod -t lib/main_prod.dart

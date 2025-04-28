@@ -1,5 +1,7 @@
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/extended_menu.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:das_client/app/widgets/table/das_table.dart';
 import 'package:das_client/di.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +18,8 @@ Future<void> openDrawer(WidgetTester tester) async {
   await tester.pumpAndSettle(const Duration(milliseconds: 250));
 }
 
-Future<void> tapElement(WidgetTester tester, FinderBase<Element> element) async {
-  await tester.tap(element);
+Future<void> tapElement(WidgetTester tester, FinderBase<Element> element, {bool warnIfMissed = true}) async {
+  await tester.tap(element, warnIfMissed: warnIfMissed);
   await tester.pumpAndSettle();
 }
 
@@ -78,10 +80,28 @@ Future<void> dismissExtendedMenu(WidgetTester tester) async {
   await Future.delayed(const Duration(milliseconds: 100));
 }
 
-Future<void> waitUntilExists(WidgetTester tester, FinderBase<Element> element, {int maxWaitSeconds = 5}) async {
+Future<void> selectBreakSeries(WidgetTester tester, {required String breakSeries}) async {
+  // Open break series bottom sheet
+  await tapElement(tester, find.byKey(TrainJourney.breakingSeriesHeaderKey));
+
+  // Check if the bottom sheet is opened
+  expect(find.text(l10n.p_train_journey_break_series), findsOneWidget);
+  await tapElement(tester, find.text(breakSeries));
+
+  // confirm button
+  await tapElement(tester, find.text(l10n.c_button_confirm));
+}
+
+Future<void> pauseAutomaticAdvancement(WidgetTester tester) async {
+  final pauseButton = find.byKey(StartPauseButton.pauseButtonKey);
+  expect(pauseButton, findsOneWidget);
+  await tapElement(tester, pauseButton);
+}
+
+Future<void> waitUntilExists(WidgetTester tester, FinderBase<Element> element, {int maxWaitSeconds = 15}) async {
   int counter = 0;
   while (true) {
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 100));
 
     element.reset();
     if (element.evaluate().isNotEmpty) {
@@ -94,15 +114,16 @@ Future<void> waitUntilExists(WidgetTester tester, FinderBase<Element> element, {
       expect(element, findsAny);
       break;
     }
-
-    await Future.delayed(const Duration(milliseconds: 100));
   }
+
+  // wait till all animations are finished
+  await tester.pumpAndSettle();
 }
 
-Future<void> waitUntilNotExists(WidgetTester tester, FinderBase<Element> element, {int maxWaitSeconds = 5}) async {
+Future<void> waitUntilNotExists(WidgetTester tester, FinderBase<Element> element, {int maxWaitSeconds = 10}) async {
   int counter = 0;
   while (true) {
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 100));
 
     element.reset();
     if (element.evaluate().isEmpty) {
@@ -115,7 +136,8 @@ Future<void> waitUntilNotExists(WidgetTester tester, FinderBase<Element> element
       expect(element, findsNothing);
       break;
     }
-
-    await Future.delayed(const Duration(milliseconds: 100));
   }
+
+  // wait till all animations are finished
+  await tester.pumpAndSettle();
 }

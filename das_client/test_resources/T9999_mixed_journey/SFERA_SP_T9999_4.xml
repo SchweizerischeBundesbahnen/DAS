@@ -10,7 +10,6 @@
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>9994</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
-            <TP_Name name="D"/>
         </TimingPoint>
 
         <Signal>
@@ -59,13 +58,14 @@
     </SP_Points>
 
     <SP_Areas>
-        <TAF_TAP_Location startEndQualifier="StartsEnds" TAF_TAP_location_abbreviation="D"
-                          TAF_TAP_location_type="station">
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="700" endLocation="700"
+            TAF_TAP_location_abbreviation="D"
+            TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>9994</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Klammerbahnhof D</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" text="Klammerbahnhof D"/>
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>bracketStation</NSP_GroupName>

@@ -11,6 +11,7 @@ import 'package:das_client/util/format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../app_test.dart';
 import '../mocks/battery_mock.dart';
@@ -18,6 +19,47 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey header test', () {
+    testWidgets('test always-on display is turned on when journey is loaded', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // Get that the always-on display is turned off, because journey is not started yet
+      final currentDisplayTurnedOff = await WakelockPlus.enabled;
+      expect(currentDisplayTurnedOff, false);
+
+      await loadTrainJourney(tester, trainNumber: 'T4');
+
+      // Get that the always-on display is turned on, because the journey is started
+      final currentDisplayTurnedOn = await WakelockPlus.enabled;
+      expect(currentDisplayTurnedOn, true);
+    });
+
+    testWidgets('test always-on display is turned off when journey is closed', (tester) async {
+      await prepareAndStartApp(tester);
+
+      await loadTrainJourney(tester, trainNumber: 'T4');
+
+      // Get that the always-on display is turned on, because the journey is started
+      final currentDisplayTurnedOn = await WakelockPlus.enabled;
+      expect(currentDisplayTurnedOn, true);
+
+      // find pause button and press it
+      final pauseButton = find.text(l10n.p_train_journey_header_button_pause);
+      expect(pauseButton, findsOneWidget);
+
+      await tapElement(tester, pauseButton);
+
+      // close journey
+      final disconnectKey = Key('disconnectButton');
+      final closeButton = find.byKey(disconnectKey);
+      expect(closeButton, findsOneWidget);
+
+      await tapElement(tester, closeButton);
+
+      // Get that the always-on display is turned off, because the journey is closed
+      final currentDisplayTurnedOff = await WakelockPlus.enabled;
+      expect(currentDisplayTurnedOff, false);
+    });
+
     testWidgets('test app bar is hiding while train is active', (tester) async {
       final testLocale = const Locale('de', 'CH');
 
@@ -94,7 +136,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test extended meneuver mode', (tester) async {
+    testWidgets('test extended maneuver mode', (tester) async {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page

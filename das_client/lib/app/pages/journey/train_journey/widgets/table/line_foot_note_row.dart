@@ -18,7 +18,7 @@ class LineFootNoteRow extends FootNoteRow<LineFootNote> {
     final identifier = data.footNote.identifier;
     if (identifier != null && metadata.lineFootNoteLocations[identifier] != null) {
       final servicePointNames = metadata.lineFootNoteLocations[identifier]!;
-      return '${context.l10n.c_radn} ${servicePointNames.first.localized} - ${servicePointNames.last.localized}';
+      return '${context.l10n.c_radn} ${servicePointNames.first} - ${servicePointNames.last}';
     } else {
       return context.l10n.c_radn;
     }

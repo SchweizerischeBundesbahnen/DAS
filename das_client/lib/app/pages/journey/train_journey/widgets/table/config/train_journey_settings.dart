@@ -1,4 +1,5 @@
 import 'package:das_client/model/journey/break_series.dart';
+import 'package:das_client/model/journey/metadata.dart';
 
 class TrainJourneySettings {
   const TrainJourneySettings({
@@ -29,5 +30,9 @@ class TrainJourneySettings {
       maneuverMode: maneuverMode ?? this.maneuverMode,
       collapsedFootNotes: collapsedFootNotes ?? this.collapsedFootNotes,
     );
+  }
+
+  BreakSeries? resolvedBreakSeries(Metadata? metadata) {
+    return selectedBreakSeries ?? metadata?.breakSeries;
   }
 }

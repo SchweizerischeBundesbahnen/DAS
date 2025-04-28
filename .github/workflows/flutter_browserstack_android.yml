@@ -36,7 +36,7 @@ jobs:
         cache: 'gradle'
     - uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.27.1'
+        flutter-version: '3.29.3'
         cache: true
     - name: Prepare Flutter Build
       env:
@@ -52,7 +52,8 @@ jobs:
         echo "ANDROID_KEY_ALIAS=$ANDROID_KEY_ALIAS" >> "$GITHUB_ENV"
         echo "ANDROID_KEY_PASSWORD=$ANDROID_KEY_PASSWORD" >> "$GITHUB_ENV"
         flutter pub get
-        flutter pub run build_runner build --delete-conflicting-outputs
+        dart run build_runner build --delete-conflicting-outputs
+        flutter gen-l10n
     - shell: bash
       env:
         MQTT_USERNAME: ${{ secrets.MQTT_USERNAME }}

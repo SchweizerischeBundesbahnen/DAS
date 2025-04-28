@@ -13,6 +13,7 @@ import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 part 'train_journey_state.dart';
 
@@ -57,6 +58,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
           case SferaServiceState.connected:
             automaticAdvancementController = AutomaticAdvancementController();
             _listenToJourneyUpdates();
+            WakelockPlus.enable();
             emit(TrainJourneyLoadedState(trainIdentification));
             break;
           case SferaServiceState.connecting:
@@ -67,8 +69,10 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
             break;
           case SferaServiceState.disconnected:
           case SferaServiceState.offline:
+            WakelockPlus.disable();
             emit(SelectingTrainJourneyState(
                 ru: ru, trainNumber: trainNumber, date: date, errorCode: _sferaService.lastErrorCode));
+            _journeySubscription?.cancel();
             break;
         }
       });
@@ -130,11 +134,19 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
     _stateSubscription?.cancel();
     _stateSubscription = null;
 
+    automaticAdvancementController.dispose();
+
     return super.close();
   }
 
   void updateBreakSeries(BreakSeries selectedBreakSeries) {
     _settingsSubject.add(_settingsSubject.value.copyWith(selectedBreakSeries: selectedBreakSeries));
+
+    if (_settingsSubject.value.automaticAdvancementActive) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        automaticAdvancementController.scrollToCurrentPosition(resetAutomaticAdvancementTimer: true);
+      });
+    }
   }
 
   void updateExpandedGroups(List<int> expandedGroups) {
@@ -148,7 +160,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
   void setAutomaticAdvancement(bool active) {
     Fimber.i('Automatic advancement state changed to active=$active');
     if (active) {
-      automaticAdvancementController.scrollToCurrentPosition();
+      automaticAdvancementController.scrollToCurrentPosition(resetAutomaticAdvancementTimer: true);
     }
     _settingsSubject.add(_settingsSubject.value.copyWith(automaticAdvancementActive: active));
   }
