@@ -1,10 +1,9 @@
 import 'dart:async';
 
-import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/base_modal_sheet_view_model.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_tab.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal/detail_modal_view_model.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_builder.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
-import 'package:das_client/app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/communication_network_change.dart';
 import 'package:das_client/model/journey/contact_list.dart';
@@ -15,8 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
-class DetailModalSheetViewModel {
-  DetailModalSheetViewModel() {
+class ServicePointModalViewModel {
+  ServicePointModalViewModel() {
     _init();
   }
 
@@ -24,13 +23,13 @@ class DetailModalSheetViewModel {
   final _rxRadioContactList = BehaviorSubject<RadioContactList?>();
   final _rxMetadata = BehaviorSubject<Metadata>();
   final _rxServicePoint = BehaviorSubject<ServicePoint>();
-  final _rxSelectedTab = BehaviorSubject.seeded(DetailModalSheetTab.values.first);
+  final _rxSelectedTab = BehaviorSubject.seeded(ServicePointModalTab.values.first);
   final _rxSettings = BehaviorSubject<TrainJourneySettings>();
   final _rxRelevantSpeedInfo = BehaviorSubject.seeded(<Speeds>[]);
   final _rxBreakSeries = BehaviorSubject<BreakSeries?>();
   final _subscriptions = <StreamSubscription>[];
 
-  Stream<DetailModalSheetTab> get selectedTab => _rxSelectedTab.distinct();
+  Stream<ServicePointModalTab> get selectedTab => _rxSelectedTab.distinct();
 
   Stream<ServicePoint> get servicePoint => _rxServicePoint.distinct();
 
@@ -85,7 +84,7 @@ class DetailModalSheetViewModel {
 
   void updateSettings(TrainJourneySettings settings) => _rxSettings.add(settings);
 
-  void open(BuildContext context, {DetailModalSheetTab? tab, ServicePoint? servicePoint}) {
+  void open(BuildContext context, {ServicePointModalTab? tab, ServicePoint? servicePoint}) {
     if (tab != null) {
       _rxSelectedTab.add(tab);
     }
@@ -93,12 +92,12 @@ class DetailModalSheetViewModel {
       _rxServicePoint.add(servicePoint);
     }
 
-    final viewModel = context.read<BaseModalSheetViewModel>();
-    final openAsMaximized = tab == DetailModalSheetTab.localRegulations;
-    viewModel.open(DetailModalSheet(), maximize: openAsMaximized);
+    final viewModel = context.read<DetailModalViewModel>();
+    final openAsMaximized = tab == ServicePointModalTab.localRegulations;
+    viewModel.open(ServicePointModalBuilder(), maximize: openAsMaximized);
   }
 
-  void close(BuildContext context) => context.read<BaseModalSheetViewModel>().close();
+  void close(BuildContext context) => context.read<DetailModalViewModel>().close();
 
   void dispose() {
     for (final subscription in _subscriptions) {

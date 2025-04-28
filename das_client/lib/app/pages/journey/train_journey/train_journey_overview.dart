@@ -1,8 +1,8 @@
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/bloc/ux_testing_cubit.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/base_modal_sheet.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/base_modal_sheet_view_model.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_view_model.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal/detail_modal.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal/detail_modal_view_model.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/notification/koa_notification.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
@@ -26,12 +26,12 @@ class TrainJourneyOverview extends StatelessWidget {
         Provider(
           create: (context) {
             final controller = context.trainJourneyCubit.automaticAdvancementController;
-            return BaseModalSheetViewModel(automaticAdvancementController: controller);
+            return DetailModalViewModel(automaticAdvancementController: controller);
           },
           dispose: (context, vm) => vm.dispose(),
         ),
         Provider(
-          create: (_) => DetailModalSheetViewModel(),
+          create: (_) => ServicePointModalViewModel(),
           dispose: (context, vm) => vm.dispose(),
         ),
       ],
@@ -47,14 +47,14 @@ class TrainJourneyOverview extends StatelessWidget {
 
   Widget _body() {
     return Builder(builder: (context) {
-      final modalSheetController = context.read<BaseModalSheetViewModel>().controller;
+      final modalController = context.read<DetailModalViewModel>().controller;
       return Listener(
-        onPointerDown: (_) => modalSheetController.resetAutomaticClose(),
-        onPointerUp: (_) => modalSheetController.resetAutomaticClose(),
+        onPointerDown: (_) => modalController.resetAutomaticClose(),
+        onPointerUp: (_) => modalController.resetAutomaticClose(),
         child: Row(
           children: [
             Expanded(child: _content()),
-            BaseModalSheet(),
+            DetailModalSheet(),
           ],
         ),
       );
