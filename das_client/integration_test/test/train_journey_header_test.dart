@@ -6,6 +6,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/header/header
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_channel.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_contact.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
+import 'package:das_client/app/widgets/indicator_wrapper.dart';
 import 'package:das_client/di.dart';
 import 'package:das_client/util/format.dart';
 import 'package:flutter/material.dart';
@@ -321,21 +322,31 @@ void main() {
       expect(wankdorfGsmRIcon, findsNothing);
       final wankdorfGsmPIcon = find.descendant(of: header, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
       expect(wankdorfGsmPIcon, findsNothing);
+      final wankdorfIndicator = find.descendant(of: header, matching: find.byKey(IndicatorWrapper.indicatorKey));
+      expect(wankdorfIndicator, findsNothing);
 
       // check network type for Burgdorf
       await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Burgdorf')));
       final burgdorfGsmPIcon = find.descendant(of: header, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
       expect(burgdorfGsmPIcon, findsOneWidget);
+      final indicator = find.descendant(of: header, matching: find.byKey(IndicatorWrapper.indicatorKey));
+      expect(indicator, findsNothing);
+      final burgdorfIndicator = find.descendant(of: header, matching: find.byKey(IndicatorWrapper.indicatorKey));
+      expect(burgdorfIndicator, findsOneWidget);
 
       // check network type for Olten
       await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Olten')));
       final oltenGsmPIcon = find.descendant(of: header, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
       expect(oltenGsmPIcon, findsOneWidget);
+      final oltenIndicator = find.descendant(of: header, matching: find.byKey(IndicatorWrapper.indicatorKey));
+      expect(oltenIndicator, findsOneWidget);
 
       // check network type for Zürich
       await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Zürich')));
       final zuerichGsmRIcon = find.descendant(of: header, matching: find.byKey(CommunicationNetworkIcon.gsmRKey));
       expect(zuerichGsmRIcon, findsOneWidget);
+      final zuerichIndicator = find.descendant(of: header, matching: find.byKey(IndicatorWrapper.indicatorKey));
+      expect(zuerichIndicator, findsOneWidget);
 
       await disconnect(tester);
     });
