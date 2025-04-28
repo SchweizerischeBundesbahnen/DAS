@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.17.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.16.0...das_client-v0.17.0) (2025-04-25)
+
+
+### Features
+
+* add always-on display when train_journey is opened ([#591](https://github.com/SchweizerischeBundesbahnen/DAS/issues/591)) ([#820](https://github.com/SchweizerischeBundesbahnen/DAS/issues/820)) ([5eaf631](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5eaf63147db3f74738e61c323b948b497c719886))
+* added communication network and radio channels to detail modal sheet ([#229](https://github.com/SchweizerischeBundesbahnen/DAS/issues/229)) ([#824](https://github.com/SchweizerischeBundesbahnen/DAS/issues/824)) ([93b47b2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/93b47b27a876836d0b8ee715af63f710bcb3ffba))
+* implement graduated speed info ([#231](https://github.com/SchweizerischeBundesbahnen/DAS/issues/231)) ([#831](https://github.com/SchweizerischeBundesbahnen/DAS/issues/831)) ([bfab300](https://github.com/SchweizerischeBundesbahnen/DAS/commit/bfab30046b2ba4893f121016ad2fb896c63551d1))
+
 ## [0.16.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.15.0...das_client-v0.16.0) (2025-04-22)
 
 

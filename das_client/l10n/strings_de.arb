@@ -53,6 +53,8 @@
   "w_detail_modal_sheet_communication_radio_channels_not_found": "Kein Funkkanal verfügbar",
   "w_detail_modal_sheet_communication_network": "Netzart",
   "w_detail_modal_sheet_graduated_speed_label": "Abgestufte Geschwindigkeiten",
+  "w_detail_modal_sheet_graduated_speed_break_series_title": "Zug- und Bremsreihe",
+  "w_detail_modal_sheet_graduated_speed_no_information": "Keine Informationen",
   "w_detail_modal_sheet_local_regulations_label": "Lokale Bestimmungen",
   "c_ru_sbb_p": "SBB",
   "c_ru_sbb_c": "SBB Cargo",

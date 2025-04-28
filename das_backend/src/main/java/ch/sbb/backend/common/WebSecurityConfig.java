@@ -29,6 +29,7 @@ public class WebSecurityConfig {
 
     private static final String ROLES_KEY = "roles";
     private static final String ROLE_PREFIX = "ROLE_";
+    private static final String PRINCIPAL_CLAIM_NAME = "preferred_username";
 
     @Value("${auth.audience.service-name}")
     private String serviceName;
@@ -77,6 +78,7 @@ public class WebSecurityConfig {
 
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(roleConverter);
+        jwtAuthenticationConverter.setPrincipalClaimName(PRINCIPAL_CLAIM_NAME);
 
         return jwtAuthenticationConverter;
     }

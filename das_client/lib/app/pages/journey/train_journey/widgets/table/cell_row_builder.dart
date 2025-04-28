@@ -137,10 +137,9 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
       return DASTableCell.empty();
     }
 
-    final currentTrainSeries = config.settings.selectedBreakSeries?.trainSeries ?? metadata.breakSeries?.trainSeries;
-    final currentBreakSeries = config.settings.selectedBreakSeries?.breakSeries ?? metadata.breakSeries?.breakSeries;
+    final currentBreakSeries = config.settings.resolvedBreakSeries(metadata);
 
-    final graduatedSpeeds = speedData.speedsFor(currentTrainSeries, currentBreakSeries);
+    final graduatedSpeeds = speedData.speedsFor(currentBreakSeries?.trainSeries, currentBreakSeries?.breakSeries);
     if (graduatedSpeeds == null) {
       return defaultCell;
     }

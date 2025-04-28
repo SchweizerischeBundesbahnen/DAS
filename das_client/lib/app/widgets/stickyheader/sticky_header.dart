@@ -63,7 +63,14 @@ class StickyHeaderState extends State<StickyHeader> {
       key: key,
       clipBehavior: Clip.hardEdge,
       children: <Widget>[
-        widget.child,
+        NotificationListener<ScrollEndNotification>(
+            onNotification: (scrollEnd) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                controller.scrollListener();
+              });
+              return false;
+            },
+            child: widget.child),
         StickyWidget(
           controller: controller,
           widgetBuilder: widget.headerBuilder,

@@ -3,11 +3,15 @@ import 'dart:async';
 import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/base_modal_sheet_view_model.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_tab.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
+import 'package:das_client/app/widgets/modal_sheet/das_modal_sheet.dart';
+import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/communication_network_change.dart';
 import 'package:das_client/model/journey/contact_list.dart';
 import 'package:das_client/model/journey/metadata.dart';
 import 'package:das_client/model/journey/service_point.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:das_client/model/journey/speeds.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -21,6 +25,9 @@ class DetailModalSheetViewModel {
   final _rxMetadata = BehaviorSubject<Metadata>();
   final _rxServicePoint = BehaviorSubject<ServicePoint>();
   final _rxSelectedTab = BehaviorSubject.seeded(DetailModalSheetTab.values.first);
+  final _rxSettings = BehaviorSubject<TrainJourneySettings>();
+  final _rxRelevantSpeedInfo = BehaviorSubject.seeded(<Speeds>[]);
+  final _rxBreakSeries = BehaviorSubject<BreakSeries?>();
   final _subscriptions = <StreamSubscription>[];
 
   Stream<DetailModalSheetTab> get selectedTab => _rxSelectedTab.distinct();
@@ -31,9 +38,14 @@ class DetailModalSheetViewModel {
 
   Stream<CommunicationNetworkType?> get communicationNetworkType => _rxCommunicationNetworkType.distinct();
 
+  Stream<List<Speeds>> get relevantSpeedInfo => _rxRelevantSpeedInfo.distinct();
+
+  Stream<BreakSeries?> get breakSeries => _rxBreakSeries.distinct();
+
   void _init() {
     _initRadioContacts();
     _initCommunicationNetworkType();
+    _initRelevantSpeedInfo();
   }
 
   void _initRadioContacts() {
@@ -42,6 +54,21 @@ class DetailModalSheetViewModel {
       _rxMetadata.stream,
       (servicePoint, metadata) => metadata.radioContactLists.lastLowerThan(servicePoint.order),
     ).listen(_rxRadioContactList.add, onError: _rxRadioContactList.addError);
+    _subscriptions.add(subscription);
+  }
+
+  void _initRelevantSpeedInfo() {
+    final subscription = Rx.combineLatest3(
+      _rxServicePoint.stream,
+      _rxMetadata.stream,
+      _rxSettings.stream,
+      (servicePoint, metadata, settings) {
+        final currentBreakSeries = settings.resolvedBreakSeries(metadata);
+        _rxBreakSeries.add(currentBreakSeries);
+
+        return servicePoint.relevantGraduatedSpeedInfo(currentBreakSeries);
+      },
+    ).listen(_rxRelevantSpeedInfo.add, onError: _rxRelevantSpeedInfo.addError);
     _subscriptions.add(subscription);
   }
 
@@ -55,6 +82,8 @@ class DetailModalSheetViewModel {
   }
 
   void updateMetadata(Metadata metadata) => _rxMetadata.add(metadata);
+
+  void updateSettings(TrainJourneySettings settings) => _rxSettings.add(settings);
 
   void open(BuildContext context, {DetailModalSheetTab? tab, ServicePoint? servicePoint}) {
     if (tab != null) {
@@ -79,5 +108,8 @@ class DetailModalSheetViewModel {
     _rxSelectedTab.close();
     _rxCommunicationNetworkType.close();
     _rxServicePoint.close();
+    _rxSettings.close();
+    _rxRelevantSpeedInfo.close();
+    _rxBreakSeries.close();
   }
 }

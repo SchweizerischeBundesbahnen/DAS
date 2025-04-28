@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   prepare:
-    runs-on: macos-latest
+    runs-on: macos-15
     concurrency:
       group: release-das-client-ios
     defaults:
@@ -40,7 +40,7 @@ jobs:
       - name: Upload generated srcs  # saves around 40 sec
         uses: actions/upload-artifact@v4
         with:
-          name: gen_srcs
+          name: gen_srcs_ios
           path: |
             **/*.g.dart
             **/*.gr.dart
@@ -49,7 +49,7 @@ jobs:
 
   release:
     needs: [prepare]
-    runs-on: macos-latest
+    runs-on: macos-15
     defaults:
       run:
         working-directory: das_client
@@ -84,7 +84,7 @@ jobs:
       - name: Download gen srcs
         uses: actions/download-artifact@v4
         with:
-          name: gen_srcs
+          name: gen_srcs_ios
 
       - name: Install Apple signing certificate and appstore connect key
         env:
