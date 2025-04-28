@@ -1,4 +1,4 @@
-import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_view_model.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/base_modal_sheet_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -21,7 +21,7 @@ class AnimatedHeaderIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<bool>(
-      stream: context.read<DetailModalSheetViewModel>().isModalSheetOpen,
+      stream: context.read<BaseModalSheetViewModel>().isModalSheetOpen,
       builder: (context, snapshot) {
         final isDetailModalSheetOpen = snapshot.data ?? false;
         return AnimatedSwitcher(

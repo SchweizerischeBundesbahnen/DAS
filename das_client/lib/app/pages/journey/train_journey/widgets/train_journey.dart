@@ -5,6 +5,7 @@ import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/break_series_selection.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/chevron_animation_wrapper.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/base_modal_sheet_view_model.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_view_model.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/balise_level_crossing_group_row.dart';
@@ -110,7 +111,7 @@ class TrainJourney extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
       child: StreamBuilder<bool>(
-        stream: context.read<DetailModalSheetViewModel>().isModalSheetOpen,
+        stream: context.read<BaseModalSheetViewModel>().isModalSheetOpen,
         builder: (context, snapshot) {
           final isDetailModelSheetOpen = snapshot.data ?? false;
           return ChevronAnimationWrapper(

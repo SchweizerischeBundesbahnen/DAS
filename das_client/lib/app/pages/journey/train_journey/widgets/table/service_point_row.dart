@@ -41,7 +41,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     return DASTableCell(
       onTap: () {
         final viewModel = context.read<DetailModalSheetViewModel>();
-        viewModel.open(tab: DetailModalSheetTab.communication, servicePoint: data);
+        viewModel.open(context, tab: DetailModalSheetTab.communication, servicePoint: data);
       },
       alignment: Alignment.bottomLeft,
       child: Text(
@@ -104,7 +104,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     return DASTableCell(
       onTap: () {
         final viewModel = context.read<DetailModalSheetViewModel>();
-        viewModel.open(tab: DetailModalSheetTab.graduatedSpeeds, servicePoint: data);
+        viewModel.open(context, tab: DetailModalSheetTab.graduatedSpeeds, servicePoint: data);
       },
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
