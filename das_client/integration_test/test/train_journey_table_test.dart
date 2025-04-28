@@ -29,7 +29,7 @@ void main() {
       await loadTrainJourney(tester, trainNumber: 'T5');
 
       // change breakseries to A50
-      await _selectBreakSeries(tester, breakSeries: 'A50');
+      await selectBreakSeries(tester, breakSeries: 'A50');
 
       // check if the breakseries A50 is chosen.
       final breakingSeriesHeaderCell = find.byKey(TrainJourney.breakingSeriesHeaderKey);
@@ -276,7 +276,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       await loadTrainJourney(tester, trainNumber: 'T5');
-      await _selectBreakSeries(tester, breakSeries: 'A85');
+      await selectBreakSeries(tester, breakSeries: 'A85');
 
       final breakingSeriesHeaderCell = find.byKey(TrainJourney.breakingSeriesHeaderKey);
       expect(breakingSeriesHeaderCell, findsOneWidget);
@@ -693,7 +693,7 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999');
 
-      await _selectBreakSeries(tester, breakSeries: 'R150');
+      await selectBreakSeries(tester, breakSeries: 'R150');
 
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
@@ -1040,16 +1040,4 @@ void _checkTrackEquipmentOnServicePoint(String name, Key expectedKey, {bool hasC
   final convExtSpeedBorder = find.descendant(
       of: servicePointRow, matching: find.byKey(TrackEquipmentCellBody.conventionalExtendedSpeedBorderKey));
   expect(convExtSpeedBorder, hasConvExtSpeedBorder ? findsAny : findsNothing);
-}
-
-Future<void> _selectBreakSeries(WidgetTester tester, {required String breakSeries}) async {
-  // Open break series bottom sheet
-  await tapElement(tester, find.byKey(TrainJourney.breakingSeriesHeaderKey));
-
-  // Check if the bottom sheet is opened
-  expect(find.text(l10n.p_train_journey_break_series), findsOneWidget);
-  await tapElement(tester, find.text(breakSeries));
-
-  // confirm button
-  await tapElement(tester, find.text(l10n.c_button_confirm));
 }
