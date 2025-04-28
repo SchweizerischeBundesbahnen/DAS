@@ -1,11 +1,14 @@
 package ch.sbb.backend.admin.infrastructure.repositories;
 
+import static ch.sbb.backend.admin.domain.settings.model.RuFeatureName.GESTES;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.backend.JpaAuditingConfiguration;
 import ch.sbb.backend.TestContainerConfiguration;
-import ch.sbb.backend.admin.infrastructure.model.CompanyEntity;
-import ch.sbb.backend.admin.infrastructure.model.RuFeatureEntity;
+import ch.sbb.backend.admin.domain.settings.model.RuFeatureName;
+import ch.sbb.backend.admin.infrastructure.settings.SpringDataJpaRuFeatureRepository;
+import ch.sbb.backend.admin.infrastructure.settings.model.CompanyEntity;
+import ch.sbb.backend.admin.infrastructure.settings.model.RuFeatureEntity;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +35,7 @@ class SpringDataJpaRuFeatureRepositoryTest {
         assertThat(entity.getId()).isEqualTo(1);
         assertThat(entity.getCompany().getCodeRics()).isEqualTo("1111");
         assertThat(entity.getCompany().getShortNameZis()).isEqualTo("SHORT1");
-        assertThat(entity.getName()).isEqualTo("RUFEATURE");
+        assertThat(entity.getName()).isEqualTo(GESTES.name());
         assertThat(entity.isEnabled()).isTrue();
         assertThat(entity.getLastModifiedBy()).isEqualTo("unit_test");
         assertThat(entity.getLastModifiedAt()).isEqualTo(LocalDateTime.parse("2025-04-17T10:18:34"));
@@ -53,7 +56,7 @@ class SpringDataJpaRuFeatureRepositoryTest {
         assertThat(entity.getCompany().getCodeRics()).isEqualTo("1111");
         assertThat(entity.getCompany().getShortNameZis()).isEqualTo("SHORT1");
 
-        assertThat(entity.getName()).isEqualTo("RUFEATURE");
+        assertThat(entity.getName()).isEqualTo(RuFeatureName.GESTES.name());
         assertThat(entity.isEnabled()).isFalse();
         assertThat(entity.getLastModifiedBy()).isEqualTo("unit_test");
         assertThat(entity.getLastModifiedAt()).isAfter(LocalDateTime.parse("2025-04-17T10:18:34"));

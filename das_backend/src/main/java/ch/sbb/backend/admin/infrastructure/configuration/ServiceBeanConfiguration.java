@@ -1,4 +1,4 @@
-package ch.sbb.backend.admin.infrastructure;
+package ch.sbb.backend.admin.infrastructure.configuration;
 
 import ch.sbb.backend.admin.domain.servicepoint.ServicePointRepository;
 import ch.sbb.backend.admin.domain.servicepoint.ServicePointService;
