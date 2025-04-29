@@ -86,12 +86,14 @@ class DetailModalSheetViewModel {
   }
 
   void _initController() {
+    final isAutoCloseActive = _rxSettings.valueOrNull?.isAutoAdvancementEnabledByUser ?? true;
+    print('hello $isAutoCloseActive');
     controller = DASModalSheetController(
-      isAutomaticCloseActive: automaticAdvancementController.isActive,
+      isAutomaticCloseActive: isAutoCloseActive,
       onClose: () => _rxIsModalSheetOpen.add(false),
       onOpen: () {
         _rxIsModalSheetOpen.add(true);
-        if (automaticAdvancementController.isActive) {
+        if (isAutoCloseActive) {
           automaticAdvancementController.scrollToCurrentPosition(resetAutomaticAdvancementTimer: true);
         }
       },
