@@ -6,6 +6,7 @@ import 'package:das_client/flavor.dart';
 import 'package:das_client/mqtt/mqtt_component.dart';
 import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
+import 'package:screen_brightness/screen_brightness.dart';
 
 import 'auth/integrationtest_authenticator.dart';
 import 'auth/mqtt_client_user_connector.dart';
@@ -19,6 +20,8 @@ class IntegrationTestDI {
     Fimber.i('Initialize integration test dependency injection');
     await GetIt.I.reset();
 
+    _registerScreenBrightness();
+    _registerBrightnessManager();
     GetIt.I.registerFlavor(flavor);
     GetIt.I.registerTokenSpecProvider();
     GetIt.I.registerOidcClient();
@@ -26,8 +29,6 @@ class IntegrationTestDI {
     GetIt.I.registerSferaComponents();
     GetIt.I.registerMqttComponent();
     _registerBattery();
-    _registerBrightnessManager();
-
     GetIt.I.registerBlocs();
     GetIt.I.registerAudioPlayer();
 
@@ -49,7 +50,11 @@ class IntegrationTestDI {
     GetIt.I.registerSingletonAsync<Battery>(() async => BatteryMock());
   }
 
+  static void _registerScreenBrightness() {
+    GetIt.I.registerLazySingleton<ScreenBrightness>(() => ScreenBrightness());
+  }
+
   static void _registerBrightnessManager() {
-    GetIt.I.registerSingleton<BrightnessManager>(MockBrightnessManager());
+    GetIt.I.registerLazySingleton<BrightnessManager>(() => MockBrightnessManager());
   }
 }

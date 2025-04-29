@@ -20,7 +20,7 @@ import '../mocks/battery_mock.dart';
 import '../mocks/brightness_mock.dart';
 import '../util/test_utils.dart';
 
-void main() {
+Future<void> main() async {
   group('train journey header test', () {
     testWidgets('test always-on display is turned on when journey is loaded', (tester) async {
       await prepareAndStartApp(tester);
@@ -383,21 +383,17 @@ void main() {
 
     // can be removed based on what option to change the brightness will be chosen
     testWidgets('double tap sets brightness to 0.1 if current is 1.0', (tester) async {
-      final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
-
-      // load journey with the track T6
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: 'T6');
 
-      // find the header and check if it is existent
+      final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
+
       final header = find.byType(Header);
       expect(header, findsOneWidget);
 
-      // find the time container and check if it is existent
       final timeContainer = find.byType(TimeContainer);
       expect(timeContainer, findsOneWidget);
 
-      // simulate a double tap on the time container
       await tester.tap(timeContainer);
       await tester.pump(const Duration(milliseconds: 50));
       await tester.tap(timeContainer);
@@ -408,16 +404,15 @@ void main() {
 
     // can be removed based on what option to change the brightness will be chosen
     testWidgets('long press dims brightness from 1.0 to 0.0', (tester) async {
-      final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
-
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: 'T6');
+
+      final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 
       final timeContainer = find.byType(TimeContainer);
       expect(timeContainer, findsOneWidget);
 
       await tester.longPress(timeContainer);
-
       await tester.pump(const Duration(seconds: 2));
 
       expect(mockBrightnessManager.calledWith.any((val) => val < 1.0), true);
@@ -425,10 +420,10 @@ void main() {
 
     // can be removed based on what option to change the brightness will be chosen
     testWidgets('horizontal drag right increases brightness', (tester) async {
-      final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
-
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: 'T6');
+
+      final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 
       final header = find.byType(Header);
       expect(header, findsOneWidget);
