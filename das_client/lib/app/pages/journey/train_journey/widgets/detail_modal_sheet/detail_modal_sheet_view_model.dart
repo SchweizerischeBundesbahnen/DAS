@@ -86,7 +86,7 @@ class DetailModalSheetViewModel {
   }
 
   void _initController() {
-    final isAutoCloseActive = _rxSettings.valueOrNull?.isAutoAdvancementEnabledByUser ?? true;
+    final isAutoCloseActive = _rxSettings.valueOrNull?.isAutoAdvancementEnabled ?? true;
     print('hello $isAutoCloseActive');
     controller = DASModalSheetController(
       isAutomaticCloseActive: isAutoCloseActive,

@@ -5,15 +5,15 @@ class TrainJourneySettings {
   const TrainJourneySettings({
     this.selectedBreakSeries,
     this.expandedGroups = const [],
-    this.isAutoAdvancementEnabledByUser = true,
-    this.isManeuverModeEnabledByUser = false,
+    this.isAutoAdvancementEnabled = true,
+    this.isManeuverModeEnabled = false,
     this.collapsedFootNotes = const [],
   });
 
   final BreakSeries? selectedBreakSeries;
   final List<int> expandedGroups;
-  final bool isAutoAdvancementEnabledByUser;
-  final bool isManeuverModeEnabledByUser;
+  final bool isAutoAdvancementEnabled;
+  final bool isManeuverModeEnabled;
   final List<String> collapsedFootNotes;
 
   TrainJourneySettings copyWith({
@@ -26,8 +26,8 @@ class TrainJourneySettings {
     return TrainJourneySettings(
       selectedBreakSeries: selectedBreakSeries ?? this.selectedBreakSeries,
       expandedGroups: expandedGroups ?? this.expandedGroups,
-      isAutoAdvancementEnabledByUser: automaticAdvancementActive ?? this.isAutoAdvancementEnabledByUser,
-      isManeuverModeEnabledByUser: maneuverMode ?? this.isManeuverModeEnabledByUser,
+      isAutoAdvancementEnabled: automaticAdvancementActive ?? this.isAutoAdvancementEnabled,
+      isManeuverModeEnabled: maneuverMode ?? this.isManeuverModeEnabled,
       collapsedFootNotes: collapsedFootNotes ?? this.collapsedFootNotes,
     );
   }
