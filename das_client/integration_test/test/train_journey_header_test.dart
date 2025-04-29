@@ -21,6 +21,20 @@ import '../mocks/brightness_mock.dart';
 import '../util/test_utils.dart';
 
 Future<void> main() async {
+  Future<void> findAndDismissBrightnessModalSheet(WidgetTester tester) async {
+    // find brightness modal sheet
+    final brightnessModalSheet = find.byType(SBBModalSheet);
+    expect(brightnessModalSheet, findsOneWidget);
+
+    //find close button
+    final closeButton = find.descendant(of: brightnessModalSheet, matching: find.byType(SBBIconButtonSmall));
+    expect(closeButton, findsOneWidget);
+
+    //tap close button
+    await tester.tap(closeButton);
+    await tester.pumpAndSettle();
+  }
+
   group('train journey header test', () {
     testWidgets('test always-on display is turned on when journey is loaded', (tester) async {
       await prepareAndStartApp(tester);
@@ -384,9 +398,16 @@ Future<void> main() async {
     // can be removed based on what option to change the brightness will be chosen
     testWidgets('double tap sets brightness to 0.1 if current is 1.0', (tester) async {
       await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T6');
 
       final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
+
+      // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
+      await findAndDismissBrightnessModalSheet(tester);
+
+      await loadTrainJourney(tester, trainNumber: 'T6');
+
+      // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
+      await findAndDismissBrightnessModalSheet(tester);
 
       final header = find.byType(Header);
       expect(header, findsOneWidget);
@@ -405,9 +426,16 @@ Future<void> main() async {
     // can be removed based on what option to change the brightness will be chosen
     testWidgets('long press dims brightness from 1.0 to 0.0', (tester) async {
       await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T6');
 
       final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
+
+      // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
+      await findAndDismissBrightnessModalSheet(tester);
+
+      await loadTrainJourney(tester, trainNumber: 'T6');
+
+      // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
+      await findAndDismissBrightnessModalSheet(tester);
 
       final timeContainer = find.byType(TimeContainer);
       expect(timeContainer, findsOneWidget);
@@ -421,9 +449,16 @@ Future<void> main() async {
     // can be removed based on what option to change the brightness will be chosen
     testWidgets('horizontal drag right increases brightness', (tester) async {
       await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T6');
 
       final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
+
+      // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
+      await findAndDismissBrightnessModalSheet(tester);
+
+      await loadTrainJourney(tester, trainNumber: 'T6');
+
+      // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
+      await findAndDismissBrightnessModalSheet(tester);
 
       final header = find.byType(Header);
       expect(header, findsOneWidget);

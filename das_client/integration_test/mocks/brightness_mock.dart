@@ -17,9 +17,12 @@ class MockBrightnessManager implements BrightnessManager {
 
   @override
   Future<bool> hasWriteSettingsPermission() async {
-    return true;
+    // always show the modal sheet
+    return false;
   }
 
   @override
-  Future<void> requestWriteSettings() async {}
+  Future<void> requestWriteSettings() async {
+    return;
+  }
 }

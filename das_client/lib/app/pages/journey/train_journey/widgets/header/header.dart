@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/brightness/brightness_manager.dart';
 import 'package:das_client/brightness/brightness_manager_impl.dart';
-import 'package:das_client/brightness/brightness_modal_sheet.dart';
+import 'package:das_client/brightness/permission_request_content.dart';
 import 'package:das_client/di.dart';
 import 'package:flutter/material.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/main_container.dart';

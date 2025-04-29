@@ -3,7 +3,7 @@ import 'package:das_client/app/extension/ru_extension.dart';
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/widgets/header.dart';
 import 'package:das_client/brightness/brightness_manager.dart';
-import 'package:das_client/brightness/brightness_modal_sheet.dart';
+import 'package:das_client/brightness/permission_request_content.dart';
 import 'package:das_client/di.dart';
 import 'package:das_client/model/ru.dart';
 import 'package:das_client/util/error_code.dart';
