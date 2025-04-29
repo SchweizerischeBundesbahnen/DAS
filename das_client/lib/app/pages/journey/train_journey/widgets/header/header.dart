@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/brightness/brightness_manager.dart';
-import 'package:das_client/brightness/brightness_manager_impl.dart';
 import 'package:das_client/brightness/permission_request_content.dart';
 import 'package:das_client/di.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,6 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/header/main_c
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/time_container.dart';
 import 'package:das_client/app/widgets/extended_header_container.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
-import 'package:screen_brightness/screen_brightness.dart';
 
 class Header extends StatefulWidget {
   const Header({
@@ -35,7 +33,7 @@ class _HeaderState extends State<Header> {
   }
 
   Future<void> _openBrightnessModalIfNeeded() async {
-    final brightnessManager = BrightnessManagerImpl(ScreenBrightness());
+    final brightnessManager = DI.get<BrightnessManager>();
     final hasPermission = await brightnessManager.hasWriteSettingsPermission();
 
     if (!hasPermission && mounted) {
