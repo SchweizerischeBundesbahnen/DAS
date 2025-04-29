@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:das_client/app/i18n/gen/app_localizations_de.dart';
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/flavor.dart';
@@ -32,12 +34,13 @@ void main() {
   detail_modal_sheet_test.main();
 }
 
-Future<void> prepareAndStartApp(WidgetTester tester, {bool initFlavor = true}) async {
+Future<void> prepareAndStartApp(WidgetTester tester, {VoidCallback? onBeforeRun}) async {
   // iOS workaround for enterText not working on some devices, if its the first element
   // (https://github.com/leancodepl/patrol/issues/1868#issuecomment-1814241939)
   tester.testTextInput.register();
 
-  if (initFlavor) await IntegrationTestDI.init(Flavor.dev);
+  await IntegrationTestDI.init(Flavor.dev);
+  onBeforeRun?.call();
   runDasApp();
   await tester.pumpAndSettle(const Duration(milliseconds: 500));
 }

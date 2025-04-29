@@ -3,7 +3,7 @@ import 'package:das_client/brightness/brightness_manager.dart';
 class MockBrightnessManager implements BrightnessManager {
   double currentBrightness = 1.0;
   final List<double> calledWith = [];
-  final bool writeSettingsPermission;
+  bool writeSettingsPermission;
 
   MockBrightnessManager({this.writeSettingsPermission = true});
 

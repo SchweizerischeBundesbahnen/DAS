@@ -16,12 +16,12 @@ import 'mocks/brightness_mock.dart';
 class IntegrationTestDI {
   const IntegrationTestDI._();
 
-  static Future<void> init(Flavor flavor, {bool simulateBrightnessPermission = true}) async {
+  static Future<void> init(Flavor flavor) async {
     Fimber.i('Initialize integration test dependency injection');
     await GetIt.I.reset();
 
     _registerScreenBrightness();
-    _registerBrightnessManager(simulateBrightnessPermission: simulateBrightnessPermission);
+    _registerBrightnessManager();
     GetIt.I.registerFlavor(flavor);
     GetIt.I.registerTokenSpecProvider();
     GetIt.I.registerOidcClient();
@@ -54,9 +54,9 @@ class IntegrationTestDI {
     GetIt.I.registerLazySingleton<ScreenBrightness>(() => ScreenBrightness());
   }
 
-  static void _registerBrightnessManager({required bool simulateBrightnessPermission}) {
+  static void _registerBrightnessManager() {
     GetIt.I.registerLazySingleton<BrightnessManager>(
-      () => MockBrightnessManager(writeSettingsPermission: simulateBrightnessPermission),
+      () => MockBrightnessManager(),
     );
   }
 }
