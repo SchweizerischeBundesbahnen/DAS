@@ -1,6 +1,6 @@
 import 'dart:async';
+import 'dart:ui';
 
-import 'package:das_client/app/pages/journey/train_journey/automatic_advancement_controller.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_tab.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:das_client/app/widgets/modal_sheet/das_modal_sheet.dart';
@@ -13,11 +13,11 @@ import 'package:das_client/model/journey/speeds.dart';
 import 'package:rxdart/rxdart.dart';
 
 class DetailModalSheetViewModel {
-  DetailModalSheetViewModel({required this.automaticAdvancementController}) {
+  DetailModalSheetViewModel({required this.onOpen}) {
     _init();
   }
 
-  final AutomaticAdvancementController automaticAdvancementController;
+  final VoidCallback onOpen;
   late DASModalSheetController controller;
 
   final _rxCommunicationNetworkType = BehaviorSubject<CommunicationNetworkType?>();
@@ -86,22 +86,13 @@ class DetailModalSheetViewModel {
   }
 
   void _initController() {
-    final isAutoCloseActive = _rxSettings.valueOrNull?.isAutoAdvancementEnabled ?? true;
-    print('hello $isAutoCloseActive');
     controller = DASModalSheetController(
-      isAutomaticCloseActive: isAutoCloseActive,
       onClose: () => _rxIsModalSheetOpen.add(false),
       onOpen: () {
         _rxIsModalSheetOpen.add(true);
-        if (isAutoCloseActive) {
-          automaticAdvancementController.scrollToCurrentPosition(resetAutomaticAdvancementTimer: true);
-        }
+        onOpen.call();
       },
     );
-
-    final subscription = automaticAdvancementController.isActiveStream
-        .listen((value) => controller.setAutomaticClose(isActivated: value));
-    _subscriptions.add(subscription);
   }
 
   void updateMetadata(Metadata metadata) => _rxMetadata.add(metadata);
