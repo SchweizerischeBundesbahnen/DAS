@@ -32,10 +32,12 @@ class AutomaticAdvancementController {
 
   void updateRenderedRows(List<DASTableRowBuilder> rows) => _renderedRows = rows;
 
-  void handleJourneyUpdate({BaseData? currentPosition, bool automaticAdvancementActive = false}) {
+  void handleJourneyUpdate({BaseData? currentPosition, BaseData? routeStart, bool isAdvancementEnabledByUser = false}) {
     _currentPosition = currentPosition;
-    _rxIsAutomaticAdvancementActive.add(automaticAdvancementActive);
-    if (!automaticAdvancementActive) {
+    final isAdvancingActive = isAdvancementEnabledByUser && (currentPosition != routeStart);
+
+    _rxIsAutomaticAdvancementActive.add(isAdvancingActive);
+    if (!isAdvancingActive) {
       return;
     }
 

@@ -58,7 +58,7 @@ void main() {
         controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(journeyRows);
-    testee.handleJourneyUpdate(currentPosition: currentPosition, automaticAdvancementActive: true);
+    testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: true);
 
     verify(scrollControllerMock.animateTo(CellRowBuilder.rowHeight * 2,
             duration: anyNamed('duration'), curve: anyNamed('curve')))
@@ -88,7 +88,7 @@ void main() {
         controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(journeyRows);
-    testee.handleJourneyUpdate(currentPosition: currentPosition, automaticAdvancementActive: false);
+    testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: false);
 
     verifyNever(scrollControllerMock.animateTo(any, duration: anyNamed('duration'), curve: anyNamed('curve')));
   });
@@ -116,12 +116,43 @@ void main() {
         controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(journeyRows);
-    testee.handleJourneyUpdate(currentPosition: currentPosition, automaticAdvancementActive: true);
-    testee.handleJourneyUpdate(currentPosition: currentPosition, automaticAdvancementActive: true);
+    testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: true);
+    testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: true);
 
     verify(scrollControllerMock.animateTo(CellRowBuilder.rowHeight * 2,
             duration: anyNamed('duration'), curve: anyNamed('curve')))
         .called(1);
+  });
+
+  test('test does not scroll and is not active if currentPosition is same as routeStart', () {
+    final List<BaseData> journeyData = [
+      Signal(order: 0, kilometre: []),
+      Signal(order: 100, kilometre: []),
+      Signal(order: 200, kilometre: []),
+      Signal(order: 300, kilometre: []),
+      Signal(order: 400, kilometre: []),
+    ];
+    final journeyRows = journeyData
+        .map((data) => SignalRow(metadata: Metadata(), data: data as Signal, key: mockGlobalKeyOffset(Offset(0, 0))))
+        .toList();
+    final currentPosition = journeyData[0];
+
+    final scrollControllerMock = MockScrollController();
+    final scrollPositionMock = MockScrollPosition();
+    when(scrollControllerMock.positions).thenReturn([scrollPositionMock]);
+    when(scrollControllerMock.position).thenReturn(scrollPositionMock);
+    when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
+
+    final testee = AutomaticAdvancementController(
+        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
+
+    testee.updateRenderedRows(journeyRows);
+    testee.handleJourneyUpdate(
+        currentPosition: currentPosition, routeStart: journeyData[0], isAdvancementEnabledByUser: true);
+
+    expect(testee.isActive, false);
+    verifyNever(scrollControllerMock.animateTo(CellRowBuilder.rowHeight * 2,
+        duration: anyNamed('duration'), curve: anyNamed('curve')));
   });
 
   test('test does nothing if not attached to a scrollview', () {
@@ -145,7 +176,7 @@ void main() {
         controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(journeyRows);
-    testee.handleJourneyUpdate(currentPosition: currentPosition, automaticAdvancementActive: true);
+    testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: true);
 
     verifyNever(scrollControllerMock.animateTo(any, duration: anyNamed('duration'), curve: anyNamed('curve')));
   });
@@ -174,7 +205,7 @@ void main() {
         controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(rows);
-    testee.handleJourneyUpdate(currentPosition: targetSignalData, automaticAdvancementActive: true);
+    testee.handleJourneyUpdate(currentPosition: targetSignalData, isAdvancementEnabledByUser: true);
 
     verify(scrollControllerMock.animateTo(
       CellRowBuilder.rowHeight * 3 + ServicePointRow.rowHeight,
@@ -207,7 +238,7 @@ void main() {
         controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(journeyRows);
-    testee.handleJourneyUpdate(currentPosition: currentPosition, automaticAdvancementActive: true);
+    testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: true);
     testee.resetScrollTimer();
 
     await Future.delayed(const Duration(seconds: 11));
@@ -241,7 +272,7 @@ void main() {
         controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(journeyRows);
-    testee.handleJourneyUpdate(currentPosition: currentPosition, automaticAdvancementActive: true);
+    testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: true);
 
     verify(scrollControllerMock.animateTo(CellRowBuilder.rowHeight * 2,
             duration: anyNamed('duration'), curve: anyNamed('curve')))
@@ -249,7 +280,7 @@ void main() {
 
     testee.resetScrollTimer();
 
-    testee.handleJourneyUpdate(currentPosition: currentPosition, automaticAdvancementActive: false);
+    testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: false);
 
     await Future.delayed(const Duration(seconds: 11));
 
