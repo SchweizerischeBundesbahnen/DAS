@@ -19,15 +19,15 @@ class TrainJourneySettings {
   TrainJourneySettings copyWith({
     BreakSeries? selectedBreakSeries,
     List<int>? expandedGroups,
-    bool? automaticAdvancementActive,
-    bool? maneuverMode,
+    bool? isAutoAdvancementEnabled,
+    bool? isManeuverModeEnabled,
     List<String>? collapsedFootNotes,
   }) {
     return TrainJourneySettings(
       selectedBreakSeries: selectedBreakSeries ?? this.selectedBreakSeries,
       expandedGroups: expandedGroups ?? this.expandedGroups,
-      isAutoAdvancementEnabled: automaticAdvancementActive ?? this.isAutoAdvancementEnabled,
-      isManeuverModeEnabled: maneuverMode ?? this.isManeuverModeEnabled,
+      isAutoAdvancementEnabled: isAutoAdvancementEnabled ?? this.isAutoAdvancementEnabled,
+      isManeuverModeEnabled: isManeuverModeEnabled ?? this.isManeuverModeEnabled,
       collapsedFootNotes: collapsedFootNotes ?? this.collapsedFootNotes,
     );
   }
