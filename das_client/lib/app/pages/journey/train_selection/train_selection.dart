@@ -2,12 +2,15 @@ import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/extension/ru_extension.dart';
 import 'package:das_client/app/i18n/i18n.dart';
 import 'package:das_client/app/widgets/header.dart';
+import 'package:das_client/brightness/brightness_manager_impl.dart';
+import 'package:das_client/brightness/brightness_modal_sheet.dart';
 import 'package:das_client/model/ru.dart';
 import 'package:das_client/util/error_code.dart';
 import 'package:das_client/util/format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:screen_brightness/screen_brightness.dart';
 
 class TrainSelection extends StatefulWidget {
   const TrainSelection({super.key});
@@ -25,6 +28,9 @@ class _TrainSelectionState extends State<TrainSelection> {
     super.initState();
     _trainNumberController = TextEditingController();
     _dateController = TextEditingController();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _openBrightnessModalIfNeeded();
+    });
   }
 
   @override
@@ -96,6 +102,19 @@ class _TrainSelectionState extends State<TrainSelection> {
         keyboardType: TextInputType.text,
       ),
     );
+  }
+
+  Future<void> _openBrightnessModalIfNeeded() async {
+    final brightnessManager = BrightnessManagerImpl(ScreenBrightness());
+    final hasPermission = await brightnessManager.hasWriteSettingsPermission();
+
+    if (!hasPermission && mounted) {
+      await showSBBModalSheet(
+        context: context,
+        title: context.l10n.w_modal_sheet_permissions_title,
+        child: const PermissionRequestContent(),
+      );
+    }
   }
 
   Widget _dateInput(SelectingTrainJourneyState state) {

@@ -7,11 +7,12 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_contact.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/time_container.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
-import 'package:das_client/brightness/brightness_util_factory.dart';
+import 'package:das_client/brightness/brightness_manager.dart';
 import 'package:das_client/di.dart';
 import 'package:das_client/util/format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
@@ -383,11 +384,11 @@ void main() {
 
     // can be removed based on what option to change the brightness will be chosen
     testWidgets('double tap sets brightness to 0.1 if current is 1.0', (tester) async {
-      final mockBrightness = MockBrightnessUtil();
-      mockBrightness.currentBrightness = 1.0;
+      final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 
-      //Adjust BrightnessUtil to use the mock version
-      BrightnessUtilFactory.instance = mockBrightness;
+      addTearDown(() async {
+        await GetIt.I.reset();
+      });
 
       // load journey with the track T6
       await prepareAndStartApp(tester);
@@ -407,15 +408,16 @@ void main() {
       await tester.tap(timeContainer);
       await tester.pumpAndSettle();
 
-      expect(mockBrightness.calledWith.contains(0.1), true);
+      expect(mockBrightnessManager.calledWith.contains(0.1), true);
     });
 
     // can be removed based on what option to change the brightness will be chosen
     testWidgets('long press dims brightness from 1.0 to 0.0', (tester) async {
-      final mockBrightness = MockBrightnessUtil();
-      mockBrightness.currentBrightness = 1.0;
+      final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 
-      BrightnessUtilFactory.instance = mockBrightness;
+      addTearDown(() async {
+        await GetIt.I.reset();
+      });
 
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: 'T6');
@@ -427,15 +429,16 @@ void main() {
 
       await tester.pump(const Duration(seconds: 2));
 
-      expect(mockBrightness.calledWith.any((val) => val < 1.0), true);
+      expect(mockBrightnessManager.calledWith.any((val) => val < 1.0), true);
     });
 
     // can be removed based on what option to change the brightness will be chosen
     testWidgets('horizontal drag right increases brightness', (tester) async {
-      final mockBrightness = MockBrightnessUtil();
-      mockBrightness.currentBrightness = 0.5;
+      final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 
-      BrightnessUtilFactory.instance = mockBrightness;
+      addTearDown(() async {
+        await GetIt.I.reset();
+      });
 
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: 'T6');
@@ -446,7 +449,10 @@ void main() {
       await tester.drag(header, const Offset(100, 0));
       await tester.pumpAndSettle();
 
-      expect(mockBrightness.calledWith.any((val) => val > 0.5), true);
+      expect(
+        mockBrightnessManager.calledWith.any((val) => val > 0.5),
+        true,
+      );
     });
   });
 }

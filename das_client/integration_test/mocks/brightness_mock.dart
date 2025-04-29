@@ -1,6 +1,6 @@
-import 'package:das_client/brightness/brightness_util.dart';
+import 'package:das_client/brightness/brightness_manager.dart';
 
-class MockBrightnessUtil implements BrightnessUtil {
+class MockBrightnessManager implements BrightnessManager {
   double currentBrightness = 1.0;
   final List<double> calledWith = [];
 

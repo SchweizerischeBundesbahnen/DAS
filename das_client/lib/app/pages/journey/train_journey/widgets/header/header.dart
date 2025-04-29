@@ -1,16 +1,18 @@
 import 'dart:async';
-import 'package:das_client/brightness/brightness_util.dart';
+import 'package:das_client/app/i18n/i18n.dart';
+import 'package:das_client/brightness/brightness_manager.dart';
+import 'package:das_client/brightness/brightness_manager_impl.dart';
+import 'package:das_client/brightness/brightness_modal_sheet.dart';
+import 'package:das_client/di.dart';
 import 'package:flutter/material.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/main_container.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/time_container.dart';
 import 'package:das_client/app/widgets/extended_header_container.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:screen_brightness/screen_brightness.dart';
 
 class Header extends StatefulWidget {
-  final BrightnessUtil brightnessUtil;
-
   const Header({
-    required this.brightnessUtil,
     super.key,
   });
 
@@ -20,24 +22,40 @@ class Header extends StatefulWidget {
 
 class _HeaderState extends State<Header> {
   Timer? _dimmingTimer;
-  late final BrightnessUtil _brightnessUtil;
+  final BrightnessManager _brightnessManager = DI.get<BrightnessManager>();
 
   @override
   void initState() {
-    _brightnessUtil = widget.brightnessUtil;
-    _brightnessUtil.setBrightness(1);
     super.initState();
+    _brightnessManager.setBrightness(1);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _openBrightnessModalIfNeeded();
+    });
+  }
+
+  Future<void> _openBrightnessModalIfNeeded() async {
+    final brightnessManager = BrightnessManagerImpl(ScreenBrightness());
+    final hasPermission = await brightnessManager.hasWriteSettingsPermission();
+
+    if (!hasPermission && mounted) {
+      await showSBBModalSheet(
+        context: context,
+        title: context.l10n.w_modal_sheet_permissions_title,
+        child: const PermissionRequestContent(),
+      );
+    }
   }
 
   void _startDimming() async {
     _dimmingTimer?.cancel();
-    final value = await _brightnessUtil.getCurrentBrightness();
+    final value = await _brightnessManager.getCurrentBrightness();
     final shouldDim = value >= 0.5;
 
     _dimmingTimer = Timer.periodic(const Duration(milliseconds: 50), (timer) async {
-      final current = await _brightnessUtil.getCurrentBrightness();
+      final current = await _brightnessManager.getCurrentBrightness();
       final newValue = shouldDim ? (current - 0.05).clamp(0.0, 1.0) : (current + 0.05).clamp(0.0, 1.0);
-      await _brightnessUtil.setBrightness(newValue);
+      await _brightnessManager.setBrightness(newValue);
       if (newValue == 0.0 || newValue == 1.0) timer.cancel();
     });
   }
@@ -47,15 +65,15 @@ class _HeaderState extends State<Header> {
   }
 
   void _doubleTap() async {
-    final current = await _brightnessUtil.getCurrentBrightness();
+    final current = await _brightnessManager.getCurrentBrightness();
     final newBrightness = current < 0.5 ? 1.0 : 0.1;
-    await _brightnessUtil.setBrightness(newBrightness);
+    await _brightnessManager.setBrightness(newBrightness);
   }
 
   void _onHorizontalDragUpdate(DragUpdateDetails details) async {
-    double value = await _brightnessUtil.getCurrentBrightness();
+    double value = await _brightnessManager.getCurrentBrightness();
     value += details.delta.dx > 0 ? 0.01 : -0.01;
-    await _brightnessUtil.setBrightness(value.clamp(0.0, 1.0));
+    await _brightnessManager.setBrightness(value.clamp(0.0, 1.0));
   }
 
   @override
