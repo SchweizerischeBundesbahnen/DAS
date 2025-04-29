@@ -10,6 +10,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/notification/
 import 'package:das_client/brightness/brightness_manager.dart';
 import 'package:das_client/app/widgets/indicator_wrapper.dart';
 import 'package:das_client/di.dart';
+import 'package:das_client/flavor.dart';
 import 'package:das_client/util/format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -17,6 +18,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../app_test.dart';
+import '../di.dart';
 import '../mocks/battery_mock.dart';
 import '../mocks/brightness_mock.dart';
 import '../util/test_utils.dart';
@@ -406,7 +408,8 @@ Future<void> main() async {
 
     // can be removed based on what option to change the brightness will be chosen
     testWidgets('double tap sets brightness to 0.1 if current is 1.0', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestDI.init(Flavor.dev, simulateBrightnessPermission: false);
+      await prepareAndStartApp(tester, initFlavor: false);
 
       final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 
@@ -434,7 +437,8 @@ Future<void> main() async {
 
     // can be removed based on what option to change the brightness will be chosen
     testWidgets('long press dims brightness from 1.0 to 0.0', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestDI.init(Flavor.dev, simulateBrightnessPermission: false);
+      await prepareAndStartApp(tester, initFlavor: false);
 
       final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 
@@ -457,7 +461,8 @@ Future<void> main() async {
 
     // can be removed based on what option to change the brightness will be chosen
     testWidgets('horizontal drag right increases brightness', (tester) async {
-      await prepareAndStartApp(tester);
+      await IntegrationTestDI.init(Flavor.dev, simulateBrightnessPermission: false);
+      await prepareAndStartApp(tester, initFlavor: false);
 
       final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 

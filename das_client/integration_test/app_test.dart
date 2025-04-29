@@ -32,12 +32,12 @@ void main() {
   detail_modal_sheet_test.main();
 }
 
-Future<void> prepareAndStartApp(WidgetTester tester) async {
+Future<void> prepareAndStartApp(WidgetTester tester, {bool initFlavor = true}) async {
   // iOS workaround for enterText not working on some devices, if its the first element
   // (https://github.com/leancodepl/patrol/issues/1868#issuecomment-1814241939)
   tester.testTextInput.register();
 
-  await IntegrationTestDI.init(Flavor.dev);
+  if (initFlavor) await IntegrationTestDI.init(Flavor.dev);
   runDasApp();
   await tester.pumpAndSettle(const Duration(milliseconds: 500));
 }

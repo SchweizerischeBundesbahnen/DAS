@@ -10,10 +10,16 @@ class BrightnessManagerImpl implements BrightnessManager {
 
   BrightnessManagerImpl(this._screenBrightness);
 
+  final double minBrightness = 0.0;
+  final double maxBrightness = 1.0;
+  final double fallbackBrightness = 0.1;
+  final String brightnessManagerChannel = 'brightness_manager';
+  final String manageWriteSettingsAction = 'android.settings.action.MANAGE_WRITE_SETTINGS';
+
   @override
   Future<bool> hasWriteSettingsPermission() async {
     if (Platform.isIOS) return true;
-    const platform = MethodChannel('brightness_manager');
+    final platform = MethodChannel(brightnessManagerChannel);
     try {
       return await platform.invokeMethod('canWriteSettings') as bool;
     } catch (e) {
@@ -25,30 +31,33 @@ class BrightnessManagerImpl implements BrightnessManager {
   @override
   Future<void> requestWriteSettings() async {
     if (Platform.isAndroid) {
-      final intent = const AndroidIntent(
-        action: 'android.settings.action.MANAGE_WRITE_SETTINGS',
+      final intent = AndroidIntent(
+        action: manageWriteSettingsAction,
       );
       await intent.launch();
     }
   }
 
-  Future<void> _ensureWriteSettingsOrTrap() async {
-    if (Platform.isIOS) return;
-    var permissionGranted = await hasWriteSettingsPermission();
+  Future<bool> _ensureWriteSettingsOrTrap() async {
+    if (Platform.isIOS) return true;
+
+    bool permissionGranted = await hasWriteSettingsPermission();
     if (!permissionGranted) {
       await requestWriteSettings();
-
-      while (!permissionGranted) {
-        permissionGranted = await hasWriteSettingsPermission();
-      }
+      permissionGranted = await hasWriteSettingsPermission();
     }
+    return permissionGranted;
   }
 
   @override
   Future<void> setBrightness(double value) async {
     try {
-      await _ensureWriteSettingsOrTrap();
-      await _screenBrightness.setSystemScreenBrightness(value.clamp(0.0, 1.0));
+      final permissionGranted = await _ensureWriteSettingsOrTrap();
+      if (!permissionGranted) {
+        Fimber.e('Cannot set brightness: write settings permission denied');
+        return;
+      }
+      await _screenBrightness.setSystemScreenBrightness(value.clamp(minBrightness, maxBrightness));
     } catch (e) {
       Fimber.e('Failed to set brightness: $e');
     }
@@ -60,7 +69,7 @@ class BrightnessManagerImpl implements BrightnessManager {
       return await _screenBrightness.system;
     } catch (e) {
       Fimber.e('Failed to get brightness: $e');
-      return 0.1;
+      return fallbackBrightness;
     }
   }
 }
