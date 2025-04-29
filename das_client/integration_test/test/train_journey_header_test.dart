@@ -6,6 +6,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/header/header
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_channel.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_contact.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
+import 'package:das_client/app/widgets/indicator_wrapper.dart';
 import 'package:das_client/di.dart';
 import 'package:das_client/util/format.dart';
 import 'package:flutter/material.dart';
@@ -359,21 +360,29 @@ void main() {
       final mainContactsWankdorf =
           find.descendant(of: radioChannel, matching: find.byKey(RadioContactChannels.radioContactChannelsKey));
       expect(mainContactsWankdorf, findsNothing);
+      final wankdorfIndicator = find.descendant(of: radioChannel, matching: find.byKey(IndicatorWrapper.indicatorKey));
+      expect(wankdorfIndicator, findsNothing);
 
       // check mainContacts for Burgdorf
       await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Burgdorf')));
       final mainContactsBurgdorf = find.descendant(of: radioChannel, matching: find.text('1407'));
       expect(mainContactsBurgdorf, findsOneWidget);
+      final burgdorfIndicator = find.descendant(of: radioChannel, matching: find.byKey(IndicatorWrapper.indicatorKey));
+      expect(burgdorfIndicator, findsNothing);
 
       // check mainContacts for Olten
       await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Olten')));
       final mainContactsOlten = find.descendant(of: radioChannel, matching: find.text('1608 (1609)'));
       expect(mainContactsOlten, findsOneWidget);
+      final oltenIndicator = find.descendant(of: radioChannel, matching: find.byKey(IndicatorWrapper.indicatorKey));
+      expect(oltenIndicator, findsOneWidget);
 
       // check mainContacts for Zürich
       await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Zürich')));
       final mainContactsZurich = find.descendant(of: radioChannel, matching: find.text('1102'));
       expect(mainContactsZurich, findsOneWidget);
+      final zuerichIndicator = find.descendant(of: radioChannel, matching: find.byKey(IndicatorWrapper.indicatorKey));
+      expect(zuerichIndicator, findsOneWidget);
 
       await disconnect(tester);
     });

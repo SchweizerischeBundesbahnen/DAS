@@ -2,6 +2,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/communication
 import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_tab.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_view_model.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_contact.dart';
+import 'package:das_client/app/widgets/indicator_wrapper.dart';
 import 'package:das_client/model/journey/communication_network_change.dart';
 import 'package:das_client/model/journey/contact_list.dart';
 import 'package:das_client/model/journey/metadata.dart';
@@ -23,6 +24,9 @@ class RadioChannel extends StatelessWidget {
         ? metadata.radioContactLists.lastLowerThan(metadata.currentPosition!.order)
         : null;
 
+    final showIndicator = radioContactList != null &&
+        (radioContactList.mainContacts.length > 1 || radioContactList.selectiveContacts.isNotEmpty);
+
     return GestureDetector(
       onTap: () {
         final viewModel = context.read<DetailModalSheetViewModel>();
@@ -36,7 +40,10 @@ class RadioChannel extends StatelessWidget {
             const Icon(SBBIcons.telephone_gsm_small),
             RadioContactChannels(contacts: radioContactList),
             if (communicationNetworkType != null && communicationNetworkType != CommunicationNetworkType.sim)
-              CommunicationNetworkIcon(networkType: communicationNetworkType),
+              IndicatorWrapper(
+                  show: showIndicator,
+                  offset: Offset(-6.0, -8.0),
+                  child: CommunicationNetworkIcon(networkType: communicationNetworkType)),
           ],
         ),
       ),
