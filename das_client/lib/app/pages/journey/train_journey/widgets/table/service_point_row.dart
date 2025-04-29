@@ -136,29 +136,22 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   @override
   DASTableCell gradientDownhillCell(BuildContext context) {
-    final downhill = data.decisiveGradient?.downhill;
-    if (downhill == null) {
-      return DASTableCell.empty();
-    }
-
-    return DASTableCell(
-        child: Text(
-          downhill.round().toString(),
-          style: DASTextStyles.largeRoman,
-        ),
-        alignment: defaultAlignment);
+    return gradientCell(data.decisiveGradient?.downhill);
   }
 
   @override
   DASTableCell gradientUphillCell(BuildContext context) {
-    final uphill = data.decisiveGradient?.uphill;
-    if (uphill == null) {
+    return gradientCell(data.decisiveGradient?.uphill);
+  }
+
+  DASTableCell gradientCell(double? value) {
+    if (value == null) {
       return DASTableCell.empty();
     }
 
     return DASTableCell(
         child: Text(
-          uphill.round().toString(),
+          value.round().toString(),
           style: DASTextStyles.largeRoman,
         ),
         alignment: defaultAlignment);
