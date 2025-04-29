@@ -133,4 +133,34 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       ),
     );
   }
+
+  @override
+  DASTableCell gradientDownhillCell(BuildContext context) {
+    final downhill = data.decisiveGradient?.downhill;
+    if (downhill == null) {
+      return DASTableCell.empty();
+    }
+
+    return DASTableCell(
+        child: Text(
+          downhill.round().toString(),
+          style: DASTextStyles.largeRoman,
+        ),
+        alignment: defaultAlignment);
+  }
+
+  @override
+  DASTableCell gradientUphillCell(BuildContext context) {
+    final uphill = data.decisiveGradient?.uphill;
+    if (uphill == null) {
+      return DASTableCell.empty();
+    }
+
+    return DASTableCell(
+        child: Text(
+          uphill.round().toString(),
+          style: DASTextStyles.largeRoman,
+        ),
+        alignment: defaultAlignment);
+  }
 }

@@ -66,6 +66,8 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
         ColumnDefinition.advisedSpeed.index: advisedSpeedCell(context),
         ColumnDefinition.actionsCell.index: actionsCell(context),
         ColumnDefinition.communicationNetwork.index: communicationNetworkCell(context),
+        ColumnDefinition.gradientUphill.index: gradientUphillCell(context),
+        ColumnDefinition.gradientDownhill.index: gradientDownhillCell(context),
       },
     );
   }
@@ -194,6 +196,10 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
   DASTableCell iconsCell3(BuildContext context) => DASTableCell.empty();
 
   DASTableCell actionsCell(BuildContext context) => DASTableCell.empty();
+
+  DASTableCell gradientUphillCell(BuildContext context) => DASTableCell.empty();
+
+  DASTableCell gradientDownhillCell(BuildContext context) => DASTableCell.empty();
 
   Color? get specialCellColor =>
       getAdditionalSpeedRestriction() != null ? AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor : null;

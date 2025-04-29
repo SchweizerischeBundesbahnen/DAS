@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="1513_6_Aarau"
-                SP_VersionMajor="3" SP_VersionMinor="2" SP_Length="5500" SP_Status="Valid">
+                SP_VersionMajor="3" SP_VersionMinor="3" SP_Length="5500" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -132,7 +132,7 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>2136</teltsi_LocationPrimaryCode>
-                <teltsi_PrimaryLocationName>"Aarau GB</teltsi_PrimaryLocationName>
+                <teltsi_PrimaryLocationName>Aarau GB</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
             <!-- todo: remove -->
             <TAF_TAP_LocationName language="de" text="Aarau GB"/>

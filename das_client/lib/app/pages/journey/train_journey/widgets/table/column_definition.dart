@@ -13,4 +13,6 @@ enum ColumnDefinition {
   advisedSpeed,
   actionsCell,
   communicationNetwork,
+  gradientUphill,
+  gradientDownhill,
 }
