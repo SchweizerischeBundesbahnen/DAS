@@ -14,4 +14,12 @@ class MockBrightnessManager implements BrightnessManager {
   Future<double> getCurrentBrightness() async {
     return currentBrightness;
   }
+
+  @override
+  Future<bool> hasWriteSettingsPermission() async {
+    return true;
+  }
+
+  @override
+  Future<void> requestWriteSettings() async {}
 }

@@ -10,6 +10,7 @@ class BrightnessManagerImpl implements BrightnessManager {
 
   BrightnessManagerImpl(this._screenBrightness);
 
+  @override
   Future<bool> hasWriteSettingsPermission() async {
     if (Platform.isIOS) return true;
     const platform = MethodChannel('brightness_manager');
@@ -21,6 +22,7 @@ class BrightnessManagerImpl implements BrightnessManager {
     }
   }
 
+  @override
   Future<void> requestWriteSettings() async {
     if (Platform.isAndroid) {
       final intent = const AndroidIntent(

@@ -12,7 +12,6 @@ import 'package:das_client/di.dart';
 import 'package:das_client/util/format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
@@ -386,10 +385,6 @@ void main() {
     testWidgets('double tap sets brightness to 0.1 if current is 1.0', (tester) async {
       final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 
-      addTearDown(() async {
-        await GetIt.I.reset();
-      });
-
       // load journey with the track T6
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: 'T6');
@@ -415,10 +410,6 @@ void main() {
     testWidgets('long press dims brightness from 1.0 to 0.0', (tester) async {
       final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 
-      addTearDown(() async {
-        await GetIt.I.reset();
-      });
-
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: 'T6');
 
@@ -435,10 +426,6 @@ void main() {
     // can be removed based on what option to change the brightness will be chosen
     testWidgets('horizontal drag right increases brightness', (tester) async {
       final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
-
-      addTearDown(() async {
-        await GetIt.I.reset();
-      });
 
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: 'T6');

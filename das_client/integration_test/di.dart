@@ -25,17 +25,16 @@ class IntegrationTestDI {
     _registerIntegrationTestAuthenticator();
     GetIt.I.registerSferaComponents();
     GetIt.I.registerMqttComponent();
+    _registerBattery();
+    _registerBrightnessManager();
+
     GetIt.I.registerBlocs();
     GetIt.I.registerAudioPlayer();
-    _registerBattery();
-
-    GetIt.I.registerBrightnessManager();
-    _registerBrightnessManager();
 
     GetIt.I.unregister<MqttClientConnector>();
     _registerMqttClientConnector();
 
-    return GetIt.I.allReady();
+    await GetIt.I.allReady();
   }
 
   static void _registerIntegrationTestAuthenticator() {
