@@ -18,20 +18,21 @@ class IndicatorWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (!show) return child;
+
     return Stack(
       clipBehavior: Clip.none,
       children: [
         child,
-        if (show)
-          Positioned(
-            top: offset.dx,
-            right: offset.dy,
-            child: CustomPaint(
-              key: indicatorKey,
-              painter: _IndicatorPainter(color: Theme.of(context).colorScheme.primary),
-              size: Size(size, size),
-            ),
-          )
+        Positioned(
+          top: offset.dx,
+          right: offset.dy,
+          child: CustomPaint(
+            key: indicatorKey,
+            painter: _IndicatorPainter(color: Theme.of(context).colorScheme.primary),
+            size: Size(size, size),
+          ),
+        )
       ],
     );
   }
