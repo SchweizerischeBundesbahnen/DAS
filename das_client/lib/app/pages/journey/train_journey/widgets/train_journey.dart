@@ -85,7 +85,7 @@ class TrainJourney extends StatelessWidget {
           bloc.automaticAdvancementController.handleJourneyUpdate(
             currentPosition: journey.metadata.currentPosition,
             routeStart: journey.metadata.routeStart,
-            isAdvancementEnabledByUser: settings.automaticAdvancementActive,
+            isAdvancementEnabledByUser: settings.isAutoAdvancementEnabledByUser,
           );
         });
 

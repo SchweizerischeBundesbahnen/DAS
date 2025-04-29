@@ -142,7 +142,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
   void updateBreakSeries(BreakSeries selectedBreakSeries) {
     _settingsSubject.add(_settingsSubject.value.copyWith(selectedBreakSeries: selectedBreakSeries));
 
-    if (_settingsSubject.value.automaticAdvancementActive) {
+    if (_settingsSubject.value.isAutoAdvancementEnabledByUser) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         automaticAdvancementController.scrollToCurrentPosition(resetAutomaticAdvancementTimer: true);
       });

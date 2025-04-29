@@ -225,7 +225,7 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
       title: context.l10n.w_extended_menu_maneuver_mode,
       onPressed: () async {
         await _removeOverlay();
-        trainJourneyCubit.setManeuverMode(!trainJourneyCubit.settings.maneuverMode);
+        trainJourneyCubit.setManeuverMode(!trainJourneyCubit.settings.isManeuverModeEnabledByUser);
       },
       trailingWidget: Padding(
         padding: const EdgeInsets.fromLTRB(0, 0, sbbDefaultSpacing * 0.5, 0),
@@ -236,7 +236,7 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
 
             return SBBSwitch(
               key: ExtendedMenu.maneuverSwitchKey,
-              value: snapshot.data?.maneuverMode ?? false,
+              value: snapshot.data?.isManeuverModeEnabledByUser ?? false,
               onChanged: (value) async {
                 await _removeOverlay();
                 trainJourneyCubit.setManeuverMode(value);

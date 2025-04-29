@@ -20,7 +20,7 @@ class ManeuverNotification extends StatelessWidget {
     return StreamBuilder<TrainJourneySettings>(
       stream: trainJourneyCubit.settingsStream,
       builder: (context, snapshot) {
-        final showNotification = snapshot.data?.maneuverMode ?? false;
+        final showNotification = snapshot.data?.isManeuverModeEnabledByUser ?? false;
 
         return showNotification
             ? Container(
@@ -43,7 +43,7 @@ class ManeuverNotification extends StatelessWidget {
                       const SizedBox(width: sbbDefaultSpacing * 0.5),
                       SBBSwitch(
                           key: maneuverNotificationSwitchKey,
-                          value: snapshot.data?.maneuverMode ?? false,
+                          value: snapshot.data?.isManeuverModeEnabledByUser ?? false,
                           onChanged: (value) => trainJourneyCubit.setManeuverMode(value)),
                     ],
                   ),

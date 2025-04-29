@@ -78,7 +78,7 @@ class _JourneyPageContentState extends State<JourneyPageContent> with SingleTick
   }
 
   PreferredSizeWidget? _appBar(BuildContext context, TrainJourneyState state, TrainJourneySettings? settings) {
-    final appBarHidden = state is TrainJourneyLoadedState && settings?.automaticAdvancementActive == true;
+    final appBarHidden = state is TrainJourneyLoadedState && settings?.isAutoAdvancementEnabledByUser == true;
     appBarHidden ? _controller.forward() : _controller.reverse();
 
     return PreferredSize(
