@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
-                SP_ID="15154_19_Thoerishaus_Dorf" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="2900" SP_Status="Valid">
+                SP_ID="15154_19_Thoerishaus_Dorf" SP_VersionMajor="1" SP_VersionMinor="2" SP_Length="2900" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -64,7 +64,7 @@
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>4115</teltsi_LocationPrimaryCode>
-                <teltsi_PrimaryLocationName>Thörishaus_Dorf</teltsi_PrimaryLocationName>
+                <teltsi_PrimaryLocationName>Thörishaus Dorf</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
 
 			<TAF_TAP_Location_NSP>

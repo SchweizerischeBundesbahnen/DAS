@@ -281,6 +281,16 @@ class TrainJourney extends StatelessWidget {
           width: 64.0,
         ),
       DASTableColumn(
+        id: ColumnDefinition.gradientDownhill.index,
+        child: Text('-'),
+        width: 40.0,
+      ),
+      DASTableColumn(
+        id: ColumnDefinition.gradientUphill.index,
+        child: Text('+'),
+        width: 40.0,
+      ),
+      DASTableColumn(
         id: ColumnDefinition.time.index,
         child: Text(context.l10n.p_train_journey_table_time_label),
         width: 100.0,

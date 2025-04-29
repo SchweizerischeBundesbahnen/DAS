@@ -4,6 +4,7 @@ import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/bracket_station.dart';
 import 'package:das_client/model/journey/connection_track.dart';
 import 'package:das_client/model/journey/curve_point.dart';
+import 'package:das_client/model/journey/decisive_gradient.dart';
 import 'package:das_client/model/journey/foot_note.dart';
 import 'package:das_client/model/journey/level_crossing.dart';
 import 'package:das_client/model/journey/line_foot_note.dart';
@@ -17,6 +18,7 @@ import 'package:das_client/model/journey/train_series.dart';
 import 'package:das_client/model/journey/whistles.dart';
 import 'package:das_client/sfera/src/mapper/graduated_speed_data_mapper.dart';
 import 'package:das_client/sfera/src/mapper/mapper_utils.dart';
+import 'package:das_client/sfera/src/model/enums/gradient_direction_type.dart';
 import 'package:das_client/sfera/src/model/enums/length_type.dart';
 import 'package:das_client/sfera/src/model/enums/stop_skip_pass.dart';
 import 'package:das_client/sfera/src/model/enums/taf_tap_location_type.dart';
@@ -112,6 +114,7 @@ class SegmentProfileMapper {
               GraduatedSpeedDataMapper.fromVelocities(tafTapLocation.stationSpeed?.xmlStationSpeed.element.velocities),
           graduatedSpeedInfo: GraduatedSpeedDataMapper.fromGraduatedSpeedInfo(
               tafTapLocation.stationSpeed?.xmlGraduatedSpeedInfo?.element),
+          decisiveGradient: _parseDecisiveGradientAtLocation(mapperData.segmentProfile, timingPoint.location),
         ),
       );
     }
@@ -339,5 +342,24 @@ class SegmentProfileMapper {
 
   static List<TrainSeries> _parseTrainSeries(String? trainSeries) {
     return trainSeries?.split(',').map((it) => TrainSeries.fromOptional(it)).nonNulls.toList() ?? [];
+  }
+
+  static DecisiveGradient? _parseDecisiveGradientAtLocation(SegmentProfile segmentProfile, double location) {
+    final decisiveGradientAreas =
+        segmentProfile.contextInformation?.decisiveGradientAreas.where((it) => it.startLocation == location);
+    if (decisiveGradientAreas == null || decisiveGradientAreas.isEmpty) {
+      return null;
+    }
+
+    double? uphill, downhill;
+    for (final gradientArea in decisiveGradientAreas) {
+      if (gradientArea.gradientDirectionType == GradientDirectionType.uphill) {
+        uphill = gradientArea.gradientValue;
+      } else {
+        downhill = gradientArea.gradientValue;
+      }
+    }
+
+    return DecisiveGradient(uphill: uphill, downhill: downhill);
   }
 }

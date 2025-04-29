@@ -80,8 +80,8 @@
             <KM_Reference kmRef="2.5"/>
         </KilometreReferencePoint>
 
-        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="11.0" gradientDirection="Downhill"
-            directionOfApplicationOnSP="Nominal"/>
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="11.0" gradientDirection="Uphill"
+                              directionOfApplicationOnSP="Nominal"/>
 
     </SP_ContextInformation>
 

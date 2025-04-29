@@ -2,6 +2,7 @@ import 'package:das_client/model/journey/base_data.dart';
 import 'package:das_client/model/journey/bracket_station.dart';
 import 'package:das_client/model/journey/break_series.dart';
 import 'package:das_client/model/journey/datatype.dart';
+import 'package:das_client/model/journey/decisive_gradient.dart';
 import 'package:das_client/model/journey/speed_data.dart';
 import 'package:das_client/model/journey/speeds.dart';
 
@@ -17,6 +18,7 @@ class ServicePoint extends BaseData {
     this.isStation = false,
     this.bracketMainStation,
     this.graduatedSpeedInfo,
+    this.decisiveGradient,
   }) : super(type: Datatype.servicePoint);
 
   final String name;
@@ -25,6 +27,7 @@ class ServicePoint extends BaseData {
   final bool isStation;
   final BracketMainStation? bracketMainStation;
   final SpeedData? graduatedSpeedInfo;
+  final DecisiveGradient? decisiveGradient;
 
   List<Speeds> relevantGraduatedSpeedInfo(BreakSeries? breakSeries) {
     final speedInfo = graduatedSpeedInfo?.speeds ?? [];

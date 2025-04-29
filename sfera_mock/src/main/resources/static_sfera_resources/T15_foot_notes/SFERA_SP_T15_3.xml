@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
-                SP_ID="T15_3" SP_VersionMajor="2" SP_VersionMinor="0" SP_Length="1800" SP_Status="Valid">
+                SP_ID="T15_3" SP_VersionMajor="4" SP_VersionMinor="0" SP_Length="1800" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -26,7 +26,6 @@
                 <teltsi_LocationPrimaryCode>1121</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Pully</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" text="Pully"/>
 
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
@@ -81,7 +80,7 @@
             <KM_Reference kmRef="2.5"/>
         </KilometreReferencePoint>
 
-        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="11.0" gradientDirection="Downhill"
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="11.0" gradientDirection="Uphill"
                               directionOfApplicationOnSP="Nominal"/>
 
     </SP_ContextInformation>

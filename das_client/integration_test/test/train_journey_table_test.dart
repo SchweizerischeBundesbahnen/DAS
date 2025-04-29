@@ -22,6 +22,43 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey table test', () {
+    testWidgets('test up- and downhill gradient is displayed correctly', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T15');
+
+      final scrollableFinder = find.byType(AnimatedList);
+      expect(scrollableFinder, findsOneWidget);
+
+      final renensRow = findDASTableRowByText('Renens VD');
+      expect(renensRow, findsAny);
+
+      final renensGradient = find.descendant(of: renensRow.first, matching: find.text('10'));
+      expect(renensGradient, findsOneWidget);
+
+      await tester.dragUntilVisible(find.text('Pully'), scrollableFinder, const Offset(0, -50));
+
+      final pullyRow = findDASTableRowByText('Pully');
+      expect(pullyRow, findsAny);
+
+      final pullyGradient = find.descendant(of: pullyRow, matching: find.text('11'));
+      expect(pullyGradient, findsOneWidget);
+
+      await tester.dragUntilVisible(find.text('Taillepied'), scrollableFinder, const Offset(0, -50));
+
+      final taillepiedRow = findDASTableRowByText('Taillepied');
+      expect(taillepiedRow, findsAny);
+
+      final taillepiedGradientUp = find.descendant(of: taillepiedRow, matching: find.text('3'));
+      expect(taillepiedGradientUp, findsOneWidget);
+
+      final taillepiedGradientDown = find.descendant(of: taillepiedRow, matching: find.text('8'));
+      expect(taillepiedGradientDown, findsOneWidget);
+
+      await disconnect(tester);
+    });
+
     testWidgets('test find one curve is found when breakingSeries A50 is chosen', (tester) async {
       await prepareAndStartApp(tester);
 
@@ -372,7 +409,7 @@ void main() {
               it is Container &&
               it.decoration is BoxDecoration &&
               (it.decoration as BoxDecoration).color == AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor));
-      expect(coloredCells, findsNWidgets(13));
+      expect(coloredCells, findsNWidgets(15));
 
       await disconnect(tester);
     });

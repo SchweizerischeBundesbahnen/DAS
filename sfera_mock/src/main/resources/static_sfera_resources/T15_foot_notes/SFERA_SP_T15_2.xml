@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T15_2"
-                SP_VersionMajor="2" SP_VersionMinor="0" SP_Length="2500" SP_Status="Valid">
+                SP_VersionMajor="4" SP_VersionMinor="0" SP_Length="2500" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -72,7 +72,6 @@
                 <teltsi_LocationPrimaryCode>1120</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Lausanne</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" text="Lausanne"/>
 
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
@@ -186,9 +185,6 @@
         <KilometreReferencePoint location="2200">
             <KM_Reference kmRef="2.2"/>
         </KilometreReferencePoint>
-
-        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="10.0" gradientDirection="Downhill"
-                              directionOfApplicationOnSP="Nominal"/>
 
     </SP_ContextInformation>
 

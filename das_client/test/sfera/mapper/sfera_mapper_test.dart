@@ -1198,6 +1198,25 @@ void main() {
     expect(radioContactLists[2].selectiveContacts.first.contactIdentifier, '1103');
     expect(radioContactLists[2].selectiveContacts.first.contactRole, 'Richtung Süd: Fahrdienstleiter');
   });
+
+  test('Test DecisiveGradientArea parsed correctly', () async {
+    final journey = getJourney('T15', 4);
+    expect(journey.valid, true);
+
+    final servicePoints = journey.data.whereType<ServicePoint>().toList();
+
+    expect(servicePoints, hasLength(4));
+    expect(servicePoints[0].decisiveGradient, isNotNull);
+    expect(servicePoints[0].decisiveGradient!.uphill, isNull);
+    expect(servicePoints[0].decisiveGradient!.downhill, 10.0);
+    expect(servicePoints[1].decisiveGradient, isNull);
+    expect(servicePoints[2].decisiveGradient, isNotNull);
+    expect(servicePoints[2].decisiveGradient!.uphill, 11.0);
+    expect(servicePoints[2].decisiveGradient!.downhill, isNull);
+    expect(servicePoints[3].decisiveGradient, isNotNull);
+    expect(servicePoints[3].decisiveGradient!.uphill, 3.0);
+    expect(servicePoints[3].decisiveGradient!.downhill, 8.0);
+  });
 }
 
 void _checkSpeed(Speed speed, int speedValue, {bool isCircled = false, bool isSquared = false}) {
