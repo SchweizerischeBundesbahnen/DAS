@@ -9,7 +9,7 @@ class StickyWidgetController with ChangeNotifier {
   StickyWidgetController(
       {required this.stickyHeaderKey, required this.scrollController, required List<DASTableRow> rows})
       : _rows = rows {
-    scrollController.addListener(_scrollListener);
+    scrollController.addListener(scrollListener);
     _initialize();
   }
 
@@ -32,11 +32,11 @@ class StickyWidgetController with ChangeNotifier {
 
   void _initialize() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollListener();
+      scrollListener();
     });
   }
 
-  void _scrollListener() {
+  void scrollListener() {
     final firstVisibleIndex = _findFirstVisibleRowIndex();
     if (firstVisibleIndex == -1) {
       _recalculating = true;
@@ -50,11 +50,9 @@ class StickyWidgetController with ChangeNotifier {
     footerIndex = -1;
 
     if (scrollController.positions.isNotEmpty) {
-      final currentPixels = scrollController.position.pixels;
-
       _calculateHeaders(firstVisibleIndex);
       _calculateHeaderOffsets();
-      footerIndex = _calculateFooter(headerIndexes[StickyLevel.first]! + 1, currentPixels);
+      footerIndex = _calculateFooter(headerIndexes[StickyLevel.first]! + 1);
     }
 
     _recalculating = false;
@@ -128,7 +126,7 @@ class StickyWidgetController with ChangeNotifier {
     return 0.0;
   }
 
-  int _calculateFooter(int startIndex, double currentPixels) {
+  int _calculateFooter(int startIndex) {
     var stickyFooterIndex = _findNextStickyBelowLevel(startIndex, StickyLevel.first);
 
     if (stickyFooterIndex != -1) {
@@ -158,12 +156,12 @@ class StickyWidgetController with ChangeNotifier {
   void updateRowData(List<DASTableRow> rows) {
     _rows = rows;
     _initialize();
-    _scrollListener();
+    scrollListener();
   }
 
   @override
   void dispose() {
-    scrollController.removeListener(_scrollListener);
+    scrollController.removeListener(scrollListener);
     super.dispose();
   }
 }

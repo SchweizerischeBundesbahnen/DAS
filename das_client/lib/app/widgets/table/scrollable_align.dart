@@ -42,7 +42,7 @@ class _ScrollableAlignState extends State<ScrollableAlign> {
                 alignToElement();
               }
             });
-            return true;
+            return false;
           },
           child: widget.child),
     );
