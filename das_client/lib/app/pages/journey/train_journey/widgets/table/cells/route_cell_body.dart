@@ -87,7 +87,7 @@ class RouteCellBody extends StatelessWidget {
 
   Positioned _circle(BuildContext context) {
     final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
-    final circleColor = isDarkTheme ? SBBColors.sky : SBBColors.black;
+    final circleColor = isDarkTheme ? SBBColors.white : SBBColors.black;
     return Positioned(
       bottom: sbbDefaultSpacing,
       child: _RouteCircle(size: routeCircleSize, color: circleColor, isStopOnRequest: isStopOnRequest),
