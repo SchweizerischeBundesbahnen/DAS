@@ -5,7 +5,6 @@ import 'dart:ui';
 import 'package:auth/component.dart';
 import 'package:app/model/journey/journey.dart';
 import 'package:app/model/journey/ux_testing.dart';
-import 'package:app/mqtt/mqtt_component.dart';
 import 'package:app/sfera/sfera_component.dart';
 import 'package:app/sfera/src/mapper/sfera_model_mapper.dart';
 import 'package:app/sfera/src/model/enums/das_driving_mode.dart';
@@ -30,6 +29,7 @@ import 'package:app/sfera/src/service/remote/task/request_train_characteristics_
 import 'package:app/sfera/src/service/remote/task/sfera_task.dart';
 import 'package:app/util/error_code.dart';
 import 'package:fimber/fimber.dart';
+import 'package:mqtt_x/component.dart';
 import 'package:rxdart/rxdart.dart';
 
 class SferaServiceImpl implements SferaService {

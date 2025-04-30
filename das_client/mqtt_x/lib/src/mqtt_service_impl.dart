@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
 
-import 'package:app/mqtt/src/mqtt_client_connector.dart';
-import 'package:app/mqtt/src/mqtt_service.dart';
+import 'package:mqtt_x/src/mqtt_client_connector.dart';
+import 'package:mqtt_x/src/mqtt_service.dart';
 import 'package:app/util/device_id_info.dart';
 import 'package:fimber/fimber.dart';
 import 'package:mqtt_client/mqtt_client.dart';

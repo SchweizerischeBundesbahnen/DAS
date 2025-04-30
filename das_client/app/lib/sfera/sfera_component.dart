@@ -1,5 +1,5 @@
 import 'package:auth/component.dart';
-import 'package:app/mqtt/mqtt_component.dart';
+import 'package:mqtt_x/component.dart';
 import 'package:app/sfera/src/db/repo/sfera_database_repository.dart';
 import 'package:app/sfera/src/db/repo/sfera_database_repository_impl.dart';
 import 'package:app/sfera/src/service/local/sfera_local_service.dart';

@@ -1,4 +1,3 @@
-import 'package:app/mqtt/mqtt_component.dart';
 import 'package:app/sfera/src/db/repo/sfera_database_repository.dart';
 import 'package:app/sfera/src/model/b2g_request.dart';
 import 'package:app/sfera/src/model/enums/jp_status.dart';
@@ -11,6 +10,7 @@ import 'package:app/sfera/src/service/remote/sfera_service.dart';
 import 'package:app/sfera/src/service/remote/task/sfera_task.dart';
 import 'package:app/util/error_code.dart';
 import 'package:fimber/fimber.dart';
+import 'package:mqtt_x/component.dart';
 
 class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
   RequestJourneyProfileTask({

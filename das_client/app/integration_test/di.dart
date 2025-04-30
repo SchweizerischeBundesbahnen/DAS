@@ -2,9 +2,9 @@ import 'package:battery_plus/battery_plus.dart';
 import 'package:auth/component.dart';
 import 'package:app/di.dart';
 import 'package:app/flavor.dart';
-import 'package:app/mqtt/mqtt_component.dart';
 import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mqtt_x/component.dart';
 
 import 'auth/integrationtest_authenticator.dart';
 import 'auth/mqtt_client_user_connector.dart';

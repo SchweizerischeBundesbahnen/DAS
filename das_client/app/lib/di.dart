@@ -1,14 +1,14 @@
-import 'package:audioplayers/audioplayers.dart';
-import 'package:battery_plus/battery_plus.dart';
 import 'package:app/app/bloc/train_journey_cubit.dart';
 import 'package:app/app/bloc/ux_testing_cubit.dart';
-import 'package:auth/component.dart';
 import 'package:app/flavor.dart';
-import 'package:app/mqtt/mqtt_component.dart';
 import 'package:app/service/backend_service.dart';
 import 'package:app/sfera/sfera_component.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:auth/component.dart';
+import 'package:battery_plus/battery_plus.dart';
 import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mqtt_x/component.dart';
 import 'package:sbb_oidc/sbb_oidc.dart';
 
 class DI {
@@ -90,7 +90,7 @@ extension GetItX on GetIt {
     final flavor = get<Flavor>();
 
     registerLazySingleton<MqttClientConnector>(
-        () => MqttComponent.createMqttClientConnector(sfereAuthService: get(), authenticator: get(), useTms: useTms));
+        () => MqttComponent.createMqttClientConnector(sferaAuthService: get(), authenticator: get(), useTms: useTms));
 
     registerLazySingleton<MqttService>(() => MqttComponent.createMqttService(
         mqttUrl: useTms ? flavor.tmsMqttUrl! : flavor.mqttUrl,

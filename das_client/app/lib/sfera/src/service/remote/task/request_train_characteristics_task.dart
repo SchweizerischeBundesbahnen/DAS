@@ -1,4 +1,5 @@
-import 'package:app/mqtt/mqtt_component.dart';
+import 'package:mqtt_x/component.dart';
+
 import 'package:app/sfera/src/db/repo/sfera_database_repository.dart';
 import 'package:app/sfera/src/model/b2g_request.dart';
 import 'package:app/sfera/src/model/journey_profile.dart';

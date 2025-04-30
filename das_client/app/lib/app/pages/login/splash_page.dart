@@ -1,4 +1,4 @@
-import 'package:app/auth/auth_cubit.dart';
+import 'package:app/app/bloc/auth_cubit.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:app/app/nav/app_router.dart';
 import 'package:auth/component.dart';

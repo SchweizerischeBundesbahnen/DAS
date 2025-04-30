@@ -16,6 +16,7 @@ dependencies:
   # workspace packages
   auth: 1.0.0
   logs: 1.0.0
+  mqtt_x: 1.0.0
 
   # https://pub.dev/packages/audioplayers
   # TODO: Fixed to 5.2.1 as there is a problem with XCode 14 on higher versions.
@@ -52,8 +53,6 @@ dependencies:
   iso_duration: ^0.1.1
   # https://pub.dev/packages/meta
   meta: ^1.15.0
-  # https://pub.dev/packages/mqtt_client
-  mqtt_client: ^10.5.1
   # https://pub.dev/packages/package_info_plus
   package_info_plus: ^8.3.0
   # https://pub.dev/packages/path_provider

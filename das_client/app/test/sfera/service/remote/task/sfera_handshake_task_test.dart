@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:app/mqtt/mqtt_component.dart';
+import 'package:mqtt_x/component.dart';
 import 'package:app/sfera/sfera_component.dart';
 import 'package:app/sfera/src/model/enums/das_driving_mode.dart';
 import 'package:app/sfera/src/model/sfera_g2b_reply_message.dart';
