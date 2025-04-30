@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:app/app/pages/journey/train_journey/automatic_advancement_controller.dart';
 import 'package:app/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_tab.dart';
 import 'package:app/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:app/app/widgets/modal_sheet/das_modal_sheet.dart';

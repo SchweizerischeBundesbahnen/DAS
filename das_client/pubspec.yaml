@@ -13,3 +13,4 @@ environment:
 workspace:
   - app
   - auth
+  - http_x
