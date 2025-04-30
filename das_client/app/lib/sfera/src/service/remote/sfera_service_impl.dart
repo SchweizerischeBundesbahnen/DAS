@@ -29,7 +29,7 @@ import 'package:app/sfera/src/service/remote/task/request_train_characteristics_
 import 'package:app/sfera/src/service/remote/task/sfera_task.dart';
 import 'package:app/util/error_code.dart';
 import 'package:fimber/fimber.dart';
-import 'package:mqtt_x/component.dart';
+import 'package:mqtt/component.dart';
 import 'package:rxdart/rxdart.dart';
 
 class SferaServiceImpl implements SferaService {

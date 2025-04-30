@@ -1,5 +1,5 @@
 import 'package:auth/component.dart';
-import 'package:mqtt_x/src/mqtt_client_connector.dart';
+import 'package:mqtt/src/mqtt_client_connector.dart';
 import 'package:fimber/fimber.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:sbb_oidc/sbb_oidc.dart';

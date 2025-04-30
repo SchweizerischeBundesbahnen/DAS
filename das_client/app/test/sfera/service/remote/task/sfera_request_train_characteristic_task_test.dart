@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:mqtt_x/component.dart';
+import 'package:mqtt/component.dart';
 import 'package:app/sfera/sfera_component.dart';
 import 'package:app/sfera/src/model/sfera_g2b_reply_message.dart';
 import 'package:app/sfera/src/service/remote/task/request_train_characteristics_task.dart';

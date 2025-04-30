@@ -1,13 +1,13 @@
 import 'package:app/sfera/sfera_component.dart';
 import 'package:auth/component.dart';
-import 'package:mqtt_x/src/mqtt_client_connector.dart';
-import 'package:mqtt_x/src/mqtt_client_oauth_connector.dart';
-import 'package:mqtt_x/src/mqtt_client_tms_oauth_connector.dart';
-import 'package:mqtt_x/src/mqtt_service.dart';
-import 'package:mqtt_x/src/mqtt_service_impl.dart';
+import 'package:mqtt/src/mqtt_client_connector.dart';
+import 'package:mqtt/src/mqtt_client_oauth_connector.dart';
+import 'package:mqtt/src/mqtt_client_tms_oauth_connector.dart';
+import 'package:mqtt/src/mqtt_service.dart';
+import 'package:mqtt/src/mqtt_service_impl.dart';
 
-export 'package:mqtt_x/src/mqtt_client_connector.dart';
-export 'package:mqtt_x/src/mqtt_service.dart';
+export 'package:mqtt/src/mqtt_client_connector.dart';
+export 'package:mqtt/src/mqtt_service.dart';
 
 // TODO: Remove dependency to sfera component
 class MqttComponent {

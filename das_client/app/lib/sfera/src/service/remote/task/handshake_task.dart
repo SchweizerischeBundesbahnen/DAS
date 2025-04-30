@@ -11,7 +11,7 @@ import 'package:app/sfera/src/service/remote/sfera_service.dart';
 import 'package:app/sfera/src/service/remote/task/sfera_task.dart';
 import 'package:app/util/error_code.dart';
 import 'package:fimber/fimber.dart';
-import 'package:mqtt_x/component.dart';
+import 'package:mqtt/component.dart';
 
 class HandshakeTask extends SferaTask {
   HandshakeTask({required MqttService mqttService, required this.otnId, required this.dasDrivingMode, super.timeout})

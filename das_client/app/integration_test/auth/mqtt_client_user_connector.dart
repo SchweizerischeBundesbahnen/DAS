@@ -1,6 +1,6 @@
 import 'package:fimber/fimber.dart';
 import 'package:mqtt_client/mqtt_client.dart';
-import 'package:mqtt_x/component.dart';
+import 'package:mqtt/component.dart';
 
 class MqttClientUserConnector implements MqttClientConnector {
   static const mqttUsername = 'MQTT_USERNAME';

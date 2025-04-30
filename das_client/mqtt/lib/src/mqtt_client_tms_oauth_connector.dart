@@ -1,4 +1,4 @@
-import 'package:mqtt_x/src/mqtt_client_connector.dart';
+import 'package:mqtt/src/mqtt_client_connector.dart';
 import 'package:app/sfera/sfera_component.dart';
 import 'package:fimber/fimber.dart';
 import 'package:mqtt_client/mqtt_client.dart';

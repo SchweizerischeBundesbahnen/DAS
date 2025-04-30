@@ -10,7 +10,7 @@ import 'package:app/service/backend_service.dart';
 import 'package:app/sfera/sfera_component.dart';
 import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mqtt_x/component.dart';
+import 'package:mqtt/component.dart';
 import 'package:sbb_oidc/sbb_oidc.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 

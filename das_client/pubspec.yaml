@@ -14,5 +14,5 @@ workspace:
   - app
   - auth
   - http_x
-  - mqtt_x
+  - mqtt
   - logger

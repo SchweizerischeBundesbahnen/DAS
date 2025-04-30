@@ -1,4 +1,4 @@
-name: mqtt_x
+name: mqtt
 publish_to: 'none'
 version: 1.0.0
 
