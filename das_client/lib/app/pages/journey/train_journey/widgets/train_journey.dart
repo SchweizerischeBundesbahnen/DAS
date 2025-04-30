@@ -84,7 +84,8 @@ class TrainJourney extends StatelessWidget {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           bloc.automaticAdvancementController.handleJourneyUpdate(
             currentPosition: journey.metadata.currentPosition,
-            automaticAdvancementActive: settings.automaticAdvancementActive,
+            routeStart: journey.metadata.routeStart,
+            isAdvancementEnabledByUser: settings.isAutoAdvancementEnabled,
           );
         });
 

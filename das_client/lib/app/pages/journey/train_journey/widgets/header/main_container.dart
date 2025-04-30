@@ -121,7 +121,7 @@ class MainContainer extends StatelessWidget {
       spacing: sbbDefaultSpacing * 0.5,
       children: [
         ThemeButton(),
-        StartPauseButton(automaticAdvancementActive: settings.automaticAdvancementActive),
+        StartPauseButton(automaticAdvancementActive: settings.isAutoAdvancementEnabled),
         ExtendedMenu(),
       ],
     );

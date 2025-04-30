@@ -23,7 +23,7 @@ class TrainJourneyOverview extends StatelessWidget {
     final bloc = context.trainJourneyCubit;
     return Provider(
       create: (_) => DetailModalSheetViewModel(
-        automaticAdvancementController: bloc.automaticAdvancementController,
+        onOpen: () => bloc.automaticAdvancementController.resetScrollTimer(),
       ),
       dispose: (context, vm) => vm.dispose(),
       builder: (context, child) => BlocProvider.value(
