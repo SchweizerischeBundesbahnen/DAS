@@ -1,5 +1,5 @@
 import 'package:battery_plus/battery_plus.dart';
-import 'package:app/auth/authentication_component.dart';
+import 'package:auth/component.dart';
 import 'package:app/di.dart';
 import 'package:app/flavor.dart';
 import 'package:app/mqtt/mqtt_component.dart';

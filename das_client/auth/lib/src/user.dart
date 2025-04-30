@@ -1,4 +1,4 @@
-import 'package:app/auth/src/role.dart';
+import 'package:auth/src/role.dart';
 import 'package:meta/meta.dart';
 
 @sealed

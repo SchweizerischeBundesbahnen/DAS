@@ -1,5 +1,5 @@
 import 'package:app/app.dart';
-import 'package:app/auth/authentication_component.dart';
+import 'package:app/auth/auth_cubit.dart';
 import 'package:app/di.dart';
 import 'package:app/flavor.dart';
 import 'package:app/logging/logging_component.dart';

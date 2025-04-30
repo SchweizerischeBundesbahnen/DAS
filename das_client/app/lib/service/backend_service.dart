@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:core';
 
-import 'package:app/auth/authentication_component.dart';
+import 'package:auth/component.dart';
 import 'package:app/logging/logging_component.dart';
 import 'package:fimber/fimber.dart';
 import 'package:http/http.dart' as http;

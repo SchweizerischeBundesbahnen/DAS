@@ -1,4 +1,4 @@
-import 'package:app/auth/src/user.dart';
+import 'package:auth/src/user.dart';
 import 'package:sbb_oidc/sbb_oidc.dart';
 
 abstract class Authenticator {

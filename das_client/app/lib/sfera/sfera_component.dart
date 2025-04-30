@@ -1,4 +1,4 @@
-import 'package:app/auth/authentication_component.dart';
+import 'package:auth/component.dart';
 import 'package:app/mqtt/mqtt_component.dart';
 import 'package:app/sfera/src/db/repo/sfera_database_repository.dart';
 import 'package:app/sfera/src/db/repo/sfera_database_repository_impl.dart';

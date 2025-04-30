@@ -1,4 +1,4 @@
-import 'package:app/auth/authentication_component.dart';
+import 'package:auth/component.dart';
 import 'package:app/mqtt/mqtt_component.dart';
 import 'package:app/sfera/sfera_component.dart';
 import 'package:app/sfera/src/service/remote/sfera_service_impl.dart';

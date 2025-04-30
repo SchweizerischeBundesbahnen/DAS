@@ -1,4 +1,4 @@
-import 'package:app/auth/authentication_component.dart';
+import 'package:auth/component.dart';
 import 'package:app/mqtt/src/mqtt_client_connector.dart';
 import 'package:app/mqtt/src/mqtt_client_oauth_connector.dart';
 import 'package:app/mqtt/src/mqtt_client_tms_oauth_connector.dart';

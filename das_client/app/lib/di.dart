@@ -2,7 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:app/app/bloc/train_journey_cubit.dart';
 import 'package:app/app/bloc/ux_testing_cubit.dart';
-import 'package:app/auth/authentication_component.dart';
+import 'package:auth/component.dart';
 import 'package:app/flavor.dart';
 import 'package:app/mqtt/mqtt_component.dart';
 import 'package:app/service/backend_service.dart';

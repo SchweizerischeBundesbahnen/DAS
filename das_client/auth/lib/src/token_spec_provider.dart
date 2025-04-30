@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:app/auth/src/token_spec.dart';
+import 'package:auth/src/token_spec.dart';
 
 class TokenSpecProvider {
   const TokenSpecProvider(this._specs);

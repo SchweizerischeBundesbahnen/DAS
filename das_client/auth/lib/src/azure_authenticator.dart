@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:app/auth/src/authenticator.dart';
-import 'package:app/auth/src/role.dart';
-import 'package:app/auth/src/token_spec.dart';
-import 'package:app/auth/src/token_spec_provider.dart';
-import 'package:app/auth/src/user.dart';
+import 'package:auth/src/authenticator.dart';
+import 'package:auth/src/role.dart';
+import 'package:auth/src/token_spec.dart';
+import 'package:auth/src/token_spec_provider.dart';
+import 'package:auth/src/user.dart';
 import 'package:sbb_oidc/sbb_oidc.dart';
 
 class AzureAuthenticator implements Authenticator {

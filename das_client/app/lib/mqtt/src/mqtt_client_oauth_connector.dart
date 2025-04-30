@@ -1,4 +1,4 @@
-import 'package:app/auth/authentication_component.dart';
+import 'package:auth/component.dart';
 import 'package:app/mqtt/src/mqtt_client_connector.dart';
 import 'package:fimber/fimber.dart';
 import 'package:mqtt_client/mqtt_client.dart';

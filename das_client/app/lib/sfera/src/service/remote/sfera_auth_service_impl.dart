@@ -1,6 +1,6 @@
 import 'dart:core';
 
-import 'package:app/auth/authentication_component.dart';
+import 'package:auth/component.dart';
 import 'package:app/sfera/src/service/remote/sfera_auth_service.dart';
 import 'package:fimber/fimber.dart';
 import 'package:http/http.dart' as http;

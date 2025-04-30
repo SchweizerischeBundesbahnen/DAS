@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:ui';
 
-import 'package:app/auth/authentication_component.dart';
+import 'package:auth/component.dart';
 import 'package:app/model/journey/journey.dart';
 import 'package:app/model/journey/ux_testing.dart';
 import 'package:app/mqtt/mqtt_component.dart';
