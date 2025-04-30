@@ -418,9 +418,6 @@ Future<void> main() async {
 
       await loadTrainJourney(tester, trainNumber: 'T6');
 
-      // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
-      await findAndDismissBrightnessModalSheet(tester);
-
       final header = find.byType(Header);
       expect(header, findsOneWidget);
 
@@ -472,9 +469,6 @@ Future<void> main() async {
       mockBrightnessManager.writeSettingsPermission = true;
 
       await loadTrainJourney(tester, trainNumber: 'T6');
-
-      // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
-      await findAndDismissBrightnessModalSheet(tester);
 
       final header = find.byType(Header);
       expect(header, findsOneWidget);
