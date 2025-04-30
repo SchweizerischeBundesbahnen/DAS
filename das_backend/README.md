@@ -26,13 +26,14 @@ IMPORTANT:
 
 ### SQL conventions
 Remarks:
-* In general, it is good practice to write SQL code in a somewhat broader dialect (there are plenty of specialisations since SQL 98 for each DB provider) and product migration is always foreseeable.
-* Aim for PostgreSQL (used by this project) and H2 (which might come in handy for in-memory Unit-Tests).
+* Write SQL statements in a broader dialect (there are plenty of specialisations since SQL 98 for each DB provider and product migration is always foreseeable):
+  * PostgreSQL (currently used by this project)
+  * H2 (might come in handy for in-memory Unit-Tests) 
 
 #### SQL DDL
 * all SQL DDL code is written as UPPERCASE
-* model code (table- and property-names) is written as lowercase (use '_' instead of CamelCase, mappin to Entity classes is made by JPA)
-* each table has a technical, numeric `id` as PRIMARY KEY (semantic keys make later ALTERation more complicated!)
+* model code (table- and property-names) is written as lowercase (use '_' instead of CamelCase, mapping to Entity classes is made by JPA)
+* each table has a technical, numeric `id` as PRIMARY KEY
 * **CONSTRAINT names must be always specified explicitely** (DB products auto-create their own generic names and might turn into a mess to DROP them later):
   * to reduce naming conflicts and missunderstandings start all contraint-names prefixed with table-name 
   * **PRIMARY KEY**: ```ALTER TABLE IF EXISTS <table> ADD CONSTRAINT <table>_id_pk PRIMARY KEY(id);```
@@ -44,11 +45,12 @@ Remarks:
 Do not save dummy values (like "UNKNOWN") for e.g. as company::name -> make it NULLable instead (reader might change to default value if wanted).
 
 ### DB roles
-Make sure production rights are as restricted as possible, for e.g.:
+[Wikipedia - Principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege) Make sure production rights are as restricted as possible, for e.g.:
 * do not develop with Admin or Write enabled users
 * declare READ-ONLY users for DAS-Client requests
  
 ### DB Tools
+Some recommendations:
 * __IntelliJ ultimate__ edition provides in "Database" panel SQL-Query Console, table opening, graphical schema
 * [pgAdmin](https://www.pgadmin.org/) for PostgreSQL allows complete DB-mgmt such as GRANTs, etc.
 * [SqlDeveloper](https://www.oracle.com/database/sqldeveloper/) from Oracle works on Postgres with a dedicated plug-in and is user-friendly (installed by SBB EAIO).
