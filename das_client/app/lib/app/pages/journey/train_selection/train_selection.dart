@@ -2,6 +2,7 @@ import 'package:app/app/bloc/train_journey_cubit.dart';
 import 'package:app/app/extension/ru_extension.dart';
 import 'package:app/app/i18n/i18n.dart';
 import 'package:app/app/widgets/header.dart';
+import 'package:app/brightness/brightness_modal_sheet.dart';
 import 'package:app/model/ru.dart';
 import 'package:app/util/error_code.dart';
 import 'package:app/util/format.dart';
@@ -25,6 +26,9 @@ class _TrainSelectionState extends State<TrainSelection> {
     super.initState();
     _trainNumberController = TextEditingController();
     _dateController = TextEditingController();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      BrightnessModalSheet.openIfNeeded(context);
+    });
   }
 
   @override

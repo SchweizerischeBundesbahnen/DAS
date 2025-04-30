@@ -1,15 +1,20 @@
-import 'package:app/app/bloc/train_journey_cubit.dart';
-import 'package:app/app/bloc/ux_testing_cubit.dart';
-import 'package:app/flavor.dart';
-import 'package:app/service/backend_service.dart';
-import 'package:app/sfera/sfera_component.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:auth/component.dart';
 import 'package:battery_plus/battery_plus.dart';
+import 'package:app/app/bloc/train_journey_cubit.dart';
+import 'package:app/app/bloc/ux_testing_cubit.dart';
+import 'package:app/auth/authentication_component.dart';
+import 'package:app/brightness/brightness_manager.dart';
+import 'package:app/brightness/brightness_manager_impl.dart';
+import 'package:app/flavor.dart';
+import 'package:app/mqtt/mqtt_component.dart';
+import 'package:app/service/backend_service.dart';
+import 'package:app/sfera/sfera_component.dart';
 import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mqtt_x/component.dart';
 import 'package:sbb_oidc/sbb_oidc.dart';
+import 'package:screen_brightness/screen_brightness.dart';
 
 class DI {
   const DI._();
@@ -45,6 +50,7 @@ class DI {
 
 extension GetItX on GetIt {
   Future<void> init(Flavor flavor, {bool useTms = false}) async {
+    registerBrightnessManager();
     registerFlavor(flavor);
     registerTokenSpecProvider(useTms: useTms);
     registerOidcClient(useTms: useTms);
@@ -56,6 +62,14 @@ extension GetItX on GetIt {
     registerBattery();
     registerAudioPlayer();
     await allReady();
+  }
+
+  void registerBrightnessManager() {
+    // First register ScreenBrightness instance
+    registerLazySingleton<ScreenBrightness>(() => ScreenBrightness());
+
+    // Then register BrightnessManager implementation using the ScreenBrightness instance
+    registerLazySingleton<BrightnessManager>(() => BrightnessManagerImpl(get<ScreenBrightness>()));
   }
 
   void registerFlavor(Flavor flavor) {

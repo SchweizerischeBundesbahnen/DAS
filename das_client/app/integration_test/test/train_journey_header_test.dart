@@ -5,8 +5,10 @@ import 'package:app/app/pages/journey/train_journey/widgets/header/extended_menu
 import 'package:app/app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/app/pages/journey/train_journey/widgets/header/radio_channel.dart';
 import 'package:app/app/pages/journey/train_journey/widgets/header/radio_contact.dart';
+import 'package:app/app/pages/journey/train_journey/widgets/header/time_container.dart';
 import 'package:app/app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
 import 'package:app/app/widgets/indicator_wrapper.dart';
+import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/di.dart';
 import 'package:app/util/format.dart';
 import 'package:flutter/material.dart';
@@ -16,9 +18,24 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../app_test.dart';
 import '../mocks/battery_mock.dart';
+import '../mocks/brightness_mock.dart';
 import '../util/test_utils.dart';
 
-void main() {
+Future<void> main() async {
+  Future<void> findAndDismissBrightnessModalSheet(WidgetTester tester) async {
+    // find brightness modal sheet
+    final brightnessModalSheet = find.byType(SBBModalSheet);
+    expect(brightnessModalSheet, findsOneWidget);
+
+    //find close button
+    final closeButton = find.descendant(of: brightnessModalSheet, matching: find.byType(SBBIconButtonSmall));
+    expect(closeButton, findsOneWidget);
+
+    //tap close button
+    await tester.tap(closeButton);
+    await tester.pumpAndSettle();
+  }
+
   group('train journey header test', () {
     testWidgets('test always-on display is turned on when journey is loaded', (tester) async {
       await prepareAndStartApp(tester);
@@ -383,6 +400,119 @@ void main() {
       expect(mainContactsZurich, findsOneWidget);
       final zuerichIndicator = find.descendant(of: radioChannel, matching: find.byKey(IndicatorWrapper.indicatorKey));
       expect(zuerichIndicator, findsOneWidget);
+
+      await disconnect(tester);
+    });
+
+    // can be removed based on what option to change the brightness will be chosen
+    testWidgets('double tap sets brightness to 0.0 if current is 1.0', (tester) async {
+      await prepareAndStartApp(tester,
+          onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false);
+
+      final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
+
+      // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
+      await findAndDismissBrightnessModalSheet(tester);
+
+      mockBrightnessManager.writeSettingsPermission = true;
+
+      await loadTrainJourney(tester, trainNumber: 'T6M');
+
+      final header = find.byType(Header);
+      expect(header, findsOneWidget);
+
+      final timeContainer = find.byType(TimeContainer);
+      expect(timeContainer, findsOneWidget);
+
+      await tester.tap(timeContainer);
+      await tester.pump(const Duration(milliseconds: 50));
+      await tester.tap(timeContainer);
+      await tester.pumpAndSettle();
+
+      expect(mockBrightnessManager.calledWith, contains(0.0));
+
+      await disconnect(tester);
+    });
+
+    // can be removed based on what option to change the brightness will be chosen
+    testWidgets('long press dims brightness from 1.0 to 0.0', (tester) async {
+      await prepareAndStartApp(tester,
+          onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false);
+
+      final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
+
+      // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
+      await findAndDismissBrightnessModalSheet(tester);
+
+      await loadTrainJourney(tester, trainNumber: 'T6');
+
+      // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
+      await findAndDismissBrightnessModalSheet(tester);
+
+      final timeContainer = find.byType(TimeContainer);
+      expect(timeContainer, findsOneWidget);
+
+      await tester.longPress(timeContainer);
+      await tester.pump(const Duration(seconds: 2));
+
+      expect(mockBrightnessManager.calledWith.any((val) => val < 1.0), true);
+
+      await disconnect(tester);
+    });
+
+    // can be removed based on what option to change the brightness will be chosen
+    testWidgets('horizontal drag right increases brightness', (tester) async {
+      await prepareAndStartApp(tester,
+          onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false);
+
+      final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
+
+      // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
+      await findAndDismissBrightnessModalSheet(tester);
+
+      mockBrightnessManager.writeSettingsPermission = true;
+      mockBrightnessManager.currentBrightness = 0.5;
+
+      await loadTrainJourney(tester, trainNumber: 'T6');
+
+      final header = find.byType(Header);
+      expect(header, findsOneWidget);
+
+      await tester.drag(header, const Offset(100, 0));
+      await tester.pumpAndSettle();
+
+      expect(
+        mockBrightnessManager.calledWith.any((val) => val > 0.5),
+        true,
+      );
+
+      await disconnect(tester);
+    });
+
+    testWidgets('horizontal drag left decreases brightness', (tester) async {
+      await prepareAndStartApp(tester,
+          onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false);
+
+      final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
+
+      // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
+      await findAndDismissBrightnessModalSheet(tester);
+
+      mockBrightnessManager.writeSettingsPermission = true;
+      mockBrightnessManager.currentBrightness = 0.5;
+
+      await loadTrainJourney(tester, trainNumber: 'T6');
+
+      final header = find.byType(Header);
+      expect(header, findsOneWidget);
+
+      await tester.drag(header, const Offset(-100, 0));
+      await tester.pumpAndSettle();
+
+      expect(
+        mockBrightnessManager.calledWith.any((val) => val < 0.5),
+        true,
+      );
 
       await disconnect(tester);
     });
