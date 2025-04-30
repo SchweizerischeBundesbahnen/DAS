@@ -8,7 +8,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class BrightnessModalSheet extends StatelessWidget {
   const BrightnessModalSheet({super.key});
 
-  static Future<void> openBrightnessModalSheet(BuildContext context) async {
+  static Future<void> openBrightnessModalSheetIfNeeded(BuildContext context) async {
     final brightnessManager = DI.get<BrightnessManager>();
     final hasPermission = await brightnessManager.hasWriteSettingsPermission();
 

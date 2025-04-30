@@ -23,7 +23,7 @@ class BrightnessManagerImpl implements BrightnessManager {
     try {
       return await platform.invokeMethod('canWriteSettings') as bool;
     } catch (e) {
-      Fimber.e('Error checking canWriteSettings: $e');
+      Fimber.e('Error checking canWriteSettings', ex: e);
       return false;
     }
   }
@@ -59,7 +59,7 @@ class BrightnessManagerImpl implements BrightnessManager {
       }
       await _screenBrightness.setSystemScreenBrightness(value.clamp(minBrightness, maxBrightness));
     } catch (e) {
-      Fimber.e('Failed to set brightness: $e');
+      Fimber.e('Failed to set brightness', ex: e);
     }
   }
 
@@ -68,7 +68,7 @@ class BrightnessManagerImpl implements BrightnessManager {
     try {
       return await _screenBrightness.system;
     } catch (e) {
-      Fimber.e('Failed to get brightness: $e');
+      Fimber.e('Failed to get brightness', ex: e);
       return fallbackBrightness;
     }
   }

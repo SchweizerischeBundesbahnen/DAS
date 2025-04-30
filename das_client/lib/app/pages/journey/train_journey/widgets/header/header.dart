@@ -24,6 +24,7 @@ class _HeaderState extends State<Header> {
   final double halfBrightness = 0.5;
   final double dimStep = 0.05;
   final double dragStep = 0.01;
+  final int dimmingInterval = 50;
 
   @override
   void initState() {
@@ -31,7 +32,7 @@ class _HeaderState extends State<Header> {
     _brightnessManager.setBrightness(minBrightness);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      BrightnessModalSheet.openBrightnessModalSheet(context);
+      BrightnessModalSheet.openBrightnessModalSheetIfNeeded(context);
     });
   }
 
@@ -40,7 +41,7 @@ class _HeaderState extends State<Header> {
     final value = await _brightnessManager.getCurrentBrightness();
     final shouldDim = value >= halfBrightness;
 
-    _dimmingTimer = Timer.periodic(Duration(milliseconds: 50), (timer) async {
+    _dimmingTimer = Timer.periodic(Duration(milliseconds: dimmingInterval), (timer) async {
       final current = await _brightnessManager.getCurrentBrightness();
       final newValue = shouldDim
           ? (current - dimStep).clamp(minBrightness, maxBrightness)

@@ -27,7 +27,7 @@ class _TrainSelectionState extends State<TrainSelection> {
     _trainNumberController = TextEditingController();
     _dateController = TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      BrightnessModalSheet.openBrightnessModalSheet(context);
+      BrightnessModalSheet.openBrightnessModalSheetIfNeeded(context);
     });
   }
 
