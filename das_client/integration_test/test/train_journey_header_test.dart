@@ -405,7 +405,7 @@ Future<void> main() async {
     });
 
     // can be removed based on what option to change the brightness will be chosen
-    testWidgets('double tap sets brightness to 0.1 if current is 1.0', (tester) async {
+    testWidgets('double tap sets brightness to 0.0 if current is 1.0', (tester) async {
       await prepareAndStartApp(tester,
           onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false);
 
@@ -416,7 +416,7 @@ Future<void> main() async {
 
       mockBrightnessManager.writeSettingsPermission = true;
 
-      await loadTrainJourney(tester, trainNumber: 'T6');
+      await loadTrainJourney(tester, trainNumber: 'T6M');
 
       final header = find.byType(Header);
       expect(header, findsOneWidget);
@@ -429,7 +429,9 @@ Future<void> main() async {
       await tester.tap(timeContainer);
       await tester.pumpAndSettle();
 
-      expect(mockBrightnessManager.calledWith.contains(0.1), true);
+      expect(mockBrightnessManager.calledWith, contains(0.0));
+
+      await disconnect(tester);
     });
 
     // can be removed based on what option to change the brightness will be chosen
@@ -454,6 +456,8 @@ Future<void> main() async {
       await tester.pump(const Duration(seconds: 2));
 
       expect(mockBrightnessManager.calledWith.any((val) => val < 1.0), true);
+
+      await disconnect(tester);
     });
 
     // can be removed based on what option to change the brightness will be chosen
@@ -467,6 +471,7 @@ Future<void> main() async {
       await findAndDismissBrightnessModalSheet(tester);
 
       mockBrightnessManager.writeSettingsPermission = true;
+      mockBrightnessManager.currentBrightness = 0.5;
 
       await loadTrainJourney(tester, trainNumber: 'T6');
 
@@ -480,6 +485,36 @@ Future<void> main() async {
         mockBrightnessManager.calledWith.any((val) => val > 0.5),
         true,
       );
+
+      await disconnect(tester);
+    });
+
+    testWidgets('horizontal drag left decreases brightness', (tester) async {
+      await prepareAndStartApp(tester,
+          onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false);
+
+      final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
+
+      // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
+      await findAndDismissBrightnessModalSheet(tester);
+
+      mockBrightnessManager.writeSettingsPermission = true;
+      mockBrightnessManager.currentBrightness = 0.5;
+
+      await loadTrainJourney(tester, trainNumber: 'T6');
+
+      final header = find.byType(Header);
+      expect(header, findsOneWidget);
+
+      await tester.drag(header, const Offset(-100, 0));
+      await tester.pumpAndSettle();
+
+      expect(
+        mockBrightnessManager.calledWith.any((val) => val < 0.5),
+        true,
+      );
+
+      await disconnect(tester);
     });
   });
 }

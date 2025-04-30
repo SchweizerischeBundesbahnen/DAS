@@ -30,8 +30,6 @@ class _HeaderState extends State<Header> {
   @override
   void initState() {
     super.initState();
-    _brightnessManager.setBrightness(minBrightness);
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       BrightnessModalSheet.openIfNeeded(context);
     });
