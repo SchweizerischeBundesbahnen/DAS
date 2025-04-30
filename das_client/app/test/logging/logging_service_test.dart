@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:app/logging/src/log_entry.dart';
-import 'package:app/logging/src/log_level.dart';
-import 'package:app/logging/src/log_service.dart';
+import 'package:logs/src/log_entry.dart';
+import 'package:logs/src/log_level.dart';
+import 'package:logs/src/log_service.dart';
 import 'package:app/service/backend_service.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter_test/flutter_test.dart';

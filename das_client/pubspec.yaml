@@ -14,3 +14,4 @@ workspace:
   - app
   - auth
   - http_x
+  - logs
