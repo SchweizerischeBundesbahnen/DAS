@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SFERA_G2B_ReplyMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="SFERA_v3.00.xsd">
+    <MessageHeader SFERA_version="1.91" message_ID="bfc9754f-2361-49d1-90af-4c4fac7f419f" timestamp="2022-05-06T10:52:46Z" sourceDevice="INFRABEL">
+        <Sender>0088</Sender>
+        <Recipient>1088</Recipient>
+    </MessageHeader>
+    <G2B_ReplyPayload>
+        <JourneyProfile JP_Status="Unavailable">
+            <TrainIdentification>
+                <OTN_ID>
+                    <teltsi_Company>1088</teltsi_Company>
+                    <teltsi_OperationalTrainNumber>9232</teltsi_OperationalTrainNumber>
+                    <AdditionalTrainNumber></AdditionalTrainNumber>
+                    <teltsi_StartDate>2022-05-17</teltsi_StartDate>
+                </OTN_ID>
+            </TrainIdentification>
+            <SegmentProfileReference SP_ID="877-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T10:52:00Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1837"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T10:52:18Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1217"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T10:59:30Z" TP_StopSkipPass="Stopping_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1839"/>
+                    </TimingPointReference>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T11:01:00Z"/>
+                </TimingPointConstraints>
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="876-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T10:59:30Z" TP_StopSkipPass="Stopping_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1839"/>
+                    </TimingPointReference>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T11:01:00Z"/>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:10:12Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1739"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="807-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:10:12Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1739"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:11:12Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="764"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="771-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:11:12Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="764"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:16:00Z" arrivalWindow="PT1M" TP_StopSkipPass="Stopping_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="37"/>
+                    </TimingPointReference>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T11:19:00Z"/>
+                </TimingPointConstraints>
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="889-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:16:00Z" arrivalWindow="PT1M" TP_StopSkipPass="Stopping_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="37"/>
+                    </TimingPointReference>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T11:19:00Z"/>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:20:48Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1840"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="888-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:20:48Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1840"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:21:42Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1584"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1030-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:21:42Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1584"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:23:00Z" arrivalWindow="PT1M" TP_StopSkipPass="Stopping_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="139"/>
+                    </TimingPointReference>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T11:25:00Z"/>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:26:06Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1506"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="226-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:26:06Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1506"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:26:36Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="864"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:27:18Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="866"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:28:06Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="590"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:29:06Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="644"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="64-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:29:06Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="644"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:31:06Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="336"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:32:12Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1083"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:33:42Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="40"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1992-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:33:42Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="40"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:34:12Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="811"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1991-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:34:12Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="811"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:37:00Z" arrivalWindow="PT1M" TP_StopSkipPass="Stopping_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="810"/>
+                    </TimingPointReference>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T11:39:00Z"/>
+                </TimingPointConstraints>
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1990-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:37:00Z" arrivalWindow="PT1M" TP_StopSkipPass="Stopping_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="810"/>
+                    </TimingPointReference>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T11:39:00Z"/>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:41:30Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1347"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1229-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:41:30Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1347"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:46:30Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1355"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1241-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:46:30Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1355"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:47:30Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1357"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1238-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:47:30Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1357"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:50:00Z" arrivalWindow="PT2M" TP_StopSkipPass="Stopping_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="219"/>
+                    </TimingPointReference>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T11:53:00Z"/>
+                </TimingPointConstraints>
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1504-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:50:00Z" arrivalWindow="PT2M" TP_StopSkipPass="Stopping_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="219"/>
+                    </TimingPointReference>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T11:53:00Z"/>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:55:12Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1736"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1503-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:55:12Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1736"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:56:30Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1641"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1480-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:56:30Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1641"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:57:18Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1260"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:58:36Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="325"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:59:00Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1523"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1214-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:59:00Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1523"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T11:59:18Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="388"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:00:00Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="521"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:01:54Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1048"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1354-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:01:54Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="1048"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:03:30Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="241"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1353-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:03:30Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="241"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:05:00Z" arrivalWindow="PT1M" TP_StopSkipPass="Stopping_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="221"/>
+                    </TimingPointReference>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T12:08:00Z"/>
+                </TimingPointConstraints>
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1434-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:05:00Z" arrivalWindow="PT1M" TP_StopSkipPass="Stopping_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="221"/>
+                    </TimingPointReference>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T12:08:00Z"/>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:09:48Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="216"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:11:30Z" arrivalWindow="PT30S" TP_StopSkipPass="Stopping_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="215"/>
+                    </TimingPointReference>
+                    <StoppingPointDepartureDetails departureTime="2022-05-17T12:13:00Z"/>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:14:24Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="217"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:15:18Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="305"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileReference>
+            <SegmentProfileReference SP_ID="1428-2" SP_VersionMajor="1" SP_VersionMinor="0">
+                <SP_Zone>
+                    <IM_ID>0088</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:15:18Z" TP_StopSkipPass="Passing_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="305"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_PlannedLatestArrivalTime="2022-05-17T12:17:00Z" TP_StopSkipPass="Stopping_Point">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="220"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+            </SegmentProfileReference>
+        </JourneyProfile>
+    </G2B_ReplyPayload>
+</SFERA_G2B_ReplyMessage>
