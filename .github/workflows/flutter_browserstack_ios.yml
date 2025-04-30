@@ -24,15 +24,15 @@ on:
       - 'das_client/**'
     branches: [ "main" ]
 
-strategy:
-  matrix:
-    include: # will run three jobs in parallel
-      - file-nr: "1"
-      - file-nr: "2"
-      - file-nr: "3"
-
 jobs:
   build:
+    strategy:
+      matrix:
+        include: # will run three jobs in parallel
+          - file-nr: "1"
+          - file-nr: "2"
+          - file-nr: "3"
+
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
