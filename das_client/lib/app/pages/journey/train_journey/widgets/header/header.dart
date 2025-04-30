@@ -1,11 +1,12 @@
 import 'dart:async';
+
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/main_container.dart';
+import 'package:das_client/app/pages/journey/train_journey/widgets/header/time_container.dart';
+import 'package:das_client/app/widgets/extended_header_container.dart';
 import 'package:das_client/brightness/brightness_manager.dart';
 import 'package:das_client/brightness/brightness_modal_sheet.dart';
 import 'package:das_client/di.dart';
 import 'package:flutter/material.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/header/main_container.dart';
-import 'package:das_client/app/pages/journey/train_journey/widgets/header/time_container.dart';
-import 'package:das_client/app/widgets/extended_header_container.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class Header extends StatefulWidget {
@@ -32,7 +33,7 @@ class _HeaderState extends State<Header> {
     _brightnessManager.setBrightness(minBrightness);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      BrightnessModalSheet.openBrightnessModalSheetIfNeeded(context);
+      BrightnessModalSheet.openIfNeeded(context);
     });
   }
 

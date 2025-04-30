@@ -8,7 +8,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class BrightnessModalSheet extends StatelessWidget {
   const BrightnessModalSheet({super.key});
 
-  static Future<void> openBrightnessModalSheetIfNeeded(BuildContext context) async {
+  static Future<void> openIfNeeded(BuildContext context) async {
     final brightnessManager = DI.get<BrightnessManager>();
     final hasPermission = await brightnessManager.hasWriteSettingsPermission();
 
@@ -23,32 +23,21 @@ class BrightnessModalSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(sbbDefaultSpacing),
-        child: SafeArea(
-          child: _body(context),
-        ),
-      ),
+    return Padding(
+      padding: const EdgeInsets.all(sbbDefaultSpacing),
+      child: _body(context),
     );
   }
 
   Widget _body(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(
-          context.l10n.w_modal_sheet_all_permissions,
-          textAlign: TextAlign.center,
-          style: DASTextStyles.largeRoman,
-        ),
-        SizedBox(height: sbbDefaultSpacing * 2),
         Text(
           context.l10n.w_modal_sheet_permission_brightness,
           style: DASTextStyles.mediumRoman,
         ),
-        const Spacer(),
+        SizedBox(height: sbbDefaultSpacing * 2),
         SBBPrimaryButton(
           label: context.l10n.w_modal_sheet_button_grant_permission,
           onPressed: () async {

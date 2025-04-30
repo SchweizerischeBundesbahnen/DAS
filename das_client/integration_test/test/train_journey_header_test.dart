@@ -7,8 +7,8 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/radio_contact.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/header/time_container.dart';
 import 'package:das_client/app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
-import 'package:das_client/brightness/brightness_manager.dart';
 import 'package:das_client/app/widgets/indicator_wrapper.dart';
+import 'package:das_client/brightness/brightness_manager.dart';
 import 'package:das_client/di.dart';
 import 'package:das_client/util/format.dart';
 import 'package:flutter/material.dart';
@@ -414,6 +414,8 @@ Future<void> main() async {
       // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
       await findAndDismissBrightnessModalSheet(tester);
 
+      mockBrightnessManager.writeSettingsPermission = true;
+
       await loadTrainJourney(tester, trainNumber: 'T6');
 
       // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
@@ -466,6 +468,8 @@ Future<void> main() async {
 
       // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
       await findAndDismissBrightnessModalSheet(tester);
+
+      mockBrightnessManager.writeSettingsPermission = true;
 
       await loadTrainJourney(tester, trainNumber: 'T6');
 
