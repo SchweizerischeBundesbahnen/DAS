@@ -1,15 +1,16 @@
-import 'package:audioplayers/audioplayers.dart';
-import 'package:auth/component.dart';
-import 'package:battery_plus/battery_plus.dart';
 import 'package:app/app/bloc/train_journey_cubit.dart';
 import 'package:app/app/bloc/ux_testing_cubit.dart';
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/brightness/brightness_manager_impl.dart';
 import 'package:app/flavor.dart';
-import 'package:app/service/backend_service.dart';
 import 'package:app/sfera/sfera_component.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:auth/component.dart';
+import 'package:battery_plus/battery_plus.dart';
 import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
+import 'package:http_x/component.dart';
+import 'package:logger/component.dart';
 import 'package:mqtt/component.dart';
 import 'package:sbb_oidc/sbb_oidc.dart';
 import 'package:screen_brightness/screen_brightness.dart';
@@ -54,8 +55,8 @@ extension GetItX on GetIt {
     registerOidcClient(useTms: useTms);
     registerAzureAuthenticator();
     registerMqttComponent(useTms: useTms);
+    registerDasLogTree();
     registerSferaComponents(useTms: useTms);
-    registerBackendService();
     registerBlocs();
     registerBattery();
     registerAudioPlayer();
@@ -67,7 +68,7 @@ extension GetItX on GetIt {
     registerLazySingleton<ScreenBrightness>(() => ScreenBrightness());
 
     // Then register BrightnessManager implementation using the ScreenBrightness instance
-    registerLazySingleton<BrightnessManager>(() => BrightnessManagerImpl(get<ScreenBrightness>()));
+    registerLazySingleton<BrightnessManager>(() => BrightnessManagerImpl(DI.get<ScreenBrightness>()));
   }
 
   void registerFlavor(Flavor flavor) {
@@ -76,16 +77,24 @@ extension GetItX on GetIt {
 
   void registerTokenSpecProvider({bool useTms = false}) {
     factoryFunc() {
-      final flavor = get<Flavor>();
+      final flavor = DI.get<Flavor>();
       return useTms ? flavor.tmsAuthenticatorConfig!.tokenSpecs : flavor.authenticatorConfig.tokenSpecs;
     }
 
     registerSingleton<TokenSpecProvider>(factoryFunc());
   }
 
+  void registerAuthorizationProvider() {
+    factoryFunc() {
+      return _AuthorizationProvider(authenticator: DI.get());
+    }
+
+    registerFactory<AuthProvider>(factoryFunc);
+  }
+
   void registerOidcClient({bool useTms = false}) {
     factoryFunc() {
-      final flavor = get<Flavor>();
+      final flavor = DI.get<Flavor>();
       final authenticatorConfig = useTms ? flavor.tmsAuthenticatorConfig! : flavor.authenticatorConfig;
       return SBBOpenIDConnect.createClient(
         discoveryUrl: authenticatorConfig.discoveryUrl,
@@ -99,22 +108,39 @@ extension GetItX on GetIt {
   }
 
   void registerMqttComponent({bool useTms = false}) {
-    final flavor = get<Flavor>();
+    final flavor = DI.get<Flavor>();
 
-    registerLazySingleton<MqttClientConnector>(
-        () => MqttComponent.createMqttClientConnector(sferaAuthService: get(), authenticator: get(), useTms: useTms));
+    registerLazySingleton<MqttClientConnector>(() =>
+        MqttComponent.createMqttClientConnector(sferaAuthService: DI.get(), authenticator: DI.get(), useTms: useTms));
 
     registerLazySingleton<MqttService>(() => MqttComponent.createMqttService(
         mqttUrl: useTms ? flavor.tmsMqttUrl! : flavor.mqttUrl,
-        mqttClientConnector: get(),
+        mqttClientConnector: DI.get(),
         prefix: flavor.mqttTopicPrefix));
+  }
+
+  void registerDasLogTree() {
+    factoryFunc() {
+      final flavor = DI.get<Flavor>();
+
+      final httpClient = createHttpClient(
+        authorizationProvider: _AuthorizationProvider(authenticator: DI.get()),
+      );
+
+      return LoggerComponent.createDasLogTree(httpClient: httpClient, baseUrl: flavor.backendUrl);
+    }
+
+    registerSingletonWithDependencies<LogTree>(
+      factoryFunc,
+      dependsOn: [Authenticator],
+    );
   }
 
   void registerAzureAuthenticator() {
     factoryFunc() {
       return AuthenticationComponent.createAzureAuthenticator(
-        oidcClient: get(),
-        tokenSpecs: get(),
+        oidcClient: DI.get(),
+        tokenSpecs: DI.get(),
       );
     }
 
@@ -125,31 +151,25 @@ extension GetItX on GetIt {
   }
 
   void registerSferaComponents({bool useTms = false}) {
-    final flavor = get<Flavor>();
+    final flavor = DI.get<Flavor>();
 
     registerLazySingleton<SferaDatabaseRepository>(() => SferaComponent.createDatabaseRepository());
     registerLazySingleton<SferaAuthService>(() => SferaComponent.createSferaAuthService(
-        authenticator: get(), tokenExchangeUrl: useTms ? flavor.tmsTokenExchangeUrl! : flavor.tokenExchangeUrl));
+        authenticator: DI.get(), tokenExchangeUrl: useTms ? flavor.tmsTokenExchangeUrl! : flavor.tokenExchangeUrl));
 
     registerLazySingleton<SferaService>(
-      () => SferaComponent.createSferaService(mqttService: get(), sferaDatabaseRepository: get(), authenticator: get()),
+      () => SferaComponent.createSferaService(
+          mqttService: DI.get(), sferaDatabaseRepository: DI.get(), authenticator: DI.get()),
       dispose: (service) => service.dispose(),
     );
 
     registerLazySingleton<SferaLocalService>(
-        () => SferaComponent.createSferaLocalService(sferaDatabaseRepository: get()));
-  }
-
-  void registerBackendService() {
-    final flavor = get<Flavor>();
-    registerSingletonWithDependencies<BackendService>(
-        () => BackendService(authenticator: DI.get(), baseUrl: flavor.backendUrl),
-        dependsOn: [Authenticator]);
+        () => SferaComponent.createSferaLocalService(sferaDatabaseRepository: DI.get()));
   }
 
   void registerBlocs() {
-    registerLazySingleton<TrainJourneyCubit>(() => TrainJourneyCubit(sferaService: get()));
-    registerLazySingleton<UxTestingCubit>(() => UxTestingCubit(sferaService: get())..initialize());
+    registerLazySingleton<TrainJourneyCubit>(() => TrainJourneyCubit(sferaService: DI.get()));
+    registerLazySingleton<UxTestingCubit>(() => UxTestingCubit(sferaService: DI.get())..initialize());
   }
 
   void registerBattery() {
@@ -158,5 +178,18 @@ extension GetItX on GetIt {
 
   void registerAudioPlayer() {
     registerLazySingleton<AudioPlayer>(() => AudioPlayer());
+  }
+}
+
+class _AuthorizationProvider implements AuthProvider {
+  const _AuthorizationProvider({required this.authenticator});
+
+  final Authenticator authenticator;
+
+  @override
+  Future<String> call({String? tokenId}) async {
+    final oidcToken = await authenticator.token(tokenId: tokenId);
+    final accessToken = oidcToken.accessToken;
+    return '${oidcToken.tokenType} $accessToken';
   }
 }

@@ -1,21 +1,21 @@
 import 'dart:io';
 
-import 'package:logger/src/log_entry.dart';
-import 'package:logger/src/log_level.dart';
-import 'package:logger/src/log_service.dart';
 import 'package:app/util/device_id_info.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:fimber/fimber.dart';
+import 'package:logger/src/data/logger_repo.dart';
+import 'package:logger/src/log_entry.dart';
+import 'package:logger/src/log_level.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class DasLogTree extends LogTree {
-  final LogService _logService;
-  late Future<void> _initialized;
-  final Map<String, String> metadata = {};
-
-  DasLogTree({required LogService logService}) : _logService = logService {
+  DasLogTree({required LoggerRepo loggerRepo}) : _loggerRepo = loggerRepo {
     _initialized = _init();
   }
+
+  final LoggerRepo _loggerRepo;
+  final Map<String, String> metadata = {};
+  late Future<void> _initialized;
 
   Future<void> _init() async {
     Fimber.i('Initializing DasLogTree...');
@@ -68,7 +68,7 @@ class DasLogTree extends LogTree {
       messageBuilder.write('\n$stackTraceMessage');
     }
 
-    _logService.save(LogEntry(messageBuilder.toString(), _getLogLevel(level), metadata));
+    _loggerRepo.saveLog(LogEntry(messageBuilder.toString(), _getLogLevel(level), metadata));
   }
 
   LogLevel _getLogLevel(String level) {

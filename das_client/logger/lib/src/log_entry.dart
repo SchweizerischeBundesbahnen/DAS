@@ -10,19 +10,4 @@ class LogEntry {
   final String message;
   final LogLevel level;
   final Map<String, dynamic> metadata;
-
-  Map<String, dynamic> toJson() => {
-        'time': time,
-        'source': source,
-        'message': message,
-        'level': level.name,
-        'metadata': metadata,
-      };
-
-  LogEntry.fromJson(Map<String, dynamic> json)
-      : time = json['time'],
-        source = json['source'],
-        message = json['message'],
-        level = LogLevel.values.firstWhere((element) => element.name == json['level']),
-        metadata = json['metadata'];
 }

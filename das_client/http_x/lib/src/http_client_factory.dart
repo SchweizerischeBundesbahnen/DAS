@@ -4,7 +4,7 @@ import 'package:http_x/src/interceptors/authorization_interceptor.dart';
 import 'package:http_x/src/interceptors/logging_interceptor.dart';
 
 /// Creates a new HTTP client.
-Client createHttpClient({AuthorizationProvider? authorizationProvider}) {
+Client createHttpClient({AuthProvider? authorizationProvider}) {
   return InterceptedClient.build(
     client: Client(),
     interceptors: [

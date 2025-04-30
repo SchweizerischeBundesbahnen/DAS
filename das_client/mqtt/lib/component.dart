@@ -9,7 +9,7 @@ import 'package:mqtt/src/mqtt_service_impl.dart';
 export 'package:mqtt/src/mqtt_client_connector.dart';
 export 'package:mqtt/src/mqtt_service.dart';
 
-// TODO: Remove dependency to sfera component
+// TODO: Remove dependency to sfera component with AuthProvider abstract class
 class MqttComponent {
   const MqttComponent._();
 

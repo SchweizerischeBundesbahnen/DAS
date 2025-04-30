@@ -8,9 +8,23 @@ environment:
 resolution: workspace
 
 dependencies:
+  # workspaces
+  http_x: 1.0.0
+
   # https://pub.dev/packages/sbb_oidc
   sbb_oidc: ^4.1.0
+  # https://pub.dev/packages/json_annotation
+  json_annotation: ^4.9.0
+  # https://pub.dev/packages/fimber
+  fimber: ^0.7.0
+  # https://pub.dev/packages/path_provider
+  path_provider: ^2.1.5
+  # https://pub.dev/packages/synchronized
+  synchronized: ^3.3.0
 
 dev_dependencies:
-  # https://pub.dev/packages/flutter_lints
-  flutter_lints: ^5.0.0
+  # https://pub.dev/packages/build_runner
+  build_runner: ^2.4.15
+  # https://pub.dev/packages/json_serializable
+  json_serializable: ^6.9.0
+

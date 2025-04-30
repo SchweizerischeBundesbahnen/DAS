@@ -46,25 +46,21 @@ dependencies:
   # https://pub.dev/packages/intl
   intl: ^0.19.0
   # https://pub.dev/packages/isar
-  isar: ^4.0.0-dev.14
+  isar: 4.0.0-dev.14
   # https://pub.dev/packages/isar_flutter_libs
-  isar_flutter_libs: ^4.0.0-dev.14
+  isar_flutter_libs: 4.0.0-dev.14
   # https://pub.dev/packages/iso_duration
   iso_duration: ^0.1.1
   # https://pub.dev/packages/meta
   meta: ^1.15.0
   # https://pub.dev/packages/package_info_plus
   package_info_plus: ^8.3.0
-  # https://pub.dev/packages/path_provider
-  path_provider: ^2.1.5
   # https://pub.dev/packages/provider
   provider: ^6.1.4
   # https://pub.dev/packages/rxdart
   rxdart: ^0.28.0
   # https://pub.dev/packages/sbb_design_system_mobile
   sbb_design_system_mobile: ^3.0.0
-  # https://pub.dev/packages/synchronized
-  synchronized: ^3.3.0
   # https://pub.dev/packages/volume_controller
   volume_controller: ^3.3.3
   # https://pub.dev/packages/wakelock_plus
