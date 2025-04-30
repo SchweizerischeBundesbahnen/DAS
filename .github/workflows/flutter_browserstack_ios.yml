@@ -24,16 +24,18 @@ on:
       - 'das_client/**'
     branches: [ "main" ]
 
+strategy:
+  matrix:
+    include: # will run three jobs in parallel
+      - file-nr: "1"
+      - file-nr: "2"
+      - file-nr: "3"
+
 jobs:
   build:
-    # required for xcode 14 to be available
-    runs-on: macos-13
+    runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: maxim-lobanov/setup-xcode@v1
-      with:
-        # Starting from xcode 15 there is a issue with integration tests running longer then ~6 minutes (https://github.com/flutter/flutter/issues/145143)
-        xcode-version: 14.3.1
     - uses: subosito/flutter-action@v2
       with:
         flutter-version: '3.29.3'
@@ -46,12 +48,12 @@ jobs:
         MQTT_USERNAME: ${{ secrets.MQTT_USERNAME }}
         MQTT_PASSWORD: ${{ secrets.MQTT_PASSWORD }}
       run: |
-        flutter build ios --flavor dev --release --no-codesign -t integration_test/app_test.dart --no-tree-shake-icons --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD
+        flutter build ios --flavor dev --release --no-codesign -t integration_test/app_test_ios_${{ matrix.file-nr }}.dart --no-tree-shake-icons --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD
         pushd ios
         xcodebuild -workspace Runner.xcworkspace -scheme dev -config Flutter/Release.xcconfig -derivedDataPath ../build/ios_integration -sdk iphoneos build-for-testing CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
         popd
         pushd build/ios_integration/Build/Products
-        zip -r app-integrationtest-release.zip Release-iphoneos dev_dev_iphoneos*-arm64.xctestrun
+        zip -r app-integrationtest-release-${{ matrix.file-nr }}.zip Release-iphoneos dev_dev_iphoneos*-arm64.xctestrun
         popd
     - name: Upload and Run on Browserstack
       uses: Grodien/browserstack-flutter-action@v1.4
@@ -61,5 +63,5 @@ jobs:
         project: das_client
         customId: das_client_ios
         buildTag: das_client_ios
-        testPackagePath: ${{ github.workspace }}/das_client/build/ios_integration/Build/Products/app-integrationtest-release.zip
+        testPackagePath: ${{ github.workspace }}/das_client/build/ios_integration/Build/Products/app-integrationtest-release-${{ matrix.file-nr }}.zip
         devices: iPad 9th-15
