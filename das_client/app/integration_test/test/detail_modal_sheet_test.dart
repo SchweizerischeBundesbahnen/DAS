@@ -81,7 +81,7 @@ void main() {
 
       await disconnect(tester);
     });
-    testWidgets('test modal sheet closes after 10s without touch on screen', (tester) async {
+    testWidgets('test modal sheet closes after timeout without touch on screen', (tester) async {
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: 'T8');
 
@@ -90,7 +90,8 @@ void main() {
       _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
 
       // wait till 10s idle time have passed
-      await Future.delayed(const Duration(seconds: 11));
+      final timeout = DASModalSheetController.automaticCloseAfterSeconds + 1;
+      await Future.delayed(Duration(seconds: timeout));
       await tester.pumpAndSettle();
 
       // check if modal sheet is closed
@@ -98,7 +99,7 @@ void main() {
 
       await disconnect(tester);
     });
-    testWidgets('test modal sheet does not close after 10s with automatic advancement paused', (tester) async {
+    testWidgets('test modal sheet does close after timeout with automatic advancement paused', (tester) async {
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: 'T8');
 
@@ -112,11 +113,12 @@ void main() {
       await tapElement(tester, pauseButton);
 
       // wait till 10s idle time have passed
-      await Future.delayed(const Duration(seconds: 11));
+      final timeout = DASModalSheetController.automaticCloseAfterSeconds + 1;
+      await Future.delayed(Duration(seconds: timeout));
       await tester.pumpAndSettle();
 
-      // check if modal sheet is still open
-      _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
+      // check if modal sheet is closed
+      expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
 
       await disconnect(tester);
     });

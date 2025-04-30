@@ -11,17 +11,14 @@ enum _ControllerState { closed, expanded, maximized }
 
 /// Used to open and close the [DasModalSheet] and handle animation.
 class DASModalSheetController {
+  static int automaticCloseAfterSeconds = 10;
+
   DASModalSheetController({
     this.animationDuration = const Duration(milliseconds: 150),
     this.maxExpandedWidth = 300.0,
-    this.automaticCloseAfterSeconds = 10,
-    this.isAutomaticCloseActive = false,
     this.onClose,
     this.onOpen,
   }) : _state = _ControllerState.closed;
-
-  bool isAutomaticCloseActive;
-  final int automaticCloseAfterSeconds;
 
   /// defines animation duration for opening and full-width extension of modal sheet.
   final Duration animationDuration;
@@ -95,18 +92,12 @@ class DASModalSheetController {
     resetAutomaticClose();
   }
 
-  /// activates or deactivates automatic close. Internally calls [resetAutomaticClose].
-  void setAutomaticClose({required bool isActivated}) {
-    isAutomaticCloseActive = isActivated;
-    resetAutomaticClose();
-  }
-
   /// resets timer for automatic close when activated and modal sheet is open
   void resetAutomaticClose() {
     _idleTimer?.cancel();
-    if (isAutomaticCloseActive && isOpen) {
+    if (isOpen) {
       _idleTimer = Timer(Duration(seconds: automaticCloseAfterSeconds), () {
-        if (isAutomaticCloseActive) {
+        if (isOpen) {
           Fimber.d('Screen idle time of $automaticCloseAfterSeconds seconds reached. Closing DAS modal sheet.');
           close();
         }

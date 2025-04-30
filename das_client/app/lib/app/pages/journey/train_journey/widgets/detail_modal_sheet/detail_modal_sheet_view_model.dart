@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:app/app/pages/journey/train_journey/automatic_advancement_controller.dart';
 import 'package:app/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_tab.dart';
@@ -13,11 +14,11 @@ import 'package:app/model/journey/speeds.dart';
 import 'package:rxdart/rxdart.dart';
 
 class DetailModalSheetViewModel {
-  DetailModalSheetViewModel({required this.automaticAdvancementController}) {
+  DetailModalSheetViewModel({required this.onOpen}) {
     _init();
   }
 
-  final AutomaticAdvancementController automaticAdvancementController;
+  final VoidCallback onOpen;
   late DASModalSheetController controller;
 
   final _rxCommunicationNetworkType = BehaviorSubject<CommunicationNetworkType?>();
@@ -87,19 +88,12 @@ class DetailModalSheetViewModel {
 
   void _initController() {
     controller = DASModalSheetController(
-      isAutomaticCloseActive: automaticAdvancementController.isActive,
       onClose: () => _rxIsModalSheetOpen.add(false),
       onOpen: () {
         _rxIsModalSheetOpen.add(true);
-        if (automaticAdvancementController.isActive) {
-          automaticAdvancementController.scrollToCurrentPosition(resetAutomaticAdvancementTimer: true);
-        }
+        onOpen.call();
       },
     );
-
-    final subscription = automaticAdvancementController.isActiveStream
-        .listen((value) => controller.setAutomaticClose(isActivated: value));
-    _subscriptions.add(subscription);
   }
 
   void updateMetadata(Metadata metadata) => _rxMetadata.add(metadata);
