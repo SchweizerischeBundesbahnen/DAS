@@ -5,7 +5,7 @@ import 'package:app/flavor.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logs/component.dart';
+import 'package:logger/component.dart';
 
 Future<void> start(Flavor flavor) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +25,7 @@ Future<void> runDasApp() async {
 
 Future<void> _initLogging() async {
   Fimber.plantTree(DebugTree(useColors: false));
-  Fimber.plantTree(LogsComponent.createDasLogTree());
+  Fimber.plantTree(LoggerComponent.createDasLogTree());
 }
 
 Future<void> _initDependencyInjection(Flavor flavor) async {

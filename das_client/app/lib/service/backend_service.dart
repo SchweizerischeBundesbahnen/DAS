@@ -4,7 +4,7 @@ import 'dart:core';
 import 'package:auth/component.dart';
 import 'package:fimber/fimber.dart';
 import 'package:http/http.dart' as http;
-import 'package:logs/component.dart';
+import 'package:logger/component.dart';
 
 class BackendService {
   final Authenticator _authenticator;

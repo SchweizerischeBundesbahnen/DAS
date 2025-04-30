@@ -31,7 +31,7 @@ packages:
     source: hosted
     version: "0.4.0"
   android_intent_plus:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: android_intent_plus
       sha256: dfc1fd3a577205ae8f11e990fb4ece8c90cceabbee56fcf48e463ecf0bd6aae3
@@ -954,7 +954,7 @@ packages:
     source: hosted
     version: "4.1.0"
   screen_brightness:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: screen_brightness
       sha256: eca7bd9d2c3c688bcad14855361cab7097839400b6b4a56f62b7ae511c709958

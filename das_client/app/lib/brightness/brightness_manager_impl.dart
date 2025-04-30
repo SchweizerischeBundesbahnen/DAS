@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
-import 'package:das_client/brightness/brightness_manager.dart';
+import 'package:app/brightness/brightness_manager.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:fimber/fimber.dart';
 import 'package:android_intent_plus/android_intent.dart';

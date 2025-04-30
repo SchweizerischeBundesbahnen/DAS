@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:logs/src/log_entry.dart';
-import 'package:logs/src/log_level.dart';
-import 'package:logs/src/log_service.dart';
+import 'package:logger/src/log_entry.dart';
+import 'package:logger/src/log_level.dart';
+import 'package:logger/src/log_service.dart';
 import 'package:app/util/device_id_info.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:fimber/fimber.dart';

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:app/di.dart';
-import 'package:logs/src/log_entry.dart';
+import 'package:logger/src/log_entry.dart';
 import 'package:app/service/backend_service.dart';
 import 'package:fimber/fimber.dart';
 import 'package:path_provider/path_provider.dart';

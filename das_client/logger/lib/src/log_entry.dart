@@ -1,4 +1,4 @@
-import 'package:logs/src/log_level.dart';
+import 'package:logger/src/log_level.dart';
 
 class LogEntry {
   LogEntry(this.message, this.level, this.metadata)
