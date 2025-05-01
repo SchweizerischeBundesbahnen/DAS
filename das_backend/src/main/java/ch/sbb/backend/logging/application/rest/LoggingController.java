@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-// todo: remove api path when using APIM (#361)
-@RequestMapping(value = "api/v1/logging")
+@RequestMapping(value = "v1/logging")
 @Tag(name = "Logging", description = "API for logging")
 class LoggingController {
 
@@ -26,6 +25,7 @@ class LoggingController {
         this.loggingService = loggingService;
     }
 
+    // TODO: deprecated: has to be reworked (#769)
     @Operation(summary = "Log messages from clients", deprecated = true)
     @ApiResponse(responseCode = "200", description = "Logs successfully saved")
     @ApiResponse(responseCode = "400", description = "Invalid input",
