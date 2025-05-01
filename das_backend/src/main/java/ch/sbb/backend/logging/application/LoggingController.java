@@ -1,4 +1,4 @@
-package ch.sbb.backend.logging.application.rest;
+package ch.sbb.backend.logging.application;
 
 import ch.sbb.backend.logging.application.model.request.LogEntry;
 import ch.sbb.backend.logging.domain.service.LoggingService;

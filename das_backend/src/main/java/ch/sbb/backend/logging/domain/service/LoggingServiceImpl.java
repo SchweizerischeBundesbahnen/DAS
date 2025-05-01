@@ -4,11 +4,11 @@ import ch.sbb.backend.logging.domain.model.LogEntry;
 import ch.sbb.backend.logging.domain.repository.LoggingRepository;
 import java.util.List;
 
-public class DomainLoggingService implements LoggingService {
+public class LoggingServiceImpl implements LoggingService {
 
     private final LoggingRepository loggingRepository;
 
-    public DomainLoggingService(LoggingRepository loggingRepository) {
+    public LoggingServiceImpl(LoggingRepository loggingRepository) {
         this.loggingRepository = loggingRepository;
     }
 

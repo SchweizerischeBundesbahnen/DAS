@@ -1,4 +1,4 @@
-package ch.sbb.backend.logging;
+package ch.sbb.backend.logging.application;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -49,7 +49,7 @@ class LoggingControllerTest {
             """;
 
         mockMvc.perform(
-                post("/api/v1/logging/logs")
+                post("/v1/logging/logs")
                     .with(jwt()
                         .jwt(jwt -> jwt.claims(claims -> claims.put("tid", "3409e798-d567-49b1-9bae-f0be66427c54")))
                         .authorities(new SimpleGrantedAuthority("ROLE_admin")))
@@ -94,7 +94,7 @@ class LoggingControllerTest {
             """;
 
         mockMvc.perform(
-                post("/api/v1/logging/logs")
+                post("/v1/logging/logs")
                     .with(jwt()
                         .jwt(jwt -> jwt.claims(claims -> claims.put("tid", "3409e798-d567-49b1-9bae-f0be66427c54")))
                         .authorities(new SimpleGrantedAuthority("ROLE_admin")))
@@ -134,7 +134,7 @@ class LoggingControllerTest {
             """;
 
         mockMvc.perform(
-                post("/api/v1/logging/logs")
+                post("/v1/logging/logs")
                     .with(jwt()
                         .jwt(jwt -> jwt.claims(claims -> claims.put("tid", "3409e798-d567-49b1-9bae-f0be66427c54")))
                         .authorities(new SimpleGrantedAuthority("ROLE_admin")))

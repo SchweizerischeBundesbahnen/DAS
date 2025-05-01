@@ -1,11 +1,10 @@
-package ch.sbb.backend.logging;
+package ch.sbb.backend.logging.domain.service;
 
 import ch.sbb.backend.logging.domain.model.LogEntry;
 import ch.sbb.backend.logging.domain.model.LogLevel;
 import ch.sbb.backend.logging.domain.model.LogTarget;
 import ch.sbb.backend.logging.domain.model.Tenant;
 import ch.sbb.backend.logging.domain.repository.TenantRepository;
-import ch.sbb.backend.logging.domain.service.DomainLoggingService;
 import ch.sbb.backend.logging.infrastructure.SplunkLoggingRepository;
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -14,9 +13,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-class DomainLoggingServiceTest {
+class LoggingServiceImplTest {
 
-    private DomainLoggingService sut;
+    private LoggingServiceImpl sut;
     private TenantRepository tenantRepository;
     private SplunkLoggingRepository splunkLoggingRepository;
 
@@ -24,7 +23,7 @@ class DomainLoggingServiceTest {
     void setUp() {
         tenantRepository = Mockito.mock(TenantRepository.class);
         splunkLoggingRepository = Mockito.mock(SplunkLoggingRepository.class);
-        sut = new DomainLoggingService(splunkLoggingRepository);
+        sut = new LoggingServiceImpl(splunkLoggingRepository);
     }
 
     @Test

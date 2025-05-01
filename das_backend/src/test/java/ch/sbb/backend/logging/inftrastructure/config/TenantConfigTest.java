@@ -1,4 +1,4 @@
-package ch.sbb.backend.logging;
+package ch.sbb.backend.logging.inftrastructure.config;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

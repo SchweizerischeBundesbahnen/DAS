@@ -5,11 +5,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(name = "RuFeature", description = "RU specific feature toggle.")
 public record RuFeatureDto(
-    @Schema(description = "Relates to teltsi_CompanyCode resp. teltsi_Company according to SFERA.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Relates to teltsi_CompanyCode (according to SFERA).", requiredMode = Schema.RequiredMode.REQUIRED)
     String companyCodeRics,
 
-    @Schema(description = "The identifier of the feature. This can be one of three values: 'WARN', 'KOA', or 'GESTES'.",
-        requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "The identifier of the feature.",
+        examples = {"WARN", "KOA", "GESTES"})
     String name,
 
     @Schema(description = "Toggle indicating whether the feature is enabled.",

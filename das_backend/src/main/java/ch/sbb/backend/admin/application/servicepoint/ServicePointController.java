@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Service Points", description = "API for service points")
 public class ServicePointController {
 
-    public static final String PATH_SEGMENT_SERVICE_POINTS = "/service-points";
+    static final String PATH_SEGMENT_SERVICE_POINTS = "/service-points";
 
-    public static final String API_SERVICE_POINTS = ApiDocumentation.VERSION_URI_V1 + PATH_SEGMENT_SERVICE_POINTS;
+    static final String API_SERVICE_POINTS = ApiDocumentation.VERSION_URI_V1 + PATH_SEGMENT_SERVICE_POINTS;
 
     private final ServicePointService servicePointService;
 
