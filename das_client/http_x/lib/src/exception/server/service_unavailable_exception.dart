@@ -13,10 +13,4 @@ class ServiceUnavailableException extends HttpException {
 
   @override
   String get statusLabel => '503 Service Unavailable';
-
-  @override
-  String toString() {
-    final jsonString = toJsonString(pretty: true);
-    return '$statusLabel $jsonString';
-  }
 }

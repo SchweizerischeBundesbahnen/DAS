@@ -14,10 +14,4 @@ class BadRequestException extends HttpException {
 
   @override
   String get statusLabel => '400 Bad Request';
-
-  @override
-  String toString() {
-    final jsonString = toJsonString(pretty: true);
-    return '$statusLabel $jsonString';
-  }
 }

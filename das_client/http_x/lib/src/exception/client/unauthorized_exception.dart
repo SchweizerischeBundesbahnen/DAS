@@ -18,10 +18,4 @@ class UnauthorizedException extends HttpException {
 
   @override
   String get statusLabel => '401 Unauthorized';
-
-  @override
-  String toString() {
-    final jsonString = toJsonString(pretty: true);
-    return '$statusLabel $jsonString';
-  }
 }

@@ -18,10 +18,4 @@ class ForbiddenException extends HttpException {
 
   @override
   String get statusLabel => '403 Forbidden';
-
-  @override
-  String toString() {
-    final jsonString = toJsonString(pretty: true);
-    return '$statusLabel $jsonString';
-  }
 }

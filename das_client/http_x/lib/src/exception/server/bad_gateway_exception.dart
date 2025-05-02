@@ -13,10 +13,4 @@ class BadGatewayException extends HttpException {
 
   @override
   String get statusLabel => '502 Bad Gateway';
-
-  @override
-  String toString() {
-    final jsonString = toJsonString(pretty: true);
-    return '$statusLabel $jsonString';
-  }
 }

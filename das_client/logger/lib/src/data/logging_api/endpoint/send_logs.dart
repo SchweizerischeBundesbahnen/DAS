@@ -24,7 +24,7 @@ class SendLogsResponse {
 
   factory SendLogsResponse.fromHttpResponse(Response response) {
     final status = response.statusCode;
-    final isSuccess = status == 201;
+    final isSuccess = status == 200;
     if (isSuccess) {
       return SendLogsResponse(headers: response.headers);
     }

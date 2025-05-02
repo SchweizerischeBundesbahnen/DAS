@@ -50,8 +50,7 @@ class HttpException {
 
   @override
   String toString() {
-    final jsonString = toJsonString(pretty: true);
-    return 'HttpException $statusCode -> $jsonString';
+    return 'HttpException(label="$statusLabel" status=$statusCode, url=$url, body="${response.body}")';
   }
 }
 

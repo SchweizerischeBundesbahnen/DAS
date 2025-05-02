@@ -84,9 +84,9 @@ extension GetItX on GetIt {
     registerSingleton<TokenSpecProvider>(factoryFunc());
   }
 
-  void registerAuthorizationProvider() {
+  void registerAuthProvider() {
     factoryFunc() {
-      return _AuthorizationProvider(authenticator: DI.get());
+      return _AuthProvider(authenticator: DI.get());
     }
 
     registerFactory<AuthProvider>(factoryFunc);
@@ -124,7 +124,7 @@ extension GetItX on GetIt {
       final flavor = DI.get<Flavor>();
 
       final httpClient = createHttpClient(
-        authorizationProvider: _AuthorizationProvider(authenticator: DI.get()),
+        authProvider: _AuthProvider(authenticator: DI.get()),
       );
 
       return LoggerComponent.createDasLogTree(httpClient: httpClient, baseUrl: flavor.backendUrl);
@@ -181,8 +181,8 @@ extension GetItX on GetIt {
   }
 }
 
-class _AuthorizationProvider implements AuthProvider {
-  const _AuthorizationProvider({required this.authenticator});
+class _AuthProvider implements AuthProvider {
+  const _AuthProvider({required this.authenticator});
 
   final Authenticator authenticator;
 

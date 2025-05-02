@@ -6,7 +6,8 @@ import 'package:logger/src/data/dto/log_entry_dto.dart';
 import 'package:path_provider/path_provider.dart';
 
 class LoggerCacheService {
-  static const _maxFileSize = 50 * 1024;
+  /// TODO: currently set below 8kb. See: https://github.com/SchweizerischeBundesbahnen/DAS/issues/850
+  static const _maxFileSize = 7 * 1024;
   static const _prefix = 'das-log';
   static const _lastSavedFileName = '$_prefix-lastSavedFile.json';
 

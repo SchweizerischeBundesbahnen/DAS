@@ -14,10 +14,4 @@ class NotImplementedException extends HttpException {
 
   @override
   String get statusLabel => '501 Not Implemented';
-
-  @override
-  String toString() {
-    final jsonString = toJsonString(pretty: true);
-    return '$statusLabel $jsonString';
-  }
 }

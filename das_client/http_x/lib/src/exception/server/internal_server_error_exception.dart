@@ -13,10 +13,4 @@ class InternalServerErrorException extends HttpException {
 
   @override
   String get statusLabel => '500 Internal Server Error';
-
-  @override
-  String toString() {
-    final jsonString = toJsonString(pretty: true);
-    return '$statusLabel $jsonString';
-  }
 }
