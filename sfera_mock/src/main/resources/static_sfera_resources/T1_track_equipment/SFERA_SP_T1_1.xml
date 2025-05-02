@@ -54,8 +54,6 @@
                 <teltsi_LocationPrimaryCode>3002</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Genève-Aéroport</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Genève-Aéroport"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1000" endLocation="1000" TAF_TAP_location_abbreviation="GEN"
@@ -65,8 +63,6 @@
                 <teltsi_LocationPrimaryCode>3003</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Genève</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Genève"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1500" endLocation="1500" TAF_TAP_location_abbreviation="GLA"
@@ -76,8 +72,6 @@
                 <teltsi_LocationPrimaryCode>3004</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Gland</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Gland"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="2000" endLocation="2000" TAF_TAP_location_abbreviation="GIL"
@@ -87,8 +81,6 @@
                 <teltsi_LocationPrimaryCode>3005</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Gilly-Bursinel</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Gilly-Bursinel"/>
         </TAF_TAP_Location>
 
         <NetworkSpecificArea startEndQualifier="Ends" endLocation="1600">

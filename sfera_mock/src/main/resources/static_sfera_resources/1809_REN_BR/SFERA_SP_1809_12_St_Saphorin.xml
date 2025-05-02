@@ -26,7 +26,6 @@
                 <teltsi_LocationPrimaryCode>1127</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>St-Saphorin</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" text="St-Saphorin"/>
 
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>

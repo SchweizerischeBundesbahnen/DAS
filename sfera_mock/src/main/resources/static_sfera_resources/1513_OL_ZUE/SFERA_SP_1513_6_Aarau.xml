@@ -62,8 +62,6 @@
                 <teltsi_LocationPrimaryCode>2113</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Aarau</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!-- todo: remove -->
-            <TAF_TAP_LocationName language="de" text="Aarau"/>
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>bracketStation</NSP_GroupName>
@@ -134,8 +132,6 @@
                 <teltsi_LocationPrimaryCode>2136</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Aarau GB</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!-- todo: remove -->
-            <TAF_TAP_LocationName language="de" text="Aarau GB"/>
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>bracketStation</NSP_GroupName>

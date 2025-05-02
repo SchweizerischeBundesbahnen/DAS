@@ -26,7 +26,6 @@
                 <teltsi_LocationPrimaryCode>19693</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Taillepied</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" text="Taillepied"/>
 
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>

@@ -56,8 +56,6 @@
                 <teltsi_LocationPrimaryCode>0207</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Solothurn</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Solothurn"/>
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>bracketStation</NSP_GroupName>
@@ -73,8 +71,6 @@
                 <teltsi_LocationPrimaryCode>0208</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Solothurn West</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Solothurn West"/>
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>bracketStation</NSP_GroupName>
@@ -90,8 +86,6 @@
                 <teltsi_LocationPrimaryCode>0209</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Langendorf</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Langendorf"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="5300" endLocation="5300" TAF_TAP_location_abbreviation="LOM"
@@ -101,8 +95,6 @@
                 <teltsi_LocationPrimaryCode>0210</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Lommiswil</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Lommiswil"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="8000" endLocation="8000" TAF_TAP_location_abbreviation="IM_H"
@@ -112,8 +104,6 @@
                 <teltsi_LocationPrimaryCode>0211</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Im Holz</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Im Holz"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="9600" endLocation="9600" TAF_TAP_location_abbreviation="OB_SO"
@@ -123,8 +113,6 @@
                 <teltsi_LocationPrimaryCode>0212</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Oberdorf SO</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Oberdorf SO"/>
         </TAF_TAP_Location>
     </SP_Areas>
     <SP_ContextInformation>

@@ -44,7 +44,6 @@
                 <teltsi_LocationPrimaryCode>1502</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Saxon</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" text="Saxon"/>
 
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
