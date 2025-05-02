@@ -55,8 +55,6 @@
                 <teltsi_LocationPrimaryCode>3508</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Dietikon</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!-- todo: remove -->
-            <TAF_TAP_LocationName language="de" text="Dietikon"/>
 
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>

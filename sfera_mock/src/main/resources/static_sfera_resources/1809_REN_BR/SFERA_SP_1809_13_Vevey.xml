@@ -26,7 +26,6 @@
                 <teltsi_LocationPrimaryCode>1200</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Vevey</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" text="Vevey"/>
 
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>

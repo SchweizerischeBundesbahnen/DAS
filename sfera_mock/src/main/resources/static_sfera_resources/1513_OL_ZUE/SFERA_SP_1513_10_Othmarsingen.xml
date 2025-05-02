@@ -37,8 +37,6 @@
                 <teltsi_LocationPrimaryCode>2105</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Othmarsingen</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!-- todo: remove -->
-            <TAF_TAP_LocationName language="de" text="Othmarsingen"/>
 
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>

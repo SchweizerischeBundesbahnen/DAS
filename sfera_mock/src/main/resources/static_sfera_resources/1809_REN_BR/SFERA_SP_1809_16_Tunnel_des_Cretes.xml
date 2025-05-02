@@ -26,7 +26,6 @@
                 <teltsi_LocationPrimaryCode>19440</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Tunnel des Crêtes</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" text="Tunnel des Crêtes"/>
 
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>

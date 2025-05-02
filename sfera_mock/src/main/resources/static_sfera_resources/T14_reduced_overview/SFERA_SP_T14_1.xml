@@ -54,8 +54,6 @@
                 <teltsi_LocationPrimaryCode>3001</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Bern</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Bern"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1000" endLocation="1000" TAF_TAP_location_abbreviation="WKD"
@@ -65,8 +63,6 @@
                 <teltsi_LocationPrimaryCode>3002</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Wankdorf</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Wankdorf"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1500" endLocation="1500" TAF_TAP_location_abbreviation="BDF"
@@ -76,8 +72,6 @@
                 <teltsi_LocationPrimaryCode>3003</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Burgdorf</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Burgdorf"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="2000" endLocation="2000" TAF_TAP_location_abbreviation="OL"
@@ -87,8 +81,6 @@
                 <teltsi_LocationPrimaryCode>3004</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Olten</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Olten"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="2500" endLocation="2500" TAF_TAP_location_abbreviation="ZUE"
@@ -98,8 +90,6 @@
                 <teltsi_LocationPrimaryCode>3005</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Zürich</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Zürich"/>
         </TAF_TAP_Location>
     </SP_Areas>
 

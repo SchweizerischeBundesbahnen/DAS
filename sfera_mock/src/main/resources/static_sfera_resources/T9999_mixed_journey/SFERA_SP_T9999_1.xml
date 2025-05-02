@@ -57,8 +57,6 @@
                 <teltsi_LocationPrimaryCode>9991</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Bahnhof A</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Bahnhof A"/>
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>

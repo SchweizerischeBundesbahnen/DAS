@@ -56,8 +56,6 @@
                 <teltsi_LocationPrimaryCode>8308</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Meiringen</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Meiringen"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1000" endLocation="1000" TAF_TAP_location_abbreviation="MRAB"
@@ -67,8 +65,6 @@
                 <teltsi_LocationPrimaryCode>0799</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Meiringen Alpbach</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Meiringen Alpbach"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1500" endLocation="1500" TAF_TAP_location_abbreviation="MRSS"
@@ -78,8 +74,6 @@
                 <teltsi_LocationPrimaryCode>0209</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Aareschlucht West</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Aareschlucht West"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="2000" endLocation="2000" TAF_TAP_location_abbreviation="INUN"
@@ -89,8 +83,6 @@
                 <teltsi_LocationPrimaryCode>0800</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Innertkirchen Unterwasser</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Innertkirchen Unterwasser"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="2500" endLocation="2500" TAF_TAP_location_abbreviation="INNP"
@@ -100,8 +92,6 @@
                 <teltsi_LocationPrimaryCode>8395</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Innertkirchen Grimseltor</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Innertkirchen Grimseltor"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="3000" endLocation="3000" TAF_TAP_location_abbreviation="INN"
@@ -111,8 +101,6 @@
                 <teltsi_LocationPrimaryCode>8359</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Innertkirchen Kraftwerk (Bahn)</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Innertkirchen Kraftwerk (Bahn)"/>
         </TAF_TAP_Location>
 
         <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="0" endLocation="5000">
