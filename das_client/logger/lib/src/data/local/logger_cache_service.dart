@@ -21,27 +21,14 @@ class LoggerCacheService {
     currentCacheFile.renameSync('$logPath/$_prefix-${DateTime.now().millisecondsSinceEpoch}.json');
   }
 
-  Future<void> clearCache() async {
-    for (final file in await _allCompletedLogFiles) {
-      Fimber.d('Deleting ${file.path}');
-      file.deleteSync();
-    }
-  }
+  Future<List<LogEntryDto>> getLogEntriesFrom(File logFile) async {
+    Fimber.d('Get logs from ${logFile.path}');
 
-  Future<List<LogEntryDto>> getCompletedLogs() async {
-    final List<LogEntryDto> result = [];
-    for (final file in await _allCompletedLogFiles) {
-      Fimber.d('Get logs from ${file.path}');
+    var content = logFile.readAsStringSync();
+    content = '[${content.substring(0, content.length - 1)}]'; // Remove trailing comma
 
-      var content = file.readAsStringSync();
-      content = '[${content.substring(0, content.length - 1)}]'; // Remove trailing comma
-
-      final Iterable decodedLogs = json.decode(content);
-      var entries = List<LogEntryDto>.from(decodedLogs.map((json) => LogEntryDto.fromJson(json)));
-      result.addAll(entries);
-    }
-
-    return result;
+    final Iterable decodedLogs = json.decode(content);
+    return List<LogEntryDto>.from(decodedLogs.map((json) => LogEntryDto.fromJson(json)));
   }
 
   Future<bool> isCacheThresholdExceeded() async {
@@ -62,7 +49,7 @@ class LoggerCacheService {
     return result;
   }
 
-  Future<Iterable<File>> get _allCompletedLogFiles async {
+  Future<Iterable<File>> get completedLogFiles async {
     final logPath = await _getLogPath();
     final logFiles = Directory(logPath).listSync();
     return logFiles.where((file) => _isCompletedLogFile(file)).cast<File>();

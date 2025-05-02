@@ -12,7 +12,7 @@ enum Flavor {
     tmsMqttUrl: 'wss://tms-vad-imtrackside-dev-mobile.messaging.solace.cloud',
     authenticatorConfig: _authenticatorConfigMockDev,
     tmsAuthenticatorConfig: _authenticatorConfigTmsDev,
-    backendUrl: 'https://das-backend-dev.app.sbb.ch',
+    backendUrl: 'das-backend-dev.app.sbb.ch',
     mqttTopicPrefix: 'dev/',
     color: SBBColors.peach,
     showBanner: true,
@@ -22,7 +22,7 @@ enum Flavor {
     tokenExchangeUrl: 'https://sfera-mock.app.sbb.ch/customClaim/requestToken',
     mqttUrl: 'wss://das-poc.messaging.solace.cloud',
     authenticatorConfig: _authenticatorConfigInte,
-    backendUrl: 'https://das-backend-int.app.sbb.ch',
+    backendUrl: 'das-backend-int.app.sbb.ch',
     mqttTopicPrefix: '',
     color: SBBColors.black,
     showBanner: true,
@@ -32,7 +32,7 @@ enum Flavor {
     tokenExchangeUrl: 'https://sfera-mock.app.sbb.ch/customClaim/requestToken',
     mqttUrl: 'wss://das-poc.messaging.solace.cloud',
     authenticatorConfig: _authenticatorConfigProd,
-    backendUrl: 'https://das-backend-dev.app.sbb.ch',
+    backendUrl: 'das-backend-dev.app.sbb.ch',
     mqttTopicPrefix: '',
   );
 

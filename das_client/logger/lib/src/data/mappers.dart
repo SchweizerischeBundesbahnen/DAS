@@ -14,5 +14,9 @@ extension LogEntryX on LogEntry {
 }
 
 extension LogEntryDtoListX on Iterable<LogEntryDto> {
-  String toJsonString() => jsonEncode(this.map((entry) => entry.toJsonString()));
+  String toJsonString({bool pretty = false}) {
+    final jsonList = this.map((entry) => entry.toJson()).toList();
+    final encoder = JsonEncoder.withIndent(pretty ? ' ' * 2 : null);
+    return encoder.convert(jsonList);
+  }
 }
