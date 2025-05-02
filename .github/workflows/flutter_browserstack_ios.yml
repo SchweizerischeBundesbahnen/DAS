@@ -26,12 +26,10 @@ on:
 
 jobs:
   build:
+    fail-fast: false
     strategy:
       matrix:
-        include: # will run three jobs in parallel
-          - file-nr: "1"
-          - file-nr: "2"
-          - file-nr: "3"
+        file-nr: [1,2,3]
 
     runs-on: macos-latest
     steps:
