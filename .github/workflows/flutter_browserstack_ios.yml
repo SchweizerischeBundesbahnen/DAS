@@ -23,6 +23,7 @@ on:
     paths:
       - 'das_client/**'
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
