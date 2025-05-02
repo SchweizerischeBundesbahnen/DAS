@@ -111,8 +111,6 @@
                 <teltsi_LocationPrimaryCode>3002</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Altstetten</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Altstetten"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="7500" endLocation="7500" TAF_TAP_location_abbreviation="SCH"
@@ -122,8 +120,6 @@
                 <teltsi_LocationPrimaryCode>3003</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Schlieren</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Schlieren"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="9500" endLocation="9500" TAF_TAP_location_abbreviation="GLA"
@@ -133,8 +129,6 @@
                 <teltsi_LocationPrimaryCode>3004</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Glanzenberg</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Glanzenberg"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="10900" endLocation="10900" TAF_TAP_location_abbreviation="DIE"
@@ -144,8 +138,6 @@
                 <teltsi_LocationPrimaryCode>3005</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Dietikon</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Dietikon"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="16100" endLocation="16100" TAF_TAP_location_abbreviation="KIL"
@@ -155,8 +147,6 @@
                 <teltsi_LocationPrimaryCode>3006</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Killwangen-S</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Killwangen-S"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="22200" endLocation="22200" TAF_TAP_location_abbreviation="MEL"
@@ -166,8 +156,6 @@
                 <teltsi_LocationPrimaryCode>3007</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Mellingen Heitersberg</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Mellingen Heitersberg"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="22800" endLocation="22800" TAF_TAP_location_abbreviation="MEL"
@@ -177,8 +165,6 @@
                 <teltsi_LocationPrimaryCode>3008</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Mellingen</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Mellingen"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="25900" endLocation="25900" TAF_TAP_location_abbreviation="MAG"
@@ -188,8 +174,6 @@
                 <teltsi_LocationPrimaryCode>3009</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Mägenwil</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Mägenwil"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="27700" endLocation="27700" TAF_TAP_location_abbreviation="OTH"
@@ -199,8 +183,6 @@
                 <teltsi_LocationPrimaryCode>3010</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Othmarsingen</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Othmarsingen"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="30200" endLocation="30200" TAF_TAP_location_abbreviation="GEX"
@@ -210,8 +192,6 @@
                 <teltsi_LocationPrimaryCode>3011</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Gexi</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Gexi"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="31900" endLocation="31900" TAF_TAP_location_abbreviation="LEN"
@@ -221,8 +201,6 @@
                 <teltsi_LocationPrimaryCode>3012</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Lenzburg</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Lenzburg"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="35600" endLocation="35600" TAF_TAP_location_abbreviation="RUP"
@@ -232,8 +210,6 @@
                 <teltsi_LocationPrimaryCode>3013</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Rupperswil</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!--todo: remove-->
-            <TAF_TAP_LocationName language="de" text="Rupperswil"/>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="40800" endLocation="40800" TAF_TAP_location_abbreviation="AAG"
@@ -243,8 +219,6 @@
                 <teltsi_LocationPrimaryCode>3014</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Aarau GB</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!-- todo: remove -->
-            <TAF_TAP_LocationName language="de" text="Aarau GB"/>
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>bracketStation</NSP_GroupName>
@@ -260,8 +234,6 @@
                 <teltsi_LocationPrimaryCode>3015</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Aarau</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!-- todo: remove -->
-            <TAF_TAP_LocationName language="de" text="Aarau"/>
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>bracketStation</NSP_GroupName>

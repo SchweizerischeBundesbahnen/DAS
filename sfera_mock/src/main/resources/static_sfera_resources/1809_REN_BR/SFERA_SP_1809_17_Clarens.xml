@@ -26,7 +26,6 @@
                 <teltsi_LocationPrimaryCode>1203</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Clarens</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" text="Clarens"/>
 
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>

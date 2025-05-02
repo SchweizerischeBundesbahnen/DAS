@@ -66,7 +66,6 @@
                 <teltsi_LocationPrimaryCode>1303</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Villeneuve</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" text="Villeneuve"/>
 
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
