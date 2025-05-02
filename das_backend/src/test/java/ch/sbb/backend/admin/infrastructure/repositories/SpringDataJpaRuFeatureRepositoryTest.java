@@ -1,11 +1,10 @@
 package ch.sbb.backend.admin.infrastructure.repositories;
 
-import static ch.sbb.backend.admin.domain.settings.model.RuFeatureName.GESTES;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.backend.JpaAuditingConfiguration;
 import ch.sbb.backend.TestContainerConfiguration;
-import ch.sbb.backend.admin.domain.settings.model.RuFeatureName;
+import ch.sbb.backend.admin.domain.settings.model.RuFeatureKey;
 import ch.sbb.backend.admin.infrastructure.settings.SpringDataJpaRuFeatureRepository;
 import ch.sbb.backend.admin.infrastructure.settings.model.CompanyEntity;
 import ch.sbb.backend.admin.infrastructure.settings.model.RuFeatureEntity;
@@ -35,7 +34,7 @@ class SpringDataJpaRuFeatureRepositoryTest {
         assertThat(entity.getId()).isEqualTo(1);
         assertThat(entity.getCompany().getCodeRics()).isEqualTo("1111");
         assertThat(entity.getCompany().getShortNameZis()).isEqualTo("SHORT1");
-        assertThat(entity.getName()).isEqualTo(GESTES.name());
+        assertThat(entity.getKey()).isEqualTo(RuFeatureKey.CHECKLIST_DEPARTURE_PROCESS.name());
         assertThat(entity.isEnabled()).isTrue();
         assertThat(entity.getLastModifiedBy()).isEqualTo("unit_test");
         assertThat(entity.getLastModifiedAt()).isEqualTo(LocalDateTime.parse("2025-04-17T10:18:34"));
@@ -56,7 +55,7 @@ class SpringDataJpaRuFeatureRepositoryTest {
         assertThat(entity.getCompany().getCodeRics()).isEqualTo("1111");
         assertThat(entity.getCompany().getShortNameZis()).isEqualTo("SHORT1");
 
-        assertThat(entity.getName()).isEqualTo(RuFeatureName.GESTES.name());
+        assertThat(entity.getKey()).isEqualTo(RuFeatureKey.CHECKLIST_DEPARTURE_PROCESS.name());
         assertThat(entity.isEnabled()).isFalse();
         assertThat(entity.getLastModifiedBy()).isEqualTo("unit_test");
         assertThat(entity.getLastModifiedAt()).isAfter(LocalDateTime.parse("2025-04-17T10:18:34"));
@@ -68,7 +67,7 @@ class SpringDataJpaRuFeatureRepositoryTest {
         CompanyEntity company = entityManager.find(CompanyEntity.class, 2);
         RuFeatureEntity entityToCreate = new RuFeatureEntity();
         entityToCreate.setCompany(company);
-        entityToCreate.setName("FEATURE2");
+        entityToCreate.setKey("FEATURE2");
         entityToCreate.setEnabled(true);
         underTest.save(entityToCreate);
         entityManager.flush();
@@ -78,7 +77,7 @@ class SpringDataJpaRuFeatureRepositoryTest {
         assertThat(entity.getId()).isEqualTo(2);
         assertThat(entity.getCompany().getCodeRics()).isEqualTo("2222");
         assertThat(entity.getCompany().getShortNameZis()).isEqualTo("SHORT2");
-        assertThat(entity.getName()).isEqualTo("FEATURE2");
+        assertThat(entity.getKey()).isEqualTo("FEATURE2");
         assertThat(entity.isEnabled()).isTrue();
         assertThat(entity.getLastModifiedBy()).isEqualTo("unit_test");
         assertThat(entity.getLastModifiedAt()).isNotNull();

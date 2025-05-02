@@ -1,7 +1,7 @@
 package ch.sbb.backend.admin.infrastructure.settings.model;
 
 import ch.sbb.backend.admin.domain.settings.model.RuFeature;
-import ch.sbb.backend.admin.domain.settings.model.RuFeatureName;
+import ch.sbb.backend.admin.domain.settings.model.RuFeatureKey;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
@@ -32,7 +32,7 @@ public class RuFeatureEntity {
     @JoinColumn(name = "company_id")
     private CompanyEntity company;
 
-    private String name;
+    private String key;
 
     private boolean enabled;
 
@@ -43,6 +43,6 @@ public class RuFeatureEntity {
     private LocalDateTime lastModifiedAt;
 
     public RuFeature toRuFeature() {
-        return new RuFeature(company.toCompany(), RuFeatureName.valueOf(name), enabled);
+        return new RuFeature(company.toCompany(), RuFeatureKey.valueOf(key), enabled);
     }
 }

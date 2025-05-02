@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.backend.TestContainerConfiguration;
-import ch.sbb.backend.admin.domain.settings.model.RuFeatureName;
+import ch.sbb.backend.admin.domain.settings.model.RuFeatureKey;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -32,7 +32,7 @@ class SettingsControllerTest {
         mockMvc.perform(get(API_SETTINGS))
             .andExpect(status().isOk())
             .andExpect(jsonPath("ruFeatures", hasSize(1)))
-            .andExpect(jsonPath("ruFeatures.[0].name").value(RuFeatureName.GESTES.name()))
+            .andExpect(jsonPath("ruFeatures.[0].key").value(RuFeatureKey.CHECKLIST_DEPARTURE_PROCESS.name()))
             .andExpect(jsonPath("ruFeatures.[0].companyCodeRics").value("1111"))
             .andExpect(jsonPath("ruFeatures.[0].enabled").value(true));
     }

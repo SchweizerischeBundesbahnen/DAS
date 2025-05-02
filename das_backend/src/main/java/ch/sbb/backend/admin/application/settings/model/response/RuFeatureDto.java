@@ -9,8 +9,8 @@ public record RuFeatureDto(
     String companyCodeRics,
 
     @Schema(description = "The identifier of the feature.",
-        examples = {"WARN", "KOA", "GESTES"})
-    String name,
+        examples = {"WARNAPP", "CUSTOMER_ORIENTED_DEPARTURE_PROCESS", "CHECKLIST_DEPARTURE_PROCESS"})
+    String key,
 
     @Schema(description = "Toggle indicating whether the feature is enabled.",
         requiredMode = Schema.RequiredMode.REQUIRED)
@@ -18,7 +18,7 @@ public record RuFeatureDto(
 ) {
 
     public RuFeatureDto(RuFeature ruFeature) {
-        this(ruFeature.company().companyCodeRics(), ruFeature.name().name(), ruFeature.enabled());
+        this(ruFeature.company().companyCodeRics(), ruFeature.key().name(), ruFeature.enabled());
     }
 
 }
