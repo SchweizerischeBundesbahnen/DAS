@@ -23,15 +23,14 @@ on:
     paths:
       - 'das_client/**'
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
-        include: # will run three jobs in parallel
-          - file-nr: "1"
-          - file-nr: "2"
-          - file-nr: "3"
+        file-nr: [1,2,3]
 
     runs-on: macos-latest
     steps:

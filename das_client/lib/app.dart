@@ -24,57 +24,65 @@ class _AppState extends State<App> {
       create: (_) => ThemeProvider(context),
       child: FlavorBanner(
         flavor: DI.get(),
-        child: Builder(builder: (context) {
-          final themeManager = context.watch<ThemeProvider>();
+        child: Builder(
+          builder: (context) {
+            final themeManager = context.watch<ThemeProvider>();
 
-          return MaterialApp.router(
-            themeMode: themeManager.themeMode,
-            theme: SBBTheme.light(
-              baseStyle: SBBBaseStyle(
-                primarySwatch: SBBColors.royal.toSingleMaterialColor(),
-                primaryColor: SBBColors.royal,
-                primaryColorDark: SBBColors.royal125,
-                brightness: Brightness.light,
-              ),
-              controlStyles: SBBControlStyles(
-                promotionBox: PromotionBoxStyle.$default(
-                  baseStyle: SBBBaseStyle(
-                    primaryColor: SBBColors.royal,
-                    primaryColorDark: SBBColors.royal125,
-                    brightness: Brightness.light,
+            return MaterialApp.router(
+              builder: (context, child) {
+                return MediaQuery(
+                  data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
+                  child: child!,
+                );
+              },
+              themeMode: themeManager.themeMode,
+              theme: SBBTheme.light(
+                baseStyle: SBBBaseStyle(
+                  primarySwatch: SBBColors.royal.toSingleMaterialColor(),
+                  primaryColor: SBBColors.royal,
+                  primaryColorDark: SBBColors.royal125,
+                  brightness: Brightness.light,
+                ),
+                controlStyles: SBBControlStyles(
+                  promotionBox: PromotionBoxStyle.$default(
+                    baseStyle: SBBBaseStyle(
+                      primaryColor: SBBColors.royal,
+                      primaryColorDark: SBBColors.royal125,
+                      brightness: Brightness.light,
+                    ),
+                  ).copyWith(
+                    badgeColor: SBBColors.royal,
+                    badgeShadowColor: SBBColors.royal.withAlpha((255.0 * 0.2).round()),
                   ),
-                ).copyWith(
-                  badgeColor: SBBColors.royal,
-                  badgeShadowColor: SBBColors.royal.withAlpha((255.0 * 0.2).round()),
                 ),
               ),
-            ),
-            darkTheme: SBBTheme.dark(
-              baseStyle: SBBBaseStyle(
-                primarySwatch: SBBColors.royal.toSingleMaterialColor(),
-                primaryColor: SBBColors.royal,
-                primaryColorDark: SBBColors.royal125,
-                brightness: Brightness.dark,
-              ),
-              controlStyles: SBBControlStyles(
-                promotionBox: PromotionBoxStyle.$default(
-                  baseStyle: SBBBaseStyle(
-                    primaryColor: SBBColors.royal,
-                    primaryColorDark: SBBColors.royal125,
-                    brightness: Brightness.dark,
+              darkTheme: SBBTheme.dark(
+                baseStyle: SBBBaseStyle(
+                  primarySwatch: SBBColors.royal.toSingleMaterialColor(),
+                  primaryColor: SBBColors.royal,
+                  primaryColorDark: SBBColors.royal125,
+                  brightness: Brightness.dark,
+                ),
+                controlStyles: SBBControlStyles(
+                  promotionBox: PromotionBoxStyle.$default(
+                    baseStyle: SBBBaseStyle(
+                      primaryColor: SBBColors.royal,
+                      primaryColorDark: SBBColors.royal125,
+                      brightness: Brightness.dark,
+                    ),
+                  ).copyWith(
+                    badgeColor: SBBColors.royal,
+                    badgeShadowColor: SBBColors.royal.withAlpha((255.0 * 0.2).round()),
                   ),
-                ).copyWith(
-                  badgeColor: SBBColors.royal,
-                  badgeShadowColor: SBBColors.royal.withAlpha((255.0 * 0.2).round()),
                 ),
               ),
-            ),
-            localizationsDelegates: localizationDelegates,
-            supportedLocales: supportedLocales,
-            routerConfig: _appRouter.config(),
-            debugShowCheckedModeBanner: false,
-          );
-        }),
+              localizationsDelegates: localizationDelegates,
+              supportedLocales: supportedLocales,
+              routerConfig: _appRouter.config(),
+              debugShowCheckedModeBanner: false,
+            );
+          },
+        ),
       ),
     );
   }
