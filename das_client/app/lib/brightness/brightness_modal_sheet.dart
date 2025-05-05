@@ -1,5 +1,5 @@
-import 'package:app/app/i18n/i18n.dart';
-import 'package:app/app/widgets/das_text_styles.dart';
+import 'package:app/i18n/i18n.dart';
+import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/di.dart';
 import 'package:flutter/material.dart';

@@ -1,4 +1,4 @@
-import 'package:app/app/pages/journey/train_journey/widgets/reduced_overview/reduced_overview_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/reduced_overview/reduced_overview_view_model.dart';
 import 'package:sfera/src/model/journey/additional_speed_restriction.dart';
 import 'package:sfera/src/model/journey/additional_speed_restriction_data.dart';
 import 'package:sfera/src/model/journey/balise.dart';

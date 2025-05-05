@@ -1,8 +1,8 @@
-import 'package:app/app/bloc/train_journey_cubit.dart';
-import 'package:app/app/pages/journey/train_journey/widgets/header/extended_menu.dart';
-import 'package:app/app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
-import 'package:app/app/pages/journey/train_journey/widgets/train_journey.dart';
-import 'package:app/app/widgets/table/das_table.dart';
+import 'package:app/bloc/train_journey_cubit.dart';
+import 'package:app/pages/journey/train_journey/widgets/header/extended_menu.dart';
+import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
+import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
+import 'package:app/widgets/table/das_table.dart';
 import 'package:app/di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

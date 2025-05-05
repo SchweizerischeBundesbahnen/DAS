@@ -1,8 +1,8 @@
 import 'dart:ui';
 
-import 'package:app/app/pages/journey/train_journey/widgets/communication_network_icon.dart';
-import 'package:app/app/pages/journey/train_journey/widgets/reduced_overview/reduced_train_journey.dart';
-import 'package:app/app/widgets/table/das_table.dart';
+import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
+import 'package:app/pages/journey/train_journey/widgets/reduced_overview/reduced_train_journey.dart';
+import 'package:app/widgets/table/das_table.dart';
 import 'package:app/util/format.dart';
 import 'package:flutter_test/flutter_test.dart';
 

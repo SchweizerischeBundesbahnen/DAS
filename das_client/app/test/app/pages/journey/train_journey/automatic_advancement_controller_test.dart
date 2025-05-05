@@ -1,8 +1,8 @@
-import 'package:app/app/pages/journey/train_journey/automatic_advancement_controller.dart';
-import 'package:app/app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
-import 'package:app/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
-import 'package:app/app/pages/journey/train_journey/widgets/table/signal_row.dart';
-import 'package:app/app/widgets/stickyheader/sticky_level.dart';
+import 'package:app/pages/journey/train_journey/automatic_advancement_controller.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/signal_row.dart';
+import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:sfera/src/model/journey/base_data.dart';
 import 'package:sfera/src/model/journey/metadata.dart';
 import 'package:sfera/src/model/journey/service_point.dart';

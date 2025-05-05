@@ -1,5 +1,5 @@
-import 'package:app/app/bloc/train_journey_cubit.dart';
-import 'package:app/app/bloc/ux_testing_cubit.dart';
+import 'package:app/bloc/train_journey_cubit.dart';
+import 'package:app/bloc/ux_testing_cubit.dart';
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/brightness/brightness_manager_impl.dart';
 import 'package:app/flavor.dart';

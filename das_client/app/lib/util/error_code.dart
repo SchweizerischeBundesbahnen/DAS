@@ -1,4 +1,4 @@
-import 'package:app/app/i18n/i18n.dart';
+import 'package:app/i18n/i18n.dart';
 import 'package:flutter/material.dart';
 import 'package:sfera/component.dart';
 

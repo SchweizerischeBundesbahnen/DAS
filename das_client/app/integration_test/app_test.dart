@@ -1,7 +1,7 @@
 import 'dart:ui';
 
-import 'package:app/app/i18n/gen/app_localizations_de.dart';
-import 'package:app/app/i18n/i18n.dart';
+import 'package:app/i18n/gen/app_localizations_de.dart';
+import 'package:app/i18n/i18n.dart';
 import 'package:app/flavor.dart';
 import 'package:app/main.dart';
 import 'package:fimber/fimber.dart';

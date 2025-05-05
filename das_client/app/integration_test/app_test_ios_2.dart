@@ -1,5 +1,5 @@
-import 'package:app/app/i18n/gen/app_localizations.dart';
-import 'package:app/app/i18n/gen/app_localizations_de.dart';
+import 'package:app/i18n/gen/app_localizations.dart';
+import 'package:app/i18n/gen/app_localizations_de.dart';
 import 'package:fimber/fimber.dart';
 import 'package:integration_test/integration_test.dart';
 

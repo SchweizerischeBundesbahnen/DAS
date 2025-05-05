@@ -1,6 +1,6 @@
-import 'package:app/app/pages/journey/train_journey/widgets/header/header.dart';
-import 'package:app/app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
-import 'package:app/app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
+import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
+import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

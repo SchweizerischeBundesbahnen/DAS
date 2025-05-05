@@ -1,7 +1,7 @@
-import 'package:app/app/pages/journey/journey_page.dart';
-import 'package:app/app/pages/links/links_page.dart';
-import 'package:app/app/pages/profile/profile_page.dart';
-import 'package:app/app/pages/settings/settings_page.dart';
+import 'package:app/pages/journey/journey_page.dart';
+import 'package:app/pages/links/links_page.dart';
+import 'package:app/pages/profile/profile_page.dart';
+import 'package:app/pages/settings/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
