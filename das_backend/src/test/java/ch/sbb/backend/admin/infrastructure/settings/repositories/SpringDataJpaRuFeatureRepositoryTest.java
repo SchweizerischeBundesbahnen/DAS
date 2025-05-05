@@ -1,4 +1,4 @@
-package ch.sbb.backend.admin.infrastructure.repositories;
+package ch.sbb.backend.admin.infrastructure.settings.repositories;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
