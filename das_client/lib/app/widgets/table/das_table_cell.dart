@@ -18,7 +18,11 @@ class DASTableCell {
     this.clipBehaviour = Clip.hardEdge,
   });
 
-  const DASTableCell.empty({Color? color}) : this(child: const SizedBox.shrink(), color: color);
+  const DASTableCell.empty({Color? color})
+      : this(
+          child: const SizedBox.shrink(key: Key('DASTableCellEmptyKey')),
+          color: color,
+        );
 
   final BoxBorder? border;
   final Widget child;
