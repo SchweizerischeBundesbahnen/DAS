@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 /// If no styling is provided, it may be provided by [DASTableCellRow] or [DASTableTheme]
 @immutable
 class DASTableCell {
+  static const key = Key('DASTableCellEmptyKey');
+
   const DASTableCell({
     required this.child,
     this.onTap,
@@ -20,7 +22,7 @@ class DASTableCell {
 
   const DASTableCell.empty({Color? color})
       : this(
-          child: const SizedBox.shrink(key: Key('DASTableCellEmptyKey')),
+          child: const SizedBox.shrink(key: key),
           color: color,
         );
 
