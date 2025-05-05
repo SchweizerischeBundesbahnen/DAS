@@ -8,6 +8,9 @@ environment:
 resolution: workspace
 
 dependencies:
+  # workspaces
+  sfera: 1.0.0
+
   # https://pub.dev/packages/mqtt_client
   mqtt_client: ^10.5.1
 

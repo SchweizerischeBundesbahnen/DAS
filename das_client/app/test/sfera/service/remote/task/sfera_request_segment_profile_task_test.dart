@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:mqtt/component.dart';
-import 'package:app/sfera/sfera_component.dart';
-import 'package:app/sfera/src/model/sfera_g2b_reply_message.dart';
-import 'package:app/sfera/src/service/remote/task/request_segment_profiles_task.dart';
+import 'package:sfera/component.dart';
+import 'package:sfera/src/model/sfera_g2b_reply_message.dart';
+import 'package:sfera/src/service/remote/task/request_segment_profiles_task.dart';
 import 'package:app/util/error_code.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter_test/flutter_test.dart';

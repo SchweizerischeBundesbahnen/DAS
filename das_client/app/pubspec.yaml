@@ -17,6 +17,7 @@ dependencies:
   auth: 1.0.0
   logger: 1.0.0
   mqtt: 1.0.0
+  sfera: 1.0.0
 
   # https://pub.dev/packages/audioplayers
   # TODO: Fixed to 5.2.1 as there is a problem with XCode 14 on higher versions.

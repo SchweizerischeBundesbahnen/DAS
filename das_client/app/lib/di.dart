@@ -3,7 +3,6 @@ import 'package:app/app/bloc/ux_testing_cubit.dart';
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/brightness/brightness_manager_impl.dart';
 import 'package:app/flavor.dart';
-import 'package:app/sfera/sfera_component.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:auth/component.dart';
 import 'package:battery_plus/battery_plus.dart';
@@ -14,6 +13,7 @@ import 'package:logger/component.dart';
 import 'package:mqtt/component.dart';
 import 'package:sbb_oidc/sbb_oidc.dart';
 import 'package:screen_brightness/screen_brightness.dart';
+import 'package:sfera/component.dart';
 
 class DI {
   const DI._();

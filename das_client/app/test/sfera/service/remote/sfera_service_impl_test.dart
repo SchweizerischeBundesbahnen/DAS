@@ -1,7 +1,7 @@
 import 'package:auth/component.dart';
 import 'package:mqtt/component.dart';
-import 'package:app/sfera/sfera_component.dart';
-import 'package:app/sfera/src/service/remote/sfera_service_impl.dart';
+import 'package:sfera/component.dart';
+import 'package:sfera/src/service/remote/sfera_service_impl.dart';
 import 'package:app/util/error_code.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';

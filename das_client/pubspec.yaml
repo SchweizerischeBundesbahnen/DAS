@@ -16,3 +16,4 @@ workspace:
   - http_x
   - mqtt
   - logger
+  - sfera

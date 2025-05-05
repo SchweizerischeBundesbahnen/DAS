@@ -7,7 +7,7 @@ import 'package:app/model/journey/break_series.dart';
 import 'package:app/model/journey/journey.dart';
 import 'package:app/model/ru.dart';
 import 'package:app/model/train_identification.dart';
-import 'package:app/sfera/sfera_component.dart';
+import 'package:sfera/component.dart';
 import 'package:app/util/error_code.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';

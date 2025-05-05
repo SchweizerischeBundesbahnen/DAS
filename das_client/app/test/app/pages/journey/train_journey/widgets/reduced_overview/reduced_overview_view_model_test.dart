@@ -20,10 +20,10 @@ import 'package:app/model/journey/tram_area.dart';
 import 'package:app/model/journey/whistles.dart';
 import 'package:app/model/ru.dart';
 import 'package:app/model/train_identification.dart';
-import 'package:app/sfera/sfera_component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:sfera/component.dart';
 
 import 'reduced_overview_view_model_test.mocks.dart';
 

@@ -8,7 +8,7 @@ import 'package:app/model/journey/journey.dart';
 import 'package:app/model/journey/metadata.dart';
 import 'package:app/model/journey/service_point.dart';
 import 'package:app/model/train_identification.dart';
-import 'package:app/sfera/sfera_component.dart';
+import 'package:sfera/component.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ReducedOverviewViewModel {

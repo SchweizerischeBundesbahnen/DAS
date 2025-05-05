@@ -1,0 +1,19 @@
+name: sfera
+publish_to: 'none'
+version: 1.0.0
+
+environment:
+  sdk: ^3.6.2
+
+resolution: workspace
+
+dependencies:
+  # workspaces
+  mqtt: 1.0.0
+
+  # https://pub.dev/packages/mqtt_client
+  mqtt_client: ^10.5.1
+
+dev_dependencies:
+  # https://pub.dev/packages/flutter_lints
+  flutter_lints: ^5.0.0
