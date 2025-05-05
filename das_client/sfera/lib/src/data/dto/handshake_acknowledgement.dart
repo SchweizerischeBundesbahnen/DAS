@@ -1,0 +1,15 @@
+import 'package:sfera/src/data/dto/das_operating_modes_selected.dart';
+import 'package:sfera/src/data/dto/sfera_xml_element.dart';
+
+class HandshakeAcknowledgement extends SferaXmlElement {
+  static const String elementType = 'HandshakeAcknowledgement';
+
+  HandshakeAcknowledgement({super.type = elementType, super.attributes, super.children, super.value});
+
+  DasOperatingModesSelected get operationModeSelected => children.whereType<DasOperatingModesSelected>().first;
+
+  @override
+  bool validate() {
+    return validateHasChildOfType<DasOperatingModesSelected>() && super.validate();
+  }
+}

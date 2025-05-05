@@ -1,17 +1,17 @@
 import 'dart:io';
 
-import 'package:sfera/src/model/das_operating_modes_supported.dart';
-import 'package:sfera/src/model/enums/das_architecture.dart';
-import 'package:sfera/src/model/enums/das_connectivity.dart';
-import 'package:sfera/src/model/enums/das_driving_mode.dart';
-import 'package:sfera/src/model/enums/handshake_reject_reason.dart';
-import 'package:sfera/src/model/enums/related_train_request_type.dart';
-import 'package:sfera/src/model/handshake_request.dart';
-import 'package:sfera/src/model/message_header.dart';
-import 'package:sfera/src/model/sfera_b2g_request_message.dart';
-import 'package:sfera/src/model/sfera_g2b_reply_message.dart';
-import 'package:sfera/src/model/sfera_xml_element.dart';
-import 'package:sfera/src/sfera_reply_parser.dart';
+import 'package:sfera/src/data/dto/das_operating_modes_supported.dart';
+import 'package:sfera/src/data/dto/enums/das_architecture.dart';
+import 'package:sfera/src/data/dto/enums/das_connectivity.dart';
+import 'package:sfera/src/data/dto/enums/das_driving_mode.dart';
+import 'package:sfera/src/data/dto/enums/handshake_reject_reason.dart';
+import 'package:sfera/src/data/dto/enums/related_train_request_type.dart';
+import 'package:sfera/src/data/dto/handshake_request.dart';
+import 'package:sfera/src/data/dto/message_header.dart';
+import 'package:sfera/src/data/dto/sfera_b2g_request_message.dart';
+import 'package:sfera/src/data/dto/sfera_g2b_reply_message.dart';
+import 'package:sfera/src/data/dto/sfera_xml_element.dart';
+import 'package:sfera/src/data/mapper/sfera_reply_parser.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter_test/flutter_test.dart';
 

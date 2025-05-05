@@ -2,10 +2,9 @@ import 'dart:io';
 
 import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
-import 'package:sfera/src/model/enums/das_driving_mode.dart';
-import 'package:sfera/src/model/sfera_g2b_reply_message.dart';
-import 'package:sfera/src/service/remote/task/handshake_task.dart';
-import 'package:app/util/error_code.dart';
+import 'package:sfera/src/data/dto/enums/das_driving_mode.dart';
+import 'package:sfera/src/data/dto/sfera_g2b_reply_message.dart';
+import 'package:sfera/src/data/sfera_api/task/handshake_task.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -57,7 +56,7 @@ void main() {
     await handshakeTask.execute((task, data) {
       fail('Task should not be sucessful');
     }, (task, errorCode) {
-      expect(errorCode, ErrorCode.sferaHandshakeRejected);
+      expect(errorCode, SferaError.handshakeRejected);
     });
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
@@ -103,7 +102,7 @@ void main() {
     await handshakeTask.execute((task, data) {
       fail('Test should not call success');
     }, (task, errorCode) {
-      expect(errorCode, ErrorCode.sferaRequestTimeout);
+      expect(errorCode, SferaError.requestTimeout);
       timeoutReached = true;
     });
 

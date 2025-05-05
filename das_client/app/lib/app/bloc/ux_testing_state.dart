@@ -1,6 +1,5 @@
 part of 'ux_testing_cubit.dart';
 
-@nonProduction
 @immutable
 sealed class UxTestingState {}
 

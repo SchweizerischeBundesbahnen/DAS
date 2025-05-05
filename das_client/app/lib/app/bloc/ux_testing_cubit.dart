@@ -3,14 +3,12 @@ import 'dart:async';
 import 'package:app/model/journey/koa_state.dart';
 import 'package:app/model/journey/ux_testing.dart';
 import 'package:sfera/component.dart';
-import 'package:app/util/annotations/non_production.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'ux_testing_state.dart';
 
-@nonProduction
 class UxTestingCubit extends Cubit<UxTestingState> {
   UxTestingCubit({required SferaService sferaService})
       : _sferaService = sferaService,

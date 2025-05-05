@@ -2,13 +2,12 @@ import 'dart:io';
 
 import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
-import 'package:sfera/src/model/sfera_g2b_reply_message.dart';
-import 'package:sfera/src/service/remote/task/request_train_characteristics_task.dart';
-import 'package:app/util/error_code.dart';
+import 'package:sfera/src/data/dto/sfera_g2b_reply_message.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:sfera/src/data/sfera_api/task/request_train_characteristics_task.dart';
 
 import 'sfera_request_train_characteristic_task_test.mocks.dart';
 
@@ -124,7 +123,7 @@ void main() {
     await tcTask.execute((task, data) {
       fail('Test should not call success');
     }, (task, errorCode) {
-      expect(errorCode, ErrorCode.sferaRequestTimeout);
+      expect(errorCode, SferaError.requestTimeout);
       timeoutReached = true;
     });
 

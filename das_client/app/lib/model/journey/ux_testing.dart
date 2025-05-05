@@ -1,9 +1,7 @@
-import 'package:app/util/annotations/non_production.dart';
 import 'package:meta/meta.dart';
 
 @sealed
 @immutable
-@nonProduction
 class UxTesting {
   const UxTesting({required this.name, required this.value});
 

@@ -25,15 +25,15 @@ import 'package:app/model/journey/train_series.dart';
 import 'package:app/model/journey/tram_area.dart';
 import 'package:app/model/journey/whistles.dart';
 import 'package:sfera/component.dart';
-import 'package:sfera/src/mapper/sfera_model_mapper.dart';
-import 'package:sfera/src/model/delay.dart';
-import 'package:sfera/src/model/g2b_event_payload.dart';
-import 'package:sfera/src/model/journey_profile.dart';
-import 'package:sfera/src/model/related_train_information.dart';
-import 'package:sfera/src/model/segment_profile.dart';
-import 'package:sfera/src/model/train_characteristics.dart';
+import 'package:sfera/src/data/dto/delay.dart';
+import 'package:sfera/src/data/dto/g2b_event_payload.dart';
+import 'package:sfera/src/data/dto/journey_profile.dart';
+import 'package:sfera/src/data/dto/related_train_information.dart';
+import 'package:sfera/src/data/dto/segment_profile.dart';
+import 'package:sfera/src/data/dto/train_characteristics.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
 
 void main() {
   Fimber.plantTree(DebugTree());
