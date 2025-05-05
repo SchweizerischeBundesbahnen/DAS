@@ -2,12 +2,11 @@ import 'dart:core';
 
 import 'package:app/model/journey/journey.dart';
 import 'package:app/model/journey/ux_testing.dart';
-import 'package:sfera/component.dart';
-import 'package:sfera/src/model/message_header.dart';
 import 'package:app/util/annotations/non_production.dart';
 import 'package:app/util/device_id_info.dart';
-import 'package:app/util/error_code.dart';
 import 'package:app/util/format.dart';
+import 'package:sfera/component.dart';
+import 'package:sfera/src/model/message_header.dart';
 import 'package:uuid/uuid.dart';
 
 /// Handles connection and message exchange with SFERA broker
@@ -21,7 +20,7 @@ abstract class SferaService {
   @nonProduction
   Stream<UxTesting?> get uxTestingStream;
 
-  ErrorCode? get lastErrorCode;
+  SferaError? get lastError;
 
   /// Connect to the SFERA broker with the given [OtnId] train identification
   Future<void> connect(OtnId otnId);

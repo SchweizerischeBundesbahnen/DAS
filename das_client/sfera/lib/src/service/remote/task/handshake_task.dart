@@ -1,3 +1,5 @@
+import 'package:fimber/fimber.dart';
+import 'package:mqtt/component.dart';
 import 'package:sfera/src/model/das_operating_modes_supported.dart';
 import 'package:sfera/src/model/enums/das_architecture.dart';
 import 'package:sfera/src/model/enums/das_connectivity.dart';
@@ -7,11 +9,9 @@ import 'package:sfera/src/model/handshake_request.dart';
 import 'package:sfera/src/model/otn_id.dart';
 import 'package:sfera/src/model/sfera_b2g_request_message.dart';
 import 'package:sfera/src/model/sfera_g2b_reply_message.dart';
+import 'package:sfera/src/service/remote/sfera_error.dart';
 import 'package:sfera/src/service/remote/sfera_service.dart';
 import 'package:sfera/src/service/remote/task/sfera_task.dart';
-import 'package:app/util/error_code.dart';
-import 'package:fimber/fimber.dart';
-import 'package:mqtt/component.dart';
 
 class HandshakeTask extends SferaTask {
   HandshakeTask({required MqttService mqttService, required this.otnId, required this.dasDrivingMode, super.timeout})
@@ -51,7 +51,7 @@ class HandshakeTask extends SferaTask {
         _mqttService.publishMessage(otnId.company, sferaTrain, sferaB2gRequestMessage.buildDocument().toString());
 
     if (!success) {
-      _taskFailedCallback(this, ErrorCode.connectionFailed);
+      _taskFailedCallback(this, SferaError.connectionFailed);
     }
   }
 
@@ -66,7 +66,7 @@ class HandshakeTask extends SferaTask {
       stopTimeout();
       Fimber.w(
           'Received handshake reject with reason=${replyMessage.handshakeReject?.handshakeRejectReason?.toString()}');
-      _taskFailedCallback(this, ErrorCode.sferaHandshakeRejected);
+      _taskFailedCallback(this, SferaError.handshakeRejected);
       _mqttService.disconnect();
       return true;
     } else {

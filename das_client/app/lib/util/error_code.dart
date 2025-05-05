@@ -1,5 +1,6 @@
 import 'package:app/app/i18n/i18n.dart';
 import 'package:flutter/material.dart';
+import 'package:sfera/component.dart';
 
 enum ErrorCode {
   connectionFailed(code: 1),
@@ -12,6 +13,23 @@ enum ErrorCode {
   const ErrorCode({
     required this.code,
   });
+
+  factory ErrorCode.fromSfera(SferaError error) {
+    switch (error) {
+      case SferaError.connectionFailed:
+        return ErrorCode.connectionFailed;
+      case SferaError.validationFailed:
+        return ErrorCode.sferaValidationFailed;
+      case SferaError.handshakeRejected:
+        return ErrorCode.sferaHandshakeRejected;
+      case SferaError.requestTimeout:
+        return ErrorCode.sferaRequestTimeout;
+      case SferaError.jpUnavailable:
+        return ErrorCode.sferaJpUnavailable;
+      case SferaError.invalid:
+        return ErrorCode.sferaInvalid;
+    }
+  }
 
   final int code;
 }

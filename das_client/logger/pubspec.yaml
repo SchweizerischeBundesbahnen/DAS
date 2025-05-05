@@ -23,6 +23,9 @@ dependencies:
   synchronized: ^3.3.0
 
 dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
   # https://pub.dev/packages/build_runner
   build_runner: ^2.4.15
   # https://pub.dev/packages/json_serializable

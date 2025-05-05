@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:sfera/src/model/sfera_g2b_reply_message.dart';
-import 'package:app/util/error_code.dart';
 import 'package:fimber/fimber.dart';
+import 'package:sfera/src/model/sfera_g2b_reply_message.dart';
+import 'package:sfera/src/service/remote/sfera_error.dart';
 
-typedef TaskFailed = void Function(SferaTask task, ErrorCode errorCode);
+typedef TaskFailed = void Function(SferaTask task, SferaError sferaError);
 typedef TaskCompleted<T> = void Function(SferaTask task, T? data);
 
 abstract class SferaTask<T> {
@@ -21,7 +21,7 @@ abstract class SferaTask<T> {
     timeoutTimer?.cancel();
     timeoutTimer = Timer(_timeout, () {
       Fimber.e('Timeout reached for task $this');
-      onFailed(this, ErrorCode.sferaRequestTimeout);
+      onFailed(this, SferaError.requestTimeout);
     });
   }
 

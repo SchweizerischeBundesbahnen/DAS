@@ -2,9 +2,12 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:ui';
 
-import 'package:auth/component.dart';
 import 'package:app/model/journey/journey.dart';
 import 'package:app/model/journey/ux_testing.dart';
+import 'package:auth/component.dart';
+import 'package:fimber/fimber.dart';
+import 'package:mqtt/component.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/mapper/sfera_model_mapper.dart';
 import 'package:sfera/src/model/enums/das_driving_mode.dart';
@@ -27,10 +30,6 @@ import 'package:sfera/src/service/remote/task/request_journey_profile_task.dart'
 import 'package:sfera/src/service/remote/task/request_segment_profiles_task.dart';
 import 'package:sfera/src/service/remote/task/request_train_characteristics_task.dart';
 import 'package:sfera/src/service/remote/task/sfera_task.dart';
-import 'package:app/util/error_code.dart';
-import 'package:fimber/fimber.dart';
-import 'package:mqtt/component.dart';
-import 'package:rxdart/rxdart.dart';
 
 class SferaServiceImpl implements SferaService {
   SferaServiceImpl({
@@ -71,7 +70,7 @@ class SferaServiceImpl implements SferaService {
   RelatedTrainInformation? _relatedTrainInformation;
 
   @override
-  ErrorCode? lastErrorCode;
+  SferaError? lastError;
 
   /// Connects to SFERA broker and initiate Handshake with [HandshakeTask].
   /// Other tasks like loading SP, JPs and TCs are triggered on completion.
@@ -80,7 +79,7 @@ class SferaServiceImpl implements SferaService {
     Fimber.i('Starting new connection for $otnId');
     _otnId = otnId;
     _tasks.clear();
-    lastErrorCode = null;
+    lastError = null;
     _stateSubject.add(SferaServiceState.connecting);
 
     final sferaTrain = SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
@@ -89,7 +88,7 @@ class SferaServiceImpl implements SferaService {
       await _initiateHandshake(otnId);
     } else {
       _otnId = null;
-      lastErrorCode = ErrorCode.connectionFailed;
+      lastError = SferaError.connectionFailed;
       _stateSubject.add(SferaServiceState.disconnected);
     }
   }
@@ -284,7 +283,7 @@ class SferaServiceImpl implements SferaService {
         onSuccess?.call();
       } else {
         Fimber.w('Failed to update journey as it is not valid');
-        lastErrorCode = ErrorCode.sferaInvalid;
+        lastError = SferaError.invalid;
         onInvalid?.call();
       }
     }
@@ -320,10 +319,10 @@ class SferaServiceImpl implements SferaService {
     }
   }
 
-  void _onTaskFailed(SferaTask task, ErrorCode errorCode) {
+  void _onTaskFailed(SferaTask task, SferaError errorCode) {
     Fimber.e('Task $task failed with error code $errorCode');
     _tasks.remove(task);
-    lastErrorCode = errorCode;
+    lastError = errorCode;
     if (_stateSubject.value != SferaServiceState.connected) {
       disconnect();
     }

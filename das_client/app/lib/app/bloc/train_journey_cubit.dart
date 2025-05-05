@@ -7,12 +7,12 @@ import 'package:app/model/journey/break_series.dart';
 import 'package:app/model/journey/journey.dart';
 import 'package:app/model/ru.dart';
 import 'package:app/model/train_identification.dart';
-import 'package:sfera/component.dart';
 import 'package:app/util/error_code.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:sfera/component.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 part 'train_journey_state.dart';
@@ -70,8 +70,8 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
           case SferaServiceState.disconnected:
           case SferaServiceState.offline:
             WakelockPlus.disable();
-            emit(SelectingTrainJourneyState(
-                ru: ru, trainNumber: trainNumber, date: date, errorCode: _sferaService.lastErrorCode));
+            final errorCode = _sferaService.lastError != null ? ErrorCode.fromSfera(_sferaService.lastError!) : null;
+            emit(SelectingTrainJourneyState(ru: ru, trainNumber: trainNumber, date: date, errorCode: errorCode));
             _journeySubscription?.cancel();
             break;
         }

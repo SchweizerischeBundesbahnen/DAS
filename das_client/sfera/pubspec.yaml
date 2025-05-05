@@ -10,10 +10,36 @@ resolution: workspace
 dependencies:
   # workspaces
   mqtt: 1.0.0
+  auth: 1.0.0
 
   # https://pub.dev/packages/mqtt_client
   mqtt_client: ^10.5.1
-
-dev_dependencies:
+  # https://pub.dev/packages/fimber
+  fimber: ^0.7.0
+  # https://pub.dev/packages/build_runner
+  build_runner: ^2.4.15
   # https://pub.dev/packages/flutter_lints
   flutter_lints: ^5.0.0
+  # https://pub.dev/packages/collection
+  collection: ^1.19.0
+  # https://pub.dev/packages/rxdart
+  rxdart: ^0.28.0
+  # https://pub.dev/packages/xml
+  xml: ^6.5.0
+  # https://pub.dev/packages/uuid
+  uuid: ^4.5.1
+  # https://pub.dev/packages/iso_duration
+  iso_duration: ^0.1.1
+  # https://pub.dev/packages/isar
+  isar: 4.0.0-dev.14
+  # https://pub.dev/packages/isar_flutter_libs
+  isar_flutter_libs: 4.0.0-dev.14
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # https://pub.dev/packages/flutter_lints
+  flutter_lints: ^5.0.0
+  # https://pub.dev/packages/mockito
+  mockito: ^5.4.5

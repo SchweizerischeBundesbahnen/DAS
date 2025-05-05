@@ -92,6 +92,7 @@ extension GetItX on GetIt {
     registerFactory<AuthProvider>(factoryFunc);
   }
 
+  // TODO: Move to auth component and handle similar to AuthProvider?
   void registerOidcClient({bool useTms = false}) {
     factoryFunc() {
       final flavor = DI.get<Flavor>();

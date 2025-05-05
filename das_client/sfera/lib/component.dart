@@ -16,6 +16,7 @@ export 'package:sfera/src/service/remote/sfera_auth_service.dart';
 export 'package:sfera/src/service/remote/sfera_service.dart';
 export 'package:sfera/src/service/remote/sfera_service_state.dart';
 export 'package:sfera/src/sfera_reply_parser.dart';
+export 'package:sfera/src/service/remote/sfera_error.dart';
 
 class SferaComponent {
   const SferaComponent._();

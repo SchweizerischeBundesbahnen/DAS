@@ -1,16 +1,13 @@
-import 'package:sfera/src/db/repo/sfera_database_repository.dart';
+import 'package:fimber/fimber.dart';
+import 'package:mqtt/component.dart';
+import 'package:sfera/component.dart';
 import 'package:sfera/src/model/b2g_request.dart';
 import 'package:sfera/src/model/enums/jp_status.dart';
 import 'package:sfera/src/model/jp_request.dart';
-import 'package:sfera/src/model/otn_id.dart';
 import 'package:sfera/src/model/sfera_b2g_request_message.dart';
 import 'package:sfera/src/model/sfera_g2b_reply_message.dart';
 import 'package:sfera/src/model/train_identification.dart';
-import 'package:sfera/src/service/remote/sfera_service.dart';
 import 'package:sfera/src/service/remote/task/sfera_task.dart';
-import 'package:app/util/error_code.dart';
-import 'package:fimber/fimber.dart';
-import 'package:mqtt/component.dart';
 
 class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
   RequestJourneyProfileTask({
@@ -61,7 +58,7 @@ class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
       Fimber.w(
         'Received JourneyProfile with status=${journeyProfile.status}.',
       );
-      _taskFailedCallback(this, ErrorCode.sferaJpUnavailable);
+      _taskFailedCallback(this, SferaError.jpUnavailable);
       return true;
     }
 

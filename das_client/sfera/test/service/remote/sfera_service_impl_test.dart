@@ -2,7 +2,6 @@ import 'package:auth/component.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/service/remote/sfera_service_impl.dart';
-import 'package:app/util/error_code.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -83,7 +82,7 @@ void main() {
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
-    expect(sferaService.lastErrorCode, ErrorCode.connectionFailed);
+    expect(sferaService.lastError, SferaError.connectionFailed);
   });
 
   test('should disconnect and set state to disconnected', () async {

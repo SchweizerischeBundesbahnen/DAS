@@ -1,19 +1,15 @@
+import 'package:fimber/fimber.dart';
 import 'package:mqtt/component.dart';
-
-import 'package:sfera/src/db/repo/sfera_database_repository.dart';
+import 'package:sfera/component.dart';
 import 'package:sfera/src/model/b2g_request.dart';
 import 'package:sfera/src/model/enums/sp_status.dart';
 import 'package:sfera/src/model/journey_profile.dart';
-import 'package:sfera/src/model/otn_id.dart';
 import 'package:sfera/src/model/segment_profile.dart';
 import 'package:sfera/src/model/segment_profile_list.dart';
 import 'package:sfera/src/model/sfera_b2g_request_message.dart';
 import 'package:sfera/src/model/sfera_g2b_reply_message.dart';
 import 'package:sfera/src/model/sp_request.dart';
-import 'package:sfera/src/service/remote/sfera_service.dart';
 import 'package:sfera/src/service/remote/task/sfera_task.dart';
-import 'package:app/util/error_code.dart';
-import 'package:fimber/fimber.dart';
 
 class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfile>> {
   RequestSegmentProfilesTask({
@@ -104,7 +100,7 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfile>> {
     if (allValid) {
       _taskCompletedCallback(this, replyMessage.payload!.segmentProfiles.toList());
     } else {
-      _taskFailedCallback(this, ErrorCode.sferaInvalid);
+      _taskFailedCallback(this, SferaError.invalid);
     }
 
     return true;

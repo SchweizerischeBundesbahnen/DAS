@@ -1,4 +1,4 @@
-name: _
+name: das_client
 publish_to: none
 description: "DAS (Driver Advisory System) is a mobile application that provides all the required journey data to the train driver."
 
