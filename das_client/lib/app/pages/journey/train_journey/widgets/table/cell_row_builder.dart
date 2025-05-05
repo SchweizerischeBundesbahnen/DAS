@@ -131,7 +131,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
       return DASTableCell.empty();
     }
 
-    return speedCell(data.speedData, DASTableCell(child: Text('XX'), alignment: Alignment.center));
+    return speedCell(data.speedData, DASTableCell.empty());
   }
 
   DASTableCell speedCell(SpeedData? speedData, DASTableCell defaultCell) {
