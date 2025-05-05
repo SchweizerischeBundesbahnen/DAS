@@ -38,7 +38,7 @@ fvm flutter test --flavor dev --dart-define=MQTT_USERNAME=${MQTT_USERNAME} --dar
 ### Test file structure
 
 To prevent confusion, fictive train numbers with the prefix `T` are used for the test scenarios. It is desired to create new train journeys for different features.  
-The file structure in [test_resources](app/test_resources) for a test scenario looks as follows:
+The file structure in [test_resources](sfera/test_resources) for a test scenario looks as follows:
 
 * base directory named `<train number>_<optional description>`
 * journey profile named `SFERA_JP_<train number>_<optional postfix>`
