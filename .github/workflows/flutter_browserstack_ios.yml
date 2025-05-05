@@ -27,8 +27,8 @@ on:
 
 jobs:
   build:
-    fail-fast: false
     strategy:
+      fail-fast: false
       matrix:
         file-nr: [1,2,3]
 
