@@ -21,7 +21,10 @@ public class ServicePointController {
 
     static final String PATH_SEGMENT_SERVICE_POINTS = "/service-points";
 
+    static final String PARAM_UIC = "uic";
+
     static final String API_SERVICE_POINTS = ApiDocumentation.VERSION_URI_V1 + PATH_SEGMENT_SERVICE_POINTS;
+    static final String API_SERVICE_POINTS_BY_UIC = API_SERVICE_POINTS + "/{" + PARAM_UIC + "}";
 
     private final ServicePointService servicePointService;
 
@@ -49,8 +52,8 @@ public class ServicePointController {
     @ApiResponse(responseCode = "404", description = "Service point not found", content = @Content(schema = @Schema(hidden = true)))
     @ApiResponse(responseCode = "500", description = "Internal server error",
         content = {@Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/ErrorResponse"))})
-    @GetMapping(path = API_SERVICE_POINTS + "/{uic}", produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<ServicePointResponse> getServicePoint(@PathVariable int uic) {
+    @GetMapping(path = API_SERVICE_POINTS_BY_UIC, produces = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<ServicePointResponse> getServicePoint(@PathVariable(PARAM_UIC) int uic) {
         return servicePointService.findByUic(uic).map(servicePoint -> ResponseEntity.ok(new ServicePointResponse(servicePoint.uic(), servicePoint.designation(), servicePoint.abbreviation())))
             .orElse(ResponseEntity.notFound().build());
     }
