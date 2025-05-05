@@ -50,8 +50,6 @@
                 <teltsi_LocationPrimaryCode>02110</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Dulliken</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <!-- todo: remove -->
-            <TAF_TAP_LocationName language="de" text="Dulliken"/>
 
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>

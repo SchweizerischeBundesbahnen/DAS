@@ -4,7 +4,7 @@ import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  group('train journey header test', () {
+  group('train journey notification test', () {
     testWidgets('test koa notifications are displayed properly', (tester) async {
       await prepareAndStartApp(tester);
 

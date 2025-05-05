@@ -22,20 +22,6 @@ import '../mocks/brightness_mock.dart';
 import '../util/test_utils.dart';
 
 Future<void> main() async {
-  Future<void> findAndDismissBrightnessModalSheet(WidgetTester tester) async {
-    // find brightness modal sheet
-    final brightnessModalSheet = find.byType(SBBModalSheet);
-    expect(brightnessModalSheet, findsOneWidget);
-
-    //find close button
-    final closeButton = find.descendant(of: brightnessModalSheet, matching: find.byType(SBBIconButtonSmall));
-    expect(closeButton, findsOneWidget);
-
-    //tap close button
-    await tester.tap(closeButton);
-    await tester.pumpAndSettle();
-  }
-
   group('train journey header test', () {
     testWidgets('test always-on display is turned on when journey is loaded', (tester) async {
       await prepareAndStartApp(tester);
@@ -517,4 +503,18 @@ Future<void> main() async {
       await disconnect(tester);
     });
   });
+}
+
+Future<void> findAndDismissBrightnessModalSheet(WidgetTester tester) async {
+  // find brightness modal sheet
+  final brightnessModalSheet = find.byType(SBBModalSheet);
+  expect(brightnessModalSheet, findsOneWidget);
+
+  //find close button
+  final closeButton = find.descendant(of: brightnessModalSheet, matching: find.byType(SBBIconButtonSmall));
+  expect(closeButton, findsOneWidget);
+
+  //tap close button
+  await tester.tap(closeButton);
+  await tester.pumpAndSettle();
 }

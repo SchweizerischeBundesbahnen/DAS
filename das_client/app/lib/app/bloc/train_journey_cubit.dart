@@ -44,7 +44,7 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
       _resetSettings();
       final date = currentState.date;
       final ru = currentState.ru;
-      final trainNumber = currentState.trainNumber;
+      final trainNumber = currentState.trainNumber?.trim();
       if (ru == null || trainNumber == null) {
         Fimber.i('company or trainNumber null');
         return;

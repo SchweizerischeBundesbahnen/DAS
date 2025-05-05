@@ -25,7 +25,6 @@
                 <teltsi_LocationPrimaryCode>1309</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Territet</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" text="Territet"/>
 
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>

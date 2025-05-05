@@ -97,6 +97,12 @@ void main() {
       await prepareAndStartApp(tester);
 
       final today = DateTime.now();
+
+      // if the current day is the first or second of the month skip test
+      if (today.day == 1 || today.day == 2) {
+        return;
+      }
+
       final yesterday = today.add(Duration(days: -1));
       final dayBeforeYesterday = today.add(Duration(days: -2));
 

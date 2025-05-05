@@ -72,7 +72,6 @@
                 <teltsi_LocationPrimaryCode>1606</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Gamsen</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-            <TAF_TAP_LocationName language="de" text="Gamsen"/>
 
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
