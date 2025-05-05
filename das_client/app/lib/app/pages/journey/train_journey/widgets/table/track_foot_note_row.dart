@@ -1,7 +1,7 @@
 import 'package:app/app/i18n/i18n.dart';
 import 'package:app/app/pages/journey/train_journey/widgets/table/foot_note_row.dart';
-import 'package:app/model/journey/track_foot_note.dart';
 import 'package:flutter/material.dart';
+import 'package:sfera/component.dart';
 
 class TrackFootNoteRow extends FootNoteRow<TrackFootNote> {
   TrackFootNoteRow({

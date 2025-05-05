@@ -1,6 +1,4 @@
-import 'package:app/model/journey/base_data.dart';
-import 'package:app/model/journey/metadata.dart';
-import 'package:app/model/journey/segment.dart';
+import 'package:sfera/component.dart';
 
 /// Data class to hold all the information to visualize bracket stations.
 class BracketStationRenderData {

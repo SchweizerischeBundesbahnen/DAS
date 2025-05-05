@@ -8,16 +8,12 @@ import 'package:app/app/pages/journey/train_journey/widgets/table/config/bracket
 import 'package:app/app/pages/journey/train_journey/widgets/table/config/train_journey_config.dart';
 import 'package:app/app/widgets/table/das_table.dart';
 import 'package:app/app/widgets/table/das_table_column.dart';
-import 'package:app/model/journey/additional_speed_restriction_data.dart';
-import 'package:app/model/journey/base_data.dart';
-import 'package:app/model/journey/datatype.dart';
-import 'package:app/model/journey/metadata.dart';
-import 'package:app/model/journey/service_point.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:sfera/component.dart';
 
 class ReducedTrainJourney extends StatelessWidget {
   static const Key reducedJourneyTableKey = Key('reducedJourneyTable');

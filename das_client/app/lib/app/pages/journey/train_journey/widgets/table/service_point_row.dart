@@ -8,12 +8,12 @@ import 'package:app/app/widgets/assets.dart';
 import 'package:app/app/widgets/das_text_styles.dart';
 import 'package:app/app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/app/widgets/table/das_table_cell.dart';
-import 'package:app/model/journey/service_point.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:sfera/component.dart';
 
 class ServicePointRow extends CellRowBuilder<ServicePoint> {
   static const Key stopOnRequestKey = Key('stopOnRequest');

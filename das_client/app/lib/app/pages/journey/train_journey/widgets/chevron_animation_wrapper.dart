@@ -1,6 +1,6 @@
 import 'package:app/app/pages/journey/train_journey/chevron_animation_controller.dart';
-import 'package:app/model/journey/journey.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:sfera/component.dart';
 
 class ChevronAnimationWrapper extends StatefulWidget {
   const ChevronAnimationWrapper({

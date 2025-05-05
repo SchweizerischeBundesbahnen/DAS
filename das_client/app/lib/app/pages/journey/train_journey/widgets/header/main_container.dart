@@ -10,13 +10,12 @@ import 'package:app/app/pages/journey/train_journey/widgets/header/theme_button.
 import 'package:app/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:app/app/widgets/assets.dart';
 import 'package:app/app/widgets/das_text_styles.dart';
-import 'package:app/model/journey/journey.dart';
-import 'package:app/model/journey/metadata.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:sfera/component.dart';
 
 class MainContainer extends StatelessWidget {
   const MainContainer({super.key});

@@ -4,13 +4,8 @@ import 'dart:ui';
 import 'package:app/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_tab.dart';
 import 'package:app/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:app/app/widgets/modal_sheet/das_modal_sheet.dart';
-import 'package:app/model/journey/break_series.dart';
-import 'package:app/model/journey/communication_network_change.dart';
-import 'package:app/model/journey/contact_list.dart';
-import 'package:app/model/journey/metadata.dart';
-import 'package:app/model/journey/service_point.dart';
-import 'package:app/model/journey/speeds.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:sfera/component.dart';
 
 class DetailModalSheetViewModel {
   DetailModalSheetViewModel({required this.onOpen}) {

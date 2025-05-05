@@ -1,8 +1,7 @@
 import 'package:app/app/pages/journey/train_journey/widgets/table/config/train_journey_config.dart';
 import 'package:app/app/widgets/table/das_table_row.dart';
-import 'package:app/model/journey/base_data.dart';
-import 'package:app/model/journey/metadata.dart';
 import 'package:flutter/material.dart';
+import 'package:sfera/component.dart';
 
 abstract class WidgetRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
   WidgetRowBuilder({

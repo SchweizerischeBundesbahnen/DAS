@@ -3,10 +3,10 @@ import 'package:app/app/pages/journey/train_journey/widgets/table/cell_row_build
 import 'package:app/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:app/app/pages/journey/train_journey/widgets/table/signal_row.dart';
 import 'package:app/app/widgets/stickyheader/sticky_level.dart';
-import 'package:app/model/journey/base_data.dart';
-import 'package:app/model/journey/metadata.dart';
-import 'package:app/model/journey/service_point.dart';
-import 'package:app/model/journey/signal.dart';
+import 'package:sfera/src/model/journey/base_data.dart';
+import 'package:sfera/src/model/journey/metadata.dart';
+import 'package:sfera/src/model/journey/service_point.dart';
+import 'package:sfera/src/model/journey/signal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';

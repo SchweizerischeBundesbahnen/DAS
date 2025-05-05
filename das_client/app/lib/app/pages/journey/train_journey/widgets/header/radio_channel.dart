@@ -3,12 +3,10 @@ import 'package:app/app/pages/journey/train_journey/widgets/detail_modal_sheet/d
 import 'package:app/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_view_model.dart';
 import 'package:app/app/pages/journey/train_journey/widgets/header/radio_contact.dart';
 import 'package:app/app/widgets/indicator_wrapper.dart';
-import 'package:app/model/journey/communication_network_change.dart';
-import 'package:app/model/journey/contact_list.dart';
-import 'package:app/model/journey/metadata.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:sfera/component.dart';
 
 class RadioChannel extends StatelessWidget {
   const RadioChannel({required this.metadata, super.key});

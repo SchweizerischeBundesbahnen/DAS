@@ -1,15 +1,15 @@
-import 'package:app/model/journey/balise.dart';
-import 'package:app/model/journey/balise_level_crossing_group.dart';
-import 'package:app/model/journey/base_data.dart';
-import 'package:app/model/journey/base_data_extension.dart';
-import 'package:app/model/journey/foot_note.dart';
-import 'package:app/model/journey/level_crossing.dart';
-import 'package:app/model/journey/line_foot_note.dart';
-import 'package:app/model/journey/op_foot_note.dart';
-import 'package:app/model/journey/signal.dart';
-import 'package:app/model/journey/track_foot_note.dart';
-import 'package:app/model/journey/train_series.dart';
-import 'package:app/model/journey/whistles.dart';
+import 'package:sfera/src/model/journey/balise.dart';
+import 'package:sfera/src/model/journey/balise_level_crossing_group.dart';
+import 'package:sfera/src/model/journey/base_data.dart';
+import 'package:sfera/src/model/journey/base_data_extension.dart';
+import 'package:sfera/src/model/journey/foot_note.dart';
+import 'package:sfera/src/model/journey/level_crossing.dart';
+import 'package:sfera/src/model/journey/line_foot_note.dart';
+import 'package:sfera/src/model/journey/op_foot_note.dart';
+import 'package:sfera/src/model/journey/signal.dart';
+import 'package:sfera/src/model/journey/track_foot_note.dart';
+import 'package:sfera/src/model/journey/train_series.dart';
+import 'package:sfera/src/model/journey/whistles.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

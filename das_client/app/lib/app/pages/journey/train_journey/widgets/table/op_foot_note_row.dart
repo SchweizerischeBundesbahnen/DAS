@@ -1,7 +1,7 @@
 import 'package:app/app/i18n/i18n.dart';
 import 'package:app/app/pages/journey/train_journey/widgets/table/foot_note_row.dart';
-import 'package:app/model/journey/op_foot_note.dart';
 import 'package:flutter/material.dart';
+import 'package:sfera/component.dart';
 
 class OpFootNoteRow extends FootNoteRow<OpFootNote> {
   OpFootNoteRow({

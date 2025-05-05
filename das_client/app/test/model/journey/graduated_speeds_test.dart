@@ -1,7 +1,7 @@
-import 'package:app/model/journey/speed_data.dart';
-import 'package:app/model/journey/speeds.dart';
-import 'package:app/model/journey/speed.dart';
-import 'package:app/model/journey/train_series.dart';
+import 'package:sfera/src/model/journey/speed_data.dart';
+import 'package:sfera/src/model/journey/speeds.dart';
+import 'package:sfera/src/model/journey/speed.dart';
+import 'package:sfera/src/model/journey/train_series.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

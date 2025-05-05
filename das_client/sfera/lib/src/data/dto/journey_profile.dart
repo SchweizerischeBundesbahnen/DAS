@@ -3,14 +3,14 @@ import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 import 'package:sfera/src/data/dto/segment_profile_list.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element.dart';
 import 'package:sfera/src/data/dto/train_characteristics_ref.dart';
-import 'package:sfera/src/data/dto/train_identification.dart';
+import 'package:sfera/src/data/dto/train_identification_dto.dart';
 
 class JourneyProfile extends SferaXmlElement {
   static const String elementType = 'JourneyProfile';
 
   JourneyProfile({super.type = elementType, super.attributes, super.children, super.value});
 
-  TrainIdentification get trainIdentification => children.whereType<TrainIdentification>().first;
+  TrainIdentificationDto get trainIdentification => children.whereType<TrainIdentificationDto>().first;
 
   Iterable<SegmentProfileReference> get segmentProfileReferences => children.whereType<SegmentProfileReference>();
 
@@ -21,6 +21,6 @@ class JourneyProfile extends SferaXmlElement {
 
   @override
   bool validate() {
-    return validateHasChildOfType<TrainIdentification>() && super.validate();
+    return validateHasChildOfType<TrainIdentificationDto>() && super.validate();
   }
 }

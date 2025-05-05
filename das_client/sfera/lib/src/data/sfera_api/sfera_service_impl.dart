@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:ui';
 
-import 'package:app/model/journey/journey.dart';
-import 'package:app/model/journey/ux_testing.dart';
+import 'package:sfera/src/model/journey/journey.dart';
+import 'package:sfera/src/model/journey/ux_testing.dart';
 import 'package:auth/component.dart';
 import 'package:fimber/fimber.dart';
 import 'package:mqtt/component.dart';

@@ -1,4 +1,4 @@
-import 'package:app/model/journey/track_equipment_segment.dart';
+import 'package:sfera/src/model/journey/track_equipment_segment.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

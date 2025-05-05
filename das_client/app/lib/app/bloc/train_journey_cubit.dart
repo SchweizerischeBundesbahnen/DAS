@@ -2,11 +2,6 @@ import 'dart:async';
 
 import 'package:app/app/pages/journey/train_journey/automatic_advancement_controller.dart';
 import 'package:app/app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
-import 'package:app/model/journey/base_foot_note.dart';
-import 'package:app/model/journey/break_series.dart';
-import 'package:app/model/journey/journey.dart';
-import 'package:app/model/ru.dart';
-import 'package:app/model/train_identification.dart';
 import 'package:app/util/error_code.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';

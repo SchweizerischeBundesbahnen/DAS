@@ -1,9 +1,9 @@
 import 'package:app/app/pages/journey/train_journey/widgets/table/config/bracket_station_render_data.dart';
-import 'package:app/model/journey/bracket_station_segment.dart';
-import 'package:app/model/journey/journey.dart';
-import 'package:app/model/journey/metadata.dart';
-import 'package:app/model/journey/service_point.dart';
-import 'package:app/model/journey/signal.dart';
+import 'package:sfera/src/model/journey/bracket_station_segment.dart';
+import 'package:sfera/src/model/journey/journey.dart';
+import 'package:sfera/src/model/journey/metadata.dart';
+import 'package:sfera/src/model/journey/service_point.dart';
+import 'package:sfera/src/model/journey/signal.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

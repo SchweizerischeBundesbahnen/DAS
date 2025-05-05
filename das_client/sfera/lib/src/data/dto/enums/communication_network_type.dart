@@ -1,4 +1,4 @@
-import 'package:app/model/journey/communication_network_change.dart';
+import 'package:sfera/src/model/journey/communication_network_change.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 
 enum SferaCommunicationNetworkType implements XmlEnum {

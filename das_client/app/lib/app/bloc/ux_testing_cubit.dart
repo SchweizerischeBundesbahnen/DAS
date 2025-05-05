@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:app/model/journey/koa_state.dart';
-import 'package:app/model/journey/ux_testing.dart';
+import 'package:sfera/src/model/journey/koa_state.dart';
+import 'package:sfera/src/model/journey/ux_testing.dart';
 import 'package:sfera/component.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';

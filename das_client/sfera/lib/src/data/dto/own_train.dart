@@ -1,5 +1,5 @@
 import 'package:sfera/src/data/dto/sfera_xml_element.dart';
-import 'package:sfera/src/data/dto/train_identification.dart';
+import 'package:sfera/src/data/dto/train_identification_dto.dart';
 import 'package:sfera/src/data/dto/train_location_information.dart';
 
 class OwnTrain extends SferaXmlElement {
@@ -7,13 +7,13 @@ class OwnTrain extends SferaXmlElement {
 
   OwnTrain({super.type = elementType, super.attributes, super.children, super.value});
 
-  TrainIdentification get trainIdentification => children.whereType<TrainIdentification>().first;
+  TrainIdentificationDto get trainIdentification => children.whereType<TrainIdentificationDto>().first;
 
   TrainLocationInformation get trainLocationInformation => children.whereType<TrainLocationInformation>().first;
 
   @override
   bool validate() {
-    return validateHasChildOfType<TrainIdentification>() &&
+    return validateHasChildOfType<TrainIdentificationDto>() &&
         validateHasChildOfType<TrainLocationInformation>() &&
         super.validate();
   }

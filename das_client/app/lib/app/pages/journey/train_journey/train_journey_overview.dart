@@ -9,7 +9,7 @@ import 'package:app/app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:app/app/pages/journey/train_journey/widgets/warn_function_modal_sheet.dart';
 import 'package:app/app/widgets/assets.dart';
 import 'package:app/di.dart';
-import 'package:app/model/journey/koa_state.dart';
+import 'package:sfera/src/model/journey/koa_state.dart';
 import 'package:app/util/sound.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,15 +1,15 @@
 import 'package:app/app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/app/pages/journey/train_journey/widgets/table/config/track_equipment_render_data.dart';
 import 'package:app/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
-import 'package:app/model/journey/cab_signaling.dart';
-import 'package:app/model/journey/connection_track.dart';
-import 'package:app/model/journey/curve_point.dart';
-import 'package:app/model/journey/journey.dart';
-import 'package:app/model/journey/level_crossing.dart';
-import 'package:app/model/journey/metadata.dart';
-import 'package:app/model/journey/service_point.dart';
-import 'package:app/model/journey/signal.dart';
-import 'package:app/model/journey/track_equipment_segment.dart';
+import 'package:sfera/src/model/journey/cab_signaling.dart';
+import 'package:sfera/src/model/journey/connection_track.dart';
+import 'package:sfera/src/model/journey/curve_point.dart';
+import 'package:sfera/src/model/journey/journey.dart';
+import 'package:sfera/src/model/journey/level_crossing.dart';
+import 'package:sfera/src/model/journey/metadata.dart';
+import 'package:sfera/src/model/journey/service_point.dart';
+import 'package:sfera/src/model/journey/signal.dart';
+import 'package:sfera/src/model/journey/track_equipment_segment.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

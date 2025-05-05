@@ -3,12 +3,12 @@ import 'package:app/app/i18n/i18n.dart';
 import 'package:app/app/pages/journey/train_journey/widgets/departure_process_modal_sheet.dart';
 import 'package:app/app/widgets/assets.dart';
 import 'package:app/app/widgets/das_text_styles.dart';
-import 'package:app/model/journey/koa_state.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:sfera/component.dart';
 
 class KoaNotification extends StatelessWidget {
   const KoaNotification({super.key});

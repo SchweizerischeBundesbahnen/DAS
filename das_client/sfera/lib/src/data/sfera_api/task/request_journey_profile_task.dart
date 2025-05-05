@@ -6,8 +6,7 @@ import 'package:sfera/src/data/dto/enums/jp_status.dart';
 import 'package:sfera/src/data/dto/jp_request.dart';
 import 'package:sfera/src/data/dto/sfera_b2g_request_message.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message.dart';
-import 'package:sfera/src/data/dto/train_identification.dart';
-import 'package:sfera/src/data/local/db/repo/sfera_database_repository.dart';
+import 'package:sfera/src/data/dto/train_identification_dto.dart';
 import 'package:sfera/src/data/sfera_api/task/sfera_task.dart';
 
 class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
@@ -36,7 +35,7 @@ class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
   }
 
   Future<void> _requestJourneyProfile() async {
-    final trainIdentification = TrainIdentification.create(otnId: otnId);
+    final trainIdentification = TrainIdentificationDto.create(otnId: otnId);
     final jpRequest = JpRequest.create(trainIdentification);
 
     final sferaB2gRequestMessage = SferaB2gRequestMessage.create(

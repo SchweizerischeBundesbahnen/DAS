@@ -1,4 +1,4 @@
-import 'package:app/model/journey/foot_note.dart';
+import 'package:sfera/src/model/journey/foot_note.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 
 enum SferaFootNoteType implements XmlEnum {

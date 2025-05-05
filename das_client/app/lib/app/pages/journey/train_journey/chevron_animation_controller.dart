@@ -1,5 +1,5 @@
-import 'package:app/model/journey/base_data.dart';
-import 'package:app/model/journey/journey.dart';
+import 'package:sfera/src/model/journey/base_data.dart';
+import 'package:sfera/src/model/journey/journey.dart';
 import 'package:flutter/material.dart';
 
 class ChevronAnimationController with ChangeNotifier {

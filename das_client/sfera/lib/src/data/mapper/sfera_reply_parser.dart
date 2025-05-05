@@ -78,7 +78,7 @@ import 'package:sfera/src/data/dto/tp_name.dart';
 import 'package:sfera/src/data/dto/track_foot_notes.dart';
 import 'package:sfera/src/data/dto/train_characteristics.dart';
 import 'package:sfera/src/data/dto/train_characteristics_ref.dart';
-import 'package:sfera/src/data/dto/train_identification.dart';
+import 'package:sfera/src/data/dto/train_identification_dto.dart';
 import 'package:sfera/src/data/dto/train_location_information.dart';
 import 'package:sfera/src/data/dto/velocity.dart';
 import 'package:sfera/src/data/dto/virtual_balise.dart';
@@ -129,8 +129,8 @@ class SferaReplyParser {
         return SegmentProfileReference(type: type, attributes: attributes, children: children, value: value);
       case OtnId.elementType:
         return OtnId(type: type, attributes: attributes, children: children, value: value);
-      case TrainIdentification.elementType:
-        return TrainIdentification(type: type, attributes: attributes, children: children, value: value);
+      case TrainIdentificationDto.elementType:
+        return TrainIdentificationDto(type: type, attributes: attributes, children: children, value: value);
       case SpZone.elementType:
         return SpZone(type: type, attributes: attributes, children: children, value: value);
       case TimingPointConstraints.elementType:

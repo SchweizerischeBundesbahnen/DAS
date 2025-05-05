@@ -1,6 +1,6 @@
 import 'package:app/app/widgets/das_text_styles.dart';
-import 'package:app/model/journey/contact_list.dart';
 import 'package:flutter/material.dart';
+import 'package:sfera/component.dart';
 
 class RadioContactChannels extends StatelessWidget {
   static const Key radioContactChannelsKey = Key('radioContactChannels');

@@ -10,15 +10,9 @@ import 'package:app/app/pages/journey/train_journey/widgets/table/config/train_j
 import 'package:app/app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:app/app/widgets/table/das_table_cell.dart';
 import 'package:app/app/widgets/table/das_table_row.dart';
-import 'package:app/model/journey/additional_speed_restriction.dart';
-import 'package:app/model/journey/base_data.dart';
-import 'package:app/model/journey/communication_network_change.dart';
-import 'package:app/model/journey/datatype.dart';
-import 'package:app/model/journey/metadata.dart';
-import 'package:app/model/journey/speed_data.dart';
-import 'package:app/model/journey/track_equipment_segment.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:sfera/component.dart';
 
 class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
   static const double rowHeight = 44.0;

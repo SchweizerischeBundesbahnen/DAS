@@ -1,5 +1,5 @@
 import 'package:app/app/i18n/i18n.dart';
-import 'package:app/model/ru.dart';
+import 'package:sfera/src/model/ru.dart';
 import 'package:flutter/material.dart';
 
 extension RuExtension on Ru {

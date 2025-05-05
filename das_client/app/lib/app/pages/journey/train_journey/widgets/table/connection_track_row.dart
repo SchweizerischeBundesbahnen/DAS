@@ -1,8 +1,8 @@
 import 'package:app/app/i18n/i18n.dart';
 import 'package:app/app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/app/widgets/table/das_table_cell.dart';
-import 'package:app/model/journey/connection_track.dart';
 import 'package:flutter/material.dart';
+import 'package:sfera/component.dart';
 
 class ConnectionTrackRow extends CellRowBuilder<ConnectionTrack> {
   ConnectionTrackRow({

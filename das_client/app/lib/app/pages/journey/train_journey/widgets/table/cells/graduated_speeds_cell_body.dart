@@ -1,9 +1,9 @@
 import 'package:app/app/widgets/indicator_wrapper.dart';
 import 'package:app/app/widgets/table/das_table_theme.dart';
 import 'package:app/app/widgets/widget_extensions.dart';
-import 'package:app/model/journey/speed.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:sfera/component.dart';
 
 class GraduatedSpeedsCellBody extends StatelessWidget {
   static const Key incomingSpeedsKey = Key('incomingSpeeds');

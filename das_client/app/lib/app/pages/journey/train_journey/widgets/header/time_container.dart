@@ -1,9 +1,9 @@
 import 'package:app/app/bloc/train_journey_cubit.dart';
 import 'package:app/app/widgets/das_text_styles.dart';
-import 'package:app/model/journey/journey.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:sfera/component.dart';
 
 class TimeContainer extends StatelessWidget {
   const TimeContainer({super.key});

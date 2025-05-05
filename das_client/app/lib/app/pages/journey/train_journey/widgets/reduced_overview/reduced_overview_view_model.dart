@@ -1,13 +1,5 @@
 import 'dart:async';
 
-import 'package:app/model/journey/additional_speed_restriction_data.dart';
-import 'package:app/model/journey/base_data.dart';
-import 'package:app/model/journey/communication_network_change.dart';
-import 'package:app/model/journey/datatype.dart';
-import 'package:app/model/journey/journey.dart';
-import 'package:app/model/journey/metadata.dart';
-import 'package:app/model/journey/service_point.dart';
-import 'package:app/model/train_identification.dart';
 import 'package:sfera/component.dart';
 import 'package:rxdart/rxdart.dart';
 

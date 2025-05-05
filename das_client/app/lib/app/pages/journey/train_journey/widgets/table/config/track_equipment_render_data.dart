@@ -1,13 +1,8 @@
 import 'package:app/app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:app/app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
-import 'package:app/model/journey/base_data.dart';
-import 'package:app/model/journey/cab_signaling.dart';
-import 'package:app/model/journey/metadata.dart';
-import 'package:app/model/journey/segment.dart';
-import 'package:app/model/journey/service_point.dart';
-import 'package:app/model/journey/track_equipment_segment.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:sfera/component.dart';
 
 /// Data class to hold all the information to visualize the track equipment.
 class TrackEquipmentRenderData {

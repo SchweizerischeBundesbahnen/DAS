@@ -1,11 +1,11 @@
 import 'package:app/app/pages/journey/train_journey/widgets/table/widget_row_builder.dart';
 import 'package:app/app/widgets/accordion/accordion.dart';
 import 'package:app/app/widgets/das_text_styles.dart';
-import 'package:app/model/journey/base_foot_note.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/text_util.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:sfera/component.dart';
 
 abstract class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
   // Accordion 30 + 2x8 vertical padding

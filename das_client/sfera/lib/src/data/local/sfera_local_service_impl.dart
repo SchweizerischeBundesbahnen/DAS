@@ -1,4 +1,4 @@
-import 'package:app/model/journey/journey.dart';
+import 'package:sfera/src/model/journey/journey.dart';
 import 'package:sfera/src/data/dto/journey_profile.dart';
 import 'package:sfera/src/data/dto/segment_profile.dart';
 import 'package:sfera/src/data/dto/train_characteristics.dart';

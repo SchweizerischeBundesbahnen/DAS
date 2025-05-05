@@ -1,6 +1,6 @@
 import 'dart:core';
 
-import 'package:app/model/journey/journey.dart';
+import 'package:sfera/src/model/journey/journey.dart';
 
 abstract class SferaLocalService {
   const SferaLocalService._();

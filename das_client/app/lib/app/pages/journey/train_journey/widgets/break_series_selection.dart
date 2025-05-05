@@ -2,10 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:app/app/i18n/i18n.dart';
 import 'package:app/app/pages/journey/train_journey/widgets/break_series_selection_button.dart';
 import 'package:app/app/widgets/das_text_styles.dart';
-import 'package:app/model/journey/break_series.dart';
-import 'package:app/model/journey/train_series.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:sfera/component.dart';
 
 class BreakSeriesSelection extends StatefulWidget {
   const BreakSeriesSelection({required this.availableBreakSeries, required this.selectedBreakSeries, super.key});

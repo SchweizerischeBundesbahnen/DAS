@@ -2,9 +2,9 @@ import 'package:app/app/i18n/i18n.dart';
 import 'package:app/app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/app/widgets/assets.dart';
 import 'package:app/app/widgets/table/das_table_cell.dart';
-import 'package:app/model/journey/curve_point.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sfera/component.dart';
 
 class CurvePointRow extends CellRowBuilder<CurvePoint> {
   static const Key curvePointIconKey = Key('curvePointIcon');

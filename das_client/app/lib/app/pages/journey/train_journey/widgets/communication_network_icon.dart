@@ -1,8 +1,8 @@
 import 'package:app/app/widgets/das_text_styles.dart';
-import 'package:app/model/journey/communication_network_change.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:sfera/component.dart';
 
 class CommunicationNetworkIcon extends StatelessWidget {
   static const Key gsmRKey = Key('gsmPCell');

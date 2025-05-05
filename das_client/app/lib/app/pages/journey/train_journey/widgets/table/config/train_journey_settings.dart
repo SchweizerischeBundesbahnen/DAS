@@ -1,5 +1,6 @@
-import 'package:app/model/journey/break_series.dart';
-import 'package:app/model/journey/metadata.dart';
+
+
+import 'package:sfera/component.dart';
 
 class TrainJourneySettings {
   const TrainJourneySettings({

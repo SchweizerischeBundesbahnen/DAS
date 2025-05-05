@@ -1,4 +1,4 @@
-import 'package:app/model/journey/signal.dart';
+import 'package:sfera/src/model/journey/signal.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

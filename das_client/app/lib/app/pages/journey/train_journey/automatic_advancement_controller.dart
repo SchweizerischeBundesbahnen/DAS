@@ -5,7 +5,7 @@ import 'package:collection/collection.dart';
 import 'package:app/app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/app/widgets/table/das_table.dart';
 import 'package:app/app/widgets/table/das_table_row.dart';
-import 'package:app/model/journey/base_data.dart';
+import 'package:sfera/src/model/journey/base_data.dart';
 import 'package:app/util/widget_util.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';

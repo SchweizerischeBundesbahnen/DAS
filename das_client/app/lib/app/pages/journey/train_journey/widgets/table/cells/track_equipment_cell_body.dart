@@ -3,11 +3,10 @@ import 'dart:math';
 import 'package:app/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:app/app/pages/journey/train_journey/widgets/table/config/track_equipment_render_data.dart';
 import 'package:app/app/widgets/table/das_table_theme.dart';
-import 'package:app/model/journey/service_point.dart';
-import 'package:app/model/journey/track_equipment_segment.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:sfera/component.dart';
 
 class TrackEquipmentCellBody extends StatelessWidget {
   static const Key conventionalExtendedSpeedBorderKey = Key('conventionalExtendedSpeedBorder');

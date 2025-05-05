@@ -1,10 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:app/app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
-import 'package:app/model/journey/base_data.dart';
-import 'package:app/model/journey/base_foot_note.dart';
-import 'package:app/model/journey/journey.dart';
-import 'package:app/model/journey/service_point.dart';
+import 'package:sfera/component.dart';
 
 /// Data class to hold all the information to chevron animation.
 class ChevronAnimationData {

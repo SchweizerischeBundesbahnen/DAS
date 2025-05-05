@@ -1,11 +1,10 @@
 import 'package:app/app/i18n/i18n.dart';
 import 'package:app/app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_view_model.dart';
 import 'package:app/app/widgets/das_text_styles.dart';
-import 'package:app/model/journey/break_series.dart';
-import 'package:app/model/journey/speeds.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:sfera/component.dart';
 
 class DetailTabGraduatedSpeeds extends StatelessWidget {
   static const graduatedSpeedsTabKey = Key('graduatedSpeedsTabKey');

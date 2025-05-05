@@ -1,4 +1,4 @@
-import 'package:app/model/journey/train_series.dart';
+import 'package:sfera/src/model/journey/train_series.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element.dart';
 import 'package:app/util/util.dart';
 

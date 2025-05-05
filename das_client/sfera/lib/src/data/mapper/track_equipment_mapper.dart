@@ -1,4 +1,4 @@
-import 'package:app/model/journey/track_equipment_segment.dart';
+import 'package:sfera/src/model/journey/track_equipment_segment.dart';
 import 'package:sfera/src/data/dto/enums/start_end_qualifier.dart';
 import 'package:sfera/src/data/dto/enums/track_equipment_type.dart';
 import 'package:sfera/src/data/dto/network_specific_area.dart';
