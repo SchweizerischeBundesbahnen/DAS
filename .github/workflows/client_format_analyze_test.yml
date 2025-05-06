@@ -1,4 +1,4 @@
-name: Client Build Test Analyze
+name: Client Format Analyze Test
 
 defaults:
   run:
@@ -48,7 +48,7 @@ jobs:
       run: melos generate
 
 #    - name: Analyze Src
-#      run: flutter analyze
+#      run: flutter analyze --no-pub
 
     - name: Flutter test
       run: melos test
