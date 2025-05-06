@@ -1,7 +1,7 @@
 # This workflow is triggered whenever a release please PR is merged with label autorelease:das_client.
 # This builds and releases the Android version of the app.
 
-name: release-das-client-android
+name: Client Release Android
 
 on:
   workflow_call:
@@ -28,13 +28,17 @@ jobs:
           flutter-version: '3.27.4'
           cache: true
 
+      - name: Setup melos
+        uses: bluefireteam/melos-action@v3
+        with:
+          melos-version: '^6.3.0'
+          run-bootstrap: 'false'
+
       - name: Get dependencies
         run: flutter pub get
 
       - name: Generate sources
-        uses: ./.github/actions/client_parallel_source_generator
-        with:
-          working-directory: 'das_client'
+        run: melos generate
 
       - name: Upload generated srcs  # saves around 40 sec
         uses: actions/upload-artifact@v4
@@ -95,7 +99,7 @@ jobs:
       - name: Prepare Android Secrets 🤫
         env:
           ANDROID_KEYSTORE_STRING: ${{ secrets.ANDROID_KEYSTORE }}
-          ANDROID_KEYSTORE: ${{ github.workspace }}/das_client/android/das.keystore
+          ANDROID_KEYSTORE: ${{ github.workspace }}/das_client/app/android/das.keystore
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
@@ -108,6 +112,7 @@ jobs:
 
       - name: Build appbundle
         run: flutter build appbundle --flavor ${{ matrix.flavor }} -t ${{ matrix.app-root }}
+        working-directory: das_client/app
 
       - name: Upload App to Google Play Store
         uses: r0adkll/upload-google-play@v1.1.3

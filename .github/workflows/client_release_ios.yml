@@ -1,7 +1,7 @@
 # This workflow is triggered whenever a release please PR is merged with label autorelease:das_client.
 # This builds and releases the iOS version of the app.
 
-name: release-das-client-ios
+name: Client release iOS
 
 on:
   workflow_call:
@@ -28,13 +28,17 @@ jobs:
           flutter-version: '3.27.4'
           cache: true
 
+      - name: Setup melos
+        uses: bluefireteam/melos-action@v3
+        with:
+          melos-version: '^6.3.0'
+          run-bootstrap: 'false'
+
       - name: Get dependencies
         run: flutter pub get
 
       - name: Generate sources
-        uses: ./.github/actions/client_parallel_source_generator
-        with:
-          working-directory: 'das_client'
+        run: melos generate
 
       - name: Upload generated srcs  # saves around 40 sec
         uses: actions/upload-artifact@v4
@@ -126,3 +130,4 @@ jobs:
         run: |
           flutter build ipa --flavor ${{ matrix.flavor }} -t ${{ matrix.app-root }} --release --no-codesign
           xcodebuild -exportArchive -archivePath "build/ios/archive/${{ matrix.archive-filename }}" -exportOptionsPlist ios/exportOptionsRelease.plist -authenticationKeyIssuerID "$APPSTORE_CONNECT_ISSUER_ID" -authenticationKeyID "$APPSTORE_CONNECT_KEY_ID" -authenticationKeyPath ~/AuthKey.p8
+        working-directory: das_client/app

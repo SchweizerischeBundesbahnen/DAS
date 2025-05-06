@@ -1,16 +1,8 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
-
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-name: Flutter Browserstack iOS Build
+name: Client Browserstack iOS
 
 defaults:
   run:
-    working-directory: das_client/app
+    working-directory: das_client
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -42,15 +34,20 @@ jobs:
         flutter-version: '3.27.4'
         cache: true
 
+    - name: Setup melos
+      uses: bluefireteam/melos-action@v3
+      with:
+        melos-version: '^6.3.0'
+        run-bootstrap: 'false'
+
     - name: Get dependencies
       run: flutter pub get
 
     - name: Generate sources
-      uses: ./.github/actions/client_parallel_source_generator
-      with:
-        working-directory: 'das_client'
+      run: melos generate
 
-    - shell: bash
+    - name: Build ipa for integration tests
+      shell: bash
       env:
         MQTT_USERNAME: ${{ secrets.MQTT_USERNAME }}
         MQTT_PASSWORD: ${{ secrets.MQTT_PASSWORD }}
@@ -62,6 +59,7 @@ jobs:
         pushd build/ios_integration/Build/Products
         zip -r app-integrationtest-release-${{ matrix.file-nr }}.zip Release-iphoneos dev_dev_iphoneos*-arm64.xctestrun
         popd
+      working-directory: das_client/app
 
     - name: Upload and Run on Browserstack
       uses: Grodien/browserstack-flutter-action@v1.4

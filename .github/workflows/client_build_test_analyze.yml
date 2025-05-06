@@ -1,12 +1,4 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
-
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-name: Flutter Build Test Analyze
+name: Client Build Test Analyze
 
 defaults:
   run:
@@ -46,16 +38,18 @@ jobs:
     - name: Format check with line length 120
       run: dart format -l 120 -o none --set-exit-if-changed .
 
-    - name: Generate sources
-      uses: ./.github/actions/client_parallel_source_generator
+    - name: Setup melos
+      uses: bluefireteam/melos-action@v3
       with:
-        working-directory: 'das_client'
+        melos-version: '^6.3.0'
+        run-bootstrap: 'false'
+
+    - name: Generate sources
+      run: melos generate
 
 #    - name: Analyze Src
 #      run: flutter analyze
 
     - name: Flutter test
-      uses: ./.github/actions/client_test
-      with:
-        working-directory: 'das_client'
+      run: melos test
 

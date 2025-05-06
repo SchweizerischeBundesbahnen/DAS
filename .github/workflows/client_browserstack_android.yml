@@ -1,16 +1,8 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
-
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-name: Flutter Browserstack Android Build
+name: Client Browserstack Android
 
 defaults:
   run:
-    working-directory: das_client/app
+    working-directory: das_client
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -43,6 +35,18 @@ jobs:
         flutter-version: '3.27.4'
         cache: true
 
+    - name: Setup melos
+      uses: bluefireteam/melos-action@v3
+      with:
+        melos-version: '^6.3.0'
+        run-bootstrap: 'false'
+
+    - name: Get dependencies
+      run: flutter pub get
+
+    - name: Generate sources
+      run: melos generate
+
     - name: Prepare Android Secrets 🤫
       env:
         ANDROID_KEYSTORE_STRING: ${{ secrets.ANDROID_KEYSTORE }}
@@ -57,26 +61,18 @@ jobs:
         echo "ANDROID_KEY_ALIAS=$ANDROID_KEY_ALIAS" >> "$GITHUB_ENV"
         echo "ANDROID_KEY_PASSWORD=$ANDROID_KEY_PASSWORD" >> "$GITHUB_ENV"
 
-    - name: Get dependencies
-      run: flutter pub get
-
-    - name: Generate sources
-      uses: ./.github/actions/client_parallel_source_generator
-      with:
-        working-directory: 'das_client'
-
-    - shell: bash
+    - name: Build apk for testing
+      shell: bash
       env:
         MQTT_USERNAME: ${{ secrets.MQTT_USERNAME }}
         MQTT_PASSWORD: ${{ secrets.MQTT_PASSWORD }}
       run: |
         flutter build apk --flavor dev -t integration_test/app_test.dart --no-tree-shake-icons --debug --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD
+      working-directory: das_client/app
 
     - name: Build Test Package
-      run: |
-        cd android
-        ./gradlew app:assembleAndroidTest
-        cd ..
+      run: ./gradlew app:assembleAndroidTest
+      working-directory: das_client/app/android
 
     - name: Upload and Run on Browserstack
       uses: Grodien/browserstack-flutter-action@v1.4
