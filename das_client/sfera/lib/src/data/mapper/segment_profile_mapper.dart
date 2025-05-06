@@ -83,8 +83,8 @@ class SegmentProfileMapper {
     return journeyData;
   }
 
-  static List<ServicePoint> _parseServicePoint(
-      _MapperData mapperData, List<SegmentProfileDto> segmentProfiles, SegmentProfileReferenceDto segmentProfileReference) {
+  static List<ServicePoint> _parseServicePoint(_MapperData mapperData, List<SegmentProfileDto> segmentProfiles,
+      SegmentProfileReferenceDto segmentProfileReference) {
     final servicePoints = <ServicePoint>[];
 
     final timingPoints = mapperData.segmentProfile.points?.timingPoints.toList() ?? [];
@@ -150,7 +150,8 @@ class SegmentProfileMapper {
 
           protectionSections.add(ProtectionSection(
               isOptional: isOptional != null ? bool.parse(isOptional.nspValue) : false,
-              isLong: isLong != null ? XmlEnum.valueOf(LengthTypeDto.values, isLong.nspValue) == LengthTypeDto.long : false,
+              isLong:
+                  isLong != null ? XmlEnum.valueOf(LengthTypeDto.values, isLong.nspValue) == LengthTypeDto.long : false,
               order: calculateOrder(mapperData.segmentIndex, currentLimitationChange.location),
               kilometre: mapperData.kilometreMap[currentLimitationChange.location]!));
         }

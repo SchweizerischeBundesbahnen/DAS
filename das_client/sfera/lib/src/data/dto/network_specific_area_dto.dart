@@ -13,7 +13,8 @@ class NetworkSpecificAreaDto extends SferaSegmentXmlElementDto {
 
   String get company => childrenWithType('teltsi_Company').first.value!;
 
-  Iterable<NetworkSpecificParameterDto> get networkSpecificParameters => children.whereType<NetworkSpecificParameterDto>();
+  Iterable<NetworkSpecificParameterDto> get networkSpecificParameters =>
+      children.whereType<NetworkSpecificParameterDto>();
 
   TrackEquipmentTypeWrapperDto? get trackEquipmentTypeWrapper =>
       children.whereType<TrackEquipmentTypeWrapperDto>().firstOrNull;

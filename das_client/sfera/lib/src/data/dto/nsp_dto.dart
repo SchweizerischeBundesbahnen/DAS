@@ -15,6 +15,8 @@ abstract class NspDto extends SferaXmlElementDto {
 
   @override
   bool validate() {
-    return validateHasChild('teltsi_Company') && validateHasChildOfType<NetworkSpecificParameterDto>() && super.validate();
+    return validateHasChild('teltsi_Company') &&
+        validateHasChildOfType<NetworkSpecificParameterDto>() &&
+        super.validate();
   }
 }

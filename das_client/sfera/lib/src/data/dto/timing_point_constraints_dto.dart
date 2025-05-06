@@ -11,10 +11,12 @@ class TimingPointConstraintsDto extends SferaXmlElementDto {
 
   TimingPointReferenceDto get timingPointReference => children.whereType<TimingPointReferenceDto>().first;
 
-  StoppingPointInformationDto? get stoppingPointInformation => children.whereType<StoppingPointInformationDto>().firstOrNull;
+  StoppingPointInformationDto? get stoppingPointInformation =>
+      children.whereType<StoppingPointInformationDto>().firstOrNull;
 
   StopSkipPassDto get stopSkipPass =>
-      XmlEnum.valueOf<StopSkipPassDto>(StopSkipPassDto.values, attributes['TP_StopSkipPass']) ?? StopSkipPassDto.stoppingPoint;
+      XmlEnum.valueOf<StopSkipPassDto>(StopSkipPassDto.values, attributes['TP_StopSkipPass']) ??
+      StopSkipPassDto.stoppingPoint;
 
   @override
   bool validate() {

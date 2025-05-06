@@ -8,7 +8,8 @@ class G2bEventPayloadDto extends SferaXmlElementDto {
 
   G2bEventPayloadDto({super.type = elementType, super.attributes, super.children, super.value});
 
-  RelatedTrainInformationDto? get relatedTrainInformation => children.whereType<RelatedTrainInformationDto>().firstOrNull;
+  RelatedTrainInformationDto? get relatedTrainInformation =>
+      children.whereType<RelatedTrainInformationDto>().firstOrNull;
 
   Iterable<JourneyProfileDto> get journeyProfiles => children.whereType<JourneyProfileDto>();
 

@@ -11,5 +11,6 @@ class TafTapLocationIdentDto extends LocationIdentDto {
     super.value,
   });
 
-  TeltsiPrimaryLocationNameDto? get primaryLocationName => children.whereType<TeltsiPrimaryLocationNameDto>().firstOrNull;
+  TeltsiPrimaryLocationNameDto? get primaryLocationName =>
+      children.whereType<TeltsiPrimaryLocationNameDto>().firstOrNull;
 }

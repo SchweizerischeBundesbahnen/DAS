@@ -21,7 +21,8 @@ class SegmentProfileDto extends SferaXmlElementDto {
 
   String get id => attributes['SP_ID']!;
 
-  SpStatusDto get status => XmlEnum.valueOf<SpStatusDto>(SpStatusDto.values, attributes['SP_Status']) ?? SpStatusDto.valid;
+  SpStatusDto get status =>
+      XmlEnum.valueOf<SpStatusDto>(SpStatusDto.values, attributes['SP_Status']) ?? SpStatusDto.valid;
 
   SpZoneDto? get zone => children.whereType<SpZoneDto>().firstOrNull;
 

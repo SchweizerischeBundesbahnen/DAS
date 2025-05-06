@@ -8,7 +8,8 @@ class SferaXmlElementDto {
   final List<SferaXmlElementDto> children;
   final String? value;
 
-  SferaXmlElementDto({required this.type, Map<String, String>? attributes, List<SferaXmlElementDto>? children, this.value})
+  SferaXmlElementDto(
+      {required this.type, Map<String, String>? attributes, List<SferaXmlElementDto>? children, this.value})
       : attributes = attributes ?? {},
         children = children ?? [];
 

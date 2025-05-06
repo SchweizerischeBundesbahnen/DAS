@@ -7,7 +7,8 @@ class NetworkSpecificEventDto extends NspDto {
 
   NetworkSpecificEventDto({super.type = elementType, super.attributes, super.children, super.value});
 
-  factory NetworkSpecificEventDto.from({Map<String, String>? attributes, List<SferaXmlElementDto>? children, String? value}) {
+  factory NetworkSpecificEventDto.from(
+      {Map<String, String>? attributes, List<SferaXmlElementDto>? children, String? value}) {
     final groupName = children?.where((it) => it.type == NspDto.groupNameElement).firstOrNull;
     if (groupName?.value == UxTestingNseDto.elementName) {
       return UxTestingNseDto(attributes: attributes, children: children, value: value);
