@@ -1,27 +1,32 @@
 import 'dart:io';
 
-import 'package:mqtt/component.dart';
-import 'package:sfera/component.dart';
-import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mqtt/component.dart';
+import 'package:sfera/component.dart';
 import 'package:sfera/src/data/api/task/request_train_characteristics_task.dart';
+import 'package:sfera/src/data/dto/message_header_dto.dart';
+import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 
 import 'sfera_request_train_characteristic_task_test.mocks.dart';
 
 @GenerateNiceMocks([
+  MockSpec<SferaService>(),
   MockSpec<MqttService>(),
   MockSpec<SferaDatabaseRepository>(),
 ])
 void main() {
+  late MockSferaService sferaService;
   late MockMqttService mqttService;
   late MockSferaDatabaseRepository sferaRepository;
   late OtnIdDto otnId;
   Fimber.plantTree(DebugTree());
 
   setUp(() {
+    sferaService = MockSferaService();
+    when(sferaService.messageHeader(sender: anyNamed('sender'))).thenReturn(MessageHeaderDto());
     mqttService = MockMqttService();
     sferaRepository = MockSferaDatabaseRepository();
     otnId = OtnIdDto.create('1085', '719', DateTime.now());
@@ -34,10 +39,12 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final tcTask = RequestTrainCharacteristicsTask(
-        mqttService: mqttService,
-        sferaDatabaseRepository: sferaRepository,
-        otnId: otnId,
-        journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first);
+      sferaService: sferaService,
+      mqttService: mqttService,
+      sferaDatabaseRepository: sferaRepository,
+      otnId: otnId,
+      journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first,
+    );
 
     await tcTask.execute((task, data) {
       expect(task, tcTask);
@@ -59,6 +66,7 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final tcTask = RequestTrainCharacteristicsTask(
+        sferaService: sferaService,
         mqttService: mqttService,
         sferaDatabaseRepository: sferaRepository,
         otnId: otnId,
@@ -85,6 +93,7 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final tcTask = RequestTrainCharacteristicsTask(
+        sferaService: sferaService,
         mqttService: mqttService,
         sferaDatabaseRepository: sferaRepository,
         otnId: otnId,
@@ -112,6 +121,7 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final tcTask = RequestTrainCharacteristicsTask(
+      sferaService: sferaService,
       mqttService: mqttService,
       sferaDatabaseRepository: sferaRepository,
       otnId: otnId,

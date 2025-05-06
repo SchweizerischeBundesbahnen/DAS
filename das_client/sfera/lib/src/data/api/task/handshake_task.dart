@@ -1,6 +1,7 @@
 import 'package:fimber/fimber.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
+import 'package:sfera/src/data/api/task/sfera_task.dart';
 import 'package:sfera/src/data/dto/das_operating_modes_supported_dto.dart';
 import 'package:sfera/src/data/dto/enums/das_architecture_dto.dart';
 import 'package:sfera/src/data/dto/enums/das_connectivity_dto.dart';
@@ -9,12 +10,18 @@ import 'package:sfera/src/data/dto/enums/related_train_request_type_dto.dart';
 import 'package:sfera/src/data/dto/handshake_request_dto.dart';
 import 'package:sfera/src/data/dto/sfera_b2g_request_message_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
-import 'package:sfera/src/data/api/task/sfera_task.dart';
 
 class HandshakeTask extends SferaTask {
-  HandshakeTask({required MqttService mqttService, required this.otnId, required this.dasDrivingMode, super.timeout})
-      : _mqttService = mqttService;
+  HandshakeTask({
+    required MqttService mqttService,
+    required SferaService sferaService,
+    required this.otnId,
+    required this.dasDrivingMode,
+    super.timeout,
+  })  : _mqttService = mqttService,
+        _sferaService = sferaService;
 
+  final SferaService _sferaService;
   final MqttService _mqttService;
   final OtnIdDto otnId;
   final DasDrivingModeDto dasDrivingMode;
@@ -28,10 +35,10 @@ class HandshakeTask extends SferaTask {
     _taskCompletedCallback = onCompleted;
     _taskFailedCallback = onFailed;
 
-    await _sendHandshakeRequest();
+    _sendHandshakeRequest();
   }
 
-  Future<void> _sendHandshakeRequest() async {
+  _sendHandshakeRequest() {
     final sferaTrain = SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
 
     Fimber.i('Sending handshake request for company=${otnId.company} train=$sferaTrain');
@@ -43,7 +50,7 @@ class HandshakeTask extends SferaTask {
       statusReportsEnabled: false,
     );
 
-    final messageHeader = await SferaService.messageHeader(sender: otnId.company);
+    final messageHeader = _sferaService.messageHeader(sender: otnId.company);
     final sferaB2gRequestMessage = SferaB2gRequestMessageDto.create(messageHeader, handshakeRequest: handshakeRequest);
     final success =
         _mqttService.publishMessage(otnId.company, sferaTrain, sferaB2gRequestMessage.buildDocument().toString());

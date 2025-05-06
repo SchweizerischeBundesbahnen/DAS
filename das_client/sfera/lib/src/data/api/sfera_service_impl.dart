@@ -7,18 +7,6 @@ import 'package:fimber/fimber.dart';
 import 'package:mqtt/component.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
-import 'package:sfera/src/data/dto/enums/das_driving_mode_dto.dart';
-import 'package:sfera/src/data/dto/journey_profile_dto.dart';
-import 'package:sfera/src/data/dto/network_specific_event_dto.dart';
-import 'package:sfera/src/data/dto/related_train_information_dto.dart';
-import 'package:sfera/src/data/dto/segment_profile_dto.dart';
-import 'package:sfera/src/data/dto/sfera_b2g_event_message_dto.dart';
-import 'package:sfera/src/data/dto/sfera_g2b_event_message_dto.dart';
-import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
-import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
-import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
-import 'package:sfera/src/data/dto/ux_testing_nse_dto.dart';
-import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
 import 'package:sfera/src/data/api/event/journey_profile_event_handler.dart';
 import 'package:sfera/src/data/api/event/network_specific_event_handler.dart';
 import 'package:sfera/src/data/api/event/related_train_information_event_handler.dart';
@@ -28,18 +16,35 @@ import 'package:sfera/src/data/api/task/request_journey_profile_task.dart';
 import 'package:sfera/src/data/api/task/request_segment_profiles_task.dart';
 import 'package:sfera/src/data/api/task/request_train_characteristics_task.dart';
 import 'package:sfera/src/data/api/task/sfera_task.dart';
+import 'package:sfera/src/data/dto/enums/das_driving_mode_dto.dart';
+import 'package:sfera/src/data/dto/journey_profile_dto.dart';
+import 'package:sfera/src/data/dto/message_header_dto.dart';
+import 'package:sfera/src/data/dto/network_specific_event_dto.dart';
+import 'package:sfera/src/data/dto/related_train_information_dto.dart';
+import 'package:sfera/src/data/dto/segment_profile_dto.dart';
+import 'package:sfera/src/data/dto/sfera_b2g_event_message_dto.dart';
+import 'package:sfera/src/data/dto/sfera_g2b_event_message_dto.dart';
+import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
+import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
+import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
+import 'package:sfera/src/data/dto/ux_testing_nse_dto.dart';
+import 'package:sfera/src/data/format.dart';
+import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
+import 'package:uuid/uuid.dart';
 
 class SferaServiceImpl implements SferaService {
   SferaServiceImpl({
     required MqttService mqttService,
     required SferaDatabaseRepository sferaDatabaseRepository,
     required Authenticator authenticator,
+    required this.deviceId,
   })  : _mqttService = mqttService,
         _sferaDatabaseRepository = sferaDatabaseRepository,
         _authenticator = authenticator {
     _initialize();
   }
 
+  final String deviceId;
   final MqttService _mqttService;
   final SferaDatabaseRepository _sferaDatabaseRepository;
   final Authenticator _authenticator;
@@ -99,7 +104,7 @@ class SferaServiceImpl implements SferaService {
     final otnId = _otnId;
     if (_stateSubject.value == SferaServiceState.connected && otnId != null) {
       Fimber.i('Sending session termination request for $otnId...');
-      final header = await SferaService.messageHeader(sender: otnId.company);
+      final header = messageHeader(sender: otnId.company);
       final sessionTerminationMessage = SferaB2gEventMessageDto.createSessionTermination(messageHeader: header);
       final sferaTrain = SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
       _mqttService.publishMessage(otnId.company, sferaTrain, sessionTerminationMessage.buildDocument().toString());
@@ -153,9 +158,11 @@ class SferaServiceImpl implements SferaService {
   Future<void> _initiateHandshake(OtnIdDto otnId) async {
     _stateSubject.add(SferaServiceState.handshaking);
     final user = await _authenticator.user();
-    final drivingMode = user.roles.contains(Role.driver) ? DasDrivingModeDto.dasNotConnected : DasDrivingModeDto.readOnly;
+    final drivingMode =
+        user.roles.contains(Role.driver) ? DasDrivingModeDto.dasNotConnected : DasDrivingModeDto.readOnly;
 
-    final handshakeTask = HandshakeTask(mqttService: _mqttService, otnId: otnId, dasDrivingMode: drivingMode);
+    final handshakeTask =
+        HandshakeTask(mqttService: _mqttService, sferaService: this, otnId: otnId, dasDrivingMode: drivingMode);
     _tasks.add(handshakeTask);
     handshakeTask.execute(_onTaskCompleted, _onTaskFailed);
   }
@@ -194,6 +201,7 @@ class SferaServiceImpl implements SferaService {
     _stateSubject.add(SferaServiceState.loadingJourney);
     final requestJourneyTask = RequestJourneyProfileTask(
       mqttService: _mqttService,
+      sferaService: this,
       sferaDatabaseRepository: _sferaDatabaseRepository,
       otnId: _otnId!,
     );
@@ -211,6 +219,7 @@ class SferaServiceImpl implements SferaService {
 
   void _startSegmentProfileAndTCTask() {
     final requestSegmentProfilesTask = RequestSegmentProfilesTask(
+      sferaService: this,
       mqttService: _mqttService,
       sferaDatabaseRepository: _sferaDatabaseRepository,
       otnId: _otnId!,
@@ -220,6 +229,7 @@ class SferaServiceImpl implements SferaService {
     requestSegmentProfilesTask.execute(_onTaskCompleted, _onTaskFailed);
 
     final requestTrainCharacteristicsTask = RequestTrainCharacteristicsTask(
+      sferaService: this,
       mqttService: _mqttService,
       sferaDatabaseRepository: _sferaDatabaseRepository,
       otnId: _otnId!,
@@ -330,5 +340,11 @@ class SferaServiceImpl implements SferaService {
   void dispose() {
     _mqttStreamSubscription?.cancel();
     _mqttStreamSubscription = null;
+  }
+
+  @override
+  MessageHeaderDto messageHeader({required String sender}) {
+    final timestamp = Format.sferaTimestamp(DateTime.now());
+    return MessageHeaderDto.create(const Uuid().v4(), timestamp, deviceId, 'TMS', sender, '0085');
   }
 }

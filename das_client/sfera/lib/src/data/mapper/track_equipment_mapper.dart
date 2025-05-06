@@ -1,10 +1,10 @@
+import 'package:sfera/src/data/comparator/start_end_int_comparator.dart';
 import 'package:sfera/src/model/journey/track_equipment_segment.dart';
 import 'package:sfera/src/data/dto/enums/start_end_qualifier_dto.dart';
 import 'package:sfera/src/data/dto/enums/track_equipment_type_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_area_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
-import 'package:app/util/comparators.dart';
 import 'package:fimber/fimber.dart';
 import 'package:sfera/src/data/mapper/mapper_utils.dart';
 
