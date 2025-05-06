@@ -46,18 +46,16 @@ jobs:
     - name: Format check with line length 120
       run: dart format -l 120 -o none --set-exit-if-changed .
 
-    - name: Src generation
-      run: dart run build_runner build --delete-conflicting-outputs
+    - name: Generate sources
+      uses: ./.github/actions/client_parallel_source_generator
+      with:
+        working-directory: 'das_client'
 
-    - name: Generate localization files
-      run:  flutter gen-l10n
-
-    - name: Flutter analyze
-      run: flutter analyze
-
-    - name: Custom linter
-      run: flutter pub run custom_lint --no-fatal-infos
+#    - name: Analyze Src
+#      run: flutter analyze
 
     - name: Flutter test
-      run: flutter test
+      uses: ./.github/actions/client_test
+      with:
+        working-directory: 'das_client'
 

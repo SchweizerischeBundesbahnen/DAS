@@ -10,7 +10,7 @@ name: Flutter Browserstack Android Build
 
 defaults:
   run:
-    working-directory: das_client
+    working-directory: das_client/app
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -29,20 +29,24 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
+
     - uses: actions/checkout@v4
+
     - uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
         java-version: '17'
         cache: 'gradle'
+
     - uses: subosito/flutter-action@v2
       with:
         flutter-version: '3.29.3'
         cache: true
-    - name: Prepare Flutter Build
+
+    - name: Prepare Android Secrets 🤫
       env:
         ANDROID_KEYSTORE_STRING: ${{ secrets.ANDROID_KEYSTORE }}
-        ANDROID_KEYSTORE: ${{ github.workspace }}/das_client/android/das.keystore
+        ANDROID_KEYSTORE: ${{ github.workspace }}/das_client/app/android/das.keystore
         ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
         ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
         ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
@@ -52,20 +56,28 @@ jobs:
         echo "ANDROID_KEYSTORE_PASSWORD=$ANDROID_KEYSTORE_PASSWORD" >> "$GITHUB_ENV"
         echo "ANDROID_KEY_ALIAS=$ANDROID_KEY_ALIAS" >> "$GITHUB_ENV"
         echo "ANDROID_KEY_PASSWORD=$ANDROID_KEY_PASSWORD" >> "$GITHUB_ENV"
-        flutter pub get
-        dart run build_runner build --delete-conflicting-outputs
-        flutter gen-l10n
+
+    - name: Get dependencies
+      run: flutter pub get
+
+    - name: Generate sources
+      uses: ./.github/actions/client_parallel_source_generator
+      with:
+        working-directory: 'das_client'
+
     - shell: bash
       env:
         MQTT_USERNAME: ${{ secrets.MQTT_USERNAME }}
         MQTT_PASSWORD: ${{ secrets.MQTT_PASSWORD }}
       run: |
         flutter build apk --flavor dev -t integration_test/app_test.dart --no-tree-shake-icons --debug --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD
+
     - name: Build Test Package
       run: |
         cd android
         ./gradlew app:assembleAndroidTest
         cd ..
+
     - name: Upload and Run on Browserstack
       uses: Grodien/browserstack-flutter-action@v1.4
       with:
@@ -74,6 +86,6 @@ jobs:
         project: das_client
         customId: das_client_android
         buildTag: das_client_android
-        appFilePath: ${{ github.workspace }}/das_client/build/app/outputs/flutter-apk/app-dev-debug.apk
-        testFilePath: ${{ github.workspace }}/das_client/build/app/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk
+        appFilePath: ${{ github.workspace }}/das_client/app/build/app/outputs/flutter-apk/app-dev-debug.apk
+        testFilePath: ${{ github.workspace }}/das_client/app/build/app/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk
         devices: Samsung Galaxy Tab S9-13.0,Samsung Galaxy Tab S8-12.0

@@ -1,8 +1,1 @@
-enum SferaError {
-  connectionFailed,
-  validationFailed,
-  handshakeRejected,
-  requestTimeout,
-  jpUnavailable,
-  invalid
-}
+enum SferaError { connectionFailed, validationFailed, handshakeRejected, requestTimeout, jpUnavailable, invalid }

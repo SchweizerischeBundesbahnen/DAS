@@ -1,5 +1,3 @@
-
-
 import 'package:sfera/component.dart';
 
 class TrainJourneySettings {
