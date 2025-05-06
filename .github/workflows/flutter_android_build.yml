@@ -62,6 +62,11 @@ jobs:
       with:
         working-directory: 'das_client'
 
-    - run: flutter build appbundle --flavor dev -t lib/main_dev.dart
-    - run: flutter build appbundle --flavor inte -t lib/main_inte.dart
-    - run: flutter build appbundle --flavor prod -t lib/main_prod.dart
+    - name: Build Appbundle DEV
+      run: flutter build appbundle --flavor dev -t app/lib/main_dev.dart
+
+    - name: Build Appbundle INTE
+      run: flutter build appbundle --flavor inte -t app/lib/main_inte.dart
+
+    - name: Build Appbundle PROD
+      run: flutter build appbundle --flavor prod -t app/lib/main_prod.dart

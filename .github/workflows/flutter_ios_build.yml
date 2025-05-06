@@ -43,10 +43,10 @@ jobs:
         working-directory: 'das_client'
 
     - name: Build iOS App DEV
-      run: flutter build ipa --flavor dev -t lib/main_dev.dart --release --no-codesign
+      run: flutter build ipa --flavor dev -t app/lib/main_dev.dart --release --no-codesign
 
     - name: Build iOS App INTE
-      run: flutter build ipa --flavor inte -t lib/main_inte.dart --release --no-codesign
+      run: flutter build ipa --flavor inte -t app/lib/main_inte.dart --release --no-codesign
 
     - name: Build iOS App PROD
-      run: flutter build ipa --flavor prod -t lib/main_prod.dart --release --no-codesign
+      run: flutter build ipa --flavor prod -t app/lib/main_prod.dart --release --no-codesign

@@ -58,15 +58,15 @@ jobs:
         include: # will run three jobs in parallel
           - flavor: "dev"
             bundle-id: 'ch.sbb.das.dev'
-            app-root: 'lib/main_dev.dart'
+            app-root: 'app/lib/main_dev.dart'
             archive-filename: 'DAS Dev.xcarchive'
           - flavor: "inte"
             bundle-id: 'ch.sbb.das.inte'
-            app-root: 'lib/main_inte.dart'
+            app-root: 'app/lib/main_inte.dart'
             archive-filename: 'DAS Inte.xcarchive'
           - flavor: "prod"
             bundle-id: 'ch.sbb.das'
-            app-root: 'lib/main_prod.dart'
+            app-root: 'app/lib/main_prod.dart'
             archive-filename: 'DAS.xcarchive'
 
     steps:

@@ -58,15 +58,15 @@ jobs:
         include: # will run three jobs in parallel
           - flavor: "dev"
             packageName: 'ch.sbb.das.client.dev'
-            app-root: 'lib/main_dev.dart'
+            app-root: 'app/lib/main_dev.dart'
             release-dir: 'devRelease/app-dev-release.aab'
           - flavor: "inte"
             packageName: 'ch.sbb.das.client.inte'
-            app-root: 'lib/main_inte.dart'
+            app-root: 'app/lib/main_inte.dart'
             release-dir: 'inteRelease/app-inte-release.aab'
           - flavor: "prod"
             packageName: 'ch.sbb.das.client'
-            app-root: 'lib/main_prod.dart'
+            app-root: 'app/lib/main_prod.dart'
             release-dir: 'prodRelease/app-prod-release.aab'
 
 
