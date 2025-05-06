@@ -1,7 +1,7 @@
 name: das_client
 description: "DAS (Driver Advisory System) is a mobile application that provides all the required journey data to the train driver."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 0.17.0+57
+version: 0.18.0+58
 
 # TODO: Flutter version below 3.29.0 as there are performance issues (https://github.com/dart-lang/sdk/issues/60335).
 # Should be fixed when at least Dart 3.7.3 is used in Flutter.
