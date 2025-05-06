@@ -10,7 +10,7 @@ name: Flutter Browserstack iOS Build
 
 defaults:
   run:
-    working-directory: das_client
+    working-directory: das_client/app
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -71,5 +71,5 @@ jobs:
         project: das_client
         customId: das_client_ios
         buildTag: das_client_ios
-        testPackagePath: ${{ github.workspace }}/das_client/build/ios_integration/Build/Products/app-integrationtest-release-${{ matrix.file-nr }}.zip
+        testPackagePath: ${{ github.workspace }}/das_client/app/build/ios_integration/Build/Products/app-integrationtest-release-${{ matrix.file-nr }}.zip
         devices: iPad 9th-15

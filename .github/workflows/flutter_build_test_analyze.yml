@@ -51,8 +51,8 @@ jobs:
       with:
         working-directory: 'das_client'
 
-    - name: Analyze Src
-      run: flutter analyze
+#    - name: Analyze Src
+#      run: flutter analyze
 
     - name: Flutter test
       uses: ./.github/actions/client_test

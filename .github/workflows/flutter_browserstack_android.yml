@@ -10,7 +10,7 @@ name: Flutter Browserstack Android Build
 
 defaults:
   run:
-    working-directory: das_client
+    working-directory: das_client/app
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -46,7 +46,7 @@ jobs:
     - name: Prepare Android Secrets 🤫
       env:
         ANDROID_KEYSTORE_STRING: ${{ secrets.ANDROID_KEYSTORE }}
-        ANDROID_KEYSTORE: ${{ github.workspace }}/das_client/android/das.keystore
+        ANDROID_KEYSTORE: ${{ github.workspace }}/das_client/app/android/das.keystore
         ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
         ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
         ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
@@ -86,6 +86,6 @@ jobs:
         project: das_client
         customId: das_client_android
         buildTag: das_client_android
-        appFilePath: ${{ github.workspace }}/das_client/build/app/outputs/flutter-apk/app-dev-debug.apk
-        testFilePath: ${{ github.workspace }}/das_client/build/app/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk
+        appFilePath: ${{ github.workspace }}/das_client/app/build/app/outputs/flutter-apk/app-dev-debug.apk
+        testFilePath: ${{ github.workspace }}/das_client/app/build/app/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk
         devices: Samsung Galaxy Tab S9-13.0,Samsung Galaxy Tab S8-12.0
