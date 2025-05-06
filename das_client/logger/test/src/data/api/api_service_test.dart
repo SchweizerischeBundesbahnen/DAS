@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http_x/component.dart';
-import 'package:logger/src/data/api/logger_service.dart';
+import 'package:logger/src/data/api/api_service.dart';
 import 'package:logger/src/data/dto/log_entry_dto.dart';
 import 'package:logger/src/data/mappers.dart';
 import 'package:mockito/annotations.dart';
@@ -8,19 +8,19 @@ import 'package:mockito/mockito.dart';
 
 @GenerateNiceMocks([MockSpec<Client>(), MockSpec<Response>()])
 import 'api_service_test.mocks.dart';
-import 'fakes/response_fake.dart';
+import 'response.fake.dart';
 
 void main() {
   const baseUrl = 'example.com';
   late MockClient mockClient;
-  late LoggerService testee;
+  late ApiService testee;
 
   setUp(() {
     mockClient = MockClient();
-    testee = LoggerService(baseUrl: baseUrl, httpClient: mockClient);
+    testee = ApiService(baseUrl: baseUrl, httpClient: mockClient);
   });
 
-  test('sendLogs_whenCalledWithSuccess_MakesPostAndHasExpectedHeaders', () async {
+  test('sendLogs_whenCalledWithSuccess_makesPostAndHasExpectedHeaders', () async {
     // ARRANGE
     final logEntries = _createDummyLogEntries();
 
@@ -57,7 +57,7 @@ void main() {
     ).called(1);
   });
 
-  test('sendLogs_whenResponseIsInvalid_ShouldThrowHttpException', () async {
+  test('sendLogs_whenResponseIsInvalid_shouldThrowHttpException', () async {
     // ARRANGE
     final logEntries = _createDummyLogEntries();
 
