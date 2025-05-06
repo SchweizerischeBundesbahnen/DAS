@@ -34,14 +34,22 @@ jobs:
 
     runs-on: macos-latest
     steps:
+
     - uses: actions/checkout@v4
+
     - uses: subosito/flutter-action@v2
       with:
         flutter-version: '3.29.3'
         cache: true
-    - run: flutter pub get
-    - run: dart run build_runner build --delete-conflicting-outputs
-    - run: flutter gen-l10n
+
+    - name: Get dependencies
+      run: flutter pub get
+
+    - name: Generate sources
+      uses: ./.github/actions/client_parallel_source_generator
+      with:
+        working-directory: 'das_client'
+
     - shell: bash
       env:
         MQTT_USERNAME: ${{ secrets.MQTT_USERNAME }}
@@ -54,6 +62,7 @@ jobs:
         pushd build/ios_integration/Build/Products
         zip -r app-integrationtest-release-${{ matrix.file-nr }}.zip Release-iphoneos dev_dev_iphoneos*-arm64.xctestrun
         popd
+
     - name: Upload and Run on Browserstack
       uses: Grodien/browserstack-flutter-action@v1.4
       with:

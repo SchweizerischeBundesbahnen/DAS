@@ -1,0 +1,63 @@
+name: Client Test
+description: "Runs flutter test for all components with `test` directory."
+inputs:
+  working-directory:
+    description: 'Working directory where component directories are located. Only top level components will be considered. Defaults to repository root.'
+    required: false
+    default: '.'
+runs:
+  using: 'composite'
+  steps:
+    - name: Parallel Build Runner
+      shell: bash
+      run: |
+        #!/bin/bash
+        # Enable strict error handling
+        set -euo pipefail
+
+        # Trap any error with the line number and exit.
+        trap 'echo "[ERROR] Error occurred on line $LINENO. Exiting." >&2' ERR
+
+        # Logging helper functions
+        log_info() {
+          echo "[INFO] $1"
+        }
+        log_error() {
+          echo "[ERROR] $1" >&2
+        }
+
+        # Change to the working directory (defaults to repository root)
+        cd "${{ inputs.working-directory }}"
+
+        # Enable nullglob to allow the package_dirs array to be empty without literal pattern.
+        shopt -s nullglob
+        package_dirs=(*/)
+        if [ ${#package_dirs[@]} -eq 0 ]; then
+          log_info "No package directories found. Exiting."
+          exit 0
+        fi
+
+
+        for dir in "${package_dirs[@]}"; do
+          package="${dir%/}"  # Remove trailing slash for logging purposes
+          if ! [ -f "$dir/pubspec.yaml" ]; then
+            log_info "Skipping directory '$dir' as it does not contain a pubspec.yaml."
+            continue
+          fi
+          if ! [ -d "$dir/test" ]; then
+            log_info "Skipping package '$package' as it does not contain test directory."
+            continue
+          fi
+        
+          log_info "Running tests for package '$package' in directory..."
+          cd "$dir" || { log_error "Failed to change to directory '$dir'"; exit 1; }
+          if ! flutter test 2>&1 | sed "s/^/[$package] /"; then
+              log_error "test failed for package '$package'."
+              exit 1
+          fi
+        
+          cd ..
+        
+        done
+        
+        log_info "All tests ran successfully."

@@ -31,11 +31,10 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Src generation
-        run: dart run build_runner build --delete-conflicting-outputs
-
-      - name: Generate localization files
-        run: flutter gen-l10n
+      - name: Generate sources
+        uses: ./.github/actions/client_parallel_source_generator
+        with:
+          working-directory: 'das_client'
 
       - name: Upload generated srcs  # saves around 40 sec
         uses: actions/upload-artifact@v4
@@ -93,7 +92,7 @@ jobs:
         with:
           name: gen_srcs_android
 
-      - name: Store secrets as env vars
+      - name: Prepare Android Secrets 🤫
         env:
           ANDROID_KEYSTORE_STRING: ${{ secrets.ANDROID_KEYSTORE }}
           ANDROID_KEYSTORE: ${{ github.workspace }}/das_client/android/das.keystore

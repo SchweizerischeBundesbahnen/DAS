@@ -1,0 +1,87 @@
+name: Client Parallel Source Generator
+description: "Recursively triggers Dart's src generator for components that depend on it. Runs gen-l10n as well."
+inputs:
+  working-directory:
+    description: 'Working directory where component directories are located. Only top level components will be considered. Defaults to repository root.'
+    required: false
+    default: '.'
+runs:
+  using: 'composite'
+  steps:
+    - name: Parallel Build Runner
+      shell: bash
+      run: |
+        #!/bin/bash
+        # Enable strict error handling
+        set -euo pipefail
+
+        # Trap any error with the line number and exit.
+        trap 'echo "[ERROR] Error occurred on line $LINENO. Exiting." >&2' ERR
+
+        # Logging helper functions
+        log_info() {
+          echo "[INFO] $1"
+        }
+        log_error() {
+          echo "[ERROR] $1" >&2
+        }
+
+        # Change to the working directory (defaults to repository root)
+        cd "${{ inputs.working-directory }}"
+
+        # Array to hold background process IDs
+        pids=()
+
+        # Enable nullglob to allow the package_dirs array to be empty without literal pattern.
+        shopt -s nullglob
+        package_dirs=(*/)
+        if [ ${#package_dirs[@]} -eq 0 ]; then
+          log_info "No package directories found. Exiting."
+          exit 0
+        fi
+
+        # Iterate over each package directory
+        for dir in "${package_dirs[@]}"; do
+          package="${dir%/}"  # Remove trailing slash for logging purposes
+          if ! [ -f "$dir/pubspec.yaml" ]; then
+            continue
+            log_info "Skipping directory '$dir' as it does not contain a pubspec.yaml."
+          fi
+          if ! grep -q 'build_runner' "$dir/pubspec.yaml"; then
+            continue
+            log_info "Skipping package '$package' as it does not depend on build_runner."
+          fi
+        
+          log_info "Triggering build_runner for package '$package' in directory ..."
+          (
+            # Change into the package directory; on failure, exit the subshell
+            cd "$dir" || { log_error "Failed to change to directory '$dir'"; exit 1; }
+            # Run build_runner and prefix every output line with the package name
+            if ! dart run build_runner build --delete-conflicting-outputs 2>&1 | sed "s/^/[$package] /"; then
+              log_error "build_runner command failed for package '$package'."
+              exit 1
+            fi
+          ) &
+          pids+=("$!") # Save the background process ID
+        done
+
+        # Wait for all background processes to complete.
+        for pid in "${pids[@]}"; do
+          if ! wait "$pid"; then
+            log_error "A build_runner process (PID: $pid) exited with an error."
+            exit 1
+          fi
+        done
+        
+        log_info "All build_runner processes completed successfully."
+                
+        log_info "Generating internationalization code..."
+                
+        # Change to app component directory; fail if not existent
+        cd "app" || { log_error "Failed to change to directory app"; exit 1; }
+        
+        # Run build_runner and prefix every output line with the package name
+        if ! flutter gen-l10n ; then
+          log_error "Generating the localization code failed."
+          exit 1
+        fi
