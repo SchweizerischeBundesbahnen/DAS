@@ -36,7 +36,8 @@ runs:
           log_info "No package directories found. Exiting."
           exit 0
         fi
-
+        
+        is_any_test_failed=0
 
         for dir in "${package_dirs[@]}"; do
           package="${dir%/}"  # Remove trailing slash for logging purposes
@@ -50,14 +51,21 @@ runs:
           fi
         
           log_info "Running tests for package '$package' in directory..."
-          cd "$dir" || { log_error "Failed to change to directory '$dir'"; exit 1; }
-          if ! flutter test 2>&1 | sed "s/^/[$package] /"; then
+          cd "$dir"
+        
+          if ! flutter test --no-pub 2>&1 | sed "s/^/[$package] /"; then
               log_error "test failed for package '$package'."
-              exit 1
+              is_any_test_failed=1
           fi
         
           cd ..
         
         done
+        
+        # Nonzero exit if any test failed
+        if [ $is_any_test_failed -ne 0 ]; then
+          log_error "One or more tests failed."
+          exit 1
+        fi
         
         log_info "All tests ran successfully."

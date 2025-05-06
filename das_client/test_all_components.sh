@@ -24,7 +24,9 @@ if [ ${#package_dirs[@]} -eq 0 ]; then
   exit 0
 fi
 
-# Iterate through each package directory
+
+is_any_test_failed=0
+
 for dir in "${package_dirs[@]}"; do
   package="${dir%/}"  # Remove trailing slash for logging purposes
   if ! [ -f "$dir/pubspec.yaml" ]; then
@@ -35,16 +37,22 @@ for dir in "${package_dirs[@]}"; do
     continue
   fi
   log_info "Running flutter test for package '$package' in directory..."
-  # Change to package directory; if fails, exit
-  cd "$dir" || { log_error "Failed to change to directory '$dir'"; exit 1; }
 
-  # Run build_runner command and prefix each line of output with package name.
+  cd "$dir"
+
+  # Run the flutter test command and prefix each line of output with package name.
   if ! fvm flutter test --no-pub 2>&1 | sed "s/^/[$package] /"; then
     log_error "flutter test command failed for package '$package'."
-    exit 1
+    is_any_test_failed=1
   fi
 
   cd ..
 done
 
-log_info "All tests ran."
+# Nonzero exit if any test failed
+if [ $is_any_test_failed -ne 0 ]; then
+  log_error "One or more tests failed."
+  exit 1
+fi
+
+log_info "All tests ran successfully."
