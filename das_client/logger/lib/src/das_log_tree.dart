@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:app/util/device_id_info.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:fimber/fimber.dart';
 import 'package:logger/src/data/logger_repo.dart';
 import 'package:logger/src/log_entry.dart';
 import 'package:logger/src/log_level.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 class DasLogTree extends LogTree {
   DasLogTree({required LoggerRepo loggerRepo}) : _loggerRepo = loggerRepo {

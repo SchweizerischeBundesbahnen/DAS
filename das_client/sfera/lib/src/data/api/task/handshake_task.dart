@@ -7,10 +7,8 @@ import 'package:sfera/src/data/dto/enums/das_connectivity_dto.dart';
 import 'package:sfera/src/data/dto/enums/das_driving_mode_dto.dart';
 import 'package:sfera/src/data/dto/enums/related_train_request_type_dto.dart';
 import 'package:sfera/src/data/dto/handshake_request_dto.dart';
-import 'package:sfera/src/data/dto/otn_id_dto.dart';
 import 'package:sfera/src/data/dto/sfera_b2g_request_message_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
-import 'package:sfera/src/data/api/sfera_error.dart';
 import 'package:sfera/src/data/api/task/sfera_task.dart';
 
 class HandshakeTask extends SferaTask {

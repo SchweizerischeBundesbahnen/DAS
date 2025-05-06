@@ -124,7 +124,7 @@ extension GetItX on GetIt {
     factoryFunc() {
       final flavor = DI.get<Flavor>();
 
-      final httpClient = createHttpClient(
+      final httpClient = HttpXComponent.createHttpClient(
         authProvider: _AuthProvider(authenticator: DI.get()),
       );
 

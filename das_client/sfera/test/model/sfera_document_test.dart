@@ -11,7 +11,7 @@ import 'package:sfera/src/data/dto/message_header_dto.dart';
 import 'package:sfera/src/data/dto/sfera_b2g_request_message_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
-import 'package:sfera/src/data/mapper/sfera_reply_parser.dart';
+import 'package:sfera/src/data/parser/sfera_reply_parser.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter_test/flutter_test.dart';
 

@@ -5,11 +5,11 @@ import 'package:collection/collection.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_row.dart';
-import 'package:sfera/src/model/journey/base_data.dart';
 import 'package:app/util/widget_util.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:sfera/component.dart';
 
 class AutomaticAdvancementController {
   static const int _minScrollDuration = 1000;

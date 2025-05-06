@@ -1,6 +1,6 @@
 import 'package:app/i18n/i18n.dart';
-import 'package:sfera/src/model/ru.dart';
 import 'package:flutter/material.dart';
+import 'package:sfera/component.dart';
 
 extension RuExtension on Ru {
   String displayText(BuildContext context) {

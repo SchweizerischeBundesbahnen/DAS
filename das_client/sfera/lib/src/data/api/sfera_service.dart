@@ -1,7 +1,5 @@
 import 'dart:core';
 
-import 'package:sfera/src/model/journey/journey.dart';
-import 'package:sfera/src/model/journey/ux_testing.dart';
 import 'package:app/util/device_id_info.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';

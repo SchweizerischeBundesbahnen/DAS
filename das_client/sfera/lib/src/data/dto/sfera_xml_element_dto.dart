@@ -1,5 +1,5 @@
 import 'package:fimber/fimber.dart';
-import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 import 'package:xml/xml.dart';
 
 class SferaXmlElementDto {

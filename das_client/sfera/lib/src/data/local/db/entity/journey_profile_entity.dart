@@ -1,5 +1,5 @@
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
-import 'package:sfera/src/data/mapper/sfera_reply_parser.dart';
+import 'package:sfera/src/data/parser/sfera_reply_parser.dart';
 import 'package:isar/isar.dart';
 
 part 'journey_profile_entity.g.dart';

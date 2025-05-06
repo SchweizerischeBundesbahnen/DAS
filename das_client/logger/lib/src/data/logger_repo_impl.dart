@@ -53,7 +53,6 @@ class LoggerRepoImpl implements LoggerRepo {
         await _sendLogsSync(logEntries);
         file.deleteSync();
       } catch (e) {
-        print(e);
         if (e is HttpException) {
           Fimber.e('Connection error while sending logs to remote. Try again in next rollover.', ex: e);
           break;

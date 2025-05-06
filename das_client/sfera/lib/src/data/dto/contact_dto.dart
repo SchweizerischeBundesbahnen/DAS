@@ -1,13 +1,13 @@
 import 'package:sfera/src/data/dto/other_contact_type_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
-import 'package:app/util/util.dart';
+import 'package:sfera/src/data/parser/parse_utils.dart';
 
 class ContactDto extends SferaXmlElementDto {
   static const String elementType = 'Contact';
 
   ContactDto({super.type = elementType, super.attributes, super.children, super.value});
 
-  bool get mainContact => Util.tryParseBool(attributes['mainContact']) ?? false;
+  bool get mainContact => ParseUtils.tryParseBool(attributes['mainContact']) ?? false;
 
   String? get contactRole => attributes['contactRole'];
 
