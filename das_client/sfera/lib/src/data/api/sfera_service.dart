@@ -1,10 +1,8 @@
 import 'dart:core';
 
-import 'package:app/util/device_id_info.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';
 import 'package:sfera/src/data/format.dart';
-import 'package:uuid/uuid.dart';
 
 /// Handles connection and message exchange with SFERA broker
 abstract class SferaService {
@@ -26,11 +24,7 @@ abstract class SferaService {
 
   void dispose();
 
-  static Future<MessageHeaderDto> messageHeader({required String sender}) async {
-    final deviceId = await DeviceIdInfo.getDeviceId();
-    final timestamp = Format.sferaTimestamp(DateTime.now());
-    return MessageHeaderDto.create(const Uuid().v4(), timestamp, deviceId, 'TMS', sender, '0085');
-  }
+  MessageHeaderDto messageHeader({required String sender});
 
   /// Returns formatted sfera train. Example: 1513_2025-10-10
   static String sferaTrain(String trainNumber, DateTime date) => '${trainNumber}_${Format.sferaDate(date)}';

@@ -1,10 +1,11 @@
 import 'package:auth/component.dart';
-import 'package:mqtt/component.dart';
-import 'package:sfera/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mqtt/component.dart';
+import 'package:sfera/component.dart';
 import 'package:sfera/src/data/api/sfera_service_impl.dart';
+import 'package:uuid/uuid.dart';
 
 import 'sfera_service_impl_test.mocks.dart';
 
@@ -29,6 +30,7 @@ void main() {
       mqttService: mockMqttService,
       sferaDatabaseRepository: mockDatabaseRepository,
       authenticator: mockAuthenticator,
+      deviceId: Uuid().v4(),
     );
   });
 

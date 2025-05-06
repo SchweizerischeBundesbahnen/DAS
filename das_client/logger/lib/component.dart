@@ -1,9 +1,9 @@
 import 'package:fimber/fimber.dart';
 import 'package:http_x/component.dart';
 import 'package:logger/src/das_log_tree.dart';
+import 'package:logger/src/data/api/logger_service.dart';
 import 'package:logger/src/data/local/logger_cache_service.dart';
 import 'package:logger/src/data/logger_repo_impl.dart';
-import 'package:logger/src/data/api/logger_service.dart';
 
 export 'package:logger/src/log_entry.dart';
 
@@ -14,9 +14,10 @@ class LoggerComponent {
   static LogTree createDasLogTree({
     required String baseUrl,
     required Client httpClient,
+    required String deviceId,
   }) {
     final remoteService = LoggerService(baseUrl: baseUrl, httpClient: httpClient);
     final loggerRepo = LoggerRepoImpl(cacheService: LoggerCacheService(), remoteService: remoteService);
-    return DasLogTree(loggerRepo: loggerRepo);
+    return DasLogTree(loggerRepo: loggerRepo, deviceId: deviceId);
   }
 }

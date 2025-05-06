@@ -1,25 +1,25 @@
 import 'dart:io';
 
-import 'package:app/util/device_id_info.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:fimber/fimber.dart';
 import 'package:logger/src/data/logger_repo.dart';
 import 'package:logger/src/log_entry.dart';
 import 'package:logger/src/log_level.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class DasLogTree extends LogTree {
-  DasLogTree({required LoggerRepo loggerRepo}) : _loggerRepo = loggerRepo {
+  DasLogTree({required LoggerRepo loggerRepo, required this.deviceId}) : _loggerRepo = loggerRepo {
     _initialized = _init();
   }
 
+  final String deviceId;
   final LoggerRepo _loggerRepo;
   final Map<String, String> metadata = {};
   late Future<void> _initialized;
 
   Future<void> _init() async {
     Fimber.i('Initializing DasLogTree...');
-    metadata['deviceId'] = await DeviceIdInfo.getDeviceId();
+    metadata['deviceId'] = deviceId;
 
     final info = await PackageInfo.fromPlatform();
     metadata['appVersion'] = info.version;

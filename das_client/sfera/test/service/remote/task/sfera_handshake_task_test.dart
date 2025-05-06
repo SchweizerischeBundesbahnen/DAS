@@ -1,26 +1,31 @@
 import 'dart:io';
 
-import 'package:mqtt/component.dart';
-import 'package:sfera/component.dart';
-import 'package:sfera/src/data/dto/enums/das_driving_mode_dto.dart';
-import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
-import 'package:sfera/src/data/api/task/handshake_task.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mqtt/component.dart';
+import 'package:sfera/component.dart';
+import 'package:sfera/src/data/api/task/handshake_task.dart';
+import 'package:sfera/src/data/dto/enums/das_driving_mode_dto.dart';
+import 'package:sfera/src/data/dto/message_header_dto.dart';
+import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 
 import 'sfera_handshake_task_test.mocks.dart';
 
 @GenerateNiceMocks([
+  MockSpec<SferaService>(),
   MockSpec<MqttService>(),
 ])
 void main() {
+  late MockSferaService sferaService;
   late MockMqttService mqttService;
   late OtnIdDto otnId;
   Fimber.plantTree(DebugTree());
 
   setUp(() {
+    sferaService = MockSferaService();
+    when(sferaService.messageHeader(sender: anyNamed('sender'))).thenReturn(MessageHeaderDto());
     mqttService = MockMqttService();
     otnId = OtnIdDto.create('1085', '719', DateTime.now());
   });
@@ -28,8 +33,12 @@ void main() {
   test('Test handshake successful', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    final handshakeTask =
-        HandshakeTask(mqttService: mqttService, otnId: otnId, dasDrivingMode: DasDrivingModeDto.readOnly);
+    final handshakeTask = HandshakeTask(
+      sferaService: sferaService,
+      mqttService: mqttService,
+      otnId: otnId,
+      dasDrivingMode: DasDrivingModeDto.readOnly,
+    );
 
     await handshakeTask.execute((task, data) {
       expect(task, handshakeTask);
@@ -50,8 +59,12 @@ void main() {
   test('Test handshake reject', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    final handshakeTask =
-        HandshakeTask(mqttService: mqttService, otnId: otnId, dasDrivingMode: DasDrivingModeDto.readOnly);
+    final handshakeTask = HandshakeTask(
+      sferaService: sferaService,
+      mqttService: mqttService,
+      otnId: otnId,
+      dasDrivingMode: DasDrivingModeDto.readOnly,
+    );
 
     await handshakeTask.execute((task, data) {
       fail('Task should not be sucessful');
@@ -71,8 +84,12 @@ void main() {
   test('Test handshake ignore other messages', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
-    final handshakeTask =
-        HandshakeTask(mqttService: mqttService, otnId: otnId, dasDrivingMode: DasDrivingModeDto.readOnly);
+    final handshakeTask = HandshakeTask(
+      sferaService: sferaService,
+      mqttService: mqttService,
+      otnId: otnId,
+      dasDrivingMode: DasDrivingModeDto.readOnly,
+    );
 
     await handshakeTask.execute((task, data) {
       fail('Test should not call success');
@@ -93,10 +110,12 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final handshakeTask = HandshakeTask(
-        mqttService: mqttService,
-        otnId: otnId,
-        dasDrivingMode: DasDrivingModeDto.readOnly,
-        timeout: const Duration(seconds: 1));
+      sferaService: sferaService,
+      mqttService: mqttService,
+      otnId: otnId,
+      dasDrivingMode: DasDrivingModeDto.readOnly,
+      timeout: const Duration(seconds: 1),
+    );
 
     var timeoutReached = false;
     await handshakeTask.execute((task, data) {

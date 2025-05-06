@@ -1,26 +1,29 @@
 import 'package:fimber/fimber.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
+import 'package:sfera/src/data/api/task/sfera_task.dart';
 import 'package:sfera/src/data/dto/b2g_request_dto.dart';
 import 'package:sfera/src/data/dto/enums/jp_status_dto.dart';
 import 'package:sfera/src/data/dto/jp_request_dto.dart';
 import 'package:sfera/src/data/dto/sfera_b2g_request_message_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:sfera/src/data/dto/train_identification_dto.dart';
-import 'package:sfera/src/data/api/task/sfera_task.dart';
 
 class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
   RequestJourneyProfileTask({
     required MqttService mqttService,
+    required SferaService sferaService,
     required SferaDatabaseRepository sferaDatabaseRepository,
     required this.otnId,
     super.timeout,
   })  : _mqttService = mqttService,
-        _sferaDatabaseRepository = sferaDatabaseRepository;
+        _sferaDatabaseRepository = sferaDatabaseRepository,
+        _sferaService = sferaService;
 
   final MqttService _mqttService;
   final OtnIdDto otnId;
   final SferaDatabaseRepository _sferaDatabaseRepository;
+  final SferaService _sferaService;
 
   late TaskCompleted<List<dynamic>> _taskCompletedCallback;
   late TaskFailed _taskFailedCallback;
@@ -39,11 +42,15 @@ class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
     final jpRequest = JpRequestDto.create(trainIdentification);
 
     final sferaB2gRequestMessage = SferaB2gRequestMessageDto.create(
-        await SferaService.messageHeader(sender: otnId.company),
-        b2gRequest: B2gRequestDto.createJPRequest(jpRequest));
+      _sferaService.messageHeader(sender: otnId.company),
+      b2gRequest: B2gRequestDto.createJPRequest(jpRequest),
+    );
     Fimber.i('Sending journey profile request...');
-    _mqttService.publishMessage(otnId.company, SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate),
-        sferaB2gRequestMessage.buildDocument().toString());
+    _mqttService.publishMessage(
+      otnId.company,
+      SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate),
+      sferaB2gRequestMessage.buildDocument().toString(),
+    );
   }
 
   @override

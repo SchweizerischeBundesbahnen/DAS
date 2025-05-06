@@ -1,4 +1,5 @@
 import 'package:auth/component.dart';
+import 'package:http_x/component.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/src/data/api/sfera_auth_service.dart';
 import 'package:sfera/src/data/api/sfera_auth_service_impl.dart';
@@ -64,19 +65,24 @@ class SferaComponent {
   }
 
   static SferaAuthService createSferaAuthService({
-    required Authenticator authenticator,
+    required Client httpClient,
     required String tokenExchangeUrl,
   }) {
-    return SferaAuthServiceImpl(authenticator: authenticator, tokenExchangeUrl: tokenExchangeUrl);
+    return SferaAuthServiceImpl(httpClient: httpClient, tokenExchangeUrl: tokenExchangeUrl);
   }
 
   static SferaService createSferaService({
     required MqttService mqttService,
     required SferaDatabaseRepository sferaDatabaseRepository,
     required Authenticator authenticator,
+    required String deviceId,
   }) {
     return SferaServiceImpl(
-        mqttService: mqttService, sferaDatabaseRepository: sferaDatabaseRepository, authenticator: authenticator);
+      mqttService: mqttService,
+      sferaDatabaseRepository: sferaDatabaseRepository,
+      authenticator: authenticator,
+      deviceId: deviceId,
+    );
   }
 
   static SferaLocalService createSferaLocalService({required SferaDatabaseRepository sferaDatabaseRepository}) {

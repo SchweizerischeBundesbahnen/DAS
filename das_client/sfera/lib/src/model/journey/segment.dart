@@ -1,4 +1,4 @@
-import 'package:app/util/comparators.dart';
+import 'package:sfera/src/data/comparator/start_end_int_comparator.dart';
 import 'package:meta/meta.dart';
 
 @sealed

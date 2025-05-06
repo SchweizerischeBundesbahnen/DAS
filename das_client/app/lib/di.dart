@@ -3,6 +3,7 @@ import 'package:app/bloc/ux_testing_cubit.dart';
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/brightness/brightness_manager_impl.dart';
 import 'package:app/flavor.dart';
+import 'package:app/util/device_id_info.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:auth/component.dart';
 import 'package:battery_plus/battery_plus.dart';
@@ -64,10 +65,7 @@ extension GetItX on GetIt {
   }
 
   void registerBrightnessManager() {
-    // First register ScreenBrightness instance
     registerLazySingleton<ScreenBrightness>(() => ScreenBrightness());
-
-    // Then register BrightnessManager implementation using the ScreenBrightness instance
     registerLazySingleton<BrightnessManager>(() => BrightnessManagerImpl(DI.get<ScreenBrightness>()));
   }
 
@@ -109,29 +107,34 @@ extension GetItX on GetIt {
   }
 
   void registerMqttComponent({bool useTms = false}) {
-    final flavor = DI.get<Flavor>();
-
     registerLazySingleton<MqttClientConnector>(() =>
         MqttComponent.createMqttClientConnector(sferaAuthService: DI.get(), authenticator: DI.get(), useTms: useTms));
 
-    registerLazySingleton<MqttService>(() => MqttComponent.createMqttService(
+    registerLazySingletonAsync(() async {
+      final flavor = DI.get<Flavor>();
+
+      final deviceId = await DeviceIdInfo.getDeviceId();
+      return MqttComponent.createMqttService(
         mqttUrl: useTms ? flavor.tmsMqttUrl! : flavor.mqttUrl,
         mqttClientConnector: DI.get(),
-        prefix: flavor.mqttTopicPrefix));
+        prefix: flavor.mqttTopicPrefix,
+        deviceId: deviceId,
+      );
+    });
   }
 
   void registerDasLogTree() {
-    factoryFunc() {
+    Future<LogTree> factoryFunc() async {
       final flavor = DI.get<Flavor>();
-
+      final deviceId = await DeviceIdInfo.getDeviceId();
       final httpClient = HttpXComponent.createHttpClient(
         authProvider: _AuthProvider(authenticator: DI.get()),
       );
 
-      return LoggerComponent.createDasLogTree(httpClient: httpClient, baseUrl: flavor.backendUrl);
+      return LoggerComponent.createDasLogTree(httpClient: httpClient, baseUrl: flavor.backendUrl, deviceId: deviceId);
     }
 
-    registerSingletonWithDependencies<LogTree>(
+    registerSingletonAsync<LogTree>(
       factoryFunc,
       dependsOn: [Authenticator],
     );
@@ -155,12 +158,26 @@ extension GetItX on GetIt {
     final flavor = DI.get<Flavor>();
 
     registerLazySingleton<SferaDatabaseRepository>(() => SferaComponent.createDatabaseRepository());
-    registerLazySingleton<SferaAuthService>(() => SferaComponent.createSferaAuthService(
-        authenticator: DI.get(), tokenExchangeUrl: useTms ? flavor.tmsTokenExchangeUrl! : flavor.tokenExchangeUrl));
+    registerLazySingleton<SferaAuthService>(() {
+      final httpClient = HttpXComponent.createHttpClient(
+        authProvider: _AuthProvider(authenticator: DI.get()),
+      );
+      return SferaComponent.createSferaAuthService(
+        httpClient: httpClient,
+        tokenExchangeUrl: useTms ? flavor.tmsTokenExchangeUrl! : flavor.tokenExchangeUrl,
+      );
+    });
 
-    registerLazySingleton<SferaService>(
-      () => SferaComponent.createSferaService(
-          mqttService: DI.get(), sferaDatabaseRepository: DI.get(), authenticator: DI.get()),
+    registerLazySingletonAsync<SferaService>(
+      () async {
+        final deviceId = await DeviceIdInfo.getDeviceId();
+        return SferaComponent.createSferaService(
+          mqttService: DI.get(),
+          sferaDatabaseRepository: DI.get(),
+          authenticator: DI.get(),
+          deviceId: deviceId,
+        );
+      },
       dispose: (service) => service.dispose(),
     );
 
