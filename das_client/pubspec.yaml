@@ -17,3 +17,6 @@ workspace:
   - mqtt
   - logger
   - sfera
+
+dev_dependencies:
+  melos: ^6.3.0
