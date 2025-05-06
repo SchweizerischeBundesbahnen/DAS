@@ -14,6 +14,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/table/whistle
 import 'package:das_client/app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:das_client/app/pages/profile/profile_page.dart';
 import 'package:das_client/app/widgets/table/das_table.dart';
+import 'package:das_client/app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -323,7 +324,6 @@ void main() {
         'Genève-Aéroport': '90',
         '65.3': '55',
         'New Line Speed All': '90',
-        'Genève': 'XX',
         'Gland': '90',
       };
 
@@ -336,11 +336,20 @@ void main() {
         expect(speedText, findsOneWidget);
       }
 
-      final specialRow = findDASTableRowByText('New Line Speed A Missing');
-      expect(specialRow, findsOneWidget);
+      final newLineSpeedRow = findDASTableRowByText('New Line Speed A Missing');
+      expect(newLineSpeedRow, findsOneWidget);
 
-      final forbiddenSpeed = find.descendant(of: specialRow, matching: find.text('XX'));
-      expect(forbiddenSpeed, findsNothing);
+      final emptySpeedNewLineSpeedRow =
+          find.descendant(of: newLineSpeedRow, matching: find.byKey(DASTableCell.emptyCellKey));
+      //Row has 11 times a DASTableCell.empty including the speed cell
+      expect(emptySpeedNewLineSpeedRow, findsNWidgets(11));
+
+      final genevaRow = findDASTableRowByText('Genève');
+      expect(genevaRow, findsOneWidget);
+
+      final emptySpeedGeneva = find.descendant(of: genevaRow, matching: find.byKey(DASTableCell.emptyCellKey));
+      //Row has 11 times a DASTableCell.empty including the speed cell
+      expect(emptySpeedGeneva, findsNWidgets(11));
 
       await disconnect(tester);
     });
