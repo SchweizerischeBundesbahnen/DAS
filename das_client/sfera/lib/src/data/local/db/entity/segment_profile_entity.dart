@@ -1,4 +1,4 @@
-import 'package:sfera/src/data/dto/segment_profile.dart';
+import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/mapper/sfera_reply_parser.dart';
 import 'package:isar/isar.dart';
 
@@ -19,12 +19,12 @@ class SegmentProfileEntity {
   final String minorVersion;
   final String xmlData;
 
-  SegmentProfile toDomain() {
-    return SferaReplyParser.parse<SegmentProfile>(xmlData);
+  SegmentProfileDto toDomain() {
+    return SferaReplyParser.parse<SegmentProfileDto>(xmlData);
   }
 }
 
-extension SegmentProfileMapperX on SegmentProfile {
+extension SegmentProfileMapperX on SegmentProfileDto {
   SegmentProfileEntity toEntity({required int isarId}) {
     return SegmentProfileEntity(
         id: isarId,

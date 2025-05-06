@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
-import 'package:sfera/src/data/dto/enums/das_driving_mode.dart';
-import 'package:sfera/src/data/dto/sfera_g2b_reply_message.dart';
-import 'package:sfera/src/data/sfera_api/task/handshake_task.dart';
+import 'package:sfera/src/data/dto/enums/das_driving_mode_dto.dart';
+import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
+import 'package:sfera/src/data/api/task/handshake_task.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -17,19 +17,19 @@ import 'sfera_handshake_task_test.mocks.dart';
 ])
 void main() {
   late MockMqttService mqttService;
-  late OtnId otnId;
+  late OtnIdDto otnId;
   Fimber.plantTree(DebugTree());
 
   setUp(() {
     mqttService = MockMqttService();
-    otnId = OtnId.create('1085', '719', DateTime.now());
+    otnId = OtnIdDto.create('1085', '719', DateTime.now());
   });
 
   test('Test handshake successful', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final handshakeTask =
-        HandshakeTask(mqttService: mqttService, otnId: otnId, dasDrivingMode: DasDrivingMode.readOnly);
+        HandshakeTask(mqttService: mqttService, otnId: otnId, dasDrivingMode: DasDrivingModeDto.readOnly);
 
     await handshakeTask.execute((task, data) {
       expect(task, handshakeTask);
@@ -41,7 +41,7 @@ void main() {
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
     final file = File('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final result = await handshakeTask.handleMessage(sferaG2bReplyMessage);
     expect(result, true);
@@ -51,7 +51,7 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final handshakeTask =
-        HandshakeTask(mqttService: mqttService, otnId: otnId, dasDrivingMode: DasDrivingMode.readOnly);
+        HandshakeTask(mqttService: mqttService, otnId: otnId, dasDrivingMode: DasDrivingModeDto.readOnly);
 
     await handshakeTask.execute((task, data) {
       fail('Task should not be sucessful');
@@ -62,7 +62,7 @@ void main() {
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
     final file = File('test_resources/SFERA_G2B_ReplyMessage_handshake_rejected.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final result = await handshakeTask.handleMessage(sferaG2bReplyMessage);
     expect(result, true);
@@ -72,7 +72,7 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final handshakeTask =
-        HandshakeTask(mqttService: mqttService, otnId: otnId, dasDrivingMode: DasDrivingMode.readOnly);
+        HandshakeTask(mqttService: mqttService, otnId: otnId, dasDrivingMode: DasDrivingModeDto.readOnly);
 
     await handshakeTask.execute((task, data) {
       fail('Test should not call success');
@@ -83,7 +83,7 @@ void main() {
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
     final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final result = await handshakeTask.handleMessage(sferaG2bReplyMessage);
     expect(result, false);
@@ -95,7 +95,7 @@ void main() {
     final handshakeTask = HandshakeTask(
         mqttService: mqttService,
         otnId: otnId,
-        dasDrivingMode: DasDrivingMode.readOnly,
+        dasDrivingMode: DasDrivingModeDto.readOnly,
         timeout: const Duration(seconds: 1));
 
     var timeoutReached = false;

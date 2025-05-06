@@ -1,7 +1,7 @@
 import 'package:sfera/src/model/journey/journey.dart';
-import 'package:sfera/src/data/dto/journey_profile.dart';
-import 'package:sfera/src/data/dto/segment_profile.dart';
-import 'package:sfera/src/data/dto/train_characteristics.dart';
+import 'package:sfera/src/data/dto/journey_profile_dto.dart';
+import 'package:sfera/src/data/dto/segment_profile_dto.dart';
+import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/local/db/repo/sfera_database_repository.dart';
 import 'package:sfera/src/data/local/sfera_local_service.dart';
 import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
@@ -32,8 +32,8 @@ class SferaLocalServiceImpl implements SferaLocalService {
     });
   }
 
-  Future<List<TrainCharacteristics>> _loadTrainCharacteristics(JourneyProfile journeyProfile) async {
-    final trainCharacteristics = <TrainCharacteristics>[];
+  Future<List<TrainCharacteristicsDto>> _loadTrainCharacteristics(JourneyProfileDto journeyProfile) async {
+    final trainCharacteristics = <TrainCharacteristicsDto>[];
     for (final tcReference in journeyProfile.trainCharacteristicsRefSet) {
       final trainCharacteristic = await _sferaDatabaseRepository.findTrainCharacteristics(
           tcReference.tcId, tcReference.versionMajor, tcReference.versionMinor);
@@ -44,8 +44,8 @@ class SferaLocalServiceImpl implements SferaLocalService {
     return trainCharacteristics;
   }
 
-  Future<List<SegmentProfile>> _loadSegmentProfiles(JourneyProfile journeyProfile) async {
-    final segmentProfiles = <SegmentProfile>[];
+  Future<List<SegmentProfileDto>> _loadSegmentProfiles(JourneyProfileDto journeyProfile) async {
+    final segmentProfiles = <SegmentProfileDto>[];
     for (final spReference in journeyProfile.segmentProfileReferences) {
       final segmentProfile = await _sferaDatabaseRepository.findSegmentProfile(
           spReference.spId, spReference.versionMajor, spReference.versionMinor);

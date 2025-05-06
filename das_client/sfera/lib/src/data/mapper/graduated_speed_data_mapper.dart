@@ -1,16 +1,16 @@
 import 'package:sfera/src/model/journey/speed_data.dart';
 import 'package:sfera/src/model/journey/speeds.dart';
 import 'package:sfera/src/model/journey/train_series.dart';
-import 'package:sfera/src/data/dto/graduated_speed_info.dart';
-import 'package:sfera/src/data/dto/velocity.dart';
+import 'package:sfera/src/data/dto/graduated_speed_info_dto.dart';
+import 'package:sfera/src/data/dto/velocity_dto.dart';
 import 'package:fimber/fimber.dart';
 
 /// Used to map data from SFERA to domain model [SpeedData].
 class GraduatedSpeedDataMapper {
   GraduatedSpeedDataMapper._();
 
-  /// Maps list of SFERA model [Velocity] to [SpeedData]
-  static SpeedData? fromVelocities(Iterable<Velocity>? velocities) {
+  /// Maps list of SFERA model [VelocityDto] to [SpeedData]
+  static SpeedData? fromVelocities(Iterable<VelocityDto>? velocities) {
     if (velocities == null) return null;
 
     final graduatedSpeeds = <Speeds>[];
@@ -33,8 +33,8 @@ class GraduatedSpeedDataMapper {
     return SpeedData(speeds: graduatedSpeeds);
   }
 
-  /// Maps SFERA model [GraduatedSpeedInfo] to [SpeedData]
-  static SpeedData? fromGraduatedSpeedInfo(GraduatedSpeedInfo? graduatedSpeedInfo) {
+  /// Maps SFERA model [GraduatedSpeedInfoDto] to [SpeedData]
+  static SpeedData? fromGraduatedSpeedInfo(GraduatedSpeedInfoDto? graduatedSpeedInfo) {
     if (graduatedSpeedInfo == null) return null;
 
     final graduatedStationSpeeds = <Speeds>[];

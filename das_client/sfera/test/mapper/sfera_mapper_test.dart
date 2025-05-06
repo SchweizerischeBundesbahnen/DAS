@@ -25,12 +25,12 @@ import 'package:sfera/src/model/journey/train_series.dart';
 import 'package:sfera/src/model/journey/tram_area.dart';
 import 'package:sfera/src/model/journey/whistles.dart';
 import 'package:sfera/component.dart';
-import 'package:sfera/src/data/dto/delay.dart';
-import 'package:sfera/src/data/dto/g2b_event_payload.dart';
-import 'package:sfera/src/data/dto/journey_profile.dart';
-import 'package:sfera/src/data/dto/related_train_information.dart';
-import 'package:sfera/src/data/dto/segment_profile.dart';
-import 'package:sfera/src/data/dto/train_characteristics.dart';
+import 'package:sfera/src/data/dto/delay_dto.dart';
+import 'package:sfera/src/data/dto/g2b_event_payload_dto.dart';
+import 'package:sfera/src/data/dto/journey_profile_dto.dart';
+import 'package:sfera/src/data/dto/related_train_information_dto.dart';
+import 'package:sfera/src/data/dto/segment_profile_dto.dart';
+import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
@@ -74,29 +74,29 @@ void main() {
 
     final baseJPFileName = 'SFERA_JP_$trainNumber${jpPostfix != null ? '_$jpPostfix' : ''}';
     final journeyFile = File('${testDirectory!.path}/$baseJPFileName.xml');
-    final journeyProfile = SferaReplyParser.parse<JourneyProfile>(journeyFile.readAsStringSync());
+    final journeyProfile = SferaReplyParser.parse<JourneyProfileDto>(journeyFile.readAsStringSync());
     expect(journeyProfile.validate(), true);
 
-    final List<SegmentProfile> segmentProfiles = [];
+    final List<SegmentProfileDto> segmentProfiles = [];
     final baseSPFileName = 'SFERA_SP_$trainNumber${spPostfix != null ? '_$spPostfix' : ''}';
     for (final File file in getFilesForSp(testDirectory.path, baseSPFileName, spCount)) {
-      final segmentProfile = SferaReplyParser.parse<SegmentProfile>(file.readAsStringSync());
+      final segmentProfile = SferaReplyParser.parse<SegmentProfileDto>(file.readAsStringSync());
       expect(segmentProfile.validate(), true);
       segmentProfiles.add(segmentProfile);
     }
 
-    final List<TrainCharacteristics> trainCharacteristics = [];
+    final List<TrainCharacteristicsDto> trainCharacteristics = [];
     final baseTCFileName = 'SFERA_TC_$trainNumber${tcPostfix != null ? '_$tcPostfix' : ''}';
     for (final File file in getFilesForTc(testDirectory.path, baseTCFileName, tcCount)) {
-      final trainCharacteristic = SferaReplyParser.parse<TrainCharacteristics>(file.readAsStringSync());
+      final trainCharacteristic = SferaReplyParser.parse<TrainCharacteristicsDto>(file.readAsStringSync());
       expect(trainCharacteristic.validate(), true);
       trainCharacteristics.add(trainCharacteristic);
     }
 
-    RelatedTrainInformation? relatedTrainInformation;
+    RelatedTrainInformationDto? relatedTrainInformation;
     if (relatedTrainInfoEventId != null) {
       final file = File('${testDirectory.path}/SFERA_Event_${trainNumber}_$relatedTrainInfoEventId.xml');
-      final g2bEventPayload = SferaReplyParser.parse<G2bEventPayload>(file.readAsStringSync());
+      final g2bEventPayload = SferaReplyParser.parse<G2bEventPayloadDto>(file.readAsStringSync());
       relatedTrainInformation = g2bEventPayload.relatedTrainInformation;
     }
 
@@ -653,7 +653,7 @@ void main() {
   });
 
   test('Test correct conversion from String to duration with the delay being PT0M25S', () async {
-    final delay = Delay(attributes: {'Delay': 'PT0M25S'});
+    final delay = DelayDto(attributes: {'Delay': 'PT0M25S'});
     final Duration? convertedDelay = delay.delayAsDuration;
     expect(convertedDelay, isNotNull);
     expect(convertedDelay!.isNegative, false);
@@ -662,7 +662,7 @@ void main() {
   });
 
   test('Test correct conversion from String to duration with negative delay', () async {
-    final delay = Delay(attributes: {'Delay': '-PT3M5S'});
+    final delay = DelayDto(attributes: {'Delay': '-PT3M5S'});
     final Duration? convertedDelay = delay.delayAsDuration;
     expect(convertedDelay, isNotNull);
     expect(convertedDelay!.isNegative, true);
@@ -671,19 +671,19 @@ void main() {
   });
 
   test('Test null delay conversion to null duration', () async {
-    final delay = Delay();
+    final delay = DelayDto();
     final Duration? convertedDelay = delay.delayAsDuration;
     expect(convertedDelay, isNull);
   });
 
   test('Test empty String conversion to null duration', () async {
-    final delay = Delay(attributes: {'Delay': ''});
+    final delay = DelayDto(attributes: {'Delay': ''});
     final Duration? convertedDelay = delay.delayAsDuration;
     expect(convertedDelay, isNull);
   });
 
   test('Test big delay String over one hour conversion to correct duration', () async {
-    final delay = Delay(attributes: {'Delay': 'PT5H45M20S'});
+    final delay = DelayDto(attributes: {'Delay': 'PT5H45M20S'});
     final Duration? convertedDelay = delay.delayAsDuration;
     expect(convertedDelay, isNotNull);
     expect(convertedDelay!.isNegative, false);
@@ -693,7 +693,7 @@ void main() {
   });
 
   test('Test only seconds conversion to correct duration', () async {
-    final delay = Delay(attributes: {'Delay': 'PT14S'});
+    final delay = DelayDto(attributes: {'Delay': 'PT14S'});
     final Duration? convertedDelay = delay.delayAsDuration;
     expect(convertedDelay, isNotNull);
     expect(convertedDelay!.isNegative, false);
@@ -701,7 +701,7 @@ void main() {
   });
 
   test('Test wrong ISO 8601 format String conversion to null duration', () async {
-    final delay = Delay(attributes: {'Delay': '+PTH45S3434M334'});
+    final delay = DelayDto(attributes: {'Delay': '+PTH45S3434M334'});
     final Duration? convertedDelay = delay.delayAsDuration;
     expect(convertedDelay, isNull);
   });

@@ -4,7 +4,7 @@ import 'package:sfera/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:sfera/src/data/sfera_api/sfera_service_impl.dart';
+import 'package:sfera/src/data/api/sfera_service_impl.dart';
 
 import 'sfera_service_impl_test.mocks.dart';
 
@@ -14,7 +14,7 @@ import 'sfera_service_impl_test.mocks.dart';
   MockSpec<Authenticator>(),
 ])
 void main() {
-  final OtnId otnId = OtnId.create('SBB', '12345', DateTime.now());
+  final OtnIdDto otnId = OtnIdDto.create('SBB', '12345', DateTime.now());
   late SferaServiceImpl sferaService;
   late MockMqttService mockMqttService;
   late MockSferaDatabaseRepository mockDatabaseRepository;

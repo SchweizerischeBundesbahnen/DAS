@@ -1,9 +1,9 @@
 import 'package:sfera/src/model/journey/track_equipment_segment.dart';
-import 'package:sfera/src/data/dto/enums/start_end_qualifier.dart';
-import 'package:sfera/src/data/dto/enums/track_equipment_type.dart';
-import 'package:sfera/src/data/dto/network_specific_area.dart';
-import 'package:sfera/src/data/dto/segment_profile.dart';
-import 'package:sfera/src/data/dto/segment_profile_list.dart';
+import 'package:sfera/src/data/dto/enums/start_end_qualifier_dto.dart';
+import 'package:sfera/src/data/dto/enums/track_equipment_type_dto.dart';
+import 'package:sfera/src/data/dto/network_specific_area_dto.dart';
+import 'package:sfera/src/data/dto/segment_profile_dto.dart';
+import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
 import 'package:app/util/comparators.dart';
 import 'package:fimber/fimber.dart';
 import 'package:sfera/src/data/mapper/mapper_utils.dart';
@@ -13,11 +13,11 @@ class TrackEquipmentMapper {
   TrackEquipmentMapper._();
 
   static List<NonStandardTrackEquipmentSegment> parseNonStandardTrackEquipmentSegment(
-      Iterable<SegmentProfileReference> segmentProfilesLists, Iterable<SegmentProfile> segmentProfiles) {
+      Iterable<SegmentProfileReferenceDto> segmentProfilesLists, Iterable<SegmentProfileDto> segmentProfiles) {
     final trackEquipments = _parseTrackEquipments(segmentProfilesLists, segmentProfiles);
     trackEquipments.sort();
 
-    final openSegments = <SferaTrackEquipmentType, _NonStandardTrackEquipment?>{};
+    final openSegments = <SferaTrackEquipmentTypeDto, _NonStandardTrackEquipment?>{};
 
     final List<NonStandardTrackEquipmentSegment> segments = [];
     for (final trackEquipment in trackEquipments) {
@@ -80,7 +80,7 @@ class TrackEquipmentMapper {
   }
 
   static List<_NonStandardTrackEquipment> _parseTrackEquipments(
-      Iterable<SegmentProfileReference> segmentProfilesLists, Iterable<SegmentProfile> segmentProfiles) {
+      Iterable<SegmentProfileReferenceDto> segmentProfilesLists, Iterable<SegmentProfileDto> segmentProfiles) {
     final trackEquipments = <_NonStandardTrackEquipment>[];
     for (int segmentIndex = 0; segmentIndex < segmentProfilesLists.length; segmentIndex++) {
       final segmentProfile = segmentProfiles.firstMatch(segmentProfilesLists.elementAt(segmentIndex));
@@ -100,7 +100,7 @@ class TrackEquipmentMapper {
   }
 
   static _NonStandardTrackEquipment? _mapToNonStandardTrackEquipment(
-      NetworkSpecificArea element, int segmentIndex, KilometreMap kilometreMap) {
+      NetworkSpecificAreaDto element, int segmentIndex, KilometreMap kilometreMap) {
     if (element.trackEquipmentTypeWrapper == null) {
       Fimber.w('Encountered invalid nonStandardTrackEquipment track equipment type NSP declaration: ${element.type}');
       return null;
@@ -111,7 +111,7 @@ class TrackEquipmentMapper {
       type: element.trackEquipmentTypeWrapper!.unwrapped,
       startLocation: element.startLocation,
       endLocation: element.endLocation,
-      appliesToWholeSp: element.startEndQualifier == StartEndQualifier.wholeSp,
+      appliesToWholeSp: element.startEndQualifier == StartEndQualifierDto.wholeSp,
       startKm: kilometreMap[element.startLocation] ?? [],
       endKm: kilometreMap[element.endLocation] ?? [],
     );
@@ -130,7 +130,7 @@ class _NonStandardTrackEquipment implements Comparable {
     this.appliesToWholeSp = false,
   });
 
-  final SferaTrackEquipmentType type;
+  final SferaTrackEquipmentTypeDto type;
   final double? startLocation;
   final double? endLocation;
   final List<double> startKm;

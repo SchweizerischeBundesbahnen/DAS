@@ -1,4 +1,4 @@
-import 'package:sfera/src/data/dto/train_characteristics.dart';
+import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/mapper/sfera_reply_parser.dart';
 import 'package:isar/isar.dart';
 
@@ -19,12 +19,12 @@ class TrainCharacteristicsEntity {
   final String minorVersion;
   final String xmlData;
 
-  TrainCharacteristics toDomain() {
-    return SferaReplyParser.parse<TrainCharacteristics>(xmlData);
+  TrainCharacteristicsDto toDomain() {
+    return SferaReplyParser.parse<TrainCharacteristicsDto>(xmlData);
   }
 }
 
-extension TrainCharacteristicsMapperX on TrainCharacteristics {
+extension TrainCharacteristicsMapperX on TrainCharacteristicsDto {
   TrainCharacteristicsEntity toEntity({required int isarId}) {
     return TrainCharacteristicsEntity(
         id: isarId,

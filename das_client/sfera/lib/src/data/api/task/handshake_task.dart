@@ -1,0 +1,77 @@
+import 'package:fimber/fimber.dart';
+import 'package:mqtt/component.dart';
+import 'package:sfera/component.dart';
+import 'package:sfera/src/data/dto/das_operating_modes_supported_dto.dart';
+import 'package:sfera/src/data/dto/enums/das_architecture_dto.dart';
+import 'package:sfera/src/data/dto/enums/das_connectivity_dto.dart';
+import 'package:sfera/src/data/dto/enums/das_driving_mode_dto.dart';
+import 'package:sfera/src/data/dto/enums/related_train_request_type_dto.dart';
+import 'package:sfera/src/data/dto/handshake_request_dto.dart';
+import 'package:sfera/src/data/dto/otn_id_dto.dart';
+import 'package:sfera/src/data/dto/sfera_b2g_request_message_dto.dart';
+import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
+import 'package:sfera/src/data/api/sfera_error.dart';
+import 'package:sfera/src/data/api/task/sfera_task.dart';
+
+class HandshakeTask extends SferaTask {
+  HandshakeTask({required MqttService mqttService, required this.otnId, required this.dasDrivingMode, super.timeout})
+      : _mqttService = mqttService;
+
+  final MqttService _mqttService;
+  final OtnIdDto otnId;
+  final DasDrivingModeDto dasDrivingMode;
+
+  late TaskCompleted _taskCompletedCallback;
+  late TaskFailed _taskFailedCallback;
+
+  @override
+  Future<void> execute(TaskCompleted onCompleted, TaskFailed onFailed) async {
+    startTimeout(onFailed);
+    _taskCompletedCallback = onCompleted;
+    _taskFailedCallback = onFailed;
+
+    await _sendHandshakeRequest();
+  }
+
+  Future<void> _sendHandshakeRequest() async {
+    final sferaTrain = SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
+
+    Fimber.i('Sending handshake request for company=${otnId.company} train=$sferaTrain');
+    final operationMode = DasOperatingModesSupportedDto.create(
+        dasDrivingMode, DasArchitectureDto.boardAdviceCalculation, DasConnectivityDto.connected);
+    final handshakeRequest = HandshakeRequestDto.create(
+      [operationMode],
+      relatedTrainRequestType: RelatedTrainRequestTypeDto.ownTrainAndRelatedTrains,
+      statusReportsEnabled: false,
+    );
+
+    final messageHeader = await SferaService.messageHeader(sender: otnId.company);
+    final sferaB2gRequestMessage = SferaB2gRequestMessageDto.create(messageHeader, handshakeRequest: handshakeRequest);
+    final success =
+        _mqttService.publishMessage(otnId.company, sferaTrain, sferaB2gRequestMessage.buildDocument().toString());
+
+    if (!success) {
+      _taskFailedCallback(this, SferaError.connectionFailed);
+    }
+  }
+
+  @override
+  Future<bool> handleMessage(SferaG2bReplyMessageDto replyMessage) async {
+    if (replyMessage.handshakeAcknowledgement != null) {
+      stopTimeout();
+      Fimber.i('Received handshake acknowledgment');
+      _taskCompletedCallback(this, null);
+      return true;
+    } else if (replyMessage.handshakeReject != null) {
+      stopTimeout();
+      Fimber.w(
+          'Received handshake reject with reason=${replyMessage.handshakeReject?.handshakeRejectReason?.toString()}');
+      _taskFailedCallback(this, SferaError.handshakeRejected);
+      _mqttService.disconnect();
+      return true;
+    } else {
+      Fimber.w('Ignoring response because is does not contain handshake');
+      return false;
+    }
+  }
+}

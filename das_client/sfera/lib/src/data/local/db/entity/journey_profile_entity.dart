@@ -1,4 +1,4 @@
-import 'package:sfera/src/data/dto/journey_profile.dart';
+import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/mapper/sfera_reply_parser.dart';
 import 'package:isar/isar.dart';
 
@@ -21,12 +21,12 @@ class JourneyProfileEntity {
   final DateTime startDate;
   final String xmlData;
 
-  JourneyProfile toDomain() {
-    return SferaReplyParser.parse<JourneyProfile>(xmlData);
+  JourneyProfileDto toDomain() {
+    return SferaReplyParser.parse<JourneyProfileDto>(xmlData);
   }
 }
 
-extension JourneyProfileMapperX on JourneyProfile {
+extension JourneyProfileMapperX on JourneyProfileDto {
   JourneyProfileEntity toEntity({required int id, DateTime? startDate}) {
     return JourneyProfileEntity(
       id: id,

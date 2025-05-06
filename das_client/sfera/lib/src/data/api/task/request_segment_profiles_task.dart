@@ -1,0 +1,108 @@
+import 'package:fimber/fimber.dart';
+import 'package:mqtt/component.dart';
+import 'package:sfera/component.dart';
+import 'package:sfera/src/data/dto/b2g_request_dto.dart';
+import 'package:sfera/src/data/dto/enums/sp_status_dto.dart';
+import 'package:sfera/src/data/dto/journey_profile_dto.dart';
+import 'package:sfera/src/data/dto/segment_profile_dto.dart';
+import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
+import 'package:sfera/src/data/dto/sfera_b2g_request_message_dto.dart';
+import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
+import 'package:sfera/src/data/dto/sp_request_dto.dart';
+import 'package:sfera/src/data/api/task/sfera_task.dart';
+
+class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfileDto>> {
+  RequestSegmentProfilesTask({
+    required MqttService mqttService,
+    required SferaDatabaseRepository sferaDatabaseRepository,
+    required this.otnId,
+    required this.journeyProfile,
+    super.timeout,
+  })  : _mqttService = mqttService,
+        _sferaDatabaseRepository = sferaDatabaseRepository;
+
+  final MqttService _mqttService;
+  final OtnIdDto otnId;
+  final SferaDatabaseRepository _sferaDatabaseRepository;
+  final JourneyProfileDto journeyProfile;
+
+  late TaskCompleted<List<SegmentProfileDto>> _taskCompletedCallback;
+  late TaskFailed _taskFailedCallback;
+
+  @override
+  Future<void> execute(TaskCompleted<List<SegmentProfileDto>> onCompleted, TaskFailed onFailed) async {
+    _taskCompletedCallback = onCompleted;
+    _taskFailedCallback = onFailed;
+
+    await _requestSegmentProfiles();
+  }
+
+  Future<void> _requestSegmentProfiles() async {
+    final missingSp = await findMissingSegmentProfiles();
+    if (missingSp.isEmpty) {
+      Fimber.i('No missing SegmentProfiles found...');
+      _taskCompletedCallback(this, []);
+      return;
+    }
+
+    final List<SpRequestDto> spRequests = [];
+    for (final sp in missingSp) {
+      spRequests.add(SpRequestDto.create(
+          id: sp.spId, versionMajor: sp.versionMajor, versionMinor: sp.versionMinor, spZone: sp.spZone));
+    }
+
+    final sferaB2gRequestMessage = SferaB2gRequestMessageDto.create(
+      await SferaService.messageHeader(sender: otnId.company),
+      b2gRequest: B2gRequestDto.createSPRequest(spRequests),
+    );
+    Fimber.i('Sending segment profiles request...');
+
+    startTimeout(_taskFailedCallback);
+    final sferaTrain = SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
+    _mqttService.publishMessage(otnId.company, sferaTrain, sferaB2gRequestMessage.buildDocument().toString());
+  }
+
+  Future<List<SegmentProfileReferenceDto>> findMissingSegmentProfiles() async {
+    final missingSps = <SegmentProfileReferenceDto>[];
+
+    for (final segment in journeyProfile.segmentProfileReferences) {
+      final existingProfile =
+          await _sferaDatabaseRepository.findSegmentProfile(segment.spId, segment.versionMajor, segment.versionMinor);
+      if (existingProfile == null) {
+        missingSps.add(segment);
+      }
+    }
+
+    return missingSps;
+  }
+
+  @override
+  Future<bool> handleMessage(SferaG2bReplyMessageDto replyMessage) async {
+    if (replyMessage.payload == null || replyMessage.payload!.segmentProfiles.isEmpty) {
+      return false;
+    }
+
+    stopTimeout();
+    Fimber.i(
+      'Received G2bReplyPayload response with ${replyMessage.payload!.segmentProfiles.length} SegmentProfiles...',
+    );
+
+    bool allValid = true;
+
+    for (final element in replyMessage.payload!.segmentProfiles) {
+      if (element.status == SpStatusDto.valid) {
+        await _sferaDatabaseRepository.saveSegmentProfile(element);
+      } else {
+        allValid = false;
+      }
+    }
+
+    if (allValid) {
+      _taskCompletedCallback(this, replyMessage.payload!.segmentProfiles.toList());
+    } else {
+      _taskFailedCallback(this, SferaError.invalid);
+    }
+
+    return true;
+  }
+}

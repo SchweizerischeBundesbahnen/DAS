@@ -2,13 +2,13 @@ import 'dart:io';
 
 import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
-import 'package:sfera/src/data/dto/journey_profile.dart';
-import 'package:sfera/src/data/dto/sfera_g2b_reply_message.dart';
+import 'package:sfera/src/data/dto/journey_profile_dto.dart';
+import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:sfera/src/data/sfera_api/task/request_journey_profile_task.dart';
+import 'package:sfera/src/data/api/task/request_journey_profile_task.dart';
 
 import 'sfera_request_journey_profile_task_test.mocks.dart';
 
@@ -19,27 +19,27 @@ import 'sfera_request_journey_profile_task_test.mocks.dart';
 void main() {
   late MockMqttService mqttService;
   late MockSferaDatabaseRepository sferaRepository;
-  late OtnId otnId;
+  late OtnIdDto otnId;
   Fimber.plantTree(DebugTree());
 
   setUp(() {
     mqttService = MockMqttService();
     sferaRepository = MockSferaDatabaseRepository();
-    otnId = OtnId.create('1085', '719', DateTime.now());
+    otnId = OtnIdDto.create('1085', '719', DateTime.now());
   });
 
   test('Test JP request successful', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final journeyTask =
         RequestJourneyProfileTask(mqttService: mqttService, sferaDatabaseRepository: sferaRepository, otnId: otnId);
 
     await journeyTask.execute((task, data) {
       expect(task, journeyTask);
-      expect(data!.whereType<JourneyProfile>().first, sferaG2bReplyMessage.payload!.journeyProfiles.first);
+      expect(data!.whereType<JourneyProfileDto>().first, sferaG2bReplyMessage.payload!.journeyProfiles.first);
     }, (task, errorCode) {
       fail('Task failed with error code $errorCode');
     });
@@ -54,7 +54,7 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final journeyTask =
         RequestJourneyProfileTask(mqttService: mqttService, sferaDatabaseRepository: sferaRepository, otnId: otnId);
@@ -78,7 +78,7 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232_invalid_jp.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final journeyTask =
         RequestJourneyProfileTask(mqttService: mqttService, sferaDatabaseRepository: sferaRepository, otnId: otnId);
@@ -103,7 +103,7 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232_unavailable_jp.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final journeyTask =
         RequestJourneyProfileTask(mqttService: mqttService, sferaDatabaseRepository: sferaRepository, otnId: otnId);
@@ -139,7 +139,7 @@ void main() {
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
     final file = File('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final result = await journeyTask.handleMessage(sferaG2bReplyMessage);
     expect(result, false);
@@ -172,7 +172,7 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final file = File('test_resources/SFERA_G2B_Reply_TC_request_T5.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final journeyTask =
         RequestJourneyProfileTask(mqttService: mqttService, sferaDatabaseRepository: sferaRepository, otnId: otnId);

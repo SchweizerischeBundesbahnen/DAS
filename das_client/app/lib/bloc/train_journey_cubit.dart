@@ -71,7 +71,9 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
             break;
         }
       });
-      _sferaService.connect(OtnId.create(ru.companyCode, trainNumber, date));
+
+      // TODO: Use domain model instead of DTO here
+      _sferaService.connect(OtnIdDto.create(ru.companyCode, trainNumber, date));
     }
   }
 

@@ -2,12 +2,12 @@ import 'dart:io';
 
 import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
-import 'package:sfera/src/data/dto/sfera_g2b_reply_message.dart';
+import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:sfera/src/data/sfera_api/task/request_train_characteristics_task.dart';
+import 'package:sfera/src/data/api/task/request_train_characteristics_task.dart';
 
 import 'sfera_request_train_characteristic_task_test.mocks.dart';
 
@@ -18,20 +18,20 @@ import 'sfera_request_train_characteristic_task_test.mocks.dart';
 void main() {
   late MockMqttService mqttService;
   late MockSferaDatabaseRepository sferaRepository;
-  late OtnId otnId;
+  late OtnIdDto otnId;
   Fimber.plantTree(DebugTree());
 
   setUp(() {
     mqttService = MockMqttService();
     sferaRepository = MockSferaDatabaseRepository();
-    otnId = OtnId.create('1085', '719', DateTime.now());
+    otnId = OtnIdDto.create('1085', '719', DateTime.now());
   });
 
   test('Test TC request successful', () async {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final file = File('test_resources/SFERA_G2B_Reply_TC_request_T5.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final tcTask = RequestTrainCharacteristicsTask(
         mqttService: mqttService,
@@ -56,7 +56,7 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final file = File('test_resources/SFERA_G2B_Reply_TC_request_T5.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final tcTask = RequestTrainCharacteristicsTask(
         mqttService: mqttService,
@@ -82,7 +82,7 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final file = File('test_resources/SFERA_G2B_Reply_TC_request_T5.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final tcTask = RequestTrainCharacteristicsTask(
         mqttService: mqttService,
@@ -100,7 +100,7 @@ void main() {
 
     final handShakefile = File('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
     final handshakeSferaG2bReplyMessage =
-        SferaReplyParser.parse<SferaG2bReplyMessage>(handShakefile.readAsStringSync());
+        SferaReplyParser.parse<SferaG2bReplyMessageDto>(handShakefile.readAsStringSync());
     final result = await tcTask.handleMessage(handshakeSferaG2bReplyMessage);
     expect(result, false);
   });
@@ -109,7 +109,7 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final file = File('test_resources/SFERA_G2B_Reply_TC_request_T5.xml');
-    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessage>(file.readAsStringSync());
+    final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final tcTask = RequestTrainCharacteristicsTask(
       mqttService: mqttService,

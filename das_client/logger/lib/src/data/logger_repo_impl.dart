@@ -3,7 +3,7 @@ import 'package:http_x/component.dart';
 import 'package:logger/src/data/dto/log_entry_dto.dart';
 import 'package:logger/src/data/local/logger_cache_service.dart';
 import 'package:logger/src/data/logger_repo.dart';
-import 'package:logger/src/data/logging_api/logger_service.dart';
+import 'package:logger/src/data/api/logger_service.dart';
 import 'package:logger/src/data/mappers.dart';
 import 'package:logger/src/log_entry.dart';
 import 'package:synchronized/synchronized.dart';

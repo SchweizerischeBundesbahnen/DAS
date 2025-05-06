@@ -1,18 +1,18 @@
 import 'package:sfera/src/data/local/db/entity/journey_profile_entity.dart';
 import 'package:sfera/src/data/local/db/entity/segment_profile_entity.dart';
 import 'package:sfera/src/data/local/db/entity/train_characteristics_entity.dart';
-import 'package:sfera/src/data/dto/journey_profile.dart';
-import 'package:sfera/src/data/dto/segment_profile.dart';
-import 'package:sfera/src/data/dto/train_characteristics.dart';
+import 'package:sfera/src/data/dto/journey_profile_dto.dart';
+import 'package:sfera/src/data/dto/segment_profile_dto.dart';
+import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 
 abstract class SferaDatabaseRepository {
   const SferaDatabaseRepository._();
 
-  Future<void> saveJourneyProfile(JourneyProfile journeyProfile);
+  Future<void> saveJourneyProfile(JourneyProfileDto journeyProfile);
 
-  Future<void> saveSegmentProfile(SegmentProfile segmentProfile);
+  Future<void> saveSegmentProfile(SegmentProfileDto segmentProfile);
 
-  Future<void> saveTrainCharacteristics(TrainCharacteristics trainCharacteristics);
+  Future<void> saveTrainCharacteristics(TrainCharacteristicsDto trainCharacteristics);
 
   Future<JourneyProfileEntity?> findJourneyProfile(String company, String operationalTrainNumber, DateTime startDate);
 

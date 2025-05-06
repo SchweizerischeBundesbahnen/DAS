@@ -16,16 +16,16 @@ import 'package:sfera/src/model/journey/speed_change.dart';
 import 'package:sfera/src/model/journey/track_foot_note.dart';
 import 'package:sfera/src/model/journey/train_series.dart';
 import 'package:sfera/src/model/journey/whistles.dart';
-import 'package:sfera/src/data/dto/enums/gradient_direction_type.dart';
-import 'package:sfera/src/data/dto/enums/length_type.dart';
-import 'package:sfera/src/data/dto/enums/stop_skip_pass.dart';
-import 'package:sfera/src/data/dto/enums/taf_tap_location_type.dart';
+import 'package:sfera/src/data/dto/enums/gradient_direction_type_dto.dart';
+import 'package:sfera/src/data/dto/enums/length_type_dto.dart';
+import 'package:sfera/src/data/dto/enums/stop_skip_pass_dto.dart';
+import 'package:sfera/src/data/dto/enums/taf_tap_location_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
-import 'package:sfera/src/data/dto/foot_note.dart';
-import 'package:sfera/src/data/dto/network_specific_parameter.dart';
-import 'package:sfera/src/data/dto/segment_profile.dart';
-import 'package:sfera/src/data/dto/segment_profile_list.dart';
-import 'package:sfera/src/data/dto/taf_tap_location.dart';
+import 'package:sfera/src/data/dto/foot_note_dto.dart';
+import 'package:sfera/src/data/dto/network_specific_parameter_dto.dart';
+import 'package:sfera/src/data/dto/segment_profile_dto.dart';
+import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
+import 'package:sfera/src/data/dto/taf_tap_location_dto.dart';
 import 'package:fimber/fimber.dart';
 import 'package:sfera/src/data/mapper/graduated_speed_data_mapper.dart';
 import 'package:sfera/src/data/mapper/mapper_utils.dart';
@@ -33,7 +33,7 @@ import 'package:sfera/src/data/mapper/mapper_utils.dart';
 class _MapperData {
   _MapperData(this.segmentProfile, this.segmentIndex, this.kilometreMap);
 
-  final SegmentProfile segmentProfile;
+  final SegmentProfileDto segmentProfile;
   final int segmentIndex;
   final KilometreMap kilometreMap;
 }
@@ -49,7 +49,7 @@ class SegmentProfileMapper {
   static const String _protectionSectionNspLengthTypeName = 'lengthType';
 
   static List<BaseData> parseSegmentProfile(
-      SegmentProfileReference segmentProfileReference, int segmentIndex, List<SegmentProfile> segmentProfiles) {
+      SegmentProfileReferenceDto segmentProfileReference, int segmentIndex, List<SegmentProfileDto> segmentProfiles) {
     final segmentProfile = segmentProfiles.firstMatch(segmentProfileReference);
     final kilometreMap = parseKilometre(segmentProfile);
     final mapperData = _MapperData(segmentProfile, segmentIndex, kilometreMap);
@@ -84,7 +84,7 @@ class SegmentProfileMapper {
   }
 
   static List<ServicePoint> _parseServicePoint(
-      _MapperData mapperData, List<SegmentProfile> segmentProfiles, SegmentProfileReference segmentProfileReference) {
+      _MapperData mapperData, List<SegmentProfileDto> segmentProfiles, SegmentProfileReferenceDto segmentProfileReference) {
     final servicePoints = <ServicePoint>[];
 
     final timingPoints = mapperData.segmentProfile.points?.timingPoints.toList() ?? [];
@@ -104,8 +104,8 @@ class SegmentProfileMapper {
           name: tafTapLocation.locationIdent.primaryLocationName?.value ?? '',
           order: calculateOrder(mapperData.segmentIndex, timingPoint.location),
           mandatoryStop: tpConstraint.stoppingPointInformation?.stopType?.mandatoryStop ?? true,
-          isStop: tpConstraint.stopSkipPass == StopSkipPass.stoppingPoint,
-          isStation: tafTapLocation.locationType != TafTapLocationType.halt,
+          isStop: tpConstraint.stopSkipPass == StopSkipPassDto.stoppingPoint,
+          isStation: tafTapLocation.locationType != TafTapLocationTypeDto.halt,
           bracketMainStation: _parseBracketMainStation(tafTapLocations, tafTapLocation),
           kilometre: mapperData.kilometreMap[timingPoint.location] ?? [],
           speedData:
@@ -150,7 +150,7 @@ class SegmentProfileMapper {
 
           protectionSections.add(ProtectionSection(
               isOptional: isOptional != null ? bool.parse(isOptional.nspValue) : false,
-              isLong: isLong != null ? XmlEnum.valueOf(LengthType.values, isLong.nspValue) == LengthType.long : false,
+              isLong: isLong != null ? XmlEnum.valueOf(LengthTypeDto.values, isLong.nspValue) == LengthTypeDto.long : false,
               order: calculateOrder(mapperData.segmentIndex, currentLimitationChange.location),
               kilometre: mapperData.kilometreMap[currentLimitationChange.location]!));
         }
@@ -160,7 +160,7 @@ class SegmentProfileMapper {
   }
 
   static BracketMainStation? _parseBracketMainStation(
-      List<TafTapLocation> allLocations, TafTapLocation tafTapLocation) {
+      List<TafTapLocationDto> allLocations, TafTapLocationDto tafTapLocation) {
     for (final tafTapLocationNsp in tafTapLocation.nsp) {
       if (tafTapLocationNsp.groupName == _bracketStationNspName) {
         final mainStationNsp = tafTapLocationNsp.parameters.withName(_bracketStationMainStationNspName);
@@ -329,7 +329,7 @@ class SegmentProfileMapper {
         .nonNulls;
   }
 
-  static List<FootNote> _parseFootNotes(Iterable<SferaFootNote> footNotes) {
+  static List<FootNote> _parseFootNotes(Iterable<SferaFootNoteDto> footNotes) {
     return footNotes.map((note) {
       return FootNote(
           text: note.text,
@@ -344,7 +344,7 @@ class SegmentProfileMapper {
     return trainSeries?.split(',').map((it) => TrainSeries.fromOptional(it)).nonNulls.toList() ?? [];
   }
 
-  static DecisiveGradient? _parseDecisiveGradientAtLocation(SegmentProfile segmentProfile, double location) {
+  static DecisiveGradient? _parseDecisiveGradientAtLocation(SegmentProfileDto segmentProfile, double location) {
     final decisiveGradientAreas =
         segmentProfile.contextInformation?.decisiveGradientAreas.where((it) => it.startLocation == location);
     if (decisiveGradientAreas == null || decisiveGradientAreas.isEmpty) {
@@ -353,7 +353,7 @@ class SegmentProfileMapper {
 
     double? uphill, downhill;
     for (final gradientArea in decisiveGradientAreas) {
-      if (gradientArea.gradientDirectionType == GradientDirectionType.uphill) {
+      if (gradientArea.gradientDirectionType == GradientDirectionTypeDto.uphill) {
         uphill = gradientArea.gradientValue;
       } else {
         downhill = gradientArea.gradientValue;

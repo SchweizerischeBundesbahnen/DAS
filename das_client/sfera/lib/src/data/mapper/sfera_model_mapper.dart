@@ -17,12 +17,12 @@ import 'package:sfera/src/model/journey/metadata.dart';
 import 'package:sfera/src/model/journey/service_point.dart';
 import 'package:sfera/src/model/journey/track_equipment_segment.dart';
 import 'package:sfera/src/model/journey/tram_area.dart';
-import 'package:sfera/src/data/dto/enums/start_end_qualifier.dart';
-import 'package:sfera/src/data/dto/journey_profile.dart';
-import 'package:sfera/src/data/dto/related_train_information.dart';
-import 'package:sfera/src/data/dto/segment_profile.dart';
-import 'package:sfera/src/data/dto/segment_profile_list.dart';
-import 'package:sfera/src/data/dto/train_characteristics.dart';
+import 'package:sfera/src/data/dto/enums/start_end_qualifier_dto.dart';
+import 'package:sfera/src/data/dto/journey_profile_dto.dart';
+import 'package:sfera/src/data/dto/related_train_information_dto.dart';
+import 'package:sfera/src/data/dto/segment_profile_dto.dart';
+import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
+import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:fimber/fimber.dart';
 import 'package:sfera/src/data/mapper/mapper_utils.dart';
 import 'package:sfera/src/data/mapper/segment_profile_mapper.dart';
@@ -33,10 +33,10 @@ class SferaModelMapper {
   SferaModelMapper._();
 
   static Journey mapToJourney({
-    required JourneyProfile journeyProfile,
-    List<SegmentProfile> segmentProfiles = const [],
-    List<TrainCharacteristics> trainCharacteristics = const [],
-    RelatedTrainInformation? relatedTrainInformation,
+    required JourneyProfileDto journeyProfile,
+    List<SegmentProfileDto> segmentProfiles = const [],
+    List<TrainCharacteristicsDto> trainCharacteristics = const [],
+    RelatedTrainInformationDto? relatedTrainInformation,
     Journey? lastJourney,
   }) {
     try {
@@ -49,10 +49,10 @@ class SferaModelMapper {
   }
 
   static Journey _tryMapToJourney(
-      JourneyProfile journeyProfile,
-      List<SegmentProfile> segmentProfiles,
-      List<TrainCharacteristics> trainCharacteristics,
-      RelatedTrainInformation? relatedTrainInformation,
+      JourneyProfileDto journeyProfile,
+      List<SegmentProfileDto> segmentProfiles,
+      List<TrainCharacteristicsDto> trainCharacteristics,
+      RelatedTrainInformationDto? relatedTrainInformation,
       Journey? lastJourney) {
     final journeyData = <BaseData>[];
 
@@ -117,8 +117,8 @@ class SferaModelMapper {
 
   static BaseData? _calculateCurrentPosition(
       List<BaseData> journeyData,
-      List<SegmentProfileReference> segmentProfilesLists,
-      RelatedTrainInformation? relatedTrainInformation,
+      List<SegmentProfileReferenceDto> segmentProfilesLists,
+      RelatedTrainInformationDto? relatedTrainInformation,
       Journey? lastJourney) {
     final positionSpeed = relatedTrainInformation?.ownTrain.trainLocationInformation.positionSpeed;
 
@@ -162,7 +162,7 @@ class SferaModelMapper {
   }
 
   static List<AdditionalSpeedRestriction> _parseAdditionalSpeedRestrictions(
-      JourneyProfile journeyProfile, List<SegmentProfile> segmentProfiles) {
+      JourneyProfileDto journeyProfile, List<SegmentProfileDto> segmentProfiles) {
     final List<AdditionalSpeedRestriction> result = [];
     final now = DateTime.now();
     final segmentProfilesReferences = journeyProfile.segmentProfileReferences.toList();
@@ -183,20 +183,20 @@ class SferaModelMapper {
         }
 
         switch (asrTemporaryConstrain.startEndQualifier) {
-          case StartEndQualifier.starts:
+          case StartEndQualifierDto.starts:
             startLocation = asrTemporaryConstrain.startLocation;
             startSegmentIndex = segmentIndex;
             break;
-          case StartEndQualifier.startsEnds:
+          case StartEndQualifierDto.startsEnds:
             startLocation = asrTemporaryConstrain.startLocation;
             startSegmentIndex = segmentIndex;
             continue next;
           next:
-          case StartEndQualifier.ends:
+          case StartEndQualifierDto.ends:
             endLocation = asrTemporaryConstrain.endLocation;
             endSegmentIndex = segmentIndex;
             break;
-          case StartEndQualifier.wholeSp:
+          case StartEndQualifierDto.wholeSp:
             break;
         }
 
@@ -272,7 +272,7 @@ class SferaModelMapper {
   }
 
   static List<CommunicationNetworkChange> _parseCommunicationNetworkChanges(
-      List<SegmentProfileReference> segmentProfileReferences, List<SegmentProfile> segmentProfiles) {
+      List<SegmentProfileReferenceDto> segmentProfileReferences, List<SegmentProfileDto> segmentProfiles) {
     return segmentProfileReferences
         .mapIndexed((index, reference) {
           final segmentProfile = segmentProfiles.firstMatch(reference);
@@ -295,7 +295,7 @@ class SferaModelMapper {
   }
 
   static Iterable<RadioContactList> _parseContactLists(
-      List<SegmentProfileReference> segmentProfileReferences, List<SegmentProfile> segmentProfiles) {
+      List<SegmentProfileReferenceDto> segmentProfileReferences, List<SegmentProfileDto> segmentProfiles) {
     return segmentProfileReferences
         .mapIndexed((index, reference) {
           final segmentProfile = segmentProfiles.firstMatch(reference);
@@ -334,8 +334,8 @@ class SferaModelMapper {
         .toSet();
   }
 
-  static TrainCharacteristics? _resolveFirstTrainCharacteristics(
-      JourneyProfile journey, List<TrainCharacteristics> trainCharacteristics) {
+  static TrainCharacteristicsDto? _resolveFirstTrainCharacteristics(
+      JourneyProfileDto journey, List<TrainCharacteristicsDto> trainCharacteristics) {
     final firstTrainRef = journey.trainCharacteristicsRefSet.firstOrNull;
     if (firstTrainRef == null) return null;
 
@@ -346,7 +346,7 @@ class SferaModelMapper {
         it.versionMinor == firstTrainRef.versionMinor);
   }
 
-  static List<TramArea> _parseTramAreas(List<SegmentProfile> segmentProfiles) {
+  static List<TramArea> _parseTramAreas(List<SegmentProfileDto> segmentProfiles) {
     final List<TramArea> result = [];
 
     int? startSegmentIndex;
@@ -362,22 +362,22 @@ class SferaModelMapper {
 
       for (final tramArea in segmentProfile.areas!.tramAreas) {
         switch (tramArea.startEndQualifier) {
-          case StartEndQualifier.starts:
+          case StartEndQualifierDto.starts:
             startLocation = tramArea.startLocation;
             startSegmentIndex = segmentIndex;
             amountTramSignals = tramArea.amountTramSignals?.amountTramSignals;
             break;
-          case StartEndQualifier.startsEnds:
+          case StartEndQualifierDto.startsEnds:
             startLocation = tramArea.startLocation;
             startSegmentIndex = segmentIndex;
             amountTramSignals = tramArea.amountTramSignals?.amountTramSignals;
             continue next;
           next:
-          case StartEndQualifier.ends:
+          case StartEndQualifierDto.ends:
             endLocation = tramArea.endLocation;
             endSegmentIndex = segmentIndex;
             break;
-          case StartEndQualifier.wholeSp:
+          case StartEndQualifierDto.wholeSp:
             break;
         }
 
