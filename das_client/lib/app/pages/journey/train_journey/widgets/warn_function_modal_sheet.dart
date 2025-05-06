@@ -4,6 +4,7 @@ import 'package:das_client/app/widgets/assets.dart';
 import 'package:das_client/app/widgets/das_modal_bottom_sheet.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/di.dart';
+import 'package:das_client/util/sound.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -43,21 +44,24 @@ class WarnFunctionModalSheet extends StatelessWidget {
             Expanded(
               child: SBBSecondaryButton(
                 label: context.l10n.w_modal_sheet_warn_function_manoeuvre_button,
-                onPressed: () {
-                  DI.get<TrainJourneyCubit>().setManeuverMode(true);
-                  Navigator.of(context).pop();
-                },
+                onPressed: () => handleStoppingSound(context, true),
               ),
             ),
             Expanded(
               child: SBBSecondaryButton(
                 label: context.l10n.w_modal_sheet_warn_function_confirm_button,
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => handleStoppingSound(context, false),
               ),
             ),
           ],
         )
       ],
     );
+  }
+
+  void handleStoppingSound(BuildContext context, bool isManeuver) {
+    Navigator.of(context).pop();
+    if (isManeuver) DI.get<TrainJourneyCubit>().setManeuverMode(true);
+    Sound.stop();
   }
 }
