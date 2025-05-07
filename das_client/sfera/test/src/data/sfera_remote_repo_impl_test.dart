@@ -7,7 +7,7 @@ import 'package:sfera/src/data/local/sfera_local_database_service.dart';
 import 'package:sfera/src/data/sfera_remote_repo_impl.dart';
 import 'package:uuid/uuid.dart';
 
-import 'sfera_service_impl_test.mocks.dart';
+import 'sfera_remote_repo_impl_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<MqttService>(),
@@ -16,19 +16,19 @@ import 'sfera_service_impl_test.mocks.dart';
 ])
 void main() {
   final OtnId otnId = OtnId(company: 'SBB', operationalTrainNumber: '12345', startDate: DateTime.now());
-  late SferaRemoteRepoImpl sferaService;
+  late SferaRemoteRepo sferaRemoteRepo;
   late MockMqttService mockMqttService;
-  late MockSferaLocalDatabaseService mockDatabaseRepository;
+  late MockSferaLocalDatabaseService mockLocalDatabaseRepository;
   late MockSferaAuthProvider mockSferaAuthProvider;
 
   setUp(() {
     mockMqttService = MockMqttService();
-    mockDatabaseRepository = MockSferaLocalDatabaseService();
+    mockLocalDatabaseRepository = MockSferaLocalDatabaseService();
     mockSferaAuthProvider = MockSferaAuthProvider();
 
-    sferaService = SferaRemoteRepoImpl(
+    sferaRemoteRepo = SferaRemoteRepoImpl(
       mqttService: mockMqttService,
-      localService: mockDatabaseRepository,
+      localService: mockLocalDatabaseRepository,
       authProvider: mockSferaAuthProvider,
       deviceId: Uuid().v4(),
     );
@@ -42,7 +42,7 @@ void main() {
 
     // LATER THEN
     expectLater(
-      sferaService.stateStream,
+      sferaRemoteRepo.stateStream,
       emitsInOrder([
         SferaRemoteRepositoryState.disconnected, // seeded state
         SferaRemoteRepositoryState.connecting,
@@ -51,7 +51,7 @@ void main() {
     );
 
     // WHEN
-    await sferaService.connect(otnId);
+    await sferaRemoteRepo.connect(otnId);
 
     // Wait till async tasks are finished
     await Future.delayed(Duration(milliseconds: 500));
@@ -71,7 +71,7 @@ void main() {
 
     // LATER THEN
     expectLater(
-      sferaService.stateStream,
+      sferaRemoteRepo.stateStream,
       emitsInOrder([
         SferaRemoteRepositoryState.disconnected, // seeded state
         SferaRemoteRepositoryState.connecting,
@@ -80,19 +80,19 @@ void main() {
     );
 
     // WHEN
-    await sferaService.connect(otnId);
+    await sferaRemoteRepo.connect(otnId);
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
-    expect(sferaService.lastError, SferaError.connectionFailed);
+    expect(sferaRemoteRepo.lastError, SferaError.connectionFailed);
   });
 
   test('should disconnect and set state to disconnected', () async {
     // WHEN
-    await sferaService.disconnect();
+    await sferaRemoteRepo.disconnect();
 
     // THEN
     verify(mockMqttService.disconnect()).called(1);
-    expect(sferaService.stateStream, emits(SferaRemoteRepositoryState.disconnected));
+    expect(sferaRemoteRepo.stateStream, emits(SferaRemoteRepositoryState.disconnected));
   });
 }
