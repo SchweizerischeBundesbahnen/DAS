@@ -82,10 +82,6 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   # https://pub.dev/packages/mockito
   mockito: ^5.4.5
-  # https://pub.dev/packages/path_provider
-  path_provider_platform_interface: any
-  # https://pub.dev/packages/plugin_platform_interface
-  plugin_platform_interface: any
 
 flutter:
   generate: false

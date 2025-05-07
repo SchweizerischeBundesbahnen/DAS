@@ -25,6 +25,8 @@ dependencies:
   device_info_plus: ^11.3.0
   # https://pub.dev/packages/package_info_plus
   package_info_plus: ^8.3.0
+  # https://pub.dev/packages/path/install
+  path: ^1.9.0
 
 dev_dependencies:
   flutter_test:
@@ -36,4 +38,8 @@ dev_dependencies:
   json_serializable: ^6.9.0
   # https://pub.dev/packages/mockito
   mockito: ^5.4.5
+  # https://pub.dev/packages/path_provider
+  path_provider_platform_interface: any
+  # https://pub.dev/packages/plugin_platform_interface
+  plugin_platform_interface: any
 
