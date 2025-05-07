@@ -9,12 +9,12 @@ import 'reduced_overview_view_model_test.mocks.dart';
 final trainIdentification = TrainIdentification(ru: Ru.sbbP, trainNumber: '1234', date: DateTime.now());
 
 @GenerateNiceMocks([
-  MockSpec<SferaLocalService>(),
+  MockSpec<SferaLocalRepo>(),
 ])
 void main() {
   test('test metadata is correctly emitted', () {
     final metadata = Metadata(timestamp: DateTime.now());
-    final sferaServiceMock = _setupSferaServiceMock(metadata, <BaseData>[]);
+    final sferaServiceMock = _setupSferaLocalRepoMock(metadata, <BaseData>[]);
 
     final viewModel =
         ReducedOverviewViewModel(trainIdentification: trainIdentification, sferaLocalService: sferaServiceMock);
@@ -33,7 +33,7 @@ void main() {
     final communicationNetworkChanges = [CommunicationNetworkChange(type: CommunicationNetworkType.gsmR, order: 400)];
     final metadata = Metadata(communicationNetworkChanges: communicationNetworkChanges);
 
-    final sferaServiceMock = _setupSferaServiceMock(metadata, data);
+    final sferaServiceMock = _setupSferaLocalRepoMock(metadata, data);
     final viewModel =
         ReducedOverviewViewModel(trainIdentification: trainIdentification, sferaLocalService: sferaServiceMock);
 
@@ -76,7 +76,7 @@ void main() {
       cabSignaling,
       asrData,
     ];
-    final sferaServiceMock = _setupSferaServiceMock(Metadata(), data);
+    final sferaServiceMock = _setupSferaLocalRepoMock(Metadata(), data);
     final viewModel =
         ReducedOverviewViewModel(trainIdentification: trainIdentification, sferaLocalService: sferaServiceMock);
 
@@ -94,7 +94,7 @@ void main() {
     final asr2 = AdditionalSpeedRestriction(kmFrom: 0.0, kmTo: 0.0, orderFrom: 300, orderTo: 400);
     final asrData2 = AdditionalSpeedRestrictionData(restriction: asr2, order: 200, kilometre: []);
     final data = <BaseData>[asrData1, asrData1, asrData2];
-    final sferaServiceMock = _setupSferaServiceMock(Metadata(), data);
+    final sferaServiceMock = _setupSferaLocalRepoMock(Metadata(), data);
     final viewModel =
         ReducedOverviewViewModel(trainIdentification: trainIdentification, sferaLocalService: sferaServiceMock);
 
@@ -106,13 +106,13 @@ void main() {
   });
 }
 
-MockSferaLocalService _setupSferaServiceMock(Metadata metadata, List<BaseData> data) {
-  final sferaServiceMock = MockSferaLocalService();
+MockSferaLocalRepo _setupSferaLocalRepoMock(Metadata metadata, List<BaseData> data) {
+  final sferaRepoMock = MockSferaLocalRepo();
   final journey = Journey(metadata: metadata, data: data);
-  when(sferaServiceMock.journeyStream(
+  when(sferaRepoMock.journeyStream(
     company: trainIdentification.ru.companyCode,
     trainNumber: trainIdentification.trainNumber,
     startDate: trainIdentification.date,
   )).thenAnswer((_) => Stream.value(journey));
-  return sferaServiceMock;
+  return sferaRepoMock;
 }

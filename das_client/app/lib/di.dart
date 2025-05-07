@@ -49,33 +49,32 @@ class DI {
 
 extension GetItX on GetIt {
   Future<void> init(Flavor flavor, {bool useTms = false}) async {
-    registerBrightnessManager();
     registerFlavor(flavor);
+    registerBrightnessManager();
     registerAzureAuthenticator(useTms: useTms);
     registerAuthProvider();
     registerSferaAuthProvider();
     registerMqttAuthProvider();
-    registerMqttComponent(useTms: useTms);
+    registerMqttClientConnector(useTms: useTms);
+    registerMqttService(useTms: useTms);
     registerDasLogTree();
-    registerSferaComponents(useTms: useTms);
+    registerSferaAuthService(useTms: useTms);
+    registerSferaLocalRepo();
+    registerSferaRemoteRepo();
     registerBlocs();
     registerBattery();
     registerAudioPlayer();
     await allReady();
   }
 
-  void registerBrightnessManager() {
-    registerLazySingleton<ScreenBrightness>(() => ScreenBrightness());
-    registerLazySingleton<BrightnessManager>(() => BrightnessManagerImpl(DI.get<ScreenBrightness>()));
-  }
-
   void registerFlavor(Flavor flavor) {
+    Fimber.d('Register flavor');
     registerSingleton<Flavor>(flavor);
   }
 
   void registerAuthProvider() {
     factoryFunc() {
-      Fimber.i('registerAuthProvider');
+      Fimber.d('Register auth provider');
       return _AuthProvider(authenticator: DI.get());
     }
 
@@ -84,7 +83,7 @@ extension GetItX on GetIt {
 
   void registerSferaAuthProvider() {
     factoryFunc() {
-      Fimber.i('registerSferaAuthProvider');
+      Fimber.d('Register sfera auth provider');
       return _SferaAuthProvider(authenticator: DI.get());
     }
 
@@ -93,21 +92,25 @@ extension GetItX on GetIt {
 
   void registerMqttAuthProvider() {
     factoryFunc() {
-      Fimber.i('registerMqttAuthProvider');
+      Fimber.d('Register mqtt auth provider');
       return _MqttAuthProvider(authenticator: DI.get(), sferaAuthService: DI.get());
     }
 
     registerFactory<MqttAuthProvider>(factoryFunc);
   }
 
-  void registerMqttComponent({bool useTms = false}) {
-    registerLazySingleton<MqttClientConnector>(() {
-      Fimber.i('createMqttClientConnector');
+  void registerMqttClientConnector({bool useTms = false}) {
+    factoryFunc() {
+      Fimber.d('Register mqtt client connector');
       return MqttComponent.createMqttClientConnector(authProvider: DI.get(), useTms: useTms);
-    });
+    }
 
-    registerSingletonAsync(() async {
-      Fimber.i('register createMqttService');
+    registerLazySingleton<MqttClientConnector>(factoryFunc);
+  }
+
+  void registerMqttService({bool useTms = false}) {
+    Future<MqttService> factoryFunc() async {
+      Fimber.d('Register mqtt service');
       final flavor = DI.get<Flavor>();
       final deviceId = await DeviceIdInfo.getDeviceId();
       return MqttComponent.createMqttService(
@@ -116,12 +119,14 @@ extension GetItX on GetIt {
         prefix: flavor.mqttTopicPrefix,
         deviceId: deviceId,
       );
-    });
+    }
+
+    registerSingletonAsync(factoryFunc);
   }
 
   void registerDasLogTree() {
     Future<LogTree> factoryFunc() async {
-      Fimber.i('registerDasLogTree');
+      Fimber.d('Register DAS log tree');
       final flavor = DI.get<Flavor>();
       final deviceId = await DeviceIdInfo.getDeviceId();
       final httpClient = HttpXComponent.createHttpClient(authProvider: DI.get());
@@ -133,7 +138,7 @@ extension GetItX on GetIt {
 
   void registerAzureAuthenticator({bool useTms = false}) {
     factoryFunc() {
-      Fimber.i('registerAzureAuthenticator');
+      Fimber.d('Register azure authenticator');
       final flavor = DI.get<Flavor>();
       final authenticatorConfig = useTms ? flavor.tmsAuthenticatorConfig! : flavor.authenticatorConfig;
       return AuthenticationComponent.createAzureAuthenticator(config: authenticatorConfig);
@@ -142,51 +147,88 @@ extension GetItX on GetIt {
     registerSingleton<Authenticator>(factoryFunc());
   }
 
-  void registerSferaComponents({bool useTms = false}) {
-    registerLazySingleton<SferaAuthService>(() {
-      Fimber.i('SferaAuthService');
+  void registerSferaAuthService({bool useTms = false}) {
+    factoryFunc() {
+      Fimber.d('Register sfera auth service');
       final flavor = DI.get<Flavor>();
       final httpClient = HttpXComponent.createHttpClient(authProvider: DI.get());
       return SferaComponent.createSferaAuthService(
         httpClient: httpClient,
         tokenExchangeUrl: useTms ? flavor.tmsTokenExchangeUrl! : flavor.tokenExchangeUrl,
       );
-    });
+    }
+
+    registerLazySingleton<SferaAuthService>(factoryFunc);
+  }
+
+  void registerSferaRemoteRepo() {
+    factoryFunc() async {
+      Fimber.d('Register sfera remote repo');
+      final deviceId = await DeviceIdInfo.getDeviceId();
+      return SferaComponent.createSferaRemoteRepo(
+        mqttService: DI.get(),
+        sferaAuthProvider: DI.get(),
+        deviceId: deviceId,
+      );
+    }
 
     registerSingletonAsync<SferaRemoteRepo>(
-      () async {
-        Fimber.i('SferaService');
-        final deviceId = await DeviceIdInfo.getDeviceId();
-        return SferaComponent.createSferaService(
-          mqttService: DI.get(),
-          sferaAuthProvider: DI.get(),
-          deviceId: deviceId,
-        );
-      },
+      factoryFunc,
       dispose: (service) => service.dispose(),
       dependsOn: [MqttService],
     );
+  }
 
-    registerLazySingleton<SferaLocalService>(() => SferaComponent.createSferaLocalService());
+  void registerSferaLocalRepo() {
+    factoryFunc() {
+      Fimber.d('Register sfera local repo');
+      return SferaComponent.createSferaLocalRepo();
+    }
+
+    registerLazySingleton<SferaLocalRepo>(factoryFunc);
   }
 
   void registerBlocs() {
     registerSingletonWithDependencies<TrainJourneyCubit>(
-      () => TrainJourneyCubit(sferaService: DI.get()),
+      () {
+        Fimber.d('Register TrainJourneyCubit');
+        return TrainJourneyCubit(sferaService: DI.get());
+      },
       dependsOn: [SferaRemoteRepo],
     );
     registerSingletonWithDependencies<UxTestingCubit>(
-      () => UxTestingCubit(sferaService: DI.get())..initialize(),
+      () {
+        Fimber.d('Register UxTestingCubit');
+        return UxTestingCubit(sferaService: DI.get())..initialize();
+      },
       dependsOn: [SferaRemoteRepo],
     );
   }
 
+  void registerBrightnessManager() {
+    registerLazySingleton<ScreenBrightness>(() {
+      Fimber.d('Register ScreenBrightness');
+      return ScreenBrightness();
+    });
+
+    registerLazySingleton<BrightnessManager>(() {
+      Fimber.d('Register ScreenBrightness');
+      return BrightnessManagerImpl(DI.get<ScreenBrightness>());
+    });
+  }
+
   void registerBattery() {
-    registerLazySingleton<Battery>(() => Battery());
+    registerLazySingleton<Battery>(() {
+      Fimber.d('Register Battery');
+      return Battery();
+    });
   }
 
   void registerAudioPlayer() {
-    registerLazySingleton<AudioPlayer>(() => AudioPlayer());
+    registerLazySingleton<AudioPlayer>(() {
+      Fimber.d('Register AudioPlayer');
+      return AudioPlayer();
+    });
   }
 }
 

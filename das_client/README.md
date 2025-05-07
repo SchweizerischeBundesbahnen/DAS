@@ -31,15 +31,15 @@ fvm dart run melos generate
 DAS Client has 3 distinct flavors: `dev`, `inte` and `prod`. Run them as follows:
 
 ```shell
-fvm flutter run --flavor dev -t lib/main_dev.dart
+fvm flutter run --flavor dev -t app/lib/main_dev.dart
 ```
 
 ```shell
-fvm flutter run --flavor inte -t lib/main_inte.dart
+fvm flutter run --flavor inte -t app/lib/main_inte.dart
 ```
 
 ```shell
-fvm flutter run --flavor prod -t lib/main_prod.dart
+fvm flutter run --flavor prod -t app/lib/main_prod.dart
 ```
 
 ## Architecture
@@ -84,7 +84,7 @@ fvm dart run melos test
 Instrumentation tests do not use user authentication. Therefore the credentials must be provided as environment variables.
 
 ```shell
-fvm flutter test --flavor dev --dart-define=MQTT_USERNAME=${MQTT_USERNAME} --dart-define=MQTT_PASSWORD=${MQTT_PASSWORD} integration_test/app_test.dart
+fvm flutter test --flavor dev --dart-define=MQTT_USERNAME=${MQTT_USERNAME} --dart-define=MQTT_PASSWORD=${MQTT_PASSWORD} app/integration_test/app_test.dart
 ```
 
 ### Test file structure

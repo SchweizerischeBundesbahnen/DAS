@@ -20,22 +20,21 @@ class IntegrationTestDI {
     Fimber.i('Initialize integration test dependency injection');
     await GetIt.I.reset();
 
+    GetIt.I.registerFlavor(flavor);
     _registerScreenBrightness();
     _registerBrightnessManager();
-    GetIt.I.registerFlavor(flavor);
     _registerIntegrationTestAuthenticator();
     GetIt.I.registerAuthProvider();
     GetIt.I.registerSferaAuthProvider();
     GetIt.I.registerMqttAuthProvider();
-    GetIt.I.registerMqttComponent();
-    GetIt.I.registerDasLogTree();
-    GetIt.I.registerSferaComponents();
+    _registerMqttClientConnector();
+    GetIt.I.registerMqttService();
+    GetIt.I.registerSferaAuthService();
+    GetIt.I.registerSferaLocalRepo();
+    GetIt.I.registerSferaRemoteRepo();
     _registerBattery();
     GetIt.I.registerBlocs();
     GetIt.I.registerAudioPlayer();
-
-    GetIt.I.unregister<MqttClientConnector>();
-    _registerMqttClientConnector();
 
     await GetIt.I.allReady();
   }

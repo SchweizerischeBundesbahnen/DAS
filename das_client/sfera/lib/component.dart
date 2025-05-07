@@ -65,7 +65,7 @@ class SferaComponent {
     return SferaAuthServiceImpl(httpClient: httpClient, tokenExchangeUrl: tokenExchangeUrl);
   }
 
-  static SferaRemoteRepo createSferaService({
+  static SferaRemoteRepo createSferaRemoteRepo({
     required MqttService mqttService,
     required SferaAuthProvider sferaAuthProvider,
     required String deviceId,
@@ -79,8 +79,8 @@ class SferaComponent {
     );
   }
 
-  static SferaLocalService createSferaLocalService() {
+  static SferaLocalRepo createSferaLocalRepo() {
     final sferaDatabaseRepository = SferaDatabaseRepositoryImpl();
-    return SferaLocalServiceImpl(sferaDatabaseRepository: sferaDatabaseRepository);
+    return SferaLocalRepoImpl(databaseRepository: sferaDatabaseRepository);
   }
 }
