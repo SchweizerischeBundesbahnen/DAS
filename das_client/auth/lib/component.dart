@@ -8,6 +8,7 @@ export 'package:auth/src/role.dart';
 export 'package:auth/src/token_spec.dart';
 export 'package:auth/src/token_spec_provider.dart';
 export 'package:auth/src/user.dart';
+export 'package:sbb_oidc/sbb_oidc.dart' show OidcToken;
 
 class AuthenticationComponent {
   const AuthenticationComponent._();

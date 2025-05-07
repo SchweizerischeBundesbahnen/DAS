@@ -1,5 +1,4 @@
 import 'package:fimber/fimber.dart';
-import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt/component.dart';
 
 class MqttClientUserConnector implements MqttClientConnector {

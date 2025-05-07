@@ -1,5 +1,4 @@
 import 'package:auth/component.dart';
-import 'package:sbb_oidc/sbb_oidc.dart';
 
 class IntegrationTestAuthenticator implements Authenticator {
   @override

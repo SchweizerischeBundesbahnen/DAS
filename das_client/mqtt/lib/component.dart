@@ -8,6 +8,7 @@ import 'package:mqtt/src/provider/mqtt_auth_provider.dart';
 export 'package:mqtt/src/mqtt_client_connector.dart';
 export 'package:mqtt/src/mqtt_service.dart';
 export 'package:mqtt/src/provider/mqtt_auth_provider.dart';
+export 'package:mqtt_client/mqtt_client.dart';
 
 class MqttComponent {
   const MqttComponent._();

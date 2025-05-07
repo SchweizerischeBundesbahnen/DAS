@@ -15,19 +15,17 @@ class MqttClientOauthConnector implements MqttClientConnector {
     final userId = await _mqttAuthProvider.userId();
     Fimber.i('Using userId=$userId');
 
-    if (userId != null) {
-      try {
-        final accessToken = await _mqttAuthProvider.token();
-        final mqttClientConnectionStatus = await client.connect(userId, 'OAUTH~azureAd~$accessToken');
-        Fimber.i('mqttClientConnectionStatus=$mqttClientConnectionStatus');
+    try {
+      final accessToken = await _mqttAuthProvider.token();
+      final mqttClientConnectionStatus = await client.connect(userId, 'OAUTH~azureAd~$accessToken');
+      Fimber.i('mqttClientConnectionStatus=$mqttClientConnectionStatus');
 
-        if (mqttClientConnectionStatus?.state == MqttConnectionState.connected) {
-          Fimber.i('Successfully connected to MQTT broker');
-          return true;
-        }
-      } catch (e) {
-        Fimber.e('Exception during connect', ex: e);
+      if (mqttClientConnectionStatus?.state == MqttConnectionState.connected) {
+        Fimber.i('Successfully connected to MQTT broker');
+        return true;
       }
+    } catch (e) {
+      Fimber.e('Exception during connect', ex: e);
     }
 
     Fimber.w('Failed to connect to MQTT broker');

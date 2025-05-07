@@ -5,5 +5,5 @@ abstract interface class MqttAuthProvider {
 
   Future<String?> tmsToken({required String company, required String train, required String role});
 
-  Future<String?> userId();
+  Future<String> userId();
 }
