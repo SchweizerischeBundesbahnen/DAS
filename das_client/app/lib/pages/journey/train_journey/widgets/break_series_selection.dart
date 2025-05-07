@@ -1,7 +1,7 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/break_series_selection_button.dart';
 import 'package:app/widgets/das_text_styles.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';

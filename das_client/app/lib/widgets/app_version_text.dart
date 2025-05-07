@@ -1,8 +1,8 @@
 import 'package:app/pages/magic_secret_shhh/pages/flappy_screen.dart';
 import 'package:app/widgets/das_text_styles.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class AppVersionText extends StatelessWidget {
   const AppVersionText({required this.color, super.key});

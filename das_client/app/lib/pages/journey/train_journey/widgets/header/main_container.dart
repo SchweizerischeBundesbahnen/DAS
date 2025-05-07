@@ -8,9 +8,9 @@ import 'package:app/pages/journey/train_journey/widgets/header/radio_channel.dar
 import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/theme_button.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_text_styles.dart';
-import 'package:app/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rxdart/rxdart.dart';

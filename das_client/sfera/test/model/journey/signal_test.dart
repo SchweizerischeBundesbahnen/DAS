@@ -1,5 +1,5 @@
-import 'package:sfera/src/model/journey/signal.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sfera/src/model/journey/signal.dart';
 
 void main() {
   test('Test string factory for signal functions', () {

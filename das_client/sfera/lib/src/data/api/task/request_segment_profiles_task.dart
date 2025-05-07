@@ -10,6 +10,7 @@ import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
 import 'package:sfera/src/data/dto/sfera_b2g_request_message_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:sfera/src/data/dto/sp_request_dto.dart';
+import 'package:sfera/src/data/local/db/repo/sfera_database_repository.dart';
 
 class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfileDto>> {
   RequestSegmentProfilesTask({
@@ -24,7 +25,7 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfileDto>> {
         _sferaService = sferaService;
 
   final MqttService _mqttService;
-  final OtnIdDto otnId;
+  final OtnId otnId;
   final SferaDatabaseRepository _sferaDatabaseRepository;
   final SferaService _sferaService;
   final JourneyProfileDto journeyProfile;

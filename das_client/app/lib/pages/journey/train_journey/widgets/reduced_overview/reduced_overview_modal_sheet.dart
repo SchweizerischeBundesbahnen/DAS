@@ -1,12 +1,12 @@
 import 'package:app/bloc/train_journey_cubit.dart';
+import 'package:app/di.dart';
 import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/reduced_overview/reduced_overview_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/reduced_overview/reduced_train_journey.dart';
-import 'package:app/widgets/das_text_styles.dart';
-import 'package:app/di.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/format.dart';
+import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';

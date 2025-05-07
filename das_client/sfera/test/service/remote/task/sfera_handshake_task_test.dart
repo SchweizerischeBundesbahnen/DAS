@@ -20,14 +20,14 @@ import 'sfera_handshake_task_test.mocks.dart';
 void main() {
   late MockSferaService sferaService;
   late MockMqttService mqttService;
-  late OtnIdDto otnId;
+  late OtnId otnId;
   Fimber.plantTree(DebugTree());
 
   setUp(() {
     sferaService = MockSferaService();
     when(sferaService.messageHeader(sender: anyNamed('sender'))).thenReturn(MessageHeaderDto());
     mqttService = MockMqttService();
-    otnId = OtnIdDto.create('1085', '719', DateTime.now());
+    otnId = OtnId(company: '1085', operationalTrainNumber: '719', startDate: DateTime.now());
   });
 
   test('Test handshake successful', () async {

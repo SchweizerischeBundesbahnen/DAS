@@ -1,10 +1,10 @@
-import 'package:auto_route/auto_route.dart';
+import 'package:app/pages/journey/journey_page.dart';
 import 'package:app/pages/links/links_page.dart';
-import 'package:app/pages/profile/profile_page.dart';
 import 'package:app/pages/login/login_page.dart';
 import 'package:app/pages/login/splash_page.dart';
+import 'package:app/pages/profile/profile_page.dart';
 import 'package:app/pages/settings/settings_page.dart';
-import 'package:app/pages/journey/journey_page.dart';
+import 'package:auto_route/auto_route.dart';
 
 part 'app_router.gr.dart';
 

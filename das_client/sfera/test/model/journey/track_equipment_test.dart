@@ -1,5 +1,5 @@
-import 'package:sfera/src/model/journey/track_equipment_segment.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sfera/src/model/journey/track_equipment_segment.dart';
 
 void main() {
   group('Test track equipment', () {

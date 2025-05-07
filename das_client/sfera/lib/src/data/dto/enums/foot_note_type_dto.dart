@@ -1,5 +1,5 @@
-import 'package:sfera/src/model/journey/foot_note.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
+import 'package:sfera/src/model/journey/foot_note.dart';
 
 enum SferaFootNoteTypeDto implements XmlEnum {
   trackSpeed(xmlValue: 'trackSpeed', footNoteType: FootNoteType.trackSpeed),

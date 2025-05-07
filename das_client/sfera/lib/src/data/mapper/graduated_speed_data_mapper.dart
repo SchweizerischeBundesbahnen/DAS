@@ -1,9 +1,9 @@
+import 'package:fimber/fimber.dart';
+import 'package:sfera/src/data/dto/graduated_speed_info_dto.dart';
+import 'package:sfera/src/data/dto/velocity_dto.dart';
 import 'package:sfera/src/model/journey/speed_data.dart';
 import 'package:sfera/src/model/journey/speeds.dart';
 import 'package:sfera/src/model/journey/train_series.dart';
-import 'package:sfera/src/data/dto/graduated_speed_info_dto.dart';
-import 'package:sfera/src/data/dto/velocity_dto.dart';
-import 'package:fimber/fimber.dart';
 
 /// Used to map data from SFERA to domain model [SpeedData].
 class GraduatedSpeedDataMapper {

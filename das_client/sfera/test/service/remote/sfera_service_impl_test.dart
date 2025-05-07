@@ -1,10 +1,10 @@
-import 'package:auth/component.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/api/sfera_service_impl.dart';
+import 'package:sfera/src/data/local/db/repo/sfera_database_repository.dart';
 import 'package:uuid/uuid.dart';
 
 import 'sfera_service_impl_test.mocks.dart';
@@ -12,24 +12,24 @@ import 'sfera_service_impl_test.mocks.dart';
 @GenerateNiceMocks([
   MockSpec<MqttService>(),
   MockSpec<SferaDatabaseRepository>(),
-  MockSpec<Authenticator>(),
+  MockSpec<SferaAuthProvider>(),
 ])
 void main() {
-  final OtnIdDto otnId = OtnIdDto.create('SBB', '12345', DateTime.now());
+  final OtnId otnId = OtnId(company: 'SBB', operationalTrainNumber: '12345', startDate: DateTime.now());
   late SferaServiceImpl sferaService;
   late MockMqttService mockMqttService;
   late MockSferaDatabaseRepository mockDatabaseRepository;
-  late MockAuthenticator mockAuthenticator;
+  late MockSferaAuthProvider mockSferaAuthProvider;
 
   setUp(() {
     mockMqttService = MockMqttService();
     mockDatabaseRepository = MockSferaDatabaseRepository();
-    mockAuthenticator = MockAuthenticator();
+    mockSferaAuthProvider = MockSferaAuthProvider();
 
     sferaService = SferaServiceImpl(
       mqttService: mockMqttService,
       sferaDatabaseRepository: mockDatabaseRepository,
-      authenticator: mockAuthenticator,
+      sferaAuthProvider: mockSferaAuthProvider,
       deviceId: Uuid().v4(),
     );
   });
@@ -38,7 +38,7 @@ void main() {
     // GIVEN
     when(mockMqttService.connect(any, any)).thenAnswer((_) async => true);
     when(mockMqttService.publishMessage(any, any, any)).thenReturn(true);
-    when(mockAuthenticator.user()).thenAnswer((_) async => User(roles: [Role.driver], name: 'Test User'));
+    when(mockSferaAuthProvider.isDriver()).thenAnswer((_) async => true);
 
     // LATER THEN
     expectLater(

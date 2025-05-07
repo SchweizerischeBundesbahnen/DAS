@@ -1,5 +1,5 @@
-import 'package:sfera/src/model/journey/communication_network_change.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sfera/src/model/journey/communication_network_change.dart';
 
 main() {
   test('test appliesToOrder of CommunicationNetworkChange list', () {

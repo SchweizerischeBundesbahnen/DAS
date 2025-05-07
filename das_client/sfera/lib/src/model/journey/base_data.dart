@@ -1,8 +1,8 @@
+import 'package:meta/meta.dart';
 import 'package:sfera/src/model/journey/base_data_extension.dart';
 import 'package:sfera/src/model/journey/datatype.dart';
 import 'package:sfera/src/model/journey/order_priority.dart';
 import 'package:sfera/src/model/journey/speed_data.dart';
-import 'package:meta/meta.dart';
 
 @sealed
 @immutable

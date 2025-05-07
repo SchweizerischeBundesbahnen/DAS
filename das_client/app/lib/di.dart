@@ -12,7 +12,6 @@ import 'package:get_it/get_it.dart';
 import 'package:http_x/component.dart';
 import 'package:logger/component.dart';
 import 'package:mqtt/component.dart';
-import 'package:sbb_oidc/sbb_oidc.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:sfera/component.dart';
 
@@ -52,9 +51,10 @@ extension GetItX on GetIt {
   Future<void> init(Flavor flavor, {bool useTms = false}) async {
     registerBrightnessManager();
     registerFlavor(flavor);
-    registerTokenSpecProvider(useTms: useTms);
-    registerOidcClient(useTms: useTms);
-    registerAzureAuthenticator();
+    registerAzureAuthenticator(useTms: useTms);
+    registerAuthProvider();
+    registerSferaAuthProvider();
+    registerMqttAuthProvider();
     registerMqttComponent(useTms: useTms);
     registerDasLogTree();
     registerSferaComponents(useTms: useTms);
@@ -73,46 +73,42 @@ extension GetItX on GetIt {
     registerSingleton<Flavor>(flavor);
   }
 
-  void registerTokenSpecProvider({bool useTms = false}) {
-    factoryFunc() {
-      final flavor = DI.get<Flavor>();
-      return useTms ? flavor.tmsAuthenticatorConfig!.tokenSpecs : flavor.authenticatorConfig.tokenSpecs;
-    }
-
-    registerSingleton<TokenSpecProvider>(factoryFunc());
-  }
-
   void registerAuthProvider() {
     factoryFunc() {
+      Fimber.i('registerAuthProvider');
       return _AuthProvider(authenticator: DI.get());
     }
 
     registerFactory<AuthProvider>(factoryFunc);
   }
 
-  // TODO: Move to auth component and handle similar to AuthProvider?
-  void registerOidcClient({bool useTms = false}) {
+  void registerSferaAuthProvider() {
     factoryFunc() {
-      final flavor = DI.get<Flavor>();
-      final authenticatorConfig = useTms ? flavor.tmsAuthenticatorConfig! : flavor.authenticatorConfig;
-      return SBBOpenIDConnect.createClient(
-        discoveryUrl: authenticatorConfig.discoveryUrl,
-        clientId: authenticatorConfig.clientId,
-        redirectUrl: authenticatorConfig.redirectUrl,
-        postLogoutRedirectUrl: authenticatorConfig.postLogoutRedirectUrl,
-      );
+      Fimber.i('registerSferaAuthProvider');
+      return _SferaAuthProvider(authenticator: DI.get());
     }
 
-    registerSingletonAsync<OidcClient>(factoryFunc);
+    registerFactory<SferaAuthProvider>(factoryFunc);
+  }
+
+  void registerMqttAuthProvider() {
+    factoryFunc() {
+      Fimber.i('registerMqttAuthProvider');
+      return _MqttAuthProvider(authenticator: DI.get(), sferaAuthService: DI.get());
+    }
+
+    registerFactory<MqttAuthProvider>(factoryFunc);
   }
 
   void registerMqttComponent({bool useTms = false}) {
-    registerLazySingleton<MqttClientConnector>(() =>
-        MqttComponent.createMqttClientConnector(sferaAuthService: DI.get(), authenticator: DI.get(), useTms: useTms));
+    registerLazySingleton<MqttClientConnector>(() {
+      Fimber.i('createMqttClientConnector');
+      return MqttComponent.createMqttClientConnector(authProvider: DI.get(), useTms: useTms);
+    });
 
-    registerLazySingletonAsync(() async {
+    registerSingletonAsync(() async {
+      Fimber.i('register createMqttService');
       final flavor = DI.get<Flavor>();
-
       final deviceId = await DeviceIdInfo.getDeviceId();
       return MqttComponent.createMqttService(
         mqttUrl: useTms ? flavor.tmsMqttUrl! : flavor.mqttUrl,
@@ -125,69 +121,64 @@ extension GetItX on GetIt {
 
   void registerDasLogTree() {
     Future<LogTree> factoryFunc() async {
+      Fimber.i('registerDasLogTree');
       final flavor = DI.get<Flavor>();
       final deviceId = await DeviceIdInfo.getDeviceId();
-      final httpClient = HttpXComponent.createHttpClient(
-        authProvider: _AuthProvider(authenticator: DI.get()),
-      );
-
+      final httpClient = HttpXComponent.createHttpClient(authProvider: DI.get());
       return LoggerComponent.createDasLogTree(httpClient: httpClient, baseUrl: flavor.backendUrl, deviceId: deviceId);
     }
 
-    registerSingletonAsync<LogTree>(
-      factoryFunc,
-      dependsOn: [Authenticator],
-    );
+    registerSingletonAsync<LogTree>(factoryFunc);
   }
 
-  void registerAzureAuthenticator() {
+  void registerAzureAuthenticator({bool useTms = false}) {
     factoryFunc() {
-      return AuthenticationComponent.createAzureAuthenticator(
-        oidcClient: DI.get(),
-        tokenSpecs: DI.get(),
-      );
+      Fimber.i('registerAzureAuthenticator');
+      final flavor = DI.get<Flavor>();
+      final authenticatorConfig = useTms ? flavor.tmsAuthenticatorConfig! : flavor.authenticatorConfig;
+      return AuthenticationComponent.createAzureAuthenticator(config: authenticatorConfig);
     }
 
-    registerSingletonWithDependencies<Authenticator>(
-      factoryFunc,
-      dependsOn: [OidcClient],
-    );
+    registerSingleton<Authenticator>(factoryFunc());
   }
 
   void registerSferaComponents({bool useTms = false}) {
-    final flavor = DI.get<Flavor>();
-
-    registerLazySingleton<SferaDatabaseRepository>(() => SferaComponent.createDatabaseRepository());
     registerLazySingleton<SferaAuthService>(() {
-      final httpClient = HttpXComponent.createHttpClient(
-        authProvider: _AuthProvider(authenticator: DI.get()),
-      );
+      Fimber.i('SferaAuthService');
+      final flavor = DI.get<Flavor>();
+      final httpClient = HttpXComponent.createHttpClient(authProvider: DI.get());
       return SferaComponent.createSferaAuthService(
         httpClient: httpClient,
         tokenExchangeUrl: useTms ? flavor.tmsTokenExchangeUrl! : flavor.tokenExchangeUrl,
       );
     });
 
-    registerLazySingletonAsync<SferaService>(
+    registerSingletonAsync<SferaService>(
       () async {
+        Fimber.i('SferaService');
         final deviceId = await DeviceIdInfo.getDeviceId();
         return SferaComponent.createSferaService(
           mqttService: DI.get(),
-          sferaDatabaseRepository: DI.get(),
-          authenticator: DI.get(),
+          sferaAuthProvider: DI.get(),
           deviceId: deviceId,
         );
       },
       dispose: (service) => service.dispose(),
+      dependsOn: [MqttService],
     );
 
-    registerLazySingleton<SferaLocalService>(
-        () => SferaComponent.createSferaLocalService(sferaDatabaseRepository: DI.get()));
+    registerLazySingleton<SferaLocalService>(() => SferaComponent.createSferaLocalService());
   }
 
   void registerBlocs() {
-    registerLazySingleton<TrainJourneyCubit>(() => TrainJourneyCubit(sferaService: DI.get()));
-    registerLazySingleton<UxTestingCubit>(() => UxTestingCubit(sferaService: DI.get())..initialize());
+    registerSingletonWithDependencies<TrainJourneyCubit>(
+      () => TrainJourneyCubit(sferaService: DI.get()),
+      dependsOn: [SferaService],
+    );
+    registerSingletonWithDependencies<UxTestingCubit>(
+      () => UxTestingCubit(sferaService: DI.get())..initialize(),
+      dependsOn: [SferaService],
+    );
   }
 
   void registerBattery() {
@@ -209,5 +200,41 @@ class _AuthProvider implements AuthProvider {
     final oidcToken = await authenticator.token(tokenId: tokenId);
     final accessToken = oidcToken.accessToken;
     return '${oidcToken.tokenType} $accessToken';
+  }
+}
+
+class _SferaAuthProvider implements SferaAuthProvider {
+  const _SferaAuthProvider({required this.authenticator});
+
+  final Authenticator authenticator;
+
+  @override
+  Future<bool> isDriver() async {
+    final user = await authenticator.user();
+    return user.roles.contains(Role.driver);
+  }
+}
+
+class _MqttAuthProvider implements MqttAuthProvider {
+  const _MqttAuthProvider({required this.authenticator, required this.sferaAuthService});
+
+  final SferaAuthService sferaAuthService;
+  final Authenticator authenticator;
+
+  @override
+  Future<String?> tmsToken({required String company, required String train, required String role}) {
+    return sferaAuthService.retrieveAuthToken(company, train, role);
+  }
+
+  @override
+  Future<String> token() async {
+    final token = await authenticator.token();
+    return token.accessToken;
+  }
+
+  @override
+  Future<String> userId() async {
+    final user = await authenticator.user();
+    return user.name;
   }
 }

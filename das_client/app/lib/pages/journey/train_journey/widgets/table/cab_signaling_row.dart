@@ -1,7 +1,7 @@
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
-import 'package:app/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sfera/component.dart';

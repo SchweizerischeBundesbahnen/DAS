@@ -5,9 +5,11 @@ import 'package:sfera/src/data/api/task/sfera_task.dart';
 import 'package:sfera/src/data/dto/b2g_request_dto.dart';
 import 'package:sfera/src/data/dto/enums/jp_status_dto.dart';
 import 'package:sfera/src/data/dto/jp_request_dto.dart';
+import 'package:sfera/src/data/dto/otn_id_dto.dart';
 import 'package:sfera/src/data/dto/sfera_b2g_request_message_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:sfera/src/data/dto/train_identification_dto.dart';
+import 'package:sfera/src/data/local/db/repo/sfera_database_repository.dart';
 
 class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
   RequestJourneyProfileTask({
@@ -21,7 +23,7 @@ class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
         _sferaService = sferaService;
 
   final MqttService _mqttService;
-  final OtnIdDto otnId;
+  final OtnId otnId;
   final SferaDatabaseRepository _sferaDatabaseRepository;
   final SferaService _sferaService;
 
@@ -38,7 +40,8 @@ class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
   }
 
   Future<void> _requestJourneyProfile() async {
-    final trainIdentification = TrainIdentificationDto.create(otnId: otnId);
+    final otnIdDto = OtnIdDto.create(otnId.company, otnId.operationalTrainNumber, otnId.startDate);
+    final trainIdentification = TrainIdentificationDto.create(otnId: otnIdDto);
     final jpRequest = JpRequestDto.create(trainIdentification);
 
     final sferaB2gRequestMessage = SferaB2gRequestMessageDto.create(

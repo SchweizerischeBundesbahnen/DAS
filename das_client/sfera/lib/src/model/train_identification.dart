@@ -1,5 +1,5 @@
-import 'package:sfera/src/model/ru.dart';
 import 'package:meta/meta.dart';
+import 'package:sfera/src/model/ru.dart';
 
 @sealed
 @immutable

@@ -1,27 +1,25 @@
-import 'package:auth/component.dart';
 import 'package:mqtt/src/mqtt_client_connector.dart';
 import 'package:mqtt/src/mqtt_client_oauth_connector.dart';
 import 'package:mqtt/src/mqtt_client_tms_oauth_connector.dart';
 import 'package:mqtt/src/mqtt_service.dart';
 import 'package:mqtt/src/mqtt_service_impl.dart';
-import 'package:sfera/component.dart';
+import 'package:mqtt/src/provider/mqtt_auth_provider.dart';
 
 export 'package:mqtt/src/mqtt_client_connector.dart';
 export 'package:mqtt/src/mqtt_service.dart';
+export 'package:mqtt/src/provider/mqtt_auth_provider.dart';
 
-// TODO: Remove dependency to sfera component with AuthProvider abstract class
 class MqttComponent {
   const MqttComponent._();
 
   static MqttClientConnector createMqttClientConnector({
-    required SferaAuthService sferaAuthService,
-    required Authenticator authenticator,
+    required MqttAuthProvider authProvider,
     bool useTms = false,
   }) {
     if (useTms) {
-      return MqttClientTMSOauthConnector(sferaAuthService: sferaAuthService);
+      return MqttClientTMSOauthConnector(mqttAuthProvider: authProvider);
     }
-    return MqttClientOauthConnector(authenticator: authenticator);
+    return MqttClientOauthConnector(mqttAuthProvider: authProvider);
   }
 
   static MqttService createMqttService({

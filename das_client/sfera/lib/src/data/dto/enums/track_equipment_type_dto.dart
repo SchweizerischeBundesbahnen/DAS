@@ -1,5 +1,5 @@
-import 'package:sfera/src/model/journey/track_equipment_segment.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
+import 'package:sfera/src/model/journey/track_equipment_segment.dart';
 
 enum SferaTrackEquipmentTypeDto implements XmlEnum {
   etcsL1ls2TracksWithSingleTrackEquipment(

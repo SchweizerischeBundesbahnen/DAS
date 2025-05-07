@@ -9,6 +9,7 @@ import 'package:sfera/component.dart';
 import 'package:sfera/src/data/api/task/request_train_characteristics_task.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
+import 'package:sfera/src/data/local/db/repo/sfera_database_repository.dart';
 
 import 'sfera_request_train_characteristic_task_test.mocks.dart';
 
@@ -21,7 +22,7 @@ void main() {
   late MockSferaService sferaService;
   late MockMqttService mqttService;
   late MockSferaDatabaseRepository sferaRepository;
-  late OtnIdDto otnId;
+  late OtnId otnId;
   Fimber.plantTree(DebugTree());
 
   setUp(() {
@@ -29,7 +30,7 @@ void main() {
     when(sferaService.messageHeader(sender: anyNamed('sender'))).thenReturn(MessageHeaderDto());
     mqttService = MockMqttService();
     sferaRepository = MockSferaDatabaseRepository();
-    otnId = OtnIdDto.create('1085', '719', DateTime.now());
+    otnId = OtnId(company: '1085', operationalTrainNumber: '719', startDate: DateTime.now());
   });
 
   test('Test TC request successful', () async {

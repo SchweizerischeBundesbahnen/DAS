@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:sfera/component.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:sfera/component.dart';
 
 part 'ux_testing_state.dart';
 

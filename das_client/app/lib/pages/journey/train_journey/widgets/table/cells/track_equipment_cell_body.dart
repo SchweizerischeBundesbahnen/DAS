@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/track_equipment_render_data.dart';
-import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:app/theme/theme_util.dart';
+import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';

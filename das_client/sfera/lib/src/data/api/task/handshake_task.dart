@@ -23,7 +23,7 @@ class HandshakeTask extends SferaTask {
 
   final SferaService _sferaService;
   final MqttService _mqttService;
-  final OtnIdDto otnId;
+  final OtnId otnId;
   final DasDrivingModeDto dasDrivingMode;
 
   late TaskCompleted _taskCompletedCallback;

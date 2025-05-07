@@ -6,9 +6,9 @@ import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.d
 import 'package:app/pages/journey/train_journey/widgets/table/column_definition.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/bracket_station_render_data.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_config.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_column.dart';
-import 'package:app/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';

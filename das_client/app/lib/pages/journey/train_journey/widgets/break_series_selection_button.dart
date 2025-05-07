@@ -1,6 +1,6 @@
+import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_text_styles.dart';
-import 'package:app/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';

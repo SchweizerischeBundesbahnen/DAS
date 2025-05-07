@@ -1,9 +1,9 @@
 import 'package:app/bloc/ux_testing_cubit.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/departure_process_modal_sheet.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_text_styles.dart';
-import 'package:app/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';

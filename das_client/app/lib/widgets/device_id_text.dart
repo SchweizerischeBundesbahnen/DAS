@@ -1,5 +1,5 @@
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/util/device_id_info.dart';
+import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 
 class DeviceIdText extends StatelessWidget {

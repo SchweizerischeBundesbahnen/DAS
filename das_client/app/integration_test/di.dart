@@ -23,11 +23,13 @@ class IntegrationTestDI {
     _registerScreenBrightness();
     _registerBrightnessManager();
     GetIt.I.registerFlavor(flavor);
-    GetIt.I.registerTokenSpecProvider();
-    GetIt.I.registerOidcClient();
     _registerIntegrationTestAuthenticator();
-    GetIt.I.registerSferaComponents();
+    GetIt.I.registerAuthProvider();
+    GetIt.I.registerSferaAuthProvider();
+    GetIt.I.registerMqttAuthProvider();
     GetIt.I.registerMqttComponent();
+    GetIt.I.registerDasLogTree();
+    GetIt.I.registerSferaComponents();
     _registerBattery();
     GetIt.I.registerBlocs();
     GetIt.I.registerAudioPlayer();

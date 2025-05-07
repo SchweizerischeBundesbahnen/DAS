@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:collection/collection.dart';
 import 'package:app/bloc/train_journey_cubit.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/break_series_selection.dart';
@@ -29,11 +28,12 @@ import 'package:app/pages/journey/train_journey/widgets/table/speed_change_row.d
 import 'package:app/pages/journey/train_journey/widgets/table/track_foot_note_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/tram_area_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/whistle_row.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_column.dart';
 import 'package:app/widgets/table/das_table_row.dart';
-import 'package:app/theme/theme_util.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';

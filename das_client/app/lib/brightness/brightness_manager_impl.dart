@@ -1,14 +1,15 @@
 import 'dart:io';
-import 'package:flutter/services.dart';
-import 'package:app/brightness/brightness_manager.dart';
-import 'package:screen_brightness/screen_brightness.dart';
-import 'package:fimber/fimber.dart';
+
 import 'package:android_intent_plus/android_intent.dart';
+import 'package:app/brightness/brightness_manager.dart';
+import 'package:fimber/fimber.dart';
+import 'package:flutter/services.dart';
+import 'package:screen_brightness/screen_brightness.dart';
 
 class BrightnessManagerImpl implements BrightnessManager {
-  final ScreenBrightness _screenBrightness;
-
   BrightnessManagerImpl(this._screenBrightness);
+
+  final ScreenBrightness _screenBrightness;
 
   final double minBrightness = 0.0;
   final double maxBrightness = 1.0;

@@ -1,6 +1,6 @@
+import 'package:meta/meta.dart';
 import 'package:sfera/src/model/journey/base_data.dart';
 import 'package:sfera/src/model/journey/metadata.dart';
-import 'package:meta/meta.dart';
 
 @sealed
 @immutable

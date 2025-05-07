@@ -1,4 +1,17 @@
 import 'package:collection/collection.dart';
+import 'package:fimber/fimber.dart';
+import 'package:sfera/src/data/dto/enums/gradient_direction_type_dto.dart';
+import 'package:sfera/src/data/dto/enums/length_type_dto.dart';
+import 'package:sfera/src/data/dto/enums/stop_skip_pass_dto.dart';
+import 'package:sfera/src/data/dto/enums/taf_tap_location_type_dto.dart';
+import 'package:sfera/src/data/dto/enums/xml_enum.dart';
+import 'package:sfera/src/data/dto/foot_note_dto.dart';
+import 'package:sfera/src/data/dto/network_specific_parameter_dto.dart';
+import 'package:sfera/src/data/dto/segment_profile_dto.dart';
+import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
+import 'package:sfera/src/data/dto/taf_tap_location_dto.dart';
+import 'package:sfera/src/data/mapper/graduated_speed_data_mapper.dart';
+import 'package:sfera/src/data/mapper/mapper_utils.dart';
 import 'package:sfera/src/model/journey/balise.dart';
 import 'package:sfera/src/model/journey/base_data.dart';
 import 'package:sfera/src/model/journey/bracket_station.dart';
@@ -16,19 +29,6 @@ import 'package:sfera/src/model/journey/speed_change.dart';
 import 'package:sfera/src/model/journey/track_foot_note.dart';
 import 'package:sfera/src/model/journey/train_series.dart';
 import 'package:sfera/src/model/journey/whistles.dart';
-import 'package:sfera/src/data/dto/enums/gradient_direction_type_dto.dart';
-import 'package:sfera/src/data/dto/enums/length_type_dto.dart';
-import 'package:sfera/src/data/dto/enums/stop_skip_pass_dto.dart';
-import 'package:sfera/src/data/dto/enums/taf_tap_location_type_dto.dart';
-import 'package:sfera/src/data/dto/enums/xml_enum.dart';
-import 'package:sfera/src/data/dto/foot_note_dto.dart';
-import 'package:sfera/src/data/dto/network_specific_parameter_dto.dart';
-import 'package:sfera/src/data/dto/segment_profile_dto.dart';
-import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
-import 'package:sfera/src/data/dto/taf_tap_location_dto.dart';
-import 'package:fimber/fimber.dart';
-import 'package:sfera/src/data/mapper/graduated_speed_data_mapper.dart';
-import 'package:sfera/src/data/mapper/mapper_utils.dart';
 
 class _MapperData {
   _MapperData(this.segmentProfile, this.segmentIndex, this.kilometreMap);

@@ -1,9 +1,9 @@
-import 'package:sfera/src/data/local/db/entity/journey_profile_entity.dart';
-import 'package:sfera/src/data/local/db/entity/segment_profile_entity.dart';
-import 'package:sfera/src/data/local/db/entity/train_characteristics_entity.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
+import 'package:sfera/src/data/local/db/entity/journey_profile_entity.dart';
+import 'package:sfera/src/data/local/db/entity/segment_profile_entity.dart';
+import 'package:sfera/src/data/local/db/entity/train_characteristics_entity.dart';
 
 abstract class SferaDatabaseRepository {
   const SferaDatabaseRepository._();

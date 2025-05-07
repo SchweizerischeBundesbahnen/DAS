@@ -1,7 +1,7 @@
+import 'package:fimber/fimber.dart';
+import 'package:sfera/src/data/api/event/sfera_event_message_handler.dart';
 import 'package:sfera/src/data/dto/related_train_information_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_event_message_dto.dart';
-import 'package:sfera/src/data/api/event/sfera_event_message_handler.dart';
-import 'package:fimber/fimber.dart';
 
 class RelatedTrainInformationEventHandler extends SferaEventMessageHandler<RelatedTrainInformationDto> {
   RelatedTrainInformationEventHandler(super.onMessageHandled);
