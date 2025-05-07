@@ -22,6 +22,8 @@ class SferaB2gEventMessageDto extends SferaXmlElementDto {
 
   @override
   bool validate() {
-    return validateHasChildOfType<MessageHeaderDto>() && validateHasChildOfType<B2gEventPayloadDto>() && super.validate();
+    return validateHasChildOfType<MessageHeaderDto>() &&
+        validateHasChildOfType<B2gEventPayloadDto>() &&
+        super.validate();
   }
 }

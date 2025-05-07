@@ -12,7 +12,8 @@ class NetworkSpecificPointDto extends NspDto {
 
   double get location => double.parse(attributes['location']!);
 
-  factory NetworkSpecificPointDto.from({Map<String, String>? attributes, List<SferaXmlElementDto>? children, String? value}) {
+  factory NetworkSpecificPointDto.from(
+      {Map<String, String>? attributes, List<SferaXmlElementDto>? children, String? value}) {
     final groupName = children?.where((it) => it.type == NspDto.groupNameElement).firstOrNull;
     if (groupName?.value == NewLineSpeedNetworkSpecificPointDto.elementName) {
       return NewLineSpeedNetworkSpecificPointDto(attributes: attributes, children: children, value: value);

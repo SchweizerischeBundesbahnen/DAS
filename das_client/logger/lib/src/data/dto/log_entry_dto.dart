@@ -6,6 +6,8 @@ part 'log_entry_dto.g.dart';
 
 @JsonSerializable()
 class LogEntryDto {
+  static String jsonIndent = '  ';
+
   LogEntryDto({
     required this.time,
     required this.source,
@@ -28,7 +30,7 @@ class LogEntryDto {
 
   String toJsonString({bool pretty = false}) {
     final json = toJson();
-    final encoder = JsonEncoder.withIndent(pretty ? ' ' * 2 : null);
+    final encoder = JsonEncoder.withIndent(pretty ? jsonIndent : null);
     return encoder.convert(json);
   }
 }

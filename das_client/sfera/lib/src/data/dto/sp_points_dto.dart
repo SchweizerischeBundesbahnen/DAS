@@ -33,7 +33,8 @@ class SpPointsDto extends SferaXmlElementDto {
   Iterable<NewLineSpeedNetworkSpecificPointDto> get newLineSpeedsNsp =>
       children.whereType<NewLineSpeedNetworkSpecificPointDto>();
 
-  Iterable<CurvePointNetworkSpecificPointDto> get curvePointsNsp => children.whereType<CurvePointNetworkSpecificPointDto>();
+  Iterable<CurvePointNetworkSpecificPointDto> get curvePointsNsp =>
+      children.whereType<CurvePointNetworkSpecificPointDto>();
 
   Iterable<WhistleNetworkSpecificPointDto> get whistleNsp => children.whereType<WhistleNetworkSpecificPointDto>();
 

@@ -14,10 +14,14 @@ class JourneyProfileDto extends SferaXmlElementDto {
 
   Iterable<SegmentProfileReferenceDto> get segmentProfileReferences => children.whereType<SegmentProfileReferenceDto>();
 
-  Set<TrainCharacteristicsRefDto> get trainCharacteristicsRefSet =>
-      children.whereType<SegmentProfileReferenceDto>().map((it) => it.trainCharacteristicsRef).expand((it) => it).toSet();
+  Set<TrainCharacteristicsRefDto> get trainCharacteristicsRefSet => children
+      .whereType<SegmentProfileReferenceDto>()
+      .map((it) => it.trainCharacteristicsRef)
+      .expand((it) => it)
+      .toSet();
 
-  JpStatusDto get status => XmlEnum.valueOf<JpStatusDto>(JpStatusDto.values, attributes['JP_Status']) ?? JpStatusDto.valid;
+  JpStatusDto get status =>
+      XmlEnum.valueOf<JpStatusDto>(JpStatusDto.values, attributes['JP_Status']) ?? JpStatusDto.valid;
 
   @override
   bool validate() {

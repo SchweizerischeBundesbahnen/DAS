@@ -13,15 +13,19 @@ class SferaG2bReplyMessageDto extends SferaXmlElementDto {
 
   G2bReplyPayloadDto? get payload => children.whereType<G2bReplyPayloadDto>().firstOrNull;
 
-  HandshakeAcknowledgementDto? get handshakeAcknowledgement => children.whereType<HandshakeAcknowledgementDto>().firstOrNull;
+  HandshakeAcknowledgementDto? get handshakeAcknowledgement =>
+      children.whereType<HandshakeAcknowledgementDto>().firstOrNull;
 
   HandshakeRejectDto? get handshakeReject => children.whereType<HandshakeRejectDto>().firstOrNull;
 
   @override
   bool validate() {
     return validateHasChildOfType<MessageHeaderDto>() &&
-        validateHasAnyChildOfType(
-            [G2bReplyPayloadDto.elementType, HandshakeAcknowledgementDto.elementType, HandshakeRejectDto.elementType]) &&
+        validateHasAnyChildOfType([
+          G2bReplyPayloadDto.elementType,
+          HandshakeAcknowledgementDto.elementType,
+          HandshakeRejectDto.elementType
+        ]) &&
         super.validate();
   }
 }
