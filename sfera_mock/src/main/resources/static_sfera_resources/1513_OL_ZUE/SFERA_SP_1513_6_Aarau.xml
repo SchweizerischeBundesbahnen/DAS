@@ -217,9 +217,7 @@
             <KM_Reference kmRef="36.8"/>
         </KilometreReferencePoint>
 
-        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
-                              gradientValue="9.0" gradientDirection="Uphill"
-                              directionOfApplicationOnSP="Nominal"/>
+
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="700" endLocation="0"
                               gradientValue="3.0" gradientDirection="Uphill"
                               directionOfApplicationOnSP="Nominal"/>
