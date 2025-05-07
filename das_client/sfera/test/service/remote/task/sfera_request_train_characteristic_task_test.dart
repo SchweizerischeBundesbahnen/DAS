@@ -19,17 +19,17 @@ import 'sfera_request_train_characteristic_task_test.mocks.dart';
   MockSpec<SferaLocalDatabaseService>(),
 ])
 void main() {
-  late MockSferaService sferaService;
+  late MockSferaRemoteRepo sferaService;
   late MockMqttService mqttService;
-  late MockSferaDatabaseRepository sferaRepository;
+  late MockSferaLocalDatabaseService sferaRepository;
   late OtnId otnId;
   Fimber.plantTree(DebugTree());
 
   setUp(() {
-    sferaService = MockSferaService();
+    sferaService = MockSferaRemoteRepo();
     when(sferaService.messageHeader(sender: anyNamed('sender'))).thenReturn(MessageHeaderDto());
     mqttService = MockMqttService();
-    sferaRepository = MockSferaDatabaseRepository();
+    sferaRepository = MockSferaLocalDatabaseService();
     otnId = OtnId(company: '1085', operationalTrainNumber: '719', startDate: DateTime.now());
   });
 

@@ -18,14 +18,14 @@ import 'sfera_handshake_task_test.mocks.dart';
   MockSpec<MqttService>(),
 ])
 void main() {
-  late MockSferaService sferaService;
+  late MockSferaRemoteRepo sferaRemoteRepo;
   late MockMqttService mqttService;
   late OtnId otnId;
   Fimber.plantTree(DebugTree());
 
   setUp(() {
-    sferaService = MockSferaService();
-    when(sferaService.messageHeader(sender: anyNamed('sender'))).thenReturn(MessageHeaderDto());
+    sferaRemoteRepo = MockSferaRemoteRepo();
+    when(sferaRemoteRepo.messageHeader(sender: anyNamed('sender'))).thenReturn(MessageHeaderDto());
     mqttService = MockMqttService();
     otnId = OtnId(company: '1085', operationalTrainNumber: '719', startDate: DateTime.now());
   });
@@ -34,7 +34,7 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final handshakeTask = HandshakeTask(
-      sferaService: sferaService,
+      sferaService: sferaRemoteRepo,
       mqttService: mqttService,
       otnId: otnId,
       dasDrivingMode: DasDrivingModeDto.readOnly,
@@ -60,7 +60,7 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final handshakeTask = HandshakeTask(
-      sferaService: sferaService,
+      sferaService: sferaRemoteRepo,
       mqttService: mqttService,
       otnId: otnId,
       dasDrivingMode: DasDrivingModeDto.readOnly,
@@ -85,7 +85,7 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final handshakeTask = HandshakeTask(
-      sferaService: sferaService,
+      sferaService: sferaRemoteRepo,
       mqttService: mqttService,
       otnId: otnId,
       dasDrivingMode: DasDrivingModeDto.readOnly,
@@ -110,7 +110,7 @@ void main() {
     when(mqttService.publishMessage(any, any, any)).thenReturn(true);
 
     final handshakeTask = HandshakeTask(
-      sferaService: sferaService,
+      sferaService: sferaRemoteRepo,
       mqttService: mqttService,
       otnId: otnId,
       dasDrivingMode: DasDrivingModeDto.readOnly,

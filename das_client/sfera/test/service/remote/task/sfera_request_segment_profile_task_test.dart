@@ -19,17 +19,17 @@ import 'sfera_request_journey_profile_task_test.mocks.dart';
   MockSpec<SferaLocalDatabaseService>(),
 ])
 void main() {
-  late MockSferaService sferaService;
+  late MockSferaRemoteRepo sferaRemoteRepo;
   late MockMqttService mqttService;
-  late MockSferaDatabaseRepository sferaRepository;
+  late MockSferaLocalDatabaseService sferaLocalService;
   late OtnId otnId;
   Fimber.plantTree(DebugTree());
 
   setUp(() {
-    sferaService = MockSferaService();
-    when(sferaService.messageHeader(sender: anyNamed('sender'))).thenReturn(MessageHeaderDto());
+    sferaRemoteRepo = MockSferaRemoteRepo();
+    when(sferaRemoteRepo.messageHeader(sender: anyNamed('sender'))).thenReturn(MessageHeaderDto());
     mqttService = MockMqttService();
-    sferaRepository = MockSferaDatabaseRepository();
+    sferaLocalService = MockSferaLocalDatabaseService();
     otnId = OtnId(company: '1085', operationalTrainNumber: '719', startDate: DateTime.now());
   });
 
@@ -40,9 +40,9 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final segmentTask = RequestSegmentProfilesTask(
-      sferaService: sferaService,
+      sferaService: sferaRemoteRepo,
       mqttService: mqttService,
-      sferaDatabaseRepository: sferaRepository,
+      sferaDatabaseRepository: sferaLocalService,
       otnId: otnId,
       journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first,
     );
@@ -67,9 +67,9 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final segmentTask = RequestSegmentProfilesTask(
-      sferaService: sferaService,
+      sferaService: sferaRemoteRepo,
       mqttService: mqttService,
-      sferaDatabaseRepository: sferaRepository,
+      sferaDatabaseRepository: sferaLocalService,
       otnId: otnId,
       journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first,
     );
@@ -85,8 +85,8 @@ void main() {
     final result = await segmentTask.handleMessage(sferaG2bReplyMessage);
     expect(result, true);
 
-    verifyNever(sferaRepository.saveJourneyProfile(any));
-    verify(sferaRepository.saveSegmentProfile(any)).called(23);
+    verifyNever(sferaLocalService.saveJourneyProfile(any));
+    verify(sferaLocalService.saveSegmentProfile(any)).called(23);
   });
 
   test('Test SP request fail on invalid SP', () async {
@@ -96,9 +96,9 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final segmentTask = RequestSegmentProfilesTask(
-      sferaService: sferaService,
+      sferaService: sferaRemoteRepo,
       mqttService: mqttService,
-      sferaDatabaseRepository: sferaRepository,
+      sferaDatabaseRepository: sferaLocalService,
       otnId: otnId,
       journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first,
     );
@@ -115,8 +115,8 @@ void main() {
     final result = await segmentTask.handleMessage(sferaG2bReplyMessage);
     expect(result, true);
 
-    verifyNever(sferaRepository.saveJourneyProfile(any));
-    verify(sferaRepository.saveSegmentProfile(any)).called(22);
+    verifyNever(sferaLocalService.saveJourneyProfile(any));
+    verify(sferaLocalService.saveSegmentProfile(any)).called(22);
   });
 
   test('Test SP request ignores other messages', () async {
@@ -126,9 +126,9 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final segmentTask = RequestSegmentProfilesTask(
-      sferaService: sferaService,
+      sferaService: sferaRemoteRepo,
       mqttService: mqttService,
-      sferaDatabaseRepository: sferaRepository,
+      sferaDatabaseRepository: sferaLocalService,
       otnId: otnId,
       journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first,
     );
@@ -155,9 +155,9 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final spTask = RequestSegmentProfilesTask(
-      sferaService: sferaService,
+      sferaService: sferaRemoteRepo,
       mqttService: mqttService,
-      sferaDatabaseRepository: sferaRepository,
+      sferaDatabaseRepository: sferaLocalService,
       otnId: otnId,
       journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first,
       timeout: const Duration(seconds: 1),
