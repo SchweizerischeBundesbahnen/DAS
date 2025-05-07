@@ -10,6 +10,7 @@ import 'package:sfera/src/data/api/task/request_journey_profile_task.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
+import 'package:sfera/src/data/local/db/repo/sfera_database_repository.dart';
 
 import 'sfera_request_journey_profile_task_test.mocks.dart';
 

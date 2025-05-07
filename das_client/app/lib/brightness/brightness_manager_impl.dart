@@ -6,9 +6,9 @@ import 'package:fimber/fimber.dart';
 import 'package:android_intent_plus/android_intent.dart';
 
 class BrightnessManagerImpl implements BrightnessManager {
-  final ScreenBrightness _screenBrightness;
-
   BrightnessManagerImpl(this._screenBrightness);
+
+  final ScreenBrightness _screenBrightness;
 
   final double minBrightness = 0.0;
   final double maxBrightness = 1.0;

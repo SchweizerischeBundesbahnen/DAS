@@ -9,6 +9,7 @@ import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:sfera/src/data/dto/tc_request_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_ref_dto.dart';
+import 'package:sfera/src/data/local/db/repo/sfera_database_repository.dart';
 
 class RequestTrainCharacteristicsTask extends SferaTask<List<TrainCharacteristicsDto>> {
   RequestTrainCharacteristicsTask({

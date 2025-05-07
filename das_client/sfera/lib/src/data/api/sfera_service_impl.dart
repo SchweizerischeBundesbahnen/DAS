@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:ui';
 
-import 'package:auth/component.dart';
 import 'package:fimber/fimber.dart';
 import 'package:mqtt/component.dart';
 import 'package:rxdart/rxdart.dart';
@@ -29,25 +28,27 @@ import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/dto/ux_testing_nse_dto.dart';
 import 'package:sfera/src/data/format.dart';
+import 'package:sfera/src/data/local/db/repo/sfera_database_repository.dart';
 import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
+import 'package:sfera/src/provider/sfera_auth_provider.dart';
 import 'package:uuid/uuid.dart';
 
 class SferaServiceImpl implements SferaService {
   SferaServiceImpl({
     required MqttService mqttService,
     required SferaDatabaseRepository sferaDatabaseRepository,
-    required Authenticator authenticator,
+    required SferaAuthProvider sferaAuthProvider,
     required this.deviceId,
   })  : _mqttService = mqttService,
         _sferaDatabaseRepository = sferaDatabaseRepository,
-        _authenticator = authenticator {
+        _sferaAuthProvider = sferaAuthProvider {
     _initialize();
   }
 
   final String deviceId;
   final MqttService _mqttService;
   final SferaDatabaseRepository _sferaDatabaseRepository;
-  final Authenticator _authenticator;
+  final SferaAuthProvider _sferaAuthProvider;
 
   StreamSubscription? _mqttStreamSubscription;
   final List<SferaTask> _tasks = [];
@@ -157,9 +158,8 @@ class SferaServiceImpl implements SferaService {
 
   Future<void> _initiateHandshake(OtnIdDto otnId) async {
     _stateSubject.add(SferaServiceState.handshaking);
-    final user = await _authenticator.user();
-    final drivingMode =
-        user.roles.contains(Role.driver) ? DasDrivingModeDto.dasNotConnected : DasDrivingModeDto.readOnly;
+    final isDriver = await _sferaAuthProvider.isDriver();
+    final drivingMode = isDriver ? DasDrivingModeDto.dasNotConnected : DasDrivingModeDto.readOnly;
 
     final handshakeTask =
         HandshakeTask(mqttService: _mqttService, sferaService: this, otnId: otnId, dasDrivingMode: drivingMode);

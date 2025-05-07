@@ -1,21 +1,19 @@
-import 'package:auth/component.dart';
 import 'package:http_x/component.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/src/data/api/sfera_auth_service.dart';
 import 'package:sfera/src/data/api/sfera_auth_service_impl.dart';
 import 'package:sfera/src/data/api/sfera_service.dart';
 import 'package:sfera/src/data/api/sfera_service_impl.dart';
-import 'package:sfera/src/data/local/db/repo/sfera_database_repository.dart';
 import 'package:sfera/src/data/local/db/repo/sfera_database_repository_impl.dart';
 import 'package:sfera/src/data/local/sfera_local_service.dart';
 import 'package:sfera/src/data/local/sfera_local_service_impl.dart';
+import 'package:sfera/src/provider/sfera_auth_provider.dart';
 
 export 'package:sfera/src/data/api/sfera_auth_service.dart';
 export 'package:sfera/src/data/api/sfera_error.dart';
 export 'package:sfera/src/data/api/sfera_service.dart';
 export 'package:sfera/src/data/api/sfera_service_state.dart';
 export 'package:sfera/src/data/dto/otn_id_dto.dart';
-export 'package:sfera/src/data/local/db/repo/sfera_database_repository.dart';
 export 'package:sfera/src/data/local/sfera_local_service.dart';
 export 'package:sfera/src/data/parser/sfera_reply_parser.dart';
 export 'package:sfera/src/model/journey/additional_speed_restriction.dart';
@@ -56,13 +54,10 @@ export 'package:sfera/src/model/journey/ux_testing.dart';
 export 'package:sfera/src/model/journey/whistles.dart';
 export 'package:sfera/src/model/ru.dart';
 export 'package:sfera/src/model/train_identification.dart';
+export 'package:sfera/src/provider/sfera_auth_provider.dart';
 
 class SferaComponent {
   const SferaComponent._();
-
-  static SferaDatabaseRepository createDatabaseRepository() {
-    return SferaDatabaseRepositoryImpl();
-  }
 
   static SferaAuthService createSferaAuthService({
     required Client httpClient,
@@ -73,19 +68,20 @@ class SferaComponent {
 
   static SferaService createSferaService({
     required MqttService mqttService,
-    required SferaDatabaseRepository sferaDatabaseRepository,
-    required Authenticator authenticator,
+    required SferaAuthProvider sferaAuthProvider,
     required String deviceId,
   }) {
+    final sferaDatabaseRepository = SferaDatabaseRepositoryImpl();
     return SferaServiceImpl(
       mqttService: mqttService,
       sferaDatabaseRepository: sferaDatabaseRepository,
-      authenticator: authenticator,
+      sferaAuthProvider: sferaAuthProvider,
       deviceId: deviceId,
     );
   }
 
-  static SferaLocalService createSferaLocalService({required SferaDatabaseRepository sferaDatabaseRepository}) {
+  static SferaLocalService createSferaLocalService() {
+    final sferaDatabaseRepository = SferaDatabaseRepositoryImpl();
     return SferaLocalServiceImpl(sferaDatabaseRepository: sferaDatabaseRepository);
   }
 }

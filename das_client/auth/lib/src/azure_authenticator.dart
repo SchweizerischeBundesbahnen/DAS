@@ -1,23 +1,36 @@
 import 'dart:async';
 
-import 'package:auth/src/authenticator.dart';
-import 'package:auth/src/role.dart';
-import 'package:auth/src/token_spec.dart';
-import 'package:auth/src/token_spec_provider.dart';
-import 'package:auth/src/user.dart';
+import 'package:auth/component.dart';
+import 'package:fimber/fimber.dart';
 import 'package:sbb_oidc/sbb_oidc.dart';
 
 class AzureAuthenticator implements Authenticator {
-  AzureAuthenticator({
-    required this.oidcClient,
-    required this.tokenSpecs,
-  });
+  AzureAuthenticator({required this.config});
 
-  final OidcClient oidcClient;
-  final TokenSpecProvider tokenSpecs;
+  final AuthenticatorConfig config;
+  late final OidcClient oidcClient;
+  bool isInitialized = false;
+
+  Future<void> _init() async {
+    if (isInitialized) return;
+    Fimber.d('Initialize AzureAuthenticator');
+    try {
+      oidcClient = await SBBOpenIDConnect.createClient(
+        discoveryUrl: config.discoveryUrl,
+        clientId: config.clientId,
+        redirectUrl: config.redirectUrl,
+        postLogoutRedirectUrl: config.postLogoutRedirectUrl,
+      );
+      isInitialized = true;
+    } catch (e, s) {
+      Fimber.e('AzureAuthenticator Initialization failed', ex: e, stacktrace: s);
+      rethrow;
+    }
+  }
 
   @override
   Future<bool> get isAuthenticated async {
+    await _init();
     try {
       await token();
       return true;
@@ -29,9 +42,10 @@ class AzureAuthenticator implements Authenticator {
   }
 
   @override
-  Future<OidcToken> login({String? tokenId}) {
-    TokenSpec? tokenSpec = tokenSpecs.getById(tokenId);
-    tokenSpec ??= tokenSpecs.all.first;
+  Future<OidcToken> login({String? tokenId}) async {
+    await _init();
+    TokenSpec? tokenSpec = config.tokenSpecs.getById(tokenId);
+    tokenSpec ??= config.tokenSpecs.all.first;
     return oidcClient.login(
       scopes: tokenSpec.scopes,
       prompt: LoginPrompt.selectAccount,
@@ -40,7 +54,8 @@ class AzureAuthenticator implements Authenticator {
 
   @override
   Future<OidcToken> token({String? tokenId, bool? forceRefresh}) async {
-    final tokenSpec = tokenSpecs.getById(tokenId);
+    await _init();
+    final tokenSpec = config.tokenSpecs.getById(tokenId);
     if (tokenSpec == null) {
       throw ArgumentError.value(tokenId, 'tokenId', 'Unknown token id.');
     }
@@ -49,6 +64,7 @@ class AzureAuthenticator implements Authenticator {
 
   @override
   Future<User> user({String? tokenId}) async {
+    await _init();
     final oidcToken = await token(tokenId: tokenId);
     final idToken = JsonWebToken.decode(oidcToken.idToken);
     final name = idToken.payload['preferred_username'] as String;
@@ -58,12 +74,14 @@ class AzureAuthenticator implements Authenticator {
   }
 
   @override
-  Future<void> logout() {
+  Future<void> logout() async {
+    await _init();
     return oidcClient.logout();
   }
 
   @override
-  Future<void> endSession() {
+  Future<void> endSession() async {
+    await _init();
     return oidcClient.endSession();
   }
 }
