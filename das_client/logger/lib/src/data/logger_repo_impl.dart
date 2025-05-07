@@ -2,7 +2,7 @@ import 'package:fimber/fimber.dart';
 import 'package:http_x/component.dart';
 import 'package:logger/src/data/api/api_service.dart';
 import 'package:logger/src/data/dto/log_entry_dto.dart';
-import 'package:logger/src/data/local/logger_cache_service.dart';
+import 'package:logger/src/data/local/log_file_service.dart';
 import 'package:logger/src/data/logger_repo.dart';
 import 'package:logger/src/data/mappers.dart';
 import 'package:logger/src/log_entry.dart';
@@ -13,7 +13,7 @@ class LoggerRepoImpl implements LoggerRepo {
 
   LoggerRepoImpl({required this.cacheService, required this.remoteService});
 
-  final LoggerCacheService cacheService;
+  final LogFileService cacheService;
   final ApiService remoteService;
 
   final _senderLock = Lock();
@@ -31,10 +31,9 @@ class LoggerRepoImpl implements LoggerRepo {
 
   Future<void> _optionalRolloverToRemote() async {
     try {
-      final cacheThresholdExceeded = await cacheService.isCacheThresholdExceeded();
-      if (cacheThresholdExceeded || _isRolloverTimeReached()) {
+      final cacheHasFullLogFiles = await cacheService.hasCompletedLogFiles;
+      if (cacheHasFullLogFiles || _isRolloverTimeReached()) {
         Fimber.d('Rolling over log file');
-        await cacheService.completeCache();
         _nextRolloverTimeStamp = DateTime.now().add(const Duration(minutes: _rolloverTimeMinutes));
 
         await _processCompletedLogFiles();
@@ -49,23 +48,22 @@ class LoggerRepoImpl implements LoggerRepo {
     Fimber.i('Found completedLogFiles: ${completedLogFiles.length}');
     for (final file in completedLogFiles) {
       try {
-        final logEntries = await cacheService.getLogEntriesFrom(file);
-        await _sendLogsSync(logEntries);
-        file.deleteSync();
+        await _sendLogsSync(file.logEntries);
+        await cacheService.deleteLogFile(file);
       } catch (e) {
         if (e is HttpException) {
           Fimber.e('Connection error while sending logs to remote. Try again in next rollover.', ex: e);
           break;
         } else {
-          Fimber.e('Send and clear logs from ${file.path} failed.', ex: e);
+          Fimber.e('Send and clear logs from ${file.file.path} failed.', ex: e);
         }
       }
     }
   }
 
-  Future<void> _sendLogsSync(List<LogEntryDto> cachedCompleted) async {
+  Future<void> _sendLogsSync(Iterable<LogEntryDto> logs) async {
     await _senderLock.synchronized(() async {
-      await remoteService.sendLogs(cachedCompleted);
+      await remoteService.sendLogs(logs);
       Fimber.d('Successfully sent logs to backend');
     });
   }
