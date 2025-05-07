@@ -1,23 +1,23 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http_x/component.dart';
-import 'package:logger/src/data/api/api_service.dart';
+import 'package:logger/src/data/api/log_api_service.dart';
 import 'package:logger/src/data/dto/log_entry_dto.dart';
 import 'package:logger/src/data/mappers.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 @GenerateNiceMocks([MockSpec<Client>(), MockSpec<Response>()])
-import 'api_service_test.mocks.dart';
+import 'log_api_service_test.mocks.dart';
 import 'response.fake.dart';
 
 void main() {
   const baseUrl = 'example.com';
   late MockClient mockClient;
-  late ApiService testee;
+  late LogApiService testee;
 
   setUp(() {
     mockClient = MockClient();
-    testee = ApiService(baseUrl: baseUrl, httpClient: mockClient);
+    testee = LogApiService(baseUrl: baseUrl, httpClient: mockClient);
   });
 
   test('sendLogs_whenCalledWithSuccess_makesPostAndHasExpectedHeaders', () async {

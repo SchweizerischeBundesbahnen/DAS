@@ -1,6 +1,6 @@
 import 'package:fimber/fimber.dart';
 import 'package:http_x/component.dart';
-import 'package:logger/src/data/api/api_service.dart';
+import 'package:logger/src/data/api/log_api_service.dart';
 import 'package:logger/src/data/dto/log_entry_dto.dart';
 import 'package:logger/src/data/local/log_file_service.dart';
 import 'package:logger/src/data/logger_repo.dart';
@@ -14,7 +14,7 @@ class LoggerRepoImpl implements LoggerRepo {
   LoggerRepoImpl({required this.cacheService, required this.remoteService});
 
   final LogFileService cacheService;
-  final ApiService remoteService;
+  final LogApiService remoteService;
 
   final _senderLock = Lock();
   final _cacheLock = Lock();
