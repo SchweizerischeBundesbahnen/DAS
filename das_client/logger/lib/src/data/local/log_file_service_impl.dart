@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:fimber/fimber.dart';
 import 'package:logger/src/data/dto/log_entry_dto.dart';
 import 'package:logger/src/data/dto/log_file_dto.dart';
 import 'package:logger/src/data/local/log_file_service.dart';
@@ -14,15 +13,13 @@ class LogFileServiceImpl implements LogFileService {
   static const _filePrefix = 'das-log';
   static const _lastSavedFileName = '$_filePrefix-lastSavedFile.json';
 
-  int _currentFileSize = 0;
-
   @override
   Future<bool> get hasCompletedLogFiles async => (await completedLogFiles).isNotEmpty;
 
   @override
   Future<void> writeLog(LogEntryDto log) async {
     if (await _isLogTooLargeForCurrentFile(log)) {
-      await _renameCurrentFileToFinish();
+      await completeCurrentFile();
     }
     await _appendToCurrentFile(log);
   }
@@ -44,10 +41,10 @@ class LogFileServiceImpl implements LogFileService {
   @override
   Future<void> deleteLogFile(LogFileDto file) => file.file.delete();
 
-  Future<void> _renameCurrentFileToFinish() async {
+  @override
+  Future<void> completeCurrentFile() async {
     final currentCacheFile = await _currentCacheFile;
     currentCacheFile.renameSync(await _logFilePathWithTimestamp());
-    _currentFileSize = 0;
   }
 
   Future<String> _logFilePathWithTimestamp() async {
@@ -86,14 +83,16 @@ class LogFileServiceImpl implements LogFileService {
 
   Future<bool> _isLogTooLargeForCurrentFile(LogEntryDto log) async {
     final logAsJsonStringWithComma = '${log.toJsonString()},';
-    final bytes = utf8.encode(logAsJsonStringWithComma).lengthInBytes;
-    return (bytes + _currentFileSize) >= _maxFileSize;
+    final sizeToAdd = utf8.encode(logAsJsonStringWithComma).lengthInBytes;
+    final currentFile = await _currentCacheFile;
+    final currentFileSize = await currentFile.length();
+
+    return (sizeToAdd + currentFileSize) >= _maxFileSize;
   }
 
   Future<void> _appendToCurrentFile(LogEntryDto log) async {
     final logAsJsonStringWithComma = '${log.toJsonString()},';
     final newCacheFile = await _currentCacheFile;
     newCacheFile.writeAsStringSync(logAsJsonStringWithComma, mode: FileMode.append);
-    _currentFileSize += utf8.encode(logAsJsonStringWithComma).lengthInBytes;
   }
 }

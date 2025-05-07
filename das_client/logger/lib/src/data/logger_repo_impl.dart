@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:fimber/fimber.dart';
 import 'package:http_x/component.dart';
 import 'package:logger/src/data/api/log_api_service.dart';
@@ -19,7 +20,7 @@ class LoggerRepoImpl implements LoggerRepo {
   final _senderLock = Lock();
   final _cacheLock = Lock();
 
-  DateTime _nextRolloverTimeStamp = DateTime.now().add(const Duration(minutes: _rolloverTimeMinutes));
+  DateTime _nextRolloverTimeStamp = clock.now().add(const Duration(minutes: _rolloverTimeMinutes));
 
   @override
   Future<void> saveLog(LogEntry log) async {
@@ -32,9 +33,11 @@ class LoggerRepoImpl implements LoggerRepo {
   Future<void> _optionalRolloverToRemote() async {
     try {
       final cacheHasFullLogFiles = await fileService.hasCompletedLogFiles;
-      if (cacheHasFullLogFiles || _isRolloverTimeReached()) {
+      final rolloverReached = _isRolloverTimeReached();
+      if (cacheHasFullLogFiles || rolloverReached) {
         Fimber.d('Rolling over log file');
-        _nextRolloverTimeStamp = DateTime.now().add(const Duration(minutes: _rolloverTimeMinutes));
+        await fileService.completeCurrentFile();
+        _nextRolloverTimeStamp = clock.now().add(const Duration(minutes: _rolloverTimeMinutes));
 
         await _processCompletedLogFiles();
       }
@@ -68,5 +71,5 @@ class LoggerRepoImpl implements LoggerRepo {
     });
   }
 
-  bool _isRolloverTimeReached() => _nextRolloverTimeStamp.isBefore(DateTime.now());
+  bool _isRolloverTimeReached() => _nextRolloverTimeStamp.isBefore(clock.now());
 }

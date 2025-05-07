@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:clock/clock.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/component.dart';
 import 'package:logger/src/data/api/endpoint/send_logs.dart';
@@ -115,5 +116,27 @@ void main() {
     // expect
     verify(apiService.sendLogs).called(1);
     verifyNever(fileService.deleteLogFile(any));
+  });
+
+  test('saveLog_whenRolloverTimeReached_shouldWriteRolloverAndDelete', () async {
+    // arrange
+    final logFile = LogFileDto(logEntries: [simpleLogFile.toDto()], file: File('fakeFile.json'));
+    when(fileService.writeLog(any)).thenAnswer((_) async {});
+    when(fileService.hasCompletedLogFiles).thenAnswer((_) async => false);
+    when(fileService.completedLogFiles).thenAnswer((_) async => [logFile]);
+    when(fileService.deleteLogFile(logFile)).thenAnswer((_) async {});
+    when(mockSendLogsRequest.call(any)).thenAnswer((_) async => mockSendLogsResponse);
+    when(apiService.sendLogs).thenReturn(mockSendLogsRequest);
+    final fiveMinutesFromNow = DateTime.now().add(const Duration(minutes: 5));
+
+    // act
+    await withClock(Clock.fixed(fiveMinutesFromNow), () async {
+      await testee.saveLog(simpleLogFile);
+    });
+
+    // expect
+    verify(fileService.completedLogFiles).called(1);
+    verify(apiService.sendLogs).called(1);
+    verify(fileService.deleteLogFile(logFile)).called(1);
   });
 }

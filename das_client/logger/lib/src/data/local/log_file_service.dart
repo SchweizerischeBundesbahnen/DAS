@@ -6,6 +6,8 @@ abstract class LogFileService {
 
   Future<void> writeLog(LogEntryDto log);
 
+  Future<void> completeCurrentFile();
+
   Future<bool> get hasCompletedLogFiles;
 
   Future<void> deleteLogFile(LogFileDto file);

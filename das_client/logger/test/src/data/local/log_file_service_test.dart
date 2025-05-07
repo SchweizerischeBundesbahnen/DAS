@@ -176,6 +176,20 @@ void main() {
     // expect
     expect(logDir.listSync().length, equals(1));
   });
+
+  test('completeCurrentFile_whenHasWrite_shouldRenameFile', () async {
+    // arrange
+    await testee.writeLog(simpleLogFile);
+    // check whether one file exist (one completed)
+    expect(logDir.listSync().length, equals(1));
+
+    // act
+    await testee.completeCurrentFile();
+
+    // expect
+    expect(logDir.listSync().length, equals(1));
+    expect(_currentCacheFile(logDir).existsSync(), false);
+  });
 }
 
 File _currentCacheFile(Directory logDir) {
