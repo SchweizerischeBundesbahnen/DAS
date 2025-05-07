@@ -1,4 +1,4 @@
-enum SferaServiceState {
+enum SferaRemoteRepositoryState {
   disconnected,
   connecting,
   handshaking,

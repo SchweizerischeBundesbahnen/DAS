@@ -12,7 +12,7 @@ import 'package:sfera/src/provider/sfera_auth_provider.dart';
 export 'package:sfera/src/data/api/sfera_auth_service.dart';
 export 'package:sfera/src/data/api/sfera_error.dart';
 export 'package:sfera/src/data/sfera_remote_repo.dart';
-export 'package:sfera/src/data/api/sfera_service_state.dart';
+export 'package:sfera/src/data/api/sfera_remote_repository_state.dart';
 export 'package:sfera/src/data/sfera_local_repo.dart';
 export 'package:sfera/src/data/parser/sfera_reply_parser.dart';
 export 'package:sfera/src/model/journey/additional_speed_restriction.dart';

@@ -50,20 +50,20 @@ class TrainJourneyCubit extends Cubit<TrainJourneyState> {
       _stateSubscription?.cancel();
       _stateSubscription = _sferaService.stateStream.listen((state) {
         switch (state) {
-          case SferaServiceState.connected:
+          case SferaRemoteRepositoryState.connected:
             automaticAdvancementController = AutomaticAdvancementController();
             _listenToJourneyUpdates();
             WakelockPlus.enable();
             emit(TrainJourneyLoadedState(trainIdentification));
             break;
-          case SferaServiceState.connecting:
-          case SferaServiceState.handshaking:
-          case SferaServiceState.loadingJourney:
-          case SferaServiceState.loadingAdditionalData:
+          case SferaRemoteRepositoryState.connecting:
+          case SferaRemoteRepositoryState.handshaking:
+          case SferaRemoteRepositoryState.loadingJourney:
+          case SferaRemoteRepositoryState.loadingAdditionalData:
             emit(ConnectingState(trainIdentification));
             break;
-          case SferaServiceState.disconnected:
-          case SferaServiceState.offline:
+          case SferaRemoteRepositoryState.disconnected:
+          case SferaRemoteRepositoryState.offline:
             WakelockPlus.disable();
             final errorCode = _sferaService.lastError != null ? ErrorCode.fromSfera(_sferaService.lastError!) : null;
             emit(SelectingTrainJourneyState(ru: ru, trainNumber: trainNumber, date: date, errorCode: errorCode));

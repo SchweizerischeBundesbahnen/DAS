@@ -44,9 +44,9 @@ void main() {
     expectLater(
       sferaService.stateStream,
       emitsInOrder([
-        SferaServiceState.disconnected, // seeded state
-        SferaServiceState.connecting,
-        SferaServiceState.handshaking,
+        SferaRemoteRepositoryState.disconnected, // seeded state
+        SferaRemoteRepositoryState.connecting,
+        SferaRemoteRepositoryState.handshaking,
       ]),
     );
 
@@ -73,9 +73,9 @@ void main() {
     expectLater(
       sferaService.stateStream,
       emitsInOrder([
-        SferaServiceState.disconnected, // seeded state
-        SferaServiceState.connecting,
-        SferaServiceState.disconnected,
+        SferaRemoteRepositoryState.disconnected, // seeded state
+        SferaRemoteRepositoryState.connecting,
+        SferaRemoteRepositoryState.disconnected,
       ]),
     );
 
@@ -93,6 +93,6 @@ void main() {
 
     // THEN
     verify(mockMqttService.disconnect()).called(1);
-    expect(sferaService.stateStream, emits(SferaServiceState.disconnected));
+    expect(sferaService.stateStream, emits(SferaRemoteRepositoryState.disconnected));
   });
 }

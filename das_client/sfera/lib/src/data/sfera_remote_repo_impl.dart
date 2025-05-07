@@ -59,7 +59,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   final List<TrainCharacteristicsDto> _trainCharacteristics = [];
   RelatedTrainInformationDto? _relatedTrainInformation;
 
-  final _stateSubject = BehaviorSubject.seeded(SferaServiceState.disconnected);
+  final _stateSubject = BehaviorSubject.seeded(SferaRemoteRepositoryState.disconnected);
   final _journeyProfileSubject = BehaviorSubject<Journey?>.seeded(null);
   final _uxTestingSubject = BehaviorSubject<UxTesting?>.seeded(null);
 
@@ -69,7 +69,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   // once last listener cancels subscription, disconnect
   // refactor with viewModel change
   @override
-  Stream<SferaServiceState> get stateStream => _stateSubject.distinct();
+  Stream<SferaRemoteRepositoryState> get stateStream => _stateSubject.distinct();
 
   @override
   Stream<Journey?> get journeyStream => _journeyProfileSubject.stream;
@@ -88,7 +88,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     _otnId = otnId;
     _tasks.clear();
     lastError = null;
-    _stateSubject.add(SferaServiceState.connecting);
+    _stateSubject.add(SferaRemoteRepositoryState.connecting);
 
     final sferaTrain = Format.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
     final isConnected = await _mqttService.connect(otnId.company, sferaTrain);
@@ -97,17 +97,17 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     } else {
       _otnId = null;
       lastError = SferaError.connectionFailed;
-      _stateSubject.add(SferaServiceState.disconnected);
+      _stateSubject.add(SferaRemoteRepositoryState.disconnected);
     }
   }
 
   /// Sends [SessionTermination] and disconnects from SFERA broker.
   ///
-  /// Disconnect is either called by the user or when one of the [SferaTask] fails and no journey was loaded yet - i.e. the service is not in the [SferaServiceState.connected].
+  /// Disconnect is either called by the user or when one of the [SferaTask] fails and no journey was loaded yet - i.e. the service is not in the [SferaRemoteRepositoryState.connected].
   @override
   Future<void> disconnect() async {
     final otnId = _otnId;
-    if (_stateSubject.value == SferaServiceState.connected && otnId != null) {
+    if (_stateSubject.value == SferaRemoteRepositoryState.connected && otnId != null) {
       Fimber.i('Sending session termination request for $otnId...');
       final header = messageHeader(sender: otnId.company);
       final sessionTerminationMessage = SferaB2gEventMessageDto.createSessionTermination(messageHeader: header);
@@ -116,7 +116,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     }
 
     _mqttService.disconnect();
-    _stateSubject.add(SferaServiceState.disconnected);
+    _stateSubject.add(SferaRemoteRepositoryState.disconnected);
   }
 
   @override
@@ -173,7 +173,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   }
 
   Future<void> _initiateHandshake(OtnId otnId) async {
-    _stateSubject.add(SferaServiceState.handshaking);
+    _stateSubject.add(SferaRemoteRepositoryState.handshaking);
     final isDriver = await _authProvider.isDriver();
     final drivingMode = isDriver ? DasDrivingModeDto.dasNotConnected : DasDrivingModeDto.readOnly;
 
@@ -195,15 +195,15 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
 
     if (_allTasksCompleted()) {
       switch (_stateSubject.value) {
-        case SferaServiceState.loadingAdditionalData:
+        case SferaRemoteRepositoryState.loadingAdditionalData:
           await _refreshSegmentProfiles();
           await _refreshTrainCharacteristics();
           _updateJourney(
-            onSuccess: () => _stateSubject.add(SferaServiceState.connected),
+            onSuccess: () => _stateSubject.add(SferaRemoteRepositoryState.connected),
             onInvalid: () => disconnect(),
           );
           break;
-        case SferaServiceState.connected:
+        case SferaRemoteRepositoryState.connected:
           await _refreshSegmentProfiles();
           await _refreshTrainCharacteristics();
           _updateJourney();
@@ -214,7 +214,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   }
 
   Future<void> _handleHandshakeTaskCompleted() async {
-    _stateSubject.add(SferaServiceState.loadingJourney);
+    _stateSubject.add(SferaRemoteRepositoryState.loadingJourney);
     final requestJourneyTask = RequestJourneyProfileTask(
       mqttService: _mqttService,
       sferaService: this,
@@ -226,7 +226,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   }
 
   Future<void> _handleRequestJourneyProfileTaskCompleted(dynamic data) async {
-    _stateSubject.add(SferaServiceState.loadingAdditionalData);
+    _stateSubject.add(SferaRemoteRepositoryState.loadingAdditionalData);
     final dataList = data as List;
     _journeyProfile = dataList.whereType<JourneyProfileDto>().first;
     _relatedTrainInformation = dataList.whereType<RelatedTrainInformationDto>().firstOrNull;
@@ -347,7 +347,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     Fimber.e('Task $task failed with error code $errorCode');
     _tasks.remove(task);
     lastError = errorCode;
-    if (_stateSubject.value != SferaServiceState.connected) {
+    if (_stateSubject.value != SferaRemoteRepositoryState.connected) {
       disconnect();
     }
   }

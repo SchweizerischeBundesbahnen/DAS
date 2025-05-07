@@ -33,7 +33,7 @@ class UxTestingCubit extends Cubit<UxTestingState> {
       }
     });
     _sferaStateSubscription = _sferaService.stateStream.listen((state) {
-      if (state == SferaServiceState.disconnected) {
+      if (state == SferaRemoteRepositoryState.disconnected) {
         _koaStateSubject.add(KoaState.waitHide);
       }
     });

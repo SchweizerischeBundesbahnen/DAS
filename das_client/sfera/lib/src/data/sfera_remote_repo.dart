@@ -9,7 +9,7 @@ import 'package:sfera/src/data/format.dart';
 abstract class SferaRemoteRepo {
   const SferaRemoteRepo._();
 
-  Stream<SferaServiceState> get stateStream;
+  Stream<SferaRemoteRepositoryState> get stateStream;
 
   Stream<Journey?> get journeyStream;
 
