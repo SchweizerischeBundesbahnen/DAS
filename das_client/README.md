@@ -13,9 +13,18 @@ DAS (Driver Advisory System) is a mobile application that provides all the requi
 
 ### Setup
 
-* Melos setup
-* FVM setup
-* Code generation
+This app uses [FVM](https://fvm.app/) to configure the Flutter SDK version and [Melos](https://melos.invertase.dev/) for mono-repos support.
+
+* [FVM installation guide](https://fvm.app/documentation/getting-started/installation)
+* [Melos installation guide](https://melos.invertase.dev/getting-started)
+
+### Generate code
+
+Use the following Melos command to generate the necessary code for all the components:
+
+```shell
+fvm dart run melos generate
+```
 
 ### Run Application
 
@@ -33,20 +42,50 @@ fvm flutter run --flavor inte -t lib/main_inte.dart
 fvm flutter run --flavor prod -t lib/main_prod.dart
 ```
 
-## Running Integration Tests
-
-Instrumentation Tests do not use user authentication. Therefore the credentials must be provided as environment variables.
-
-```shell
-fvm flutter test --flavor dev --dart-define=MQTT_USERNAME=${MQTT_USERNAME} --dart-define=MQTT_PASSWORD=${MQTT_PASSWORD} integration_test/app_test.dart
-```
-
 ## Architecture
 
 In general, we aim to follow the recommended [Flutter architecture guidelines](https://docs.flutter.dev/app-architecture) as closely as possible.
 We deviate purposefully for the following concepts:
 
 * We have decided to adopt the *Packages by Component* approach instead of a *Layered Architecture* using Dart workspaces
+
+### Components
+
+The app is separated into the following components:
+
+![UML component diagram](components.svg)
+
+| Component      | Description                                                                            |
+|----------------|----------------------------------------------------------------------------------------|
+| **app**        | UI implementation with Flutter components                                              |
+| **auth**       | User authentication and authentication state management.                               |
+| **http_x**     | Extension for http package that supports authorization and log requests and responses. |
+| **mqtt**       | Handles MQTT client auth and communication                                             |
+| **sfera**      | SFERA api integration with local database for caching                                  |
+| **logger**     | Handles app logs caching and rollover to remote for monitoring                         |
+
+### Component Naming
+
+Keep the component names as short as possible (e.g. mqtt, auth).
+In case of a naming conflict:
+* Rename: logging → logger
+* Extension: http → http_x
+
+## Testing
+
+Use the following Melos command to run all component tests:
+
+```shell
+fvm dart run melos test
+```
+
+### Running Integration Tests
+
+Instrumentation tests do not use user authentication. Therefore the credentials must be provided as environment variables.
+
+```shell
+fvm flutter test --flavor dev --dart-define=MQTT_USERNAME=${MQTT_USERNAME} --dart-define=MQTT_PASSWORD=${MQTT_PASSWORD} integration_test/app_test.dart
+```
 
 ### Test file structure
 
@@ -66,18 +105,10 @@ The file structure in [test_resources](sfera/test_resources) for a test scenario
   * SFERA_TC_T1_1
     <a name="localization"></a>
 
-### Component Naming
-
-TODO @Ralf
-
-### Component Overview
-
-TODO PlantUML
-
 ## Custom Icons
 
-To add custom icons, you can upload [font_config.json](app/font_config.json) to [fluttericon][3] and add your icon. Use [SVG Strokes to Fills Converter][4] if SVG is not compatible
-with fonts.
+To add custom icons, you can upload [font_config.json](app/font_config.json) to [fluttericon](https://www.fluttericon.com/) and add your icon. 
+Use [SVG Strokes to Fills Converter](https://iconly.io/tools/svg-convert-stroke-to-fill) if SVG is not compatible with fonts.
 
 ## Localization
 
@@ -110,22 +141,9 @@ The generation of the localization code is included in the `melos generate` comm
 
 ## Code style
 
-This application uses the code style defined in the [Flutter Wiki][2]. The
-recommendations are mandatory and should always be followed unless there is a
-good reason not to do so. However, this must be approved by all developers.
+This application uses the code style defined in the [Flutter Wiki](https://github.com/flutter/flutter/blob/master/docs/contributing/Style-guide-for-Flutter-repo.md). 
+The recommendations are mandatory and should always be followed unless there is a good reason not to do so. However, this must be approved by all developers.
 
 Notable difference: Line length is set to 120 characters. Please adapt your IDE configuration accordingly.
 
 For formatting XML test files, contact a developer for custom Android Studio XML formatting setup.
-
-## Flutter SDK version
-
-This app uses [FVM][1] to configure the Flutter SDK version.
-
-[1]:https://fvm.app/
-
-[2]:https://github.com/flutter/flutter/blob/master/docs/contributing/Style-guide-for-Flutter-repo.md
-
-[3]:https://www.fluttericon.com/
-
-[4]:https://iconly.io/tools/svg-convert-stroke-to-fill

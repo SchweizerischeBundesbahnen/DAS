@@ -1,0 +1,26 @@
+@startuml components
+
+component app
+component auth
+component logger
+component sfera
+component mqtt
+component mqtt_client #4DB1FF
+component http_x
+component http #4DB1FF
+
+app --> auth
+app --> sfera
+app --> logger
+app --> mqtt
+app --> http_x
+
+logger --> http_x
+
+sfera --> mqtt
+
+http_x *-- http
+
+mqtt *-- mqtt_client
+
+@enduml
