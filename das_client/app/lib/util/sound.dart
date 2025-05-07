@@ -1,5 +1,5 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:app/di.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:volume_controller/volume_controller.dart';
 
 class Sound {

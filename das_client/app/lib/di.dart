@@ -164,7 +164,7 @@ extension GetItX on GetIt {
         );
       },
       dispose: (service) => service.dispose(),
-      dependsOn: [MqttService]
+      dependsOn: [MqttService],
     );
 
     registerLazySingleton<SferaLocalService>(() => SferaComponent.createSferaLocalService());

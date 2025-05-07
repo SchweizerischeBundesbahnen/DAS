@@ -1,3 +1,4 @@
+import 'package:meta/meta.dart';
 import 'package:sfera/src/model/journey/additional_speed_restriction.dart';
 import 'package:sfera/src/model/journey/base_data.dart';
 import 'package:sfera/src/model/journey/bracket_station_segment.dart';
@@ -6,7 +7,6 @@ import 'package:sfera/src/model/journey/communication_network_change.dart';
 import 'package:sfera/src/model/journey/contact_list.dart';
 import 'package:sfera/src/model/journey/service_point.dart';
 import 'package:sfera/src/model/journey/track_equipment_segment.dart';
-import 'package:meta/meta.dart';
 
 @sealed
 @immutable

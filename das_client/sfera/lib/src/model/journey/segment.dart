@@ -1,5 +1,5 @@
-import 'package:sfera/src/data/comparator/start_end_int_comparator.dart';
 import 'package:meta/meta.dart';
+import 'package:sfera/src/data/comparator/start_end_int_comparator.dart';
 
 @sealed
 @immutable

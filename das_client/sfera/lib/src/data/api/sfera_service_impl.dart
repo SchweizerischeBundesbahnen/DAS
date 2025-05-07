@@ -30,7 +30,6 @@ import 'package:sfera/src/data/dto/ux_testing_nse_dto.dart';
 import 'package:sfera/src/data/format.dart';
 import 'package:sfera/src/data/local/db/repo/sfera_database_repository.dart';
 import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
-import 'package:sfera/src/provider/sfera_auth_provider.dart';
 import 'package:uuid/uuid.dart';
 
 class SferaServiceImpl implements SferaService {

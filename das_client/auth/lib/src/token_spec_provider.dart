@@ -1,5 +1,5 @@
-import 'package:collection/collection.dart';
 import 'package:auth/src/token_spec.dart';
+import 'package:collection/collection.dart';
 
 // TODO: Rethink use of token IDs instead of url scopes
 class TokenSpecProvider {

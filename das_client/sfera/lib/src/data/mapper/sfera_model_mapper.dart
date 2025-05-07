@@ -1,4 +1,14 @@
 import 'package:collection/collection.dart';
+import 'package:fimber/fimber.dart';
+import 'package:sfera/src/data/dto/enums/start_end_qualifier_dto.dart';
+import 'package:sfera/src/data/dto/journey_profile_dto.dart';
+import 'package:sfera/src/data/dto/related_train_information_dto.dart';
+import 'package:sfera/src/data/dto/segment_profile_dto.dart';
+import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
+import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
+import 'package:sfera/src/data/mapper/mapper_utils.dart';
+import 'package:sfera/src/data/mapper/segment_profile_mapper.dart';
+import 'package:sfera/src/data/mapper/track_equipment_mapper.dart';
 import 'package:sfera/src/model/journey/additional_speed_restriction.dart';
 import 'package:sfera/src/model/journey/additional_speed_restriction_data.dart';
 import 'package:sfera/src/model/journey/base_data.dart';
@@ -17,16 +27,6 @@ import 'package:sfera/src/model/journey/metadata.dart';
 import 'package:sfera/src/model/journey/service_point.dart';
 import 'package:sfera/src/model/journey/track_equipment_segment.dart';
 import 'package:sfera/src/model/journey/tram_area.dart';
-import 'package:sfera/src/data/dto/enums/start_end_qualifier_dto.dart';
-import 'package:sfera/src/data/dto/journey_profile_dto.dart';
-import 'package:sfera/src/data/dto/related_train_information_dto.dart';
-import 'package:sfera/src/data/dto/segment_profile_dto.dart';
-import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
-import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
-import 'package:fimber/fimber.dart';
-import 'package:sfera/src/data/mapper/mapper_utils.dart';
-import 'package:sfera/src/data/mapper/segment_profile_mapper.dart';
-import 'package:sfera/src/data/mapper/track_equipment_mapper.dart';
 
 /// Used to map SFERA data to [Journey] with relevant [Metadata].
 class SferaModelMapper {

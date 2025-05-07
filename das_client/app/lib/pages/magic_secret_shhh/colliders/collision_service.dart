@@ -1,5 +1,5 @@
-import 'package:app/pages/magic_secret_shhh/models/barrier_model.dart';
 import 'package:app/pages/magic_secret_shhh/colliders/game_collider.dart';
+import 'package:app/pages/magic_secret_shhh/models/barrier_model.dart';
 import 'package:flutter/material.dart';
 
 class CollisionService {

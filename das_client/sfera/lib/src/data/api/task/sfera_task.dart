@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:fimber/fimber.dart';
-import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:sfera/src/data/api/sfera_error.dart';
+import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 
 typedef TaskFailed = void Function(SferaTask task, SferaError sferaError);
 typedef TaskCompleted<T> = void Function(SferaTask task, T? data);

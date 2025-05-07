@@ -1,13 +1,13 @@
+import 'package:fimber/fimber.dart';
+import 'package:isar/isar.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:sfera/src/data/dto/journey_profile_dto.dart';
+import 'package:sfera/src/data/dto/segment_profile_dto.dart';
+import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/local/db/entity/journey_profile_entity.dart';
 import 'package:sfera/src/data/local/db/entity/segment_profile_entity.dart';
 import 'package:sfera/src/data/local/db/entity/train_characteristics_entity.dart';
 import 'package:sfera/src/data/local/db/repo/sfera_database_repository.dart';
-import 'package:sfera/src/data/dto/journey_profile_dto.dart';
-import 'package:sfera/src/data/dto/segment_profile_dto.dart';
-import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
-import 'package:fimber/fimber.dart';
-import 'package:isar/isar.dart';
-import 'package:path_provider/path_provider.dart';
 
 class SferaDatabaseRepositoryImpl implements SferaDatabaseRepository {
   late final Future<void> _initialized;

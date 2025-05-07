@@ -1,5 +1,5 @@
-import 'package:sfera/src/model/journey/train_series.dart';
 import 'package:meta/meta.dart';
+import 'package:sfera/src/model/journey/train_series.dart';
 
 @sealed
 @immutable

@@ -1,6 +1,6 @@
-import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:fimber/fimber.dart';
 import 'package:iso_duration/iso_duration.dart';
+import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 
 class DelayDto extends SferaXmlElementDto {
   static const String elementType = 'Delay';

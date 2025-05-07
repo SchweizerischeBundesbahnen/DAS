@@ -1,6 +1,6 @@
-import 'package:collection/collection.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
+import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 
 /// Data class to hold all the information to chevron animation.

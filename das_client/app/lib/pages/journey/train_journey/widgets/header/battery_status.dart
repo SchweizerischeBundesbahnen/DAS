@@ -1,8 +1,9 @@
 import 'dart:async';
-import 'package:battery_plus/battery_plus.dart';
+
+import 'package:app/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/widgets/assets.dart';
-import 'package:app/di.dart';
+import 'package:battery_plus/battery_plus.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

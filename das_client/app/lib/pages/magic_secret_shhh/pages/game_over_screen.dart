@@ -1,5 +1,5 @@
-import 'package:app/pages/magic_secret_shhh/widgets/custom_appbar.dart';
 import 'package:app/pages/magic_secret_shhh/pages/flappy_screen.dart';
+import 'package:app/pages/magic_secret_shhh/widgets/custom_appbar.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';

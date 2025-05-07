@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
@@ -10,6 +9,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/config/train_journ
 import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_row.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';

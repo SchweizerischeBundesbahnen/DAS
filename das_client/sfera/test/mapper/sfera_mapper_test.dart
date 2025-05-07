@@ -1,7 +1,8 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
-import 'package:sfera/src/model/journey/foot_note.dart';
+import 'package:fimber/fimber.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/delay_dto.dart';
 import 'package:sfera/src/data/dto/g2b_event_payload_dto.dart';
@@ -9,9 +10,8 @@ import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/related_train_information_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
-import 'package:fimber/fimber.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
+import 'package:sfera/src/model/journey/foot_note.dart';
 
 void main() {
   Fimber.plantTree(DebugTree());

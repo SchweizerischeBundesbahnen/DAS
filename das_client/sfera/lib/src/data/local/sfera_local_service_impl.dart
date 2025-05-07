@@ -1,10 +1,10 @@
-import 'package:sfera/src/model/journey/journey.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/local/db/repo/sfera_database_repository.dart';
 import 'package:sfera/src/data/local/sfera_local_service.dart';
 import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
+import 'package:sfera/src/model/journey/journey.dart';
 
 class SferaLocalServiceImpl implements SferaLocalService {
   const SferaLocalServiceImpl({required SferaDatabaseRepository sferaDatabaseRepository})

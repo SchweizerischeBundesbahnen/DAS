@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:sfera/component.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:sfera/component.dart';
 
 class ReducedOverviewViewModel {
   ReducedOverviewViewModel({

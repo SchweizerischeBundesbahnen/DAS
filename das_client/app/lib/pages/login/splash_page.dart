@@ -1,8 +1,8 @@
 import 'package:app/bloc/auth_cubit.dart';
-import 'package:auto_route/auto_route.dart';
+import 'package:app/di.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:auth/component.dart';
-import 'package:app/di.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

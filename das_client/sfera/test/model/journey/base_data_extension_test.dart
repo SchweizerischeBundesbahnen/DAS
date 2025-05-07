@@ -1,3 +1,4 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/src/model/journey/balise.dart';
 import 'package:sfera/src/model/journey/balise_level_crossing_group.dart';
 import 'package:sfera/src/model/journey/base_data.dart';
@@ -10,7 +11,6 @@ import 'package:sfera/src/model/journey/signal.dart';
 import 'package:sfera/src/model/journey/track_foot_note.dart';
 import 'package:sfera/src/model/journey/train_series.dart';
 import 'package:sfera/src/model/journey/whistles.dart';
-import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('Test balise and level crossing grouping', () {

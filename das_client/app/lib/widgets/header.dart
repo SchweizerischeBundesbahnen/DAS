@@ -1,7 +1,7 @@
-import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/theme/theme_util.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class Header extends StatelessWidget {
   const Header({required this.child, super.key, this.information});

@@ -1,9 +1,9 @@
+import 'package:app/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
-import 'package:app/widgets/flavor_banner.dart';
-import 'package:app/di.dart';
 import 'package:app/theme/theme_provider.dart';
 import 'package:app/util/color_extension.dart';
+import 'package:app/widgets/flavor_banner.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';

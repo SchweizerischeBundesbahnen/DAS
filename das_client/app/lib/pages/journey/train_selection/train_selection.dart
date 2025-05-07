@@ -1,10 +1,10 @@
 import 'package:app/bloc/train_journey_cubit.dart';
+import 'package:app/brightness/brightness_modal_sheet.dart';
 import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
-import 'package:app/widgets/header.dart';
-import 'package:app/brightness/brightness_modal_sheet.dart';
 import 'package:app/util/error_code.dart';
 import 'package:app/util/format.dart';
+import 'package:app/widgets/header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
