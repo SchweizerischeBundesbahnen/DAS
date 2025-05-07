@@ -8,7 +8,7 @@ import 'package:logger/src/data/local/log_file_service_impl.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:path/path.dart' as p;
 
-import 'path_provider_fake.dart';
+import 'path_provider_platform.fake.dart';
 
 void main() {
   late Directory tempDir;
