@@ -11,6 +11,14 @@ DAS (Driver Advisory System) is a mobile application that provides all the requi
 
 ## Build and run
 
+### Setup
+
+* Melos setup
+* FVM setup
+* Code generation
+
+### Run Application
+
 DAS Client has 3 distinct flavors: `dev`, `inte` and `prod`. Run them as follows:
 
 ```shell
@@ -35,6 +43,11 @@ fvm flutter test --flavor dev --dart-define=MQTT_USERNAME=${MQTT_USERNAME} --dar
 
 ## Architecture
 
+In general, we aim to follow the recommended [Flutter architecture guidelines](https://docs.flutter.dev/app-architecture) as closely as possible.
+We deviate purposefully for the following concepts:
+
+* We have decided to adopt the *Packages by Component* approach instead of a *Layered Architecture* using Dart workspaces
+
 ### Test file structure
 
 To prevent confusion, fictive train numbers with the prefix `T` are used for the test scenarios. It is desired to create new train journeys for different features.  
@@ -53,9 +66,18 @@ The file structure in [test_resources](sfera/test_resources) for a test scenario
   * SFERA_TC_T1_1
     <a name="localization"></a>
 
+### Component Naming
+
+TODO @Ralf
+
+### Component Overview
+
+TODO PlantUML
+
 ## Custom Icons
 
-To add custom icons, you can upload [font_config.json](app/font_config.json) to [fluttericon][3] and add your icon. Use [SVG Strokes to Fills Converter][4] if SVG is not compatible with fonts.
+To add custom icons, you can upload [font_config.json](app/font_config.json) to [fluttericon][3] and add your icon. Use [SVG Strokes to Fills Converter][4] if SVG is not compatible
+with fonts.
 
 ## Localization
 
@@ -84,11 +106,7 @@ The prefix is mandatory and indicates the scope of the term. Valid prefixes are:
 The context is optional and indicate where a localization is used. When a localization is scoped to a page or widget, the context MUST be equal to the name of that page or widget.
 For example, localizations used on the login page would start with `p_login_`.
 
-To generate the localization code, run the following command:
-
-```shell
-fvm flutter gen-l10n
-```
+The generation of the localization code is included in the `melos generate` command.
 
 ## Code style
 
