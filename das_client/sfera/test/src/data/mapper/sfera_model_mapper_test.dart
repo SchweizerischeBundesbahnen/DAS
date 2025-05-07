@@ -32,13 +32,16 @@ void main() {
     return files;
   }
 
-  Journey getJourney(String trainNumber, int spCount,
-      {String? spPostfix,
-      String? jpPostfix,
-      String? tcPostfix,
-      int tcCount = 0,
-      int? relatedTrainInfoEventId,
-      Journey? lastJourney}) {
+  Journey getJourney(
+    String trainNumber,
+    int spCount, {
+    String? spPostfix,
+    String? jpPostfix,
+    String? tcPostfix,
+    int tcCount = 0,
+    int? relatedTrainInfoEventId,
+    Journey? lastJourney,
+  }) {
     final resourceDir = Directory('test_resources');
     expect(resourceDir.existsSync(), true);
 
