@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/src/data/dto/log_entry_dto.dart';
@@ -15,9 +14,6 @@ void main() {
   late Directory logDir;
   late LogFileService testee;
   late PathProviderPlatform originalPlatform;
-
-  const prefix = 'das-log';
-  const lastSavedFileName = '$prefix-lastSavedFile.json';
 
   final simpleLogFile = LogEntryDto(
     time: 1624046400.0,

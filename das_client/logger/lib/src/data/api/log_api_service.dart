@@ -1,8 +1,8 @@
 import 'package:http_x/component.dart';
 import 'package:logger/src/data/api/endpoint/send_logs.dart';
 
-class ApiService {
-  ApiService({required this.baseUrl, required this.httpClient});
+class LogApiService {
+  LogApiService({required this.baseUrl, required this.httpClient});
 
   final String baseUrl;
   final Client httpClient;
