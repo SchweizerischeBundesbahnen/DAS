@@ -79,7 +79,7 @@ void main() {
     // ACT & EXPECT
     try {
       await testee.sendLogs(logEntries);
-      fail("Expected a BadRequestException to be thrown.");
+      fail('Expected a BadRequestException to be thrown.');
     } catch (e) {
       expect(e, isA<BadRequestException>());
     }

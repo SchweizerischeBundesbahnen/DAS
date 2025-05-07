@@ -3,8 +3,6 @@ import 'dart:core';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';
 import 'package:sfera/src/data/dto/otn_id_dto.dart';
-import 'package:sfera/src/data/format.dart';
-import 'package:sfera/src/data/sfera_remote_repo_impl.dart';
 
 /// Handles connection and message exchange with SFERA broker
 abstract class SferaRemoteRepo {

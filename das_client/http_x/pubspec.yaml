@@ -9,7 +9,7 @@ resolution: workspace
 
 dependencies:
   # https://pub.dev/packages/http
-  http: ^1.3.0
+  http: ^1.4.0
   # https://pub.dev/packages/http_interceptor
   http_interceptor: ^2.0.0
   # https://pub.dev/packages/fimber
