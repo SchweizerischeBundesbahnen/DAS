@@ -6,8 +6,8 @@ import 'package:sfera/src/data/dto/otn_id_dto.dart';
 import 'package:sfera/src/data/format.dart';
 
 /// Handles connection and message exchange with SFERA broker
-abstract class SferaService {
-  const SferaService._();
+abstract class SferaRemoteRepo {
+  const SferaRemoteRepo._();
 
   Stream<SferaServiceState> get stateStream;
 
@@ -26,7 +26,4 @@ abstract class SferaService {
   void dispose();
 
   MessageHeaderDto messageHeader({required String sender});
-
-  /// Returns formatted sfera train. Example: 1513_2025-10-10
-  static String sferaTrain(String trainNumber, DateTime date) => '${trainNumber}_${Format.sferaDate(date)}';
 }

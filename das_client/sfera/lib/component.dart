@@ -2,18 +2,18 @@ import 'package:http_x/component.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/src/data/api/sfera_auth_service.dart';
 import 'package:sfera/src/data/api/sfera_auth_service_impl.dart';
-import 'package:sfera/src/data/api/sfera_service.dart';
-import 'package:sfera/src/data/api/sfera_service_impl.dart';
-import 'package:sfera/src/data/local/db/repo/sfera_database_repository_impl.dart';
-import 'package:sfera/src/data/local/sfera_local_service.dart';
-import 'package:sfera/src/data/local/sfera_local_service_impl.dart';
+import 'package:sfera/src/data/sfera_remote_repo.dart';
+import 'package:sfera/src/data/sfera_remote_repo_impl.dart';
+import 'package:sfera/src/data/local/sfera_local_database_service_impl.dart';
+import 'package:sfera/src/data/sfera_local_repo.dart';
+import 'package:sfera/src/data/sfera_local_repo_impl.dart';
 import 'package:sfera/src/provider/sfera_auth_provider.dart';
 
 export 'package:sfera/src/data/api/sfera_auth_service.dart';
 export 'package:sfera/src/data/api/sfera_error.dart';
-export 'package:sfera/src/data/api/sfera_service.dart';
+export 'package:sfera/src/data/sfera_remote_repo.dart';
 export 'package:sfera/src/data/api/sfera_service_state.dart';
-export 'package:sfera/src/data/local/sfera_local_service.dart';
+export 'package:sfera/src/data/sfera_local_repo.dart';
 export 'package:sfera/src/data/parser/sfera_reply_parser.dart';
 export 'package:sfera/src/model/journey/additional_speed_restriction.dart';
 export 'package:sfera/src/model/journey/additional_speed_restriction_data.dart';
@@ -66,16 +66,16 @@ class SferaComponent {
     return SferaAuthServiceImpl(httpClient: httpClient, tokenExchangeUrl: tokenExchangeUrl);
   }
 
-  static SferaService createSferaService({
+  static SferaRemoteRepo createSferaService({
     required MqttService mqttService,
     required SferaAuthProvider sferaAuthProvider,
     required String deviceId,
   }) {
     final sferaDatabaseRepository = SferaDatabaseRepositoryImpl();
-    return SferaServiceImpl(
+    return SferaRemoteRepoImpl(
       mqttService: mqttService,
-      sferaDatabaseRepository: sferaDatabaseRepository,
-      sferaAuthProvider: sferaAuthProvider,
+      localService: sferaDatabaseRepository,
+      authProvider: sferaAuthProvider,
       deviceId: deviceId,
     );
   }

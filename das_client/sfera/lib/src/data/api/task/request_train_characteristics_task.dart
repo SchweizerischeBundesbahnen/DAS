@@ -9,13 +9,14 @@ import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:sfera/src/data/dto/tc_request_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_ref_dto.dart';
-import 'package:sfera/src/data/local/db/repo/sfera_database_repository.dart';
+import 'package:sfera/src/data/format.dart';
+import 'package:sfera/src/data/local/sfera_local_database_service.dart';
 
 class RequestTrainCharacteristicsTask extends SferaTask<List<TrainCharacteristicsDto>> {
   RequestTrainCharacteristicsTask({
     required MqttService mqttService,
-    required SferaService sferaService,
-    required SferaDatabaseRepository sferaDatabaseRepository,
+    required SferaRemoteRepo sferaService,
+    required SferaLocalDatabaseService sferaDatabaseRepository,
     required this.otnId,
     required this.journeyProfile,
     super.timeout,
@@ -25,8 +26,8 @@ class RequestTrainCharacteristicsTask extends SferaTask<List<TrainCharacteristic
 
   final MqttService _mqttService;
   final OtnId otnId;
-  final SferaDatabaseRepository _sferaDatabaseRepository;
-  final SferaService _sferaService;
+  final SferaLocalDatabaseService _sferaDatabaseRepository;
+  final SferaRemoteRepo _sferaService;
   final JourneyProfileDto journeyProfile;
 
   late TaskCompleted<List<TrainCharacteristicsDto>> _taskCompletedCallback;
@@ -64,7 +65,7 @@ class RequestTrainCharacteristicsTask extends SferaTask<List<TrainCharacteristic
     Fimber.i('Sending train characteristics request...');
 
     startTimeout(_taskFailedCallback);
-    _mqttService.publishMessage(otnId.company, SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate),
+    _mqttService.publishMessage(otnId.company, Format.sferaTrain(otnId.operationalTrainNumber, otnId.startDate),
         sferaB2gRequestMessage.buildDocument().toString());
   }
 

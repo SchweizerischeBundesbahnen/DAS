@@ -9,13 +9,14 @@ import 'package:sfera/src/data/dto/otn_id_dto.dart';
 import 'package:sfera/src/data/dto/sfera_b2g_request_message_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:sfera/src/data/dto/train_identification_dto.dart';
-import 'package:sfera/src/data/local/db/repo/sfera_database_repository.dart';
+import 'package:sfera/src/data/format.dart';
+import 'package:sfera/src/data/local/sfera_local_database_service.dart';
 
 class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
   RequestJourneyProfileTask({
     required MqttService mqttService,
-    required SferaService sferaService,
-    required SferaDatabaseRepository sferaDatabaseRepository,
+    required SferaRemoteRepo sferaService,
+    required SferaLocalDatabaseService sferaDatabaseRepository,
     required this.otnId,
     super.timeout,
   })  : _mqttService = mqttService,
@@ -24,8 +25,8 @@ class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
 
   final MqttService _mqttService;
   final OtnId otnId;
-  final SferaDatabaseRepository _sferaDatabaseRepository;
-  final SferaService _sferaService;
+  final SferaLocalDatabaseService _sferaDatabaseRepository;
+  final SferaRemoteRepo _sferaService;
 
   late TaskCompleted<List<dynamic>> _taskCompletedCallback;
   late TaskFailed _taskFailedCallback;
@@ -51,7 +52,7 @@ class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
     Fimber.i('Sending journey profile request...');
     _mqttService.publishMessage(
       otnId.company,
-      SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate),
+      Format.sferaTrain(otnId.operationalTrainNumber, otnId.startDate),
       sferaB2gRequestMessage.buildDocument().toString(),
     );
   }

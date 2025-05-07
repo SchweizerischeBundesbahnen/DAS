@@ -14,11 +14,11 @@ part 'train_journey_state.dart';
 
 class TrainJourneyCubit extends Cubit<TrainJourneyState> {
   TrainJourneyCubit({
-    required SferaService sferaService,
+    required SferaRemoteRepo sferaService,
   })  : _sferaService = sferaService,
         super(SelectingTrainJourneyState(date: DateTime.now(), ru: Ru.sbbP));
 
-  final SferaService _sferaService;
+  final SferaRemoteRepo _sferaService;
 
   Stream<Journey?> get journeyStream => _sferaService.journeyStream;
 

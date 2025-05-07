@@ -19,7 +19,6 @@ import 'package:sfera/src/data/dto/enums/das_driving_mode_dto.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_event_dto.dart';
-import 'package:sfera/src/data/dto/otn_id_dto.dart';
 import 'package:sfera/src/data/dto/related_train_information_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/sfera_b2g_event_message_dto.dart';
@@ -29,30 +28,36 @@ import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/dto/ux_testing_nse_dto.dart';
 import 'package:sfera/src/data/format.dart';
-import 'package:sfera/src/data/local/db/repo/sfera_database_repository.dart';
+import 'package:sfera/src/data/local/sfera_local_database_service.dart';
 import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
 import 'package:uuid/uuid.dart';
 
-class SferaServiceImpl implements SferaService {
-  SferaServiceImpl({
+class SferaRemoteRepoImpl implements SferaRemoteRepo {
+  SferaRemoteRepoImpl({
     required MqttService mqttService,
-    required SferaDatabaseRepository sferaDatabaseRepository,
-    required SferaAuthProvider sferaAuthProvider,
+    required SferaLocalDatabaseService localService,
+    required SferaAuthProvider authProvider,
     required this.deviceId,
   })  : _mqttService = mqttService,
-        _sferaDatabaseRepository = sferaDatabaseRepository,
-        _sferaAuthProvider = sferaAuthProvider {
+        _localService = localService,
+        _authProvider = authProvider {
     _initialize();
   }
 
   final String deviceId;
   final MqttService _mqttService;
-  final SferaDatabaseRepository _sferaDatabaseRepository;
-  final SferaAuthProvider _sferaAuthProvider;
+  final SferaLocalDatabaseService _localService;
+  final SferaAuthProvider _authProvider;
 
   StreamSubscription? _mqttStreamSubscription;
   final List<SferaTask> _tasks = [];
   final List<SferaEventMessageHandler> _eventMessageHandlers = [];
+
+  OtnId? _otnId;
+  JourneyProfileDto? _journeyProfile;
+  final List<SegmentProfileDto> _segmentProfiles = [];
+  final List<TrainCharacteristicsDto> _trainCharacteristics = [];
+  RelatedTrainInformationDto? _relatedTrainInformation;
 
   final _stateSubject = BehaviorSubject.seeded(SferaServiceState.disconnected);
   final _journeyProfileSubject = BehaviorSubject<Journey?>.seeded(null);
@@ -67,12 +72,6 @@ class SferaServiceImpl implements SferaService {
   @override
   Stream<UxTesting?> get uxTestingStream => _uxTestingSubject.stream;
 
-  OtnId? _otnId;
-  JourneyProfileDto? _journeyProfile;
-  final List<SegmentProfileDto> _segmentProfiles = [];
-  final List<TrainCharacteristicsDto> _trainCharacteristics = [];
-  RelatedTrainInformationDto? _relatedTrainInformation;
-
   @override
   SferaError? lastError;
 
@@ -86,7 +85,7 @@ class SferaServiceImpl implements SferaService {
     lastError = null;
     _stateSubject.add(SferaServiceState.connecting);
 
-    final sferaTrain = SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
+    final sferaTrain = Format.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
     final isConnected = await _mqttService.connect(otnId.company, sferaTrain);
     if (isConnected) {
       await _initiateHandshake(otnId);
@@ -107,12 +106,24 @@ class SferaServiceImpl implements SferaService {
       Fimber.i('Sending session termination request for $otnId...');
       final header = messageHeader(sender: otnId.company);
       final sessionTerminationMessage = SferaB2gEventMessageDto.createSessionTermination(messageHeader: header);
-      final sferaTrain = SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
+      final sferaTrain = Format.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
       _mqttService.publishMessage(otnId.company, sferaTrain, sessionTerminationMessage.buildDocument().toString());
     }
 
     _mqttService.disconnect();
     _stateSubject.add(SferaServiceState.disconnected);
+  }
+
+  @override
+  void dispose() {
+    _mqttStreamSubscription?.cancel();
+    _mqttStreamSubscription = null;
+  }
+
+  @override
+  MessageHeaderDto messageHeader({required String sender}) {
+    final timestamp = Format.sferaTimestamp(DateTime.now());
+    return MessageHeaderDto.create(const Uuid().v4(), timestamp, deviceId, 'TMS', sender, '0085');
   }
 
   void _initialize() {
@@ -158,7 +169,7 @@ class SferaServiceImpl implements SferaService {
 
   Future<void> _initiateHandshake(OtnId otnId) async {
     _stateSubject.add(SferaServiceState.handshaking);
-    final isDriver = await _sferaAuthProvider.isDriver();
+    final isDriver = await _authProvider.isDriver();
     final drivingMode = isDriver ? DasDrivingModeDto.dasNotConnected : DasDrivingModeDto.readOnly;
 
     final handshakeTask =
@@ -202,7 +213,7 @@ class SferaServiceImpl implements SferaService {
     final requestJourneyTask = RequestJourneyProfileTask(
       mqttService: _mqttService,
       sferaService: this,
-      sferaDatabaseRepository: _sferaDatabaseRepository,
+      sferaDatabaseRepository: _localService,
       otnId: _otnId!,
     );
     _tasks.add(requestJourneyTask);
@@ -221,7 +232,7 @@ class SferaServiceImpl implements SferaService {
     final requestSegmentProfilesTask = RequestSegmentProfilesTask(
       sferaService: this,
       mqttService: _mqttService,
-      sferaDatabaseRepository: _sferaDatabaseRepository,
+      sferaDatabaseRepository: _localService,
       otnId: _otnId!,
       journeyProfile: _journeyProfile!,
     );
@@ -231,7 +242,7 @@ class SferaServiceImpl implements SferaService {
     final requestTrainCharacteristicsTask = RequestTrainCharacteristicsTask(
       sferaService: this,
       mqttService: _mqttService,
-      sferaDatabaseRepository: _sferaDatabaseRepository,
+      sferaDatabaseRepository: _localService,
       otnId: _otnId!,
       journeyProfile: _journeyProfile!,
     );
@@ -248,7 +259,7 @@ class SferaServiceImpl implements SferaService {
 
     for (final element in _journeyProfile!.segmentProfileReferences) {
       final segmentProfileEntity =
-          await _sferaDatabaseRepository.findSegmentProfile(element.spId, element.versionMajor, element.versionMinor);
+          await _localService.findSegmentProfile(element.spId, element.versionMajor, element.versionMinor);
       final segmentProfile = segmentProfileEntity?.toDomain();
       if (segmentProfile != null && segmentProfile.validate()) {
         _segmentProfiles.add(segmentProfile);
@@ -264,8 +275,8 @@ class SferaServiceImpl implements SferaService {
     _trainCharacteristics.clear();
 
     for (final element in _journeyProfile!.trainCharacteristicsRefSet) {
-      final trainCharacteristicsEntity = await _sferaDatabaseRepository.findTrainCharacteristics(
-          element.tcId, element.versionMajor, element.versionMinor);
+      final trainCharacteristicsEntity =
+          await _localService.findTrainCharacteristics(element.tcId, element.versionMajor, element.versionMinor);
       final trainCharacteristics = trainCharacteristicsEntity?.toDomain();
       if (trainCharacteristics != null && trainCharacteristics.validate()) {
         _trainCharacteristics.add(trainCharacteristics);
@@ -298,7 +309,7 @@ class SferaServiceImpl implements SferaService {
   }
 
   void _addEventMessageHandlers() {
-    _eventMessageHandlers.add(JourneyProfileEventHandler(_onJourneyProfileUpdated, _sferaDatabaseRepository));
+    _eventMessageHandlers.add(JourneyProfileEventHandler(_onJourneyProfileUpdated, _localService));
     _eventMessageHandlers.add(RelatedTrainInformationEventHandler(_onRelatedTrainInformationUpdated));
     _eventMessageHandlers.add(NetworkSpecificEventHandler(_onNetworkSpecificEvent));
   }
@@ -334,17 +345,5 @@ class SferaServiceImpl implements SferaService {
     if (_stateSubject.value != SferaServiceState.connected) {
       disconnect();
     }
-  }
-
-  @override
-  void dispose() {
-    _mqttStreamSubscription?.cancel();
-    _mqttStreamSubscription = null;
-  }
-
-  @override
-  MessageHeaderDto messageHeader({required String sender}) {
-    final timestamp = Format.sferaTimestamp(DateTime.now());
-    return MessageHeaderDto.create(const Uuid().v4(), timestamp, deviceId, 'TMS', sender, '0085');
   }
 }

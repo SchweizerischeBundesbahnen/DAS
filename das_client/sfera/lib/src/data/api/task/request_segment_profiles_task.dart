@@ -10,13 +10,14 @@ import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
 import 'package:sfera/src/data/dto/sfera_b2g_request_message_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:sfera/src/data/dto/sp_request_dto.dart';
-import 'package:sfera/src/data/local/db/repo/sfera_database_repository.dart';
+import 'package:sfera/src/data/format.dart';
+import 'package:sfera/src/data/local/sfera_local_database_service.dart';
 
 class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfileDto>> {
   RequestSegmentProfilesTask({
     required MqttService mqttService,
-    required SferaService sferaService,
-    required SferaDatabaseRepository sferaDatabaseRepository,
+    required SferaRemoteRepo sferaService,
+    required SferaLocalDatabaseService sferaDatabaseRepository,
     required this.otnId,
     required this.journeyProfile,
     super.timeout,
@@ -26,8 +27,8 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfileDto>> {
 
   final MqttService _mqttService;
   final OtnId otnId;
-  final SferaDatabaseRepository _sferaDatabaseRepository;
-  final SferaService _sferaService;
+  final SferaLocalDatabaseService _sferaDatabaseRepository;
+  final SferaRemoteRepo _sferaService;
   final JourneyProfileDto journeyProfile;
 
   late TaskCompleted<List<SegmentProfileDto>> _taskCompletedCallback;
@@ -62,7 +63,7 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfileDto>> {
     Fimber.i('Sending segment profiles request...');
 
     startTimeout(_taskFailedCallback);
-    final sferaTrain = SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
+    final sferaTrain = Format.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
     _mqttService.publishMessage(otnId.company, sferaTrain, sferaB2gRequestMessage.buildDocument().toString());
   }
 

@@ -9,14 +9,14 @@ import 'package:sfera/component.dart';
 import 'package:sfera/src/data/api/task/request_train_characteristics_task.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
-import 'package:sfera/src/data/local/db/repo/sfera_database_repository.dart';
+import 'package:sfera/src/data/local/sfera_local_database_service.dart';
 
 import 'sfera_request_train_characteristic_task_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<SferaService>(),
+  MockSpec<SferaRemoteRepo>(),
   MockSpec<MqttService>(),
-  MockSpec<SferaDatabaseRepository>(),
+  MockSpec<SferaLocalDatabaseService>(),
 ])
 void main() {
   late MockSferaService sferaService;

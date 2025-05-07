@@ -4,12 +4,12 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
-import 'package:sfera/src/data/local/db/entity/journey_profile_entity.dart';
-import 'package:sfera/src/data/local/db/entity/segment_profile_entity.dart';
-import 'package:sfera/src/data/local/db/entity/train_characteristics_entity.dart';
-import 'package:sfera/src/data/local/db/repo/sfera_database_repository.dart';
+import 'package:sfera/src/data/local/entity/journey_profile_entity.dart';
+import 'package:sfera/src/data/local/entity/segment_profile_entity.dart';
+import 'package:sfera/src/data/local/entity/train_characteristics_entity.dart';
+import 'package:sfera/src/data/local/sfera_local_database_service.dart';
 
-class SferaDatabaseRepositoryImpl implements SferaDatabaseRepository {
+class SferaDatabaseRepositoryImpl implements SferaLocalDatabaseService {
   late final Future<void> _initialized;
   late final Isar _db;
 

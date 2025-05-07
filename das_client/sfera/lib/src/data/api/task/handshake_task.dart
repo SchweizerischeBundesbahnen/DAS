@@ -10,18 +10,19 @@ import 'package:sfera/src/data/dto/enums/related_train_request_type_dto.dart';
 import 'package:sfera/src/data/dto/handshake_request_dto.dart';
 import 'package:sfera/src/data/dto/sfera_b2g_request_message_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
+import 'package:sfera/src/data/format.dart';
 
 class HandshakeTask extends SferaTask {
   HandshakeTask({
     required MqttService mqttService,
-    required SferaService sferaService,
+    required SferaRemoteRepo sferaService,
     required this.otnId,
     required this.dasDrivingMode,
     super.timeout,
   })  : _mqttService = mqttService,
         _sferaService = sferaService;
 
-  final SferaService _sferaService;
+  final SferaRemoteRepo _sferaService;
   final MqttService _mqttService;
   final OtnId otnId;
   final DasDrivingModeDto dasDrivingMode;
@@ -39,7 +40,7 @@ class HandshakeTask extends SferaTask {
   }
 
   _sendHandshakeRequest() {
-    final sferaTrain = SferaService.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
+    final sferaTrain = Format.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
 
     Fimber.i('Sending handshake request for company=${otnId.company} train=$sferaTrain');
     final operationMode = DasOperatingModesSupportedDto.create(

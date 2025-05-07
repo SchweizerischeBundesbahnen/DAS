@@ -153,7 +153,7 @@ extension GetItX on GetIt {
       );
     });
 
-    registerSingletonAsync<SferaService>(
+    registerSingletonAsync<SferaRemoteRepo>(
       () async {
         Fimber.i('SferaService');
         final deviceId = await DeviceIdInfo.getDeviceId();
@@ -173,11 +173,11 @@ extension GetItX on GetIt {
   void registerBlocs() {
     registerSingletonWithDependencies<TrainJourneyCubit>(
       () => TrainJourneyCubit(sferaService: DI.get()),
-      dependsOn: [SferaService],
+      dependsOn: [SferaRemoteRepo],
     );
     registerSingletonWithDependencies<UxTestingCubit>(
       () => UxTestingCubit(sferaService: DI.get())..initialize(),
-      dependsOn: [SferaService],
+      dependsOn: [SferaRemoteRepo],
     );
   }
 

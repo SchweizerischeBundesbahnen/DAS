@@ -1,16 +1,16 @@
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
-import 'package:sfera/src/data/local/db/repo/sfera_database_repository.dart';
-import 'package:sfera/src/data/local/sfera_local_service.dart';
+import 'package:sfera/src/data/local/sfera_local_database_service.dart';
+import 'package:sfera/src/data/sfera_local_repo.dart';
 import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
 import 'package:sfera/src/model/journey/journey.dart';
 
 class SferaLocalServiceImpl implements SferaLocalService {
-  const SferaLocalServiceImpl({required SferaDatabaseRepository sferaDatabaseRepository})
+  const SferaLocalServiceImpl({required SferaLocalDatabaseService sferaDatabaseRepository})
       : _sferaDatabaseRepository = sferaDatabaseRepository;
 
-  final SferaDatabaseRepository _sferaDatabaseRepository;
+  final SferaLocalDatabaseService _sferaDatabaseRepository;
 
   @override
   Stream<Journey?> journeyStream({required String company, required String trainNumber, required DateTime startDate}) {

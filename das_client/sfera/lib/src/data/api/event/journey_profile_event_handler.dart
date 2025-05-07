@@ -2,10 +2,10 @@ import 'package:fimber/fimber.dart';
 import 'package:sfera/src/data/api/event/sfera_event_message_handler.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_event_message_dto.dart';
-import 'package:sfera/src/data/local/db/repo/sfera_database_repository.dart';
+import 'package:sfera/src/data/local/sfera_local_database_service.dart';
 
 class JourneyProfileEventHandler extends SferaEventMessageHandler<JourneyProfileDto> {
-  final SferaDatabaseRepository _sferaDatabaseRepository;
+  final SferaLocalDatabaseService _sferaDatabaseRepository;
 
   JourneyProfileEventHandler(super.onMessageHandled, this._sferaDatabaseRepository);
 

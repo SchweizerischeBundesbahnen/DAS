@@ -47,6 +47,7 @@ scripts:
     run: flutter test --no-pub
     description: Run tests in components with test dir
     exec:
+      concurrency: 1
     packageFilters:
       dirExists: test
 

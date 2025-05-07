@@ -14,4 +14,7 @@ class Format {
     final dateFormat = DateFormat("yyyy-MM-ddTHH:mm:ss'Z'");
     return dateFormat.format(localDate);
   }
+
+  /// Returns formatted sfera train. Example: 1513_2025-10-10
+  static String sferaTrain(String trainNumber, DateTime date) => '${trainNumber}_${Format.sferaDate(date)}';
 }

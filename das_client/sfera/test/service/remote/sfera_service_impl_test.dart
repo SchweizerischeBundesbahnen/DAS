@@ -3,33 +3,33 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
-import 'package:sfera/src/data/api/sfera_service_impl.dart';
-import 'package:sfera/src/data/local/db/repo/sfera_database_repository.dart';
+import 'package:sfera/src/data/local/sfera_local_database_service.dart';
+import 'package:sfera/src/data/sfera_remote_repo_impl.dart';
 import 'package:uuid/uuid.dart';
 
 import 'sfera_service_impl_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<MqttService>(),
-  MockSpec<SferaDatabaseRepository>(),
+  MockSpec<SferaLocalDatabaseService>(),
   MockSpec<SferaAuthProvider>(),
 ])
 void main() {
   final OtnId otnId = OtnId(company: 'SBB', operationalTrainNumber: '12345', startDate: DateTime.now());
-  late SferaServiceImpl sferaService;
+  late SferaRemoteRepoImpl sferaService;
   late MockMqttService mockMqttService;
-  late MockSferaDatabaseRepository mockDatabaseRepository;
+  late MockSferaLocalDatabaseService mockDatabaseRepository;
   late MockSferaAuthProvider mockSferaAuthProvider;
 
   setUp(() {
     mockMqttService = MockMqttService();
-    mockDatabaseRepository = MockSferaDatabaseRepository();
+    mockDatabaseRepository = MockSferaLocalDatabaseService();
     mockSferaAuthProvider = MockSferaAuthProvider();
 
-    sferaService = SferaServiceImpl(
+    sferaService = SferaRemoteRepoImpl(
       mqttService: mockMqttService,
-      sferaDatabaseRepository: mockDatabaseRepository,
-      sferaAuthProvider: mockSferaAuthProvider,
+      localService: mockDatabaseRepository,
+      authProvider: mockSferaAuthProvider,
       deviceId: Uuid().v4(),
     );
   });

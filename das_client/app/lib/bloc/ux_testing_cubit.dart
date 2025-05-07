@@ -8,11 +8,11 @@ import 'package:sfera/component.dart';
 part 'ux_testing_state.dart';
 
 class UxTestingCubit extends Cubit<UxTestingState> {
-  UxTestingCubit({required SferaService sferaService})
+  UxTestingCubit({required SferaRemoteRepo sferaService})
       : _sferaService = sferaService,
         super(UxTestingInitial());
 
-  final SferaService _sferaService;
+  final SferaRemoteRepo _sferaService;
 
   StreamSubscription? _eventSubscription;
   StreamSubscription? _sferaStateSubscription;

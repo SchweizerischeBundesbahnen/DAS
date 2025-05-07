@@ -14,7 +14,7 @@ import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'sfera_handshake_task_test.mocks.dart';
 
 @GenerateNiceMocks([
-  MockSpec<SferaService>(),
+  MockSpec<SferaRemoteRepo>(),
   MockSpec<MqttService>(),
 ])
 void main() {
