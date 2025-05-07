@@ -14,7 +14,7 @@ class DASModalSheetController {
   static int automaticCloseAfterSeconds = 10;
 
   DASModalSheetController({
-    this.animationDuration = const Duration(milliseconds: 2000),
+    this.animationDuration = const Duration(milliseconds: 150),
     this.maxExpandedWidth = 300.0,
     this.onClose,
     this.onOpen,
