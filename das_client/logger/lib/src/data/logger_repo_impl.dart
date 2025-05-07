@@ -11,10 +11,10 @@ import 'package:synchronized/synchronized.dart';
 class LoggerRepoImpl implements LoggerRepo {
   static const _rolloverTimeMinutes = 1;
 
-  LoggerRepoImpl({required this.cacheService, required this.remoteService});
+  LoggerRepoImpl({required this.fileService, required this.apiService});
 
-  final LogFileService cacheService;
-  final LogApiService remoteService;
+  final LogFileService fileService;
+  final LogApiService apiService;
 
   final _senderLock = Lock();
   final _cacheLock = Lock();
@@ -23,15 +23,15 @@ class LoggerRepoImpl implements LoggerRepo {
 
   @override
   Future<void> saveLog(LogEntry log) async {
-    _cacheLock.synchronized(() async {
-      await cacheService.writeLog(log.toDto());
+    return _cacheLock.synchronized(() async {
+      await fileService.writeLog(log.toDto());
       await _optionalRolloverToRemote();
     });
   }
 
   Future<void> _optionalRolloverToRemote() async {
     try {
-      final cacheHasFullLogFiles = await cacheService.hasCompletedLogFiles;
+      final cacheHasFullLogFiles = await fileService.hasCompletedLogFiles;
       if (cacheHasFullLogFiles || _isRolloverTimeReached()) {
         Fimber.d('Rolling over log file');
         _nextRolloverTimeStamp = DateTime.now().add(const Duration(minutes: _rolloverTimeMinutes));
@@ -44,12 +44,12 @@ class LoggerRepoImpl implements LoggerRepo {
   }
 
   Future<void> _processCompletedLogFiles() async {
-    final completedLogFiles = await cacheService.completedLogFiles;
+    final completedLogFiles = await fileService.completedLogFiles;
     Fimber.i('Found completedLogFiles: ${completedLogFiles.length}');
     for (final file in completedLogFiles) {
       try {
         await _sendLogsSync(file.logEntries);
-        await cacheService.deleteLogFile(file);
+        await fileService.deleteLogFile(file);
       } catch (e) {
         if (e is HttpException) {
           Fimber.e('Connection error while sending logs to remote. Try again in next rollover.', ex: e);
@@ -63,7 +63,7 @@ class LoggerRepoImpl implements LoggerRepo {
 
   Future<void> _sendLogsSync(Iterable<LogEntryDto> logs) async {
     await _senderLock.synchronized(() async {
-      await remoteService.sendLogs(logs);
+      await apiService.sendLogs(logs);
       Fimber.d('Successfully sent logs to backend');
     });
   }

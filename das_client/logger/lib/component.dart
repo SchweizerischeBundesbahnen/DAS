@@ -17,7 +17,7 @@ class LoggerComponent {
     required String deviceId,
   }) {
     final remoteService = LogApiService(baseUrl: baseUrl, httpClient: httpClient);
-    final loggerRepo = LoggerRepoImpl(cacheService: LogFileServiceImpl(), remoteService: remoteService);
+    final loggerRepo = LoggerRepoImpl(fileService: LogFileServiceImpl(), apiService: remoteService);
     return DasLogTree(loggerRepo: loggerRepo, deviceId: deviceId);
   }
 }

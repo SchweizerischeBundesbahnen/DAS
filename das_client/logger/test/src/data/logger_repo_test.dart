@@ -1,25 +1,39 @@
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/component.dart';
+import 'package:logger/src/data/api/endpoint/send_logs.dart';
 import 'package:logger/src/data/api/log_api_service.dart';
+import 'package:logger/src/data/dto/log_file_dto.dart';
 import 'package:logger/src/data/local/log_file_service.dart';
 import 'package:logger/src/data/logger_repo.dart';
 import 'package:logger/src/data/logger_repo_impl.dart';
+import 'package:logger/src/data/mappers.dart';
 import 'package:logger/src/log_level.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-@GenerateNiceMocks([MockSpec<LogApiService>(), MockSpec<LogFileService>()])
+@GenerateNiceMocks([
+  MockSpec<LogApiService>(),
+  MockSpec<LogFileService>(),
+  MockSpec<SendLogsRequest>(),
+  MockSpec<SendLogsResponse>(),
+])
 import 'logger_repo_test.mocks.dart';
 
 void main() {
   late LoggerRepo testee;
-  late MockLogApiService mockApiService;
-  late MockLogFileService mockFileService;
+  late MockLogApiService apiService;
+  late MockLogFileService fileService;
+  late MockSendLogsRequest mockSendLogsRequest;
+  late MockSendLogsResponse mockSendLogsResponse;
 
   setUp(() {
-    mockFileService = MockLogFileService();
-    mockApiService = MockLogApiService();
-    testee = LoggerRepoImpl(cacheService: mockFileService, remoteService: mockApiService);
+    fileService = MockLogFileService();
+    apiService = MockLogApiService();
+    mockSendLogsRequest = MockSendLogsRequest();
+    mockSendLogsResponse = MockSendLogsResponse();
+    testee = LoggerRepoImpl(fileService: fileService, apiService: apiService);
   });
 
   final simpleLogFile = LogEntry(
@@ -28,104 +42,78 @@ void main() {
     {'key': 'value'},
   );
 
-  final fourKiloBytesLog = LogEntry(
-    // metadata takes around 70 bytes
-    'A' * 3935,
-    LogLevel.warning,
-    {},
-  );
-
   test('saveLog_whenNoCompletedLogFiles_shouldWriteAndNotRollover', () async {
     // arrange
-    when(mockFileService.writeLog(any)).thenAnswer((_) => Future.value());
-    when(mockFileService.hasCompletedLogFiles).thenAnswer((_) => Future.value(false));
+    when(fileService.writeLog(any)).thenAnswer((_) => Future.value());
+    when(fileService.hasCompletedLogFiles).thenAnswer((_) => Future.value(false));
 
     // act
     await testee.saveLog(simpleLogFile);
 
     // expect
-    verify(mockFileService.writeLog(any)).called(1);
-    verify(mockFileService.hasCompletedLogFiles).called(1);
-    verifyNever(mockFileService.completedLogFiles);
-    verifyNever(mockApiService.sendLogs);
+    verify(fileService.writeLog(any)).called(1);
+    verify(fileService.hasCompletedLogFiles).called(1);
+    verifyNever(fileService.completedLogFiles);
+    verifyNever(apiService.sendLogs);
+  });
+
+  test('saveLog_whenHasCompletedLogFiles_shouldWriteAndRolloverAndDelete', () async {
+    // arrange
+    final logFile = LogFileDto(logEntries: [simpleLogFile.toDto()], file: File('fakeFile.json'));
+    when(fileService.writeLog(any)).thenAnswer((_) async {});
+    when(fileService.hasCompletedLogFiles).thenAnswer((_) async => true);
+    when(fileService.completedLogFiles).thenAnswer((_) async => [logFile]);
+    when(fileService.deleteLogFile(logFile)).thenAnswer((_) async {});
+    when(mockSendLogsRequest.call(any)).thenAnswer((_) async => mockSendLogsResponse);
+    when(apiService.sendLogs).thenReturn(mockSendLogsRequest);
+
+    // act
+    await testee.saveLog(simpleLogFile);
+
+    // expect
+    verify(fileService.writeLog(any)).called(1);
+    verify(fileService.hasCompletedLogFiles).called(1);
+    verify(fileService.completedLogFiles).called(1);
+    verify(apiService.sendLogs).called(1);
+    verify(fileService.deleteLogFile(logFile)).called(1);
+  });
+
+  test('saveLog_whenHasMultipleCompletedLogFiles_shouldWriteAndRolloverAndDelete', () async {
+    // arrange
+    final logFile = LogFileDto(logEntries: [simpleLogFile.toDto()], file: File('fakeFile.json'));
+    when(fileService.writeLog(any)).thenAnswer((_) async {});
+    when(fileService.hasCompletedLogFiles).thenAnswer((_) async => true);
+    when(fileService.completedLogFiles).thenAnswer((_) async => [logFile, logFile, logFile]);
+    when(fileService.deleteLogFile(logFile)).thenAnswer((_) async {});
+    when(mockSendLogsRequest.call(any)).thenAnswer((_) async => mockSendLogsResponse);
+    when(apiService.sendLogs).thenReturn(mockSendLogsRequest);
+
+    // act
+    await testee.saveLog(simpleLogFile);
+
+    // expect
+    verify(fileService.writeLog(any)).called(1);
+    verify(fileService.hasCompletedLogFiles).called(1);
+    verify(fileService.completedLogFiles).called(1);
+    verify(apiService.sendLogs).called(3);
+    verify(fileService.deleteLogFile(logFile)).called(3);
+  });
+
+  test('saveLog_whenSendFails_shouldNotDeleteLogFile', () async {
+    // arrange
+    final logFile = LogFileDto(logEntries: [simpleLogFile.toDto()], file: File('fakeFile.json'));
+    when(fileService.writeLog(any)).thenAnswer((_) async {});
+    when(fileService.hasCompletedLogFiles).thenAnswer((_) async => true);
+    when(fileService.completedLogFiles).thenAnswer((_) async => [logFile]);
+    when(fileService.deleteLogFile(logFile)).thenAnswer((_) async {});
+    when(mockSendLogsRequest.call(any)).thenThrow(HttpException('fakeException'));
+    when(apiService.sendLogs).thenReturn(mockSendLogsRequest);
+
+    // act
+    await testee.saveLog(simpleLogFile);
+
+    // expect
+    verify(apiService.sendLogs).called(1);
+    verifyNever(fileService.deleteLogFile(any));
   });
 }
-
-//
-//   test('Test rolls over files after size limit reached', () async {
-//     final loggingService = LogService(backendService: mockBackendService);
-//     when(mockBackendService.sendLogs(any)).thenAnswer((input) => Future.value(false));
-//
-//     var files = logDirectory.listSync();
-//     expect(files, hasLength(0));
-//     final logEntry = LogEntry('Test message', LogLevel.info, {'version': '0.1', 'systemName': 'unitTests'});
-//     loggingService.save(logEntry);
-//
-//     await Future.delayed(const Duration(milliseconds: 20));
-//
-//     files = logDirectory.listSync();
-//     expect(files, hasLength(1));
-//
-//     for (var i = 0; i < 400; i++) {
-//       loggingService.save(logEntry);
-//     }
-//
-//     await Future.delayed(const Duration(milliseconds: 20));
-//
-//     files = logDirectory.listSync();
-//     expect(files, hasLength(2));
-//
-//     await Future.delayed(const Duration(milliseconds: 20));
-//   });
-//
-//   test('Test send logs after rolling over file', () async {
-//     final loggingService = LogService(backendService: mockBackendService);
-//     when(mockBackendService.sendLogs(any)).thenAnswer((input) => Future.value(false));
-//
-//     var files = logDirectory.listSync();
-//     expect(files, hasLength(0));
-//     final logEntry = LogEntry('Test message', LogLevel.info, {'version': '0.1', 'systemName': 'unitTests'});
-//     loggingService.save(logEntry);
-//
-//     await Future.delayed(const Duration(milliseconds: 20));
-//
-//     files = logDirectory.listSync();
-//     expect(files, hasLength(1));
-//
-//     for (var i = 0; i < 400; i++) {
-//       loggingService.save(logEntry);
-//     }
-//
-//     await Future.delayed(const Duration(milliseconds: 20));
-//
-//     files = logDirectory.listSync();
-//     expect(files, hasLength(2));
-//
-//     verify(mockBackendService.sendLogs(any)).called(1);
-//   });
-//
-//   test('Test file deletion after successful backend request', () async {
-//     final loggingService = LogService(backendService: mockBackendService);
-//     when(mockBackendService.sendLogs(any)).thenAnswer((input) => Future.value(true));
-//
-//     var files = logDirectory.listSync();
-//     expect(files, hasLength(0));
-//     final logEntry = LogEntry('Test message', LogLevel.info, {'version': '0.1', 'systemName': 'unitTests'});
-//     loggingService.save(logEntry);
-//
-//     await Future.delayed(const Duration(milliseconds: 20));
-//
-//     files = logDirectory.listSync();
-//     expect(files, hasLength(1));
-//
-//     for (var i = 0; i < 400; i++) {
-//       loggingService.save(logEntry);
-//     }
-//
-//     await Future.delayed(const Duration(milliseconds: 20));
-//
-//     files = logDirectory.listSync();
-//     expect(files, hasLength(1));
-//     verify(mockBackendService.sendLogs(any)).called(1);
-//   });
-// }
