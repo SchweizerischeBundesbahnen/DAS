@@ -24,7 +24,7 @@ class RequestTrainCharacteristicsTask extends SferaTask<List<TrainCharacteristic
         _sferaService = sferaService;
 
   final MqttService _mqttService;
-  final OtnIdDto otnId;
+  final OtnId otnId;
   final SferaDatabaseRepository _sferaDatabaseRepository;
   final SferaService _sferaService;
   final JourneyProfileDto journeyProfile;

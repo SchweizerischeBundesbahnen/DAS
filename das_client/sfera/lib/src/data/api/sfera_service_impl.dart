@@ -19,6 +19,7 @@ import 'package:sfera/src/data/dto/enums/das_driving_mode_dto.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_event_dto.dart';
+import 'package:sfera/src/data/dto/otn_id_dto.dart';
 import 'package:sfera/src/data/dto/related_train_information_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/sfera_b2g_event_message_dto.dart';
@@ -66,7 +67,7 @@ class SferaServiceImpl implements SferaService {
   @override
   Stream<UxTesting?> get uxTestingStream => _uxTestingSubject.stream;
 
-  OtnIdDto? _otnId;
+  OtnId? _otnId;
   JourneyProfileDto? _journeyProfile;
   final List<SegmentProfileDto> _segmentProfiles = [];
   final List<TrainCharacteristicsDto> _trainCharacteristics = [];
@@ -78,7 +79,7 @@ class SferaServiceImpl implements SferaService {
   /// Connects to SFERA broker and initiate Handshake with [HandshakeTask].
   /// Other tasks like loading SP, JPs and TCs are triggered on completion.
   @override
-  Future<void> connect(OtnIdDto otnId) async {
+  Future<void> connect(OtnId otnId) async {
     Fimber.i('Starting new connection for $otnId');
     _otnId = otnId;
     _tasks.clear();
@@ -155,7 +156,7 @@ class SferaServiceImpl implements SferaService {
     }
   }
 
-  Future<void> _initiateHandshake(OtnIdDto otnId) async {
+  Future<void> _initiateHandshake(OtnId otnId) async {
     _stateSubject.add(SferaServiceState.handshaking);
     final isDriver = await _sferaAuthProvider.isDriver();
     final drivingMode = isDriver ? DasDrivingModeDto.dasNotConnected : DasDrivingModeDto.readOnly;

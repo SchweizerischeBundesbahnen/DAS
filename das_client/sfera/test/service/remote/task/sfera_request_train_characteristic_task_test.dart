@@ -22,7 +22,7 @@ void main() {
   late MockSferaService sferaService;
   late MockMqttService mqttService;
   late MockSferaDatabaseRepository sferaRepository;
-  late OtnIdDto otnId;
+  late OtnId otnId;
   Fimber.plantTree(DebugTree());
 
   setUp(() {
@@ -30,7 +30,7 @@ void main() {
     when(sferaService.messageHeader(sender: anyNamed('sender'))).thenReturn(MessageHeaderDto());
     mqttService = MockMqttService();
     sferaRepository = MockSferaDatabaseRepository();
-    otnId = OtnIdDto.create('1085', '719', DateTime.now());
+    otnId = OtnId(company: '1085', operationalTrainNumber: '719', startDate: DateTime.now());
   });
 
   test('Test TC request successful', () async {
