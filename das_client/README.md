@@ -82,9 +82,10 @@ fvm dart run melos test
 ### Running Integration Tests
 
 Instrumentation tests do not use user authentication. Therefore the credentials must be provided as environment variables.
+Run the following command in the `app` folder.
 
 ```shell
-fvm flutter test --flavor dev --dart-define=MQTT_USERNAME=${MQTT_USERNAME} --dart-define=MQTT_PASSWORD=${MQTT_PASSWORD} app/integration_test/app_test.dart
+fvm flutter test --flavor dev --dart-define=MQTT_USERNAME=${MQTT_USERNAME} --dart-define=MQTT_PASSWORD=${MQTT_PASSWORD} integration_test/app_test.dart
 ```
 
 ### Test file structure
