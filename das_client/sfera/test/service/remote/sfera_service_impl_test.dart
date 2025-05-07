@@ -15,7 +15,7 @@ import 'sfera_service_impl_test.mocks.dart';
   MockSpec<SferaAuthProvider>(),
 ])
 void main() {
-  final OtnId otnId  = OtnId(company: 'SBB', operationalTrainNumber: '12345', startDate: DateTime.now());
+  final OtnId otnId = OtnId(company: 'SBB', operationalTrainNumber: '12345', startDate: DateTime.now());
   late SferaServiceImpl sferaService;
   late MockMqttService mockMqttService;
   late MockSferaDatabaseRepository mockDatabaseRepository;
