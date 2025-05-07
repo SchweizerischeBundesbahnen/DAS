@@ -63,6 +63,11 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   final _journeyProfileSubject = BehaviorSubject<Journey?>.seeded(null);
   final _uxTestingSubject = BehaviorSubject<UxTesting?>.seeded(null);
 
+  // TODO: refactor _sferaService.stateStream & journeyUpdateStream & (connect / disconnect)
+  // repository should not expose a state, should just expose data stream
+  // once first listener tunes in, connect
+  // once last listener cancels subscription, disconnect
+  // refactor with viewModel change
   @override
   Stream<SferaServiceState> get stateStream => _stateSubject.distinct();
 
