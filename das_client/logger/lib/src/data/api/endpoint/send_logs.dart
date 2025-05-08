@@ -9,7 +9,7 @@ class SendLogsRequest {
   final Client httpClient;
 
   Future<SendLogsResponse> call(Iterable<LogEntryDto> logEntries) async {
-    final url = Uri.https(baseUrl, '/api/v1/logging/logs');
+    final url = Uri.https(baseUrl, '/v1/logging/logs');
     final response = await httpClient.post(
       url,
       headers: {'Content-Type': 'application/json'},

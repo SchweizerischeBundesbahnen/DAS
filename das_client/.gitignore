@@ -39,6 +39,9 @@ coverage/
 .pub/
 /build/
 
+# log file
+**/das-log-lastSavedFile.json
+
 # Symbolication related
 app.*.symbols
 
