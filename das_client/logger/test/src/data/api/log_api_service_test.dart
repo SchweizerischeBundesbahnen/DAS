@@ -47,7 +47,7 @@ void main() {
     // EXPECT
     expect(response.headers, equals(expectedHeaders));
 
-    final expectedUrl = Uri.https(baseUrl, '/api/v1/logging/logs');
+    final expectedUrl = Uri.https(baseUrl, '/v1/logging/logs');
     verify(
       mockClient.post(
         expectedUrl,
