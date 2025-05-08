@@ -14,7 +14,7 @@ main() {
     final notGiven = networkChanges.appliesToOrder(0);
     final gsmP1 = networkChanges.appliesToOrder(100);
     final gsmP2 = networkChanges.appliesToOrder(150);
-    final gsmPSimIgnored = networkChanges.appliesToOrder(250);
+    final gsmPSimIgnored = networkChanges.whereNotSim.appliesToOrder(250);
     final gsmR1 = networkChanges.appliesToOrder(300);
     final gsmR2 = networkChanges.appliesToOrder(350);
 
