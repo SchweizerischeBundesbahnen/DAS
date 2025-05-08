@@ -1,8 +1,8 @@
 import 'package:clock/clock.dart';
 import 'package:fimber/fimber.dart';
-import 'package:http_x/component.dart';
 import 'package:logger/src/data/api/log_api_service.dart';
 import 'package:logger/src/data/dto/log_entry_dto.dart';
+import 'package:logger/src/data/dto/log_file_dto.dart';
 import 'package:logger/src/data/local/log_file_service.dart';
 import 'package:logger/src/data/logger_repo.dart';
 import 'package:logger/src/data/mappers.dart';
@@ -10,7 +10,8 @@ import 'package:logger/src/log_entry.dart';
 import 'package:synchronized/synchronized.dart';
 
 class LoggerRepoImpl implements LoggerRepo {
-  static const _rolloverTimeMinutes = 1;
+  static const _rolloverTimeMinutes = 5;
+  static const _retryDelayAfterFailedSendMinutes = 1;
 
   LoggerRepoImpl({required this.fileService, required this.apiService});
 
@@ -21,6 +22,7 @@ class LoggerRepoImpl implements LoggerRepo {
   final _cacheLock = Lock();
 
   DateTime _nextRolloverTimeStamp = clock.now().add(const Duration(minutes: _rolloverTimeMinutes));
+  DateTime _stopSendingUntil = clock.now().subtract(const Duration(milliseconds: 10));
 
   @override
   Future<void> saveLog(LogEntry log) async {
@@ -32,9 +34,7 @@ class LoggerRepoImpl implements LoggerRepo {
 
   Future<void> _optionalRolloverToRemote() async {
     try {
-      final cacheHasFullLogFiles = await fileService.hasCompletedLogFiles;
-      final rolloverReached = _isRolloverTimeReached();
-      if (cacheHasFullLogFiles || rolloverReached) {
+      if (await _shouldRollover()) {
         Fimber.d('Rolling over log file');
         await fileService.completeCurrentFile();
         _nextRolloverTimeStamp = clock.now().add(const Duration(minutes: _rolloverTimeMinutes));
@@ -52,15 +52,20 @@ class LoggerRepoImpl implements LoggerRepo {
     for (final file in completedLogFiles) {
       try {
         await _sendLogsSync(file.logEntries);
-        await fileService.deleteLogFile(file);
-      } catch (e) {
-        if (e is HttpException) {
-          Fimber.e('Connection error while sending logs to remote. Try again in next rollover.', ex: e);
-          break;
-        } else {
-          Fimber.e('Send and clear logs from ${file.file.path} failed.', ex: e);
-        }
+      } catch (ex) {
+        Fimber.e('Connection error while sending logs to remote.', ex: ex);
+        _stopSendingUntil = clock.now().add(Duration(minutes: _retryDelayAfterFailedSendMinutes));
+        break;
       }
+      await _tryDelete(file);
+    }
+  }
+
+  Future<void> _tryDelete(LogFileDto file) async {
+    try {
+      await fileService.deleteLogFile(file);
+    } catch (ex) {
+      Fimber.e('Send and clear logs from ${file.file.path} failed.', ex: ex);
     }
   }
 
@@ -69,6 +74,13 @@ class LoggerRepoImpl implements LoggerRepo {
       await apiService.sendLogs(logs);
       Fimber.d('Successfully sent logs to backend');
     });
+  }
+
+  Future<bool> _shouldRollover() async {
+    final hasLogFilesToSend = await fileService.hasCompletedLogFiles;
+    final isRolloverTimeReached = _isRolloverTimeReached();
+    final isAllowedToSend = _stopSendingUntil.isBefore(clock.now());
+    return isAllowedToSend && (hasLogFilesToSend || isRolloverTimeReached);
   }
 
   bool _isRolloverTimeReached() => _nextRolloverTimeStamp.isBefore(clock.now());

@@ -127,10 +127,10 @@ void main() {
     when(fileService.deleteLogFile(logFile)).thenAnswer((_) async {});
     when(mockSendLogsRequest.call(any)).thenAnswer((_) async => mockSendLogsResponse);
     when(apiService.sendLogs).thenReturn(mockSendLogsRequest);
-    final fiveMinutesFromNow = DateTime.now().add(const Duration(minutes: 5));
+    final sixMinutesFromNow = DateTime.now().add(const Duration(minutes: 6));
 
     // act
-    await withClock(Clock.fixed(fiveMinutesFromNow), () async {
+    await withClock(Clock.fixed(sixMinutesFromNow), () async {
       await testee.saveLog(simpleLogFile);
     });
 
@@ -138,5 +138,28 @@ void main() {
     verify(fileService.completedLogFiles).called(1);
     verify(apiService.sendLogs).called(1);
     verify(fileService.deleteLogFile(logFile)).called(1);
+  });
+
+  test('saveLog_whenSendFails_shouldNotResendUntilAfterDelay', () async {
+    // arrange
+    final logFile = LogFileDto(logEntries: [simpleLogFile.toDto()], file: File('fakeFile.json'));
+    when(fileService.writeLog(any)).thenAnswer((_) async {});
+    when(fileService.hasCompletedLogFiles).thenAnswer((_) async => true);
+    when(fileService.completedLogFiles).thenAnswer((_) async => [logFile]);
+    when(fileService.deleteLogFile(logFile)).thenAnswer((_) async {});
+    when(mockSendLogsRequest.call(any)).thenThrow(HttpException('fakeException'));
+    when(apiService.sendLogs).thenReturn(mockSendLogsRequest);
+    final fiveMinutesFromNow = DateTime.now().add(const Duration(minutes: 5));
+
+    // act
+    await testee.saveLog(simpleLogFile); // will fail
+    await testee.saveLog(simpleLogFile); // shouldNotCallAgain
+    await withClock(Clock.fixed(fiveMinutesFromNow), () async {
+      await testee.saveLog(simpleLogFile); // should try and fail again
+    });
+
+    // expect
+    verify(apiService.sendLogs).called(2);
+    verifyNever(fileService.deleteLogFile(any));
   });
 }
