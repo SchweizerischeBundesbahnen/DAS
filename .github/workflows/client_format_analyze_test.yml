@@ -1,0 +1,55 @@
+name: Client Format Analyze Test
+
+defaults:
+  run:
+    working-directory: das_client
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    paths:
+      - 'das_client/**'
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        cache: 'gradle'
+
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.27.4'
+        cache: true
+
+    - name: Get dependencies
+      run: flutter pub get
+
+    - name: Format check with line length 120
+      run: dart format -l 120 -o none --set-exit-if-changed .
+
+    - name: Setup melos
+      uses: bluefireteam/melos-action@v3
+      with:
+        melos-version: '^6.3.0'
+        run-bootstrap: 'false'
+
+    - name: Generate sources
+      run: melos generate
+
+#    - name: Analyze Src
+#      run: flutter analyze --no-pub
+
+    - name: Flutter test
+      run: melos test
+

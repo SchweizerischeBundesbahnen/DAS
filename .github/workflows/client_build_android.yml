@@ -1,0 +1,71 @@
+name: Client Build Android
+
+defaults:
+  run:
+    working-directory: das_client
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    paths:
+      - 'das_client/**'
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        cache: 'gradle'
+
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.27.4'
+        cache: true
+
+    - name: Setup melos
+      uses: bluefireteam/melos-action@v3
+      with:
+        melos-version: '^6.3.0'
+        run-bootstrap: 'false'
+
+    - name: Get dependencies
+      run: flutter pub get
+
+    - name: Generate sources
+      run: melos generate
+
+    - name: Prepare Android Secrets 🤫
+      env:
+        ANDROID_KEYSTORE_STRING: ${{ secrets.ANDROID_KEYSTORE }}
+        ANDROID_KEYSTORE: ${{ github.workspace }}/das_client/app/android/das.keystore
+        ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      run: |
+        echo $ANDROID_KEYSTORE_STRING | base64 -d > $ANDROID_KEYSTORE
+        echo "ANDROID_KEYSTORE=$ANDROID_KEYSTORE" >> "$GITHUB_ENV"
+        echo "ANDROID_KEYSTORE_PASSWORD=$ANDROID_KEYSTORE_PASSWORD" >> "$GITHUB_ENV"
+        echo "ANDROID_KEY_ALIAS=$ANDROID_KEY_ALIAS" >> "$GITHUB_ENV"
+        echo "ANDROID_KEY_PASSWORD=$ANDROID_KEY_PASSWORD" >> "$GITHUB_ENV"
+
+    - name: Build Appbundle DEV
+      run: flutter build appbundle --flavor dev -t lib/main_dev.dart
+      working-directory: das_client/app
+
+    - name: Build Appbundle INTE
+      run: flutter build appbundle --flavor inte -t lib/main_inte.dart
+      working-directory: das_client/app
+
+    - name: Build Appbundle PROD
+      run: flutter build appbundle --flavor prod -t lib/main_prod.dart
+      working-directory: das_client/app

@@ -1,0 +1,133 @@
+# This workflow is triggered whenever a release please PR is merged with label autorelease:das_client.
+# This builds and releases the iOS version of the app.
+
+name: Client release iOS
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  prepare:
+    runs-on: macos-15
+    concurrency:
+      group: release-das-client-ios
+    defaults:
+      run:
+        working-directory: das_client
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.27.4'
+          cache: true
+
+      - name: Setup melos
+        uses: bluefireteam/melos-action@v3
+        with:
+          melos-version: '^6.3.0'
+          run-bootstrap: 'false'
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate sources
+        run: melos generate
+
+      - name: Upload generated srcs  # saves around 40 sec
+        uses: actions/upload-artifact@v4
+        with:
+          name: gen_srcs_ios
+          path: |
+            **/*.g.dart
+            **/*.gr.dart
+            **/*.mocks.dart
+            **/i18n/gen
+
+  release:
+    needs: [prepare]
+    runs-on: macos-15
+    defaults:
+      run:
+        working-directory: das_client
+
+    strategy:
+      matrix:
+        include: # will run three jobs in parallel
+          - flavor: "dev"
+            bundle-id: 'ch.sbb.das.dev'
+            app-root: 'app/lib/main_dev.dart'
+            archive-filename: 'DAS Dev.xcarchive'
+          - flavor: "inte"
+            bundle-id: 'ch.sbb.das.inte'
+            app-root: 'app/lib/main_inte.dart'
+            archive-filename: 'DAS Inte.xcarchive'
+          - flavor: "prod"
+            bundle-id: 'ch.sbb.das'
+            app-root: 'app/lib/main_prod.dart'
+            archive-filename: 'DAS.xcarchive'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.27.4'
+          cache: true
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Download gen srcs
+        uses: actions/download-artifact@v4
+        with:
+          name: gen_srcs_ios
+
+      - name: Install Apple signing certificate and appstore connect key
+        env:
+          SBB_APPSTORE_BASE64: ${{ secrets.SBB_APPSTORE_BASE64 }}
+          SBB_APPSTORE_P12_PASSWORD: ${{ secrets.SBB_APPSTORE_P12_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+          APPSTORE_CONNECT_PRIVATE_KEY_BASE64: ${{ secrets.APPSTORE_CONNECT_PRIVATE_KEY_BASE64 }}
+        run: |
+          # create variables
+          SBB_CERTIFICATE_PATH=$RUNNER_TEMP/sbb_appstore.p12
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+          APPSTORE_CONNECT_PRIVATE_KEY_PATH=~/AuthKey.p8
+
+          # import certificate and private key from secrets
+          echo -n "$SBB_APPSTORE_BASE64" | base64 --decode -o $SBB_CERTIFICATE_PATH
+          echo -n "$APPSTORE_CONNECT_PRIVATE_KEY_BASE64" | base64 --decode -o $APPSTORE_CONNECT_PRIVATE_KEY_PATH
+
+          # create temporary keychain
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
+          # import certificate to keychain
+          security import $SBB_CERTIFICATE_PATH -P "$SBB_APPSTORE_P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+
+      - name: Download Provisioning Profiles
+        uses: apple-actions/download-provisioning-profiles@v4
+        with:
+          bundle-id: ${{ matrix.bundle-id }}
+          issuer-id: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
+          api-key-id: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
+          api-private-key: ${{ secrets.APPSTORE_CONNECT_PRIVATE_KEY }}
+
+      - name: Build and Deploy iOS App
+        env:
+          APPSTORE_CONNECT_KEY_ID: ${{ secrets.APPSTORE_CONNECT_KEY_ID }}
+          APPSTORE_CONNECT_ISSUER_ID: ${{ secrets.APPSTORE_CONNECT_ISSUER_ID }}
+        run: |
+          flutter build ipa --flavor ${{ matrix.flavor }} -t ${{ matrix.app-root }} --release --no-codesign
+          xcodebuild -exportArchive -archivePath "build/ios/archive/${{ matrix.archive-filename }}" -exportOptionsPlist ios/exportOptionsRelease.plist -authenticationKeyIssuerID "$APPSTORE_CONNECT_ISSUER_ID" -authenticationKeyID "$APPSTORE_CONNECT_KEY_ID" -authenticationKeyPath ~/AuthKey.p8
+        working-directory: das_client/app

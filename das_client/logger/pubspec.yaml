@@ -1,0 +1,47 @@
+name: logger
+publish_to: 'none'
+version: 1.0.0
+
+environment:
+  sdk: ^3.6.2
+
+resolution: workspace
+
+dependencies:
+  # workspaces
+  http_x: 1.0.0
+
+  # https://pub.dev/packages/json_annotation
+  json_annotation: ^4.9.0
+  # https://pub.dev/packages/fimber
+  fimber: ^0.7.0
+  # https://pub.dev/packages/path_provider
+  path_provider: ^2.1.5
+  # https://pub.dev/packages/synchronized
+  synchronized: ^3.3.0
+  # https://pub.dev/packages/device_info_plus
+  device_info_plus: ^11.3.0
+  # https://pub.dev/packages/package_info_plus
+  package_info_plus: ^8.3.0
+  # https://pub.dev/packages/clock
+  clock: ^1.1.1
+  # https://pub.dev/packages/path
+  path: ^1.9.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # https://pub.dev/packages/build_runner
+  build_runner: ^2.4.15
+  # https://pub.dev/packages/json_serializable
+  json_serializable: ^6.9.0
+  # https://pub.dev/packages/mockito
+  mockito: ^5.4.5
+  # https://pub.dev/packages/path_provider
+  path_provider_platform_interface: any
+  # https://pub.dev/packages/plugin_platform_interface
+  plugin_platform_interface: any
+  # https://pub.dev/packages/flutter_lints
+  flutter_lints: ^5.0.0
+
