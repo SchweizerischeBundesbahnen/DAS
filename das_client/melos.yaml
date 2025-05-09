@@ -1,0 +1,57 @@
+name: das_client
+publish_to: none
+
+environment:
+  sdk: ^3.6.2
+
+packages:
+  - app
+  - auth
+  - http_x
+  - mqtt
+  - logger
+  - sfera
+
+
+scripts:
+  clean:das:
+    description: Run cleanup of das client files
+    run: flutter clean
+    exec:
+      concurrency: 4
+    packageFilters:
+      flutter: true
+
+  generate:
+    run: |
+      melos run generate:build_runner --no-select &&
+      melos run generate:intl
+
+  generate:build_runner:
+    run: dart run build_runner build --delete-conflicting-outputs
+    description: Run build_runner in all components
+    exec:
+      orderDependents: true
+    packageFilters:
+      dependsOn: "build_runner"
+
+  generate:intl:
+    run: flutter gen-l10n
+    description: Run generation of internationalization files
+    exec:
+      concurrency: 1
+    packageFilters:
+      dirExists: l10n
+
+  test:
+    run: flutter test --no-pub
+    description: Run tests in components with test dir
+    exec:
+      failFast: false
+    packageFilters:
+      dirExists: test
+
+command:
+  clean:
+    hooks:
+      post: melos run clean:das --no-select
