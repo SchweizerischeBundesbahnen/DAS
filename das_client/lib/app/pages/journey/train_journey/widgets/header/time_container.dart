@@ -1,15 +1,55 @@
+import 'dart:async';
+
 import 'package:das_client/app/bloc/train_journey_cubit.dart';
 import 'package:das_client/app/widgets/das_text_styles.dart';
 import 'package:das_client/model/journey/journey.dart';
+import 'package:das_client/theme/theme_util.dart';
+import 'package:das_client/time_controller/time_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-class TimeContainer extends StatelessWidget {
+class TimeContainer extends StatefulWidget {
   const TimeContainer({super.key});
 
   @override
+  State<TimeContainer> createState() => _TimeContainerState();
+}
+
+//TODO still have to add that when first no update comes and the PüA disappears it needs to reappear as soon as an update arrives
+
+class _TimeContainerState extends State<TimeContainer> {
+  DateTime? _lastUpdate;
+  late final Timer _checkTimer;
+  final DateTime _initialRenderTime = DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+    _checkTimer = Timer.periodic(const Duration(milliseconds: 100), (_) => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    _checkTimer.cancel();
+    super.dispose();
+  }
+
+  Duration _timeSinceUpdate() {
+    return _lastUpdate == null
+        ? DateTime.now().difference(_initialRenderTime)
+        : DateTime.now().difference(_lastUpdate!);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final Duration sinceUpdate = _timeSinceUpdate();
+    final timeController = TimeController();
+    final staleTime = timeController.punctualityStaleSeconds;
+    final disappearTime = timeController.punctualityDisappearSeconds;
+    final bool isStale = sinceUpdate > Duration(seconds: staleTime);
+    final bool isVisible = sinceUpdate < Duration(seconds: disappearTime);
+
     return SBBGroup(
       padding: const EdgeInsets.all(sbbDefaultSpacing),
       useShadow: false,
@@ -22,7 +62,12 @@ class TimeContainer extends StatelessWidget {
           children: [
             Flexible(child: _currentTime()),
             _divider(),
-            Flexible(child: _punctualityDisplay(context)),
+            if (isVisible)
+              Flexible(child: _punctualityDisplay(context, isStale))
+            else
+              SizedBox(
+                height: sbbDefaultSpacing * 2.5,
+              ),
           ],
         ),
       ),
@@ -36,22 +81,31 @@ class TimeContainer extends StatelessWidget {
     );
   }
 
-  Widget _punctualityDisplay(BuildContext context) {
+  Widget _punctualityDisplay(BuildContext context, bool isStale) {
     return StreamBuilder<Journey?>(
       stream: context.trainJourneyCubit.journeyStream,
       builder: (context, snapshot) {
-        var punctualityString = '+00:00';
         final delay = snapshot.data?.metadata.delay;
         if (delay != null) {
-          final String minutes = NumberFormat('00').format(delay.inMinutes.abs() % 60);
-          final String seconds = NumberFormat('00').format(delay.inSeconds.abs() % 60);
+          _lastUpdate = DateTime.now();
+        }
+
+        var punctualityString = '+00:00';
+        if (delay != null) {
+          final minutes = NumberFormat('00').format(delay.inMinutes.abs() % 60);
+          final seconds = NumberFormat('00').format(delay.inSeconds.abs() % 60);
           punctualityString = '${delay.isNegative ? '-' : '+'}$minutes:$seconds';
         }
+
+        final style = isStale
+            ? DASTextStyles.xLargeLight
+                .copyWith(color: ThemeUtil.getColor(context, SBBColors.graphite, SBBColors.granite))
+            : DASTextStyles.xLargeLight;
 
         return Padding(
           padding:
               const EdgeInsets.fromLTRB(sbbDefaultSpacing * 0.5, 0.0, sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5),
-          child: Text(punctualityString, style: DASTextStyles.xLargeLight),
+          child: Text(punctualityString, style: style),
         );
       },
     );

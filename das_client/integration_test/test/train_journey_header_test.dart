@@ -10,6 +10,7 @@ import 'package:das_client/app/pages/journey/train_journey/widgets/notification/
 import 'package:das_client/app/widgets/indicator_wrapper.dart';
 import 'package:das_client/brightness/brightness_manager.dart';
 import 'package:das_client/di.dart';
+import 'package:das_client/time_controller/time_controller.dart';
 import 'package:das_client/util/format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -23,6 +24,17 @@ import '../util/test_utils.dart';
 
 Future<void> main() async {
   group('train journey header test', () {
+    testWidgets('test punctuality display when no updates come', (tester) async {
+      await prepareAndStartApp(tester);
+
+      final timeContainer = TimeController();
+
+      timeContainer.changeTimerPunctualityDisplay(newPunctualityGraySeconds: 2, newPunctualityDisappearSeconds: 3);
+
+      expect(timeContainer.punctualityStaleSeconds, 2);
+      expect(timeContainer.punctualityDisappearSeconds, 3);
+    });
+
     testWidgets('test always-on display is turned on when journey is loaded', (tester) async {
       await prepareAndStartApp(tester);
 
