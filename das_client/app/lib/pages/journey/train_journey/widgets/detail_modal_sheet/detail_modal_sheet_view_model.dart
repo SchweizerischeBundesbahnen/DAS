@@ -75,7 +75,7 @@ class DetailModalSheetViewModel {
     final subscription = Rx.combineLatest2(
       _rxServicePoint.stream,
       _rxMetadata.stream,
-      (servicePoint, metadata) => metadata.communicationNetworkChanges.appliesToOrder(servicePoint.order),
+      (servicePoint, metadata) => metadata.communicationNetworkChanges.whereNotSim.appliesToOrder(servicePoint.order),
     ).listen(_rxCommunicationNetworkType.add, onError: _rxCommunicationNetworkType.addError);
     _subscriptions.add(subscription);
   }
