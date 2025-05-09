@@ -1,13 +1,13 @@
 import 'dart:async';
 
-import 'package:das_client/app/bloc/train_journey_cubit.dart';
-import 'package:das_client/app/widgets/das_text_styles.dart';
-import 'package:das_client/model/journey/journey.dart';
-import 'package:das_client/theme/theme_util.dart';
-import 'package:das_client/time_controller/time_controller.dart';
+import 'package:app/bloc/train_journey_cubit.dart';
+import 'package:app/theme/theme_util.dart';
+import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:app/time_controller/time_controller.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:sfera/component.dart';
 
 class TimeContainer extends StatefulWidget {
   const TimeContainer({super.key});

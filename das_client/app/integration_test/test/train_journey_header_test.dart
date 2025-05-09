@@ -1,4 +1,5 @@
 import 'package:battery_plus/battery_plus.dart';
+import 'package:app/time_controller/time_controller.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/battery_status.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/extended_menu.dart';
@@ -23,6 +24,17 @@ import '../util/test_utils.dart';
 
 Future<void> main() async {
   group('train journey header test', () {
+    testWidgets('test punctuality display when no updates come', (tester) async {
+      await prepareAndStartApp(tester);
+
+      final timeContainer = TimeController();
+
+      timeContainer.changeTimerPunctualityDisplay(newPunctualityGraySeconds: 2, newPunctualityDisappearSeconds: 3);
+
+      expect(timeContainer.punctualityStaleSeconds, 2);
+      expect(timeContainer.punctualityDisappearSeconds, 3);
+    });
+
     testWidgets('test always-on display is turned on when journey is loaded', (tester) async {
       await prepareAndStartApp(tester);
 
