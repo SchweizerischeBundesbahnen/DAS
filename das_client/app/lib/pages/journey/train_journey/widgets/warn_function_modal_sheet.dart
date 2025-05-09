@@ -1,6 +1,7 @@
 import 'package:app/bloc/train_journey_cubit.dart';
 import 'package:app/di.dart';
 import 'package:app/i18n/i18n.dart';
+import 'package:app/util/sound.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_modal_bottom_sheet.dart';
 import 'package:app/widgets/das_text_styles.dart';
@@ -45,19 +46,24 @@ class WarnFunctionModalSheet extends StatelessWidget {
                 label: context.l10n.w_modal_sheet_warn_function_manoeuvre_button,
                 onPressed: () {
                   DI.get<TrainJourneyCubit>().setManeuverMode(true);
-                  Navigator.of(context).pop();
+                  dismissModalWithSound(context);
                 },
               ),
             ),
             Expanded(
               child: SBBSecondaryButton(
                 label: context.l10n.w_modal_sheet_warn_function_confirm_button,
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => dismissModalWithSound(context),
               ),
             ),
           ],
         )
       ],
     );
+  }
+
+  void dismissModalWithSound(BuildContext context) {
+    Navigator.of(context).pop();
+    Sound.stop();
   }
 }
