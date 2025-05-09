@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/src/model/journey/communication_network_change.dart';
 
@@ -49,5 +50,36 @@ main() {
     expect(gsmPSimIgnored, isNull);
     expect(gsmR1, CommunicationNetworkType.gsmR);
     expect(notGiven, isNull);
+  });
+
+  test('whereNotSim_whenHasNoSim_shouldNotChangeList', () {
+    // GIVEN
+    final networkChanges = [
+      CommunicationNetworkChange(type: CommunicationNetworkType.gsmP, order: 100),
+      CommunicationNetworkChange(type: CommunicationNetworkType.gsmR, order: 200),
+      CommunicationNetworkChange(type: CommunicationNetworkType.gsmR, order: 300),
+    ];
+
+    // WHEN
+    final actual = networkChanges.whereNotSim.toList();
+
+    // THEN
+    expect(ListEquality().equals(networkChanges, actual), true, reason: 'Expected lists to be equal');
+  });
+
+  test('whereNotSim_whenHasSim_shouldRemoveSimEntries', () {
+    // GIVEN
+    final networkChanges = [
+      CommunicationNetworkChange(type: CommunicationNetworkType.gsmP, order: 100),
+      CommunicationNetworkChange(type: CommunicationNetworkType.sim, order: 200),
+      CommunicationNetworkChange(type: CommunicationNetworkType.gsmR, order: 300),
+    ];
+    final expected = networkChanges.where((change) => change.type != CommunicationNetworkType.sim).toList();
+
+    // WHEN
+    final actual = networkChanges.whereNotSim.toList();
+
+    // THEN
+    expect(ListEquality().equals(expected, actual), true, reason: 'Expected lists to be equal');
   });
 }
