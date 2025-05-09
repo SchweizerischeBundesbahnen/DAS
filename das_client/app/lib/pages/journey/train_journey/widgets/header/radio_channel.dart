@@ -29,7 +29,7 @@ class RadioChannel extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         final viewModel = context.read<DetailModalSheetViewModel>();
-        viewModel.open(tab: DetailModalSheetTab.communication, servicePoint: metadata.nextStop);
+        viewModel.open(tab: DetailModalSheetTab.communication, servicePoint: metadata.lastServicePoint);
       },
       child: ConstrainedBox(
         constraints: const BoxConstraints(minWidth: 258.0),
