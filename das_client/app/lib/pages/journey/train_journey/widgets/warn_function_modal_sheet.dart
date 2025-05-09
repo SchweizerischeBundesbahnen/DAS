@@ -46,14 +46,14 @@ class WarnFunctionModalSheet extends StatelessWidget {
                 label: context.l10n.w_modal_sheet_warn_function_manoeuvre_button,
                 onPressed: () {
                   DI.get<TrainJourneyCubit>().setManeuverMode(true);
-                  handleStoppingSound(context);
+                  dismissModalWithSound(context);
                 },
               ),
             ),
             Expanded(
               child: SBBSecondaryButton(
                 label: context.l10n.w_modal_sheet_warn_function_confirm_button,
-                onPressed: () => handleStoppingSound(context),
+                onPressed: () => dismissModalWithSound(context),
               ),
             ),
           ],
@@ -62,7 +62,7 @@ class WarnFunctionModalSheet extends StatelessWidget {
     );
   }
 
-  void handleStoppingSound(BuildContext context) {
+  void dismissModalWithSound(BuildContext context) {
     Navigator.of(context).pop();
     Sound.stop();
   }
