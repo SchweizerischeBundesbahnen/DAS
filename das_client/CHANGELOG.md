@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.18.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.18.0...das_client-v0.18.1) (2025-05-09)
+
+
+### Bug Fixes
+
+* click on radio channel header opens last service point ([#866](https://github.com/SchweizerischeBundesbahnen/DAS/issues/866)) ([c744b69](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c744b69c2e4cd990536b3622c660d326acc2ee4e))
+* correct log path, add delayAfterLogSendFailure to stop infinite log send attempts ([#862](https://github.com/SchweizerischeBundesbahnen/DAS/issues/862)) ([6d4772c](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6d4772c7d68d406886639492b3aa58aca83225ab))
+* show SIM in header ([#865](https://github.com/SchweizerischeBundesbahnen/DAS/issues/865)) ([ca1ca32](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ca1ca3203a735fc8bc9c6c18fbc73dc39d50f9a5))
+
 ## [0.18.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.17.0...das_client-v0.18.0) (2025-05-06)
 
 
