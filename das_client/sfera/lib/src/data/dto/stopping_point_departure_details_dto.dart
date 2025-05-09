@@ -7,6 +7,9 @@ class StoppingPointDepartureDetailsDto extends SferaXmlElementDto {
 
   DateTime get departureTime => DateTime.parse(attributes['departureTime']!);
 
+  DateTime? get plannedDepartureTime =>
+      attributes['plannedDepartureTime'] != null ? DateTime.parse(attributes['plannedDepartureTime']!) : null;
+
   @override
   bool validate() {
     return validateHasAttribute('departureTime') && super.validate();
