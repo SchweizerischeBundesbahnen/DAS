@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SFERA_G2B_ReplyMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="SFERA_v3.00.xsd">
+    <MessageHeader SFERA_version="1.91" message_ID="bfc9754f-2361-49d1-90af-4c4fac7f419f" timestamp="2022-05-06T10:52:46Z" sourceDevice="INFRABEL">
+        <Sender>0088</Sender>
+        <Recipient>1088</Recipient>
+    </MessageHeader>
+    <G2B_ReplyPayload>
+        <JourneyProfile JP_Status="Valid" JP_Version="1">
+            <TrainIdentification>
+                <OTN_ID>
+                    <teltsi_Company>1085</teltsi_Company>
+                    <teltsi_OperationalTrainNumber>T5</teltsi_OperationalTrainNumber>
+                    <teltsi_StartDate>2022-01-04</teltsi_StartDate>
+                </OTN_ID>
+            </TrainIdentification>
+            <SegmentProfileReference SP_ID="T5_1" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+                <SP_Zone>
+                    <IM_ID>0085</IM_ID>
+                </SP_Zone>
+                <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="Genève-Aéroport"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="Genève"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+                    <TimingPointReference>
+                        <TP_ID_Reference TP_ID="Gland"/>
+                    </TimingPointReference>
+                </TimingPointConstraints>
+                <TrainCharacteristicsRef TC_ID="T5_1" TC_VersionMajor="1" TC_VersionMinor="1" location="0">
+                    <TC_RU_ID>1185</TC_RU_ID>
+                </TrainCharacteristicsRef>
+            </SegmentProfileReference>
+        </JourneyProfile>
+        <TrainCharacteristics TC_ID="T5_1" TC_VersionMajor="1" TC_VersionMinor="1">
+            <TC_RU_ID>1185</TC_RU_ID>
+            <TC_Features trainCategoryCode="R" brakedWeightPercentage="115"/>
+        </TrainCharacteristics>
+    </G2B_ReplyPayload>
+</SFERA_G2B_ReplyMessage>

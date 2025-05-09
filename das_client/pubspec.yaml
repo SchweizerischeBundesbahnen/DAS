@@ -1,7 +1,6 @@
 name: das_client
+publish_to: none
 description: "DAS (Driver Advisory System) is a mobile application that provides all the required journey data to the train driver."
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 0.17.0+57
 
 # TODO: Flutter version below 3.29.0 as there are performance issues (https://github.com/dart-lang/sdk/issues/60335).
 # Should be fixed when at least Dart 3.7.3 is used in Flutter.
@@ -11,112 +10,13 @@ environment:
   # This should be improved in future releases. See: https://github.com/dart-lang/dart_style/issues/1652
   sdk: ^3.6.2
 
-dependencies:
-  flutter:
-    sdk: flutter
-  flutter_localizations:
-    sdk: flutter
-
-  # https://pub.dev/packages/audioplayers
-  # TODO: Fixed to 5.2.1 as there is a problem with XCode 14 on higher versions.
-  audioplayers: 5.2.1
-  # https://pub.dev/packages/android_id
-  android_id: ^0.4.0
-  # https://pub.dev/packages/auto_route
-  auto_route: ^9.3.0
-  # https://pub.dev/packages/battery_plus
-  battery_plus: ^6.2.1
-  # https://pub.dev/packages/collection
-  collection: ^1.19.0
-  # https://pub.dev/packages/device_info_plus
-  device_info_plus: ^11.3.0
-  # https://pub.dev/packages/extra_hittest_area
-  extra_hittest_area: ^1.0.0
-  # https://pub.dev/packages/fimber
-  fimber: ^0.7.0
-  # https://pub.dev/packages/flutter_bloc
-  flutter_bloc: ^9.1.0
-  # https://pub.dev/packages/flutter_svg
-  flutter_svg: ^2.0.17
-  # https://pub.dev/packages/get_it
-  get_it: ^8.0.3
-  # https://pub.dev/packages/http
-  http: ^1.3.0
-  # https://pub.dev/packages/intl
-  intl: ^0.19.0
-  # https://pub.dev/packages/isar
-  isar: ^4.0.0-dev.14
-  # https://pub.dev/packages/isar_flutter_libs
-  isar_flutter_libs: ^4.0.0-dev.14
-  # https://pub.dev/packages/iso_duration
-  iso_duration: ^0.1.1
-  # https://pub.dev/packages/meta
-  meta: ^1.15.0
-  # https://pub.dev/packages/mqtt_client
-  mqtt_client: ^10.5.1
-  # https://pub.dev/packages/package_info_plus
-  package_info_plus: ^8.3.0
-  # https://pub.dev/packages/path_provider
-  path_provider: ^2.1.5
-  # https://pub.dev/packages/provider
-  provider: ^6.1.4
-  # https://pub.dev/packages/rxdart
-  rxdart: ^0.28.0
-  # https://pub.dev/packages/sbb_design_system_mobile
-  sbb_design_system_mobile: ^3.0.0
-  # https://pub.dev/packages/sbb_oidc
-  sbb_oidc: ^4.1.0
-  # https://pub.dev/packages/synchronized
-  synchronized: ^3.3.0
-  # https://pub.dev/packages/volume_controller
-  volume_controller: ^3.3.3
-  # https://pub.dev/packages/wakelock_plus
-  wakelock_plus: ^1.3.2
-  # https://pub.dev/packages/screen_brightness/
-  screen_brightness: ^2.1.2
-  # https://pub.dev/packages/android_intent_plus
-  android_intent_plus: ^5.3.0
-  # https://pub.dev/packages/xml
-  xml: ^6.5.0
-  # https://pub.dev/packages/uuid
-  uuid: ^4.5.1
+workspace:
+  - app
+  - auth
+  - http_x
+  - mqtt
+  - logger
+  - sfera
 
 dev_dependencies:
-  integration_test:
-    sdk: flutter
-  flutter_test:
-    sdk: flutter
-
-  # https://pub.dev/packages/auto_route_generator
-  auto_route_generator: ^9.0.0
-  # https://pub.dev/packages/build_runner
-  build_runner: ^2.4.15
-  # https://pub.dev/packages/custom_lint
-  custom_lint:
-  das_custom_lints:
-    path: ./das_custom_lints
-  # https://pub.dev/packages/flutter_launcher_icons
-  flutter_launcher_icons: ^0.14.3
-  # https://pub.dev/packages/flutter_lints
-  flutter_lints: ^5.0.0
-  # https://pub.dev/packages/mockito
-  mockito: ^5.4.5
-  # https://pub.dev/packages/path_provider
-  path_provider_platform_interface: any
-  # https://pub.dev/packages/plugin_platform_interface
-  plugin_platform_interface: any
-
-flutter:
-  generate: false
-  uses-material-design: true
-  disable-swift-package-manager: true
-  assets:
-    - assets/
-    - assets/icons/
-    - assets/others/
-    - assets/fonts/
-    - assets/sounds/
-  fonts:
-    - family: DasIcons
-      fonts:
-        - asset: assets/fonts/DasIcons.ttf
+  melos: ^6.3.0

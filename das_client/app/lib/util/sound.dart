@@ -1,0 +1,22 @@
+import 'package:app/di.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:volume_controller/volume_controller.dart';
+
+class Sound {
+  const Sound._();
+
+  static const _defaultVolume = 1.0;
+
+  static Future<void> play(String soundAsset, {double? volume}) async {
+    await VolumeController.instance.setVolume(volume ?? _defaultVolume);
+    final audioPlayer = DI.get<AudioPlayer>();
+    await audioPlayer.stop();
+    await audioPlayer.play(AssetSource(soundAsset));
+  }
+
+  static Future<void> stop() async {
+    await VolumeController.instance.setVolume(0.0);
+    final audioPlayer = DI.get<AudioPlayer>();
+    await audioPlayer.stop();
+  }
+}

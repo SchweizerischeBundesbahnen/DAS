@@ -1,0 +1,51 @@
+name: Client Build iOS
+
+defaults:
+  run:
+    working-directory: das_client
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    paths:
+      - 'das_client/**'
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+
+    - uses: actions/checkout@v4
+
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.27.4'
+        cache: true
+
+    - name: Setup melos
+      uses: bluefireteam/melos-action@v3
+      with:
+        melos-version: '^6.3.0'
+        run-bootstrap: 'false'
+
+    - name: Get dependencies
+      run: flutter pub get
+
+    - name: Generate sources
+      run: melos generate
+
+    - name: Build iOS App DEV
+      run: flutter build ipa --flavor dev -t lib/main_dev.dart --release --no-codesign
+      working-directory: das_client/app
+
+    - name: Build iOS App INTE
+      run: flutter build ipa --flavor inte -t lib/main_inte.dart --release --no-codesign
+      working-directory: das_client/app
+
+    - name: Build iOS App PROD
+      run: flutter build ipa --flavor prod -t lib/main_prod.dart --release --no-codesign
+      working-directory: das_client/app

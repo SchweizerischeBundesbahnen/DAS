@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.18.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.17.0...das_client-v0.18.0) (2025-05-06)
+
+
+### Features
+
+* add indicator in header when multiple radio channels ([#229](https://github.com/SchweizerischeBundesbahnen/DAS/issues/229)) ([#836](https://github.com/SchweizerischeBundesbahnen/DAS/issues/836)) ([95966a4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/95966a4121424644d4ee91a93bcee5df71ae8f2f))
+* automatic advancement resets position after journey start ([#673](https://github.com/SchweizerischeBundesbahnen/DAS/issues/673)) ([#842](https://github.com/SchweizerischeBundesbahnen/DAS/issues/842)) ([d16afc7](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d16afc77a2c93574428c3a574f771f4209994bc9))
+* ideas on how to change brightness ([#564](https://github.com/SchweizerischeBundesbahnen/DAS/issues/564)) ([#810](https://github.com/SchweizerischeBundesbahnen/DAS/issues/810)) ([b7becd5](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b7becd5f581c373d44f2046ae5217c7e8573d061))
+* massgebende neigung ([#225](https://github.com/SchweizerischeBundesbahnen/DAS/issues/225)) ([#841](https://github.com/SchweizerischeBundesbahnen/DAS/issues/841)) ([4c27956](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4c2795631c8cec9493b69ea8b1d6918d3c84a987))
+* remove unnecessary XX from code ([#502](https://github.com/SchweizerischeBundesbahnen/DAS/issues/502)) ([#851](https://github.com/SchweizerischeBundesbahnen/DAS/issues/851)) ([7dee48c](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7dee48c1fa45fe90e8adcde68082b47f98a80a40))
+
+
+### Bug Fixes
+
+* scroll behaviour ([#837](https://github.com/SchweizerischeBundesbahnen/DAS/issues/837)) ([8986928](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8986928fc76f63b6e0f826468fa91e9db2d37478))
+
 ## [0.17.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.16.0...das_client-v0.17.0) (2025-04-25)
 
 

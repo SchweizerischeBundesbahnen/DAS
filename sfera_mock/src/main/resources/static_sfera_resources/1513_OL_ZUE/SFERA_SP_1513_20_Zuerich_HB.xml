@@ -74,10 +74,6 @@
             <KM_Reference kmRef="0.0"/>
         </KilometreReferencePoint>
 
-        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
-                              gradientValue="3.0" gradientDirection="Uphill"
-                              directionOfApplicationOnSP="Nominal"/>
-
     </SP_ContextInformation>
 
 </SegmentProfile>
