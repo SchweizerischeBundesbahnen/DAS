@@ -27,35 +27,35 @@
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
-        <TimingPoint TP_ID="Morges" location="1500">
+        <TimingPoint TP_ID="Morges" location="2000">
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3005</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
-        <TimingPoint TP_ID="Lausanne" location="1500">
+        <TimingPoint TP_ID="Lausanne" location="2500">
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3006</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
-        <TimingPoint TP_ID="Vevey" location="1500">
+        <TimingPoint TP_ID="Vevey" location="3000">
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3007</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
-        <TimingPoint TP_ID="Montreux" location="1500">
+        <TimingPoint TP_ID="Montreux" location="4000">
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3008</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
-        <TimingPoint TP_ID="Aigle" location="1500">
+        <TimingPoint TP_ID="Aigle" location="5000">
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3009</teltsi_LocationPrimaryCode>

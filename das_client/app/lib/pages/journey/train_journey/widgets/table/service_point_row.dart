@@ -5,6 +5,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/cells/graduated_sp
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:app/theme/theme_util.dart';
+import 'package:app/util/format.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
@@ -56,6 +57,16 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   @override
   DASTableCell timeCell(BuildContext context) {
+    if (data.arrivalDepartureTime == null) return DASTableCell.empty();
+
+    if (data.arrivalDepartureTime?.operationalDepartureTime != null) {
+      final time = data.arrivalDepartureTime!.operationalDepartureTime!;
+      return DASTableCell(
+          child: Text(Format.time(time, showSeconds: true).substring(0, 7)),
+          alignment: defaultAlignment,
+          color: specialCellColor);
+    }
+
     return DASTableCell(child: Text('06:05:52'), alignment: defaultAlignment, color: specialCellColor);
   }
 
