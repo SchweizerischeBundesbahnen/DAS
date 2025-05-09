@@ -15,6 +15,7 @@ class Metadata {
     DateTime? timestamp,
     this.nextStop,
     this.lastPosition,
+    this.lastServicePoint,
     this.currentPosition,
     this.routeStart,
     this.routeEnd,
@@ -31,6 +32,7 @@ class Metadata {
 
   final DateTime timestamp;
   final ServicePoint? nextStop;
+  final ServicePoint? lastServicePoint;
   final BaseData? lastPosition;
   final BaseData? currentPosition;
   final List<AdditionalSpeedRestriction> additionalSpeedRestrictions;
