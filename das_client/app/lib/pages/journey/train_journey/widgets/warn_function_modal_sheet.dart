@@ -1,16 +1,10 @@
 import 'package:app/bloc/train_journey_cubit.dart';
 import 'package:app/di.dart';
 import 'package:app/i18n/i18n.dart';
+import 'package:app/util/sound.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_modal_bottom_sheet.dart';
 import 'package:app/widgets/das_text_styles.dart';
-import 'package:das_client/app/bloc/train_journey_cubit.dart';
-import 'package:das_client/app/i18n/i18n.dart';
-import 'package:das_client/app/widgets/assets.dart';
-import 'package:das_client/app/widgets/das_modal_bottom_sheet.dart';
-import 'package:das_client/app/widgets/das_text_styles.dart';
-import 'package:das_client/di.dart';
-import 'package:das_client/util/sound.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -50,13 +44,16 @@ class WarnFunctionModalSheet extends StatelessWidget {
             Expanded(
               child: SBBSecondaryButton(
                 label: context.l10n.w_modal_sheet_warn_function_manoeuvre_button,
-                onPressed: () => handleStoppingSound(context, true),
+                onPressed: () {
+                  DI.get<TrainJourneyCubit>().setManeuverMode(true);
+                  handleStoppingSound(context);
+                },
               ),
             ),
             Expanded(
               child: SBBSecondaryButton(
                 label: context.l10n.w_modal_sheet_warn_function_confirm_button,
-                onPressed: () => handleStoppingSound(context, false),
+                onPressed: () => handleStoppingSound(context),
               ),
             ),
           ],
@@ -65,9 +62,8 @@ class WarnFunctionModalSheet extends StatelessWidget {
     );
   }
 
-  void handleStoppingSound(BuildContext context, bool isManeuver) {
+  void handleStoppingSound(BuildContext context) {
     Navigator.of(context).pop();
-    if (isManeuver) DI.get<TrainJourneyCubit>().setManeuverMode(true);
     Sound.stop();
   }
 }
