@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:app/bloc/train_journey_cubit.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/das_text_styles.dart';
@@ -16,61 +15,73 @@ class TimeContainer extends StatefulWidget {
   State<TimeContainer> createState() => _TimeContainerState();
 }
 
-//TODO still have to add that when first no update comes and the PüA disappears it needs to reappear as soon as an update arrives
-
 class _TimeContainerState extends State<TimeContainer> {
-  DateTime? _lastUpdate;
-  late final Timer _checkTimer;
-  final DateTime _initialRenderTime = DateTime.now();
+  DateTime _lastUpdate = DateTime.now();
+  Timer? _updateTimer;
 
   @override
   void initState() {
     super.initState();
-    _checkTimer = Timer.periodic(const Duration(milliseconds: 100), (_) => setState(() {}));
+    _updateTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted) setState(() {});
+    });
   }
 
   @override
   void dispose() {
-    _checkTimer.cancel();
+    _updateTimer?.cancel();
     super.dispose();
-  }
-
-  Duration _timeSinceUpdate() {
-    return _lastUpdate == null
-        ? DateTime.now().difference(_initialRenderTime)
-        : DateTime.now().difference(_lastUpdate!);
   }
 
   @override
   Widget build(BuildContext context) {
-    final Duration sinceUpdate = _timeSinceUpdate();
     final timeController = TimeController();
-    final staleTime = timeController.punctualityStaleSeconds;
-    final disappearTime = timeController.punctualityDisappearSeconds;
-    final bool isStale = sinceUpdate > Duration(seconds: staleTime);
-    final bool isVisible = sinceUpdate < Duration(seconds: disappearTime);
 
-    return SBBGroup(
-      padding: const EdgeInsets.all(sbbDefaultSpacing),
-      useShadow: false,
-      child: SizedBox(
-        width: 124.0,
-        height: 112.0,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Flexible(child: _currentTime()),
-            _divider(),
-            if (isVisible)
-              Flexible(child: _punctualityDisplay(context, isStale))
-            else
-              SizedBox(
-                height: sbbDefaultSpacing * 2.5,
-              ),
-          ],
-        ),
-      ),
+    final sinceUpdate = DateTime.now().difference(_lastUpdate);
+    final isStale = sinceUpdate > Duration(seconds: timeController.punctualityStaleSeconds);
+    final isVisible = sinceUpdate < Duration(seconds: timeController.punctualityDisappearSeconds);
+
+    return StreamBuilder<Journey?>(
+      stream: context.trainJourneyCubit.journeyStream,
+      builder: (context, snapshot) {
+        final journey = snapshot.data;
+        final delay = journey?.metadata.delay;
+
+        if (delay != null) {
+          final oldSince = DateTime.now().difference(_lastUpdate);
+          final wasStale = oldSince > Duration(seconds: timeController.punctualityStaleSeconds);
+          final wasInvisible = oldSince > Duration(seconds: timeController.punctualityDisappearSeconds);
+
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) {
+              _lastUpdate = DateTime.now();
+              if (wasStale || wasInvisible) {
+                setState(() {});
+              }
+            }
+          });
+        }
+
+        final delayText = _buildDelayText(delay, isStale);
+
+        return SBBGroup(
+          padding: const EdgeInsets.all(sbbDefaultSpacing),
+          useShadow: false,
+          child: SizedBox(
+            width: 124.0,
+            height: 112.0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Flexible(child: _currentTime()),
+                _divider(),
+                if (isVisible) Flexible(child: delayText) else SizedBox(height: sbbDefaultSpacing * 2.5),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -81,33 +92,24 @@ class _TimeContainerState extends State<TimeContainer> {
     );
   }
 
-  Widget _punctualityDisplay(BuildContext context, bool isStale) {
-    return StreamBuilder<Journey?>(
-      stream: context.trainJourneyCubit.journeyStream,
-      builder: (context, snapshot) {
-        final delay = snapshot.data?.metadata.delay;
-        if (delay != null) {
-          _lastUpdate = DateTime.now();
-        }
+  Widget _buildDelayText(Duration? delay, bool isStale) {
+    String delayString = '+00:00';
+    if (delay != null) {
+      final minutes = NumberFormat('00').format(delay.inMinutes.abs());
+      final seconds = NumberFormat('00').format(delay.inSeconds.abs() % 60);
+      delayString = '${delay.isNegative ? '-' : '+'}$minutes:$seconds';
+    }
 
-        var punctualityString = '+00:00';
-        if (delay != null) {
-          final minutes = NumberFormat('00').format(delay.inMinutes.abs() % 60);
-          final seconds = NumberFormat('00').format(delay.inSeconds.abs() % 60);
-          punctualityString = '${delay.isNegative ? '-' : '+'}$minutes:$seconds';
-        }
+    final style = isStale
+        ? DASTextStyles.xLargeLight.copyWith(
+            color: ThemeUtil.getColor(context, SBBColors.graphite, SBBColors.granite),
+          )
+        : DASTextStyles.xLargeLight;
 
-        final style = isStale
-            ? DASTextStyles.xLargeLight
-                .copyWith(color: ThemeUtil.getColor(context, SBBColors.graphite, SBBColors.granite))
-            : DASTextStyles.xLargeLight;
-
-        return Padding(
-          padding:
-              const EdgeInsets.fromLTRB(sbbDefaultSpacing * 0.5, 0.0, sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5),
-          child: Text(punctualityString, style: style),
-        );
-      },
+    return Padding(
+      padding:
+          const EdgeInsets.fromLTRB(sbbDefaultSpacing * 0.5, 0.0, sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5),
+      child: Text(delayString, style: style),
     );
   }
 
@@ -119,7 +121,7 @@ class _TimeContainerState extends State<TimeContainer> {
           padding:
               const EdgeInsets.fromLTRB(sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5, 0),
           child: Text(
-            DateFormat('HH:mm:ss').format(DateTime.now().toLocal()),
+            DateFormat('HH:mm:ss').format(DateTime.now()),
             style: DASTextStyles.xLargeBold,
           ),
         );
