@@ -31,9 +31,9 @@ Future<void> main() async {
 
       final TimeController timeController = DI.get<TimeController>();
 
+      // set stale and disappear time down to 2 and 7 seconds
       timeController.changeTimerPunctualityDisplay(newPunctualityGraySeconds: 2, newPunctualityDisappearSeconds: 7);
 
-      // set stale and disappear time down to 2 and 7 seconds
       expect(timeController.punctualityStaleSeconds, 2);
       expect(timeController.punctualityDisappearSeconds, 7);
 
