@@ -69,14 +69,15 @@ class MainContainer extends StatelessWidget {
 
   Widget _trainJourneyText(BuildContext context) {
     final state = context.trainJourneyCubit.state;
-
+    final resolvedTextColor = ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite);
+    
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
       child: Text(
         state is TrainJourneyLoadedState
             ? '${state.trainIdentification.trainNumber} ${state.trainIdentification.ru.displayText(context)}'
             : '',
-        style: DASTextStyles.largeRoman,
+        style: DASTextStyles.largeRoman.copyWith(color: resolvedTextColor),
       ),
     );
   }
