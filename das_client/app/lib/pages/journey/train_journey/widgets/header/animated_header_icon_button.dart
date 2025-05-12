@@ -20,10 +20,12 @@ class AnimatedHeaderIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.read<DetailModalSheetViewModel>();
     return StreamBuilder<bool>(
-      stream: context.read<DetailModalSheetViewModel>().isModalSheetOpen,
+      initialData: viewModel.isModalSheetOpenValue,
+      stream: viewModel.isModalSheetOpen,
       builder: (context, snapshot) {
-        final isDetailModalSheetOpen = snapshot.data ?? false;
+        final isDetailModalSheetOpen = snapshot.requireData;
         return AnimatedSwitcher(
           duration: const Duration(milliseconds: 400),
           child: isDetailModalSheetOpen ? _iconButton : _iconWithLabelButton,
