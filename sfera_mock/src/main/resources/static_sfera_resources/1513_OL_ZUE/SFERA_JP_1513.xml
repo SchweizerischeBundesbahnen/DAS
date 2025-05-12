@@ -35,7 +35,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="1513_2_Dulliken" SP_VersionMajor="3" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1513_2_Dulliken" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -48,7 +48,7 @@
         </TimingPointConstraints>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="1513_3_Daeniken" SP_VersionMajor="3" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1513_3_Daeniken" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -61,7 +61,7 @@
         </TimingPointConstraints>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="1513_4_Schoenenwerd" SP_VersionMajor="3" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1513_4_Schoenenwerd" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -73,7 +73,7 @@
         </TimingPointConstraints>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="1513_5_Woeschnau" SP_VersionMajor="3" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1513_5_Woeschnau" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -85,7 +85,7 @@
         </TimingPointConstraints>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="1513_6_Aarau" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1513_6_Aarau" SP_VersionMajor="3" SP_VersionMinor="4" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -103,7 +103,7 @@
         </TimingPointConstraints>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="1513_7_Rupperswil" SP_VersionMajor="3" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1513_7_Rupperswil" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -115,7 +115,7 @@
         </TimingPointConstraints>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="1513_8_Lenzburg" SP_VersionMajor="3" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1513_8_Lenzburg" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -139,7 +139,7 @@
         </TimingPointConstraints>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="1513_10_Othmarsingen" SP_VersionMajor="3" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1513_10_Othmarsingen" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -151,7 +151,7 @@
         </TimingPointConstraints>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="1513_11_Maegenwil" SP_VersionMajor="3" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1513_11_Maegenwil" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -175,7 +175,7 @@
         </TimingPointConstraints>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="1513_13_Mellingen_Heitersberg" SP_VersionMajor="3" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1513_13_Mellingen_Heitersberg" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -199,7 +199,7 @@
         </TimingPointConstraints>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="1513_15_Dietikon" SP_VersionMajor="3" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1513_15_Dietikon" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -211,7 +211,7 @@
         </TimingPointConstraints>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="1513_16_Glanzenberg" SP_VersionMajor="3" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1513_16_Glanzenberg" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -223,7 +223,7 @@
         </TimingPointConstraints>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="1513_17_Schlieren" SP_VersionMajor="3" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1513_17_Schlieren" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -235,7 +235,7 @@
         </TimingPointConstraints>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="1513_18_Altstetten" SP_VersionMajor="3" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1513_18_Altstetten" SP_VersionMajor="3" SP_VersionMinor="2" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -247,7 +247,7 @@
         </TimingPointConstraints>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="1513_19_Hardbruecke" SP_VersionMajor="3" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1513_19_Hardbruecke" SP_VersionMajor="3" SP_VersionMinor="3" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -259,7 +259,7 @@
         </TimingPointConstraints>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="1513_20_Zuerich_HB" SP_VersionMajor="3" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1513_20_Zuerich_HB" SP_VersionMajor="3" SP_VersionMinor="2" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>

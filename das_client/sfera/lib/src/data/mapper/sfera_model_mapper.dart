@@ -93,6 +93,7 @@ class SferaModelMapper {
       metadata: Metadata(
         nextStop: _calculateNextStop(servicePoints, currentPosition),
         lastPosition: journeyData.firstWhereOrNull((it) => it.order == lastJourney?.metadata.currentPosition?.order),
+        lastServicePoint: _calculateLastServicePoint(servicePoints, currentPosition),
         currentPosition: currentPosition,
         additionalSpeedRestrictions: additionalSpeedRestrictions,
         routeStart: journeyData.firstOrNull,
@@ -156,9 +157,18 @@ class SferaModelMapper {
   }
 
   static ServicePoint? _calculateNextStop(Iterable<ServicePoint> servicePoints, BaseData? currentPosition) {
-    return servicePoints.skip(1).firstWhereOrNull(
-            (data) => data.isStop && (currentPosition == null || data.order > currentPosition.order)) ??
+    return servicePoints
+            .skip(1)
+            .firstWhereOrNull((sP) => sP.isStop && (currentPosition == null || sP.order > currentPosition.order)) ??
         servicePoints.last;
+  }
+
+  static _calculateLastServicePoint(Iterable<ServicePoint> servicePoints, BaseData? currentPosition) {
+    return servicePoints
+            .toList()
+            .reversed
+            .firstWhereOrNull((sP) => (currentPosition == null || sP.order < currentPosition.order)) ??
+        servicePoints.firstOrNull;
   }
 
   static List<AdditionalSpeedRestriction> _parseAdditionalSpeedRestrictions(

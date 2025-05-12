@@ -28,7 +28,7 @@ void main() {
 
       // open and check modal sheet over radio channel tap in header
       await _openRadioChannelByHeaderTap(tester);
-      _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Burgdorf');
+      _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
 
       // close modal sheet
       await _closeModalSheet(tester);
