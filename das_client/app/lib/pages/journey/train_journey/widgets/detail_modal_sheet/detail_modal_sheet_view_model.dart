@@ -28,6 +28,8 @@ class DetailModalSheetViewModel {
 
   Stream<DetailModalSheetTab> get selectedTab => _rxSelectedTab.distinct();
 
+  bool get isModalSheetOpenValue => _rxIsModalSheetOpen.value;
+
   Stream<bool> get isModalSheetOpen => _rxIsModalSheetOpen.distinct();
 
   Stream<ServicePoint> get servicePoint => _rxServicePoint.distinct();
