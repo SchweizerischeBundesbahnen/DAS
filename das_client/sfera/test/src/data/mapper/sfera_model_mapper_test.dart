@@ -1210,35 +1210,35 @@ void main() {
     expect(servicePoints.first.arrivalDepartureTime, isNull);
     // single operationalDepartureTime
     expect(servicePoints[1].arrivalDepartureTime, isNotNull);
-    expect(servicePoints[1].arrivalDepartureTime!.operationalDepartureTime, DateTime.parse('9999-01-01T00:10:25Z'));
+    expect(servicePoints[1].arrivalDepartureTime!.operationalDepartureTime, DateTime.parse('2025-05-12T16:24:25Z'));
     // operationalDepartureTime and plannedOperationalDepartureTime
     expect(servicePoints[2].arrivalDepartureTime, isNotNull);
-    expect(servicePoints[2].arrivalDepartureTime!.operationalDepartureTime, DateTime.parse('9999-01-01T00:24:59Z'));
-    expect(servicePoints[2].arrivalDepartureTime!.plannedDepartureTime, DateTime.parse('9999-01-01T00:24:43Z'));
+    expect(servicePoints[2].arrivalDepartureTime!.operationalDepartureTime, DateTime.parse('2025-05-12T16:39:59Z'));
+    expect(servicePoints[2].arrivalDepartureTime!.plannedDepartureTime, DateTime.parse('2025-05-12T16:39:43Z'));
     // single operationalArrivalTime
     expect(servicePoints[3].arrivalDepartureTime, isNotNull);
     expect(servicePoints[3].arrivalDepartureTime!.operationalDepartureTime, isNull);
     expect(servicePoints[3].arrivalDepartureTime!.plannedDepartureTime, isNull);
-    expect(servicePoints[3].arrivalDepartureTime!.operationalArrivalTime, DateTime.parse('9999-01-01T00:39:12Z'));
+    expect(servicePoints[3].arrivalDepartureTime!.operationalArrivalTime, DateTime.parse('2025-05-12T16:55:23Z'));
     expect(servicePoints[3].arrivalDepartureTime!.plannedArrivalTime, isNull);
     // operationalArrivalTime and plannedArrivalTime
     expect(servicePoints[4].arrivalDepartureTime, isNotNull);
     expect(servicePoints[4].arrivalDepartureTime!.operationalDepartureTime, isNull);
     expect(servicePoints[4].arrivalDepartureTime!.plannedDepartureTime, isNull);
-    expect(servicePoints[4].arrivalDepartureTime!.operationalArrivalTime, DateTime.parse('9999-01-01T00:52:12Z'));
-    expect(servicePoints[4].arrivalDepartureTime!.plannedArrivalTime, DateTime.parse('9999-01-01T00:53:12Z'));
+    expect(servicePoints[4].arrivalDepartureTime!.operationalArrivalTime, DateTime.parse('2025-05-12T17:07:12Z'));
+    expect(servicePoints[4].arrivalDepartureTime!.plannedArrivalTime, DateTime.parse('2025-05-12T17:07:20Z'));
     // operationalArrivalTime, plannedArrivalTime and operationalDepartureTime
     expect(servicePoints[5].arrivalDepartureTime, isNotNull);
-    expect(servicePoints[5].arrivalDepartureTime!.operationalDepartureTime, DateTime.parse('9999-01-01T01:09:12Z'));
+    expect(servicePoints[5].arrivalDepartureTime!.operationalDepartureTime, DateTime.parse('2025-05-12T17:29:12Z'));
     expect(servicePoints[5].arrivalDepartureTime!.plannedDepartureTime, isNull);
-    expect(servicePoints[5].arrivalDepartureTime!.operationalArrivalTime, DateTime.parse('9999-01-01T01:08:56Z'));
-    expect(servicePoints[5].arrivalDepartureTime!.plannedArrivalTime, DateTime.parse('9999-01-01T01:08:12Z'));
+    expect(servicePoints[5].arrivalDepartureTime!.operationalArrivalTime, DateTime.parse('2025-05-12T17:28:56Z'));
+    expect(servicePoints[5].arrivalDepartureTime!.plannedArrivalTime, DateTime.parse('2025-05-12T17:28:12Z'));
     // all times
     expect(servicePoints[6].arrivalDepartureTime, isNotNull);
-    expect(servicePoints[6].arrivalDepartureTime!.operationalDepartureTime, DateTime.parse('9999-01-01T01:16:42Z'));
-    expect(servicePoints[6].arrivalDepartureTime!.plannedDepartureTime, DateTime.parse('9999-01-01T01:15:12Z'));
-    expect(servicePoints[6].arrivalDepartureTime!.operationalArrivalTime, DateTime.parse('9999-01-01T01:15:16Z'));
-    expect(servicePoints[6].arrivalDepartureTime!.plannedArrivalTime, DateTime.parse('9999-01-01T01:14:12Z'));
+    expect(servicePoints[6].arrivalDepartureTime!.operationalDepartureTime, DateTime.parse('2025-05-12T17:36:42Z'));
+    expect(servicePoints[6].arrivalDepartureTime!.plannedDepartureTime, DateTime.parse('2025-05-12T17:36:12Z'));
+    expect(servicePoints[6].arrivalDepartureTime!.operationalArrivalTime, DateTime.parse('2025-05-12T17:35:16Z'));
+    expect(servicePoints[6].arrivalDepartureTime!.plannedArrivalTime, DateTime.parse('2025-05-12T17:35:12Z'));
     // none again
     expect(servicePoints[7].arrivalDepartureTime, isNull);
   });

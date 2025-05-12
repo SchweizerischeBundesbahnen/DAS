@@ -20,38 +20,38 @@
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Genève"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="9999-01-01T00:10:25Z"/>
+            <StoppingPointDepartureDetails departureTime="2025-05-12T16:24:25Z"/>
         </TimingPointConstraints>
         <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Nyon"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="9999-01-01T00:24:59Z" plannedDepartureTime="9999-01-01T00:24:43Z"/>
+            <StoppingPointDepartureDetails departureTime="2025-05-12T16:39:59Z" plannedDepartureTime="2025-05-12T16:39:43Z"/>
         </TimingPointConstraints>
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:39:12Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-12T16:55:23Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Morges"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:52:12Z"
-                                TP_PlannedLatestArrivalTime="9999-01-01T00:53:12Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-12T17:07:12Z"
+                                TP_PlannedLatestArrivalTime="2025-05-12T17:07:20Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Lausanne"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T01:08:56Z"
-                                TP_PlannedLatestArrivalTime="9999-01-01T01:08:12Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-12T17:28:56Z"
+                                TP_PlannedLatestArrivalTime="2025-05-12T17:28:12Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Vevey"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="9999-01-01T01:09:12Z"/>
+            <StoppingPointDepartureDetails departureTime="2025-05-12T17:29:12Z"/>
         </TimingPointConstraints>
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T01:15:16Z"
-                                TP_PlannedLatestArrivalTime="9999-01-01T01:14:12Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-12T17:35:16Z"
+                                TP_PlannedLatestArrivalTime="2025-05-12T17:35:12Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Montreux"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="9999-01-01T01:16:42Z" plannedDepartureTime="9999-01-01T01:15:12Z"/>
+            <StoppingPointDepartureDetails departureTime="2025-05-12T17:36:42Z" plannedDepartureTime="2025-05-12T17:36:12Z"/>
         </TimingPointConstraints>
         <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
             <TimingPointReference>
