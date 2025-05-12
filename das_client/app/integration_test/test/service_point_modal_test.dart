@@ -164,7 +164,7 @@ void main() {
       final gsmRIcon = find.descendant(of: tabContentBern, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
       expect(gsmRIcon, findsNothing);
       final notFoundText = find.descendant(
-          of: tabContentBern, matching: find.text(l10n.w_detail_modal_sheet_communication_radio_channels_not_found));
+          of: tabContentBern, matching: find.text(l10n.w_service_point_modal_communication_radio_channels_not_found));
       expect(notFoundText, findsOneWidget);
 
       // Tab on Wankdorf -> GSM-P, 1407

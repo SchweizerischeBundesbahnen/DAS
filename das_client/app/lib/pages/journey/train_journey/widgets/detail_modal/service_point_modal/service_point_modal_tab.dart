@@ -13,11 +13,11 @@ enum ServicePointModalTab {
   String localized(BuildContext context) {
     switch (this) {
       case communication:
-        return context.l10n.w_detail_modal_sheet_communication_label;
+        return context.l10n.w_service_point_modal_communication_label;
       case graduatedSpeeds:
-        return context.l10n.w_detail_modal_sheet_graduated_speed_label;
+        return context.l10n.w_service_point_modal_graduated_speed_label;
       case localRegulations:
-        return context.l10n.w_detail_modal_sheet_local_regulations_label;
+        return context.l10n.w_service_point_modal_local_regulations_label;
     }
   }
 

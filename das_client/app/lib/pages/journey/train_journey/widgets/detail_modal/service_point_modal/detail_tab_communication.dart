@@ -23,7 +23,7 @@ class DetailTabCommunication extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _communicationNetworkType(context),
-            Text(context.l10n.w_detail_modal_sheet_communication_radio_channel, style: DASTextStyles.smallRoman),
+            Text(context.l10n.w_service_point_modal_communication_radio_channel, style: DASTextStyles.smallRoman),
             _contactList(context),
           ],
         ),
@@ -39,7 +39,7 @@ class DetailTabCommunication extends StatelessWidget {
         if (!snapshot.hasData) {
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: Text(context.l10n.w_detail_modal_sheet_communication_radio_channels_not_found),
+            child: Text(context.l10n.w_service_point_modal_communication_radio_channels_not_found),
           );
         }
 
@@ -83,7 +83,7 @@ class DetailTabCommunication extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(context.l10n.w_detail_modal_sheet_communication_network, style: DASTextStyles.smallRoman),
+            Text(context.l10n.w_service_point_modal_communication_network, style: DASTextStyles.smallRoman),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: sbbDefaultSpacing),
               child: CommunicationNetworkIcon(networkType: snapshot.data!),

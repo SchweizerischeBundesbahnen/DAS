@@ -146,14 +146,16 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   DASTableCell gradientCell(double? value) {
     if (value == null) {
-      return DASTableCell.empty();
+      return DASTableCell.empty(color: specialCellColor);
     }
 
     return DASTableCell(
-        child: Text(
-          value.round().toString(),
-          style: DASTextStyles.largeRoman,
-        ),
-        alignment: defaultAlignment);
+      color: specialCellColor,
+      child: Text(
+        value.round().toString(),
+        style: DASTextStyles.largeRoman,
+      ),
+      alignment: defaultAlignment,
+    );
   }
 }

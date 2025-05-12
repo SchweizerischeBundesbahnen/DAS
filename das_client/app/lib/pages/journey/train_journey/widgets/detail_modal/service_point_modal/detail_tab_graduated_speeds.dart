@@ -31,7 +31,7 @@ class DetailTabGraduatedSpeeds extends StatelessWidget {
         if (breakSeries == null || relevantSpeeds.isEmpty) {
           return Center(
             child: Text(
-              context.l10n.w_detail_modal_sheet_graduated_speed_no_information,
+              context.l10n.w_service_point_modal_graduated_speed_no_information,
               style: DASTextStyles.mediumRoman,
             ),
           );
@@ -43,7 +43,7 @@ class DetailTabGraduatedSpeeds extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                '${context.l10n.w_detail_modal_sheet_graduated_speed_break_series_title}: $breakSeriesLabel',
+                '${context.l10n.w_service_point_modal_graduated_speed_break_series_title}: $breakSeriesLabel',
                 style: DASTextStyles.smallBold,
               ),
               Expanded(child: _buildSpeedInfoList(context, relevantSpeeds)),

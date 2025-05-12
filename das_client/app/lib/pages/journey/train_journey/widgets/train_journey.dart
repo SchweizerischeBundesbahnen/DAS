@@ -4,6 +4,7 @@ import 'package:app/bloc/train_journey_cubit.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/break_series_selection.dart';
 import 'package:app/pages/journey/train_journey/widgets/chevron_animation_wrapper.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
@@ -163,6 +164,7 @@ class TrainJourney extends StatelessWidget {
             metadata: journey.metadata,
             data: rowData as AdditionalSpeedRestrictionData,
             config: trainJourneyConfig,
+            onTap: () => _onAdditionalSpeedRestrictionTab(context, rowData),
           );
         case Datatype.connectionTrack:
           return ConnectionTrackRow(
@@ -359,5 +361,11 @@ class TrainJourney extends StatelessWidget {
 
     return data.type == Datatype.curvePoint &&
         data.localSpeedData?.speedsFor(breakSeries?.trainSeries, breakSeries?.breakSeries) == null;
+  }
+
+  void _onAdditionalSpeedRestrictionTab(BuildContext context, AdditionalSpeedRestrictionData data) {
+    print('_onAdditionalSpeedRestrictionTab');
+    final viewModel = context.read<AdditionalSpeedRestrictionModalViewModel>();
+    viewModel.open(context, data.restriction);
   }
 }

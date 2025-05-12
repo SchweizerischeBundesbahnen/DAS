@@ -1,6 +1,7 @@
 import 'package:app/bloc/train_journey_cubit.dart';
 import 'package:app/bloc/ux_testing_cubit.dart';
 import 'package:app/di.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_modal.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
@@ -32,6 +33,10 @@ class TrainJourneyOverview extends StatelessWidget {
         ),
         Provider(
           create: (_) => ServicePointModalViewModel(),
+          dispose: (context, vm) => vm.dispose(),
+        ),
+        Provider(
+          create: (_) => AdditionalSpeedRestrictionModalViewModel(),
           dispose: (context, vm) => vm.dispose(),
         ),
       ],
