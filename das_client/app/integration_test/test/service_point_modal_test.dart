@@ -1,15 +1,16 @@
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
-import 'package:app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet.dart';
-import 'package:app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_tab.dart';
-import 'package:app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_tab_communication.dart';
-import 'package:app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_tab_graduated_speeds.dart';
-import 'package:app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_tab_local_regulations.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_communication.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_graduated_speeds.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_local_regulations.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_builder.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/animated_header_icon_button.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
 import 'package:app/widgets/indicator_wrapper.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -17,8 +18,8 @@ import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  group('general modal sheet tests', () {
-    testWidgets('test interaction points for detail modal sheet', (tester) async {
+  group('general service point modal sheet tests', () {
+    testWidgets('test interaction points for modal sheet', (tester) async {
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: 'T8');
 
@@ -42,7 +43,7 @@ void main() {
 
       await disconnect(tester);
     });
-    testWidgets('test header button collapsed on if detail model sheet open', (tester) async {
+    testWidgets('test header button collapsed if detail model sheet open', (tester) async {
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: 'T9999');
 
@@ -59,29 +60,29 @@ void main() {
 
       await disconnect(tester);
     });
-    testWidgets('test change of detail modal sheet page with segmented button', (tester) async {
+    testWidgets('test change of service point modal page with segmented button', (tester) async {
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: 'T8');
 
-      // open modal sheet with tap on service point name
+      // open modal with tap on service point name
       await _openByTapOnCellWithText(tester, 'Olten');
       _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Olten');
 
       // change tab to graduated speeds
-      await _selectTab(tester, DetailModalSheetTab.graduatedSpeeds);
+      await _selectTab(tester, ServicePointModalTab.graduatedSpeeds);
       _checkOpenModalSheet(DetailTabGraduatedSpeeds.graduatedSpeedsTabKey, 'Olten');
 
       // change tab to local regulations and check if full width
-      await _selectTab(tester, DetailModalSheetTab.localRegulations);
+      await _selectTab(tester, ServicePointModalTab.localRegulations);
       _checkOpenModalSheet(DetailTabLocalRegulations.localRegulationsTabKey, 'Olten', isMaximized: true);
 
       // change back to tab radio channels
-      await _selectTab(tester, DetailModalSheetTab.communication);
+      await _selectTab(tester, ServicePointModalTab.communication);
       _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Olten');
 
       await disconnect(tester);
     });
-    testWidgets('test modal sheet closes after timeout without touch on screen', (tester) async {
+    testWidgets('test modal closes after timeout without touch on screen', (tester) async {
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: 'T8');
 
@@ -208,7 +209,7 @@ void main() {
       _checkOpenModalSheet(DetailTabGraduatedSpeeds.graduatedSpeedsTabKey, 'Olten');
 
       // change to communication tab and check content
-      await _selectTab(tester, DetailModalSheetTab.communication);
+      await _selectTab(tester, ServicePointModalTab.communication);
       final tabContent = find.byKey(DetailTabCommunication.communicationTabKey);
       expect(tabContent, findsOneWidget);
       final gsmRIcon = find.descendant(of: tabContent, matching: find.byKey(CommunicationNetworkIcon.gsmRKey));
@@ -244,8 +245,8 @@ Future<void> _openByTapOnCellWithText(WidgetTester tester, String cellText) asyn
   await tapElement(tester, cell, warnIfMissed: false);
 }
 
-Future<void> _selectTab(WidgetTester tester, DetailModalSheetTab tab) async {
-  final segmentedButton = find.byKey(DetailModalSheet.segmentedButtonKey);
+Future<void> _selectTab(WidgetTester tester, ServicePointModalTab tab) async {
+  final segmentedButton = find.byKey(ServicePointModalBuilder.segmentedButtonKey);
   final segment = find.descendant(of: segmentedButton, matching: find.byIcon(tab.icon));
   await tapElement(tester, segment, warnIfMissed: false);
 }

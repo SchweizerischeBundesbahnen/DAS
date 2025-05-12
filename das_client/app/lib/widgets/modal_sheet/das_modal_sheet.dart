@@ -9,6 +9,13 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 enum _ControllerState { closed, expanded, maximized }
 
+/// Used to build header and body widgets for [DasModalSheet]
+class DASModalSheetBuilder {
+  Widget? header(BuildContext context) => null;
+
+  Widget body(BuildContext context) => SizedBox.shrink();
+}
+
 /// Used to open and close the [DasModalSheet] and handle animation.
 class DASModalSheetController {
   static int automaticCloseAfterSeconds = 10;
@@ -42,6 +49,7 @@ class DASModalSheetController {
   /// will be called by [DasModalSheet] to get [TickerProvider]
   void _initialize({required TickerProvider vsync, VoidCallback? onUpdate}) {
     _controller = AnimationController(vsync: vsync, duration: animationDuration);
+    // TODO: Rename and add https://stackoverflow.com/questions/55364049/how-do-you-add-a-curves-class-animation-to-animationcontroller-in-flutter
     _widthAnimation = Tween<double>(begin: 0.0, end: maxExpandedWidth).animate(_controller)
       ..addListener(() => onUpdate?.call());
 
@@ -132,15 +140,13 @@ class DasModalSheet extends StatefulWidget {
   static const Key modalSheetCloseButtonKey = Key('dasModalSheetCloseButton');
 
   const DasModalSheet({
-    required this.child,
+    required this.builder,
     required this.controller,
     super.key,
-    this.header,
     this.leftMargin = 0.0,
   });
 
-  final Widget child;
-  final Widget? header;
+  final DASModalSheetBuilder builder;
   final DASModalSheetController controller;
 
   /// margin used in full-screen on the left side of the modal sheet.
@@ -196,7 +202,7 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
       children: [
         _header(),
         SizedBox(height: sbbDefaultSpacing * 0.5),
-        Expanded(child: widget.child),
+        Expanded(child: widget.builder.body(context)),
       ],
     );
   }
@@ -205,7 +211,7 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
     return Row(
       children: [
         Expanded(
-          child: widget.header != null ? widget.header! : SizedBox(),
+          child: widget.builder.header(context) ?? SizedBox(),
         ),
         SBBIconButtonLarge(
           key: DasModalSheet.modalSheetCloseButtonKey,

@@ -3,12 +3,12 @@ import 'package:app/widgets/das_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-enum DetailModalSheetTab {
+enum ServicePointModalTab {
   communication(icon: SBBIcons.telephone_gsm_small),
   graduatedSpeeds(icon: DasIcons.appIconSmallTempo),
   localRegulations(icon: SBBIcons.location_pin_surrounding_area_small);
 
-  const DetailModalSheetTab({required this.icon});
+  const ServicePointModalTab({required this.icon});
 
   String localized(BuildContext context) {
     switch (this) {

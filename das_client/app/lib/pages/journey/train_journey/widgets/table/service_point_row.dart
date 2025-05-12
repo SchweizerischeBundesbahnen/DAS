@@ -1,5 +1,5 @@
-import 'package:app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_tab.dart';
-import 'package:app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
@@ -40,8 +40,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     final servicePointName = data.name;
     return DASTableCell(
       onTap: () {
-        final viewModel = context.read<DetailModalSheetViewModel>();
-        viewModel.open(tab: DetailModalSheetTab.communication, servicePoint: data);
+        final viewModel = context.read<ServicePointModalViewModel>();
+        viewModel.open(context, tab: ServicePointModalTab.communication, servicePoint: data);
       },
       alignment: Alignment.bottomLeft,
       child: Text(
@@ -105,8 +105,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
     return DASTableCell(
       onTap: () {
-        final viewModel = context.read<DetailModalSheetViewModel>();
-        viewModel.open(tab: DetailModalSheetTab.graduatedSpeeds, servicePoint: data);
+        final viewModel = context.read<ServicePointModalViewModel>();
+        viewModel.open(context, tab: ServicePointModalTab.graduatedSpeeds, servicePoint: data);
       },
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),

@@ -1,6 +1,6 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
-import 'package:app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +32,7 @@ class DetailTabCommunication extends StatelessWidget {
   }
 
   Widget _contactList(BuildContext context) {
-    final viewModel = context.read<DetailModalSheetViewModel>();
+    final viewModel = context.read<ServicePointModalViewModel>();
     return StreamBuilder(
       stream: viewModel.radioContacts,
       builder: (context, snapshot) {
@@ -72,7 +72,7 @@ class DetailTabCommunication extends StatelessWidget {
   }
 
   Widget _communicationNetworkType(BuildContext context) {
-    final viewModel = context.read<DetailModalSheetViewModel>();
+    final viewModel = context.read<ServicePointModalViewModel>();
     return StreamBuilder(
       stream: viewModel.communicationNetworkType,
       builder: (context, snapshot) {
