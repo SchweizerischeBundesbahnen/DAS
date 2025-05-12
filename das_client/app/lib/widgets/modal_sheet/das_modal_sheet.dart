@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:app/time_controller/time_controller.dart';
 import 'package:app/widgets/extended_header_container.dart';
 import 'package:extra_hittest_area/extra_hittest_area.dart';
 import 'package:fimber/fimber.dart';
@@ -11,7 +12,7 @@ enum _ControllerState { closed, expanded, maximized }
 
 /// Used to open and close the [DasModalSheet] and handle animation.
 class DASModalSheetController {
-  static int automaticCloseAfterSeconds = 10;
+  final TimeController timeController = TimeController();
 
   DASModalSheetController({
     this.animationDuration = const Duration(milliseconds: 150),
@@ -96,9 +97,10 @@ class DASModalSheetController {
   void resetAutomaticClose() {
     _idleTimer?.cancel();
     if (isOpen) {
-      _idleTimer = Timer(Duration(seconds: automaticCloseAfterSeconds), () {
+      _idleTimer = Timer(Duration(seconds: timeController.idleTimeDASModalSheet), () {
         if (isOpen) {
-          Fimber.d('Screen idle time of $automaticCloseAfterSeconds seconds reached. Closing DAS modal sheet.');
+          Fimber.d(
+              'Screen idle time of ${timeController.idleTimeDASModalSheet} seconds reached. Closing DAS modal sheet.');
           close();
         }
       });

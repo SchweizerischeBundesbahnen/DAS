@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:app/bloc/train_journey_cubit.dart';
+import 'package:app/di.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,8 @@ import 'package:sfera/component.dart';
 class TimeContainer extends StatefulWidget {
   const TimeContainer({super.key});
 
+  static const Key delayKey = Key('delayTextKey');
+
   @override
   State<TimeContainer> createState() => _TimeContainerState();
 }
@@ -20,10 +23,12 @@ class _TimeContainerState extends State<TimeContainer> {
   Journey? _previousJourney;
   bool _wasVisible = true;
   Timer? _updateTimer;
+  TimeController? timeController;
 
   @override
   void initState() {
     super.initState();
+    timeController = DI.get<TimeController>();
     _updateTimer = Timer.periodic(const Duration(milliseconds: 100), (_) {
       if (mounted) setState(() {});
     });
@@ -40,11 +45,9 @@ class _TimeContainerState extends State<TimeContainer> {
     return StreamBuilder<Journey?>(
       stream: context.trainJourneyCubit.journeyStream,
       builder: (context, snapshot) {
-        final timeController = TimeController();
-
         final sinceUpdate = DateTime.now().difference(_lastUpdate);
-        final isStale = sinceUpdate > Duration(seconds: timeController.punctualityStaleSeconds);
-        final isVisible = sinceUpdate < Duration(seconds: timeController.punctualityDisappearSeconds);
+        final isStale = sinceUpdate > Duration(seconds: timeController!.punctualityStaleSeconds);
+        final isVisible = sinceUpdate < Duration(seconds: timeController!.punctualityDisappearSeconds);
 
         final journey = snapshot.data;
         final delay = journey?.metadata.delay;
@@ -114,8 +117,6 @@ class _TimeContainerState extends State<TimeContainer> {
   }
 
   Widget _buildDelayText(Duration? delay, bool isStale) {
-    const Key delayKey = Key('delayTextKey');
-
     String delayString = '+00:00';
     if (delay != null) {
       final minutes = NumberFormat('00').format(delay.inMinutes.abs());
@@ -136,7 +137,7 @@ class _TimeContainerState extends State<TimeContainer> {
         sbbDefaultSpacing * 0.5,
         sbbDefaultSpacing * 0.5,
       ),
-      child: Text(delayString, style: style, key: delayKey),
+      child: Text(delayString, style: style, key: TimeContainer.delayKey),
     );
   }
 
@@ -145,12 +146,8 @@ class _TimeContainerState extends State<TimeContainer> {
       stream: Stream.periodic(const Duration(milliseconds: 200)),
       builder: (context, snapshot) {
         return Padding(
-          padding: const EdgeInsets.fromLTRB(
-            sbbDefaultSpacing * 0.5,
-            sbbDefaultSpacing * 0.5,
-            sbbDefaultSpacing * 0.5,
-            0,
-          ),
+          padding:
+              const EdgeInsets.fromLTRB(sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5, 0),
           child: Text(
             DateFormat('HH:mm:ss').format(DateTime.now()),
             style: DASTextStyles.xLargeBold,

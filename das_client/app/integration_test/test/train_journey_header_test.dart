@@ -1,3 +1,4 @@
+import 'package:app/theme/theme_util.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:app/time_controller/time_controller.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
@@ -27,25 +28,50 @@ Future<void> main() async {
     testWidgets('test punctuality display when no updates come', (tester) async {
       await prepareAndStartApp(tester);
 
-      final timeContainer = TimeController();
+      final TimeController timeController = DI.get<TimeController>();
 
-      timeContainer.changeTimerPunctualityDisplay(newPunctualityGraySeconds: 2, newPunctualityDisappearSeconds: 3);
+      timeController.changeTimerPunctualityDisplay(newPunctualityGraySeconds: 2, newPunctualityDisappearSeconds: 7);
 
-      expect(timeContainer.punctualityStaleSeconds, 2);
-      expect(timeContainer.punctualityDisappearSeconds, 3);
+      // set stale and disappear time down to 2 and 7 seconds
+      expect(timeController.punctualityStaleSeconds, 2);
+      expect(timeController.punctualityDisappearSeconds, 7);
+
+      await loadTrainJourney(tester, trainNumber: 'T4');
+
+      final timeContainer = find.byType(TimeContainer);
+      expect(timeContainer, findsOneWidget);
+
+      final context = tester.element(timeContainer);
+
+      // find delay text
+      final delayText = find.descendant(of: timeContainer, matching: find.byKey(TimeContainer.delayKey));
+
+      // check that delay text is there
+      expect(delayText, findsOneWidget);
+
+      await tester.pump(const Duration(seconds: 3));
+
+      // check that delay text is stale
+      final delayTextWidget = tester.widget<Text>(delayText);
+      expect(delayTextWidget.style?.color, ThemeUtil.getColor(context, SBBColors.graphite, SBBColors.granite));
+
+      await tester.pump(const Duration(seconds: 5));
+
+      // check that delay text has disappeared
+      expect(delayText, findsNothing);
     });
 
     testWidgets('test always-on display is turned on when journey is loaded', (tester) async {
       await prepareAndStartApp(tester);
 
       // Get that the always-on display is turned off, because journey is not started yet
-      final currentDisplayTurnedOff = await WakelockPlus.enabled;
-      expect(currentDisplayTurnedOff, false);
+      bool currentDisplayTurnedOn = await WakelockPlus.enabled;
+      expect(currentDisplayTurnedOn, false);
 
       await loadTrainJourney(tester, trainNumber: 'T4');
 
       // Get that the always-on display is turned on, because the journey is started
-      final currentDisplayTurnedOn = await WakelockPlus.enabled;
+      currentDisplayTurnedOn = await WakelockPlus.enabled;
       expect(currentDisplayTurnedOn, true);
     });
 

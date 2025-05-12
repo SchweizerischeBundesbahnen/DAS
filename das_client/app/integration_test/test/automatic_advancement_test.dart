@@ -1,6 +1,8 @@
+import 'package:app/di.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
+import 'package:app/time_controller/time_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -34,6 +36,12 @@ void main() {
       // Load app widget.
       await prepareAndStartApp(tester);
 
+      final TimeController timeController = DI.get<TimeController>();
+
+      // set idle time to 3 seconds
+      timeController.changeIdleTimeAutoScroll(newIdleTimeAutoScroll: 3);
+      expect(timeController.idleTimeAutoScroll, 3);
+
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9');
 
@@ -49,7 +57,7 @@ void main() {
       expect(find.text('Bern'), findsAny);
 
       // Wait until idle time reached
-      await Future.delayed(const Duration(seconds: 12));
+      await Future.delayed(Duration(seconds: timeController.idleTimeAutoScroll));
       await tester.pumpAndSettle();
 
       // Check if the last row is visible
