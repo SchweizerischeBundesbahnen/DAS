@@ -259,16 +259,18 @@ class TrainJourney extends StatelessWidget {
           child: Text(context.l10n.p_train_journey_table_kilometre_label),
           width: 64.0,
         ),
-      DASTableColumn(
-        id: ColumnDefinition.gradientDownhill.index,
-        child: Text('-'),
-        width: 40.0,
-      ),
-      DASTableColumn(
-        id: ColumnDefinition.gradientUphill.index,
-        child: Text('+'),
-        width: 40.0,
-      ),
+      if (!isDetailModelSheetOpen)
+        DASTableColumn(
+          id: ColumnDefinition.gradientDownhill.index,
+          child: Text('-'),
+          width: 40.0,
+        ),
+      if (!isDetailModelSheetOpen)
+        DASTableColumn(
+          id: ColumnDefinition.gradientUphill.index,
+          child: Text('+'),
+          width: 40.0,
+        ),
       DASTableColumn(
         id: ColumnDefinition.time.index,
         child: Text(context.l10n.p_train_journey_table_time_label),
