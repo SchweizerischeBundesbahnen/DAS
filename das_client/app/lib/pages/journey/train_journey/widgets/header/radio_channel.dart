@@ -2,6 +2,7 @@ import 'package:app/pages/journey/train_journey/widgets/communication_network_ic
 import 'package:app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_tab.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/radio_contact.dart';
+import 'package:app/pages/journey/train_journey/widgets/header/sim_identifier.dart';
 import 'package:app/widgets/indicator_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -28,21 +29,27 @@ class RadioChannel extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         final viewModel = context.read<DetailModalSheetViewModel>();
-        viewModel.open(tab: DetailModalSheetTab.communication, servicePoint: metadata.nextStop);
+        viewModel.open(tab: DetailModalSheetTab.communication, servicePoint: metadata.lastServicePoint);
       },
       child: ConstrainedBox(
         constraints: const BoxConstraints(minWidth: 258.0),
-        child: Row(
-          spacing: sbbDefaultSpacing * 0.5,
-          children: [
-            const Icon(SBBIcons.telephone_gsm_small),
-            RadioContactChannels(contacts: radioContactList),
-            if (communicationNetworkType != null && communicationNetworkType != CommunicationNetworkType.sim)
-              IndicatorWrapper(
-                  show: showIndicator,
-                  offset: Offset(-6.0, -8.0),
-                  child: CommunicationNetworkIcon(networkType: communicationNetworkType)),
-          ],
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: IndicatorWrapper(
+            show: showIndicator,
+            offset: Offset(-6.0, -8.0),
+            child: Row(
+              spacing: sbbDefaultSpacing * 0.5,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(SBBIcons.telephone_gsm_small),
+                if (communicationNetworkType == CommunicationNetworkType.sim) SimIdentifier(),
+                RadioContactChannels(contacts: radioContactList),
+                if (communicationNetworkType != null && communicationNetworkType != CommunicationNetworkType.sim)
+                  CommunicationNetworkIcon(networkType: communicationNetworkType)
+              ],
+            ),
+          ),
         ),
       ),
     );

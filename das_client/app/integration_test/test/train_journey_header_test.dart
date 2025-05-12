@@ -1,3 +1,4 @@
+import 'package:app/pages/journey/train_journey/widgets/header/sim_identifier.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/battery_status.dart';
@@ -331,10 +332,10 @@ Future<void> main() async {
       final burgdorfGsmPIcon = find.descendant(of: header, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
       expect(burgdorfGsmPIcon, findsOneWidget);
 
-      // check network type for Olten
+      // check network type for Olten (SIM displayed)
       await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Olten')));
       final oltenGsmPIcon = find.descendant(of: header, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
-      expect(oltenGsmPIcon, findsOneWidget);
+      expect(oltenGsmPIcon, findsNothing);
 
       // check network type for Zürich
       await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Zürich')));
@@ -357,35 +358,43 @@ Future<void> main() async {
       final radioChannel = find.descendant(of: header, matching: find.byType(RadioChannel));
       expect(radioChannel, findsOneWidget);
 
-      // check empty radio contactList for Wankdorf
-      final wankdorf = find.descendant(of: header, matching: find.text('Wankdorf'));
-      expect(wankdorf, findsOneWidget);
-      final mainContactsWankdorf =
+      // check empty radio contactList for Bern (nextStop: Wankdorf)
+      final nextStopWankdorf = find.descendant(of: header, matching: find.text('Wankdorf'));
+      expect(nextStopWankdorf, findsOneWidget);
+      final mainContactBern =
           find.descendant(of: radioChannel, matching: find.byKey(RadioContactChannels.radioContactChannelsKey));
-      expect(mainContactsWankdorf, findsNothing);
+      expect(mainContactBern, findsNothing);
+      final bernIndicator = find.descendant(of: radioChannel, matching: find.byKey(IndicatorWrapper.indicatorKey));
+      expect(bernIndicator, findsNothing);
+      final bernSim = find.descendant(of: radioChannel, matching: find.byKey(SimIdentifier.simKey));
+      expect(bernSim, findsNothing);
+
+      // check mainContacts for Wankdorf (nextStop: Burgdorf)
+      await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Burgdorf')));
+      final mainContactWankdorf = find.descendant(of: radioChannel, matching: find.text('1407'));
+      expect(mainContactWankdorf, findsOneWidget);
       final wankdorfIndicator = find.descendant(of: radioChannel, matching: find.byKey(IndicatorWrapper.indicatorKey));
       expect(wankdorfIndicator, findsNothing);
+      final wankdorfSim = find.descendant(of: radioChannel, matching: find.byKey(SimIdentifier.simKey));
+      expect(wankdorfSim, findsNothing);
 
-      // check mainContacts for Burgdorf
-      await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Burgdorf')));
-      final mainContactsBurgdorf = find.descendant(of: radioChannel, matching: find.text('1407'));
+      // check mainContacts for Burgdorf (nextStop: Olten)
+      await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Olten')));
+      final mainContactsBurgdorf = find.descendant(of: radioChannel, matching: find.text('1608 (1609)'));
       expect(mainContactsBurgdorf, findsOneWidget);
       final burgdorfIndicator = find.descendant(of: radioChannel, matching: find.byKey(IndicatorWrapper.indicatorKey));
-      expect(burgdorfIndicator, findsNothing);
+      expect(burgdorfIndicator, findsOneWidget);
+      final burgdorfSim = find.descendant(of: radioChannel, matching: find.byKey(SimIdentifier.simKey));
+      expect(burgdorfSim, findsOneWidget);
 
-      // check mainContacts for Olten
-      await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Olten')));
-      final mainContactsOlten = find.descendant(of: radioChannel, matching: find.text('1608 (1609)'));
+      // check mainContacts for Olten (nextStop: Zürich)
+      await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Zürich')));
+      final mainContactsOlten = find.descendant(of: radioChannel, matching: find.text('1102'));
       expect(mainContactsOlten, findsOneWidget);
       final oltenIndicator = find.descendant(of: radioChannel, matching: find.byKey(IndicatorWrapper.indicatorKey));
       expect(oltenIndicator, findsOneWidget);
-
-      // check mainContacts for Zürich
-      await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Zürich')));
-      final mainContactsZurich = find.descendant(of: radioChannel, matching: find.text('1102'));
-      expect(mainContactsZurich, findsOneWidget);
-      final zuerichIndicator = find.descendant(of: radioChannel, matching: find.byKey(IndicatorWrapper.indicatorKey));
-      expect(zuerichIndicator, findsOneWidget);
+      final oltenSim = find.descendant(of: radioChannel, matching: find.byKey(SimIdentifier.simKey));
+      expect(oltenSim, findsNothing);
 
       await disconnect(tester);
     });

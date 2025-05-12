@@ -1070,6 +1070,41 @@ void main() {
     expect(journey2.metadata.nextStop, journey2.data.whereType<ServicePoint>().toList()[1]);
   });
 
+  test('Test last service point is calculated correctly with non position infos', () async {
+    final journey = getJourney('T9', 1, tcCount: 1);
+    expect(journey.valid, true);
+    expect(journey.metadata.lastServicePoint, journey.data.whereType<ServicePoint>().toList()[0]);
+  });
+
+  test('Test last service point is calculated correctly when no other service point driven over', () async {
+    final journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 2000);
+    expect(journey.valid, true);
+    expect(journey.metadata.lastServicePoint, journey.data.whereType<ServicePoint>().toList()[0]);
+  });
+
+  test('Test last service point is calculated correctly with non position infos', () async {
+    final journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 3000);
+    expect(journey.valid, true);
+    expect(journey.metadata.lastServicePoint, journey.data.whereType<ServicePoint>().toList()[1]);
+  });
+
+  test('Test last service point is correct with invalid position update', () async {
+    final journey1 = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 3000);
+    expect(journey1.valid, true);
+    expect(journey1.metadata.currentPosition, journey1.data[18]);
+    expect(journey1.metadata.lastServicePoint, journey1.data.whereType<ServicePoint>().toList()[1]);
+
+    final journey2 = getJourney(
+      'T9',
+      1,
+      tcCount: 1,
+      relatedTrainInfoEventId: -1,
+      lastJourney: journey1,
+    );
+    expect(journey2.metadata.currentPosition, journey2.data[18]);
+    expect(journey2.metadata.lastServicePoint, journey2.data.whereType<ServicePoint>().toList()[1]);
+  });
+
   test('Test CommunicationNetworks parsed correctly', () async {
     final journey = getJourney('T12', 1);
     expect(journey.valid, true);

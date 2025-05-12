@@ -78,7 +78,7 @@ class ReducedOverviewViewModel {
 
   bool _relevantForReducedOverview(BaseData data, Metadata metadata) {
     final isServicePointWithStop = data.type == Datatype.servicePoint && (data as ServicePoint).isStop;
-    final isNetworkChange = metadata.communicationNetworkChanges.changeAtOrder(data.order) != null;
+    final isNetworkChange = metadata.communicationNetworkChanges.whereNotSim.changeAtOrder(data.order) != null;
     return isServicePointWithStop || isNetworkChange || data.type == Datatype.additionalSpeedRestriction;
   }
 
