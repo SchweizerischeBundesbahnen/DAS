@@ -70,7 +70,7 @@ class MainContainer extends StatelessWidget {
   Widget _trainJourneyText(BuildContext context) {
     final state = context.trainJourneyCubit.state;
     final resolvedTextColor = ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite);
-    
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
       child: Text(
