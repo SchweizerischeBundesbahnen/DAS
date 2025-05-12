@@ -76,7 +76,7 @@ class MainContainer extends StatelessWidget {
         state is TrainJourneyLoadedState
             ? '${state.trainIdentification.trainNumber} ${state.trainIdentification.ru.displayText(context)}'
             : '',
-        style: DASTextStyles.mediumRoman,
+        style: DASTextStyles.largeRoman,
       ),
     );
   }
