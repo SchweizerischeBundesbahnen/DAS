@@ -17,12 +17,14 @@ class TimeContainer extends StatefulWidget {
 
 class _TimeContainerState extends State<TimeContainer> {
   DateTime _lastUpdate = DateTime.now();
+  Journey? _previousJourney;
+  bool _wasVisible = true;
   Timer? _updateTimer;
 
   @override
   void initState() {
     super.initState();
-    _updateTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+    _updateTimer = Timer.periodic(const Duration(milliseconds: 100), (_) {
       if (mounted) setState(() {});
     });
   }
@@ -35,32 +37,19 @@ class _TimeContainerState extends State<TimeContainer> {
 
   @override
   Widget build(BuildContext context) {
-    final timeController = TimeController();
-
-    final sinceUpdate = DateTime.now().difference(_lastUpdate);
-    final isStale = sinceUpdate > Duration(seconds: timeController.punctualityStaleSeconds);
-    final isVisible = sinceUpdate < Duration(seconds: timeController.punctualityDisappearSeconds);
-
     return StreamBuilder<Journey?>(
       stream: context.trainJourneyCubit.journeyStream,
       builder: (context, snapshot) {
+        final timeController = TimeController();
+
+        final sinceUpdate = DateTime.now().difference(_lastUpdate);
+        final isStale = sinceUpdate > Duration(seconds: timeController.punctualityStaleSeconds);
+        final isVisible = sinceUpdate < Duration(seconds: timeController.punctualityDisappearSeconds);
+
         final journey = snapshot.data;
         final delay = journey?.metadata.delay;
 
-        if (delay != null) {
-          final oldSince = DateTime.now().difference(_lastUpdate);
-          final wasStale = oldSince > Duration(seconds: timeController.punctualityStaleSeconds);
-          final wasInvisible = oldSince > Duration(seconds: timeController.punctualityDisappearSeconds);
-
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (mounted) {
-              _lastUpdate = DateTime.now();
-              if (wasStale || wasInvisible) {
-                setState(() {});
-              }
-            }
-          });
-        }
+        _handleUpdate(journey, delay, isVisible);
 
         final delayText = _buildDelayText(delay, isStale);
 
@@ -70,18 +59,50 @@ class _TimeContainerState extends State<TimeContainer> {
           child: SizedBox(
             width: 124.0,
             height: 112.0,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Flexible(child: _currentTime()),
-                _divider(),
-                if (isVisible) Flexible(child: delayText) else SizedBox(height: sbbDefaultSpacing * 2.5),
-              ],
-            ),
+            child: _buildDelayColumn(isVisible, delayText),
           ),
         );
       },
+    );
+  }
+
+  void _handleUpdate(Journey? newJourney, Duration? delay, bool isVisible) {
+    final journey = newJourney;
+
+    if (delay != null && journey != _previousJourney) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _lastUpdate = DateTime.now();
+          _previousJourney = journey;
+          _wasVisible = true;
+          setState(() {});
+        }
+      });
+    }
+
+    if (!_wasVisible && isVisible) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _wasVisible = true;
+          setState(() {});
+        }
+      });
+    }
+
+    if (!isVisible && _wasVisible) {
+      _wasVisible = false;
+    }
+  }
+
+  Widget _buildDelayColumn(bool isVisible, Widget delayText) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Flexible(child: _currentTime()),
+        _divider(),
+        isVisible ? Flexible(child: delayText) : SizedBox(height: sbbDefaultSpacing * 2.5),
+      ],
     );
   }
 
@@ -93,6 +114,8 @@ class _TimeContainerState extends State<TimeContainer> {
   }
 
   Widget _buildDelayText(Duration? delay, bool isStale) {
+    const Key delayKey = Key('delayTextKey');
+
     String delayString = '+00:00';
     if (delay != null) {
       final minutes = NumberFormat('00').format(delay.inMinutes.abs());
@@ -107,9 +130,13 @@ class _TimeContainerState extends State<TimeContainer> {
         : DASTextStyles.xLargeLight;
 
     return Padding(
-      padding:
-          const EdgeInsets.fromLTRB(sbbDefaultSpacing * 0.5, 0.0, sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5),
-      child: Text(delayString, style: style),
+      padding: const EdgeInsets.fromLTRB(
+        sbbDefaultSpacing * 0.5,
+        0.0,
+        sbbDefaultSpacing * 0.5,
+        sbbDefaultSpacing * 0.5,
+      ),
+      child: Text(delayString, style: style, key: delayKey),
     );
   }
 
@@ -118,8 +145,12 @@ class _TimeContainerState extends State<TimeContainer> {
       stream: Stream.periodic(const Duration(milliseconds: 200)),
       builder: (context, snapshot) {
         return Padding(
-          padding:
-              const EdgeInsets.fromLTRB(sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5, 0),
+          padding: const EdgeInsets.fromLTRB(
+            sbbDefaultSpacing * 0.5,
+            sbbDefaultSpacing * 0.5,
+            sbbDefaultSpacing * 0.5,
+            0,
+          ),
           child: Text(
             DateFormat('HH:mm:ss').format(DateTime.now()),
             style: DASTextStyles.xLargeBold,
