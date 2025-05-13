@@ -59,8 +59,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   DASTableCell timeCell(BuildContext context) {
     if (data.arrivalDepartureTime == null) return DASTableCell.empty();
 
-    if (data.arrivalDepartureTime?.operationalDepartureTime != null) {
-      final time = data.arrivalDepartureTime!.operationalDepartureTime!;
+    if (data.arrivalDepartureTime?.primaryDepartureTime != null) {
+      final time = data.arrivalDepartureTime!.primaryDepartureTime!;
       return DASTableCell(
           child: Text(Format.time(time, showSeconds: true).substring(0, 7)),
           alignment: defaultAlignment,

@@ -1234,7 +1234,7 @@ void main() {
     expect(servicePoints[3].decisiveGradient!.downhill, 8.0);
   });
 
-  test('Test ArrivalDepartureTime parsed correctly', () {
+  test('Test ArrivalDepartureTime parsed correctly in near time', () {
     final journey = getJourney('T16', 1);
     expect(journey.valid, true);
 
@@ -1242,43 +1242,64 @@ void main() {
     expect(servicePoints, hasLength(8));
 
     // operationalDepartureTime and plannedOperationalDepartureTime
-    expect(servicePoints.first.arrivalDepartureTime, isNotNull);
-    expect(servicePoints[0].arrivalDepartureTime!.operationalDepartureTime, DateTime.parse('2025-05-12T16:14:25Z'));
-    expect(servicePoints[0].arrivalDepartureTime!.plannedDepartureTime, DateTime.parse('2025-05-12T16:14:25Z'));
-    // single operationalDepartureTime
-    expect(servicePoints[1].arrivalDepartureTime, isNotNull);
-    expect(servicePoints[1].arrivalDepartureTime!.operationalDepartureTime, DateTime.parse('2025-05-12T16:24:25Z'));
-    expect(servicePoints[1].arrivalDepartureTime!.plannedDepartureTime, isNull);
+    final genevaAirport = servicePoints[0];
+    expect(genevaAirport.arrivalDepartureTime, isNotNull);
+    expect(genevaAirport.arrivalDepartureTime!.primaryDepartureTime, DateTime.parse('2025-05-12T16:14:25Z'));
+    expect(genevaAirport.arrivalDepartureTime!.secondaryDepartureTime, DateTime.parse('2025-05-12T16:14:10Z'));
+    expect(genevaAirport.arrivalDepartureTime!.hasCalculatedTimes, true);
+    // single operationalDepartureTime ('time not calculated')
+    final geneva = servicePoints[1];
+    expect(geneva.arrivalDepartureTime, isNotNull);
+    final genevaPrimaryDepTime = geneva.arrivalDepartureTime!.primaryDepartureTime;
+    final genevaSecondaryDepTime = geneva.arrivalDepartureTime!.secondaryDepartureTime;
+    expect(genevaPrimaryDepTime, DateTime.parse('2025-05-12T16:24:25Z'));
+    expect(genevaSecondaryDepTime, genevaPrimaryDepTime);
+    expect(geneva.arrivalDepartureTime!.hasCalculatedTimes, false);
     // operationalDepartureTime and plannedOperationalDepartureTime
-    expect(servicePoints[2].arrivalDepartureTime, isNotNull);
-    expect(servicePoints[2].arrivalDepartureTime!.operationalDepartureTime, DateTime.parse('2025-05-12T16:39:59Z'));
-    expect(servicePoints[2].arrivalDepartureTime!.plannedDepartureTime, DateTime.parse('2025-05-12T16:39:43Z'));
+    final nyon = servicePoints[2];
+    expect(nyon.arrivalDepartureTime, isNotNull);
+    expect(nyon.arrivalDepartureTime!.primaryDepartureTime, DateTime.parse('2025-05-12T16:39:59Z'));
+    expect(nyon.arrivalDepartureTime!.secondaryDepartureTime, DateTime.parse('2025-05-12T16:39:43Z'));
+    expect(nyon.arrivalDepartureTime!.hasCalculatedTimes, true);
     // single operationalArrivalTime
-    expect(servicePoints[3].arrivalDepartureTime, isNotNull);
-    expect(servicePoints[3].arrivalDepartureTime!.operationalDepartureTime, isNull);
-    expect(servicePoints[3].arrivalDepartureTime!.plannedDepartureTime, isNull);
-    expect(servicePoints[3].arrivalDepartureTime!.operationalArrivalTime, DateTime.parse('2025-05-12T16:55:23Z'));
-    expect(servicePoints[3].arrivalDepartureTime!.plannedArrivalTime, isNull);
+    final morges = servicePoints[3];
+    expect(morges.arrivalDepartureTime, isNotNull);
+    expect(morges.arrivalDepartureTime!.primaryDepartureTime, isNull);
+    expect(morges.arrivalDepartureTime!.secondaryDepartureTime, isNull);
+    final morgesPrimaryArrTime = morges.arrivalDepartureTime!.primaryArrivalTime;
+    final morgesSecondaryArrTime = morges.arrivalDepartureTime!.secondaryArrivalTime;
+    expect(morgesPrimaryArrTime, DateTime.parse('2025-05-12T16:55:23Z'));
+    expect(morgesPrimaryArrTime, morgesSecondaryArrTime);
+    expect(morges.arrivalDepartureTime!.hasCalculatedTimes, false);
     // operationalArrivalTime and plannedArrivalTime
-    expect(servicePoints[4].arrivalDepartureTime, isNotNull);
-    expect(servicePoints[4].arrivalDepartureTime!.operationalDepartureTime, isNull);
-    expect(servicePoints[4].arrivalDepartureTime!.plannedDepartureTime, isNull);
-    expect(servicePoints[4].arrivalDepartureTime!.operationalArrivalTime, DateTime.parse('2025-05-12T17:07:12Z'));
-    expect(servicePoints[4].arrivalDepartureTime!.plannedArrivalTime, DateTime.parse('2025-05-12T17:07:20Z'));
+    final lausanne = servicePoints[4];
+    expect(lausanne.arrivalDepartureTime, isNotNull);
+    expect(lausanne.arrivalDepartureTime!.primaryDepartureTime, isNull);
+    expect(lausanne.arrivalDepartureTime!.secondaryDepartureTime, isNull);
+    expect(lausanne.arrivalDepartureTime!.primaryArrivalTime, DateTime.parse('2025-05-12T17:07:12Z'));
+    expect(lausanne.arrivalDepartureTime!.secondaryArrivalTime, DateTime.parse('2025-05-12T17:07:20Z'));
+    expect(lausanne.arrivalDepartureTime!.hasCalculatedTimes, true);
     // operationalArrivalTime, plannedArrivalTime and operationalDepartureTime
-    expect(servicePoints[5].arrivalDepartureTime, isNotNull);
-    expect(servicePoints[5].arrivalDepartureTime!.operationalDepartureTime, DateTime.parse('2025-05-12T17:29:12Z'));
-    expect(servicePoints[5].arrivalDepartureTime!.plannedDepartureTime, isNull);
-    expect(servicePoints[5].arrivalDepartureTime!.operationalArrivalTime, DateTime.parse('2025-05-12T17:28:56Z'));
-    expect(servicePoints[5].arrivalDepartureTime!.plannedArrivalTime, DateTime.parse('2025-05-12T17:28:12Z'));
+    final vevey = servicePoints[5];
+    expect(vevey.arrivalDepartureTime, isNotNull);
+    final veveyPrimaryDepTime = vevey.arrivalDepartureTime!.primaryDepartureTime;
+    final veveySecondaryDepTime = vevey.arrivalDepartureTime!.secondaryDepartureTime;
+    expect(veveyPrimaryDepTime, DateTime.parse('2025-05-12T17:29:12Z'));
+    expect(veveyPrimaryDepTime, veveySecondaryDepTime);
+    expect(vevey.arrivalDepartureTime!.primaryArrivalTime, DateTime.parse('2025-05-12T17:28:56Z'));
+    expect(vevey.arrivalDepartureTime!.secondaryArrivalTime, DateTime.parse('2025-05-12T17:28:12Z'));
+    expect(vevey.arrivalDepartureTime!.hasCalculatedTimes, true);
     // all times
-    expect(servicePoints[6].arrivalDepartureTime, isNotNull);
-    expect(servicePoints[6].arrivalDepartureTime!.operationalDepartureTime, DateTime.parse('2025-05-12T17:36:42Z'));
-    expect(servicePoints[6].arrivalDepartureTime!.plannedDepartureTime, DateTime.parse('2025-05-12T17:36:12Z'));
-    expect(servicePoints[6].arrivalDepartureTime!.operationalArrivalTime, DateTime.parse('2025-05-12T17:35:16Z'));
-    expect(servicePoints[6].arrivalDepartureTime!.plannedArrivalTime, DateTime.parse('2025-05-12T17:35:12Z'));
+    final montreux = servicePoints[6];
+    expect(montreux.arrivalDepartureTime, isNotNull);
+    expect(montreux.arrivalDepartureTime!.primaryDepartureTime, DateTime.parse('2025-05-12T17:36:42Z'));
+    expect(montreux.arrivalDepartureTime!.secondaryDepartureTime, DateTime.parse('2025-05-12T17:36:12Z'));
+    expect(montreux.arrivalDepartureTime!.primaryArrivalTime, DateTime.parse('2025-05-12T17:35:16Z'));
+    expect(montreux.arrivalDepartureTime!.secondaryArrivalTime, DateTime.parse('2025-05-12T17:35:12Z'));
+    expect(montreux.arrivalDepartureTime!.hasCalculatedTimes, true);
     // none again
-    expect(servicePoints[7].arrivalDepartureTime, isNull);
+    final aigle = servicePoints[7];
+    expect(aigle.arrivalDepartureTime, isNull);
   });
 }
 
