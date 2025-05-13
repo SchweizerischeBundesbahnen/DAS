@@ -1,7 +1,7 @@
 import 'package:app/bloc/train_journey_cubit.dart';
 import 'package:app/di.dart';
 import 'package:app/i18n/i18n.dart';
-import 'package:app/util/sound.dart';
+import 'package:app/sound/sound.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_modal_bottom_sheet.dart';
 import 'package:app/widgets/das_text_styles.dart';
