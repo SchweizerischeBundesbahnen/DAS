@@ -328,16 +328,16 @@ void main() {
     expect(curvePoints.where((c) => c.curvePointType == CurvePointType.end), isEmpty);
     expect(curvePoints[0].curvePointType, CurvePointType.begin);
     expect(curvePoints[0].curveType, CurveType.curve);
-    expect(curvePoints[0].comment, 'Kurve 1');
+    expect(curvePoints[0].comment, 'Kurve 1 comment');
     expect(curvePoints[1].curvePointType, CurvePointType.begin);
     expect(curvePoints[1].curveType, CurveType.curve);
-    expect(curvePoints[1].comment, 'Kurve 1');
+    expect(curvePoints[1].comment, 'Kurve 1 after comment');
     expect(curvePoints[2].curvePointType, CurvePointType.begin);
     expect(curvePoints[2].curveType, CurveType.stationExitCurve);
-    expect(curvePoints[2].comment, 'Kurve 2');
+    expect(curvePoints[2].comment, 'Kurve 5 after stop');
     expect(curvePoints[3].curvePointType, CurvePointType.begin);
     expect(curvePoints[3].curveType, CurveType.curveAfterHalt);
-    expect(curvePoints[3].comment, 'Kurve 3');
+    expect(curvePoints[3].comment, 'Kurve 5 after stop');
   });
 
   test('Test stop on demand is parsed correctly', () async {
