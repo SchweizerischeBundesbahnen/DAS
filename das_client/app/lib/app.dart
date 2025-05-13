@@ -73,6 +73,7 @@ class _AppState extends State<App> {
                   ).copyWith(
                     badgeColor: SBBColors.royal,
                     badgeShadowColor: SBBColors.royal.withAlpha((255.0 * 0.2).round()),
+                    gradientColors: [Color(0xFF0079C7), Color(0xFF143A85), Color(0xFF143A85), Color(0xFF0079C7)],
                   ),
                 ),
               ),
