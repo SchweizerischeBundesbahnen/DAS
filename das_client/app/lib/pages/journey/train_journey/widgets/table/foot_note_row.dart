@@ -46,7 +46,7 @@ abstract class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
           isExpanded: isExpanded,
           accordionToggleCallback: accordionToggleCallback,
           icon: SBBIcons.form_small,
-          backgroundColor: ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.iron),
+          backgroundColor: ThemeUtil.getColor(context, SBBColors.white, SBBColors.charcoal),
         ),
       ),
     );
