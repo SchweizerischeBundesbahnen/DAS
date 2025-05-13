@@ -64,7 +64,7 @@ class TrainJourneyOverview extends StatelessWidget {
   void _handleUxEvents(BuildContext context, UxTestingState state) {
     if (state is UxTestingEventReceived) {
       if (state.event.isWarn) {
-        Sound.play(AppAssets.warnappWarn);
+        Sound.play(AppAssets.warnappWarn, volume: 1.0, loop: true);
         showWarnFunctionModalSheet(context);
       } else if (state.event.isKoa && state.event.value == KoaState.waitCancelled.name) {
         Sound.play(AppAssets.soundKoaWaitCanceled);
