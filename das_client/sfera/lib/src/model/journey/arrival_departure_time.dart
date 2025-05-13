@@ -23,7 +23,9 @@ class ArrivalDepartureTime {
 
   // > 2h before Journey - sent operational times are **planned** times and no planned times are sent separately
   // < 2h before Journey - sent operational times are **calculated** times and planned times are sent separately
-  bool get hasCalculatedTimes => _plannedDepartureTime != null || _plannedArrivalTime != null;
+  bool get hasCalculatedTimes =>
+      (_plannedDepartureTime != null && _operationalDepartureTime != null) ||
+      (_plannedArrivalTime != null && _operationalArrivalTime != null);
 
   final DateTime? _operationalDepartureTime;
   final DateTime? _plannedDepartureTime;
