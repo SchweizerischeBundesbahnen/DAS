@@ -9,7 +9,7 @@
         </OTN_ID>
     </TrainIdentification>
 
-    <SegmentProfileReference SP_ID="1671_1" SP_VersionMajor="2" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1671_1" SP_VersionMajor="2" SP_VersionMinor="3" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -86,7 +86,7 @@
             <TemporaryConstraintReason text="Umbau" language="DE"/>
         </TemporaryConstraints>
 
-        <TrainCharacteristicsRef TC_ID="1671_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
+        <TrainCharacteristicsRef TC_ID="1671_1" TC_VersionMajor="1" TC_VersionMinor="1" location="0">
             <TC_RU_ID>1285</TC_RU_ID>
         </TrainCharacteristicsRef>
 
