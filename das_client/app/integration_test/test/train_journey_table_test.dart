@@ -339,17 +339,15 @@ void main() {
       final newLineSpeedRow = findDASTableRowByText('New Line Speed A Missing');
       expect(newLineSpeedRow, findsOneWidget);
 
-      final emptySpeedNewLineSpeedRow =
+      final emptyCellsInNewLineSpeedRow =
           find.descendant(of: newLineSpeedRow, matching: find.byKey(DASTableCell.emptyCellKey));
-      //Row has 11 times a DASTableCell.empty including the speed cell
-      expect(emptySpeedNewLineSpeedRow, findsNWidgets(11));
+      expect(emptyCellsInNewLineSpeedRow, findsNWidgets(11));
 
       final genevaRow = findDASTableRowByText('Genève');
       expect(genevaRow, findsOneWidget);
 
-      final emptySpeedGeneva = find.descendant(of: genevaRow, matching: find.byKey(DASTableCell.emptyCellKey));
-      //Row has 11 times a DASTableCell.empty including the speed cell
-      expect(emptySpeedGeneva, findsNWidgets(11));
+      final emptyCellsInGenevaRow = find.descendant(of: genevaRow, matching: find.byKey(DASTableCell.emptyCellKey));
+      expect(emptyCellsInGenevaRow, findsNWidgets(12));
 
       await disconnect(tester);
     });

@@ -57,7 +57,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   @override
   DASTableCell timeCell(BuildContext context) {
-    if (data.arrivalDepartureTime == null) return DASTableCell.empty();
+    if (data.arrivalDepartureTime == null) return DASTableCell.empty(color: specialCellColor);
 
     if (data.arrivalDepartureTime?.primaryDepartureTime != null) {
       final time = data.arrivalDepartureTime!.primaryDepartureTime!;
