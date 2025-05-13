@@ -54,7 +54,7 @@ class KoaNotification extends StatelessWidget {
       ),
       badgeText: context.l10n.w_koa_notification_title,
       trailing: _trailingButton(context),
-      gradientColors: [SBBColors.cloud, SBBColors.milk, SBBColors.milk, SBBColors.cloud],
+      gradientColors: [SBBColors.aluminum, SBBColors.cement, SBBColors.cement, SBBColors.aluminum],
     );
   }
 
