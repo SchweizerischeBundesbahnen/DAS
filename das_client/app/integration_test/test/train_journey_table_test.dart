@@ -467,7 +467,7 @@ void main() {
       final List<String> expectedHeaders = [
         l10n.p_train_journey_table_kilometre_label,
         l10n.p_train_journey_table_journey_information_label,
-        l10n.p_train_journey_table_time_label,
+        l10n.p_train_journey_table_time_label_planned,
         l10n.p_train_journey_table_advised_speed_label,
         l10n.p_train_journey_table_graduated_speed_label,
       ];

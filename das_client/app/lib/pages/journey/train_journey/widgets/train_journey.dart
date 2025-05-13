@@ -272,7 +272,7 @@ class TrainJourney extends StatelessWidget {
       ],
       DASTableColumn(
         id: ColumnDefinition.time.index,
-        child: Text(context.l10n.p_train_journey_table_time_label),
+        child: Text(context.l10n.p_train_journey_table_time_label_planned),
         width: 100.0,
       ),
       DASTableColumn(id: ColumnDefinition.route.index, width: 48.0), // route column
