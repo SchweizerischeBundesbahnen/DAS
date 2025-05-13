@@ -6,15 +6,17 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 class AdditionalSpeedRestrictionModalViewModel {
+  /// TODO: Count will make more sense when sequence or complex ASR are implemented
+  final _rxAdditionalSpeedRestrictionCount = BehaviorSubject<int>();
   final _rxAdditionalSpeedRestriction = BehaviorSubject<AdditionalSpeedRestriction>();
 
-  // TODO: Get count
-  Stream<int> count = Stream.value(1).asBroadcastStream();
+  Stream<int> get count => _rxAdditionalSpeedRestrictionCount.distinct();
 
   Stream<AdditionalSpeedRestriction> get additionalSpeedRestriction => _rxAdditionalSpeedRestriction.distinct();
 
-  void open(BuildContext context, AdditionalSpeedRestriction additionalSpeedRestriction) {
-    _rxAdditionalSpeedRestriction.add(additionalSpeedRestriction);
+  void open(BuildContext context, AdditionalSpeedRestriction restriction) {
+    _rxAdditionalSpeedRestriction.add(restriction);
+    _rxAdditionalSpeedRestrictionCount.add(1);
 
     final viewModel = context.read<DetailModalViewModel>();
     viewModel.open(AdditionalSpeedRestrictionModalBuilder(), maximize: false);
@@ -24,5 +26,6 @@ class AdditionalSpeedRestrictionModalViewModel {
 
   void dispose() {
     _rxAdditionalSpeedRestriction.close();
+    _rxAdditionalSpeedRestrictionCount.close();
   }
 }

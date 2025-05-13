@@ -12,6 +12,8 @@ class AdditionalSpeedRestriction {
     required this.kmTo,
     required this.orderFrom,
     required this.orderTo,
+    this.restrictionFrom,
+    this.restrictionUntil,
     this.speed,
     this.reason,
   });
@@ -20,6 +22,8 @@ class AdditionalSpeedRestriction {
   final double kmTo;
   final int orderFrom;
   final int orderTo;
+  final DateTime? restrictionFrom;
+  final DateTime? restrictionUntil;
   final int? speed;
   final LocalizedString? reason;
 

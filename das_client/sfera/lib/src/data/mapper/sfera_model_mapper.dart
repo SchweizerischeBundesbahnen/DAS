@@ -227,6 +227,8 @@ class SferaModelMapper {
             kmTo: endKilometreMap[endLocation]!.first,
             orderFrom: startOrder,
             orderTo: endOrder,
+            restrictionFrom: asrTemporaryConstrain.startTime,
+            restrictionUntil: asrTemporaryConstrain.endTime,
             speed: asrTemporaryConstrain.additionalSpeedRestriction?.asrSpeed,
             reason: _localizedStringFromMultilingualText(asrTemporaryConstrain.temporaryConstraintReasons),
           ));

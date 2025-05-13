@@ -18,5 +18,5 @@ class MultilingualTextDto extends SferaXmlElementDto {
 // extensions
 
 extension MultilingualTextsExtension on Iterable<MultilingualTextDto> {
-  String? textFor(String locale) => where((it) => it.language == locale).firstOrNull?.text;
+  String? textFor(String locale) => where((it) => it.language.toLowerCase() == locale.toLowerCase()).firstOrNull?.text;
 }

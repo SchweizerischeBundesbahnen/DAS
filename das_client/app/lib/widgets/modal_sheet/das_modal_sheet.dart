@@ -208,17 +208,20 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
   }
 
   Widget _header() {
-    return Row(
-      children: [
-        Expanded(
-          child: widget.builder.header(context) ?? SizedBox(),
-        ),
-        SBBIconButtonLarge(
-          key: DasModalSheet.modalSheetCloseButtonKey,
-          onPressed: () => widget.controller.close(),
-          icon: SBBIcons.cross_small,
-        ),
-      ],
+    return ConstrainedBox(
+      constraints: BoxConstraints(minHeight: 64.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: widget.builder.header(context) ?? SizedBox(),
+          ),
+          SBBIconButtonLarge(
+            key: DasModalSheet.modalSheetCloseButtonKey,
+            onPressed: () => widget.controller.close(),
+            icon: SBBIcons.cross_small,
+          ),
+        ],
+      ),
     );
   }
 
