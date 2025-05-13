@@ -59,15 +59,17 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   DASTableCell timeCell(BuildContext context) {
     if (data.arrivalDepartureTime == null) return DASTableCell.empty(color: specialCellColor);
 
-    if (data.arrivalDepartureTime?.primaryDepartureTime != null) {
-      final time = data.arrivalDepartureTime!.primaryDepartureTime!;
-      return DASTableCell(
-          child: Text(Format.time(time, showSeconds: true).substring(0, 7)),
-          alignment: defaultAlignment,
-          color: specialCellColor);
-    }
+    final depTime = data.arrivalDepartureTime?.primaryDepartureTime;
 
-    return DASTableCell(child: Text('06:05:52'), alignment: defaultAlignment, color: specialCellColor);
+    if (depTime == null) return DASTableCell.empty(color: specialCellColor);
+
+    String formattedTime = Format.time(depTime, showSeconds: false);
+    if (!data.isStop) formattedTime = '($formattedTime)';
+
+    return DASTableCell(
+        child: Text(formattedTime, style: DASTextStyles.largeBold),
+        alignment: defaultAlignment,
+        color: specialCellColor);
   }
 
   @override
