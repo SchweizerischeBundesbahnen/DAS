@@ -119,6 +119,6 @@ jobs:
         with:
           serviceAccountJsonPlainText: ${{ secrets.ANDROID_SERVICE_ACCOUNT_JSON }}
           packageName: ${{ matrix.packageName }}
-          releaseFiles: das_client/build/app/outputs/bundle/${{ matrix.release-dir }}
+          releaseFiles: das_client/app/build/app/outputs/bundle/${{ matrix.release-dir }}
           track: internal
           status: draft
