@@ -1241,11 +1241,14 @@ void main() {
     final servicePoints = journey.data.whereType<ServicePoint>().toList();
     expect(servicePoints, hasLength(8));
 
-    // no times
-    expect(servicePoints.first.arrivalDepartureTime, isNull);
+    // operationalDepartureTime and plannedOperationalDepartureTime
+    expect(servicePoints.first.arrivalDepartureTime, isNotNull);
+    expect(servicePoints[0].arrivalDepartureTime!.operationalDepartureTime, DateTime.parse('2025-05-12T16:14:25Z'));
+    expect(servicePoints[0].arrivalDepartureTime!.plannedDepartureTime, DateTime.parse('2025-05-12T16:14:25Z'));
     // single operationalDepartureTime
     expect(servicePoints[1].arrivalDepartureTime, isNotNull);
     expect(servicePoints[1].arrivalDepartureTime!.operationalDepartureTime, DateTime.parse('2025-05-12T16:24:25Z'));
+    expect(servicePoints[1].arrivalDepartureTime!.plannedDepartureTime, isNull);
     // operationalDepartureTime and plannedOperationalDepartureTime
     expect(servicePoints[2].arrivalDepartureTime, isNotNull);
     expect(servicePoints[2].arrivalDepartureTime!.operationalDepartureTime, DateTime.parse('2025-05-12T16:39:59Z'));
