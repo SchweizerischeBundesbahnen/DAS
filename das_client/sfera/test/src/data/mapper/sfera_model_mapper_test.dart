@@ -433,6 +433,7 @@ void main() {
     expect(speedRestrictions[0].restriction.orderFrom, 700);
     expect(speedRestrictions[0].restriction.orderTo, 800);
     expect(speedRestrictions[0].restriction.speed, 60);
+    expect(speedRestrictions[0].restriction.reason?.de, 'Schutz Personal');
 
     expect(journey.metadata.additionalSpeedRestrictions, hasLength(1));
     expect(journey.metadata.additionalSpeedRestrictions[0].kmFrom, 64.2);
@@ -440,6 +441,7 @@ void main() {
     expect(journey.metadata.additionalSpeedRestrictions[0].orderFrom, 700);
     expect(journey.metadata.additionalSpeedRestrictions[0].orderTo, 800);
     expect(journey.metadata.additionalSpeedRestrictions[0].speed, 60);
+    expect(journey.metadata.additionalSpeedRestrictions[0].reason?.de, 'Schutz Personal');
   });
 
   test('Test additional speed restriction is parsed correctly over multiple segments', () async {
