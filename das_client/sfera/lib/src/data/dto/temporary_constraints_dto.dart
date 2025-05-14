@@ -17,7 +17,8 @@ class TemporaryConstraintsDto extends SferaSegmentXmlElementDto {
   TemporaryConstraintTypeDto get temporaryConstraintType =>
       XmlEnum.valueOf(TemporaryConstraintTypeDto.values, attributes['temporaryConstraintType']!)!;
 
-  Iterable<TemporaryConstraintReasonDto> get temporaryConstraintReasons => children.whereType<TemporaryConstraintReasonDto>();
+  Iterable<TemporaryConstraintReasonDto> get temporaryConstraintReasons =>
+      children.whereType<TemporaryConstraintReasonDto>();
 
   AdditionalSpeedRestrictionDto? get additionalSpeedRestriction =>
       children.whereType<AdditionalSpeedRestrictionDto>().firstOrNull;
