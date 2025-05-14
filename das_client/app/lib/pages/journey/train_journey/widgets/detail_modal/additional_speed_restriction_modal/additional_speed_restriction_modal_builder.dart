@@ -17,7 +17,7 @@ class AdditionalSpeedRestrictionModalBuilder extends DASModalSheetBuilder {
       children: [
         Text(context.l10n.w_additional_speed_restriction_modal_title, style: DASTextStyles.largeRoman),
         StreamBuilder(
-          stream: viewModel.count,
+          stream: viewModel.numberOfRestrictions,
           builder: (context, snapshot) {
             final count = snapshot.data ?? 0;
             final countLabel = context.l10n.w_additional_speed_restriction_modal_subtitle_count;

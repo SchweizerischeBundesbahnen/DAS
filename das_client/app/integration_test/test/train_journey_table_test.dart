@@ -453,7 +453,7 @@ void main() {
                 it.decoration is BoxDecoration &&
                 (it.decoration as BoxDecoration).color ==
                     AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor));
-        expect(coloredCells, findsNWidgets(4));
+        expect(coloredCells, findsNWidgets(6));
       }
 
       await disconnect(tester);

@@ -48,7 +48,7 @@ class AdditionalSpeedRestriction {
 
   @override
   String toString() {
-    return 'AdditionalSpeedRestriction(kmFrom: $kmFrom, kmTo: $kmTo, orderFrom: $orderFrom, orderTo: $orderTo, reason: $reason, speed: $speed)';
+    return 'AdditionalSpeedRestriction(kmFrom: $kmFrom, kmTo: $kmTo, orderFrom: $orderFrom, orderTo: $orderTo, restrictionFrom: $restrictionFrom, restrictionUntil: $restrictionUntil, speed: $speed, reason: $reason)';
   }
 
   @override
@@ -61,9 +61,18 @@ class AdditionalSpeedRestriction {
           orderFrom == other.orderFrom &&
           orderTo == other.orderTo &&
           reason == other.reason &&
+          restrictionFrom == other.restrictionFrom &&
+          restrictionUntil == other.restrictionUntil &&
           speed == other.speed;
 
   @override
   int get hashCode =>
-      kmFrom.hashCode ^ kmTo.hashCode ^ orderFrom.hashCode ^ orderTo.hashCode ^ speed.hashCode ^ reason.hashCode;
+      kmFrom.hashCode ^
+      kmTo.hashCode ^
+      orderFrom.hashCode ^
+      orderTo.hashCode ^
+      speed.hashCode ^
+      reason.hashCode ^
+      restrictionFrom.hashCode ^
+      restrictionUntil.hashCode;
 }

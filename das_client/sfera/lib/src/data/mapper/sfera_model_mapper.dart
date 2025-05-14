@@ -28,7 +28,6 @@ import 'package:sfera/src/model/journey/metadata.dart';
 import 'package:sfera/src/model/journey/service_point.dart';
 import 'package:sfera/src/model/journey/track_equipment_segment.dart';
 import 'package:sfera/src/model/journey/tram_area.dart';
-import 'package:sfera/src/model/localized_string.dart';
 
 /// Used to map SFERA data to [Journey] with relevant [Metadata].
 class SferaModelMapper {
@@ -230,7 +229,7 @@ class SferaModelMapper {
             restrictionFrom: asrTemporaryConstrain.startTime,
             restrictionUntil: asrTemporaryConstrain.endTime,
             speed: asrTemporaryConstrain.additionalSpeedRestriction?.asrSpeed,
-            reason: _localizedStringFromMultilingualText(asrTemporaryConstrain.temporaryConstraintReasons),
+            reason: asrTemporaryConstrain.temporaryConstraintReasons.toLocalizedString,
           ));
 
           startSegmentIndex = null;
@@ -472,17 +471,5 @@ class SferaModelMapper {
       }
     }
     return lineFootNoteLocations;
-  }
-
-  static LocalizedString? _localizedStringFromMultilingualText(Iterable<MultilingualTextDto> multilingualTexts) {
-    if (multilingualTexts.isEmpty) {
-      return null;
-    }
-
-    return LocalizedString(
-      de: multilingualTexts.textFor('de'),
-      fr: multilingualTexts.textFor('fr'),
-      it: multilingualTexts.textFor('it'),
-    );
   }
 }
