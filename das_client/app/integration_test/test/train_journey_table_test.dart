@@ -1075,54 +1075,67 @@ void main() {
 //       await disconnect(tester);
 //     });
 //
-  testWidgets('test time cells for journey in far future (T4) with non calculated times', (tester) async {
+  testWidgets('test time cells for journey in far future (T4) with planned times only', (tester) async {
     await prepareAndStartApp(tester);
 
     // load train journey by filling out train selection page
     await loadTrainJourney(tester, trainNumber: 'T4');
 
-    // test if planned header label is in time column (no calculated times)
+    // test if planned time header label is in table (no calculated times)
     final expectedHeaderLabel = l10n.p_train_journey_table_time_label_planned;
     expect(find.text(expectedHeaderLabel), findsOneWidget);
 
     // two service points have empty times
-    final key = ServicePointRow.timeCellInServicePointRowKey;
-    expect(_findByKeyInRowWithText(key: key, rowText: 'Solothurn'), findsNothing);
+    final timeCellKey = ServicePointRow.timeCellInServicePointRowKey;
+    expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: 'Solothurn'), findsNothing);
 
-    expect(_findByKeyInRowWithText(key: key, rowText: 'Solothurn West'), findsNothing);
+    expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: 'Solothurn West'), findsNothing);
 
     // Langendorf should have only departure
     final langendorf = 'Langendorf';
-    expect(_findByKeyInRowWithText(key: key, rowText: langendorf), findsOneWidget);
-    expect(_findTextInRowWithText(innerText: '18:36', rowText: langendorf), findsOneWidget);
+    expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: langendorf), findsOneWidget);
+    expect(_findTextInDASTableRowByText(innerText: '18:36', rowText: langendorf), findsOneWidget);
 
     // Lommiswil has departure and arrival
     final lommiswil = 'Lommiswil';
-    expect(_findByKeyInRowWithText(key: key, rowText: lommiswil), findsOneWidget);
-    expect(_findTextInRowWithText(innerText: '18:39\n18:40', rowText: lommiswil), findsOneWidget);
+    expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: lommiswil), findsOneWidget);
+    expect(_findTextInDASTableRowByText(innerText: '18:39\n18:40', rowText: lommiswil), findsOneWidget);
 
     // Im Holz (non mandatory stop) has departure
     final holz = 'Im Holz';
-    expect(_findByKeyInRowWithText(key: key, rowText: holz), findsOneWidget);
-    expect(_findTextInRowWithText(innerText: '18:46', rowText: holz), findsOneWidget);
+    expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: holz), findsOneWidget);
+    expect(_findTextInDASTableRowByText(innerText: '18:46', rowText: holz), findsOneWidget);
 
     // Oberdorf has only arrival
     final oberdorf = 'Oberdorf SO';
-    expect(_findByKeyInRowWithText(key: key, rowText: oberdorf), findsOneWidget);
-    expect(_findTextInRowWithText(innerText: '18:48\n', rowText: oberdorf), findsOneWidget);
+    expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: oberdorf), findsOneWidget);
+    expect(_findTextInDASTableRowByText(innerText: '18:48\n', rowText: oberdorf), findsOneWidget);
+
+    await disconnect(tester);
+  });
+
+  testWidgets('test time cells for journey in near future (T16) with calculated times', (tester) async {
+    await prepareAndStartApp(tester);
+
+    // load train journey by filling out train selection page
+    await loadTrainJourney(tester, trainNumber: 'T16');
+
+    // test if calculated time header label is in table
+    final expectedHeaderLabel = l10n.p_train_journey_table_time_label_calculated;
+    expect(find.text(expectedHeaderLabel), findsOneWidget);
 
     await disconnect(tester);
   });
   // });
 }
 
-Finder _findByKeyInRowWithText({required Key key, required String rowText}) {
+Finder _findByKeyInDASTableRowByText({required Key key, required String rowText}) {
   final row = findDASTableRowByText(rowText);
   expect(row, findsOneWidget);
   return find.descendant(of: row, matching: find.byKey(key));
 }
 
-Finder _findTextInRowWithText({required String innerText, required String rowText}) {
+Finder _findTextInDASTableRowByText({required String innerText, required String rowText}) {
   final row = findDASTableRowByText(rowText);
   expect(row, findsOneWidget);
   return find.descendant(of: row, matching: find.text(innerText));

@@ -252,6 +252,10 @@ class TrainJourney extends StatelessWidget {
     final speedLabel =
         currentBreakSeries != null ? '${currentBreakSeries.trainSeries.name}${currentBreakSeries.breakSeries}' : '??';
 
+    final resolvedTimeHeaderLabel = metadata.hasAnyCalculatedTimes
+        ? context.l10n.p_train_journey_table_time_label_calculated
+        : context.l10n.p_train_journey_table_time_label_planned;
+
     return [
       if (!isDetailModelSheetOpen) ...[
         DASTableColumn(
@@ -272,7 +276,7 @@ class TrainJourney extends StatelessWidget {
       ],
       DASTableColumn(
         id: ColumnDefinition.time.index,
-        child: Text(context.l10n.p_train_journey_table_time_label_planned),
+        child: Text(resolvedTimeHeaderLabel),
         width: 100.0,
       ),
       DASTableColumn(id: ColumnDefinition.route.index, width: 48.0), // route column

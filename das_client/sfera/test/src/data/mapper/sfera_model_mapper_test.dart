@@ -1241,6 +1241,9 @@ void main() {
     final servicePoints = journey.data.whereType<ServicePoint>().toList();
     expect(servicePoints, hasLength(8));
 
+    // has calculated times
+    expect(journey.metadata.hasAnyCalculatedTimes, isTrue);
+
     // operationalDepartureTime and plannedOperationalDepartureTime
     final genevaAirport = servicePoints[0];
     expect(genevaAirport.arrivalDepartureTime, isNotNull);
@@ -1300,6 +1303,22 @@ void main() {
     // none again
     final aigle = servicePoints[7];
     expect(aigle.arrivalDepartureTime, isNull);
+  });
+
+  test('metadata.hasCalculatedTimes_whenNoCalculatedTimesInJourney_thenFalse', () {
+    final journey = getJourney('T4', 1);
+    expect(journey.valid, true);
+
+    // has calculated times
+    expect(journey.metadata.hasAnyCalculatedTimes, isFalse);
+  });
+
+  test('metadata.hasCalculatedTimes_whenNoTimesInJourney_thenFalse', () {
+    final journey = getJourney('T5', 1);
+    expect(journey.valid, true);
+
+    // has calculated times
+    expect(journey.metadata.hasAnyCalculatedTimes, isFalse);
   });
 }
 
