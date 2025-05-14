@@ -395,6 +395,12 @@ ha liberato gli scambi in deviazione&quot;/&gt;
                         &lt;entry nSpeed=&quot;120&quot; text=&quot;Entrata e uscita lato Schonberg: velocità fra il fabbricato viaggiatori e il segnale di binario A&quot;/&gt;
                     &lt;/entries&gt;
                 "/>
+                <NetworkSpecificParameter name="xmlStationSpeed" value="
+					&lt;stationSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;160/140&quot;/&gt;
+						&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;160/140&quot;/&gt;
+					&lt;/stationSpeed&gt;
+				"/>
             </TAF_TAP_Location_NSP>
 
             <TAF_TAP_Location_NSP>
@@ -441,6 +447,14 @@ ha liberato gli scambi in deviazione&quot;/&gt;
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
+                    &lt;entries&gt;
+						&lt;entry roSpeed=&quot;120&quot; adSpeed=&quot;120&quot; text=&quot;Uscita dai binari 1 dallo scambio 2b risp. 3b, quando la coda del treno
+ha liberato gli scambi in deviazione&quot;/&gt;
+                        &lt;entry nSpeed=&quot;120&quot; text=&quot;Uscita dai binari 1 dallo scambio 2b risp. 3b, quando la coda del treno
+ha liberato gli scambi in deviazione&quot;/&gt;
+                    &lt;/entries&gt;
+                "/>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
 					&lt;stationSpeed&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;85-75/75-80&quot;/&gt;
