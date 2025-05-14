@@ -4,42 +4,32 @@ import 'package:meta/meta.dart';
 @immutable
 class ArrivalDepartureTime {
   const ArrivalDepartureTime({
-    DateTime? operationalDepartureTime,
-    DateTime? plannedDepartureTime,
-    DateTime? operationalArrivalTime,
-    DateTime? plannedArrivalTime,
-  })  : _operationalDepartureTime = operationalDepartureTime,
-        _plannedDepartureTime = plannedDepartureTime,
-        _operationalArrivalTime = operationalArrivalTime,
-        _plannedArrivalTime = plannedArrivalTime;
+    this.operationalDepartureTime,
+    this.plannedDepartureTime,
+    this.operationalArrivalTime,
+    this.plannedArrivalTime,
+  });
 
-  DateTime? get primaryDepartureTime => _operationalDepartureTime ?? _plannedDepartureTime;
+  final DateTime? operationalDepartureTime;
+  final DateTime? operationalArrivalTime;
+  final DateTime? plannedDepartureTime;
+  final DateTime? plannedArrivalTime;
 
-  DateTime? get primaryArrivalTime => _operationalArrivalTime ?? _plannedArrivalTime;
+  bool get isDepartureTimeCalculated => operationalDepartureTime != null && plannedDepartureTime != null;
 
-  DateTime? get secondaryDepartureTime => _plannedDepartureTime ?? _operationalDepartureTime;
-
-  DateTime? get secondaryArrivalTime => _plannedArrivalTime ?? _operationalArrivalTime;
+  bool get isArrivalTimeCalculated => operationalArrivalTime != null && plannedArrivalTime != null;
 
   // > 2h before Journey - sent operational times are **planned** times and no planned times are sent separately
   // < 2h before Journey - sent operational times are **calculated** times and planned times are sent separately
-  bool get hasCalculatedTimes =>
-      (_plannedDepartureTime != null && _operationalDepartureTime != null) ||
-      (_plannedArrivalTime != null && _operationalArrivalTime != null);
-
-  final DateTime? _operationalDepartureTime;
-  final DateTime? _plannedDepartureTime;
-
-  final DateTime? _operationalArrivalTime;
-  final DateTime? _plannedArrivalTime;
-
+  bool get anyCalculatedTimes => isDepartureTimeCalculated || isArrivalTimeCalculated;
+  
   @override
   String toString() {
     return 'ArrivalDepartureTime('
-        'operationalDepartureTime: $_operationalDepartureTime'
-        ', plannedDepartureTime: $_plannedDepartureTime'
-        ', operationalArrivalTime: $_operationalArrivalTime'
-        ', plannedArrivalTime: $_plannedArrivalTime'
+        'operationalDepartureTime: $operationalDepartureTime'
+        ', plannedDepartureTime: $plannedDepartureTime'
+        ', operationalArrivalTime: $operationalArrivalTime'
+        ', plannedArrivalTime: $plannedArrivalTime'
         ')';
   }
 }

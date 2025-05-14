@@ -99,7 +99,8 @@ class SferaModelMapper {
         routeStart: journeyData.firstOrNull,
         routeEnd: journeyData.lastOrNull,
         delay: relatedTrainInformation?.ownTrain.trainLocationInformation.delay.delayAsDuration,
-        hasAnyCalculatedTimes: servicePoints.any((sP) => sP.arrivalDepartureTime?.hasCalculatedTimes ?? false),
+        anyCalculatedArrivalDepartureTimes:
+            servicePoints.any((sP) => sP.arrivalDepartureTime?.anyCalculatedTimes ?? false),
         nonStandardTrackEquipmentSegments: trackEquipmentSegments,
         bracketStationSegments: _parseBracketStationSegments(servicePoints),
         availableBreakSeries: _parseAvailableBreakSeries(journeyData),

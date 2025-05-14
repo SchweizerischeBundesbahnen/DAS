@@ -2,135 +2,107 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/src/model/journey/arrival_departure_time.dart';
 
 void main() {
-  test('primaryDepartureTime_whenOperationalDepartureTimeIsProvided_thenReturnsOperationalDepartureTime', () {
-    final operationalDepartureTime = DateTime(2025, 5, 13, 10, 0);
-    final plannedDepartureTime = DateTime(2025, 5, 13, 12, 0);
-    final time = ArrivalDepartureTime(
-      operationalDepartureTime: operationalDepartureTime,
-      plannedDepartureTime: plannedDepartureTime,
-    );
-
-    expect(time.primaryDepartureTime, operationalDepartureTime);
-  });
-
-  test('primaryDepartureTime_whenBothOperationalAndPlannedDepartureTimesAreNull_thenReturnsNull', () {
-    final time = ArrivalDepartureTime(
-      operationalDepartureTime: null,
-      plannedDepartureTime: null,
-    );
-
-    expect(time.primaryDepartureTime, isNull);
-  });
-
-  test('primaryDepartureTime_whenOperationalDepartureTimeIsNull_thenReturnsPlannedDepartureTime', () {
-    final plannedDepartureTime = DateTime(2025, 5, 13, 12, 0);
-    final time = ArrivalDepartureTime(
-      operationalDepartureTime: null,
-      plannedDepartureTime: plannedDepartureTime,
-    );
-
-    expect(time.primaryDepartureTime, plannedDepartureTime);
-  });
-
-  test('primaryArrivalTime_whenOperationalArrivalTimeIsProvided_thenReturnsOperationalArrivalTime', () {
-    final operationalArrivalTime = DateTime(2025, 5, 13, 15, 0);
-    final plannedArrivalTime = DateTime(2025, 5, 13, 16, 0);
-    final time = ArrivalDepartureTime(
-      operationalArrivalTime: operationalArrivalTime,
-      plannedArrivalTime: plannedArrivalTime,
-    );
-
-    expect(time.primaryArrivalTime, operationalArrivalTime);
-  });
-
-  test('primaryArrivalTime_whenBothOperationalAndPlannedArrivalTimesAreNull_thenReturnsNull', () {
-    final time = ArrivalDepartureTime(
-      operationalArrivalTime: null,
-      plannedArrivalTime: null,
-    );
-
-    expect(time.primaryArrivalTime, isNull);
-  });
-
-  test('primaryArrivalTime_whenOperationalArrivalTimeIsNull_thenReturnsPlannedArrivalTime', () {
-    final plannedArrivalTime = DateTime(2025, 5, 13, 16, 0);
-    final time = ArrivalDepartureTime(
-      operationalArrivalTime: null,
-      plannedArrivalTime: plannedArrivalTime,
-    );
-
-    expect(time.primaryArrivalTime, plannedArrivalTime);
-  });
-
-  test('secondaryDepartureTime_whenBothOperationalAndPlannedDepartureTimesAreNull_thenReturnsNull', () {
-    final time = ArrivalDepartureTime(
-      operationalDepartureTime: null,
-      plannedDepartureTime: null,
-    );
-
-    expect(time.secondaryDepartureTime, isNull);
-  });
-
-  test('secondaryArrivalTime_whenBothOperationalAndPlannedArrivalTimesAreNull_thenReturnsNull', () {
-    final time = ArrivalDepartureTime(
-      operationalArrivalTime: null,
-      plannedArrivalTime: null,
-    );
-
-    expect(time.secondaryArrivalTime, isNull);
-  });
-
-  test('hasCalculatedTimes_whenOnlyPlannedDepartureTimeIsProvided_thenReturnsFalse', () {
+  test('isDepartureTimeCalculated_whenOnlyPlannedDepartureTimeIsProvided_thenReturnsFalse', () {
     final time = ArrivalDepartureTime(
       plannedDepartureTime: DateTime(2025, 5, 13, 12, 0),
     );
 
-    expect(time.hasCalculatedTimes, isFalse);
+    expect(time.isDepartureTimeCalculated, isFalse);
   });
 
-  test('hasCalculatedTimes_whenOnlyOperationalDepartureTimeIsProvided_thenReturnsFalse', () {
+  test('isDepartureTimeCalculated_whenOnlyOperationalDepartureTimeIsProvided_thenReturnsFalse', () {
     final time = ArrivalDepartureTime(
       operationalDepartureTime: DateTime(2025, 5, 13, 12, 0),
     );
 
-    expect(time.hasCalculatedTimes, isFalse);
+    expect(time.isDepartureTimeCalculated, isFalse);
   });
 
-  test('hasCalculatedTimes_whenPlannedAndOpDepartureTimeIsProvided_thenReturnsTrue', () {
+  test('isDepartureTimeCalculated_whenBothOperationalAndPlannedDepartureTimesAreProvided_thenReturnsTrue', () {
     final time = ArrivalDepartureTime(
       plannedDepartureTime: DateTime(2025, 5, 13, 12, 0),
       operationalDepartureTime: DateTime(2025, 5, 13, 15, 0),
     );
 
-    expect(time.hasCalculatedTimes, isTrue);
+    expect(time.isDepartureTimeCalculated, isTrue);
   });
 
-  test('hasCalculatedTimes_whenOnlyPlannedArrivalTimeIsProvided_thenReturnsFalse', () {
+  test('isArrivalTimeCalculated_whenOnlyPlannedArrivalTimeIsProvided_thenReturnsFalse', () {
     final time = ArrivalDepartureTime(
       plannedArrivalTime: DateTime(2025, 5, 13, 16, 0),
     );
 
-    expect(time.hasCalculatedTimes, isFalse);
+    expect(time.isArrivalTimeCalculated, isFalse);
   });
 
-  test('hasCalculatedTimes_whenOnlyOperationalArrivalTimeIsProvided_thenReturnsFalse', () {
+  test('isArrivalTimeCalculated_whenOnlyOperationalArrivalTimeIsProvided_thenReturnsFalse', () {
     final time = ArrivalDepartureTime(
       operationalArrivalTime: DateTime(2025, 5, 13, 15, 0),
     );
 
-    expect(time.hasCalculatedTimes, isFalse);
+    expect(time.isArrivalTimeCalculated, isFalse);
   });
 
-  test('hasCalculatedTimes_whenPlannedAndOpArrivalTimeIsProvided_thenReturnsTrue', () {
+  test('isArrivalTimeCalculated_whenBothOperationalAndPlannedArrivalTimesAreProvided_thenReturnsTrue', () {
     final time = ArrivalDepartureTime(
       plannedArrivalTime: DateTime(2025, 5, 13, 16, 0),
       operationalArrivalTime: DateTime(2025, 5, 13, 15, 0),
     );
 
-    expect(time.hasCalculatedTimes, isTrue);
+    expect(time.isArrivalTimeCalculated, isTrue);
   });
 
-  test('hasCalculatedTimes_whenNeitherPlannedNorOperationalTimesAreProvided_thenReturnsFalse', () {
+  test('anyCalculatedTimes_whenOnlyPlannedDepartureTimeIsProvided_thenReturnsFalse', () {
+    final time = ArrivalDepartureTime(
+      plannedDepartureTime: DateTime(2025, 5, 13, 12, 0),
+    );
+
+    expect(time.anyCalculatedTimes, isFalse);
+  });
+
+  test('anyCalculatedTimes_whenOnlyOperationalDepartureTimeIsProvided_thenReturnsFalse', () {
+    final time = ArrivalDepartureTime(
+      operationalDepartureTime: DateTime(2025, 5, 13, 12, 0),
+    );
+
+    expect(time.anyCalculatedTimes, isFalse);
+  });
+
+  test('anyCalculatedTimes_whenPlannedAndOpDepartureTimeIsProvided_thenReturnsTrue', () {
+    final time = ArrivalDepartureTime(
+      plannedDepartureTime: DateTime(2025, 5, 13, 12, 0),
+      operationalDepartureTime: DateTime(2025, 5, 13, 15, 0),
+    );
+
+    expect(time.anyCalculatedTimes, isTrue);
+  });
+
+  test('anyCalculatedTimes_whenOnlyPlannedArrivalTimeIsProvided_thenReturnsFalse', () {
+    final time = ArrivalDepartureTime(
+      plannedArrivalTime: DateTime(2025, 5, 13, 16, 0),
+    );
+
+    expect(time.anyCalculatedTimes, isFalse);
+  });
+
+  test('anyCalculatedTimes_whenOnlyOperationalArrivalTimeIsProvided_thenReturnsFalse', () {
+    final time = ArrivalDepartureTime(
+      operationalArrivalTime: DateTime(2025, 5, 13, 15, 0),
+    );
+
+    expect(time.anyCalculatedTimes, isFalse);
+  });
+
+  test('anyCalculatedTimes_whenPlannedAndOpArrivalTimeIsProvided_thenReturnsTrue', () {
+    final time = ArrivalDepartureTime(
+      plannedArrivalTime: DateTime(2025, 5, 13, 16, 0),
+      operationalArrivalTime: DateTime(2025, 5, 13, 15, 0),
+    );
+
+    expect(time.anyCalculatedTimes, isTrue);
+  });
+
+  test('anyCalculatedTimes_whenNeitherPlannedNorOperationalTimesAreProvided_thenReturnsFalse', () {
     final time = ArrivalDepartureTime(
       operationalDepartureTime: null,
       plannedDepartureTime: null,
@@ -138,7 +110,7 @@ void main() {
       plannedArrivalTime: null,
     );
 
-    expect(time.hasCalculatedTimes, isFalse);
+    expect(time.anyCalculatedTimes, isFalse);
   });
 
   test('toString_whenCalled_thenReturnsCorrectStringRepresentation', () {

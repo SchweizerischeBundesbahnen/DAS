@@ -62,8 +62,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   DASTableCell timeCell(BuildContext context) {
     if (data.arrivalDepartureTime == null) return DASTableCell.empty(color: specialCellColor);
 
-    final depTime = data.arrivalDepartureTime?.primaryDepartureTime;
-    final arrTime = data.arrivalDepartureTime?.primaryArrivalTime;
+    final depTime = data.arrivalDepartureTime?.operationalDepartureTime;
+    final arrTime = data.arrivalDepartureTime?.operationalArrivalTime;
 
     if (depTime == null && arrTime == null) return DASTableCell.empty(color: specialCellColor);
 
@@ -81,10 +81,10 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
             String? formattedArrTime;
             if (depTime != null) {
               if (showCalculatedTimes) {
-                final primeTime = data.arrivalDepartureTime!.primaryDepartureTime!;
+                final primeTime = data.arrivalDepartureTime!.operationalDepartureTime!;
                 formattedDepTime = Format.time(primeTime, showSeconds: true).substring(0, 7);
               } else {
-                final secTime = data.arrivalDepartureTime!.secondaryDepartureTime!;
+                final secTime = data.arrivalDepartureTime!.plannedDepartureTime!;
                 formattedDepTime = Format.time(secTime, showSeconds: false);
               }
               if (!data.isStop) formattedDepTime = '($formattedDepTime)';
