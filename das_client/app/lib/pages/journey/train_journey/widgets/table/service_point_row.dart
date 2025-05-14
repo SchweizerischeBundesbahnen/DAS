@@ -1,5 +1,6 @@
 import 'package:app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_tab.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
@@ -60,32 +61,47 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   @override
   DASTableCell timeCell(BuildContext context) {
     if (data.arrivalDepartureTime == null) return DASTableCell.empty(color: specialCellColor);
-
     final depTime = data.arrivalDepartureTime?.primaryDepartureTime;
     final arrTime = data.arrivalDepartureTime?.primaryArrivalTime;
 
     if (depTime == null && arrTime == null) return DASTableCell.empty(color: specialCellColor);
 
-    String? formattedDepTime;
-    String? formattedArrTime;
-    if (depTime != null) {
-      formattedDepTime = Format.time(depTime, showSeconds: false);
-      if (!data.isStop) formattedDepTime = '($formattedDepTime)';
-    }
-    if (arrTime != null) {
-      formattedArrTime = Format.time(arrTime, showSeconds: false);
-      if (!data.isStop) formattedArrTime = '($formattedArrTime)';
-    }
+    final viewModel = context.read<ArrivalDepartureTimeViewModel>();
+
     return DASTableCell(
-      child: Text.rich(
-        TextSpan(
-          children: [
-            if (formattedArrTime != null) TextSpan(text: '$formattedArrTime\n'),
-            TextSpan(text: formattedDepTime ?? '', style: DASTextStyles.largeBold)
-          ],
-        ),
-        key: timeCellInServicePointRowKey,
-      ),
+      child: StreamBuilder(
+          key: timeCellInServicePointRowKey,
+          stream: viewModel.rxShowCalculatedTimes,
+          builder: (context, snapshot) {
+            final showCalculatedTimes = snapshot.data ?? false;
+
+            String? formattedDepTime;
+            String? formattedArrTime;
+            if (depTime != null) {
+              if (showCalculatedTimes) {
+                formattedDepTime = Format.time(depTime, showSeconds: true).substring(0, 7);
+              } else {
+                formattedDepTime = Format.time(depTime, showSeconds: false);
+              }
+              if (!data.isStop) formattedDepTime = '($formattedDepTime)';
+            }
+            if (arrTime != null) {
+              if (showCalculatedTimes) {
+                formattedArrTime = Format.time(arrTime, showSeconds: true).substring(0, 7);
+              } else {
+                formattedArrTime = Format.time(arrTime, showSeconds: false);
+              }
+              if (!data.isStop) formattedArrTime = '($formattedArrTime)';
+            }
+            return Text.rich(
+              TextSpan(
+                children: [
+                  if (formattedArrTime != null) TextSpan(text: '$formattedArrTime\n'),
+                  TextSpan(text: formattedDepTime ?? '', style: DASTextStyles.largeBold)
+                ],
+              ),
+            );
+          }),
       alignment: defaultAlignment,
       color: specialCellColor,
     );

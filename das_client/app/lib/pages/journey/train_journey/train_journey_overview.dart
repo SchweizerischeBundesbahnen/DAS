@@ -6,6 +6,7 @@ import 'package:app/pages/journey/train_journey/widgets/detail_modal_sheet/detai
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/koa_notification.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:app/pages/journey/train_journey/widgets/warn_function_modal_sheet.dart';
 import 'package:app/util/sound.dart';
@@ -21,11 +22,21 @@ class TrainJourneyOverview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.trainJourneyCubit;
-    return Provider(
-      create: (_) => DetailModalSheetViewModel(
-        onOpen: () => bloc.automaticAdvancementController.resetScrollTimer(),
-      ),
-      dispose: (context, vm) => vm.dispose(),
+    return MultiProvider(
+      providers: [
+        Provider(
+          create: (_) => DetailModalSheetViewModel(
+            onOpen: () => bloc.automaticAdvancementController.resetScrollTimer(),
+          ),
+          dispose: (context, vm) => vm.dispose(),
+        ),
+        Provider(
+          create: (_) => ArrivalDepartureTimeViewModel(
+            journeyStream: bloc.journeyStream,
+          ),
+          dispose: (context, vm) => vm.dispose(),
+        )
+      ],
       builder: (context, child) => BlocProvider.value(
         value: DI.get<UxTestingCubit>(),
         child: BlocListener<UxTestingCubit, UxTestingState>(

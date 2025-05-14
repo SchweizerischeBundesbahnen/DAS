@@ -6,6 +6,7 @@ import 'package:app/pages/journey/train_journey/widgets/break_series_selection.d
 import 'package:app/pages/journey/train_journey/widgets/chevron_animation_wrapper.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/balise_level_crossing_group_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/balise_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cab_signaling_row.dart';
@@ -252,9 +253,7 @@ class TrainJourney extends StatelessWidget {
     final speedLabel =
         currentBreakSeries != null ? '${currentBreakSeries.trainSeries.name}${currentBreakSeries.breakSeries}' : '??';
 
-    final resolvedTimeHeaderLabel = metadata.hasAnyCalculatedTimes
-        ? context.l10n.p_train_journey_table_time_label_calculated
-        : context.l10n.p_train_journey_table_time_label_planned;
+    final timeViewModel = context.read<ArrivalDepartureTimeViewModel>();
 
     return [
       if (!isDetailModelSheetOpen) ...[
@@ -275,10 +274,17 @@ class TrainJourney extends StatelessWidget {
         ),
       ],
       DASTableColumn(
-        id: ColumnDefinition.time.index,
-        child: Text(resolvedTimeHeaderLabel),
-        width: 100.0,
-      ),
+          id: ColumnDefinition.time.index,
+          child: StreamBuilder(
+              stream: timeViewModel.rxShowCalculatedTimes,
+              builder: (context, showCalcTimeSnap) => Text(showCalcTimeSnap.data ?? false
+                  ? context.l10n.p_train_journey_table_time_label_calculated
+                  : context.l10n.p_train_journey_table_time_label_planned)),
+          width: 100.0,
+          onTap: () {
+            final viewModel = context.read<ArrivalDepartureTimeViewModel>();
+            viewModel.toggleCalculatedTime();
+          }),
       DASTableColumn(id: ColumnDefinition.route.index, width: 48.0), // route column
       DASTableColumn(id: ColumnDefinition.trackEquipment.index, width: 20.0), // track equipment column
       DASTableColumn(id: ColumnDefinition.icons1.index, width: 64.0), // icons column
