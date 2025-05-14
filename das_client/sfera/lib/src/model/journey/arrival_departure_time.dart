@@ -4,17 +4,17 @@ import 'package:meta/meta.dart';
 @immutable
 class ArrivalDepartureTime {
   const ArrivalDepartureTime({
-    DateTime? operationalDepartureTime,
+    DateTime? ambiguousDepartureTime,
     DateTime? plannedDepartureTime,
-    DateTime? operationalArrivalTime,
+    DateTime? ambiguousArrivalTime,
     DateTime? plannedArrivalTime,
-  })  : _operationalDepartureTime = operationalDepartureTime,
-        _operationalArrivalTime = operationalArrivalTime,
+  })  : _ambiguousDepartureTime = ambiguousDepartureTime,
+        _ambiguousArrivalTime = ambiguousArrivalTime,
         _plannedArrivalTime = plannedArrivalTime,
         _plannedDepartureTime = plannedDepartureTime;
 
-  final DateTime? _operationalDepartureTime;
-  final DateTime? _operationalArrivalTime;
+  final DateTime? _ambiguousDepartureTime;
+  final DateTime? _ambiguousArrivalTime;
   final DateTime? _plannedDepartureTime;
   final DateTime? _plannedArrivalTime;
 
@@ -24,17 +24,19 @@ class ArrivalDepartureTime {
       operationalDepartureTime != null ||
       plannedDepartureTime != null;
 
-  DateTime? get plannedDepartureTime => _isDepartureTimeCalculated ? _plannedDepartureTime : _operationalDepartureTime;
+  DateTime? get plannedDepartureTime =>
+      _isDepartureTimeCalculated ? _plannedDepartureTime : _ambiguousDepartureTime ?? _plannedDepartureTime;
 
-  DateTime? get operationalDepartureTime => _isDepartureTimeCalculated ? _operationalDepartureTime : null;
+  DateTime? get operationalDepartureTime => _isDepartureTimeCalculated ? _ambiguousDepartureTime : null;
 
-  DateTime? get plannedArrivalTime => _isArrivalTimeCalculated ? _plannedArrivalTime : _operationalArrivalTime;
+  DateTime? get plannedArrivalTime =>
+      _isArrivalTimeCalculated ? _plannedArrivalTime : _ambiguousArrivalTime ?? _plannedArrivalTime;
 
-  DateTime? get operationalArrivalTime => _isArrivalTimeCalculated ? _operationalArrivalTime : null;
+  DateTime? get operationalArrivalTime => _isArrivalTimeCalculated ? _ambiguousArrivalTime : null;
 
-  bool get _isDepartureTimeCalculated => _operationalDepartureTime != null && _plannedDepartureTime != null;
+  bool get _isDepartureTimeCalculated => _ambiguousDepartureTime != null && _plannedDepartureTime != null;
 
-  bool get _isArrivalTimeCalculated => _operationalArrivalTime != null && _plannedArrivalTime != null;
+  bool get _isArrivalTimeCalculated => _ambiguousArrivalTime != null && _plannedArrivalTime != null;
 
   // > 2h before Journey - sent operational times are **planned** times and no planned times are sent separately
   // < 2h before Journey - sent operational times are **calculated** times and planned times are sent separately
@@ -43,10 +45,10 @@ class ArrivalDepartureTime {
   @override
   String toString() {
     return 'ArrivalDepartureTime('
-        'operationalDepartureTime: $_operationalDepartureTime'
-        ', plannedDepartureTime: $_plannedDepartureTime'
-        ', operationalArrivalTime: $_operationalArrivalTime'
-        ', plannedArrivalTime: $_plannedArrivalTime'
+        'operationalDepartureTime: $operationalDepartureTime'
+        ', plannedDepartureTime: $plannedDepartureTime'
+        ', operationalArrivalTime: $operationalArrivalTime'
+        ', plannedArrivalTime: $plannedArrivalTime'
         ')';
   }
 }

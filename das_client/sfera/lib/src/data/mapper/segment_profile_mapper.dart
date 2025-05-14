@@ -374,9 +374,9 @@ class SegmentProfileMapper {
     if (departureDetails == null && operationalArrivalTime == null && plannedArrivalTime == null) return null;
 
     return ArrivalDepartureTime(
-      operationalDepartureTime: departureDetails?.departureTime,
+      ambiguousDepartureTime: departureDetails?.departureTime,
       plannedDepartureTime: departureDetails?.plannedDepartureTime,
-      operationalArrivalTime: operationalArrivalTime,
+      ambiguousArrivalTime: operationalArrivalTime,
       plannedArrivalTime: plannedArrivalTime,
     );
   }
