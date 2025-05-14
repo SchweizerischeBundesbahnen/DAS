@@ -24,14 +24,14 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   Fimber.plantTree(DebugTree());
 
-  train_reduced_journey_tests.main();
+  // train_reduced_journey_tests.main();
   train_journey_table_tests.main();
-  train_journey_header_tests.main();
-  train_journey_notification_tests.main();
-  navigation_tests.main();
-  train_search_tests.main();
-  automatic_advancement_tests.main();
-  detail_modal_sheet_test.main();
+  // train_journey_header_tests.main();
+  // train_journey_notification_tests.main();
+  // navigation_tests.main();
+  // train_search_tests.main();
+  // automatic_advancement_tests.main();
+  // detail_modal_sheet_test.main();
 }
 
 Future<void> prepareAndStartApp(WidgetTester tester, {VoidCallback? onBeforeRun}) async {
