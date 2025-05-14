@@ -10,6 +10,8 @@ class ArrivalDepartureTimeViewModel {
 
   Stream<bool> get rxShowCalculatedTimes => _rxShowCalculatedTimes.distinct();
 
+  bool get showCalculatedTimes => _rxShowCalculatedTimes.value;
+
   late StreamSubscription<Journey?> _journeySubscription;
 
   bool _hasJourneyCalculatedTimes = false;

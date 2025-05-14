@@ -60,12 +60,9 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   @override
   DASTableCell timeCell(BuildContext context) {
-    if (data.arrivalDepartureTime == null) return DASTableCell.empty(color: specialCellColor);
-
-    final depTime = data.arrivalDepartureTime?.operationalDepartureTime;
-    final arrTime = data.arrivalDepartureTime?.operationalArrivalTime;
-
-    if (depTime == null && arrTime == null) return DASTableCell.empty(color: specialCellColor);
+    final times = data.arrivalDepartureTime;
+    if (times == null) return DASTableCell.empty(color: specialCellColor);
+    if (!times.hasAnyTime) return DASTableCell.empty(color: specialCellColor);
 
     final viewModel = context.read<ArrivalDepartureTimeViewModel>();
 
@@ -74,34 +71,54 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       child: StreamBuilder(
           key: timeCellInServicePointRowKey,
           stream: viewModel.rxShowCalculatedTimes,
+          initialData: viewModel.showCalculatedTimes,
           builder: (context, snapshot) {
             final showCalculatedTimes = snapshot.data ?? false;
 
-            String? formattedDepTime;
-            String? formattedArrTime;
-            if (depTime != null) {
-              if (showCalculatedTimes) {
-                final primeTime = data.arrivalDepartureTime!.operationalDepartureTime!;
-                formattedDepTime = Format.time(primeTime, showSeconds: true).substring(0, 7);
+            bool isTimeCalculated = false;
+            DateTime? depTime;
+            DateTime? arrTime;
+            if (showCalculatedTimes) {
+              if (times.hasAnyCalculatedTime) {
+                // show calculated
+                depTime = times.operationalDepartureTime;
+                arrTime = times.operationalArrivalTime;
+                isTimeCalculated = true;
               } else {
-                final secTime = data.arrivalDepartureTime!.plannedDepartureTime!;
-                formattedDepTime = Format.time(secTime, showSeconds: false);
+                // empty
               }
-              if (!data.isStop) formattedDepTime = '($formattedDepTime)';
+            } else {
+              // show Planned
+              depTime = times.plannedDepartureTime;
+              arrTime = times.plannedArrivalTime;
             }
-            if (arrTime != null) {
-              if (showCalculatedTimes) {
-                formattedArrTime = Format.time(arrTime, showSeconds: true).substring(0, 7);
-              } else {
-                formattedArrTime = Format.time(arrTime, showSeconds: false);
-              }
-              if (!data.isStop) formattedArrTime = '($formattedArrTime)';
+
+            String formattedDepTime = '';
+            String formattedArrTime = '';
+
+            if (depTime != null) formattedDepTime = Format.time(depTime, showSeconds: true);
+            if (arrTime != null) formattedArrTime = Format.time(arrTime, showSeconds: true);
+
+            int timeLength = 5; // noSeconds
+            if (isTimeCalculated) {
+              timeLength = 7;
             }
+
+            formattedDepTime = formattedDepTime.substring(
+                0, timeLength <= formattedDepTime.length ? timeLength : formattedDepTime.length);
+            formattedArrTime = formattedArrTime.substring(
+                0, timeLength <= formattedArrTime.length ? timeLength : formattedArrTime.length);
+
+            if (formattedDepTime.isNotEmpty && !data.isStop) formattedDepTime = '($formattedDepTime)';
+            if (formattedArrTime.isNotEmpty && !data.isStop) formattedArrTime = '($formattedArrTime)';
+
+            final isArrTimeBold = formattedDepTime.isEmpty && !isTimeCalculated;
+
             return Text.rich(
               TextSpan(
                 children: [
-                  if (formattedArrTime != null) TextSpan(text: '$formattedArrTime\n'),
-                  TextSpan(text: formattedDepTime ?? '', style: DASTextStyles.largeBold)
+                  TextSpan(text: '$formattedArrTime\n', style: isArrTimeBold ? DASTextStyles.largeBold : null),
+                  TextSpan(text: formattedDepTime, style: DASTextStyles.largeBold)
                 ],
               ),
             );
