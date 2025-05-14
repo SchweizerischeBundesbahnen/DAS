@@ -14,9 +14,9 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     outputs:
-      das_client--release_created: ${{ steps.release.outputs.das_client--release_created }}
-      das_client--version: ${{ steps.release.outputs.das_client--version }}
-      das_client--tag_name: ${{ steps.release.outputs.das_client--tag_name }}
+      das_client--release_created: ${{ steps.release.outputs['das_client/app--release_created'] }}
+      das_client--version: ${{ steps.release.outputs['das_client/app--version'] }}
+      das_client--tag_name: ${{ steps.release.outputs['das_client/app--tag_name'] }}
       sfera_mock--release_created: ${{ steps.release.outputs.sfera_mock--release_created }}
       sfera_mock--version: ${{ steps.release.outputs.sfera_mock--version }}
       sfera_mock--tag_name: ${{ steps.release.outputs.sfera_mock--tag_name }}

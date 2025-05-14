@@ -30,7 +30,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   }) : super(
           rowColor: rowColor ??
               ((metadata.nextStop == data)
-                  ? ThemeUtil.getColor(context, Color(0xFFCDD6E8), SBBColors.royal150)
+                  ? ThemeUtil.getColor(context, Color(0x4D143A85), SBBColors.royal150)
                   : ThemeUtil.getDASTableColor(context)),
           stickyLevel: StickyLevel.first,
         );

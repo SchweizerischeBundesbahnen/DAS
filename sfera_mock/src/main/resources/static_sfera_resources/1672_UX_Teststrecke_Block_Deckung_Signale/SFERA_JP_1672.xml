@@ -9,7 +9,7 @@
         </OTN_ID>
     </TrainIdentification>
 
-    <SegmentProfileReference SP_ID="1672_1" SP_VersionMajor="2" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1672_1" SP_VersionMajor="2" SP_VersionMinor="2" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -96,12 +96,21 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
-        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="10117" endLocation="10311">
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="10117" endLocation="10311" startTime="2025-01-15T12:00:00Z" endTime="2025-08-20T20:00:00Z">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="50"/>
             <TemporaryConstraintReason text="Umbau" language="DE"/>
+            <TemporaryConstraintReason text="Renouvellement" language="FR"/>
+            <TemporaryConstraintReason text="Ristrutturazione" language="IT"/>
         </TemporaryConstraints>
 
-        <TrainCharacteristicsRef TC_ID="1672_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="24050" endLocation="26140" startTime="2025-04-10T18:00:00Z" endTime="2025-12-10T06:00:00Z">
+            <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="50"/>
+            <TemporaryConstraintReason text="Schutz Personal" language="DE"/>
+            <TemporaryConstraintReason text="Protection du personnel" language="FR"/>
+            <TemporaryConstraintReason text="Protezione del personale" language="IT"/>
+        </TemporaryConstraints>
+
+        <TrainCharacteristicsRef TC_ID="1672_1" TC_VersionMajor="1" TC_VersionMinor="1" location="0">
             <TC_RU_ID>1285</TC_RU_ID>
         </TrainCharacteristicsRef>
 
