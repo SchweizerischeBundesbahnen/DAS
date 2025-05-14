@@ -10,6 +10,7 @@ import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
+import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +19,7 @@ import 'package:sfera/component.dart';
 
 class ServicePointRow extends CellRowBuilder<ServicePoint> {
   static const Key stopOnRequestKey = Key('stopOnRequest');
+  static const Key timeCellInServicePointRowKey = Key('timeCellInServicePointRow');
 
   static const double rowHeight = 64.0;
 
@@ -60,16 +62,33 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     if (data.arrivalDepartureTime == null) return DASTableCell.empty(color: specialCellColor);
 
     final depTime = data.arrivalDepartureTime?.primaryDepartureTime;
+    final arrTime = data.arrivalDepartureTime?.primaryArrivalTime;
 
-    if (depTime == null) return DASTableCell.empty(color: specialCellColor);
+    if (depTime == null && arrTime == null) return DASTableCell.empty(color: specialCellColor);
 
-    String formattedTime = Format.time(depTime, showSeconds: false);
-    if (!data.isStop) formattedTime = '($formattedTime)';
-
+    String? formattedDepTime;
+    String? formattedArrTime;
+    if (depTime != null) {
+      formattedDepTime = Format.time(depTime, showSeconds: false);
+      if (!data.isStop) formattedDepTime = '($formattedDepTime)';
+    }
+    if (arrTime != null) {
+      formattedArrTime = Format.time(arrTime, showSeconds: false);
+      if (!data.isStop) formattedArrTime = '($formattedArrTime)';
+    }
     return DASTableCell(
-        child: Text(formattedTime, style: DASTextStyles.largeBold),
-        alignment: defaultAlignment,
-        color: specialCellColor);
+      child: Text.rich(
+        TextSpan(
+          children: [
+            if (formattedArrTime != null) TextSpan(text: '$formattedArrTime\n'),
+            TextSpan(text: formattedDepTime ?? '', style: DASTextStyles.largeBold)
+          ],
+        ),
+        key: timeCellInServicePointRowKey,
+      ),
+      alignment: defaultAlignment,
+      color: specialCellColor,
+    );
   }
 
   @override

@@ -1073,6 +1073,51 @@ void main() {
 
       await disconnect(tester);
     });
+
+    testWidgets('test time cells for journey in far future (T4) with non calculated times', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T4');
+
+      // test if planned header label is in time column (no calculated times)
+      final expectedHeaderLabel = l10n.p_train_journey_table_time_label_planned;
+      expect(find.text(expectedHeaderLabel), findsOneWidget);
+
+      // two service points have empty times
+      final solothurnRow = findDASTableRowByText('Solothurn');
+      expect(solothurnRow, findsOneWidget);
+
+      final solothurnTimeCell =
+          find.descendant(of: solothurnRow, matching: find.byKey(ServicePointRow.timeCellInServicePointRowKey));
+      expect(solothurnTimeCell, findsNothing);
+
+      final solothurnWestRow = findDASTableRowByText('Solothurn West');
+      expect(solothurnWestRow, findsOneWidget);
+
+      final solothurnWestTimeCell =
+          find.descendant(of: solothurnWestRow, matching: find.byKey(ServicePointRow.timeCellInServicePointRowKey));
+      expect(solothurnWestTimeCell, findsNothing);
+
+      // Langendorf should have only departure
+      final langendorfRow = findDASTableRowByText('Langendorf');
+      expect(langendorfRow, findsOneWidget);
+
+      final langendorfTimeCell =
+          find.descendant(of: langendorfRow, matching: find.byKey(ServicePointRow.timeCellInServicePointRowKey));
+      expect(langendorfTimeCell, findsOneWidget);
+
+      final langendorfText = find.descendant(of: langendorfRow, matching: find.text('18:36'));
+      expect(langendorfText, findsOneWidget);
+
+      //TODO: Lommiswil has departure and arrival
+
+      // Im Holz (non mandatory stop) has departure
+
+      // Oberdorf has only arrival
+
+      await disconnect(tester);
+    });
   });
 }
 
