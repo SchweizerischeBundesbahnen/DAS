@@ -923,6 +923,9 @@ ha liberato gli scambi in deviazione&quot;/&gt;
         <KilometreReferencePoint location="23900">
             <KM_Reference kmRef="18.2"/>
         </KilometreReferencePoint>
+        <KilometreReferencePoint location="24050">
+            <KM_Reference kmRef="18.05"/>
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="24100">
             <KM_Reference kmRef="18.00"/>
         </KilometreReferencePoint>
@@ -936,6 +939,9 @@ ha liberato gli scambi in deviazione&quot;/&gt;
             <KM_Reference kmRef="16.95"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="25250">
+            <KM_Reference kmRef="16.85"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="26140">
             <KM_Reference kmRef="16.85"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="27830">
@@ -992,6 +998,9 @@ ha liberato gli scambi in deviazione&quot;/&gt;
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="5300" endLocation="5300"
                               gradientValue="1.0" gradientDirection="Downhill"
                               directionOfApplicationOnSP="Nominal"/>
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="5300" endLocation="5300"
+                              gradientValue="0.0" gradientDirection="Uphill"
+                              directionOfApplicationOnSP="Nominal"/>
 
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="9100" endLocation="9100"
                               gradientValue="1.0" gradientDirection="Downhill"
@@ -1001,17 +1010,29 @@ ha liberato gli scambi in deviazione&quot;/&gt;
                               directionOfApplicationOnSP="Nominal"/>
 
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="11200" endLocation="11200"
+                              gradientValue="0.0" gradientDirection="Downhill"
+                              directionOfApplicationOnSP="Nominal"/>
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="11200" endLocation="11200"
                               gradientValue="10.0" gradientDirection="Uphill"
                               directionOfApplicationOnSP="Nominal"/>
 
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="14700" endLocation="14700"
+                              gradientValue="0.0" gradientDirection="Downhill"
+                              directionOfApplicationOnSP="Nominal"/>
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="14700" endLocation="14700"
                               gradientValue="4.0" gradientDirection="Uphill"
                               directionOfApplicationOnSP="Nominal"/>
 
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="17600" endLocation="17600"
+                              gradientValue="0.0" gradientDirection="Downhill"
+                              directionOfApplicationOnSP="Nominal"/>
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="17600" endLocation="17600"
                               gradientValue="5.0" gradientDirection="Uphill"
                               directionOfApplicationOnSP="Nominal"/>
 
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="20600" endLocation="20600"
+                              gradientValue="0.0" gradientDirection="Downhill"
+                              directionOfApplicationOnSP="Nominal"/>
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="20600" endLocation="20600"
                               gradientValue="8.0" gradientDirection="Uphill"
                               directionOfApplicationOnSP="Nominal"/>
@@ -1026,13 +1047,22 @@ ha liberato gli scambi in deviazione&quot;/&gt;
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="28800" endLocation="28800"
                               gradientValue="3.0" gradientDirection="Downhill"
                               directionOfApplicationOnSP="Nominal"/>
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="28800" endLocation="28800"
+                              gradientValue="0.0" gradientDirection="Uphill"
+                              directionOfApplicationOnSP="Nominal"/>
 
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="31000" endLocation="31000"
                               gradientValue="4.0" gradientDirection="Downhill"
                               directionOfApplicationOnSP="Nominal"/>
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="31000" endLocation="31000"
+                              gradientValue="0.0" gradientDirection="Uphill"
+                              directionOfApplicationOnSP="Nominal"/>
 
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="33800" endLocation="33800"
                               gradientValue="18.0" gradientDirection="Downhill"
+                              directionOfApplicationOnSP="Nominal"/>
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="33800" endLocation="33800"
+                              gradientValue="0.0" gradientDirection="Uphill"
                               directionOfApplicationOnSP="Nominal"/>
 
 
