@@ -4,7 +4,6 @@
   "packages": {
     "das_client/app": {
       "package-name": "das_client",
-      "changelog-path": "../CHANGELOG.md",
       "release-type": "dart",
       "bump-minor-pre-major": true
     },
