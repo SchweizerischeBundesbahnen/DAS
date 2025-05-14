@@ -1149,7 +1149,7 @@ void main() {
     // test if times switched
     final geneveAerPlanned = 'Genève-Aéroport';
     expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: geneveAerPlanned), findsOneWidget);
-    expect(_findTextInDASTableRowByText(innerText: '18:14', rowText: geneveAerPlanned), findsOneWidget);
+    expect(_findTextInDASTableRowByText(innerText: '18:13', rowText: geneveAerPlanned), findsOneWidget);
     // and did not for only planned service points
     final geneve = 'Genève';
     expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: geneve), findsOneWidget);

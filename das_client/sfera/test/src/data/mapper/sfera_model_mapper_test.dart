@@ -1248,7 +1248,7 @@ void main() {
     final genevaAirport = servicePoints[0];
     expect(genevaAirport.arrivalDepartureTime, isNotNull);
     expect(genevaAirport.arrivalDepartureTime!.primaryDepartureTime, DateTime.parse('2025-05-12T16:14:25Z'));
-    expect(genevaAirport.arrivalDepartureTime!.secondaryDepartureTime, DateTime.parse('2025-05-12T16:14:10Z'));
+    expect(genevaAirport.arrivalDepartureTime!.secondaryDepartureTime, DateTime.parse('2025-05-12T16:13:40Z'));
     expect(genevaAirport.arrivalDepartureTime!.hasCalculatedTimes, isTrue);
     // single operationalDepartureTime ('time not calculated')
     final geneva = servicePoints[1];

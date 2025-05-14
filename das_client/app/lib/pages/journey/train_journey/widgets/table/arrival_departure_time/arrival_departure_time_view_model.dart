@@ -8,30 +8,31 @@ class ArrivalDepartureTimeViewModel {
     _listenToJourneyUpdates(journeyStream);
   }
 
+  Stream<bool> get rxShowCalculatedTimes => _rxShowCalculatedTimes.distinct();
+
   late StreamSubscription<Journey?> _journeySubscription;
 
   bool _hasJourneyCalculatedTimes = false;
 
-  final BehaviorSubject<bool> rxShowCalculatedTimes = BehaviorSubject.seeded(true);
+  final BehaviorSubject<bool> _rxShowCalculatedTimes = BehaviorSubject.seeded(true);
 
   void dispose() {
     _journeySubscription.cancel();
-    rxShowCalculatedTimes.close();
+    _rxShowCalculatedTimes.close();
   }
 
   void _listenToJourneyUpdates(Stream<Journey?> stream) {
     _journeySubscription = stream.listen((journey) {
       if (journey == null) {
-        rxShowCalculatedTimes.add(false);
+        _rxShowCalculatedTimes.add(false);
         _hasJourneyCalculatedTimes = false;
         return;
       }
       final journeyHasCalculatedTimes = journey.metadata.hasAnyCalculatedTimes;
       if (!journeyHasCalculatedTimes) {
-        rxShowCalculatedTimes.add(false);
+        _rxShowCalculatedTimes.add(false);
         _hasJourneyCalculatedTimes = false;
       } else {
-        rxShowCalculatedTimes.add(true);
         _hasJourneyCalculatedTimes = true;
       }
     });
@@ -39,11 +40,11 @@ class ArrivalDepartureTimeViewModel {
 
   void toggleCalculatedTime() {
     if (!_hasJourneyCalculatedTimes) return;
-    final currentValue = rxShowCalculatedTimes.value;
+    final currentValue = _rxShowCalculatedTimes.value;
     if (currentValue) {
-      rxShowCalculatedTimes.add(false);
+      _rxShowCalculatedTimes.add(false);
     } else {
-      rxShowCalculatedTimes.add(true);
+      _rxShowCalculatedTimes.add(true);
     }
   }
 }

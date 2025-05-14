@@ -61,6 +61,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   @override
   DASTableCell timeCell(BuildContext context) {
     if (data.arrivalDepartureTime == null) return DASTableCell.empty(color: specialCellColor);
+
     final depTime = data.arrivalDepartureTime?.primaryDepartureTime;
     final arrTime = data.arrivalDepartureTime?.primaryArrivalTime;
 
@@ -69,6 +70,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     final viewModel = context.read<ArrivalDepartureTimeViewModel>();
 
     return DASTableCell(
+      onTap: () => viewModel.toggleCalculatedTime(),
       child: StreamBuilder(
           key: timeCellInServicePointRowKey,
           stream: viewModel.rxShowCalculatedTimes,
@@ -79,9 +81,11 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
             String? formattedArrTime;
             if (depTime != null) {
               if (showCalculatedTimes) {
-                formattedDepTime = Format.time(depTime, showSeconds: true).substring(0, 7);
+                final primeTime = data.arrivalDepartureTime!.primaryDepartureTime!;
+                formattedDepTime = Format.time(primeTime, showSeconds: true).substring(0, 7);
               } else {
-                formattedDepTime = Format.time(depTime, showSeconds: false);
+                final secTime = data.arrivalDepartureTime!.secondaryDepartureTime!;
+                formattedDepTime = Format.time(secTime, showSeconds: false);
               }
               if (!data.isStop) formattedDepTime = '($formattedDepTime)';
             }
