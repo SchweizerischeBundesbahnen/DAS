@@ -3,6 +3,7 @@ import 'package:app/bloc/ux_testing_cubit.dart';
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/brightness/brightness_manager_impl.dart';
 import 'package:app/flavor.dart';
+import 'package:app/time_controller/time_controller.dart';
 import 'package:app/util/device_id_info.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:auth/component.dart';
@@ -64,6 +65,7 @@ extension GetItX on GetIt {
     registerBlocs();
     registerBattery();
     registerAudioPlayer();
+    registerTimeController();
     await allReady();
   }
 
@@ -215,6 +217,11 @@ extension GetItX on GetIt {
       Fimber.d('Register ScreenBrightness');
       return BrightnessManagerImpl(DI.get<ScreenBrightness>());
     });
+  }
+
+  void registerTimeController() {
+    Fimber.d('Register TimeController');
+    registerLazySingleton<TimeController>(() => TimeController());
   }
 
   void registerBattery() {

@@ -12,6 +12,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 @RoutePage()
 class JourneyPage extends StatelessWidget {
@@ -45,6 +46,7 @@ class _JourneyPageContentState extends State<JourneyPageContent> with SingleTick
   @override
   void initState() {
     super.initState();
+    WakelockPlus.disable();
     _controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: _toolbarHideAnimationDuration),
