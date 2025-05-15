@@ -1,87 +1,112 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
+import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/src/model/journey/journey.dart';
 import 'package:sfera/src/model/journey/metadata.dart';
 
 void main() {
-  late ArrivalDepartureTimeViewModel viewModel;
+  late ArrivalDepartureTimeViewModel testee;
   late StreamController<Journey?> journeyStreamController;
 
   setUp(() {
     journeyStreamController = StreamController<Journey?>();
-    viewModel = ArrivalDepartureTimeViewModel(journeyStream: journeyStreamController.stream);
+    testee = ArrivalDepartureTimeViewModel(journeyStream: journeyStreamController.stream);
   });
 
   tearDown(() {
-    viewModel.dispose();
+    testee.dispose();
     journeyStreamController.close();
   });
 
-  test('showCalculatedTimes_whenInitialized_thenReturnsTrue', () {
-    expect(viewModel.showCalculatedTimes, isTrue);
+  test('showOperationalTimes_whenInitialized_thenReturnsTrue', () {
+    expect(testee.showOperationalTimes, isTrue);
   });
 
-  test('rxShowCalculatedTimes_whenJourneyIsNull_thenEmitsFalse', () async {
+  test('rxShowOperationalTime_whenJourneyIsNull_thenEmitsFalse', () async {
     journeyStreamController.add(null);
     await Future.delayed(Duration(milliseconds: 10));
 
-    expect(await viewModel.rxShowCalculatedTimes.first, isFalse);
+    expect(await testee.rxShowOperationalTime.first, isFalse);
   });
 
-  test('rxShowCalculatedTimes_whenJourneyHasNoOperationalArrivalDepartureTimes_thenEmitsFalse', () async {
+  test('rxShowOperationalTime_whenJourneyHasNoOperationalTimes_thenEmitsFalse', () async {
     final metadata = Metadata(anyOperationalArrivalDepartureTimes: false);
     final journey = Journey(metadata: metadata, data: []);
 
     journeyStreamController.add(journey);
     await Future.delayed(Duration(milliseconds: 10));
 
-    expect(await viewModel.rxShowCalculatedTimes.first, isFalse);
+    expect(await testee.rxShowOperationalTime.first, isFalse);
   });
 
-  test('rxShowCalculatedTimes_whenJourneyHasOperationalArrivalDepartureTimes_thenEmitsTrue', () async {
+  test('rxShowOperationalTime_whenJourneyHasOperationalTimes_thenEmitsTrue', () async {
     final metadata = Metadata(anyOperationalArrivalDepartureTimes: true);
     final journey = Journey(metadata: metadata, data: []);
 
     journeyStreamController.add(journey);
     await Future.delayed(Duration(milliseconds: 10));
 
-    expect(await viewModel.rxShowCalculatedTimes.first, isTrue);
+    expect(await testee.rxShowOperationalTime.first, isTrue);
   });
 
-  test('toggleCalculatedTime_whenJourneyHasCalculatedTimes_thenTogglesShowCalculatedTimes', () async {
+  test('toggleOperationalTime_whenJourneyHasCalculatedTimes_thenStartsTimerToSwitchBack', () async {
     final metadata = Metadata(anyOperationalArrivalDepartureTimes: true);
     final journey = Journey(metadata: metadata, data: []);
 
     journeyStreamController.add(journey);
     await Future.delayed(Duration(milliseconds: 10));
 
-    expect(viewModel.showCalculatedTimes, isTrue);
+    expect(testee.showOperationalTimes, isTrue);
 
-    viewModel.toggleCalculatedTime();
-    expect(viewModel.showCalculatedTimes, isFalse);
+    FakeAsync().run((fakeAsync) {
+      testee.toggleOperationalTime();
+      expect(testee.showOperationalTimes, isFalse);
 
-    viewModel.toggleCalculatedTime();
-    expect(viewModel.showCalculatedTimes, isTrue);
+      fakeAsync.elapse(Duration(seconds: 11));
+
+      expect(testee.showOperationalTimes, isTrue);
+    });
   });
 
-  test('toggleCalculatedTime_whenJourneyHasNoCalculatedTimes_thenDoesNothing', () {
+  test('toggleOperationalTime_whenToggledBack_thenCancelsTimer', () async {
+    final metadata = Metadata(anyOperationalArrivalDepartureTimes: true);
+    final journey = Journey(metadata: metadata, data: []);
+
+    journeyStreamController.add(journey);
+    await Future.delayed(Duration(milliseconds: 10));
+
+    expect(testee.showOperationalTimes, isTrue);
+
+    testee.toggleOperationalTime();
+    expect(testee.showOperationalTimes, isFalse);
+
+    FakeAsync().run((fakeAsync) {
+      testee.toggleOperationalTime();
+      expect(testee.showOperationalTimes, isTrue);
+
+      fakeAsync.elapse(Duration(seconds: 11));
+
+      expect(testee.showOperationalTimes, isTrue); // Should remain true
+    });
+  });
+
+  test('toggleOperationalTime_whenJourneyHasNoCalculatedTimes_thenDoesNothing', () {
     final metadata = Metadata(anyOperationalArrivalDepartureTimes: false);
     final journey = Journey(metadata: metadata, data: []);
 
     journeyStreamController.add(journey);
-    expect(viewModel.showCalculatedTimes, isTrue);
+    expect(testee.showOperationalTimes, isTrue);
 
-    viewModel.toggleCalculatedTime();
-    // Should remain true
-    expect(viewModel.showCalculatedTimes, isTrue);
+    testee.toggleOperationalTime();
+    expect(testee.showOperationalTimes, isTrue); // Should remain true
   });
 
   test('dispose_whenCalled_thenCancelsSubscriptionAndClosesSubject', () {
     expect(journeyStreamController.hasListener, isTrue);
 
-    viewModel.dispose();
+    testee.dispose();
 
     expect(journeyStreamController.hasListener, isFalse);
   });

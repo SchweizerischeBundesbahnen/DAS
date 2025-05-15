@@ -22,8 +22,8 @@ class TimeCellBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: viewModel.rxShowCalculatedTimes,
-        initialData: viewModel.showCalculatedTimes,
+        stream: viewModel.rxShowOperationalTime,
+        initialData: viewModel.showOperationalTimes,
         builder: (context, snapshot) {
           final showCalculatedTimes = snapshot.data ?? false;
 

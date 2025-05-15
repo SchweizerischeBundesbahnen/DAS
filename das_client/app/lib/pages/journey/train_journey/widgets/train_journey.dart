@@ -276,14 +276,14 @@ class TrainJourney extends StatelessWidget {
       DASTableColumn(
           id: ColumnDefinition.time.index,
           child: StreamBuilder(
-              stream: timeViewModel.rxShowCalculatedTimes,
+              stream: timeViewModel.rxShowOperationalTime,
               builder: (context, showCalcTimeSnap) => Text(showCalcTimeSnap.data ?? false
                   ? context.l10n.p_train_journey_table_time_label_new
                   : context.l10n.p_train_journey_table_time_label_planned)),
           width: 100.0,
           onTap: () {
             final viewModel = context.read<ArrivalDepartureTimeViewModel>();
-            viewModel.toggleCalculatedTime();
+            viewModel.toggleOperationalTime();
           }),
       DASTableColumn(id: ColumnDefinition.route.index, width: 48.0), // route column
       DASTableColumn(id: ColumnDefinition.trackEquipment.index, width: 20.0), // track equipment column

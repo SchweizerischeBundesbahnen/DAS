@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/src/data/mapper/datetime_x.dart';
-import 'package:sfera/src/model/journey/communication_network_change.dart';
 
 main() {
   test('parseNullable_whenNull_returnsNull', () {

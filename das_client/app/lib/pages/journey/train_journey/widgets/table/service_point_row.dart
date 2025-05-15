@@ -62,11 +62,11 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     final viewModel = context.read<ArrivalDepartureTimeViewModel>();
 
     if (times == null || !times.hasAnyTime) {
-      return DASTableCell.empty(color: specialCellColor, onTap: () => viewModel.toggleCalculatedTime());
+      return DASTableCell.empty(color: specialCellColor, onTap: () => viewModel.toggleOperationalTime());
     }
 
     return DASTableCell(
-      onTap: () => viewModel.toggleCalculatedTime(),
+      onTap: () => viewModel.toggleOperationalTime(),
       child: TimeCellBody(times: times, viewModel: viewModel, showTimesInBrackets: !data.isStop),
       alignment: defaultAlignment,
       color: specialCellColor,

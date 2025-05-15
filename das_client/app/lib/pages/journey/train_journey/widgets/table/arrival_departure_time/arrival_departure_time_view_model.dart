@@ -4,49 +4,56 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 class ArrivalDepartureTimeViewModel {
+  static const int _resetToOperationalAfterSeconds = 10;
+
   ArrivalDepartureTimeViewModel({required Stream<Journey?> journeyStream}) {
     _listenToJourneyUpdates(journeyStream);
   }
 
-  Stream<bool> get rxShowCalculatedTimes => _rxShowCalculatedTimes.distinct();
+  Stream<bool> get rxShowOperationalTime => _rxShowOperationalTimes.distinct();
 
-  bool get showCalculatedTimes => _rxShowCalculatedTimes.value;
+  bool get showOperationalTimes => _rxShowOperationalTimes.value;
 
   late StreamSubscription<Journey?> _journeySubscription;
+  bool? _hasJourneyOperationalTimes;
+  Timer? _timer;
 
-  bool _hasJourneyCalculatedTimes = false;
-
-  final BehaviorSubject<bool> _rxShowCalculatedTimes = BehaviorSubject.seeded(true);
+  final BehaviorSubject<bool> _rxShowOperationalTimes = BehaviorSubject.seeded(true);
 
   void dispose() {
     _journeySubscription.cancel();
-    _rxShowCalculatedTimes.close();
+    _timer?.cancel();
+    _rxShowOperationalTimes.close();
   }
 
   void _listenToJourneyUpdates(Stream<Journey?> stream) {
     _journeySubscription = stream.listen((journey) {
       if (journey == null) {
-        _rxShowCalculatedTimes.add(false);
-        _hasJourneyCalculatedTimes = false;
+        _rxShowOperationalTimes.add(false);
+        _hasJourneyOperationalTimes = null;
+        _timer?.cancel();
         return;
       }
-      final journeyHasCalculatedTimes = journey.metadata.anyOperationalArrivalDepartureTimes;
-      if (!journeyHasCalculatedTimes) {
-        _rxShowCalculatedTimes.add(false);
-        _hasJourneyCalculatedTimes = false;
-      } else {
-        _hasJourneyCalculatedTimes = true;
+      final updatedJourneyHasOpTimes = journey.metadata.anyOperationalArrivalDepartureTimes;
+      if (updatedJourneyHasOpTimes != _hasJourneyOperationalTimes) {
+        _rxShowOperationalTimes.add(updatedJourneyHasOpTimes);
+        _hasJourneyOperationalTimes = updatedJourneyHasOpTimes;
+        _timer?.cancel();
       }
     });
   }
 
-  void toggleCalculatedTime() {
-    if (!_hasJourneyCalculatedTimes) return;
-    final currentValue = _rxShowCalculatedTimes.value;
+  void toggleOperationalTime() {
+    if (_hasJourneyOperationalTimes == null || !(_hasJourneyOperationalTimes ?? false)) return;
+    final currentValue = _rxShowOperationalTimes.value;
     if (currentValue) {
-      _rxShowCalculatedTimes.add(false);
+      _rxShowOperationalTimes.add(false);
+      _timer = Timer(Duration(seconds: _resetToOperationalAfterSeconds), () {
+        if (!_rxShowOperationalTimes.value) _rxShowOperationalTimes.add(true);
+      });
     } else {
-      _rxShowCalculatedTimes.add(true);
+      _rxShowOperationalTimes.add(true);
+      _timer?.cancel();
     }
   }
 }
