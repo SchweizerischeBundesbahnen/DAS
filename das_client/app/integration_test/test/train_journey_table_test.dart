@@ -4,6 +4,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/cab_signaling_row.
 import 'package:app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/time_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/curve_point_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/protection_section_row.dart';
@@ -1087,7 +1088,7 @@ void main() {
     expect(timeHeader, findsOneWidget);
 
     // two service points have empty times
-    final timeCellKey = ServicePointRow.timeCellInServicePointRowKey;
+    final timeCellKey = TimeCellBody.timeCellKey;
     expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: 'Solothurn'), findsNothing);
 
     expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: 'Solothurn West'), findsNothing);
@@ -1133,19 +1134,18 @@ void main() {
     expect(timeHeader, findsOneWidget);
 
     // test if times are displayed correctly
-    final timeCellKey = ServicePointRow.timeCellInServicePointRowKey;
+    final timeCellKey = TimeCellBody.timeCellKey;
     // Geneve Aeroport should have only departure operational time
     final geneveAer = 'Genève-Aéroport';
     expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: geneveAer), findsOneWidget);
     expect(_findTextInDASTableRowByText(innerText: '18:14:2', rowText: geneveAer), findsOneWidget);
     // morges should have empty times since it does not have operational times
     final morges = 'Morges';
-    expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: morges), findsOneWidget);
-    expect(_findTextInDASTableRowByText(innerText: '(18:55)\n', rowText: morges), findsOneWidget);
-    // vevey should have both times in brackets since it's a passing point
+    expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: morges), findsNothing);
+    // vevey should have single operational arrival in brackets since it's a passing point
     final vevey = 'Vevey';
     expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: vevey), findsOneWidget);
-    expect(_findTextInDASTableRowByText(innerText: '(19:28:5)\n(19:29:1)', rowText: vevey), findsOneWidget);
+    expect(_findTextInDASTableRowByText(innerText: '(19:28:5)\n', rowText: vevey), findsOneWidget);
 
     // tap header label to switch to planned times
     await tapElement(tester, timeHeader);
@@ -1153,14 +1153,18 @@ void main() {
     // test if planned time header label is in table
     final expectedPlannedHeaderLabel = l10n.p_train_journey_table_time_label_planned;
     expect(find.text(expectedPlannedHeaderLabel), findsOneWidget);
-    // test if time switched
+    // test if time switched (aeroport)
     final geneveAerPlanned = 'Genève-Aéroport';
     expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: geneveAerPlanned), findsOneWidget);
-    expect(_findTextInDASTableRowByText(innerText: '18:13', rowText: geneveAerPlanned), findsOneWidget);
-    // and did not for only planned service points
+    expect(_findTextInDASTableRowByText(innerText: '17:13', rowText: geneveAerPlanned), findsOneWidget);
+    // morges
     final morgesPlanned = 'Morges';
     expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: morgesPlanned), findsOneWidget);
-    expect(_findTextInDASTableRowByText(innerText: '(18:55)\n', rowText: morgesPlanned), findsOneWidget);
+    expect(_findTextInDASTableRowByText(innerText: '(17:55)\n', rowText: morgesPlanned), findsOneWidget);
+    // vevey should have both times in brackets since it's a passing point
+    final veveyPlanned = 'Vevey';
+    expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: veveyPlanned), findsOneWidget);
+    expect(_findTextInDASTableRowByText(innerText: '(18:28)\n(18:29)', rowText: veveyPlanned), findsOneWidget);
 
     await disconnect(tester);
   });

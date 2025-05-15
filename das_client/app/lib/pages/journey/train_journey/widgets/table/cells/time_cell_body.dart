@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:sfera/component.dart';
 
 class TimeCellBody extends StatelessWidget {
-  static const emptyTimeCellKey = DASTableCell.emptyCellKey;
   static const timeCellKey = Key('timeCellKey');
 
   const TimeCellBody({
@@ -38,7 +37,7 @@ class TimeCellBody extends StatelessWidget {
               arrTime = times.operationalArrivalTime;
               isTimeCalculated = true;
             } else {
-              return SizedBox.shrink(key: emptyTimeCellKey);
+              return SizedBox.shrink(key: DASTableCell.emptyCellKey);
             }
           } else {
             // show Planned
@@ -67,11 +66,13 @@ class TimeCellBody extends StatelessWidget {
 
           final isArrTimeBold = formattedDepTime.isEmpty && !isTimeCalculated;
 
+          if (formattedArrTime.isNotEmpty) formattedArrTime = '$formattedArrTime\n';
+
           return Text.rich(
             key: timeCellKey,
             TextSpan(
               children: [
-                TextSpan(text: '$formattedArrTime\n', style: isArrTimeBold ? DASTextStyles.largeBold : null),
+                TextSpan(text: formattedArrTime, style: isArrTimeBold ? DASTextStyles.largeBold : null),
                 TextSpan(text: formattedDepTime, style: DASTextStyles.largeBold)
               ],
             ),
