@@ -1121,7 +1121,7 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test time cells for journey in near future (T16) with operational times', (tester) async {
+  testWidgets('test time cells for journey in near future (T16) with operational and planned times', (tester) async {
     await prepareAndStartApp(tester);
 
     // load train journey by filling out train selection page

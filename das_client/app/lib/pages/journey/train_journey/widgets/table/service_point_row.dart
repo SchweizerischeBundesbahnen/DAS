@@ -4,6 +4,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/time_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/format.dart';
@@ -61,68 +62,15 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   @override
   DASTableCell timeCell(BuildContext context) {
     final times = data.arrivalDepartureTime;
-    if (times == null) return DASTableCell.empty(color: specialCellColor);
-    if (!times.hasAnyTime) return DASTableCell.empty(color: specialCellColor);
-
     final viewModel = context.read<ArrivalDepartureTimeViewModel>();
+
+    if (times == null || !times.hasAnyTime) {
+      return DASTableCell.empty(color: specialCellColor, onTap: () => viewModel.toggleCalculatedTime());
+    }
 
     return DASTableCell(
       onTap: () => viewModel.toggleCalculatedTime(),
-      child: StreamBuilder(
-          key: timeCellInServicePointRowKey,
-          stream: viewModel.rxShowCalculatedTimes,
-          initialData: viewModel.showCalculatedTimes,
-          builder: (context, snapshot) {
-            final showCalculatedTimes = snapshot.data ?? false;
-
-            bool isTimeCalculated = false;
-            DateTime? depTime;
-            DateTime? arrTime;
-            if (showCalculatedTimes) {
-              if (times.hasAnyOperationalTime) {
-                // show calculated
-                depTime = times.operationalDepartureTime;
-                arrTime = times.operationalArrivalTime;
-                isTimeCalculated = true;
-              } else {
-                // empty
-              }
-            } else {
-              // show Planned
-              depTime = times.plannedDepartureTime;
-              arrTime = times.plannedArrivalTime;
-            }
-
-            String formattedDepTime = '';
-            String formattedArrTime = '';
-
-            if (depTime != null) formattedDepTime = Format.time(depTime, showSeconds: true);
-            if (arrTime != null) formattedArrTime = Format.time(arrTime, showSeconds: true);
-
-            int timeLength = 5; // noSeconds
-            if (isTimeCalculated) {
-              timeLength = 7;
-            }
-
-            formattedDepTime = formattedDepTime.substring(
-                0, timeLength <= formattedDepTime.length ? timeLength : formattedDepTime.length);
-            formattedArrTime = formattedArrTime.substring(
-                0, timeLength <= formattedArrTime.length ? timeLength : formattedArrTime.length);
-
-            if (formattedDepTime.isNotEmpty && !data.isStop) formattedDepTime = '($formattedDepTime)';
-            if (formattedArrTime.isNotEmpty && !data.isStop) formattedArrTime = '($formattedArrTime)';
-
-            final isArrTimeBold = formattedDepTime.isEmpty && !isTimeCalculated;
-
-            return Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(text: '$formattedArrTime\n', style: isArrTimeBold ? DASTextStyles.largeBold : null),
-                  TextSpan(text: formattedDepTime, style: DASTextStyles.largeBold)
-                ],
-              ),
-            );
-          }),
+      child: TimeCellBody(times: times, viewModel: viewModel, showTimesInBrackets: !data.isStop),
       alignment: defaultAlignment,
       color: specialCellColor,
     );
