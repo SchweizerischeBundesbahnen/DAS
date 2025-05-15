@@ -22,7 +22,7 @@ dependencies:
 
   # https://pub.dev/packages/audioplayers
   # TODO: Fixed to 5.2.1 as there is a problem with XCode 14 on higher versions.
-  audioplayers: 5.2.1
+  audioplayers: 6.4.0
   # https://pub.dev/packages/android_id
   android_id: ^0.4.0
   # https://pub.dev/packages/auto_route
