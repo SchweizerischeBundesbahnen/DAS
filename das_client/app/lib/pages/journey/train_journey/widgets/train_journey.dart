@@ -278,7 +278,7 @@ class TrainJourney extends StatelessWidget {
           child: StreamBuilder(
               stream: timeViewModel.rxShowCalculatedTimes,
               builder: (context, showCalcTimeSnap) => Text(showCalcTimeSnap.data ?? false
-                  ? context.l10n.p_train_journey_table_time_label_calculated
+                  ? context.l10n.p_train_journey_table_time_label_new
                   : context.l10n.p_train_journey_table_time_label_planned)),
           width: 100.0,
           onTap: () {

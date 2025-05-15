@@ -1082,8 +1082,9 @@ void main() {
     await loadTrainJourney(tester, trainNumber: 'T4');
 
     // test if planned time header label is in table (no calculated times)
-    final expectedHeaderLabel = l10n.p_train_journey_table_time_label_planned;
-    expect(find.text(expectedHeaderLabel), findsOneWidget);
+    final expectedPlannedHeaderLabel = l10n.p_train_journey_table_time_label_planned;
+    final timeHeader = find.text(expectedPlannedHeaderLabel);
+    expect(timeHeader, findsOneWidget);
 
     // two service points have empty times
     final timeCellKey = ServicePointRow.timeCellInServicePointRowKey;
@@ -1111,17 +1112,23 @@ void main() {
     expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: oberdorf), findsOneWidget);
     expect(_findTextInDASTableRowByText(innerText: '18:48\n', rowText: oberdorf), findsOneWidget);
 
+    // tap header label to switch to planned times
+    await tapElement(tester, timeHeader);
+
+    // test if planned time header label is still in table (does not switch)
+    expect(find.text(expectedPlannedHeaderLabel), findsOneWidget);
+
     await disconnect(tester);
   });
 
-  testWidgets('test time cells for journey in near future (T16) with calculated times', (tester) async {
+  testWidgets('test time cells for journey in near future (T16) with operational times', (tester) async {
     await prepareAndStartApp(tester);
 
     // load train journey by filling out train selection page
     await loadTrainJourney(tester, trainNumber: 'T16');
 
     // test if calculated time header label is in table
-    final expectedCalculatedHeaderLabel = l10n.p_train_journey_table_time_label_calculated;
+    final expectedCalculatedHeaderLabel = l10n.p_train_journey_table_time_label_new;
     final timeHeader = find.text(expectedCalculatedHeaderLabel);
     expect(timeHeader, findsOneWidget);
 
