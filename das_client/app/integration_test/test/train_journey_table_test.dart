@@ -1081,7 +1081,7 @@ void main() {
     // load train journey by filling out train selection page
     await loadTrainJourney(tester, trainNumber: 'T4');
 
-    // test if planned time header label is in table (no calculated times)
+    // test if planned time header label is in table (no operational times)
     final expectedPlannedHeaderLabel = l10n.p_train_journey_table_time_label_planned;
     final timeHeader = find.text(expectedPlannedHeaderLabel);
     expect(timeHeader, findsOneWidget);
@@ -1127,18 +1127,18 @@ void main() {
     // load train journey by filling out train selection page
     await loadTrainJourney(tester, trainNumber: 'T16');
 
-    // test if calculated time header label is in table
+    // test if operational time header label is in table
     final expectedCalculatedHeaderLabel = l10n.p_train_journey_table_time_label_new;
     final timeHeader = find.text(expectedCalculatedHeaderLabel);
     expect(timeHeader, findsOneWidget);
 
     // test if times are displayed correctly
     final timeCellKey = ServicePointRow.timeCellInServicePointRowKey;
-    // Geneve Aeroport should have only departure calculated time
+    // Geneve Aeroport should have only departure operational time
     final geneveAer = 'Genève-Aéroport';
     expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: geneveAer), findsOneWidget);
     expect(_findTextInDASTableRowByText(innerText: '18:14:2', rowText: geneveAer), findsOneWidget);
-    // morges should have planned arrival time in brackets since it's a passing point and has no calculated times
+    // morges should have empty times since it does not have operational times
     final morges = 'Morges';
     expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: morges), findsOneWidget);
     expect(_findTextInDASTableRowByText(innerText: '(18:55)\n', rowText: morges), findsOneWidget);

@@ -21,7 +21,7 @@ class Metadata {
     this.routeEnd,
     this.delay,
     this.breakSeries,
-    bool? anyCalculatedArrivalDepartureTimes,
+    bool? anyOperationalArrivalDepartureTimes,
     this.additionalSpeedRestrictions = const [],
     this.nonStandardTrackEquipmentSegments = const [],
     this.bracketStationSegments = const [],
@@ -30,7 +30,7 @@ class Metadata {
     this.lineFootNoteLocations = const {},
     this.radioContactLists = const [],
   })  : timestamp = timestamp ?? DateTime.now(),
-        anyCalculatedArrivalDepartureTimes = anyCalculatedArrivalDepartureTimes ?? false;
+        anyOperationalArrivalDepartureTimes = anyOperationalArrivalDepartureTimes ?? false;
 
   final DateTime timestamp;
   final ServicePoint? nextStop;
@@ -41,7 +41,7 @@ class Metadata {
   final BaseData? routeStart;
   final BaseData? routeEnd;
   final Duration? delay;
-  final bool anyCalculatedArrivalDepartureTimes;
+  final bool anyOperationalArrivalDepartureTimes;
   final List<NonStandardTrackEquipmentSegment> nonStandardTrackEquipmentSegments;
   final List<CommunicationNetworkChange> communicationNetworkChanges;
   final List<BracketStationSegment> bracketStationSegments;

@@ -1242,7 +1242,7 @@ void main() {
     expect(servicePoints, hasLength(8));
 
     // has calculated times
-    expect(journey.metadata.anyCalculatedArrivalDepartureTimes, isTrue);
+    expect(journey.metadata.anyOperationalArrivalDepartureTimes, isTrue);
 
     // ambiguousDepartureTime and plannedOperationalDepartureTime
     final genevaAirport = servicePoints[0];
@@ -1303,7 +1303,7 @@ void main() {
     expect(journey.valid, true);
 
     // has calculated times
-    expect(journey.metadata.anyCalculatedArrivalDepartureTimes, isFalse);
+    expect(journey.metadata.anyOperationalArrivalDepartureTimes, isFalse);
   });
 
   test('metadata.hasCalculatedTimes_whenNoTimesInJourney_thenFalse', () {
@@ -1311,7 +1311,7 @@ void main() {
     expect(journey.valid, true);
 
     // has calculated times
-    expect(journey.metadata.anyCalculatedArrivalDepartureTimes, isFalse);
+    expect(journey.metadata.anyOperationalArrivalDepartureTimes, isFalse);
   });
 }
 

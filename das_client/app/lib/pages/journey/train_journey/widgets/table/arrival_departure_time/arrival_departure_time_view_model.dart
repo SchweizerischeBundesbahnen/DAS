@@ -30,7 +30,7 @@ class ArrivalDepartureTimeViewModel {
         _hasJourneyCalculatedTimes = false;
         return;
       }
-      final journeyHasCalculatedTimes = journey.metadata.anyCalculatedArrivalDepartureTimes;
+      final journeyHasCalculatedTimes = journey.metadata.anyOperationalArrivalDepartureTimes;
       if (!journeyHasCalculatedTimes) {
         _rxShowCalculatedTimes.add(false);
         _hasJourneyCalculatedTimes = false;
