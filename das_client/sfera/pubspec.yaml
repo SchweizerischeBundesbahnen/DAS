@@ -9,7 +9,7 @@ resolution: workspace
 
 dependencies:
   # workspaces
-  mqtt: 1.0.0
+  mqtt: 1.1.4
   http_x: 1.0.0
 
   # https://pub.dev/packages/fimber
