@@ -79,7 +79,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
             DateTime? depTime;
             DateTime? arrTime;
             if (showCalculatedTimes) {
-              if (times.hasAnyCalculatedTime) {
+              if (times.hasAnyOperationalTime) {
                 // show calculated
                 depTime = times.operationalDepartureTime;
                 arrTime = times.operationalArrivalTime;

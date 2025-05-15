@@ -40,7 +40,7 @@ class ArrivalDepartureTime {
 
   // > 2h before Journey - sent operational times are **planned** times and no planned times are sent separately
   // < 2h before Journey - sent operational times are **calculated** times and planned times are sent separately
-  bool get hasAnyCalculatedTime => _isDepartureTimeCalculated || _isArrivalTimeCalculated;
+  bool get hasAnyOperationalTime => _isDepartureTimeCalculated || _isArrivalTimeCalculated;
 
   @override
   String toString() {

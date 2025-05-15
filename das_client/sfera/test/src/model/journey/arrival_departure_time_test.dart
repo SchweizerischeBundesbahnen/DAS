@@ -125,57 +125,57 @@ void main() {
     expect(time.hasAnyTime, isTrue);
   });
 
-  test('hasAnyCalculatedTime_whenOnlyPlannedDepartureTimeIsProvided_thenReturnsFalse', () {
+  test('hasAnyOperationalTime_whenOnlyPlannedDepartureTimeIsProvided_thenReturnsFalse', () {
     final time = ArrivalDepartureTime(
       plannedDepartureTime: DateTime(2025, 5, 13, 12, 0),
     );
 
-    expect(time.hasAnyCalculatedTime, isFalse);
+    expect(time.hasAnyOperationalTime, isFalse);
   });
 
-  test('hasAnyCalculatedTime_whenOnlyOperationalDepartureTimeIsProvided_thenReturnsFalse', () {
+  test('hasAnyOperationalTime_whenOnlyAmbiguousDepartureTimeIsProvided_thenReturnsFalse', () {
     final time = ArrivalDepartureTime(
       ambiguousDepartureTime: DateTime(2025, 5, 13, 12, 0),
     );
 
-    expect(time.hasAnyCalculatedTime, isFalse);
+    expect(time.hasAnyOperationalTime, isFalse);
   });
 
-  test('hasAnyCalculatedTime_whenPlannedAndOpDepartureTimeIsProvided_thenReturnsTrue', () {
+  test('hasAnyOperationalTime_whenPlannedAndAmbiguousDepartureTimeIsProvided_thenReturnsTrue', () {
     final time = ArrivalDepartureTime(
       plannedDepartureTime: DateTime(2025, 5, 13, 12, 0),
       ambiguousDepartureTime: DateTime(2025, 5, 13, 15, 0),
     );
 
-    expect(time.hasAnyCalculatedTime, isTrue);
+    expect(time.hasAnyOperationalTime, isTrue);
   });
 
-  test('hasAnyCalculatedTime_whenOnlyPlannedArrivalTimeIsProvided_thenReturnsFalse', () {
+  test('hasAnyOperationalTime_whenOnlyPlannedArrivalTimeIsProvided_thenReturnsFalse', () {
     final time = ArrivalDepartureTime(
       plannedArrivalTime: DateTime(2025, 5, 13, 16, 0),
     );
 
-    expect(time.hasAnyCalculatedTime, isFalse);
+    expect(time.hasAnyOperationalTime, isFalse);
   });
 
-  test('hasAnyCalculatedTime_whenOnlyOperationalArrivalTimeIsProvided_thenReturnsFalse', () {
+  test('hasAnyOperationalTime_whenOnlyAmbiguousArrivalTimeIsProvided_thenReturnsFalse', () {
     final time = ArrivalDepartureTime(
       ambiguousArrivalTime: DateTime(2025, 5, 13, 15, 0),
     );
 
-    expect(time.hasAnyCalculatedTime, isFalse);
+    expect(time.hasAnyOperationalTime, isFalse);
   });
 
-  test('hasAnyCalculatedTime_whenPlannedAndOpArrivalTimeIsProvided_thenReturnsTrue', () {
+  test('hasAnyOperationalTime_whenPlannedAndAmbiguousArrivalTimeIsProvided_thenReturnsTrue', () {
     final time = ArrivalDepartureTime(
       plannedArrivalTime: DateTime(2025, 5, 13, 16, 0),
       ambiguousArrivalTime: DateTime(2025, 5, 13, 15, 0),
     );
 
-    expect(time.hasAnyCalculatedTime, isTrue);
+    expect(time.hasAnyOperationalTime, isTrue);
   });
 
-  test('hasAnyCalculatedTime_whenNeitherPlannedNorOperationalTimesAreProvided_thenReturnsFalse', () {
+  test('hasAnyOperationalTime_whenNeitherPlannedNorAmbiguousTimesAreProvided_thenReturnsFalse', () {
     final time = ArrivalDepartureTime(
       ambiguousDepartureTime: null,
       plannedDepartureTime: null,
@@ -183,7 +183,7 @@ void main() {
       plannedArrivalTime: null,
     );
 
-    expect(time.hasAnyCalculatedTime, isFalse);
+    expect(time.hasAnyOperationalTime, isFalse);
   });
 
   test('toString_whenCalled_thenReturnsCorrectStringRepresentation', () {
