@@ -1,8 +1,10 @@
 import 'package:app/bloc/train_journey_cubit.dart';
 import 'package:app/bloc/ux_testing_cubit.dart';
 import 'package:app/di.dart';
-import 'package:app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet.dart';
-import 'package:app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_modal.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_modal_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/koa_notification.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
@@ -22,18 +24,26 @@ class TrainJourneyOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.trainJourneyCubit;
     return MultiProvider(
       providers: [
         Provider(
-          create: (_) => DetailModalSheetViewModel(
-            onOpen: () => bloc.automaticAdvancementController.resetScrollTimer(),
-          ),
+          create: (context) {
+            final controller = context.trainJourneyCubit.automaticAdvancementController;
+            return DetailModalViewModel(onOpen: () => controller.resetScrollTimer());
+          },
+          dispose: (context, vm) => vm.dispose(),
+        ),
+        Provider(
+          create: (_) => ServicePointModalViewModel(),
+          dispose: (context, vm) => vm.dispose(),
+        ),
+        Provider(
+          create: (_) => AdditionalSpeedRestrictionModalViewModel(),
           dispose: (context, vm) => vm.dispose(),
         ),
         Provider(
           create: (_) => ArrivalDepartureTimeViewModel(
-            journeyStream: bloc.journeyStream,
+            journeyStream: context.trainJourneyCubit.journeyStream,
           ),
           dispose: (context, vm) => vm.dispose(),
         )
@@ -49,10 +59,10 @@ class TrainJourneyOverview extends StatelessWidget {
   }
 
   Widget _body(BuildContext context) {
-    final detailModalSheetController = context.read<DetailModalSheetViewModel>().controller;
+    final detailModalController = context.read<DetailModalViewModel>().controller;
     return Listener(
-      onPointerDown: (_) => detailModalSheetController.resetAutomaticClose(),
-      onPointerUp: (_) => detailModalSheetController.resetAutomaticClose(),
+      onPointerDown: (_) => detailModalController.resetAutomaticClose(),
+      onPointerUp: (_) => detailModalController.resetAutomaticClose(),
       child: Row(
         children: [
           Expanded(child: _content()),

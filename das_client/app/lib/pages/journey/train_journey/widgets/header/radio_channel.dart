@@ -1,6 +1,6 @@
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
-import 'package:app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_tab.dart';
-import 'package:app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/radio_contact.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/sim_identifier.dart';
 import 'package:app/widgets/indicator_wrapper.dart';
@@ -28,8 +28,8 @@ class RadioChannel extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        final viewModel = context.read<DetailModalSheetViewModel>();
-        viewModel.open(tab: DetailModalSheetTab.communication, servicePoint: metadata.lastServicePoint);
+        final viewModel = context.read<ServicePointModalViewModel>();
+        viewModel.open(context, tab: ServicePointModalTab.communication, servicePoint: metadata.lastServicePoint);
       },
       child: ConstrainedBox(
         constraints: const BoxConstraints(minWidth: 258.0),

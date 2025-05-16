@@ -1,6 +1,6 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
-import 'package:app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,7 +23,7 @@ class DetailTabCommunication extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _communicationNetworkType(context),
-            Text(context.l10n.w_detail_modal_sheet_communication_radio_channel, style: DASTextStyles.smallRoman),
+            Text(context.l10n.w_service_point_modal_communication_radio_channel, style: DASTextStyles.smallRoman),
             _contactList(context),
           ],
         ),
@@ -32,14 +32,14 @@ class DetailTabCommunication extends StatelessWidget {
   }
 
   Widget _contactList(BuildContext context) {
-    final viewModel = context.read<DetailModalSheetViewModel>();
+    final viewModel = context.read<ServicePointModalViewModel>();
     return StreamBuilder(
       stream: viewModel.radioContacts,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: Text(context.l10n.w_detail_modal_sheet_communication_radio_channels_not_found),
+            child: Text(context.l10n.w_service_point_modal_communication_radio_channels_not_found),
           );
         }
 
@@ -72,7 +72,7 @@ class DetailTabCommunication extends StatelessWidget {
   }
 
   Widget _communicationNetworkType(BuildContext context) {
-    final viewModel = context.read<DetailModalSheetViewModel>();
+    final viewModel = context.read<ServicePointModalViewModel>();
     return StreamBuilder(
       stream: viewModel.communicationNetworkType,
       builder: (context, snapshot) {
@@ -83,7 +83,7 @@ class DetailTabCommunication extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(context.l10n.w_detail_modal_sheet_communication_network, style: DASTextStyles.smallRoman),
+            Text(context.l10n.w_service_point_modal_communication_network, style: DASTextStyles.smallRoman),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: sbbDefaultSpacing),
               child: CommunicationNetworkIcon(networkType: snapshot.data!),

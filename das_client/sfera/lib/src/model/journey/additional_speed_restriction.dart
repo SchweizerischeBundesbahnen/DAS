@@ -2,6 +2,7 @@ import 'package:meta/meta.dart';
 import 'package:sfera/src/model/journey/base_data.dart';
 import 'package:sfera/src/model/journey/segment.dart';
 import 'package:sfera/src/model/journey/track_equipment_segment.dart';
+import 'package:sfera/src/model/localized_string.dart';
 
 @sealed
 @immutable
@@ -11,18 +12,23 @@ class AdditionalSpeedRestriction {
     required this.kmTo,
     required this.orderFrom,
     required this.orderTo,
+    this.restrictionFrom,
+    this.restrictionUntil,
     this.speed,
+    this.reason,
   });
 
   final double kmFrom;
   final double kmTo;
   final int orderFrom;
   final int orderTo;
+  final DateTime? restrictionFrom;
+  final DateTime? restrictionUntil;
   final int? speed;
+  final LocalizedString? reason;
 
-  bool needsEndMarker(List<BaseData> journeyData) {
-    return journeyData.where((it) => it.order >= orderFrom && it.order <= orderTo).length > 1;
-  }
+  bool needsEndMarker(List<BaseData> journeyData) =>
+      journeyData.where((it) => it.order >= orderFrom && it.order <= orderTo).length > 1;
 
   /// Checks if this ASR should be displayed in the train journey.
   ///
@@ -42,7 +48,7 @@ class AdditionalSpeedRestriction {
 
   @override
   String toString() {
-    return 'AdditionalSpeedRestriction(kmFrom: $kmFrom, kmTo: $kmTo, orderFrom: $orderFrom, orderTo: $orderTo, speed: $speed)';
+    return 'AdditionalSpeedRestriction(kmFrom: $kmFrom, kmTo: $kmTo, orderFrom: $orderFrom, orderTo: $orderTo, restrictionFrom: $restrictionFrom, restrictionUntil: $restrictionUntil, speed: $speed, reason: $reason)';
   }
 
   @override
@@ -54,8 +60,19 @@ class AdditionalSpeedRestriction {
           kmTo == other.kmTo &&
           orderFrom == other.orderFrom &&
           orderTo == other.orderTo &&
+          reason == other.reason &&
+          restrictionFrom == other.restrictionFrom &&
+          restrictionUntil == other.restrictionUntil &&
           speed == other.speed;
 
   @override
-  int get hashCode => kmFrom.hashCode ^ kmTo.hashCode ^ orderFrom.hashCode ^ orderTo.hashCode ^ speed.hashCode;
+  int get hashCode =>
+      kmFrom.hashCode ^
+      kmTo.hashCode ^
+      orderFrom.hashCode ^
+      orderTo.hashCode ^
+      speed.hashCode ^
+      reason.hashCode ^
+      restrictionFrom.hashCode ^
+      restrictionUntil.hashCode;
 }

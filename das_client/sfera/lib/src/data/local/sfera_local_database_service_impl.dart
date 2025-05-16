@@ -42,7 +42,7 @@ class SferaDatabaseRepositoryImpl implements SferaLocalDatabaseService {
     final journeyProfileEntity =
         journeyProfile.toEntity(id: existingProfile?.id ?? _db.journeyProfile.autoIncrement(), startDate: today);
 
-    Fimber.i(
+    Fimber.d(
         'Writing journey profile to db company=${journeyProfileEntity.company} operationalTrainNumber=${journeyProfileEntity.operationalTrainNumber} startDate=${journeyProfileEntity.startDate}');
     await _db.writeAsync((isar) {
       isar.journeyProfile.put(journeyProfileEntity);
@@ -57,11 +57,11 @@ class SferaDatabaseRepositoryImpl implements SferaLocalDatabaseService {
         await findSegmentProfile(segmentProfile.id, segmentProfile.versionMajor, segmentProfile.versionMinor);
     if (existingProfile == null) {
       final segmentProfileEntity = segmentProfile.toEntity(isarId: _db.segmentProfile.autoIncrement());
-      Fimber.i(
+      Fimber.d(
           'Writing segment profile to db spId=${segmentProfileEntity.spId} majorVersion=${segmentProfileEntity.majorVersion} minorVersion=${segmentProfileEntity.minorVersion}');
       _db.write((isar) => isar.segmentProfile.put(segmentProfileEntity));
     } else {
-      Fimber.i(
+      Fimber.d(
           'Segment profile already exists in db spId=${segmentProfile.id} majorVersion=${segmentProfile.versionMajor} minorVersion=${segmentProfile.versionMinor}');
     }
   }
@@ -124,11 +124,11 @@ class SferaDatabaseRepositoryImpl implements SferaLocalDatabaseService {
     if (existingTrainCharacteristics == null) {
       final trainCharacteristicsEntity =
           trainCharacteristics.toEntity(isarId: _db.trainCharacteristics.autoIncrement());
-      Fimber.i(
+      Fimber.d(
           'Writing train characteristics to db tcId=${trainCharacteristicsEntity.tcId} majorVersion=${trainCharacteristicsEntity.majorVersion} minorVersion=${trainCharacteristicsEntity.minorVersion}');
       _db.write((isar) => isar.trainCharacteristics.put(trainCharacteristicsEntity));
     } else {
-      Fimber.i(
+      Fimber.d(
           'train characteristics already exists in db tcId=${existingTrainCharacteristics.tcId} majorVersion=${existingTrainCharacteristics.majorVersion} minorVersion=${existingTrainCharacteristics.minorVersion}');
     }
   }
