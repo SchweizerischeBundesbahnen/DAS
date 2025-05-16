@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd" SP_ID="T9999_3" SP_VersionMajor="3"
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd" SP_ID="T9999_3" SP_VersionMajor="4"
                 SP_VersionMinor="0" SP_Length="1000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
@@ -25,7 +25,7 @@
             <!-- 'stationExitCurve' (begins in a station) -->
             <NetworkSpecificParameter name="curveType" value="stationExitCurve"/>
             <NetworkSpecificParameter name="xmlCurveSpeed" value="
-                &lt;curveSpeed text=&quot;Kurve 5&quot; comment=&quot;Kurve 2&quot;&gt;
+                &lt;curveSpeed text=&quot;Kurve 5&quot; comment=&quot;Kurve 5 after stop&quot;&gt;
                 &lt;speeds&gt;
                 &lt;v trainSeries=&quot;R&quot; speed=&quot;44&quot;/&gt;
                 &lt;v trainSeries=&quot;A&quot; speed=&quot;55&quot;/&gt;
@@ -41,7 +41,7 @@
             <!-- 'curveAfterHalt' (begins at an halt). -->
             <NetworkSpecificParameter name="curveType" value="curveAfterHalt"/>
             <NetworkSpecificParameter name="xmlCurveSpeed" value="
-                &lt;curveSpeed text=&quot;Kurve 5&quot; comment=&quot;Kurve 3&quot;&gt;
+                &lt;curveSpeed text=&quot;Kurve 5&quot; comment=&quot;Kurve 5 after stop&quot;&gt;
                 &lt;speeds&gt;
                 &lt;v trainSeries=&quot;R&quot; speed=&quot;44&quot;/&gt;
                 &lt;v trainSeries=&quot;A&quot; speed=&quot;55&quot;/&gt;
@@ -66,9 +66,7 @@
     </SP_Points>
 
     <SP_Areas>
-        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="400" endLocation="400"
-            TAF_TAP_location_abbreviation="C"
-            TAF_TAP_location_type="halt">
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="400" endLocation="400" TAF_TAP_location_abbreviation="C" TAF_TAP_location_type="halt">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>9993</teltsi_LocationPrimaryCode>

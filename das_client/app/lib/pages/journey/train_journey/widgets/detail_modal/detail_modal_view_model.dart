@@ -1,15 +1,15 @@
 import 'dart:async';
 
+import 'package:app/pages/journey/train_journey/automatic_advancement_controller.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
-import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 
 class DetailModalViewModel {
-  DetailModalViewModel({required this.onOpen}) {
+  DetailModalViewModel({required this.automaticAdvancementController}) {
     _init();
   }
 
-  final VoidCallback onOpen;
+  final AutomaticAdvancementController automaticAdvancementController;
   late DASModalSheetController controller;
 
   final _rxContentBuilder = BehaviorSubject<DASModalSheetBuilder?>();
@@ -30,7 +30,9 @@ class DetailModalViewModel {
       onClose: () => _rxIsModalOpen.add(false),
       onOpen: () {
         _rxIsModalOpen.add(true);
-        onOpen.call();
+        if (automaticAdvancementController.isActive) {
+          automaticAdvancementController.scrollToCurrentPosition(resetAutomaticAdvancementTimer: true);
+        }
       },
     );
   }

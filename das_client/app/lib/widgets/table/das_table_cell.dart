@@ -20,10 +20,11 @@ class DASTableCell {
     this.clipBehaviour = Clip.hardEdge,
   });
 
-  const DASTableCell.empty({Color? color})
+  const DASTableCell.empty({Color? color, VoidCallback? onTap})
       : this(
           child: const SizedBox.shrink(key: emptyCellKey),
           color: color,
+          onTap: onTap,
         );
 
   final BoxBorder? border;

@@ -16,6 +16,7 @@ export 'package:sfera/src/data/sfera_local_repo.dart';
 export 'package:sfera/src/data/parser/sfera_reply_parser.dart';
 export 'package:sfera/src/model/journey/additional_speed_restriction.dart';
 export 'package:sfera/src/model/journey/additional_speed_restriction_data.dart';
+export 'package:sfera/src/model/journey/arrival_departure_time.dart';
 export 'package:sfera/src/model/journey/balise.dart';
 export 'package:sfera/src/model/journey/balise_level_crossing_group.dart';
 export 'package:sfera/src/model/journey/base_data.dart';

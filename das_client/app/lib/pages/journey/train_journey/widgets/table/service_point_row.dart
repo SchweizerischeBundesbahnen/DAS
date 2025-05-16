@@ -1,8 +1,10 @@
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/time_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
@@ -56,7 +58,19 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   @override
   DASTableCell timeCell(BuildContext context) {
-    return DASTableCell(child: Text('06:05:52'), alignment: defaultAlignment, color: specialCellColor);
+    final times = data.arrivalDepartureTime;
+    final viewModel = context.read<ArrivalDepartureTimeViewModel>();
+
+    if (times == null || !times.hasAnyTime) {
+      return DASTableCell.empty(color: specialCellColor, onTap: () => viewModel.toggleOperationalTime());
+    }
+
+    return DASTableCell(
+      onTap: () => viewModel.toggleOperationalTime(),
+      child: TimeCellBody(times: times, viewModel: viewModel, showTimesInBrackets: !data.isStop),
+      alignment: defaultAlignment,
+      color: specialCellColor,
+    );
   }
 
   @override

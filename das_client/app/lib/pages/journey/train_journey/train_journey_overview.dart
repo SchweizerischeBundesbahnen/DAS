@@ -8,6 +8,7 @@ import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_poi
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/koa_notification.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:app/pages/journey/train_journey/widgets/warn_function_modal_sheet.dart';
 import 'package:app/sound/koa_sound.dart';
@@ -28,7 +29,7 @@ class TrainJourneyOverview extends StatelessWidget {
         Provider(
           create: (context) {
             final controller = context.trainJourneyCubit.automaticAdvancementController;
-            return DetailModalViewModel(onOpen: () => controller.resetScrollTimer());
+            return DetailModalViewModel(automaticAdvancementController: controller);
           },
           dispose: (context, vm) => vm.dispose(),
         ),
@@ -40,6 +41,12 @@ class TrainJourneyOverview extends StatelessWidget {
           create: (_) => AdditionalSpeedRestrictionModalViewModel(),
           dispose: (context, vm) => vm.dispose(),
         ),
+        Provider(
+          create: (_) => ArrivalDepartureTimeViewModel(
+            journeyStream: context.trainJourneyCubit.journeyStream,
+          ),
+          dispose: (context, vm) => vm.dispose(),
+        )
       ],
       builder: (context, child) => BlocProvider.value(
         value: DI.get<UxTestingCubit>(),

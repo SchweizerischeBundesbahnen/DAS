@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="3" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="4" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
     <TrainIdentification>
         <OTN_ID>
             <teltsi_Company>1085</teltsi_Company>
@@ -7,7 +7,7 @@
             <teltsi_StartDate>2022-01-04</teltsi_StartDate>
         </OTN_ID>
     </TrainIdentification>
-    <SegmentProfileReference SP_ID="T9999_1" SP_VersionMajor="3" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T9999_1" SP_VersionMajor="4" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -15,12 +15,13 @@
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Bahnhof_A"/>
             </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:00:02Z" plannedDepartureTime="9999-01-01T00:00:10Z"/>
         </TimingPointConstraints>
         <TrainCharacteristicsRef TC_ID="T9999_1" TC_VersionMajor="3" TC_VersionMinor="0" location="0">
             <TC_RU_ID>1085</TC_RU_ID>
         </TrainCharacteristicsRef>
     </SegmentProfileReference>
-    <SegmentProfileReference SP_ID="T9999_2" SP_VersionMajor="3" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T9999_2" SP_VersionMajor="4" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -28,13 +29,15 @@
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Haltestelle_B"/>
             </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:00:34Z" plannedDepartureTime="9999-01-01T00:00:40Z"/>
         </TimingPointConstraints>
     </SegmentProfileReference>
-    <SegmentProfileReference SP_ID="T9999_3" SP_VersionMajor="3" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T9999_3" SP_VersionMajor="4" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:01:34Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:01:34Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Halt_auf_Verlangen_C"/>
             </TimingPointReference>
@@ -43,10 +46,10 @@
                     <teltsi_TrainActivityType>0001</teltsi_TrainActivityType>
                 </StopType>
             </StoppingPointInformation>
-            <StoppingPointDepartureDetails departureTime="2022-05-17T07:52:00Z"/>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:02:42Z" plannedDepartureTime="9999-01-01T00:02:20Z"/>
         </TimingPointConstraints>
     </SegmentProfileReference>
-    <SegmentProfileReference SP_ID="T9999_4" SP_VersionMajor="3" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T9999_4" SP_VersionMajor="4" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -54,9 +57,10 @@
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Klammerbahnhof_D"/>
             </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:03:42Z" plannedDepartureTime="9999-01-01T00:03:22Z"/>
         </TimingPointConstraints>
     </SegmentProfileReference>
-    <SegmentProfileReference SP_ID="T9999_5" SP_VersionMajor="3" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T9999_5" SP_VersionMajor="4" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -64,8 +68,10 @@
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Klammerbahnhof_D1"/>
             </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:05:42Z" plannedDepartureTime="9999-01-01T00:05:12Z"/>
         </TimingPointConstraints>
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="End_of_Journey">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="End_of_Journey" TP_latestArrivalTime="9999-01-01T00:07:42Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:08:12Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Bahnhof_E"/>
             </TimingPointReference>

@@ -8,6 +8,7 @@ import 'package:app/pages/journey/train_journey/widgets/detail_modal/additional_
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/balise_level_crossing_group_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/balise_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cab_signaling_row.dart';
@@ -255,6 +256,8 @@ class TrainJourney extends StatelessWidget {
     final speedLabel =
         currentBreakSeries != null ? '${currentBreakSeries.trainSeries.name}${currentBreakSeries.breakSeries}' : '??';
 
+    final timeViewModel = context.read<ArrivalDepartureTimeViewModel>();
+
     return [
       if (!isDetailModalOpen) ...[
         DASTableColumn(
@@ -274,10 +277,17 @@ class TrainJourney extends StatelessWidget {
         ),
       ],
       DASTableColumn(
-        id: ColumnDefinition.time.index,
-        child: Text(context.l10n.p_train_journey_table_time_label),
-        width: 100.0,
-      ),
+          id: ColumnDefinition.time.index,
+          child: StreamBuilder(
+              stream: timeViewModel.showOperationalTime,
+              builder: (context, showCalcTimeSnap) => Text(showCalcTimeSnap.data ?? false
+                  ? context.l10n.p_train_journey_table_time_label_new
+                  : context.l10n.p_train_journey_table_time_label_planned)),
+          width: 100.0,
+          onTap: () {
+            final viewModel = context.read<ArrivalDepartureTimeViewModel>();
+            viewModel.toggleOperationalTime();
+          }),
       DASTableColumn(id: ColumnDefinition.route.index, width: 48.0), // route column
       DASTableColumn(id: ColumnDefinition.trackEquipment.index, width: 20.0), // track equipment column
       DASTableColumn(id: ColumnDefinition.icons1.index, width: 64.0), // icons column
