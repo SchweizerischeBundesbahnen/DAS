@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="1671_1"
-                SP_VersionMajor="2" SP_VersionMinor="3" SP_Length="36000" SP_Status="Valid">
+                SP_VersionMajor="2" SP_VersionMinor="4" SP_Length="36000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -571,6 +571,12 @@ ha liberato gli scambi in deviazione&quot;/&gt;
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
+                    &lt;entries&gt;
+						&lt;entry roSpeed=&quot;120&quot; adSpeed=&quot;120&quot; text=&quot;Entrata e uscita lato Helmaiche: velocità fra il fabbricato viaggiatori e il segnale di binario A&quot;/&gt;
+                        &lt;entry nSpeed=&quot;120&quot; text=&quot;Entrata e uscita lato Helmaiche: velocità fra il fabbricato viaggiatori e il segnale di binario A&quot;/&gt;
+                    &lt;/entries&gt;
+                "/>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
 					&lt;stationSpeed&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;95/85&quot;/&gt;
@@ -718,7 +724,13 @@ ha liberato gli scambi in deviazione&quot;/&gt;
         </ContactList>
         <ContactList startEndQualifier="StartsEnds" startLocation="28800" endLocation="28800">
             <Contact mainContact="true">
-                <OtherContactType contactIdentifier="1304"/>
+                <OtherContactType contactIdentifier="1306"/>
+            </Contact>
+            <Contact mainContact="false" contactRole="Capomovimento">
+                <OtherContactType contactIdentifier="1306"/>
+            </Contact>
+            <Contact mainContact="false" contactRole="Formatore treno SBB Cargo Italia">
+                <OtherContactType contactIdentifier="1307"/>
             </Contact>
         </ContactList>
         <ContactList startEndQualifier="StartsEnds" startLocation="31000" endLocation="31000">
