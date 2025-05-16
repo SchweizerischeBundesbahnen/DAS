@@ -43,7 +43,7 @@ class TrainJourneyOverview extends StatelessWidget {
         ),
         Provider(
           create: (_) => ArrivalDepartureTimeViewModel(
-            journeyStream: bloc.journeyStream,
+            journeyStream: context.trainJourneyCubit.journeyStream,
           ),
           dispose: (context, vm) => vm.dispose(),
         )
