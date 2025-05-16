@@ -1,36 +1,30 @@
 import 'dart:async';
-import 'dart:ui';
 
-import 'package:app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_tab.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_modal_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_builder.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
-import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-class DetailModalSheetViewModel {
-  DetailModalSheetViewModel({required this.onOpen}) {
+class ServicePointModalViewModel {
+  ServicePointModalViewModel() {
     _init();
   }
-
-  final VoidCallback onOpen;
-  late DASModalSheetController controller;
 
   final _rxCommunicationNetworkType = BehaviorSubject<CommunicationNetworkType?>();
   final _rxRadioContactList = BehaviorSubject<RadioContactList?>();
   final _rxMetadata = BehaviorSubject<Metadata>();
   final _rxServicePoint = BehaviorSubject<ServicePoint>();
-  final _rxIsModalSheetOpen = BehaviorSubject.seeded(false);
-  final _rxSelectedTab = BehaviorSubject.seeded(DetailModalSheetTab.values.first);
+  final _rxSelectedTab = BehaviorSubject.seeded(ServicePointModalTab.values.first);
   final _rxSettings = BehaviorSubject<TrainJourneySettings>();
   final _rxRelevantSpeedInfo = BehaviorSubject.seeded(<Speeds>[]);
   final _rxBreakSeries = BehaviorSubject<BreakSeries?>();
   final _subscriptions = <StreamSubscription>[];
 
-  Stream<DetailModalSheetTab> get selectedTab => _rxSelectedTab.distinct();
-
-  bool get isModalSheetOpenValue => _rxIsModalSheetOpen.value;
-
-  Stream<bool> get isModalSheetOpen => _rxIsModalSheetOpen.distinct();
+  Stream<ServicePointModalTab> get selectedTab => _rxSelectedTab.distinct();
 
   Stream<ServicePoint> get servicePoint => _rxServicePoint.distinct();
 
@@ -43,7 +37,6 @@ class DetailModalSheetViewModel {
   Stream<BreakSeries?> get breakSeries => _rxBreakSeries.distinct();
 
   void _init() {
-    _initController();
     _initRadioContacts();
     _initCommunicationNetworkType();
     _initRelevantSpeedInfo();
@@ -82,21 +75,11 @@ class DetailModalSheetViewModel {
     _subscriptions.add(subscription);
   }
 
-  void _initController() {
-    controller = DASModalSheetController(
-      onClose: () => _rxIsModalSheetOpen.add(false),
-      onOpen: () {
-        _rxIsModalSheetOpen.add(true);
-        onOpen.call();
-      },
-    );
-  }
-
   void updateMetadata(Metadata metadata) => _rxMetadata.add(metadata);
 
   void updateSettings(TrainJourneySettings settings) => _rxSettings.add(settings);
 
-  void open({DetailModalSheetTab? tab, ServicePoint? servicePoint}) {
+  void open(BuildContext context, {ServicePointModalTab? tab, ServicePoint? servicePoint}) {
     if (tab != null) {
       _rxSelectedTab.add(tab);
     }
@@ -104,14 +87,12 @@ class DetailModalSheetViewModel {
       _rxServicePoint.add(servicePoint);
     }
 
-    if (tab == DetailModalSheetTab.localRegulations) {
-      controller.maximize();
-    } else {
-      controller.expand();
-    }
+    final viewModel = context.read<DetailModalViewModel>();
+    final openAsMaximized = tab == ServicePointModalTab.localRegulations;
+    viewModel.open(ServicePointModalBuilder(), maximize: openAsMaximized);
   }
 
-  void close() => controller.close();
+  void close(BuildContext context) => context.read<DetailModalViewModel>().close();
 
   void dispose() {
     for (final subscription in _subscriptions) {
@@ -119,12 +100,10 @@ class DetailModalSheetViewModel {
     }
     _rxMetadata.close();
     _rxSelectedTab.close();
-    _rxIsModalSheetOpen.close();
     _rxCommunicationNetworkType.close();
     _rxServicePoint.close();
     _rxSettings.close();
     _rxRelevantSpeedInfo.close();
     _rxBreakSeries.close();
-    controller.dispose();
   }
 }

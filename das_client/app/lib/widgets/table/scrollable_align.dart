@@ -35,16 +35,15 @@ class _ScrollableAlignState extends State<ScrollableAlign> {
         isTouching = false;
       },
       child: NotificationListener<ScrollEndNotification>(
-          onNotification: (scrollEnd) {
-            // Delay scroll back by 1 Frame to avoid strange behaviour
-            Future.delayed(Duration(milliseconds: 1), () {
-              if (!isTouching && !isAnimating) {
-                alignToElement();
-              }
-            });
-            return false;
-          },
-          child: widget.child),
+        onNotification: (_) {
+          // Delay scroll back by 1 Frame to avoid strange behaviour
+          if (!isTouching && !isAnimating) {
+            Future.delayed(Duration(milliseconds: 1), () => alignToElement());
+          }
+          return false;
+        },
+        child: widget.child,
+      ),
     );
   }
 

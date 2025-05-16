@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:fimber/fimber.dart';
 import 'package:sfera/src/data/dto/enums/start_end_qualifier_dto.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
+import 'package:sfera/src/data/dto/multilingual_text_dto.dart';
 import 'package:sfera/src/data/dto/related_train_information_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
@@ -221,11 +222,15 @@ class SferaModelMapper {
           final endOrder = calculateOrder(endSegmentIndex, endLocation);
 
           result.add(AdditionalSpeedRestriction(
-              kmFrom: startKilometreMap[startLocation]!.first,
-              kmTo: endKilometreMap[endLocation]!.first,
-              orderFrom: startOrder,
-              orderTo: endOrder,
-              speed: asrTemporaryConstrain.additionalSpeedRestriction?.asrSpeed));
+            kmFrom: startKilometreMap[startLocation]!.first,
+            kmTo: endKilometreMap[endLocation]!.first,
+            orderFrom: startOrder,
+            orderTo: endOrder,
+            restrictionFrom: asrTemporaryConstrain.startTime,
+            restrictionUntil: asrTemporaryConstrain.endTime,
+            speed: asrTemporaryConstrain.additionalSpeedRestriction?.asrSpeed,
+            reason: asrTemporaryConstrain.temporaryConstraintReasons.toLocalizedString,
+          ));
 
           startSegmentIndex = null;
           endSegmentIndex = null;
