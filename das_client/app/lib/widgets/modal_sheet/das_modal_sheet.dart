@@ -18,7 +18,7 @@ class DASModalSheetBuilder {
 
 /// Used to open and close the [DasModalSheet] and handle animation.
 class DASModalSheetController {
-  static int automaticCloseAfterSeconds = 10;
+  static int automaticCloseAfterSeconds = 40;
 
   DASModalSheetController({
     this.animationDuration = const Duration(milliseconds: 150),
