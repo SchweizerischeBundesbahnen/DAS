@@ -4,7 +4,9 @@ import 'package:app/bloc/train_journey_cubit.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/break_series_selection.dart';
 import 'package:app/pages/journey/train_journey/widgets/chevron_animation_wrapper.dart';
-import 'package:app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_modal_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/balise_level_crossing_group_row.dart';
@@ -68,9 +70,9 @@ class TrainJourney extends StatelessWidget {
           );
         });
 
-        final detailModelSheetViewModel = context.read<DetailModalSheetViewModel>();
-        detailModelSheetViewModel.updateMetadata(journey.metadata);
-        detailModelSheetViewModel.updateSettings(settings);
+        final servicePointModalViewModel = context.read<ServicePointModalViewModel>();
+        servicePointModalViewModel.updateMetadata(journey.metadata);
+        servicePointModalViewModel.updateSettings(settings);
 
         return Listener(
           onPointerDown: (_) => bloc.automaticAdvancementController.resetScrollTimer(),
@@ -92,15 +94,15 @@ class TrainJourney extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
       child: StreamBuilder<bool>(
-        stream: context.read<DetailModalSheetViewModel>().isModalSheetOpen,
+        stream: context.read<DetailModalViewModel>().isModalOpen,
         builder: (context, snapshot) {
-          final isDetailModelSheetOpen = snapshot.data ?? false;
+          final isDetailModelOpen = snapshot.data ?? false;
           return ChevronAnimationWrapper(
             journey: journey,
             child: DASTable(
               key: context.trainJourneyCubit.automaticAdvancementController.tableKey,
               scrollController: context.trainJourneyCubit.automaticAdvancementController.scrollController,
-              columns: _columns(context, journey.metadata, settings, isDetailModelSheetOpen),
+              columns: _columns(context, journey.metadata, settings, isDetailModelOpen),
               rows: tableRows.map((it) => it.build(context)).toList(),
               bottomMarginAdjustment: marginAdjustment,
             ),
@@ -163,6 +165,7 @@ class TrainJourney extends StatelessWidget {
             metadata: journey.metadata,
             data: rowData as AdditionalSpeedRestrictionData,
             config: trainJourneyConfig,
+            onTap: () => _onAdditionalSpeedRestrictionTab(context, rowData),
           );
         case Datatype.connectionTrack:
           return ConnectionTrackRow(
@@ -247,7 +250,7 @@ class TrainJourney extends StatelessWidget {
     BuildContext context,
     Metadata metadata,
     TrainJourneySettings settings,
-    bool isDetailModelSheetOpen,
+    bool isDetailModalOpen,
   ) {
     final currentBreakSeries = settings.resolvedBreakSeries(metadata);
     final speedLabel =
@@ -256,7 +259,7 @@ class TrainJourney extends StatelessWidget {
     final timeViewModel = context.read<ArrivalDepartureTimeViewModel>();
 
     return [
-      if (!isDetailModelSheetOpen) ...[
+      if (!isDetailModalOpen) ...[
         DASTableColumn(
           id: ColumnDefinition.kilometre.index,
           child: Text(context.l10n.p_train_journey_table_kilometre_label),
@@ -368,5 +371,10 @@ class TrainJourney extends StatelessWidget {
 
     return data.type == Datatype.curvePoint &&
         data.localSpeedData?.speedsFor(breakSeries?.trainSeries, breakSeries?.breakSeries) == null;
+  }
+
+  void _onAdditionalSpeedRestrictionTab(BuildContext context, AdditionalSpeedRestrictionData data) {
+    final viewModel = context.read<AdditionalSpeedRestrictionModalViewModel>();
+    viewModel.open(context, data.restriction);
   }
 }

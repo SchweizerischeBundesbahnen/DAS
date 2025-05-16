@@ -10,7 +10,8 @@ import 'package:integration_test/integration_test.dart';
 
 import 'di.dart';
 import 'test/automatic_advancement_test.dart' as automatic_advancement_tests;
-import 'test/detail_modal_sheet_test.dart' as detail_modal_sheet_test;
+import 'test/service_point_modal_test.dart' as service_point_modal_test;
+import 'test/additional_speed_restriction_modal_test.dart' as additional_speed_restriction_modal_test;
 import 'test/navigation_test.dart' as navigation_tests;
 import 'test/train_journey_header_test.dart' as train_journey_header_tests;
 import 'test/train_journey_notification_test.dart' as train_journey_notification_tests;
@@ -31,7 +32,8 @@ void main() {
   navigation_tests.main();
   train_search_tests.main();
   automatic_advancement_tests.main();
-  detail_modal_sheet_test.main();
+  service_point_modal_test.main();
+  additional_speed_restriction_modal_test.main();
 }
 
 Future<void> prepareAndStartApp(WidgetTester tester, {VoidCallback? onBeforeRun}) async {

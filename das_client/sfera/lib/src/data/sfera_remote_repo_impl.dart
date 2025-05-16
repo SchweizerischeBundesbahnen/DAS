@@ -293,7 +293,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
 
   void _updateJourney({VoidCallback? onSuccess, VoidCallback? onInvalid}) {
     if (_journeyProfile != null && _segmentProfiles.isNotEmpty) {
-      Fimber.i('Updating journey stream...');
+      Fimber.d('Updating journey stream...');
       final newJourney = SferaModelMapper.mapToJourney(
         journeyProfile: _journeyProfile!,
         segmentProfiles: _segmentProfiles,
@@ -303,7 +303,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
       );
       if (newJourney.valid) {
         _journeyProfileSubject.add(newJourney);
-        Fimber.i('Journey updates successfully.');
+        Fimber.d('Journey updates successfully.');
         onSuccess?.call();
       } else {
         Fimber.w('Failed to update journey as it is not valid');
