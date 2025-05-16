@@ -14,7 +14,7 @@ dependencies:
     sdk: flutter
 
   # workspace packages
-  auth: 1.0.0
+  auth: 8.2.0+2
   logger: 1.0.0
   mqtt: 1.0.0
   sfera: 1.0.0
