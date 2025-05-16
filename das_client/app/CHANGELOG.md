@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.19.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.18.1...das_client-v0.19.0) (2025-05-16)
+
+
+### Features
+
+* added details modal for additional speed restrictions ([#567](https://github.com/SchweizerischeBundesbahnen/DAS/issues/567)) ([#892](https://github.com/SchweizerischeBundesbahnen/DAS/issues/892)) ([b5468b8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b5468b8c686d9456fdd8d55e0d44d7146aa6f75c))
+* planned and operational times ([#84](https://github.com/SchweizerischeBundesbahnen/DAS/issues/84)) ([#906](https://github.com/SchweizerischeBundesbahnen/DAS/issues/906)) ([54b53f3](https://github.com/SchweizerischeBundesbahnen/DAS/commit/54b53f390f08df0edffd7c583fe920ef7ae9839d))
+* warnApp sound is looped ([#876](https://github.com/SchweizerischeBundesbahnen/DAS/issues/876)) ([591281c](https://github.com/SchweizerischeBundesbahnen/DAS/commit/591281c67a5b1638360bc16e1e5be066972704f0))
+
+
+### Bug Fixes
+
+* click on radio channel header opens last service point ([#866](https://github.com/SchweizerischeBundesbahnen/DAS/issues/866)) ([c744b69](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c744b69c2e4cd990536b3622c660d326acc2ee4e))
+* do not display gradient columns if modal sheet open ([#873](https://github.com/SchweizerischeBundesbahnen/DAS/issues/873)) ([f1a2894](https://github.com/SchweizerischeBundesbahnen/DAS/commit/f1a28941f4535142331eba0959b5595f4706045f))
+* icon button animation in header for pause/start button ([#497](https://github.com/SchweizerischeBundesbahnen/DAS/issues/497)) ([#872](https://github.com/SchweizerischeBundesbahnen/DAS/issues/872)) ([ded9a4a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ded9a4a9ac81fae5219544ca716dcd208166e8c9))
+* show SIM in header ([#865](https://github.com/SchweizerischeBundesbahnen/DAS/issues/865)) ([ca1ca32](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ca1ca3203a735fc8bc9c6c18fbc73dc39d50f9a5))
+* small ui changes ([#875](https://github.com/SchweizerischeBundesbahnen/DAS/issues/875)) ([2abf485](https://github.com/SchweizerischeBundesbahnen/DAS/commit/2abf485655ad69d02b3d9c277c03a3513077e3a2))
+
 ## [0.18.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.18.0...das_client-v0.18.1) (2025-05-13)
 
 
