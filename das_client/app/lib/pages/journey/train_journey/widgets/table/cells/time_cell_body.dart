@@ -21,9 +21,10 @@ class TimeCellBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: refactor the formatting out of there
     return StreamBuilder(
-        stream: viewModel.rxShowOperationalTime,
-        initialData: viewModel.showOperationalTimes,
+        stream: viewModel.showOperationalTime,
+        initialData: viewModel.showOperationalTimeValue,
         builder: (context, snapshot) {
           final showCalculatedTimes = snapshot.data ?? false;
 

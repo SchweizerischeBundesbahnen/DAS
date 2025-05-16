@@ -276,7 +276,7 @@ class TrainJourney extends StatelessWidget {
       DASTableColumn(
           id: ColumnDefinition.time.index,
           child: StreamBuilder(
-              stream: timeViewModel.rxShowOperationalTime,
+              stream: timeViewModel.showOperationalTime,
               builder: (context, showCalcTimeSnap) => Text(showCalcTimeSnap.data ?? false
                   ? context.l10n.p_train_journey_table_time_label_new
                   : context.l10n.p_train_journey_table_time_label_planned)),

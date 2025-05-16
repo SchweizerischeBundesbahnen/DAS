@@ -10,9 +10,9 @@ class ArrivalDepartureTimeViewModel {
     _listenToJourneyUpdates(journeyStream);
   }
 
-  Stream<bool> get rxShowOperationalTime => _rxShowOperationalTimes.distinct();
+  Stream<bool> get showOperationalTime => _rxShowOperationalTimes.distinct();
 
-  bool get showOperationalTimes => _rxShowOperationalTimes.value;
+  bool get showOperationalTimeValue => _rxShowOperationalTimes.value;
 
   late StreamSubscription<Journey?> _journeySubscription;
   bool? _hasJourneyOperationalTimes;

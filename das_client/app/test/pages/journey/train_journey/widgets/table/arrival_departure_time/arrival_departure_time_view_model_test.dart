@@ -21,14 +21,14 @@ void main() {
   });
 
   test('showOperationalTimes_whenInitialized_thenReturnsTrue', () {
-    expect(testee.showOperationalTimes, isTrue);
+    expect(testee.showOperationalTimeValue, isTrue);
   });
 
   test('rxShowOperationalTime_whenJourneyIsNull_thenEmitsFalse', () async {
     journeyStreamController.add(null);
     await Future.delayed(Duration(milliseconds: 10));
 
-    expect(await testee.rxShowOperationalTime.first, isFalse);
+    expect(await testee.showOperationalTime.first, isFalse);
   });
 
   test('rxShowOperationalTime_whenJourneyHasNoOperationalTimes_thenEmitsFalse', () async {
@@ -38,7 +38,7 @@ void main() {
     journeyStreamController.add(journey);
     await Future.delayed(Duration(milliseconds: 10));
 
-    expect(await testee.rxShowOperationalTime.first, isFalse);
+    expect(await testee.showOperationalTime.first, isFalse);
   });
 
   test('rxShowOperationalTime_whenJourneyHasOperationalTimes_thenEmitsTrue', () async {
@@ -48,7 +48,7 @@ void main() {
     journeyStreamController.add(journey);
     await Future.delayed(Duration(milliseconds: 10));
 
-    expect(await testee.rxShowOperationalTime.first, isTrue);
+    expect(await testee.showOperationalTime.first, isTrue);
   });
 
   test('toggleOperationalTime_whenJourneyHasCalculatedTimes_thenStartsTimerToSwitchBack', () async {
@@ -58,15 +58,15 @@ void main() {
     journeyStreamController.add(journey);
     await Future.delayed(Duration(milliseconds: 10));
 
-    expect(testee.showOperationalTimes, isTrue);
+    expect(testee.showOperationalTimeValue, isTrue);
 
     FakeAsync().run((fakeAsync) {
       testee.toggleOperationalTime();
-      expect(testee.showOperationalTimes, isFalse);
+      expect(testee.showOperationalTimeValue, isFalse);
 
       fakeAsync.elapse(Duration(seconds: 11));
 
-      expect(testee.showOperationalTimes, isTrue);
+      expect(testee.showOperationalTimeValue, isTrue);
     });
   });
 
@@ -77,18 +77,18 @@ void main() {
     journeyStreamController.add(journey);
     await Future.delayed(Duration(milliseconds: 10));
 
-    expect(testee.showOperationalTimes, isTrue);
+    expect(testee.showOperationalTimeValue, isTrue);
 
     testee.toggleOperationalTime();
-    expect(testee.showOperationalTimes, isFalse);
+    expect(testee.showOperationalTimeValue, isFalse);
 
     FakeAsync().run((fakeAsync) {
       testee.toggleOperationalTime();
-      expect(testee.showOperationalTimes, isTrue);
+      expect(testee.showOperationalTimeValue, isTrue);
 
       fakeAsync.elapse(Duration(seconds: 11));
 
-      expect(testee.showOperationalTimes, isTrue); // Should remain true
+      expect(testee.showOperationalTimeValue, isTrue); // Should remain true
     });
   });
 
@@ -97,10 +97,10 @@ void main() {
     final journey = Journey(metadata: metadata, data: []);
 
     journeyStreamController.add(journey);
-    expect(testee.showOperationalTimes, isTrue);
+    expect(testee.showOperationalTimeValue, isTrue);
 
     testee.toggleOperationalTime();
-    expect(testee.showOperationalTimes, isTrue); // Should remain true
+    expect(testee.showOperationalTimeValue, isTrue); // Should remain true
   });
 
   test('dispose_whenCalled_thenCancelsSubscriptionAndClosesSubject', () {
