@@ -14,4 +14,17 @@ const localizationDelegates = <LocalizationsDelegate<dynamic>>[
 
 const supportedLocales = [
   Locale('de', 'CH'),
+  Locale('fr', 'CH'),
+  Locale('it', 'CH'),
+  Locale('en'),
 ];
+
+Locale defaultLocale(Locale? locale, Iterable<Locale> supported) {
+  for (final supportedLocale in supported) {
+    if (supportedLocale.languageCode == locale?.languageCode) {
+      return supportedLocale;
+    }
+  }
+
+  return supportedLocales.first;
+}

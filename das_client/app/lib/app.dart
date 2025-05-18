@@ -79,6 +79,7 @@ class _AppState extends State<App> {
               ),
               localizationsDelegates: localizationDelegates,
               supportedLocales: supportedLocales,
+              localeResolutionCallback: defaultLocale,
               routerConfig: _appRouter.config(),
               debugShowCheckedModeBanner: false,
             );
