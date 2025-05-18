@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.20.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.19.0...das_client-v0.20.0) (2025-05-18)
+
+
+### Features
+
+* added french, italian and english translations ([#121](https://github.com/SchweizerischeBundesbahnen/DAS/issues/121)) ([#909](https://github.com/SchweizerischeBundesbahnen/DAS/issues/909)) ([fa195be](https://github.com/SchweizerischeBundesbahnen/DAS/commit/fa195be93e6df758bdbf80238649ccb5add8b667))
+
 ## [0.19.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.18.1...das_client-v0.19.0) (2025-05-16)
 
 
