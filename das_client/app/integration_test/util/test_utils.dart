@@ -1,14 +1,29 @@
+import 'dart:io';
+
 import 'package:app/bloc/train_journey_cubit.dart';
+import 'package:app/di.dart';
+import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/extended_menu.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
 import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:app/widgets/table/das_table.dart';
-import 'package:app/di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
+
+Locale deviceLocale() {
+  if (Platform.localeName.contains('_')) {
+    final localeWithCountry = Platform.localeName.split('_');
+    return Locale(localeWithCountry[0], localeWithCountry[1]);
+  }
+  return Locale(Platform.localeName);
+}
+
+Future<AppLocalizations> deviceLocalizations() async {
+  return AppLocalizations.delegate.load(deviceLocale());
+}
 
 Future<void> openDrawer(WidgetTester tester) async {
   final ScaffoldState scaffoldState = tester.firstState(find.byType(Scaffold));

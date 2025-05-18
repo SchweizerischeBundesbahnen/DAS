@@ -4,3 +4,4 @@ output-localization-file: app_localizations.dart
 output-class: AppLocalizations
 output-dir: lib/i18n/gen
 synthetic-package: false
+preferred-supported-locales: [ 'de', 'fr', 'it', 'en' ]
