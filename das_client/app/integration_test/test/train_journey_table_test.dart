@@ -362,7 +362,7 @@ void main() {
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
-      final weicheRow = findDASTableRowByText('Weiche');
+      final weicheRow = findDASTableRowByText(l10n.c_connection_track_weiche);
       expect(weicheRow, findsOneWidget);
 
       final weicheKilometre = find.descendant(of: weicheRow, matching: find.text('0.8'));
@@ -658,7 +658,7 @@ void main() {
 
       final bracketStationD = findDASTableRowByText('Klammerbahnhof D');
       final zahnstangenEnde = findDASTableRowByText('Zahnstangen Ende');
-      final deckungssignal = findDASTableRowByText('Deckungssignal');
+      final deckungssignal = findDASTableRowByText(l10n.c_main_signal_function_protection);
       final bracketStationD1 = findDASTableRowByText('Klammerbahnhof D1');
       expect(bracketStationD, findsOneWidget);
       expect(zahnstangenEnde, findsOneWidget);
@@ -743,17 +743,19 @@ void main() {
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
-      await tester.dragUntilVisible(find.text('Kurve').first, scrollableFinder, const Offset(0, -50));
+      final curveLabel = l10n.p_train_journey_table_curve_type_curve;
+      await tester.dragUntilVisible(find.text(curveLabel).first, scrollableFinder, const Offset(0, -50));
 
-      final curveRows = findDASTableRowByText('Kurve');
+      final curveRows = findDASTableRowByText(curveLabel);
       expect(curveRows, findsAtLeast(1));
 
       final curveIcon = find.descendant(of: curveRows.first, matching: find.byKey(CurvePointRow.curvePointIconKey));
       expect(curveIcon, findsOneWidget);
 
-      await tester.dragUntilVisible(find.text('Kurve nach Haltestelle'), scrollableFinder, const Offset(0, -50));
+      final curveAfterHaltLabel = l10n.p_train_journey_table_curve_type_curve_after_halt;
+      await tester.dragUntilVisible(find.text(curveAfterHaltLabel), scrollableFinder, const Offset(0, -50));
 
-      final curveAfterHaltRow = findDASTableRowByText('Kurve nach Haltestelle');
+      final curveAfterHaltRow = findDASTableRowByText(curveAfterHaltLabel);
       expect(curveAfterHaltRow, findsOneWidget);
 
       await disconnect(tester);
@@ -778,8 +780,8 @@ void main() {
       expect(laneChangeIcon, findsOneWidget);
 
       // check if basic signal is rendered correctly
-      await tester.dragUntilVisible(find.text('Deckungssignal'), scrollableFinder, const Offset(0, -50));
-      final protectionSignalRow = findDASTableRowByText('Deckungssignal');
+      await tester.dragUntilVisible(find.text(l10n.c_main_signal_function_protection), scrollableFinder, const Offset(0, -50));
+      final protectionSignalRow = findDASTableRowByText(l10n.c_main_signal_function_protection);
       expect(protectionSignalRow, findsOneWidget);
       expect(find.descendant(of: protectionSignalRow, matching: find.text('D1')), findsOneWidget);
       final noLaneChangeIcon =
@@ -787,8 +789,9 @@ void main() {
       expect(noLaneChangeIcon, findsNothing);
 
       // check if signals with multiple functions are rendered correctly
-      await tester.dragUntilVisible(find.text('Block/Abschnittsignal'), scrollableFinder, const Offset(0, -50));
-      final blockIntermediateSignalRow = findDASTableRowByText('Block/Abschnittsignal');
+      final signalLabel = '${l10n.c_main_signal_function_block}/${l10n.c_main_signal_function_intermediate}';
+      await tester.dragUntilVisible(find.text(signalLabel), scrollableFinder, const Offset(0, -50));
+      final blockIntermediateSignalRow = findDASTableRowByText(signalLabel);
       expect(blockIntermediateSignalRow, findsOneWidget);
       expect(find.descendant(of: blockIntermediateSignalRow, matching: find.text('BAB1')), findsOneWidget);
       final noLaneChangeIcon2 =

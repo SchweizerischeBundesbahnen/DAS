@@ -13,9 +13,16 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
 
+Locale deviceLocale() {
+  if (Platform.localeName.contains('_')) {
+    final localeWithCountry = Platform.localeName.split('_');
+    return Locale(localeWithCountry[0], localeWithCountry[1]);
+  }
+  return Locale(Platform.localeName);
+}
+
 Future<AppLocalizations> deviceLocalizations() async {
-  final deviceLanguage = Platform.localeName.contains('_') ? Platform.localeName.split('_')[0] : Platform.localeName;
-  return AppLocalizations.delegate.load(Locale(deviceLanguage));
+  return AppLocalizations.delegate.load(deviceLocale());
 }
 
 Future<void> openDrawer(WidgetTester tester) async {

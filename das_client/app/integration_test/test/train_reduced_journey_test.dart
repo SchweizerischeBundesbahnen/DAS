@@ -12,15 +12,14 @@ import '../util/test_utils.dart';
 void main() {
   group('train reduced journey test', () {
     testWidgets('test train information is displayed', (tester) async {
-      final testLocale = const Locale('de', 'CH');
 
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: 'T14');
       await openReducedJourneyMenu(tester);
 
-      expect(find.text('T14 SBB'), findsAny);
+      expect(find.text('T14 ${l10n.c_ru_sbb_p}'), findsAny);
 
-      final formattedDate = Format.dateWithAbbreviatedDay(DateTime.now(), testLocale);
+      final formattedDate = Format.dateWithAbbreviatedDay(DateTime.now(), deviceLocale());
       expect(find.text(formattedDate), findsOneWidget);
 
       await disconnect(tester);

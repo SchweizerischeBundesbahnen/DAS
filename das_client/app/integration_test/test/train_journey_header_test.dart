@@ -66,14 +66,12 @@ Future<void> main() async {
     });
 
     testWidgets('test app bar is hiding while train is active', (tester) async {
-      final testLocale = const Locale('de', 'CH');
-
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999');
 
-      final date = Format.dateWithAbbreviatedDay(DateTime.now(), testLocale);
+      final date = Format.dateWithAbbreviatedDay(DateTime.now(), deviceLocale());
       final appbarText = '${l10n.p_train_journey_appbar_text} - $date';
 
       expect(find.text(appbarText).hitTestable(), findsNothing);
@@ -104,7 +102,7 @@ Future<void> main() async {
       if (brightness != Brightness.dark) {
         final nightMode = find.descendant(
           of: header,
-          matching: find.widgetWithText(SBBTertiaryButtonLarge, 'Nachtmodus'),
+          matching: find.widgetWithText(SBBTertiaryButtonLarge, l10n.p_train_journey_header_button_dark_theme),
         );
         expect(nightMode, findsOneWidget);
 
@@ -113,7 +111,7 @@ Future<void> main() async {
       } else {
         final dayMode = find.descendant(
           of: header,
-          matching: find.widgetWithText(SBBTertiaryButtonLarge, 'Tagmodus'),
+          matching: find.widgetWithText(SBBTertiaryButtonLarge, l10n.p_train_journey_header_button_light_theme),
         );
         expect(dayMode, findsOneWidget);
 
