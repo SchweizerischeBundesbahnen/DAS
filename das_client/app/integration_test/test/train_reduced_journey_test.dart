@@ -1,9 +1,7 @@
-import 'dart:ui';
-
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/reduced_overview/reduced_train_journey.dart';
-import 'package:app/widgets/table/das_table.dart';
 import 'package:app/util/format.dart';
+import 'package:app/widgets/table/das_table.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
@@ -12,7 +10,6 @@ import '../util/test_utils.dart';
 void main() {
   group('train reduced journey test', () {
     testWidgets('test train information is displayed', (tester) async {
-
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: 'T14');
       await openReducedJourneyMenu(tester);

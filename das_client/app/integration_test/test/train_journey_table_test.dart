@@ -780,7 +780,8 @@ void main() {
       expect(laneChangeIcon, findsOneWidget);
 
       // check if basic signal is rendered correctly
-      await tester.dragUntilVisible(find.text(l10n.c_main_signal_function_protection), scrollableFinder, const Offset(0, -50));
+      await tester.dragUntilVisible(
+          find.text(l10n.c_main_signal_function_protection), scrollableFinder, const Offset(0, -50));
       final protectionSignalRow = findDASTableRowByText(l10n.c_main_signal_function_protection);
       expect(protectionSignalRow, findsOneWidget);
       expect(find.descendant(of: protectionSignalRow, matching: find.text('D1')), findsOneWidget);
