@@ -698,10 +698,10 @@
             <Contact mainContact="true">
                 <OtherContactType contactIdentifier="1306"/>
             </Contact>
-            <Contact mainContact="false" contactRole="Capomovimento">
+            <Contact mainContact="false" contactRole="Gare ouest: Chef-circulation">
                 <OtherContactType contactIdentifier="1306"/>
             </Contact>
-            <Contact mainContact="false" contactRole="Formatore treno SBB Cargo Italia">
+            <Contact mainContact="false" contactRole="Gare est: Chef-circulation">
                 <OtherContactType contactIdentifier="1307"/>
             </Contact>
         </ContactList>
