@@ -1,4 +1,3 @@
-import 'package:app/bloc/auth_cubit.dart';
 import 'package:app/bloc/train_journey_cubit.dart';
 import 'package:app/di.dart';
 import 'package:app/i18n/i18n.dart';
@@ -8,6 +7,7 @@ import 'package:app/pages/journey/train_journey/train_journey_overview.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:app/pages/journey/train_selection/train_selection.dart';
 import 'package:app/util/format.dart';
+import 'package:auth/component.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -63,16 +63,17 @@ class _JourneyPageContentState extends State<JourneyPageContent> with SingleTick
     return BlocBuilder<TrainJourneyCubit, TrainJourneyState>(
       builder: (context, state) {
         return StreamBuilder<TrainJourneySettings>(
-            stream: context.trainJourneyCubit.settingsStream,
-            builder: (context, snapshot) {
-              return Scaffold(
-                //Handling overflow issues in train selection when tablet is too small
-                resizeToAvoidBottomInset: screenHeight <= 830 ? true : null,
-                appBar: _appBar(context, state, snapshot.data),
-                body: _body(context, state),
-                drawer: const DASNavigationDrawer(),
-              );
-            });
+          stream: context.trainJourneyCubit.settingsStream,
+          builder: (context, snapshot) {
+            return Scaffold(
+              //Handling overflow issues in train selection when tablet is too small
+              resizeToAvoidBottomInset: screenHeight <= 830 ? true : null,
+              appBar: _appBar(context, state, snapshot.data),
+              body: _body(context, state),
+              drawer: const DASNavigationDrawer(),
+            );
+          },
+        );
       },
     );
   }
@@ -107,17 +108,18 @@ class _JourneyPageContentState extends State<JourneyPageContent> with SingleTick
         _ => const Center(child: CircularProgressIndicator()),
       };
 
-  IconButton _logoutButton(BuildContext context) {
+  Widget _logoutButton(BuildContext context) {
     return IconButton(
       icon: const Icon(SBBIcons.exit_small),
       onPressed: () {
-        context.authCubit.logout();
+        // TODO:
+        DI.get<Authenticator>().logout();
         context.router.replace(const LoginRoute());
       },
     );
   }
 
-  IconButton _trainSelectionButton(BuildContext context) {
+  Widget _trainSelectionButton(BuildContext context) {
     return IconButton(
       key: JourneyPageContent.disconnectKey,
       icon: const Icon(SBBIcons.train_small),

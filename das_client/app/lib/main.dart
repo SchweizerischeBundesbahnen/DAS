@@ -1,10 +1,8 @@
 import 'package:app/app.dart';
-import 'package:app/bloc/auth_cubit.dart';
 import 'package:app/di.dart';
 import 'package:app/flavor.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future<void> start(Flavor flavor) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,12 +12,7 @@ Future<void> start(Flavor flavor) async {
 }
 
 Future<void> runDasApp() async {
-  runApp(MultiBlocProvider(
-    providers: [
-      BlocProvider(create: (context) => AuthCubit()..init()),
-    ],
-    child: App(),
-  ));
+  runApp(App());
 }
 
 Future<void> _initLogging() async {
