@@ -167,11 +167,9 @@ class SferaModelMapper {
   }
 
   static _calculateLastServicePoint(Iterable<ServicePoint> servicePoints, BaseData? currentPosition) {
-    return servicePoints
-            .toList()
-            .reversed
-            .firstWhereOrNull((sP) => (currentPosition == null || sP.order < currentPosition.order)) ??
-        servicePoints.firstOrNull;
+    if (currentPosition == null) return servicePoints.firstOrNull;
+
+    return servicePoints.toList().reversed.firstWhereOrNull((sP) => sP.order <= currentPosition.order);
   }
 
   static List<AdditionalSpeedRestriction> _parseAdditionalSpeedRestrictions(
