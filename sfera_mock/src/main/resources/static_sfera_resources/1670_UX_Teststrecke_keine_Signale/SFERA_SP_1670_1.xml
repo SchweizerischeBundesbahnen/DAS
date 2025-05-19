@@ -326,7 +326,7 @@
                 <NetworkSpecificParameter name="xmlOPFootNotes" value="
 				&lt;oPFootNotes&gt; 
 					&lt;footNote type=&quot;contact&quot; refText=&quot;1)&quot;&gt; 
-						&lt;text&gt;+41 512 800 505 RBC CBT&lt;/text&gt; 
+						&lt;text&gt;+41 512 800 506 RBC Lavaux&lt;/text&gt; 
 					&lt;/footNote&gt; 
 				&lt;/oPFootNotes&gt;
 				"/>
@@ -366,7 +366,7 @@
                 <NetworkSpecificParameter name="xmlLineFootNotes" value="
 				&lt;lineFootNotes&gt; 
 					&lt;footNote identifier=&quot;8D289607429F44C9A7FF4C8D037832F1&quot;&gt; 
-						&lt;text&gt;ammesso soltanto per &lt;b&gt;RABDe 500&lt;/b&gt;&lt;/text&gt;
+						&lt;text&gt;admis seulement pour &lt;b&gt;RABDe 500&lt;/b&gt;&lt;/text&gt;
                         &lt;trainSeries>N&lt;/trainSeries&gt; 
 					&lt;/footNote&gt; 
 				&lt;/lineFootNotes&gt;
@@ -424,7 +424,7 @@
                 <NetworkSpecificParameter name="xmlLineFootNotes" value="
 				&lt;lineFootNotes&gt; 
 					&lt;footNote identifier=&quot;8D289607429F44C9A7FF4C8D037832F1&quot;&gt;  
-						&lt;text&gt;ammesso soltanto per &lt;b&gt;RABDe 500&lt;/b&gt;&lt;/text&gt;
+						&lt;text&gt;admis seulement pour &lt;b&gt;RABDe 500&lt;/b&gt;&lt;/text&gt;
                         &lt;trainSeries>N&lt;/trainSeries&gt; 
 					&lt;/footNote&gt; 
 				&lt;/lineFootNotes&gt;
@@ -482,7 +482,7 @@
                 <NetworkSpecificParameter name="xmlLineFootNotes" value="
 				&lt;lineFootNotes&gt; 
 					&lt;footNote identifier=&quot;8D289607429F44C9A7FF4C8D037832F1&quot;&gt;  
-						&lt;text&gt;ammesso soltanto per &lt;b&gt;RABDe 500&lt;/b&gt;&lt;/text&gt;
+						&lt;text&gt;admis seulement pour &lt;b&gt;RABDe 500&lt;/b&gt;&lt;/text&gt;
                         &lt;trainSeries>N&lt;/trainSeries&gt; 
 					&lt;/footNote&gt; 
 				&lt;/lineFootNotes&gt;
