@@ -1083,12 +1083,12 @@ void main() {
   });
 
   test('Test last service point is calculated correctly when no other service point driven over', () async {
-    final journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 2000);
+    final journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 1000);
     expect(journey.valid, true);
     expect(journey.metadata.lastServicePoint, journey.data.whereType<ServicePoint>().toList()[0]);
   });
 
-  test('Test last service point is calculated correctly with non position infos', () async {
+  test('Test last service point is calculated correctly when second sp is driven over', () async {
     final journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 3000);
     expect(journey.valid, true);
     expect(journey.metadata.lastServicePoint, journey.data.whereType<ServicePoint>().toList()[1]);
@@ -1109,6 +1109,12 @@ void main() {
     );
     expect(journey2.metadata.currentPosition, journey2.data[18]);
     expect(journey2.metadata.lastServicePoint, journey2.data.whereType<ServicePoint>().toList()[1]);
+  });
+
+  test('Test last service point is calculated correctly when is last service point of journey', () async {
+    final journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 5000);
+    expect(journey.valid, true);
+    expect(journey.metadata.lastServicePoint, journey.data.whereType<ServicePoint>().toList()[2]);
   });
 
   test('Test CommunicationNetworks parsed correctly', () async {
