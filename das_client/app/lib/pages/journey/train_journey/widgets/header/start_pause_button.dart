@@ -1,6 +1,6 @@
-import 'package:app/bloc/train_journey_view_model.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/animated_header_icon_button.dart';
+import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';

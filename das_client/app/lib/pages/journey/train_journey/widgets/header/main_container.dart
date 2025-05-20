@@ -1,4 +1,3 @@
-import 'package:app/bloc/train_journey_view_model.dart';
 import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/battery_status.dart';
@@ -8,6 +7,7 @@ import 'package:app/pages/journey/train_journey/widgets/header/radio_channel.dar
 import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/theme_button.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
+import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_text_styles.dart';

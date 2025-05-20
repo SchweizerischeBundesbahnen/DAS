@@ -1,7 +1,7 @@
-import 'package:app/bloc/train_journey_view_model.dart';
 import 'package:app/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
+import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/theme/theme_provider.dart';
 import 'package:app/util/color_extension.dart';
 import 'package:app/widgets/flavor_banner.dart';
@@ -42,10 +42,10 @@ class _AppState extends State<App> {
 
         return MaterialApp.router(
           builder: (context, child) {
-            return child!; /*MediaQuery(
+            return MediaQuery(
               data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
-              child: ,
-            );*/
+              child: child!,
+            );
           },
           themeMode: themeProvider.themeMode,
           theme: _lightDASTheme(),

@@ -1,9 +1,9 @@
-import 'package:app/bloc/train_journey_view_model.dart';
 import 'package:app/di.dart';
 import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/reduced_overview/reduced_overview_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/reduced_overview/reduced_train_journey.dart';
+import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/format.dart';
 import 'package:app/widgets/das_text_styles.dart';

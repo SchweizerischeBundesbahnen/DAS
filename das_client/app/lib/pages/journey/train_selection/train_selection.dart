@@ -1,12 +1,12 @@
-import 'package:app/bloc/train_journey_view_model.dart';
 import 'package:app/brightness/brightness_modal_sheet.dart';
 import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/util/error_code.dart';
 import 'package:app/util/format.dart';
 import 'package:app/widgets/header.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
@@ -174,12 +174,11 @@ class _TrainSelectionState extends State<TrainSelection> {
     );
   }
 
-  void _showDatePicker(BuildContext context, DateTime selectedDate) {
-    showSBBModalSheet(
+  void _showDatePicker(BuildContext context, DateTime selectedDate) => showSBBModalSheet(
         context: context,
         title: context.l10n.p_train_selection_choose_date,
-        child: _datePickerWidget(context, selectedDate));
-  }
+        child: _datePickerWidget(context, selectedDate),
+      );
 
   Widget _datePickerWidget(BuildContext context, DateTime selectedDate) {
     final now = DateTime.now();

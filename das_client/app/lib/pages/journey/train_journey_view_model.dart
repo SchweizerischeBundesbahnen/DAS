@@ -44,7 +44,7 @@ class TrainJourneyViewModel {
   final _rxDate = BehaviorSubject<DateTime>.seeded(DateTime.now());
   final _rxTrainNumber = BehaviorSubject<String?>.seeded(null);
   final _rxRailwayUndertaking = BehaviorSubject<RailwayUndertaking>.seeded(RailwayUndertaking.sbbP);
-  final _rxErrorCode = BehaviorSubject<ErrorCode?>();
+  final _rxErrorCode = BehaviorSubject<ErrorCode?>.seeded(null);
   final _rxTrainIdentification = BehaviorSubject<TrainIdentification?>.seeded(null);
   final _rxFormCompleted = BehaviorSubject<bool>.seeded(false);
   final _subscriptions = <StreamSubscription>[];
@@ -58,6 +58,8 @@ class TrainJourneyViewModel {
 
   void loadTrainJourney() async {
     _resetSettings();
+    _rxErrorCode.add(null);
+
     final date = _rxDate.value;
     final ru = _rxRailwayUndertaking.value;
     final trainNumber = _rxTrainNumber.value;

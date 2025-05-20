@@ -1,6 +1,5 @@
-import 'package:app/bloc/train_journey_view_model.dart';
-import 'package:app/bloc/ux_testing_cubit.dart';
 import 'package:app/di.dart';
+import 'package:app/pages/journey/train_journey/ux_testing_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_modal.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_modal_view_model.dart';
@@ -11,11 +10,11 @@ import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_no
 import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:app/pages/journey/train_journey/widgets/warn_function_modal_sheet.dart';
+import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/sound/koa_sound.dart';
 import 'package:app/sound/sound.dart';
 import 'package:app/sound/warn_app_sound.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:sfera/component.dart';
 
@@ -46,28 +45,34 @@ class TrainJourneyOverview extends StatelessWidget {
             journeyStream: context.read<TrainJourneyViewModel>().journey,
           ),
           dispose: (context, vm) => vm.dispose(),
-        )
-      ],
-      builder: (context, child) => BlocProvider.value(
-        value: DI.get<UxTestingCubit>(),
-        child: BlocListener<UxTestingCubit, UxTestingState>(
-          listener: _handleUxEvents,
-          child: _body(context),
         ),
-      ),
+        Provider(
+          create: (_) => UxTestingViewModel(sferaService: DI.get()),
+          dispose: (context, vm) => vm.dispose(),
+        ),
+      ],
+      builder: (context, child) => _body(context),
     );
   }
 
   Widget _body(BuildContext context) {
+    final uxTestingViewModel = context.read<UxTestingViewModel>();
     final detailModalController = context.read<DetailModalViewModel>().controller;
     return Listener(
       onPointerDown: (_) => detailModalController.resetAutomaticClose(),
       onPointerUp: (_) => detailModalController.resetAutomaticClose(),
-      child: Row(
-        children: [
-          Expanded(child: _content()),
-          DetailModalSheet(),
-        ],
+      child: StreamBuilder(
+        stream: uxTestingViewModel.uxTestingEvents,
+        builder: (context, snapshot) {
+          _handleUxEvents(context, snapshot.data);
+
+          return Row(
+            children: [
+              Expanded(child: _content()),
+              DetailModalSheet(),
+            ],
+          );
+        },
       ),
     );
   }
@@ -83,16 +88,16 @@ class TrainJourneyOverview extends StatelessWidget {
     );
   }
 
-  void _handleUxEvents(BuildContext context, UxTestingState state) {
-    if (state is UxTestingEventReceived) {
-      if (state.event.isWarn) {
-        final Sound sound = WarnAppSound();
-        sound.play();
-        showWarnFunctionModalSheet(context);
-      } else if (state.event.isKoa && state.event.value == KoaState.waitCancelled.name) {
-        final Sound sound = KoaSound();
-        sound.play();
-      }
+  void _handleUxEvents(BuildContext context, UxTesting? event) {
+    if (event == null) return;
+
+    if (event.isWarn) {
+      final Sound sound = WarnAppSound();
+      sound.play();
+      showWarnFunctionModalSheet(context);
+    } else if (event.isKoa && event.value == KoaState.waitCancelled.name) {
+      final Sound sound = KoaSound();
+      sound.play();
     }
   }
 }

@@ -1,4 +1,4 @@
-import 'package:app/bloc/train_journey_view_model.dart';
+import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

@@ -1,4 +1,3 @@
-import 'package:app/bloc/ux_testing_cubit.dart';
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/brightness/brightness_manager_impl.dart';
 import 'package:app/flavor.dart';
@@ -60,7 +59,6 @@ extension GetItX on GetIt {
     registerSferaAuthService(useTms: useTms);
     registerSferaLocalRepo();
     registerSferaRemoteRepo();
-    registerBlocs();
     registerBattery();
     registerAudioPlayer();
     await allReady();
@@ -185,16 +183,6 @@ extension GetItX on GetIt {
     }
 
     registerLazySingleton<SferaLocalRepo>(factoryFunc);
-  }
-
-  void registerBlocs() {
-    registerSingletonWithDependencies<UxTestingCubit>(
-      () {
-        Fimber.d('Register UxTestingCubit');
-        return UxTestingCubit(sferaService: DI.get())..initialize();
-      },
-      dependsOn: [SferaRemoteRepo],
-    );
   }
 
   void registerBrightnessManager() {
