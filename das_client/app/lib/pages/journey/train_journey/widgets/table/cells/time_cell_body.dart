@@ -27,20 +27,20 @@ class TimeCellBody extends StatelessWidget {
       builder: (context, snapshot) {
         final showOperationalTime = snapshot.data ?? false;
 
-        final (depTime, arrTime) = _formattedTimes(showOperationalTime);
+        final (departureTime, arrivalTime) = _formattedTimes(showOperationalTime);
 
-        if (depTime.isEmpty && arrTime.isEmpty) {
+        if (departureTime.isEmpty && arrivalTime.isEmpty) {
           return SizedBox.shrink(key: DASTableCell.emptyCellKey);
         }
 
-        final isArrTimeBold = depTime.isEmpty && !showOperationalTime;
+        final isArrivalBold = departureTime.isEmpty && !showOperationalTime;
 
         return Text.rich(
           key: timeCellKey,
           TextSpan(
             children: [
-              TextSpan(text: arrTime, style: isArrTimeBold ? DASTextStyles.largeBold : null),
-              TextSpan(text: depTime, style: DASTextStyles.largeBold)
+              TextSpan(text: arrivalTime, style: isArrivalBold ? DASTextStyles.largeBold : null),
+              TextSpan(text: departureTime, style: DASTextStyles.largeBold)
             ],
           ),
         );
@@ -49,24 +49,24 @@ class TimeCellBody extends StatelessWidget {
   }
 
   (String, String) _formattedTimes(showOperationalTime) {
-    String depTime = '';
-    String arrTime = '';
+    String departureTime = '';
+    String arrivalTime = '';
 
     if (showOperationalTime) {
-      depTime = Format.operationalTime(times.operationalDepartureTime);
-      arrTime = Format.operationalTime(times.operationalArrivalTime);
+      departureTime = Format.operationalTime(times.operationalDepartureTime);
+      arrivalTime = Format.operationalTime(times.operationalArrivalTime);
     } else {
-      depTime = Format.plannedTime(times.plannedDepartureTime);
-      arrTime = Format.plannedTime(times.plannedArrivalTime);
+      departureTime = Format.plannedTime(times.plannedDepartureTime);
+      arrivalTime = Format.plannedTime(times.plannedArrivalTime);
     }
 
     if (showTimesInBrackets) {
-      depTime = depTime.isNotEmpty ? '($depTime)' : depTime;
-      arrTime = arrTime.isNotEmpty ? '($arrTime)' : arrTime;
+      departureTime = departureTime.isNotEmpty ? '($departureTime)' : departureTime;
+      arrivalTime = arrivalTime.isNotEmpty ? '($arrivalTime)' : arrivalTime;
     }
 
-    arrTime = arrTime.isNotEmpty ? '$arrTime\n' : arrTime;
+    arrivalTime = arrivalTime.isNotEmpty ? '$arrivalTime\n' : arrivalTime;
 
-    return (depTime, arrTime);
+    return (departureTime, arrivalTime);
   }
 }
