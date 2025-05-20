@@ -3,6 +3,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.d
 import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/signal_row.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
+import 'package:fake_async/fake_async.dart';
 import 'package:sfera/src/model/journey/base_data.dart';
 import 'package:sfera/src/model/journey/metadata.dart';
 import 'package:sfera/src/model/journey/service_point.dart';
@@ -239,9 +240,12 @@ void main() {
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: true);
-    testee.resetScrollTimer();
 
-    await Future.delayed(const Duration(seconds: 11));
+    FakeAsync().run((fakeAsync) {
+      testee.resetScrollTimer();
+
+      fakeAsync.elapse(const Duration(seconds: 11));
+    });
 
     verify(scrollControllerMock.animateTo(CellRowBuilder.rowHeight * 2,
             duration: anyNamed('duration'), curve: anyNamed('curve')))
@@ -278,11 +282,13 @@ void main() {
             duration: anyNamed('duration'), curve: anyNamed('curve')))
         .called(1);
 
-    testee.resetScrollTimer();
+    FakeAsync().run((fakeAsync) {
+      testee.resetScrollTimer();
 
-    testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: false);
+      testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: false);
 
-    await Future.delayed(const Duration(seconds: 11));
+      fakeAsync.elapse(const Duration(seconds: 11));
+    });
 
     verifyNever(scrollControllerMock.animateTo(any, duration: anyNamed('duration'), curve: anyNamed('curve')));
   });

@@ -5,6 +5,7 @@ import 'package:app/util/widget_util.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_row.dart';
+import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
@@ -44,8 +45,7 @@ class AutomaticAdvancementController {
     final targetScrollPosition = _calculateScrollPosition();
     if (_lastScrollPosition != targetScrollPosition &&
         targetScrollPosition != null &&
-        (_lastTouch == null ||
-            _lastTouch!.add(Duration(seconds: _screenIdleTimeSeconds)).compareTo(DateTime.now()) < 0)) {
+        (_lastTouch == null || _lastTouch!.add(Duration(seconds: _screenIdleTimeSeconds)).compareTo(clock.now()) < 0)) {
       _scrollToPosition(targetScrollPosition);
     }
   }
@@ -126,7 +126,7 @@ class AutomaticAdvancementController {
   }
 
   void resetScrollTimer() {
-    _lastTouch = DateTime.now();
+    _lastTouch = clock.now();
     if (_rxIsAutomaticAdvancementActive.value) {
       _scrollTimer?.cancel();
       _scrollTimer = Timer(const Duration(seconds: _screenIdleTimeSeconds), () {
