@@ -18,6 +18,7 @@ import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
 
 import '../app_test.dart';
 import '../util/test_utils.dart';
@@ -1098,23 +1099,29 @@ void main() {
 
       // Langendorf should have only departure
       final langendorf = 'Langendorf';
+      final expectedTimeLangendorf = _localHHMM(DateTime.parse('2025-05-12T16:36:45Z'));
+
       expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: langendorf), findsOneWidget);
-      expect(_findTextInDASTableRowByText(innerText: '18:36', rowText: langendorf), findsOneWidget);
+      expect(_findTextInDASTableRowByText(innerText: expectedTimeLangendorf, rowText: langendorf), findsOneWidget);
 
       // Lommiswil has departure and arrival
       final lommiswil = 'Lommiswil';
+      final expectedTimeLommiswil = '${_localHHMM(DateTime.parse('2025-05-12T16:39:12Z'))}\n'
+          '${_localHHMM(DateTime.parse('2025-05-12T16:40:12Z'))}';
       expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: lommiswil), findsOneWidget);
-      expect(_findTextInDASTableRowByText(innerText: '18:39\n18:40', rowText: lommiswil), findsOneWidget);
+      expect(_findTextInDASTableRowByText(innerText: expectedTimeLommiswil, rowText: lommiswil), findsOneWidget);
 
       // Im Holz (non mandatory stop) has departure
       final holz = 'Im Holz';
+      final expectedTimeHolz = _localHHMM(DateTime.parse('2025-05-12T16:46:12Z'));
       expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: holz), findsOneWidget);
-      expect(_findTextInDASTableRowByText(innerText: '18:46', rowText: holz), findsOneWidget);
+      expect(_findTextInDASTableRowByText(innerText: expectedTimeHolz, rowText: holz), findsOneWidget);
 
       // Oberdorf has only arrival
       final oberdorf = 'Oberdorf SO';
+      final expectedTimeOberdorf = '${_localHHMM(DateTime.parse('2025-05-12T16:48:45Z'))}\n';
       expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: oberdorf), findsOneWidget);
-      expect(_findTextInDASTableRowByText(innerText: '18:48\n', rowText: oberdorf), findsOneWidget);
+      expect(_findTextInDASTableRowByText(innerText: expectedTimeOberdorf, rowText: oberdorf), findsOneWidget);
 
       // tap header label to switch to planned times
       await tapElement(tester, timeHeader);
@@ -1140,15 +1147,17 @@ void main() {
       final timeCellKey = TimeCellBody.timeCellKey;
       // Geneve Aeroport should have only departure operational time
       final geneveAer = 'Genève-Aéroport';
+      final expectedTimeGeneveAer = '${_localHHMMs(DateTime.parse('2025-05-12T16:14:25Z'))}';
       expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: geneveAer), findsOneWidget);
-      expect(_findTextInDASTableRowByText(innerText: '18:14:2', rowText: geneveAer), findsOneWidget);
+      expect(_findTextInDASTableRowByText(innerText: expectedTimeGeneveAer, rowText: geneveAer), findsOneWidget);
       // morges should have empty times since it does not have operational times
       final morges = 'Morges';
       expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: morges), findsNothing);
       // vevey should have single operational arrival in brackets since it's a passing point
       final vevey = 'Vevey';
+      final expectedTimeVevey = '(${_localHHMMs(DateTime.parse('2025-05-12T17:28:56Z'))})\n';
       expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: vevey), findsOneWidget);
-      expect(_findTextInDASTableRowByText(innerText: '(19:28:5)\n', rowText: vevey), findsOneWidget);
+      expect(_findTextInDASTableRowByText(innerText: expectedTimeVevey, rowText: vevey), findsOneWidget);
 
       // tap header label to switch to planned times
       await tapElement(tester, timeHeader);
@@ -1158,16 +1167,22 @@ void main() {
       expect(find.text(expectedPlannedHeaderLabel), findsOneWidget);
       // test if time switched (aeroport)
       final geneveAerPlanned = 'Genève-Aéroport';
+      final expectedTimeGenAerPlanned = '${_localHHMM(DateTime.parse('2025-05-12T15:13:40Z'))}';
       expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: geneveAerPlanned), findsOneWidget);
-      expect(_findTextInDASTableRowByText(innerText: '17:13', rowText: geneveAerPlanned), findsOneWidget);
+      expect(_findTextInDASTableRowByText(innerText: expectedTimeGenAerPlanned, rowText: geneveAerPlanned),
+          findsOneWidget);
       // morges
       final morgesPlanned = 'Morges';
+      final expectedTimeMorgesPlanned = '(${_localHHMM(DateTime.parse('2025-05-12T15:55:23Z'))})\n';
       expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: morgesPlanned), findsOneWidget);
-      expect(_findTextInDASTableRowByText(innerText: '(17:55)\n', rowText: morgesPlanned), findsOneWidget);
+      expect(
+          _findTextInDASTableRowByText(innerText: expectedTimeMorgesPlanned, rowText: morgesPlanned), findsOneWidget);
       // vevey should have both times in brackets since it's a passing point
       final veveyPlanned = 'Vevey';
+      final expectedTimeVeveyPlanned = '(${_localHHMM(DateTime.parse('2025-05-12T16:28:12Z'))})\n'
+          '(${_localHHMM(DateTime.parse('2025-05-12T16:29:12Z'))})';
       expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: veveyPlanned), findsOneWidget);
-      expect(_findTextInDASTableRowByText(innerText: '(18:28)\n(18:29)', rowText: veveyPlanned), findsOneWidget);
+      expect(_findTextInDASTableRowByText(innerText: expectedTimeVeveyPlanned, rowText: veveyPlanned), findsOneWidget);
 
       await disconnect(tester);
     });
@@ -1201,6 +1216,16 @@ void main() {
       await disconnect(tester);
     });
   });
+}
+
+_localHHMM(DateTime date) {
+  final localTime = date.toLocal();
+  return DateFormat(DateFormat.HOUR24_MINUTE).format(localTime);
+}
+
+_localHHMMs(DateTime date) {
+  final localTime = date.toLocal();
+  return DateFormat(DateFormat.HOUR24_MINUTE_SECOND).format(localTime).substring(0, 7);
 }
 
 Finder _findByKeyInDASTableRowByText({required Key key, required String rowText}) {
