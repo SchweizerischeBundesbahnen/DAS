@@ -2,18 +2,18 @@ import 'package:app/i18n/i18n.dart';
 import 'package:flutter/material.dart';
 import 'package:sfera/component.dart';
 
-extension RuExtension on Ru {
+extension RuExtension on RailwayUndertaking {
   String displayText(BuildContext context) {
     switch (this) {
-      case Ru.sbbP:
+      case RailwayUndertaking.sbbP:
         return context.l10n.c_ru_sbb_p;
-      case Ru.sbbC:
+      case RailwayUndertaking.sbbC:
         return context.l10n.c_ru_sbb_c;
-      case Ru.blsP:
+      case RailwayUndertaking.blsP:
         return context.l10n.c_ru_bls_p;
-      case Ru.blsC:
+      case RailwayUndertaking.blsC:
         return context.l10n.c_ru_bls_c;
-      case Ru.sob:
+      case RailwayUndertaking.sob:
         return context.l10n.c_ru_sob;
     }
   }

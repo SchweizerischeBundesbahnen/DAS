@@ -11,9 +11,7 @@ Future<void> start(Flavor flavor) async {
   runDasApp();
 }
 
-Future<void> runDasApp() async {
-  runApp(App());
-}
+Future<void> runDasApp() async => runApp(App());
 
 Future<void> _initLogging() async {
   Fimber.plantTree(DebugTree(useColors: false));

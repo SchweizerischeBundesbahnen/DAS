@@ -24,7 +24,7 @@ class HttpXComponent {
       client: Client(),
       interceptors: [
         AuthorizationInterceptor(authProvider),
-        const LoggingInterceptor(obfuscateSecrets: true),
+        const LoggingInterceptor(obfuscateSecrets: true, enabled: false),
       ],
     );
   }

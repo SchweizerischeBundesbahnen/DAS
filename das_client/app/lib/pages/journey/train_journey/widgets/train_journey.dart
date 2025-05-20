@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:app/bloc/train_journey_cubit.dart';
+import 'package:app/bloc/train_journey_view_model.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/break_series_selection.dart';
 import 'package:app/pages/journey/train_journey/widgets/chevron_animation_wrapper.dart';
@@ -50,10 +50,10 @@ class TrainJourney extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.trainJourneyCubit;
+    final viewModel = context.read<TrainJourneyViewModel>();
 
     return StreamBuilder<List<dynamic>>(
-      stream: CombineLatestStream.list([bloc.journeyStream, bloc.settingsStream]),
+      stream: CombineLatestStream.list([viewModel.journey, viewModel.settings]),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data?[0] == null) {
           return Container();
@@ -63,7 +63,7 @@ class TrainJourney extends StatelessWidget {
         final settings = snapshot.data![1] as TrainJourneySettings;
 
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          bloc.automaticAdvancementController.handleJourneyUpdate(
+          viewModel.automaticAdvancementController.handleJourneyUpdate(
             currentPosition: journey.metadata.currentPosition,
             routeStart: journey.metadata.routeStart,
             isAdvancementEnabledByUser: settings.isAutoAdvancementEnabled,
@@ -75,8 +75,8 @@ class TrainJourney extends StatelessWidget {
         servicePointModalViewModel.updateSettings(settings);
 
         return Listener(
-          onPointerDown: (_) => bloc.automaticAdvancementController.resetScrollTimer(),
-          onPointerUp: (_) => bloc.automaticAdvancementController.resetScrollTimer(),
+          onPointerDown: (_) => viewModel.automaticAdvancementController.resetScrollTimer(),
+          onPointerUp: (_) => viewModel.automaticAdvancementController.resetScrollTimer(),
           child: _body(context, journey, settings),
         );
       },
@@ -85,7 +85,7 @@ class TrainJourney extends StatelessWidget {
 
   Widget _body(BuildContext context, Journey journey, TrainJourneySettings settings) {
     final tableRows = _rows(context, journey, settings);
-    context.trainJourneyCubit.automaticAdvancementController.updateRenderedRows(tableRows);
+    context.read<TrainJourneyViewModel>().automaticAdvancementController.updateRenderedRows(tableRows);
 
     final marginAdjustment = Platform.isIOS
         ? tableRows.lastWhereOrNull((it) => it.stickyLevel == StickyLevel.first)?.height ?? CellRowBuilder.rowHeight
@@ -100,8 +100,8 @@ class TrainJourney extends StatelessWidget {
           return ChevronAnimationWrapper(
             journey: journey,
             child: DASTable(
-              key: context.trainJourneyCubit.automaticAdvancementController.tableKey,
-              scrollController: context.trainJourneyCubit.automaticAdvancementController.scrollController,
+              key: context.read<TrainJourneyViewModel>().automaticAdvancementController.tableKey,
+              scrollController: context.read<TrainJourneyViewModel>().automaticAdvancementController.scrollController,
               columns: _columns(context, journey.metadata, settings, isDetailModelOpen),
               rows: tableRows.map((it) => it.build(context)).toList(),
               bottomMarginAdjustment: marginAdjustment,
@@ -333,7 +333,7 @@ class TrainJourney extends StatelessWidget {
       newList.add(footNote.identifier);
     }
 
-    context.trainJourneyCubit.updateCollapsedFootnotes(newList);
+    context.read<TrainJourneyViewModel>().updateCollapsedFootnotes(newList);
   }
 
   void _onBaliseLevelCrossingGroupTap(
@@ -345,11 +345,11 @@ class TrainJourney extends StatelessWidget {
       newList.add(group.order);
     }
 
-    context.trainJourneyCubit.updateExpandedGroups(newList);
+    context.read<TrainJourneyViewModel>().updateExpandedGroups(newList);
   }
 
   Future<void> _onBreakSeriesTap(BuildContext context, Metadata metadata, TrainJourneySettings settings) async {
-    final trainJourneyCubit = context.trainJourneyCubit;
+    final trainJourneyCubit = context.read<TrainJourneyViewModel>();
 
     final selectedBreakSeries = await showSBBModalSheet<BreakSeries>(
       context: context,

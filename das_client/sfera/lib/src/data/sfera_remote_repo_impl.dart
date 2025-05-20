@@ -59,9 +59,9 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   final List<TrainCharacteristicsDto> _trainCharacteristics = [];
   RelatedTrainInformationDto? _relatedTrainInformation;
 
-  final _stateSubject = BehaviorSubject.seeded(SferaRemoteRepositoryState.disconnected);
-  final _journeyProfileSubject = BehaviorSubject<Journey?>.seeded(null);
-  final _uxTestingSubject = BehaviorSubject<UxTesting?>.seeded(null);
+  final _rxState = BehaviorSubject.seeded(SferaRemoteRepositoryState.disconnected);
+  final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
+  final _rxUxTesting = BehaviorSubject<UxTesting?>.seeded(null);
 
   // TODO: refactor _sferaService.stateStream & journeyUpdateStream & (connect / disconnect)
   // repository should not expose a state, should just expose data stream
@@ -69,13 +69,13 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   // once last listener cancels subscription, disconnect
   // refactor with viewModel change
   @override
-  Stream<SferaRemoteRepositoryState> get stateStream => _stateSubject.distinct();
+  Stream<SferaRemoteRepositoryState> get stateStream => _rxState.distinct();
 
   @override
-  Stream<Journey?> get journeyStream => _journeyProfileSubject.stream;
+  Stream<Journey?> get journeyStream => _rxJourney.stream;
 
   @override
-  Stream<UxTesting?> get uxTestingStream => _uxTestingSubject.stream;
+  Stream<UxTesting?> get uxTestingStream => _rxUxTesting.stream;
 
   @override
   SferaError? lastError;
@@ -88,7 +88,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     _otnId = otnId;
     _tasks.clear();
     lastError = null;
-    _stateSubject.add(SferaRemoteRepositoryState.connecting);
+    _rxState.add(SferaRemoteRepositoryState.connecting);
 
     final sferaTrain = Format.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
     final isConnected = await _mqttService.connect(otnId.company, sferaTrain);
@@ -97,7 +97,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     } else {
       _otnId = null;
       lastError = SferaError.connectionFailed;
-      _stateSubject.add(SferaRemoteRepositoryState.disconnected);
+      _rxState.add(SferaRemoteRepositoryState.disconnected);
     }
   }
 
@@ -107,7 +107,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   @override
   Future<void> disconnect() async {
     final otnId = _otnId;
-    if (_stateSubject.value == SferaRemoteRepositoryState.connected && otnId != null) {
+    if (_rxState.value == SferaRemoteRepositoryState.connected && otnId != null) {
       Fimber.i('Sending session termination request for $otnId...');
       final header = messageHeader(sender: otnId.company);
       final sessionTerminationMessage = SferaB2gEventMessageDto.createSessionTermination(messageHeader: header);
@@ -116,11 +116,16 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     }
 
     _mqttService.disconnect();
-    _stateSubject.add(SferaRemoteRepositoryState.disconnected);
+    _rxJourney.add(null);
+    _rxUxTesting.add(null);
+    _rxState.add(SferaRemoteRepositoryState.disconnected);
   }
 
   @override
   void dispose() {
+    _rxJourney.close();
+    _rxState.close();
+    _rxUxTesting.close();
     _mqttStreamSubscription?.cancel();
     _mqttStreamSubscription = null;
   }
@@ -173,7 +178,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   }
 
   Future<void> _initiateHandshake(OtnId otnId) async {
-    _stateSubject.add(SferaRemoteRepositoryState.handshaking);
+    _rxState.add(SferaRemoteRepositoryState.handshaking);
     final isDriver = await _authProvider.isDriver();
     final drivingMode = isDriver ? DasDrivingModeDto.dasNotConnected : DasDrivingModeDto.readOnly;
 
@@ -194,12 +199,12 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     }
 
     if (_allTasksCompleted()) {
-      switch (_stateSubject.value) {
+      switch (_rxState.value) {
         case SferaRemoteRepositoryState.loadingAdditionalData:
           await _refreshSegmentProfiles();
           await _refreshTrainCharacteristics();
           _updateJourney(
-            onSuccess: () => _stateSubject.add(SferaRemoteRepositoryState.connected),
+            onSuccess: () => _rxState.add(SferaRemoteRepositoryState.connected),
             onInvalid: () => disconnect(),
           );
           break;
@@ -214,7 +219,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   }
 
   Future<void> _handleHandshakeTaskCompleted() async {
-    _stateSubject.add(SferaRemoteRepositoryState.loadingJourney);
+    _rxState.add(SferaRemoteRepositoryState.loadingJourney);
     final requestJourneyTask = RequestJourneyProfileTask(
       mqttService: _mqttService,
       sferaService: this,
@@ -226,7 +231,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   }
 
   Future<void> _handleRequestJourneyProfileTaskCompleted(dynamic data) async {
-    _stateSubject.add(SferaRemoteRepositoryState.loadingAdditionalData);
+    _rxState.add(SferaRemoteRepositoryState.loadingAdditionalData);
     final dataList = data as List;
     _journeyProfile = dataList.whereType<JourneyProfileDto>().first;
     _relatedTrainInformation = dataList.whereType<RelatedTrainInformationDto>().firstOrNull;
@@ -299,10 +304,10 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
         segmentProfiles: _segmentProfiles,
         trainCharacteristics: _trainCharacteristics,
         relatedTrainInformation: _relatedTrainInformation,
-        lastJourney: _journeyProfileSubject.value,
+        lastJourney: _rxJourney.value,
       );
       if (newJourney.valid) {
-        _journeyProfileSubject.add(newJourney);
+        _rxJourney.add(newJourney);
         Fimber.d('Journey updates successfully.');
         onSuccess?.call();
       } else {
@@ -333,12 +338,12 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     if (data is UxTestingNseDto) {
       if (data.koa != null) {
         final uxTesting = UxTesting(name: data.koa!.name, value: data.koa!.nspValue);
-        _uxTestingSubject.add(uxTesting);
+        _rxUxTesting.add(uxTesting);
       }
 
       if (data.warn != null) {
         final uxTesting = UxTesting(name: data.warn!.name, value: data.warn!.nspValue);
-        _uxTestingSubject.add(uxTesting);
+        _rxUxTesting.add(uxTesting);
       }
     }
   }
@@ -347,7 +352,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     Fimber.e('Task $task failed with error code $errorCode');
     _tasks.remove(task);
     lastError = errorCode;
-    if (_stateSubject.value != SferaRemoteRepositoryState.connected) {
+    if (_rxState.value != SferaRemoteRepositoryState.connected) {
       disconnect();
     }
   }

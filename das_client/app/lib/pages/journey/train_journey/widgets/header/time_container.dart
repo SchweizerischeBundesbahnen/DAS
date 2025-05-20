@@ -1,7 +1,8 @@
-import 'package:app/bloc/train_journey_cubit.dart';
+import 'package:app/bloc/train_journey_view_model.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
@@ -38,7 +39,7 @@ class TimeContainer extends StatelessWidget {
 
   Widget _punctualityDisplay(BuildContext context) {
     return StreamBuilder<Journey?>(
-      stream: context.trainJourneyCubit.journeyStream,
+      stream: context.read<TrainJourneyViewModel>().journey,
       builder: (context, snapshot) {
         var punctualityString = '+00:00';
         final delay = snapshot.data?.metadata.delay;

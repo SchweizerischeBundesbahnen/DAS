@@ -1,4 +1,3 @@
-import 'package:app/bloc/train_journey_cubit.dart';
 import 'package:app/bloc/ux_testing_cubit.dart';
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/brightness/brightness_manager_impl.dart';
@@ -174,7 +173,7 @@ extension GetItX on GetIt {
 
     registerSingletonAsync<SferaRemoteRepo>(
       factoryFunc,
-      dispose: (service) => service.dispose(),
+      dispose: (repo) => repo.dispose(),
       dependsOn: [MqttService],
     );
   }
@@ -189,13 +188,6 @@ extension GetItX on GetIt {
   }
 
   void registerBlocs() {
-    registerSingletonWithDependencies<TrainJourneyCubit>(
-      () {
-        Fimber.d('Register TrainJourneyCubit');
-        return TrainJourneyCubit(sferaService: DI.get());
-      },
-      dependsOn: [SferaRemoteRepo],
-    );
     registerSingletonWithDependencies<UxTestingCubit>(
       () {
         Fimber.d('Register UxTestingCubit');

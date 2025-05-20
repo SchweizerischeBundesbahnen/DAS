@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
+// TODO Replace with view model
 class ThemeProvider extends ChangeNotifier {
   ThemeMode _themeMode;
 

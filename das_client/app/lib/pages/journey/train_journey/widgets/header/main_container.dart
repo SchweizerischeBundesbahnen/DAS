@@ -1,4 +1,4 @@
-import 'package:app/bloc/train_journey_cubit.dart';
+import 'package:app/bloc/train_journey_view_model.dart';
 import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/battery_status.dart';
@@ -13,6 +13,7 @@ import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
@@ -22,10 +23,10 @@ class MainContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.trainJourneyCubit;
+    final viewModel = context.read<TrainJourneyViewModel>();
 
     return StreamBuilder(
-      stream: CombineLatestStream.list([bloc.journeyStream, bloc.settingsStream]),
+      stream: CombineLatestStream.list([viewModel.journey, viewModel.settings]),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data?[0] == null || snapshot.data?[1] == null) {
           return Center(child: SBBLoadingIndicator());
@@ -68,17 +69,23 @@ class MainContainer extends StatelessWidget {
   }
 
   Widget _trainJourneyText(BuildContext context) {
-    final state = context.trainJourneyCubit.state;
+    final viewModel = context.read<TrainJourneyViewModel>();
     final resolvedTextColor = ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
-      child: Text(
-        state is TrainJourneyLoadedState
-            ? '${state.trainIdentification.trainNumber} ${state.trainIdentification.ru.displayText(context)}'
-            : '',
-        style: DASTextStyles.largeRoman.copyWith(color: resolvedTextColor),
-      ),
+    return StreamBuilder(
+      stream: viewModel.trainIdentification,
+      builder: (context, snapshot) {
+        final trainIdentification = snapshot.data;
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
+          child: Text(
+            trainIdentification != null
+                ? '${trainIdentification.trainNumber} ${trainIdentification.ru.displayText(context)}'
+                : '',
+            style: DASTextStyles.largeRoman.copyWith(color: resolvedTextColor),
+          ),
+        );
+      },
     );
   }
 

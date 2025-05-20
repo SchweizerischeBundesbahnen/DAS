@@ -1,4 +1,4 @@
-import 'package:app/bloc/train_journey_cubit.dart';
+import 'package:app/bloc/train_journey_view_model.dart';
 import 'package:app/bloc/ux_testing_cubit.dart';
 import 'package:app/di.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
@@ -28,7 +28,7 @@ class TrainJourneyOverview extends StatelessWidget {
       providers: [
         Provider(
           create: (context) {
-            final controller = context.trainJourneyCubit.automaticAdvancementController;
+            final controller = context.read<TrainJourneyViewModel>().automaticAdvancementController;
             return DetailModalViewModel(automaticAdvancementController: controller);
           },
           dispose: (context, vm) => vm.dispose(),
@@ -43,7 +43,7 @@ class TrainJourneyOverview extends StatelessWidget {
         ),
         Provider(
           create: (_) => ArrivalDepartureTimeViewModel(
-            journeyStream: context.trainJourneyCubit.journeyStream,
+            journeyStream: context.read<TrainJourneyViewModel>().journey,
           ),
           dispose: (context, vm) => vm.dispose(),
         )
