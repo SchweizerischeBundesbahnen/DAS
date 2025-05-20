@@ -12,7 +12,7 @@ class ReducedServicePointRow extends ServicePointRow {
 
   @override
   DASTableCell localSpeedCell(BuildContext context) {
-    return speedCell(data.localSpeedData, DASTableCell.empty());
+    return DASTableCell.empty();
   }
 
   @override
