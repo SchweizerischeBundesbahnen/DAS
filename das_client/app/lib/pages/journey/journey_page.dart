@@ -130,7 +130,6 @@ class _JourneyPageState extends State<JourneyPage> with SingleTickerProviderStat
     return IconButton(
       icon: const Icon(SBBIcons.exit_small),
       onPressed: () {
-        // TODO:
         DI.get<Authenticator>().logout();
         context.router.replace(const LoginRoute());
       },

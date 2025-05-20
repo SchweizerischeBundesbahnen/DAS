@@ -2,12 +2,11 @@ import 'package:app/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/train_journey_view_model.dart';
-import 'package:app/theme/theme_provider.dart';
-import 'package:app/util/color_extension.dart';
+import 'package:app/theme/theme_view_model.dart';
+import 'package:app/theme/themes.dart';
 import 'package:app/widgets/flavor_banner.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class App extends StatefulWidget {
@@ -22,24 +21,30 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => ThemeProvider(context),
-      child: Provider(
-        create: (_) => TrainJourneyViewModel(sferaRemoteRepo: DI.get<SferaRemoteRepo>()),
-        builder: (_, __) => FlavorBanner(
-          flavor: DI.get(),
-          child: _materialApp(),
+    return MultiProvider(
+      providers: [
+        Provider(
+          create: (_) => ThemeViewModel(),
+          dispose: (context, vm) => vm.dispose(),
         ),
-        dispose: (_, vm) => vm.dispose(),
+        Provider(
+          create: (_) => TrainJourneyViewModel(sferaRemoteRepo: DI.get<SferaRemoteRepo>()),
+          dispose: (context, vm) => vm.dispose(),
+        ),
+      ],
+      builder: (context, __) => FlavorBanner(
+        flavor: DI.get(),
+        child: _materialApp(context),
       ),
     );
   }
 
-  Widget _materialApp() {
-    return Builder(
-      builder: (context) {
-        final themeProvider = context.watch<ThemeProvider>();
-
+  Widget _materialApp(BuildContext context) {
+    return StreamBuilder(
+      initialData: ThemeViewModel.defaultMode,
+      stream: context.read<ThemeViewModel>().themeMode,
+      builder: (context, snapshot) {
+        final themeMode = snapshot.requireData;
         return MaterialApp.router(
           builder: (context, child) {
             return MediaQuery(
@@ -47,9 +52,9 @@ class _AppState extends State<App> {
               child: child!,
             );
           },
-          themeMode: themeProvider.themeMode,
-          theme: _lightDASTheme(),
-          darkTheme: _darkDASTheme(),
+          themeMode: themeMode,
+          theme: dasLightTheme,
+          darkTheme: dasDarkTheme,
           localizationsDelegates: localizationDelegates,
           supportedLocales: supportedLocales,
           localeResolutionCallback: defaultLocale,
@@ -57,53 +62,6 @@ class _AppState extends State<App> {
           debugShowCheckedModeBanner: false,
         );
       },
-    );
-  }
-
-  ThemeData _darkDASTheme() {
-    return SBBTheme.dark(
-      baseStyle: SBBBaseStyle(
-        primarySwatch: SBBColors.royal.toSingleMaterialColor(),
-        primaryColor: SBBColors.royal,
-        primaryColorDark: SBBColors.royal125,
-        brightness: Brightness.dark,
-      ),
-      controlStyles: SBBControlStyles(
-        promotionBox: PromotionBoxStyle.$default(
-          baseStyle: SBBBaseStyle(
-            primaryColor: SBBColors.royal,
-            primaryColorDark: SBBColors.royal125,
-            brightness: Brightness.dark,
-          ),
-        ).copyWith(
-          badgeColor: SBBColors.royal,
-          badgeShadowColor: SBBColors.royal.withAlpha((255.0 * 0.2).round()),
-          gradientColors: [Color(0xFF0079C7), Color(0xFF143A85), Color(0xFF143A85), Color(0xFF0079C7)],
-        ),
-      ),
-    );
-  }
-
-  ThemeData _lightDASTheme() {
-    return SBBTheme.light(
-      baseStyle: SBBBaseStyle(
-        primarySwatch: SBBColors.royal.toSingleMaterialColor(),
-        primaryColor: SBBColors.royal,
-        primaryColorDark: SBBColors.royal125,
-        brightness: Brightness.light,
-      ),
-      controlStyles: SBBControlStyles(
-        promotionBox: PromotionBoxStyle.$default(
-          baseStyle: SBBBaseStyle(
-            primaryColor: SBBColors.royal,
-            primaryColorDark: SBBColors.royal125,
-            brightness: Brightness.light,
-          ),
-        ).copyWith(
-          badgeColor: SBBColors.royal,
-          badgeShadowColor: SBBColors.royal.withAlpha((255.0 * 0.2).round()),
-        ),
-      ),
     );
   }
 }
