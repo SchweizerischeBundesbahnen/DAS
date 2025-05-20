@@ -16,10 +16,4 @@ class Format {
     final dateFormat = DateFormat('E dd.MM.yyyy', locale.toLanguageTag());
     return dateFormat.format(localDate);
   }
-
-  static String time(DateTime date, {bool showSeconds = true}) {
-    final localDate = date.toLocal();
-    final format = showSeconds ? DateFormat.HOUR24_MINUTE_SECOND : DateFormat.HOUR24_MINUTE;
-    return DateFormat(format).format(localDate);
-  }
 }
