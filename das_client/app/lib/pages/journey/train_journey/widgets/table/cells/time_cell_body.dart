@@ -1,6 +1,5 @@
 import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
 import 'package:app/util/format.dart';
-import 'package:app/util/time_format.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
@@ -54,11 +53,11 @@ class TimeCellBody extends StatelessWidget {
     String arrTime = '';
 
     if (showOperationalTime) {
-      depTime = TimeFormat.operationalTime(times.operationalDepartureTime);
-      arrTime = TimeFormat.operationalTime(times.operationalArrivalTime);
+      depTime = Format.operationalTime(times.operationalDepartureTime);
+      arrTime = Format.operationalTime(times.operationalArrivalTime);
     } else {
-      depTime = TimeFormat.plannedTime(times.plannedDepartureTime);
-      arrTime = TimeFormat.plannedTime(times.plannedArrivalTime);
+      depTime = Format.plannedTime(times.plannedDepartureTime);
+      arrTime = Format.plannedTime(times.plannedArrivalTime);
     }
 
     if (showTimesInBrackets) {
