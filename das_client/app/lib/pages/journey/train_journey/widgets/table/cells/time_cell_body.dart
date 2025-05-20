@@ -1,5 +1,6 @@
 import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
 import 'package:app/util/format.dart';
+import 'package:app/util/time_format.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
@@ -21,63 +22,52 @@ class TimeCellBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: refactor the formatting out of there
     return StreamBuilder(
-        stream: viewModel.showOperationalTime,
-        initialData: viewModel.showOperationalTimeValue,
-        builder: (context, snapshot) {
-          final showCalculatedTimes = snapshot.data ?? false;
+      stream: viewModel.showOperationalTime,
+      initialData: viewModel.showOperationalTimeValue,
+      builder: (context, snapshot) {
+        final showOperationalTime = snapshot.data ?? false;
 
-          bool isTimeCalculated = false;
-          DateTime? depTime;
-          DateTime? arrTime;
-          if (showCalculatedTimes) {
-            if (times.hasAnyOperationalTime) {
-              // show calculated
-              depTime = times.operationalDepartureTime;
-              arrTime = times.operationalArrivalTime;
-              isTimeCalculated = true;
-            } else {
-              return SizedBox.shrink(key: DASTableCell.emptyCellKey);
-            }
-          } else {
-            // show Planned
-            depTime = times.plannedDepartureTime;
-            arrTime = times.plannedArrivalTime;
-          }
+        final (depTime, arrTime) = _formattedTimes(showOperationalTime);
 
-          String formattedDepTime = '';
-          String formattedArrTime = '';
+        if (depTime.isEmpty && arrTime.isEmpty) {
+          return SizedBox.shrink(key: DASTableCell.emptyCellKey);
+        }
 
-          if (depTime != null) formattedDepTime = Format.time(depTime, showSeconds: true);
-          if (arrTime != null) formattedArrTime = Format.time(arrTime, showSeconds: true);
+        final isArrTimeBold = depTime.isEmpty && !showOperationalTime;
 
-          int timeLength = 5; // noSeconds
-          if (isTimeCalculated) {
-            timeLength = 7;
-          }
+        return Text.rich(
+          key: timeCellKey,
+          TextSpan(
+            children: [
+              TextSpan(text: arrTime, style: isArrTimeBold ? DASTextStyles.largeBold : null),
+              TextSpan(text: depTime, style: DASTextStyles.largeBold)
+            ],
+          ),
+        );
+      },
+    );
+  }
 
-          formattedDepTime = formattedDepTime.substring(
-              0, timeLength <= formattedDepTime.length ? timeLength : formattedDepTime.length);
-          formattedArrTime = formattedArrTime.substring(
-              0, timeLength <= formattedArrTime.length ? timeLength : formattedArrTime.length);
+  (String, String) _formattedTimes(showOperationalTime) {
+    String depTime = '';
+    String arrTime = '';
 
-          if (formattedDepTime.isNotEmpty && showTimesInBrackets) formattedDepTime = '($formattedDepTime)';
-          if (formattedArrTime.isNotEmpty && showTimesInBrackets) formattedArrTime = '($formattedArrTime)';
+    if (showOperationalTime) {
+      depTime = TimeFormat.operationalTime(times.operationalDepartureTime);
+      arrTime = TimeFormat.operationalTime(times.operationalArrivalTime);
+    } else {
+      depTime = TimeFormat.plannedTime(times.plannedDepartureTime);
+      arrTime = TimeFormat.plannedTime(times.plannedArrivalTime);
+    }
 
-          final isArrTimeBold = formattedDepTime.isEmpty && !isTimeCalculated;
+    if (showTimesInBrackets) {
+      depTime = depTime.isNotEmpty ? '($depTime)' : depTime;
+      arrTime = arrTime.isNotEmpty ? '($arrTime)' : arrTime;
+    }
 
-          if (formattedArrTime.isNotEmpty) formattedArrTime = '$formattedArrTime\n';
+    arrTime = arrTime.isNotEmpty ? '$arrTime\n' : arrTime;
 
-          return Text.rich(
-            key: timeCellKey,
-            TextSpan(
-              children: [
-                TextSpan(text: formattedArrTime, style: isArrTimeBold ? DASTextStyles.largeBold : null),
-                TextSpan(text: formattedDepTime, style: DASTextStyles.largeBold)
-              ],
-            ),
-          );
-        });
+    return (depTime, arrTime);
   }
 }

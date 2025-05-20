@@ -5,13 +5,6 @@ import 'package:intl/intl.dart';
 class Format {
   const Format._();
 
-  static String dateTime(DateTime date, {bool showSeconds = false}) {
-    final localDate = date.toLocal();
-    final dateFormat = DateFormat.yMMMd();
-    showSeconds ? dateFormat.add_Hms() : dateFormat.add_Hm();
-    return dateFormat.format(localDate);
-  }
-
   static String date(DateTime date) {
     final localDate = date.toLocal();
     final dateFormat = DateFormat('dd.MM.yyyy');
