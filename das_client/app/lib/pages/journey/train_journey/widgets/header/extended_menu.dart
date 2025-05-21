@@ -225,7 +225,8 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
       title: context.l10n.w_extended_menu_maneuver_mode,
       onPressed: () async {
         await _removeOverlay();
-        viewModel.setManeuverMode(!viewModel.settingsValue.isManeuverModeEnabled);
+        final maneuverModeToggled = !viewModel.settingsValue.isManeuverModeEnabled;
+        viewModel.setManeuverMode(maneuverModeToggled);
       },
       trailingWidget: Padding(
         padding: const EdgeInsets.fromLTRB(0, 0, sbbDefaultSpacing * 0.5, 0),

@@ -88,7 +88,7 @@ class TrainJourneyOverview extends StatelessWidget {
     );
   }
 
-  void _handleUxEvents(BuildContext context, UxTesting? event) {
+  void _handleUxEvents(BuildContext context, UxTestingEvent? event) {
     if (event == null) return;
 
     if (event.isWarn) {

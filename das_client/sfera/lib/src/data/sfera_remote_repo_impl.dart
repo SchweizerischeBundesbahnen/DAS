@@ -61,7 +61,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
 
   final _rxState = BehaviorSubject.seeded(SferaRemoteRepositoryState.disconnected);
   final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
-  final _rxUxTesting = BehaviorSubject<UxTesting?>.seeded(null);
+  final _rxUxTestingEvent = BehaviorSubject<UxTestingEvent?>.seeded(null);
 
   // TODO: refactor _sferaService.stateStream & journeyUpdateStream & (connect / disconnect)
   // repository should not expose a state, should just expose data stream
@@ -75,7 +75,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   Stream<Journey?> get journeyStream => _rxJourney.stream;
 
   @override
-  Stream<UxTesting?> get uxTestingStream => _rxUxTesting.stream;
+  Stream<UxTestingEvent?> get uxTestingEventStream => _rxUxTestingEvent.stream;
 
   @override
   SferaError? lastError;
@@ -117,7 +117,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
 
     _mqttService.disconnect();
     _rxJourney.add(null);
-    _rxUxTesting.add(null);
+    _rxUxTestingEvent.add(null);
     _rxState.add(SferaRemoteRepositoryState.disconnected);
   }
 
@@ -125,7 +125,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   void dispose() {
     _rxJourney.close();
     _rxState.close();
-    _rxUxTesting.close();
+    _rxUxTestingEvent.close();
     _mqttStreamSubscription?.cancel();
     _mqttStreamSubscription = null;
   }
@@ -337,13 +337,13 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   void _onNetworkSpecificEvent(SferaEventMessageHandler handler, NetworkSpecificEventDto data) async {
     if (data is UxTestingNseDto) {
       if (data.koa != null) {
-        final uxTesting = UxTesting(name: data.koa!.name, value: data.koa!.nspValue);
-        _rxUxTesting.add(uxTesting);
+        final event = UxTestingEvent(name: data.koa!.name, value: data.koa!.nspValue);
+        _rxUxTestingEvent.add(event);
       }
 
       if (data.warn != null) {
-        final uxTesting = UxTesting(name: data.warn!.name, value: data.warn!.nspValue);
-        _rxUxTesting.add(uxTesting);
+        final event = UxTestingEvent(name: data.warn!.name, value: data.warn!.nspValue);
+        _rxUxTestingEvent.add(event);
       }
     }
   }

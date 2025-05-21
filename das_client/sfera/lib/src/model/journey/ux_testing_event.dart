@@ -2,8 +2,8 @@ import 'package:meta/meta.dart';
 
 @sealed
 @immutable
-class UxTesting {
-  const UxTesting({required this.name, required this.value});
+class UxTestingEvent {
+  const UxTestingEvent({required this.name, required this.value});
 
   final String name;
   final String value;
@@ -15,7 +15,7 @@ class UxTesting {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UxTesting && runtimeType == other.runtimeType && name == other.name && value == other.value;
+      other is UxTestingEvent && runtimeType == other.runtimeType && name == other.name && value == other.value;
 
   @override
   int get hashCode => name.hashCode ^ value.hashCode;

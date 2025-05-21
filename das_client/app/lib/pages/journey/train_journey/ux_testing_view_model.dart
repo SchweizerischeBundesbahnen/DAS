@@ -13,15 +13,15 @@ class UxTestingViewModel {
   StreamSubscription? _eventSubscription;
   StreamSubscription? _sferaStateSubscription;
 
-  final _rxUxTestingEvents = BehaviorSubject<UxTesting>();
+  final _rxUxTestingEvents = BehaviorSubject<UxTestingEvent>();
   final _rxKoaState = BehaviorSubject.seeded(KoaState.waitHide);
 
   Stream<KoaState> get koaState => _rxKoaState.distinct();
 
-  Stream<UxTesting> get uxTestingEvents => _rxUxTestingEvents.distinct();
+  Stream<UxTestingEvent> get uxTestingEvents => _rxUxTestingEvents.distinct();
 
   void _init() {
-    _eventSubscription = _sferaService.uxTestingStream.listen((data) {
+    _eventSubscription = _sferaService.uxTestingEventStream.listen((data) {
       if (data != null) {
         if (data.isKoa) {
           _rxKoaState.add(KoaState.from(data.value));
