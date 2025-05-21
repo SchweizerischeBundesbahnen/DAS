@@ -14,11 +14,7 @@ void main() {
     // open and check modal sheet
     final asrRow = findDASTableRowByText('km 64.200 - km 47.200');
     await tapElement(tester, asrRow, warnIfMissed: false);
-    _checkModalSheetContent(
-      restrictionCount: 1,
-      kmText: '64.200 - 47.200',
-      vmaxText: '60',
-    );
+    _checkModalSheetContent(restrictionCount: 1, kmText: '64.200 - 47.200', vmaxText: '60');
 
     // close modal sheet
     await _closeModalSheet(tester);
@@ -39,8 +35,8 @@ void main() {
       restrictionCount: 1,
       kmText: '64.200 - 63.200',
       vmaxText: '60',
-      fromText: '01.01.2022 00:01',
-      untilText: '01.01.2060 00:01',
+      fromText: '01.01.2022 00:00',
+      untilText: '01.01.2060 00:00',
       reasonText: 'Schutz Personal',
     );
 
