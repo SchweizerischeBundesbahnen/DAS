@@ -6,8 +6,12 @@ class SpRequestDto extends SferaXmlElementDto {
 
   SpRequestDto({super.type = elementType, super.attributes, super.children, super.value});
 
-  factory SpRequestDto.create(
-      {required String id, required String versionMajor, required String versionMinor, required SpZoneDto spZone}) {
+  factory SpRequestDto.create({
+    required String id,
+    required String versionMajor,
+    required String versionMinor,
+    required SpZoneDto spZone,
+  }) {
     final request = SpRequestDto();
     request.attributes['SP_ID'] = id;
     request.attributes['SP_VersionMajor'] = versionMajor;

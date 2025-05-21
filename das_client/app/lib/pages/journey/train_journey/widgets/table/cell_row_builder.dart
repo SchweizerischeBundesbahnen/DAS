@@ -78,7 +78,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(data.kilometre[0].toStringAsFixed(1)),
-          if (data.kilometre.length > 1) Text(data.kilometre[1].toStringAsFixed(1))
+          if (data.kilometre.length > 1) Text(data.kilometre[1].toStringAsFixed(1)),
         ],
       ),
       alignment: Alignment.centerLeft,
@@ -158,8 +158,9 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
       padding: EdgeInsets.all(0.0),
       clipBehaviour: Clip.none,
       child: BracketStationCellBody(
-        stationAbbreviation:
-            config.bracketStationRenderData!.isStart ? bracketStationRenderData.stationAbbreviation : null,
+        stationAbbreviation: config.bracketStationRenderData!.isStart
+            ? bracketStationRenderData.stationAbbreviation
+            : null,
         height: height,
       ),
     );
@@ -200,10 +201,12 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
 
   AdditionalSpeedRestriction? getAdditionalSpeedRestriction() {
     return metadata.additionalSpeedRestrictions
-        .where((it) =>
-            it.orderFrom <= data.order &&
-            it.orderTo >= data.order &&
-            it.isDisplayed(metadata.nonStandardTrackEquipmentSegments))
+        .where(
+          (it) =>
+              it.orderFrom <= data.order &&
+              it.orderTo >= data.order &&
+              it.isDisplayed(metadata.nonStandardTrackEquipmentSegments),
+        )
         .firstOrNull;
   }
 

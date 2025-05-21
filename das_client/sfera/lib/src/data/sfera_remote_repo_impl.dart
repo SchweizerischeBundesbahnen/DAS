@@ -38,9 +38,9 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     required SferaLocalDatabaseService localService,
     required SferaAuthProvider authProvider,
     required this.deviceId,
-  })  : _mqttService = mqttService,
-        _localService = localService,
-        _authProvider = authProvider {
+  }) : _mqttService = mqttService,
+       _localService = localService,
+       _authProvider = authProvider {
     _initialize();
   }
 
@@ -182,8 +182,12 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     final isDriver = await _authProvider.isDriver();
     final drivingMode = isDriver ? DasDrivingModeDto.dasNotConnected : DasDrivingModeDto.readOnly;
 
-    final handshakeTask =
-        HandshakeTask(mqttService: _mqttService, sferaService: this, otnId: otnId, dasDrivingMode: drivingMode);
+    final handshakeTask = HandshakeTask(
+      mqttService: _mqttService,
+      sferaService: this,
+      otnId: otnId,
+      dasDrivingMode: drivingMode,
+    );
     _tasks.add(handshakeTask);
     handshakeTask.execute(_onTaskCompleted, _onTaskFailed);
   }
@@ -268,8 +272,11 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     _segmentProfiles.clear();
 
     for (final element in _journeyProfile!.segmentProfileReferences) {
-      final segmentProfileEntity =
-          await _localService.findSegmentProfile(element.spId, element.versionMajor, element.versionMinor);
+      final segmentProfileEntity = await _localService.findSegmentProfile(
+        element.spId,
+        element.versionMajor,
+        element.versionMinor,
+      );
       final segmentProfile = segmentProfileEntity?.toDomain();
       if (segmentProfile != null && segmentProfile.validate()) {
         _segmentProfiles.add(segmentProfile);
@@ -285,8 +292,11 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     _trainCharacteristics.clear();
 
     for (final element in _journeyProfile!.trainCharacteristicsRefSet) {
-      final trainCharacteristicsEntity =
-          await _localService.findTrainCharacteristics(element.tcId, element.versionMajor, element.versionMinor);
+      final trainCharacteristicsEntity = await _localService.findTrainCharacteristics(
+        element.tcId,
+        element.versionMajor,
+        element.versionMinor,
+      );
       final trainCharacteristics = trainCharacteristicsEntity?.toDomain();
       if (trainCharacteristics != null && trainCharacteristics.validate()) {
         _trainCharacteristics.add(trainCharacteristics);

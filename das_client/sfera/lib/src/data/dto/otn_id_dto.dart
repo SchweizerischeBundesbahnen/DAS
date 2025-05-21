@@ -11,8 +11,12 @@ class OtnIdDto extends SferaXmlElementDto {
 
   OtnIdDto({super.type = elementType, super.attributes, super.children, super.value});
 
-  factory OtnIdDto.create(String company, String operationalTrainNumber, DateTime startDate,
-      {String? additionalTrainNumber}) {
+  factory OtnIdDto.create(
+    String company,
+    String operationalTrainNumber,
+    DateTime startDate, {
+    String? additionalTrainNumber,
+  }) {
     final otnId = OtnIdDto();
     otnId.children.add(SferaXmlElementDto(type: _companyAttribute, value: company));
     otnId.children.add(SferaXmlElementDto(type: _operationalTrainNumberAttribute, value: operationalTrainNumber));

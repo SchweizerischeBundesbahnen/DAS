@@ -6,12 +6,13 @@ part 'train_characteristics_entity.g.dart';
 
 @Collection(accessor: 'trainCharacteristics')
 class TrainCharacteristicsEntity {
-  TrainCharacteristicsEntity(
-      {required this.id,
-      required this.tcId,
-      required this.majorVersion,
-      required this.minorVersion,
-      required this.xmlData});
+  TrainCharacteristicsEntity({
+    required this.id,
+    required this.tcId,
+    required this.majorVersion,
+    required this.minorVersion,
+    required this.xmlData,
+  });
 
   final int id;
   final String tcId;
@@ -27,10 +28,11 @@ class TrainCharacteristicsEntity {
 extension TrainCharacteristicsMapperX on TrainCharacteristicsDto {
   TrainCharacteristicsEntity toEntity({required int isarId}) {
     return TrainCharacteristicsEntity(
-        id: isarId,
-        tcId: tcId,
-        majorVersion: versionMajor,
-        minorVersion: versionMinor,
-        xmlData: buildDocument().toString());
+      id: isarId,
+      tcId: tcId,
+      majorVersion: versionMajor,
+      minorVersion: versionMinor,
+      xmlData: buildDocument().toString(),
+    );
   }
 }

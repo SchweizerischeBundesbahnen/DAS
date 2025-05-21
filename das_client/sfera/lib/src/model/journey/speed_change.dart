@@ -3,7 +3,7 @@ import 'package:sfera/src/model/journey/datatype.dart';
 
 class SpeedChange extends BaseData {
   const SpeedChange({required super.order, required super.kilometre, required super.speedData, this.text})
-      : super(type: Datatype.speedChange);
+    : super(type: Datatype.speedChange);
 
   final String? text;
 }

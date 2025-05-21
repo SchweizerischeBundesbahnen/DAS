@@ -15,8 +15,10 @@ class MqttClientUserConnector implements MqttClientConnector {
     }
 
     try {
-      final mqttClientConnectionStatus =
-          await client.connect(const String.fromEnvironment(mqttUsername), const String.fromEnvironment(mqttPassword));
+      final mqttClientConnectionStatus = await client.connect(
+        const String.fromEnvironment(mqttUsername),
+        const String.fromEnvironment(mqttPassword),
+      );
       Fimber.i('mqttClientConnectionStatus=$mqttClientConnectionStatus');
 
       if (mqttClientConnectionStatus?.state == MqttConnectionState.connected) {

@@ -6,12 +6,13 @@ part 'segment_profile_entity.g.dart';
 
 @Collection(accessor: 'segmentProfile')
 class SegmentProfileEntity {
-  SegmentProfileEntity(
-      {required this.id,
-      required this.spId,
-      required this.majorVersion,
-      required this.minorVersion,
-      required this.xmlData});
+  SegmentProfileEntity({
+    required this.id,
+    required this.spId,
+    required this.majorVersion,
+    required this.minorVersion,
+    required this.xmlData,
+  });
 
   final int id;
   final String spId;
@@ -27,10 +28,11 @@ class SegmentProfileEntity {
 extension SegmentProfileMapperX on SegmentProfileDto {
   SegmentProfileEntity toEntity({required int isarId}) {
     return SegmentProfileEntity(
-        id: isarId,
-        spId: this.id,
-        majorVersion: versionMajor,
-        minorVersion: versionMinor,
-        xmlData: buildDocument().toString());
+      id: isarId,
+      spId: this.id,
+      majorVersion: versionMajor,
+      minorVersion: versionMinor,
+      xmlData: buildDocument().toString(),
+    );
   }
 }

@@ -27,11 +27,11 @@ void main() {
     final expectedHeaders = {'Content-Type': 'application/json'};
 
     successResponse(Request request) => FakeResponse(
-          statusCode: 200,
-          headers: expectedHeaders,
-          body: '{"result": "success"}',
-          request: request,
-        );
+      statusCode: 200,
+      headers: expectedHeaders,
+      body: '{"result": "success"}',
+      request: request,
+    );
 
     when(
       mockClient.post(
@@ -62,11 +62,11 @@ void main() {
     final logEntries = _createDummyLogEntries();
 
     badRequestResponse(Request request) => FakeResponse(
-          statusCode: 400,
-          headers: const {},
-          body: '{"error": "Bad Request"}',
-          request: request,
-        );
+      statusCode: 400,
+      headers: const {},
+      body: '{"error": "Bad Request"}',
+      request: request,
+    );
 
     when(
       mockClient.post(

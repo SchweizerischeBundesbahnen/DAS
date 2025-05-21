@@ -29,8 +29,8 @@ class DASTable extends StatefulWidget {
     this.themeData,
     this.alignToItem = true,
     this.addBottomSpacer = true,
-  })  : assert(columns.isNotEmpty),
-        scrollController = scrollController ?? ScrollController();
+  }) : assert(columns.isNotEmpty),
+       scrollController = scrollController ?? ScrollController();
 
   /// List of rows to be displayed in the table.
   final List<DASTableRow> rows;
@@ -82,8 +82,11 @@ class _DASTableState extends State<DASTable> {
       }
     } else if (oldLength > newLength) {
       for (int i = 0; i < diff; i++) {
-        _animatedListKey.currentState!
-            .removeItem(oldLength - i, (context, animation) => Container(), duration: Duration.zero);
+        _animatedListKey.currentState!.removeItem(
+          oldLength - i,
+          (context, animation) => Container(),
+          duration: Duration.zero,
+        );
       }
     }
   }
@@ -106,8 +109,10 @@ class _DASTableState extends State<DASTable> {
     for (int i = 0; i < widget.rows.length && i < oldWidget.rows.length; i++) {
       final newRow = widget.rows[i];
       if (newRow.identifier != null && oldWidget.rows[i].identifier != newRow.identifier) {
-        _animatedListKey.currentState!
-            .insertItem(i, duration: Duration(milliseconds: _tableInsertRemoveAnimationDurationMs));
+        _animatedListKey.currentState!.insertItem(
+          i,
+          duration: Duration(milliseconds: _tableInsertRemoveAnimationDurationMs),
+        );
       }
     }
   }
@@ -115,31 +120,33 @@ class _DASTableState extends State<DASTable> {
   @override
   Widget build(BuildContext context) {
     final tableThemeData = widget.themeData ?? _defaultThemeData(context);
-    return LayoutBuilder(builder: (context, constraints) {
-      return DASTableTheme(
-        data: tableThemeData,
-        child: Container(
-          decoration: BoxDecoration(
-            color: tableThemeData.backgroundColor,
-            borderRadius: tableThemeData.tableBorder?.borderRadius,
-            border: BorderDirectional(
-              top: tableThemeData.tableBorder?.top ?? BorderSide.none,
-              start: tableThemeData.tableBorder?.left ?? BorderSide.none,
-              end: tableThemeData.tableBorder?.right ?? BorderSide.none,
-              bottom: tableThemeData.tableBorder?.bottom ?? BorderSide.none,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return DASTableTheme(
+          data: tableThemeData,
+          child: Container(
+            decoration: BoxDecoration(
+              color: tableThemeData.backgroundColor,
+              borderRadius: tableThemeData.tableBorder?.borderRadius,
+              border: BorderDirectional(
+                top: tableThemeData.tableBorder?.top ?? BorderSide.none,
+                start: tableThemeData.tableBorder?.left ?? BorderSide.none,
+                end: tableThemeData.tableBorder?.right ?? BorderSide.none,
+                bottom: tableThemeData.tableBorder?.bottom ?? BorderSide.none,
+              ),
+            ),
+            child: Column(
+              children: [
+                _headerRow(),
+                Expanded(
+                  child: _stickyHeaderList(constraints),
+                ),
+              ],
             ),
           ),
-          child: Column(
-            children: [
-              _headerRow(),
-              Expanded(
-                child: _stickyHeaderList(constraints),
-              ),
-            ],
-          ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 
   Widget _stickyHeaderList(BoxConstraints constraints) {
@@ -160,7 +167,7 @@ class _DASTableState extends State<DASTable> {
             color: SBBColors.black.withAlpha((255.0 * 0.2).round()),
             blurRadius: 5,
             offset: Offset(0, -5),
-          )
+          ),
         ],
       ),
       child: ClipRect(
@@ -272,32 +279,38 @@ class _DASTableState extends State<DASTable> {
   }
 
   Widget _dataCell(DASTableCell cell, DASTableColumn column, DASTableCellRow row, {isLast = false}) {
-    return Builder(builder: (context) {
-      final tableThemeData = DASTableTheme.of(context)?.data;
-      final effectiveAlignment = cell.alignment ?? column.alignment;
-      final BoxBorder? cellBorder =
-          cell.border ?? column.border ?? tableThemeData?.tableBorder?.toBoxBorder(isLastCell: isLast);
-      return _TableCellWrapper(
-        expanded: column.expanded,
-        width: column.width,
-        child: InkWell(
-          onTap: cell.onTap,
-          child: Container(
-            decoration: BoxDecoration(
-              border: cellBorder,
-              color: cell.color ?? row.color ?? column.color ?? tableThemeData?.dataRowColor,
-            ),
-            padding: _adjustPaddingToBorder(
-                cell.padding ?? column.padding ?? EdgeInsets.all(sbbDefaultSpacing * 0.5), cellBorder),
-            clipBehavior: cell.clipBehaviour,
-            child: DefaultTextStyle(
-              style: DefaultTextStyle.of(context).style.merge(tableThemeData?.dataTextStyle),
-              child: effectiveAlignment != null ? Align(alignment: effectiveAlignment, child: cell.child) : cell.child,
+    return Builder(
+      builder: (context) {
+        final tableThemeData = DASTableTheme.of(context)?.data;
+        final effectiveAlignment = cell.alignment ?? column.alignment;
+        final BoxBorder? cellBorder =
+            cell.border ?? column.border ?? tableThemeData?.tableBorder?.toBoxBorder(isLastCell: isLast);
+        return _TableCellWrapper(
+          expanded: column.expanded,
+          width: column.width,
+          child: InkWell(
+            onTap: cell.onTap,
+            child: Container(
+              decoration: BoxDecoration(
+                border: cellBorder,
+                color: cell.color ?? row.color ?? column.color ?? tableThemeData?.dataRowColor,
+              ),
+              padding: _adjustPaddingToBorder(
+                cell.padding ?? column.padding ?? EdgeInsets.all(sbbDefaultSpacing * 0.5),
+                cellBorder,
+              ),
+              clipBehavior: cell.clipBehaviour,
+              child: DefaultTextStyle(
+                style: DefaultTextStyle.of(context).style.merge(tableThemeData?.dataTextStyle),
+                child: effectiveAlignment != null
+                    ? Align(alignment: effectiveAlignment, child: cell.child)
+                    : cell.child,
+              ),
             ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 
   EdgeInsets? _adjustPaddingToBorder(EdgeInsets? padding, BoxBorder? border) {
@@ -308,8 +321,12 @@ class _DASTableState extends State<DASTable> {
     final borderSideStart = border is BorderDirectional ? border.start : (border as Border).left;
     final borderSideEnd = border is BorderDirectional ? border.end : (border as Border).right;
 
-    return EdgeInsets.fromLTRB(max(padding.left - borderSideStart.width, 0), max(padding.top - border.top.width, 0),
-        max(padding.right - borderSideEnd.width, 0), max(padding.bottom - border.bottom.width, 0));
+    return EdgeInsets.fromLTRB(
+      max(padding.left - borderSideStart.width, 0),
+      max(padding.top - border.top.width, 0),
+      max(padding.right - borderSideEnd.width, 0),
+      max(padding.bottom - border.bottom.width, 0),
+    );
   }
 }
 

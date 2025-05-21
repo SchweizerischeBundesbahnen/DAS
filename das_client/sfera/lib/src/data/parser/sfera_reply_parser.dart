@@ -108,11 +108,19 @@ class SferaReplyParser {
     }
 
     return _createResolvedType(
-        xmlElement.name.toString(), Map.unmodifiable(attributes), List.unmodifiable(children), xmlElement);
+      xmlElement.name.toString(),
+      Map.unmodifiable(attributes),
+      List.unmodifiable(children),
+      xmlElement,
+    );
   }
 
   static SferaXmlElementDto _createResolvedType(
-      String type, Map<String, String> attributes, List<SferaXmlElementDto> children, XmlElement xmlElement) {
+    String type,
+    Map<String, String> attributes,
+    List<SferaXmlElementDto> children,
+    XmlElement xmlElement,
+  ) {
     final xmlTextElements = xmlElement.children.whereType<XmlText>();
     final value = xmlTextElements.length == 1 ? xmlTextElements.first.toString() : null;
 

@@ -19,9 +19,9 @@ class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
     required SferaLocalDatabaseService sferaDatabaseRepository,
     required this.otnId,
     super.timeout,
-  })  : _mqttService = mqttService,
-        _sferaDatabaseRepository = sferaDatabaseRepository,
-        _sferaService = sferaService;
+  }) : _mqttService = mqttService,
+       _sferaDatabaseRepository = sferaDatabaseRepository,
+       _sferaService = sferaService;
 
   final MqttService _mqttService;
   final OtnId otnId;

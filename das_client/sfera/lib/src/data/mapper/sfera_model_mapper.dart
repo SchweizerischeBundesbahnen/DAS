@@ -42,7 +42,12 @@ class SferaModelMapper {
   }) {
     try {
       return _tryMapToJourney(
-          journeyProfile, segmentProfiles, trainCharacteristics, relatedTrainInformation, lastJourney);
+        journeyProfile,
+        segmentProfiles,
+        trainCharacteristics,
+        relatedTrainInformation,
+        lastJourney,
+      );
     } catch (e, s) {
       Fimber.e('Error mapping journey-/segment profiles to journey:', ex: e, stacktrace: s);
       return Journey.invalid();
@@ -50,11 +55,12 @@ class SferaModelMapper {
   }
 
   static Journey _tryMapToJourney(
-      JourneyProfileDto journeyProfile,
-      List<SegmentProfileDto> segmentProfiles,
-      List<TrainCharacteristicsDto> trainCharacteristics,
-      RelatedTrainInformationDto? relatedTrainInformation,
-      Journey? lastJourney) {
+    JourneyProfileDto journeyProfile,
+    List<SegmentProfileDto> segmentProfiles,
+    List<TrainCharacteristicsDto> trainCharacteristics,
+    RelatedTrainInformationDto? relatedTrainInformation,
+    Journey? lastJourney,
+  ) {
     final journeyData = <BaseData>[];
 
     final segmentProfileReferences = journeyProfile.segmentProfileReferences.toList();
@@ -67,26 +73,42 @@ class SferaModelMapper {
     final tramAreas = _parseTramAreas(segmentProfiles);
     journeyData.addAll(tramAreas);
 
-    final trackEquipmentSegments =
-        TrackEquipmentMapper.parseNonStandardTrackEquipmentSegment(segmentProfileReferences, segmentProfiles);
+    final trackEquipmentSegments = TrackEquipmentMapper.parseNonStandardTrackEquipmentSegment(
+      segmentProfileReferences,
+      segmentProfiles,
+    );
     journeyData.addAll(_cabSignalingStart(trackEquipmentSegments));
     journeyData.addAll(_cabSignalingEnd(trackEquipmentSegments, journeyData));
 
     final additionalSpeedRestrictions = _parseAdditionalSpeedRestrictions(journeyProfile, segmentProfiles);
     for (final restriction in additionalSpeedRestrictions.where((asr) => asr.isDisplayed(trackEquipmentSegments))) {
-      journeyData.add(AdditionalSpeedRestrictionData(
-          restriction: restriction, order: restriction.orderFrom, kilometre: [restriction.kmFrom]));
+      journeyData.add(
+        AdditionalSpeedRestrictionData(
+          restriction: restriction,
+          order: restriction.orderFrom,
+          kilometre: [restriction.kmFrom],
+        ),
+      );
 
       if (restriction.needsEndMarker(journeyData)) {
-        journeyData.add(AdditionalSpeedRestrictionData(
-            restriction: restriction, order: restriction.orderTo, kilometre: [restriction.kmTo]));
+        journeyData.add(
+          AdditionalSpeedRestrictionData(
+            restriction: restriction,
+            order: restriction.orderTo,
+            kilometre: [restriction.kmTo],
+          ),
+        );
       }
     }
 
     journeyData.sort();
 
-    final currentPosition =
-        _calculateCurrentPosition(journeyData, segmentProfileReferences, relatedTrainInformation, lastJourney);
+    final currentPosition = _calculateCurrentPosition(
+      journeyData,
+      segmentProfileReferences,
+      relatedTrainInformation,
+      lastJourney,
+    );
     final trainCharacteristic = _resolveFirstTrainCharacteristics(journeyProfile, trainCharacteristics);
     final servicePoints = journeyData.whereType<ServicePoint>();
 
@@ -100,17 +122,20 @@ class SferaModelMapper {
         routeStart: journeyData.firstOrNull,
         routeEnd: journeyData.lastOrNull,
         delay: relatedTrainInformation?.ownTrain.trainLocationInformation.delay.delayAsDuration,
-        anyOperationalArrivalDepartureTimes:
-            servicePoints.any((sP) => sP.arrivalDepartureTime?.hasAnyOperationalTime ?? false),
+        anyOperationalArrivalDepartureTimes: servicePoints.any(
+          (sP) => sP.arrivalDepartureTime?.hasAnyOperationalTime ?? false,
+        ),
         nonStandardTrackEquipmentSegments: trackEquipmentSegments,
         bracketStationSegments: _parseBracketStationSegments(servicePoints),
         availableBreakSeries: _parseAvailableBreakSeries(journeyData),
         communicationNetworkChanges: _parseCommunicationNetworkChanges(segmentProfileReferences, segmentProfiles),
-        breakSeries: trainCharacteristic?.tcFeatures.trainCategoryCode != null &&
+        breakSeries:
+            trainCharacteristic?.tcFeatures.trainCategoryCode != null &&
                 trainCharacteristic?.tcFeatures.brakedWeightPercentage != null
             ? BreakSeries(
                 trainSeries: trainCharacteristic!.tcFeatures.trainCategoryCode!,
-                breakSeries: trainCharacteristic.tcFeatures.brakedWeightPercentage!)
+                breakSeries: trainCharacteristic.tcFeatures.brakedWeightPercentage!,
+              )
             : null,
         lineFootNoteLocations: _generateLineFootNoteLocationMap(journeyData.whereType<LineFootNote>()),
         radioContactLists: _parseContactLists(segmentProfileReferences, segmentProfiles),
@@ -120,10 +145,11 @@ class SferaModelMapper {
   }
 
   static BaseData? _calculateCurrentPosition(
-      List<BaseData> journeyData,
-      List<SegmentProfileReferenceDto> segmentProfilesLists,
-      RelatedTrainInformationDto? relatedTrainInformation,
-      Journey? lastJourney) {
+    List<BaseData> journeyData,
+    List<SegmentProfileReferenceDto> segmentProfilesLists,
+    RelatedTrainInformationDto? relatedTrainInformation,
+    Journey? lastJourney,
+  ) {
     final positionSpeed = relatedTrainInformation?.ownTrain.trainLocationInformation.positionSpeed;
 
     if (relatedTrainInformation == null || positionSpeed == null) {
@@ -173,7 +199,9 @@ class SferaModelMapper {
   }
 
   static List<AdditionalSpeedRestriction> _parseAdditionalSpeedRestrictions(
-      JourneyProfileDto journeyProfile, List<SegmentProfileDto> segmentProfiles) {
+    JourneyProfileDto journeyProfile,
+    List<SegmentProfileDto> segmentProfiles,
+  ) {
     final List<AdditionalSpeedRestriction> result = [];
     final now = DateTime.now();
     final segmentProfilesReferences = journeyProfile.segmentProfileReferences.toList();
@@ -221,16 +249,18 @@ class SferaModelMapper {
           final startOrder = calculateOrder(startSegmentIndex, startLocation);
           final endOrder = calculateOrder(endSegmentIndex, endLocation);
 
-          result.add(AdditionalSpeedRestriction(
-            kmFrom: startKilometreMap[startLocation]!.first,
-            kmTo: endKilometreMap[endLocation]!.first,
-            orderFrom: startOrder,
-            orderTo: endOrder,
-            restrictionFrom: asrTemporaryConstrain.startTime,
-            restrictionUntil: asrTemporaryConstrain.endTime,
-            speed: asrTemporaryConstrain.additionalSpeedRestriction?.asrSpeed,
-            reason: asrTemporaryConstrain.temporaryConstraintReasons.toLocalizedString,
-          ));
+          result.add(
+            AdditionalSpeedRestriction(
+              kmFrom: startKilometreMap[startLocation]!.first,
+              kmTo: endKilometreMap[endLocation]!.first,
+              orderFrom: startOrder,
+              orderTo: endOrder,
+              restrictionFrom: asrTemporaryConstrain.startTime,
+              restrictionUntil: asrTemporaryConstrain.endTime,
+              speed: asrTemporaryConstrain.additionalSpeedRestriction?.asrSpeed,
+              reason: asrTemporaryConstrain.temporaryConstraintReasons.toLocalizedString,
+            ),
+          );
 
           startSegmentIndex = null;
           endSegmentIndex = null;
@@ -241,17 +271,20 @@ class SferaModelMapper {
     }
 
     if (startSegmentIndex != null || endSegmentIndex != null || startLocation != null || endLocation != null) {
-      Fimber.w('Incomplete additional speed restriction found: '
-          'startSegmentIndex: $startSegmentIndex, endSegmentIndex: $endSegmentIndex, '
-          'startLocation: $startLocation, endLocation: $endLocation');
+      Fimber.w(
+        'Incomplete additional speed restriction found: '
+        'startSegmentIndex: $startSegmentIndex, endSegmentIndex: $endSegmentIndex, '
+        'startLocation: $startLocation, endLocation: $endLocation',
+      );
     }
 
     return result;
   }
 
   static Iterable<CABSignaling> _cabSignalingStart(Iterable<NonStandardTrackEquipmentSegment> trackEquipmentSegments) {
-    return trackEquipmentSegments.withCABSignalingStart
-        .map((element) => CABSignaling(isStart: true, order: element.startOrder!, kilometre: element.startKm));
+    return trackEquipmentSegments.withCABSignalingStart.map(
+      (element) => CABSignaling(isStart: true, order: element.startOrder!, kilometre: element.startKm),
+    );
   }
 
   /// Returns CAB signaling end for ETCS level 2 segments.
@@ -261,21 +294,26 @@ class SferaModelMapper {
   ///
   /// Used NewLineSpeed for CAB signaling end will be removed from [journeyData]
   static Iterable<CABSignaling> _cabSignalingEnd(
-      Iterable<NonStandardTrackEquipmentSegment> trackEquipmentSegments, List<BaseData> journeyData) {
+    Iterable<NonStandardTrackEquipmentSegment> trackEquipmentSegments,
+    List<BaseData> journeyData,
+  ) {
     final cabEndSpeedChanges = <BaseData>[];
     final cabSignalingEnds = <CABSignaling>[];
     for (final segment in trackEquipmentSegments.withCABSignalingEnd) {
-      final speedChange =
-          journeyData.firstWhereOrNull((data) => data.type == Datatype.speedChange && data.order == segment.endOrder);
+      final speedChange = journeyData.firstWhereOrNull(
+        (data) => data.type == Datatype.speedChange && data.order == segment.endOrder,
+      );
       if (speedChange != null) {
         cabEndSpeedChanges.add(speedChange);
       }
-      cabSignalingEnds.add(CABSignaling(
-        isStart: false,
-        order: segment.endOrder!,
-        kilometre: segment.endKm,
-        speedData: speedChange?.speedData,
-      ));
+      cabSignalingEnds.add(
+        CABSignaling(
+          isStart: false,
+          order: segment.endOrder!,
+          kilometre: segment.endKm,
+          speedData: speedChange?.speedData,
+        ),
+      );
     }
 
     // remove SpeedChange that were used for CAB signaling end
@@ -287,7 +325,9 @@ class SferaModelMapper {
   }
 
   static List<CommunicationNetworkChange> _parseCommunicationNetworkChanges(
-      List<SegmentProfileReferenceDto> segmentProfileReferences, List<SegmentProfileDto> segmentProfiles) {
+    List<SegmentProfileReferenceDto> segmentProfileReferences,
+    List<SegmentProfileDto> segmentProfiles,
+  ) {
     return segmentProfileReferences
         .mapIndexed((index, reference) {
           final segmentProfile = segmentProfiles.firstMatch(reference);
@@ -295,7 +335,8 @@ class SferaModelMapper {
           return communicationNetworks?.map((element) {
             if (element.startLocation != element.endLocation) {
               Fimber.w(
-                  'CommunicationNetwork found without identical location (start=${element.startLocation} end=${element.endLocation}).');
+                'CommunicationNetwork found without identical location (start=${element.startLocation} end=${element.endLocation}).',
+              );
             }
 
             return CommunicationNetworkChange(
@@ -310,7 +351,9 @@ class SferaModelMapper {
   }
 
   static Iterable<RadioContactList> _parseContactLists(
-      List<SegmentProfileReferenceDto> segmentProfileReferences, List<SegmentProfileDto> segmentProfiles) {
+    List<SegmentProfileReferenceDto> segmentProfileReferences,
+    List<SegmentProfileDto> segmentProfiles,
+  ) {
     return segmentProfileReferences
         .mapIndexed((index, reference) {
           final segmentProfile = segmentProfiles.firstMatch(reference);
@@ -319,21 +362,28 @@ class SferaModelMapper {
           return contactLists?.map((contactList) {
             if (contactList.startLocation != contactList.endLocation) {
               Fimber.w(
-                  'ContactList found without identical location (start=${contactList.startLocation} end=${contactList.endLocation}).');
+                'ContactList found without identical location (start=${contactList.startLocation} end=${contactList.endLocation}).',
+              );
             }
 
-            final identifiableContacts = contactList.contacts
-                .where((c) => c.otherContactType != null && c.otherContactType!.contactIdentifier != null);
+            final identifiableContacts = contactList.contacts.where(
+              (c) => c.otherContactType != null && c.otherContactType!.contactIdentifier != null,
+            );
             return RadioContactList(
-                order: calculateOrder(index, contactList.startLocation!),
-                contacts: identifiableContacts.map(
-                  (e) => switch (e.mainContact) {
-                    true => MainContact(
-                        contactIdentifier: e.otherContactType!.contactIdentifier!, contactRole: e.contactRole),
-                    false => SelectiveContact(
-                        contactIdentifier: e.otherContactType!.contactIdentifier!, contactRole: e.contactRole)
-                  },
-                ));
+              order: calculateOrder(index, contactList.startLocation!),
+              contacts: identifiableContacts.map(
+                (e) => switch (e.mainContact) {
+                  true => MainContact(
+                    contactIdentifier: e.otherContactType!.contactIdentifier!,
+                    contactRole: e.contactRole,
+                  ),
+                  false => SelectiveContact(
+                    contactIdentifier: e.otherContactType!.contactIdentifier!,
+                    contactRole: e.contactRole,
+                  ),
+                },
+              ),
+            );
           });
         })
         .nonNulls
@@ -350,15 +400,19 @@ class SferaModelMapper {
   }
 
   static TrainCharacteristicsDto? _resolveFirstTrainCharacteristics(
-      JourneyProfileDto journey, List<TrainCharacteristicsDto> trainCharacteristics) {
+    JourneyProfileDto journey,
+    List<TrainCharacteristicsDto> trainCharacteristics,
+  ) {
     final firstTrainRef = journey.trainCharacteristicsRefSet.firstOrNull;
     if (firstTrainRef == null) return null;
 
-    return trainCharacteristics.firstWhereOrNull((it) =>
-        it.tcId == firstTrainRef.tcId &&
-        it.ruId == firstTrainRef.ruId &&
-        it.versionMajor == firstTrainRef.versionMajor &&
-        it.versionMinor == firstTrainRef.versionMinor);
+    return trainCharacteristics.firstWhereOrNull(
+      (it) =>
+          it.tcId == firstTrainRef.tcId &&
+          it.ruId == firstTrainRef.ruId &&
+          it.versionMajor == firstTrainRef.versionMajor &&
+          it.versionMinor == firstTrainRef.versionMinor,
+    );
   }
 
   static List<TramArea> _parseTramAreas(List<SegmentProfileDto> segmentProfiles) {
@@ -407,12 +461,14 @@ class SferaModelMapper {
           final startKilometreMap = parseKilometre(startSegment);
           final endKilometreMap = parseKilometre(endSegment);
 
-          result.add(TramArea(
-            order: calculateOrder(startSegmentIndex, startLocation),
-            kilometre: startKilometreMap[startLocation]!,
-            endKilometre: endKilometreMap[endLocation]!.first,
-            amountTramSignals: amountTramSignals,
-          ));
+          result.add(
+            TramArea(
+              order: calculateOrder(startSegmentIndex, startLocation),
+              kilometre: startKilometreMap[startLocation]!,
+              endKilometre: endKilometreMap[endLocation]!.first,
+              amountTramSignals: amountTramSignals,
+            ),
+          );
 
           startSegmentIndex = null;
           endSegmentIndex = null;
@@ -424,9 +480,11 @@ class SferaModelMapper {
     }
 
     if (startSegmentIndex != null || endSegmentIndex != null || startLocation != null || endLocation != null) {
-      Fimber.w('Incomplete tram area found: '
-          'startSegmentIndex: $startSegmentIndex, endSegmentIndex: $endSegmentIndex, '
-          'startLocation: $startLocation, endLocation: $endLocation, amountTramSignals: $amountTramSignals');
+      Fimber.w(
+        'Incomplete tram area found: '
+        'startSegmentIndex: $startSegmentIndex, endSegmentIndex: $endSegmentIndex, '
+        'startLocation: $startLocation, endLocation: $endLocation, amountTramSignals: $amountTramSignals',
+      );
     }
 
     return result;

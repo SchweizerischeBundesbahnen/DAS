@@ -5,8 +5,12 @@ class TcRequestDto extends SferaXmlElementDto {
 
   TcRequestDto({super.type = elementType, super.attributes, super.children, super.value});
 
-  factory TcRequestDto.create(
-      {required String id, required String versionMajor, required String versionMinor, required String ruId}) {
+  factory TcRequestDto.create({
+    required String id,
+    required String versionMajor,
+    required String versionMinor,
+    required String ruId,
+  }) {
     final request = TcRequestDto();
     request.attributes['TC_ID'] = id;
     request.attributes['TC_VersionMajor'] = versionMajor;

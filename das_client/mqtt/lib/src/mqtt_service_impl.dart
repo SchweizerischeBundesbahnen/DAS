@@ -15,8 +15,8 @@ class MqttServiceImpl implements MqttService {
     required MqttClientConnector mqttClientConnector,
     required this.deviceId,
     required this.prefix,
-  })  : _mqttUrl = mqttUrl,
-        _mqttClientConnector = mqttClientConnector {
+  }) : _mqttUrl = mqttUrl,
+       _mqttClientConnector = mqttClientConnector {
     _init();
   }
 
@@ -85,7 +85,8 @@ class MqttServiceImpl implements MqttService {
       if (messageList != null) {
         for (final message in messageList) {
           Fimber.v(
-              'Received mqtt message with type=${message.runtimeType.toString()} payload=${message.payload.toString()}');
+            'Received mqtt message with type=${message.runtimeType.toString()} payload=${message.payload.toString()}',
+          );
 
           if (message.payload is MqttPublishMessage) {
             final recMess = message.payload as MqttPublishMessage;

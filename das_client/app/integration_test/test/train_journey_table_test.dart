@@ -168,8 +168,10 @@ void main() {
       final countText = find.descendant(of: groupOf5BaliseRow, matching: find.text('5'));
       expect(countText, findsOneWidget);
 
-      final levelCrossingText =
-          find.descendant(of: groupOf5BaliseRow, matching: find.text(l10n.p_train_journey_table_level_crossing));
+      final levelCrossingText = find.descendant(
+        of: groupOf5BaliseRow,
+        matching: find.text(l10n.p_train_journey_table_level_crossing),
+      );
       expect(levelCrossingText, findsOneWidget);
 
       var detailRowBalise = findDASTableRowByText('41.552');
@@ -189,8 +191,9 @@ void main() {
 
       expect(find.descendant(of: detailRowBalise, matching: find.byKey(BaliseRow.baliseIconKey)), findsOneWidget);
       expect(
-          find.descendant(of: detailRowLevelCrossing, matching: find.text(l10n.p_train_journey_table_level_crossing)),
-          findsOneWidget);
+        find.descendant(of: detailRowLevelCrossing, matching: find.text(l10n.p_train_journey_table_level_crossing)),
+        findsOneWidget,
+      );
 
       // collapse group
       await tapElement(tester, groupOf5BaliseRow);
@@ -261,7 +264,7 @@ void main() {
         'A95',
         'A105',
         'A115',
-        'D30'
+        'D30',
       };
 
       for (final entry in expectedOptions) {
@@ -341,8 +344,10 @@ void main() {
       final newLineSpeedRow = findDASTableRowByText('New Line Speed A Missing');
       expect(newLineSpeedRow, findsOneWidget);
 
-      final emptyCellsInNewLineSpeedRow =
-          find.descendant(of: newLineSpeedRow, matching: find.byKey(DASTableCell.emptyCellKey));
+      final emptyCellsInNewLineSpeedRow = find.descendant(
+        of: newLineSpeedRow,
+        matching: find.byKey(DASTableCell.emptyCellKey),
+      );
       expect(emptyCellsInNewLineSpeedRow, findsNWidgets(11));
 
       final genevaRow = findDASTableRowByText('Genève');
@@ -405,7 +410,9 @@ void main() {
       expect(asrRow, findsOneWidget);
 
       final asrIcon = find.descendant(
-          of: asrRow, matching: find.byKey(AdditionalSpeedRestrictionRow.additionalSpeedRestrictionIconKey));
+        of: asrRow,
+        matching: find.byKey(AdditionalSpeedRestrictionRow.additionalSpeedRestrictionIconKey),
+      );
       expect(asrIcon, findsOneWidget);
 
       final asrSpeed = find.descendant(of: asrRow, matching: find.text('60'));
@@ -413,11 +420,14 @@ void main() {
 
       // check all cells are colored
       final coloredCells = find.descendant(
-          of: asrRow,
-          matching: find.byWidgetPredicate((it) =>
+        of: asrRow,
+        matching: find.byWidgetPredicate(
+          (it) =>
               it is Container &&
               it.decoration is BoxDecoration &&
-              (it.decoration as BoxDecoration).color == AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor));
+              (it.decoration as BoxDecoration).color == AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor,
+        ),
+      );
       expect(coloredCells, findsNWidgets(15));
 
       await disconnect(tester);
@@ -447,12 +457,14 @@ void main() {
 
         // check first 3 cells are colored
         final coloredCells = find.descendant(
-            of: testRow,
-            matching: find.byWidgetPredicate((it) =>
+          of: testRow,
+          matching: find.byWidgetPredicate(
+            (it) =>
                 it is Container &&
                 it.decoration is BoxDecoration &&
-                (it.decoration as BoxDecoration).color ==
-                    AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor));
+                (it.decoration as BoxDecoration).color == AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor,
+          ),
+        );
         expect(coloredCells, findsNWidgets(6));
       }
 
@@ -501,14 +513,18 @@ void main() {
 
       // check stop circles
       final stopRoute = find.descendant(of: stopRouteRow, matching: find.byKey(RouteCellBody.stopKey));
-      final nonStoppingPassRoute =
-          find.descendant(of: nonStoppingPassRouteRow, matching: find.byKey(RouteCellBody.stopKey));
+      final nonStoppingPassRoute = find.descendant(
+        of: nonStoppingPassRouteRow,
+        matching: find.byKey(RouteCellBody.stopKey),
+      );
       expect(stopRoute, findsOneWidget);
       expect(nonStoppingPassRoute, findsNothing);
 
       // check route start
-      final routeStart =
-          find.descendant(of: find.byKey(DASTable.tableKey), matching: find.byKey(RouteCellBody.routeStartKey));
+      final routeStart = find.descendant(
+        of: find.byKey(DASTable.tableKey),
+        matching: find.byKey(RouteCellBody.routeStartKey),
+      );
       expect(routeStart, findsAny);
 
       await tester.dragUntilVisible(find.byKey(RouteCellBody.routeEndKey), scrollableFinder, const Offset(0, -50));
@@ -540,8 +556,10 @@ void main() {
       expect(find.descendant(of: protectionSectionRow, matching: find.text('FL')), findsOneWidget);
       expect(find.descendant(of: protectionSectionRow, matching: find.text('32.2')), findsOneWidget);
       // Verify icon is displayed
-      expect(find.descendant(of: protectionSectionRow, matching: find.byKey(ProtectionSectionRow.protectionSectionKey)),
-          findsOneWidget);
+      expect(
+        find.descendant(of: protectionSectionRow, matching: find.byKey(ProtectionSectionRow.protectionSectionKey)),
+        findsOneWidget,
+      );
 
       // Scroll to next protection section
       await tester.dragUntilVisible(find.text('Yverdon-les-Bains'), scrollableFinder, const Offset(0, -20));
@@ -667,14 +685,22 @@ void main() {
       expect(bracketStationD1, findsOneWidget);
 
       // check if the bracket station widget is displayed
-      final bracketStationDWidget =
-          find.descendant(of: bracketStationD, matching: find.byKey(BracketStationCellBody.bracketStationKey));
-      final zahnstangenEndeWidget =
-          find.descendant(of: zahnstangenEnde, matching: find.byKey(BracketStationCellBody.bracketStationKey));
-      final deckungssignalWidget =
-          find.descendant(of: deckungssignal, matching: find.byKey(BracketStationCellBody.bracketStationKey));
-      final bracketStationD1Widget =
-          find.descendant(of: bracketStationD1, matching: find.byKey(BracketStationCellBody.bracketStationKey));
+      final bracketStationDWidget = find.descendant(
+        of: bracketStationD,
+        matching: find.byKey(BracketStationCellBody.bracketStationKey),
+      );
+      final zahnstangenEndeWidget = find.descendant(
+        of: zahnstangenEnde,
+        matching: find.byKey(BracketStationCellBody.bracketStationKey),
+      );
+      final deckungssignalWidget = find.descendant(
+        of: deckungssignal,
+        matching: find.byKey(BracketStationCellBody.bracketStationKey),
+      );
+      final bracketStationD1Widget = find.descendant(
+        of: bracketStationD1,
+        matching: find.byKey(BracketStationCellBody.bracketStationKey),
+      );
       expect(bracketStationDWidget, findsOneWidget);
       expect(zahnstangenEndeWidget, findsOneWidget);
       expect(deckungssignalWidget, findsOneWidget);
@@ -703,12 +729,16 @@ void main() {
       final stopOnDemandRow = findDASTableRowByText('Halt auf Verlangen C');
       expect(stopOnDemandRow, findsOneWidget);
 
-      final stopOnRequestIcon =
-          find.descendant(of: stopOnDemandRow, matching: find.byKey(ServicePointRow.stopOnRequestKey));
+      final stopOnRequestIcon = find.descendant(
+        of: stopOnDemandRow,
+        matching: find.byKey(ServicePointRow.stopOnRequestKey),
+      );
       expect(stopOnRequestIcon, findsOneWidget);
 
-      final stopOnRequestRoute =
-          find.descendant(of: stopOnDemandRow, matching: find.byKey(RouteCellBody.stopOnRequestKey));
+      final stopOnRequestRoute = find.descendant(
+        of: stopOnDemandRow,
+        matching: find.byKey(RouteCellBody.stopOnRequestKey),
+      );
       final stopRoute = find.descendant(of: stopOnDemandRow, matching: find.byKey(RouteCellBody.stopKey));
       expect(stopOnRequestRoute, findsOneWidget);
       expect(stopRoute, findsNothing);
@@ -722,12 +752,14 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T6');
 
-      final glanzenbergText = find
-          .byWidgetPredicate((it) => it is Text && it.data == 'Glanzenberg' && it.style?.fontStyle == FontStyle.italic);
+      final glanzenbergText = find.byWidgetPredicate(
+        (it) => it is Text && it.data == 'Glanzenberg' && it.style?.fontStyle == FontStyle.italic,
+      );
       expect(glanzenbergText, findsOneWidget);
 
-      final schlierenText = find
-          .byWidgetPredicate((it) => it is Text && it.data == 'Schlieren' && it.style?.fontStyle != FontStyle.italic);
+      final schlierenText = find.byWidgetPredicate(
+        (it) => it is Text && it.data == 'Schlieren' && it.style?.fontStyle != FontStyle.italic,
+      );
       expect(schlierenText, findsOneWidget);
 
       await disconnect(tester);
@@ -776,18 +808,25 @@ void main() {
       final langeChangeBlockSignalRow = findDASTableRowByText('S1');
       expect(langeChangeBlockSignalRow, findsOneWidget);
       expect(find.descendant(of: langeChangeBlockSignalRow, matching: find.text('Block')), findsOneWidget);
-      final laneChangeIcon =
-          find.descendant(of: langeChangeBlockSignalRow, matching: find.byKey(SignalRow.signalLineChangeIconKey));
+      final laneChangeIcon = find.descendant(
+        of: langeChangeBlockSignalRow,
+        matching: find.byKey(SignalRow.signalLineChangeIconKey),
+      );
       expect(laneChangeIcon, findsOneWidget);
 
       // check if basic signal is rendered correctly
       await tester.dragUntilVisible(
-          find.text(l10n.c_main_signal_function_protection), scrollableFinder, const Offset(0, -50));
+        find.text(l10n.c_main_signal_function_protection),
+        scrollableFinder,
+        const Offset(0, -50),
+      );
       final protectionSignalRow = findDASTableRowByText(l10n.c_main_signal_function_protection);
       expect(protectionSignalRow, findsOneWidget);
       expect(find.descendant(of: protectionSignalRow, matching: find.text('D1')), findsOneWidget);
-      final noLaneChangeIcon =
-          find.descendant(of: protectionSignalRow, matching: find.byKey(SignalRow.signalLineChangeIconKey));
+      final noLaneChangeIcon = find.descendant(
+        of: protectionSignalRow,
+        matching: find.byKey(SignalRow.signalLineChangeIconKey),
+      );
       expect(noLaneChangeIcon, findsNothing);
 
       // check if signals with multiple functions are rendered correctly
@@ -796,8 +835,10 @@ void main() {
       final blockIntermediateSignalRow = findDASTableRowByText(signalLabel);
       expect(blockIntermediateSignalRow, findsOneWidget);
       expect(find.descendant(of: blockIntermediateSignalRow, matching: find.text('BAB1')), findsOneWidget);
-      final noLaneChangeIcon2 =
-          find.descendant(of: blockIntermediateSignalRow, matching: find.byKey(SignalRow.signalLineChangeIconKey));
+      final noLaneChangeIcon2 = find.descendant(
+        of: blockIntermediateSignalRow,
+        matching: find.byKey(SignalRow.signalLineChangeIconKey),
+      );
       expect(noLaneChangeIcon2, findsNothing);
 
       await disconnect(tester);
@@ -816,8 +857,10 @@ void main() {
       await tester.dragUntilVisible(find.text('29.7').first, scrollableFinder, const Offset(0, -50));
       final segment1CABStop = findDASTableRowByText('33.2');
       expect(segment1CABStop, findsOneWidget);
-      final segment1CABStopIcon =
-          find.descendant(of: segment1CABStop, matching: find.byKey(CABSignalingRow.cabSignalingEndIconKey));
+      final segment1CABStopIcon = find.descendant(
+        of: segment1CABStop,
+        matching: find.byKey(CABSignalingRow.cabSignalingEndIconKey),
+      );
       expect(segment1CABStopIcon, findsOneWidget);
       final segment1CABStopSpeed = find.descendant(of: segment1CABStop, matching: find.text('55'));
       expect(segment1CABStopSpeed, findsOneWidget);
@@ -831,8 +874,10 @@ void main() {
       final rowsAtKm12_5 = findDASTableRowByText('12.5');
       expect(rowsAtKm12_5, findsExactly(2));
       final segment2CABStart = rowsAtKm12_5.first; // start should be before other elements at same location
-      final segment2CABStartIcon =
-          find.descendant(of: segment2CABStart, matching: find.byKey(CABSignalingRow.cabSignalingStartIconKey));
+      final segment2CABStartIcon = find.descendant(
+        of: segment2CABStart,
+        matching: find.byKey(CABSignalingRow.cabSignalingStartIconKey),
+      );
       expect(segment2CABStartIcon, findsOneWidget);
       await tester.dragUntilVisible(find.text('75.3'), scrollableFinder, const Offset(0, -50));
       final trackEquipmentTypeChange = findDASTableRowByText('56.8');
@@ -841,8 +886,10 @@ void main() {
       final rothristServicePointRow = findDASTableRowByText('46.2');
       expect(rothristServicePointRow, findsOneWidget); // no CAB signaling at connecting ETCS L2 segments
       final segment2CABEnd = findDASTableRowByText('39.9');
-      final segment2CABEndIcon =
-          find.descendant(of: segment2CABEnd, matching: find.byKey(CABSignalingRow.cabSignalingEndIconKey));
+      final segment2CABEndIcon = find.descendant(
+        of: segment2CABEnd,
+        matching: find.byKey(CABSignalingRow.cabSignalingEndIconKey),
+      );
       expect(segment2CABEndIcon, findsOneWidget);
       final segment2CABEndSpeed = find.descendant(of: segment2CABEnd, matching: find.text('80'));
       expect(segment2CABEndSpeed, findsOneWidget);
@@ -850,8 +897,10 @@ void main() {
       // CAB segment with end outside train journey and start at 8.3 km
       await tester.dragUntilVisible(find.text('9.5'), scrollableFinder, const Offset(0, -50));
       final segment3CABStart = findDASTableRowByText('8.3');
-      final segment3CABStartIcon =
-          find.descendant(of: segment3CABStart, matching: find.byKey(CABSignalingRow.cabSignalingStartIconKey));
+      final segment3CABStartIcon = find.descendant(
+        of: segment3CABStart,
+        matching: find.byKey(CABSignalingRow.cabSignalingStartIconKey),
+      );
       expect(segment3CABStartIcon, findsOneWidget);
 
       await disconnect(tester);
@@ -872,7 +921,9 @@ void main() {
       _checkTrackEquipmentOnServicePoint('Gland', TrackEquipmentCellBody.extendedSpeedReversingPossibleKey);
       final segment1CABStop = findDASTableRowByText('33.8').last;
       final segment1CABStopTrackEquipment = find.descendant(
-          of: segment1CABStop, matching: find.byKey(TrackEquipmentCellBody.extendedSpeedReversingPossibleKey));
+        of: segment1CABStop,
+        matching: find.byKey(TrackEquipmentCellBody.extendedSpeedReversingPossibleKey),
+      );
       expect(segment1CABStopTrackEquipment, findsOneWidget);
 
       // check two tracks with single track equipment on Gilly-Bursinel
@@ -882,18 +933,27 @@ void main() {
       await tester.dragUntilVisible(find.text('Onnens-Bonvillars'), scrollableFinder, const Offset(0, -50));
       final segment2CABStart = findDASTableRowByText('12.5').first;
       final segment2CABStartTrackEquipment = find.descendant(
-          of: segment2CABStart, matching: find.byKey(TrackEquipmentCellBody.conventionalSpeedReversingImpossibleKey));
+        of: segment2CABStart,
+        matching: find.byKey(TrackEquipmentCellBody.conventionalSpeedReversingImpossibleKey),
+      );
       expect(segment2CABStartTrackEquipment, findsOneWidget);
       _checkTrackEquipmentOnServicePoint('Morges', TrackEquipmentCellBody.conventionalSpeedReversingImpossibleKey);
       _checkTrackEquipmentOnServicePoint(
-          'Yverdon-les-Bains', TrackEquipmentCellBody.conventionalSpeedReversingImpossibleKey);
+        'Yverdon-les-Bains',
+        TrackEquipmentCellBody.conventionalSpeedReversingImpossibleKey,
+      );
       _checkTrackEquipmentOnServicePoint(
-          'Onnens-Bonvillars', TrackEquipmentCellBody.conventionalSpeedReversingImpossibleKey);
+        'Onnens-Bonvillars',
+        TrackEquipmentCellBody.conventionalSpeedReversingImpossibleKey,
+      );
 
       // check ExtendedSpeedReversingPossibleKey from Neuchâtel to Rothrist
       await tester.dragUntilVisible(find.text('Grenchen Süd'), scrollableFinder, const Offset(0, -50));
-      _checkTrackEquipmentOnServicePoint('Neuchâtel', TrackEquipmentCellBody.extendedSpeedReversingPossibleKey,
-          hasConvExtSpeedBorder: true);
+      _checkTrackEquipmentOnServicePoint(
+        'Neuchâtel',
+        TrackEquipmentCellBody.extendedSpeedReversingPossibleKey,
+        hasConvExtSpeedBorder: true,
+      );
       _checkTrackEquipmentOnServicePoint('Biel/Bienne', TrackEquipmentCellBody.extendedSpeedReversingPossibleKey);
       _checkTrackEquipmentOnServicePoint('Lengnau', TrackEquipmentCellBody.extendedSpeedReversingPossibleKey);
       _checkTrackEquipmentOnServicePoint('Grenchen Süd', TrackEquipmentCellBody.extendedSpeedReversingPossibleKey);
@@ -904,18 +964,25 @@ void main() {
 
       // check ExtendedSpeedReversingPossibleKey in Olten
       await tester.dragUntilVisible(find.text('Aarau'), scrollableFinder, const Offset(0, -50));
-      _checkTrackEquipmentOnServicePoint('Olten', TrackEquipmentCellBody.conventionalSpeedReversingImpossibleKey,
-          hasConvExtSpeedBorder: true);
+      _checkTrackEquipmentOnServicePoint(
+        'Olten',
+        TrackEquipmentCellBody.conventionalSpeedReversingImpossibleKey,
+        hasConvExtSpeedBorder: true,
+      );
       final segment2CABEnd = findDASTableRowByText('39.9').first;
       final segment2CABEndTrackEquipment = find.descendant(
-          of: segment2CABEnd, matching: find.byKey(TrackEquipmentCellBody.conventionalSpeedReversingImpossibleKey));
+        of: segment2CABEnd,
+        matching: find.byKey(TrackEquipmentCellBody.conventionalSpeedReversingImpossibleKey),
+      );
       expect(segment2CABEndTrackEquipment, findsOneWidget);
 
       // check ExtendedSpeedReversingImpossibleKey from Zürich HB to Opfikon Süd
       await tester.dragUntilVisible(find.text('Flughafen'), scrollableFinder, const Offset(0, -50));
       final segment3CABStart = findDASTableRowByText('8.3').first;
       final segment3CABStartTrackEquipment = find.descendant(
-          of: segment3CABStart, matching: find.byKey(TrackEquipmentCellBody.extendedSpeedReversingImpossibleKey));
+        of: segment3CABStart,
+        matching: find.byKey(TrackEquipmentCellBody.extendedSpeedReversingImpossibleKey),
+      );
       expect(segment3CABStartTrackEquipment, findsOneWidget);
       _checkTrackEquipmentOnServicePoint('Zürich HB', TrackEquipmentCellBody.extendedSpeedReversingImpossibleKey);
       _checkTrackEquipmentOnServicePoint('Opfikon Süd', TrackEquipmentCellBody.extendedSpeedReversingImpossibleKey);
@@ -942,7 +1009,9 @@ void main() {
       _checkTrackEquipmentOnServicePoint('Innertkirchen Unterwasser', TrackEquipmentCellBody.singleTrackNoBlockKey);
       _checkTrackEquipmentOnServicePoint('Innertkirchen Grimseltor', TrackEquipmentCellBody.singleTrackNoBlockKey);
       _checkTrackEquipmentOnServicePoint(
-          'Innertkirchen Kraftwerk (Bahn)', TrackEquipmentCellBody.singleTrackNoBlockKey);
+        'Innertkirchen Kraftwerk (Bahn)',
+        TrackEquipmentCellBody.singleTrackNoBlockKey,
+      );
 
       await disconnect(tester);
     });
@@ -960,65 +1029,86 @@ void main() {
 
       final bernStationRow = findDASTableRowByText('Bern');
       expect(bernStationRow, findsOneWidget);
-      final bernIncomingSpeeds =
-          find.descendant(of: bernStationRow, matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey));
+      final bernIncomingSpeeds = find.descendant(
+        of: bernStationRow,
+        matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey),
+      );
       expect(bernIncomingSpeeds, findsNWidgets(2));
       final bernIncomingSpeedsText = find.descendant(of: bernStationRow, matching: find.text('75-70-60'));
       expect(bernIncomingSpeedsText, findsOneWidget);
-      final bernOutgoingSpeeds =
-          find.descendant(of: bernStationRow, matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey));
+      final bernOutgoingSpeeds = find.descendant(
+        of: bernStationRow,
+        matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey),
+      );
       expect(bernOutgoingSpeeds, findsNothing);
 
       // check station speeds for Wankdorf, no station speeds given
 
       final wankdorfStationRow = findDASTableRowByText('Wankdorf');
       expect(wankdorfStationRow, findsOneWidget);
-      final wankdorfIncomingSpeeds =
-          find.descendant(of: wankdorfStationRow, matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey));
+      final wankdorfIncomingSpeeds = find.descendant(
+        of: wankdorfStationRow,
+        matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey),
+      );
       expect(wankdorfIncomingSpeeds, findsNothing);
-      final wankdorfOutgoingSpeeds =
-          find.descendant(of: wankdorfStationRow, matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey));
+      final wankdorfOutgoingSpeeds = find.descendant(
+        of: wankdorfStationRow,
+        matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey),
+      );
       expect(wankdorfOutgoingSpeeds, findsNothing);
 
       // check station speeds for Burgdorf
 
       final burgdorfStationRow = findDASTableRowByText('Burgdorf');
       expect(burgdorfStationRow, findsOneWidget);
-      final burgdorfIncomingSpeeds =
-          find.descendant(of: burgdorfStationRow, matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey));
+      final burgdorfIncomingSpeeds = find.descendant(
+        of: burgdorfStationRow,
+        matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey),
+      );
       expect(burgdorfIncomingSpeeds, findsNWidgets(2));
       final burgdorfIncomingSpeeds75 = find.descendant(of: burgdorfIncomingSpeeds, matching: find.text('75'));
       expect(burgdorfIncomingSpeeds75, findsOneWidget);
       final burgdorfIncomingSpeeds70 = find.descendant(of: burgdorfIncomingSpeeds, matching: find.text('70'));
       expect(burgdorfIncomingSpeeds70, findsOneWidget);
-      final burgdorfIncomingSpeeds70Circled =
-          find.ancestor(of: burgdorfIncomingSpeeds70, matching: find.byKey(GraduatedSpeedsCellBody.circledSpeedKey));
+      final burgdorfIncomingSpeeds70Circled = find.ancestor(
+        of: burgdorfIncomingSpeeds70,
+        matching: find.byKey(GraduatedSpeedsCellBody.circledSpeedKey),
+      );
       expect(burgdorfIncomingSpeeds70Circled, findsOneWidget);
-      final burgdorfOutgoingSpeeds =
-          find.descendant(of: burgdorfStationRow, matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey));
+      final burgdorfOutgoingSpeeds = find.descendant(
+        of: burgdorfStationRow,
+        matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey),
+      );
       expect(burgdorfOutgoingSpeeds, findsOneWidget);
       final burgdorfOutgoingSpeeds60 = find.descendant(of: burgdorfOutgoingSpeeds, matching: find.text('60'));
       expect(burgdorfOutgoingSpeeds60, findsOneWidget);
-      final burgdorfOutgoingSpeeds60Squared =
-          find.ancestor(of: burgdorfOutgoingSpeeds60, matching: find.byKey(GraduatedSpeedsCellBody.squaredSpeedKey));
+      final burgdorfOutgoingSpeeds60Squared = find.ancestor(
+        of: burgdorfOutgoingSpeeds60,
+        matching: find.byKey(GraduatedSpeedsCellBody.squaredSpeedKey),
+      );
       expect(burgdorfOutgoingSpeeds60Squared, findsOneWidget);
 
       // check station speeds for Olten, no graduated speed for train series R
 
       final oltenStationRow = findDASTableRowByText('Olten');
       expect(oltenStationRow, findsOneWidget);
-      final oltenIncomingSpeeds =
-          find.descendant(of: oltenStationRow, matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey));
+      final oltenIncomingSpeeds = find.descendant(
+        of: oltenStationRow,
+        matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey),
+      );
       expect(oltenIncomingSpeeds, findsOneWidget);
-      final oltenOutgoingSpeeds =
-          find.descendant(of: oltenStationRow, matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey));
+      final oltenOutgoingSpeeds = find.descendant(
+        of: oltenStationRow,
+        matching: find.byKey(GraduatedSpeedsCellBody.outgoingSpeedsKey),
+      );
       expect(oltenOutgoingSpeeds, findsNothing);
 
       await disconnect(tester);
     });
 
-    testWidgets('test additional speed restriction row are displayed correctly on ETCS level 2 section',
-        (tester) async {
+    testWidgets('test additional speed restriction row are displayed correctly on ETCS level 2 section', (
+      tester,
+    ) async {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
@@ -1106,7 +1196,8 @@ void main() {
 
       // Lommiswil has departure and arrival
       final lommiswil = 'Lommiswil';
-      final expectedTimeLommiswil = '${Format.plannedTime(DateTime.parse('2025-05-12T16:39:12Z'))}\n'
+      final expectedTimeLommiswil =
+          '${Format.plannedTime(DateTime.parse('2025-05-12T16:39:12Z'))}\n'
           '${Format.plannedTime(DateTime.parse('2025-05-12T16:40:12Z'))}';
       expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: lommiswil), findsOneWidget);
       expect(_findTextInDASTableRowByText(innerText: expectedTimeLommiswil, rowText: lommiswil), findsOneWidget);
@@ -1169,17 +1260,22 @@ void main() {
       final geneveAerPlanned = 'Genève-Aéroport';
       final expectedTimeGenAerPlanned = Format.plannedTime(DateTime.parse('2025-05-12T15:13:40Z'));
       expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: geneveAerPlanned), findsOneWidget);
-      expect(_findTextInDASTableRowByText(innerText: expectedTimeGenAerPlanned, rowText: geneveAerPlanned),
-          findsOneWidget);
+      expect(
+        _findTextInDASTableRowByText(innerText: expectedTimeGenAerPlanned, rowText: geneveAerPlanned),
+        findsOneWidget,
+      );
       // morges
       final morgesPlanned = 'Morges';
       final expectedTimeMorgesPlanned = '(${Format.plannedTime(DateTime.parse('2025-05-12T15:55:23Z'))})\n';
       expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: morgesPlanned), findsOneWidget);
       expect(
-          _findTextInDASTableRowByText(innerText: expectedTimeMorgesPlanned, rowText: morgesPlanned), findsOneWidget);
+        _findTextInDASTableRowByText(innerText: expectedTimeMorgesPlanned, rowText: morgesPlanned),
+        findsOneWidget,
+      );
       // vevey should have both times in brackets since it's a passing point
       final veveyPlanned = 'Vevey';
-      final expectedTimeVeveyPlanned = '(${Format.plannedTime(DateTime.parse('2025-05-12T16:28:12Z'))})\n'
+      final expectedTimeVeveyPlanned =
+          '(${Format.plannedTime(DateTime.parse('2025-05-12T16:28:12Z'))})\n'
           '(${Format.plannedTime(DateTime.parse('2025-05-12T16:29:12Z'))})';
       expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: veveyPlanned), findsOneWidget);
       expect(_findTextInDASTableRowByText(innerText: expectedTimeVeveyPlanned, rowText: veveyPlanned), findsOneWidget);
@@ -1188,33 +1284,34 @@ void main() {
     });
 
     testWidgets(
-        'test auto switch behavior for time cells journey in near future (T9999) with operational and planned times',
-        (tester) async {
-      await prepareAndStartApp(tester);
+      'test auto switch behavior for time cells journey in near future (T9999) with operational and planned times',
+      (tester) async {
+        await prepareAndStartApp(tester);
 
-      // load train journey by filling out train selection page
-      await loadTrainJourney(tester, trainNumber: 'T9999');
+        // load train journey by filling out train selection page
+        await loadTrainJourney(tester, trainNumber: 'T9999');
 
-      // test if operational time header label is in table
-      final expectedCalculatedHeaderLabel = l10n.p_train_journey_table_time_label_new;
-      final timeHeader = find.text(expectedCalculatedHeaderLabel);
-      expect(timeHeader, findsOneWidget);
+        // test if operational time header label is in table
+        final expectedCalculatedHeaderLabel = l10n.p_train_journey_table_time_label_new;
+        final timeHeader = find.text(expectedCalculatedHeaderLabel);
+        expect(timeHeader, findsOneWidget);
 
-      // tap header label to switch to planned times
-      await tapElement(tester, timeHeader);
+        // tap header label to switch to planned times
+        await tapElement(tester, timeHeader);
 
-      // test if planned time header label is in table
-      final expectedPlannedHeaderLabel = l10n.p_train_journey_table_time_label_planned;
-      expect(find.text(expectedPlannedHeaderLabel), findsOneWidget);
+        // test if planned time header label is in table
+        final expectedPlannedHeaderLabel = l10n.p_train_journey_table_time_label_planned;
+        expect(find.text(expectedPlannedHeaderLabel), findsOneWidget);
 
-      await Future.delayed(Duration(seconds: 11));
+        await Future.delayed(Duration(seconds: 11));
 
-      await tester.pumpAndSettle();
+        await tester.pumpAndSettle();
 
-      expect(find.text(expectedCalculatedHeaderLabel), findsOneWidget);
+        expect(find.text(expectedCalculatedHeaderLabel), findsOneWidget);
 
-      await disconnect(tester);
-    });
+        await disconnect(tester);
+      },
+    );
   });
 }
 
@@ -1236,6 +1333,8 @@ void _checkTrackEquipmentOnServicePoint(String name, Key expectedKey, {bool hasC
   expect(trackEquipment, findsAny);
 
   final convExtSpeedBorder = find.descendant(
-      of: servicePointRow, matching: find.byKey(TrackEquipmentCellBody.conventionalExtendedSpeedBorderKey));
+    of: servicePointRow,
+    matching: find.byKey(TrackEquipmentCellBody.conventionalExtendedSpeedBorderKey),
+  );
   expect(convExtSpeedBorder, hasConvExtSpeedBorder ? findsAny : findsNothing);
 }

@@ -62,40 +62,42 @@ class _TrainSelectionState extends State<TrainSelection> {
   Widget _header(BuildContext context) {
     final viewModel = context.read<TrainJourneyViewModel>();
     return StreamBuilder(
-        stream: viewModel.selectedDate,
-        builder: (context, snapshot) {
-          final selectedDate = snapshot.data;
-          return Header(
-            information: !DateUtils.isSameDay(selectedDate, DateTime.now())
-                ? context.l10n.p_train_selection_date_not_today_warning
-                : null,
-            child: Column(
-              children: [
-                _trainNumberInput(context),
-                _dateInput(selectedDate),
-                _ruSelection(context),
-              ],
-            ),
-          );
-        });
+      stream: viewModel.selectedDate,
+      builder: (context, snapshot) {
+        final selectedDate = snapshot.data;
+        return Header(
+          information: !DateUtils.isSameDay(selectedDate, DateTime.now())
+              ? context.l10n.p_train_selection_date_not_today_warning
+              : null,
+          child: Column(
+            children: [
+              _trainNumberInput(context),
+              _dateInput(selectedDate),
+              _ruSelection(context),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Widget _trainNumberInput(BuildContext context) {
     final viewModel = context.read<TrainJourneyViewModel>();
     return StreamBuilder(
-        stream: viewModel.selectedTrainNumber,
-        builder: (context, snapshot) {
-          _trainNumberController.text = snapshot.data ?? '';
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, sbbDefaultSpacing, 0, sbbDefaultSpacing / 2),
-            child: SBBTextField(
-              onChanged: (value) => viewModel.updateTrainNumber(value),
-              controller: _trainNumberController,
-              labelText: context.l10n.p_train_selection_trainnumber_description,
-              keyboardType: TextInputType.text,
-            ),
-          );
-        });
+      stream: viewModel.selectedTrainNumber,
+      builder: (context, snapshot) {
+        _trainNumberController.text = snapshot.data ?? '';
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, sbbDefaultSpacing, 0, sbbDefaultSpacing / 2),
+          child: SBBTextField(
+            onChanged: (value) => viewModel.updateTrainNumber(value),
+            controller: _trainNumberController,
+            labelText: context.l10n.p_train_selection_trainnumber_description,
+            keyboardType: TextInputType.text,
+          ),
+        );
+      },
+    );
   }
 
   Widget _dateInput(DateTime? selectedDate) {
@@ -175,10 +177,10 @@ class _TrainSelectionState extends State<TrainSelection> {
   }
 
   void _showDatePicker(BuildContext context, DateTime selectedDate) => showSBBModalSheet(
-        context: context,
-        title: context.l10n.p_train_selection_choose_date,
-        child: _datePickerWidget(context, selectedDate),
-      );
+    context: context,
+    title: context.l10n.p_train_selection_choose_date,
+    child: _datePickerWidget(context, selectedDate),
+  );
 
   Widget _datePickerWidget(BuildContext context, DateTime selectedDate) {
     final now = DateTime.now();

@@ -8,10 +8,13 @@ class SferaXmlElementDto {
   final List<SferaXmlElementDto> children;
   final String? value;
 
-  SferaXmlElementDto(
-      {required this.type, Map<String, String>? attributes, List<SferaXmlElementDto>? children, this.value})
-      : attributes = attributes ?? {},
-        children = children ?? [];
+  SferaXmlElementDto({
+    required this.type,
+    Map<String, String>? attributes,
+    List<SferaXmlElementDto>? children,
+    this.value,
+  }) : attributes = attributes ?? {},
+       children = children ?? [];
 
   @mustCallSuper
   bool validate() {
@@ -39,7 +42,8 @@ class SferaXmlElementDto {
   bool validateHasAttributeInRange(String attribute, List<String> allValues) {
     if (allValues.where((it) => it.toLowerCase() == attributes[attribute]?.toLowerCase()).isEmpty) {
       Fimber.w(
-          'Validation failed for $type because attribute $attribute with value "${attributes[attribute]}" could not be mapped to any of ${allValues.join(",")}');
+        'Validation failed for $type because attribute $attribute with value "${attributes[attribute]}" could not be mapped to any of ${allValues.join(",")}',
+      );
       return false;
     }
 
@@ -54,7 +58,8 @@ class SferaXmlElementDto {
 
     if (double.tryParse(attributes[attribute]!) == null) {
       Fimber.w(
-          'Validation failed for $type because attribute=$attribute with value=${attributes[attribute]} could not be parsed to double');
+        'Validation failed for $type because attribute=$attribute with value=${attributes[attribute]} could not be parsed to double',
+      );
       return false;
     }
 
@@ -69,7 +74,8 @@ class SferaXmlElementDto {
 
     if (int.tryParse(attributes[attribute]!) == null) {
       Fimber.w(
-          'Validation failed for $type because attribute=$attribute with value=${attributes[attribute]} could not be parsed to int');
+        'Validation failed for $type because attribute=$attribute with value=${attributes[attribute]} could not be parsed to int',
+      );
       return false;
     }
 
@@ -94,7 +100,8 @@ class SferaXmlElementDto {
 
     if (childValue == null || int.tryParse(childValue) == null) {
       Fimber.w(
-          'Validation failed for ${this.type} because child of type=$type with value=$childValue could not be parsed to int');
+        'Validation failed for ${this.type} because child of type=$type with value=$childValue could not be parsed to int',
+      );
       return false;
     }
 
@@ -131,17 +138,20 @@ class SferaXmlElementDto {
   }
 
   void buildElement(XmlBuilder builder) {
-    builder.element(type, nest: () {
-      attributes.forEach((k, v) {
-        builder.attribute(k, v);
-      });
-      for (final child in children) {
-        child.buildElement(builder);
-      }
-      if (value != null) {
-        builder.text(value!);
-      }
-    });
+    builder.element(
+      type,
+      nest: () {
+        attributes.forEach((k, v) {
+          builder.attribute(k, v);
+        });
+        for (final child in children) {
+          child.buildElement(builder);
+        }
+        if (value != null) {
+          builder.text(value!);
+        }
+      },
+    );
   }
 
   @override

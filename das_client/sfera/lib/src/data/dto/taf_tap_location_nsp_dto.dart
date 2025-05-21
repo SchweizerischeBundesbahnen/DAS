@@ -10,8 +10,11 @@ class TafTapLocationNspDto extends NspDto {
 
   TafTapLocationNspDto({super.type = elementType, super.attributes, super.children, super.value});
 
-  factory TafTapLocationNspDto.from(
-      {Map<String, String>? attributes, List<SferaXmlElementDto>? children, String? value}) {
+  factory TafTapLocationNspDto.from({
+    Map<String, String>? attributes,
+    List<SferaXmlElementDto>? children,
+    String? value,
+  }) {
     final groupName = children?.where((it) => it.type == NspDto.groupNameElement).firstOrNull;
     if (groupName?.value == StationSpeedNspDto.elementName) {
       return StationSpeedNspDto(attributes: attributes, children: children, value: value);

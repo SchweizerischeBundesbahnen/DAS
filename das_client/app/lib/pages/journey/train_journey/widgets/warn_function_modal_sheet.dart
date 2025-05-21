@@ -64,7 +64,7 @@ class WarnFunctionModalSheet extends StatelessWidget {
                 ),
               ),
             ],
-          )
+          ),
         ],
       ),
     );

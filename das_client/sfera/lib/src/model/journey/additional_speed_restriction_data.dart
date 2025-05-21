@@ -4,7 +4,7 @@ import 'package:sfera/src/model/journey/datatype.dart';
 
 class AdditionalSpeedRestrictionData extends BaseData {
   const AdditionalSpeedRestrictionData({required this.restriction, required super.order, required super.kilometre})
-      : super(type: Datatype.additionalSpeedRestriction);
+    : super(type: Datatype.additionalSpeedRestriction);
 
   final AdditionalSpeedRestriction restriction;
 

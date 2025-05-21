@@ -47,12 +47,15 @@ void main() {
       journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first,
     );
 
-    await segmentTask.execute((task, data) {
-      expect(task, segmentTask);
-      expect(data, sferaG2bReplyMessage.payload!.segmentProfiles);
-    }, (task, errorCode) {
-      fail('Task failed with error code $errorCode');
-    });
+    await segmentTask.execute(
+      (task, data) {
+        expect(task, segmentTask);
+        expect(data, sferaG2bReplyMessage.payload!.segmentProfiles);
+      },
+      (task, errorCode) {
+        fail('Task failed with error code $errorCode');
+      },
+    );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
@@ -74,11 +77,14 @@ void main() {
       journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first,
     );
 
-    await segmentTask.execute((task, data) {
-      expect(task, segmentTask);
-    }, (task, errorCode) {
-      fail('Task failed with error code $errorCode');
-    });
+    await segmentTask.execute(
+      (task, data) {
+        expect(task, segmentTask);
+      },
+      (task, errorCode) {
+        fail('Task failed with error code $errorCode');
+      },
+    );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
@@ -103,12 +109,15 @@ void main() {
       journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first,
     );
 
-    await segmentTask.execute((task, data) {
-      fail('Test should not call success');
-    }, (task, errorCode) {
-      expect(task, segmentTask);
-      expect(errorCode, SferaError.invalid);
-    });
+    await segmentTask.execute(
+      (task, data) {
+        fail('Test should not call success');
+      },
+      (task, errorCode) {
+        expect(task, segmentTask);
+        expect(errorCode, SferaError.invalid);
+      },
+    );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
@@ -133,17 +142,21 @@ void main() {
       journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first,
     );
 
-    await segmentTask.execute((task, data) {
-      fail('Test should not call success');
-    }, (task, errorCode) {
-      fail('Test should not call error');
-    });
+    await segmentTask.execute(
+      (task, data) {
+        fail('Test should not call success');
+      },
+      (task, errorCode) {
+        fail('Test should not call error');
+      },
+    );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
     final handShakefile = File('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
-    final handshakeSferaG2bReplyMessage =
-        SferaReplyParser.parse<SferaG2bReplyMessageDto>(handShakefile.readAsStringSync());
+    final handshakeSferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(
+      handShakefile.readAsStringSync(),
+    );
     final result = await segmentTask.handleMessage(handshakeSferaG2bReplyMessage);
     expect(result, false);
   });
@@ -164,12 +177,15 @@ void main() {
     );
 
     var timeoutReached = false;
-    await spTask.execute((task, data) {
-      fail('Test should not call success');
-    }, (task, errorCode) {
-      expect(errorCode, SferaError.requestTimeout);
-      timeoutReached = true;
-    });
+    await spTask.execute(
+      (task, data) {
+        fail('Test should not call success');
+      },
+      (task, errorCode) {
+        expect(errorCode, SferaError.requestTimeout);
+        timeoutReached = true;
+      },
+    );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 

@@ -15,15 +15,31 @@ void main() {
   Fimber.plantTree(DebugTree());
 
   test('Test Sfera HandshakeRequest generation', () async {
-    final handshakeRequest = HandshakeRequestDto.create([
-      DasOperatingModesSupportedDto.create(
-          DasDrivingModeDto.goa1, DasArchitectureDto.boardAdviceCalculation, DasConnectivityDto.connected),
-      DasOperatingModesSupportedDto.create(
-          DasDrivingModeDto.goa1, DasArchitectureDto.boardAdviceCalculation, DasConnectivityDto.standalone)
-    ], relatedTrainRequestType: RelatedTrainRequestTypeDto.ownTrainAndOrRelatedTrains, statusReportsEnabled: true);
+    final handshakeRequest = HandshakeRequestDto.create(
+      [
+        DasOperatingModesSupportedDto.create(
+          DasDrivingModeDto.goa1,
+          DasArchitectureDto.boardAdviceCalculation,
+          DasConnectivityDto.connected,
+        ),
+        DasOperatingModesSupportedDto.create(
+          DasDrivingModeDto.goa1,
+          DasArchitectureDto.boardAdviceCalculation,
+          DasConnectivityDto.standalone,
+        ),
+      ],
+      relatedTrainRequestType: RelatedTrainRequestTypeDto.ownTrainAndOrRelatedTrains,
+      statusReportsEnabled: true,
+    );
 
     final messageHeader = MessageHeaderDto.create(
-        'a24e63c3-ab2e-4102-9a10-ba058dec5efe', '2019-09-26T20:07:36Z', 'DAS', 'TMS', '1084', '0084');
+      'a24e63c3-ab2e-4102-9a10-ba058dec5efe',
+      '2019-09-26T20:07:36Z',
+      'DAS',
+      'TMS',
+      '1084',
+      '0084',
+    );
 
     final sferaB2gRequestMessage = SferaB2gRequestMessageDto.create(messageHeader, handshakeRequest: handshakeRequest);
     expect(sferaB2gRequestMessage.validate(), true);

@@ -21,5 +21,8 @@ abstract class SferaLocalDatabaseService {
   Future<TrainCharacteristicsEntity?> findTrainCharacteristics(String tcId, String majorVersion, String minorVersion);
 
   Stream<JourneyProfileEntity?> observeJourneyProfile(
-      String company, String operationalTrainNumber, DateTime startDate);
+    String company,
+    String operationalTrainNumber,
+    DateTime startDate,
+  );
 }

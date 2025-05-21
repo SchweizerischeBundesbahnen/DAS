@@ -39,7 +39,7 @@ class _SplashPageState extends State<SplashPage> {
         children: [
           CircularProgressIndicator(
             color: Colors.black,
-          )
+          ),
         ],
       ),
     );

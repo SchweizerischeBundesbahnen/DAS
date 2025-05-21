@@ -78,7 +78,7 @@ class GameOverScreen extends StatelessWidget {
                 color: SBBColors.white,
               ),
             ),
-          )
+          ),
         ],
       ),
     );

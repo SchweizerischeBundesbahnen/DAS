@@ -35,15 +35,15 @@ enum TrackEquipmentType {
   etcsL2ExtSpeedReversingImpossible;
 
   bool get isEtcsL2 => [
-        TrackEquipmentType.etcsL2ConvSpeedReversingImpossible,
-        TrackEquipmentType.etcsL2ExtSpeedReversingPossible,
-        TrackEquipmentType.etcsL2ExtSpeedReversingImpossible
-      ].contains(this);
+    TrackEquipmentType.etcsL2ConvSpeedReversingImpossible,
+    TrackEquipmentType.etcsL2ExtSpeedReversingPossible,
+    TrackEquipmentType.etcsL2ExtSpeedReversingImpossible,
+  ].contains(this);
 
   bool get isExtendedSpeed => [
-        TrackEquipmentType.etcsL2ExtSpeedReversingPossible,
-        TrackEquipmentType.etcsL2ExtSpeedReversingImpossible
-      ].contains(this);
+    TrackEquipmentType.etcsL2ExtSpeedReversingPossible,
+    TrackEquipmentType.etcsL2ExtSpeedReversingImpossible,
+  ].contains(this);
 
   bool get isConventionalSpeed => this == etcsL2ConvSpeedReversingImpossible;
 }
