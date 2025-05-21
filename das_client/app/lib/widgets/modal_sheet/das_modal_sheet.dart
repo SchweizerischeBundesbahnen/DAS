@@ -49,7 +49,6 @@ class DASModalSheetController {
   /// will be called by [DasModalSheet] to get [TickerProvider]
   void _initialize({required TickerProvider vsync, VoidCallback? onUpdate}) {
     _controller = AnimationController(vsync: vsync, duration: animationDuration);
-    // TODO: Rename and add https://stackoverflow.com/questions/55364049/how-do-you-add-a-curves-class-animation-to-animationcontroller-in-flutter
     _widthAnimation = Tween<double>(begin: 0.0, end: maxExpandedWidth).animate(_controller)
       ..addListener(() => onUpdate?.call());
 

@@ -7,7 +7,6 @@ import 'package:logger/src/data/logger_repo_impl.dart';
 
 export 'package:logger/src/log_entry.dart';
 
-// TODO: Fix logging code
 class LoggerComponent {
   const LoggerComponent._();
 

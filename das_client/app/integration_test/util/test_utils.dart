@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:app/bloc/train_journey_cubit.dart';
 import 'package:app/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/extended_menu.dart';
@@ -10,6 +9,7 @@ import 'package:app/widgets/table/das_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:sfera/component.dart';
 
 import '../app_test.dart';
 
@@ -73,7 +73,7 @@ Future<void> loadTrainJourney(WidgetTester tester, {required String trainNumber}
 }
 
 Future<void> disconnect(WidgetTester tester) async {
-  DI.get<TrainJourneyCubit>().reset();
+  DI.get<SferaRemoteRepo>().disconnect();
   await Future.delayed(const Duration(milliseconds: 50));
 }
 

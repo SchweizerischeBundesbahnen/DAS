@@ -39,8 +39,6 @@ dependencies:
   extra_hittest_area: ^1.0.0
   # https://pub.dev/packages/fimber
   fimber: ^0.7.0
-  # https://pub.dev/packages/flutter_bloc
-  flutter_bloc: ^9.1.1
   # https://pub.dev/packages/flutter_svg
   flutter_svg: ^2.1.0
   # https://pub.dev/packages/get_it
