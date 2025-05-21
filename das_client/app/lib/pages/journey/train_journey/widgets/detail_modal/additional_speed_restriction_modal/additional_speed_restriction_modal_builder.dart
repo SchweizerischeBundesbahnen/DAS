@@ -57,5 +57,5 @@ class AdditionalSpeedRestrictionModalBuilder extends DASModalSheetBuilder {
 }
 
 extension _DateTimeFormat on DateTime {
-  String format() => DateFormat('DD.MM.yyyy HH:MM').format(this);
+  String format() => DateFormat('dd.MM.yyyy HH:mm').format(this);
 }
