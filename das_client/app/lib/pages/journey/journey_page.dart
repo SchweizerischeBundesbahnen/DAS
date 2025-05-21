@@ -18,6 +18,8 @@ import 'package:sfera/component.dart';
 
 @RoutePage()
 class JourneyPage extends StatefulWidget {
+  static const disconnectButtonKey = Key('disconnectButton');
+
   const JourneyPage({super.key});
 
   @override
@@ -136,6 +138,7 @@ class _JourneyPageState extends State<JourneyPage> with SingleTickerProviderStat
 
   Widget _trainSelectionButton(BuildContext context) {
     return IconButton(
+      key: JourneyPage.disconnectButtonKey,
       icon: const Icon(SBBIcons.train_small),
       onPressed: () => context.read<TrainJourneyViewModel>().reset(),
     );

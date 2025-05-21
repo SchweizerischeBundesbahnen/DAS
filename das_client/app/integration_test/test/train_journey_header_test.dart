@@ -1,17 +1,18 @@
-import 'package:app/pages/journey/train_journey/widgets/header/sim_identifier.dart';
-import 'package:battery_plus/battery_plus.dart';
+import 'package:app/brightness/brightness_manager.dart';
+import 'package:app/di.dart';
+import 'package:app/pages/journey/journey_page.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/battery_status.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/extended_menu.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/radio_channel.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/radio_contact.dart';
+import 'package:app/pages/journey/train_journey/widgets/header/sim_identifier.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/time_container.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
-import 'package:app/widgets/indicator_wrapper.dart';
-import 'package:app/brightness/brightness_manager.dart';
-import 'package:app/di.dart';
 import 'package:app/util/format.dart';
+import 'package:app/widgets/indicator_wrapper.dart';
+import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -54,8 +55,7 @@ Future<void> main() async {
       await tapElement(tester, pauseButton);
 
       // close journey
-      final disconnectKey = Key('disconnectButton');
-      final closeButton = find.byKey(disconnectKey);
+      final closeButton = find.byKey(JourneyPage.disconnectButtonKey);
       expect(closeButton, findsOneWidget);
 
       await tapElement(tester, closeButton);
