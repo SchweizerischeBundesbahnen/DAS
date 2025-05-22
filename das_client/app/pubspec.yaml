@@ -51,12 +51,7 @@ dependencies:
   # https://pub.dev/packages/rxdart
   rxdart: ^0.28.0
   # https://pub.dev/packages/sbb_design_system_mobile
-  # sbb_design_system_mobile: ^3.0.0
-  # TODO: will revert to pub dev once works with 3.32.0
-  sbb_design_system_mobile:
-    git:
-      url: https://github.com/SchweizerischeBundesbahnen/design_system_flutter.git
-      ref: feature/support-flutter-3-32-0
+  sbb_design_system_mobile: ^3.1.0
   # https://pub.dev/packages/volume_controller
   volume_controller: ^3.3.3
   # https://pub.dev/packages/wakelock_plus

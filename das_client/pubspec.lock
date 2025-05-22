@@ -972,12 +972,11 @@ packages:
   sbb_design_system_mobile:
     dependency: transitive
     description:
-      path: "."
-      ref: "feature/support-flutter-3-32-0"
-      resolved-ref: "34be7f7a10c2b59f017c34c98ad2dae4d05ecb28"
-      url: "https://github.com/SchweizerischeBundesbahnen/design_system_flutter.git"
-    source: git
-    version: "3.0.0"
+      name: sbb_design_system_mobile
+      sha256: "1ebf7255fe441dc17a7b9ea09d5858001d5b5cd8662e3402b5c488e128beb965"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.0"
   sbb_oidc:
     dependency: transitive
     description:
