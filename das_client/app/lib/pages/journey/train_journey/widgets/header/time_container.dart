@@ -50,8 +50,12 @@ class TimeContainer extends StatelessWidget {
         }
 
         return Padding(
-          padding:
-              const EdgeInsets.fromLTRB(sbbDefaultSpacing * 0.5, 0.0, sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5),
+          padding: const EdgeInsets.fromLTRB(
+            sbbDefaultSpacing * 0.5,
+            0.0,
+            sbbDefaultSpacing * 0.5,
+            sbbDefaultSpacing * 0.5,
+          ),
           child: Text(punctualityString, style: DASTextStyles.xLargeLight),
         );
       },
@@ -63,8 +67,12 @@ class TimeContainer extends StatelessWidget {
       stream: Stream.periodic(const Duration(milliseconds: 200)),
       builder: (context, snapshot) {
         return Padding(
-          padding:
-              const EdgeInsets.fromLTRB(sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5, 0),
+          padding: const EdgeInsets.fromLTRB(
+            sbbDefaultSpacing * 0.5,
+            sbbDefaultSpacing * 0.5,
+            sbbDefaultSpacing * 0.5,
+            0,
+          ),
           child: Text(
             DateFormat('HH:mm:ss').format(DateTime.now().toLocal()),
             style: DASTextStyles.xLargeBold,

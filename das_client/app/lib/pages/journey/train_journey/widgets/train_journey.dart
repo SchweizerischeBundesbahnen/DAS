@@ -122,8 +122,11 @@ class TrainJourney extends StatelessWidget {
         .hideFootNotesForNotSelectedTrainSeries(currentBreakSeries?.trainSeries)
         .toList();
 
-    final groupedRows =
-        rows.whereType<BaliseLevelCrossingGroup>().map((it) => it.groupedElements).expand((it) => it).toList();
+    final groupedRows = rows
+        .whereType<BaliseLevelCrossingGroup>()
+        .map((it) => it.groupedElements)
+        .expand((it) => it)
+        .toList();
 
     return List.generate(rows.length, (index) {
       final rowData = rows[index];
@@ -253,8 +256,9 @@ class TrainJourney extends StatelessWidget {
     bool isDetailModalOpen,
   ) {
     final currentBreakSeries = settings.resolvedBreakSeries(metadata);
-    final speedLabel =
-        currentBreakSeries != null ? '${currentBreakSeries.trainSeries.name}${currentBreakSeries.breakSeries}' : '??';
+    final speedLabel = currentBreakSeries != null
+        ? '${currentBreakSeries.trainSeries.name}${currentBreakSeries.breakSeries}'
+        : '??';
 
     final timeViewModel = context.read<ArrivalDepartureTimeViewModel>();
 
@@ -277,17 +281,21 @@ class TrainJourney extends StatelessWidget {
         ),
       ],
       DASTableColumn(
-          id: ColumnDefinition.time.index,
-          child: StreamBuilder(
-              stream: timeViewModel.showOperationalTime,
-              builder: (context, showCalcTimeSnap) => Text(showCalcTimeSnap.data ?? false
-                  ? context.l10n.p_train_journey_table_time_label_new
-                  : context.l10n.p_train_journey_table_time_label_planned)),
-          width: 100.0,
-          onTap: () {
-            final viewModel = context.read<ArrivalDepartureTimeViewModel>();
-            viewModel.toggleOperationalTime();
-          }),
+        id: ColumnDefinition.time.index,
+        child: StreamBuilder(
+          stream: timeViewModel.showOperationalTime,
+          builder: (context, showCalcTimeSnap) => Text(
+            showCalcTimeSnap.data ?? false
+                ? context.l10n.p_train_journey_table_time_label_new
+                : context.l10n.p_train_journey_table_time_label_planned,
+          ),
+        ),
+        width: 100.0,
+        onTap: () {
+          final viewModel = context.read<ArrivalDepartureTimeViewModel>();
+          viewModel.toggleOperationalTime();
+        },
+      ),
       DASTableColumn(id: ColumnDefinition.route.index, width: 48.0), // route column
       DASTableColumn(id: ColumnDefinition.trackEquipment.index, width: 20.0), // track equipment column
       DASTableColumn(id: ColumnDefinition.icons1.index, width: 64.0), // icons column
@@ -337,7 +345,10 @@ class TrainJourney extends StatelessWidget {
   }
 
   void _onBaliseLevelCrossingGroupTap(
-      BuildContext context, BaliseLevelCrossingGroup group, TrainJourneySettings settings) {
+    BuildContext context,
+    BaliseLevelCrossingGroup group,
+    TrainJourneySettings settings,
+  ) {
     final newList = List<int>.from(settings.expandedGroups);
     if (settings.expandedGroups.contains(group.order)) {
       newList.remove(group.order);

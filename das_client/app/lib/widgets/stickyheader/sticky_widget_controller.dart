@@ -6,9 +6,11 @@ import 'package:app/widgets/table/das_table_row.dart';
 import 'package:flutter/material.dart';
 
 class StickyWidgetController with ChangeNotifier {
-  StickyWidgetController(
-      {required this.stickyHeaderKey, required this.scrollController, required List<DASTableRow> rows})
-      : _rows = rows {
+  StickyWidgetController({
+    required this.stickyHeaderKey,
+    required this.scrollController,
+    required List<DASTableRow> rows,
+  }) : _rows = rows {
     scrollController.addListener(scrollListener);
     _initialize();
   }
@@ -100,13 +102,17 @@ class StickyWidgetController with ChangeNotifier {
   }
 
   void _calculateHeaderOffsets() {
-    final firstHeaderHeight =
-        headerIndexes[StickyLevel.first] != -1 ? _rows[headerIndexes[StickyLevel.first]!].height : 0.0;
+    final firstHeaderHeight = headerIndexes[StickyLevel.first] != -1
+        ? _rows[headerIndexes[StickyLevel.first]!].height
+        : 0.0;
 
     headerOffsets = {
       StickyLevel.first: _calculateHeaderOffset(headerIndexes[StickyLevel.first]!, StickyLevel.first, 0.0),
-      StickyLevel.second:
-          _calculateHeaderOffset(headerIndexes[StickyLevel.second]!, StickyLevel.second, firstHeaderHeight),
+      StickyLevel.second: _calculateHeaderOffset(
+        headerIndexes[StickyLevel.second]!,
+        StickyLevel.second,
+        firstHeaderHeight,
+      ),
     };
   }
 

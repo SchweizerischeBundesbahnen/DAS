@@ -47,12 +47,15 @@ void main() {
       journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first,
     );
 
-    await tcTask.execute((task, data) {
-      expect(task, tcTask);
-      expect(data, sferaG2bReplyMessage.payload!.trainCharacteristics);
-    }, (task, errorCode) {
-      fail('Task failed with error code $errorCode');
-    });
+    await tcTask.execute(
+      (task, data) {
+        expect(task, tcTask);
+        expect(data, sferaG2bReplyMessage.payload!.trainCharacteristics);
+      },
+      (task, errorCode) {
+        fail('Task failed with error code $errorCode');
+      },
+    );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
@@ -67,17 +70,21 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final tcTask = RequestTrainCharacteristicsTask(
-        sferaService: sferaService,
-        mqttService: mqttService,
-        sferaDatabaseRepository: sferaRepository,
-        otnId: otnId,
-        journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first);
+      sferaService: sferaService,
+      mqttService: mqttService,
+      sferaDatabaseRepository: sferaRepository,
+      otnId: otnId,
+      journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first,
+    );
 
-    await tcTask.execute((task, data) {
-      expect(task, tcTask);
-    }, (task, errorCode) {
-      fail('Task failed with error code $errorCode');
-    });
+    await tcTask.execute(
+      (task, data) {
+        expect(task, tcTask);
+      },
+      (task, errorCode) {
+        fail('Task failed with error code $errorCode');
+      },
+    );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
@@ -94,23 +101,28 @@ void main() {
     final sferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(file.readAsStringSync());
 
     final tcTask = RequestTrainCharacteristicsTask(
-        sferaService: sferaService,
-        mqttService: mqttService,
-        sferaDatabaseRepository: sferaRepository,
-        otnId: otnId,
-        journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first);
+      sferaService: sferaService,
+      mqttService: mqttService,
+      sferaDatabaseRepository: sferaRepository,
+      otnId: otnId,
+      journeyProfile: sferaG2bReplyMessage.payload!.journeyProfiles.first,
+    );
 
-    await tcTask.execute((task, data) {
-      fail('Test should not call success');
-    }, (task, errorCode) {
-      fail('Test should not call error');
-    });
+    await tcTask.execute(
+      (task, data) {
+        fail('Test should not call success');
+      },
+      (task, errorCode) {
+        fail('Test should not call error');
+      },
+    );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
     final handShakefile = File('test_resources/SFERA_G2B_ReplyMessage_handshake.xml');
-    final handshakeSferaG2bReplyMessage =
-        SferaReplyParser.parse<SferaG2bReplyMessageDto>(handShakefile.readAsStringSync());
+    final handshakeSferaG2bReplyMessage = SferaReplyParser.parse<SferaG2bReplyMessageDto>(
+      handShakefile.readAsStringSync(),
+    );
     final result = await tcTask.handleMessage(handshakeSferaG2bReplyMessage);
     expect(result, false);
   });
@@ -131,12 +143,15 @@ void main() {
     );
 
     var timeoutReached = false;
-    await tcTask.execute((task, data) {
-      fail('Test should not call success');
-    }, (task, errorCode) {
-      expect(errorCode, SferaError.requestTimeout);
-      timeoutReached = true;
-    });
+    await tcTask.execute(
+      (task, data) {
+        fail('Test should not call success');
+      },
+      (task, errorCode) {
+        expect(errorCode, SferaError.requestTimeout);
+        timeoutReached = true;
+      },
+    );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 

@@ -9,7 +9,10 @@ class DasOperatingModesSupportedDto extends SferaXmlElementDto {
   DasOperatingModesSupportedDto({super.type = elementType, super.attributes, super.children, super.value});
 
   factory DasOperatingModesSupportedDto.create(
-      DasDrivingModeDto drivingMode, DasArchitectureDto architecture, DasConnectivityDto connectivity) {
+    DasDrivingModeDto drivingMode,
+    DasArchitectureDto architecture,
+    DasConnectivityDto connectivity,
+  ) {
     final operatingMode = DasOperatingModesSupportedDto();
     operatingMode.attributes['DAS_drivingMode'] = drivingMode.xmlValue;
     operatingMode.attributes['DAS_architecture'] = architecture.xmlValue;

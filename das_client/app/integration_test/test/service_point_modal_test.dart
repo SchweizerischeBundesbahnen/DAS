@@ -164,18 +164,24 @@ void main() {
       final gsmRIcon = find.descendant(of: tabContentBern, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
       expect(gsmRIcon, findsNothing);
       final notFoundText = find.descendant(
-          of: tabContentBern, matching: find.text(l10n.w_service_point_modal_communication_radio_channels_not_found));
+        of: tabContentBern,
+        matching: find.text(l10n.w_service_point_modal_communication_radio_channels_not_found),
+      );
       expect(notFoundText, findsOneWidget);
 
       // Tab on Wankdorf -> GSM-P, 1407
       await _openByTapOnCellWithText(tester, 'Wankdorf');
       final tabContentWankdorf = find.byKey(DetailTabCommunication.communicationTabKey);
       expect(tabContentWankdorf, findsOneWidget);
-      final gsmPIconWankdorf =
-          find.descendant(of: tabContentWankdorf, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
+      final gsmPIconWankdorf = find.descendant(
+        of: tabContentWankdorf,
+        matching: find.byKey(CommunicationNetworkIcon.gsmPKey),
+      );
       expect(gsmPIconWankdorf, findsOneWidget);
-      final radioChannelsListWankdorf =
-          find.descendant(of: tabContentBern, matching: find.byKey(DetailTabCommunication.radioChannelListKey));
+      final radioChannelsListWankdorf = find.descendant(
+        of: tabContentBern,
+        matching: find.byKey(DetailTabCommunication.radioChannelListKey),
+      );
       expect(radioChannelsListWankdorf, findsOneWidget);
       _expectText(radioChannelsListWankdorf, '1407');
 
@@ -183,11 +189,15 @@ void main() {
       await _openByTapOnCellWithText(tester, 'Olten');
       final tabContentOlten = find.byKey(DetailTabCommunication.communicationTabKey);
       expect(tabContentOlten, findsOneWidget);
-      final gsmRIconOlten =
-          find.descendant(of: tabContentOlten, matching: find.byKey(CommunicationNetworkIcon.gsmRKey));
+      final gsmRIconOlten = find.descendant(
+        of: tabContentOlten,
+        matching: find.byKey(CommunicationNetworkIcon.gsmRKey),
+      );
       expect(gsmRIconOlten, findsOneWidget);
-      final radioChannelsListOlten =
-          find.descendant(of: tabContentOlten, matching: find.byKey(DetailTabCommunication.radioChannelListKey));
+      final radioChannelsListOlten = find.descendant(
+        of: tabContentOlten,
+        matching: find.byKey(DetailTabCommunication.radioChannelListKey),
+      );
       expect(radioChannelsListOlten, findsOneWidget);
       _expectText(radioChannelsListOlten, '1102');
       _expectText(radioChannelsListOlten, 'Richtung Süd: Fahrdienstleiter');
@@ -214,8 +224,10 @@ void main() {
       expect(tabContent, findsOneWidget);
       final gsmRIcon = find.descendant(of: tabContent, matching: find.byKey(CommunicationNetworkIcon.gsmRKey));
       expect(gsmRIcon, findsOneWidget);
-      final radioChannels =
-          find.descendant(of: tabContent, matching: find.byKey(DetailTabCommunication.radioChannelListKey));
+      final radioChannels = find.descendant(
+        of: tabContent,
+        matching: find.byKey(DetailTabCommunication.radioChannelListKey),
+      );
       expect(radioChannels, findsOneWidget);
       _expectText(radioChannels, '1304', count: 2);
       _expectText(radioChannels, 'Richtung Süd: Fahrdienstleiter');

@@ -32,7 +32,7 @@ class IndicatorWrapper extends StatelessWidget {
             painter: _IndicatorPainter(color: Theme.of(context).colorScheme.primary),
             size: Size(size, size),
           ),
-        )
+        ),
       ],
     );
   }

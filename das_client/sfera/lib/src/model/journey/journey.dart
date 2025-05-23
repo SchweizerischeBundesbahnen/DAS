@@ -12,5 +12,5 @@ class Journey {
   final bool valid;
 
   Journey.invalid({Metadata? metadata, List<BaseData>? data})
-      : this(metadata: metadata ?? Metadata(), data: data ?? [], valid: false);
+    : this(metadata: metadata ?? Metadata(), data: data ?? [], valid: false);
 }

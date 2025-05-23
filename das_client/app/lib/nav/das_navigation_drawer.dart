@@ -52,8 +52,12 @@ class DASNavigationDrawer extends StatelessWidget {
     );
   }
 
-  Widget _navigationTile(BuildContext context,
-      {required IconData icon, required String title, required PageRouteInfo route}) {
+  Widget _navigationTile(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required PageRouteInfo route,
+  }) {
     final bool isActiveRoute = context.router.isRouteActive(route.routeName);
 
     return ListTile(
@@ -92,7 +96,7 @@ class DASNavigationDrawer extends StatelessWidget {
             ),
             DeviceIdText(
               color: SBBColors.granite,
-            )
+            ),
           ],
         ),
       ),

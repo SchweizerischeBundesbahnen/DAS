@@ -47,12 +47,15 @@ void main() {
       otnId: otnId,
     );
 
-    await journeyTask.execute((task, data) {
-      expect(task, journeyTask);
-      expect(data!.whereType<JourneyProfileDto>().first, sferaG2bReplyMessage.payload!.journeyProfiles.first);
-    }, (task, errorCode) {
-      fail('Task failed with error code $errorCode');
-    });
+    await journeyTask.execute(
+      (task, data) {
+        expect(task, journeyTask);
+        expect(data!.whereType<JourneyProfileDto>().first, sferaG2bReplyMessage.payload!.journeyProfiles.first);
+      },
+      (task, errorCode) {
+        fail('Task failed with error code $errorCode');
+      },
+    );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
@@ -73,11 +76,14 @@ void main() {
       otnId: otnId,
     );
 
-    await journeyTask.execute((task, data) {
-      expect(task, journeyTask);
-    }, (task, errorCode) {
-      fail('Task failed with error code $errorCode');
-    });
+    await journeyTask.execute(
+      (task, data) {
+        expect(task, journeyTask);
+      },
+      (task, errorCode) {
+        fail('Task failed with error code $errorCode');
+      },
+    );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
@@ -101,12 +107,15 @@ void main() {
       otnId: otnId,
     );
 
-    await journeyTask.execute((task, data) {
-      fail('Test should not call success');
-    }, (task, errorCode) {
-      expect(task, journeyTask);
-      expect(errorCode, SferaError.jpUnavailable);
-    });
+    await journeyTask.execute(
+      (task, data) {
+        fail('Test should not call success');
+      },
+      (task, errorCode) {
+        expect(task, journeyTask);
+        expect(errorCode, SferaError.jpUnavailable);
+      },
+    );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
@@ -130,12 +139,15 @@ void main() {
       otnId: otnId,
     );
 
-    await journeyTask.execute((task, data) {
-      fail('Test should not call success');
-    }, (task, errorCode) {
-      expect(task, journeyTask);
-      expect(errorCode, SferaError.jpUnavailable);
-    });
+    await journeyTask.execute(
+      (task, data) {
+        fail('Test should not call success');
+      },
+      (task, errorCode) {
+        expect(task, journeyTask);
+        expect(errorCode, SferaError.jpUnavailable);
+      },
+    );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
@@ -156,11 +168,14 @@ void main() {
       otnId: otnId,
     );
 
-    await journeyTask.execute((task, data) {
-      fail('Test should not call success');
-    }, (task, errorCode) {
-      fail('Test should not call error');
-    });
+    await journeyTask.execute(
+      (task, data) {
+        fail('Test should not call success');
+      },
+      (task, errorCode) {
+        fail('Test should not call error');
+      },
+    );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
@@ -183,12 +198,15 @@ void main() {
     );
 
     var timeoutReached = false;
-    await journeyTask.execute((task, data) {
-      fail('Test should not call success');
-    }, (task, errorCode) {
-      expect(errorCode, SferaError.requestTimeout);
-      timeoutReached = true;
-    });
+    await journeyTask.execute(
+      (task, data) {
+        fail('Test should not call success');
+      },
+      (task, errorCode) {
+        expect(errorCode, SferaError.requestTimeout);
+        timeoutReached = true;
+      },
+    );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
@@ -209,11 +227,14 @@ void main() {
       otnId: otnId,
     );
 
-    await journeyTask.execute((task, data) {
-      expect(task, journeyTask);
-    }, (task, errorCode) {
-      fail('Task failed with error code $errorCode');
-    });
+    await journeyTask.execute(
+      (task, data) {
+        expect(task, journeyTask);
+      },
+      (task, errorCode) {
+        fail('Task failed with error code $errorCode');
+      },
+    );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 

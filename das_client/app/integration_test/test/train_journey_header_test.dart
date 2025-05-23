@@ -287,12 +287,15 @@ Future<void> main() async {
 
       final DateTime currentTime = DateTime.now();
       final String currentHour = currentTime.hour <= 9 ? '0${currentTime.hour}' : (currentTime.hour).toString();
-      final String currentMinutes =
-          currentTime.minute <= 9 ? '0${currentTime.minute}' : (currentTime.minute).toString();
-      final String currentSeconds =
-          currentTime.second <= 9 ? '0${currentTime.second}' : (currentTime.second).toString();
-      final String nextSecond =
-          currentTime.second <= 9 ? '0${currentTime.second + 1}' : (currentTime.second + 1).toString();
+      final String currentMinutes = currentTime.minute <= 9
+          ? '0${currentTime.minute}'
+          : (currentTime.minute).toString();
+      final String currentSeconds = currentTime.second <= 9
+          ? '0${currentTime.second}'
+          : (currentTime.second).toString();
+      final String nextSecond = currentTime.second <= 9
+          ? '0${currentTime.second + 1}'
+          : (currentTime.second + 1).toString();
       final String currentWholeTime = '$currentHour:$currentMinutes:$currentSeconds';
       final String nextSecondWholeTime = '$currentHour:$currentMinutes:$nextSecond';
 
@@ -359,8 +362,10 @@ Future<void> main() async {
       // check empty radio contactList for Bern (nextStop: Wankdorf)
       final nextStopWankdorf = find.descendant(of: header, matching: find.text('Wankdorf'));
       expect(nextStopWankdorf, findsOneWidget);
-      final mainContactBern =
-          find.descendant(of: radioChannel, matching: find.byKey(RadioContactChannels.radioContactChannelsKey));
+      final mainContactBern = find.descendant(
+        of: radioChannel,
+        matching: find.byKey(RadioContactChannels.radioContactChannelsKey),
+      );
       expect(mainContactBern, findsNothing);
       final bernIndicator = find.descendant(of: radioChannel, matching: find.byKey(IndicatorWrapper.indicatorKey));
       expect(bernIndicator, findsNothing);
@@ -399,8 +404,10 @@ Future<void> main() async {
 
     // can be removed based on what option to change the brightness will be chosen
     testWidgets('double tap sets brightness to 0.0 if current is 1.0', (tester) async {
-      await prepareAndStartApp(tester,
-          onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false);
+      await prepareAndStartApp(
+        tester,
+        onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false,
+      );
 
       final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 
@@ -429,8 +436,10 @@ Future<void> main() async {
 
     // can be removed based on what option to change the brightness will be chosen
     testWidgets('long press dims brightness from 1.0 to 0.0', (tester) async {
-      await prepareAndStartApp(tester,
-          onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false);
+      await prepareAndStartApp(
+        tester,
+        onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false,
+      );
 
       final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 
@@ -455,8 +464,10 @@ Future<void> main() async {
 
     // can be removed based on what option to change the brightness will be chosen
     testWidgets('horizontal drag right increases brightness', (tester) async {
-      await prepareAndStartApp(tester,
-          onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false);
+      await prepareAndStartApp(
+        tester,
+        onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false,
+      );
 
       final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 
@@ -483,8 +494,10 @@ Future<void> main() async {
     });
 
     testWidgets('horizontal drag left decreases brightness', (tester) async {
-      await prepareAndStartApp(tester,
-          onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false);
+      await prepareAndStartApp(
+        tester,
+        onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false,
+      );
 
       final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 

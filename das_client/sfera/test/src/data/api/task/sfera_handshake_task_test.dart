@@ -40,12 +40,15 @@ void main() {
       dasDrivingMode: DasDrivingModeDto.readOnly,
     );
 
-    await handshakeTask.execute((task, data) {
-      expect(task, handshakeTask);
-      expect(data, isNull);
-    }, (task, errorCode) {
-      fail('Task failed with error code $errorCode');
-    });
+    await handshakeTask.execute(
+      (task, data) {
+        expect(task, handshakeTask);
+        expect(data, isNull);
+      },
+      (task, errorCode) {
+        fail('Task failed with error code $errorCode');
+      },
+    );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
@@ -66,11 +69,14 @@ void main() {
       dasDrivingMode: DasDrivingModeDto.readOnly,
     );
 
-    await handshakeTask.execute((task, data) {
-      fail('Task should not be sucessful');
-    }, (task, errorCode) {
-      expect(errorCode, SferaError.handshakeRejected);
-    });
+    await handshakeTask.execute(
+      (task, data) {
+        fail('Task should not be sucessful');
+      },
+      (task, errorCode) {
+        expect(errorCode, SferaError.handshakeRejected);
+      },
+    );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
@@ -91,11 +97,14 @@ void main() {
       dasDrivingMode: DasDrivingModeDto.readOnly,
     );
 
-    await handshakeTask.execute((task, data) {
-      fail('Test should not call success');
-    }, (task, errorCode) {
-      fail('Test should not call error');
-    });
+    await handshakeTask.execute(
+      (task, data) {
+        fail('Test should not call success');
+      },
+      (task, errorCode) {
+        fail('Test should not call error');
+      },
+    );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 
@@ -118,12 +127,15 @@ void main() {
     );
 
     var timeoutReached = false;
-    await handshakeTask.execute((task, data) {
-      fail('Test should not call success');
-    }, (task, errorCode) {
-      expect(errorCode, SferaError.requestTimeout);
-      timeoutReached = true;
-    });
+    await handshakeTask.execute(
+      (task, data) {
+        fail('Test should not call success');
+      },
+      (task, errorCode) {
+        expect(errorCode, SferaError.requestTimeout);
+        timeoutReached = true;
+      },
+    );
 
     verify(mqttService.publishMessage(any, any, any)).called(1);
 

@@ -82,11 +82,12 @@ void main() {
     }
 
     return SferaModelMapper.mapToJourney(
-        journeyProfile: journeyProfile,
-        segmentProfiles: segmentProfiles,
-        trainCharacteristics: trainCharacteristics,
-        relatedTrainInformation: relatedTrainInformation,
-        lastJourney: lastJourney);
+      journeyProfile: journeyProfile,
+      segmentProfiles: segmentProfiles,
+      trainCharacteristics: trainCharacteristics,
+      relatedTrainInformation: relatedTrainInformation,
+      lastJourney: lastJourney,
+    );
   }
 
   test('Test invalid journey on SP missing', () async {
@@ -229,31 +230,45 @@ void main() {
     expect(journey.metadata.nonStandardTrackEquipmentSegments, hasLength(7));
 
     expect(
-        journey.metadata.nonStandardTrackEquipmentSegments[0].type, TrackEquipmentType.etcsL2ExtSpeedReversingPossible);
+      journey.metadata.nonStandardTrackEquipmentSegments[0].type,
+      TrackEquipmentType.etcsL2ExtSpeedReversingPossible,
+    );
     expect(journey.metadata.nonStandardTrackEquipmentSegments[0].startOrder, isNull);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[0].endOrder, 1600);
-    expect(journey.metadata.nonStandardTrackEquipmentSegments[1].type,
-        TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment);
+    expect(
+      journey.metadata.nonStandardTrackEquipmentSegments[1].type,
+      TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment,
+    );
     expect(journey.metadata.nonStandardTrackEquipmentSegments[1].startOrder, 1700);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[1].endOrder, 2300);
-    expect(journey.metadata.nonStandardTrackEquipmentSegments[2].type,
-        TrackEquipmentType.etcsL2ConvSpeedReversingImpossible);
+    expect(
+      journey.metadata.nonStandardTrackEquipmentSegments[2].type,
+      TrackEquipmentType.etcsL2ConvSpeedReversingImpossible,
+    );
     expect(journey.metadata.nonStandardTrackEquipmentSegments[2].startOrder, 102500);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[2].endOrder, 103700);
     expect(
-        journey.metadata.nonStandardTrackEquipmentSegments[3].type, TrackEquipmentType.etcsL2ExtSpeedReversingPossible);
+      journey.metadata.nonStandardTrackEquipmentSegments[3].type,
+      TrackEquipmentType.etcsL2ExtSpeedReversingPossible,
+    );
     expect(journey.metadata.nonStandardTrackEquipmentSegments[3].startOrder, 103700);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[3].endOrder, 307000);
-    expect(journey.metadata.nonStandardTrackEquipmentSegments[4].type,
-        TrackEquipmentType.etcsL2ConvSpeedReversingImpossible);
+    expect(
+      journey.metadata.nonStandardTrackEquipmentSegments[4].type,
+      TrackEquipmentType.etcsL2ConvSpeedReversingImpossible,
+    );
     expect(journey.metadata.nonStandardTrackEquipmentSegments[4].startOrder, 307000);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[4].endOrder, 307800);
-    expect(journey.metadata.nonStandardTrackEquipmentSegments[5].type,
-        TrackEquipmentType.etcsL2ExtSpeedReversingImpossible);
+    expect(
+      journey.metadata.nonStandardTrackEquipmentSegments[5].type,
+      TrackEquipmentType.etcsL2ExtSpeedReversingImpossible,
+    );
     expect(journey.metadata.nonStandardTrackEquipmentSegments[5].startOrder, 409200);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[5].endOrder, 410200);
     expect(
-        journey.metadata.nonStandardTrackEquipmentSegments[6].type, TrackEquipmentType.etcsL2ExtSpeedReversingPossible);
+      journey.metadata.nonStandardTrackEquipmentSegments[6].type,
+      TrackEquipmentType.etcsL2ExtSpeedReversingPossible,
+    );
     expect(journey.metadata.nonStandardTrackEquipmentSegments[6].startOrder, 410200);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[6].endOrder, isNull);
   });
@@ -400,8 +415,10 @@ void main() {
 
   test('Test protection section is parsed correctly', () async {
     final journey = getJourney('T3', 1);
-    final protectionSections =
-        journey.data.where((it) => it.type == Datatype.protectionSection).cast<ProtectionSection>().toList();
+    final protectionSections = journey.data
+        .where((it) => it.type == Datatype.protectionSection)
+        .cast<ProtectionSection>()
+        .toList();
 
     expect(journey.valid, true);
     expect(protectionSections, hasLength(6));
@@ -555,8 +572,10 @@ void main() {
 
   test('Test connection tracks are parsed correctly', () async {
     final journey = getJourney('T9999', 5);
-    final connectionTracks =
-        journey.data.where((it) => it.type == Datatype.connectionTrack).cast<ConnectionTrack>().toList();
+    final connectionTracks = journey.data
+        .where((it) => it.type == Datatype.connectionTrack)
+        .cast<ConnectionTrack>()
+        .toList();
 
     expect(journey.valid, true);
     expect(connectionTracks, hasLength(3));
@@ -940,8 +959,9 @@ void main() {
     expect(nSpeedEntry1.outgoingSpeeds, hasLength(1));
     _checkSpeed(nSpeedEntry1.outgoingSpeeds[0], 60);
 
-    final relevantSpeedInfo =
-        servicePoints[0].relevantGraduatedSpeedInfo(BreakSeries(trainSeries: TrainSeries.N, breakSeries: 50));
+    final relevantSpeedInfo = servicePoints[0].relevantGraduatedSpeedInfo(
+      BreakSeries(trainSeries: TrainSeries.N, breakSeries: 50),
+    );
     expect(relevantSpeedInfo, hasLength(1));
     expect(relevantSpeedInfo[0].text, 'Zusatzinformation B');
     expect(relevantSpeedInfo[0].trainSeries, TrainSeries.N);
@@ -1141,8 +1161,10 @@ void main() {
     expect(opFootNotes[0].footNote.text, 'Renens - Lausanne <i>"via saut-de-mouton"</i> 0‰');
     expect(opFootNotes[0].footNote.refText, '1)');
     expect(opFootNotes[1].footNote.type, FootNoteType.contact);
-    expect(opFootNotes[1].footNote.text,
-        'Das ist <b>fett <i>und kursiv</i></b> <br/>und das ist <br/><i>noch kursiv</i>.');
+    expect(
+      opFootNotes[1].footNote.text,
+      'Das ist <b>fett <i>und kursiv</i></b> <br/>und das ist <br/><i>noch kursiv</i>.',
+    );
     expect(opFootNotes[1].footNote.refText, '1)');
     expect(opFootNotes[2].footNote.type, FootNoteType.contact);
     expect(opFootNotes[2].footNote.text, '+41 512 800 506 RBC Lavaux');

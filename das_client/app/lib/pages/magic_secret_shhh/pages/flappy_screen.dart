@@ -127,11 +127,13 @@ class _FlappyGameState extends State<FlappyScreen> with SingleTickerProviderStat
 
   void _generateBarriers() {
     for (int i = 0; i < 6; i++) {
-      barriers.add(BarrierModel(
-        x: 1.0 + i * 1.0,
-        heights: _generateRandomHeights(),
-        movingDown: rand.nextBool(),
-      ));
+      barriers.add(
+        BarrierModel(
+          x: 1.0 + i * 1.0,
+          heights: _generateRandomHeights(),
+          movingDown: rand.nextBool(),
+        ),
+      );
     }
   }
 
@@ -181,11 +183,13 @@ class _FlappyGameState extends State<FlappyScreen> with SingleTickerProviderStat
   void _recycleBarriers() {
     if (barriers.isNotEmpty && barriers.first.x < -1.5) {
       barriers.removeAt(0);
-      barriers.add(BarrierModel(
-        x: barriers.last.x + rand.nextDouble() * 1.5 + 0.8,
-        heights: _generateRandomHeights(),
-        movingDown: rand.nextBool(),
-      ));
+      barriers.add(
+        BarrierModel(
+          x: barriers.last.x + rand.nextDouble() * 1.5 + 0.8,
+          heights: _generateRandomHeights(),
+          movingDown: rand.nextBool(),
+        ),
+      );
     }
   }
 
@@ -241,20 +245,22 @@ class _FlappyGameState extends State<FlappyScreen> with SingleTickerProviderStat
                 color: ThemeUtil.getBackgroundColor(context),
                 child: Bird(evu: chosenEVU),
               ),
-              ...barriers.expand((barrier) => [
-                    Barrier(
-                      xPos: barrier.x,
-                      height: barrier.heights[0],
-                      isBottom: false,
-                      offset: barrier.offset,
-                    ),
-                    Barrier(
-                      xPos: barrier.x,
-                      height: barrier.heights[1],
-                      isBottom: true,
-                      offset: barrier.offset,
-                    ),
-                  ]),
+              ...barriers.expand(
+                (barrier) => [
+                  Barrier(
+                    xPos: barrier.x,
+                    height: barrier.heights[0],
+                    isBottom: false,
+                    offset: barrier.offset,
+                  ),
+                  Barrier(
+                    xPos: barrier.x,
+                    height: barrier.heights[1],
+                    isBottom: true,
+                    offset: barrier.offset,
+                  ),
+                ],
+              ),
               Container(
                 alignment: const Alignment(0, -0.9),
                 child: Text(

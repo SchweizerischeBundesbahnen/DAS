@@ -3,10 +3,10 @@ import 'package:sfera/component.dart';
 
 class ChevronAnimationController with ChangeNotifier {
   ChevronAnimationController(this.tickerProvider)
-      : animationController = AnimationController(
-          duration: const Duration(milliseconds: 500),
-          vsync: tickerProvider,
-        );
+    : animationController = AnimationController(
+        duration: const Duration(milliseconds: 500),
+        vsync: tickerProvider,
+      );
 
   final TickerProvider tickerProvider;
   final AnimationController animationController;

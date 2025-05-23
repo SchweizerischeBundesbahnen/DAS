@@ -13,7 +13,9 @@ class TrackEquipmentMapper {
   TrackEquipmentMapper._();
 
   static List<NonStandardTrackEquipmentSegment> parseNonStandardTrackEquipmentSegment(
-      Iterable<SegmentProfileReferenceDto> segmentProfilesLists, Iterable<SegmentProfileDto> segmentProfiles) {
+    Iterable<SegmentProfileReferenceDto> segmentProfilesLists,
+    Iterable<SegmentProfileDto> segmentProfiles,
+  ) {
     final trackEquipments = _parseTrackEquipments(segmentProfilesLists, segmentProfiles);
     trackEquipments.sort();
 
@@ -64,7 +66,9 @@ class TrackEquipmentMapper {
       _createSegment(trackEquipment, trackEquipment);
 
   static NonStandardTrackEquipmentSegment _createSegment(
-      _NonStandardTrackEquipment? start, _NonStandardTrackEquipment? end) {
+    _NonStandardTrackEquipment? start,
+    _NonStandardTrackEquipment? end,
+  ) {
     if (start == null && end == null) {
       throw Exception('Can not create track equipment segment without at least start or end information.');
     }
@@ -80,7 +84,9 @@ class TrackEquipmentMapper {
   }
 
   static List<_NonStandardTrackEquipment> _parseTrackEquipments(
-      Iterable<SegmentProfileReferenceDto> segmentProfilesLists, Iterable<SegmentProfileDto> segmentProfiles) {
+    Iterable<SegmentProfileReferenceDto> segmentProfilesLists,
+    Iterable<SegmentProfileDto> segmentProfiles,
+  ) {
     final trackEquipments = <_NonStandardTrackEquipment>[];
     for (int segmentIndex = 0; segmentIndex < segmentProfilesLists.length; segmentIndex++) {
       final segmentProfile = segmentProfiles.firstMatch(segmentProfilesLists.elementAt(segmentIndex));
@@ -100,7 +106,10 @@ class TrackEquipmentMapper {
   }
 
   static _NonStandardTrackEquipment? _mapToNonStandardTrackEquipment(
-      NetworkSpecificAreaDto element, int segmentIndex, KilometreMap kilometreMap) {
+    NetworkSpecificAreaDto element,
+    int segmentIndex,
+    KilometreMap kilometreMap,
+  ) {
     if (element.trackEquipmentTypeWrapper == null) {
       Fimber.w('Encountered invalid nonStandardTrackEquipment track equipment type NSP declaration: ${element.type}');
       return null;

@@ -103,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                 });
               },
             ),
-            Text(context.l10n.p_login_connect_to_tms)
+            Text(context.l10n.p_login_connect_to_tms),
           ],
         ),
       );
@@ -135,9 +135,11 @@ class _LoginPageState extends State<LoginPage> {
     } catch (e) {
       Fimber.d('Login failed', ex: e);
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(context.l10n.p_login_login_failed),
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(context.l10n.p_login_login_failed),
+          ),
+        );
       }
     }
 

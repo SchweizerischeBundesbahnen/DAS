@@ -58,7 +58,11 @@ class ReducedTrainJourney extends StatelessWidget {
       switch (rowData.type) {
         case Datatype.servicePoint:
           return ReducedServicePointRow(
-              metadata: metadata, data: rowData as ServicePoint, config: trainJourneyConfig, context: context);
+            metadata: metadata,
+            data: rowData as ServicePoint,
+            config: trainJourneyConfig,
+            context: context,
+          );
         case Datatype.additionalSpeedRestriction:
           return AdditionalSpeedRestrictionRow(
             metadata: metadata,
@@ -76,9 +80,10 @@ class ReducedTrainJourney extends StatelessWidget {
   List<DASTableColumn> _columns(BuildContext context) {
     return [
       DASTableColumn(
-          id: ColumnDefinition.time.index,
-          width: 100.0,
-          child: Text(context.l10n.p_train_journey_table_time_label_planned)),
+        id: ColumnDefinition.time.index,
+        width: 100.0,
+        child: Text(context.l10n.p_train_journey_table_time_label_planned),
+      ),
       DASTableColumn(id: ColumnDefinition.route.index, width: 48.0), // route column
       DASTableColumn(width: 10.0), // spacer column so bracketStation does not overlap
       DASTableColumn(id: ColumnDefinition.bracketStation.index, width: 0.0), // bracket station column
@@ -98,9 +103,10 @@ class ReducedTrainJourney extends StatelessWidget {
         ),
       ),
       DASTableColumn(
-          id: ColumnDefinition.communicationNetwork.index,
-          width: 80.0,
-          child: Text(context.l10n.p_train_journey_table_communication_network)),
+        id: ColumnDefinition.communicationNetwork.index,
+        width: 80.0,
+        child: Text(context.l10n.p_train_journey_table_communication_network),
+      ),
     ];
   }
 }

@@ -62,10 +62,14 @@ void main() {
 
       final reducedJourneyTable = _findTableOfReducedJourney();
 
-      expect(find.descendant(of: reducedJourneyTable, matching: find.byKey(CommunicationNetworkIcon.gsmPKey)),
-          findsOneWidget);
-      expect(find.descendant(of: reducedJourneyTable, matching: find.byKey(CommunicationNetworkIcon.gsmRKey)),
-          findsOneWidget);
+      expect(
+        find.descendant(of: reducedJourneyTable, matching: find.byKey(CommunicationNetworkIcon.gsmPKey)),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(of: reducedJourneyTable, matching: find.byKey(CommunicationNetworkIcon.gsmRKey)),
+        findsOneWidget,
+      );
 
       await disconnect(tester);
     });

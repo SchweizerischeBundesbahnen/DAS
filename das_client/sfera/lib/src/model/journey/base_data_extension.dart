@@ -32,7 +32,10 @@ extension BaseDataExtension on Iterable<BaseData> {
       if (groupedElements.length > 1 && [Datatype.balise, Datatype.levelCrossing].contains(currentElement.type)) {
         // Add a group header if we have more then 1 element
         final group = BaliseLevelCrossingGroup(
-            order: groupedElements[0].order, kilometre: groupedElements[0].kilometre, groupedElements: groupedElements);
+          order: groupedElements[0].order,
+          kilometre: groupedElements[0].kilometre,
+          groupedElements: groupedElements,
+        );
         resultList.add(group);
 
         // Add all the elements if the group is currently expanded
@@ -104,10 +107,12 @@ extension BaseDataExtension on Iterable<BaseData> {
 
     final resultList = List.of(this);
 
-    resultList.removeWhere((it) =>
-        it is BaseFootNote &&
-        it.footNote.trainSeries.isNotEmpty &&
-        !it.footNote.trainSeries.contains(selectedTrainSeries));
+    resultList.removeWhere(
+      (it) =>
+          it is BaseFootNote &&
+          it.footNote.trainSeries.isNotEmpty &&
+          !it.footNote.trainSeries.contains(selectedTrainSeries),
+    );
 
     return resultList;
   }

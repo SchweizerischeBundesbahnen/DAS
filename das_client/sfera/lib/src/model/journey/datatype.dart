@@ -14,5 +14,5 @@ enum Datatype {
   baliseLevelCrossingGroup,
   opFootNote,
   trackFootNote,
-  lineFootNote;
+  lineFootNote,
 }

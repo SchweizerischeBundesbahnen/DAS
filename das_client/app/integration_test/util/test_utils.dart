@@ -50,8 +50,9 @@ Finder findTextFieldByLabel(String label) {
 
 Finder findDASTableRowByText(String text) {
   return find.descendant(
-      of: find.byKey(DASTable.tableKey),
-      matching: find.ancestor(of: find.text(text), matching: find.byKey(DASTable.rowKey)));
+    of: find.byKey(DASTable.tableKey),
+    matching: find.ancestor(of: find.text(text), matching: find.byKey(DASTable.rowKey)),
+  );
 }
 
 /// Verifies, that SBB is selected and loads train journey with [trainNumber]

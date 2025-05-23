@@ -12,13 +12,13 @@ part 'app_router.gr.dart';
 class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
-        _splash,
-        _login,
-        _journey,
-        _links,
-        _settings,
-        _profile,
-      ];
+    _splash,
+    _login,
+    _journey,
+    _links,
+    _settings,
+    _profile,
+  ];
 
   @override
   get defaultRouteType => const RouteType.custom();

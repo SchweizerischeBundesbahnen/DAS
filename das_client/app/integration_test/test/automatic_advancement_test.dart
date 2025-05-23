@@ -18,13 +18,17 @@ void main() {
 
       // Check chevron at start
       expect(
-          find.descendant(of: findDASTableRowByText('Bern'), matching: find.byKey(RouteChevron.chevronKey)), findsAny);
+        find.descendant(of: findDASTableRowByText('Bern'), matching: find.byKey(RouteChevron.chevronKey)),
+        findsAny,
+      );
 
       final locations = ['B2', 'Burgdorf', 'B101', 'Olten'];
 
       for (final location in locations) {
-        await waitUntilExists(tester,
-            find.descendant(of: findDASTableRowByText(location), matching: find.byKey(RouteChevron.chevronKey)));
+        await waitUntilExists(
+          tester,
+          find.descendant(of: findDASTableRowByText(location), matching: find.byKey(RouteChevron.chevronKey)),
+        );
       }
 
       await disconnect(tester);
@@ -101,7 +105,9 @@ void main() {
 
       // Check chevron at start
       expect(
-          find.descendant(of: findDASTableRowByText('Bern'), matching: find.byKey(RouteChevron.chevronKey)), findsAny);
+        find.descendant(of: findDASTableRowByText('Bern'), matching: find.byKey(RouteChevron.chevronKey)),
+        findsAny,
+      );
 
       // Wait until the chevron is no longer visible
       await waitUntilNotExists(tester, find.byKey(RouteChevron.chevronKey), maxWaitSeconds: 40);

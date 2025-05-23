@@ -60,9 +60,10 @@ class _BreakSeriesSelectionState extends State<BreakSeriesSelection> {
           Padding(
             padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, sbbDefaultSpacing, 0),
             child: SBBPrimaryButton(
-                label: context.l10n.c_button_confirm,
-                onPressed: canConfirm ? () => context.router.maybePop(selectedBreakSeries) : null),
-          )
+              label: context.l10n.c_button_confirm,
+              onPressed: canConfirm ? () => context.router.maybePop(selectedBreakSeries) : null,
+            ),
+          ),
         ],
       ),
     );
@@ -99,13 +100,14 @@ class _BreakSeriesSelectionState extends State<BreakSeriesSelection> {
             (index) {
               final breakSerie = breakSeries[index];
               return BreakSeriesSelectionButton(
-                  label: breakSerie.toString(),
-                  currentlySelected: breakSerie == selectedBreakSeries,
-                  onTap: () {
-                    setState(() {
-                      selectedBreakSeries = breakSerie;
-                    });
+                label: breakSerie.toString(),
+                currentlySelected: breakSerie == selectedBreakSeries,
+                onTap: () {
+                  setState(() {
+                    selectedBreakSeries = breakSerie;
                   });
+                },
+              );
             },
           ),
         ),
