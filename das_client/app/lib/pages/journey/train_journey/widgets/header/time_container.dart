@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:app/bloc/train_journey_cubit.dart';
 import 'package:app/di.dart';
 import 'package:app/theme/theme_util.dart';
+import 'package:app/time_controller/punctuality_state_enum.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -19,24 +20,18 @@ class TimeContainer extends StatefulWidget {
 }
 
 class _TimeContainerState extends State<TimeContainer> {
-  DateTime _lastUpdate = DateTime.now();
-  Journey? _previousJourney;
-  bool _wasVisible = true;
-  Timer? _updateTimer;
   TimeController? timeController;
 
   @override
   void initState() {
     super.initState();
     timeController = DI.get<TimeController>();
-    _updateTimer = Timer.periodic(const Duration(milliseconds: 100), (_) {
-      if (mounted) setState(() {});
-    });
+    timeController!.startMonitoring();
   }
 
   @override
   void dispose() {
-    _updateTimer?.cancel();
+    timeController!.cancelTimer();
     super.dispose();
   }
 
@@ -45,67 +40,40 @@ class _TimeContainerState extends State<TimeContainer> {
     return StreamBuilder<Journey?>(
       stream: context.trainJourneyCubit.journeyStream,
       builder: (context, snapshot) {
-        final sinceUpdate = DateTime.now().difference(_lastUpdate);
-        final isStale = sinceUpdate > Duration(seconds: timeController!.punctualityStaleSeconds);
-        final isVisible = sinceUpdate < Duration(seconds: timeController!.punctualityDisappearSeconds);
-
         final journey = snapshot.data;
-        final delay = journey?.metadata.delay;
-
-        _handleUpdate(journey, delay, isVisible);
-
-        final delayText = _buildDelayText(delay, isStale);
-
         return SBBGroup(
           padding: const EdgeInsets.all(sbbDefaultSpacing),
           useShadow: false,
           child: SizedBox(
             width: 124.0,
             height: 112.0,
-            child: _buildDelayColumn(isVisible, delayText),
+            child: _buildDelayColumn(journey),
           ),
         );
       },
     );
   }
 
-  void _handleUpdate(Journey? newJourney, Duration? delay, bool isVisible) {
-    final journey = newJourney;
+  Widget _buildDelayColumn(Journey? journey) {
+    return StreamBuilder<PunctualityState>(
+      stream: timeController?.punctualityStateStream,
+      builder: (context, snapshot) {
+        timeController?.updatePunctualityTimestamp(journey);
 
-    if (delay != null && journey != _previousJourney) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          _lastUpdate = DateTime.now();
-          _previousJourney = journey;
-          _wasVisible = true;
-          setState(() {});
-        }
-      });
-    }
+        final state = snapshot.data ?? PunctualityState.hidden;
+        final delay = journey?.metadata.delay;
+        final delayText = _buildDelayText(delay, state);
 
-    if (!_wasVisible && isVisible) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          _wasVisible = true;
-          setState(() {});
-        }
-      });
-    }
-
-    if (!isVisible && _wasVisible) {
-      _wasVisible = false;
-    }
-  }
-
-  Widget _buildDelayColumn(bool isVisible, Widget delayText) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Flexible(child: _currentTime()),
-        _divider(),
-        isVisible ? Flexible(child: delayText) : SizedBox(height: sbbDefaultSpacing * 2.5),
-      ],
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Flexible(child: _currentTime()),
+            _divider(),
+            state != PunctualityState.hidden ? Flexible(child: delayText) : SizedBox(height: sbbDefaultSpacing * 2.5),
+          ],
+        );
+      },
     );
   }
 
@@ -116,7 +84,7 @@ class _TimeContainerState extends State<TimeContainer> {
     );
   }
 
-  Widget _buildDelayText(Duration? delay, bool isStale) {
+  Widget _buildDelayText(Duration? delay, PunctualityState punctualityState) {
     String delayString = '+00:00';
     if (delay != null) {
       final minutes = NumberFormat('00').format(delay.inMinutes.abs());
@@ -124,7 +92,7 @@ class _TimeContainerState extends State<TimeContainer> {
       delayString = '${delay.isNegative ? '-' : '+'}$minutes:$seconds';
     }
 
-    final style = isStale
+    final style = punctualityState == PunctualityState.stale
         ? DASTextStyles.xLargeLight.copyWith(
             color: ThemeUtil.getColor(context, SBBColors.graphite, SBBColors.granite),
           )
