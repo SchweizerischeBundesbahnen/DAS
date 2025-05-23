@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="1672_1"
-                SP_VersionMajor="2" SP_VersionMinor="4" SP_Length="36000" SP_Status="Valid">
+                SP_VersionMajor="2" SP_VersionMinor="5" SP_Length="36000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -290,8 +290,8 @@
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
                     &lt;entries&gt;
-						&lt;entry roSpeed=&quot;160&quot; adSpeed=&quot;160&quot; nSpeed=&quot;160&quot; text=&quot;A l‘entrée, dès le début du quai&quot;/&gt;
-                        &lt;entry roSpeed=&quot;140&quot; adSpeed=&quot;140&quot; nSpeed=&quot;140&quot; text=&quot;A la sortie, jusqu'à l’extrémité du quai&quot;/&gt;
+						&lt;entry roSpeed=&quot;160&quot; adSpeed=&quot;160&quot; nSpeed=&quot;160&quot; text=&quot;Ab Perronanfang&quot;/&gt;
+                        &lt;entry roSpeed=&quot;140&quot; adSpeed=&quot;140&quot; nSpeed=&quot;140&quot; text=&quot;Ab Perronmitte&quot;/&gt;
                     &lt;/entries&gt;
                 "/>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
@@ -364,7 +364,7 @@
                 <NetworkSpecificParameter name="xmlOPFootNotes" value="
 				&lt;oPFootNotes&gt; 
 					&lt;footNote type=&quot;contact&quot; refText=&quot;1)&quot;&gt; 
-						&lt;text&gt;+41 512 800 506 RBC Lavaux&lt;/text&gt; 
+						&lt;text&gt;+41 512 800 503 RBC AXEN&lt;/text&gt; 
 					&lt;/footNote&gt; 
 				&lt;/oPFootNotes&gt;
 				"/>
@@ -404,7 +404,7 @@
                 <NetworkSpecificParameter name="xmlLineFootNotes" value="
 				&lt;lineFootNotes&gt; 
 					&lt;footNote identifier=&quot;8D289607429F44C9A7FF4C8D037832F1&quot;&gt; 
-						&lt;text&gt;admis seulement pour &lt;b&gt;RABDe 500&lt;/b&gt;&lt;/text&gt;
+						&lt;text&gt;Zugelassen nur für &lt;b&gt;RABDe 500&lt;/b&gt;&lt;/text&gt;
                         &lt;trainSeries>N&lt;/trainSeries&gt; 
 					&lt;/footNote&gt; 
 				&lt;/lineFootNotes&gt;
@@ -427,8 +427,8 @@
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
                     &lt;entries&gt;
-						&lt;entry roSpeed=&quot;160&quot; adSpeed=&quot;160&quot; nSpeed=&quot;160&quot; text=&quot;A l‘entrée, dès le début du quai&quot;/&gt;
-                        &lt;entry roSpeed=&quot;140&quot; adSpeed=&quot;140&quot; nSpeed=&quot;140&quot; text=&quot;A la sortie, jusqu'à l’extrémité du quai&quot;/&gt;
+						&lt;entry roSpeed=&quot;160&quot; adSpeed=&quot;160&quot; nSpeed=&quot;160&quot; text=&quot;Ab Perronanfang&quot;/&gt;
+                        &lt;entry roSpeed=&quot;140&quot; adSpeed=&quot;140&quot; nSpeed=&quot;140&quot; text=&quot;Ab Perronmitte&quot;/&gt;
                     &lt;/entries&gt;
                 "/>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
@@ -462,7 +462,7 @@
                 <NetworkSpecificParameter name="xmlLineFootNotes" value="
 				&lt;lineFootNotes&gt; 
 					&lt;footNote identifier=&quot;8D289607429F44C9A7FF4C8D037832F1&quot;&gt;  
-						&lt;text&gt;admis seulement pour &lt;b&gt;RABDe 500&lt;/b&gt;&lt;/text&gt;
+						&lt;text&gt;Zugelassen nur für &lt;b&gt;RABDe 500&lt;/b&gt;&lt;/text&gt;
                         &lt;trainSeries>N&lt;/trainSeries&gt; 
 					&lt;/footNote&gt; 
 				&lt;/lineFootNotes&gt;
@@ -485,8 +485,8 @@
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
                     &lt;entries&gt;
-						&lt;entry roSpeed=&quot;85&quot; adSpeed=&quot;85&quot; nSpeed=&quot;85&quot; text=&quot;A l‘entrée, dès le début du quai&quot;/&gt;
-                        &lt;entry roSpeed=&quot;75&quot; adSpeed=&quot;75&quot; nSpeed=&quot;75&quot; text=&quot;A la sortie, jusqu'à l’extrémité du quai&quot;/&gt;
+						&lt;entry roSpeed=&quot;85&quot; adSpeed=&quot;85&quot; nSpeed=&quot;85&quot; text=&quot;Ab Perronanfang&quot;/&gt;
+                        &lt;entry roSpeed=&quot;75&quot; adSpeed=&quot;75&quot; nSpeed=&quot;75&quot; text=&quot;Ab Perronmitte&quot;/&gt;
                     &lt;/entries&gt;
                 "/>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
@@ -520,7 +520,7 @@
                 <NetworkSpecificParameter name="xmlLineFootNotes" value="
 				&lt;lineFootNotes&gt; 
 					&lt;footNote identifier=&quot;8D289607429F44C9A7FF4C8D037832F1&quot;&gt;  
-						&lt;text&gt;admis seulement pour &lt;b&gt;RABDe 500&lt;/b&gt;&lt;/text&gt;
+						&lt;text&gt;Zugelassen nur für &lt;b&gt;RABDe 500&lt;/b&gt;&lt;/text&gt;
                         &lt;trainSeries>N&lt;/trainSeries&gt; 
 					&lt;/footNote&gt; 
 				&lt;/lineFootNotes&gt;
@@ -599,8 +599,8 @@
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
                     &lt;entries&gt;
-						&lt;entry roSpeed=&quot;95&quot; adSpeed=&quot;95&quot; nSpeed=&quot;95&quot; text=&quot;A l‘entrée, dès le début du quai&quot;/&gt;
-                        &lt;entry roSpeed=&quot;85&quot; adSpeed=&quot;85&quot; nSpeed=&quot;85&quot; text=&quot;A la sortie, jusqu'à l’extrémité du quai&quot;/&gt;
+						&lt;entry roSpeed=&quot;95&quot; adSpeed=&quot;95&quot; nSpeed=&quot;95&quot; text=&quot;Ab Perronanfang&quot;/&gt;
+                        &lt;entry roSpeed=&quot;85&quot; adSpeed=&quot;85&quot; nSpeed=&quot;85&quot; text=&quot;Ab Perronmitte&quot;/&gt;
                     &lt;/entries&gt;
                 "/>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
@@ -736,10 +736,10 @@
             <Contact mainContact="true">
                 <OtherContactType contactIdentifier="1306"/>
             </Contact>
-            <Contact mainContact="false" contactRole="Gare ouest: Chef-circulation">
+            <Contact mainContact="false" contactRole="Fahrdienstleiter Nord">
                 <OtherContactType contactIdentifier="1306"/>
             </Contact>
-            <Contact mainContact="false" contactRole="Gare est: Chef-circulation">
+            <Contact mainContact="false" contactRole="Fahrdienstleiter Süd">
                 <OtherContactType contactIdentifier="1307"/>
             </Contact>
         </ContactList>
@@ -762,10 +762,10 @@
             <Contact mainContact="true">
                 <OtherContactType contactIdentifier="1306"/>
             </Contact>
-            <Contact mainContact="false" contactRole="Capomovimento">
+            <Contact mainContact="false" contactRole="Fahrdienstleiter Nord">
                 <OtherContactType contactIdentifier="1306"/>
             </Contact>
-            <Contact mainContact="false" contactRole="Formatore treno SBB Cargo Italia">
+            <Contact mainContact="false" contactRole="Fahrdienstleiter Süd">
                 <OtherContactType contactIdentifier="1307"/>
             </Contact>
         </ContactList>
