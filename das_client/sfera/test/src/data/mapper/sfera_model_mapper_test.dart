@@ -328,16 +328,16 @@ void main() {
     expect(curvePoints.where((c) => c.curvePointType == CurvePointType.end), isEmpty);
     expect(curvePoints[0].curvePointType, CurvePointType.begin);
     expect(curvePoints[0].curveType, CurveType.curve);
-    expect(curvePoints[0].comment, 'Kurve 1');
+    expect(curvePoints[0].comment, 'Kurve 1 comment');
     expect(curvePoints[1].curvePointType, CurvePointType.begin);
     expect(curvePoints[1].curveType, CurveType.curve);
-    expect(curvePoints[1].comment, 'Kurve 1');
+    expect(curvePoints[1].comment, 'Kurve 1 after comment');
     expect(curvePoints[2].curvePointType, CurvePointType.begin);
     expect(curvePoints[2].curveType, CurveType.stationExitCurve);
-    expect(curvePoints[2].comment, 'Kurve 2');
+    expect(curvePoints[2].comment, 'Kurve 5 after stop');
     expect(curvePoints[3].curvePointType, CurvePointType.begin);
     expect(curvePoints[3].curveType, CurveType.curveAfterHalt);
-    expect(curvePoints[3].comment, 'Kurve 3');
+    expect(curvePoints[3].comment, 'Kurve 5 after stop');
   });
 
   test('Test stop on demand is parsed correctly', () async {
@@ -433,6 +433,9 @@ void main() {
     expect(speedRestrictions[0].restriction.orderFrom, 700);
     expect(speedRestrictions[0].restriction.orderTo, 800);
     expect(speedRestrictions[0].restriction.speed, 60);
+    expect(speedRestrictions[0].restriction.restrictionFrom, DateTime.parse('2022-01-01T00:00:00Z'));
+    expect(speedRestrictions[0].restriction.restrictionUntil, DateTime.parse('2060-01-01T00:00:00Z'));
+    expect(speedRestrictions[0].restriction.reason?.de, 'Schutz Personal');
 
     expect(journey.metadata.additionalSpeedRestrictions, hasLength(1));
     expect(journey.metadata.additionalSpeedRestrictions[0].kmFrom, 64.2);
@@ -440,6 +443,9 @@ void main() {
     expect(journey.metadata.additionalSpeedRestrictions[0].orderFrom, 700);
     expect(journey.metadata.additionalSpeedRestrictions[0].orderTo, 800);
     expect(journey.metadata.additionalSpeedRestrictions[0].speed, 60);
+    expect(journey.metadata.additionalSpeedRestrictions[0].restrictionFrom, DateTime.parse('2022-01-01T00:00:00Z'));
+    expect(journey.metadata.additionalSpeedRestrictions[0].restrictionUntil, DateTime.parse('2060-01-01T00:00:00Z'));
+    expect(journey.metadata.additionalSpeedRestrictions[0].reason?.de, 'Schutz Personal');
   });
 
   test('Test additional speed restriction is parsed correctly over multiple segments', () async {
@@ -1077,12 +1083,12 @@ void main() {
   });
 
   test('Test last service point is calculated correctly when no other service point driven over', () async {
-    final journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 2000);
+    final journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 1000);
     expect(journey.valid, true);
     expect(journey.metadata.lastServicePoint, journey.data.whereType<ServicePoint>().toList()[0]);
   });
 
-  test('Test last service point is calculated correctly with non position infos', () async {
+  test('Test last service point is calculated correctly when second sp is driven over', () async {
     final journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 3000);
     expect(journey.valid, true);
     expect(journey.metadata.lastServicePoint, journey.data.whereType<ServicePoint>().toList()[1]);
@@ -1103,6 +1109,12 @@ void main() {
     );
     expect(journey2.metadata.currentPosition, journey2.data[18]);
     expect(journey2.metadata.lastServicePoint, journey2.data.whereType<ServicePoint>().toList()[1]);
+  });
+
+  test('Test last service point is calculated correctly when is last service point of journey', () async {
+    final journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 5000);
+    expect(journey.valid, true);
+    expect(journey.metadata.lastServicePoint, journey.data.whereType<ServicePoint>().toList()[2]);
   });
 
   test('Test CommunicationNetworks parsed correctly', () async {
@@ -1215,7 +1227,7 @@ void main() {
     expect(radioContactLists[2].selectiveContacts.first.contactRole, 'Richtung Süd: Fahrdienstleiter');
   });
 
-  test('Test DecisiveGradientArea parsed correctly', () async {
+  test('Test DecisiveGradientArea parsed correctly', () {
     final journey = getJourney('T15', 4);
     expect(journey.valid, true);
 
@@ -1232,6 +1244,86 @@ void main() {
     expect(servicePoints[3].decisiveGradient, isNotNull);
     expect(servicePoints[3].decisiveGradient!.uphill, 3.0);
     expect(servicePoints[3].decisiveGradient!.downhill, 8.0);
+  });
+
+  test('Test ArrivalDepartureTime parsed correctly in near time', () {
+    final journey = getJourney('T16', 1);
+    expect(journey.valid, true);
+
+    final servicePoints = journey.data.whereType<ServicePoint>().toList();
+    expect(servicePoints, hasLength(8));
+
+    // has calculated times
+    expect(journey.metadata.anyOperationalArrivalDepartureTimes, isTrue);
+
+    // ambiguousDepartureTime and plannedOperationalDepartureTime
+    final genevaAirport = servicePoints[0];
+    expect(genevaAirport.arrivalDepartureTime, isNotNull);
+    expect(genevaAirport.arrivalDepartureTime!.operationalDepartureTime, DateTime.parse('2025-05-12T16:14:25Z'));
+    expect(genevaAirport.arrivalDepartureTime!.plannedDepartureTime, DateTime.parse('2025-05-12T15:13:40Z'));
+    expect(genevaAirport.arrivalDepartureTime!.hasAnyOperationalTime, isTrue);
+    // single ambiguousDepartureTime ('time not calculated')
+    final geneva = servicePoints[1];
+    expect(geneva.arrivalDepartureTime, isNotNull);
+    expect(geneva.arrivalDepartureTime!.operationalDepartureTime, isNull);
+    expect(geneva.arrivalDepartureTime!.plannedDepartureTime, DateTime.parse('2025-05-12T15:24:25Z'));
+    expect(geneva.arrivalDepartureTime!.hasAnyOperationalTime, isFalse);
+    // ambiguousDepartureTime and plannedOperationalDepartureTime
+    final nyon = servicePoints[2];
+    expect(nyon.arrivalDepartureTime, isNotNull);
+    expect(nyon.arrivalDepartureTime!.operationalDepartureTime, DateTime.parse('2025-05-12T16:39:59Z'));
+    expect(nyon.arrivalDepartureTime!.plannedDepartureTime, DateTime.parse('2025-05-12T15:39:43Z'));
+    expect(nyon.arrivalDepartureTime!.hasAnyOperationalTime, isTrue);
+    // single ambiguousArrivalTime
+    final morges = servicePoints[3];
+    expect(morges.arrivalDepartureTime, isNotNull);
+    expect(morges.arrivalDepartureTime!.operationalDepartureTime, isNull);
+    expect(morges.arrivalDepartureTime!.plannedDepartureTime, isNull);
+    expect(morges.arrivalDepartureTime!.operationalArrivalTime, isNull);
+    expect(morges.arrivalDepartureTime!.plannedArrivalTime, DateTime.parse('2025-05-12T15:55:23Z'));
+    // ambiguousArrivalTime and plannedArrivalTime
+    final lausanne = servicePoints[4];
+    expect(lausanne.arrivalDepartureTime, isNotNull);
+    expect(lausanne.arrivalDepartureTime!.operationalDepartureTime, isNull);
+    expect(lausanne.arrivalDepartureTime!.plannedDepartureTime, isNull);
+    expect(lausanne.arrivalDepartureTime!.operationalArrivalTime, DateTime.parse('2025-05-12T17:07:12Z'));
+    expect(lausanne.arrivalDepartureTime!.plannedArrivalTime, DateTime.parse('2025-05-12T16:07:20Z'));
+    expect(lausanne.arrivalDepartureTime!.hasAnyOperationalTime, isTrue);
+    // ambiguousArrivalTime, plannedArrivalTime and ambiguousDepartureTime
+    final vevey = servicePoints[5];
+    expect(vevey.arrivalDepartureTime, isNotNull);
+    expect(vevey.arrivalDepartureTime!.operationalDepartureTime, isNull);
+    expect(vevey.arrivalDepartureTime!.plannedDepartureTime, DateTime.parse('2025-05-12T16:29:12Z'));
+    expect(vevey.arrivalDepartureTime!.operationalArrivalTime, DateTime.parse('2025-05-12T17:28:56Z'));
+    expect(vevey.arrivalDepartureTime!.plannedArrivalTime, DateTime.parse('2025-05-12T16:28:12Z'));
+    expect(vevey.arrivalDepartureTime!.hasAnyOperationalTime, isTrue);
+    // all times
+    final montreux = servicePoints[6];
+    expect(montreux.arrivalDepartureTime, isNotNull);
+    expect(montreux.arrivalDepartureTime!.operationalDepartureTime, DateTime.parse('2025-05-12T17:36:42Z'));
+    expect(montreux.arrivalDepartureTime!.plannedDepartureTime, DateTime.parse('2025-05-12T16:36:12Z'));
+    expect(montreux.arrivalDepartureTime!.operationalArrivalTime, DateTime.parse('2025-05-12T17:35:16Z'));
+    expect(montreux.arrivalDepartureTime!.plannedArrivalTime, DateTime.parse('2025-05-12T16:35:12Z'));
+    expect(montreux.arrivalDepartureTime!.hasAnyOperationalTime, isTrue);
+    // none again
+    final aigle = servicePoints[7];
+    expect(aigle.arrivalDepartureTime, isNull);
+  });
+
+  test('metadata.hasCalculatedTimes_whenNoCalculatedTimesInJourney_thenFalse', () {
+    final journey = getJourney('T4', 1);
+    expect(journey.valid, true);
+
+    // has calculated times
+    expect(journey.metadata.anyOperationalArrivalDepartureTimes, isFalse);
+  });
+
+  test('metadata.hasCalculatedTimes_whenNoTimesInJourney_thenFalse', () {
+    final journey = getJourney('T5', 1);
+    expect(journey.valid, true);
+
+    // has calculated times
+    expect(journey.metadata.anyOperationalArrivalDepartureTimes, isFalse);
   });
 }
 

@@ -10,9 +10,17 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 enum _ControllerState { closed, expanded, maximized }
 
+/// Used to build header and body widgets for [DasModalSheet]
+class DASModalSheetBuilder {
+  Widget? header(BuildContext context) => null;
+
+  Widget body(BuildContext context) => SizedBox.shrink();
+}
+
 /// Used to open and close the [DasModalSheet] and handle animation.
 class DASModalSheetController {
   final TimeController timeController = TimeController();
+  static int automaticCloseAfterSeconds = 40;
 
   DASModalSheetController({
     this.animationDuration = const Duration(milliseconds: 150),
@@ -134,15 +142,13 @@ class DasModalSheet extends StatefulWidget {
   static const Key modalSheetCloseButtonKey = Key('dasModalSheetCloseButton');
 
   const DasModalSheet({
-    required this.child,
+    required this.builder,
     required this.controller,
     super.key,
-    this.header,
     this.leftMargin = 0.0,
   });
 
-  final Widget child;
-  final Widget? header;
+  final DASModalSheetBuilder builder;
   final DASModalSheetController controller;
 
   /// margin used in full-screen on the left side of the modal sheet.
@@ -198,23 +204,26 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
       children: [
         _header(),
         SizedBox(height: sbbDefaultSpacing * 0.5),
-        Expanded(child: widget.child),
+        Expanded(child: widget.builder.body(context)),
       ],
     );
   }
 
   Widget _header() {
-    return Row(
-      children: [
-        Expanded(
-          child: widget.header != null ? widget.header! : SizedBox(),
-        ),
-        SBBIconButtonLarge(
-          key: DasModalSheet.modalSheetCloseButtonKey,
-          onPressed: () => widget.controller.close(),
-          icon: SBBIcons.cross_small,
-        ),
-      ],
+    return ConstrainedBox(
+      constraints: BoxConstraints(minHeight: 64.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: widget.builder.header(context) ?? SizedBox(),
+          ),
+          SBBIconButtonLarge(
+            key: DasModalSheet.modalSheetCloseButtonKey,
+            onPressed: () => widget.controller.close(),
+            icon: SBBIcons.cross_small,
+          ),
+        ],
+      ),
     );
   }
 

@@ -1,42 +1,33 @@
-import 'package:app/bloc/auth_cubit.dart';
-import 'package:app/bloc/train_journey_cubit.dart';
 import 'package:app/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/nav/das_navigation_drawer.dart';
 import 'package:app/pages/journey/train_journey/train_journey_overview.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
+import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/pages/journey/train_selection/train_selection.dart';
+import 'package:app/util/error_code.dart';
 import 'package:app/util/format.dart';
+import 'package:auth/component.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
+import 'package:sfera/component.dart';
 
 @RoutePage()
-class JourneyPage extends StatelessWidget {
+class JourneyPage extends StatefulWidget {
+  static const disconnectButtonKey = Key('disconnectButton');
+
   const JourneyPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: DI.get<TrainJourneyCubit>(),
-      child: JourneyPageContent(),
-    );
-  }
+  State<JourneyPage> createState() => _JourneyPageState();
 }
 
-class JourneyPageContent extends StatefulWidget {
-  const JourneyPageContent({super.key});
-
-  static const disconnectKey = Key('disconnectButton');
-
-  @override
-  State<JourneyPageContent> createState() => _JourneyPageContentState();
-}
-
-class _JourneyPageContentState extends State<JourneyPageContent> with SingleTickerProviderStateMixin {
+class _JourneyPageState extends State<JourneyPage> with SingleTickerProviderStateMixin {
   static const _toolbarHideAnimationDuration = 400;
 
   late final AnimationController _controller;
@@ -62,78 +53,107 @@ class _JourneyPageContentState extends State<JourneyPageContent> with SingleTick
   @override
   Widget build(BuildContext context) {
     final double screenHeight = MediaQuery.of(context).size.height;
-    return BlocBuilder<TrainJourneyCubit, TrainJourneyState>(
-      builder: (context, state) {
-        return StreamBuilder<TrainJourneySettings>(
-            stream: context.trainJourneyCubit.settingsStream,
-            builder: (context, snapshot) {
-              return Scaffold(
-                //Handling overflow issues in train selection when tablet is too small
-                resizeToAvoidBottomInset: screenHeight <= 830 ? true : null,
-                appBar: _appBar(context, state, snapshot.data),
-                body: _body(context, state),
-                drawer: const DASNavigationDrawer(),
-              );
-            });
+    final viewModel = context.read<TrainJourneyViewModel>();
+    return StreamBuilder<TrainJourneySettings>(
+      stream: viewModel.settings,
+      builder: (context, snapshot) {
+        return Scaffold(
+          //Handling overflow issues in train selection when tablet is too small
+          resizeToAvoidBottomInset: screenHeight <= 830 ? true : null,
+          appBar: _appBar(context, snapshot.data),
+          body: _body(context),
+          drawer: const DASNavigationDrawer(),
+        );
       },
     );
   }
 
-  PreferredSizeWidget? _appBar(BuildContext context, TrainJourneyState state, TrainJourneySettings? settings) {
-    final appBarHidden = state is TrainJourneyLoadedState && settings?.isAutoAdvancementEnabled == true;
-    appBarHidden ? _controller.forward() : _controller.reverse();
-
+  PreferredSizeWidget? _appBar(BuildContext context, TrainJourneySettings? settings) {
+    final viewModel = context.read<TrainJourneyViewModel>();
     return PreferredSize(
       preferredSize: Size.fromHeight(_toolbarHeight),
-      child: SBBHeader(
-        title: _headerTitle(context, state),
-        actions: [
-          if (state is SelectingTrainJourneyState) _logoutButton(context),
-          if (state is! SelectingTrainJourneyState) _trainSelectionButton(context)
-        ],
+      child: StreamBuilder(
+        stream: CombineLatestStream.list([viewModel.journey, viewModel.trainIdentification]),
+        builder: (context, snapshot) {
+          final journey = snapshot.data?[0] as Journey?;
+          final trainIdentification = snapshot.data?[1] as TrainIdentification?;
+
+          final appBarHidden = journey != null && settings?.isAutoAdvancementEnabled == true;
+          appBarHidden ? _controller.forward() : _controller.reverse();
+
+          return SBBHeader(
+            title: _headerTitle(context, trainIdentification),
+            actions: [
+              journey == null ? _logoutButton(context) : _trainSelectionButton(context),
+            ],
+          );
+        },
       ),
     );
   }
 
-  Widget _body(BuildContext context, TrainJourneyState state) {
+  Widget _body(BuildContext context) {
     return Column(
       children: [
-        Expanded(child: _content(state)),
+        Expanded(child: _content(context)),
       ],
     );
   }
 
-  Widget _content(TrainJourneyState state) => switch (state) {
-        SelectingTrainJourneyState() => const TrainSelection(),
-        TrainJourneyLoadedState() => const TrainJourneyOverview(),
-        _ => const Center(child: CircularProgressIndicator()),
-      };
+  Widget _content(BuildContext context) {
+    final viewModel = context.read<TrainJourneyViewModel>();
+    return StreamBuilder(
+      stream: CombineLatestStream.list([
+        viewModel.journey,
+        viewModel.trainIdentification,
+        viewModel.errorCode,
+      ]),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-  IconButton _logoutButton(BuildContext context) {
+        final journey = snapshot.data?[0] as Journey?;
+        final trainIdentification = snapshot.data?[1] as TrainIdentification?;
+        final errorCode = snapshot.data?[2] as ErrorCode?;
+
+        if (trainIdentification == null || errorCode != null) {
+          return const TrainSelection();
+        } else if (journey != null) {
+          return const TrainJourneyOverview();
+        }
+
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
+  }
+
+  Widget _logoutButton(BuildContext context) {
     return IconButton(
       icon: const Icon(SBBIcons.exit_small),
       onPressed: () {
-        context.authCubit.logout();
+        DI.get<Authenticator>().logout();
         context.router.replace(const LoginRoute());
       },
     );
   }
 
-  IconButton _trainSelectionButton(BuildContext context) {
+  Widget _trainSelectionButton(BuildContext context) {
     return IconButton(
-      key: JourneyPageContent.disconnectKey,
+      key: JourneyPage.disconnectButtonKey,
       icon: const Icon(SBBIcons.train_small),
-      onPressed: () => context.trainJourneyCubit.reset(),
+      onPressed: () => context.read<TrainJourneyViewModel>().reset(),
     );
   }
 
-  String _headerTitle(BuildContext context, TrainJourneyState state) {
-    if (state is TrainJourneyLoadedState) {
-      final locale = Localizations.localeOf(context);
-      final date = Format.dateWithAbbreviatedDay(state.trainIdentification.date, locale);
-      return '${context.l10n.p_train_journey_appbar_text} - $date';
+  String _headerTitle(BuildContext context, TrainIdentification? trainIdentification) {
+    if (trainIdentification == null) {
+      return context.l10n.c_app_name;
     }
-    return context.l10n.c_app_name;
+
+    final locale = Localizations.localeOf(context);
+    final date = Format.dateWithAbbreviatedDay(trainIdentification.date, locale);
+    return '${context.l10n.p_train_journey_appbar_text} - $date';
   }
 
   @override

@@ -1,6 +1,6 @@
 {
   "das_playground": "0.4.0",
-  "das_client": "0.18.1",
+  "das_client/app": "0.20.0",
   "das_backend": "0.1.2",
   "sfera_mock": "0.4.0"
 }

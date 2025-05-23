@@ -1,8 +1,10 @@
-import 'package:app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_tab.dart';
-import 'package:app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/time_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
@@ -30,7 +32,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   }) : super(
           rowColor: rowColor ??
               ((metadata.nextStop == data)
-                  ? ThemeUtil.getColor(context, Color(0x4D143A85), SBBColors.royal150)
+                  ? ThemeUtil.getColor(context, Color(0xFFB1BED4), SBBColors.royal150)
                   : ThemeUtil.getDASTableColor(context)),
           stickyLevel: StickyLevel.first,
         );
@@ -40,8 +42,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     final servicePointName = data.name;
     return DASTableCell(
       onTap: () {
-        final viewModel = context.read<DetailModalSheetViewModel>();
-        viewModel.open(tab: DetailModalSheetTab.communication, servicePoint: data);
+        final viewModel = context.read<ServicePointModalViewModel>();
+        viewModel.open(context, tab: ServicePointModalTab.communication, servicePoint: data);
       },
       alignment: Alignment.bottomLeft,
       child: Text(
@@ -56,7 +58,19 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   @override
   DASTableCell timeCell(BuildContext context) {
-    return DASTableCell(child: Text('06:05:52'), alignment: defaultAlignment, color: specialCellColor);
+    final times = data.arrivalDepartureTime;
+    final viewModel = context.read<ArrivalDepartureTimeViewModel>();
+
+    if (times == null || !times.hasAnyTime) {
+      return DASTableCell.empty(color: specialCellColor, onTap: () => viewModel.toggleOperationalTime());
+    }
+
+    return DASTableCell(
+      onTap: () => viewModel.toggleOperationalTime(),
+      child: TimeCellBody(times: times, viewModel: viewModel, showTimesInBrackets: !data.isStop),
+      alignment: defaultAlignment,
+      color: specialCellColor,
+    );
   }
 
   @override
@@ -105,8 +119,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
     return DASTableCell(
       onTap: () {
-        final viewModel = context.read<DetailModalSheetViewModel>();
-        viewModel.open(tab: DetailModalSheetTab.graduatedSpeeds, servicePoint: data);
+        final viewModel = context.read<ServicePointModalViewModel>();
+        viewModel.open(context, tab: ServicePointModalTab.graduatedSpeeds, servicePoint: data);
       },
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
@@ -146,14 +160,16 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   DASTableCell gradientCell(double? value) {
     if (value == null) {
-      return DASTableCell.empty();
+      return DASTableCell.empty(color: specialCellColor);
     }
 
     return DASTableCell(
-        child: Text(
-          value.round().toString(),
-          style: DASTextStyles.largeRoman,
-        ),
-        alignment: defaultAlignment);
+      color: specialCellColor,
+      child: Text(
+        value.round().toString(),
+        style: DASTextStyles.largeRoman,
+      ),
+      alignment: defaultAlignment,
+    );
   }
 }

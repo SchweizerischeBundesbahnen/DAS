@@ -6,7 +6,7 @@ import 'package:sfera/component.dart';
 
 import 'reduced_overview_view_model_test.mocks.dart';
 
-final trainIdentification = TrainIdentification(ru: Ru.sbbP, trainNumber: '1234', date: DateTime.now());
+final trainIdentification = TrainIdentification(ru: RailwayUndertaking.sbbP, trainNumber: '1234', date: DateTime.now());
 
 @GenerateNiceMocks([
   MockSpec<SferaLocalRepo>(),

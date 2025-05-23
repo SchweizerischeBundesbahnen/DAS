@@ -1,8 +1,8 @@
 import 'package:app/util/error_code.dart';
 import 'package:app/util/format.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
 import '../util/test_utils.dart';

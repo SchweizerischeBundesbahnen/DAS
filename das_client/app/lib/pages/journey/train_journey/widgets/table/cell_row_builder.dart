@@ -191,9 +191,9 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
 
   DASTableCell actionsCell(BuildContext context) => DASTableCell.empty();
 
-  DASTableCell gradientUphillCell(BuildContext context) => DASTableCell.empty();
+  DASTableCell gradientUphillCell(BuildContext context) => DASTableCell.empty(color: specialCellColor);
 
-  DASTableCell gradientDownhillCell(BuildContext context) => DASTableCell.empty();
+  DASTableCell gradientDownhillCell(BuildContext context) => DASTableCell.empty(color: specialCellColor);
 
   Color? get specialCellColor =>
       getAdditionalSpeedRestriction() != null ? AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor : null;

@@ -2,18 +2,21 @@ import 'package:app/pages/journey/train_journey/widgets/header/sim_identifier.da
 import 'package:app/theme/theme_util.dart';
 import 'package:battery_plus/battery_plus.dart';
 //import 'package:app/time_controller/time_controller.dart';
+import 'package:app/brightness/brightness_manager.dart';
+import 'package:app/di.dart';
+import 'package:app/pages/journey/journey_page.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/battery_status.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/extended_menu.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/radio_channel.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/radio_contact.dart';
+import 'package:app/pages/journey/train_journey/widgets/header/sim_identifier.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/time_container.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
-import 'package:app/widgets/indicator_wrapper.dart';
-import 'package:app/brightness/brightness_manager.dart';
-import 'package:app/di.dart';
 import 'package:app/util/format.dart';
+import 'package:app/widgets/indicator_wrapper.dart';
+import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -90,8 +93,7 @@ Future<void> main() async {
       await tapElement(tester, pauseButton);
 
       // close journey
-      final disconnectKey = Key('disconnectButton');
-      final closeButton = find.byKey(disconnectKey);
+      final closeButton = find.byKey(JourneyPage.disconnectButtonKey);
       expect(closeButton, findsOneWidget);
 
       await tapElement(tester, closeButton);
@@ -102,14 +104,12 @@ Future<void> main() async {
     });
 
     testWidgets('test app bar is hiding while train is active', (tester) async {
-      final testLocale = const Locale('de', 'CH');
-
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999');
 
-      final date = Format.dateWithAbbreviatedDay(DateTime.now(), testLocale);
+      final date = Format.dateWithAbbreviatedDay(DateTime.now(), deviceLocale());
       final appbarText = '${l10n.p_train_journey_appbar_text} - $date';
 
       expect(find.text(appbarText).hitTestable(), findsNothing);
@@ -140,7 +140,7 @@ Future<void> main() async {
       if (brightness != Brightness.dark) {
         final nightMode = find.descendant(
           of: header,
-          matching: find.widgetWithText(SBBTertiaryButtonLarge, 'Nachtmodus'),
+          matching: find.widgetWithText(SBBTertiaryButtonLarge, l10n.p_train_journey_header_button_dark_theme),
         );
         expect(nightMode, findsOneWidget);
 
@@ -149,7 +149,7 @@ Future<void> main() async {
       } else {
         final dayMode = find.descendant(
           of: header,
-          matching: find.widgetWithText(SBBTertiaryButtonLarge, 'Tagmodus'),
+          matching: find.widgetWithText(SBBTertiaryButtonLarge, l10n.p_train_journey_header_button_light_theme),
         );
         expect(dayMode, findsOneWidget);
 

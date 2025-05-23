@@ -4,6 +4,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/cab_signaling_row.
 import 'package:app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/time_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/curve_point_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/protection_section_row.dart';
@@ -13,6 +14,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/tram_area_row.dart
 import 'package:app/pages/journey/train_journey/widgets/table/whistle_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:app/pages/profile/profile_page.dart';
+import 'package:app/util/format.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
@@ -339,17 +341,15 @@ void main() {
       final newLineSpeedRow = findDASTableRowByText('New Line Speed A Missing');
       expect(newLineSpeedRow, findsOneWidget);
 
-      final emptySpeedNewLineSpeedRow =
+      final emptyCellsInNewLineSpeedRow =
           find.descendant(of: newLineSpeedRow, matching: find.byKey(DASTableCell.emptyCellKey));
-      //Row has 11 times a DASTableCell.empty including the speed cell
-      expect(emptySpeedNewLineSpeedRow, findsNWidgets(11));
+      expect(emptyCellsInNewLineSpeedRow, findsNWidgets(11));
 
       final genevaRow = findDASTableRowByText('Genève');
       expect(genevaRow, findsOneWidget);
 
-      final emptySpeedGeneva = find.descendant(of: genevaRow, matching: find.byKey(DASTableCell.emptyCellKey));
-      //Row has 11 times a DASTableCell.empty including the speed cell
-      expect(emptySpeedGeneva, findsNWidgets(11));
+      final emptyCellsInGenevaRow = find.descendant(of: genevaRow, matching: find.byKey(DASTableCell.emptyCellKey));
+      expect(emptyCellsInGenevaRow, findsNWidgets(12));
 
       await disconnect(tester);
     });
@@ -363,7 +363,7 @@ void main() {
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
-      final weicheRow = findDASTableRowByText('Weiche');
+      final weicheRow = findDASTableRowByText(l10n.c_connection_track_weiche);
       expect(weicheRow, findsOneWidget);
 
       final weicheKilometre = find.descendant(of: weicheRow, matching: find.text('0.8'));
@@ -453,7 +453,7 @@ void main() {
                 it.decoration is BoxDecoration &&
                 (it.decoration as BoxDecoration).color ==
                     AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor));
-        expect(coloredCells, findsNWidgets(4));
+        expect(coloredCells, findsNWidgets(6));
       }
 
       await disconnect(tester);
@@ -469,7 +469,7 @@ void main() {
       final List<String> expectedHeaders = [
         l10n.p_train_journey_table_kilometre_label,
         l10n.p_train_journey_table_journey_information_label,
-        l10n.p_train_journey_table_time_label,
+        l10n.p_train_journey_table_time_label_planned,
         l10n.p_train_journey_table_advised_speed_label,
         l10n.p_train_journey_table_graduated_speed_label,
       ];
@@ -659,7 +659,7 @@ void main() {
 
       final bracketStationD = findDASTableRowByText('Klammerbahnhof D');
       final zahnstangenEnde = findDASTableRowByText('Zahnstangen Ende');
-      final deckungssignal = findDASTableRowByText('Deckungssignal');
+      final deckungssignal = findDASTableRowByText(l10n.c_main_signal_function_protection);
       final bracketStationD1 = findDASTableRowByText('Klammerbahnhof D1');
       expect(bracketStationD, findsOneWidget);
       expect(zahnstangenEnde, findsOneWidget);
@@ -744,17 +744,19 @@ void main() {
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
-      await tester.dragUntilVisible(find.text('Kurve').first, scrollableFinder, const Offset(0, -50));
+      final curveLabel = l10n.p_train_journey_table_curve_type_curve;
+      await tester.dragUntilVisible(find.text(curveLabel).first, scrollableFinder, const Offset(0, -50));
 
-      final curveRows = findDASTableRowByText('Kurve');
+      final curveRows = findDASTableRowByText(curveLabel);
       expect(curveRows, findsAtLeast(1));
 
       final curveIcon = find.descendant(of: curveRows.first, matching: find.byKey(CurvePointRow.curvePointIconKey));
       expect(curveIcon, findsOneWidget);
 
-      await tester.dragUntilVisible(find.text('Kurve nach Haltestelle'), scrollableFinder, const Offset(0, -50));
+      final curveAfterHaltLabel = l10n.p_train_journey_table_curve_type_curve_after_halt;
+      await tester.dragUntilVisible(find.text(curveAfterHaltLabel), scrollableFinder, const Offset(0, -50));
 
-      final curveAfterHaltRow = findDASTableRowByText('Kurve nach Haltestelle');
+      final curveAfterHaltRow = findDASTableRowByText(curveAfterHaltLabel);
       expect(curveAfterHaltRow, findsOneWidget);
 
       await disconnect(tester);
@@ -779,8 +781,9 @@ void main() {
       expect(laneChangeIcon, findsOneWidget);
 
       // check if basic signal is rendered correctly
-      await tester.dragUntilVisible(find.text('Deckungssignal'), scrollableFinder, const Offset(0, -50));
-      final protectionSignalRow = findDASTableRowByText('Deckungssignal');
+      await tester.dragUntilVisible(
+          find.text(l10n.c_main_signal_function_protection), scrollableFinder, const Offset(0, -50));
+      final protectionSignalRow = findDASTableRowByText(l10n.c_main_signal_function_protection);
       expect(protectionSignalRow, findsOneWidget);
       expect(find.descendant(of: protectionSignalRow, matching: find.text('D1')), findsOneWidget);
       final noLaneChangeIcon =
@@ -788,8 +791,9 @@ void main() {
       expect(noLaneChangeIcon, findsNothing);
 
       // check if signals with multiple functions are rendered correctly
-      await tester.dragUntilVisible(find.text('Block/Abschnittsignal'), scrollableFinder, const Offset(0, -50));
-      final blockIntermediateSignalRow = findDASTableRowByText('Block/Abschnittsignal');
+      final signalLabel = '${l10n.c_main_signal_function_block}/${l10n.c_main_signal_function_intermediate}';
+      await tester.dragUntilVisible(find.text(signalLabel), scrollableFinder, const Offset(0, -50));
+      final blockIntermediateSignalRow = findDASTableRowByText(signalLabel);
       expect(blockIntermediateSignalRow, findsOneWidget);
       expect(find.descendant(of: blockIntermediateSignalRow, matching: find.text('BAB1')), findsOneWidget);
       final noLaneChangeIcon2 =
@@ -1075,7 +1079,155 @@ void main() {
 
       await disconnect(tester);
     });
+
+    testWidgets('test time cells for journey in far future (T4) with planned times only', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T4');
+
+      // test if planned time header label is in table (no operational times)
+      final expectedPlannedHeaderLabel = l10n.p_train_journey_table_time_label_planned;
+      final timeHeader = find.text(expectedPlannedHeaderLabel);
+      expect(timeHeader, findsOneWidget);
+
+      // two service points have empty times
+      final timeCellKey = TimeCellBody.timeCellKey;
+      expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: 'Solothurn'), findsNothing);
+
+      expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: 'Solothurn West'), findsNothing);
+
+      // Langendorf should have only departure
+      final langendorf = 'Langendorf';
+      final expectedTimeLangendorf = Format.plannedTime(DateTime.parse('2025-05-12T16:36:45Z'));
+
+      expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: langendorf), findsOneWidget);
+      expect(_findTextInDASTableRowByText(innerText: expectedTimeLangendorf, rowText: langendorf), findsOneWidget);
+
+      // Lommiswil has departure and arrival
+      final lommiswil = 'Lommiswil';
+      final expectedTimeLommiswil = '${Format.plannedTime(DateTime.parse('2025-05-12T16:39:12Z'))}\n'
+          '${Format.plannedTime(DateTime.parse('2025-05-12T16:40:12Z'))}';
+      expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: lommiswil), findsOneWidget);
+      expect(_findTextInDASTableRowByText(innerText: expectedTimeLommiswil, rowText: lommiswil), findsOneWidget);
+
+      // Im Holz (non mandatory stop) has departure
+      final holz = 'Im Holz';
+      final expectedTimeHolz = Format.plannedTime(DateTime.parse('2025-05-12T16:46:12Z'));
+      expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: holz), findsOneWidget);
+      expect(_findTextInDASTableRowByText(innerText: expectedTimeHolz, rowText: holz), findsOneWidget);
+
+      // Oberdorf has only arrival
+      final oberdorf = 'Oberdorf SO';
+      final expectedTimeOberdorf = '${Format.plannedTime(DateTime.parse('2025-05-12T16:48:45Z'))}\n';
+      expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: oberdorf), findsOneWidget);
+      expect(_findTextInDASTableRowByText(innerText: expectedTimeOberdorf, rowText: oberdorf), findsOneWidget);
+
+      // tap header label to switch to planned times
+      await tapElement(tester, timeHeader);
+
+      // test if planned time header label is still in table (does not switch)
+      expect(find.text(expectedPlannedHeaderLabel), findsOneWidget);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('test time cells for journey in near future (T16) with operational and planned times', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T16');
+
+      // test if operational time header label is in table
+      final expectedCalculatedHeaderLabel = l10n.p_train_journey_table_time_label_new;
+      final timeHeader = find.text(expectedCalculatedHeaderLabel);
+      expect(timeHeader, findsOneWidget);
+
+      // test if times are displayed correctly
+      final timeCellKey = TimeCellBody.timeCellKey;
+      // Geneve Aeroport should have only departure operational time
+      final geneveAer = 'Genève-Aéroport';
+      final expectedTimeGeneveAer = Format.operationalTime(DateTime.parse('2025-05-12T16:14:25Z'));
+      expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: geneveAer), findsOneWidget);
+      expect(_findTextInDASTableRowByText(innerText: expectedTimeGeneveAer, rowText: geneveAer), findsOneWidget);
+      // morges should have empty times since it does not have operational times
+      final morges = 'Morges';
+      expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: morges), findsNothing);
+      // vevey should have single operational arrival in brackets since it's a passing point
+      final vevey = 'Vevey';
+      final expectedTimeVevey = '(${Format.operationalTime(DateTime.parse('2025-05-12T17:28:56Z'))})\n';
+      expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: vevey), findsOneWidget);
+      expect(_findTextInDASTableRowByText(innerText: expectedTimeVevey, rowText: vevey), findsOneWidget);
+
+      // tap header label to switch to planned times
+      await tapElement(tester, timeHeader);
+
+      // test if planned time header label is in table
+      final expectedPlannedHeaderLabel = l10n.p_train_journey_table_time_label_planned;
+      expect(find.text(expectedPlannedHeaderLabel), findsOneWidget);
+      // test if time switched (aeroport)
+      final geneveAerPlanned = 'Genève-Aéroport';
+      final expectedTimeGenAerPlanned = Format.plannedTime(DateTime.parse('2025-05-12T15:13:40Z'));
+      expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: geneveAerPlanned), findsOneWidget);
+      expect(_findTextInDASTableRowByText(innerText: expectedTimeGenAerPlanned, rowText: geneveAerPlanned),
+          findsOneWidget);
+      // morges
+      final morgesPlanned = 'Morges';
+      final expectedTimeMorgesPlanned = '(${Format.plannedTime(DateTime.parse('2025-05-12T15:55:23Z'))})\n';
+      expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: morgesPlanned), findsOneWidget);
+      expect(
+          _findTextInDASTableRowByText(innerText: expectedTimeMorgesPlanned, rowText: morgesPlanned), findsOneWidget);
+      // vevey should have both times in brackets since it's a passing point
+      final veveyPlanned = 'Vevey';
+      final expectedTimeVeveyPlanned = '(${Format.plannedTime(DateTime.parse('2025-05-12T16:28:12Z'))})\n'
+          '(${Format.plannedTime(DateTime.parse('2025-05-12T16:29:12Z'))})';
+      expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: veveyPlanned), findsOneWidget);
+      expect(_findTextInDASTableRowByText(innerText: expectedTimeVeveyPlanned, rowText: veveyPlanned), findsOneWidget);
+
+      await disconnect(tester);
+    });
+
+    testWidgets(
+        'test auto switch behavior for time cells journey in near future (T9999) with operational and planned times',
+        (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T9999');
+
+      // test if operational time header label is in table
+      final expectedCalculatedHeaderLabel = l10n.p_train_journey_table_time_label_new;
+      final timeHeader = find.text(expectedCalculatedHeaderLabel);
+      expect(timeHeader, findsOneWidget);
+
+      // tap header label to switch to planned times
+      await tapElement(tester, timeHeader);
+
+      // test if planned time header label is in table
+      final expectedPlannedHeaderLabel = l10n.p_train_journey_table_time_label_planned;
+      expect(find.text(expectedPlannedHeaderLabel), findsOneWidget);
+
+      await Future.delayed(Duration(seconds: 11));
+
+      await tester.pumpAndSettle();
+
+      expect(find.text(expectedCalculatedHeaderLabel), findsOneWidget);
+
+      await disconnect(tester);
+    });
   });
+}
+
+Finder _findByKeyInDASTableRowByText({required Key key, required String rowText}) {
+  final row = findDASTableRowByText(rowText);
+  expect(row, findsOneWidget);
+  return find.descendant(of: row, matching: find.byKey(key));
+}
+
+Finder _findTextInDASTableRowByText({required String innerText, required String rowText}) {
+  final row = findDASTableRowByText(rowText);
+  expect(row, findsOneWidget);
+  return find.descendant(of: row, matching: find.text(innerText));
 }
 
 void _checkTrackEquipmentOnServicePoint(String name, Key expectedKey, {bool hasConvExtSpeedBorder = false}) {

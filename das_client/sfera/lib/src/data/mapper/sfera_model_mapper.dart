@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:fimber/fimber.dart';
 import 'package:sfera/src/data/dto/enums/start_end_qualifier_dto.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
+import 'package:sfera/src/data/dto/multilingual_text_dto.dart';
 import 'package:sfera/src/data/dto/related_train_information_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
@@ -99,6 +100,8 @@ class SferaModelMapper {
         routeStart: journeyData.firstOrNull,
         routeEnd: journeyData.lastOrNull,
         delay: relatedTrainInformation?.ownTrain.trainLocationInformation.delay.delayAsDuration,
+        anyOperationalArrivalDepartureTimes:
+            servicePoints.any((sP) => sP.arrivalDepartureTime?.hasAnyOperationalTime ?? false),
         nonStandardTrackEquipmentSegments: trackEquipmentSegments,
         bracketStationSegments: _parseBracketStationSegments(servicePoints),
         availableBreakSeries: _parseAvailableBreakSeries(journeyData),
@@ -164,11 +167,9 @@ class SferaModelMapper {
   }
 
   static _calculateLastServicePoint(Iterable<ServicePoint> servicePoints, BaseData? currentPosition) {
-    return servicePoints
-            .toList()
-            .reversed
-            .firstWhereOrNull((sP) => (currentPosition == null || sP.order < currentPosition.order)) ??
-        servicePoints.firstOrNull;
+    if (currentPosition == null) return servicePoints.firstOrNull;
+
+    return servicePoints.toList().reversed.firstWhereOrNull((sP) => sP.order <= currentPosition.order);
   }
 
   static List<AdditionalSpeedRestriction> _parseAdditionalSpeedRestrictions(
@@ -221,11 +222,15 @@ class SferaModelMapper {
           final endOrder = calculateOrder(endSegmentIndex, endLocation);
 
           result.add(AdditionalSpeedRestriction(
-              kmFrom: startKilometreMap[startLocation]!.first,
-              kmTo: endKilometreMap[endLocation]!.first,
-              orderFrom: startOrder,
-              orderTo: endOrder,
-              speed: asrTemporaryConstrain.additionalSpeedRestriction?.asrSpeed));
+            kmFrom: startKilometreMap[startLocation]!.first,
+            kmTo: endKilometreMap[endLocation]!.first,
+            orderFrom: startOrder,
+            orderTo: endOrder,
+            restrictionFrom: asrTemporaryConstrain.startTime,
+            restrictionUntil: asrTemporaryConstrain.endTime,
+            speed: asrTemporaryConstrain.additionalSpeedRestriction?.asrSpeed,
+            reason: asrTemporaryConstrain.temporaryConstraintReasons.toLocalizedString,
+          ));
 
           startSegmentIndex = null;
           endSegmentIndex = null;

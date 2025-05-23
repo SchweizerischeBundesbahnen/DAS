@@ -1,6 +1,6 @@
 name: app
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 0.18.1+59
+version: 0.20.0+61
 
 environment:
   sdk: ^3.6.2
@@ -22,7 +22,7 @@ dependencies:
 
   # https://pub.dev/packages/audioplayers
   # TODO: Fixed to 5.2.1 as there is a problem with XCode 14 on higher versions.
-  audioplayers: 5.2.1
+  audioplayers: 6.4.0
   # https://pub.dev/packages/android_id
   android_id: ^0.4.0
   # https://pub.dev/packages/auto_route
@@ -31,14 +31,14 @@ dependencies:
   battery_plus: ^6.2.1
   # https://pub.dev/packages/collection
   collection: ^1.19.0
+  # https://pub.dev/packages/clock
+  clock: ^1.1.1
   # https://pub.dev/packages/device_info_plus
   device_info_plus: ^11.3.0
   # https://pub.dev/packages/extra_hittest_area
   extra_hittest_area: ^1.0.0
   # https://pub.dev/packages/fimber
   fimber: ^0.7.0
-  # https://pub.dev/packages/flutter_bloc
-  flutter_bloc: ^9.1.1
   # https://pub.dev/packages/flutter_svg
   flutter_svg: ^2.1.0
   # https://pub.dev/packages/get_it
@@ -82,6 +82,9 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   # https://pub.dev/packages/mockito
   mockito: ^5.4.5
+  # https://pub.dev/packages/fake_async
+  fake_async: ^1.3.1
+
 
 flutter:
   generate: false

@@ -133,7 +133,7 @@ class _DASTableState extends State<DASTable> {
             children: [
               _headerRow(),
               Expanded(
-                child: _buildStickyHeaderList(constraints),
+                child: _stickyHeaderList(constraints),
               ),
             ],
           ),
@@ -142,25 +142,34 @@ class _DASTableState extends State<DASTable> {
     });
   }
 
-  Widget _buildStickyHeaderList(BoxConstraints constraints) {
+  Widget _stickyHeaderList(BoxConstraints constraints) {
     return StickyHeader(
-      footerBuilder: (context, index) {
-        return Container(
-            decoration: BoxDecoration(boxShadow: [
-              BoxShadow(color: SBBColors.black.withAlpha((255.0 * 0.2).round()), blurRadius: 5, offset: Offset(0, -5))
-            ]),
-            child: ClipRect(child: _dataRow(widget.rows[index])));
-      },
-      headerBuilder: (BuildContext context, int index) {
-        return ClipRect(child: _dataRow(widget.rows[index]));
-      },
+      footerBuilder: (context, index) => _footer(index),
+      headerBuilder: (context, index) => ClipRect(child: _dataRow(widget.rows[index])),
       scrollController: widget.scrollController,
       rows: widget.rows,
-      child: SizedBox(key: DASTable.tableKey, child: _buildAnimatedList(constraints)),
+      child: SizedBox(key: DASTable.tableKey, child: _animatedList(constraints)),
     );
   }
 
-  Widget _buildAnimatedList(BoxConstraints constraints) {
+  Container _footer(int index) {
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: SBBColors.black.withAlpha((255.0 * 0.2).round()),
+            blurRadius: 5,
+            offset: Offset(0, -5),
+          )
+        ],
+      ),
+      child: ClipRect(
+        child: _dataRow(widget.rows[index]),
+      ),
+    );
+  }
+
+  Widget _animatedList(BoxConstraints constraints) {
     final list = AnimatedList(
       physics: ClampingScrollPhysics(),
       key: _animatedListKey,
@@ -168,12 +177,15 @@ class _DASTableState extends State<DASTable> {
       initialItemCount: widget.rows.length + (widget.addBottomSpacer ? 1 : 0),
       itemBuilder: (context, index, animation) {
         if (index == widget.rows.length && widget.addBottomSpacer) {
-          return SizedBox(
-              height: max(
-                  constraints.maxHeight - DASTable.headerRowHeight - widget.bottomMarginAdjustment - sbbDefaultSpacing,
-                  widget.minBottomMargin));
+          final bottomMargin =
+              constraints.maxHeight - DASTable.headerRowHeight - widget.bottomMarginAdjustment - sbbDefaultSpacing;
+          return SizedBox(height: max(bottomMargin, widget.minBottomMargin));
         }
-        return SizeTransition(key: widget.rows[index].key, sizeFactor: animation, child: _dataRow(widget.rows[index]));
+        return SizeTransition(
+          key: widget.rows[index].key,
+          sizeFactor: animation,
+          child: _dataRow(widget.rows[index]),
+        );
       },
     );
 
@@ -208,35 +220,37 @@ class _DASTableState extends State<DASTable> {
   }
 
   Widget _headerCell(DASTableColumn column) {
-    return Builder(builder: (context) {
-      final tableThemeData = DASTableTheme.of(context)?.data;
-      final headerCell = _TableCellWrapper(
-        expanded: column.expanded,
-        width: column.width,
-        child: Container(
-          key: column.headerKey,
-          decoration: BoxDecoration(
-            border: tableThemeData?.headingRowBorder ?? column.border,
-            color: column.color ?? tableThemeData?.headingRowColor,
+    return Builder(
+      builder: (context) {
+        final tableThemeData = DASTableTheme.of(context)?.data;
+        final headerCell = _TableCellWrapper(
+          expanded: column.expanded,
+          width: column.width,
+          child: Container(
+            key: column.headerKey,
+            decoration: BoxDecoration(
+              border: tableThemeData?.headingRowBorder ?? column.border,
+              color: column.color ?? tableThemeData?.headingRowColor,
+            ),
+            padding: column.padding,
+            child: column.child == null
+                ? SizedBox.shrink()
+                : DefaultTextStyle(
+                    style: DefaultTextStyle.of(context).style.merge(tableThemeData?.headingTextStyle),
+                    child: column.alignment != null
+                        ? Align(alignment: column.alignment!, child: column.child)
+                        : column.child!,
+                  ),
           ),
-          padding: column.padding,
-          child: column.child == null
-              ? SizedBox.shrink()
-              : DefaultTextStyle(
-                  style: DefaultTextStyle.of(context).style.merge(tableThemeData?.headingTextStyle),
-                  child: column.alignment != null
-                      ? Align(alignment: column.alignment!, child: column.child)
-                      : column.child!,
-                ),
-        ),
-      );
-      return column.onTap != null
-          ? GestureDetector(
-              onTap: column.onTap,
-              child: headerCell,
-            )
-          : headerCell;
-    });
+        );
+        return column.onTap != null
+            ? GestureDetector(
+                onTap: column.onTap,
+                child: headerCell,
+              )
+            : headerCell;
+      },
+    );
   }
 
   Widget _dataRow(DASTableRow row) {

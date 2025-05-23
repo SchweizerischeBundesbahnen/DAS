@@ -1,9 +1,7 @@
-import 'dart:ui';
-
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/reduced_overview/reduced_train_journey.dart';
-import 'package:app/widgets/table/das_table.dart';
 import 'package:app/util/format.dart';
+import 'package:app/widgets/table/das_table.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
@@ -12,15 +10,13 @@ import '../util/test_utils.dart';
 void main() {
   group('train reduced journey test', () {
     testWidgets('test train information is displayed', (tester) async {
-      final testLocale = const Locale('de', 'CH');
-
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: 'T14');
       await openReducedJourneyMenu(tester);
 
-      expect(find.text('T14 SBB'), findsAny);
+      expect(find.text('T14 ${l10n.c_ru_sbb_p}'), findsAny);
 
-      final formattedDate = Format.dateWithAbbreviatedDay(DateTime.now(), testLocale);
+      final formattedDate = Format.dateWithAbbreviatedDay(DateTime.now(), deviceLocale());
       expect(find.text(formattedDate), findsOneWidget);
 
       await disconnect(tester);

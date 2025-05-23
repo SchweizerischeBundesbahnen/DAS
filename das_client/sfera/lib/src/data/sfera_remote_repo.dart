@@ -12,7 +12,7 @@ abstract class SferaRemoteRepo {
 
   Stream<Journey?> get journeyStream;
 
-  Stream<UxTesting?> get uxTestingStream;
+  Stream<UxTestingEvent?> get uxTestingEventStream;
 
   SferaError? get lastError;
 

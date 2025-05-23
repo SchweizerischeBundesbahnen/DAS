@@ -1,3 +1,4 @@
+import 'package:sfera/src/model/journey/arrival_departure_time.dart';
 import 'package:sfera/src/model/journey/base_data.dart';
 import 'package:sfera/src/model/journey/bracket_station.dart';
 import 'package:sfera/src/model/journey/break_series.dart';
@@ -19,6 +20,7 @@ class ServicePoint extends BaseData {
     this.bracketMainStation,
     this.graduatedSpeedInfo,
     this.decisiveGradient,
+    this.arrivalDepartureTime,
   }) : super(type: Datatype.servicePoint);
 
   final String name;
@@ -28,6 +30,7 @@ class ServicePoint extends BaseData {
   final BracketMainStation? bracketMainStation;
   final SpeedData? graduatedSpeedInfo;
   final DecisiveGradient? decisiveGradient;
+  final ArrivalDepartureTime? arrivalDepartureTime;
 
   List<Speeds> relevantGraduatedSpeedInfo(BreakSeries? breakSeries) {
     final speedInfo = graduatedSpeedInfo?.speeds ?? [];
@@ -36,6 +39,17 @@ class ServicePoint extends BaseData {
 
   @override
   String toString() {
-    return 'ServicePoint(order: $order, kilometre: $kilometre, name: $name, mandatoryStop: $mandatoryStop, isStop: $isStop, isStation: $isStation, bracketMainStation: $bracketMainStation, speedData: $speedData, localSpeedData: $localSpeedData)';
+    return 'ServicePoint('
+        'order: $order'
+        ', kilometre: $kilometre'
+        ', name: $name'
+        ', mandatoryStop: $mandatoryStop'
+        ', isStop: $isStop'
+        ', isStation: $isStation'
+        ', bracketMainStation: $bracketMainStation'
+        ', speedData: $speedData'
+        ', localSpeedData: $localSpeedData'
+        ', arrivalDepartureTime: $arrivalDepartureTime'
+        ')';
   }
 }

@@ -10,8 +10,10 @@ import 'package:sfera/src/data/dto/network_specific_parameter_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
 import 'package:sfera/src/data/dto/taf_tap_location_dto.dart';
+import 'package:sfera/src/data/dto/timing_point_constraints_dto.dart';
 import 'package:sfera/src/data/mapper/graduated_speed_data_mapper.dart';
 import 'package:sfera/src/data/mapper/mapper_utils.dart';
+import 'package:sfera/src/model/journey/arrival_departure_time.dart';
 import 'package:sfera/src/model/journey/balise.dart';
 import 'package:sfera/src/model/journey/base_data.dart';
 import 'package:sfera/src/model/journey/bracket_station.dart';
@@ -115,6 +117,7 @@ class SegmentProfileMapper {
           graduatedSpeedInfo: GraduatedSpeedDataMapper.fromGraduatedSpeedInfo(
               tafTapLocation.stationSpeed?.xmlGraduatedSpeedInfo?.element),
           decisiveGradient: _parseDecisiveGradientAtLocation(mapperData.segmentProfile, timingPoint.location),
+          arrivalDepartureTime: _parseArrivalDepartureTime(tpConstraint),
         ),
       );
     }
@@ -362,5 +365,19 @@ class SegmentProfileMapper {
     }
 
     return DecisiveGradient(uphill: uphill, downhill: downhill);
+  }
+
+  static ArrivalDepartureTime? _parseArrivalDepartureTime(TimingPointConstraintsDto timingPointConstraint) {
+    final departureDetails = timingPointConstraint.stoppingPointDepartureDetails;
+    final operationalArrivalTime = timingPointConstraint.latestArrivalTime;
+    final plannedArrivalTime = timingPointConstraint.plannedLatestArrivalTime;
+    if (departureDetails == null && operationalArrivalTime == null && plannedArrivalTime == null) return null;
+
+    return ArrivalDepartureTime(
+      ambiguousDepartureTime: departureDetails?.departureTime,
+      plannedDepartureTime: departureDetails?.plannedDepartureTime,
+      ambiguousArrivalTime: operationalArrivalTime,
+      plannedArrivalTime: plannedArrivalTime,
+    );
   }
 }

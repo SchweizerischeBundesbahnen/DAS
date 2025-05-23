@@ -4,9 +4,11 @@ import 'package:auth/component.dart';
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/di.dart';
 import 'package:app/flavor.dart';
-import 'package:mqtt/component.dart';
+import 'package:auth/component.dart';
+import 'package:battery_plus/battery_plus.dart';
 import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mqtt/component.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 
 import 'auth/integrationtest_authenticator.dart';
@@ -35,7 +37,6 @@ class IntegrationTestDI {
     GetIt.I.registerSferaLocalRepo();
     GetIt.I.registerSferaRemoteRepo();
     _registerBattery();
-    GetIt.I.registerBlocs();
     GetIt.I.registerAudioPlayer();
 
     await GetIt.I.allReady();

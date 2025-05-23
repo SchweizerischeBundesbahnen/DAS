@@ -10,7 +10,7 @@ class TrainIdentification {
     required this.date,
   });
 
-  final Ru ru;
+  final RailwayUndertaking ru;
   final String trainNumber;
   final DateTime date;
 }

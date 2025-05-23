@@ -1,11 +1,13 @@
 import 'dart:io';
 
-import 'package:app/bloc/train_journey_cubit.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/break_series_selection.dart';
 import 'package:app/pages/journey/train_journey/widgets/chevron_animation_wrapper.dart';
-import 'package:app/pages/journey/train_journey/widgets/detail_modal_sheet/detail_modal_sheet_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_modal_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/balise_level_crossing_group_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/balise_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cab_signaling_row.dart';
@@ -28,6 +30,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/speed_change_row.d
 import 'package:app/pages/journey/train_journey/widgets/table/track_foot_note_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/tram_area_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/whistle_row.dart';
+import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/table/das_table.dart';
@@ -35,7 +38,7 @@ import 'package:app/widgets/table/das_table_column.dart';
 import 'package:app/widgets/table/das_table_row.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
@@ -47,10 +50,10 @@ class TrainJourney extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.trainJourneyCubit;
+    final viewModel = context.read<TrainJourneyViewModel>();
 
     return StreamBuilder<List<dynamic>>(
-      stream: CombineLatestStream.list([bloc.journeyStream, bloc.settingsStream]),
+      stream: CombineLatestStream.list([viewModel.journey, viewModel.settings]),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data?[0] == null) {
           return Container();
@@ -60,20 +63,20 @@ class TrainJourney extends StatelessWidget {
         final settings = snapshot.data![1] as TrainJourneySettings;
 
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          bloc.automaticAdvancementController.handleJourneyUpdate(
+          viewModel.automaticAdvancementController.handleJourneyUpdate(
             currentPosition: journey.metadata.currentPosition,
             routeStart: journey.metadata.routeStart,
             isAdvancementEnabledByUser: settings.isAutoAdvancementEnabled,
           );
         });
 
-        final detailModelSheetViewModel = context.read<DetailModalSheetViewModel>();
-        detailModelSheetViewModel.updateMetadata(journey.metadata);
-        detailModelSheetViewModel.updateSettings(settings);
+        final servicePointModalViewModel = context.read<ServicePointModalViewModel>();
+        servicePointModalViewModel.updateMetadata(journey.metadata);
+        servicePointModalViewModel.updateSettings(settings);
 
         return Listener(
-          onPointerDown: (_) => bloc.automaticAdvancementController.resetScrollTimer(),
-          onPointerUp: (_) => bloc.automaticAdvancementController.resetScrollTimer(),
+          onPointerDown: (_) => viewModel.automaticAdvancementController.resetScrollTimer(),
+          onPointerUp: (_) => viewModel.automaticAdvancementController.resetScrollTimer(),
           child: _body(context, journey, settings),
         );
       },
@@ -82,7 +85,7 @@ class TrainJourney extends StatelessWidget {
 
   Widget _body(BuildContext context, Journey journey, TrainJourneySettings settings) {
     final tableRows = _rows(context, journey, settings);
-    context.trainJourneyCubit.automaticAdvancementController.updateRenderedRows(tableRows);
+    context.read<TrainJourneyViewModel>().automaticAdvancementController.updateRenderedRows(tableRows);
 
     final marginAdjustment = Platform.isIOS
         ? tableRows.lastWhereOrNull((it) => it.stickyLevel == StickyLevel.first)?.height ?? CellRowBuilder.rowHeight
@@ -91,15 +94,15 @@ class TrainJourney extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
       child: StreamBuilder<bool>(
-        stream: context.read<DetailModalSheetViewModel>().isModalSheetOpen,
+        stream: context.read<DetailModalViewModel>().isModalOpen,
         builder: (context, snapshot) {
-          final isDetailModelSheetOpen = snapshot.data ?? false;
+          final isDetailModelOpen = snapshot.data ?? false;
           return ChevronAnimationWrapper(
             journey: journey,
             child: DASTable(
-              key: context.trainJourneyCubit.automaticAdvancementController.tableKey,
-              scrollController: context.trainJourneyCubit.automaticAdvancementController.scrollController,
-              columns: _columns(context, journey.metadata, settings, isDetailModelSheetOpen),
+              key: context.read<TrainJourneyViewModel>().automaticAdvancementController.tableKey,
+              scrollController: context.read<TrainJourneyViewModel>().automaticAdvancementController.scrollController,
+              columns: _columns(context, journey.metadata, settings, isDetailModelOpen),
               rows: tableRows.map((it) => it.build(context)).toList(),
               bottomMarginAdjustment: marginAdjustment,
             ),
@@ -162,6 +165,7 @@ class TrainJourney extends StatelessWidget {
             metadata: journey.metadata,
             data: rowData as AdditionalSpeedRestrictionData,
             config: trainJourneyConfig,
+            onTap: () => _onAdditionalSpeedRestrictionTab(context, rowData),
           );
         case Datatype.connectionTrack:
           return ConnectionTrackRow(
@@ -246,14 +250,16 @@ class TrainJourney extends StatelessWidget {
     BuildContext context,
     Metadata metadata,
     TrainJourneySettings settings,
-    bool isDetailModelSheetOpen,
+    bool isDetailModalOpen,
   ) {
     final currentBreakSeries = settings.resolvedBreakSeries(metadata);
     final speedLabel =
         currentBreakSeries != null ? '${currentBreakSeries.trainSeries.name}${currentBreakSeries.breakSeries}' : '??';
 
+    final timeViewModel = context.read<ArrivalDepartureTimeViewModel>();
+
     return [
-      if (!isDetailModelSheetOpen) ...[
+      if (!isDetailModalOpen) ...[
         DASTableColumn(
           id: ColumnDefinition.kilometre.index,
           child: Text(context.l10n.p_train_journey_table_kilometre_label),
@@ -271,10 +277,17 @@ class TrainJourney extends StatelessWidget {
         ),
       ],
       DASTableColumn(
-        id: ColumnDefinition.time.index,
-        child: Text(context.l10n.p_train_journey_table_time_label),
-        width: 100.0,
-      ),
+          id: ColumnDefinition.time.index,
+          child: StreamBuilder(
+              stream: timeViewModel.showOperationalTime,
+              builder: (context, showCalcTimeSnap) => Text(showCalcTimeSnap.data ?? false
+                  ? context.l10n.p_train_journey_table_time_label_new
+                  : context.l10n.p_train_journey_table_time_label_planned)),
+          width: 100.0,
+          onTap: () {
+            final viewModel = context.read<ArrivalDepartureTimeViewModel>();
+            viewModel.toggleOperationalTime();
+          }),
       DASTableColumn(id: ColumnDefinition.route.index, width: 48.0), // route column
       DASTableColumn(id: ColumnDefinition.trackEquipment.index, width: 20.0), // track equipment column
       DASTableColumn(id: ColumnDefinition.icons1.index, width: 64.0), // icons column
@@ -320,7 +333,7 @@ class TrainJourney extends StatelessWidget {
       newList.add(footNote.identifier);
     }
 
-    context.trainJourneyCubit.updateCollapsedFootnotes(newList);
+    context.read<TrainJourneyViewModel>().updateCollapsedFootnotes(newList);
   }
 
   void _onBaliseLevelCrossingGroupTap(
@@ -332,11 +345,11 @@ class TrainJourney extends StatelessWidget {
       newList.add(group.order);
     }
 
-    context.trainJourneyCubit.updateExpandedGroups(newList);
+    context.read<TrainJourneyViewModel>().updateExpandedGroups(newList);
   }
 
   Future<void> _onBreakSeriesTap(BuildContext context, Metadata metadata, TrainJourneySettings settings) async {
-    final trainJourneyCubit = context.trainJourneyCubit;
+    final trainJourneyCubit = context.read<TrainJourneyViewModel>();
 
     final selectedBreakSeries = await showSBBModalSheet<BreakSeries>(
       context: context,
@@ -358,5 +371,10 @@ class TrainJourney extends StatelessWidget {
 
     return data.type == Datatype.curvePoint &&
         data.localSpeedData?.speedsFor(breakSeries?.trainSeries, breakSeries?.breakSeries) == null;
+  }
+
+  void _onAdditionalSpeedRestrictionTab(BuildContext context, AdditionalSpeedRestrictionData data) {
+    final viewModel = context.read<AdditionalSpeedRestrictionModalViewModel>();
+    viewModel.open(context, data.restriction);
   }
 }

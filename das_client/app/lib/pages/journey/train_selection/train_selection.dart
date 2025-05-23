@@ -1,12 +1,12 @@
-import 'package:app/bloc/train_journey_cubit.dart';
 import 'package:app/brightness/brightness_modal_sheet.dart';
 import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/util/error_code.dart';
 import 'package:app/util/format.dart';
 import 'package:app/widgets/header.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
@@ -33,18 +33,6 @@ class _TrainSelectionState extends State<TrainSelection> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TrainJourneyCubit, TrainJourneyState>(
-      builder: (context, state) {
-        if (state is SelectingTrainJourneyState) {
-          return _body(context, state);
-        } else {
-          return Container();
-        }
-      },
-    );
-  }
-
-  Widget _body(BuildContext context, SelectingTrainJourneyState state) {
     return SafeArea(
       child: LayoutBuilder(
         builder: (context, constraints) {
@@ -57,10 +45,10 @@ class _TrainSelectionState extends State<TrainSelection> {
               child: IntrinsicHeight(
                 child: Column(
                   children: [
-                    _header(context, state),
-                    _errorMessage(context, state),
+                    _header(context),
+                    _errorMessage(context),
                     Spacer(),
-                    _loadButton(context, state),
+                    _confirmButton(context),
                   ],
                 ),
               ),
@@ -71,44 +59,52 @@ class _TrainSelectionState extends State<TrainSelection> {
     );
   }
 
-  Widget _header(BuildContext context, SelectingTrainJourneyState state) {
-    return Header(
-      information: !DateUtils.isSameDay(state.date, DateTime.now())
-          ? context.l10n.p_train_selection_date_not_today_warning
-          : null,
-      child: Column(
-        children: [
-          _trainNumberInput(state),
-          _dateInput(state),
-          _ruSelection(context, state),
-        ],
-      ),
-    );
+  Widget _header(BuildContext context) {
+    final viewModel = context.read<TrainJourneyViewModel>();
+    return StreamBuilder(
+        stream: viewModel.selectedDate,
+        builder: (context, snapshot) {
+          final selectedDate = snapshot.data;
+          return Header(
+            information: !DateUtils.isSameDay(selectedDate, DateTime.now())
+                ? context.l10n.p_train_selection_date_not_today_warning
+                : null,
+            child: Column(
+              children: [
+                _trainNumberInput(context),
+                _dateInput(selectedDate),
+                _ruSelection(context),
+              ],
+            ),
+          );
+        });
   }
 
-  Widget _trainNumberInput(SelectingTrainJourneyState state) {
-    if (state.errorCode != null && state.trainNumber != null) {
-      _trainNumberController.text = state.trainNumber!;
-    }
-
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, sbbDefaultSpacing, 0, sbbDefaultSpacing / 2),
-      child: SBBTextField(
-        onChanged: (value) => context.trainJourneyCubit.updateTrainNumber(value),
-        controller: _trainNumberController,
-        labelText: context.l10n.p_train_selection_trainnumber_description,
-        keyboardType: TextInputType.text,
-      ),
-    );
+  Widget _trainNumberInput(BuildContext context) {
+    final viewModel = context.read<TrainJourneyViewModel>();
+    return StreamBuilder(
+        stream: viewModel.selectedTrainNumber,
+        builder: (context, snapshot) {
+          _trainNumberController.text = snapshot.data ?? '';
+          return Padding(
+            padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, sbbDefaultSpacing, 0, sbbDefaultSpacing / 2),
+            child: SBBTextField(
+              onChanged: (value) => viewModel.updateTrainNumber(value),
+              controller: _trainNumberController,
+              labelText: context.l10n.p_train_selection_trainnumber_description,
+              keyboardType: TextInputType.text,
+            ),
+          );
+        });
   }
 
-  Widget _dateInput(SelectingTrainJourneyState state) {
-    _dateController.text = Format.date(state.date);
+  Widget _dateInput(DateTime? selectedDate) {
+    _dateController.text = selectedDate != null ? Format.date(selectedDate) : '';
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, 0, sbbDefaultSpacing / 2),
       child: GestureDetector(
-        onTap: () => _showDatePicker(context, state),
+        onTap: () => selectedDate != null ? _showDatePicker(context, selectedDate) : null,
         child: SBBTextField(
           labelText: context.l10n.p_train_selection_date_description,
           controller: _dateController,
@@ -118,63 +114,85 @@ class _TrainSelectionState extends State<TrainSelection> {
     );
   }
 
-  Widget _ruSelection(BuildContext context, SelectingTrainJourneyState state) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, 0, sbbDefaultSpacing),
-      child: SBBSelect<Ru>(
-        label: context.l10n.p_train_selection_ru_description,
-        value: state.ru,
-        items: Ru.values.map((ru) => SelectMenuItem<Ru>(value: ru, label: ru.displayText(context))).toList(),
-        onChanged: (selectedRu) => context.trainJourneyCubit.updateCompany(selectedRu),
-        isLastElement: true,
-      ),
+  Widget _ruSelection(BuildContext context) {
+    final viewModel = context.read<TrainJourneyViewModel>();
+    return StreamBuilder(
+      stream: viewModel.selectedRailwayUndertaking,
+      builder: (context, snapshot) {
+        final railwayUndertaking = snapshot.data;
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, 0, sbbDefaultSpacing),
+          child: SBBSelect<RailwayUndertaking>(
+            label: context.l10n.p_train_selection_ru_description,
+            value: railwayUndertaking,
+            items: RailwayUndertaking.values
+                .map((ru) => SelectMenuItem<RailwayUndertaking>(value: ru, label: ru.displayText(context)))
+                .toList(),
+            onChanged: (value) {
+              if (value != null) {
+                viewModel.updateRailwayUndertaking(value);
+              }
+            },
+            isLastElement: true,
+          ),
+        );
+      },
     );
   }
 
-  Widget _errorMessage(BuildContext context, SelectingTrainJourneyState state) {
-    if (state.errorCode != null) {
-      return SBBMessage(
-        illustration: MessageIllustration.Display,
-        title: context.l10n.c_something_went_wrong,
-        description: state.errorCode!.displayText(context),
-        messageCode: '${context.l10n.c_error_code}: ${state.errorCode!.code.toString()}',
+  Widget _errorMessage(BuildContext context) {
+    final viewModel = context.read<TrainJourneyViewModel>();
+    return StreamBuilder(
+      stream: viewModel.errorCode,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return SizedBox.shrink();
+
+        final errorCode = snapshot.requireData;
+        return SBBMessage(
+          illustration: MessageIllustration.Display,
+          title: context.l10n.c_something_went_wrong,
+          description: errorCode!.displayText(context),
+          messageCode: '${context.l10n.c_error_code}: ${errorCode.code.toString()}',
+        );
+      },
+    );
+  }
+
+  Widget _confirmButton(BuildContext context) {
+    return StreamBuilder(
+      stream: context.read<TrainJourneyViewModel>().formCompleted,
+      builder: (context, snapshot) {
+        final formCompleted = snapshot.data ?? false;
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing / 2),
+          child: SBBPrimaryButton(
+            label: context.l10n.c_button_confirm,
+            onPressed: formCompleted ? () => context.read<TrainJourneyViewModel>().loadTrainJourney() : null,
+          ),
+        );
+      },
+    );
+  }
+
+  void _showDatePicker(BuildContext context, DateTime selectedDate) => showSBBModalSheet(
+        context: context,
+        title: context.l10n.p_train_selection_choose_date,
+        child: _datePickerWidget(context, selectedDate),
       );
-    }
-    return Container();
-  }
 
-  Widget _loadButton(BuildContext context, SelectingTrainJourneyState state) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing / 2),
-      child: SBBPrimaryButton(
-        label: context.l10n.c_button_confirm,
-        onPressed: _canContinue(state) ? () => context.trainJourneyCubit.loadTrainJourney() : null,
-      ),
-    );
-  }
-
-  void _showDatePicker(BuildContext context, SelectingTrainJourneyState state) {
-    showSBBModalSheet(
-        context: context, title: context.l10n.p_train_selection_choose_date, child: _datePickerWidget(context, state));
-  }
-
-  Widget _datePickerWidget(BuildContext context, SelectingTrainJourneyState state) {
+  Widget _datePickerWidget(BuildContext context, DateTime selectedDate) {
     final now = DateTime.now();
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         SBBDatePicker(
-          initialDate: state.date,
+          initialDate: selectedDate,
           minimumDate: now.add(Duration(days: -1)),
           maximumDate: now.add(Duration(hours: 4)),
-          onDateChanged: (value) => context.trainJourneyCubit.updateDate(value),
+          onDateChanged: (value) => context.read<TrainJourneyViewModel>().updateDate(value),
         ),
       ],
     );
-  }
-
-  bool _canContinue(SelectingTrainJourneyState state) {
-    return state.trainNumber != null && state.trainNumber!.isNotEmpty && state.ru != null;
   }
 }
