@@ -61,23 +61,25 @@ class GraduatedSpeedsCellBody extends StatelessWidget {
   }
 
   Widget _speedText(Speed speed) {
-    return Builder(builder: (context) {
-      final squaredOrCircled = speed.isCircled || speed.isSquared;
-      return Container(
-        key: squaredOrCircled ? (speed.isCircled ? circledSpeedKey : squaredSpeedKey) : null,
-        padding: EdgeInsets.all(1.0),
-        decoration: squaredOrCircled
-            ? BoxDecoration(
-                border: Border.all(color: Theme.of(context).colorScheme.onSurface),
-                borderRadius: speed.isCircled ? BorderRadius.circular(sbbDefaultSpacing) : BorderRadius.zero,
-              )
-            : null,
-        child: Text(
-          speed.speed.toString(),
-          style: DASTableTheme.of(context)?.data.dataTextStyle?.copyWith(height: 0),
-        ),
-      );
-    });
+    return Builder(
+      builder: (context) {
+        final squaredOrCircled = speed.isCircled || speed.isSquared;
+        return Container(
+          key: squaredOrCircled ? (speed.isCircled ? circledSpeedKey : squaredSpeedKey) : null,
+          padding: EdgeInsets.all(1.0),
+          decoration: squaredOrCircled
+              ? BoxDecoration(
+                  border: Border.all(color: Theme.of(context).colorScheme.onSurface),
+                  borderRadius: speed.isCircled ? BorderRadius.circular(sbbDefaultSpacing) : BorderRadius.zero,
+                )
+              : null,
+          child: Text(
+            speed.speed.toString(),
+            style: DASTableTheme.of(context)?.data.dataTextStyle?.copyWith(height: 0),
+          ),
+        );
+      },
+    );
   }
 }
 

@@ -12,10 +12,10 @@ class GameCollider {
   });
 
   Rect get rect => Rect.fromCenter(
-        center: center,
-        width: size,
-        height: height ?? size,
-      );
+    center: center,
+    width: size,
+    height: height ?? size,
+  );
 
   bool collidesWith(GameCollider other) {
     return rect.overlaps(other.rect);

@@ -3,13 +3,13 @@ publish_to: 'none'
 version: 1.0.0
 
 environment:
-  sdk: ^3.6.2
+  sdk: 3.8.0
 
 resolution: workspace
 
 dependencies:
   # https://pub.dev/packages/mqtt_client
-  mqtt_client: ^10.5.1
+  mqtt_client: ^10.8.0
   # https://pub.dev/packages/fimber
   fimber: ^0.7.0
   # https://pub.dev/packages/rxdart

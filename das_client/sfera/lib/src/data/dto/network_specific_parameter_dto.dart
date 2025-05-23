@@ -14,8 +14,11 @@ class NetworkSpecificParameterDto extends SferaXmlElementDto {
 
   NetworkSpecificParameterDto({super.type = elementType, super.attributes, super.children, super.value});
 
-  factory NetworkSpecificParameterDto.from(
-      {Map<String, String>? attributes, List<SferaXmlElementDto>? children, String? value}) {
+  factory NetworkSpecificParameterDto.from({
+    Map<String, String>? attributes,
+    List<SferaXmlElementDto>? children,
+    String? value,
+  }) {
     if (attributes?['name'] == XmlNewLineSpeedDto.elementName) {
       return XmlNewLineSpeedDto(attributes: attributes, children: children, value: value);
     } else if (attributes?['name'] == TrackEquipmentTypeWrapperDto.elementName) {

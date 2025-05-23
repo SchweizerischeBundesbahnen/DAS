@@ -23,7 +23,8 @@ class RadioChannel extends StatelessWidget {
         ? metadata.radioContactLists.lastLowerThan(metadata.currentPosition!.order)
         : null;
 
-    final showIndicator = radioContactList != null &&
+    final showIndicator =
+        radioContactList != null &&
         (radioContactList.mainContacts.length > 1 || radioContactList.selectiveContacts.isNotEmpty);
 
     return GestureDetector(
@@ -46,7 +47,7 @@ class RadioChannel extends StatelessWidget {
                 if (communicationNetworkType == CommunicationNetworkType.sim) SimIdentifier(),
                 RadioContactChannels(contacts: radioContactList),
                 if (communicationNetworkType != null && communicationNetworkType != CommunicationNetworkType.sim)
-                  CommunicationNetworkIcon(networkType: communicationNetworkType)
+                  CommunicationNetworkIcon(networkType: communicationNetworkType),
               ],
             ),
           ),

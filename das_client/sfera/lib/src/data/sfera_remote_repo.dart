@@ -34,5 +34,5 @@ enum SferaRemoteRepositoryState {
   loadingJourney,
   loadingAdditionalData,
   connected,
-  offline
+  offline,
 }

@@ -16,8 +16,10 @@ void main() {
     final metadata = Metadata(timestamp: DateTime.now());
     final sferaServiceMock = _setupSferaLocalRepoMock(metadata, <BaseData>[]);
 
-    final viewModel =
-        ReducedOverviewViewModel(trainIdentification: trainIdentification, sferaLocalService: sferaServiceMock);
+    final viewModel = ReducedOverviewViewModel(
+      trainIdentification: trainIdentification,
+      sferaLocalService: sferaServiceMock,
+    );
 
     expect(viewModel.journeyMetadata, emits(metadata));
   });
@@ -34,8 +36,10 @@ void main() {
     final metadata = Metadata(communicationNetworkChanges: communicationNetworkChanges);
 
     final sferaServiceMock = _setupSferaLocalRepoMock(metadata, data);
-    final viewModel =
-        ReducedOverviewViewModel(trainIdentification: trainIdentification, sferaLocalService: sferaServiceMock);
+    final viewModel = ReducedOverviewViewModel(
+      trainIdentification: trainIdentification,
+      sferaLocalService: sferaServiceMock,
+    );
 
     // WHEN
     final dataStream = viewModel.journeyData;
@@ -77,8 +81,10 @@ void main() {
       asrData,
     ];
     final sferaServiceMock = _setupSferaLocalRepoMock(Metadata(), data);
-    final viewModel =
-        ReducedOverviewViewModel(trainIdentification: trainIdentification, sferaLocalService: sferaServiceMock);
+    final viewModel = ReducedOverviewViewModel(
+      trainIdentification: trainIdentification,
+      sferaLocalService: sferaServiceMock,
+    );
 
     // WHEN
     final dataStream = viewModel.journeyData;
@@ -95,8 +101,10 @@ void main() {
     final asrData2 = AdditionalSpeedRestrictionData(restriction: asr2, order: 200, kilometre: []);
     final data = <BaseData>[asrData1, asrData1, asrData2];
     final sferaServiceMock = _setupSferaLocalRepoMock(Metadata(), data);
-    final viewModel =
-        ReducedOverviewViewModel(trainIdentification: trainIdentification, sferaLocalService: sferaServiceMock);
+    final viewModel = ReducedOverviewViewModel(
+      trainIdentification: trainIdentification,
+      sferaLocalService: sferaServiceMock,
+    );
 
     // WHEN
     final dataStream = viewModel.journeyData;
@@ -109,10 +117,12 @@ void main() {
 MockSferaLocalRepo _setupSferaLocalRepoMock(Metadata metadata, List<BaseData> data) {
   final sferaRepoMock = MockSferaLocalRepo();
   final journey = Journey(metadata: metadata, data: data);
-  when(sferaRepoMock.journeyStream(
-    company: trainIdentification.ru.companyCode,
-    trainNumber: trainIdentification.trainNumber,
-    startDate: trainIdentification.date,
-  )).thenAnswer((_) => Stream.value(journey));
+  when(
+    sferaRepoMock.journeyStream(
+      company: trainIdentification.ru.companyCode,
+      trainNumber: trainIdentification.trainNumber,
+      startDate: trainIdentification.date,
+    ),
+  ).thenAnswer((_) => Stream.value(journey));
   return sferaRepoMock;
 }

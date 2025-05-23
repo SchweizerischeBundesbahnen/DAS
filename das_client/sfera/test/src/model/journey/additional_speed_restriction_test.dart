@@ -21,13 +21,28 @@ main() {
 
   test('test ASR is displayed for ETCS level 2 segments below 40km/h', () {
     // GIVEN
-    final asrOverWholeSegment =
-        AdditionalSpeedRestriction(kmFrom: 0.0, kmTo: 15.0, orderFrom: 0, orderTo: 1500, speed: 35);
-    final asrStartingOutside =
-        AdditionalSpeedRestriction(kmFrom: 0.0, kmTo: 7.0, orderFrom: 0, orderTo: 700, speed: 30);
+    final asrOverWholeSegment = AdditionalSpeedRestriction(
+      kmFrom: 0.0,
+      kmTo: 15.0,
+      orderFrom: 0,
+      orderTo: 1500,
+      speed: 35,
+    );
+    final asrStartingOutside = AdditionalSpeedRestriction(
+      kmFrom: 0.0,
+      kmTo: 7.0,
+      orderFrom: 0,
+      orderTo: 700,
+      speed: 30,
+    );
     final asrInside = AdditionalSpeedRestriction(kmFrom: 6.0, kmTo: 8.0, orderFrom: 600, orderTo: 800, speed: 10);
-    final asrEndingOutside =
-        AdditionalSpeedRestriction(kmFrom: 7.0, kmTo: 15.0, orderFrom: 700, orderTo: 1500, speed: 20);
+    final asrEndingOutside = AdditionalSpeedRestriction(
+      kmFrom: 7.0,
+      kmTo: 15.0,
+      orderFrom: 700,
+      orderTo: 1500,
+      speed: 20,
+    );
     final etcsL2TrackEquipments = [
       _trackEquipment(TrackEquipmentType.etcsL2ExtSpeedReversingImpossible, 500, 1000),
     ];
@@ -47,13 +62,28 @@ main() {
 
   test('test ASR from 40km/h is only not displayed if inside ETCS level 2 segments', () {
     // GIVEN
-    final asrOverWholeSegment =
-        AdditionalSpeedRestriction(kmFrom: 0.0, kmTo: 15.0, orderFrom: 0, orderTo: 1500, speed: 40);
-    final asrStartingOutside =
-        AdditionalSpeedRestriction(kmFrom: 0.0, kmTo: 7.0, orderFrom: 0, orderTo: 700, speed: 40);
+    final asrOverWholeSegment = AdditionalSpeedRestriction(
+      kmFrom: 0.0,
+      kmTo: 15.0,
+      orderFrom: 0,
+      orderTo: 1500,
+      speed: 40,
+    );
+    final asrStartingOutside = AdditionalSpeedRestriction(
+      kmFrom: 0.0,
+      kmTo: 7.0,
+      orderFrom: 0,
+      orderTo: 700,
+      speed: 40,
+    );
     final asrInside = AdditionalSpeedRestriction(kmFrom: 6.0, kmTo: 8.0, orderFrom: 600, orderTo: 800, speed: 40);
-    final asrEndingOutside =
-        AdditionalSpeedRestriction(kmFrom: 7.0, kmTo: 15.0, orderFrom: 700, orderTo: 1500, speed: 40);
+    final asrEndingOutside = AdditionalSpeedRestriction(
+      kmFrom: 7.0,
+      kmTo: 15.0,
+      orderFrom: 700,
+      orderTo: 1500,
+      speed: 40,
+    );
     final etcsL2TrackEquipments = [
       _trackEquipment(TrackEquipmentType.etcsL2ConvSpeedReversingImpossible, 500, 1000),
     ];

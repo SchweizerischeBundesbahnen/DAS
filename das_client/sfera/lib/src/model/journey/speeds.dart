@@ -21,8 +21,13 @@ class Speeds {
   final List<Speed> outgoingSpeeds;
   final bool reduced;
 
-  factory Speeds.from(TrainSeries trainSeries, String speedString,
-      {String? text, int? breakSeries, bool reduced = false}) {
+  factory Speeds.from(
+    TrainSeries trainSeries,
+    String speedString, {
+    String? text,
+    int? breakSeries,
+    bool reduced = false,
+  }) {
     final parts = speedString.split('/');
     final incomingSpeeds = parts[0].split('-');
     final outgoingSpeeds = parts.length > 1 ? parts[1].split('-') : [];

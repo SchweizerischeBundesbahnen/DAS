@@ -21,11 +21,11 @@ class DASTableCell {
   });
 
   const DASTableCell.empty({Color? color, VoidCallback? onTap})
-      : this(
-          child: const SizedBox.shrink(key: emptyCellKey),
-          color: color,
-          onTap: onTap,
-        );
+    : this(
+        child: const SizedBox.shrink(key: emptyCellKey),
+        color: color,
+        onTap: onTap,
+      );
 
   final BoxBorder? border;
   final Widget child;

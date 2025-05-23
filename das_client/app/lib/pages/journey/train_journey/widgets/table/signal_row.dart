@@ -33,8 +33,9 @@ class SignalRow extends CellRowBuilder<Signal> {
   Widget _signalFunctions(BuildContext context) {
     Iterable<SignalFunction> signalFunctions = data.functions;
     if (signalFunctions.length > 1) {
-      signalFunctions = signalFunctions
-          .where((function) => function != SignalFunction.laneChange && function != SignalFunction.unknown);
+      signalFunctions = signalFunctions.where(
+        (function) => function != SignalFunction.laneChange && function != SignalFunction.unknown,
+      );
     }
     return Text(
       signalFunctions.map((function) => function.localizedName(context)).join('/'),

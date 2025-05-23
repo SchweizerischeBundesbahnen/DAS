@@ -6,8 +6,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class BreakSeriesSelectionButton extends StatelessWidget {
-  const BreakSeriesSelectionButton(
-      {required this.label, required this.currentlySelected, required this.onTap, super.key});
+  const BreakSeriesSelectionButton({
+    required this.label,
+    required this.currentlySelected,
+    required this.onTap,
+    super.key,
+  });
 
   final String label;
   final bool currentlySelected;
@@ -44,7 +48,8 @@ class BreakSeriesSelectionButton extends StatelessWidget {
               ),
             ),
           ),
-          if (currentlySelected) Positioned(top: -6, right: -6, child: SvgPicture.asset(AppAssets.iconIndicatorChecked))
+          if (currentlySelected)
+            Positioned(top: -6, right: -6, child: SvgPicture.asset(AppAssets.iconIndicatorChecked)),
         ],
       ),
     );

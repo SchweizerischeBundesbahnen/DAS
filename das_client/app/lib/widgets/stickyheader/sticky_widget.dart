@@ -102,7 +102,8 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
       if (indexesToBuild[StickyLevel.second] != -1) {
         _stickyHeader2 = Positioned(
           left: 0,
-          top: widget.controller.widgetHeight(indexesToBuild[StickyLevel.first]!) +
+          top:
+              widget.controller.widgetHeight(indexesToBuild[StickyLevel.first]!) +
               widget.controller.headerOffsets[StickyLevel.second]!,
           right: 0,
           child: widget.widgetBuilder(context, indexesToBuild[StickyLevel.second]!),
@@ -149,8 +150,9 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
   /// The sticky widget should be scrollable so it feels like part of the scrolling widget.
   void _onPanUpdate(DragUpdateDetails details) {
     if (widget.controller.scrollController.positions.isNotEmpty) {
-      widget.controller.scrollController.position
-          .jumpTo(max(widget.controller.scrollController.position.pixels - details.delta.dy, 0));
+      widget.controller.scrollController.position.jumpTo(
+        max(widget.controller.scrollController.position.pixels - details.delta.dy, 0),
+      );
     }
   }
 

@@ -102,8 +102,15 @@ void main() {
 
   test('Test hide foot notes with non matching train series', () {
     final originalRows = <BaseData>[
-      LineFootNote(order: 101, footNote: FootNote(text: 'LineFootNote'), locationName: ''),
-      OpFootNote(order: 202, footNote: FootNote(text: 'OpFootNote', trainSeries: [TrainSeries.R])),
+      LineFootNote(
+        order: 101,
+        footNote: FootNote(text: 'LineFootNote'),
+        locationName: '',
+      ),
+      OpFootNote(
+        order: 202,
+        footNote: FootNote(text: 'OpFootNote', trainSeries: [TrainSeries.R]),
+      ),
       TrackFootNote(order: 303, footNote: FootNote(text: 'TrackFootNot')),
     ];
 
@@ -116,8 +123,15 @@ void main() {
 
   test('Test do not hide foot notes with matching train series', () {
     final originalRows = <BaseData>[
-      LineFootNote(order: 101, footNote: FootNote(text: 'LineFootNote'), locationName: ''),
-      OpFootNote(order: 202, footNote: FootNote(text: 'OpFootNote', trainSeries: [TrainSeries.R])),
+      LineFootNote(
+        order: 101,
+        footNote: FootNote(text: 'LineFootNote'),
+        locationName: '',
+      ),
+      OpFootNote(
+        order: 202,
+        footNote: FootNote(text: 'OpFootNote', trainSeries: [TrainSeries.R]),
+      ),
       TrackFootNote(order: 303, footNote: FootNote(text: 'TrackFootNot')),
     ];
 
@@ -131,8 +145,15 @@ void main() {
 
   test('Test do not filter foot notes if current train series is null', () {
     final originalRows = <BaseData>[
-      LineFootNote(order: 101, footNote: FootNote(text: 'LineFootNote'), locationName: ''),
-      OpFootNote(order: 202, footNote: FootNote(text: 'OpFootNote', trainSeries: [TrainSeries.R])),
+      LineFootNote(
+        order: 101,
+        footNote: FootNote(text: 'LineFootNote'),
+        locationName: '',
+      ),
+      OpFootNote(
+        order: 202,
+        footNote: FootNote(text: 'OpFootNote', trainSeries: [TrainSeries.R]),
+      ),
       TrackFootNote(order: 303, footNote: FootNote(text: 'TrackFootNot')),
     ];
 
@@ -148,12 +169,36 @@ void main() {
     final identifier = 'AAAAA-BBBBB-CCCCC';
 
     final originalRows = <BaseData>[
-      LineFootNote(order: 101, footNote: FootNote(text: 'LineFootNote', identifier: identifier), locationName: ''),
-      LineFootNote(order: 202, footNote: FootNote(text: 'LineFootNote', identifier: identifier), locationName: ''),
-      LineFootNote(order: 303, footNote: FootNote(text: 'LineFootNote', identifier: identifier), locationName: ''),
-      LineFootNote(order: 404, footNote: FootNote(text: 'LineFootNote', identifier: identifier), locationName: ''),
-      LineFootNote(order: 505, footNote: FootNote(text: 'LineFootNote', identifier: identifier), locationName: ''),
-      LineFootNote(order: 606, footNote: FootNote(text: 'LineFootNote', identifier: identifier), locationName: ''),
+      LineFootNote(
+        order: 101,
+        footNote: FootNote(text: 'LineFootNote', identifier: identifier),
+        locationName: '',
+      ),
+      LineFootNote(
+        order: 202,
+        footNote: FootNote(text: 'LineFootNote', identifier: identifier),
+        locationName: '',
+      ),
+      LineFootNote(
+        order: 303,
+        footNote: FootNote(text: 'LineFootNote', identifier: identifier),
+        locationName: '',
+      ),
+      LineFootNote(
+        order: 404,
+        footNote: FootNote(text: 'LineFootNote', identifier: identifier),
+        locationName: '',
+      ),
+      LineFootNote(
+        order: 505,
+        footNote: FootNote(text: 'LineFootNote', identifier: identifier),
+        locationName: '',
+      ),
+      LineFootNote(
+        order: 606,
+        footNote: FootNote(text: 'LineFootNote', identifier: identifier),
+        locationName: '',
+      ),
     ];
 
     final filteredRows = originalRows.hideRepeatedLineFootNotes(null).toList();
@@ -167,12 +212,36 @@ void main() {
     final identifier = 'AAAAA-BBBBB-CCCCC';
 
     final originalRows = <BaseData>[
-      LineFootNote(order: 101, footNote: FootNote(text: 'LineFootNote', identifier: identifier), locationName: ''),
-      LineFootNote(order: 202, footNote: FootNote(text: 'LineFootNote', identifier: identifier), locationName: ''),
-      LineFootNote(order: 303, footNote: FootNote(text: 'LineFootNote', identifier: identifier), locationName: ''),
-      LineFootNote(order: 404, footNote: FootNote(text: 'LineFootNote', identifier: identifier), locationName: ''),
-      LineFootNote(order: 505, footNote: FootNote(text: 'LineFootNote', identifier: identifier), locationName: ''),
-      LineFootNote(order: 606, footNote: FootNote(text: 'LineFootNote', identifier: identifier), locationName: ''),
+      LineFootNote(
+        order: 101,
+        footNote: FootNote(text: 'LineFootNote', identifier: identifier),
+        locationName: '',
+      ),
+      LineFootNote(
+        order: 202,
+        footNote: FootNote(text: 'LineFootNote', identifier: identifier),
+        locationName: '',
+      ),
+      LineFootNote(
+        order: 303,
+        footNote: FootNote(text: 'LineFootNote', identifier: identifier),
+        locationName: '',
+      ),
+      LineFootNote(
+        order: 404,
+        footNote: FootNote(text: 'LineFootNote', identifier: identifier),
+        locationName: '',
+      ),
+      LineFootNote(
+        order: 505,
+        footNote: FootNote(text: 'LineFootNote', identifier: identifier),
+        locationName: '',
+      ),
+      LineFootNote(
+        order: 606,
+        footNote: FootNote(text: 'LineFootNote', identifier: identifier),
+        locationName: '',
+      ),
     ];
 
     final filteredRows = originalRows.hideRepeatedLineFootNotes(originalRows[2]).toList();
@@ -187,12 +256,36 @@ void main() {
 
     final originalRows = <BaseData>[
       Signal(order: 100, kilometre: [0.0]),
-      LineFootNote(order: 101, footNote: FootNote(text: 'LineFootNote', identifier: identifier), locationName: ''),
-      LineFootNote(order: 202, footNote: FootNote(text: 'LineFootNote', identifier: identifier), locationName: ''),
-      LineFootNote(order: 303, footNote: FootNote(text: 'LineFootNote', identifier: identifier), locationName: ''),
-      LineFootNote(order: 404, footNote: FootNote(text: 'LineFootNote', identifier: identifier), locationName: ''),
-      LineFootNote(order: 505, footNote: FootNote(text: 'LineFootNote', identifier: identifier), locationName: ''),
-      LineFootNote(order: 606, footNote: FootNote(text: 'LineFootNote', identifier: identifier), locationName: ''),
+      LineFootNote(
+        order: 101,
+        footNote: FootNote(text: 'LineFootNote', identifier: identifier),
+        locationName: '',
+      ),
+      LineFootNote(
+        order: 202,
+        footNote: FootNote(text: 'LineFootNote', identifier: identifier),
+        locationName: '',
+      ),
+      LineFootNote(
+        order: 303,
+        footNote: FootNote(text: 'LineFootNote', identifier: identifier),
+        locationName: '',
+      ),
+      LineFootNote(
+        order: 404,
+        footNote: FootNote(text: 'LineFootNote', identifier: identifier),
+        locationName: '',
+      ),
+      LineFootNote(
+        order: 505,
+        footNote: FootNote(text: 'LineFootNote', identifier: identifier),
+        locationName: '',
+      ),
+      LineFootNote(
+        order: 606,
+        footNote: FootNote(text: 'LineFootNote', identifier: identifier),
+        locationName: '',
+      ),
     ];
 
     final filteredRows = originalRows.hideRepeatedLineFootNotes(originalRows[0]).whereType<LineFootNote>().toList();
@@ -206,12 +299,36 @@ void main() {
     final identifier = 'AAAAA-BBBBB-CCCCC';
 
     final originalRows = <BaseData>[
-      LineFootNote(order: 101, footNote: FootNote(text: 'LineFootNote', identifier: identifier), locationName: ''),
-      LineFootNote(order: 202, footNote: FootNote(text: 'LineFootNote', identifier: identifier), locationName: ''),
-      LineFootNote(order: 303, footNote: FootNote(text: 'LineFootNote', identifier: identifier), locationName: ''),
-      LineFootNote(order: 404, footNote: FootNote(text: 'LineFootNote', identifier: identifier), locationName: ''),
-      LineFootNote(order: 505, footNote: FootNote(text: 'LineFootNote', identifier: identifier), locationName: ''),
-      LineFootNote(order: 606, footNote: FootNote(text: 'LineFootNote', identifier: identifier), locationName: ''),
+      LineFootNote(
+        order: 101,
+        footNote: FootNote(text: 'LineFootNote', identifier: identifier),
+        locationName: '',
+      ),
+      LineFootNote(
+        order: 202,
+        footNote: FootNote(text: 'LineFootNote', identifier: identifier),
+        locationName: '',
+      ),
+      LineFootNote(
+        order: 303,
+        footNote: FootNote(text: 'LineFootNote', identifier: identifier),
+        locationName: '',
+      ),
+      LineFootNote(
+        order: 404,
+        footNote: FootNote(text: 'LineFootNote', identifier: identifier),
+        locationName: '',
+      ),
+      LineFootNote(
+        order: 505,
+        footNote: FootNote(text: 'LineFootNote', identifier: identifier),
+        locationName: '',
+      ),
+      LineFootNote(
+        order: 606,
+        footNote: FootNote(text: 'LineFootNote', identifier: identifier),
+        locationName: '',
+      ),
       Signal(order: 800, kilometre: [0.0]),
     ];
 

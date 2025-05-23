@@ -8,8 +8,11 @@ class SferaB2gRequestMessageDto extends SferaXmlElementDto {
 
   SferaB2gRequestMessageDto({super.type = elementType, super.attributes, super.children, super.value});
 
-  factory SferaB2gRequestMessageDto.create(MessageHeaderDto header,
-      {HandshakeRequestDto? handshakeRequest, B2gRequestDto? b2gRequest}) {
+  factory SferaB2gRequestMessageDto.create(
+    MessageHeaderDto header, {
+    HandshakeRequestDto? handshakeRequest,
+    B2gRequestDto? b2gRequest,
+  }) {
     final requestMessage = SferaB2gRequestMessageDto();
     requestMessage.children.add(header);
     if (handshakeRequest != null) {

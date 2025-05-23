@@ -21,9 +21,9 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfileDto>> {
     required this.otnId,
     required this.journeyProfile,
     super.timeout,
-  })  : _mqttService = mqttService,
-        _sferaDatabaseRepository = sferaDatabaseRepository,
-        _sferaService = sferaService;
+  }) : _mqttService = mqttService,
+       _sferaDatabaseRepository = sferaDatabaseRepository,
+       _sferaService = sferaService;
 
   final MqttService _mqttService;
   final OtnId otnId;
@@ -52,8 +52,14 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfileDto>> {
 
     final List<SpRequestDto> spRequests = [];
     for (final sp in missingSp) {
-      spRequests.add(SpRequestDto.create(
-          id: sp.spId, versionMajor: sp.versionMajor, versionMinor: sp.versionMinor, spZone: sp.spZone));
+      spRequests.add(
+        SpRequestDto.create(
+          id: sp.spId,
+          versionMajor: sp.versionMajor,
+          versionMinor: sp.versionMinor,
+          spZone: sp.spZone,
+        ),
+      );
     }
 
     final sferaB2gRequestMessage = SferaB2gRequestMessageDto.create(
@@ -71,8 +77,11 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfileDto>> {
     final missingSps = <SegmentProfileReferenceDto>[];
 
     for (final segment in journeyProfile.segmentProfileReferences) {
-      final existingProfile =
-          await _sferaDatabaseRepository.findSegmentProfile(segment.spId, segment.versionMajor, segment.versionMinor);
+      final existingProfile = await _sferaDatabaseRepository.findSegmentProfile(
+        segment.spId,
+        segment.versionMajor,
+        segment.versionMinor,
+      );
       if (existingProfile == null) {
         missingSps.add(segment);
       }

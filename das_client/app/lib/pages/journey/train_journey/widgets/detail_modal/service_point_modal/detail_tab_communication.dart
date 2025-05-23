@@ -65,7 +65,7 @@ class DetailTabCommunication extends StatelessWidget {
         spacing: 4.0,
         children: [
           if (contact.contactRole != null) Text(contact.contactRole!, style: DASTextStyles.mediumRoman),
-          Text(contact.contactIdentifier, style: DASTextStyles.mediumBold)
+          Text(contact.contactIdentifier, style: DASTextStyles.mediumBold),
         ],
       ),
     );

@@ -24,7 +24,7 @@ class SferaG2bReplyMessageDto extends SferaXmlElementDto {
         validateHasAnyChildOfType([
           G2bReplyPayloadDto.elementType,
           HandshakeAcknowledgementDto.elementType,
-          HandshakeRejectDto.elementType
+          HandshakeRejectDto.elementType,
         ]) &&
         super.validate();
   }

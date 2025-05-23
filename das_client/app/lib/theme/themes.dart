@@ -10,16 +10,17 @@ final dasLightTheme = SBBTheme.light(
     brightness: Brightness.light,
   ),
   controlStyles: SBBControlStyles(
-    promotionBox: PromotionBoxStyle.$default(
-      baseStyle: SBBBaseStyle(
-        primaryColor: SBBColors.royal,
-        primaryColorDark: SBBColors.royal125,
-        brightness: Brightness.light,
-      ),
-    ).copyWith(
-      badgeColor: SBBColors.royal,
-      badgeShadowColor: SBBColors.royal.withAlpha((255.0 * 0.2).round()),
-    ),
+    promotionBox:
+        PromotionBoxStyle.$default(
+          baseStyle: SBBBaseStyle(
+            primaryColor: SBBColors.royal,
+            primaryColorDark: SBBColors.royal125,
+            brightness: Brightness.light,
+          ),
+        ).copyWith(
+          badgeColor: SBBColors.royal,
+          badgeShadowColor: SBBColors.royal.withAlpha((255.0 * 0.2).round()),
+        ),
   ),
 );
 
@@ -31,16 +32,17 @@ final dasDarkTheme = SBBTheme.dark(
     brightness: Brightness.dark,
   ),
   controlStyles: SBBControlStyles(
-    promotionBox: PromotionBoxStyle.$default(
-      baseStyle: SBBBaseStyle(
-        primaryColor: SBBColors.royal,
-        primaryColorDark: SBBColors.royal125,
-        brightness: Brightness.dark,
-      ),
-    ).copyWith(
-      badgeColor: SBBColors.royal,
-      badgeShadowColor: SBBColors.royal.withAlpha((255.0 * 0.2).round()),
-      gradientColors: [Color(0xFF0079C7), Color(0xFF143A85), Color(0xFF143A85), Color(0xFF0079C7)],
-    ),
+    promotionBox:
+        PromotionBoxStyle.$default(
+          baseStyle: SBBBaseStyle(
+            primaryColor: SBBColors.royal,
+            primaryColorDark: SBBColors.royal125,
+            brightness: Brightness.dark,
+          ),
+        ).copyWith(
+          badgeColor: SBBColors.royal,
+          badgeShadowColor: SBBColors.royal.withAlpha((255.0 * 0.2).round()),
+          gradientColors: [Color(0xFF0079C7), Color(0xFF143A85), Color(0xFF143A85), Color(0xFF0079C7)],
+        ),
   ),
 );

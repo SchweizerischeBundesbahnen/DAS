@@ -29,8 +29,8 @@ class Metadata {
     this.communicationNetworkChanges = const [],
     this.lineFootNoteLocations = const {},
     this.radioContactLists = const [],
-  })  : timestamp = timestamp ?? DateTime.now(),
-        anyOperationalArrivalDepartureTimes = anyOperationalArrivalDepartureTimes ?? false;
+  }) : timestamp = timestamp ?? DateTime.now(),
+       anyOperationalArrivalDepartureTimes = anyOperationalArrivalDepartureTimes ?? false;
 
   final DateTime timestamp;
   final ServicePoint? nextStop;

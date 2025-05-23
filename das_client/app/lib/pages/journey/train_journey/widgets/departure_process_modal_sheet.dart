@@ -4,11 +4,11 @@ import 'package:flutter/widgets.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 Future<void> showDepartureProcessModalSheet(BuildContext context) => showSBBModalSheet(
-      context: context,
-      title: context.l10n.w_departure_process_modal_sheet_title,
-      constraints: BoxConstraints(),
-      child: DepartureProcessModalSheet(),
-    );
+  context: context,
+  title: context.l10n.w_departure_process_modal_sheet_title,
+  constraints: BoxConstraints(),
+  child: DepartureProcessModalSheet(),
+);
 
 class DepartureProcessModalSheet extends StatelessWidget {
   const DepartureProcessModalSheet({

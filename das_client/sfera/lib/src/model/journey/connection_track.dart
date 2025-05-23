@@ -3,7 +3,7 @@ import 'package:sfera/src/model/journey/datatype.dart';
 
 class ConnectionTrack extends BaseData {
   const ConnectionTrack({required super.order, required super.kilometre, this.text, super.speedData})
-      : super(type: Datatype.connectionTrack);
+    : super(type: Datatype.connectionTrack);
 
   final String? text;
 

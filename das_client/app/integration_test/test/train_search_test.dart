@@ -78,8 +78,9 @@ void main() {
 
       final sbbDatePickerFinder = find.byWidgetPredicate((widget) => widget is SBBDatePicker);
       final yesterdayFinder = find.descendant(
-          of: sbbDatePickerFinder,
-          matching: find.byWidgetPredicate((widget) => widget is Text && widget.data == '${(yesterday.day)}.'));
+        of: sbbDatePickerFinder,
+        matching: find.byWidgetPredicate((widget) => widget is Text && widget.data == '${(yesterday.day)}.'),
+      );
       await tapElement(tester, yesterdayFinder);
 
       // tap outside dialog
@@ -118,9 +119,9 @@ void main() {
 
       final sbbDatePickerFinder = find.byWidgetPredicate((widget) => widget is SBBDatePicker);
       final yesterdayFinder = find.descendant(
-          of: sbbDatePickerFinder,
-          matching:
-              find.byWidgetPredicate((widget) => widget is Text && widget.data == '${(dayBeforeYesterday.day)}.'));
+        of: sbbDatePickerFinder,
+        matching: find.byWidgetPredicate((widget) => widget is Text && widget.data == '${(dayBeforeYesterday.day)}.'),
+      );
       await tapElement(tester, yesterdayFinder);
 
       // tap outside dialog

@@ -19,8 +19,8 @@ class HandshakeTask extends SferaTask {
     required this.otnId,
     required this.dasDrivingMode,
     super.timeout,
-  })  : _mqttService = mqttService,
-        _sferaService = sferaService;
+  }) : _mqttService = mqttService,
+       _sferaService = sferaService;
 
   final SferaRemoteRepo _sferaService;
   final MqttService _mqttService;
@@ -44,7 +44,10 @@ class HandshakeTask extends SferaTask {
 
     Fimber.i('Sending handshake request for company=${otnId.company} train=$sferaTrain');
     final operationMode = DasOperatingModesSupportedDto.create(
-        dasDrivingMode, DasArchitectureDto.boardAdviceCalculation, DasConnectivityDto.connected);
+      dasDrivingMode,
+      DasArchitectureDto.boardAdviceCalculation,
+      DasConnectivityDto.connected,
+    );
     final handshakeRequest = HandshakeRequestDto.create(
       [operationMode],
       relatedTrainRequestType: RelatedTrainRequestTypeDto.ownTrainAndRelatedTrains,
@@ -53,8 +56,11 @@ class HandshakeTask extends SferaTask {
 
     final messageHeader = _sferaService.messageHeader(sender: otnId.company);
     final sferaB2gRequestMessage = SferaB2gRequestMessageDto.create(messageHeader, handshakeRequest: handshakeRequest);
-    final success =
-        _mqttService.publishMessage(otnId.company, sferaTrain, sferaB2gRequestMessage.buildDocument().toString());
+    final success = _mqttService.publishMessage(
+      otnId.company,
+      sferaTrain,
+      sferaB2gRequestMessage.buildDocument().toString(),
+    );
 
     if (!success) {
       _taskFailedCallback(this, SferaError.connectionFailed);
@@ -71,7 +77,8 @@ class HandshakeTask extends SferaTask {
     } else if (replyMessage.handshakeReject != null) {
       stopTimeout();
       Fimber.w(
-          'Received handshake reject with reason=${replyMessage.handshakeReject?.handshakeRejectReason?.toString()}');
+        'Received handshake reject with reason=${replyMessage.handshakeReject?.handshakeRejectReason?.toString()}',
+      );
       _taskFailedCallback(this, SferaError.handshakeRejected);
       _mqttService.disconnect();
       return true;

@@ -2,13 +2,8 @@ name: das_client
 publish_to: none
 description: "DAS (Driver Advisory System) is a mobile application that provides all the required journey data to the train driver."
 
-# TODO: Flutter version below 3.29.0 as there are performance issues (https://github.com/dart-lang/sdk/issues/60335).
-# Should be fixed when at least Dart 3.7.3 is used in Flutter.
-
 environment:
-  # TODO: Currently set below sdk 3.7.0 as new formatter removes trailing commas which generates unreadable code.
-  # This should be improved in future releases. See: https://github.com/dart-lang/dart_style/issues/1652
-  sdk: ^3.6.2
+  sdk: 3.8.0
 
 workspace:
   - app
@@ -19,4 +14,50 @@ workspace:
   - sfera
 
 dev_dependencies:
-  melos: ^6.3.0
+  melos: 7.0.0-dev.8
+
+# Melos Configuration
+
+melos:
+  scripts:
+    clean:das:
+      description: Run cleanup of das client files
+      run: flutter clean
+      exec:
+        concurrency: 4
+      packageFilters:
+        flutter: true
+
+    generate:
+      run: |
+        melos run generate:build_runner --no-select &&
+        melos run generate:intl
+
+    generate:build_runner:
+      run: dart run build_runner build --delete-conflicting-outputs
+      description: Run build_runner in all components
+      exec:
+        orderDependents: true
+      packageFilters:
+        dependsOn: "build_runner"
+
+    generate:intl:
+      run: flutter gen-l10n
+      description: Run generation of internationalization files
+      exec:
+        concurrency: 1
+      packageFilters:
+        dirExists: l10n
+
+    test:
+      run: flutter test --no-pub
+      description: Run tests in components with test dir
+      exec:
+        failFast: false
+      packageFilters:
+        dirExists: test
+
+  command:
+    clean:
+      hooks:
+        post: melos run clean:das --no-select

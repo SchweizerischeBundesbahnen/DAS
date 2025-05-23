@@ -8,10 +8,10 @@ class ArrivalDepartureTime {
     DateTime? plannedDepartureTime,
     DateTime? ambiguousArrivalTime,
     DateTime? plannedArrivalTime,
-  })  : _ambiguousDepartureTime = ambiguousDepartureTime,
-        _ambiguousArrivalTime = ambiguousArrivalTime,
-        _plannedArrivalTime = plannedArrivalTime,
-        _plannedDepartureTime = plannedDepartureTime;
+  }) : _ambiguousDepartureTime = ambiguousDepartureTime,
+       _ambiguousArrivalTime = ambiguousArrivalTime,
+       _plannedArrivalTime = plannedArrivalTime,
+       _plannedDepartureTime = plannedDepartureTime;
 
   /// these are private since the logic of figuring out whether a time is planned or operational from the
   /// ambiguous times are handled in here

@@ -34,12 +34,13 @@ class ReducedOverviewViewModel {
     final company = trainIdentification.ru.companyCode;
     final trainNumber = trainIdentification.trainNumber;
     final date = trainIdentification.date;
-    final subscription =
-        _sferaLocalService.journeyStream(company: company, trainNumber: trainNumber, startDate: date).listen((data) {
-      if (data != null) {
-        _rxJourney.add(data);
-      }
-    }, onError: _rxJourney.addError);
+    final subscription = _sferaLocalService
+        .journeyStream(company: company, trainNumber: trainNumber, startDate: date)
+        .listen((data) {
+          if (data != null) {
+            _rxJourney.add(data);
+          }
+        }, onError: _rxJourney.addError);
     _subscriptions.add(subscription);
   }
 

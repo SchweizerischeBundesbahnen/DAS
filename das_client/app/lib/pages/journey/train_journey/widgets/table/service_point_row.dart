@@ -30,12 +30,13 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     super.config,
     Color? rowColor,
   }) : super(
-          rowColor: rowColor ??
-              ((metadata.nextStop == data)
-                  ? ThemeUtil.getColor(context, Color(0xFFB1BED4), SBBColors.royal150)
-                  : ThemeUtil.getDASTableColor(context)),
-          stickyLevel: StickyLevel.first,
-        );
+         rowColor:
+             rowColor ??
+             ((metadata.nextStop == data)
+                 ? ThemeUtil.getColor(context, Color(0xFFB1BED4), SBBColors.royal150)
+                 : ThemeUtil.getDASTableColor(context)),
+         stickyLevel: StickyLevel.first,
+       );
 
   @override
   DASTableCell informationCell(BuildContext context) {
@@ -50,8 +51,9 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
         servicePointName,
         textAlign: TextAlign.start,
         overflow: TextOverflow.ellipsis,
-        style:
-            data.isStation ? DASTextStyles.xLargeBold : DASTextStyles.xLargeLight.copyWith(fontStyle: FontStyle.italic),
+        style: data.isStation
+            ? DASTextStyles.xLargeBold
+            : DASTextStyles.xLargeLight.copyWith(fontStyle: FontStyle.italic),
       ),
     );
   }
@@ -111,8 +113,10 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
     final currentBreakSeries = config.settings.resolvedBreakSeries(metadata);
 
-    final graduatedSpeeds =
-        data.localSpeedData!.speedsFor(currentBreakSeries?.trainSeries, currentBreakSeries?.breakSeries);
+    final graduatedSpeeds = data.localSpeedData!.speedsFor(
+      currentBreakSeries?.trainSeries,
+      currentBreakSeries?.breakSeries,
+    );
     if (graduatedSpeeds == null) return DASTableCell.empty();
 
     final relevantGraduatedSpeedInfo = data.relevantGraduatedSpeedInfo(currentBreakSeries);
