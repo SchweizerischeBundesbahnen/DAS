@@ -48,7 +48,7 @@ class AutomaticAdvancementController {
     if (_lastScrollPosition != targetScrollPosition &&
         targetScrollPosition != null &&
         (_lastTouch == null ||
-            _lastTouch!.add(Duration(seconds: timeController.idleTimeAutoScroll + 1)).compareTo(clock.now()) < 0)) {}
+            _lastTouch!.add(Duration(seconds: timeController.idleTimeAutoScroll)).compareTo(clock.now()) < 0)) {}
   }
 
   double? _calculateScrollPosition() {
