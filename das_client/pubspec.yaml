@@ -17,6 +17,7 @@ workspace:
   - mqtt
   - logger
   - sfera
+  - warnapp
 
 dev_dependencies:
   melos: ^6.3.0
