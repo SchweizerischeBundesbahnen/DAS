@@ -17,7 +17,7 @@ import 'package:sfera/component.dart';
 class AutomaticAdvancementController {
   static const int _minScrollDuration = 1000;
   static const int _maxScrollDuration = 2000;
-  final TimeController? timeController = DI.get<TimeController>();
+  final TimeController timeController = DI.get<TimeController>();
 
   AutomaticAdvancementController({ScrollController? controller, GlobalKey? tableKey})
       : scrollController = controller ?? ScrollController(),
@@ -47,8 +47,8 @@ class AutomaticAdvancementController {
     final targetScrollPosition = _calculateScrollPosition();
     if (_lastScrollPosition != targetScrollPosition &&
         targetScrollPosition != null &&
-        (_lastTouch == null || _lastTouch!.add(Duration(seconds: timeController!.idleTime)).compareTo(clock.now()) < 0)) {
-    }
+        (_lastTouch == null ||
+            _lastTouch!.add(Duration(seconds: timeController.idleTimeAutoScroll + 1)).compareTo(clock.now()) < 0)) {}
   }
 
   double? _calculateScrollPosition() {
@@ -130,10 +130,10 @@ class AutomaticAdvancementController {
     _lastTouch = clock.now();
     if (_rxIsAutomaticAdvancementActive.value) {
       _scrollTimer?.cancel();
-      _scrollTimer = Timer(Duration(seconds: timeController!.idleTimeAutoScroll), () {
+      _scrollTimer = Timer(Duration(seconds: timeController.idleTimeAutoScroll), () {
         if (_rxIsAutomaticAdvancementActive.value) {
           Fimber.d(
-              'Screen idle time of ${timeController!.idleTimeAutoScroll} seconds reached. Scrolling to current position');
+              'Screen idle time of ${timeController.idleTimeAutoScroll} seconds reached. Scrolling to current position');
           scrollToCurrentPosition();
         }
       });

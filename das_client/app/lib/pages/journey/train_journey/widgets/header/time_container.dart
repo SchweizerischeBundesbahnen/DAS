@@ -1,14 +1,13 @@
 import 'dart:async';
-import 'package:app/bloc/train_journey_cubit.dart';
 import 'package:app/di.dart';
+import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/time_controller/punctuality_state_enum.dart';
-import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:app/time_controller/time_controller.dart';
+import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
@@ -23,12 +22,14 @@ class TimeContainer extends StatefulWidget {
 
 class _TimeContainerState extends State<TimeContainer> {
   TimeController? timeController;
+  TrainJourneyViewModel? viewModel;
 
   @override
   void initState() {
     super.initState();
     timeController = DI.get<TimeController>();
     timeController!.startMonitoring();
+    viewModel = context.read<TrainJourneyViewModel>();
   }
 
   @override
@@ -40,7 +41,7 @@ class _TimeContainerState extends State<TimeContainer> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Journey?>(
-      stream: context.trainJourneyCubit.journeyStream,
+      stream: viewModel!.journey,
       builder: (context, snapshot) {
         final journey = snapshot.data;
         return SBBGroup(
@@ -86,17 +87,6 @@ class _TimeContainerState extends State<TimeContainer> {
     );
   }
 
-  Widget _punctualityDisplay(BuildContext context) {
-    return StreamBuilder<Journey?>(
-      stream: context.read<TrainJourneyViewModel>().journey,
-      builder: (context, snapshot) {
-        var punctualityString = '+00:00';
-        final delay = snapshot.data?.metadata.delay;
-        if (delay != null) {
-          final String minutes = NumberFormat('00').format(delay.inMinutes.abs() % 60);
-          final String seconds = NumberFormat('00').format(delay.inSeconds.abs() % 60);
-          punctualityString = '${delay.isNegative ? '-' : '+'}$minutes:$seconds';
-        }
   Widget _buildDelayText(Duration? delay, PunctualityState punctualityState) {
     String delayString = '+00:00';
     if (delay != null) {

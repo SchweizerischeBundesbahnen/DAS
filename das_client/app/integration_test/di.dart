@@ -4,8 +4,6 @@ import 'package:auth/component.dart';
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/di.dart';
 import 'package:app/flavor.dart';
-import 'package:auth/component.dart';
-import 'package:battery_plus/battery_plus.dart';
 import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mqtt/component.dart';
