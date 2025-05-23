@@ -1,8 +1,9 @@
+import 'package:app/time_controller/time_controller.dart';
+import 'package:battery_plus/battery_plus.dart';
+import 'package:auth/component.dart';
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/di.dart';
 import 'package:app/flavor.dart';
-import 'package:auth/component.dart';
-import 'package:battery_plus/battery_plus.dart';
 import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mqtt/component.dart';
@@ -23,6 +24,7 @@ class IntegrationTestDI {
     GetIt.I.registerFlavor(flavor);
     _registerScreenBrightness();
     _registerBrightnessManager();
+    _registerTimeController();
     _registerIntegrationTestAuthenticator();
     GetIt.I.registerAuthProvider();
     GetIt.I.registerSferaAuthProvider();
@@ -36,6 +38,10 @@ class IntegrationTestDI {
     GetIt.I.registerAudioPlayer();
 
     await GetIt.I.allReady();
+  }
+
+  static void _registerTimeController() {
+    GetIt.I.registerLazySingleton<TimeController>(() => TimeController());
   }
 
   static void _registerIntegrationTestAuthenticator() {

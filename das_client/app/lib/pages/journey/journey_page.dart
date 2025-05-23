@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:sfera/component.dart';
 
 @RoutePage()
@@ -36,6 +37,7 @@ class _JourneyPageState extends State<JourneyPage> with SingleTickerProviderStat
   @override
   void initState() {
     super.initState();
+    WakelockPlus.disable();
     _controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: _toolbarHideAnimationDuration),
