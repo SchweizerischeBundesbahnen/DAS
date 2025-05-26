@@ -13,7 +13,7 @@ class DelayedTrigger {
   int counterFalse = -1;
 
   bool updateWithTrigger(bool trigger) {
-    bool oldState = state;
+    final bool oldState = state;
 
     if (trigger && !lastTrigger) {
       counterTrue = anzahlTrue;
