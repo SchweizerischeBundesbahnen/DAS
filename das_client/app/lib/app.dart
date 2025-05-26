@@ -53,8 +53,8 @@ class _AppState extends State<App> {
             );
           },
           themeMode: themeMode,
-          theme: dasLightTheme,
-          darkTheme: dasDarkTheme,
+          theme: DASTheme.light(),
+          darkTheme: DASTheme.dark(),
           localizationsDelegates: localizationDelegates,
           supportedLocales: supportedLocales,
           localeResolutionCallback: defaultLocale,
