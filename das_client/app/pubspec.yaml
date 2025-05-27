@@ -53,7 +53,7 @@ dependencies:
   # https://pub.dev/packages/sbb_design_system_mobile
   sbb_design_system_mobile:
     git:
-      url: git@github.com:SchweizerischeBundesbahnen/design_system_flutter.git
+      url: https://github.com/SchweizerischeBundesbahnen/design_system_flutter.git
       ref: promotion-box-style
   # https://pub.dev/packages/volume_controller
   volume_controller: ^3.3.3
