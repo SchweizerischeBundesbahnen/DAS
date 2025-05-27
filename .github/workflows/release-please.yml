@@ -23,6 +23,7 @@ jobs:
       das_backend--release_created: ${{ steps.release.outputs.das_backend--release_created }}
       das_backend--version: ${{ steps.release.outputs.das_backend--version }}
       das_backend--tag_name: ${{ steps.release.outputs.das_backend--tag_name }}
+      das_backend--upload_url: ${{ steps.release.outputs.das_backend--upload_url }}
       das_playground--release_created: ${{ steps.release.outputs.das_playground--release_created }}
       das_playground--version: ${{ steps.release.outputs.das_playground--version }}
       das_playground--tag_name: ${{ steps.release.outputs.das_playground--tag_name }}
@@ -114,7 +115,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.release.outputs.das_backend--upload_url }}
+          upload_url: ${{ needs.release.outputs.das_backend--upload_url }}
           asset_path: ./das_backend/src/main/resources/api/api-docs.yaml
           asset_name: api-docs.yaml
           asset_content_type: application/yaml
