@@ -1,5 +1,5 @@
-import 'package:app/pages/journey/train_journey/ux_testing_view_model.dart';
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/train_journey/ux_testing_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/departure_process_modal_sheet.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
@@ -21,16 +21,25 @@ class KoaNotification extends StatelessWidget {
       stream: viewModel.koaState,
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data == KoaState.waitHide) return Container();
-
         return Container(
           margin: EdgeInsets.fromLTRB(sbbDefaultSpacing * 0.5, 0, sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5),
-          child: snapshot.data == KoaState.wait ? _waitWidget(context) : _waitCanceledWidget(context),
+          child: snapshot.data == KoaState.wait ? _WaitNotification() : _WaitCancelledNotification(),
         );
       },
     );
   }
+}
 
-  Widget _waitWidget(BuildContext context) {
+class _WaitNotification extends StatelessWidget {
+  const _WaitNotification();
+
+  @override
+  Widget build(BuildContext context) {
+    final isLight = Theme.brightnessOf(context) == Brightness.light;
+    final resolvedTextStyle = isLight
+        ? DASTextStyles.mediumRoman.copyWith(color: SBBColors.black)
+        : DASTextStyles.mediumBold.copyWith(color: SBBColors.white);
+
     return SBBPromotionBox.custom(
       leading: SvgPicture.asset(
         AppAssets.iconKoaWait,
@@ -38,32 +47,76 @@ class KoaNotification extends StatelessWidget {
       ),
       content: Text(
         context.l10n.w_koa_notification_wait,
-        style: DASTextStyles.mediumRoman,
+        style: resolvedTextStyle,
       ),
       badgeText: context.l10n.w_koa_notification_title,
-      trailing: _trailingButton(context),
+      trailing: _KoaTrailingButton(),
+      style: _waitStyle(context),
     );
   }
 
-  Widget _waitCanceledWidget(BuildContext context) {
+  PromotionBoxStyle _waitStyle(BuildContext context) {
+    final isLight = Theme.brightnessOf(context) == Brightness.light;
+    final resolvedGradientColors = isLight
+        ? [SBBColors.cloud, SBBColors.milk, SBBColors.milk, SBBColors.cloud]
+        : [Color(0xFF0079C7), Color(0xFF143A85), Color(0xFF143A85), Color(0xFF0079C7)];
+    final resolvedBadgeShadowColor = isLight
+        ? SBBColors.royal.withValues(alpha: 0.2)
+        : SBBColors.royal.withValues(alpha: 0.6);
+
+    return PromotionBoxStyle.$default(baseStyle: SBBBaseStyle.of(context)).copyWith(
+      badgeColor: SBBColors.royal,
+      badgeBorderColor: SBBColors.white,
+      badgeShadowColor: resolvedBadgeShadowColor,
+      gradientColors: resolvedGradientColors,
+    );
+  }
+}
+
+class _WaitCancelledNotification extends StatelessWidget {
+  const _WaitCancelledNotification();
+
+  @override
+  Widget build(BuildContext context) {
+    final isLight = Theme.brightnessOf(context) == Brightness.light;
+    final resolvedTextStyle = isLight
+        ? DASTextStyles.mediumRoman.copyWith(color: SBBColors.black)
+        : DASTextStyles.mediumBold.copyWith(color: SBBColors.black);
+
     return SBBPromotionBox.custom(
-      leading: Icon(SBBIcons.circle_tick_medium, color: SBBColors.black),
-      content: Text(
-        context.l10n.w_koa_notification_wait_canceled,
-        style: DASTextStyles.mediumRoman.copyWith(color: SBBColors.black),
-      ),
+      leading: Icon(SBBIcons.circle_tick_medium, color: SBBColors.black, size: 36.0),
+      content: Text(context.l10n.w_koa_notification_wait_canceled, style: resolvedTextStyle),
       badgeText: context.l10n.w_koa_notification_title,
-      trailing: _trailingButton(context),
-      gradientColors: [SBBColors.aluminum, SBBColors.cement, SBBColors.cement, SBBColors.aluminum],
+      trailing: _KoaTrailingButton(),
+      style: _waitCancelledStyle(context),
     );
   }
 
-  Widget _trailingButton(BuildContext context) {
-    return SBBTertiaryButtonSmall(
-      label: context.l10n.w_koa_notification_departure_process,
-      onPressed: () {
-        showDepartureProcessModalSheet(context);
-      },
+  PromotionBoxStyle _waitCancelledStyle(BuildContext context) {
+    final isLight = Theme.brightnessOf(context) == Brightness.light;
+    final resolvedGradientColors = isLight
+        ? [SBBColors.cloud, SBBColors.milk, SBBColors.milk, SBBColors.cloud]
+        : [SBBColors.aluminum, SBBColors.cement, SBBColors.cement, SBBColors.aluminum];
+    final resolvedBadgeShadowColor = isLight
+        ? SBBColors.royal.withValues(alpha: 0.2)
+        : SBBColors.royal.withValues(alpha: 0.6);
+
+    return PromotionBoxStyle.$default(baseStyle: SBBBaseStyle.of(context)).copyWith(
+      borderColor: SBBColors.royal,
+      badgeColor: SBBColors.royal,
+      badgeBorderColor: SBBColors.white,
+      badgeShadowColor: resolvedBadgeShadowColor,
+      gradientColors: resolvedGradientColors,
     );
   }
+}
+
+class _KoaTrailingButton extends StatelessWidget {
+  const _KoaTrailingButton();
+
+  @override
+  Widget build(BuildContext context) => SBBTertiaryButtonSmall(
+    label: context.l10n.w_koa_notification_departure_process,
+    onPressed: () => showDepartureProcessModalSheet(context),
+  );
 }

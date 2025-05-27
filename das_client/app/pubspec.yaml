@@ -51,7 +51,10 @@ dependencies:
   # https://pub.dev/packages/rxdart
   rxdart: ^0.28.0
   # https://pub.dev/packages/sbb_design_system_mobile
-  sbb_design_system_mobile: ^3.1.0
+  sbb_design_system_mobile:
+    git:
+      url: git@github.com:SchweizerischeBundesbahnen/design_system_flutter.git
+      ref: promotion-box-style
   # https://pub.dev/packages/volume_controller
   volume_controller: ^3.3.3
   # https://pub.dev/packages/wakelock_plus
