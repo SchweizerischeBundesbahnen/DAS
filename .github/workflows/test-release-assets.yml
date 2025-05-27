@@ -56,8 +56,11 @@ jobs:
       #          release_name: Test Release ${{ github.ref }}
       #          draft: false
       #          prerelease: false
+      - name: Location
+        run: pwd
       - name: List files
-        run: ls ./src/main/resources
+        run: ls /
+
       - name: Test Upload Release Asset
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
