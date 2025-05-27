@@ -50,8 +50,13 @@ dependencies:
   provider: ^6.1.5
   # https://pub.dev/packages/rxdart
   rxdart: ^0.28.0
+
+  # TODO: after next release of DSM, move back to it
   # https://pub.dev/packages/sbb_design_system_mobile
-  sbb_design_system_mobile: ^3.1.0
+  sbb_design_system_mobile:
+    git:
+      url: https://github.com/SchweizerischeBundesbahnen/design_system_flutter.git
+      ref: 7dd645f
   # https://pub.dev/packages/volume_controller
   volume_controller: ^3.3.3
   # https://pub.dev/packages/wakelock_plus
