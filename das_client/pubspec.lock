@@ -973,9 +973,9 @@ packages:
     dependency: transitive
     description:
       path: "."
-      ref: promotion-box-style
-      resolved-ref: b6cd7393ac6b6f561f9bb27ba676bf74f57e195f
-      url: "git@github.com:SchweizerischeBundesbahnen/design_system_flutter.git"
+      ref: "7dd645f"
+      resolved-ref: "7dd645f0aabda6ac1b9526f681757ba4877a6bd2"
+      url: "https://github.com/SchweizerischeBundesbahnen/design_system_flutter.git"
     source: git
     version: "3.1.0"
   sbb_oidc:
