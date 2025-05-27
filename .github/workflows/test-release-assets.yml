@@ -21,14 +21,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      #      - name: Set up JDK 21
-      #        uses: actions/setup-java@v4
-      #        with:
-      #          java-version: '21'
-      #          distribution: 'temurin'
-      #          cache: maven
-      #      - name: Run the Maven verify phase
-      #        run: mvn --batch-mode --update-snapshots verify
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+      - name: Run the Maven verify phase
+        run: mvn --batch-mode --update-snapshots verify
       #      - name: Login to GitHub Container Registry
       #        if: github.ref == 'refs/heads/main'
       #        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
