@@ -59,7 +59,7 @@ jobs:
       - name: Location
         run: pwd
       - name: List files
-        run: ls ./src/main/resources
+        run: ls ./das_backend/src/main/resources
 
       - name: Test Upload Release Asset
         id: upload-release-asset
@@ -69,6 +69,6 @@ jobs:
         with:
           upload_url: https://uploads.github.com/repos/SchweizerischeBundesbahnen/DAS/releases/221196711/assets{?name,label}
           #          ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./src/main/resources/application.yaml
+          asset_path: ./das_backend/src/main/resources/application.yaml
           asset_name: application.yaml
           asset_content_type: application/yaml
