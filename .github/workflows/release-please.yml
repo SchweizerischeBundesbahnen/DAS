@@ -109,6 +109,15 @@ jobs:
           docker push $IMAGE_ID:$VERSION
           docker tag $IMAGE_ID:$VERSION $IMAGE_ID:latest
           docker push $IMAGE_ID:latest
+      - name: Upload api-docs asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.release-please.outputs.das_backend--upload_url }}
+          asset_path: ./das_backend/src/main/resources/api/api-docs.yaml
+          asset_name: api-docs.yaml
+          asset_content_type: application/yaml
   das_playground-release:
     needs: release-please
     if: needs.release-please.outputs.das_playground--release_created
