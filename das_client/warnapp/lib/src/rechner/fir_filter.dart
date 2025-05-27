@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:warnapp/src/rechner/vector.dart';
+
 class FIRFilter {
   final int length;
   late List<double> _firCoef;
@@ -70,7 +72,7 @@ class FIRFilter {
   }
 }
 
-class FIRFilter3D {
+class FIRFilter3D implements Vector {
   FIRFilter filterX;
   FIRFilter filterY;
   FIRFilter filterZ;
@@ -93,9 +95,12 @@ class FIRFilter3D {
     filterZ.updateWithNewSample(z);
   }
 
+  @override
   double get x => filterX.value;
 
+  @override
   double get y => filterY.value;
 
+  @override
   double get z => filterZ.value;
 }

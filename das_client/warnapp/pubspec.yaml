@@ -7,6 +7,10 @@ environment:
 
 resolution: workspace
 
+dependencies:
+  # https://pub.dev/packages/intl
+  intl: ^0.20.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

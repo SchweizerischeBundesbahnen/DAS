@@ -22,7 +22,7 @@ class PeakDetector {
 
   double mittelwertGesamterBuffer() {
     double summe = 0.0;
-    for (double value in x) {
+    for (final value in x) {
       summe += value;
     }
     return summe / length;
@@ -40,7 +40,7 @@ class PeakDetector {
     double summe = 0.0;
     int index1 = (index + indexVon) % length;
     for (int i = indexVon; i <= indexBis; i++) {
-      double value = x[index1];
+      final value = x[index1];
       summe += value;
       index1 = (index1 + 1) % length;
     }
@@ -63,8 +63,8 @@ class PeakDetector {
     double maxAbweichung = 0.0;
     int index1 = (index + indexVon) % length;
     for (int i = indexVon; i <= indexBis; i++) {
-      double value = x[index1];
-      double abweichung = (value - mittelwert).abs();
+      final value = x[index1];
+      final abweichung = (value - mittelwert).abs();
       if (abweichung > maxAbweichung) {
         maxAbweichung = abweichung;
       }
@@ -76,25 +76,25 @@ class PeakDetector {
   bool update(double newSample) {
     x[index] = newSample;
     index = (index + 1) % length;
-    double mittelwert1 = this.mittelwert1();
-    double mittelwert2 = this.mittelwert2();
+    final mittelwert1 = this.mittelwert1();
+    final mittelwert2 = this.mittelwert2();
 
     if ((mittelwert1 - mittelwert2).abs() > differenzMittelwert.abs()) {
       return false;
     }
 
-    double maxAbweichung1 = max1ZuMittelwert(mittelwert1);
+    final maxAbweichung1 = max1ZuMittelwert(mittelwert1);
     if (maxAbweichung1 > schwelleBorder) {
       return false;
     }
 
-    double maxAbweichung2 = max2ZuMittelwert(mittelwert2);
+    final maxAbweichung2 = max2ZuMittelwert(mittelwert2);
     if (maxAbweichung2 > schwelleBorder) {
       return false;
     }
 
-    double mittelwert = mittelwertGesamterBuffer();
-    double maxAbweichung = maxAbweichungZuMittelwert(mittelwert);
+    final mittelwert = mittelwertGesamterBuffer();
+    final maxAbweichung = maxAbweichungZuMittelwert(mittelwert);
 
     return maxAbweichung > schwelle;
   }
@@ -117,17 +117,17 @@ class PeakDetector3D {
         peakDetectorZ = PeakDetector(length, borderLength, differenzMittelwert, schwelle, schwelleBorder);
 
   bool updateXYZ(double x, double y, double z) {
-    bool stateX = peakDetectorX.update(x);
-    bool stateY = peakDetectorY.update(y);
-    bool stateZ = peakDetectorZ.update(z);
+    final stateX = peakDetectorX.update(x);
+    final stateY = peakDetectorY.update(y);
+    final stateZ = peakDetectorZ.update(z);
     state = stateX || stateY || stateZ;
     return state;
   }
 
   bool resetWithXYZ(double x, double y, double z) {
-    bool stateX = peakDetectorX.reset(x);
-    bool stateY = peakDetectorY.reset(y);
-    bool stateZ = peakDetectorZ.reset(z);
+    final stateX = peakDetectorX.reset(x);
+    final stateY = peakDetectorY.reset(y);
+    final stateZ = peakDetectorZ.reset(z);
     state = stateX || stateY || stateZ;
     return state;
   }
