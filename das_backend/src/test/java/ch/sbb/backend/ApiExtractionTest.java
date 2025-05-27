@@ -32,7 +32,7 @@ class ApiExtractionTest {
         MvcResult mvcResult = mvc.perform(get("/v3/api-docs.yaml"))
             .andExpect(status().isOk())
             .andReturn();
-        Path specYamlFile = Paths.get("src/main/resources/api/spec.yaml");
+        Path specYamlFile = Paths.get("src/main/resources/api/api-docs.yaml");
 
         Path parentDir = specYamlFile.getParent();
         assertThat(parentDir).isNotNull();
@@ -40,7 +40,7 @@ class ApiExtractionTest {
             Files.createDirectories(parentDir);
         }
 
-        log.info("Exporting OpenAPI spec.yaml to {}", specYamlFile.toAbsolutePath().normalize());
+        log.info("Exporting OpenAPI api-docs.yaml to {}", specYamlFile.toAbsolutePath().normalize());
 
         byte[] specYamlAsBytes = mvcResult.getResponse().getContentAsByteArray();
         assertThat(specYamlAsBytes).isNotEmpty();
