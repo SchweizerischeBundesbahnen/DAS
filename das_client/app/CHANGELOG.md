@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.21.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.20.0...das_client-v0.21.0) (2025-05-28)
+
+
+### Features
+
+* adjust koa notification styling ([#819](https://github.com/SchweizerischeBundesbahnen/DAS/issues/819)) ([#933](https://github.com/SchweizerischeBundesbahnen/DAS/issues/933)) ([c1afa26](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c1afa26fca7e4fad56313986176ecd8cf00313bd))
+
+
+### Bug Fixes
+
+* date format in additional speed restriction details ([#567](https://github.com/SchweizerischeBundesbahnen/DAS/issues/567)) ([#926](https://github.com/SchweizerischeBundesbahnen/DAS/issues/926)) ([30aeaea](https://github.com/SchweizerischeBundesbahnen/DAS/commit/30aeaea8a646db8ddb7afcbdc69abdf5197e6975))
+* **deps:** update dependency audioplayers to v6 ([#903](https://github.com/SchweizerischeBundesbahnen/DAS/issues/903)) ([60225cb](https://github.com/SchweizerischeBundesbahnen/DAS/commit/60225cb0bb26a20a354b486b574db91b3f5b5c2a))
+* reduced journey does not display speeds ([#883](https://github.com/SchweizerischeBundesbahnen/DAS/issues/883)) ([#919](https://github.com/SchweizerischeBundesbahnen/DAS/issues/919)) ([45f43ff](https://github.com/SchweizerischeBundesbahnen/DAS/commit/45f43ffe37c1b9090116c1343e7fad7855eb0f1c))
+
 ## [0.20.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.19.0...das_client-v0.20.0) (2025-05-18)
 
 
