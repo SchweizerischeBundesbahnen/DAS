@@ -28,7 +28,7 @@ public class OpenApiConfig {
 
     @Value("${info.app.version}") private String applicationVersion;
 
-    @Value("${springdoc.swagger-ui.oauth.clientId}") private String clientId;
+    @Value("${auth.audience.service-name}") private String serviceName;
 
     @Value("${spring.security.oauth2.authorizationUrl}") private String authorizationUrl;
 
@@ -52,7 +52,7 @@ public class OpenApiConfig {
     }
 
     private SecurityScheme addOAuthSecurityScheme() {
-        final Scopes scopes = new Scopes().addString(clientId + "/.default", "Global access");
+        final Scopes scopes = new Scopes().addString("api://" + serviceName + "/.default", "Global access");
 
         final OAuthFlows flowAuthorizationCode = new OAuthFlows().authorizationCode(
             new OAuthFlow().authorizationUrl(authorizationUrl + "/authorize").tokenUrl(authorizationUrl + "/token").scopes(scopes));
