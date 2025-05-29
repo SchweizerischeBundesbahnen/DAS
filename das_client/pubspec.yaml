@@ -14,7 +14,7 @@ workspace:
   - sfera
 
 dev_dependencies:
-  melos: 7.0.0-dev.8
+  melos: 7.0.0-dev.9
 
 # Melos Configuration
 
