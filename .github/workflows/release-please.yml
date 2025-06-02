@@ -116,8 +116,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.release-please.outputs.das_backend--upload_url }}
-          asset_path: ./das_backend/src/main/resources/api/api-docs.yaml
-          asset_name: api-docs.yaml
+          asset_path: ./das_backend/src/main/resources/api/api-specification.yaml
+          asset_name: api-specification.yaml
           asset_content_type: application/yaml
   das_playground-release:
     needs: release-please
