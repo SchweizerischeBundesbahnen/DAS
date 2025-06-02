@@ -3,6 +3,8 @@ spring:
     url: jdbc
 
 auth:
+  audience:
+    service-name: test
   tenants:
     - name: test
       id: 3409e798-d567-49b1-9bae-f0be66427c54
