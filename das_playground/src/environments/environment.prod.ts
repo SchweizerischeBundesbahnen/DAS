@@ -7,8 +7,8 @@ const authConfig: PassedInitialConfig = {
   config: {
     authority: 'https://login.microsoftonline.com/common/v2.0',
     redirectUrl: window.location.origin,
-    clientId: '6025180f-123b-4f2f-9703-16e08fc221f0',
-    scope: 'openid profile email offline_access 6025180f-123b-4f2f-9703-16e08fc221f0/.default',
+    clientId: process.env.AUTH_CLIENT_ID,
+    scope: `openid profile email offline_access ${process.env.AUTH_SCOPE}`,
     silentRenew: true,
     useRefreshToken: true,
     maxIdTokenIatOffsetAllowedInSeconds: 600,
@@ -35,7 +35,7 @@ const mqttServiceOptions: IMqttServiceOptions = {
 export const environment: Environment = {
   production: process.env.PRODUCTION !== 'false',
   label: process.env.ENVIRONMENT_LABEL!,
-  oauthProfile: 'azureAd',
+  oauthProfile: process.env.MQTT_OAUTH_PROFILE!,
   customTopicPrefix: process.env.CUSTOM_TOPIC_PREFIX || '',
   backendUrl: process.env.BACKEND_URL!,
   authConfig,
