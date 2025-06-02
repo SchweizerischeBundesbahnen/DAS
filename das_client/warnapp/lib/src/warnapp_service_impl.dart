@@ -34,17 +34,23 @@ class WarnappServiceImpl implements WarnappService {
 
     _gyroSubscription?.cancel();
     _gyroSubscription = gyroscopeEventStream(samplingPeriod: samplingPeriod).listen((event) {
+      Fimber.d('gyro event');
       _motionDataContainer.gyroscopeEvent = event;
       _gyroUpdateCount++;
       _handleMotionDateUpdate();
-    });
+    }, onError: (error) {
+      Fimber.e('Error listening to gyro stream', ex: error);
+    }, cancelOnError: true);
 
     _accelerometerSubscription?.cancel();
     _accelerometerSubscription = accelerometerEventStream(samplingPeriod: samplingPeriod).listen((event) {
+      Fimber.d('accelerometer event');
       _motionDataContainer.accelerometerEvent = event;
       _accelerometerUpdateCount++;
       _handleMotionDateUpdate();
-    });
+    }, onError: (error) {
+      Fimber.e('Error listening to accelerometer stream', ex: error);
+    }, cancelOnError: true);
 
     _initializeLocation();
   }
