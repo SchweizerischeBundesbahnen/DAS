@@ -12,6 +12,7 @@ import 'package:logger/component.dart';
 import 'package:mqtt/component.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:sfera/component.dart';
+import 'package:warnapp/component.dart';
 
 class DI {
   const DI._();
@@ -61,6 +62,7 @@ extension GetItX on GetIt {
     registerSferaRemoteRepo();
     registerBattery();
     registerAudioPlayer();
+    registerWarnapp();
     await allReady();
   }
 
@@ -192,7 +194,7 @@ extension GetItX on GetIt {
     });
 
     registerLazySingleton<BrightnessManager>(() {
-      Fimber.d('Register ScreenBrightness');
+      Fimber.d('Register BrightnessManager');
       return BrightnessManagerImpl(DI.get<ScreenBrightness>());
     });
   }
@@ -208,6 +210,12 @@ extension GetItX on GetIt {
     registerLazySingleton<AudioPlayer>(() {
       Fimber.d('Register AudioPlayer');
       return AudioPlayer();
+    });
+  }
+
+  void registerWarnapp() {
+    registerLazySingleton(() {
+      return WarnappComponent.createWarnappService();
     });
   }
 }

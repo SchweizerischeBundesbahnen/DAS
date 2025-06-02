@@ -8,6 +8,7 @@ import 'package:app/widgets/flavor_banner.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sfera/component.dart';
+import 'package:warnapp/component.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -28,7 +29,10 @@ class _AppState extends State<App> {
           dispose: (context, vm) => vm.dispose(),
         ),
         Provider(
-          create: (_) => TrainJourneyViewModel(sferaRemoteRepo: DI.get<SferaRemoteRepo>()),
+          create: (_) => TrainJourneyViewModel(
+            sferaRemoteRepo: DI.get<SferaRemoteRepo>(),
+            warnappService: DI.get<WarnappService>(),
+          ),
           dispose: (context, vm) => vm.dispose(),
         ),
       ],

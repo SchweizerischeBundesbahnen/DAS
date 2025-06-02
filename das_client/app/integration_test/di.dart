@@ -34,6 +34,7 @@ class IntegrationTestDI {
     GetIt.I.registerSferaRemoteRepo();
     _registerBattery();
     GetIt.I.registerAudioPlayer();
+    GetIt.I.registerWarnapp();
 
     await GetIt.I.allReady();
   }

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:warnapp/src/algorithmus_16.dart';
-import 'package:warnapp/src/algorithmus_16_properties.dart';
+import 'package:warnapp/src/algorithmus/algorithmus_16.dart';
+import 'package:warnapp/src/algorithmus/algorithmus_16_properties.dart';
 
 void main() {
   group('Algorithmus16 Tests', () {

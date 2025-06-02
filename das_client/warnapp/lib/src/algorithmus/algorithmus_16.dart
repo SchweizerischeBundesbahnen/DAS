@@ -1,5 +1,5 @@
 import 'package:intl/intl.dart';
-import 'package:warnapp/src/algorithmus_16_properties.dart';
+import 'package:warnapp/src/algorithmus/algorithmus_16_properties.dart';
 import 'package:warnapp/src/rechner/abfahrt_detector.dart';
 import 'package:warnapp/src/rechner/delayed_trigger.dart';
 import 'package:warnapp/src/rechner/delta.dart';

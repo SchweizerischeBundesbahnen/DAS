@@ -8,15 +8,19 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
+import 'package:warnapp/component.dart';
 
 class TrainJourneyViewModel {
   TrainJourneyViewModel({
     required SferaRemoteRepo sferaRemoteRepo,
-  }) : _sferaRemoteRepo = sferaRemoteRepo {
+    required WarnappService warnappService,
+  }) : _sferaRemoteRepo = sferaRemoteRepo,
+       _warnappService = warnappService {
     _init();
   }
 
   final SferaRemoteRepo _sferaRemoteRepo;
+  final WarnappService _warnappService;
 
   Stream<Journey?> get journey => _sferaRemoteRepo.journeyStream;
 
@@ -78,6 +82,7 @@ class TrainJourneyViewModel {
           automaticAdvancementController = AutomaticAdvancementController();
           _listenToJourneyUpdates();
           WakelockPlus.enable();
+          _warnappService.enable();
           break;
         case SferaRemoteRepositoryState.connecting:
         case SferaRemoteRepositoryState.handshaking:
@@ -87,6 +92,7 @@ class TrainJourneyViewModel {
         case SferaRemoteRepositoryState.disconnected:
         case SferaRemoteRepositoryState.offline:
           WakelockPlus.disable();
+          _warnappService.disable();
           if (_sferaRemoteRepo.lastError != null) {
             _rxErrorCode.add(ErrorCode.fromSfera(_sferaRemoteRepo.lastError!));
           }
