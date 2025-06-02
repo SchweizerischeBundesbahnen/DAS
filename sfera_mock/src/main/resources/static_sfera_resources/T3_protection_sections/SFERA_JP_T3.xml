@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="3" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="4" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
     <TrainIdentification>
         <OTN_ID>
             <teltsi_Company>1085</teltsi_Company>
@@ -7,7 +7,7 @@
             <teltsi_StartDate>2022-01-04</teltsi_StartDate>
         </OTN_ID>
     </TrainIdentification>
-    <SegmentProfileReference SP_ID="T3_1" SP_VersionMajor="2" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T3_1" SP_VersionMajor="2" SP_VersionMinor="2" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -15,6 +15,7 @@
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Genève-Aéroport"/>
             </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2022-01-01T00:00:00Z" plannedDepartureTime="2022-01-01T00:00:00Z"/>
         </TimingPointConstraints>
         <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
             <TimingPointReference>
@@ -111,15 +112,56 @@
                 <TP_ID_Reference TP_ID="Opfikon Süd"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="End_of_Journey">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="End_of_Journey" TP_latestArrivalTime="2022-01-01T01:00:00Z"
+                                TP_PlannedLatestArrivalTime="2022-01-01T01:00:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Flughafen"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="700"
-                              endLocation="800" startTime="2022-01-01T00:00:00Z" endTime="2060-01-01T00:00:00Z">
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="700" endLocation="800"
+                              startTime="2022-01-01T00:00:00Z" endTime="2060-01-01T00:00:00Z">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="60"/>
             <TemporaryConstraintReason text="Schutz Personal" language="de"/>
+        </TemporaryConstraints>
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="1100" endLocation="1200"
+                              startTime="2021-12-01T00:00:00Z" endTime="2021-12-31T23:29:59Z">
+            <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="60"/>
+            <TemporaryConstraintReason text="ASR not parsed - ends 30 min before JourneyStart" language="de"/>
+        </TemporaryConstraints>
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="1300" endLocation="1400"
+                              startTime="2021-01-01T00:00:00Z" endTime="2021-12-31T23:45:00Z">
+            <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="60"/>
+            <TemporaryConstraintReason text="Schutz Personal - JourneyStart plus gap overlaps with ASR" language="de"/>
+        </TemporaryConstraints>
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="1550" endLocation="1575"
+                              startTime="2021-01-01T00:00:00Z" endTime="2022-01-01T00:00:01Z">
+            <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="60"/>
+            <TemporaryConstraintReason text="Schutz Personal - JourneyStart overlaps with ASR" language="de"/>
+        </TemporaryConstraints>
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="2200" endLocation="2400"
+                              startTime="2021-01-01T00:00:00Z" endTime="2022-01-01T00:30:01Z">
+            <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="60"/>
+            <TemporaryConstraintReason text="Schutz Personal - JourneyStart and JourneyEnd overlap with ASR" language="de"/>
+        </TemporaryConstraints>
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="3300" endLocation="3400"
+                              startTime="2021-12-31T23:45:00Z" endTime="2060-01-01T00:00:00Z">
+            <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="60"/>
+            <TemporaryConstraintReason text="Schutz Personal - JourneyEnd and JourneyStart overlap with ASR" language="de"/>
+        </TemporaryConstraints>
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="5600" endLocation="5800"
+                              startTime="2022-01-01T00:45:00Z" endTime="2060-01-01T00:00:00Z">
+            <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="60"/>
+            <TemporaryConstraintReason text="Schutz Personal - JourneyEnd overlap with ASR" language="de"/>
+        </TemporaryConstraints>
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="6200" endLocation="6400"
+                              startTime="2022-01-01T01:29:59Z" endTime="2060-01-01T00:00:00Z">
+            <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="60"/>
+            <TemporaryConstraintReason text="Schutz Personal - JourneyEnd plus gap overlap with ASR" language="de"/>
+        </TemporaryConstraints>
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="7800" endLocation="7900"
+                              startTime="2022-01-01T01:30:01Z" endTime="2022-01-31T00:00:00Z">
+            <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="60"/>
+            <TemporaryConstraintReason text="ASR not parsed - starts 30 min after JourneyEnd" language="de"/>
         </TemporaryConstraints>
     </SegmentProfileReference>
 </JourneyProfile>
