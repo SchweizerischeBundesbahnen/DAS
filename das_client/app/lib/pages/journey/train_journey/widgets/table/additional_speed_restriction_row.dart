@@ -21,8 +21,8 @@ class AdditionalSpeedRestrictionRow extends CellRowBuilder<AdditionalSpeedRestri
   @override
   DASTableCell informationCell(BuildContext context) {
     final kilometreLabel = context.l10n.p_train_journey_table_kilometre_label;
-    final fromKilometre = data.restriction.kmFrom.toStringAsFixed(3);
-    final endKilometre = data.restriction.kmTo.toStringAsFixed(3);
+    final fromKilometre = data.kmFrom.toStringAsFixed(3);
+    final endKilometre = data.kmTo.toStringAsFixed(3);
     return DASTableCell(
       child: Text(
         '$kilometreLabel $fromKilometre - $kilometreLabel $endKilometre',
@@ -44,8 +44,9 @@ class AdditionalSpeedRestrictionRow extends CellRowBuilder<AdditionalSpeedRestri
 
   @override
   DASTableCell localSpeedCell(BuildContext context) {
+    // TODO: What to do with nullable speed
     return DASTableCell(
-      child: Text(data.restriction.speed.toString()),
+      child: Text(data.speed.toString()),
       alignment: Alignment.center,
     );
   }

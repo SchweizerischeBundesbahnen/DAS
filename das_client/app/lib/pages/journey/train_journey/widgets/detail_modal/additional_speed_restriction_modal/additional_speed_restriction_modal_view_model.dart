@@ -6,17 +6,12 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 class AdditionalSpeedRestrictionModalViewModel {
-  /// TODO: NumberOfRestrictions will make more sense when sequence or complex ASR are implemented
-  final _rxNumberOfRestrictions = BehaviorSubject<int>();
-  final _rxAdditionalSpeedRestriction = BehaviorSubject<AdditionalSpeedRestriction>();
+  final _rxAdditionalSpeedRestrictions = BehaviorSubject<List<AdditionalSpeedRestriction>>();
 
-  Stream<int> get numberOfRestrictions => _rxNumberOfRestrictions.distinct();
+  Stream<List<AdditionalSpeedRestriction>> get additionalSpeedRestrictions => _rxAdditionalSpeedRestrictions.distinct();
 
-  Stream<AdditionalSpeedRestriction> get additionalSpeedRestriction => _rxAdditionalSpeedRestriction.distinct();
-
-  void open(BuildContext context, AdditionalSpeedRestriction restriction) {
-    _rxAdditionalSpeedRestriction.add(restriction);
-    _rxNumberOfRestrictions.add(1);
+  void open(BuildContext context, List<AdditionalSpeedRestriction> restrictions) {
+    _rxAdditionalSpeedRestrictions.add(restrictions);
 
     final viewModel = context.read<DetailModalViewModel>();
     viewModel.open(AdditionalSpeedRestrictionModalBuilder(), maximize: false);
@@ -25,7 +20,6 @@ class AdditionalSpeedRestrictionModalViewModel {
   void close(BuildContext context) => context.read<DetailModalViewModel>().close();
 
   void dispose() {
-    _rxAdditionalSpeedRestriction.close();
-    _rxNumberOfRestrictions.close();
+    _rxAdditionalSpeedRestrictions.close();
   }
 }

@@ -3,13 +3,40 @@ import 'package:sfera/src/model/journey/base_data.dart';
 import 'package:sfera/src/model/journey/datatype.dart';
 
 class AdditionalSpeedRestrictionData extends BaseData {
-  const AdditionalSpeedRestrictionData({required this.restriction, required super.order, required super.kilometre})
-    : super(type: Datatype.additionalSpeedRestriction);
+  AdditionalSpeedRestrictionData({required this.restrictions, required super.order, required super.kilometre})
+    : assert(restrictions.isNotEmpty),
+      super(type: Datatype.additionalSpeedRestriction);
 
-  final AdditionalSpeedRestriction restriction;
+  factory AdditionalSpeedRestrictionData.start(List<AdditionalSpeedRestriction> restrictions) {
+    if (restrictions.isEmpty) throw ArgumentError('Restrictions can not be empty');
+    final startRestriction = restrictions.getByLowestOrderFrom;
+    return AdditionalSpeedRestrictionData(
+      restrictions: restrictions,
+      order: startRestriction.orderFrom,
+      kilometre: [startRestriction.kmFrom],
+    );
+  }
+
+  factory AdditionalSpeedRestrictionData.end(List<AdditionalSpeedRestriction> restrictions) {
+    if (restrictions.isEmpty) throw ArgumentError('Restrictions can not be empty');
+    final startRestriction = restrictions.getByHighestOrderTo;
+    return AdditionalSpeedRestrictionData(
+      restrictions: restrictions,
+      order: startRestriction.orderTo,
+      kilometre: [startRestriction.kmTo],
+    );
+  }
+
+  final List<AdditionalSpeedRestriction> restrictions;
+
+  double get kmFrom => restrictions.getByLowestOrderFrom.kmFrom;
+
+  double get kmTo => restrictions.getByLowestOrderFrom.kmTo;
+
+  int? get speed => restrictions.minimalSpeed;
 
   @override
   String toString() {
-    return 'AdditionalSpeedRestrictionData(order: $order, kilometre: $kilometre, restriction: $AdditionalSpeedRestriction)';
+    return 'AdditionalSpeedRestrictionData(order: $order, kilometre: $kilometre, restrictions: $AdditionalSpeedRestriction)';
   }
 }

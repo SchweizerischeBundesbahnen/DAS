@@ -386,6 +386,6 @@ class TrainJourney extends StatelessWidget {
 
   void _onAdditionalSpeedRestrictionTab(BuildContext context, AdditionalSpeedRestrictionData data) {
     final viewModel = context.read<AdditionalSpeedRestrictionModalViewModel>();
-    viewModel.open(context, data.restriction);
+    viewModel.open(context, data.restrictions);
   }
 }

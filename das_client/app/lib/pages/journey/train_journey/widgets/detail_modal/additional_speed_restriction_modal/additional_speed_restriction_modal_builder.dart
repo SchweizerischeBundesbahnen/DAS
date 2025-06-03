@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:sfera/component.dart';
 
 class AdditionalSpeedRestrictionModalBuilder extends DASModalSheetBuilder {
   @override
@@ -17,9 +18,9 @@ class AdditionalSpeedRestrictionModalBuilder extends DASModalSheetBuilder {
       children: [
         Text(context.l10n.w_additional_speed_restriction_modal_title, style: DASTextStyles.largeRoman),
         StreamBuilder(
-          stream: viewModel.numberOfRestrictions,
+          stream: viewModel.additionalSpeedRestrictions,
           builder: (context, snapshot) {
-            final count = snapshot.data ?? 0;
+            final count = snapshot.data?.length ?? 0;
             final countLabel = context.l10n.w_additional_speed_restriction_modal_subtitle_count;
             return Text('$countLabel: $count', style: DASTextStyles.extraSmallRoman);
           },
@@ -32,27 +33,34 @@ class AdditionalSpeedRestrictionModalBuilder extends DASModalSheetBuilder {
   Widget body(BuildContext context) {
     final viewModel = context.read<AdditionalSpeedRestrictionModalViewModel>();
     return StreamBuilder(
-      stream: viewModel.additionalSpeedRestriction,
+      stream: viewModel.additionalSpeedRestrictions,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return SBBLoadingIndicator.tiny();
         }
 
-        final restriction = snapshot.requireData;
-        final fromKilometre = restriction.kmFrom.toStringAsFixed(3);
-        final endKilometre = restriction.kmTo.toStringAsFixed(3);
-
-        final data = {
-          context.l10n.w_additional_speed_restriction_modal_table_label_km: '$fromKilometre - $endKilometre',
-          context.l10n.w_additional_speed_restriction_modal_table_label_vmax: restriction.speed?.toString(),
-          context.l10n.w_additional_speed_restriction_modal_table_label_from: restriction.restrictionFrom?.format(),
-          context.l10n.w_additional_speed_restriction_modal_table_label_until: restriction.restrictionUntil?.format(),
-          context.l10n.w_additional_speed_restriction_modal_table_label_reason: restriction.reason?.localized,
-        };
-
-        return SingleChildScrollView(child: DetailsTable(data: data));
+        final restrictions = snapshot.requireData;
+        return ListView.builder(
+          itemCount: restrictions.length,
+          itemBuilder: (context, index) => _restrictionDetailsTable(context, restrictions[index]),
+        );
       },
     );
+  }
+
+  DetailsTable _restrictionDetailsTable(BuildContext context, AdditionalSpeedRestriction restriction) {
+    final fromKilometre = restriction.kmFrom.toStringAsFixed(3);
+    final endKilometre = restriction.kmTo.toStringAsFixed(3);
+
+    final data = {
+      context.l10n.w_additional_speed_restriction_modal_table_label_km: '$fromKilometre - $endKilometre',
+      context.l10n.w_additional_speed_restriction_modal_table_label_vmax: restriction.speed?.toString(),
+      context.l10n.w_additional_speed_restriction_modal_table_label_from: restriction.restrictionFrom?.format(),
+      context.l10n.w_additional_speed_restriction_modal_table_label_until: restriction.restrictionUntil?.format(),
+      context.l10n.w_additional_speed_restriction_modal_table_label_reason: restriction.reason?.localized,
+    };
+
+    return DetailsTable(data: data);
   }
 }
 
