@@ -52,8 +52,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: lint
     env:
-      IMAGE_REPO: ghcr.io/${{ github.repository }}/webapp
-      IMAGE_TAG: main
+      IMAGE_ID: ghcr.io/${{ github.repository }}/webapp
+      VERSION: main
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -70,9 +70,9 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           # Convert to lowercase
-          IMAGE_REPO=$(echo $IMAGE_REPO | tr '[:upper:]' '[:lower:]')
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[:upper:]' '[:lower:]')
           
-          docker build -t $IMAGE_REPO:$IMAGE_TAG .
-          docker push $IMAGE_REPO:$IMAGE_TAG
+          docker build -t $IMAGE_ID:$VERSION .
+          docker push $IMAGE_ID:$VERSION
         env:
           DOCKER_BUILDKIT: 1

@@ -23,7 +23,6 @@ jobs:
       das_backend--release_created: ${{ steps.release.outputs.das_backend--release_created }}
       das_backend--version: ${{ steps.release.outputs.das_backend--version }}
       das_backend--tag_name: ${{ steps.release.outputs.das_backend--tag_name }}
-      das_backend--upload_url: ${{ steps.release.outputs.das_backend--upload_url }}
       das_playground--release_created: ${{ steps.release.outputs.das_playground--release_created }}
       das_playground--version: ${{ steps.release.outputs.das_playground--version }}
       das_playground--tag_name: ${{ steps.release.outputs.das_playground--tag_name }}
@@ -104,21 +103,16 @@ jobs:
           IMAGE_ID=$(echo $IMAGE_ID | tr '[:upper:]' '[:lower:]')
 
           mvn spring-boot:build-image \
-            -Dmaven.test.skip=true \
+            -Dtest=ch.sbb.backend.ApiExtractionTest \
             -Dspring-boot.build-image.imageName=$IMAGE_ID:$VERSION
 
           docker push $IMAGE_ID:$VERSION
           docker tag $IMAGE_ID:$VERSION $IMAGE_ID:latest
           docker push $IMAGE_ID:latest
-      - name: Upload api-docs asset
-        uses: actions/upload-release-asset@v1
+      - name: Upload Release Artifact
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ needs.release-please.outputs.das_backend--upload_url }}
-          asset_path: ./das_backend/src/main/resources/api/api-specification.yaml
-          asset_name: api-specification.yaml
-          asset_content_type: application/yaml
+        run: gh release upload ${{ needs.release-please.outputs.das_backend--tag_name }} ./src/main/resources/api/api-specification.yaml
   das_playground-release:
     needs: release-please
     if: needs.release-please.outputs.das_playground--release_created
@@ -139,15 +133,15 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
       - name: Create container image
         env:
-          IMAGE_REPO: ghcr.io/${{ github.repository }}/webapp
-          IMAGE_TAG: ${{ needs.release-please.outputs.das_playground--version }}
+          IMAGE_ID: ghcr.io/${{ github.repository }}/webapp
+          VERSION: ${{ needs.release-please.outputs.das_playground--version }}
           DOCKER_BUILDKIT: 1
         run: |
           # Convert to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[:upper:]' '[:lower:]')
 
-          docker build -t $IMAGE_REPO:$IMAGE_TAG .
-          docker push $IMAGE_REPO:$IMAGE_TAG
-          docker tag $IMAGE_REPO:$IMAGE_TAG $IMAGE_REPO:latest
-          docker push $IMAGE_REPO:latest
+          docker build -t $IMAGE_ID:$VERSION .
+          docker push $IMAGE_ID:$VERSION
+          docker tag $IMAGE_ID:$VERSION $IMAGE_ID:latest
+          docker push $IMAGE_ID:latest
           
