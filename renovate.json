@@ -16,6 +16,13 @@
       ]
     },
     {
+      "description": "Group dependencies from components",
+      "matchFileNames": [
+        "das_client/**/pubspec.yaml"
+      ],
+      "groupName": "das-client-component-updates"
+    },
+    {
       "matchFileNames": [
         "das_playground/**"
       ],
