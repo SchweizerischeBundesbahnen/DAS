@@ -6,12 +6,8 @@ defaults:
 
 on:
   push:
-    paths:
-      - 'das_backend/**'
     branches: [ "main" ]
   pull_request:
-    paths:
-      - 'das_backend/**'
     branches: [ "main" ]
 
 jobs:
