@@ -99,7 +99,12 @@ extension GetItX on GetIt {
   void registerMqttClientConnector({bool useTms = false}) {
     factoryFunc() {
       Fimber.d('Register mqtt client connector');
-      return MqttComponent.createMqttClientConnector(authProvider: DI.get(), useTms: useTms);
+      final flavor = DI.get<Flavor>();
+      return MqttComponent.createMqttClientConnector(
+        authProvider: DI.get(),
+        useTms: useTms,
+        oauthProfile: flavor.mqttOauthProfile,
+      );
     }
 
     registerLazySingleton<MqttClientConnector>(factoryFunc);
