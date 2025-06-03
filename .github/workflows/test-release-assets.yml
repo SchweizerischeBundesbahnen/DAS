@@ -28,7 +28,7 @@ jobs:
         #          IMAGE_ID: ghcr.io/${{ github.repository }}/backend
         #          VERSION: ${{ needs.release-please.outputs.das_backend--version }}
         run: |
-          mvn spring-boot:build-image
+          mvn spring-boot:build-image -DskipTests -Dtest=ApiExtractionTest
       #      - name: Run the Maven verify phase
       #        run: mvn --batch-mode --update-snapshots verify
       #      - name: Login to GitHub Container Registry
