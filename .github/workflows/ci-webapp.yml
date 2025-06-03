@@ -6,8 +6,12 @@ defaults:
 
 on:
   push:
+    paths:
+      - 'das_playground/**'
     branches: [ "main" ]
   pull_request:
+    paths:
+      - 'das_playground/**'
     branches: [ "main" ]
 
 
@@ -49,7 +53,7 @@ jobs:
     needs: lint
     env:
       IMAGE_ID: ghcr.io/${{ github.repository }}/webapp
-      VERSION: test
+      VERSION: main
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -60,13 +64,15 @@ jobs:
       - run: npm clean-install
       - run: npm run build:ngssc
       - name: Login to GitHub Container Registry
+        if: github.ref == 'refs/heads/main'
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
       - name: Create container image
+        if: github.ref == 'refs/heads/main'
         run: |
           # Convert to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[:upper:]' '[:lower:]')
           
-          docker build -t $IMAGE_ID:test .
-          docker push $IMAGE_ID:test
+          docker build -t $IMAGE_ID:$VERSION .
+          docker push $IMAGE_ID:$VERSION
         env:
           DOCKER_BUILDKIT: 1
