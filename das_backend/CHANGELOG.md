@@ -15,9 +15,7 @@
 
 * backend tests ([#968](https://github.com/SchweizerischeBundesbahnen/DAS/issues/968)) ([3d5468a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/3d5468a9b455216217b215d70704213454526e27))
 * **deps:** update dependency org.springdoc:springdoc-openapi-starter-webmvc-ui to v2.8.8 ([#860](https://github.com/SchweizerischeBundesbahnen/DAS/issues/860)) ([7ad2fed](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7ad2fed0e98aac7ee8573a4d8019f304b1f2cc93))
-* **deps:** update dependency org.springframework.boot:spring-boot-starter-parent to v3.4.5 ([#844](https://github.com/SchweizerischeBundesbahnen/DAS/issues/844)) ([d47b70c](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d47b70cb12223b2d129a9e1ca28cb8329417a78a))
 * **deps:** update dependency org.springframework.boot:spring-boot-starter-parent to v3.5.0 ([#953](https://github.com/SchweizerischeBundesbahnen/DAS/issues/953)) ([a70596e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a70596ed3b7fd87a764ffd52116e839867582fac))
-* **deps:** update dependency org.springframework.modulith:spring-modulith-bom to v1.3.5 ([#846](https://github.com/SchweizerischeBundesbahnen/DAS/issues/846)) ([d1b5338](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d1b53389cdba2906f5ff8206e5285516e53f24d1))
 * **deps:** update dependency org.springframework.modulith:spring-modulith-bom to v1.4.0 ([#955](https://github.com/SchweizerischeBundesbahnen/DAS/issues/955)) ([3ee7d75](https://github.com/SchweizerischeBundesbahnen/DAS/commit/3ee7d754faadb0abcb803440999595d6637c8377))
 
 
