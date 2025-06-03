@@ -5,6 +5,7 @@ target/
 sfera_mock/src/main/java/generated/**
 sfera_mock/src/main/java/META-INF/JAXB/**
 sfera_mock/src/main/java/org/w3/_2001/xmlschema/**
+/das_backend/src/main/resources/api/**
 *.p12
 *.env
 

@@ -444,7 +444,7 @@ void main() {
         .toList();
 
     expect(journey.valid, true);
-    expect(speedRestrictions, hasLength(1));
+    expect(speedRestrictions, hasLength(7));
     expect(speedRestrictions[0].speed, 60);
     expect(speedRestrictions[0].kmFrom, 64.2);
     expect(speedRestrictions[0].kmTo, 63.2);
@@ -459,7 +459,7 @@ void main() {
     expect(speedRestrictions[0].restrictions[0].restrictionUntil, DateTime.parse('2060-01-01T00:00:00Z'));
     expect(speedRestrictions[0].restrictions[0].reason?.de, 'Schutz Personal');
 
-    expect(journey.metadata.additionalSpeedRestrictions, hasLength(1));
+    expect(journey.metadata.additionalSpeedRestrictions, hasLength(7));
     expect(journey.metadata.additionalSpeedRestrictions[0].kmFrom, 64.2);
     expect(journey.metadata.additionalSpeedRestrictions[0].kmTo, 63.2);
     expect(journey.metadata.additionalSpeedRestrictions[0].orderFrom, 700);
@@ -468,6 +468,19 @@ void main() {
     expect(journey.metadata.additionalSpeedRestrictions[0].restrictionFrom, DateTime.parse('2022-01-01T00:00:00Z'));
     expect(journey.metadata.additionalSpeedRestrictions[0].restrictionUntil, DateTime.parse('2060-01-01T00:00:00Z'));
     expect(journey.metadata.additionalSpeedRestrictions[0].reason?.de, 'Schutz Personal');
+  });
+
+  test('Test additional speed restriction out of journey times are filtered correctly', () async {
+    final journey = getJourney('T3', 1);
+    final speedRestrictions = journey.data
+        .where((it) => it.type == Datatype.additionalSpeedRestriction)
+        .cast<AdditionalSpeedRestrictionData>()
+        .toList();
+
+    expect(journey.valid, true);
+    expect(speedRestrictions, hasLength(7)); // other two restrictions are out of journey times
+
+    expect(journey.metadata.additionalSpeedRestrictions, hasLength(7));
   });
 
   test('Test additional speed restriction is parsed correctly over multiple segments', () async {
@@ -502,51 +515,30 @@ void main() {
   });
 
   test('Test additional speed restriction without a date', () async {
-    final journey = getJourney('T3', 1, jpPostfix: 'asp_no_date');
+    final journey = getJourney('T2', 3);
     final speedRestrictions = journey.data
         .where((it) => it.type == Datatype.additionalSpeedRestriction)
         .cast<AdditionalSpeedRestrictionData>()
         .toList();
 
     expect(journey.valid, true);
-    expect(speedRestrictions, hasLength(1));
+    expect(speedRestrictions, hasLength(2));
     expect(speedRestrictions[0].restrictions, hasLength(1));
     expect(speedRestrictions[0].restrictions[0].kmFrom, 64.2);
     expect(speedRestrictions[0].restrictions[0].kmTo, 63.2);
     expect(speedRestrictions[0].restrictions[0].orderFrom, 700);
     expect(speedRestrictions[0].restrictions[0].orderTo, 800);
     expect(speedRestrictions[0].restrictions[0].speed, 60);
+    expect(speedRestrictions[0].restrictions[0].restrictionFrom, isNull);
+    expect(speedRestrictions[0].restrictions[0].restrictionUntil, isNull);
+    expect(speedRestrictions[1].restrictions, hasLength(1));
+    expect(speedRestrictions[1].restrictions[0].restrictionFrom, isNull);
+    expect(speedRestrictions[1].restrictions[0].restrictionUntil, isNull);
+    expect(speedRestrictions[1].order, 206800);
 
     expect(journey.metadata.additionalSpeedRestrictions, hasLength(1));
-    expect(journey.metadata.additionalSpeedRestrictions[0].kmFrom, 64.2);
-    expect(journey.metadata.additionalSpeedRestrictions[0].kmTo, 63.2);
-    expect(journey.metadata.additionalSpeedRestrictions[0].orderFrom, 700);
-    expect(journey.metadata.additionalSpeedRestrictions[0].orderTo, 800);
-    expect(journey.metadata.additionalSpeedRestrictions[0].speed, 60);
-  });
-
-  test('Test additional speed restriction with date in the past', () async {
-    final journey = getJourney('T3', 1, jpPostfix: 'asp_date_before');
-    final speedRestrictions = journey.data
-        .where((it) => it.type == Datatype.additionalSpeedRestriction)
-        .cast<AdditionalSpeedRestrictionData>()
-        .toList();
-
-    expect(journey.valid, true);
-    expect(speedRestrictions, hasLength(0));
-    expect(journey.metadata.additionalSpeedRestrictions, hasLength(0));
-  });
-
-  test('Test additional speed restriction with date in the future', () async {
-    final journey = getJourney('T3', 1, jpPostfix: 'asp_date_after');
-    final speedRestrictions = journey.data
-        .where((it) => it.type == Datatype.additionalSpeedRestriction)
-        .cast<AdditionalSpeedRestrictionData>()
-        .toList();
-
-    expect(journey.valid, true);
-    expect(speedRestrictions, hasLength(0));
-    expect(journey.metadata.additionalSpeedRestrictions, hasLength(0));
+    expect(journey.metadata.additionalSpeedRestrictions[0].restrictionFrom, isNull);
+    expect(journey.metadata.additionalSpeedRestrictions[0].restrictionUntil, isNull);
   });
 
   test('Test complex additional speed restrictions are parsed correctly', () async {

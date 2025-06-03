@@ -66,7 +66,7 @@
 		<NetworkSpecificArea startEndQualifier="WholeSP">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
-            <NetworkSpecificParameter name="trackEquipmentType" value="ETCSL1LS-2TracksWithSingleTrackEquipment"/>
+            <NetworkSpecificParameter name="trackEquipmentType" value="ETCS-L1LS-2TracksWithSingleTrackEquipment"/>
         </NetworkSpecificArea>
 
     </SP_Areas>

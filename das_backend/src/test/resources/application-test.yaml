@@ -1,23 +1,6 @@
-info:
-  app:
-    version: test
-
 spring:
-  security:
-    oauth2:
-      authorizationUrl: test
-  jackson:
-    mapper:
-      accept-case-insensitive-enums: true
-    time-zone: CET
-  sql:
-    init:
-      mode: always
-
-springdoc:
-  swagger-ui:
-    oauth:
-      clientId: test
+  datasource:
+    url: jdbc
 
 auth:
   audience:
@@ -27,8 +10,7 @@ auth:
       id: 3409e798-d567-49b1-9bae-f0be66427c54
       issuer-uri: https://login.microsoftonline.com/3409e798-d567-49b1-9bae-f0be66427c54/v2.0
       jwk-set-uri: https://login.microsoftonline.com/3409e798-d567-49b1-9bae-f0be66427c54/discovery/v2.0/keys
-      log-destination: splunk
 
 splunk:
-  url: "url"
-  token: "token"
+  url: url
+  token: token

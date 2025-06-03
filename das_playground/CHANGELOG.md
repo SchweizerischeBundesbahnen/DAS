@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.4.0...webapp-v0.5.0) (2025-06-03)
+
+
+### Features
+
+* use apim auth client ([#832](https://github.com/SchweizerischeBundesbahnen/DAS/issues/832)) ([#937](https://github.com/SchweizerischeBundesbahnen/DAS/issues/937)) ([831f865](https://github.com/SchweizerischeBundesbahnen/DAS/commit/831f8654a1b15415d64ede5038cf20e5ff75478a))
+
 ## [0.4.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.3.0...webapp-v0.4.0) (2025-03-25)
 
 

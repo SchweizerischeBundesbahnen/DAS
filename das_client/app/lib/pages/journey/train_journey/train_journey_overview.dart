@@ -94,7 +94,9 @@ class TrainJourneyOverview extends StatelessWidget {
     if (event.isWarn) {
       final Sound sound = WarnAppSound();
       sound.play();
-      showWarnFunctionModalSheet(context);
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        showWarnFunctionModalSheet(context);
+      });
     } else if (event.isKoa && event.value == KoaState.waitCancelled.name) {
       final Sound sound = KoaSound();
       sound.play();
