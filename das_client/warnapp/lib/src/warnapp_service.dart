@@ -1,7 +1,7 @@
 import 'package:warnapp/src/warnapp_listener.dart';
 
 abstract class WarnappService {
-  WarnappService._();
+  const WarnappService._();
 
   bool get isEnabled;
 
