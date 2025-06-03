@@ -61,6 +61,10 @@ jobs:
 
       - name: List files
         run: ls ./src/main/resources
+      - name: Upload Release Artifact
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload backend-v0.2.0 ./das_backend/src/main/resources/api/api-specification.yaml
 
 #      - name: Test Upload Release Asset
 #        id: upload-release-asset
