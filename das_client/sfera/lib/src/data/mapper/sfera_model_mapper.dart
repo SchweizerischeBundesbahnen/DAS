@@ -6,6 +6,7 @@ import 'package:sfera/src/data/dto/multilingual_text_dto.dart';
 import 'package:sfera/src/data/dto/related_train_information_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
+import 'package:sfera/src/data/dto/temporary_constraints_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/mapper/mapper_utils.dart';
 import 'package:sfera/src/data/mapper/segment_profile_mapper.dart';
@@ -80,26 +81,14 @@ class SferaModelMapper {
     journeyData.addAll(_cabSignalingStart(trackEquipmentSegments));
     journeyData.addAll(_cabSignalingEnd(trackEquipmentSegments, journeyData));
 
-    final additionalSpeedRestrictions = _parseAdditionalSpeedRestrictions(journeyProfile, segmentProfiles);
-    for (final restriction in additionalSpeedRestrictions.where((asr) => asr.isDisplayed(trackEquipmentSegments))) {
-      journeyData.add(
-        AdditionalSpeedRestrictionData(
-          restriction: restriction,
-          order: restriction.orderFrom,
-          kilometre: [restriction.kmFrom],
-        ),
-      );
+    final servicePoints = journeyData.whereType<ServicePoint>().sortedBy((sP) => sP.order);
 
-      if (restriction.needsEndMarker(journeyData)) {
-        journeyData.add(
-          AdditionalSpeedRestrictionData(
-            restriction: restriction,
-            order: restriction.orderTo,
-            kilometre: [restriction.kmTo],
-          ),
-        );
-      }
-    }
+    final additionalSpeedRestrictions = _parseAdditionalSpeedRestrictions(
+      journeyProfile,
+      segmentProfiles,
+      servicePoints,
+    );
+    _addAdditionalSpeedRestrictionsToJourneyData(additionalSpeedRestrictions, trackEquipmentSegments, journeyData);
 
     journeyData.sort();
 
@@ -110,7 +99,6 @@ class SferaModelMapper {
       lastJourney,
     );
     final trainCharacteristic = _resolveFirstTrainCharacteristics(journeyProfile, trainCharacteristics);
-    final servicePoints = journeyData.whereType<ServicePoint>();
 
     return Journey(
       metadata: Metadata(
@@ -142,6 +130,32 @@ class SferaModelMapper {
       ),
       data: journeyData,
     );
+  }
+
+  static void _addAdditionalSpeedRestrictionsToJourneyData(
+    List<AdditionalSpeedRestriction> additionalSpeedRestrictions,
+    List<NonStandardTrackEquipmentSegment> trackEquipmentSegments,
+    List<BaseData> journeyData,
+  ) {
+    for (final restriction in additionalSpeedRestrictions.where((asr) => asr.isDisplayed(trackEquipmentSegments))) {
+      journeyData.add(
+        AdditionalSpeedRestrictionData(
+          restriction: restriction,
+          order: restriction.orderFrom,
+          kilometre: [restriction.kmFrom],
+        ),
+      );
+
+      if (restriction.needsEndMarker(journeyData)) {
+        journeyData.add(
+          AdditionalSpeedRestrictionData(
+            restriction: restriction,
+            order: restriction.orderTo,
+            kilometre: [restriction.kmTo],
+          ),
+        );
+      }
+    }
   }
 
   static BaseData? _calculateCurrentPosition(
@@ -201,9 +215,9 @@ class SferaModelMapper {
   static List<AdditionalSpeedRestriction> _parseAdditionalSpeedRestrictions(
     JourneyProfileDto journeyProfile,
     List<SegmentProfileDto> segmentProfiles,
+    List<ServicePoint> servicePoints,
   ) {
     final List<AdditionalSpeedRestriction> result = [];
-    final now = DateTime.now();
     final segmentProfilesReferences = journeyProfile.segmentProfileReferences.toList();
 
     int? startSegmentIndex;
@@ -215,11 +229,7 @@ class SferaModelMapper {
       final segmentProfileReference = segmentProfilesReferences[segmentIndex];
 
       for (final asrTemporaryConstrain in segmentProfileReference.asrTemporaryConstrains) {
-        // TODO: Es werden Langsamfahrstellen von 30min vor Start der Fahrt (betriebliche Zeit) bis 30min nach Ende der Fahrt (betriebliche Zeit) angezeigt.
-        if (asrTemporaryConstrain.startTime != null && asrTemporaryConstrain.startTime!.isAfter(now) ||
-            asrTemporaryConstrain.endTime != null && asrTemporaryConstrain.endTime!.isBefore(now)) {
-          continue;
-        }
+        if (_shouldSkipAsrDueToJourneyTimes(servicePoints, asrTemporaryConstrain)) continue;
 
         switch (asrTemporaryConstrain.startEndQualifier) {
           case StartEndQualifierDto.starts:
@@ -279,6 +289,35 @@ class SferaModelMapper {
     }
 
     return result;
+  }
+
+  static bool _shouldSkipAsrDueToJourneyTimes(
+    List<ServicePoint> servicePoints,
+    TemporaryConstraintsDto asrTemporaryConstrain,
+  ) {
+    const timeBuffer = Duration(minutes: 30);
+
+    final journeyStartTime = servicePoints.firstOrNull?.arrivalDepartureTime?.operationalDepartureTime;
+    final journeyEndTime = servicePoints.lastOrNull?.arrivalDepartureTime?.operationalArrivalTime;
+
+    final journeyStartMinusBuffer = journeyStartTime?.subtract(timeBuffer);
+    final journeyEndPlusBuffer = journeyEndTime?.add(timeBuffer);
+
+    // Skip ASR if it ends before the journey start time minus timeBuffer
+    if (asrTemporaryConstrain.endTime != null &&
+        journeyStartMinusBuffer != null &&
+        asrTemporaryConstrain.endTime!.isBefore(journeyStartMinusBuffer)) {
+      return true;
+    }
+
+    // Skip ASR if it starts after the journey end time plus timeBuffer
+    if (asrTemporaryConstrain.startTime != null &&
+        journeyEndPlusBuffer != null &&
+        asrTemporaryConstrain.startTime!.isAfter(journeyEndPlusBuffer)) {
+      return true;
+    }
+
+    return false;
   }
 
   static Iterable<CABSignaling> _cabSignalingStart(Iterable<NonStandardTrackEquipmentSegment> trackEquipmentSegments) {

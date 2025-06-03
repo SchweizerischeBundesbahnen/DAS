@@ -805,11 +805,14 @@ void main() {
 
       // check if signals with both functions laneChange, block are correct
       await tester.dragUntilVisible(find.text('S1'), scrollableFinder, const Offset(0, -50));
-      final langeChangeBlockSignalRow = findDASTableRowByText('S1');
-      expect(langeChangeBlockSignalRow, findsOneWidget);
-      expect(find.descendant(of: langeChangeBlockSignalRow, matching: find.text('Block')), findsOneWidget);
+      final laneChangeBlockSignalRow = findDASTableRowByText('S1');
+      expect(laneChangeBlockSignalRow, findsOneWidget);
+      expect(
+        find.descendant(of: laneChangeBlockSignalRow, matching: find.text(l10n.c_main_signal_function_block)),
+        findsOneWidget,
+      );
       final laneChangeIcon = find.descendant(
-        of: langeChangeBlockSignalRow,
+        of: laneChangeBlockSignalRow,
         matching: find.byKey(SignalRow.signalLineChangeIconKey),
       );
       expect(laneChangeIcon, findsOneWidget);

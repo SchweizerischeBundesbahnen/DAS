@@ -18,7 +18,7 @@ class UxTestingViewModel {
 
   Stream<KoaState> get koaState => _rxKoaState.distinct();
 
-  Stream<UxTestingEvent> get uxTestingEvents => _rxUxTestingEvents.distinct();
+  Stream<UxTestingEvent> get uxTestingEvents => _rxUxTestingEvents.stream;
 
   void _init() {
     _eventSubscription = _sferaService.uxTestingEventStream.listen((data) {
