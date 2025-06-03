@@ -4,12 +4,9 @@ import 'package:mqtt/src/provider/mqtt_auth_provider.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 
 class MqttClientOauthConnector implements MqttClientConnector {
-  MqttClientOauthConnector({required MqttAuthProvider mqttAuthProvider, required String oauthProfile})
-    : _mqttAuthProvider = mqttAuthProvider,
-      _oauthProfile = oauthProfile;
+  MqttClientOauthConnector({required MqttAuthProvider mqttAuthProvider}) : _mqttAuthProvider = mqttAuthProvider;
 
   final MqttAuthProvider _mqttAuthProvider;
-  final String _oauthProfile;
 
   @override
   Future<bool> connect(MqttClient client, String company, String train) async {
@@ -20,7 +17,10 @@ class MqttClientOauthConnector implements MqttClientConnector {
 
     try {
       final accessToken = await _mqttAuthProvider.token();
-      final mqttClientConnectionStatus = await client.connect(userId, 'OAUTH~$_oauthProfile~$accessToken');
+      final mqttClientConnectionStatus = await client.connect(
+        userId,
+        'OAUTH~${_mqttAuthProvider.oauthProfile}~$accessToken',
+      );
       Fimber.i('mqttClientConnectionStatus=$mqttClientConnectionStatus');
 
       if (mqttClientConnectionStatus?.state == MqttConnectionState.connected) {

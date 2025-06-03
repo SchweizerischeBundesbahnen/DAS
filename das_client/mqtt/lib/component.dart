@@ -15,13 +15,12 @@ class MqttComponent {
 
   static MqttClientConnector createMqttClientConnector({
     required MqttAuthProvider authProvider,
-    required String oauthProfile,
     bool useTms = false,
   }) {
     if (useTms) {
       return MqttClientTMSOauthConnector(mqttAuthProvider: authProvider);
     }
-    return MqttClientOauthConnector(mqttAuthProvider: authProvider, oauthProfile: oauthProfile);
+    return MqttClientOauthConnector(mqttAuthProvider: authProvider);
   }
 
   static MqttService createMqttService({
