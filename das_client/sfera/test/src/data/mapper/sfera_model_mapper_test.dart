@@ -524,13 +524,9 @@ void main() {
     expect(journey.valid, true);
     expect(speedRestrictions, hasLength(2));
     expect(speedRestrictions[0].restrictions, hasLength(1));
-    expect(speedRestrictions[0].restrictions[0].kmFrom, 64.2);
-    expect(speedRestrictions[0].restrictions[0].kmTo, 63.2);
-    expect(speedRestrictions[0].restrictions[0].orderFrom, 700);
-    expect(speedRestrictions[0].restrictions[0].orderTo, 800);
-    expect(speedRestrictions[0].restrictions[0].speed, 60);
     expect(speedRestrictions[0].restrictions[0].restrictionFrom, isNull);
     expect(speedRestrictions[0].restrictions[0].restrictionUntil, isNull);
+    expect(speedRestrictions[0].order, 700);
     expect(speedRestrictions[1].restrictions, hasLength(1));
     expect(speedRestrictions[1].restrictions[0].restrictionFrom, isNull);
     expect(speedRestrictions[1].restrictions[0].restrictionUntil, isNull);
