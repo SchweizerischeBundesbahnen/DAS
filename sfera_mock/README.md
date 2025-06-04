@@ -30,7 +30,7 @@ see journeys [static_sfera_resources](src/main/resources/static_sfera_resources)
 
 ## Add new Scenario
 To create a new scenario some resources need to be added
-1. add a new directory named `<train number>_<optional comment>` in `static_sfera_resources`
+1. add a new directory named `<train number>_<optional comment>` in `src/main/resources/static_sfera_resources`
 2. add a journey profile named `SFERA_JP_<train number>` to the directory
    1. to achieve dynamic timestamps you can use the following pattern
       - `9999-01-01-HH-MM-SSZ` for positive offsets
