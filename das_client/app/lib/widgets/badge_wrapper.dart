@@ -37,6 +37,7 @@ class BadgeWrapper extends StatelessWidget {
 
   Widget _badge(BuildContext context) {
     return Container(
+      key: badgeKey,
       constraints: const BoxConstraints(minWidth: 18.0),
       height: 18.0,
       decoration: BoxDecoration(

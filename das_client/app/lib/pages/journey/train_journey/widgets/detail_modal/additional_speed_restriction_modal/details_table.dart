@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class DetailsTable extends StatelessWidget {
+  static const Key detailsTableKey = Key('detailsTable');
+
   DetailsTable({required this.data, super.key}) : _maxTitleWidth = _calculateMaxTextWidth(data.keys);
 
   final Map<String, String?> data;
@@ -13,6 +15,7 @@ class DetailsTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      key: detailsTableKey,
       padding: EdgeInsets.symmetric(horizontal: sbbDefaultSpacing),
       decoration: BoxDecoration(
         color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
