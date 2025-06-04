@@ -5,14 +5,23 @@ import 'package:warnapp/src/motion_data_listener.dart';
 import 'package:warnapp/src/motion_data_provider.dart';
 
 class MockMotionDataProvider implements MotionDataProvider {
-  MockMotionDataProvider({required String motionData}) {
+  MockMotionDataProvider({String? motionData, this.samplingPeriod}) {
     _parseMotionData(motionData);
   }
 
   MotionDataListener? _motionDataListener;
   final List<MotionData> _motionData = [];
+  final Duration? samplingPeriod;
+  var _isReplayingEvents = false;
 
-  void _parseMotionData(String motionDataString) {
+  bool get isReplayingEvents => _isReplayingEvents;
+
+  void _parseMotionData(String? motionDataString) {
+    if (motionDataString == null) {
+      return;
+    }
+    _motionData.clear();
+
     final rows = motionDataString.split('\n');
     for (final row in rows.skip(1)) {
       final data = row.split(',');
@@ -46,6 +55,10 @@ class MockMotionDataProvider implements MotionDataProvider {
     }
   }
 
+  void updateMotionData(String motionData) {
+    _parseMotionData(motionData);
+  }
+
   @override
   void start(MotionDataListener listener) {
     _motionDataListener = listener;
@@ -53,9 +66,15 @@ class MockMotionDataProvider implements MotionDataProvider {
   }
 
   void _notifyEvents() async {
+    _isReplayingEvents = true;
     for (final motionData in _motionData) {
+      if (samplingPeriod != null) {
+        await Future.delayed(samplingPeriod!);
+      }
       _motionDataListener?.onMotionData(motionData);
     }
+
+    _isReplayingEvents = false;
   }
 
   @override

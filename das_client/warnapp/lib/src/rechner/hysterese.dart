@@ -1,14 +1,4 @@
 class Hysterese {
-  bool state;
-  bool positiveSchwelleErkannt = false;
-  bool negativeSchwelleErkannt = false;
-  final int anzahlPositiv;
-  final double schwellePositiv;
-  final int anzahlNegativ;
-  final double schwelleNegativ;
-  int counter = 0;
-  final bool absolut;
-
   Hysterese({
     required this.state,
     required this.anzahlPositiv,
@@ -21,6 +11,16 @@ class Hysterese {
       throw ArgumentError('schwelleNegativ > schwellePositiv');
     }
   }
+
+  bool state;
+  bool positiveSchwelleErkannt = false;
+  bool negativeSchwelleErkannt = false;
+  final int anzahlPositiv;
+  final double schwellePositiv;
+  final int anzahlNegativ;
+  final double schwelleNegativ;
+  int counter = 0;
+  final bool absolut;
 
   bool update(double updateValue) {
     final value = absolut ? updateValue.abs() : updateValue;

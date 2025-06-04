@@ -2,14 +2,14 @@ import 'package:warnapp/src/rechner/signal_keeper.dart';
 import 'package:warnapp/src/rechner/vector.dart';
 
 class SignalKeeper3D implements Vector {
-  final SignalKeeper keeperX;
-  final SignalKeeper keeperY;
-  final SignalKeeper keeperZ;
-
   SignalKeeper3D()
       : keeperX = SignalKeeper(),
         keeperY = SignalKeeper(),
         keeperZ = SignalKeeper();
+
+  final SignalKeeper keeperX;
+  final SignalKeeper keeperY;
+  final SignalKeeper keeperZ;
 
   void updateWithValue(Vector vector, double factor) {
     keeperX.updateWithValue(vector.x, factor);

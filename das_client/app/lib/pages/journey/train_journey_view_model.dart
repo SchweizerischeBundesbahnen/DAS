@@ -238,11 +238,10 @@ class TrainJourneyViewModel implements WarnappListener {
   @override
   void onAbfahrtDetected() {
     final now = DateTime.now();
-    _rxWarnapp.add(WarnappEvent());
     if (_lastWarnappEventTimestamp != null &&
         now.difference(_lastWarnappEventTimestamp!).inMilliseconds < _warnappWindowMilliseconds) {
       Fimber.i('Abfahrt detected while warnapp message was within $_warnappWindowMilliseconds ms -> Warning!');
-      //_rxWarnapp.add(WarnappEvent());
+      _rxWarnapp.add(WarnappEvent());
     }
   }
 

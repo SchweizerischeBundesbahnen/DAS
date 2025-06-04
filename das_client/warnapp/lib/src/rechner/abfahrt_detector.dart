@@ -1,15 +1,6 @@
 import 'package:warnapp/src/rechner/ring_buffer.dart';
 
 class AbfahrtDetector {
-  final int laengeHalt;
-  final double schwelleFahrt;
-  final double schwelleQuiet;
-
-  final int length;
-  final RingBuffer ringBufferHalt;
-  final RingBuffer ringBufferFahrt;
-  int updatesCount = 0;
-
   AbfahrtDetector({
     required this.length,
     required this.laengeHalt,
@@ -19,6 +10,15 @@ class AbfahrtDetector {
         ringBufferFahrt = RingBuffer(length - laengeHalt) {
     reset(0);
   }
+
+  final int laengeHalt;
+  final double schwelleFahrt;
+  final double schwelleQuiet;
+
+  final int length;
+  final RingBuffer ringBufferHalt;
+  final RingBuffer ringBufferFahrt;
+  int updatesCount = 0;
 
   void reset(double value) {
     updatesCount = 0;

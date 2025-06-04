@@ -3,14 +3,6 @@ import 'dart:math';
 import 'package:warnapp/src/rechner/vector.dart';
 
 class FIRFilter {
-  final int length;
-  late List<double> _firCoef;
-  late List<double> _x;
-  late bool _resetOnFirstUpdate;
-  int _index = 0;
-  bool _firstCall = true;
-  double value = 0.0;
-
   FIRFilter(this.length, {bool resetOnFirstUpdate = false}) : assert(length > 0, 'length must be greater than zero') {
     _x = List<double>.filled(length, 0.0);
     _firCoef = List<double>.filled(length, 0.0);
@@ -26,6 +18,14 @@ class FIRFilter {
       _firCoef[i] /= summe;
     }
   }
+
+  final int length;
+  late List<double> _firCoef;
+  late List<double> _x;
+  late bool _resetOnFirstUpdate;
+  int _index = 0;
+  bool _firstCall = true;
+  double value = 0.0;
 
   double getFIRCoef(int index) {
     return _firCoef[index];

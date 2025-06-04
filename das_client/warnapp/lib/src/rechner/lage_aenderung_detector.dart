@@ -1,4 +1,11 @@
 class LageAenderungDetector {
+  LageAenderungDetector(this.length1, this.length2, this.schwelle)
+      : assert(length1 > 0 && length2 > 0, 'length1 and length2 must be greater than zero'),
+        length = length1 + length2,
+        x = List<double>.filled(length1 + length2, 0.0) {
+    initWithValue(0.0);
+  }
+
   final int length;
   final int length1;
   final int length2;
@@ -9,13 +16,6 @@ class LageAenderungDetector {
   double mittelwert1 = 0.0;
   double mittelwert2 = 0.0;
   double abweichungMittelwerte = 0.0;
-
-  LageAenderungDetector(this.length1, this.length2, this.schwelle)
-      : assert(length1 > 0 && length2 > 0, 'length1 and length2 must be greater than zero'),
-        length = length1 + length2,
-        x = List<double>.filled(length1 + length2, 0.0) {
-    initWithValue(0.0);
-  }
 
   void initWithValue(double value) {
     updatesCount = 0;

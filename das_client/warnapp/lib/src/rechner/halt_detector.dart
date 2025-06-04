@@ -1,6 +1,11 @@
 import 'dart:math';
 
 class HaltDetector {
+  HaltDetector(this.length, this.laengeHalt, this.schwelleHalt, this.schwelleQuiet)
+      : ringbuffer = List<double>.filled(length, 0.0) {
+    reset(0.0);
+  }
+
   final int laengeHalt;
   final double schwelleHalt;
   final double schwelleQuiet;
@@ -8,11 +13,6 @@ class HaltDetector {
   final int length;
   List<double> ringbuffer;
   int posRingbuffer = 0;
-
-  HaltDetector(this.length, this.laengeHalt, this.schwelleHalt, this.schwelleQuiet)
-      : ringbuffer = List<double>.filled(length, 0.0) {
-    reset(0.0);
-  }
 
   void reset(double value) {
     for (int i = 0; i < length; i++) {

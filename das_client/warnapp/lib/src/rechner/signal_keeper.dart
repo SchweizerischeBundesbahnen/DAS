@@ -1,8 +1,8 @@
 class SignalKeeper {
+  SignalKeeper();
+
   double _lastResult = 0.0;
   double _factor = 1.0;
-
-  SignalKeeper();
 
   void setFactor(double factor) {
     if (factor > 1.0) {

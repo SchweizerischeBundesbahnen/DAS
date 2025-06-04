@@ -1,4 +1,10 @@
 class RSFlipFlop {
+  RSFlipFlop(int sizeSet, int sizeReset, [this.minimaleAnzahlZwischenZweiSets = 0]) {
+    lastSet = List<bool>.filled(sizeSet, false);
+    lastReset = List<bool>.filled(sizeReset, false);
+    updatesCountLetzteErkanntePositiveSchwelle = double.maxFinite.toInt(); // equivalent to NSUIntegerMax
+  }
+
   bool state = false;
   bool positiveSchwelleErkannt = false;
   bool softSetErkannt = false;
@@ -12,12 +18,6 @@ class RSFlipFlop {
   int changedSoftSetIndex = 0;
   int changedSetIndex = 0;
   int changedResetIndex = 0;
-
-  RSFlipFlop(int sizeSet, int sizeReset, [this.minimaleAnzahlZwischenZweiSets = 0]) {
-    lastSet = List<bool>.filled(sizeSet, false);
-    lastReset = List<bool>.filled(sizeReset, false);
-    updatesCountLetzteErkanntePositiveSchwelle = double.maxFinite.toInt(); // equivalent to NSUIntegerMax
-  }
 
   void set(List<bool> valuesSet, List<bool> valuesSoftSet, List<bool> valuesReset) {
     final oldState = state;

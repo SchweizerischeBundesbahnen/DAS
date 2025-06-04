@@ -17,10 +17,6 @@ class GravityFactorStatus {
 }
 
 class GravityFactor {
-  late List<GravityFactorStatus> alleStatus;
-  late GravityFactorStatus aktuellerStatus;
-  int anzahlUpdatesSeitStatuswechsel = 0;
-
   GravityFactor({GravityFactorStatusType type = GravityFactorStatusType.init}) {
     alleStatus = [
       GravityFactorStatus(GravityFactorStatusType.init, 1.0, true),
@@ -33,6 +29,10 @@ class GravityFactor {
     ];
     aktuellerStatus = alleStatus[type.index];
   }
+
+  late List<GravityFactorStatus> alleStatus;
+  late GravityFactorStatus aktuellerStatus;
+  int anzahlUpdatesSeitStatuswechsel = 0;
 
   void updateWithFahrt(bool fahrt, bool drehung, bool handbewegung) {
     if (drehung) {

@@ -1,12 +1,12 @@
 class FlipFlop {
+  FlipFlop(bool initialValue)
+      : state = initialValue,
+        lastTrigger = initialValue;
+
   bool state;
   bool lastTrigger;
   bool positiveSchwelleErkannt = false;
   bool negativeSchwelleErkannt = false;
-
-  FlipFlop(bool initialValue)
-      : state = initialValue,
-        lastTrigger = initialValue;
 
   bool updateWithTrigger(bool trigger, {bool disablePositiv = false, bool disableNegativ = false}) {
     final bool oldState = state;

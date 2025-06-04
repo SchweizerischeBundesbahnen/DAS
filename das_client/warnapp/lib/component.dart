@@ -1,8 +1,10 @@
 import 'package:warnapp/src/device_motion_data_provider.dart';
+import 'package:warnapp/src/mock_motion_data_provider.dart';
 import 'package:warnapp/src/motion_data_provider.dart';
 import 'package:warnapp/src/warnapp_service.dart';
 import 'package:warnapp/src/warnapp_service_impl.dart';
 
+export 'package:warnapp/src/mock_motion_data_provider.dart';
 export 'package:warnapp/src/motion_data_listener.dart';
 export 'package:warnapp/src/motion_data_provider.dart';
 export 'package:warnapp/src/warnapp_listener.dart';
@@ -17,5 +19,9 @@ class WarnappComponent {
 
   static MotionDataProvider createDeviceMotionDataProvider() {
     return DeviceMotionDataProvider();
+  }
+
+  static MotionDataProvider createMockMotionDataProvider({String? motionData, Duration? samplingPeriod}) {
+    return MockMotionDataProvider(motionData: motionData, samplingPeriod: samplingPeriod);
   }
 }
