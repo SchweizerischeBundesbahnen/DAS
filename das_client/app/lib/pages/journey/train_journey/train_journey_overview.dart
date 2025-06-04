@@ -99,7 +99,6 @@ class TrainJourneyOverview extends StatelessWidget {
         if (snapshot.hasData) {
           _triggerWarnappNotification(context);
         }
-        _triggerWarnappNotification(context);
 
         return SizedBox.shrink();
       },
@@ -109,7 +108,9 @@ class TrainJourneyOverview extends StatelessWidget {
   void _triggerWarnappNotification(BuildContext context) {
     final Sound sound = WarnAppSound();
     //sound.play();
-    showWarnFunctionModalSheet(context);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      showWarnFunctionModalSheet(context);
+    });
   }
 
   void _handleUxEvents(BuildContext context, UxTestingEvent? event) {
