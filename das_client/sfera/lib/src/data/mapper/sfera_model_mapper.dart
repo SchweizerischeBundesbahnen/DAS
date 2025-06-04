@@ -90,6 +90,7 @@ class SferaModelMapper {
         .toList();
     final consolidatedASRs = _consolidateAdditionalSpeedRestrictions(journeyData, displayedSpeedRestrictions);
     journeyData.addAll(consolidatedASRs);
+
     journeyData.sort();
 
     final currentPosition = _calculateCurrentPosition(
@@ -186,7 +187,6 @@ class SferaModelMapper {
     return servicePoints.toList().reversed.firstWhereOrNull((sP) => sP.order <= currentPosition.order);
   }
 
-  // TODO: comment, improve algorithm
   static List<AdditionalSpeedRestrictionData> _consolidateAdditionalSpeedRestrictions(
     List<BaseData> journeyData,
     List<AdditionalSpeedRestriction> restrictions,
@@ -196,7 +196,7 @@ class SferaModelMapper {
     restrictions.sort((a, b) => a.orderFrom.compareTo(b.orderFrom));
 
     final List<List<AdditionalSpeedRestriction>> grouped = [];
-    List<AdditionalSpeedRestriction> currentGroup = [restrictions.first];
+    var currentGroup = [restrictions.first];
 
     for (int i = 1; i < restrictions.length; i++) {
       final current = restrictions[i];

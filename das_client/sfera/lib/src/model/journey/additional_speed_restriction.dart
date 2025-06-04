@@ -88,7 +88,6 @@ extension T on Iterable<AdditionalSpeedRestriction> {
     return reduce((current, next) => current.orderTo <= next.orderTo ? next : current);
   }
 
-  // TODO: What to do with nullable?
   int? get minimalSpeed => where(
     (restriction) => restriction.speed != null,
   ).reduce((current, next) => current.speed! < next.speed! ? current : next).speed;

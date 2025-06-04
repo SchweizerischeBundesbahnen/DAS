@@ -50,9 +50,10 @@ class AdditionalSpeedRestrictionRow extends CellRowBuilder<AdditionalSpeedRestri
 
   @override
   DASTableCell localSpeedCell(BuildContext context) {
-    // TODO: What to do with nullable speed
+    if (data.speed == null) return DASTableCell.empty();
+
     return DASTableCell(
-      child: Text(data.speed.toString()),
+      child: Text(data.speed!.toString()),
       alignment: Alignment.center,
     );
   }

@@ -39,7 +39,6 @@ class TafTapLocationDto extends SferaSegmentXmlElementDto {
 
 // extensions
 
-// TODO: Add unit tests
 extension TafTapLocationDtoIterableExtension on Iterable<TafTapLocationDto> {
   TafTapLocationDto firstWhereGiven({String? countryCode, int? primaryCode}) =>
       _whereGiven(countryCode, primaryCode).first;
