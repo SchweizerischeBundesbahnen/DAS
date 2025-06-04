@@ -1,6 +1,7 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/widgets/assets.dart';
+import 'package:app/widgets/badge_wrapper.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -33,10 +34,15 @@ class AdditionalSpeedRestrictionRow extends CellRowBuilder<AdditionalSpeedRestri
 
   @override
   DASTableCell iconsCell2(BuildContext context) {
+    final badgeLabel = data.restrictions.length > 1 ? data.restrictions.length : null;
     return DASTableCell(
-      child: SvgPicture.asset(
-        AppAssets.iconAdditionalSpeedRestriction,
-        key: additionalSpeedRestrictionIconKey,
+      child: BadgeWrapper(
+        offset: Offset(-9.0, -14.0),
+        label: badgeLabel?.toString(),
+        child: SvgPicture.asset(
+          AppAssets.iconAdditionalSpeedRestriction,
+          key: additionalSpeedRestrictionIconKey,
+        ),
       ),
       alignment: Alignment.center,
     );
