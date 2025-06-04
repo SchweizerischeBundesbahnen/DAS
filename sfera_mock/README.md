@@ -14,7 +14,7 @@ Capabilities:
 ## Getting-Started
 ### Run on localhost
 1. Add environment variables (according to [application.yaml](src/main/resources/application.yaml) and specify concrete values
-   - by an .env file
+   - by an .env file (adapt `SFERA_CUSTOM_TOPIC_PREFIX` to your local preferred name)
    - (or by run configuration)
 2. Add certificate-file to src/main/resources according to .env SOLACE_KEY_STORE_PATH
 3. Run `SferaMockApplication`
