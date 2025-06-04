@@ -14,7 +14,6 @@ import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/sound/koa_sound.dart';
 import 'package:app/sound/sound.dart';
 import 'package:app/sound/warn_app_sound.dart';
-import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sfera/component.dart';
@@ -95,7 +94,6 @@ class TrainJourneyOverview extends StatelessWidget {
     return StreamBuilder(
       stream: context.read<TrainJourneyViewModel>().warnappEvents,
       builder: (context, snapshot) {
-        Fimber.i('Warnapp notification stream: ${snapshot.data}');
         if (snapshot.hasData) {
           _triggerWarnappNotification(context);
         }

@@ -123,6 +123,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     _mqttService.disconnect();
     _rxJourney.add(null);
     _rxUxTestingEvent.add(null);
+    _rxWarnappEvent.add(null);
     _rxState.add(SferaRemoteRepositoryState.disconnected);
   }
 
@@ -133,6 +134,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     _rxUxTestingEvent.close();
     _mqttStreamSubscription?.cancel();
     _mqttStreamSubscription = null;
+    _rxWarnappEvent.close();
   }
 
   @override
