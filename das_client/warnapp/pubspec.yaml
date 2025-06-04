@@ -18,6 +18,8 @@ dependencies:
   geolocator: ^14.0.1
   # https://pub.dev/packages/fimber
   fimber: ^0.7.0
+  # https://pub.dev/packages/path_provider
+  path_provider: ^2.1.5
 
 
 dev_dependencies:

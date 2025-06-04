@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:fimber/fimber.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:warnapp/src/algorithmus/algorithmus_16.dart';
 import 'package:warnapp/src/algorithmus/algorithmus_16_properties.dart';
 import 'package:warnapp/src/data/motion_data.dart';
@@ -8,7 +11,9 @@ import 'package:warnapp/src/warnapp_listener.dart';
 import 'package:warnapp/src/warnapp_service.dart';
 
 class WarnappServiceImpl implements WarnappService, MotionDataListener {
-  WarnappServiceImpl({required this.motionDataProvider});
+  WarnappServiceImpl({required this.motionDataProvider}) {
+    _createLogDirectory();
+  }
 
   final MotionDataProvider motionDataProvider;
   final List<WarnappListener> _listeners = [];
@@ -21,12 +26,26 @@ class WarnappServiceImpl implements WarnappService, MotionDataListener {
   var _lastCount = 0;
   late DateTime _nextFrequencyCheck;
 
+  static const bool saveMotionDataToFile = true;
+  late Directory _logDirectory;
+  File? _logFile;
+
   void _initialize() {
     algorithmus = Algorithmus16(properties: Algorithmus16Properties.defaultProperties());
     _updatedCount = 0;
 
     _lastCount = 0;
     _nextFrequencyCheck = DateTime.now().add(Duration(seconds: 1));
+
+    _logFile = null;
+  }
+
+  void _createLogDirectory() async {
+    final appSupportDirectory = await getApplicationSupportDirectory();
+    _logDirectory = Directory('${appSupportDirectory.path}/motion_logs/');
+    if (!_logDirectory.existsSync()) {
+      _logDirectory.createSync(recursive: true);
+    }
   }
 
   @override
@@ -66,7 +85,36 @@ class WarnappServiceImpl implements WarnappService, MotionDataListener {
 
       _updatedCount++;
       _updateAndLogFrequency();
+
+      if (saveMotionDataToFile) {
+        _saveToFile(motionData, isHalt);
+      }
     }
+  }
+
+  void _saveToFile(MotionData motionData, bool isHalt) {
+    if (_logFile == null) {
+      _logFile = File('${_logDirectory.path}/motion_data_log_${DateTime.now().millisecondsSinceEpoch}.txt');
+      _logFile?.writeAsStringSync(
+          'TS_EPOCH,updatesCount,ROT_X,ROT_Y,ROT_Z,ACC_X,ACC_Y,ACC_Z,TOUCH,HALT,GPS_TIME,GPS_LAT,GPS_LONG,GPS_HACC,GPS_VACC,GPS_SPEED\n');
+    }
+    final logEntry = '${motionData.gyroscopeEvent?.timestamp.millisecondsSinceEpoch},'
+        '$_updatedCount,'
+        '${motionData.gyroscopeEvent?.x},'
+        '${motionData.gyroscopeEvent?.y},'
+        '${motionData.gyroscopeEvent?.z},'
+        '${motionData.accelerometerEvent?.x},'
+        '${motionData.accelerometerEvent?.y},'
+        '${motionData.accelerometerEvent?.z},'
+        '0,'
+        '${isHalt ? '1' : '0'},'
+        '${motionData.position?.timestamp.millisecondsSinceEpoch},'
+        '${motionData.position?.latitude},'
+        '${motionData.position?.longitude},'
+        '${motionData.position?.accuracy},'
+        '${motionData.position?.accuracy},'
+        '${motionData.position?.speed}\n';
+    _logFile!.writeAsStringSync(logEntry, mode: FileMode.append);
   }
 
   void _updateAndLogFrequency() {

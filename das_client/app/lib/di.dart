@@ -214,9 +214,7 @@ extension GetItX on GetIt {
   }
 
   void registerWarnapp() {
-    registerLazySingleton(() {
-      return WarnappComponent.createWarnappService();
-    });
+    registerSingleton(WarnappComponent.createWarnappService());
   }
 }
 
