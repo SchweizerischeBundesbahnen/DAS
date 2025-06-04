@@ -19,11 +19,11 @@ class AdditionalSpeedRestrictionData extends BaseData {
 
   factory AdditionalSpeedRestrictionData.end(List<AdditionalSpeedRestriction> restrictions) {
     if (restrictions.isEmpty) throw ArgumentError('Restrictions can not be empty');
-    final startRestriction = restrictions.getByHighestOrderTo;
+    final endRestriction = restrictions.getByHighestOrderTo;
     return AdditionalSpeedRestrictionData(
       restrictions: restrictions,
-      order: startRestriction.orderTo,
-      kilometre: [startRestriction.kmTo],
+      order: endRestriction.orderTo,
+      kilometre: [endRestriction.kmTo],
     );
   }
 
@@ -31,12 +31,12 @@ class AdditionalSpeedRestrictionData extends BaseData {
 
   double get kmFrom => restrictions.getByLowestOrderFrom.kmFrom;
 
-  double get kmTo => restrictions.getByLowestOrderFrom.kmTo;
+  double get kmTo => restrictions.getByHighestOrderTo.kmTo;
 
   int? get speed => restrictions.minimalSpeed;
 
   @override
   String toString() {
-    return 'AdditionalSpeedRestrictionData(order: $order, kilometre: $kilometre, restrictions: $AdditionalSpeedRestriction)';
+    return 'AdditionalSpeedRestrictionData(order: $order, kilometre: $kilometre, restrictions: $restrictions)';
   }
 }
