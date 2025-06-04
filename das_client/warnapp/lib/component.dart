@@ -5,6 +5,7 @@ import 'package:warnapp/src/warnapp_service_impl.dart';
 
 export 'package:warnapp/src/motion_data_listener.dart';
 export 'package:warnapp/src/motion_data_provider.dart';
+export 'package:warnapp/src/warnapp_listener.dart';
 export 'package:warnapp/src/warnapp_service.dart';
 
 class WarnappComponent {

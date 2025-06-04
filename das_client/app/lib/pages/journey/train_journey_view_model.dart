@@ -10,7 +10,7 @@ import 'package:sfera/component.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:warnapp/component.dart';
 
-class TrainJourneyViewModel {
+class TrainJourneyViewModel implements WarnappListener {
   TrainJourneyViewModel({
     required SferaRemoteRepo sferaRemoteRepo,
     required WarnappService warnappService,
@@ -18,6 +18,8 @@ class TrainJourneyViewModel {
        _warnappService = warnappService {
     _init();
   }
+
+  static const _warnappWindowMilliseconds = 1250;
 
   final SferaRemoteRepo _sferaRemoteRepo;
   final WarnappService _warnappService;
@@ -40,6 +42,8 @@ class TrainJourneyViewModel {
 
   Stream<TrainIdentification?> get trainIdentification => _rxTrainIdentification.stream;
 
+  Stream<WarnappEvent> get warnappEvents => _rxWarnapp.stream;
+
   TrainIdentification? get trainIdentificationValue => _rxTrainIdentification.value;
 
   AutomaticAdvancementController automaticAdvancementController = AutomaticAdvancementController();
@@ -51,10 +55,14 @@ class TrainJourneyViewModel {
   final _rxErrorCode = BehaviorSubject<ErrorCode?>.seeded(null);
   final _rxTrainIdentification = BehaviorSubject<TrainIdentification?>.seeded(null);
   final _rxFormCompleted = BehaviorSubject<bool>.seeded(false);
+  final _rxWarnapp = PublishSubject<WarnappEvent>();
   final _subscriptions = <StreamSubscription>[];
+
+  DateTime? _lastWarnappEventTimestamp;
 
   StreamSubscription? _stateSubscription;
   StreamSubscription? _journeySubscription;
+  StreamSubscription? _warnappSubscription;
 
   void _init() {
     _initFormComplete();
@@ -82,7 +90,7 @@ class TrainJourneyViewModel {
           automaticAdvancementController = AutomaticAdvancementController();
           _listenToJourneyUpdates();
           WakelockPlus.enable();
-          _warnappService.enable();
+          _enableWarnapp();
           break;
         case SferaRemoteRepositoryState.connecting:
         case SferaRemoteRepositoryState.handshaking:
@@ -92,7 +100,7 @@ class TrainJourneyViewModel {
         case SferaRemoteRepositoryState.disconnected:
         case SferaRemoteRepositoryState.offline:
           WakelockPlus.disable();
-          _warnappService.disable();
+          _disableWarnapp();
           if (_sferaRemoteRepo.lastError != null) {
             _rxErrorCode.add(ErrorCode.fromSfera(_sferaRemoteRepo.lastError!));
           }
@@ -103,6 +111,22 @@ class TrainJourneyViewModel {
     });
 
     _sferaRemoteRepo.connect(OtnId(company: ru.companyCode, operationalTrainNumber: trainNumber, startDate: date));
+  }
+
+  void _enableWarnapp() {
+    _warnappService.addListener(this);
+    _warnappService.enable();
+    _warnappSubscription = _sferaRemoteRepo.warnappEventStream.listen((event) {
+      _lastWarnappEventTimestamp = DateTime.now();
+    });
+  }
+
+  void _disableWarnapp() {
+    _warnappService.disable();
+    _warnappService.removeListener(this);
+    _warnappSubscription?.cancel();
+    _warnappSubscription = null;
+    _lastWarnappEventTimestamp = null;
   }
 
   void updateTrainNumber(String? trainNumber) => _rxTrainNumber.add(trainNumber);
@@ -209,5 +233,21 @@ class TrainJourneyViewModel {
         .map((trainNumber) => trainNumber != null && trainNumber.isNotEmpty)
         .listen(_rxFormCompleted.add, onError: _rxFormCompleted.addError);
     _subscriptions.add(subscription);
+  }
+
+  @override
+  void onAbfahrtDetected() {
+    final now = DateTime.now();
+    _rxWarnapp.add(WarnappEvent());
+    if (_lastWarnappEventTimestamp != null &&
+        now.difference(_lastWarnappEventTimestamp!).inMilliseconds < _warnappWindowMilliseconds) {
+      Fimber.i('Abfahrt detected while warnapp message was within $_warnappWindowMilliseconds ms -> Warning!');
+      //_rxWarnapp.add(WarnappEvent());
+    }
+  }
+
+  @override
+  void onHaltDetected() {
+    // unused for now
   }
 }
