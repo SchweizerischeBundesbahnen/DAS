@@ -14,9 +14,13 @@ class MockMotionDataProvider implements MotionDataProvider {
 
   void _parseMotionData(String motionDataString) {
     final rows = motionDataString.split('\n');
-    for (final row in rows) {
+    for (final row in rows.skip(1)) {
       final data = row.split(',');
-      final timestamp = DateTime.fromMillisecondsSinceEpoch(int.parse(data[0]));
+      if (data.length < 16) {
+        continue;
+      }
+
+      final timestamp = DateTime.fromMillisecondsSinceEpoch(double.parse(data[0]).toInt());
       final motionData = MotionData();
       motionData.gyroscopeEvent =
           GyroscopeEvent(double.parse(data[2]), double.parse(data[3]), double.parse(data[4]), timestamp);
@@ -24,7 +28,7 @@ class MockMotionDataProvider implements MotionDataProvider {
           AccelerometerEvent(double.parse(data[5]), double.parse(data[6]), double.parse(data[7]), timestamp);
 
       if (data[10].trim().isNotEmpty) {
-        final locationTimestamp = DateTime.fromMillisecondsSinceEpoch(int.parse(data[10]));
+        final locationTimestamp = DateTime.fromMillisecondsSinceEpoch(double.parse(data[10]).toInt());
         motionData.position = Position(
             longitude: double.parse(data[11]),
             latitude: double.parse(data[12]),
