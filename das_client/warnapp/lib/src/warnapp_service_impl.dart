@@ -26,7 +26,7 @@ class WarnappServiceImpl implements WarnappService, MotionDataListener {
   var _lastCount = 0;
   late DateTime _nextFrequencyCheck;
 
-  static const bool saveMotionDataToFile = true;
+  static const bool saveMotionDataToFile = false;
   late Directory _logDirectory;
   File? _logFile;
 
@@ -41,10 +41,12 @@ class WarnappServiceImpl implements WarnappService, MotionDataListener {
   }
 
   void _createLogDirectory() async {
-    final appSupportDirectory = await getApplicationSupportDirectory();
-    _logDirectory = Directory('${appSupportDirectory.path}/motion_logs/');
-    if (!_logDirectory.existsSync()) {
-      _logDirectory.createSync(recursive: true);
+    if (saveMotionDataToFile) {
+      final appSupportDirectory = await getApplicationSupportDirectory();
+      _logDirectory = Directory('${appSupportDirectory.path}/motion_logs/');
+      if (!_logDirectory.existsSync()) {
+        _logDirectory.createSync(recursive: true);
+      }
     }
   }
 
@@ -108,12 +110,12 @@ class WarnappServiceImpl implements WarnappService, MotionDataListener {
         '${motionData.accelerometerEvent?.z},'
         '0,'
         '${isHalt ? '1' : '0'},'
-        '${motionData.position?.timestamp.millisecondsSinceEpoch},'
-        '${motionData.position?.latitude},'
-        '${motionData.position?.longitude},'
-        '${motionData.position?.accuracy},'
-        '${motionData.position?.accuracy},'
-        '${motionData.position?.speed}\n';
+        '${motionData.position?.timestamp.millisecondsSinceEpoch ?? ''},'
+        '${motionData.position?.latitude ?? ''},'
+        '${motionData.position?.longitude ?? ''},'
+        '${motionData.position?.accuracy ?? ''},'
+        '${motionData.position?.accuracy ?? ''},'
+        '${motionData.position?.speed ?? ''}\n';
     _logFile!.writeAsStringSync(logEntry, mode: FileMode.append);
   }
 
