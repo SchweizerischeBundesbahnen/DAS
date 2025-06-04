@@ -40,7 +40,9 @@ class AdditionalSpeedRestrictionModalBuilder extends DASModalSheetBuilder {
         }
 
         final restrictions = snapshot.requireData;
-        return ListView.builder(
+        return ListView.separated(
+          padding: EdgeInsets.only(top: 10.0),
+          separatorBuilder: (context, index) => SizedBox(height: sbbDefaultSpacing),
           itemCount: restrictions.length,
           itemBuilder: (context, index) => _restrictionDetailsTable(context, restrictions[index]),
         );
@@ -48,7 +50,7 @@ class AdditionalSpeedRestrictionModalBuilder extends DASModalSheetBuilder {
     );
   }
 
-  DetailsTable _restrictionDetailsTable(BuildContext context, AdditionalSpeedRestriction restriction) {
+  Widget _restrictionDetailsTable(BuildContext context, AdditionalSpeedRestriction restriction) {
     final fromKilometre = restriction.kmFrom.toStringAsFixed(3);
     final endKilometre = restriction.kmTo.toStringAsFixed(3);
 
