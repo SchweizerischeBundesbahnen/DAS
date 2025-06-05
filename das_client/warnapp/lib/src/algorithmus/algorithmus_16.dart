@@ -348,7 +348,7 @@ class Algorithmus16 {
   String infoWithConfig() => '${info()} $properties';
 
   String stringFromCurrentTime(DateTime time) {
-    final formatter = DateFormat('HH:mm:ss');
+    final formatter = DateFormat('HH:mm:ss', 'de_DE');
     return formatter.format(time);
   }
 

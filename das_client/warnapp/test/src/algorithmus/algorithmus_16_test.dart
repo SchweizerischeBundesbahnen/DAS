@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:warnapp/src/algorithmus/algorithmus_16.dart';
 import 'package:warnapp/src/algorithmus/algorithmus_16_properties.dart';
 
@@ -8,6 +9,7 @@ void main() {
 
     setUp(() {
       algo16 = Algorithmus16(properties: Algorithmus16Properties.defaultProperties());
+      initializeDateFormatting();
     });
 
     test('saveSoftSetInfo fahrtHysterese', () {
