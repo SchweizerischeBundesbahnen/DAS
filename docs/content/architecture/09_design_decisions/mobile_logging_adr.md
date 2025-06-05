@@ -3,8 +3,8 @@ title: Mobile Logging
 draft: true
 status: DECIDED
 result: Delivery via backend
-date: 2024-09-23
-issue: 209
+date: ~~2024-09-23~~ 2025-06-04
+issue: 209, 522
 tags:
   - adr
 ---
