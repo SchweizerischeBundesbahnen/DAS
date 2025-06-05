@@ -3,13 +3,13 @@ publish_to: 'none'
 version: 1.0.0
 
 environment:
-  sdk: 3.8.0
+  sdk: 3.8.1
 
 resolution: workspace
 
 dependencies:
   # workspaces
-  mqtt: 1.0.0
+  mqtt: 1.1.4
   http_x: 1.0.0
 
   # https://pub.dev/packages/fimber
