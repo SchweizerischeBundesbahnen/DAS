@@ -13,27 +13,27 @@ void main() {
     });
 
     test('saveSoftSetInfo fahrtHysterese', () {
-      algo16.saveSoftSetInfo(1, 0, 0, DateTime.fromMillisecondsSinceEpoch(60 * 60 * 1000, isUtc: true));
-      expect(algo16.softSetInfos, equals('1,02:00:00'));
+      algo16.saveSoftSetInfo(1, 0, 0, DateTime.fromMillisecondsSinceEpoch(60 * 60 * 1000));
+      expect(algo16.softSetInfos, equals('1,01:00:00'));
 
-      algo16.saveSoftSetInfo(1, 0, 0, DateTime.fromMillisecondsSinceEpoch(60 * 60 * 2000, isUtc: true));
-      expect(algo16.softSetInfos, equals('1,02:00:00;1,03:00:00'));
+      algo16.saveSoftSetInfo(1, 0, 0, DateTime.fromMillisecondsSinceEpoch(60 * 60 * 2000));
+      expect(algo16.softSetInfos, equals('1,01:00:00;1,02:00:00'));
     });
 
     test('saveSoftSetInfo locationFahrtHysterese', () {
-      algo16.saveSoftSetInfo(2, 1.5678, 2.9876, DateTime.fromMillisecondsSinceEpoch(60 * 60 * 1000, isUtc: true));
-      expect(algo16.softSetInfos, equals('2,02:00:00,1.5678,2.9876'));
+      algo16.saveSoftSetInfo(2, 1.5678, 2.9876, DateTime.fromMillisecondsSinceEpoch(60 * 60 * 1000));
+      expect(algo16.softSetInfos, equals('2,01:00:00,1.5678,2.9876'));
 
-      algo16.saveSoftSetInfo(2, 0, 0, DateTime.fromMillisecondsSinceEpoch(60 * 60 * 2000, isUtc: true));
-      expect(algo16.softSetInfos, equals('2,02:00:00,1.5678,2.9876;2,03:00:00,0.0,0.0'));
+      algo16.saveSoftSetInfo(2, 0, 0, DateTime.fromMillisecondsSinceEpoch(60 * 60 * 2000));
+      expect(algo16.softSetInfos, equals('2,01:00:00,1.5678,2.9876;2,02:00:00,0.0,0.0'));
     });
 
     test('saveSoftSetInfo mixed', () {
-      algo16.saveSoftSetInfo(1, 0, 0, DateTime.fromMillisecondsSinceEpoch(60 * 60 * 1000, isUtc: true));
-      algo16.saveSoftSetInfo(2, 1.5678, 2.9876, DateTime.fromMillisecondsSinceEpoch(60 * 60 * 2000, isUtc: true));
-      algo16.saveSoftSetInfo(1, 0, 0, DateTime.fromMillisecondsSinceEpoch(60 * 60 * 3000, isUtc: true));
-      algo16.saveSoftSetInfo(2, 0, 0, DateTime.fromMillisecondsSinceEpoch(60 * 60 * 4000, isUtc: true));
-      expect(algo16.softSetInfos, equals('1,02:00:00;2,03:00:00,1.5678,2.9876;1,04:00:00;2,05:00:00,0.0,0.0'));
+      algo16.saveSoftSetInfo(1, 0, 0, DateTime.fromMillisecondsSinceEpoch(60 * 60 * 1000));
+      algo16.saveSoftSetInfo(2, 1.5678, 2.9876, DateTime.fromMillisecondsSinceEpoch(60 * 60 * 2000));
+      algo16.saveSoftSetInfo(1, 0, 0, DateTime.fromMillisecondsSinceEpoch(60 * 60 * 3000));
+      algo16.saveSoftSetInfo(2, 0, 0, DateTime.fromMillisecondsSinceEpoch(60 * 60 * 4000));
+      expect(algo16.softSetInfos, equals('1,01:00:00;2,02:00:00,1.5678,2.9876;1,03:00:00;2,04:00:00,0.0,0.0'));
     });
 
     test('updateWithAccelerationX does not fail', () {
