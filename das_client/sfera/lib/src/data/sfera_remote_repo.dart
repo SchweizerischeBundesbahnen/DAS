@@ -14,6 +14,8 @@ abstract class SferaRemoteRepo {
 
   Stream<UxTestingEvent?> get uxTestingEventStream;
 
+  Stream<WarnappEvent?> get warnappEventStream;
+
   SferaError? get lastError;
 
   /// Connect to the SFERA broker with the given [OtnIdDto] train identification

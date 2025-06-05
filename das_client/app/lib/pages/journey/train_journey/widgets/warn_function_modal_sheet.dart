@@ -22,6 +22,8 @@ Future<void> showWarnFunctionModalSheet(BuildContext context) async {
 }
 
 class WarnFunctionModalSheet extends StatelessWidget {
+  static const warnappModalSheetKey = Key('warnappModalSheet');
+
   const WarnFunctionModalSheet({
     super.key,
   });
@@ -29,6 +31,7 @@ class WarnFunctionModalSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
+      key: warnappModalSheetKey,
       padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, 64.0, sbbDefaultSpacing, sbbDefaultSpacing * 2),
       child: Column(
         mainAxisSize: MainAxisSize.min,

@@ -52,5 +52,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSMotionUsageDescription</key>
+    <string>This app requires access to the motion sensors to detect departures and stops</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app requires access to the location to detect departures and stops</string>
 </dict>
 </plist>

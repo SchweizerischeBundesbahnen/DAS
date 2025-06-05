@@ -7,6 +7,7 @@ import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mqtt/component.dart';
 import 'package:screen_brightness/screen_brightness.dart';
+import 'package:warnapp/component.dart';
 
 import 'auth/integrationtest_authenticator.dart';
 import 'auth/mqtt_client_user_connector.dart';
@@ -34,6 +35,8 @@ class IntegrationTestDI {
     GetIt.I.registerSferaRemoteRepo();
     _registerBattery();
     GetIt.I.registerAudioPlayer();
+    _registerMockMotionDataService();
+    GetIt.I.registerWarnapp();
 
     await GetIt.I.allReady();
   }
@@ -52,6 +55,12 @@ class IntegrationTestDI {
 
   static void _registerScreenBrightness() {
     GetIt.I.registerLazySingleton<ScreenBrightness>(() => ScreenBrightness());
+  }
+
+  static void _registerMockMotionDataService() {
+    GetIt.I.registerSingleton<MotionDataService>(
+      WarnappComponent.createMockMotionDataService(samplingPeriod: Duration(milliseconds: 2)),
+    );
   }
 
   static void _registerBrightnessManager() {

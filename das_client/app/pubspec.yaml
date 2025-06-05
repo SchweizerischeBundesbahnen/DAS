@@ -19,6 +19,7 @@ dependencies:
   mqtt: 1.0.0
   sfera: 1.0.0
   http_x: 1.0.0
+  warnapp: 1.0.0
 
   # https://pub.dev/packages/audioplayers
   audioplayers: 6.4.0
