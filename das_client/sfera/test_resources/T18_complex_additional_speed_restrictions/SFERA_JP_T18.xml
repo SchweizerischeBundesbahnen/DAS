@@ -7,7 +7,7 @@
             <teltsi_StartDate>2022-01-04</teltsi_StartDate>
         </OTN_ID>
     </TrainIdentification>
-    <SegmentProfileReference SP_ID="T17_1" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T18_1" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -43,7 +43,7 @@
             <TemporaryConstraintReason text="Ristrutturazione" language="IT"/>
         </TemporaryConstraints>
     </SegmentProfileReference>
-    <SegmentProfileReference SP_ID="T17_2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T18_2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -86,7 +86,7 @@
             <NetworkSpecificConstraint>
                 <teltsi_Company>1085</teltsi_Company>
                 <NSP_GroupName>parallel_ASR</NSP_GroupName>
-                <NetworkSpecificParameter name="id" value="T17_parallel_asr_1"/>
+                <NetworkSpecificParameter name="id" value="T18_parallel_asr_1"/>
                 <NetworkSpecificParameter name="speed" value="50"/>
             </NetworkSpecificConstraint>
             <TemporaryConstraintReason text="Schutz Personal" language="DE"/>
@@ -94,7 +94,7 @@
             <TemporaryConstraintReason text="Protezione del personale" language="IT"/>
         </TemporaryConstraints>
     </SegmentProfileReference>
-    <SegmentProfileReference SP_ID="T17_3" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T18_3" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -153,7 +153,7 @@
             <NetworkSpecificConstraint>
                 <teltsi_Company>1085</teltsi_Company>
                 <NSP_GroupName>parallel_ASR</NSP_GroupName>
-                <NetworkSpecificParameter name="id" value="T17_parallel_asr_1"/>
+                <NetworkSpecificParameter name="id" value="T18_parallel_asr_1"/>
                 <NetworkSpecificParameter name="speed" value="50"/>
             </NetworkSpecificConstraint>
             <TemporaryConstraintReason text="Schutz Personal" language="DE"/>

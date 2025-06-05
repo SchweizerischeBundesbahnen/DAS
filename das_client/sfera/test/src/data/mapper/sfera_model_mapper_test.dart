@@ -538,7 +538,7 @@ void main() {
   });
 
   test('Test complex additional speed restrictions are parsed correctly', () async {
-    final journey = getJourney('T17', 3);
+    final journey = getJourney('T18', 3);
     final speedRestrictions = journey.data
         .where((it) => it.type == Datatype.additionalSpeedRestriction)
         .cast<AdditionalSpeedRestrictionData>()

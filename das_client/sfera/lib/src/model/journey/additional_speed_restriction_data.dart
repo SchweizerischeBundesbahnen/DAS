@@ -9,7 +9,7 @@ class AdditionalSpeedRestrictionData extends BaseData {
 
   factory AdditionalSpeedRestrictionData.start(List<AdditionalSpeedRestriction> restrictions) {
     if (restrictions.isEmpty) throw ArgumentError('Restrictions can not be empty');
-    final startRestriction = restrictions.getByLowestOrderFrom;
+    final startRestriction = restrictions.getLowestByOrderFrom;
     return AdditionalSpeedRestrictionData(
       restrictions: restrictions,
       order: startRestriction.orderFrom,
@@ -19,7 +19,7 @@ class AdditionalSpeedRestrictionData extends BaseData {
 
   factory AdditionalSpeedRestrictionData.end(List<AdditionalSpeedRestriction> restrictions) {
     if (restrictions.isEmpty) throw ArgumentError('Restrictions can not be empty');
-    final endRestriction = restrictions.getByHighestOrderTo;
+    final endRestriction = restrictions.getHighestByOrderTo;
     return AdditionalSpeedRestrictionData(
       restrictions: restrictions,
       order: endRestriction.orderTo,
@@ -29,11 +29,11 @@ class AdditionalSpeedRestrictionData extends BaseData {
 
   final List<AdditionalSpeedRestriction> restrictions;
 
-  double get kmFrom => restrictions.getByLowestOrderFrom.kmFrom;
+  double get kmFrom => restrictions.getLowestByOrderFrom.kmFrom;
 
-  double get kmTo => restrictions.getByHighestOrderTo.kmTo;
+  double get kmTo => restrictions.getHighestByOrderTo.kmTo;
 
-  int? get speed => restrictions.minimalSpeed;
+  int? get speed => restrictions.minSpeed;
 
   @override
   String toString() {

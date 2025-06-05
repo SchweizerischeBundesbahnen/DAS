@@ -109,7 +109,7 @@ main() {
     final restrictions = [asr2, asr1, asr3];
 
     // WHEN
-    final lowestOrderFrom = restrictions.getByLowestOrderFrom;
+    final lowestOrderFrom = restrictions.getLowestByOrderFrom;
 
     // THEN
     expect(lowestOrderFrom, asr1);
@@ -123,13 +123,13 @@ main() {
     final restrictions = [asr2, asr1, asr3];
 
     // WHEN
-    final highestOrderTo = restrictions.getByHighestOrderTo;
+    final highestOrderTo = restrictions.getHighestByOrderTo;
 
     // THEN
     expect(highestOrderTo, asr3);
   });
 
-  test('test get highest orderTo on ASR iterable', () {
+  test('test get min speed from ASR iterable', () {
     // GIVEN
     final asr1 = AdditionalSpeedRestriction(kmFrom: 1.0, kmTo: 2.0, orderFrom: 100, orderTo: 200, speed: 60);
     final asr2 = AdditionalSpeedRestriction(kmFrom: 3.0, kmTo: 4.0, orderFrom: 300, orderTo: 400, speed: 20);
@@ -138,10 +138,10 @@ main() {
     final restrictions = [asr1, asr2, asr3, asr4];
 
     // WHEN
-    final minimalSpeed = restrictions.minimalSpeed;
+    final minSpeed = restrictions.minSpeed;
 
     // THEN
-    expect(minimalSpeed, 20);
+    expect(minSpeed, 20);
   });
 }
 

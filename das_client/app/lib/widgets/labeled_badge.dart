@@ -2,10 +2,11 @@ import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-class BadgeWrapper extends StatelessWidget {
-  static const Key badgeKey = Key('badgeWrapper');
+/// Adds badge with a [label] to the [child]. Position can be defined with the [offset].
+class LabeledBadge extends StatelessWidget {
+  static const Key labeledBadgeKey = Key('labeledBadge');
 
-  const BadgeWrapper({
+  const LabeledBadge({
     required this.child,
     this.label,
     this.offset = const Offset(0, 0),
@@ -37,7 +38,7 @@ class BadgeWrapper extends StatelessWidget {
 
   Widget _badge(BuildContext context) {
     return Container(
-      key: badgeKey,
+      key: labeledBadgeKey,
       constraints: const BoxConstraints(minWidth: 18.0),
       height: 18.0,
       decoration: BoxDecoration(

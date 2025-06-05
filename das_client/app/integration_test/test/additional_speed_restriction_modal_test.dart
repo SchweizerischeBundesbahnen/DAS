@@ -56,9 +56,9 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('test details for complex ASR in T17', (tester) async {
+  testWidgets('test details for complex ASR in T18', (tester) async {
     await prepareAndStartApp(tester);
-    await loadTrainJourney(tester, trainNumber: 'T17');
+    await loadTrainJourney(tester, trainNumber: 'T18');
 
     expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
 

@@ -200,7 +200,7 @@ class SferaModelMapper {
 
     for (int i = 1; i < restrictions.length; i++) {
       final current = restrictions[i];
-      final lastInGroup = currentGroup.getByHighestOrderTo;
+      final lastInGroup = currentGroup.getHighestByOrderTo;
 
       if (current.orderFrom <= lastInGroup.orderTo) {
         currentGroup.add(current);

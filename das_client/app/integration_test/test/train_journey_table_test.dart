@@ -15,7 +15,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/whistle_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:app/pages/profile/profile_page.dart';
 import 'package:app/util/format.dart';
-import 'package:app/widgets/badge_wrapper.dart';
+import 'package:app/widgets/labeled_badge.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
@@ -438,7 +438,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await loadTrainJourney(tester, trainNumber: 'T17');
+      await loadTrainJourney(tester, trainNumber: 'T18');
 
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
@@ -451,7 +451,7 @@ void main() {
       // no count badge should be shown for normal ASR
       final asrCountBadge = find.descendant(
         of: asrRow,
-        matching: find.byKey(BadgeWrapper.badgeKey),
+        matching: find.byKey(LabeledBadge.labeledBadgeKey),
       );
       expect(asrCountBadge, findsNothing);
 
@@ -463,7 +463,7 @@ void main() {
       expect(complexAsr, findsOneWidget);
 
       // check count badge
-      final complexAsrCountBadge = find.descendant(of: complexAsr, matching: find.byKey(BadgeWrapper.badgeKey));
+      final complexAsrCountBadge = find.descendant(of: complexAsr, matching: find.byKey(LabeledBadge.labeledBadgeKey));
       expect(complexAsrCountBadge, findsOneWidget);
       final countBadgeText = find.descendant(of: complexAsrCountBadge, matching: find.text('2'));
       expect(countBadgeText, findsOneWidget);
