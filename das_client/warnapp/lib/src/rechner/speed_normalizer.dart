@@ -1,17 +1,17 @@
 class SpeedNormalizer {
-  SpeedNormalizer(this.gueltigkeitsDauer);
+  SpeedNormalizer(this._gueltigkeitsDauer);
 
-  final int gueltigkeitsDauer;
+  final int _gueltigkeitsDauer;
+  int _anzahlGueltigeSignale = 0;
   double speed = -1.0;
-  int anzahlGueltigeSignale = 0;
 
   double updateWithSpeed(double speed, double timestamp) {
     if (timestamp > 0) {
       this.speed = speed;
-      anzahlGueltigeSignale = 0;
+      _anzahlGueltigeSignale = 0;
     } else {
-      anzahlGueltigeSignale++;
-      if (anzahlGueltigeSignale >= gueltigkeitsDauer) {
+      _anzahlGueltigeSignale++;
+      if (_anzahlGueltigeSignale >= _gueltigkeitsDauer) {
         this.speed = -1.0;
       }
     }

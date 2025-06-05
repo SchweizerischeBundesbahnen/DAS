@@ -3,11 +3,11 @@ import 'dart:math';
 import 'package:warnapp/src/rechner/vector.dart';
 
 class FIRFilter {
-  FIRFilter(this.length, {bool resetOnFirstUpdate = false}) : assert(length > 0, 'length must be greater than zero') {
-    _x = List<double>.filled(length, 0.0);
-    _firCoef = List<double>.filled(length, 0.0);
-    _resetOnFirstUpdate = resetOnFirstUpdate;
-
+  FIRFilter(this.length, {bool resetOnFirstUpdate = false})
+    : assert(length > 0, 'length must be greater than zero'),
+      _x = List<double>.filled(length, 0.0),
+      _firCoef = List<double>.filled(length, 0.0),
+      _resetOnFirstUpdate = resetOnFirstUpdate {
     var summe = 0.0;
     for (int i = 0; i < length; i++) {
       _x[i] = 0;
@@ -20,12 +20,12 @@ class FIRFilter {
   }
 
   final int length;
-  late List<double> _firCoef;
-  late List<double> _x;
-  late bool _resetOnFirstUpdate;
+  final List<double> _firCoef;
+  final List<double> _x;
+  final bool _resetOnFirstUpdate;
   int _index = 0;
   bool _firstCall = true;
-  double value = 0.0;
+  double _value = 0.0;
 
   double getFIRCoef(int index) {
     return _firCoef[index];
@@ -50,7 +50,7 @@ class FIRFilter {
     }
     _index = (_index + 1) % length; // fastRingBufferIncrement logic
 
-    value = y;
+    _value = y;
     return y;
   }
 
@@ -64,7 +64,7 @@ class FIRFilter {
     }
     _index = (_index + 1) % length; // fastRingBufferIncrement logic
 
-    value = newSample;
+    _value = newSample;
     return newSample;
   }
 }
@@ -93,11 +93,11 @@ class FIRFilter3D implements Vector {
   }
 
   @override
-  double get x => filterX.value;
+  double get x => filterX._value;
 
   @override
-  double get y => filterY.value;
+  double get y => filterY._value;
 
   @override
-  double get z => filterZ.value;
+  double get z => filterZ._value;
 }

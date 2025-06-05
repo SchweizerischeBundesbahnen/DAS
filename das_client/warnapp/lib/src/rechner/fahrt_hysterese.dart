@@ -1,17 +1,18 @@
 class FahrtHysterese {
   FahrtHysterese(this.length, this.schwelleFahrt, this.sollAnzahlUeberSchwelle)
-      : assert(length > 0),
-        ringbuffer = List<double>.filled(length, 0.0) {
+    : assert(length > 0),
+      ringbuffer = List<double>.filled(length, 0.0) {
     reset(0.0);
   }
 
-  double schwelleFahrt;
   int length;
+  double schwelleFahrt;
   int sollAnzahlUeberSchwelle;
-  int anzahlUeberSchwelle = 0;
   List<double> ringbuffer;
   int posRingbuffer = 0;
   bool fahrt = false;
+
+  int _anzahlUeberSchwelle = 0;
 
   void reset(double value) {
     for (int i = 0; i < length; i++) {
@@ -19,10 +20,10 @@ class FahrtHysterese {
     }
     if (value >= schwelleFahrt) {
       fahrt = true;
-      anzahlUeberSchwelle = length;
+      _anzahlUeberSchwelle = length;
     } else {
       fahrt = false;
-      anzahlUeberSchwelle = 0;
+      _anzahlUeberSchwelle = 0;
     }
   }
 
@@ -32,14 +33,14 @@ class FahrtHysterese {
     posRingbuffer = posRingbuffer + 1 >= length ? 0 : posRingbuffer + 1;
 
     if (lastValue >= schwelleFahrt) {
-      anzahlUeberSchwelle--;
+      _anzahlUeberSchwelle--;
     }
 
     if (value >= schwelleFahrt) {
-      anzahlUeberSchwelle++;
+      _anzahlUeberSchwelle++;
     }
 
-    fahrt = anzahlUeberSchwelle >= sollAnzahlUeberSchwelle;
+    fahrt = _anzahlUeberSchwelle >= sollAnzahlUeberSchwelle;
     return fahrt;
   }
 }

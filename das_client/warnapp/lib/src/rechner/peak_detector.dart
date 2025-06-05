@@ -1,17 +1,17 @@
 class PeakDetector {
-  PeakDetector(this.length, this.borderLength, this.differenzMittelwert, this.schwelle, this.schwelleBorder)
-      : assert(length > 0 && borderLength > 0, 'length and borderLength must be greater than zero'),
-        assert(borderLength * 2 < length, 'length must be larger then two times borderLength'),
-        x = List<double>.filled(length, 0.0) {
+  PeakDetector(this.length, this.borderLength, this._differenzMittelwert, this._schwelle, this._schwelleBorder)
+    : assert(length > 0 && borderLength > 0, 'length and borderLength must be greater than zero'),
+      assert(borderLength * 2 < length, 'length must be larger then two times borderLength'),
+      x = List<double>.filled(length, 0.0) {
     initWithValue(0.0);
   }
 
   final int length;
   final int borderLength;
-  final double differenzMittelwert;
-  final double schwelle;
-  final double schwelleBorder;
-  List<double> x;
+  final double _differenzMittelwert;
+  final double _schwelle;
+  final double _schwelleBorder;
+  final List<double> x;
   int index = 0;
 
   void initWithValue(double value) {
@@ -79,24 +79,24 @@ class PeakDetector {
     final mittelwert1 = this.mittelwert1();
     final mittelwert2 = this.mittelwert2();
 
-    if ((mittelwert1 - mittelwert2).abs() > differenzMittelwert.abs()) {
+    if ((mittelwert1 - mittelwert2).abs() > _differenzMittelwert.abs()) {
       return false;
     }
 
     final maxAbweichung1 = max1ZuMittelwert(mittelwert1);
-    if (maxAbweichung1 > schwelleBorder) {
+    if (maxAbweichung1 > _schwelleBorder) {
       return false;
     }
 
     final maxAbweichung2 = max2ZuMittelwert(mittelwert2);
-    if (maxAbweichung2 > schwelleBorder) {
+    if (maxAbweichung2 > _schwelleBorder) {
       return false;
     }
 
     final mittelwert = mittelwertGesamterBuffer();
     final maxAbweichung = maxAbweichungZuMittelwert(mittelwert);
 
-    return maxAbweichung > schwelle;
+    return maxAbweichung > _schwelle;
   }
 
   bool reset(double newSample) {
@@ -112,9 +112,9 @@ class PeakDetector3D {
   bool state = false;
 
   PeakDetector3D(int length, int borderLength, double differenzMittelwert, double schwelle, double schwelleBorder)
-      : peakDetectorX = PeakDetector(length, borderLength, differenzMittelwert, schwelle, schwelleBorder),
-        peakDetectorY = PeakDetector(length, borderLength, differenzMittelwert, schwelle, schwelleBorder),
-        peakDetectorZ = PeakDetector(length, borderLength, differenzMittelwert, schwelle, schwelleBorder);
+    : peakDetectorX = PeakDetector(length, borderLength, differenzMittelwert, schwelle, schwelleBorder),
+      peakDetectorY = PeakDetector(length, borderLength, differenzMittelwert, schwelle, schwelleBorder),
+      peakDetectorZ = PeakDetector(length, borderLength, differenzMittelwert, schwelle, schwelleBorder);
 
   bool updateXYZ(double x, double y, double z) {
     final stateX = peakDetectorX.update(x);

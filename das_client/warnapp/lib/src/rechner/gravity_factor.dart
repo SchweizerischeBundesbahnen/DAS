@@ -18,7 +18,7 @@ class GravityFactorStatus {
 
 class GravityFactor {
   GravityFactor({GravityFactorStatusType type = GravityFactorStatusType.init}) {
-    alleStatus = [
+    _alleStatus = [
       GravityFactorStatus(GravityFactorStatusType.init, 1.0, true),
       GravityFactorStatus(GravityFactorStatusType.fahrtUndefiniert, 0.0002, false),
       GravityFactorStatus(GravityFactorStatusType.haltAnfang, 1.0, true),
@@ -27,11 +27,11 @@ class GravityFactor {
       GravityFactorStatus(GravityFactorStatusType.rotation, 1.0, true),
       GravityFactorStatus(GravityFactorStatusType.rotationBeendetImHalt, 0.01, false),
     ];
-    aktuellerStatus = alleStatus[type.index];
+    _aktuellerStatus = _alleStatus[type.index];
   }
 
-  late List<GravityFactorStatus> alleStatus;
-  late GravityFactorStatus aktuellerStatus;
+  late List<GravityFactorStatus> _alleStatus;
+  late GravityFactorStatus _aktuellerStatus;
   int anzahlUpdatesSeitStatuswechsel = 0;
 
   void updateWithFahrt(bool fahrt, bool drehung, bool handbewegung) {
@@ -40,7 +40,7 @@ class GravityFactor {
     } else if (handbewegung && !fahrt) {
       changeStatus(GravityFactorStatusType.rotation);
     } else {
-      switch (aktuellerStatus.type) {
+      switch (_aktuellerStatus.type) {
         case GravityFactorStatusType.haltAnfang:
           changeStatus(fahrt ? GravityFactorStatusType.fahrt : GravityFactorStatusType.halt);
           break;
@@ -84,16 +84,16 @@ class GravityFactor {
   }
 
   void changeStatus(GravityFactorStatusType newStatus) {
-    if (aktuellerStatus.type != newStatus) {
-      aktuellerStatus = alleStatus[newStatus.index];
+    if (_aktuellerStatus.type != newStatus) {
+      _aktuellerStatus = _alleStatus[newStatus.index];
       anzahlUpdatesSeitStatuswechsel = 0;
     }
   }
 
-  double get factor => aktuellerStatus.factor;
+  double get factor => _aktuellerStatus.factor;
 
-  bool get disabled => aktuellerStatus.disabled;
+  bool get disabled => _aktuellerStatus.disabled;
 
   // zu Testzwecken
-  GravityFactorStatusType get type => aktuellerStatus.type;
+  GravityFactorStatusType get type => _aktuellerStatus.type;
 }

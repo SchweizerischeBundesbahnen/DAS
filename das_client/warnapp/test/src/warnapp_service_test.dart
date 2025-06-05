@@ -4,7 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:warnapp/component.dart';
-import 'package:warnapp/src/mock_motion_data_provider.dart';
 
 import 'warnapp_service_test.mocks.dart';
 

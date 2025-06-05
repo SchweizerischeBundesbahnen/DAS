@@ -1,7 +1,7 @@
 class DelayedTrigger {
   DelayedTrigger(bool initialValue, this.anzahlTrue, this.anzahlFalse)
-      : lastTrigger = initialValue,
-        state = initialValue;
+    : lastTrigger = initialValue,
+      state = initialValue;
 
   bool state;
   bool positiveSchwelleErkannt = false;
@@ -9,18 +9,19 @@ class DelayedTrigger {
   bool lastTrigger;
   int anzahlTrue;
   int anzahlFalse;
-  int counterTrue = -1;
-  int counterFalse = -1;
+
+  int _counterTrue = -1;
+  int _counterFalse = -1;
 
   bool updateWithTrigger(bool trigger) {
     final bool oldState = state;
 
     if (trigger && !lastTrigger) {
-      counterTrue = anzahlTrue;
-      counterFalse = -1;
+      _counterTrue = anzahlTrue;
+      _counterFalse = -1;
     } else if (!trigger && lastTrigger) {
-      counterTrue = -1;
-      counterFalse = anzahlFalse;
+      _counterTrue = -1;
+      _counterFalse = anzahlFalse;
     }
     lastTrigger = trigger;
 
@@ -33,17 +34,17 @@ class DelayedTrigger {
   }
 
   void checkDelaySetAndReset() {
-    if (counterTrue == 0) {
+    if (_counterTrue == 0) {
       state = true;
-    } else if (counterFalse == 0) {
+    } else if (_counterFalse == 0) {
       state = false;
     }
 
-    if (counterTrue >= 0) {
-      counterTrue--;
+    if (_counterTrue >= 0) {
+      _counterTrue--;
     }
-    if (counterFalse >= 0) {
-      counterFalse--;
+    if (_counterFalse >= 0) {
+      _counterFalse--;
     }
   }
 }

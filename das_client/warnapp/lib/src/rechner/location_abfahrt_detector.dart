@@ -1,21 +1,21 @@
 class LocationAbfahrtDetector {
   LocationAbfahrtDetector(this.length, this.laengeHalt, this.schwelleFahrt)
-      : ringbuffer = List<double>.filled(length, 0.0) {
+    : _ringbuffer = List<double>.filled(length, 0.0) {
     reset(0.0);
   }
 
+  final int length;
   final int laengeHalt;
   final double schwelleFahrt;
 
-  final int length;
-  List<double> ringbuffer;
-  int posRingbuffer = 0;
-  int updatesCount = 0;
+  final List<double> _ringbuffer;
+  int _posRingbuffer = 0;
+  int _updatesCount = 0;
 
   void reset(double value) {
-    updatesCount = 0;
+    _updatesCount = 0;
     for (int i = 0; i < length; i++) {
-      ringbuffer[i] = value;
+      _ringbuffer[i] = value;
     }
   }
 
@@ -24,9 +24,9 @@ class LocationAbfahrtDetector {
   }
 
   bool signalImmerVorhandenVonBis(int indexVon, int indexBis) {
-    int index1 = (posRingbuffer + indexVon) % length;
+    int index1 = (_posRingbuffer + indexVon) % length;
     for (int i = indexVon; i <= indexBis; i++) {
-      final value = ringbuffer[index1];
+      final value = _ringbuffer[index1];
       if (value == -1) {
         return false;
       }
@@ -40,9 +40,9 @@ class LocationAbfahrtDetector {
   }
 
   bool standStillVonBis(int indexVon, int indexBis) {
-    int index1 = (posRingbuffer + indexVon) % length;
+    int index1 = (_posRingbuffer + indexVon) % length;
     for (int i = indexVon; i <= indexBis; i++) {
-      final value = ringbuffer[index1];
+      final value = _ringbuffer[index1];
       if (value != 0) {
         return false;
       }
@@ -53,29 +53,29 @@ class LocationAbfahrtDetector {
 
   bool update(double value, {bool disabled = false}) {
     if (!disabled) {
-      ringbuffer[posRingbuffer] = value;
-      posRingbuffer = (posRingbuffer + 1) % length;
-      updatesCount++;
+      _ringbuffer[_posRingbuffer] = value;
+      _posRingbuffer = (_posRingbuffer + 1) % length;
+      _updatesCount++;
     } else {
-      updatesCount = 0;
+      _updatesCount = 0;
     }
     return isAbfahrt();
   }
 
   bool isAbfahrt() {
-    if (updatesCount < length) {
+    if (_updatesCount < length) {
       return false;
     }
     return getSecondLastValue() > 0 && getLastValue() > schwelleFahrt && standStill() && signalImmerVorhanden();
   }
 
   double getLastValue() {
-    final indexRingbuffer = (posRingbuffer + length - 1) % length;
-    return ringbuffer[indexRingbuffer];
+    final indexRingbuffer = (_posRingbuffer + length - 1) % length;
+    return _ringbuffer[indexRingbuffer];
   }
 
   double getSecondLastValue() {
-    final indexRingbuffer = (posRingbuffer + length - 2) % length;
-    return ringbuffer[indexRingbuffer];
+    final indexRingbuffer = (_posRingbuffer + length - 2) % length;
+    return _ringbuffer[indexRingbuffer];
   }
 }

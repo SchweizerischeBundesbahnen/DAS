@@ -1,21 +1,21 @@
 class LocationHaltDetector {
   LocationHaltDetector(this.length, this.schwelleMin, this.schwelleMax)
-      : ringbuffer = List<double>.filled(length, 0.0) {
+    : _ringbuffer = List<double>.filled(length, 0.0) {
     reset(0.0);
   }
 
   final double schwelleMin;
   final double schwelleMax;
-
   final int length;
-  List<double> ringbuffer;
-  int posRingbuffer = 0;
-  int updatesCount = 0;
+
+  final List<double> _ringbuffer;
+  int _posRingbuffer = 0;
+  int _updatesCount = 0;
 
   void reset(double value) {
-    updatesCount = 0;
+    _updatesCount = 0;
     for (int i = 0; i < length; i++) {
-      ringbuffer[i] = value;
+      _ringbuffer[i] = value;
     }
   }
 
@@ -24,9 +24,9 @@ class LocationHaltDetector {
   }
 
   bool signalImmerVorhandenVonBis(int indexVon, int indexBis) {
-    int index1 = (posRingbuffer + indexVon) % length;
+    int index1 = (_posRingbuffer + indexVon) % length;
     for (int i = indexVon; i <= indexBis; i++) {
-      final value = ringbuffer[index1];
+      final value = _ringbuffer[index1];
       if (value == -1) {
         return false;
       }
@@ -40,9 +40,9 @@ class LocationHaltDetector {
   }
 
   bool standStillVonBis(int indexVon, int indexBis) {
-    int index1 = (posRingbuffer + indexVon) % length;
+    int index1 = (_posRingbuffer + indexVon) % length;
     for (int i = indexVon; i <= indexBis; i++) {
-      final value = ringbuffer[index1];
+      final value = _ringbuffer[index1];
       if (value != 0) {
         return false;
       }
@@ -52,15 +52,15 @@ class LocationHaltDetector {
   }
 
   bool update(double value) {
-    ringbuffer[posRingbuffer] = value;
-    posRingbuffer = (posRingbuffer + 1) % length;
-    updatesCount++;
+    _ringbuffer[_posRingbuffer] = value;
+    _posRingbuffer = (_posRingbuffer + 1) % length;
+    _updatesCount++;
 
     return isHalt();
   }
 
   bool isHalt() {
-    if (updatesCount < length) {
+    if (_updatesCount < length) {
       return false;
     }
     final firstValue = getFirstValue();
@@ -68,7 +68,7 @@ class LocationHaltDetector {
   }
 
   double getFirstValue() {
-    final indexRingbuffer = posRingbuffer % length;
-    return ringbuffer[indexRingbuffer];
+    final indexRingbuffer = _posRingbuffer % length;
+    return _ringbuffer[indexRingbuffer];
   }
 }

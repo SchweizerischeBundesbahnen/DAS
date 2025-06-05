@@ -5,51 +5,51 @@ class Hysterese {
     required this.schwellePositiv,
     required this.anzahlNegativ,
     required this.schwelleNegativ,
-    this.absolut = false,
-  }) {
+    bool absolut = false,
+  }) : _absolut = absolut {
     if (schwelleNegativ > schwellePositiv) {
       throw ArgumentError('schwelleNegativ > schwellePositiv');
     }
   }
 
   bool state;
-  bool positiveSchwelleErkannt = false;
-  bool negativeSchwelleErkannt = false;
   final int anzahlPositiv;
   final double schwellePositiv;
   final int anzahlNegativ;
   final double schwelleNegativ;
-  int counter = 0;
-  final bool absolut;
+  bool positiveSchwelleErkannt = false;
+  bool negativeSchwelleErkannt = false;
+  int _counter = 0;
+  final bool _absolut;
 
   bool update(double updateValue) {
-    final value = absolut ? updateValue.abs() : updateValue;
+    final value = _absolut ? updateValue.abs() : updateValue;
     positiveSchwelleErkannt = false;
     negativeSchwelleErkannt = false;
 
     if (!state) {
-      if (value >= schwellePositiv && counter >= anzahlPositiv) {
+      if (value >= schwellePositiv && _counter >= anzahlPositiv) {
         positiveSchwelleErkannt = true;
         state = true;
-        counter = 0;
+        _counter = 0;
       }
 
       if (value >= schwellePositiv) {
-        counter++;
+        _counter++;
       } else {
-        counter = 0;
+        _counter = 0;
       }
     } else {
-      if (value <= schwelleNegativ && counter >= anzahlNegativ) {
+      if (value <= schwelleNegativ && _counter >= anzahlNegativ) {
         negativeSchwelleErkannt = true;
         state = false;
-        counter = 0;
+        _counter = 0;
       }
 
       if (value <= schwelleNegativ) {
-        counter++;
+        _counter++;
       } else {
-        counter = 0;
+        _counter = 0;
       }
     }
     return state;

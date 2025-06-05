@@ -2,27 +2,27 @@ import 'dart:math';
 
 class HaltDetector {
   HaltDetector(this.length, this.laengeHalt, this.schwelleHalt, this.schwelleQuiet)
-      : ringbuffer = List<double>.filled(length, 0.0) {
+    : _ringbuffer = List<double>.filled(length, 0.0) {
     reset(0.0);
   }
 
+  final int length;
   final int laengeHalt;
   final double schwelleHalt;
   final double schwelleQuiet;
 
-  final int length;
-  List<double> ringbuffer;
-  int posRingbuffer = 0;
+  final List<double> _ringbuffer;
+  int _posRingbuffer = 0;
 
   void reset(double value) {
     for (int i = 0; i < length; i++) {
-      ringbuffer[i] = value;
+      _ringbuffer[i] = value;
     }
   }
 
   bool update(double value) {
-    ringbuffer[posRingbuffer] = value;
-    posRingbuffer = (posRingbuffer + 1) % length; // fastRingBufferIncrement logic
+    _ringbuffer[_posRingbuffer] = value;
+    _posRingbuffer = (_posRingbuffer + 1) % length; // fastRingBufferIncrement logic
 
     return isHalt();
   }
@@ -33,10 +33,10 @@ class HaltDetector {
 
   double getMin(int beginIndex, int calcLength) {
     double result = double.maxFinite;
-    int indexRingbuffer = (posRingbuffer + beginIndex) % length; // fastRingBufferSet logic
+    int indexRingbuffer = (_posRingbuffer + beginIndex) % length; // fastRingBufferSet logic
 
     for (int i = 0; i < calcLength; i++) {
-      final value = ringbuffer[indexRingbuffer];
+      final value = _ringbuffer[indexRingbuffer];
       result = min(result, value);
       indexRingbuffer = (indexRingbuffer + 1) % length; // fastRingBufferIncrement logic
     }
@@ -45,10 +45,10 @@ class HaltDetector {
 
   double getMaxAbs(int beginIndex, int calcLength) {
     double result = 0.0;
-    int indexRingbuffer = (posRingbuffer + beginIndex) % length; // fastRingBufferSet logic
+    int indexRingbuffer = (_posRingbuffer + beginIndex) % length; // fastRingBufferSet logic
 
     for (int i = 0; i < calcLength; i++) {
-      final value = ringbuffer[indexRingbuffer];
+      final value = _ringbuffer[indexRingbuffer];
       result = max(result, value.abs());
       indexRingbuffer = (indexRingbuffer + 1) % length; // fastRingBufferIncrement logic
     }

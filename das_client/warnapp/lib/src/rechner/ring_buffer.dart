@@ -7,28 +7,23 @@ enum RingBufferOptions {
 class RingBuffer {
   RingBuffer(this.length, {this.options = const [RingBufferOptions.none]})
     : assert(length > 0),
-      x = List<double>.filled(length, 0.0),
-      sum = 0,
-      min = 0,
-      max = 0,
-      firstValue = 0,
-      lastValue = 0,
-      lastRemovedValue = 0;
+      _x = List<double>.filled(length, 0.0);
 
   final int length;
   final List<RingBufferOptions> options;
-  double firstValue;
-  double lastValue;
-  double lastRemovedValue;
-  double sum;
-  double min;
-  double max;
-  List<double> x;
-  int index = 0;
+  double firstValue = 0;
+  double lastValue = 0;
+  double lastRemovedValue = 0;
+  double sum = 0;
+  double min = 0;
+  double max = 0;
+
+  final List<double> _x;
+  int _index = 0;
 
   void reset(double value) {
     for (int i = 0; i < length; i++) {
-      x[i] = value;
+      _x[i] = value;
     }
     sum = value * length;
     min = value;
@@ -41,15 +36,15 @@ class RingBuffer {
   double update(double newValue) {
     lastRemovedValue = firstValue;
 
-    x[index] = newValue;
-    index = (index + 1) % length; // fastRingBufferIncrement logic
+    _x[_index] = newValue;
+    _index = (_index + 1) % length; // fastRingBufferIncrement logic
 
     lastValue = newValue;
     if (options.contains(RingBufferOptions.sum)) {
       sum = sum + newValue - lastRemovedValue;
     }
-    final indexRingbuffer = index; // fastRingBufferSet logic
-    firstValue = x[indexRingbuffer];
+    final indexRingbuffer = _index; // fastRingBufferSet logic
+    firstValue = _x[indexRingbuffer];
 
     if (options.contains(RingBufferOptions.minMax)) {
       if (newValue > max) {
@@ -73,9 +68,9 @@ class RingBuffer {
     final indexVon = 0;
     final indexBis = length - 1;
 
-    int index1 = (index + indexVon) % length; // fastRingBufferSet logic
+    int index1 = (_index + indexVon) % length; // fastRingBufferSet logic
     for (int i = indexVon; i <= indexBis; i++) {
-      final value = x[index1];
+      final value = _x[index1];
       if (value > max) {
         max = value;
       }
@@ -90,9 +85,9 @@ class RingBuffer {
     final indexVon = 0;
     final indexBis = length - 1;
 
-    int index1 = (index + indexVon) % length; // fastRingBufferSet logic
+    int index1 = (_index + indexVon) % length; // fastRingBufferSet logic
     for (int i = indexVon; i <= indexBis; i++) {
-      final value = x[index1];
+      final value = _x[index1];
       if (value < min) {
         min = value;
       }
@@ -107,9 +102,9 @@ class RingBuffer {
     final indexVon = 0;
     final indexBis = length - 1;
 
-    int index1 = (index + indexVon) % length; // fastRingBufferSet logic
+    int index1 = (_index + indexVon) % length; // fastRingBufferSet logic
     for (int i = indexVon; i <= indexBis; i++) {
-      final value = x[index1];
+      final value = _x[index1];
       values[i] = value;
       index1 = (index1 + 1) % length; // fastRingBufferIncrement logic
     }
@@ -122,9 +117,9 @@ class RingBuffer {
     final indexVon = 0;
     final indexBis = length - 1;
 
-    int index1 = (index + indexVon) % length; // fastRingBufferSet logic
+    int index1 = (_index + indexVon) % length; // fastRingBufferSet logic
     for (int i = indexVon; i <= indexBis; i++) {
-      final value = x[index1];
+      final value = _x[index1];
       if (i > 0) {
         result.write(delimiter);
       }

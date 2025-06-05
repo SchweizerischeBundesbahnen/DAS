@@ -1,19 +1,19 @@
 class RSFlipFlop {
-  RSFlipFlop(int sizeSet, int sizeReset, [this.minimaleAnzahlZwischenZweiSets = 0]) {
-    lastSet = List<bool>.filled(sizeSet, false);
-    lastReset = List<bool>.filled(sizeReset, false);
-    updatesCountLetzteErkanntePositiveSchwelle = double.maxFinite.toInt(); // equivalent to NSUIntegerMax
-  }
+  RSFlipFlop(int sizeSet, int sizeReset, [this.minimaleAnzahlZwischenZweiSets = 0])
+    : _lastSet = List<bool>.filled(sizeSet, false),
+      _lastReset = List<bool>.filled(sizeReset, false),
+      _updatesCountLetzteErkanntePositiveSchwelle = double.maxFinite.toInt();
+
+  List<bool> _lastSet;
+  List<bool> _lastReset;
+  int _updatesCountLetzteErkanntePositiveSchwelle;
+  int _updatesCount = 0;
 
   bool state = false;
   bool positiveSchwelleErkannt = false;
   bool softSetErkannt = false;
   bool negativeSchwelleErkannt = false;
-  late List<bool> lastSet;
-  late List<bool> lastReset;
-  late int updatesCountLetzteErkanntePositiveSchwelle;
   int minimaleAnzahlZwischenZweiSets;
-  int updatesCount = 0;
 
   int changedSoftSetIndex = 0;
   int changedSetIndex = 0;
@@ -21,27 +21,27 @@ class RSFlipFlop {
 
   void set(List<bool> valuesSet, List<bool> valuesSoftSet, List<bool> valuesReset) {
     final oldState = state;
-    updatesCount++;
+    _updatesCount++;
 
     // Set
-    if (lastSet.length != valuesSet.length) {
-      throw Exception('Länge von SET ist ${valuesSet.length} erwartet wird ${lastSet.length}');
+    if (_lastSet.length != valuesSet.length) {
+      throw Exception('Länge von SET ist ${valuesSet.length} erwartet wird ${_lastSet.length}');
     }
     final changedSetIndex = 0;
-    if (hasChanged(lastSet, valuesSet, changedSetIndex)) {
+    if (hasChanged(_lastSet, valuesSet, changedSetIndex)) {
       state = true;
     }
-    lastSet = valuesSet;
+    _lastSet = valuesSet;
 
     // Reset
-    if (lastReset.length != valuesReset.length) {
-      throw Exception('Länge von RESET ist ${valuesReset.length} erwartet wird ${lastReset.length}');
+    if (_lastReset.length != valuesReset.length) {
+      throw Exception('Länge von RESET ist ${valuesReset.length} erwartet wird ${_lastReset.length}');
     }
     final changedResetIndex = 0;
-    if (hasChanged(lastReset, valuesReset, changedResetIndex)) {
+    if (hasChanged(_lastReset, valuesReset, changedResetIndex)) {
       state = false;
     }
-    lastReset = valuesReset;
+    _lastReset = valuesReset;
 
     // Schwellenerkennung
     positiveSchwelleErkannt = !oldState && state;
@@ -49,12 +49,12 @@ class RSFlipFlop {
     // Anzahl Samples zwischen zwei PositivenSchwellen prüfen
     bool doSoftset = false;
     if (positiveSchwelleErkannt) {
-      if (updatesCountLetzteErkanntePositiveSchwelle != double.maxFinite.toInt() &&
-          updatesCount - updatesCountLetzteErkanntePositiveSchwelle < minimaleAnzahlZwischenZweiSets) {
+      if (_updatesCountLetzteErkanntePositiveSchwelle != double.maxFinite.toInt() &&
+          _updatesCount - _updatesCountLetzteErkanntePositiveSchwelle < minimaleAnzahlZwischenZweiSets) {
         doSoftset = true;
         positiveSchwelleErkannt = false;
       } else {
-        updatesCountLetzteErkanntePositiveSchwelle = updatesCount;
+        _updatesCountLetzteErkanntePositiveSchwelle = _updatesCount;
       }
     }
 
