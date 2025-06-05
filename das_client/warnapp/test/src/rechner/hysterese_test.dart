@@ -5,14 +5,15 @@ void main() {
   group('Hysterese Tests', () {
     test('Hysterese Argument', () {
       expect(
-          () => Hysterese(
-                state: false,
-                anzahlPositiv: 3,
-                schwellePositiv: 2.5,
-                anzahlNegativ: 0,
-                schwelleNegativ: 3.9,
-              ),
-          throwsArgumentError);
+        () => Hysterese(
+          state: false,
+          anzahlPositiv: 3,
+          schwellePositiv: 2.5,
+          anzahlNegativ: 0,
+          schwelleNegativ: 3.9,
+        ),
+        throwsArgumentError,
+      );
     });
 
     test('Hysterese Standard Positiv', () {

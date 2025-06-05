@@ -40,20 +40,38 @@ void main() {
   });
 }
 
-void initWithState(bool initialState, bool trigger, bool disablePositiv, bool disableNegativ, bool expectedState,
-    bool positiveSchwelleErkannt, bool negativeSchwelleErkannt) {
+void initWithState(
+  bool initialState,
+  bool trigger,
+  bool disablePositiv,
+  bool disableNegativ,
+  bool expectedState,
+  bool positiveSchwelleErkannt,
+  bool negativeSchwelleErkannt,
+) {
   final flipFlop = FlipFlop(initialState);
-  expect(flipFlop.updateWithTrigger(trigger, disablePositiv: disablePositiv, disableNegativ: disableNegativ),
-      equals(expectedState));
+  expect(
+    flipFlop.updateWithTrigger(trigger, disablePositiv: disablePositiv, disableNegativ: disableNegativ),
+    equals(expectedState),
+  );
   expect(flipFlop.state, equals(expectedState));
   expect(flipFlop.positiveSchwelleErkannt, equals(positiveSchwelleErkannt));
   expect(flipFlop.negativeSchwelleErkannt, equals(negativeSchwelleErkannt));
 }
 
-void flipFlopTest(FlipFlop flipFlop, bool trigger, bool disablePositiv, bool disableNegativ, bool expectedState,
-    bool positiveSchwelleErkannt, bool negativeSchwelleErkannt) {
-  expect(flipFlop.updateWithTrigger(trigger, disablePositiv: disablePositiv, disableNegativ: disableNegativ),
-      equals(expectedState));
+void flipFlopTest(
+  FlipFlop flipFlop,
+  bool trigger,
+  bool disablePositiv,
+  bool disableNegativ,
+  bool expectedState,
+  bool positiveSchwelleErkannt,
+  bool negativeSchwelleErkannt,
+) {
+  expect(
+    flipFlop.updateWithTrigger(trigger, disablePositiv: disablePositiv, disableNegativ: disableNegativ),
+    equals(expectedState),
+  );
   expect(flipFlop.state, equals(expectedState));
   expect(flipFlop.positiveSchwelleErkannt, equals(positiveSchwelleErkannt));
   expect(flipFlop.negativeSchwelleErkannt, equals(negativeSchwelleErkannt));
