@@ -1,5 +1,5 @@
 import 'package:intl/intl.dart';
-import 'package:warnapp/src/algorithmus/algorithmus_16_properties.dart';
+import 'package:warnapp/src/algorithmus/abfahrt_detection_algorithmus_properties.dart';
 import 'package:warnapp/src/rechner/abfahrt_detector.dart';
 import 'package:warnapp/src/rechner/delayed_trigger.dart';
 import 'package:warnapp/src/rechner/delta.dart';
@@ -17,10 +17,12 @@ import 'package:warnapp/src/rechner/peak_detector.dart';
 import 'package:warnapp/src/rechner/rs_flip_flop.dart';
 import 'package:warnapp/src/rechner/signal_keeper_3d.dart';
 import 'package:warnapp/src/rechner/speed_normalizer.dart';
-import 'package:warnapp/src/rechner/vector_calculator.dart';
+import 'package:warnapp/src/rechner/vector.dart';
 
-class Algorithmus16 {
-  final Algorithmus16Properties properties;
+/// This algorithm matches the 'algorithmus 16' from the original warnapp library that was written in objective-c.
+/// It is a direct port into dart. As such variables and method names are kept as close to the original as possible.
+class AbfahrtDetectionAlgorithmus {
+  final AbfahrtDetectionAlgorithmusProperties properties;
 
   final FIRFilter3D slowFirFilter;
   final FIRFilter3D fastFirFilter;
@@ -74,133 +76,133 @@ class Algorithmus16 {
   final LocationAbfahrtDetector slowLocationAbfahrtDetektor;
   final LocationHaltDetector locationHaltDetektor;
 
-  Algorithmus16({required this.properties})
-      : slowFirFilter = FIRFilter3D(properties.slowWindowLength, resetOnFirstUpdate: true),
-        fastFirFilter = FIRFilter3D(properties.fastWindowLength, resetOnFirstUpdate: true),
-        integrator = Integrator(properties.integratorWindowLength),
-        hystereseHandbewegung = Hysterese(
-          state: false,
-          anzahlPositiv: 0,
-          schwellePositiv: properties.hystereseHandbewegungPositiv,
-          anzahlNegativ: properties.hystereseHandbewegungAnzahlNegativ,
-          schwelleNegativ: properties.hystereseHandbewegungNegativ,
-        ),
-        hystereseHandbewegung2 = Hysterese(
-          state: false,
-          anzahlPositiv: 0,
-          schwellePositiv: properties.hystereseHandbewegung2Positiv,
-          anzahlNegativ: properties.hystereseHandbewegung2AnzahlNegativ,
-          schwelleNegativ: properties.hystereseHandbewegung2Negativ,
-        ),
-        handbewegungFirFilter = FIRFilter3D(properties.handbewegungWindowLength, resetOnFirstUpdate: true),
-        peakDetector = PeakDetector3D(
-          properties.peakDetectorWindowLength,
-          properties.peakDetectorBorderLength,
-          properties.peakDetectorDifferenzMittelwert,
-          properties.peakDetectorSchwelle,
-          properties.peakDetectorSchwelleBorder,
-        ),
-        delayedPeakDetector = DelayedTrigger(false, 0, properties.peakDetectorDelay),
-        delayedTouch = DelayedTrigger(false, 0, properties.touchDelay),
-        berechnungsZeit = properties.berechnungsZeit,
-        lengthForInitialization = properties.lengthForInitialization,
-        delta = Delta(),
-        abfahrtDetektor = AbfahrtDetector(
-          length: properties.abfahrtDetektorLength,
-          laengeHalt: properties.abfahrtDetektorLaengeHalt,
-          schwelleFahrt: properties.abfahrtDetektorSchwelleFahrt,
-          schwelleQuiet: properties.abfahrtDetektorSchwelleQuiet,
-        ),
-        fahrtHystereseSpeed = LocationFahrtHysterese(
-          properties.hystereseFahrtLocationSchwelleSpeed,
-          properties.hystereseFahrtLocationGueltigkeitsDauer,
-        ),
-        fahrtHystereseDelta = FahrtHysterese(
-          properties.hystereseFahrtDeltaLength,
-          properties.hystereseFahrtDeltaSchwelle,
-          properties.hystereseFahrtDeltaAnzahlUeberSchwelle,
-        ),
-        fahrtHystereseDeltaFlanke = DelayedTrigger(false, 0, 0),
-        haltDetektor = HaltDetector(
-          properties.haltDetektorLength,
-          properties.haltDetektorLaengeHalt,
-          properties.haltDetektorSchwelleHalt,
-          properties.haltDetektorSchwelleQuiet,
-        ),
-        ruheDetektionHystereseLang = Hysterese(
-          state: false,
-          anzahlPositiv: properties.ruheDetektionLangAnzahlPositiv,
-          schwellePositiv: properties.ruheDetektionLangSchwellePositiv,
-          anzahlNegativ: properties.ruheDetektionLangAnzahlNegativ,
-          schwelleNegativ: properties.ruheDetektionLangSchwelleNegativ,
-          absolut: true,
-        ),
-        ruheDetektionHystereseKurz = Hysterese(
-          state: false,
-          anzahlPositiv: properties.ruheDetektionKurzAnzahlPositiv,
-          schwellePositiv: properties.ruheDetektionKurzSchwellePositiv,
-          anzahlNegativ: properties.ruheDetektionKurzAnzahlNegativ,
-          schwelleNegativ: properties.ruheDetektionKurzSchwelleNegativ,
-          absolut: true,
-        ),
-        flipFlop = RSFlipFlop(
-          5,
-          5,
-          properties.minimaleAnzahlZwischenZweiAbfahrten,
-        ),
-        slowIntegrator = Integrator(properties.slowIntegratorWindowLength),
-        slowAbfahrtDetektor = AbfahrtDetector(
-          length: properties.slowAbfahrtDetektorLength,
-          laengeHalt: properties.slowAbfahrtDetektorLaengeHalt,
-          schwelleFahrt: properties.slowAbfahrtDetektorSchwelleFahrt,
-          schwelleQuiet: properties.slowAbfahrtDetektorSchwelleQuiet,
-        ),
-        gravitationHystereseRotation = Hysterese(
-          state: false,
-          anzahlPositiv: properties.gravitationHystereseRotationAnzahlPositiv,
-          schwellePositiv: properties.gravitationHystereseRotationSchwellePositiv,
-          anzahlNegativ: properties.gravitationHystereseRotationAnzahlNegativ,
-          schwelleNegativ: properties.gravitationHystereseRotationSchwelleNegativ,
-        ),
-        gravitationsFaktor = GravityFactor(),
-        keeper = SignalKeeper3D(),
-        gravitationsIntegrator = Integrator(properties.gravitationIntegratorWindowLength),
-        gravitationsAbfahrtDetektor = AbfahrtDetector(
-          length: properties.gravitationAbfahrtDetektorLength,
-          laengeHalt: properties.gravitationAbfahrtDetektorLaengeHalt,
-          schwelleFahrt: properties.gravitationAbfahrtDetektorSchwelleFahrt,
-          schwelleQuiet: properties.gravitationAbfahrtDetektorSchwelleQuiet,
-        ),
-        gravitationsHaltDetektor = HaltDetector(
-          properties.gravitationHaltDetektorLength,
-          properties.gravitationHaltDetektorLaengeHalt,
-          properties.gravitationHaltDetektorSchwelleHalt,
-          properties.gravitationHaltDetektorSchwelleQuiet,
-        ),
-        gravitationsDelta = Delta(),
-        speedNormalizer = SpeedNormalizer(properties.speedNormalizerGueltigkeitsDauer),
-        locationAbfahrtDetektor = LocationAbfahrtDetector(
-          properties.locationAbfahrtDetektorLength,
-          properties.locationAbfahrtDetektorLaengeHalt,
-          properties.locationAbfahrtDetektorSchwelleFahrt,
-        ),
-        slowLocationAbfahrtDetektor = LocationAbfahrtDetector(
-          properties.slowLocationAbfahrtDetektorLength,
-          properties.slowLocationAbfahrtDetektorLaengeHalt,
-          properties.slowLocationAbfahrtDetektorSchwelleFahrt,
-        ),
-        locationHaltDetektor = LocationHaltDetector(
-          properties.locationHaltDetektorLength,
-          properties.locationHaltDetektorSchwelleMin,
-          properties.locationHaltDetektorSchwelleMax,
-        ),
-        lageaenderungDetector = LageAenderungDetector3D(
-          properties.lageaenderungWindowLength,
-          properties.lageaenderungWindowLength,
-          properties.lageaenderungSchwelle,
-        ),
-        delayedTriggerLageaenderung = DelayedTrigger(false, 0, properties.lageaenderungDelay),
-        lageaenderungOrNachAnd = properties.lageaenderungOrNachAnd;
+  AbfahrtDetectionAlgorithmus({required this.properties})
+    : slowFirFilter = FIRFilter3D(properties.slowWindowLength, resetOnFirstUpdate: true),
+      fastFirFilter = FIRFilter3D(properties.fastWindowLength, resetOnFirstUpdate: true),
+      integrator = Integrator(properties.integratorWindowLength),
+      hystereseHandbewegung = Hysterese(
+        state: false,
+        anzahlPositiv: 0,
+        schwellePositiv: properties.hystereseHandbewegungPositiv,
+        anzahlNegativ: properties.hystereseHandbewegungAnzahlNegativ,
+        schwelleNegativ: properties.hystereseHandbewegungNegativ,
+      ),
+      hystereseHandbewegung2 = Hysterese(
+        state: false,
+        anzahlPositiv: 0,
+        schwellePositiv: properties.hystereseHandbewegung2Positiv,
+        anzahlNegativ: properties.hystereseHandbewegung2AnzahlNegativ,
+        schwelleNegativ: properties.hystereseHandbewegung2Negativ,
+      ),
+      handbewegungFirFilter = FIRFilter3D(properties.handbewegungWindowLength, resetOnFirstUpdate: true),
+      peakDetector = PeakDetector3D(
+        properties.peakDetectorWindowLength,
+        properties.peakDetectorBorderLength,
+        properties.peakDetectorDifferenzMittelwert,
+        properties.peakDetectorSchwelle,
+        properties.peakDetectorSchwelleBorder,
+      ),
+      delayedPeakDetector = DelayedTrigger(false, 0, properties.peakDetectorDelay),
+      delayedTouch = DelayedTrigger(false, 0, properties.touchDelay),
+      berechnungsZeit = properties.berechnungsZeit,
+      lengthForInitialization = properties.lengthForInitialization,
+      delta = Delta(),
+      abfahrtDetektor = AbfahrtDetector(
+        length: properties.abfahrtDetektorLength,
+        laengeHalt: properties.abfahrtDetektorLaengeHalt,
+        schwelleFahrt: properties.abfahrtDetektorSchwelleFahrt,
+        schwelleQuiet: properties.abfahrtDetektorSchwelleQuiet,
+      ),
+      fahrtHystereseSpeed = LocationFahrtHysterese(
+        properties.hystereseFahrtLocationSchwelleSpeed,
+        properties.hystereseFahrtLocationGueltigkeitsDauer,
+      ),
+      fahrtHystereseDelta = FahrtHysterese(
+        properties.hystereseFahrtDeltaLength,
+        properties.hystereseFahrtDeltaSchwelle,
+        properties.hystereseFahrtDeltaAnzahlUeberSchwelle,
+      ),
+      fahrtHystereseDeltaFlanke = DelayedTrigger(false, 0, 0),
+      haltDetektor = HaltDetector(
+        properties.haltDetektorLength,
+        properties.haltDetektorLaengeHalt,
+        properties.haltDetektorSchwelleHalt,
+        properties.haltDetektorSchwelleQuiet,
+      ),
+      ruheDetektionHystereseLang = Hysterese(
+        state: false,
+        anzahlPositiv: properties.ruheDetektionLangAnzahlPositiv,
+        schwellePositiv: properties.ruheDetektionLangSchwellePositiv,
+        anzahlNegativ: properties.ruheDetektionLangAnzahlNegativ,
+        schwelleNegativ: properties.ruheDetektionLangSchwelleNegativ,
+        absolut: true,
+      ),
+      ruheDetektionHystereseKurz = Hysterese(
+        state: false,
+        anzahlPositiv: properties.ruheDetektionKurzAnzahlPositiv,
+        schwellePositiv: properties.ruheDetektionKurzSchwellePositiv,
+        anzahlNegativ: properties.ruheDetektionKurzAnzahlNegativ,
+        schwelleNegativ: properties.ruheDetektionKurzSchwelleNegativ,
+        absolut: true,
+      ),
+      flipFlop = RSFlipFlop(
+        5,
+        5,
+        properties.minimaleAnzahlZwischenZweiAbfahrten,
+      ),
+      slowIntegrator = Integrator(properties.slowIntegratorWindowLength),
+      slowAbfahrtDetektor = AbfahrtDetector(
+        length: properties.slowAbfahrtDetektorLength,
+        laengeHalt: properties.slowAbfahrtDetektorLaengeHalt,
+        schwelleFahrt: properties.slowAbfahrtDetektorSchwelleFahrt,
+        schwelleQuiet: properties.slowAbfahrtDetektorSchwelleQuiet,
+      ),
+      gravitationHystereseRotation = Hysterese(
+        state: false,
+        anzahlPositiv: properties.gravitationHystereseRotationAnzahlPositiv,
+        schwellePositiv: properties.gravitationHystereseRotationSchwellePositiv,
+        anzahlNegativ: properties.gravitationHystereseRotationAnzahlNegativ,
+        schwelleNegativ: properties.gravitationHystereseRotationSchwelleNegativ,
+      ),
+      gravitationsFaktor = GravityFactor(),
+      keeper = SignalKeeper3D(),
+      gravitationsIntegrator = Integrator(properties.gravitationIntegratorWindowLength),
+      gravitationsAbfahrtDetektor = AbfahrtDetector(
+        length: properties.gravitationAbfahrtDetektorLength,
+        laengeHalt: properties.gravitationAbfahrtDetektorLaengeHalt,
+        schwelleFahrt: properties.gravitationAbfahrtDetektorSchwelleFahrt,
+        schwelleQuiet: properties.gravitationAbfahrtDetektorSchwelleQuiet,
+      ),
+      gravitationsHaltDetektor = HaltDetector(
+        properties.gravitationHaltDetektorLength,
+        properties.gravitationHaltDetektorLaengeHalt,
+        properties.gravitationHaltDetektorSchwelleHalt,
+        properties.gravitationHaltDetektorSchwelleQuiet,
+      ),
+      gravitationsDelta = Delta(),
+      speedNormalizer = SpeedNormalizer(properties.speedNormalizerGueltigkeitsDauer),
+      locationAbfahrtDetektor = LocationAbfahrtDetector(
+        properties.locationAbfahrtDetektorLength,
+        properties.locationAbfahrtDetektorLaengeHalt,
+        properties.locationAbfahrtDetektorSchwelleFahrt,
+      ),
+      slowLocationAbfahrtDetektor = LocationAbfahrtDetector(
+        properties.slowLocationAbfahrtDetektorLength,
+        properties.slowLocationAbfahrtDetektorLaengeHalt,
+        properties.slowLocationAbfahrtDetektorSchwelleFahrt,
+      ),
+      locationHaltDetektor = LocationHaltDetector(
+        properties.locationHaltDetektorLength,
+        properties.locationHaltDetektorSchwelleMin,
+        properties.locationHaltDetektorSchwelleMax,
+      ),
+      lageaenderungDetector = LageAenderungDetector3D(
+        properties.lageaenderungWindowLength,
+        properties.lageaenderungWindowLength,
+        properties.lageaenderungSchwelle,
+      ),
+      delayedTriggerLageaenderung = DelayedTrigger(false, 0, properties.lageaenderungDelay),
+      lageaenderungOrNachAnd = properties.lageaenderungOrNachAnd;
 
   String? get abfahrtInfos => abfahrtInfo;
 
@@ -240,29 +242,40 @@ class Algorithmus16 {
 
     handbewegungFirFilter.updateXYZ(accX, accY, accZ);
     if (handbewegungUndHaltOderLageAenderung) {
-      slowFirFilter.resetWithXYZ(handbewegungFirFilter.filterX.value, handbewegungFirFilter.filterY.value,
-          handbewegungFirFilter.filterZ.value);
-      fastFirFilter.resetWithXYZ(handbewegungFirFilter.filterX.value, handbewegungFirFilter.filterY.value,
-          handbewegungFirFilter.filterZ.value);
+      slowFirFilter.resetWithXYZ(
+        handbewegungFirFilter.x,
+        handbewegungFirFilter.y,
+        handbewegungFirFilter.z,
+      );
+      fastFirFilter.resetWithXYZ(
+        handbewegungFirFilter.x,
+        handbewegungFirFilter.y,
+        handbewegungFirFilter.z,
+      );
     } else {
       slowFirFilter.updateXYZ(accX, accY, accZ);
       fastFirFilter.updateXYZ(accX, accY, accZ);
     }
 
-    final distance = VectorCalculator.distanceBetween(slowFirFilter, fastFirFilter);
+    final distance = slowFirFilter.distanceTo(fastFirFilter);
     final deltaValue = delta.updateWithDistance(distance);
     final distanceIntegrated = integrator.updateWithNewSample(deltaValue);
 
     final gravityDrehung = gravitationHystereseRotation.update(rotation);
     gravitationsFaktor.updateWithFahrt(
-        !wasHalt, (gravityDrehung || lageAenderung), handbewegungUndHaltOderLageAenderung);
+      !wasHalt,
+      (gravityDrehung || lageAenderung),
+      handbewegungUndHaltOderLageAenderung,
+    );
     final gravityFactor = gravitationsFaktor.factor;
     final gravityDisable = gravitationsFaktor.disabled;
     keeper.updateWithValue(slowFirFilter, gravityFactor);
-    final gravityDistance = VectorCalculator.distanceBetween(keeper, fastFirFilter);
+    final gravityDistance = keeper.distanceTo(fastFirFilter);
     final gravityDelta = gravitationsDelta.updateWithDistance(gravityDistance);
-    final gravityDistanceIntegrated =
-        gravitationsIntegrator.updateWithNewSample(gravityDelta, disabled: gravityDisable);
+    final gravityDistanceIntegrated = gravitationsIntegrator.updateWithNewSample(
+      gravityDelta,
+      disabled: gravityDisable,
+    );
 
     if (wasHaltFlanke) {
       fahrtHystereseDelta.reset(0);
@@ -271,14 +284,20 @@ class Algorithmus16 {
     }
 
     final normalizedSpeed = speedNormalizer.updateWithSpeed(speed, timestampSpeed);
-    final locationAbfahrtDetected =
-        locationAbfahrtDetektor.update(normalizedSpeed, disabled: handbewegungUndHaltOderLageAenderung);
-    final slowLocationAbfahrtDetected =
-        slowLocationAbfahrtDetektor.update(normalizedSpeed, disabled: handbewegungUndHaltOderLageAenderung);
+    final locationAbfahrtDetected = locationAbfahrtDetektor.update(
+      normalizedSpeed,
+      disabled: handbewegungUndHaltOderLageAenderung,
+    );
+    final slowLocationAbfahrtDetected = slowLocationAbfahrtDetektor.update(
+      normalizedSpeed,
+      disabled: handbewegungUndHaltOderLageAenderung,
+    );
     final locationRuheDetected = locationHaltDetektor.update(normalizedSpeed);
 
-    final gravityAbfahrtDetected =
-        gravitationsAbfahrtDetektor.update(gravityDistanceIntegrated, disabled: handbewegungUndHaltOderLageAenderung);
+    final gravityAbfahrtDetected = gravitationsAbfahrtDetektor.update(
+      gravityDistanceIntegrated,
+      disabled: handbewegungUndHaltOderLageAenderung,
+    );
     final gravityHaltDetected = gravitationsHaltDetektor.update(gravityDistanceIntegrated);
 
     final fahrtDetectedSpeed = fahrtHystereseSpeed.updateWithSpeed(speed, timestampSpeed);
@@ -291,8 +310,10 @@ class Algorithmus16 {
     final ruheKurzDetected = !ruheDetektionHystereseKurz.update(distanceIntegrated);
 
     final slowDistanceIntegrated = slowIntegrator.updateWithNewSample(distance);
-    final slowAbfahrtDetected =
-        slowAbfahrtDetektor.update(slowDistanceIntegrated, disabled: handbewegungUndHaltOderLageAenderung);
+    final slowAbfahrtDetected = slowAbfahrtDetektor.update(
+      slowDistanceIntegrated,
+      disabled: handbewegungUndHaltOderLageAenderung,
+    );
 
     flipFlop.set(
       [
@@ -300,7 +321,7 @@ class Algorithmus16 {
         abfahrtDetected,
         slowAbfahrtDetected,
         locationAbfahrtDetected,
-        slowLocationAbfahrtDetected
+        slowLocationAbfahrtDetected,
       ],
       [fahrtDetectedDelta, fahrtDetectedSpeed],
       [gravityHaltDetected, haltDetected, ruheLangDetected, ruheKurzDetected, locationRuheDetected],

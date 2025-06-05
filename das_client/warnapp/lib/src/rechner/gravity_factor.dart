@@ -42,11 +42,7 @@ class GravityFactor {
     } else {
       switch (aktuellerStatus.type) {
         case GravityFactorStatusType.haltAnfang:
-          if (fahrt) {
-            changeStatus(GravityFactorStatusType.fahrt);
-          } else {
-            changeStatus(GravityFactorStatusType.halt);
-          }
+          changeStatus(fahrt ? GravityFactorStatusType.fahrt : GravityFactorStatusType.halt);
           break;
         case GravityFactorStatusType.halt:
           if (fahrt) {
@@ -60,11 +56,7 @@ class GravityFactor {
           break;
         case GravityFactorStatusType.init:
           if (anzahlUpdatesSeitStatuswechsel > 1) {
-            if (fahrt) {
-              changeStatus(GravityFactorStatusType.fahrtUndefiniert);
-            } else {
-              changeStatus(GravityFactorStatusType.halt);
-            }
+            changeStatus(fahrt ? GravityFactorStatusType.fahrtUndefiniert : GravityFactorStatusType.halt);
           }
           break;
         case GravityFactorStatusType.fahrtUndefiniert:
@@ -73,11 +65,9 @@ class GravityFactor {
           }
           break;
         case GravityFactorStatusType.rotation:
-          if (fahrt) {
-            changeStatus(GravityFactorStatusType.fahrtUndefiniert);
-          } else {
-            changeStatus(GravityFactorStatusType.rotationBeendetImHalt);
-          }
+          changeStatus(
+            fahrt ? GravityFactorStatusType.fahrtUndefiniert : GravityFactorStatusType.rotationBeendetImHalt,
+          );
           break;
         case GravityFactorStatusType.rotationBeendetImHalt:
           if (fahrt) {

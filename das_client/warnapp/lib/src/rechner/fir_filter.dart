@@ -40,12 +40,11 @@ class FIRFilter {
     }
 
     double y = 0; // output sample
-    int n;
 
     // Calculate the new output
     _x[_index] = newSample;
     int index1 = _index;
-    for (n = 0; n < length; n++) {
+    for (int n = 0; n < length; n++) {
       y += _firCoef[n] * _x[index1];
       index1 = (index1 - 1) % length; // fastRingBufferDecrement logic
     }
@@ -56,12 +55,10 @@ class FIRFilter {
   }
 
   double resetWithNewSample(double newSample) {
-    int n;
-
     // Calculate the new output
     _x[_index] = newSample;
     int index1 = _index;
-    for (n = 0; n < length; n++) {
+    for (int n = 0; n < length; n++) {
       _x[index1] = newSample;
       index1 = (index1 - 1) % length; // fastRingBufferDecrement logic
     }
@@ -78,10 +75,10 @@ class FIRFilter3D implements Vector {
   FIRFilter filterZ;
 
   FIRFilter3D(int length, {bool resetOnFirstUpdate = false})
-      : assert(length > 0, 'length must be greater than zero'),
-        filterX = FIRFilter(length, resetOnFirstUpdate: resetOnFirstUpdate),
-        filterY = FIRFilter(length, resetOnFirstUpdate: resetOnFirstUpdate),
-        filterZ = FIRFilter(length, resetOnFirstUpdate: resetOnFirstUpdate);
+    : assert(length > 0, 'length must be greater than zero'),
+      filterX = FIRFilter(length, resetOnFirstUpdate: resetOnFirstUpdate),
+      filterY = FIRFilter(length, resetOnFirstUpdate: resetOnFirstUpdate),
+      filterZ = FIRFilter(length, resetOnFirstUpdate: resetOnFirstUpdate);
 
   void resetWithXYZ(double x, double y, double z) {
     filterX.resetWithNewSample(x);

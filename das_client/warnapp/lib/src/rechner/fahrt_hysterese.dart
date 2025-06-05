@@ -29,7 +29,7 @@ class FahrtHysterese {
   bool update(double value) {
     final lastValue = ringbuffer[posRingbuffer];
     ringbuffer[posRingbuffer] = value;
-    posRingbuffer = (posRingbuffer + 1) % length; // fastRingBufferIncrement logic
+    posRingbuffer = posRingbuffer + 1 >= length ? 0 : posRingbuffer + 1;
 
     if (lastValue >= schwelleFahrt) {
       anzahlUeberSchwelle--;

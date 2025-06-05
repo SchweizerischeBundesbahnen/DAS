@@ -1,14 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:warnapp/src/algorithmus/algorithmus_16.dart';
-import 'package:warnapp/src/algorithmus/algorithmus_16_properties.dart';
+import 'package:warnapp/src/algorithmus/abfahrt_detection_algorithmus.dart';
+import 'package:warnapp/src/algorithmus/abfahrt_detection_algorithmus_properties.dart';
 
 void main() {
-  group('Algorithmus16 Tests', () {
-    late Algorithmus16 algo16;
+  group('Abfhart detection algorithmus tests', () {
+    late AbfahrtDetectionAlgorithmus algo16;
 
     setUp(() {
-      algo16 = Algorithmus16(properties: Algorithmus16Properties.defaultProperties());
+      algo16 = AbfahrtDetectionAlgorithmus(properties: AbfahrtDetectionAlgorithmusProperties.defaultProperties());
       initializeDateFormatting();
     });
 

@@ -1,14 +1,10 @@
 class Delay {
-  Delay(this.length)
-      : assert(length > 0),
-        x = List.filled(length, 0.0),
-        value = 0.0,
-        index = 0;
+  Delay(this.length) : assert(length > 0), x = List.filled(length, 0.0);
 
   final int length;
-  double value;
+  double value = 0.0;
   List<double> x;
-  int index;
+  int index = 0;
 
   double updateWithNewSample(double newSample) {
     value = x[index];

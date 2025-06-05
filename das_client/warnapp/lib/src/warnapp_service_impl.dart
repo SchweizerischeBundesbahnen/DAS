@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:fimber/fimber.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:warnapp/src/algorithmus/algorithmus_16.dart';
-import 'package:warnapp/src/algorithmus/algorithmus_16_properties.dart';
+import 'package:warnapp/src/algorithmus/abfahrt_detection_algorithmus.dart';
+import 'package:warnapp/src/algorithmus/abfahrt_detection_algorithmus_properties.dart';
 import 'package:warnapp/src/data/motion_data.dart';
 import 'package:warnapp/src/motion_data_listener.dart';
 import 'package:warnapp/src/motion_data_provider.dart';
@@ -17,7 +17,7 @@ class WarnappServiceImpl implements WarnappService, MotionDataListener {
 
   final MotionDataProvider motionDataProvider;
   final List<WarnappListener> _listeners = [];
-  late Algorithmus16 algorithmus;
+  late AbfahrtDetectionAlgorithmus algorithmus;
 
   bool _enabled = false;
   bool _lastHalt = false;
@@ -31,7 +31,7 @@ class WarnappServiceImpl implements WarnappService, MotionDataListener {
   File? _logFile;
 
   void _initialize() {
-    algorithmus = Algorithmus16(properties: Algorithmus16Properties.defaultProperties());
+    algorithmus = AbfahrtDetectionAlgorithmus(properties: AbfahrtDetectionAlgorithmusProperties.defaultProperties());
     _updatedCount = 0;
 
     _lastCount = 0;

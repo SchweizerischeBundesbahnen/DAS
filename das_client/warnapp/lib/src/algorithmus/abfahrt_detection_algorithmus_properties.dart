@@ -1,4 +1,4 @@
-class Algorithmus16Properties {
+class AbfahrtDetectionAlgorithmusProperties {
   final double berechnungsZeit;
   final int lengthForInitialization;
 
@@ -104,7 +104,7 @@ class Algorithmus16Properties {
 
   final int minimaleAnzahlZwischenZweiAbfahrten;
 
-  Algorithmus16Properties({
+  AbfahrtDetectionAlgorithmusProperties({
     required this.berechnungsZeit,
     required this.lengthForInitialization,
     required this.slowWindowLength,
@@ -184,8 +184,8 @@ class Algorithmus16Properties {
     required this.minimaleAnzahlZwischenZweiAbfahrten,
   });
 
-  factory Algorithmus16Properties.defaultProperties() {
-    return Algorithmus16Properties(
+  factory AbfahrtDetectionAlgorithmusProperties.defaultProperties() {
+    return AbfahrtDetectionAlgorithmusProperties(
       berechnungsZeit: 2,
       lengthForInitialization: 500,
       slowWindowLength: 500,

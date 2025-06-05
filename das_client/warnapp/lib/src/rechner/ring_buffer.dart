@@ -6,14 +6,14 @@ enum RingBufferOptions {
 
 class RingBuffer {
   RingBuffer(this.length, {this.options = const [RingBufferOptions.none]})
-      : assert(length > 0),
-        x = List<double>.filled(length, 0.0),
-        sum = 0,
-        min = 0,
-        max = 0,
-        firstValue = 0,
-        lastValue = 0,
-        lastRemovedValue = 0;
+    : assert(length > 0),
+      x = List<double>.filled(length, 0.0),
+      sum = 0,
+      min = 0,
+      max = 0,
+      firstValue = 0,
+      lastValue = 0,
+      lastRemovedValue = 0;
 
   final int length;
   final List<RingBufferOptions> options;
@@ -99,25 +99,6 @@ class RingBuffer {
       index1 = (index1 + 1) % length; // fastRingBufferIncrement logic
     }
     return min;
-  }
-
-  double mean() {
-    return sum / length;
-  }
-
-  double inner() {
-    double skalarprodukt = 0;
-
-    final indexVon = 0;
-    final indexBis = length - 1;
-
-    int index1 = (index + indexVon) % length; // fastRingBufferSet logic
-    for (int i = indexVon; i <= indexBis; i++) {
-      final value = x[index1];
-      skalarprodukt += value * value;
-      index1 = (index1 + 1) % length; // fastRingBufferIncrement logic
-    }
-    return skalarprodukt / length;
   }
 
   List<double> values() {
