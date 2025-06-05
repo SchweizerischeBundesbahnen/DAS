@@ -12,7 +12,7 @@ import 'package:sfera/src/model/journey/track_equipment_segment.dart';
 class TrackEquipmentMapper {
   TrackEquipmentMapper._();
 
-  static List<NonStandardTrackEquipmentSegment> parseNonStandardTrackEquipmentSegment(
+  static List<NonStandardTrackEquipmentSegment> parseSegments(
     Iterable<SegmentProfileReferenceDto> segmentProfilesLists,
     Iterable<SegmentProfileDto> segmentProfiles,
   ) {

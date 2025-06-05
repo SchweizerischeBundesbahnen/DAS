@@ -1,9 +1,12 @@
+import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class DetailsTable extends StatelessWidget {
+  static const Key detailsTableKey = Key('detailsTable');
+
   DetailsTable({required this.data, super.key}) : _maxTitleWidth = _calculateMaxTextWidth(data.keys);
 
   final Map<String, String?> data;
@@ -12,23 +15,24 @@ class DetailsTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 10.0),
+      key: detailsTableKey,
       padding: EdgeInsets.symmetric(horizontal: sbbDefaultSpacing),
       decoration: BoxDecoration(
-        color: SBBColors.milk,
+        color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
         borderRadius: BorderRadius.circular(sbbDefaultSpacing * 0.5),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: data.entries
-            .mapIndexed((index, row) => _tableRow(row.key, row.value, isLastItem: index == data.length - 1))
+            .mapIndexed((index, row) => _tableRow(context, row.key, row.value, isLastItem: index == data.length - 1))
             .toList(),
       ),
     );
   }
 
-  Widget _tableRow(String title, String? data, {bool isLastItem = false}) {
-    final borderSide = BorderSide(color: SBBColors.cloud);
+  Widget _tableRow(BuildContext context, String title, String? data, {bool isLastItem = false}) {
+    final borderColor = ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.granite);
+    final borderSide = BorderSide(color: borderColor);
     final bottomBorder = isLastItem ? BorderSide.none : borderSide;
     final cellPadding = sbbDefaultSpacing * 0.5;
     return IntrinsicHeight(

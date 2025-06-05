@@ -69,7 +69,7 @@ class ReducedOverviewViewModel {
       final current = data[i];
       final previous = data[i - 1];
       if (current is AdditionalSpeedRestrictionData && previous is AdditionalSpeedRestrictionData) {
-        if (current.restriction == previous.restriction) {
+        if (current.restrictions == previous.restrictions) {
           data.removeAt(i);
           i--;
         }

@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd" SP_ID="T18_1" SP_VersionMajor="1"
+                SP_VersionMinor="0" SP_Length="90000" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>0085</IM_ID>
+    </SP_Zone>
+    <SP_Points>
+        <TimingPoint TP_ID="Genève-Aéroport" location="500">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3002</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Genève" location="1000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3003</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Gland" location="1500">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3004</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Gilly-Bursinel" location="2000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3005</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Morges" location="2500">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3006</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+    </SP_Points>
+    <SP_Areas>
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="500" endLocation="500" TAF_TAP_location_abbreviation="GENA"
+            TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3002</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Genève-Aéroport</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1000" endLocation="1000" TAF_TAP_location_abbreviation="GEN"
+            TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3003</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Genève</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1500" endLocation="1500" TAF_TAP_location_abbreviation="GLA"
+            TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3004</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Gland</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="2000" endLocation="2000" TAF_TAP_location_abbreviation="GIL"
+            TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3005</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Gilly-Bursinel</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="2500" endLocation="2500" TAF_TAP_location_abbreviation="MO"
+            TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3006</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Morges</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+    </SP_Areas>
+
+    <SP_ContextInformation>
+
+        <KilometreReferencePoint location="500">
+            <KM_Reference kmRef="66.2"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="700">
+            <KM_Reference kmRef="64.2"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="1000">
+            <KM_Reference kmRef="60.3"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="1500">
+            <KM_Reference kmRef="33.8"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="2000">
+            <KM_Reference kmRef="29.7"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="2100">
+            <KM_Reference kmRef="26.1"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="2500">
+            <KM_Reference kmRef="12.5"/>
+        </KilometreReferencePoint>
+    </SP_ContextInformation>
+</SegmentProfile>

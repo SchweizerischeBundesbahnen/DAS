@@ -31,6 +31,7 @@ import 'package:sfera/src/data/dto/location_ident_dto.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';
 import 'package:sfera/src/data/dto/multilingual_text_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_area_dto.dart';
+import 'package:sfera/src/data/dto/network_specific_constraint_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_event_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_parameter_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_point_dto.dart';
@@ -293,6 +294,8 @@ class SferaReplyParser {
         return TrackFootNotesDto(type: type, attributes: attributes, children: children, value: value);
       case DecisiveGradientAreaDto.elementType:
         return DecisiveGradientAreaDto(type: type, attributes: attributes, children: children, value: value);
+      case NetworkSpecificConstraintDto.elementType:
+        return NetworkSpecificConstraintDto.from(attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElementDto(type: type, attributes: attributes, children: children, value: value);
     }

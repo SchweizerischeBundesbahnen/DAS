@@ -1,4 +1,4 @@
-import 'package:app/widgets/indicator_wrapper.dart';
+import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:app/widgets/widget_extensions.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +24,7 @@ class GraduatedSpeedsCellBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IndicatorWrapper(
+    return DotIndicator(
       show: hasAdditionalInformation,
       offset: outgoingSpeeds.isEmpty ? const Offset(0, -sbbDefaultSpacing * 0.5) : const Offset(0, 0),
       child: _buildSpeeds(context),

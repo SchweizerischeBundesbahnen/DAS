@@ -63,7 +63,7 @@ void main() {
     final baliseLevelCrossingGroup = BaliseLevelCrossingGroup(order: 1100, kilometre: [], groupedElements: []);
     final cabSignaling = CABSignaling(order: 1200, kilometre: []);
     final asr = AdditionalSpeedRestriction(kmFrom: 0.0, kmTo: 0.0, orderFrom: 1300, orderTo: 1400);
-    final asrData = AdditionalSpeedRestrictionData(restriction: asr, order: 1300, kilometre: []);
+    final asrData = AdditionalSpeedRestrictionData(restrictions: [asr], order: 1300, kilometre: []);
 
     final data = <BaseData>[
       servicePoint,
@@ -96,9 +96,9 @@ void main() {
   test('test duplicated ASR are removed', () {
     // GIVEN
     final asr1 = AdditionalSpeedRestriction(kmFrom: 0.0, kmTo: 0.0, orderFrom: 100, orderTo: 200);
-    final asrData1 = AdditionalSpeedRestrictionData(restriction: asr1, order: 100, kilometre: []);
+    final asrData1 = AdditionalSpeedRestrictionData(restrictions: [asr1], order: 100, kilometre: []);
     final asr2 = AdditionalSpeedRestriction(kmFrom: 0.0, kmTo: 0.0, orderFrom: 300, orderTo: 400);
-    final asrData2 = AdditionalSpeedRestrictionData(restriction: asr2, order: 200, kilometre: []);
+    final asrData2 = AdditionalSpeedRestrictionData(restrictions: [asr2], order: 200, kilometre: []);
     final data = <BaseData>[asrData1, asrData1, asrData2];
     final sferaServiceMock = _setupSferaLocalRepoMock(Metadata(), data);
     final viewModel = ReducedOverviewViewModel(

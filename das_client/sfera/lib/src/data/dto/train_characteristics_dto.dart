@@ -1,5 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/tc_features_dto.dart';
+import 'package:sfera/src/data/dto/train_characteristics_ref_dto.dart';
 
 class TrainCharacteristicsDto extends SferaXmlElementDto {
   static const String elementType = 'TrainCharacteristics';
@@ -25,4 +27,16 @@ class TrainCharacteristicsDto extends SferaXmlElementDto {
         validateHasAttribute('TC_VersionMinor') &&
         super.validate();
   }
+}
+
+// extensions
+
+extension TrainCharacteristicsDtoIterableExtension on Iterable<TrainCharacteristicsDto> {
+  TrainCharacteristicsDto? firstWhereGivenOrNull(TrainCharacteristicsRefDto trainReference) => firstWhereOrNull(
+    (it) =>
+        it.tcId == trainReference.tcId &&
+        it.ruId == trainReference.ruId &&
+        it.versionMajor == trainReference.versionMajor &&
+        it.versionMinor == trainReference.versionMinor,
+  );
 }

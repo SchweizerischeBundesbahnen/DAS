@@ -1,0 +1,164 @@
+<?xml version="1.0"?>
+<JourneyProfile JP_Status="Valid" JP_Version="2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd">
+    <TrainIdentification>
+        <OTN_ID>
+            <teltsi_Company>1085</teltsi_Company>
+            <teltsi_OperationalTrainNumber>T2</teltsi_OperationalTrainNumber>
+            <teltsi_StartDate>2022-01-04</teltsi_StartDate>
+        </OTN_ID>
+    </TrainIdentification>
+    <SegmentProfileReference SP_ID="T18_1" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>0085</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Genève-Aéroport"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Genève"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Gland"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Gilly-Bursinel"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Morges"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="700" endLocation="2100">
+            <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
+            <TemporaryConstraintReason text="Umbau" language="DE"/>
+            <TemporaryConstraintReason text="Renouvellement" language="FR"/>
+            <TemporaryConstraintReason text="Ristrutturazione" language="IT"/>
+        </TemporaryConstraints>
+    </SegmentProfileReference>
+    <SegmentProfileReference SP_ID="T18_2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>0085</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Yverdon-les-Bains"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Onnens-Bonvillars"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Neuchâtel"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Biel/Bienne"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Lengnau"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Grenchen Süd"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Solothurn"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="ASR" startLocation="5600">
+            <NetworkSpecificConstraint>
+                <teltsi_Company>1085</teltsi_Company>
+                <NSP_GroupName>parallel_ASR</NSP_GroupName>
+                <NetworkSpecificParameter name="id" value="T18_parallel_asr_1"/>
+                <NetworkSpecificParameter name="speed" value="50"/>
+            </NetworkSpecificConstraint>
+            <TemporaryConstraintReason text="Schutz Personal" language="DE"/>
+            <TemporaryConstraintReason text="Protection du personell" language="FR"/>
+            <TemporaryConstraintReason text="Protezione del personale" language="IT"/>
+        </TemporaryConstraints>
+    </SegmentProfileReference>
+    <SegmentProfileReference SP_ID="T18_3" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>0085</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="WANZ"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Rothrist"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Olten"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Aarau"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="End_of_Journey">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Mellingen Heitersberg"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="End_of_Journey">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Killwangen-S."/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="End_of_Journey">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Zürich HB"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="End_of_Journey">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Opfikon Süd"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="End_of_Journey">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Flughafen"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="6800" endLocation="9100">
+            <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="60"/>
+            <TemporaryConstraintReason text="Umbau" language="DE"/>
+            <TemporaryConstraintReason text="Renouvellement" language="FR"/>
+            <TemporaryConstraintReason text="Ristrutturazione" language="IT"/>
+        </TemporaryConstraints>
+        <TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="ASR" endLocation="10200">
+            <NetworkSpecificConstraint>
+                <teltsi_Company>1085</teltsi_Company>
+                <NSP_GroupName>parallel_ASR</NSP_GroupName>
+                <NetworkSpecificParameter name="id" value="T18_parallel_asr_1"/>
+                <NetworkSpecificParameter name="speed" value="50"/>
+            </NetworkSpecificConstraint>
+            <TemporaryConstraintReason text="Schutz Personal" language="DE"/>
+            <TemporaryConstraintReason text="Protection du personell" language="FR"/>
+            <TemporaryConstraintReason text="Protezione del personale" language="IT"/>
+        </TemporaryConstraints>
+    </SegmentProfileReference>
+</JourneyProfile>

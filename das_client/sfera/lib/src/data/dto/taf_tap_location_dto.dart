@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:sfera/src/data/dto/enums/taf_tap_location_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 import 'package:sfera/src/data/dto/line_foot_notes_nsp_dto.dart';
@@ -33,5 +34,21 @@ class TafTapLocationDto extends SferaSegmentXmlElementDto {
   @override
   bool validate() {
     return validateHasChildOfType<TafTapLocationIdentDto>() && super.validate();
+  }
+}
+
+// extensions
+
+extension TafTapLocationDtoIterableExtension on Iterable<TafTapLocationDto> {
+  TafTapLocationDto firstWhereGiven({String? countryCode, int? primaryCode}) =>
+      _whereGiven(countryCode, primaryCode).first;
+
+  TafTapLocationDto? firstWhereGivenOrNull({String? countryCode, int? primaryCode}) =>
+      _whereGiven(countryCode, primaryCode).firstOrNull;
+
+  Iterable<TafTapLocationDto> _whereGiven(String? countryCode, int? primaryCode) {
+    return where(
+      (it) => it.locationIdent.countryCodeISO == countryCode && it.locationIdent.locationPrimaryCode == primaryCode,
+    );
   }
 }
