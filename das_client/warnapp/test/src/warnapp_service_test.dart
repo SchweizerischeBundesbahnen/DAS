@@ -41,7 +41,7 @@ main() {
 void testAbfahrtDetected(String testFile, int abfahrtCount) {
   final listenerMock = MockWarnappListener();
   final motionDataFile = File(testFile);
-  final motionDataProvider = MockMotionDataProvider(motionData: motionDataFile.readAsStringSync());
+  final motionDataProvider = MockMotionDataService(motionData: motionDataFile.readAsStringSync());
   final warappService = WarnappComponent.createWarnappService(motionDataProvider: motionDataProvider);
   warappService.addListener(listenerMock);
 

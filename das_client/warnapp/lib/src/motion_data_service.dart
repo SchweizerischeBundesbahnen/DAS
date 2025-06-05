@@ -1,7 +1,7 @@
 import 'package:warnapp/src/motion_data_listener.dart';
 
-abstract class MotionDataProvider {
-  const MotionDataProvider._();
+abstract class MotionDataService {
+  const MotionDataService._();
 
   void start(MotionDataListener listener);
 

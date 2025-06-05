@@ -13,7 +13,7 @@ void main() {
     testWidgets('test warnapp gets triggered when signal is red', (tester) async {
       await prepareAndStartApp(tester);
 
-      final motionDataProvider = DI.get<MotionDataProvider>() as MockMotionDataProvider;
+      final motionDataProvider = DI.get<MotionDataService>() as MockMotionDataService;
       motionDataProvider.updateMotionData(motionDataAbfahrt1);
 
       await loadTrainJourney(tester, trainNumber: 'T17');
@@ -31,7 +31,7 @@ void main() {
     testWidgets('test warnapp maneuver button activates maneuver mode', (tester) async {
       await prepareAndStartApp(tester);
 
-      final motionDataProvider = DI.get<MotionDataProvider>() as MockMotionDataProvider;
+      final motionDataProvider = DI.get<MotionDataService>() as MockMotionDataService;
       motionDataProvider.updateMotionData(motionDataAbfahrt1);
 
       await loadTrainJourney(tester, trainNumber: 'T17');
@@ -48,7 +48,7 @@ void main() {
     testWidgets('test warnapp does not get triggered while in maneuver mode', (tester) async {
       await prepareAndStartApp(tester);
 
-      final motionDataProvider = DI.get<MotionDataProvider>() as MockMotionDataProvider;
+      final motionDataProvider = DI.get<MotionDataService>() as MockMotionDataService;
       motionDataProvider.updateMotionData(motionDataAbfahrt1);
 
       await loadTrainJourney(tester, trainNumber: 'T17');
@@ -71,7 +71,7 @@ void main() {
     testWidgets('test warnapp does not get triggered when signal is green', (tester) async {
       await prepareAndStartApp(tester);
 
-      final motionDataProvider = DI.get<MotionDataProvider>() as MockMotionDataProvider;
+      final motionDataProvider = DI.get<MotionDataService>() as MockMotionDataService;
       motionDataProvider.updateMotionData(motionDataAbfahrt1);
 
       await loadTrainJourney(tester, trainNumber: 'T15');

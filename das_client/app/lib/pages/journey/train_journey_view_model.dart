@@ -13,7 +13,7 @@ import 'package:warnapp/component.dart';
 class TrainJourneyViewModel implements WarnappListener {
   TrainJourneyViewModel({
     required SferaRemoteRepo sferaRemoteRepo,
-    required WarnappService warnappService,
+    required WarnappRepository warnappService,
   }) : _sferaRemoteRepo = sferaRemoteRepo,
        _warnappService = warnappService {
     _init();
@@ -22,7 +22,7 @@ class TrainJourneyViewModel implements WarnappListener {
   static const _warnappWindowMilliseconds = 1250;
 
   final SferaRemoteRepo _sferaRemoteRepo;
-  final WarnappService _warnappService;
+  final WarnappRepository _warnappService;
 
   Stream<Journey?> get journey => _sferaRemoteRepo.journeyStream;
 
@@ -171,6 +171,12 @@ class TrainJourneyViewModel implements WarnappListener {
   void setManeuverMode(bool active) {
     Fimber.i('Maneuver mode state changed to active=$active');
     _rxSettings.add(_rxSettings.value.copyWith(isManeuverModeEnabled: active));
+
+    if (active) {
+      _warnappService.disable();
+    } else {
+      _warnappService.enable();
+    }
   }
 
   void dispose() {

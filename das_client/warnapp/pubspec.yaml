@@ -18,6 +18,8 @@ dependencies:
   fimber: ^0.7.0
   # https://pub.dev/packages/path_provider
   path_provider: ^2.1.5
+  # https://pub.dev/packages/rxdart
+  rxdart: ^0.28.0
 
 
 dev_dependencies:

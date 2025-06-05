@@ -1,27 +1,27 @@
-import 'package:warnapp/src/device_motion_data_provider.dart';
-import 'package:warnapp/src/mock_motion_data_provider.dart';
-import 'package:warnapp/src/motion_data_provider.dart';
-import 'package:warnapp/src/warnapp_service.dart';
-import 'package:warnapp/src/warnapp_service_impl.dart';
+import 'package:warnapp/src/device_motion_data_service.dart';
+import 'package:warnapp/src/mock_motion_data_service.dart';
+import 'package:warnapp/src/motion_data_service.dart';
+import 'package:warnapp/src/warnapp_repository.dart';
+import 'package:warnapp/src/warnapp_repository_impl.dart';
 
-export 'package:warnapp/src/mock_motion_data_provider.dart';
+export 'package:warnapp/src/mock_motion_data_service.dart';
 export 'package:warnapp/src/motion_data_listener.dart';
-export 'package:warnapp/src/motion_data_provider.dart';
+export 'package:warnapp/src/motion_data_service.dart';
 export 'package:warnapp/src/warnapp_listener.dart';
-export 'package:warnapp/src/warnapp_service.dart';
+export 'package:warnapp/src/warnapp_repository.dart';
 
 class WarnappComponent {
   const WarnappComponent._();
 
-  static WarnappService createWarnappService({MotionDataProvider? motionDataProvider}) {
+  static WarnappRepository createWarnappService({MotionDataService? motionDataProvider}) {
     return WarnappServiceImpl(motionDataProvider: motionDataProvider ?? createDeviceMotionDataProvider());
   }
 
-  static MotionDataProvider createDeviceMotionDataProvider() {
-    return DeviceMotionDataProvider();
+  static MotionDataService createDeviceMotionDataProvider() {
+    return DeviceMotionDataService();
   }
 
-  static MotionDataProvider createMockMotionDataProvider({String? motionData, Duration? samplingPeriod}) {
-    return MockMotionDataProvider(motionData: motionData, samplingPeriod: samplingPeriod);
+  static MotionDataService createMockMotionDataProvider({String? motionData, Duration? samplingPeriod}) {
+    return MockMotionDataService(motionData: motionData, samplingPeriod: samplingPeriod);
   }
 }

@@ -58,7 +58,7 @@ class IntegrationTestDI {
   }
 
   static void _registerMockMotionDataProvider() {
-    GetIt.I.registerSingleton<MotionDataProvider>(
+    GetIt.I.registerSingleton<MotionDataService>(
       WarnappComponent.createMockMotionDataProvider(samplingPeriod: Duration(milliseconds: 2)),
     );
   }

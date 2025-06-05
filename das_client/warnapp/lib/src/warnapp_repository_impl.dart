@@ -6,16 +6,16 @@ import 'package:warnapp/src/algorithmus/abfahrt_detection_algorithmus.dart';
 import 'package:warnapp/src/algorithmus/abfahrt_detection_algorithmus_properties.dart';
 import 'package:warnapp/src/data/motion_data.dart';
 import 'package:warnapp/src/motion_data_listener.dart';
-import 'package:warnapp/src/motion_data_provider.dart';
+import 'package:warnapp/src/motion_data_service.dart';
 import 'package:warnapp/src/warnapp_listener.dart';
-import 'package:warnapp/src/warnapp_service.dart';
+import 'package:warnapp/src/warnapp_repository.dart';
 
-class WarnappServiceImpl implements WarnappService, MotionDataListener {
+class WarnappServiceImpl implements WarnappRepository, MotionDataListener {
   WarnappServiceImpl({required this.motionDataProvider}) {
     _createLogDirectory();
   }
 
-  final MotionDataProvider motionDataProvider;
+  final MotionDataService motionDataProvider;
   final List<WarnappListener> _listeners = [];
   late AbfahrtDetectionAlgorithmus algorithmus;
 
@@ -59,18 +59,19 @@ class WarnappServiceImpl implements WarnappService, MotionDataListener {
     final horizontalAccuracy = motionData.position?.accuracy ?? 0.0;
 
     final abfahrtDetected = algorithmus.updateWithAcceleration(
-        motionData.accelerometerEvent!.x,
-        motionData.accelerometerEvent!.y,
-        motionData.accelerometerEvent!.z,
-        motionData.gyroscopeEvent!.x,
-        motionData.gyroscopeEvent!.y,
-        motionData.gyroscopeEvent!.z,
-        false,
-        speed,
-        timestampSpeed,
-        latitude,
-        longitude,
-        horizontalAccuracy);
+      motionData.accelerometerEvent!.x,
+      motionData.accelerometerEvent!.y,
+      motionData.accelerometerEvent!.z,
+      motionData.gyroscopeEvent!.x,
+      motionData.gyroscopeEvent!.y,
+      motionData.gyroscopeEvent!.z,
+      false,
+      speed,
+      timestampSpeed,
+      latitude,
+      longitude,
+      horizontalAccuracy,
+    );
 
     final isHalt = algorithmus.isHalt;
     if (isHalt != _lastHalt) {
@@ -96,9 +97,11 @@ class WarnappServiceImpl implements WarnappService, MotionDataListener {
     if (_logFile == null) {
       _logFile = File('${_logDirectory.path}/motion_data_log_${DateTime.now().millisecondsSinceEpoch}.txt');
       _logFile?.writeAsStringSync(
-          'TS_EPOCH,updatesCount,ROT_X,ROT_Y,ROT_Z,ACC_X,ACC_Y,ACC_Z,TOUCH,HALT,GPS_TIME,GPS_LAT,GPS_LONG,GPS_HACC,GPS_VACC,GPS_SPEED\n');
+        'TS_EPOCH,updatesCount,ROT_X,ROT_Y,ROT_Z,ACC_X,ACC_Y,ACC_Z,TOUCH,HALT,GPS_TIME,GPS_LAT,GPS_LONG,GPS_HACC,GPS_VACC,GPS_SPEED\n',
+      );
     }
-    final logEntry = '${motionData.gyroscopeEvent?.timestamp.millisecondsSinceEpoch},'
+    final logEntry =
+        '${motionData.gyroscopeEvent?.timestamp.millisecondsSinceEpoch},'
         '$_updatedCount,'
         '${motionData.gyroscopeEvent?.x},'
         '${motionData.gyroscopeEvent?.y},'
