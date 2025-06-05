@@ -48,7 +48,7 @@ class FIRFilter {
       y += _firCoef[n] * _x[index1];
       index1 = (index1 - 1) % length; // fastRingBufferDecrement logic
     }
-    _index = (_index + 1) % length; // fastRingBufferIncrement logic
+    _index = _index + 1 >= length ? 0 : _index + 1;
 
     _value = y;
     return y;
@@ -62,7 +62,7 @@ class FIRFilter {
       _x[index1] = newSample;
       index1 = (index1 - 1) % length; // fastRingBufferDecrement logic
     }
-    _index = (_index + 1) % length; // fastRingBufferIncrement logic
+    _index = _index + 1 >= length ? 0 : _index + 1;
 
     _value = newSample;
     return newSample;

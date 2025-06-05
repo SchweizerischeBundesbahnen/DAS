@@ -22,7 +22,7 @@ class HaltDetector {
 
   bool update(double value) {
     _ringbuffer[_posRingbuffer] = value;
-    _posRingbuffer = (_posRingbuffer + 1) % length; // fastRingBufferIncrement logic
+    _posRingbuffer = _posRingbuffer + 1 >= length ? 0 : _posRingbuffer + 1;
 
     return isHalt();
   }
@@ -38,7 +38,7 @@ class HaltDetector {
     for (int i = 0; i < calcLength; i++) {
       final value = _ringbuffer[indexRingbuffer];
       result = min(result, value);
-      indexRingbuffer = (indexRingbuffer + 1) % length; // fastRingBufferIncrement logic
+      indexRingbuffer = indexRingbuffer + 1 >= length ? 0 : indexRingbuffer + 1;
     }
     return result;
   }
@@ -50,7 +50,7 @@ class HaltDetector {
     for (int i = 0; i < calcLength; i++) {
       final value = _ringbuffer[indexRingbuffer];
       result = max(result, value.abs());
-      indexRingbuffer = (indexRingbuffer + 1) % length; // fastRingBufferIncrement logic
+      indexRingbuffer = indexRingbuffer + 1 >= length ? 0 : indexRingbuffer + 1;
     }
     return result;
   }

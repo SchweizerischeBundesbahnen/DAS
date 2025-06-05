@@ -37,7 +37,7 @@ class RingBuffer {
     lastRemovedValue = firstValue;
 
     _x[_index] = newValue;
-    _index = (_index + 1) % length; // fastRingBufferIncrement logic
+    _index = _index + 1 >= length ? 0 : _index + 1;
 
     lastValue = newValue;
     if (options.contains(RingBufferOptions.sum)) {
@@ -74,7 +74,7 @@ class RingBuffer {
       if (value > max) {
         max = value;
       }
-      index1 = (index1 + 1) % length; // fastRingBufferIncrement logic
+      index1 = index1 + 1 >= length ? 0 : index1 + 1;
     }
     return max;
   }
@@ -91,7 +91,7 @@ class RingBuffer {
       if (value < min) {
         min = value;
       }
-      index1 = (index1 + 1) % length; // fastRingBufferIncrement logic
+      index1 = index1 + 1 >= length ? 0 : index1 + 1;
     }
     return min;
   }
@@ -106,7 +106,7 @@ class RingBuffer {
     for (int i = indexVon; i <= indexBis; i++) {
       final value = _x[index1];
       values[i] = value;
-      index1 = (index1 + 1) % length; // fastRingBufferIncrement logic
+      index1 = index1 + 1 >= length ? 0 : index1 + 1;
     }
     return values;
   }
@@ -124,7 +124,7 @@ class RingBuffer {
         result.write(delimiter);
       }
       result.write(value.toStringAsFixed(fractionLength)); // Formatierung analog zu Objective-C
-      index1 = (index1 + 1) % length; // fastRingBufferIncrement logic
+      index1 = index1 + 1 >= length ? 0 : index1 + 1;
     }
     return result.toString();
   }

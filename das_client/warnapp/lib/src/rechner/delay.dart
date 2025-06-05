@@ -10,7 +10,7 @@ class Delay {
   double updateWithNewSample(double newSample) {
     _value = x[_index];
     x[_index] = newSample;
-    _index = (_index + 1) % length; // fastRingBufferIncrement logic
+    _index = _index + 1 >= length ? 0 : _index + 1;
     return _value;
   }
 
