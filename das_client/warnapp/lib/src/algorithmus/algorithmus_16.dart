@@ -349,7 +349,7 @@ class Algorithmus16 {
 
   String stringFromCurrentTime(DateTime time) {
     final formatter = DateFormat('HH:mm:ss', 'de_DE');
-    return formatter.format(time);
+    return formatter.format(time.toLocal());
   }
 
   void saveSoftSetInfo(int changedSoftSetIndex, double latitude, double longitude, DateTime now) {

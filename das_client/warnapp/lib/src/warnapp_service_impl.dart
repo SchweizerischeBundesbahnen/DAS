@@ -52,45 +52,43 @@ class WarnappServiceImpl implements WarnappService, MotionDataListener {
 
   @override
   void onMotionData(MotionData motionData) {
-    if (motionData.isComplete) {
-      final speed = motionData.position?.speed ?? 0.0;
-      final timestampSpeed = motionData.position?.timestamp.millisecondsSinceEpoch.toDouble() ?? 0.0;
-      final latitude = motionData.position?.latitude ?? 0.0;
-      final longitude = motionData.position?.longitude ?? 0.0;
-      final horizontalAccuracy = motionData.position?.accuracy ?? 0.0;
+    final speed = motionData.position?.speed ?? 0.0;
+    final timestampSpeed = motionData.position?.timestamp.millisecondsSinceEpoch.toDouble() ?? 0.0;
+    final latitude = motionData.position?.latitude ?? 0.0;
+    final longitude = motionData.position?.longitude ?? 0.0;
+    final horizontalAccuracy = motionData.position?.accuracy ?? 0.0;
 
-      final abfahrtDetected = algorithmus.updateWithAcceleration(
-          motionData.accelerometerEvent!.x,
-          motionData.accelerometerEvent!.y,
-          motionData.accelerometerEvent!.z,
-          motionData.gyroscopeEvent!.x,
-          motionData.gyroscopeEvent!.y,
-          motionData.gyroscopeEvent!.z,
-          false,
-          speed,
-          timestampSpeed,
-          latitude,
-          longitude,
-          horizontalAccuracy);
+    final abfahrtDetected = algorithmus.updateWithAcceleration(
+        motionData.accelerometerEvent!.x,
+        motionData.accelerometerEvent!.y,
+        motionData.accelerometerEvent!.z,
+        motionData.gyroscopeEvent!.x,
+        motionData.gyroscopeEvent!.y,
+        motionData.gyroscopeEvent!.z,
+        false,
+        speed,
+        timestampSpeed,
+        latitude,
+        longitude,
+        horizontalAccuracy);
 
-      final isHalt = algorithmus.isHalt;
-      if (isHalt != _lastHalt) {
-        Fimber.d('Halt state changed to $isHalt');
-        _lastHalt = isHalt;
-      }
+    final isHalt = algorithmus.isHalt;
+    if (isHalt != _lastHalt) {
+      Fimber.d('Halt state changed to $isHalt');
+      _lastHalt = isHalt;
+    }
 
-      if (abfahrtDetected) {
-        _notifyAbfahrt();
-      } else if (isHalt) {
-        _notifyHalt();
-      }
+    if (abfahrtDetected) {
+      _notifyAbfahrt();
+    } else if (isHalt) {
+      _notifyHalt();
+    }
 
-      _updatedCount++;
-      _updateAndLogFrequency();
+    _updatedCount++;
+    _updateAndLogFrequency();
 
-      if (saveMotionDataToFile) {
-        _saveToFile(motionData, isHalt);
-      }
+    if (saveMotionDataToFile) {
+      _saveToFile(motionData, isHalt);
     }
   }
 
