@@ -62,7 +62,7 @@ extension GetItX on GetIt {
     registerSferaRemoteRepo();
     registerBattery();
     registerAudioPlayer();
-    registerMotionDataProvider();
+    registerMotionDataService();
     registerWarnapp();
     await allReady();
   }
@@ -214,12 +214,12 @@ extension GetItX on GetIt {
     });
   }
 
-  void registerMotionDataProvider() {
-    registerSingleton(WarnappComponent.createDeviceMotionDataProvider());
+  void registerMotionDataService() {
+    registerSingleton(WarnappComponent.createDeviceMotionDataService());
   }
 
   void registerWarnapp() {
-    registerSingleton(WarnappComponent.createWarnappService(motionDataProvider: DI.get()));
+    registerSingleton(WarnappComponent.createWarnappRepository(motionDataService: DI.get()));
   }
 }
 

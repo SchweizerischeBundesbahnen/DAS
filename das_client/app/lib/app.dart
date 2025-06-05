@@ -31,7 +31,7 @@ class _AppState extends State<App> {
         Provider(
           create: (_) => TrainJourneyViewModel(
             sferaRemoteRepo: DI.get<SferaRemoteRepo>(),
-            warnappService: DI.get<WarnappRepository>(),
+            warnappRepo: DI.get<WarnappRepository>(),
           ),
           dispose: (context, vm) => vm.dispose(),
         ),

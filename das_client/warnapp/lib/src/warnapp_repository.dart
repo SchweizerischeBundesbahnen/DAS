@@ -1,5 +1,3 @@
-import 'package:warnapp/src/warnapp_listener.dart';
-
 abstract class WarnappRepository {
   const WarnappRepository._();
 
@@ -9,7 +7,7 @@ abstract class WarnappRepository {
 
   void disable();
 
-  void addListener(WarnappListener listener);
+  Stream<void> get haltEventStream;
 
-  void removeListener(WarnappListener listener);
+  Stream<void> get abfahrtEventStream;
 }

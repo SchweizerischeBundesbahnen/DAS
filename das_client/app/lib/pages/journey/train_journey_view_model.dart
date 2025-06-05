@@ -10,19 +10,19 @@ import 'package:sfera/component.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:warnapp/component.dart';
 
-class TrainJourneyViewModel implements WarnappListener {
+class TrainJourneyViewModel {
   TrainJourneyViewModel({
     required SferaRemoteRepo sferaRemoteRepo,
-    required WarnappRepository warnappService,
+    required WarnappRepository warnappRepo,
   }) : _sferaRemoteRepo = sferaRemoteRepo,
-       _warnappService = warnappService {
+       _warnappRepo = warnappRepo {
     _init();
   }
 
   static const _warnappWindowMilliseconds = 1250;
 
   final SferaRemoteRepo _sferaRemoteRepo;
-  final WarnappRepository _warnappService;
+  final WarnappRepository _warnappRepo;
 
   Stream<Journey?> get journey => _sferaRemoteRepo.journeyStream;
 
@@ -62,7 +62,8 @@ class TrainJourneyViewModel implements WarnappListener {
 
   StreamSubscription? _stateSubscription;
   StreamSubscription? _journeySubscription;
-  StreamSubscription? _warnappSubscription;
+  StreamSubscription? _warnappSignalSubscription;
+  StreamSubscription? _warnappAbfahrtSubscription;
 
   void _init() {
     _initFormComplete();
@@ -114,18 +115,19 @@ class TrainJourneyViewModel implements WarnappListener {
   }
 
   void _enableWarnapp() {
-    _warnappService.addListener(this);
-    _warnappService.enable();
-    _warnappSubscription = _sferaRemoteRepo.warnappEventStream.listen((event) {
+    _warnappAbfahrtSubscription = _warnappRepo.abfahrtEventStream.listen((event) => _handleAbfahrtEvent());
+    _warnappSignalSubscription = _sferaRemoteRepo.warnappEventStream.listen((event) {
       _lastWarnappEventTimestamp = DateTime.now();
     });
+    _warnappRepo.enable();
   }
 
   void _disableWarnapp() {
-    _warnappService.disable();
-    _warnappService.removeListener(this);
-    _warnappSubscription?.cancel();
-    _warnappSubscription = null;
+    _warnappRepo.disable();
+    _warnappAbfahrtSubscription?.cancel();
+    _warnappAbfahrtSubscription = null;
+    _warnappSignalSubscription?.cancel();
+    _warnappSignalSubscription = null;
     _lastWarnappEventTimestamp = null;
   }
 
@@ -173,9 +175,9 @@ class TrainJourneyViewModel implements WarnappListener {
     _rxSettings.add(_rxSettings.value.copyWith(isManeuverModeEnabled: active));
 
     if (active) {
-      _warnappService.disable();
+      _warnappRepo.disable();
     } else {
-      _warnappService.enable();
+      _warnappRepo.enable();
     }
   }
 
@@ -241,18 +243,12 @@ class TrainJourneyViewModel implements WarnappListener {
     _subscriptions.add(subscription);
   }
 
-  @override
-  void onAbfahrtDetected() {
+  void _handleAbfahrtEvent() {
     final now = DateTime.now();
     if (_lastWarnappEventTimestamp != null &&
         now.difference(_lastWarnappEventTimestamp!).inMilliseconds < _warnappWindowMilliseconds) {
       Fimber.i('Abfahrt detected while warnapp message was within $_warnappWindowMilliseconds ms -> Warning!');
       _rxWarnapp.add(WarnappEvent());
     }
-  }
-
-  @override
-  void onHaltDetected() {
-    // unused for now
   }
 }

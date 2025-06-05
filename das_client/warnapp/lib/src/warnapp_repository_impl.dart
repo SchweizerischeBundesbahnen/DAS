@@ -2,22 +2,30 @@ import 'dart:io';
 
 import 'package:fimber/fimber.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:warnapp/src/algorithmus/abfahrt_detection_algorithmus.dart';
 import 'package:warnapp/src/algorithmus/abfahrt_detection_algorithmus_properties.dart';
 import 'package:warnapp/src/data/motion_data.dart';
 import 'package:warnapp/src/motion_data_listener.dart';
 import 'package:warnapp/src/motion_data_service.dart';
-import 'package:warnapp/src/warnapp_listener.dart';
 import 'package:warnapp/src/warnapp_repository.dart';
 
-class WarnappServiceImpl implements WarnappRepository, MotionDataListener {
-  WarnappServiceImpl({required this.motionDataProvider}) {
+class WarnappRepositoryImpl implements WarnappRepository, MotionDataListener {
+  WarnappRepositoryImpl({required this.motionDataService}) {
     _createLogDirectory();
   }
 
-  final MotionDataService motionDataProvider;
-  final List<WarnappListener> _listeners = [];
+  final MotionDataService motionDataService;
   late AbfahrtDetectionAlgorithmus algorithmus;
+
+  final _rxAbfahrt = PublishSubject<void>();
+  final _rxHalt = PublishSubject<void>();
+
+  @override
+  Stream<void> get abfahrtEventStream => _rxAbfahrt.stream;
+
+  @override
+  Stream<void> get haltEventStream => _rxHalt.stream;
 
   bool _enabled = false;
   bool _lastHalt = false;
@@ -80,9 +88,10 @@ class WarnappServiceImpl implements WarnappRepository, MotionDataListener {
     }
 
     if (abfahrtDetected) {
-      _notifyAbfahrt();
+      Fimber.d('Abfahrt detected...');
+      _rxAbfahrt.add(null);
     } else if (isHalt) {
-      _notifyHalt();
+      _rxHalt.add(null);
     }
 
     _updatedCount++;
@@ -129,25 +138,12 @@ class WarnappServiceImpl implements WarnappRepository, MotionDataListener {
     }
   }
 
-  void _notifyHalt() {
-    for (final listener in _listeners) {
-      listener.onHaltDetected();
-    }
-  }
-
-  void _notifyAbfahrt() {
-    Fimber.d('Abfahrt detected...');
-    for (final listener in _listeners) {
-      listener.onAbfahrtDetected();
-    }
-  }
-
   @override
   bool get isEnabled => _enabled;
 
   @override
   void disable() {
-    motionDataProvider.stop();
+    motionDataService.stop();
     _enabled = false;
   }
 
@@ -155,18 +151,8 @@ class WarnappServiceImpl implements WarnappRepository, MotionDataListener {
   void enable() {
     if (!_enabled) {
       _initialize();
-      motionDataProvider.start(this);
+      motionDataService.start(this);
       _enabled = true;
     }
-  }
-
-  @override
-  void addListener(WarnappListener listener) {
-    _listeners.add(listener);
-  }
-
-  @override
-  void removeListener(WarnappListener listener) {
-    _listeners.remove(listener);
   }
 }

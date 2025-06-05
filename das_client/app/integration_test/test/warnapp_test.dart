@@ -13,8 +13,8 @@ void main() {
     testWidgets('test warnapp gets triggered when signal is red', (tester) async {
       await prepareAndStartApp(tester);
 
-      final motionDataProvider = DI.get<MotionDataService>() as MockMotionDataService;
-      motionDataProvider.updateMotionData(motionDataAbfahrt1);
+      final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;
+      motionDataService.updateMotionData(motionDataAbfahrt1);
 
       await loadTrainJourney(tester, trainNumber: 'T17');
 
@@ -31,8 +31,8 @@ void main() {
     testWidgets('test warnapp maneuver button activates maneuver mode', (tester) async {
       await prepareAndStartApp(tester);
 
-      final motionDataProvider = DI.get<MotionDataService>() as MockMotionDataService;
-      motionDataProvider.updateMotionData(motionDataAbfahrt1);
+      final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;
+      motionDataService.updateMotionData(motionDataAbfahrt1);
 
       await loadTrainJourney(tester, trainNumber: 'T17');
 
@@ -48,10 +48,15 @@ void main() {
     testWidgets('test warnapp does not get triggered while in maneuver mode', (tester) async {
       await prepareAndStartApp(tester);
 
-      final motionDataProvider = DI.get<MotionDataService>() as MockMotionDataService;
-      motionDataProvider.updateMotionData(motionDataAbfahrt1);
+      final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;
+      motionDataService.updateMotionData(motionDataAbfahrt1);
 
       await loadTrainJourney(tester, trainNumber: 'T17');
+
+      final warappRepo = DI.get<WarnappRepository>();
+
+      // check if warnapp is enabled
+      expect(warappRepo.isEnabled, true);
 
       // activate maneuver mode
       await openExtendedMenu(tester);
@@ -59,7 +64,10 @@ void main() {
       await tapElement(tester, find.byKey(ExtendedMenu.maneuverSwitchKey));
       expect(find.text(l10n.w_maneuver_notification_text), findsOneWidget);
 
-      while (motionDataProvider.isReplayingEvents) {
+      // check if warnapp has been disabled
+      expect(warappRepo.isEnabled, false);
+
+      while (motionDataService.isReplayingEvents) {
         await tester.pump();
       }
 
@@ -71,12 +79,12 @@ void main() {
     testWidgets('test warnapp does not get triggered when signal is green', (tester) async {
       await prepareAndStartApp(tester);
 
-      final motionDataProvider = DI.get<MotionDataService>() as MockMotionDataService;
-      motionDataProvider.updateMotionData(motionDataAbfahrt1);
+      final motionDataService = DI.get<MotionDataService>() as MockMotionDataService;
+      motionDataService.updateMotionData(motionDataAbfahrt1);
 
       await loadTrainJourney(tester, trainNumber: 'T15');
 
-      while (motionDataProvider.isReplayingEvents) {
+      while (motionDataService.isReplayingEvents) {
         await tester.pump();
       }
 

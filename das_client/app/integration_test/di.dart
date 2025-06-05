@@ -35,7 +35,7 @@ class IntegrationTestDI {
     GetIt.I.registerSferaRemoteRepo();
     _registerBattery();
     GetIt.I.registerAudioPlayer();
-    _registerMockMotionDataProvider();
+    _registerMockMotionDataService();
     GetIt.I.registerWarnapp();
 
     await GetIt.I.allReady();
@@ -57,9 +57,9 @@ class IntegrationTestDI {
     GetIt.I.registerLazySingleton<ScreenBrightness>(() => ScreenBrightness());
   }
 
-  static void _registerMockMotionDataProvider() {
+  static void _registerMockMotionDataService() {
     GetIt.I.registerSingleton<MotionDataService>(
-      WarnappComponent.createMockMotionDataProvider(samplingPeriod: Duration(milliseconds: 2)),
+      WarnappComponent.createMockMotionDataService(samplingPeriod: Duration(milliseconds: 2)),
     );
   }
 
