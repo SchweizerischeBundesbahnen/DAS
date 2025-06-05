@@ -20,7 +20,7 @@ class PeakDetector {
     }
   }
 
-  double mittelwertGesamterBuffer() {
+  double _mittelwertGesamterBuffer() {
     double summe = 0.0;
     for (final value in x) {
       summe += value;
@@ -29,14 +29,14 @@ class PeakDetector {
   }
 
   double mittelwert1() {
-    return mittelwertVon(0, borderLength - 1);
+    return _mittelwertVon(0, borderLength - 1);
   }
 
   double mittelwert2() {
-    return mittelwertVon(length - borderLength, length - 1);
+    return _mittelwertVon(length - borderLength, length - 1);
   }
 
-  double mittelwertVon(int indexVon, int indexBis) {
+  double _mittelwertVon(int indexVon, int indexBis) {
     double summe = 0.0;
     int index1 = (index + indexVon) % length;
     for (int i = indexVon; i <= indexBis; i++) {
@@ -48,18 +48,18 @@ class PeakDetector {
   }
 
   double maxAbweichungZuMittelwert(double mittelwert) {
-    return maxAbweichungVon(borderLength, length - borderLength - 1, mittelwert);
+    return _maxAbweichungVon(borderLength, length - borderLength - 1, mittelwert);
   }
 
   double max1ZuMittelwert(double mittelwert) {
-    return maxAbweichungVon(0, borderLength - 1, mittelwert);
+    return _maxAbweichungVon(0, borderLength - 1, mittelwert);
   }
 
   double max2ZuMittelwert(double mittelwert) {
-    return maxAbweichungVon(length - borderLength, length - 1, mittelwert);
+    return _maxAbweichungVon(length - borderLength, length - 1, mittelwert);
   }
 
-  double maxAbweichungVon(int indexVon, int indexBis, double mittelwert) {
+  double _maxAbweichungVon(int indexVon, int indexBis, double mittelwert) {
     double maxAbweichung = 0.0;
     int index1 = (index + indexVon) % length;
     for (int i = indexVon; i <= indexBis; i++) {
@@ -93,7 +93,7 @@ class PeakDetector {
       return false;
     }
 
-    final mittelwert = mittelwertGesamterBuffer();
+    final mittelwert = _mittelwertGesamterBuffer();
     final maxAbweichung = maxAbweichungZuMittelwert(mittelwert);
 
     return maxAbweichung > _schwelle;

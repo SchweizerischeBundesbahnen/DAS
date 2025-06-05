@@ -36,45 +36,45 @@ class GravityFactor {
 
   void updateWithFahrt(bool fahrt, bool drehung, bool handbewegung) {
     if (drehung) {
-      changeStatus(GravityFactorStatusType.rotation);
+      _changeStatus(GravityFactorStatusType.rotation);
     } else if (handbewegung && !fahrt) {
-      changeStatus(GravityFactorStatusType.rotation);
+      _changeStatus(GravityFactorStatusType.rotation);
     } else {
       switch (_aktuellerStatus.type) {
         case GravityFactorStatusType.haltAnfang:
-          changeStatus(fahrt ? GravityFactorStatusType.fahrt : GravityFactorStatusType.halt);
+          _changeStatus(fahrt ? GravityFactorStatusType.fahrt : GravityFactorStatusType.halt);
           break;
         case GravityFactorStatusType.halt:
           if (fahrt) {
-            changeStatus(GravityFactorStatusType.fahrt);
+            _changeStatus(GravityFactorStatusType.fahrt);
           }
           break;
         case GravityFactorStatusType.fahrt:
           if (!fahrt) {
-            changeStatus(GravityFactorStatusType.haltAnfang);
+            _changeStatus(GravityFactorStatusType.haltAnfang);
           }
           break;
         case GravityFactorStatusType.init:
           if (anzahlUpdatesSeitStatuswechsel > 1) {
-            changeStatus(fahrt ? GravityFactorStatusType.fahrtUndefiniert : GravityFactorStatusType.halt);
+            _changeStatus(fahrt ? GravityFactorStatusType.fahrtUndefiniert : GravityFactorStatusType.halt);
           }
           break;
         case GravityFactorStatusType.fahrtUndefiniert:
           if (!fahrt) {
-            changeStatus(GravityFactorStatusType.haltAnfang);
+            _changeStatus(GravityFactorStatusType.haltAnfang);
           }
           break;
         case GravityFactorStatusType.rotation:
-          changeStatus(
+          _changeStatus(
             fahrt ? GravityFactorStatusType.fahrtUndefiniert : GravityFactorStatusType.rotationBeendetImHalt,
           );
           break;
         case GravityFactorStatusType.rotationBeendetImHalt:
           if (fahrt) {
-            changeStatus(GravityFactorStatusType.fahrtUndefiniert);
+            _changeStatus(GravityFactorStatusType.fahrtUndefiniert);
           } else {
             if (anzahlUpdatesSeitStatuswechsel > 50) {
-              changeStatus(GravityFactorStatusType.halt);
+              _changeStatus(GravityFactorStatusType.halt);
             }
           }
           break;
@@ -83,7 +83,7 @@ class GravityFactor {
     anzahlUpdatesSeitStatuswechsel++;
   }
 
-  void changeStatus(GravityFactorStatusType newStatus) {
+  void _changeStatus(GravityFactorStatusType newStatus) {
     if (_aktuellerStatus.type != newStatus) {
       _aktuellerStatus = _alleStatus[newStatus.index];
       anzahlUpdatesSeitStatuswechsel = 0;

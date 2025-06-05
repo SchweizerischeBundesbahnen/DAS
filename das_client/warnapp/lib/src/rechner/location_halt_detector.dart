@@ -20,10 +20,10 @@ class LocationHaltDetector {
   }
 
   bool signalImmerVorhanden() {
-    return signalImmerVorhandenVonBis(0, length - 1);
+    return _signalImmerVorhandenVonBis(0, length - 1);
   }
 
-  bool signalImmerVorhandenVonBis(int indexVon, int indexBis) {
+  bool _signalImmerVorhandenVonBis(int indexVon, int indexBis) {
     int index1 = (_posRingbuffer + indexVon) % length;
     for (int i = indexVon; i <= indexBis; i++) {
       final value = _ringbuffer[index1];
@@ -35,11 +35,11 @@ class LocationHaltDetector {
     return true;
   }
 
-  bool standStill() {
-    return standStillVonBis(1, length - 1);
+  bool _standStill() {
+    return _standStillVonBis(1, length - 1);
   }
 
-  bool standStillVonBis(int indexVon, int indexBis) {
+  bool _standStillVonBis(int indexVon, int indexBis) {
     int index1 = (_posRingbuffer + indexVon) % length;
     for (int i = indexVon; i <= indexBis; i++) {
       final value = _ringbuffer[index1];
@@ -63,11 +63,11 @@ class LocationHaltDetector {
     if (_updatesCount < length) {
       return false;
     }
-    final firstValue = getFirstValue();
-    return firstValue >= schwelleMin && firstValue < schwelleMax && standStill() && signalImmerVorhanden();
+    final firstValue = _getFirstValue();
+    return firstValue >= schwelleMin && firstValue < schwelleMax && _standStill() && signalImmerVorhanden();
   }
 
-  double getFirstValue() {
+  double _getFirstValue() {
     final indexRingbuffer = _posRingbuffer % length;
     return _ringbuffer[indexRingbuffer];
   }

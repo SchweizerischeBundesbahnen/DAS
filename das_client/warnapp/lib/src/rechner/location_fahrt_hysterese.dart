@@ -6,7 +6,6 @@ class LocationFahrtHysterese {
 
   final double schwelleSpeed;
   final int gueltigkeitsDauer;
-  bool fahrt = false;
   int count = 0;
 
   final RingBuffer _ringBuffer;

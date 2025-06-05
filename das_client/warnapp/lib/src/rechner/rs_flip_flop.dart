@@ -28,7 +28,7 @@ class RSFlipFlop {
       throw Exception('Länge von SET ist ${valuesSet.length} erwartet wird ${_lastSet.length}');
     }
     final changedSetIndex = 0;
-    if (hasChanged(_lastSet, valuesSet, changedSetIndex)) {
+    if (_hasChanged(_lastSet, valuesSet, changedSetIndex)) {
       state = true;
     }
     _lastSet = valuesSet;
@@ -38,7 +38,7 @@ class RSFlipFlop {
       throw Exception('Länge von RESET ist ${valuesReset.length} erwartet wird ${_lastReset.length}');
     }
     final changedResetIndex = 0;
-    if (hasChanged(_lastReset, valuesReset, changedResetIndex)) {
+    if (_hasChanged(_lastReset, valuesReset, changedResetIndex)) {
       state = false;
     }
     _lastReset = valuesReset;
@@ -60,7 +60,7 @@ class RSFlipFlop {
 
     // Softset
     final changedSoftSetIndex = 0;
-    if (!state && hasPositivValue(valuesSoftSet, changedSoftSetIndex)) {
+    if (!state && _hasPositivValue(valuesSoftSet, changedSoftSetIndex)) {
       state = true;
       softSetErkannt = true;
       this.changedSoftSetIndex = changedSoftSetIndex;
@@ -75,7 +75,7 @@ class RSFlipFlop {
     negativeSchwelleErkannt = oldState && !state;
   }
 
-  bool hasPositivValue(List<bool> newValues, int firstPositivIndex) {
+  bool _hasPositivValue(List<bool> newValues, int firstPositivIndex) {
     for (int i = 0; i < newValues.length; i++) {
       if (newValues[i]) {
         firstPositivIndex = i + 1;
@@ -85,7 +85,7 @@ class RSFlipFlop {
     return false;
   }
 
-  bool hasChanged(List<bool> lastValues, List<bool> newValues, int changedIndex) {
+  bool _hasChanged(List<bool> lastValues, List<bool> newValues, int changedIndex) {
     for (int i = 0; i < newValues.length; i++) {
       if (!lastValues[i] && newValues[i]) {
         changedIndex = i + 1;

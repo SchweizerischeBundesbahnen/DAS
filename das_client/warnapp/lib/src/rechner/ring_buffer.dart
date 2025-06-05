@@ -50,19 +50,19 @@ class RingBuffer {
       if (newValue > max) {
         max = newValue;
       } else if (lastRemovedValue >= max) {
-        max = maxValue();
+        max = _maxValue();
       }
 
       if (newValue < min) {
         min = newValue;
       } else if (lastRemovedValue <= min) {
-        min = minValue();
+        min = _minValue();
       }
     }
     return lastRemovedValue;
   }
 
-  double maxValue() {
+  double _maxValue() {
     double max = lastValue;
 
     final indexVon = 0;
@@ -79,7 +79,7 @@ class RingBuffer {
     return max;
   }
 
-  double minValue() {
+  double _minValue() {
     double min = lastValue;
 
     final indexVon = 0;

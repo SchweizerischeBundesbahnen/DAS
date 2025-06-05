@@ -25,14 +25,14 @@ class LageAenderungDetector {
   }
 
   double calculateMittelwert1() {
-    return calculateMittelwertVon(0, length1 - 1);
+    return _calculateMittelwertVon(0, length1 - 1);
   }
 
   double calculateMittelwert2() {
-    return calculateMittelwertVon(length1, _length - 1);
+    return _calculateMittelwertVon(length1, _length - 1);
   }
 
-  double calculateMittelwertVon(int indexVon, int indexBis) {
+  double _calculateMittelwertVon(int indexVon, int indexBis) {
     double summe = 0.0;
 
     int index1 = (index + indexVon) % _length;
@@ -44,7 +44,7 @@ class LageAenderungDetector {
     return summe / ((indexBis - indexVon) + 1);
   }
 
-  double berechneAbweichungMittelwerte() {
+  double _berechneAbweichungMittelwerte() {
     _mittelwert1 = calculateMittelwert1();
     _mittelwert2 = calculateMittelwert2();
     _abweichungMittelwerte = _mittelwert1 - _mittelwert2;
@@ -56,7 +56,7 @@ class LageAenderungDetector {
     x[index] = newSample;
     index = (index + 1) % _length;
 
-    return (berechneAbweichungMittelwerte().abs() > schwelle && _updatesCount >= _length);
+    return (_berechneAbweichungMittelwerte().abs() > schwelle && _updatesCount >= _length);
   }
 }
 

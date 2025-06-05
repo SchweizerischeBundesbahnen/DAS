@@ -20,10 +20,10 @@ class LocationAbfahrtDetector {
   }
 
   bool signalImmerVorhanden() {
-    return signalImmerVorhandenVonBis(laengeHalt, length - 1);
+    return _signalImmerVorhandenVonBis(laengeHalt, length - 1);
   }
 
-  bool signalImmerVorhandenVonBis(int indexVon, int indexBis) {
+  bool _signalImmerVorhandenVonBis(int indexVon, int indexBis) {
     int index1 = (_posRingbuffer + indexVon) % length;
     for (int i = indexVon; i <= indexBis; i++) {
       final value = _ringbuffer[index1];
@@ -36,10 +36,10 @@ class LocationAbfahrtDetector {
   }
 
   bool standStill() {
-    return standStillVonBis(0, laengeHalt - 1);
+    return _standStillVonBis(0, laengeHalt - 1);
   }
 
-  bool standStillVonBis(int indexVon, int indexBis) {
+  bool _standStillVonBis(int indexVon, int indexBis) {
     int index1 = (_posRingbuffer + indexVon) % length;
     for (int i = indexVon; i <= indexBis; i++) {
       final value = _ringbuffer[index1];
@@ -66,15 +66,15 @@ class LocationAbfahrtDetector {
     if (_updatesCount < length) {
       return false;
     }
-    return getSecondLastValue() > 0 && getLastValue() > schwelleFahrt && standStill() && signalImmerVorhanden();
+    return _getSecondLastValue() > 0 && _getLastValue() > schwelleFahrt && standStill() && signalImmerVorhanden();
   }
 
-  double getLastValue() {
+  double _getLastValue() {
     final indexRingbuffer = (_posRingbuffer + length - 1) % length;
     return _ringbuffer[indexRingbuffer];
   }
 
-  double getSecondLastValue() {
+  double _getSecondLastValue() {
     final indexRingbuffer = (_posRingbuffer + length - 2) % length;
     return _ringbuffer[indexRingbuffer];
   }

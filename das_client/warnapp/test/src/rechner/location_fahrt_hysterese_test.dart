@@ -6,7 +6,7 @@ void main() {
     test('Init Length 5 And 3', () {
       final hysterese = LocationFahrtHysterese(5, 3);
 
-      expect(hysterese.fahrt, isFalse);
+      expect(hysterese.isFahrt(), isFalse);
       expect(hysterese.gueltigkeitsDauer, equals(3));
       expect(hysterese.schwelleSpeed, equals(5));
     });

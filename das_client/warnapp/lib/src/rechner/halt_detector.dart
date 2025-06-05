@@ -28,10 +28,10 @@ class HaltDetector {
   }
 
   bool isHalt() {
-    return getMin(0, laengeHalt) < schwelleHalt && getMaxAbs(laengeHalt, length - laengeHalt) < schwelleQuiet;
+    return _getMin(0, laengeHalt) < schwelleHalt && _getMaxAbs(laengeHalt, length - laengeHalt) < schwelleQuiet;
   }
 
-  double getMin(int beginIndex, int calcLength) {
+  double _getMin(int beginIndex, int calcLength) {
     double result = double.maxFinite;
     int indexRingbuffer = (_posRingbuffer + beginIndex) % length; // fastRingBufferSet logic
 
@@ -43,7 +43,7 @@ class HaltDetector {
     return result;
   }
 
-  double getMaxAbs(int beginIndex, int calcLength) {
+  double _getMaxAbs(int beginIndex, int calcLength) {
     double result = 0.0;
     int indexRingbuffer = (_posRingbuffer + beginIndex) % length; // fastRingBufferSet logic
 
