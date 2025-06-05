@@ -1,0 +1,127 @@
+<?xml version="1.0" ?>
+
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="1" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+    <TrainIdentification>
+        <OTN_ID>
+            <teltsi_Company>1285</teltsi_Company>
+            <teltsi_OperationalTrainNumber>7318</teltsi_OperationalTrainNumber>
+            <teltsi_StartDate>2025-05-17</teltsi_StartDate>
+        </OTN_ID>
+    </TrainIdentification>
+
+    <SegmentProfileReference SP_ID="7318_1_Sonceboz_Sombeval" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:39:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T12:39:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Sonceboz_Sombeval"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T12:39:00Z" plannedDepartureTime="2025-05-17T12:39:00Z"/>
+        </TimingPointConstraints>
+
+        <TrainCharacteristicsRef TC_ID="7318_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
+            <TC_RU_ID>1285</TC_RU_ID>
+        </TrainCharacteristicsRef>
+    </SegmentProfileReference>
+
+    <SegmentProfileReference SP_ID="7318_2_Tavannes" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:45:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T12:45:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Tavannes"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T12:46:00Z" plannedDepartureTime="2025-05-17T12:46:00Z"/>
+        </TimingPointConstraints>
+    </SegmentProfileReference>	
+
+    <SegmentProfileReference SP_ID="7318_3_Reconvilier" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:49:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T12:49:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Reconvilier"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T12:49:00Z" plannedDepartureTime="2025-05-17T12:49:00Z"/>
+        </TimingPointConstraints>
+    </SegmentProfileReference>	
+	
+    <SegmentProfileReference SP_ID="7318_4_Pontenet" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:52:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T12:52:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Pontenet"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T12:52:00Z" plannedDepartureTime="2025-05-17T12:52:00Z"/>
+        </TimingPointConstraints>
+    </SegmentProfileReference>		
+
+    <SegmentProfileReference SP_ID="7318_5_Malleray_Bevilard" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:54:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T12:54:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Malleray_Bevilard"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T12:57:00Z" plannedDepartureTime="2025-05-17T12:57:00Z"/>
+        </TimingPointConstraints>
+    </SegmentProfileReference>	
+
+    <SegmentProfileReference SP_ID="7318_6_Sorvilier" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T13:00:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T13:00:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Sorvilier"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T13:00:00Z" plannedDepartureTime="2025-05-17T13:00:00Z"/>
+        </TimingPointConstraints>
+    </SegmentProfileReference>
+
+    <SegmentProfileReference SP_ID="7318_7_Court" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T13:03:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T13:03:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Court"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T13:03:00Z" plannedDepartureTime="2025-05-17T13:03:00Z"/>
+        </TimingPointConstraints>
+    </SegmentProfileReference>
+
+    <SegmentProfileReference SP_ID="19240_8_Moutier" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="End_of_Journey" TP_latestArrivalTime="2025-05-17T13:11:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T13:11:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Moutier"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileReference>
+
+</JourneyProfile>
