@@ -1,4 +1,4 @@
-import 'package:app/di.dart';
+import 'package:app/di/di.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 abstract class Sound {

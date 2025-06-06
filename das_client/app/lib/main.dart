@@ -1,5 +1,5 @@
 import 'package:app/app.dart';
-import 'package:app/di.dart';
+import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:app/di.dart';
+import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/extended_menu.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';

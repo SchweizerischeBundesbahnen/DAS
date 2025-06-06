@@ -1,5 +1,5 @@
 import 'package:app/brightness/brightness_manager.dart';
-import 'package:app/di.dart';
+import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
 import 'package:auth/component.dart';
 import 'package:battery_plus/battery_plus.dart';
