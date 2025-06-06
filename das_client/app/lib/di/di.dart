@@ -1,15 +1,15 @@
-import 'package:app/di/scope/di_scope.dart';
-import 'package:app/di/scope/scope_handler.dart';
-import 'package:app/di/scope/scope_handler_impl.dart';
+import 'package:app/di/scope_handler.dart';
+import 'package:app/di/scope_handler_impl.dart';
+import 'package:app/di/scopes/di_scope.dart';
 import 'package:app/flavor.dart';
 import 'package:auth/component.dart';
 import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
 
-export 'package:app/di/scope/di_scope.dart' show AuthenticatedScopeExtension;
-export 'package:app/di/scope/di_scope.dart' show BaseScopeExtension;
-export 'package:app/di/scope/di_scope.dart' show SferaMockScopeExtension;
-export 'package:app/di/scope/di_scope.dart' show TmsScopeExtension;
+export 'package:app/di/scopes/di_scope.dart' show AuthenticatedScopeExtension;
+export 'package:app/di/scopes/di_scope.dart' show BaseScopeExtension;
+export 'package:app/di/scopes/di_scope.dart' show SferaMockScopeExtension;
+export 'package:app/di/scopes/di_scope.dart' show TmsScopeExtension;
 
 class DI {
   const DI._();

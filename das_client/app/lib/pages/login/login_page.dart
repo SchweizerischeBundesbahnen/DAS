@@ -1,6 +1,6 @@
 import 'package:app/di/di.dart';
-import 'package:app/di/scope/di_scope.dart';
-import 'package:app/di/scope/scope_handler.dart';
+import 'package:app/di/scope_handler.dart';
+import 'package:app/di/scopes/di_scope.dart';
 import 'package:app/flavor.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';

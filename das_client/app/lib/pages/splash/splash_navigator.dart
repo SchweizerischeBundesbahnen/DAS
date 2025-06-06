@@ -1,6 +1,6 @@
 import 'package:app/di/di.dart';
-import 'package:app/di/scope/di_scope.dart';
-import 'package:app/di/scope/scope_handler.dart';
+import 'package:app/di/scope_handler.dart';
+import 'package:app/di/scopes/di_scope.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/pages/splash/splash_view_model.dart';
 import 'package:auto_route/auto_route.dart';

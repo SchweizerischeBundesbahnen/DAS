@@ -1,4 +1,4 @@
-import 'package:app/di/scope/di_scope.dart';
+import 'package:app/di/scopes/di_scope.dart';
 
 abstract interface class ScopeHandler {
   /// Returns the current scope.
