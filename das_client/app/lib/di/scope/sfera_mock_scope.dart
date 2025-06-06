@@ -1,16 +1,13 @@
-import 'package:app/di/di.dart';
-import 'package:app/flavor.dart';
-import 'package:fimber/fimber.dart';
-import 'package:get_it/get_it.dart';
-import 'package:mqtt/component.dart';
+part of 'di_scope.dart';
 
-class SferaMockScope {
-  SferaMockScope._();
+class SferaMockScope extends DIScope {
+  static const String scopeName = 'SferaMockScope';
 
-  static const String _scopeName = 'SferaMockScope';
-  static final _getIt = GetIt.I;
+  @override
+  String get _scopeName => scopeName;
 
-  static Future<void> push() async {
+  @override
+  Future<void> push() async {
     Fimber.d('Pushing scope $_scopeName');
     _getIt.pushNewScope(scopeName: _scopeName);
     final sferaFlavor = DI.get<Flavor>().withSferaMockValues();
@@ -19,11 +16,6 @@ class SferaMockScope {
     _getIt.registerAzureAuthenticator();
 
     _getIt.registerOAuthMqttClientConnector();
-  }
-
-  static Future<bool> pop() async {
-    Fimber.d('Popping scope $_scopeName');
-    return _getIt.popScopesTill(_scopeName);
   }
 }
 

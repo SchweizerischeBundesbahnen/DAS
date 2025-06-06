@@ -1,21 +1,13 @@
-import 'package:app/di/di.dart';
-import 'package:app/flavor.dart';
-import 'package:app/pages/journey/train_journey_view_model.dart';
-import 'package:app/util/device_id_info.dart';
-import 'package:auth/component.dart';
-import 'package:fimber/fimber.dart';
-import 'package:get_it/get_it.dart';
-import 'package:http_x/component.dart';
-import 'package:mqtt/component.dart';
-import 'package:sfera/component.dart';
+part of 'di_scope.dart';
 
-class AuthenticatedScope {
-  AuthenticatedScope._();
+class AuthenticatedScope extends DIScope {
+  static const String scopeName = 'AuthenticatedScope';
 
-  static const String _scopeName = 'AuthenticatedScope';
-  static final _getIt = GetIt.I;
+  @override
+  String get _scopeName => scopeName;
 
-  static Future<void> push() async {
+  @override
+  Future<void> push() async {
     Fimber.d('Pushing scope $_scopeName');
     _getIt.pushNewScope(scopeName: _scopeName);
 
@@ -30,11 +22,6 @@ class AuthenticatedScope {
     _getIt.registerTrainJourneyViewModel();
 
     return _getIt.allReady();
-  }
-
-  static Future<bool> pop() async {
-    Fimber.d('Popping scope $_scopeName');
-    return _getIt.popScopesTill(_scopeName);
   }
 }
 

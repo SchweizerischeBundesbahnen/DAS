@@ -1,15 +1,15 @@
-import 'package:app/di/scope/das_base_scope.dart';
-import 'package:app/di/scope/sfera_mock_scope.dart';
-import 'package:app/di/scope/tms_scope.dart';
+import 'package:app/di/scope/di_scope.dart';
+import 'package:app/di/scope/scope_handler.dart';
+import 'package:app/di/scope/scope_handler_impl.dart';
 import 'package:app/flavor.dart';
 import 'package:auth/component.dart';
 import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
 
-export 'package:app/di/scope/authenticated_scope.dart' show AuthenticatedScopeExtension;
-export 'package:app/di/scope/das_base_scope.dart' show BaseScopeExtension;
-export 'package:app/di/scope/sfera_mock_scope.dart' show SferaMockScopeExtension;
-export 'package:app/di/scope/tms_scope.dart' show TmsScopeExtension;
+export 'package:app/di/scope/di_scope.dart' show AuthenticatedScopeExtension;
+export 'package:app/di/scope/di_scope.dart' show BaseScopeExtension;
+export 'package:app/di/scope/di_scope.dart' show SferaMockScopeExtension;
+export 'package:app/di/scope/di_scope.dart' show TmsScopeExtension;
 
 class DI {
   const DI._();
@@ -26,14 +26,15 @@ class DI {
       Fimber.d('Unplanting existing log tree');
       Fimber.unplantTree(logTree);
     }
-    await DASBaseScope.popAbove();
-    Fimber.d('CurrentScope: ${GetIt.I.currentScopeName}');
+
+    final scopeHandler = DI.get<ScopeHandler>();
+    await scopeHandler.popAbove<DASBaseScope>();
     if (useTms) {
       Fimber.d('Using TMS scope');
-      await TmsScope.push();
+      await scopeHandler.push<TmsScope>();
     } else {
       Fimber.d('Using Sfera mock scope');
-      await SferaMockScope.push();
+      await scopeHandler.push<SferaMockScope>();
     }
 
     await GetIt.I.allReady();
@@ -72,9 +73,24 @@ class DI {
 
 extension GetItX on GetIt {
   Future<void> init(Flavor flavor) async {
-    await DASBaseScope.push(flavor: flavor);
-    SferaMockScope.push();
+    // Register flavor and scope handler before any scopes.
+    registerFlavor(flavor);
+    registerScopeHandler();
+
+    final scopeHandler = get<ScopeHandler>();
+    await scopeHandler.push<DASBaseScope>();
+    await scopeHandler.push<SferaMockScope>();
     await allReady();
+  }
+
+  void registerScopeHandler() {
+    Fimber.d('Register scope handler');
+    registerSingleton<ScopeHandler>(ScopeHandlerImpl());
+  }
+
+  void registerFlavor(Flavor flavor) {
+    Fimber.d('Register flavor');
+    registerSingleton<Flavor>(flavor);
   }
 
   void registerAzureAuthenticator() {
