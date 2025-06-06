@@ -1,4 +1,5 @@
 import 'package:app/di/di.dart';
+import 'package:app/di/scope/authenticated_scope.dart';
 import 'package:app/flavor.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
@@ -129,6 +130,8 @@ class _LoginPageState extends State<LoginPage> {
     final context = this.context;
     try {
       await authenticator.login();
+      await AuthenticatedScope.push();
+      Fimber.plantTree(DI.get());
       if (context.mounted) {
         context.router.replace(const JourneyRoute());
       }

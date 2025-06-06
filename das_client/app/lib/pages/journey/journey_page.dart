@@ -8,7 +8,6 @@ import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/pages/journey/train_selection/train_selection.dart';
 import 'package:app/util/error_code.dart';
 import 'package:app/util/format.dart';
-import 'package:auth/component.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -133,7 +132,8 @@ class _JourneyPageState extends State<JourneyPage> with SingleTickerProviderStat
     return IconButton(
       icon: const Icon(SBBIcons.exit_small),
       onPressed: () {
-        DI.get<Authenticator>().logout();
+        // DI.get<Authenticator>().logout();
+        // DASBaseScope.popAbove();
         context.router.replace(const LoginRoute());
       },
     );

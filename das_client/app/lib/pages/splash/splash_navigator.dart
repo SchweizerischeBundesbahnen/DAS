@@ -1,3 +1,4 @@
+import 'package:app/di/scope/authenticated_scope.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/pages/splash/splash_view_model.dart';
 import 'package:auto_route/auto_route.dart';
@@ -18,6 +19,7 @@ class SplashNavigator {
   Future<void> _checkAuthenticationState() async {
     final isAuthenticated = await viewModel.isAuthenticated;
     if (isAuthenticated) {
+      AuthenticatedScope.push();
       _navigateToJourney();
     } else {
       _navigateToLogin();

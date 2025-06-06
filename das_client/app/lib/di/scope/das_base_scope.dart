@@ -11,10 +11,11 @@ import 'package:http_x/component.dart';
 import 'package:logger/component.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 
-class BaseScope {
-  BaseScope._();
+// Named 'DASBaseScope' to avoid confusion with GetIt's 'baseScope'.
+class DASBaseScope {
+  DASBaseScope._();
 
-  static const String _scopeName = 'BaseScope';
+  static const String _scopeName = 'DASBaseScope';
   static final _getIt = GetIt.I;
 
   static Future<void> push({required Flavor flavor}) {
@@ -28,9 +29,9 @@ class BaseScope {
     return _getIt.allReady();
   }
 
-  Future<void> pop() async {
+  static Future<bool> pop() async {
     Fimber.d('Popping scope $_scopeName');
-    await _getIt.popScopesTill(_scopeName);
+    return _getIt.popScopesTill(_scopeName);
   }
 
   static Future<bool> popAbove() async {

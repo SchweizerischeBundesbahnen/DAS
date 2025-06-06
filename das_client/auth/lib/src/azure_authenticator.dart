@@ -84,4 +84,10 @@ class AzureAuthenticator implements Authenticator {
     await _init();
     return oidcClient.endSession();
   }
+
+  @override
+  Future<void> dispose() async {
+    await _init();
+    return logout();
+  }
 }
