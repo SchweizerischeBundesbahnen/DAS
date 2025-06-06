@@ -28,7 +28,7 @@ class DI {
       Fimber.unplantTree(logTree);
     }
     await GetIt.I.reset();
-    GetIt.I.init(flavor, useTms: useTms);
+    GetIt.I.init(flavor);
 
     await GetIt.I.allReady();
 
@@ -67,7 +67,7 @@ class DI {
 // Internal
 
 extension GetItX on GetIt {
-  Future<void> init(Flavor flavor, {bool useTms = false}) async {
+  Future<void> init(Flavor flavor) async {
     BaseScope.push(flavor: flavor);
     SferaMockScope.push();
     await allReady();
@@ -100,13 +100,13 @@ extension GetItX on GetIt {
     registerFactory<MqttAuthProvider>(factoryFunc);
   }
 
-  void registerMqttService({bool useTms = false}) {
+  void registerMqttService() {
     Future<MqttService> factoryFunc() async {
       Fimber.d('Register mqtt service');
       final flavor = DI.get<Flavor>();
       final deviceId = await DeviceIdInfo.getDeviceId();
       return MqttComponent.createMqttService(
-        mqttUrl: useTms ? flavor.tmsMqttUrl! : flavor.mqttUrl,
+        mqttUrl: flavor.mqttUrl,
         mqttClientConnector: DI.get(),
         prefix: flavor.mqttTopicPrefix,
         deviceId: deviceId,
@@ -116,25 +116,25 @@ extension GetItX on GetIt {
     registerSingletonAsync(factoryFunc);
   }
 
-  void registerAzureAuthenticator({bool useTms = false}) {
+  void registerAzureAuthenticator() {
     factoryFunc() {
       Fimber.d('Register azure authenticator');
       final flavor = DI.get<Flavor>();
-      final authenticatorConfig = useTms ? flavor.tmsAuthenticatorConfig! : flavor.authenticatorConfig;
+      final authenticatorConfig = flavor.authenticatorConfig;
       return AuthenticationComponent.createAzureAuthenticator(config: authenticatorConfig);
     }
 
     registerSingleton<Authenticator>(factoryFunc());
   }
 
-  void registerSferaAuthService({bool useTms = false}) {
+  void registerSferaAuthService() {
     factoryFunc() {
       Fimber.d('Register sfera auth service');
       final flavor = DI.get<Flavor>();
       final httpClient = HttpXComponent.createHttpClient(authProvider: DI.get());
       return SferaComponent.createSferaAuthService(
         httpClient: httpClient,
-        tokenExchangeUrl: useTms ? flavor.tmsTokenExchangeUrl! : flavor.tokenExchangeUrl,
+        tokenExchangeUrl: flavor.tokenExchangeUrl,
       );
     }
 

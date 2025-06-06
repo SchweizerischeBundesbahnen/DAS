@@ -88,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _tmsCheckbox(BuildContext context) {
     final flavor = DI.get<Flavor>();
 
-    if (flavor.tmsAuthenticatorConfig != null && flavor.tmsMqttUrl != null && flavor.tmsTokenExchangeUrl != null) {
+    if (flavor.isTmsEnabledForFlavor) {
       return Padding(
         padding: const EdgeInsets.all(sbbDefaultSpacing),
         child: Row(
