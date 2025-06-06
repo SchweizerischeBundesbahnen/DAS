@@ -21,9 +21,9 @@ class TmsScope {
     _getIt.registerOpenIdMqttClientConnector();
   }
 
-  Future<void> pop() async {
+  static Future<bool> pop() async {
     Fimber.d('Popping scope $_scopeName');
-    await _getIt.popScopesTill(_scopeName);
+    return _getIt.popScopesTill(_scopeName);
   }
 }
 
