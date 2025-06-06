@@ -17,7 +17,7 @@ class BaseScope {
   static const String _scopeName = 'BaseScope';
   static final _getIt = GetIt.I;
 
-  static void push({required Flavor flavor}) {
+  static Future<void> push({required Flavor flavor}) {
     Fimber.d('Pushing scope $_scopeName');
     _getIt.pushNewScope(scopeName: _scopeName);
     _getIt.registerFlavor(flavor);
@@ -25,6 +25,7 @@ class BaseScope {
     _getIt.registerAudioPlayer();
     _getIt.registerBattery();
     _getIt.registerDasLogTree(); // pushes without remote service
+    return _getIt.allReady();
   }
 
   Future<void> pop() async {

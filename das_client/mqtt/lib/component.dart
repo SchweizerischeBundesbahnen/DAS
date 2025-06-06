@@ -13,16 +13,6 @@ export 'package:mqtt_client/mqtt_client.dart';
 class MqttComponent {
   const MqttComponent._();
 
-  static MqttClientConnector createMqttClientConnector({
-    required MqttAuthProvider authProvider,
-    bool useTms = false,
-  }) {
-    if (useTms) {
-      return MqttClientTMSOauthConnector(mqttAuthProvider: authProvider);
-    }
-    return MqttClientOauthConnector(mqttAuthProvider: authProvider);
-  }
-
   static MqttService createMqttService({
     required String mqttUrl,
     required MqttClientConnector mqttClientConnector,
@@ -36,4 +26,10 @@ class MqttComponent {
       deviceId: deviceId,
     );
   }
+
+  static MqttClientConnector createOAuthClientConnector({required MqttAuthProvider authProvider}) =>
+      MqttClientOauthConnector(mqttAuthProvider: authProvider);
+
+  static MqttClientConnector createOpenIdClientConnector({required MqttAuthProvider authProvider}) =>
+      MqttClientTMSOauthConnector(mqttAuthProvider: authProvider);
 }

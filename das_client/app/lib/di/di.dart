@@ -1,4 +1,5 @@
 import 'package:app/di/scope/base_scope.dart';
+import 'package:app/di/scope/sfera_mock_scope.dart';
 import 'package:app/flavor.dart';
 import 'package:app/util/device_id_info.dart';
 import 'package:auth/component.dart';
@@ -68,15 +69,7 @@ class DI {
 extension GetItX on GetIt {
   Future<void> init(Flavor flavor, {bool useTms = false}) async {
     BaseScope.push(flavor: flavor);
-    registerAzureAuthenticator(useTms: useTms);
-    registerAuthProvider();
-    registerSferaAuthProvider();
-    registerMqttAuthProvider();
-    registerMqttClientConnector(useTms: useTms);
-    registerMqttService(useTms: useTms);
-    registerSferaAuthService(useTms: useTms);
-    registerSferaLocalRepo();
-    registerSferaRemoteRepo();
+    SferaMockScope.push();
     await allReady();
   }
 
@@ -105,15 +98,6 @@ extension GetItX on GetIt {
     }
 
     registerFactory<MqttAuthProvider>(factoryFunc);
-  }
-
-  void registerMqttClientConnector({bool useTms = false}) {
-    factoryFunc() {
-      Fimber.d('Register mqtt client connector');
-      return MqttComponent.createMqttClientConnector(authProvider: DI.get(), useTms: useTms);
-    }
-
-    registerLazySingleton<MqttClientConnector>(factoryFunc);
   }
 
   void registerMqttService({bool useTms = false}) {
