@@ -149,7 +149,9 @@ extension GetItX on GetIt {
       Fimber.d('Register DAS log tree');
       final flavor = DI.get<Flavor>();
       final deviceId = await DeviceIdInfo.getDeviceId();
-      final httpClient = HttpXComponent.createHttpClient(authProvider: DI.get());
+      final AuthProvider? authProvider = DI.getOrNull<AuthProvider>();
+      Client? httpClient;
+      if (authProvider != null) httpClient = HttpXComponent.createHttpClient(authProvider: authProvider);
       return LoggerComponent.createDasLogTree(httpClient: httpClient, baseUrl: flavor.backendUrl, deviceId: deviceId);
     }
 

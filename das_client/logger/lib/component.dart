@@ -12,10 +12,11 @@ class LoggerComponent {
 
   static LogTree createDasLogTree({
     required String baseUrl,
-    required Client httpClient,
+    required Client? httpClient,
     required String deviceId,
   }) {
-    final remoteService = LogApiService(baseUrl: baseUrl, httpClient: httpClient);
+    LogApiService? remoteService;
+    if (httpClient != null) remoteService = LogApiService(baseUrl: baseUrl, httpClient: httpClient);
     final loggerRepo = LoggerRepoImpl(fileService: LogFileServiceImpl(), apiService: remoteService);
     return DasLogTree(loggerRepo: loggerRepo, deviceId: deviceId);
   }
