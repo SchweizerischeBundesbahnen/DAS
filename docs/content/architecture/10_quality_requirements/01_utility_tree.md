@@ -1,58 +1,47 @@
 ---
-title: 10.1 Utility Tree
+title: 10.1 Quality Tree
 cascade:
   type: docs
 ---
 
-The priority quality objectives of DAS in order of importance.
-
-![](utility_tree.svg)
-
-Reliability - Railway operations depend on it.
-: DAS is available during all railway operations. Failures of an external system do not prevent DAS
-from providing all available information.
-
--> Entkopplung (z.B. Logging), Azure down: keine Chance (spielt keine Rolle, wenn drin, bis Refresh
-failed), Daten vorladen, was passiert, wenn keine Netzwerkverbindung (Login offline möglich, Caching
-der Anmeldeinformationen), möglichst wenige Umsysteme / Abhängigkeiten
-Offene Punkte: Authentifizierung / Token-Gültigkeit MQTT, wird Access Token nur initial benötigt?
-Macht hier TMS noch Konfiguration?
+[Software Product Quality ISO 25010](https://www.iso25000.com/index.php/en/iso-25000-standards/iso-25010)
+![](ISO%2025010.png)
 
 Functional Suitability - Provided information is correct.
 : DAS only displays and never modifies data. A data source can rely on DAS to present the provided
-data completely and with the intentioned meaning.
+data as is and with the intentioned meaning.
 
--> Ausführliche Tests (end-to-end), Zwischensysteme vermeiden, View-Model read-only (final), Mapper,
-Testsuite, UI-Tests, v.a. für SFERA,
+Performance Efficiency
+: DAS-Client provides a sufficient response time for users (drivers).
 
-Operability - Reliable and efficient operation.
-: The system is efficient to operate and oversee. Problems can be identified and mitigated in a
-timely manner.
+Compatibility
+: DAS-Client commits to SFERA standard. Scoped reusable for Swiss RUs. Cross availability for iOS and Android devices.
 
--> Logging, Monitoring (Splunk ?), Crash-Recorder, Dashboard, Tracing, keine unnötigen Dependencies,
+Interaction Capability
+: DAS-Client will be used by train drivers on-board. A driver should not be distracted unnecessarily by the system,
+therefore providing a simple and concise user interface for engine drivers to support operations and avoid
+distractions is paramount (UX and test-involvement of relevant users is key).
+The system is efficient to operate and oversee.
+Problems can be identified and mitigated in a timely manner ([Logging](../09_design_decisions/mobile_logging_adr.md), Monitoring/Tracing (Instana?), Crash-Recorder, Dashboards).
 
-Maintainability - Changes need to be implemented efficiently and safely.
+Reliability
+: DAS is available during all railway operations by a driver. Failures of an external system shall not prevent DAS
+from providing all available information. Offline features may compensate lost network connections.
+
+Security
+: DAS is usable by authenticated users/tenants.
+[Swiss government recomendations for Cyber-Security](https://www.ncsc.admin.ch/ncsc/de/home/infos-fuer/infos-it-spezialisten/themen/ikt-minimalstandards.html) are considered.
+
+Maintainability
 : New functionality can be implemented in a predictive manner while guaranteeing to not break
-existing functionality. Additional railway undertakings can be easily integrated.
+existing functionality. Additional railway undertakings can be easily integrated. CENELEC drives the change
+process for safety relevant applications.
+SBB Governance/Standards are covered.
+Open source documentation.
 
--> keine unnötigen Dependencies (Check, ob Dependencies "gut" sind), APIM, Modularisierung (auch
-Projektstruktur), SBB Standards einsetzen, Lint enforced Modularisierung, Arch Unit (DDD),
+Flexibility
+: DAS-Client installation by App stores. Backends are cloud based and therefore easy scalable.
 
-Usability - Support, not distract the engine driver
-: Providing a simple and concise user interface for engine drivers to support operations and avoid
-distractions is paramount.
-
--> UX, Research, Testing, Einfluss/Zusammenarbeit im Entwicklungsprozess
-
-### Further objectives which are relevant for DAS in the context of Functional Suitability:
-
-Auditability - Like an open book
-: It is easy to check and understand the functionality, data flows and logic.
-
--> Logging, Open Source, comprehensive documentation,
-
-Safety - No influence on safety of operations
-: The circumstances of the use of the systems are always respected. No unnecessary functionality or
-distracting features will be implemented.
-
--> K 250, Prozesse SBB folgen, ISO miteinbeziehen, Testing, Simulatoren
+Safety
+: SBB Safty Management K 250 (Risk Analysis), CENELEC Norms SN EN 50126 & SN EN 50716, ISO 9001 Quality System.
+Cabine-Simulator
