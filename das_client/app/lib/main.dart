@@ -6,17 +6,15 @@ import 'package:flutter/material.dart';
 
 Future<void> start(Flavor flavor) async {
   WidgetsFlutterBinding.ensureInitialized();
+  Fimber.plantTree(DebugTree(useColors: false));
   await _initDependencyInjection(flavor);
-  await _initLogging();
+  await _initDASLogging();
   runDasApp();
 }
 
 Future<void> runDasApp() async => runApp(App());
 
-Future<void> _initLogging() async {
-  Fimber.plantTree(DebugTree(useColors: false));
-  Fimber.plantTree(DI.get());
-}
+Future<void> _initDASLogging() async => Fimber.plantTree(DI.get());
 
 Future<void> _initDependencyInjection(Flavor flavor) async {
   await DI.init(flavor);
