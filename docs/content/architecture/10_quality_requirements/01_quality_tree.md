@@ -5,7 +5,7 @@ cascade:
 ---
 
 [Software Product Quality ISO 25010](https://www.iso25000.com/index.php/en/iso-25000-standards/iso-25010)
-![](ISO%2025010.png)
+![](ISO-25010.png)
 
 Functional Suitability - Provided information is correct.
 : DAS only displays and never modifies data. A data source can rely on DAS to present the provided

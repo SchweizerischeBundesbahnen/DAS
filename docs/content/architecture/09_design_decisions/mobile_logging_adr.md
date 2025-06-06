@@ -31,7 +31,7 @@ One logging-instance is enough. If anytime later RUs prefer their own instances,
 
 ## Alternatives
 
-1. DAS-Backend could be an intermediate layer to more comfortably delegate to tenant technology and/or instances.
+1. DAS-Client could log to DAS-Backend by an intermediate layer to more comfortably delegate tenant technology and/or instances.
 
 ## Decision
 
