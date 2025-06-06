@@ -51,18 +51,21 @@ class _JourneyPageState extends State<JourneyPage> with SingleTickerProviderStat
   @override
   Widget build(BuildContext context) {
     final double screenHeight = MediaQuery.of(context).size.height;
-    final viewModel = context.read<TrainJourneyViewModel>();
-    return StreamBuilder<TrainJourneySettings>(
-      stream: viewModel.settings,
-      builder: (context, snapshot) {
-        return Scaffold(
-          //Handling overflow issues in train selection when tablet is too small
-          resizeToAvoidBottomInset: screenHeight <= 830 ? true : null,
-          appBar: _appBar(context, snapshot.data),
-          body: _body(context),
-          drawer: const DASNavigationDrawer(),
-        );
-      },
+    final viewModel = DI.get<TrainJourneyViewModel>();
+    return Provider(
+      create: (_) => DI.get<TrainJourneyViewModel>(),
+      child: StreamBuilder<TrainJourneySettings>(
+        stream: viewModel.settings,
+        builder: (context, snapshot) {
+          return Scaffold(
+            //Handling overflow issues in train selection when tablet is too small
+            resizeToAvoidBottomInset: screenHeight <= 830 ? true : null,
+            appBar: _appBar(context, snapshot.data),
+            body: _body(context),
+            drawer: const DASNavigationDrawer(),
+          );
+        },
+      ),
     );
   }
 

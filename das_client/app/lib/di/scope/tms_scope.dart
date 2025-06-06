@@ -27,7 +27,7 @@ class TmsScope {
   }
 }
 
-extension TmsExtension on GetIt {
+extension TmsScopeExtension on GetIt {
   void registerOpenIdMqttClientConnector() {
     factoryFunc() {
       Fimber.d('Register mqtt client connector');

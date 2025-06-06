@@ -27,7 +27,7 @@ class SferaMockScope {
   }
 }
 
-extension SferaMockExtension on GetIt {
+extension SferaMockScopeExtension on GetIt {
   void registerOAuthMqttClientConnector() {
     factoryFunc() {
       Fimber.d('Register mqtt client connector');

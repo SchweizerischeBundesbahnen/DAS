@@ -41,7 +41,7 @@ Future<void> prepareAndStartApp(WidgetTester tester, {VoidCallback? onBeforeRun}
   // (https://github.com/leancodepl/patrol/issues/1868#issuecomment-1814241939)
   tester.testTextInput.register();
 
-  await IntegrationTestDI.init(Flavor.dev());
+  await IntegrationTestDI.init(Flavor.dev().withSferaMockValues());
   l10n = await deviceLocalizations();
   onBeforeRun?.call();
   runDasApp();
