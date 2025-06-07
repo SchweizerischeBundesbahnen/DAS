@@ -1,21 +1,24 @@
-part of 'di_scope.dart';
+import 'package:app/di/di.dart';
+import 'package:app/di/scopes/di_scope.dart';
+import 'package:app/flavor.dart';
+import 'package:fimber/fimber.dart';
+import 'package:get_it/get_it.dart';
+import 'package:mqtt/component.dart';
 
 class TmsScope extends DIScope {
-  static get scopeName => 'TmsScope';
-
   @override
-  String get _scopeName => scopeName;
+  String get scopeName => 'TmsScope';
 
   @override
   Future<void> push() async {
-    Fimber.d('Pushing scope $_scopeName');
-    _getIt.pushNewScope(scopeName: _scopeName);
+    Fimber.d('Pushing scope $scopeName');
+    getIt.pushNewScope(scopeName: scopeName);
     final tmsFlavor = DI.get<Flavor>().withTmsValues();
 
-    _getIt.registerFlavor(tmsFlavor);
-    _getIt.registerAzureAuthenticator();
+    getIt.registerFlavor(tmsFlavor);
+    getIt.registerAzureAuthenticator();
 
-    _getIt.registerOpenIdMqttClientConnector();
+    getIt.registerOpenIdMqttClientConnector();
   }
 }
 

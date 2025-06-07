@@ -1,27 +1,34 @@
-part of 'di_scope.dart';
+import 'package:app/di/di.dart';
+import 'package:app/flavor.dart';
+import 'package:app/pages/journey/train_journey_view_model.dart';
+import 'package:app/util/device_id_info.dart';
+import 'package:auth/component.dart';
+import 'package:fimber/fimber.dart';
+import 'package:get_it/get_it.dart';
+import 'package:http_x/component.dart';
+import 'package:mqtt/component.dart';
+import 'package:sfera/component.dart';
 
 class AuthenticatedScope extends DIScope {
-  static const String scopeName = 'AuthenticatedScope';
-
   @override
-  String get _scopeName => scopeName;
+  String get scopeName => 'AuthenticatedScope';
 
   @override
   Future<void> push() async {
-    Fimber.d('Pushing scope $_scopeName');
-    _getIt.pushNewScope(scopeName: _scopeName);
+    Fimber.d('Pushing scope $scopeName');
+    getIt.pushNewScope(scopeName: scopeName);
 
-    _getIt.registerAuthProvider();
-    _getIt.registerSferaAuthProvider();
-    _getIt.registerSferaAuthService();
-    _getIt.registerMqttAuthProvider();
-    _getIt.registerMqttService();
-    _getIt.registerDasLogTree();
-    _getIt.registerSferaLocalRepo();
-    _getIt.registerSferaRemoteRepo();
-    _getIt.registerTrainJourneyViewModel();
+    getIt.registerAuthProvider();
+    getIt.registerSferaAuthProvider();
+    getIt.registerSferaAuthService();
+    getIt.registerMqttAuthProvider();
+    getIt.registerMqttService();
+    getIt.registerDasLogTree();
+    getIt.registerSferaLocalRepo();
+    getIt.registerSferaRemoteRepo();
+    getIt.registerTrainJourneyViewModel();
 
-    return _getIt.allReady();
+    await getIt.allReady();
   }
 }
 

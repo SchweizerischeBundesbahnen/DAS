@@ -1,8 +1,10 @@
-import 'package:app/di/scopes/di_scope.dart';
+import 'package:app/di/di.dart';
 
 abstract interface class ScopeHandler {
-  /// Returns the current scope.
-  String? getCurrentScopeName();
+  /// Checks whether the given scope is within the stack.
+  bool isInStack<T extends DIScope>();
+
+  bool isTop<T extends DIScope>();
 
   /// Pushes a new scope of the given type.
   Future<void> push<T extends DIScope>();

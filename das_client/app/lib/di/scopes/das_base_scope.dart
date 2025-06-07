@@ -1,21 +1,30 @@
-part of 'di_scope.dart';
-
 // Named 'DASBaseScope' to avoid confusion with GetIt's 'baseScope'.
-class DASBaseScope extends DIScope {
-  static const String scopeName = 'DASBaseScope';
+import 'package:app/brightness/brightness_manager.dart';
+import 'package:app/brightness/brightness_manager_impl.dart';
+import 'package:app/di/di.dart';
+import 'package:app/flavor.dart';
+import 'package:app/util/device_id_info.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:battery_plus/battery_plus.dart';
+import 'package:fimber/fimber.dart';
+import 'package:get_it/get_it.dart';
+import 'package:http_x/component.dart';
+import 'package:logger/component.dart';
+import 'package:screen_brightness/screen_brightness.dart';
 
+class DASBaseScope extends DIScope {
   @override
-  String get _scopeName => scopeName;
+  String get scopeName => 'DASBaseScope';
 
   @override
   Future<void> push() async {
-    Fimber.d('Pushing scope $_scopeName');
-    _getIt.pushNewScope(scopeName: _scopeName);
-    _getIt.registerBrightnessManager();
-    _getIt.registerAudioPlayer();
-    _getIt.registerBattery();
-    _getIt.registerDasLogTree(); // pushes without remote service
-    return _getIt.allReady();
+    Fimber.d('Pushing scope $scopeName');
+    getIt.pushNewScope(scopeName: scopeName);
+    getIt.registerBrightnessManager();
+    getIt.registerAudioPlayer();
+    getIt.registerBattery();
+    getIt.registerDasLogTree(); // pushes without remote service
+    await getIt.allReady();
   }
 }
 

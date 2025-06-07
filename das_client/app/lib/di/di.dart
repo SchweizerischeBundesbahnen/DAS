@@ -1,40 +1,34 @@
 import 'package:app/di/scope_handler.dart';
 import 'package:app/di/scope_handler_impl.dart';
-import 'package:app/di/scopes/di_scope.dart';
+import 'package:app/di/scopes/scopes.dart';
 import 'package:app/flavor.dart';
 import 'package:auth/component.dart';
 import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
 
-export 'package:app/di/scopes/di_scope.dart' show AuthenticatedScopeExtension;
-export 'package:app/di/scopes/di_scope.dart' show BaseScopeExtension;
-export 'package:app/di/scopes/di_scope.dart' show SferaMockScopeExtension;
-export 'package:app/di/scopes/di_scope.dart' show TmsScopeExtension;
+export 'package:app/di/scopes/scopes.dart';
 
 class DI {
   const DI._();
 
   static Future<void> init(Flavor flavor) {
-    Fimber.i('Initialize dependency injection');
+    Fimber.d('Initialize dependency injection');
     return GetIt.I.init(flavor);
   }
 
-  static Future<void> reinitialize({required bool useTms}) async {
-    Fimber.i('Reinitialize dependency injection with useTms=$useTms');
-    final LogTree? logTree = getOrNull<LogTree>();
-    if (logTree != null) {
-      Fimber.d('Unplanting existing log tree');
-      Fimber.unplantTree(logTree);
-    }
+  /// The login scope is either the TMS scope or the Sfera mock scope.
+  static Future<void> loginScope({required bool useTms}) async {
+    Fimber.i('LoginScope with useTms=$useTms');
 
     final scopeHandler = DI.get<ScopeHandler>();
-    await scopeHandler.popAbove<DASBaseScope>();
+    if (scopeHandler.isInStack<AuthenticatedScope>()) await scopeHandler.pop<AuthenticatedScope>();
+
     if (useTms) {
-      Fimber.d('Using TMS scope');
-      await scopeHandler.push<TmsScope>();
+      if (scopeHandler.isTop<SferaMockScope>()) await scopeHandler.pop<SferaMockScope>();
+      if (!scopeHandler.isTop<TmsScope>()) await scopeHandler.push<TmsScope>();
     } else {
-      Fimber.d('Using Sfera mock scope');
-      await scopeHandler.push<SferaMockScope>();
+      if (scopeHandler.isTop<TmsScope>()) await scopeHandler.pop<TmsScope>();
+      if (!scopeHandler.isTop<SferaMockScope>()) await scopeHandler.push<SferaMockScope>();
     }
 
     await GetIt.I.allReady();

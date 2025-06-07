@@ -14,7 +14,10 @@ Future<void> start(Flavor flavor) async {
 
 Future<void> runDasApp() async => runApp(App());
 
-Future<void> _initDASLogging() async => Fimber.plantTree(DI.get());
+Future<void> _initDASLogging() async {
+  Fimber.d('Initializing DAS logging by planting BaseScope tree');
+  Fimber.plantTree(DI.get());
+}
 
 Future<void> _initDependencyInjection(Flavor flavor) async {
   await DI.init(flavor);

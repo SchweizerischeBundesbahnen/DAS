@@ -2,12 +2,13 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:fimber/fimber.dart';
+import 'package:get_it/get_it.dart';
 import 'package:logger/src/data/logger_repo.dart';
 import 'package:logger/src/log_entry.dart';
 import 'package:logger/src/log_level.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-class DasLogTree extends LogTree {
+class DasLogTree extends LogTree implements ShadowChangeHandlers {
   DasLogTree({required LoggerRepo loggerRepo, required this.deviceId}) : _loggerRepo = loggerRepo {
     _initialized = _init();
   }
@@ -18,7 +19,7 @@ class DasLogTree extends LogTree {
   late Future<void> _initialized;
 
   Future<void> _init() async {
-    Fimber.i('Initializing DasLogTree...');
+    Fimber.d('Initializing DasLogTree...');
     metadata['deviceId'] = deviceId;
 
     final info = await PackageInfo.fromPlatform();
@@ -85,5 +86,19 @@ class DasLogTree extends LogTree {
       default:
         return LogLevel.info;
     }
+  }
+
+  @override
+  void onGetShadowed(Object shadowing) {
+    Fimber.d('Being shadowed by - unplanting this and planting new tree with shadowing!');
+    Fimber.unplantTree(this);
+    Fimber.plantTree(shadowing as LogTree);
+  }
+
+  @override
+  void onLeaveShadow(Object shadowing) {
+    Fimber.d('Left shadow of $shadowing - unplanting shadow and planting this tree!');
+    Fimber.unplantTree(shadowing as LogTree);
+    Fimber.plantTree(this);
   }
 }
