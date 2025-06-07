@@ -13,4 +13,18 @@ class TrainIdentification {
   final RailwayUndertaking ru;
   final String trainNumber;
   final DateTime date;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+    final TrainIdentification otherId = other as TrainIdentification;
+    return ru == otherId.ru && trainNumber == otherId.trainNumber && date == otherId.date;
+  }
+
+  @override
+  int get hashCode => Object.hash(ru, trainNumber, date);
+
+  @override
+  String toString() => 'TrainIdentification(ru: $ru, trainNumber: $trainNumber, date: $date)';
 }
