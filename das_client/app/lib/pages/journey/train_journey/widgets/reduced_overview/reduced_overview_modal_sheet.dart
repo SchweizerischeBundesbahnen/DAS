@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 Future<void> showReducedOverviewModalSheet(BuildContext context) async {
-  final viewModel = context.read<TrainJourneyViewModel>();
+  final viewModel = DI.get<TrainJourneyViewModel>();
   final trainIdentification = viewModel.trainIdentificationValue;
   if (trainIdentification != null) {
     showSBBModalSheet(

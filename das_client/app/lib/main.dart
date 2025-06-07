@@ -21,7 +21,7 @@ Future<void> _initDASLogging() async {
 }
 
 Future<void> _initDependencyInjection(Flavor flavor) async {
-  await DI.init(flavor); // registers flavor and scope handler
+  await DI.init(flavor); // registers flavor, scopes, and scope handler
 
   final scopeHandler = DI.get<ScopeHandler>();
   await scopeHandler.push<DASBaseScope>();

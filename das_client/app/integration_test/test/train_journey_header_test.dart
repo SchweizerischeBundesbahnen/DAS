@@ -187,7 +187,7 @@ Future<void> main() async {
       await prepareAndStartApp(tester);
 
       // Set Battery to a mocked version
-      final battery = DI.get<Battery>() as BatteryMock;
+      final battery = DI.get<Battery>() as MockBattery;
 
       // Set current Battery-Level to 80 % so it is over 15%
       battery.currentBatteryLevel = 80;
@@ -211,7 +211,7 @@ Future<void> main() async {
       await prepareAndStartApp(tester);
 
       // Set Battery to a mocked version
-      final battery = DI.get<Battery>() as BatteryMock;
+      final battery = DI.get<Battery>() as MockBattery;
 
       // Set current Battery-Level to 10% so it is under 15%
       battery.currentBatteryLevel = 10;

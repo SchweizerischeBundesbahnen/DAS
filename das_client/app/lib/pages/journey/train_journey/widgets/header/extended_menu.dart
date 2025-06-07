@@ -1,3 +1,4 @@
+import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/reduced_overview/reduced_overview_modal_sheet.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
@@ -7,7 +8,6 @@ import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class ExtendedMenu extends StatefulWidget {
@@ -223,7 +223,7 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
   }
 
   Widget _maneuverItem(BuildContext context) {
-    final viewModel = context.read<TrainJourneyViewModel>();
+    final viewModel = DI.get<TrainJourneyViewModel>();
 
     return SBBListItem.custom(
       title: context.l10n.w_extended_menu_maneuver_mode,
