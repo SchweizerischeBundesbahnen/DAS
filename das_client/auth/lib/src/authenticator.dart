@@ -15,7 +15,4 @@ abstract class Authenticator {
   Future<void> logout();
 
   Future<void> endSession();
-
-  /// calls logout
-  Future<void> dispose();
 }

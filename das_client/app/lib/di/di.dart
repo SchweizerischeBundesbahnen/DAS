@@ -13,7 +13,9 @@ class DI {
 
   static Future<void> init(Flavor flavor) {
     Fimber.d('Initialize dependency injection');
-    return GetIt.I.init(flavor);
+    GetIt.I.registerFlavor(flavor);
+    GetIt.I.registerScopeHandler();
+    return GetIt.I.allReady();
   }
 
   /// The login scope is either the TMS scope or the Sfera mock scope.
@@ -66,17 +68,6 @@ class DI {
 // Internal
 
 extension GetItX on GetIt {
-  Future<void> init(Flavor flavor) async {
-    // Register flavor and scope handler before any scopes.
-    registerFlavor(flavor);
-    registerScopeHandler();
-
-    final scopeHandler = get<ScopeHandler>();
-    await scopeHandler.push<DASBaseScope>();
-    await scopeHandler.push<SferaMockScope>();
-    await allReady();
-  }
-
   void registerScopeHandler() {
     Fimber.d('Register scope handler');
     registerSingleton<ScopeHandler>(ScopeHandlerImpl());
@@ -95,6 +86,6 @@ extension GetItX on GetIt {
       return AuthenticationComponent.createAzureAuthenticator(config: authenticatorConfig);
     }
 
-    registerSingleton<Authenticator>(factoryFunc(), dispose: (authenticator) => authenticator.dispose());
+    registerSingleton<Authenticator>(factoryFunc());
   }
 }

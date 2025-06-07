@@ -26,7 +26,4 @@ class IntegrationTestAuthenticator implements Authenticator {
   }
 
   OidcToken _token() => OidcToken(tokenType: '', accessToken: '', idToken: '');
-
-  @override
-  Future<void> dispose() async {}
 }

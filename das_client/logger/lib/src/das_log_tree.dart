@@ -90,14 +90,14 @@ class DasLogTree extends LogTree implements ShadowChangeHandlers {
 
   @override
   void onGetShadowed(Object shadowing) {
-    Fimber.d('Being shadowed by - unplanting this and planting new tree with shadowing!');
+    Fimber.d('This tree is being shadowed - unplanting this and planting new tree with shadowing');
     Fimber.unplantTree(this);
     Fimber.plantTree(shadowing as LogTree);
   }
 
   @override
   void onLeaveShadow(Object shadowing) {
-    Fimber.d('Left shadow of $shadowing - unplanting shadow and planting this tree!');
+    Fimber.d('This tree is not shadowed anymore - unplanting shadow and planting this tree');
     Fimber.unplantTree(shadowing as LogTree);
     Fimber.plantTree(this);
   }
