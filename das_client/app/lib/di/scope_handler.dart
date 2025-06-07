@@ -1,5 +1,7 @@
 import 'package:app/di/di.dart';
 
+/// The ScopeHandler interface defines methods for managing DI scopes in the application.
+/// Makes scope handling during integration tests easier.
 abstract interface class ScopeHandler {
   /// Checks whether the given scope is within the stack.
   bool isInStack<T extends DIScope>();

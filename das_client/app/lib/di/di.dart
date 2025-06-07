@@ -14,6 +14,7 @@ class DI {
   static Future<void> init(Flavor flavor) {
     Fimber.d('Initialize dependency injection');
     GetIt.I.registerFlavor(flavor);
+    GetIt.I.registerScopes();
     GetIt.I.registerScopeHandler();
     return GetIt.I.allReady();
   }
@@ -32,8 +33,6 @@ class DI {
       if (scopeHandler.isTop<TmsScope>()) await scopeHandler.pop<TmsScope>();
       if (!scopeHandler.isTop<SferaMockScope>()) await scopeHandler.push<SferaMockScope>();
     }
-
-    await GetIt.I.allReady();
   }
 
   static T? getOrNull<T extends Object>({
@@ -42,7 +41,7 @@ class DI {
     dynamic param2,
   }) {
     try {
-      return GetIt.I.get<T>(
+      return get<T>(
         instanceName: instanceName,
         param1: param1,
         param2: param2,
@@ -65,9 +64,7 @@ class DI {
   }
 }
 
-// Internal
-
-extension GetItX on GetIt {
+extension DiExtension on GetIt {
   void registerScopeHandler() {
     Fimber.d('Register scope handler');
     registerSingleton<ScopeHandler>(ScopeHandlerImpl());
@@ -87,5 +84,13 @@ extension GetItX on GetIt {
     }
 
     registerSingleton<Authenticator>(factoryFunc());
+  }
+
+  void registerScopes() {
+    Fimber.d('Registering scopes');
+    registerSingleton<DASBaseScope>(DASBaseScope());
+    registerSingleton<SferaMockScope>(SferaMockScope());
+    registerSingleton<TmsScope>(TmsScope());
+    registerSingleton<AuthenticatedScope>(AuthenticatedScope());
   }
 }

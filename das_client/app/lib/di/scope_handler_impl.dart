@@ -3,59 +3,41 @@ import 'package:app/di/scope_handler.dart';
 import 'package:get_it/get_it.dart';
 
 class ScopeHandlerImpl implements ScopeHandler {
+  DIScope _getScope<T extends DIScope>() {
+    try {
+      return DI.get<T>();
+    } catch (e) {
+      throw UnimplementedError('Scope not implemented for type: $T');
+    }
+  }
+
   @override
   bool isTop<T extends DIScope>() {
     final currentScopeName = GetIt.I.currentScopeName;
     if (currentScopeName == null) return false;
 
-    final tName = switch (T) {
-      const (DASBaseScope) => DASBaseScope().scopeName,
-      const (SferaMockScope) => SferaMockScope().scopeName,
-      const (TmsScope) => TmsScope().scopeName,
-      const (AuthenticatedScope) => AuthenticatedScope().scopeName,
-      _ => throw UnimplementedError('isCurrentScope not implemented for scope type: $T'),
-    };
+    final tName = _getScope<T>().scopeName;
     return currentScopeName == tName;
   }
 
   @override
   Future<bool> pop<T extends DIScope>() {
-    return switch (T) {
-      const (DASBaseScope) => DASBaseScope().pop(),
-      const (SferaMockScope) => SferaMockScope().pop(),
-      const (TmsScope) => TmsScope().pop(),
-      const (AuthenticatedScope) => AuthenticatedScope().pop(),
-      _ => throw UnimplementedError('pop not implemented for scope type: $T'),
-    };
+    return _getScope<T>().pop();
   }
 
   @override
-  Future<bool> popAbove<T extends DIScope>() => switch (T) {
-    const (DASBaseScope) => DASBaseScope().popAbove(),
-    const (SferaMockScope) => SferaMockScope().popAbove(),
-    const (TmsScope) => TmsScope().popAbove(),
-    const (AuthenticatedScope) => AuthenticatedScope().popAbove(),
-    _ => throw UnimplementedError('popAbove not implemented for scope type: $T'),
-  };
+  Future<bool> popAbove<T extends DIScope>() {
+    return _getScope<T>().popAbove();
+  }
 
   @override
-  Future<void> push<T extends DIScope>() => switch (T) {
-    const (DASBaseScope) => DASBaseScope().push(),
-    const (SferaMockScope) => SferaMockScope().push(),
-    const (TmsScope) => TmsScope().push(),
-    const (AuthenticatedScope) => AuthenticatedScope().push(),
-    _ => throw UnimplementedError('push not implemented for scope type: $T'),
-  };
+  Future<void> push<T extends DIScope>() {
+    return _getScope<T>().push();
+  }
 
   @override
   bool isInStack<T extends DIScope>() {
-    final scopeName = switch (T) {
-      const (DASBaseScope) => DASBaseScope().scopeName,
-      const (SferaMockScope) => SferaMockScope().scopeName,
-      const (TmsScope) => TmsScope().scopeName,
-      const (AuthenticatedScope) => AuthenticatedScope().scopeName,
-      _ => throw UnimplementedError('isInStack not implemented for scope type: $T'),
-    };
+    final scopeName = _getScope<T>().scopeName;
     return GetIt.I.hasScope(scopeName);
   }
 }

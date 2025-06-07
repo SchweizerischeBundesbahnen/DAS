@@ -1,4 +1,3 @@
-// Named 'DASBaseScope' to avoid confusion with GetIt's 'baseScope'.
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/brightness/brightness_manager_impl.dart';
 import 'package:app/di/di.dart';
@@ -12,6 +11,7 @@ import 'package:http_x/component.dart';
 import 'package:logger/component.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 
+/// Named 'DASBaseScope' to avoid confusion with GetIt's 'baseScope'.
 class DASBaseScope extends DIScope {
   @override
   String get scopeName => 'DASBaseScope';

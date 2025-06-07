@@ -1,12 +1,12 @@
 import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
 
-class DIScope {
+abstract class DIScope {
   String get scopeName => '';
 
   final getIt = GetIt.I;
 
-  Future<void> push() => Future.value(null);
+  Future<void> push();
 
   Future<bool> pop() async {
     Fimber.d('Popping scope $scopeName');

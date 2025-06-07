@@ -1,5 +1,4 @@
 import 'package:app/di/di.dart';
-import 'package:app/di/scopes/di_scope.dart';
 import 'package:app/flavor.dart';
 import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
