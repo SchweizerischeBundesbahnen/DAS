@@ -51,33 +51,28 @@ class _JourneyPageState extends State<JourneyPage> with SingleTickerProviderStat
   @override
   Widget build(BuildContext context) {
     final double screenHeight = MediaQuery.of(context).size.height;
-    final viewModel = DI.get<TrainJourneyViewModel>();
     return Provider(
       create: (_) => DI.get<TrainJourneyViewModel>(),
-      child: StreamBuilder<TrainJourneySettings>(
-        stream: viewModel.settings,
-        builder: (context, snapshot) {
-          return Scaffold(
-            //Handling overflow issues in train selection when tablet is too small
-            resizeToAvoidBottomInset: screenHeight <= 830 ? true : null,
-            appBar: _appBar(context, snapshot.data),
-            body: _body(context),
-            drawer: const DASNavigationDrawer(),
-          );
-        },
+      child: Scaffold(
+        //Handling overflow issues in train selection when tablet is too small
+        resizeToAvoidBottomInset: screenHeight <= 830 ? true : null,
+        appBar: _appBar(context),
+        body: _body(context),
+        drawer: const DASNavigationDrawer(),
       ),
     );
   }
 
-  PreferredSizeWidget? _appBar(BuildContext context, TrainJourneySettings? settings) {
-    final viewModel = context.read<TrainJourneyViewModel>();
+  PreferredSizeWidget? _appBar(BuildContext context) {
+    final viewModel = DI.get<TrainJourneyViewModel>();
     return PreferredSize(
       preferredSize: Size.fromHeight(_toolbarHeight),
       child: StreamBuilder(
-        stream: CombineLatestStream.list([viewModel.journey, viewModel.trainIdentification]),
+        stream: CombineLatestStream.list([viewModel.journey, viewModel.trainIdentification, viewModel.settings]),
         builder: (context, snapshot) {
           final journey = snapshot.data?[0] as Journey?;
           final trainIdentification = snapshot.data?[1] as TrainIdentification?;
+          final settings = snapshot.data?[2] as TrainJourneySettings?;
 
           final appBarHidden = journey != null && settings?.isAutoAdvancementEnabled == true;
           appBarHidden ? _controller.forward() : _controller.reverse();
@@ -102,7 +97,7 @@ class _JourneyPageState extends State<JourneyPage> with SingleTickerProviderStat
   }
 
   Widget _content(BuildContext context) {
-    final viewModel = context.read<TrainJourneyViewModel>();
+    final viewModel = DI.get<TrainJourneyViewModel>();
     return StreamBuilder(
       stream: CombineLatestStream.list([
         viewModel.journey,
