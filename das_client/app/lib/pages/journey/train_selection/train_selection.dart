@@ -94,6 +94,7 @@ class _TrainSelectionState extends State<TrainSelection> {
             controller: _trainNumberController,
             labelText: context.l10n.p_train_selection_trainnumber_description,
             keyboardType: TextInputType.text,
+            onSubmitted: (_) => viewModel.formCompletedValue ? viewModel.loadTrainJourney() : null,
           ),
         );
       },

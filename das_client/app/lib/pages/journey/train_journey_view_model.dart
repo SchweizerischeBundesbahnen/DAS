@@ -32,6 +32,8 @@ class TrainJourneyViewModel {
 
   Stream<bool> get formCompleted => _rxFormCompleted.stream;
 
+  bool get formCompletedValue => _rxFormCompleted.value;
+
   Stream<RailwayUndertaking> get selectedRailwayUndertaking => _rxRailwayUndertaking.stream;
 
   Stream<TrainIdentification?> get trainIdentification => _rxTrainIdentification.stream;
