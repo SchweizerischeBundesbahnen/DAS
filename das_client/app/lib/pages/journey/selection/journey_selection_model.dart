@@ -3,52 +3,50 @@ import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:sfera/component.dart';
 
-sealed class TrainJourneySelectionModel {
-  const TrainJourneySelectionModel._();
+sealed class JourneySelectionModel {
+  const JourneySelectionModel._();
 
-  factory TrainJourneySelectionModel.selecting({
+  factory JourneySelectionModel.selecting({
     required DateTime startDate,
     required RailwayUndertaking railwayUndertaking,
     String? trainNumber,
   }) = Selecting;
 
-  factory TrainJourneySelectionModel.loading({required TrainIdentification trainJourneyIdentification}) = Loading;
+  factory JourneySelectionModel.loading({required TrainIdentification trainJourneyIdentification}) = Loading;
 
-  factory TrainJourneySelectionModel.loaded({required TrainIdentification trainJourneyIdentification}) = Loaded;
+  factory JourneySelectionModel.loaded({required TrainIdentification trainJourneyIdentification}) = Loaded;
 
-  factory TrainJourneySelectionModel.error({
+  factory JourneySelectionModel.error({
+    required TrainIdentification trainJourneyIdentification,
     required ErrorCode errorCode,
-    String? trainNumber,
-    DateTime? startDate,
-    RailwayUndertaking? railwayUndertaking,
   }) = Error;
 
   bool get isStartDateSameAsToday => switch (this) {
     final Selecting selecting => DateUtils.isSameDay(selecting.startDate, clock.now()),
     final Loading loading => DateUtils.isSameDay(loading.trainJourneyIdentification.date, clock.now()),
     final Loaded loaded => DateUtils.isSameDay(loaded.trainJourneyIdentification.date, clock.now()),
-    final Error error => error.startDate != null && DateUtils.isSameDay(error.startDate!, clock.now()),
+    final Error error => DateUtils.isSameDay(error.trainJourneyIdentification.date, clock.now()),
   };
 
   String get operationalTrainNumber => switch (this) {
     final Selecting selecting => selecting.trainNumber ?? '',
     final Loading loading => loading.trainJourneyIdentification.trainNumber,
     final Loaded loaded => loaded.trainJourneyIdentification.trainNumber,
-    final Error error => error.trainNumber ?? '',
+    final Error error => error.trainJourneyIdentification.trainNumber,
   };
 
-  get selectedDate => switch (this) {
+  DateTime get startDate => switch (this) {
     final Selecting selecting => selecting.startDate,
     final Loading loading => loading.trainJourneyIdentification.date,
     final Loaded loaded => loaded.trainJourneyIdentification.date,
-    final Error error => error.startDate ?? clock.now(),
+    final Error error => error.trainJourneyIdentification.date,
   };
 
-  get railwayUndertaking => switch (this) {
+  RailwayUndertaking get railwayUndertaking => switch (this) {
     final Selecting selecting => selecting.railwayUndertaking,
     final Loading loading => loading.trainJourneyIdentification.ru,
     final Loaded loaded => loaded.trainJourneyIdentification.ru,
-    final Error error => error.railwayUndertaking ?? RailwayUndertaking.sbbP,
+    final Error error => error.trainJourneyIdentification.ru,
   };
 
   @override
@@ -58,14 +56,16 @@ sealed class TrainJourneySelectionModel {
   int get hashCode => runtimeType.hashCode;
 }
 
-class Selecting extends TrainJourneySelectionModel {
+class Selecting extends JourneySelectionModel {
   const Selecting({
     required this.startDate,
     required this.railwayUndertaking,
     this.trainNumber,
     this.isInputComplete = false,
   }) : super._();
+  @override
   final DateTime startDate;
+  @override
   final RailwayUndertaking railwayUndertaking;
   final String? trainNumber;
   final bool isInputComplete;
@@ -90,7 +90,7 @@ class Selecting extends TrainJourneySelectionModel {
     bool? isInputComplete,
   }) {
     return Selecting(
-      trainNumber: operationalTrainNumber ?? this.trainNumber,
+      trainNumber: operationalTrainNumber ?? trainNumber,
       startDate: startDate ?? this.startDate,
       railwayUndertaking: railwayUndertaking ?? this.railwayUndertaking,
       isInputComplete: isInputComplete ?? this.isInputComplete,
@@ -98,7 +98,7 @@ class Selecting extends TrainJourneySelectionModel {
   }
 }
 
-class Loading extends TrainJourneySelectionModel {
+class Loading extends JourneySelectionModel {
   const Loading({
     required this.trainJourneyIdentification,
   }) : super._();
@@ -124,7 +124,7 @@ class Loading extends TrainJourneySelectionModel {
   }
 }
 
-class Loaded extends TrainJourneySelectionModel {
+class Loaded extends JourneySelectionModel {
   const Loaded({
     required this.trainJourneyIdentification,
   }) : super._();
@@ -140,26 +140,14 @@ class Loaded extends TrainJourneySelectionModel {
 
   @override
   int get hashCode => Object.hash(runtimeType, trainJourneyIdentification);
-
-  Loaded copyWith({
-    TrainIdentification? trainJourneyIdentification,
-  }) {
-    return Loaded(
-      trainJourneyIdentification: trainJourneyIdentification ?? this.trainJourneyIdentification,
-    );
-  }
 }
 
-class Error extends TrainJourneySelectionModel {
+class Error extends JourneySelectionModel {
   const Error({
-    this.trainNumber,
-    this.startDate,
-    this.railwayUndertaking,
+    required this.trainJourneyIdentification,
     required this.errorCode,
   }) : super._();
-  final String? trainNumber;
-  final DateTime? startDate;
-  final RailwayUndertaking? railwayUndertaking;
+  final TrainIdentification trainJourneyIdentification;
   final ErrorCode errorCode;
 
   @override
@@ -167,25 +155,9 @@ class Error extends TrainJourneySelectionModel {
       identical(this, other) ||
       other is Error &&
           runtimeType == other.runtimeType &&
-          trainNumber == other.trainNumber &&
-          startDate == other.startDate &&
-          railwayUndertaking == other.railwayUndertaking &&
+          trainJourneyIdentification == other.trainJourneyIdentification &&
           errorCode == other.errorCode;
 
   @override
-  int get hashCode => Object.hash(runtimeType, trainNumber, startDate, railwayUndertaking, errorCode);
-
-  Error copyWith({
-    String? operationalTrainNumber,
-    DateTime? startDate,
-    RailwayUndertaking? railwayUndertaking,
-    ErrorCode? errorCode,
-  }) {
-    return Error(
-      trainNumber: operationalTrainNumber ?? this.trainNumber,
-      startDate: startDate ?? this.startDate,
-      railwayUndertaking: railwayUndertaking ?? this.railwayUndertaking,
-      errorCode: errorCode ?? this.errorCode,
-    );
-  }
+  int get hashCode => Object.hash(runtimeType, trainJourneyIdentification, errorCode);
 }

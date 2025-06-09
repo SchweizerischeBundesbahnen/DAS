@@ -3,8 +3,8 @@ import 'package:app/di/di.dart';
 import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
-import 'package:app/pages/journey/train_selection/train_journey_selection_model.dart';
-import 'package:app/pages/journey/train_selection/train_journey_selection_view_model.dart';
+import 'package:app/pages/journey/selection/journey_selection_model.dart';
+import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
 import 'package:app/util/error_code.dart';
 import 'package:app/util/format.dart';
@@ -22,8 +22,8 @@ class JourneySelectionPage extends StatelessWidget implements AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) {
-    return Provider<TrainJourneySelectionViewModel>(
-      create: (_) => TrainJourneySelectionViewModel(),
+    return Provider<JourneySelectionViewModel>(
+      create: (_) => JourneySelectionViewModel(),
       dispose: (context, vm) => vm.dispose(),
       child: this,
     );
@@ -80,7 +80,7 @@ class _ContentState extends State<_Content> {
 class _LoadJourneyButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<TrainJourneySelectionViewModel>();
+    final viewModel = context.read<JourneySelectionViewModel>();
     return StreamBuilder(
       stream: viewModel.model,
       builder: (context, snapshot) {
@@ -105,7 +105,7 @@ class _LoadJourneyButton extends StatelessWidget {
 class _Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<TrainJourneySelectionViewModel>();
+    final viewModel = context.read<JourneySelectionViewModel>();
     return StreamBuilder(
       stream: viewModel.model,
       builder: (context, snapshot) {
@@ -130,7 +130,7 @@ class _Header extends StatelessWidget {
 class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) => StreamBuilder(
-    stream: context.read<TrainJourneySelectionViewModel>().model,
+    stream: context.read<JourneySelectionViewModel>().model,
     builder: (context, snapshot) {
       final model = snapshot.data;
       if (model == null) return SBBLoadingIndicator();
@@ -154,7 +154,7 @@ class JourneyRailwayUndertakingInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<TrainJourneySelectionViewModel>();
+    final viewModel = context.read<JourneySelectionViewModel>();
     return StreamBuilder(
       stream: viewModel.model,
       builder: (context, snapshot) {
@@ -203,7 +203,7 @@ class _JourneyTrainNumberInputState extends State<JourneyTrainNumberInput> {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<TrainJourneySelectionViewModel>();
+    final viewModel = context.read<JourneySelectionViewModel>();
     return StreamBuilder(
       stream: viewModel.model,
       builder: (context, snapshot) {
@@ -267,19 +267,18 @@ class _JourneyDateInputState extends State<JourneyDateInput> {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<TrainJourneySelectionViewModel>();
+    final viewModel = context.read<JourneySelectionViewModel>();
     return StreamBuilder(
       stream: viewModel.model,
       builder: (context, snapshot) {
         final model = snapshot.data;
         if (model == null) return SizedBox.shrink();
 
-        final date = model.selectedDate;
+        final date = model.startDate;
         _controller.text = Format.date(date);
 
         return switch (model) {
-          final Selecting _ ||
-          final Error _ => _dateInput(context, onTap: date != null ? _showDatePicker(context, date) : null),
+          final Selecting _ || final Error _ => _dateInput(context, onTap: _showDatePicker(context, date)),
           _ => _dateInput(context),
         };
       },
@@ -317,7 +316,7 @@ class _JourneyDateInputState extends State<JourneyDateInput> {
           initialDate: selectedDate,
           minimumDate: now.add(Duration(days: -1)),
           maximumDate: now.add(Duration(hours: 4)),
-          onDateChanged: (value) => context.read<TrainJourneySelectionViewModel>().updateDate(value),
+          onDateChanged: (value) => context.read<JourneySelectionViewModel>().updateDate(value),
         ),
       ],
     );

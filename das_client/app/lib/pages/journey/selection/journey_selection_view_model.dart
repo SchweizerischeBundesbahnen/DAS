@@ -1,26 +1,26 @@
 import 'dart:async';
 
-import 'package:app/pages/journey/train_selection/train_journey_selection_model.dart';
+import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/util/error_code.dart';
 import 'package:clock/clock.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-class TrainJourneySelectionViewModel {
+class JourneySelectionViewModel {
   static const RailwayUndertaking _initialRailwayUndertaking = RailwayUndertaking.sbbP;
 
   DateTime Function() get _initialDateTime =>
       () => clock.now();
 
-  final _state = BehaviorSubject<TrainJourneySelectionModel>();
+  final _state = BehaviorSubject<JourneySelectionModel>();
 
-  TrainJourneySelectionViewModel() {
+  JourneySelectionViewModel() {
     _emitInitial();
   }
 
-  Stream<TrainJourneySelectionModel> get model => _state.stream;
+  Stream<JourneySelectionModel> get model => _state.stream;
 
-  TrainJourneySelectionModel get modelValue => _state.value;
+  JourneySelectionModel get modelValue => _state.value;
 
   void loadTrainJourney() async {
     final currentState = _state.value;
@@ -39,9 +39,11 @@ class TrainJourneySelectionViewModel {
         _state.add(
           Error(
             errorCode: ErrorCode.connectionFailed,
-            trainNumber: sM.operationalTrainNumber,
-            startDate: sM.startDate,
-            railwayUndertaking: sM.railwayUndertaking,
+            trainJourneyIdentification: TrainIdentification(
+              date: sM.startDate,
+              ru: sM.railwayUndertaking,
+              trainNumber: sM.operationalTrainNumber,
+            ),
           ),
         );
         // await Future.delayed(Duration(seconds: 1));
@@ -65,7 +67,7 @@ class TrainJourneySelectionViewModel {
   }
 
   void _emitInitial() => _state.add(
-    TrainJourneySelectionModel.selecting(
+    JourneySelectionModel.selecting(
       startDate: _initialDateTime(),
       railwayUndertaking: _initialRailwayUndertaking,
     ),
@@ -85,9 +87,9 @@ class TrainJourneySelectionViewModel {
       case final Error eM:
         final updatedModel = updateFunc(
           Selecting(
-            startDate: eM.startDate ?? _initialDateTime(),
-            railwayUndertaking: eM.railwayUndertaking ?? _initialRailwayUndertaking,
-            trainNumber: eM.trainNumber,
+            startDate: eM.startDate,
+            railwayUndertaking: eM.railwayUndertaking,
+            trainNumber: eM.operationalTrainNumber,
           ),
         );
         _state.add(updatedModel.copyWith(isInputComplete: _validateInput(updatedModel)));

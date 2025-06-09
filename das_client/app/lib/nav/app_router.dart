@@ -1,5 +1,5 @@
 import 'package:app/pages/journey/journey_page.dart';
-import 'package:app/pages/journey/train_selection/train_selection_page.dart';
+import 'package:app/pages/journey/selection/journey_selection_page.dart';
 import 'package:app/pages/links/links_page.dart';
 import 'package:app/pages/login/login_page.dart';
 import 'package:app/pages/profile/profile_page.dart';

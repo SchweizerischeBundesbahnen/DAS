@@ -1,14 +1,14 @@
-import 'package:app/pages/journey/train_selection/train_journey_selection_model.dart';
-import 'package:app/pages/journey/train_selection/train_journey_selection_view_model.dart';
+import 'package:app/pages/journey/selection/journey_selection_model.dart';
+import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';
 
 void main() {
-  late TrainJourneySelectionViewModel testee;
+  late JourneySelectionViewModel testee;
 
   setUp(() {
-    testee = TrainJourneySelectionViewModel();
+    testee = JourneySelectionViewModel();
   });
 
   tearDown(() {
@@ -21,7 +21,7 @@ void main() {
     final clock = Clock.fixed(backInTheSeventies);
     withClock(clock, () {
       // seventies testee
-      testee = TrainJourneySelectionViewModel();
+      testee = JourneySelectionViewModel();
     });
     // ACT
     final state = testee.modelValue;
@@ -86,43 +86,4 @@ void main() {
     final selecting = state as Selecting;
     expect(selecting.railwayUndertaking, newRU);
   });
-
-  // test('updateTrainNumber_whenAllFieldsSetAndInputComplete_thenLoadedState', () {
-  //   // ARRANGE
-  //   final date = DateTime(2025, 6, 7);
-  //   final ru = RailwayUndertaking.sbbP;
-  //
-  //   // ACT
-  //   testee.updateTrainNumber('1234');
-  //   testee.updateDate(date);
-  //   testee.updateRailwayUndertaking(ru);
-  //
-  //   // EXPECT
-  //   final state = testee.modelValue;
-  //   expect(state, isA<Loaded>());
-  //   final loaded = state as Loaded;
-  //   expect(loaded.trainJourneyIdentification.trainNumber, '1234');
-  //   expect(loaded.trainJourneyIdentification.date, date);
-  //   expect(loaded.trainJourneyIdentification.ru, ru);
-  // });
-
-  // test('model_stream_whenStateChanges_thenEmitsCorrectStates', () async {
-  //   // ARRANGE
-  //   final emitted = <TrainJourneySelectionModel>[];
-  //   final sub = testee.model.listen(emitted.add);
-  //
-  //   // ACT
-  //   testee.updateTrainNumber('1234');
-  //   testee.updateDate(DateTime(2025, 6, 7));
-  //   testee.updateRailwayUndertaking(RailwayUndertaking.sbbP);
-  //
-  //   await Future.delayed(Duration.zero);
-  //
-  //   // EXPECT
-  //   expect(emitted.any((s) => s is Loaded), isTrue);
-  //   expect(emitted.any((s) => s is Error), isTrue);
-  //   expect(emitted.last, isA<Selecting>());
-  //
-  //   await sub.cancel();
-  // });
 }

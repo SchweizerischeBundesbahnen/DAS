@@ -1,10 +1,10 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
+import 'package:app/pages/journey/selection/train_selection.dart';
 import 'package:app/pages/journey/train_journey/train_journey_overview.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:app/pages/journey/train_journey_view_model.dart';
-import 'package:app/pages/journey/train_selection/train_selection.dart';
 import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
 import 'package:app/util/error_code.dart';
 import 'package:app/util/format.dart';
