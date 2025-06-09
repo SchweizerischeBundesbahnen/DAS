@@ -37,26 +37,33 @@ class JourneyPage extends StatelessWidget {
           final showAppBar = journey == null || settings?.isAutoAdvancementEnabled == false;
 
           return DASJourneyScaffold(
-            body: _body(context),
-            appBarTitle: _headerTitle(context, trainIdentification),
+            body: _Content(),
+            appBarTitle: _appBarTitle(context, trainIdentification),
             showAppBar: showAppBar,
-            appBarTrailingAction: journey != null ? _trainSelectionButton(context) : _logoutButton(context),
+            appBarTrailingAction: journey != null ? _DismissJourneyButton() : _LogoutButton(),
           );
         },
       ),
     );
   }
 
-  Widget _body(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(child: _content(context)),
-      ],
-    );
-  }
+  String _appBarTitle(BuildContext context, TrainIdentification? trainIdentification) {
+    if (trainIdentification == null) {
+      return context.l10n.c_app_name;
+    }
 
-  Widget _content(BuildContext context) {
-    final viewModel = DI.get<TrainJourneyViewModel>();
+    final locale = Localizations.localeOf(context);
+    final date = Format.dateWithAbbreviatedDay(trainIdentification.date, locale);
+    return '${context.l10n.p_train_journey_appbar_text} - $date';
+  }
+}
+
+class _Content extends StatelessWidget {
+  const _Content();
+
+  @override
+  Widget build(BuildContext context) {
+    final viewModel = context.read<TrainJourneyViewModel>();
     return StreamBuilder(
       stream: CombineLatestStream.list([
         viewModel.journey,
@@ -82,32 +89,24 @@ class JourneyPage extends StatelessWidget {
       },
     );
   }
+}
 
-  Widget _logoutButton(BuildContext context) {
-    return IconButton(
-      icon: const Icon(SBBIcons.exit_small),
-      onPressed: () {
-        DI.get<Authenticator>().logout();
-        context.router.replace(const LoginRoute());
-      },
-    );
-  }
+class _DismissJourneyButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) => IconButton(
+    key: JourneyPage.disconnectButtonKey,
+    icon: const Icon(SBBIcons.train_small),
+    onPressed: () => context.read<TrainJourneyViewModel>().reset(),
+  );
+}
 
-  Widget _trainSelectionButton(BuildContext context) {
-    return IconButton(
-      key: disconnectButtonKey,
-      icon: const Icon(SBBIcons.train_small),
-      onPressed: () => context.read<TrainJourneyViewModel>().reset(),
-    );
-  }
-
-  String _headerTitle(BuildContext context, TrainIdentification? trainIdentification) {
-    if (trainIdentification == null) {
-      return context.l10n.c_app_name;
-    }
-
-    final locale = Localizations.localeOf(context);
-    final date = Format.dateWithAbbreviatedDay(trainIdentification.date, locale);
-    return '${context.l10n.p_train_journey_appbar_text} - $date';
-  }
+class _LogoutButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) => IconButton(
+    icon: const Icon(SBBIcons.exit_small),
+    onPressed: () {
+      DI.get<Authenticator>().logout();
+      context.router.replace(const LoginRoute());
+    },
+  );
 }
