@@ -132,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
       await authenticator.login();
       await DI.get<ScopeHandler>().push<AuthenticatedScope>();
       if (context.mounted) {
-        context.router.replace(const JourneyRoute());
+        context.router.replace(const JourneySelectionRoute());
       }
     } catch (e) {
       Fimber.d('Login failed', ex: e);

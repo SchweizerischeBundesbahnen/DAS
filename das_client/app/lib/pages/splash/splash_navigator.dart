@@ -30,7 +30,7 @@ class SplashNavigator {
   Future<void> _navigateToJourney() async {
     Fimber.d('Navigate to home');
     try {
-      router.replaceAll([JourneyRoute()]);
+      router.replaceAll([JourneySelectionRoute()]);
     } catch (e, s) {
       Fimber.e('Navigate to journey failed', ex: e, stacktrace: s);
     }

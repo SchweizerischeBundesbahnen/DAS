@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/train_selection/train_journey_selection_model.dart';
+import 'package:app/util/error_code.dart';
 import 'package:clock/clock.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
@@ -21,16 +22,46 @@ class TrainJourneySelectionViewModel {
 
   TrainJourneySelectionModel get modelValue => _state.value;
 
+  void loadTrainJourney() async {
+    final currentState = _state.value;
+    switch (currentState) {
+      case final Selecting sM:
+        _state.add(
+          Loading(
+            trainJourneyIdentification: TrainIdentification(
+              date: sM.startDate,
+              ru: sM.railwayUndertaking,
+              trainNumber: sM.operationalTrainNumber,
+            ),
+          ),
+        );
+        await Future.delayed(Duration(seconds: 1));
+        _state.add(
+          Error(
+            errorCode: ErrorCode.connectionFailed,
+            trainNumber: sM.operationalTrainNumber,
+            startDate: sM.startDate,
+            railwayUndertaking: sM.railwayUndertaking,
+          ),
+        );
+        // await Future.delayed(Duration(seconds: 1));
+        // _state.add(sM);
+        break;
+      case Loading() || Loaded() || Error():
+        break;
+    }
+  }
+
   void updateDate(DateTime date) {
-    _ifInSelectingEmitWith((model) => model.copyWith(startDate: date));
+    _ifInSelectingOrErrorEmitSelectingWith((model) => model.copyWith(startDate: date));
   }
 
   void updateTrainNumber(String? trainNumber) {
-    _ifInSelectingEmitWith((model) => model.copyWith(operationalTrainNumber: trainNumber));
+    _ifInSelectingOrErrorEmitSelectingWith((model) => model.copyWith(operationalTrainNumber: trainNumber));
   }
 
   void updateRailwayUndertaking(RailwayUndertaking ru) {
-    _ifInSelectingEmitWith((model) => model.copyWith(railwayUndertaking: ru));
+    _ifInSelectingOrErrorEmitSelectingWith((model) => model.copyWith(railwayUndertaking: ru));
   }
 
   void _emitInitial() => _state.add(
@@ -44,17 +75,26 @@ class TrainJourneySelectionViewModel {
     _state.close();
   }
 
-  void _ifInSelectingEmitWith(Selecting Function(Selecting model) updateFunc) {
+  void _ifInSelectingOrErrorEmitSelectingWith(Selecting Function(Selecting model) updateFunc) {
     switch (modelValue) {
-      case final Selecting model:
-        final updatedModel = updateFunc(model);
+      case final Selecting sM:
+        final updatedModel = updateFunc(sM);
         final isInputComplete = _validateInput(updatedModel);
         _state.add(updatedModel.copyWith(isInputComplete: isInputComplete));
         break;
+      case final Error eM:
+        final updatedModel = updateFunc(
+          Selecting(
+            startDate: eM.startDate ?? _initialDateTime(),
+            railwayUndertaking: eM.railwayUndertaking ?? _initialRailwayUndertaking,
+            trainNumber: eM.trainNumber,
+          ),
+        );
+        _state.add(updatedModel.copyWith(isInputComplete: _validateInput(updatedModel)));
       default:
         break;
     }
   }
 
-  _validateInput(Selecting updatedModel) => updatedModel.operationalTrainNumber?.isNotEmpty == true;
+  _validateInput(Selecting updatedModel) => updatedModel.trainNumber?.isNotEmpty == true;
 }

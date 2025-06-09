@@ -29,7 +29,7 @@ void main() {
     // EXPECT
     expect(state, isA<Selecting>());
     final selecting = state as Selecting;
-    expect(selecting.operationalTrainNumber, isNull);
+    expect(selecting.trainNumber, isNull);
     expect(selecting.startDate, equals(backInTheSeventies));
     expect(selecting.railwayUndertaking, RailwayUndertaking.sbbP);
     expect(selecting.isInputComplete, isFalse);
@@ -43,7 +43,7 @@ void main() {
     final state = testee.modelValue;
     expect(state, isA<Selecting>());
     final selecting = state as Selecting;
-    expect(selecting.operationalTrainNumber, '');
+    expect(selecting.trainNumber, '');
     expect(selecting.isInputComplete, isFalse);
   });
 
@@ -55,7 +55,7 @@ void main() {
     final state = testee.modelValue;
     expect(state, isA<Selecting>());
     final selecting = state as Selecting;
-    expect(selecting.operationalTrainNumber, '1234');
+    expect(selecting.trainNumber, '1234');
     expect(selecting.isInputComplete, isTrue);
   });
 
