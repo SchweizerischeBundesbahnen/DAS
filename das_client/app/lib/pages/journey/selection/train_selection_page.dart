@@ -11,7 +11,6 @@ import 'package:app/util/format.dart';
 import 'package:app/widgets/header.dart';
 import 'package:auth/component.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -41,7 +40,7 @@ class JourneySelectionPage extends StatelessWidget implements AutoRouteWrapper {
 }
 
 class _Content extends StatefulWidget {
-  const _Content({super.key});
+  const _Content();
 
   @override
   State<_Content> createState() => _ContentState();
@@ -212,8 +211,6 @@ class _JourneyTrainNumberInputState extends State<JourneyTrainNumberInput> {
         if (model == null) return SizedBox.shrink();
         _controller.text = model.operationalTrainNumber;
 
-        Fimber.d('Model type: ${model.runtimeType}');
-
         return switch (model) {
           final Selecting _ || final Error _ => _buildTrainNumberInput(
             context,
@@ -227,7 +224,6 @@ class _JourneyTrainNumberInputState extends State<JourneyTrainNumberInput> {
   }
 
   Widget _buildTrainNumberInput(BuildContext context, {Function(String)? onChanged, Function(String)? onSubmitted}) {
-    Fimber.d('onChanged: $onChanged, onSubmitted: $onSubmitted');
     return Padding(
       padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, sbbDefaultSpacing, 0, sbbDefaultSpacing / 2),
       child: SBBTextField(

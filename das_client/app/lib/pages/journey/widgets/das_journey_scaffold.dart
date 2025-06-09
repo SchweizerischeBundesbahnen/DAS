@@ -4,19 +4,20 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 const _toolbarAnimationDuration = Duration(milliseconds: 400);
 
+/// Responsible for hiding and showing the app bar on journey related pages.
 class DASJourneyScaffold extends StatefulWidget {
   const DASJourneyScaffold({
     required this.body,
     required this.appBarTitle,
     this.appBarTrailingAction,
-    this.showAppBar = true,
+    this.hideAppBar = false,
     super.key,
   });
 
   final Widget body;
   final String appBarTitle;
   final Widget? appBarTrailingAction;
-  final bool showAppBar;
+  final bool hideAppBar;
 
   @override
   State<DASJourneyScaffold> createState() => _DASJourneyScaffoldState();
@@ -42,8 +43,8 @@ class _DASJourneyScaffoldState extends State<DASJourneyScaffold> with SingleTick
   @override
   void didUpdateWidget(covariant DASJourneyScaffold oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.showAppBar != oldWidget.showAppBar) {
-      widget.showAppBar ? _controller.reverse() : _controller.forward();
+    if (widget.hideAppBar != oldWidget.hideAppBar) {
+      widget.hideAppBar ? _controller.forward() : _controller.reverse();
     }
   }
 

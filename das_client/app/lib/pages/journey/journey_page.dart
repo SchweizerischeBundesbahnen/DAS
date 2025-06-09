@@ -34,12 +34,12 @@ class JourneyPage extends StatelessWidget {
           final trainIdentification = snapshot.data?[1] as TrainIdentification?;
           final settings = snapshot.data?[2] as TrainJourneySettings?;
 
-          final showAppBar = journey == null || settings?.isAutoAdvancementEnabled == false;
+          final hideAppBar = journey != null && settings?.isAutoAdvancementEnabled == true;
 
           return DASJourneyScaffold(
             body: _Content(),
             appBarTitle: _appBarTitle(context, trainIdentification),
-            showAppBar: showAppBar,
+            hideAppBar: hideAppBar,
             appBarTrailingAction: journey != null ? _DismissJourneyButton() : _LogoutButton(),
           );
         },
