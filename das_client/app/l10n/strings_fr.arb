@@ -74,7 +74,7 @@
   "c_main_signal_function_entry": "Signal d’entrée",
   "c_main_signal_function_exit": "Signal de sortie",
   "c_main_signal_function_intermediate": "Signal de tronçon",
-  "c_main_signal_function_block": "Signal de block",
+  "c_main_signal_function_block": "Block",
   "c_main_signal_function_protection": "Signal de protection",
   "c_main_signal_function_laneChange": "Diagonale d’échange",
   "c_error_code": "Code d’erreur",

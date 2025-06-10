@@ -74,7 +74,7 @@
   "c_main_signal_function_entry": "Segnale d’entrata",
   "c_main_signal_function_exit": "Segnale d’uscita",
   "c_main_signal_function_intermediate": "Segnale di settore",
-  "c_main_signal_function_block": "Segnale di blocco",
+  "c_main_signal_function_block": "Blocco",
   "c_main_signal_function_protection": "Segnale di protezione",
   "c_main_signal_function_laneChange": "Cambio di binario",
   "c_error_code": "Codice di errore",
