@@ -18,7 +18,7 @@ class DI {
     GetIt.I.registerScopeHandler();
     return GetIt.I.allReady();
   }
-  
+
   static Future<void> resetToUnauthenticatedScope({required bool useTms}) async {
     Fimber.i('LoginScope with useTms=$useTms');
 
