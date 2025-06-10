@@ -11,7 +11,7 @@ public enum TractionMode {
 
     private final String key;
 
-    TractionMode(final String key) {
+    TractionMode(String key) {
         this.key = key;
     }
 }
