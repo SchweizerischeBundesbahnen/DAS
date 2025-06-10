@@ -103,13 +103,10 @@ class SegmentProfileMapper {
     for (final tpConstraint in segmentProfileReference.timingPointsConstraints) {
       final tpId = tpConstraint.timingPointReference.tpIdReference.tpId;
       final timingPoint = timingPoints.where((it) => it.id == tpId).first;
-      final tafTapLocation = tafTapLocations
-          .where(
-            (it) =>
-                it.locationIdent.countryCodeISO == timingPoint.locationReference?.countryCodeISO &&
-                it.locationIdent.locationPrimaryCode == timingPoint.locationReference?.locationPrimaryCode,
-          )
-          .first;
+      final tafTapLocation = tafTapLocations.firstWhereGiven(
+        countryCode: timingPoint.locationReference?.countryCodeISO,
+        primaryCode: timingPoint.locationReference?.locationPrimaryCode,
+      );
 
       servicePoints.add(
         ServicePoint(
@@ -194,13 +191,7 @@ class SegmentProfileMapper {
         } else {
           final countryCode = mainStationNsp.nspValue.substring(0, 2);
           final primaryCode = int.parse(mainStationNsp.nspValue.substring(2, 6));
-          final mainStation = allLocations
-              .where(
-                (it) =>
-                    it.locationIdent.countryCodeISO == countryCode &&
-                    it.locationIdent.locationPrimaryCode == primaryCode,
-              )
-              .firstOrNull;
+          final mainStation = allLocations.firstWhereGivenOrNull(countryCode: countryCode, primaryCode: primaryCode);
           if (mainStation == null) {
             Fimber.w('Failed to resolve main station for bracket station: $tafTapLocation');
           }
@@ -297,7 +288,6 @@ class SegmentProfileMapper {
     final trackFootNotesNsp = mapperData.segmentProfile.points?.trackFootNotesNsp ?? [];
     return trackFootNotesNsp.map((trackFootNoteNsp) {
       final footNotes = _parseFootNotes(trackFootNoteNsp.xmlTrackFootNotes.element.footNotes);
-
       return footNotes.map(
         (note) => TrackFootNote(
           order: calculateOrder(mapperData.segmentIndex, trackFootNoteNsp.location),
@@ -321,7 +311,6 @@ class SegmentProfileMapper {
           }
 
           final footNotes = _parseFootNotes(location.opFootNotes!.xmlOpFootNotes.element.footNotes);
-
           return footNotes.map(
             (note) => OpFootNote(
               order: calculateOrder(mapperData.segmentIndex, location.startLocation!),
@@ -348,7 +337,6 @@ class SegmentProfileMapper {
           }
 
           final footNotes = _parseFootNotes(location.lineFootNotes!.xmlLineFootNotes.element.footNotes);
-
           return footNotes.map(
             (note) => LineFootNote(
               locationName: location.locationIdent.primaryLocationName?.value ?? '',

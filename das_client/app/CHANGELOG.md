@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.21.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.20.0...das_client-v0.21.0) (2025-06-10)
+
+
+### Features
+
+* adjust koa notification styling ([#819](https://github.com/SchweizerischeBundesbahnen/DAS/issues/819)) ([#933](https://github.com/SchweizerischeBundesbahnen/DAS/issues/933)) ([c1afa26](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c1afa26fca7e4fad56313986176ecd8cf00313bd))
+* consolidate complex additional speed restrictions ([#227](https://github.com/SchweizerischeBundesbahnen/DAS/issues/227)) ([#984](https://github.com/SchweizerischeBundesbahnen/DAS/issues/984)) ([c68068b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c68068b64ff6fcaddec38019b2e67b0c1b5efcee))
+* only display AdditionalSpeedRestriction within journey time ([#911](https://github.com/SchweizerischeBundesbahnen/DAS/issues/911)) ([#966](https://github.com/SchweizerischeBundesbahnen/DAS/issues/966)) ([65e9318](https://github.com/SchweizerischeBundesbahnen/DAS/commit/65e9318f0b040d1f699a1e18e6e60c4a12bd47b6))
+* warnfunktion geschlossenes signal ([#98](https://github.com/SchweizerischeBundesbahnen/DAS/issues/98)) ([#982](https://github.com/SchweizerischeBundesbahnen/DAS/issues/982)) ([7f6de3a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7f6de3af841ce1335fc5917080798907fb5329b5))
+
+
+### Bug Fixes
+
+* date format in additional speed restriction details ([#567](https://github.com/SchweizerischeBundesbahnen/DAS/issues/567)) ([#926](https://github.com/SchweizerischeBundesbahnen/DAS/issues/926)) ([30aeaea](https://github.com/SchweizerischeBundesbahnen/DAS/commit/30aeaea8a646db8ddb7afcbdc69abdf5197e6975))
+* **deps:** update dependency audioplayers to v6 ([#903](https://github.com/SchweizerischeBundesbahnen/DAS/issues/903)) ([60225cb](https://github.com/SchweizerischeBundesbahnen/DAS/commit/60225cb0bb26a20a354b486b574db91b3f5b5c2a))
+* reduced journey does not display speeds ([#883](https://github.com/SchweizerischeBundesbahnen/DAS/issues/883)) ([#919](https://github.com/SchweizerischeBundesbahnen/DAS/issues/919)) ([45f43ff](https://github.com/SchweizerischeBundesbahnen/DAS/commit/45f43ffe37c1b9090116c1343e7fad7855eb0f1c))
+* warn function modal did not open and multiple equal events were ignored ([#963](https://github.com/SchweizerischeBundesbahnen/DAS/issues/963)) ([6092705](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6092705c1a3a85616a4163702137a0209b2e502e))
+
 ## [0.20.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.19.0...das_client-v0.20.0) (2025-05-18)
 
 

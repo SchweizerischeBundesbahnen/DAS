@@ -1,7 +1,7 @@
 > [!NOTE]  
-> This playground webapp is for testing and demo purpose only
+> This webapp is for testing and demo purpose only
 
-# das_playground
+# DAS-Playground
 
 Observing and testing SFERA messages.
 

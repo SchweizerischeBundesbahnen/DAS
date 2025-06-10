@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
-class IndicatorWrapper extends StatelessWidget {
-  static const Key indicatorKey = Key('indicatorKey');
+/// Adds an indicator to the [child]. Position can be defined with the [offset].
+class DotIndicator extends StatelessWidget {
+  static const Key indicatorKey = Key('dotIndicator');
 
-  const IndicatorWrapper({
-    required this.show,
+  const DotIndicator({
     required this.child,
+    this.show = true,
     this.offset = const Offset(0, 0),
     this.size = 8.0,
     super.key,
@@ -29,7 +30,7 @@ class IndicatorWrapper extends StatelessWidget {
           right: offset.dy,
           child: CustomPaint(
             key: indicatorKey,
-            painter: _IndicatorPainter(color: Theme.of(context).colorScheme.primary),
+            painter: _DotPainter(color: Theme.of(context).colorScheme.primary),
             size: Size(size, size),
           ),
         ),
@@ -38,8 +39,8 @@ class IndicatorWrapper extends StatelessWidget {
   }
 }
 
-class _IndicatorPainter extends CustomPainter {
-  _IndicatorPainter({required this.color});
+class _DotPainter extends CustomPainter {
+  _DotPainter({required this.color});
 
   final Color color;
 

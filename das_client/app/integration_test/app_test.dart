@@ -20,6 +20,7 @@ import 'test/train_journey_notification_test.dart' as train_journey_notification
 import 'test/train_journey_table_test.dart' as train_journey_table_tests;
 import 'test/train_reduced_journey_test.dart' as train_reduced_journey_tests;
 import 'test/train_search_test.dart' as train_search_tests;
+import 'test/warnapp_test.dart' as warnapp_tests;
 import 'util/test_utils.dart';
 
 late AppLocalizations l10n;
@@ -37,6 +38,7 @@ void main() {
   automatic_advancement_tests.main();
   service_point_modal_test.main();
   additional_speed_restriction_modal_test.main();
+  warnapp_tests.main();
 }
 
 Future<void> prepareAndStartApp(WidgetTester tester, {VoidCallback? onBeforeRun}) async {

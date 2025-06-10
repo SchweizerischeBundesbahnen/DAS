@@ -27,6 +27,7 @@ import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/dto/ux_testing_nse_dto.dart';
+import 'package:sfera/src/data/dto/warn_app_msg_dto.dart';
 import 'package:sfera/src/data/format.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
 import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
@@ -62,6 +63,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   final _rxState = BehaviorSubject.seeded(SferaRemoteRepositoryState.disconnected);
   final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
   final _rxUxTestingEvent = BehaviorSubject<UxTestingEvent?>.seeded(null);
+  final _rxWarnappEvent = BehaviorSubject<WarnappEvent?>.seeded(null);
 
   // TODO: refactor _sferaService.stateStream & journeyUpdateStream & (connect / disconnect)
   // repository should not expose a state, should just expose data stream
@@ -76,6 +78,9 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
 
   @override
   Stream<UxTestingEvent?> get uxTestingEventStream => _rxUxTestingEvent.stream;
+
+  @override
+  Stream<WarnappEvent?> get warnappEventStream => _rxWarnappEvent.stream;
 
   @override
   SferaError? lastError;
@@ -118,6 +123,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     _mqttService.disconnect();
     _rxJourney.add(null);
     _rxUxTestingEvent.add(null);
+    _rxWarnappEvent.add(null);
     _rxState.add(SferaRemoteRepositoryState.disconnected);
   }
 
@@ -128,6 +134,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     _rxUxTestingEvent.close();
     _mqttStreamSubscription?.cancel();
     _mqttStreamSubscription = null;
+    _rxWarnappEvent.close();
   }
 
   @override
@@ -355,6 +362,10 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
         final event = UxTestingEvent(name: data.warn!.name, value: data.warn!.nspValue);
         _rxUxTestingEvent.add(event);
       }
+    }
+
+    if (data is WarnAppMsgDto) {
+      _rxWarnappEvent.add(WarnappEvent());
     }
   }
 

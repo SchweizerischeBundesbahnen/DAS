@@ -58,6 +58,7 @@ class TrainJourneyOverview extends StatelessWidget {
   Widget _body(BuildContext context) {
     final uxTestingViewModel = context.read<UxTestingViewModel>();
     final detailModalController = context.read<DetailModalViewModel>().controller;
+
     return Listener(
       onPointerDown: (_) => detailModalController.resetAutomaticClose(),
       onPointerUp: (_) => detailModalController.resetAutomaticClose(),
@@ -68,7 +69,7 @@ class TrainJourneyOverview extends StatelessWidget {
 
           return Row(
             children: [
-              Expanded(child: _content()),
+              Expanded(child: _content(context)),
               DetailModalSheet(),
             ],
           );
@@ -77,26 +78,44 @@ class TrainJourneyOverview extends StatelessWidget {
     );
   }
 
-  Widget _content() {
+  Widget _content(BuildContext context) {
     return Column(
       children: [
         Header(),
         ManeuverNotification(),
         KoaNotification(),
+        _warnappNotification(context),
         Expanded(child: TrainJourney()),
       ],
     );
+  }
+
+  Widget _warnappNotification(BuildContext context) {
+    return StreamBuilder(
+      stream: context.read<TrainJourneyViewModel>().warnappEvents,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          _triggerWarnappNotification(context);
+        }
+
+        return SizedBox.shrink();
+      },
+    );
+  }
+
+  void _triggerWarnappNotification(BuildContext context) {
+    final Sound sound = WarnAppSound();
+    sound.play();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      showWarnFunctionModalSheet(context);
+    });
   }
 
   void _handleUxEvents(BuildContext context, UxTestingEvent? event) {
     if (event == null) return;
 
     if (event.isWarn) {
-      final Sound sound = WarnAppSound();
-      sound.play();
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        showWarnFunctionModalSheet(context);
-      });
+      _triggerWarnappNotification(context);
     } else if (event.isKoa && event.value == KoaState.waitCancelled.name) {
       final Sound sound = KoaSound();
       sound.play();

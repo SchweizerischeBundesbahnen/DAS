@@ -7,7 +7,7 @@ import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_poi
 import 'package:app/pages/journey/train_journey/widgets/header/animated_header_icon_button.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
-import 'package:app/widgets/indicator_wrapper.dart';
+import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -131,7 +131,7 @@ void main() {
       await loadTrainJourney(tester, trainNumber: 'T8');
 
       final tableRowBern = findDASTableRowByText('75-70-60');
-      final indicator = find.descendant(of: tableRowBern, matching: find.byKey(IndicatorWrapper.indicatorKey));
+      final indicator = find.descendant(of: tableRowBern, matching: find.byKey(DotIndicator.indicatorKey));
       expect(indicator, findsOneWidget);
 
       // open and check modal sheet with tap on graduated speeds

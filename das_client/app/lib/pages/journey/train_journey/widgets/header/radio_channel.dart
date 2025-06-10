@@ -3,7 +3,7 @@ import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_poi
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/radio_contact.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/sim_identifier.dart';
-import 'package:app/widgets/indicator_wrapper.dart';
+import 'package:app/widgets/dot_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -36,7 +36,7 @@ class RadioChannel extends StatelessWidget {
         constraints: const BoxConstraints(minWidth: 258.0),
         child: Align(
           alignment: Alignment.centerLeft,
-          child: IndicatorWrapper(
+          child: DotIndicator(
             show: showIndicator,
             offset: Offset(-6.0, -8.0),
             child: Row(

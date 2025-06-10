@@ -11,6 +11,7 @@ sealed class Flavor {
     required this.authenticatorConfig,
     required this.mqttTopicPrefix,
     required this.backendUrl,
+    required this.mqttOauthProfile,
     this.color = SBBColors.transparent,
     this.showBanner = false,
     this.isTmsEnabledForFlavor = false,
@@ -21,6 +22,7 @@ sealed class Flavor {
   final String mqttUrl;
   final AuthenticatorConfig authenticatorConfig;
   final String mqttTopicPrefix;
+  final String mqttOauthProfile;
   final String backendUrl;
   final bool showBanner;
   final Color color;
@@ -92,6 +94,7 @@ class _DevFlavor extends Flavor {
          color: SBBColors.peach,
          showBanner: true,
          isTmsEnabledForFlavor: true,
+    mqttOauthProfile: 'azureAdDev',
        );
 }
 
@@ -106,6 +109,7 @@ class _InteFlavor extends Flavor {
          backendUrl: 'das-backend-int.app.sbb.ch',
          color: SBBColors.black,
          showBanner: true,
+    mqttOauthProfile: 'azureAdInt',
        );
 }
 
@@ -120,6 +124,7 @@ class _ProdFlavor extends Flavor {
          backendUrl: 'das-backend-dev.app.sbb.ch',
          color: SBBColors.transparent,
          showBanner: false,
+    mqttOauthProfile: 'azureAdInt',
        );
 }
 
@@ -141,39 +146,39 @@ const _authenticatorConfigTmsDev = AuthenticatorConfig(
 
 const _authenticatorConfigMockDev = AuthenticatorConfig(
   discoveryUrl: 'https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration',
-  clientId: '6025180f-123b-4f2f-9703-16e08fc221f0',
+  clientId: '5467e91f-a84c-40a5-89ba-75dcefc5569c',
   redirectUrl: 'ch.sbb.das://sbbauth/redirect',
   tokenSpecs: TokenSpecProvider([
     TokenSpec(
       id: TokenSpec.defaultTokenId,
       displayName: 'User Token',
-      scopes: ['openid', 'profile', 'email', 'offline_access', '6025180f-123b-4f2f-9703-16e08fc221f0/.default'],
+      scopes: ['openid', 'profile', 'email', 'offline_access', 'api://8f16d52b-c6df-4a94-a132-da4956579a48/.default'],
     ),
   ]),
 );
 
 const _authenticatorConfigInte = AuthenticatorConfig(
   discoveryUrl: 'https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration',
-  clientId: '6025180f-123b-4f2f-9703-16e08fc221f0',
+  clientId: '7d1cf8b6-a770-422f-ae8b-a9cbfe63e7b9',
   redirectUrl: 'ch.sbb.das://sbbauth/redirect',
   tokenSpecs: TokenSpecProvider([
     TokenSpec(
       id: TokenSpec.defaultTokenId,
       displayName: 'User Token',
-      scopes: ['openid', 'profile', 'email', 'offline_access', '6025180f-123b-4f2f-9703-16e08fc221f0/.default'],
+      scopes: ['openid', 'profile', 'email', 'offline_access', 'api://c46d2363-2b94-439a-a84d-f71a76a70f45/.default'],
     ),
   ]),
 );
 
 const _authenticatorConfigProd = AuthenticatorConfig(
   discoveryUrl: 'https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration',
-  clientId: '6025180f-123b-4f2f-9703-16e08fc221f0',
+  clientId: '7d1cf8b6-a770-422f-ae8b-a9cbfe63e7b9',
   redirectUrl: 'ch.sbb.das://sbbauth/redirect',
   tokenSpecs: TokenSpecProvider([
     TokenSpec(
       id: TokenSpec.defaultTokenId,
       displayName: 'User Token',
-      scopes: ['openid', 'profile', 'email', 'offline_access', '6025180f-123b-4f2f-9703-16e08fc221f0/.default'],
+      scopes: ['openid', 'profile', 'email', 'offline_access', 'api://c46d2363-2b94-439a-a84d-f71a76a70f45/.default'],
     ),
   ]),
 );
