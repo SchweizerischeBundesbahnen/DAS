@@ -13,13 +13,14 @@ class JourneySelectionViewModel {
   }) : _sferaRemoteRepo = sferaRemoteRepo,
        _onJourneySelected = onJourneySelected {
     _emitInitial();
+    _initSferaRepoSubscription();
   }
 
   final SferaRemoteRepo _sferaRemoteRepo;
 
   final Function(TrainIdentification) _onJourneySelected;
 
-  StreamSubscription? _stateSubscription;
+  StreamSubscription? _sferaRemoteRepoSubscription;
 
   static const RailwayUndertaking _initialRailwayUndertaking = RailwayUndertaking.sbbP;
 
@@ -47,32 +48,6 @@ class JourneySelectionViewModel {
         );
         _state.add(JourneySelectionModel.loading(trainIdentification: trainIdentification));
 
-        _stateSubscription?.cancel();
-        _stateSubscription = _sferaRemoteRepo.stateStream.listen((state) {
-          switch (state) {
-            case SferaRemoteRepositoryState.connected:
-              _state.add(JourneySelectionModel.loaded(trainIdentification: trainIdentification));
-              _onJourneySelected(trainIdentification);
-              break;
-            case SferaRemoteRepositoryState.connecting:
-            case SferaRemoteRepositoryState.handshaking:
-            case SferaRemoteRepositoryState.loadingJourney:
-            case SferaRemoteRepositoryState.loadingAdditionalData:
-              break;
-            case SferaRemoteRepositoryState.disconnected:
-            case SferaRemoteRepositoryState.offline:
-              if (_sferaRemoteRepo.lastError != null) {
-                _state.add(
-                  JourneySelectionModel.error(
-                    trainIdentification: trainIdentification,
-                    errorCode: ErrorCode.fromSfera(_sferaRemoteRepo.lastError!),
-                  ),
-                );
-              }
-              break;
-          }
-        });
-
         _sferaRemoteRepo.connect(
           OtnId(
             company: trainIdentification.ru.companyCode,
@@ -81,6 +56,57 @@ class JourneySelectionViewModel {
           ),
         );
     }
+  }
+
+  void _initSferaRepoSubscription() {
+    _sferaRemoteRepoSubscription = _sferaRemoteRepo.stateStream.listen((state) {
+      switch (state) {
+        case SferaRemoteRepositoryState.connected:
+          switch (_state.value) {
+            case final Loading lM:
+              _state.add(JourneySelectionModel.loaded(trainIdentification: lM.trainIdentification));
+              _onJourneySelected(lM.trainIdentification);
+              break;
+            case final Selecting _ || final Error _ || final Loaded _:
+              break;
+          }
+          break;
+        case SferaRemoteRepositoryState.connecting:
+        case SferaRemoteRepositoryState.handshaking:
+        case SferaRemoteRepositoryState.loadingJourney:
+        case SferaRemoteRepositoryState.loadingAdditionalData:
+          break;
+        case SferaRemoteRepositoryState.disconnected:
+        case SferaRemoteRepositoryState.offline:
+          if (_sferaRemoteRepo.lastError != null) {
+            switch (_state.value) {
+              case final Loading lM:
+                _state.add(
+                  JourneySelectionModel.error(
+                    trainIdentification: lM.trainIdentification,
+                    errorCode: ErrorCode.fromSfera(_sferaRemoteRepo.lastError!),
+                  ),
+                );
+                break;
+              case final Selecting sM:
+                _state.add(
+                  JourneySelectionModel.error(
+                    trainIdentification: TrainIdentification(
+                      ru: sM.railwayUndertaking,
+                      trainNumber: sM.operationalTrainNumber,
+                      date: sM.startDate,
+                    ),
+                    errorCode: ErrorCode.fromSfera(_sferaRemoteRepo.lastError!),
+                  ),
+                );
+                break;
+              case final Loaded _ || final Error _:
+                break;
+            }
+          }
+          break;
+      }
+    });
   }
 
   void updateDate(DateTime date) {
@@ -103,7 +129,7 @@ class JourneySelectionViewModel {
   );
 
   void dispose() {
-    _stateSubscription?.cancel();
+    _sferaRemoteRepoSubscription?.cancel();
     _state.close();
   }
 

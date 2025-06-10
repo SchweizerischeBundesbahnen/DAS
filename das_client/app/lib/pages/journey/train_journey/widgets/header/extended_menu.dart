@@ -1,4 +1,3 @@
-import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/reduced_overview/reduced_overview_modal_sheet.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
@@ -8,6 +7,7 @@ import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class ExtendedMenu extends StatefulWidget {
@@ -80,24 +80,30 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
     final renderBox = context.findRenderObject() as RenderBox;
     final positionOffset = renderBox.localToGlobal(Offset.zero);
     final size = renderBox.size;
+    final viewModel = context.read<TrainJourneyViewModel>();
 
     overlayEntry = OverlayEntry(
-      builder: (context) => Stack(
-        children: [
-          // Fullscreen background
-          GestureDetector(
-            onTap: () => _removeOverlay(),
-            child: Container(
-              color: SBBColors.iron.withAlpha((255.0 * 0.6).round()),
-            ),
+      builder: (_) => Provider(
+        create: (_) => viewModel,
+        child: Builder(
+          builder: (context) => Stack(
+            children: [
+              // Fullscreen background
+              GestureDetector(
+                onTap: () => _removeOverlay(),
+                child: Container(
+                  color: SBBColors.iron.withAlpha((255.0 * 0.6).round()),
+                ),
+              ),
+              // Positioned extended menu
+              Positioned(
+                left: positionOffset.dx - extendedMenuContentWidth / 2 + size.width / 2,
+                top: positionOffset.dy + size.height + extendedMenuContentHeightOffset,
+                child: _menu(context),
+              ),
+            ],
           ),
-          // Positioned extended menu
-          Positioned(
-            left: positionOffset.dx - extendedMenuContentWidth / 2 + size.width / 2,
-            top: positionOffset.dy + size.height + extendedMenuContentHeightOffset,
-            child: _menu(context),
-          ),
-        ],
+        ),
       ),
     );
 
@@ -223,7 +229,7 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
   }
 
   Widget _maneuverItem(BuildContext context) {
-    final viewModel = DI.get<TrainJourneyViewModel>();
+    final viewModel = context.read<TrainJourneyViewModel>();
 
     return SBBListItem.custom(
       title: context.l10n.w_extended_menu_maneuver_mode,
