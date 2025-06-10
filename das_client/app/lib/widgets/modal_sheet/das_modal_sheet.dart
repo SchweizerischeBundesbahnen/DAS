@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:app/di.dart';
 import 'package:app/time_controller/time_controller.dart';
 import 'package:app/widgets/extended_header_container.dart';
 import 'package:extra_hittest_area/extra_hittest_area.dart';
@@ -19,7 +20,7 @@ class DASModalSheetBuilder {
 
 /// Used to open and close the [DasModalSheet] and handle animation.
 class DASModalSheetController {
-  final TimeController timeController = TimeController();
+  final TimeController timeController = DI.get<TimeController>();
   static int automaticCloseAfterSeconds = 40;
 
   DASModalSheetController({

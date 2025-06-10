@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:app/di.dart';
 import 'package:app/pages/journey/train_journey/automatic_advancement_controller.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
+import 'package:app/time_controller/time_controller.dart';
 import 'package:app/util/error_code.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +40,8 @@ class TrainJourneyViewModel {
 
   TrainIdentification? get trainIdentificationValue => _rxTrainIdentification.value;
 
-  AutomaticAdvancementController automaticAdvancementController = AutomaticAdvancementController();
+  AutomaticAdvancementController automaticAdvancementController =
+      AutomaticAdvancementController(timeController: DI.get<TimeController>());
 
   final _rxSettings = BehaviorSubject<TrainJourneySettings>.seeded(TrainJourneySettings());
   final _rxDate = BehaviorSubject<DateTime>.seeded(DateTime.now());
@@ -75,7 +78,8 @@ class TrainJourneyViewModel {
     _stateSubscription = _sferaRemoteRepo.stateStream.listen((state) {
       switch (state) {
         case SferaRemoteRepositoryState.connected:
-          automaticAdvancementController = AutomaticAdvancementController();
+          final timeController = DI.get<TimeController>();
+          automaticAdvancementController = AutomaticAdvancementController(timeController: timeController);
           _listenToJourneyUpdates();
           WakelockPlus.enable();
           break;

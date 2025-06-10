@@ -2,6 +2,7 @@ import 'package:app/pages/journey/train_journey/automatic_advancement_controller
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/signal_row.dart';
+import 'package:app/time_controller/mock_time_controller.dart';
 import 'package:app/time_controller/time_controller.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:get_it/get_it.dart';
@@ -35,7 +36,8 @@ void main() {
 
   test('test does nothing without anything provided', () {
     final scrollControllerMock = MockScrollController();
-    final testee = AutomaticAdvancementController(controller: scrollControllerMock);
+    final timeController = MockTimeController();
+    final testee = AutomaticAdvancementController(timeController: timeController, controller: scrollControllerMock);
 
     testee.scrollToCurrentPosition();
 
@@ -62,8 +64,12 @@ void main() {
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
+    final timeController = MockTimeController();
+
     final testee = AutomaticAdvancementController(
-        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
+        timeController: timeController,
+        controller: scrollControllerMock,
+        tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: true);
@@ -92,8 +98,12 @@ void main() {
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
+    final timeController = MockTimeController();
+
     final testee = AutomaticAdvancementController(
-        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
+        timeController: timeController,
+        controller: scrollControllerMock,
+        tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: false);
@@ -120,8 +130,12 @@ void main() {
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
+    final timeController = MockTimeController();
+
     final testee = AutomaticAdvancementController(
-        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
+        timeController: timeController,
+        controller: scrollControllerMock,
+        tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: true);
@@ -151,8 +165,12 @@ void main() {
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
+    final timeController = MockTimeController();
+
     final testee = AutomaticAdvancementController(
-        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
+        timeController: timeController,
+        controller: scrollControllerMock,
+        tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(
@@ -180,8 +198,12 @@ void main() {
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
+    final timeController = MockTimeController();
+
     final testee = AutomaticAdvancementController(
-        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
+        timeController: timeController,
+        controller: scrollControllerMock,
+        tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: true);
@@ -209,8 +231,12 @@ void main() {
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 10);
 
+    final timeController = MockTimeController();
+
     final testee = AutomaticAdvancementController(
-        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
+        timeController: timeController,
+        controller: scrollControllerMock,
+        tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(rows);
     testee.handleJourneyUpdate(currentPosition: targetSignalData, isAdvancementEnabledByUser: true);
@@ -242,8 +268,12 @@ void main() {
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
+    final timeController = MockTimeController();
+
     final testee = AutomaticAdvancementController(
-        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
+        timeController: timeController,
+        controller: scrollControllerMock,
+        tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: true);
@@ -279,8 +309,12 @@ void main() {
     when(scrollControllerMock.position).thenReturn(scrollPositionMock);
     when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
 
+    final timeController = MockTimeController();
+
     final testee = AutomaticAdvancementController(
-        controller: scrollControllerMock, tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
+        timeController: timeController,
+        controller: scrollControllerMock,
+        tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: true);

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:app/di.dart';
 import 'package:app/time_controller/time_controller.dart';
 import 'package:app/util/widget_util.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
@@ -17,12 +16,12 @@ import 'package:sfera/component.dart';
 class AutomaticAdvancementController {
   static const int _minScrollDuration = 1000;
   static const int _maxScrollDuration = 2000;
-  final TimeController timeController = DI.get<TimeController>();
 
-  AutomaticAdvancementController({ScrollController? controller, GlobalKey? tableKey})
+  AutomaticAdvancementController({required this.timeController, ScrollController? controller, GlobalKey? tableKey})
       : scrollController = controller ?? ScrollController(),
         tableKey = tableKey ?? GlobalKey();
 
+  final TimeController timeController;
   final ScrollController scrollController;
   final GlobalKey tableKey;
   BaseData? _currentPosition;

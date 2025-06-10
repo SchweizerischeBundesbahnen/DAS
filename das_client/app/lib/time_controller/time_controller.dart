@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/time_controller/punctuality_state_enum.dart';
+import 'package:clock/clock.dart';
 import 'package:sfera/component.dart';
 
 class TimeController {
@@ -8,17 +9,18 @@ class TimeController {
   final int punctualityDisappearSeconds = 6 /*300*/;
   final int idleTimeDASModalSheet = 10;
   final int idleTimeAutoScroll = 10;
+
   DateTime? _lastUpdate;
   Timer? _updateTimer;
   Journey? _lastJourney;
   PunctualityState? _lastEmittedState;
+
   final _punctualityStateController = StreamController<PunctualityState>.broadcast();
   Stream<PunctualityState> get punctualityStateStream => _punctualityStateController.stream;
 
   void startMonitoring() {
     _updateTimer = Timer.periodic(const Duration(milliseconds: 100), (_) {
-      final duration = _lastUpdate != null ? DateTime.now().difference(_lastUpdate!) : Duration.zero;
-
+      final duration = _lastUpdate != null ? clock.now().difference(_lastUpdate!) : Duration.zero;
       final state = _getPunctualityStateFromDuration(duration);
       _emitState(state);
     });
@@ -39,11 +41,10 @@ class TimeController {
     if (journey == null || delay == null) return;
 
     final isNewJourney = journey != _lastJourney;
-
     _lastJourney = journey;
 
     if (isNewJourney || _lastUpdate == null) {
-      _lastUpdate = DateTime.now();
+      _lastUpdate = clock.now();
       _emitState(PunctualityState.visible);
     }
   }
