@@ -107,7 +107,10 @@ class TrainJourneyOverview extends StatelessWidget {
     final Sound sound = WarnAppSound();
     sound.play();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      showWarnFunctionModalSheet(context);
+      showWarnFunctionModalSheet(
+        context,
+        onManeuverButtonPressed: () => context.read<TrainJourneyViewModel>().setManeuverMode(true),
+      );
     });
   }
 

@@ -11,7 +11,7 @@ import 'scope_handler_test.mocks.dart';
 @GenerateNiceMocks([MockSpec<DASBaseScope>()])
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  group('ScopeHandlerImpl', () {
+  group('ScopeHandler', () {
     const dasBaseScopeName = 'DASBaseScope';
     late ScopeHandlerImpl testee;
     late DASBaseScope mockDASBaseScope;

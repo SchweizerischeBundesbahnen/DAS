@@ -94,7 +94,7 @@ class _DevFlavor extends Flavor {
          color: SBBColors.peach,
          showBanner: true,
          isTmsEnabledForFlavor: true,
-    mqttOauthProfile: 'azureAdDev',
+         mqttOauthProfile: 'azureAdDev',
        );
 }
 
@@ -109,7 +109,7 @@ class _InteFlavor extends Flavor {
          backendUrl: 'das-backend-int.app.sbb.ch',
          color: SBBColors.black,
          showBanner: true,
-    mqttOauthProfile: 'azureAdInt',
+         mqttOauthProfile: 'azureAdInt',
        );
 }
 
@@ -124,7 +124,7 @@ class _ProdFlavor extends Flavor {
          backendUrl: 'das-backend-dev.app.sbb.ch',
          color: SBBColors.transparent,
          showBanner: false,
-    mqttOauthProfile: 'azureAdInt',
+         mqttOauthProfile: 'azureAdInt',
        );
 }
 

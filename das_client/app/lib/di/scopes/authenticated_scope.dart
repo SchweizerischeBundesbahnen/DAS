@@ -8,7 +8,6 @@ import 'package:get_it/get_it.dart';
 import 'package:http_x/component.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
-import 'package:warnapp/component.dart';
 
 class AuthenticatedScope extends DIScope {
   @override
@@ -55,11 +54,10 @@ extension AuthenticatedScopeExtension on GetIt {
   void registerMqttAuthProvider() {
     factoryFunc() {
       Fimber.d('Register mqtt auth provider');
-      final flavor = DI.get<Flavor>();
       return _MqttAuthProvider(
         authenticator: DI.get(),
         sferaAuthService: DI.get(),
-        oauthProfile: flavor.mqttOauthProfile,
+        oauthProfile: DI.get<Flavor>().mqttOauthProfile,
       );
     }
 
@@ -123,18 +121,6 @@ extension AuthenticatedScopeExtension on GetIt {
     registerLazySingleton<SferaLocalRepo>(factoryFunc);
   }
 
-  // void registerTrainJourneyViewModel() {
-  //   factoryFunc() {
-  //     Fimber.d('Register TrainJourneyViewModel');
-  //     return TrainJourneyViewModel(sferaRemoteRepo: DI.get());
-  //   }
-  //
-  //   registerLazySingleton<TrainJourneyViewModel>(
-  //     factoryFunc,
-  //     dispose: (vm) => vm.dispose(),
-  //   );
-  // }
-
   void registerJourneyNavigationViewModel() {
     factoryFunc() {
       Fimber.d('Register TrainJourneyNavigationViewModel');
@@ -145,14 +131,6 @@ extension AuthenticatedScopeExtension on GetIt {
       factoryFunc,
       dispose: (vm) => vm.dispose(),
     );
-  }
-
-  void registerMotionDataService() {
-    registerSingleton(WarnappComponent.createDeviceMotionDataService());
-  }
-
-  void registerWarnapp() {
-    registerSingleton(WarnappComponent.createWarnappRepository(motionDataService: DI.get()));
   }
 }
 

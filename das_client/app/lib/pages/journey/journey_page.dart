@@ -24,7 +24,7 @@ class JourneyPage extends StatelessWidget implements AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) => Provider<TrainJourneyViewModel>(
-    create: (_) => TrainJourneyViewModel(sferaRemoteRepo: DI.get<SferaRemoteRepo>()),
+    create: (_) => TrainJourneyViewModel(sferaRemoteRepo: DI.get(), warnappRepo: DI.get()),
     dispose: (_, vm) => vm.dispose(),
     child: this,
   );

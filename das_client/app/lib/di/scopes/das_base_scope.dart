@@ -10,6 +10,7 @@ import 'package:get_it/get_it.dart';
 import 'package:http_x/component.dart';
 import 'package:logger/component.dart';
 import 'package:screen_brightness/screen_brightness.dart';
+import 'package:warnapp/component.dart';
 
 /// Named 'DASBaseScope' to avoid confusion with GetIt's 'baseScope'.
 class DASBaseScope extends DIScope {
@@ -23,6 +24,8 @@ class DASBaseScope extends DIScope {
     getIt.registerBrightnessManager();
     getIt.registerAudioPlayer();
     getIt.registerBattery();
+    getIt.registerMotionDataService();
+    getIt.registerWarnapp();
     getIt.registerDasLogTree(); // pushes without remote service
     await getIt.allReady();
   }
@@ -61,5 +64,13 @@ extension BaseScopeExtension on GetIt {
     }
 
     registerSingletonAsync<LogTree>(factoryFunc);
+  }
+
+  void registerMotionDataService() {
+    registerSingleton(WarnappComponent.createDeviceMotionDataService());
+  }
+
+  void registerWarnapp() {
+    registerSingleton(WarnappComponent.createWarnappRepository(motionDataService: DI.get()));
   }
 }

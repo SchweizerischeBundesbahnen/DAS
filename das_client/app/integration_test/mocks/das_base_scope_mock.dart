@@ -4,6 +4,7 @@ import 'package:app/di/scopes/das_base_scope.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:fimber/fimber.dart';
 import 'package:screen_brightness/screen_brightness.dart';
+import 'package:warnapp/component.dart';
 
 import 'battery_mock.dart';
 import 'brightness_mock.dart';
@@ -19,6 +20,9 @@ class MockDASBaseScope extends DASBaseScope {
     _registerMockBrightnessManager();
     getIt.registerAudioPlayer();
     _registerMockBattery();
+    _registerMockMotionDataService();
+    getIt.registerWarnapp();
+
     await getIt.allReady();
   }
 
@@ -29,5 +33,11 @@ class MockDASBaseScope extends DASBaseScope {
   void _registerMockBrightnessManager() {
     getIt.registerLazySingleton<BrightnessManager>(() => MockBrightnessManager());
     getIt.registerLazySingleton<ScreenBrightness>(() => ScreenBrightness());
+  }
+
+  void _registerMockMotionDataService() {
+    getIt.registerSingleton<MotionDataService>(
+      WarnappComponent.createMockMotionDataService(samplingPeriod: Duration(milliseconds: 2)),
+    );
   }
 }
