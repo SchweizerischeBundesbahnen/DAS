@@ -187,6 +187,7 @@ class TrainJourneyViewModel {
     _rxRailwayUndertaking.close();
     _rxTrainNumber.close();
     _rxTrainIdentification.close();
+    _rxWarnapp.close();
 
     for (final subscription in _subscriptions) {
       subscription.cancel();
