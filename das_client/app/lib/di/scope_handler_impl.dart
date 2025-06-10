@@ -3,6 +3,7 @@ import 'package:app/di/scope_handler.dart';
 import 'package:get_it/get_it.dart';
 
 class ScopeHandlerImpl implements ScopeHandler {
+  // TODO: use generic on class level
   DIScope _getScope<T extends DIScope>() {
     try {
       return DI.get<T>();

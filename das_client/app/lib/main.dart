@@ -17,7 +17,7 @@ Future<void> runDasApp() async => runApp(App());
 
 Future<void> _initDASLogging() async {
   Fimber.d('Initializing DAS logging by planting BaseScope tree');
-  Fimber.plantTree(DI.get());
+  Fimber.plantTree(DI.get<LogTree>());
 }
 
 Future<void> _initDependencyInjection(Flavor flavor) async {

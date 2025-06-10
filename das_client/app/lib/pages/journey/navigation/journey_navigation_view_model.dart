@@ -1,9 +1,9 @@
-import 'package:app/pages/journey/train_journey_navigation/train_journey_navigation_model.dart';
+import 'package:app/pages/journey/navigation/journey_navigation_model.dart';
 import 'package:fimber/fimber.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-class TrainJourneyNavigationViewModel {
+class JourneyNavigationViewModel {
   final List<TrainIdentification> _trainIds = [];
   final _rxModel = BehaviorSubject<TrainJourneyNavigationModel?>.seeded(null);
 
@@ -19,8 +19,6 @@ class TrainJourneyNavigationViewModel {
     if (_trainIds.isNotEmpty && _currentTrainId == trainId) {
       return;
     }
-    Fimber.d('Pushing TrainIdentification: $trainId');
-
     if (!_trainIds.contains(trainId)) {
       _trainIds.add(trainId);
     }

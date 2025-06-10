@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/train_journey_navigation/train_journey_navigation_model.dart';
+import 'package:app/pages/journey/navigation/journey_navigation_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';
 

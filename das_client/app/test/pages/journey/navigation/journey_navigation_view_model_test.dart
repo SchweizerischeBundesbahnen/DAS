@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:app/pages/journey/train_journey_navigation/train_journey_navigation_view_model.dart';
+import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';
 
 void main() {
   group('TrainJourneyNavigationViewModel', () {
-    late TrainJourneyNavigationViewModel viewModel;
+    late JourneyNavigationViewModel viewModel;
     late List<dynamic> emitRegister;
     late StreamSubscription sub;
 
@@ -17,7 +17,7 @@ void main() {
     final trainId3 = TrainIdentification(ru: RailwayUndertaking.blsP, trainNumber: '9999', date: yesterday);
 
     setUp(() {
-      viewModel = TrainJourneyNavigationViewModel();
+      viewModel = JourneyNavigationViewModel();
       emitRegister = <dynamic>[];
       sub = viewModel.model.listen(emitRegister.add);
     });
