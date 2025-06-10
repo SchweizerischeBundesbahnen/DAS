@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS train_formation_run
     hauled_load_length_in_cm                      INTEGER,
     formation_length_in_cm                        INTEGER,
     traction_gross_weight_in_t                    INTEGER,
-    hauled_load_in_t                              INTEGER,
+    hauled_load_weight_in_t                       INTEGER,
     formation_weight_in_t                         INTEGER,
     traction_braked_weight_in_t                   INTEGER,
     hauled_load_braked_weight_in_t                INTEGER,
