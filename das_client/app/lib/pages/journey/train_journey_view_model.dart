@@ -26,53 +26,20 @@ class TrainJourneyViewModel {
 
   Stream<ErrorCode?> get errorCode => _rxErrorCode.stream;
 
-  Stream<DateTime> get selectedDate => _rxDate.stream;
-
-  Stream<String?> get selectedTrainNumber => _rxTrainNumber.stream;
-
-  Stream<bool> get formCompleted => _rxFormCompleted.stream;
-
-  bool get formCompletedValue => _rxFormCompleted.value;
-
-  Stream<RailwayUndertaking> get selectedRailwayUndertaking => _rxRailwayUndertaking.stream;
-
-  Stream<TrainIdentification?> get trainIdentification => _rxTrainIdentification.stream;
-
-  TrainIdentification? get trainIdentificationValue => _rxTrainIdentification.value;
-
   AutomaticAdvancementController automaticAdvancementController = AutomaticAdvancementController();
 
   final _rxSettings = BehaviorSubject<TrainJourneySettings>.seeded(TrainJourneySettings());
-  final _rxDate = BehaviorSubject<DateTime>.seeded(DateTime.now());
-  final _rxTrainNumber = BehaviorSubject<String?>.seeded(null);
-  final _rxRailwayUndertaking = BehaviorSubject<RailwayUndertaking>.seeded(RailwayUndertaking.sbbP);
   final _rxErrorCode = BehaviorSubject<ErrorCode?>.seeded(null);
-  final _rxTrainIdentification = BehaviorSubject<TrainIdentification?>.seeded(null);
-  final _rxFormCompleted = BehaviorSubject<bool>.seeded(false);
   final _subscriptions = <StreamSubscription>[];
 
   StreamSubscription? _stateSubscription;
   StreamSubscription? _journeySubscription;
 
   void _init() {
-    _initFormComplete();
+    _listenToSferaRemoteRepo();
   }
 
-  void loadTrainJourney() async {
-    _resetSettings();
-    _rxErrorCode.add(null);
-
-    final date = _rxDate.value;
-    final ru = _rxRailwayUndertaking.value;
-    final trainNumber = _rxTrainNumber.value;
-    if (trainNumber == null) {
-      Fimber.i('company or trainNumber null');
-      return;
-    }
-
-    final trainIdentification = TrainIdentification(ru: ru, trainNumber: trainNumber.trim(), date: date);
-    _rxTrainIdentification.add(trainIdentification);
-
+  void _listenToSferaRemoteRepo() {
     _stateSubscription?.cancel();
     _stateSubscription = _sferaRemoteRepo.stateStream.listen((state) {
       switch (state) {
@@ -92,26 +59,14 @@ class TrainJourneyViewModel {
           if (_sferaRemoteRepo.lastError != null) {
             _rxErrorCode.add(ErrorCode.fromSfera(_sferaRemoteRepo.lastError!));
           }
-
           _journeySubscription?.cancel();
           break;
       }
     });
-
-    _sferaRemoteRepo.connect(OtnId(company: ru.companyCode, operationalTrainNumber: trainNumber, startDate: date));
   }
-
-  void updateTrainNumber(String? trainNumber) => _rxTrainNumber.add(trainNumber);
-
-  void updateRailwayUndertaking(RailwayUndertaking railwayUndertaking) => _rxRailwayUndertaking.add(railwayUndertaking);
-
-  void updateDate(DateTime date) => _rxDate.add(date);
 
   void reset() {
     _sferaRemoteRepo.disconnect();
-    _rxDate.add(DateTime.now());
-    _rxTrainNumber.add(null);
-    _rxTrainIdentification.add(null);
   }
 
   void updateBreakSeries(BreakSeries selectedBreakSeries) {
@@ -147,10 +102,6 @@ class TrainJourneyViewModel {
 
   void dispose() {
     _rxSettings.close();
-    _rxDate.close();
-    _rxRailwayUndertaking.close();
-    _rxTrainNumber.close();
-    _rxTrainIdentification.close();
 
     for (final subscription in _subscriptions) {
       subscription.cancel();
@@ -160,8 +111,6 @@ class TrainJourneyViewModel {
 
     automaticAdvancementController.dispose();
   }
-
-  void _resetSettings() => _rxSettings.add(TrainJourneySettings());
 
   void _listenToJourneyUpdates() {
     _journeySubscription?.cancel();
@@ -198,12 +147,5 @@ class TrainJourneyViewModel {
     if (newList.length != collapsedFootNotes.length) {
       updateCollapsedFootnotes(newList);
     }
-  }
-
-  void _initFormComplete() {
-    final subscription = _rxTrainNumber.stream
-        .map((trainNumber) => trainNumber != null && trainNumber.isNotEmpty)
-        .listen(_rxFormCompleted.add, onError: _rxFormCompleted.addError);
-    _subscriptions.add(subscription);
   }
 }

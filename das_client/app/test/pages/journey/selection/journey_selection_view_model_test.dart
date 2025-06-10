@@ -2,13 +2,19 @@ import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:sfera/component.dart';
 
+@GenerateNiceMocks([MockSpec<SferaRemoteRepo>()])
+import 'journey_selection_view_model_test.mocks.dart';
+
 void main() {
+  late SferaRemoteRepo mockSferaRemoteRepo;
   late JourneySelectionViewModel testee;
 
   setUp(() {
-    testee = JourneySelectionViewModel();
+    mockSferaRemoteRepo = MockSferaRemoteRepo();
+    testee = JourneySelectionViewModel(sferaRemoteRepo: mockSferaRemoteRepo);
   });
 
   tearDown(() {
@@ -21,7 +27,7 @@ void main() {
     final clock = Clock.fixed(backInTheSeventies);
     withClock(clock, () {
       // seventies testee
-      testee = JourneySelectionViewModel();
+      testee = JourneySelectionViewModel(sferaRemoteRepo: mockSferaRemoteRepo);
     });
     // ACT
     final state = testee.modelValue;

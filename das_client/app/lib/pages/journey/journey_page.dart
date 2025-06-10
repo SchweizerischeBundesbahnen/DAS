@@ -1,14 +1,12 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
-import 'package:app/nav/app_router.dart';
-import 'package:app/pages/journey/selection/train_selection.dart';
+import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/train_journey/train_journey_overview.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
 import 'package:app/util/error_code.dart';
 import 'package:app/util/format.dart';
-import 'package:auth/component.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,33 +15,35 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 @RoutePage()
-class JourneyPage extends StatelessWidget {
+class JourneyPage extends StatelessWidget implements AutoRouteWrapper {
   static const disconnectButtonKey = Key('disconnectButton');
 
   const JourneyPage({super.key});
 
   @override
+  Widget wrappedRoute(BuildContext context) => Provider<TrainJourneyViewModel>(
+    create: (_) => DI.get<TrainJourneyViewModel>(),
+    child: this,
+  );
+
+  @override
   Widget build(BuildContext context) {
-    final viewModel = DI.get<TrainJourneyViewModel>();
-    return Provider(
-      create: (_) => DI.get<TrainJourneyViewModel>(),
-      child: StreamBuilder(
-        stream: CombineLatestStream.list([viewModel.journey, viewModel.trainIdentification, viewModel.settings]),
-        builder: (context, snapshot) {
-          final journey = snapshot.data?[0] as Journey?;
-          final trainIdentification = snapshot.data?[1] as TrainIdentification?;
-          final settings = snapshot.data?[2] as TrainJourneySettings?;
+    return StreamBuilder(
+      stream: CombineLatestStream.list([
+        context.read<TrainJourneyViewModel>().settings,
+        DI.get<JourneyNavigationViewModel>().model,
+      ]),
+      builder: (context, snapshot) {
+        final settings = snapshot.data?[0] as TrainJourneySettings?;
+        final trainIdentification = snapshot.data?[1] as TrainIdentification?;
 
-          final hideAppBar = journey != null && settings?.isAutoAdvancementEnabled == true;
-
-          return DASJourneyScaffold(
-            body: _Content(),
-            appBarTitle: _appBarTitle(context, trainIdentification),
-            hideAppBar: hideAppBar,
-            appBarTrailingAction: journey != null ? _DismissJourneyButton() : _LogoutButton(),
-          );
-        },
-      ),
+        return DASJourneyScaffold(
+          body: _Content(),
+          appBarTitle: _appBarTitle(context, trainIdentification),
+          hideAppBar: settings?.isAutoAdvancementEnabled == true,
+          appBarTrailingAction: _DismissJourneyButton(),
+        );
+      },
     );
   }
 
@@ -67,7 +67,6 @@ class _Content extends StatelessWidget {
     return StreamBuilder(
       stream: CombineLatestStream.list([
         viewModel.journey,
-        viewModel.trainIdentification,
         viewModel.errorCode,
       ]),
       builder: (context, snapshot) {
@@ -76,11 +75,17 @@ class _Content extends StatelessWidget {
         }
 
         final journey = snapshot.data?[0] as Journey?;
-        final trainIdentification = snapshot.data?[1] as TrainIdentification?;
-        final errorCode = snapshot.data?[2] as ErrorCode?;
+        final errorCode = snapshot.data?[1] as ErrorCode?;
 
-        if (trainIdentification == null || errorCode != null) {
-          return const TrainSelection();
+        if (errorCode != null) {
+          return Center(
+            child: SBBMessage(
+              illustration: MessageIllustration.Display,
+              title: context.l10n.c_something_went_wrong,
+              description: errorCode.displayText(context),
+              messageCode: '${context.l10n.c_error_code}: ${errorCode.code.toString()}',
+            ),
+          );
         } else if (journey != null) {
           return const TrainJourneyOverview();
         }
@@ -97,16 +102,5 @@ class _DismissJourneyButton extends StatelessWidget {
     key: JourneyPage.disconnectButtonKey,
     icon: const Icon(SBBIcons.train_small),
     onPressed: () => context.read<TrainJourneyViewModel>().reset(),
-  );
-}
-
-class _LogoutButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) => IconButton(
-    icon: const Icon(SBBIcons.exit_small),
-    onPressed: () {
-      DI.get<Authenticator>().logout();
-      context.router.replace(const LoginRoute());
-    },
   );
 }

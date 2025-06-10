@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/brightness/brightness_modal_sheet.dart';
 import 'package:app/di/di.dart';
 import 'package:app/extension/ru_extension.dart';
@@ -11,6 +13,7 @@ import 'package:app/util/format.dart';
 import 'package:app/widgets/header.dart';
 import 'package:auth/component.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -23,7 +26,7 @@ class JourneySelectionPage extends StatelessWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) {
     return Provider<JourneySelectionViewModel>(
-      create: (_) => JourneySelectionViewModel(),
+      create: (_) => JourneySelectionViewModel(sferaRemoteRepo: DI.get<SferaRemoteRepo>()),
       dispose: (context, vm) => vm.dispose(),
       child: this,
     );
@@ -47,9 +50,19 @@ class _Content extends StatefulWidget {
 }
 
 class _ContentState extends State<_Content> {
+  late StreamSubscription<JourneySelectionModel?> _subscription;
+
   @override
   void initState() {
     super.initState();
+    final viewModel = context.read<JourneySelectionViewModel>();
+    _subscription = viewModel.model.listen((model) {
+      if (model is Loaded) {
+        Fimber.d('Loaded!');
+        context.router.replace(JourneyRoute());
+      }
+    });
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       BrightnessModalSheet.openIfNeeded(context);
     });
@@ -74,6 +87,12 @@ class _ContentState extends State<_Content> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
   }
 }
 

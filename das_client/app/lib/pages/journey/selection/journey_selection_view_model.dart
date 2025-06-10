@@ -7,16 +7,22 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 class JourneySelectionViewModel {
+  JourneySelectionViewModel({
+    required SferaRemoteRepo sferaRemoteRepo,
+  }) : _sferaRemoteRepo = sferaRemoteRepo {
+    _emitInitial();
+  }
+
+  final SferaRemoteRepo _sferaRemoteRepo;
+
+  StreamSubscription? _stateSubscription;
+
   static const RailwayUndertaking _initialRailwayUndertaking = RailwayUndertaking.sbbP;
 
   DateTime Function() get _initialDateTime =>
       () => clock.now();
 
   final _state = BehaviorSubject<JourneySelectionModel>();
-
-  JourneySelectionViewModel() {
-    _emitInitial();
-  }
 
   Stream<JourneySelectionModel> get model => _state.stream;
 
@@ -25,32 +31,50 @@ class JourneySelectionViewModel {
   void loadTrainJourney() async {
     final currentState = _state.value;
     switch (currentState) {
-      case final Selecting sM:
-        _state.add(
-          Loading(
-            trainJourneyIdentification: TrainIdentification(
-              date: sM.startDate,
-              ru: sM.railwayUndertaking,
-              trainNumber: sM.operationalTrainNumber,
-            ),
-          ),
-        );
-        await Future.delayed(Duration(seconds: 1));
-        _state.add(
-          Error(
-            errorCode: ErrorCode.connectionFailed,
-            trainJourneyIdentification: TrainIdentification(
-              date: sM.startDate,
-              ru: sM.railwayUndertaking,
-              trainNumber: sM.operationalTrainNumber,
-            ),
-          ),
-        );
-        // await Future.delayed(Duration(seconds: 1));
-        // _state.add(sM);
-        break;
       case Loading() || Loaded() || Error():
         break;
+      case final Selecting sM:
+        if (!sM.isInputComplete) return;
+
+        final trainIdentification = TrainIdentification(
+          ru: sM.railwayUndertaking,
+          trainNumber: sM.operationalTrainNumber.trim(),
+          date: sM.startDate,
+        );
+        _state.add(JourneySelectionModel.loading(trainJourneyIdentification: trainIdentification));
+
+        _stateSubscription?.cancel();
+        _stateSubscription = _sferaRemoteRepo.stateStream.listen((state) {
+          switch (state) {
+            case SferaRemoteRepositoryState.connected:
+              _state.add(JourneySelectionModel.loaded(trainJourneyIdentification: trainIdentification));
+              break;
+            case SferaRemoteRepositoryState.connecting:
+            case SferaRemoteRepositoryState.handshaking:
+            case SferaRemoteRepositoryState.loadingJourney:
+            case SferaRemoteRepositoryState.loadingAdditionalData:
+              break;
+            case SferaRemoteRepositoryState.disconnected:
+            case SferaRemoteRepositoryState.offline:
+              if (_sferaRemoteRepo.lastError != null) {
+                _state.add(
+                  JourneySelectionModel.error(
+                    trainJourneyIdentification: trainIdentification,
+                    errorCode: ErrorCode.fromSfera(_sferaRemoteRepo.lastError!),
+                  ),
+                );
+              }
+              break;
+          }
+        });
+
+        _sferaRemoteRepo.connect(
+          OtnId(
+            company: trainIdentification.ru.companyCode,
+            operationalTrainNumber: trainIdentification.trainNumber,
+            startDate: trainIdentification.date,
+          ),
+        );
     }
   }
 
@@ -74,6 +98,7 @@ class JourneySelectionViewModel {
   );
 
   void dispose() {
+    _stateSubscription?.cancel();
     _state.close();
   }
 
