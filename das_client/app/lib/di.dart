@@ -93,7 +93,12 @@ extension GetItX on GetIt {
   void registerMqttAuthProvider() {
     factoryFunc() {
       Fimber.d('Register mqtt auth provider');
-      return _MqttAuthProvider(authenticator: DI.get(), sferaAuthService: DI.get());
+      final flavor = DI.get<Flavor>();
+      return _MqttAuthProvider(
+        authenticator: DI.get(),
+        sferaAuthService: DI.get(),
+        oauthProfile: flavor.mqttOauthProfile,
+      );
     }
 
     registerFactory<MqttAuthProvider>(factoryFunc);
@@ -102,7 +107,10 @@ extension GetItX on GetIt {
   void registerMqttClientConnector({bool useTms = false}) {
     factoryFunc() {
       Fimber.d('Register mqtt client connector');
-      return MqttComponent.createMqttClientConnector(authProvider: DI.get(), useTms: useTms);
+      return MqttComponent.createMqttClientConnector(
+        authProvider: DI.get(),
+        useTms: useTms,
+      );
     }
 
     registerLazySingleton<MqttClientConnector>(factoryFunc);
@@ -249,10 +257,13 @@ class _SferaAuthProvider implements SferaAuthProvider {
 }
 
 class _MqttAuthProvider implements MqttAuthProvider {
-  const _MqttAuthProvider({required this.authenticator, required this.sferaAuthService});
+  const _MqttAuthProvider({required this.authenticator, required this.sferaAuthService, required this.oauthProfile});
 
   final SferaAuthService sferaAuthService;
   final Authenticator authenticator;
+
+  @override
+  final String oauthProfile;
 
   @override
   Future<String?> tmsToken({required String company, required String train, required String role}) {
