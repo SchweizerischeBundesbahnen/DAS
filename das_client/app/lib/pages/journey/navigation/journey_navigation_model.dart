@@ -1,11 +1,11 @@
 import 'package:sfera/component.dart';
 
-class TrainJourneyNavigationModel {
+class JourneyNavigationModel {
   final TrainIdentification trainIdentification;
   final int currentIndex;
   final int navigationStackLength;
 
-  TrainJourneyNavigationModel({
+  JourneyNavigationModel({
     required this.trainIdentification,
     required this.currentIndex,
     required this.navigationStackLength,
@@ -14,7 +14,7 @@ class TrainJourneyNavigationModel {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TrainJourneyNavigationModel &&
+      other is JourneyNavigationModel &&
           runtimeType == other.runtimeType &&
           trainIdentification == other.trainIdentification &&
           currentIndex == other.currentIndex &&
@@ -25,5 +25,5 @@ class TrainJourneyNavigationModel {
 
   @override
   String toString() =>
-      'TrainJourneyNavigationModel(trainIdentification: $trainIdentification, currentIndex: $currentIndex, navigationStackLength: $navigationStackLength)';
+      'JourneyNavigationModel(trainIdentification: $trainIdentification, currentIndex: $currentIndex, navigationStackLength: $navigationStackLength)';
 }

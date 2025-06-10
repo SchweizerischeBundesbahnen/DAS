@@ -5,11 +5,11 @@ import 'package:sfera/component.dart';
 
 class JourneyNavigationViewModel {
   final List<TrainIdentification> _trainIds = [];
-  final _rxModel = BehaviorSubject<TrainJourneyNavigationModel?>.seeded(null);
+  final _rxModel = BehaviorSubject<JourneyNavigationModel?>.seeded(null);
 
-  Stream<TrainJourneyNavigationModel?> get model => _rxModel.stream.distinct();
+  Stream<JourneyNavigationModel?> get model => _rxModel.stream.distinct();
 
-  TrainJourneyNavigationModel? get modelValue => _rxModel.value;
+  JourneyNavigationModel? get modelValue => _rxModel.value;
 
   int get _currentTrainIdIndex => _rxModel.value?.currentIndex ?? -1;
 
@@ -42,20 +42,20 @@ class JourneyNavigationViewModel {
   }
 
   void reset() {
-    Fimber.d('Resetting TrainJourneyNavigationViewModel');
+    Fimber.d('Resetting JourneyNavigationViewModel');
     _trainIds.clear();
     _rxModel.add(null);
   }
 
   void dispose() {
-    Fimber.d('Disposing TrainJourneyNavigationViewModel');
+    Fimber.d('Disposing JourneyNavigationViewModel');
     _rxModel.close();
     _trainIds.clear();
   }
 
   void _addToStream(TrainIdentification trainId) {
     _rxModel.add(
-      TrainJourneyNavigationModel(
+      JourneyNavigationModel(
         trainIdentification: trainId,
         currentIndex: _trainIds.indexOf(trainId),
         navigationStackLength: _trainIds.length,

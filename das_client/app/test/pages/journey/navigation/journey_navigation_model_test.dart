@@ -3,11 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';
 
 void main() {
-  group('TrainJourneyNavigationModel', () {
-    late TrainJourneyNavigationModel testee1;
-    late TrainJourneyNavigationModel testee2;
-    late TrainJourneyNavigationModel testee3;
-    late TrainJourneyNavigationModel testee4;
+  group('JourneyNavigationModel', () {
+    late JourneyNavigationModel testee1;
+    late JourneyNavigationModel testee2;
+    late JourneyNavigationModel testee3;
+    late JourneyNavigationModel testee4;
     late TrainIdentification trainId;
     late TrainIdentification trainId2;
 
@@ -22,10 +22,10 @@ void main() {
         trainNumber: '5678',
         date: DateTime.now().add(Duration(days: 1)),
       );
-      testee1 = TrainJourneyNavigationModel(trainIdentification: trainId, currentIndex: 0, navigationStackLength: 1);
-      testee2 = TrainJourneyNavigationModel(trainIdentification: trainId2, currentIndex: 1, navigationStackLength: 2);
-      testee3 = TrainJourneyNavigationModel(trainIdentification: trainId, currentIndex: 0, navigationStackLength: 1);
-      testee4 = TrainJourneyNavigationModel(trainIdentification: trainId, currentIndex: 0, navigationStackLength: 2);
+      testee1 = JourneyNavigationModel(trainIdentification: trainId, currentIndex: 0, navigationStackLength: 1);
+      testee2 = JourneyNavigationModel(trainIdentification: trainId2, currentIndex: 1, navigationStackLength: 2);
+      testee3 = JourneyNavigationModel(trainIdentification: trainId, currentIndex: 0, navigationStackLength: 1);
+      testee4 = JourneyNavigationModel(trainIdentification: trainId, currentIndex: 0, navigationStackLength: 2);
     });
 
     test('equals_whenSameTrainIdAndIndex_thenReturnsTrue', () {
@@ -47,7 +47,7 @@ void main() {
     test('toString_whenCalled_thenReturnsCorrectString', () {
       expect(
         testee1.toString(),
-        equals('TrainJourneyNavigationModel(trainIdentification: $trainId, currentIndex: 0, navigationStackLength: 1)'),
+        equals('JourneyNavigationModel(trainIdentification: $trainId, currentIndex: 0, navigationStackLength: 1)'),
       );
     });
 

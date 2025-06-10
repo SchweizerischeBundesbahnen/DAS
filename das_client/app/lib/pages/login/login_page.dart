@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    DI.loginScope(useTms: isTmsChecked);
+    DI.resetToUnauthenticatedScope(useTms: isTmsChecked);
     super.initState();
   }
 
@@ -100,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
               onChanged: (value) {
                 setState(() {
                   isTmsChecked = value ?? false;
-                  DI.loginScope(useTms: isTmsChecked);
+                  DI.resetToUnauthenticatedScope(useTms: isTmsChecked);
                 });
               },
             ),

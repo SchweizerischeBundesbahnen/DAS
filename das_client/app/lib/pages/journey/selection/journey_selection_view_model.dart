@@ -45,13 +45,13 @@ class JourneySelectionViewModel {
           trainNumber: sM.operationalTrainNumber.trim(),
           date: sM.startDate,
         );
-        _state.add(JourneySelectionModel.loading(trainJourneyIdentification: trainIdentification));
+        _state.add(JourneySelectionModel.loading(trainIdentification: trainIdentification));
 
         _stateSubscription?.cancel();
         _stateSubscription = _sferaRemoteRepo.stateStream.listen((state) {
           switch (state) {
             case SferaRemoteRepositoryState.connected:
-              _state.add(JourneySelectionModel.loaded(trainJourneyIdentification: trainIdentification));
+              _state.add(JourneySelectionModel.loaded(trainIdentification: trainIdentification));
               _onJourneySelected(trainIdentification);
               break;
             case SferaRemoteRepositoryState.connecting:
@@ -64,7 +64,7 @@ class JourneySelectionViewModel {
               if (_sferaRemoteRepo.lastError != null) {
                 _state.add(
                   JourneySelectionModel.error(
-                    trainJourneyIdentification: trainIdentification,
+                    trainIdentification: trainIdentification,
                     errorCode: ErrorCode.fromSfera(_sferaRemoteRepo.lastError!),
                   ),
                 );

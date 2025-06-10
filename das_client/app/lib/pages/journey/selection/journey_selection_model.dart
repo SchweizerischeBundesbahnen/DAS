@@ -3,6 +3,7 @@ import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:sfera/component.dart';
 
+/// Represents the state of the journey selection process.
 sealed class JourneySelectionModel {
   const JourneySelectionModel._();
 
@@ -12,41 +13,41 @@ sealed class JourneySelectionModel {
     String? trainNumber,
   }) = Selecting;
 
-  factory JourneySelectionModel.loading({required TrainIdentification trainJourneyIdentification}) = Loading;
+  factory JourneySelectionModel.loading({required TrainIdentification trainIdentification}) = Loading;
 
-  factory JourneySelectionModel.loaded({required TrainIdentification trainJourneyIdentification}) = Loaded;
+  factory JourneySelectionModel.loaded({required TrainIdentification trainIdentification}) = Loaded;
 
   factory JourneySelectionModel.error({
-    required TrainIdentification trainJourneyIdentification,
+    required TrainIdentification trainIdentification,
     required ErrorCode errorCode,
   }) = Error;
 
   bool get isStartDateSameAsToday => switch (this) {
-    final Selecting selecting => DateUtils.isSameDay(selecting.startDate, clock.now()),
-    final Loading loading => DateUtils.isSameDay(loading.trainJourneyIdentification.date, clock.now()),
-    final Loaded loaded => DateUtils.isSameDay(loaded.trainJourneyIdentification.date, clock.now()),
-    final Error error => DateUtils.isSameDay(error.trainJourneyIdentification.date, clock.now()),
+    final Selecting s => DateUtils.isSameDay(s.startDate, clock.now()),
+    final Loading l => DateUtils.isSameDay(l.trainIdentification.date, clock.now()),
+    final Loaded l => DateUtils.isSameDay(l.trainIdentification.date, clock.now()),
+    final Error l => DateUtils.isSameDay(l.trainIdentification.date, clock.now()),
   };
 
   String get operationalTrainNumber => switch (this) {
-    final Selecting selecting => selecting.trainNumber ?? '',
-    final Loading loading => loading.trainJourneyIdentification.trainNumber,
-    final Loaded loaded => loaded.trainJourneyIdentification.trainNumber,
-    final Error error => error.trainJourneyIdentification.trainNumber,
+    final Selecting s => s.trainNumber ?? '',
+    final Loading l => l.trainIdentification.trainNumber,
+    final Loaded l => l.trainIdentification.trainNumber,
+    final Error e => e.trainIdentification.trainNumber,
   };
 
   DateTime get startDate => switch (this) {
-    final Selecting selecting => selecting.startDate,
-    final Loading loading => loading.trainJourneyIdentification.date,
-    final Loaded loaded => loaded.trainJourneyIdentification.date,
-    final Error error => error.trainJourneyIdentification.date,
+    final Selecting s => s.startDate,
+    final Loading l => l.trainIdentification.date,
+    final Loaded l => l.trainIdentification.date,
+    final Error e => e.trainIdentification.date,
   };
 
   RailwayUndertaking get railwayUndertaking => switch (this) {
-    final Selecting selecting => selecting.railwayUndertaking,
-    final Loading loading => loading.trainJourneyIdentification.ru,
-    final Loaded loaded => loaded.trainJourneyIdentification.ru,
-    final Error error => error.trainJourneyIdentification.ru,
+    final Selecting s => s.railwayUndertaking,
+    final Loading l => l.trainIdentification.ru,
+    final Loaded l => l.trainIdentification.ru,
+    final Error e => e.trainIdentification.ru,
   };
 
   @override
@@ -100,54 +101,42 @@ class Selecting extends JourneySelectionModel {
 
 class Loading extends JourneySelectionModel {
   const Loading({
-    required this.trainJourneyIdentification,
+    required this.trainIdentification,
   }) : super._();
 
-  final TrainIdentification trainJourneyIdentification;
+  final TrainIdentification trainIdentification;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Loading &&
-          runtimeType == other.runtimeType &&
-          trainJourneyIdentification == other.trainJourneyIdentification;
+      other is Loading && runtimeType == other.runtimeType && trainIdentification == other.trainIdentification;
 
   @override
-  int get hashCode => Object.hash(runtimeType, trainJourneyIdentification);
-
-  Loading copyWith({
-    TrainIdentification? trainJourneyIdentification,
-  }) {
-    return Loading(
-      trainJourneyIdentification: trainJourneyIdentification ?? this.trainJourneyIdentification,
-    );
-  }
+  int get hashCode => Object.hash(runtimeType, trainIdentification);
 }
 
 class Loaded extends JourneySelectionModel {
   const Loaded({
-    required this.trainJourneyIdentification,
+    required this.trainIdentification,
   }) : super._();
 
-  final TrainIdentification trainJourneyIdentification;
+  final TrainIdentification trainIdentification;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Loaded &&
-          runtimeType == other.runtimeType &&
-          trainJourneyIdentification == other.trainJourneyIdentification;
+      other is Loaded && runtimeType == other.runtimeType && trainIdentification == other.trainIdentification;
 
   @override
-  int get hashCode => Object.hash(runtimeType, trainJourneyIdentification);
+  int get hashCode => Object.hash(runtimeType, trainIdentification);
 }
 
 class Error extends JourneySelectionModel {
   const Error({
-    required this.trainJourneyIdentification,
+    required this.trainIdentification,
     required this.errorCode,
   }) : super._();
-  final TrainIdentification trainJourneyIdentification;
+  final TrainIdentification trainIdentification;
   final ErrorCode errorCode;
 
   @override
@@ -155,9 +144,9 @@ class Error extends JourneySelectionModel {
       identical(this, other) ||
       other is Error &&
           runtimeType == other.runtimeType &&
-          trainJourneyIdentification == other.trainJourneyIdentification &&
+          trainIdentification == other.trainIdentification &&
           errorCode == other.errorCode;
 
   @override
-  int get hashCode => Object.hash(runtimeType, trainJourneyIdentification, errorCode);
+  int get hashCode => Object.hash(runtimeType, trainIdentification, errorCode);
 }

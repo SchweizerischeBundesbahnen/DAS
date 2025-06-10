@@ -38,7 +38,7 @@ class JourneyPage extends StatelessWidget implements AutoRouteWrapper {
       ]),
       builder: (context, snapshot) {
         final settings = snapshot.data?[0] as TrainJourneySettings?;
-        final model = snapshot.data?[1] as TrainJourneyNavigationModel?;
+        final model = snapshot.data?[1] as JourneyNavigationModel?;
 
         return DASJourneyScaffold(
           body: _Content(),
