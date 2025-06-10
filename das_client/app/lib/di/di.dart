@@ -18,8 +18,7 @@ class DI {
     GetIt.I.registerScopeHandler();
     return GetIt.I.allReady();
   }
-
-  /// The login scope is either the TMS scope or the Sfera mock scope.
+  
   static Future<void> resetToUnauthenticatedScope({required bool useTms}) async {
     Fimber.i('LoginScope with useTms=$useTms');
 
