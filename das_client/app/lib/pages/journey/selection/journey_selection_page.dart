@@ -31,7 +31,7 @@ class JourneySelectionPage extends StatelessWidget implements AutoRouteWrapper {
         sferaRemoteRepo: DI.get<SferaRemoteRepo>(),
         onJourneySelected: DI.get<JourneyNavigationViewModel>().push,
       ),
-      dispose: (context, vm) => vm.dispose(),
+      dispose: (_, vm) => vm.dispose(),
       child: this,
     );
   }
@@ -62,7 +62,6 @@ class _ContentState extends State<_Content> {
     final viewModel = context.read<JourneySelectionViewModel>();
     _subscription = viewModel.model.listen((model) {
       if (model is Loaded) {
-        Fimber.d('Loaded!');
         context.router.replace(JourneyRoute());
       }
     });
@@ -131,9 +130,13 @@ class _Header extends StatelessWidget {
     final viewModel = context.read<JourneySelectionViewModel>();
     return StreamBuilder(
       stream: viewModel.model,
+      initialData: viewModel.modelValue,
       builder: (context, snapshot) {
         final model = snapshot.data;
-        if (model == null) return SizedBox.shrink();
+        if (model == null) {
+          Fimber.d('JourneySelectionModel is null, returning empty header');
+          return SizedBox.shrink();
+        }
 
         return Header(
           information: !model.isStartDateSameAsToday ? context.l10n.p_train_selection_date_not_today_warning : null,
@@ -152,24 +155,28 @@ class _Header extends StatelessWidget {
 
 class _Body extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => StreamBuilder(
-    stream: context.read<JourneySelectionViewModel>().model,
-    builder: (context, snapshot) {
-      final model = snapshot.data;
-      if (model == null) return SBBLoadingIndicator();
+  Widget build(BuildContext context) {
+    final viewModel = context.read<JourneySelectionViewModel>();
+    return StreamBuilder(
+      stream: viewModel.model,
+      initialData: viewModel.modelValue,
+      builder: (context, snapshot) {
+        final model = snapshot.data;
+        if (model == null) return SBBLoadingIndicator();
 
-      return switch (model) {
-        final Selecting _ || final Loaded _ => SizedBox.shrink(),
-        final Loading _ => Center(child: CircularProgressIndicator()),
-        final Error eM => SBBMessage(
-          illustration: MessageIllustration.Display,
-          title: context.l10n.c_something_went_wrong,
-          description: eM.errorCode.displayText(context),
-          messageCode: '${context.l10n.c_error_code}: ${eM.errorCode.code.toString()}',
-        ),
-      };
-    },
-  );
+        return switch (model) {
+          final Selecting _ || final Loaded _ => SizedBox.shrink(),
+          final Loading _ => Center(child: CircularProgressIndicator()),
+          final Error eM => SBBMessage(
+            illustration: MessageIllustration.Display,
+            title: context.l10n.c_something_went_wrong,
+            description: eM.errorCode.displayText(context),
+            messageCode: '${context.l10n.c_error_code}: ${eM.errorCode.code.toString()}',
+          ),
+        };
+      },
+    );
+  }
 }
 
 class JourneyRailwayUndertakingInput extends StatelessWidget {
@@ -180,6 +187,7 @@ class JourneyRailwayUndertakingInput extends StatelessWidget {
     final viewModel = context.read<JourneySelectionViewModel>();
     return StreamBuilder(
       stream: viewModel.model,
+      initialData: viewModel.modelValue,
       builder: (context, snapshot) {
         final model = snapshot.data;
         if (model == null) return SizedBox.shrink();
@@ -229,6 +237,7 @@ class _JourneyTrainNumberInputState extends State<JourneyTrainNumberInput> {
     final viewModel = context.read<JourneySelectionViewModel>();
     return StreamBuilder(
       stream: viewModel.model,
+      initialData: viewModel.modelValue,
       builder: (context, snapshot) {
         final model = snapshot.data;
         if (model == null) return SizedBox.shrink();
@@ -293,6 +302,7 @@ class _JourneyDateInputState extends State<JourneyDateInput> {
     final viewModel = context.read<JourneySelectionViewModel>();
     return StreamBuilder(
       stream: viewModel.model,
+      initialData: viewModel.modelValue,
       builder: (context, snapshot) {
         final model = snapshot.data;
         if (model == null) return SizedBox.shrink();
