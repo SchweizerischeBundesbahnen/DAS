@@ -68,13 +68,13 @@ sealed class Flavor {
         return _InteFlavor(
           tokenExchangeUrl: '',
           mqttUrl: '',
-          authenticatorConfig: _authenticatorConfigMockDev, // TODO: replace with empty config
+          authenticatorConfig: _emptyAuthenticatorConfig,
         );
       case _ProdFlavor():
         return _ProdFlavor(
           tokenExchangeUrl: '',
           mqttUrl: '',
-          authenticatorConfig: _authenticatorConfigProd, // TODO: replace with empty config
+          authenticatorConfig: _emptyAuthenticatorConfig,
         );
     }
   }
@@ -84,7 +84,7 @@ class _DevFlavor extends Flavor {
   const _DevFlavor({
     super.tokenExchangeUrl = '',
     super.mqttUrl = '',
-    super.authenticatorConfig = _authenticatorConfigMockDev, // TODO: replace with empty config
+    super.authenticatorConfig = _emptyAuthenticatorConfig,
   }) : super(
          displayName: 'Dev',
          mqttTopicPrefix: 'dev/',
@@ -99,7 +99,7 @@ class _InteFlavor extends Flavor {
   const _InteFlavor({
     super.tokenExchangeUrl = '',
     super.mqttUrl = '',
-    super.authenticatorConfig = _authenticatorConfigMockDev, // TODO: replace with empty config
+    super.authenticatorConfig = _emptyAuthenticatorConfig,
   }) : super(
          displayName: 'Inte',
          mqttTopicPrefix: '',
@@ -113,7 +113,7 @@ class _ProdFlavor extends Flavor {
   const _ProdFlavor({
     super.tokenExchangeUrl = '',
     super.mqttUrl = '',
-    super.authenticatorConfig = _authenticatorConfigMockDev, // TODO: replace with empty config
+    super.authenticatorConfig = _emptyAuthenticatorConfig,
   }) : super(
          displayName: 'Prod',
          mqttTopicPrefix: '',
@@ -122,6 +122,8 @@ class _ProdFlavor extends Flavor {
          showBanner: false,
        );
 }
+
+const _emptyAuthenticatorConfig = AuthenticatorConfig.empty();
 
 const _authenticatorConfigTmsDev = AuthenticatorConfig(
   discoveryUrl:
