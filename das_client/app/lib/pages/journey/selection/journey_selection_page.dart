@@ -5,6 +5,7 @@ import 'package:app/di/di.dart';
 import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
+import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
@@ -26,7 +27,10 @@ class JourneySelectionPage extends StatelessWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) {
     return Provider<JourneySelectionViewModel>(
-      create: (_) => JourneySelectionViewModel(sferaRemoteRepo: DI.get<SferaRemoteRepo>()),
+      create: (_) => JourneySelectionViewModel(
+        sferaRemoteRepo: DI.get<SferaRemoteRepo>(),
+        onJourneySelected: DI.get<JourneyNavigationViewModel>().push,
+      ),
       dispose: (context, vm) => vm.dispose(),
       child: this,
     );

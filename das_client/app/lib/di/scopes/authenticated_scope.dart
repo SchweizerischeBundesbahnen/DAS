@@ -1,7 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
 import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
-import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/util/device_id_info.dart';
 import 'package:auth/component.dart';
 import 'package:fimber/fimber.dart';
@@ -28,7 +27,6 @@ class AuthenticatedScope extends DIScope {
     getIt.registerSferaLocalRepo();
     getIt.registerSferaRemoteRepo();
     getIt.registerJourneyNavigationViewModel();
-    getIt.registerTrainJourneyViewModel();
 
     await getIt.allReady();
   }
@@ -119,17 +117,17 @@ extension AuthenticatedScopeExtension on GetIt {
     registerLazySingleton<SferaLocalRepo>(factoryFunc);
   }
 
-  void registerTrainJourneyViewModel() {
-    factoryFunc() {
-      Fimber.d('Register TrainJourneyViewModel');
-      return TrainJourneyViewModel(sferaRemoteRepo: DI.get());
-    }
-
-    registerLazySingleton<TrainJourneyViewModel>(
-      factoryFunc,
-      dispose: (vm) => vm.dispose(),
-    );
-  }
+  // void registerTrainJourneyViewModel() {
+  //   factoryFunc() {
+  //     Fimber.d('Register TrainJourneyViewModel');
+  //     return TrainJourneyViewModel(sferaRemoteRepo: DI.get());
+  //   }
+  //
+  //   registerLazySingleton<TrainJourneyViewModel>(
+  //     factoryFunc,
+  //     dispose: (vm) => vm.dispose(),
+  //   );
+  // }
 
   void registerJourneyNavigationViewModel() {
     factoryFunc() {

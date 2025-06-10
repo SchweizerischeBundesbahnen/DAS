@@ -9,11 +9,15 @@ import 'package:sfera/component.dart';
 class JourneySelectionViewModel {
   JourneySelectionViewModel({
     required SferaRemoteRepo sferaRemoteRepo,
-  }) : _sferaRemoteRepo = sferaRemoteRepo {
+    required Function(TrainIdentification) onJourneySelected,
+  }) : _sferaRemoteRepo = sferaRemoteRepo,
+       _onJourneySelected = onJourneySelected {
     _emitInitial();
   }
 
   final SferaRemoteRepo _sferaRemoteRepo;
+
+  final Function(TrainIdentification) _onJourneySelected;
 
   StreamSubscription? _stateSubscription;
 
@@ -48,6 +52,7 @@ class JourneySelectionViewModel {
           switch (state) {
             case SferaRemoteRepositoryState.connected:
               _state.add(JourneySelectionModel.loaded(trainJourneyIdentification: trainIdentification));
+              _onJourneySelected(trainIdentification);
               break;
             case SferaRemoteRepositoryState.connecting:
             case SferaRemoteRepositoryState.handshaking:

@@ -1,5 +1,7 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
+import 'package:app/nav/app_router.dart';
+import 'package:app/pages/journey/navigation/journey_navigation_model.dart';
 import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/train_journey/train_journey_overview.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
@@ -22,7 +24,8 @@ class JourneyPage extends StatelessWidget implements AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) => Provider<TrainJourneyViewModel>(
-    create: (_) => DI.get<TrainJourneyViewModel>(),
+    create: (_) => TrainJourneyViewModel(sferaRemoteRepo: DI.get<SferaRemoteRepo>()),
+    dispose: (_, vm) => vm.dispose(),
     child: this,
   );
 
@@ -35,11 +38,11 @@ class JourneyPage extends StatelessWidget implements AutoRouteWrapper {
       ]),
       builder: (context, snapshot) {
         final settings = snapshot.data?[0] as TrainJourneySettings?;
-        final trainIdentification = snapshot.data?[1] as TrainIdentification?;
+        final model = snapshot.data?[1] as TrainJourneyNavigationModel?;
 
         return DASJourneyScaffold(
           body: _Content(),
-          appBarTitle: _appBarTitle(context, trainIdentification),
+          appBarTitle: _appBarTitle(context, model?.trainIdentification),
           hideAppBar: settings?.isAutoAdvancementEnabled == true,
           appBarTrailingAction: _DismissJourneyButton(),
         );
@@ -101,6 +104,10 @@ class _DismissJourneyButton extends StatelessWidget {
   Widget build(BuildContext context) => IconButton(
     key: JourneyPage.disconnectButtonKey,
     icon: const Icon(SBBIcons.train_small),
-    onPressed: () => context.read<TrainJourneyViewModel>().reset(),
+    onPressed: () {
+      DI.get<JourneyNavigationViewModel>().reset();
+      context.read<TrainJourneyViewModel>().reset();
+      context.router.replace(JourneySelectionRoute());
+    },
   );
 }

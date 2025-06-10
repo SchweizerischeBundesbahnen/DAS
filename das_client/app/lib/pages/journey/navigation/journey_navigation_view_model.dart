@@ -41,6 +41,12 @@ class JourneyNavigationViewModel {
     _addToStream(trainId);
   }
 
+  void reset() {
+    Fimber.d('Resetting TrainJourneyNavigationViewModel');
+    _trainIds.clear();
+    _rxModel.add(null);
+  }
+
   void dispose() {
     Fimber.d('Disposing TrainJourneyNavigationViewModel');
     _rxModel.close();

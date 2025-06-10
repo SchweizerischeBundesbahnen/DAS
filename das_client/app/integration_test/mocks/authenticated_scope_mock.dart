@@ -20,7 +20,7 @@ class MockAuthenticatedScope extends AuthenticatedScope {
     getIt.registerSferaAuthService();
     getIt.registerSferaLocalRepo();
     getIt.registerSferaRemoteRepo();
-    getIt.registerTrainJourneyViewModel();
+    getIt.registerJourneyNavigationViewModel();
 
     return getIt.allReady();
   }
