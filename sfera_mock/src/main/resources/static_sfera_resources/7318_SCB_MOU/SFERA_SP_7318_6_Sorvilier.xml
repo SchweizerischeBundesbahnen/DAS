@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                SP_ID="7318_6_Sorvilier" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="5200" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>1285</IM_ID>
+    </SP_Zone>
+
+    <SP_Points>
+
+        <TimingPoint TP_ID="Sorvilier" location="0">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>103</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+		
+		<Signal>
+            <Signal_ID signal_ID_Physical="C" location="3230"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="C"/>
+        </Signal>
+		
+		<BaliseGroup>
+            <Balise location="0" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+        </BaliseGroup>
+		<BaliseGroup>
+            <Balise location="2019" levelCrossingGuarding="true" amountLevelCrossings="1"/>
+        </BaliseGroup>
+
+    </SP_Points>
+
+    <SP_Areas>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="SOR" TAF_TAP_location_type="halt">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>103</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Sorvilier</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+			
+			<TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+					&lt;lineSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;90&quot;/&gt;
+							&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;90&quot;/&gt;
+							&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;90&quot;/&gt;
+							&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;90&quot;/&gt;
+							&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;90&quot;/&gt;
+							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;80&quot;/&gt;
+							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;80&quot;/&gt;
+							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;85&quot;/&gt;
+							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;85&quot;/&gt;
+							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;85&quot;/&gt;
+							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;85&quot;/&gt;
+							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;85&quot;/&gt;
+							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;85&quot;/&gt;
+							&lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;80&quot;/&gt;
+					&lt;/lineSpeed&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>departureAuth</NSP_GroupName>
+                <NetworkSpecificParameter name="departureAuth" value="false"/>
+            </TAF_TAP_Location_NSP>
+
+        </TAF_TAP_Location>
+
+    </SP_Areas>
+
+
+    <SP_ContextInformation>
+	
+		<LevelCrossingArea startEndQualifier="StartsEnds" startLocation="865" endLocation="865"/>
+		<LevelCrossingArea startEndQualifier="StartsEnds" startLocation="2899" endLocation="2899"/>
+	
+        <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1307"/>
+            </Contact>
+        </ContactList>
+		
+		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-P"/>
+
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="63.37"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="865">
+            <KM_Reference kmRef="64.235"/>
+        </KilometreReferencePoint>
+		<KilometreReferencePoint location="2019">
+            <KM_Reference kmRef="65.389"/>
+        </KilometreReferencePoint>
+		<KilometreReferencePoint location="2899">
+            <KM_Reference kmRef="66.269"/>
+        </KilometreReferencePoint>
+		<KilometreReferencePoint location="3230">
+            <KM_Reference kmRef="66.6"/>
+        </KilometreReferencePoint>
+
+    </SP_ContextInformation>
+
+</SegmentProfile>
