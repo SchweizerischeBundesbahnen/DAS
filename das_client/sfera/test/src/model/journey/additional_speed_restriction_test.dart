@@ -100,6 +100,49 @@ main() {
     expect(isDisplayedAsrInside, isFalse);
     expect(isDisplayedAsrEndingOutside, isTrue);
   });
+
+  test('test get lowest orderFrom on ASR iterable', () {
+    // GIVEN
+    final asr1 = AdditionalSpeedRestriction(kmFrom: 1.0, kmTo: 2.0, orderFrom: 100, orderTo: 200, speed: 50);
+    final asr2 = AdditionalSpeedRestriction(kmFrom: 3.0, kmTo: 4.0, orderFrom: 300, orderTo: 400, speed: 50);
+    final asr3 = AdditionalSpeedRestriction(kmFrom: 5.0, kmTo: 6.0, orderFrom: 500, orderTo: 600, speed: 50);
+    final restrictions = [asr2, asr1, asr3];
+
+    // WHEN
+    final lowestOrderFrom = restrictions.getLowestByOrderFrom;
+
+    // THEN
+    expect(lowestOrderFrom, asr1);
+  });
+
+  test('test get highest orderTo on ASR iterable', () {
+    // GIVEN
+    final asr1 = AdditionalSpeedRestriction(kmFrom: 1.0, kmTo: 2.0, orderFrom: 100, orderTo: 200, speed: 50);
+    final asr2 = AdditionalSpeedRestriction(kmFrom: 3.0, kmTo: 4.0, orderFrom: 300, orderTo: 400, speed: 50);
+    final asr3 = AdditionalSpeedRestriction(kmFrom: 5.0, kmTo: 6.0, orderFrom: 500, orderTo: 600, speed: 50);
+    final restrictions = [asr2, asr1, asr3];
+
+    // WHEN
+    final highestOrderTo = restrictions.getHighestByOrderTo;
+
+    // THEN
+    expect(highestOrderTo, asr3);
+  });
+
+  test('test get min speed from ASR iterable', () {
+    // GIVEN
+    final asr1 = AdditionalSpeedRestriction(kmFrom: 1.0, kmTo: 2.0, orderFrom: 100, orderTo: 200, speed: 60);
+    final asr2 = AdditionalSpeedRestriction(kmFrom: 3.0, kmTo: 4.0, orderFrom: 300, orderTo: 400, speed: 20);
+    final asr3 = AdditionalSpeedRestriction(kmFrom: 5.0, kmTo: 6.0, orderFrom: 500, orderTo: 600, speed: 70);
+    final asr4 = AdditionalSpeedRestriction(kmFrom: 5.0, kmTo: 6.0, orderFrom: 500, orderTo: 600, speed: null);
+    final restrictions = [asr1, asr2, asr3, asr4];
+
+    // WHEN
+    final minSpeed = restrictions.minSpeed;
+
+    // THEN
+    expect(minSpeed, 20);
+  });
 }
 
 NonStandardTrackEquipmentSegment _trackEquipment(TrackEquipmentType type, int? startOrder, int? endOrder) =>
