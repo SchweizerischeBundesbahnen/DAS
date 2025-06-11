@@ -3,14 +3,6 @@ import 'package:app/di/scope_handler.dart';
 import 'package:get_it/get_it.dart';
 
 class ScopeHandlerImpl implements ScopeHandler {
-  DIScope _getScope<T extends DIScope>() {
-    try {
-      return DI.get<T>();
-    } catch (e) {
-      throw UnimplementedError('Scope not implemented for type: $T');
-    }
-  }
-
   @override
   bool isTop<T extends DIScope>() {
     final currentScopeName = GetIt.I.currentScopeName;
@@ -39,5 +31,13 @@ class ScopeHandlerImpl implements ScopeHandler {
   bool isInStack<T extends DIScope>() {
     final scopeName = _getScope<T>().scopeName;
     return GetIt.I.hasScope(scopeName);
+  }
+
+  DIScope _getScope<T extends DIScope>() {
+    try {
+      return DI.get<T>();
+    } catch (e) {
+      throw UnimplementedError('Scope not implemented for type: $T');
+    }
   }
 }

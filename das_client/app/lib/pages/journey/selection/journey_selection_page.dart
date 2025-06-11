@@ -137,11 +137,11 @@ class _Body extends StatelessWidget {
         return switch (model) {
           final Selecting _ || final Loaded _ => SizedBox.shrink(),
           final Loading _ => Center(child: CircularProgressIndicator()),
-          final Error eM => SBBMessage(
+          final Error e => SBBMessage(
             illustration: MessageIllustration.Display,
             title: context.l10n.c_something_went_wrong,
-            description: eM.errorCode.displayText(context),
-            messageCode: '${context.l10n.c_error_code}: ${eM.errorCode.code.toString()}',
+            description: e.errorCode.displayText(context),
+            messageCode: '${context.l10n.c_error_code}: ${e.errorCode.code.toString()}',
           ),
         };
       },
@@ -161,11 +161,11 @@ class _LoadJourneyButton extends StatelessWidget {
 
         return switch (model) {
           final Loading _ || final Loaded _ || Error _ => SizedBox.shrink(),
-          final Selecting sM => Padding(
+          final Selecting s => Padding(
             padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing / 2),
             child: SBBPrimaryButton(
               label: context.l10n.c_button_confirm,
-              onPressed: sM.isInputComplete ? () => viewModel.loadTrainJourney() : null,
+              onPressed: s.isInputComplete ? () => viewModel.loadTrainJourney() : null,
             ),
           ),
         };

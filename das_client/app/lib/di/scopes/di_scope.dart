@@ -2,7 +2,7 @@ import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
 
 abstract class DIScope {
-  String get scopeName => '';
+  String get scopeName;
 
   final getIt = GetIt.I;
 

@@ -22,12 +22,7 @@ sealed class JourneySelectionModel {
     required ErrorCode errorCode,
   }) = Error;
 
-  bool get isStartDateSameAsToday => switch (this) {
-    final Selecting s => DateUtils.isSameDay(s.startDate, clock.now()),
-    final Loading l => DateUtils.isSameDay(l.trainIdentification.date, clock.now()),
-    final Loaded l => DateUtils.isSameDay(l.trainIdentification.date, clock.now()),
-    final Error l => DateUtils.isSameDay(l.trainIdentification.date, clock.now()),
-  };
+  bool get isStartDateSameAsToday => DateUtils.isSameDay(startDate, clock.now());
 
   String get operationalTrainNumber => switch (this) {
     final Selecting s => s.trainNumber ?? '',

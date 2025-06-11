@@ -1,15 +1,15 @@
 import 'package:sfera/component.dart';
 
 class JourneyNavigationModel {
-  final TrainIdentification trainIdentification;
-  final int currentIndex;
-  final int navigationStackLength;
-
   JourneyNavigationModel({
     required this.trainIdentification,
     required this.currentIndex,
     required this.navigationStackLength,
   });
+
+  final TrainIdentification trainIdentification;
+  final int currentIndex;
+  final int navigationStackLength;
 
   @override
   bool operator ==(Object other) =>
