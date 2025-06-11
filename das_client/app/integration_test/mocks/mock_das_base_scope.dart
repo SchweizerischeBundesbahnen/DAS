@@ -1,13 +1,15 @@
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/di/di.dart';
 import 'package:app/di/scopes/das_base_scope.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:fimber/fimber.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:warnapp/component.dart';
 
-import 'battery_mock.dart';
-import 'brightness_mock.dart';
+import 'integration_test_audio_player.dart';
+import 'mock_battery.dart';
+import 'mock_brightness_manager.dart';
 
 class MockDASBaseScope extends DASBaseScope {
   @override
@@ -18,7 +20,8 @@ class MockDASBaseScope extends DASBaseScope {
     Fimber.d('Pushing mock scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
     _registerMockBrightnessManager();
-    getIt.registerAudioPlayer();
+
+    _registerIntegrationTestAudioPlayer();
     _registerMockBattery();
     _registerMockMotionDataService();
     getIt.registerWarnapp();
@@ -39,5 +42,12 @@ class MockDASBaseScope extends DASBaseScope {
     getIt.registerSingleton<MotionDataService>(
       WarnappComponent.createMockMotionDataService(samplingPeriod: Duration(milliseconds: 2)),
     );
+  }
+
+  void _registerIntegrationTestAudioPlayer() {
+    getIt.registerLazySingleton<AudioPlayer>(() {
+      Fimber.d('Register IntegrationTestAudioPlayer');
+      return IntegrationTestAudioPlayer();
+    });
   }
 }
