@@ -3,9 +3,9 @@ import 'package:app/flavor.dart';
 import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
 
-import 'mocks/authenticated_scope_mock.dart';
-import 'mocks/das_base_scope_mock.dart';
-import 'mocks/sfera_mock_scope_mock.dart';
+import 'mocks/mock_authenticated_scope.dart';
+import 'mocks/mock_das_base_scope.dart';
+import 'mocks/mock_sfera_mock_scope.dart';
 
 class IntegrationTestDI {
   const IntegrationTestDI._();

@@ -19,8 +19,8 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../app_test.dart';
-import '../mocks/battery_mock.dart';
-import '../mocks/brightness_mock.dart';
+import '../mocks/mock_battery.dart';
+import '../mocks/mock_brightness_manager.dart';
 import '../util/test_utils.dart';
 
 Future<void> main() async {
