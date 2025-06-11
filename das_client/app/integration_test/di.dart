@@ -1,6 +1,7 @@
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/di.dart';
 import 'package:app/flavor.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:auth/component.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:fimber/fimber.dart';
@@ -13,6 +14,7 @@ import 'auth/integrationtest_authenticator.dart';
 import 'auth/mqtt_client_user_connector.dart';
 import 'mocks/battery_mock.dart';
 import 'mocks/brightness_mock.dart';
+import 'mocks/integration_test_audio_player.dart';
 
 class IntegrationTestDI {
   const IntegrationTestDI._();
@@ -34,7 +36,7 @@ class IntegrationTestDI {
     GetIt.I.registerSferaLocalRepo();
     GetIt.I.registerSferaRemoteRepo();
     _registerBattery();
-    GetIt.I.registerAudioPlayer();
+    _registerAudioPlayer();
     _registerMockMotionDataService();
     GetIt.I.registerWarnapp();
 
@@ -67,5 +69,12 @@ class IntegrationTestDI {
     GetIt.I.registerLazySingleton<BrightnessManager>(
       () => MockBrightnessManager(),
     );
+  }
+
+  static void _registerAudioPlayer() {
+    GetIt.I.registerLazySingleton<AudioPlayer>(() {
+      Fimber.d('Register IntegrationTestAudioPlayer');
+      return IntegrationTestAudioPlayer();
+    });
   }
 }
