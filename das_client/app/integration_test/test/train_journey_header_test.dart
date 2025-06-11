@@ -1,5 +1,5 @@
 import 'package:app/brightness/brightness_manager.dart';
-import 'package:app/di.dart';
+import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_page.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/battery_status.dart';
@@ -19,8 +19,8 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../app_test.dart';
-import '../mocks/battery_mock.dart';
-import '../mocks/brightness_mock.dart';
+import '../mocks/mock_battery.dart';
+import '../mocks/mock_brightness_manager.dart';
 import '../util/test_utils.dart';
 
 Future<void> main() async {
@@ -187,7 +187,7 @@ Future<void> main() async {
       await prepareAndStartApp(tester);
 
       // Set Battery to a mocked version
-      final battery = DI.get<Battery>() as BatteryMock;
+      final battery = DI.get<Battery>() as MockBattery;
 
       // Set current Battery-Level to 80 % so it is over 15%
       battery.currentBatteryLevel = 80;
@@ -211,7 +211,7 @@ Future<void> main() async {
       await prepareAndStartApp(tester);
 
       // Set Battery to a mocked version
-      final battery = DI.get<Battery>() as BatteryMock;
+      final battery = DI.get<Battery>() as MockBattery;
 
       // Set current Battery-Level to 10% so it is under 15%
       battery.currentBatteryLevel = 10;

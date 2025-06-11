@@ -1,3 +1,5 @@
+import 'package:app/di/di.dart';
+import 'package:app/di/scope_handler.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/pages/splash/splash_view_model.dart';
 import 'package:auto_route/auto_route.dart';
@@ -18,6 +20,7 @@ class SplashNavigator {
   Future<void> _checkAuthenticationState() async {
     final isAuthenticated = await viewModel.isAuthenticated;
     if (isAuthenticated) {
+      await DI.get<ScopeHandler>().push<AuthenticatedScope>();
       _navigateToJourney();
     } else {
       _navigateToLogin();
@@ -27,7 +30,7 @@ class SplashNavigator {
   Future<void> _navigateToJourney() async {
     Fimber.d('Navigate to home');
     try {
-      router.replaceAll([JourneyRoute()]);
+      router.replaceAll([JourneySelectionRoute()]);
     } catch (e, s) {
       Fimber.e('Navigate to journey failed', ex: e, stacktrace: s);
     }

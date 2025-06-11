@@ -13,10 +13,10 @@ class LoggerRepoImpl implements LoggerRepo {
   static const _rolloverTimeMinutes = 5;
   static const _retryDelayAfterFailedSendMinutes = 1;
 
-  LoggerRepoImpl({required this.fileService, required this.apiService});
+  LoggerRepoImpl({required this.fileService, this.apiService});
 
   final LogFileService fileService;
-  final LogApiService apiService;
+  final LogApiService? apiService;
 
   final _senderLock = Lock();
   final _cacheLock = Lock();
@@ -39,16 +39,16 @@ class LoggerRepoImpl implements LoggerRepo {
         await fileService.completeCurrentFile();
         _nextRolloverTimeStamp = clock.now().add(const Duration(minutes: _rolloverTimeMinutes));
 
-        await _processCompletedLogFiles();
+        await _rolloverAllLogs();
       }
     } catch (e) {
       Fimber.e('Optional rollover to remote failed', ex: e);
     }
   }
 
-  Future<void> _processCompletedLogFiles() async {
+  Future<void> _rolloverAllLogs() async {
     final completedLogFiles = await fileService.completedLogFiles;
-    Fimber.i('Found completedLogFiles: ${completedLogFiles.length}');
+    Fimber.d('Found completedLogFiles: ${completedLogFiles.length}');
     for (final file in completedLogFiles) {
       try {
         await _sendLogsSync(file.logEntries);
@@ -71,8 +71,10 @@ class LoggerRepoImpl implements LoggerRepo {
 
   Future<void> _sendLogsSync(Iterable<LogEntryDto> logs) async {
     await _senderLock.synchronized(() async {
-      await apiService.sendLogs(logs);
-      Fimber.d('Successfully sent logs to backend');
+      if (apiService != null) {
+        await apiService!.sendLogs(logs);
+        Fimber.d('Successfully sent logs to backend');
+      }
     });
   }
 
@@ -80,7 +82,8 @@ class LoggerRepoImpl implements LoggerRepo {
     final hasLogFilesToSend = await fileService.hasCompletedLogFiles;
     final isRolloverTimeReached = _isRolloverTimeReached();
     final isAllowedToSend = _stopSendingUntil.isBefore(clock.now());
-    return isAllowedToSend && (hasLogFilesToSend || isRolloverTimeReached);
+    final canSend = apiService != null;
+    return isAllowedToSend && (hasLogFilesToSend || isRolloverTimeReached) && canSend;
   }
 
   bool _isRolloverTimeReached() => _nextRolloverTimeStamp.isBefore(clock.now());

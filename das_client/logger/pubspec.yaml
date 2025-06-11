@@ -27,6 +27,8 @@ dependencies:
   clock: ^1.1.2
   # https://pub.dev/packages/path
   path: ^1.9.1
+  # https://pub.dev/packages/get_it
+  get_it: ^8.0.3
 
 dev_dependencies:
   flutter_test:

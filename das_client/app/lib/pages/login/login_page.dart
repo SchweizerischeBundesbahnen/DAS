@@ -1,4 +1,5 @@
-import 'package:app/di.dart';
+import 'package:app/di/di.dart';
+import 'package:app/di/scope_handler.dart';
 import 'package:app/flavor.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
@@ -24,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    DI.reinitialize(useTms: isTmsChecked);
+    DI.resetToUnauthenticatedScope(useTms: isTmsChecked);
     super.initState();
   }
 
@@ -88,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _tmsCheckbox(BuildContext context) {
     final flavor = DI.get<Flavor>();
 
-    if (flavor.tmsAuthenticatorConfig != null && flavor.tmsMqttUrl != null && flavor.tmsTokenExchangeUrl != null) {
+    if (flavor.isTmsEnabledForFlavor) {
       return Padding(
         padding: const EdgeInsets.all(sbbDefaultSpacing),
         child: Row(
@@ -99,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
               onChanged: (value) {
                 setState(() {
                   isTmsChecked = value ?? false;
-                  DI.reinitialize(useTms: isTmsChecked);
+                  DI.resetToUnauthenticatedScope(useTms: isTmsChecked);
                 });
               },
             ),
@@ -129,8 +130,9 @@ class _LoginPageState extends State<LoginPage> {
     final context = this.context;
     try {
       await authenticator.login();
+      await DI.get<ScopeHandler>().push<AuthenticatedScope>();
       if (context.mounted) {
-        context.router.replace(const JourneyRoute());
+        context.router.replace(const JourneySelectionRoute());
       }
     } catch (e) {
       Fimber.d('Login failed', ex: e);

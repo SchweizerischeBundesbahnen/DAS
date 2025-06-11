@@ -1,7 +1,7 @@
 import 'package:battery_plus/battery_plus.dart';
 import 'package:rxdart/rxdart.dart';
 
-class BatteryMock implements Battery {
+class MockBattery implements Battery {
   var currentBatteryLevel = 10;
   var currentBatteryState = BatteryState.charging;
   var batteryStateSubject = BehaviorSubject.seeded(BatteryState.charging);

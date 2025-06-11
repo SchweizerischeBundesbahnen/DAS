@@ -1,6 +1,6 @@
 name: app
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 0.21.0+62
+publish_to: 'none'
+version: 0.21.0+62  # set by ReleasePlease
 
 environment:
   sdk: 3.8.0
