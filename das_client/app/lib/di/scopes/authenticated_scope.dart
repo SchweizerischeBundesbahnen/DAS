@@ -22,10 +22,10 @@ class AuthenticatedScope extends DIScope {
 
     getIt.registerAuthProvider();
     getIt.registerSferaAuthProvider();
+    getIt.registerHttpClient();
     getIt.registerSferaAuthService();
     getIt.registerMqttAuthProvider();
     getIt.registerMqttService();
-    getIt.registerDasLogTree();
     getIt.registerSferaLocalRepo();
     getIt.registerSferaRemoteRepo();
     getIt.registerJourneyNavigationViewModel();
@@ -82,11 +82,20 @@ extension AuthenticatedScopeExtension on GetIt {
     registerSingletonAsync(factoryFunc);
   }
 
+  void registerHttpClient() {
+    factoryFunc() {
+      _log.fine('Register http client');
+      return HttpXComponent.createHttpClient(authProvider: DI.get());
+    }
+
+    registerLazySingleton<Client>(factoryFunc);
+  }
+
   void registerSferaAuthService() {
     factoryFunc() {
       _log.fine('Register sfera auth service');
       final flavor = DI.get<Flavor>();
-      final httpClient = HttpXComponent.createHttpClient(authProvider: DI.get());
+      final httpClient = DI.get<Client>();
       return SferaComponent.createSferaAuthService(
         httpClient: httpClient,
         tokenExchangeUrl: flavor.tokenExchangeUrl,

@@ -103,7 +103,7 @@ class _Color {
 
 extension _LogRecordX on LogRecord {
   String get metadata {
-    return [time.format(), level.name.padRight(7), loggerName, ''].join(' ');
+    return [time.format(), level.name.padRight(7), '$loggerName:', ''].join(' ');
   }
 
   AnsiPen get pen {

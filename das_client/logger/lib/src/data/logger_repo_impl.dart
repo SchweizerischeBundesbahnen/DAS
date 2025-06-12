@@ -15,10 +15,10 @@ class LoggerRepoImpl implements LoggerRepo {
   static const _rolloverTimeMinutes = 5;
   static const _retryDelayAfterFailedSendMinutes = 1;
 
-  LoggerRepoImpl({required this.fileService, this.apiService});
+  LoggerRepoImpl({required this.fileService, required this.apiService});
 
   final LogFileService fileService;
-  final LogApiService? apiService;
+  final LogApiService apiService;
 
   final _senderLock = Lock();
   final _cacheLock = Lock();
@@ -73,10 +73,8 @@ class LoggerRepoImpl implements LoggerRepo {
 
   Future<void> _sendLogsSync(Iterable<LogEntryDto> logs) async {
     await _senderLock.synchronized(() async {
-      if (apiService != null) {
-        await apiService!.sendLogs(logs);
-        _log.fine('Successfully sent logs to backend');
-      }
+      await apiService.sendLogs(logs);
+      _log.fine('Successfully sent logs to backend');
     });
   }
 
@@ -84,8 +82,7 @@ class LoggerRepoImpl implements LoggerRepo {
     final hasLogFilesToSend = await fileService.hasCompletedLogFiles;
     final isRolloverTimeReached = _isRolloverTimeReached();
     final isAllowedToSend = _stopSendingUntil.isBefore(clock.now());
-    final canSend = apiService != null;
-    return isAllowedToSend && (hasLogFilesToSend || isRolloverTimeReached) && canSend;
+    return isAllowedToSend && (hasLogFilesToSend || isRolloverTimeReached);
   }
 
   bool _isRolloverTimeReached() => _nextRolloverTimeStamp.isBefore(clock.now());
