@@ -574,6 +574,11 @@ Korridor rechtes Gleis: Anmeldenummer 1393&lt;/text&gt;
                 <OtherContactType contactIdentifier="1305"/>
             </Contact>
         </ContactList>
+        <ContactList startEndQualifier="StartsEnds" startLocation="100" endLocation="200">
+            <Contact mainContact="false" contactRole="Frutigen - Kandergrund">
+                <OtherContactType contactIdentifier="1390"/>
+            </Contact>
+        </ContactList>
 		<ContactList startEndQualifier="StartsEnds" startLocation="100" endLocation="100">
             <Contact mainContact="true">
                 <OtherContactType contactIdentifier="(1390)"/>
@@ -589,9 +594,25 @@ Korridor rechtes Gleis: Anmeldenummer 1393&lt;/text&gt;
                 <OtherContactType contactIdentifier="1301"/>
             </Contact>
         </ContactList>
+        <ContactList startEndQualifier="StartsEnds" startLocation="400" endLocation="500">
+            <Contact mainContact="false" contactRole="Staz. della Galleria - Iselle, linkes Gleis">
+                <OtherContactType contactIdentifier="1394"/>
+            </Contact>
+            <Contact mainContact="false" contactRole="Staz. della Galleria - Iselle, rechtes Gleis">
+                <OtherContactType contactIdentifier="1395"/>
+            </Contact>
+        </ContactList>
 		<ContactList startEndQualifier="StartsEnds" startLocation="600" endLocation="600">
             <Contact mainContact="true">
                 <OtherContactType contactIdentifier="(1305)"/>
+            </Contact>
+        </ContactList>
+        <ContactList startEndQualifier="StartsEnds" startLocation="600" endLocation="800">
+            <Contact mainContact="false" contactRole="Domodossola - Preglia, linkes Gleis">
+                <OtherContactType contactIdentifier="1392"/>
+            </Contact>
+            <Contact mainContact="false" contactRole="Domodossola - Preglia, rechtes Gleis">
+                <OtherContactType contactIdentifier="1393"/>
             </Contact>
         </ContactList>
 		<ContactList startEndQualifier="StartsEnds" startLocation="800" endLocation="800">
