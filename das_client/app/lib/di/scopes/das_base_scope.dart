@@ -5,12 +5,14 @@ import 'package:app/flavor.dart';
 import 'package:app/util/device_id_info.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:battery_plus/battery_plus.dart';
-import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http_x/component.dart';
 import 'package:logger/component.dart';
+import 'package:logging/logging.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:warnapp/component.dart';
+
+final _log = Logger('DASBaseScope');
 
 /// Named 'DASBaseScope' to avoid confusion with GetIt's 'baseScope'.
 class DASBaseScope extends DIScope {
@@ -19,7 +21,7 @@ class DASBaseScope extends DIScope {
 
   @override
   Future<void> push() async {
-    Fimber.d('Pushing scope $scopeName');
+    _log.fine('Pushing scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
     getIt.registerBrightnessManager();
     getIt.registerAudioPlayer();
@@ -33,28 +35,28 @@ class DASBaseScope extends DIScope {
 
 extension BaseScopeExtension on GetIt {
   void registerBrightnessManager() {
-    Fimber.d('Register ScreenBrightness');
+    _log.fine('Register ScreenBrightness');
     registerSingleton<ScreenBrightness>(ScreenBrightness());
 
-    Fimber.d('Register BrightnessManager');
+    _log.fine('Register BrightnessManager');
     registerSingleton<BrightnessManager>(BrightnessManagerImpl(DI.get<ScreenBrightness>()));
   }
 
   void registerBattery() {
-    Fimber.d('Register Battery');
+    _log.fine('Register Battery');
     registerSingleton<Battery>(Battery());
   }
 
   void registerAudioPlayer() {
     registerLazySingleton<AudioPlayer>(() {
-      Fimber.d('Register AudioPlayer');
+      _log.fine('Register AudioPlayer');
       return AudioPlayer();
     });
   }
 
   void registerDasLogTree() {
     Future<DasLogger> factoryFunc() async {
-      Fimber.d('Register DAS log tree');
+      _log.fine('Register DAS log tree');
       final flavor = DI.get<Flavor>();
       final deviceId = await DeviceIdInfo.getDeviceId();
       final AuthProvider? authProvider = DI.getOrNull<AuthProvider>();

@@ -1,5 +1,5 @@
-import 'package:fimber/fimber.dart';
 import 'package:isar/isar.dart';
+import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
@@ -8,6 +8,8 @@ import 'package:sfera/src/data/local/entity/journey_profile_entity.dart';
 import 'package:sfera/src/data/local/entity/segment_profile_entity.dart';
 import 'package:sfera/src/data/local/entity/train_characteristics_entity.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
+
+final _log = Logger('SferaDatabaseRepositoryImpl');
 
 class SferaDatabaseRepositoryImpl implements SferaLocalDatabaseService {
   late final Future<void> _initialized;
@@ -18,7 +20,7 @@ class SferaDatabaseRepositoryImpl implements SferaLocalDatabaseService {
   }
 
   Future<void> _init() async {
-    Fimber.i('Initializing SferaStore...');
+    _log.info('Initializing SferaStore...');
     final dir = await getApplicationDocumentsDirectory();
     _db = await Isar.openAsync(
       schemas: [JourneyProfileEntitySchema, SegmentProfileEntitySchema, TrainCharacteristicsEntitySchema],
@@ -45,7 +47,7 @@ class SferaDatabaseRepositoryImpl implements SferaLocalDatabaseService {
       startDate: today,
     );
 
-    Fimber.d(
+    _log.fine(
       'Writing journey profile to db company=${journeyProfileEntity.company} operationalTrainNumber=${journeyProfileEntity.operationalTrainNumber} startDate=${journeyProfileEntity.startDate}',
     );
     await _db.writeAsync((isar) {
@@ -64,12 +66,12 @@ class SferaDatabaseRepositoryImpl implements SferaLocalDatabaseService {
     );
     if (existingProfile == null) {
       final segmentProfileEntity = segmentProfile.toEntity(isarId: _db.segmentProfile.autoIncrement());
-      Fimber.d(
+      _log.fine(
         'Writing segment profile to db spId=${segmentProfileEntity.spId} majorVersion=${segmentProfileEntity.majorVersion} minorVersion=${segmentProfileEntity.minorVersion}',
       );
       _db.write((isar) => isar.segmentProfile.put(segmentProfileEntity));
     } else {
-      Fimber.d(
+      _log.fine(
         'Segment profile already exists in db spId=${segmentProfile.id} majorVersion=${segmentProfile.versionMajor} minorVersion=${segmentProfile.versionMinor}',
       );
     }
@@ -146,12 +148,12 @@ class SferaDatabaseRepositoryImpl implements SferaLocalDatabaseService {
       final trainCharacteristicsEntity = trainCharacteristics.toEntity(
         isarId: _db.trainCharacteristics.autoIncrement(),
       );
-      Fimber.d(
+      _log.fine(
         'Writing train characteristics to db tcId=${trainCharacteristicsEntity.tcId} majorVersion=${trainCharacteristicsEntity.majorVersion} minorVersion=${trainCharacteristicsEntity.minorVersion}',
       );
       _db.write((isar) => isar.trainCharacteristics.put(trainCharacteristicsEntity));
     } else {
-      Fimber.d(
+      _log.fine(
         'train characteristics already exists in db tcId=${existingTrainCharacteristics.tcId} majorVersion=${existingTrainCharacteristics.majorVersion} minorVersion=${existingTrainCharacteristics.minorVersion}',
       );
     }

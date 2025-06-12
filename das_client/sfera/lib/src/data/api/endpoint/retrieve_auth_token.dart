@@ -1,5 +1,7 @@
-import 'package:fimber/fimber.dart';
 import 'package:http_x/component.dart';
+import 'package:logging/logging.dart';
+
+final _log = Logger('RetrieveAuthTokenRequest');
 
 class RetrieveAuthTokenRequest {
   const RetrieveAuthTokenRequest({required this.tokenExchangeUrl, required this.httpClient});
@@ -8,7 +10,7 @@ class RetrieveAuthTokenRequest {
   final Client httpClient;
 
   Future<RetrieveAuthTokenResponse> call(String ru, String train, String role) async {
-    Fimber.i('Trying to fetch sfera auth token for ru=$ru train=$train role=$role...');
+    _log.info('Trying to fetch sfera auth token for ru=$ru train=$train role=$role...');
     final url = Uri.parse('$tokenExchangeUrl?ru=$ru&train=$train&role=$role');
 
     final response = await httpClient.get(url);

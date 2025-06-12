@@ -1,7 +1,8 @@
 import 'dart:io';
 
-import 'package:fimber/fimber.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:logger/component.dart';
+import 'package:logging/logging.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mqtt/component.dart';
@@ -24,7 +25,9 @@ void main() {
   late MockMqttService mqttService;
   late MockSferaLocalDatabaseService sferaRepository;
   late OtnId otnId;
-  Fimber.plantTree(DebugTree());
+
+  Logger.root.level = Level.ALL;
+  Logger.root.onRecord.listen(LogPrinter(appName: 'DAS Tests', isDebugMode: true).call);
 
   setUp(() {
     sferaRemoteRepo = MockSferaRemoteRepo();

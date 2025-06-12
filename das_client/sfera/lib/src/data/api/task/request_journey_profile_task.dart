@@ -1,4 +1,4 @@
-import 'package:fimber/fimber.dart';
+import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/api/task/sfera_task.dart';
@@ -11,6 +11,8 @@ import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:sfera/src/data/dto/train_identification_dto.dart';
 import 'package:sfera/src/data/format.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
+
+final _log = Logger('RequestJourneyProfileTask');
 
 class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
   RequestJourneyProfileTask({
@@ -49,7 +51,7 @@ class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
       _sferaService.messageHeader(sender: otnId.company),
       b2gRequest: B2gRequestDto.createJPRequest(jpRequest),
     );
-    Fimber.i('Sending journey profile request...');
+    _log.info('Sending journey profile request...');
     _mqttService.publishMessage(
       otnId.company,
       Format.sferaTrain(otnId.operationalTrainNumber, otnId.startDate),
@@ -66,14 +68,14 @@ class RequestJourneyProfileTask extends SferaTask<List<dynamic>> {
     stopTimeout();
     final journeyProfile = replyMessage.payload!.journeyProfiles.first;
     if (journeyProfile.status == JpStatusDto.invalid || journeyProfile.status == JpStatusDto.unavailable) {
-      Fimber.w(
+      _log.warning(
         'Received JourneyProfile with status=${journeyProfile.status}.',
       );
       _taskFailedCallback(this, SferaError.jpUnavailable);
       return true;
     }
 
-    Fimber.i(
+    _log.info(
       'Received G2bReplyPayload response with ${replyMessage.payload!.journeyProfiles.length} JourneyProfiles, '
       '${replyMessage.payload!.segmentProfiles.length} SegmentProfiles and '
       '${replyMessage.payload!.trainCharacteristics.length} TrainCharacteristics...',

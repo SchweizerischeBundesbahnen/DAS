@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:auth/component.dart';
-import 'package:fimber/fimber.dart';
+import 'package:logging/logging.dart';
 import 'package:sbb_oidc/sbb_oidc.dart';
+
+final _log = Logger('AzureAuthenticator');
 
 class AzureAuthenticator implements Authenticator {
   AzureAuthenticator({required this.config});
@@ -13,7 +15,7 @@ class AzureAuthenticator implements Authenticator {
 
   Future<void> _init() async {
     if (isInitialized) return;
-    Fimber.d('Initialize AzureAuthenticator');
+    _log.fine('Initialize AzureAuthenticator');
     try {
       oidcClient = await SBBOpenIDConnect.createClient(
         discoveryUrl: config.discoveryUrl,
@@ -23,7 +25,7 @@ class AzureAuthenticator implements Authenticator {
       );
       isInitialized = true;
     } catch (e, s) {
-      Fimber.e('AzureAuthenticator Initialization failed', ex: e, stacktrace: s);
+      _log.severe('AzureAuthenticator Initialization failed', e, s);
       rethrow;
     }
   }

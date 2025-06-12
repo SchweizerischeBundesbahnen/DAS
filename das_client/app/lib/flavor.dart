@@ -92,7 +92,7 @@ class _DevFlavor extends Flavor {
     super.authenticatorConfig = _emptyAuthenticatorConfig,
   }) : super(
          displayName: 'Dev',
-         mqttTopicPrefix: 'dev/',
+         mqttTopicPrefix: 'thomas/',
          backendUrl: 'das-backend-dev.app.sbb.ch',
          color: SBBColors.peach,
          showBanner: true,

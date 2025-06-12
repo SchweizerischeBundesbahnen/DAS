@@ -11,7 +11,7 @@ import 'integration_test_audio_player.dart';
 import 'mock_battery.dart';
 import 'mock_brightness_manager.dart';
 
-final _log = Logger('MockAuthenticatedScope');
+final _log = Logger('MockDASBaseScope');
 
 class MockDASBaseScope extends DASBaseScope {
   @override
@@ -48,7 +48,7 @@ class MockDASBaseScope extends DASBaseScope {
 
   void _registerIntegrationTestAudioPlayer() {
     getIt.registerLazySingleton<AudioPlayer>(() {
-      Fimber.d('Register IntegrationTestAudioPlayer');
+      _log.fine('Register IntegrationTestAudioPlayer');
       return IntegrationTestAudioPlayer();
     });
   }

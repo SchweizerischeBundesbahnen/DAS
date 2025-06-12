@@ -2,14 +2,14 @@ import 'package:app/app.dart';
 import 'package:app/di/di.dart';
 import 'package:app/di/scope_handler.dart';
 import 'package:app/flavor.dart';
-import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 
 Future<void> start(Flavor flavor) async {
   WidgetsFlutterBinding.ensureInitialized();
-  Fimber.plantTree(DebugTree(useColors: false));
+  // TODO: find a way to log DI
+  //Fimber.plantTree(DebugTree(useColors: false));
   await _initDependencyInjection(flavor);
   await _initDASLogging(flavor);
   runDasApp();
@@ -21,9 +21,6 @@ Future<void> _initDASLogging(Flavor flavor) async {
   Logger.root.level = flavor.logLevel;
   Logger.root.onRecord.listen(LogPrinter(appName: 'DAS ${flavor.displayName}').call);
   Logger.root.onRecord.listen(DI.get<DasLogger>().call);
-
-  Fimber.d('Initializing DAS logging by planting BaseScope tree');
-  Fimber.plantTree(DI.get<LogTree>());
 }
 
 Future<void> _initDependencyInjection(Flavor flavor) async {

@@ -1,11 +1,13 @@
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
 import 'package:auth/component.dart';
-import 'package:fimber/fimber.dart';
+import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
 
 import '../auth/integrationtest_authenticator.dart';
 import '../auth/mqtt_client_user_connector.dart';
+
+final _log = Logger('MockSferaMockScope');
 
 class MockSferaMockScope extends SferaMockScope {
   @override
@@ -13,7 +15,7 @@ class MockSferaMockScope extends SferaMockScope {
 
   @override
   Future<void> push() async {
-    Fimber.d('Pushing mock scope $scopeName');
+    _log.fine('Pushing mock scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
     final sferaFlavor = DI.get<Flavor>().withSferaMockValues();
 

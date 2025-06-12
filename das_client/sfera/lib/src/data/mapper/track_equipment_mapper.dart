@@ -1,4 +1,4 @@
-import 'package:fimber/fimber.dart';
+import 'package:logging/logging.dart';
 import 'package:sfera/src/data/comparator/start_end_int_comparator.dart';
 import 'package:sfera/src/data/dto/enums/start_end_qualifier_dto.dart';
 import 'package:sfera/src/data/dto/enums/track_equipment_type_dto.dart';
@@ -7,6 +7,8 @@ import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
 import 'package:sfera/src/data/mapper/mapper_utils.dart';
 import 'package:sfera/src/model/journey/track_equipment_segment.dart';
+
+final _log = Logger('TrackEquipmentMapper');
 
 /// used to map SFERA data to [NonStandardTrackEquipmentSegment]
 class TrackEquipmentMapper {
@@ -27,7 +29,7 @@ class TrackEquipmentMapper {
         segments.add(_createSegmentFromStartsEnds(trackEquipment));
       } else if (trackEquipment.startLocation != null) {
         if (openSegments.containsKey(trackEquipment.type)) {
-          Fimber.w('Found a track equipment with the same type ${trackEquipment.type} that hasn\'t ended yet');
+          _log.warning('Found a track equipment with the same type ${trackEquipment.type} that hasn\'t ended yet');
           continue;
         }
         openSegments[trackEquipment.type] = trackEquipment;
@@ -40,7 +42,7 @@ class TrackEquipmentMapper {
           // got end of track equipment with start outside of train journey
           segments.add(_createSegmentFromEnds(trackEquipment));
         } else {
-          Fimber.w('Got end of track equipment segment for type ${trackEquipment.type} without start definition');
+          _log.warning('Got end of track equipment segment for type ${trackEquipment.type} without start definition');
         }
       } else if (trackEquipment.appliesToWholeSp) {
         openSegments.putIfAbsent(trackEquipment.type, () => trackEquipment);
@@ -111,7 +113,9 @@ class TrackEquipmentMapper {
     KilometreMap kilometreMap,
   ) {
     if (element.trackEquipmentTypeWrapper == null) {
-      Fimber.w('Encountered invalid nonStandardTrackEquipment track equipment type NSP declaration: ${element.type}');
+      _log.warning(
+        'Encountered invalid nonStandardTrackEquipment track equipment type NSP declaration: ${element.type}',
+      );
       return null;
     }
 
