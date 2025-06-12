@@ -11,63 +11,63 @@
         <TimingPoint TP_ID="Reichenbach_im_Kandertal" location="0">
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
-                <teltsi_LocationPrimaryCode>2113</teltsi_LocationPrimaryCode>
+                <teltsi_LocationPrimaryCode>7480</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
 		
 		<TimingPoint TP_ID="Frutigen" location="100">
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
-                <teltsi_LocationPrimaryCode>2113</teltsi_LocationPrimaryCode>
+                <teltsi_LocationPrimaryCode>7478</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
 		
 		<TimingPoint TP_ID="Kandergrund" location="200">
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
-                <teltsi_LocationPrimaryCode>2113</teltsi_LocationPrimaryCode>
+                <teltsi_LocationPrimaryCode>7477</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
 		
 		<TimingPoint TP_ID="Brig" location="300">
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
-                <teltsi_LocationPrimaryCode>2113</teltsi_LocationPrimaryCode>
+                <teltsi_LocationPrimaryCode>1609</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
 		
 		<TimingPoint TP_ID="Staz_della_Galleria" location="400">
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
-                <teltsi_LocationPrimaryCode>2113</teltsi_LocationPrimaryCode>
+                <teltsi_LocationPrimaryCode>1642</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
 		
 		<TimingPoint TP_ID="Iselle" location="500">
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
-                <teltsi_LocationPrimaryCode>2113</teltsi_LocationPrimaryCode>
+                <teltsi_LocationPrimaryCode>71184</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
 		
 		<TimingPoint TP_ID="Domodossola_FM" location="600">
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
-                <teltsi_LocationPrimaryCode>2113</teltsi_LocationPrimaryCode>
+                <teltsi_LocationPrimaryCode>1699</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
 		
 		<TimingPoint TP_ID="Domodossola" location="700">
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
-                <teltsi_LocationPrimaryCode>2113</teltsi_LocationPrimaryCode>
+                <teltsi_LocationPrimaryCode>1607</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
 		
 		<TimingPoint TP_ID="Preglia" location="800">
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
-                <teltsi_LocationPrimaryCode>2113</teltsi_LocationPrimaryCode>
+                <teltsi_LocationPrimaryCode>1950</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
 		
