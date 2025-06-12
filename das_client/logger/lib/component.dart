@@ -5,7 +5,6 @@ import 'package:logger/src/data/local/log_file_service_impl.dart';
 import 'package:logger/src/data/logger_repo_impl.dart';
 
 export 'package:logger/src/das_logger.dart';
-export 'package:logger/src/data/api/log_api_service.dart';
 export 'package:logger/src/log_entry.dart';
 export 'package:logger/src/log_printer.dart';
 
