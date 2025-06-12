@@ -52,7 +52,7 @@ ALTER TABLE IF EXISTS train_formation_run
     ADD CONSTRAINT train_formation_run_unique UNIQUE (modified_date_time,
                                                       operational_train_number,
                                                       start_date, company,
-                                                      start_taf_tap_location_reference,
-                                                      end_taf_tap_location_reference);
+                                                      taf_tap_location_reference_start,
+                                                      taf_tap_location_reference_end);
 
 CREATE SEQUENCE train_formation_run_id_seq START WITH 1 INCREMENT BY 1;
