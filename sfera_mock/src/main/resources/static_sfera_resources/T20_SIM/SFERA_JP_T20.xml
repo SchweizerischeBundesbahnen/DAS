@@ -9,7 +9,7 @@
         </OTN_ID>
     </TrainIdentification>
 
-    <SegmentProfileReference SP_ID="T20_1" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T20_1" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -29,20 +29,20 @@
             </TimingPointReference>
         </TimingPointConstraints>
 		
-		<TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:36:00Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T12:36:00Z">
+		<TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:40:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T12:40:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Kandergrund"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="2025-05-17T12:36:00Z" plannedDepartureTime="2025-05-17T12:36:00Z"/>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T12:45:00Z" plannedDepartureTime="2025-05-17T12:45:00Z"/>
         </TimingPointConstraints>
 		
-		<TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:36:00Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T12:36:00Z">
+		<TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:45:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T12:45:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Brig"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="2025-05-17T12:36:00Z" plannedDepartureTime="2025-05-17T12:36:00Z"/>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T12:50:00Z" plannedDepartureTime="2025-05-17T12:50:00Z"/>
         </TimingPointConstraints>
 		
 		<TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:38:00Z"
@@ -52,24 +52,24 @@
             </TimingPointReference>
         </TimingPointConstraints>
 		
-		<TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:36:00Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T12:36:00Z">
+		<TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:56:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T12:56:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Iselle"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="2025-05-17T12:36:00Z" plannedDepartureTime="2025-05-17T12:36:00Z"/>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T12:56:00Z" plannedDepartureTime="2025-05-17T12:56:00Z"/>
         </TimingPointConstraints>
 		
-		<TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:36:00Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T12:36:00Z">
+		<TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:58:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T12:58:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Domodossola_FM"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="2025-05-17T12:36:00Z" plannedDepartureTime="2025-05-17T12:36:00Z"/>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T13:00:00Z" plannedDepartureTime="2025-05-17T13:00:00Z"/>
         </TimingPointConstraints>
 		
-		<TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:38:00Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T12:38:00Z">
+		<TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:05:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T13:05:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Domodossola"/>
             </TimingPointReference>
