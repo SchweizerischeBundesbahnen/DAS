@@ -92,13 +92,13 @@ class _DevFlavor extends Flavor {
     super.authenticatorConfig = _emptyAuthenticatorConfig,
   }) : super(
          displayName: 'Dev',
-         mqttTopicPrefix: 'thomas/',
+         mqttTopicPrefix: 'dev/',
          backendUrl: 'das-backend-dev.app.sbb.ch',
          color: SBBColors.peach,
          showBanner: true,
          isTmsEnabledForFlavor: true,
          mqttOauthProfile: 'azureAdDev',
-         logLevel: Level.ALL,
+         logLevel: Level.FINE,
        );
 }
 

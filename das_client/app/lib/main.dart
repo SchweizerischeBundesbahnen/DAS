@@ -2,6 +2,7 @@ import 'package:app/app.dart';
 import 'package:app/di/di.dart';
 import 'package:app/di/scope_handler.dart';
 import 'package:app/flavor.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
@@ -19,7 +20,7 @@ Future<void> runDasApp() async => runApp(App());
 
 Future<void> _initDASLogging(Flavor flavor) async {
   Logger.root.level = flavor.logLevel;
-  Logger.root.onRecord.listen(LogPrinter(appName: 'DAS ${flavor.displayName}').call);
+  Logger.root.onRecord.listen(LogPrinter(appName: 'DAS ${flavor.displayName}', isDebugMode: kDebugMode).call);
   Logger.root.onRecord.listen(DI.get<DasLogger>().call);
 }
 

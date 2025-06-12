@@ -56,7 +56,7 @@ extension BaseScopeExtension on GetIt {
 
   void registerDasLogTree() {
     Future<DasLogger> factoryFunc() async {
-      _log.fine('Register DAS log tree');
+      _log.fine('Register DAS logger');
       final flavor = DI.get<Flavor>();
       final deviceId = await DeviceIdInfo.getDeviceId();
       final AuthProvider? authProvider = DI.getOrNull<AuthProvider>();
