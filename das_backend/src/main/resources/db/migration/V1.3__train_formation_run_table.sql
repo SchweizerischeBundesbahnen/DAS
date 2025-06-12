@@ -55,4 +55,4 @@ ALTER TABLE IF EXISTS train_formation_run
                                                       start_taf_tap_location_reference,
                                                       end_taf_tap_location_reference);
 
-CREATE SEQUENCE train_formation_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE train_formation_run_id_seq START WITH 1 INCREMENT BY 1;
