@@ -1,5 +1,7 @@
-import 'package:fimber/fimber.dart';
+import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
+
+final _log = Logger('MqttClientUserConnector');
 
 class MqttClientUserConnector implements MqttClientConnector {
   static const mqttUsername = 'MQTT_USERNAME';
@@ -7,10 +9,10 @@ class MqttClientUserConnector implements MqttClientConnector {
 
   @override
   Future<bool> connect(MqttClient client, String company, String train) async {
-    Fimber.i('Connecting to mqtt using static login and password');
+    _log.info('Connecting to mqtt using static login and password');
 
     if (!const bool.hasEnvironment(mqttUsername) || !const bool.hasEnvironment(mqttPassword)) {
-      Fimber.e('$mqttUsername or $mqttPassword not defined');
+      _log.severe('$mqttUsername or $mqttPassword not defined');
       return false;
     }
 
@@ -19,17 +21,17 @@ class MqttClientUserConnector implements MqttClientConnector {
         const String.fromEnvironment(mqttUsername),
         const String.fromEnvironment(mqttPassword),
       );
-      Fimber.i('mqttClientConnectionStatus=$mqttClientConnectionStatus');
+      _log.info('mqttClientConnectionStatus=$mqttClientConnectionStatus');
 
       if (mqttClientConnectionStatus?.state == MqttConnectionState.connected) {
-        Fimber.i('Successfully connected to MQTT broker');
+        _log.info('Successfully connected to MQTT broker');
         return true;
       }
     } catch (e) {
-      Fimber.e('Exception during connect', ex: e);
+      _log.severe('Exception during connect', e);
     }
 
-    Fimber.w('Failed to connect to MQTT broker');
+    _log.warning('Failed to connect to MQTT broker');
     return false;
   }
 }

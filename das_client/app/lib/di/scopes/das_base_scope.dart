@@ -53,17 +53,17 @@ extension BaseScopeExtension on GetIt {
   }
 
   void registerDasLogTree() {
-    Future<LogTree> factoryFunc() async {
+    Future<DasLogger> factoryFunc() async {
       Fimber.d('Register DAS log tree');
       final flavor = DI.get<Flavor>();
       final deviceId = await DeviceIdInfo.getDeviceId();
       final AuthProvider? authProvider = DI.getOrNull<AuthProvider>();
       Client? httpClient;
       if (authProvider != null) httpClient = HttpXComponent.createHttpClient(authProvider: authProvider);
-      return LoggerComponent.createDasLogTree(httpClient: httpClient, baseUrl: flavor.backendUrl, deviceId: deviceId);
+      return LoggerComponent.createDasLogger(httpClient: httpClient, baseUrl: flavor.backendUrl, deviceId: deviceId);
     }
 
-    registerSingletonAsync<LogTree>(factoryFunc);
+    registerSingletonAsync<DasLogger>(factoryFunc);
   }
 
   void registerMotionDataService() {

@@ -6,9 +6,10 @@ import 'package:app/di/scopes/sfera_mock_scope.dart';
 import 'package:app/flavor.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/main.dart';
-import 'package:fimber/fimber.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:logger/component.dart';
+import 'package:logging/logging.dart';
 
 import 'integration_test_di.dart';
 import 'test/additional_speed_restriction_modal_test.dart' as additional_speed_restriction_modal_test;
@@ -27,7 +28,9 @@ late AppLocalizations l10n;
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-  Fimber.plantTree(DebugTree());
+
+  Logger.root.level = Level.FINE;
+  Logger.root.onRecord.listen(LogPrinter(appName: 'DAS IntegrationTests').call);
 
   train_reduced_journey_tests.main();
   train_journey_table_tests.main();

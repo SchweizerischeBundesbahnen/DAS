@@ -1,5 +1,4 @@
 import 'package:clock/clock.dart';
-import 'package:fimber/fimber.dart';
 import 'package:logger/src/data/api/log_api_service.dart';
 import 'package:logger/src/data/dto/log_entry_dto.dart';
 import 'package:logger/src/data/dto/log_file_dto.dart';
@@ -7,7 +6,10 @@ import 'package:logger/src/data/local/log_file_service.dart';
 import 'package:logger/src/data/logger_repo.dart';
 import 'package:logger/src/data/mappers.dart';
 import 'package:logger/src/log_entry.dart';
+import 'package:logging/logging.dart';
 import 'package:synchronized/synchronized.dart';
+
+final _log = Logger('LoggerRepoImpl');
 
 class LoggerRepoImpl implements LoggerRepo {
   static const _rolloverTimeMinutes = 5;
@@ -35,25 +37,25 @@ class LoggerRepoImpl implements LoggerRepo {
   Future<void> _optionalRolloverToRemote() async {
     try {
       if (await _shouldRollover()) {
-        Fimber.d('Rolling over log file');
+        _log.fine('Rolling over log file');
         await fileService.completeCurrentFile();
         _nextRolloverTimeStamp = clock.now().add(const Duration(minutes: _rolloverTimeMinutes));
 
         await _rolloverAllLogs();
       }
     } catch (e) {
-      Fimber.e('Optional rollover to remote failed', ex: e);
+      _log.severe('Optional rollover to remote failed', e);
     }
   }
 
   Future<void> _rolloverAllLogs() async {
     final completedLogFiles = await fileService.completedLogFiles;
-    Fimber.d('Found completedLogFiles: ${completedLogFiles.length}');
+    _log.fine('Found completedLogFiles: ${completedLogFiles.length}');
     for (final file in completedLogFiles) {
       try {
         await _sendLogsSync(file.logEntries);
       } catch (ex) {
-        Fimber.e('Connection error while sending logs to remote.', ex: ex);
+        _log.severe('Connection error while sending logs to remote.', ex);
         _stopSendingUntil = clock.now().add(Duration(minutes: _retryDelayAfterFailedSendMinutes));
         break;
       }
@@ -65,7 +67,7 @@ class LoggerRepoImpl implements LoggerRepo {
     try {
       await fileService.deleteLogFile(file);
     } catch (ex) {
-      Fimber.e('Send and clear logs from ${file.file.path} failed.', ex: ex);
+      _log.severe('Send and clear logs from ${file.file.path} failed.', ex);
     }
   }
 
@@ -73,7 +75,7 @@ class LoggerRepoImpl implements LoggerRepo {
     await _senderLock.synchronized(() async {
       if (apiService != null) {
         await apiService!.sendLogs(logs);
-        Fimber.d('Successfully sent logs to backend');
+        _log.fine('Successfully sent logs to backend');
       }
     });
   }

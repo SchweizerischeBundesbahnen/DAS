@@ -3,7 +3,7 @@ import 'package:app/di/di.dart';
 import 'package:app/di/scopes/das_base_scope.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:battery_plus/battery_plus.dart';
-import 'package:fimber/fimber.dart';
+import 'package:logging/logging.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:warnapp/component.dart';
 
@@ -11,13 +11,15 @@ import 'integration_test_audio_player.dart';
 import 'mock_battery.dart';
 import 'mock_brightness_manager.dart';
 
+final _log = Logger('MockAuthenticatedScope');
+
 class MockDASBaseScope extends DASBaseScope {
   @override
   String get scopeName => 'DASBaseScopeMock';
 
   @override
   Future<void> push() async {
-    Fimber.d('Pushing mock scope $scopeName');
+    _log.fine('Pushing mock scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
     _registerMockBrightnessManager();
 
