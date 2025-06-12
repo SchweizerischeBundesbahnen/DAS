@@ -6,8 +6,11 @@ import java.lang.annotation.RetentionPolicy;
 
 /**
  * All these elements/attributes are imported from the TAF/TAP XSD
- * <p>
- * - SFERA v3.00 imports TAF/TAP XSD v3.5.0.0 - Further versions will update the import - The namespace is “teltsi:” (i.e. “Telematics TSI”)
+ * <ul>
+ *  <li>SFERA v3.00 imports TAF/TAP XSD v3.5.0.0</li>
+ *  <li>Further versions will update the import</li>
+ *  <li>The namespace is “teltsi:” (i.e. “Telematics TSI”)</li>
+ * </ul>
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
