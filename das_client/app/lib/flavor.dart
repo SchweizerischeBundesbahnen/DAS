@@ -93,7 +93,7 @@ class _DevFlavor extends Flavor {
   }) : super(
          displayName: 'Dev',
          mqttTopicPrefix: 'dev/',
-         backendUrl: 'das-backend-dev.app.sbb.ch',
+         backendUrl: 'das-dev-int.api.sbb.ch',
          color: SBBColors.peach,
          showBanner: true,
          isTmsEnabledForFlavor: true,
@@ -110,7 +110,7 @@ class _InteFlavor extends Flavor {
   }) : super(
          displayName: 'Inte',
          mqttTopicPrefix: '',
-         backendUrl: 'das-backend-int.app.sbb.ch',
+         backendUrl: 'das-int.api.sbb.ch',
          color: SBBColors.black,
          showBanner: true,
          mqttOauthProfile: 'azureAdInt',

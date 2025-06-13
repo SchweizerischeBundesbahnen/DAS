@@ -4,6 +4,7 @@ import 'package:clock/clock.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/component.dart';
 import 'package:logger/src/data/api/endpoint/send_logs.dart';
+import 'package:logger/src/data/api/log_api_service.dart';
 import 'package:logger/src/data/dto/log_file_dto.dart';
 import 'package:logger/src/data/local/log_file_service.dart';
 import 'package:logger/src/data/logger_repo.dart';
