@@ -19,8 +19,10 @@ public class CompanyEntity {
     @SequenceGenerator(name = "company_id_seq", allocationSize = 1)
     private Integer id;
 
+    // todo: atlas will provide a mapping to the RICS code (2026 Q2)
     private String codeRics;
 
+    // todo: remove?
     private String shortNameZis;
 
     public Company toCompany() {
