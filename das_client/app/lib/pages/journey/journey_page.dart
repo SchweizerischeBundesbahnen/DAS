@@ -18,7 +18,7 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:sfera/component.dart';
 
 @RoutePage()
-class JourneyPage extends StatelessWidget implements AutoRouteWrapper {
+class JourneyPage extends StatefulWidget implements AutoRouteWrapper {
   static const disconnectButtonKey = Key('disconnectButton');
 
   const JourneyPage({super.key});
@@ -29,6 +29,7 @@ class JourneyPage extends StatelessWidget implements AutoRouteWrapper {
     dispose: (_, vm) => vm.dispose(),
     child: this,
   );
+  @override
   State<JourneyPage> createState() => _JourneyPageState();
 }
 

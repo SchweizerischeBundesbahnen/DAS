@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:app/di.dart';
+import 'package:app/di/di.dart';
 import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/time_controller/punctuality_state_enum.dart';

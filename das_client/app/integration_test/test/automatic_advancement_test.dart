@@ -1,4 +1,4 @@
-import 'package:app/di.dart';
+import 'package:app/di/di.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';

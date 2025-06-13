@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:app/di.dart';
+import 'package:app/di/di.dart';
 import 'package:app/time_controller/time_controller.dart';
 import 'package:app/widgets/extended_header_container.dart';
 import 'package:extra_hittest_area/extra_hittest_area.dart';
@@ -109,7 +109,8 @@ class DASModalSheetController {
       _idleTimer = Timer(Duration(seconds: timeController.idleTimeDASModalSheet), () {
         if (isOpen) {
           Fimber.d(
-              'Screen idle time of ${timeController.idleTimeDASModalSheet} seconds reached. Closing DAS modal sheet.');
+            'Screen idle time of ${timeController.idleTimeDASModalSheet} seconds reached. Closing DAS modal sheet.',
+          );
           close();
         }
       });

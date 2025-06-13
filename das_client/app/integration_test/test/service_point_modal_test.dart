@@ -1,3 +1,4 @@
+import 'package:app/di/di.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_communication.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_graduated_speeds.dart';
@@ -8,7 +9,6 @@ import 'package:app/pages/journey/train_journey/widgets/header/animated_header_i
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
 import 'package:app/time_controller/time_controller.dart';
-import 'package:app/widgets/indicator_wrapper.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:flutter/foundation.dart';

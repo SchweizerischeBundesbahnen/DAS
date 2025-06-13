@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:app/di.dart';
+import 'package:app/di/di.dart';
 import 'package:app/pages/journey/train_journey/automatic_advancement_controller.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:app/time_controller/time_controller.dart';
@@ -36,8 +36,9 @@ class TrainJourneyViewModel {
 
   Stream<WarnappEvent> get warnappEvents => _rxWarnapp.stream;
 
-  AutomaticAdvancementController automaticAdvancementController =
-      AutomaticAdvancementController(timeController: DI.get<TimeController>());
+  AutomaticAdvancementController automaticAdvancementController = AutomaticAdvancementController(
+    timeController: DI.get<TimeController>(),
+  );
 
   final _rxSettings = BehaviorSubject<TrainJourneySettings>.seeded(TrainJourneySettings());
   final _rxErrorCode = BehaviorSubject<ErrorCode?>.seeded(null);

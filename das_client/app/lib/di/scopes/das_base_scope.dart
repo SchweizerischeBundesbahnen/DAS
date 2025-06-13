@@ -2,6 +2,7 @@ import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/brightness/brightness_manager_impl.dart';
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
+import 'package:app/time_controller/time_controller.dart';
 import 'package:app/util/device_id_info.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:battery_plus/battery_plus.dart';
@@ -22,6 +23,7 @@ class DASBaseScope extends DIScope {
     Fimber.d('Pushing scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
     getIt.registerBrightnessManager();
+    getIt._registerTimeController();
     getIt.registerAudioPlayer();
     getIt.registerBattery();
     getIt.registerMotionDataService();
@@ -32,6 +34,10 @@ class DASBaseScope extends DIScope {
 }
 
 extension BaseScopeExtension on GetIt {
+  void _registerTimeController() {
+    GetIt.I.registerLazySingleton<TimeController>(() => TimeController());
+  }
+
   void registerBrightnessManager() {
     Fimber.d('Register ScreenBrightness');
     registerSingleton<ScreenBrightness>(ScreenBrightness());

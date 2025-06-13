@@ -67,9 +67,10 @@ void main() {
     final timeController = MockTimeController();
 
     final testee = AutomaticAdvancementController(
-        timeController: timeController,
-        controller: scrollControllerMock,
-        tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
+      timeController: timeController,
+      controller: scrollControllerMock,
+      tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)),
+    );
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: true);
@@ -105,9 +106,10 @@ void main() {
     final timeController = MockTimeController();
 
     final testee = AutomaticAdvancementController(
-        timeController: timeController,
-        controller: scrollControllerMock,
-        tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
+      timeController: timeController,
+      controller: scrollControllerMock,
+      tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)),
+    );
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: false);
@@ -137,9 +139,10 @@ void main() {
     final timeController = MockTimeController();
 
     final testee = AutomaticAdvancementController(
-        timeController: timeController,
-        controller: scrollControllerMock,
-        tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
+      timeController: timeController,
+      controller: scrollControllerMock,
+      tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)),
+    );
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: true);
@@ -176,9 +179,10 @@ void main() {
     final timeController = MockTimeController();
 
     final testee = AutomaticAdvancementController(
-        timeController: timeController,
-        controller: scrollControllerMock,
-        tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
+      timeController: timeController,
+      controller: scrollControllerMock,
+      tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)),
+    );
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(
@@ -217,9 +221,10 @@ void main() {
     final timeController = MockTimeController();
 
     final testee = AutomaticAdvancementController(
-        timeController: timeController,
-        controller: scrollControllerMock,
-        tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
+      timeController: timeController,
+      controller: scrollControllerMock,
+      tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)),
+    );
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: true);
@@ -250,9 +255,10 @@ void main() {
     final timeController = MockTimeController();
 
     final testee = AutomaticAdvancementController(
-        timeController: timeController,
-        controller: scrollControllerMock,
-        tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
+      timeController: timeController,
+      controller: scrollControllerMock,
+      tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)),
+    );
 
     testee.updateRenderedRows(rows);
     testee.handleJourneyUpdate(currentPosition: targetSignalData, isAdvancementEnabledByUser: true);
@@ -289,9 +295,10 @@ void main() {
     final timeController = MockTimeController();
 
     final testee = AutomaticAdvancementController(
-        timeController: timeController,
-        controller: scrollControllerMock,
-        tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
+      timeController: timeController,
+      controller: scrollControllerMock,
+      tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)),
+    );
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: true);
@@ -302,9 +309,13 @@ void main() {
       fakeAsync.elapse(const Duration(seconds: 11));
     });
 
-    verify(scrollControllerMock.animateTo(CellRowBuilder.rowHeight * 2,
-            duration: anyNamed('duration'), curve: anyNamed('curve')))
-        .called(2);
+    verify(
+      scrollControllerMock.animateTo(
+        CellRowBuilder.rowHeight * 2,
+        duration: anyNamed('duration'),
+        curve: anyNamed('curve'),
+      ),
+    ).called(2);
   });
 
   test('test does not scroll with delay after touch if disabled', () async {
@@ -330,9 +341,10 @@ void main() {
     final timeController = MockTimeController();
 
     final testee = AutomaticAdvancementController(
-        timeController: timeController,
-        controller: scrollControllerMock,
-        tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)));
+      timeController: timeController,
+      controller: scrollControllerMock,
+      tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)),
+    );
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: true);

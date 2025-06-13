@@ -15,8 +15,6 @@ import 'package:app/pages/journey/train_journey/widgets/header/time_container.da
 import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
 import 'package:app/util/format.dart';
 import 'package:app/widgets/dot_indicator.dart';
-import 'package:battery_plus/battery_plus.dart';
-import 'package:app/widgets/indicator_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';

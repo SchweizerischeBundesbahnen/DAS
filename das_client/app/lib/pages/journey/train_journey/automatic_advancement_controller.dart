@@ -18,8 +18,8 @@ class AutomaticAdvancementController {
   static const int _maxScrollDuration = 2000;
 
   AutomaticAdvancementController({required this.timeController, ScrollController? controller, GlobalKey? tableKey})
-      : scrollController = controller ?? ScrollController(),
-        tableKey = tableKey ?? GlobalKey();
+    : scrollController = controller ?? ScrollController(),
+      tableKey = tableKey ?? GlobalKey();
 
   final TimeController timeController;
   final ScrollController scrollController;
@@ -136,7 +136,8 @@ class AutomaticAdvancementController {
       _scrollTimer = Timer(Duration(seconds: timeController.idleTimeAutoScroll), () {
         if (_rxIsAutomaticAdvancementActive.value) {
           Fimber.d(
-              'Screen idle time of ${timeController.idleTimeAutoScroll} seconds reached. Scrolling to current position');
+            'Screen idle time of ${timeController.idleTimeAutoScroll} seconds reached. Scrolling to current position',
+          );
           scrollToCurrentPosition();
         }
       });
