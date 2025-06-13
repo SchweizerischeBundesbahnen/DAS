@@ -70,19 +70,13 @@ class DasLoggerImpl extends DasLogger {
   }
 
   LogLevel _getLogLevel(Level level) {
-    switch (level.value) {
-      case 700:
-        return LogLevel.debug;
-      case 800:
-        return LogLevel.info;
-      case 900:
-        return LogLevel.warning;
-      case 1000:
-        return LogLevel.error;
-      case 1200:
-        return LogLevel.fatal;
-      default:
-        return LogLevel.trace;
-    }
+    return switch (level.value) {
+      700 => LogLevel.debug,
+      800 => LogLevel.info,
+      900 => LogLevel.warning,
+      1000 => LogLevel.error,
+      1200 => LogLevel.fatal,
+      _ => LogLevel.trace,
+    };
   }
 }
