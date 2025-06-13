@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:fimber/fimber.dart';
+import 'package:logging/logging.dart';
 import 'package:sfera/src/data/dto/enums/start_end_qualifier_dto.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/multilingual_text_dto.dart';
@@ -30,6 +30,8 @@ import 'package:sfera/src/model/journey/service_point.dart';
 import 'package:sfera/src/model/journey/track_equipment_segment.dart';
 import 'package:sfera/src/model/journey/tram_area.dart';
 
+final _log = Logger('SferaModelMapper');
+
 /// Used to map SFERA data to [Journey] with relevant [Metadata].
 class SferaModelMapper {
   SferaModelMapper._();
@@ -50,7 +52,7 @@ class SferaModelMapper {
         lastJourney,
       );
     } catch (e, s) {
-      Fimber.e('Error mapping journey-/segment profiles to journey:', ex: e, stacktrace: s);
+      _log.severe('Error mapping journey-/segment profiles to journey:', e, s);
       return Journey.invalid();
     }
   }
@@ -148,7 +150,7 @@ class SferaModelMapper {
 
     final positionSegmentIndex = segmentProfilesLists.indexWhere((it) => it.spId == positionSpeed.spId);
     if (positionSegmentIndex == -1) {
-      Fimber.w('Received position on unknown segment with spId: ${positionSpeed.spId}');
+      _log.warning('Received position on unknown segment with spId: ${positionSpeed.spId}');
       return journeyData.firstWhereOrNull((it) => it.order == lastJourney?.metadata.currentPosition?.order);
     } else {
       final positionOrder = calculateOrder(positionSegmentIndex, positionSpeed.location);
@@ -288,7 +290,7 @@ class SferaModelMapper {
 
     for (final segmentData in segmentsData.values) {
       if (segmentData.isIncomplete) {
-        Fimber.w('Incomplete additional speed restriction found: $segmentData');
+        _log.warning('Incomplete additional speed restriction found: $segmentData');
       }
     }
 
@@ -377,7 +379,7 @@ class SferaModelMapper {
           final communicationNetworks = segmentProfile.contextInformation?.communicationNetworks;
           return communicationNetworks?.map((element) {
             if (element.startLocation != element.endLocation) {
-              Fimber.w(
+              _log.warning(
                 'CommunicationNetwork found without identical location (start=${element.startLocation} end=${element.endLocation}).',
               );
             }
@@ -404,7 +406,7 @@ class SferaModelMapper {
           final contactLists = segmentProfile.contextInformation?.contactLists;
           return contactLists?.map((contactList) {
             if (contactList.startLocation != contactList.endLocation) {
-              Fimber.w(
+              _log.warning(
                 'ContactList found without identical location (start=${contactList.startLocation} end=${contactList.endLocation}).',
               );
             }
@@ -507,7 +509,7 @@ class SferaModelMapper {
     }
 
     if (segmentData.isIncomplete) {
-      Fimber.w('Incomplete tram area found: $segmentData');
+      _log.warning('Incomplete tram area found: $segmentData');
     }
 
     return result;
@@ -528,7 +530,9 @@ class SferaModelMapper {
 
     return combinedBracketStations.values.map((bracketStations) {
       if (bracketStations.length < 2) {
-        Fimber.w('There should at least be two bracket stations for a segment. Found service points: $bracketStations');
+        _log.warning(
+          'There should at least be two bracket stations for a segment. Found service points: $bracketStations',
+        );
       }
 
       final orders = bracketStations.map((it) => it.order);

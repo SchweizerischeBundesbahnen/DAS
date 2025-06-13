@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:auth/component.dart';
+import 'package:logging/logging.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 sealed class Flavor {
@@ -15,6 +16,7 @@ sealed class Flavor {
     this.color = SBBColors.transparent,
     this.showBanner = false,
     this.isTmsEnabledForFlavor = false,
+    this.logLevel = Level.INFO,
   });
 
   final String displayName;
@@ -27,6 +29,7 @@ sealed class Flavor {
   final bool showBanner;
   final Color color;
   final bool isTmsEnabledForFlavor;
+  final Level logLevel;
 
   factory Flavor.dev() = _DevFlavor;
 
@@ -90,11 +93,12 @@ class _DevFlavor extends Flavor {
   }) : super(
          displayName: 'Dev',
          mqttTopicPrefix: 'dev/',
-         backendUrl: 'das-backend-dev.app.sbb.ch',
+         backendUrl: 'das-dev-int.api.sbb.ch',
          color: SBBColors.peach,
          showBanner: true,
          isTmsEnabledForFlavor: true,
          mqttOauthProfile: 'azureAdDev',
+         logLevel: Level.FINE,
        );
 }
 
@@ -106,7 +110,7 @@ class _InteFlavor extends Flavor {
   }) : super(
          displayName: 'Inte',
          mqttTopicPrefix: '',
-         backendUrl: 'das-backend-int.app.sbb.ch',
+         backendUrl: 'das-int.api.sbb.ch',
          color: SBBColors.black,
          showBanner: true,
          mqttOauthProfile: 'azureAdInt',

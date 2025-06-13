@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:fimber/fimber.dart';
+import 'package:logging/logging.dart';
 import 'package:sfera/src/data/dto/enums/gradient_direction_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/length_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/stop_skip_pass_dto.dart';
@@ -39,6 +39,8 @@ class _MapperData {
   final int segmentIndex;
   final KilometreMap kilometreMap;
 }
+
+final _log = Logger('SegmentProfileMapper');
 
 /// Used to map journey data from a SFERA segment profile.
 class SegmentProfileMapper {
@@ -187,13 +189,13 @@ class SegmentProfileMapper {
         final mainStationNsp = tafTapLocationNsp.parameters.withName(_bracketStationMainStationNspName);
         final textNsp = tafTapLocationNsp.parameters.withName(_bracketStationTextNspName);
         if (mainStationNsp == null) {
-          Fimber.w('Encountered bracket station without main station NSP declaration: $tafTapLocation');
+          _log.warning('Encountered bracket station without main station NSP declaration: $tafTapLocation');
         } else {
           final countryCode = mainStationNsp.nspValue.substring(0, 2);
           final primaryCode = int.parse(mainStationNsp.nspValue.substring(2, 6));
           final mainStation = allLocations.firstWhereGivenOrNull(countryCode: countryCode, primaryCode: primaryCode);
           if (mainStation == null) {
-            Fimber.w('Failed to resolve main station for bracket station: $tafTapLocation');
+            _log.warning('Failed to resolve main station for bracket station: $tafTapLocation');
           }
 
           return BracketMainStation(
@@ -306,7 +308,7 @@ class SegmentProfileMapper {
           }
 
           if (location.startLocation == null) {
-            Fimber.w('Failed to parse opFootNote because TafTapLocation has no startLocation: $location');
+            _log.warning('Failed to parse opFootNote because TafTapLocation has no startLocation: $location');
             return null;
           }
 
@@ -332,7 +334,7 @@ class SegmentProfileMapper {
           }
 
           if (location.startLocation == null) {
-            Fimber.w('Failed to parse lineFootNote because TafTapLocation has no startLocation: $location');
+            _log.warning('Failed to parse lineFootNote because TafTapLocation has no startLocation: $location');
             return null;
           }
 

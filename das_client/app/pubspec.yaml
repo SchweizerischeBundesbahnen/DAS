@@ -37,8 +37,8 @@ dependencies:
   device_info_plus: ^11.4.0
   # https://pub.dev/packages/extra_hittest_area
   extra_hittest_area: ^1.0.0
-  # https://pub.dev/packages/fimber
-  fimber: ^0.7.0
+  # https://pub.dev/packages/logging
+  logging: ^1.3.0
   # https://pub.dev/packages/flutter_svg
   flutter_svg: ^2.1.0
   # https://pub.dev/packages/get_it

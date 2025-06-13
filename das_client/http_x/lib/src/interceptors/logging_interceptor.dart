@@ -1,8 +1,10 @@
 import 'dart:convert';
 
-import 'package:fimber/fimber.dart';
 import 'package:http_interceptor/models/interceptor_contract.dart';
 import 'package:http_x/component.dart';
+import 'package:logging/logging.dart';
+
+final _log = Logger('LoggingInterceptor');
 
 /// A HTTP interceptor that logs requests and responses.
 class LoggingInterceptor implements InterceptorContract {
@@ -17,7 +19,7 @@ class LoggingInterceptor implements InterceptorContract {
   @override
   Future<BaseRequest> interceptRequest({required BaseRequest request}) async {
     final jsonString = request.toJsonString(obfuscateSecrets);
-    Fimber.d('Request $jsonString');
+    _log.finer('Request $jsonString');
     return request;
   }
 
@@ -27,7 +29,7 @@ class LoggingInterceptor implements InterceptorContract {
   @override
   Future<BaseResponse> interceptResponse({required BaseResponse response}) async {
     final jsonString = response.toJsonString(obfuscateSecrets);
-    Fimber.d('Response $jsonString');
+    _log.finer('Response $jsonString');
     return response;
   }
 }

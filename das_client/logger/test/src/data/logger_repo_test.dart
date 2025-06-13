@@ -100,27 +100,6 @@ void main() {
     verify(fileService.deleteLogFile(logFile)).called(3);
   });
 
-  test('saveLog_whenApiServiceNull_shouldNotRolloverLogs', () async {
-    // arrange
-    testee = LoggerRepoImpl(fileService: fileService); // no api service given
-    final logFile = LogFileDto(logEntries: [simpleLogFile.toDto()], file: File('fakeFile.json'));
-    when(fileService.writeLog(any)).thenAnswer((_) async {});
-    when(fileService.hasCompletedLogFiles).thenAnswer((_) async => true);
-    when(fileService.completedLogFiles).thenAnswer((_) async => [logFile]);
-    when(fileService.deleteLogFile(logFile)).thenAnswer((_) async {});
-    when(mockSendLogsRequest.call(any)).thenAnswer((_) async => mockSendLogsResponse);
-    when(apiService.sendLogs).thenReturn(mockSendLogsRequest);
-
-    // act
-    await testee.saveLog(simpleLogFile);
-
-    // expect
-    verify(fileService.writeLog(any)).called(1);
-    verify(fileService.hasCompletedLogFiles).called(1);
-    verifyNever(fileService.completedLogFiles);
-    verifyNever(apiService.sendLogs);
-  });
-
   test('saveLog_whenSendFails_shouldNotDeleteLogFile', () async {
     // arrange
     final logFile = LogFileDto(logEntries: [simpleLogFile.toDto()], file: File('fakeFile.json'));

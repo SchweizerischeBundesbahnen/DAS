@@ -1,6 +1,8 @@
-import 'package:fimber/fimber.dart';
 import 'package:iso_duration/iso_duration.dart';
+import 'package:logging/logging.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
+
+final _log = Logger('DelayDto');
 
 class DelayDto extends SferaXmlElementDto {
   static const String elementType = 'Delay';
@@ -20,8 +22,8 @@ class DelayDto extends SferaXmlElementDto {
     }
     try {
       return tryParseIso8601Duration(delay);
-    } catch (error) {
-      Fimber.w('An error occurred while trying to parse $delay to a duration. Here the error: $error');
+    } catch (e) {
+      _log.warning('An error occurred while trying to parse $delay to a duration', e);
       return null;
     }
   }

@@ -3,7 +3,9 @@ import 'package:app/di/scope_handler.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/pages/splash/splash_view_model.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:fimber/fimber.dart';
+import 'package:logging/logging.dart';
+
+final _log = Logger('SplashNavigator');
 
 class SplashNavigator {
   SplashNavigator({required this.viewModel, required this.router}) {
@@ -28,20 +30,20 @@ class SplashNavigator {
   }
 
   Future<void> _navigateToJourney() async {
-    Fimber.d('Navigate to home');
+    _log.fine('Navigate to home');
     try {
       router.replaceAll([JourneySelectionRoute()]);
     } catch (e, s) {
-      Fimber.e('Navigate to journey failed', ex: e, stacktrace: s);
+      _log.severe('Navigate to journey failed', e, s);
     }
   }
 
   Future<void> _navigateToLogin() async {
-    Fimber.d('Navigate to login');
+    _log.fine('Navigate to login');
     try {
       router.replaceAll([LoginRoute()]);
     } catch (e, s) {
-      Fimber.e('Navigate to login failed', ex: e, stacktrace: s);
+      _log.severe('Navigate to login failed', e, s);
     }
   }
 }

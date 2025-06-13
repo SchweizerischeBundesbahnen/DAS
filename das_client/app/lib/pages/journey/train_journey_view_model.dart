@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:app/pages/journey/train_journey/automatic_advancement_controller.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:app/util/error_code.dart';
-import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:warnapp/component.dart';
+
+final _log = Logger('TrainJourneyViewModel');
 
 class TrainJourneyViewModel {
   TrainJourneyViewModel({
@@ -121,7 +123,7 @@ class TrainJourneyViewModel {
   }
 
   void setAutomaticAdvancement(bool active) {
-    Fimber.i('Automatic advancement state changed to active=$active');
+    _log.info('Automatic advancement state changed to active=$active');
     if (active) {
       automaticAdvancementController.scrollToCurrentPosition(resetAutomaticAdvancementTimer: true);
     }
@@ -129,7 +131,7 @@ class TrainJourneyViewModel {
   }
 
   void setManeuverMode(bool active) {
-    Fimber.i('Maneuver mode state changed to active=$active');
+    _log.info('Maneuver mode state changed to active=$active');
     _rxSettings.add(_rxSettings.value.copyWith(isManeuverModeEnabled: active));
 
     if (active) {
@@ -195,7 +197,7 @@ class TrainJourneyViewModel {
     final now = DateTime.now();
     if (_lastWarnappEventTimestamp != null &&
         now.difference(_lastWarnappEventTimestamp!).inMilliseconds < _warnappWindowMilliseconds) {
-      Fimber.i('Abfahrt detected while warnapp message was within $_warnappWindowMilliseconds ms -> Warning!');
+      _log.info('Abfahrt detected while warnapp message was within $_warnappWindowMilliseconds ms -> Warning!');
       _rxWarnapp.add(WarnappEvent());
     }
   }

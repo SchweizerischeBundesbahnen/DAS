@@ -3,11 +3,13 @@ import 'package:app/flavor.dart';
 import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
 import 'package:app/util/device_id_info.dart';
 import 'package:auth/component.dart';
-import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http_x/component.dart';
+import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
+
+final _log = Logger('AuthenticatedScope');
 
 class AuthenticatedScope extends DIScope {
   @override
@@ -15,15 +17,15 @@ class AuthenticatedScope extends DIScope {
 
   @override
   Future<void> push() async {
-    Fimber.d('Pushing scope $scopeName');
+    _log.fine('Pushing scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
 
     getIt.registerAuthProvider();
     getIt.registerSferaAuthProvider();
+    getIt.registerHttpClient();
     getIt.registerSferaAuthService();
     getIt.registerMqttAuthProvider();
     getIt.registerMqttService();
-    getIt.registerDasLogTree();
     getIt.registerSferaLocalRepo();
     getIt.registerSferaRemoteRepo();
     getIt.registerJourneyNavigationViewModel();
@@ -35,7 +37,7 @@ class AuthenticatedScope extends DIScope {
 extension AuthenticatedScopeExtension on GetIt {
   void registerAuthProvider() {
     factoryFunc() {
-      Fimber.d('Register auth provider');
+      _log.fine('Register auth provider');
       return _AuthProvider(authenticator: DI.get());
     }
 
@@ -44,7 +46,7 @@ extension AuthenticatedScopeExtension on GetIt {
 
   void registerSferaAuthProvider() {
     factoryFunc() {
-      Fimber.d('Register sfera auth provider');
+      _log.fine('Register sfera auth provider');
       return _SferaAuthProvider(authenticator: DI.get());
     }
 
@@ -53,7 +55,7 @@ extension AuthenticatedScopeExtension on GetIt {
 
   void registerMqttAuthProvider() {
     factoryFunc() {
-      Fimber.d('Register mqtt auth provider');
+      _log.fine('Register mqtt auth provider');
       return _MqttAuthProvider(
         authenticator: DI.get(),
         sferaAuthService: DI.get(),
@@ -66,7 +68,7 @@ extension AuthenticatedScopeExtension on GetIt {
 
   void registerMqttService() {
     Future<MqttService> factoryFunc() async {
-      Fimber.d('Register mqtt service');
+      _log.fine('Register mqtt service');
       final flavor = DI.get<Flavor>();
       final deviceId = await DeviceIdInfo.getDeviceId();
       return MqttComponent.createMqttService(
@@ -80,11 +82,20 @@ extension AuthenticatedScopeExtension on GetIt {
     registerSingletonAsync(factoryFunc);
   }
 
+  void registerHttpClient() {
+    factoryFunc() {
+      _log.fine('Register http client');
+      return HttpXComponent.createHttpClient(authProvider: DI.get());
+    }
+
+    registerLazySingleton<Client>(factoryFunc);
+  }
+
   void registerSferaAuthService() {
     factoryFunc() {
-      Fimber.d('Register sfera auth service');
+      _log.fine('Register sfera auth service');
       final flavor = DI.get<Flavor>();
-      final httpClient = HttpXComponent.createHttpClient(authProvider: DI.get());
+      final httpClient = DI.get<Client>();
       return SferaComponent.createSferaAuthService(
         httpClient: httpClient,
         tokenExchangeUrl: flavor.tokenExchangeUrl,
@@ -96,7 +107,7 @@ extension AuthenticatedScopeExtension on GetIt {
 
   void registerSferaRemoteRepo() {
     factoryFunc() async {
-      Fimber.d('Register sfera remote repo');
+      _log.fine('Register sfera remote repo');
       final deviceId = await DeviceIdInfo.getDeviceId();
       return SferaComponent.createSferaRemoteRepo(
         mqttService: DI.get(),
@@ -114,7 +125,7 @@ extension AuthenticatedScopeExtension on GetIt {
 
   void registerSferaLocalRepo() {
     factoryFunc() {
-      Fimber.d('Register sfera local repo');
+      _log.fine('Register sfera local repo');
       return SferaComponent.createSferaLocalRepo();
     }
 
@@ -123,7 +134,7 @@ extension AuthenticatedScopeExtension on GetIt {
 
   void registerJourneyNavigationViewModel() {
     factoryFunc() {
-      Fimber.d('Register TrainJourneyNavigationViewModel');
+      _log.fine('Register TrainJourneyNavigationViewModel');
       return JourneyNavigationViewModel();
     }
 

@@ -1,15 +1,17 @@
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:fimber/fimber.dart';
-import 'package:get_it/get_it.dart';
+import 'package:logger/src/das_logger.dart';
 import 'package:logger/src/data/logger_repo.dart';
 import 'package:logger/src/log_entry.dart';
 import 'package:logger/src/log_level.dart';
+import 'package:logging/logging.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-class DasLogTree extends LogTree implements ShadowChangeHandlers {
-  DasLogTree({required LoggerRepo loggerRepo, required this.deviceId}) : _loggerRepo = loggerRepo {
+final _log = Logger('DasLoggerImpl');
+
+class DasLoggerImpl extends DasLogger {
+  DasLoggerImpl({required LoggerRepo loggerRepo, required this.deviceId}) : _loggerRepo = loggerRepo {
     _initialized = _init();
   }
 
@@ -19,7 +21,7 @@ class DasLogTree extends LogTree implements ShadowChangeHandlers {
   late Future<void> _initialized;
 
   Future<void> _init() async {
-    Fimber.d('Initializing DasLogTree...');
+    _log.fine('Initializing DasLoggerImpl...');
     metadata['deviceId'] = deviceId;
 
     final info = await PackageInfo.fromPlatform();
@@ -46,16 +48,11 @@ class DasLogTree extends LogTree implements ShadowChangeHandlers {
   }
 
   @override
-  List<String> getLevels() {
-    return ['I', 'W', 'E'];
+  void call(LogRecord record) {
+    _logInternal(record.level, record.message, tag: record.loggerName, ex: record.error, stacktrace: record.stackTrace);
   }
 
-  @override
-  void log(String level, String message, {String? tag, ex, StackTrace? stacktrace}) {
-    logInternal(level, message, tag: tag ?? LogTree.getTag(), ex: ex, stacktrace: stacktrace);
-  }
-
-  void logInternal(String level, String message, {String? tag, ex, StackTrace? stacktrace}) async {
+  void _logInternal(Level level, String message, {String? tag, ex, StackTrace? stacktrace}) async {
     await _initialized;
 
     final messageBuilder = StringBuffer('$tag:\t $message');
@@ -72,33 +69,14 @@ class DasLogTree extends LogTree implements ShadowChangeHandlers {
     _loggerRepo.saveLog(LogEntry(messageBuilder.toString(), _getLogLevel(level), metadata));
   }
 
-  LogLevel _getLogLevel(String level) {
-    switch (level) {
-      case 'D':
-        return LogLevel.debug;
-      case 'W':
-        return LogLevel.warning;
-      case 'E':
-        return LogLevel.error;
-      case 'V':
-        return LogLevel.trace;
-      case 'I':
-      default:
-        return LogLevel.info;
-    }
-  }
-
-  @override
-  void onGetShadowed(Object shadowing) {
-    Fimber.d('This tree is being shadowed - unplanting this and planting new tree with shadowing');
-    Fimber.unplantTree(this);
-    Fimber.plantTree(shadowing as LogTree);
-  }
-
-  @override
-  void onLeaveShadow(Object shadowing) {
-    Fimber.d('This tree is not shadowed anymore - unplanting shadow and planting this tree');
-    Fimber.unplantTree(shadowing as LogTree);
-    Fimber.plantTree(this);
+  LogLevel _getLogLevel(Level level) {
+    return switch (level.value) {
+      700 => LogLevel.debug,
+      800 => LogLevel.info,
+      900 => LogLevel.warning,
+      1000 => LogLevel.error,
+      1200 => LogLevel.fatal,
+      _ => LogLevel.trace,
+    };
   }
 }

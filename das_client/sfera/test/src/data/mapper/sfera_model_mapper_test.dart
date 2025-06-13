@@ -1,8 +1,9 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
-import 'package:fimber/fimber.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:logger/component.dart';
+import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/delay_dto.dart';
 import 'package:sfera/src/data/dto/g2b_event_payload_dto.dart';
@@ -14,7 +15,8 @@ import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
 import 'package:sfera/src/model/journey/foot_note.dart';
 
 void main() {
-  Fimber.plantTree(DebugTree());
+  Logger.root.level = Level.ALL;
+  Logger.root.onRecord.listen(LogPrinter(appName: 'DAS Tests', isDebugMode: true).call);
 
   List<File> getFilesForSp(String path, String baseName, int count) {
     final files = <File>[];

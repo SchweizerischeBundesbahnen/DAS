@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:fimber/fimber.dart';
+import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:warnapp/src/algorithmus/abfahrt_detection_algorithmus.dart';
@@ -9,6 +9,8 @@ import 'package:warnapp/src/data/motion_data.dart';
 import 'package:warnapp/src/motion_data_listener.dart';
 import 'package:warnapp/src/motion_data_service.dart';
 import 'package:warnapp/src/warnapp_repository.dart';
+
+final _log = Logger('WarnappRepositoryImpl');
 
 class WarnappRepositoryImpl implements WarnappRepository, MotionDataListener {
   WarnappRepositoryImpl({required this.motionDataService}) {
@@ -83,12 +85,12 @@ class WarnappRepositoryImpl implements WarnappRepository, MotionDataListener {
 
     final isHalt = algorithmus.isHalt;
     if (isHalt != _lastHalt) {
-      Fimber.d('Halt state changed to $isHalt');
+      _log.fine('Halt state changed to $isHalt');
       _lastHalt = isHalt;
     }
 
     if (abfahrtDetected) {
-      Fimber.d('Abfahrt detected...');
+      _log.fine('Abfahrt detected...');
       _rxAbfahrt.add(null);
     } else if (isHalt) {
       _rxHalt.add(null);
@@ -132,7 +134,7 @@ class WarnappRepositoryImpl implements WarnappRepository, MotionDataListener {
   void _updateAndLogFrequency() {
     final now = DateTime.now();
     if (_nextFrequencyCheck.isBefore(now)) {
-      Fimber.d('Processed $_updatedCount motion updates... (${_updatedCount - _lastCount} hz)');
+      _log.fine('Processed $_updatedCount motion updates... (${_updatedCount - _lastCount} hz)');
       _lastCount = _updatedCount;
       _nextFrequencyCheck = now.add(Duration(seconds: 1));
     }

@@ -1,11 +1,13 @@
 import 'dart:async';
 
-import 'package:fimber/fimber.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:logging/logging.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:warnapp/src/data/motion_data.dart';
 import 'package:warnapp/src/motion_data_listener.dart';
 import 'package:warnapp/src/motion_data_service.dart';
+
+final _log = Logger('DeviceMotionDataService');
 
 class DeviceMotionDataService implements MotionDataService {
   DeviceMotionDataService({this.samplingPeriod = const Duration(microseconds: 16666)}); // 60 hz
@@ -30,7 +32,7 @@ class DeviceMotionDataService implements MotionDataService {
         _handleNotify();
       },
       onError: (error) {
-        Fimber.e('Error listening to gyro stream', ex: error);
+        _log.severe('Error listening to gyro stream', error);
       },
       cancelOnError: true,
     );
@@ -42,7 +44,7 @@ class DeviceMotionDataService implements MotionDataService {
         _handleNotify();
       },
       onError: (error) {
-        Fimber.e('Error listening to accelerometer stream', ex: error);
+        _log.severe('Error listening to accelerometer stream', error);
       },
       cancelOnError: true,
     );
@@ -53,7 +55,7 @@ class DeviceMotionDataService implements MotionDataService {
   void _initializeLocation() async {
     final serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      Fimber.e('Location service is disabled');
+      _log.severe('Location service is disabled');
       return;
     }
 
@@ -61,17 +63,17 @@ class DeviceMotionDataService implements MotionDataService {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        Fimber.e('Location permissions are denied');
+        _log.severe('Location permissions are denied');
         return;
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      Fimber.e('Location permissions are permanently denied, we cannot request permissions.');
+      _log.severe('Location permissions are permanently denied, we cannot request permissions.');
       return;
     }
 
-    Fimber.d('Listening to position updates...');
+    _log.fine('Listening to position updates...');
     _locationSubscription?.cancel();
     _locationSubscription = Geolocator.getPositionStream().listen((Position? position) {
       _motionData.position = position;
