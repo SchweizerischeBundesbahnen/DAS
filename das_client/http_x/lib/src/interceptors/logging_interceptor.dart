@@ -19,7 +19,7 @@ class LoggingInterceptor implements InterceptorContract {
   @override
   Future<BaseRequest> interceptRequest({required BaseRequest request}) async {
     final jsonString = request.toJsonString(obfuscateSecrets);
-    _log.fine('Request $jsonString');
+    _log.finer('Request $jsonString');
     return request;
   }
 
@@ -29,7 +29,7 @@ class LoggingInterceptor implements InterceptorContract {
   @override
   Future<BaseResponse> interceptResponse({required BaseResponse response}) async {
     final jsonString = response.toJsonString(obfuscateSecrets);
-    _log.fine('Response $jsonString');
+    _log.finer('Response $jsonString');
     return response;
   }
 }
