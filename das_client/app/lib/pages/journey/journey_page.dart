@@ -14,10 +14,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:sfera/component.dart';
 
 @RoutePage()
-class JourneyPage extends StatelessWidget implements AutoRouteWrapper {
+class JourneyPage extends StatefulWidget implements AutoRouteWrapper {
   static const disconnectButtonKey = Key('disconnectButton');
 
   const JourneyPage({super.key});
@@ -28,6 +29,32 @@ class JourneyPage extends StatelessWidget implements AutoRouteWrapper {
     dispose: (_, vm) => vm.dispose(),
     child: this,
   );
+  @override
+  State<JourneyPage> createState() => _JourneyPageState();
+}
+
+class _JourneyPageState extends State<JourneyPage> with SingleTickerProviderStateMixin {
+  static const _toolbarHideAnimationDuration = 400;
+
+  late final AnimationController _controller;
+  late final Animation<double> _animation;
+  double _toolbarHeight = kToolbarHeight;
+
+  @override
+  void initState() {
+    super.initState();
+    WakelockPlus.disable();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: _toolbarHideAnimationDuration),
+    );
+    _animation = Tween<double>(begin: kToolbarHeight, end: 0.0).animate(_controller)
+      ..addListener(() {
+        setState(() {
+          _toolbarHeight = _animation.value;
+        });
+      });
+  }
 
   @override
   Widget build(BuildContext context) {

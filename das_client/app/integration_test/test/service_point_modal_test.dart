@@ -1,3 +1,4 @@
+import 'package:app/di/di.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_communication.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_graduated_speeds.dart';
@@ -7,6 +8,7 @@ import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_poi
 import 'package:app/pages/journey/train_journey/widgets/header/animated_header_icon_button.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
+import 'package:app/time_controller/time_controller.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:flutter/foundation.dart';
@@ -84,6 +86,9 @@ void main() {
     });
     testWidgets('test modal closes after timeout without touch on screen', (tester) async {
       await prepareAndStartApp(tester);
+
+      final TimeController timeController = DI.get<TimeController>();
+
       await loadTrainJourney(tester, trainNumber: 'T8');
 
       // open modal sheet with tap on service point name
@@ -91,7 +96,7 @@ void main() {
       _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
 
       // wait till 10s idle time have passed
-      final timeout = DASModalSheetController.automaticCloseAfterSeconds + 1;
+      final timeout = timeController.idleTimeDASModalSheet + 1;
       await Future.delayed(Duration(seconds: timeout));
       await tester.pumpAndSettle();
 
@@ -102,6 +107,9 @@ void main() {
     });
     testWidgets('test modal sheet does close after timeout with automatic advancement paused', (tester) async {
       await prepareAndStartApp(tester);
+
+      final TimeController timeController = TimeController();
+
       await loadTrainJourney(tester, trainNumber: 'T8');
 
       // open modal sheet with tap on service point name
@@ -114,7 +122,7 @@ void main() {
       await tapElement(tester, pauseButton);
 
       // wait till 10s idle time have passed
-      final timeout = DASModalSheetController.automaticCloseAfterSeconds + 1;
+      final timeout = timeController.idleTimeDASModalSheet + 1;
       await Future.delayed(Duration(seconds: timeout));
       await tester.pumpAndSettle();
 
