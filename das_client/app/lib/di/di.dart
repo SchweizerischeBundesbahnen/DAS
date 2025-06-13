@@ -74,7 +74,6 @@ extension DiExtension on GetIt {
   void registerFlavor(Flavor flavor) {
     _log.fine('Register flavor');
     registerSingleton<Flavor>(flavor);
-    registerSingleton<String>(flavor.backendUrl, instanceName: 'backendUrl');
   }
 
   void registerAzureAuthenticator() {
