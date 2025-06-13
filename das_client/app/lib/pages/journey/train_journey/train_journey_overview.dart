@@ -1,4 +1,4 @@
-import 'package:app/di.dart';
+import 'package:app/di/di.dart';
 import 'package:app/pages/journey/train_journey/ux_testing_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_modal.dart';
@@ -58,6 +58,7 @@ class TrainJourneyOverview extends StatelessWidget {
   Widget _body(BuildContext context) {
     final uxTestingViewModel = context.read<UxTestingViewModel>();
     final detailModalController = context.read<DetailModalViewModel>().controller;
+
     return Listener(
       onPointerDown: (_) => detailModalController.resetAutomaticClose(),
       onPointerUp: (_) => detailModalController.resetAutomaticClose(),
@@ -68,7 +69,7 @@ class TrainJourneyOverview extends StatelessWidget {
 
           return Row(
             children: [
-              Expanded(child: _content()),
+              Expanded(child: _content(context)),
               DetailModalSheet(),
             ],
           );
@@ -77,24 +78,47 @@ class TrainJourneyOverview extends StatelessWidget {
     );
   }
 
-  Widget _content() {
+  Widget _content(BuildContext context) {
     return Column(
       children: [
         Header(),
         ManeuverNotification(),
         KoaNotification(),
+        _warnappNotification(context),
         Expanded(child: TrainJourney()),
       ],
     );
+  }
+
+  Widget _warnappNotification(BuildContext context) {
+    return StreamBuilder(
+      stream: context.read<TrainJourneyViewModel>().warnappEvents,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          _triggerWarnappNotification(context);
+        }
+
+        return SizedBox.shrink();
+      },
+    );
+  }
+
+  void _triggerWarnappNotification(BuildContext context) {
+    final Sound sound = WarnAppSound();
+    sound.play();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      showWarnFunctionModalSheet(
+        context,
+        onManeuverButtonPressed: () => context.read<TrainJourneyViewModel>().setManeuverMode(true),
+      );
+    });
   }
 
   void _handleUxEvents(BuildContext context, UxTestingEvent? event) {
     if (event == null) return;
 
     if (event.isWarn) {
-      final Sound sound = WarnAppSound();
-      sound.play();
-      showWarnFunctionModalSheet(context);
+      _triggerWarnappNotification(context);
     } else if (event.isKoa && event.value == KoaState.waitCancelled.name) {
       final Sound sound = KoaSound();
       sound.play();

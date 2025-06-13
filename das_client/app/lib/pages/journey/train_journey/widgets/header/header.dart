@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/brightness/brightness_modal_sheet.dart';
-import 'package:app/di.dart';
+import 'package:app/di/di.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/main_container.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/time_container.dart';
 import 'package:app/widgets/extended_header_container.dart';

@@ -1,4 +1,5 @@
 import 'package:app/pages/journey/journey_page.dart';
+import 'package:app/pages/journey/selection/journey_selection_page.dart';
 import 'package:app/pages/links/links_page.dart';
 import 'package:app/pages/login/login_page.dart';
 import 'package:app/pages/profile/profile_page.dart';
@@ -12,13 +13,14 @@ part 'app_router.gr.dart';
 class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
-        _splash,
-        _login,
-        _journey,
-        _links,
-        _settings,
-        _profile,
-      ];
+    _splash,
+    _login,
+    _journey,
+    _journeySelection,
+    _links,
+    _settings,
+    _profile,
+  ];
 
   @override
   get defaultRouteType => const RouteType.custom();
@@ -40,6 +42,11 @@ final _login = AutoRoute(
 final _journey = AutoRoute(
   path: '/journey',
   page: JourneyRoute.page,
+);
+
+final _journeySelection = AutoRoute(
+  path: '/journey-selection',
+  page: JourneySelectionRoute.page,
 );
 
 final _links = AutoRoute(

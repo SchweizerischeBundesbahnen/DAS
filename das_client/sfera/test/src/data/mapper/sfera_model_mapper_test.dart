@@ -82,11 +82,12 @@ void main() {
     }
 
     return SferaModelMapper.mapToJourney(
-        journeyProfile: journeyProfile,
-        segmentProfiles: segmentProfiles,
-        trainCharacteristics: trainCharacteristics,
-        relatedTrainInformation: relatedTrainInformation,
-        lastJourney: lastJourney);
+      journeyProfile: journeyProfile,
+      segmentProfiles: segmentProfiles,
+      trainCharacteristics: trainCharacteristics,
+      relatedTrainInformation: relatedTrainInformation,
+      lastJourney: lastJourney,
+    );
   }
 
   test('Test invalid journey on SP missing', () async {
@@ -229,31 +230,45 @@ void main() {
     expect(journey.metadata.nonStandardTrackEquipmentSegments, hasLength(7));
 
     expect(
-        journey.metadata.nonStandardTrackEquipmentSegments[0].type, TrackEquipmentType.etcsL2ExtSpeedReversingPossible);
+      journey.metadata.nonStandardTrackEquipmentSegments[0].type,
+      TrackEquipmentType.etcsL2ExtSpeedReversingPossible,
+    );
     expect(journey.metadata.nonStandardTrackEquipmentSegments[0].startOrder, isNull);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[0].endOrder, 1600);
-    expect(journey.metadata.nonStandardTrackEquipmentSegments[1].type,
-        TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment);
+    expect(
+      journey.metadata.nonStandardTrackEquipmentSegments[1].type,
+      TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment,
+    );
     expect(journey.metadata.nonStandardTrackEquipmentSegments[1].startOrder, 1700);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[1].endOrder, 2300);
-    expect(journey.metadata.nonStandardTrackEquipmentSegments[2].type,
-        TrackEquipmentType.etcsL2ConvSpeedReversingImpossible);
+    expect(
+      journey.metadata.nonStandardTrackEquipmentSegments[2].type,
+      TrackEquipmentType.etcsL2ConvSpeedReversingImpossible,
+    );
     expect(journey.metadata.nonStandardTrackEquipmentSegments[2].startOrder, 102500);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[2].endOrder, 103700);
     expect(
-        journey.metadata.nonStandardTrackEquipmentSegments[3].type, TrackEquipmentType.etcsL2ExtSpeedReversingPossible);
+      journey.metadata.nonStandardTrackEquipmentSegments[3].type,
+      TrackEquipmentType.etcsL2ExtSpeedReversingPossible,
+    );
     expect(journey.metadata.nonStandardTrackEquipmentSegments[3].startOrder, 103700);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[3].endOrder, 307000);
-    expect(journey.metadata.nonStandardTrackEquipmentSegments[4].type,
-        TrackEquipmentType.etcsL2ConvSpeedReversingImpossible);
+    expect(
+      journey.metadata.nonStandardTrackEquipmentSegments[4].type,
+      TrackEquipmentType.etcsL2ConvSpeedReversingImpossible,
+    );
     expect(journey.metadata.nonStandardTrackEquipmentSegments[4].startOrder, 307000);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[4].endOrder, 307800);
-    expect(journey.metadata.nonStandardTrackEquipmentSegments[5].type,
-        TrackEquipmentType.etcsL2ExtSpeedReversingImpossible);
+    expect(
+      journey.metadata.nonStandardTrackEquipmentSegments[5].type,
+      TrackEquipmentType.etcsL2ExtSpeedReversingImpossible,
+    );
     expect(journey.metadata.nonStandardTrackEquipmentSegments[5].startOrder, 409200);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[5].endOrder, 410200);
     expect(
-        journey.metadata.nonStandardTrackEquipmentSegments[6].type, TrackEquipmentType.etcsL2ExtSpeedReversingPossible);
+      journey.metadata.nonStandardTrackEquipmentSegments[6].type,
+      TrackEquipmentType.etcsL2ExtSpeedReversingPossible,
+    );
     expect(journey.metadata.nonStandardTrackEquipmentSegments[6].startOrder, 410200);
     expect(journey.metadata.nonStandardTrackEquipmentSegments[6].endOrder, isNull);
   });
@@ -400,8 +415,10 @@ void main() {
 
   test('Test protection section is parsed correctly', () async {
     final journey = getJourney('T3', 1);
-    final protectionSections =
-        journey.data.where((it) => it.type == Datatype.protectionSection).cast<ProtectionSection>().toList();
+    final protectionSections = journey.data
+        .where((it) => it.type == Datatype.protectionSection)
+        .cast<ProtectionSection>()
+        .toList();
 
     expect(journey.valid, true);
     expect(protectionSections, hasLength(6));
@@ -427,17 +444,22 @@ void main() {
         .toList();
 
     expect(journey.valid, true);
-    expect(speedRestrictions, hasLength(1));
-    expect(speedRestrictions[0].restriction.kmFrom, 64.2);
-    expect(speedRestrictions[0].restriction.kmTo, 63.2);
-    expect(speedRestrictions[0].restriction.orderFrom, 700);
-    expect(speedRestrictions[0].restriction.orderTo, 800);
-    expect(speedRestrictions[0].restriction.speed, 60);
-    expect(speedRestrictions[0].restriction.restrictionFrom, DateTime.parse('2022-01-01T00:00:00Z'));
-    expect(speedRestrictions[0].restriction.restrictionUntil, DateTime.parse('2060-01-01T00:00:00Z'));
-    expect(speedRestrictions[0].restriction.reason?.de, 'Schutz Personal');
+    expect(speedRestrictions, hasLength(7));
+    expect(speedRestrictions[0].speed, 60);
+    expect(speedRestrictions[0].kmFrom, 64.2);
+    expect(speedRestrictions[0].kmTo, 63.2);
+    expect(speedRestrictions[0].order, 700);
+    expect(speedRestrictions[0].restrictions, hasLength(1));
+    expect(speedRestrictions[0].restrictions[0].kmFrom, 64.2);
+    expect(speedRestrictions[0].restrictions[0].kmTo, 63.2);
+    expect(speedRestrictions[0].restrictions[0].orderFrom, 700);
+    expect(speedRestrictions[0].restrictions[0].orderTo, 800);
+    expect(speedRestrictions[0].restrictions[0].speed, 60);
+    expect(speedRestrictions[0].restrictions[0].restrictionFrom, DateTime.parse('2022-01-01T00:00:00Z'));
+    expect(speedRestrictions[0].restrictions[0].restrictionUntil, DateTime.parse('2060-01-01T00:00:00Z'));
+    expect(speedRestrictions[0].restrictions[0].reason?.de, 'Schutz Personal');
 
-    expect(journey.metadata.additionalSpeedRestrictions, hasLength(1));
+    expect(journey.metadata.additionalSpeedRestrictions, hasLength(7));
     expect(journey.metadata.additionalSpeedRestrictions[0].kmFrom, 64.2);
     expect(journey.metadata.additionalSpeedRestrictions[0].kmTo, 63.2);
     expect(journey.metadata.additionalSpeedRestrictions[0].orderFrom, 700);
@@ -446,6 +468,19 @@ void main() {
     expect(journey.metadata.additionalSpeedRestrictions[0].restrictionFrom, DateTime.parse('2022-01-01T00:00:00Z'));
     expect(journey.metadata.additionalSpeedRestrictions[0].restrictionUntil, DateTime.parse('2060-01-01T00:00:00Z'));
     expect(journey.metadata.additionalSpeedRestrictions[0].reason?.de, 'Schutz Personal');
+  });
+
+  test('Test additional speed restriction out of journey times are filtered correctly', () async {
+    final journey = getJourney('T3', 1);
+    final speedRestrictions = journey.data
+        .where((it) => it.type == Datatype.additionalSpeedRestriction)
+        .cast<AdditionalSpeedRestrictionData>()
+        .toList();
+
+    expect(journey.valid, true);
+    expect(speedRestrictions, hasLength(7)); // other two restrictions are out of journey times
+
+    expect(journey.metadata.additionalSpeedRestrictions, hasLength(7));
   });
 
   test('Test additional speed restriction is parsed correctly over multiple segments', () async {
@@ -457,17 +492,18 @@ void main() {
 
     expect(journey.valid, true);
     expect(speedRestrictions, hasLength(2));
-    expect(speedRestrictions[0].restriction.kmFrom, 64.2);
-    expect(speedRestrictions[0].restriction.kmTo, 47.2);
-    expect(speedRestrictions[0].restriction.orderFrom, 700);
-    expect(speedRestrictions[0].restriction.orderTo, 206800);
-    expect(speedRestrictions[0].restriction.speed, 60);
+    expect(speedRestrictions[0].restrictions, hasLength(1));
+    expect(speedRestrictions[0].restrictions[0].kmFrom, 64.2);
+    expect(speedRestrictions[0].restrictions[0].kmTo, 47.2);
+    expect(speedRestrictions[0].restrictions[0].orderFrom, 700);
+    expect(speedRestrictions[0].restrictions[0].orderTo, 206800);
+    expect(speedRestrictions[0].restrictions[0].speed, 60);
     expect(speedRestrictions[0].order, 700);
-    expect(speedRestrictions[1].restriction.kmFrom, 64.2);
-    expect(speedRestrictions[1].restriction.kmTo, 47.2);
-    expect(speedRestrictions[1].restriction.orderFrom, 700);
-    expect(speedRestrictions[1].restriction.orderTo, 206800);
-    expect(speedRestrictions[1].restriction.speed, 60);
+    expect(speedRestrictions[1].restrictions[0].kmFrom, 64.2);
+    expect(speedRestrictions[1].restrictions[0].kmTo, 47.2);
+    expect(speedRestrictions[1].restrictions[0].orderFrom, 700);
+    expect(speedRestrictions[1].restrictions[0].orderTo, 206800);
+    expect(speedRestrictions[1].restrictions[0].speed, 60);
     expect(speedRestrictions[1].order, 206800);
 
     expect(journey.metadata.additionalSpeedRestrictions, hasLength(1));
@@ -479,50 +515,108 @@ void main() {
   });
 
   test('Test additional speed restriction without a date', () async {
-    final journey = getJourney('T3', 1, jpPostfix: 'asp_no_date');
+    final journey = getJourney('T2', 3);
     final speedRestrictions = journey.data
         .where((it) => it.type == Datatype.additionalSpeedRestriction)
         .cast<AdditionalSpeedRestrictionData>()
         .toList();
 
     expect(journey.valid, true);
-    expect(speedRestrictions, hasLength(1));
-    expect(speedRestrictions[0].restriction.kmFrom, 64.2);
-    expect(speedRestrictions[0].restriction.kmTo, 63.2);
-    expect(speedRestrictions[0].restriction.orderFrom, 700);
-    expect(speedRestrictions[0].restriction.orderTo, 800);
-    expect(speedRestrictions[0].restriction.speed, 60);
+    expect(speedRestrictions, hasLength(2));
+    expect(speedRestrictions[0].restrictions, hasLength(1));
+    expect(speedRestrictions[0].restrictions[0].restrictionFrom, isNull);
+    expect(speedRestrictions[0].restrictions[0].restrictionUntil, isNull);
+    expect(speedRestrictions[0].order, 700);
+    expect(speedRestrictions[1].restrictions, hasLength(1));
+    expect(speedRestrictions[1].restrictions[0].restrictionFrom, isNull);
+    expect(speedRestrictions[1].restrictions[0].restrictionUntil, isNull);
+    expect(speedRestrictions[1].order, 206800);
 
     expect(journey.metadata.additionalSpeedRestrictions, hasLength(1));
+    expect(journey.metadata.additionalSpeedRestrictions[0].restrictionFrom, isNull);
+    expect(journey.metadata.additionalSpeedRestrictions[0].restrictionUntil, isNull);
+  });
+
+  test('Test complex additional speed restrictions are parsed correctly', () async {
+    final journey = getJourney('T18', 3);
+    final speedRestrictions = journey.data
+        .where((it) => it.type == Datatype.additionalSpeedRestriction)
+        .cast<AdditionalSpeedRestrictionData>()
+        .toList();
+
+    expect(journey.valid, true);
+    expect(speedRestrictions, hasLength(4));
+
+    void checkNormalASRRestriction(AdditionalSpeedRestrictionData data) {
+      expect(data.restrictions[0].kmFrom, 64.2);
+      expect(data.restrictions[0].kmTo, 26.1);
+      expect(data.restrictions[0].orderFrom, 700);
+      expect(data.restrictions[0].orderTo, 2100);
+      expect(data.restrictions[0].speed, 80);
+    }
+
+    // start of normal ASR between Genève-Aéroport and Morges
+    expect(speedRestrictions[0].restrictions, hasLength(1));
+    checkNormalASRRestriction(speedRestrictions[0]);
+    expect(speedRestrictions[0].kmFrom, 64.2);
+    expect(speedRestrictions[0].kmTo, 26.1);
+    expect(speedRestrictions[0].speed, 80);
+    expect(speedRestrictions[0].order, 700);
+
+    // end of normal ASR between Genève-Aéroport and Morges
+    expect(speedRestrictions[1].restrictions, hasLength(1));
+    checkNormalASRRestriction(speedRestrictions[1]);
+    expect(speedRestrictions[1].kmFrom, 64.2);
+    expect(speedRestrictions[1].kmTo, 26.1);
+    expect(speedRestrictions[1].speed, 80);
+    expect(speedRestrictions[1].order, 2100);
+
+    void checkComplexASRRestrictions(AdditionalSpeedRestrictionData data) {
+      expect(data.restrictions[0].kmFrom, 83.1);
+      expect(data.restrictions[0].kmTo, 6.6);
+      expect(data.restrictions[0].orderFrom, 105600);
+      expect(data.restrictions[0].orderTo, 210200);
+      expect(data.restrictions[0].speed, 50);
+      expect(data.restrictions[1].kmFrom, 47.2);
+      expect(data.restrictions[1].kmTo, 12.0);
+      expect(data.restrictions[1].orderFrom, 206800);
+      expect(data.restrictions[1].orderTo, 209100);
+      expect(data.restrictions[1].speed, 60);
+    }
+
+    // start of complex ASR between Lengnau and Zurich Flughafen
+    expect(speedRestrictions[2].restrictions, hasLength(2));
+    checkComplexASRRestrictions(speedRestrictions[2]);
+    expect(speedRestrictions[2].kmFrom, 83.1);
+    expect(speedRestrictions[2].kmTo, 6.6);
+    expect(speedRestrictions[2].speed, 50);
+    expect(speedRestrictions[2].order, 105600);
+
+    // end of complex ASR between Lengnau and Zurich Flughafen
+    expect(speedRestrictions[3].restrictions, hasLength(2));
+    checkComplexASRRestrictions(speedRestrictions[3]);
+    expect(speedRestrictions[3].kmFrom, 83.1);
+    expect(speedRestrictions[3].kmTo, 6.6);
+    expect(speedRestrictions[3].speed, 50);
+    expect(speedRestrictions[3].order, 210200);
+
+    // metadata should contain all restriction even if multiple are combined
+    expect(journey.metadata.additionalSpeedRestrictions, hasLength(3));
     expect(journey.metadata.additionalSpeedRestrictions[0].kmFrom, 64.2);
-    expect(journey.metadata.additionalSpeedRestrictions[0].kmTo, 63.2);
+    expect(journey.metadata.additionalSpeedRestrictions[0].kmTo, 26.1);
     expect(journey.metadata.additionalSpeedRestrictions[0].orderFrom, 700);
-    expect(journey.metadata.additionalSpeedRestrictions[0].orderTo, 800);
-    expect(journey.metadata.additionalSpeedRestrictions[0].speed, 60);
-  });
-
-  test('Test additional speed restriction with date in the past', () async {
-    final journey = getJourney('T3', 1, jpPostfix: 'asp_date_before');
-    final speedRestrictions = journey.data
-        .where((it) => it.type == Datatype.additionalSpeedRestriction)
-        .cast<AdditionalSpeedRestrictionData>()
-        .toList();
-
-    expect(journey.valid, true);
-    expect(speedRestrictions, hasLength(0));
-    expect(journey.metadata.additionalSpeedRestrictions, hasLength(0));
-  });
-
-  test('Test additional speed restriction with date in the future', () async {
-    final journey = getJourney('T3', 1, jpPostfix: 'asp_date_after');
-    final speedRestrictions = journey.data
-        .where((it) => it.type == Datatype.additionalSpeedRestriction)
-        .cast<AdditionalSpeedRestrictionData>()
-        .toList();
-
-    expect(journey.valid, true);
-    expect(speedRestrictions, hasLength(0));
-    expect(journey.metadata.additionalSpeedRestrictions, hasLength(0));
+    expect(journey.metadata.additionalSpeedRestrictions[0].orderTo, 2100);
+    expect(journey.metadata.additionalSpeedRestrictions[0].speed, 80);
+    expect(journey.metadata.additionalSpeedRestrictions[1].kmFrom, 47.2);
+    expect(journey.metadata.additionalSpeedRestrictions[1].kmTo, 12.0);
+    expect(journey.metadata.additionalSpeedRestrictions[1].orderFrom, 206800);
+    expect(journey.metadata.additionalSpeedRestrictions[1].orderTo, 209100);
+    expect(journey.metadata.additionalSpeedRestrictions[1].speed, 60);
+    expect(journey.metadata.additionalSpeedRestrictions[2].kmFrom, 83.1);
+    expect(journey.metadata.additionalSpeedRestrictions[2].kmTo, 6.6);
+    expect(journey.metadata.additionalSpeedRestrictions[2].orderFrom, 105600);
+    expect(journey.metadata.additionalSpeedRestrictions[2].orderTo, 210200);
+    expect(journey.metadata.additionalSpeedRestrictions[2].speed, 50);
   });
 
   test('Test speed change is parsed correctly', () async {
@@ -555,8 +649,10 @@ void main() {
 
   test('Test connection tracks are parsed correctly', () async {
     final journey = getJourney('T9999', 5);
-    final connectionTracks =
-        journey.data.where((it) => it.type == Datatype.connectionTrack).cast<ConnectionTrack>().toList();
+    final connectionTracks = journey.data
+        .where((it) => it.type == Datatype.connectionTrack)
+        .cast<ConnectionTrack>()
+        .toList();
 
     expect(journey.valid, true);
     expect(connectionTracks, hasLength(3));
@@ -940,8 +1036,9 @@ void main() {
     expect(nSpeedEntry1.outgoingSpeeds, hasLength(1));
     _checkSpeed(nSpeedEntry1.outgoingSpeeds[0], 60);
 
-    final relevantSpeedInfo =
-        servicePoints[0].relevantGraduatedSpeedInfo(BreakSeries(trainSeries: TrainSeries.N, breakSeries: 50));
+    final relevantSpeedInfo = servicePoints[0].relevantGraduatedSpeedInfo(
+      BreakSeries(trainSeries: TrainSeries.N, breakSeries: 50),
+    );
     expect(relevantSpeedInfo, hasLength(1));
     expect(relevantSpeedInfo[0].text, 'Zusatzinformation B');
     expect(relevantSpeedInfo[0].trainSeries, TrainSeries.N);
@@ -1141,8 +1238,10 @@ void main() {
     expect(opFootNotes[0].footNote.text, 'Renens - Lausanne <i>"via saut-de-mouton"</i> 0‰');
     expect(opFootNotes[0].footNote.refText, '1)');
     expect(opFootNotes[1].footNote.type, FootNoteType.contact);
-    expect(opFootNotes[1].footNote.text,
-        'Das ist <b>fett <i>und kursiv</i></b> <br/>und das ist <br/><i>noch kursiv</i>.');
+    expect(
+      opFootNotes[1].footNote.text,
+      'Das ist <b>fett <i>und kursiv</i></b> <br/>und das ist <br/><i>noch kursiv</i>.',
+    );
     expect(opFootNotes[1].footNote.refText, '1)');
     expect(opFootNotes[2].footNote.type, FootNoteType.contact);
     expect(opFootNotes[2].footNote.text, '+41 512 800 506 RBC Lavaux');

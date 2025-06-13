@@ -58,11 +58,13 @@ void main() {
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);
-    verify(mockMqttService.publishMessage(
-      any,
-      any,
-      argThat(contains('</HandshakeRequest>')),
-    )).called(1);
+    verify(
+      mockMqttService.publishMessage(
+        any,
+        any,
+        argThat(contains('</HandshakeRequest>')),
+      ),
+    ).called(1);
   });
 
   test('should publish disconnected when mqtt connection fails', () async {

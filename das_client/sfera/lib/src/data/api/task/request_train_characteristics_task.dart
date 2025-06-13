@@ -20,9 +20,9 @@ class RequestTrainCharacteristicsTask extends SferaTask<List<TrainCharacteristic
     required this.otnId,
     required this.journeyProfile,
     super.timeout,
-  })  : _mqttService = mqttService,
-        _sferaDatabaseRepository = sferaDatabaseRepository,
-        _sferaService = sferaService;
+  }) : _mqttService = mqttService,
+       _sferaDatabaseRepository = sferaDatabaseRepository,
+       _sferaService = sferaService;
 
   final MqttService _mqttService;
   final OtnId otnId;
@@ -51,11 +51,14 @@ class RequestTrainCharacteristicsTask extends SferaTask<List<TrainCharacteristic
 
     final List<TcRequestDto> tcRequests = [];
     for (final missingTrainRef in missingTrainCharacteristics) {
-      tcRequests.add(TcRequestDto.create(
+      tcRequests.add(
+        TcRequestDto.create(
           id: missingTrainRef.tcId,
           versionMajor: missingTrainRef.versionMajor,
           versionMinor: missingTrainRef.versionMinor,
-          ruId: missingTrainRef.ruId));
+          ruId: missingTrainRef.ruId,
+        ),
+      );
     }
 
     final sferaB2gRequestMessage = SferaB2gRequestMessageDto.create(
@@ -65,8 +68,11 @@ class RequestTrainCharacteristicsTask extends SferaTask<List<TrainCharacteristic
     Fimber.i('Sending train characteristics request...');
 
     startTimeout(_taskFailedCallback);
-    _mqttService.publishMessage(otnId.company, Format.sferaTrain(otnId.operationalTrainNumber, otnId.startDate),
-        sferaB2gRequestMessage.buildDocument().toString());
+    _mqttService.publishMessage(
+      otnId.company,
+      Format.sferaTrain(otnId.operationalTrainNumber, otnId.startDate),
+      sferaB2gRequestMessage.buildDocument().toString(),
+    );
   }
 
   Future<Set<TrainCharacteristicsRefDto>> findMissingTrainCharacteristics() async {
@@ -74,7 +80,10 @@ class RequestTrainCharacteristicsTask extends SferaTask<List<TrainCharacteristic
 
     for (final trainRef in journeyProfile.trainCharacteristicsRefSet) {
       final existingTrainCharacteristic = await _sferaDatabaseRepository.findTrainCharacteristics(
-          trainRef.tcId, trainRef.versionMajor, trainRef.versionMinor);
+        trainRef.tcId,
+        trainRef.versionMajor,
+        trainRef.versionMinor,
+      );
       if (existingTrainCharacteristic == null) {
         missingTrainCharacteristics.add(trainRef);
       }

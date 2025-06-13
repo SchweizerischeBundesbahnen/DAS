@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:app/di.dart';
+import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:battery_plus/battery_plus.dart';

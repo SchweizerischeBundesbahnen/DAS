@@ -40,7 +40,7 @@ class TimeCellBody extends StatelessWidget {
           TextSpan(
             children: [
               TextSpan(text: arrivalTime, style: isArrivalBold ? DASTextStyles.largeBold : null),
-              TextSpan(text: departureTime, style: DASTextStyles.largeBold)
+              TextSpan(text: departureTime, style: DASTextStyles.largeBold),
             ],
           ),
         );

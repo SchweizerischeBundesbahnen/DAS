@@ -1,16 +1,23 @@
+> [!NOTE]  
+> This app is for testing and demo purpose only
+
 # SFERA Mock
 
 ## Introduction
+This application mocks TMS-VAD resp. fakes MQTT and waits for SFERA request topics (like train-number) to be received from another source (like DAS-Client, DAS-Playground).
+
+Capabilities:
 - solace
 - generates SFERA model out of `sfera_*.xsd`
-- for SFERA e2e tests of mobile app
+- for SFERA e2e tests of DAS-Client (mobile App)
 
 ## Getting-Started
 ### Run on localhost
 1. Add environment variables (according to [application.yaml](src/main/resources/application.yaml) and specify concrete values
-   - either by run configuration
-   - or an .env file
-2. Run `SferaMockApplication`
+   - by an .env file (adapt `SFERA_CUSTOM_TOPIC_PREFIX` to your local preferred name)
+   - (or by run configuration)
+2. Add certificate-file to src/main/resources according to .env SOLACE_KEY_STORE_PATH
+3. Run `SferaMockApplication`
 
 ## Scenarios
 
@@ -23,7 +30,7 @@ see journeys [static_sfera_resources](src/main/resources/static_sfera_resources)
 
 ## Add new Scenario
 To create a new scenario some resources need to be added
-1. add a new directory named `<train number>_<optional comment>` in `static_sfera_resources`
+1. add a new directory named `<train number>_<optional comment>` in `src/main/resources/static_sfera_resources`
 2. add a journey profile named `SFERA_JP_<train number>` to the directory
    1. to achieve dynamic timestamps you can use the following pattern
       - `9999-01-01-HH-MM-SSZ` for positive offsets

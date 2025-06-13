@@ -74,9 +74,13 @@ void main() {
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: true);
 
-    verify(scrollControllerMock.animateTo(CellRowBuilder.rowHeight * 2,
-            duration: anyNamed('duration'), curve: anyNamed('curve')))
-        .called(1);
+    verify(
+      scrollControllerMock.animateTo(
+        CellRowBuilder.rowHeight * 2,
+        duration: anyNamed('duration'),
+        curve: anyNamed('curve'),
+      ),
+    ).called(1);
   });
 
   test('test does not scroll to correct element offset if not active', () {
@@ -141,9 +145,13 @@ void main() {
     testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: true);
     testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: true);
 
-    verify(scrollControllerMock.animateTo(CellRowBuilder.rowHeight * 2,
-            duration: anyNamed('duration'), curve: anyNamed('curve')))
-        .called(1);
+    verify(
+      scrollControllerMock.animateTo(
+        CellRowBuilder.rowHeight * 2,
+        duration: anyNamed('duration'),
+        curve: anyNamed('curve'),
+      ),
+    ).called(1);
   });
 
   test('test does not scroll and is not active if currentPosition is same as routeStart', () {
@@ -174,11 +182,19 @@ void main() {
 
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(
-        currentPosition: currentPosition, routeStart: journeyData[0], isAdvancementEnabledByUser: true);
+      currentPosition: currentPosition,
+      routeStart: journeyData[0],
+      isAdvancementEnabledByUser: true,
+    );
 
     expect(testee.isActive, false);
-    verifyNever(scrollControllerMock.animateTo(CellRowBuilder.rowHeight * 2,
-        duration: anyNamed('duration'), curve: anyNamed('curve')));
+    verifyNever(
+      scrollControllerMock.animateTo(
+        CellRowBuilder.rowHeight * 2,
+        duration: anyNamed('duration'),
+        curve: anyNamed('curve'),
+      ),
+    );
   });
 
   test('test does nothing if not attached to a scrollview', () {
@@ -241,11 +257,13 @@ void main() {
     testee.updateRenderedRows(rows);
     testee.handleJourneyUpdate(currentPosition: targetSignalData, isAdvancementEnabledByUser: true);
 
-    verify(scrollControllerMock.animateTo(
-      CellRowBuilder.rowHeight * 3 + ServicePointRow.rowHeight,
-      duration: anyNamed('duration'),
-      curve: anyNamed('curve'),
-    )).called(1);
+    verify(
+      scrollControllerMock.animateTo(
+        CellRowBuilder.rowHeight * 3 + ServicePointRow.rowHeight,
+        duration: anyNamed('duration'),
+        curve: anyNamed('curve'),
+      ),
+    ).called(1);
   });
 
   test('test scrolls with delay after touch', () async {
@@ -319,9 +337,13 @@ void main() {
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(currentPosition: currentPosition, isAdvancementEnabledByUser: true);
 
-    verify(scrollControllerMock.animateTo(CellRowBuilder.rowHeight * 2,
-            duration: anyNamed('duration'), curve: anyNamed('curve')))
-        .called(1);
+    verify(
+      scrollControllerMock.animateTo(
+        CellRowBuilder.rowHeight * 2,
+        duration: anyNamed('duration'),
+        curve: anyNamed('curve'),
+      ),
+    ).called(1);
 
     FakeAsync().run((fakeAsync) {
       testee.resetScrollTimer();

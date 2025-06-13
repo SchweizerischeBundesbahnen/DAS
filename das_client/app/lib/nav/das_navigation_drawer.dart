@@ -1,5 +1,7 @@
+import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
+import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
 import 'package:app/widgets/app_version_text.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/device_id_text.dart';
@@ -12,6 +14,8 @@ class DASNavigationDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final journeyNavigationViewModel = DI.getOrNull<JourneyNavigationViewModel>();
+    final isJourneySelected = journeyNavigationViewModel?.modelValue != null;
     return Drawer(
       child: Column(
         children: [
@@ -23,7 +27,7 @@ class DASNavigationDrawer extends StatelessWidget {
                   context,
                   icon: SBBIcons.route_circle_start_small,
                   title: context.l10n.w_navigation_drawer_fahrtinfo_title,
-                  route: const JourneyRoute(),
+                  route: isJourneySelected ? const JourneyRoute() : const JourneySelectionRoute(),
                 ),
                 _navigationTile(
                   context,
@@ -52,8 +56,12 @@ class DASNavigationDrawer extends StatelessWidget {
     );
   }
 
-  Widget _navigationTile(BuildContext context,
-      {required IconData icon, required String title, required PageRouteInfo route}) {
+  Widget _navigationTile(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required PageRouteInfo route,
+  }) {
     final bool isActiveRoute = context.router.isRouteActive(route.routeName);
 
     return ListTile(
@@ -92,7 +100,7 @@ class DASNavigationDrawer extends StatelessWidget {
             ),
             DeviceIdText(
               color: SBBColors.granite,
-            )
+            ),
           ],
         ),
       ),

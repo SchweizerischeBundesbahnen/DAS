@@ -51,7 +51,10 @@ class SegmentProfileMapper {
   static const String _protectionSectionNspLengthTypeName = 'lengthType';
 
   static List<BaseData> parseSegmentProfile(
-      SegmentProfileReferenceDto segmentProfileReference, int segmentIndex, List<SegmentProfileDto> segmentProfiles) {
+    SegmentProfileReferenceDto segmentProfileReference,
+    int segmentIndex,
+    List<SegmentProfileDto> segmentProfiles,
+  ) {
     final segmentProfile = segmentProfiles.firstMatch(segmentProfileReference);
     final kilometreMap = parseKilometre(segmentProfile);
     final mapperData = _MapperData(segmentProfile, segmentIndex, kilometreMap);
@@ -75,9 +78,11 @@ class SegmentProfileMapper {
     final connectionTracks = _parseConnectionTrack(mapperData, newLineSpeeds);
 
     // Remove new line speeds that are already present as connection tracks
-    newLineSpeeds.removeWhere((speedChange) =>
-        connectionTracks.firstWhereOrNull((connectionTrack) => connectionTrack.speedData == speedChange.speedData) !=
-        null);
+    newLineSpeeds.removeWhere(
+      (speedChange) =>
+          connectionTracks.firstWhereOrNull((connectionTrack) => connectionTrack.speedData == speedChange.speedData) !=
+          null,
+    );
 
     journeyData.addAll(connectionTracks);
     journeyData.addAll(newLineSpeeds);
@@ -85,8 +90,11 @@ class SegmentProfileMapper {
     return journeyData;
   }
 
-  static List<ServicePoint> _parseServicePoint(_MapperData mapperData, List<SegmentProfileDto> segmentProfiles,
-      SegmentProfileReferenceDto segmentProfileReference) {
+  static List<ServicePoint> _parseServicePoint(
+    _MapperData mapperData,
+    List<SegmentProfileDto> segmentProfiles,
+    SegmentProfileReferenceDto segmentProfileReference,
+  ) {
     final servicePoints = <ServicePoint>[];
 
     final timingPoints = mapperData.segmentProfile.points?.timingPoints.toList() ?? [];
@@ -95,11 +103,10 @@ class SegmentProfileMapper {
     for (final tpConstraint in segmentProfileReference.timingPointsConstraints) {
       final tpId = tpConstraint.timingPointReference.tpIdReference.tpId;
       final timingPoint = timingPoints.where((it) => it.id == tpId).first;
-      final tafTapLocation = tafTapLocations
-          .where((it) =>
-              it.locationIdent.countryCodeISO == timingPoint.locationReference?.countryCodeISO &&
-              it.locationIdent.locationPrimaryCode == timingPoint.locationReference?.locationPrimaryCode)
-          .first;
+      final tafTapLocation = tafTapLocations.firstWhereGiven(
+        countryCode: timingPoint.locationReference?.countryCodeISO,
+        primaryCode: timingPoint.locationReference?.locationPrimaryCode,
+      );
 
       servicePoints.add(
         ServicePoint(
@@ -110,12 +117,15 @@ class SegmentProfileMapper {
           isStation: tafTapLocation.locationType != TafTapLocationTypeDto.halt,
           bracketMainStation: _parseBracketMainStation(tafTapLocations, tafTapLocation),
           kilometre: mapperData.kilometreMap[timingPoint.location] ?? [],
-          speedData:
-              GraduatedSpeedDataMapper.fromVelocities(tafTapLocation.newLineSpeed?.xmlNewLineSpeed.element.velocities),
-          localSpeedData:
-              GraduatedSpeedDataMapper.fromVelocities(tafTapLocation.stationSpeed?.xmlStationSpeed.element.velocities),
+          speedData: GraduatedSpeedDataMapper.fromVelocities(
+            tafTapLocation.newLineSpeed?.xmlNewLineSpeed.element.velocities,
+          ),
+          localSpeedData: GraduatedSpeedDataMapper.fromVelocities(
+            tafTapLocation.stationSpeed?.xmlStationSpeed.element.velocities,
+          ),
           graduatedSpeedInfo: GraduatedSpeedDataMapper.fromGraduatedSpeedInfo(
-              tafTapLocation.stationSpeed?.xmlGraduatedSpeedInfo?.element),
+            tafTapLocation.stationSpeed?.xmlGraduatedSpeedInfo?.element,
+          ),
           decisiveGradient: _parseDecisiveGradientAtLocation(mapperData.segmentProfile, timingPoint.location),
           arrivalDepartureTime: _parseArrivalDepartureTime(tpConstraint),
         ),
@@ -145,18 +155,23 @@ class SegmentProfileMapper {
 
       for (final currentLimitationChange in currentLimitation.currentLimitationChanges) {
         if (currentLimitationChange.maxCurValue == '0') {
-          final protectionSectionNsp =
-              protectionSectionNsps.where((it) => it.location == currentLimitationChange.location).firstOrNull;
+          final protectionSectionNsp = protectionSectionNsps
+              .where((it) => it.location == currentLimitationChange.location)
+              .firstOrNull;
 
           final isOptional = protectionSectionNsp?.parameters.withName(_protectionSectionNspFacultativeName);
           final isLong = protectionSectionNsp?.parameters.withName(_protectionSectionNspLengthTypeName);
 
-          protectionSections.add(ProtectionSection(
+          protectionSections.add(
+            ProtectionSection(
               isOptional: isOptional != null ? bool.parse(isOptional.nspValue) : false,
-              isLong:
-                  isLong != null ? XmlEnum.valueOf(LengthTypeDto.values, isLong.nspValue) == LengthTypeDto.long : false,
+              isLong: isLong != null
+                  ? XmlEnum.valueOf(LengthTypeDto.values, isLong.nspValue) == LengthTypeDto.long
+                  : false,
               order: calculateOrder(mapperData.segmentIndex, currentLimitationChange.location),
-              kilometre: mapperData.kilometreMap[currentLimitationChange.location]!));
+              kilometre: mapperData.kilometreMap[currentLimitationChange.location]!,
+            ),
+          );
         }
       }
     }
@@ -164,7 +179,9 @@ class SegmentProfileMapper {
   }
 
   static BracketMainStation? _parseBracketMainStation(
-      List<TafTapLocationDto> allLocations, TafTapLocationDto tafTapLocation) {
+    List<TafTapLocationDto> allLocations,
+    TafTapLocationDto tafTapLocation,
+  ) {
     for (final tafTapLocationNsp in tafTapLocation.nsp) {
       if (tafTapLocationNsp.groupName == _bracketStationNspName) {
         final mainStationNsp = tafTapLocationNsp.parameters.withName(_bracketStationMainStationNspName);
@@ -174,16 +191,16 @@ class SegmentProfileMapper {
         } else {
           final countryCode = mainStationNsp.nspValue.substring(0, 2);
           final primaryCode = int.parse(mainStationNsp.nspValue.substring(2, 6));
-          final mainStation = allLocations
-              .where((it) =>
-                  it.locationIdent.countryCodeISO == countryCode && it.locationIdent.locationPrimaryCode == primaryCode)
-              .firstOrNull;
+          final mainStation = allLocations.firstWhereGivenOrNull(countryCode: countryCode, primaryCode: primaryCode);
           if (mainStation == null) {
             Fimber.w('Failed to resolve main station for bracket station: $tafTapLocation');
           }
 
           return BracketMainStation(
-              abbreviation: textNsp?.nspValue ?? '', countryCode: countryCode, primaryCode: primaryCode);
+            abbreviation: textNsp?.nspValue ?? '',
+            countryCode: countryCode,
+            primaryCode: primaryCode,
+          );
         }
       }
     }
@@ -198,8 +215,9 @@ class SegmentProfileMapper {
       return CurvePoint(
         order: calculateOrder(mapperData.segmentIndex, curvePointNsp.location),
         kilometre: mapperData.kilometreMap[curvePointNsp.location] ?? [],
-        curvePointType:
-            curvePointNsp.curvePointType != null ? CurvePointType.from(curvePointNsp.curvePointType!) : null,
+        curvePointType: curvePointNsp.curvePointType != null
+            ? CurvePointType.from(curvePointNsp.curvePointType!)
+            : null,
         curveType: curvePointNsp.curveType != null ? CurveType.from(curvePointNsp.curveType!) : null,
         text: curveSpeed?.text,
         comment: curveSpeed?.comment,
@@ -214,10 +232,11 @@ class SegmentProfileMapper {
       final currentOrder = calculateOrder(mapperData.segmentIndex, connectionTrack.location);
       final speedChange = newLineSpeeds.firstWhereOrNull((it) => it.order == currentOrder);
       return ConnectionTrack(
-          text: connectionTrack.connectionTrackDescription?.text,
-          order: calculateOrder(mapperData.segmentIndex, connectionTrack.location),
-          speedData: speedChange?.speedData,
-          kilometre: mapperData.kilometreMap[connectionTrack.location] ?? []);
+        text: connectionTrack.connectionTrackDescription?.text,
+        order: calculateOrder(mapperData.segmentIndex, connectionTrack.location),
+        speedData: speedChange?.speedData,
+        kilometre: mapperData.kilometreMap[connectionTrack.location] ?? [],
+      );
     }).toList();
   }
 
@@ -226,10 +245,11 @@ class SegmentProfileMapper {
     return newLineSpeeds.map<SpeedChange>((newLineSpeed) {
       final velocities = newLineSpeed.xmlNewLineSpeed.element.speeds?.velocities;
       return SpeedChange(
-          text: newLineSpeed.xmlNewLineSpeed.element.text,
-          speedData: GraduatedSpeedDataMapper.fromVelocities(velocities),
-          order: calculateOrder(mapperData.segmentIndex, newLineSpeed.location),
-          kilometre: mapperData.kilometreMap[newLineSpeed.location] ?? []);
+        text: newLineSpeed.xmlNewLineSpeed.element.text,
+        speedData: GraduatedSpeedDataMapper.fromVelocities(velocities),
+        order: calculateOrder(mapperData.segmentIndex, newLineSpeed.location),
+        kilometre: mapperData.kilometreMap[newLineSpeed.location] ?? [],
+      );
     }).toList();
   }
 
@@ -268,7 +288,6 @@ class SegmentProfileMapper {
     final trackFootNotesNsp = mapperData.segmentProfile.points?.trackFootNotesNsp ?? [];
     return trackFootNotesNsp.map((trackFootNoteNsp) {
       final footNotes = _parseFootNotes(trackFootNoteNsp.xmlTrackFootNotes.element.footNotes);
-
       return footNotes.map(
         (note) => TrackFootNote(
           order: calculateOrder(mapperData.segmentIndex, trackFootNoteNsp.location),
@@ -292,7 +311,6 @@ class SegmentProfileMapper {
           }
 
           final footNotes = _parseFootNotes(location.opFootNotes!.xmlOpFootNotes.element.footNotes);
-
           return footNotes.map(
             (note) => OpFootNote(
               order: calculateOrder(mapperData.segmentIndex, location.startLocation!),
@@ -319,7 +337,6 @@ class SegmentProfileMapper {
           }
 
           final footNotes = _parseFootNotes(location.lineFootNotes!.xmlLineFootNotes.element.footNotes);
-
           return footNotes.map(
             (note) => LineFootNote(
               locationName: location.locationIdent.primaryLocationName?.value ?? '',
@@ -336,11 +353,12 @@ class SegmentProfileMapper {
   static List<FootNote> _parseFootNotes(Iterable<SferaFootNoteDto> footNotes) {
     return footNotes.map((note) {
       return FootNote(
-          text: note.text,
-          type: note.footNoteType?.footNoteType,
-          refText: note.refText,
-          identifier: note.identifier,
-          trainSeries: _parseTrainSeries(note.trainSeries));
+        text: note.text,
+        type: note.footNoteType?.footNoteType,
+        refText: note.refText,
+        identifier: note.identifier,
+        trainSeries: _parseTrainSeries(note.trainSeries),
+      );
     }).toList();
   }
 
@@ -349,8 +367,9 @@ class SegmentProfileMapper {
   }
 
   static DecisiveGradient? _parseDecisiveGradientAtLocation(SegmentProfileDto segmentProfile, double location) {
-    final decisiveGradientAreas =
-        segmentProfile.contextInformation?.decisiveGradientAreas.where((it) => it.startLocation == location);
+    final decisiveGradientAreas = segmentProfile.contextInformation?.decisiveGradientAreas.where(
+      (it) => it.startLocation == location,
+    );
     if (decisiveGradientAreas == null || decisiveGradientAreas.isEmpty) {
       return null;
     }

@@ -8,7 +8,7 @@ import 'package:sfera/src/model/journey/journey.dart';
 
 class SferaLocalRepoImpl implements SferaLocalRepo {
   const SferaLocalRepoImpl({required SferaLocalDatabaseService databaseRepository})
-      : _databaseRepository = databaseRepository;
+    : _databaseRepository = databaseRepository;
 
   final SferaLocalDatabaseService _databaseRepository;
 
@@ -36,7 +36,10 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
     final trainCharacteristics = <TrainCharacteristicsDto>[];
     for (final tcReference in journeyProfile.trainCharacteristicsRefSet) {
       final trainCharacteristic = await _databaseRepository.findTrainCharacteristics(
-          tcReference.tcId, tcReference.versionMajor, tcReference.versionMinor);
+        tcReference.tcId,
+        tcReference.versionMajor,
+        tcReference.versionMinor,
+      );
       if (trainCharacteristic != null) {
         trainCharacteristics.add(trainCharacteristic.toDomain());
       }
@@ -48,7 +51,10 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
     final segmentProfiles = <SegmentProfileDto>[];
     for (final spReference in journeyProfile.segmentProfileReferences) {
       final segmentProfile = await _databaseRepository.findSegmentProfile(
-          spReference.spId, spReference.versionMajor, spReference.versionMinor);
+        spReference.spId,
+        spReference.versionMajor,
+        spReference.versionMinor,
+      );
       if (segmentProfile != null) {
         segmentProfiles.add(segmentProfile.toDomain());
       }

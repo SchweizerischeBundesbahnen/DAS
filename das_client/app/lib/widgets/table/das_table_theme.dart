@@ -68,13 +68,13 @@ class DASTableThemeData {
 
   @override
   int get hashCode => Object.hash(
-        dataRowColor,
-        headingRowColor,
-        tableBorder,
-        dataTextStyle,
-        headingTextStyle,
-        headingRowBorder,
-      );
+    dataRowColor,
+    headingRowColor,
+    tableBorder,
+    dataTextStyle,
+    headingTextStyle,
+    headingRowBorder,
+  );
 
   @override
   bool operator ==(Object other) {

@@ -64,7 +64,11 @@ class TrackEquipmentRenderData {
 
   /// calculates the cumulative height of the track equipment "line" of previous rows with the same type as given [segment].
   static double _calculateTrackEquipmentCumulativeHeight(
-      List<BaseData> rowData, Metadata metadata, NonStandardTrackEquipmentSegment segment, int index) {
+    List<BaseData> rowData,
+    Metadata metadata,
+    NonStandardTrackEquipmentSegment segment,
+    int index,
+  ) {
     var cumulativeHeight = 0.0;
     var searchIndex = index - 1;
     while (searchIndex >= 0) {

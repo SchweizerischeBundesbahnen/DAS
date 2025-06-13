@@ -21,9 +21,10 @@ class SferaDatabaseRepositoryImpl implements SferaLocalDatabaseService {
     Fimber.i('Initializing SferaStore...');
     final dir = await getApplicationDocumentsDirectory();
     _db = await Isar.openAsync(
-        schemas: [JourneyProfileEntitySchema, SegmentProfileEntitySchema, TrainCharacteristicsEntitySchema],
-        directory: dir.path,
-        name: 'das');
+      schemas: [JourneyProfileEntitySchema, SegmentProfileEntitySchema, TrainCharacteristicsEntitySchema],
+      directory: dir.path,
+      name: 'das',
+    );
   }
 
   @override
@@ -39,11 +40,14 @@ class SferaDatabaseRepositoryImpl implements SferaLocalDatabaseService {
       //journeyProfile.trainIdentification.otnId.startDate);
     );
 
-    final journeyProfileEntity =
-        journeyProfile.toEntity(id: existingProfile?.id ?? _db.journeyProfile.autoIncrement(), startDate: today);
+    final journeyProfileEntity = journeyProfile.toEntity(
+      id: existingProfile?.id ?? _db.journeyProfile.autoIncrement(),
+      startDate: today,
+    );
 
     Fimber.d(
-        'Writing journey profile to db company=${journeyProfileEntity.company} operationalTrainNumber=${journeyProfileEntity.operationalTrainNumber} startDate=${journeyProfileEntity.startDate}');
+      'Writing journey profile to db company=${journeyProfileEntity.company} operationalTrainNumber=${journeyProfileEntity.operationalTrainNumber} startDate=${journeyProfileEntity.startDate}',
+    );
     await _db.writeAsync((isar) {
       isar.journeyProfile.put(journeyProfileEntity);
     });
@@ -53,22 +57,30 @@ class SferaDatabaseRepositoryImpl implements SferaLocalDatabaseService {
   Future<void> saveSegmentProfile(SegmentProfileDto segmentProfile) async {
     await _initialized;
 
-    final existingProfile =
-        await findSegmentProfile(segmentProfile.id, segmentProfile.versionMajor, segmentProfile.versionMinor);
+    final existingProfile = await findSegmentProfile(
+      segmentProfile.id,
+      segmentProfile.versionMajor,
+      segmentProfile.versionMinor,
+    );
     if (existingProfile == null) {
       final segmentProfileEntity = segmentProfile.toEntity(isarId: _db.segmentProfile.autoIncrement());
       Fimber.d(
-          'Writing segment profile to db spId=${segmentProfileEntity.spId} majorVersion=${segmentProfileEntity.majorVersion} minorVersion=${segmentProfileEntity.minorVersion}');
+        'Writing segment profile to db spId=${segmentProfileEntity.spId} majorVersion=${segmentProfileEntity.majorVersion} minorVersion=${segmentProfileEntity.minorVersion}',
+      );
       _db.write((isar) => isar.segmentProfile.put(segmentProfileEntity));
     } else {
       Fimber.d(
-          'Segment profile already exists in db spId=${segmentProfile.id} majorVersion=${segmentProfile.versionMajor} minorVersion=${segmentProfile.versionMinor}');
+        'Segment profile already exists in db spId=${segmentProfile.id} majorVersion=${segmentProfile.versionMajor} minorVersion=${segmentProfile.versionMinor}',
+      );
     }
   }
 
   @override
   Future<JourneyProfileEntity?> findJourneyProfile(
-      String company, String operationalTrainNumber, DateTime startDate) async {
+    String company,
+    String operationalTrainNumber,
+    DateTime startDate,
+  ) async {
     await _initialized;
     return _db.journeyProfile
         .where()
@@ -91,7 +103,10 @@ class SferaDatabaseRepositoryImpl implements SferaLocalDatabaseService {
 
   @override
   Stream<JourneyProfileEntity?> observeJourneyProfile(
-      String company, String operationalTrainNumber, DateTime startDate) async* {
+    String company,
+    String operationalTrainNumber,
+    DateTime startDate,
+  ) async* {
     await _initialized;
 
     yield* _db.journeyProfile
@@ -105,7 +120,10 @@ class SferaDatabaseRepositoryImpl implements SferaLocalDatabaseService {
 
   @override
   Future<TrainCharacteristicsEntity?> findTrainCharacteristics(
-      String tcId, String majorVersion, String minorVersion) async {
+    String tcId,
+    String majorVersion,
+    String minorVersion,
+  ) async {
     await _initialized;
     return _db.trainCharacteristics
         .where()
@@ -120,16 +138,22 @@ class SferaDatabaseRepositoryImpl implements SferaLocalDatabaseService {
     await _initialized;
 
     final existingTrainCharacteristics = await findTrainCharacteristics(
-        trainCharacteristics.tcId, trainCharacteristics.versionMajor, trainCharacteristics.versionMinor);
+      trainCharacteristics.tcId,
+      trainCharacteristics.versionMajor,
+      trainCharacteristics.versionMinor,
+    );
     if (existingTrainCharacteristics == null) {
-      final trainCharacteristicsEntity =
-          trainCharacteristics.toEntity(isarId: _db.trainCharacteristics.autoIncrement());
+      final trainCharacteristicsEntity = trainCharacteristics.toEntity(
+        isarId: _db.trainCharacteristics.autoIncrement(),
+      );
       Fimber.d(
-          'Writing train characteristics to db tcId=${trainCharacteristicsEntity.tcId} majorVersion=${trainCharacteristicsEntity.majorVersion} minorVersion=${trainCharacteristicsEntity.minorVersion}');
+        'Writing train characteristics to db tcId=${trainCharacteristicsEntity.tcId} majorVersion=${trainCharacteristicsEntity.majorVersion} minorVersion=${trainCharacteristicsEntity.minorVersion}',
+      );
       _db.write((isar) => isar.trainCharacteristics.put(trainCharacteristicsEntity));
     } else {
       Fimber.d(
-          'train characteristics already exists in db tcId=${existingTrainCharacteristics.tcId} majorVersion=${existingTrainCharacteristics.majorVersion} minorVersion=${existingTrainCharacteristics.minorVersion}');
+        'train characteristics already exists in db tcId=${existingTrainCharacteristics.tcId} majorVersion=${existingTrainCharacteristics.majorVersion} minorVersion=${existingTrainCharacteristics.minorVersion}',
+      );
     }
   }
 }

@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                SP_ID="19240_12_Schwalmenacker" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="1300" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>1285</IM_ID>
+    </SP_Zone>
+
+    <SP_Points>
+
+        <TimingPoint TP_ID="Schwalmenacker" location="0">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>15176</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+            <TP_Name name="SCAL"/>
+        </TimingPoint>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="N337" location="300"/>
+            <SignalFunction>exit</SignalFunction>
+			<SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="N337"/>
+        </Signal>
+		
+		<Signal>
+            <Signal_ID signal_ID_Physical="M93" location="800"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="M93"/>
+        </Signal>
+
+    </SP_Points>
+
+    <SP_Areas>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="SCAL" TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>15176</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Schwalmenacker </teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+					&lt;lineSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;105&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;55&quot;/&gt;
+					&lt;/lineSpeed&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>departureAuth</NSP_GroupName>
+                <NetworkSpecificParameter name="departureAuth" value="false"/>
+            </TAF_TAP_Location_NSP>
+
+        </TAF_TAP_Location>
+
+    </SP_Areas>
+
+
+    <SP_ContextInformation>
+        <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1312"/>
+            </Contact>
+        </ContactList>
+		
+		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
+
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="136.5"/>
+        </KilometreReferencePoint>
+		<KilometreReferencePoint location="300">
+            <KM_Reference kmRef="136.8"/>
+        </KilometreReferencePoint>
+		<KilometreReferencePoint location="800">
+            <KM_Reference kmRef="137.3"/>
+        </KilometreReferencePoint>
+		
+		<DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="7.0" gradientDirection="Downhill"
+                              directionOfApplicationOnSP="Nominal"/>
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
+                              gradientValue="0.0" gradientDirection="Uphill"
+                              directionOfApplicationOnSP="Nominal"/> 
+
+    </SP_ContextInformation>
+
+</SegmentProfile>

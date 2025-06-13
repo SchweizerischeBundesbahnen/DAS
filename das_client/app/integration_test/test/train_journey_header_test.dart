@@ -3,7 +3,7 @@ import 'package:app/theme/theme_util.dart';
 import 'package:battery_plus/battery_plus.dart';
 //import 'package:app/time_controller/time_controller.dart';
 import 'package:app/brightness/brightness_manager.dart';
-import 'package:app/di.dart';
+import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_page.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/battery_status.dart';
@@ -14,6 +14,8 @@ import 'package:app/pages/journey/train_journey/widgets/header/radio_contact.dar
 import 'package:app/pages/journey/train_journey/widgets/header/time_container.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
 import 'package:app/util/format.dart';
+import 'package:app/widgets/dot_indicator.dart';
+import 'package:battery_plus/battery_plus.dart';
 import 'package:app/widgets/indicator_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -21,8 +23,8 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../app_test.dart';
-import '../mocks/battery_mock.dart';
-import '../mocks/brightness_mock.dart';
+import '../mocks/mock_battery.dart';
+import '../mocks/mock_brightness_manager.dart';
 import '../util/test_utils.dart';
 
 Future<void> main() async {
@@ -223,7 +225,7 @@ Future<void> main() async {
       await prepareAndStartApp(tester);
 
       // Set Battery to a mocked version
-      final battery = DI.get<Battery>() as BatteryMock;
+      final battery = DI.get<Battery>() as MockBattery;
 
       // Set current Battery-Level to 80 % so it is over 15%
       battery.currentBatteryLevel = 80;
@@ -247,7 +249,7 @@ Future<void> main() async {
       await prepareAndStartApp(tester);
 
       // Set Battery to a mocked version
-      final battery = DI.get<Battery>() as BatteryMock;
+      final battery = DI.get<Battery>() as MockBattery;
 
       // Set current Battery-Level to 10% so it is under 15%
       battery.currentBatteryLevel = 10;
@@ -323,12 +325,15 @@ Future<void> main() async {
 
       final DateTime currentTime = DateTime.now();
       final String currentHour = currentTime.hour <= 9 ? '0${currentTime.hour}' : (currentTime.hour).toString();
-      final String currentMinutes =
-          currentTime.minute <= 9 ? '0${currentTime.minute}' : (currentTime.minute).toString();
-      final String currentSeconds =
-          currentTime.second <= 9 ? '0${currentTime.second}' : (currentTime.second).toString();
-      final String nextSecond =
-          currentTime.second <= 9 ? '0${currentTime.second + 1}' : (currentTime.second + 1).toString();
+      final String currentMinutes = currentTime.minute <= 9
+          ? '0${currentTime.minute}'
+          : (currentTime.minute).toString();
+      final String currentSeconds = currentTime.second <= 9
+          ? '0${currentTime.second}'
+          : (currentTime.second).toString();
+      final String nextSecond = currentTime.second <= 9
+          ? '0${currentTime.second + 1}'
+          : (currentTime.second + 1).toString();
       final String currentWholeTime = '$currentHour:$currentMinutes:$currentSeconds';
       final String nextSecondWholeTime = '$currentHour:$currentMinutes:$nextSecond';
 
@@ -395,10 +400,12 @@ Future<void> main() async {
       // check empty radio contactList for Bern (nextStop: Wankdorf)
       final nextStopWankdorf = find.descendant(of: header, matching: find.text('Wankdorf'));
       expect(nextStopWankdorf, findsOneWidget);
-      final mainContactBern =
-          find.descendant(of: radioChannel, matching: find.byKey(RadioContactChannels.radioContactChannelsKey));
+      final mainContactBern = find.descendant(
+        of: radioChannel,
+        matching: find.byKey(RadioContactChannels.radioContactChannelsKey),
+      );
       expect(mainContactBern, findsNothing);
-      final bernIndicator = find.descendant(of: radioChannel, matching: find.byKey(IndicatorWrapper.indicatorKey));
+      final bernIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));
       expect(bernIndicator, findsNothing);
       final bernSim = find.descendant(of: radioChannel, matching: find.byKey(SimIdentifier.simKey));
       expect(bernSim, findsNothing);
@@ -407,7 +414,7 @@ Future<void> main() async {
       await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Burgdorf')));
       final mainContactWankdorf = find.descendant(of: radioChannel, matching: find.text('1407'));
       expect(mainContactWankdorf, findsOneWidget);
-      final wankdorfIndicator = find.descendant(of: radioChannel, matching: find.byKey(IndicatorWrapper.indicatorKey));
+      final wankdorfIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));
       expect(wankdorfIndicator, findsNothing);
       final wankdorfSim = find.descendant(of: radioChannel, matching: find.byKey(SimIdentifier.simKey));
       expect(wankdorfSim, findsNothing);
@@ -416,7 +423,7 @@ Future<void> main() async {
       await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Olten')));
       final mainContactsBurgdorf = find.descendant(of: radioChannel, matching: find.text('1608 (1609)'));
       expect(mainContactsBurgdorf, findsOneWidget);
-      final burgdorfIndicator = find.descendant(of: radioChannel, matching: find.byKey(IndicatorWrapper.indicatorKey));
+      final burgdorfIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));
       expect(burgdorfIndicator, findsOneWidget);
       final burgdorfSim = find.descendant(of: radioChannel, matching: find.byKey(SimIdentifier.simKey));
       expect(burgdorfSim, findsOneWidget);
@@ -425,7 +432,7 @@ Future<void> main() async {
       await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Zürich')));
       final mainContactsOlten = find.descendant(of: radioChannel, matching: find.text('1102'));
       expect(mainContactsOlten, findsOneWidget);
-      final oltenIndicator = find.descendant(of: radioChannel, matching: find.byKey(IndicatorWrapper.indicatorKey));
+      final oltenIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));
       expect(oltenIndicator, findsOneWidget);
       final oltenSim = find.descendant(of: radioChannel, matching: find.byKey(SimIdentifier.simKey));
       expect(oltenSim, findsNothing);
@@ -435,8 +442,10 @@ Future<void> main() async {
 
     // can be removed based on what option to change the brightness will be chosen
     testWidgets('double tap sets brightness to 0.0 if current is 1.0', (tester) async {
-      await prepareAndStartApp(tester,
-          onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false);
+      await prepareAndStartApp(
+        tester,
+        onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false,
+      );
 
       final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 
@@ -465,8 +474,10 @@ Future<void> main() async {
 
     // can be removed based on what option to change the brightness will be chosen
     testWidgets('long press dims brightness from 1.0 to 0.0', (tester) async {
-      await prepareAndStartApp(tester,
-          onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false);
+      await prepareAndStartApp(
+        tester,
+        onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false,
+      );
 
       final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 
@@ -491,8 +502,10 @@ Future<void> main() async {
 
     // can be removed based on what option to change the brightness will be chosen
     testWidgets('horizontal drag right increases brightness', (tester) async {
-      await prepareAndStartApp(tester,
-          onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false);
+      await prepareAndStartApp(
+        tester,
+        onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false,
+      );
 
       final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 
@@ -519,8 +532,10 @@ Future<void> main() async {
     });
 
     testWidgets('horizontal drag left decreases brightness', (tester) async {
-      await prepareAndStartApp(tester,
-          onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false);
+      await prepareAndStartApp(
+        tester,
+        onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false,
+      );
 
       final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 

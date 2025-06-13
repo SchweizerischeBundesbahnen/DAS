@@ -1,5 +1,8 @@
 import 'dart:ui';
 
+import 'package:app/di/scope_handler.dart';
+import 'package:app/di/scopes/das_base_scope.dart';
+import 'package:app/di/scopes/sfera_mock_scope.dart';
 import 'package:app/flavor.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/main.dart';
@@ -7,7 +10,7 @@ import 'package:fimber/fimber.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
-import 'di.dart';
+import 'integration_test_di.dart';
 import 'test/additional_speed_restriction_modal_test.dart' as additional_speed_restriction_modal_test;
 import 'test/automatic_advancement_test.dart' as automatic_advancement_tests;
 import 'test/navigation_test.dart' as navigation_tests;
@@ -17,6 +20,7 @@ import 'test/train_journey_notification_test.dart' as train_journey_notification
 import 'test/train_journey_table_test.dart' as train_journey_table_tests;
 import 'test/train_reduced_journey_test.dart' as train_reduced_journey_tests;
 import 'test/train_search_test.dart' as train_search_tests;
+import 'test/warnapp_test.dart' as warnapp_tests;
 import 'util/test_utils.dart';
 
 late AppLocalizations l10n;
@@ -34,6 +38,7 @@ void main() {
   automatic_advancement_tests.main();
   service_point_modal_test.main();
   additional_speed_restriction_modal_test.main();
+  warnapp_tests.main();
 }
 
 Future<void> prepareAndStartApp(WidgetTester tester, {VoidCallback? onBeforeRun}) async {
@@ -41,7 +46,12 @@ Future<void> prepareAndStartApp(WidgetTester tester, {VoidCallback? onBeforeRun}
   // (https://github.com/leancodepl/patrol/issues/1868#issuecomment-1814241939)
   tester.testTextInput.register();
 
-  await IntegrationTestDI.init(Flavor.dev);
+  await IntegrationTestDI.init(Flavor.dev()); // registers flavor, mockScopes and scope handler
+
+  final scopeHandler = IntegrationTestDI.get<ScopeHandler>();
+  await scopeHandler.push<DASBaseScope>();
+  await scopeHandler.push<SferaMockScope>();
+
   l10n = await deviceLocalizations();
   onBeforeRun?.call();
   runDasApp();

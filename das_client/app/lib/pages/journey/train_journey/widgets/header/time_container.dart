@@ -117,8 +117,12 @@ class _TimeContainerState extends State<TimeContainer> {
       stream: Stream.periodic(const Duration(milliseconds: 200)),
       builder: (context, snapshot) {
         return Padding(
-          padding:
-              const EdgeInsets.fromLTRB(sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5, 0),
+          padding: const EdgeInsets.fromLTRB(
+            sbbDefaultSpacing * 0.5,
+            sbbDefaultSpacing * 0.5,
+            sbbDefaultSpacing * 0.5,
+            0,
+          ),
           child: Text(
             DateFormat('HH:mm:ss').format(DateTime.now()),
             style: DASTextStyles.xLargeBold,

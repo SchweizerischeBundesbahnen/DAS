@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 class ReducedServicePointRow extends ServicePointRow {
   ReducedServicePointRow({required super.metadata, required super.data, required this.context, super.config})
-      : super(context: context, rowColor: ThemeUtil.getDASTableColor(context));
+    : super(context: context, rowColor: ThemeUtil.getDASTableColor(context));
 
   final BuildContext context;
 

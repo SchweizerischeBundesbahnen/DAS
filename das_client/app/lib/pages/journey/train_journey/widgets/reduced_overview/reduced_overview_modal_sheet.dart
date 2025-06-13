@@ -1,9 +1,9 @@
-import 'package:app/di.dart';
+import 'package:app/di/di.dart';
 import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/reduced_overview/reduced_overview_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/reduced_overview/reduced_train_journey.dart';
-import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/format.dart';
 import 'package:app/widgets/das_text_styles.dart';
@@ -12,9 +12,9 @@ import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 Future<void> showReducedOverviewModalSheet(BuildContext context) async {
-  final viewModel = context.read<TrainJourneyViewModel>();
-  final trainIdentification = viewModel.trainIdentificationValue;
-  if (trainIdentification != null) {
+  final viewModel = DI.get<JourneyNavigationViewModel>();
+  final model = viewModel.modelValue;
+  if (model != null) {
     showSBBModalSheet(
       context: context,
       title: context.l10n.w_reduced_train_journey_title,
@@ -22,7 +22,7 @@ Future<void> showReducedOverviewModalSheet(BuildContext context) async {
       child: Provider(
         create: (_) => ReducedOverviewViewModel(
           sferaLocalService: DI.get(),
-          trainIdentification: trainIdentification,
+          trainIdentification: model.trainIdentification,
         ),
         dispose: (context, vm) => vm.dispose(),
         builder: (context, child) => _ReducedOverviewModalSheet(),

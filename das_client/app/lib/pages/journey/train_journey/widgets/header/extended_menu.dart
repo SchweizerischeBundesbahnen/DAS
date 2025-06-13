@@ -38,15 +38,19 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
       vsync: this,
     );
 
-    _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    ));
+    _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeInOut,
+      ),
+    );
 
-    _scaleAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    ));
+    _scaleAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeInOut,
+      ),
+    );
   }
 
   @override
@@ -76,24 +80,30 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
     final renderBox = context.findRenderObject() as RenderBox;
     final positionOffset = renderBox.localToGlobal(Offset.zero);
     final size = renderBox.size;
+    final viewModel = context.read<TrainJourneyViewModel>();
 
     overlayEntry = OverlayEntry(
-      builder: (context) => Stack(
-        children: [
-          // Fullscreen background
-          GestureDetector(
-            onTap: () => _removeOverlay(),
-            child: Container(
-              color: SBBColors.iron.withAlpha((255.0 * 0.6).round()),
-            ),
+      builder: (_) => Provider(
+        create: (_) => viewModel,
+        child: Builder(
+          builder: (context) => Stack(
+            children: [
+              // Fullscreen background
+              GestureDetector(
+                onTap: () => _removeOverlay(),
+                child: Container(
+                  color: SBBColors.iron.withAlpha((255.0 * 0.6).round()),
+                ),
+              ),
+              // Positioned extended menu
+              Positioned(
+                left: positionOffset.dx - extendedMenuContentWidth / 2 + size.width / 2,
+                top: positionOffset.dy + size.height + extendedMenuContentHeightOffset,
+                child: _menu(context),
+              ),
+            ],
           ),
-          // Positioned extended menu
-          Positioned(
-            left: positionOffset.dx - extendedMenuContentWidth / 2 + size.width / 2,
-            top: positionOffset.dy + size.height + extendedMenuContentHeightOffset,
-            child: _menu(context),
-          ),
-        ],
+        ),
       ),
     );
 

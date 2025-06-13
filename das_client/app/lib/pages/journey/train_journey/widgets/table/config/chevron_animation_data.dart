@@ -64,9 +64,10 @@ class ChevronAnimationData {
     }
 
     return ChevronAnimationData(
-        startOffset: startOffset,
-        endOffset: endOffset,
-        lastPosition: journey.metadata.lastPosition!,
-        currenPosition: journey.metadata.currentPosition!);
+      startOffset: startOffset,
+      endOffset: endOffset,
+      lastPosition: journey.metadata.lastPosition!,
+      currenPosition: journey.metadata.currentPosition!,
+    );
   }
 }

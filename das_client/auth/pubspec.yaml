@@ -3,17 +3,17 @@ publish_to: 'none'
 version: 1.0.0
 
 environment:
-  sdk: ^3.6.2
+  sdk: 3.8.0
 
 resolution: workspace
 
 dependencies:
   # https://pub.dev/packages/meta
-  meta: ^1.15.0
+  meta: ^1.16.0
   # https://pub.dev/packages/sbb_oidc
   sbb_oidc: ^4.1.0
   # https://pub.dev/packages/collection
-  collection: ^1.19.0
+  collection: ^1.19.1
   # https://pub.dev/packages/fimber
   fimber: ^0.7.0
 

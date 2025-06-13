@@ -102,7 +102,8 @@ class _ScrollableAlignState extends State<ScrollableAlign> {
   Future<void> _scrollToTarget(double targetPosition) async {
     if (widget.scrollController.position.pixels != targetPosition) {
       Fimber.d(
-          'Scrolling to targetPosition=$targetPosition, currentPosition=${widget.scrollController.position.pixels}');
+        'Scrolling to targetPosition=$targetPosition, currentPosition=${widget.scrollController.position.pixels}',
+      );
       isAnimating = true;
       await widget.scrollController.animateTo(targetPosition, duration: alignScrollDuration, curve: Curves.easeInOut);
       isAnimating = false;

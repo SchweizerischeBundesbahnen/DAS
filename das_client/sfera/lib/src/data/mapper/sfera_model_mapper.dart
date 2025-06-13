@@ -6,6 +6,7 @@ import 'package:sfera/src/data/dto/multilingual_text_dto.dart';
 import 'package:sfera/src/data/dto/related_train_information_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
+import 'package:sfera/src/data/dto/temporary_constraints_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/mapper/mapper_utils.dart';
 import 'package:sfera/src/data/mapper/segment_profile_mapper.dart';
@@ -42,7 +43,12 @@ class SferaModelMapper {
   }) {
     try {
       return _tryMapToJourney(
-          journeyProfile, segmentProfiles, trainCharacteristics, relatedTrainInformation, lastJourney);
+        journeyProfile,
+        segmentProfiles,
+        trainCharacteristics,
+        relatedTrainInformation,
+        lastJourney,
+      );
     } catch (e, s) {
       Fimber.e('Error mapping journey-/segment profiles to journey:', ex: e, stacktrace: s);
       return Journey.invalid();
@@ -50,11 +56,12 @@ class SferaModelMapper {
   }
 
   static Journey _tryMapToJourney(
-      JourneyProfileDto journeyProfile,
-      List<SegmentProfileDto> segmentProfiles,
-      List<TrainCharacteristicsDto> trainCharacteristics,
-      RelatedTrainInformationDto? relatedTrainInformation,
-      Journey? lastJourney) {
+    JourneyProfileDto journeyProfile,
+    List<SegmentProfileDto> segmentProfiles,
+    List<TrainCharacteristicsDto> trainCharacteristics,
+    RelatedTrainInformationDto? relatedTrainInformation,
+    Journey? lastJourney,
+  ) {
     final journeyData = <BaseData>[];
 
     final segmentProfileReferences = journeyProfile.segmentProfileReferences.toList();
@@ -67,28 +74,32 @@ class SferaModelMapper {
     final tramAreas = _parseTramAreas(segmentProfiles);
     journeyData.addAll(tramAreas);
 
-    final trackEquipmentSegments =
-        TrackEquipmentMapper.parseNonStandardTrackEquipmentSegment(segmentProfileReferences, segmentProfiles);
+    final trackEquipmentSegments = TrackEquipmentMapper.parseSegments(segmentProfileReferences, segmentProfiles);
     journeyData.addAll(_cabSignalingStart(trackEquipmentSegments));
     journeyData.addAll(_cabSignalingEnd(trackEquipmentSegments, journeyData));
 
-    final additionalSpeedRestrictions = _parseAdditionalSpeedRestrictions(journeyProfile, segmentProfiles);
-    for (final restriction in additionalSpeedRestrictions.where((asr) => asr.isDisplayed(trackEquipmentSegments))) {
-      journeyData.add(AdditionalSpeedRestrictionData(
-          restriction: restriction, order: restriction.orderFrom, kilometre: [restriction.kmFrom]));
+    final servicePoints = journeyData.whereType<ServicePoint>().sortedBy((sP) => sP.order);
 
-      if (restriction.needsEndMarker(journeyData)) {
-        journeyData.add(AdditionalSpeedRestrictionData(
-            restriction: restriction, order: restriction.orderTo, kilometre: [restriction.kmTo]));
-      }
-    }
+    final additionalSpeedRestrictions = _parseAdditionalSpeedRestrictions(
+      journeyProfile,
+      segmentProfiles,
+      servicePoints,
+    );
+    final displayedSpeedRestrictions = additionalSpeedRestrictions
+        .where((asr) => asr.isDisplayed(trackEquipmentSegments))
+        .toList();
+    final consolidatedASRs = _consolidateAdditionalSpeedRestrictions(journeyData, displayedSpeedRestrictions);
+    journeyData.addAll(consolidatedASRs);
 
     journeyData.sort();
 
-    final currentPosition =
-        _calculateCurrentPosition(journeyData, segmentProfileReferences, relatedTrainInformation, lastJourney);
+    final currentPosition = _calculateCurrentPosition(
+      journeyData,
+      segmentProfileReferences,
+      relatedTrainInformation,
+      lastJourney,
+    );
     final trainCharacteristic = _resolveFirstTrainCharacteristics(journeyProfile, trainCharacteristics);
-    final servicePoints = journeyData.whereType<ServicePoint>();
 
     return Journey(
       metadata: Metadata(
@@ -100,17 +111,20 @@ class SferaModelMapper {
         routeStart: journeyData.firstOrNull,
         routeEnd: journeyData.lastOrNull,
         delay: relatedTrainInformation?.ownTrain.trainLocationInformation.delay.delayAsDuration,
-        anyOperationalArrivalDepartureTimes:
-            servicePoints.any((sP) => sP.arrivalDepartureTime?.hasAnyOperationalTime ?? false),
+        anyOperationalArrivalDepartureTimes: servicePoints.any(
+          (sP) => sP.arrivalDepartureTime?.hasAnyOperationalTime ?? false,
+        ),
         nonStandardTrackEquipmentSegments: trackEquipmentSegments,
         bracketStationSegments: _parseBracketStationSegments(servicePoints),
         availableBreakSeries: _parseAvailableBreakSeries(journeyData),
         communicationNetworkChanges: _parseCommunicationNetworkChanges(segmentProfileReferences, segmentProfiles),
-        breakSeries: trainCharacteristic?.tcFeatures.trainCategoryCode != null &&
+        breakSeries:
+            trainCharacteristic?.tcFeatures.trainCategoryCode != null &&
                 trainCharacteristic?.tcFeatures.brakedWeightPercentage != null
             ? BreakSeries(
                 trainSeries: trainCharacteristic!.tcFeatures.trainCategoryCode!,
-                breakSeries: trainCharacteristic.tcFeatures.brakedWeightPercentage!)
+                breakSeries: trainCharacteristic.tcFeatures.brakedWeightPercentage!,
+              )
             : null,
         lineFootNoteLocations: _generateLineFootNoteLocationMap(journeyData.whereType<LineFootNote>()),
         radioContactLists: _parseContactLists(segmentProfileReferences, segmentProfiles),
@@ -120,10 +134,11 @@ class SferaModelMapper {
   }
 
   static BaseData? _calculateCurrentPosition(
-      List<BaseData> journeyData,
-      List<SegmentProfileReferenceDto> segmentProfilesLists,
-      RelatedTrainInformationDto? relatedTrainInformation,
-      Journey? lastJourney) {
+    List<BaseData> journeyData,
+    List<SegmentProfileReferenceDto> segmentProfilesLists,
+    RelatedTrainInformationDto? relatedTrainInformation,
+    Journey? lastJourney,
+  ) {
     final positionSpeed = relatedTrainInformation?.ownTrain.trainLocationInformation.positionSpeed;
 
     if (relatedTrainInformation == null || positionSpeed == null) {
@@ -172,86 +187,147 @@ class SferaModelMapper {
     return servicePoints.toList().reversed.firstWhereOrNull((sP) => sP.order <= currentPosition.order);
   }
 
+  static List<AdditionalSpeedRestrictionData> _consolidateAdditionalSpeedRestrictions(
+    List<BaseData> journeyData,
+    List<AdditionalSpeedRestriction> restrictions,
+  ) {
+    if (restrictions.isEmpty) return [];
+
+    restrictions.sort((a, b) => a.orderFrom.compareTo(b.orderFrom));
+
+    final List<List<AdditionalSpeedRestriction>> grouped = [];
+    var currentGroup = [restrictions.first];
+
+    for (int i = 1; i < restrictions.length; i++) {
+      final current = restrictions[i];
+      final lastInGroup = currentGroup.getHighestByOrderTo;
+
+      if (current.orderFrom <= lastInGroup.orderTo) {
+        currentGroup.add(current);
+      } else {
+        grouped.add(currentGroup);
+        currentGroup = [current];
+      }
+    }
+    grouped.add(currentGroup);
+
+    final result = <AdditionalSpeedRestrictionData>[];
+    for (final group in grouped) {
+      result.add(AdditionalSpeedRestrictionData.start(group));
+      if (group.any((restriction) => restriction.needsEndMarker(journeyData))) {
+        result.add(AdditionalSpeedRestrictionData.end(group));
+      }
+    }
+    return result;
+  }
+
   static List<AdditionalSpeedRestriction> _parseAdditionalSpeedRestrictions(
-      JourneyProfileDto journeyProfile, List<SegmentProfileDto> segmentProfiles) {
+    JourneyProfileDto journeyProfile,
+    List<SegmentProfileDto> segmentProfiles,
+    List<ServicePoint> servicePoints,
+  ) {
     final List<AdditionalSpeedRestriction> result = [];
-    final now = DateTime.now();
     final segmentProfilesReferences = journeyProfile.segmentProfileReferences.toList();
 
-    int? startSegmentIndex;
-    int? endSegmentIndex;
-    double? startLocation;
-    double? endLocation;
+    final Map<String?, _SegmentMapperData> segmentsData = {};
 
     for (int segmentIndex = 0; segmentIndex < segmentProfilesReferences.length; segmentIndex++) {
       final segmentProfileReference = segmentProfilesReferences[segmentIndex];
 
       for (final asrTemporaryConstrain in segmentProfileReference.asrTemporaryConstrains) {
-        // TODO: Es werden Langsamfahrstellen von 30min vor Start der Fahrt (betriebliche Zeit) bis 30min nach Ende der Fahrt (betriebliche Zeit) angezeigt.
-        if (asrTemporaryConstrain.startTime != null && asrTemporaryConstrain.startTime!.isAfter(now) ||
-            asrTemporaryConstrain.endTime != null && asrTemporaryConstrain.endTime!.isBefore(now)) {
-          continue;
-        }
+        if (_shouldSkipAsrDueToJourneyTimes(servicePoints, asrTemporaryConstrain)) continue;
+
+        final parallelAsrId = asrTemporaryConstrain.parallelAsrConstraintDto?.idNsp.id;
+        segmentsData.putIfAbsent(parallelAsrId, () => _SegmentMapperData());
+        final segmentData = segmentsData[parallelAsrId]!;
 
         switch (asrTemporaryConstrain.startEndQualifier) {
           case StartEndQualifierDto.starts:
-            startLocation = asrTemporaryConstrain.startLocation;
-            startSegmentIndex = segmentIndex;
+            segmentData.startLocation = asrTemporaryConstrain.startLocation;
+            segmentData.startIndex = segmentIndex;
             break;
           case StartEndQualifierDto.startsEnds:
-            startLocation = asrTemporaryConstrain.startLocation;
-            startSegmentIndex = segmentIndex;
+            segmentData.startLocation = asrTemporaryConstrain.startLocation;
+            segmentData.startIndex = segmentIndex;
             continue next;
           next:
           case StartEndQualifierDto.ends:
-            endLocation = asrTemporaryConstrain.endLocation;
-            endSegmentIndex = segmentIndex;
+            segmentData.endLocation = asrTemporaryConstrain.endLocation;
+            segmentData.endIndex = segmentIndex;
             break;
           case StartEndQualifierDto.wholeSp:
             break;
         }
 
-        if (startSegmentIndex != null && endSegmentIndex != null && startLocation != null && endLocation != null) {
-          final startSegment = segmentProfiles.firstMatch(segmentProfilesReferences[startSegmentIndex]);
-          final endSegment = segmentProfiles.firstMatch(segmentProfilesReferences[endSegmentIndex]);
-
+        if (segmentData.isComplete) {
+          final startSegment = segmentProfiles.firstMatch(segmentProfilesReferences[segmentData.startIndex!]);
+          final endSegment = segmentProfiles.firstMatch(segmentProfilesReferences[segmentData.endIndex!]);
           final startKilometreMap = parseKilometre(startSegment);
           final endKilometreMap = parseKilometre(endSegment);
+          final speed =
+              asrTemporaryConstrain.additionalSpeedRestriction?.asrSpeed ??
+              asrTemporaryConstrain.parallelAsrConstraintDto?.speedNsp.speed;
 
-          final startOrder = calculateOrder(startSegmentIndex, startLocation);
-          final endOrder = calculateOrder(endSegmentIndex, endLocation);
+          result.add(
+            AdditionalSpeedRestriction(
+              kmFrom: startKilometreMap[segmentData.startLocation]!.first,
+              kmTo: endKilometreMap[segmentData.endLocation]!.first,
+              orderFrom: segmentData.startOrder!,
+              orderTo: segmentData.endOrder!,
+              restrictionFrom: asrTemporaryConstrain.startTime,
+              restrictionUntil: asrTemporaryConstrain.endTime,
+              speed: speed,
+              reason: asrTemporaryConstrain.temporaryConstraintReasons.toLocalizedString,
+            ),
+          );
 
-          result.add(AdditionalSpeedRestriction(
-            kmFrom: startKilometreMap[startLocation]!.first,
-            kmTo: endKilometreMap[endLocation]!.first,
-            orderFrom: startOrder,
-            orderTo: endOrder,
-            restrictionFrom: asrTemporaryConstrain.startTime,
-            restrictionUntil: asrTemporaryConstrain.endTime,
-            speed: asrTemporaryConstrain.additionalSpeedRestriction?.asrSpeed,
-            reason: asrTemporaryConstrain.temporaryConstraintReasons.toLocalizedString,
-          ));
-
-          startSegmentIndex = null;
-          endSegmentIndex = null;
-          startLocation = null;
-          endLocation = null;
+          segmentsData.remove(parallelAsrId);
         }
       }
     }
 
-    if (startSegmentIndex != null || endSegmentIndex != null || startLocation != null || endLocation != null) {
-      Fimber.w('Incomplete additional speed restriction found: '
-          'startSegmentIndex: $startSegmentIndex, endSegmentIndex: $endSegmentIndex, '
-          'startLocation: $startLocation, endLocation: $endLocation');
+    for (final segmentData in segmentsData.values) {
+      if (segmentData.isIncomplete) {
+        Fimber.w('Incomplete additional speed restriction found: $segmentData');
+      }
     }
 
     return result;
   }
 
+  static bool _shouldSkipAsrDueToJourneyTimes(
+    List<ServicePoint> servicePoints,
+    TemporaryConstraintsDto asrTemporaryConstrain,
+  ) {
+    const timeBuffer = Duration(minutes: 30);
+
+    final journeyStartTime = servicePoints.firstOrNull?.arrivalDepartureTime?.operationalDepartureTime;
+    final journeyEndTime = servicePoints.lastOrNull?.arrivalDepartureTime?.operationalArrivalTime;
+
+    final journeyStartMinusBuffer = journeyStartTime?.subtract(timeBuffer);
+    final journeyEndPlusBuffer = journeyEndTime?.add(timeBuffer);
+
+    // Skip ASR if it ends before the journey start time minus timeBuffer
+    if (asrTemporaryConstrain.endTime != null &&
+        journeyStartMinusBuffer != null &&
+        asrTemporaryConstrain.endTime!.isBefore(journeyStartMinusBuffer)) {
+      return true;
+    }
+
+    // Skip ASR if it starts after the journey end time plus timeBuffer
+    if (asrTemporaryConstrain.startTime != null &&
+        journeyEndPlusBuffer != null &&
+        asrTemporaryConstrain.startTime!.isAfter(journeyEndPlusBuffer)) {
+      return true;
+    }
+
+    return false;
+  }
+
   static Iterable<CABSignaling> _cabSignalingStart(Iterable<NonStandardTrackEquipmentSegment> trackEquipmentSegments) {
-    return trackEquipmentSegments.withCABSignalingStart
-        .map((element) => CABSignaling(isStart: true, order: element.startOrder!, kilometre: element.startKm));
+    return trackEquipmentSegments.withCABSignalingStart.map(
+      (element) => CABSignaling(isStart: true, order: element.startOrder!, kilometre: element.startKm),
+    );
   }
 
   /// Returns CAB signaling end for ETCS level 2 segments.
@@ -261,21 +337,26 @@ class SferaModelMapper {
   ///
   /// Used NewLineSpeed for CAB signaling end will be removed from [journeyData]
   static Iterable<CABSignaling> _cabSignalingEnd(
-      Iterable<NonStandardTrackEquipmentSegment> trackEquipmentSegments, List<BaseData> journeyData) {
+    Iterable<NonStandardTrackEquipmentSegment> trackEquipmentSegments,
+    List<BaseData> journeyData,
+  ) {
     final cabEndSpeedChanges = <BaseData>[];
     final cabSignalingEnds = <CABSignaling>[];
     for (final segment in trackEquipmentSegments.withCABSignalingEnd) {
-      final speedChange =
-          journeyData.firstWhereOrNull((data) => data.type == Datatype.speedChange && data.order == segment.endOrder);
+      final speedChange = journeyData.firstWhereOrNull(
+        (data) => data.type == Datatype.speedChange && data.order == segment.endOrder,
+      );
       if (speedChange != null) {
         cabEndSpeedChanges.add(speedChange);
       }
-      cabSignalingEnds.add(CABSignaling(
-        isStart: false,
-        order: segment.endOrder!,
-        kilometre: segment.endKm,
-        speedData: speedChange?.speedData,
-      ));
+      cabSignalingEnds.add(
+        CABSignaling(
+          isStart: false,
+          order: segment.endOrder!,
+          kilometre: segment.endKm,
+          speedData: speedChange?.speedData,
+        ),
+      );
     }
 
     // remove SpeedChange that were used for CAB signaling end
@@ -287,7 +368,9 @@ class SferaModelMapper {
   }
 
   static List<CommunicationNetworkChange> _parseCommunicationNetworkChanges(
-      List<SegmentProfileReferenceDto> segmentProfileReferences, List<SegmentProfileDto> segmentProfiles) {
+    List<SegmentProfileReferenceDto> segmentProfileReferences,
+    List<SegmentProfileDto> segmentProfiles,
+  ) {
     return segmentProfileReferences
         .mapIndexed((index, reference) {
           final segmentProfile = segmentProfiles.firstMatch(reference);
@@ -295,7 +378,8 @@ class SferaModelMapper {
           return communicationNetworks?.map((element) {
             if (element.startLocation != element.endLocation) {
               Fimber.w(
-                  'CommunicationNetwork found without identical location (start=${element.startLocation} end=${element.endLocation}).');
+                'CommunicationNetwork found without identical location (start=${element.startLocation} end=${element.endLocation}).',
+              );
             }
 
             return CommunicationNetworkChange(
@@ -310,7 +394,9 @@ class SferaModelMapper {
   }
 
   static Iterable<RadioContactList> _parseContactLists(
-      List<SegmentProfileReferenceDto> segmentProfileReferences, List<SegmentProfileDto> segmentProfiles) {
+    List<SegmentProfileReferenceDto> segmentProfileReferences,
+    List<SegmentProfileDto> segmentProfiles,
+  ) {
     return segmentProfileReferences
         .mapIndexed((index, reference) {
           final segmentProfile = segmentProfiles.firstMatch(reference);
@@ -319,21 +405,28 @@ class SferaModelMapper {
           return contactLists?.map((contactList) {
             if (contactList.startLocation != contactList.endLocation) {
               Fimber.w(
-                  'ContactList found without identical location (start=${contactList.startLocation} end=${contactList.endLocation}).');
+                'ContactList found without identical location (start=${contactList.startLocation} end=${contactList.endLocation}).',
+              );
             }
 
-            final identifiableContacts = contactList.contacts
-                .where((c) => c.otherContactType != null && c.otherContactType!.contactIdentifier != null);
+            final identifiableContacts = contactList.contacts.where(
+              (c) => c.otherContactType != null && c.otherContactType!.contactIdentifier != null,
+            );
             return RadioContactList(
-                order: calculateOrder(index, contactList.startLocation!),
-                contacts: identifiableContacts.map(
-                  (e) => switch (e.mainContact) {
-                    true => MainContact(
-                        contactIdentifier: e.otherContactType!.contactIdentifier!, contactRole: e.contactRole),
-                    false => SelectiveContact(
-                        contactIdentifier: e.otherContactType!.contactIdentifier!, contactRole: e.contactRole)
-                  },
-                ));
+              order: calculateOrder(index, contactList.startLocation!),
+              contacts: identifiableContacts.map(
+                (e) => switch (e.mainContact) {
+                  true => MainContact(
+                    contactIdentifier: e.otherContactType!.contactIdentifier!,
+                    contactRole: e.contactRole,
+                  ),
+                  false => SelectiveContact(
+                    contactIdentifier: e.otherContactType!.contactIdentifier!,
+                    contactRole: e.contactRole,
+                  ),
+                },
+              ),
+            );
           });
         })
         .nonNulls
@@ -350,24 +443,19 @@ class SferaModelMapper {
   }
 
   static TrainCharacteristicsDto? _resolveFirstTrainCharacteristics(
-      JourneyProfileDto journey, List<TrainCharacteristicsDto> trainCharacteristics) {
+    JourneyProfileDto journey,
+    List<TrainCharacteristicsDto> trainCharacteristics,
+  ) {
     final firstTrainRef = journey.trainCharacteristicsRefSet.firstOrNull;
     if (firstTrainRef == null) return null;
 
-    return trainCharacteristics.firstWhereOrNull((it) =>
-        it.tcId == firstTrainRef.tcId &&
-        it.ruId == firstTrainRef.ruId &&
-        it.versionMajor == firstTrainRef.versionMajor &&
-        it.versionMinor == firstTrainRef.versionMinor);
+    return trainCharacteristics.firstWhereGivenOrNull(firstTrainRef);
   }
 
   static List<TramArea> _parseTramAreas(List<SegmentProfileDto> segmentProfiles) {
     final List<TramArea> result = [];
 
-    int? startSegmentIndex;
-    int? endSegmentIndex;
-    double? startLocation;
-    double? endLocation;
+    final segmentData = _SegmentMapperData();
     int? amountTramSignals;
 
     for (int segmentIndex = 0; segmentIndex < segmentProfiles.length; segmentIndex++) {
@@ -378,55 +466,48 @@ class SferaModelMapper {
       for (final tramArea in segmentProfile.areas!.tramAreas) {
         switch (tramArea.startEndQualifier) {
           case StartEndQualifierDto.starts:
-            startLocation = tramArea.startLocation;
-            startSegmentIndex = segmentIndex;
+            segmentData.startLocation = tramArea.startLocation;
+            segmentData.startIndex = segmentIndex;
             amountTramSignals = tramArea.amountTramSignals?.amountTramSignals;
             break;
           case StartEndQualifierDto.startsEnds:
-            startLocation = tramArea.startLocation;
-            startSegmentIndex = segmentIndex;
+            segmentData.startLocation = tramArea.startLocation;
+            segmentData.startIndex = segmentIndex;
             amountTramSignals = tramArea.amountTramSignals?.amountTramSignals;
             continue next;
           next:
           case StartEndQualifierDto.ends:
-            endLocation = tramArea.endLocation;
-            endSegmentIndex = segmentIndex;
+            segmentData.endLocation = tramArea.endLocation;
+            segmentData.endIndex = segmentIndex;
             break;
           case StartEndQualifierDto.wholeSp:
             break;
         }
 
-        if (startSegmentIndex != null &&
-            endSegmentIndex != null &&
-            startLocation != null &&
-            endLocation != null &&
-            amountTramSignals != null) {
-          final startSegment = segmentProfiles[startSegmentIndex];
-          final endSegment = segmentProfiles[endSegmentIndex];
+        if (segmentData.isComplete && amountTramSignals != null) {
+          final startSegment = segmentProfiles[segmentData.startIndex!];
+          final endSegment = segmentProfiles[segmentData.endIndex!];
 
           final startKilometreMap = parseKilometre(startSegment);
           final endKilometreMap = parseKilometre(endSegment);
 
-          result.add(TramArea(
-            order: calculateOrder(startSegmentIndex, startLocation),
-            kilometre: startKilometreMap[startLocation]!,
-            endKilometre: endKilometreMap[endLocation]!.first,
-            amountTramSignals: amountTramSignals,
-          ));
+          result.add(
+            TramArea(
+              order: segmentData.startOrder!,
+              kilometre: startKilometreMap[segmentData.startLocation]!,
+              endKilometre: endKilometreMap[segmentData.endLocation]!.first,
+              amountTramSignals: amountTramSignals,
+            ),
+          );
 
-          startSegmentIndex = null;
-          endSegmentIndex = null;
-          startLocation = null;
-          endLocation = null;
+          segmentData.reset();
           amountTramSignals = null;
         }
       }
     }
 
-    if (startSegmentIndex != null || endSegmentIndex != null || startLocation != null || endLocation != null) {
-      Fimber.w('Incomplete tram area found: '
-          'startSegmentIndex: $startSegmentIndex, endSegmentIndex: $endSegmentIndex, '
-          'startLocation: $startLocation, endLocation: $endLocation, amountTramSignals: $amountTramSignals');
+    if (segmentData.isIncomplete) {
+      Fimber.w('Incomplete tram area found: $segmentData');
     }
 
     return result;
@@ -471,5 +552,37 @@ class SferaModelMapper {
       }
     }
     return lineFootNoteLocations;
+  }
+}
+
+class _SegmentMapperData {
+  int? startIndex;
+  int? endIndex;
+  double? startLocation;
+  double? endLocation;
+
+  int? get startOrder => _calculateOrder(startIndex, startLocation);
+
+  int? get endOrder => _calculateOrder(endIndex, endLocation);
+
+  int? _calculateOrder(int? segmentIndex, double? location) {
+    if (segmentIndex == null || location == null) return null;
+    return calculateOrder(segmentIndex, location);
+  }
+
+  bool get isComplete => startIndex != null && endIndex != null && startLocation != null && endLocation != null;
+
+  bool get isIncomplete => startIndex != null || endIndex != null || startLocation != null || endLocation != null;
+
+  void reset() {
+    startIndex = null;
+    endIndex = null;
+    startLocation = null;
+    endLocation = null;
+  }
+
+  @override
+  String toString() {
+    return '_SegmentMapperData{startSegmentIndex: $startIndex, endSegmentIndex: $endIndex, startLocation: $startLocation, endLocation: $endLocation}';
   }
 }

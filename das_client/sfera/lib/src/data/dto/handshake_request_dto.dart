@@ -7,8 +7,12 @@ class HandshakeRequestDto extends SferaXmlElementDto {
 
   HandshakeRequestDto({super.type = elementType, super.attributes, super.children, super.value});
 
-  factory HandshakeRequestDto.create(Iterable<DasOperatingModesSupportedDto> supportedOperatingModes,
-      {bool? statusReportsEnabled, String? additionalInfo, RelatedTrainRequestTypeDto? relatedTrainRequestType}) {
+  factory HandshakeRequestDto.create(
+    Iterable<DasOperatingModesSupportedDto> supportedOperatingModes, {
+    bool? statusReportsEnabled,
+    String? additionalInfo,
+    RelatedTrainRequestTypeDto? relatedTrainRequestType,
+  }) {
     final request = HandshakeRequestDto();
     request.children.addAll(supportedOperatingModes);
     if (relatedTrainRequestType != null) {

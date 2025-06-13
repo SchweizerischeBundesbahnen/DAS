@@ -1,4 +1,4 @@
-import 'package:app/di.dart';
+import 'package:app/di/di.dart';
 import 'package:app/pages/splash/splash_navigator.dart';
 import 'package:app/pages/splash/splash_view_model.dart';
 import 'package:auto_route/auto_route.dart';
@@ -39,7 +39,7 @@ class _SplashPageState extends State<SplashPage> {
         children: [
           CircularProgressIndicator(
             color: Colors.black,
-          )
+          ),
         ],
       ),
     );

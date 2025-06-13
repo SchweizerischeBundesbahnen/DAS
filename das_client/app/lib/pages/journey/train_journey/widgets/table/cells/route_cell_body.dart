@@ -58,11 +58,12 @@ class RouteCellBody extends StatelessWidget {
                 left: 0,
                 right: 0,
                 child: RouteChevron(
-                    isStop: isStop,
-                    circleSize: routeCircleSize,
-                    chevronWidth: chevronWidth,
-                    chevronAnimationData: chevronAnimationData,
-                    chevronHeight: chevronHeight),
+                  isStop: isStop,
+                  circleSize: routeCircleSize,
+                  chevronWidth: chevronWidth,
+                  chevronAnimationData: chevronAnimationData,
+                  chevronHeight: chevronHeight,
+                ),
               ),
             if (isStop) _circle(context),
           ],
@@ -128,10 +129,11 @@ class _RouteCircle extends StatelessWidget {
   BoxDecoration _stopDecoration() => BoxDecoration(color: color, shape: BoxShape.circle);
 
   BoxDecoration _stopOnRequestDecoration({required Color backgroundColor}) => BoxDecoration(
-      color: backgroundColor,
-      shape: BoxShape.circle,
-      border: Border.all(
-        color: color, // Set the border color
-        width: 2.0, // Set the border width
-      ));
+    color: backgroundColor,
+    shape: BoxShape.circle,
+    border: Border.all(
+      color: color, // Set the border color
+      width: 2.0, // Set the border width
+    ),
+  );
 }

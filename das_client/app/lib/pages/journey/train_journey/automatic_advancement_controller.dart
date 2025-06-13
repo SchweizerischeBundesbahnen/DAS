@@ -68,7 +68,8 @@ class AutomaticAdvancementController {
 
     if (fromIndex == -1 || toIndex == -1) {
       Fimber.w(
-          'Failed to calculate scroll position because elements do not exist: fromIndex: $fromIndex, toIndex: $toIndex');
+        'Failed to calculate scroll position because elements do not exist: fromIndex: $fromIndex, toIndex: $toIndex',
+      );
       return null;
     }
 
@@ -99,7 +100,8 @@ class AutomaticAdvancementController {
     final stickyHeight = _calculateStickyHeight(_currentPosition!);
 
     Fimber.d(
-        'currentpixels: ${scrollController.position.pixels}, renderedDiff: $renderedDiff, scrollDiff: $scrollDiff, stickyHeight: $stickyHeight');
+      'currentpixels: ${scrollController.position.pixels}, renderedDiff: $renderedDiff, scrollDiff: $scrollDiff, stickyHeight: $stickyHeight',
+    );
 
     return scrollController.position.pixels + renderedDiff + scrollDiff - stickyHeight;
   }

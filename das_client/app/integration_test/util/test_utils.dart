@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:app/di.dart';
+import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/extended_menu.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
@@ -50,8 +50,9 @@ Finder findTextFieldByLabel(String label) {
 
 Finder findDASTableRowByText(String text) {
   return find.descendant(
-      of: find.byKey(DASTable.tableKey),
-      matching: find.ancestor(of: find.text(text), matching: find.byKey(DASTable.rowKey)));
+    of: find.byKey(DASTable.tableKey),
+    matching: find.ancestor(of: find.text(text), matching: find.byKey(DASTable.rowKey)),
+  );
 }
 
 /// Verifies, that SBB is selected and loads train journey with [trainNumber]

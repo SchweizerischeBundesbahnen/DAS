@@ -1,0 +1,91 @@
+<?xml version="1.0" ?>
+
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="1" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+    <TrainIdentification>
+        <OTN_ID>
+            <teltsi_Company>1285</teltsi_Company>
+            <teltsi_OperationalTrainNumber>T20</teltsi_OperationalTrainNumber>
+            <teltsi_StartDate>2025-05-17</teltsi_StartDate>
+        </OTN_ID>
+    </TrainIdentification>
+
+    <SegmentProfileReference SP_ID="T20_1" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:36:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T12:36:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Reichenbach_im_Kandertal"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T12:36:00Z" plannedDepartureTime="2025-05-17T12:36:00Z"/>
+        </TimingPointConstraints>
+		
+		<TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:38:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T12:38:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Frutigen"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+		
+		<TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:40:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T12:40:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Kandergrund"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T12:45:00Z" plannedDepartureTime="2025-05-17T12:45:00Z"/>
+        </TimingPointConstraints>
+		
+		<TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:45:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T12:45:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Brig"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T12:50:00Z" plannedDepartureTime="2025-05-17T12:50:00Z"/>
+        </TimingPointConstraints>
+		
+		<TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:38:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T12:38:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Staz_della_Galleria"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+		
+		<TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:56:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T12:56:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Iselle"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T12:56:00Z" plannedDepartureTime="2025-05-17T12:56:00Z"/>
+        </TimingPointConstraints>
+		
+		<TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:58:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T12:58:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Domodossola_FM"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T13:00:00Z" plannedDepartureTime="2025-05-17T13:00:00Z"/>
+        </TimingPointConstraints>
+		
+		<TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T12:05:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T13:05:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Domodossola"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+		
+		
+		<TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="End_of_Journey" TP_latestArrivalTime="2025-05-17T13:13:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T13:13:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Preglia"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+
+        <TrainCharacteristicsRef TC_ID="T20_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
+            <TC_RU_ID>1285</TC_RU_ID>
+        </TrainCharacteristicsRef>
+    </SegmentProfileReference>
+
+</JourneyProfile>
