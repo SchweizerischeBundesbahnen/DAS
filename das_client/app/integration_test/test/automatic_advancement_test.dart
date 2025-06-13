@@ -61,7 +61,7 @@ void main() {
       expect(find.text('Bern'), findsAny);
 
       // Wait until idle time reached
-      await Future.delayed(Duration(seconds: timeController.idleTimeAutoScroll));
+      await Future.delayed(Duration(seconds: timeController.idleTimeAutoScroll + 1));
       await tester.pumpAndSettle();
 
       // Check if the last row is visible
