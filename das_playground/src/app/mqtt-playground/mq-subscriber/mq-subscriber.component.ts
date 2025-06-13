@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { SbbFormFieldModule } from "@sbb-esta/angular/form-field";
 import { SbbButtonModule } from "@sbb-esta/angular/button";
 import { MqService } from "../../mq.service";
@@ -19,13 +19,12 @@ import { SbbInputModule } from "@sbb-esta/angular/input";
   styleUrl: './mq-subscriber.component.scss'
 })
 export class MqSubscriberComponent implements OnDestroy {
+  private mqService = inject(MqService);
+
   subscriptions: Subscription[] = [];
   messages: IMqttMessage[] = [];
   topicControl = new FormControl('', {nonNullable: true});
   topics: string[] = [];
-
-  constructor(private mqService: MqService) {
-  }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(value => value.unsubscribe());

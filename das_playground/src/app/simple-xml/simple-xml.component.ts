@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, Renderer2 } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, Renderer2, inject } from '@angular/core';
 
 @Component({
   selector: 'app-simple-xml',
@@ -7,13 +7,13 @@ import { AfterViewInit, Component, ElementRef, Input, Renderer2 } from '@angular
   styleUrl: './simple-xml.component.scss'
 })
 export class SimpleXmlComponent implements AfterViewInit {
+  private el = inject(ElementRef);
+  private renderer = inject(Renderer2);
+
   @Input() xml: Document | undefined;
   @Input() xmlString: string | undefined;
   @Input() collapsedText: string = '...';
   @Input() collapsed: boolean = false;
-
-  constructor(private el: ElementRef, private renderer: Renderer2) {
-  }
 
   ngAfterViewInit() {
     if (this.xml === undefined && this.xmlString === undefined) {

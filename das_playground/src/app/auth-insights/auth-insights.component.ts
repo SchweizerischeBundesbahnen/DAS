@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { map } from "rxjs";
 import { OidcSecurityService } from "angular-auth-oidc-client";
@@ -12,9 +12,8 @@ import { OidcSecurityService } from "angular-auth-oidc-client";
   styleUrl: './auth-insights.component.scss'
 })
 export class AuthInsightsComponent {
+  private oidcSecurityService = inject(OidcSecurityService);
 
-  constructor(private oidcSecurityService: OidcSecurityService) {
-  }
 
   get claims() {
     return this.oidcSecurityService.getUserData();

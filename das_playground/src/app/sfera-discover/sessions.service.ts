@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { environment } from "../../environments/environment";
@@ -15,10 +15,10 @@ export interface Session {
   providedIn: 'root'
 })
 export class SessionsService {
+  private httpClient = inject(HttpClient);
+
 
   private url = `${environment.backendUrl}/actuator/sessions`;
-
-  constructor(private httpClient: HttpClient) { }
 
 
   getSessions(): Observable<Session[]> {
