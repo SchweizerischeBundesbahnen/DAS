@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd" SP_ID="T2_3" SP_VersionMajor="2"
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T2_3" SP_VersionMajor="2"
                 SP_VersionMinor="0" SP_Length="20000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
@@ -90,7 +90,7 @@
     </SP_Points>
     <SP_Areas>
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="6500" endLocation="6500" TAF_TAP_location_abbreviation="WANZ"
-            TAF_TAP_location_type="station">
+                          TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3014</teltsi_LocationPrimaryCode>
@@ -99,7 +99,7 @@
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="7000" endLocation="7000" TAF_TAP_location_abbreviation="ROTH"
-            TAF_TAP_location_type="station">
+                          TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3015</teltsi_LocationPrimaryCode>
@@ -108,7 +108,7 @@
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="7500" endLocation="7500" TAF_TAP_location_abbreviation="OL"
-            TAF_TAP_location_type="station">
+                          TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3016</teltsi_LocationPrimaryCode>
@@ -117,7 +117,7 @@
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="8000" endLocation="8000" TAF_TAP_location_abbreviation="AAR"
-            TAF_TAP_location_type="station">
+                          TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3017</teltsi_LocationPrimaryCode>
@@ -126,7 +126,7 @@
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="8500" endLocation="8500" TAF_TAP_location_abbreviation="MLH"
-            TAF_TAP_location_type="halt">
+                          TAF_TAP_location_type="halt">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3018</teltsi_LocationPrimaryCode>
@@ -135,7 +135,7 @@
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="9000" endLocation="9000" TAF_TAP_location_abbreviation="KIL"
-            TAF_TAP_location_type="station">
+                          TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3019</teltsi_LocationPrimaryCode>
@@ -144,7 +144,7 @@
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="9500" endLocation="9500" TAF_TAP_location_abbreviation="ZRH"
-            TAF_TAP_location_type="station">
+                          TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3020</teltsi_LocationPrimaryCode>
@@ -153,7 +153,7 @@
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="10000" endLocation="10000" TAF_TAP_location_abbreviation="OPF"
-            TAF_TAP_location_type="station">
+                          TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3021</teltsi_LocationPrimaryCode>
@@ -162,7 +162,7 @@
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="10500" endLocation="10500" TAF_TAP_location_abbreviation="ZHF"
-            TAF_TAP_location_type="station">
+                          TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3022</teltsi_LocationPrimaryCode>

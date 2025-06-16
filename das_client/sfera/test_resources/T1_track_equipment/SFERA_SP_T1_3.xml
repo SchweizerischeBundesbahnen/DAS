@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd" SP_ID="T1_3" SP_VersionMajor="2"
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T1_3" SP_VersionMajor="2"
                 SP_VersionMinor="0" SP_Length="20000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
@@ -35,7 +35,7 @@
     </SP_Points>
     <SP_Areas>
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="4500" endLocation="4500" TAF_TAP_location_abbreviation="BI"
-            TAF_TAP_location_type="station">
+                          TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3010</teltsi_LocationPrimaryCode>
@@ -44,7 +44,7 @@
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="5000" endLocation="5000" TAF_TAP_location_abbreviation="LEN"
-            TAF_TAP_location_type="station">
+                          TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3011</teltsi_LocationPrimaryCode>
@@ -53,7 +53,7 @@
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="5500" endLocation="5500" TAF_TAP_location_abbreviation="GRN"
-            TAF_TAP_location_type="station">
+                          TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3012</teltsi_LocationPrimaryCode>
@@ -62,7 +62,7 @@
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="6000" endLocation="6000" TAF_TAP_location_abbreviation="SOLO"
-            TAF_TAP_location_type="station">
+                          TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3013</teltsi_LocationPrimaryCode>
