@@ -924,7 +924,7 @@ void main() {
     // check ServicePoint Burgdorf
 
     final graduatedStationSpeeds2 = servicePoints[2].localSpeedData!.speeds;
-    expect(graduatedStationSpeeds2, hasLength(6));
+    expect(graduatedStationSpeeds2, hasLength(7));
 
     final rSpeedEntry2 = graduatedStationSpeeds2.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.R);
     expect(rSpeedEntry2, isNotNull);
@@ -961,6 +961,15 @@ void main() {
     expect(dSpeedEntry2.incomingSpeeds, hasLength(1));
     _checkSpeed(dSpeedEntry2.incomingSpeeds[0], '70');
     expect(dSpeedEntry2.outgoingSpeeds, isEmpty);
+
+    final nSpeedEntry2 = graduatedStationSpeeds2.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.N);
+    expect(nSpeedEntry2, isNotNull);
+    expect(nSpeedEntry2!.text, isNull);
+    expect(nSpeedEntry2.trainSeries, TrainSeries.N);
+    expect(nSpeedEntry2.incomingSpeeds, hasLength(2));
+    _checkSpeed(nSpeedEntry2.incomingSpeeds[0], '75');
+    _checkSpeed(nSpeedEntry2.incomingSpeeds[1], 'XX', isCircled: true);
+    _checkSpeed(nSpeedEntry2.outgoingSpeeds[0], 'XX', isSquared: true);
 
     // check ServicePoint Olten
 
@@ -1054,7 +1063,7 @@ void main() {
     // check ServicePoint Burgdorf
 
     final graduatedStationSpeeds2 = servicePoints[2].graduatedSpeedInfo!.speeds;
-    expect(graduatedStationSpeeds2, hasLength(4));
+    expect(graduatedStationSpeeds2, hasLength(5));
 
     final rSpeedEntry2 = graduatedStationSpeeds2.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.R);
     expect(rSpeedEntry2, isNotNull);
@@ -1091,6 +1100,15 @@ void main() {
     expect(dSpeedEntry2.incomingSpeeds, hasLength(1));
     _checkSpeed(dSpeedEntry2.incomingSpeeds[0], '70');
     expect(dSpeedEntry2.outgoingSpeeds, isEmpty);
+
+    final nSpeedEntry2 = graduatedStationSpeeds2.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.N);
+    expect(nSpeedEntry2, isNotNull);
+    expect(nSpeedEntry2!.text, 'Zusatzinformation C');
+    expect(nSpeedEntry2.trainSeries, TrainSeries.N);
+    expect(nSpeedEntry2.incomingSpeeds, hasLength(2));
+    _checkSpeed(nSpeedEntry2.incomingSpeeds[0], '75');
+    _checkSpeed(nSpeedEntry2.incomingSpeeds[1], 'XX', isCircled: true);
+    _checkSpeed(nSpeedEntry2.outgoingSpeeds[0], 'XX', isSquared: true);
 
     // check ServicePoint Olten
 
