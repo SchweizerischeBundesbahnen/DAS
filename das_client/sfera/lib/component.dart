@@ -2,7 +2,7 @@ import 'package:http_x/component.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/src/data/api/sfera_auth_service.dart';
 import 'package:sfera/src/data/api/sfera_auth_service_impl.dart';
-import 'package:sfera/src/data/local/sfera_local_database_service_impl.dart';
+import 'package:sfera/src/data/local/drift_database_service.dart';
 import 'package:sfera/src/data/sfera_local_repo.dart';
 import 'package:sfera/src/data/sfera_local_repo_impl.dart';
 import 'package:sfera/src/data/sfera_remote_repo.dart';
@@ -72,7 +72,7 @@ class SferaComponent {
     required SferaAuthProvider sferaAuthProvider,
     required String deviceId,
   }) {
-    final sferaDatabaseRepository = SferaDatabaseRepositoryImpl();
+    final sferaDatabaseRepository = DriftDatabaseService();
     return SferaRemoteRepoImpl(
       mqttService: mqttService,
       localService: sferaDatabaseRepository,
@@ -82,7 +82,7 @@ class SferaComponent {
   }
 
   static SferaLocalRepo createSferaLocalRepo() {
-    final sferaDatabaseRepository = SferaDatabaseRepositoryImpl();
+    final sferaDatabaseRepository = DriftDatabaseService();
     return SferaLocalRepoImpl(databaseRepository: sferaDatabaseRepository);
   }
 }
