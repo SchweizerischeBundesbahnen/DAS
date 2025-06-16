@@ -13,20 +13,31 @@ void main() {
 
     // THEN
     expect(speed1.incomingSpeeds, hasLength(1));
-    checkSpeed(speed1.incomingSpeeds[0], 100);
+    checkSpeed(speed1.incomingSpeeds[0], '100');
     expect(speed1.outgoingSpeeds, isEmpty);
 
     expect(speed2.incomingSpeeds, hasLength(2));
-    checkSpeed(speed2.incomingSpeeds[0], 100);
-    checkSpeed(speed2.incomingSpeeds[1], 90);
+    checkSpeed(speed2.incomingSpeeds[0], '100');
+    checkSpeed(speed2.incomingSpeeds[1], '90');
     expect(speed2.outgoingSpeeds, isEmpty);
 
     expect(speed3.incomingSpeeds, hasLength(3));
-    checkSpeed(speed3.incomingSpeeds[0], 100);
-    checkSpeed(speed3.incomingSpeeds[1], 90);
-    checkSpeed(speed3.incomingSpeeds[2], 80);
+    checkSpeed(speed3.incomingSpeeds[0], '100');
+    checkSpeed(speed3.incomingSpeeds[1], '90');
+    checkSpeed(speed3.incomingSpeeds[2], '80');
     expect(speed3.outgoingSpeeds, isEmpty);
   });
+
+  test('test with XX speeds', () {
+    // GIVEN WHEN
+    final speed1 = Speeds.from(TrainSeries.R, 'XX');
+
+    // THEN
+    expect(speed1.incomingSpeeds, hasLength(1));
+    checkSpeed(speed1.incomingSpeeds[0], 'XX');
+    expect(speed1.outgoingSpeeds, isEmpty);
+  });
+
   test('test with incoming and outgoing station speeds', () {
     // GIVEN WHEN
     final speed1 = Speeds.from(TrainSeries.R, '100/70');
@@ -41,67 +52,67 @@ void main() {
 
     // THEN
     expect(speed1.incomingSpeeds, hasLength(1));
-    checkSpeed(speed1.incomingSpeeds[0], 100);
+    checkSpeed(speed1.incomingSpeeds[0], '100');
     expect(speed1.outgoingSpeeds, hasLength(1));
-    checkSpeed(speed1.outgoingSpeeds[0], 70);
+    checkSpeed(speed1.outgoingSpeeds[0], '70');
 
     expect(speed2.incomingSpeeds, hasLength(2));
-    checkSpeed(speed2.incomingSpeeds[0], 100);
-    checkSpeed(speed2.incomingSpeeds[1], 90);
+    checkSpeed(speed2.incomingSpeeds[0], '100');
+    checkSpeed(speed2.incomingSpeeds[1], '90');
     expect(speed2.outgoingSpeeds, hasLength(1));
-    checkSpeed(speed2.outgoingSpeeds[0], 70);
+    checkSpeed(speed2.outgoingSpeeds[0], '70');
 
     expect(speed3.incomingSpeeds, hasLength(3));
-    checkSpeed(speed3.incomingSpeeds[0], 100);
-    checkSpeed(speed3.incomingSpeeds[1], 90);
-    checkSpeed(speed3.incomingSpeeds[2], 80);
+    checkSpeed(speed3.incomingSpeeds[0], '100');
+    checkSpeed(speed3.incomingSpeeds[1], '90');
+    checkSpeed(speed3.incomingSpeeds[2], '80');
     expect(speed3.outgoingSpeeds, hasLength(1));
-    checkSpeed(speed3.outgoingSpeeds[0], 70);
+    checkSpeed(speed3.outgoingSpeeds[0], '70');
 
     expect(speed4.incomingSpeeds, hasLength(1));
-    checkSpeed(speed4.incomingSpeeds[0], 100);
+    checkSpeed(speed4.incomingSpeeds[0], '100');
     expect(speed4.outgoingSpeeds, hasLength(2));
-    checkSpeed(speed4.outgoingSpeeds[0], 70);
-    checkSpeed(speed4.outgoingSpeeds[1], 60);
+    checkSpeed(speed4.outgoingSpeeds[0], '70');
+    checkSpeed(speed4.outgoingSpeeds[1], '60');
 
     expect(speed5.incomingSpeeds, hasLength(2));
-    checkSpeed(speed5.incomingSpeeds[0], 100);
-    checkSpeed(speed5.incomingSpeeds[1], 90);
+    checkSpeed(speed5.incomingSpeeds[0], '100');
+    checkSpeed(speed5.incomingSpeeds[1], '90');
     expect(speed5.outgoingSpeeds, hasLength(2));
-    checkSpeed(speed5.outgoingSpeeds[0], 70);
-    checkSpeed(speed5.outgoingSpeeds[1], 60);
+    checkSpeed(speed5.outgoingSpeeds[0], '70');
+    checkSpeed(speed5.outgoingSpeeds[1], '60');
 
     expect(speed6.incomingSpeeds, hasLength(3));
-    checkSpeed(speed6.incomingSpeeds[0], 100);
-    checkSpeed(speed6.incomingSpeeds[1], 90);
-    checkSpeed(speed6.incomingSpeeds[2], 80);
+    checkSpeed(speed6.incomingSpeeds[0], '100');
+    checkSpeed(speed6.incomingSpeeds[1], '90');
+    checkSpeed(speed6.incomingSpeeds[2], '80');
     expect(speed6.outgoingSpeeds, hasLength(2));
-    checkSpeed(speed6.outgoingSpeeds[0], 70);
-    checkSpeed(speed6.outgoingSpeeds[1], 60);
+    checkSpeed(speed6.outgoingSpeeds[0], '70');
+    checkSpeed(speed6.outgoingSpeeds[1], '60');
 
     expect(speed7.incomingSpeeds, hasLength(1));
-    checkSpeed(speed7.incomingSpeeds[0], 100);
+    checkSpeed(speed7.incomingSpeeds[0], '100');
     expect(speed7.outgoingSpeeds, hasLength(3));
-    checkSpeed(speed7.outgoingSpeeds[0], 70);
-    checkSpeed(speed7.outgoingSpeeds[1], 60);
-    checkSpeed(speed7.outgoingSpeeds[2], 50);
+    checkSpeed(speed7.outgoingSpeeds[0], '70');
+    checkSpeed(speed7.outgoingSpeeds[1], '60');
+    checkSpeed(speed7.outgoingSpeeds[2], '50');
 
     expect(speed8.incomingSpeeds, hasLength(2));
-    checkSpeed(speed8.incomingSpeeds[0], 100);
-    checkSpeed(speed8.incomingSpeeds[1], 90);
+    checkSpeed(speed8.incomingSpeeds[0], '100');
+    checkSpeed(speed8.incomingSpeeds[1], '90');
     expect(speed8.outgoingSpeeds, hasLength(3));
-    checkSpeed(speed8.outgoingSpeeds[0], 70);
-    checkSpeed(speed8.outgoingSpeeds[1], 60);
-    checkSpeed(speed8.outgoingSpeeds[2], 50);
+    checkSpeed(speed8.outgoingSpeeds[0], '70');
+    checkSpeed(speed8.outgoingSpeeds[1], '60');
+    checkSpeed(speed8.outgoingSpeeds[2], '50');
 
     expect(speed9.incomingSpeeds, hasLength(3));
-    checkSpeed(speed9.incomingSpeeds[0], 100);
-    checkSpeed(speed9.incomingSpeeds[1], 90);
-    checkSpeed(speed9.incomingSpeeds[2], 80);
+    checkSpeed(speed9.incomingSpeeds[0], '100');
+    checkSpeed(speed9.incomingSpeeds[1], '90');
+    checkSpeed(speed9.incomingSpeeds[2], '80');
     expect(speed9.outgoingSpeeds, hasLength(3));
-    checkSpeed(speed9.outgoingSpeeds[0], 70);
-    checkSpeed(speed9.outgoingSpeeds[1], 60);
-    checkSpeed(speed9.outgoingSpeeds[2], 50);
+    checkSpeed(speed9.outgoingSpeeds[0], '70');
+    checkSpeed(speed9.outgoingSpeeds[1], '60');
+    checkSpeed(speed9.outgoingSpeeds[2], '50');
   });
   test('test station speeds with circled or squared values', () {
     // GIVEN WHEN
@@ -111,23 +122,23 @@ void main() {
 
     // THEN
     expect(speed1.incomingSpeeds, hasLength(2));
-    checkSpeed(speed1.incomingSpeeds[0], 100);
-    checkSpeed(speed1.incomingSpeeds[1], 90, isCircled: true);
+    checkSpeed(speed1.incomingSpeeds[0], '100');
+    checkSpeed(speed1.incomingSpeeds[1], '90', isCircled: true);
     expect(speed1.outgoingSpeeds, hasLength(1));
-    checkSpeed(speed1.outgoingSpeeds[0], 70);
+    checkSpeed(speed1.outgoingSpeeds[0], '70');
 
     expect(speed2.incomingSpeeds, hasLength(1));
-    checkSpeed(speed2.incomingSpeeds[0], 100);
+    checkSpeed(speed2.incomingSpeeds[0], '100');
     expect(speed2.outgoingSpeeds, hasLength(2));
-    checkSpeed(speed2.outgoingSpeeds[0], 70);
-    checkSpeed(speed2.outgoingSpeeds[1], 60, isSquared: true);
+    checkSpeed(speed2.outgoingSpeeds[0], '70');
+    checkSpeed(speed2.outgoingSpeeds[1], '60', isSquared: true);
 
     expect(speed3.incomingSpeeds, hasLength(2));
-    checkSpeed(speed3.incomingSpeeds[0], 100, isSquared: true);
-    checkSpeed(speed3.incomingSpeeds[1], 90);
+    checkSpeed(speed3.incomingSpeeds[0], '100', isSquared: true);
+    checkSpeed(speed3.incomingSpeeds[1], '90');
     expect(speed3.outgoingSpeeds, hasLength(2));
-    checkSpeed(speed3.outgoingSpeeds[0], 70, isCircled: true);
-    checkSpeed(speed3.outgoingSpeeds[1], 60, isSquared: true);
+    checkSpeed(speed3.outgoingSpeeds[0], '70', isCircled: true);
+    checkSpeed(speed3.outgoingSpeeds[1], '60', isSquared: true);
   });
 
   test('test invalid speed format', () {
@@ -155,10 +166,10 @@ void main() {
       ],
     );
 
-    expect(speedData.speedsFor(TrainSeries.R, 100)!.incomingSpeeds[0].speed, 100);
-    expect(speedData.speedsFor(TrainSeries.R, 150)!.incomingSpeeds[0].speed, 150);
-    expect(speedData.speedsFor(TrainSeries.A, 100)!.incomingSpeeds[0].speed, 200);
-    expect(speedData.speedsFor(TrainSeries.A, 150)!.incomingSpeeds[0].speed, 250);
+    expect(speedData.speedsFor(TrainSeries.R, 100)!.incomingSpeeds[0].speed, '100');
+    expect(speedData.speedsFor(TrainSeries.R, 150)!.incomingSpeeds[0].speed, '150');
+    expect(speedData.speedsFor(TrainSeries.A, 100)!.incomingSpeeds[0].speed, '200');
+    expect(speedData.speedsFor(TrainSeries.A, 150)!.incomingSpeeds[0].speed, '250');
   });
 
   test('Test resolved speed default break series', () {
@@ -171,16 +182,16 @@ void main() {
       ],
     );
 
-    expect(speedData.speedsFor(TrainSeries.R, 100)!.incomingSpeeds[0].speed, 100);
-    expect(speedData.speedsFor(TrainSeries.R, 150)!.incomingSpeeds[0].speed, 150);
-    expect(speedData.speedsFor(TrainSeries.R, 50)!.incomingSpeeds[0].speed, 150);
-    expect(speedData.speedsFor(TrainSeries.A, 100)!.incomingSpeeds[0].speed, 200);
-    expect(speedData.speedsFor(TrainSeries.A, 150)!.incomingSpeeds[0].speed, 250);
-    expect(speedData.speedsFor(TrainSeries.A, 80)!.incomingSpeeds[0].speed, 200);
+    expect(speedData.speedsFor(TrainSeries.R, 100)!.incomingSpeeds[0].speed, '100');
+    expect(speedData.speedsFor(TrainSeries.R, 150)!.incomingSpeeds[0].speed, '150');
+    expect(speedData.speedsFor(TrainSeries.R, 50)!.incomingSpeeds[0].speed, '150');
+    expect(speedData.speedsFor(TrainSeries.A, 100)!.incomingSpeeds[0].speed, '200');
+    expect(speedData.speedsFor(TrainSeries.A, 150)!.incomingSpeeds[0].speed, '250');
+    expect(speedData.speedsFor(TrainSeries.A, 80)!.incomingSpeeds[0].speed, '200');
   });
 }
 
-void checkSpeed(Speed speed, int speedValue, {bool isCircled = false, bool isSquared = false}) {
+void checkSpeed(Speed speed, String speedValue, {bool isCircled = false, bool isSquared = false}) {
   expect(speed.speed, speedValue);
   expect(speed.isCircled, isCircled);
   expect(speed.isSquared, isSquared);

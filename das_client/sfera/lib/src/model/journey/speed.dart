@@ -11,9 +11,9 @@ class Speed {
 
   factory Speed.from(String value) {
     if (RegExp(speedRegex).hasMatch(value)) {
-      final digit = RegExp(r'\d+').stringMatch(value);
+      final speedValue = RegExp(r'\d+|XX').stringMatch(value);
       return Speed(
-        speed: int.parse(digit!),
+        speed: speedValue!,
         isCircled: value.contains('{'),
         isSquared: value.contains('['),
       );
@@ -22,9 +22,10 @@ class Speed {
     throw ArgumentError('Invalid speed format: $value');
   }
 
-  static const speedRegex = r'^\d+$|^\[\d+\]$|^\{\d+\}$'; // exp. 50, {60} or [70]
+  // Accepts 50, {60}, [70], XX, {XX}, [XX]
+  static const speedRegex = r'^(\d+|XX)$|^\[(\d+|XX)\]$|^\{(\d+|XX)\}$';
 
-  final int speed;
+  final String speed;
 
   /// Normally means that speed is higher than given by signaling. Can have other meanings so this variable is named generically.
   final bool isSquared;

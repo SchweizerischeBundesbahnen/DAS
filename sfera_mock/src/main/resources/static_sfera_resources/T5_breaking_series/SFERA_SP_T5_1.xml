@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T5_1" SP_VersionMajor="2"
-                SP_VersionMinor="1" SP_Length="2000" SP_Status="Valid">
+                SP_VersionMinor="0" SP_Length="2000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -37,6 +37,7 @@
                 &lt;v trainSeries=&quot;R&quot; speed=&quot;44&quot;/&gt;
                 &lt;v trainSeries=&quot;A&quot; speed=&quot;55&quot;/&gt;
                 &lt;v trainSeries=&quot;D&quot; speed=&quot;66&quot;/&gt;
+                &lt;v trainSeries=&quot;N&quot; speed=&quot;XX&quot;/&gt;
                 &lt;/speeds&gt;
                 &lt;/curveSpeed&gt;
             "/>
@@ -70,6 +71,7 @@
                 &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;100&quot;/&gt;
                 &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;105&quot;/&gt;
                 &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;77&quot;/&gt;
+                &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;30&quot; speed=&quot;77&quot;/&gt;
                 &lt;/speeds&gt;
                 &lt;/lineSpeed&gt;
             "/>
@@ -87,6 +89,7 @@
                 &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;70&quot;/&gt;
                 &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;75&quot;/&gt;
                 &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;77&quot;/&gt;
+                &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;XX&quot;/&gt;
                 &lt;/speeds&gt;
                 &lt;/lineSpeed&gt;
             "/>
@@ -102,6 +105,7 @@
                 &lt;speeds&gt;
                 &lt;v trainSeries=&quot;R&quot; speed=&quot;44&quot;/&gt;
                 &lt;v trainSeries=&quot;D&quot; speed=&quot;66&quot;/&gt;
+                &lt;v trainSeries=&quot;N&quot; speed=&quot;XX&quot;/&gt;
                 &lt;/speeds&gt;
                 &lt;/curveSpeed&gt;
             "/>
@@ -160,6 +164,7 @@
                     &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;100&quot;/&gt;
                     &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;105&quot;/&gt;
                     &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;77&quot;/&gt;
+                    &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;30&quot; speed=&quot;XX&quot;/&gt;
                     &lt;/lineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
@@ -183,6 +188,7 @@
                     &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;70&quot;/&gt;
                     &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;75&quot;/&gt;
                     &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;77&quot;/&gt;
+                    &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;30&quot; speed=&quot;XX&quot;/&gt;
                     &lt;/lineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
@@ -216,6 +222,7 @@
                     &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;100&quot;/&gt;
                     &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;105&quot;/&gt;
                     &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;30&quot; speed=&quot;77&quot;/&gt;
+                    &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;30&quot; speed=&quot;XX&quot;/&gt;
                     &lt;/lineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
