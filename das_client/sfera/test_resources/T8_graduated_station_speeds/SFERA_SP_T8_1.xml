@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd" SP_ID="T8_1" SP_VersionMajor="2"
-                SP_VersionMinor="2" SP_Length="2000" SP_Status="Valid">
+                SP_VersionMinor="3" SP_Length="2000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -108,12 +108,14 @@
                     &lt;v trainSeries=&quot;O&quot; speed=&quot;75-{70}/[60]&quot;/&gt;
                     &lt;v trainSeries=&quot;A&quot; speed=&quot;70&quot;/&gt;
                     &lt;v trainSeries=&quot;D&quot; speed=&quot;70&quot;/&gt;
+                    &lt;v trainSeries=&quot;N&quot; speed=&quot;75-{XX}/[XX]&quot;/&gt;
                     &lt;/stationSpeed&gt;
                 "/>
                 <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
                     &lt;entries&gt;
                     &lt;entry roSpeed=&quot;75-{70}/[60]&quot; text=&quot;Zusatzinformation A&quot;/&gt;
                     &lt;entry adSpeed=&quot;70&quot; text=&quot;Zusatzinformation B&quot;/&gt;
+                    &lt;entry nSpeed=&quot;75-{XX}/[XX]&quot; text=&quot;Zusatzinformation C&quot;/&gt;
                     &lt;/entries&gt;
                 "/>
             </TAF_TAP_Location_NSP>

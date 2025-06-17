@@ -1,8 +1,10 @@
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
-import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
+
+final _log = Logger('TmsScope');
 
 class TmsScope extends DIScope {
   @override
@@ -10,7 +12,7 @@ class TmsScope extends DIScope {
 
   @override
   Future<void> push() async {
-    Fimber.d('Pushing scope $scopeName');
+    _log.fine('Pushing scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
     final tmsFlavor = DI.get<Flavor>().withTmsValues();
 
@@ -24,7 +26,7 @@ class TmsScope extends DIScope {
 extension TmsScopeExtension on GetIt {
   void registerOpenIdMqttClientConnector() {
     factoryFunc() {
-      Fimber.d('Register mqtt client connector');
+      _log.fine('Register mqtt client connector');
       return MqttComponent.createOpenIdClientConnector(authProvider: DI.get());
     }
 

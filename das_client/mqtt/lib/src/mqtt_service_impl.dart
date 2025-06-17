@@ -2,12 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
 
-import 'package:fimber/fimber.dart';
+import 'package:logging/logging.dart';
 import 'package:mqtt/src/mqtt_client_connector.dart';
 import 'package:mqtt/src/mqtt_service.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:rxdart/rxdart.dart';
+
+final _log = Logger('MqttServiceImpl');
 
 class MqttServiceImpl implements MqttService {
   MqttServiceImpl({
@@ -41,7 +43,7 @@ class MqttServiceImpl implements MqttService {
 
   @override
   void disconnect() {
-    Fimber.i('Disconnecting from MQTT broker');
+    _log.info('Disconnecting from MQTT broker');
     _client.disconnect();
   }
 
@@ -54,7 +56,7 @@ class MqttServiceImpl implements MqttService {
       _client.subscribe('${prefix}90940/2/event/$company/$train', MqttQos.exactlyOnce);
       _client.subscribe('${prefix}90940/2/event/$company/$train/$deviceId', MqttQos.exactlyOnce);
       _client.subscribe('${prefix}90940/2/G2B/$company/$train/$deviceId', MqttQos.exactlyOnce);
-      Fimber.i("Subscribed to topic with prefix='$prefix'...");
+      _log.info("Subscribed to topic with prefix='$prefix'...");
       _startUpdateListener();
       return true;
     }
@@ -71,10 +73,10 @@ class MqttServiceImpl implements MqttService {
       builder.addString(message);
       _client.publishMessage(topic, MqttQos.exactlyOnce, builder.payload!);
 
-      Fimber.v('Published MQTT message: topic=$topic message=$message');
+      _log.finer('Published MQTT message: topic=$topic message=$message');
       return true;
     } else {
-      Fimber.w('Failed to publish MQTT message because it is not connected');
+      _log.warning('Failed to publish MQTT message because it is not connected');
       return false;
     }
   }
@@ -84,21 +86,21 @@ class MqttServiceImpl implements MqttService {
     _updateSubscription = _client.updates!.listen((List<MqttReceivedMessage<MqttMessage>>? messageList) {
       if (messageList != null) {
         for (final message in messageList) {
-          Fimber.v(
+          _log.finer(
             'Received mqtt message with type=${message.runtimeType.toString()} payload=${message.payload.toString()}',
           );
 
           if (message.payload is MqttPublishMessage) {
             final recMess = message.payload as MqttPublishMessage;
             final decodedMessage = utf8.decode(recMess.payload.message);
-            Fimber.v('Decoded mqtt message: $decodedMessage');
+            _log.finer('Decoded mqtt message: $decodedMessage');
             _messageSubject.add(decodedMessage);
           } else {
-            Fimber.w('Type ${message.payload.runtimeType.toString()} parsing not implemented');
+            _log.warning('Type ${message.payload.runtimeType.toString()} parsing not implemented');
           }
         }
       } else {
-        Fimber.w('received mqtt update with messageList=null');
+        _log.warning('received mqtt update with messageList=null');
       }
     });
   }

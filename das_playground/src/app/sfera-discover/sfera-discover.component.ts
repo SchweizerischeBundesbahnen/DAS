@@ -18,15 +18,15 @@ import { SbbNotification } from "@sbb-esta/angular/notification";
   styleUrl: './sfera-discover.component.scss'
 })
 export class SferaDiscoverComponent implements OnInit, OnDestroy {
+  private sessionsService = inject(SessionsService);
+  private router = inject(Router);
+
 
   protected sessions?: Session[];
   protected refreshedAt?: Date;
   protected isError = false;
   private _destroyed = inject(DestroyRef);
   private interval?: NodeJS.Timeout;
-
-  constructor(private sessionsService: SessionsService, private router: Router) {
-  }
 
   ngOnDestroy(): void {
     clearInterval(this.interval)

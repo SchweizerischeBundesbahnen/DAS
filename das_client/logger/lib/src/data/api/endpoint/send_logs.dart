@@ -6,11 +6,15 @@ class SendLogsRequest {
   const SendLogsRequest({required this.baseUrl, required this.httpClient});
 
   final String baseUrl;
-  final Client httpClient;
+  final Client? httpClient;
 
   Future<SendLogsResponse> call(Iterable<LogEntryDto> logEntries) async {
+    if (httpClient == null) {
+      return Future.error('HTTP client is not initialized');
+    }
+
     final url = Uri.https(baseUrl, '/v1/logging/logs');
-    final response = await httpClient.post(
+    final response = await httpClient!.post(
       url,
       headers: {'Content-Type': 'application/json'},
       body: logEntries.toJsonString(),

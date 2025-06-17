@@ -8,11 +8,14 @@ import { SbbNotificationToast } from "@sbb-esta/angular/notification-toast";
   providedIn: 'root'
 })
 export class MqService {
+  private mqttService = inject(MqttService);
+  private _notification = inject(SbbNotificationToast);
+
 
   state = this.mqttService.state;
   private _destroyed = inject(DestroyRef);
 
-  constructor(private mqttService: MqttService, private _notification: SbbNotificationToast) {
+  constructor() {
     this.mqttService.onError
       .pipe(takeUntilDestroyed(this._destroyed))
       .subscribe(val => {

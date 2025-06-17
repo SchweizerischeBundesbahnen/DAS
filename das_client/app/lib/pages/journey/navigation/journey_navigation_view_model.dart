@@ -1,7 +1,9 @@
 import 'package:app/pages/journey/navigation/journey_navigation_model.dart';
-import 'package:fimber/fimber.dart';
+import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
+
+final _log = Logger('JourneyNavigationViewModel');
 
 class JourneyNavigationViewModel {
   final List<TrainIdentification> _trainIds = [];
@@ -42,13 +44,13 @@ class JourneyNavigationViewModel {
   }
 
   void reset() {
-    Fimber.d('Resetting JourneyNavigationViewModel');
+    _log.fine('Resetting JourneyNavigationViewModel');
     _trainIds.clear();
     _rxModel.add(null);
   }
 
   void dispose() {
-    Fimber.d('Disposing JourneyNavigationViewModel');
+    _log.fine('Disposing JourneyNavigationViewModel');
     _rxModel.close();
     _trainIds.clear();
   }

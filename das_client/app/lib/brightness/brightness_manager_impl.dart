@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:app/brightness/brightness_manager.dart';
-import 'package:fimber/fimber.dart';
 import 'package:flutter/services.dart';
+import 'package:logging/logging.dart';
 import 'package:screen_brightness/screen_brightness.dart';
+
+final _log = Logger('BrightnessManagerImpl');
 
 class BrightnessManagerImpl implements BrightnessManager {
   BrightnessManagerImpl(this._screenBrightness);
@@ -24,7 +26,7 @@ class BrightnessManagerImpl implements BrightnessManager {
     try {
       return await platform.invokeMethod('canWriteSettings') as bool;
     } catch (e) {
-      Fimber.e('Error checking canWriteSettings', ex: e);
+      _log.severe('Error checking canWriteSettings', e);
       return false;
     }
   }
@@ -55,12 +57,12 @@ class BrightnessManagerImpl implements BrightnessManager {
     try {
       final permissionGranted = await _ensureWriteSettingsOrTrap();
       if (!permissionGranted) {
-        Fimber.e('Cannot set brightness: write settings permission denied');
+        _log.severe('Cannot set brightness: write settings permission denied');
         return;
       }
       await _screenBrightness.setSystemScreenBrightness(value.clamp(minBrightness, maxBrightness));
     } catch (e) {
-      Fimber.e('Failed to set brightness', ex: e);
+      _log.severe('Failed to set brightness', e);
     }
   }
 
@@ -69,7 +71,7 @@ class BrightnessManagerImpl implements BrightnessManager {
     try {
       return await _screenBrightness.system;
     } catch (e) {
-      Fimber.e('Failed to get brightness', ex: e);
+      _log.severe('Failed to get brightness', e);
       return fallbackBrightness;
     }
   }

@@ -1,17 +1,19 @@
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
-import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logging/logging.dart';
 
 import 'mocks/mock_authenticated_scope.dart';
 import 'mocks/mock_das_base_scope.dart';
 import 'mocks/mock_sfera_mock_scope.dart';
 
+final _log = Logger('IntegrationTestDI');
+
 class IntegrationTestDI {
   const IntegrationTestDI._();
 
   static Future<void> init(Flavor flavor) async {
-    Fimber.d('Initialize integration test dependency injection');
+    _log.fine('Initialize integration test dependency injection');
     await GetIt.I.reset();
 
     GetIt.I.registerFlavor(flavor);

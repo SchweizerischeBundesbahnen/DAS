@@ -3,16 +3,18 @@ import 'package:app/di/scope_handler_impl.dart';
 import 'package:app/di/scopes/scopes.dart';
 import 'package:app/flavor.dart';
 import 'package:auth/component.dart';
-import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logging/logging.dart';
 
 export 'package:app/di/scopes/scopes.dart';
+
+final _log = Logger('DI');
 
 class DI {
   const DI._();
 
   static Future<void> init(Flavor flavor) {
-    Fimber.d('Initialize dependency injection');
+    _log.fine('Initialize dependency injection');
     GetIt.I.registerFlavor(flavor);
     GetIt.I.registerScopes();
     GetIt.I.registerScopeHandler();
@@ -20,7 +22,7 @@ class DI {
   }
 
   static Future<void> resetToUnauthenticatedScope({required bool useTms}) async {
-    Fimber.i('LoginScope with useTms=$useTms');
+    _log.info('LoginScope with useTms=$useTms');
 
     final scopeHandler = DI.get<ScopeHandler>();
     if (scopeHandler.isInStack<AuthenticatedScope>()) await scopeHandler.pop<AuthenticatedScope>();
@@ -65,18 +67,18 @@ class DI {
 
 extension DiExtension on GetIt {
   void registerScopeHandler() {
-    Fimber.d('Register scope handler');
+    _log.fine('Register scope handler');
     registerSingleton<ScopeHandler>(ScopeHandlerImpl());
   }
 
   void registerFlavor(Flavor flavor) {
-    Fimber.d('Register flavor');
+    _log.fine('Register flavor');
     registerSingleton<Flavor>(flavor);
   }
 
   void registerAzureAuthenticator() {
     factoryFunc() {
-      Fimber.d('Register azure authenticator');
+      _log.fine('Register azure authenticator');
       final flavor = DI.get<Flavor>();
       final authenticatorConfig = flavor.authenticatorConfig;
       return AuthenticationComponent.createAzureAuthenticator(config: authenticatorConfig);
@@ -86,7 +88,7 @@ extension DiExtension on GetIt {
   }
 
   void registerScopes() {
-    Fimber.d('Registering scopes');
+    _log.fine('Registering scopes');
     registerSingleton<DASBaseScope>(DASBaseScope());
     registerSingleton<SferaMockScope>(SferaMockScope());
     registerSingleton<TmsScope>(TmsScope());

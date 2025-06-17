@@ -5,8 +5,8 @@ import 'package:app/di/di.dart';
 import 'package:app/time_controller/time_controller.dart';
 import 'package:app/widgets/extended_header_container.dart';
 import 'package:extra_hittest_area/extra_hittest_area.dart';
-import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 enum _ControllerState { closed, expanded, maximized }
@@ -17,6 +17,8 @@ class DASModalSheetBuilder {
 
   Widget body(BuildContext context) => SizedBox.shrink();
 }
+
+final _log = Logger('DASModalSheetController');
 
 /// Used to open and close the [DasModalSheet] and handle animation.
 class DASModalSheetController {
@@ -108,9 +110,7 @@ class DASModalSheetController {
     if (isOpen) {
       _idleTimer = Timer(Duration(seconds: timeController.idleTimeDASModalSheet), () {
         if (isOpen) {
-          Fimber.d(
-            'Screen idle time of ${timeController.idleTimeDASModalSheet} seconds reached. Closing DAS modal sheet.',
-          );
+          _log.fine('Screen idle time of $automaticCloseAfterSeconds seconds reached. Closing DAS modal sheet.');
           close();
         }
       });

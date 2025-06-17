@@ -1,8 +1,10 @@
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
-import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
+
+final _log = Logger('SferaMockScope');
 
 class SferaMockScope extends DIScope {
   @override
@@ -10,7 +12,7 @@ class SferaMockScope extends DIScope {
 
   @override
   Future<void> push() async {
-    Fimber.d('Pushing scope $scopeName');
+    _log.fine('Pushing scope $scopeName');
     getIt.pushNewScope(scopeName: scopeName);
     final sferaFlavor = DI.get<Flavor>().withSferaMockValues();
 
@@ -24,7 +26,7 @@ class SferaMockScope extends DIScope {
 extension SferaMockScopeExtension on GetIt {
   void registerOAuthMqttClientConnector() {
     factoryFunc() {
-      Fimber.d('Register mqtt client connector');
+      _log.fine('Register mqtt client connector');
       return MqttComponent.createOAuthClientConnector(authProvider: DI.get());
     }
 

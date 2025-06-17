@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:ui';
 
-import 'package:fimber/fimber.dart';
+import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
@@ -30,8 +30,12 @@ import 'package:sfera/src/data/dto/ux_testing_nse_dto.dart';
 import 'package:sfera/src/data/dto/warn_app_msg_dto.dart';
 import 'package:sfera/src/data/format.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
+import 'package:sfera/src/data/local/tables/segment_profile_table.dart';
+import 'package:sfera/src/data/local/tables/train_characteristics_table.dart';
 import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
 import 'package:uuid/uuid.dart';
+
+final _log = Logger('SferaRemoteRepoImpl');
 
 class SferaRemoteRepoImpl implements SferaRemoteRepo {
   SferaRemoteRepoImpl({
@@ -89,7 +93,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   /// Other tasks like loading SP, JPs and TCs are triggered on completion.
   @override
   Future<void> connect(OtnId otnId) async {
-    Fimber.i('Starting new connection for $otnId');
+    _log.info('Starting new connection for $otnId');
     _otnId = otnId;
     _tasks.clear();
     lastError = null;
@@ -113,7 +117,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   Future<void> disconnect() async {
     final otnId = _otnId;
     if (_rxState.value == SferaRemoteRepositoryState.connected && otnId != null) {
-      Fimber.i('Sending session termination request for $otnId...');
+      _log.info('Sending session termination request for $otnId...');
       final header = messageHeader(sender: otnId.company);
       final sessionTerminationMessage = SferaB2gEventMessageDto.createSessionTermination(messageHeader: header);
       final sferaTrain = Format.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
@@ -151,7 +155,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   void _handleMqttMessage(String xmlMessage) async {
     final message = SferaReplyParser.parse<SferaXmlElementDto>(xmlMessage);
     if (!message.validate()) {
-      Fimber.w('Validation failed for MQTT response $xmlMessage');
+      _log.warning('Validation failed for MQTT response $xmlMessage');
       return;
     }
 
@@ -169,7 +173,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     }
 
     if (!handled) {
-      Fimber.w('Could not handle Sfera reply message $xmlMessage');
+      _log.warning('Could not handle Sfera reply message $xmlMessage');
     }
   }
 
@@ -180,7 +184,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
     }
 
     if (!handled) {
-      Fimber.w('Could not handle Sfera event message $xmlMessage');
+      _log.warning('Could not handle Sfera event message $xmlMessage');
     }
   }
 
@@ -201,7 +205,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
 
   void _onTaskCompleted(SferaTask task, dynamic data) async {
     _tasks.remove(task);
-    Fimber.i('Task $task completed');
+    _log.info('Task $task completed');
     switch (task) {
       case HandshakeTask _:
         await _handleHandshakeTaskCompleted();
@@ -288,7 +292,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
       if (segmentProfile != null && segmentProfile.validate()) {
         _segmentProfiles.add(segmentProfile);
       } else {
-        Fimber.w('Could not find and validate segment profile for ${element.spId}');
+        _log.warning('Could not find and validate segment profile for ${element.spId}');
       }
     }
   }
@@ -308,14 +312,14 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
       if (trainCharacteristics != null && trainCharacteristics.validate()) {
         _trainCharacteristics.add(trainCharacteristics);
       } else {
-        Fimber.w('Could not find and validate $element');
+        _log.warning('Could not find and validate $element');
       }
     }
   }
 
   void _updateJourney({VoidCallback? onSuccess, VoidCallback? onInvalid}) {
     if (_journeyProfile != null && _segmentProfiles.isNotEmpty) {
-      Fimber.d('Updating journey stream...');
+      _log.fine('Updating journey stream...');
       final newJourney = SferaModelMapper.mapToJourney(
         journeyProfile: _journeyProfile!,
         segmentProfiles: _segmentProfiles,
@@ -325,10 +329,10 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
       );
       if (newJourney.valid) {
         _rxJourney.add(newJourney);
-        Fimber.d('Journey updates successfully.');
+        _log.fine('Journey updates successfully.');
         onSuccess?.call();
       } else {
-        Fimber.w('Failed to update journey as it is not valid');
+        _log.warning('Failed to update journey as it is not valid');
         lastError = SferaError.invalid;
         onInvalid?.call();
       }
@@ -370,7 +374,7 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   }
 
   void _onTaskFailed(SferaTask task, SferaError errorCode) {
-    Fimber.e('Task $task failed with error code $errorCode');
+    _log.severe('Task $task failed with error code $errorCode');
     _tasks.remove(task);
     lastError = errorCode;
     if (_rxState.value != SferaRemoteRepositoryState.connected) {

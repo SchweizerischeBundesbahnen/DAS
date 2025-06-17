@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:http_x/component.dart';
 import 'package:logger/src/data/api/log_api_service.dart';
 import 'package:logger/src/data/dto/log_entry_dto.dart';
@@ -17,7 +18,12 @@ void main() {
 
   setUp(() {
     mockClient = MockClient();
-    testee = LogApiService(baseUrl: baseUrl, httpClient: mockClient);
+    GetIt.I.registerSingleton<Client>(mockClient);
+    testee = LogApiService(baseUrl: baseUrl);
+  });
+
+  tearDown(() {
+    GetIt.I.reset();
   });
 
   test('sendLogs_whenCalledWithSuccess_makesPostAndHasExpectedHeaders', () async {

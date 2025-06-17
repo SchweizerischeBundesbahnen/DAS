@@ -8,10 +8,12 @@ import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_row.dart';
 import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
-import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
+
+final _log = Logger('AutomaticAdvancementController');
 
 class AutomaticAdvancementController {
   static const int _minScrollDuration = 1000;
@@ -59,7 +61,7 @@ class AutomaticAdvancementController {
 
     final firstRenderedRow = _findFirstRenderedRow();
     if (firstRenderedRow == null) {
-      Fimber.w('Failed to calculate scroll position: no rendered rows found');
+      _log.warning('Failed to calculate scroll position: no rendered rows found');
       return null;
     }
 
@@ -67,7 +69,7 @@ class AutomaticAdvancementController {
     final toIndex = _renderedRows.indexWhere((it) => it.data == _currentPosition);
 
     if (fromIndex == -1 || toIndex == -1) {
-      Fimber.w(
+      _log.warning(
         'Failed to calculate scroll position because elements do not exist: fromIndex: $fromIndex, toIndex: $toIndex',
       );
       return null;
@@ -92,14 +94,14 @@ class AutomaticAdvancementController {
     final listOffset = WidgetUtil.findOffsetOfKey(tableKey);
 
     if (firstRowOffset == null || listOffset == null) {
-      Fimber.w('Failed to calculate scroll position: firstRowOffset: $firstRowOffset, listOffset: $listOffset');
+      _log.warning('Failed to calculate scroll position: firstRowOffset: $firstRowOffset, listOffset: $listOffset');
       return null;
     }
 
     final renderedDiff = firstRowOffset.dy - listOffset.dy - DASTable.headerRowHeight;
     final stickyHeight = _calculateStickyHeight(_currentPosition!);
 
-    Fimber.d(
+    _log.fine(
       'currentpixels: ${scrollController.position.pixels}, renderedDiff: $renderedDiff, scrollDiff: $scrollDiff, stickyHeight: $stickyHeight',
     );
 
@@ -121,7 +123,7 @@ class AutomaticAdvancementController {
   void _scrollToPosition(double targetScrollPosition) {
     _lastScrollPosition = targetScrollPosition;
 
-    Fimber.d('Scrolling to position $targetScrollPosition');
+    _log.fine('Scrolling to position $targetScrollPosition');
     scrollController.animateTo(
       targetScrollPosition,
       duration: _calculateDuration(targetScrollPosition, 1),
@@ -135,9 +137,7 @@ class AutomaticAdvancementController {
       _scrollTimer?.cancel();
       _scrollTimer = Timer(Duration(seconds: timeController.idleTimeAutoScroll), () {
         if (_rxIsAutomaticAdvancementActive.value) {
-          Fimber.d(
-            'Screen idle time of ${timeController.idleTimeAutoScroll} seconds reached. Scrolling to current position',
-          );
+          _log.fine('Screen idle time of $_screenIdleTimeSeconds seconds reached. Scrolling to current position');
           scrollToCurrentPosition();
         }
       });

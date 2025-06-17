@@ -5,9 +5,11 @@ import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:auth/component.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+
+final _log = Logger('LoginPage');
 
 @RoutePage()
 class LoginPage extends StatefulWidget {
@@ -135,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
         context.router.replace(const JourneySelectionRoute());
       }
     } catch (e) {
-      Fimber.d('Login failed', ex: e);
+      _log.severe('Login failed', e);
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

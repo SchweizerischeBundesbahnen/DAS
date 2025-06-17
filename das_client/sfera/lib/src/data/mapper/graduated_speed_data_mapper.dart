@@ -1,9 +1,11 @@
-import 'package:fimber/fimber.dart';
+import 'package:logging/logging.dart';
 import 'package:sfera/src/data/dto/graduated_speed_info_dto.dart';
 import 'package:sfera/src/data/dto/velocity_dto.dart';
 import 'package:sfera/src/model/journey/speed_data.dart';
 import 'package:sfera/src/model/journey/speeds.dart';
 import 'package:sfera/src/model/journey/train_series.dart';
+
+final _log = Logger('GraduatedSpeedDataMapper');
 
 /// Used to map data from SFERA to domain model [SpeedData].
 class GraduatedSpeedDataMapper {
@@ -20,7 +22,7 @@ class GraduatedSpeedDataMapper {
         final speeds = Speeds.from(trainSeries, speedString, breakSeries: breakSeries, reduced: reduced);
         graduatedSpeeds.add(speeds);
       } catch (e) {
-        Fimber.w('Could not parse station speed with "$speedString"', ex: e);
+        _log.warning('Could not parse station speed with "$speedString"', e);
       }
     }
 
@@ -44,7 +46,7 @@ class GraduatedSpeedDataMapper {
         final speeds = Speeds.from(trainSeries, speedString, text: text);
         graduatedStationSpeeds.add(speeds);
       } catch (e) {
-        Fimber.w('Could not parse graduated station speed with "$speedString"', ex: e);
+        _log.warning('Could not parse graduated station speed with "$speedString"', e);
       }
     }
 

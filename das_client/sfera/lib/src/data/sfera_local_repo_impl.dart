@@ -2,20 +2,22 @@ import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
+import 'package:sfera/src/data/local/tables/journey_profile_table.dart';
+import 'package:sfera/src/data/local/tables/segment_profile_table.dart';
+import 'package:sfera/src/data/local/tables/train_characteristics_table.dart';
 import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
 import 'package:sfera/src/data/sfera_local_repo.dart';
 import 'package:sfera/src/model/journey/journey.dart';
 
 class SferaLocalRepoImpl implements SferaLocalRepo {
-  const SferaLocalRepoImpl({required SferaLocalDatabaseService databaseRepository})
-    : _databaseRepository = databaseRepository;
+  const SferaLocalRepoImpl({required SferaLocalDatabaseService localService}) : _databaseService = localService;
 
-  final SferaLocalDatabaseService _databaseRepository;
+  final SferaLocalDatabaseService _databaseService;
 
   @override
   Stream<Journey?> journeyStream({required String company, required String trainNumber, required DateTime startDate}) {
     final date = DateTime(startDate.year, startDate.month, startDate.day);
-    return _databaseRepository.observeJourneyProfile(company, trainNumber, date).asyncMap((entity) async {
+    return _databaseService.observeJourneyProfile(company, trainNumber, date).asyncMap((entity) async {
       if (entity == null) {
         return Future.value(null);
       }
@@ -35,7 +37,7 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
   Future<List<TrainCharacteristicsDto>> _loadTrainCharacteristics(JourneyProfileDto journeyProfile) async {
     final trainCharacteristics = <TrainCharacteristicsDto>[];
     for (final tcReference in journeyProfile.trainCharacteristicsRefSet) {
-      final trainCharacteristic = await _databaseRepository.findTrainCharacteristics(
+      final trainCharacteristic = await _databaseService.findTrainCharacteristics(
         tcReference.tcId,
         tcReference.versionMajor,
         tcReference.versionMinor,
@@ -50,7 +52,7 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
   Future<List<SegmentProfileDto>> _loadSegmentProfiles(JourneyProfileDto journeyProfile) async {
     final segmentProfiles = <SegmentProfileDto>[];
     for (final spReference in journeyProfile.segmentProfileReferences) {
-      final segmentProfile = await _databaseRepository.findSegmentProfile(
+      final segmentProfile = await _databaseService.findSegmentProfile(
         spReference.spId,
         spReference.versionMajor,
         spReference.versionMinor,

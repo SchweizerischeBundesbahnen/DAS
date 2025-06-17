@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import { SbbFormFieldModule } from "@sbb-esta/angular/form-field";
 import { SbbInputModule } from "@sbb-esta/angular/input";
@@ -39,6 +39,11 @@ import { ActivatedRoute } from "@angular/router";
   styleUrl: './sfera-observer.component.scss'
 })
 export class SferaObserverComponent implements OnInit, OnDestroy {
+  private oidcSecurityService = inject(OidcSecurityService);
+  protected mqService = inject(MqService);
+  private sessionsService = inject(SessionsService);
+  private route = inject(ActivatedRoute);
+
   companyControl = new FormControl('1085', {nonNullable: true});
   trainControl = new FormControl('1513', {nonNullable: true});
   dateControl = new FormControl(new Date().toISOString().split('T')[0], {nonNullable: true});
@@ -57,12 +62,6 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
   eventSubscription?: Subscription;
 
   protected readonly MqttConnectionState = MqttConnectionState;
-
-  constructor(private oidcSecurityService: OidcSecurityService,
-              protected mqService: MqService,
-              private sessionsService: SessionsService,
-              private route: ActivatedRoute) {
-  }
 
   ngOnInit() {
     const params = this.route.snapshot.paramMap;
