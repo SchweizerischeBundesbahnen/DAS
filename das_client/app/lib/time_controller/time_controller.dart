@@ -14,7 +14,7 @@ class TimeController {
   final int idleTimeDASModalSheet = 10;
   final int idleTimeAutoScroll = 10;
 
-  DateTime? _lastUpdate;
+  DateTime? lastUpdate;
   Timer? _updateTimer;
   Journey? _lastJourney;
   PunctualityState? _lastEmittedState;
@@ -25,7 +25,7 @@ class TimeController {
 
   void startMonitoring() {
     _updateTimer = Timer.periodic(const Duration(milliseconds: 100), (_) {
-      final duration = _lastUpdate != null ? clock.now().difference(_lastUpdate!) : Duration.zero;
+      final duration = lastUpdate != null ? clock.now().difference(lastUpdate!) : Duration.zero;
       final state = _getPunctualityStateFromDuration(duration);
       _emitState(state);
     });
@@ -48,8 +48,8 @@ class TimeController {
     final isNewJourney = journey != _lastJourney;
     _lastJourney = journey;
 
-    if (isNewJourney || _lastUpdate == null) {
-      _lastUpdate = clock.now();
+    if (isNewJourney || lastUpdate == null) {
+      lastUpdate = clock.now();
       _emitState(PunctualityState.visible);
     }
   }

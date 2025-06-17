@@ -28,6 +28,7 @@ class _TimeContainerState extends State<TimeContainer> {
   void initState() {
     super.initState();
     timeController = DI.get<TimeController>();
+    timeController!.lastUpdate = DateTime.now();
     timeController!.startMonitoring();
     viewModel = context.read<TrainJourneyViewModel>();
   }

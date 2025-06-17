@@ -33,7 +33,7 @@ class DASBaseScope extends DIScope {
 extension BaseScopeExtension on GetIt {
   void _registerTimeController() {
     _log.fine('Register TimeController');
-    GetIt.I.registerLazySingleton<TimeController>(() => TimeController());
+    registerSingleton(TimeController());
   }
 
   void registerBrightnessManager() {
