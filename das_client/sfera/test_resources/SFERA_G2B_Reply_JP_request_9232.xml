@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<SFERA_G2B_ReplyMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="SFERA_v3.00.xsd">
+<SFERA_G2B_ReplyMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd">
     <MessageHeader SFERA_version="1.91" message_ID="bfc9754f-2361-49d1-90af-4c4fac7f419f" timestamp="2022-05-06T10:52:46Z" sourceDevice="INFRABEL">
         <Sender>0088</Sender>
         <Recipient>1088</Recipient>

@@ -1,6 +1,1 @@
-<?xml version="1.0"?>
-<TrainCharacteristics xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd" TC_ID="T5_1" TC_VersionMajor="1"
-                      TC_VersionMinor="1">
-    <TC_RU_ID>1185</TC_RU_ID>
-    <TC_Features trainCategoryCode="R" brakedWeightPercentage="115"/>
-</TrainCharacteristics>
+../../../../sfera_mock/src/main/resources/static_sfera_resources/T5_breaking_series/SFERA_TC_T5_1.xml
