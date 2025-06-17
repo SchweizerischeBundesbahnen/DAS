@@ -10,14 +10,14 @@ import 'package:sfera/src/data/sfera_local_repo.dart';
 import 'package:sfera/src/model/journey/journey.dart';
 
 class SferaLocalRepoImpl implements SferaLocalRepo {
-  const SferaLocalRepoImpl({required SferaLocalDatabaseService localService}) : _databaseRepository = localService;
+  const SferaLocalRepoImpl({required SferaLocalDatabaseService localService}) : _databaseService = localService;
 
-  final SferaLocalDatabaseService _databaseRepository;
+  final SferaLocalDatabaseService _databaseService;
 
   @override
   Stream<Journey?> journeyStream({required String company, required String trainNumber, required DateTime startDate}) {
     final date = DateTime(startDate.year, startDate.month, startDate.day);
-    return _databaseRepository.observeJourneyProfile(company, trainNumber, date).asyncMap((entity) async {
+    return _databaseService.observeJourneyProfile(company, trainNumber, date).asyncMap((entity) async {
       if (entity == null) {
         return Future.value(null);
       }
@@ -37,7 +37,7 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
   Future<List<TrainCharacteristicsDto>> _loadTrainCharacteristics(JourneyProfileDto journeyProfile) async {
     final trainCharacteristics = <TrainCharacteristicsDto>[];
     for (final tcReference in journeyProfile.trainCharacteristicsRefSet) {
-      final trainCharacteristic = await _databaseRepository.findTrainCharacteristics(
+      final trainCharacteristic = await _databaseService.findTrainCharacteristics(
         tcReference.tcId,
         tcReference.versionMajor,
         tcReference.versionMinor,
@@ -52,7 +52,7 @@ class SferaLocalRepoImpl implements SferaLocalRepo {
   Future<List<SegmentProfileDto>> _loadSegmentProfiles(JourneyProfileDto journeyProfile) async {
     final segmentProfiles = <SegmentProfileDto>[];
     for (final spReference in journeyProfile.segmentProfileReferences) {
-      final segmentProfile = await _databaseRepository.findSegmentProfile(
+      final segmentProfile = await _databaseService.findSegmentProfile(
         spReference.spId,
         spReference.versionMajor,
         spReference.versionMinor,
