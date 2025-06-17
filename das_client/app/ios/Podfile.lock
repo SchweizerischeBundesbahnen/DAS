@@ -33,6 +33,28 @@ PODS:
     - Flutter
   - sensors_plus (0.0.1):
     - Flutter
+  - sqlite3 (3.50.1):
+    - sqlite3/common (= 3.50.1)
+  - sqlite3/common (3.50.1)
+  - sqlite3/dbstatvtab (3.50.1):
+    - sqlite3/common
+  - sqlite3/fts5 (3.50.1):
+    - sqlite3/common
+  - sqlite3/math (3.50.1):
+    - sqlite3/common
+  - sqlite3/perf-threadsafe (3.50.1):
+    - sqlite3/common
+  - sqlite3/rtree (3.50.1):
+    - sqlite3/common
+  - sqlite3_flutter_libs (0.0.1):
+    - Flutter
+    - FlutterMacOS
+    - sqlite3 (~> 3.50.1)
+    - sqlite3/dbstatvtab
+    - sqlite3/fts5
+    - sqlite3/math
+    - sqlite3/perf-threadsafe
+    - sqlite3/rtree
   - volume_controller (0.0.1):
     - Flutter
   - wakelock_plus (0.0.1):
@@ -52,12 +74,14 @@ DEPENDENCIES:
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - screen_brightness_ios (from `.symlinks/plugins/screen_brightness_ios/ios`)
   - sensors_plus (from `.symlinks/plugins/sensors_plus/ios`)
+  - sqlite3_flutter_libs (from `.symlinks/plugins/sqlite3_flutter_libs/darwin`)
   - volume_controller (from `.symlinks/plugins/volume_controller/ios`)
   - wakelock_plus (from `.symlinks/plugins/wakelock_plus/ios`)
 
 SPEC REPOS:
   trunk:
     - AppAuth
+    - sqlite3
 
 EXTERNAL SOURCES:
   audioplayers_darwin:
@@ -86,6 +110,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/screen_brightness_ios/ios"
   sensors_plus:
     :path: ".symlinks/plugins/sensors_plus/ios"
+  sqlite3_flutter_libs:
+    :path: ".symlinks/plugins/sqlite3_flutter_libs/darwin"
   volume_controller:
     :path: ".symlinks/plugins/volume_controller/ios"
   wakelock_plus:
@@ -106,6 +132,8 @@ SPEC CHECKSUMS:
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   screen_brightness_ios: 7437207a2a9bc56553aa10f782afecf830b4c4e2
   sensors_plus: 7229095999f30740798f0eeef5cd120357a8f4f2
+  sqlite3: 1d85290c3321153511f6e900ede7a1608718bbd5
+  sqlite3_flutter_libs: 2c48c4ee7217fd653251975e43412250d5bcbbe2
   volume_controller: 2e3de73d6e7e81a0067310d17fb70f2f86d71ac7
   wakelock_plus: 76957ab028e12bfa4e66813c99e46637f367fc7e
 

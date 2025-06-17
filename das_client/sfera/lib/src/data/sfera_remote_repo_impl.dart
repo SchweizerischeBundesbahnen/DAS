@@ -30,6 +30,8 @@ import 'package:sfera/src/data/dto/ux_testing_nse_dto.dart';
 import 'package:sfera/src/data/dto/warn_app_msg_dto.dart';
 import 'package:sfera/src/data/format.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
+import 'package:sfera/src/data/local/tables/segment_profile_table.dart';
+import 'package:sfera/src/data/local/tables/train_characteristics_table.dart';
 import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
 import 'package:uuid/uuid.dart';
 
