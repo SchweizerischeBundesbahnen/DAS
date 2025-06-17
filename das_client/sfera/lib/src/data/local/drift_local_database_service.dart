@@ -9,7 +9,7 @@ import 'package:sfera/src/data/local/tables/journey_profile_table.dart';
 import 'package:sfera/src/data/local/tables/segment_profile_table.dart';
 import 'package:sfera/src/data/local/tables/train_characteristics_table.dart';
 
-part 'drift_database_service.g.dart';
+part 'drift_local_database_service.g.dart';
 
 final _log = Logger('DriftDatabaseService');
 
@@ -20,8 +20,8 @@ final _log = Logger('DriftDatabaseService');
     TrainCharacteristicsTable,
   ],
 )
-class DriftDatabaseService extends _$DriftDatabaseService implements SferaLocalDatabaseService {
-  DriftDatabaseService() : super(driftDatabase(name: 'sfera_db'));
+class DriftLocalDatabaseService extends _$DriftLocalDatabaseService implements SferaLocalDatabaseService {
+  DriftLocalDatabaseService() : super(driftDatabase(name: 'sfera_db'));
 
   @override
   int get schemaVersion => 1;

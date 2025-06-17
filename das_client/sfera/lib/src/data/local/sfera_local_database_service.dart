@@ -1,7 +1,7 @@
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
-import 'package:sfera/src/data/local/drift_database_service.dart';
+import 'package:sfera/src/data/local/drift_local_database_service.dart';
 
 abstract class SferaLocalDatabaseService {
   const SferaLocalDatabaseService._();

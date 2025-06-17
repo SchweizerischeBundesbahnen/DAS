@@ -10,8 +10,7 @@ import 'package:sfera/src/data/sfera_local_repo.dart';
 import 'package:sfera/src/model/journey/journey.dart';
 
 class SferaLocalRepoImpl implements SferaLocalRepo {
-  const SferaLocalRepoImpl({required SferaLocalDatabaseService databaseRepository})
-    : _databaseRepository = databaseRepository;
+  const SferaLocalRepoImpl({required SferaLocalDatabaseService localService}) : _databaseRepository = localService;
 
   final SferaLocalDatabaseService _databaseRepository;
 
