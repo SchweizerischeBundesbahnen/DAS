@@ -137,7 +137,9 @@ class AutomaticAdvancementController {
       _scrollTimer?.cancel();
       _scrollTimer = Timer(Duration(seconds: timeController.idleTimeAutoScroll), () {
         if (_rxIsAutomaticAdvancementActive.value) {
-          _log.fine('Screen idle time of $_screenIdleTimeSeconds seconds reached. Scrolling to current position');
+          _log.fine(
+            'Screen idle time of ${timeController.idleTimeAutoScroll} seconds reached. Scrolling to current position',
+          );
           scrollToCurrentPosition();
         }
       });
