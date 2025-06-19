@@ -28,13 +28,3 @@ abstract class SferaRemoteRepo {
 
   MessageHeaderDto messageHeader({required String sender});
 }
-
-enum SferaRemoteRepositoryState {
-  disconnected,
-  connecting,
-  handshaking,
-  loadingJourney,
-  loadingAdditionalData,
-  connected,
-  offline,
-}

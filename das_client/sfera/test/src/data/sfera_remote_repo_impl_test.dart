@@ -4,7 +4,7 @@ import 'package:mockito/mockito.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
-import 'package:sfera/src/data/sfera_remote_repo_impl.dart';
+import 'package:sfera/src/data/repository/sfera_remote_repo_impl.dart';
 import 'package:uuid/uuid.dart';
 
 import 'sfera_remote_repo_impl_test.mocks.dart';
@@ -46,7 +46,6 @@ void main() {
       emitsInOrder([
         SferaRemoteRepositoryState.disconnected, // seeded state
         SferaRemoteRepositoryState.connecting,
-        SferaRemoteRepositoryState.handshaking,
       ]),
     );
 

@@ -65,12 +65,8 @@ class TrainJourneyViewModel {
           _enableWarnapp();
           break;
         case SferaRemoteRepositoryState.connecting:
-        case SferaRemoteRepositoryState.handshaking:
-        case SferaRemoteRepositoryState.loadingJourney:
-        case SferaRemoteRepositoryState.loadingAdditionalData:
           break;
         case SferaRemoteRepositoryState.disconnected:
-        case SferaRemoteRepositoryState.offline:
           WakelockPlus.disable();
           _disableWarnapp();
           if (_sferaRemoteRepo.lastError != null) {
