@@ -23,7 +23,7 @@ extension JourneyScopeExtension on GetIt {
   void registerJourneyNavigationViewModel() {
     factoryFunc() {
       _log.fine('Register JourneyNavigationViewModel');
-      return JourneyNavigationViewModel();
+      return JourneyNavigationViewModel(sferaRepo: DI.get());
     }
 
     registerLazySingleton<JourneyNavigationViewModel>(

@@ -33,6 +33,7 @@ import 'package:sfera/src/data/local/sfera_local_database_service.dart';
 import 'package:sfera/src/data/local/tables/segment_profile_table.dart';
 import 'package:sfera/src/data/local/tables/train_characteristics_table.dart';
 import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
+import 'package:sfera/src/model/otn_id.dart';
 import 'package:uuid/uuid.dart';
 
 final _log = Logger('SferaRemoteRepoImpl');
@@ -92,7 +93,8 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
   /// Connects to SFERA broker and initiate Handshake with [HandshakeTask].
   /// Other tasks like loading SP, JPs and TCs are triggered on completion.
   @override
-  Future<void> connect(OtnId otnId) async {
+  Future<void> connect(TrainIdentification trainId) async {
+    final OtnId otnId = _toOtnId(trainId);
     _log.info('Starting new connection for $otnId');
     _otnId = otnId;
     _tasks.clear();
@@ -108,6 +110,15 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
       lastError = SferaError.connectionFailed;
       _rxState.add(SferaRemoteRepositoryInternalState.disconnected);
     }
+  }
+
+  OtnId _toOtnId(TrainIdentification trainId) {
+    final otnId = OtnId(
+      company: trainId.ru.companyCode,
+      operationalTrainNumber: trainId.trainNumber,
+      startDate: trainId.date,
+    );
+    return otnId;
   }
 
   /// Sends [SessionTermination] and disconnects from SFERA broker.

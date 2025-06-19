@@ -6,6 +6,9 @@ import 'package:sfera/component.dart';
 final _log = Logger('JourneyNavigationViewModel');
 
 class JourneyNavigationViewModel {
+  JourneyNavigationViewModel({required SferaRemoteRepo sferaRepo}) : _sferaRemoteRepo = sferaRepo;
+
+  final SferaRemoteRepo _sferaRemoteRepo;
   final List<TrainIdentification> _trainIds = [];
   final _rxModel = BehaviorSubject<JourneyNavigationModel?>.seeded(null);
 
@@ -18,12 +21,11 @@ class JourneyNavigationViewModel {
   TrainIdentification? get _currentTrainId => _rxModel.value?.trainIdentification;
 
   void push(TrainIdentification trainId) {
-    if (_trainIds.isNotEmpty && _currentTrainId == trainId) {
-      return;
-    }
-    if (!_trainIds.contains(trainId)) {
-      _trainIds.add(trainId);
-    }
+    if (_trainIds.isNotEmpty && _currentTrainId == trainId) return;
+
+    if (!_trainIds.contains(trainId)) _trainIds.add(trainId);
+
+    _sferaRemoteRepo.connect(trainId);
     _addToStream(trainId);
   }
 

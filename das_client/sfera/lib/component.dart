@@ -53,7 +53,6 @@ export 'package:sfera/src/model/journey/tram_area.dart';
 export 'package:sfera/src/model/journey/ux_testing_event.dart';
 export 'package:sfera/src/model/journey/warnapp_event.dart';
 export 'package:sfera/src/model/journey/whistles.dart';
-export 'package:sfera/src/model/otn_id.dart';
 export 'package:sfera/src/model/ru.dart';
 export 'package:sfera/src/model/train_identification.dart';
 export 'package:sfera/src/provider/sfera_auth_provider.dart';

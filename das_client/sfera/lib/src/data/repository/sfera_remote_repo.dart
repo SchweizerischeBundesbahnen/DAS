@@ -2,7 +2,6 @@ import 'dart:core';
 
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/message_header_dto.dart';
-import 'package:sfera/src/data/dto/otn_id_dto.dart';
 
 /// Handles connection and message exchange with SFERA broker
 abstract class SferaRemoteRepo {
@@ -18,8 +17,8 @@ abstract class SferaRemoteRepo {
 
   SferaError? get lastError;
 
-  /// Connect to the SFERA broker with the given [OtnIdDto] train identification
-  Future<void> connect(OtnId otnId);
+  /// Connect to the SFERA broker with the given train identification
+  Future<void> connect(TrainIdentification otnId);
 
   /// Disconnects from SFERA broker
   Future<void> disconnect();
