@@ -7,7 +7,6 @@ import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_input.dart';
-import 'package:app/pages/journey/selection/widgets/journey_load_button.dart';
 import 'package:app/pages/journey/selection/widgets/journey_railway_undertaking_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_train_number_input.dart';
 import 'package:app/pages/journey/selection/widgets/logout_button.dart';
@@ -79,7 +78,7 @@ class _ContentState extends State<_Content> {
               children: [
                 _header(context),
                 Expanded(child: _body(context)),
-                JourneyLoadButton(),
+                _loadJourneyButton(context),
               ],
             ),
           ),
@@ -132,6 +131,28 @@ class _ContentState extends State<_Content> {
             title: context.l10n.c_something_went_wrong,
             description: e.errorCode.displayText(context),
             messageCode: '${context.l10n.c_error_code}: ${e.errorCode.code.toString()}',
+          ),
+        };
+      },
+    );
+  }
+
+  Widget _loadJourneyButton(BuildContext context) {
+    final viewModel = context.read<JourneySelectionViewModel>();
+    return StreamBuilder(
+      stream: viewModel.model,
+      builder: (context, snapshot) {
+        final model = snapshot.data;
+        if (model == null) return SBBLoadingIndicator();
+
+        return switch (model) {
+          final Loading _ || final Loaded _ || Error _ => SizedBox.shrink(),
+          final Selecting s => Padding(
+            padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing / 2),
+            child: SBBPrimaryButton(
+              label: context.l10n.c_button_confirm,
+              onPressed: s.isInputComplete ? () => viewModel.loadTrainJourney() : null,
+            ),
           ),
         };
       },

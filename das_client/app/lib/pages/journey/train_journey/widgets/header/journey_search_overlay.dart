@@ -1,8 +1,8 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_input.dart';
-import 'package:app/pages/journey/selection/widgets/journey_load_button.dart';
 import 'package:app/pages/journey/selection/widgets/journey_railway_undertaking_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_train_number_input.dart';
 import 'package:app/theme/theme_util.dart';
@@ -166,7 +166,7 @@ class _JourneySearchOverlayState extends State<JourneySearchOverlay> with Single
                   ],
                 ),
               ),
-              JourneyLoadButton(),
+              _loadJourneyButton(context),
             ],
           ),
         ),
@@ -190,6 +190,33 @@ class _JourneySearchOverlayState extends State<JourneySearchOverlay> with Single
           icon: SBBIcons.cross_small,
         ),
       ],
+    );
+  }
+
+  Widget _loadJourneyButton(BuildContext context) {
+    final viewModel = context.read<JourneySelectionViewModel>();
+    return StreamBuilder(
+      stream: viewModel.model,
+      builder: (context, snapshot) {
+        final model = snapshot.data;
+        if (model == null) return SBBLoadingIndicator();
+
+        return switch (model) {
+          final Loading _ || final Loaded _ || Error _ => SizedBox.shrink(),
+          final Selecting s => Padding(
+            padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing / 2),
+            child: SBBPrimaryButton(
+              label: context.l10n.c_button_confirm,
+              onPressed: s.isInputComplete
+                  ? () {
+                      _removeOverlay();
+                      viewModel.loadTrainJourney();
+                    }
+                  : null,
+            ),
+          ),
+        };
+      },
     );
   }
 }
