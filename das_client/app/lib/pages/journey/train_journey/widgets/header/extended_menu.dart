@@ -10,6 +10,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
+const _anchorsOffset = Offset(0, sbbDefaultSpacing / 2);
+
 class ExtendedMenu extends StatefulWidget {
   static const Key menuButtonKey = Key('extendedMenuButton');
   static const Key menuButtonCloseKey = Key('closeExtendedMenuButton');
@@ -23,7 +25,8 @@ class ExtendedMenu extends StatefulWidget {
 
 class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderStateMixin {
   static const extendedMenuContentWidth = 360.0;
-  static const extendedMenuContentHeightOffset = 10;
+
+  final _layerLink = LayerLink();
 
   OverlayEntry? overlayEntry;
   late AnimationController _controller;
@@ -61,10 +64,13 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    return SBBIconButtonLarge(
-      key: ExtendedMenu.menuButtonKey,
-      icon: SBBIcons.context_menu_small,
-      onPressed: () => _showOverlay(context),
+    return CompositedTransformTarget(
+      link: _layerLink,
+      child: SBBIconButtonLarge(
+        key: ExtendedMenu.menuButtonKey,
+        icon: SBBIcons.context_menu_small,
+        onPressed: () => _showOverlay(context),
+      ),
     );
   }
 
@@ -77,9 +83,6 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
 
   void _showOverlay(BuildContext context) {
     final overlayState = Overlay.of(context);
-    final renderBox = context.findRenderObject() as RenderBox;
-    final positionOffset = renderBox.localToGlobal(Offset.zero);
-    final size = renderBox.size;
     final viewModel = context.read<TrainJourneyViewModel>();
 
     overlayEntry = OverlayEntry(
@@ -96,9 +99,11 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
                 ),
               ),
               // Positioned extended menu
-              Positioned(
-                left: positionOffset.dx - extendedMenuContentWidth / 2 + size.width / 2,
-                top: positionOffset.dy + size.height + extendedMenuContentHeightOffset,
+              CompositedTransformFollower(
+                link: _layerLink,
+                offset: _anchorsOffset,
+                targetAnchor: Alignment.bottomCenter,
+                followerAnchor: Alignment.topCenter,
                 child: _menu(context),
               ),
             ],
