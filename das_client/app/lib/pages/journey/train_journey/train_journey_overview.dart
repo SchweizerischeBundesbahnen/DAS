@@ -1,4 +1,9 @@
+import 'dart:async';
+
 import 'package:app/di/di.dart';
+import 'package:app/nav/app_router.dart';
+import 'package:app/pages/journey/navigation/journey_navigation_model.dart';
+import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/train_journey/ux_testing_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_modal.dart';
@@ -14,12 +19,39 @@ import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/sound/koa_sound.dart';
 import 'package:app/sound/sound.dart';
 import 'package:app/sound/warn_app_sound.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sfera/component.dart';
 
-class TrainJourneyOverview extends StatelessWidget {
+class TrainJourneyOverview extends StatefulWidget {
   const TrainJourneyOverview({super.key});
+
+  @override
+  State<TrainJourneyOverview> createState() => _TrainJourneyOverviewState();
+}
+
+class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
+  final _navigationVM = DI.get<JourneyNavigationViewModel>();
+  late StreamSubscription<JourneyNavigationModel?> _navigationSubscription;
+  late TrainIdentification? _trainIdentification;
+
+  @override
+  void initState() {
+    super.initState();
+    _trainIdentification = _navigationVM.modelValue?.trainIdentification;
+    _navigationSubscription = _navigationVM.model.listen((model) async {
+      if (model?.trainIdentification != _trainIdentification) {
+        if (mounted) context.router.replace(JourneySelectionRoute());
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _navigationSubscription.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

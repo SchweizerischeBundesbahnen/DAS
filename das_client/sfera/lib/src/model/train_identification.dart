@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart';
+import 'package:sfera/src/data/mapper/datetime_x.dart';
 import 'package:sfera/src/model/ru.dart';
 
 @sealed
@@ -18,8 +19,8 @@ class TrainIdentification {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other.runtimeType != runtimeType) return false;
-    final TrainIdentification otherId = other as TrainIdentification;
-    return ru == otherId.ru && trainNumber == otherId.trainNumber && date == otherId.date;
+    other as TrainIdentification;
+    return ru == other.ru && trainNumber == other.trainNumber && date.isSameDay(other.date);
   }
 
   @override

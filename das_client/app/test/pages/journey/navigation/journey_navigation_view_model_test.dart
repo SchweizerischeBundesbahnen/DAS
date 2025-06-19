@@ -16,11 +16,18 @@ void main() {
     late StreamSubscription sub;
     late MockSferaRemoteRepo mockSferaRepo;
 
-    final tomorrow = DateTime.now().add(Duration(days: 1));
-    final yesterday = DateTime.now().subtract(Duration(days: 1));
-    final trainId1 = TrainIdentification(ru: RailwayUndertaking.sbbP, trainNumber: '1234', date: DateTime.now());
+    final now = DateTime(1970, 1, 1);
+    final tomorrow = now.add(Duration(days: 1));
+    final yesterday = now.subtract(Duration(days: 1));
+    final nowPlusFiveMinutes = now.add(Duration(minutes: 5));
+    final trainId1 = TrainIdentification(ru: RailwayUndertaking.sbbP, trainNumber: '1234', date: now);
     final trainId2 = TrainIdentification(ru: RailwayUndertaking.sbbC, trainNumber: '5678', date: tomorrow);
     final trainId3 = TrainIdentification(ru: RailwayUndertaking.blsP, trainNumber: '9999', date: yesterday);
+    final trainIdSameAs1 = TrainIdentification(
+      ru: RailwayUndertaking.sbbP,
+      trainNumber: '1234',
+      date: nowPlusFiveMinutes,
+    );
 
     setUp(() {
       mockSferaRepo = MockSferaRemoteRepo();

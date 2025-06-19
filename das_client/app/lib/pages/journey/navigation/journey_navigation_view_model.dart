@@ -22,6 +22,7 @@ class JourneyNavigationViewModel {
 
   void push(TrainIdentification trainId) {
     if (_currentTrainId == trainId) return;
+    _log.fine('Pushing');
 
     if (_trainIds.isNotEmpty) _sferaRemoteRepo.disconnect();
 
