@@ -22,7 +22,7 @@ class JourneyLoadButton extends StatelessWidget {
           final Selecting s => Padding(
             padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing / 2),
             child: SBBPrimaryButton(
-              label: context.l10n.c_button_confirm,
+              label: context.l10n.c_load_journey_button,
               onPressed: s.isInputComplete ? () => viewModel.loadTrainJourney() : null,
             ),
           ),

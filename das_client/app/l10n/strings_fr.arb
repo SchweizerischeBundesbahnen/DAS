@@ -87,6 +87,7 @@
   "c_error_sfera_invalid": "Données incomplètes",
   "c_connection_track_weiche": "Aiguille",
   "c_button_confirm": "Appliquer",
+  "c_load_journey_button": "Ouvrir Marche",
   "c_radn": "RADN",
   "w_modal_sheet_warn_function_stop_message": "Arrêt!",
   "w_modal_sheet_warn_function_manoeuvre_button": "Manœuvrer",
@@ -95,5 +96,6 @@
   "w_modal_sheet_battery_status_plug_in_device": "Branche ton appareil au réseau électrique.",
   "w_modal_sheet_permissions_title": "Le client DAS a besoin d’autorisations système",
   "w_modal_sheet_permission_brightness": "Pour adapter la luminosité de l’écran, le client DAS doit accéder aux paramètres système.",
-  "w_modal_sheet_button_grant_permission": "Octroyer les autorisations"
+  "w_modal_sheet_button_grant_permission": "Octroyer les autorisations",
+  "w_journey_search_overlay_title": "Rechercher Marche"
 }

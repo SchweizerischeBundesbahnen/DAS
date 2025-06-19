@@ -2,6 +2,7 @@ import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_input.dart';
+import 'package:app/pages/journey/selection/widgets/journey_load_button.dart';
 import 'package:app/pages/journey/selection/widgets/journey_railway_undertaking_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_train_number_input.dart';
 import 'package:app/theme/theme_util.dart';
@@ -30,28 +31,28 @@ class _JourneySearchOverlayState extends State<JourneySearchOverlay> with Single
   final _overlayController = OverlayPortalController();
   final LayerLink _layerLink = LayerLink();
 
-  late AnimationController _controller;
+  late AnimationController _animationController;
   late Animation<double> _opacityAnimation;
   late Animation<double> _scaleAnimation;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
+    _animationController = AnimationController(
       duration: const Duration(milliseconds: 100),
       vsync: this,
     );
 
     _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
-        parent: _controller,
+        parent: _animationController,
         curve: Curves.easeInOut,
       ),
     );
 
     _scaleAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(
       CurvedAnimation(
-        parent: _controller,
+        parent: _animationController,
         curve: Curves.easeInOut,
       ),
     );
@@ -59,7 +60,7 @@ class _JourneySearchOverlayState extends State<JourneySearchOverlay> with Single
 
   @override
   void dispose() {
-    _controller.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -110,11 +111,11 @@ class _JourneySearchOverlayState extends State<JourneySearchOverlay> with Single
 
   Future<void> _showOverlay() async {
     _overlayController.show();
-    _controller.forward();
+    _animationController.forward();
   }
 
   Future<void> _removeOverlay() async {
-    await _controller.reverse();
+    await _animationController.reverse();
     _overlayController.hide();
   }
 
@@ -159,12 +160,13 @@ class _JourneySearchOverlayState extends State<JourneySearchOverlay> with Single
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    JourneyTrainNumberInput(),
-                    JourneyDateInput(),
-                    JourneyRailwayUndertakingInput(),
+                    JourneyTrainNumberInput(isModalVersion: true),
+                    JourneyDateInput(isModalVersion: true),
+                    JourneyRailwayUndertakingInput(isModalVersion: true),
                   ],
                 ),
               ),
+              JourneyLoadButton(),
             ],
           ),
         ),
@@ -178,7 +180,7 @@ class _JourneySearchOverlayState extends State<JourneySearchOverlay> with Single
       children: [
         Expanded(
           child: Text(
-            context.l10n.w_extended_menu_title,
+            context.l10n.w_journey_search_overlay_title,
             style: DASTextStyles.largeLight,
           ),
         ),

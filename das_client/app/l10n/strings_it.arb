@@ -87,6 +87,7 @@
   "c_error_sfera_invalid": "Ricevuti dati incompleti",
   "c_connection_track_weiche": "Scambio",
   "c_button_confirm": "Conferma",
+  "c_load_journey_button": "Apri Orario",
   "c_radn": "RADN",
   "w_modal_sheet_warn_function_stop_message": "Fermata!",
   "w_modal_sheet_warn_function_manoeuvre_button": "Manovra",
@@ -95,5 +96,6 @@
   "w_modal_sheet_battery_status_plug_in_device": "Collega il dispositivo alla rete elettrica.",
   "w_modal_sheet_permissions_title": "DAS Client richiede autorizzazioni di sistema",
   "w_modal_sheet_permission_brightness": "Per regolare la luminosità dello schermo, DAS Client richiede le autorizzazioni necessarie per accedere alle impostazioni di sistema.",
-  "w_modal_sheet_button_grant_permission": "Concedi le autorizzazioni"
+  "w_modal_sheet_button_grant_permission": "Concedi le autorizzazioni",
+  "w_journey_search_overlay_title": "Ricerca Orario"
 }
