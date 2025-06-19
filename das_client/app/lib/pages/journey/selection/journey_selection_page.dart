@@ -7,12 +7,13 @@ import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_input.dart';
+import 'package:app/pages/journey/selection/widgets/journey_load_button.dart';
 import 'package:app/pages/journey/selection/widgets/journey_railway_undertaking_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_train_number_input.dart';
+import 'package:app/pages/journey/selection/widgets/logout_button.dart';
 import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
 import 'package:app/util/error_code.dart';
 import 'package:app/widgets/header.dart';
-import 'package:auth/component.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -36,7 +37,7 @@ class JourneySelectionPage extends StatelessWidget implements AutoRouteWrapper {
     return DASJourneyScaffold(
       body: _Content(),
       appBarTitle: context.l10n.c_app_name,
-      appBarTrailingAction: _LogoutButton(),
+      appBarTrailingAction: LogoutButton(),
     );
   }
 }
@@ -76,9 +77,9 @@ class _ContentState extends State<_Content> {
             hasScrollBody: false,
             child: Column(
               children: [
-                _Header(),
-                Expanded(child: _Body()),
-                _LoadJourneyButton(),
+                _header(context),
+                Expanded(child: _body(context)),
+                JourneyLoadButton(),
               ],
             ),
           ),
@@ -92,11 +93,8 @@ class _ContentState extends State<_Content> {
     _subscription.cancel();
     super.dispose();
   }
-}
 
-class _Header extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+  Widget _header(BuildContext context) {
     final viewModel = context.read<JourneySelectionViewModel>();
     return StreamBuilder(
       stream: viewModel.model,
@@ -117,11 +115,8 @@ class _Header extends StatelessWidget {
       },
     );
   }
-}
 
-class _Body extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+  Widget _body(BuildContext context) {
     final viewModel = context.read<JourneySelectionViewModel>();
     return StreamBuilder(
       stream: viewModel.model,
@@ -142,40 +137,4 @@ class _Body extends StatelessWidget {
       },
     );
   }
-}
-
-class _LoadJourneyButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final viewModel = context.read<JourneySelectionViewModel>();
-    return StreamBuilder(
-      stream: viewModel.model,
-      builder: (context, snapshot) {
-        final model = snapshot.data;
-        if (model == null) return SBBLoadingIndicator();
-
-        return switch (model) {
-          final Loading _ || final Loaded _ || Error _ => SizedBox.shrink(),
-          final Selecting s => Padding(
-            padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing / 2),
-            child: SBBPrimaryButton(
-              label: context.l10n.c_button_confirm,
-              onPressed: s.isInputComplete ? () => viewModel.loadTrainJourney() : null,
-            ),
-          ),
-        };
-      },
-    );
-  }
-}
-
-class _LogoutButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) => IconButton(
-    icon: const Icon(SBBIcons.exit_small),
-    onPressed: () {
-      DI.get<Authenticator>().logout();
-      context.router.replace(const LoginRoute());
-    },
-  );
 }
