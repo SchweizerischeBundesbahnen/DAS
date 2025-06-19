@@ -47,7 +47,7 @@ class JourneyNavigationViewModel {
     _addToStream(trainId);
   }
 
-  void reset() {
+  void _reset() {
     _log.fine('Resetting JourneyNavigationViewModel');
     _trainIds.clear();
     _rxModel.add(null);
