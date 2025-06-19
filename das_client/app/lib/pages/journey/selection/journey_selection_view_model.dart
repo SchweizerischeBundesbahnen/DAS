@@ -12,7 +12,7 @@ class JourneySelectionViewModel {
     required Function(TrainIdentification) onJourneySelected,
   }) : _sferaRemoteRepo = sferaRemoteRepo,
        _onJourneySelected = onJourneySelected {
-    _emitInitial();
+    _emitSelectingWithDefaults();
     _initSferaRepoSubscription();
   }
 
@@ -52,28 +52,32 @@ class JourneySelectionViewModel {
     _ifInSelectingOrErrorEmitSelectingWith((model) => model.copyWith(railwayUndertaking: ru));
   }
 
+  void dismissSelection() {
+    final currentState = _state.value;
+    if (currentState is Loading) return;
+
+    _emitSelectingWithDefaults();
+  }
+
   void dispose() {
     _sferaRemoteRepoSubscription?.cancel();
     _state.close();
   }
 
   void _initSferaRepoSubscription() {
-    _sferaRemoteRepoSubscription = _sferaRemoteRepo.stateStream.listen(
-      (state) => _onSferaRepoStateActions(
-        state,
-        onConnected: () {
+    _sferaRemoteRepoSubscription = _sferaRemoteRepo.stateStream.listen((state) {
+      switch (state) {
+        case SferaRemoteRepositoryState.connected:
           final currentState = _state.value;
           if (currentState is! Loading) return;
 
-          _state.add(JourneySelectionModel.loaded(trainIdentification: currentState.trainIdentification));
-        },
-        onLoadingJourney: () {
+          return _state.add(JourneySelectionModel.loaded(trainIdentification: currentState.trainIdentification));
+        case SferaRemoteRepositoryState.connecting:
           final currentState = _state.value;
           if (currentState is! Selecting) return;
 
-          _state.add(JourneySelectionModel.loading(trainIdentification: _trainIdFrom(currentState)));
-        },
-        onDisconnected: () {
+          return _state.add(JourneySelectionModel.loading(trainIdentification: _trainIdFrom(currentState)));
+        case SferaRemoteRepositoryState.disconnected:
           if (_sferaRemoteRepo.lastError == null) return;
 
           return switch (_state.value) {
@@ -91,31 +95,11 @@ class JourneySelectionViewModel {
             ),
             _ => null,
           };
-        },
-      ),
-    );
+      }
+    });
   }
 
-  void _onSferaRepoStateActions(
-    SferaRemoteRepositoryState state, {
-    required void Function() onConnected,
-    required void Function() onLoadingJourney,
-    required void Function() onDisconnected,
-  }) {
-    switch (state) {
-      case SferaRemoteRepositoryState.connected:
-        onConnected();
-        break;
-      case SferaRemoteRepositoryState.connecting:
-        onLoadingJourney();
-        break;
-      case SferaRemoteRepositoryState.disconnected:
-        onDisconnected();
-        break;
-    }
-  }
-
-  void _emitInitial() => _state.add(
+  void _emitSelectingWithDefaults() => _state.add(
     JourneySelectionModel.selecting(
       startDate: clock.now(),
       railwayUndertaking: RailwayUndertaking.sbbP,
