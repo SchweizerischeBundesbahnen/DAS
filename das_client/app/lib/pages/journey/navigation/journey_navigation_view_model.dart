@@ -21,7 +21,7 @@ class JourneyNavigationViewModel {
   TrainIdentification? get _currentTrainId => _rxModel.value?.trainIdentification;
 
   void push(TrainIdentification trainId) {
-    if (_trainIds.isNotEmpty && _currentTrainId == trainId) return;
+    if (_currentTrainId == trainId) return;
 
     if (_trainIds.isNotEmpty) _sferaRemoteRepo.disconnect();
 
@@ -33,24 +33,18 @@ class JourneyNavigationViewModel {
 
   void next() {
     if (_trainIds.isEmpty) return;
-    if (_currentTrainIdIndex < 0 || _currentTrainIdIndex >= _trainIds.length - 1) return;
     final updatedIdx = _currentTrainIdIndex + 1;
-    final trainId = _trainIds[updatedIdx];
+    if (_isOutOfTrainIdsRange(updatedIdx)) return;
 
-    _addToStream(trainId);
+    _addToStream(_trainIds[updatedIdx]);
   }
 
   void previous() {
-    if (_currentTrainIdIndex <= 0) return;
+    if (_trainIds.isEmpty) return;
     final updatedIdx = _currentTrainIdIndex - 1;
-    final trainId = _trainIds[updatedIdx];
-    _addToStream(trainId);
-  }
+    if (_isOutOfTrainIdsRange(updatedIdx)) return;
 
-  void _reset() {
-    _log.fine('Resetting JourneyNavigationViewModel');
-    _trainIds.clear();
-    _rxModel.add(null);
+    _addToStream(_trainIds[updatedIdx]);
   }
 
   void dispose() {
@@ -59,6 +53,14 @@ class JourneyNavigationViewModel {
     _rxModel.close();
     _trainIds.clear();
   }
+
+  void _reset() {
+    _log.fine('Resetting JourneyNavigationViewModel');
+    _trainIds.clear();
+    _rxModel.add(null);
+  }
+
+  bool _isOutOfTrainIdsRange(int idx) => idx < 0 || idx >= _trainIds.length;
 
   void _addToStream(TrainIdentification trainId) {
     _rxModel.add(
