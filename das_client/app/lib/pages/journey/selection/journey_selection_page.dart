@@ -4,7 +4,6 @@ import 'package:app/brightness/brightness_modal_sheet.dart';
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
-import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_input.dart';
@@ -18,7 +17,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
-import 'package:sfera/component.dart';
 
 @RoutePage()
 class JourneySelectionPage extends StatelessWidget implements AutoRouteWrapper {
@@ -27,10 +25,7 @@ class JourneySelectionPage extends StatelessWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) {
     return Provider<JourneySelectionViewModel>(
-      create: (_) => JourneySelectionViewModel(
-        sferaRemoteRepo: DI.get<SferaRemoteRepo>(),
-        onJourneySelected: DI.get<JourneyNavigationViewModel>().push,
-      ),
+      create: (_) => DI.get<JourneySelectionViewModel>(),
       dispose: (_, vm) => vm.dispose(),
       child: this,
     );

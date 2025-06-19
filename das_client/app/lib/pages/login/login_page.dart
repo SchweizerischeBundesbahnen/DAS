@@ -1,5 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/di/scope_handler.dart';
+import 'package:app/di/scopes/journey_scope.dart';
 import 'package:app/flavor.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
@@ -133,6 +134,7 @@ class _LoginPageState extends State<LoginPage> {
     try {
       await authenticator.login();
       await DI.get<ScopeHandler>().push<AuthenticatedScope>();
+      await DI.get<ScopeHandler>().push<JourneyScope>();
       if (context.mounted) {
         context.router.replace(const JourneySelectionRoute());
       }
