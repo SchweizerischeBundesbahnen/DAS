@@ -27,7 +27,7 @@ class JourneySelectionPage extends StatelessWidget implements AutoRouteWrapper {
   Widget wrappedRoute(BuildContext context) {
     return Provider<JourneySelectionViewModel>(
       create: (_) => DI.get<JourneySelectionViewModel>(),
-      dispose: (_, vm) => vm.dispose(),
+      dispose: (_, _) {}, // dispose is called when JourneyScope is popped
       child: this,
     );
   }
