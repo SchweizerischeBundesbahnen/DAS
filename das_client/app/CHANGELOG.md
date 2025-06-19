@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.22.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.21.0...das_client-v0.22.0) (2025-06-19)
+
+
+### Features
+
+* client displays xx speeds ([#502](https://github.com/SchweizerischeBundesbahnen/DAS/issues/502)) ([#1038](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1038)) ([a7dab99](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a7dab9904bca4b36500b976a019872a53d290495))
+
 ## [0.21.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.20.0...das_client-v0.21.0) (2025-06-10)
 
 
