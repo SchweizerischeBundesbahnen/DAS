@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.2.1...backend-v0.3.0) (2025-06-19)
+
+
+### Features
+
+* formation db model ([#715](https://github.com/SchweizerischeBundesbahnen/DAS/issues/715)) ([#986](https://github.com/SchweizerischeBundesbahnen/DAS/issues/986)) ([b82904b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b82904baf0178833d9d5503de3d57d1166b19012))
+
+
+### Bug Fixes
+
+* **deps:** update dependency org.springdoc:springdoc-openapi-starter-webmvc-ui to v2.8.9 ([#1023](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1023)) ([6f1b29f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6f1b29fe865dc515a25ab61ab4f8ad37226be2bc))
+
 ## [0.2.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.2.0...backend-v0.2.1) (2025-06-03)
 
 
