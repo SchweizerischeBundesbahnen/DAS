@@ -23,6 +23,8 @@ class JourneyNavigationViewModel {
   void push(TrainIdentification trainId) {
     if (_trainIds.isNotEmpty && _currentTrainId == trainId) return;
 
+    if (_trainIds.isNotEmpty) _sferaRemoteRepo.disconnect();
+
     if (!_trainIds.contains(trainId)) _trainIds.add(trainId);
 
     _sferaRemoteRepo.connect(trainId);
@@ -53,6 +55,7 @@ class JourneyNavigationViewModel {
 
   void dispose() {
     _log.fine('Disposing JourneyNavigationViewModel');
+    _sferaRemoteRepo.disconnect();
     _rxModel.close();
     _trainIds.clear();
   }

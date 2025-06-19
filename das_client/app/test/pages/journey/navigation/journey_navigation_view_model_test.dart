@@ -79,11 +79,39 @@ void main() {
       expect(model2.navigationStackLength, 1);
     });
 
-    test('push_whenNewJourneyAdded_thenCallsConnectInRepo', () {
+    test('push_whenNewJourneyAddedAfterInit_thenCallsConnectInRepoButNotDisconnect', () {
       // ACT
       testee.push(trainId1);
+
       // EXPECT
       verify(mockSferaRepo.connect(any)).called(1);
+      verifyNever(mockSferaRepo.disconnect());
+    });
+
+    test('push_whenSameJourneyAdded_thenDoesNotCallConnectInRepoTwice', () {
+      // ARRANGE
+      testee.push(trainId1);
+      reset(mockSferaRepo);
+
+      // ACT
+      testee.push(trainId1);
+
+      // EXPECT
+      verifyNever(mockSferaRepo.connect(any));
+      verifyNever(mockSferaRepo.disconnect());
+    });
+
+    test('push_whenNewJourneyAdded_thenCallsDisconnectAndConnectInRepo', () {
+      // ARRANGE
+      testee.push(trainId1);
+      reset(mockSferaRepo);
+
+      // ACT
+      testee.push(trainId2);
+
+      // EXPECT
+      verify(mockSferaRepo.connect(trainId2)).called(1);
+      verify(mockSferaRepo.disconnect()).called(1);
     });
 
     test('next_whenCalled_thenMovesToNextJourney', () {
@@ -164,6 +192,7 @@ void main() {
 
       // EXPECT
       expect(() => testee.modelValue, returnsNormally);
+      verify(mockSferaRepo.disconnect()).called(1);
     });
 
     test('model_stream_whenPushCalledMultipleTimesWithSameTrainId_thenEmitsOnce', () async {
