@@ -1,6 +1,5 @@
 import 'package:app/pages/journey/train_journey/widgets/header/sim_identifier.dart';
 import 'package:app/theme/theme_util.dart';
-import 'package:app/time_controller/time_controller.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/di/di.dart';

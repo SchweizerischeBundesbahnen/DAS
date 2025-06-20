@@ -59,6 +59,10 @@ class TimeController {
     }
   }
 
+  void endStream() async {
+    _punctualityStateController.close();
+  }
+
   void cancelTimer() {
     _updateTimer?.cancel();
   }

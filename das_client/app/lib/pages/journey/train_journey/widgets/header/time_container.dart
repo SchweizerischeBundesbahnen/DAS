@@ -4,6 +4,7 @@ import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/time_controller/punctuality_state_enum.dart';
 import 'package:app/widgets/das_text_styles.dart';
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:app/time_controller/time_controller.dart';
@@ -23,14 +24,16 @@ class TimeContainer extends StatefulWidget {
 class _TimeContainerState extends State<TimeContainer> {
   TimeController? timeController;
   TrainJourneyViewModel? viewModel;
+  bool? isFirstState;
 
   @override
   void initState() {
     super.initState();
     timeController = DI.get<TimeController>();
-    timeController!.lastUpdate = DateTime.now();
+    timeController!.lastUpdate = clock.now();
     timeController!.startMonitoring();
     viewModel = context.read<TrainJourneyViewModel>();
+    isFirstState = true;
   }
 
   @override
@@ -64,7 +67,7 @@ class _TimeContainerState extends State<TimeContainer> {
       builder: (context, snapshot) {
         timeController?.updatePunctualityTimestamp(journey);
 
-        final state = snapshot.data ?? PunctualityState.hidden;
+        final state = snapshot.data ?? (isFirstState! ? PunctualityState.visible : PunctualityState.hidden);
         final delay = journey?.metadata.delay;
         final delayText = _buildDelayText(delay, state);
 
@@ -125,7 +128,7 @@ class _TimeContainerState extends State<TimeContainer> {
             0,
           ),
           child: Text(
-            DateFormat('HH:mm:ss').format(DateTime.now()),
+            DateFormat('HH:mm:ss').format(clock.now()),
             style: DASTextStyles.xLargeBold,
           ),
         );
