@@ -95,7 +95,6 @@ void main() {
       await _openByTapOnCellWithText(tester, 'Bern');
       _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
 
-      // wait till 10s idle time have passed
       final timeout = timeController.idleTimeDASModalSheet + 1;
       await Future.delayed(Duration(seconds: timeout));
       await tester.pumpAndSettle();
@@ -121,7 +120,6 @@ void main() {
       expect(pauseButton, findsOneWidget);
       await tapElement(tester, pauseButton);
 
-      // wait till 10s idle time have passed
       final timeout = timeController.idleTimeDASModalSheet + 1;
       await Future.delayed(Duration(seconds: timeout));
       await tester.pumpAndSettle();

@@ -3,9 +3,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.d
 import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/signal_row.dart';
 import 'package:app/time_controller/mock_time_controller.dart';
-import 'package:app/time_controller/time_controller.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
-import 'package:get_it/get_it.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:sfera/src/model/journey/base_data.dart';
 import 'package:sfera/src/model/journey/metadata.dart';
@@ -28,11 +26,6 @@ import 'automatic_advancement_controller_test.mocks.dart';
 ])
 void main() {
   const double dasTableHeaderOffset = -40;
-
-  setUpAll(() async {
-    await GetIt.I.reset();
-    GetIt.I.registerLazySingleton<TimeController>(() => TimeController());
-  });
 
   test('test does nothing without anything provided', () {
     final scrollControllerMock = MockScrollController();

@@ -42,10 +42,6 @@ void main() {
 
       final TimeController timeController = DI.get<TimeController>();
 
-      // set idle time to 3 seconds
-      //TODO change the following line
-      //timeController.changeIdleTimeAutoScroll(newIdleTimeAutoScroll: 3);
-
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9');
 
