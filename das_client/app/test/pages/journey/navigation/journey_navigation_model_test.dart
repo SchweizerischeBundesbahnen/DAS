@@ -4,10 +4,11 @@ import 'package:sfera/component.dart';
 
 void main() {
   group('JourneyNavigationModel', () {
-    late JourneyNavigationModel testee1;
-    late JourneyNavigationModel testee2;
-    late JourneyNavigationModel testee3;
-    late JourneyNavigationModel testee4;
+    late JourneyNavigationModel baseTestee;
+    late JourneyNavigationModel sameTestee;
+    late JourneyNavigationModel diffTrainId;
+    late JourneyNavigationModel diffStackLength;
+    late JourneyNavigationModel diffIndex;
     late TrainIdentification trainId;
     late TrainIdentification trainId2;
 
@@ -22,41 +23,42 @@ void main() {
         trainNumber: '5678',
         date: DateTime.now().add(Duration(days: 1)),
       );
-      testee1 = JourneyNavigationModel(trainIdentification: trainId, currentIndex: 0, navigationStackLength: 1);
-      testee2 = JourneyNavigationModel(trainIdentification: trainId2, currentIndex: 1, navigationStackLength: 2);
-      testee3 = JourneyNavigationModel(trainIdentification: trainId, currentIndex: 0, navigationStackLength: 1);
-      testee4 = JourneyNavigationModel(trainIdentification: trainId, currentIndex: 0, navigationStackLength: 2);
+      baseTestee = JourneyNavigationModel(trainIdentification: trainId, currentIndex: 0, navigationStackLength: 1);
+      sameTestee = JourneyNavigationModel(trainIdentification: trainId, currentIndex: 0, navigationStackLength: 1);
+      diffTrainId = JourneyNavigationModel(trainIdentification: trainId2, currentIndex: 0, navigationStackLength: 1);
+      diffStackLength = JourneyNavigationModel(trainIdentification: trainId, currentIndex: 0, navigationStackLength: 2);
+      diffIndex = JourneyNavigationModel(trainIdentification: trainId, currentIndex: 1, navigationStackLength: 1);
     });
 
     test('equals_whenSameTrainIdAndIndex_thenReturnsTrue', () {
-      expect(testee1 == testee3, isTrue);
+      expect(baseTestee == sameTestee, isTrue);
     });
 
     test('equals_whenDifferentTrainId_thenReturnsFalse', () {
-      expect(testee1 == testee2, isFalse);
+      expect(baseTestee == diffTrainId, isFalse);
     });
 
     test('equals_whenDifferentIndex_thenReturnsFalse', () {
-      expect(testee1 == testee2, isFalse);
+      expect(baseTestee == diffIndex, isFalse);
     });
 
     test('equals_whenDifferentNavigationStackLength_thenReturnsFalse', () {
-      expect(testee1 == testee4, isFalse);
+      expect(baseTestee == diffStackLength, isFalse);
     });
 
     test('toString_whenCalled_thenReturnsCorrectString', () {
       expect(
-        testee1.toString(),
+        baseTestee.toString(),
         equals('JourneyNavigationModel(trainIdentification: $trainId, currentIndex: 0, navigationStackLength: 1)'),
       );
     });
 
     test('hashCode_whenSameTrainIdAndIndex_thenReturnsSameHash', () {
-      expect(testee1.hashCode, equals(testee3.hashCode));
+      expect(baseTestee.hashCode, equals(diffTrainId.hashCode));
     });
 
     test('hashCode_whenDifferentTrainId_thenReturnsDifferentHash', () {
-      expect(testee1.hashCode, isNot(equals(testee2.hashCode)));
+      expect(baseTestee.hashCode, isNot(equals(sameTestee.hashCode)));
     });
   });
 }
