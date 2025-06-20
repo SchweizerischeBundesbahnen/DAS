@@ -1,7 +1,7 @@
 import 'package:app/pages/journey/train_journey/widgets/header/sim_identifier.dart';
 import 'package:app/theme/theme_util.dart';
+import 'package:app/time_controller/time_controller.dart';
 import 'package:battery_plus/battery_plus.dart';
-//import 'package:app/time_controller/time_controller.dart';
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_page.dart';
@@ -30,12 +30,6 @@ Future<void> main() async {
     testWidgets('test punctuality display when no updates come', (tester) async {
       await prepareAndStartApp(tester);
 
-      //final TimeController timeController = DI.get<TimeController>();
-
-      // set stale and disappear time down to 2 and 7 seconds
-      //TODO change the following line
-      //timeController.changeTimerPunctualityDisplay(newPunctualityGraySeconds: 2, newPunctualityDisappearSeconds: 7);
-
       await loadTrainJourney(tester, trainNumber: 'T4');
 
       final timeContainer = find.byType(TimeContainer);
@@ -49,13 +43,13 @@ Future<void> main() async {
       // check that delay text is there
       expect(delayText, findsOneWidget);
 
-      await tester.pump(const Duration(seconds: 3));
+      await tester.pump(const Duration(seconds: 2));
 
       // check that delay text is stale
       final delayTextWidget = tester.widget<Text>(delayText);
       expect(delayTextWidget.style?.color, ThemeUtil.getColor(context, SBBColors.graphite, SBBColors.granite));
 
-      await tester.pump(const Duration(seconds: 5));
+      await tester.pump(const Duration(seconds: 4));
 
       // check that delay text has disappeared
       expect(delayText, findsNothing);

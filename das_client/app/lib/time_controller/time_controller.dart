@@ -5,11 +5,9 @@ import 'package:clock/clock.dart';
 import 'package:sfera/component.dart';
 
 class TimeController {
-  final int punctualityStaleSeconds = 3
-  /*180*/;
+  final int punctualityStaleSeconds = 180;
 
-  final int punctualityDisappearSeconds = 6
-  /*300*/;
+  final int punctualityDisappearSeconds = 300;
 
   final int idleTimeDASModalSheet = 10;
   final int idleTimeAutoScroll = 10;
