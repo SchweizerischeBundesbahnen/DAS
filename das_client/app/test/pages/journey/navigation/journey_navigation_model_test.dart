@@ -9,6 +9,7 @@ void main() {
     late JourneyNavigationModel diffTrainId;
     late JourneyNavigationModel diffStackLength;
     late JourneyNavigationModel diffIndex;
+    late JourneyNavigationModel diffShowNavigationButtons;
     late TrainIdentification trainId;
     late TrainIdentification trainId2;
 
@@ -23,11 +24,42 @@ void main() {
         trainNumber: '5678',
         date: DateTime.now().add(Duration(days: 1)),
       );
-      baseTestee = JourneyNavigationModel(trainIdentification: trainId, currentIndex: 0, navigationStackLength: 1);
-      sameTestee = JourneyNavigationModel(trainIdentification: trainId, currentIndex: 0, navigationStackLength: 1);
-      diffTrainId = JourneyNavigationModel(trainIdentification: trainId2, currentIndex: 0, navigationStackLength: 1);
-      diffStackLength = JourneyNavigationModel(trainIdentification: trainId, currentIndex: 0, navigationStackLength: 2);
-      diffIndex = JourneyNavigationModel(trainIdentification: trainId, currentIndex: 1, navigationStackLength: 1);
+      baseTestee = JourneyNavigationModel(
+        trainIdentification: trainId,
+        currentIndex: 0,
+        navigationStackLength: 1,
+        showNavigationButtons: false,
+      );
+      sameTestee = JourneyNavigationModel(
+        trainIdentification: trainId,
+        currentIndex: 0,
+        navigationStackLength: 1,
+        showNavigationButtons: false,
+      );
+      diffTrainId = JourneyNavigationModel(
+        trainIdentification: trainId2,
+        currentIndex: 0,
+        navigationStackLength: 1,
+        showNavigationButtons: false,
+      );
+      diffStackLength = JourneyNavigationModel(
+        trainIdentification: trainId,
+        currentIndex: 0,
+        navigationStackLength: 2,
+        showNavigationButtons: false,
+      );
+      diffIndex = JourneyNavigationModel(
+        trainIdentification: trainId,
+        currentIndex: 1,
+        navigationStackLength: 1,
+        showNavigationButtons: false,
+      );
+      diffShowNavigationButtons = JourneyNavigationModel(
+        trainIdentification: trainId,
+        currentIndex: 0,
+        navigationStackLength: 1,
+        showNavigationButtons: true,
+      );
     });
 
     test('equals_whenSameTrainIdAndIndex_thenReturnsTrue', () {
@@ -44,6 +76,10 @@ void main() {
 
     test('equals_whenDifferentNavigationStackLength_thenReturnsFalse', () {
       expect(baseTestee == diffStackLength, isFalse);
+    });
+
+    test('equals_whenDifferentShowNavigationButtons_thenReturnsFalse', () {
+      expect(baseTestee == diffShowNavigationButtons, isFalse);
     });
 
     test('toString_whenCalled_thenReturnsCorrectString', () {

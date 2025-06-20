@@ -10,6 +10,7 @@ import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_moda
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
+import 'package:app/pages/journey/train_journey/widgets/journey_navigation_buttons.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/koa_notification.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
@@ -21,6 +22,7 @@ import 'package:app/sound/sound.dart';
 import 'package:app/sound/warn_app_sound.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:sfera/component.dart';
 
@@ -42,7 +44,10 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
     _trainIdentification = _navigationVM.modelValue?.trainIdentification;
     _navigationSubscription = _navigationVM.model.listen((model) async {
       if (model?.trainIdentification != _trainIdentification) {
-        if (mounted) context.router.replace(JourneySelectionRoute());
+        if (mounted) {
+          Logger('TrainJourneyOverview').warning('Navigating to Selection Route');
+          context.router.replace(JourneySelectionRoute());
+        }
       }
     });
   }
@@ -117,7 +122,14 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
         ManeuverNotification(),
         KoaNotification(),
         _warnappNotification(context),
-        Expanded(child: TrainJourney()),
+        Expanded(
+          child: Stack(
+            children: [
+              TrainJourney(),
+              Align(alignment: Alignment.bottomCenter, child: JourneyNavigationButtons()),
+            ],
+          ),
+        ),
       ],
     );
   }

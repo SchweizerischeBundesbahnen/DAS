@@ -27,7 +27,6 @@ class JourneyNavigationViewModel {
 
   void push(TrainIdentification trainId) {
     if (_currentTrainId == trainId) return;
-    _log.fine('Pushing');
 
     if (_trainIds.isNotEmpty) _sferaRemoteRepo.disconnect();
 
@@ -65,8 +64,9 @@ class JourneyNavigationViewModel {
     _log.fine('Disposing JourneyNavigationViewModel');
     _sferaRemoteStateSubscription?.cancel();
     _sferaRemoteRepo.disconnect();
-    _rxModel.close();
+    _addToStream(null);
     _trainIds.clear();
+    _rxModel.close();
   }
 
   void _reset() {
@@ -85,6 +85,7 @@ class JourneyNavigationViewModel {
         trainIdentification: trainId,
         currentIndex: _trainIds.indexOf(trainId),
         navigationStackLength: _trainIds.length,
+        showNavigationButtons: _trainIds.length > 1,
       ),
     );
   }
