@@ -4,6 +4,7 @@ import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart'
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 import 'journey_navigation_view_model_test.mocks.dart';
@@ -15,22 +16,19 @@ void main() {
     late List<dynamic> emitRegister;
     late StreamSubscription sub;
     late MockSferaRemoteRepo mockSferaRepo;
+    late BehaviorSubject<SferaRemoteRepositoryState> mockStream;
 
     final now = DateTime(1970, 1, 1);
     final tomorrow = now.add(Duration(days: 1));
     final yesterday = now.subtract(Duration(days: 1));
-    final nowPlusFiveMinutes = now.add(Duration(minutes: 5));
     final trainId1 = TrainIdentification(ru: RailwayUndertaking.sbbP, trainNumber: '1234', date: now);
     final trainId2 = TrainIdentification(ru: RailwayUndertaking.sbbC, trainNumber: '5678', date: tomorrow);
     final trainId3 = TrainIdentification(ru: RailwayUndertaking.blsP, trainNumber: '9999', date: yesterday);
-    final trainIdSameAs1 = TrainIdentification(
-      ru: RailwayUndertaking.sbbP,
-      trainNumber: '1234',
-      date: nowPlusFiveMinutes,
-    );
 
     setUp(() {
       mockSferaRepo = MockSferaRemoteRepo();
+      mockStream = BehaviorSubject<SferaRemoteRepositoryState>.seeded(SferaRemoteRepositoryState.disconnected);
+      when(mockSferaRepo.stateStream).thenAnswer((_) => mockStream.stream);
       testee = JourneyNavigationViewModel(sferaRepo: mockSferaRepo);
       emitRegister = <dynamic>[];
       sub = testee.model.listen(emitRegister.add);
@@ -200,6 +198,21 @@ void main() {
       // EXPECT
       expect(() => testee.modelValue, returnsNormally);
       verify(mockSferaRepo.disconnect()).called(1);
+    });
+    test('model_stream_whenSferaRemoteRepoDisconnectsWithError_thenEmitsNullOnce', () async {
+      // ARRANGE
+      testee.push(trainId1);
+      await allowStreamProcessing();
+      emitRegister.clear();
+      when(mockSferaRepo.lastError).thenReturn(SferaError.requestTimeout);
+
+      // ACT
+      mockStream.add(SferaRemoteRepositoryState.disconnected);
+      await allowStreamProcessing();
+
+      // EXCPECT
+      expect(emitRegister.length, 1);
+      expect(emitRegister.first, isNull);
     });
 
     test('model_stream_whenPushCalledMultipleTimesWithSameTrainId_thenEmitsOnce', () async {
