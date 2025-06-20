@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:app/di/di.dart';
+import 'package:app/time_controller/time_controller.dart';
 import 'package:app/widgets/extended_header_container.dart';
 import 'package:extra_hittest_area/extra_hittest_area.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +22,7 @@ final _log = Logger('DASModalSheetController');
 
 /// Used to open and close the [DasModalSheet] and handle animation.
 class DASModalSheetController {
+  final TimeController timeController = DI.get<TimeController>();
   static int automaticCloseAfterSeconds = 40;
 
   DASModalSheetController({
@@ -105,7 +108,7 @@ class DASModalSheetController {
   void resetAutomaticClose() {
     _idleTimer?.cancel();
     if (isOpen) {
-      _idleTimer = Timer(Duration(seconds: automaticCloseAfterSeconds), () {
+      _idleTimer = Timer(Duration(seconds: timeController.idleTimeDASModalSheet), () {
         if (isOpen) {
           _log.fine('Screen idle time of $automaticCloseAfterSeconds seconds reached. Closing DAS modal sheet.');
           close();

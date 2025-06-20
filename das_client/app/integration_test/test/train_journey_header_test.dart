@@ -1,3 +1,6 @@
+import 'package:app/pages/journey/train_journey/widgets/header/sim_identifier.dart';
+import 'package:app/theme/theme_util.dart';
+import 'package:battery_plus/battery_plus.dart';
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_page.dart';
@@ -7,12 +10,10 @@ import 'package:app/pages/journey/train_journey/widgets/header/extended_menu.dar
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/radio_channel.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/radio_contact.dart';
-import 'package:app/pages/journey/train_journey/widgets/header/sim_identifier.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/time_container.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
 import 'package:app/util/format.dart';
 import 'package:app/widgets/dot_indicator.dart';
-import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -25,17 +26,45 @@ import '../util/test_utils.dart';
 
 Future<void> main() async {
   group('train journey header test', () {
+    testWidgets('test punctuality display when no updates come', (tester) async {
+      await prepareAndStartApp(tester);
+
+      await loadTrainJourney(tester, trainNumber: 'T4');
+
+      final timeContainer = find.byType(TimeContainer);
+      expect(timeContainer, findsOneWidget);
+
+      final context = tester.element(timeContainer);
+
+      // find delay text
+      final delayText = find.descendant(of: timeContainer, matching: find.byKey(TimeContainer.delayKey));
+
+      // check that delay text is there
+      expect(delayText, findsOneWidget);
+
+      await tester.pump(const Duration(seconds: 2));
+
+      // check that delay text is stale
+      final delayTextWidget = tester.widget<Text>(delayText);
+      expect(delayTextWidget.style?.color, ThemeUtil.getColor(context, SBBColors.graphite, SBBColors.granite));
+
+      await tester.pump(const Duration(seconds: 4));
+
+      // check that delay text has disappeared
+      expect(delayText, findsNothing);
+    });
+
     testWidgets('test always-on display is turned on when journey is loaded', (tester) async {
       await prepareAndStartApp(tester);
 
       // Get that the always-on display is turned off, because journey is not started yet
-      final currentDisplayTurnedOff = await WakelockPlus.enabled;
-      expect(currentDisplayTurnedOff, false);
+      bool currentDisplayTurnedOn = await WakelockPlus.enabled;
+      expect(currentDisplayTurnedOn, false);
 
       await loadTrainJourney(tester, trainNumber: 'T4');
 
       // Get that the always-on display is turned on, because the journey is started
-      final currentDisplayTurnedOn = await WakelockPlus.enabled;
+      currentDisplayTurnedOn = await WakelockPlus.enabled;
       expect(currentDisplayTurnedOn, true);
     });
 
