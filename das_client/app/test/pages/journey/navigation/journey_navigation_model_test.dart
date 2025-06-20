@@ -54,11 +54,11 @@ void main() {
     });
 
     test('hashCode_whenSameTrainIdAndIndex_thenReturnsSameHash', () {
-      expect(baseTestee.hashCode, equals(diffTrainId.hashCode));
+      expect(baseTestee.hashCode, equals(sameTestee.hashCode));
     });
 
     test('hashCode_whenDifferentTrainId_thenReturnsDifferentHash', () {
-      expect(baseTestee.hashCode, isNot(equals(sameTestee.hashCode)));
+      expect(baseTestee.hashCode, isNot(equals(diffTrainId.hashCode)));
     });
   });
 }

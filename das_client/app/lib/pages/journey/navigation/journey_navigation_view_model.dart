@@ -42,7 +42,11 @@ class JourneyNavigationViewModel {
     final updatedIdx = _currentTrainIdIndex + 1;
     if (_isOutOfTrainIdsRange(updatedIdx)) return;
 
-    _addToStream(_trainIds[updatedIdx]);
+    _sferaRemoteRepo.disconnect();
+
+    final trainId = _trainIds[updatedIdx];
+    _sferaRemoteRepo.connect(trainId);
+    _addToStream(trainId);
   }
 
   void previous() {
@@ -50,7 +54,11 @@ class JourneyNavigationViewModel {
     final updatedIdx = _currentTrainIdIndex - 1;
     if (_isOutOfTrainIdsRange(updatedIdx)) return;
 
-    _addToStream(_trainIds[updatedIdx]);
+    _sferaRemoteRepo.disconnect();
+
+    final trainId = _trainIds[updatedIdx];
+    _sferaRemoteRepo.connect(trainId);
+    _addToStream(trainId);
   }
 
   void dispose() {

@@ -136,6 +136,22 @@ void main() {
       expect(model.navigationStackLength, 3);
     });
 
+    test('next_whenCalled_thenDisconnectsAndConnectsToNewTrainId', () {
+      // ARRANGE
+      testee.push(trainId1);
+      testee.push(trainId2);
+      testee.push(trainId3);
+      testee.push(trainId2); // set current to trainId2
+      reset(mockSferaRepo);
+
+      // ACT
+      testee.next();
+
+      // EXPECT
+      verify(mockSferaRepo.connect(any)).called(1);
+      verify(mockSferaRepo.disconnect()).called(1);
+    });
+
     test('next_whenAtEnd_thenDoesNotChangeModel', () {
       // ARRANGE
       testee.push(trainId1);
@@ -170,6 +186,22 @@ void main() {
       expect(model.trainIdentification, trainId1);
       expect(model.currentIndex, 0);
       expect(model.navigationStackLength, 3);
+    });
+
+    test('previous_whenCalled_thenDisconnectsAndConnectsToNewTrainId', () {
+      // ARRANGE
+      testee.push(trainId1);
+      testee.push(trainId2);
+      testee.push(trainId3);
+      testee.push(trainId2); // set current to trainId2
+      reset(mockSferaRepo);
+
+      // ACT
+      testee.previous();
+
+      // EXPECT
+      verify(mockSferaRepo.connect(any)).called(1);
+      verify(mockSferaRepo.disconnect()).called(1);
     });
 
     test('previous_whenAtStart_thenDoesNotChangeModel', () {
