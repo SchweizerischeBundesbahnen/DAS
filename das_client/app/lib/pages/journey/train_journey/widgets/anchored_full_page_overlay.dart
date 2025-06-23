@@ -10,7 +10,7 @@ final _fullPageBackgroundColor = SBBColors.iron.withAlpha((255.0 * 0.6).round())
 /// 1. "collapsed": a triggering widget, that can be interacted with to show the overlay and transition to the second state
 /// 2. "overlay": a full screen overlay with two "layers":
 ///     1. a grayed out background accross the whole screen
-///     2. a widget with the given [contentWidth] on top at the position of the
+///     2. a widget with the given [contentWidth] on top positioned relative to the triggering widget
 ///
 /// Implemented using an [OverlayPortal] and a [CompositedTransformTarget]. Control the relative positioning of the
 /// triggering widget and the widget in the overlay with [targetAnchor], [followerAnchor] and [offset].
