@@ -5,11 +5,13 @@ class JourneyNavigationModel {
     required this.trainIdentification,
     required this.currentIndex,
     required this.navigationStackLength,
+    required this.showNavigationButtons,
   });
 
   final TrainIdentification trainIdentification;
   final int currentIndex;
   final int navigationStackLength;
+  final bool showNavigationButtons;
 
   @override
   bool operator ==(Object other) =>
@@ -18,12 +20,13 @@ class JourneyNavigationModel {
           runtimeType == other.runtimeType &&
           trainIdentification == other.trainIdentification &&
           currentIndex == other.currentIndex &&
-          navigationStackLength == other.navigationStackLength;
+          navigationStackLength == other.navigationStackLength &&
+          showNavigationButtons == other.showNavigationButtons;
 
   @override
-  int get hashCode => Object.hash(trainIdentification, currentIndex, navigationStackLength);
+  int get hashCode => Object.hash(trainIdentification, currentIndex, navigationStackLength, showNavigationButtons);
 
   @override
   String toString() =>
-      'JourneyNavigationModel(trainIdentification: $trainIdentification, currentIndex: $currentIndex, navigationStackLength: $navigationStackLength)';
+      'JourneyNavigationModel(trainIdentification: $trainIdentification, currentIndex: $currentIndex, navigationStackLength: $navigationStackLength, showNavigationButtons: $showNavigationButtons)';
 }

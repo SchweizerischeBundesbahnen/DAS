@@ -4,7 +4,7 @@ import 'package:mockito/mockito.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
-import 'package:sfera/src/data/sfera_remote_repo_impl.dart';
+import 'package:sfera/src/data/repository/sfera_remote_repo_impl.dart';
 import 'package:uuid/uuid.dart';
 
 import 'sfera_remote_repo_impl_test.mocks.dart';
@@ -15,7 +15,11 @@ import 'sfera_remote_repo_impl_test.mocks.dart';
   MockSpec<SferaAuthProvider>(),
 ])
 void main() {
-  final OtnId otnId = OtnId(company: 'SBB', operationalTrainNumber: '12345', startDate: DateTime.now());
+  final TrainIdentification trainId = TrainIdentification(
+    ru: RailwayUndertaking.sbbP,
+    trainNumber: '12345',
+    date: DateTime.now(),
+  );
   late SferaRemoteRepo sferaRemoteRepo;
   late MockMqttService mockMqttService;
   late MockSferaLocalDatabaseService mockLocalDatabaseRepository;
@@ -46,12 +50,11 @@ void main() {
       emitsInOrder([
         SferaRemoteRepositoryState.disconnected, // seeded state
         SferaRemoteRepositoryState.connecting,
-        SferaRemoteRepositoryState.handshaking,
       ]),
     );
 
     // WHEN
-    await sferaRemoteRepo.connect(otnId);
+    await sferaRemoteRepo.connect(trainId);
 
     // Wait till async tasks are finished
     await Future.delayed(Duration(milliseconds: 500));
@@ -82,7 +85,7 @@ void main() {
     );
 
     // WHEN
-    await sferaRemoteRepo.connect(otnId);
+    await sferaRemoteRepo.connect(trainId);
 
     // THEN
     verify(mockMqttService.connect(any, any)).called(1);

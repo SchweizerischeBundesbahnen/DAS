@@ -7,8 +7,12 @@ import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
+const _inputPadding = EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, 0, sbbDefaultSpacing);
+
 class JourneyRailwayUndertakingInput extends StatelessWidget {
-  const JourneyRailwayUndertakingInput({super.key});
+  const JourneyRailwayUndertakingInput({super.key, this.isModalVersion = false});
+
+  final bool isModalVersion;
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +39,10 @@ class JourneyRailwayUndertakingInput extends StatelessWidget {
 
   _buildRailwayUndertakingInput(BuildContext context, value, {Function(RailwayUndertaking)? onChanged}) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, 0, sbbDefaultSpacing),
+      padding: isModalVersion ? EdgeInsets.zero : _inputPadding,
       child: SBBSelect<RailwayUndertaking>(
-        label: context.l10n.p_train_selection_ru_description,
+        label: isModalVersion ? null : context.l10n.p_train_selection_ru_description,
+        hint: isModalVersion ? context.l10n.p_train_selection_ru_description : null,
         value: value,
         items: RailwayUndertaking.values
             .map((ru) => SelectMenuItem<RailwayUndertaking>(value: ru, label: ru.displayText(context)))

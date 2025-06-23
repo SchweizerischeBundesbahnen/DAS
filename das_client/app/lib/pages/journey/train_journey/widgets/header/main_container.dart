@@ -5,6 +5,7 @@ import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart'
 import 'package:app/pages/journey/train_journey/widgets/header/battery_status.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/departure_authorization.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/extended_menu.dart';
+import 'package:app/pages/journey/train_journey/widgets/header/journey_search_overlay.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/radio_channel.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/theme_button.dart';
@@ -132,6 +133,7 @@ class MainContainer extends StatelessWidget {
         ThemeButton(),
         StartPauseButton(automaticAdvancementActive: settings.isAutoAdvancementEnabled),
         ExtendedMenu(),
+        JourneySearchOverlay(),
       ],
     );
   }

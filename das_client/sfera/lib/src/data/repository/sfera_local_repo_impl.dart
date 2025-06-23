@@ -6,7 +6,7 @@ import 'package:sfera/src/data/local/tables/journey_profile_table.dart';
 import 'package:sfera/src/data/local/tables/segment_profile_table.dart';
 import 'package:sfera/src/data/local/tables/train_characteristics_table.dart';
 import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
-import 'package:sfera/src/data/sfera_local_repo.dart';
+import 'package:sfera/src/data/repository/sfera_local_repo.dart';
 import 'package:sfera/src/model/journey/journey.dart';
 
 class SferaLocalRepoImpl implements SferaLocalRepo {

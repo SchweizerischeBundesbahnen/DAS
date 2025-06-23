@@ -14,6 +14,7 @@ import 'package:logging/logging.dart';
 import 'integration_test_di.dart';
 import 'test/additional_speed_restriction_modal_test.dart' as additional_speed_restriction_modal_test;
 import 'test/automatic_advancement_test.dart' as automatic_advancement_tests;
+import 'test/journey_search_overlay_test.dart' as journey_search_overlay_tests;
 import 'test/navigation_test.dart' as navigation_tests;
 import 'test/service_point_modal_test.dart' as service_point_modal_test;
 import 'test/train_journey_header_test.dart' as train_journey_header_tests;
@@ -40,6 +41,7 @@ void main() {
   train_search_tests.main();
   automatic_advancement_tests.main();
   service_point_modal_test.main();
+  journey_search_overlay_tests.main();
   additional_speed_restriction_modal_test.main();
   warnapp_tests.main();
 }

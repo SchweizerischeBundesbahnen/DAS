@@ -2,41 +2,53 @@ import 'dart:async';
 
 import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
+import 'journey_navigation_view_model_test.mocks.dart';
+
+@GenerateNiceMocks([MockSpec<SferaRemoteRepo>()])
 void main() {
   group('JourneyNavigationViewModel', () {
-    late JourneyNavigationViewModel viewModel;
+    late JourneyNavigationViewModel testee;
     late List<dynamic> emitRegister;
     late StreamSubscription sub;
+    late MockSferaRemoteRepo mockSferaRepo;
+    late BehaviorSubject<SferaRemoteRepositoryState> mockStream;
 
-    final tomorrow = DateTime.now().add(Duration(days: 1));
-    final yesterday = DateTime.now().subtract(Duration(days: 1));
-    final trainId1 = TrainIdentification(ru: RailwayUndertaking.sbbP, trainNumber: '1234', date: DateTime.now());
+    final now = DateTime(1970, 1, 1);
+    final tomorrow = now.add(Duration(days: 1));
+    final yesterday = now.subtract(Duration(days: 1));
+    final trainId1 = TrainIdentification(ru: RailwayUndertaking.sbbP, trainNumber: '1234', date: now);
     final trainId2 = TrainIdentification(ru: RailwayUndertaking.sbbC, trainNumber: '5678', date: tomorrow);
     final trainId3 = TrainIdentification(ru: RailwayUndertaking.blsP, trainNumber: '9999', date: yesterday);
 
     setUp(() {
-      viewModel = JourneyNavigationViewModel();
+      mockSferaRepo = MockSferaRemoteRepo();
+      mockStream = BehaviorSubject<SferaRemoteRepositoryState>.seeded(SferaRemoteRepositoryState.disconnected);
+      when(mockSferaRepo.stateStream).thenAnswer((_) => mockStream.stream);
+      testee = JourneyNavigationViewModel(sferaRepo: mockSferaRepo);
       emitRegister = <dynamic>[];
-      sub = viewModel.model.listen(emitRegister.add);
+      sub = testee.model.listen(emitRegister.add);
     });
 
     tearDown(() {
       sub.cancel();
-      viewModel.dispose();
+      if (testee.modelValue != null) testee.dispose();
     });
 
     test('initialState_whenInstantiated_thenIsEmpty', () {
-      expect(viewModel.modelValue, isNull);
+      expect(testee.modelValue, isNull);
     });
 
     test('push_whenNewJourneyAdded_thenUpdatesModel', () {
       // ACT
-      viewModel.push(trainId1);
+      testee.push(trainId1);
 
       // EXPECT
-      final model = viewModel.modelValue!;
+      final model = testee.modelValue!;
       expect(model.trainIdentification, trainId1);
       expect(model.currentIndex, 0);
       expect(model.navigationStackLength, 1);
@@ -44,13 +56,13 @@ void main() {
 
     test('push_whenSecondNewJourneyAdded_thenUpdatesModel', () {
       // ARRANGE
-      viewModel.push(trainId1);
+      testee.push(trainId1);
 
       // ACT
-      viewModel.push(trainId2);
+      testee.push(trainId2);
 
       // EXPECT
-      final model = viewModel.modelValue!;
+      final model = testee.modelValue!;
       expect(model.trainIdentification, trainId2);
       expect(model.currentIndex, 1);
       expect(model.navigationStackLength, 2);
@@ -58,50 +70,101 @@ void main() {
 
     test('push_whenSameJourneyAddedTwice_thenDoesNotChangeModelOrLength', () {
       // ARRANGE
-      viewModel.push(trainId1);
-      final model1 = viewModel.modelValue;
+      testee.push(trainId1);
+      final model1 = testee.modelValue;
 
       // ACT
-      viewModel.push(trainId1);
+      testee.push(trainId1);
 
       // EXPECT
-      final model2 = viewModel.modelValue;
+      final model2 = testee.modelValue;
       expect(model2, model1);
       expect(model2!.trainIdentification, trainId1);
       expect(model2.currentIndex, 0);
       expect(model2.navigationStackLength, 1);
     });
 
-    test('next_whenCalled_thenMovesToNextJourney', () {
-      // ARRANGE
-      viewModel.push(trainId1);
-      viewModel.push(trainId2);
-      viewModel.push(trainId3);
-      viewModel.push(trainId2); // set current to trainId2
-
+    test('push_whenNewJourneyAddedAfterInit_thenCallsConnectInRepoButNotDisconnect', () {
       // ACT
-      viewModel.next();
+      testee.push(trainId1);
 
       // EXPECT
-      final model = viewModel.modelValue!;
+      verify(mockSferaRepo.connect(any)).called(1);
+      verifyNever(mockSferaRepo.disconnect());
+    });
+
+    test('push_whenSameJourneyAdded_thenDoesNotCallConnectInRepoTwice', () {
+      // ARRANGE
+      testee.push(trainId1);
+      reset(mockSferaRepo);
+
+      // ACT
+      testee.push(trainId1);
+
+      // EXPECT
+      verifyNever(mockSferaRepo.connect(any));
+      verifyNever(mockSferaRepo.disconnect());
+    });
+
+    test('push_whenNewJourneyAdded_thenCallsDisconnectAndConnectInRepo', () {
+      // ARRANGE
+      testee.push(trainId1);
+      reset(mockSferaRepo);
+
+      // ACT
+      testee.push(trainId2);
+
+      // EXPECT
+      verify(mockSferaRepo.connect(trainId2)).called(1);
+      verify(mockSferaRepo.disconnect()).called(1);
+    });
+
+    test('next_whenCalled_thenMovesToNextJourney', () {
+      // ARRANGE
+      testee.push(trainId1);
+      testee.push(trainId2);
+      testee.push(trainId3);
+      testee.push(trainId2); // set current to trainId2
+
+      // ACT
+      testee.next();
+
+      // EXPECT
+      final model = testee.modelValue!;
       expect(model.trainIdentification, trainId3);
       expect(model.currentIndex, 2);
       expect(model.navigationStackLength, 3);
     });
 
-    test('next_whenAtEnd_thenDoesNotChangeModel', () {
+    test('next_whenCalled_thenDisconnectsAndConnectsToNewTrainId', () {
       // ARRANGE
-      viewModel.push(trainId1);
-      viewModel.push(trainId2);
-      viewModel.push(trainId3);
-      viewModel.push(trainId3); // set current to last
-      final modelBefore = viewModel.modelValue;
+      testee.push(trainId1);
+      testee.push(trainId2);
+      testee.push(trainId3);
+      testee.push(trainId2); // set current to trainId2
+      reset(mockSferaRepo);
 
       // ACT
-      viewModel.next();
+      testee.next();
 
       // EXPECT
-      final modelAfter = viewModel.modelValue;
+      verify(mockSferaRepo.connect(any)).called(1);
+      verify(mockSferaRepo.disconnect()).called(1);
+    });
+
+    test('next_whenAtEnd_thenDoesNotChangeModel', () {
+      // ARRANGE
+      testee.push(trainId1);
+      testee.push(trainId2);
+      testee.push(trainId3);
+      testee.push(trainId3); // set current to last
+      final modelBefore = testee.modelValue;
+
+      // ACT
+      testee.next();
+
+      // EXPECT
+      final modelAfter = testee.modelValue;
       expect(modelAfter, modelBefore);
       expect(modelAfter!.trainIdentification, trainId3);
       expect(modelAfter.currentIndex, 2);
@@ -110,31 +173,47 @@ void main() {
 
     test('previous_whenCalled_thenMovesToPreviousJourney', () {
       // ARRANGE
-      viewModel.push(trainId1);
-      viewModel.push(trainId2);
-      viewModel.push(trainId3);
-      viewModel.push(trainId2); // set current to trainId2
+      testee.push(trainId1);
+      testee.push(trainId2);
+      testee.push(trainId3);
+      testee.push(trainId2); // set current to trainId2
 
       // ACT
-      viewModel.previous();
+      testee.previous();
 
       // EXPECT
-      final model = viewModel.modelValue!;
+      final model = testee.modelValue!;
       expect(model.trainIdentification, trainId1);
       expect(model.currentIndex, 0);
       expect(model.navigationStackLength, 3);
     });
 
-    test('previous_whenAtStart_thenDoesNotChangeModel', () {
+    test('previous_whenCalled_thenDisconnectsAndConnectsToNewTrainId', () {
       // ARRANGE
-      viewModel.push(trainId1);
-      final modelBefore = viewModel.modelValue;
+      testee.push(trainId1);
+      testee.push(trainId2);
+      testee.push(trainId3);
+      testee.push(trainId2); // set current to trainId2
+      reset(mockSferaRepo);
 
       // ACT
-      viewModel.previous();
+      testee.previous();
 
       // EXPECT
-      final modelAfter = viewModel.modelValue;
+      verify(mockSferaRepo.connect(any)).called(1);
+      verify(mockSferaRepo.disconnect()).called(1);
+    });
+
+    test('previous_whenAtStart_thenDoesNotChangeModel', () {
+      // ARRANGE
+      testee.push(trainId1);
+      final modelBefore = testee.modelValue;
+
+      // ACT
+      testee.previous();
+
+      // EXPECT
+      final modelAfter = testee.modelValue;
       expect(modelAfter, modelBefore);
       expect(modelAfter!.trainIdentification, trainId1);
       expect(modelAfter.currentIndex, 0);
@@ -143,20 +222,36 @@ void main() {
 
     test('dispose_whenCalled_thenClearsJourneysAndClosesStream', () {
       // ARRANGE
-      viewModel.push(trainId1);
+      testee.push(trainId1);
 
       // ACT
-      viewModel.dispose();
+      testee.dispose();
 
       // EXPECT
-      expect(() => viewModel.modelValue, returnsNormally);
+      expect(() => testee.modelValue, returnsNormally);
+      verify(mockSferaRepo.disconnect()).called(1);
+    });
+    test('model_stream_whenSferaRemoteRepoDisconnectsWithError_thenEmitsNullOnce', () async {
+      // ARRANGE
+      testee.push(trainId1);
+      await allowStreamProcessing();
+      emitRegister.clear();
+      when(mockSferaRepo.lastError).thenReturn(SferaError.requestTimeout);
+
+      // ACT
+      mockStream.add(SferaRemoteRepositoryState.disconnected);
+      await allowStreamProcessing();
+
+      // EXCPECT
+      expect(emitRegister.length, 1);
+      expect(emitRegister.first, isNull);
     });
 
     test('model_stream_whenPushCalledMultipleTimesWithSameTrainId_thenEmitsOnce', () async {
       // ACT
-      viewModel.push(trainId1);
-      viewModel.push(trainId1);
-      viewModel.push(trainId1);
+      testee.push(trainId1);
+      testee.push(trainId1);
+      testee.push(trainId1);
 
       await allowStreamProcessing();
 
@@ -166,9 +261,9 @@ void main() {
 
     test('model_stream_whenPushDifferentTrainIds_thenEmitsForEach', () async {
       // ACT
-      viewModel.push(trainId1);
-      viewModel.push(trainId2);
-      viewModel.push(trainId3);
+      testee.push(trainId1);
+      testee.push(trainId2);
+      testee.push(trainId3);
 
       await allowStreamProcessing();
 
@@ -178,13 +273,13 @@ void main() {
 
     test('model_stream_whenNextOrPreviousCalledAtBounds_thenDoesNotEmit', () async {
       // ARRANGE
-      viewModel.push(trainId1);
+      testee.push(trainId1);
       await allowStreamProcessing();
       emitRegister.clear();
 
       // ACT
-      viewModel.previous(); // at start, should not emit
-      viewModel.next(); // at end, should not emit
+      testee.previous(); // at start, should not emit
+      testee.next(); // at end, should not emit
 
       await allowStreamProcessing();
 
@@ -194,14 +289,14 @@ void main() {
 
     test('model_stream_whenNextAndPreviousCalledWithinBounds_thenEmits', () async {
       // ARRANGE
-      viewModel.push(trainId1);
-      viewModel.push(trainId2);
+      testee.push(trainId1);
+      testee.push(trainId2);
       await allowStreamProcessing();
       emitRegister.clear();
 
       // ACT
-      viewModel.previous(); // should emit (move to trainId1)
-      viewModel.next(); // should emit (move to trainId2)
+      testee.previous(); // should emit (move to trainId1)
+      testee.next(); // should emit (move to trainId2)
 
       await allowStreamProcessing();
 

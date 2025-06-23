@@ -1,4 +1,5 @@
 import 'package:app/di/di.dart';
+import 'package:app/di/scopes/journey_scope.dart';
 import 'package:app/flavor.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
@@ -39,5 +40,6 @@ class IntegrationTestDI {
     GetIt.I.registerSingleton<DASBaseScope>(MockDASBaseScope());
     GetIt.I.registerSingleton<SferaMockScope>(MockSferaMockScope());
     GetIt.I.registerSingleton<AuthenticatedScope>(MockAuthenticatedScope());
+    GetIt.I.registerSingleton<JourneyScope>(JourneyScope());
   }
 }

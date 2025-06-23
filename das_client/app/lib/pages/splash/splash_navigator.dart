@@ -1,5 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/di/scope_handler.dart';
+import 'package:app/di/scopes/journey_scope.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/pages/splash/splash_view_model.dart';
 import 'package:auto_route/auto_route.dart';
@@ -23,6 +24,7 @@ class SplashNavigator {
     final isAuthenticated = await viewModel.isAuthenticated;
     if (isAuthenticated) {
       await DI.get<ScopeHandler>().push<AuthenticatedScope>();
+      await DI.get<ScopeHandler>().push<JourneyScope>();
       _navigateToJourney();
     } else {
       _navigateToLogin();

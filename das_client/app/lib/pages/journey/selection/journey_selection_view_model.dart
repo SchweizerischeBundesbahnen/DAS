@@ -12,7 +12,7 @@ class JourneySelectionViewModel {
     required Function(TrainIdentification) onJourneySelected,
   }) : _sferaRemoteRepo = sferaRemoteRepo,
        _onJourneySelected = onJourneySelected {
-    _emitInitial();
+    _emitSelectingWithDefaults();
     _initSferaRepoSubscription();
   }
 
@@ -36,72 +36,8 @@ class JourneySelectionViewModel {
       case final Selecting s:
         if (!s.isInputComplete) return;
 
-        final trainIdentification = TrainIdentification(
-          ru: s.railwayUndertaking,
-          trainNumber: s.operationalTrainNumber.trim(),
-          date: s.startDate,
-        );
-        _state.add(JourneySelectionModel.loading(trainIdentification: trainIdentification));
-
-        _sferaRemoteRepo.connect(
-          OtnId(
-            company: trainIdentification.ru.companyCode,
-            operationalTrainNumber: trainIdentification.trainNumber,
-            startDate: trainIdentification.date,
-          ),
-        );
+        _onJourneySelected(_trainIdFrom(s));
     }
-  }
-
-  void _initSferaRepoSubscription() {
-    _sferaRemoteRepoSubscription = _sferaRemoteRepo.stateStream.listen((state) {
-      switch (state) {
-        case SferaRemoteRepositoryState.connected:
-          switch (_state.value) {
-            case final Loading lM:
-              _state.add(JourneySelectionModel.loaded(trainIdentification: lM.trainIdentification));
-              _onJourneySelected(lM.trainIdentification);
-              break;
-            case final Selecting _ || final Error _ || final Loaded _:
-              break;
-          }
-          break;
-        case SferaRemoteRepositoryState.connecting:
-        case SferaRemoteRepositoryState.handshaking:
-        case SferaRemoteRepositoryState.loadingJourney:
-        case SferaRemoteRepositoryState.loadingAdditionalData:
-          break;
-        case SferaRemoteRepositoryState.disconnected:
-        case SferaRemoteRepositoryState.offline:
-          if (_sferaRemoteRepo.lastError != null) {
-            switch (_state.value) {
-              case final Loading l:
-                _state.add(
-                  JourneySelectionModel.error(
-                    trainIdentification: l.trainIdentification,
-                    errorCode: ErrorCode.fromSfera(_sferaRemoteRepo.lastError!),
-                  ),
-                );
-                break;
-              case final Selecting s:
-                _state.add(
-                  JourneySelectionModel.error(
-                    trainIdentification: TrainIdentification(
-                      ru: s.railwayUndertaking,
-                      trainNumber: s.operationalTrainNumber,
-                      date: s.startDate,
-                    ),
-                    errorCode: ErrorCode.fromSfera(_sferaRemoteRepo.lastError!),
-                  ),
-                );
-                break;
-              case final Loaded _ || final Error _:
-                break;
-            }
-          }
-          break;
-      }
-    });
   }
 
   void updateDate(DateTime date) {
@@ -116,17 +52,59 @@ class JourneySelectionViewModel {
     _ifInSelectingOrErrorEmitSelectingWith((model) => model.copyWith(railwayUndertaking: ru));
   }
 
-  void _emitInitial() => _state.add(
-    JourneySelectionModel.selecting(
-      startDate: clock.now(),
-      railwayUndertaking: RailwayUndertaking.sbbP,
-    ),
-  );
+  void dismissSelection() {
+    final currentState = _state.value;
+    if (currentState is Loading) return;
+
+    _emitSelectingWithDefaults();
+  }
 
   void dispose() {
     _sferaRemoteRepoSubscription?.cancel();
     _state.close();
   }
+
+  void _initSferaRepoSubscription() {
+    _sferaRemoteRepoSubscription = _sferaRemoteRepo.stateStream.listen((state) {
+      switch (state) {
+        case SferaRemoteRepositoryState.connected:
+          final currentState = _state.value;
+          if (currentState is! Loading) return;
+
+          return _state.add(JourneySelectionModel.loaded(trainIdentification: currentState.trainIdentification));
+        case SferaRemoteRepositoryState.connecting:
+          final currentState = _state.value;
+          if (currentState is! Selecting) return;
+
+          return _state.add(JourneySelectionModel.loading(trainIdentification: _trainIdFrom(currentState)));
+        case SferaRemoteRepositoryState.disconnected:
+          if (_sferaRemoteRepo.lastError == null) return;
+
+          return switch (_state.value) {
+            final Loading l => _state.add(
+              JourneySelectionModel.error(
+                trainIdentification: l.trainIdentification,
+                errorCode: ErrorCode.fromSfera(_sferaRemoteRepo.lastError!),
+              ),
+            ),
+            final Selecting s => _state.add(
+              JourneySelectionModel.error(
+                trainIdentification: _trainIdFrom(s),
+                errorCode: ErrorCode.fromSfera(_sferaRemoteRepo.lastError!),
+              ),
+            ),
+            _ => null,
+          };
+      }
+    });
+  }
+
+  void _emitSelectingWithDefaults() => _state.add(
+    JourneySelectionModel.selecting(
+      startDate: clock.now(),
+      railwayUndertaking: RailwayUndertaking.sbbP,
+    ),
+  );
 
   void _ifInSelectingOrErrorEmitSelectingWith(Selecting Function(Selecting model) updateFunc) {
     switch (modelValue) {
@@ -149,5 +127,11 @@ class JourneySelectionViewModel {
     }
   }
 
-  _validateInput(Selecting updatedModel) => updatedModel.trainNumber?.isNotEmpty == true;
+  bool _validateInput(Selecting updatedModel) => updatedModel.trainNumber?.isNotEmpty == true;
+
+  TrainIdentification _trainIdFrom(Selecting selectingState) => TrainIdentification(
+    ru: selectingState.railwayUndertaking,
+    trainNumber: selectingState.operationalTrainNumber.trim(),
+    date: selectingState.startDate,
+  );
 }
