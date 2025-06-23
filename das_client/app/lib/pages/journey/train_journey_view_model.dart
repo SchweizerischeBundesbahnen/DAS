@@ -71,6 +71,7 @@ class TrainJourneyViewModel {
           _disableWarnapp();
           if (_sferaRemoteRepo.lastError != null) {
             _rxErrorCode.add(ErrorCode.fromSfera(_sferaRemoteRepo.lastError!));
+            setAutomaticAdvancement(false);
           }
           _journeySubscription?.cancel();
           break;
