@@ -1,18 +1,14 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/train_journey/widgets/anchored_full_page_overlay.dart';
 import 'package:app/pages/journey/train_journey/widgets/reduced_overview/reduced_overview_modal_sheet.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:app/pages/journey/train_journey_view_model.dart';
-import 'package:app/theme/theme_util.dart';
-import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-const _anchorsOffset = Offset(0, sbbDefaultSpacing / 2);
-
-class ExtendedMenu extends StatefulWidget {
+class ExtendedMenu extends StatelessWidget {
   static const Key menuButtonKey = Key('extendedMenuButton');
   static const Key menuButtonCloseKey = Key('closeExtendedMenuButton');
   static const Key maneuverSwitchKey = Key('maneuverSwitch');
@@ -20,160 +16,44 @@ class ExtendedMenu extends StatefulWidget {
   const ExtendedMenu({super.key});
 
   @override
-  State<ExtendedMenu> createState() => _ExtendedMenuState();
-}
-
-class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderStateMixin {
-  static const extendedMenuContentWidth = 360.0;
-
-  final _layerLink = LayerLink();
-
-  OverlayEntry? overlayEntry;
-  late AnimationController _controller;
-  late Animation<double> _opacityAnimation;
-  late Animation<double> _scaleAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 100),
-      vsync: this,
-    );
-
-    _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeInOut,
-      ),
-    );
-
-    _scaleAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeInOut,
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return CompositedTransformTarget(
-      link: _layerLink,
-      child: SBBIconButtonLarge(
-        key: ExtendedMenu.menuButtonKey,
-        icon: SBBIcons.context_menu_small,
-        onPressed: () => _showOverlay(context),
-      ),
-    );
-  }
-
-  Future<void> _removeOverlay() async {
-    await _controller.reverse();
-    overlayEntry?.remove();
-    overlayEntry?.dispose();
-    overlayEntry = null;
-  }
-
-  void _showOverlay(BuildContext context) {
-    final overlayState = Overlay.of(context);
     final viewModel = context.read<TrainJourneyViewModel>();
-
-    overlayEntry = OverlayEntry(
-      builder: (_) => Provider(
-        create: (_) => viewModel,
-        child: Builder(
-          builder: (context) => Stack(
-            children: [
-              // Fullscreen background
-              GestureDetector(
-                onTap: () => _removeOverlay(),
-                child: Container(
-                  color: SBBColors.iron.withAlpha((255.0 * 0.6).round()),
-                ),
-              ),
-              // Positioned extended menu
-              CompositedTransformFollower(
-                link: _layerLink,
-                offset: _anchorsOffset,
-                targetAnchor: Alignment.bottomCenter,
-                followerAnchor: Alignment.topCenter,
-                child: _menu(context),
-              ),
-            ],
-          ),
-        ),
+    return AnchoredFullPageOverlay(
+      triggerBuilder: (context, showOverlay) => SBBIconButtonLarge(
+        key: menuButtonKey,
+        icon: SBBIcons.context_menu_small,
+        onPressed: () => showOverlay(),
       ),
-    );
-
-    // Insert the overlay entry into the Overlay
-    overlayState.insert(overlayEntry!);
-    _controller.forward(); // Start the animation
-  }
-
-  Widget _menu(BuildContext context) {
-    return FadeTransition(
-      opacity: _opacityAnimation,
-      child: ScaleTransition(
-        scale: _scaleAnimation,
-        child: Column(
-          children: [
-            SvgPicture.asset(
-              AppAssets.shapeMenuArrow,
-              colorFilter: ColorFilter.mode(
-                ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
-                BlendMode.srcIn,
-              ),
+      contentBuilder: (context, hideOverlay) {
+        return Provider(
+          create: (_) => viewModel,
+          child: Builder(
+            builder: (context) => Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _menuHeader(context, hideOverlay),
+                SizedBox(height: sbbDefaultSpacing),
+                SBBGroup(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _breakSlipItem(context),
+                      _transportDocumentItem(context),
+                      _journeyOverviewItem(context, hideOverlay),
+                      _maneuverItem(context, hideOverlay),
+                      _waraItem(context),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            _menuContent(context),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _menuContent(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: Container(
-        decoration: BoxDecoration(
-          color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
-          borderRadius: BorderRadius.circular(sbbDefaultSpacing),
-        ),
-        width: extendedMenuContentWidth,
-        child: Padding(
-          padding: const EdgeInsets.all(sbbDefaultSpacing),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              _menuHeader(context),
-              SizedBox(height: sbbDefaultSpacing),
-              SBBGroup(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _breakSlipItem(context),
-                    _transportDocumentItem(context),
-                    _journeyOverviewItem(context),
-                    _maneuverItem(context),
-                    _waraItem(context),
-                  ],
-                ),
-              ),
-            ],
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
-  Widget _menuHeader(BuildContext context) {
+  Widget _menuHeader(BuildContext context, VoidCallback hideOverlay) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -184,8 +64,8 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
           ),
         ),
         SBBIconButtonSmall(
-          key: ExtendedMenu.menuButtonCloseKey,
-          onPressed: () => _removeOverlay(),
+          key: menuButtonCloseKey,
+          onPressed: () => hideOverlay(),
           icon: SBBIcons.cross_small,
         ),
       ],
@@ -210,11 +90,11 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
     );
   }
 
-  Widget _journeyOverviewItem(BuildContext context) {
+  Widget _journeyOverviewItem(BuildContext context, VoidCallback hideOverlay) {
     return SBBListItem(
       title: context.l10n.w_extended_menu_journey_overview_action,
       onPressed: () async {
-        await _removeOverlay();
+        hideOverlay;
         if (context.mounted) {
           showReducedOverviewModalSheet(context);
         }
@@ -233,13 +113,13 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
     );
   }
 
-  Widget _maneuverItem(BuildContext context) {
+  Widget _maneuverItem(BuildContext context, VoidCallback hideOverlay) {
     final viewModel = context.read<TrainJourneyViewModel>();
 
     return SBBListItem.custom(
       title: context.l10n.w_extended_menu_maneuver_mode,
-      onPressed: () async {
-        await _removeOverlay();
+      onPressed: () {
+        hideOverlay();
         final maneuverModeToggled = !viewModel.settingsValue.isManeuverModeEnabled;
         viewModel.setManeuverMode(maneuverModeToggled);
       },
@@ -251,10 +131,10 @@ class _ExtendedMenuState extends State<ExtendedMenu> with SingleTickerProviderSt
             if (!snapshot.hasData) return Container();
 
             return SBBSwitch(
-              key: ExtendedMenu.maneuverSwitchKey,
+              key: maneuverSwitchKey,
               value: snapshot.data?.isManeuverModeEnabled ?? false,
-              onChanged: (value) async {
-                await _removeOverlay();
+              onChanged: (value) {
+                hideOverlay();
                 viewModel.setManeuverMode(value);
               },
             );
