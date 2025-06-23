@@ -32,6 +32,8 @@ void main() {
       // closed
       expect(find.byKey(JourneySearchOverlay.journeySearchKey), findsOneWidget);
       expect(find.byKey(JourneySearchOverlay.journeySearchCloseKey), findsNothing);
+
+      await disconnect(tester);
     });
 
     testWidgets('input fields have defaults and validation works', (tester) async {
@@ -65,6 +67,8 @@ void main() {
 
       // button enabled
       expect(tester.widget<SBBPrimaryButton>(primaryButton).onPressed, isNotNull);
+
+      await disconnect(tester);
     });
 
     testWidgets('loading another train journey and displaying navigation buttons work', (tester) async {
@@ -111,6 +115,8 @@ void main() {
 
       // wait until T1 opened
       await waitUntilExists(tester, find.descendant(of: find.byType(Header), matching: find.text('T1 SBB')));
+
+      await disconnect(tester);
     });
   });
 }
