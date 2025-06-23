@@ -83,10 +83,10 @@ void main() {
     });
 
     test('toString_whenCalled_thenReturnsCorrectString', () {
-      expect(
-        baseTestee.toString(),
-        equals('JourneyNavigationModel(trainIdentification: $trainId, currentIndex: 0, navigationStackLength: 1)'),
-      );
+      final expectedString =
+          'JourneyNavigationModel(trainIdentification: $trainId, currentIndex: 0, '
+          'navigationStackLength: 1, showNavigationButtons: false)';
+      expect(baseTestee.toString(), equals(expectedString));
     });
 
     test('hashCode_whenSameTrainIdAndIndex_thenReturnsSameHash', () {

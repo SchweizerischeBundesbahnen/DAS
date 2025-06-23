@@ -36,7 +36,7 @@ void main() {
 
     tearDown(() {
       sub.cancel();
-      testee.dispose();
+      if (testee.modelValue != null) testee.dispose();
     });
 
     test('initialState_whenInstantiated_thenIsEmpty', () {
