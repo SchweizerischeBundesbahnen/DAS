@@ -11,6 +11,10 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 const _animationDuration = Duration(milliseconds: 300);
 
 class JourneyNavigationButtons extends StatelessWidget {
+  static const Key journeyNavigationButtonKey = Key('JourneyNavigationButtons');
+  static const Key journeyNavigationButtonPreviousKey = Key('JourneyNavigationButtonsPreviousButton');
+  static const Key journeyNavigationButtonNextKey = Key('JourneyNavigationButtonsNextButton');
+
   const JourneyNavigationButtons({super.key});
 
   @override
@@ -27,6 +31,8 @@ class JourneyNavigationButtons extends StatelessWidget {
         final navigationModel = snap[0] as JourneyNavigationModel;
         final settings = snap[1] as TrainJourneySettings;
 
+        if (!navigationModel.showNavigationButtons) return SizedBox.shrink();
+
         final resolvedShowNavButtons = navigationModel.showNavigationButtons && !settings.isAutoAdvancementEnabled;
 
         return AnimatedOpacity(
@@ -35,20 +41,29 @@ class JourneyNavigationButtons extends StatelessWidget {
           child: IgnorePointer(
             ignoring: !resolvedShowNavButtons,
             child: Container(
+              key: journeyNavigationButtonKey,
               margin: EdgeInsets.only(bottom: sbbDefaultSpacing * 2),
               padding: EdgeInsets.all(sbbDefaultSpacing / 2),
               decoration: _navigationButtonsDecoration(context),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  SBBIconButtonLarge(icon: SBBIcons.chevron_left_small, onPressed: () => navigationVM.previous()),
+                  SBBIconButtonLarge(
+                    key: journeyNavigationButtonPreviousKey,
+                    icon: SBBIcons.chevron_left_small,
+                    onPressed: () => navigationVM.previous(),
+                  ),
                   SizedBox(width: sbbDefaultSpacing),
                   SBBPagination(
                     numberPages: navigationModel.navigationStackLength,
                     currentPage: navigationModel.currentIndex,
                   ),
                   SizedBox(width: sbbDefaultSpacing),
-                  SBBIconButtonLarge(icon: SBBIcons.chevron_right_small, onPressed: () => navigationVM.next()),
+                  SBBIconButtonLarge(
+                    key: journeyNavigationButtonNextKey,
+                    icon: SBBIcons.chevron_right_small,
+                    onPressed: () => navigationVM.next(),
+                  ),
                 ],
               ),
             ),

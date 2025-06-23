@@ -1,0 +1,131 @@
+import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
+import 'package:app/pages/journey/train_journey/widgets/header/journey_search_overlay.dart';
+import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
+import 'package:app/pages/journey/train_journey/widgets/journey_navigation_buttons.dart';
+import 'package:app/util/format.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+
+import '../app_test.dart';
+import '../util/test_utils.dart';
+
+void main() {
+  group('Journey search overlay tests', () {
+    testWidgets('overlay can be opened and dismissed', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T1');
+
+      // closed by default - should show journeySearch icon with key
+      expect(find.byKey(JourneySearchOverlay.journeySearchKey), findsOneWidget);
+      expect(find.byKey(JourneySearchOverlay.journeySearchCloseKey), findsNothing);
+
+      // open
+      await _openJourneySearchOverlayByTap(tester);
+
+      // opened
+      expect(find.byKey(JourneySearchOverlay.journeySearchCloseKey), findsAny);
+
+      // close
+      await _closeJourneySearchOverlayByTap(tester);
+
+      // closed
+      expect(find.byKey(JourneySearchOverlay.journeySearchKey), findsOneWidget);
+      expect(find.byKey(JourneySearchOverlay.journeySearchCloseKey), findsNothing);
+    });
+
+    testWidgets('input fields have defaults and validation works', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T1');
+      final journeySearchOverlay = find.byType(JourneySearchOverlay);
+
+      // open
+      await _openJourneySearchOverlayByTap(tester);
+
+      // Verify we have ru SBB.
+      expect(find.descendant(of: journeySearchOverlay, matching: find.text(l10n.c_ru_sbb_p)), findsOneWidget);
+
+      // Verify that today is preselected
+      expect(
+        find.descendant(of: journeySearchOverlay, matching: find.text(Format.date(DateTime.now()))),
+        findsOneWidget,
+      );
+
+      // check that the primary button is disabled
+      final primaryButton = find.descendant(
+        of: journeySearchOverlay,
+        matching: find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first,
+      );
+      expect(tester.widget<SBBPrimaryButton>(primaryButton).onPressed, isNull);
+
+      // set input
+      final trainNumberText = findTextFieldByHint(l10n.p_train_selection_trainnumber_description);
+      expect(trainNumberText, findsOneWidget);
+      await enterText(tester, trainNumberText, '123');
+
+      // button enabled
+      expect(tester.widget<SBBPrimaryButton>(primaryButton).onPressed, isNotNull);
+    });
+
+    testWidgets('loading another train journey and displaying navigation buttons work', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T1');
+      final journeySearchOverlay = find.byType(JourneySearchOverlay);
+
+      // open
+      await _openJourneySearchOverlayByTap(tester);
+
+      // set input
+      final trainNumberText = findTextFieldByHint(l10n.p_train_selection_trainnumber_description);
+      expect(trainNumberText, findsOneWidget);
+      await enterText(tester, trainNumberText, 'T2');
+
+      // load T2 Journey
+      final primaryButton = find.descendant(
+        of: journeySearchOverlay,
+        matching: find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first,
+      );
+      await tapElement(tester, primaryButton);
+
+      // wait until T2 opened
+      await waitUntilExists(tester, find.descendant(of: find.byType(Header), matching: find.text('T2 SBB')));
+
+      // should not display navigation buttons (autoAdvancement is active)
+      final opacity = find.descendant(
+        of: find.byType(JourneyNavigationButtons),
+        matching: find.byWidgetPredicate((widget) => widget is AnimatedOpacity).first,
+      );
+      expect(tester.widget<AnimatedOpacity>(opacity).opacity, isZero);
+
+      // pause auto advancement
+      final pauseButton = find.byKey(StartPauseButton.pauseButtonKey);
+      await tapElement(tester, pauseButton);
+      await tester.pumpAndSettle(Duration(milliseconds: 300));
+
+      // navigation buttons displayed
+      expect(tester.widget<AnimatedOpacity>(opacity).opacity, isNonZero);
+
+      // navigate to previous journey
+      final previousButton = find.byKey(JourneyNavigationButtons.journeyNavigationButtonPreviousKey);
+      await tapElement(tester, previousButton);
+
+      // wait until T1 opened
+      await waitUntilExists(tester, find.descendant(of: find.byType(Header), matching: find.text('T1 SBB')));
+    });
+  });
+}
+
+Future<void> _openJourneySearchOverlayByTap(WidgetTester tester) async {
+  final icon = find.descendant(
+    of: find.byType(JourneySearchOverlay),
+    matching: find.byIcon(SBBIcons.magnifying_glass_small),
+  );
+  await tapElement(tester, icon, warnIfMissed: false);
+  await Future.delayed(const Duration(milliseconds: 250));
+}
+
+Future<void> _closeJourneySearchOverlayByTap(WidgetTester tester) async {
+  final icon = find.descendant(of: find.byType(JourneySearchOverlay), matching: find.byIcon(SBBIcons.cross_small));
+  await tapElement(tester, icon, warnIfMissed: false);
+  await Future.delayed(const Duration(milliseconds: 250));
+}

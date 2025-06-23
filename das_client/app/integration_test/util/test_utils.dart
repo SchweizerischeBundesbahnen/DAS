@@ -48,6 +48,11 @@ Finder findTextFieldByLabel(String label) {
   return find.descendant(of: sbbTextField, matching: find.byType(TextField));
 }
 
+Finder findTextFieldByHint(String hint) {
+  final sbbTextField = find.byWidgetPredicate((widget) => widget is SBBTextField && widget.hintText == hint);
+  return find.descendant(of: sbbTextField, matching: find.byType(TextField));
+}
+
 Finder findDASTableRowByText(String text) {
   return find.descendant(
     of: find.byKey(DASTable.tableKey),
