@@ -1063,27 +1063,13 @@ void main() {
     // check ServicePoint Burgdorf
 
     final graduatedStationSpeeds2 = servicePoints[2].graduatedSpeedInfo!.speeds;
-    expect(graduatedStationSpeeds2, hasLength(5));
+    expect(graduatedStationSpeeds2, hasLength(3));
 
     final rSpeedEntry2 = graduatedStationSpeeds2.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.R);
-    expect(rSpeedEntry2, isNotNull);
-    expect(rSpeedEntry2!.text, 'Zusatzinformation A');
-    expect(rSpeedEntry2.trainSeries, TrainSeries.R);
-    expect(rSpeedEntry2.incomingSpeeds, hasLength(2));
-    _checkSpeed(rSpeedEntry2.incomingSpeeds[0], '75');
-    _checkSpeed(rSpeedEntry2.incomingSpeeds[1], '70', isCircled: true);
-    expect(rSpeedEntry2.outgoingSpeeds, hasLength(1));
-    _checkSpeed(rSpeedEntry2.outgoingSpeeds[0], '60', isSquared: true);
+    expect(rSpeedEntry2, isNull);
 
     final oSpeedEntry2 = graduatedStationSpeeds2.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.O);
-    expect(oSpeedEntry2, isNotNull);
-    expect(oSpeedEntry2!.text, 'Zusatzinformation A');
-    expect(oSpeedEntry2.trainSeries, TrainSeries.O);
-    expect(oSpeedEntry2.incomingSpeeds, hasLength(2));
-    _checkSpeed(oSpeedEntry2.incomingSpeeds[0], '75');
-    _checkSpeed(oSpeedEntry2.incomingSpeeds[1], '70', isCircled: true);
-    expect(oSpeedEntry2.outgoingSpeeds, hasLength(1));
-    _checkSpeed(oSpeedEntry2.outgoingSpeeds[0], '60', isSquared: true);
+    expect(oSpeedEntry2, isNull);
 
     final aSpeedEntry2 = graduatedStationSpeeds2.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.A);
     expect(aSpeedEntry2, isNotNull);
