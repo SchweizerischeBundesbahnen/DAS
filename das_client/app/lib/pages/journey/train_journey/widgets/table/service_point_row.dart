@@ -122,10 +122,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     final relevantGraduatedSpeedInfo = data.relevantGraduatedSpeedInfo(currentBreakSeries);
 
     return DASTableCell(
-      onTap: () {
-        final viewModel = context.read<ServicePointModalViewModel>();
-        viewModel.open(context, tab: ServicePointModalTab.graduatedSpeeds, servicePoint: data);
-      },
+      onTap: relevantGraduatedSpeedInfo.isNotEmpty ? () => _openGraduatedSpeedDetails(context) : null,
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
       child: GraduatedSpeedsCellBody(
@@ -175,5 +172,10 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       ),
       alignment: defaultAlignment,
     );
+  }
+
+  void _openGraduatedSpeedDetails(BuildContext context) {
+    final viewModel = context.read<ServicePointModalViewModel>();
+    viewModel.open(context, tab: ServicePointModalTab.graduatedSpeeds, servicePoint: data);
   }
 }

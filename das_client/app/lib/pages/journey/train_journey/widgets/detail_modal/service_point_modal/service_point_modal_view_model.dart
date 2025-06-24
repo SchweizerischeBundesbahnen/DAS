@@ -18,13 +18,14 @@ class ServicePointModalViewModel {
   final _rxRadioContactList = BehaviorSubject<RadioContactList?>();
   final _rxMetadata = BehaviorSubject<Metadata>();
   final _rxServicePoint = BehaviorSubject<ServicePoint>();
-  final _rxSelectedTab = BehaviorSubject.seeded(ServicePointModalTab.values.first);
+  final _rxSelectedTab = BehaviorSubject<ServicePointModalTab?>();
   final _rxSettings = BehaviorSubject<TrainJourneySettings>();
   final _rxRelevantSpeedInfo = BehaviorSubject.seeded(<Speeds>[]);
   final _rxBreakSeries = BehaviorSubject<BreakSeries?>();
+  final _rxTabsWithData = BehaviorSubject.seeded(<ServicePointModalTab>[]);
   final _subscriptions = <StreamSubscription>[];
 
-  Stream<ServicePointModalTab> get selectedTab => _rxSelectedTab.distinct();
+  Stream<ServicePointModalTab?> get selectedTab => _rxSelectedTab.distinct();
 
   Stream<ServicePoint> get servicePoint => _rxServicePoint.distinct();
 
@@ -36,10 +37,14 @@ class ServicePointModalViewModel {
 
   Stream<BreakSeries?> get breakSeries => _rxBreakSeries.distinct();
 
+  Stream<List<ServicePointModalTab>> get tabsWithData => _rxTabsWithData.distinct();
+
   void _init() {
     _initRadioContacts();
     _initCommunicationNetworkType();
     _initRelevantSpeedInfo();
+    _initTabsWithData();
+    _initSelectedTab();
   }
 
   void _initRadioContacts() {
@@ -75,6 +80,30 @@ class ServicePointModalViewModel {
     _subscriptions.add(subscription);
   }
 
+  void _initTabsWithData() {
+    final subscription = Rx.combineLatest2(
+      _rxBreakSeries.stream,
+      _rxRelevantSpeedInfo.stream,
+      (breakSeries, relevantSpeedData) {
+        final tabsWithData = <ServicePointModalTab>[ServicePointModalTab.communication];
+        if (breakSeries != null && relevantSpeedData.isNotEmpty) {
+          tabsWithData.add(ServicePointModalTab.graduatedSpeeds);
+        }
+        return tabsWithData;
+      },
+    ).listen(_rxTabsWithData.add, onError: _rxTabsWithData.addError);
+    _subscriptions.add(subscription);
+  }
+
+  void _initSelectedTab() {
+    final subscription = _rxTabsWithData.listen((tabs) {
+      if (_rxSelectedTab.valueOrNull == null && tabs.isNotEmpty) {
+        _rxSelectedTab.add(tabs.first);
+      }
+    });
+    _subscriptions.add(subscription);
+  }
+
   void updateMetadata(Metadata metadata) => _rxMetadata.add(metadata);
 
   void updateSettings(TrainJourneySettings settings) => _rxSettings.add(settings);
@@ -105,5 +134,6 @@ class ServicePointModalViewModel {
     _rxSettings.close();
     _rxRelevantSpeedInfo.close();
     _rxBreakSeries.close();
+    _rxTabsWithData.close();
   }
 }

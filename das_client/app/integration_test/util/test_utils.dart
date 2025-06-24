@@ -157,3 +157,20 @@ Future<void> waitUntilNotExists(WidgetTester tester, FinderBase<Element> element
   // wait till all animations are finished
   await tester.pumpAndSettle();
 }
+
+// integration tests fail if an overflow error occurs
+void ignoreOverflowErrors(
+  FlutterErrorDetails details, {
+  bool forceReport = false,
+}) {
+  final exception = details.exception;
+  if (exception is FlutterError && exception.isPixelOverflowError) {
+    debugPrint('Ignored Error');
+  } else {
+    FlutterError.dumpErrorToConsole(details, forceReport: forceReport);
+  }
+}
+
+extension _FlutterErrorExtension on FlutterError {
+  bool get isPixelOverflowError => diagnostics.any((e) => e.value.toString().startsWith('A RenderFlex overflowed by'));
+}

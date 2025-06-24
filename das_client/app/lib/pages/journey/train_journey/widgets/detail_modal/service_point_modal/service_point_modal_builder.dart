@@ -19,7 +19,9 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
     return StreamBuilder(
       stream: viewModel.selectedTab,
       builder: (context, snapshot) {
-        final selectedTab = snapshot.data ?? ServicePointModalTab.values.first;
+        if (!snapshot.hasData) return SBBLoadingIndicator.tiny();
+
+        final selectedTab = snapshot.data!;
         return Column(
           children: [
             _segmentedIconButton(context, selectedTab),
@@ -47,7 +49,8 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
         StreamBuilder(
           stream: viewModel.selectedTab,
           builder: (context, snapshot) {
-            final selectedTab = snapshot.data ?? ServicePointModalTab.values.first;
+            if (!snapshot.hasData) return SizedBox.shrink();
+            final selectedTab = snapshot.data!;
             return Text(selectedTab.localized(context), style: DASTextStyles.extraSmallRoman);
           },
         ),
@@ -57,11 +60,19 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
 
   Widget _segmentedIconButton(BuildContext context, ServicePointModalTab selectedTab) {
     final viewModel = context.read<ServicePointModalViewModel>();
-    return SBBSegmentedButton.icon(
-      key: segmentedButtonKey,
-      icons: {for (final tab in ServicePointModalTab.values) tab.icon: tab.localized(context)},
-      selectedStateIndex: selectedTab.index,
-      selectedIndexChanged: (index) => viewModel.open(context, tab: ServicePointModalTab.values[index]),
+    return StreamBuilder(
+      stream: viewModel.tabsWithData,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return SizedBox.shrink();
+
+        final tabsWithData = snapshot.requireData;
+        return SBBSegmentedButton.icon(
+          key: segmentedButtonKey,
+          icons: {for (final tab in tabsWithData) tab.icon: tab.localized(context)},
+          selectedStateIndex: selectedTab.index,
+          selectedIndexChanged: (index) => viewModel.open(context, tab: tabsWithData[index]),
+        );
+      },
     );
   }
 

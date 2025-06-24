@@ -1036,12 +1036,11 @@ packages:
   sbb_design_system_mobile:
     dependency: transitive
     description:
-      path: "."
-      ref: "7dd645f"
-      resolved-ref: "7dd645f0aabda6ac1b9526f681757ba4877a6bd2"
-      url: "https://github.com/SchweizerischeBundesbahnen/design_system_flutter.git"
-    source: git
-    version: "3.1.0"
+      name: sbb_design_system_mobile
+      sha256: "23a35f1a0f30989701d25a5d7300446fd246e19bb543028b83f311568553a1e1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.0"
   sbb_oidc:
     dependency: transitive
     description:
