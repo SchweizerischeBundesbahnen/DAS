@@ -6,25 +6,9 @@
   "additionalBranchPrefix": "{{parentDir}}-",
   "packageRules": [
     {
-      "matchManagers": [
-        "pub"
-      ],
-      "groupName": "auto_route",
-      "matchPackageNames": [
-        "auto_route{/,}**",
-        "auto_route_generator{/,}**"
-      ]
-    },
-    {
-      "description": "Group dependencies from components",
       "matchFileNames": [
-        "das_client/**/pubspec.yaml"
-      ],
-      "groupName": "das-client-component-updates"
-    },
-    {
-      "matchFileNames": [
-        "das_playground/**"
+        "das_playground/**",
+        "das_client/**"
       ],
       "enabled": false
     }

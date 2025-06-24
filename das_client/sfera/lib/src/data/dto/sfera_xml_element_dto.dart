@@ -1,6 +1,8 @@
-import 'package:fimber/fimber.dart';
+import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:xml/xml.dart';
+
+final _log = Logger('SferaXmlElementDto');
 
 class SferaXmlElementDto {
   final String type;
@@ -23,7 +25,7 @@ class SferaXmlElementDto {
 
   bool validateIsNotNull(dynamic object) {
     if (object == null) {
-      Fimber.w('Validation failed for $type because required object is null');
+      _log.warning('Validation failed for $type because required object is null');
       return false;
     }
 
@@ -32,7 +34,7 @@ class SferaXmlElementDto {
 
   bool validateHasAttribute(String attribute) {
     if (!attributes.containsKey(attribute)) {
-      Fimber.w('Validation failed for $type because attribute $attribute is missing');
+      _log.warning('Validation failed for $type because attribute $attribute is missing');
       return false;
     }
 
@@ -41,7 +43,7 @@ class SferaXmlElementDto {
 
   bool validateHasAttributeInRange(String attribute, List<String> allValues) {
     if (allValues.where((it) => it.toLowerCase() == attributes[attribute]?.toLowerCase()).isEmpty) {
-      Fimber.w(
+      _log.warning(
         'Validation failed for $type because attribute $attribute with value "${attributes[attribute]}" could not be mapped to any of ${allValues.join(",")}',
       );
       return false;
@@ -52,12 +54,12 @@ class SferaXmlElementDto {
 
   bool validateHasAttributeDouble(String attribute) {
     if (!attributes.containsKey(attribute)) {
-      Fimber.w('Validation failed for $type because attribute=$attribute is missing');
+      _log.warning('Validation failed for $type because attribute=$attribute is missing');
       return false;
     }
 
     if (double.tryParse(attributes[attribute]!) == null) {
-      Fimber.w(
+      _log.warning(
         'Validation failed for $type because attribute=$attribute with value=${attributes[attribute]} could not be parsed to double',
       );
       return false;
@@ -68,12 +70,12 @@ class SferaXmlElementDto {
 
   bool validateHasAttributeInt(String attribute) {
     if (!attributes.containsKey(attribute)) {
-      Fimber.w('Validation failed for $type because attribute=$attribute is missing');
+      _log.warning('Validation failed for $type because attribute=$attribute is missing');
       return false;
     }
 
     if (int.tryParse(attributes[attribute]!) == null) {
-      Fimber.w(
+      _log.warning(
         'Validation failed for $type because attribute=$attribute with value=${attributes[attribute]} could not be parsed to int',
       );
       return false;
@@ -84,7 +86,7 @@ class SferaXmlElementDto {
 
   bool validateHasChild(String type) {
     if (childrenWithType(type).isEmpty) {
-      Fimber.w('Validation failed for ${this.type} because it has no child of type $type');
+      _log.warning('Validation failed for ${this.type} because it has no child of type $type');
       return false;
     }
 
@@ -99,7 +101,7 @@ class SferaXmlElementDto {
     final childValue = childrenWithType(type).first.value;
 
     if (childValue == null || int.tryParse(childValue) == null) {
-      Fimber.w(
+      _log.warning(
         'Validation failed for ${this.type} because child of type=$type with value=$childValue could not be parsed to int',
       );
       return false;
@@ -110,7 +112,7 @@ class SferaXmlElementDto {
 
   bool validateHasChildOfType<T>() {
     if (children.whereType<T>().isEmpty) {
-      Fimber.w('Validation failed for $type because it has no child of type ${T.toString()}');
+      _log.warning('Validation failed for $type because it has no child of type ${T.toString()}');
       return false;
     }
 
@@ -119,7 +121,7 @@ class SferaXmlElementDto {
 
   bool validateHasAnyChildOfType(List<String> types) {
     if (!children.map((it) => it.type).any((it) => types.contains(it))) {
-      Fimber.w("Validation failed for $type because it has no child of any type: ${types.join(", ")}");
+      _log.warning("Validation failed for $type because it has no child of any type: ${types.join(", ")}");
       return false;
     }
 

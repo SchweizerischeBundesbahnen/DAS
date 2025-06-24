@@ -1,4 +1,4 @@
-import 'package:fimber/fimber.dart';
+import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/api/task/sfera_task.dart';
@@ -11,6 +11,9 @@ import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_ref_dto.dart';
 import 'package:sfera/src/data/format.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
+import 'package:sfera/src/model/otn_id.dart';
+
+final _log = Logger('RequestTrainCharacteristicsTask');
 
 class RequestTrainCharacteristicsTask extends SferaTask<List<TrainCharacteristicsDto>> {
   RequestTrainCharacteristicsTask({
@@ -44,7 +47,7 @@ class RequestTrainCharacteristicsTask extends SferaTask<List<TrainCharacteristic
   Future<void> _requestSegmentProfiles() async {
     final missingTrainCharacteristics = await findMissingTrainCharacteristics();
     if (missingTrainCharacteristics.isEmpty) {
-      Fimber.i('No missing train characteristics found...');
+      _log.info('No missing train characteristics found...');
       _taskCompletedCallback(this, []);
       return;
     }
@@ -65,7 +68,7 @@ class RequestTrainCharacteristicsTask extends SferaTask<List<TrainCharacteristic
       _sferaService.messageHeader(sender: otnId.company),
       b2gRequest: B2gRequestDto.createTCRequest(tcRequests),
     );
-    Fimber.i('Sending train characteristics request...');
+    _log.info('Sending train characteristics request...');
 
     startTimeout(_taskFailedCallback);
     _mqttService.publishMessage(
@@ -99,7 +102,7 @@ class RequestTrainCharacteristicsTask extends SferaTask<List<TrainCharacteristic
     }
 
     stopTimeout();
-    Fimber.i(
+    _log.info(
       'Received G2bReplyPayload response with ${replyMessage.payload!.trainCharacteristics.length} TrainCharacteristics...',
     );
 

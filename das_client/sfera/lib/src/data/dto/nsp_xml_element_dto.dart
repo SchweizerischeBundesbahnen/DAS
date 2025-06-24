@@ -1,6 +1,8 @@
-import 'package:fimber/fimber.dart';
+import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
+
+final _log = Logger('NspXmlElementDto');
 
 mixin NspXmlElementDto<T extends SferaXmlElementDto> on SferaXmlElementDto {
   T? _element;
@@ -18,9 +20,9 @@ mixin NspXmlElementDto<T extends SferaXmlElementDto> on SferaXmlElementDto {
       try {
         _generateElement();
       } catch (e) {
-        Fimber.e(
+        _log.severe(
           'Failed to parse nsp xml element of type ${T.runtimeType.toString()} with value ${attributes['value']}',
-          ex: e,
+          e,
         );
         return false;
       }

@@ -1,11 +1,13 @@
 import 'dart:async';
 
-import 'package:fimber/fimber.dart';
+import 'package:logging/logging.dart';
 import 'package:sfera/src/data/api/sfera_error.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 
 typedef TaskFailed = void Function(SferaTask task, SferaError sferaError);
 typedef TaskCompleted<T> = void Function(SferaTask task, T? data);
+
+final _log = Logger('SferaTask');
 
 abstract class SferaTask<T> {
   SferaTask({Duration? timeout}) : _timeout = timeout ?? const Duration(seconds: 15);
@@ -20,7 +22,7 @@ abstract class SferaTask<T> {
   void startTimeout(TaskFailed onFailed) {
     timeoutTimer?.cancel();
     timeoutTimer = Timer(_timeout, () {
-      Fimber.e('Timeout reached for task $this');
+      _log.severe('Timeout reached for task $this');
       onFailed(this, SferaError.requestTimeout);
     });
   }

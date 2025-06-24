@@ -1,7 +1,8 @@
 import 'dart:io';
 
-import 'package:fimber/fimber.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:logger/component.dart';
+import 'package:logging/logging.dart';
 import 'package:sfera/src/data/dto/das_operating_modes_supported_dto.dart';
 import 'package:sfera/src/data/dto/enums/das_architecture_dto.dart';
 import 'package:sfera/src/data/dto/enums/das_connectivity_dto.dart';
@@ -12,7 +13,8 @@ import 'package:sfera/src/data/dto/message_header_dto.dart';
 import 'package:sfera/src/data/dto/sfera_b2g_request_message_dto.dart';
 
 void main() {
-  Fimber.plantTree(DebugTree());
+  Logger.root.level = Level.ALL;
+  Logger.root.onRecord.listen(LogPrinter(appName: 'DAS Tests', isDebugMode: true).call);
 
   test('Test Sfera HandshakeRequest generation', () async {
     final handshakeRequest = HandshakeRequestDto.create(

@@ -1,8 +1,11 @@
+import 'package:app/di/di.dart';
 import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/battery_status.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/departure_authorization.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/extended_menu.dart';
+import 'package:app/pages/journey/train_journey/widgets/header/journey_search_overlay.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/radio_channel.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/theme_button.dart';
@@ -69,18 +72,18 @@ class MainContainer extends StatelessWidget {
   }
 
   Widget _trainJourneyText(BuildContext context) {
-    final viewModel = context.read<TrainJourneyViewModel>();
+    final viewModel = DI.get<JourneyNavigationViewModel>();
     final resolvedTextColor = ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite);
 
     return StreamBuilder(
-      stream: viewModel.trainIdentification,
+      stream: viewModel.model,
       builder: (context, snapshot) {
-        final trainIdentification = snapshot.data;
+        final model = snapshot.data;
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
           child: Text(
-            trainIdentification != null
-                ? '${trainIdentification.trainNumber} ${trainIdentification.ru.displayText(context)}'
+            model != null
+                ? '${model.trainIdentification.trainNumber} ${model.trainIdentification.ru.displayText(context)}'
                 : '',
             style: DASTextStyles.largeRoman.copyWith(color: resolvedTextColor),
           ),
@@ -130,6 +133,7 @@ class MainContainer extends StatelessWidget {
         ThemeButton(),
         StartPauseButton(automaticAdvancementActive: settings.isAutoAdvancementEnabled),
         ExtendedMenu(),
+        JourneySearchOverlay(),
       ],
     );
   }

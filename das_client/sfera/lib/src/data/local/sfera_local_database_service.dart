@@ -1,9 +1,7 @@
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
-import 'package:sfera/src/data/local/entity/journey_profile_entity.dart';
-import 'package:sfera/src/data/local/entity/segment_profile_entity.dart';
-import 'package:sfera/src/data/local/entity/train_characteristics_entity.dart';
+import 'package:sfera/src/data/local/drift_local_database_service.dart';
 
 abstract class SferaLocalDatabaseService {
   const SferaLocalDatabaseService._();
@@ -14,13 +12,21 @@ abstract class SferaLocalDatabaseService {
 
   Future<void> saveTrainCharacteristics(TrainCharacteristicsDto trainCharacteristics);
 
-  Future<JourneyProfileEntity?> findJourneyProfile(String company, String operationalTrainNumber, DateTime startDate);
+  Future<JourneyProfileTableData?> findJourneyProfile(
+    String company,
+    String operationalTrainNumber,
+    DateTime startDate,
+  );
 
-  Future<SegmentProfileEntity?> findSegmentProfile(String spId, String majorVersion, String minorVersion);
+  Future<SegmentProfileTableData?> findSegmentProfile(String spId, String majorVersion, String minorVersion);
 
-  Future<TrainCharacteristicsEntity?> findTrainCharacteristics(String tcId, String majorVersion, String minorVersion);
+  Future<TrainCharacteristicsTableData?> findTrainCharacteristics(
+    String tcId,
+    String majorVersion,
+    String minorVersion,
+  );
 
-  Stream<JourneyProfileEntity?> observeJourneyProfile(
+  Stream<JourneyProfileTableData?> observeJourneyProfile(
     String company,
     String operationalTrainNumber,
     DateTime startDate,

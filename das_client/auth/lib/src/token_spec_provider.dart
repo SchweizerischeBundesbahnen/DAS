@@ -5,6 +5,8 @@ import 'package:collection/collection.dart';
 class TokenSpecProvider {
   const TokenSpecProvider(this._specs);
 
+  const TokenSpecProvider.empty() : _specs = const <TokenSpec>[];
+
   final List<TokenSpec> _specs;
 
   operator [](int i) => _specs[i];

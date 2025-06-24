@@ -1,4 +1,4 @@
-import 'package:fimber/fimber.dart';
+import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/api/task/sfera_task.dart';
@@ -11,6 +11,9 @@ import 'package:sfera/src/data/dto/handshake_request_dto.dart';
 import 'package:sfera/src/data/dto/sfera_b2g_request_message_dto.dart';
 import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:sfera/src/data/format.dart';
+import 'package:sfera/src/model/otn_id.dart';
+
+final _log = Logger('HandshakeTask');
 
 class HandshakeTask extends SferaTask {
   HandshakeTask({
@@ -42,7 +45,7 @@ class HandshakeTask extends SferaTask {
   _sendHandshakeRequest() {
     final sferaTrain = Format.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
 
-    Fimber.i('Sending handshake request for company=${otnId.company} train=$sferaTrain');
+    _log.info('Sending handshake request for company=${otnId.company} train=$sferaTrain');
     final operationMode = DasOperatingModesSupportedDto.create(
       dasDrivingMode,
       DasArchitectureDto.boardAdviceCalculation,
@@ -71,19 +74,19 @@ class HandshakeTask extends SferaTask {
   Future<bool> handleMessage(SferaG2bReplyMessageDto replyMessage) async {
     if (replyMessage.handshakeAcknowledgement != null) {
       stopTimeout();
-      Fimber.i('Received handshake acknowledgment');
+      _log.info('Received handshake acknowledgment');
       _taskCompletedCallback(this, null);
       return true;
     } else if (replyMessage.handshakeReject != null) {
       stopTimeout();
-      Fimber.w(
+      _log.warning(
         'Received handshake reject with reason=${replyMessage.handshakeReject?.handshakeRejectReason?.toString()}',
       );
       _taskFailedCallback(this, SferaError.handshakeRejected);
       _mqttService.disconnect();
       return true;
     } else {
-      Fimber.w('Ignoring response because is does not contain handshake');
+      _log.warning('Ignoring response because is does not contain handshake');
       return false;
     }
   }

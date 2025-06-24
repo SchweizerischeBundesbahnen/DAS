@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { SbbHeaderLeanModule, } from "@sbb-esta/angular/header-lean";
 import { SbbIconModule } from "@sbb-esta/angular/icon";
 import { SbbUsermenuModule } from "@sbb-esta/angular/usermenu";
@@ -25,17 +25,14 @@ import { OidcSecurityService } from "angular-auth-oidc-client";
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
+  private oidcSecurityService = inject(OidcSecurityService);
+  private router = inject(Router);
+
   version = packageJson.version;
   environmentLabel = environment.label;
   title = 'DAS playground';
 
   readonly userData = this.oidcSecurityService.userData;
-
-  constructor(
-    private oidcSecurityService: OidcSecurityService,
-    private router: Router,
-  ) {
-  }
 
   login() {
     this.oidcSecurityService.authorize();

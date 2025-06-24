@@ -12,6 +12,13 @@ class AuthenticatorConfig {
     this.postLogoutRedirectUrl,
   });
 
+  const AuthenticatorConfig.empty()
+    : discoveryUrl = '',
+      clientId = '',
+      redirectUrl = '',
+      postLogoutRedirectUrl = null,
+      tokenSpecs = const TokenSpecProvider.empty();
+
   final String discoveryUrl;
   final String clientId;
   final String redirectUrl;

@@ -1,6 +1,8 @@
-import 'package:fimber/fimber.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 import 'package:http_x/component.dart';
+import 'package:logging/logging.dart';
+
+final _log = Logger('AuthorizationInterceptor');
 
 class AuthorizationInterceptor implements InterceptorContract {
   const AuthorizationInterceptor(this.authProvider);
@@ -16,7 +18,7 @@ class AuthorizationInterceptor implements InterceptorContract {
       final value = await authProvider!();
       request.headers['authorization'] = value;
     } catch (e, s) {
-      Fimber.e('Set authorization header failed', ex: e, stacktrace: s);
+      _log.severe('Set authorization header failed', e, s);
     }
     return request;
   }

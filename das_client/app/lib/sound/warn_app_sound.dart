@@ -1,4 +1,4 @@
-import 'package:app/di.dart';
+import 'package:app/di/di.dart';
 import 'package:app/sound/sound.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:audioplayers/audioplayers.dart';

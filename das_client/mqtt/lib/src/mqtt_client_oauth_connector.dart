@@ -1,7 +1,9 @@
-import 'package:fimber/fimber.dart';
+import 'package:logging/logging.dart';
 import 'package:mqtt/src/mqtt_client_connector.dart';
 import 'package:mqtt/src/provider/mqtt_auth_provider.dart';
 import 'package:mqtt_client/mqtt_client.dart';
+
+final _log = Logger('MqttClientOauthConnector');
 
 class MqttClientOauthConnector implements MqttClientConnector {
   MqttClientOauthConnector({required MqttAuthProvider mqttAuthProvider}) : _mqttAuthProvider = mqttAuthProvider;
@@ -10,25 +12,28 @@ class MqttClientOauthConnector implements MqttClientConnector {
 
   @override
   Future<bool> connect(MqttClient client, String company, String train) async {
-    Fimber.i('Connecting to mqtt using oauth token');
+    _log.info('Connecting to mqtt using oauth token');
 
     final userId = await _mqttAuthProvider.userId();
-    Fimber.i('Using userId=$userId');
+    _log.info('Using userId=$userId');
 
     try {
       final accessToken = await _mqttAuthProvider.token();
-      final mqttClientConnectionStatus = await client.connect(userId, 'OAUTH~azureAd~$accessToken');
-      Fimber.i('mqttClientConnectionStatus=$mqttClientConnectionStatus');
+      final mqttClientConnectionStatus = await client.connect(
+        userId,
+        'OAUTH~${_mqttAuthProvider.oauthProfile}~$accessToken',
+      );
+      _log.info('mqttClientConnectionStatus=$mqttClientConnectionStatus');
 
       if (mqttClientConnectionStatus?.state == MqttConnectionState.connected) {
-        Fimber.i('Successfully connected to MQTT broker');
+        _log.info('Successfully connected to MQTT broker');
         return true;
       }
     } catch (e) {
-      Fimber.e('Exception during connect', ex: e);
+      _log.severe('Exception during connect', e);
     }
 
-    Fimber.w('Failed to connect to MQTT broker');
+    _log.warning('Failed to connect to MQTT broker');
     return false;
   }
 }

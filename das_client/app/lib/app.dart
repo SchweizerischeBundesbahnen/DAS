@@ -1,13 +1,11 @@
-import 'package:app/di.dart';
+import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
-import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/theme/theme_view_model.dart';
 import 'package:app/theme/themes.dart';
 import 'package:app/widgets/flavor_banner.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sfera/component.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -21,17 +19,9 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider(
-          create: (_) => ThemeViewModel(),
-          dispose: (context, vm) => vm.dispose(),
-        ),
-        Provider(
-          create: (_) => TrainJourneyViewModel(sferaRemoteRepo: DI.get<SferaRemoteRepo>()),
-          dispose: (context, vm) => vm.dispose(),
-        ),
-      ],
+    return Provider(
+      create: (_) => ThemeViewModel(),
+      dispose: (context, vm) => vm.dispose(),
       builder: (context, __) => FlavorBanner(
         flavor: DI.get(),
         child: _materialApp(context),

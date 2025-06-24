@@ -15,7 +15,6 @@ class ArrivalDepartureTime {
 
   /// these are private since the logic of figuring out whether a time is planned or operational from the
   /// ambiguous times are handled in here
-  /// TODO: Discuss whether to move to sfera model mapper
   final DateTime? _ambiguousDepartureTime;
   final DateTime? _ambiguousArrivalTime;
   final DateTime? _plannedDepartureTime;

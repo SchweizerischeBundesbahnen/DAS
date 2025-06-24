@@ -1,41 +1,10 @@
+import 'dart:ui';
+
 import 'package:auth/component.dart';
-import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-enum Flavor {
-  dev(
-    displayName: 'Dev',
-    tokenExchangeUrl: 'https://sfera-mock.app.sbb.ch/customClaim/requestToken',
-    tmsTokenExchangeUrl:
-        'https://imts-token-provider-tms-vad-imtrackside-dev.apps.halon-ocp1-1-t.sbb-aws-test.net/token/exchange',
-    mqttUrl: 'wss://das-poc.messaging.solace.cloud',
-    tmsMqttUrl: 'wss://tms-vad-imtrackside-dev-mobile.messaging.solace.cloud',
-    authenticatorConfig: _authenticatorConfigMockDev,
-    tmsAuthenticatorConfig: _authenticatorConfigTmsDev,
-    backendUrl: 'das-backend-dev.app.sbb.ch',
-    mqttTopicPrefix: 'dev/',
-    color: SBBColors.peach,
-    showBanner: true,
-  ),
-  inte(
-    displayName: 'Inte',
-    tokenExchangeUrl: 'https://sfera-mock.app.sbb.ch/customClaim/requestToken',
-    mqttUrl: 'wss://das-poc.messaging.solace.cloud',
-    authenticatorConfig: _authenticatorConfigInte,
-    backendUrl: 'das-backend-int.app.sbb.ch',
-    mqttTopicPrefix: '',
-    color: SBBColors.black,
-    showBanner: true,
-  ),
-  prod(
-    displayName: 'Prod',
-    tokenExchangeUrl: 'https://sfera-mock.app.sbb.ch/customClaim/requestToken',
-    mqttUrl: 'wss://das-poc.messaging.solace.cloud',
-    authenticatorConfig: _authenticatorConfigProd,
-    backendUrl: 'das-backend-dev.app.sbb.ch',
-    mqttTopicPrefix: '',
-  );
-
+sealed class Flavor {
   const Flavor({
     required this.displayName,
     required this.tokenExchangeUrl,
@@ -43,25 +12,127 @@ enum Flavor {
     required this.authenticatorConfig,
     required this.mqttTopicPrefix,
     required this.backendUrl,
+    required this.mqttOauthProfile,
     this.color = SBBColors.transparent,
     this.showBanner = false,
-    this.tmsTokenExchangeUrl,
-    this.tmsMqttUrl,
-    this.tmsAuthenticatorConfig,
+    this.isTmsEnabledForFlavor = false,
+    this.logLevel = Level.INFO,
   });
 
   final String displayName;
   final String tokenExchangeUrl;
-  final String? tmsTokenExchangeUrl;
   final String mqttUrl;
-  final String? tmsMqttUrl;
   final AuthenticatorConfig authenticatorConfig;
-  final AuthenticatorConfig? tmsAuthenticatorConfig;
   final String mqttTopicPrefix;
+  final String mqttOauthProfile;
   final String backendUrl;
   final bool showBanner;
   final Color color;
+  final bool isTmsEnabledForFlavor;
+  final Level logLevel;
+
+  factory Flavor.dev() = _DevFlavor;
+
+  factory Flavor.inte() = _InteFlavor;
+
+  factory Flavor.prod() = _ProdFlavor;
+
+  Flavor withSferaMockValues() {
+    switch (this) {
+      case _DevFlavor():
+        return _DevFlavor(
+          tokenExchangeUrl: 'https://sfera-mock.app.sbb.ch/customClaim/requestToken',
+          mqttUrl: 'wss://das-poc.messaging.solace.cloud',
+          authenticatorConfig: _authenticatorConfigMockDev,
+        );
+      case _InteFlavor():
+        return _InteFlavor(
+          tokenExchangeUrl: 'https://sfera-mock.app.sbb.ch/customClaim/requestToken',
+          mqttUrl: 'wss://das-poc.messaging.solace.cloud',
+          authenticatorConfig: _authenticatorConfigInte,
+        );
+      case _ProdFlavor():
+        return _ProdFlavor(
+          tokenExchangeUrl: 'https://sfera-mock.app.sbb.ch/customClaim/requestToken',
+          mqttUrl: 'wss://das-poc.messaging.solace.cloud',
+          authenticatorConfig: _authenticatorConfigProd,
+        );
+    }
+  }
+
+  Flavor withTmsValues() {
+    switch (this) {
+      case _DevFlavor():
+        return _DevFlavor(
+          tokenExchangeUrl:
+              'https://imts-token-provider-tms-vad-imtrackside-dev.apps.halon-ocp1-1-t.sbb-aws-test.net/token/exchange',
+          mqttUrl: 'wss://das-poc.messaging.solace.cloudwss://tms-vad-imtrackside-dev-mobile.messaging.solace.cloud',
+          authenticatorConfig: _authenticatorConfigTmsDev,
+        );
+      case _InteFlavor():
+        return _InteFlavor(
+          tokenExchangeUrl: '',
+          mqttUrl: '',
+          authenticatorConfig: _emptyAuthenticatorConfig,
+        );
+      case _ProdFlavor():
+        return _ProdFlavor(
+          tokenExchangeUrl: '',
+          mqttUrl: '',
+          authenticatorConfig: _emptyAuthenticatorConfig,
+        );
+    }
+  }
 }
+
+class _DevFlavor extends Flavor {
+  const _DevFlavor({
+    super.tokenExchangeUrl = '',
+    super.mqttUrl = '',
+    super.authenticatorConfig = _emptyAuthenticatorConfig,
+  }) : super(
+         displayName: 'Dev',
+         mqttTopicPrefix: 'dev/',
+         backendUrl: 'das-dev-int.api.sbb.ch',
+         color: SBBColors.peach,
+         showBanner: true,
+         isTmsEnabledForFlavor: true,
+         mqttOauthProfile: 'azureAdDev',
+         logLevel: Level.FINE,
+       );
+}
+
+class _InteFlavor extends Flavor {
+  const _InteFlavor({
+    super.tokenExchangeUrl = '',
+    super.mqttUrl = '',
+    super.authenticatorConfig = _emptyAuthenticatorConfig,
+  }) : super(
+         displayName: 'Inte',
+         mqttTopicPrefix: '',
+         backendUrl: 'das-int.api.sbb.ch',
+         color: SBBColors.black,
+         showBanner: true,
+         mqttOauthProfile: 'azureAdInt',
+       );
+}
+
+class _ProdFlavor extends Flavor {
+  const _ProdFlavor({
+    super.tokenExchangeUrl = '',
+    super.mqttUrl = '',
+    super.authenticatorConfig = _emptyAuthenticatorConfig,
+  }) : super(
+         displayName: 'Prod',
+         mqttTopicPrefix: '',
+         backendUrl: 'das-backend-dev.app.sbb.ch',
+         color: SBBColors.transparent,
+         showBanner: false,
+         mqttOauthProfile: 'azureAdInt',
+       );
+}
+
+const _emptyAuthenticatorConfig = AuthenticatorConfig.empty();
 
 const _authenticatorConfigTmsDev = AuthenticatorConfig(
   discoveryUrl:
@@ -79,39 +150,39 @@ const _authenticatorConfigTmsDev = AuthenticatorConfig(
 
 const _authenticatorConfigMockDev = AuthenticatorConfig(
   discoveryUrl: 'https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration',
-  clientId: '6025180f-123b-4f2f-9703-16e08fc221f0',
+  clientId: '5467e91f-a84c-40a5-89ba-75dcefc5569c',
   redirectUrl: 'ch.sbb.das://sbbauth/redirect',
   tokenSpecs: TokenSpecProvider([
     TokenSpec(
       id: TokenSpec.defaultTokenId,
       displayName: 'User Token',
-      scopes: ['openid', 'profile', 'email', 'offline_access', '6025180f-123b-4f2f-9703-16e08fc221f0/.default'],
+      scopes: ['openid', 'profile', 'email', 'offline_access', 'api://8f16d52b-c6df-4a94-a132-da4956579a48/.default'],
     ),
   ]),
 );
 
 const _authenticatorConfigInte = AuthenticatorConfig(
   discoveryUrl: 'https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration',
-  clientId: '6025180f-123b-4f2f-9703-16e08fc221f0',
+  clientId: '7d1cf8b6-a770-422f-ae8b-a9cbfe63e7b9',
   redirectUrl: 'ch.sbb.das://sbbauth/redirect',
   tokenSpecs: TokenSpecProvider([
     TokenSpec(
       id: TokenSpec.defaultTokenId,
       displayName: 'User Token',
-      scopes: ['openid', 'profile', 'email', 'offline_access', '6025180f-123b-4f2f-9703-16e08fc221f0/.default'],
+      scopes: ['openid', 'profile', 'email', 'offline_access', 'api://c46d2363-2b94-439a-a84d-f71a76a70f45/.default'],
     ),
   ]),
 );
 
 const _authenticatorConfigProd = AuthenticatorConfig(
   discoveryUrl: 'https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration',
-  clientId: '6025180f-123b-4f2f-9703-16e08fc221f0',
+  clientId: '7d1cf8b6-a770-422f-ae8b-a9cbfe63e7b9',
   redirectUrl: 'ch.sbb.das://sbbauth/redirect',
   tokenSpecs: TokenSpecProvider([
     TokenSpec(
       id: TokenSpec.defaultTokenId,
       displayName: 'User Token',
-      scopes: ['openid', 'profile', 'email', 'offline_access', '6025180f-123b-4f2f-9703-16e08fc221f0/.default'],
+      scopes: ['openid', 'profile', 'email', 'offline_access', 'api://c46d2363-2b94-439a-a84d-f71a76a70f45/.default'],
     ),
   ]),
 );

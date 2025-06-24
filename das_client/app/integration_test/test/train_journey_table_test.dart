@@ -15,6 +15,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/whistle_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:app/pages/profile/profile_page.dart';
 import 'package:app/util/format.dart';
+import 'package:app/widgets/labeled_badge.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
@@ -429,6 +430,43 @@ void main() {
         ),
       );
       expect(coloredCells, findsNWidgets(15));
+
+      await disconnect(tester);
+    });
+
+    testWidgets('test complex additional speed restriction row is displayed correctly', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T18');
+
+      final scrollableFinder = find.byType(AnimatedList);
+      expect(scrollableFinder, findsOneWidget);
+
+      final asrRows = findDASTableRowByText('km 64.200 - km 26.100');
+      expect(asrRows, findsAtLeast(1));
+
+      final asrRow = asrRows.first;
+
+      // no count badge should be shown for normal ASR
+      final asrCountBadge = find.descendant(
+        of: asrRow,
+        matching: find.byKey(LabeledBadge.labeledBadgeKey),
+      );
+      expect(asrCountBadge, findsNothing);
+
+      // scroll to complex ASR
+      final rowFinder = find.descendant(of: scrollableFinder, matching: find.text('WANZ'));
+      await tester.dragUntilVisible(rowFinder, scrollableFinder, const Offset(0, -100));
+
+      final complexAsr = findDASTableRowByText('km 83.100 - km 6.600');
+      expect(complexAsr, findsOneWidget);
+
+      // check count badge
+      final complexAsrCountBadge = find.descendant(of: complexAsr, matching: find.byKey(LabeledBadge.labeledBadgeKey));
+      expect(complexAsrCountBadge, findsOneWidget);
+      final countBadgeText = find.descendant(of: complexAsrCountBadge, matching: find.text('2'));
+      expect(countBadgeText, findsOneWidget);
 
       await disconnect(tester);
     });

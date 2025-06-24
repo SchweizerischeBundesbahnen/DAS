@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/journey_page.dart';
+import 'package:app/pages/journey/selection/journey_selection_page.dart';
 import 'package:app/pages/links/links_page.dart';
 import 'package:app/pages/profile/profile_page.dart';
 import 'package:app/pages/settings/settings_page.dart';
@@ -119,7 +119,7 @@ void main() {
       await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
 
       // Check on FahrtPage
-      expect(find.byType(JourneyPage), findsOneWidget);
+      expect(find.byType(JourneySelectionPage), findsOneWidget);
     });
   });
 }

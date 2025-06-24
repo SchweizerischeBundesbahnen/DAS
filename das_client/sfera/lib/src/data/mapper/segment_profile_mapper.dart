@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:fimber/fimber.dart';
+import 'package:logging/logging.dart';
 import 'package:sfera/src/data/dto/enums/gradient_direction_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/length_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/stop_skip_pass_dto.dart';
@@ -39,6 +39,8 @@ class _MapperData {
   final int segmentIndex;
   final KilometreMap kilometreMap;
 }
+
+final _log = Logger('SegmentProfileMapper');
 
 /// Used to map journey data from a SFERA segment profile.
 class SegmentProfileMapper {
@@ -103,13 +105,10 @@ class SegmentProfileMapper {
     for (final tpConstraint in segmentProfileReference.timingPointsConstraints) {
       final tpId = tpConstraint.timingPointReference.tpIdReference.tpId;
       final timingPoint = timingPoints.where((it) => it.id == tpId).first;
-      final tafTapLocation = tafTapLocations
-          .where(
-            (it) =>
-                it.locationIdent.countryCodeISO == timingPoint.locationReference?.countryCodeISO &&
-                it.locationIdent.locationPrimaryCode == timingPoint.locationReference?.locationPrimaryCode,
-          )
-          .first;
+      final tafTapLocation = tafTapLocations.firstWhereGiven(
+        countryCode: timingPoint.locationReference?.countryCodeISO,
+        primaryCode: timingPoint.locationReference?.locationPrimaryCode,
+      );
 
       servicePoints.add(
         ServicePoint(
@@ -190,19 +189,13 @@ class SegmentProfileMapper {
         final mainStationNsp = tafTapLocationNsp.parameters.withName(_bracketStationMainStationNspName);
         final textNsp = tafTapLocationNsp.parameters.withName(_bracketStationTextNspName);
         if (mainStationNsp == null) {
-          Fimber.w('Encountered bracket station without main station NSP declaration: $tafTapLocation');
+          _log.warning('Encountered bracket station without main station NSP declaration: $tafTapLocation');
         } else {
           final countryCode = mainStationNsp.nspValue.substring(0, 2);
           final primaryCode = int.parse(mainStationNsp.nspValue.substring(2, 6));
-          final mainStation = allLocations
-              .where(
-                (it) =>
-                    it.locationIdent.countryCodeISO == countryCode &&
-                    it.locationIdent.locationPrimaryCode == primaryCode,
-              )
-              .firstOrNull;
+          final mainStation = allLocations.firstWhereGivenOrNull(countryCode: countryCode, primaryCode: primaryCode);
           if (mainStation == null) {
-            Fimber.w('Failed to resolve main station for bracket station: $tafTapLocation');
+            _log.warning('Failed to resolve main station for bracket station: $tafTapLocation');
           }
 
           return BracketMainStation(
@@ -297,7 +290,6 @@ class SegmentProfileMapper {
     final trackFootNotesNsp = mapperData.segmentProfile.points?.trackFootNotesNsp ?? [];
     return trackFootNotesNsp.map((trackFootNoteNsp) {
       final footNotes = _parseFootNotes(trackFootNoteNsp.xmlTrackFootNotes.element.footNotes);
-
       return footNotes.map(
         (note) => TrackFootNote(
           order: calculateOrder(mapperData.segmentIndex, trackFootNoteNsp.location),
@@ -316,12 +308,11 @@ class SegmentProfileMapper {
           }
 
           if (location.startLocation == null) {
-            Fimber.w('Failed to parse opFootNote because TafTapLocation has no startLocation: $location');
+            _log.warning('Failed to parse opFootNote because TafTapLocation has no startLocation: $location');
             return null;
           }
 
           final footNotes = _parseFootNotes(location.opFootNotes!.xmlOpFootNotes.element.footNotes);
-
           return footNotes.map(
             (note) => OpFootNote(
               order: calculateOrder(mapperData.segmentIndex, location.startLocation!),
@@ -343,12 +334,11 @@ class SegmentProfileMapper {
           }
 
           if (location.startLocation == null) {
-            Fimber.w('Failed to parse lineFootNote because TafTapLocation has no startLocation: $location');
+            _log.warning('Failed to parse lineFootNote because TafTapLocation has no startLocation: $location');
             return null;
           }
 
           final footNotes = _parseFootNotes(location.lineFootNotes!.xmlLineFootNotes.element.footNotes);
-
           return footNotes.map(
             (note) => LineFootNote(
               locationName: location.locationIdent.primaryLocationName?.value ?? '',

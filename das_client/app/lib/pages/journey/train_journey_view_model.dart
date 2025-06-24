@@ -3,20 +3,28 @@ import 'dart:async';
 import 'package:app/pages/journey/train_journey/automatic_advancement_controller.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:app/util/error_code.dart';
-import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
+import 'package:warnapp/component.dart';
+
+final _log = Logger('TrainJourneyViewModel');
 
 class TrainJourneyViewModel {
   TrainJourneyViewModel({
     required SferaRemoteRepo sferaRemoteRepo,
-  }) : _sferaRemoteRepo = sferaRemoteRepo {
+    required WarnappRepository warnappRepo,
+  }) : _sferaRemoteRepo = sferaRemoteRepo,
+       _warnappRepo = warnappRepo {
     _init();
   }
 
+  static const _warnappWindowMilliseconds = 1250;
+
   final SferaRemoteRepo _sferaRemoteRepo;
+  final WarnappRepository _warnappRepo;
 
   Stream<Journey?> get journey => _sferaRemoteRepo.journeyStream;
 
@@ -26,51 +34,27 @@ class TrainJourneyViewModel {
 
   Stream<ErrorCode?> get errorCode => _rxErrorCode.stream;
 
-  Stream<DateTime> get selectedDate => _rxDate.stream;
-
-  Stream<String?> get selectedTrainNumber => _rxTrainNumber.stream;
-
-  Stream<bool> get formCompleted => _rxFormCompleted.stream;
-
-  Stream<RailwayUndertaking> get selectedRailwayUndertaking => _rxRailwayUndertaking.stream;
-
-  Stream<TrainIdentification?> get trainIdentification => _rxTrainIdentification.stream;
-
-  TrainIdentification? get trainIdentificationValue => _rxTrainIdentification.value;
+  Stream<WarnappEvent> get warnappEvents => _rxWarnapp.stream;
 
   AutomaticAdvancementController automaticAdvancementController = AutomaticAdvancementController();
 
   final _rxSettings = BehaviorSubject<TrainJourneySettings>.seeded(TrainJourneySettings());
-  final _rxDate = BehaviorSubject<DateTime>.seeded(DateTime.now());
-  final _rxTrainNumber = BehaviorSubject<String?>.seeded(null);
-  final _rxRailwayUndertaking = BehaviorSubject<RailwayUndertaking>.seeded(RailwayUndertaking.sbbP);
   final _rxErrorCode = BehaviorSubject<ErrorCode?>.seeded(null);
-  final _rxTrainIdentification = BehaviorSubject<TrainIdentification?>.seeded(null);
-  final _rxFormCompleted = BehaviorSubject<bool>.seeded(false);
+  final _rxWarnapp = PublishSubject<WarnappEvent>();
   final _subscriptions = <StreamSubscription>[];
+
+  DateTime? _lastWarnappEventTimestamp;
 
   StreamSubscription? _stateSubscription;
   StreamSubscription? _journeySubscription;
+  StreamSubscription? _warnappSignalSubscription;
+  StreamSubscription? _warnappAbfahrtSubscription;
 
   void _init() {
-    _initFormComplete();
+    _listenToSferaRemoteRepo();
   }
 
-  void loadTrainJourney() async {
-    _resetSettings();
-    _rxErrorCode.add(null);
-
-    final date = _rxDate.value;
-    final ru = _rxRailwayUndertaking.value;
-    final trainNumber = _rxTrainNumber.value;
-    if (trainNumber == null) {
-      Fimber.i('company or trainNumber null');
-      return;
-    }
-
-    final trainIdentification = TrainIdentification(ru: ru, trainNumber: trainNumber.trim(), date: date);
-    _rxTrainIdentification.add(trainIdentification);
-
+  void _listenToSferaRemoteRepo() {
     _stateSubscription?.cancel();
     _stateSubscription = _sferaRemoteRepo.stateStream.listen((state) {
       switch (state) {
@@ -78,38 +62,43 @@ class TrainJourneyViewModel {
           automaticAdvancementController = AutomaticAdvancementController();
           _listenToJourneyUpdates();
           WakelockPlus.enable();
+          _enableWarnapp();
           break;
         case SferaRemoteRepositoryState.connecting:
-        case SferaRemoteRepositoryState.handshaking:
-        case SferaRemoteRepositoryState.loadingJourney:
-        case SferaRemoteRepositoryState.loadingAdditionalData:
           break;
         case SferaRemoteRepositoryState.disconnected:
-        case SferaRemoteRepositoryState.offline:
           WakelockPlus.disable();
+          _disableWarnapp();
           if (_sferaRemoteRepo.lastError != null) {
             _rxErrorCode.add(ErrorCode.fromSfera(_sferaRemoteRepo.lastError!));
+            setAutomaticAdvancement(false);
           }
-
           _journeySubscription?.cancel();
           break;
       }
     });
-
-    _sferaRemoteRepo.connect(OtnId(company: ru.companyCode, operationalTrainNumber: trainNumber, startDate: date));
   }
 
-  void updateTrainNumber(String? trainNumber) => _rxTrainNumber.add(trainNumber);
+  void _enableWarnapp() {
+    _warnappAbfahrtSubscription = _warnappRepo.abfahrtEventStream.listen((event) => _handleAbfahrtEvent());
+    _warnappSignalSubscription = _sferaRemoteRepo.warnappEventStream.listen((event) {
+      _lastWarnappEventTimestamp = DateTime.now();
+    });
+    _warnappRepo.enable();
+  }
 
-  void updateRailwayUndertaking(RailwayUndertaking railwayUndertaking) => _rxRailwayUndertaking.add(railwayUndertaking);
-
-  void updateDate(DateTime date) => _rxDate.add(date);
+  void _disableWarnapp() {
+    _warnappRepo.disable();
+    _warnappAbfahrtSubscription?.cancel();
+    _warnappAbfahrtSubscription = null;
+    _warnappSignalSubscription?.cancel();
+    _warnappSignalSubscription = null;
+    _lastWarnappEventTimestamp = null;
+  }
 
   void reset() {
     _sferaRemoteRepo.disconnect();
-    _rxDate.add(DateTime.now());
-    _rxTrainNumber.add(null);
-    _rxTrainIdentification.add(null);
+    _resetSettings();
   }
 
   void updateBreakSeries(BreakSeries selectedBreakSeries) {
@@ -131,7 +120,7 @@ class TrainJourneyViewModel {
   }
 
   void setAutomaticAdvancement(bool active) {
-    Fimber.i('Automatic advancement state changed to active=$active');
+    _log.info('Automatic advancement state changed to active=$active');
     if (active) {
       automaticAdvancementController.scrollToCurrentPosition(resetAutomaticAdvancementTimer: true);
     }
@@ -139,16 +128,19 @@ class TrainJourneyViewModel {
   }
 
   void setManeuverMode(bool active) {
-    Fimber.i('Maneuver mode state changed to active=$active');
+    _log.info('Maneuver mode state changed to active=$active');
     _rxSettings.add(_rxSettings.value.copyWith(isManeuverModeEnabled: active));
+
+    if (active) {
+      _warnappRepo.disable();
+    } else {
+      _warnappRepo.enable();
+    }
   }
 
   void dispose() {
     _rxSettings.close();
-    _rxDate.close();
-    _rxRailwayUndertaking.close();
-    _rxTrainNumber.close();
-    _rxTrainIdentification.close();
+    _rxWarnapp.close();
 
     for (final subscription in _subscriptions) {
       subscription.cancel();
@@ -198,10 +190,12 @@ class TrainJourneyViewModel {
     }
   }
 
-  void _initFormComplete() {
-    final subscription = _rxTrainNumber.stream
-        .map((trainNumber) => trainNumber != null && trainNumber.isNotEmpty)
-        .listen(_rxFormCompleted.add, onError: _rxFormCompleted.addError);
-    _subscriptions.add(subscription);
+  void _handleAbfahrtEvent() {
+    final now = DateTime.now();
+    if (_lastWarnappEventTimestamp != null &&
+        now.difference(_lastWarnappEventTimestamp!).inMilliseconds < _warnappWindowMilliseconds) {
+      _log.info('Abfahrt detected while warnapp message was within $_warnappWindowMilliseconds ms -> Warning!');
+      _rxWarnapp.add(WarnappEvent());
+    }
   }
 }

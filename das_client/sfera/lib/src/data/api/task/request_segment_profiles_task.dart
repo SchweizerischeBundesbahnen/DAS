@@ -1,4 +1,4 @@
-import 'package:fimber/fimber.dart';
+import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/api/task/sfera_task.dart';
@@ -12,6 +12,9 @@ import 'package:sfera/src/data/dto/sfera_g2b_reply_message_dto.dart';
 import 'package:sfera/src/data/dto/sp_request_dto.dart';
 import 'package:sfera/src/data/format.dart';
 import 'package:sfera/src/data/local/sfera_local_database_service.dart';
+import 'package:sfera/src/model/otn_id.dart';
+
+final _log = Logger('RequestSegmentProfilesTask');
 
 class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfileDto>> {
   RequestSegmentProfilesTask({
@@ -45,7 +48,7 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfileDto>> {
   Future<void> _requestSegmentProfiles() async {
     final missingSp = await findMissingSegmentProfiles();
     if (missingSp.isEmpty) {
-      Fimber.i('No missing SegmentProfiles found...');
+      _log.info('No missing SegmentProfiles found...');
       _taskCompletedCallback(this, []);
       return;
     }
@@ -66,7 +69,7 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfileDto>> {
       _sferaService.messageHeader(sender: otnId.company),
       b2gRequest: B2gRequestDto.createSPRequest(spRequests),
     );
-    Fimber.i('Sending segment profiles request...');
+    _log.info('Sending segment profiles request...');
 
     startTimeout(_taskFailedCallback);
     final sferaTrain = Format.sferaTrain(otnId.operationalTrainNumber, otnId.startDate);
@@ -97,7 +100,7 @@ class RequestSegmentProfilesTask extends SferaTask<List<SegmentProfileDto>> {
     }
 
     stopTimeout();
-    Fimber.i(
+    _log.info(
       'Received G2bReplyPayload response with ${replyMessage.payload!.segmentProfiles.length} SegmentProfiles...',
     );
 
