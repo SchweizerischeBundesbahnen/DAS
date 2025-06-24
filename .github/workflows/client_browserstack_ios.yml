@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        file-nr: [1,2,3,4]
+        file-nr: [1,2,3,4,5]
 
     runs-on: macos-latest
     steps:
@@ -31,7 +31,7 @@ jobs:
 
     - uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.32.4'
+        flutter-version: '3.32.x'
         cache: true
 
     - name: Setup melos
