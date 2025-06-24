@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T12_2" SP_VersionMajor="2"
+                SP_VersionMinor="0" SP_Length="600" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>0085</IM_ID>
+    </SP_Zone>
+    <SP_Points>
+        <TimingPoint TP_ID="ZOER" location="100">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3006</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="ZFH" location="500">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3016</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="L312" location="600"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="L312"/>
+        </Signal>
+        
+    </SP_Points>
+    <SP_Areas>
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="100" endLocation="100" TAF_TAP_location_abbreviation="ZOER"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3006</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Zürich Oerlikon</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="500" endLocation="500" TAF_TAP_location_abbreviation="ZFH"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3016</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Zürich Flughafen</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+    </SP_Areas>
+
+    <SP_ContextInformation>
+        <ContactList startEndQualifier="StartsEnds" startLocation="100" endLocation="100">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1407"/>
+            </Contact>
+        </ContactList>
+        <ContactList startEndQualifier="StartsEnds" startLocation="500" endLocation="600">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1102"/>
+            </Contact>
+            <Contact mainContact="false" contactRole="Richtung Süd: Fahrdienstleiter">
+                <OtherContactType contactIdentifier="1103"/>
+            </Contact>
+            <Contact mainContact="false" contactRole="Richtung Nord: Fahrdienstleiter">
+                <OtherContactType contactIdentifier="1104"/>
+            </Contact>
+            <Contact mainContact="false" contactRole="Rangierbahnhof: Fahrdienstleiter Stellwerk 3">
+                <OtherContactType contactIdentifier="1105"/>
+            </Contact>
+        </ContactList>
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="100" endLocation="100" communicationNetworkType="GSM-P"/>
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="500" endLocation="500" communicationNetworkType="SIM"/>
+
+        <KilometreReferencePoint location="100">
+            <KM_Reference kmRef="48.2"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="500">
+            <KM_Reference kmRef="40.5"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="600">
+            <KM_Reference kmRef="39.5"/>
+        </KilometreReferencePoint>
+
+    </SP_ContextInformation>
+</SegmentProfile>

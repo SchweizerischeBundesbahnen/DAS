@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T12_3" SP_VersionMajor="2"
+                SP_VersionMinor="0" SP_Length="900" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>0085</IM_ID>
+    </SP_Zone>
+    <SP_Points>
+        <TimingPoint TP_ID="W" location="300">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>6000</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="FF" location="500">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>6100</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="WF" location="800">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>6105</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="L324" location="600"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="L324"/>
+        </Signal>
+
+    </SP_Points>
+    <SP_Areas>
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="300" endLocation="300" TAF_TAP_location_abbreviation="W"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>6000</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Winterthur</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="500" endLocation="500" TAF_TAP_location_abbreviation="FF"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>6100</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Frauenfeld</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="800" endLocation="800" TAF_TAP_location_abbreviation="WF"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>6105</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Weinfelden</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+    </SP_Areas>
+
+    <SP_ContextInformation>
+        <ContactList startEndQualifier="WholeSP">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1102"/>
+            </Contact>
+            <Contact mainContact="false" contactRole="Richtung Süd: Fahrdienstleiter">
+                <OtherContactType contactIdentifier="1103"/>
+            </Contact>
+            <Contact mainContact="false" contactRole="Richtung Nord: Fahrdienstleiter">
+                <OtherContactType contactIdentifier="1104"/>
+            </Contact>
+            <Contact mainContact="false" contactRole="Rangierbahnhof: Fahrdienstleiter Stellwerk 3">
+                <OtherContactType contactIdentifier="1105"/>
+            </Contact>
+        </ContactList>
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="300" endLocation="300" communicationNetworkType="SIM"/>
+
+        <KilometreReferencePoint location="300">
+            <KM_Reference kmRef="98.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="500">
+            <KM_Reference kmRef="80.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="600">
+            <KM_Reference kmRef="58.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="800">
+            <KM_Reference kmRef="49.4"/>
+        </KilometreReferencePoint>
+
+    </SP_ContextInformation>
+</SegmentProfile>
