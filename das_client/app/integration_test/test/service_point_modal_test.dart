@@ -242,7 +242,6 @@ void main() {
       expect(scrollableFinder, findsOneWidget);
 
       await tester.dragUntilVisible(find.text('Lenzburg'), scrollableFinder, const Offset(0, -50));
-      //await tester.pumpAndSettle();
 
       // open graduated speed tab of Rupperswil
       await _openByTapOnGraduatedSpeedOf(tester, 'Rupperswil');
