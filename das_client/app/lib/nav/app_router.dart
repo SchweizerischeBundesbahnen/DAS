@@ -23,7 +23,7 @@ class AppRouter extends RootStackRouter {
   ];
 
   @override
-  get defaultRouteType => const RouteType.custom();
+  get defaultRouteType => RouteType.custom();
 }
 
 // Routes
