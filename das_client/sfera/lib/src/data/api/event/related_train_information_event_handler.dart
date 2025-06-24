@@ -14,7 +14,7 @@ class RelatedTrainInformationEventHandler extends SferaEventMessageHandler<Relat
       return false;
     }
 
-    final delay = eventMessage.payload!.relatedTrainInformation?.ownTrain.trainLocationInformation.delay.delay;
+    final delay = eventMessage.payload!.relatedTrainInformation?.ownTrain.trainLocationInformation.delay?.delay;
     _log.info('Received new related train information... delay=$delay');
     onMessageHandled(this, eventMessage.payload!.relatedTrainInformation!);
     return true;

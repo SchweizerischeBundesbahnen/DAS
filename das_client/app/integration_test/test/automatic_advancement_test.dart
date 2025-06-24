@@ -1,8 +1,6 @@
-import 'package:app/di/di.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
-import 'package:app/time_controller/time_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -40,8 +38,6 @@ void main() {
       // Load app widget.
       await prepareAndStartApp(tester);
 
-      final TimeController timeController = DI.get<TimeController>();
-
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9');
 
@@ -56,8 +52,13 @@ void main() {
       await tester.dragUntilVisible(find.text('B1'), scrollableFinder, const Offset(0, 100));
       expect(find.text('Bern'), findsAny);
 
+      //TODO add the clock block
+      final idleTimeAutoScrollInSeconds = 10;
+
+      final timeout = idleTimeAutoScrollInSeconds + 1;
+
       // Wait until idle time reached
-      await Future.delayed(Duration(seconds: timeController.idleTimeAutoScroll + 1));
+      await Future.delayed(Duration(seconds: timeout));
       await tester.pumpAndSettle();
 
       // Check if the last row is visible

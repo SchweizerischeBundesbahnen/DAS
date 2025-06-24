@@ -1,8 +1,6 @@
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/di/di.dart';
 import 'package:app/di/scopes/das_base_scope.dart';
-import 'package:app/time_controller/mock_time_controller.dart';
-import 'package:app/time_controller/time_controller.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:logging/logging.dart';
@@ -27,7 +25,6 @@ class MockDASBaseScope extends DASBaseScope {
 
     _registerIntegrationTestAudioPlayer();
     _registerMockBattery();
-    _registerMockTimeController();
     _registerMockMotionDataService();
     getIt.registerWarnapp();
 
@@ -36,10 +33,6 @@ class MockDASBaseScope extends DASBaseScope {
 
   void _registerMockBattery() {
     getIt.registerSingletonAsync<Battery>(() async => MockBattery());
-  }
-
-  void _registerMockTimeController() {
-    getIt.registerLazySingleton<TimeController>(() => MockTimeController());
   }
 
   void _registerMockBrightnessManager() {

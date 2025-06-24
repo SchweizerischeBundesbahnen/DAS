@@ -1,13 +1,12 @@
 import 'dart:async';
-import 'package:app/di/di.dart';
+import 'package:app/pages/journey/train_journey/widgets/punctuality/punctuality_controller.dart';
+import 'package:app/pages/journey/train_journey/widgets/punctuality/punctuality_state_enum.dart';
 import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/theme/theme_util.dart';
-import 'package:app/time_controller/punctuality_state_enum.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:app/time_controller/time_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
@@ -22,23 +21,21 @@ class TimeContainer extends StatefulWidget {
 }
 
 class _TimeContainerState extends State<TimeContainer> {
-  TimeController? timeController;
+  late PunctualityController punctualityController;
   TrainJourneyViewModel? viewModel;
-  bool? isFirstState;
 
   @override
   void initState() {
     super.initState();
-    timeController = DI.get<TimeController>();
-    timeController!.lastUpdate = clock.now();
-    timeController!.startMonitoring();
+    punctualityController = PunctualityController();
+    punctualityController.lastUpdate = clock.now();
+    punctualityController.startMonitoring();
     viewModel = context.read<TrainJourneyViewModel>();
-    isFirstState = true;
   }
 
   @override
   void dispose() {
-    timeController!.cancelTimer();
+    punctualityController.stopMonitoring();
     super.dispose();
   }
 
@@ -48,6 +45,8 @@ class _TimeContainerState extends State<TimeContainer> {
       stream: viewModel!.journey,
       builder: (context, snapshot) {
         final journey = snapshot.data;
+        punctualityController.updatePunctualityTimestamp(journey?.metadata.delay);
+
         return SBBGroup(
           padding: const EdgeInsets.all(sbbDefaultSpacing),
           useShadow: false,
@@ -63,13 +62,11 @@ class _TimeContainerState extends State<TimeContainer> {
 
   Widget _buildDelayColumn(Journey? journey) {
     return StreamBuilder<PunctualityState>(
-      stream: timeController?.punctualityStateStream,
+      stream: punctualityController.punctualityStateStream,
       builder: (context, snapshot) {
-        timeController?.updatePunctualityTimestamp(journey);
-
-        final state = snapshot.data ?? (isFirstState! ? PunctualityState.visible : PunctualityState.hidden);
+        final state = snapshot.data ?? PunctualityState.visible;
         final delay = journey?.metadata.delay;
-        final delayText = _buildDelayText(delay, state);
+        final delayText = _buildDelayText(delay?.delay, state);
 
         return Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
