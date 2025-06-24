@@ -158,7 +158,6 @@ Future<void> waitUntilNotExists(WidgetTester tester, FinderBase<Element> element
   await tester.pumpAndSettle();
 }
 
-// integration tests fail if an overflow error occurs
 void ignoreOverflowErrors(
   FlutterErrorDetails details, {
   bool forceReport = false,

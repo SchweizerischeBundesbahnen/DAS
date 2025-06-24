@@ -61,16 +61,16 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
   Widget _segmentedIconButton(BuildContext context, ServicePointModalTab selectedTab) {
     final viewModel = context.read<ServicePointModalViewModel>();
     return StreamBuilder(
-      stream: viewModel.tabsWithData,
+      stream: viewModel.tabs,
       builder: (context, snapshot) {
         if (!snapshot.hasData) return SizedBox.shrink();
 
-        final tabsWithData = snapshot.requireData;
+        final tabs = snapshot.requireData;
         return SBBSegmentedButton.icon(
           key: segmentedButtonKey,
-          icons: {for (final tab in tabsWithData) tab.icon: tab.localized(context)},
+          icons: {for (final tab in tabs) tab.icon: tab.localized(context)},
           selectedStateIndex: selectedTab.index,
-          selectedIndexChanged: (index) => viewModel.open(context, tab: tabsWithData[index]),
+          selectedIndexChanged: (index) => viewModel.open(context, tab: tabs[index]),
         );
       },
     );

@@ -22,7 +22,7 @@ class ServicePointModalViewModel {
   final _rxSettings = BehaviorSubject<TrainJourneySettings>();
   final _rxRelevantSpeedInfo = BehaviorSubject.seeded(<Speeds>[]);
   final _rxBreakSeries = BehaviorSubject<BreakSeries?>();
-  final _rxTabsWithData = BehaviorSubject.seeded(<ServicePointModalTab>[]);
+  final _rxTabs = BehaviorSubject.seeded(<ServicePointModalTab>[]);
   final _subscriptions = <StreamSubscription>[];
 
   Stream<ServicePointModalTab?> get selectedTab => _rxSelectedTab.distinct();
@@ -37,13 +37,13 @@ class ServicePointModalViewModel {
 
   Stream<BreakSeries?> get breakSeries => _rxBreakSeries.distinct();
 
-  Stream<List<ServicePointModalTab>> get tabsWithData => _rxTabsWithData.distinct();
+  Stream<List<ServicePointModalTab>> get tabs => _rxTabs.distinct();
 
   void _init() {
     _initRadioContacts();
     _initCommunicationNetworkType();
     _initRelevantSpeedInfo();
-    _initTabsWithData();
+    _initTabs();
     _initSelectedTab();
   }
 
@@ -80,7 +80,7 @@ class ServicePointModalViewModel {
     _subscriptions.add(subscription);
   }
 
-  void _initTabsWithData() {
+  void _initTabs() {
     final subscription = Rx.combineLatest2(
       _rxBreakSeries.stream,
       _rxRelevantSpeedInfo.stream,
@@ -91,12 +91,12 @@ class ServicePointModalViewModel {
         }
         return tabsWithData;
       },
-    ).listen(_rxTabsWithData.add, onError: _rxTabsWithData.addError);
+    ).listen(_rxTabs.add, onError: _rxTabs.addError);
     _subscriptions.add(subscription);
   }
 
   void _initSelectedTab() {
-    final subscription = _rxTabsWithData.listen((tabs) {
+    final subscription = _rxTabs.listen((tabs) {
       if (_rxSelectedTab.valueOrNull == null && tabs.isNotEmpty) {
         _rxSelectedTab.add(tabs.first);
       }
@@ -134,6 +134,6 @@ class ServicePointModalViewModel {
     _rxSettings.close();
     _rxRelevantSpeedInfo.close();
     _rxBreakSeries.close();
-    _rxTabsWithData.close();
+    _rxTabs.close();
   }
 }
