@@ -25,7 +25,7 @@
         </TimingPoint>
 
         <Signal>
-            <Signal_ID signal_ID_Physical="L324" location="600"/>
+            <Signal_ID signal_ID_Physical="L324" location="50"/>
             <SignalFunction>intermediate</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="L324"/>
         </Signal>
@@ -77,14 +77,14 @@
         </ContactList>
         <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="300" endLocation="300" communicationNetworkType="SIM"/>
 
+        <KilometreReferencePoint location="50">
+            <KM_Reference kmRef="99.1"/>
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="300">
             <KM_Reference kmRef="98.2"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="500">
             <KM_Reference kmRef="80.5"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="600">
-            <KM_Reference kmRef="58.1"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="800">
             <KM_Reference kmRef="49.4"/>

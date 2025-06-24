@@ -19,11 +19,16 @@
         </TimingPoint>
 
         <Signal>
-            <Signal_ID signal_ID_Physical="L312" location="600"/>
+            <Signal_ID signal_ID_Physical="L312" location="50"/>
             <SignalFunction>intermediate</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="L312"/>
         </Signal>
-        
+        <Signal>
+            <Signal_ID signal_ID_Physical="1" location="550"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="B1"/>
+        </Signal>
+
     </SP_Points>
     <SP_Areas>
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="100" endLocation="100" TAF_TAP_location_abbreviation="ZOER"
@@ -68,17 +73,19 @@
         <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="100" endLocation="100" communicationNetworkType="GSM-P"/>
         <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="500" endLocation="500" communicationNetworkType="SIM"/>
 
+        <KilometreReferencePoint location="50">
+            <KM_Reference kmRef="49.5"/>
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="100">
             <KM_Reference kmRef="48.2"/>
         </KilometreReferencePoint>
-
         <KilometreReferencePoint location="500">
             <KM_Reference kmRef="40.5"/>
         </KilometreReferencePoint>
-
-        <KilometreReferencePoint location="600">
-            <KM_Reference kmRef="39.5"/>
+        <KilometreReferencePoint location="550">
+            <KM_Reference kmRef="40.1"/>
         </KilometreReferencePoint>
+
 
     </SP_ContextInformation>
 </SegmentProfile>

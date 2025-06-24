@@ -19,9 +19,14 @@
         </TimingPoint>
 
         <Signal>
-            <Signal_ID signal_ID_Physical="L989" location="200"/>
+            <Signal_ID signal_ID_Physical="L989" location="50"/>
             <SignalFunction>intermediate</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="L989"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="1" location="200"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="B1"/>
         </Signal>
 
     </SP_Points>
@@ -68,14 +73,15 @@
         <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="100" endLocation="100" communicationNetworkType="SIM"/>
         <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="500" endLocation="500" communicationNetworkType="GSM-R"/>
 
+        <KilometreReferencePoint location="50">
+            <KM_Reference kmRef="12.0"/>
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="100">
             <KM_Reference kmRef="11.2"/>
         </KilometreReferencePoint>
-
         <KilometreReferencePoint location="200">
             <KM_Reference kmRef="7.3"/>
         </KilometreReferencePoint>
-
         <KilometreReferencePoint location="500">
             <KM_Reference kmRef="6.5"/>
         </KilometreReferencePoint>
