@@ -700,13 +700,17 @@ void main() {
 
     journey = getJourney('T8', 1);
     expect(journey.valid, true);
-    expect(journey.metadata.availableBreakSeries, hasLength(3));
+    expect(journey.metadata.availableBreakSeries, hasLength(5));
     expect(journey.metadata.availableBreakSeries.elementAt(0).trainSeries, TrainSeries.R);
     expect(journey.metadata.availableBreakSeries.elementAt(0).breakSeries, 115);
     expect(journey.metadata.availableBreakSeries.elementAt(1).trainSeries, TrainSeries.N);
     expect(journey.metadata.availableBreakSeries.elementAt(1).breakSeries, 50);
     expect(journey.metadata.availableBreakSeries.elementAt(2).trainSeries, TrainSeries.R);
     expect(journey.metadata.availableBreakSeries.elementAt(2).breakSeries, 150);
+    expect(journey.metadata.availableBreakSeries.elementAt(3).trainSeries, TrainSeries.R);
+    expect(journey.metadata.availableBreakSeries.elementAt(3).breakSeries, 60);
+    expect(journey.metadata.availableBreakSeries.elementAt(4).trainSeries, TrainSeries.A);
+    expect(journey.metadata.availableBreakSeries.elementAt(4).breakSeries, 70);
   });
 
   test('Test station/curve speeds are parsed correctly', () async {
@@ -870,7 +874,7 @@ void main() {
     expect(journey.valid, true);
 
     final servicePoints = journey.data.where((it) => it.type == Datatype.servicePoint).cast<ServicePoint>().toList();
-    expect(servicePoints, hasLength(4));
+    expect(servicePoints, hasLength(7));
 
     // check ServicePoint Bern
 
@@ -995,6 +999,73 @@ void main() {
     _checkSpeed(sSpeedEntry3.incomingSpeeds[1], '60');
     expect(sSpeedEntry3.outgoingSpeeds, hasLength(1));
     _checkSpeed(sSpeedEntry3.outgoingSpeeds[0], '50');
+
+    // check ServicePoint Dulliken
+
+    final graduatedStationSpeeds4 = servicePoints[4].localSpeedData!.speeds;
+    expect(graduatedStationSpeeds4, hasLength(2));
+
+    final rSpeedEntry4 = graduatedStationSpeeds4.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.R);
+    expect(rSpeedEntry4, isNotNull);
+    expect(rSpeedEntry4!.text, isNull);
+    expect(rSpeedEntry4.trainSeries, TrainSeries.R);
+    expect(rSpeedEntry4.incomingSpeeds, hasLength(3));
+    _checkSpeed(rSpeedEntry4.incomingSpeeds[0], '75');
+    _checkSpeed(rSpeedEntry4.incomingSpeeds[1], '70');
+    _checkSpeed(rSpeedEntry4.incomingSpeeds[2], '65');
+    expect(rSpeedEntry4.outgoingSpeeds, isEmpty);
+
+    final aSpeedEntry4 = graduatedStationSpeeds4.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.A);
+    expect(aSpeedEntry4, isNotNull);
+    expect(aSpeedEntry4!.text, isNull);
+    expect(aSpeedEntry4.trainSeries, TrainSeries.A);
+    expect(aSpeedEntry4.incomingSpeeds, hasLength(1));
+    _checkSpeed(aSpeedEntry4.incomingSpeeds[0], '70');
+    expect(aSpeedEntry4.outgoingSpeeds, isEmpty);
+
+    // check ServicePoint Lenzburg
+
+    final graduatedStationSpeeds5 = servicePoints[5].localSpeedData!.speeds;
+    expect(graduatedStationSpeeds5, hasLength(2));
+
+    final rSpeedEntry5 = graduatedStationSpeeds5.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.R);
+    expect(rSpeedEntry5, isNotNull);
+    expect(rSpeedEntry5!.text, isNull);
+    expect(rSpeedEntry5.trainSeries, TrainSeries.R);
+    expect(rSpeedEntry5.incomingSpeeds, hasLength(2));
+    _checkSpeed(rSpeedEntry5.incomingSpeeds[0], '70');
+    _checkSpeed(rSpeedEntry5.incomingSpeeds[1], '65');
+    expect(rSpeedEntry5.outgoingSpeeds, hasLength(1));
+    _checkSpeed(rSpeedEntry5.outgoingSpeeds[0], '55');
+
+    final aSpeedEntry5 = graduatedStationSpeeds5.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.A);
+    expect(aSpeedEntry5, isNotNull);
+    expect(aSpeedEntry5!.text, isNull);
+    expect(aSpeedEntry5.trainSeries, TrainSeries.A);
+    expect(aSpeedEntry5.incomingSpeeds, hasLength(1));
+    _checkSpeed(aSpeedEntry5.incomingSpeeds[0], '75');
+    expect(aSpeedEntry5.outgoingSpeeds, isEmpty);
+
+    // check ServicePoint Zuerich
+
+    final graduatedStationSpeeds6 = servicePoints[6].localSpeedData!.speeds;
+    expect(graduatedStationSpeeds6, hasLength(2));
+
+    final rSpeedEntry6 = graduatedStationSpeeds6.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.R);
+    expect(rSpeedEntry6, isNotNull);
+    expect(rSpeedEntry6!.text, isNull);
+    expect(rSpeedEntry6.trainSeries, TrainSeries.R);
+    expect(rSpeedEntry6.incomingSpeeds, hasLength(1));
+    _checkSpeed(rSpeedEntry6.incomingSpeeds[0], '60');
+    expect(rSpeedEntry6.outgoingSpeeds, isEmpty);
+
+    final aSpeedEntry6 = graduatedStationSpeeds6.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.A);
+    expect(aSpeedEntry6, isNotNull);
+    expect(aSpeedEntry6!.text, isNull);
+    expect(aSpeedEntry6.trainSeries, TrainSeries.A);
+    expect(aSpeedEntry6.incomingSpeeds, hasLength(1));
+    _checkSpeed(aSpeedEntry6.incomingSpeeds[0], '60');
+    expect(aSpeedEntry6.outgoingSpeeds, isEmpty);
   });
 
   test('Test graduated station speeds are parsed correctly', () async {
@@ -1002,7 +1073,7 @@ void main() {
     expect(journey.valid, true);
 
     final servicePoints = journey.data.where((it) => it.type == Datatype.servicePoint).cast<ServicePoint>().toList();
-    expect(servicePoints, hasLength(4));
+    expect(servicePoints, hasLength(7));
 
     // check ServicePoint Bern
 
@@ -1120,6 +1191,31 @@ void main() {
     _checkSpeed(sSpeedEntry3.incomingSpeeds[1], '60');
     expect(sSpeedEntry3.outgoingSpeeds, hasLength(1));
     _checkSpeed(sSpeedEntry3.outgoingSpeeds[0], '50');
+
+    // check ServicePoint Dulliken
+
+    final graduatedStationSpeeds4 = servicePoints[4].graduatedSpeedInfo!.speeds;
+    expect(graduatedStationSpeeds4, hasLength(2));
+
+    final rSpeedEntry3 = graduatedStationSpeeds4.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.R);
+    expect(rSpeedEntry3, isNotNull);
+    expect(rSpeedEntry3!.text, 'Zusatzinformation D');
+    expect(rSpeedEntry3.trainSeries, TrainSeries.R);
+    expect(rSpeedEntry3.incomingSpeeds, hasLength(3));
+    _checkSpeed(rSpeedEntry3.incomingSpeeds[0], '75');
+    _checkSpeed(rSpeedEntry3.incomingSpeeds[1], '70');
+    _checkSpeed(rSpeedEntry3.incomingSpeeds[2], '65');
+    expect(rSpeedEntry3.outgoingSpeeds, isEmpty);
+
+    final oSpeedEntry3 = graduatedStationSpeeds4.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.O);
+    expect(oSpeedEntry3, isNotNull);
+    expect(oSpeedEntry3!.text, 'Zusatzinformation D');
+    expect(oSpeedEntry3.trainSeries, TrainSeries.O);
+    expect(oSpeedEntry3.incomingSpeeds, hasLength(3));
+    _checkSpeed(oSpeedEntry3.incomingSpeeds[0], '75');
+    _checkSpeed(oSpeedEntry3.incomingSpeeds[1], '70');
+    _checkSpeed(oSpeedEntry3.incomingSpeeds[2], '60');
+    expect(oSpeedEntry3.outgoingSpeeds, isEmpty);
   });
 
   test('Test current position is start when nothing is given ', () async {
