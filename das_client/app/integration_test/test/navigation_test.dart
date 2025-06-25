@@ -121,5 +121,29 @@ void main() {
       // Check on FahrtPage
       expect(find.byType(JourneySelectionPage), findsOneWidget);
     });
+
+    testWidgets('test if train journey stays loaded after navigation', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T6');
+
+      // check first train station
+      expect(findDASTableRowByText('Zürich HB'), findsOneWidget);
+
+      await openDrawer(tester);
+      await tapElement(tester, find.text(l10n.w_navigation_drawer_profile_title));
+
+      // Check on ProfilePage
+      expect(find.byType(ProfilePage), findsOneWidget);
+
+      await openDrawer(tester);
+      await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
+
+      // check first train station is still visible
+      expect(findDASTableRowByText('Zürich HB'), findsOneWidget);
+
+      await disconnect(tester);
+    });
   });
 }

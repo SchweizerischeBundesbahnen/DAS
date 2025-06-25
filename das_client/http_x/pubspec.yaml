@@ -3,7 +3,7 @@ publish_to: 'none'
 version: 1.0.0
 
 environment:
-  sdk: 3.8.0
+  sdk: ^3.8.0
 
 resolution: workspace
 
@@ -19,4 +19,4 @@ dependencies:
 
 dev_dependencies:
   # https://pub.dev/packages/flutter_lints
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
