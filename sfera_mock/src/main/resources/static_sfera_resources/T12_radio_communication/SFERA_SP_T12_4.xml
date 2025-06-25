@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T12_4" SP_VersionMajor="2"
+                SP_VersionMinor="0" SP_Length="300" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>0085</IM_ID>
+    </SP_Zone>
+    <SP_Points>
+        <TimingPoint TP_ID="AW" location="100">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>6109</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+        <TimingPoint TP_ID="RH" location="500">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>6121</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="L989" location="50"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="L989"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="1" location="200"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="B1"/>
+        </Signal>
+
+    </SP_Points>
+    <SP_Areas>
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="100" endLocation="100" TAF_TAP_location_abbreviation="AW"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>6109</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Amriswil</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="500" endLocation="500" TAF_TAP_location_abbreviation="RH"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>6121</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Romanshorn</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+    </SP_Areas>
+
+    <SP_ContextInformation>
+        <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="100">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1102"/>
+            </Contact>
+            <Contact mainContact="false" contactRole="Richtung Süd: Fahrdienstleiter">
+                <OtherContactType contactIdentifier="1103"/>
+            </Contact>
+            <Contact mainContact="false" contactRole="Richtung Nord: Fahrdienstleiter">
+                <OtherContactType contactIdentifier="1104"/>
+            </Contact>
+            <Contact mainContact="false" contactRole="Rangierbahnhof: Fahrdienstleiter Stellwerk 3">
+                <OtherContactType contactIdentifier="1105"/>
+            </Contact>
+        </ContactList>
+        <ContactList startEndQualifier="StartsEnds" startLocation="500" endLocation="500">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1407"/>
+            </Contact>
+        </ContactList>
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="100" endLocation="100" communicationNetworkType="SIM"/>
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="500" endLocation="500" communicationNetworkType="GSM-R"/>
+
+        <KilometreReferencePoint location="50">
+            <KM_Reference kmRef="12.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="100">
+            <KM_Reference kmRef="11.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="200">
+            <KM_Reference kmRef="7.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="500">
+            <KM_Reference kmRef="6.5"/>
+        </KilometreReferencePoint>
+
+    </SP_ContextInformation>
+</SegmentProfile>
