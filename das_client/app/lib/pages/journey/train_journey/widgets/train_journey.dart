@@ -144,24 +144,28 @@ class TrainJourney extends StatelessWidget {
             data: rowData as ServicePoint,
             config: trainJourneyConfig,
             context: context,
+            rowIndex: index,
           );
         case Datatype.protectionSection:
           return ProtectionSectionRow(
             metadata: journey.metadata,
             data: rowData as ProtectionSection,
             config: trainJourneyConfig,
+            rowIndex: index,
           );
         case Datatype.curvePoint:
           return CurvePointRow(
             metadata: journey.metadata,
             data: rowData as CurvePoint,
             config: trainJourneyConfig,
+            rowIndex: index,
           );
         case Datatype.signal:
           return SignalRow(
             metadata: journey.metadata,
             data: rowData as Signal,
             config: trainJourneyConfig,
+            rowIndex: index,
           );
         case Datatype.additionalSpeedRestriction:
           return AdditionalSpeedRestrictionRow(
@@ -169,24 +173,28 @@ class TrainJourney extends StatelessWidget {
             data: rowData as AdditionalSpeedRestrictionData,
             config: trainJourneyConfig,
             onTap: () => _onAdditionalSpeedRestrictionTab(context, rowData),
+            rowIndex: index,
           );
         case Datatype.connectionTrack:
           return ConnectionTrackRow(
             metadata: journey.metadata,
             data: rowData as ConnectionTrack,
             config: trainJourneyConfig,
+            rowIndex: index,
           );
         case Datatype.speedChange:
           return SpeedChangeRow(
             metadata: journey.metadata,
             data: rowData as SpeedChange,
             config: trainJourneyConfig,
+            rowIndex: index,
           );
         case Datatype.cabSignaling:
           return CABSignalingRow(
             metadata: journey.metadata,
             data: rowData as CABSignaling,
             config: trainJourneyConfig,
+            rowIndex: index,
           );
         case Datatype.balise:
           return BaliseRow(
@@ -194,12 +202,14 @@ class TrainJourney extends StatelessWidget {
             data: rowData as Balise,
             config: trainJourneyConfig,
             isGrouped: groupedRows.contains(rowData),
+            rowIndex: index,
           );
         case Datatype.whistle:
           return WhistleRow(
             metadata: journey.metadata,
             data: rowData as Whistle,
             config: trainJourneyConfig,
+            rowIndex: index,
           );
         case Datatype.levelCrossing:
           return LevelCrossingRow(
@@ -207,12 +217,14 @@ class TrainJourney extends StatelessWidget {
             data: rowData as LevelCrossing,
             config: trainJourneyConfig,
             isGrouped: groupedRows.contains(rowData),
+            rowIndex: index,
           );
         case Datatype.tramArea:
           return TramAreaRow(
             metadata: journey.metadata,
             data: rowData as TramArea,
             config: trainJourneyConfig,
+            rowIndex: index,
           );
         case Datatype.baliseLevelCrossingGroup:
           return BaliseLevelCrossingGroupRow(
@@ -220,6 +232,7 @@ class TrainJourney extends StatelessWidget {
             data: rowData as BaliseLevelCrossingGroup,
             config: trainJourneyConfig,
             onTap: () => _onBaliseLevelCrossingGroupTap(context, rowData, settings),
+            rowIndex: index,
           );
         case Datatype.opFootNote:
           return OpFootNoteRow(
@@ -228,6 +241,7 @@ class TrainJourney extends StatelessWidget {
             config: trainJourneyConfig,
             isExpanded: !settings.collapsedFootNotes.contains(rowData.identifier),
             accordionToggleCallback: () => _onFootNoteExpanded(context, rowData, settings),
+            rowIndex: index,
           );
         case Datatype.lineFootNote:
           return LineFootNoteRow(
@@ -236,6 +250,7 @@ class TrainJourney extends StatelessWidget {
             config: trainJourneyConfig,
             isExpanded: !settings.collapsedFootNotes.contains(rowData.identifier),
             accordionToggleCallback: () => _onFootNoteExpanded(context, rowData, settings),
+            rowIndex: index,
           );
         case Datatype.trackFootNote:
           return TrackFootNoteRow(
@@ -244,6 +259,7 @@ class TrainJourney extends StatelessWidget {
             config: trainJourneyConfig,
             isExpanded: !settings.collapsedFootNotes.contains(rowData.identifier),
             accordionToggleCallback: () => _onFootNoteExpanded(context, rowData, settings),
+            rowIndex: index,
           );
       }
     });

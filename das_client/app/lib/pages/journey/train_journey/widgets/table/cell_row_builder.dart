@@ -20,6 +20,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
   CellRowBuilder({
     required this.metadata,
     required super.data,
+    required super.rowIndex,
     super.height = rowHeight,
     super.stickyLevel,
     super.key,
@@ -45,6 +46,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
       color: rowColor,
       onTap: onTap,
       stickyLevel: stickyLevel,
+      rowIndex: rowIndex,
       cells: {
         ColumnDefinition.kilometre.index: kilometreCell(context),
         ColumnDefinition.time.index: timeCell(context),
@@ -146,6 +148,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
       child: GraduatedSpeedsCellBody(
         incomingSpeeds: graduatedSpeeds.incomingSpeeds,
         outgoingSpeeds: graduatedSpeeds.outgoingSpeeds,
+        rowIndex: rowIndex,
       ),
     );
   }

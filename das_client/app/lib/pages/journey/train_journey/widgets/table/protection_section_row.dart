@@ -13,6 +13,7 @@ class ProtectionSectionRow extends CellRowBuilder<ProtectionSection> {
   ProtectionSectionRow({
     required super.metadata,
     required super.data,
+    required super.rowIndex,
     super.config,
   }) : super(rowColor: SBBColors.peach);
 

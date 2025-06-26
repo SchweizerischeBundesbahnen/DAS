@@ -1,4 +1,6 @@
 import 'package:app/widgets/dot_indicator.dart';
+import 'package:app/widgets/stickyheader/sticky_header.dart';
+import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:app/widgets/widget_extensions.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,7 @@ class GraduatedSpeedsCellBody extends StatelessWidget {
   static const Key squaredSpeedKey = Key('graduatedSpeedSquared');
 
   const GraduatedSpeedsCellBody({
+    required this.rowIndex,
     this.incomingSpeeds = const [],
     this.outgoingSpeeds = const [],
     this.hasAdditionalInformation = false,
@@ -21,13 +24,20 @@ class GraduatedSpeedsCellBody extends StatelessWidget {
   final List<Speed> incomingSpeeds;
   final List<Speed> outgoingSpeeds;
   final bool hasAdditionalInformation;
+  final int rowIndex;
 
   @override
   Widget build(BuildContext context) {
-    return DotIndicator(
-      show: hasAdditionalInformation,
-      offset: outgoingSpeeds.isEmpty ? const Offset(0, -sbbDefaultSpacing * 0.5) : const Offset(0, 0),
-      child: _buildSpeeds(context),
+    return ListenableBuilder(
+      listenable: StickyHeader.of(context)!.controller,
+      builder: (context, _) {
+        final displaySticky = StickyHeader.of(context)!.controller.headerIndexes[StickyLevel.first] == rowIndex;
+        return DotIndicator(
+          show: hasAdditionalInformation,
+          offset: outgoingSpeeds.isEmpty ? const Offset(0, -sbbDefaultSpacing * 0.5) : const Offset(0, 0),
+          child: displaySticky ? Text('Sticky') : _buildSpeeds(context),
+        );
+      },
     );
   }
 

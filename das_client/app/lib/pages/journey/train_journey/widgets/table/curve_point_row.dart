@@ -12,6 +12,7 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
   CurvePointRow({
     required super.metadata,
     required super.data,
+    required super.rowIndex,
     super.config,
   });
 

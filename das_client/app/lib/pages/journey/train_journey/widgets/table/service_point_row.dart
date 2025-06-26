@@ -26,6 +26,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     required super.metadata,
     required super.data,
     required BuildContext context,
+    required super.rowIndex,
     super.height = rowHeight,
     super.config,
     Color? rowColor,
@@ -129,6 +130,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
         incomingSpeeds: graduatedSpeeds.incomingSpeeds,
         outgoingSpeeds: graduatedSpeeds.outgoingSpeeds,
         hasAdditionalInformation: relevantGraduatedSpeedInfo.isNotEmpty,
+        rowIndex: rowIndex,
       ),
     );
   }
