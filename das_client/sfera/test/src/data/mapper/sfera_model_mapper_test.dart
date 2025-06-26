@@ -1214,7 +1214,7 @@ void main() {
     expect(oSpeedEntry3.incomingSpeeds, hasLength(3));
     _checkSpeed(oSpeedEntry3.incomingSpeeds[0], '75');
     _checkSpeed(oSpeedEntry3.incomingSpeeds[1], '70');
-    _checkSpeed(oSpeedEntry3.incomingSpeeds[2], '60');
+    _checkSpeed(oSpeedEntry3.incomingSpeeds[2], '65');
     expect(oSpeedEntry3.outgoingSpeeds, isEmpty);
   });
 
