@@ -130,6 +130,8 @@ class SegmentProfileMapper {
           ),
           decisiveGradient: _parseDecisiveGradientAtLocation(mapperData.segmentProfile, timingPoint.location),
           arrivalDepartureTime: _parseArrivalDepartureTime(tpConstraint),
+          stationSign1: tafTapLocation.routeTableDataNsp?.stationSign1,
+          stationSign2: tafTapLocation.routeTableDataNsp?.stationSign2,
         ),
       );
     }

@@ -42,8 +42,11 @@
         </TimingPointConstraints>
 
 		<TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="300" endLocation="450">
-            <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="140"/>
+            <AdvisedSpeed adviceType="AccelerationAdvice">
+                <ReasonText language="de" text="asdf"/>
+            </AdvisedSpeed>
             <TemporaryConstraintReason text="Umbau" language="DE"/>
+
         </TemporaryConstraints>
 
     </SegmentProfileReference>
