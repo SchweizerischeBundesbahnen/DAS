@@ -22,20 +22,19 @@
             <StoppingPointDepartureDetails departureTime="2025-05-17T09:36:50Z" plannedDepartureTime="2025-05-17T09:36:00Z"/>
         </TimingPointConstraints>
 		
+        <TrainCharacteristicsRef TC_ID="2266_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
+            <TC_RU_ID>1285</TC_RU_ID>
+        </TrainCharacteristicsRef>
+
 		<!-- VPro -->
 		<JP_ContextInformation>
 			<JP_ContextInformation_NSPs>
 				<teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
-				<JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" >
-					<NetworkSpecificParameter name="newSpeed" value="110"/>
-				</JP_ContextInformation_NSP_Constraints>
+				<NetworkSpecificParameter name="newSpeed" value="110"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" />                
 			</JP_ContextInformation_NSPs>
-		</JP_ContextInformation>
-			
-        <TrainCharacteristicsRef TC_ID="2266_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
-            <TC_RU_ID>1285</TC_RU_ID>
-        </TrainCharacteristicsRef>
+		</JP_ContextInformation>    
 		
     </SegmentProfileReference>
 
@@ -55,9 +54,8 @@
 			<JP_ContextInformation_NSPs>
 				<teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
-				<JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" >
-					<NetworkSpecificParameter name="newSpeed" value="115"/>
-				</JP_ContextInformation_NSP_Constraints>
+				<NetworkSpecificParameter name="newSpeed" value="115"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" />                
 			</JP_ContextInformation_NSPs>
 		</JP_ContextInformation>
 		
@@ -123,16 +121,17 @@
 		
 		<!-- ADL -->
 		<TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="AdvisedSpeed" startLocation="3700" endLocation="8900">
-			<AdvisedSpeed optimalSpeed="80" reasonCode="followTrain" reasonText="ADL" adviceType="ConstantspeedAdvice" />
+			<AdvisedSpeed optimalSpeed="80" reasonCode="followTrain" adviceType="ConstantspeedAdvice">
+				<ReasonText language="DE" text="ADL" />
+			</AdvisedSpeed>
 		</TemporaryConstraints>
 		
 		<JP_ContextInformation>
 			<JP_ContextInformation_NSPs>
 				<teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
-				<JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" >
-					<NetworkSpecificParameter name="newSpeed" value="90"/>
-				</JP_ContextInformation_NSP_Constraints>
+				<NetworkSpecificParameter name="newSpeed" value="90"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" />                
 			</JP_ContextInformation_NSPs>
 		</JP_ContextInformation>
 		
@@ -154,9 +153,8 @@
 			<JP_ContextInformation_NSPs>
 				<teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
-				<JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" >
-					<NetworkSpecificParameter name="newSpeed" value="115"/>
-				</JP_ContextInformation_NSP_Constraints>
+				<NetworkSpecificParameter name="newSpeed" value="115"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" />					                
 			</JP_ContextInformation_NSPs>
 		</JP_ContextInformation>
 		
@@ -178,9 +176,8 @@
 			<JP_ContextInformation_NSPs>
 				<teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
-				<JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" >
-					<NetworkSpecificParameter name="newSpeed" value="100"/>
-				</JP_ContextInformation_NSP_Constraints>
+				<NetworkSpecificParameter name="newSpeed" value="100"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" />                
 			</JP_ContextInformation_NSPs>
 		</JP_ContextInformation>
 		
@@ -203,9 +200,8 @@
 			<JP_ContextInformation_NSPs>
 				<teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
-				<JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" >
-					<NetworkSpecificParameter name="newSpeed" value="95"/>
-				</JP_ContextInformation_NSP_Constraints>
+				<NetworkSpecificParameter name="newSpeed" value="95"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" />                
 			</JP_ContextInformation_NSPs>
 		</JP_ContextInformation>
 		
@@ -266,7 +262,9 @@
         </TemporaryConstraints>
 		
 		<TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="AdvisedSpeed" startLocation="4700" >
-			<AdvisedSpeed reasonCode="trainFollowing" reasonText="ADL" deltaSpeed="0" adviceType="ConstantspeedAdvice" />
+			<AdvisedSpeed reasonCode="trainFollowing" deltaSpeed="0" adviceType="ConstantspeedAdvice">
+				<ReasonText language="DE" text="ADL" />
+			</AdvisedSpeed>
 		</TemporaryConstraints>
 		
     </SegmentProfileReference>
@@ -284,16 +282,17 @@
         </TimingPointConstraints>
 		
 		<TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="AdvisedSpeed" endLocation="2300">
-			<AdvisedSpeed reasonCode="trainFollowing" reasonText="ADL" deltaSpeed="0" adviceType="ConstantspeedAdvice" />
+			<AdvisedSpeed reasonCode="trainFollowing" deltaSpeed="0" adviceType="ConstantspeedAdvice">
+				<ReasonText language="DE" text="ADL" />
+			</AdvisedSpeed>
 		</TemporaryConstraints>
 		
 		<JP_ContextInformation>
 			<JP_ContextInformation_NSPs>
 				<teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
-				<JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" >
-					<NetworkSpecificParameter name="newSpeed" value="80"/>
-				</JP_ContextInformation_NSP_Constraints>
+				<NetworkSpecificParameter name="newSpeed" value="80"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" />                
 			</JP_ContextInformation_NSPs>
 		</JP_ContextInformation>
 		
