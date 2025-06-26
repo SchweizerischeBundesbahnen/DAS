@@ -1,6 +1,7 @@
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
+import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:app/widgets/widget_extensions.dart';
 import 'package:flutter/material.dart';
@@ -18,12 +19,14 @@ class GraduatedSpeedsCellBody extends StatelessWidget {
     this.incomingSpeeds = const [],
     this.outgoingSpeeds = const [],
     this.hasAdditionalInformation = false,
+    this.isSpeedFromOtherRow = false,
     super.key,
   });
 
   final List<Speed> incomingSpeeds;
   final List<Speed> outgoingSpeeds;
   final bool hasAdditionalInformation;
+  final bool isSpeedFromOtherRow;
   final int rowIndex;
 
   @override
@@ -31,11 +34,12 @@ class GraduatedSpeedsCellBody extends StatelessWidget {
     return ListenableBuilder(
       listenable: StickyHeader.of(context)!.controller,
       builder: (context, _) {
-        final displaySticky = StickyHeader.of(context)!.controller.headerIndexes[StickyLevel.first] == rowIndex;
+        final isNotSticky = StickyHeader.of(context)!.controller.headerIndexes[StickyLevel.first] == rowIndex;
+        if (isNotSticky && isSpeedFromOtherRow) return DASTableCell.emptyBuilder;
         return DotIndicator(
           show: hasAdditionalInformation,
           offset: outgoingSpeeds.isEmpty ? const Offset(0, -sbbDefaultSpacing * 0.5) : const Offset(0, 0),
-          child: displaySticky ? Text('Sticky') : _buildSpeeds(context),
+          child: _buildSpeeds(context),
         );
       },
     );

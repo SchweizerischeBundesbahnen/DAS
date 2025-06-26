@@ -148,6 +148,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
       child: GraduatedSpeedsCellBody(
         incomingSpeeds: graduatedSpeeds.incomingSpeeds,
         outgoingSpeeds: graduatedSpeeds.outgoingSpeeds,
+        isSpeedFromOtherRow: speedData.isFromPreviousData,
         rowIndex: rowIndex,
       ),
     );
