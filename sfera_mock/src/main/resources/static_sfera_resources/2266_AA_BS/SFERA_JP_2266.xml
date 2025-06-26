@@ -24,13 +24,13 @@
 		
 		<!-- VPro -->
 		<JP_ContextInformation>
-			<JP_ContextInformation_NSP>
+			<JP_ContextInformation_NSPs>
 				<teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
 				<JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" >
 					<NetworkSpecificParameter name="newSpeed" value="110"/>
 				</JP_ContextInformation_NSP_Constraints>
-			</JP_ContextInformation_NSP>
+			</JP_ContextInformation_NSPs>
 		</JP_ContextInformation>
 			
         <TrainCharacteristicsRef TC_ID="2266_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
@@ -52,13 +52,13 @@
         </TimingPointConstraints>
 		
 		<JP_ContextInformation>
-			<JP_ContextInformation_NSP>
+			<JP_ContextInformation_NSPs>
 				<teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
 				<JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" >
 					<NetworkSpecificParameter name="newSpeed" value="115"/>
 				</JP_ContextInformation_NSP_Constraints>
-			</JP_ContextInformation_NSP>
+			</JP_ContextInformation_NSPs>
 		</JP_ContextInformation>
 		
     </SegmentProfileReference>
@@ -127,13 +127,13 @@
 		</TemporaryConstraints>
 		
 		<JP_ContextInformation>
-			<JP_ContextInformation_NSP>
+			<JP_ContextInformation_NSPs>
 				<teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
 				<JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" >
 					<NetworkSpecificParameter name="newSpeed" value="90"/>
 				</JP_ContextInformation_NSP_Constraints>
-			</JP_ContextInformation_NSP>
+			</JP_ContextInformation_NSPs>
 		</JP_ContextInformation>
 		
     </SegmentProfileReference>
@@ -151,13 +151,13 @@
         </TimingPointConstraints>
 		
 		<JP_ContextInformation>
-			<JP_ContextInformation_NSP>
+			<JP_ContextInformation_NSPs>
 				<teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
 				<JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" >
 					<NetworkSpecificParameter name="newSpeed" value="115"/>
 				</JP_ContextInformation_NSP_Constraints>
-			</JP_ContextInformation_NSP>
+			</JP_ContextInformation_NSPs>
 		</JP_ContextInformation>
 		
     </SegmentProfileReference>
@@ -175,13 +175,13 @@
         </TimingPointConstraints>
 		
 		<JP_ContextInformation>
-			<JP_ContextInformation_NSP>
+			<JP_ContextInformation_NSPs>
 				<teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
 				<JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" >
 					<NetworkSpecificParameter name="newSpeed" value="100"/>
 				</JP_ContextInformation_NSP_Constraints>
-			</JP_ContextInformation_NSP>
+			</JP_ContextInformation_NSPs>
 		</JP_ContextInformation>
 		
     </SegmentProfileReference>
@@ -200,13 +200,13 @@
         </TimingPointConstraints>
 		
 		<JP_ContextInformation>
-			<JP_ContextInformation_NSP>
+			<JP_ContextInformation_NSPs>
 				<teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
 				<JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" >
 					<NetworkSpecificParameter name="newSpeed" value="95"/>
 				</JP_ContextInformation_NSP_Constraints>
-			</JP_ContextInformation_NSP>
+			</JP_ContextInformation_NSPs>
 		</JP_ContextInformation>
 		
     </SegmentProfileReference>
@@ -288,13 +288,13 @@
 		</TemporaryConstraints>
 		
 		<JP_ContextInformation>
-			<JP_ContextInformation_NSP>
+			<JP_ContextInformation_NSPs>
 				<teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
 				<JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" >
 					<NetworkSpecificParameter name="newSpeed" value="80"/>
 				</JP_ContextInformation_NSP_Constraints>
-			</JP_ContextInformation_NSP>
+			</JP_ContextInformation_NSPs>
 		</JP_ContextInformation>
 		
     </SegmentProfileReference>
