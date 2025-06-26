@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.22.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.21.0...das_client-v0.22.0) (2025-06-26)
+
+
+### Features
+
+* client displays xx speeds ([#502](https://github.com/SchweizerischeBundesbahnen/DAS/issues/502)) ([#1038](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1038)) ([a7dab99](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a7dab9904bca4b36500b976a019872a53d290495))
+* handling of missing data in detail modal ([#1040](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1040)) ([#1053](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1053)) ([9651bbd](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9651bbd86ae6596df1edfdd70352cf161296154e))
+* search journey with modal in loaded journey ([#456](https://github.com/SchweizerischeBundesbahnen/DAS/issues/456)) ([#1051](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1051)) ([ff232f5](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ff232f574d2e073839ff553170cd21cdefc59eb6))
+
 ## [0.21.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.20.0...das_client-v0.21.0) (2025-06-10)
 
 
