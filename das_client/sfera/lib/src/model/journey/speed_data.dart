@@ -8,9 +8,9 @@ import 'package:sfera/src/model/journey/train_series_speeds.dart';
 class SpeedData {
   const SpeedData({this.speeds = const []});
 
-  final List<TrainSeriesSpeeds> speeds;
+  final List<TrainSeriesSpeed> speeds;
 
-  TrainSeriesSpeeds? speedsFor(TrainSeries? trainSeries, int? breakSeries) {
+  TrainSeriesSpeed? speedsFor(TrainSeries? trainSeries, int? breakSeries) {
     if (trainSeries == null) return null;
 
     final trainSeriesSpeeds = speeds.where((it) => it.trainSeries == trainSeries);

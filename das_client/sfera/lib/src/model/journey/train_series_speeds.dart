@@ -4,8 +4,8 @@ import 'package:sfera/src/model/journey/train_series.dart';
 
 @sealed
 @immutable
-class TrainSeriesSpeeds {
-  const TrainSeriesSpeeds({
+class TrainSeriesSpeed {
+  const TrainSeriesSpeed({
     required this.trainSeries,
     this.text,
     this.breakSeries,
@@ -21,7 +21,7 @@ class TrainSeriesSpeeds {
   final List<Speed> outgoingSpeeds;
   final bool reduced;
 
-  factory TrainSeriesSpeeds.from(
+  factory TrainSeriesSpeed.from(
     TrainSeries trainSeries,
     String speedString, {
     String? text,
@@ -38,7 +38,7 @@ class TrainSeriesSpeeds {
       throw ArgumentError('Invalid graduated station speed format: $speedString');
     }
 
-    return TrainSeriesSpeeds(
+    return TrainSeriesSpeed(
       trainSeries: trainSeries,
       text: text,
       breakSeries: breakSeries,

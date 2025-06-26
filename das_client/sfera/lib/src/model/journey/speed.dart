@@ -18,6 +18,8 @@ class Speed {
   /// Constructs a new Speed instance based on [formattedString].
   ///
   /// Throws a FormatException if the input string cannot be parsed.
+  ///
+  /// The formattedString is expected to be something like '50', '{60}' or '&#91;XX&#93;'
   static Speed parse(String formattedString) {
     if (!isValid(formattedString)) throw FormatException('Invalid speed: $formattedString');
 

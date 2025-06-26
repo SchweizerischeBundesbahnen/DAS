@@ -7,9 +7,9 @@ import 'package:sfera/src/model/journey/train_series_speeds.dart';
 void main() {
   test('test with only incoming station speeds', () {
     // GIVEN WHEN
-    final speed1 = TrainSeriesSpeeds.from(TrainSeries.R, '100');
-    final speed2 = TrainSeriesSpeeds.from(TrainSeries.R, '100-90');
-    final speed3 = TrainSeriesSpeeds.from(TrainSeries.R, '100-90-80');
+    final speed1 = TrainSeriesSpeed.from(TrainSeries.R, '100');
+    final speed2 = TrainSeriesSpeed.from(TrainSeries.R, '100-90');
+    final speed3 = TrainSeriesSpeed.from(TrainSeries.R, '100-90-80');
 
     // THEN
     expect(speed1.incomingSpeeds, hasLength(1));
@@ -30,7 +30,7 @@ void main() {
 
   test('test with XX speeds', () {
     // GIVEN WHEN
-    final speed1 = TrainSeriesSpeeds.from(TrainSeries.R, 'XX');
+    final speed1 = TrainSeriesSpeed.from(TrainSeries.R, 'XX');
 
     // THEN
     expect(speed1.incomingSpeeds, hasLength(1));
@@ -40,15 +40,15 @@ void main() {
 
   test('test with incoming and outgoing station speeds', () {
     // GIVEN WHEN
-    final speed1 = TrainSeriesSpeeds.from(TrainSeries.R, '100/70');
-    final speed2 = TrainSeriesSpeeds.from(TrainSeries.R, '100-90/70');
-    final speed3 = TrainSeriesSpeeds.from(TrainSeries.R, '100-90-80/70');
-    final speed4 = TrainSeriesSpeeds.from(TrainSeries.R, '100/70-60');
-    final speed5 = TrainSeriesSpeeds.from(TrainSeries.R, '100-90/70-60');
-    final speed6 = TrainSeriesSpeeds.from(TrainSeries.R, '100-90-80/70-60');
-    final speed7 = TrainSeriesSpeeds.from(TrainSeries.R, '100/70-60-50');
-    final speed8 = TrainSeriesSpeeds.from(TrainSeries.R, '100-90/70-60-50');
-    final speed9 = TrainSeriesSpeeds.from(TrainSeries.R, '100-90-80/70-60-50');
+    final speed1 = TrainSeriesSpeed.from(TrainSeries.R, '100/70');
+    final speed2 = TrainSeriesSpeed.from(TrainSeries.R, '100-90/70');
+    final speed3 = TrainSeriesSpeed.from(TrainSeries.R, '100-90-80/70');
+    final speed4 = TrainSeriesSpeed.from(TrainSeries.R, '100/70-60');
+    final speed5 = TrainSeriesSpeed.from(TrainSeries.R, '100-90/70-60');
+    final speed6 = TrainSeriesSpeed.from(TrainSeries.R, '100-90-80/70-60');
+    final speed7 = TrainSeriesSpeed.from(TrainSeries.R, '100/70-60-50');
+    final speed8 = TrainSeriesSpeed.from(TrainSeries.R, '100-90/70-60-50');
+    final speed9 = TrainSeriesSpeed.from(TrainSeries.R, '100-90-80/70-60-50');
 
     // THEN
     expect(speed1.incomingSpeeds, hasLength(1));
@@ -116,9 +116,9 @@ void main() {
   });
   test('test station speeds with circled or squared values', () {
     // GIVEN WHEN
-    final speed1 = TrainSeriesSpeeds.from(TrainSeries.R, '100-{90}/70');
-    final speed2 = TrainSeriesSpeeds.from(TrainSeries.R, '100/70-[60]');
-    final speed3 = TrainSeriesSpeeds.from(TrainSeries.R, '[100]-90/{70}-[60]');
+    final speed1 = TrainSeriesSpeed.from(TrainSeries.R, '100-{90}/70');
+    final speed2 = TrainSeriesSpeed.from(TrainSeries.R, '100/70-[60]');
+    final speed3 = TrainSeriesSpeed.from(TrainSeries.R, '[100]-90/{70}-[60]');
 
     // THEN
     expect(speed1.incomingSpeeds, hasLength(2));
@@ -142,11 +142,11 @@ void main() {
   });
 
   test('test invalid speed format', () {
-    expect(() => TrainSeriesSpeeds.from(TrainSeries.R, 'ABC'), throwsArgumentError);
-    expect(() => TrainSeriesSpeeds.from(TrainSeries.R, '1A-{90}/70'), throwsArgumentError);
-    expect(() => TrainSeriesSpeeds.from(TrainSeries.R, '100--20'), throwsArgumentError);
-    expect(() => TrainSeriesSpeeds.from(TrainSeries.R, '100-{{90}'), throwsArgumentError);
-    expect(() => TrainSeriesSpeeds.from(TrainSeries.R, '100-{90}//70'), throwsArgumentError);
+    expect(() => TrainSeriesSpeed.from(TrainSeries.R, 'ABC'), throwsArgumentError);
+    expect(() => TrainSeriesSpeed.from(TrainSeries.R, '1A-{90}/70'), throwsArgumentError);
+    expect(() => TrainSeriesSpeed.from(TrainSeries.R, '100--20'), throwsArgumentError);
+    expect(() => TrainSeriesSpeed.from(TrainSeries.R, '100-{{90}'), throwsArgumentError);
+    expect(() => TrainSeriesSpeed.from(TrainSeries.R, '100-{90}//70'), throwsArgumentError);
   });
 
   test('Test resolved speed no velocities', () {
@@ -159,25 +159,25 @@ void main() {
   test('Test resolved speed exact match', () {
     final speedData = SpeedData(
       speeds: [
-        TrainSeriesSpeeds(
+        TrainSeriesSpeed(
           trainSeries: TrainSeries.R,
           breakSeries: 100,
           incomingSpeeds: [Speed.parse('100')],
           reduced: false,
         ),
-        TrainSeriesSpeeds(
+        TrainSeriesSpeed(
           trainSeries: TrainSeries.R,
           breakSeries: 150,
           incomingSpeeds: [Speed.parse('150')],
           reduced: false,
         ),
-        TrainSeriesSpeeds(
+        TrainSeriesSpeed(
           trainSeries: TrainSeries.A,
           breakSeries: 100,
           incomingSpeeds: [Speed.parse('200')],
           reduced: false,
         ),
-        TrainSeriesSpeeds(
+        TrainSeriesSpeed(
           trainSeries: TrainSeries.A,
           breakSeries: 150,
           incomingSpeeds: [Speed.parse('250')],
@@ -195,15 +195,15 @@ void main() {
   test('Test resolved speed default break series', () {
     final speedData = SpeedData(
       speeds: [
-        TrainSeriesSpeeds(
+        TrainSeriesSpeed(
           trainSeries: TrainSeries.R,
           breakSeries: 100,
           incomingSpeeds: [Speed.parse('100')],
           reduced: false,
         ),
-        TrainSeriesSpeeds(trainSeries: TrainSeries.R, incomingSpeeds: [Speed.parse('150')], reduced: false),
-        TrainSeriesSpeeds(trainSeries: TrainSeries.A, incomingSpeeds: [Speed.parse('200')], reduced: false),
-        TrainSeriesSpeeds(
+        TrainSeriesSpeed(trainSeries: TrainSeries.R, incomingSpeeds: [Speed.parse('150')], reduced: false),
+        TrainSeriesSpeed(trainSeries: TrainSeries.A, incomingSpeeds: [Speed.parse('200')], reduced: false),
+        TrainSeriesSpeed(
           trainSeries: TrainSeries.A,
           breakSeries: 150,
           incomingSpeeds: [Speed.parse('250')],

@@ -20,7 +20,7 @@ class ServicePointModalViewModel {
   final _rxServicePoint = BehaviorSubject<ServicePoint>();
   final _rxSelectedTab = BehaviorSubject<ServicePointModalTab?>();
   final _rxSettings = BehaviorSubject<TrainJourneySettings>();
-  final _rxRelevantSpeedInfo = BehaviorSubject.seeded(<TrainSeriesSpeeds>[]);
+  final _rxRelevantSpeedInfo = BehaviorSubject.seeded(<TrainSeriesSpeed>[]);
   final _rxBreakSeries = BehaviorSubject<BreakSeries?>();
   final _rxTabs = BehaviorSubject.seeded(<ServicePointModalTab>[]);
   final _subscriptions = <StreamSubscription>[];
@@ -33,7 +33,7 @@ class ServicePointModalViewModel {
 
   Stream<CommunicationNetworkType?> get communicationNetworkType => _rxCommunicationNetworkType.distinct();
 
-  Stream<List<TrainSeriesSpeeds>> get relevantSpeedInfo => _rxRelevantSpeedInfo.distinct();
+  Stream<List<TrainSeriesSpeed>> get relevantSpeedInfo => _rxRelevantSpeedInfo.distinct();
 
   Stream<BreakSeries?> get breakSeries => _rxBreakSeries.distinct();
 

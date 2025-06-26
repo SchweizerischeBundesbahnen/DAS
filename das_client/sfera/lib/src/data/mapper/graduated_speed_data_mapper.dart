@@ -15,11 +15,11 @@ class GraduatedSpeedDataMapper {
   static SpeedData? fromVelocities(Iterable<VelocityDto>? velocities) {
     if (velocities == null) return null;
 
-    final graduatedSpeeds = <TrainSeriesSpeeds>[];
+    final graduatedSpeeds = <TrainSeriesSpeed>[];
 
     void addSpeed(TrainSeries trainSeries, int? breakSeries, String speedString, bool reduced) {
       try {
-        final speeds = TrainSeriesSpeeds.from(trainSeries, speedString, breakSeries: breakSeries, reduced: reduced);
+        final speeds = TrainSeriesSpeed.from(trainSeries, speedString, breakSeries: breakSeries, reduced: reduced);
         graduatedSpeeds.add(speeds);
       } catch (e) {
         _log.warning('Could not parse station speed with "$speedString"', e);
@@ -39,11 +39,11 @@ class GraduatedSpeedDataMapper {
   static SpeedData? fromGraduatedSpeedInfo(GraduatedSpeedInfoDto? graduatedSpeedInfo) {
     if (graduatedSpeedInfo == null) return null;
 
-    final graduatedStationSpeeds = <TrainSeriesSpeeds>[];
+    final graduatedStationSpeeds = <TrainSeriesSpeed>[];
 
     void addSpeed(TrainSeries trainSeries, String speedString, String? text) {
       try {
-        final speeds = TrainSeriesSpeeds.from(trainSeries, speedString, text: text);
+        final speeds = TrainSeriesSpeed.from(trainSeries, speedString, text: text);
         graduatedStationSpeeds.add(speeds);
       } catch (e) {
         _log.warning('Could not parse graduated station speed with "$speedString"', e);
