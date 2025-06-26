@@ -2,8 +2,8 @@ import 'package:logging/logging.dart';
 import 'package:sfera/src/data/dto/graduated_speed_info_dto.dart';
 import 'package:sfera/src/data/dto/velocity_dto.dart';
 import 'package:sfera/src/model/journey/speed_data.dart';
-import 'package:sfera/src/model/journey/speeds.dart';
 import 'package:sfera/src/model/journey/train_series.dart';
+import 'package:sfera/src/model/journey/train_series_speeds.dart';
 
 final _log = Logger('GraduatedSpeedDataMapper');
 
@@ -15,11 +15,11 @@ class GraduatedSpeedDataMapper {
   static SpeedData? fromVelocities(Iterable<VelocityDto>? velocities) {
     if (velocities == null) return null;
 
-    final graduatedSpeeds = <Speeds>[];
+    final graduatedSpeeds = <TrainSeriesSpeeds>[];
 
     void addSpeed(TrainSeries trainSeries, int? breakSeries, String speedString, bool reduced) {
       try {
-        final speeds = Speeds.from(trainSeries, speedString, breakSeries: breakSeries, reduced: reduced);
+        final speeds = TrainSeriesSpeeds.from(trainSeries, speedString, breakSeries: breakSeries, reduced: reduced);
         graduatedSpeeds.add(speeds);
       } catch (e) {
         _log.warning('Could not parse station speed with "$speedString"', e);
@@ -39,11 +39,11 @@ class GraduatedSpeedDataMapper {
   static SpeedData? fromGraduatedSpeedInfo(GraduatedSpeedInfoDto? graduatedSpeedInfo) {
     if (graduatedSpeedInfo == null) return null;
 
-    final graduatedStationSpeeds = <Speeds>[];
+    final graduatedStationSpeeds = <TrainSeriesSpeeds>[];
 
     void addSpeed(TrainSeries trainSeries, String speedString, String? text) {
       try {
-        final speeds = Speeds.from(trainSeries, speedString, text: text);
+        final speeds = TrainSeriesSpeeds.from(trainSeries, speedString, text: text);
         graduatedStationSpeeds.add(speeds);
       } catch (e) {
         _log.warning('Could not parse graduated station speed with "$speedString"', e);
