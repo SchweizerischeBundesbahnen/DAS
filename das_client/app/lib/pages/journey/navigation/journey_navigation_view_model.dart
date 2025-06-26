@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/pages/journey/navigation/journey_navigation_model.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -6,6 +8,12 @@ import 'package:sfera/component.dart';
 final _log = Logger('JourneyNavigationViewModel');
 
 class JourneyNavigationViewModel {
+  JourneyNavigationViewModel({required SferaRemoteRepo sferaRepo}) : _sferaRemoteRepo = sferaRepo {
+    _initSferaRemoteStateSubscription();
+  }
+
+  final SferaRemoteRepo _sferaRemoteRepo;
+  StreamSubscription<SferaRemoteRepositoryState>? _sferaRemoteStateSubscription;
   final List<TrainIdentification> _trainIds = [];
   final _rxModel = BehaviorSubject<JourneyNavigationModel?>.seeded(null);
 
@@ -18,50 +26,77 @@ class JourneyNavigationViewModel {
   TrainIdentification? get _currentTrainId => _rxModel.value?.trainIdentification;
 
   void push(TrainIdentification trainId) {
-    if (_trainIds.isNotEmpty && _currentTrainId == trainId) {
-      return;
-    }
-    if (!_trainIds.contains(trainId)) {
-      _trainIds.add(trainId);
-    }
+    if (_currentTrainId == trainId) return;
+
+    if (_trainIds.isNotEmpty) _sferaRemoteRepo.disconnect();
+
+    if (!_trainIds.contains(trainId)) _trainIds.add(trainId);
+
+    _sferaRemoteRepo.connect(trainId);
     _addToStream(trainId);
   }
 
   void next() {
     if (_trainIds.isEmpty) return;
-    if (_currentTrainIdIndex < 0 || _currentTrainIdIndex >= _trainIds.length - 1) return;
     final updatedIdx = _currentTrainIdIndex + 1;
-    final trainId = _trainIds[updatedIdx];
+    if (_isOutOfTrainIdsRange(updatedIdx)) return;
 
+    _sferaRemoteRepo.disconnect();
+
+    final trainId = _trainIds[updatedIdx];
+    _sferaRemoteRepo.connect(trainId);
     _addToStream(trainId);
   }
 
   void previous() {
-    if (_currentTrainIdIndex <= 0) return;
+    if (_trainIds.isEmpty) return;
     final updatedIdx = _currentTrainIdIndex - 1;
+    if (_isOutOfTrainIdsRange(updatedIdx)) return;
+
+    _sferaRemoteRepo.disconnect();
+
     final trainId = _trainIds[updatedIdx];
+    _sferaRemoteRepo.connect(trainId);
     _addToStream(trainId);
   }
 
-  void reset() {
+  void dispose() {
+    _log.fine('Disposing JourneyNavigationViewModel');
+    _sferaRemoteStateSubscription?.cancel();
+    _sferaRemoteRepo.disconnect();
+    _addToStream(null);
+    _trainIds.clear();
+    _rxModel.close();
+  }
+
+  void _reset() {
     _log.fine('Resetting JourneyNavigationViewModel');
     _trainIds.clear();
     _rxModel.add(null);
   }
 
-  void dispose() {
-    _log.fine('Disposing JourneyNavigationViewModel');
-    _rxModel.close();
-    _trainIds.clear();
-  }
+  bool _isOutOfTrainIdsRange(int idx) => idx < 0 || idx >= _trainIds.length;
 
-  void _addToStream(TrainIdentification trainId) {
+  void _addToStream(TrainIdentification? trainId) {
+    if (trainId == null) return _rxModel.add(null);
+
     _rxModel.add(
       JourneyNavigationModel(
         trainIdentification: trainId,
         currentIndex: _trainIds.indexOf(trainId),
         navigationStackLength: _trainIds.length,
+        showNavigationButtons: _trainIds.length > 1,
       ),
+    );
+  }
+
+  void _initSferaRemoteStateSubscription() {
+    _sferaRemoteStateSubscription?.cancel();
+    _sferaRemoteStateSubscription = _sferaRemoteRepo.stateStream.listen(
+      (s) => switch (s) {
+        SferaRemoteRepositoryState.disconnected => _sferaRemoteRepo.lastError != null ? _reset() : null,
+        SferaRemoteRepositoryState.connected || SferaRemoteRepositoryState.connecting => null,
+      },
     );
   }
 }

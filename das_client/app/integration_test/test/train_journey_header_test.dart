@@ -99,25 +99,18 @@ Future<void> main() async {
 
       final brightness = SBBBaseStyle.of(context).brightness;
 
-      if (brightness != Brightness.dark) {
-        final nightMode = find.descendant(
-          of: header,
-          matching: find.widgetWithText(SBBTertiaryButtonLarge, l10n.p_train_journey_header_button_dark_theme),
-        );
-        expect(nightMode, findsOneWidget);
+      final searchedButtonLabel = brightness != Brightness.dark
+          ? l10n.p_train_journey_header_button_dark_theme
+          : l10n.p_train_journey_header_button_light_theme;
 
-        await tester.tap(nightMode);
-        await tester.pumpAndSettle();
-      } else {
-        final dayMode = find.descendant(
-          of: header,
-          matching: find.widgetWithText(SBBTertiaryButtonLarge, l10n.p_train_journey_header_button_light_theme),
-        );
-        expect(dayMode, findsOneWidget);
+      final themeSwitchButton = find.descendant(
+        of: header,
+        matching: find.widgetWithText(SBBTertiaryButtonLarge, searchedButtonLabel),
+      );
+      expect(themeSwitchButton, findsOneWidget);
+      await tester.tap(themeSwitchButton);
 
-        await tester.tap(dayMode);
-        await tester.pumpAndSettle();
-      }
+      await tester.pumpAndSettle(Duration(milliseconds: 300));
 
       expect(SBBBaseStyle.of(context).brightness != brightness, true);
     });

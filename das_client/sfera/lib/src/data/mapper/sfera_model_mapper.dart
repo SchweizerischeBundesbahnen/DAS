@@ -405,17 +405,11 @@ class SferaModelMapper {
 
           final contactLists = segmentProfile.contextInformation?.contactLists;
           return contactLists?.map((contactList) {
-            if (contactList.startLocation != contactList.endLocation) {
-              _log.warning(
-                'ContactList found without identical location (start=${contactList.startLocation} end=${contactList.endLocation}).',
-              );
-            }
-
             final identifiableContacts = contactList.contacts.where(
               (c) => c.otherContactType != null && c.otherContactType!.contactIdentifier != null,
             );
             return RadioContactList(
-              order: calculateOrder(index, contactList.startLocation!),
+              order: calculateOrder(index, contactList.startLocation ?? 0),
               contacts: identifiableContacts.map(
                 (e) => switch (e.mainContact) {
                   true => MainContact(

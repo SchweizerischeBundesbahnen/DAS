@@ -1,6 +1,5 @@
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
-import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
 import 'package:app/util/device_id_info.dart';
 import 'package:auth/component.dart';
 import 'package:get_it/get_it.dart';
@@ -28,7 +27,6 @@ class AuthenticatedScope extends DIScope {
     getIt.registerMqttService();
     getIt.registerSferaLocalRepo();
     getIt.registerSferaRemoteRepo();
-    getIt.registerJourneyNavigationViewModel();
 
     await getIt.allReady();
   }
@@ -130,18 +128,6 @@ extension AuthenticatedScopeExtension on GetIt {
     }
 
     registerLazySingleton<SferaLocalRepo>(factoryFunc);
-  }
-
-  void registerJourneyNavigationViewModel() {
-    factoryFunc() {
-      _log.fine('Register TrainJourneyNavigationViewModel');
-      return JourneyNavigationViewModel();
-    }
-
-    registerLazySingleton<JourneyNavigationViewModel>(
-      factoryFunc,
-      dispose: (vm) => vm.dispose(),
-    );
   }
 }
 

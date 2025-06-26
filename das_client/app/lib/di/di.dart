@@ -1,5 +1,6 @@
 import 'package:app/di/scope_handler.dart';
 import 'package:app/di/scope_handler_impl.dart';
+import 'package:app/di/scopes/journey_scope.dart';
 import 'package:app/di/scopes/scopes.dart';
 import 'package:app/flavor.dart';
 import 'package:auth/component.dart';
@@ -93,5 +94,6 @@ extension DiExtension on GetIt {
     registerSingleton<SferaMockScope>(SferaMockScope());
     registerSingleton<TmsScope>(TmsScope());
     registerSingleton<AuthenticatedScope>(AuthenticatedScope());
+    registerSingleton<JourneyScope>(JourneyScope());
   }
 }

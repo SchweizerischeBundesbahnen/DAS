@@ -5,6 +5,7 @@ import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_moda
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
+import 'package:app/pages/journey/train_journey/widgets/journey_navigation_buttons.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/koa_notification.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
@@ -85,7 +86,14 @@ class TrainJourneyOverview extends StatelessWidget {
         ManeuverNotification(),
         KoaNotification(),
         _warnappNotification(context),
-        Expanded(child: TrainJourney()),
+        Expanded(
+          child: Stack(
+            children: [
+              TrainJourney(),
+              Align(alignment: Alignment.bottomCenter, child: JourneyNavigationButtons()),
+            ],
+          ),
+        ),
       ],
     );
   }

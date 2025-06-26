@@ -3,7 +3,7 @@ publish_to: 'none'
 version: 1.0.0
 
 environment:
-  sdk: 3.8.0
+  sdk: ^3.8.0
 
 resolution: workspace
 
@@ -22,7 +22,7 @@ dependencies:
   # https://pub.dev/packages/synchronized
   synchronized: ^3.3.1
   # https://pub.dev/packages/device_info_plus
-  device_info_plus: ^11.4.0
+  device_info_plus: ^11.5.0
   # https://pub.dev/packages/package_info_plus
   package_info_plus: ^8.3.0
   # https://pub.dev/packages/clock
@@ -37,15 +37,15 @@ dev_dependencies:
     sdk: flutter
 
   # https://pub.dev/packages/build_runner
-  build_runner: ^2.4.15
+  build_runner: ^2.5.4
   # https://pub.dev/packages/json_serializable
-  json_serializable: ^6.9.0
+  json_serializable: ^6.9.5
   # https://pub.dev/packages/mockito
-  mockito: ^5.4.5
+  mockito: ^5.4.6
   # https://pub.dev/packages/path_provider
   path_provider_platform_interface: any
   # https://pub.dev/packages/plugin_platform_interface
   plugin_platform_interface: any
   # https://pub.dev/packages/flutter_lints
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
 

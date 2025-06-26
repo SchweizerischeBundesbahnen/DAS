@@ -4,21 +4,19 @@ import 'package:app/brightness/brightness_modal_sheet.dart';
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
-import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_railway_undertaking_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_train_number_input.dart';
+import 'package:app/pages/journey/selection/widgets/logout_button.dart';
 import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
 import 'package:app/util/error_code.dart';
 import 'package:app/widgets/header.dart';
-import 'package:auth/component.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
-import 'package:sfera/component.dart';
 
 @RoutePage()
 class JourneySelectionPage extends StatelessWidget implements AutoRouteWrapper {
@@ -27,11 +25,8 @@ class JourneySelectionPage extends StatelessWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) {
     return Provider<JourneySelectionViewModel>(
-      create: (_) => JourneySelectionViewModel(
-        sferaRemoteRepo: DI.get<SferaRemoteRepo>(),
-        onJourneySelected: DI.get<JourneyNavigationViewModel>().push,
-      ),
-      dispose: (_, vm) => vm.dispose(),
+      create: (_) => DI.get<JourneySelectionViewModel>(),
+      dispose: (_, _) {}, // dispose is called when JourneyScope is popped
       child: this,
     );
   }
@@ -41,7 +36,7 @@ class JourneySelectionPage extends StatelessWidget implements AutoRouteWrapper {
     return DASJourneyScaffold(
       body: _Content(),
       appBarTitle: context.l10n.c_app_name,
-      appBarTrailingAction: _LogoutButton(),
+      appBarTrailingAction: LogoutButton(),
     );
   }
 }
@@ -81,9 +76,9 @@ class _ContentState extends State<_Content> {
             hasScrollBody: false,
             child: Column(
               children: [
-                _Header(),
-                Expanded(child: _Body()),
-                _LoadJourneyButton(),
+                _header(context),
+                Expanded(child: _body(context)),
+                _loadJourneyButton(context),
               ],
             ),
           ),
@@ -97,11 +92,8 @@ class _ContentState extends State<_Content> {
     _subscription.cancel();
     super.dispose();
   }
-}
 
-class _Header extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+  Widget _header(BuildContext context) {
     final viewModel = context.read<JourneySelectionViewModel>();
     return StreamBuilder(
       stream: viewModel.model,
@@ -122,11 +114,8 @@ class _Header extends StatelessWidget {
       },
     );
   }
-}
 
-class _Body extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+  Widget _body(BuildContext context) {
     final viewModel = context.read<JourneySelectionViewModel>();
     return StreamBuilder(
       stream: viewModel.model,
@@ -147,11 +136,8 @@ class _Body extends StatelessWidget {
       },
     );
   }
-}
 
-class _LoadJourneyButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+  Widget _loadJourneyButton(BuildContext context) {
     final viewModel = context.read<JourneySelectionViewModel>();
     return StreamBuilder(
       stream: viewModel.model,
@@ -172,15 +158,4 @@ class _LoadJourneyButton extends StatelessWidget {
       },
     );
   }
-}
-
-class _LogoutButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) => IconButton(
-    icon: const Icon(SBBIcons.exit_small),
-    onPressed: () {
-      DI.get<Authenticator>().logout();
-      context.router.replace(const LoginRoute());
-    },
-  );
 }

@@ -170,14 +170,3 @@ the context MUST be equal to the name of that page or widget.
 For example, localizations used on the login page would start with `p_login_`.
 
 The generation of the localization code is included in the `melos generate` command.
-
-## Code style
-
-This application uses the code style defined in
-the [Flutter Wiki](https://github.com/flutter/flutter/blob/master/docs/contributing/Style-guide-for-Flutter-repo.md).
-The recommendations are mandatory and should always be followed unless there is a good reason not to do so. However,
-this must be approved by all developers.
-
-Notable difference: Line length is set to 120 characters. Please adapt your IDE configuration accordingly.
-
-For formatting XML test files, contact a developer for custom Android Studio XML formatting setup.
