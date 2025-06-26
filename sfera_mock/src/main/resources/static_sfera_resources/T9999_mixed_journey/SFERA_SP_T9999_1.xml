@@ -81,14 +81,6 @@
                     &lt;/entries&gt;
                 "/>
             </TAF_TAP_Location_NSP>
-
-            <!--            gleisspezifische Geschwindigkeiten	-->
-            <TAF_TAP_Location_NSP>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>stationProperty_00000</NSP_GroupName>
-                <NetworkSpecificParameter name="stationPropertySpeed_R150" value="30-40"/>
-                <NetworkSpecificParameter name="text" value="&lt;b&gt;31&lt;/b&gt;"/>
-            </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
         <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="600" endLocation="900">

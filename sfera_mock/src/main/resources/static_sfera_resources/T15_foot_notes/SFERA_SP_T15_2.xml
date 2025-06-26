@@ -103,15 +103,15 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>stationProperty</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationProperty" value="
-				&lt;stationProperty&gt; 
-					&lt;stationProperty1;&gt;
+				&lt;stationProperties&gt;
+					&lt;stationProperty&gt;
 						&lt;speeds&gt; 
 							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;35&quot; reduced=&quot;true&quot;/&gt;
 							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;35&quot; reduced=&quot;true&quot;/&gt;
 							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;35&quot; reduced=&quot;true&quot;/&gt;
 						&lt;/speeds&gt; 
-					&lt;/stationProperty1&gt; 
-				&lt;/stationProperty&gt;
+					&lt;/stationProperty&gt;
+				&lt;/stationProperties&gt;
 				"/>
             </TAF_TAP_Location_NSP>
 

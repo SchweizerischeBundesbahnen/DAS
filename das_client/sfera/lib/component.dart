@@ -45,6 +45,7 @@ export 'package:sfera/src/model/journey/speed.dart';
 export 'package:sfera/src/model/journey/speed_change.dart';
 export 'package:sfera/src/model/journey/speed_data.dart';
 export 'package:sfera/src/model/journey/speeds.dart';
+export 'package:sfera/src/model/journey/station_sign.dart';
 export 'package:sfera/src/model/journey/track_equipment_segment.dart';
 export 'package:sfera/src/model/journey/track_foot_note.dart';
 export 'package:sfera/src/model/journey/train_series.dart';
