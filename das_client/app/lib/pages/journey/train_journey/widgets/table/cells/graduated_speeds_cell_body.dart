@@ -34,7 +34,7 @@ class GraduatedSpeedsCellBody extends StatelessWidget {
     return ListenableBuilder(
       listenable: StickyHeader.of(context)!.controller,
       builder: (context, _) {
-        final isNotSticky = StickyHeader.of(context)!.controller.headerIndexes[StickyLevel.first] == rowIndex;
+        final isNotSticky = StickyHeader.of(context)!.controller.headerIndexes[StickyLevel.first] != rowIndex;
         if (isNotSticky && isSpeedFromOtherRow) return DASTableCell.emptyBuilder;
         return DotIndicator(
           show: hasAdditionalInformation,

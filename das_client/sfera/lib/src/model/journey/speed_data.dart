@@ -6,12 +6,8 @@ import 'package:sfera/src/model/journey/train_series.dart';
 @sealed
 @immutable
 class SpeedData {
-  const SpeedData({
-    this.speeds = const [],
-    this.isFromPreviousData = false,
-  });
+  const SpeedData({this.speeds = const []});
 
-  final bool isFromPreviousData;
   final List<Speeds> speeds;
 
   Speeds? speedsFor(TrainSeries? trainSeries, int? breakSeries) {

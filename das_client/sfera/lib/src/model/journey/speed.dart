@@ -9,17 +9,15 @@ class Speed {
     this.isCircled = false,
   });
 
-  factory Speed.from(String value) {
-    if (RegExp(speedRegex).hasMatch(value)) {
-      final speedValue = RegExp(r'\d+|XX').stringMatch(value);
-      return Speed(
-        speed: speedValue!,
-        isCircled: value.contains('{'),
-        isSquared: value.contains('['),
-      );
-    }
+  factory Speed.parse(String value) {
+    if (!RegExp(speedRegex).hasMatch(value)) throw FormatException('Invalid speed: $value');
 
-    throw ArgumentError('Invalid speed format: $value');
+    final speedValue = RegExp(r'\d+|XX').stringMatch(value);
+    return Speed(
+      speed: speedValue!,
+      isCircled: value.contains('{'),
+      isSquared: value.contains('['),
+    );
   }
 
   // Accepts 50, {60}, [70], XX, {XX}, [XX]

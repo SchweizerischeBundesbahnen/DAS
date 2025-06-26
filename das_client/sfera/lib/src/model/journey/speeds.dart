@@ -44,8 +44,8 @@ class Speeds {
       text: text,
       breakSeries: breakSeries,
       reduced: reduced,
-      incomingSpeeds: incomingSpeeds.map((speed) => Speed.from(speed)).toList(),
-      outgoingSpeeds: outgoingSpeeds.map((speed) => Speed.from(speed)).toList(),
+      incomingSpeeds: incomingSpeeds.map((speed) => Speed.parse(speed)).toList(),
+      outgoingSpeeds: outgoingSpeeds.map((speed) => Speed.parse(speed)).toList(),
     );
   }
 
