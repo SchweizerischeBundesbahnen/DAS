@@ -298,7 +298,7 @@
 		
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="19240_14_Basel_SBB" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="2266_14_Basel_SBB" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
