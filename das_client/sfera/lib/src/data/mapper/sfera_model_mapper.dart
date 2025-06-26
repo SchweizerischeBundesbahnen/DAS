@@ -183,7 +183,7 @@ class SferaModelMapper {
         servicePoints.last;
   }
 
-  static _calculateLastServicePoint(Iterable<ServicePoint> servicePoints, BaseData? currentPosition) {
+  static ServicePoint? _calculateLastServicePoint(Iterable<ServicePoint> servicePoints, BaseData? currentPosition) {
     if (currentPosition == null) return servicePoints.firstOrNull;
 
     return servicePoints.toList().reversed.firstWhereOrNull((sP) => sP.order <= currentPosition.order);

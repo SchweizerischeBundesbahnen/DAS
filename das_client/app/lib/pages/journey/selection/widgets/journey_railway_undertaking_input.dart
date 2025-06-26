@@ -37,7 +37,7 @@ class JourneyRailwayUndertakingInput extends StatelessWidget {
     );
   }
 
-  _buildRailwayUndertakingInput(BuildContext context, value, {Function(RailwayUndertaking)? onChanged}) {
+  Widget _buildRailwayUndertakingInput(BuildContext context, value, {Function(RailwayUndertaking)? onChanged}) {
     return Padding(
       padding: isModalVersion ? EdgeInsets.zero : _inputPadding,
       child: SBBSelect<RailwayUndertaking>(
