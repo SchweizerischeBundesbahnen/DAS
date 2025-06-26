@@ -286,11 +286,11 @@ void main() {
     expect(endSignaling, hasLength(2));
     expect(endSignaling[0].speedData, isNotNull);
     expect(endSignaling[0].speedData!.speeds[0].trainSeries, TrainSeries.R);
-    expect(endSignaling[0].speedData!.speeds[0].incomingSpeeds[0].speed, '55');
+    expect(endSignaling[0].speedData!.speeds[0].incomingSpeeds[0].value, '55');
     expect(endSignaling[0].speedData!.speeds[0].breakSeries, 115);
     expect(endSignaling[1].speedData, isNotNull);
     expect(endSignaling[1].speedData!.speeds[0].trainSeries, TrainSeries.R);
-    expect(endSignaling[1].speedData!.speeds[0].incomingSpeeds[0].speed, '80');
+    expect(endSignaling[1].speedData!.speeds[0].incomingSpeeds[0].value, '80');
     expect(endSignaling[1].speedData!.speeds[0].breakSeries, 115);
   });
 
@@ -630,21 +630,21 @@ void main() {
     expect(speedChanges[0].text, 'Zahnstangen Anfang');
     expect(speedChanges[0].speedData!.speeds, hasLength(2));
     expect(speedChanges[0].speedData!.speeds[0].trainSeries, TrainSeries.R);
-    expect(speedChanges[0].speedData!.speeds[0].incomingSpeeds[0].speed, '55');
+    expect(speedChanges[0].speedData!.speeds[0].incomingSpeeds[0].value, '55');
     expect(speedChanges[0].speedData!.speeds[0].reduced, true);
     expect(speedChanges[0].speedData!.speeds[0].breakSeries, 100);
     expect(speedChanges[0].speedData!.speeds[1].trainSeries, TrainSeries.A);
-    expect(speedChanges[0].speedData!.speeds[1].incomingSpeeds[0].speed, '50');
+    expect(speedChanges[0].speedData!.speeds[1].incomingSpeeds[0].value, '50');
     expect(speedChanges[0].speedData!.speeds[1].reduced, false);
     expect(speedChanges[0].speedData!.speeds[1].breakSeries, 30);
     expect(speedChanges[1].text, 'Zahnstangen Ende');
     expect(speedChanges[1].speedData!.speeds, hasLength(2));
     expect(speedChanges[1].speedData!.speeds[0].trainSeries, TrainSeries.R);
-    expect(speedChanges[1].speedData!.speeds[0].incomingSpeeds[0].speed, '80');
+    expect(speedChanges[1].speedData!.speeds[0].incomingSpeeds[0].value, '80');
     expect(speedChanges[1].speedData!.speeds[0].reduced, false);
     expect(speedChanges[1].speedData!.speeds[0].breakSeries, 100);
     expect(speedChanges[1].speedData!.speeds[1].trainSeries, TrainSeries.A);
-    expect(speedChanges[1].speedData!.speeds[1].incomingSpeeds[0].speed, '80');
+    expect(speedChanges[1].speedData!.speeds[1].incomingSpeeds[0].value, '80');
     expect(speedChanges[1].speedData!.speeds[1].reduced, false);
     expect(speedChanges[1].speedData!.speeds[1].breakSeries, 30);
   });
@@ -666,11 +666,11 @@ void main() {
     expect(connectionTracks[2].speedData, isNotNull);
     expect(connectionTracks[2].speedData!.speeds, hasLength(2));
     expect(connectionTracks[2].speedData!.speeds[0].trainSeries, TrainSeries.R);
-    expect(connectionTracks[2].speedData!.speeds[0].incomingSpeeds[0].speed, '45');
+    expect(connectionTracks[2].speedData!.speeds[0].incomingSpeeds[0].value, '45');
     expect(connectionTracks[2].speedData!.speeds[0].reduced, false);
     expect(connectionTracks[2].speedData!.speeds[0].breakSeries, isNull);
     expect(connectionTracks[2].speedData!.speeds[1].trainSeries, TrainSeries.A);
-    expect(connectionTracks[2].speedData!.speeds[1].incomingSpeeds[0].speed, '40');
+    expect(connectionTracks[2].speedData!.speeds[1].incomingSpeeds[0].value, '40');
     expect(connectionTracks[2].speedData!.speeds[1].reduced, false);
     expect(connectionTracks[2].speedData!.speeds[1].breakSeries, isNull);
   });
@@ -1557,7 +1557,7 @@ void main() {
 }
 
 void _checkSpeed(Speed speed, String speedValue, {bool isCircled = false, bool isSquared = false}) {
-  expect(speed.speed, speedValue);
+  expect(speed.value, speedValue);
   expect(speed.isCircled, isCircled);
   expect(speed.isSquared, isSquared);
 }

@@ -88,7 +88,7 @@ class GraduatedSpeedsCellBody extends StatelessWidget {
                 )
               : null,
           child: Text(
-            speed.speed,
+            speed.value,
             style: DASTableTheme.of(context)?.data.dataTextStyle?.copyWith(height: 0),
           ),
         );
@@ -100,7 +100,7 @@ class GraduatedSpeedsCellBody extends StatelessWidget {
 // extensions
 
 extension _SpeedIterableX on Iterable<Speed> {
-  String toJoinedString({String divider = '-'}) => map((it) => it.speed).join(divider);
+  String toJoinedString({String divider = '-'}) => map((it) => it.value).join(divider);
 
   bool get hasSquaredOrCircled => any((it) => it.isSquared || it.isCircled);
 }

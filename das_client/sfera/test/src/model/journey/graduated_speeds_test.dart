@@ -166,10 +166,10 @@ void main() {
       ],
     );
 
-    expect(speedData.speedsFor(TrainSeries.R, 100)!.incomingSpeeds[0].speed, '100');
-    expect(speedData.speedsFor(TrainSeries.R, 150)!.incomingSpeeds[0].speed, '150');
-    expect(speedData.speedsFor(TrainSeries.A, 100)!.incomingSpeeds[0].speed, '200');
-    expect(speedData.speedsFor(TrainSeries.A, 150)!.incomingSpeeds[0].speed, '250');
+    expect(speedData.speedsFor(TrainSeries.R, 100)!.incomingSpeeds[0].value, '100');
+    expect(speedData.speedsFor(TrainSeries.R, 150)!.incomingSpeeds[0].value, '150');
+    expect(speedData.speedsFor(TrainSeries.A, 100)!.incomingSpeeds[0].value, '200');
+    expect(speedData.speedsFor(TrainSeries.A, 150)!.incomingSpeeds[0].value, '250');
   });
 
   test('Test resolved speed default break series', () {
@@ -182,17 +182,17 @@ void main() {
       ],
     );
 
-    expect(speedData.speedsFor(TrainSeries.R, 100)!.incomingSpeeds[0].speed, '100');
-    expect(speedData.speedsFor(TrainSeries.R, 150)!.incomingSpeeds[0].speed, '150');
-    expect(speedData.speedsFor(TrainSeries.R, 50)!.incomingSpeeds[0].speed, '150');
-    expect(speedData.speedsFor(TrainSeries.A, 100)!.incomingSpeeds[0].speed, '200');
-    expect(speedData.speedsFor(TrainSeries.A, 150)!.incomingSpeeds[0].speed, '250');
-    expect(speedData.speedsFor(TrainSeries.A, 80)!.incomingSpeeds[0].speed, '200');
+    expect(speedData.speedsFor(TrainSeries.R, 100)!.incomingSpeeds[0].value, '100');
+    expect(speedData.speedsFor(TrainSeries.R, 150)!.incomingSpeeds[0].value, '150');
+    expect(speedData.speedsFor(TrainSeries.R, 50)!.incomingSpeeds[0].value, '150');
+    expect(speedData.speedsFor(TrainSeries.A, 100)!.incomingSpeeds[0].value, '200');
+    expect(speedData.speedsFor(TrainSeries.A, 150)!.incomingSpeeds[0].value, '250');
+    expect(speedData.speedsFor(TrainSeries.A, 80)!.incomingSpeeds[0].value, '200');
   });
 }
 
 void checkSpeed(Speed speed, String speedValue, {bool isCircled = false, bool isSquared = false}) {
-  expect(speed.speed, speedValue);
+  expect(speed.value, speedValue);
   expect(speed.isCircled, isCircled);
   expect(speed.isSquared, isSquared);
 }

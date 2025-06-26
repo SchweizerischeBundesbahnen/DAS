@@ -29,12 +29,11 @@ class Speeds {
     bool reduced = false,
   }) {
     final parts = speedString.split('/');
-    final incomingSpeeds = parts[0].split('-');
-    final outgoingSpeeds = parts.length > 1 ? parts[1].split('-') : [];
+    final List<String> incomingSpeeds = parts[0].split('-');
+    final List<String> outgoingSpeeds = parts.length > 1 ? parts[1].split('-') : [];
 
     // validate station speed format
-    final speedRegex = RegExp(Speed.speedRegex);
-    final formatSatisfied = [...incomingSpeeds, ...outgoingSpeeds].every((speed) => speedRegex.hasMatch(speed));
+    final formatSatisfied = [...incomingSpeeds, ...outgoingSpeeds].every(Speed.isValid);
     if (incomingSpeeds.isNotEmpty && !formatSatisfied) {
       throw ArgumentError('Invalid graduated station speed format: $speedString');
     }
