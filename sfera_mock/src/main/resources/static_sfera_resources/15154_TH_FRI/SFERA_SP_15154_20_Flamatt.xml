@@ -44,7 +44,7 @@
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>curvePoint</NSP_GroupName>
             <NetworkSpecificParameter name="curvePointType" value="begin"/>
-            <NetworkSpecificParameter name="curveType" value="curve"/>
+            <NetworkSpecificParameter name="curveType" value="stationExitCurve"/>
             <NetworkSpecificParameter name="xmlCurveSpeed" value="
                 &lt;curveSpeed &gt;
 					&lt;speeds&gt;

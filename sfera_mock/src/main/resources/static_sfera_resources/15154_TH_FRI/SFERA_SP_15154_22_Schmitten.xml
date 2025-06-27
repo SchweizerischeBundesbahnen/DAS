@@ -42,7 +42,7 @@
 
 		<Signal>
             <Signal_ID signal_ID_Physical="D950" location="5000"/>
-            <SignalFunction>block</SignalFunction>
+            <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="D950"/>
         </Signal>	
 		
