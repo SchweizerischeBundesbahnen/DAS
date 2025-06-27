@@ -16,19 +16,6 @@
             <TP_Name name="W"/>
         </TimingPoint>
 
-        <Signal>
-            <Signal_ID signal_ID_Physical="N337" location="300"/>
-            <SignalFunction>exit</SignalFunction>
-			<SignalFunction>entry</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="N337"/>
-        </Signal>
-		
-		<Signal>
-            <Signal_ID signal_ID_Physical="M93" location="800"/>
-            <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="M93"/>
-        </Signal>
-
     </SP_Points>
 
     <SP_Areas>
@@ -43,6 +30,13 @@
             <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
+                    &lt;entries&gt;
+						&lt;entry nSpeed=&quot;80&quot; roSpeed=&quot;80&quot; adSpeed=&quot;75&quot; text=&quot;Einfahrt von Tössmühle ab „Merktafel für Änderung der Höchstgeschwindigkeit“ km 25.6&quot;/&gt;
+						&lt;entry nSpeed=&quot;80&quot; roSpeed=&quot;80&quot; adSpeed=&quot;75&quot; text=&quot;Ausfahrt nach Tössmühle bis „Merktafel für Änderung der Höchstgeschwindigkeit“ km 25.5&quot;/&gt;
+						&lt;entry nSpeed=&quot;70&quot; roSpeed=&quot;70&quot; adSpeed=&quot;65&quot; text=&quot;Einfahrt von Schwalmenacker ab „Merktafel für Änderung der Höchstgeschwindigkeit“ km 26.9 bzw. km 136.9&#10;&quot;/&gt;
+                    &lt;/entries&gt;
+                "/>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
 					&lt;stationSpeed&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;110-70/80-125&quot;/&gt;

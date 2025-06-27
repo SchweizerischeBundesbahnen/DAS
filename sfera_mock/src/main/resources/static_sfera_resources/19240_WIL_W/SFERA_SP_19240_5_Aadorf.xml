@@ -115,10 +115,13 @@
 		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
 
         <KilometreReferencePoint location="0">
-            <KM_Reference kmRef="120.9"/>
+            <KM_Reference kmRef="122.9"/>
         </KilometreReferencePoint>
-        <KilometreReferencePoint location="1200">
-            <KM_Reference kmRef="122.1"/>
+        <KilometreReferencePoint location="200">
+            <KM_Reference kmRef="123.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2300">
+            <KM_Reference kmRef="125.2"/>
         </KilometreReferencePoint>
 		
 		<DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="9.0" gradientDirection="Downhill"

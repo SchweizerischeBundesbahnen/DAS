@@ -77,6 +77,14 @@
 			<TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
+                    &lt;entries&gt;
+						&lt;entry nSpeed=&quot;85&quot; roSpeed=&quot;80&quot; adSpeed=&quot;70&quot; text=&quot;Ein- und Ausfahrt von/nach Sirnach ab/bis „Merktafel für Änderung der Höchstgeschwindigkeit“ km 111.0&quot;/&gt;
+						&lt;entry nSpeed=&quot;85&quot; roSpeed=&quot;80&quot; adSpeed=&quot;70&quot; text=&quot;Ein- und Ausfahrt von/nach Schwarzenbach ab/bis „Merktafel für Änderung der Höchstgeschwindigkeit“ km 109.8&quot;/&gt;
+						&lt;entry roSpeed=&quot;60&quot; adSpeed=&quot;60&quot; text=&quot;Ausfahrt nach Bazenheid bis „Merktafel für Änderung der Höchstgeschwindigkeit“ km 0.6&quot;/&gt;
+						&lt;entry roSpeed=&quot;40&quot; adSpeed=&quot;40&quot; text=&quot;Einfahrt von Bettwiesen ab „Merktafel für Änderung der Höchstgeschwindigkeit“ km 0.25&#10;&quot;/&gt;
+                    &lt;/entries&gt;
+                "/>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
 					&lt;stationSpeed&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;90-80/80-95&quot;/&gt;
@@ -114,6 +122,8 @@
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;85&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;90&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;90&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;95&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;95&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;105&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;105&quot;/&gt;
 						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;105&quot;/&gt;
