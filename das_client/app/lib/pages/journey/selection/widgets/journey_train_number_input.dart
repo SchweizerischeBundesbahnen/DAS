@@ -6,8 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
+const _inputPadding = EdgeInsets.fromLTRB(sbbDefaultSpacing, sbbDefaultSpacing, 0, sbbDefaultSpacing / 2);
+
 class JourneyTrainNumberInput extends StatefulWidget {
-  const JourneyTrainNumberInput({super.key});
+  const JourneyTrainNumberInput({super.key, this.isModalVersion = false});
+
+  final bool isModalVersion;
 
   @override
   State<JourneyTrainNumberInput> createState() => _JourneyTrainNumberInputState();
@@ -40,12 +44,13 @@ class _JourneyTrainNumberInputState extends State<JourneyTrainNumberInput> {
 
   Widget _buildTrainNumberInput(BuildContext context, {Function(String)? onChanged, Function(String)? onSubmitted}) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, sbbDefaultSpacing, 0, sbbDefaultSpacing / 2),
+      padding: widget.isModalVersion ? EdgeInsets.zero : _inputPadding,
       child: SBBTextField(
+        labelText: widget.isModalVersion ? null : context.l10n.p_train_selection_trainnumber_description,
+        hintText: widget.isModalVersion ? context.l10n.p_train_selection_trainnumber_description : null,
         enabled: onChanged != null,
         onChanged: onChanged,
         controller: _controller,
-        labelText: context.l10n.p_train_selection_trainnumber_description,
         keyboardType: TextInputType.text,
         onSubmitted: onSubmitted,
       ),

@@ -4,6 +4,8 @@ import 'package:integration_test/integration_test.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 
+import 'test/train_journey_table_break_series_test.dart' as train_journey_table_break_series_tests;
+import 'test/train_journey_table_track_equipment_test.dart' as train_journey_table_track_equipment_tests;
 import 'test/warnapp_test.dart' as warnapp_tests;
 
 AppLocalizations l10n = AppLocalizationsDe();
@@ -15,4 +17,6 @@ void main() {
   Logger.root.onRecord.listen(LogPrinter(appName: 'DAS IntegrationTests').call);
 
   warnapp_tests.main();
+  train_journey_table_break_series_tests.main();
+  train_journey_table_track_equipment_tests.main();
 }

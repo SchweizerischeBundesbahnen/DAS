@@ -6,8 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
+const _inputPadding = EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, 0, sbbDefaultSpacing / 2);
+
 class JourneyDateInput extends StatefulWidget {
-  const JourneyDateInput({super.key});
+  const JourneyDateInput({
+    super.key,
+    this.isModalVersion = false,
+  });
+
+  final bool isModalVersion;
 
   @override
   State<JourneyDateInput> createState() => _JourneyDateInputState();
@@ -38,11 +45,12 @@ class _JourneyDateInputState extends State<JourneyDateInput> {
 
   Widget _dateInput(BuildContext context, {VoidCallback? onTap}) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, 0, sbbDefaultSpacing / 2),
+      padding: widget.isModalVersion ? EdgeInsets.zero : _inputPadding,
       child: GestureDetector(
         onTap: onTap,
         child: SBBTextField(
-          labelText: context.l10n.p_train_selection_date_description,
+          labelText: widget.isModalVersion ? null : context.l10n.p_train_selection_date_description,
+          hintText: widget.isModalVersion ? context.l10n.p_train_selection_date_description : null,
           controller: _controller,
           enabled: false,
         ),

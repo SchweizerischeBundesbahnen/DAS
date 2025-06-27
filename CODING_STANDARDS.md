@@ -9,8 +9,7 @@ or for [IntelliJ](https://www.jetbrains.com/help/idea/eslint.html).
 
 ## Mobile
 
-This project follows the Dart [code style](https://dart.dev/effective-dart):
-- Exception: Line length is extended to 120 characters
+Checkout separate [CODING_STANDARDS](das_client/CODING_STANDARDS.md) in DAS Client.
 
 ## Mock XML Files
 

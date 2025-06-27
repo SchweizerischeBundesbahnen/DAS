@@ -95,5 +95,6 @@
   "w_modal_sheet_battery_status_plug_in_device": "Connect your device to the power supply.",
   "w_modal_sheet_permissions_title": "DAS client requires system permissions",
   "w_modal_sheet_permission_brightness": "To adjust the screen brightness, the DAS client needs access to the system settings.",
-  "w_modal_sheet_button_grant_permission": "Grant permissions"
+  "w_modal_sheet_button_grant_permission": "Grant permissions",
+  "w_journey_search_overlay_title": "Search Timetable"
 }

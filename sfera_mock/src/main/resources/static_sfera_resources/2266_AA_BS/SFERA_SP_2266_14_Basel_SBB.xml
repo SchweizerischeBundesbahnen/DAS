@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                SP_ID="2266_14_Basel_SBB" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="4800" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>1285</IM_ID>
+    </SP_Zone>
+
+    <SP_Points>
+
+        <TimingPoint TP_ID="Basel_SBB" location="0">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>10</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+    </SP_Points>
+
+    <SP_Areas>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="BS" TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>10</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Basel SBB</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+			
+			<TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
+                    &lt;entries&gt;
+						&lt;entry nSpeed=&quot;35&quot; roSpeed=&quot;35&quot; adSpeed=&quot;35&quot; text=&quot;Ein- und Ausfahrt von/nach Ost mit Fahrbegriff 2 oder &#10;Fahrbegriff 6 ab/bis Peter Merian-Brücke km 122.700 bzw. &#10;km 0.310&quot;/&gt;
+                    &lt;/entries&gt;
+                "/>
+				<NetworkSpecificParameter name="xmlStationSpeed" value="
+					&lt;stationSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;85-35&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;85-35&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;85-35&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;85-35&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;85-35&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;75-35&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;75-35&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;75-35&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;80-35&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;80-35&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;80-35&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;80-35&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;80-35&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;80-35&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;80-35&quot;/&gt;
+					&lt;/stationSpeed&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>departureAuth</NSP_GroupName>
+                <NetworkSpecificParameter name="departureAuth" value="false"/>
+            </TAF_TAP_Location_NSP>
+			
+		<TAF_TAP_Location_NSP>
+			 <teltsi_Company>0085</teltsi_Company>
+			 <NSP_GroupName>stationProperty</NSP_GroupName>
+			 <NetworkSpecificParameter name="xmlStationProperty" value="
+				  &lt;stationProperties&gt;
+					   &lt;stationProperty1 text=&quot;&lt;b&gt;4&lt;/b&gt;&quot;&gt;
+							&lt;speeds&gt; 
+								&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;[60]&quot;/&gt;
+								&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;[60]&quot;/&gt;
+								&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;[60]&quot;/&gt;
+								&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;[60]&quot;/&gt;
+								&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;[60]&quot;/&gt;
+								&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;[60]&quot;/&gt;
+								&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;[60]&quot;/&gt;
+								&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;[60]&quot;/&gt;
+								&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;[60]&quot;/&gt;
+								&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;[60]&quot;/&gt;
+								&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;[60]&quot;/&gt;
+								&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;[60]&quot;/&gt;
+								&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;[60]&quot;/&gt;
+								&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;[60]&quot;/&gt;
+								&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;[60]&quot;/&gt;
+							&lt;/speeds&gt; 
+					   &lt;/stationProperty1&gt; 
+				  &lt;/stationProperties&gt;
+			  "/>
+			</TAF_TAP_Location_NSP>
+
+			<TAF_TAP_Location_NSP>
+				 <teltsi_Company>0085</teltsi_Company>
+				 <NSP_GroupName>routeTableData</NSP_GroupName>
+				 <NetworkSpecificParameter name="stationSign1" value="P" />
+			</TAF_TAP_Location_NSP>
+
+        </TAF_TAP_Location>
+
+    </SP_Areas>
+
+
+    <SP_ContextInformation>
+        <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1301"/>
+            </Contact>
+        </ContactList>
+		
+		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
+
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="0.0"/>
+        </KilometreReferencePoint> 
+
+    </SP_ContextInformation>
+
+</SegmentProfile>

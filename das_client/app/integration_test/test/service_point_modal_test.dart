@@ -1,15 +1,14 @@
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_communication.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_graduated_speeds.dart';
-import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_local_regulations.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_builder.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/animated_header_icon_button.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -20,6 +19,9 @@ import '../util/test_utils.dart';
 void main() {
   group('general service point modal sheet tests', () {
     testWidgets('test interaction points for modal sheet', (tester) async {
+      // TODO: Workaround till SegmentedButton is fixed in Design System: https://github.com/SchweizerischeBundesbahnen/design_system_flutter/issues/312
+      FlutterError.onError = ignoreOverflowErrors;
+
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: 'T8');
 
@@ -31,6 +33,10 @@ void main() {
 
       // close modal sheet
       await _closeModalSheet(tester);
+      expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
+
+      // check non-clickable graduated speeds if no details present
+      await _openByTapOnGraduatedSpeedOf(tester, 'Burgdorf');
       expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
 
       // open and check modal sheet with tap on graduated speeds
@@ -60,25 +66,43 @@ void main() {
 
       await disconnect(tester);
     });
+    testWidgets('test only tabs are displayed with data', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T8');
+
+      await _openByTapOnCellWithText(tester, 'Bern');
+      _checkModalSheetTabs([
+        ServicePointModalTab.communication, // always displayed
+        ServicePointModalTab.graduatedSpeeds,
+      ]);
+
+      await _openByTapOnCellWithText(tester, 'Burgdorf');
+      _checkModalSheetTabs([
+        ServicePointModalTab.communication, // always displayed
+      ]);
+
+      await disconnect(tester);
+    });
     testWidgets('test change of service point modal page with segmented button', (tester) async {
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: 'T8');
 
       // open modal with tap on service point name
-      await _openByTapOnCellWithText(tester, 'Olten');
-      _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Olten');
+      await _openByTapOnCellWithText(tester, 'Bern');
+      _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
 
       // change tab to graduated speeds
       await _selectTab(tester, ServicePointModalTab.graduatedSpeeds);
-      _checkOpenModalSheet(DetailTabGraduatedSpeeds.graduatedSpeedsTabKey, 'Olten');
+      _checkOpenModalSheet(DetailTabGraduatedSpeeds.graduatedSpeedsTabKey, 'Bern');
 
+      // TODO: Add back test when local regulations are implemented
       // change tab to local regulations and check if full width
-      await _selectTab(tester, ServicePointModalTab.localRegulations);
-      _checkOpenModalSheet(DetailTabLocalRegulations.localRegulationsTabKey, 'Olten', isMaximized: true);
+      // await _selectTab(tester, ServicePointModalTab.localRegulations);
+      // _checkOpenModalSheet(DetailTabLocalRegulations.localRegulationsTabKey, 'Olten', isMaximized: true);
 
       // change back to tab radio channels
       await _selectTab(tester, ServicePointModalTab.communication);
-      _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Olten');
+      _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
 
       await disconnect(tester);
     });
@@ -214,9 +238,14 @@ void main() {
       await loadTrainJourney(tester, trainNumber: '1513');
       await pauseAutomaticAdvancement(tester);
 
-      // open graduated speed tab of Olten
-      await _openByTapOnCellWithText(tester, '90');
-      _checkOpenModalSheet(DetailTabGraduatedSpeeds.graduatedSpeedsTabKey, 'Olten');
+      final scrollableFinder = find.byType(AnimatedList);
+      expect(scrollableFinder, findsOneWidget);
+
+      await tester.dragUntilVisible(find.text('Lenzburg'), scrollableFinder, const Offset(0, -50));
+
+      // open graduated speed tab of Rupperswil
+      await _openByTapOnGraduatedSpeedOf(tester, 'Rupperswil');
+      _checkOpenModalSheet(DetailTabGraduatedSpeeds.graduatedSpeedsTabKey, 'Rupperswil');
 
       // change to communication tab and check content
       await _selectTab(tester, ServicePointModalTab.communication);
@@ -229,16 +258,20 @@ void main() {
         matching: find.byKey(DetailTabCommunication.radioChannelListKey),
       );
       expect(radioChannels, findsOneWidget);
-      _expectText(radioChannels, '1304', count: 2);
-      _expectText(radioChannels, 'Richtung Süd: Fahrdienstleiter');
-      _expectText(radioChannels, '1302');
-      _expectText(radioChannels, 'Richtung Nord: Fahrdienstleiter');
-      _expectText(radioChannels, 'Rangierbahnhof: Fahrdienstleiter Stellwerk 3');
-      _expectText(radioChannels, '1310');
+      _expectText(radioChannels, '1308');
 
       await disconnect(tester);
     });
   });
+}
+
+Future<void> _openByTapOnGraduatedSpeedOf(WidgetTester tester, String text) async {
+  final tableRow = findDASTableRowByText(text);
+  final speedCell = find.descendant(
+    of: tableRow,
+    matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey),
+  );
+  await tapElement(tester, speedCell.first, warnIfMissed: false);
 }
 
 void _expectText(Finder finder, String text, {int count = 1}) {
@@ -252,8 +285,8 @@ Future<void> _openRadioChannelByHeaderTap(WidgetTester tester) async {
 }
 
 Future<void> _openByTapOnCellWithText(WidgetTester tester, String cellText) async {
-  final tableRowBern = findDASTableRowByText(cellText);
-  final cell = find.descendant(of: tableRowBern, matching: find.text(cellText));
+  final tableRow = findDASTableRowByText(cellText);
+  final cell = find.descendant(of: tableRow, matching: find.text(cellText));
   await tapElement(tester, cell, warnIfMissed: false);
 }
 
@@ -271,6 +304,22 @@ void _checkOpenModalSheet(Key tabContentKey, String servicePointName, {bool isMa
   expect(tabContent, findsOneWidget);
   final servicePointLabel = find.descendant(of: modalSheet, matching: find.text(servicePointName));
   expect(servicePointLabel, findsOneWidget);
+}
+
+void _checkModalSheetTabs(List<ServicePointModalTab> displayedTabs, {bool isMaximized = false}) {
+  final modalSheetKey = isMaximized ? DasModalSheet.modalSheetMaximizedKey : DasModalSheet.modalSheetExtendedKey;
+  final modalSheet = find.byKey(modalSheetKey);
+  for (final tab in displayedTabs) {
+    final tabIcon = find.descendant(of: modalSheet, matching: find.byIcon(tab.icon));
+    expect(tabIcon, findsOneWidget);
+  }
+
+  // check if other tabs are not shown
+  final notShownTabs = ServicePointModalTab.values.where((tab) => !displayedTabs.contains(tab));
+  for (final tab in notShownTabs) {
+    final tabIcon = find.descendant(of: modalSheet, matching: find.byIcon(tab.icon));
+    expect(tabIcon, findsNothing);
+  }
 }
 
 Future<void> _closeModalSheet(WidgetTester tester) =>
