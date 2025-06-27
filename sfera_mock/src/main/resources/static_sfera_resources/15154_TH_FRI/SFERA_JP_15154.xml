@@ -9,7 +9,7 @@
         </OTN_ID>
     </TrainIdentification>
 
-    <SegmentProfileReference SP_ID="15154_1_Thun" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_1_Thun" SP_VersionMajor="1" SP_VersionMinor="3" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -287,7 +287,7 @@
         </TimingPointConstraints>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_19_Thoerishaus_Dorf" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_19_Thoerishaus_Dorf" SP_VersionMajor="1" SP_VersionMinor="3" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -302,7 +302,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_20_Flamatt" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_20_Flamatt" SP_VersionMajor="1" SP_VersionMinor="3" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -332,7 +332,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_22_Schmitten" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_22_Schmitten" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -377,7 +377,7 @@
 
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_25_Fribourg_Freiburg" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_25_Fribourg_Freiburg" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
