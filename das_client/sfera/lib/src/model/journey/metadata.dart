@@ -5,6 +5,7 @@ import 'package:sfera/src/model/journey/bracket_station_segment.dart';
 import 'package:sfera/src/model/journey/break_series.dart';
 import 'package:sfera/src/model/journey/communication_network_change.dart';
 import 'package:sfera/src/model/journey/contact_list.dart';
+import 'package:sfera/src/model/journey/delay.dart';
 import 'package:sfera/src/model/journey/service_point.dart';
 import 'package:sfera/src/model/journey/track_equipment_segment.dart';
 
@@ -40,7 +41,7 @@ class Metadata {
   final List<AdditionalSpeedRestriction> additionalSpeedRestrictions;
   final BaseData? routeStart;
   final BaseData? routeEnd;
-  final Duration? delay;
+  final Delay? delay;
   final bool anyOperationalArrivalDepartureTimes;
   final List<NonStandardTrackEquipmentSegment> nonStandardTrackEquipmentSegments;
   final List<CommunicationNetworkChange> communicationNetworkChanges;

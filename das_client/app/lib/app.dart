@@ -6,6 +6,7 @@ import 'package:app/theme/themes.dart';
 import 'package:app/widgets/flavor_banner.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -30,6 +31,7 @@ class _AppState extends State<App> {
   }
 
   Widget _materialApp(BuildContext context) {
+    WakelockPlus.disable();
     return StreamBuilder(
       initialData: ThemeViewModel.defaultMode,
       stream: context.read<ThemeViewModel>().themeMode,

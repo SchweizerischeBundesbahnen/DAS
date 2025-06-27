@@ -108,14 +108,17 @@ void main() {
     });
     testWidgets('test modal closes after timeout without touch on screen', (tester) async {
       await prepareAndStartApp(tester);
+
       await loadTrainJourney(tester, trainNumber: 'T8');
 
       // open modal sheet with tap on service point name
       await _openByTapOnCellWithText(tester, 'Bern');
       _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
 
-      // wait till 10s idle time have passed
-      final timeout = DASModalSheetController.automaticCloseAfterSeconds + 1;
+      //TODO add the clock fake async
+      final idleTimeInSeconds = 10;
+
+      final timeout = idleTimeInSeconds + 1;
       await Future.delayed(Duration(seconds: timeout));
       await tester.pumpAndSettle();
 
@@ -126,6 +129,7 @@ void main() {
     });
     testWidgets('test modal sheet does close after timeout with automatic advancement paused', (tester) async {
       await prepareAndStartApp(tester);
+
       await loadTrainJourney(tester, trainNumber: 'T8');
 
       // open modal sheet with tap on service point name
@@ -137,8 +141,10 @@ void main() {
       expect(pauseButton, findsOneWidget);
       await tapElement(tester, pauseButton);
 
-      // wait till 10s idle time have passed
-      final timeout = DASModalSheetController.automaticCloseAfterSeconds + 1;
+      //TODO add the clock fake async
+      final idleTimeInSeconds = 10;
+
+      final timeout = idleTimeInSeconds + 1;
       await Future.delayed(Duration(seconds: timeout));
       await tester.pumpAndSettle();
 

@@ -52,8 +52,13 @@ void main() {
       await tester.dragUntilVisible(find.text('B1'), scrollableFinder, const Offset(0, 100));
       expect(find.text('Bern'), findsAny);
 
+      //TODO add the clock block
+      final idleTimeAutoScrollInSeconds = 10;
+
+      final timeout = idleTimeAutoScrollInSeconds + 1;
+
       // Wait until idle time reached
-      await Future.delayed(const Duration(seconds: 12));
+      await Future.delayed(Duration(seconds: timeout));
       await tester.pumpAndSettle();
 
       // Check if the last row is visible

@@ -23,6 +23,7 @@ import 'package:sfera/src/model/journey/communication_network_change.dart';
 import 'package:sfera/src/model/journey/contact.dart';
 import 'package:sfera/src/model/journey/contact_list.dart';
 import 'package:sfera/src/model/journey/datatype.dart';
+import 'package:sfera/src/model/journey/delay.dart';
 import 'package:sfera/src/model/journey/journey.dart';
 import 'package:sfera/src/model/journey/line_foot_note.dart';
 import 'package:sfera/src/model/journey/metadata.dart';
@@ -112,7 +113,7 @@ class SferaModelMapper {
         additionalSpeedRestrictions: additionalSpeedRestrictions,
         routeStart: journeyData.firstOrNull,
         routeEnd: journeyData.lastOrNull,
-        delay: relatedTrainInformation?.ownTrain.trainLocationInformation.delay.delayAsDuration,
+        delay: _parseDelay(relatedTrainInformation),
         anyOperationalArrivalDepartureTimes: servicePoints.any(
           (sP) => sP.arrivalDepartureTime?.hasAnyOperationalTime ?? false,
         ),
@@ -550,6 +551,13 @@ class SferaModelMapper {
       }
     }
     return lineFootNoteLocations;
+  }
+
+  static Delay? _parseDelay(RelatedTrainInformationDto? relatedTrainInformation) {
+    final duration = relatedTrainInformation?.ownTrain.trainLocationInformation.delay?.delayAsDuration;
+    final positionSpeed = relatedTrainInformation?.ownTrain.trainLocationInformation.positionSpeed;
+    final location = '${positionSpeed?.spId}${positionSpeed?.location}';
+    return duration != null ? Delay(delay: duration, location: location) : null;
   }
 }
 
