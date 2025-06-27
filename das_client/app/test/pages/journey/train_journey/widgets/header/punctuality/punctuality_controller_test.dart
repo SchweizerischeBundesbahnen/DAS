@@ -8,74 +8,114 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';
 
 void main() {
-  Future<PunctualityState> listenToStream(PunctualityController testee) {
-    final completer = Completer<PunctualityState>();
-
-    testee.punctualityStateStream.listen(
-      expectAsync1((event) {
-        completer.complete(event);
-      }),
-    );
-
-    return completer.future;
+  Clock buildFakeClock(DateTime baseTime, FakeAsync fakeAsync) {
+    return Clock(() => baseTime.add(fakeAsync.elapsed));
   }
 
   test('test default state is visible', () async {
     final testee = PunctualityController();
-    final state = await listenToStream(testee);
+    final completer = Completer<PunctualityState>();
+
+    testee.punctualityStateStream.listen((state) {
+      if (!completer.isCompleted) completer.complete(state);
+    });
+
+    final state = await completer.future;
     expect(state, PunctualityState.visible);
   });
 
-  //TODO fakeasync using, gang i controller generier es delay und monitoring starte, 100' sec passe la luege ob state changed etc
+  test('test check if punctuality display goes from visible to stale to hidden', () {
+    FakeAsync().run((fakeAsync) {
+      final fakeClock = buildFakeClock(DateTime(2025), fakeAsync);
 
-  test('test check if punctuality display works like normal', () {
-    FakeAsync().run((fakeAsync) async {
-      final baseTime = DateTime(2025);
-      final testee = PunctualityController();
-      final now = baseTime.add(fakeAsync.elapsed);
-      testee.startMonitoring();
+      withClock(fakeClock, () {
+        final testee = PunctualityController();
+        late PunctualityState latest;
 
-      late PunctualityState latest;
-      testee.punctualityStateStream.listen((state) {
-        latest = state;
+        testee.punctualityStateStream.listen((state) {
+          latest = state;
+        });
+
+        testee.startMonitoring();
+
+        final delay = Delay(delay: const Duration(minutes: 1, seconds: 3), location: 'Bern');
+        testee.updatePunctualityTimestamp(delay);
+
+        fakeAsync.elapse(const Duration(seconds: 100));
+        expect(latest, PunctualityState.visible);
+
+        fakeAsync.elapse(const Duration(seconds: 100));
+        expect(latest, PunctualityState.stale);
+
+        fakeAsync.elapse(const Duration(seconds: 200));
+        expect(latest, PunctualityState.hidden);
+
+        addTearDown(() => testee.stopMonitoring());
       });
-
-      //TODO Still add the rest of the body so the check about visible, stale, hidden
-
-      testee.stopMonitoring();
     });
   });
 
-  //TODO monitoring starte, 50 sek abwarte u ner nöie update när nomau iwie 60 sek skippe
+  test('test check if punctuality process triggers after a new update', () {
+    FakeAsync().run((fakeAsync) {
+      final fakeClock = buildFakeClock(DateTime(2025), fakeAsync);
 
-  test('test check if punctuality process triggers after a new update', () {});
+      withClock(fakeClock, () {
+        final testee = PunctualityController();
+        late PunctualityState latest;
+
+        testee.punctualityStateStream.listen((state) {
+          latest = state;
+        });
+
+        testee.startMonitoring();
+
+        final delay1 = Delay(delay: const Duration(seconds: 1), location: 'Zürich');
+        testee.updatePunctualityTimestamp(delay1);
+        fakeAsync.elapse(const Duration(seconds: 50));
+        expect(latest, PunctualityState.visible);
+
+        final delay2 = Delay(delay: const Duration(minutes: 1, seconds: 34), location: 'Bern');
+        testee.updatePunctualityTimestamp(delay2);
+        fakeAsync.elapse(const Duration(seconds: 60));
+        expect(latest, PunctualityState.visible);
+
+        addTearDown(() => testee.stopMonitoring());
+      });
+    });
+  });
 
   test('test check if same value delays still triggers the punctuality process', () {
     FakeAsync().run((fakeAsync) {
-      final baseTime = DateTime(2025);
-      final testee = PunctualityController();
-      final now = baseTime.add(fakeAsync.elapsed);
-      testee.startMonitoring();
+      final fakeClock = buildFakeClock(DateTime(2025), fakeAsync);
 
       late PunctualityState latest;
-      testee.punctualityStateStream.listen((state) {
-        latest = state;
-      });
 
-      for (var i = 0; i < 3; i++) {
-        withClock(Clock.fixed(now), () {
-          final delay = Delay(delay: Duration(minutes: 2, seconds: 14), location: 'Bern');
-          testee.updatePunctualityTimestamp(delay);
+      withClock(fakeClock, () {
+        final testee = PunctualityController();
+
+        testee.punctualityStateStream.listen((state) {
+          latest = state;
         });
-        fakeAsync.elapse(const Duration(seconds: 100));
-      }
 
-      fakeAsync.elapse(const Duration(seconds: 400));
-      withClock(Clock.fixed(now), () {
+        testee.startMonitoring();
+
+        final initialDelay = Delay(delay: const Duration(minutes: 1, seconds: 22), location: 'Bern');
+        testee.updatePunctualityTimestamp(initialDelay);
+
+        fakeAsync.elapse(const Duration(seconds: 1));
+        expect(latest, PunctualityState.visible);
+
+        for (var i = 0; i < 3; i++) {
+          testee.updatePunctualityTimestamp(Delay(delay: const Duration(minutes: 2, seconds: 14), location: 'Bern'));
+          fakeAsync.elapse(const Duration(seconds: 50));
+          expect(latest, PunctualityState.visible);
+        }
+
+        fakeAsync.elapse(const Duration(seconds: 300));
         expect(latest, PunctualityState.hidden);
-      });
 
-      testee.stopMonitoring();
+        addTearDown(() => testee.stopMonitoring());
+      });
     });
   });
 }
