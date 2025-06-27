@@ -95,5 +95,6 @@
   "w_modal_sheet_battery_status_plug_in_device": "Bitte schliesse dein Gerät am Stromnetz an.",
   "w_modal_sheet_permissions_title": "DAS Client benötigt Systemberechtigungen",
   "w_modal_sheet_permission_brightness": "Um die Bildschirmhelligkeit anzupassen, benötigt der DAS Client Zugriff auf die Systemeinstellungen.",
-  "w_modal_sheet_button_grant_permission": "Berechtigungen erteilen"
+  "w_modal_sheet_button_grant_permission": "Berechtigungen erteilen",
+  "w_journey_search_overlay_title": "Fahrordnung suchen"
 }

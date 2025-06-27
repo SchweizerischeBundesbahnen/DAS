@@ -48,6 +48,11 @@ Finder findTextFieldByLabel(String label) {
   return find.descendant(of: sbbTextField, matching: find.byType(TextField));
 }
 
+Finder findTextFieldByHint(String hint) {
+  final sbbTextField = find.byWidgetPredicate((widget) => widget is SBBTextField && widget.hintText == hint);
+  return find.descendant(of: sbbTextField, matching: find.byType(TextField));
+}
+
 Finder findDASTableRowByText(String text) {
   return find.descendant(
     of: find.byKey(DASTable.tableKey),
@@ -156,4 +161,20 @@ Future<void> waitUntilNotExists(WidgetTester tester, FinderBase<Element> element
 
   // wait till all animations are finished
   await tester.pumpAndSettle();
+}
+
+void ignoreOverflowErrors(
+  FlutterErrorDetails details, {
+  bool forceReport = false,
+}) {
+  final exception = details.exception;
+  if (exception is FlutterError && exception.isPixelOverflowError) {
+    debugPrint('Ignored Error');
+  } else {
+    FlutterError.dumpErrorToConsole(details, forceReport: forceReport);
+  }
+}
+
+extension _FlutterErrorExtension on FlutterError {
+  bool get isPixelOverflowError => diagnostics.any((e) => e.value.toString().startsWith('A RenderFlex overflowed by'));
 }

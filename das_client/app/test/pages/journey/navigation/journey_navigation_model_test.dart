@@ -4,10 +4,12 @@ import 'package:sfera/component.dart';
 
 void main() {
   group('JourneyNavigationModel', () {
-    late JourneyNavigationModel testee1;
-    late JourneyNavigationModel testee2;
-    late JourneyNavigationModel testee3;
-    late JourneyNavigationModel testee4;
+    late JourneyNavigationModel baseTestee;
+    late JourneyNavigationModel sameTestee;
+    late JourneyNavigationModel diffTrainId;
+    late JourneyNavigationModel diffStackLength;
+    late JourneyNavigationModel diffIndex;
+    late JourneyNavigationModel diffShowNavigationButtons;
     late TrainIdentification trainId;
     late TrainIdentification trainId2;
 
@@ -22,41 +24,77 @@ void main() {
         trainNumber: '5678',
         date: DateTime.now().add(Duration(days: 1)),
       );
-      testee1 = JourneyNavigationModel(trainIdentification: trainId, currentIndex: 0, navigationStackLength: 1);
-      testee2 = JourneyNavigationModel(trainIdentification: trainId2, currentIndex: 1, navigationStackLength: 2);
-      testee3 = JourneyNavigationModel(trainIdentification: trainId, currentIndex: 0, navigationStackLength: 1);
-      testee4 = JourneyNavigationModel(trainIdentification: trainId, currentIndex: 0, navigationStackLength: 2);
-    });
-
-    test('equals_whenSameTrainIdAndIndex_thenReturnsTrue', () {
-      expect(testee1 == testee3, isTrue);
-    });
-
-    test('equals_whenDifferentTrainId_thenReturnsFalse', () {
-      expect(testee1 == testee2, isFalse);
-    });
-
-    test('equals_whenDifferentIndex_thenReturnsFalse', () {
-      expect(testee1 == testee2, isFalse);
-    });
-
-    test('equals_whenDifferentNavigationStackLength_thenReturnsFalse', () {
-      expect(testee1 == testee4, isFalse);
-    });
-
-    test('toString_whenCalled_thenReturnsCorrectString', () {
-      expect(
-        testee1.toString(),
-        equals('JourneyNavigationModel(trainIdentification: $trainId, currentIndex: 0, navigationStackLength: 1)'),
+      baseTestee = JourneyNavigationModel(
+        trainIdentification: trainId,
+        currentIndex: 0,
+        navigationStackLength: 1,
+        showNavigationButtons: false,
+      );
+      sameTestee = JourneyNavigationModel(
+        trainIdentification: trainId,
+        currentIndex: 0,
+        navigationStackLength: 1,
+        showNavigationButtons: false,
+      );
+      diffTrainId = JourneyNavigationModel(
+        trainIdentification: trainId2,
+        currentIndex: 0,
+        navigationStackLength: 1,
+        showNavigationButtons: false,
+      );
+      diffStackLength = JourneyNavigationModel(
+        trainIdentification: trainId,
+        currentIndex: 0,
+        navigationStackLength: 2,
+        showNavigationButtons: false,
+      );
+      diffIndex = JourneyNavigationModel(
+        trainIdentification: trainId,
+        currentIndex: 1,
+        navigationStackLength: 1,
+        showNavigationButtons: false,
+      );
+      diffShowNavigationButtons = JourneyNavigationModel(
+        trainIdentification: trainId,
+        currentIndex: 0,
+        navigationStackLength: 1,
+        showNavigationButtons: true,
       );
     });
 
+    test('equals_whenSameTrainIdAndIndex_thenReturnsTrue', () {
+      expect(baseTestee == sameTestee, isTrue);
+    });
+
+    test('equals_whenDifferentTrainId_thenReturnsFalse', () {
+      expect(baseTestee == diffTrainId, isFalse);
+    });
+
+    test('equals_whenDifferentIndex_thenReturnsFalse', () {
+      expect(baseTestee == diffIndex, isFalse);
+    });
+
+    test('equals_whenDifferentNavigationStackLength_thenReturnsFalse', () {
+      expect(baseTestee == diffStackLength, isFalse);
+    });
+
+    test('equals_whenDifferentShowNavigationButtons_thenReturnsFalse', () {
+      expect(baseTestee == diffShowNavigationButtons, isFalse);
+    });
+
+    test('toString_whenCalled_thenReturnsCorrectString', () {
+      final expectedString =
+          'JourneyNavigationModel(trainIdentification: $trainId, currentIndex: 0, '
+          'navigationStackLength: 1, showNavigationButtons: false)';
+      expect(baseTestee.toString(), equals(expectedString));
+    });
+
     test('hashCode_whenSameTrainIdAndIndex_thenReturnsSameHash', () {
-      expect(testee1.hashCode, equals(testee3.hashCode));
+      expect(baseTestee.hashCode, equals(sameTestee.hashCode));
     });
 
     test('hashCode_whenDifferentTrainId_thenReturnsDifferentHash', () {
-      expect(testee1.hashCode, isNot(equals(testee2.hashCode)));
+      expect(baseTestee.hashCode, isNot(equals(diffTrainId.hashCode)));
     });
   });
 }

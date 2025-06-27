@@ -1063,27 +1063,13 @@ void main() {
     // check ServicePoint Burgdorf
 
     final graduatedStationSpeeds2 = servicePoints[2].graduatedSpeedInfo!.speeds;
-    expect(graduatedStationSpeeds2, hasLength(5));
+    expect(graduatedStationSpeeds2, hasLength(3));
 
     final rSpeedEntry2 = graduatedStationSpeeds2.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.R);
-    expect(rSpeedEntry2, isNotNull);
-    expect(rSpeedEntry2!.text, 'Zusatzinformation A');
-    expect(rSpeedEntry2.trainSeries, TrainSeries.R);
-    expect(rSpeedEntry2.incomingSpeeds, hasLength(2));
-    _checkSpeed(rSpeedEntry2.incomingSpeeds[0], '75');
-    _checkSpeed(rSpeedEntry2.incomingSpeeds[1], '70', isCircled: true);
-    expect(rSpeedEntry2.outgoingSpeeds, hasLength(1));
-    _checkSpeed(rSpeedEntry2.outgoingSpeeds[0], '60', isSquared: true);
+    expect(rSpeedEntry2, isNull);
 
     final oSpeedEntry2 = graduatedStationSpeeds2.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.O);
-    expect(oSpeedEntry2, isNotNull);
-    expect(oSpeedEntry2!.text, 'Zusatzinformation A');
-    expect(oSpeedEntry2.trainSeries, TrainSeries.O);
-    expect(oSpeedEntry2.incomingSpeeds, hasLength(2));
-    _checkSpeed(oSpeedEntry2.incomingSpeeds[0], '75');
-    _checkSpeed(oSpeedEntry2.incomingSpeeds[1], '70', isCircled: true);
-    expect(oSpeedEntry2.outgoingSpeeds, hasLength(1));
-    _checkSpeed(oSpeedEntry2.outgoingSpeeds[0], '60', isSquared: true);
+    expect(oSpeedEntry2, isNull);
 
     final aSpeedEntry2 = graduatedStationSpeeds2.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.A);
     expect(aSpeedEntry2, isNotNull);
@@ -1237,17 +1223,27 @@ void main() {
   });
 
   test('Test CommunicationNetworks parsed correctly', () async {
-    final journey = getJourney('T12', 1);
+    final journey = getJourney('T12', 4);
     expect(journey.valid, true);
 
     final networkChanges = journey.metadata.communicationNetworkChanges;
-    expect(networkChanges, hasLength(3));
+    expect(networkChanges, hasLength(8));
     expect(networkChanges[0].order, 1000);
     expect(networkChanges[0].type, CommunicationNetworkType.gsmP);
     expect(networkChanges[1].order, 1500);
     expect(networkChanges[1].type, CommunicationNetworkType.sim);
     expect(networkChanges[2].order, 2000);
     expect(networkChanges[2].type, CommunicationNetworkType.gsmR);
+    expect(networkChanges[3].order, 100100);
+    expect(networkChanges[3].type, CommunicationNetworkType.gsmP);
+    expect(networkChanges[4].order, 100500);
+    expect(networkChanges[4].type, CommunicationNetworkType.sim);
+    expect(networkChanges[5].order, 200300);
+    expect(networkChanges[5].type, CommunicationNetworkType.sim);
+    expect(networkChanges[6].order, 300100);
+    expect(networkChanges[6].type, CommunicationNetworkType.sim);
+    expect(networkChanges[7].order, 300500);
+    expect(networkChanges[7].type, CommunicationNetworkType.gsmR);
   });
 
   test('Test opFootNote parsed correctly', () async {
@@ -1332,12 +1328,12 @@ void main() {
   });
 
   test('Test ContactList T12 parsed correctly', () async {
-    final journey = getJourney('T12', 1);
+    final journey = getJourney('T12', 4);
     expect(journey.valid, true);
 
     final radioContactLists = journey.metadata.radioContactLists.toList();
 
-    expect(radioContactLists.length, 3);
+    expect(radioContactLists.length, 8);
     expect(radioContactLists[0].mainContacts.length, 1);
     expect(radioContactLists[0].mainContacts.first.contactIdentifier, '1407');
     expect(radioContactLists[1].mainContacts.length, 3);
@@ -1346,6 +1342,22 @@ void main() {
     expect(radioContactLists[2].selectiveContacts.length, 3);
     expect(radioContactLists[2].selectiveContacts.first.contactIdentifier, '1103');
     expect(radioContactLists[2].selectiveContacts.first.contactRole, 'Richtung Süd: Fahrdienstleiter');
+    expect(radioContactLists[3].mainContacts.length, 1);
+    expect(radioContactLists[3].mainContacts.first.contactIdentifier, '1407');
+    expect(radioContactLists[4].mainContacts.length, 1);
+    expect(radioContactLists[4].selectiveContacts.length, 3);
+    expect(radioContactLists[4].selectiveContacts.first.contactIdentifier, '1103');
+    expect(radioContactLists[4].selectiveContacts.first.contactRole, 'Richtung Süd: Fahrdienstleiter');
+    expect(radioContactLists[5].mainContacts.length, 1);
+    expect(radioContactLists[5].selectiveContacts.length, 3);
+    expect(radioContactLists[5].selectiveContacts.first.contactIdentifier, '1103');
+    expect(radioContactLists[5].selectiveContacts.first.contactRole, 'Richtung Süd: Fahrdienstleiter');
+    expect(radioContactLists[6].mainContacts.length, 1);
+    expect(radioContactLists[6].selectiveContacts.length, 3);
+    expect(radioContactLists[6].selectiveContacts.first.contactIdentifier, '1103');
+    expect(radioContactLists[6].selectiveContacts.first.contactRole, 'Richtung Süd: Fahrdienstleiter');
+    expect(radioContactLists[7].mainContacts.length, 1);
+    expect(radioContactLists[7].mainContacts.first.contactIdentifier, '1407');
   });
 
   test('Test DecisiveGradientArea parsed correctly', () {

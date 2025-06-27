@@ -95,5 +95,6 @@
   "w_modal_sheet_battery_status_plug_in_device": "Branche ton appareil au réseau électrique.",
   "w_modal_sheet_permissions_title": "Le client DAS a besoin d’autorisations système",
   "w_modal_sheet_permission_brightness": "Pour adapter la luminosité de l’écran, le client DAS doit accéder aux paramètres système.",
-  "w_modal_sheet_button_grant_permission": "Octroyer les autorisations"
+  "w_modal_sheet_button_grant_permission": "Octroyer les autorisations",
+  "w_journey_search_overlay_title": "Rechercher Marche"
 }
