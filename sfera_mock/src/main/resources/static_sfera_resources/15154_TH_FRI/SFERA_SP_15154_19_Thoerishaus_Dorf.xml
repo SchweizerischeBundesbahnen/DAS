@@ -42,9 +42,9 @@
             <NetworkSpecificParameter name="xmlCurveSpeed" value="
                 &lt;curveSpeed &gt;
 					&lt;speeds&gt;
-						&lt;v trainSeries=&quot;R&quot; speed=&quot;90&quot;/&gt;
-						&lt;v trainSeries=&quot;A&quot; speed=&quot;80&quot;/&gt;
-						&lt;v trainSeries=&quot;D&quot; speed=&quot;80&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; speed=&quot;90-100&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; speed=&quot;80-90&quot;/&gt;
+						&lt;v trainSeries=&quot;D&quot; speed=&quot;80-90&quot;/&gt;
 					&lt;/speeds&gt;
                 &lt;/curveSpeed&gt;
             "/>
