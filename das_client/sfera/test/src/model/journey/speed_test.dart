@@ -42,12 +42,10 @@ void main() {
     test('toString_whenCalled_thenReturnsFormattedString', () {
       // ARRANGE
       final speed = Speed(value: '120', isSquared: true, isCircled: false);
-
-      // ACT
-      final result = speed.toString();
-
-      // EXPECT
-      expect(result, equals('Speed(value: 120, isSquared: true, isCircled: false)'));
+      final expectedString = 'Speed(value: 120, isSquared: true, isCircled: false)';
+      
+      // ACT & EXPECT
+      expect(speed.toString(), equals(expectedString));
     });
   });
 }

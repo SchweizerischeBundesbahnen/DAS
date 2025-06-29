@@ -1,3 +1,4 @@
+import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:sfera/src/model/journey/arrival_departure_time.dart';
 import 'package:sfera/src/model/journey/base_data.dart';
 import 'package:sfera/src/model/journey/bracket_station.dart';
@@ -5,8 +6,11 @@ import 'package:sfera/src/model/journey/break_series.dart';
 import 'package:sfera/src/model/journey/datatype.dart';
 import 'package:sfera/src/model/journey/decisive_gradient.dart';
 import 'package:sfera/src/model/journey/speed_data.dart';
-import 'package:sfera/src/model/journey/speeds.dart';
+import 'package:sfera/src/model/journey/train_series_speeds.dart';
 
+part 'service_point.g.dart';
+
+@CopyWith()
 class ServicePoint extends BaseData {
   const ServicePoint({
     required this.name,
@@ -32,7 +36,7 @@ class ServicePoint extends BaseData {
   final DecisiveGradient? decisiveGradient;
   final ArrivalDepartureTime? arrivalDepartureTime;
 
-  List<Speeds> relevantGraduatedSpeedInfo(BreakSeries? breakSeries) {
+  List<TrainSeriesSpeed> relevantGraduatedSpeedInfo(BreakSeries? breakSeries) {
     final speedInfo = graduatedSpeedInfo?.speeds ?? [];
     return speedInfo.where((speed) => speed.trainSeries == breakSeries?.trainSeries && speed.text != null).toList();
   }
