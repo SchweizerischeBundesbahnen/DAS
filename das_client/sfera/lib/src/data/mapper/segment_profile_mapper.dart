@@ -82,8 +82,7 @@ class SegmentProfileMapper {
     // Remove new line speeds that are already present as connection tracks
     newLineSpeeds.removeWhere(
       (speedChange) =>
-          connectionTracks.firstWhereOrNull((connectionTrack) => connectionTrack.speedData == speedChange.speedData) !=
-          null,
+          connectionTracks.firstWhereOrNull((connectionTrack) => connectionTrack.speeds == speedChange.speeds) != null,
     );
 
     journeyData.addAll(connectionTracks);
@@ -119,10 +118,10 @@ class SegmentProfileMapper {
           isStation: tafTapLocation.locationType != TafTapLocationTypeDto.halt,
           bracketMainStation: _parseBracketMainStation(tafTapLocations, tafTapLocation),
           kilometre: mapperData.kilometreMap[timingPoint.location] ?? [],
-          speedData: GraduatedSpeedDataMapper.fromVelocities(
+          speeds: GraduatedSpeedDataMapper.fromVelocities(
             tafTapLocation.newLineSpeed?.xmlNewLineSpeed.element.velocities,
           ),
-          localSpeedData: GraduatedSpeedDataMapper.fromVelocities(
+          localSpeeds: GraduatedSpeedDataMapper.fromVelocities(
             tafTapLocation.stationSpeed?.xmlStationSpeed.element.velocities,
           ),
           graduatedSpeedInfo: GraduatedSpeedDataMapper.fromGraduatedSpeedInfo(
@@ -223,7 +222,7 @@ class SegmentProfileMapper {
         curveType: curvePointNsp.curveType != null ? CurveType.from(curvePointNsp.curveType!) : null,
         text: curveSpeed?.text,
         comment: curveSpeed?.comment,
-        localSpeedData: GraduatedSpeedDataMapper.fromVelocities(curveSpeed?.speeds?.velocities),
+        localSpeeds: GraduatedSpeedDataMapper.fromVelocities(curveSpeed?.speeds?.velocities),
       );
     }).toList();
   }
@@ -236,7 +235,7 @@ class SegmentProfileMapper {
       return ConnectionTrack(
         text: connectionTrack.connectionTrackDescription?.text,
         order: calculateOrder(mapperData.segmentIndex, connectionTrack.location),
-        speedData: speedChange?.speedData,
+        speeds: speedChange?.speeds,
         kilometre: mapperData.kilometreMap[connectionTrack.location] ?? [],
       );
     }).toList();
@@ -248,7 +247,7 @@ class SegmentProfileMapper {
       final velocities = newLineSpeed.xmlNewLineSpeed.element.speeds?.velocities;
       return SpeedChange(
         text: newLineSpeed.xmlNewLineSpeed.element.text,
-        speedData: GraduatedSpeedDataMapper.fromVelocities(velocities),
+        speeds: GraduatedSpeedDataMapper.fromVelocities(velocities),
         order: calculateOrder(mapperData.segmentIndex, newLineSpeed.location),
         kilometre: mapperData.kilometreMap[newLineSpeed.location] ?? [],
       );

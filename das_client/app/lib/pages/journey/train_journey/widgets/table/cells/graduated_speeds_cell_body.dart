@@ -1,7 +1,6 @@
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
-import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:app/widgets/widget_extensions.dart';
 import 'package:flutter/material.dart';
@@ -16,17 +15,13 @@ class GraduatedSpeedsCellBody extends StatelessWidget {
 
   const GraduatedSpeedsCellBody({
     required this.rowIndex,
-    this.incomingSpeeds = const [],
-    this.outgoingSpeeds = const [],
+    required this.speed,
     this.hasAdditionalInformation = false,
-    this.isSpeedFromOtherRow = false,
     super.key,
   });
 
-  final List<Speed> incomingSpeeds;
-  final List<Speed> outgoingSpeeds;
+  final Speed speed;
   final bool hasAdditionalInformation;
-  final bool isSpeedFromOtherRow;
   final int rowIndex;
 
   @override
@@ -35,46 +30,49 @@ class GraduatedSpeedsCellBody extends StatelessWidget {
       listenable: StickyHeader.of(context)!.controller,
       builder: (context, _) {
         final isNotSticky = StickyHeader.of(context)!.controller.headerIndexes[StickyLevel.first] != rowIndex;
-        if (isNotSticky && isSpeedFromOtherRow) return DASTableCell.emptyBuilder;
         return DotIndicator(
           show: hasAdditionalInformation,
-          offset: outgoingSpeeds.isEmpty ? const Offset(0, -sbbDefaultSpacing * 0.5) : const Offset(0, 0),
-          child: _buildSpeeds(context),
+          offset: _dotIndicatorOffset(),
+          child: switch (speed) {
+            final IncomingOutgoingSpeed s => _columnSpeed(context, s),
+            final GraduatedSpeed _ || final SingleSpeed _ => _visualizedSpeeds(key: incomingSpeedsKey, speeds: speed),
+          },
         );
       },
     );
   }
 
-  Widget _buildSpeeds(BuildContext context) {
-    if (outgoingSpeeds.isNotEmpty) {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _visualizedSpeeds(key: incomingSpeedsKey, speeds: incomingSpeeds),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 2.0),
-            child: Divider(color: Theme.of(context).colorScheme.onSurface, height: 1.0),
-          ),
-          _visualizedSpeeds(key: outgoingSpeedsKey, speeds: outgoingSpeeds),
-        ],
-      );
-    }
-
-    return _visualizedSpeeds(key: incomingSpeedsKey, speeds: incomingSpeeds);
+  Widget _columnSpeed(BuildContext context, IncomingOutgoingSpeed ioSpeed) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _visualizedSpeeds(key: incomingSpeedsKey, speeds: ioSpeed.incoming),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 2.0),
+          child: Divider(color: Theme.of(context).colorScheme.onSurface, height: 1.0),
+        ),
+        _visualizedSpeeds(key: outgoingSpeedsKey, speeds: ioSpeed.outgoing),
+      ],
+    );
   }
 
-  Widget _visualizedSpeeds({required List<Speed> speeds, Key? key}) {
-    if (speeds.hasSquaredOrCircled) {
+  Widget _visualizedSpeeds({required Speed speeds, Key? key}) {
+    final List<SingleSpeed> singleSpeeds = switch (speeds) {
+      final GraduatedSpeed g => g.speeds,
+      final SingleSpeed s => [s],
+      final IncomingOutgoingSpeed i => throw UnimplementedError(),
+    };
+    if (singleSpeeds.hasSquaredOrCircled) {
       return Row(
         key: key,
         mainAxisSize: MainAxisSize.min,
-        children: speeds.map((speed) => _speedText(speed)).withDivider(Text('-')).toList(),
+        children: singleSpeeds.map((speed) => _speedText(speed)).withDivider(Text('-')).toList(),
       );
     }
-    return Text(key: key, speeds.toJoinedString());
+    return Text(key: key, singleSpeeds.toJoinedString());
   }
 
-  Widget _speedText(Speed speed) {
+  Widget _speedText(SingleSpeed speed) {
     return Builder(
       builder: (context) {
         final squaredOrCircled = speed.isCircled || speed.isSquared;
@@ -95,11 +93,16 @@ class GraduatedSpeedsCellBody extends StatelessWidget {
       },
     );
   }
+
+  Offset _dotIndicatorOffset() => switch (speed) {
+    final IncomingOutgoingSpeed _ => const Offset(0, 0),
+    final GraduatedSpeed _ || final SingleSpeed _ => const Offset(0, -sbbDefaultSpacing * 0.5),
+  };
 }
 
 // extensions
 
-extension _SpeedIterableX on Iterable<Speed> {
+extension _SpeedIterableX on List<SingleSpeed> {
   String toJoinedString({String divider = '-'}) => map((it) => it.value).join(divider);
 
   bool get hasSquaredOrCircled => any((it) => it.isSquared || it.isCircled);

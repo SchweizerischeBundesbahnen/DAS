@@ -5,7 +5,7 @@ class LevelCrossing extends BaseData {
   const LevelCrossing({
     required super.order,
     required super.kilometre,
-    super.speedData,
+    super.speeds,
   }) : super(type: Datatype.levelCrossing);
 
   @override

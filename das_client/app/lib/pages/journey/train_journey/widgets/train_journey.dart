@@ -397,7 +397,7 @@ class TrainJourney extends StatelessWidget {
     final breakSeries = settings.resolvedBreakSeries(journey.metadata);
 
     return data.type == Datatype.curvePoint &&
-        data.localSpeedData?.speedsFor(breakSeries?.trainSeries, breakSeries?.breakSeries) == null;
+        data.localSpeeds?.speedFor(breakSeries?.trainSeries, breakSeries: breakSeries?.breakSeries) == null;
   }
 
   void _onAdditionalSpeedRestrictionTab(BuildContext context, AdditionalSpeedRestrictionData data) {

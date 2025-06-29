@@ -110,15 +110,15 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   @override
   DASTableCell localSpeedCell(BuildContext context) {
-    if (data.localSpeedData == null) return DASTableCell.empty();
+    if (data.localSpeeds == null) return DASTableCell.empty();
 
     final currentBreakSeries = config.settings.resolvedBreakSeries(metadata);
 
-    final graduatedSpeeds = data.localSpeedData!.speedsFor(
+    final trainSeriesSpeed = data.localSpeeds!.speedFor(
       currentBreakSeries?.trainSeries,
-      currentBreakSeries?.breakSeries,
+      breakSeries: currentBreakSeries?.breakSeries,
     );
-    if (graduatedSpeeds == null) return DASTableCell.empty();
+    if (trainSeriesSpeed == null) return DASTableCell.empty();
 
     final relevantGraduatedSpeedInfo = data.relevantGraduatedSpeedInfo(currentBreakSeries);
 
@@ -127,8 +127,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
       child: GraduatedSpeedsCellBody(
-        incomingSpeeds: graduatedSpeeds.incomingSpeeds,
-        outgoingSpeeds: graduatedSpeeds.outgoingSpeeds,
+        speed: trainSeriesSpeed.speed,
         hasAdditionalInformation: relevantGraduatedSpeedInfo.isNotEmpty,
         rowIndex: rowIndex,
       ),

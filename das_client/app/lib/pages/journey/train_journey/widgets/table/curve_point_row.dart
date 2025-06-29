@@ -18,7 +18,7 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
 
   @override
   DASTableCell localSpeedCell(BuildContext context) {
-    return speedCell(data.localSpeedData, DASTableCell.empty());
+    return speedCell(data.localSpeeds, DASTableCell.empty());
   }
 
   @override

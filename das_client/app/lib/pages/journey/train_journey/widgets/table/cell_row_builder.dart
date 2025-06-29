@@ -118,7 +118,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
   }
 
   DASTableCell localSpeedCell(BuildContext context) {
-    return speedCell(data.localSpeedData, DASTableCell.empty());
+    return speedCell(data.localSpeeds, DASTableCell.empty());
   }
 
   DASTableCell brakedWeightSpeedCell(BuildContext context) {
@@ -127,18 +127,21 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
       return DASTableCell.empty();
     }
 
-    return speedCell(data.speedData, DASTableCell.empty());
+    return speedCell(data.speeds, DASTableCell.empty());
   }
 
-  DASTableCell speedCell(SpeedData? speedData, DASTableCell defaultCell) {
+  DASTableCell speedCell(List<TrainSeriesSpeed>? speedData, DASTableCell defaultCell) {
     if (speedData == null) {
       return DASTableCell.empty();
     }
 
-    final currentBreakSeries = config.settings.resolvedBreakSeries(metadata);
+    final selectedBreakSeries = config.settings.resolvedBreakSeries(metadata);
 
-    final graduatedSpeeds = speedData.speedsFor(currentBreakSeries?.trainSeries, currentBreakSeries?.breakSeries);
-    if (graduatedSpeeds == null) {
+    final trainSeriesSpeed = speedData.speedFor(
+      selectedBreakSeries?.trainSeries,
+      breakSeries: selectedBreakSeries?.breakSeries,
+    );
+    if (trainSeriesSpeed == null) {
       return defaultCell;
     }
 
@@ -146,9 +149,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
       child: GraduatedSpeedsCellBody(
-        incomingSpeeds: graduatedSpeeds.incomingSpeeds,
-        outgoingSpeeds: graduatedSpeeds.outgoingSpeeds,
-        isSpeedFromOtherRow: false,
+        speed: trainSeriesSpeed.speed,
         rowIndex: rowIndex,
       ),
     );

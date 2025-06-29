@@ -1,23 +1,18 @@
-import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:sfera/src/model/journey/arrival_departure_time.dart';
 import 'package:sfera/src/model/journey/base_data.dart';
 import 'package:sfera/src/model/journey/bracket_station.dart';
 import 'package:sfera/src/model/journey/break_series.dart';
 import 'package:sfera/src/model/journey/datatype.dart';
 import 'package:sfera/src/model/journey/decisive_gradient.dart';
-import 'package:sfera/src/model/journey/speed_data.dart';
-import 'package:sfera/src/model/journey/train_series_speeds.dart';
+import 'package:sfera/src/model/journey/train_series_speed.dart';
 
-part 'service_point.g.dart';
-
-@CopyWith()
 class ServicePoint extends BaseData {
   const ServicePoint({
     required this.name,
     required super.order,
     required super.kilometre,
-    super.speedData,
-    super.localSpeedData,
+    super.speeds,
+    super.localSpeeds,
     this.mandatoryStop = false,
     this.isStop = false,
     this.isStation = false,
@@ -32,12 +27,12 @@ class ServicePoint extends BaseData {
   final bool isStop;
   final bool isStation;
   final BracketMainStation? bracketMainStation;
-  final SpeedData? graduatedSpeedInfo;
+  final List<TrainSeriesSpeed>? graduatedSpeedInfo;
   final DecisiveGradient? decisiveGradient;
   final ArrivalDepartureTime? arrivalDepartureTime;
 
   List<TrainSeriesSpeed> relevantGraduatedSpeedInfo(BreakSeries? breakSeries) {
-    final speedInfo = graduatedSpeedInfo?.speeds ?? [];
+    final speedInfo = graduatedSpeedInfo ?? [];
     return speedInfo.where((speed) => speed.trainSeries == breakSeries?.trainSeries && speed.text != null).toList();
   }
 
@@ -51,8 +46,8 @@ class ServicePoint extends BaseData {
         ', isStop: $isStop'
         ', isStation: $isStation'
         ', bracketMainStation: $bracketMainStation'
-        ', speedData: $speedData'
-        ', localSpeedData: $localSpeedData'
+        ', speeds: $speeds'
+        ', localSpeeds: $localSpeeds'
         ', arrivalDepartureTime: $arrivalDepartureTime'
         ')';
   }
