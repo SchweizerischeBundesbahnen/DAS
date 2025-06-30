@@ -46,7 +46,7 @@ class TrainSeriesSpeed {
   int get hashCode => Object.hash(trainSeries, speed, breakSeries, text, reduced);
 }
 
-extension TrainSeriesSpeedExtension on Iterable<TrainSeriesSpeed> {
+extension TrainSeriesSpeedExtension on Iterable<TrainSeriesSpeed>? {
   TrainSeriesSpeed? speedFor(TrainSeries? trainSeries, {int? breakSeries}) {
     if (trainSeries == null) return null;
     if (this == null) return null;

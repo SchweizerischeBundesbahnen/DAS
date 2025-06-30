@@ -1,9 +1,13 @@
+import 'package:app/pages/journey/train_journey/das_table_speed_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
+import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:app/widgets/widget_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
@@ -20,7 +24,7 @@ class SpeedCellBody extends StatelessWidget {
     super.key,
   });
 
-  final Speed speed;
+  final Speed? speed;
   final bool hasAdditionalInformation;
   final int rowIndex;
 
@@ -29,13 +33,25 @@ class SpeedCellBody extends StatelessWidget {
     return ListenableBuilder(
       listenable: StickyHeader.of(context)!.controller,
       builder: (context, _) {
-        final isNotSticky = StickyHeader.of(context)!.controller.headerIndexes[StickyLevel.first] != rowIndex;
+        bool isSticky = false;
+        if (speed == null) {
+          final stickyController = StickyHeader.of(context)!.controller;
+          isSticky =
+              stickyController.headerIndexes[StickyLevel.first] == rowIndex ||
+              (stickyController.nextHeaderIndex[StickyLevel.first] == rowIndex &&
+                  ((stickyController.headerOffsets[StickyLevel.first] ?? 0) < (-ServicePointRow.rowHeight * 0.33)));
+        }
+
+        final Speed? resolvedSpeed = isSticky ? context.read<DASTableSpeedViewModel>().previousSpeed(rowIndex) : speed;
+        if (resolvedSpeed == null) return DASTableCell.emptyBuilder;
+
         return DotIndicator(
           show: hasAdditionalInformation,
-          offset: _dotIndicatorOffset(),
-          child: switch (speed) {
+          offset: _dotIndicatorOffset(resolvedSpeed),
+          child: switch (resolvedSpeed) {
             final IncomingOutgoingSpeed s => _columnSpeed(context, s),
-            final GraduatedSpeed _ || final SingleSpeed _ => _visualizedSpeeds(key: incomingSpeedsKey, speeds: speed),
+            final GraduatedSpeed _ ||
+            final SingleSpeed _ => _visualizedSpeeds(key: incomingSpeedsKey, speeds: resolvedSpeed),
           },
         );
       },
@@ -94,7 +110,7 @@ class SpeedCellBody extends StatelessWidget {
     );
   }
 
-  Offset _dotIndicatorOffset() => switch (speed) {
+  Offset _dotIndicatorOffset(Speed resolvedSpeed) => switch (resolvedSpeed) {
     final IncomingOutgoingSpeed _ => const Offset(0, 0),
     final GraduatedSpeed _ || final SingleSpeed _ => const Offset(0, -sbbDefaultSpacing * 0.5),
   };
