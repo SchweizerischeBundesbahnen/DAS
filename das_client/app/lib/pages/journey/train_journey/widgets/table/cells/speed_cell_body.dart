@@ -33,16 +33,7 @@ class SpeedCellBody extends StatelessWidget {
     return ListenableBuilder(
       listenable: StickyHeader.of(context)!.controller,
       builder: (context, _) {
-        bool isSticky = false;
-        if (speed == null) {
-          final stickyController = StickyHeader.of(context)!.controller;
-          isSticky =
-              stickyController.headerIndexes[StickyLevel.first] == rowIndex ||
-              (stickyController.nextHeaderIndex[StickyLevel.first] == rowIndex &&
-                  ((stickyController.headerOffsets[StickyLevel.first] ?? 0) < (-ServicePointRow.rowHeight * 0.33)));
-        }
-
-        final Speed? resolvedSpeed = isSticky ? context.read<DASTableSpeedViewModel>().previousSpeed(rowIndex) : speed;
+        final Speed? resolvedSpeed = _resolveSpeedOnStickiness(context);
         if (resolvedSpeed == null) return DASTableCell.emptyBuilder;
 
         return DotIndicator(
@@ -76,7 +67,7 @@ class SpeedCellBody extends StatelessWidget {
     final List<SingleSpeed> singleSpeeds = switch (speeds) {
       final GraduatedSpeed g => g.speeds,
       final SingleSpeed s => [s],
-      final IncomingOutgoingSpeed i => throw UnimplementedError(),
+      final IncomingOutgoingSpeed _ => throw UnimplementedError(),
     };
     if (singleSpeeds.hasSquaredOrCircled) {
       return Row(
@@ -114,6 +105,22 @@ class SpeedCellBody extends StatelessWidget {
     final IncomingOutgoingSpeed _ => const Offset(0, 0),
     final GraduatedSpeed _ || final SingleSpeed _ => const Offset(0, -sbbDefaultSpacing * 0.5),
   };
+
+  Speed? _resolveSpeedOnStickiness(BuildContext context) {
+    bool showPreviousSpeed = false;
+    if (speed == null) {
+      final stickyController = StickyHeader.of(context)!.controller;
+      showPreviousSpeed =
+          stickyController.headerIndexes[StickyLevel.first] == rowIndex ||
+          (stickyController.nextHeaderIndex[StickyLevel.first] == rowIndex &&
+              ((stickyController.headerOffsets[StickyLevel.first] ?? 0) < (-ServicePointRow.rowHeight * 0.33)));
+    }
+
+    final Speed? resolvedSpeed = showPreviousSpeed
+        ? context.read<DASTableSpeedViewModel>().previousSpeed(rowIndex)
+        : speed;
+    return resolvedSpeed;
+  }
 }
 
 // extensions
