@@ -1,6 +1,7 @@
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
+import 'package:fake_async/fake_async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -52,13 +53,15 @@ void main() {
       await tester.dragUntilVisible(find.text('B1'), scrollableFinder, const Offset(0, 100));
       expect(find.text('Bern'), findsAny);
 
-      //TODO add the clock block
       final idleTimeAutoScrollInSeconds = 10;
 
       final timeout = idleTimeAutoScrollInSeconds + 1;
 
       // Wait until idle time reached
-      await Future.delayed(Duration(seconds: timeout));
+      FakeAsync().run((fakeAsync) {
+        fakeAsync.elapse(Duration(seconds: timeout));
+      });
+
       await tester.pumpAndSettle();
 
       // Check if the last row is visible

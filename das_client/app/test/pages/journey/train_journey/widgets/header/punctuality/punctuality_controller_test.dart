@@ -50,7 +50,7 @@ void main() {
         fakeAsync.elapse(const Duration(seconds: 200));
         expect(latest, PunctualityState.hidden);
 
-        addTearDown(() => testee.stopMonitoring());
+        testee.stopMonitoring();
       });
     });
   });
@@ -79,12 +79,12 @@ void main() {
         fakeAsync.elapse(const Duration(seconds: 60));
         expect(latest, PunctualityState.visible);
 
-        addTearDown(() => testee.stopMonitoring());
+        testee.stopMonitoring();
       });
     });
   });
 
-  test('test check if same value delays still triggers the punctuality process', () {
+  test('test check if same value delays do not trigger the punctuality process when the same location is given', () {
     FakeAsync().run((fakeAsync) {
       final fakeClock = buildFakeClock(DateTime(2025), fakeAsync);
 
@@ -105,16 +105,19 @@ void main() {
         fakeAsync.elapse(const Duration(seconds: 1));
         expect(latest, PunctualityState.visible);
 
-        for (var i = 0; i < 3; i++) {
-          testee.updatePunctualityTimestamp(Delay(delay: const Duration(minutes: 2, seconds: 14), location: 'Bern'));
-          fakeAsync.elapse(const Duration(seconds: 50));
-          expect(latest, PunctualityState.visible);
-        }
+        final delay = Delay(delay: const Duration(minutes: 2, seconds: 14), location: 'Bern');
+        testee.updatePunctualityTimestamp(delay);
 
-        fakeAsync.elapse(const Duration(seconds: 300));
+        fakeAsync.elapse(const Duration(seconds: 100));
+        expect(latest, PunctualityState.visible);
+
+        fakeAsync.elapse(const Duration(seconds: 100));
+        expect(latest, PunctualityState.stale);
+
+        fakeAsync.elapse(const Duration(seconds: 200));
         expect(latest, PunctualityState.hidden);
 
-        addTearDown(() => testee.stopMonitoring());
+        testee.stopMonitoring();
       });
     });
   });

@@ -9,6 +9,7 @@ import 'package:app/pages/journey/train_journey/widgets/header/start_pause_butto
 import 'package:app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
+import 'package:fake_async/fake_async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -115,11 +116,15 @@ void main() {
       await _openByTapOnCellWithText(tester, 'Bern');
       _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
 
-      //TODO add the clock fake async
       final idleTimeInSeconds = 10;
 
       final timeout = idleTimeInSeconds + 1;
-      await Future.delayed(Duration(seconds: timeout));
+
+      // Wait until idle time reached
+      FakeAsync().run((fakeAsync) {
+        fakeAsync.elapse(Duration(seconds: timeout));
+      });
+
       await tester.pumpAndSettle();
 
       // check if modal sheet is closed
@@ -141,11 +146,15 @@ void main() {
       expect(pauseButton, findsOneWidget);
       await tapElement(tester, pauseButton);
 
-      //TODO add the clock fake async
       final idleTimeInSeconds = 10;
 
       final timeout = idleTimeInSeconds + 1;
-      await Future.delayed(Duration(seconds: timeout));
+
+      // Wait until idle time reached
+      FakeAsync().run((fakeAsync) {
+        fakeAsync.elapse(Duration(seconds: timeout));
+      });
+
       await tester.pumpAndSettle();
 
       // check if modal sheet is closed
