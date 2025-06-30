@@ -19,7 +19,9 @@ import 'test/navigation_test.dart' as navigation_tests;
 import 'test/service_point_modal_test.dart' as service_point_modal_test;
 import 'test/train_journey_header_test.dart' as train_journey_header_tests;
 import 'test/train_journey_notification_test.dart' as train_journey_notification_tests;
+import 'test/train_journey_table_break_series_test.dart' as train_journey_table_break_series_tests;
 import 'test/train_journey_table_test.dart' as train_journey_table_tests;
+import 'test/train_journey_table_track_equipment_test.dart' as train_journey_table_track_equipment_tests;
 import 'test/train_reduced_journey_test.dart' as train_reduced_journey_tests;
 import 'test/train_search_test.dart' as train_search_tests;
 import 'test/warnapp_test.dart' as warnapp_tests;
@@ -36,6 +38,8 @@ void main() {
   train_reduced_journey_tests.main();
   train_journey_table_tests.main();
   train_journey_header_tests.main();
+  train_journey_table_track_equipment_tests.main();
+  train_journey_table_break_series_tests.main();
   train_journey_notification_tests.main();
   navigation_tests.main();
   train_search_tests.main();

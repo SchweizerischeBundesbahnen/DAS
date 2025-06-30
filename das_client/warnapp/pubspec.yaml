@@ -27,4 +27,4 @@ dev_dependencies:
     sdk: flutter
 
   # https://pub.dev/packages/build_runner
-  build_runner: ^2.4.15
+  build_runner: ^2.5.4
