@@ -7,13 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
-class GraduatedSpeedsCellBody extends StatelessWidget {
+class SpeedCellBody extends StatelessWidget {
   static const Key incomingSpeedsKey = Key('incomingSpeeds');
   static const Key outgoingSpeedsKey = Key('outgoingSpeeds');
   static const Key circledSpeedKey = Key('graduatedSpeedCircled');
   static const Key squaredSpeedKey = Key('graduatedSpeedSquared');
 
-  const GraduatedSpeedsCellBody({
+  const SpeedCellBody({
     required this.rowIndex,
     required this.speed,
     this.hasAdditionalInformation = false,

@@ -1,8 +1,8 @@
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/speed_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/column_definition.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_config.dart';
@@ -131,9 +131,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
   }
 
   DASTableCell speedCell(List<TrainSeriesSpeed>? speedData, DASTableCell defaultCell) {
-    if (speedData == null) {
-      return DASTableCell.empty();
-    }
+    if (speedData == null) return DASTableCell.empty();
 
     final selectedBreakSeries = config.settings.resolvedBreakSeries(metadata);
 
@@ -148,7 +146,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
     return DASTableCell(
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
-      child: GraduatedSpeedsCellBody(
+      child: SpeedCellBody(
         speed: trainSeriesSpeed.speed,
         rowIndex: rowIndex,
       ),
