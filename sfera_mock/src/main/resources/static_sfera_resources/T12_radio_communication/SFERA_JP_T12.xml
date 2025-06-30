@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="3" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="4" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
     <TrainIdentification>
         <OTN_ID>
             <teltsi_Company>1085</teltsi_Company>
@@ -17,21 +17,21 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="9999-01-01T00:02:00Z" plannedDepartureTime="9999-01-01T00:02:00Z"/>
         </TimingPointConstraints>
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:12:00Z"
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:12:00Z"
                                 TP_PlannedLatestArrivalTime="9999-01-01T00:12:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Wankdorf"/>
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="9999-01-01T00:12:30Z" plannedDepartureTime="9999-01-01T00:12:30Z"/>
         </TimingPointConstraints>
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:23:00Z"
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:23:00Z"
                                 TP_PlannedLatestArrivalTime="9999-01-01T00:23:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Burgdorf"/>
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="9999-01-01T00:23:30Z" plannedDepartureTime="9999-01-01T00:23:30Z"/>
         </TimingPointConstraints>
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:38:00Z"
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:38:00Z"
                                 TP_PlannedLatestArrivalTime="9999-01-01T00:38:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Olten"/>
