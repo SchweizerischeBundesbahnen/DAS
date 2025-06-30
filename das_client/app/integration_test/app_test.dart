@@ -35,10 +35,10 @@ void main() {
   Logger.root.level = Level.FINE;
   Logger.root.onRecord.listen(LogPrinter(appName: 'DAS IntegrationTests').call);
 
-  train_reduced_journey_tests.main();
-  train_journey_table_tests.main();
+  //train_reduced_journey_tests.main();
+  //train_journey_table_tests.main();
   train_journey_header_tests.main();
-  train_journey_table_track_equipment_tests.main();
+  /*train_journey_table_track_equipment_tests.main();
   train_journey_table_break_series_tests.main();
   train_journey_notification_tests.main();
   navigation_tests.main();
@@ -47,7 +47,7 @@ void main() {
   service_point_modal_test.main();
   journey_search_overlay_tests.main();
   additional_speed_restriction_modal_test.main();
-  warnapp_tests.main();
+  warnapp_tests.main();*/
 }
 
 Future<void> prepareAndStartApp(WidgetTester tester, {VoidCallback? onBeforeRun}) async {

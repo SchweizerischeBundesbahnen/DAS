@@ -22,6 +22,7 @@ class PunctualityController {
     _updateTimer = Timer.periodic(const Duration(seconds: 1), (_) {
       final duration = lastUpdate != null ? clock.now().difference(lastUpdate!) : Duration.zero;
       final state = _getPunctualityStateFromDuration(duration);
+      print('$duration $state');
       _emitState(state);
     });
   }
