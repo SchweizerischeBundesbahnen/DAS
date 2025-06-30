@@ -39,6 +39,15 @@ class ServicePoint extends BaseData {
   }
 
   @override
+  Iterable<Speeds> get allSpeedData {
+    return [
+      ...super.allSpeedData,
+      ...?graduatedSpeedInfo?.speeds,
+      ...properties.map((it) => it.speedData).nonNulls.expand((it) => it.speeds),
+    ];
+  }
+
+  @override
   String toString() {
     return 'ServicePoint('
         'order: $order'
@@ -53,6 +62,7 @@ class ServicePoint extends BaseData {
         ', arrivalDepartureTime: $arrivalDepartureTime'
         ', stationSign1: $stationSign1'
         ', stationSign2: $stationSign2'
+        ', properties: $properties'
         ')';
   }
 }

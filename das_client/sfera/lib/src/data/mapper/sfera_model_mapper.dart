@@ -432,7 +432,7 @@ class SferaModelMapper {
 
   static Set<BreakSeries> _parseAvailableBreakSeries(List<BaseData> journeyData) {
     return journeyData
-        .expand((it) => [...it.speedData?.speeds ?? [], ...it.localSpeedData?.speeds ?? []])
+        .expand((it) => it.allSpeedData)
         .where((it) => it.breakSeries != null)
         .map((it) => BreakSeries(trainSeries: it.trainSeries, breakSeries: it.breakSeries!))
         .toSet();
