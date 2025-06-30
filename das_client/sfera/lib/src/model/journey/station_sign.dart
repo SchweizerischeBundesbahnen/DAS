@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart';
+
 enum StationSign {
   deadendStation('Q'),
   entryOccupiedTrack('Z'),
@@ -6,13 +8,17 @@ enum StationSign {
   noEntrySignal('O'),
   noExitSignal('P'),
   openLevelCrossingBeforeExitSignal('C'),
-  unknown('Unknown');
+  unknown('UNKNOWN');
 
-  final String value;
+  final String? value;
 
   const StationSign(this.value);
 
   factory StationSign.from(String value) {
     return values.firstWhere((element) => element.value == value.toUpperCase(), orElse: () => StationSign.unknown);
   }
+
+  static StationSign? fromOptional(String? value) => values.firstWhereOrNull(
+    (e) => e.value == value?.toLowerCase(),
+  );
 }

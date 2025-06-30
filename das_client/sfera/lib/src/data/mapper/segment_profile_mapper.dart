@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
+import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/enums/gradient_direction_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/length_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/stop_skip_pass_dto.dart';
@@ -9,28 +10,14 @@ import 'package:sfera/src/data/dto/foot_note_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_parameter_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
+import 'package:sfera/src/data/dto/station_property_dto.dart';
 import 'package:sfera/src/data/dto/taf_tap_location_dto.dart';
 import 'package:sfera/src/data/dto/timing_point_constraints_dto.dart';
 import 'package:sfera/src/data/mapper/graduated_speed_data_mapper.dart';
 import 'package:sfera/src/data/mapper/mapper_utils.dart';
-import 'package:sfera/src/model/journey/arrival_departure_time.dart';
-import 'package:sfera/src/model/journey/balise.dart';
-import 'package:sfera/src/model/journey/base_data.dart';
 import 'package:sfera/src/model/journey/bracket_station.dart';
-import 'package:sfera/src/model/journey/connection_track.dart';
-import 'package:sfera/src/model/journey/curve_point.dart';
 import 'package:sfera/src/model/journey/decisive_gradient.dart';
 import 'package:sfera/src/model/journey/foot_note.dart';
-import 'package:sfera/src/model/journey/level_crossing.dart';
-import 'package:sfera/src/model/journey/line_foot_note.dart';
-import 'package:sfera/src/model/journey/op_foot_note.dart';
-import 'package:sfera/src/model/journey/protection_section.dart';
-import 'package:sfera/src/model/journey/service_point.dart';
-import 'package:sfera/src/model/journey/signal.dart';
-import 'package:sfera/src/model/journey/speed_change.dart';
-import 'package:sfera/src/model/journey/track_foot_note.dart';
-import 'package:sfera/src/model/journey/train_series.dart';
-import 'package:sfera/src/model/journey/whistles.dart';
 
 class _MapperData {
   _MapperData(this.segmentProfile, this.segmentIndex, this.kilometreMap);
@@ -132,6 +119,7 @@ class SegmentProfileMapper {
           arrivalDepartureTime: _parseArrivalDepartureTime(tpConstraint),
           stationSign1: tafTapLocation.routeTableDataNsp?.stationSign1,
           stationSign2: tafTapLocation.routeTableDataNsp?.stationSign2,
+          properties: _parseStationProperties(tafTapLocation.property?.xmlStationProperty.element.properties),
         ),
       );
     }
@@ -402,5 +390,19 @@ class SegmentProfileMapper {
       ambiguousArrivalTime: operationalArrivalTime,
       plannedArrivalTime: plannedArrivalTime,
     );
+  }
+
+  static List<StationProperty> _parseStationProperties(Iterable<StationPropertyDto>? properties) {
+    if (properties == null || properties.isEmpty) {
+      return [];
+    }
+
+    return properties.map((property) {
+      return StationProperty(
+        text: property.text,
+        sign: StationSign.fromOptional(property.sign),
+        speedData: GraduatedSpeedDataMapper.fromVelocities(property.speeds?.velocities),
+      );
+    }).toList();
   }
 }

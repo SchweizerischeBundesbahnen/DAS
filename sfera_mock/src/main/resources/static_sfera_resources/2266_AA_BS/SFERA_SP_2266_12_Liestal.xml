@@ -139,7 +139,7 @@
                 <NSP_GroupName>stationProperty</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationProperty" value="
 				&lt;stationProperties&gt;
-					&lt;stationProperty1 text=&quot;&lt;i&gt;via Adlertunnel&lt;/i&gt;&quot; /&gt; 
+					&lt;stationProperty text=&quot;&lt;i&gt;via Adlertunnel&lt;/i&gt;&quot; /&gt;
 				&lt;/stationProperties&gt;
 				"/>
             </TAF_TAP_Location_NSP>

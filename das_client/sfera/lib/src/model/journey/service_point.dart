@@ -18,6 +18,7 @@ class ServicePoint extends BaseData {
     this.arrivalDepartureTime,
     this.stationSign1,
     this.stationSign2,
+    this.properties = const [],
   }) : super(type: Datatype.servicePoint);
 
   final String name;
@@ -30,6 +31,7 @@ class ServicePoint extends BaseData {
   final ArrivalDepartureTime? arrivalDepartureTime;
   final StationSign? stationSign1;
   final StationSign? stationSign2;
+  final List<StationProperty> properties;
 
   List<Speeds> relevantGraduatedSpeedInfo(BreakSeries? breakSeries) {
     final speedInfo = graduatedSpeedInfo?.speeds ?? [];

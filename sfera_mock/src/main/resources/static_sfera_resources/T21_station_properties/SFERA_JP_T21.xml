@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="3" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+    <TrainIdentification>
+        <OTN_ID>
+            <teltsi_Company>1085</teltsi_Company>
+            <teltsi_OperationalTrainNumber>T21</teltsi_OperationalTrainNumber>
+            <teltsi_StartDate>2022-01-04</teltsi_StartDate>
+        </OTN_ID>
+    </TrainIdentification>
+    <SegmentProfileReference SP_ID="T21_1" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>0085</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Genève-Aéroport"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-12T16:14:25Z" plannedDepartureTime="2025-05-12T15:13:40Z"/>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Genève"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-12T15:24:25Z"/>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Nyon"/>
+            </TimingPointReference>
+            <StoppingPointInformation>
+                <StopType mandatoryStop="false">
+                    <teltsi_TrainActivityType>0001</teltsi_TrainActivityType>
+                </StopType>
+            </StoppingPointInformation>
+            <StoppingPointDepartureDetails departureTime="2025-05-12T16:39:59Z" plannedDepartureTime="2025-05-12T15:39:43Z"/>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-12T15:55:23Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Morges"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-12T17:07:12Z"
+                                TP_PlannedLatestArrivalTime="2025-05-12T16:07:20Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Lausanne"/>
+            </TimingPointReference>
+            <StoppingPointInformation>
+                <StopType mandatoryStop="false">
+                    <teltsi_TrainActivityType>0001</teltsi_TrainActivityType>
+                </StopType>
+            </StoppingPointInformation>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-12T17:28:56Z"
+                                TP_PlannedLatestArrivalTime="2025-05-12T16:28:12Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Vevey"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-12T16:29:12Z"/>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-12T17:35:16Z"
+                                TP_PlannedLatestArrivalTime="2025-05-12T16:35:12Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Montreux"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-12T17:36:42Z" plannedDepartureTime="2025-05-12T16:36:12Z"/>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Aigle"/>
+            </TimingPointReference>
+            <StoppingPointInformation>
+                <StopType mandatoryStop="false">
+                    <teltsi_TrainActivityType>0001</teltsi_TrainActivityType>
+                </StopType>
+            </StoppingPointInformation>
+        </TimingPointConstraints>
+        <TrainCharacteristicsRef TC_ID="T16_1" TC_VersionMajor="1" TC_VersionMinor="1" location="0">
+            <TC_RU_ID>1185</TC_RU_ID>
+        </TrainCharacteristicsRef>
+    </SegmentProfileReference>
+</JourneyProfile>

@@ -1,3 +1,4 @@
+import 'package:app/extension/station_sign_extension.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
@@ -76,20 +77,6 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   }
 
   @override
-  DASTableCell iconsCell1(BuildContext context) {
-    if (data.mandatoryStop) return DASTableCell.empty();
-
-    return DASTableCell(
-      alignment: Alignment.bottomCenter,
-      child: SvgPicture.asset(
-        AppAssets.iconStopOnRequest,
-        key: stopOnRequestKey,
-        colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
-      ),
-    );
-  }
-
-  @override
   DASTableCell routeCell(BuildContext context) {
     return DASTableCell(
       color: specialCellColor,
@@ -103,6 +90,45 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
         isRouteEnd: metadata.routeEnd == data,
         isStopOnRequest: !data.mandatoryStop,
         chevronAnimationData: config.chevronAnimationData,
+      ),
+    );
+  }
+
+  @override
+  DASTableCell iconsCell1(BuildContext context) {
+    if (data.mandatoryStop && data.stationSign1 == null && data.stationSign2 == null) return DASTableCell.empty();
+
+    return DASTableCell(
+      alignment: Alignment.bottomRight,
+      padding: EdgeInsets.symmetric(vertical: sbbDefaultSpacing * 0.5, horizontal: 2),
+      child: Wrap(
+        spacing: 2,
+        children: [
+          if (!data.mandatoryStop)
+            SvgPicture.asset(
+              AppAssets.iconStopOnRequest,
+              key: stopOnRequestKey,
+              colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
+            ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            spacing: 2,
+            children: [
+              if (data.stationSign2 != null)
+                SvgPicture.asset(
+                  data.stationSign2!.displayIcon(),
+                  key: Key(data.stationSign2!.name),
+                  colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
+                ),
+              if (data.stationSign1 != null)
+                SvgPicture.asset(
+                  data.stationSign1!.displayIcon(),
+                  key: Key(data.stationSign1!.name),
+                  colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
+                ),
+            ],
+          ),
+        ],
       ),
     );
   }
