@@ -8,8 +8,8 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 abstract class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
-  // Accordion 30 + 2x8 vertical padding
-  static const double _collapsedHeight = 46.0;
+  static const double _collapsedHeight = 28.0; // title 24 + 2x2 vertical padding
+  static const double _expandedHeight = 64.0; // title 24 + 2x16 vertical padding + 8 content spacing
 
   FootNoteRow({
     required super.metadata,
@@ -29,25 +29,15 @@ abstract class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
   Widget buildRowWidget(BuildContext context) {
     return Container(
       color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
-      child: SBBGroup(
-        margin: EdgeInsets.symmetric(vertical: sbbDefaultSpacing / 2),
-        child: Accordion(
-          key: ObjectKey(data.identifier),
-          title: title(context),
-          body: Padding(
-            padding: EdgeInsets.fromLTRB(
-              sbbDefaultSpacing + 24, // 24 is the width of the icon
-              sbbDefaultSpacing * 0.25,
-              sbbDefaultSpacing,
-              sbbDefaultSpacing * 0.25,
-            ),
-            child: contentText(data),
-          ),
-          isExpanded: isExpanded,
-          accordionToggleCallback: accordionToggleCallback,
-          icon: SBBIcons.form_small,
-          backgroundColor: ThemeUtil.getColor(context, SBBColors.white, SBBColors.charcoal),
-        ),
+      child: Accordion(
+        key: ObjectKey(data.identifier),
+        title: title(context),
+        body: contentText(data),
+        isExpanded: isExpanded,
+        toggleCallback: accordionToggleCallback,
+        icon: SBBIcons.form_small,
+        margin: EdgeInsets.symmetric(vertical: sbbDefaultSpacing * 0.5),
+        backgroundColor: ThemeUtil.getColor(context, SBBColors.white, SBBColors.charcoal),
       ),
     );
   }
@@ -63,10 +53,8 @@ abstract class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
   static double _calculateHeight(BaseFootNote data, bool isExpanded) {
     if (isExpanded) {
       final content = _contentText(data);
-      final tp = TextPainter(text: content.textSpan, textDirection: TextDirection.ltr);
-      tp.layout();
-
-      return _collapsedHeight + tp.height + sbbDefaultSpacing * 0.5;
+      final tp = TextPainter(text: content.textSpan, textDirection: TextDirection.ltr)..layout();
+      return _expandedHeight + tp.height;
     } else {
       return _collapsedHeight;
     }
