@@ -21,7 +21,6 @@ final _log = Logger('DASModalSheetController');
 /// Used to open and close the [DasModalSheet] and handle animation.
 class DASModalSheetController {
   static int automaticCloseAfterSeconds = 40;
-  static final int idleTimeDASModalSheet = 10;
 
   DASModalSheetController({
     this.animationDuration = const Duration(milliseconds: 150),
@@ -106,7 +105,7 @@ class DASModalSheetController {
   void resetAutomaticClose() {
     _idleTimer?.cancel();
     if (isOpen) {
-      _idleTimer = Timer(Duration(seconds: idleTimeDASModalSheet), () {
+      _idleTimer = Timer(Duration(seconds: automaticCloseAfterSeconds), () {
         if (isOpen) {
           _log.fine('Screen idle time of $automaticCloseAfterSeconds seconds reached. Closing DAS modal sheet.');
           close();
