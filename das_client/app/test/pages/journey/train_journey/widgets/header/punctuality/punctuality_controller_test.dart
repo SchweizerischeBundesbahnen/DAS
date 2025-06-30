@@ -99,21 +99,19 @@ void main() {
 
         testee.startMonitoring();
 
-        final initialDelay = Delay(delay: const Duration(minutes: 1, seconds: 22), location: 'Bern');
-        testee.updatePunctualityTimestamp(initialDelay);
-
+        testee.updatePunctualityTimestamp(Delay(delay: const Duration(minutes: 2, seconds: 14), location: 'Bern'));
         fakeAsync.elapse(const Duration(seconds: 1));
         expect(latest, PunctualityState.visible);
 
-        final delay = Delay(delay: const Duration(minutes: 2, seconds: 14), location: 'Bern');
-        testee.updatePunctualityTimestamp(delay);
-
+        testee.updatePunctualityTimestamp(Delay(delay: const Duration(minutes: 2, seconds: 14), location: 'Bern'));
         fakeAsync.elapse(const Duration(seconds: 100));
         expect(latest, PunctualityState.visible);
 
+        testee.updatePunctualityTimestamp(Delay(delay: const Duration(minutes: 2, seconds: 14), location: 'Bern'));
         fakeAsync.elapse(const Duration(seconds: 100));
         expect(latest, PunctualityState.stale);
 
+        testee.updatePunctualityTimestamp(Delay(delay: const Duration(minutes: 2, seconds: 14), location: 'Bern'));
         fakeAsync.elapse(const Duration(seconds: 200));
         expect(latest, PunctualityState.hidden);
 
