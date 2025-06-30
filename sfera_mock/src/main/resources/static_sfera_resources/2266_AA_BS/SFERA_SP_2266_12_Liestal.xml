@@ -138,9 +138,9 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>stationProperty</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationProperty" value="
-				&lt;stationProperty&gt; 
+				&lt;stationProperties&gt;
 					&lt;stationProperty1 text=&quot;&lt;i&gt;via Adlertunnel&lt;/i&gt;&quot; /&gt; 
-				&lt;/stationProperty&gt;
+				&lt;/stationProperties&gt;
 				"/>
             </TAF_TAP_Location_NSP>
 			
