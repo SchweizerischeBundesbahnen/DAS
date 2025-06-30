@@ -849,6 +849,46 @@ void main() {
       await disconnect(tester);
     });
 
+    testWidgets('test line speed always displayed in sticky header', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T8');
+
+      final scrollableFinder = find.byType(AnimatedList);
+      expect(scrollableFinder, findsOneWidget);
+
+      // now empty
+      final wankdorfStationRow = findDASTableRowByText('Wankdorf');
+      expect(wankdorfStationRow, findsOneWidget);
+      final wankdorfIncomingSpeedsEmpty = find.descendant(
+        of: wankdorfStationRow,
+        matching: find.byKey(SpeedCellBody.incomingSpeedsKey),
+      );
+      expect(wankdorfIncomingSpeedsEmpty, findsNothing);
+      final wankdorfOutgoingSpeedsEmpty = find.descendant(
+        of: wankdorfStationRow,
+        matching: find.byKey(SpeedCellBody.outgoingSpeedsKey),
+      );
+      expect(wankdorfOutgoingSpeedsEmpty, findsNothing);
+
+      await tester.dragUntilVisible(find.text('Zurich'), scrollableFinder, const Offset(0, -100));
+
+      // now filled
+      final wankdorfIncomingSpeedsFilled = find.descendant(
+        of: wankdorfStationRow,
+        matching: find.byKey(SpeedCellBody.incomingSpeedsKey),
+      );
+      expect(wankdorfIncomingSpeedsFilled, findsNWidgets(1));
+      final bernIncomingSpeedsText = find.descendant(of: wankdorfStationRow, matching: find.text('90'));
+      expect(bernIncomingSpeedsText, findsOneWidget);
+      final wankdorfIncomingSpeedsEmpty2 = find.descendant(
+        of: wankdorfStationRow,
+        matching: find.byKey(SpeedCellBody.outgoingSpeedsKey),
+      );
+      expect(wankdorfIncomingSpeedsEmpty2, findsNothing);
+    });
+
     testWidgets('test additional speed restriction row are displayed correctly on ETCS level 2 section', (
       tester,
     ) async {
