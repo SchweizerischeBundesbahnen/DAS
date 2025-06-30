@@ -6,14 +6,14 @@ import 'package:sfera/src/data/dto/velocity_dto.dart';
 final _log = Logger('GraduatedSpeedDataMapper');
 
 /// Used to map data from SFERA to domain model [SpeedData].
-class GraduatedSpeedDataMapper {
-  GraduatedSpeedDataMapper._();
+class SpeedMapper {
+  SpeedMapper._();
 
   /// Maps list of SFERA model [VelocityDto] to [SpeedData]
   static List<TrainSeriesSpeed>? fromVelocities(Iterable<VelocityDto>? velocities) {
     if (velocities == null) return null;
 
-    final graduatedSpeeds = <TrainSeriesSpeed>[];
+    final result = <TrainSeriesSpeed>[];
 
     void addSpeed(TrainSeries trainSeries, int? breakSeries, String speedString, bool reduced) {
       try {
@@ -23,9 +23,9 @@ class GraduatedSpeedDataMapper {
           breakSeries: breakSeries,
           reduced: reduced,
         );
-        graduatedSpeeds.add(speeds);
+        result.add(speeds);
       } catch (e) {
-        _log.warning('Could not parse station speed with "$speedString"', e);
+        _log.warning('Could not parse speed with "$speedString"', e);
       }
     }
 
@@ -35,21 +35,21 @@ class GraduatedSpeedDataMapper {
       }
     }
 
-    return graduatedSpeeds;
+    return result;
   }
 
   /// Maps SFERA model [GraduatedSpeedInfoDto] to [SpeedData]
   static List<TrainSeriesSpeed>? fromGraduatedSpeedInfo(GraduatedSpeedInfoDto? graduatedSpeedInfo) {
     if (graduatedSpeedInfo == null) return null;
 
-    final graduatedStationSpeeds = <TrainSeriesSpeed>[];
+    final result = <TrainSeriesSpeed>[];
 
     void addSpeed(TrainSeries trainSeries, String speedString, String? text) {
       try {
         final speeds = TrainSeriesSpeed(trainSeries: trainSeries, speed: Speed.parse(speedString), text: text);
-        graduatedStationSpeeds.add(speeds);
+        result.add(speeds);
       } catch (e) {
-        _log.warning('Could not parse graduated station speed with "$speedString"', e);
+        _log.warning('Could not parse graduated station speed info with "$speedString"', e);
       }
     }
 
@@ -70,6 +70,6 @@ class GraduatedSpeedDataMapper {
       }
     }
 
-    return graduatedStationSpeeds;
+    return result;
   }
 }

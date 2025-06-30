@@ -11,8 +11,8 @@ import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
 import 'package:sfera/src/data/dto/taf_tap_location_dto.dart';
 import 'package:sfera/src/data/dto/timing_point_constraints_dto.dart';
-import 'package:sfera/src/data/mapper/graduated_speed_data_mapper.dart';
 import 'package:sfera/src/data/mapper/mapper_utils.dart';
+import 'package:sfera/src/data/mapper/speed_mapper.dart';
 import 'package:sfera/src/model/journey/arrival_departure_time.dart';
 import 'package:sfera/src/model/journey/balise.dart';
 import 'package:sfera/src/model/journey/base_data.dart';
@@ -118,13 +118,13 @@ class SegmentProfileMapper {
           isStation: tafTapLocation.locationType != TafTapLocationTypeDto.halt,
           bracketMainStation: _parseBracketMainStation(tafTapLocations, tafTapLocation),
           kilometre: mapperData.kilometreMap[timingPoint.location] ?? [],
-          speeds: GraduatedSpeedDataMapper.fromVelocities(
+          speeds: SpeedMapper.fromVelocities(
             tafTapLocation.newLineSpeed?.xmlNewLineSpeed.element.velocities,
           ),
-          localSpeeds: GraduatedSpeedDataMapper.fromVelocities(
+          localSpeeds: SpeedMapper.fromVelocities(
             tafTapLocation.stationSpeed?.xmlStationSpeed.element.velocities,
           ),
-          graduatedSpeedInfo: GraduatedSpeedDataMapper.fromGraduatedSpeedInfo(
+          graduatedSpeedInfo: SpeedMapper.fromGraduatedSpeedInfo(
             tafTapLocation.stationSpeed?.xmlGraduatedSpeedInfo?.element,
           ),
           decisiveGradient: _parseDecisiveGradientAtLocation(mapperData.segmentProfile, timingPoint.location),
@@ -222,7 +222,7 @@ class SegmentProfileMapper {
         curveType: curvePointNsp.curveType != null ? CurveType.from(curvePointNsp.curveType!) : null,
         text: curveSpeed?.text,
         comment: curveSpeed?.comment,
-        localSpeeds: GraduatedSpeedDataMapper.fromVelocities(curveSpeed?.speeds?.velocities),
+        localSpeeds: SpeedMapper.fromVelocities(curveSpeed?.speeds?.velocities),
       );
     }).toList();
   }
@@ -247,7 +247,7 @@ class SegmentProfileMapper {
       final velocities = newLineSpeed.xmlNewLineSpeed.element.speeds?.velocities;
       return SpeedChange(
         text: newLineSpeed.xmlNewLineSpeed.element.text,
-        speeds: GraduatedSpeedDataMapper.fromVelocities(velocities),
+        speeds: SpeedMapper.fromVelocities(velocities),
         order: calculateOrder(mapperData.segmentIndex, newLineSpeed.location),
         kilometre: mapperData.kilometreMap[newLineSpeed.location] ?? [],
       );
