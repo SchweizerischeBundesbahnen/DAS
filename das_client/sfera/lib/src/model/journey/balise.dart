@@ -7,7 +7,7 @@ class Balise extends BaseData {
     required super.order,
     required super.kilometre,
     required this.amountLevelCrossings,
-    super.speedData,
+    super.speeds,
   }) : super(type: Datatype.balise);
 
   final int amountLevelCrossings;

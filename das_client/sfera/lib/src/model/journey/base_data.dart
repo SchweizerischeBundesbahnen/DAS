@@ -1,8 +1,6 @@
 import 'package:meta/meta.dart';
-import 'package:sfera/src/model/journey/base_data_extension.dart';
-import 'package:sfera/src/model/journey/datatype.dart';
+import 'package:sfera/component.dart';
 import 'package:sfera/src/model/journey/order_priority.dart';
-import 'package:sfera/src/model/journey/speed_data.dart';
 
 @sealed
 @immutable
@@ -11,15 +9,15 @@ abstract class BaseData implements Comparable {
     required this.type,
     required this.order,
     required this.kilometre,
-    this.speedData,
-    this.localSpeedData,
+    this.speeds,
+    this.localSpeeds,
   });
 
   final Datatype type;
   final int order;
   final List<double> kilometre;
-  final SpeedData? speedData;
-  final SpeedData? localSpeedData;
+  final List<TrainSeriesSpeed>? speeds;
+  final List<TrainSeriesSpeed>? localSpeeds;
 
   @override
   int compareTo(other) {
