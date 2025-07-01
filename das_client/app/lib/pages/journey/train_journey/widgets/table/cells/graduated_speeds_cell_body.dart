@@ -1,3 +1,4 @@
+import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:app/widgets/widget_extensions.dart';
@@ -15,12 +16,14 @@ class GraduatedSpeedsCellBody extends StatelessWidget {
     this.incomingSpeeds = const [],
     this.outgoingSpeeds = const [],
     this.hasAdditionalInformation = false,
+    this.singleLine = false,
     super.key,
   });
 
   final List<Speed> incomingSpeeds;
   final List<Speed> outgoingSpeeds;
   final bool hasAdditionalInformation;
+  final bool singleLine;
 
   @override
   Widget build(BuildContext context) {
@@ -33,17 +36,32 @@ class GraduatedSpeedsCellBody extends StatelessWidget {
 
   Widget _buildSpeeds(BuildContext context) {
     if (outgoingSpeeds.isNotEmpty) {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _visualizedSpeeds(key: incomingSpeedsKey, speeds: incomingSpeeds),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 2.0),
-            child: Divider(color: Theme.of(context).colorScheme.onSurface, height: 1.0),
-          ),
-          _visualizedSpeeds(key: outgoingSpeedsKey, speeds: outgoingSpeeds),
-        ],
-      );
+      if (singleLine) {
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _visualizedSpeeds(key: incomingSpeedsKey, speeds: incomingSpeeds),
+            Text(
+              ' / ',
+              style: DASTextStyles.mediumRoman,
+            ),
+            _visualizedSpeeds(key: outgoingSpeedsKey, speeds: outgoingSpeeds),
+          ],
+        );
+      } else {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _visualizedSpeeds(key: incomingSpeedsKey, speeds: incomingSpeeds),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2.0),
+              child: Divider(color: Theme.of(context).colorScheme.onSurface, height: 1.0),
+            ),
+            _visualizedSpeeds(key: outgoingSpeedsKey, speeds: outgoingSpeeds),
+          ],
+        );
+      }
     }
 
     return _visualizedSpeeds(key: incomingSpeedsKey, speeds: incomingSpeeds);

@@ -18,10 +18,12 @@ class TrackEquipmentCellBody extends StatelessWidget {
 
   const TrackEquipmentCellBody({
     this.renderData = const TrackEquipmentRenderData(),
+    this.startEndSpacing = sbbDefaultSpacing,
     super.key,
   });
 
   final TrackEquipmentRenderData renderData;
+  final double startEndSpacing;
 
   @override
   Widget build(BuildContext context) {
@@ -165,7 +167,7 @@ class TrackEquipmentCellBody extends StatelessWidget {
     if (renderData.isStart && renderData.isEnd) {
       return height * 0.25;
     } else if (renderData.isEnd && renderData.dataType == ServicePoint) {
-      return sbbDefaultSpacing + RouteCellBody.routeCircleSize / 2;
+      return startEndSpacing + RouteCellBody.routeCircleSize / 2;
     } else if (renderData.isEnd) {
       return height * 0.5;
     }
@@ -179,7 +181,7 @@ class TrackEquipmentCellBody extends StatelessWidget {
     if (renderData.isStart && renderData.isEnd) {
       return height * 0.25;
     } else if (renderData.isStart && renderData.dataType == ServicePoint) {
-      return height - sbbDefaultSpacing - RouteCellBody.routeCircleSize / 2;
+      return height - startEndSpacing - RouteCellBody.routeCircleSize / 2;
     } else if (renderData.isStart) {
       return height * 0.5;
     }

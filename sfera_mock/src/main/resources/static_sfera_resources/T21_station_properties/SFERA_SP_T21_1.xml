@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T21_1" SP_VersionMajor="1"
-                SP_VersionMinor="4" SP_Length="2000" SP_Status="Valid">
+                SP_VersionMinor="5" SP_Length="2000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -83,7 +83,7 @@
                 <NSP_GroupName>stationProperty</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationProperty" value="
 				&lt;stationProperties&gt;
-					&lt;stationProperty text=&quot;&lt;b&gt;A&quot;&gt; sign=&quot;Q&quot;&gt;
+					&lt;stationProperty ext=&quot;&lt;b&gt;A&quot; sign=&quot;Q&quot;&gt;
 						&lt;speeds&gt;
 							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;[55]&quot;/&gt;
 						&lt;/speeds&gt;
@@ -113,7 +113,7 @@
                 <NSP_GroupName>stationProperty</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationProperty" value="
 				&lt;stationProperties&gt;
-					&lt;stationProperty text=&quot;&lt;b&gt;A&quot;&gt; sign=&quot;Q&quot;&gt;
+					&lt;stationProperty ext=&quot;&lt;b&gt;A&quot; sign=&quot;Q&quot;&gt;
 						&lt;speeds&gt;
 							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;[55]&quot;/&gt;
 						&lt;/speeds&gt;
@@ -206,6 +206,30 @@
                 <teltsi_LocationPrimaryCode>3007</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Vevey</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationProperty</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlStationProperty" value="
+				&lt;stationProperties&gt;
+					&lt;stationProperty text=&quot;&lt;i&gt;via Stammlinie&quot;&gt;
+					&lt;/stationProperty&gt;
+					&lt;stationProperty&gt;
+						&lt;speeds&gt;
+							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;35&quot; reduced=&quot;true&quot;/&gt;
+							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;35&quot; reduced=&quot;true&quot;/&gt;
+							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;35&quot; reduced=&quot;true&quot;/&gt;
+							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;35&quot; reduced=&quot;true&quot;/&gt;
+						&lt;/speeds&gt;
+					&lt;/stationProperty&gt;
+                    &lt;stationProperty ext=&quot;&lt;b&gt;A&quot; sign=&quot;Q&quot;&gt;
+						&lt;speeds&gt;
+							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;[55]&quot;/&gt;
+						&lt;/speeds&gt;
+					&lt;/stationProperty&gt;
+				&lt;/stationProperties&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="4000" endLocation="4000" TAF_TAP_location_abbreviation="MNT"
@@ -224,6 +248,17 @@
                 <teltsi_LocationPrimaryCode>3009</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Aigle</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationProperty</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlStationProperty" value="
+				&lt;stationProperties&gt;
+					&lt;stationProperty sign=&quot;Z&quot;&gt;
+					&lt;/stationProperty&gt;
+				&lt;/stationProperties&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
     </SP_Areas>
 

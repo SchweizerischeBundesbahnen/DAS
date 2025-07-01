@@ -210,10 +210,10 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
         .firstOrNull;
   }
 
-  static double rowHeightForData(BaseData data) {
+  static double rowHeightForData(BaseData data, BreakSeries? currentBreakSeries) {
     switch (data.type) {
       case Datatype.servicePoint:
-        return ServicePointRow.rowHeight;
+        return ServicePointRow.calculateHeight(data as ServicePoint, currentBreakSeries);
       default:
         return CellRowBuilder.rowHeight;
     }

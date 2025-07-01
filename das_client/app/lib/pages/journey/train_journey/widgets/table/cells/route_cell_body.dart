@@ -23,11 +23,13 @@ class RouteCellBody extends StatelessWidget {
     this.isRouteStart = false,
     this.isRouteEnd = false,
     this.chevronAnimationData,
+    this.routeCircleBottomSpacing = sbbDefaultSpacing,
   });
 
   final double chevronHeight;
   final double chevronWidth;
   final double lineThickness;
+  final double routeCircleBottomSpacing;
 
   final bool isCurrentPosition;
   final bool isStop;
@@ -79,8 +81,8 @@ class RouteCellBody extends StatelessWidget {
         DASTableTheme.of(context)?.data.tableBorder?.horizontalInside.width ?? sbbDefaultSpacing;
     return Positioned(
       key: _routeKey(),
-      top: isRouteStart ? height - sbbDefaultSpacing : 0,
-      bottom: isRouteEnd ? sbbDefaultSpacing : -horizontalBorderWidth,
+      top: isRouteStart ? height - routeCircleBottomSpacing : 0,
+      bottom: isRouteEnd ? routeCircleBottomSpacing : -horizontalBorderWidth,
       left: (width / 2) - (lineThickness / 2),
       child: VerticalDivider(thickness: lineThickness, color: lineColor),
     );
@@ -90,7 +92,7 @@ class RouteCellBody extends StatelessWidget {
     final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
     final circleColor = isDarkTheme ? SBBColors.white : SBBColors.black;
     return Positioned(
-      bottom: sbbDefaultSpacing,
+      bottom: routeCircleBottomSpacing,
       child: _RouteCircle(size: routeCircleSize, color: circleColor, isStopOnRequest: isStopOnRequest),
     );
   }

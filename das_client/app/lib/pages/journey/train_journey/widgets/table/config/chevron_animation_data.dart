@@ -17,7 +17,12 @@ class ChevronAnimationData {
   final BaseData lastPosition;
   final BaseData currenPosition;
 
-  static ChevronAnimationData? from(List<BaseData> rows, Journey journey, BaseData currentRow) {
+  static ChevronAnimationData? from(
+    List<BaseData> rows,
+    Journey journey,
+    BaseData currentRow,
+    BreakSeries? currentBreakSeries,
+  ) {
     if (journey.metadata.lastPosition == null ||
         journey.metadata.currentPosition == null ||
         journey.metadata.lastPosition == journey.metadata.currentPosition) {
@@ -45,7 +50,7 @@ class ChevronAnimationData {
     }
 
     for (var i = fromIndex + 1; i <= toIndex; i++) {
-      endOffset += CellRowBuilder.rowHeightForData(filteredRows[i]);
+      endOffset += CellRowBuilder.rowHeightForData(filteredRows[i], currentBreakSeries);
       if (currentIndex == i) {
         startOffset = endOffset * -1;
         endOffset = 0.0;

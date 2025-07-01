@@ -133,9 +133,9 @@ class TrainJourney extends StatelessWidget {
 
       final trainJourneyConfig = TrainJourneyConfig(
         settings: settings,
-        trackEquipmentRenderData: TrackEquipmentRenderData.from(rows, journey.metadata, index),
+        trackEquipmentRenderData: TrackEquipmentRenderData.from(rows, journey.metadata, index, currentBreakSeries),
         bracketStationRenderData: BracketStationRenderData.from(rowData, journey.metadata),
-        chevronAnimationData: ChevronAnimationData.from(rows, journey, rowData),
+        chevronAnimationData: ChevronAnimationData.from(rows, journey, rowData, currentBreakSeries),
       );
       switch (rowData.type) {
         case Datatype.servicePoint:

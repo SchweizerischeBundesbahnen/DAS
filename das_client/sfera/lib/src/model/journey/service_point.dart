@@ -38,6 +38,14 @@ class ServicePoint extends BaseData {
     return speedInfo.where((speed) => speed.trainSeries == breakSeries?.trainSeries && speed.text != null).toList();
   }
 
+  Iterable<StationProperty> relevantProperties(BreakSeries? breakSeries) {
+    return properties.where(
+      (property) =>
+          property.speedData == null ||
+          property.speedData?.speedsFor(breakSeries?.trainSeries, breakSeries?.breakSeries) != null,
+    );
+  }
+
   @override
   Iterable<Speeds> get allSpeedData {
     return [

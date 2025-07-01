@@ -19,6 +19,6 @@ enum StationSign {
   }
 
   static StationSign? fromOptional(String? value) => values.firstWhereOrNull(
-    (e) => e.value == value?.toLowerCase(),
+    (e) => e.value == value?.toUpperCase(),
   );
 }
