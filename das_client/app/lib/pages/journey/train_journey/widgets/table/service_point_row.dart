@@ -139,9 +139,29 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   DASTableCell advisedSpeedCell(BuildContext context) {
     if (data.calculatedSpeed == null) return DASTableCell.empty();
 
+    SingleSpeed? lineSpeed;
+    SingleSpeed calculatedSpeed;
+    final currentBreakSeries = config.settings.resolvedBreakSeries(metadata);
+    final trainSeriesSpeed = data.speeds?.speedFor(
+      currentBreakSeries?.trainSeries,
+      breakSeries: currentBreakSeries?.breakSeries,
+    );
+    lineSpeed = trainSeriesSpeed?.speed as SingleSpeed?;
+    calculatedSpeed = data.calculatedSpeed!;
+
+    bool isSpeedReducedDueToLineSpeed = false;
+
+    if (lineSpeed != null) {
+      final ls = int.parse(lineSpeed.value);
+      final cs = int.parse(data.calculatedSpeed!.value);
+      isSpeedReducedDueToLineSpeed = cs > ls;
+      if (isSpeedReducedDueToLineSpeed) calculatedSpeed = lineSpeed;
+    }
+
     return DASTableCell(
       child: AdvisedSpeedCellBody(
-        speed: data.calculatedSpeed!,
+        speed: calculatedSpeed,
+        isSpeedReducedDueToLineSpeed: isSpeedReducedDueToLineSpeed,
       ),
     );
   }
