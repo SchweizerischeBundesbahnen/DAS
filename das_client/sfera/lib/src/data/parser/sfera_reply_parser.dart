@@ -22,6 +22,9 @@ import 'package:sfera/src/data/dto/graduated_speed_info_entity_dto.dart';
 import 'package:sfera/src/data/dto/handshake_acknowledgement_dto.dart';
 import 'package:sfera/src/data/dto/handshake_reject_dto.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
+import 'package:sfera/src/data/dto/jp_context_information_dto.dart';
+import 'package:sfera/src/data/dto/jp_context_information_nsp_constraints_dto.dart';
+import 'package:sfera/src/data/dto/jp_context_information_nsp_dto.dart';
 import 'package:sfera/src/data/dto/kilometre_reference_point_dto.dart';
 import 'package:sfera/src/data/dto/km_reference_dto.dart';
 import 'package:sfera/src/data/dto/level_crossing_area_dto.dart';
@@ -69,6 +72,7 @@ import 'package:sfera/src/data/dto/taf_tap_location_reference_dto.dart';
 import 'package:sfera/src/data/dto/tc_features_dto.dart';
 import 'package:sfera/src/data/dto/teltsi_primary_location_name_dto.dart';
 import 'package:sfera/src/data/dto/temporary_constraint_reason_dto.dart';
+import 'package:sfera/src/data/dto/temporary_constraints_complex_dto.dart';
 import 'package:sfera/src/data/dto/temporary_constraints_dto.dart';
 import 'package:sfera/src/data/dto/text_dto.dart';
 import 'package:sfera/src/data/dto/timing_point_constraints_dto.dart';
@@ -222,6 +226,8 @@ class SferaReplyParser {
         return AdditionalSpeedRestrictionDto(type: type, attributes: attributes, children: children, value: value);
       case TemporaryConstraintsDto.elementType:
         return TemporaryConstraintsDto(type: type, attributes: attributes, children: children, value: value);
+      case TemporaryConstraintsComplexDto.elementType:
+        return TemporaryConstraintsComplexDto(type: type, attributes: attributes, children: children, value: value);
       case TemporaryConstraintReasonDto.elementType:
         return TemporaryConstraintReasonDto(type: type, attributes: attributes, children: children, value: value);
       case VelocityDto.elementType:
@@ -296,6 +302,12 @@ class SferaReplyParser {
         return DecisiveGradientAreaDto(type: type, attributes: attributes, children: children, value: value);
       case NetworkSpecificConstraintDto.elementType:
         return NetworkSpecificConstraintDto.from(attributes: attributes, children: children, value: value);
+      case JpContextInformationDto.elementType:
+        return JpContextInformationDto(attributes: attributes, children: children, value: value);
+      case JpContextInformationNspDto.elementType:
+        return JpContextInformationNspDto(attributes: attributes, children: children, value: value);
+      case JpContextInformationNspConstraintsDto.elementType:
+        return JpContextInformationNspConstraintsDto(attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElementDto(type: type, attributes: attributes, children: children, value: value);
     }

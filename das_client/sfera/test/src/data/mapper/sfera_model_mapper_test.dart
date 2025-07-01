@@ -1146,6 +1146,45 @@ void main() {
     );
   });
 
+  test('Test calculatedSpeed are parsed correctly for each service point', () async {
+    final journey = getJourney('T23', 2);
+    expect(journey.valid, true);
+
+    final servicePoints = journey.data.whereType<ServicePoint>().toList();
+    expect(servicePoints, hasLength(13));
+
+    // service points without calculated speed
+    final servicePointIdxWithoutCalculatedSpeed = {6, 7, 10, 12};
+    expect(
+      servicePoints
+          .whereIndexed((idx, _) => servicePointIdxWithoutCalculatedSpeed.contains(idx))
+          .every((sP) => sP.calculatedSpeed == null),
+      isTrue,
+    );
+
+    // service points with calculated speed
+    expect(servicePoints[0].calculatedSpeed, isNotNull);
+    expect(servicePoints[0].calculatedSpeed, equals(Speed.parse('110')));
+    expect(servicePoints[1].calculatedSpeed, isNotNull);
+    expect(servicePoints[1].calculatedSpeed, equals(Speed.parse('135')));
+    expect(servicePoints[2].calculatedSpeed, isNotNull);
+    expect(servicePoints[2].calculatedSpeed, equals(Speed.parse('0')));
+    expect(servicePoints[3].calculatedSpeed, isNotNull);
+    expect(servicePoints[3].calculatedSpeed, equals(Speed.parse('130')));
+    expect(servicePoints[4].calculatedSpeed, isNotNull);
+    expect(servicePoints[4].calculatedSpeed, equals(Speed.parse('0')));
+    expect(servicePoints[5].calculatedSpeed, isNotNull);
+    expect(servicePoints[5].calculatedSpeed, equals(Speed.parse('90')));
+    expect(servicePoints[5].calculatedSpeed, isNotNull);
+    expect(servicePoints[5].calculatedSpeed, equals(Speed.parse('90')));
+    expect(servicePoints[8].calculatedSpeed, isNotNull);
+    expect(servicePoints[8].calculatedSpeed, equals(Speed.parse('120')));
+    expect(servicePoints[9].calculatedSpeed, isNotNull);
+    expect(servicePoints[9].calculatedSpeed, equals(Speed.parse('145')));
+    expect(servicePoints[11].calculatedSpeed, isNotNull);
+    expect(servicePoints[11].calculatedSpeed, equals(Speed.parse('100')));
+  });
+
   test('Test current position is start when nothing is given ', () async {
     var journey = getJourney('T9', 1, tcCount: 1);
     expect(journey.valid, true);
