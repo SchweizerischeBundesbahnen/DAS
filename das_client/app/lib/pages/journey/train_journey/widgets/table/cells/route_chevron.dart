@@ -13,6 +13,7 @@ class RouteChevron extends StatefulWidget {
     required this.circleSize,
     required this.chevronWidth,
     required this.chevronHeight,
+    required this.chevronBottomSpacing,
     this.chevronAnimationData,
     super.key,
   });
@@ -21,6 +22,7 @@ class RouteChevron extends StatefulWidget {
   final double circleSize;
   final double chevronWidth;
   final double chevronHeight;
+  final double chevronBottomSpacing;
 
   final ChevronAnimationData? chevronAnimationData;
 
@@ -72,8 +74,8 @@ class _RouteChevronState extends State<RouteChevron> {
       children: [
         Positioned(
           bottom: widget.isStop
-              ? sbbDefaultSpacing + widget.circleSize - currentOffsetValue
-              : sbbDefaultSpacing - currentOffsetValue,
+              ? widget.chevronBottomSpacing + widget.circleSize - currentOffsetValue
+              : widget.chevronBottomSpacing - currentOffsetValue,
           child: CustomPaint(
             key: RouteChevron.chevronKey,
             size: Size(widget.chevronWidth, widget.chevronHeight),

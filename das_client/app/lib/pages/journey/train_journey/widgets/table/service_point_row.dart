@@ -169,34 +169,37 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       DASTableCell(
         alignment: Alignment.bottomRight,
         padding: EdgeInsets.symmetric(vertical: sbbDefaultSpacing * 0.5, horizontal: 2),
-        child: Wrap(
-          spacing: 2,
-          children: [
-            if (!data.mandatoryStop)
-              SvgPicture.asset(
-                AppAssets.iconStopOnRequest,
-                key: stopOnRequestKey,
-                colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
+        child: Padding(
+          padding: config.bracketStationRenderData != null ? const EdgeInsets.only(right: 24.0) : EdgeInsets.zero,
+          child: Wrap(
+            spacing: 2,
+            children: [
+              if (!data.mandatoryStop)
+                SvgPicture.asset(
+                  AppAssets.iconStopOnRequest,
+                  key: stopOnRequestKey,
+                  colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
+                ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                spacing: 2,
+                children: [
+                  if (data.stationSign2 != null)
+                    SvgPicture.asset(
+                      data.stationSign2!.displayIcon(),
+                      key: Key(data.stationSign2!.name),
+                      colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
+                    ),
+                  if (data.stationSign1 != null)
+                    SvgPicture.asset(
+                      data.stationSign1!.displayIcon(),
+                      key: Key(data.stationSign1!.name),
+                      colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
+                    ),
+                ],
               ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              spacing: 2,
-              children: [
-                if (data.stationSign2 != null)
-                  SvgPicture.asset(
-                    data.stationSign2!.displayIcon(),
-                    key: Key(data.stationSign2!.name),
-                    colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
-                  ),
-                if (data.stationSign1 != null)
-                  SvgPicture.asset(
-                    data.stationSign1!.displayIcon(),
-                    key: Key(data.stationSign1!.name),
-                    colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
-                  ),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

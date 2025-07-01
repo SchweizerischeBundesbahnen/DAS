@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T21_1" SP_VersionMajor="1"
-                SP_VersionMinor="5" SP_Length="2000" SP_Status="Valid">
+                SP_VersionMinor="8" SP_Length="2000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -83,12 +83,32 @@
                 <NSP_GroupName>stationProperty</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationProperty" value="
 				&lt;stationProperties&gt;
-					&lt;stationProperty ext=&quot;&lt;b&gt;A&quot; sign=&quot;Q&quot;&gt;
+					&lt;stationProperty text=&quot;&lt;b&gt;A&quot; sign=&quot;Q&quot;&gt;
 						&lt;speeds&gt;
 							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;[55]&quot;/&gt;
 						&lt;/speeds&gt;
 					&lt;/stationProperty&gt;
 				&lt;/stationProperties&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlStationSpeed" value="
+					&lt;stationSpeed&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;95/85&quot;/&gt;
+					&lt;/stationSpeed&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+					&lt;lineSpeed&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;105&quot;/&gt;
+					&lt;/lineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
@@ -113,7 +133,7 @@
                 <NSP_GroupName>stationProperty</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationProperty" value="
 				&lt;stationProperties&gt;
-					&lt;stationProperty ext=&quot;&lt;b&gt;A&quot; sign=&quot;Q&quot;&gt;
+					&lt;stationProperty text=&quot;&lt;b&gt;A&quot; sign=&quot;Q&quot;&gt;
 						&lt;speeds&gt;
 							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;[55]&quot;/&gt;
 						&lt;/speeds&gt;
@@ -197,6 +217,13 @@
                 <NSP_GroupName>routeTableData</NSP_GroupName>
                 <NetworkSpecificParameter name="stationSign1" value="C" />
             </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>bracketStation</NSP_GroupName>
+                <NetworkSpecificParameter name="mainStation" value="CH3006"/>
+                <NetworkSpecificParameter name="text" value="LS"/>
+            </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="3000" endLocation="3000" TAF_TAP_location_abbreviation="ZKZ"
@@ -222,12 +249,36 @@
 							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;35&quot; reduced=&quot;true&quot;/&gt;
 						&lt;/speeds&gt;
 					&lt;/stationProperty&gt;
-                    &lt;stationProperty ext=&quot;&lt;b&gt;A&quot; sign=&quot;Q&quot;&gt;
-						&lt;speeds&gt;
-							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;[55]&quot;/&gt;
-						&lt;/speeds&gt;
+                    &lt;stationProperty text=&quot;&lt;b&gt;A&quot; sign=&quot;Q&quot;&gt;
 					&lt;/stationProperty&gt;
 				&lt;/stationProperties&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>bracketStation</NSP_GroupName>
+                <NetworkSpecificParameter name="mainStation" value="CH3006"/>
+                <NetworkSpecificParameter name="text" value="LS"/>
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlStationSpeed" value="
+					&lt;stationSpeed&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;[100]-90/85&quot;/&gt;
+					&lt;/stationSpeed&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+					&lt;lineSpeed&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;105&quot;/&gt;
+					&lt;/lineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
@@ -260,6 +311,13 @@
 				"/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
+
+        <NetworkSpecificArea startEndQualifier="StartsEnds" startLocation="500" endLocation="3000">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>nonStandardTrackEquipment</NSP_GroupName>
+            <NetworkSpecificParameter name="trackEquipmentType"
+                                      value="ETCS-L1LS-2TracksWithSingleTrackEquipment"/>
+        </NetworkSpecificArea>
     </SP_Areas>
 
     <SP_ContextInformation>
@@ -343,5 +401,12 @@
         <KilometreReferencePoint location="5000">
             <KM_Reference kmRef="10.8"/>
         </KilometreReferencePoint>
+
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="500" endLocation="500"
+                              gradientValue="9.0" gradientDirection="Uphill"
+                              directionOfApplicationOnSP="Nominal"/>
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="500" endLocation="500"
+                              gradientValue="1.0" gradientDirection="Downhill"
+                              directionOfApplicationOnSP="Nominal"/>
     </SP_ContextInformation>
 </SegmentProfile>

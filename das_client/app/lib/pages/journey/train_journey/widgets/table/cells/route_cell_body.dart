@@ -65,6 +65,7 @@ class RouteCellBody extends StatelessWidget {
                   chevronWidth: chevronWidth,
                   chevronAnimationData: chevronAnimationData,
                   chevronHeight: chevronHeight,
+                  chevronBottomSpacing: routeCircleBottomSpacing,
                 ),
               ),
             if (isStop) _circle(context),

@@ -1,6 +1,8 @@
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:collection/collection.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 /// Data class to hold all the information to chevron animation.
@@ -45,14 +47,19 @@ class ChevronAnimationData {
 
     // Adjust for stopping point circle on start row
     final startRow = filteredRows[fromIndex];
-    if (startRow is ServicePoint && startRow.isStop) {
-      endOffset += RouteCellBody.routeCircleSize;
+    if (startRow is ServicePoint) {
+      if (startRow.isStop) {
+        startOffset += RouteCellBody.routeCircleSize;
+      }
+      endOffset +=
+          ServicePointRow.routeCircleBottomSpacing(ServicePointRow.calculateHeight(startRow, currentBreakSeries)) -
+          sbbDefaultSpacing;
     }
 
     for (var i = fromIndex + 1; i <= toIndex; i++) {
       endOffset += CellRowBuilder.rowHeightForData(filteredRows[i], currentBreakSeries);
       if (currentIndex == i) {
-        startOffset = endOffset * -1;
+        startOffset += endOffset * -1;
         endOffset = 0.0;
       }
     }
@@ -67,6 +74,8 @@ class ChevronAnimationData {
       startOffset -= endOffset;
       endOffset = 0.0;
     }
+
+    print('$startOffset $endOffset');
 
     return ChevronAnimationData(
       startOffset: startOffset,
