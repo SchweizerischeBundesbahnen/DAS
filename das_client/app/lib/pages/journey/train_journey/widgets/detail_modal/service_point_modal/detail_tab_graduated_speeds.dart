@@ -26,7 +26,7 @@ class DetailTabGraduatedSpeeds extends StatelessWidget {
         }
 
         final breakSeries = snapshot.requireData[0] as BreakSeries?;
-        final relevantSpeeds = snapshot.requireData[1] as List<Speeds>;
+        final relevantSpeeds = snapshot.requireData[1] as List<TrainSeriesSpeed>;
 
         if (breakSeries == null || relevantSpeeds.isEmpty) {
           return Center(
@@ -54,7 +54,7 @@ class DetailTabGraduatedSpeeds extends StatelessWidget {
     );
   }
 
-  Widget _buildSpeedInfoList(BuildContext context, List<Speeds> speedInfo) {
+  Widget _buildSpeedInfoList(BuildContext context, List<TrainSeriesSpeed> speedInfo) {
     return ListView.separated(
       physics: ClampingScrollPhysics(),
       itemCount: speedInfo.length,
