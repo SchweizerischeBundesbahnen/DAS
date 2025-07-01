@@ -11,6 +11,14 @@ typedef AccordionToggleCallback = void Function();
 ///
 /// * [ExpansionPanelList], which this widget is based on.
 class Accordion extends StatefulWidget {
+  static const double defaultCollapsedHeight = _headerFontSize + 2 * _collapsedVerticalPadding;
+  static const double defaultExpandedHeight = _headerFontSize + 2 * _expandedVerticalPadding + _headerContentSpacing;
+
+  static const _headerFontSize = 24.0; // Large Bold
+  static const _expandedVerticalPadding = sbbDefaultSpacing;
+  static const _collapsedVerticalPadding = 2.0;
+  static const _headerContentSpacing = sbbDefaultSpacing * 0.5;
+
   const Accordion({
     required this.title,
     required this.body,
@@ -58,7 +66,7 @@ class _AccordionState extends State<Accordion> {
           ),
         ),
         padding: EdgeInsets.symmetric(
-          vertical: widget.isExpanded ? sbbDefaultSpacing : 2.0,
+          vertical: widget.isExpanded ? Accordion._expandedVerticalPadding : Accordion._collapsedVerticalPadding,
           horizontal: sbbDefaultSpacing * 0.5,
         ),
         child: Column(
@@ -67,7 +75,7 @@ class _AccordionState extends State<Accordion> {
             _header(),
             widget.isExpanded
                 ? Padding(
-                    padding: const EdgeInsets.only(top: sbbDefaultSpacing * 0.5),
+                    padding: const EdgeInsets.only(top: Accordion._headerContentSpacing),
                     child: widget.body,
                   )
                 : SizedBox.shrink(),

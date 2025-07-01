@@ -22,6 +22,9 @@ import 'package:sfera/src/data/dto/graduated_speed_info_entity_dto.dart';
 import 'package:sfera/src/data/dto/handshake_acknowledgement_dto.dart';
 import 'package:sfera/src/data/dto/handshake_reject_dto.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
+import 'package:sfera/src/data/dto/jp_contex_information_nsp_constraints.dart';
+import 'package:sfera/src/data/dto/jp_context_information_dto.dart';
+import 'package:sfera/src/data/dto/jp_context_information_nsps_dto.dart';
 import 'package:sfera/src/data/dto/kilometre_reference_point_dto.dart';
 import 'package:sfera/src/data/dto/km_reference_dto.dart';
 import 'package:sfera/src/data/dto/level_crossing_area_dto.dart';
@@ -296,6 +299,12 @@ class SferaReplyParser {
         return DecisiveGradientAreaDto(type: type, attributes: attributes, children: children, value: value);
       case NetworkSpecificConstraintDto.elementType:
         return NetworkSpecificConstraintDto.from(attributes: attributes, children: children, value: value);
+      case JpContexInformationNspConstraints.elementType:
+        return JpContexInformationNspConstraints(attributes: attributes, children: children, value: value);
+      case JpContextInformationDto.elementType:
+        return JpContextInformationDto(attributes: attributes, children: children, value: value);
+      case JpContextInformationNspDto.elementType:
+        return JpContextInformationNspDto.from(attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElementDto(type: type, attributes: attributes, children: children, value: value);
     }

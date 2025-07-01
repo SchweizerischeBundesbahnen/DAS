@@ -1308,6 +1308,26 @@ void main() {
     expect(trackFootNotes[0].footNote.refText, '1)');
   });
 
+  test('Test operational indications parsed correctly', () async {
+    final journey = getJourney('T22', 3);
+    expect(journey.valid, true);
+
+    final uncodedOperationalIndications = journey.data.whereType<UncodedOperationalIndication>().toList();
+    expect(uncodedOperationalIndications, hasLength(4));
+
+    expect(uncodedOperationalIndications[0].order, 0);
+    expect(uncodedOperationalIndications[0].text, 'Renens VD: Halt an Halteort 3');
+    expect(uncodedOperationalIndications[1].order, 100000);
+    expect(uncodedOperationalIndications[1].text, 'Lausanne: Halt an Halteort 2');
+    expect(uncodedOperationalIndications[2].order, 100000);
+    expect(
+      uncodedOperationalIndications[2].text,
+      'Strecke INN - MR: Bahnübergangsanlagen ohne Balisenüberwachung Straba. = Strassenbahnbereich E Straba. = Ende Strassenbahnbanbereich K Ende = Kurvenende',
+    );
+    expect(uncodedOperationalIndications[3].order, 200000);
+    expect(uncodedOperationalIndications[3].text, 'Pully: Vorziehen bis Ende Perron');
+  });
+
   test('Test ContactList T9999 parsed correctly', () async {
     final journey = getJourney('T9999', 5);
     expect(journey.valid, true);

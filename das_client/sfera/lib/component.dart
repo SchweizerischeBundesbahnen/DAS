@@ -50,6 +50,7 @@ export 'package:sfera/src/model/journey/track_equipment_segment.dart';
 export 'package:sfera/src/model/journey/track_foot_note.dart';
 export 'package:sfera/src/model/journey/train_series.dart';
 export 'package:sfera/src/model/journey/tram_area.dart';
+export 'package:sfera/src/model/journey/uncoded_operational_indication.dart';
 export 'package:sfera/src/model/journey/ux_testing_event.dart';
 export 'package:sfera/src/model/journey/warnapp_event.dart';
 export 'package:sfera/src/model/journey/whistles.dart';

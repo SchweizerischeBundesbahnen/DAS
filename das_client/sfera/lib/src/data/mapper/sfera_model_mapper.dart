@@ -1,8 +1,11 @@
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
+import 'package:sfera/component.dart';
+import 'package:sfera/src/data/dto/enums/operational_indication_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/start_end_qualifier_dto.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/multilingual_text_dto.dart';
+import 'package:sfera/src/data/dto/operational_indication_nsp_dto.dart';
 import 'package:sfera/src/data/dto/related_train_information_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
@@ -11,24 +14,7 @@ import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/mapper/mapper_utils.dart';
 import 'package:sfera/src/data/mapper/segment_profile_mapper.dart';
 import 'package:sfera/src/data/mapper/track_equipment_mapper.dart';
-import 'package:sfera/src/model/journey/additional_speed_restriction.dart';
-import 'package:sfera/src/model/journey/additional_speed_restriction_data.dart';
-import 'package:sfera/src/model/journey/base_data.dart';
-import 'package:sfera/src/model/journey/base_foot_note.dart';
 import 'package:sfera/src/model/journey/bracket_station.dart';
-import 'package:sfera/src/model/journey/bracket_station_segment.dart';
-import 'package:sfera/src/model/journey/break_series.dart';
-import 'package:sfera/src/model/journey/cab_signaling.dart';
-import 'package:sfera/src/model/journey/communication_network_change.dart';
-import 'package:sfera/src/model/journey/contact.dart';
-import 'package:sfera/src/model/journey/contact_list.dart';
-import 'package:sfera/src/model/journey/datatype.dart';
-import 'package:sfera/src/model/journey/journey.dart';
-import 'package:sfera/src/model/journey/line_foot_note.dart';
-import 'package:sfera/src/model/journey/metadata.dart';
-import 'package:sfera/src/model/journey/service_point.dart';
-import 'package:sfera/src/model/journey/track_equipment_segment.dart';
-import 'package:sfera/src/model/journey/tram_area.dart';
 
 final _log = Logger('SferaModelMapper');
 
@@ -72,6 +58,11 @@ class SferaModelMapper {
         .mapIndexed((index, reference) => SegmentProfileMapper.parseSegmentProfile(reference, index, segmentProfiles))
         .flattenedToList;
     journeyData.addAll(segmentJourneyData);
+
+    final uncodedOperationalIndications = segmentProfileReferences
+        .mapIndexed((index, reference) => _parseUncodedOperationalIndication(index, reference))
+        .flattenedToList;
+    journeyData.addAll(uncodedOperationalIndications);
 
     final tramAreas = _parseTramAreas(segmentProfiles);
     journeyData.addAll(tramAreas);
@@ -446,6 +437,32 @@ class SferaModelMapper {
     if (firstTrainRef == null) return null;
 
     return trainCharacteristics.firstWhereGivenOrNull(firstTrainRef);
+  }
+
+  static List<UncodedOperationalIndication> _parseUncodedOperationalIndication(
+    int segmentIndex,
+    SegmentProfileReferenceDto segmentProfileReference,
+  ) {
+    final indications = segmentProfileReference.jpContextInformation?.operationalIndications;
+    if (indications == null) return [];
+
+    mapToModel(OperationalIndicationNspDto uncoded) {
+      final startLocation = uncoded.constraints?.startLocation;
+      if (startLocation == null || uncoded.uncodedText == null) {
+        _log.warning('Uncoded operational indication without text and/or location found: $uncoded');
+        return null;
+      }
+      return UncodedOperationalIndication(
+        order: calculateOrder(segmentIndex, startLocation),
+        text: uncoded.uncodedText!,
+      );
+    }
+
+    return indications
+        .where((indication) => indication.operationalIndicationType == OperationalIndicationTypeDto.uncoded)
+        .map(mapToModel)
+        .nonNulls
+        .toList();
   }
 
   static List<TramArea> _parseTramAreas(List<SegmentProfileDto> segmentProfiles) {

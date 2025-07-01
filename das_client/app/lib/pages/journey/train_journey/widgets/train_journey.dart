@@ -29,6 +29,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/signal_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/speed_change_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/track_foot_note_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/tram_area_row.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/uncoded_operational_indication_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/whistle_row.dart';
 import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/theme/theme_util.dart';
@@ -245,6 +246,15 @@ class TrainJourney extends StatelessWidget {
             isExpanded: !settings.collapsedFootNotes.contains(rowData.identifier),
             accordionToggleCallback: () => _onFootNoteExpanded(context, rowData, settings),
           );
+        case Datatype.uncodedOperationalIndication:
+          return UncodedOperationalIndicationRow(
+            metadata: journey.metadata,
+            data: rowData as UncodedOperationalIndication,
+            config: trainJourneyConfig,
+            // TODO:
+            isExpanded: true,
+            accordionToggleCallback: () {},
+          );
       }
     });
   }
@@ -333,6 +343,7 @@ class TrainJourney extends StatelessWidget {
     ];
   }
 
+  // TODO: Use collapsable interface / class
   void _onFootNoteExpanded(BuildContext context, BaseFootNote footNote, TrainJourneySettings settings) {
     final newList = List<String>.from(settings.collapsedFootNotes);
     if (settings.collapsedFootNotes.contains(footNote.identifier)) {

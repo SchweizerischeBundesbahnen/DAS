@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                SP_ID="T22_3" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="1800" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>1285</IM_ID>
+    </SP_Zone>
+
+    <SP_Points>
+
+        <TimingPoint TP_ID="Pully" location="0">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>1121</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+            <TP_Name name="PU"/>
+        </TimingPoint>
+
+    </SP_Points>
+
+    <SP_Areas>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="PU" TAF_TAP_location_type="halt">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>1121</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Pully</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>departureAuth</NSP_GroupName>
+                <NetworkSpecificParameter name="departureAuth" value="false"/>
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>lineFootNotes</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlLineFootNotes" value="
+				&lt;lineFootNotes&gt;
+					&lt;footNote identifier=&quot;DF1B0A0060F74EE0B874B2180359406B&quot;&gt;
+						&lt;text&gt;Zugelassen nur für&lt;b&gt; RABDe 500&lt;/b&gt;&lt;/text&gt;
+						&lt;trainSeries>R&lt;/trainSeries&gt;
+					&lt;/footNote&gt;
+				&lt;/lineFootNotes&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
+
+        </TAF_TAP_Location>
+
+    </SP_Areas>
+
+    <SP_ContextInformation>
+
+        <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1314"/>
+            </Contact>
+        </ContactList>
+
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="2.5"/>
+        </KilometreReferencePoint>
+
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="11.0" gradientDirection="Uphill"
+                              directionOfApplicationOnSP="Nominal"/>
+
+    </SP_ContextInformation>
+
+</SegmentProfile>

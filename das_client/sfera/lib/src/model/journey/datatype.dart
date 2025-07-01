@@ -15,4 +15,5 @@ enum Datatype {
   opFootNote,
   trackFootNote,
   lineFootNote,
+  uncodedOperationalIndication,
 }
