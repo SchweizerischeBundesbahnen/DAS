@@ -2,6 +2,7 @@ import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_poi
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/advised_speed_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/speed_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/time_cell_body.dart';
@@ -130,6 +131,17 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
         speed: trainSeriesSpeed.speed,
         hasAdditionalInformation: relevantGraduatedSpeedInfo.isNotEmpty,
         rowIndex: rowIndex,
+      ),
+    );
+  }
+
+  @override
+  DASTableCell advisedSpeedCell(BuildContext context) {
+    if (data.calculatedSpeed == null) return DASTableCell.empty();
+
+    return DASTableCell(
+      child: AdvisedSpeedCellBody(
+        speed: data.calculatedSpeed!,
       ),
     );
   }

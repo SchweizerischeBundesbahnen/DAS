@@ -25,7 +25,7 @@ class ServicePoint extends BaseData {
   final bool isStation;
   final BracketMainStation? bracketMainStation;
   final List<TrainSeriesSpeed>? graduatedSpeedInfo;
-  final Speed? calculatedSpeed;
+  final SingleSpeed? calculatedSpeed;
   final DecisiveGradient? decisiveGradient;
   final ArrivalDepartureTime? arrivalDepartureTime;
 
