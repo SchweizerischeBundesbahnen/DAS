@@ -11,15 +11,16 @@ class PunctualityController {
   final int punctualityDisappearSeconds = 300;
 
   DateTime? lastUpdate;
-  Timer? _updateTimer;
+  Timer? updateTimer;
   Delay? _lastDelay;
 
   final _punctualityStateController = BehaviorSubject<PunctualityState>.seeded(PunctualityState.visible);
 
   Stream<PunctualityState> get punctualityStateStream => _punctualityStateController.distinct();
 
+  //todo statt lastupdate und jede sekunde durchgehen eher ein future welches man danach im widget test awaiten kann. (zb future delay) wenn update kommt beide idle times cancellen und wieder neu warten.
   void startMonitoring() {
-    _updateTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+    updateTimer = Timer.periodic(const Duration(seconds: 1), (_) {
       final duration = lastUpdate != null ? clock.now().difference(lastUpdate!) : Duration.zero;
       final state = _getPunctualityStateFromDuration(duration);
       print('$duration $state');
@@ -54,6 +55,6 @@ class PunctualityController {
   }
 
   void stopMonitoring() {
-    _updateTimer?.cancel();
+    updateTimer?.cancel();
   }
 }

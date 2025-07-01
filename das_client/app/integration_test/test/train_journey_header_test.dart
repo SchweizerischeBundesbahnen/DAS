@@ -53,12 +53,10 @@ Future<void> main() async {
 
         // check that delay text is there
         expect(delayText, findsOneWidget);
-        FakeAsync().run((fakeAsync) {
-          fakeAsync.elapse(const Duration(seconds: 320));
-        });
 
-        await Future.delayed(Duration(seconds: 5));
-        await tester.pumpAndSettle();
+        tester.pump(Duration(seconds: 320));
+
+        await Future.delayed(Duration(seconds: 2));
 
         // check that delay text has disappeared
         expect(delayText, findsNothing);

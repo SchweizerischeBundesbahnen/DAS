@@ -17,10 +17,10 @@ class TimeContainer extends StatefulWidget {
   static const Key delayKey = Key('delayTextKey');
 
   @override
-  State<TimeContainer> createState() => _TimeContainerState();
+  State<TimeContainer> createState() => TimeContainerState();
 }
 
-class _TimeContainerState extends State<TimeContainer> {
+class TimeContainerState extends State<TimeContainer> {
   late PunctualityController punctualityController;
   TrainJourneyViewModel? viewModel;
 
