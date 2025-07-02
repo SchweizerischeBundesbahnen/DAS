@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T8_1" SP_VersionMajor="2"
-                SP_VersionMinor="4" SP_Length="2000" SP_Status="Valid">
+                SP_VersionMinor="5" SP_Length="3500" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -33,6 +33,63 @@
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
+        <TimingPoint TP_ID="Dulliken" location="2500">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3005</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Lenzburg" location="3000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3006</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Zurich" location="3500">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3007</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E10" location="700"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E10"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="P120" location="1200"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="P120"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="A180" location="1800"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A180"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E22" location="2200"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E22"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="C44" location="2700"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="C44"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="P305" location="3200"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="P305"/>
+        </Signal>
     </SP_Points>
     <SP_Areas>
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="500" endLocation="500" TAF_TAP_location_abbreviation="BE"
@@ -152,23 +209,138 @@
                 "/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="2500" endLocation="2500" TAF_TAP_location_abbreviation="DU"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3005</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Dulliken</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                    &lt;lineSpeed&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;60&quot; speed=&quot;85&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;90&quot;/&gt;
+                    &lt;/lineSpeed&gt;
+                "/>
+            </TAF_TAP_Location_NSP>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlStationSpeed" value="
+                    &lt;stationSpeed&gt;
+                    &lt;v trainSeries=&quot;R&quot; speed=&quot;75-70-65&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; speed=&quot;70&quot;/&gt;
+                    &lt;/stationSpeed&gt;
+                "/>
+                <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
+                    &lt;entries&gt;
+                    &lt;entry roSpeed=&quot;75-70-65&quot; text=&quot;Zusatzinformation D&quot;/&gt;
+                    &lt;/entries&gt;
+                "/>
+            </TAF_TAP_Location_NSP>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="3000" endLocation="3000" TAF_TAP_location_abbreviation="LZ"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3006</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Lenzburg</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                    &lt;lineSpeed&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;85&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;60&quot; speed=&quot;95&quot;/&gt;
+                    &lt;/lineSpeed&gt;
+                "/>
+            </TAF_TAP_Location_NSP>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlStationSpeed" value="
+                    &lt;stationSpeed&gt;
+                    &lt;v trainSeries=&quot;R&quot; speed=&quot;70-65/55&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; speed=&quot;75&quot;/&gt;
+                    &lt;/stationSpeed&gt;
+                "/>
+            </TAF_TAP_Location_NSP>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="3500" endLocation="3500" TAF_TAP_location_abbreviation="ZUE"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3007</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Zurich</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                    &lt;lineSpeed&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;90&quot;/&gt;
+                    &lt;/lineSpeed&gt;
+                "/>
+            </TAF_TAP_Location_NSP>
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlStationSpeed" value="
+                    &lt;stationSpeed&gt;
+                    &lt;v trainSeries=&quot;R&quot; speed=&quot;60&quot;/&gt;
+                    &lt;v trainSeries=&quot;A&quot; speed=&quot;60&quot;/&gt;
+                    &lt;/stationSpeed&gt;
+                "/>
+            </TAF_TAP_Location_NSP>
+        </TAF_TAP_Location>
     </SP_Areas>
 
     <SP_ContextInformation>
         <KilometreReferencePoint location="500">
             <KM_Reference kmRef="30.2"/>
         </KilometreReferencePoint>
-
+        <KilometreReferencePoint location="700">
+            <KM_Reference kmRef="32.4"/>
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="1000">
             <KM_Reference kmRef="33.5"/>
         </KilometreReferencePoint>
-
+        <KilometreReferencePoint location="1200">
+            <KM_Reference kmRef="45.2"/>
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="1500">
             <KM_Reference kmRef="54.7"/>
         </KilometreReferencePoint>
-
+        <KilometreReferencePoint location="1800">
+            <KM_Reference kmRef="70.5"/>
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="2000">
             <KM_Reference kmRef="84.9"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2200">
+            <KM_Reference kmRef="86.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2500">
+            <KM_Reference kmRef="91.7"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2700">
+            <KM_Reference kmRef="95.4"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="3000">
+            <KM_Reference kmRef="112.8"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="3200">
+            <KM_Reference kmRef="120.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="3500">
+            <KM_Reference kmRef="135.2"/>
         </KilometreReferencePoint>
     </SP_ContextInformation>
 </SegmentProfile>

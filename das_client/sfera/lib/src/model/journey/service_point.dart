@@ -1,14 +1,20 @@
-import 'package:sfera/component.dart';
+import 'package:sfera/src/model/journey/arrival_departure_time.dart';
+import 'package:sfera/src/model/journey/base_data.dart';
 import 'package:sfera/src/model/journey/bracket_station.dart';
+import 'package:sfera/src/model/journey/break_series.dart';
+import 'package:sfera/src/model/journey/datatype.dart';
 import 'package:sfera/src/model/journey/decisive_gradient.dart';
+import 'package:sfera/src/model/journey/station_property.dart';
+import 'package:sfera/src/model/journey/station_sign.dart';
+import 'package:sfera/src/model/journey/train_series_speed.dart';
 
 class ServicePoint extends BaseData {
   const ServicePoint({
     required this.name,
     required super.order,
     required super.kilometre,
-    super.speedData,
-    super.localSpeedData,
+    super.speeds,
+    super.localSpeeds,
     this.mandatoryStop = false,
     this.isStop = false,
     this.isStation = false,
@@ -26,32 +32,32 @@ class ServicePoint extends BaseData {
   final bool isStop;
   final bool isStation;
   final BracketMainStation? bracketMainStation;
-  final SpeedData? graduatedSpeedInfo;
+  final List<TrainSeriesSpeed>? graduatedSpeedInfo;
   final DecisiveGradient? decisiveGradient;
   final ArrivalDepartureTime? arrivalDepartureTime;
   final StationSign? stationSign1;
   final StationSign? stationSign2;
   final List<StationProperty> properties;
 
-  List<Speeds> relevantGraduatedSpeedInfo(BreakSeries? breakSeries) {
-    final speedInfo = graduatedSpeedInfo?.speeds ?? [];
+  List<TrainSeriesSpeed> relevantGraduatedSpeedInfo(BreakSeries? breakSeries) {
+    final speedInfo = graduatedSpeedInfo ?? [];
     return speedInfo.where((speed) => speed.trainSeries == breakSeries?.trainSeries && speed.text != null).toList();
   }
 
   Iterable<StationProperty> relevantProperties(BreakSeries? breakSeries) {
     return properties.where(
       (property) =>
-          property.speedData == null ||
-          property.speedData?.speedsFor(breakSeries?.trainSeries, breakSeries?.breakSeries) != null,
+          property.speeds == null ||
+          property.speeds?.speedFor(breakSeries?.trainSeries, breakSeries: breakSeries?.breakSeries) != null,
     );
   }
 
   @override
-  Iterable<Speeds> get allSpeedData {
+  Iterable<TrainSeriesSpeed> get allSpeeds {
     return [
-      ...super.allSpeedData,
-      ...?graduatedSpeedInfo?.speeds,
-      ...properties.map((it) => it.speedData).nonNulls.expand((it) => it.speeds),
+      ...super.allSpeeds,
+      ...?graduatedSpeedInfo,
+      ...properties.map((it) => it.speeds).nonNulls.expand((it) => it),
     ];
   }
 
@@ -65,8 +71,8 @@ class ServicePoint extends BaseData {
         ', isStop: $isStop'
         ', isStation: $isStation'
         ', bracketMainStation: $bracketMainStation'
-        ', speedData: $speedData'
-        ', localSpeedData: $localSpeedData'
+        ', speeds: $speeds'
+        ', localSpeeds: $localSpeeds'
         ', arrivalDepartureTime: $arrivalDepartureTime'
         ', stationSign1: $stationSign1'
         ', stationSign2: $stationSign2'

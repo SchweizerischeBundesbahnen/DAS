@@ -12,8 +12,8 @@ import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
 import 'package:sfera/src/data/dto/station_property_dto.dart';
 import 'package:sfera/src/data/dto/taf_tap_location_dto.dart';
 import 'package:sfera/src/data/dto/timing_point_constraints_dto.dart';
-import 'package:sfera/src/data/mapper/graduated_speed_data_mapper.dart';
 import 'package:sfera/src/data/mapper/mapper_utils.dart';
+import 'package:sfera/src/data/mapper/speed_mapper.dart';
 import 'package:sfera/src/model/journey/arrival_departure_time.dart';
 import 'package:sfera/src/model/journey/balise.dart';
 import 'package:sfera/src/model/journey/base_data.dart';
@@ -85,8 +85,7 @@ class SegmentProfileMapper {
     // Remove new line speeds that are already present as connection tracks
     newLineSpeeds.removeWhere(
       (speedChange) =>
-          connectionTracks.firstWhereOrNull((connectionTrack) => connectionTrack.speedData == speedChange.speedData) !=
-          null,
+          connectionTracks.firstWhereOrNull((connectionTrack) => connectionTrack.speeds == speedChange.speeds) != null,
     );
 
     journeyData.addAll(connectionTracks);
@@ -122,13 +121,13 @@ class SegmentProfileMapper {
           isStation: tafTapLocation.locationType != TafTapLocationTypeDto.halt,
           bracketMainStation: _parseBracketMainStation(tafTapLocations, tafTapLocation),
           kilometre: mapperData.kilometreMap[timingPoint.location] ?? [],
-          speedData: GraduatedSpeedDataMapper.fromVelocities(
+          speeds: SpeedMapper.fromVelocities(
             tafTapLocation.newLineSpeed?.xmlNewLineSpeed.element.velocities,
           ),
-          localSpeedData: GraduatedSpeedDataMapper.fromVelocities(
+          localSpeeds: SpeedMapper.fromVelocities(
             tafTapLocation.stationSpeed?.xmlStationSpeed.element.velocities,
           ),
-          graduatedSpeedInfo: GraduatedSpeedDataMapper.fromGraduatedSpeedInfo(
+          graduatedSpeedInfo: SpeedMapper.fromGraduatedSpeedInfo(
             tafTapLocation.stationSpeed?.xmlGraduatedSpeedInfo?.element,
           ),
           decisiveGradient: _parseDecisiveGradientAtLocation(mapperData.segmentProfile, timingPoint.location),
@@ -229,7 +228,7 @@ class SegmentProfileMapper {
         curveType: curvePointNsp.curveType != null ? CurveType.from(curvePointNsp.curveType!) : null,
         text: curveSpeed?.text,
         comment: curveSpeed?.comment,
-        localSpeedData: GraduatedSpeedDataMapper.fromVelocities(curveSpeed?.speeds?.velocities),
+        localSpeeds: SpeedMapper.fromVelocities(curveSpeed?.speeds?.velocities),
       );
     }).toList();
   }
@@ -242,7 +241,7 @@ class SegmentProfileMapper {
       return ConnectionTrack(
         text: connectionTrack.connectionTrackDescription?.text,
         order: calculateOrder(mapperData.segmentIndex, connectionTrack.location),
-        speedData: speedChange?.speedData,
+        speeds: speedChange?.speeds,
         kilometre: mapperData.kilometreMap[connectionTrack.location] ?? [],
       );
     }).toList();
@@ -254,7 +253,7 @@ class SegmentProfileMapper {
       final velocities = newLineSpeed.xmlNewLineSpeed.element.speeds?.velocities;
       return SpeedChange(
         text: newLineSpeed.xmlNewLineSpeed.element.text,
-        speedData: GraduatedSpeedDataMapper.fromVelocities(velocities),
+        speeds: SpeedMapper.fromVelocities(velocities),
         order: calculateOrder(mapperData.segmentIndex, newLineSpeed.location),
         kilometre: mapperData.kilometreMap[newLineSpeed.location] ?? [],
       );
@@ -417,7 +416,7 @@ class SegmentProfileMapper {
       return StationProperty(
         text: property.text,
         sign: StationSign.fromOptional(property.sign),
-        speedData: GraduatedSpeedDataMapper.fromVelocities(property.speeds?.velocities),
+        speeds: SpeedMapper.fromVelocities(property.speeds?.velocities),
       );
     }).toList();
   }

@@ -1,28 +1,31 @@
 import 'package:logging/logging.dart';
+import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/graduated_speed_info_dto.dart';
 import 'package:sfera/src/data/dto/velocity_dto.dart';
-import 'package:sfera/src/model/journey/speed_data.dart';
-import 'package:sfera/src/model/journey/speeds.dart';
-import 'package:sfera/src/model/journey/train_series.dart';
 
 final _log = Logger('GraduatedSpeedDataMapper');
 
 /// Used to map data from SFERA to domain model [SpeedData].
-class GraduatedSpeedDataMapper {
-  GraduatedSpeedDataMapper._();
+class SpeedMapper {
+  SpeedMapper._();
 
   /// Maps list of SFERA model [VelocityDto] to [SpeedData]
-  static SpeedData? fromVelocities(Iterable<VelocityDto>? velocities) {
+  static List<TrainSeriesSpeed>? fromVelocities(Iterable<VelocityDto>? velocities) {
     if (velocities == null) return null;
 
-    final graduatedSpeeds = <Speeds>[];
+    final result = <TrainSeriesSpeed>[];
 
     void addSpeed(TrainSeries trainSeries, int? breakSeries, String speedString, bool reduced) {
       try {
-        final speeds = Speeds.from(trainSeries, speedString, breakSeries: breakSeries, reduced: reduced);
-        graduatedSpeeds.add(speeds);
+        final speeds = TrainSeriesSpeed(
+          trainSeries: trainSeries,
+          speed: Speed.parse(speedString),
+          breakSeries: breakSeries,
+          reduced: reduced,
+        );
+        result.add(speeds);
       } catch (e) {
-        _log.warning('Could not parse station speed with "$speedString"', e);
+        _log.warning('Could not parse speed with "$speedString"', e);
       }
     }
 
@@ -32,21 +35,21 @@ class GraduatedSpeedDataMapper {
       }
     }
 
-    return SpeedData(speeds: graduatedSpeeds);
+    return result;
   }
 
   /// Maps SFERA model [GraduatedSpeedInfoDto] to [SpeedData]
-  static SpeedData? fromGraduatedSpeedInfo(GraduatedSpeedInfoDto? graduatedSpeedInfo) {
+  static List<TrainSeriesSpeed>? fromGraduatedSpeedInfo(GraduatedSpeedInfoDto? graduatedSpeedInfo) {
     if (graduatedSpeedInfo == null) return null;
 
-    final graduatedStationSpeeds = <Speeds>[];
+    final result = <TrainSeriesSpeed>[];
 
     void addSpeed(TrainSeries trainSeries, String speedString, String? text) {
       try {
-        final speeds = Speeds.from(trainSeries, speedString, text: text);
-        graduatedStationSpeeds.add(speeds);
+        final speeds = TrainSeriesSpeed(trainSeries: trainSeries, speed: Speed.parse(speedString), text: text);
+        result.add(speeds);
       } catch (e) {
-        _log.warning('Could not parse graduated station speed with "$speedString"', e);
+        _log.warning('Could not parse graduated station speed info with "$speedString"', e);
       }
     }
 
@@ -67,6 +70,6 @@ class GraduatedSpeedDataMapper {
       }
     }
 
-    return SpeedData(speeds: graduatedStationSpeeds);
+    return result;
   }
 }

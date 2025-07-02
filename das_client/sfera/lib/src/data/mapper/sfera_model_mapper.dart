@@ -356,7 +356,7 @@ class SferaModelMapper {
           isStart: false,
           order: segment.endOrder!,
           kilometre: segment.endKm,
-          speedData: speedChange?.speedData,
+          speeds: speedChange?.speeds,
         ),
       );
     }
@@ -432,7 +432,7 @@ class SferaModelMapper {
 
   static Set<BreakSeries> _parseAvailableBreakSeries(List<BaseData> journeyData) {
     return journeyData
-        .expand((it) => it.allSpeedData)
+        .expand((it) => it.allSpeeds)
         .where((it) => it.breakSeries != null)
         .map((it) => BreakSeries(trainSeries: it.trainSeries, breakSeries: it.breakSeries!))
         .toSet();

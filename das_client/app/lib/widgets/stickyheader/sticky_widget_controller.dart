@@ -28,6 +28,11 @@ class StickyWidgetController with ChangeNotifier {
     StickyLevel.first: -1,
     StickyLevel.second: -1,
   };
+  Map<StickyLevel, int> nextHeaderIndex = {
+    StickyLevel.first: -1,
+    StickyLevel.second: -1,
+  };
+
   var footerIndex = -1;
 
   bool get isRecalculating => _recalculating;
@@ -53,6 +58,7 @@ class StickyWidgetController with ChangeNotifier {
 
     if (scrollController.positions.isNotEmpty) {
       _calculateHeaders(firstVisibleIndex);
+      _calculateNextHeaderIndex();
       _calculateHeaderOffsets();
       footerIndex = _calculateFooter(headerIndexes[StickyLevel.first]! + 1);
     }
@@ -169,5 +175,12 @@ class StickyWidgetController with ChangeNotifier {
   void dispose() {
     scrollController.removeListener(scrollListener);
     super.dispose();
+  }
+
+  void _calculateNextHeaderIndex() {
+    nextHeaderIndex = {
+      StickyLevel.first: _findNextStickyBelowLevel(headerIndexes[StickyLevel.first]! + 1, StickyLevel.first),
+      StickyLevel.second: _findNextStickyBelowLevel(headerIndexes[StickyLevel.second]! + 1, StickyLevel.second),
+    };
   }
 }

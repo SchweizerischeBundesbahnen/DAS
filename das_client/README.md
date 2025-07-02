@@ -32,15 +32,18 @@ fvm dart run melos generate
 DAS Client has 3 distinct flavors: `dev`, `inte` and `prod`. Run them as follows:
 
 ```shell
-fvm flutter run --flavor dev -t app/lib/main_dev.dart
+cd app
+fvm flutter run --flavor dev -t lib/main_dev.dart
 ```
 
 ```shell
-fvm flutter run --flavor inte -t app/lib/main_inte.dart
+cd app
+fvm flutter run --flavor inte -t lib/main_inte.dart
 ```
 
 ```shell
-fvm flutter run --flavor prod -t app/lib/main_prod.dart
+cd app
+fvm flutter run --flavor prod -t lib/main_prod.dart
 ```
 
 ## Architecture

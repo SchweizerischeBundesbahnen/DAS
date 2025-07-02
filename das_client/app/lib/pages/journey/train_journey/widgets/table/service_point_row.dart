@@ -4,8 +4,8 @@ import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_poi
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/speed_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/time_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:app/theme/theme_util.dart';
@@ -31,6 +31,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     required super.metadata,
     required super.data,
     required BuildContext context,
+    required super.rowIndex,
     super.config,
     Color? rowColor,
   }) : super(
@@ -80,7 +81,10 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     final relevantProperties = data.relevantProperties(currentBreakSeries);
     if (relevantProperties.isEmpty) return [];
     return relevantProperties.map((property) {
-      final speed = property.speedData?.speedsFor(currentBreakSeries?.trainSeries, currentBreakSeries?.breakSeries);
+      final speed = property.speeds?.speedFor(
+        currentBreakSeries?.trainSeries,
+        breakSeries: currentBreakSeries?.breakSeries,
+      );
 
       return Padding(
         padding: EdgeInsets.fromLTRB(0, 4, 0, 0),
@@ -112,9 +116,9 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
                   colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
                 ),
               if (speed != null)
-                GraduatedSpeedsCellBody(
-                  incomingSpeeds: speed.incomingSpeeds,
-                  outgoingSpeeds: speed.outgoingSpeeds,
+                SpeedCellBody(
+                  speed: speed.speed,
+                  rowIndex: rowIndex,
                   singleLine: true,
                 ),
             ],
@@ -208,15 +212,15 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   @override
   DASTableCell localSpeedCell(BuildContext context) {
-    if (data.localSpeedData == null) return DASTableCell.empty();
+    if (data.localSpeeds == null) return DASTableCell.empty();
 
     final currentBreakSeries = config.settings.resolvedBreakSeries(metadata);
 
-    final graduatedSpeeds = data.localSpeedData!.speedsFor(
+    final trainSeriesSpeed = data.localSpeeds!.speedFor(
       currentBreakSeries?.trainSeries,
-      currentBreakSeries?.breakSeries,
+      breakSeries: currentBreakSeries?.breakSeries,
     );
-    if (graduatedSpeeds == null) return DASTableCell.empty();
+    if (trainSeriesSpeed == null) return DASTableCell.empty();
 
     final relevantGraduatedSpeedInfo = data.relevantGraduatedSpeedInfo(currentBreakSeries);
 
@@ -224,10 +228,10 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       onTap: relevantGraduatedSpeedInfo.isNotEmpty ? () => _openGraduatedSpeedDetails(context) : null,
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
-      child: GraduatedSpeedsCellBody(
-        incomingSpeeds: graduatedSpeeds.incomingSpeeds,
-        outgoingSpeeds: graduatedSpeeds.outgoingSpeeds,
+      child: SpeedCellBody(
+        speed: trainSeriesSpeed.speed,
         hasAdditionalInformation: relevantGraduatedSpeedInfo.isNotEmpty,
+        rowIndex: rowIndex,
       ),
     );
   }

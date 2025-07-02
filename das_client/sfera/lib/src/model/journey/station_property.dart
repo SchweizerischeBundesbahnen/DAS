@@ -4,14 +4,14 @@ import 'package:sfera/component.dart';
 @sealed
 @immutable
 class StationProperty {
-  const StationProperty({this.text, this.sign, this.speedData});
+  const StationProperty({this.text, this.sign, this.speeds});
 
   final String? text;
   final StationSign? sign;
-  final SpeedData? speedData;
+  final List<TrainSeriesSpeed>? speeds;
 
   @override
   String toString() {
-    return 'StationProperty(text: $text, sign: $sign, speedData: $speedData)';
+    return 'StationProperty(text: $text, sign: $sign, speeds: $speeds)';
   }
 }
