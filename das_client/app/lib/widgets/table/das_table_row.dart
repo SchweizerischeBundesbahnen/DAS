@@ -7,6 +7,7 @@ abstract class DASTableRowBuilder<T> {
   DASTableRowBuilder({
     required this.height,
     required this.data,
+    required this.rowIndex,
     this.stickyLevel = StickyLevel.none,
     this.identifier,
     GlobalKey? key,
@@ -17,6 +18,7 @@ abstract class DASTableRowBuilder<T> {
   final double height;
   final StickyLevel stickyLevel;
   final T data;
+  final int rowIndex;
   final String? identifier;
   final GlobalKey key;
 }
@@ -28,6 +30,7 @@ class DASTableCellRow extends DASTableRow {
     required this.cells,
     required super.height,
     required super.key,
+    required super.rowIndex,
     this.color,
     this.onTap,
     super.stickyLevel,
@@ -47,6 +50,7 @@ class DASTableWidgetRow extends DASTableRow {
     required this.widget,
     required super.height,
     required super.key,
+    required super.rowIndex,
     super.stickyLevel,
     super.identifier,
   });
@@ -58,6 +62,7 @@ abstract class DASTableRow {
   const DASTableRow({
     required this.height,
     required this.key,
+    required this.rowIndex,
     this.stickyLevel = StickyLevel.none,
     this.identifier,
   });
@@ -67,6 +72,8 @@ abstract class DASTableRow {
   final StickyLevel stickyLevel;
 
   final String? identifier;
+
+  final int rowIndex;
 
   final GlobalKey key;
 }

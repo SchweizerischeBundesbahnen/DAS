@@ -57,7 +57,7 @@ void main() {
     final connectionTrack = ConnectionTrack(order: 500, kilometre: []);
     final tramArea = TramArea(order: 600, kilometre: [], endKilometre: 0.0, amountTramSignals: 0);
     final whistle = Whistle(order: 700, kilometre: []);
-    final speedChange = SpeedChange(order: 800, kilometre: [], speedData: SpeedData());
+    final speedChange = SpeedChange(order: 800, kilometre: [], speeds: []);
     final balise = Balise(order: 900, kilometre: [], amountLevelCrossings: 0);
     final levelCrossing = LevelCrossing(order: 1000, kilometre: []);
     final baliseLevelCrossingGroup = BaliseLevelCrossingGroup(order: 1100, kilometre: [], groupedElements: []);

@@ -6,7 +6,7 @@ import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_poi
 import 'package:app/pages/journey/train_journey/widgets/header/animated_header_icon_button.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/speed_cell_body.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:fake_async/fake_async.dart';
@@ -284,7 +284,7 @@ Future<void> _openByTapOnGraduatedSpeedOf(WidgetTester tester, String text) asyn
   final tableRow = findDASTableRowByText(text);
   final speedCell = find.descendant(
     of: tableRow,
-    matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey),
+    matching: find.byKey(SpeedCellBody.incomingSpeedsKey),
   );
   await tapElement(tester, speedCell.first, warnIfMissed: false);
 }
