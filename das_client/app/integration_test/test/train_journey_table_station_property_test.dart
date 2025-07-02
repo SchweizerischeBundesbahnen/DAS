@@ -20,7 +20,7 @@ void main() {
     expect(find.byKey(Key(StationSign.openLevelCrossingBeforeExitSignal.name)), findsNWidgets(2));
 
     final scrollableFinder = find.byType(AnimatedList);
-    await tester.dragUntilVisible(find.text('Aigle'), scrollableFinder, const Offset(0, -200));
+    await tester.dragUntilVisible(find.text('Aigle'), scrollableFinder, const Offset(0, -50));
 
     expect(find.byKey(Key(StationSign.entryOccupiedTrack.name)), findsNWidgets(1));
 
@@ -52,7 +52,7 @@ void main() {
     expect(find.descendant(of: veveyRow, matching: find.byKey(Key(StationSign.deadendStation.name))), findsOneWidget);
 
     final scrollableFinder = find.byType(AnimatedList);
-    await tester.dragUntilVisible(find.text('Aigle'), scrollableFinder, const Offset(0, -200));
+    await tester.dragUntilVisible(find.text('Aigle'), scrollableFinder, const Offset(0, -50));
 
     final aigleRow = findDASTableRowByText('Aigle');
     expect(
