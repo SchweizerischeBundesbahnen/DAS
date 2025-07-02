@@ -162,12 +162,16 @@ void main() {
       await _openByTapOnCellWithText(tester, '75-70-60');
       _checkOpenModalSheet(DetailTabGraduatedSpeeds.graduatedSpeedsTabKey, 'Bern');
 
+      expect(find.text('75-70-60'), findsOneWidget);
+
       expect(find.text('Zusatzinformation A'), findsOneWidget);
 
       await selectBreakSeries(tester, breakSeries: 'N50');
 
       expect(find.text('Zusatzinformation A'), findsNothing);
-      expect(find.text('Zusatzinformation B'), findsOneWidget);
+      expect(find.text('Zusatzinformation B'), findsExactly(2));
+      expect(find.text('70'), findsOneWidget);
+      expect(find.text('60'), findsOneWidget);
 
       await disconnect(tester);
     });

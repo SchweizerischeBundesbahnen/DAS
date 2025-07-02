@@ -61,14 +61,35 @@ class DetailTabGraduatedSpeeds extends StatelessWidget {
       separatorBuilder: (context, index) => const Divider(),
       itemBuilder: (context, index) {
         final speed = speedInfo[index];
+        final incoming = speed.incomingSpeeds.toJoinedString();
+        final outgoing = speed.outgoingSpeeds.toJoinedString();
+        final hasOutgoing = speed.outgoingSpeeds.isNotEmpty;
+
         return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Text(
-            speed.text!,
-            style: DASTextStyles.mediumRoman,
+          padding: const EdgeInsets.only(left: 16.0, top: 10, right: 16.0, bottom: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(incoming, style: DASTextStyles.mediumBold),
+              const SizedBox(height: 10),
+              Text(speed.text!, style: DASTextStyles.mediumRoman),
+              const SizedBox(height: 10),
+
+              if (hasOutgoing) ...[
+                const Divider(),
+                const SizedBox(height: 10),
+                Text(outgoing, style: DASTextStyles.mediumBold),
+                const SizedBox(height: 10),
+                Text(speed.text!, style: DASTextStyles.mediumRoman),
+              ],
+            ],
           ),
         );
       },
     );
   }
+}
+
+extension _SpeedIterableX on Iterable<Speed> {
+  String toJoinedString({String divider = '-'}) => map((it) => it.speed).join(divider);
 }
