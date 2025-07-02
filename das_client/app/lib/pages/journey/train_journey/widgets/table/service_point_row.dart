@@ -1,3 +1,4 @@
+import 'package:app/extension/base_data_extension.dart';
 import 'package:app/extension/station_sign_extension.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
@@ -156,7 +157,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
         isRouteEnd: metadata.routeEnd == data,
         isStopOnRequest: !data.mandatoryStop,
         chevronAnimationData: config.chevronAnimationData,
-        routeCircleBottomSpacing: routeCircleBottomSpacing(height),
+        chevronPosition: data.chevronPosition,
       ),
     );
   }
@@ -243,7 +244,10 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       alignment: null,
       child: TrackEquipmentCellBody(
         renderData: config.trackEquipmentRenderData!,
-        startEndSpacing: routeCircleBottomSpacing(height),
+        position:
+            data.chevronPosition +
+            RouteCellBody.chevronHeight +
+            (data.isStop ? RouteCellBody.routeCircleSize / 2 : 0.0),
       ),
     );
   }
@@ -298,9 +302,5 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
     if (relevantProperties.isEmpty) return baseRowHeight;
     return baseRowHeight + (relevantProperties.length * propertyRowHeight);
-  }
-
-  static double routeCircleBottomSpacing(double rowHeight) {
-    return (rowHeight - baseRowHeight) + sbbDefaultSpacing;
   }
 }

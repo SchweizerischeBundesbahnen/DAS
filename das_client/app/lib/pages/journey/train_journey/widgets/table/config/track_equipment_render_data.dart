@@ -1,7 +1,7 @@
+import 'package:app/extension/base_data_extension.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:sfera/component.dart';
 
 /// Data class to hold all the information to visualize the track equipment.
@@ -117,9 +117,9 @@ class TrackEquipmentRenderData {
 
     // handle positioning of stop circle on route
     if (isStart && data is ServicePoint) {
-      return ServicePointRow.routeCircleBottomSpacing(rowHeight) + RouteCellBody.routeCircleSize / 2;
+      return rowHeight - (data.chevronPosition + RouteCellBody.chevronHeight) - RouteCellBody.routeCircleSize / 2;
     } else if (isEnd && data is ServicePoint) {
-      return rowHeight - ServicePointRow.routeCircleBottomSpacing(rowHeight) - RouteCellBody.routeCircleSize / 2;
+      return data.chevronPosition + RouteCellBody.chevronHeight + RouteCellBody.routeCircleSize / 2;
     }
 
     return isStart || isEnd ? rowHeight / 2 : rowHeight;

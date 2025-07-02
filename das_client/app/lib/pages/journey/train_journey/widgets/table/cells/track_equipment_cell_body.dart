@@ -1,11 +1,9 @@
 import 'dart:math';
 
-import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/track_equipment_render_data.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class TrackEquipmentCellBody extends StatelessWidget {
@@ -18,12 +16,12 @@ class TrackEquipmentCellBody extends StatelessWidget {
 
   const TrackEquipmentCellBody({
     this.renderData = const TrackEquipmentRenderData(),
-    this.startEndSpacing = sbbDefaultSpacing,
+    this.position,
     super.key,
   });
 
   final TrackEquipmentRenderData renderData;
-  final double startEndSpacing;
+  final double? position;
 
   @override
   Widget build(BuildContext context) {
@@ -166,10 +164,8 @@ class TrackEquipmentCellBody extends StatelessWidget {
   double _calculateBottom(BuildContext context, double height) {
     if (renderData.isStart && renderData.isEnd) {
       return height * 0.25;
-    } else if (renderData.isEnd && renderData.dataType == ServicePoint) {
-      return startEndSpacing + RouteCellBody.routeCircleSize / 2;
     } else if (renderData.isEnd) {
-      return height * 0.5;
+      return position != null ? height - position! : height * 0.5;
     }
 
     final tableBorder = DASTableTheme.of(context)?.data.tableBorder;
@@ -180,10 +176,8 @@ class TrackEquipmentCellBody extends StatelessWidget {
   double _calculateTop(double height) {
     if (renderData.isStart && renderData.isEnd) {
       return height * 0.25;
-    } else if (renderData.isStart && renderData.dataType == ServicePoint) {
-      return height - startEndSpacing - RouteCellBody.routeCircleSize / 2;
     } else if (renderData.isStart) {
-      return height * 0.5;
+      return position != null ? position! : height * 0.5;
     }
 
     return renderData.isConventionalExtendedSpeedBorder ? conventionalExtendedSpeedBorderSpace : 0;

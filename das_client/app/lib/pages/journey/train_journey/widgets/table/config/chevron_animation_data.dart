@@ -1,8 +1,6 @@
+import 'package:app/extension/base_data_extension.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:collection/collection.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 /// Data class to hold all the information to chevron animation.
@@ -45,37 +43,37 @@ class ChevronAnimationData {
     var startOffset = 0.0;
     var endOffset = 0.0;
 
-    // Adjust for stopping point circle on start row
+    // First row chevron to end of cell
     final startRow = filteredRows[fromIndex];
-    if (startRow is ServicePoint) {
-      if (startRow.isStop) {
-        startOffset += RouteCellBody.routeCircleSize;
-      }
-      endOffset +=
-          ServicePointRow.routeCircleBottomSpacing(ServicePointRow.calculateHeight(startRow, currentBreakSeries)) -
-          sbbDefaultSpacing;
-    }
+    final startRowHeight = CellRowBuilder.rowHeightForData(startRow, currentBreakSeries);
+    final startRowChevronPosition = startRow.chevronPosition;
 
-    for (var i = fromIndex + 1; i <= toIndex; i++) {
-      endOffset += CellRowBuilder.rowHeightForData(filteredRows[i], currentBreakSeries);
+    endOffset += startRowHeight - startRowChevronPosition;
+
+    // Full height for all rows in between
+    for (var i = fromIndex + 1; i < toIndex; i++) {
+      final currentRow = filteredRows[i];
+      final rowHeight = CellRowBuilder.rowHeightForData(currentRow, currentBreakSeries);
       if (currentIndex == i) {
-        startOffset += endOffset * -1;
-        endOffset = 0.0;
+        // swap startOffset when current cell is passed over
+        final chevronPosition = currentRow.chevronPosition;
+        endOffset += chevronPosition;
+        startOffset = endOffset * -1;
+        endOffset = rowHeight - chevronPosition;
+      } else {
+        endOffset += rowHeight;
       }
     }
 
-    // Adjust for stopping point circle on end row
+    // Last row cell start to chevron position
     final endRow = filteredRows[toIndex];
-    if (endRow is ServicePoint && endRow.isStop) {
-      endOffset -= RouteCellBody.routeCircleSize;
-    }
+    final endRowChevronPosition = endRow.chevronPosition;
+    endOffset += endRowChevronPosition;
 
     if (currentRow == journey.metadata.currentPosition) {
-      startOffset -= endOffset;
+      startOffset = -endOffset;
       endOffset = 0.0;
     }
-
-    print('$startOffset $endOffset');
 
     return ChevronAnimationData(
       startOffset: startOffset,

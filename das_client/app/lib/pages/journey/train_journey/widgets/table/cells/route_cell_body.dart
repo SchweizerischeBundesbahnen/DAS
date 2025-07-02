@@ -11,10 +11,11 @@ class RouteCellBody extends StatelessWidget {
   static const Key routeEndKey = Key('endRouteCell');
 
   static const double routeCircleSize = 14.0;
+  static const double chevronHeight = 8.0;
 
   const RouteCellBody({
+    required this.chevronPosition,
     super.key,
-    this.chevronHeight = 8.0,
     this.chevronWidth = 16.0,
     this.lineThickness = 2.0,
     this.isStop = false,
@@ -23,13 +24,11 @@ class RouteCellBody extends StatelessWidget {
     this.isRouteStart = false,
     this.isRouteEnd = false,
     this.chevronAnimationData,
-    this.routeCircleBottomSpacing = sbbDefaultSpacing,
   });
 
-  final double chevronHeight;
   final double chevronWidth;
   final double lineThickness;
-  final double routeCircleBottomSpacing;
+  final double chevronPosition;
 
   final bool isCurrentPosition;
   final bool isStop;
@@ -60,12 +59,10 @@ class RouteCellBody extends StatelessWidget {
                 left: 0,
                 right: 0,
                 child: RouteChevron(
-                  isStop: isStop,
-                  circleSize: routeCircleSize,
                   chevronWidth: chevronWidth,
                   chevronAnimationData: chevronAnimationData,
                   chevronHeight: chevronHeight,
-                  chevronBottomSpacing: routeCircleBottomSpacing,
+                  chevronPosition: chevronPosition,
                 ),
               ),
             if (isStop) _circle(context),
@@ -82,8 +79,8 @@ class RouteCellBody extends StatelessWidget {
         DASTableTheme.of(context)?.data.tableBorder?.horizontalInside.width ?? sbbDefaultSpacing;
     return Positioned(
       key: _routeKey(),
-      top: isRouteStart ? height - routeCircleBottomSpacing : 0,
-      bottom: isRouteEnd ? routeCircleBottomSpacing : -horizontalBorderWidth,
+      top: isRouteStart ? chevronPosition + RouteCellBody.chevronHeight : 0,
+      bottom: isRouteEnd ? height - chevronPosition - RouteCellBody.chevronHeight : -horizontalBorderWidth,
       left: (width / 2) - (lineThickness / 2),
       child: VerticalDivider(thickness: lineThickness, color: lineColor),
     );
@@ -93,7 +90,7 @@ class RouteCellBody extends StatelessWidget {
     final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
     final circleColor = isDarkTheme ? SBBColors.white : SBBColors.black;
     return Positioned(
-      bottom: routeCircleBottomSpacing,
+      top: chevronPosition + routeCircleSize / 2,
       child: _RouteCircle(size: routeCircleSize, color: circleColor, isStopOnRequest: isStopOnRequest),
     );
   }

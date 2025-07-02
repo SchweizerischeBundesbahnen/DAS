@@ -9,20 +9,16 @@ class RouteChevron extends StatefulWidget {
   static const Key chevronKey = Key('chevronCell');
 
   const RouteChevron({
-    required this.isStop,
-    required this.circleSize,
     required this.chevronWidth,
     required this.chevronHeight,
-    required this.chevronBottomSpacing,
+    required this.chevronPosition,
     this.chevronAnimationData,
     super.key,
   });
 
-  final bool isStop;
-  final double circleSize;
   final double chevronWidth;
   final double chevronHeight;
-  final double chevronBottomSpacing;
+  final double chevronPosition;
 
   final ChevronAnimationData? chevronAnimationData;
 
@@ -73,9 +69,7 @@ class _RouteChevronState extends State<RouteChevron> {
       alignment: Alignment.center,
       children: [
         Positioned(
-          bottom: widget.isStop
-              ? widget.chevronBottomSpacing + widget.circleSize - currentOffsetValue
-              : widget.chevronBottomSpacing - currentOffsetValue,
+          top: widget.chevronPosition + currentOffsetValue,
           child: CustomPaint(
             key: RouteChevron.chevronKey,
             size: Size(widget.chevronWidth, widget.chevronHeight),
