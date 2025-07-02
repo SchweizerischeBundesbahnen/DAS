@@ -46,6 +46,7 @@ class ServicePoint extends BaseData {
         ', bracketMainStation: $bracketMainStation'
         ', speeds: $speeds'
         ', localSpeeds: $localSpeeds'
+        ', calculatedSpeed: $calculatedSpeed'
         ', arrivalDepartureTime: $arrivalDepartureTime'
         ')';
   }
