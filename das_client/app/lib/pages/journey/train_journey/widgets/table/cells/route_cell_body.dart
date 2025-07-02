@@ -90,7 +90,7 @@ class RouteCellBody extends StatelessWidget {
     final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
     final circleColor = isDarkTheme ? SBBColors.white : SBBColors.black;
     return Positioned(
-      top: chevronPosition + routeCircleSize / 2,
+      top: chevronPosition + RouteCellBody.chevronHeight,
       child: _RouteCircle(size: routeCircleSize, color: circleColor, isStopOnRequest: isStopOnRequest),
     );
   }
