@@ -41,12 +41,9 @@
             <StoppingPointDepartureDetails departureTime="2025-05-17T14:47:00Z" plannedDepartureTime="2025-05-17T14:47:00Z"/>
         </TimingPointConstraints>
 
-		<TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="300" endLocation="450">
-            <AdvisedSpeed adviceType="AccelerationAdvice">
-                <ReasonText language="de" text="asdf"/>
-            </AdvisedSpeed>
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="300" endLocation="450">
+            <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="140"/>
             <TemporaryConstraintReason text="Umbau" language="DE"/>
-
         </TemporaryConstraints>
 
     </SegmentProfileReference>
