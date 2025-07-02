@@ -117,7 +117,7 @@ e.g. to create the `SFERA_JP_T1.xml` symlink, run:
 
 ```shell
 cd sfera/test_resources/T1_track_equipment
-ln -s ../../../sfera_mock/main/resources/static_sfera_resources/T1_track_equipment/SFERA_JP_T1.xml .
+ln -s ../../../../sfera_mock/src/main/resources/static_sfera_resources/T1_track_equipment/SFERA_JP_T1.xml .
 ```
 
 The resulting file structure for a test scenario looks as follows:
