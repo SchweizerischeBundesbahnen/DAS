@@ -13,6 +13,7 @@ class SignalRow extends CellRowBuilder<Signal> {
   SignalRow({
     required super.metadata,
     required super.data,
+    required super.rowIndex,
     super.config,
     super.key,
   });
