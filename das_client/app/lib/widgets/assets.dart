@@ -25,6 +25,14 @@ class AppAssets {
   static const iconTramArea = '$_iconsDir/icon_tram_area.svg';
   static const iconBatteryStatusLow = '$_iconsDir/icon_battery_status_low.svg';
   static const iconKoaWait = '$_iconsDir/icon_koa_wait.svg';
+  static const iconDeadendStation = '$_iconsDir/icon_deadend_station.svg';
+  static const iconEntryOccupiedTrack = '$_iconsDir/icon_entry_occupied_track.svg';
+  static const iconEntryStationWithoutRailfreeAccess = '$_iconsDir/icon_entry_station_without_railfree_access.svg';
+  static const iconNoEntryExitSignal = '$_iconsDir/icon_no_entry_exit_signal.svg';
+  static const iconNoEntrySignal = '$_iconsDir/icon_no_entry_signal.svg';
+  static const iconNoExitSignal = '$_iconsDir/icon_no_exit_signal.svg';
+  static const iconOpenLevelCrossingBeforeExitSignal = '$_iconsDir/icon_open_level_crossing_before_exit_signal.svg';
+  static const iconReducedSpeed = '$_iconsDir/icon_reduced_speed.svg';
 
   // others
   static const imageTypeNSignalStop = '$_othersDir/type_n_signal_stop.svg';

@@ -9,6 +9,7 @@ import 'package:sfera/src/data/dto/foot_note_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_parameter_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
+import 'package:sfera/src/data/dto/station_property_dto.dart';
 import 'package:sfera/src/data/dto/taf_tap_location_dto.dart';
 import 'package:sfera/src/data/dto/timing_point_constraints_dto.dart';
 import 'package:sfera/src/data/mapper/mapper_utils.dart';
@@ -28,6 +29,8 @@ import 'package:sfera/src/model/journey/protection_section.dart';
 import 'package:sfera/src/model/journey/service_point.dart';
 import 'package:sfera/src/model/journey/signal.dart';
 import 'package:sfera/src/model/journey/speed_change.dart';
+import 'package:sfera/src/model/journey/station_property.dart';
+import 'package:sfera/src/model/journey/station_sign.dart';
 import 'package:sfera/src/model/journey/track_foot_note.dart';
 import 'package:sfera/src/model/journey/train_series.dart';
 import 'package:sfera/src/model/journey/whistles.dart';
@@ -129,6 +132,9 @@ class SegmentProfileMapper {
           ),
           decisiveGradient: _parseDecisiveGradientAtLocation(mapperData.segmentProfile, timingPoint.location),
           arrivalDepartureTime: _parseArrivalDepartureTime(tpConstraint),
+          stationSign1: tafTapLocation.routeTableDataNsp?.stationSign1,
+          stationSign2: tafTapLocation.routeTableDataNsp?.stationSign2,
+          properties: _parseStationProperties(tafTapLocation.property?.xmlStationProperty.element.properties),
         ),
       );
     }
@@ -399,5 +405,19 @@ class SegmentProfileMapper {
       ambiguousArrivalTime: operationalArrivalTime,
       plannedArrivalTime: plannedArrivalTime,
     );
+  }
+
+  static List<StationProperty> _parseStationProperties(Iterable<StationPropertyDto>? properties) {
+    if (properties == null || properties.isEmpty) {
+      return [];
+    }
+
+    return properties.map((property) {
+      return StationProperty(
+        text: property.text,
+        sign: StationSign.fromOptional(property.sign),
+        speeds: SpeedMapper.fromVelocities(property.speeds?.velocities),
+      );
+    }).toList();
   }
 }

@@ -4,6 +4,8 @@ import 'package:sfera/src/model/journey/bracket_station.dart';
 import 'package:sfera/src/model/journey/break_series.dart';
 import 'package:sfera/src/model/journey/datatype.dart';
 import 'package:sfera/src/model/journey/decisive_gradient.dart';
+import 'package:sfera/src/model/journey/station_property.dart';
+import 'package:sfera/src/model/journey/station_sign.dart';
 import 'package:sfera/src/model/journey/train_series_speed.dart';
 
 class ServicePoint extends BaseData {
@@ -20,6 +22,9 @@ class ServicePoint extends BaseData {
     this.graduatedSpeedInfo,
     this.decisiveGradient,
     this.arrivalDepartureTime,
+    this.stationSign1,
+    this.stationSign2,
+    this.properties = const [],
   }) : super(type: Datatype.servicePoint);
 
   final String name;
@@ -30,10 +35,30 @@ class ServicePoint extends BaseData {
   final List<TrainSeriesSpeed>? graduatedSpeedInfo;
   final DecisiveGradient? decisiveGradient;
   final ArrivalDepartureTime? arrivalDepartureTime;
+  final StationSign? stationSign1;
+  final StationSign? stationSign2;
+  final List<StationProperty> properties;
 
   List<TrainSeriesSpeed> relevantGraduatedSpeedInfo(BreakSeries? breakSeries) {
     final speedInfo = graduatedSpeedInfo ?? [];
     return speedInfo.where((speed) => speed.trainSeries == breakSeries?.trainSeries && speed.text != null).toList();
+  }
+
+  Iterable<StationProperty> propertiesFor(BreakSeries? breakSeries) {
+    return properties.where(
+      (property) =>
+          property.speeds == null ||
+          property.speeds?.speedFor(breakSeries?.trainSeries, breakSeries: breakSeries?.breakSeries) != null,
+    );
+  }
+
+  @override
+  Iterable<TrainSeriesSpeed> get allSpeeds {
+    return [
+      ...super.allSpeeds,
+      ...?graduatedSpeedInfo,
+      ...properties.map((it) => it.speeds).nonNulls.expand((it) => it),
+    ];
   }
 
   @override
@@ -49,6 +74,9 @@ class ServicePoint extends BaseData {
         ', speeds: $speeds'
         ', localSpeeds: $localSpeeds'
         ', arrivalDepartureTime: $arrivalDepartureTime'
+        ', stationSign1: $stationSign1'
+        ', stationSign2: $stationSign2'
+        ', properties: $properties'
         ')';
   }
 }

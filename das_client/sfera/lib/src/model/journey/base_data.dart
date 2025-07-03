@@ -1,6 +1,7 @@
 import 'package:meta/meta.dart';
-import 'package:sfera/component.dart';
+import 'package:sfera/src/model/journey/datatype.dart';
 import 'package:sfera/src/model/journey/order_priority.dart';
+import 'package:sfera/src/model/journey/train_series_speed.dart';
 
 @sealed
 @immutable
@@ -43,5 +44,12 @@ abstract class BaseData implements Comparable {
   /// Grouping is done in [BaseDataExtension]
   bool canGroupWith(BaseData other) {
     return false;
+  }
+
+  Iterable<TrainSeriesSpeed> get allSpeeds {
+    return [
+      ...?speeds,
+      ...?localSpeeds,
+    ];
   }
 }
