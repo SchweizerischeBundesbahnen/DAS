@@ -14,7 +14,6 @@ import 'package:app/theme/theme_util.dart';
 import 'package:app/util/format.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:battery_plus/battery_plus.dart';
-import 'package:fake_async/fake_async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -35,18 +34,14 @@ Future<void> main() async {
       final timeContainer = find.byType(TimeContainer);
       expect(timeContainer, findsOneWidget);
 
-      // find delay text
-      final delayText = find.descendant(of: timeContainer, matching: find.byKey(TimeContainer.delayKey));
-
       // check that delay text is there
-      expect(delayText, findsOneWidget);
+      expect(find.descendant(of: timeContainer, matching: find.byKey(TimeContainer.delayKey)), findsOneWidget);
 
-      await tester.pump(Duration(seconds: 320));
-
-      await Future.delayed(Duration(seconds: 2));
+      await Future.delayed(Duration(seconds: 5));
+      await tester.pumpAndSettle();
 
       // check that delay text has disappeared
-      expect(delayText, findsNothing);
+      expect(find.descendant(of: timeContainer, matching: find.byKey(TimeContainer.delayKey)), findsNothing);
     });
 
     testWidgets('test punctuality display becomes stale when no updates come', (tester) async {
@@ -65,9 +60,7 @@ Future<void> main() async {
       // check that delay text is there
       expect(delayText, findsOneWidget);
 
-      FakeAsync().run((fakeAsync) {
-        fakeAsync.elapse(const Duration(seconds: 200));
-      });
+      await Future.delayed(Duration(seconds: 3));
       await tester.pumpAndSettle();
 
       // check that delay text is stale

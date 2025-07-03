@@ -2,12 +2,22 @@ import 'dart:async';
 
 import 'package:app/pages/journey/train_journey/widgets/punctuality/punctuality_controller.dart';
 import 'package:app/pages/journey/train_journey/widgets/punctuality/punctuality_state_enum.dart';
+import 'package:app/util/time_constants.dart';
 import 'package:clock/clock.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:sfera/component.dart';
 
 void main() {
+  setUp(() {
+    GetIt.I.registerSingleton(TimeConstants());
+  });
+
+  tearDown(() {
+    GetIt.I.reset();
+  });
+
   Clock buildFakeClock(DateTime baseTime, FakeAsync fakeAsync) {
     return Clock(() => baseTime.add(fakeAsync.elapsed));
   }

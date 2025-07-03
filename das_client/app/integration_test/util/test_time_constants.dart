@@ -6,4 +6,10 @@ class TestTimeConstants extends TimeConstants {
 
   @override
   int get punctualityDisappearSeconds => 4;
+
+  @override
+  int get automaticAdvancementIdleTimeAutoScroll => 2;
+
+  @override
+  int get modalSheetAutomaticCloseAfterSeconds => 2;
 }

@@ -1,13 +1,14 @@
 import 'dart:async';
 
+import 'package:app/di/di.dart';
 import 'package:app/pages/journey/train_journey/widgets/punctuality/punctuality_state_enum.dart';
+import 'package:app/util/time_constants.dart';
 import 'package:clock/clock.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 class PunctualityController {
-  final int punctualityStaleSeconds = 180;
-  final int punctualityDisappearSeconds = 300;
+  final TimeConstants _timeConstants = DI.get<TimeConstants>();
 
   DateTime? lastUpdate;
   Timer? updateTimer;
@@ -26,9 +27,9 @@ class PunctualityController {
   }
 
   PunctualityState _getPunctualityStateFromDuration(Duration duration) {
-    if (duration.inSeconds >= punctualityDisappearSeconds) {
+    if (duration.inSeconds >= _timeConstants.punctualityDisappearSeconds) {
       return PunctualityState.hidden;
-    } else if (duration.inSeconds >= punctualityStaleSeconds) {
+    } else if (duration.inSeconds >= _timeConstants.punctualityStaleSeconds) {
       return PunctualityState.stale;
     } else {
       return PunctualityState.visible;
