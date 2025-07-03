@@ -7,7 +7,6 @@ import 'package:sfera/component.dart';
 
 class PunctualityController {
   final int punctualityStaleSeconds = 180;
-
   final int punctualityDisappearSeconds = 300;
 
   DateTime? lastUpdate;
@@ -18,12 +17,10 @@ class PunctualityController {
 
   Stream<PunctualityState> get punctualityStateStream => _punctualityStateController.distinct();
 
-  //todo statt lastupdate und jede sekunde durchgehen eher ein future welches man danach im widget test awaiten kann. (zb future delay) wenn update kommt beide idle times cancellen und wieder neu warten.
   void startMonitoring() {
     updateTimer = Timer.periodic(const Duration(seconds: 1), (_) {
       final duration = lastUpdate != null ? clock.now().difference(lastUpdate!) : Duration.zero;
       final state = _getPunctualityStateFromDuration(duration);
-      print('$duration $state');
       _emitState(state);
     });
   }

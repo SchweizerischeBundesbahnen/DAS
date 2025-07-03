@@ -1,6 +1,3 @@
-import 'package:app/pages/journey/train_journey/widgets/header/sim_identifier.dart';
-import 'package:app/theme/theme_util.dart';
-import 'package:battery_plus/battery_plus.dart';
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_page.dart';
@@ -10,11 +7,13 @@ import 'package:app/pages/journey/train_journey/widgets/header/extended_menu.dar
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/radio_channel.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/radio_contact.dart';
+import 'package:app/pages/journey/train_journey/widgets/header/sim_identifier.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/time_container.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:app/util/format.dart';
 import 'package:app/widgets/dot_indicator.dart';
-import 'package:clock/clock.dart';
+import 'package:battery_plus/battery_plus.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -26,41 +25,28 @@ import '../mocks/mock_battery.dart';
 import '../mocks/mock_brightness_manager.dart';
 import '../util/test_utils.dart';
 
-Clock _buildFakeClock(DateTime baseTime, FakeAsync fakeAsync) {
-  return Clock(() => baseTime.add(fakeAsync.elapsed));
-}
-
 Future<void> main() async {
   group('train journey header test', () {
-    late Clock clock;
-    late FakeAsync fAsync;
-    FakeAsync().run((fakeAsync) {
-      clock = _buildFakeClock(DateTime.now(), fakeAsync);
-      fAsync = fakeAsync;
-    });
+    testWidgets('test punctuality display hides when no updates come', (tester) async {
+      await prepareAndStartApp(tester);
 
-    withClock(clock, () {
-      testWidgets('test punctuality display hides when no updates come', (tester) async {
-        await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T4');
 
-        await loadTrainJourney(tester, trainNumber: 'T4');
+      final timeContainer = find.byType(TimeContainer);
+      expect(timeContainer, findsOneWidget);
 
-        final timeContainer = find.byType(TimeContainer);
-        expect(timeContainer, findsOneWidget);
+      // find delay text
+      final delayText = find.descendant(of: timeContainer, matching: find.byKey(TimeContainer.delayKey));
 
-        // find delay text
-        final delayText = find.descendant(of: timeContainer, matching: find.byKey(TimeContainer.delayKey));
+      // check that delay text is there
+      expect(delayText, findsOneWidget);
 
-        // check that delay text is there
-        expect(delayText, findsOneWidget);
+      await tester.pump(Duration(seconds: 320));
 
-        tester.pump(Duration(seconds: 320));
+      await Future.delayed(Duration(seconds: 2));
 
-        await Future.delayed(Duration(seconds: 2));
-
-        // check that delay text has disappeared
-        expect(delayText, findsNothing);
-      });
+      // check that delay text has disappeared
+      expect(delayText, findsNothing);
     });
 
     testWidgets('test punctuality display becomes stale when no updates come', (tester) async {
