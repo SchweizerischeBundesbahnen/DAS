@@ -880,6 +880,8 @@ void main() {
         const Offset(0, -100),
       );
 
+      await tester.pumpAndSettle();
+
       // now filled
       final wankdorfIncomingSpeedsFilled = find.descendant(
         of: wankdorfStationRow,
