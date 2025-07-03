@@ -56,14 +56,24 @@ class DetailTabGraduatedSpeeds extends StatelessWidget {
 
   Widget _buildSpeedInfoList(BuildContext context, List<TrainSeriesSpeed> speedInfo) {
     return ListView.separated(
-      physics: ClampingScrollPhysics(),
+      physics: const ClampingScrollPhysics(),
       itemCount: speedInfo.length,
       separatorBuilder: (context, index) => const Divider(),
       itemBuilder: (context, index) {
         final speed = speedInfo[index];
-        final incoming = speed.incomingSpeeds.toJoinedString();
-        final outgoing = speed.outgoingSpeeds.toJoinedString();
-        final hasOutgoing = speed.outgoingSpeeds.isNotEmpty;
+        final Speed parsedSpeed = speed.speed;
+
+        String incoming = '';
+        String outgoing = '';
+        bool hasOutgoing = false;
+
+        if (parsedSpeed is IncomingOutgoingSpeed) {
+          incoming = _toJoinedString(parsedSpeed.incoming);
+          outgoing = _toJoinedString(parsedSpeed.outgoing);
+          hasOutgoing = outgoing.isNotEmpty;
+        } else {
+          incoming = _toJoinedString(parsedSpeed);
+        }
 
         return Padding(
           padding: const EdgeInsets.only(left: 16.0, top: 10, right: 16.0, bottom: 10),
@@ -73,9 +83,9 @@ class DetailTabGraduatedSpeeds extends StatelessWidget {
               Text(incoming, style: DASTextStyles.mediumBold),
               const SizedBox(height: 10),
               Text(speed.text!, style: DASTextStyles.mediumRoman),
-              const SizedBox(height: 10),
 
               if (hasOutgoing) ...[
+                const SizedBox(height: 10),
                 const Divider(),
                 const SizedBox(height: 10),
                 Text(outgoing, style: DASTextStyles.mediumBold),
@@ -88,8 +98,13 @@ class DetailTabGraduatedSpeeds extends StatelessWidget {
       },
     );
   }
-}
 
-extension _SpeedIterableX on Iterable<Speed> {
-  String toJoinedString({String divider = '-'}) => map((it) => it.speed).join(divider);
+  String _toJoinedString(Speed speed) {
+    if (speed is SingleSpeed) {
+      return speed.value;
+    } else if (speed is GraduatedSpeed) {
+      return speed.speeds.map((s) => s.value).join('-');
+    }
+    return '';
+  }
 }
