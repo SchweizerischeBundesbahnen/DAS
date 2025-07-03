@@ -33,16 +33,16 @@ class TrainJourneyOverview extends StatefulWidget {
 }
 
 class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
-  TrainIdentification? _currentJourney;
+  TrainIdentification? _currentTrainIdentification;
   StreamSubscription<JourneyNavigationModel?>? _journeySubscription;
 
   @override
   void initState() {
     final journeyNavigationVM = DI.get<JourneyNavigationViewModel>();
-    _currentJourney = journeyNavigationVM.modelValue?.trainIdentification;
+    _currentTrainIdentification = journeyNavigationVM.modelValue?.trainIdentification;
 
     _journeySubscription = journeyNavigationVM.model.listen((model) {
-      if (model?.trainIdentification != _currentJourney) {
+      if (model?.trainIdentification != _currentTrainIdentification) {
         if (mounted) context.router.replace(JourneySelectionRoute());
       }
     });
