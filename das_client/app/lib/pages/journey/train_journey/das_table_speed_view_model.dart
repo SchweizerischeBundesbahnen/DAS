@@ -20,4 +20,6 @@ class DASTableSpeedViewModel {
 
     return previousSpeedData.lastOrNull?.speed;
   }
+
+  previousCalculatedSpeed(int rowIndex) {}
 }

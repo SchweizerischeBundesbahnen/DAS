@@ -235,6 +235,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       child: AdvisedSpeedCellBody(
         calculatedSpeed: data.calculatedSpeed,
         lineSpeed: trainSeriesSpeed?.speed as SingleSpeed?,
+        rowIndex: rowIndex,
       ),
     );
   }
