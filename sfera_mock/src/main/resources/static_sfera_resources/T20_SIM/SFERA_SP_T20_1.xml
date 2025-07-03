@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
-                SP_ID="T20_1" SP_VersionMajor="1" SP_VersionMinor="2" SP_Length="1400" SP_Status="Valid">
+                SP_ID="T20_1" SP_VersionMajor="1" SP_VersionMinor="3" SP_Length="1400" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -400,7 +400,7 @@ Korridor rechtes Gleis: Anmeldenummer 1395&lt;/text&gt;
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>1642</teltsi_LocationPrimaryCode>
-                <teltsi_PrimaryLocationName>Staz_della_Galleria</teltsi_PrimaryLocationName>
+                <teltsi_PrimaryLocationName>Staz. della Galleria Sempione</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
 
             <TAF_TAP_Location_NSP>
@@ -706,6 +706,12 @@ Korridor rechtes Gleis: Anmeldenummer 1393&lt;/text&gt;
         </KilometreReferencePoint>
 		<KilometreReferencePoint location="410">
             <KM_Reference kmRef="161.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="420">
+            <KM_Reference kmRef="166.61"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="430">
+            <KM_Reference kmRef="167.09"/>
         </KilometreReferencePoint>
 		<KilometreReferencePoint location="500">
             <KM_Reference kmRef="167.5"/>

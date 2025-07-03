@@ -13,6 +13,7 @@ class SpeedChangeRow extends CellRowBuilder<SpeedChange> {
   SpeedChangeRow({
     required super.metadata,
     required super.data,
+    required super.rowIndex,
     super.config,
   });
 
@@ -24,9 +25,7 @@ class SpeedChangeRow extends CellRowBuilder<SpeedChange> {
   }
 
   @override
-  DASTableCell brakedWeightSpeedCell(BuildContext context) {
-    return speedCell(data.speedData, DASTableCell.empty());
-  }
+  DASTableCell brakedWeightSpeedCell(BuildContext context) => speedCell(data.speeds);
 
   @override
   DASTableCell iconsCell2(BuildContext context) {

@@ -13,6 +13,7 @@ class WhistleRow extends CellRowBuilder<Whistle> {
   WhistleRow({
     required super.metadata,
     required super.data,
+    required super.rowIndex,
     super.config,
   });
 
