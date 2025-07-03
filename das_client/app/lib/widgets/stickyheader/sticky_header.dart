@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 typedef StickyWidgetBuilder = Widget Function(BuildContext context, int index);
 
 class StickyHeader extends StatefulWidget {
+  static const Key headerKey = Key('StickyHeaderHeader');
+
   final ScrollController scrollController;
   final StickyWidgetBuilder headerBuilder;
   final StickyWidgetBuilder? footerBuilder;
@@ -73,6 +75,7 @@ class StickyHeaderState extends State<StickyHeader> {
           child: widget.child,
         ),
         StickyWidget(
+          key: StickyHeader.headerKey,
           controller: controller,
           widgetBuilder: widget.headerBuilder,
         ),
