@@ -48,7 +48,7 @@ class TimeCellBody extends StatelessWidget {
     );
   }
 
-  (String, String) _formattedTimes(showOperationalTime) {
+  (String, String) _formattedTimes(bool showOperationalTime) {
     String departureTime = '';
     String arrivalTime = '';
 

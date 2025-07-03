@@ -9,7 +9,7 @@ class TokenSpecProvider {
 
   final List<TokenSpec> _specs;
 
-  operator [](int i) => _specs[i];
+  TokenSpec operator [](int i) => _specs[i];
 
   int get length => _specs.length;
 

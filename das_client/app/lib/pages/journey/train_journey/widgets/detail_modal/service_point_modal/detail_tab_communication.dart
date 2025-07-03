@@ -50,7 +50,7 @@ class DetailTabCommunication extends StatelessWidget {
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemCount: contacts.length,
-          separatorBuilder: (_, __) => Divider(),
+          separatorBuilder: (_, _) => Divider(),
           itemBuilder: (context, index) => _contactItem(contacts.elementAt(index)),
         );
       },
