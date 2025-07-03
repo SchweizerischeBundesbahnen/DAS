@@ -1,6 +1,5 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
-import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_input.dart';
@@ -8,7 +7,6 @@ import 'package:app/pages/journey/selection/widgets/journey_railway_undertaking_
 import 'package:app/pages/journey/selection/widgets/journey_train_number_input.dart';
 import 'package:app/pages/journey/train_journey/widgets/anchored_full_page_overlay.dart';
 import 'package:app/widgets/das_text_styles.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -102,7 +100,6 @@ class JourneySearchOverlay extends StatelessWidget {
                   ? () {
                       hideOverlay();
                       viewModel.loadTrainJourney();
-                      context.router.replace(JourneySelectionRoute());
                     }
                   : null,
             ),
