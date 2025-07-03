@@ -1,4 +1,5 @@
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/train_journey/das_table_speed_view_model.dart';
 import 'package:app/pages/journey/train_journey/ux_testing_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_modal.dart';
@@ -24,32 +25,40 @@ class TrainJourneyOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final trainJourneyViewModel = context.read<TrainJourneyViewModel>();
     return MultiProvider(
       providers: [
         Provider(
           create: (context) {
-            final controller = context.read<TrainJourneyViewModel>().automaticAdvancementController;
+            final controller = trainJourneyViewModel.automaticAdvancementController;
             return DetailModalViewModel(automaticAdvancementController: controller);
           },
-          dispose: (context, vm) => vm.dispose(),
+          dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
           create: (_) => ServicePointModalViewModel(),
-          dispose: (context, vm) => vm.dispose(),
+          dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
           create: (_) => AdditionalSpeedRestrictionModalViewModel(),
-          dispose: (context, vm) => vm.dispose(),
+          dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
           create: (_) => ArrivalDepartureTimeViewModel(
-            journeyStream: context.read<TrainJourneyViewModel>().journey,
+            journeyStream: trainJourneyViewModel.journey,
           ),
-          dispose: (context, vm) => vm.dispose(),
+          dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
           create: (_) => UxTestingViewModel(sferaService: DI.get()),
-          dispose: (context, vm) => vm.dispose(),
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        Provider(
+          create: (_) => DASTableSpeedViewModel(
+            journeyStream: trainJourneyViewModel.journey,
+            settingsStream: trainJourneyViewModel.settings,
+          ),
+          dispose: (_, vm) => vm.dispose(),
         ),
       ],
       builder: (context, child) => _body(context),
