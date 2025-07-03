@@ -35,7 +35,6 @@ void main() {
   Logger.root.level = Level.FINE;
   Logger.root.onRecord.listen(LogPrinter(appName: 'DAS IntegrationTests').call);
 
-  service_point_modal_test.main();
   train_reduced_journey_tests.main();
   train_journey_table_tests.main();
   train_journey_header_tests.main();
@@ -45,6 +44,7 @@ void main() {
   navigation_tests.main();
   train_search_tests.main();
   automatic_advancement_tests.main();
+  service_point_modal_test.main();
   journey_search_overlay_tests.main();
   additional_speed_restriction_modal_test.main();
   warnapp_tests.main();

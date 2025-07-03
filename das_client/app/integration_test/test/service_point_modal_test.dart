@@ -1,3 +1,4 @@
+import 'package:app/di/di.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_communication.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_graduated_speeds.dart';
@@ -7,6 +8,7 @@ import 'package:app/pages/journey/train_journey/widgets/header/animated_header_i
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/speed_cell_body.dart';
+import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:flutter/material.dart';
@@ -115,7 +117,10 @@ void main() {
       await _openByTapOnCellWithText(tester, 'Bern');
       _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
 
-      await Future.delayed(Duration(seconds: 3));
+      final waitTime = DI.get<TimeConstants>().modalSheetAutomaticCloseAfterSeconds + 1;
+
+      // wait until waitTime reached
+      await Future.delayed(Duration(seconds: waitTime));
       await tester.pumpAndSettle();
 
       // check if modal sheet is closed
@@ -137,7 +142,10 @@ void main() {
       expect(pauseButton, findsOneWidget);
       await tapElement(tester, pauseButton);
 
-      await Future.delayed(Duration(seconds: 3));
+      final waitTime = DI.get<TimeConstants>().modalSheetAutomaticCloseAfterSeconds + 1;
+
+      // wait until waitTime reached
+      await Future.delayed(Duration(seconds: waitTime));
       await tester.pumpAndSettle();
 
       // check if modal sheet is closed

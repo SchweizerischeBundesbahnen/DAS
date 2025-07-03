@@ -12,6 +12,7 @@ import 'package:app/pages/journey/train_journey/widgets/header/time_container.da
 import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/format.dart';
+import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,10 @@ Future<void> main() async {
       // check that delay text is there
       expect(find.descendant(of: timeContainer, matching: find.byKey(TimeContainer.delayKey)), findsOneWidget);
 
-      await Future.delayed(Duration(seconds: 5));
+      final waitTime = DI.get<TimeConstants>().punctualityDisappearSeconds + 1;
+
+      // wait until waitTime reached
+      await Future.delayed(Duration(seconds: waitTime));
       await tester.pumpAndSettle();
 
       // check that delay text has disappeared
@@ -60,7 +64,10 @@ Future<void> main() async {
       // check that delay text is there
       expect(delayText, findsOneWidget);
 
-      await Future.delayed(Duration(seconds: 3));
+      final waitTime = DI.get<TimeConstants>().punctualityStaleSeconds + 1;
+
+      // wait until waitTime reached
+      await Future.delayed(Duration(seconds: waitTime));
       await tester.pumpAndSettle();
 
       // check that delay text is stale
