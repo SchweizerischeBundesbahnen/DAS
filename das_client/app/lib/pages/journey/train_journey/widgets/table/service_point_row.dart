@@ -78,9 +78,10 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   List<Widget> _stationProperties(BuildContext context) {
     final currentBreakSeries = config.settings.resolvedBreakSeries(metadata);
-    final relevantProperties = data.relevantProperties(currentBreakSeries);
-    if (relevantProperties.isEmpty) return [];
-    return relevantProperties.map((property) {
+    final properties = data.propertiesFor(currentBreakSeries);
+    if (properties.isEmpty) return [];
+
+    return properties.map((property) {
       final speed = property.speeds?.speedFor(
         currentBreakSeries?.trainSeries,
         breakSeries: currentBreakSeries?.breakSeries,
@@ -97,7 +98,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
             children: [
               if (property.sign != null)
                 SvgPicture.asset(
-                  property.sign!.displayIcon(),
+                  property.sign!.iconAsset(),
                   key: Key(property.sign!.name),
                   colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
                 ),
@@ -191,13 +192,13 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
                 children: [
                   if (data.stationSign2 != null)
                     SvgPicture.asset(
-                      data.stationSign2!.displayIcon(),
+                      data.stationSign2!.iconAsset(),
                       key: Key(data.stationSign2!.name),
                       colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
                     ),
                   if (data.stationSign1 != null)
                     SvgPicture.asset(
-                      data.stationSign1!.displayIcon(),
+                      data.stationSign1!.iconAsset(),
                       key: Key(data.stationSign1!.name),
                       colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
                     ),
@@ -292,7 +293,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       onTap: cell.onTap,
       color: cell.color,
       padding: cell.padding,
-      alignment: Alignment(-1, -1),
+      alignment: Alignment.topLeft,
       clipBehaviour: cell.clipBehaviour,
       child: SizedBox(
         height: baseRowHeight - verticalPadding * 2,
@@ -302,9 +303,9 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   }
 
   static double calculateHeight(ServicePoint data, BreakSeries? currentBreakSeries) {
-    final relevantProperties = data.relevantProperties(currentBreakSeries);
+    final properties = data.propertiesFor(currentBreakSeries);
 
-    if (relevantProperties.isEmpty) return baseRowHeight;
-    return baseRowHeight + (relevantProperties.length * propertyRowHeight);
+    if (properties.isEmpty) return baseRowHeight;
+    return baseRowHeight + (properties.length * propertyRowHeight);
   }
 }

@@ -2,11 +2,11 @@ import 'package:app/widgets/assets.dart';
 import 'package:sfera/component.dart';
 
 extension StationSignExtension on StationSign {
-  String displayIcon() {
+  String iconAsset() {
     return switch (this) {
       StationSign.deadendStation => AppAssets.iconDeadendStation,
       StationSign.entryOccupiedTrack => AppAssets.iconEntryOccupiedTrack,
-      StationSign.entryStationWithoutRailfreeAccess => AppAssets.iconEntryStationWithoutRailfreeAccess,
+      StationSign.entryStationWithoutRailFreeAccess => AppAssets.iconEntryStationWithoutRailfreeAccess,
       StationSign.noEntryExitSignal => AppAssets.iconNoEntryExitSignal,
       StationSign.noEntrySignal => AppAssets.iconNoEntrySignal,
       StationSign.noExitSignal => AppAssets.iconNoExitSignal,

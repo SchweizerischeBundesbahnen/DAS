@@ -1493,7 +1493,7 @@ void main() {
     expect(servicePoints[0].stationSign1, StationSign.noExitSignal);
     expect(servicePoints[0].stationSign2, isNull);
     expect(servicePoints[1].stationSign1, StationSign.noEntrySignal);
-    expect(servicePoints[1].stationSign2, StationSign.entryStationWithoutRailfreeAccess);
+    expect(servicePoints[1].stationSign2, StationSign.entryStationWithoutRailFreeAccess);
     expect(servicePoints[2].stationSign1, StationSign.deadendStation);
     expect(servicePoints[2].stationSign2, StationSign.noEntryExitSignal);
     expect(servicePoints[3].stationSign1, StationSign.openLevelCrossingBeforeExitSignal);
@@ -1601,25 +1601,25 @@ void main() {
     expect(servicePoints[7].properties[0].speeds, isNull);
   });
 
-  test('Test relevant station properties', () {
+  test('Test properties for break series', () {
     final journey = getJourney('T21', 1);
     expect(journey.valid, true);
 
     final servicePoints = journey.data.whereType<ServicePoint>().toList();
 
     // Geneve-Aeroport
-    expect(servicePoints[0].relevantProperties(BreakSeries(trainSeries: TrainSeries.A, breakSeries: 50)), hasLength(1));
-    expect(servicePoints[0].relevantProperties(BreakSeries(trainSeries: TrainSeries.A, breakSeries: 60)), hasLength(0));
+    expect(servicePoints[0].propertiesFor(BreakSeries(trainSeries: TrainSeries.A, breakSeries: 50)), hasLength(1));
+    expect(servicePoints[0].propertiesFor(BreakSeries(trainSeries: TrainSeries.A, breakSeries: 60)), hasLength(0));
     expect(
-      servicePoints[0].relevantProperties(BreakSeries(trainSeries: TrainSeries.R, breakSeries: 115)),
+      servicePoints[0].propertiesFor(BreakSeries(trainSeries: TrainSeries.R, breakSeries: 115)),
       hasLength(0),
     );
 
     // Vevey
-    expect(servicePoints[5].relevantProperties(BreakSeries(trainSeries: TrainSeries.A, breakSeries: 50)), hasLength(3));
-    expect(servicePoints[5].relevantProperties(BreakSeries(trainSeries: TrainSeries.A, breakSeries: 60)), hasLength(3));
+    expect(servicePoints[5].propertiesFor(BreakSeries(trainSeries: TrainSeries.A, breakSeries: 50)), hasLength(3));
+    expect(servicePoints[5].propertiesFor(BreakSeries(trainSeries: TrainSeries.A, breakSeries: 60)), hasLength(3));
     expect(
-      servicePoints[5].relevantProperties(BreakSeries(trainSeries: TrainSeries.R, breakSeries: 115)),
+      servicePoints[5].propertiesFor(BreakSeries(trainSeries: TrainSeries.R, breakSeries: 115)),
       hasLength(2),
     );
   });

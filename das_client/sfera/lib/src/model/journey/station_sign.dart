@@ -3,7 +3,7 @@ import 'package:collection/collection.dart';
 enum StationSign {
   deadendStation('Q'),
   entryOccupiedTrack('Z'),
-  entryStationWithoutRailfreeAccess('M'),
+  entryStationWithoutRailFreeAccess('M'),
   noEntryExitSignal('N'),
   noEntrySignal('O'),
   noExitSignal('P'),

@@ -16,7 +16,7 @@ void main() {
     expect(find.byKey(Key(StationSign.noExitSignal.name)), findsNWidgets(2));
     expect(find.byKey(Key(StationSign.noEntrySignal.name)), findsNWidgets(1));
     expect(find.byKey(Key(StationSign.noEntryExitSignal.name)), findsNWidgets(1));
-    expect(find.byKey(Key(StationSign.entryStationWithoutRailfreeAccess.name)), findsNWidgets(1));
+    expect(find.byKey(Key(StationSign.entryStationWithoutRailFreeAccess.name)), findsNWidgets(1));
     expect(find.byKey(Key(StationSign.openLevelCrossingBeforeExitSignal.name)), findsNWidgets(2));
 
     final scrollableFinder = find.byType(AnimatedList);
