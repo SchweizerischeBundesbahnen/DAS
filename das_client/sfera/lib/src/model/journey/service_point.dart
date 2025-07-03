@@ -1,9 +1,6 @@
 import 'package:sfera/component.dart';
 import 'package:sfera/src/model/journey/bracket_station.dart';
 import 'package:sfera/src/model/journey/decisive_gradient.dart';
-import 'package:sfera/src/model/journey/station_property.dart';
-import 'package:sfera/src/model/journey/station_sign.dart';
-import 'package:sfera/src/model/journey/train_series_speed.dart';
 
 class ServicePoint extends BaseData {
   const ServicePoint({
@@ -52,9 +49,9 @@ class ServicePoint extends BaseData {
   }
 
   @override
-  Iterable<TrainSeriesSpeed> get allSpeeds {
+  Iterable<TrainSeriesSpeed> get allStaticSpeeds {
     return [
-      ...super.allSpeeds,
+      ...super.allStaticSpeeds,
       ...?graduatedSpeedInfo,
       ...properties.map((it) => it.speeds).nonNulls.expand((it) => it),
     ];
