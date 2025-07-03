@@ -88,7 +88,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       );
 
       return Padding(
-        padding: EdgeInsets.fromLTRB(0, 4, 0, 0),
+        padding: EdgeInsets.only(top: 4),
         child: SizedBox(
           height: propertyRowHeight - 4,
           child: Row(
@@ -96,12 +96,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
             crossAxisAlignment: CrossAxisAlignment.center,
             spacing: sbbDefaultSpacing * 0.25,
             children: [
-              if (property.sign != null)
-                SvgPicture.asset(
-                  property.sign!.iconAsset(),
-                  key: Key(property.sign!.name),
-                  colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
-                ),
+              if (property.sign != null) _icon(context, property.sign!.iconAsset(), Key(property.sign!.name)),
               if (property.text != null)
                 Text.rich(
                   TextUtil.parseHtmlText(
@@ -110,12 +105,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
-              if (speed != null && speed.reduced)
-                SvgPicture.asset(
-                  AppAssets.iconReducedSpeed,
-                  key: reducedSpeedKey,
-                  colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
-                ),
+              if (speed != null && speed.reduced) _icon(context, AppAssets.iconReducedSpeed, reducedSpeedKey),
               if (speed != null)
                 SpeedCellBody(
                   speed: speed.speed,
@@ -180,34 +170,29 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
           child: Wrap(
             spacing: 2,
             children: [
-              if (!data.mandatoryStop)
-                SvgPicture.asset(
-                  AppAssets.iconStopOnRequest,
-                  key: stopOnRequestKey,
-                  colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
-                ),
+              if (!data.mandatoryStop) _icon(context, AppAssets.iconStopOnRequest, stopOnRequestKey),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 spacing: 2,
                 children: [
                   if (data.stationSign2 != null)
-                    SvgPicture.asset(
-                      data.stationSign2!.iconAsset(),
-                      key: Key(data.stationSign2!.name),
-                      colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
-                    ),
+                    _icon(context, data.stationSign2!.iconAsset(), Key(data.stationSign2!.name)),
                   if (data.stationSign1 != null)
-                    SvgPicture.asset(
-                      data.stationSign1!.iconAsset(),
-                      key: Key(data.stationSign1!.name),
-                      colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
-                    ),
+                    _icon(context, data.stationSign1!.iconAsset(), Key(data.stationSign1!.name)),
                 ],
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _icon(BuildContext context, String assetName, Key key) {
+    return SvgPicture.asset(
+      assetName,
+      key: key,
+      colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
     );
   }
 
