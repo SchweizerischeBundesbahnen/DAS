@@ -14,6 +14,7 @@ class BaliseLevelCrossingGroupRow extends CellRowBuilder<BaliseLevelCrossingGrou
   BaliseLevelCrossingGroupRow({
     required super.metadata,
     required super.data,
+    required super.rowIndex,
     super.config,
     super.onTap,
   });

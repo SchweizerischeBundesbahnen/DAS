@@ -1,6 +1,7 @@
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/track_equipment_render_data.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/src/model/journey/cab_signaling.dart';
 import 'package:sfera/src/model/journey/connection_track.dart';
 import 'package:sfera/src/model/journey/curve_point.dart';
@@ -10,7 +11,6 @@ import 'package:sfera/src/model/journey/metadata.dart';
 import 'package:sfera/src/model/journey/service_point.dart';
 import 'package:sfera/src/model/journey/signal.dart';
 import 'package:sfera/src/model/journey/track_equipment_segment.dart';
-import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('test CAB signaling start and end', () {
@@ -77,7 +77,7 @@ void main() {
     expect(servicePoint, isNotNull);
     expect(servicePoint!.cumulativeHeight, expectedHeight += (CellRowBuilder.rowHeight / 2));
     expect(cabSignalingEnd, isNotNull);
-    expect(cabSignalingEnd!.cumulativeHeight, expectedHeight += ServicePointRow.rowHeight);
+    expect(cabSignalingEnd!.cumulativeHeight, expectedHeight += ServicePointRow.baseRowHeight);
     expect(signal, isNotNull);
     expect(signal!.cumulativeHeight, expectedHeight += (CellRowBuilder.rowHeight / 2));
   });
@@ -108,7 +108,7 @@ void main() {
     expect(servicePoint, isNotNull);
     expect(servicePoint!.cumulativeHeight, expectedHeight += (CellRowBuilder.rowHeight / 2));
     expect(signal, isNotNull);
-    expect(signal!.cumulativeHeight, expectedHeight += ServicePointRow.rowHeight);
+    expect(signal!.cumulativeHeight, expectedHeight += ServicePointRow.baseRowHeight);
   });
   test('test trackEquipmentType mapping', () {
     // GIVEN

@@ -6,7 +6,7 @@ class BaliseLevelCrossingGroup extends BaseData {
     required super.order,
     required super.kilometre,
     required this.groupedElements,
-    super.speedData,
+    super.speeds,
   }) : super(type: Datatype.baliseLevelCrossingGroup);
 
   final List<BaseData> groupedElements;

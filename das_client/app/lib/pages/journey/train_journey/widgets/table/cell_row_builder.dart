@@ -1,8 +1,9 @@
+import 'package:app/extension/base_data_extension.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/speed_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/column_definition.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_config.dart';
@@ -20,6 +21,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
   CellRowBuilder({
     required this.metadata,
     required super.data,
+    required super.rowIndex,
     super.height = rowHeight,
     super.stickyLevel,
     super.key,
@@ -45,6 +47,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
       color: rowColor,
       onTap: onTap,
       stickyLevel: stickyLevel,
+      rowIndex: rowIndex,
       cells: {
         ColumnDefinition.kilometre.index: kilometreCell(context),
         ColumnDefinition.time.index: timeCell(context),
@@ -96,6 +99,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
         isRouteStart: metadata.routeStart == data,
         isRouteEnd: metadata.routeEnd == data,
         chevronAnimationData: config.chevronAnimationData,
+        chevronPosition: data.chevronPosition,
       ),
     );
   }
@@ -116,7 +120,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
   }
 
   DASTableCell localSpeedCell(BuildContext context) {
-    return speedCell(data.localSpeedData, DASTableCell.empty());
+    return speedCell(data.localSpeeds);
   }
 
   DASTableCell brakedWeightSpeedCell(BuildContext context) {
@@ -125,27 +129,22 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
       return DASTableCell.empty();
     }
 
-    return speedCell(data.speedData, DASTableCell.empty());
+    return speedCell(data.speeds);
   }
 
-  DASTableCell speedCell(SpeedData? speedData, DASTableCell defaultCell) {
-    if (speedData == null) {
-      return DASTableCell.empty();
-    }
-
-    final currentBreakSeries = config.settings.resolvedBreakSeries(metadata);
-
-    final graduatedSpeeds = speedData.speedsFor(currentBreakSeries?.trainSeries, currentBreakSeries?.breakSeries);
-    if (graduatedSpeeds == null) {
-      return defaultCell;
-    }
+  DASTableCell speedCell(List<TrainSeriesSpeed>? speedData) {
+    final selectedBreakSeries = config.settings.resolvedBreakSeries(metadata);
+    final trainSeriesSpeed = speedData.speedFor(
+      selectedBreakSeries?.trainSeries,
+      breakSeries: selectedBreakSeries?.breakSeries,
+    );
 
     return DASTableCell(
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
-      child: GraduatedSpeedsCellBody(
-        incomingSpeeds: graduatedSpeeds.incomingSpeeds,
-        outgoingSpeeds: graduatedSpeeds.outgoingSpeeds,
+      child: SpeedCellBody(
+        speed: trainSeriesSpeed?.speed,
+        rowIndex: rowIndex,
       ),
     );
   }
@@ -210,10 +209,10 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
         .firstOrNull;
   }
 
-  static double rowHeightForData(BaseData data) {
+  static double rowHeightForData(BaseData data, BreakSeries? currentBreakSeries) {
     switch (data.type) {
       case Datatype.servicePoint:
-        return ServicePointRow.rowHeight;
+        return ServicePointRow.calculateHeight(data as ServicePoint, currentBreakSeries);
       default:
         return CellRowBuilder.rowHeight;
     }

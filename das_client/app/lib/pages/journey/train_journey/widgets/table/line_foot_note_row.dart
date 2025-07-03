@@ -10,6 +10,7 @@ class LineFootNoteRow extends FootNoteRow<LineFootNote> {
     required super.data,
     required super.isExpanded,
     required super.accordionToggleCallback,
+    required super.rowIndex,
     super.config,
   }) : super(stickyLevel: StickyLevel.second, identifier: data.identifier);
 

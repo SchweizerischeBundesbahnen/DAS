@@ -9,6 +9,7 @@ class TrackFootNoteRow extends FootNoteRow<TrackFootNote> {
     required super.data,
     required super.isExpanded,
     required super.accordionToggleCallback,
+    required super.rowIndex,
     super.config,
   });
 

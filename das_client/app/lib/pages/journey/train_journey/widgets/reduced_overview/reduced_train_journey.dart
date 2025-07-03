@@ -62,12 +62,14 @@ class ReducedTrainJourney extends StatelessWidget {
             data: rowData as ServicePoint,
             config: trainJourneyConfig,
             context: context,
+            rowIndex: index,
           );
         case Datatype.additionalSpeedRestriction:
           return AdditionalSpeedRestrictionRow(
             metadata: metadata,
             data: rowData as AdditionalSpeedRestrictionData,
             config: trainJourneyConfig,
+            rowIndex: index,
           );
         default:
           return null;
