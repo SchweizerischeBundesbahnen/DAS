@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/train_journey/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/train_journey/das_table_speed_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/break_series_selection.dart';
 import 'package:app/pages/journey/train_journey/widgets/chevron_animation_wrapper.dart';
@@ -79,13 +80,13 @@ class TrainJourney extends StatelessWidget {
         return Listener(
           onPointerDown: (_) => viewModel.automaticAdvancementController.resetScrollTimer(),
           onPointerUp: (_) => viewModel.automaticAdvancementController.resetScrollTimer(),
-          child: _body(context, journey, settings),
+          child: _body(journey, settings),
         );
       },
     );
   }
 
-  Widget _body(BuildContext context, Journey journey, TrainJourneySettings settings) {
+  Widget _body(Journey journey, TrainJourneySettings settings) {
     return Provider<DASTableSpeedViewModel>(
       create: (_) => DASTableSpeedViewModel(journey, settings),
       child: Builder(builder: (context) => _table(context, journey, settings)),
@@ -93,35 +94,47 @@ class TrainJourney extends StatelessWidget {
   }
 
   Widget _table(BuildContext context, Journey journey, TrainJourneySettings settings) {
-    final tableRows = _rows(context, journey, settings);
-    context.read<TrainJourneyViewModel>().automaticAdvancementController.updateRenderedRows(tableRows);
+    return StreamBuilder(
+      stream: context.read<CollapsibleRowsViewModel>().collapsedRows,
+      builder: (context, snapshot) {
+        final collapsedRows = snapshot.data ?? {};
+        final tableRows = _rows(context, journey, settings, collapsedRows);
+        context.read<TrainJourneyViewModel>().automaticAdvancementController.updateRenderedRows(tableRows);
 
-    final marginAdjustment = Platform.isIOS
-        ? tableRows.lastWhereOrNull((it) => it.stickyLevel == StickyLevel.first)?.height ?? CellRowBuilder.rowHeight
-        : 0.0;
+        final marginAdjustment = Platform.isIOS
+            ? tableRows.lastWhereOrNull((it) => it.stickyLevel == StickyLevel.first)?.height ?? CellRowBuilder.rowHeight
+            : 0.0;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
-      child: StreamBuilder<bool>(
-        stream: context.read<DetailModalViewModel>().isModalOpen,
-        builder: (context, snapshot) {
-          final isDetailModalOpen = snapshot.data ?? false;
-          return ChevronAnimationWrapper(
-            journey: journey,
-            child: DASTable(
-              key: context.read<TrainJourneyViewModel>().automaticAdvancementController.tableKey,
-              scrollController: context.read<TrainJourneyViewModel>().automaticAdvancementController.scrollController,
-              columns: _columns(context, journey.metadata, settings, isDetailModalOpen),
-              rows: tableRows.map((it) => it.build(context)).toList(),
-              bottomMarginAdjustment: marginAdjustment,
-            ),
-          );
-        },
-      ),
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
+          child: StreamBuilder<bool>(
+            stream: context.read<DetailModalViewModel>().isModalOpen,
+            builder: (context, snapshot) {
+              final isDetailModalOpen = snapshot.data ?? false;
+              final advancementController = context.read<TrainJourneyViewModel>().automaticAdvancementController;
+              return ChevronAnimationWrapper(
+                journey: journey,
+                child: DASTable(
+                  key: advancementController.tableKey,
+                  scrollController: advancementController.scrollController,
+                  columns: _columns(context, journey.metadata, settings, isDetailModalOpen),
+                  rows: tableRows.map((it) => it.build(context)).toList(),
+                  bottomMarginAdjustment: marginAdjustment,
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 
-  List<DASTableRowBuilder> _rows(BuildContext context, Journey journey, TrainJourneySettings settings) {
+  List<DASTableRowBuilder> _rows(
+    BuildContext context,
+    Journey journey,
+    TrainJourneySettings settings,
+    Map<int, CollapsedState> collapsedRows,
+  ) {
     final currentBreakSeries = settings.resolvedBreakSeries(journey.metadata);
 
     final rows = journey.data
@@ -146,6 +159,13 @@ class TrainJourney extends StatelessWidget {
         bracketStationRenderData: BracketStationRenderData.from(rowData, journey.metadata),
         chevronAnimationData: ChevronAnimationData.from(rows, journey, rowData),
       );
+
+      var hasPreviousCollapsible = false;
+      if (index > 0) {
+        final previous = rows[index - 1];
+        hasPreviousCollapsible = previous.isCollapsible;
+      }
+
       switch (rowData.type) {
         case Datatype.servicePoint:
           return ServicePointRow(
@@ -248,8 +268,9 @@ class TrainJourney extends StatelessWidget {
             metadata: journey.metadata,
             data: rowData as OpFootNote,
             config: trainJourneyConfig,
-            isExpanded: !settings.collapsedFootNotes.contains(rowData.identifier),
-            accordionToggleCallback: () => _onFootNoteExpanded(context, rowData, settings),
+            isExpanded: !collapsedRows.containsKey(rowData.hashCode),
+            addTopMargin: !hasPreviousCollapsible,
+            accordionToggleCallback: () => context.read<CollapsibleRowsViewModel>().toggleRow(rowData),
             rowIndex: index,
           );
         case Datatype.lineFootNote:
@@ -257,8 +278,9 @@ class TrainJourney extends StatelessWidget {
             metadata: journey.metadata,
             data: rowData as LineFootNote,
             config: trainJourneyConfig,
-            isExpanded: !settings.collapsedFootNotes.contains(rowData.identifier),
-            accordionToggleCallback: () => _onFootNoteExpanded(context, rowData, settings),
+            isExpanded: !collapsedRows.containsKey(rowData.hashCode),
+            addTopMargin: !hasPreviousCollapsible,
+            accordionToggleCallback: () => context.read<CollapsibleRowsViewModel>().toggleRow(rowData),
             rowIndex: index,
           );
         case Datatype.trackFootNote:
@@ -266,8 +288,9 @@ class TrainJourney extends StatelessWidget {
             metadata: journey.metadata,
             data: rowData as TrackFootNote,
             config: trainJourneyConfig,
-            isExpanded: !settings.collapsedFootNotes.contains(rowData.identifier),
-            accordionToggleCallback: () => _onFootNoteExpanded(context, rowData, settings),
+            isExpanded: !collapsedRows.containsKey(rowData.hashCode),
+            addTopMargin: !hasPreviousCollapsible,
+            accordionToggleCallback: () => context.read<CollapsibleRowsViewModel>().toggleRow(rowData),
             rowIndex: index,
           );
         case Datatype.uncodedOperationalIndication:
@@ -275,9 +298,11 @@ class TrainJourney extends StatelessWidget {
             metadata: journey.metadata,
             data: rowData as UncodedOperationalIndication,
             config: trainJourneyConfig,
-            // TODO:
-            isExpanded: true,
-            accordionToggleCallback: () {},
+            expandedContent: collapsedRows[rowData.hashCode] == CollapsedState.openWithCollapsedContent,
+            isExpanded: !collapsedRows.containsKey(rowData.hashCode),
+            addTopMargin: !hasPreviousCollapsible,
+            accordionToggleCallback: () => context.read<CollapsibleRowsViewModel>().toggleRow(rowData),
+            rowIndex: index,
           );
       }
     });
@@ -365,18 +390,6 @@ class TrainJourney extends StatelessWidget {
       ),
       DASTableColumn(id: ColumnDefinition.actionsCell.index, width: 40.0), // actions
     ];
-  }
-
-  // TODO: Use collapsable interface / class
-  void _onFootNoteExpanded(BuildContext context, BaseFootNote footNote, TrainJourneySettings settings) {
-    final newList = List<String>.from(settings.collapsedFootNotes);
-    if (settings.collapsedFootNotes.contains(footNote.identifier)) {
-      newList.remove(footNote.identifier);
-    } else {
-      newList.add(footNote.identifier);
-    }
-
-    context.read<TrainJourneyViewModel>().updateCollapsedFootnotes(newList);
   }
 
   void _onBaliseLevelCrossingGroupTap(

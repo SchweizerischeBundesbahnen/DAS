@@ -10,6 +10,7 @@ class TrackFootNoteRow extends FootNoteRow<TrackFootNote> {
     required super.isExpanded,
     required super.accordionToggleCallback,
     required super.rowIndex,
+    required super.addTopMargin,
     super.config,
   });
 

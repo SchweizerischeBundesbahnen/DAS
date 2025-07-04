@@ -1,4 +1,5 @@
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/train_journey/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/train_journey/ux_testing_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_modal.dart';
@@ -13,7 +14,6 @@ import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:app/pages/journey/train_journey/widgets/warn_function_modal_sheet.dart';
 import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/sound/koa_sound.dart';
-import 'package:app/sound/sound.dart';
 import 'package:app/sound/warn_app_sound.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +31,10 @@ class TrainJourneyOverview extends StatelessWidget {
             final controller = context.read<TrainJourneyViewModel>().automaticAdvancementController;
             return DetailModalViewModel(automaticAdvancementController: controller);
           },
+          dispose: (context, vm) => vm.dispose(),
+        ),
+        Provider(
+          create: (_) => CollapsibleRowsViewModel(sferaRemoteRepo: DI.get()),
           dispose: (context, vm) => vm.dispose(),
         ),
         Provider(
@@ -57,14 +61,12 @@ class TrainJourneyOverview extends StatelessWidget {
   }
 
   Widget _body(BuildContext context) {
-    final uxTestingViewModel = context.read<UxTestingViewModel>();
     final detailModalController = context.read<DetailModalViewModel>().controller;
-
     return Listener(
       onPointerDown: (_) => detailModalController.resetAutomaticClose(),
       onPointerUp: (_) => detailModalController.resetAutomaticClose(),
       child: StreamBuilder(
-        stream: uxTestingViewModel.uxTestingEvents,
+        stream: context.read<UxTestingViewModel>().uxTestingEvents,
         builder: (context, snapshot) {
           _handleUxEvents(context, snapshot.data);
 
@@ -112,8 +114,7 @@ class TrainJourneyOverview extends StatelessWidget {
   }
 
   void _triggerWarnappNotification(BuildContext context) {
-    final Sound sound = WarnAppSound();
-    sound.play();
+    WarnAppSound().play();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       showWarnFunctionModalSheet(
         context,
@@ -128,8 +129,7 @@ class TrainJourneyOverview extends StatelessWidget {
     if (event.isWarn) {
       _triggerWarnappNotification(context);
     } else if (event.isKoa && event.value == KoaState.waitCancelled.name) {
-      final Sound sound = KoaSound();
-      sound.play();
+      KoaSound().play();
     }
   }
 }

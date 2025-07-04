@@ -13,6 +13,7 @@ typedef AccordionToggleCallback = void Function();
 class Accordion extends StatefulWidget {
   static const double defaultCollapsedHeight = _headerFontSize + 2 * _collapsedVerticalPadding;
   static const double defaultExpandedHeight = _headerFontSize + 2 * _expandedVerticalPadding + _headerContentSpacing;
+  static const double horizontalContentPadding = sbbDefaultSpacing * 0.5;
 
   static const _headerFontSize = 24.0; // Large Bold
   static const _expandedVerticalPadding = sbbDefaultSpacing;
@@ -67,7 +68,7 @@ class _AccordionState extends State<Accordion> {
         ),
         padding: EdgeInsets.symmetric(
           vertical: widget.isExpanded ? Accordion._expandedVerticalPadding : Accordion._collapsedVerticalPadding,
-          horizontal: sbbDefaultSpacing * 0.5,
+          horizontal: Accordion.horizontalContentPadding,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

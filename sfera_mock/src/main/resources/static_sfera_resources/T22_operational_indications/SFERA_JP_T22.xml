@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
-
-<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="1" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+<!-- TODO: Reset to Version 1 -->
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="2" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
     <TrainIdentification>
         <OTN_ID>
             <teltsi_Company>1285</teltsi_Company>
@@ -67,8 +67,7 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>operationalIndication</NSP_GroupName>
                 <NetworkSpecificParameter name="type" value="uncoded"/>
-                <!-- TODO: Add multi line text with new lines -->
-                <NetworkSpecificParameter name="uncodedText" value="Strecke INN - MR: Bahnübergangsanlagen ohne Balisenüberwachung Straba. = Strassenbahnbereich E Straba. = Ende Strassenbahnbanbereich K Ende = Kurvenende" />
+                <NetworkSpecificParameter name="uncodedText" value="Strecke INN - MR: Bahnübergangsanlagen ohne Balisenüberwachung&lt;br/&gt;Straba. = Strassenbahnbereich&lt;br/&gt;E Straba. = Ende Strassenbahnbanbereich&lt;br/&gt;K Ende = Kurvenende" />
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" />
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>

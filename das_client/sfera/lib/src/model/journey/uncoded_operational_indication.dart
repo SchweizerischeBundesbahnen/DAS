@@ -10,5 +10,16 @@ class UncodedOperationalIndication extends BaseData {
   final String text;
 
   @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is UncodedOperationalIndication &&
+          runtimeType == other.runtimeType &&
+          text == other.text &&
+          order == other.order;
+
+  @override
+  int get hashCode => text.hashCode ^ order.hashCode;
+
+  @override
   OrderPriority get orderPriority => OrderPriority.uncodedOperationalIndication;
 }

@@ -11,6 +11,7 @@ class LineFootNoteRow extends FootNoteRow<LineFootNote> {
     required super.isExpanded,
     required super.accordionToggleCallback,
     required super.rowIndex,
+    required super.addTopMargin,
     super.config,
   }) : super(stickyLevel: StickyLevel.second, identifier: data.identifier);
 

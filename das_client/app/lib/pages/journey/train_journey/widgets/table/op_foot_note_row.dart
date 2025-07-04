@@ -10,6 +10,7 @@ class OpFootNoteRow extends FootNoteRow<OpFootNote> {
     required super.rowIndex,
     required super.isExpanded,
     required super.accordionToggleCallback,
+    required super.addTopMargin,
     super.config,
   });
 
