@@ -10,7 +10,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class AdvisedSpeedCellBody extends StatelessWidget {
-  static const String _dash = '\u{2013}';
+  static const String zeroSpeedContent = '\u{2013}'; // en dash '–'
 
   const AdvisedSpeedCellBody({
     required this.rowIndex,
@@ -25,9 +25,13 @@ class AdvisedSpeedCellBody extends StatelessWidget {
   final SingleSpeed? lineSpeed;
   final bool isSpeedReducedDueToLineSpeed;
 
+  static const Key nonEmptyKey = Key('AdvisedSpeedCellBodyNonEmptyKey');
+  static const Key generalKey = Key('AdvisedSpeedCellBodyGeneralKey');
+
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
+      key: generalKey,
       listenable: StickyHeader.of(context)!.controller,
       builder: (context, _) {
         final isSticky = _isSticky(context);
@@ -38,8 +42,8 @@ class AdvisedSpeedCellBody extends StatelessWidget {
 
         resolvedCalculatedSpeed = _min(resolvedLineSpeed, resolvedCalculatedSpeed);
         return Text(
-          key: key,
-          resolvedCalculatedSpeed.value == '0' ? _dash : resolvedCalculatedSpeed.value,
+          key: nonEmptyKey,
+          resolvedCalculatedSpeed.value == '0' ? zeroSpeedContent : resolvedCalculatedSpeed.value,
           style: isSpeedReducedDueToLineSpeed ? DASTextStyles.largeLight.copyWith(color: SBBColors.metal) : null,
         );
       },
