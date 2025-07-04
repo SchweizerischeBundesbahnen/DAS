@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warnapp/component.dart';
 
-main() {
+void main() {
   group('Warnapp service tests', () {
     test('Test abfahrt detected 1', () async {
       await testAbfahrtDetected('test_resources/motion_log_abfahrt_1.txt', 1);

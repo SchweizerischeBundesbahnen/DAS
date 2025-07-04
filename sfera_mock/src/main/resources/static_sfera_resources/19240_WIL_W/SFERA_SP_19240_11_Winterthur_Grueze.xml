@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
-                SP_ID="19240_11_Winterthur_Grueze" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="1300" SP_Status="Valid">
+                SP_ID="19240_11_Winterthur_Grueze" SP_VersionMajor="1" SP_VersionMinor="2" SP_Length="1300" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -68,25 +68,25 @@
             <NSP_GroupName>stationProperty</NSP_GroupName>
 			<NetworkSpecificParameter name="xmlStationProperty" value="
 				&lt;stationProperties&gt; 
-					&lt;stationProperty &gt; 
+					&lt;stationProperty&gt;
 						&lt;speeds&gt; 
-							&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;[60] / {80}&quot;/&gt;
-							&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;[60] / {80}&quot;/&gt;
-							&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;[60] / {80}&quot;/&gt;
-							&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;[60] / {80}&quot;/&gt;
-							&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;[60] / {80}&quot;/&gt;
-							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;[60] / {70}&quot;/&gt;
-							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;[60] / {70}&quot;/&gt;
-							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;[60] / {70}&quot;/&gt;
-							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;[60] / {70}&quot;/&gt;
-							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;[60] / {70}&quot;/&gt;
-							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;[60] / {70}&quot;/&gt;
-							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;[60] / {70}&quot;/&gt;
-							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;[60] / {70}&quot;/&gt;
-							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;[60] / {70}&quot;/&gt;
-							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;[60] / {70}&quot;/&gt;
-							&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;[60] / {80}&quot;/&gt;
-							&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;[60] / {80}&quot;/&gt;
+							&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;[60]/{80}&quot;/&gt;
+							&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;[60]/{80}&quot;/&gt;
+							&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;[60]/{80}&quot;/&gt;
+							&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;[60]/{80}&quot;/&gt;
+							&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;[60]/{80}&quot;/&gt;
+							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;[60]/{70}&quot;/&gt;
+							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;[60]/{70}&quot;/&gt;
+							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;[60]/{70}&quot;/&gt;
+							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;[60]/{70}&quot;/&gt;
+							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;[60]/{70}&quot;/&gt;
+							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;[60]/{70}&quot;/&gt;
+							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;[60]/{70}&quot;/&gt;
+							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;[60]/{70}&quot;/&gt;
+							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;[60]/{70}&quot;/&gt;
+							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;[60]/{70}&quot;/&gt;
+							&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;[60]/{80}&quot;/&gt;
+							&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;[60]/{80}&quot;/&gt;
 						&lt;/speeds&gt; 
 					&lt;/stationProperty&gt; 
 				&lt;/stationProperties&gt;

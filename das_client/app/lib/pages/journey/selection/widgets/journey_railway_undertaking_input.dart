@@ -26,18 +26,18 @@ class JourneyRailwayUndertakingInput extends StatelessWidget {
         final currentRu = model.railwayUndertaking;
 
         return switch (model) {
-          final Selecting _ || final Error _ => _buildRailwayUndertakingInput(
+          final Selecting _ || final Error _ => _railwayUndertakingInput(
             context,
             currentRu,
             onChanged: (value) => viewModel.updateRailwayUndertaking(value),
           ),
-          _ => _buildRailwayUndertakingInput(context, currentRu),
+          _ => _railwayUndertakingInput(context, currentRu),
         };
       },
     );
   }
 
-  _buildRailwayUndertakingInput(BuildContext context, value, {Function(RailwayUndertaking)? onChanged}) {
+  Widget _railwayUndertakingInput(BuildContext context, value, {Function(RailwayUndertaking)? onChanged}) {
     return Padding(
       padding: isModalVersion ? EdgeInsets.zero : _inputPadding,
       child: SBBSelect<RailwayUndertaking>(
