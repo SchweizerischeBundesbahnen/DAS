@@ -1,3 +1,4 @@
+import 'package:app/di/di.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/balise_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
@@ -12,6 +13,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/tram_area_row.dart
 import 'package:app/pages/journey/train_journey/widgets/table/whistle_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:app/util/format.dart';
+import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/labeled_badge.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/table/das_table.dart';
@@ -1094,7 +1096,9 @@ void main() {
         final expectedPlannedHeaderLabel = l10n.p_train_journey_table_time_label_planned;
         expect(find.text(expectedPlannedHeaderLabel), findsOneWidget);
 
-        await Future.delayed(Duration(seconds: 11));
+        final waitTime = DI.get<TimeConstants>().arrivalDepartureOperationalResetSeconds + 1;
+
+        await Future.delayed(Duration(seconds: waitTime));
 
         await tester.pumpAndSettle();
 
