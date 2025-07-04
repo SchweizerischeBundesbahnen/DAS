@@ -61,6 +61,8 @@ import 'package:sfera/src/data/dto/sp_context_information_dto.dart';
 import 'package:sfera/src/data/dto/sp_points_dto.dart';
 import 'package:sfera/src/data/dto/sp_zone_dto.dart';
 import 'package:sfera/src/data/dto/speeds_dto.dart';
+import 'package:sfera/src/data/dto/station_properties_dto.dart';
+import 'package:sfera/src/data/dto/station_property_dto.dart';
 import 'package:sfera/src/data/dto/station_speed_dto.dart';
 import 'package:sfera/src/data/dto/stop_type_dto.dart';
 import 'package:sfera/src/data/dto/stopping_point_departure_details_dto.dart';
@@ -299,6 +301,10 @@ class SferaReplyParser {
         return DecisiveGradientAreaDto(type: type, attributes: attributes, children: children, value: value);
       case NetworkSpecificConstraintDto.elementType:
         return NetworkSpecificConstraintDto.from(attributes: attributes, children: children, value: value);
+      case StationPropertiesDto.elementType:
+        return StationPropertiesDto(attributes: attributes, children: children, value: value);
+      case StationPropertyDto.elementType:
+        return StationPropertyDto(attributes: attributes, children: children, value: value);
       case JpContexInformationNspConstraints.elementType:
         return JpContexInformationNspConstraints(attributes: attributes, children: children, value: value);
       case JpContextInformationDto.elementType:

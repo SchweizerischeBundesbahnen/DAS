@@ -331,7 +331,7 @@ class _DASTableState extends State<DASTable> {
 }
 
 extension _TableBorderExtension on TableBorder {
-  toBoxBorder({bool isLastCell = false}) {
+  BorderDirectional toBoxBorder({bool isLastCell = false}) {
     return BorderDirectional(bottom: horizontalInside, end: isLastCell ? BorderSide.none : verticalInside);
   }
 }

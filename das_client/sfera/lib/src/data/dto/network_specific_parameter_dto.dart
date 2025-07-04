@@ -8,6 +8,7 @@ import 'package:sfera/src/data/dto/xml_graduated_speed_info_dto.dart';
 import 'package:sfera/src/data/dto/xml_line_foot_notes_dto.dart';
 import 'package:sfera/src/data/dto/xml_new_line_speed_dto.dart';
 import 'package:sfera/src/data/dto/xml_op_foot_notes_dto.dart';
+import 'package:sfera/src/data/dto/xml_station_property_dto.dart';
 import 'package:sfera/src/data/dto/xml_station_speed_dto.dart';
 import 'package:sfera/src/data/dto/xml_track_foot_notes_dto.dart';
 
@@ -43,6 +44,8 @@ class NetworkSpecificParameterDto extends SferaXmlElementDto {
       return IdNetworkSpecificParameterDto(attributes: attributes, children: children, value: value);
     } else if (attributes?['name'] == SpeedNetworkSpecificParameterDto.elementName) {
       return SpeedNetworkSpecificParameterDto(attributes: attributes, children: children, value: value);
+    } else if (attributes?['name'] == XmlStationPropertyDto.elementName) {
+      return XmlStationPropertyDto(attributes: attributes, children: children, value: value);
     }
     return NetworkSpecificParameterDto(attributes: attributes, children: children, value: value);
   }

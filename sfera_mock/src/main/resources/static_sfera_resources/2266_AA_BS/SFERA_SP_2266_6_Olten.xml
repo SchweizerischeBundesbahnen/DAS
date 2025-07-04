@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
-                SP_ID="2266_6_Olten" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="11100" SP_Status="Valid">
+                SP_ID="2266_6_Olten" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="11100" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -116,11 +116,11 @@
                 <NSP_GroupName>stationProperty</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationProperty" value="
 				&lt;stationProperties&gt;
-					&lt;stationProperty1 text=&quot;&lt;b&gt;A&quot;&gt; sign=&quot;Q&quot;&gt;
-						&lt;speeds&gt; 
+					&lt;stationProperty text=&quot;&lt;b&gt;A&quot; sign=&quot;Q&quot;&gt;
+						&lt;speeds&gt;
 							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;[55]&quot;/&gt; 
 						&lt;/speeds&gt; 
-					&lt;/stationProperty1&gt; 
+					&lt;/stationProperty&gt;
 				&lt;/stationProperties&gt;
 				"/>
             </TAF_TAP_Location_NSP>

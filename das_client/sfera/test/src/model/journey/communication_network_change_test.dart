@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/src/model/journey/communication_network_change.dart';
 
-main() {
+void main() {
   test('test appliesToOrder of CommunicationNetworkChange list', () {
     // GIVEN
     final networkChanges = [

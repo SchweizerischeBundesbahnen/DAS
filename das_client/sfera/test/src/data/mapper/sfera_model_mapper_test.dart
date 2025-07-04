@@ -1502,6 +1502,147 @@ void main() {
     // has calculated times
     expect(journey.metadata.anyOperationalArrivalDepartureTimes, isFalse);
   });
+
+  test('Test stations signs are parsed correctly', () {
+    final journey = getJourney('T21', 1);
+    expect(journey.valid, true);
+
+    final servicePoints = journey.data.whereType<ServicePoint>().toList();
+
+    expect(servicePoints, hasLength(8));
+    expect(servicePoints[0].stationSign1, StationSign.noExitSignal);
+    expect(servicePoints[0].stationSign2, isNull);
+    expect(servicePoints[1].stationSign1, StationSign.noEntrySignal);
+    expect(servicePoints[1].stationSign2, StationSign.entryStationWithoutRailFreeAccess);
+    expect(servicePoints[2].stationSign1, StationSign.deadendStation);
+    expect(servicePoints[2].stationSign2, StationSign.noEntryExitSignal);
+    expect(servicePoints[3].stationSign1, StationSign.openLevelCrossingBeforeExitSignal);
+    expect(servicePoints[3].stationSign2, isNull);
+    expect(servicePoints[4].stationSign1, StationSign.openLevelCrossingBeforeExitSignal);
+    expect(servicePoints[4].stationSign2, isNull);
+    expect(servicePoints[5].stationSign1, isNull);
+    expect(servicePoints[5].stationSign2, isNull);
+    expect(servicePoints[6].stationSign1, isNull);
+    expect(servicePoints[6].stationSign2, isNull);
+    expect(servicePoints[7].stationSign1, isNull);
+    expect(servicePoints[7].stationSign2, isNull);
+  });
+
+  test('Test stations properties are parsed correctly', () {
+    final journey = getJourney('T21', 1);
+    expect(journey.valid, true);
+
+    final servicePoints = journey.data.whereType<ServicePoint>().toList();
+
+    // Geneve-Aeroport
+    expect(servicePoints, hasLength(8));
+    expect(servicePoints[0].properties, hasLength(1));
+    expect(servicePoints[0].properties[0].sign, StationSign.deadendStation);
+    expect(servicePoints[0].properties[0].text, '<b>A');
+    expect(servicePoints[0].properties[0].speeds, hasLength(1));
+    expect(servicePoints[0].properties[0].speeds![0].speed, isA<SingleSpeed>());
+    expect((servicePoints[0].properties[0].speeds![0].speed as SingleSpeed).value, '55');
+    expect((servicePoints[0].properties[0].speeds![0].speed as SingleSpeed).isSquared, true);
+    expect((servicePoints[0].properties[0].speeds![0].speed as SingleSpeed).isCircled, false);
+
+    // Nyon
+    expect(servicePoints[2].properties, hasLength(1));
+    expect(servicePoints[2].properties[0].sign, isNull);
+    expect(servicePoints[2].properties[0].text, isNull);
+    expect(servicePoints[2].properties[0].speeds, hasLength(17));
+    expect(
+      servicePoints[2].properties[0].speeds.speedFor(TrainSeries.A, breakSeries: 50)!.speed,
+      isA<IncomingOutgoingSpeed>(),
+    );
+    expect(
+      ((servicePoints[2].properties[0].speeds.speedFor(TrainSeries.A, breakSeries: 50)!.speed as IncomingOutgoingSpeed)
+                  .incoming
+              as SingleSpeed)
+          .value,
+      '60',
+    );
+    expect(
+      ((servicePoints[2].properties[0].speeds.speedFor(TrainSeries.A, breakSeries: 50)!.speed as IncomingOutgoingSpeed)
+                  .incoming
+              as SingleSpeed)
+          .isSquared,
+      true,
+    );
+    expect(
+      ((servicePoints[2].properties[0].speeds.speedFor(TrainSeries.A, breakSeries: 50)!.speed as IncomingOutgoingSpeed)
+                  .incoming
+              as SingleSpeed)
+          .isCircled,
+      false,
+    );
+    expect(
+      ((servicePoints[2].properties[0].speeds.speedFor(TrainSeries.A, breakSeries: 50)!.speed as IncomingOutgoingSpeed)
+                  .outgoing
+              as SingleSpeed)
+          .value,
+      '70',
+    );
+    expect(
+      ((servicePoints[2].properties[0].speeds.speedFor(TrainSeries.A, breakSeries: 50)!.speed as IncomingOutgoingSpeed)
+                  .outgoing
+              as SingleSpeed)
+          .isCircled,
+      true,
+    );
+    expect(
+      ((servicePoints[2].properties[0].speeds.speedFor(TrainSeries.A, breakSeries: 50)!.speed as IncomingOutgoingSpeed)
+                  .outgoing
+              as SingleSpeed)
+          .isSquared,
+      false,
+    );
+
+    // Vevey
+    expect(servicePoints[5].properties, hasLength(3));
+    expect(servicePoints[5].properties[0].sign, isNull);
+    expect(servicePoints[5].properties[0].text, '<i>via Stammlinie');
+    expect(servicePoints[5].properties[0].speeds, isNull);
+    expect(servicePoints[5].properties[1].sign, isNull);
+    expect(servicePoints[5].properties[1].text, isNull);
+    expect(servicePoints[5].properties[1].speeds, isNotNull);
+    expect(servicePoints[5].properties[1].speeds![0].reduced, true);
+    expect(servicePoints[5].properties[1].speeds![0].speed, isA<SingleSpeed>());
+    expect((servicePoints[5].properties[1].speeds![0].speed as SingleSpeed).value, '35');
+    expect((servicePoints[5].properties[1].speeds![0].speed as SingleSpeed).isSquared, false);
+    expect((servicePoints[5].properties[1].speeds![0].speed as SingleSpeed).isCircled, false);
+    expect(servicePoints[5].properties[2].sign, StationSign.deadendStation);
+    expect(servicePoints[5].properties[2].text, '<b>A');
+    expect(servicePoints[5].properties[2].speeds, isNull);
+
+    // Aigle
+    expect(servicePoints[7].properties, hasLength(1));
+    expect(servicePoints[7].properties[0].sign, StationSign.entryOccupiedTrack);
+    expect(servicePoints[7].properties[0].text, isNull);
+    expect(servicePoints[7].properties[0].speeds, isNull);
+  });
+
+  test('Test properties for break series', () {
+    final journey = getJourney('T21', 1);
+    expect(journey.valid, true);
+
+    final servicePoints = journey.data.whereType<ServicePoint>().toList();
+
+    // Geneve-Aeroport
+    expect(servicePoints[0].propertiesFor(BreakSeries(trainSeries: TrainSeries.A, breakSeries: 50)), hasLength(1));
+    expect(servicePoints[0].propertiesFor(BreakSeries(trainSeries: TrainSeries.A, breakSeries: 60)), hasLength(0));
+    expect(
+      servicePoints[0].propertiesFor(BreakSeries(trainSeries: TrainSeries.R, breakSeries: 115)),
+      hasLength(0),
+    );
+
+    // Vevey
+    expect(servicePoints[5].propertiesFor(BreakSeries(trainSeries: TrainSeries.A, breakSeries: 50)), hasLength(3));
+    expect(servicePoints[5].propertiesFor(BreakSeries(trainSeries: TrainSeries.A, breakSeries: 60)), hasLength(3));
+    expect(
+      servicePoints[5].propertiesFor(BreakSeries(trainSeries: TrainSeries.R, breakSeries: 115)),
+      hasLength(2),
+    );
+  });
 }
 
 void _checkTrainSeriesSpeed<T extends Speed>(
