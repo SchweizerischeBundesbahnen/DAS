@@ -1,3 +1,4 @@
+import 'package:app/pages/journey/train_journey/widgets/header/time_container.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/advised_speed_cell_body.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:flutter/material.dart';
@@ -12,12 +13,11 @@ void main() {
 
     await loadTrainJourney(tester, trainNumber: 'T23');
 
-    final scrollableFinder = find.byType(AnimatedList);
+    // do not get disrupted by events
+    await pauseAutomaticAdvancement(tester);
+    await tester.pumpAndSettle(Duration(milliseconds: 100));
 
-    final luzernStationRow = findDASTableRowByText('Luzern');
-    expect(luzernStationRow, findsOneWidget);
-    final luzernAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(luzernStationRow);
-    expect(luzernAdvisedSpeedCell, findsNothing);
+    final scrollableFinder = find.byType(AnimatedList);
 
     final ebikonStationRow = findDASTableRowByText('Ebikon');
     expect(ebikonStationRow, findsOneWidget);
@@ -49,6 +49,9 @@ void main() {
     final zuerichAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(zuerichOerlikonStationRow);
     expect(zuerichAdvisedSpeedCell, findsNothing);
 
+    // scroll to see lower stations
+    await tester.dragUntilVisible(find.text('Konstanz'), scrollableFinder, const Offset(0, -100));
+
     final zuerichAirportStationRow = findDASTableRowByText('Zürich Flughafen');
     expect(zuerichAirportStationRow, findsOneWidget);
     _findTextWithin(zuerichAirportStationRow, '130');
@@ -61,9 +64,6 @@ void main() {
     final winterthurStationRow = findDASTableRowByText('Winterthur');
     expect(winterthurStationRow, findsOneWidget);
     _findTextWithin(winterthurStationRow, '80');
-
-    // scroll to see lower stations
-    await tester.dragUntilVisible(find.text('Konstanz'), scrollableFinder, const Offset(0, -100));
 
     final frauenfeldStationRow = findDASTableRowByText('Frauenfeld');
     expect(frauenfeldStationRow, findsOneWidget);
@@ -92,6 +92,12 @@ void main() {
 
     await loadTrainJourney(tester, trainNumber: 'T23');
 
+    // do not get disrupted by events
+    await pauseAutomaticAdvancement(tester);
+    await tester.pumpAndSettle(Duration(milliseconds: 100));
+
+    await _dragUntilInStickyHeader(tester, 'Thalwil');
+
     // Oerlikon ---------
 
     final oerlikon = 'Zürich Oerlikon';
@@ -111,8 +117,7 @@ void main() {
     const zurichAirport = 'Zürich Flughafen';
     final zrhStationRow = findDASTableRowByText(zurichAirport);
     expect(zrhStationRow, findsOneWidget);
-    final zrhAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(zrhStationRow);
-    expect(zrhAdvisedSpeedCell, findsNothing);
+    _findTextWithin(zrhStationRow, '130');
 
     await _dragUntilInStickyHeader(tester, zurichAirport);
 
@@ -136,6 +141,31 @@ void main() {
 
     await disconnect(tester);
   });
+
+  testWidgets('test do not display punctuality if no vpro speed in current position', (tester) async {
+    await prepareAndStartApp(tester);
+
+    await loadTrainJourney(tester, trainNumber: 'T23');
+
+    const fourtySecondsDelay = '+00:40';
+
+    final timeContainer = find.byType(TimeContainer);
+
+    // should not display punctuality string
+    expect(find.descendant(of: timeContainer, matching: find.text(TimeContainer.trainIsPunctualString)), findsNothing);
+
+    await tester.pumpAndSettle(Duration(milliseconds: 700));
+
+    // first event to service point without VPro
+    expect(find.descendant(of: timeContainer, matching: find.text(TimeContainer.trainIsPunctualString)), findsNothing);
+
+    await tester.pumpAndSettle(Duration(seconds: 3));
+
+    // event to service point with VPro and delay 40 seconds
+    expect(find.descendant(of: timeContainer, matching: find.text(fourtySecondsDelay)), findsOneWidget);
+
+    await disconnect(tester);
+  });
 }
 
 Future<void> _dragUntilInStickyHeader(WidgetTester tester, String bassersdorf) async {
@@ -144,7 +174,8 @@ Future<void> _dragUntilInStickyHeader(WidgetTester tester, String bassersdorf) a
   await tester.dragUntilVisible(
     find.descendant(of: stickyHeader, matching: find.text(bassersdorf)),
     scrollableFinder,
-    const Offset(0, -100),
+    const Offset(0, -50),
+    maxIteration: 100,
   );
   await tester.pumpAndSettle();
 }

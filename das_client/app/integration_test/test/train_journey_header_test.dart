@@ -241,7 +241,10 @@ Future<void> main() async {
       final header = find.byType(Header);
       expect(header, findsOneWidget);
 
-      await waitUntilNotExists(tester, find.descendant(of: header, matching: find.text('+00:00')));
+      await waitUntilNotExists(
+        tester,
+        find.descendant(of: header, matching: find.text(TimeContainer.trainIsPunctualString)),
+      );
 
       expect(find.descendant(of: header, matching: find.text('+00:30')), findsOneWidget);
 
@@ -260,7 +263,7 @@ Future<void> main() async {
       expect(header, findsOneWidget);
 
       // find the text in the header
-      expect(find.descendant(of: header, matching: find.text('+00:00')), findsOneWidget);
+      expect(find.descendant(of: header, matching: find.text(TimeContainer.trainIsPunctualString)), findsOneWidget);
 
       await tester.pumpAndSettle();
 

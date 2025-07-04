@@ -7,6 +7,8 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class TimeContainer extends StatelessWidget {
+  static const String trainIsPunctualString = '+00:00';
+
   const TimeContainer({super.key});
 
   @override
@@ -41,12 +43,19 @@ class TimeContainer extends StatelessWidget {
     return StreamBuilder<Journey?>(
       stream: context.read<TrainJourneyViewModel>().journey,
       builder: (context, snapshot) {
-        var punctualityString = '+00:00';
+        var punctualityString = trainIsPunctualString;
         final delay = snapshot.data?.metadata.delay;
         if (delay != null) {
           final String minutes = NumberFormat('00').format(delay.inMinutes.abs() % 60);
           final String seconds = NumberFormat('00').format(delay.inSeconds.abs() % 60);
           punctualityString = '${delay.isNegative ? '-' : '+'}$minutes:$seconds';
+        }
+
+        if (!snapshot.hasData) punctualityString = '';
+
+        final lastServicePoint = snapshot.data?.metadata.lastServicePoint;
+        if (lastServicePoint != null) {
+          if (lastServicePoint.calculatedSpeed == null) punctualityString = '';
         }
 
         return Padding(
