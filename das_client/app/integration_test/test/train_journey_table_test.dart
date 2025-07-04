@@ -1094,7 +1094,7 @@ void main() {
         final expectedPlannedHeaderLabel = l10n.p_train_journey_table_time_label_planned;
         expect(find.text(expectedPlannedHeaderLabel), findsOneWidget);
 
-        await Future.delayed(Duration(seconds: 11));
+        await Future.delayed(Duration(seconds: 3));
 
         await tester.pumpAndSettle();
 
