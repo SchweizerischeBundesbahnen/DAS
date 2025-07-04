@@ -279,7 +279,7 @@ void main() {
 
     verify(
       scrollControllerMock.animateTo(
-        CellRowBuilder.rowHeight * 3 + ServicePointRow.rowHeight,
+        CellRowBuilder.rowHeight * 3 + ServicePointRow.baseRowHeight,
         duration: anyNamed('duration'),
         curve: anyNamed('curve'),
       ),
@@ -395,7 +395,7 @@ ServicePointRow mockServicePointRow(ServicePoint data, Offset offset) {
   final servicePointRow = MockServicePointRow();
   final mockKey = mockGlobalKeyOffset(offset);
   when(servicePointRow.data).thenReturn(data);
-  when(servicePointRow.height).thenReturn(ServicePointRow.rowHeight);
+  when(servicePointRow.height).thenReturn(ServicePointRow.baseRowHeight);
   when(servicePointRow.stickyLevel).thenReturn(StickyLevel.first);
   when(servicePointRow.key).thenReturn(mockKey);
   return servicePointRow;

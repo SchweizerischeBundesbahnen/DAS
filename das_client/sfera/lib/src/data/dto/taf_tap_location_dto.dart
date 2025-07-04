@@ -5,9 +5,11 @@ import 'package:sfera/src/data/dto/line_foot_notes_nsp_dto.dart';
 import 'package:sfera/src/data/dto/new_line_speed_taf_tap_location_dto.dart';
 import 'package:sfera/src/data/dto/op_foot_notes_nsp_dto.dart';
 import 'package:sfera/src/data/dto/sfera_segment_xml_element_dto.dart';
+import 'package:sfera/src/data/dto/station_property_nsp_dto.dart';
 import 'package:sfera/src/data/dto/station_speed_nsp_dto.dart';
 import 'package:sfera/src/data/dto/taf_tap_location_ident_dto.dart';
 import 'package:sfera/src/data/dto/taf_tap_location_nsp_dto.dart';
+import 'package:sfera/src/data/dto/taf_tap_route_table_data_nsp_dto.dart';
 
 class TafTapLocationDto extends SferaSegmentXmlElementDto {
   static const String elementType = 'TAF_TAP_Location';
@@ -30,6 +32,10 @@ class TafTapLocationDto extends SferaSegmentXmlElementDto {
   OpFootNotesNspDto? get opFootNotes => children.whereType<OpFootNotesNspDto>().firstOrNull;
 
   LineFootNotesNspDto? get lineFootNotes => children.whereType<LineFootNotesNspDto>().firstOrNull;
+
+  TafTapRouteTableDataNspDto? get routeTableDataNsp => children.whereType<TafTapRouteTableDataNspDto>().firstOrNull;
+
+  StationPropertyNspDto? get property => children.whereType<StationPropertyNspDto>().firstOrNull;
 
   @override
   bool validate() {

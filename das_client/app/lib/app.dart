@@ -23,7 +23,7 @@ class _AppState extends State<App> {
     return Provider(
       create: (_) => ThemeViewModel(),
       dispose: (context, vm) => vm.dispose(),
-      builder: (context, __) => FlavorBanner(
+      builder: (context, _) => FlavorBanner(
         flavor: DI.get(),
         child: _materialApp(context),
       ),

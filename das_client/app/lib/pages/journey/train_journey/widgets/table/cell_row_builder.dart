@@ -1,3 +1,4 @@
+import 'package:app/extension/base_data_extension.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
@@ -98,6 +99,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
         isRouteStart: metadata.routeStart == data,
         isRouteEnd: metadata.routeEnd == data,
         chevronAnimationData: config.chevronAnimationData,
+        chevronPosition: data.chevronPosition,
       ),
     );
   }
@@ -207,10 +209,10 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
         .firstOrNull;
   }
 
-  static double rowHeightForData(BaseData data) {
+  static double rowHeightForData(BaseData data, BreakSeries? currentBreakSeries) {
     switch (data.type) {
       case Datatype.servicePoint:
-        return ServicePointRow.rowHeight;
+        return ServicePointRow.calculateHeight(data as ServicePoint, currentBreakSeries);
       default:
         return CellRowBuilder.rowHeight;
     }

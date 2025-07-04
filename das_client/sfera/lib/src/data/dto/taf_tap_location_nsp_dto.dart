@@ -3,7 +3,9 @@ import 'package:sfera/src/data/dto/new_line_speed_taf_tap_location_dto.dart';
 import 'package:sfera/src/data/dto/nsp_dto.dart';
 import 'package:sfera/src/data/dto/op_foot_notes_nsp_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
+import 'package:sfera/src/data/dto/station_property_nsp_dto.dart';
 import 'package:sfera/src/data/dto/station_speed_nsp_dto.dart';
+import 'package:sfera/src/data/dto/taf_tap_route_table_data_nsp_dto.dart';
 
 class TafTapLocationNspDto extends NspDto {
   static const String elementType = 'TAF_TAP_Location_NSP';
@@ -24,6 +26,10 @@ class TafTapLocationNspDto extends NspDto {
       return LineFootNotesNspDto(attributes: attributes, children: children, value: value);
     } else if (groupName?.value == OpFootNotesNspDto.elementName) {
       return OpFootNotesNspDto(attributes: attributes, children: children, value: value);
+    } else if (groupName?.value == StationPropertyNspDto.elementName) {
+      return StationPropertyNspDto(attributes: attributes, children: children, value: value);
+    } else if (groupName?.value == TafTapRouteTableDataNspDto.elementName) {
+      return TafTapRouteTableDataNspDto(attributes: attributes, children: children, value: value);
     }
     return TafTapLocationNspDto(attributes: attributes, children: children, value: value);
   }

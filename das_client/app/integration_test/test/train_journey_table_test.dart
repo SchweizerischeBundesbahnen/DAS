@@ -13,6 +13,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/whistle_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:app/util/format.dart';
 import 'package:app/widgets/labeled_badge.dart';
+import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
@@ -872,7 +873,14 @@ void main() {
       );
       expect(wankdorfOutgoingSpeedsEmpty, findsNothing);
 
-      await tester.dragUntilVisible(find.text('Zurich'), scrollableFinder, const Offset(0, -100));
+      final stickyHeader = find.byKey(StickyHeader.headerKey);
+      await tester.dragUntilVisible(
+        find.descendant(of: stickyHeader, matching: find.text('Wankdorf')),
+        scrollableFinder,
+        const Offset(0, -100),
+      );
+
+      await tester.pumpAndSettle();
 
       // now filled
       final wankdorfIncomingSpeedsFilled = find.descendant(

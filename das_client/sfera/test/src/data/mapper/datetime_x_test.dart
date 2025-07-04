@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/src/data/mapper/datetime_x.dart';
 
-main() {
+void main() {
   test('parseNullable_whenNull_returnsNull', () {
     // WHEN & THEN
     expect(DateTimeX.parseNullable(null), isNull);

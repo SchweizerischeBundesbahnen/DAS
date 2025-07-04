@@ -184,7 +184,7 @@ class SferaModelMapper {
         servicePoints.last;
   }
 
-  static _calculateLastServicePoint(Iterable<ServicePoint> servicePoints, BaseData? currentPosition) {
+  static ServicePoint? _calculateLastServicePoint(Iterable<ServicePoint> servicePoints, BaseData? currentPosition) {
     if (currentPosition == null) return servicePoints.firstOrNull;
 
     return servicePoints.toList().reversed.firstWhereOrNull((sP) => sP.order <= currentPosition.order);
@@ -433,7 +433,7 @@ class SferaModelMapper {
 
   static Set<BreakSeries> _parseAvailableBreakSeries(List<BaseData> journeyData) {
     return journeyData
-        .expand((it) => [...it.speeds ?? [], ...it.localSpeeds ?? []])
+        .expand((it) => it.allSpeeds)
         .where((it) => it.breakSeries != null)
         .map((it) => BreakSeries(trainSeries: it.trainSeries, breakSeries: it.breakSeries!))
         .toSet();
