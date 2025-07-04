@@ -7,5 +7,5 @@ class TimeConstants {
 
   int get modalSheetAutomaticCloseAfterSeconds => 40;
 
-  int get resetToOperationalAfterSeconds => 10;
+  int get arrivalDepartureOperationalResetSeconds => 10;
 }

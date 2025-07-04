@@ -12,4 +12,7 @@ class TestTimeConstants extends TimeConstants {
 
   @override
   int get modalSheetAutomaticCloseAfterSeconds => 2;
+
+  @override
+  int get arrivalDepartureOperationalResetSeconds => 2;
 }

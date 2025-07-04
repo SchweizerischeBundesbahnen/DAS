@@ -6,7 +6,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 class ArrivalDepartureTimeViewModel {
-  final _timeConstants = DI.get<TimeConstants>();
+  final _resetToOperationalAfterSeconds = DI.get<TimeConstants>().arrivalDepartureOperationalResetSeconds;
 
   ArrivalDepartureTimeViewModel({required Stream<Journey?> journeyStream}) {
     _listenToJourneyUpdates(journeyStream);
@@ -50,7 +50,7 @@ class ArrivalDepartureTimeViewModel {
     final currentValue = _rxShowOperationalTimes.value;
     if (currentValue) {
       _rxShowOperationalTimes.add(false);
-      _timer = Timer(Duration(seconds: _timeConstants.resetToOperationalAfterSeconds), () {
+      _timer = Timer(Duration(seconds: _resetToOperationalAfterSeconds), () {
         if (!_rxShowOperationalTimes.value) _rxShowOperationalTimes.add(true);
       });
     } else {
