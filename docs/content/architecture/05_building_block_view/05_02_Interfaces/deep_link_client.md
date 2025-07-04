@@ -50,7 +50,7 @@ on the device, one needs to add at least the following path and query parameters
 
 Remarks about parameter-values (derived from [SFERA xsd](../../../../../sfera_mock/src/main/resources/SFERA_v3.00.xsd) copy):
 * `operationalTrainNumber`: Source NeTS-FPS, which represents an operational train-number (for e.g. as in "IC 1 **625**"). In the near future 2031 this may change with TMS::CM1. 
-* `tafTapLocationReferenceStart/End`: Represents operational stop-points (de:Betriebspunkte), considered by a Digital-driving-order (de:Fahrordnung) and consists of an ISO Country Code (ISO 3166-1) and the primary location code (the format within this specifaction is proprietary and derived from the underlying SFERA service-contract, for e.g. Bern "CH07000")
+* `tafTapLocationReferenceStart/End`: Represents operational stop-points (de:Betriebspunkte), considered by a Digital-driving-order (de:Fahrordnung) and consists of an ISO Country Code (ISO 3166-1) and the primary location code (the format within this specification is proprietary and derived from the underlying SFERA service-contract, for e.g. Bern "CH07000")
 * `company`: As defined by [RICS company code](https://uic.org/support-activities/it/rics), for e.g. BLS P "1163", BLS C "3356"
 
 ### Testing during development
