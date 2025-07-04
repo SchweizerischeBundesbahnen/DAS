@@ -20,7 +20,7 @@ class AutomaticAdvancementController {
   static const int _minScrollDuration = 1000;
   static const int _maxScrollDuration = 2000;
 
-  final _timeConstants = DI.get<TimeConstants>();
+  final _idleTimeAutoScroll = DI.get<TimeConstants>().automaticAdvancementIdleTimeAutoScroll;
 
   AutomaticAdvancementController({ScrollController? controller, GlobalKey? tableKey})
     : scrollController = controller ?? ScrollController(),
@@ -50,11 +50,7 @@ class AutomaticAdvancementController {
     final targetScrollPosition = _calculateScrollPosition();
     if (_lastScrollPosition != targetScrollPosition &&
         targetScrollPosition != null &&
-        (_lastTouch == null ||
-            _lastTouch!
-                    .add(Duration(seconds: _timeConstants.automaticAdvancementIdleTimeAutoScroll))
-                    .compareTo(clock.now()) <
-                0)) {
+        (_lastTouch == null || _lastTouch!.add(Duration(seconds: _idleTimeAutoScroll)).compareTo(clock.now()) < 0)) {
       _scrollToPosition(targetScrollPosition);
     }
   }
@@ -140,10 +136,10 @@ class AutomaticAdvancementController {
     _lastTouch = clock.now();
     if (_rxIsAutomaticAdvancementActive.value) {
       _scrollTimer?.cancel();
-      _scrollTimer = Timer(Duration(seconds: _timeConstants.automaticAdvancementIdleTimeAutoScroll), () {
+      _scrollTimer = Timer(Duration(seconds: _idleTimeAutoScroll), () {
         if (_rxIsAutomaticAdvancementActive.value) {
           _log.fine(
-            'Screen idle time of ${_timeConstants.automaticAdvancementIdleTimeAutoScroll} seconds reached. Scrolling to current position',
+            'Screen idle time of $_idleTimeAutoScroll seconds reached. Scrolling to current position',
           );
           scrollToCurrentPosition();
         }

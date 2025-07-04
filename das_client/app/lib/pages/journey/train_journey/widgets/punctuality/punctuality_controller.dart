@@ -14,9 +14,9 @@ class PunctualityController {
   Timer? updateTimer;
   Delay? _lastDelay;
 
-  final _punctualityStateController = BehaviorSubject<PunctualityState>.seeded(PunctualityState.visible);
+  final _rxPunctualityState = BehaviorSubject<PunctualityState>.seeded(PunctualityState.visible);
 
-  Stream<PunctualityState> get punctualityStateStream => _punctualityStateController.distinct();
+  Stream<PunctualityState> get punctualityStateStream => _rxPunctualityState.distinct();
 
   void startMonitoring() {
     updateTimer = Timer.periodic(const Duration(seconds: 1), (_) {
@@ -49,7 +49,7 @@ class PunctualityController {
   }
 
   void _emitState(PunctualityState state) {
-    _punctualityStateController.add(state);
+    _rxPunctualityState.add(state);
   }
 
   void stopMonitoring() {

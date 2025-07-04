@@ -6,4 +6,6 @@ class TimeConstants {
   int get automaticAdvancementIdleTimeAutoScroll => 10;
 
   int get modalSheetAutomaticCloseAfterSeconds => 40;
+
+  int get resetToOperationalAfterSeconds => 10;
 }

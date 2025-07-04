@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:app/di/di.dart';
+import 'package:app/util/time_constants.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 class ArrivalDepartureTimeViewModel {
-  static const int _resetToOperationalAfterSeconds = 10;
+  final _timeConstants = DI.get<TimeConstants>();
 
   ArrivalDepartureTimeViewModel({required Stream<Journey?> journeyStream}) {
     _listenToJourneyUpdates(journeyStream);
@@ -48,7 +50,7 @@ class ArrivalDepartureTimeViewModel {
     final currentValue = _rxShowOperationalTimes.value;
     if (currentValue) {
       _rxShowOperationalTimes.add(false);
-      _timer = Timer(Duration(seconds: _resetToOperationalAfterSeconds), () {
+      _timer = Timer(Duration(seconds: _timeConstants.resetToOperationalAfterSeconds), () {
         if (!_rxShowOperationalTimes.value) _rxShowOperationalTimes.add(true);
       });
     } else {
