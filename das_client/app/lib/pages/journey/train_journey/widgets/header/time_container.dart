@@ -1,34 +1,84 @@
+import 'dart:async';
+
+import 'package:app/pages/journey/train_journey/widgets/punctuality/punctuality_controller.dart';
+import 'package:app/pages/journey/train_journey/widgets/punctuality/punctuality_state_enum.dart';
 import 'package:app/pages/journey/train_journey_view_model.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/das_text_styles.dart';
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
-class TimeContainer extends StatelessWidget {
+class TimeContainer extends StatefulWidget {
   static const String trainIsPunctualString = '+00:00';
+  static const Key delayKey = Key('delayTextKey');
 
   const TimeContainer({super.key});
 
   @override
+  State<TimeContainer> createState() => TimeContainerState();
+}
+
+class TimeContainerState extends State<TimeContainer> {
+  late PunctualityController punctualityController;
+  TrainJourneyViewModel? viewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    punctualityController = PunctualityController();
+    punctualityController.lastUpdate = clock.now();
+    punctualityController.startMonitoring();
+    viewModel = context.read<TrainJourneyViewModel>();
+  }
+
+  @override
+  void dispose() {
+    punctualityController.stopMonitoring();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SBBGroup(
-      padding: const EdgeInsets.all(sbbDefaultSpacing),
-      useShadow: false,
-      child: SizedBox(
-        width: 124.0,
-        height: 112.0,
-        child: Column(
+    return StreamBuilder<Journey?>(
+      stream: viewModel!.journey,
+      builder: (context, snapshot) {
+        final journey = snapshot.data;
+        punctualityController.updatePunctualityTimestamp(journey?.metadata);
+
+        return SBBGroup(
+          padding: const EdgeInsets.all(sbbDefaultSpacing),
+          useShadow: false,
+          child: SizedBox(
+            width: 124.0,
+            height: 112.0,
+            child: _buildDelayColumn(journey),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildDelayColumn(Journey? journey) {
+    return StreamBuilder<PunctualityState>(
+      stream: punctualityController.punctualityStateStream,
+      builder: (context, snapshot) {
+        final state = snapshot.data ?? PunctualityState.visible;
+        final delay = _delay(journey, state);
+
+        return Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Flexible(child: _currentTime()),
             _divider(),
-            Flexible(child: _punctualityDisplay(context)),
+            state != PunctualityState.hidden ? Flexible(child: delay) : SizedBox(height: sbbDefaultSpacing * 2.5),
           ],
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -39,36 +89,39 @@ class TimeContainer extends StatelessWidget {
     );
   }
 
-  Widget _punctualityDisplay(BuildContext context) {
-    return StreamBuilder<Journey?>(
-      stream: context.read<TrainJourneyViewModel>().journey,
-      builder: (context, snapshot) {
-        var punctualityString = trainIsPunctualString;
-        final delay = snapshot.data?.metadata.delay;
-        if (delay != null) {
-          final String minutes = NumberFormat('00').format(delay.inMinutes.abs() % 60);
-          final String seconds = NumberFormat('00').format(delay.inSeconds.abs() % 60);
-          punctualityString = '${delay.isNegative ? '-' : '+'}$minutes:$seconds';
-        }
+  Widget _delay(Journey? journey, PunctualityState punctualityState) {
+    final delayValue = _resolveDelayString(journey);
+    final TextStyle resolvedStyle = _resolvedDelayStyle(punctualityState);
 
-        if (!snapshot.hasData) punctualityString = '';
-
-        final lastServicePoint = snapshot.data?.metadata.lastServicePoint;
-        if (lastServicePoint != null) {
-          if (lastServicePoint.calculatedSpeed == null) punctualityString = '';
-        }
-
-        return Padding(
-          padding: const EdgeInsets.fromLTRB(
-            sbbDefaultSpacing * 0.5,
-            0.0,
-            sbbDefaultSpacing * 0.5,
-            sbbDefaultSpacing * 0.5,
-          ),
-          child: Text(punctualityString, style: DASTextStyles.xLargeLight),
-        );
-      },
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        sbbDefaultSpacing * 0.5,
+        0.0,
+        sbbDefaultSpacing * 0.5,
+        sbbDefaultSpacing * 0.5,
+      ),
+      child: Text(delayValue, style: resolvedStyle, key: TimeContainer.delayKey),
     );
+  }
+
+  TextStyle _resolvedDelayStyle(PunctualityState punctualityState) {
+    final resolvedStyle = punctualityState == PunctualityState.stale
+        ? DASTextStyles.xLargeLight.copyWith(
+            color: ThemeUtil.getColor(context, SBBColors.graphite, SBBColors.granite),
+          )
+        : DASTextStyles.xLargeLight;
+    return resolvedStyle;
+  }
+
+  String _resolveDelayString(Journey? journey) {
+    String delayString = TimeContainer.trainIsPunctualString;
+    final delay = journey?.metadata.delay?.delay;
+    if (delay != null) {
+      final minutes = NumberFormat('00').format(delay.inMinutes.abs());
+      final seconds = NumberFormat('00').format(delay.inSeconds.abs() % 60);
+      delayString = '${delay.isNegative ? '-' : '+'}$minutes:$seconds';
+    }
+    return delayString;
   }
 
   Widget _currentTime() {
@@ -83,7 +136,7 @@ class TimeContainer extends StatelessWidget {
             0,
           ),
           child: Text(
-            DateFormat('HH:mm:ss').format(DateTime.now().toLocal()),
+            DateFormat('HH:mm:ss').format(clock.now()),
             style: DASTextStyles.xLargeBold,
           ),
         );
