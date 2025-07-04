@@ -3,11 +3,35 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class TextUtil {
   static TextSpan parseHtmlText(String text, TextStyle baseTextStyle) {
-    return _parseHtmlTextTags(replaceHtmlLineBreaks(text), baseTextStyle);
+    return _parseHtmlTextTags(balanceHtmlTags(replaceHtmlLineBreaks(text)), baseTextStyle);
   }
 
   static String replaceHtmlLineBreaks(String text) {
     return text.replaceAll(RegExp(r'<br\s*/?>'), '\n');
+  }
+
+  static String balanceHtmlTags(String text) {
+    final openTags = <String>[];
+    final regex = RegExp(r'<(/?)(\w+)>', caseSensitive: false);
+
+    // Find all opening and closing tags
+    for (final match in regex.allMatches(text)) {
+      final tagName = match.group(2)!.toLowerCase();
+      if (match.group(1) == '/') {
+        if (openTags.isNotEmpty && openTags.last == tagName) {
+          openTags.removeLast();
+        }
+      } else {
+        openTags.add(tagName);
+      }
+    }
+
+    // Close any remaining open tags
+    while (openTags.isNotEmpty) {
+      text += '</${openTags.removeLast()}>';
+    }
+
+    return text;
   }
 
   static TextSpan _parseHtmlTextTags(String text, TextStyle baseTextStyle) {
