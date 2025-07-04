@@ -27,17 +27,22 @@ class AdvisedSpeedCellBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isSticky = _isSticky(context);
+    return ListenableBuilder(
+      listenable: StickyHeader.of(context)!.controller,
+      builder: (context, _) {
+        final isSticky = _isSticky(context);
 
-    SingleSpeed? resolvedCalculatedSpeed = calculatedSpeed ?? (isSticky ? _calculatedSpeedFromPrev(context) : null);
-    final resolvedLineSpeed = lineSpeed ?? (isSticky ? _lineSpeedFromPrev(context) : null);
-    if (resolvedCalculatedSpeed == null) return DASTableCell.emptyBuilder;
+        SingleSpeed? resolvedCalculatedSpeed = calculatedSpeed ?? (isSticky ? _calculatedSpeedFromPrev(context) : null);
+        final resolvedLineSpeed = lineSpeed ?? (isSticky ? _lineSpeedFromPrev(context) : null);
+        if (resolvedCalculatedSpeed == null) return DASTableCell.emptyBuilder;
 
-    resolvedCalculatedSpeed = _min(resolvedLineSpeed, resolvedCalculatedSpeed);
-    return Text(
-      key: key,
-      resolvedCalculatedSpeed.value == '0' ? _dash : resolvedCalculatedSpeed.value,
-      style: isSpeedReducedDueToLineSpeed ? DASTextStyles.largeLight.copyWith(color: SBBColors.metal) : null,
+        resolvedCalculatedSpeed = _min(resolvedLineSpeed, resolvedCalculatedSpeed);
+        return Text(
+          key: key,
+          resolvedCalculatedSpeed.value == '0' ? _dash : resolvedCalculatedSpeed.value,
+          style: isSpeedReducedDueToLineSpeed ? DASTextStyles.largeLight.copyWith(color: SBBColors.metal) : null,
+        );
+      },
     );
   }
 
@@ -52,10 +57,10 @@ class AdvisedSpeedCellBody extends StatelessWidget {
   }
 
   SingleSpeed? _calculatedSpeedFromPrev(BuildContext context) =>
-      context.read<DASTableSpeedViewModel>().previousCalculatedSpeed(rowIndex) as SingleSpeed?;
+      context.read<DASTableSpeedViewModel>().previousCalculatedSpeed(rowIndex);
 
   SingleSpeed? _lineSpeedFromPrev(BuildContext context) =>
-      context.read<DASTableSpeedViewModel>().previousSpeed(rowIndex) as SingleSpeed?;
+      context.read<DASTableSpeedViewModel>().previousLineSpeed(rowIndex);
 
   SingleSpeed _min(SingleSpeed? resolvedLineSpeed, SingleSpeed resolvedCalculatedSpeed) {
     if (resolvedLineSpeed == null) return resolvedCalculatedSpeed;
