@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
+import 'package:app/util/time_constants.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:sfera/src/model/journey/journey.dart';
 import 'package:sfera/src/model/journey/metadata.dart';
 
@@ -11,6 +13,7 @@ void main() {
   late StreamController<Journey?> journeyStreamController;
 
   setUp(() {
+    GetIt.I.registerSingleton(TimeConstants());
     journeyStreamController = StreamController<Journey?>();
     testee = ArrivalDepartureTimeViewModel(journeyStream: journeyStreamController.stream);
   });
@@ -18,6 +21,7 @@ void main() {
   tearDown(() {
     testee.dispose();
     journeyStreamController.close();
+    GetIt.I.reset();
   });
 
   test('showOperationalTimes_whenInitialized_thenReturnsTrue', () {

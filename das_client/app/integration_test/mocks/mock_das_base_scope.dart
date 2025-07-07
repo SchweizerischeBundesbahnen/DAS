@@ -1,12 +1,14 @@
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/di/di.dart';
 import 'package:app/di/scopes/das_base_scope.dart';
+import 'package:app/util/time_constants.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:logging/logging.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:warnapp/component.dart';
 
+import '../util/test_time_constants.dart';
 import 'integration_test_audio_player.dart';
 import 'mock_battery.dart';
 import 'mock_brightness_manager.dart';
@@ -27,6 +29,7 @@ class MockDASBaseScope extends DASBaseScope {
     _registerMockBattery();
     _registerMockMotionDataService();
     getIt.registerWarnapp();
+    _registerTestTimeConstants();
 
     await getIt.allReady();
   }
@@ -51,5 +54,9 @@ class MockDASBaseScope extends DASBaseScope {
       _log.fine('Register IntegrationTestAudioPlayer');
       return IntegrationTestAudioPlayer();
     });
+  }
+
+  void _registerTestTimeConstants() {
+    getIt.registerSingleton<TimeConstants>(TestTimeConstants());
   }
 }

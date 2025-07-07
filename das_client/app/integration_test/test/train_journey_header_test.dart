@@ -10,7 +10,9 @@ import 'package:app/pages/journey/train_journey/widgets/header/radio_contact.dar
 import 'package:app/pages/journey/train_journey/widgets/header/sim_identifier.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/time_container.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:app/util/format.dart';
+import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
@@ -25,17 +27,65 @@ import '../util/test_utils.dart';
 
 Future<void> main() async {
   group('train journey header test', () {
+    testWidgets('test punctuality display hides when no updates come', (tester) async {
+      await prepareAndStartApp(tester);
+
+      await loadTrainJourney(tester, trainNumber: 'T4');
+
+      final timeContainer = find.byType(TimeContainer);
+      expect(timeContainer, findsOneWidget);
+
+      // check that delay text is there
+      expect(find.descendant(of: timeContainer, matching: find.byKey(TimeContainer.delayKey)), findsOneWidget);
+
+      final waitTime = DI.get<TimeConstants>().punctualityDisappearSeconds + 1;
+
+      // wait until waitTime reached
+      await Future.delayed(Duration(seconds: waitTime));
+      await tester.pumpAndSettle();
+
+      // check that delay text has disappeared
+      expect(find.descendant(of: timeContainer, matching: find.byKey(TimeContainer.delayKey)), findsNothing);
+    });
+
+    testWidgets('test punctuality display becomes stale when no updates come', (tester) async {
+      await prepareAndStartApp(tester);
+
+      await loadTrainJourney(tester, trainNumber: 'T4');
+
+      final timeContainer = find.byType(TimeContainer);
+      expect(timeContainer, findsOneWidget);
+
+      final context = tester.element(timeContainer);
+
+      // find delay text
+      final delayText = find.descendant(of: timeContainer, matching: find.byKey(TimeContainer.delayKey));
+
+      // check that delay text is there
+      expect(delayText, findsOneWidget);
+
+      final waitTime = DI.get<TimeConstants>().punctualityStaleSeconds + 1;
+
+      // wait until waitTime reached
+      await Future.delayed(Duration(seconds: waitTime));
+      await tester.pumpAndSettle();
+
+      // check that delay text is stale
+      final delayTextWidget = tester.widget<Text>(delayText);
+      expect(delayTextWidget.style?.color, ThemeUtil.getColor(context, SBBColors.graphite, SBBColors.granite));
+    });
+
     testWidgets('test always-on display is turned on when journey is loaded', (tester) async {
       await prepareAndStartApp(tester);
 
       // Get that the always-on display is turned off, because journey is not started yet
-      final currentDisplayTurnedOff = await WakelockPlus.enabled;
-      expect(currentDisplayTurnedOff, false);
+      bool currentDisplayTurnedOn = await WakelockPlus.enabled;
+      expect(currentDisplayTurnedOn, false);
 
       await loadTrainJourney(tester, trainNumber: 'T4');
 
       // Get that the always-on display is turned on, because the journey is started
-      final currentDisplayTurnedOn = await WakelockPlus.enabled;
+      currentDisplayTurnedOn = await WakelockPlus.enabled;
       expect(currentDisplayTurnedOn, true);
     });
 

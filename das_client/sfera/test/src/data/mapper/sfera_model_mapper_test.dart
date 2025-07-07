@@ -92,6 +92,29 @@ void main() {
     );
   }
 
+  test('returns null delay when delay is missing in event', () {
+    final journey = getJourney('T8', 1);
+    expect(journey.valid, true);
+
+    final delay = journey.metadata.delay;
+
+    expect(delay, isNull);
+  });
+
+  test('return valid delay when location and delay are given', () {
+    final journey = getJourney('T9999', 5, relatedTrainInfoEventId: 2000);
+    expect(journey.valid, true);
+
+    final delay = journey.metadata.delay;
+
+    expect(delay, isNotNull);
+    final delayValue = delay!.delay;
+    expect(delayValue, Duration(seconds: 30));
+
+    final location = delay.location;
+    expect(location, 'T9999_1500.0');
+  });
+
   test('Test invalid journey on SP missing', () async {
     final journey = getJourney('T9999', 4);
 
