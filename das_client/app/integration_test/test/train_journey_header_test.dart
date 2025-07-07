@@ -10,7 +10,6 @@ import 'package:app/pages/journey/train_journey/widgets/header/radio_contact.dar
 import 'package:app/pages/journey/train_journey/widgets/header/sim_identifier.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/time_container.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
-import 'package:app/pages/journey/train_journey/widgets/punctuality/punctuality_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/format.dart';
 import 'package:app/util/time_constants.dart';
@@ -36,14 +35,13 @@ Future<void> main() async {
       final timeContainer = find.byType(TimeContainer);
       expect(timeContainer, findsOneWidget);
 
-      // check that delay text is there
-      expect(find.descendant(of: timeContainer, matching: find.byKey(TimeContainer.delayKey)), findsOneWidget);
+      // wait until delay displayed
+      await waitUntilExists(tester, find.descendant(of: timeContainer, matching: find.byKey(TimeContainer.delayKey)));
 
       final waitTime = DI.get<TimeConstants>().punctualityDisappearSeconds + 1;
 
       // wait until waitTime reached
-      await Future.delayed(Duration(seconds: waitTime));
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(Duration(seconds: waitTime));
 
       // check that delay text has disappeared
       expect(find.descendant(of: timeContainer, matching: find.byKey(TimeContainer.delayKey)), findsNothing);
@@ -59,20 +57,16 @@ Future<void> main() async {
 
       final context = tester.element(timeContainer);
 
-      // find delay text
-      final delayText = find.descendant(of: timeContainer, matching: find.byKey(TimeContainer.delayKey));
-
-      // check that delay text is there
-      expect(delayText, findsOneWidget);
+      // wait until delay displayed
+      await waitUntilExists(tester, find.descendant(of: timeContainer, matching: find.text('+00:40')));
 
       final waitTime = DI.get<TimeConstants>().punctualityStaleSeconds + 1;
 
       // wait until waitTime reached
-      await Future.delayed(Duration(seconds: waitTime));
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(Duration(seconds: waitTime));
 
       // check that delay text is stale
-      final delayTextWidget = tester.widget<Text>(delayText);
+      final delayTextWidget = tester.widget<Text>(find.descendant(of: timeContainer, matching: find.text('+00:40')));
       expect(delayTextWidget.style?.color, ThemeUtil.getColor(context, SBBColors.graphite, SBBColors.granite));
     });
 
@@ -292,17 +286,15 @@ Future<void> main() async {
       final header = find.byType(Header);
       expect(header, findsOneWidget);
 
-      await waitUntilNotExists(
-        tester,
-        find.descendant(of: header, matching: find.text(PunctualityViewModel.trainIsPunctualString)),
-      );
+      await waitUntilExists(tester, find.descendant(of: header, matching: find.byKey(TimeContainer.delayKey)));
+      await tester.pumpAndSettle(Duration(seconds: 1));
 
       expect(find.descendant(of: header, matching: find.text('+00:30')), findsOneWidget);
 
       await disconnect(tester);
     });
 
-    testWidgets('find base value when no punctuality update comes', (tester) async {
+    testWidgets('punctuality display is hidden when no calculated speed', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
 
@@ -313,13 +305,10 @@ Future<void> main() async {
       final header = find.byType(Header);
       expect(header, findsOneWidget);
 
-      // find the text in the header
-      expect(
-        find.descendant(of: header, matching: find.text(PunctualityViewModel.trainIsPunctualString)),
-        findsOneWidget,
-      );
-
       await tester.pumpAndSettle();
+
+      // does not find delay text
+      expect(find.descendant(of: header, matching: find.byKey(TimeContainer.delayKey)), findsNothing);
 
       await disconnect(tester);
     });

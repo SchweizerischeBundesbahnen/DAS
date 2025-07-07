@@ -160,13 +160,7 @@ void main() {
 
     await tester.pumpAndSettle(Duration(milliseconds: 700));
 
-    // first event to service point without VPro
-    expect(
-      find.descendant(of: timeContainer, matching: find.text(PunctualityViewModel.trainIsPunctualString)),
-      findsNothing,
-    );
-
-    await tester.pumpAndSettle(Duration(seconds: 3));
+    await waitUntilExists(tester, find.descendant(of: timeContainer, matching: find.byKey(TimeContainer.delayKey)));
 
     // event to service point with VPro and delay 40 seconds
     expect(find.descendant(of: timeContainer, matching: find.text(fourtySecondsDelay)), findsOneWidget);

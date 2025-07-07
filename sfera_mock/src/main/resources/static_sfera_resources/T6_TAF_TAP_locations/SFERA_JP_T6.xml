@@ -21,14 +21,6 @@
                 <TP_ID_Reference TP_ID="Hardbrücke"/>
             </TimingPointReference>
         </TimingPointConstraints>
-        <JP_ContextInformation>
-            <JP_ContextInformation_NSPs>
-                <teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
-                <NetworkSpecificParameter name="newSpeed" value="140"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" endLocation="0" startLocation="0"/>
-            </JP_ContextInformation_NSPs>
-        </JP_ContextInformation>
     </SegmentProfileReference>
     <SegmentProfileReference SP_ID="T6_2" SP_VersionMajor="2" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>

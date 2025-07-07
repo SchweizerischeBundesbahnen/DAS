@@ -28,31 +28,15 @@ class TimeContainer extends StatelessWidget {
     );
   }
 
-  Widget _currentTimeAndOptionalDelay(BuildContext context) {
-    final viewModel = context.read<PunctualityViewModel>();
-    return StreamBuilder<PunctualityModel>(
-      stream: viewModel.model,
-      initialData: viewModel.modelValue,
-      builder: (context, snapshot) {
-        final model = snapshot.data;
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Flexible(child: _currentTime()),
-            _divider(),
-            Flexible(
-              child: AnimatedOpacity(
-                opacity: (model != null && model is! Hidden) ? 1.0 : 0.0,
-                duration: const Duration(milliseconds: 200),
-                child: _delay(model, context),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  Widget _currentTimeAndOptionalDelay(BuildContext context) => Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    crossAxisAlignment: CrossAxisAlignment.end,
+    children: [
+      Flexible(child: _currentTime()),
+      _divider(),
+      Flexible(child: _delay(context)),
+    ],
+  );
 
   Widget _divider() {
     return const Padding(
@@ -61,19 +45,26 @@ class TimeContainer extends StatelessWidget {
     );
   }
 
-  Widget _delay(PunctualityModel? model, BuildContext context) {
-    if (model == null) return SizedBox.expand();
+  Widget _delay(BuildContext context) {
+    final viewModel = context.read<PunctualityViewModel>();
+    return StreamBuilder<PunctualityModel>(
+      stream: viewModel.model,
+      initialData: viewModel.modelValue,
+      builder: (context, snapshot) {
+        final model = snapshot.data;
+        if (model == null || model is Hidden) return SizedBox.expand();
 
-    final TextStyle resolvedStyle = _resolvedDelayStyle(model, context);
-
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(
-        sbbDefaultSpacing * 0.5,
-        0.0,
-        sbbDefaultSpacing * 0.5,
-        sbbDefaultSpacing * 0.5,
-      ),
-      child: Text(model.delayString, style: resolvedStyle, key: TimeContainer.delayKey),
+        final TextStyle resolvedStyle = _resolvedDelayStyle(model, context);
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(
+            sbbDefaultSpacing * 0.5,
+            0.0,
+            sbbDefaultSpacing * 0.5,
+            sbbDefaultSpacing * 0.5,
+          ),
+          child: Text(model.delayString, style: resolvedStyle, key: TimeContainer.delayKey),
+        );
+      },
     );
   }
 
