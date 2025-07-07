@@ -80,7 +80,7 @@ class SpeedMapper {
 
     final nsp = jpContextInfoNsp.parameters.firstOrNull;
     if (nsp is! NewSpeedNetworkSpecificParameterDto) return null;
-    
+
     return SingleSpeed(value: nsp.speed);
   }
 }

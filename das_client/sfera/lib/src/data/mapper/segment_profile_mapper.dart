@@ -118,7 +118,7 @@ class SegmentProfileMapper {
         primaryCode: timingPoint.locationReference?.locationPrimaryCode,
       );
       final jpContextInfoNsp = jpContextNsps?.firstWhereOrNull(
-        (nsp) => nsp.constraint.startLocation == timingPoint.location,
+        (nsp) => nsp.constraint?.startLocation == timingPoint.location,
       );
 
       servicePoints.add(

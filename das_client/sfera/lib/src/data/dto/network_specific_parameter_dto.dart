@@ -45,7 +45,7 @@ class NetworkSpecificParameterDto extends SferaXmlElementDto {
       return IdNetworkSpecificParameterDto(attributes: attributes, children: children, value: value);
     } else if (attributes?['name'] == SpeedNetworkSpecificParameterDto.elementName) {
       return SpeedNetworkSpecificParameterDto(attributes: attributes, children: children, value: value);
-      } else if (attributes?['name'] == NewSpeedNetworkSpecificParameterDto.elementName) {
+    } else if (attributes?['name'] == NewSpeedNetworkSpecificParameterDto.elementName) {
       return NewSpeedNetworkSpecificParameterDto(attributes: attributes, children: children, value: value);
     } else if (attributes?['name'] == XmlStationPropertyDto.elementName) {
       return XmlStationPropertyDto(attributes: attributes, children: children, value: value);

@@ -6,8 +6,8 @@ class JpContextInformationNspDto extends NspDto {
 
   JpContextInformationNspDto({super.type = elementType, super.attributes, super.children, super.value});
 
-  JpContextInformationNspConstraintsDto get constraint =>
-      children.whereType<JpContextInformationNspConstraintsDto>().first;
+  JpContextInformationNspConstraintsDto? get constraint =>
+      children.whereType<JpContextInformationNspConstraintsDto>().firstOrNull;
 
   @override
   bool validate() => validateHasChildOfType<JpContextInformationNspConstraintsDto>() && super.validate();

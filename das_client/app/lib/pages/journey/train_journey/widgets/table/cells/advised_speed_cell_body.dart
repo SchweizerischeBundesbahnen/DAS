@@ -11,6 +11,8 @@ import 'package:sfera/component.dart';
 
 class AdvisedSpeedCellBody extends StatelessWidget {
   static const String zeroSpeedContent = '\u{2013}'; // en dash '–'
+  static const Key nonEmptyKey = Key('AdvisedSpeedCellBodyNonEmptyKey');
+  static const Key generalKey = Key('AdvisedSpeedCellBodyGeneralKey');
 
   const AdvisedSpeedCellBody({
     required this.rowIndex,
@@ -24,9 +26,6 @@ class AdvisedSpeedCellBody extends StatelessWidget {
   final SingleSpeed? calculatedSpeed;
   final SingleSpeed? lineSpeed;
   final bool isSpeedReducedDueToLineSpeed;
-
-  static const Key nonEmptyKey = Key('AdvisedSpeedCellBodyNonEmptyKey');
-  static const Key generalKey = Key('AdvisedSpeedCellBodyGeneralKey');
 
   @override
   Widget build(BuildContext context) {
