@@ -48,8 +48,8 @@ class PunctualityViewModel {
 
   void _emitState() {
     if (!_hasCalculatedSpeed || _isHiddenDueToNoUpdates) return _rxModel.add(PunctualityModel.hidden());
-    if (_isStale) return _rxModel.add(PunctualityModel.stale(delayString: _currentDelayString));
-    _rxModel.add(PunctualityModel.visible(delayString: _currentDelayString));
+    if (_isStale) return _rxModel.add(PunctualityModel.stale(delay: _currentDelayString));
+    _rxModel.add(PunctualityModel.visible(delay: _currentDelayString));
   }
 
   void dispose() {

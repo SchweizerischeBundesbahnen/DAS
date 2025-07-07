@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/train_journey/widgets/header/time_container.dart';
+import 'package:app/pages/journey/train_journey/widgets/header/das_chronograph.dart';
 import 'package:app/pages/journey/train_journey/widgets/punctuality/punctuality_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/advised_speed_cell_body.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
@@ -150,20 +150,23 @@ void main() {
 
     const fourtySecondsDelay = '+00:40';
 
-    final timeContainer = find.byType(TimeContainer);
+    final chronograph = find.byType(DASChronograph);
 
     // should not display punctuality string
     expect(
-      find.descendant(of: timeContainer, matching: find.text(PunctualityViewModel.trainIsPunctualString)),
+      find.descendant(of: chronograph, matching: find.text(PunctualityViewModel.trainIsPunctualString)),
       findsNothing,
     );
 
     await tester.pumpAndSettle(Duration(milliseconds: 700));
 
-    await waitUntilExists(tester, find.descendant(of: timeContainer, matching: find.byKey(TimeContainer.delayKey)));
+    await waitUntilExists(
+      tester,
+      find.descendant(of: chronograph, matching: find.byKey(DASChronograph.punctualityTextKey)),
+    );
 
     // event to service point with VPro and delay 40 seconds
-    expect(find.descendant(of: timeContainer, matching: find.text(fourtySecondsDelay)), findsOneWidget);
+    expect(find.descendant(of: chronograph, matching: find.text(fourtySecondsDelay)), findsOneWidget);
 
     await disconnect(tester);
   });

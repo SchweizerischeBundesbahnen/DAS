@@ -126,13 +126,13 @@ void main() {
     test('punctualityStateValue_whenJourneyWithSpeedsAndDelay_isVisibleAndEmitsOnce', () {
       // EXPECT
       expect(emitRegister, hasLength(1));
-      expect(emitRegister.first, PunctualityModel.visible(delayString: testDelayString));
-      expect(testee.modelValue, PunctualityModel.visible(delayString: testDelayString));
+      expect(emitRegister.first, PunctualityModel.visible(delay: testDelayString));
+      expect(testee.modelValue, PunctualityModel.visible(delay: testDelayString));
     });
 
     test('punctualityStateValue_whenStaleTimeIsElapsed_emitsStaleState', () {
       // ARRANGE
-      expect(emitRegister.first, PunctualityModel.visible(delayString: testDelayString));
+      expect(emitRegister.first, PunctualityModel.visible(delay: testDelayString));
       emitRegister.clear();
 
       // ACT
@@ -140,12 +140,12 @@ void main() {
 
       // EXPECT
       expect(emitRegister, hasLength(1));
-      expect(testee.modelValue, PunctualityModel.stale(delayString: testDelayString));
+      expect(testee.modelValue, PunctualityModel.stale(delay: testDelayString));
     });
 
     test('punctualityStateValue_whenDisappearTimeIsElapsed_emitsStaleThenHiddenState', () {
       // ARRANGE
-      expect(emitRegister.first, PunctualityModel.visible(delayString: testDelayString));
+      expect(emitRegister.first, PunctualityModel.visible(delay: testDelayString));
       emitRegister.clear();
 
       // ACT
@@ -155,7 +155,7 @@ void main() {
       expect(emitRegister, hasLength(2));
       expect(
         ListEquality().equals([
-          PunctualityModel.stale(delayString: testDelayString),
+          PunctualityModel.stale(delay: testDelayString),
           PunctualityModel.hidden(),
         ], emitRegister),
         isTrue,
@@ -165,19 +165,19 @@ void main() {
 
     test('punctualityState_whenJourneyUpdateWithNull_emitsNothing', () {
       // ARRANGE
-      expect(emitRegister.first, PunctualityModel.visible(delayString: testDelayString));
+      expect(emitRegister.first, PunctualityModel.visible(delay: testDelayString));
       emitRegister.clear();
       testAsync.run((_) => journeyController.add(null));
       _processStreamInFakeAsync(testAsync);
 
       // EXPECT
       expect(emitRegister, hasLength(0));
-      expect(testee.modelValue, PunctualityModel.visible(delayString: testDelayString));
+      expect(testee.modelValue, PunctualityModel.visible(delay: testDelayString));
     });
 
     test('punctualityState_whenJourneyUpdateWithNoCalculatedSpeed_emitsHidden', () {
       // ARRANGE
-      expect(emitRegister.first, PunctualityModel.visible(delayString: testDelayString));
+      expect(emitRegister.first, PunctualityModel.visible(delay: testDelayString));
       emitRegister.clear();
       testAsync.run((_) => journeyController.add(delayButNoCalculatedSpeedJourney));
       _processStreamInFakeAsync(testAsync);
@@ -189,10 +189,10 @@ void main() {
 
     test('punctualityState_whenJourneyWithSameDelayIsGiven_doesNotResetTimers', () {
       // ARRANGE
-      expect(emitRegister.first, PunctualityModel.visible(delayString: testDelayString));
+      expect(emitRegister.first, PunctualityModel.visible(delay: testDelayString));
       emitRegister.clear();
       testAsync.elapse(Duration(seconds: timeConstants.punctualityStaleSeconds ~/ 2));
-      expect(testee.modelValue, PunctualityModel.visible(delayString: testDelayString));
+      expect(testee.modelValue, PunctualityModel.visible(delay: testDelayString));
 
       // ACT
       testAsync.run((_) => journeyController.add(delayAndCalculatedSpeedJourney));
@@ -200,7 +200,7 @@ void main() {
 
       // EXPECT
       expect(emitRegister, hasLength(1));
-      expect(testee.modelValue, PunctualityModel.stale(delayString: testDelayString));
+      expect(testee.modelValue, PunctualityModel.stale(delay: testDelayString));
     });
   });
 }

@@ -3,25 +3,25 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('PunctualityModel', () {
-    group('delayString getter', () {
+    group('delay getter', () {
       test('visible_whenGettingDelayString_thenReturnsCorrectValue', () {
-        expect(PunctualityModel.visible(delayString: 'someStr').delayString, 'someStr');
+        expect(PunctualityModel.visible(delay: 'someStr').delay, 'someStr');
       });
 
       test('stale_whenGettingDelayString_thenReturnsCorrectValue', () {
-        expect(PunctualityModel.stale(delayString: 'someStr').delayString, 'someStr');
+        expect(PunctualityModel.stale(delay: 'someStr').delay, 'someStr');
       });
 
       test('hidden_whenGettingDelayString_thenReturnsEmptyString', () {
-        expect(PunctualityModel.hidden().delayString, '');
+        expect(PunctualityModel.hidden().delay, '');
       });
     });
 
     group('equality', () {
       test('visible_whenComparedToIdenticalVisible_thenIsEqual', () {
         // ARRANGE
-        final model1 = PunctualityModel.visible(delayString: '+00:00');
-        final model2 = PunctualityModel.visible(delayString: '+00:00');
+        final model1 = PunctualityModel.visible(delay: '+00:00');
+        final model2 = PunctualityModel.visible(delay: '+00:00');
 
         // EXPECT
         expect(model1 == model2, isTrue);
@@ -30,8 +30,8 @@ void main() {
 
       test('visible_whenComparedToDifferentVisible_thenIsNotEqual', () {
         // ARRANGE
-        final model1 = PunctualityModel.visible(delayString: '+00:00');
-        final model2 = PunctualityModel.visible(delayString: '+00:10');
+        final model1 = PunctualityModel.visible(delay: '+00:00');
+        final model2 = PunctualityModel.visible(delay: '+00:10');
 
         // EXPECT
         expect(model1 == model2, isFalse);
@@ -40,8 +40,8 @@ void main() {
 
       test('stale_whenComparedToIdenticalStale_thenIsEqual', () {
         // ARRANGE
-        final model1 = PunctualityModel.stale(delayString: '+00:00');
-        final model2 = PunctualityModel.stale(delayString: '+00:00');
+        final model1 = PunctualityModel.stale(delay: '+00:00');
+        final model2 = PunctualityModel.stale(delay: '+00:00');
 
         // EXPECT
         expect(model1 == model2, isTrue);
@@ -50,8 +50,8 @@ void main() {
 
       test('stale_whenComparedToDifferentStale_thenIsNotEqual', () {
         // ARRANGE
-        final model1 = PunctualityModel.stale(delayString: '+00:00');
-        final model2 = PunctualityModel.stale(delayString: '+01:00');
+        final model1 = PunctualityModel.stale(delay: '+00:00');
+        final model2 = PunctualityModel.stale(delay: '+01:00');
 
         // EXPECT
         expect(model1 == model2, isFalse);
@@ -70,8 +70,8 @@ void main() {
 
       test('differentTypes_whenCompared_thenAreNotEqual', () {
         // ARRANGE
-        final visible = PunctualityModel.visible(delayString: '+01:00');
-        final stale = PunctualityModel.stale(delayString: '+01:00');
+        final visible = PunctualityModel.visible(delay: '+01:00');
+        final stale = PunctualityModel.stale(delay: '+01:00');
         final hidden = PunctualityModel.hidden();
 
         // EXPECT

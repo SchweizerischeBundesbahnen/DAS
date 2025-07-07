@@ -10,10 +10,14 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-class TimeContainer extends StatelessWidget {
-  static const Key delayKey = Key('delayTextKey');
+const double _width = 124.0;
+const double _height = 112.0;
+const Duration _animationDuration = Duration(milliseconds: 250);
 
-  const TimeContainer({super.key});
+class DASChronograph extends StatelessWidget {
+  static const Key punctualityTextKey = Key('punctualityTextKey');
+
+  const DASChronograph({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,29 +25,22 @@ class TimeContainer extends StatelessWidget {
       padding: const EdgeInsets.all(sbbDefaultSpacing),
       useShadow: false,
       child: SizedBox(
-        width: 124.0,
-        height: 112.0,
-        child: _currentTimeAndOptionalDelay(context),
+        width: _width,
+        height: _height,
+        child: body(context),
       ),
     );
   }
 
-  Widget _currentTimeAndOptionalDelay(BuildContext context) => Column(
-    mainAxisAlignment: MainAxisAlignment.center,
+  Widget body(BuildContext context) => Column(
+    mainAxisAlignment: MainAxisAlignment.start,
     crossAxisAlignment: CrossAxisAlignment.end,
     children: [
       Flexible(child: _currentTime()),
-      _divider(),
+      Divider(height: sbbDefaultSpacing, color: SBBColors.cloud),
       Flexible(child: _delay(context)),
     ],
   );
-
-  Widget _divider() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(vertical: sbbDefaultSpacing * 0.5),
-      child: Divider(height: 1.0, color: SBBColors.cloud),
-    );
-  }
 
   Widget _delay(BuildContext context) {
     final viewModel = context.read<PunctualityViewModel>();
@@ -52,23 +49,26 @@ class TimeContainer extends StatelessWidget {
       initialData: viewModel.modelValue,
       builder: (context, snapshot) {
         final model = snapshot.data;
-        if (model == null || model is Hidden) return SizedBox.expand();
+        final showPunctuality = (model != null && model is! Hidden);
 
         final TextStyle resolvedStyle = _resolvedDelayStyle(model, context);
-        return Padding(
-          padding: const EdgeInsets.fromLTRB(
-            sbbDefaultSpacing * 0.5,
-            0.0,
-            sbbDefaultSpacing * 0.5,
-            sbbDefaultSpacing * 0.5,
+        return AnimatedOpacity(
+          opacity: showPunctuality ? 1.0 : 0.0,
+          duration: _animationDuration,
+          child: Padding(
+            padding: const EdgeInsets.all(sbbDefaultSpacing * 0.5),
+            child: Text(
+              key: showPunctuality ? DASChronograph.punctualityTextKey : null,
+              model?.delay ?? '',
+              style: resolvedStyle,
+            ),
           ),
-          child: Text(model.delayString, style: resolvedStyle, key: TimeContainer.delayKey),
         );
       },
     );
   }
 
-  TextStyle _resolvedDelayStyle(PunctualityModel model, BuildContext context) => switch (model) {
+  TextStyle _resolvedDelayStyle(PunctualityModel? model, BuildContext context) => switch (model) {
     final Stale _ => DASTextStyles.xLargeLight.copyWith(
       color: ThemeUtil.getColor(
         context,
@@ -76,7 +76,7 @@ class TimeContainer extends StatelessWidget {
         SBBColors.granite,
       ),
     ),
-    final Visible _ || final Hidden _ => DASTextStyles.xLargeLight,
+    final Visible _ || final Hidden _ || null => DASTextStyles.xLargeLight,
   };
 
   Widget _currentTime() {
@@ -84,12 +84,7 @@ class TimeContainer extends StatelessWidget {
       stream: Stream.periodic(const Duration(milliseconds: 200)),
       builder: (context, snapshot) {
         return Padding(
-          padding: const EdgeInsets.fromLTRB(
-            sbbDefaultSpacing * 0.5,
-            sbbDefaultSpacing * 0.5,
-            sbbDefaultSpacing * 0.5,
-            0,
-          ),
+          padding: const EdgeInsets.all(sbbDefaultSpacing * 0.5),
           child: Text(
             DateFormat('HH:mm:ss').format(clock.now()),
             style: DASTextStyles.xLargeBold,

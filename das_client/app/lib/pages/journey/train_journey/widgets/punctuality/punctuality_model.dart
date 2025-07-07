@@ -2,18 +2,18 @@ sealed class PunctualityModel {
   const PunctualityModel._();
 
   factory PunctualityModel.visible({
-    required String delayString,
+    required String delay,
   }) = Visible;
 
   factory PunctualityModel.stale({
-    required String delayString,
+    required String delay,
   }) = Stale;
 
   factory PunctualityModel.hidden() = Hidden;
 
-  String get delayString => switch (this) {
-    final Visible v => v.delayString,
-    final Stale s => s.delayString,
+  String get delay => switch (this) {
+    final Visible v => v.delay,
+    final Stale s => s.delay,
     final Hidden _ => '',
   };
 
@@ -25,30 +25,29 @@ sealed class PunctualityModel {
 }
 
 class Visible extends PunctualityModel {
-  const Visible({required this.delayString}) : super._();
+  const Visible({required this.delay}) : super._();
   @override
-  final String delayString;
+  final String delay;
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Visible && runtimeType == other.runtimeType && delayString == other.delayString;
+      identical(this, other) || other is Visible && runtimeType == other.runtimeType && delay == other.delay;
 
   @override
-  int get hashCode => Object.hash(runtimeType, delayString);
+  int get hashCode => Object.hash(runtimeType, delay);
 }
 
 class Stale extends PunctualityModel {
-  const Stale({required this.delayString}) : super._();
+  const Stale({required this.delay}) : super._();
   @override
-  final String delayString;
+  final String delay;
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is Stale && runtimeType == other.runtimeType && delayString == other.delayString;
+      identical(this, other) || other is Stale && runtimeType == other.runtimeType && delay == other.delay;
 
   @override
-  int get hashCode => Object.hash(runtimeType, delayString);
+  int get hashCode => Object.hash(runtimeType, delay);
 }
 
 class Hidden extends PunctualityModel {
