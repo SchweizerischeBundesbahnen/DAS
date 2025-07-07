@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/train_journey/das_table_speed_view_model.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/navigation/journey_navigation_model.dart';
 import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
+import 'package:app/pages/journey/train_journey/das_table_speed_view_model.dart';
 import 'package:app/pages/journey/train_journey/ux_testing_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_modal.dart';
@@ -14,6 +14,7 @@ import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/pages/journey/train_journey/widgets/journey_navigation_buttons.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/koa_notification.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
+import 'package:app/pages/journey/train_journey/widgets/punctuality/punctuality_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:app/pages/journey/train_journey/widgets/warn_function_modal_sheet.dart';
@@ -91,6 +92,10 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
             journeyStream: trainJourneyViewModel.journey,
             settingsStream: trainJourneyViewModel.settings,
           ),
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        Provider(
+          create: (_) => PunctualityViewModel(journeyStream: trainJourneyViewModel.journey),
           dispose: (_, vm) => vm.dispose(),
         ),
       ],

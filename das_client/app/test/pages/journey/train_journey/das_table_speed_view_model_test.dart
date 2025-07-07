@@ -5,6 +5,8 @@ import 'package:app/pages/journey/train_journey/widgets/table/config/train_journ
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';
 
+import '../../../test_util.dart';
+
 void main() {
   group('DASTableSpeedViewModel', () {
     late StreamController<Journey?> journeyController;
@@ -31,9 +33,10 @@ void main() {
       () => expect(testee.previousLineSpeed(0), isNull),
     );
 
-    test('previousLineSpeed_whenSettingsIsNull_thenReturnsNull', () {
+    test('previousLineSpeed_whenSettingsIsNull_thenReturnsNull', () async {
       // ARRANGE
       journeyController.add(Journey.invalid());
+      await processStreams();
 
       // ACT & EXPECT
       expect(testee.previousLineSpeed(0), isNull);
@@ -55,7 +58,7 @@ void main() {
       const calculatedSpeedRowZero = SingleSpeed(value: '100');
       const calculatedSpeedRowOne = SingleSpeed(value: '120');
 
-      setUp(() {
+      setUp(() async {
         trainSeries = TrainSeries.A;
         breakSeries = BreakSeries(trainSeries: TrainSeries.A, breakSeries: 1);
 
@@ -95,6 +98,7 @@ void main() {
 
         journeyController.add(journey);
         settingsController.add(settings);
+        await processStreams();
       });
 
       test('previousLineSpeed_whenRowIndexGiven_returnsCorrectSpeeds', () {
@@ -109,17 +113,18 @@ void main() {
         expect(testee.previousCalculatedSpeed(2), equals(calculatedSpeedRowOne));
       });
 
-      test('previousLineSpeed_whenDifferentBreakSeriesInSettings_thenReturnsNull', () {
+      test('previousLineSpeed_whenDifferentBreakSeriesInSettings_thenReturnsNull', () async {
         // ARRANGE
         final newBreakSeries = BreakSeries(trainSeries: trainSeries, breakSeries: 2);
         final newSettings = TrainJourneySettings(selectedBreakSeries: newBreakSeries);
         settingsController.add(newSettings);
+        await processStreams();
 
         // ACT & EXPECT
         expect(testee.previousLineSpeed(1), isNull);
       });
 
-      test('previousLineSpeed_whenOverarchingRowsWithNullSpeeds_returnsLastNonNullSpeed', () {
+      test('previousLineSpeed_whenOverarchingRowsWithNullSpeeds_returnsLastNonNullSpeed', () async {
         // ARRANGE
         final mixedData = <BaseData>[
           ServicePoint(
@@ -155,9 +160,10 @@ void main() {
         ];
 
         journeyController.add(Journey(metadata: journey.metadata, data: mixedData));
+        await processStreams();
 
         // ACT & EXPECT
-        expect(testee.previousLineSpeed(2), equals(lineSpeedRowOne));
+        expect(testee.previousLineSpeed(2), equals(lineSpeedRowZero));
         expect(testee.previousLineSpeed(3), equals(lineSpeedRowTwo));
       });
     });
@@ -166,7 +172,7 @@ void main() {
       late Journey journey;
       late TrainJourneySettings settings;
 
-      setUp(() {
+      setUp(() async {
         final metadata = Metadata();
 
         final data = <BaseData>[
@@ -189,6 +195,7 @@ void main() {
 
         journeyController.add(journey);
         settingsController.add(settings);
+        await processStreams();
       });
 
       test('previousLineSpeed_whenNoSpeedsInData_returnsNull', () {

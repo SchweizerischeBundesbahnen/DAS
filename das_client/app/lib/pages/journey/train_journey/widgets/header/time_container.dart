@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:app/pages/journey/train_journey/widgets/punctuality/punctuality_controller.dart';
 import 'package:app/pages/journey/train_journey/widgets/punctuality/punctuality_state_enum.dart';
+import 'package:app/pages/journey/train_journey/widgets/punctuality/punctuality_view_model.dart';
 import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/das_text_styles.dart';
@@ -23,21 +23,17 @@ class TimeContainer extends StatefulWidget {
 }
 
 class TimeContainerState extends State<TimeContainer> {
-  late PunctualityController punctualityController;
+  late PunctualityViewModel punctualityController;
   TrainJourneyViewModel? viewModel;
 
   @override
   void initState() {
     super.initState();
-    punctualityController = PunctualityController();
-    punctualityController.lastUpdate = clock.now();
-    punctualityController.startMonitoring();
     viewModel = context.read<TrainJourneyViewModel>();
   }
 
   @override
   void dispose() {
-    punctualityController.stopMonitoring();
     super.dispose();
   }
 
@@ -47,7 +43,6 @@ class TimeContainerState extends State<TimeContainer> {
       stream: viewModel!.journey,
       builder: (context, snapshot) {
         final journey = snapshot.data;
-        punctualityController.updatePunctualityTimestamp(journey?.metadata);
 
         return SBBGroup(
           padding: const EdgeInsets.all(sbbDefaultSpacing),
@@ -64,7 +59,7 @@ class TimeContainerState extends State<TimeContainer> {
 
   Widget _buildDelayColumn(Journey? journey) {
     return StreamBuilder<PunctualityState>(
-      stream: punctualityController.punctualityStateStream,
+      stream: punctualityController.punctualityState,
       builder: (context, snapshot) {
         final state = snapshot.data ?? PunctualityState.visible;
         final delay = _delay(journey, state);
