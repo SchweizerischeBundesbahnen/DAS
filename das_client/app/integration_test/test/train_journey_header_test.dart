@@ -10,6 +10,7 @@ import 'package:app/pages/journey/train_journey/widgets/header/radio_contact.dar
 import 'package:app/pages/journey/train_journey/widgets/header/sim_identifier.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/time_container.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
+import 'package:app/pages/journey/train_journey/widgets/punctuality/punctuality_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/format.dart';
 import 'package:app/util/time_constants.dart';
@@ -293,7 +294,7 @@ Future<void> main() async {
 
       await waitUntilNotExists(
         tester,
-        find.descendant(of: header, matching: find.text(TimeContainer.trainIsPunctualString)),
+        find.descendant(of: header, matching: find.text(PunctualityViewModel.trainIsPunctualString)),
       );
 
       expect(find.descendant(of: header, matching: find.text('+00:30')), findsOneWidget);
@@ -313,7 +314,10 @@ Future<void> main() async {
       expect(header, findsOneWidget);
 
       // find the text in the header
-      expect(find.descendant(of: header, matching: find.text(TimeContainer.trainIsPunctualString)), findsOneWidget);
+      expect(
+        find.descendant(of: header, matching: find.text(PunctualityViewModel.trainIsPunctualString)),
+        findsOneWidget,
+      );
 
       await tester.pumpAndSettle();
 

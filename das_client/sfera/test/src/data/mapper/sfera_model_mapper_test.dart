@@ -108,7 +108,7 @@ void main() {
     final delay = journey.metadata.delay;
 
     expect(delay, isNotNull);
-    final delayValue = delay!.delay;
+    final delayValue = delay!.value;
     expect(delayValue, Duration(seconds: 30));
 
     final location = delay.location;

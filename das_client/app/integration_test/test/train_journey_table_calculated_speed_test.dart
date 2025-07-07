@@ -1,4 +1,5 @@
 import 'package:app/pages/journey/train_journey/widgets/header/time_container.dart';
+import 'package:app/pages/journey/train_journey/widgets/punctuality/punctuality_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/advised_speed_cell_body.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:flutter/material.dart';
@@ -152,12 +153,18 @@ void main() {
     final timeContainer = find.byType(TimeContainer);
 
     // should not display punctuality string
-    expect(find.descendant(of: timeContainer, matching: find.text(TimeContainer.trainIsPunctualString)), findsNothing);
+    expect(
+      find.descendant(of: timeContainer, matching: find.text(PunctualityViewModel.trainIsPunctualString)),
+      findsNothing,
+    );
 
     await tester.pumpAndSettle(Duration(milliseconds: 700));
 
     // first event to service point without VPro
-    expect(find.descendant(of: timeContainer, matching: find.text(TimeContainer.trainIsPunctualString)), findsNothing);
+    expect(
+      find.descendant(of: timeContainer, matching: find.text(PunctualityViewModel.trainIsPunctualString)),
+      findsNothing,
+    );
 
     await tester.pumpAndSettle(Duration(seconds: 3));
 

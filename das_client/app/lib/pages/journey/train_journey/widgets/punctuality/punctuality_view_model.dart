@@ -1,12 +1,15 @@
 import 'dart:async';
 
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/train_journey/widgets/punctuality/punctuality_state_enum.dart';
+import 'package:app/pages/journey/train_journey/widgets/punctuality/punctuality_model.dart';
 import 'package:app/util/time_constants.dart';
+import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 class PunctualityViewModel {
+  static const String trainIsPunctualString = '+00:00';
+
   PunctualityViewModel({required Stream<Journey?> journeyStream}) {
     _initJourneyStreamSubscription(journeyStream);
     _initTimers();
@@ -17,7 +20,8 @@ class PunctualityViewModel {
   Timer? _staleTimer;
   Timer? _hiddenTimer;
 
-  Delay? _lastDelay;
+  String _currentDelayString = '';
+  Delay? _delay;
 
   bool _isStale = false;
   bool _isHiddenDueToNoUpdates = false;
@@ -25,11 +29,11 @@ class PunctualityViewModel {
 
   StreamSubscription<Journey?>? _journeySubscription;
 
-  final _rxPunctualityState = BehaviorSubject<PunctualityState>.seeded(PunctualityState.hidden);
+  final _rxModel = BehaviorSubject<PunctualityModel>.seeded(PunctualityModel.hidden());
 
-  Stream<PunctualityState> get punctualityState => _rxPunctualityState.distinct();
+  Stream<PunctualityModel> get model => _rxModel.distinct();
 
-  PunctualityState get punctualityStateValue => _rxPunctualityState.value;
+  PunctualityModel get modelValue => _rxModel.value;
 
   void _initTimers() {
     _staleTimer = Timer(Duration(seconds: _timeConstants.punctualityStaleSeconds), () {
@@ -43,9 +47,9 @@ class PunctualityViewModel {
   }
 
   void _emitState() {
-    if (!_hasCalculatedSpeed || _isHiddenDueToNoUpdates) return _rxPunctualityState.add(PunctualityState.hidden);
-    if (_isStale) return _rxPunctualityState.add(PunctualityState.stale);
-    _rxPunctualityState.add(PunctualityState.visible);
+    if (!_hasCalculatedSpeed || _isHiddenDueToNoUpdates) return _rxModel.add(PunctualityModel.hidden());
+    if (_isStale) return _rxModel.add(PunctualityModel.stale(delayString: _currentDelayString));
+    _rxModel.add(PunctualityModel.visible(delayString: _currentDelayString));
   }
 
   void dispose() {
@@ -70,8 +74,10 @@ class PunctualityViewModel {
       _hasCalculatedSpeed = calculatedSpeed != null;
 
   void _updateDelayRelatedStates(Delay? delay) {
-    final isNewDelay = delay != _lastDelay;
-    _lastDelay = delay;
+    final isNewDelay = _delay != delay;
+    final String stringDelay = _stringDelayPresentation(delay);
+    _delay = delay;
+    _currentDelayString = stringDelay;
 
     if (isNewDelay) {
       _resetTimers();
@@ -84,5 +90,15 @@ class PunctualityViewModel {
     _staleTimer?.cancel();
     _hiddenTimer?.cancel();
     _initTimers();
+  }
+
+  String _stringDelayPresentation(Delay? delay) {
+    if (delay == null) return '';
+
+    final d = delay.value;
+
+    final minutes = NumberFormat('00').format(d.inMinutes.abs());
+    final seconds = NumberFormat('00').format(d.inSeconds.abs() % 60);
+    return '${d.isNegative ? '-' : '+'}$minutes:$seconds';
   }
 }
