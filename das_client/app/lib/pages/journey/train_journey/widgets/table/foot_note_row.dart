@@ -1,3 +1,4 @@
+import 'package:app/pages/journey/train_journey/train_journey_overview.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/widget_row_builder.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/text_util.dart';
@@ -17,11 +18,10 @@ abstract class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
     required this.isExpanded,
     required this.addTopMargin,
     required this.accordionToggleCallback,
-    double? height,
     super.stickyLevel,
     super.config,
     super.identifier,
-  }) : super(height: height ?? _calculateHeight(data, isExpanded, addTopMargin));
+  }) : super(height: _calculateHeight(data, isExpanded, addTopMargin));
 
   final bool addTopMargin;
   final bool isExpanded;
@@ -62,7 +62,11 @@ abstract class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
     }
 
     final content = _contentText(data);
-    final tp = TextPainter(text: content.textSpan, textDirection: TextDirection.ltr)..layout();
+    final tp = TextPainter(text: content.textSpan, textDirection: TextDirection.ltr)
+      ..layout(maxWidth: _accordionContentWidth);
     return Accordion.defaultExpandedHeight + tp.height + margin;
   }
+
+  static double get _accordionContentWidth =>
+      Accordion.contentWidth(outsidePadding: TrainJourneyOverview.horizontalPadding);
 }

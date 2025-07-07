@@ -1,4 +1,5 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/train_journey/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/train_journey/train_journey_overview.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/widget_row_builder.dart';
 import 'package:app/theme/theme_util.dart';
@@ -6,11 +7,12 @@ import 'package:app/util/text_util.dart';
 import 'package:app/widgets/accordion/accordion.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
+// TODO: Check theming
 // TODO: Handle Sticky Header
-// TODO: Show text initially without new lines and add ;
 class UncodedOperationalIndicationRow extends WidgetRowBuilder<UncodedOperationalIndication> {
   static const double _verticalMargin = sbbDefaultSpacing * 0.5;
   static const TextStyle _textStyle = DASTextStyles.largeRoman;
@@ -23,11 +25,17 @@ class UncodedOperationalIndicationRow extends WidgetRowBuilder<UncodedOperationa
     required this.accordionToggleCallback,
     required this.addTopMargin,
     this.expandedContent = false,
-    double? height,
     super.stickyLevel,
     super.config,
     super.identifier,
-  }) : super(height: height ?? _calculateHeight(data, isExpanded, addTopMargin));
+  }) : super(
+         height: _calculateHeight(
+           data.text,
+           isExpanded: isExpanded,
+           expandedContent: expandedContent,
+           addTopMargin: addTopMargin,
+         ),
+       );
 
   final bool isExpanded;
   final bool expandedContent;
@@ -54,29 +62,24 @@ class UncodedOperationalIndicationRow extends WidgetRowBuilder<UncodedOperationa
   }
 
   Widget _body(BuildContext context) {
+    if (expandedContent) return _contentText(data.text);
+
     final textWithoutLineBreaks = TextUtil.replaceLineBreaks(data.text);
-    final hasOverflow = TextUtil.hasTextOverflow(
-      textWithoutLineBreaks,
-      _accordionContentWidth,
-      _textStyle,
-    );
+    final hasOverflow = TextUtil.hasTextOverflow(textWithoutLineBreaks, _accordionContentWidth, _textStyle);
     if (hasOverflow) {
       return Row(
         children: [
-          Expanded(child: _contentText(data, maxLines: 1)),
+          Expanded(child: _contentText(textWithoutLineBreaks, maxLines: 1)),
           _showMoreButton(context),
         ],
       );
     }
-    return _contentText(data);
+    return _contentText(data.text);
   }
 
   Widget _showMoreButton(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        // TODO: Implement show more logic
-        print('show more');
-      },
+      onTap: () => context.read<CollapsibleRowsViewModel>().openWithCollapsedContent(data),
       child: Text(
         context.l10n.c_show_more,
         style: _textStyle.copyWith(
@@ -87,21 +90,26 @@ class UncodedOperationalIndicationRow extends WidgetRowBuilder<UncodedOperationa
     );
   }
 
-  static Text _contentText(UncodedOperationalIndication data, {int? maxLines}) {
+  static Text _contentText(String text, {int? maxLines}) {
     return Text.rich(
-      TextUtil.parseHtmlText(data.text, _textStyle),
+      TextUtil.parseHtmlText(text, _textStyle),
       maxLines: maxLines,
-      overflow: TextOverflow.ellipsis,
+      overflow: maxLines != null ? TextOverflow.ellipsis : null,
     );
   }
 
-  static double _calculateHeight(UncodedOperationalIndication data, bool isExpanded, bool addTopMargin) {
+  static double _calculateHeight(
+    String text, {
+    required bool isExpanded,
+    required bool expandedContent,
+    required bool addTopMargin,
+  }) {
     final margin = _verticalMargin * (addTopMargin ? 2 : 1);
     if (!isExpanded) {
       return Accordion.defaultCollapsedHeight + margin;
     }
 
-    final content = _contentText(data);
+    final content = _contentText(text);
     final tp = TextPainter(text: content.textSpan, textDirection: TextDirection.ltr)
       ..layout(maxWidth: _accordionContentWidth);
     return Accordion.defaultExpandedHeight + tp.height + margin;

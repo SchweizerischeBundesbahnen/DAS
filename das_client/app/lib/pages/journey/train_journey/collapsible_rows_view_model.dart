@@ -27,12 +27,18 @@ class CollapsibleRowsViewModel {
 
   void toggleRow(BaseData data) {
     final newMap = Map<int, CollapsedState>.from(_rxCollapsedRows.value);
-    if (newMap.containsKey(data.hashCode)) {
+    if (!newMap.isExpanded(data.hashCode)) {
       newMap.remove(data.hashCode);
     } else {
       newMap[data.hashCode] = CollapsedState.collapsed;
     }
 
+    _rxCollapsedRows.add(newMap);
+  }
+
+  void openWithCollapsedContent(BaseData data) {
+    final newMap = Map<int, CollapsedState>.from(_rxCollapsedRows.value);
+    newMap[data.hashCode] = CollapsedState.openWithCollapsedContent;
     _rxCollapsedRows.add(newMap);
   }
 
@@ -102,4 +108,10 @@ class CollapsibleRowsViewModel {
 
 extension BaseDataExtension on BaseData {
   bool get isCollapsible => this is BaseFootNote || this is UncodedOperationalIndication;
+}
+
+extension CollapsedStateMap on Map<int, CollapsedState> {
+  bool isContentExpanded(int key) => this[key] == CollapsedState.openWithCollapsedContent;
+
+  bool isExpanded(int key) => !containsKey(key) || this[key] == CollapsedState.openWithCollapsedContent;
 }
