@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/train_journey/das_table_speed_view_model.dart';
+import 'package:app/pages/journey/train_journey/train_journey_overview.dart';
 import 'package:app/pages/journey/train_journey/widgets/break_series_selection.dart';
 import 'package:app/pages/journey/train_journey/widgets/chevron_animation_wrapper.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
@@ -106,7 +107,7 @@ class TrainJourney extends StatelessWidget {
             : 0.0;
 
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
+          padding: const EdgeInsets.symmetric(horizontal: TrainJourneyOverview.horizontalPadding),
           child: StreamBuilder<bool>(
             stream: context.read<DetailModalViewModel>().isModalOpen,
             builder: (context, snapshot) {

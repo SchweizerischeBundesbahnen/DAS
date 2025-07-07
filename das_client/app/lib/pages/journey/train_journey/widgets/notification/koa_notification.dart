@@ -1,4 +1,5 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/train_journey/train_journey_overview.dart';
 import 'package:app/pages/journey/train_journey/ux_testing_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/departure_process_modal_sheet.dart';
 import 'package:app/theme/theme_util.dart';
@@ -22,7 +23,7 @@ class KoaNotification extends StatelessWidget {
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data == KoaState.waitHide) return Container();
         return Container(
-          margin: EdgeInsets.fromLTRB(sbbDefaultSpacing * 0.5, 0, sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5),
+          margin: EdgeInsets.all(TrainJourneyOverview.horizontalPadding).copyWith(top: 0),
           child: snapshot.data == KoaState.wait ? _WaitNotification() : _WaitCancelledNotification(),
         );
       },

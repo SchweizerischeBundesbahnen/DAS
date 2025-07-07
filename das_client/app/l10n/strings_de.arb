@@ -89,6 +89,7 @@
   "c_button_confirm": "Übernehmen",
   "c_radn": "RADN",
   "c_uncoded_operational_indication": "Arbeitsanweisung",
+  "c_show_more": "Mehr anzeigen",
   "w_modal_sheet_warn_function_stop_message": "Halt!",
   "w_modal_sheet_warn_function_manoeuvre_button": "Manövrieren",
   "w_modal_sheet_warn_function_confirm_button": "Bestätigen & Schliessen",

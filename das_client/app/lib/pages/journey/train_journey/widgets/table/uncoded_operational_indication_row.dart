@@ -1,4 +1,5 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/train_journey/train_journey_overview.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/widget_row_builder.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/text_util.dart';
@@ -8,10 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
+// TODO: Handle Sticky Header
 // TODO: Show text initially without new lines and add ;
-// TODO: Add "show more" functionality
 class UncodedOperationalIndicationRow extends WidgetRowBuilder<UncodedOperationalIndication> {
   static const double _verticalMargin = sbbDefaultSpacing * 0.5;
+  static const TextStyle _textStyle = DASTextStyles.largeRoman;
 
   UncodedOperationalIndicationRow({
     required super.rowIndex,
@@ -37,9 +39,8 @@ class UncodedOperationalIndicationRow extends WidgetRowBuilder<UncodedOperationa
     return Container(
       color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
       child: Accordion(
-        // key: ObjectKey(data.identifier), TODO:
         title: context.l10n.c_uncoded_operational_indication,
-        body: _content(data),
+        body: _body(context),
         isExpanded: isExpanded,
         toggleCallback: accordionToggleCallback,
         icon: SBBIcons.form_small,
@@ -52,12 +53,46 @@ class UncodedOperationalIndicationRow extends WidgetRowBuilder<UncodedOperationa
     );
   }
 
-  static Text _content(UncodedOperationalIndication data) {
-    final textStyle = DASTextStyles.smallRoman;
-    // TODO: how to get width?
-    // final textWithoutLineBreaks = TextUtil.replaceLineBreaks(data.text);
-    // final hasOverflow = TextUtil.hasTextOverflow(textWithoutLineBreaks, 1000, textStyle);
-    return Text.rich(TextUtil.parseHtmlText(data.text, textStyle));
+  Widget _body(BuildContext context) {
+    final textWithoutLineBreaks = TextUtil.replaceLineBreaks(data.text);
+    final hasOverflow = TextUtil.hasTextOverflow(
+      textWithoutLineBreaks,
+      _accordionContentWidth,
+      _textStyle,
+    );
+    if (hasOverflow) {
+      return Row(
+        children: [
+          Expanded(child: _contentText(data, maxLines: 1)),
+          _showMoreButton(context),
+        ],
+      );
+    }
+    return _contentText(data);
+  }
+
+  Widget _showMoreButton(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        // TODO: Implement show more logic
+        print('show more');
+      },
+      child: Text(
+        context.l10n.c_show_more,
+        style: _textStyle.copyWith(
+          color: ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite),
+          decoration: TextDecoration.underline,
+        ),
+      ),
+    );
+  }
+
+  static Text _contentText(UncodedOperationalIndication data, {int? maxLines}) {
+    return Text.rich(
+      TextUtil.parseHtmlText(data.text, _textStyle),
+      maxLines: maxLines,
+      overflow: TextOverflow.ellipsis,
+    );
   }
 
   static double _calculateHeight(UncodedOperationalIndication data, bool isExpanded, bool addTopMargin) {
@@ -66,8 +101,12 @@ class UncodedOperationalIndicationRow extends WidgetRowBuilder<UncodedOperationa
       return Accordion.defaultCollapsedHeight + margin;
     }
 
-    final content = _content(data);
-    final tp = TextPainter(text: content.textSpan, textDirection: TextDirection.ltr)..layout();
+    final content = _contentText(data);
+    final tp = TextPainter(text: content.textSpan, textDirection: TextDirection.ltr)
+      ..layout(maxWidth: _accordionContentWidth);
     return Accordion.defaultExpandedHeight + tp.height + margin;
   }
+
+  static double get _accordionContentWidth =>
+      Accordion.contentWidth(outsidePadding: TrainJourneyOverview.horizontalPadding);
 }

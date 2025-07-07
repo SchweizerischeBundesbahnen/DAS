@@ -52,7 +52,7 @@ abstract class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
   Text contentText(BaseFootNote data) => _contentText(data);
 
   static Text _contentText(BaseFootNote data) {
-    return Text.rich(TextUtil.parseHtmlText(data.footNote.text, DASTextStyles.smallRoman));
+    return Text.rich(TextUtil.parseHtmlText(data.footNote.text, DASTextStyles.largeRoman));
   }
 
   static double _calculateHeight(BaseFootNote data, bool isExpanded, bool addTopMargin) {
