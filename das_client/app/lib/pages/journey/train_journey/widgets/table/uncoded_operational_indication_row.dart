@@ -29,7 +29,7 @@ class UncodedOperationalIndicationRow extends WidgetRowBuilder<UncodedOperationa
     super.identifier,
   }) : super(
          height: _calculateHeight(
-           data.text,
+           data.combinedText,
            isExpanded: isExpanded,
            expandedContent: expandedContent,
            addTopMargin: addTopMargin,
@@ -61,9 +61,9 @@ class UncodedOperationalIndicationRow extends WidgetRowBuilder<UncodedOperationa
   }
 
   Widget _body(BuildContext context) {
-    if (expandedContent) return _contentText(data.text);
+    if (expandedContent) return _contentText(data.combinedText);
 
-    final textWithoutLineBreaks = TextUtil.replaceLineBreaks(data.text);
+    final textWithoutLineBreaks = TextUtil.replaceLineBreaks(data.combinedText);
     final hasOverflow = TextUtil.hasTextOverflow(textWithoutLineBreaks, _accordionContentWidth, _textStyle);
     if (hasOverflow) {
       return Row(
@@ -73,7 +73,7 @@ class UncodedOperationalIndicationRow extends WidgetRowBuilder<UncodedOperationa
         ],
       );
     }
-    return _contentText(data.text);
+    return _contentText(data.combinedText);
   }
 
   Widget _showMoreButton(BuildContext context) {

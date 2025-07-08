@@ -454,7 +454,7 @@ class SferaModelMapper {
       }
       return UncodedOperationalIndication(
         order: calculateOrder(segmentIndex, startLocation),
-        text: uncoded.uncodedText!,
+        texts: [uncoded.uncodedText!],
       );
     }
 
@@ -462,6 +462,7 @@ class SferaModelMapper {
         .where((indication) => indication.operationalIndicationType == OperationalIndicationTypeDto.uncoded)
         .map(mapToModel)
         .nonNulls
+        .mergeOnSameLocation()
         .toList();
   }
 
