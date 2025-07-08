@@ -34,8 +34,7 @@ class BaliseRow extends CellRowBuilder<Balise> {
 
   @override
   DASTableCell informationCell(BuildContext context) {
-    final levelCrossingCount =
-        '(${data.amountLevelCrossings} ${context.l10n.p_train_journey_table_level_crossing}asdf)';
+    final levelCrossingCount = '(${data.amountLevelCrossings} ${context.l10n.p_train_journey_table_level_crossing})';
     return DASTableCell(
       child: Text(data.amountLevelCrossings > 1 && !isGrouped ? levelCrossingCount : ''),
       alignment: Alignment.centerRight,
