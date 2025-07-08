@@ -1,6 +1,6 @@
 import 'package:sfera/src/data/dto/enums/operational_indication_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
-import 'package:sfera/src/data/dto/jp_context_information_nsps_dto.dart';
+import 'package:sfera/src/data/dto/jp_context_information_nsp_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_parameter_dto.dart';
 
 class OperationalIndicationNspDto extends JpContextInformationNspDto {

@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/collapsible_rows_view_model.dart';
-import 'package:app/pages/journey/train_journey/das_table_speed_view_model.dart';
 import 'package:app/pages/journey/train_journey/train_journey_overview.dart';
 import 'package:app/pages/journey/train_journey/widgets/break_series_selection.dart';
 import 'package:app/pages/journey/train_journey/widgets/chevron_animation_wrapper.dart';
@@ -81,7 +80,7 @@ class TrainJourney extends StatelessWidget {
         return Listener(
           onPointerDown: (_) => viewModel.automaticAdvancementController.resetScrollTimer(),
           onPointerUp: (_) => viewModel.automaticAdvancementController.resetScrollTimer(),
-          child: _body(journey, settings),
+          child: _body(context, journey, settings),
         );
       },
     );
