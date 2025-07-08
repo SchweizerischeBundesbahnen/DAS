@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 /// Adds an indicator to the [child]. Position can be defined with the [offset].
 class DotIndicator extends StatelessWidget {
@@ -30,12 +31,17 @@ class DotIndicator extends StatelessWidget {
           right: offset.dy,
           child: CustomPaint(
             key: indicatorKey,
-            painter: _DotPainter(color: Theme.of(context).colorScheme.primary),
+            painter: _DotPainter(color: _resolvedColor(context)),
             size: Size(size, size),
           ),
         ),
       ],
     );
+  }
+
+  Color _resolvedColor(BuildContext context) {
+    final theme = Theme.of(context);
+    return theme.brightness == Brightness.light ? theme.colorScheme.primary : SBBColors.sky;
   }
 }
 
