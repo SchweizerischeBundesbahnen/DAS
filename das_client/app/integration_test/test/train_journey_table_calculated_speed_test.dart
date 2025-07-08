@@ -45,19 +45,18 @@ void main() {
     expect(zuerichHbStationRow, findsOneWidget);
     _findTextWithin(zuerichHbStationRow, '90');
 
-    await tester.dragUntilVisible(find.text('Zürich Oerlikon'), scrollableFinder, const Offset(0, -50));
+    await tester.dragUntilVisible(find.text('Zürich Flughafen'), scrollableFinder, const Offset(0, -20));
 
     final zuerichOerlikonStationRow = findDASTableRowByText('Zürich Oerlikon');
     expect(zuerichOerlikonStationRow, findsOneWidget);
     final zuerichAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(zuerichOerlikonStationRow);
     expect(zuerichAdvisedSpeedCell, findsNothing);
 
-    // scroll to see lower stations
-    await tester.dragUntilVisible(find.text('Konstanz'), scrollableFinder, const Offset(0, -100));
-
     final zuerichAirportStationRow = findDASTableRowByText('Zürich Flughafen');
     expect(zuerichAirportStationRow, findsOneWidget);
     _findTextWithin(zuerichAirportStationRow, '130');
+
+    await tester.dragUntilVisible(find.text('Konstanz'), scrollableFinder, const Offset(0, -20));
 
     final bassersdorfStationRow = findDASTableRowByText('Bassersdorf');
     expect(bassersdorfStationRow, findsOneWidget);
