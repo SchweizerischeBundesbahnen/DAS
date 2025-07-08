@@ -1,9 +1,10 @@
 package ch.sbb.backend.formation.infrastructure.trainformation.model;
 
+import ch.sbb.backend.formation.domain.model.TrainFormationRun;
+import ch.sbb.backend.formation.infrastructure.configuration.StringListConverter;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -11,12 +12,17 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.SequenceGenerator;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Getter
-@Setter
 @Entity(name = "train_formation_run")
+@NoArgsConstructor
 public class TrainFormationRunEntity {
 
     @Id
@@ -29,8 +35,7 @@ public class TrainFormationRunEntity {
     @TelTsi
     private String operationalTrainNumber;
 
-    @TelTsi
-    private LocalDate startDate;
+    private LocalDate operationalDay;
 
     @TelTsi
     @JoinColumn(name = "company", referencedColumnName = "codeRics")
@@ -91,8 +96,8 @@ public class TrainFormationRunEntity {
 
     private boolean simTrain;
 
-    @Enumerated(EnumType.STRING)
-    private TractionMode tractionMode;
+    @Convert(converter = StringListConverter.class)
+    private List<String> tractionModes;
 
     private boolean carCarrierVehicle;
 
@@ -121,4 +126,66 @@ public class TrainFormationRunEntity {
     private Integer gradientDownhillMaxInPermille;
 
     private String slopeMaxForHoldingForceMinInPermille;
+
+    //    todo remove
+    @JdbcTypeCode(SqlTypes.JSON)
+    private Map<String, Object> originalZisMessage = new HashMap<>();
+
+    public TrainFormationRunEntity(TrainFormationRun trainFormationRun) {
+        modifiedDateTime = trainFormationRun.getModifiedDateTime();
+        operationalTrainNumber = trainFormationRun.getOperationalTrainNumber();
+        operationalDay = trainFormationRun.getOperationalDay();
+        company = trainFormationRun.getCompany();
+        tafTapLocationReferenceStart = trainFormationRun.getTafTapLocationReferenceStart();
+        tafTapLocationReferenceEnd = trainFormationRun.getTafTapLocationReferenceEnd();
+        trainCategoryCode = trainFormationRun.getTrainCategoryCode();
+        brakedWeightPercentage = trainFormationRun.getBrakedWeightPercentage();
+        tractionMaxSpeedInKmh = trainFormationRun.getTractionMaxSpeedInKmh();
+        hauledLoadMaxSpeedInKmh = trainFormationRun.getHauledLoadMaxSpeedInKmh();
+        formationMaxSpeedInKmh = trainFormationRun.getFormationMaxSpeedInKmh();
+        tractionLengthInCm = trainFormationRun.getTractionLengthInCm();
+        hauledLoadLengthInCm = trainFormationRun.getHauledLoadLengthInCm();
+        formationLengthInCm = trainFormationRun.getFormationLengthInCm();
+        tractionGrossWeightInT = trainFormationRun.getTractionGrossWeightInT();
+        hauledLoadWeightInT = trainFormationRun.getHauledLoadWeightInT();
+        formationWeightInT = trainFormationRun.getFormationWeightInT();
+        tractionBrakedWeightInT = trainFormationRun.getTractionBrakedWeightInT();
+        hauledLoadBrakedWeightInT = trainFormationRun.getHauledLoadBrakedWeightInT();
+        formationBrakedWeightInT = trainFormationRun.getFormationBrakedWeightInT();
+        tractionHoldingForceInHectoNewton = trainFormationRun.getTractionHoldingForceInHectoNewton();
+        hauledLoadHoldingForceInHectoNewton = trainFormationRun.getHauledLoadHoldingForceInHectoNewton();
+        formationHoldingForceInHectoNewton = trainFormationRun.getFormationHoldingForceInHectoNewton();
+        brakePositionGForLeadingTraction = trainFormationRun.isBrakePositionGForLeadingTraction();
+        brakePositionGForBrakeUnit1to5 = trainFormationRun.isBrakePositionGForBrakeUnit1to5();
+        brakePositionGForLoadHauled = trainFormationRun.isBrakePositionGForLoadHauled();
+        simTrain = trainFormationRun.isSimTrain();
+        tractionModes = trainFormationRun.getTractionModes();
+        carCarrierVehicle = trainFormationRun.isCarCarrierVehicle();
+        dangerousGoods = trainFormationRun.isDangerousGoods();
+        vehiclesCount = trainFormationRun.getVehiclesCount();
+        vehiclesWithBrakeDesignLlAndKCount = trainFormationRun.getVehiclesWithBrakeDesignLlAndKCount();
+        vehiclesWithBrakeDesignDCount = trainFormationRun.getVehiclesWithBrakeDesignDCount();
+        vehiclesWithDisabledBrakesCount = trainFormationRun.getVehiclesWithDisabledBrakesCount();
+        europeanVehicleNumberFirst = trainFormationRun.getEuropeanVehicleNumberFirst();
+        europeanVehicleNumberLast = trainFormationRun.getEuropeanVehicleNumberLast();
+        axleLoadMaxInKg = trainFormationRun.getAxleLoadMaxInKg();
+        routeClass = trainFormationRun.getRouteClass();
+        gradientUphillMaxInPermille = trainFormationRun.getGradientUphillMaxInPermille();
+        gradientDownhillMaxInPermille = trainFormationRun.getGradientDownhillMaxInPermille();
+        slopeMaxForHoldingForceMinInPermille = trainFormationRun.getSlopeMaxForHoldingForceMinInPermille();
+    }
+
+    public TrainFormationRun toTrainFormationRun() {
+        return new TrainFormationRun(modifiedDateTime, operationalTrainNumber, operationalDay, company,
+            tafTapLocationReferenceStart, tafTapLocationReferenceEnd, trainCategoryCode, brakedWeightPercentage,
+            tractionMaxSpeedInKmh, hauledLoadMaxSpeedInKmh, formationMaxSpeedInKmh, tractionLengthInCm,
+            hauledLoadLengthInCm, formationLengthInCm, tractionGrossWeightInT, hauledLoadWeightInT,
+            formationWeightInT, tractionBrakedWeightInT, hauledLoadBrakedWeightInT, formationBrakedWeightInT,
+            tractionHoldingForceInHectoNewton, hauledLoadHoldingForceInHectoNewton, formationHoldingForceInHectoNewton,
+            brakePositionGForLeadingTraction, brakePositionGForBrakeUnit1to5, brakePositionGForLoadHauled,
+            simTrain, tractionModes, carCarrierVehicle, dangerousGoods, vehiclesCount,
+            vehiclesWithBrakeDesignLlAndKCount, vehiclesWithBrakeDesignDCount, vehiclesWithDisabledBrakesCount,
+            europeanVehicleNumberFirst, europeanVehicleNumberLast, axleLoadMaxInKg, routeClass,
+            gradientUphillMaxInPermille, gradientDownhillMaxInPermille, slopeMaxForHoldingForceMinInPermille);
+    }
 }
