@@ -6,6 +6,7 @@ import 'package:sfera/src/data/dto/enums/stop_skip_pass_dto.dart';
 import 'package:sfera/src/data/dto/enums/taf_tap_location_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 import 'package:sfera/src/data/dto/foot_note_dto.dart';
+import 'package:sfera/src/data/dto/jp_context_information_nsp_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_parameter_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
@@ -104,12 +105,20 @@ class SegmentProfileMapper {
     final timingPoints = mapperData.segmentProfile.points?.timingPoints.toList() ?? [];
     final tafTapLocations = segmentProfiles.map((it) => it.areas).nonNulls.expand((it) => it.tafTapLocations).toList();
 
+    final List<JpContextInformationNspDto>? jpContextNsps = segmentProfileReference
+        .jpContextInformation
+        ?.contextInformationNsp
+        .toList();
+
     for (final tpConstraint in segmentProfileReference.timingPointsConstraints) {
       final tpId = tpConstraint.timingPointReference.tpIdReference.tpId;
       final timingPoint = timingPoints.where((it) => it.id == tpId).first;
       final tafTapLocation = tafTapLocations.firstWhereGiven(
         countryCode: timingPoint.locationReference?.countryCodeISO,
         primaryCode: timingPoint.locationReference?.locationPrimaryCode,
+      );
+      final jpContextInfoNsp = jpContextNsps?.firstWhereOrNull(
+        (nsp) => nsp.constraint?.startLocation == timingPoint.location,
       );
 
       servicePoints.add(
@@ -130,6 +139,7 @@ class SegmentProfileMapper {
           graduatedSpeedInfo: SpeedMapper.fromGraduatedSpeedInfo(
             tafTapLocation.stationSpeed?.xmlGraduatedSpeedInfo?.element,
           ),
+          calculatedSpeed: SpeedMapper.fromJourneyProfileContextInfoNsp(jpContextInfoNsp),
           decisiveGradient: _parseDecisiveGradientAtLocation(mapperData.segmentProfile, timingPoint.location),
           arrivalDepartureTime: _parseArrivalDepartureTime(tpConstraint),
           stationSign1: tafTapLocation.routeTableDataNsp?.stationSign1,

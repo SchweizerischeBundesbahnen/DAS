@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/train_journey/das_table_speed_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/break_series_selection.dart';
 import 'package:app/pages/journey/train_journey/widgets/chevron_animation_wrapper.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
@@ -85,13 +84,6 @@ class TrainJourney extends StatelessWidget {
   }
 
   Widget _body(BuildContext context, Journey journey, TrainJourneySettings settings) {
-    return Provider<DASTableSpeedViewModel>(
-      create: (_) => DASTableSpeedViewModel(journey, settings),
-      child: Builder(builder: (context) => _table(context, journey, settings)),
-    );
-  }
-
-  Widget _table(BuildContext context, Journey journey, TrainJourneySettings settings) {
     final tableRows = _rows(context, journey, settings);
     context.read<TrainJourneyViewModel>().automaticAdvancementController.updateRenderedRows(tableRows);
 

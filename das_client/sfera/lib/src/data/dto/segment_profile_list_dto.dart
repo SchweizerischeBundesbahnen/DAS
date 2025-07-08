@@ -1,4 +1,5 @@
 import 'package:sfera/src/data/dto/enums/temporary_constraint_type_dto.dart';
+import 'package:sfera/src/data/dto/jp_context_information_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/sp_zone_dto.dart';
 import 'package:sfera/src/data/dto/temporary_constraints_dto.dart';
@@ -25,6 +26,8 @@ class SegmentProfileReferenceDto extends SferaXmlElementDto {
   Iterable<TemporaryConstraintsDto> get asrTemporaryConstrains => children.whereType<TemporaryConstraintsDto>().where(
     (it) => it.temporaryConstraintType == TemporaryConstraintTypeDto.asr,
   );
+
+  JpContextInformationDto? get jpContextInformation => children.whereType<JpContextInformationDto>().firstOrNull;
 
   @override
   bool validate() {

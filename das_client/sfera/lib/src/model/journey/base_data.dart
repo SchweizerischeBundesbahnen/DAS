@@ -46,7 +46,8 @@ abstract class BaseData implements Comparable {
     return false;
   }
 
-  Iterable<TrainSeriesSpeed> get allSpeeds {
+  /// Returns static local and line speeds. Does not return calculated or advised speed.
+  Iterable<TrainSeriesSpeed> get allStaticSpeeds {
     return [
       ...?speeds,
       ...?localSpeeds,

@@ -433,7 +433,7 @@ class SferaModelMapper {
 
   static Set<BreakSeries> _parseAvailableBreakSeries(List<BaseData> journeyData) {
     return journeyData
-        .expand((it) => it.allSpeeds)
+        .expand((it) => it.allStaticSpeeds)
         .where((it) => it.breakSeries != null)
         .map((it) => BreakSeries(trainSeries: it.trainSeries, breakSeries: it.breakSeries!))
         .toSet();
@@ -557,7 +557,7 @@ class SferaModelMapper {
     final duration = relatedTrainInformation?.ownTrain.trainLocationInformation.delay?.delayAsDuration;
     final positionSpeed = relatedTrainInformation?.ownTrain.trainLocationInformation.positionSpeed;
     final location = '${positionSpeed?.spId}${positionSpeed?.location}';
-    return duration != null ? Delay(delay: duration, location: location) : null;
+    return duration != null ? Delay(value: duration, location: location) : null;
   }
 }
 
