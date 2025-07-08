@@ -18,8 +18,6 @@ void main() {
     await pauseAutomaticAdvancement(tester);
     await tester.pumpAndSettle(Duration(milliseconds: 100));
 
-    final scrollableFinder = find.byType(AnimatedList);
-
     final ebikonStationRow = findDASTableRowByText('Ebikon');
     expect(ebikonStationRow, findsOneWidget);
     final ebikonAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(ebikonStationRow);
@@ -33,38 +31,47 @@ void main() {
     expect(rotkreuxStationRow, findsOneWidget);
     _findTextWithin(rotkreuxStationRow, '130');
 
-    final zugStationRow = findDASTableRowByText('Zug');
+    final zug = 'Zug';
+    final zugStationRow = findDASTableRowByText(zug);
     expect(zugStationRow, findsOneWidget);
     _findTextWithin(zugStationRow, AdvisedSpeedCellBody.zeroSpeedContent);
+
+    await _dragUntilInStickyHeader(tester, zug);
 
     final baarStationRow = findDASTableRowByText('Baar');
     expect(baarStationRow, findsOneWidget);
     _findTextWithin(baarStationRow, '130');
 
-    final zuerichHbStationRow = findDASTableRowByText('Zürich HB');
+    final zuerichHb = 'Zürich HB';
+    final zuerichHbStationRow = findDASTableRowByText(zuerichHb);
     expect(zuerichHbStationRow, findsOneWidget);
     _findTextWithin(zuerichHbStationRow, '90');
+
+    await _dragUntilInStickyHeader(tester, zuerichHb);
 
     final zuerichOerlikonStationRow = findDASTableRowByText('Zürich Oerlikon');
     expect(zuerichOerlikonStationRow, findsOneWidget);
     final zuerichAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(zuerichOerlikonStationRow);
     expect(zuerichAdvisedSpeedCell, findsNothing);
 
-    // scroll to see lower stations
-    await tester.dragUntilVisible(find.text('Konstanz'), scrollableFinder, const Offset(0, -100));
-
-    final zuerichAirportStationRow = findDASTableRowByText('Zürich Flughafen');
+    final zuerichAirport = 'Zürich Flughafen';
+    final zuerichAirportStationRow = findDASTableRowByText(zuerichAirport);
     expect(zuerichAirportStationRow, findsOneWidget);
     _findTextWithin(zuerichAirportStationRow, '130');
+
+    await _dragUntilInStickyHeader(tester, zuerichAirport);
 
     final bassersdorfStationRow = findDASTableRowByText('Bassersdorf');
     expect(bassersdorfStationRow, findsOneWidget);
     final bassersdorfAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(bassersdorfStationRow);
     expect(bassersdorfAdvisedSpeedCell, findsNothing);
 
-    final winterthurStationRow = findDASTableRowByText('Winterthur');
+    final winterthur = 'Winterthur';
+    final winterthurStationRow = findDASTableRowByText(winterthur);
     expect(winterthurStationRow, findsOneWidget);
     _findTextWithin(winterthurStationRow, '80');
+
+    await _dragUntilInStickyHeader(tester, winterthur);
 
     final frauenfeldStationRow = findDASTableRowByText('Frauenfeld');
     expect(frauenfeldStationRow, findsOneWidget);
@@ -172,11 +179,11 @@ void main() {
   });
 }
 
-Future<void> _dragUntilInStickyHeader(WidgetTester tester, String bassersdorf) async {
+Future<void> _dragUntilInStickyHeader(WidgetTester tester, String station) async {
   final scrollableFinder = find.byType(AnimatedList);
   final stickyHeader = find.byKey(StickyHeader.headerKey);
   await tester.dragUntilVisible(
-    find.descendant(of: stickyHeader, matching: find.text(bassersdorf)),
+    find.descendant(of: stickyHeader, matching: find.text(station)),
     scrollableFinder,
     const Offset(0, -50),
     maxIteration: 100,
