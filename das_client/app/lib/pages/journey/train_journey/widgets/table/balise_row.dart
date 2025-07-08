@@ -19,11 +19,6 @@ class BaliseRow extends CellRowBuilder<Balise> {
     super.isGrouped,
   });
 
-  /*@override
-  DASTableCell kilometreCell(BuildContext context) {
-    return DASTableCell(color: specialCellColor, child: Text(data.kilometre[0].toStringAsFixed(3)));
-  }*/
-
   @override
   DASTableCell kilometreCell(BuildContext context) {
     if (!isGrouped) {
