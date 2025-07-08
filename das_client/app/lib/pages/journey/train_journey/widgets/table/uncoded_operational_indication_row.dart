@@ -11,7 +11,6 @@ import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
-// TODO: Check theming
 // TODO: Handle Sticky Header
 class UncodedOperationalIndicationRow extends WidgetRowBuilder<UncodedOperationalIndication> {
   static const double _verticalMargin = sbbDefaultSpacing * 0.5;
