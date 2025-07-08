@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -18,6 +19,9 @@
         <archunit-junit5.version>1.4.1</archunit-junit5.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.8.9</springdoc-openapi-starter-webmvc-ui.version>
         <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
+        <kafka-json-schema-serializer.version>7.8.1</kafka-json-schema-serializer.version>
+        <confluent.schema-registry-plugin.version>8.0.0</confluent.schema-registry-plugin.version>
+        <jsonschema2pojo-maven-plugin.version>1.2.2</jsonschema2pojo-maven-plugin.version>
     </properties>
     <dependencies>
         <dependency>
@@ -66,6 +70,15 @@
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.confluent</groupId>
+            <artifactId>kafka-json-schema-serializer</artifactId>
+            <version>${kafka-json-schema-serializer.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-docker-compose</artifactId>
             <scope>runtime</scope>
@@ -101,6 +114,11 @@
             <groupId>com.tngtech.archunit</groupId>
             <artifactId>archunit-junit5</artifactId>
             <version>${archunit-junit5.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -167,6 +185,54 @@
                             <formats>
                                 <format>XML</format>
                             </formats>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.confluent</groupId>
+                <artifactId>kafka-schema-registry-maven-plugin</artifactId>
+                <version>${confluent.schema-registry-plugin.version}</version>
+                <configuration>
+                    <schemaRegistryUrls>
+                        <param>${ZIS_SR_URL}</param>
+                    </schemaRegistryUrls>
+                    <userInfoConfig>${ZIS_SR_API_KEY}:${ZIS_SR_API_SECRET}</userInfoConfig>
+                    <outputDirectory>${project.build.directory}/schema_registry</outputDirectory>
+                    <subjectPatterns>
+                        <param>zis.inte.trafo.trainformation.operational-(key|value)</param>
+                    </subjectPatterns>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>download</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jsonschema2pojo</groupId>
+                <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+                <version>${jsonschema2pojo-maven-plugin.version}</version>
+                <configuration>
+                    <includeConstructors>true</includeConstructors>
+                    <useJakartaValidation>true</useJakartaValidation>
+                    <dateType>java.time.LocalDate</dateType>
+                    <dateTimeType>java.time.LocalDateTime</dateTimeType>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <sourcePaths>
+                                <sourcePath>${project.build.directory}/schema_registry</sourcePath>
+                            </sourcePaths>
+                            <targetPackage>ch.sbb.zis.trainformation.api.model</targetPackage>
                         </configuration>
                     </execution>
                 </executions>
