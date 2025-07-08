@@ -1,3 +1,5 @@
+import 'dart:core';
+
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/theme/theme_util.dart';
@@ -10,14 +12,16 @@ import 'package:sfera/component.dart';
 
 class BaliseLevelCrossingGroupRow extends CellRowBuilder<BaliseLevelCrossingGroup> {
   static const Key baliseIconKey = Key('baliseIcon');
+  final Color? rowColorBalise;
 
   BaliseLevelCrossingGroupRow({
     required super.metadata,
     required super.data,
     required super.rowIndex,
+    required this.rowColorBalise,
     super.config,
     super.onTap,
-  });
+  }) : super(rowColor: rowColorBalise);
 
   @override
   DASTableCell informationCell(BuildContext context) {

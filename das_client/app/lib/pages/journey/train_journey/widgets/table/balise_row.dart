@@ -19,13 +19,13 @@ class BaliseRow extends CellRowBuilder<Balise> {
     super.isGrouped,
   });
 
-  @override
+  /*@override
   DASTableCell kilometreCell(BuildContext context) {
-    return isGrouped ? DASTableCell.empty() : super.kilometreCell(context);
-  }
+    return DASTableCell(color: specialCellColor, child: Text(data.kilometre[0].toStringAsFixed(3)));
+  }*/
 
   @override
-  DASTableCell timeCell(BuildContext context) {
+  DASTableCell kilometreCell(BuildContext context) {
     if (!isGrouped) {
       return DASTableCell.empty();
     }
@@ -39,7 +39,8 @@ class BaliseRow extends CellRowBuilder<Balise> {
 
   @override
   DASTableCell informationCell(BuildContext context) {
-    final levelCrossingCount = '(${data.amountLevelCrossings} ${context.l10n.p_train_journey_table_level_crossing})';
+    final levelCrossingCount =
+        '(${data.amountLevelCrossings} ${context.l10n.p_train_journey_table_level_crossing}asdf)';
     return DASTableCell(
       child: Text(data.amountLevelCrossings > 1 && !isGrouped ? levelCrossingCount : ''),
       alignment: Alignment.centerRight,

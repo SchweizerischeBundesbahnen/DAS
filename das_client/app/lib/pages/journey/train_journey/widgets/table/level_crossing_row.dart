@@ -15,11 +15,6 @@ class LevelCrossingRow extends CellRowBuilder<LevelCrossing> {
 
   @override
   DASTableCell kilometreCell(BuildContext context) {
-    return isGrouped ? DASTableCell.empty() : super.kilometreCell(context);
-  }
-
-  @override
-  DASTableCell timeCell(BuildContext context) {
     if (!isGrouped) {
       return DASTableCell.empty();
     }
@@ -35,7 +30,7 @@ class LevelCrossingRow extends CellRowBuilder<LevelCrossing> {
   DASTableCell informationCell(BuildContext context) {
     return DASTableCell(
       child: Text(context.l10n.p_train_journey_table_level_crossing),
-      alignment: Alignment.centerLeft,
+      alignment: Alignment.centerRight,
     );
   }
 }

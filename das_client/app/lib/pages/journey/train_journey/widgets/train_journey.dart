@@ -241,6 +241,9 @@ class TrainJourney extends StatelessWidget {
             config: trainJourneyConfig,
             onTap: () => _onBaliseLevelCrossingGroupTap(context, rowData, settings),
             rowIndex: index,
+            rowColorBalise: settings.expandedGroups.contains(rowData.order)
+                ? ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.iron)
+                : null,
           );
         case Datatype.opFootNote:
           return OpFootNoteRow(
@@ -291,7 +294,7 @@ class TrainJourney extends StatelessWidget {
         DASTableColumn(
           id: ColumnDefinition.kilometre.index,
           child: Text(context.l10n.p_train_journey_table_kilometre_label),
-          width: 64.0,
+          width: 80.0,
         ),
         DASTableColumn(
           id: ColumnDefinition.gradientDownhill.index,
