@@ -1,6 +1,8 @@
 import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/graduated_speed_info_dto.dart';
+import 'package:sfera/src/data/dto/jp_context_information_nsp_dto.dart';
+import 'package:sfera/src/data/dto/new_speed_nsp_dto.dart';
 import 'package:sfera/src/data/dto/velocity_dto.dart';
 
 final _log = Logger('GraduatedSpeedDataMapper');
@@ -71,5 +73,14 @@ class SpeedMapper {
     }
 
     return result;
+  }
+
+  static SingleSpeed? fromJourneyProfileContextInfoNsp(JpContextInformationNspDto? jpContextInfoNsp) {
+    if (jpContextInfoNsp == null) return null;
+
+    final nsp = jpContextInfoNsp.parameters.firstOrNull;
+    if (nsp is! NewSpeedNetworkSpecificParameterDto) return null;
+
+    return SingleSpeed(value: nsp.speed);
   }
 }

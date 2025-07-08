@@ -106,6 +106,8 @@ class SingleSpeed extends Speed {
     );
   }
 
+  bool get isIllegal => value == 'XX';
+
   /// The value of this or 'XX'.
   final String value;
 

@@ -7,6 +7,7 @@ import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
+import '../../../test_util.dart';
 import 'journey_navigation_view_model_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<SferaRemoteRepo>()])
@@ -234,13 +235,13 @@ void main() {
     test('model_stream_whenSferaRemoteRepoDisconnectsWithError_thenEmitsNullOnce', () async {
       // ARRANGE
       testee.push(trainId1);
-      await allowStreamProcessing();
+      await processStreams();
       emitRegister.clear();
       when(mockSferaRepo.lastError).thenReturn(SferaError.requestTimeout);
 
       // ACT
       mockStream.add(SferaRemoteRepositoryState.disconnected);
-      await allowStreamProcessing();
+      await processStreams();
 
       // EXCPECT
       expect(emitRegister.length, 1);
@@ -253,7 +254,7 @@ void main() {
       testee.push(trainId1);
       testee.push(trainId1);
 
-      await allowStreamProcessing();
+      await processStreams();
 
       // EXPECT
       expect(emitRegister.where((e) => e != null).length, 1);
@@ -265,7 +266,7 @@ void main() {
       testee.push(trainId2);
       testee.push(trainId3);
 
-      await allowStreamProcessing();
+      await processStreams();
 
       // EXPECT
       expect(emitRegister.where((e) => e != null).length, 3);
@@ -274,14 +275,14 @@ void main() {
     test('model_stream_whenNextOrPreviousCalledAtBounds_thenDoesNotEmit', () async {
       // ARRANGE
       testee.push(trainId1);
-      await allowStreamProcessing();
+      await processStreams();
       emitRegister.clear();
 
       // ACT
       testee.previous(); // at start, should not emit
       testee.next(); // at end, should not emit
 
-      await allowStreamProcessing();
+      await processStreams();
 
       // EXPECT
       expect(emitRegister.where((e) => e != null).length, 0);
@@ -291,19 +292,17 @@ void main() {
       // ARRANGE
       testee.push(trainId1);
       testee.push(trainId2);
-      await allowStreamProcessing();
+      await processStreams();
       emitRegister.clear();
 
       // ACT
       testee.previous(); // should emit (move to trainId1)
       testee.next(); // should emit (move to trainId2)
 
-      await allowStreamProcessing();
+      await processStreams();
 
       // EXPECT
       expect(emitRegister.where((e) => e != null).length, 2);
     });
   });
 }
-
-Future<void> allowStreamProcessing() async => await Future.delayed(Duration.zero);
