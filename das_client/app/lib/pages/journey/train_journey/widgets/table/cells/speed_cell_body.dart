@@ -135,7 +135,7 @@ class SpeedCellBody extends StatelessWidget {
     }
 
     final Speed? resolvedSpeed = showPreviousSpeed
-        ? context.read<DASTableSpeedViewModel>().previousSpeed(rowIndex)
+        ? context.read<DASTableSpeedViewModel>().previousLineSpeed(rowIndex)
         : speed;
     return resolvedSpeed;
   }

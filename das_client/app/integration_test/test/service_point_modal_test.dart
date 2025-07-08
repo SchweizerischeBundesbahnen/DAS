@@ -1,3 +1,4 @@
+import 'package:app/di/di.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_communication.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_graduated_speeds.dart';
@@ -7,6 +8,7 @@ import 'package:app/pages/journey/train_journey/widgets/header/animated_header_i
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/speed_cell_body.dart';
+import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:flutter/material.dart';
@@ -108,15 +110,17 @@ void main() {
     });
     testWidgets('test modal closes after timeout without touch on screen', (tester) async {
       await prepareAndStartApp(tester);
+
       await loadTrainJourney(tester, trainNumber: 'T8');
 
       // open modal sheet with tap on service point name
       await _openByTapOnCellWithText(tester, 'Bern');
       _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
 
-      // wait till 10s idle time have passed
-      final timeout = DASModalSheetController.automaticCloseAfterSeconds + 1;
-      await Future.delayed(Duration(seconds: timeout));
+      final waitTime = DI.get<TimeConstants>().modalSheetAutomaticCloseAfterSeconds + 1;
+
+      // wait until waitTime reached
+      await Future.delayed(Duration(seconds: waitTime));
       await tester.pumpAndSettle();
 
       // check if modal sheet is closed
@@ -126,6 +130,7 @@ void main() {
     });
     testWidgets('test modal sheet does close after timeout with automatic advancement paused', (tester) async {
       await prepareAndStartApp(tester);
+
       await loadTrainJourney(tester, trainNumber: 'T8');
 
       // open modal sheet with tap on service point name
@@ -137,9 +142,10 @@ void main() {
       expect(pauseButton, findsOneWidget);
       await tapElement(tester, pauseButton);
 
-      // wait till 10s idle time have passed
-      final timeout = DASModalSheetController.automaticCloseAfterSeconds + 1;
-      await Future.delayed(Duration(seconds: timeout));
+      final waitTime = DI.get<TimeConstants>().modalSheetAutomaticCloseAfterSeconds + 1;
+
+      // wait until waitTime reached
+      await Future.delayed(Duration(seconds: waitTime));
       await tester.pumpAndSettle();
 
       // check if modal sheet is closed

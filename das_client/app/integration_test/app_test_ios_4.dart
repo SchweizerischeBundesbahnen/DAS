@@ -5,6 +5,7 @@ import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 
 import 'test/train_journey_table_break_series_test.dart' as train_journey_table_break_series_tests;
+import 'test/train_journey_table_calculated_speed_test.dart' as train_journey_table_calculated_speed_tests;
 import 'test/train_journey_table_track_equipment_test.dart' as train_journey_table_track_equipment_tests;
 import 'test/warnapp_test.dart' as warnapp_tests;
 
@@ -19,4 +20,5 @@ void main() {
   warnapp_tests.main();
   train_journey_table_break_series_tests.main();
   train_journey_table_track_equipment_tests.main();
+  train_journey_table_calculated_speed_tests.main();
 }

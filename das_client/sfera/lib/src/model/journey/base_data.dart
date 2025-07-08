@@ -44,7 +44,8 @@ abstract class BaseData implements Comparable {
   /// Grouping is done in [BaseDataExtension]
   bool canGroupWith(BaseData other) => false;
 
-  Iterable<TrainSeriesSpeed> get allSpeeds {
+  /// Returns static local and line speeds. Does not return calculated or advised speed.
+  Iterable<TrainSeriesSpeed> get allStaticSpeeds {
     return [
       ...?speeds,
       ...?localSpeeds,

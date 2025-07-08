@@ -15,6 +15,20 @@ import 'package:sfera/src/data/mapper/mapper_utils.dart';
 import 'package:sfera/src/data/mapper/segment_profile_mapper.dart';
 import 'package:sfera/src/data/mapper/track_equipment_mapper.dart';
 import 'package:sfera/src/model/journey/bracket_station.dart';
+import 'package:sfera/src/model/journey/bracket_station_segment.dart';
+import 'package:sfera/src/model/journey/break_series.dart';
+import 'package:sfera/src/model/journey/cab_signaling.dart';
+import 'package:sfera/src/model/journey/communication_network_change.dart';
+import 'package:sfera/src/model/journey/contact.dart';
+import 'package:sfera/src/model/journey/contact_list.dart';
+import 'package:sfera/src/model/journey/datatype.dart';
+import 'package:sfera/src/model/journey/delay.dart';
+import 'package:sfera/src/model/journey/journey.dart';
+import 'package:sfera/src/model/journey/line_foot_note.dart';
+import 'package:sfera/src/model/journey/metadata.dart';
+import 'package:sfera/src/model/journey/service_point.dart';
+import 'package:sfera/src/model/journey/track_equipment_segment.dart';
+import 'package:sfera/src/model/journey/tram_area.dart';
 
 final _log = Logger('SferaModelMapper');
 
@@ -103,7 +117,7 @@ class SferaModelMapper {
         additionalSpeedRestrictions: additionalSpeedRestrictions,
         routeStart: journeyData.firstOrNull,
         routeEnd: journeyData.lastOrNull,
-        delay: relatedTrainInformation?.ownTrain.trainLocationInformation.delay.delayAsDuration,
+        delay: _parseDelay(relatedTrainInformation),
         anyOperationalArrivalDepartureTimes: servicePoints.any(
           (sP) => sP.arrivalDepartureTime?.hasAnyOperationalTime ?? false,
         ),
@@ -423,7 +437,7 @@ class SferaModelMapper {
 
   static Set<BreakSeries> _parseAvailableBreakSeries(List<BaseData> journeyData) {
     return journeyData
-        .expand((it) => it.allSpeeds)
+        .expand((it) => it.allStaticSpeeds)
         .where((it) => it.breakSeries != null)
         .map((it) => BreakSeries(trainSeries: it.trainSeries, breakSeries: it.breakSeries!))
         .toSet();
@@ -567,6 +581,13 @@ class SferaModelMapper {
       }
     }
     return lineFootNoteLocations;
+  }
+
+  static Delay? _parseDelay(RelatedTrainInformationDto? relatedTrainInformation) {
+    final duration = relatedTrainInformation?.ownTrain.trainLocationInformation.delay?.delayAsDuration;
+    final positionSpeed = relatedTrainInformation?.ownTrain.trainLocationInformation.positionSpeed;
+    final location = '${positionSpeed?.spId}${positionSpeed?.location}';
+    return duration != null ? Delay(value: duration, location: location) : null;
   }
 }
 

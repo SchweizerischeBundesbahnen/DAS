@@ -92,6 +92,29 @@ void main() {
     );
   }
 
+  test('returns null delay when delay is missing in event', () {
+    final journey = getJourney('T8', 1);
+    expect(journey.valid, true);
+
+    final delay = journey.metadata.delay;
+
+    expect(delay, isNull);
+  });
+
+  test('return valid delay when location and delay are given', () {
+    final journey = getJourney('T9999', 5, relatedTrainInfoEventId: 2000);
+    expect(journey.valid, true);
+
+    final delay = journey.metadata.delay;
+
+    expect(delay, isNotNull);
+    final delayValue = delay!.value;
+    expect(delayValue, Duration(seconds: 30));
+
+    final location = delay.location;
+    expect(location, 'T9999_1500.0');
+  });
+
   test('Test invalid journey on SP missing', () async {
     final journey = getJourney('T9999', 4);
 
@@ -1144,6 +1167,43 @@ void main() {
       trainSeries: TrainSeries.O,
       text: 'Zusatzinformation D',
     );
+  });
+
+  test('Test calculatedSpeed are parsed correctly for each service point', () async {
+    final journey = getJourney('T23', 2);
+    expect(journey.valid, true);
+
+    final servicePoints = journey.data.whereType<ServicePoint>().toList();
+    expect(servicePoints, hasLength(16));
+
+    // service points without calculated speed
+    final servicePointIdxWithoutCalculatedSpeed = {0, 1, 8, 10, 12, 13, 15};
+    expect(
+      servicePoints
+          .whereIndexed((idx, _) => servicePointIdxWithoutCalculatedSpeed.contains(idx))
+          .every((sP) => sP.calculatedSpeed == null),
+      isTrue,
+    );
+
+    // service points with calculated speed
+    expect(servicePoints[2].calculatedSpeed, isNotNull);
+    expect(servicePoints[2].calculatedSpeed, equals(Speed.parse('110')));
+    expect(servicePoints[3].calculatedSpeed, isNotNull);
+    expect(servicePoints[3].calculatedSpeed, equals(Speed.parse('135')));
+    expect(servicePoints[4].calculatedSpeed, isNotNull);
+    expect(servicePoints[4].calculatedSpeed, equals(Speed.parse('0')));
+    expect(servicePoints[5].calculatedSpeed, isNotNull);
+    expect(servicePoints[5].calculatedSpeed, equals(Speed.parse('130')));
+    expect(servicePoints[6].calculatedSpeed, isNotNull);
+    expect(servicePoints[6].calculatedSpeed, equals(Speed.parse('0')));
+    expect(servicePoints[7].calculatedSpeed, isNotNull);
+    expect(servicePoints[7].calculatedSpeed, equals(Speed.parse('90')));
+    expect(servicePoints[9].calculatedSpeed, isNotNull);
+    expect(servicePoints[9].calculatedSpeed, equals(Speed.parse('130')));
+    expect(servicePoints[11].calculatedSpeed, isNotNull);
+    expect(servicePoints[11].calculatedSpeed, equals(Speed.parse('80')));
+    expect(servicePoints[14].calculatedSpeed, isNotNull);
+    expect(servicePoints[14].calculatedSpeed, equals(Speed.parse('0')));
   });
 
   test('Test current position is start when nothing is given ', () async {

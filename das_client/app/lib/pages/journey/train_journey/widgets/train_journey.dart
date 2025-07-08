@@ -87,14 +87,7 @@ class TrainJourney extends StatelessWidget {
     );
   }
 
-  Widget _body(Journey journey, TrainJourneySettings settings) {
-    return Provider<DASTableSpeedViewModel>(
-      create: (_) => DASTableSpeedViewModel(journey, settings),
-      child: Builder(builder: (context) => _table(context, journey, settings)),
-    );
-  }
-
-  Widget _table(BuildContext context, Journey journey, TrainJourneySettings settings) {
+  Widget _body(BuildContext context, Journey journey, TrainJourneySettings settings) {
     return StreamBuilder(
       stream: context.read<CollapsibleRowsViewModel>().collapsedRows,
       builder: (context, snapshot) {

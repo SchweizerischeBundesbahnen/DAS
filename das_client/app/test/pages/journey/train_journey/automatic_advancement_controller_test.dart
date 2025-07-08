@@ -2,11 +2,13 @@ import 'package:app/pages/journey/train_journey/automatic_advancement_controller
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/signal_row.dart';
+import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:collection/collection.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sfera/src/model/journey/base_data.dart';
@@ -26,6 +28,14 @@ import 'automatic_advancement_controller_test.mocks.dart';
 ])
 void main() {
   const double dasTableHeaderOffset = -40;
+
+  setUp(() {
+    GetIt.I.registerSingleton(TimeConstants());
+  });
+
+  tearDown(() {
+    GetIt.I.reset();
+  });
 
   test('test does nothing without anything provided', () {
     final scrollControllerMock = MockScrollController();
