@@ -45,6 +45,8 @@ void main() {
     expect(zuerichHbStationRow, findsOneWidget);
     _findTextWithin(zuerichHbStationRow, '90');
 
+    await tester.dragUntilVisible(find.text('Winterthur'), scrollableFinder, const Offset(0, -100));
+
     final zuerichOerlikonStationRow = findDASTableRowByText('Zürich Oerlikon');
     expect(zuerichOerlikonStationRow, findsOneWidget);
     final zuerichAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(zuerichOerlikonStationRow);
