@@ -45,7 +45,7 @@ void main() {
     expect(zuerichHbStationRow, findsOneWidget);
     _findTextWithin(zuerichHbStationRow, '90');
 
-    await tester.dragUntilVisible(find.text('Winterthur'), scrollableFinder, const Offset(0, -100));
+    await tester.dragUntilVisible(find.text('Zürich Oerlikon'), scrollableFinder, const Offset(0, -50));
 
     final zuerichOerlikonStationRow = findDASTableRowByText('Zürich Oerlikon');
     expect(zuerichOerlikonStationRow, findsOneWidget);
