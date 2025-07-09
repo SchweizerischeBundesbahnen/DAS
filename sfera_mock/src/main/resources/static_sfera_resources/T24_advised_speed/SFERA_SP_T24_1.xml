@@ -488,6 +488,9 @@
         <KilometreReferencePoint location="8050">
             <KM_Reference kmRef="33.5"/>
         </KilometreReferencePoint>
+        <KilometreReferencePoint location="9000">
+            <KM_Reference kmRef="30.1"/>
+        </KilometreReferencePoint>
         <KilometreReferencePoint location="9950">
             <KM_Reference kmRef="27.0"/>
         </KilometreReferencePoint>
@@ -496,6 +499,9 @@
         </KilometreReferencePoint>
         <KilometreReferencePoint location="10050">
             <KM_Reference kmRef="26.4"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="11000">
+            <KM_Reference kmRef="22.1"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="11950">
             <KM_Reference kmRef="21.7"/>
