@@ -7,12 +7,7 @@ class TrainLocationInformationDto extends SferaXmlElementDto {
 
   TrainLocationInformationDto({super.type = elementType, super.attributes, super.children, super.value});
 
-  DelayDto get delay => children.whereType<DelayDto>().first;
+  DelayDto? get delay => children.whereType<DelayDto>().firstOrNull;
 
   PositionSpeedDto? get positionSpeed => children.whereType<PositionSpeedDto>().firstOrNull;
-
-  @override
-  bool validate() {
-    return validateHasChildOfType<DelayDto>() && super.validate();
-  }
 }

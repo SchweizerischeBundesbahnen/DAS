@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.22.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.21.0...das_client-v0.22.0) (2025-07-08)
+
+
+### Features
+
+* add calculated speed ([#88](https://github.com/SchweizerischeBundesbahnen/DAS/issues/88)) ([#1080](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1080)) ([913054f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/913054f03fab2e3633d0cef2fc516ded192641e7))
+* always display line speed in sticky header ([#932](https://github.com/SchweizerischeBundesbahnen/DAS/issues/932)) ([#1069](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1069)) ([539a16f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/539a16f1ec0434e6fe1e4348a37d621f92da3aa3))
+* bahnhofseigenschaften  ([#127](https://github.com/SchweizerischeBundesbahnen/DAS/issues/127)) ([#1074](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1074)) ([66fe982](https://github.com/SchweizerischeBundesbahnen/DAS/commit/66fe982f4c325eab73b4413c4eb5f9b06f129928))
+* client displays xx speeds ([#502](https://github.com/SchweizerischeBundesbahnen/DAS/issues/502)) ([#1038](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1038)) ([a7dab99](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a7dab9904bca4b36500b976a019872a53d290495))
+* handle punctuality display when no update is sent ([#300](https://github.com/SchweizerischeBundesbahnen/DAS/issues/300)) ([#869](https://github.com/SchweizerischeBundesbahnen/DAS/issues/869)) ([3ba1c58](https://github.com/SchweizerischeBundesbahnen/DAS/commit/3ba1c58f7621473ff2f1eb5a81b6ba027633807d))
+* handling of missing data in detail modal ([#1040](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1040)) ([#1053](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1053)) ([9651bbd](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9651bbd86ae6596df1edfdd70352cf161296154e))
+* search journey with modal in loaded journey ([#456](https://github.com/SchweizerischeBundesbahnen/DAS/issues/456)) ([#1051](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1051)) ([ff232f5](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ff232f574d2e073839ff553170cd21cdefc59eb6))
+
 ## [0.21.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.20.0...das_client-v0.21.0) (2025-06-10)
 
 

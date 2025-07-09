@@ -1,5 +1,6 @@
 import 'package:sfera/src/data/dto/amount_tram_signals_dto.dart';
 import 'package:sfera/src/data/dto/id_nsp_dto.dart';
+import 'package:sfera/src/data/dto/new_speed_nsp_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/speed_nsp_dto.dart';
 import 'package:sfera/src/data/dto/track_equipment_type_wrapper_dto.dart';
@@ -44,6 +45,8 @@ class NetworkSpecificParameterDto extends SferaXmlElementDto {
       return IdNetworkSpecificParameterDto(attributes: attributes, children: children, value: value);
     } else if (attributes?['name'] == SpeedNetworkSpecificParameterDto.elementName) {
       return SpeedNetworkSpecificParameterDto(attributes: attributes, children: children, value: value);
+    } else if (attributes?['name'] == NewSpeedNetworkSpecificParameterDto.elementName) {
+      return NewSpeedNetworkSpecificParameterDto(attributes: attributes, children: children, value: value);
     } else if (attributes?['name'] == XmlStationPropertyDto.elementName) {
       return XmlStationPropertyDto(attributes: attributes, children: children, value: value);
     }

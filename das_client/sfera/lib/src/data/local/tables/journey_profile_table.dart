@@ -1,3 +1,5 @@
+// coverage:ignore-file
+
 import 'package:drift/drift.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/local/drift_local_database_service.dart';

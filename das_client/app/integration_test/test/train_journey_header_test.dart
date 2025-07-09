@@ -3,14 +3,16 @@ import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_page.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/battery_status.dart';
+import 'package:app/pages/journey/train_journey/widgets/header/das_chronograph.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/extended_menu.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/radio_channel.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/radio_contact.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/sim_identifier.dart';
-import 'package:app/pages/journey/train_journey/widgets/header/time_container.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:app/util/format.dart';
+import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
@@ -25,17 +27,63 @@ import '../util/test_utils.dart';
 
 Future<void> main() async {
   group('train journey header test', () {
+    testWidgets('test punctuality display hides when no updates come', (tester) async {
+      await prepareAndStartApp(tester);
+
+      await loadTrainJourney(tester, trainNumber: 'T4');
+
+      final chronograph = find.byType(DASChronograph);
+      expect(chronograph, findsOneWidget);
+
+      // wait until delay displayed
+      await waitUntilExists(
+        tester,
+        find.descendant(of: chronograph, matching: find.byKey(DASChronograph.punctualityTextKey)),
+      );
+
+      final waitTime = DI.get<TimeConstants>().punctualityDisappearSeconds + 1;
+
+      // wait until waitTime reached
+      await tester.pumpAndSettle(Duration(seconds: waitTime));
+
+      // check that delay text has disappeared
+      expect(find.descendant(of: chronograph, matching: find.byKey(DASChronograph.punctualityTextKey)), findsNothing);
+    });
+
+    testWidgets('test punctuality display becomes stale when no updates come', (tester) async {
+      await prepareAndStartApp(tester);
+
+      await loadTrainJourney(tester, trainNumber: 'T4');
+
+      final chronograph = find.byType(DASChronograph);
+      expect(chronograph, findsOneWidget);
+
+      final context = tester.element(chronograph);
+
+      // wait until delay displayed
+      await waitUntilExists(tester, find.descendant(of: chronograph, matching: find.text('+00:40')));
+
+      final waitTime = DI.get<TimeConstants>().punctualityStaleSeconds + 1;
+
+      // wait until waitTime reached
+      await tester.pumpAndSettle(Duration(seconds: waitTime));
+
+      // check that delay text is stale
+      final delayTextWidget = tester.widget<Text>(find.descendant(of: chronograph, matching: find.text('+00:40')));
+      expect(delayTextWidget.style?.color, ThemeUtil.getColor(context, SBBColors.graphite, SBBColors.granite));
+    });
+
     testWidgets('test always-on display is turned on when journey is loaded', (tester) async {
       await prepareAndStartApp(tester);
 
       // Get that the always-on display is turned off, because journey is not started yet
-      final currentDisplayTurnedOff = await WakelockPlus.enabled;
-      expect(currentDisplayTurnedOff, false);
+      bool currentDisplayTurnedOn = await WakelockPlus.enabled;
+      expect(currentDisplayTurnedOn, false);
 
       await loadTrainJourney(tester, trainNumber: 'T4');
 
       // Get that the always-on display is turned on, because the journey is started
-      final currentDisplayTurnedOn = await WakelockPlus.enabled;
+      currentDisplayTurnedOn = await WakelockPlus.enabled;
       expect(currentDisplayTurnedOn, true);
     });
 
@@ -241,14 +289,18 @@ Future<void> main() async {
       final header = find.byType(Header);
       expect(header, findsOneWidget);
 
-      await waitUntilNotExists(tester, find.descendant(of: header, matching: find.text('+00:00')));
+      await waitUntilExists(
+        tester,
+        find.descendant(of: header, matching: find.byKey(DASChronograph.punctualityTextKey)),
+      );
+      await tester.pumpAndSettle(Duration(seconds: 1));
 
       expect(find.descendant(of: header, matching: find.text('+00:30')), findsOneWidget);
 
       await disconnect(tester);
     });
 
-    testWidgets('find base value when no punctuality update comes', (tester) async {
+    testWidgets('punctuality display is hidden when no calculated speed', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
 
@@ -259,10 +311,10 @@ Future<void> main() async {
       final header = find.byType(Header);
       expect(header, findsOneWidget);
 
-      // find the text in the header
-      expect(find.descendant(of: header, matching: find.text('+00:00')), findsOneWidget);
-
       await tester.pumpAndSettle();
+
+      // does not find delay text
+      expect(find.descendant(of: header, matching: find.byKey(DASChronograph.punctualityTextKey)), findsNothing);
 
       await disconnect(tester);
     });
@@ -414,12 +466,12 @@ Future<void> main() async {
       final header = find.byType(Header);
       expect(header, findsOneWidget);
 
-      final timeContainer = find.byType(TimeContainer);
-      expect(timeContainer, findsOneWidget);
+      final chronograph = find.byType(DASChronograph);
+      expect(chronograph, findsOneWidget);
 
-      await tester.tap(timeContainer);
+      await tester.tap(chronograph);
       await tester.pump(const Duration(milliseconds: 50));
-      await tester.tap(timeContainer);
+      await tester.tap(chronograph);
       await tester.pumpAndSettle();
 
       expect(mockBrightnessManager.calledWith, contains(0.0));
@@ -444,10 +496,10 @@ Future<void> main() async {
       // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
       await findAndDismissBrightnessModalSheet(tester);
 
-      final timeContainer = find.byType(TimeContainer);
-      expect(timeContainer, findsOneWidget);
+      final chronograph = find.byType(DASChronograph);
+      expect(chronograph, findsOneWidget);
 
-      await tester.longPress(timeContainer);
+      await tester.longPress(chronograph);
       await tester.pump(const Duration(seconds: 2));
 
       expect(mockBrightnessManager.calledWith.any((val) => val < 1.0), true);
