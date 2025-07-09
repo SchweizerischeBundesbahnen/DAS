@@ -175,7 +175,7 @@ void main() {
       await selectBreakSeries(tester, breakSeries: 'N50');
 
       expect(find.text('Zusatzinformation A'), findsNothing);
-      expect(find.text('Zusatzinformation B'), findsExactly(2));
+      expect(find.text('Zusatzinformation B'), findsOne);
       expect(find.text('70'), findsExactly(3));
       expect(find.text('60'), findsExactly(3));
 

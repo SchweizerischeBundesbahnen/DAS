@@ -1,9 +1,11 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/speed_cell_body.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class DetailTabGraduatedSpeeds extends StatelessWidget {
@@ -61,50 +63,23 @@ class DetailTabGraduatedSpeeds extends StatelessWidget {
       separatorBuilder: (context, index) => const Divider(),
       itemBuilder: (context, index) {
         final speed = speedInfo[index];
-        final Speed parsedSpeed = speed.speed;
-
-        String incoming = '';
-        String outgoing = '';
-        bool hasOutgoing = false;
-
-        if (parsedSpeed is IncomingOutgoingSpeed) {
-          incoming = _toJoinedString(parsedSpeed.incoming);
-          outgoing = _toJoinedString(parsedSpeed.outgoing);
-          hasOutgoing = outgoing.isNotEmpty;
-        } else {
-          incoming = _toJoinedString(parsedSpeed);
-        }
 
         return Padding(
-          padding: const EdgeInsets.only(left: 16.0, top: 10, right: 16.0, bottom: 10),
+          padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing, vertical: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(incoming, style: DASTextStyles.mediumBold),
+              SpeedCellBody(
+                speed: speed.speed,
+                singleLine: true,
+                textStyle: DASTextStyles.mediumBold,
+              ),
               const SizedBox(height: 10),
               Text(speed.text!, style: DASTextStyles.mediumRoman),
-
-              if (hasOutgoing) ...[
-                const SizedBox(height: 10),
-                const Divider(),
-                const SizedBox(height: 10),
-                Text(outgoing, style: DASTextStyles.mediumBold),
-                const SizedBox(height: 10),
-                Text(speed.text!, style: DASTextStyles.mediumRoman),
-              ],
             ],
           ),
         );
       },
     );
-  }
-
-  String _toJoinedString(Speed speed) {
-    if (speed is SingleSpeed) {
-      return speed.value;
-    } else if (speed is GraduatedSpeed) {
-      return speed.speeds.map((s) => s.value).join('-');
-    }
-    return '';
   }
 }
