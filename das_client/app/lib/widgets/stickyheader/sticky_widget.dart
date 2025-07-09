@@ -35,6 +35,8 @@ class StickyWidget extends StatefulWidget {
 class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
 
+  Widget? _stickyHeader1;
+  Widget? _stickyHeader2;
   Widget? _stickyFooter;
 
   @override
@@ -73,28 +75,43 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
   }
 
   Widget _buildHeaders(BuildContext context) {
-    final indexesToBuild = widget.controller.headerIndexes;
-    final first = indexesToBuild[StickyLevel.first]!;
-    final second = indexesToBuild[StickyLevel.second]!;
+    _buildHeaderWidgets(context);
 
     return Stack(
       children: [
-        if (second != -1)
-          Positioned(
-            left: 0,
-            top: widget.controller.widgetHeight(first) + widget.controller.headerOffsets[StickyLevel.second]!,
-            right: 0,
-            child: widget.widgetBuilder(context, second),
-          ),
-        if (first != -1)
-          Positioned(
-            left: 0,
-            top: widget.controller.headerOffsets[StickyLevel.first]!,
-            right: 0,
-            child: widget.widgetBuilder(context, first),
-          ),
+        if (_stickyHeader2 != null) _stickyHeader2!,
+        if (_stickyHeader1 != null) _stickyHeader1!,
       ],
     );
+  }
+
+  void _buildHeaderWidgets(BuildContext context) {
+    final indexesToBuild = widget.controller.headerIndexes;
+    if (!widget.controller.isRecalculating) {
+      if (indexesToBuild[StickyLevel.first] != -1) {
+        _stickyHeader1 = Positioned(
+          left: 0,
+          top: widget.controller.headerOffsets[StickyLevel.first],
+          right: 0,
+          child: widget.widgetBuilder(context, indexesToBuild[StickyLevel.first]!),
+        );
+      } else {
+        _stickyHeader1 = null;
+      }
+
+      if (indexesToBuild[StickyLevel.second] != -1) {
+        _stickyHeader2 = Positioned(
+          left: 0,
+          top:
+              widget.controller.widgetHeight(indexesToBuild[StickyLevel.first]!) +
+              widget.controller.headerOffsets[StickyLevel.second]!,
+          right: 0,
+          child: widget.widgetBuilder(context, indexesToBuild[StickyLevel.second]!),
+        );
+      } else {
+        _stickyHeader2 = null;
+      }
+    }
   }
 
   void _buildFooterWidget(BuildContext context) {
