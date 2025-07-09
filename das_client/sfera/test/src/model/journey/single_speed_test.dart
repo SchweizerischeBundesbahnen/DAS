@@ -39,6 +39,26 @@ void main() {
       expect(() => Speed.parse('(50)'), throwsFormatException);
     });
 
+    test('isIllegal_whenXX_thenTrue', () {
+      // ACT
+      final actual = Speed.parse('XX');
+
+      // EXPECT
+      expect(actual, isA<SingleSpeed>());
+      actual as SingleSpeed;
+      expect(actual.isIllegal, isTrue);
+    });
+
+    test('isIllegal_whenNotXX_thenFalse', () {
+      // ACT
+      final actual = Speed.parse('[45]');
+
+      // EXPECT
+      expect(actual, isA<SingleSpeed>());
+      actual as SingleSpeed;
+      expect(actual.isIllegal, isFalse);
+    });
+
     test('toString_whenCalled_thenReturnsFormattedString', () {
       // ARRANGE
       final speed = SingleSpeed(value: '120', isSquared: true, isCircled: false);

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SFERA_G2B_EventMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SFERA_v3.00.xsd">
+    <MessageHeader SFERA_version="1.91" message_ID="bfc9754f-2361-49d1-90af-4c4fac7f419f" timestamp="2022-05-06T10:52:46Z" sourceDevice="INFRABEL">
+        <Sender>0088</Sender>
+        <Recipient>1088</Recipient>
+    </MessageHeader>
+    <G2B_EventPayload>
+        <RelatedTrainInformation>
+            <OwnTrain>
+                <TrainIdentification>
+                    <OTN_ID>
+                        <teltsi_Company>1285</teltsi_Company>
+                        <teltsi_OperationalTrainNumber>1809</teltsi_OperationalTrainNumber>
+                        <teltsi_StartDate>2025-05-17</teltsi_StartDate>
+                    </OTN_ID>
+                </TrainIdentification>
+                <TrainLocationInformation>
+                    <PositionSpeed SP_ID="9315_1" location="0">
+                        <SP_Zone>
+                            <IM_ID>1285</IM_ID>
+                        </SP_Zone>
+                    </PositionSpeed>
+                    <Delay Delay="PT0M20S"/>
+                </TrainLocationInformation>
+            </OwnTrain>
+        </RelatedTrainInformation>
+    </G2B_EventPayload>
+</SFERA_G2B_EventMessage>

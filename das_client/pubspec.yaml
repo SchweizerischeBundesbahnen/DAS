@@ -58,6 +58,14 @@ melos:
       packageFilters:
         dirExists: test
 
+    coverage:
+      run: flutter test --coverage --no-pub
+      description: Run tests with coverage in components with test dir
+      exec:
+        failFast: false
+      packageFilters:
+        dirExists: test
+
   command:
     clean:
       hooks:
