@@ -65,7 +65,7 @@ class SpeedCellBody extends StatelessWidget {
         _visualizedSpeeds(key: incomingSpeedsKey, speeds: ioSpeed.incoming),
         Text(
           ' / ',
-          style: textStyle.copyWith(height: 0),
+          style: textStyle,
         ),
         _visualizedSpeeds(key: outgoingSpeedsKey, speeds: ioSpeed.outgoing),
       ],
