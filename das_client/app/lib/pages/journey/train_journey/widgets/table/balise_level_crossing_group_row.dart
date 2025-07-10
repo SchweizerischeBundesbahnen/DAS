@@ -12,16 +12,18 @@ import 'package:sfera/component.dart';
 
 class BaliseLevelCrossingGroupRow extends CellRowBuilder<BaliseLevelCrossingGroup> {
   static const Key baliseIconKey = Key('baliseIcon');
-  final Color? rowColorBalise;
+  final bool isExpanded;
+  final BuildContext context;
 
   BaliseLevelCrossingGroupRow({
     required super.metadata,
     required super.data,
     required super.rowIndex,
-    required this.rowColorBalise,
+    required this.isExpanded,
+    required this.context,
     super.config,
     super.onTap,
-  }) : super(rowColor: rowColorBalise);
+  }) : super(rowColor: isExpanded ? ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.iron) : null);
 
   @override
   DASTableCell informationCell(BuildContext context) {

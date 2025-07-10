@@ -22,7 +22,18 @@ class LevelCrossingRow extends CellRowBuilder<LevelCrossing> {
     if (data.kilometre.isEmpty) {
       return DASTableCell.empty(color: specialCellColor);
     } else {
-      return DASTableCell(color: specialCellColor, child: Text(data.kilometre[0].toStringAsFixed(3)));
+      return DASTableCell(
+        color: specialCellColor,
+        child: Padding(
+          padding: EdgeInsets.only(left: 8.0),
+          child: OverflowBox(
+            alignment: Alignment.centerLeft,
+            maxWidth: double.infinity,
+            child: Text(data.kilometre[0].toStringAsFixed(3)),
+          ),
+        ),
+        clipBehaviour: Clip.none,
+      );
     }
   }
 
