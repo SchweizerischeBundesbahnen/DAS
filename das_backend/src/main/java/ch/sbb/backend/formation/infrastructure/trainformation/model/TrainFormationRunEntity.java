@@ -1,7 +1,8 @@
 package ch.sbb.backend.formation.infrastructure.trainformation.model;
 
+import ch.sbb.backend.common.TelTsi;
+import ch.sbb.backend.common.utils.StringListConverter;
 import ch.sbb.backend.formation.domain.model.TrainFormationRun;
-import ch.sbb.backend.formation.infrastructure.configuration.StringListConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -11,7 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.SequenceGenerator;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class TrainFormationRunEntity {
     @SequenceGenerator(name = "train_formation_run_id_seq", allocationSize = 1)
     private Integer id;
 
-    private LocalDateTime modifiedDateTime;
+    private OffsetDateTime modifiedDateTime;
 
     @TelTsi
     private String operationalTrainNumber;

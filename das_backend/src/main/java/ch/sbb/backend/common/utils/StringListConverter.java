@@ -1,4 +1,4 @@
-package ch.sbb.backend.formation.infrastructure.configuration;
+package ch.sbb.backend.common.utils;
 
 import static java.util.Collections.emptyList;
 

@@ -220,7 +220,7 @@
                     <includeConstructors>true</includeConstructors>
                     <useJakartaValidation>true</useJakartaValidation>
                     <dateType>java.time.LocalDate</dateType>
-                    <dateTimeType>java.time.LocalDateTime</dateTimeType>
+                    <dateTimeType>java.time.OffsetDateTime</dateTimeType>
                 </configuration>
                 <executions>
                     <execution>

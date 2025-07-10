@@ -4,11 +4,11 @@ import ch.sbb.backend.admin.domain.settings.CompanyRepository;
 import org.springframework.stereotype.Component;
 
 @Component
-class PostgreSQLCompanyRepository implements CompanyRepository {
+class PersistenceCompanyRepository implements CompanyRepository {
 
     private final SpringDataJpaCompanyRepository companyRepository;
 
-    PostgreSQLCompanyRepository(SpringDataJpaCompanyRepository companyRepository) {
+    PersistenceCompanyRepository(SpringDataJpaCompanyRepository companyRepository) {
         this.companyRepository = companyRepository;
     }
 

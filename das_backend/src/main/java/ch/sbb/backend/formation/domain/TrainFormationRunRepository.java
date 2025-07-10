@@ -2,12 +2,12 @@ package ch.sbb.backend.formation.domain;
 
 import ch.sbb.backend.formation.domain.model.TrainFormationRun;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 public interface TrainFormationRunRepository {
 
     TrainFormationRun findByModifiedDateTimeAndOperationalTrainNumberAndOperationalDayAndCompanyAndTafTapLocationReferenceStartAndTafTapLocationReferenceEnd(
-        LocalDateTime modifiedDateTime,
+        OffsetDateTime modifiedDateTime,
         String operationalTrainNumber,
         LocalDate operationalDay,
         String company,

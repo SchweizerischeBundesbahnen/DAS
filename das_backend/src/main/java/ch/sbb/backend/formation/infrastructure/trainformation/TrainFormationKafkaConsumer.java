@@ -4,6 +4,7 @@ import ch.sbb.backend.formation.domain.TrainFormationService;
 import ch.sbb.backend.formation.domain.model.TrainFormationRun;
 import ch.sbb.zis.trainformation.api.model.DailyFormationTrain;
 import ch.sbb.zis.trainformation.api.model.DailyFormationTrainKey;
+import ch.sbb.zis.trainformation.api.model.FormationRun;
 import ch.sbb.zis.trainformation.api.model.FormationRunInspection;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -28,14 +29,16 @@ public class TrainFormationKafkaConsumer {
         }
         message.value().getFormationRuns()
             .stream()
-            .filter(formationRun -> {
-                FormationRunInspection formationRunInspection = formationRun.getFormationRunInspection();
-                return formationRunInspection != null && formationRunInspection.getInspected();
-            })
+            .filter(this::isInspectedFormationRun)
             .forEach(formationRun -> trainFormationService.processTrainFormationRun(new TrainFormationRun(
                 message.value().getMetadata().getModifiedDateTime(),
                 message.key().getBetriebstag(),
                 message.key().getZugnummer().toString(),
                 formationRun)));
+    }
+
+    private boolean isInspectedFormationRun(FormationRun formationRun) {
+        FormationRunInspection formationRunInspection = formationRun.getFormationRunInspection();
+        return formationRunInspection != null && formationRunInspection.getInspected();
     }
 }

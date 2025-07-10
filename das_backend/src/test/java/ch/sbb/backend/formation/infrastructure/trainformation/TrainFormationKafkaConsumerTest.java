@@ -14,7 +14,8 @@ import ch.sbb.zis.trainformation.api.model.FormationRun;
 import ch.sbb.zis.trainformation.api.model.FormationRunInspection;
 import ch.sbb.zis.trainformation.api.model.TrainMetadata;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.junit.jupiter.api.BeforeAll;
@@ -39,14 +40,14 @@ class TrainFormationKafkaConsumerTest {
     }
 
     @Test
-    void testReceive_withInspectedFormationRun_callsService() {
+    void receive_withIsInspectedFormationRun_callsService() {
         // Arrange
         DailyFormationTrainKey key = new DailyFormationTrainKey();
         key.setBetriebstag(LocalDate.now());
         key.setZugnummer(123);
 
         TrainMetadata metadata = new TrainMetadata();
-        metadata.setModifiedDateTime(LocalDateTime.now());
+        metadata.setModifiedDateTime(OffsetDateTime.now(ZoneId.of("Europe/Zurich")));
 
         FormationRunInspection inspected = new FormationRunInspection();
         inspected.setInspected(true);
@@ -77,7 +78,7 @@ class TrainFormationKafkaConsumerTest {
     }
 
     @Test
-    void testReceive_withNullFormationRuns_doesNotCallService() {
+    void receive_withNullFormationRuns_doesNotCallService() {
         // Arrange
         DailyFormationTrainKey key = new DailyFormationTrainKey();
         key.setBetriebstag(LocalDate.now());

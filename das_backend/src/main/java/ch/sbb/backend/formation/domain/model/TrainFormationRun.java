@@ -1,5 +1,6 @@
 package ch.sbb.backend.formation.domain.model;
 
+import ch.sbb.backend.common.TelTsi;
 import ch.sbb.zis.trainformation.api.model.BrakeCalculationResult;
 import ch.sbb.zis.trainformation.api.model.ConsolidatedBrakingInformation;
 import ch.sbb.zis.trainformation.api.model.FormationRun;
@@ -9,25 +10,33 @@ import ch.sbb.zis.trainformation.api.model.Vehicle;
 import ch.sbb.zis.trainformation.api.model.VehicleGroup;
 import ch.sbb.zis.trainformation.api.model.VehicleUnit;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * ZIS-Formation delivers DailyFormationTrain's which consists of FormationRun's. (Remark: a Formation, FormationTrain, Composition or TrainFromation corresponds to a Transmodel "COMPOUND TRAIN".)
+ * <p>
+ * This class maintains a FormationRun, by means the snapshot between stop-points (de:Betriebspunkte) out of a DailyFormationTrain.
+ *
+ * @see <a href="https://confluence.sbb.ch/spaces/DASBP/pages/3037422329/Cargo+Formation+ZIS-Formation">ZIS Mapping / Business rules</a>
+ */
 @AllArgsConstructor
 @Getter
 public class TrainFormationRun {
 
-    private static final int TONNE_IN_HECTO_NEWTON = 10;
+    private static final int TON_IN_HECTO_NEWTON = 10;
     private static final int DISABLED_BRAKE_STATUS = 0;
 
-    private LocalDateTime modifiedDateTime;
+    private OffsetDateTime modifiedDateTime;
+    @TelTsi
     private String operationalTrainNumber;
     private LocalDate operationalDay;
+    @TelTsi
     private String company;
     private String tafTapLocationReferenceStart;
     private String tafTapLocationReferenceEnd;
@@ -67,7 +76,7 @@ public class TrainFormationRun {
     private Integer gradientDownhillMaxInPermille;
     private String slopeMaxForHoldingForceMinInPermille;
 
-    public TrainFormationRun(LocalDateTime modifiedDateTime, LocalDate operationalDay, String operationalTrainNumber, FormationRun formationRun) {
+    public TrainFormationRun(OffsetDateTime modifiedDateTime, LocalDate operationalDay, String operationalTrainNumber, FormationRun formationRun) {
         this.modifiedDateTime = modifiedDateTime;
         this.operationalDay = operationalDay;
         this.operationalTrainNumber = operationalTrainNumber;
@@ -87,14 +96,14 @@ public class TrainFormationRun {
         this.formationLengthInCm = brakeCalculationResult.getTotalLengthInCentimeter();
         this.tractionGrossWeightInT = brakeCalculationResult.getTractionGrossWeightInTonne();
         this.hauledLoadWeightInT = brakeCalculationResult.getHauledLoadInTonne();
-        this.formationWeightInT = brakeCalculationResult.getTractionGrossWeightInTonne() + brakeCalculationResult.getHauledLoadInTonne();
+        this.formationWeightInT = sum(this.tractionGrossWeightInT, this.hauledLoadWeightInT);
         this.tractionBrakedWeightInT = brakeCalculationResult.getTractionBrakedWeightInTonne();
         this.hauledLoadBrakedWeightInT = brakeCalculationResult.getHauledLoadBrakedWeightInTonne();
-        this.formationBrakedWeightInT = brakeCalculationResult.getTractionBrakedWeightInTonne() + brakeCalculationResult.getHauledLoadBrakedWeightInTonne();
+        this.formationBrakedWeightInT = sum(this.tractionBrakedWeightInT, this.hauledLoadBrakedWeightInT);
         List<Vehicle> allVehicles = extractVehicles(formationRun.getVehicleGroups());
         this.tractionHoldingForceInHectoNewton = tractionHoldingForce(allVehicles);
         this.hauledLoadHoldingForceInHectoNewton = hauledLoadHoldingForce(allVehicles);
-        this.formationHoldingForceInHectoNewton = this.tractionHoldingForceInHectoNewton + this.hauledLoadHoldingForceInHectoNewton;
+        this.formationHoldingForceInHectoNewton = sum(this.tractionHoldingForceInHectoNewton, this.hauledLoadHoldingForceInHectoNewton);
         this.brakePositionGForLeadingTraction = brakeCalculationResult.getBrakePositionGForLeadingTraction() != null && brakeCalculationResult.getBrakePositionGForLeadingTraction();
         this.brakePositionGForBrakeUnit1to5 = brakeCalculationResult.getBrakePositionGForBrakeUnit1to5() != null && brakeCalculationResult.getBrakePositionGForBrakeUnit1to5();
         this.brakePositionGForLoadHauled = brakeCalculationResult.getBrakePositionGForLoadHauled() != null && brakeCalculationResult.getBrakePositionGForLoadHauled();
@@ -106,12 +115,13 @@ public class TrainFormationRun {
         this.vehiclesWithBrakeDesignLlAndKCount = vehiclesWithBrakeDesignLlAndKCount(allVehicles);
         this.vehiclesWithBrakeDesignDCount = vehiclesWithBrakeDesignDCount(allVehicles);
         this.vehiclesWithDisabledBrakesCount = vehiclesWithDisabledBrakesCount(allVehicles);
-        this.europeanVehicleNumberFirst = europeanVehicleNumberFirst(allVehicles);
-        this.europeanVehicleNumberLast = europeanVehicleNumberLast(allVehicles);
+        europeanVehicleNumbers(allVehicles);
         this.axleLoadMaxInKg = consolidatedBrakingInformation.getMaxAxleLoadInKilogrammes();
         this.routeClass = consolidatedBrakingInformation.getRouteClass();
-        this.gradientUphillMaxInPermille = consolidatedBrakingInformation.getMaxUphillDownhillGradients().getMaxUphillGradientInPermille();
-        this.gradientDownhillMaxInPermille = consolidatedBrakingInformation.getMaxUphillDownhillGradients().getMaxDownhillGradientInPermille();
+        if (consolidatedBrakingInformation.getMaxUphillDownhillGradients() != null) {
+            this.gradientUphillMaxInPermille = consolidatedBrakingInformation.getMaxUphillDownhillGradients().getMaxUphillGradientInPermille();
+            this.gradientDownhillMaxInPermille = consolidatedBrakingInformation.getMaxUphillDownhillGradients().getMaxDownhillGradientInPermille();
+        }
         this.slopeMaxForHoldingForceMinInPermille = consolidatedBrakingInformation.getMaximumSlopeForMinimumHoldingForceInPermille();
     }
 
@@ -119,27 +129,24 @@ public class TrainFormationRun {
         return vehicle -> vehicle.getVehicleUnits() == null ? Stream.empty() : vehicle.getVehicleUnits().stream();
     }
 
-    private List<String> tractionModes(List<Vehicle> allVehicles) {
-        return allVehicles.stream().filter(this::isTraction)
+    private Integer sum(Integer a, Integer b) {
+        return (a != null ? a : 0) + (b != null ? b : 0);
+    }
+
+    List<String> tractionModes(List<Vehicle> vehicles) {
+        return vehicles.stream().filter(this::isTractionVehicle)
             .filter(vehicle -> vehicle.getVehicleEffectiveTractionData() != null && vehicle.getVehicleEffectiveTractionData().getTractionMode() != null)
             .map(vehicle -> vehicle.getVehicleEffectiveTractionData().getTractionMode())
             .toList();
     }
 
-    String europeanVehicleNumberFirst(List<Vehicle> allVehicles) {
-        List<Vehicle> hauledLoadVehicles = allVehicles.stream().filter(vehicle -> !isTraction(vehicle)).toList();
+    void europeanVehicleNumbers(List<Vehicle> vehicles) {
+        List<Vehicle> hauledLoadVehicles = vehicles.stream().filter(vehicle -> !isTractionVehicle(vehicle)).toList();
         if (hauledLoadVehicles.isEmpty()) {
-            return null;
+            return;
         }
-        return europeanVehicleNumber(hauledLoadVehicles.getFirst());
-    }
-
-    String europeanVehicleNumberLast(List<Vehicle> allVehicles) {
-        List<Vehicle> hauledLoadVehicles = allVehicles.stream().filter(vehicle -> !isTraction(vehicle)).toList();
-        if (hauledLoadVehicles.isEmpty()) {
-            return null;
-        }
-        return europeanVehicleNumber(hauledLoadVehicles.getLast());
+        this.europeanVehicleNumberFirst = europeanVehicleNumber(hauledLoadVehicles.getFirst());
+        this.europeanVehicleNumberLast = europeanVehicleNumber(hauledLoadVehicles.getLast());
     }
 
     String europeanVehicleNumber(Vehicle vehicle) {
@@ -149,14 +156,14 @@ public class TrainFormationRun {
         return null;
     }
 
-    private boolean hasDangerousGoods(List<Vehicle> vehicles) {
+    boolean hasDangerousGoods(List<Vehicle> vehicles) {
         return vehicles.stream()
             .flatMap(extractVehicleUnits())
             .map(vehicleUnit -> vehicleUnit.getCargoTransport() == null ? null : vehicleUnit.getCargoTransport().getLoad())
-            .anyMatch(this::loadHasDangerousGoods);
+            .anyMatch(this::hasLoadDangerousGoods);
     }
 
-    private boolean loadHasDangerousGoods(Load load) {
+    private boolean hasLoadDangerousGoods(Load load) {
         if (load == null) {
             return false;
         }
@@ -177,16 +184,16 @@ public class TrainFormationRun {
             .toList();
     }
 
-    private int tractionHoldingForce(List<Vehicle> allVehicles) {
-        return allVehicles.stream()
-            .filter(this::isTraction)
+    private int tractionHoldingForce(List<Vehicle> vehicles) {
+        return vehicles.stream()
+            .filter(this::isTractionVehicle)
             .flatMap(extractVehicleUnits())
             .map(vehicleUnit -> {
                 if (vehicleUnit != null && vehicleUnit.getUnitTechnicalData() != null && vehicleUnit.getUnitTechnicalData().getHoldingForceInHectonewton() != null) {
                     return vehicleUnit.getUnitTechnicalData().getHoldingForceInHectonewton();
                 }
                 if (vehicleUnit != null && vehicleUnit.getUnitTechnicalData() != null && vehicleUnit.getUnitTechnicalData().getHandBrakeWeightInTonne() != null) {
-                    return vehicleUnit.getUnitTechnicalData().getHandBrakeWeightInTonne() * TONNE_IN_HECTO_NEWTON;
+                    return vehicleUnit.getUnitTechnicalData().getHandBrakeWeightInTonne() * TON_IN_HECTO_NEWTON;
                 }
                 return 0;
             })
@@ -194,16 +201,16 @@ public class TrainFormationRun {
             .sum();
     }
 
-    private int hauledLoadHoldingForce(List<Vehicle> allVehicles) {
-        return allVehicles.stream()
-            .filter(vehicle -> !isTraction(vehicle))
+    private int hauledLoadHoldingForce(List<Vehicle> vehicles) {
+        return vehicles.stream()
+            .filter(vehicle -> !isTractionVehicle(vehicle))
             .flatMap(extractVehicleUnits())
             .map(vehicleUnit -> {
                 if (vehicleUnit != null && vehicleUnit.getUnitEffectiveOperationalData() != null && vehicleUnit.getUnitEffectiveOperationalData().getHoldingForceInHectonewton() != null) {
                     return vehicleUnit.getUnitEffectiveOperationalData().getHoldingForceInHectonewton();
                 }
                 if (vehicleUnit != null && vehicleUnit.getUnitTechnicalData() != null && vehicleUnit.getUnitTechnicalData().getHandBrakeWeightInTonne() != null) {
-                    return vehicleUnit.getUnitTechnicalData().getHandBrakeWeightInTonne() * TONNE_IN_HECTO_NEWTON;
+                    return vehicleUnit.getUnitTechnicalData().getHandBrakeWeightInTonne() * TON_IN_HECTO_NEWTON;
                 }
                 return 0;
             })
@@ -211,27 +218,27 @@ public class TrainFormationRun {
             .sum();
     }
 
-    private boolean isTraction(Vehicle vehicle) {
+    private boolean isTractionVehicle(Vehicle vehicle) {
         String vehicleCategory = vehicle.getVehicleCategory();
         TractionMode vehicleTractionMode = vehicle.getVehicleEffectiveTractionData() != null ? TractionMode.valueOfKey(vehicle.getVehicleEffectiveTractionData().getTractionMode()) : null;
-        return (Objects.equals(vehicleCategory, "LOKOMOTIVE") || Objects.equals(vehicleCategory, "TRIEBWAGEN") || Objects.equals(vehicleCategory, "GLIEDERFAHRZEUG"))
-            && !Objects.equals(vehicleTractionMode, TractionMode.SCHLEPPLOK);
+        return TractionMode.SCHLEPPLOK != vehicleTractionMode &&
+            (VehicleCategory.LOKOMOTIVE.name().equals(vehicleCategory) || VehicleCategory.TRIEBWAGEN.name().equals(vehicleCategory) || VehicleCategory.GLIEDERFAHRZEUG.name().equals(vehicleCategory));
     }
 
     String toLocationReference(LocationUic locationUic) {
         return String.format("%02d", locationUic.getCountryCodeUic()) + String.format("%06d", locationUic.getUicCode());
     }
 
-    private Integer vehiclesWithBrakeDesignLlAndKCount(List<Vehicle> allVehicles) {
-        return filterVehiclesByBrakeDesigns(allVehicles, List.of(6, 2)).size();
+    private Integer vehiclesWithBrakeDesignLlAndKCount(List<Vehicle> vehicles) {
+        return filterVehiclesByBrakeDesigns(vehicles, List.of(BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE, BrakeDesign.KUNSTSTOFF_BREMSKLOETZE)).size();
     }
 
-    private Integer vehiclesWithBrakeDesignDCount(List<Vehicle> allVehicles) {
-        return filterVehiclesByBrakeDesigns(allVehicles, List.of(0)).size();
+    private Integer vehiclesWithBrakeDesignDCount(List<Vehicle> vehicles) {
+        return filterVehiclesByBrakeDesigns(vehicles, List.of(BrakeDesign.NORMALE_BREMSAUSRUESTUNG_KEINE_MERKMALE)).size();
     }
 
-    private Integer vehiclesWithDisabledBrakesCount(List<Vehicle> allVehicles) {
-        return allVehicles.stream()
+    private Integer vehiclesWithDisabledBrakesCount(List<Vehicle> vehicles) {
+        return vehicles.stream()
             .filter(vehicle -> vehicle.getVehicleUnits().stream()
                 .anyMatch(vehicleUnit -> {
                     if (vehicleUnit != null && vehicleUnit.getUnitEffectiveOperationalData() != null && vehicleUnit.getUnitEffectiveOperationalData().getBrakeStatus() != null) {
@@ -244,12 +251,12 @@ public class TrainFormationRun {
             .size();
     }
 
-    private List<Vehicle> filterVehiclesByBrakeDesigns(List<Vehicle> allVehicles, List<Integer> brakeDesigns) {
-        return allVehicles.stream()
+    private List<Vehicle> filterVehiclesByBrakeDesigns(List<Vehicle> vehicles, List<BrakeDesign> brakeDesigns) {
+        return vehicles.stream()
             .filter(vehicle -> vehicle.getVehicleUnits().stream()
                 .anyMatch(vehicleUnit -> {
                     if (vehicleUnit != null && vehicleUnit.getUnitTechnicalData() != null && vehicleUnit.getUnitTechnicalData().getBrakeDesign() != null) {
-                        Integer brakeDesign = vehicleUnit.getUnitTechnicalData().getBrakeDesign();
+                        BrakeDesign brakeDesign = BrakeDesign.valueOfKey(vehicleUnit.getUnitTechnicalData().getBrakeDesign());
                         return brakeDesigns.contains(brakeDesign);
                     }
                     return false;
