@@ -17,11 +17,11 @@ class UncodedOperationalIndication extends BaseData {
       identical(this, other) ||
       other is UncodedOperationalIndication &&
           runtimeType == other.runtimeType &&
-          texts == other.texts &&
+          const ListEquality().equals(texts, other.texts) &&
           order == other.order;
 
   @override
-  int get hashCode => texts.hashCode ^ order.hashCode;
+  int get hashCode => Object.hash(order, const ListEquality().hash(texts));
 
   @override
   OrderPriority get orderPriority => OrderPriority.uncodedOperationalIndication;

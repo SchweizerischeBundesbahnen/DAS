@@ -13,6 +13,10 @@ import 'package:sfera/component.dart';
 
 // TODO: Handle Sticky Header
 class UncodedOperationalIndicationRow extends WidgetRowBuilder<UncodedOperationalIndication> {
+  static const Key showMoreButtonKey = Key('operationalIndicationShowMoreButton');
+  static const Key expandedContentKey = Key('operationalIndicationExpandedContent');
+  static const Key collapsedContentKey = Key('operationalIndicationCollapsedContent');
+
   static const double _verticalMargin = sbbDefaultSpacing * 0.5;
   static const TextStyle _textStyle = DASTextStyles.largeRoman;
 
@@ -46,6 +50,7 @@ class UncodedOperationalIndicationRow extends WidgetRowBuilder<UncodedOperationa
     return Container(
       color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
       child: Accordion(
+        key: ObjectKey(data.hashCode),
         title: context.l10n.c_uncoded_operational_indication,
         body: _body(context),
         isExpanded: isExpanded,
@@ -78,6 +83,7 @@ class UncodedOperationalIndicationRow extends WidgetRowBuilder<UncodedOperationa
 
   Widget _showMoreButton(BuildContext context) {
     return GestureDetector(
+      key: showMoreButtonKey,
       onTap: () => context.read<CollapsibleRowsViewModel>().openWithCollapsedContent(data),
       child: Text(
         context.l10n.c_show_more,
@@ -91,6 +97,7 @@ class UncodedOperationalIndicationRow extends WidgetRowBuilder<UncodedOperationa
 
   static Text _contentText(String text, {int? maxLines}) {
     return Text.rich(
+      key: maxLines == null ? expandedContentKey : collapsedContentKey,
       TextUtil.parseHtmlText(text, _textStyle),
       maxLines: maxLines,
       overflow: maxLines != null ? TextOverflow.ellipsis : null,

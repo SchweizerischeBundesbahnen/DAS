@@ -33,6 +33,7 @@ export 'package:sfera/src/model/journey/contact_list.dart';
 export 'package:sfera/src/model/journey/curve_point.dart';
 export 'package:sfera/src/model/journey/datatype.dart';
 export 'package:sfera/src/model/journey/delay.dart';
+export 'package:sfera/src/model/journey/foot_note.dart';
 export 'package:sfera/src/model/journey/journey.dart';
 export 'package:sfera/src/model/journey/koa_state.dart';
 export 'package:sfera/src/model/journey/level_crossing.dart';
@@ -76,7 +77,7 @@ class SferaComponent {
     required SferaAuthProvider sferaAuthProvider,
     required String deviceId,
   }) {
-    final localDatabaseService = DriftLocalDatabaseService();
+    final localDatabaseService = DriftLocalDatabaseService.instance;
     return SferaRemoteRepoImpl(
       mqttService: mqttService,
       localService: localDatabaseService,
@@ -86,7 +87,7 @@ class SferaComponent {
   }
 
   static SferaLocalRepo createSferaLocalRepo() {
-    final localDatabaseService = DriftLocalDatabaseService();
+    final localDatabaseService = DriftLocalDatabaseService.instance;
     return SferaLocalRepoImpl(localService: localDatabaseService);
   }
 }

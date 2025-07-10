@@ -21,7 +21,14 @@ final _log = Logger('DriftDatabaseService');
   ],
 )
 class DriftLocalDatabaseService extends _$DriftLocalDatabaseService implements SferaLocalDatabaseService {
-  DriftLocalDatabaseService() : super(driftDatabase(name: 'sfera_db'));
+  static DriftLocalDatabaseService? _instance;
+
+  static DriftLocalDatabaseService get instance {
+    _instance ??= DriftLocalDatabaseService._();
+    return _instance!;
+  }
+
+  DriftLocalDatabaseService._() : super(driftDatabase(name: 'sfera_db'));
 
   @override
   int get schemaVersion => 1;

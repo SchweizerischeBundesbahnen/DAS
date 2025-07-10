@@ -274,7 +274,7 @@ class _DASTableState extends State<DASTable> {
         ),
       );
     } else {
-      return (row as DASTableWidgetRow).widget;
+      return KeyedSubtree(key: DASTable.rowKey, child: (row as DASTableWidgetRow).widget);
     }
   }
 

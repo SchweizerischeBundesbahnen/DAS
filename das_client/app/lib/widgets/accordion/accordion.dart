@@ -12,6 +12,8 @@ typedef AccordionToggleCallback = void Function();
 ///
 /// * [ExpansionPanelList], which this widget is based on.
 class Accordion extends StatefulWidget {
+  static const Key collapsedKey = Key('accordionCollapsed');
+  static const Key expandedKey = Key('accordionExpanded');
   static const double defaultCollapsedHeight = _headerFontSize + 2 * _collapsedVerticalPadding;
   static const double defaultExpandedHeight = _headerFontSize + 2 * _expandedVerticalPadding + _headerContentSpacing;
 
@@ -53,6 +55,7 @@ class _AccordionState extends State<Accordion> {
   @override
   Widget build(BuildContext context) {
     return Padding(
+      key: widget.isExpanded ? Accordion.expandedKey : Accordion.collapsedKey,
       padding: widget.margin ?? EdgeInsets.zero,
       child: _accordion(context),
     );
