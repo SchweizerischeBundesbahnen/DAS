@@ -1,4 +1,5 @@
 import 'package:sfera/src/data/dto/additional_speed_restriction_dto.dart';
+import 'package:sfera/src/data/dto/advised_speed_dto.dart';
 import 'package:sfera/src/data/dto/b2g_event_payload_dto.dart';
 import 'package:sfera/src/data/dto/balise_dto.dart';
 import 'package:sfera/src/data/dto/balise_group_dto.dart';
@@ -314,6 +315,8 @@ class SferaReplyParser {
         return JpContextInformationNspDto(attributes: attributes, children: children, value: value);
       case JpContextInformationNspConstraintsDto.elementType:
         return JpContextInformationNspConstraintsDto(attributes: attributes, children: children, value: value);
+      case AdvisedSpeedDto.elementType:
+        return AdvisedSpeedDto(attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElementDto(type: type, attributes: attributes, children: children, value: value);
     }
