@@ -21,9 +21,7 @@ class BaliseRow extends CellRowBuilder<Balise> {
 
   @override
   DASTableCell kilometreCell(BuildContext context) {
-    if (!isGrouped) {
-      return DASTableCell.empty();
-    }
+    if (!isGrouped) super.kilometreCell(context);
 
     if (data.kilometre.isEmpty) {
       return DASTableCell.empty(color: specialCellColor);
@@ -33,7 +31,6 @@ class BaliseRow extends CellRowBuilder<Balise> {
         child: Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: OverflowBox(
-            alignment: Alignment.centerLeft,
             maxWidth: double.infinity,
             child: Text(data.kilometre[0].toStringAsFixed(3)),
           ),

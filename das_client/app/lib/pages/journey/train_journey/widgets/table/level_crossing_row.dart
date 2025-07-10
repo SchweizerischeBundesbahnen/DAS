@@ -27,7 +27,6 @@ class LevelCrossingRow extends CellRowBuilder<LevelCrossing> {
         child: Padding(
           padding: EdgeInsets.only(left: 8.0),
           child: OverflowBox(
-            alignment: Alignment.centerLeft,
             maxWidth: double.infinity,
             child: Text(data.kilometre[0].toStringAsFixed(3)),
           ),

@@ -84,6 +84,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
           if (data.kilometre.length > 1) Text(data.kilometre[1].toStringAsFixed(1)),
         ],
       ),
+      alignment: Alignment.centerLeft,
     );
   }
 
