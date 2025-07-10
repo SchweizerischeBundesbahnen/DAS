@@ -112,7 +112,7 @@
                 <ReasonText language="DE" text="ADL"/>
             </AdvisedSpeed>
         </TemporaryConstraints>
-        <!-- fifth ADL - followTrain - no exact signals known goes from Gland to Allaman including -->
+        <!-- fifth ADL - followTrain - no exact signals known - should be displayed from Gland to Allaman including -->
         <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="AdvisedSpeed" startLocation="9000" endLocation="11000">
             <AdvisedSpeed deltaSpeed="0" reasonCode="followTrain" adviceType="ConstantspeedAdvice">
                 <ReasonText language="DE" text="ADL"/>

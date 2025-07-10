@@ -44,6 +44,7 @@ import 'package:sfera/src/data/dto/other_contact_type_dto.dart';
 import 'package:sfera/src/data/dto/otn_id_dto.dart';
 import 'package:sfera/src/data/dto/own_train_dto.dart';
 import 'package:sfera/src/data/dto/position_speed_dto.dart';
+import 'package:sfera/src/data/dto/reason_text_dto.dart';
 import 'package:sfera/src/data/dto/related_train_information_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
@@ -317,6 +318,8 @@ class SferaReplyParser {
         return JpContextInformationNspConstraintsDto(attributes: attributes, children: children, value: value);
       case AdvisedSpeedDto.elementType:
         return AdvisedSpeedDto(attributes: attributes, children: children, value: value);
+      case ReasonTextDto.elementType:
+        return ReasonTextDto(attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElementDto(type: type, attributes: attributes, children: children, value: value);
     }
