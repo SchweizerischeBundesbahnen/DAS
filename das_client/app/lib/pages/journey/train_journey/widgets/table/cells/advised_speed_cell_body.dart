@@ -18,14 +18,12 @@ class AdvisedSpeedCellBody extends StatelessWidget {
     required this.rowIndex,
     this.calculatedSpeed,
     this.lineSpeed,
-    this.isSpeedReducedDueToLineSpeed = false,
     super.key,
   });
 
   final int rowIndex;
   final SingleSpeed? calculatedSpeed;
   final SingleSpeed? lineSpeed;
-  final bool isSpeedReducedDueToLineSpeed;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +37,7 @@ class AdvisedSpeedCellBody extends StatelessWidget {
         final resolvedLineSpeed = lineSpeed ?? (isSticky ? _lineSpeedFromPrev(context) : null);
         if (resolvedCalculatedSpeed == null) return DASTableCell.emptyBuilder;
 
+        final isSpeedReducedDueToLineSpeed = _isBLargerThanA(a: resolvedLineSpeed, b: resolvedCalculatedSpeed);
         resolvedCalculatedSpeed = _min(resolvedLineSpeed, resolvedCalculatedSpeed);
         return Text(
           key: nonEmptyKey,
@@ -72,4 +71,10 @@ class AdvisedSpeedCellBody extends StatelessWidget {
   }
 
   String _numericMin(String a, String b) => int.parse(a) > int.parse(b) ? b : a;
+
+  bool _isBLargerThanA({required SingleSpeed? a, required SingleSpeed b}) {
+    if (a == null) return false;
+    if (a.isIllegal) return false;
+    return int.parse(b.value) > int.parse(a.value);
+  }
 }
