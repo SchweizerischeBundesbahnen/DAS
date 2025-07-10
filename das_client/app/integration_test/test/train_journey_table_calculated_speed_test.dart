@@ -4,6 +4,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/cells/advised_spee
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
 import '../util/test_utils.dart';
@@ -174,6 +175,29 @@ void main() {
 
     // event to service point with VPro and delay 40 seconds
     expect(find.descendant(of: chronograph, matching: find.text(fourtySecondsDelay)), findsOneWidget);
+
+    await disconnect(tester);
+  });
+
+  testWidgets('test calculated speed is reduced to line speed and displayed in different color', (tester) async {
+    await prepareAndStartApp(tester);
+
+    await loadTrainJourney(tester, trainNumber: 'T23');
+    await pauseAutomaticAdvancement(tester);
+    await tester.pumpAndSettle(Duration(milliseconds: 100));
+
+    await _dragUntilInStickyHeader(tester, 'Buchrain');
+
+    // find reduced speed in Rotkreuz
+    final rotkreuxStationRow = findDASTableRowByText('Rotkreuz');
+    expect(rotkreuxStationRow, findsOneWidget);
+    _findTextWithin(rotkreuxStationRow, '130');
+
+    // should be in metal
+    final textWidget = tester.widget<Text>(
+      find.descendant(of: rotkreuxStationRow, matching: find.byKey(AdvisedSpeedCellBody.nonEmptyKey)),
+    );
+    expect(textWidget.style?.color, equals(SBBColors.metal));
 
     await disconnect(tester);
   });
