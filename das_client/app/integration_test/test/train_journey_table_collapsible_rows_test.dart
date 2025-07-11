@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/train_journey/widgets/table/uncoded_operational_indication_row.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/uncoded_operational_indication_accordion.dart';
 import 'package:app/widgets/accordion/accordion.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:flutter/material.dart';
@@ -51,12 +51,12 @@ void main() {
     // should have show more button and collapsed content
     final collapsedContent = find.descendant(
       of: collapsibleRow,
-      matching: find.byKey(UncodedOperationalIndicationRow.collapsedContentKey),
+      matching: find.byKey(UncodedOperationalIndicationAccordion.collapsedContentKey),
     );
     expect(collapsedContent, findsOneWidget);
     var showMoreButton = find.descendant(
       of: collapsibleRow,
-      matching: find.byKey(UncodedOperationalIndicationRow.showMoreButtonKey),
+      matching: find.byKey(UncodedOperationalIndicationAccordion.showMoreButtonKey),
     );
     expect(showMoreButton, findsOneWidget);
 
@@ -68,7 +68,7 @@ void main() {
     expect(rowWithEndOfText, findsOneWidget);
     showMoreButton = find.descendant(
       of: collapsibleRow,
-      matching: find.byKey(UncodedOperationalIndicationRow.showMoreButtonKey),
+      matching: find.byKey(UncodedOperationalIndicationAccordion.showMoreButtonKey),
     );
     expect(showMoreButton, findsNothing);
 
@@ -88,12 +88,12 @@ void main() {
     );
     final collapsedContent = find.descendant(
       of: collapsibleRow,
-      matching: find.byKey(UncodedOperationalIndicationRow.collapsedContentKey),
+      matching: find.byKey(UncodedOperationalIndicationAccordion.collapsedContentKey),
     );
     expect(collapsedContent, findsOneWidget);
     final showMoreButton = find.descendant(
       of: collapsibleRow,
-      matching: find.byKey(UncodedOperationalIndicationRow.showMoreButtonKey),
+      matching: find.byKey(UncodedOperationalIndicationAccordion.showMoreButtonKey),
     );
     expect(showMoreButton, findsOneWidget);
 

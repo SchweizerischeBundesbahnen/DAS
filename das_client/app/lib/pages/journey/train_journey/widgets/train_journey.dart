@@ -15,6 +15,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/balise_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cab_signaling_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/column_definition.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/combined_foot_note_operational_indication_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/bracket_station_render_data.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/chevron_animation_data.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/track_equipment_render_data.dart';
@@ -22,14 +23,12 @@ import 'package:app/pages/journey/train_journey/widgets/table/config/train_journ
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/connection_track_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/curve_point_row.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/foot_note_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/level_crossing_row.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/line_foot_note_row.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/op_foot_note_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/protection_section_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/signal_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/speed_change_row.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/track_foot_note_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/tram_area_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/uncoded_operational_indication_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/whistle_row.dart';
@@ -135,7 +134,8 @@ class TrainJourney extends StatelessWidget {
         .groupBaliseAndLeveLCrossings(settings.expandedGroups)
         .hideRepeatedLineFootNotes(journey.metadata.currentPosition)
         .hideFootNotesForNotSelectedTrainSeries(currentBreakSeries?.trainSeries)
-        .toList();
+        .combineFootNoteAndOperationalIndication()
+        .sortedBy((data) => data.order);
 
     final groupedRows = rows
         .whereType<BaliseLevelCrossingGroup>()
@@ -256,30 +256,10 @@ class TrainJourney extends StatelessWidget {
             onTap: () => _onBaliseLevelCrossingGroupTap(context, rowData, settings),
             rowIndex: index,
           );
-        case Datatype.opFootNote:
-          return OpFootNoteRow(
+        case Datatype.opFootNote || Datatype.lineFootNote || Datatype.trackFootNote:
+          return FootNoteRow(
             metadata: journey.metadata,
-            data: rowData as OpFootNote,
-            config: trainJourneyConfig,
-            isExpanded: collapsedRows.isExpanded(rowData.hashCode),
-            addTopMargin: !hasPreviousCollapsible,
-            accordionToggleCallback: () => context.read<CollapsibleRowsViewModel>().toggleRow(rowData),
-            rowIndex: index,
-          );
-        case Datatype.lineFootNote:
-          return LineFootNoteRow(
-            metadata: journey.metadata,
-            data: rowData as LineFootNote,
-            config: trainJourneyConfig,
-            isExpanded: collapsedRows.isExpanded(rowData.hashCode),
-            addTopMargin: !hasPreviousCollapsible,
-            accordionToggleCallback: () => context.read<CollapsibleRowsViewModel>().toggleRow(rowData),
-            rowIndex: index,
-          );
-        case Datatype.trackFootNote:
-          return TrackFootNoteRow(
-            metadata: journey.metadata,
-            data: rowData as TrackFootNote,
+            data: rowData as BaseFootNote,
             config: trainJourneyConfig,
             isExpanded: collapsedRows.isExpanded(rowData.hashCode),
             addTopMargin: !hasPreviousCollapsible,
@@ -296,6 +276,21 @@ class TrainJourney extends StatelessWidget {
             addTopMargin: !hasPreviousCollapsible,
             accordionToggleCallback: () => context.read<CollapsibleRowsViewModel>().toggleRow(rowData),
             rowIndex: index,
+          );
+        case Datatype.combinedFootNoteOperationalIndication:
+          return CombinedFootNoteOperationalIndicationRow(
+            rowIndex: index,
+            metadata: journey.metadata,
+            data: rowData as CombinedFootNoteOperationalIndication,
+            footNoteConfig: AccordionConfig(
+              isExpanded: collapsedRows.isExpanded(rowData.footNote.hashCode),
+              toggleCallback: () => context.read<CollapsibleRowsViewModel>().toggleRow(rowData.footNote),
+            ),
+            operationIndicationConfig: AccordionConfig(
+              isExpanded: collapsedRows.isExpanded(rowData.operationalIndication.hashCode),
+              isContentExpanded: collapsedRows.isContentExpanded(rowData.operationalIndication.hashCode),
+              toggleCallback: () => context.read<CollapsibleRowsViewModel>().toggleRow(rowData.operationalIndication),
+            ),
           );
       }
     });

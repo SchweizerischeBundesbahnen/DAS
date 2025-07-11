@@ -26,6 +26,7 @@ export 'package:sfera/src/model/journey/base_foot_note.dart';
 export 'package:sfera/src/model/journey/bracket_station_segment.dart';
 export 'package:sfera/src/model/journey/break_series.dart';
 export 'package:sfera/src/model/journey/cab_signaling.dart';
+export 'package:sfera/src/model/journey/combined_foot_note_operational_indication.dart';
 export 'package:sfera/src/model/journey/communication_network_change.dart';
 export 'package:sfera/src/model/journey/connection_track.dart';
 export 'package:sfera/src/model/journey/contact.dart';

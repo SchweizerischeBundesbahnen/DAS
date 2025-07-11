@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!-- TODO: Reset to Version 1 -->
-<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="4" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="6" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
     <TrainIdentification>
         <OTN_ID>
             <teltsi_Company>1285</teltsi_Company>
@@ -96,5 +96,18 @@
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
 
+    </SegmentProfileReference>
+
+    <SegmentProfileReference SP_ID="T22_4" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:52:10Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T07:52:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Taillepied"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
     </SegmentProfileReference>
 </JourneyProfile>

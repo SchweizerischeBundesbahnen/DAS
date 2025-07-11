@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                SP_ID="T22_4" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="800" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>1285</IM_ID>
+    </SP_Zone>
+
+    <SP_Points>
+
+        <TimingPoint TP_ID="Taillepied" location="400">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>19693</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+            <TP_Name name="TAPI"/>
+        </TimingPoint>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="J3" location="0"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="J3"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="H874" location="200"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="H874"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="D844" location="300"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="D844"/>
+        </Signal>
+
+    </SP_Points>
+
+    <SP_Areas>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="TAPI" TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>19693</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Taillepied</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+    </SP_Areas>
+
+    <SP_ContextInformation>
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="3.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="200">
+            <KM_Reference kmRef="4.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="300">
+            <KM_Reference kmRef="4.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="400">
+            <KM_Reference kmRef="5.0"/>
+        </KilometreReferencePoint>
+    </SP_ContextInformation>
+
+</SegmentProfile>

@@ -1,16 +1,14 @@
-import 'package:app/pages/journey/train_journey/train_journey_overview.dart';
+import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/foot_note_accordion.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/widget_row_builder.dart';
 import 'package:app/theme/theme_util.dart';
-import 'package:app/util/text_util.dart';
 import 'package:app/widgets/accordion/accordion.dart';
-import 'package:app/widgets/das_text_styles.dart';
+import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
-abstract class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
-  static const double _verticalMargin = sbbDefaultSpacing * 0.5;
-
+class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
   FootNoteRow({
     required super.metadata,
     required super.data,
@@ -18,10 +16,16 @@ abstract class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
     required this.isExpanded,
     required this.addTopMargin,
     required this.accordionToggleCallback,
-    super.stickyLevel,
     super.config,
     super.identifier,
-  }) : super(height: _calculateHeight(data, isExpanded, addTopMargin));
+  }) : super(
+         stickyLevel: data.stickyLevel,
+         height: FootNoteAccordion.calculateHeight(
+           data: data,
+           isExpanded: isExpanded,
+           addTopMargin: addTopMargin,
+         ),
+       );
 
   final bool addTopMargin;
   final bool isExpanded;
@@ -31,42 +35,45 @@ abstract class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
   Widget buildRowWidget(BuildContext context) {
     return Container(
       color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
-      child: Accordion(
-        key: ObjectKey(data.identifier),
-        title: title(context),
-        body: contentText(data),
+      child: FootNoteAccordion(
+        data: data,
+        title: data.title(context, metadata),
+        addTopMargin: addTopMargin,
         isExpanded: isExpanded,
-        toggleCallback: accordionToggleCallback,
-        icon: SBBIcons.form_small,
-        margin: EdgeInsets.only(
-          bottom: _verticalMargin,
-          top: addTopMargin ? _verticalMargin : 0.0,
-        ),
-        backgroundColor: ThemeUtil.getColor(context, SBBColors.white, SBBColors.charcoal),
+        accordionToggleCallback: accordionToggleCallback,
       ),
     );
   }
+}
 
-  String title(BuildContext context);
+// extension
 
-  Text contentText(BaseFootNote data) => _contentText(data);
-
-  static Text _contentText(BaseFootNote data) {
-    return Text.rich(TextUtil.parseHtmlText(data.footNote.text, DASTextStyles.largeRoman));
-  }
-
-  static double _calculateHeight(BaseFootNote data, bool isExpanded, bool addTopMargin) {
-    final margin = _verticalMargin * (addTopMargin ? 2 : 1);
-    if (!isExpanded) {
-      return Accordion.defaultCollapsedHeight + margin;
+extension FootNoteExtension on BaseFootNote {
+  StickyLevel get stickyLevel {
+    switch (this) {
+      case LineFootNote _:
+        return StickyLevel.second;
+      default:
+        return StickyLevel.none;
     }
-
-    final content = _contentText(data);
-    final tp = TextPainter(text: content.textSpan, textDirection: TextDirection.ltr)
-      ..layout(maxWidth: _accordionContentWidth);
-    return Accordion.defaultExpandedHeight + tp.height + margin;
   }
 
-  static double get _accordionContentWidth =>
-      Accordion.contentWidth(outsidePadding: TrainJourneyOverview.horizontalPadding);
+  String title(BuildContext context, Metadata metadata) {
+    switch (this) {
+      case final LineFootNote lineFootNote:
+        return _resolveTitle(context, lineFootNote, metadata);
+      default:
+        return context.l10n.c_radn;
+    }
+  }
+
+  String _resolveTitle(BuildContext context, LineFootNote lineFootNote, Metadata metadata) {
+    final identifier = lineFootNote.footNote.identifier;
+    if (identifier != null && metadata.lineFootNoteLocations[identifier] != null) {
+      final servicePointNames = metadata.lineFootNoteLocations[identifier]!;
+      return '${context.l10n.c_radn} ${servicePointNames.first} - ${servicePointNames.last}';
+    } else {
+      return context.l10n.c_radn;
+    }
+  }
 }
