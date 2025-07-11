@@ -5,7 +5,6 @@ import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
-import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:app/widgets/widget_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,35 +18,41 @@ class SpeedCellBody extends StatelessWidget {
   static const Key squaredSpeedKey = Key('graduatedSpeedSquared');
 
   const SpeedCellBody({
-    required this.rowIndex,
     required this.speed,
+    this.rowIndex,
     this.hasAdditionalInformation = false,
     this.singleLine = false,
+    this.textStyle = DASTextStyles.largeRoman,
     super.key,
   });
 
   final Speed? speed;
   final bool hasAdditionalInformation;
-  final int rowIndex;
+  final int? rowIndex;
   final bool singleLine;
+  final TextStyle textStyle;
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: StickyHeader.of(context)!.controller,
-      builder: (context, _) {
-        final Speed? resolvedSpeed = _resolveSpeedOnStickiness(context);
-        if (resolvedSpeed == null) return DASTableCell.emptyBuilder;
+    return rowIndex != null
+        ? ListenableBuilder(
+            listenable: StickyHeader.of(context)!.controller,
+            builder: (context, _) {
+              final Speed? resolvedSpeed = _resolveSpeedOnStickiness(context);
+              return _speed(resolvedSpeed, context);
+            },
+          )
+        : _speed(speed, context);
+  }
 
-        return DotIndicator(
-          show: hasAdditionalInformation,
-          offset: _dotIndicatorOffset(resolvedSpeed),
-          child: switch (resolvedSpeed) {
-            final IncomingOutgoingSpeed s => singleLine ? _rowSpeed(context, s) : _columnSpeed(context, s),
-            final GraduatedSpeed _ ||
-            final SingleSpeed _ => _visualizedSpeeds(key: incomingSpeedsKey, speeds: resolvedSpeed),
-          },
-        );
+  Widget _speed(Speed? speed, BuildContext context) {
+    if (speed == null) return DASTableCell.emptyBuilder;
+    return DotIndicator(
+      show: hasAdditionalInformation,
+      offset: _dotIndicatorOffset(speed),
+      child: switch (speed) {
+        final IncomingOutgoingSpeed s => singleLine ? _rowSpeed(context, s) : _columnSpeed(context, s),
+        final GraduatedSpeed _ || final SingleSpeed _ => _visualizedSpeeds(key: incomingSpeedsKey, speeds: speed),
       },
     );
   }
@@ -60,7 +65,7 @@ class SpeedCellBody extends StatelessWidget {
         _visualizedSpeeds(key: incomingSpeedsKey, speeds: ioSpeed.incoming),
         Text(
           ' / ',
-          style: DASTextStyles.mediumRoman,
+          style: textStyle,
         ),
         _visualizedSpeeds(key: outgoingSpeedsKey, speeds: ioSpeed.outgoing),
       ],
@@ -91,10 +96,19 @@ class SpeedCellBody extends StatelessWidget {
       return Row(
         key: key,
         mainAxisSize: MainAxisSize.min,
-        children: singleSpeeds.map((speed) => _speedText(speed)).withDivider(Text('-')).toList(),
+        children: singleSpeeds
+            .map((speed) => _speedText(speed))
+            .withDivider(
+              Text('-', style: textStyle),
+            )
+            .toList(),
       );
     }
-    return Text(key: key, singleSpeeds.toJoinedString());
+    return Text(
+      key: key,
+      singleSpeeds.toJoinedString(),
+      style: textStyle,
+    );
   }
 
   Widget _speedText(SingleSpeed speed) {
@@ -112,7 +126,7 @@ class SpeedCellBody extends StatelessWidget {
               : null,
           child: Text(
             speed.value,
-            style: DASTableTheme.of(context)?.data.dataTextStyle?.copyWith(height: 0),
+            style: textStyle.copyWith(height: 0),
           ),
         );
       },
@@ -125,6 +139,8 @@ class SpeedCellBody extends StatelessWidget {
   };
 
   Speed? _resolveSpeedOnStickiness(BuildContext context) {
+    if (rowIndex == null) return speed;
+
     bool showPreviousSpeed = false;
     if (speed == null) {
       final stickyController = StickyHeader.of(context)!.controller;
@@ -135,7 +151,7 @@ class SpeedCellBody extends StatelessWidget {
     }
 
     final Speed? resolvedSpeed = showPreviousSpeed
-        ? context.read<DASTableSpeedViewModel>().previousLineSpeed(rowIndex)
+        ? context.read<DASTableSpeedViewModel>().previousLineSpeed(rowIndex!)
         : speed;
     return resolvedSpeed;
   }
