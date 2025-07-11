@@ -10,8 +10,7 @@ class TextUtil {
     return text.replaceAll(RegExp(r'<br\s*/?>'), '\n');
   }
 
-  static bool hasTextOverflow(
-      String text,
+  static bool hasTextOverflow(String text,
       double maxWidth,
       TextStyle style, {
         TextScaler textScaler = TextScaler.noScaling,
@@ -22,7 +21,8 @@ class TextUtil {
       maxLines: maxLines,
       textDirection: TextDirection.ltr,
       textScaler: textScaler,
-    )..layout(minWidth: 0, maxWidth: maxWidth);
+    )
+      ..layout(minWidth: 0, maxWidth: maxWidth);
     return textPainter.didExceedMaxLines;
   }
 
