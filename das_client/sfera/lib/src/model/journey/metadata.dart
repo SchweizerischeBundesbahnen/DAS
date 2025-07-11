@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:sfera/src/model/journey/additional_speed_restriction.dart';
+import 'package:sfera/src/model/journey/advised_speed_segment.dart';
 import 'package:sfera/src/model/journey/base_data.dart';
 import 'package:sfera/src/model/journey/bracket_station_segment.dart';
 import 'package:sfera/src/model/journey/break_series.dart';
@@ -26,6 +27,7 @@ class Metadata {
     this.additionalSpeedRestrictions = const [],
     this.nonStandardTrackEquipmentSegments = const [],
     this.bracketStationSegments = const [],
+    this.advisedSpeedSegments = const [],
     this.availableBreakSeries = const {},
     this.communicationNetworkChanges = const [],
     this.lineFootNoteLocations = const {},
@@ -46,6 +48,7 @@ class Metadata {
   final List<NonStandardTrackEquipmentSegment> nonStandardTrackEquipmentSegments;
   final List<CommunicationNetworkChange> communicationNetworkChanges;
   final List<BracketStationSegment> bracketStationSegments;
+  final List<AdvisedSpeedSegment> advisedSpeedSegments;
   final BreakSeries? breakSeries;
   final Set<BreakSeries> availableBreakSeries;
   final Map<String, List<String>> lineFootNoteLocations;

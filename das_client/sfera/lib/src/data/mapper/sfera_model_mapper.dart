@@ -13,6 +13,7 @@ import 'package:sfera/src/data/mapper/segment_profile_mapper.dart';
 import 'package:sfera/src/data/mapper/track_equipment_mapper.dart';
 import 'package:sfera/src/model/journey/additional_speed_restriction.dart';
 import 'package:sfera/src/model/journey/additional_speed_restriction_data.dart';
+import 'package:sfera/src/model/journey/advised_speed_segment.dart';
 import 'package:sfera/src/model/journey/base_data.dart';
 import 'package:sfera/src/model/journey/base_foot_note.dart';
 import 'package:sfera/src/model/journey/bracket_station.dart';
@@ -119,6 +120,7 @@ class SferaModelMapper {
         ),
         nonStandardTrackEquipmentSegments: trackEquipmentSegments,
         bracketStationSegments: _parseBracketStationSegments(servicePoints),
+        advisedSpeedSegments: _parseAdvisedSpeeds(journeyData, segmentProfiles, currentPosition),
         availableBreakSeries: _parseAvailableBreakSeries(journeyData),
         communicationNetworkChanges: _parseCommunicationNetworkChanges(segmentProfileReferences, segmentProfiles),
         breakSeries:
@@ -558,6 +560,15 @@ class SferaModelMapper {
     final positionSpeed = relatedTrainInformation?.ownTrain.trainLocationInformation.positionSpeed;
     final location = '${positionSpeed?.spId}${positionSpeed?.location}';
     return duration != null ? Delay(value: duration, location: location) : null;
+  }
+
+  static List<AdvisedSpeedSegment> _parseAdvisedSpeeds(
+    List<BaseData> journeyData,
+    List<SegmentProfileDto> segmentProfiles,
+    BaseData? currentPosition,
+  ) {
+    final List<AdvisedSpeedSegment> result = [];
+    return result;
   }
 }
 
