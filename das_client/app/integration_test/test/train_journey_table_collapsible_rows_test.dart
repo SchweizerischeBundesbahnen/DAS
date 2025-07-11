@@ -1,3 +1,4 @@
+import 'package:app/pages/journey/train_journey/widgets/table/combined_foot_note_operational_indication_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/uncoded_operational_indication_accordion.dart';
 import 'package:app/widgets/accordion/accordion.dart';
 import 'package:app/widgets/table/das_table.dart';
@@ -113,6 +114,34 @@ void main() {
 
     await disconnect(tester);
   });
+  testWidgets('test row combined for operational indication and foot note on same service point', (tester) async {
+    await prepareAndStartApp(tester);
+    await loadTrainJourney(tester, trainNumber: 'T22M');
+
+    final scrollableFinder = find.byType(AnimatedList);
+    await tester.dragUntilVisible(
+      find.byKey(CombinedFootNoteOperationalIndicationRow.rowKey),
+      scrollableFinder,
+      const Offset(0, -100),
+    );
+
+    final combinedRow = find.byKey(CombinedFootNoteOperationalIndicationRow.rowKey);
+    expect(combinedRow, findsOneWidget);
+
+    final operationalIndicationRow = find.descendant(
+      of: combinedRow,
+      matching: find.textContaining(l10n.c_uncoded_operational_indication),
+    );
+    expect(operationalIndicationRow, findsOneWidget);
+
+    final footNoteRow = find.descendant(
+      of: combinedRow,
+      matching: find.textContaining(l10n.c_radn),
+    );
+    expect(footNoteRow, findsOneWidget);
+
+    await disconnect(tester);
+  });
   testWidgets('test operational indication collapsed when passed', (tester) async {
     await prepareAndStartApp(tester);
     await loadTrainJourney(tester, trainNumber: 'T22');
@@ -162,11 +191,11 @@ Future<void> _checkCollapsible(int identifier, WidgetTester tester) async {
   _checkCollapsibleRow(identifier: identifier, isCollapsed: false);
 
   // should be collapsed after tap
-  await tapElement(tester, _findDASTableAccordionRowByKey(identifier));
+  await tapElement(tester, _findDASTableAccordionRowByKey(identifier), warnIfMissed: false);
   _checkCollapsibleRow(identifier: identifier, isCollapsed: true);
 
   // should be reopened after tap
-  await tapElement(tester, _findDASTableAccordionRowByKey(identifier));
+  await tapElement(tester, _findDASTableAccordionRowByKey(identifier), warnIfMissed: false);
   _checkCollapsibleRow(identifier: identifier, isCollapsed: false);
 }
 

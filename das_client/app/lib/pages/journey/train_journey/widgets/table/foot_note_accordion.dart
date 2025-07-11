@@ -28,7 +28,7 @@ class FootNoteAccordion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Accordion(
-      key: ObjectKey(data.identifier),
+      key: ObjectKey(data.hashCode),
       title: title,
       body: contentText(data),
       isExpanded: isExpanded,

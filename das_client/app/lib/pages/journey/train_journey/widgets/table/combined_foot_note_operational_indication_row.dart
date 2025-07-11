@@ -22,6 +22,8 @@ class AccordionConfig {
 }
 
 class CombinedFootNoteOperationalIndicationRow extends WidgetRowBuilder<CombinedFootNoteOperationalIndication> {
+  static const Key rowKey = Key('combinedFootNoteOperationalIndicationRow');
+
   CombinedFootNoteOperationalIndicationRow({
     required super.rowIndex,
     required super.metadata,
@@ -52,6 +54,7 @@ class CombinedFootNoteOperationalIndicationRow extends WidgetRowBuilder<Combined
   @override
   Widget buildRowWidget(BuildContext context) {
     return Container(
+      key: rowKey,
       color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
       child: Column(
         children: [

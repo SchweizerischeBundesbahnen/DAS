@@ -448,13 +448,13 @@ class SferaModelMapper {
 
     mapToModel(OperationalIndicationNspDto uncoded) {
       final startLocation = uncoded.constraint?.startLocation;
-      if (startLocation == null || uncoded.uncodedText == null) {
-        _log.warning('Uncoded operational indication without text and/or location found: $uncoded');
+      if (startLocation == null) {
+        _log.warning('Uncoded operational indication without location found: $uncoded');
         return null;
       }
       return UncodedOperationalIndication(
         order: calculateOrder(segmentIndex, startLocation),
-        texts: [uncoded.uncodedText!],
+        texts: [uncoded.uncodedText],
       );
     }
 
