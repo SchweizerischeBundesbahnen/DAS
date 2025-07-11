@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.23.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.22.0...das_client-v0.23.0) (2025-07-11)
+
+
+### Features
+
+* color of dot indicator in dark mode is sky ([#907](https://github.com/SchweizerischeBundesbahnen/DAS/issues/907)) ([#1082](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1082)) ([d3bede9](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d3bede9f196c18b55cd3d5a31f70d29d799b36ac))
+
+
+### Bug Fixes
+
+* reduction of calculated speed is displayed ([#88](https://github.com/SchweizerischeBundesbahnen/DAS/issues/88)) ([#1087](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1087)) ([4fdf40d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4fdf40ded262b293a799f5f8293481b0994cc6ca))
+* update speed in speed-detail ([#1068](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1068)) ([b40ca55](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b40ca55a5bfa355e81c421efbe1ae5acb0257fde))
+
 ## [0.22.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.21.0...das_client-v0.22.0) (2025-07-08)
 
 
