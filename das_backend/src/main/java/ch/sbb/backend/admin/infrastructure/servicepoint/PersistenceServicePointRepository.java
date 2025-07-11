@@ -8,11 +8,11 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 @Component
-class PostgreSQLServicePointRepository implements ServicePointRepository {
+class PersistenceServicePointRepository implements ServicePointRepository {
 
     private final SpringDataJpaServicePointRepository servicePointRepository;
 
-    PostgreSQLServicePointRepository(SpringDataJpaServicePointRepository servicePointRepository) {
+    PersistenceServicePointRepository(SpringDataJpaServicePointRepository servicePointRepository) {
         this.servicePointRepository = servicePointRepository;
     }
 

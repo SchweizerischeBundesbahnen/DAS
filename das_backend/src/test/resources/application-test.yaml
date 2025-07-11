@@ -1,6 +1,9 @@
 spring:
   datasource:
     url: jdbc
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
 
 auth:
   audience:
