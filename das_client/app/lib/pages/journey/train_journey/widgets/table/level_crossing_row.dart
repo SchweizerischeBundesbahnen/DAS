@@ -15,9 +15,7 @@ class LevelCrossingRow extends CellRowBuilder<LevelCrossing> {
 
   @override
   DASTableCell kilometreCell(BuildContext context) {
-    if (!isGrouped) {
-      return DASTableCell.empty();
-    }
+    if (!isGrouped) return super.kilometreCell(context);
 
     if (data.kilometre.isEmpty) {
       return DASTableCell.empty(color: specialCellColor);
