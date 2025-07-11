@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';
 
 void main() {
-  test('test ASR is displayed outside of ETCS level 2 segments', () {
+  test('test texts of UncodedOperationalIndication are combined correctly', () {
     // GIVEN
     final indication = UncodedOperationalIndication(order: 100, texts: ['Text A', 'Text B']);
 
@@ -14,7 +14,7 @@ void main() {
     expect(combinedText, 'Text A\nText B');
   });
 
-  test('test ASR is displayed outside of ETCS level 2 segments', () {
+  test('test UncodedOperationalIndication on same location are merged', () {
     // GIVEN
     final sameLocationA = UncodedOperationalIndication(order: 100, texts: ['Text A']);
     final sameLocationB = UncodedOperationalIndication(order: 100, texts: ['Text B']);

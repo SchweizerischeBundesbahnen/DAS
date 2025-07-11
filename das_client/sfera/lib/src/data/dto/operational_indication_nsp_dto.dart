@@ -1,17 +1,21 @@
 import 'package:sfera/src/data/dto/enums/operational_indication_type_dto.dart';
-import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 import 'package:sfera/src/data/dto/jp_context_information_nsp_dto.dart';
-import 'package:sfera/src/data/dto/network_specific_parameter_dto.dart';
+import 'package:sfera/src/data/dto/operational_indication_type_nsp_dto.dart';
+import 'package:sfera/src/data/dto/operational_indication_uncoded_text_nsp_dto.dart';
 
 class OperationalIndicationNspDto extends JpContextInformationNspDto {
   static const String elementType = 'operationalIndication';
 
   OperationalIndicationNspDto({super.type = elementType, super.attributes, super.children, super.value});
 
-  OperationalIndicationTypeDto? get operationalIndicationType => XmlEnum.valueOf<OperationalIndicationTypeDto>(
-    OperationalIndicationTypeDto.values,
-    parameters.withName('type')?.nspValue,
-  );
+  OperationalIndicationTypeDto get operationalIndicationType =>
+      children.whereType<OperationalIndicationTypeNspDto>().first.operationalIndicationType;
 
-  String? get uncodedText => parameters.withName('uncodedText')?.nspValue;
+  String get uncodedText => children.whereType<OperationalIndicationUncodedTextNspDto>().first.text;
+
+  @override
+  bool validate() =>
+      validateHasChildOfType<OperationalIndicationUncodedTextNspDto>() &&
+      validateHasChildOfType<OperationalIndicationTypeNspDto>() &&
+      super.validate();
 }
