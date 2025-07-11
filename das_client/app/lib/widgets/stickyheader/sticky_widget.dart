@@ -67,14 +67,78 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onPanUpdate: _onPanUpdate,
-      onPanEnd: _onPanEnd,
-      child: widget.isHeader ? _buildHeaders(context) : _buildFooter(context),
-    );
+    final controller = widget.controller;
+    final indexesToBuild = controller.headerIndexes;
+    final isHeader = widget.isHeader;
+
+    if (!controller.isRecalculating) {
+      if (isHeader) {
+        Widget? stickyHeader1;
+        Widget? stickyHeader2;
+
+        if (indexesToBuild[StickyLevel.first] != -1) {
+          stickyHeader1 = Positioned(
+            left: 0,
+            top: controller.headerOffsets[StickyLevel.first],
+            right: 0,
+            child: widget.widgetBuilder(context, indexesToBuild[StickyLevel.first]!),
+          );
+        }
+
+        if (indexesToBuild[StickyLevel.second] != -1) {
+          stickyHeader2 = Positioned(
+            left: 0,
+            top:
+                controller.widgetHeight(indexesToBuild[StickyLevel.first]!) +
+                controller.headerOffsets[StickyLevel.second]!,
+            right: 0,
+            child: widget.widgetBuilder(context, indexesToBuild[StickyLevel.second]!),
+          );
+        }
+
+        return GestureDetector(
+          onPanUpdate: _onPanUpdate,
+          onPanEnd: _onPanEnd,
+          child: Stack(
+            children: [
+              if (stickyHeader2 != null) stickyHeader2,
+              if (stickyHeader1 != null) stickyHeader1,
+            ],
+          ),
+        );
+      } else {
+        // Footer
+        Widget? stickyFooter;
+        final indexToBuild = controller.footerIndex;
+
+        if (indexToBuild != -1) {
+          stickyFooter = widget.widgetBuilder(context, indexToBuild);
+        }
+
+        return GestureDetector(
+          onPanUpdate: _onPanUpdate,
+          onPanEnd: _onPanEnd,
+          child: stickyFooter != null
+              ? Stack(
+                  children: [
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      child: stickyFooter,
+                    ),
+                  ],
+                )
+              : Container(),
+        );
+      }
+    }
+
+    // Fallback in case recalculating
+    return Container();
   }
 
-  Widget _buildHeaders(BuildContext context) {
+  /*Widget _buildHeaders(BuildContext context) {
     _buildHeaderWidgets(context);
 
     return Stack(
@@ -141,7 +205,7 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
       );
     }
     return Container();
-  }
+  }*/
 
   void _update() {
     setState(() {});
