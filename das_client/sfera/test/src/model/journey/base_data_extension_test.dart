@@ -1,16 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sfera/src/model/journey/balise.dart';
-import 'package:sfera/src/model/journey/balise_level_crossing_group.dart';
-import 'package:sfera/src/model/journey/base_data.dart';
-import 'package:sfera/src/model/journey/base_data_extension.dart';
-import 'package:sfera/src/model/journey/foot_note.dart';
-import 'package:sfera/src/model/journey/level_crossing.dart';
-import 'package:sfera/src/model/journey/line_foot_note.dart';
-import 'package:sfera/src/model/journey/op_foot_note.dart';
-import 'package:sfera/src/model/journey/signal.dart';
-import 'package:sfera/src/model/journey/track_foot_note.dart';
-import 'package:sfera/src/model/journey/train_series.dart';
-import 'package:sfera/src/model/journey/whistles.dart';
+import 'package:sfera/component.dart';
 
 void main() {
   test('Test balise and level crossing grouping', () {
@@ -337,5 +326,37 @@ void main() {
     expect(filteredRows, hasLength(1));
     expect(filteredRows[0], isA<LineFootNote>());
     expect(filteredRows[0].order, 606);
+  });
+
+  test('Test combine of UncodedOperationalIndication and FootNote on same location', () {
+    // GIVEN
+    final footNoteToBeCombined = LineFootNote(
+      order: 100,
+      footNote: FootNote(text: 'Test A'),
+      locationName: 'Location A',
+    );
+    final operationalIndicationToBeCombined = UncodedOperationalIndication(order: 100, texts: ['Test B']);
+    final baseData = <BaseData>[
+      footNoteToBeCombined,
+      operationalIndicationToBeCombined,
+      LineFootNote(
+        order: 300,
+        footNote: FootNote(text: 'Test C'),
+        locationName: 'Location C',
+      ),
+      UncodedOperationalIndication(order: 400, texts: ['Test D']),
+    ];
+
+    // WHEN
+    final combinedDataList = baseData.combineFootNoteAndOperationalIndication();
+
+    // THEN
+    expect(combinedDataList, hasLength(3));
+    final combinedData = combinedDataList.whereType<CombinedFootNoteOperationalIndication>().toList();
+    expect(combinedData, hasLength(1));
+    expect(combinedData[0].footNote, footNoteToBeCombined);
+    expect(combinedData[0].operationalIndication, operationalIndicationToBeCombined);
+    expect(combinedDataList, isNot(contains(footNoteToBeCombined)));
+    expect(combinedDataList, isNot(contains(operationalIndicationToBeCombined)));
   });
 }

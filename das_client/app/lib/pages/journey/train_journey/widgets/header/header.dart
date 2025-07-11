@@ -4,6 +4,7 @@ import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/brightness/brightness_modal_sheet.dart';
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/das_chronograph.dart';
+import 'package:app/pages/journey/train_journey/train_journey_overview.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/main_container.dart';
 import 'package:app/widgets/extended_header_container.dart';
 import 'package:flutter/material.dart';
@@ -17,9 +18,6 @@ class Header extends StatefulWidget {
 }
 
 class _HeaderState extends State<Header> {
-  Timer? _dimmingTimer;
-  final BrightnessManager _brightnessManager = DI.get<BrightnessManager>();
-
   final double maxBrightness = 1.0;
   final double minBrightness = 0.0;
   final double halfBrightness = 0.5;
@@ -27,12 +25,41 @@ class _HeaderState extends State<Header> {
   final double dragStep = 0.01;
   final int dimmingInterval = 50;
 
+  Timer? _dimmingTimer;
+  final BrightnessManager _brightnessManager = DI.get<BrightnessManager>();
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       BrightnessModalSheet.openIfNeeded(context);
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ExtendedAppBarWrapper(
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onHorizontalDragUpdate: _onHorizontalDragUpdate,
+        child: Padding(
+          padding: const EdgeInsets.all(TrainJourneyOverview.horizontalPadding).copyWith(top: 0),
+          child: Row(
+            spacing: sbbDefaultSpacing * 0.5,
+            children: [
+              Expanded(child: MainContainer()),
+              GestureDetector(
+                onLongPressStart: (_) => _startDimming(),
+                onLongPressEnd: (_) => _stopDimming(),
+                onDoubleTap: _doubleTap,
+                behavior: HitTestBehavior.translucent,
+                child: const DASChronograph(),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   void _startDimming() async {
@@ -64,31 +91,5 @@ class _HeaderState extends State<Header> {
     double value = await _brightnessManager.getCurrentBrightness();
     value += details.delta.dx > 0 ? dragStep : -dragStep;
     await _brightnessManager.setBrightness(value.clamp(minBrightness, maxBrightness));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ExtendedAppBarWrapper(
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onHorizontalDragUpdate: _onHorizontalDragUpdate,
-        child: Padding(
-          padding: const EdgeInsets.all(sbbDefaultSpacing * 0.5).copyWith(top: 0),
-          child: Row(
-            spacing: sbbDefaultSpacing * 0.5,
-            children: [
-              Expanded(child: MainContainer()),
-              GestureDetector(
-                onLongPressStart: (_) => _startDimming(),
-                onLongPressEnd: (_) => _stopDimming(),
-                onDoubleTap: _doubleTap,
-                behavior: HitTestBehavior.translucent,
-                child: const DASChronograph(),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }

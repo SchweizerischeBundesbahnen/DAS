@@ -1,7 +1,13 @@
 import 'package:sfera/src/model/journey/train_series.dart';
 
 class FootNote {
-  FootNote({required this.text, this.type, this.refText, this.identifier, this.trainSeries = const <TrainSeries>[]});
+  FootNote({
+    required this.text,
+    this.type,
+    this.refText,
+    this.identifier,
+    this.trainSeries = const <TrainSeries>[],
+  });
 
   final String text;
   final FootNoteType? type;

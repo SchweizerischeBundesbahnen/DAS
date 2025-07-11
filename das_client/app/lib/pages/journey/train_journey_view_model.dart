@@ -41,12 +41,10 @@ class TrainJourneyViewModel {
   final _rxSettings = BehaviorSubject<TrainJourneySettings>.seeded(TrainJourneySettings());
   final _rxErrorCode = BehaviorSubject<ErrorCode?>.seeded(null);
   final _rxWarnapp = PublishSubject<WarnappEvent>();
-  final _subscriptions = <StreamSubscription>[];
 
   DateTime? _lastWarnappEventTimestamp;
 
   StreamSubscription? _stateSubscription;
-  StreamSubscription? _journeySubscription;
   StreamSubscription? _warnappSignalSubscription;
   StreamSubscription? _warnappAbfahrtSubscription;
 
@@ -60,7 +58,6 @@ class TrainJourneyViewModel {
       switch (state) {
         case SferaRemoteRepositoryState.connected:
           automaticAdvancementController = AutomaticAdvancementController();
-          _listenToJourneyUpdates();
           WakelockPlus.enable();
           _enableWarnapp();
           break;
@@ -73,15 +70,14 @@ class TrainJourneyViewModel {
             _rxErrorCode.add(ErrorCode.fromSfera(_sferaRemoteRepo.lastError!));
             setAutomaticAdvancement(false);
           }
-          _journeySubscription?.cancel();
           break;
       }
     });
   }
 
   void _enableWarnapp() {
-    _warnappAbfahrtSubscription = _warnappRepo.abfahrtEventStream.listen((event) => _handleAbfahrtEvent());
-    _warnappSignalSubscription = _sferaRemoteRepo.warnappEventStream.listen((event) {
+    _warnappAbfahrtSubscription = _warnappRepo.abfahrtEventStream.listen((_) => _handleAbfahrtEvent());
+    _warnappSignalSubscription = _sferaRemoteRepo.warnappEventStream.listen((_) {
       _lastWarnappEventTimestamp = DateTime.now();
     });
     _warnappRepo.enable();
@@ -115,10 +111,6 @@ class TrainJourneyViewModel {
     _rxSettings.add(_rxSettings.value.copyWith(expandedGroups: expandedGroups));
   }
 
-  void updateCollapsedFootnotes(List<String> collapsedGroups) {
-    _rxSettings.add(_rxSettings.value.copyWith(collapsedFootNotes: collapsedGroups));
-  }
-
   void setAutomaticAdvancement(bool active) {
     _log.info('Automatic advancement state changed to active=$active');
     if (active) {
@@ -141,54 +133,11 @@ class TrainJourneyViewModel {
   void dispose() {
     _rxSettings.close();
     _rxWarnapp.close();
-
-    for (final subscription in _subscriptions) {
-      subscription.cancel();
-    }
-    _journeySubscription?.cancel();
     _stateSubscription?.cancel();
-
     automaticAdvancementController.dispose();
   }
 
   void _resetSettings() => _rxSettings.add(TrainJourneySettings());
-
-  void _listenToJourneyUpdates() {
-    _journeySubscription?.cancel();
-    _journeySubscription = _sferaRemoteRepo.journeyStream.listen((journey) {
-      if (journey != null) {
-        _collapsePassedFootNotes(journey);
-      }
-    });
-  }
-
-  void _collapsePassedFootNotes(Journey journey) {
-    if (journey.metadata.currentPosition == journey.metadata.lastPosition ||
-        journey.metadata.lastPosition == null ||
-        journey.metadata.currentPosition == null) {
-      return;
-    }
-
-    final fromIndex = journey.data.indexOf(journey.metadata.lastPosition!);
-    final toIndex = journey.data.indexOf(journey.metadata.currentPosition!);
-
-    final passedFootNotes = journey.data.sublist(fromIndex, toIndex).whereType<BaseFootNote>();
-
-    final collapsedFootNotes = _rxSettings.value.collapsedFootNotes;
-    final newList = List.of(collapsedFootNotes);
-
-    for (final footNote in passedFootNotes) {
-      if (collapsedFootNotes.contains(footNote.identifier)) continue;
-
-      if (journey.data.lastIndexWhere((it) => it is BaseFootNote && it.identifier == footNote.identifier) <= toIndex) {
-        newList.add(footNote.identifier);
-      }
-    }
-
-    if (newList.length != collapsedFootNotes.length) {
-      updateCollapsedFootnotes(newList);
-    }
-  }
 
   void _handleAbfahrtEvent() {
     final now = DateTime.now();

@@ -1,9 +1,5 @@
-import 'package:sfera/src/model/journey/balise_level_crossing_group.dart';
-import 'package:sfera/src/model/journey/base_data.dart';
-import 'package:sfera/src/model/journey/base_foot_note.dart';
-import 'package:sfera/src/model/journey/datatype.dart';
-import 'package:sfera/src/model/journey/line_foot_note.dart';
-import 'package:sfera/src/model/journey/train_series.dart';
+import 'package:collection/collection.dart';
+import 'package:sfera/component.dart';
 
 extension BaseDataExtension on Iterable<BaseData> {
   Iterable<BaseData> groupBaliseAndLeveLCrossings(List<int> expandedGroups) {
@@ -101,19 +97,43 @@ extension BaseDataExtension on Iterable<BaseData> {
   }
 
   Iterable<BaseData> hideFootNotesForNotSelectedTrainSeries(TrainSeries? selectedTrainSeries) {
-    if (selectedTrainSeries == null) {
-      return this;
-    }
+    if (selectedTrainSeries == null) return this;
 
-    final resultList = List.of(this);
-
-    resultList.removeWhere(
+    return List.of(this)..removeWhere(
       (it) =>
           it is BaseFootNote &&
           it.footNote.trainSeries.isNotEmpty &&
           !it.footNote.trainSeries.contains(selectedTrainSeries),
     );
+  }
 
-    return resultList;
+  /// Combines [BaseFootNote] and [UncodedOperationalIndication] that are on same location (technically always on a service point)
+  Iterable<BaseData> combineFootNoteAndOperationalIndication() {
+    final groupedMap = where(
+      (it) => it is BaseFootNote || it is UncodedOperationalIndication,
+    ).groupListsBy((i) => i.order);
+
+    final dataToBeRemoved = <BaseData>[];
+    final combinedData = groupedMap.values
+        .map((group) {
+          final footNote = group.firstWhereOrNull((it) => it is BaseFootNote) as BaseFootNote?;
+          final operationalIndication =
+              group.firstWhereOrNull((it) => it is UncodedOperationalIndication) as UncodedOperationalIndication?;
+          if (footNote == null || operationalIndication == null) {
+            return null;
+          }
+
+          dataToBeRemoved.addAll([footNote, operationalIndication]);
+          return CombinedFootNoteOperationalIndication(
+            footNote: footNote,
+            operationalIndication: operationalIndication,
+          );
+        })
+        .nonNulls
+        .toList(); // force non-lazy map
+
+    return List.of(this)
+      ..removeWhere((it) => dataToBeRemoved.contains(it))
+      ..addAll(combinedData);
   }
 }
