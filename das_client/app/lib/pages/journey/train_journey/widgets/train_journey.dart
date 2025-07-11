@@ -233,6 +233,8 @@ class TrainJourney extends StatelessWidget {
             config: trainJourneyConfig,
             onTap: () => _onBaliseLevelCrossingGroupTap(context, rowData, settings),
             rowIndex: index,
+            context: context,
+            isExpanded: settings.expandedGroups.contains(rowData.order),
           );
         case Datatype.opFootNote:
           return OpFootNoteRow(
