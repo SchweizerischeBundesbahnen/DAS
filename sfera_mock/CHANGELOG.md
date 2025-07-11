@@ -1,5 +1,53 @@
 # Changelog
 
+## [0.5.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.4.0...sfera_mock-v0.5.0) (2025-07-08)
+
+
+### Features
+
+* add calculated speed ([#88](https://github.com/SchweizerischeBundesbahnen/DAS/issues/88)) ([#1080](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1080)) ([913054f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/913054f03fab2e3633d0cef2fc516ded192641e7))
+* added details modal for additional speed restrictions ([#567](https://github.com/SchweizerischeBundesbahnen/DAS/issues/567)) ([#892](https://github.com/SchweizerischeBundesbahnen/DAS/issues/892)) ([b5468b8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b5468b8c686d9456fdd8d55e0d44d7146aa6f75c))
+* always display line speed in sticky header ([#932](https://github.com/SchweizerischeBundesbahnen/DAS/issues/932)) ([#1069](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1069)) ([539a16f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/539a16f1ec0434e6fe1e4348a37d621f92da3aa3))
+* bahnhofseigenschaften  ([#127](https://github.com/SchweizerischeBundesbahnen/DAS/issues/127)) ([#1074](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1074)) ([66fe982](https://github.com/SchweizerischeBundesbahnen/DAS/commit/66fe982f4c325eab73b4413c4eb5f9b06f129928))
+* client displays xx speeds ([#502](https://github.com/SchweizerischeBundesbahnen/DAS/issues/502)) ([#1038](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1038)) ([a7dab99](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a7dab9904bca4b36500b976a019872a53d290495))
+* consolidate complex additional speed restrictions ([#227](https://github.com/SchweizerischeBundesbahnen/DAS/issues/227)) ([#984](https://github.com/SchweizerischeBundesbahnen/DAS/issues/984)) ([c68068b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c68068b64ff6fcaddec38019b2e67b0c1b5efcee))
+* handle contactList over multiple SP ([#1004](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1004)) ([#1056](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1056)) ([242d35a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/242d35a25504e165cb38c89735b66365ce386777))
+* handling of missing data in detail modal ([#1040](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1040)) ([#1053](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1053)) ([9651bbd](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9651bbd86ae6596df1edfdd70352cf161296154e))
+* implement graduated speed info ([#231](https://github.com/SchweizerischeBundesbahnen/DAS/issues/231)) ([#831](https://github.com/SchweizerischeBundesbahnen/DAS/issues/831)) ([bfab300](https://github.com/SchweizerischeBundesbahnen/DAS/commit/bfab30046b2ba4893f121016ad2fb896c63551d1))
+* massgebende neigung ([#225](https://github.com/SchweizerischeBundesbahnen/DAS/issues/225)) ([#841](https://github.com/SchweizerischeBundesbahnen/DAS/issues/841)) ([4c27956](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4c2795631c8cec9493b69ea8b1d6918d3c84a987))
+* only display AdditionalSpeedRestriction within journey time ([#911](https://github.com/SchweizerischeBundesbahnen/DAS/issues/911)) ([#966](https://github.com/SchweizerischeBundesbahnen/DAS/issues/966)) ([65e9318](https://github.com/SchweizerischeBundesbahnen/DAS/commit/65e9318f0b040d1f699a1e18e6e60c4a12bd47b6))
+* planned and operational times ([#84](https://github.com/SchweizerischeBundesbahnen/DAS/issues/84)) ([#906](https://github.com/SchweizerischeBundesbahnen/DAS/issues/906)) ([54b53f3](https://github.com/SchweizerischeBundesbahnen/DAS/commit/54b53f390f08df0edffd7c583fe920ef7ae9839d))
+* search journey with modal in loaded journey ([#456](https://github.com/SchweizerischeBundesbahnen/DAS/issues/456)) ([#1051](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1051)) ([ff232f5](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ff232f574d2e073839ff553170cd21cdefc59eb6))
+* warnfunktion geschlossenes signal ([#98](https://github.com/SchweizerischeBundesbahnen/DAS/issues/98)) ([#982](https://github.com/SchweizerischeBundesbahnen/DAS/issues/982)) ([7f6de3a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7f6de3af841ce1335fc5917080798907fb5329b5))
+
+
+### Bug Fixes
+
+* **deps:** update dependency org.springframework.boot:spring-boot-starter-parent to v3.4.5 ([#845](https://github.com/SchweizerischeBundesbahnen/DAS/issues/845)) ([d65eb90](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d65eb901eee9670acef26d746652e3e482f9849d))
+* **deps:** update dependency org.springframework.boot:spring-boot-starter-parent to v3.5.0 ([#954](https://github.com/SchweizerischeBundesbahnen/DAS/issues/954)) ([86a515b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/86a515bb7c4f64bf7d233d0174cc36e7ee29efb1))
+* **deps:** update dependency org.springframework.boot:spring-boot-starter-parent to v3.5.3 ([#1059](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1059)) ([46bec4d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/46bec4dbc28f6d1561a50a6a233cf219e6894b51))
+
+
+### Documentation
+
+* 7318 add events ([#1071](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1071)) ([bbea346](https://github.com/SchweizerischeBundesbahnen/DAS/commit/bbea34623040af55c8e960e3e8c34a3e0a09ca61))
+* add footnotes, graduatedSpeedInfo and contactInfo DE ([#929](https://github.com/SchweizerischeBundesbahnen/DAS/issues/929)) ([a78b28a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a78b28a4be8db09e54a74f9a841abd493be1b9ab))
+* additions for I7 ([#882](https://github.com/SchweizerischeBundesbahnen/DAS/issues/882)) ([459c04e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/459c04e137f661d45ee010625549687f0df13c23))
+* fix 15154 and add events ([#1064](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1064)) ([1d9e59d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1d9e59d3b868458a8ba62a8f4c393a81f8bf8119))
+* fix 19240 and add event ([#1065](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1065)) ([75873b3](https://github.com/SchweizerischeBundesbahnen/DAS/commit/75873b3ae588444a5a656506092654c24101d79e))
+* fix massgebende Neigung ([e133f76](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e133f76e08130a52596343076b9d619283d9b10f))
+* fix station speed and add Baumen station speed ([#890](https://github.com/SchweizerischeBundesbahnen/DAS/issues/890)) ([7f54397](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7f5439715c920ccead18b83f9f0331c708a3f98e))
+* fix T20 and add events ([#1070](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1070)) ([89fe6f8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/89fe6f83cf4e86f1ee0b76b1ee47b8a20dd1c598))
+* fix testdata T20 ([#1030](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1030)) ([fb611f8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/fb611f8953203ddecb43809c6b62817f8fa361df))
+* fix version number for gradient ([#858](https://github.com/SchweizerischeBundesbahnen/DAS/issues/858)) ([88b24a7](https://github.com/SchweizerischeBundesbahnen/DAS/commit/88b24a7a0a79895b07dd2e9f4efd8122eccaaba9))
+* sfera mock readme ([#983](https://github.com/SchweizerischeBundesbahnen/DAS/issues/983)) ([b82bb51](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b82bb51b2eff03c2b07ea897255a6a21bd4b7ab2))
+* testdata 19240 wil w ([#931](https://github.com/SchweizerischeBundesbahnen/DAS/issues/931)) ([93e411a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/93e411a21e4f945ac543c0eb8c0fc6a7d1a64be3))
+* testdata 2266 AA-BS ([#1061](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1061)) ([2a3be9e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/2a3be9e76c3a5a6534b5417a1ca2e505720b1a17))
+* testdata for SIM ([#1026](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1026)) ([80b3dca](https://github.com/SchweizerischeBundesbahnen/DAS/commit/80b3dcad5c38acb8485d9b437e2fbe384db50867))
+* testdata I7 add Infos to Helmaiche ([#908](https://github.com/SchweizerischeBundesbahnen/DAS/issues/908)) ([948b8a7](https://github.com/SchweizerischeBundesbahnen/DAS/commit/948b8a7da9777630a9588a37f7b1196d7c64ab99))
+* testdata i7 fr ([#918](https://github.com/SchweizerischeBundesbahnen/DAS/issues/918)) ([0ac6bd5](https://github.com/SchweizerischeBundesbahnen/DAS/commit/0ac6bd52debbbd9d615b1fbcb92de10a8be1d4d8))
+* testdate SCB MOU 7318 ([#1003](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1003)) ([cf47fa2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/cf47fa28213434c569faac7fa159ffe7c2acaf44))
+
 ## [0.4.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.3.0...sfera_mock-v0.4.0) (2025-04-22)
 
 
