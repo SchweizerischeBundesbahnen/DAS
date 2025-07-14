@@ -11,7 +11,7 @@ typedef AccordionToggleCallback = void Function();
 /// See also:
 ///
 /// * [ExpansionPanelList], which this widget is based on.
-class Accordion extends StatefulWidget {
+class Accordion extends StatelessWidget {
   static const Key collapsedKey = Key('accordionCollapsed');
   static const Key expandedKey = Key('accordionExpanded');
   static const double defaultCollapsedHeight = _headerFontSize + 2 * _collapsedVerticalPadding;
@@ -48,15 +48,10 @@ class Accordion extends StatefulWidget {
   final EdgeInsetsGeometry? margin;
 
   @override
-  State<StatefulWidget> createState() => _AccordionState();
-}
-
-class _AccordionState extends State<Accordion> {
-  @override
   Widget build(BuildContext context) {
     return Padding(
-      key: widget.isExpanded ? Accordion.expandedKey : Accordion.collapsedKey,
-      padding: widget.margin ?? EdgeInsets.zero,
+      key: isExpanded ? expandedKey : collapsedKey,
+      padding: margin ?? EdgeInsets.zero,
       child: _accordion(context),
     );
   }
@@ -64,28 +59,28 @@ class _AccordionState extends State<Accordion> {
   Widget _accordion(BuildContext context) {
     final style = SBBControlStyles.of(context);
     return InkWell(
-      onTap: () => widget.toggleCallback(),
+      onTap: () => toggleCallback(),
       child: Container(
         decoration: BoxDecoration(
-          color: widget.backgroundColor ?? style.accordionBackgroundColor,
+          color: backgroundColor ?? style.accordionBackgroundColor,
           borderRadius: BorderRadius.all(
-            Radius.circular(widget.isExpanded ? sbbDefaultSpacing : sbbDefaultSpacing * 0.5),
+            Radius.circular(isExpanded ? sbbDefaultSpacing : sbbDefaultSpacing * 0.5),
           ),
         ),
         padding: EdgeInsets.symmetric(
-          vertical: widget.isExpanded ? Accordion._expandedVerticalPadding : Accordion._collapsedVerticalPadding,
-          horizontal: Accordion._horizontalPadding,
+          vertical: isExpanded ? _expandedVerticalPadding : _collapsedVerticalPadding,
+          horizontal: _horizontalPadding,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _header(),
-            widget.isExpanded
+            isExpanded
                 ? Padding(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: Accordion._contentPadding,
-                    ).copyWith(top: Accordion._headerContentSpacing),
-                    child: widget.body,
+                      horizontal: _contentPadding,
+                    ).copyWith(top: _headerContentSpacing),
+                    child: body,
                   )
                 : SizedBox.shrink(),
           ],
@@ -98,17 +93,17 @@ class _AccordionState extends State<Accordion> {
     return Row(
       spacing: sbbDefaultSpacing * 0.5,
       children: [
-        if (widget.icon != null) Icon(widget.icon, size: 20.0),
+        if (icon != null) Icon(icon, size: 20.0),
         Expanded(
           child: Text(
-            widget.title,
+            title,
             style: DASTextStyles.largeBold,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
         ),
         Icon(
-          widget.isExpanded ? SBBIcons.chevron_small_down_small : SBBIcons.chevron_small_right_small,
+          isExpanded ? SBBIcons.chevron_small_down_small : SBBIcons.chevron_small_right_small,
         ),
       ],
     );
