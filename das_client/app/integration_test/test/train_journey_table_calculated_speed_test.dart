@@ -1,7 +1,6 @@
 import 'package:app/pages/journey/train_journey/widgets/header/das_chronograph.dart';
 import 'package:app/pages/journey/train_journey/widgets/punctuality/punctuality_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/advised_speed_cell_body.dart';
-import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -97,7 +96,7 @@ void main() {
     await pauseAutomaticAdvancement(tester);
     await tester.pumpAndSettle(Duration(milliseconds: 100));
 
-    await _dragUntilInStickyHeader(tester, 'Thalwil');
+    await dragUntilTextInStickyHeader(tester, 'Thalwil');
 
     // Oerlikon ---------
 
@@ -107,7 +106,7 @@ void main() {
     final zuerichOerlikonAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(zuerichOerlikonStationRow);
     expect(zuerichOerlikonAdvisedSpeedCell, findsNothing);
 
-    await _dragUntilInStickyHeader(tester, oerlikon);
+    await dragUntilTextInStickyHeader(tester, oerlikon);
 
     // filled from Zürich HB
     expect(zuerichOerlikonStationRow, findsOneWidget);
@@ -120,7 +119,7 @@ void main() {
     expect(zrhStationRow, findsOneWidget);
     _findTextWithin(zrhStationRow, '130');
 
-    await _dragUntilInStickyHeader(tester, zurichAirport);
+    await dragUntilTextInStickyHeader(tester, zurichAirport);
 
     // filled with line speed from Zürich HB
     expect(zrhStationRow, findsOneWidget);
@@ -134,7 +133,7 @@ void main() {
     final frauenfeldAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(frauenfeldStationRow);
     expect(frauenfeldAdvisedSpeedCell, findsNothing);
 
-    await _dragUntilInStickyHeader(tester, frauenfeld);
+    await dragUntilTextInStickyHeader(tester, frauenfeld);
 
     // filled with line speed from Frauenfeld
     expect(frauenfeldStationRow, findsOneWidget);
@@ -170,18 +169,6 @@ void main() {
 
     await disconnect(tester);
   });
-}
-
-Future<void> _dragUntilInStickyHeader(WidgetTester tester, String bassersdorf) async {
-  final scrollableFinder = find.byType(AnimatedList);
-  final stickyHeader = find.byKey(StickyHeader.headerKey);
-  await tester.dragUntilVisible(
-    find.descendant(of: stickyHeader, matching: find.text(bassersdorf)),
-    scrollableFinder,
-    const Offset(0, -50),
-    maxIteration: 100,
-  );
-  await tester.pumpAndSettle();
 }
 
 void _findTextWithin(Finder buchrainStationRow, String s) {
