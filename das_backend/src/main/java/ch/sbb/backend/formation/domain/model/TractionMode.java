@@ -27,4 +27,8 @@ public enum TractionMode {
         }
         throw new IllegalArgumentException("No TractionMode with key: " + key);
     }
+
+    public String getKey() {
+        return key;
+    }
 }
