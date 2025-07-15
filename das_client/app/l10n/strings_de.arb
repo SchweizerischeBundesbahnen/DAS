@@ -54,7 +54,7 @@
   "w_service_point_modal_communication_radio_channels_not_found": "Kein Funkkanal verfügbar",
   "w_service_point_modal_communication_network": "Netzart",
   "w_service_point_modal_graduated_speed_label": "Abgestufte Geschwindigkeiten",
-  "w_service_point_modal_graduated_speed_break_series_title": "Zug- und Bremsreihe",
+  "w_service_point_modal_graduated_speed_break_series_title": "Zugreihe",
   "w_service_point_modal_graduated_speed_no_information": "Keine Informationen",
   "w_service_point_modal_local_regulations_label": "Lokale Bestimmungen",
   "w_additional_speed_restriction_modal_title": "Langsamfahrstelle",

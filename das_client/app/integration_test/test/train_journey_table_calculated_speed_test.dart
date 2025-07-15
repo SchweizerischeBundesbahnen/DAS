@@ -3,6 +3,7 @@ import 'package:app/pages/journey/train_journey/widgets/punctuality/punctuality_
 import 'package:app/pages/journey/train_journey/widgets/table/cells/advised_speed_cell_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
 import '../util/test_utils.dart';
@@ -17,8 +18,6 @@ void main() {
     await pauseAutomaticAdvancement(tester);
     await tester.pumpAndSettle(Duration(milliseconds: 100));
 
-    final scrollableFinder = find.byType(AnimatedList);
-
     final ebikonStationRow = findDASTableRowByText('Ebikon');
     expect(ebikonStationRow, findsOneWidget);
     final ebikonAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(ebikonStationRow);
@@ -32,38 +31,47 @@ void main() {
     expect(rotkreuxStationRow, findsOneWidget);
     _findTextWithin(rotkreuxStationRow, '130');
 
-    final zugStationRow = findDASTableRowByText('Zug');
+    final zug = 'Zug';
+    final zugStationRow = findDASTableRowByText(zug);
     expect(zugStationRow, findsOneWidget);
     _findTextWithin(zugStationRow, AdvisedSpeedCellBody.zeroSpeedContent);
+
+    await dragUntilTextInStickyHeader(tester, zug);
 
     final baarStationRow = findDASTableRowByText('Baar');
     expect(baarStationRow, findsOneWidget);
     _findTextWithin(baarStationRow, '130');
 
-    final zuerichHbStationRow = findDASTableRowByText('Zürich HB');
+    final zuerichHb = 'Zürich HB';
+    final zuerichHbStationRow = findDASTableRowByText(zuerichHb);
     expect(zuerichHbStationRow, findsOneWidget);
     _findTextWithin(zuerichHbStationRow, '90');
+
+    await dragUntilTextInStickyHeader(tester, zuerichHb);
 
     final zuerichOerlikonStationRow = findDASTableRowByText('Zürich Oerlikon');
     expect(zuerichOerlikonStationRow, findsOneWidget);
     final zuerichAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(zuerichOerlikonStationRow);
     expect(zuerichAdvisedSpeedCell, findsNothing);
 
-    // scroll to see lower stations
-    await tester.dragUntilVisible(find.text('Konstanz'), scrollableFinder, const Offset(0, -100));
-
-    final zuerichAirportStationRow = findDASTableRowByText('Zürich Flughafen');
+    final zuerichAirport = 'Zürich Flughafen';
+    final zuerichAirportStationRow = findDASTableRowByText(zuerichAirport);
     expect(zuerichAirportStationRow, findsOneWidget);
     _findTextWithin(zuerichAirportStationRow, '130');
+
+    await dragUntilTextInStickyHeader(tester, zuerichAirport);
 
     final bassersdorfStationRow = findDASTableRowByText('Bassersdorf');
     expect(bassersdorfStationRow, findsOneWidget);
     final bassersdorfAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(bassersdorfStationRow);
     expect(bassersdorfAdvisedSpeedCell, findsNothing);
 
-    final winterthurStationRow = findDASTableRowByText('Winterthur');
+    final winterthur = 'Winterthur';
+    final winterthurStationRow = findDASTableRowByText(winterthur);
     expect(winterthurStationRow, findsOneWidget);
     _findTextWithin(winterthurStationRow, '80');
+
+    await dragUntilTextInStickyHeader(tester, winterthur);
 
     final frauenfeldStationRow = findDASTableRowByText('Frauenfeld');
     expect(frauenfeldStationRow, findsOneWidget);
@@ -166,6 +174,29 @@ void main() {
 
     // event to service point with VPro and delay 40 seconds
     expect(find.descendant(of: chronograph, matching: find.text(fourtySecondsDelay)), findsOneWidget);
+
+    await disconnect(tester);
+  });
+
+  testWidgets('test calculated speed is reduced to line speed and displayed in different color', (tester) async {
+    await prepareAndStartApp(tester);
+
+    await loadTrainJourney(tester, trainNumber: 'T23');
+    await pauseAutomaticAdvancement(tester);
+    await tester.pumpAndSettle(Duration(milliseconds: 100));
+
+    await dragUntilTextInStickyHeader(tester, 'Buchrain');
+
+    // find reduced speed in Rotkreuz
+    final rotkreuxStationRow = findDASTableRowByText('Rotkreuz');
+    expect(rotkreuxStationRow, findsOneWidget);
+    _findTextWithin(rotkreuxStationRow, '130');
+
+    // should be in metal
+    final textWidget = tester.widget<Text>(
+      find.descendant(of: rotkreuxStationRow, matching: find.byKey(AdvisedSpeedCellBody.nonEmptyKey)),
+    );
+    expect(textWidget.style?.color, equals(SBBColors.metal));
 
     await disconnect(tester);
   });

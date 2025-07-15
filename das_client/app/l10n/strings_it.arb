@@ -54,7 +54,7 @@
   "w_service_point_modal_communication_radio_channels_not_found": "Nessun canale radio disponibile",
   "w_service_point_modal_communication_network": "Tipo di rete",
   "w_service_point_modal_graduated_speed_label": "Velocità graduate",
-  "w_service_point_modal_graduated_speed_break_series_title": "Categoria di treno e di freno",
+  "w_service_point_modal_graduated_speed_break_series_title": "Categoria di treno",
   "w_service_point_modal_graduated_speed_no_information": "Nessuna informazione",
   "w_service_point_modal_local_regulations_label": "Disposizioni locali",
   "w_additional_speed_restriction_modal_title": "Tratto di rallentamento",

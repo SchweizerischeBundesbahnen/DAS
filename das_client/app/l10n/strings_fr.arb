@@ -61,7 +61,7 @@
   "w_service_point_modal_communication_radio_channels_not_found": "Aucun canal radio disponible",
   "w_service_point_modal_communication_network": "Type de réseau",
   "w_service_point_modal_graduated_speed_label": "Graduation de la vitesse",
-  "w_service_point_modal_graduated_speed_break_series_title": "Catégorie de train et de freinage",
+  "w_service_point_modal_graduated_speed_break_series_title": "Catégorie de train",
   "w_service_point_modal_graduated_speed_no_information": "Aucune information",
   "w_service_point_modal_local_regulations_label": "Prescriptions locales",
   "c_ru_sbb_p": "CFF",

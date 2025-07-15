@@ -1,9 +1,11 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/speed_cell_body.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class DetailTabGraduatedSpeeds extends StatelessWidget {
@@ -56,16 +58,25 @@ class DetailTabGraduatedSpeeds extends StatelessWidget {
 
   Widget _buildSpeedInfoList(BuildContext context, List<TrainSeriesSpeed> speedInfo) {
     return ListView.separated(
-      physics: ClampingScrollPhysics(),
+      physics: const ClampingScrollPhysics(),
       itemCount: speedInfo.length,
       separatorBuilder: (context, index) => const Divider(),
       itemBuilder: (context, index) {
         final speed = speedInfo[index];
+
         return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Text(
-            speed.text!,
-            style: DASTextStyles.mediumRoman,
+          padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing, vertical: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SpeedCellBody(
+                speed: speed.speed,
+                singleLine: true,
+                textStyle: DASTextStyles.mediumBold,
+              ),
+              const SizedBox(height: 10),
+              Text(speed.text!, style: DASTextStyles.mediumRoman),
+            ],
           ),
         );
       },
