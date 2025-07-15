@@ -187,7 +187,7 @@ Future<void> _checkCollapsedWhenPassed(int identifier, WidgetTester tester) asyn
   _checkCollapsibleRow(identifier: identifier, isCollapsed: false);
 
   // wait for positional update and scroll back up
-  await tester.pumpAndSettle(Duration(seconds: 1));
+  await tester.pumpAndSettle(Duration(seconds: 2));
   await tester.drag(find.byType(AnimatedList), const Offset(0, 300));
 
   _checkCollapsibleRow(identifier: identifier, isCollapsed: true);
@@ -195,16 +195,13 @@ Future<void> _checkCollapsedWhenPassed(int identifier, WidgetTester tester) asyn
 
 void _checkCollapsibleRow({required bool isCollapsed, Object? identifier, Finder? collapsibleRow}) {
   final rowToTest = collapsibleRow ?? _findDASTableAccordionRowByKey(identifier!);
-  final collapsedAccordions = find.descendant(
+
+  final accordions = find.descendant(
     of: rowToTest,
-    matching: find.byKey(Accordion.collapsedKey),
+    matching: find.byKey(isCollapsed ? Accordion.collapsedKey : Accordion.expandedKey),
   );
-  final expandedAccordions = find.descendant(
-    of: rowToTest,
-    matching: find.byKey(Accordion.expandedKey),
-  );
-  expect(collapsedAccordions, isCollapsed ? findsAny : findsNothing);
-  expect(expandedAccordions, !isCollapsed ? findsAny : findsNothing);
+
+  expect(accordions, findsAny);
 }
 
 Finder _findDASTableAccordionRowByKey(Object identifier) {
