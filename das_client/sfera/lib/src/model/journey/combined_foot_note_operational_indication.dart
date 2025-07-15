@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/model/journey/order_priority.dart';
 
@@ -19,4 +20,16 @@ class CombinedFootNoteOperationalIndication extends BaseData {
 
   @override
   OrderPriority get orderPriority => OrderPriority.uncodedOperationalIndication;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is CombinedFootNoteOperationalIndication &&
+          footNote == other.footNote &&
+          operationalIndication == other.operationalIndication &&
+          order == other.order &&
+          kilometre == other.kilometre);
+
+  @override
+  int get hashCode => Object.hash(order, ListEquality().hash(kilometre), footNote, operationalIndication);
 }
