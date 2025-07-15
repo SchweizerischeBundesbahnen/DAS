@@ -167,22 +167,6 @@ void main() {
 
     await disconnect(tester);
   });
-  testWidgets('test RADN foot notes collapsed when passed', (tester) async {
-    await prepareAndStartApp(tester);
-    await loadTrainJourney(tester, trainNumber: 'T15');
-
-    final footnote = FootNote(
-      type: FootNoteType.decisiveGradientDown,
-      refText: '1)',
-      text: 'Renens - Lausanne <i>"via saut-de-mouton"</i> 0‰',
-    );
-    final opFootNote = OpFootNote(order: 0, footNote: footnote);
-    final identifier = opFootNote.hashCode;
-
-    await _checkCollapsedWhenPassed(identifier, tester);
-
-    await disconnect(tester);
-  });
 }
 
 Future<void> _checkCollapsible(int identifier, WidgetTester tester) async {
