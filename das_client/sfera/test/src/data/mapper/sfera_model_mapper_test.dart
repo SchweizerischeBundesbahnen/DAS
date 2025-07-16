@@ -1407,7 +1407,7 @@ void main() {
     expect(
       uncodedOperationalIndications[1].texts,
       contains(
-        'Strecke INN - MR: Bahnübergangsanlagen ohne Balisenüberwachung<br/>Straba. = Strassenbahnbereich<br/>E Straba. = Ende Strassenbahnbanbereich<br/>K Ende = Kurvenende',
+        'Strecke INN - MR: Bahnübergangsanlagen ohne Balisenüberwachung<br/>Straba. = Strassenbahnbereich<br/>E Straba. = Ende Strassenbahnbanbereich<br/>K Ende = Kurvenende<br/>F Fake = FakingIt',
       ),
     );
     expect(uncodedOperationalIndications[2].order, 200000);
