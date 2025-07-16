@@ -12,11 +12,7 @@ void main() {
   testWidgets('test calculated speeds are displayed correctly', (tester) async {
     await prepareAndStartApp(tester);
 
-    await loadTrainJourney(tester, trainNumber: 'T23');
-
-    // do not get disrupted by events
-    await pauseAutomaticAdvancement(tester);
-    await tester.pumpAndSettle(Duration(milliseconds: 100));
+    await loadTrainJourney(tester, trainNumber: 'T23M');
 
     final ebikonStationRow = findDASTableRowByText('Ebikon');
     expect(ebikonStationRow, findsOneWidget);
@@ -98,11 +94,7 @@ void main() {
   testWidgets('test calculated speeds are displayed correctly in sticky header', (tester) async {
     await prepareAndStartApp(tester);
 
-    await loadTrainJourney(tester, trainNumber: 'T23');
-
-    // do not get disrupted by events
-    await pauseAutomaticAdvancement(tester);
-    await tester.pumpAndSettle(Duration(milliseconds: 100));
+    await loadTrainJourney(tester, trainNumber: 'T23M');
 
     await dragUntilTextInStickyHeader(tester, 'Thalwil');
 
@@ -155,8 +147,6 @@ void main() {
 
     await loadTrainJourney(tester, trainNumber: 'T23');
 
-    const fourtySecondsDelay = '+00:40';
-
     final chronograph = find.byType(DASChronograph);
 
     // should not display punctuality string
@@ -165,14 +155,13 @@ void main() {
       findsNothing,
     );
 
-    await tester.pumpAndSettle(Duration(milliseconds: 700));
-
     await waitUntilExists(
       tester,
       find.descendant(of: chronograph, matching: find.byKey(DASChronograph.punctualityTextKey)),
     );
 
     // event to service point with VPro and delay 40 seconds
+    const fourtySecondsDelay = '+00:40';
     expect(find.descendant(of: chronograph, matching: find.text(fourtySecondsDelay)), findsOneWidget);
 
     await disconnect(tester);
@@ -181,9 +170,7 @@ void main() {
   testWidgets('test calculated speed is reduced to line speed and displayed in different color', (tester) async {
     await prepareAndStartApp(tester);
 
-    await loadTrainJourney(tester, trainNumber: 'T23');
-    await pauseAutomaticAdvancement(tester);
-    await tester.pumpAndSettle(Duration(milliseconds: 100));
+    await loadTrainJourney(tester, trainNumber: 'T23M');
 
     await dragUntilTextInStickyHeader(tester, 'Buchrain');
 
