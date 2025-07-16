@@ -42,9 +42,7 @@ abstract class BaseData implements Comparable {
   /// Used to check if the current element is allowed to be grouped with the other element
   /// Only gets checked if [canGroup] is already true
   /// Grouping is done in [BaseDataExtension]
-  bool canGroupWith(BaseData other) {
-    return false;
-  }
+  bool canGroupWith(BaseData other) => false;
 
   /// Returns static local and line speeds. Does not return calculated or advised speed.
   Iterable<TrainSeriesSpeed> get allStaticSpeeds {

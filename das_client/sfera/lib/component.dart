@@ -26,6 +26,7 @@ export 'package:sfera/src/model/journey/base_foot_note.dart';
 export 'package:sfera/src/model/journey/bracket_station_segment.dart';
 export 'package:sfera/src/model/journey/break_series.dart';
 export 'package:sfera/src/model/journey/cab_signaling.dart';
+export 'package:sfera/src/model/journey/combined_foot_note_operational_indication.dart';
 export 'package:sfera/src/model/journey/communication_network_change.dart';
 export 'package:sfera/src/model/journey/connection_track.dart';
 export 'package:sfera/src/model/journey/contact.dart';
@@ -33,6 +34,7 @@ export 'package:sfera/src/model/journey/contact_list.dart';
 export 'package:sfera/src/model/journey/curve_point.dart';
 export 'package:sfera/src/model/journey/datatype.dart';
 export 'package:sfera/src/model/journey/delay.dart';
+export 'package:sfera/src/model/journey/foot_note.dart';
 export 'package:sfera/src/model/journey/journey.dart';
 export 'package:sfera/src/model/journey/koa_state.dart';
 export 'package:sfera/src/model/journey/level_crossing.dart';
@@ -53,6 +55,7 @@ export 'package:sfera/src/model/journey/track_foot_note.dart';
 export 'package:sfera/src/model/journey/train_series.dart';
 export 'package:sfera/src/model/journey/train_series_speed.dart';
 export 'package:sfera/src/model/journey/tram_area.dart';
+export 'package:sfera/src/model/journey/uncoded_operational_indication.dart';
 export 'package:sfera/src/model/journey/ux_testing_event.dart';
 export 'package:sfera/src/model/journey/warnapp_event.dart';
 export 'package:sfera/src/model/journey/whistles.dart';
@@ -75,7 +78,7 @@ class SferaComponent {
     required SferaAuthProvider sferaAuthProvider,
     required String deviceId,
   }) {
-    final localDatabaseService = DriftLocalDatabaseService();
+    final localDatabaseService = DriftLocalDatabaseService.instance;
     return SferaRemoteRepoImpl(
       mqttService: mqttService,
       localService: localDatabaseService,
@@ -85,7 +88,7 @@ class SferaComponent {
   }
 
   static SferaLocalRepo createSferaLocalRepo() {
-    final localDatabaseService = DriftLocalDatabaseService();
+    final localDatabaseService = DriftLocalDatabaseService.instance;
     return SferaLocalRepoImpl(localService: localDatabaseService);
   }
 }

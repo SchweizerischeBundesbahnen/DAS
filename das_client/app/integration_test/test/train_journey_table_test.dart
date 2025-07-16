@@ -30,7 +30,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await loadTrainJourney(tester, trainNumber: 'T15');
+      await loadTrainJourney(tester, trainNumber: 'T15M');
 
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
@@ -41,7 +41,7 @@ void main() {
       final renensGradient = find.descendant(of: renensRow.first, matching: find.text('10'));
       expect(renensGradient, findsOneWidget);
 
-      await tester.dragUntilVisible(find.text('Pully'), scrollableFinder, const Offset(0, -50));
+      await dragUntilTextInStickyHeader(tester, 'Lausanne');
 
       final pullyRow = findDASTableRowByText('Pully');
       expect(pullyRow, findsAny);
@@ -49,7 +49,7 @@ void main() {
       final pullyGradient = find.descendant(of: pullyRow, matching: find.text('11'));
       expect(pullyGradient, findsOneWidget);
 
-      await tester.dragUntilVisible(find.text('Taillepied'), scrollableFinder, const Offset(0, -50));
+      await dragUntilTextInStickyHeader(tester, 'Pully');
 
       final taillepiedRow = findDASTableRowByText('Taillepied');
       expect(taillepiedRow, findsAny);
@@ -683,10 +683,7 @@ void main() {
     testWidgets('test curves are displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
 
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999');
-
-      await selectBreakSeries(tester, breakSeries: 'R150');
 
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
