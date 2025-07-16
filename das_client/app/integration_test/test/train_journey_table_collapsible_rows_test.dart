@@ -79,8 +79,7 @@ void main() {
     await loadTrainJourney(tester, trainNumber: 'T22M');
 
     // scroll to testable row
-    final scrollableFinder = find.byType(AnimatedList);
-    await tester.dragUntilVisible(find.textContaining('Strecke INN - MR'), scrollableFinder, const Offset(0, -100));
+    await dragUntilTextInStickyHeader(tester, 'Lausanne');
 
     // should have show more button and collapsed content with " ;" delimiter
     final collapsibleRow = _findDASTableAccordionRowByContainsText(
