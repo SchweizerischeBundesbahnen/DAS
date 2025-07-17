@@ -21,32 +21,35 @@ public final class FormationRunFactory {
     private static FormationRun create(ch.sbb.zis.trainformation.api.model.FormationRun formationRun) {
         ConsolidatedBrakingInformation consolidatedBrakingInformation = formationRun.getConsolidatedBrakingInformation();
         BrakeCalculationResult brakeCalculationResult = formationRun.getFormationRunInspection().getBrakeCalculationResult();
-        return new FormationRun(
-            formationRun.getFormationRunInspection().getInspected(),
-            formationRun.getSmsEvu(),
-            mapToTafTapLocationReference(formationRun.getStartLocationUic()),
-            mapToTafTapLocationReference(formationRun.getEndLocationUic()),
-            formationRun.getTrainSequence(),
-            formationRun.getBrakeSequence(),
-            consolidatedBrakingInformation.getTractionMaxSpeedInKilometerPerHour(),
-            consolidatedBrakingInformation.getHauledLoadMaxSpeedInKilometerPerHour(),
-            brakeCalculationResult.getTractionLengthInCentimeter(),
-            brakeCalculationResult.getHauledLoadLengthInCentimeter(),
-            brakeCalculationResult.getTractionGrossWeightInTonne(),
-            brakeCalculationResult.getHauledLoadInTonne(),
-            brakeCalculationResult.getTractionBrakedWeightInTonne(),
-            brakeCalculationResult.getHauledLoadBrakedWeightInTonne(),
-            brakeCalculationResult.getBrakePositionGForLeadingTraction(),
-            brakeCalculationResult.getBrakePositionGForBrakeUnit1to5(),
-            brakeCalculationResult.getBrakePositionGForLoadHauled(),
-            consolidatedBrakingInformation.getIsSimZug(),
-            consolidatedBrakingInformation.getCarCarrierWagon(),
-            consolidatedBrakingInformation.getMaxAxleLoadInKilogrammes(),
-            consolidatedBrakingInformation.getRouteClass(),
-            consolidatedBrakingInformation.getMaxUphillDownhillGradients().getMaxUphillGradientInPermille(),
-            consolidatedBrakingInformation.getMaxUphillDownhillGradients().getMaxDownhillGradientInPermille(),
-            consolidatedBrakingInformation.getMaximumSlopeForMinimumHoldingForceInPermille(),
-            VehicleFactory.create(formationRun.getVehicleGroups()));
+        return FormationRun.builder()
+            .inspected(formationRun.getFormationRunInspection().getInspected())
+            .company(formationRun.getSmsEvu())
+            .tafTapLocationReferenceStart(mapToTafTapLocationReference(formationRun.getStartLocationUic()))
+            .tafTapLocationReferenceEnd(mapToTafTapLocationReference(formationRun.getEndLocationUic()))
+            .trainCategoryCode(formationRun.getTrainSequence())
+            .brakedWeightPercentage(formationRun.getBrakeSequence())
+            .tractionMaxSpeedInKmh(consolidatedBrakingInformation.getTractionMaxSpeedInKilometerPerHour())
+            .hauledLoadMaxSpeedInKmh(consolidatedBrakingInformation.getHauledLoadMaxSpeedInKilometerPerHour())
+            .formationMaxSpeedInKmh(consolidatedBrakingInformation.getFormationMaxSpeedInKilometerPerHour())
+            .tractionLengthInCm(brakeCalculationResult.getTractionLengthInCentimeter())
+            .hauledLoadLengthInCm(brakeCalculationResult.getHauledLoadLengthInCentimeter())
+            .formationLengthInCm(brakeCalculationResult.getTotalLengthInCentimeter())
+            .tractionGrossWeightInT(brakeCalculationResult.getTractionGrossWeightInTonne())
+            .hauledLoadGrossWeightInT(brakeCalculationResult.getHauledLoadInTonne())
+            .tractionBrakedWeightInT(brakeCalculationResult.getTractionBrakedWeightInTonne())
+            .hauledLoadBrakedWeightInT(brakeCalculationResult.getHauledLoadBrakedWeightInTonne())
+            .brakePositionGForLeadingTraction(brakeCalculationResult.getBrakePositionGForLeadingTraction())
+            .brakePositionGForBrakeUnit1to5(brakeCalculationResult.getBrakePositionGForBrakeUnit1to5())
+            .brakePositionGForLoadHauled(brakeCalculationResult.getBrakePositionGForLoadHauled())
+            .simTrain(consolidatedBrakingInformation.getIsSimZug())
+            .carCarrierVehicle(consolidatedBrakingInformation.getCarCarrierWagon())
+            .axleLoadMaxInKg(consolidatedBrakingInformation.getMaxAxleLoadInKilogrammes())
+            .routeClass(consolidatedBrakingInformation.getRouteClass())
+            .gradientUphillMaxInPermille(consolidatedBrakingInformation.getMaxUphillDownhillGradients().getMaxUphillGradientInPermille())
+            .gradientDownhillMaxInPermille(consolidatedBrakingInformation.getMaxUphillDownhillGradients().getMaxDownhillGradientInPermille())
+            .slopeMaxForHoldingForceMinInPermille(consolidatedBrakingInformation.getMaximumSlopeForMinimumHoldingForceInPermille())
+            .vehicles(VehicleFactory.create(formationRun.getVehicleGroups()))
+            .build();
     }
 
     private static TafTapLocationReference mapToTafTapLocationReference(LocationUic locationUic) {

@@ -10,9 +10,6 @@ public class Load {
     private List<IntermodalLoadingUnit> intermodalLoadingUnits;
 
     boolean hasDangerousGoods() {
-        if (goods == null || goods.isEmpty()) {
-            return false;
-        }
         return Good.hasDangerousGoods(goods) || IntermodalLoadingUnit.hasDangerousGoods(intermodalLoadingUnits);
     }
 }

@@ -9,7 +9,7 @@ public class Good {
     private boolean isDangerous;
 
     static boolean hasDangerousGoods(List<Good> goods) {
-        if (goods == null || goods.isEmpty()) {
+        if (goods == null) {
             return false;
         }
         return goods.stream()

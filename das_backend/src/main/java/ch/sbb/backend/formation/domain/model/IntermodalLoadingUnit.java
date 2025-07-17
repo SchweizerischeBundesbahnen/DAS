@@ -9,14 +9,14 @@ public class IntermodalLoadingUnit {
     private List<Good> goods;
 
     static boolean hasDangerousGoods(List<IntermodalLoadingUnit> intermodalLoadingUnits) {
-        if (intermodalLoadingUnits == null || intermodalLoadingUnits.isEmpty()) {
+        if (intermodalLoadingUnits == null) {
             return false;
         }
         return intermodalLoadingUnits.stream()
-            .anyMatch(IntermodalLoadingUnit::hasLoadDangerousGoods);
+            .anyMatch(IntermodalLoadingUnit::hasDangerousGoods);
     }
 
-    private boolean hasLoadDangerousGoods() {
+    private boolean hasDangerousGoods() {
         return Good.hasDangerousGoods(goods);
     }
 }
