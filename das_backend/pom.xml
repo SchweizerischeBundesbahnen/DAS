@@ -245,10 +245,10 @@
             <url>https://packages.confluent.io/maven/</url>
         </pluginRepository>
     </pluginRepositories>
-    <repositories>
-        <repository>
-            <id>confluent</id>
-            <url>https://packages.confluent.io/maven/</url>
-        </repository>
-    </repositories>
+    <!--    <repositories>-->
+    <!--        <repository>-->
+    <!--            <id>confluent</id>-->
+    <!--            <url>https://packages.confluent.io/maven/</url>-->
+    <!--        </repository>-->
+    <!--    </repositories>-->
 </project>
