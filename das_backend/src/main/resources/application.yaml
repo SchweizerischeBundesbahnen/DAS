@@ -24,6 +24,34 @@ spring:
     url: ${DB_URL}
   flyway:
     baseline-on-migrate: true
+  kafka:
+    consumer:
+      bootstrap-servers: ${ZIS_BOOTSTRAP_URL}
+      key-deserializer: io.confluent.kafka.serializers.json.KafkaJsonSchemaDeserializer
+      value-deserializer: io.confluent.kafka.serializers.json.KafkaJsonSchemaDeserializer
+      auto-offset-reset: latest
+      group-id: ${ZIS_GROUP_ID}
+      properties:
+        schema.registry.url: ${ZIS_SR_URL}
+        json:
+          value.type: ch.sbb.zis.trainformation.api.model.DailyFormationTrain
+          key.type: ch.sbb.zis.trainformation.api.model.DailyFormationTrainKey
+          fail.invalid.schema: true
+    jaas:
+      enabled: true
+      login-module: org.apache.kafka.common.security.plain.PlainLoginModule
+      options:
+        username: ${ZIS_API_KEY}
+        password: ${ZIS_API_SECRET}
+    security:
+      protocol: SASL_SSL
+    properties:
+      sasl.mechanism: PLAIN
+      connections.max.idle.ms: 340000
+      basic.auth:
+        credentials.source: USER_INFO
+        user.info: ${ZIS_SR_API_KEY}:${ZIS_SR_API_SECRET}
+      schema.registry.url: ${ZIS_SR_URL}
 management:
   endpoint:
     health:
@@ -57,3 +85,6 @@ auth:
 splunk:
   url: ${SPLUNK_HEC_URL}
   token: ${SPLUNK_HEC_TOKEN}
+
+zis:
+  kafka.topic: zis.inte.trafo.trainformation.operational
