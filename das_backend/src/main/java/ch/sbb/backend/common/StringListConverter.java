@@ -1,4 +1,4 @@
-package ch.sbb.backend.common.utils;
+package ch.sbb.backend.common;
 
 import static java.util.Collections.emptyList;
 

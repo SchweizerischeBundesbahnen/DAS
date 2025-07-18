@@ -132,8 +132,8 @@ class FormationRunTest {
     void formationBrakedWeightInT_correct() {
         FormationRun formationRun = FormationRun.builder()
             .inspected(true)
-            .tractionGrossWeightInT(87)
-            .hauledLoadGrossWeightInT(4)
+            .tractionBrakedWeightInT(87)
+            .hauledLoadBrakedWeightInT(4)
             .build();
 
         int result = formationRun.formationBrakedWeightInT();

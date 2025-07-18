@@ -4,9 +4,11 @@ import ch.sbb.backend.common.TelTsi;
 import java.util.Collections;
 import java.util.List;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Builder
+@EqualsAndHashCode
 public class FormationRun {
 
     private Boolean inspected;
