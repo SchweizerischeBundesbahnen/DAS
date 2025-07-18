@@ -16,16 +16,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.SequenceGenerator;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 @Entity(name = "train_formation_run")
 @ToString
@@ -138,10 +134,6 @@ public class TrainFormationRunEntity {
     private Integer gradientDownhillMaxInPermille;
 
     private String slopeMaxForHoldingForceMinInPermille;
-
-    //    todo remove
-    @JdbcTypeCode(SqlTypes.JSON)
-    private Map<String, Object> originalZisMessage = new HashMap<>();
 
     public static List<TrainFormationRunEntity> from(Formation formation) {
         return formation.inspectedFormationRuns().stream()
