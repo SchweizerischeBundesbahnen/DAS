@@ -1,6 +1,5 @@
-package ch.sbb.backend.formation;
+package ch.sbb.backend.formation.infrastructure;
 
-import ch.sbb.backend.formation.infrastructure.TrainFormationRunRepository;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
