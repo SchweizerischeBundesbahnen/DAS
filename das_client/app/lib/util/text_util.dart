@@ -10,6 +10,22 @@ class TextUtil {
     return text.replaceAll(RegExp(r'<br\s*/?>'), '\n');
   }
 
+  static bool hasTextOverflow(
+    String text,
+    double maxWidth,
+    TextStyle style, {
+    TextScaler textScaler = TextScaler.noScaling,
+    int maxLines = 1,
+  }) {
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      maxLines: maxLines,
+      textDirection: TextDirection.ltr,
+      textScaler: textScaler,
+    )..layout(minWidth: 0, maxWidth: maxWidth);
+    return textPainter.didExceedMaxLines;
+  }
+
   static String balanceHtmlTags(String text) {
     final openTags = <String>[];
     final regex = RegExp(r'<(/?)(\w+)>', caseSensitive: false);
@@ -32,6 +48,12 @@ class TextUtil {
     }
 
     return text;
+  }
+
+  /// replaces all line breaks by given [delimiter]
+  static String replaceLineBreaks(String input, {String delimiter = '; '}) {
+    final pattern = RegExp(r'(\r\n|\r|\n|<br\s*/?>)', multiLine: true);
+    return input.replaceAll(pattern, delimiter);
   }
 
   static TextSpan _parseHtmlTextTags(String text, TextStyle baseTextStyle) {

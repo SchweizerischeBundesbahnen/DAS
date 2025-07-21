@@ -313,7 +313,7 @@ class SferaReplyParser {
       case JpContextInformationDto.elementType:
         return JpContextInformationDto(attributes: attributes, children: children, value: value);
       case JpContextInformationNspDto.elementType:
-        return JpContextInformationNspDto(attributes: attributes, children: children, value: value);
+        return JpContextInformationNspDto.from(attributes: attributes, children: children, value: value);
       case JpContextInformationNspConstraintsDto.elementType:
         return JpContextInformationNspConstraintsDto(attributes: attributes, children: children, value: value);
       case AdvisedSpeedDto.elementType:

@@ -12,7 +12,6 @@ import 'package:sfera/src/data/dto/related_train_information_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
-import 'package:sfera/src/model/journey/foot_note.dart';
 
 void main() {
   Logger.root.level = Level.ALL;
@@ -1392,6 +1391,35 @@ void main() {
     expect(trackFootNotes[0].footNote.refText, '1)');
   });
 
+  test('Test operational indications parsed correctly', () async {
+    final journey = getJourney('T22', 4);
+    expect(journey.valid, true);
+
+    final uncodedOperationalIndications = journey.data.whereType<UncodedOperationalIndication>().toList();
+    expect(uncodedOperationalIndications, hasLength(3));
+
+    expect(uncodedOperationalIndications[0].order, 0);
+    expect(uncodedOperationalIndications[0].texts, hasLength(1));
+    expect(uncodedOperationalIndications[0].texts[0], 'Renens VD: Halt an Halteort 3');
+    expect(uncodedOperationalIndications[1].order, 100000);
+    expect(uncodedOperationalIndications[1].texts, hasLength(2));
+    expect(uncodedOperationalIndications[1].texts, contains('Lausanne: Halt an Halteort 2'));
+    expect(
+      uncodedOperationalIndications[1].texts,
+      contains(
+        'Strecke INN - MR: Bahnübergangsanlagen ohne Balisenüberwachung<br/>Straba. = Strassenbahnbereich<br/>E Straba. = Ende Strassenbahnbanbereich<br/>K Ende = Kurvenende<br/>F Fake = FakingIt',
+      ),
+    );
+    expect(uncodedOperationalIndications[2].order, 200000);
+    expect(uncodedOperationalIndications[2].texts, hasLength(1));
+    expect(
+      uncodedOperationalIndications[2].texts[0],
+      contains(
+        'Pully: Vorziehen bis Ende Perron. Das ist ein sehr langer einzeiliger Text um zu prüfen, ob die Anzeige korrekt damit umgehen kann.',
+      ),
+    );
+  });
+
   test('Test ContactList T9999 parsed correctly', () async {
     final journey = getJourney('T9999', 5);
     expect(journey.valid, true);
@@ -1590,52 +1618,15 @@ void main() {
     expect(servicePoints[2].properties[0].sign, isNull);
     expect(servicePoints[2].properties[0].text, isNull);
     expect(servicePoints[2].properties[0].speeds, hasLength(17));
-    expect(
-      servicePoints[2].properties[0].speeds.speedFor(TrainSeries.A, breakSeries: 50)!.speed,
-      isA<IncomingOutgoingSpeed>(),
-    );
-    expect(
-      ((servicePoints[2].properties[0].speeds.speedFor(TrainSeries.A, breakSeries: 50)!.speed as IncomingOutgoingSpeed)
-                  .incoming
-              as SingleSpeed)
-          .value,
-      '60',
-    );
-    expect(
-      ((servicePoints[2].properties[0].speeds.speedFor(TrainSeries.A, breakSeries: 50)!.speed as IncomingOutgoingSpeed)
-                  .incoming
-              as SingleSpeed)
-          .isSquared,
-      true,
-    );
-    expect(
-      ((servicePoints[2].properties[0].speeds.speedFor(TrainSeries.A, breakSeries: 50)!.speed as IncomingOutgoingSpeed)
-                  .incoming
-              as SingleSpeed)
-          .isCircled,
-      false,
-    );
-    expect(
-      ((servicePoints[2].properties[0].speeds.speedFor(TrainSeries.A, breakSeries: 50)!.speed as IncomingOutgoingSpeed)
-                  .outgoing
-              as SingleSpeed)
-          .value,
-      '70',
-    );
-    expect(
-      ((servicePoints[2].properties[0].speeds.speedFor(TrainSeries.A, breakSeries: 50)!.speed as IncomingOutgoingSpeed)
-                  .outgoing
-              as SingleSpeed)
-          .isCircled,
-      true,
-    );
-    expect(
-      ((servicePoints[2].properties[0].speeds.speedFor(TrainSeries.A, breakSeries: 50)!.speed as IncomingOutgoingSpeed)
-                  .outgoing
-              as SingleSpeed)
-          .isSquared,
-      false,
-    );
+    final speed = servicePoints[2].properties[0].speeds.speedFor(TrainSeries.A, breakSeries: 50)!.speed;
+    expect(speed, isA<IncomingOutgoingSpeed>());
+    final incomingOutgoingSpeed = speed as IncomingOutgoingSpeed;
+    expect((incomingOutgoingSpeed.incoming as SingleSpeed).value, '60');
+    expect((incomingOutgoingSpeed.incoming as SingleSpeed).isSquared, true);
+    expect((incomingOutgoingSpeed.incoming as SingleSpeed).isCircled, false);
+    expect((incomingOutgoingSpeed.outgoing as SingleSpeed).value, '70');
+    expect((incomingOutgoingSpeed.outgoing as SingleSpeed).isCircled, true);
+    expect((incomingOutgoingSpeed.outgoing as SingleSpeed).isSquared, false);
 
     // Vevey
     expect(servicePoints[5].properties, hasLength(3));

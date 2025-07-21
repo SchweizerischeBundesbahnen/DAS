@@ -1,0 +1,114 @@
+<?xml version="1.0" ?>
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="1" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+    <TrainIdentification>
+        <OTN_ID>
+            <teltsi_Company>1285</teltsi_Company>
+            <teltsi_OperationalTrainNumber>T22</teltsi_OperationalTrainNumber>
+            <teltsi_StartDate>2025-05-17</teltsi_StartDate>
+        </OTN_ID>
+    </TrainIdentification>
+
+    <SegmentProfileReference SP_ID="T22_1" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:37:50Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T07:37:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Renens_VD"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T07:38:00Z" plannedDepartureTime="2025-05-17T07:38:00Z"/>
+        </TimingPointConstraints>
+
+        <TrainCharacteristicsRef TC_ID="T22_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
+            <TC_RU_ID>1285</TC_RU_ID>
+        </TrainCharacteristicsRef>
+
+        <!-- Single Uncoded Operational Indication -->
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>operationalIndication</NSP_GroupName>
+                <NetworkSpecificParameter name="type" value="uncoded"/>
+                <NetworkSpecificParameter name="uncodedText" value="Renens VD: Halt an Halteort 3"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
+    </SegmentProfileReference>
+
+    <SegmentProfileReference SP_ID="T22_2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:43:20Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T07:44:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Lausanne"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T07:48:00Z" plannedDepartureTime="2025-05-17T07:48:00Z"/>
+        </TimingPointConstraints>
+
+        <!-- Multiple Uncoded Operational Indications on one service point -->
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>operationalIndication</NSP_GroupName>
+                <NetworkSpecificParameter name="type" value="uncoded"/>
+                <NetworkSpecificParameter name="uncodedText" value="Lausanne: Halt an Halteort 2"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>operationalIndication</NSP_GroupName>
+                <NetworkSpecificParameter name="type" value="uncoded"/>
+                <NetworkSpecificParameter name="uncodedText"
+                                          value="Strecke INN - MR: Bahnübergangsanlagen ohne Balisenüberwachung&lt;br/&gt;Straba. = Strassenbahnbereich&lt;br/&gt;E Straba. = Ende Strassenbahnbanbereich&lt;br/&gt;K Ende = Kurvenende&lt;br/&gt;F Fake = FakingIt"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+    </SegmentProfileReference>
+
+    <SegmentProfileReference SP_ID="T22_3" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:51:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T07:51:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Pully"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+
+        <!-- Single Uncoded Operational Indication with RADN footnotes on same service point -->
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>operationalIndication</NSP_GroupName>
+                <NetworkSpecificParameter name="type" value="uncoded"/>
+                <NetworkSpecificParameter name="uncodedText"
+                                          value="Pully: Vorziehen bis Ende Perron. Das ist ein sehr langer einzeiliger Text um zu prüfen, ob die Anzeige korrekt damit umgehen kann. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
+    </SegmentProfileReference>
+
+    <SegmentProfileReference SP_ID="T22_4" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T07:52:10Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T07:52:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Taillepied"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileReference>
+</JourneyProfile>

@@ -4,6 +4,7 @@ import 'package:app/di/di.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/navigation/journey_navigation_model.dart';
 import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
+import 'package:app/pages/journey/train_journey/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/train_journey/das_table_speed_view_model.dart';
 import 'package:app/pages/journey/train_journey/ux_testing_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
@@ -20,14 +21,16 @@ import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:app/pages/journey/train_journey/widgets/warn_function_modal_sheet.dart';
 import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/sound/koa_sound.dart';
-import 'package:app/sound/sound.dart';
 import 'package:app/sound/warn_app_sound.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class TrainJourneyOverview extends StatefulWidget {
+  static const double horizontalPadding = sbbDefaultSpacing * 0.5;
+
   const TrainJourneyOverview({super.key});
 
   @override
@@ -70,6 +73,10 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
+          create: (_) => CollapsibleRowsViewModel(sferaRemoteRepo: DI.get()),
+          dispose: (context, vm) => vm.dispose(),
+        ),
+        Provider(
           create: (_) => ServicePointModalViewModel(),
           dispose: (_, vm) => vm.dispose(),
         ),
@@ -104,14 +111,12 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
   }
 
   Widget _body(BuildContext context) {
-    final uxTestingViewModel = context.read<UxTestingViewModel>();
     final detailModalController = context.read<DetailModalViewModel>().controller;
-
     return Listener(
       onPointerDown: (_) => detailModalController.resetAutomaticClose(),
       onPointerUp: (_) => detailModalController.resetAutomaticClose(),
       child: StreamBuilder(
-        stream: uxTestingViewModel.uxTestingEvents,
+        stream: context.read<UxTestingViewModel>().uxTestingEvents,
         builder: (context, snapshot) {
           _handleUxEvents(context, snapshot.data);
 
@@ -159,8 +164,7 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
   }
 
   void _triggerWarnappNotification(BuildContext context) {
-    final Sound sound = WarnAppSound();
-    sound.play();
+    WarnAppSound().play();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       showWarnFunctionModalSheet(
         context,
@@ -175,8 +179,7 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
     if (event.isWarn) {
       _triggerWarnappNotification(context);
     } else if (event.isKoa && event.value == KoaState.waitCancelled.name) {
-      final Sound sound = KoaSound();
-      sound.play();
+      KoaSound().play();
     }
   }
 }

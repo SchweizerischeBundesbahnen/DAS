@@ -40,9 +40,10 @@
 				&lt;stationProperties&gt;
 					&lt;stationProperty text=&quot;&lt;b&gt;A&quot; sign=&quot;Q&quot;&gt;
 						&lt;speeds&gt; 
-							&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;40-30&quot;/&gt; 
-							&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;40-30&quot;/&gt; 
-						&lt;/speeds&gt; 
+							&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;40-30/80&quot;/&gt;
+							&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;40-30/80&quot;/&gt;
+							&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;40-30/80&quot;/&gt;
+						&lt;/speeds&gt;
 					&lt;/stationProperty&gt;
 				&lt;/stationProperties&gt;
 				"/>

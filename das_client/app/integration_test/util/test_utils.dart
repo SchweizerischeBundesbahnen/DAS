@@ -5,6 +5,7 @@ import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/extended_menu.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
 import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
+import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -173,6 +174,18 @@ void ignoreOverflowErrors(
   } else {
     FlutterError.dumpErrorToConsole(details, forceReport: forceReport);
   }
+}
+
+Future<void> dragUntilTextInStickyHeader(WidgetTester tester, String textToSearch) async {
+  final scrollableFinder = find.byType(AnimatedList);
+  final stickyHeader = find.byKey(StickyHeader.headerKey);
+  await tester.dragUntilVisible(
+    find.descendant(of: stickyHeader, matching: find.text(textToSearch)),
+    scrollableFinder,
+    const Offset(0, -50),
+    maxIteration: 100,
+  );
+  await tester.pumpAndSettle();
 }
 
 extension _FlutterErrorExtension on FlutterError {
