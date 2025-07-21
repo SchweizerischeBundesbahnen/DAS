@@ -2,9 +2,13 @@ package ch.sbb.backend.formation.domain.model;
 
 import java.util.Arrays;
 import java.util.List;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
-@AllArgsConstructor
+@Builder
+@EqualsAndHashCode
+@ToString
 public class VehicleUnit {
 
     private static final int TON_IN_HECTO_NEWTON = 10;
@@ -52,7 +56,7 @@ public class VehicleUnit {
         if (handBrakeWeightInTonne != null) {
             return handBrakeWeightInTonne * TON_IN_HECTO_NEWTON;
         }
-        return null;
+        return 0;
     }
 
     private boolean hasBrakeDesign(BrakeDesign... brakeDesigns) {
@@ -63,6 +67,6 @@ public class VehicleUnit {
     }
 
     private boolean hasDangerousGoods() {
-        return load.hasDangerousGoods();
+        return load != null && load.hasDangerousGoods();
     }
 }

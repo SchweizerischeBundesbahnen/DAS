@@ -94,22 +94,22 @@ public class TrainFormationRunEntity {
     private Integer formationHoldingForceInHectoNewton;
 
     @Column(name = "brake_position_g_for_leading_traction")
-    private boolean brakePositionGForLeadingTraction;
+    private Boolean brakePositionGForLeadingTraction;
 
     @Column(name = "brake_position_g_for_brake_unit_1_to_5")
-    private boolean brakePositionGForBrakeUnit1to5;
+    private Boolean brakePositionGForBrakeUnit1to5;
 
     @Column(name = "brake_position_g_for_load_hauled")
-    private boolean brakePositionGForLoadHauled;
+    private Boolean brakePositionGForLoadHauled;
 
-    private boolean simTrain;
+    private Boolean simTrain;
 
     @Convert(converter = StringListConverter.class)
     private List<String> tractionModes;
 
-    private boolean carCarrierVehicle;
+    private Boolean carCarrierVehicle;
 
-    private boolean dangerousGoods;
+    private Boolean dangerousGoods;
 
     private Integer vehiclesCount;
 
@@ -181,8 +181,8 @@ public class TrainFormationRunEntity {
             .vehiclesWithBrakeDesignLlAndKCount(formationRun.vehiclesWithBrakeDesignCount(BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE, BrakeDesign.KUNSTSTOFF_BREMSKLOETZE))
             .vehiclesWithBrakeDesignDCount(formationRun.vehiclesWithBrakeDesignCount(BrakeDesign.NORMALE_BREMSAUSRUESTUNG_KEINE_MERKMALE))
             .vehiclesWithDisabledBrakesCount(formationRun.vehiclesWithDisabledBrakeCount())
-            .europeanVehicleNumberFirst(formationRun.europeanVehicleNumberFirst().toString())
-            .europeanVehicleNumberLast(formationRun.europeanVehicleNumberLast().toString())
+            .europeanVehicleNumberFirst(formationRun.europeanVehicleNumberFirst() != null ? formationRun.europeanVehicleNumberFirst().asString() : null)
+            .europeanVehicleNumberLast(formationRun.europeanVehicleNumberLast() != null ? formationRun.europeanVehicleNumberLast().asString() : null)
             .axleLoadMaxInKg(formationRun.getAxleLoadMaxInKg())
             .routeClass(formationRun.getRouteClass())
             .gradientUphillMaxInPermille(formationRun.getGradientUphillMaxInPermille())

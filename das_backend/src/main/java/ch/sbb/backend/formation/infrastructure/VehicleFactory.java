@@ -9,7 +9,12 @@ import ch.sbb.backend.formation.domain.model.Load;
 import ch.sbb.backend.formation.domain.model.TractionMode;
 import ch.sbb.backend.formation.domain.model.Vehicle;
 import ch.sbb.backend.formation.domain.model.VehicleUnit;
+import ch.sbb.backend.formation.domain.model.VehicleUnit.VehicleUnitBuilder;
+import ch.sbb.zis.trainformation.api.model.CargoTransport;
 import ch.sbb.zis.trainformation.api.model.Goods;
+import ch.sbb.zis.trainformation.api.model.UnitEffectiveOperationalData;
+import ch.sbb.zis.trainformation.api.model.UnitTechnicalData;
+import ch.sbb.zis.trainformation.api.model.VehicleEffectiveTractionData;
 import ch.sbb.zis.trainformation.api.model.VehicleGroup;
 import java.util.Collections;
 import java.util.List;
@@ -36,8 +41,8 @@ public final class VehicleFactory {
     }
 
     private static Vehicle create(ch.sbb.zis.trainformation.api.model.Vehicle vehicle) {
-        return new Vehicle(mapToTractionMode(vehicle.getVehicleEffectiveTractionData().getTractionMode()), vehicle.getVehicleCategory(), mapToVehicleUnits(vehicle.getVehicleUnits()),
-            new EuropeanVehicleNumber(vehicle.getEuropeanVehicleNumber().getCountryCodeUic(), vehicle.getEuropeanVehicleNumber().getVehicleNumber()));
+        return new Vehicle(mapToTractionMode(vehicle.getVehicleEffectiveTractionData()), vehicle.getVehicleCategory(), mapToVehicleUnits(vehicle.getVehicleUnits()),
+            mapToEuropeanVehicleNumber(vehicle.getEuropeanVehicleNumber()));
     }
 
     private static List<VehicleUnit> mapToVehicleUnits(List<ch.sbb.zis.trainformation.api.model.VehicleUnit> vehicleUnits) {
@@ -45,9 +50,37 @@ public final class VehicleFactory {
     }
 
     private static VehicleUnit mapToVehicleUnit(ch.sbb.zis.trainformation.api.model.VehicleUnit vehicleUnit) {
-        return new VehicleUnit(mapToBrakeDesign(vehicleUnit.getUnitTechnicalData().getBrakeDesign()), mapToBrakeStatus(vehicleUnit.getUnitEffectiveOperationalData().getBrakeStatus()),
-            vehicleUnit.getUnitTechnicalData().getHoldingForceInHectonewton(), vehicleUnit.getUnitEffectiveOperationalData().getHoldingForceInHectonewton(),
-            vehicleUnit.getUnitTechnicalData().getHandBrakeWeightInTonne(), mapToLoad(vehicleUnit.getCargoTransport().getLoad()));
+        VehicleUnitBuilder builder = VehicleUnit.builder();
+        builder = mapUnitTechnichalData(builder, vehicleUnit.getUnitTechnicalData());
+        builder = mapUnitEffectiveOperationalData(builder, vehicleUnit.getUnitEffectiveOperationalData());
+        builder = mapLoad(builder, vehicleUnit.getCargoTransport());
+        return builder.build();
+    }
+
+    private static VehicleUnitBuilder mapLoad(VehicleUnitBuilder builder, CargoTransport cargoTransport) {
+        if (cargoTransport == null || cargoTransport.getLoad() == null) {
+            return builder;
+        }
+        return builder.load(mapToLoad(cargoTransport.getLoad()));
+    }
+
+    private static VehicleUnitBuilder mapUnitEffectiveOperationalData(VehicleUnitBuilder builder, UnitEffectiveOperationalData unitEffectiveOperationalData) {
+        if (unitEffectiveOperationalData == null) {
+            return builder;
+        }
+        return builder
+            .brakeStatus(new BrakeStatus(unitEffectiveOperationalData.getBrakeStatus()))
+            .effectiveOperationalHoldingForceInHectonewton(unitEffectiveOperationalData.getHoldingForceInHectonewton());
+    }
+
+    private static VehicleUnitBuilder mapUnitTechnichalData(VehicleUnitBuilder builder, UnitTechnicalData unitTechnicalData) {
+        if (unitTechnicalData == null) {
+            return builder;
+        }
+        return builder
+            .brakeDesign(mapToBrakeDesign(unitTechnicalData.getBrakeDesign()))
+            .technicalHoldingForceInHectonewton(unitTechnicalData.getHoldingForceInHectonewton())
+            .handBrakeWeightInTonne(unitTechnicalData.getHandBrakeWeightInTonne());
     }
 
     private static Load mapToLoad(ch.sbb.zis.trainformation.api.model.Load load) {
@@ -70,15 +103,24 @@ public final class VehicleFactory {
         return new Good(!goods.getDangerousGoods().isEmpty());
     }
 
-    private static BrakeStatus mapToBrakeStatus(Integer brakeStatus) {
-        return new BrakeStatus(brakeStatus);
-    }
-
     private static BrakeDesign mapToBrakeDesign(Integer brakeDesign) {
+        if (brakeDesign == null) {
+            return null;
+        }
         return BrakeDesign.valueOfKey(brakeDesign);
     }
 
-    private static TractionMode mapToTractionMode(String tractionMode) {
-        return TractionMode.valueOfKey(tractionMode);
+    private static TractionMode mapToTractionMode(VehicleEffectiveTractionData vehicleEffectiveTractionData) {
+        if (vehicleEffectiveTractionData == null || vehicleEffectiveTractionData.getTractionMode() == null) {
+            return null;
+        }
+        return TractionMode.valueOfKey(vehicleEffectiveTractionData.getTractionMode());
+    }
+
+    private static EuropeanVehicleNumber mapToEuropeanVehicleNumber(ch.sbb.zis.trainformation.api.model.EuropeanVehicleNumber europeanVehicleNumber) {
+        if (europeanVehicleNumber == null) {
+            return null;
+        }
+        return new EuropeanVehicleNumber(europeanVehicleNumber.getCountryCodeUic(), europeanVehicleNumber.getVehicleNumber());
     }
 }

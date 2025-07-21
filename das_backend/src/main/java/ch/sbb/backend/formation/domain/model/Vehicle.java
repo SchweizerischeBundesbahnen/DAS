@@ -3,8 +3,12 @@ package ch.sbb.backend.formation.domain.model;
 import java.util.Collections;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class Vehicle {
 
     private TractionMode tractionMode;
@@ -101,5 +105,4 @@ public class Vehicle {
     private boolean hasBrakeDesign(BrakeDesign... brakeDesigns) {
         return VehicleUnit.hasBrakeDesign(vehicleUnits, brakeDesigns);
     }
-
 }

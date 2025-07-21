@@ -10,10 +10,9 @@ public class TafTapLocationReference {
     private Integer countryCodeUic;
     private Integer uicCode;
 
-    @Override
-    public String toString() {
+    public String asString() {
         if (countryCodeUic == null || uicCode == null) {
-            return "";
+            return null;
         }
         return String.format("%02d", countryCodeUic) + String.format("%06d", uicCode);
     }

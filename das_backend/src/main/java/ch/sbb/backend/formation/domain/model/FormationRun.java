@@ -6,9 +6,11 @@ import java.util.List;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 @Builder
 @EqualsAndHashCode
+@ToString
 public class FormationRun {
 
     private Boolean inspected;
@@ -45,7 +47,7 @@ public class FormationRun {
             return Collections.emptyList();
         }
         return formationRuns.stream()
-            .filter(formationRun -> formationRun.inspected)
+            .filter(formationRun -> formationRun.inspected != null && formationRun.inspected)
             .toList();
     }
 
