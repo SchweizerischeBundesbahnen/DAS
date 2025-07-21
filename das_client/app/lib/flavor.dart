@@ -107,10 +107,10 @@ class _InteFlavor extends Flavor {
   const _InteFlavor({
     super.tokenExchangeUrl = '',
     super.mqttUrl = '',
+    super.mqttTopicPrefix = '',
     super.authenticatorConfig = _emptyAuthenticatorConfig,
   }) : super(
          displayName: 'Inte',
-         mqttTopicPrefix: '',
          backendUrl: 'das-int.api.sbb.ch',
          color: SBBColors.black,
          showBanner: true,
@@ -122,10 +122,10 @@ class _ProdFlavor extends Flavor {
   const _ProdFlavor({
     super.tokenExchangeUrl = '',
     super.mqttUrl = '',
+    super.mqttTopicPrefix = '',
     super.authenticatorConfig = _emptyAuthenticatorConfig,
   }) : super(
          displayName: 'Prod',
-         mqttTopicPrefix: '',
          backendUrl: 'das-backend-dev.app.sbb.ch',
          color: SBBColors.transparent,
          showBanner: false,
