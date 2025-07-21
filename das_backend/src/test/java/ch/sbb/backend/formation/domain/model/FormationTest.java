@@ -25,13 +25,13 @@ class FormationTest {
         assertEquals(modifiedDateTime, formation.getModifiedDateTime());
         assertEquals(operationalTrainNumber, formation.getOperationalTrainNumber());
         assertEquals(operationalDay, formation.getOperationalDay());
-        assertEquals(Collections.emptyList(), formation.inspectedFormationRuns());
+        assertEquals(Collections.emptyList(), formation.validFormationRuns());
     }
 
     @Test
     void inspectedFormationRuns_empty() {
         Formation formation = new Formation(OffsetDateTime.now(), "12345", LocalDate.now(), Collections.emptyList());
-        assertEquals(Collections.emptyList(), formation.inspectedFormationRuns());
+        assertEquals(Collections.emptyList(), formation.validFormationRuns());
     }
 
     @Test
@@ -39,7 +39,7 @@ class FormationTest {
         List<FormationRun> inspectedRuns = List.of(mock(FormationRun.class));
 
         try (MockedStatic<FormationRun> mockedStatic = mockStatic(FormationRun.class)) {
-            mockedStatic.when(() -> FormationRun.inspected(any())).thenReturn(inspectedRuns);
+            mockedStatic.when(() -> FormationRun.valid(any())).thenReturn(inspectedRuns);
 
             Formation formation = new Formation(
                 OffsetDateTime.now(),
@@ -48,7 +48,7 @@ class FormationTest {
                 null // mocked
             );
 
-            assertEquals(1, formation.inspectedFormationRuns().size());
+            assertEquals(1, formation.validFormationRuns().size());
         }
     }
 }

@@ -21,10 +21,14 @@ public class TrainFormationKafkaConsumer {
         this.formationService = formationService;
     }
 
+    // todo log kafka lag
+
     @KafkaListener(topics = "${zis.kafka.topic}")
     void receive(ConsumerRecord<DailyFormationTrainKey, DailyFormationTrain> message) {
         Formation formation = FormationFactory.create(message);
-        List<TrainFormationRunEntity> trainFormationRunEntity = TrainFormationRunEntity.from(formation);
-        formationService.save(trainFormationRunEntity);
+        List<TrainFormationRunEntity> trainFormationRunEntities = TrainFormationRunEntity.from(formation);
+
+        formationService.save(trainFormationRunEntities);
+        log.debug("Successfully saved train formation runs for kafka message partition: {}, offset: {}", message.partition(), message.offset());
     }
 }

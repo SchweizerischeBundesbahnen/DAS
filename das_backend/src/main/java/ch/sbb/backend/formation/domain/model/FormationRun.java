@@ -7,11 +7,16 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 @Builder
 @EqualsAndHashCode
 @ToString
+@Slf4j
 public class FormationRun {
+
+    public static final String INVALID_COMPANY_CODE = "0000";
+    public static final int COMPANY_CODE_LENGTH = 4;
 
     private Boolean inspected;
     @Getter @TelTsi
@@ -42,13 +47,27 @@ public class FormationRun {
     @Getter private String slopeMaxForHoldingForceMinInPermille;
     private List<Vehicle> vehicles;
 
-    static List<FormationRun> inspected(List<FormationRun> formationRuns) {
+    /**
+     * Reduces formation runs to only the inspected ones as well as valid company. By means relevant for train journeys in reality.
+     *
+     * @param formationRuns All kind of formation runs (includes also non inspected).
+     * @return
+     */
+    static List<FormationRun> valid(List<FormationRun> formationRuns) {
         if (formationRuns == null) {
             return Collections.emptyList();
         }
         return formationRuns.stream()
-            .filter(formationRun -> formationRun.inspected != null && formationRun.inspected)
+            .filter(formationRun -> formationRun.inspected() && formationRun.validCompany())
             .toList();
+    }
+
+    private boolean inspected() {
+        return inspected != null && inspected;
+    }
+
+    private boolean validCompany() {
+        return company != null && company.length() == COMPANY_CODE_LENGTH && !INVALID_COMPANY_CODE.equals(company);
     }
 
     public Integer formationGrossWeightInT() {

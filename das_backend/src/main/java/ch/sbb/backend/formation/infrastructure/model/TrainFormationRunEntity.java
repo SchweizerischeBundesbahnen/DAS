@@ -28,8 +28,8 @@ import lombok.ToString;
 @Builder
 @Getter
 @RequiredArgsConstructor
-//@NoArgsConstructor
 @AllArgsConstructor
+// todo: a default value must be defined for all non-primitive Boolean and Integer fields (by business or source systems)
 public class TrainFormationRunEntity {
 
     @Id
@@ -136,7 +136,7 @@ public class TrainFormationRunEntity {
     private String slopeMaxForHoldingForceMinInPermille;
 
     public static List<TrainFormationRunEntity> from(Formation formation) {
-        return formation.inspectedFormationRuns().stream()
+        return formation.validFormationRuns().stream()
             .map(formationRun -> {
                 TrainFormationRunEntityBuilder builder = TrainFormationRunEntity.builder();
                 builder
@@ -151,8 +151,8 @@ public class TrainFormationRunEntity {
     private static TrainFormationRunEntityBuilder addFormationRun(TrainFormationRunEntityBuilder builder, FormationRun formationRun) {
         return builder
             .company(formationRun.getCompany())
-            .tafTapLocationReferenceStart(formationRun.getTafTapLocationReferenceStart().toString())
-            .tafTapLocationReferenceEnd(formationRun.getTafTapLocationReferenceEnd().toString())
+            .tafTapLocationReferenceStart(formationRun.getTafTapLocationReferenceStart().asString())
+            .tafTapLocationReferenceEnd(formationRun.getTafTapLocationReferenceEnd().asString())
             .trainCategoryCode(formationRun.getTrainCategoryCode())
             .brakedWeightPercentage(formationRun.getBrakedWeightPercentage())
             .tractionMaxSpeedInKmh(formationRun.getTractionMaxSpeedInKmh())

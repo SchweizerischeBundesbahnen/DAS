@@ -15,7 +15,7 @@ public class Formation {
     @Getter private LocalDate operationalDay;
     private List<FormationRun> formationRuns;
 
-    public List<FormationRun> inspectedFormationRuns() {
-        return FormationRun.inspected(formationRuns);
+    public List<FormationRun> validFormationRuns() {
+        return FormationRun.valid(formationRuns);
     }
 }

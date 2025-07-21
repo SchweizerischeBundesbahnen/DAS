@@ -56,6 +56,7 @@ public class VehicleUnit {
         if (handBrakeWeightInTonne != null) {
             return handBrakeWeightInTonne * TON_IN_HECTO_NEWTON;
         }
+        // todo: default value needs to be defined by business
         return 0;
     }
 

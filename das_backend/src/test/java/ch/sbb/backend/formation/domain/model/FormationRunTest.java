@@ -79,27 +79,36 @@ class FormationRunTest {
 
     @Test
     void inspected_withNull() {
-        List<FormationRun> result = FormationRun.inspected(null);
+        List<FormationRun> result = FormationRun.valid(null);
         assertEquals(0, result.size());
     }
 
     @Test
     void inspected_withEmpty() {
-        List<FormationRun> result = FormationRun.inspected(Collections.emptyList());
+        List<FormationRun> result = FormationRun.valid(Collections.emptyList());
         assertEquals(0, result.size());
     }
 
     @Test
     void inspected_withInspectedAndUninspected() {
-        FormationRun inspected1 = createFormationRun(true);
-        FormationRun inspected2 = createFormationRun(true);
-        List<FormationRun> formationRuns = List.of(createFormationRun(false), inspected1, inspected2);
+        FormationRun inspected1 = createFormationRun(true, "3012");
+        FormationRun inspected2 = createFormationRun(true, "1023");
+        List<FormationRun> formationRuns = List.of(createFormationRun(false, "5443"), inspected1, inspected2);
 
-        List<FormationRun> result = FormationRun.inspected(formationRuns);
+        List<FormationRun> result = FormationRun.valid(formationRuns);
 
         assertEquals(2, result.size());
         assertTrue(result.contains(inspected1));
         assertTrue(result.contains(inspected2));
+    }
+
+    @Test
+    void inspected_withInvalidCompany() {
+        List<FormationRun> formationRuns = List.of(createFormationRun(true, "0000"), createFormationRun(true, null));
+
+        List<FormationRun> result = FormationRun.valid(formationRuns);
+
+        assertEquals(0, result.size());
     }
 
     @Test
@@ -348,9 +357,10 @@ class FormationRunTest {
         }
     }
 
-    private FormationRun createFormationRun(Boolean inspected) {
+    private FormationRun createFormationRun(Boolean inspected, String company) {
         return FormationRun.builder()
             .inspected(inspected)
+            .company(company)
             .build();
     }
 
