@@ -290,6 +290,7 @@ void main() {
 
       // check Brig SIM information
       await _openByTapOnCellWithText(tester, 'Brig');
+      await tester.pumpAndSettle(const Duration(milliseconds: 100));
       expect(find.byKey(DetailTabCommunication.simCorridorListKey), findsNothing);
 
       // check Domodossola FM SIM information
