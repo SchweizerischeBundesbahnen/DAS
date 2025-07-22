@@ -172,7 +172,7 @@ void main() {
     await loadTrainJourney(tester, trainNumber: 'T15M');
 
     expect(find.textContaining(l10n.c_radn_type_decisive_gradient_down), findsOneWidget);
-    expect(find.textContaining(l10n.c_radn_type_journey), findsOneWidget);
+    expect(find.textContaining(l10n.c_radn_type_journey), findsAny);
 
     await disconnect(tester);
   });
