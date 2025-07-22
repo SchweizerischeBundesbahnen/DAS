@@ -38,21 +38,18 @@ class DetailTabCommunication extends StatelessWidget {
     return StreamBuilder(
       stream: viewModel.simCorridor,
       builder: (context, snapshot) {
-        debugPrint('SimCorridor: ${snapshot.data}');
-        if (!snapshot.hasData) {
-          return SizedBox.shrink();
-        }
+        if (!snapshot.hasData) return SizedBox.shrink();
 
         final contactList = snapshot.requireData!;
-        final contacts = [...contactList.mainContacts, ...contactList.selectiveContacts];
+        final simContacts = [...contactList.mainContacts, ...contactList.selectiveContacts];
         return ListView.builder(
           key: simCorridorListKey,
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
-          itemCount: contacts.length + 1,
+          itemCount: simContacts.length + 1,
           itemBuilder: (context, index) => index == 0
               ? Text(context.l10n.w_service_point_modal_communication_sim, style: DASTextStyles.smallRoman)
-              : _simContactItem(contacts.elementAt(index - 1)),
+              : _simContactItem(simContacts.elementAt(index - 1)),
         );
       },
     );
