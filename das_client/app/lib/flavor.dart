@@ -66,8 +66,9 @@ sealed class Flavor {
         return _DevFlavor(
           tokenExchangeUrl:
               'https://imts-token-provider-tms-vad-imtrackside-dev.apps.halon-ocp1-1-t.sbb-aws-test.net/token/exchange',
-          mqttUrl: 'wss://das-poc.messaging.solace.cloudwss://tms-vad-imtrackside-dev-mobile.messaging.solace.cloud',
+          mqttUrl: 'wss://tms-vad-imtrackside-dev-mobile.messaging.solace.cloud',
           authenticatorConfig: _authenticatorConfigTmsDev,
+          mqttTopicPrefix: '',
         );
       case _InteFlavor():
         return _InteFlavor(
@@ -89,10 +90,10 @@ class _DevFlavor extends Flavor {
   const _DevFlavor({
     super.tokenExchangeUrl = '',
     super.mqttUrl = '',
+    super.mqttTopicPrefix = 'dev/',
     super.authenticatorConfig = _emptyAuthenticatorConfig,
   }) : super(
          displayName: 'Dev',
-         mqttTopicPrefix: 'dev/',
          backendUrl: 'das-dev-int.api.sbb.ch',
          color: SBBColors.peach,
          showBanner: true,
@@ -106,10 +107,10 @@ class _InteFlavor extends Flavor {
   const _InteFlavor({
     super.tokenExchangeUrl = '',
     super.mqttUrl = '',
+    super.mqttTopicPrefix = '',
     super.authenticatorConfig = _emptyAuthenticatorConfig,
   }) : super(
          displayName: 'Inte',
-         mqttTopicPrefix: '',
          backendUrl: 'das-int.api.sbb.ch',
          color: SBBColors.black,
          showBanner: true,
@@ -121,10 +122,10 @@ class _ProdFlavor extends Flavor {
   const _ProdFlavor({
     super.tokenExchangeUrl = '',
     super.mqttUrl = '',
+    super.mqttTopicPrefix = '',
     super.authenticatorConfig = _emptyAuthenticatorConfig,
   }) : super(
          displayName: 'Prod',
-         mqttTopicPrefix: '',
          backendUrl: 'das-backend-dev.app.sbb.ch',
          color: SBBColors.transparent,
          showBanner: false,
