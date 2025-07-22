@@ -166,6 +166,16 @@ void main() {
 
     await disconnect(tester);
   });
+
+  testWidgets('test RADN foot notes title contain type', (tester) async {
+    await prepareAndStartApp(tester);
+    await loadTrainJourney(tester, trainNumber: 'T15M');
+
+    expect(find.textContaining(l10n.c_radn_type_decisive_gradient_down), findsOneWidget);
+    expect(find.textContaining(l10n.c_radn_type_journey), findsOneWidget);
+
+    await disconnect(tester);
+  });
 }
 
 Future<void> _checkCollapsible(int identifier, WidgetTester tester) async {
