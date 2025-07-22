@@ -294,6 +294,8 @@ void main() {
 
       // check Domodossola FM SIM information
       await tester.dragUntilVisible(find.text('Domodossola FM'), scrollableFinder, const Offset(0, -50));
+
+      await _openByTapOnCellWithText(tester, 'Domodossola FM');
       expect(find.byKey(DetailTabCommunication.simCorridorListKey), findsOneWidget);
       expect(find.text('1392'), findsOneWidget);
       expect(find.text('Domodossola - Preglia, linkes Gleis'), findsOneWidget);
