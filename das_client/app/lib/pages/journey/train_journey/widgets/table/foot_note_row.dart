@@ -82,23 +82,14 @@ extension FootNoteExtension on BaseFootNote {
       return context.l10n.c_radn_sim;
     }
 
-    if (footNote.type != null) {
-      switch (footNote.type!) {
-        case FootNoteType.trackSpeed:
-          return '${context.l10n.c_radn} ${context.l10n.c_radn_type_track_speed}';
-        case FootNoteType.decisiveGradientUp:
-          return '${context.l10n.c_radn} ${context.l10n.c_radn_type_decisive_gradient_up}';
-        case FootNoteType.decisiveGradientDown:
-          return '${context.l10n.c_radn} ${context.l10n.c_radn_type_decisive_gradient_down}';
-        case FootNoteType.contact:
-          return '${context.l10n.c_radn} ${context.l10n.c_radn_type_contact}';
-        case FootNoteType.networkType:
-          return '${context.l10n.c_radn} ${context.l10n.c_radn_type_network_type}';
-        case FootNoteType.journey:
-          return '${context.l10n.c_radn} ${context.l10n.c_radn_type_journey}';
-      }
-    }
-
-    return context.l10n.c_radn;
+    return switch (footNote.type) {
+      FootNoteType.trackSpeed => '${context.l10n.c_radn} ${context.l10n.c_radn_type_track_speed}',
+      FootNoteType.decisiveGradientUp => '${context.l10n.c_radn} ${context.l10n.c_radn_type_decisive_gradient_up}',
+      FootNoteType.decisiveGradientDown => '${context.l10n.c_radn} ${context.l10n.c_radn_type_decisive_gradient_down}',
+      FootNoteType.contact => '${context.l10n.c_radn} ${context.l10n.c_radn_type_contact}',
+      FootNoteType.networkType => '${context.l10n.c_radn} ${context.l10n.c_radn_type_network_type}',
+      FootNoteType.journey => '${context.l10n.c_radn} ${context.l10n.c_radn_type_journey}',
+      null => context.l10n.c_radn,
+    };
   }
 }
