@@ -110,7 +110,7 @@ class SferaModelMapper {
         ),
         nonStandardTrackEquipmentSegments: trackEquipmentSegments,
         bracketStationSegments: _parseBracketStationSegments(servicePoints),
-        advisedSpeedSegments: _parseAdvisedSpeeds(journeyData, segmentProfiles, currentPosition),
+        advisedSpeedSegments: _parseAdvisedSpeeds(journeyProfile, segmentProfiles, servicePoints, currentPosition),
         availableBreakSeries: _parseAvailableBreakSeries(journeyData),
         communicationNetworkChanges: _parseCommunicationNetworkChanges(segmentProfileReferences, segmentProfiles),
         breakSeries:
@@ -229,7 +229,7 @@ class SferaModelMapper {
     for (int segmentIndex = 0; segmentIndex < segmentProfilesReferences.length; segmentIndex++) {
       final segmentProfileReference = segmentProfilesReferences[segmentIndex];
 
-      for (final asrTemporaryConstrain in segmentProfileReference.asrTemporaryConstrains) {
+      for (final asrTemporaryConstrain in segmentProfileReference.asrTemporaryConstraints) {
         if (_shouldSkipAsrDueToJourneyTimes(servicePoints, asrTemporaryConstrain)) continue;
 
         final parallelAsrId = asrTemporaryConstrain.parallelAsrConstraintDto?.idNsp.id;
@@ -580,11 +580,41 @@ class SferaModelMapper {
   }
 
   static List<AdvisedSpeedSegment> _parseAdvisedSpeeds(
-    List<BaseData> journeyData,
+    JourneyProfileDto journeyProfile,
     List<SegmentProfileDto> segmentProfiles,
+    List<ServicePoint> servicePoints,
     BaseData? currentPosition,
   ) {
     final List<AdvisedSpeedSegment> result = [];
+    final segmentProfileReferences = journeyProfile.segmentProfileReferences.toList();
+
+    for (int segmentIndex = 0; segmentIndex < segmentProfileReferences.length; segmentIndex++) {
+      final segmentProfileReference = segmentProfileReferences[segmentIndex];
+      final segmentProfile = segmentProfiles.where((sP) => sP.id == segmentProfileReference.spId).first;
+
+      for (final advisedSpeedConstraint in segmentProfileReference.advisedSpeedTemporaryConstraints) {
+        SingleSpeed? speed;
+        if (advisedSpeedConstraint.advisedSpeed?.speed != null) {
+          speed = Speed.parse(advisedSpeedConstraint.advisedSpeed!.speed!) as SingleSpeed;
+        }
+
+        final currentPositionOrder = currentPosition?.order ?? 0;
+        final startOrder = calculateOrder(segmentIndex, advisedSpeedConstraint.startLocation ?? 0);
+        final endOrder = calculateOrder(
+          segmentIndex,
+          advisedSpeedConstraint.endLocation ?? double.parse(segmentProfile.length),
+        );
+        result.add(
+          AdvisedSpeedSegment(
+            speed: speed,
+            startOrder: startOrder,
+            endOrder: endOrder,
+            isActive: currentPositionOrder >= startOrder && currentPositionOrder < endOrder,
+          ),
+        );
+      }
+    }
+
     return result;
   }
 }

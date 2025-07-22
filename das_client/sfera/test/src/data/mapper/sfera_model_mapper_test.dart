@@ -1205,6 +1205,25 @@ void main() {
     expect(servicePoints[14].calculatedSpeed, equals(Speed.parse('0')));
   });
 
+  test('Test advised speeds are parsed correctly when currentPosition is not in ADL segment', () async {
+    final journey = getJourney('T24', 1);
+    expect(journey.valid, isTrue);
+
+    final advisedSpeeds = journey.metadata.advisedSpeedSegments;
+    expect(advisedSpeeds.length, 5);
+
+    expect(advisedSpeeds[0].speed!.value, '80');
+    expect(advisedSpeeds[0].isActive, false);
+    expect(advisedSpeeds[1].speed!.value, '80');
+    expect(advisedSpeeds[1].isActive, false);
+    expect(advisedSpeeds[2].speed!.value, '120');
+    expect(advisedSpeeds[2].isActive, false);
+    expect(advisedSpeeds[3].speed, isNull);
+    expect(advisedSpeeds[3].isActive, false);
+    expect(advisedSpeeds[4].speed, isNull);
+    expect(advisedSpeeds[4].isActive, false);
+  });
+
   test('Test current position is start when nothing is given ', () async {
     var journey = getJourney('T9', 1, tcCount: 1);
     expect(journey.valid, true);

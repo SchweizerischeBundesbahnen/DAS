@@ -6,7 +6,6 @@
     </SP_Zone>
     <SP_Points>
 
-        <!--Timing Points-->
         <TimingPoint TP_ID="GEAP" location="0">
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
