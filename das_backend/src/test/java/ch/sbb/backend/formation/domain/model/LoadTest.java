@@ -28,7 +28,7 @@ class LoadTest {
 
     @Test
     void hasDangerousGoods_withGoods() {
-        Load load = new Load(List.of(new Good(false)), List.of());
+        Load load = new Load(List.of(new Goods(false)), List.of());
 
         boolean result = load.hasDangerousGoods();
 
@@ -37,7 +37,7 @@ class LoadTest {
 
     @Test
     void hasDangerousGoods_withDangerousGoods() {
-        Load load = new Load(List.of(new Good(true), new Good(false)), List.of());
+        Load load = new Load(List.of(new Goods(true), new Goods(false)), List.of());
 
         boolean result = load.hasDangerousGoods();
 
@@ -46,7 +46,7 @@ class LoadTest {
 
     @Test
     void hasDangerousGoods_withIntermodalLoadingUnits() {
-        Load load = new Load(List.of(), List.of(new IntermodalLoadingUnit(List.of(new Good(false)))));
+        Load load = new Load(List.of(), List.of(new IntermodalLoadingUnit(List.of(new Goods(false)))));
 
         boolean result = load.hasDangerousGoods();
 
@@ -57,9 +57,9 @@ class LoadTest {
     void hasDangerousGoods_withDangerousIntermodalLoadingUnits() {
         Load load = new Load(List.of(), List.of(
             new IntermodalLoadingUnit(
-                List.of(new Good(true), new Good(false))),
+                List.of(new Goods(true), new Goods(false))),
             new IntermodalLoadingUnit(
-                List.of(new Good(false), new Good(false)))));
+                List.of(new Goods(false), new Goods(false)))));
 
         boolean result = load.hasDangerousGoods();
 

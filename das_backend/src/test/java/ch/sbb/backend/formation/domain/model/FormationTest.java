@@ -39,7 +39,7 @@ class FormationTest {
         List<FormationRun> inspectedRuns = List.of(mock(FormationRun.class));
 
         try (MockedStatic<FormationRun> mockedStatic = mockStatic(FormationRun.class)) {
-            mockedStatic.when(() -> FormationRun.valid(any())).thenReturn(inspectedRuns);
+            mockedStatic.when(() -> FormationRun.filterValid(any())).thenReturn(inspectedRuns);
 
             Formation formation = new Formation(
                 OffsetDateTime.now(),

@@ -15,9 +15,9 @@ public class VehicleUnit {
 
     private BrakeDesign brakeDesign;
     private BrakeStatus brakeStatus;
-    private Integer technicalHoldingForceInHectonewton;
-    private Integer effectiveOperationalHoldingForceInHectonewton;
-    private Integer handBrakeWeightInTonne;
+    private Integer technicalHoldingForceInHectoNewton;
+    private Integer effectiveOperationalHoldingForceInHectoNewton;
+    private Integer handBrakeWeightInT;
     private Load load;
 
     static boolean hasDisabledBrake(List<VehicleUnit> vehicleUnits) {
@@ -45,16 +45,16 @@ public class VehicleUnit {
 
     Integer holdingForce(boolean isTraction) {
         if (isTraction) {
-            if (technicalHoldingForceInHectonewton != null) {
-                return technicalHoldingForceInHectonewton;
+            if (technicalHoldingForceInHectoNewton != null) {
+                return technicalHoldingForceInHectoNewton;
             }
         } else {
-            if (effectiveOperationalHoldingForceInHectonewton != null) {
-                return effectiveOperationalHoldingForceInHectonewton;
+            if (effectiveOperationalHoldingForceInHectoNewton != null) {
+                return effectiveOperationalHoldingForceInHectoNewton;
             }
         }
-        if (handBrakeWeightInTonne != null) {
-            return handBrakeWeightInTonne * TON_IN_HECTO_NEWTON;
+        if (handBrakeWeightInT != null) {
+            return handBrakeWeightInT * TON_IN_HECTO_NEWTON;
         }
         // todo: default value needs to be defined by business
         return 0;

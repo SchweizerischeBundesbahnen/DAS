@@ -10,10 +10,10 @@ import lombok.ToString;
 @ToString
 public class Load {
 
-    private List<Good> goods;
+    private List<Goods> goodsList;
     private List<IntermodalLoadingUnit> intermodalLoadingUnits;
 
     boolean hasDangerousGoods() {
-        return Good.hasDangerousGoods(goods) || IntermodalLoadingUnit.hasDangerousGoods(intermodalLoadingUnits);
+        return Goods.hasDangerousGoods(goodsList) || IntermodalLoadingUnit.hasDangerousGoods(intermodalLoadingUnits);
     }
 }

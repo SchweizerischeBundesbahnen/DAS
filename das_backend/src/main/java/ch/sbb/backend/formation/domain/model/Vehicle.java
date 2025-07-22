@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.springframework.util.CollectionUtils;
 
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -17,14 +18,14 @@ public class Vehicle {
     private EuropeanVehicleNumber europeanVehicleNumber;
 
     static Vehicle first(List<Vehicle> vehicles) {
-        if (vehicles == null || vehicles.isEmpty()) {
+        if (CollectionUtils.isEmpty(vehicles)) {
             return null;
         }
         return vehicles.getFirst();
     }
 
     static Vehicle last(List<Vehicle> vehicles) {
-        if (vehicles == null || vehicles.isEmpty()) {
+        if (CollectionUtils.isEmpty(vehicles)) {
             return null;
         }
         return vehicles.getLast();
@@ -39,14 +40,23 @@ public class Vehicle {
     }
 
     static Integer brakeDesignCount(List<Vehicle> vehicles, BrakeDesign... brakeDesigns) {
+        if (vehicles == null) {
+            return null;
+        }
         return (int) vehicles.stream().filter(vehicle -> vehicle.hasBrakeDesign(brakeDesigns)).count();
     }
 
     static Integer disabledBrakeCount(List<Vehicle> vehicles) {
+        if (vehicles == null) {
+            return null;
+        }
         return (int) vehicles.stream().filter(Vehicle::hasDisabledBrake).count();
     }
 
     static Integer holdingForce(List<Vehicle> vehicles) {
+        if (vehicles == null) {
+            return null;
+        }
         return vehicles.stream().mapToInt(Vehicle::holdingForce).sum();
     }
 

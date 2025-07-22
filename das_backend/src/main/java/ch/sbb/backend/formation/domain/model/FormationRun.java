@@ -9,12 +9,18 @@ import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * <a href="https://confluence.sbb.ch/spaces/DASBP/pages/3037422329/Cargo+Formation+ZIS-Formation">Business rules</a>
+ */
 @Builder
 @EqualsAndHashCode
 @ToString
 @Slf4j
 public class FormationRun {
 
+    /**
+     * Given in case data provider has no known Company yet.
+     */
     public static final String INVALID_COMPANY_CODE = "0000";
     public static final int COMPANY_CODE_LENGTH = 4;
 
@@ -53,50 +59,52 @@ public class FormationRun {
      * @param formationRuns All kind of formation runs (includes also non inspected).
      * @return
      */
-    static List<FormationRun> valid(List<FormationRun> formationRuns) {
+    static List<FormationRun> filterValid(List<FormationRun> formationRuns) {
         if (formationRuns == null) {
             return Collections.emptyList();
         }
         return formationRuns.stream()
-            .filter(formationRun -> formationRun.inspected() && formationRun.validCompany())
+            .filter(formationRun -> formationRun.isInspected() && formationRun.isValidCompany())
             .toList();
     }
 
-    private boolean inspected() {
-        return inspected != null && inspected;
+    private boolean isInspected() {
+        return Boolean.TRUE.equals(inspected);
     }
 
-    private boolean validCompany() {
+    private boolean isValidCompany() {
         return company != null && company.length() == COMPANY_CODE_LENGTH && !INVALID_COMPANY_CODE.equals(company);
     }
 
-    public Integer formationGrossWeightInT() {
+    public Integer getFormationGrossWeightInT() {
+        // todo: null cases need to be defined (by business or source systems)
         if (tractionGrossWeightInT == null || hauledLoadGrossWeightInT == null) {
             return null;
         }
         return tractionGrossWeightInT + hauledLoadGrossWeightInT;
     }
 
-    public Integer formationBrakedWeightInT() {
+    public Integer getFormationBrakedWeightInT() {
+        // todo: null cases need to be defined (by business or source systems)
         if (tractionBrakedWeightInT == null || hauledLoadBrakedWeightInT == null) {
             return null;
         }
         return tractionBrakedWeightInT + hauledLoadBrakedWeightInT;
     }
 
-    public Integer tractionHoldingForceInHectoNewton() {
+    public Integer getTractionHoldingForceInHectoNewton() {
         return Vehicle.tractionHoldingForceInHectoNewton(vehicles);
     }
 
-    public Integer hauledLoadHoldingForceInHectoNewton() {
+    public Integer getHauledLoadHoldingForceInHectoNewton() {
         return Vehicle.hauledLoadHoldingForceInHectoNewton(vehicles);
     }
 
-    public Integer formationHoldingForceInHectoNewton() {
+    public Integer getFormationHoldingForceInHectoNewton() {
         return Vehicle.holdingForce(vehicles);
     }
 
-    public List<TractionMode> tractionModes() {
+    public List<TractionMode> getTractionModes() {
         if (vehicles == null) {
             return Collections.emptyList();
         }

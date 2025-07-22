@@ -8,23 +8,23 @@ import org.junit.jupiter.api.Test;
 class TafTapLocationReferenceTest {
 
     @Test
-    void asString_null() {
+    void toLocationCode_null() {
         TafTapLocationReference reference = new TafTapLocationReference(null, null);
-        String result = reference.asString();
+        String result = reference.toLocationCode();
         assertNull(result);
     }
 
     @Test
-    void asString_shouldFormatCountryAndUicCode() {
+    void toLocationCode_shouldFormatCountryAndUicCode() {
         TafTapLocationReference reference = new TafTapLocationReference(12, 345678);
-        String result = reference.asString();
+        String result = reference.toLocationCode();
         assertEquals("12345678", result);
     }
 
     @Test
-    void asString_shouldFormatCountryAndUicCodeWith0() {
+    void toLocationCode_shouldFormatCountryAndUicCodeWith0() {
         TafTapLocationReference reference = new TafTapLocationReference(5, 23);
-        String result = reference.asString();
+        String result = reference.toLocationCode();
         assertEquals("05000023", result);
     }
 }

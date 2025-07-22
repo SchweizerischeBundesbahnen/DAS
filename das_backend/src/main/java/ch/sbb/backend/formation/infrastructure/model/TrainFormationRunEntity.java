@@ -68,9 +68,8 @@ public class TrainFormationRunEntity {
 
     private Integer formationLengthInCm;
 
-    //    todo rename tractionWeightInT or the other to grossWeight
-    @Column(name = "traction_gross_weight_in_t")
-    private Integer tractionGrossWeightInT;
+    @Column(name = "traction_weight_in_t")
+    private Integer tractionWeightInT;
 
     @Column(name = "hauled_load_weight_in_t")
     private Integer hauledLoadWeightInT;
@@ -139,20 +138,21 @@ public class TrainFormationRunEntity {
         return formation.validFormationRuns().stream()
             .map(formationRun -> {
                 TrainFormationRunEntityBuilder builder = TrainFormationRunEntity.builder();
+                applyFormationRun(builder, formationRun);
                 builder
                     .modifiedDateTime(formation.getModifiedDateTime())
                     .operationalTrainNumber(formation.getOperationalTrainNumber())
                     .operationalDay(formation.getOperationalDay());
-                return addFormationRun(builder, formationRun).build();
+                return builder.build();
             })
             .toList();
     }
 
-    private static TrainFormationRunEntityBuilder addFormationRun(TrainFormationRunEntityBuilder builder, FormationRun formationRun) {
-        return builder
+    private static void applyFormationRun(TrainFormationRunEntityBuilder builder, FormationRun formationRun) {
+        builder
             .company(formationRun.getCompany())
-            .tafTapLocationReferenceStart(formationRun.getTafTapLocationReferenceStart().asString())
-            .tafTapLocationReferenceEnd(formationRun.getTafTapLocationReferenceEnd().asString())
+            .tafTapLocationReferenceStart(formationRun.getTafTapLocationReferenceStart().toLocationCode())
+            .tafTapLocationReferenceEnd(formationRun.getTafTapLocationReferenceEnd().toLocationCode())
             .trainCategoryCode(formationRun.getTrainCategoryCode())
             .brakedWeightPercentage(formationRun.getBrakedWeightPercentage())
             .tractionMaxSpeedInKmh(formationRun.getTractionMaxSpeedInKmh())
@@ -161,20 +161,20 @@ public class TrainFormationRunEntity {
             .tractionLengthInCm(formationRun.getTractionLengthInCm())
             .hauledLoadLengthInCm(formationRun.getHauledLoadLengthInCm())
             .formationLengthInCm(formationRun.getFormationLengthInCm())
-            .tractionGrossWeightInT(formationRun.getTractionGrossWeightInT())
+            .tractionWeightInT(formationRun.getTractionGrossWeightInT())
             .hauledLoadWeightInT(formationRun.getHauledLoadGrossWeightInT())
-            .formationWeightInT(formationRun.formationGrossWeightInT())
+            .formationWeightInT(formationRun.getFormationGrossWeightInT())
             .tractionBrakedWeightInT(formationRun.getTractionBrakedWeightInT())
             .hauledLoadBrakedWeightInT(formationRun.getHauledLoadBrakedWeightInT())
-            .formationBrakedWeightInT(formationRun.formationBrakedWeightInT())
-            .tractionHoldingForceInHectoNewton(formationRun.tractionHoldingForceInHectoNewton())
-            .hauledLoadHoldingForceInHectoNewton(formationRun.hauledLoadHoldingForceInHectoNewton())
-            .formationHoldingForceInHectoNewton(formationRun.formationHoldingForceInHectoNewton())
+            .formationBrakedWeightInT(formationRun.getFormationBrakedWeightInT())
+            .tractionHoldingForceInHectoNewton(formationRun.getTractionHoldingForceInHectoNewton())
+            .hauledLoadHoldingForceInHectoNewton(formationRun.getHauledLoadHoldingForceInHectoNewton())
+            .formationHoldingForceInHectoNewton(formationRun.getFormationHoldingForceInHectoNewton())
             .brakePositionGForLeadingTraction(formationRun.getBrakePositionGForLeadingTraction())
             .brakePositionGForBrakeUnit1to5(formationRun.getBrakePositionGForBrakeUnit1to5())
             .brakePositionGForLoadHauled(formationRun.getBrakePositionGForLoadHauled())
             .simTrain(formationRun.getSimTrain())
-            .tractionModes(mapTractionModes(formationRun.tractionModes()))
+            .tractionModes(mapTractionModes(formationRun.getTractionModes()))
             .carCarrierVehicle(formationRun.getCarCarrierVehicle())
             .dangerousGoods(formationRun.hasDangerousGoods())
             .vehiclesCount(formationRun.vehicleCount())

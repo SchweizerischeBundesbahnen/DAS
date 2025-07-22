@@ -16,6 +16,6 @@ public class Formation {
     private List<FormationRun> formationRuns;
 
     public List<FormationRun> validFormationRuns() {
-        return FormationRun.valid(formationRuns);
+        return FormationRun.filterValid(formationRuns);
     }
 }

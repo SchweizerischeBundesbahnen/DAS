@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import ch.sbb.backend.formation.domain.model.BrakeDesign;
 import ch.sbb.backend.formation.domain.model.BrakeStatus;
 import ch.sbb.backend.formation.domain.model.EuropeanVehicleNumber;
-import ch.sbb.backend.formation.domain.model.Good;
+import ch.sbb.backend.formation.domain.model.Goods;
 import ch.sbb.backend.formation.domain.model.IntermodalLoadingUnit;
 import ch.sbb.backend.formation.domain.model.Load;
 import ch.sbb.backend.formation.domain.model.TractionMode;
@@ -13,7 +13,6 @@ import ch.sbb.backend.formation.domain.model.Vehicle;
 import ch.sbb.backend.formation.domain.model.VehicleUnit;
 import ch.sbb.zis.trainformation.api.model.CargoTransport;
 import ch.sbb.zis.trainformation.api.model.DangerousGoods;
-import ch.sbb.zis.trainformation.api.model.Goods;
 import ch.sbb.zis.trainformation.api.model.UnitEffectiveOperationalData;
 import ch.sbb.zis.trainformation.api.model.UnitTechnicalData;
 import ch.sbb.zis.trainformation.api.model.VehicleEffectiveTractionData;
@@ -43,10 +42,10 @@ class VehicleFactoryTest {
                 VehicleUnit.builder()
                     .brakeDesign(BrakeDesign.SCHEIBENBREMSEN)
                     .brakeStatus(new BrakeStatus(3))
-                    .technicalHoldingForceInHectonewton(92)
-                    .effectiveOperationalHoldingForceInHectonewton(342)
-                    .handBrakeWeightInTonne(12)
-                    .load(new Load(List.of(new Good(true)), List.of(new IntermodalLoadingUnit(List.of(new Good(false))))))
+                    .technicalHoldingForceInHectoNewton(92)
+                    .effectiveOperationalHoldingForceInHectoNewton(342)
+                    .handBrakeWeightInT(12)
+                    .load(new Load(List.of(new Goods(true)), List.of(new IntermodalLoadingUnit(List.of(new Goods(false))))))
                     .build()),
             new EuropeanVehicleNumber("46", "334455"));
 
@@ -60,10 +59,10 @@ class VehicleFactoryTest {
     }
 
     private ch.sbb.zis.trainformation.api.model.VehicleUnit createVehicleUnit() {
-        Goods goodsWithDangerousGoods = new Goods();
+        ch.sbb.zis.trainformation.api.model.Goods goodsWithDangerousGoods = new ch.sbb.zis.trainformation.api.model.Goods();
         goodsWithDangerousGoods.setDangerousGoods(List.of(new DangerousGoods()));
 
-        Goods goodsWithoutDangerousGoods = new Goods();
+        ch.sbb.zis.trainformation.api.model.Goods goodsWithoutDangerousGoods = new ch.sbb.zis.trainformation.api.model.Goods();
 
         ch.sbb.zis.trainformation.api.model.VehicleUnit vehicleUnit = new ch.sbb.zis.trainformation.api.model.VehicleUnit();
         ch.sbb.zis.trainformation.api.model.Load load = new ch.sbb.zis.trainformation.api.model.Load();
