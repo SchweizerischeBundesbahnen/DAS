@@ -63,7 +63,7 @@ extension FootNoteExtension on BaseFootNote {
       case final LineFootNote lineFootNote:
         return _resolveTitle(context, lineFootNote, metadata);
       default:
-        return context.l10n.c_radn;
+        return _defaultTitle(context);
     }
   }
 
@@ -72,6 +72,14 @@ extension FootNoteExtension on BaseFootNote {
     if (identifier != null && metadata.lineFootNoteLocations[identifier] != null) {
       final servicePointNames = metadata.lineFootNoteLocations[identifier]!;
       return '${context.l10n.c_radn} ${servicePointNames.first} - ${servicePointNames.last}';
+    } else {
+      return _defaultTitle(context);
+    }
+  }
+
+  String _defaultTitle(BuildContext context) {
+    if (footNote.refText == 'SIM') {
+      return context.l10n.c_radn_sim;
     } else {
       return context.l10n.c_radn;
     }

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
-                SP_ID="T20_1" SP_VersionMajor="1" SP_VersionMinor="3" SP_Length="1400" SP_Status="Valid">
+                SP_ID="T20_1" SP_VersionMajor="1" SP_VersionMinor="4" SP_Length="1400" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -589,7 +589,7 @@ Korridor rechtes Gleis: Anmeldenummer 1393&lt;/text&gt;
                 <OtherContactType contactIdentifier="1301"/>
             </Contact>
         </ContactList>
-		<ContactList startEndQualifier="StartsEnds" startLocation="300" endLocation="200">
+		<ContactList startEndQualifier="StartsEnds" startLocation="300" endLocation="300">
             <Contact mainContact="true">
                 <OtherContactType contactIdentifier="1301"/>
             </Contact>

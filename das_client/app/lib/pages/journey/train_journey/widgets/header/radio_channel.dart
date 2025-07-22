@@ -44,8 +44,8 @@ class RadioChannel extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Icon(SBBIcons.telephone_gsm_small),
-                if (communicationNetworkType == CommunicationNetworkType.sim) SimIdentifier(),
                 RadioContactChannels(contacts: radioContactList),
+                if (communicationNetworkType == CommunicationNetworkType.sim) SimIdentifier(),
                 if (communicationNetworkType != null && communicationNetworkType != CommunicationNetworkType.sim)
                   CommunicationNetworkIcon(networkType: communicationNetworkType),
               ],

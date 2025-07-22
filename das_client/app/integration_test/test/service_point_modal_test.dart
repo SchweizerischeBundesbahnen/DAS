@@ -272,6 +272,41 @@ void main() {
 
       await disconnect(tester);
     });
+
+    testWidgets('test SIM corridor information', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T20');
+      await pauseAutomaticAdvancement(tester);
+
+      final scrollableFinder = find.byType(AnimatedList);
+      expect(scrollableFinder, findsOneWidget);
+
+      // check Frutigen SIM information
+      await _openByTapOnCellWithText(tester, 'Frutigen');
+      expect(find.byKey(DetailTabCommunication.simCorridorListKey), findsOneWidget);
+      expect(find.text('Frutigen - Kandergrund'), findsOneWidget);
+
+      await tester.dragUntilVisible(find.text('Brig'), scrollableFinder, const Offset(0, -50));
+
+      // check Brig SIM information
+      await _openByTapOnCellWithText(tester, 'Brig');
+      expect(find.byKey(DetailTabCommunication.simCorridorListKey), findsNothing);
+
+      // check Domodossola FM SIM information
+      await tester.dragUntilVisible(find.text('Domodossola FM'), scrollableFinder, const Offset(0, -50));
+
+      await _openByTapOnCellWithText(tester, 'Domodossola FM');
+      expect(find.byKey(DetailTabCommunication.simCorridorListKey), findsOneWidget);
+      expect(find.text('1392'), findsOneWidget);
+      expect(find.text('Domodossola - Preglia, linkes Gleis'), findsOneWidget);
+      expect(find.text('1393'), findsOneWidget);
+      expect(find.text('Domodossola - Preglia, rechtes Gleis'), findsOneWidget);
+
+      // check Footnote header
+      expect(find.text(l10n.c_radn_sim), findsAny);
+
+      await disconnect(tester);
+    });
   });
 }
 
