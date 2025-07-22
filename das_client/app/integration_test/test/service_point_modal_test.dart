@@ -286,7 +286,8 @@ void main() {
       expect(find.byKey(DetailTabCommunication.simCorridorListKey), findsOneWidget);
       expect(find.text('Frutigen - Kandergrund'), findsOneWidget);
 
-      await tester.dragUntilVisible(find.text('Brig'), scrollableFinder, const Offset(0, -50));
+      await tester.dragUntilVisible(find.text('Brig'), scrollableFinder, const Offset(0, -100));
+      await tester.pumpAndSettle(const Duration(milliseconds: 100));
 
       // check Brig SIM information
       await _openByTapOnCellWithText(tester, 'Brig');
