@@ -1,6 +1,6 @@
 package ch.sbb.backend.formation.infrastructure;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.backend.formation.domain.model.BrakeDesign;
 import ch.sbb.backend.formation.domain.model.BrakeStatus;
@@ -51,10 +51,7 @@ class VehicleFactoryTest {
 
         Vehicle expectedOtherVehicle = new Vehicle(null, null, Collections.emptyList(), null);
 
-        assertEquals(3, result.size());
-        assertEquals(expectedVehicle1, result.getFirst());
-        assertEquals(expectedOtherVehicle, result.get(1));
-        assertEquals(expectedOtherVehicle, result.get(2));
+        assertThat(result).containsExactly(expectedVehicle1, expectedOtherVehicle, expectedOtherVehicle);
 
     }
 

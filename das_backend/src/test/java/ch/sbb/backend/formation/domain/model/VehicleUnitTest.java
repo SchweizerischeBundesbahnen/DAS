@@ -1,8 +1,6 @@
 package ch.sbb.backend.formation.domain.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -27,7 +25,7 @@ class VehicleUnitTest {
 
         boolean result = VehicleUnit.hasDisabledBrake(vehicleUnits);
 
-        assertTrue(result);
+        assertThat(result).isTrue();
     }
 
     @Test
@@ -42,7 +40,7 @@ class VehicleUnitTest {
 
         boolean result = VehicleUnit.hasDisabledBrake(vehicleUnits);
 
-        assertFalse(result);
+        assertThat(result).isFalse();
     }
 
     @Test
@@ -60,7 +58,7 @@ class VehicleUnitTest {
 
         boolean result = VehicleUnit.hasDangerousGoods(vehicleUnits);
 
-        assertTrue(result);
+        assertThat(result).isTrue();
     }
 
     @Test
@@ -75,7 +73,7 @@ class VehicleUnitTest {
 
         boolean result = VehicleUnit.hasDangerousGoods(vehicleUnits);
 
-        assertFalse(result);
+        assertThat(result).isFalse();
     }
 
     @Test
@@ -86,7 +84,7 @@ class VehicleUnitTest {
 
         boolean result = VehicleUnit.hasBrakeDesign(vehicleUnits, BrakeDesign.EINLOESIGE_BREMSE);
 
-        assertTrue(result);
+        assertThat(result).isTrue();
     }
 
     @Test
@@ -97,7 +95,7 @@ class VehicleUnitTest {
 
         boolean result = VehicleUnit.hasBrakeDesign(vehicleUnits, BrakeDesign.SCHEIBENBREMSEN);
 
-        assertFalse(result);
+        assertThat(result).isFalse();
     }
 
     @Test
@@ -106,9 +104,9 @@ class VehicleUnitTest {
         vehicleUnits.add(new VehicleUnit(BrakeDesign.L_KUNSTSTOFF_LEISE, null, null, null, null, null));
         vehicleUnits.add(new VehicleUnit(BrakeDesign.NICHT_KODIERT, null, null, null, null, null));
 
-        assertTrue(VehicleUnit.hasBrakeDesign(vehicleUnits, BrakeDesign.SCHEIBENBREMSEN, BrakeDesign.NICHT_KODIERT));
-        assertTrue(VehicleUnit.hasBrakeDesign(vehicleUnits, BrakeDesign.NICHT_KODIERT, BrakeDesign.L_KUNSTSTOFF_LEISE));
-        assertFalse(VehicleUnit.hasBrakeDesign(vehicleUnits, BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE, BrakeDesign.NORMALE_BREMSAUSRUESTUNG_KEINE_MERKMALE));
+        assertThat(VehicleUnit.hasBrakeDesign(vehicleUnits, BrakeDesign.SCHEIBENBREMSEN, BrakeDesign.NICHT_KODIERT)).isTrue();
+        assertThat(VehicleUnit.hasBrakeDesign(vehicleUnits, BrakeDesign.NICHT_KODIERT, BrakeDesign.L_KUNSTSTOFF_LEISE)).isTrue();
+        assertThat(VehicleUnit.hasBrakeDesign(vehicleUnits, BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE, BrakeDesign.NORMALE_BREMSAUSRUESTUNG_KEINE_MERKMALE)).isFalse();
     }
 
     @Test
@@ -117,7 +115,7 @@ class VehicleUnitTest {
 
         Integer result = vehicleUnit.holdingForce(true);
 
-        assertEquals(0, result);
+        assertThat(result).isZero();
     }
 
     @Test
@@ -126,7 +124,7 @@ class VehicleUnitTest {
 
         Integer result = vehicleUnit.holdingForce(true);
 
-        assertEquals(13, result);
+        assertThat(result).isEqualTo(13);
     }
 
     @Test
@@ -135,7 +133,7 @@ class VehicleUnitTest {
 
         Integer result = vehicleUnit.holdingForce(true);
 
-        assertEquals(100, result);
+        assertThat(result).isEqualTo(100);
     }
 
     @Test
@@ -144,7 +142,7 @@ class VehicleUnitTest {
 
         Integer result = vehicleUnit.holdingForce(false);
 
-        assertEquals(12, result);
+        assertThat(result).isEqualTo(12);
     }
 
     @Test
@@ -153,6 +151,6 @@ class VehicleUnitTest {
 
         Integer result = vehicleUnit.holdingForce(false);
 
-        assertEquals(90, result);
+        assertThat(result).isEqualTo(90);
     }
 }

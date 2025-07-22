@@ -1,6 +1,6 @@
 package ch.sbb.backend.formation.domain.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
@@ -22,16 +22,16 @@ class FormationTest {
 
         Formation formation = new Formation(modifiedDateTime, operationalTrainNumber, operationalDay, Collections.emptyList());
 
-        assertEquals(modifiedDateTime, formation.getModifiedDateTime());
-        assertEquals(operationalTrainNumber, formation.getOperationalTrainNumber());
-        assertEquals(operationalDay, formation.getOperationalDay());
-        assertEquals(Collections.emptyList(), formation.validFormationRuns());
+        assertThat(formation.getModifiedDateTime()).isEqualTo(modifiedDateTime);
+        assertThat(formation.getOperationalTrainNumber()).isEqualTo(operationalTrainNumber);
+        assertThat(formation.getOperationalDay()).isEqualTo(operationalDay);
+        assertThat(formation.validFormationRuns()).isEqualTo(Collections.emptyList());
     }
 
     @Test
     void inspectedFormationRuns_empty() {
         Formation formation = new Formation(OffsetDateTime.now(), "12345", LocalDate.now(), Collections.emptyList());
-        assertEquals(Collections.emptyList(), formation.validFormationRuns());
+        assertThat(formation.validFormationRuns()).isEqualTo(Collections.emptyList());
     }
 
     @Test
@@ -48,7 +48,7 @@ class FormationTest {
                 null // mocked
             );
 
-            assertEquals(1, formation.validFormationRuns().size());
+            assertThat(formation.validFormationRuns()).hasSize(1);
         }
     }
 }

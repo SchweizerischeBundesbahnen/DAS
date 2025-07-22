@@ -12,7 +12,7 @@ public class EuropeanVehicleNumber {
     private String countryCodeUic;
     private String vehicleNumber;
 
-    public String asString() {
+    public String toVehicleCode() {
         if (countryCodeUic == null || vehicleNumber == null) {
             return null;
         }
