@@ -80,8 +80,25 @@ extension FootNoteExtension on BaseFootNote {
   String _defaultTitle(BuildContext context) {
     if (footNote.refText == 'SIM') {
       return context.l10n.c_radn_sim;
-    } else {
-      return context.l10n.c_radn;
     }
+
+    if (footNote.type != null) {
+      switch (footNote.type!) {
+        case FootNoteType.trackSpeed:
+          return '${context.l10n.c_radn} ${context.l10n.c_radn_type_track_speed}';
+        case FootNoteType.decisiveGradientUp:
+          return '${context.l10n.c_radn} ${context.l10n.c_radn_type_decisive_gradient_up}';
+        case FootNoteType.decisiveGradientDown:
+          return '${context.l10n.c_radn} ${context.l10n.c_radn_type_decisive_gradient_down}';
+        case FootNoteType.contact:
+          return '${context.l10n.c_radn} ${context.l10n.c_radn_type_contact}';
+        case FootNoteType.networkType:
+          return '${context.l10n.c_radn} ${context.l10n.c_radn_type_network_type}';
+        case FootNoteType.journey:
+          return '${context.l10n.c_radn} ${context.l10n.c_radn_type_journey}';
+      }
+    }
+
+    return context.l10n.c_radn;
   }
 }
