@@ -1502,6 +1502,29 @@ void main() {
     expect(radioContactLists[7].mainContacts.first.contactIdentifier, '1407');
   });
 
+  test('Test SIM ContactList T20 parsed correctly', () async {
+    final journey = getJourney('T20', 1);
+    expect(journey.valid, true);
+
+    final radioContactLists = journey.metadata.radioContactLists.toList();
+
+    expect(radioContactLists.length, 9);
+    expect(radioContactLists[0].mainContacts.length, 1);
+    expect(radioContactLists[0].mainContacts.first.contactIdentifier, '1305');
+    expect(radioContactLists[0].isSimCorridor, false);
+    expect(radioContactLists[1].selectiveContacts.length, 1);
+    expect(radioContactLists[1].selectiveContacts.first.contactIdentifier, '1390');
+    expect(radioContactLists[1].selectiveContacts.first.contactRole, 'Frutigen - Kandergrund');
+    expect(radioContactLists[1].isSimCorridor, true);
+    expect(radioContactLists[2].isSimCorridor, false);
+    expect(radioContactLists[3].isSimCorridor, false);
+    expect(radioContactLists[4].isSimCorridor, false);
+    expect(radioContactLists[5].isSimCorridor, true);
+    expect(radioContactLists[6].isSimCorridor, false);
+    expect(radioContactLists[7].isSimCorridor, true);
+    expect(radioContactLists[8].isSimCorridor, false);
+  });
+
   test('Test DecisiveGradientArea parsed correctly', () {
     final journey = getJourney('T15', 4);
     expect(journey.valid, true);

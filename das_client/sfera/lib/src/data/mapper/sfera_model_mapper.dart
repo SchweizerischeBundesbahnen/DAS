@@ -403,6 +403,7 @@ class SferaModelMapper {
             );
             return RadioContactList(
               order: calculateOrder(index, contactList.startLocation ?? 0),
+              endOrder: calculateOrder(index, contactList.endLocation ?? 0),
               contacts: identifiableContacts.map(
                 (e) => switch (e.mainContact) {
                   true => MainContact(

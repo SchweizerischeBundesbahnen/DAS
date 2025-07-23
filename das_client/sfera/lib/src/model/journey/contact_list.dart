@@ -2,11 +2,15 @@ import 'package:collection/collection.dart';
 import 'package:sfera/src/model/journey/contact.dart';
 
 class RadioContactList implements Comparable {
-  RadioContactList({required this.order, required Iterable<Contact> contacts})
-    : mainContacts = contacts.whereType<MainContact>(),
-      selectiveContacts = contacts.whereType<SelectiveContact>();
+  RadioContactList({
+    required this.order,
+    required this.endOrder,
+    required Iterable<Contact> contacts,
+  }) : mainContacts = contacts.whereType<MainContact>(),
+       selectiveContacts = contacts.whereType<SelectiveContact>();
 
   final int order;
+  final int endOrder;
   final Iterable<Contact> mainContacts;
   final Iterable<Contact> selectiveContacts;
 
@@ -18,6 +22,8 @@ class RadioContactList implements Comparable {
 
   String? get mainContactsIdentifier =>
       mainContacts.isNotEmpty ? mainContacts.map((c) => c.contactIdentifier).take(2).join(' ') : null;
+
+  bool get isSimCorridor => order != endOrder;
 }
 
 extension RadioContactListExtension on Iterable<RadioContactList> {

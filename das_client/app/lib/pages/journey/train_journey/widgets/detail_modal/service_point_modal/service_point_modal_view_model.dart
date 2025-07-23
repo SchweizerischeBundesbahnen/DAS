@@ -16,6 +16,7 @@ class ServicePointModalViewModel {
 
   final _rxCommunicationNetworkType = BehaviorSubject<CommunicationNetworkType?>();
   final _rxRadioContactList = BehaviorSubject<RadioContactList?>();
+  final _rxSimCorridor = BehaviorSubject<RadioContactList?>();
   final _rxMetadata = BehaviorSubject<Metadata>();
   final _rxServicePoint = BehaviorSubject<ServicePoint>();
   final _rxSelectedTab = BehaviorSubject<ServicePointModalTab?>();
@@ -31,6 +32,8 @@ class ServicePointModalViewModel {
 
   Stream<RadioContactList?> get radioContacts => _rxRadioContactList.distinct();
 
+  Stream<RadioContactList?> get simCorridor => _rxSimCorridor.distinct();
+
   Stream<CommunicationNetworkType?> get communicationNetworkType => _rxCommunicationNetworkType.distinct();
 
   Stream<List<TrainSeriesSpeed>> get relevantSpeedInfo => _rxRelevantSpeedInfo.distinct();
@@ -41,6 +44,7 @@ class ServicePointModalViewModel {
 
   void _init() {
     _initRadioContacts();
+    _initSimCorridor();
     _initCommunicationNetworkType();
     _initRelevantSpeedInfo();
     _initTabs();
@@ -51,8 +55,22 @@ class ServicePointModalViewModel {
     final subscription = Rx.combineLatest2(
       _rxServicePoint.stream,
       _rxMetadata.stream,
-      (servicePoint, metadata) => metadata.radioContactLists.lastLowerThan(servicePoint.order),
+      (servicePoint, metadata) =>
+          metadata.radioContactLists.where((it) => !it.isSimCorridor).lastLowerThan(servicePoint.order),
     ).listen(_rxRadioContactList.add, onError: _rxRadioContactList.addError);
+    _subscriptions.add(subscription);
+  }
+
+  void _initSimCorridor() {
+    final subscription = Rx.combineLatest2(
+      _rxServicePoint.stream,
+      _rxMetadata.stream,
+      (servicePoint, metadata) => metadata.radioContactLists
+          .where(
+            (it) => it.isSimCorridor && it.order <= servicePoint.order && it.endOrder >= servicePoint.order,
+          )
+          .firstOrNull,
+    ).listen(_rxSimCorridor.add, onError: _rxSimCorridor.addError);
     _subscriptions.add(subscription);
   }
 

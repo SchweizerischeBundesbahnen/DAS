@@ -63,7 +63,7 @@ extension FootNoteExtension on BaseFootNote {
       case final LineFootNote lineFootNote:
         return _resolveTitle(context, lineFootNote, metadata);
       default:
-        return context.l10n.c_radn;
+        return _defaultTitle(context);
     }
   }
 
@@ -73,7 +73,23 @@ extension FootNoteExtension on BaseFootNote {
       final servicePointNames = metadata.lineFootNoteLocations[identifier]!;
       return '${context.l10n.c_radn} ${servicePointNames.first} - ${servicePointNames.last}';
     } else {
-      return context.l10n.c_radn;
+      return _defaultTitle(context);
     }
+  }
+
+  String _defaultTitle(BuildContext context) {
+    if (footNote.refText == 'SIM') {
+      return context.l10n.c_radn_sim;
+    }
+
+    return switch (footNote.type) {
+      FootNoteType.trackSpeed => '${context.l10n.c_radn} ${context.l10n.c_radn_type_track_speed}',
+      FootNoteType.decisiveGradientUp => '${context.l10n.c_radn} ${context.l10n.c_radn_type_decisive_gradient_up}',
+      FootNoteType.decisiveGradientDown => '${context.l10n.c_radn} ${context.l10n.c_radn_type_decisive_gradient_down}',
+      FootNoteType.contact => '${context.l10n.c_radn} ${context.l10n.c_radn_type_contact}',
+      FootNoteType.networkType => '${context.l10n.c_radn} ${context.l10n.c_radn_type_network_type}',
+      FootNoteType.journey => '${context.l10n.c_radn} ${context.l10n.c_radn_type_journey}',
+      null => context.l10n.c_radn,
+    };
   }
 }

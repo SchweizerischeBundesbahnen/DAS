@@ -9,5 +9,5 @@ class TrackFootNote extends BaseFootNote {
   }) : super(type: Datatype.trackFootNote);
 
   @override
-  OrderPriority get orderPriority => OrderPriority.baseData;
+  OrderPriority get orderPriority => OrderPriority.trackFootNote;
 }

@@ -5,5 +5,6 @@ enum OrderPriority {
   lineFootNotes,
   opFootNote,
   curve,
+  trackFootNote,
   cabSignalingEnd,
 }

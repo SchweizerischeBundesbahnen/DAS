@@ -272,6 +272,60 @@ void main() {
 
       await disconnect(tester);
     });
+
+    testWidgets('test SIM corridor information', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T20');
+      await pauseAutomaticAdvancement(tester);
+
+      final scrollableFinder = find.byType(AnimatedList);
+      expect(scrollableFinder, findsOneWidget);
+
+      // check Reichenbach im Kandertal SIM information
+      await _openByTapOnCellWithText(tester, 'Reichenbach im Kandertal');
+      expect(find.byKey(DetailTabCommunication.simCorridorListKey), findsNothing);
+
+      // check Frutigen SIM information
+      await _openByTapOnCellWithText(tester, 'Frutigen');
+      expect(find.byKey(DetailTabCommunication.simCorridorListKey), findsOneWidget);
+      expect(find.text('Frutigen - Kandergrund'), findsOneWidget);
+
+      // check Domodossola FM SIM information
+      await tester.dragUntilVisible(find.text('Domodossola FM'), scrollableFinder, const Offset(0, -50));
+
+      await _openByTapOnCellWithText(tester, 'Domodossola FM');
+      expect(find.byKey(DetailTabCommunication.simCorridorListKey), findsOneWidget);
+      expect(find.text('1392'), findsOneWidget);
+      expect(find.text('Domodossola - Preglia, linkes Gleis'), findsOneWidget);
+      expect(find.text('1393'), findsOneWidget);
+      expect(find.text('Domodossola - Preglia, rechtes Gleis'), findsOneWidget);
+
+      // check Footnote header
+      expect(find.text(l10n.c_radn_sim), findsAny);
+
+      await disconnect(tester);
+    });
+  });
+
+  testWidgets('test short signal names are displayed when modal is open', (tester) async {
+    await prepareAndStartApp(tester);
+    await loadTrainJourney(tester, trainNumber: 'T9999');
+    await pauseAutomaticAdvancement(tester);
+
+    expect(find.text(l10n.c_main_signal_function_entry), findsAny);
+    expect(find.text(l10n.c_main_signal_function_exit), findsAny);
+    expect(find.text(l10n.c_main_signal_function_entry_short), findsNothing);
+    expect(find.text(l10n.c_main_signal_function_exit_short), findsNothing);
+
+    await _openByTapOnCellWithText(tester, 'Bahnhof A');
+    await tester.pumpAndSettle();
+
+    expect(find.text(l10n.c_main_signal_function_entry), findsNothing);
+    expect(find.text(l10n.c_main_signal_function_exit), findsNothing);
+    expect(find.text(l10n.c_main_signal_function_entry_short), findsAny);
+    expect(find.text(l10n.c_main_signal_function_exit_short), findsAny);
+
+    await disconnect(tester);
   });
 }
 
