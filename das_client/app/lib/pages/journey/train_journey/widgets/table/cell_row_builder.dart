@@ -2,6 +2,7 @@ import 'package:app/extension/base_data_extension.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/line_speed_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/speed_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
@@ -119,9 +120,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
     );
   }
 
-  DASTableCell localSpeedCell(BuildContext context) {
-    return speedCell(data.localSpeeds);
-  }
+  DASTableCell localSpeedCell(BuildContext context) => speedCell(data.localSpeeds);
 
   DASTableCell brakedWeightSpeedCell(BuildContext context) {
     final inEtcsLevel2Segment = metadata.nonStandardTrackEquipmentSegments.isInEtcsLevel2Segment(data.order);
@@ -129,7 +128,11 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
       return DASTableCell.empty();
     }
 
-    return speedCell(data.speeds);
+    return DASTableCell(
+      alignment: Alignment.center,
+      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
+      child: LineSpeedCellBody(rowIndex: rowIndex),
+    );
   }
 
   DASTableCell speedCell(List<TrainSeriesSpeed>? speedData) {
