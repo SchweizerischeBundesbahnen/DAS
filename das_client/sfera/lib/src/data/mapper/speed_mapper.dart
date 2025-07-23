@@ -10,13 +10,13 @@ import 'package:sfera/src/data/dto/velocity_dto.dart';
 import 'package:sfera/src/data/mapper/mapper_utils.dart';
 import 'package:sfera/src/model/journey/advised_speed_segment.dart';
 
-final _log = Logger('GraduatedSpeedDataMapper');
+final _log = Logger('SpeedMapper');
 
-/// Used to map data from SFERA to domain model [SpeedData].
+/// Used to map data from SFERA to domain model speeds.
 class SpeedMapper {
   SpeedMapper._();
 
-  /// Maps list of SFERA model [VelocityDto] to [SpeedData]
+  /// Maps list of SFERA model [VelocityDto] to [TrainSeriesSpeed]
   static List<TrainSeriesSpeed>? fromVelocities(Iterable<VelocityDto>? velocities) {
     if (velocities == null) return null;
 
@@ -45,7 +45,7 @@ class SpeedMapper {
     return result;
   }
 
-  /// Maps SFERA model [GraduatedSpeedInfoDto] to [SpeedData]
+  /// Maps SFERA model [GraduatedSpeedInfoDto] to [TrainSeriesSpeed]
   static List<TrainSeriesSpeed>? fromGraduatedSpeedInfo(GraduatedSpeedInfoDto? graduatedSpeedInfo) {
     if (graduatedSpeedInfo == null) return null;
 
