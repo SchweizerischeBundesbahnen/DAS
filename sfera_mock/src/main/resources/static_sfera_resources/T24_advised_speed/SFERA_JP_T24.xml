@@ -94,7 +94,7 @@
                 <ReasonText language="DE" text="ADL"/>
             </AdvisedSpeed>
         </TemporaryConstraints>
-        <!-- second ADL - fixedSpeed -->
+        <!-- second ADL - fixedTime -->
         <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="AdvisedSpeed" startLocation="4500" endLocation="5000">
             <AdvisedSpeed speed="80" reasonCode="nationalUse1" adviceType="ConstantspeedAdvice">
                 <ReasonText language="DE" text="ADL"/>
@@ -112,9 +112,9 @@
                 <ReasonText language="DE" text="ADL"/>
             </AdvisedSpeed>
         </TemporaryConstraints>
-        <!-- fifth ADL - followTrain - no exact signals known - should be displayed from Gland to Allaman including -->
+        <!-- fifth ADL - Vmax - no exact signals known - should be displayed from Gland to Allaman including -->
         <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="AdvisedSpeed" startLocation="9000" endLocation="11000">
-            <AdvisedSpeed deltaSpeed="0" reasonCode="followTrain" adviceType="ConstantspeedAdvice">
+            <AdvisedSpeed deltaSpeed="0" adviceType="ConstantspeedAdvice">
                 <ReasonText language="DE" text="ADL"/>
             </AdvisedSpeed>
         </TemporaryConstraints>

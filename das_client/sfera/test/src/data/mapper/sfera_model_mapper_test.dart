@@ -12,6 +12,7 @@ import 'package:sfera/src/data/dto/related_train_information_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
+import 'package:sfera/src/model/journey/advised_speed_segment.dart';
 
 void main() {
   Logger.root.level = Level.ALL;
@@ -1205,23 +1206,33 @@ void main() {
     expect(servicePoints[14].calculatedSpeed, equals(Speed.parse('0')));
   });
 
-  test('Test advised speeds are parsed correctly when currentPosition is not in ADL segment', () async {
+  test('Test advised speeds are parsed correctly', () async {
     final journey = getJourney('T24', 1);
     expect(journey.valid, isTrue);
 
-    final advisedSpeeds = journey.metadata.advisedSpeedSegments;
+    final advisedSpeeds = journey.metadata.advisedSpeedSegments.toList();
     expect(advisedSpeeds.length, 5);
 
-    expect(advisedSpeeds[0].speed!.value, '80');
-    expect(advisedSpeeds[0].isActive, false);
-    expect(advisedSpeeds[1].speed!.value, '80');
-    expect(advisedSpeeds[1].isActive, false);
-    expect(advisedSpeeds[2].speed!.value, '120');
-    expect(advisedSpeeds[2].isActive, false);
+    expect(advisedSpeeds[0], isA<FollowTrainAdvisedSpeedSegment>());
+    expect(advisedSpeeds[0].speed, equals(SingleSpeed(value: '80')));
+    expect(advisedSpeeds[0].startOrder, 500);
+    expect(advisedSpeeds[0].endOrder, 2500);
+    expect(advisedSpeeds[1], isA<FixedTimeAdvisedSpeedSegment>());
+    expect(advisedSpeeds[1].speed, equals(SingleSpeed(value: '80')));
+    expect(advisedSpeeds[1].startOrder, 4500);
+    expect(advisedSpeeds[1].endOrder, 5000);
+    expect(advisedSpeeds[2], isA<TrainFollowingAdvisedSpeedSegment>());
+    expect(advisedSpeeds[2].speed, equals(SingleSpeed(value: '120')));
+    expect(advisedSpeeds[2].startOrder, 5500);
+    expect(advisedSpeeds[2].endOrder, 6500);
+    expect(advisedSpeeds[3], isA<VelocityMaxAdvisedSpeedSegment>());
     expect(advisedSpeeds[3].speed, isNull);
-    expect(advisedSpeeds[3].isActive, false);
+    expect(advisedSpeeds[3].startOrder, 7000);
+    expect(advisedSpeeds[3].endOrder, 7500);
+    expect(advisedSpeeds[4], isA<VelocityMaxAdvisedSpeedSegment>());
     expect(advisedSpeeds[4].speed, isNull);
-    expect(advisedSpeeds[4].isActive, false);
+    expect(advisedSpeeds[4].startOrder, 8000);
+    expect(advisedSpeeds[4].endOrder, 12000);
   });
 
   test('Test current position is start when nothing is given ', () async {

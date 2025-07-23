@@ -48,7 +48,7 @@ class Metadata {
   final List<NonStandardTrackEquipmentSegment> nonStandardTrackEquipmentSegments;
   final List<CommunicationNetworkChange> communicationNetworkChanges;
   final List<BracketStationSegment> bracketStationSegments;
-  final List<AdvisedSpeedSegment> advisedSpeedSegments;
+  final Iterable<AdvisedSpeedSegment> advisedSpeedSegments;
   final BreakSeries? breakSeries;
   final Set<BreakSeries> availableBreakSeries;
   final Map<String, List<String>> lineFootNoteLocations;
