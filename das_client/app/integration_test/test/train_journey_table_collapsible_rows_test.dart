@@ -62,6 +62,8 @@ void main() {
 
     // should show full text after tap on "show more" and no button
     await tapElement(tester, showMoreButton);
+    await tester.pumpAndSettle(Duration(milliseconds: 100));
+
     final rowWithEndOfText = _findDASTableAccordionRowByContainsText(
       'Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
     );
