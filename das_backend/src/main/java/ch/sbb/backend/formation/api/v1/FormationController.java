@@ -1,6 +1,7 @@
 package ch.sbb.backend.formation.api.v1;
 
 import ch.sbb.backend.ApiDocumentation;
+import ch.sbb.backend.common.SFERA;
 import ch.sbb.backend.common.TelTsi;
 import ch.sbb.backend.formation.api.v1.model.FormationResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,21 +30,19 @@ public class FormationController {
     private static final String API_FORMATIONS = ApiDocumentation.VERSION_URI_V1 + PATH_SEGMENT_FORMATIONS;
 
     // todo: cacheable
+    // todo: error API responses
     @Operation(summary = "Get formation by train identification")
     @ApiResponse(responseCode = "200", description = "Formation found")
     @GetMapping(path = API_FORMATIONS, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<FormationResponse> getFormation(
         @Parameter(description = OPERATIONAL_TRAIN_NUMBER_DESCRIPTION, required = true)
-        //     todo   @SFERA
-        @TelTsi @RequestParam @NotBlank String operationalTrainNumber,
+        @SFERA @TelTsi @RequestParam @NotBlank String operationalTrainNumber,
 
-        //     todo   @SFERA(nsp)
         @Parameter(description = OPERATIONAL_DAY_DESCRIPTION, required = true)
-        @RequestParam @NotNull LocalDate operationalDay,
+        @SFERA(nsp = true) @RequestParam @NotNull LocalDate operationalDay,
 
-        //     todo   @SFERA
         @Parameter(description = COMPANY_DESCRIPTION)
-        @TelTsi @RequestParam @Pattern(regexp = "\\d{4}") String company) {
+        @SFERA @TelTsi @RequestParam @Pattern(regexp = "\\d{4}") String company) {
         // todo: check params and implement
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
     }

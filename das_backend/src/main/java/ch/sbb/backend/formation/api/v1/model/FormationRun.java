@@ -1,56 +1,93 @@
 package ch.sbb.backend.formation.api.v1.model;
 
 import ch.sbb.backend.formation.infrastructure.model.TrainFormationRunEntity;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.Builder;
 
 // todo: property descriptions
+// todo: check required/non-required resp. default values with source
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public record FormationRun(
     @Schema(description = "Last modification date and time of the formation run.", requiredMode = Schema.RequiredMode.REQUIRED)
     OffsetDateTime modifiedDateTime,
-    @Schema(description = "blabla", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     String tafTapLocationReferenceStart,
-    @Schema(description = "blabla", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     String tafTapLocationReferenceEnd,
-    //todo all requiredModes and default values
-    // todo null values not transmitted on API (JSONIncluede false)
+    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
     String trainCategoryCode,
+    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
     Integer brakedWeightPercentage,
+    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
     Integer tractionMaxSpeedInKmh,
+    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
     Integer hauledLoadMaxSpeedInKmh,
+    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
     Integer formationMaxSpeedInKmh,
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer tractionLengthInCm,
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer hauledLoadLengthInCm,
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer formationLengthInCm,
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer tractionWeightInT,
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer hauledLoadWeightInT,
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer formationWeightInT,
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer tractionBrakedWeightInT,
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer hauledLoadBrakedWeightInT,
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer formationBrakedWeightInT,
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer tractionHoldingForceInHectoNewton,
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer hauledLoadHoldingForceInHectoNewton,
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer formationHoldingForceInHectoNewton,
+    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
     Boolean brakePositionGForLeadingTraction,
+    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
     Boolean brakePositionGForBrakeUnit1to5,
+    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
     Boolean brakePositionGForLoadHauled,
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Boolean simTrain,
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     List<String> tractionModes,
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Boolean carCarrierVehicle,
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Boolean dangerousGoods,
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer vehiclesCount,
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer vehiclesWithBrakeDesignLlAndKCount,
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer vehiclesWithBrakeDesignDCount,
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer vehiclesWithDisabledBrakesCount,
+    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
     String europeanVehicleNumberFirst,
+    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
     String europeanVehicleNumberLast,
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer axleLoadMaxInKg,
+    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
     String routeClass,
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer gradientUphillMaxInPermille,
+    @Schema(requiredMode = RequiredMode.REQUIRED)
     Integer gradientDownhillMaxInPermille,
+    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
     String slopeMaxForHoldingForceMinInPermille
 ) {
 
@@ -68,7 +105,7 @@ public record FormationRun(
             .tractionLengthInCm(trainFormationRunEntity.getTractionLengthInCm())
             .hauledLoadLengthInCm(trainFormationRunEntity.getHauledLoadLengthInCm())
             .formationLengthInCm(trainFormationRunEntity.getFormationLengthInCm())
-            .tractionWeightInT(trainFormationRunEntity.getTractionGrossWeightInT())
+            .tractionWeightInT(trainFormationRunEntity.getTractionWeightInT())
             .hauledLoadWeightInT(trainFormationRunEntity.getHauledLoadWeightInT())
             .formationWeightInT(trainFormationRunEntity.getFormationWeightInT())
             .tractionBrakedWeightInT(trainFormationRunEntity.getTractionBrakedWeightInT())
