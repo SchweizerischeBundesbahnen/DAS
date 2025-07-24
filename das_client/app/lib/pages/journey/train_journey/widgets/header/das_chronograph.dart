@@ -1,12 +1,8 @@
-import 'dart:async';
-
-import 'package:app/pages/journey/train_journey/widgets/punctuality/punctuality_model.dart';
-import 'package:app/pages/journey/train_journey/widgets/punctuality/punctuality_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/chronograph/chronograph_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/chronograph/punctuality_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/das_text_styles.dart';
-import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -36,17 +32,17 @@ class DASChronograph extends StatelessWidget {
     mainAxisAlignment: MainAxisAlignment.start,
     crossAxisAlignment: CrossAxisAlignment.end,
     children: [
-      Flexible(child: _currentTime()),
+      Flexible(child: _currentTime(context)),
       Divider(height: sbbDefaultSpacing, color: SBBColors.cloud),
       Flexible(child: _delay(context)),
     ],
   );
 
   Widget _delay(BuildContext context) {
-    final viewModel = context.read<PunctualityViewModel>();
+    final viewModel = context.read<ChronographViewModel>();
     return StreamBuilder<PunctualityModel>(
-      stream: viewModel.model,
-      initialData: viewModel.modelValue,
+      stream: viewModel.punctualityModel,
+      initialData: viewModel.punctualityModelValue,
       builder: (context, snapshot) {
         final model = snapshot.data;
         final showPunctuality = (model != null && model is! Hidden);
@@ -79,16 +75,17 @@ class DASChronograph extends StatelessWidget {
     final Visible _ || final Hidden _ || null => DASTextStyles.xLargeLight,
   };
 
-  Widget _currentTime() {
+  Widget _currentTime(BuildContext context) {
+    final viewModel = context.read<ChronographViewModel>();
     return StreamBuilder(
-      stream: Stream.periodic(const Duration(milliseconds: 200)),
+      stream: viewModel.formattedWallclockTime,
+      initialData: viewModel.formattedWallclockTimeValue,
       builder: (context, snapshot) {
+        if (!snapshot.hasData) return SizedBox.expand();
+
         return Padding(
           padding: const EdgeInsets.all(sbbDefaultSpacing * 0.5),
-          child: Text(
-            DateFormat('HH:mm:ss').format(clock.now()),
-            style: DASTextStyles.xLargeBold,
-          ),
+          child: Text(snapshot.requireData, style: DASTextStyles.xLargeBold),
         );
       },
     );

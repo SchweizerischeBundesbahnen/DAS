@@ -27,7 +27,7 @@ import '../util/test_utils.dart';
 
 Future<void> main() async {
   group('train journey header test', () {
-    testWidgets('test punctuality display hides when no updates come', (tester) async {
+    testWidgets('test chronograph punctuality display hides when no updates come', (tester) async {
       await prepareAndStartApp(tester);
 
       await loadTrainJourney(tester, trainNumber: 'T4');
@@ -50,7 +50,7 @@ Future<void> main() async {
       expect(find.descendant(of: chronograph, matching: find.byKey(DASChronograph.punctualityTextKey)), findsNothing);
     });
 
-    testWidgets('test punctuality display becomes stale when no updates come', (tester) async {
+    testWidgets('test chronograph punctuality display becomes stale when no updates come', (tester) async {
       await prepareAndStartApp(tester);
 
       await loadTrainJourney(tester, trainNumber: 'T4');
@@ -300,7 +300,7 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('punctuality display is hidden when no calculated speed', (tester) async {
+    testWidgets('chronograph punctuality display is hidden when no calculated speed', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
 
