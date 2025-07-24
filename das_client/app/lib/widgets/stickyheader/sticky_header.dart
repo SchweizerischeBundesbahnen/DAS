@@ -18,6 +18,7 @@ class StickyHeader extends StatefulWidget {
   final StickyWidgetBuilder headerBuilder;
   final StickyWidgetBuilder? footerBuilder;
   final List<DASTableRow> rows;
+  final void Function(int) stickyIndexUpdateCallback;
   final Widget child;
 
   const StickyHeader({
@@ -25,6 +26,7 @@ class StickyHeader extends StatefulWidget {
     required this.child,
     required this.scrollController,
     required this.rows,
+    required this.stickyIndexUpdateCallback,
     this.footerBuilder,
     super.key,
   });
@@ -47,6 +49,7 @@ class StickyHeaderState extends State<StickyHeader> {
     controller = StickyWidgetController(
       stickyHeaderKey: key,
       scrollController: widget.scrollController,
+      stickyIndexUpdateCallback: widget.stickyIndexUpdateCallback,
       rows: widget.rows,
     );
   }
@@ -62,7 +65,7 @@ class StickyHeaderState extends State<StickyHeader> {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      key: key,
+      key: controller.stickyHeaderKey,
       clipBehavior: Clip.hardEdge,
       children: <Widget>[
         NotificationListener<ScrollEndNotification>(

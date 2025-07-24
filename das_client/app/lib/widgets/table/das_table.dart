@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:app/pages/journey/train_journey/das_table_speed_view_model.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
@@ -8,6 +9,7 @@ import 'package:app/widgets/table/das_table_row.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:app/widgets/table/scrollable_align.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 /// [DASTable] provides a the basic structure for a train journey table.
@@ -120,6 +122,7 @@ class _DASTableState extends State<DASTable> {
   @override
   Widget build(BuildContext context) {
     final tableThemeData = widget.themeData ?? _defaultThemeData(context);
+    final speedViewModel = context.read<DASTableSpeedViewModel>();
     return LayoutBuilder(
       builder: (context, constraints) {
         return DASTableTheme(
@@ -139,7 +142,7 @@ class _DASTableState extends State<DASTable> {
               children: [
                 _headerRow(),
                 Expanded(
-                  child: _stickyHeaderList(constraints),
+                  child: _stickyHeaderList(constraints, speedViewModel.updateStickyIndex),
                 ),
               ],
             ),
@@ -149,12 +152,13 @@ class _DASTableState extends State<DASTable> {
     );
   }
 
-  Widget _stickyHeaderList(BoxConstraints constraints) {
+  Widget _stickyHeaderList(BoxConstraints constraints, stickyIndexUpdateCallback) {
     return StickyHeader(
       footerBuilder: (context, index) => _footer(index),
       headerBuilder: (context, index) => ClipRect(child: _dataRow(widget.rows[index])),
       scrollController: widget.scrollController,
       rows: widget.rows,
+      stickyIndexUpdateCallback: stickyIndexUpdateCallback,
       child: SizedBox(key: DASTable.tableKey, child: _animatedList(constraints)),
     );
   }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:math';
 
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
@@ -27,38 +28,53 @@ class DASTableSpeedViewModel {
 
   TrainJourneySettings? _settings;
   Journey? _journey;
+  List<BaseData>? _rows;
 
-  TrainSeries? _currentTrainSeries;
-  int? _currentBreakSeries;
+  int? _stickyIndex;
 
-  final List<BehaviorSubject<SingleSpeed?>> _rxLineSpeeds = [];
+  final _rxLineSpeeds = SplayTreeMap<int, BehaviorSubject<SingleSpeed?>>();
 
-  Stream<SingleSpeed?>? lineSpeedFor(int rowIndex) {
-    final streamController = _rxLineSpeeds.elementAtOrNull(rowIndex);
-    return streamController?.stream.distinct();
+  /// TODO: implement a separate ViewModel for this here and in the TrainJourney
+  void _updateRows() {
+    final currentBreakSeries = _settings?.resolvedBreakSeries(_journey?.metadata);
+    _rows = _journey?.data
+        .whereNot((it) => _isCurvePointWithoutSpeed(it, _journey, _settings))
+        .groupBaliseAndLeveLCrossings(_settings?.expandedGroups ?? [])
+        .hideRepeatedLineFootNotes(_journey?.metadata.currentPosition)
+        .hideFootNotesForNotSelectedTrainSeries(currentBreakSeries?.trainSeries)
+        .combineFootNoteAndOperationalIndication()
+        .sortedBy((data) => data.order);
+  }
+
+  bool _isCurvePointWithoutSpeed(BaseData data, Journey? journey, TrainJourneySettings? settings) {
+    final breakSeries = settings?.resolvedBreakSeries(journey?.metadata);
+
+    return data.type == Datatype.curvePoint &&
+        data.localSpeeds?.speedFor(breakSeries?.trainSeries, breakSeries: breakSeries?.breakSeries) == null;
+  }
+
+  Stream<SingleSpeed?>? lineSpeedFor(int identifier) => _rxLineSpeeds[identifier]?.stream;
+
+  SingleSpeed? lineSpeedValueFor(int identifier) => _rxLineSpeeds[identifier]?.stream.valueOrNull;
+
+  void updateStickyIndex(int index) {
+    if (_stickyIndex == index) return;
+    final oldStickyIndex = _stickyIndex;
+
+    _stickyIndex = index;
+    if (oldStickyIndex != null) _singleLineSpeedUpdate(oldStickyIndex);
+    _singleLineSpeedUpdate(_stickyIndex!);
   }
 
   void dispose() {
-    for (final streamController in _rxLineSpeeds) {
-      streamController.close();
-    }
+    _clearAllLineSpeeds();
     _settingsSubscription.cancel();
     _journeySubscription.cancel();
   }
 
-  SingleSpeed? previousLineSpeed(int rowIndex) {
-    if (_journey == null || _settings == null) return null;
-
-    final currentBreakSeries = _settings!.resolvedBreakSeries(_journey!.metadata);
-    final end = min(_journey!.data.length, rowIndex);
-    final previousSpeeds = _journey!.data
-        .getRange(0, end)
-        .map((d) => d.speeds.speedFor(currentBreakSeries?.trainSeries, breakSeries: currentBreakSeries?.breakSeries))
-        .nonNulls
-        .map((trainSeriesSpeed) => trainSeriesSpeed.speed)
-        .whereType<SingleSpeed>();
-
-    return previousSpeeds.lastOrNull;
+  SingleSpeed? previousLineSpeed(int identifier) {
+    final int? previousIdxWithSpeed = _rxLineSpeeds.lastKeyBefore(identifier);
+    return _rxLineSpeeds[previousIdxWithSpeed]?.valueOrNull;
   }
 
   SingleSpeed? previousCalculatedSpeed(int rowIndex) {
@@ -74,52 +90,70 @@ class DASTableSpeedViewModel {
   }
 
   void _init(Stream<Journey?> journeyStream, Stream<TrainJourneySettings> settingsStream) {
-    _journeySubscription = journeyStream.listen((journey) => _handleJourneyUpdate(journey));
+    _journeySubscription = journeyStream.listen((journey) {
+      _journey = journey;
+      _updateRows();
+      _removeAndUpdateLineSpeeds();
+    });
     _settingsSubscription = settingsStream.listen((settings) {
       _settings = settings;
-      _currentTrainSeries = settings.selectedBreakSeries?.trainSeries;
-      _currentBreakSeries = settings.selectedBreakSeries?.breakSeries;
+      _updateRows();
+      _removeAndUpdateLineSpeeds();
     });
   }
 
-  void _handleJourneyUpdate(Journey? journey) {
-    _journey = journey; // TODO: remove this line maybe in the end
-    _updateLineSpeeds(journey);
+  void _removeAndUpdateLineSpeeds() {
+    if (_journey == null) return _clearAllLineSpeeds();
+    _removeInexistentLineSpeeds();
+    _updateAllLineSpeeds();
   }
 
-  void _updateLineSpeeds(Journey? journey) {
-    if (journey == null) return _addNullAndCancelAllLineSpeeds();
-    _removeInexistentLineSpeeds(journey);
-    _addLineSpeeds(journey);
-  }
-
-  void _addLineSpeeds(Journey journey) {
-    for (final (idx, data) in journey.data.indexed) {
-      final speed = data.speeds.speedFor(_currentTrainSeries, breakSeries: _currentBreakSeries);
-      final streamController = _rxLineSpeeds.elementAtOrNull(idx);
-      if (streamController == null) {
-        _rxLineSpeeds.insert(idx, BehaviorSubject<SingleSpeed?>.seeded(speed?.speed as SingleSpeed?));
-        continue;
-      }
-
-      streamController.add(speed?.speed as SingleSpeed?);
+  void _updateAllLineSpeeds() {
+    if (_rows == null) return;
+    for (var i = 0; i < _rows!.length; i++) {
+      _singleLineSpeedUpdate(i);
     }
   }
 
-  void _addNullAndCancelAllLineSpeeds() {
-    for (final value in _rxLineSpeeds) {
+  void _singleLineSpeedUpdate(int rowIndex) {
+    if (_rows == null) return;
+    final data = _rows?.elementAtOrNull(rowIndex);
+    // if (data == null) return _safeRemoveFromLineSpeeds(rowIndex);
+
+    final resolvedBreakSeries = _settings?.resolvedBreakSeries(_journey?.metadata);
+    final TrainSeriesSpeed? speed = data?.speeds.speedFor(
+      resolvedBreakSeries?.trainSeries,
+      breakSeries: resolvedBreakSeries?.breakSeries,
+    );
+    SingleSpeed? lineSpeed = speed?.speed as SingleSpeed?;
+    if (data?.type == Datatype.servicePoint && _stickyIndex == rowIndex) lineSpeed ??= previousLineSpeed(rowIndex);
+
+    if (_rxLineSpeeds.containsKey(rowIndex)) {
+      _rxLineSpeeds[rowIndex]!.add(lineSpeed);
+    } else if (lineSpeed != null) {
+      _rxLineSpeeds[rowIndex] = BehaviorSubject<SingleSpeed?>.seeded(lineSpeed);
+    }
+  }
+
+  void _clearAllLineSpeeds() {
+    for (final value in _rxLineSpeeds.values) {
       value.add(null);
       value.close();
     }
     _rxLineSpeeds.clear();
   }
 
-  void _removeInexistentLineSpeeds(Journey journey) {
-    if (_rxLineSpeeds.length <= journey.data.length) return;
-    _rxLineSpeeds.getRange(journey.data.length, _rxLineSpeeds.length).forEach((streamController) {
-      streamController.add(null);
-      streamController.close();
-    });
-    _rxLineSpeeds.removeRange(journey.data.length, _rxLineSpeeds.length);
+  void _removeInexistentLineSpeeds() {
+    final keys = List.from(_rxLineSpeeds.keys, growable: false);
+    for (final key in keys) {
+      if (key >= _rows?.length) _safeRemoveFromLineSpeeds(key);
+    }
+  }
+
+  void _safeRemoveFromLineSpeeds(int idx) {
+    final toBeRemoved = _rxLineSpeeds[idx];
+    toBeRemoved?.add(null);
+    toBeRemoved?.close();
+    (toBeRemoved != null) ? _rxLineSpeeds.remove(idx) : null;
   }
 }

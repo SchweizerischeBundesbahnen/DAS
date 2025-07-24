@@ -131,7 +131,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
     return DASTableCell(
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
-      child: LineSpeedCellBody(rowIndex: rowIndex),
+      child: LineSpeedCellBody(rowIdentifier: rowIndex),
     );
   }
 

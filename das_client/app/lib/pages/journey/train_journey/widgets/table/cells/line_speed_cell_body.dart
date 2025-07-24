@@ -4,16 +4,19 @@ import 'package:provider/provider.dart';
 
 class LineSpeedCellBody extends StatelessWidget {
   const LineSpeedCellBody({
-    required this.rowIndex,
+    required this.rowIdentifier,
     super.key,
   });
 
-  final int rowIndex;
+  final int rowIdentifier;
 
   @override
   Widget build(BuildContext context) {
+    final vm = context.read<DASTableSpeedViewModel>();
     return StreamBuilder(
-      stream: context.read<DASTableSpeedViewModel>().lineSpeedFor(rowIndex),
+      key: ValueKey(rowIdentifier),
+      stream: vm.lineSpeedFor(rowIdentifier),
+      initialData: vm.lineSpeedValueFor(rowIdentifier),
       builder: (context, snap) {
         if (!snap.hasData) return SizedBox.shrink();
 

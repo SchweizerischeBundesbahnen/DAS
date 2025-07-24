@@ -61,8 +61,7 @@ class AdvisedSpeedCellBody extends StatelessWidget {
   SingleSpeed? _calculatedSpeedFromPrev(BuildContext context) =>
       context.read<DASTableSpeedViewModel>().previousCalculatedSpeed(rowIndex);
 
-  SingleSpeed? _lineSpeedFromPrev(BuildContext context) =>
-      context.read<DASTableSpeedViewModel>().previousLineSpeed(rowIndex);
+  SingleSpeed? _lineSpeedFromPrev(BuildContext context) => null;
 
   SingleSpeed _min(SingleSpeed? resolvedLineSpeed, SingleSpeed resolvedCalculatedSpeed) {
     if (resolvedLineSpeed == null) return resolvedCalculatedSpeed;

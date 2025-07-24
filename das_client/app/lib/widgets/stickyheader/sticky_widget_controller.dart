@@ -10,6 +10,7 @@ class StickyWidgetController with ChangeNotifier {
     required this.stickyHeaderKey,
     required this.scrollController,
     required List<DASTableRow> rows,
+    required this.stickyIndexUpdateCallback,
   }) : _rows = rows {
     scrollController.addListener(scrollListener);
     _initialize();
@@ -17,6 +18,7 @@ class StickyWidgetController with ChangeNotifier {
 
   final GlobalKey stickyHeaderKey;
   final ScrollController scrollController;
+  final void Function(int) stickyIndexUpdateCallback;
   List<DASTableRow> _rows;
   bool _recalculating = false;
 
@@ -64,6 +66,7 @@ class StickyWidgetController with ChangeNotifier {
     }
 
     _recalculating = false;
+    stickyIndexUpdateCallback.call(headerIndexes[StickyLevel.first] ?? -1);
     notifyListeners();
   }
 

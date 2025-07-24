@@ -1,4 +1,3 @@
-import 'package:app/pages/journey/train_journey/das_table_speed_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/dot_indicator.dart';
@@ -7,7 +6,6 @@ import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/widget_extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
@@ -150,9 +148,7 @@ class SpeedCellBody extends StatelessWidget {
               ((stickyController.headerOffsets[StickyLevel.first] ?? 0) < (-ServicePointRow.baseRowHeight * 0.33)));
     }
 
-    final Speed? resolvedSpeed = showPreviousSpeed
-        ? context.read<DASTableSpeedViewModel>().previousLineSpeed(rowIndex!)
-        : speed;
+    final Speed? resolvedSpeed = showPreviousSpeed ? speed : speed;
     return resolvedSpeed;
   }
 }
