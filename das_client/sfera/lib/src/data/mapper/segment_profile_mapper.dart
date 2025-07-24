@@ -134,7 +134,7 @@ class SegmentProfileMapper {
             tafTapLocation.newLineSpeed?.xmlNewLineSpeed.element.velocities,
           ),
           localSpeeds: SpeedMapper.fromVelocities(
-            tafTapLocation.stationSpeed?.xmlStationSpeed.element.velocities,
+            tafTapLocation.stationSpeed?.xmlStationSpeed?.element.velocities,
           ),
           graduatedSpeedInfo: SpeedMapper.fromGraduatedSpeedInfo(
             tafTapLocation.stationSpeed?.xmlGraduatedSpeedInfo?.element,
