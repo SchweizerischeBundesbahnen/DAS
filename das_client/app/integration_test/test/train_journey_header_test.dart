@@ -480,34 +480,6 @@ Future<void> main() async {
     });
 
     // can be removed based on what option to change the brightness will be chosen
-    testWidgets('long press dims brightness from 1.0 to 0.0', (tester) async {
-      await prepareAndStartApp(
-        tester,
-        onBeforeRun: () => (DI.get<BrightnessManager>() as MockBrightnessManager).writeSettingsPermission = false,
-      );
-
-      final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
-
-      // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
-      await findAndDismissBrightnessModalSheet(tester);
-
-      await loadTrainJourney(tester, trainNumber: 'T6');
-
-      // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
-      await findAndDismissBrightnessModalSheet(tester);
-
-      final chronograph = find.byType(DASChronograph);
-      expect(chronograph, findsOneWidget);
-
-      await tester.longPress(chronograph);
-      await tester.pump(const Duration(seconds: 2));
-
-      expect(mockBrightnessManager.calledWith.any((val) => val < 1.0), true);
-
-      await disconnect(tester);
-    });
-
-    // can be removed based on what option to change the brightness will be chosen
     testWidgets('horizontal drag right increases brightness', (tester) async {
       await prepareAndStartApp(
         tester,

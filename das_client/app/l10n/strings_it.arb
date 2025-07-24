@@ -83,7 +83,7 @@
   "c_main_signal_function_protection": "Segnale di protezione",
   "c_main_signal_function_protection_short": "S.Prot.",
   "c_main_signal_function_laneChange": "Cambio di binario",
-  "c_main_signal_function_laneChange_short": "Cambio di binario",
+  "c_main_signal_function_laneChange_short": "Cambio",
   "c_error_code": "Codice di errore",
   "c_something_went_wrong": "Qualcosa non ha funzionato.",
   "c_error_connection_failed": "Connessione non riuscita",
