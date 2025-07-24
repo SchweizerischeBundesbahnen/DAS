@@ -36,9 +36,10 @@ class ChronographViewModel {
 
   PunctualityModel get punctualityModelValue => _rxModel.value;
 
-  Stream<DateTime> get wallclockTime => Stream.periodic(const Duration(milliseconds: 200), (_) => clock.now());
-
-  Stream<String> get formattedWallclockTime => wallclockTime.map(DateFormat('HH:mm:ss').format);
+  Stream<String> get formattedWallclockTime => Stream.periodic(
+    const Duration(milliseconds: 200),
+    (_) => DateFormat('HH:mm:ss').format(clock.now()),
+  );
 
   String get formattedWallclockTimeValue => DateFormat('HH:mm:ss').format(clock.now());
 
@@ -61,6 +62,7 @@ class ChronographViewModel {
 
   void dispose() {
     _journeySubscription?.cancel();
+    _rxModel.close();
     _hiddenTimer?.cancel();
     _staleTimer?.cancel();
   }

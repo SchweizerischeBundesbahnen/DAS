@@ -2,19 +2,26 @@ import 'dart:async';
 
 import 'package:app/di/di.dart';
 import 'package:app/util/time_constants.dart';
+import 'package:clock/clock.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 class ArrivalDepartureTimeViewModel {
   final _resetToOperationalAfterSeconds = DI.get<TimeConstants>().arrivalDepartureOperationalResetSeconds;
 
-  ArrivalDepartureTimeViewModel({required Stream<Journey?> journeyStream}) {
+  ArrivalDepartureTimeViewModel({
+    required Stream<Journey?> journeyStream,
+  }) {
     _listenToJourneyUpdates(journeyStream);
   }
 
-  Stream<bool> get showOperationalTime => _rxShowOperationalTimes.distinct();
+  Stream<bool> get showOperationalTime => _rxShowOperationalTimes;
 
   bool get showOperationalTimeValue => _rxShowOperationalTimes.value;
+
+  Stream<DateTime> get wallclockTime => Stream.periodic(const Duration(milliseconds: 200), (_) => clock.now());
+
+  DateTime get wallclockTimeValue => clock.now();
 
   late StreamSubscription<Journey?> _journeySubscription;
   bool? _hasJourneyOperationalTimes;

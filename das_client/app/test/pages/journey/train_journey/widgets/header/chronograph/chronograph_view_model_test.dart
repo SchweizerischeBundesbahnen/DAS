@@ -18,10 +18,8 @@ void main() {
   late ChronographViewModel testee;
   late StreamController<Journey?> journeyController;
   late StreamSubscription punctualitySubscription;
-  late StreamSubscription wallclockTimeSubscription;
   late StreamSubscription formattedWallclockTimeSubscription;
   late List<PunctualityModel> punctualityEmitRegister;
-  late List<DateTime> wallclockTimeRegister;
   late List<String> formattedWallclockTimeRegister;
   late FakeAsync testAsync;
 
@@ -55,11 +53,9 @@ void main() {
     fakeAsync((fakeAsync) {
       journeyController = StreamController<Journey?>();
       testAsync = fakeAsync;
-      wallclockTimeRegister = <DateTime>[];
       formattedWallclockTimeRegister = <String>[];
       withClock(testClock, () {
         testee = ChronographViewModel(journeyStream: journeyController.stream);
-        wallclockTimeSubscription = testee.wallclockTime.listen(wallclockTimeRegister.add);
         formattedWallclockTimeSubscription = testee.formattedWallclockTime.listen(formattedWallclockTimeRegister.add);
       });
       punctualityEmitRegister = <PunctualityModel>[];
@@ -70,7 +66,6 @@ void main() {
 
   tearDown(() {
     punctualitySubscription.cancel();
-    wallclockTimeSubscription.cancel();
     formattedWallclockTimeSubscription.cancel();
     testee.dispose();
     journeyController.close();
@@ -83,12 +78,6 @@ void main() {
       final actual = testee.formattedWallclockTimeValue;
       expect(actual, equals('02:56:00'));
     });
-  });
-
-  test('wallClockTime_withFixedTime_shouldEmitFixedTimes', () {
-    testAsync.elapse(const Duration(seconds: 1));
-    expect(wallclockTimeRegister, isNotEmpty);
-    expect(wallclockTimeRegister.first, equals(testClock.now()));
   });
 
   test('formattedWallClockTime_withFixedTime_shouldEmitFixedFormattedTimes', () {

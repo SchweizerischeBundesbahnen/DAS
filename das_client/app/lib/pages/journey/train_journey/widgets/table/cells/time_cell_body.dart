@@ -3,6 +3,7 @@ import 'package:app/util/format.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 class TimeCellBody extends StatelessWidget {
@@ -22,10 +23,15 @@ class TimeCellBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: viewModel.showOperationalTime,
-      initialData: viewModel.showOperationalTimeValue,
+      stream: CombineLatestStream.combine2<bool, DateTime, (bool, DateTime)>(
+        viewModel.showOperationalTime,
+        viewModel.wallclockTime,
+        (a, b) => (a, b),
+      ),
+      initialData: (viewModel.showOperationalTimeValue, viewModel.wallclockTimeValue),
       builder: (context, snapshot) {
-        final showOperationalTime = snapshot.data ?? false;
+        final showOperationalTime = snapshot.requireData.$1;
+        final currentTime = snapshot.requireData.$2;
 
         final (departureTime, arrivalTime) = _formattedTimes(showOperationalTime);
 
@@ -34,13 +40,19 @@ class TimeCellBody extends StatelessWidget {
         }
 
         final isArrivalBold = departureTime.isEmpty && !showOperationalTime;
+        final isDepartureUnderlined = currentTime.isAfterOrSameToTheMinute(times.plannedDepartureTime);
 
         return Text.rich(
           key: timeCellKey,
           TextSpan(
             children: [
               TextSpan(text: arrivalTime, style: isArrivalBold ? DASTextStyles.largeBold : null),
-              TextSpan(text: departureTime, style: DASTextStyles.largeBold),
+              TextSpan(
+                text: departureTime,
+                style: DASTextStyles.largeBold.copyWith(
+                  decoration: isDepartureUnderlined ? TextDecoration.underline : TextDecoration.none,
+                ),
+              ),
             ],
           ),
         );
@@ -69,4 +81,24 @@ class TimeCellBody extends StatelessWidget {
 
     return (departureTime, arrivalTime);
   }
+}
+
+extension _DateTimeExtension on DateTime {
+  bool isAfterOrSameToTheMinute(DateTime? other) {
+    if (other == null) return false;
+    return roundToMinute().isAfterOrSame(other.roundToMinute());
+  }
+
+  bool isAfterOrSame(DateTime other) => isAtSameMomentAs(other) || isAfter(other);
+
+  DateTime roundToMinute() => copyWith(
+    year: year,
+    month: month,
+    day: day,
+    hour: hour,
+    minute: minute,
+    second: 0,
+    millisecond: 0,
+    microsecond: 0,
+  );
 }
