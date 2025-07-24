@@ -6,13 +6,17 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.Builder;
 
+// todo: property descriptions
 @Builder
-@Schema(name = "FormationRun")
-public record FormationRunDto(
+public record FormationRun(
     @Schema(description = "Last modification date and time of the formation run.", requiredMode = Schema.RequiredMode.REQUIRED)
     OffsetDateTime modifiedDateTime,
+    @Schema(description = "blabla", requiredMode = Schema.RequiredMode.REQUIRED)
     String tafTapLocationReferenceStart,
+    @Schema(description = "blabla", requiredMode = Schema.RequiredMode.REQUIRED)
     String tafTapLocationReferenceEnd,
+    //todo all requiredModes and default values
+    // todo null values not transmitted on API (JSONIncluede false)
     String trainCategoryCode,
     Integer brakedWeightPercentage,
     Integer tractionMaxSpeedInKmh,
@@ -50,8 +54,9 @@ public record FormationRunDto(
     String slopeMaxForHoldingForceMinInPermille
 ) {
 
-    private static FormationRunDto from(TrainFormationRunEntity trainFormationRunEntity) {
-        return FormationRunDto.builder()
+    private static FormationRun from(TrainFormationRunEntity trainFormationRunEntity) {
+        //      todo  consider use mapper (cause of testing effort)
+        return FormationRun.builder()
             .modifiedDateTime(trainFormationRunEntity.getModifiedDateTime())
             .tafTapLocationReferenceStart(trainFormationRunEntity.getTafTapLocationReferenceStart())
             .tafTapLocationReferenceEnd(trainFormationRunEntity.getTafTapLocationReferenceEnd())
@@ -93,9 +98,9 @@ public record FormationRunDto(
             .build();
     }
 
-    static List<FormationRunDto> fromList(List<TrainFormationRunEntity> trainFormationRunEntities) {
+    static List<FormationRun> fromList(List<TrainFormationRunEntity> trainFormationRunEntities) {
         return trainFormationRunEntities.stream()
-            .map(FormationRunDto::from)
+            .map(FormationRun::from)
             .toList();
     }
 }
