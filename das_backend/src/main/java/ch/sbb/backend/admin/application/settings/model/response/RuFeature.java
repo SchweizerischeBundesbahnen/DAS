@@ -1,10 +1,9 @@
 package ch.sbb.backend.admin.application.settings.model.response;
 
-import ch.sbb.backend.admin.domain.settings.model.RuFeature;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(name = "RuFeature", description = "RU specific feature toggle.")
-public record RuFeatureDto(
+@Schema(description = "RU specific feature toggle.")
+public record RuFeature(
     @Schema(description = "Relates to teltsi_CompanyCode (according to SFERA).", requiredMode = Schema.RequiredMode.REQUIRED)
     String companyCodeRics,
 
@@ -17,7 +16,7 @@ public record RuFeatureDto(
     boolean enabled
 ) {
 
-    public RuFeatureDto(RuFeature ruFeature) {
+    public RuFeature(ch.sbb.backend.admin.domain.settings.model.RuFeature ruFeature) {
         this(ruFeature.company().companyCodeRics(), ruFeature.key().name(), ruFeature.enabled());
     }
 
