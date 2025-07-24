@@ -1,27 +1,26 @@
 package ch.sbb.backend.formation.domain.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
 class EuropeanVehicleNumberTest {
 
     @Test
-    void asString_null() {
+    void toVehicleCode_null() {
         EuropeanVehicleNumber europeanVehicleNumber = new EuropeanVehicleNumber(null, null);
-        assertNull(europeanVehicleNumber.asString());
+        assertThat(europeanVehicleNumber.toVehicleCode()).isNull();
     }
 
     @Test
-    void asString_correct() {
+    void toVehicleCode_correct() {
         EuropeanVehicleNumber europeanVehicleNumber = new EuropeanVehicleNumber("67", "462892");
-        assertEquals("67462892", europeanVehicleNumber.asString());
+        assertThat(europeanVehicleNumber.toVehicleCode()).isEqualTo("67462892");
     }
 
     @Test
-    void asString_invalid() {
+    void toVehicleCode_invalid() {
         EuropeanVehicleNumber europeanVehicleNumber = new EuropeanVehicleNumber(null, "462892");
-        assertNull(europeanVehicleNumber.asString());
+        assertThat(europeanVehicleNumber.toVehicleCode()).isNull();
     }
 }

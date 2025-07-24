@@ -1,30 +1,29 @@
 package ch.sbb.backend.formation.domain.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
 class TafTapLocationReferenceTest {
 
     @Test
-    void asString_null() {
+    void toLocationCode_null() {
         TafTapLocationReference reference = new TafTapLocationReference(null, null);
-        String result = reference.asString();
-        assertNull(result);
+        String result = reference.toLocationCode();
+        assertThat(result).isNull();
     }
 
     @Test
-    void asString_shouldFormatCountryAndUicCode() {
+    void toLocationCode_shouldFormatCountryAndUicCode() {
         TafTapLocationReference reference = new TafTapLocationReference(12, 345678);
-        String result = reference.asString();
-        assertEquals("12345678", result);
+        String result = reference.toLocationCode();
+        assertThat(result).isEqualTo("12345678");
     }
 
     @Test
-    void asString_shouldFormatCountryAndUicCodeWith0() {
+    void toLocationCode_shouldFormatCountryAndUicCodeWith0() {
         TafTapLocationReference reference = new TafTapLocationReference(5, 23);
-        String result = reference.asString();
-        assertEquals("05000023", result);
+        String result = reference.toLocationCode();
+        assertThat(result).isEqualTo("05000023");
     }
 }

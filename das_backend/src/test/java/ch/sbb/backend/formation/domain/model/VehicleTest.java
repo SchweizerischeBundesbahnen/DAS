@@ -1,8 +1,6 @@
 package ch.sbb.backend.formation.domain.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.mock;
@@ -21,8 +19,8 @@ class VehicleTest {
         EuropeanVehicleNumber europeanVehicleNumber = new EuropeanVehicleNumber("86", "12345");
         Vehicle vehicle = new Vehicle(TractionMode.ZUGLOK, null, null, europeanVehicleNumber);
 
-        assertEquals(TractionMode.ZUGLOK, vehicle.getTractionMode());
-        assertEquals(europeanVehicleNumber, vehicle.getEuropeanVehicleNumber());
+        assertThat(vehicle.getTractionMode()).isEqualTo(TractionMode.ZUGLOK);
+        assertThat(vehicle.getEuropeanVehicleNumber()).isEqualTo(europeanVehicleNumber);
     }
 
     @Test
@@ -33,7 +31,7 @@ class VehicleTest {
 
         Vehicle result = Vehicle.first(vehicles);
 
-        assertEquals(vehicle1, result);
+        assertThat(result).isEqualTo(vehicle1);
     }
 
     @Test
@@ -44,7 +42,7 @@ class VehicleTest {
 
         Vehicle result = Vehicle.last(vehicles);
 
-        assertEquals(vehicle2, result);
+        assertThat(result).isEqualTo(vehicle2);
     }
 
     @Test
@@ -55,15 +53,8 @@ class VehicleTest {
         Vehicle firstResult = Vehicle.first(vehicles);
         Vehicle lastResult = Vehicle.last(vehicles);
 
-        assertEquals(vehicle, firstResult);
-        assertEquals(vehicle, lastResult);
-    }
-
-    @Test
-    void hasDangerousGoods_withNull() {
-        boolean result = Vehicle.hasDangerousGoods(null);
-
-        assertFalse(result);
+        assertThat(firstResult).isEqualTo(vehicle);
+        assertThat(lastResult).isEqualTo(vehicle);
     }
 
     @Test
@@ -72,7 +63,7 @@ class VehicleTest {
 
         boolean result = Vehicle.hasDangerousGoods(vehicles);
 
-        assertFalse(result);
+        assertThat(result).isFalse();
     }
 
     @Test
@@ -81,7 +72,7 @@ class VehicleTest {
         try (MockedStatic<VehicleUnit> mockedStatic = mockStatic(VehicleUnit.class)) {
             mockedStatic.when(() -> VehicleUnit.hasDangerousGoods(any())).thenReturn(true);
 
-            assertTrue(vehicle.hasDangerousGoods());
+            assertThat(vehicle.hasDangerousGoods()).isTrue();
         }
     }
 
@@ -92,77 +83,77 @@ class VehicleTest {
         try (MockedStatic<VehicleUnit> mockedStatic = mockStatic(VehicleUnit.class)) {
             mockedStatic.when(() -> VehicleUnit.hasDangerousGoods(any())).thenReturn(true);
 
-            assertTrue(Vehicle.hasDangerousGoods(vehicles));
+            assertThat(Vehicle.hasDangerousGoods(vehicles)).isTrue();
         }
     }
 
     @Test
-    void brakeDesignCount_hasTwo() {
+    void countBrakeDesigns_hasTwo() {
         List<Vehicle> vehicles = List.of(createVehicle(), createVehicle());
 
         try (MockedStatic<VehicleUnit> mockedStatic = mockStatic(VehicleUnit.class)) {
             mockedStatic.when(() -> VehicleUnit.hasBrakeDesign(any(), any())).thenReturn(true);
 
-            assertEquals(2, Vehicle.brakeDesignCount(vehicles, BrakeDesign.EINLOESIGE_BREMSE));
+            assertThat(Vehicle.countBrakeDesigns(vehicles, BrakeDesign.EINLOESIGE_BREMSE)).isEqualTo(2);
         }
     }
 
     @Test
-    void brakeDesignCount_hasNone() {
+    void countBrakeDesigns_hasNone() {
         List<Vehicle> vehicles = List.of(createVehicle(), createVehicle());
 
         try (MockedStatic<VehicleUnit> mockedStatic = mockStatic(VehicleUnit.class)) {
             mockedStatic.when(() -> VehicleUnit.hasBrakeDesign(any(), any())).thenReturn(false);
 
-            assertEquals(0, Vehicle.brakeDesignCount(vehicles, BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE));
+            assertThat(Vehicle.countBrakeDesigns(vehicles, BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE)).isZero();
         }
     }
 
     @Test
-    void disabledBrakeCount_hasOne() {
+    void countDisabledBrakes_hasOne() {
         List<Vehicle> vehicles = List.of(createVehicle());
 
         try (MockedStatic<VehicleUnit> mockedStatic = mockStatic(VehicleUnit.class)) {
             mockedStatic.when(() -> VehicleUnit.hasDisabledBrake(any())).thenReturn(true);
 
-            assertEquals(1, Vehicle.disabledBrakeCount(vehicles));
+            assertThat(Vehicle.countDisabledBrakes(vehicles)).isEqualTo(1);
         }
     }
 
     @Test
-    void holdingForce_withMultipleVehicles() {
+    void calculateHoldingForce_withMultipleVehicles() {
         VehicleUnit vehicleUnit = mock(VehicleUnit.class);
-        when(vehicleUnit.holdingForce(anyBoolean())).thenReturn(100);
+        when(vehicleUnit.calculateHoldingForce(anyBoolean())).thenReturn(100);
         Vehicle vehicle1 = new Vehicle(null, null, List.of(vehicleUnit, vehicleUnit), null);
         Vehicle vehicle2 = new Vehicle(null, null, List.of(vehicleUnit), null);
 
-        Integer result = Vehicle.holdingForce(List.of(vehicle1, vehicle2));
+        Integer result = Vehicle.calculateHoldingForce(List.of(vehicle1, vehicle2));
 
-        assertEquals(300, result);
+        assertThat(result).isEqualTo(300);
     }
 
     @Test
-    void tractionHoldingForceInHectoNewton_withMultipleVehicles() {
+    void tractionCalculateHoldingForceInHectoNewton_withMultipleVehicles() {
         VehicleUnit vehicleUnit = mock(VehicleUnit.class);
-        when(vehicleUnit.holdingForce(anyBoolean())).thenReturn(20);
+        when(vehicleUnit.calculateHoldingForce(anyBoolean())).thenReturn(20);
         Vehicle vehicle1 = new Vehicle(TractionMode.ZUGLOK, VehicleCategory.LOKOMOTIVE.name(), List.of(vehicleUnit), null);
         Vehicle vehicle2 = new Vehicle(null, null, List.of(vehicleUnit), null);
 
-        Integer result = Vehicle.tractionHoldingForceInHectoNewton(List.of(vehicle1, vehicle2));
+        Integer result = Vehicle.calculateTractionHoldingForceInHectoNewton(List.of(vehicle1, vehicle2));
 
-        assertEquals(20, result);
+        assertThat(result).isEqualTo(20);
     }
 
     @Test
-    void hauledLoadHoldingForceInHectoNewton_withMultipleVehicles() {
+    void hauledLoadCalculateHoldingForceInHectoNewton_withMultipleVehicles() {
         VehicleUnit vehicleUnit = mock(VehicleUnit.class);
-        when(vehicleUnit.holdingForce(anyBoolean())).thenReturn(30);
+        when(vehicleUnit.calculateHoldingForce(anyBoolean())).thenReturn(30);
         Vehicle vehicle1 = new Vehicle(TractionMode.ZUGLOK, VehicleCategory.LOKOMOTIVE.name(), List.of(vehicleUnit), null);
         Vehicle vehicle2 = new Vehicle(null, null, List.of(vehicleUnit, vehicleUnit), null);
 
-        Integer result = Vehicle.hauledLoadHoldingForceInHectoNewton(List.of(vehicle1, vehicle2));
+        Integer result = Vehicle.calculateHauledLoadHoldingForceInHectoNewton(List.of(vehicle1, vehicle2));
 
-        assertEquals(60, result);
+        assertThat(result).isEqualTo(60);
     }
 
     @Test
@@ -171,7 +162,7 @@ class VehicleTest {
 
         boolean result = vehicle.isTraction();
 
-        assertFalse(result);
+        assertThat(result).isFalse();
     }
 
     @Test
@@ -180,7 +171,7 @@ class VehicleTest {
 
         boolean result = vehicle.isTraction();
 
-        assertTrue(result);
+        assertThat(result).isTrue();
     }
 
     @Test
@@ -189,7 +180,7 @@ class VehicleTest {
 
         boolean result = vehicle.isTraction();
 
-        assertFalse(result);
+        assertThat(result).isFalse();
     }
 
     private Vehicle createVehicle() {

@@ -1,10 +1,10 @@
 package ch.sbb.backend.formation.domain.model;
 
-import java.util.Collections;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.springframework.util.CollectionUtils;
 
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -17,60 +17,51 @@ public class Vehicle {
     private EuropeanVehicleNumber europeanVehicleNumber;
 
     static Vehicle first(List<Vehicle> vehicles) {
-        if (vehicles == null || vehicles.isEmpty()) {
+        if (CollectionUtils.isEmpty(vehicles)) {
             return null;
         }
         return vehicles.getFirst();
     }
 
     static Vehicle last(List<Vehicle> vehicles) {
-        if (vehicles == null || vehicles.isEmpty()) {
+        if (CollectionUtils.isEmpty(vehicles)) {
             return null;
         }
         return vehicles.getLast();
     }
 
     static boolean hasDangerousGoods(List<Vehicle> vehicles) {
-        if (vehicles == null) {
-            return false;
-        }
         return vehicles.stream()
             .anyMatch(Vehicle::hasDangerousGoods);
     }
 
-    static Integer brakeDesignCount(List<Vehicle> vehicles, BrakeDesign... brakeDesigns) {
+    static Integer countBrakeDesigns(List<Vehicle> vehicles, BrakeDesign... brakeDesigns) {
         return (int) vehicles.stream().filter(vehicle -> vehicle.hasBrakeDesign(brakeDesigns)).count();
     }
 
-    static Integer disabledBrakeCount(List<Vehicle> vehicles) {
+    static Integer countDisabledBrakes(List<Vehicle> vehicles) {
         return (int) vehicles.stream().filter(Vehicle::hasDisabledBrake).count();
     }
 
-    static Integer holdingForce(List<Vehicle> vehicles) {
-        return vehicles.stream().mapToInt(Vehicle::holdingForce).sum();
+    static Integer calculateHoldingForce(List<Vehicle> vehicles) {
+        return vehicles.stream().mapToInt(Vehicle::calculateHoldingForce).sum();
     }
 
-    static Integer tractionHoldingForceInHectoNewton(List<Vehicle> vehicles) {
-        return Vehicle.holdingForce(Vehicle.filterTraction(vehicles));
+    static Integer calculateTractionHoldingForceInHectoNewton(List<Vehicle> vehicles) {
+        return Vehicle.calculateHoldingForce(Vehicle.filterTraction(vehicles));
     }
 
-    static Integer hauledLoadHoldingForceInHectoNewton(List<Vehicle> vehicles) {
-        return Vehicle.holdingForce(Vehicle.filterHauledLoad(vehicles));
+    static Integer calculateHauledLoadHoldingForceInHectoNewton(List<Vehicle> vehicles) {
+        return Vehicle.calculateHoldingForce(Vehicle.filterHauledLoad(vehicles));
     }
 
     private static List<Vehicle> filterHauledLoad(List<Vehicle> vehicles) {
-        if (vehicles == null) {
-            return Collections.emptyList();
-        }
         return vehicles.stream()
             .filter(vehicle -> !vehicle.isTraction())
             .toList();
     }
 
     private static List<Vehicle> filterTraction(List<Vehicle> vehicles) {
-        if (vehicles == null) {
-            return Collections.emptyList();
-        }
         return vehicles.stream()
             .filter(Vehicle::isTraction)
             .toList();
@@ -98,8 +89,8 @@ public class Vehicle {
         return VehicleUnit.hasDisabledBrake(vehicleUnits);
     }
 
-    private int holdingForce() {
-        return vehicleUnits.stream().mapToInt(vehicleUnit -> vehicleUnit.holdingForce(isTraction())).sum();
+    private int calculateHoldingForce() {
+        return vehicleUnits.stream().mapToInt(vehicleUnit -> vehicleUnit.calculateHoldingForce(isTraction())).sum();
     }
 
     private boolean hasBrakeDesign(BrakeDesign... brakeDesigns) {

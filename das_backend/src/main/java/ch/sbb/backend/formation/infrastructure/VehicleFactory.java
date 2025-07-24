@@ -3,7 +3,7 @@ package ch.sbb.backend.formation.infrastructure;
 import ch.sbb.backend.formation.domain.model.BrakeDesign;
 import ch.sbb.backend.formation.domain.model.BrakeStatus;
 import ch.sbb.backend.formation.domain.model.EuropeanVehicleNumber;
-import ch.sbb.backend.formation.domain.model.Good;
+import ch.sbb.backend.formation.domain.model.Goods;
 import ch.sbb.backend.formation.domain.model.IntermodalLoadingUnit;
 import ch.sbb.backend.formation.domain.model.Load;
 import ch.sbb.backend.formation.domain.model.TractionMode;
@@ -11,7 +11,6 @@ import ch.sbb.backend.formation.domain.model.Vehicle;
 import ch.sbb.backend.formation.domain.model.VehicleUnit;
 import ch.sbb.backend.formation.domain.model.VehicleUnit.VehicleUnitBuilder;
 import ch.sbb.zis.trainformation.api.model.CargoTransport;
-import ch.sbb.zis.trainformation.api.model.Goods;
 import ch.sbb.zis.trainformation.api.model.UnitEffectiveOperationalData;
 import ch.sbb.zis.trainformation.api.model.UnitTechnicalData;
 import ch.sbb.zis.trainformation.api.model.VehicleEffectiveTractionData;
@@ -21,6 +20,7 @@ import java.util.List;
 import java.util.stream.Stream;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.util.CollectionUtils;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class VehicleFactory {
@@ -41,83 +41,87 @@ public final class VehicleFactory {
     }
 
     private static Vehicle create(ch.sbb.zis.trainformation.api.model.Vehicle vehicle) {
-        return new Vehicle(mapToTractionMode(vehicle.getVehicleEffectiveTractionData()), vehicle.getVehicleCategory(), mapToVehicleUnits(vehicle.getVehicleUnits()),
-            mapToEuropeanVehicleNumber(vehicle.getEuropeanVehicleNumber()));
+        return new Vehicle(toTractionMode(vehicle.getVehicleEffectiveTractionData()), vehicle.getVehicleCategory(), toVehicleUnits(vehicle.getVehicleUnits()),
+            toEuropeanVehicleNumber(vehicle.getEuropeanVehicleNumber()));
     }
 
-    private static List<VehicleUnit> mapToVehicleUnits(List<ch.sbb.zis.trainformation.api.model.VehicleUnit> vehicleUnits) {
-        return vehicleUnits.stream().map(VehicleFactory::mapToVehicleUnit).toList();
+    private static List<VehicleUnit> toVehicleUnits(List<ch.sbb.zis.trainformation.api.model.VehicleUnit> vehicleUnits) {
+        return vehicleUnits.stream().map(VehicleFactory::toVehicleUnit).toList();
     }
 
-    private static VehicleUnit mapToVehicleUnit(ch.sbb.zis.trainformation.api.model.VehicleUnit vehicleUnit) {
+    private static VehicleUnit toVehicleUnit(ch.sbb.zis.trainformation.api.model.VehicleUnit vehicleUnit) {
         VehicleUnitBuilder builder = VehicleUnit.builder();
-        builder = mapUnitTechnichalData(builder, vehicleUnit.getUnitTechnicalData());
-        builder = mapUnitEffectiveOperationalData(builder, vehicleUnit.getUnitEffectiveOperationalData());
-        builder = mapLoad(builder, vehicleUnit.getCargoTransport());
+        applyUnitTechnichalData(builder, vehicleUnit.getUnitTechnicalData());
+        applyUnitEffectiveOperationalData(builder, vehicleUnit.getUnitEffectiveOperationalData());
+        applyCargoTransport(builder, vehicleUnit.getCargoTransport());
         return builder.build();
     }
 
-    private static VehicleUnitBuilder mapLoad(VehicleUnitBuilder builder, CargoTransport cargoTransport) {
+    private static void applyCargoTransport(VehicleUnitBuilder builder, CargoTransport cargoTransport) {
         if (cargoTransport == null || cargoTransport.getLoad() == null) {
-            return builder;
+            return;
         }
-        return builder.load(mapToLoad(cargoTransport.getLoad()));
+        List<Goods> goodsList = toGoodsList(cargoTransport.getLoad().getGoods());
+        List<IntermodalLoadingUnit> intermodalLoadingUnits = toIntermodalLoadingUnits(cargoTransport.getLoad().getIntermodalLoadingUnits());
+        builder.load(new Load(goodsList, intermodalLoadingUnits));
     }
 
-    private static VehicleUnitBuilder mapUnitEffectiveOperationalData(VehicleUnitBuilder builder, UnitEffectiveOperationalData unitEffectiveOperationalData) {
+    private static void applyUnitEffectiveOperationalData(VehicleUnitBuilder builder, UnitEffectiveOperationalData unitEffectiveOperationalData) {
         if (unitEffectiveOperationalData == null) {
-            return builder;
+            return;
         }
-        return builder
+        builder
             .brakeStatus(new BrakeStatus(unitEffectiveOperationalData.getBrakeStatus()))
-            .effectiveOperationalHoldingForceInHectonewton(unitEffectiveOperationalData.getHoldingForceInHectonewton());
+            .effectiveOperationalHoldingForceInHectoNewton(unitEffectiveOperationalData.getHoldingForceInHectonewton());
     }
 
-    private static VehicleUnitBuilder mapUnitTechnichalData(VehicleUnitBuilder builder, UnitTechnicalData unitTechnicalData) {
+    private static void applyUnitTechnichalData(VehicleUnitBuilder builder, UnitTechnicalData unitTechnicalData) {
         if (unitTechnicalData == null) {
-            return builder;
+            return;
         }
-        return builder
-            .brakeDesign(mapToBrakeDesign(unitTechnicalData.getBrakeDesign()))
-            .technicalHoldingForceInHectonewton(unitTechnicalData.getHoldingForceInHectonewton())
-            .handBrakeWeightInTonne(unitTechnicalData.getHandBrakeWeightInTonne());
+        builder
+            .brakeDesign(toBrakeDesign(unitTechnicalData.getBrakeDesign()))
+            .technicalHoldingForceInHectoNewton(unitTechnicalData.getHoldingForceInHectonewton())
+            .handBrakeWeightInT(unitTechnicalData.getHandBrakeWeightInTonne());
     }
 
-    private static Load mapToLoad(ch.sbb.zis.trainformation.api.model.Load load) {
-        return new Load(mapToGoodsList(load.getGoods()), mapToIntermodalLoadingUnits(load.getIntermodalLoadingUnits()));
+    private static List<IntermodalLoadingUnit> toIntermodalLoadingUnits(List<ch.sbb.zis.trainformation.api.model.IntermodalLoadingUnit> intermodalLoadingUnits) {
+        if (intermodalLoadingUnits == null) {
+            return Collections.emptyList();
+        }
+        return intermodalLoadingUnits.stream().map(VehicleFactory::toIntermodalLoadingUnit).toList();
     }
 
-    private static List<IntermodalLoadingUnit> mapToIntermodalLoadingUnits(List<ch.sbb.zis.trainformation.api.model.IntermodalLoadingUnit> intermodalLoadingUnits) {
-        return intermodalLoadingUnits.stream().map(VehicleFactory::mapToIntermodalLoadingUnit).toList();
+    private static IntermodalLoadingUnit toIntermodalLoadingUnit(ch.sbb.zis.trainformation.api.model.IntermodalLoadingUnit intermodalLoadingUnit) {
+        return new IntermodalLoadingUnit(toGoodsList(intermodalLoadingUnit.getGoods()));
     }
 
-    private static IntermodalLoadingUnit mapToIntermodalLoadingUnit(ch.sbb.zis.trainformation.api.model.IntermodalLoadingUnit intermodalLoadingUnit) {
-        return new IntermodalLoadingUnit(mapToGoodsList(intermodalLoadingUnit.getGoods()));
+    private static List<Goods> toGoodsList(List<ch.sbb.zis.trainformation.api.model.Goods> goods) {
+        if (goods == null) {
+            return Collections.emptyList();
+        }
+        return goods.stream().map(VehicleFactory::toGoods).toList();
     }
 
-    private static List<Good> mapToGoodsList(List<Goods> goods) {
-        return goods.stream().map(VehicleFactory::mapToGood).toList();
+    private static Goods toGoods(ch.sbb.zis.trainformation.api.model.Goods goods) {
+        return new Goods(!CollectionUtils.isEmpty(goods.getDangerousGoods()));
     }
 
-    private static Good mapToGood(Goods goods) {
-        return new Good(!goods.getDangerousGoods().isEmpty());
-    }
-
-    private static BrakeDesign mapToBrakeDesign(Integer brakeDesign) {
+    private static BrakeDesign toBrakeDesign(Integer brakeDesign) {
         if (brakeDesign == null) {
             return null;
         }
         return BrakeDesign.valueOfKey(brakeDesign);
     }
 
-    private static TractionMode mapToTractionMode(VehicleEffectiveTractionData vehicleEffectiveTractionData) {
+    private static TractionMode toTractionMode(VehicleEffectiveTractionData vehicleEffectiveTractionData) {
         if (vehicleEffectiveTractionData == null || vehicleEffectiveTractionData.getTractionMode() == null) {
             return null;
         }
         return TractionMode.valueOfKey(vehicleEffectiveTractionData.getTractionMode());
     }
 
-    private static EuropeanVehicleNumber mapToEuropeanVehicleNumber(ch.sbb.zis.trainformation.api.model.EuropeanVehicleNumber europeanVehicleNumber) {
+    private static EuropeanVehicleNumber toEuropeanVehicleNumber(ch.sbb.zis.trainformation.api.model.EuropeanVehicleNumber europeanVehicleNumber) {
         if (europeanVehicleNumber == null) {
             return null;
         }

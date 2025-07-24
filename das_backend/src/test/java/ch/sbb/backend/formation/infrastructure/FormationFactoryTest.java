@@ -1,6 +1,6 @@
 package ch.sbb.backend.formation.infrastructure;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.times;
@@ -37,9 +37,9 @@ class FormationFactoryTest {
         try (MockedStatic<FormationRunFactory> mockedStatic = mockStatic(FormationRunFactory.class)) {
             Formation result = FormationFactory.create(message);
 
-            assertEquals(modifiedDateTime, result.getModifiedDateTime());
-            assertEquals(operationalTrainNumber.toString(), result.getOperationalTrainNumber());
-            assertEquals(operationalDay, result.getOperationalDay());
+            assertThat(result.getModifiedDateTime()).isEqualTo(modifiedDateTime);
+            assertThat(result.getOperationalTrainNumber()).isEqualTo(operationalTrainNumber.toString());
+            assertThat(result.getOperationalDay()).isEqualTo(operationalDay);
             mockedStatic.verify(() -> FormationRunFactory.create(any()), times(1));
         }
     }

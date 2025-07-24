@@ -23,33 +23,33 @@ public final class FormationRunFactory {
     private static FormationRun create(ch.sbb.zis.trainformation.api.model.FormationRun formationRun) {
         FormationRunBuilder builder = FormationRun.builder()
             .company(formationRun.getSmsEvu())
-            .tafTapLocationReferenceStart(mapToTafTapLocationReference(formationRun.getStartLocationUic()))
-            .tafTapLocationReferenceEnd(mapToTafTapLocationReference(formationRun.getEndLocationUic()))
+            .tafTapLocationReferenceStart(toTafTapLocationReference(formationRun.getStartLocationUic()))
+            .tafTapLocationReferenceEnd(toTafTapLocationReference(formationRun.getEndLocationUic()))
             .trainCategoryCode(formationRun.getTrainSequence())
             .brakedWeightPercentage(formationRun.getBrakeSequence())
             .vehicles(VehicleFactory.create(formationRun.getVehicleGroups()));
-        builder = mapConsolidatedBrakingInformation(builder, formationRun.getConsolidatedBrakingInformation());
-        builder = mapFormationRunInspection(builder, formationRun.getFormationRunInspection());
+        applyConsolidatedBrakingInformation(builder, formationRun.getConsolidatedBrakingInformation());
+        applyFormationRunInspection(builder, formationRun.getFormationRunInspection());
         return builder.build();
     }
 
-    private static TafTapLocationReference mapToTafTapLocationReference(LocationUic locationUic) {
+    private static TafTapLocationReference toTafTapLocationReference(LocationUic locationUic) {
         return new TafTapLocationReference(locationUic.getCountryCodeUic(), locationUic.getUicCode());
     }
 
-    private static FormationRunBuilder mapFormationRunInspection(FormationRunBuilder builder, FormationRunInspection formationRunInspection) {
+    private static void applyFormationRunInspection(FormationRunBuilder builder, FormationRunInspection formationRunInspection) {
         if (formationRunInspection == null) {
-            return builder;
+            return;
         }
         builder.inspected(formationRunInspection.getInspected());
-        return mapBrakeCalculationResult(builder, formationRunInspection.getBrakeCalculationResult());
+        applyBrakeCalculationResult(builder, formationRunInspection.getBrakeCalculationResult());
     }
 
-    private static FormationRunBuilder mapBrakeCalculationResult(FormationRunBuilder builder, BrakeCalculationResult brakeCalculationResult) {
+    private static void applyBrakeCalculationResult(FormationRunBuilder builder, BrakeCalculationResult brakeCalculationResult) {
         if (brakeCalculationResult == null) {
-            return builder;
+            return;
         }
-        return builder
+        builder
             .tractionLengthInCm(brakeCalculationResult.getTractionLengthInCentimeter())
             .hauledLoadLengthInCm(brakeCalculationResult.getHauledLoadLengthInCentimeter())
             .formationLengthInCm(brakeCalculationResult.getTotalLengthInCentimeter())
@@ -62,9 +62,9 @@ public final class FormationRunFactory {
             .brakePositionGForLoadHauled(brakeCalculationResult.getBrakePositionGForLoadHauled());
     }
 
-    private static FormationRunBuilder mapConsolidatedBrakingInformation(FormationRunBuilder builder, ConsolidatedBrakingInformation consolidatedBrakingInformation) {
+    private static void applyConsolidatedBrakingInformation(FormationRunBuilder builder, ConsolidatedBrakingInformation consolidatedBrakingInformation) {
         if (consolidatedBrakingInformation == null) {
-            return builder;
+            return;
         }
         builder
             .tractionMaxSpeedInKmh(consolidatedBrakingInformation.getTractionMaxSpeedInKilometerPerHour())
@@ -75,14 +75,15 @@ public final class FormationRunFactory {
             .axleLoadMaxInKg(consolidatedBrakingInformation.getMaxAxleLoadInKilogrammes())
             .routeClass(consolidatedBrakingInformation.getRouteClass())
             .slopeMaxForHoldingForceMinInPermille(consolidatedBrakingInformation.getMaximumSlopeForMinimumHoldingForceInPermille());
-        return mapMaxUphillDownhillGradients(builder, consolidatedBrakingInformation.getMaxUphillDownhillGradients());
+        applyMaxUphillDownhillGradients(builder, consolidatedBrakingInformation.getMaxUphillDownhillGradients());
     }
 
-    private static FormationRunBuilder mapMaxUphillDownhillGradients(FormationRunBuilder builder, MaxUphillDownhillGradients maxUphillDownhillGradients) {
+    private static void applyMaxUphillDownhillGradients(FormationRunBuilder builder, MaxUphillDownhillGradients maxUphillDownhillGradients) {
         if (maxUphillDownhillGradients == null) {
-            return builder;
+            return;
         }
-        return builder.gradientUphillMaxInPermille(maxUphillDownhillGradients.getMaxUphillGradientInPermille())
+        builder
+            .gradientUphillMaxInPermille(maxUphillDownhillGradients.getMaxUphillGradientInPermille())
             .gradientDownhillMaxInPermille(maxUphillDownhillGradients.getMaxDownhillGradientInPermille());
 
     }

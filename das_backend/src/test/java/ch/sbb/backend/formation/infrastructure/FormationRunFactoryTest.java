@@ -1,6 +1,6 @@
 package ch.sbb.backend.formation.infrastructure;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.backend.formation.domain.model.FormationRun;
 import ch.sbb.zis.trainformation.api.model.BrakeCalculationResult;
@@ -75,8 +75,8 @@ class FormationRunFactoryTest {
         List<FormationRun> result = FormationRunFactory.create(List.of(formationRun));
 
         // Assert
-        assertEquals(1, result.size());
+        assertThat(result).hasSize(1);
         FormationRun formationRunResult = result.getFirst();
-        assertEquals(expectedFormationRun, formationRunResult);
+        assertThat(formationRunResult).isEqualTo(expectedFormationRun);
     }
 }

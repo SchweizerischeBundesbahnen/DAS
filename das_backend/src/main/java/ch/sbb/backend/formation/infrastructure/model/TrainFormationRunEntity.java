@@ -1,5 +1,6 @@
 package ch.sbb.backend.formation.infrastructure.model;
 
+import ch.sbb.backend.common.SFERA;
 import ch.sbb.backend.common.StringListConverter;
 import ch.sbb.backend.common.TelTsi;
 import ch.sbb.backend.formation.domain.model.BrakeDesign;
@@ -20,14 +21,12 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.NoArgsConstructor;
 
 @Entity(name = "train_formation_run")
-@ToString
 @Builder
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
 @AllArgsConstructor
 // todo: a default value must be defined for all non-primitive Boolean and Integer fields (by business or source systems)
 public class TrainFormationRunEntity {
@@ -39,12 +38,13 @@ public class TrainFormationRunEntity {
 
     private OffsetDateTime modifiedDateTime;
 
-    @TelTsi
+    @SFERA @TelTsi
     private String operationalTrainNumber;
 
+    @SFERA(nsp = true)
     private LocalDate operationalDay;
 
-    @TelTsi
+    @SFERA @TelTsi
     @JoinColumn(name = "company", referencedColumnName = "codeRics")
     private String company;
 
@@ -68,9 +68,8 @@ public class TrainFormationRunEntity {
 
     private Integer formationLengthInCm;
 
-    //    todo rename tractionWeightInT or the other to grossWeight
-    @Column(name = "traction_gross_weight_in_t")
-    private Integer tractionGrossWeightInT;
+    @Column(name = "traction_weight_in_t")
+    private Integer tractionWeightInT;
 
     @Column(name = "hauled_load_weight_in_t")
     private Integer hauledLoadWeightInT;
@@ -139,20 +138,21 @@ public class TrainFormationRunEntity {
         return formation.validFormationRuns().stream()
             .map(formationRun -> {
                 TrainFormationRunEntityBuilder builder = TrainFormationRunEntity.builder();
+                applyFormationRun(builder, formationRun);
                 builder
                     .modifiedDateTime(formation.getModifiedDateTime())
                     .operationalTrainNumber(formation.getOperationalTrainNumber())
                     .operationalDay(formation.getOperationalDay());
-                return addFormationRun(builder, formationRun).build();
+                return builder.build();
             })
             .toList();
     }
 
-    private static TrainFormationRunEntityBuilder addFormationRun(TrainFormationRunEntityBuilder builder, FormationRun formationRun) {
-        return builder
+    private static void applyFormationRun(TrainFormationRunEntityBuilder builder, FormationRun formationRun) {
+        builder
             .company(formationRun.getCompany())
-            .tafTapLocationReferenceStart(formationRun.getTafTapLocationReferenceStart().asString())
-            .tafTapLocationReferenceEnd(formationRun.getTafTapLocationReferenceEnd().asString())
+            .tafTapLocationReferenceStart(formationRun.getTafTapLocationReferenceStart().toLocationCode())
+            .tafTapLocationReferenceEnd(formationRun.getTafTapLocationReferenceEnd().toLocationCode())
             .trainCategoryCode(formationRun.getTrainCategoryCode())
             .brakedWeightPercentage(formationRun.getBrakedWeightPercentage())
             .tractionMaxSpeedInKmh(formationRun.getTractionMaxSpeedInKmh())
@@ -161,28 +161,28 @@ public class TrainFormationRunEntity {
             .tractionLengthInCm(formationRun.getTractionLengthInCm())
             .hauledLoadLengthInCm(formationRun.getHauledLoadLengthInCm())
             .formationLengthInCm(formationRun.getFormationLengthInCm())
-            .tractionGrossWeightInT(formationRun.getTractionGrossWeightInT())
+            .tractionWeightInT(formationRun.getTractionGrossWeightInT())
             .hauledLoadWeightInT(formationRun.getHauledLoadGrossWeightInT())
-            .formationWeightInT(formationRun.formationGrossWeightInT())
+            .formationWeightInT(formationRun.getFormationGrossWeightInT())
             .tractionBrakedWeightInT(formationRun.getTractionBrakedWeightInT())
             .hauledLoadBrakedWeightInT(formationRun.getHauledLoadBrakedWeightInT())
-            .formationBrakedWeightInT(formationRun.formationBrakedWeightInT())
-            .tractionHoldingForceInHectoNewton(formationRun.tractionHoldingForceInHectoNewton())
-            .hauledLoadHoldingForceInHectoNewton(formationRun.hauledLoadHoldingForceInHectoNewton())
-            .formationHoldingForceInHectoNewton(formationRun.formationHoldingForceInHectoNewton())
+            .formationBrakedWeightInT(formationRun.getFormationBrakedWeightInT())
+            .tractionHoldingForceInHectoNewton(formationRun.getTractionHoldingForceInHectoNewton())
+            .hauledLoadHoldingForceInHectoNewton(formationRun.getHauledLoadHoldingForceInHectoNewton())
+            .formationHoldingForceInHectoNewton(formationRun.getFormationHoldingForceInHectoNewton())
             .brakePositionGForLeadingTraction(formationRun.getBrakePositionGForLeadingTraction())
             .brakePositionGForBrakeUnit1to5(formationRun.getBrakePositionGForBrakeUnit1to5())
             .brakePositionGForLoadHauled(formationRun.getBrakePositionGForLoadHauled())
             .simTrain(formationRun.getSimTrain())
-            .tractionModes(mapTractionModes(formationRun.tractionModes()))
+            .tractionModes(mapTractionModes(formationRun.getTractionModes()))
             .carCarrierVehicle(formationRun.getCarCarrierVehicle())
             .dangerousGoods(formationRun.hasDangerousGoods())
             .vehiclesCount(formationRun.vehicleCount())
             .vehiclesWithBrakeDesignLlAndKCount(formationRun.vehiclesWithBrakeDesignCount(BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE, BrakeDesign.KUNSTSTOFF_BREMSKLOETZE))
             .vehiclesWithBrakeDesignDCount(formationRun.vehiclesWithBrakeDesignCount(BrakeDesign.NORMALE_BREMSAUSRUESTUNG_KEINE_MERKMALE))
             .vehiclesWithDisabledBrakesCount(formationRun.vehiclesWithDisabledBrakeCount())
-            .europeanVehicleNumberFirst(formationRun.europeanVehicleNumberFirst() != null ? formationRun.europeanVehicleNumberFirst().asString() : null)
-            .europeanVehicleNumberLast(formationRun.europeanVehicleNumberLast() != null ? formationRun.europeanVehicleNumberLast().asString() : null)
+            .europeanVehicleNumberFirst(formationRun.europeanVehicleNumberFirst() != null ? formationRun.europeanVehicleNumberFirst().toVehicleCode() : null)
+            .europeanVehicleNumberLast(formationRun.europeanVehicleNumberLast() != null ? formationRun.europeanVehicleNumberLast().toVehicleCode() : null)
             .axleLoadMaxInKg(formationRun.getAxleLoadMaxInKg())
             .routeClass(formationRun.getRouteClass())
             .gradientUphillMaxInPermille(formationRun.getGradientUphillMaxInPermille())

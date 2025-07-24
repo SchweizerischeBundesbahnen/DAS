@@ -29,6 +29,6 @@ public class TrainFormationKafkaConsumer {
         List<TrainFormationRunEntity> trainFormationRunEntities = TrainFormationRunEntity.from(formation);
 
         formationService.save(trainFormationRunEntities);
-        log.debug("Successfully saved train formation runs for kafka message partition: {}, offset: {}", message.partition(), message.offset());
+        log.debug("Train formation runs saved from kafka message partition={}, offset={}", message.partition(), message.offset());
     }
 }

@@ -8,15 +8,15 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class Good {
+public class Goods {
 
     private boolean isDangerous;
 
-    static boolean hasDangerousGoods(List<Good> goods) {
-        if (goods == null) {
+    static boolean hasDangerousGoods(List<Goods> goodsList) {
+        if (goodsList == null) {
             return false;
         }
-        return goods.stream()
-            .anyMatch(good -> good.isDangerous);
+        return goodsList.stream()
+            .anyMatch(goods -> goods.isDangerous);
     }
 }

@@ -46,9 +46,9 @@ final class ArchUnitTest {
             "java..",
             "javax..",
             "org.slf4j..",
-            "kotlin..",
             "org.jetbrains.annotations..",
-            "lombok.."
+            "lombok..",
+            "org.springframework.util"
         )
-        .because("our domain core should be independent of frameworks");
+        .because("domain core should be independent of frameworks");
 }
