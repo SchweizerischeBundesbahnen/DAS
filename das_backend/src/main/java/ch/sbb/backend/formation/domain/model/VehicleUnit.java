@@ -43,7 +43,7 @@ public class VehicleUnit {
             .anyMatch(vehicleUnit -> vehicleUnit.hasBrakeDesign(brakeDesigns));
     }
 
-    Integer holdingForce(boolean isTraction) {
+    Integer calculateHoldingForce(boolean isTraction) {
         if (isTraction) {
             if (technicalHoldingForceInHectoNewton != null) {
                 return technicalHoldingForceInHectoNewton;

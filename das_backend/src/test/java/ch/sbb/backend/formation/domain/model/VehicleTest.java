@@ -58,13 +58,6 @@ class VehicleTest {
     }
 
     @Test
-    void hasDangerousGoods_withNull() {
-        boolean result = Vehicle.hasDangerousGoods(null);
-
-        assertThat(result).isFalse();
-    }
-
-    @Test
     void hasDangerousGoods_withEmpty() {
         List<Vehicle> vehicles = Collections.emptyList();
 
@@ -95,70 +88,70 @@ class VehicleTest {
     }
 
     @Test
-    void brakeDesignCount_hasTwo() {
+    void countBrakeDesigns_hasTwo() {
         List<Vehicle> vehicles = List.of(createVehicle(), createVehicle());
 
         try (MockedStatic<VehicleUnit> mockedStatic = mockStatic(VehicleUnit.class)) {
             mockedStatic.when(() -> VehicleUnit.hasBrakeDesign(any(), any())).thenReturn(true);
 
-            assertThat(Vehicle.brakeDesignCount(vehicles, BrakeDesign.EINLOESIGE_BREMSE)).isEqualTo(2);
+            assertThat(Vehicle.countBrakeDesigns(vehicles, BrakeDesign.EINLOESIGE_BREMSE)).isEqualTo(2);
         }
     }
 
     @Test
-    void brakeDesignCount_hasNone() {
+    void countBrakeDesigns_hasNone() {
         List<Vehicle> vehicles = List.of(createVehicle(), createVehicle());
 
         try (MockedStatic<VehicleUnit> mockedStatic = mockStatic(VehicleUnit.class)) {
             mockedStatic.when(() -> VehicleUnit.hasBrakeDesign(any(), any())).thenReturn(false);
 
-            assertThat(Vehicle.brakeDesignCount(vehicles, BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE)).isZero();
+            assertThat(Vehicle.countBrakeDesigns(vehicles, BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE)).isZero();
         }
     }
 
     @Test
-    void disabledBrakeCount_hasOne() {
+    void countDisabledBrakes_hasOne() {
         List<Vehicle> vehicles = List.of(createVehicle());
 
         try (MockedStatic<VehicleUnit> mockedStatic = mockStatic(VehicleUnit.class)) {
             mockedStatic.when(() -> VehicleUnit.hasDisabledBrake(any())).thenReturn(true);
 
-            assertThat(Vehicle.disabledBrakeCount(vehicles)).isEqualTo(1);
+            assertThat(Vehicle.countDisabledBrakes(vehicles)).isEqualTo(1);
         }
     }
 
     @Test
-    void holdingForce_withMultipleVehicles() {
+    void calculateHoldingForce_withMultipleVehicles() {
         VehicleUnit vehicleUnit = mock(VehicleUnit.class);
-        when(vehicleUnit.holdingForce(anyBoolean())).thenReturn(100);
+        when(vehicleUnit.calculateHoldingForce(anyBoolean())).thenReturn(100);
         Vehicle vehicle1 = new Vehicle(null, null, List.of(vehicleUnit, vehicleUnit), null);
         Vehicle vehicle2 = new Vehicle(null, null, List.of(vehicleUnit), null);
 
-        Integer result = Vehicle.holdingForce(List.of(vehicle1, vehicle2));
+        Integer result = Vehicle.calculateHoldingForce(List.of(vehicle1, vehicle2));
 
         assertThat(result).isEqualTo(300);
     }
 
     @Test
-    void tractionHoldingForceInHectoNewton_withMultipleVehicles() {
+    void tractionCalculateHoldingForceInHectoNewton_withMultipleVehicles() {
         VehicleUnit vehicleUnit = mock(VehicleUnit.class);
-        when(vehicleUnit.holdingForce(anyBoolean())).thenReturn(20);
+        when(vehicleUnit.calculateHoldingForce(anyBoolean())).thenReturn(20);
         Vehicle vehicle1 = new Vehicle(TractionMode.ZUGLOK, VehicleCategory.LOKOMOTIVE.name(), List.of(vehicleUnit), null);
         Vehicle vehicle2 = new Vehicle(null, null, List.of(vehicleUnit), null);
 
-        Integer result = Vehicle.tractionHoldingForceInHectoNewton(List.of(vehicle1, vehicle2));
+        Integer result = Vehicle.calculateTractionHoldingForceInHectoNewton(List.of(vehicle1, vehicle2));
 
         assertThat(result).isEqualTo(20);
     }
 
     @Test
-    void hauledLoadHoldingForceInHectoNewton_withMultipleVehicles() {
+    void hauledLoadCalculateHoldingForceInHectoNewton_withMultipleVehicles() {
         VehicleUnit vehicleUnit = mock(VehicleUnit.class);
-        when(vehicleUnit.holdingForce(anyBoolean())).thenReturn(30);
+        when(vehicleUnit.calculateHoldingForce(anyBoolean())).thenReturn(30);
         Vehicle vehicle1 = new Vehicle(TractionMode.ZUGLOK, VehicleCategory.LOKOMOTIVE.name(), List.of(vehicleUnit), null);
         Vehicle vehicle2 = new Vehicle(null, null, List.of(vehicleUnit, vehicleUnit), null);
 
-        Integer result = Vehicle.hauledLoadHoldingForceInHectoNewton(List.of(vehicle1, vehicle2));
+        Integer result = Vehicle.calculateHauledLoadHoldingForceInHectoNewton(List.of(vehicle1, vehicle2));
 
         assertThat(result).isEqualTo(60);
     }

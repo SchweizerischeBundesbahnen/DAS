@@ -25,7 +25,7 @@ class FormationServiceTest {
     @Test
     void save() {
         // Arrange
-        List<TrainFormationRunEntity> trainFormationRunEntities = List.of(new TrainFormationRunEntity());
+        List<TrainFormationRunEntity> trainFormationRunEntities = List.of(TrainFormationRunEntity.builder().build());
 
         // Act
         underTest.save(trainFormationRunEntities);
@@ -40,7 +40,7 @@ class FormationServiceTest {
         TrainFormationRunEntity trainFormationRunEntity = TrainFormationRunEntity.builder()
             .axleLoadMaxInKg(238)
             .build();
-        List<TrainFormationRunEntity> trainFormationRunEntities = List.of(new TrainFormationRunEntity(), trainFormationRunEntity);
+        List<TrainFormationRunEntity> trainFormationRunEntities = List.of(TrainFormationRunEntity.builder().build(), trainFormationRunEntity);
 
         // Act
         underTest.save(trainFormationRunEntities);

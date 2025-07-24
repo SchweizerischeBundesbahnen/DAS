@@ -165,7 +165,7 @@ class FormationRunTest {
         FormationRun formationRun = createFormationRunWithVehicles(Collections.emptyList());
 
         try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
-            mockedStatic.when(() -> Vehicle.tractionHoldingForceInHectoNewton(any())).thenReturn(59);
+            mockedStatic.when(() -> Vehicle.calculateTractionHoldingForceInHectoNewton(any())).thenReturn(59);
 
             int result = formationRun.getTractionHoldingForceInHectoNewton();
 
@@ -178,7 +178,7 @@ class FormationRunTest {
         FormationRun formationRun = createFormationRunWithVehicles(Collections.emptyList());
 
         try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
-            mockedStatic.when(() -> Vehicle.hauledLoadHoldingForceInHectoNewton(any())).thenReturn(67);
+            mockedStatic.when(() -> Vehicle.calculateHauledLoadHoldingForceInHectoNewton(any())).thenReturn(67);
 
             int result = formationRun.getHauledLoadHoldingForceInHectoNewton();
 
@@ -191,19 +191,12 @@ class FormationRunTest {
         FormationRun formationRun = createFormationRunWithVehicles(Collections.emptyList());
 
         try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
-            mockedStatic.when(() -> Vehicle.holdingForce(any())).thenReturn(3);
+            mockedStatic.when(() -> Vehicle.calculateHoldingForce(any())).thenReturn(3);
 
             int result = formationRun.getFormationHoldingForceInHectoNewton();
 
             assertThat(result).isEqualTo(3);
         }
-    }
-
-    @Test
-    void getTractionModes_null() {
-        FormationRun formationRun = createFormationRunWithVehicles(null);
-        List<TractionMode> tractionModes = formationRun.getTractionModes();
-        assertThat(tractionModes).isEmpty();
     }
 
     @Test
@@ -214,7 +207,7 @@ class FormationRunTest {
     }
 
     @Test
-    void tractionModes_noGetTractionVehicle() {
+    void getTractionModes_noGetTractionVehicle() {
         Vehicle vehicle = mock(Vehicle.class);
         when(vehicle.isTraction()).thenReturn(false);
         when(vehicle.getTractionMode()).thenReturn(TractionMode.DOPPELTRAKTION);
@@ -254,15 +247,6 @@ class FormationRunTest {
     }
 
     @Test
-    void vehicleCount_null() {
-        FormationRun formationRun = createFormationRunWithVehicles(null);
-
-        Integer result = formationRun.vehicleCount();
-
-        assertThat(result).isZero();
-    }
-
-    @Test
     void vehicleCount_twoVehicles() {
         FormationRun formationRun = createFormationRunWithVehicles(List.of(mock(Vehicle.class), mock(Vehicle.class)));
 
@@ -276,11 +260,11 @@ class FormationRunTest {
         FormationRun formationRun = createFormationRunWithVehicles(null);
 
         try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
-            mockedStatic.when(() -> Vehicle.brakeDesignCount(any(), any(), any())).thenReturn(3);
+            mockedStatic.when(() -> Vehicle.countBrakeDesigns(any(), any(), any())).thenReturn(3);
 
             Integer result = formationRun.vehiclesWithBrakeDesignCount(BrakeDesign.NORMALE_BREMSAUSRUESTUNG_KEINE_MERKMALE, BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE);
 
-            mockedStatic.verify(() -> Vehicle.brakeDesignCount(any(), eq(BrakeDesign.NORMALE_BREMSAUSRUESTUNG_KEINE_MERKMALE), eq(BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE)));
+            mockedStatic.verify(() -> Vehicle.countBrakeDesigns(any(), eq(BrakeDesign.NORMALE_BREMSAUSRUESTUNG_KEINE_MERKMALE), eq(BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE)));
             assertThat(result).isEqualTo(3);
         }
     }
@@ -290,7 +274,7 @@ class FormationRunTest {
         FormationRun formationRun = createFormationRunWithVehicles(null);
 
         try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
-            mockedStatic.when(() -> Vehicle.disabledBrakeCount(any())).thenReturn(5);
+            mockedStatic.when(() -> Vehicle.countDisabledBrakes(any())).thenReturn(5);
 
             Integer result = formationRun.vehiclesWithDisabledBrakeCount();
 

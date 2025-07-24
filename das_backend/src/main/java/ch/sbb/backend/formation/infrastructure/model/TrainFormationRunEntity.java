@@ -1,5 +1,6 @@
 package ch.sbb.backend.formation.infrastructure.model;
 
+import ch.sbb.backend.common.SFERA;
 import ch.sbb.backend.common.StringListConverter;
 import ch.sbb.backend.common.TelTsi;
 import ch.sbb.backend.formation.domain.model.BrakeDesign;
@@ -20,14 +21,12 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.NoArgsConstructor;
 
 @Entity(name = "train_formation_run")
-@ToString
 @Builder
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
 @AllArgsConstructor
 // todo: a default value must be defined for all non-primitive Boolean and Integer fields (by business or source systems)
 public class TrainFormationRunEntity {
@@ -39,12 +38,13 @@ public class TrainFormationRunEntity {
 
     private OffsetDateTime modifiedDateTime;
 
-    @TelTsi
+    @SFERA @TelTsi
     private String operationalTrainNumber;
 
+    @SFERA(nsp = true)
     private LocalDate operationalDay;
 
-    @TelTsi
+    @SFERA @TelTsi
     @JoinColumn(name = "company", referencedColumnName = "codeRics")
     private String company;
 

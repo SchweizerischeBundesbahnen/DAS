@@ -110,46 +110,46 @@ class VehicleUnitTest {
     }
 
     @Test
-    void holdingForce_null() {
+    void calculateCalculateHoldingForce_null() {
         VehicleUnit vehicleUnit = new VehicleUnit(null, null, null, null, null, null);
 
-        Integer result = vehicleUnit.holdingForce(true);
+        Integer result = vehicleUnit.calculateHoldingForce(true);
 
         assertThat(result).isZero();
     }
 
     @Test
-    void holdingForce_whenTraction() {
+    void calculateCalculateHoldingForce_whenTraction() {
         VehicleUnit vehicleUnit = new VehicleUnit(null, null, 13, 22, 10, null);
 
-        Integer result = vehicleUnit.holdingForce(true);
+        Integer result = vehicleUnit.calculateHoldingForce(true);
 
         assertThat(result).isEqualTo(13);
     }
 
     @Test
-    void holdingForce_whenTractionNoHoldingForce() {
+    void holdingForce_whenTractionNoCalculateCalculateHoldingForce() {
         VehicleUnit vehicleUnit = new VehicleUnit(null, null, null, 22, 10, null);
 
-        Integer result = vehicleUnit.holdingForce(true);
+        Integer result = vehicleUnit.calculateHoldingForce(true);
 
         assertThat(result).isEqualTo(100);
     }
 
     @Test
-    void holdingForce_whenNotTraction() {
+    void calculateCalculateHoldingForce_whenNotTraction() {
         VehicleUnit vehicleUnit = new VehicleUnit(null, null, 34, 12, 7, null);
 
-        Integer result = vehicleUnit.holdingForce(false);
+        Integer result = vehicleUnit.calculateHoldingForce(false);
 
         assertThat(result).isEqualTo(12);
     }
 
     @Test
-    void holdingForce_whenNotTractionNoHoldingForce() {
+    void holdingForce_whenNotTractionNoCalculateCalculateHoldingForce() {
         VehicleUnit vehicleUnit = new VehicleUnit(null, null, 34, null, 9, null);
 
-        Integer result = vehicleUnit.holdingForce(false);
+        Integer result = vehicleUnit.calculateHoldingForce(false);
 
         assertThat(result).isEqualTo(90);
     }

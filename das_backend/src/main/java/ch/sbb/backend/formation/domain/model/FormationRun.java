@@ -1,6 +1,5 @@
 package ch.sbb.backend.formation.domain.model;
 
-import ch.sbb.backend.common.TelTsi;
 import java.util.Collections;
 import java.util.List;
 import lombok.Builder;
@@ -25,8 +24,7 @@ public class FormationRun {
     public static final int COMPANY_CODE_LENGTH = 4;
 
     private Boolean inspected;
-    @Getter @TelTsi
-    private String company;
+    @Getter private String company;
     @Getter private TafTapLocationReference tafTapLocationReferenceStart;
     @Getter private TafTapLocationReference tafTapLocationReferenceEnd;
     @Getter private String trainCategoryCode;
@@ -51,6 +49,9 @@ public class FormationRun {
     @Getter private Integer gradientUphillMaxInPermille;
     @Getter private Integer gradientDownhillMaxInPermille;
     @Getter private String slopeMaxForHoldingForceMinInPermille;
+    /**
+     * Always provided by the source system.
+     */
     private List<Vehicle> vehicles;
 
     /**
@@ -93,21 +94,18 @@ public class FormationRun {
     }
 
     public Integer getTractionHoldingForceInHectoNewton() {
-        return Vehicle.tractionHoldingForceInHectoNewton(vehicles);
+        return Vehicle.calculateTractionHoldingForceInHectoNewton(vehicles);
     }
 
     public Integer getHauledLoadHoldingForceInHectoNewton() {
-        return Vehicle.hauledLoadHoldingForceInHectoNewton(vehicles);
+        return Vehicle.calculateHauledLoadHoldingForceInHectoNewton(vehicles);
     }
 
     public Integer getFormationHoldingForceInHectoNewton() {
-        return Vehicle.holdingForce(vehicles);
+        return Vehicle.calculateHoldingForce(vehicles);
     }
 
     public List<TractionMode> getTractionModes() {
-        if (vehicles == null) {
-            return Collections.emptyList();
-        }
         return vehicles.stream()
             .filter(Vehicle::isTraction)
             .map(Vehicle::getTractionMode)
@@ -119,18 +117,15 @@ public class FormationRun {
     }
 
     public Integer vehicleCount() {
-        if (vehicles == null) {
-            return 0;
-        }
         return vehicles.size();
     }
 
     public Integer vehiclesWithBrakeDesignCount(BrakeDesign... brakeDesigns) {
-        return Vehicle.brakeDesignCount(vehicles, brakeDesigns);
+        return Vehicle.countBrakeDesigns(vehicles, brakeDesigns);
     }
 
     public Integer vehiclesWithDisabledBrakeCount() {
-        return Vehicle.disabledBrakeCount(vehicles);
+        return Vehicle.countDisabledBrakes(vehicles);
     }
 
     public EuropeanVehicleNumber europeanVehicleNumberFirst() {
