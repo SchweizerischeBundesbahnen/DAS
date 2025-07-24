@@ -66,7 +66,6 @@ class _HeaderState extends State<Header> {
 
   void _onHorizontalDragStart(DragStartDetails details) async {
     _dragBrightness = await _brightnessManager.getCurrentBrightness();
-    debugPrint('Initial brightness: $_dragBrightness');
   }
 
   void _onHorizontalDragEnd(DragEndDetails details) {
@@ -78,7 +77,7 @@ class _HeaderState extends State<Header> {
 
     _dragBrightness = _dragBrightness! + (details.delta.dx * dragStep);
     _dragBrightness = _dragBrightness!.clamp(minBrightness, maxBrightness);
-    debugPrint('${details.delta.dx} newBrightness brightness: $_dragBrightness');
+
     await _brightnessManager.setBrightness(_dragBrightness!);
   }
 }
