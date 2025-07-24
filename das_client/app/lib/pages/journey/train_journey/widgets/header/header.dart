@@ -1,10 +1,8 @@
-import 'dart:async';
-
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/brightness/brightness_modal_sheet.dart';
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/train_journey/widgets/header/das_chronograph.dart';
 import 'package:app/pages/journey/train_journey/train_journey_overview.dart';
+import 'package:app/pages/journey/train_journey/widgets/header/das_chronograph.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/main_container.dart';
 import 'package:app/widgets/extended_header_container.dart';
 import 'package:flutter/material.dart';
@@ -21,12 +19,10 @@ class _HeaderState extends State<Header> {
   final double maxBrightness = 1.0;
   final double minBrightness = 0.0;
   final double halfBrightness = 0.5;
-  final double dimStep = 0.05;
-  final double dragStep = 0.01;
-  final int dimmingInterval = 50;
+  final double dragStep = 0.002;
 
-  Timer? _dimmingTimer;
   final BrightnessManager _brightnessManager = DI.get<BrightnessManager>();
+  double? _dragBrightness;
 
   @override
   void initState() {
@@ -41,7 +37,9 @@ class _HeaderState extends State<Header> {
     return ExtendedAppBarWrapper(
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
+        onHorizontalDragStart: _onHorizontalDragStart,
         onHorizontalDragUpdate: _onHorizontalDragUpdate,
+        onHorizontalDragEnd: _onHorizontalDragEnd,
         child: Padding(
           padding: const EdgeInsets.all(TrainJourneyOverview.horizontalPadding).copyWith(top: 0),
           child: Row(
@@ -49,8 +47,6 @@ class _HeaderState extends State<Header> {
             children: [
               Expanded(child: MainContainer()),
               GestureDetector(
-                onLongPressStart: (_) => _startDimming(),
-                onLongPressEnd: (_) => _stopDimming(),
                 onDoubleTap: _doubleTap,
                 behavior: HitTestBehavior.translucent,
                 child: const DASChronograph(),
@@ -62,34 +58,27 @@ class _HeaderState extends State<Header> {
     );
   }
 
-  void _startDimming() async {
-    _dimmingTimer?.cancel();
-    final value = await _brightnessManager.getCurrentBrightness();
-    final shouldDim = value >= halfBrightness;
-
-    _dimmingTimer = Timer.periodic(Duration(milliseconds: dimmingInterval), (timer) async {
-      final current = await _brightnessManager.getCurrentBrightness();
-      final newValue = shouldDim
-          ? (current - dimStep).clamp(minBrightness, maxBrightness)
-          : (current + dimStep).clamp(minBrightness, maxBrightness);
-      await _brightnessManager.setBrightness(newValue);
-      if (newValue == minBrightness || newValue == maxBrightness) timer.cancel();
-    });
-  }
-
-  void _stopDimming() {
-    _dimmingTimer?.cancel();
-  }
-
   void _doubleTap() async {
     final current = await _brightnessManager.getCurrentBrightness();
     final newBrightness = current < halfBrightness ? maxBrightness : minBrightness;
     await _brightnessManager.setBrightness(newBrightness);
   }
 
+  void _onHorizontalDragStart(DragStartDetails details) async {
+    _dragBrightness = await _brightnessManager.getCurrentBrightness();
+    debugPrint('Initial brightness: $_dragBrightness');
+  }
+
+  void _onHorizontalDragEnd(DragEndDetails details) {
+    _dragBrightness = null;
+  }
+
   void _onHorizontalDragUpdate(DragUpdateDetails details) async {
-    double value = await _brightnessManager.getCurrentBrightness();
-    value += details.delta.dx > 0 ? dragStep : -dragStep;
-    await _brightnessManager.setBrightness(value.clamp(minBrightness, maxBrightness));
+    if (_dragBrightness == null) return;
+
+    _dragBrightness = _dragBrightness! + (details.delta.dx * dragStep);
+    _dragBrightness = _dragBrightness!.clamp(minBrightness, maxBrightness);
+    debugPrint('${details.delta.dx} newBrightness brightness: $_dragBrightness');
+    await _brightnessManager.setBrightness(_dragBrightness!);
   }
 }
