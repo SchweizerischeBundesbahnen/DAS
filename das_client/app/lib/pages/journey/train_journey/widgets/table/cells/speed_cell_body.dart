@@ -4,6 +4,7 @@ import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
+import 'package:app/widgets/table/das_row_controller.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/widget_extensions.dart';
 import 'package:flutter/material.dart';
@@ -35,9 +36,10 @@ class SpeedCellBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return rowIndex != null
-        ? ListenableBuilder(
-            listenable: StickyHeader.of(context)!.controller,
-            builder: (context, _) {
+        ? StreamBuilder(
+            stream: DASRowController.of(context)!.rowState,
+            builder: (context, snapshot) {
+              debugPrint('${snapshot.data}');
               final Speed? resolvedSpeed = _resolveSpeedOnStickiness(context);
               return _speed(resolvedSpeed, context);
             },
