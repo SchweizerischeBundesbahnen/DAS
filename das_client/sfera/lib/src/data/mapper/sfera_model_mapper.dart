@@ -22,6 +22,7 @@ import 'package:sfera/src/model/journey/bracket_station.dart';
 final _log = Logger('SferaModelMapper');
 
 /// Used to map SFERA data to [Journey] with relevant [Metadata].
+/// TODO: Remove speed data from basedata and move to Metadata.
 class SferaModelMapper {
   SferaModelMapper._();
 

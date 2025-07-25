@@ -51,6 +51,9 @@ class AdvisedSpeedCellBody extends StatelessWidget {
   }
 
   SingleSpeed? _resolvedTrainSeriesSpeed({bool resolvePrevious = false}) {
+    final inEtcsLevel2Segment = metadata.nonStandardTrackEquipmentSegments.isInEtcsLevel2Segment(order);
+    if (inEtcsLevel2Segment) return null;
+
     var trainSeriesSpeeds = metadata.lineSpeeds[order];
     if (trainSeriesSpeeds == null && resolvePrevious) {
       trainSeriesSpeeds = metadata.lineSpeeds[metadata.lineSpeeds.lastKeyBefore(order)];

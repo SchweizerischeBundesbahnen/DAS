@@ -1,5 +1,6 @@
 import 'package:rxdart/rxdart.dart';
 
+// TODO: Implement almostSticky state
 class DASRowController {
   DASRowController({required this.isAlwaysSticky}) {
     _rxRowState = BehaviorSubject<DASRowState>.seeded(isAlwaysSticky ? DASRowState.sticky : DASRowState.notSticky);
