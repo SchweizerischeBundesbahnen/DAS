@@ -1,3 +1,4 @@
+import 'package:app/extension/datetime_extension.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
 import 'package:app/util/format.dart';
 import 'package:app/widgets/das_text_styles.dart';
@@ -25,10 +26,10 @@ class TimeCellBody extends StatelessWidget {
     return StreamBuilder(
       stream: CombineLatestStream.combine2<bool, DateTime, (bool, DateTime)>(
         viewModel.showOperationalTime,
-        viewModel.wallclockTime,
+        viewModel.wallclockTimeToMinute,
         (a, b) => (a, b),
       ),
-      initialData: (viewModel.showOperationalTimeValue, viewModel.wallclockTimeValue),
+      initialData: (viewModel.showOperationalTimeValue, viewModel.wallclockTimeToMinuteValue),
       builder: (context, snapshot) {
         final showOperationalTime = snapshot.requireData.$1;
         final currentTime = snapshot.requireData.$2;
@@ -86,19 +87,8 @@ class TimeCellBody extends StatelessWidget {
 extension _DateTimeExtension on DateTime {
   bool isAfterOrSameToTheMinute(DateTime? other) {
     if (other == null) return false;
-    return roundToMinute().isAfterOrSame(other.roundToMinute());
+    return roundDownToMinute().isAfterOrSame(other.roundDownToMinute());
   }
 
   bool isAfterOrSame(DateTime other) => isAtSameMomentAs(other) || isAfter(other);
-
-  DateTime roundToMinute() => copyWith(
-    year: year,
-    month: month,
-    day: day,
-    hour: hour,
-    minute: minute,
-    second: 0,
-    millisecond: 0,
-    microsecond: 0,
-  );
 }
