@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
-import 'package:app/widgets/table/das_row_controller.dart';
+import 'package:app/widgets/table/das_row_controller_wrapper.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_column.dart';
 import 'package:app/widgets/table/das_table_row.dart';
@@ -265,7 +265,7 @@ class _DASTableState extends State<DASTable> {
     if (row is DASTableCellRow) {
       return InkWell(
         onTap: row.onTap,
-        child: DASRowController(
+        child: DASRowControllerWrapper(
           isAlwaysSticky: isSticky,
           child: _FixedHeightRow(
             height: row.height,
