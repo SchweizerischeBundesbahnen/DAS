@@ -107,12 +107,12 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
                   overflow: TextOverflow.ellipsis,
                 ),
               if (speed != null && speed.reduced) _icon(context, AppAssets.iconReducedSpeed, reducedSpeedKey),
-              if (speed != null)
+              /*if (speed != null)
                 SpeedCellBody(
                   speed: speed.speed,
                   rowIndex: rowIndex,
                   singleLine: true,
-                ),
+                ),*/
             ],
           ),
         ),
@@ -215,11 +215,12 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       onTap: relevantGraduatedSpeedInfo.isNotEmpty ? () => _openGraduatedSpeedDetails(context) : null,
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
-      child: SpeedCellBody(
+      child: /*SpeedCellBody(
         speed: trainSeriesSpeed.speed,
         hasAdditionalInformation: relevantGraduatedSpeedInfo.isNotEmpty,
         rowIndex: rowIndex,
-      ),
+      )*/
+          Container(),
     );
   }
 
@@ -304,6 +305,9 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       ),
     );
   }
+
+  @override
+  ShowSpeedBehavior get showSpeedBehavior => ShowSpeedBehavior.alwaysOrPreviousOnStickiness;
 
   static double calculateHeight(ServicePoint data, BreakSeries? currentBreakSeries) {
     final properties = data.propertiesFor(currentBreakSeries);

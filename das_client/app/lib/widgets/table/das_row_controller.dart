@@ -3,12 +3,14 @@ import 'package:rxdart/rxdart.dart';
 
 class DASRowController extends InheritedWidget {
   DASRowController({required super.child, required this.isAlwaysSticky, super.key}) {
-    _rxRowState = BehaviorSubject<DasRowState>.seeded(isAlwaysSticky ? DasRowState.sticky : DasRowState.notSticky);
+    _rxRowState = BehaviorSubject<DASRowState>.seeded(isAlwaysSticky ? DASRowState.sticky : DASRowState.notSticky);
   }
 
-  late Subject<DasRowState> _rxRowState;
+  late BehaviorSubject<DASRowState> _rxRowState;
 
-  Stream<DasRowState> get rowState => _rxRowState.stream;
+  Stream<DASRowState> get rowState => _rxRowState.stream;
+
+  DASRowState get rowStateValue => _rxRowState.value;
 
   final bool isAlwaysSticky;
 
@@ -20,7 +22,7 @@ class DASRowController extends InheritedWidget {
   }
 }
 
-enum DasRowState {
+enum DASRowState {
   sticky,
   almostSticky,
   notSticky,

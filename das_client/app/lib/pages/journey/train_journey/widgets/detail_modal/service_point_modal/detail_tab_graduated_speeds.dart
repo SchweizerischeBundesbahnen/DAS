@@ -1,6 +1,5 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/cells/speed_cell_body.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -69,11 +68,11 @@ class DetailTabGraduatedSpeeds extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SpeedCellBody(
+              /*SpeedCellBody(
                 speed: speed.speed,
                 singleLine: true,
                 textStyle: DASTextStyles.mediumBold,
-              ),
+              ),*/
               const SizedBox(height: 10),
               Text(speed.text!, style: DASTextStyles.mediumRoman),
             ],

@@ -129,7 +129,16 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
       return DASTableCell.empty();
     }
 
-    return speedCell(data.speeds);
+    return DASTableCell(
+      alignment: Alignment.center,
+      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
+      child: SpeedCellBody(
+        metadata: metadata,
+        config: config.settings,
+        order: data.order,
+        showSpeedBehavior: showSpeedBehavior,
+      ),
+    );
   }
 
   DASTableCell speedCell(List<TrainSeriesSpeed>? speedData) {
@@ -142,10 +151,11 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
     return DASTableCell(
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
-      child: SpeedCellBody(
+      child: /*SpeedCellBody(
         speed: trainSeriesSpeed?.speed,
         rowIndex: rowIndex,
-      ),
+      */
+          Container(),
     );
   }
 
@@ -207,6 +217,10 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
               it.isDisplayed(metadata.nonStandardTrackEquipmentSegments),
         )
         .firstOrNull;
+  }
+
+  ShowSpeedBehavior get showSpeedBehavior {
+    return ShowSpeedBehavior.never;
   }
 
   static double rowHeightForData(BaseData data, BreakSeries? currentBreakSeries) {

@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
@@ -123,6 +125,7 @@ class SferaModelMapper {
             : null,
         lineFootNoteLocations: _generateLineFootNoteLocationMap(journeyData.whereType<LineFootNote>()),
         radioContactLists: _parseContactLists(segmentProfileReferences, segmentProfiles),
+        lineSpeeds: _gatherLineSpeeds(journeyData),
       ),
       data: journeyData,
     );
@@ -578,6 +581,18 @@ class SferaModelMapper {
     final positionSpeed = relatedTrainInformation?.ownTrain.trainLocationInformation.positionSpeed;
     final location = '${positionSpeed?.spId}${positionSpeed?.location}';
     return duration != null ? Delay(value: duration, location: location) : null;
+  }
+
+  static SplayTreeMap<int, Iterable<TrainSeriesSpeed>> _gatherLineSpeeds(List<BaseData> journeyData) {
+    final SplayTreeMap<int, Iterable<TrainSeriesSpeed>> lineSpeeds = SplayTreeMap();
+
+    for (final data in journeyData) {
+      if (data.speeds != null) {
+        lineSpeeds[data.order] = data.speeds!;
+      }
+    }
+
+    return lineSpeeds;
   }
 }
 

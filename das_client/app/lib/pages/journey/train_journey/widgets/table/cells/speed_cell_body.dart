@@ -1,14 +1,10 @@
-import 'package:app/pages/journey/train_journey/das_table_speed_view_model.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/dot_indicator.dart';
-import 'package:app/widgets/stickyheader/sticky_header.dart';
-import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/table/das_row_controller.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/widget_extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
@@ -19,32 +15,56 @@ class SpeedCellBody extends StatelessWidget {
   static const Key squaredSpeedKey = Key('graduatedSpeedSquared');
 
   const SpeedCellBody({
-    required this.speed,
-    this.rowIndex,
+    required this.metadata,
+    required this.config,
+    required this.order,
+    this.showSpeedBehavior = ShowSpeedBehavior.never,
     this.hasAdditionalInformation = false,
     this.singleLine = false,
     this.textStyle = DASTextStyles.largeRoman,
     super.key,
   });
 
-  final Speed? speed;
+  final Metadata metadata;
+  final TrainJourneySettings config;
+  final int order;
+  final ShowSpeedBehavior showSpeedBehavior;
   final bool hasAdditionalInformation;
-  final int? rowIndex;
   final bool singleLine;
   final TextStyle textStyle;
 
   @override
   Widget build(BuildContext context) {
-    return rowIndex != null
-        ? StreamBuilder(
-            stream: DASRowController.of(context)!.rowState,
-            builder: (context, snapshot) {
-              debugPrint('${snapshot.data}');
-              final Speed? resolvedSpeed = _resolveSpeedOnStickiness(context);
-              return _speed(resolvedSpeed, context);
-            },
-          )
-        : _speed(speed, context);
+    return switch (showSpeedBehavior) {
+      ShowSpeedBehavior.always => _speed(_resolvedTrainSeriesSpeed()?.speed, context),
+      ShowSpeedBehavior.never => DASTableCell.emptyBuilder,
+      ShowSpeedBehavior.alwaysOrPreviousOnStickiness => StreamBuilder(
+        stream: DASRowController.of(context)!.rowState,
+        initialData: DASRowController.of(context)!.rowStateValue,
+        builder: (context, snapshot) {
+          final state = snapshot.requireData;
+
+          final trainSeriesSpeed = _resolvedTrainSeriesSpeed(
+            resolvePrevious: state == DASRowState.sticky || state == DASRowState.almostSticky,
+          );
+
+          return _speed(trainSeriesSpeed?.speed, context);
+        },
+      ),
+    };
+  }
+
+  TrainSeriesSpeed? _resolvedTrainSeriesSpeed({bool resolvePrevious = false}) {
+    var trainSeriesSpeeds = metadata.lineSpeeds[order];
+    if (trainSeriesSpeeds == null && resolvePrevious) {
+      trainSeriesSpeeds = metadata.lineSpeeds[metadata.lineSpeeds.lastKeyBefore(order)];
+    }
+
+    final selectedBreakSeries = config.resolvedBreakSeries(metadata);
+    return trainSeriesSpeeds.speedFor(
+      selectedBreakSeries?.trainSeries,
+      breakSeries: selectedBreakSeries?.breakSeries,
+    );
   }
 
   Widget _speed(Speed? speed, BuildContext context) {
@@ -139,24 +159,6 @@ class SpeedCellBody extends StatelessWidget {
     final IncomingOutgoingSpeed _ => const Offset(0, 0),
     final GraduatedSpeed _ || final SingleSpeed _ => const Offset(0, -sbbDefaultSpacing * 0.5),
   };
-
-  Speed? _resolveSpeedOnStickiness(BuildContext context) {
-    if (rowIndex == null) return speed;
-
-    bool showPreviousSpeed = false;
-    if (speed == null) {
-      final stickyController = StickyHeader.of(context)!.controller;
-      showPreviousSpeed =
-          stickyController.headerIndexes[StickyLevel.first] == rowIndex ||
-          (stickyController.nextHeaderIndex[StickyLevel.first] == rowIndex &&
-              ((stickyController.headerOffsets[StickyLevel.first] ?? 0) < (-ServicePointRow.baseRowHeight * 0.33)));
-    }
-
-    final Speed? resolvedSpeed = showPreviousSpeed
-        ? context.read<DASTableSpeedViewModel>().previousLineSpeed(rowIndex!)
-        : speed;
-    return resolvedSpeed;
-  }
 }
 
 // extensions
@@ -166,3 +168,5 @@ extension _SpeedIterableX on List<SingleSpeed> {
 
   bool get hasSquaredOrCircled => any((it) => it.isSquared || it.isCircled);
 }
+
+enum ShowSpeedBehavior { always, alwaysOrPreviousOnStickiness, never }

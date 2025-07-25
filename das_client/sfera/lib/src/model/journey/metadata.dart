@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:meta/meta.dart';
 import 'package:sfera/src/model/journey/additional_speed_restriction.dart';
 import 'package:sfera/src/model/journey/advised_speed_segment.dart';
@@ -9,6 +11,7 @@ import 'package:sfera/src/model/journey/contact_list.dart';
 import 'package:sfera/src/model/journey/delay.dart';
 import 'package:sfera/src/model/journey/service_point.dart';
 import 'package:sfera/src/model/journey/track_equipment_segment.dart';
+import 'package:sfera/src/model/journey/train_series_speed.dart';
 
 @sealed
 @immutable
@@ -32,8 +35,10 @@ class Metadata {
     this.communicationNetworkChanges = const [],
     this.lineFootNoteLocations = const {},
     this.radioContactLists = const [],
+    SplayTreeMap<int, Iterable<TrainSeriesSpeed>>? lineSpeeds,
   }) : timestamp = timestamp ?? DateTime.now(),
-       anyOperationalArrivalDepartureTimes = anyOperationalArrivalDepartureTimes ?? false;
+       anyOperationalArrivalDepartureTimes = anyOperationalArrivalDepartureTimes ?? false,
+       lineSpeeds = lineSpeeds ?? SplayTreeMap<int, Iterable<TrainSeriesSpeed>>();
 
   final DateTime timestamp;
   final ServicePoint? nextStop;
@@ -53,4 +58,5 @@ class Metadata {
   final Set<BreakSeries> availableBreakSeries;
   final Map<String, List<String>> lineFootNoteLocations;
   final Iterable<RadioContactList> radioContactLists;
+  final SplayTreeMap<int, Iterable<TrainSeriesSpeed>> lineSpeeds;
 }
