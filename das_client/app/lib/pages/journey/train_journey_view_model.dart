@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:app/di/di.dart';
 import 'package:app/pages/journey/train_journey/automatic_advancement_controller.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:app/util/error_code.dart';
+import 'package:app/util/time_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -21,6 +23,7 @@ class TrainJourneyViewModel {
     _init();
   }
 
+  final _resetToKmAfterSeconds = DI.get<TimeConstants>().kmDecisiveGradientResetSeconds;
   static const _warnappWindowMilliseconds = 1250;
 
   final SferaRemoteRepo _sferaRemoteRepo;
@@ -36,11 +39,18 @@ class TrainJourneyViewModel {
 
   Stream<WarnappEvent> get warnappEvents => _rxWarnapp.stream;
 
+  Stream<bool> get showDecisiveGradient => _rxShowDecisiveGradient.distinct();
+
+  bool get showDecisiveGradientValue => _rxShowDecisiveGradient.value;
+
   AutomaticAdvancementController automaticAdvancementController = AutomaticAdvancementController();
 
   final _rxSettings = BehaviorSubject<TrainJourneySettings>.seeded(TrainJourneySettings());
   final _rxErrorCode = BehaviorSubject<ErrorCode?>.seeded(null);
   final _rxWarnapp = PublishSubject<WarnappEvent>();
+
+  final _rxShowDecisiveGradient = BehaviorSubject<bool>.seeded(false);
+  Timer? _showDecisiveGradientTimer;
 
   DateTime? _lastWarnappEventTimestamp;
 
@@ -145,6 +155,19 @@ class TrainJourneyViewModel {
         now.difference(_lastWarnappEventTimestamp!).inMilliseconds < _warnappWindowMilliseconds) {
       _log.info('Abfahrt detected while warnapp message was within $_warnappWindowMilliseconds ms -> Warning!');
       _rxWarnapp.add(WarnappEvent());
+    }
+  }
+
+  void toggleKmDecisiveGradient() {
+    final showDecisiveGradient = _rxShowDecisiveGradient.value;
+    if (!showDecisiveGradient) {
+      _rxShowDecisiveGradient.add(true);
+      _showDecisiveGradientTimer = Timer(Duration(seconds: _resetToKmAfterSeconds), () {
+        if (_rxShowDecisiveGradient.value) _rxShowDecisiveGradient.add(false);
+      });
+    } else {
+      _rxShowDecisiveGradient.add(false);
+      _showDecisiveGradientTimer?.cancel();
     }
   }
 }

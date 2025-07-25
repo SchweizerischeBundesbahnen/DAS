@@ -1,12 +1,23 @@
+import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/das_navigation_drawer.dart';
+import 'package:app/util/user_settings.dart';
+import 'package:app/widgets/das_text_styles.dart';
+import 'package:app/widgets/header.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 @RoutePage()
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
+
+  @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  final _userSettings = DI.get<UserSettings>();
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +35,90 @@ class SettingsPage extends StatelessWidget {
   }
 
   Widget _body(BuildContext context) {
-    return Center(child: Text(context.l10n.w_navigation_drawer_settings_title));
+    return Column(
+      children: [
+        _settingsHeader(context),
+        _settingsBody(context),
+      ],
+    );
+  }
+
+  Widget _settingsHeader(BuildContext context) {
+    return Header(
+      child: SizedBox(
+        width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.all(sbbDefaultSpacing),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: sbbDefaultSpacing * 0.25,
+            children: [
+              Text(
+                context.l10n.w_navigation_drawer_settings_title,
+                style: DASTextStyles.mediumBold,
+              ),
+              Text(
+                context.l10n.p_settings_page_personalize,
+                style: DASTextStyles.smallLight.copyWith(color: SBBColors.granite),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _settingsBody(BuildContext context) {
+    return SingleChildScrollView(
+      child: SizedBox(
+        width: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _settingTitle(context.l10n.p_settings_page_decisive_gradient_title),
+            _decisiveGradientSettings(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _decisiveGradientSettings(BuildContext context) {
+    return SBBGroup(
+      margin: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
+      padding: const EdgeInsets.only(
+        top: sbbDefaultSpacing * 0.5,
+        bottom: sbbDefaultSpacing * 0.5,
+        right: sbbDefaultSpacing,
+      ),
+      child: Column(
+        children: [
+          SBBListItem.custom(
+            title: context.l10n.p_settings_page_decisive_gradient_show_setting,
+            onPressed: () => _updateSettings(UserSettingKeys.showDecisiveGradient, !_userSettings.showDecisiveGradient),
+            isLastElement: true,
+            trailingWidget: SBBSwitch(
+              value: _userSettings.showDecisiveGradient,
+              onChanged: (value) => _updateSettings(UserSettingKeys.showDecisiveGradient, value),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _settingTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 1.5),
+      child: Text(
+        title,
+        style: DASTextStyles.smallLight,
+      ),
+    );
+  }
+
+  void _updateSettings<T>(UserSettingKeys key, T value) async {
+    await _userSettings.setUserSetting(key, value);
+    setState(() {});
   }
 }
