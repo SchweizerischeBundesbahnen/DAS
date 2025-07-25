@@ -17,6 +17,7 @@ import 'package:app/widgets/dot_indicator.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
@@ -27,7 +28,7 @@ import '../util/test_utils.dart';
 
 Future<void> main() async {
   group('train journey header test', () {
-    testWidgets('test punctuality display hides when no updates come', (tester) async {
+    testWidgets('test chronograph punctuality display hides when no updates come', (tester) async {
       await prepareAndStartApp(tester);
 
       await loadTrainJourney(tester, trainNumber: 'T4');
@@ -50,7 +51,7 @@ Future<void> main() async {
       expect(find.descendant(of: chronograph, matching: find.byKey(DASChronograph.punctualityTextKey)), findsNothing);
     });
 
-    testWidgets('test punctuality display becomes stale when no updates come', (tester) async {
+    testWidgets('test chronograph punctuality display becomes stale when no updates come', (tester) async {
       await prepareAndStartApp(tester);
 
       await loadTrainJourney(tester, trainNumber: 'T4');
@@ -300,7 +301,7 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('punctuality display is hidden when no calculated speed', (tester) async {
+    testWidgets('chronograph punctuality display is hidden when no calculated speed', (tester) async {
       // Load app widget.
       await prepareAndStartApp(tester);
 
@@ -320,37 +321,32 @@ Future<void> main() async {
     });
 
     testWidgets('check if the displayed current time is correct', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
 
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T6');
 
-      // find the header and check if it is existent
+      await tester.pumpAndSettle(const Duration(milliseconds: 200));
+
       final header = find.byType(Header);
       expect(header, findsOneWidget);
 
-      final DateTime currentTime = DateTime.now();
-      final String currentHour = currentTime.hour <= 9 ? '0${currentTime.hour}' : (currentTime.hour).toString();
-      final String currentMinutes = currentTime.minute <= 9
-          ? '0${currentTime.minute}'
-          : (currentTime.minute).toString();
-      final String currentSeconds = currentTime.second <= 9
-          ? '0${currentTime.second}'
-          : (currentTime.second).toString();
-      final String nextSecond = currentTime.second <= 9
-          ? '0${currentTime.second + 1}'
-          : (currentTime.second + 1).toString();
-      final String currentWholeTime = '$currentHour:$currentMinutes:$currentSeconds';
-      final String nextSecondWholeTime = '$currentHour:$currentMinutes:$nextSecond';
+      final currentTimeText = tester.widget<Text>(
+        find.descendant(of: header, matching: find.byKey(DASChronograph.currentTimeTextKey)),
+      );
 
-      if (!find.descendant(of: header, matching: find.text(currentWholeTime)).evaluate().isNotEmpty) {
-        expect(find.descendant(of: header, matching: find.text(nextSecondWholeTime)), findsOneWidget);
-      } else {
-        expect(find.descendant(of: header, matching: find.text(currentWholeTime)), findsOneWidget);
-      }
+      final displayedTime = currentTimeText.data;
 
-      await tester.pumpAndSettle();
+      expect(displayedTime, isNotEmpty);
+
+      // compare the range up to three seconds to allow some slack
+      final now = tester.binding.clock.now();
+      final expectedTime = DateFormat('HH:mm:ss').format(now);
+
+      final displayedDateTime = DateTime.parse('1970-01-01 $displayedTime');
+      final expectedDateTime = DateTime.parse('1970-01-01 $expectedTime');
+
+      final difference = displayedDateTime.difference(expectedDateTime).inSeconds.abs();
+      expect(difference <= 3, isTrue);
 
       await disconnect(tester);
     });

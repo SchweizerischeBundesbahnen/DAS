@@ -1117,7 +1117,52 @@ void main() {
         await disconnect(tester);
       },
     );
+    testWidgets('test departure time is underlined when time reached', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T9999');
+
+      // wait one second for underline to happen if opened last second of previous minute
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+
+      // check Bahnhof A has underlined departure time
+      final stationARow = findDASTableRowByText('Bahnhof A');
+      expect(stationARow, findsOneWidget);
+
+      final stationATimeText = tester.widget<Text>(
+        find.descendant(of: stationARow, matching: find.byKey(TimeCellBody.timeCellKey)),
+      );
+      final hasUnderlinedSpanStationA = _hasAnyUnderlinedTextSpans(stationATimeText);
+      expect(hasUnderlinedSpanStationA, isTrue);
+
+      await dragUntilTextInStickyHeader(tester, 'Haltestelle B');
+
+      // check Halt auf Verlangen C has no underlined departure time
+      final stationCRow = findDASTableRowByText('Halt auf Verlangen C');
+      expect(stationCRow, findsOneWidget);
+
+      final stationCTimeText = tester.widget<Text>(
+        find.descendant(of: stationCRow, matching: find.byKey(TimeCellBody.timeCellKey)),
+      );
+      final hasUnderlinedSpanStationC = _hasAnyUnderlinedTextSpans(stationCTimeText);
+      expect(hasUnderlinedSpanStationC, isFalse);
+
+      await disconnect(tester);
+    });
   });
+}
+
+bool _hasAnyUnderlinedTextSpans(Text stationATimeText) {
+  bool hasUnderlinedSpanStationA = false;
+  stationATimeText.textSpan?.visitChildren((span) {
+    if (span.style?.decoration == TextDecoration.underline) {
+      hasUnderlinedSpanStationA = true;
+      return false;
+    }
+    return true;
+  });
+  return hasUnderlinedSpanStationA;
 }
 
 Finder _findByKeyInDASTableRowByText({required Key key, required String rowText}) {

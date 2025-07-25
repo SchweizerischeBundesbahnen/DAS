@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/train_journey/widgets/punctuality/punctuality_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/chronograph/punctuality_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

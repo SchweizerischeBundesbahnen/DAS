@@ -1,16 +1,17 @@
 import 'dart:async';
 
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/train_journey/widgets/punctuality/punctuality_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/chronograph/punctuality_model.dart';
 import 'package:app/util/time_constants.dart';
+import 'package:clock/clock.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-class PunctualityViewModel {
+class ChronographViewModel {
   static const String trainIsPunctualString = '+00:00';
 
-  PunctualityViewModel({required Stream<Journey?> journeyStream}) {
+  ChronographViewModel({required Stream<Journey?> journeyStream}) {
     _initJourneyStreamSubscription(journeyStream);
     _initTimers();
   }
@@ -31,9 +32,16 @@ class PunctualityViewModel {
 
   final _rxModel = BehaviorSubject<PunctualityModel>.seeded(PunctualityModel.hidden());
 
-  Stream<PunctualityModel> get model => _rxModel.distinct();
+  Stream<PunctualityModel> get punctualityModel => _rxModel.distinct();
 
-  PunctualityModel get modelValue => _rxModel.value;
+  PunctualityModel get punctualityModelValue => _rxModel.value;
+
+  Stream<String> get formattedWallclockTime => Stream.periodic(
+    const Duration(milliseconds: 200),
+    (_) => DateFormat('HH:mm:ss').format(clock.now()),
+  );
+
+  String get formattedWallclockTimeValue => DateFormat('HH:mm:ss').format(clock.now());
 
   void _initTimers() {
     _staleTimer = Timer(Duration(seconds: _timeConstants.punctualityStaleSeconds), () {
@@ -54,6 +62,7 @@ class PunctualityViewModel {
 
   void dispose() {
     _journeySubscription?.cancel();
+    _rxModel.close();
     _hiddenTimer?.cancel();
     _staleTimer?.cancel();
   }
