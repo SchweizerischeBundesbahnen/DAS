@@ -126,6 +126,7 @@ class SferaModelMapper {
         lineFootNoteLocations: _generateLineFootNoteLocationMap(journeyData.whereType<LineFootNote>()),
         radioContactLists: _parseContactLists(segmentProfileReferences, segmentProfiles),
         lineSpeeds: _gatherLineSpeeds(journeyData),
+        calculatedSpeeds: _gatherCalculatedSpeeds(journeyData),
       ),
       data: journeyData,
     );
@@ -584,15 +585,27 @@ class SferaModelMapper {
   }
 
   static SplayTreeMap<int, Iterable<TrainSeriesSpeed>> _gatherLineSpeeds(List<BaseData> journeyData) {
-    final SplayTreeMap<int, Iterable<TrainSeriesSpeed>> lineSpeeds = SplayTreeMap();
+    final SplayTreeMap<int, Iterable<TrainSeriesSpeed>> result = SplayTreeMap();
 
     for (final data in journeyData) {
       if (data.speeds != null) {
-        lineSpeeds[data.order] = data.speeds!;
+        result[data.order] = data.speeds!;
       }
     }
 
-    return lineSpeeds;
+    return result;
+  }
+
+  static SplayTreeMap<int, SingleSpeed> _gatherCalculatedSpeeds(List<BaseData> journeyData) {
+    final SplayTreeMap<int, SingleSpeed> result = SplayTreeMap();
+
+    for (final data in journeyData.whereType<ServicePoint>()) {
+      if (data.calculatedSpeed != null) {
+        result[data.order] = data.calculatedSpeed!;
+      }
+    }
+
+    return result;
   }
 }
 

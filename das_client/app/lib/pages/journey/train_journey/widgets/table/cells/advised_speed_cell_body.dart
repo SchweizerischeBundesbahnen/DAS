@@ -1,11 +1,8 @@
-import 'package:app/pages/journey/train_journey/das_table_speed_view_model.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:app/widgets/das_text_styles.dart';
-import 'package:app/widgets/stickyheader/sticky_header.dart';
-import 'package:app/widgets/stickyheader/sticky_level.dart';
+import 'package:app/widgets/table/das_row_controller.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
@@ -15,26 +12,30 @@ class AdvisedSpeedCellBody extends StatelessWidget {
   static const Key generalKey = Key('AdvisedSpeedCellBodyGeneralKey');
 
   const AdvisedSpeedCellBody({
-    required this.rowIndex,
-    this.calculatedSpeed,
-    this.lineSpeed,
+    required this.metadata,
+    required this.settings,
+    required this.order,
     super.key,
   });
 
-  final int rowIndex;
-  final SingleSpeed? calculatedSpeed;
-  final SingleSpeed? lineSpeed;
+  final Metadata metadata;
+  final TrainJourneySettings settings;
+  final int order;
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
+    return StreamBuilder(
       key: generalKey,
-      listenable: StickyHeader.of(context)!.controller,
-      builder: (context, _) {
-        final isSticky = _isSticky(context);
+      stream: DASRowController.of(context)!.rowState,
+      initialData: DASRowController.of(context)!.rowStateValue,
+      builder: (context, snapshot) {
+        final state = snapshot.requireData;
+        final isSticky = state == DASRowState.sticky;
 
-        SingleSpeed? resolvedCalculatedSpeed = calculatedSpeed ?? (isSticky ? _calculatedSpeedFromPrev(context) : null);
-        final resolvedLineSpeed = lineSpeed ?? (isSticky ? _lineSpeedFromPrev(context) : null);
+        final calculatedSpeed = metadata.calculatedSpeeds[order];
+
+        SingleSpeed? resolvedCalculatedSpeed = calculatedSpeed ?? (isSticky ? _calculatedSpeedFromPrev : null);
+        final resolvedLineSpeed = _resolvedTrainSeriesSpeed(resolvePrevious: true);
         if (resolvedCalculatedSpeed == null) return DASTableCell.emptyBuilder;
 
         final isSpeedReducedDueToLineSpeed = _isBLargerThanA(a: resolvedLineSpeed, b: resolvedCalculatedSpeed);
@@ -48,21 +49,24 @@ class AdvisedSpeedCellBody extends StatelessWidget {
     );
   }
 
-  bool _isSticky(BuildContext context) {
-    // stickiness only relevant if any speed null
-    if (calculatedSpeed != null && lineSpeed != null) return false;
+  SingleSpeed? _resolvedTrainSeriesSpeed({bool resolvePrevious = false}) {
+    var trainSeriesSpeeds = metadata.lineSpeeds[order];
+    if (trainSeriesSpeeds == null && resolvePrevious) {
+      trainSeriesSpeeds = metadata.lineSpeeds[metadata.lineSpeeds.lastKeyBefore(order)];
+    }
 
-    final stickyController = StickyHeader.of(context)!.controller;
-    return stickyController.headerIndexes[StickyLevel.first] == rowIndex ||
-        (stickyController.nextHeaderIndex[StickyLevel.first] == rowIndex &&
-            ((stickyController.headerOffsets[StickyLevel.first] ?? 0) < (-ServicePointRow.baseRowHeight * 0.33)));
+    final selectedBreakSeries = settings.resolvedBreakSeries(metadata);
+    return trainSeriesSpeeds
+            .speedFor(
+              selectedBreakSeries?.trainSeries,
+              breakSeries: selectedBreakSeries?.breakSeries,
+            )
+            ?.speed
+        as SingleSpeed?;
   }
 
-  SingleSpeed? _calculatedSpeedFromPrev(BuildContext context) =>
-      context.read<DASTableSpeedViewModel>().previousCalculatedSpeed(rowIndex);
-
-  SingleSpeed? _lineSpeedFromPrev(BuildContext context) =>
-      context.read<DASTableSpeedViewModel>().previousLineSpeed(rowIndex);
+  SingleSpeed? get _calculatedSpeedFromPrev =>
+      metadata.calculatedSpeeds[metadata.calculatedSpeeds.lastKeyBefore(order)];
 
   SingleSpeed _min(SingleSpeed? resolvedLineSpeed, SingleSpeed resolvedCalculatedSpeed) {
     if (resolvedLineSpeed == null) return resolvedCalculatedSpeed;

@@ -5,13 +5,8 @@ import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
 import 'package:sfera/component.dart';
 
-class SpeedCellBody extends StatelessWidget {
-  static const Key incomingSpeedsKey = Key('incomingSpeeds');
-  static const Key outgoingSpeedsKey = Key('outgoingSpeeds');
-  static const Key circledSpeedKey = Key('graduatedSpeedCircled');
-  static const Key squaredSpeedKey = Key('graduatedSpeedSquared');
-
-  const SpeedCellBody({
+class LineSpeedCellBody extends StatelessWidget {
+  const LineSpeedCellBody({
     required this.metadata,
     required this.config,
     required this.order,
