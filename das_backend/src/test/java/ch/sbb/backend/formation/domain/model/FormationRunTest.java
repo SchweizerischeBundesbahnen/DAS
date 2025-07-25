@@ -1,0 +1,352 @@
+package ch.sbb.backend.formation.domain.model;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.when;
+
+import java.util.Collections;
+import java.util.List;
+import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+
+class FormationRunTest {
+
+    @Test
+    void constructor_getters() {
+        TafTapLocationReference start = new TafTapLocationReference(34, 1);
+        TafTapLocationReference end = new TafTapLocationReference(34, 2);
+
+        FormationRun result = FormationRun.builder()
+            .company("1134")
+            .tafTapLocationReferenceStart(start)
+            .tafTapLocationReferenceEnd(end)
+            .trainCategoryCode("TC")
+            .brakedWeightPercentage(23)
+            .tractionMaxSpeedInKmh(120)
+            .hauledLoadMaxSpeedInKmh(110)
+            .formationMaxSpeedInKmh(110)
+            .tractionLengthInCm(12000)
+            .hauledLoadLengthInCm(8000)
+            .formationLengthInCm(20000)
+            .tractionGrossWeightInT(50)
+            .hauledLoadGrossWeightInT(100)
+            .tractionBrakedWeightInT(85)
+            .hauledLoadBrakedWeightInT(4)
+            .brakePositionGForLeadingTraction(true)
+            .brakePositionGForBrakeUnit1to5(false)
+            .brakePositionGForLoadHauled(true)
+            .simTrain(true)
+            .carCarrierVehicle(false)
+            .axleLoadMaxInKg(10000)
+            .routeClass("RC")
+            .gradientUphillMaxInPermille(50)
+            .gradientDownhillMaxInPermille(30)
+            .slopeMaxForHoldingForceMinInPermille("5.6")
+            .build();
+
+        assertThat(result.getCompany()).isEqualTo("1134");
+        assertThat(result.getTafTapLocationReferenceStart()).isEqualTo(start);
+        assertThat(result.getTafTapLocationReferenceEnd()).isEqualTo(end);
+        assertThat(result.getTrainCategoryCode()).isEqualTo("TC");
+        assertThat(result.getBrakedWeightPercentage()).isEqualTo(23);
+        assertThat(result.getTractionMaxSpeedInKmh()).isEqualTo(120);
+        assertThat(result.getHauledLoadMaxSpeedInKmh()).isEqualTo(110);
+        assertThat(result.getFormationMaxSpeedInKmh()).isEqualTo(110);
+        assertThat(result.getTractionLengthInCm()).isEqualTo(12000);
+        assertThat(result.getHauledLoadLengthInCm()).isEqualTo(8000);
+        assertThat(result.getFormationLengthInCm()).isEqualTo(20000);
+        assertThat(result.getTractionGrossWeightInT()).isEqualTo(50);
+        assertThat(result.getHauledLoadGrossWeightInT()).isEqualTo(100);
+        assertThat(result.getTractionBrakedWeightInT()).isEqualTo(85);
+        assertThat(result.getHauledLoadBrakedWeightInT()).isEqualTo(4);
+        assertThat(result.getBrakePositionGForLeadingTraction()).isTrue();
+        assertThat(result.getBrakePositionGForBrakeUnit1to5()).isFalse();
+        assertThat(result.getBrakePositionGForLoadHauled()).isTrue();
+        assertThat(result.getSimTrain()).isTrue();
+        assertThat(result.getCarCarrierVehicle()).isFalse();
+        assertThat(result.getAxleLoadMaxInKg()).isEqualTo(10000);
+        assertThat(result.getRouteClass()).isEqualTo("RC");
+        assertThat(result.getGradientUphillMaxInPermille()).isEqualTo(50);
+        assertThat(result.getGradientDownhillMaxInPermille()).isEqualTo(30);
+        assertThat(result.getSlopeMaxForHoldingForceMinInPermille()).isEqualTo("5.6");
+    }
+
+    @Test
+    void isInspected_withNull() {
+        List<FormationRun> result = FormationRun.filterValid(null);
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    void isInspected_withEmpty() {
+        List<FormationRun> result = FormationRun.filterValid(Collections.emptyList());
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    void inspected_withIsInspectedAndUninspected() {
+        FormationRun inspected1 = createFormationRun(true, "3012");
+        FormationRun inspected2 = createFormationRun(true, "1023");
+        List<FormationRun> formationRuns = List.of(createFormationRun(false, "5443"), inspected1, inspected2);
+
+        List<FormationRun> result = FormationRun.filterValid(formationRuns);
+
+        assertThat(result).hasSize(2)
+            .contains(inspected1)
+            .contains(inspected2);
+    }
+
+    @Test
+    void isInspected_withUnknownCompany() {
+        List<FormationRun> formationRuns = List.of(createFormationRun(true, "0000"), createFormationRun(true, null));
+
+        List<FormationRun> result = FormationRun.filterValid(formationRuns);
+
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    void getFormationGrossWeightInT_correct() {
+        FormationRun formationRun = FormationRun.builder()
+            .inspected(true)
+            .tractionGrossWeightInT(53)
+            .hauledLoadGrossWeightInT(102)
+            .build();
+
+        int result = formationRun.getFormationGrossWeightInT();
+
+        assertThat(result).isEqualTo(155);
+    }
+
+    @Test
+    void getFormationGrossWeightInT_null() {
+        FormationRun formationRun = FormationRun.builder()
+            .inspected(true)
+            .tractionGrossWeightInT(null)
+            .hauledLoadGrossWeightInT(null)
+            .build();
+
+        Integer result = formationRun.getFormationGrossWeightInT();
+
+        assertThat(result).isNull();
+    }
+
+    @Test
+    void getFormationBrakedWeightInT_correct() {
+        FormationRun formationRun = FormationRun.builder()
+            .inspected(true)
+            .tractionBrakedWeightInT(87)
+            .hauledLoadBrakedWeightInT(4)
+            .build();
+
+        int result = formationRun.getFormationBrakedWeightInT();
+
+        assertThat(result).isEqualTo(91);
+    }
+
+    @Test
+    void getFormationBrakedWeightInT_null() {
+        FormationRun formationRun = FormationRun.builder()
+            .inspected(true)
+            .tractionBrakedWeightInT(null)
+            .hauledLoadBrakedWeightInT(null)
+            .build();
+
+        Integer result = formationRun.getFormationBrakedWeightInT();
+
+        assertThat(result).isNull();
+    }
+
+    @Test
+    void getTractionHoldingForceInHectoNewton_correct() {
+        FormationRun formationRun = createFormationRunWithVehicles(Collections.emptyList());
+
+        try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
+            mockedStatic.when(() -> Vehicle.calculateTractionHoldingForceInHectoNewton(any())).thenReturn(59);
+
+            int result = formationRun.getTractionHoldingForceInHectoNewton();
+
+            assertThat(result).isEqualTo(59);
+        }
+    }
+
+    @Test
+    void getHauledLoadHoldingForceInHectoNewton_correct() {
+        FormationRun formationRun = createFormationRunWithVehicles(Collections.emptyList());
+
+        try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
+            mockedStatic.when(() -> Vehicle.calculateHauledLoadHoldingForceInHectoNewton(any())).thenReturn(67);
+
+            int result = formationRun.getHauledLoadHoldingForceInHectoNewton();
+
+            assertThat(result).isEqualTo(67);
+        }
+    }
+
+    @Test
+    void getFormationHoldingForceInHectoNewton_correct() {
+        FormationRun formationRun = createFormationRunWithVehicles(Collections.emptyList());
+
+        try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
+            mockedStatic.when(() -> Vehicle.calculateHoldingForce(any())).thenReturn(3);
+
+            int result = formationRun.getFormationHoldingForceInHectoNewton();
+
+            assertThat(result).isEqualTo(3);
+        }
+    }
+
+    @Test
+    void getTractionModes_empty() {
+        FormationRun formationRun = createFormationRunWithVehicles(Collections.emptyList());
+        List<TractionMode> tractionModes = formationRun.getTractionModes();
+        assertThat(tractionModes).isEmpty();
+    }
+
+    @Test
+    void getTractionModes_noGetTractionVehicle() {
+        Vehicle vehicle = mock(Vehicle.class);
+        when(vehicle.isTraction()).thenReturn(false);
+        when(vehicle.getTractionMode()).thenReturn(TractionMode.DOPPELTRAKTION);
+
+        FormationRun formationRun = createFormationRunWithVehicles(List.of(vehicle));
+        List<TractionMode> tractionModes = formationRun.getTractionModes();
+        assertThat(tractionModes).isEmpty();
+    }
+
+    @Test
+    void getTractionModes_correct() {
+        Vehicle vehicle1 = mock(Vehicle.class);
+        when(vehicle1.isTraction()).thenReturn(true);
+        when(vehicle1.getTractionMode()).thenReturn(TractionMode.DOPPELTRAKTION);
+        Vehicle vehicle2 = mock(Vehicle.class);
+        when(vehicle2.isTraction()).thenReturn(false);
+        Vehicle vehicle3 = mock(Vehicle.class);
+        when(vehicle3.isTraction()).thenReturn(true);
+        when(vehicle3.getTractionMode()).thenReturn(TractionMode.SCHIEBELOK);
+
+        FormationRun formationRun = createFormationRunWithVehicles(List.of(vehicle1, vehicle2, vehicle3));
+        List<TractionMode> tractionModes = formationRun.getTractionModes();
+        assertThat(tractionModes).containsExactly(TractionMode.DOPPELTRAKTION, TractionMode.SCHIEBELOK);
+    }
+
+    @Test
+    void hasDangerousGoods_withDangerousGoods() {
+        FormationRun formationRun = createFormationRunWithVehicles(null);
+
+        try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
+            mockedStatic.when(() -> Vehicle.hasDangerousGoods(any())).thenReturn(true);
+
+            boolean result = formationRun.hasDangerousGoods();
+
+            assertThat(result).isTrue();
+        }
+    }
+
+    @Test
+    void vehicleCount_twoVehicles() {
+        FormationRun formationRun = createFormationRunWithVehicles(List.of(mock(Vehicle.class), mock(Vehicle.class)));
+
+        Integer result = formationRun.vehicleCount();
+
+        assertThat(result).isEqualTo(2);
+    }
+
+    @Test
+    void vehiclesWithBrakeDesignCount_correct() {
+        FormationRun formationRun = createFormationRunWithVehicles(null);
+
+        try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
+            mockedStatic.when(() -> Vehicle.countBrakeDesigns(any(), any(), any())).thenReturn(3);
+
+            Integer result = formationRun.vehiclesWithBrakeDesignCount(BrakeDesign.NORMALE_BREMSAUSRUESTUNG_KEINE_MERKMALE, BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE);
+
+            mockedStatic.verify(() -> Vehicle.countBrakeDesigns(any(), eq(BrakeDesign.NORMALE_BREMSAUSRUESTUNG_KEINE_MERKMALE), eq(BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE)));
+            assertThat(result).isEqualTo(3);
+        }
+    }
+
+    @Test
+    void vehiclesWithDisabledBrakeCount_correct() {
+        FormationRun formationRun = createFormationRunWithVehicles(null);
+
+        try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
+            mockedStatic.when(() -> Vehicle.countDisabledBrakes(any())).thenReturn(5);
+
+            Integer result = formationRun.vehiclesWithDisabledBrakeCount();
+
+            assertThat(result).isEqualTo(5);
+        }
+    }
+
+    @Test
+    void europeanVehicleNumberFirst_null() {
+        FormationRun formationRun = createFormationRunWithVehicles(null);
+        try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
+            mockedStatic.when(() -> Vehicle.first(any())).thenReturn(null);
+
+            EuropeanVehicleNumber result = formationRun.europeanVehicleNumberFirst();
+
+            assertThat(result).isNull();
+        }
+    }
+
+    @Test
+    void europeanVehicleNumberFirst_correct() {
+        FormationRun formationRun = createFormationRunWithVehicles(null);
+        try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
+            Vehicle vehicle = mock(Vehicle.class);
+            EuropeanVehicleNumber europeanVehicleNumber = new EuropeanVehicleNumber("12", "3456");
+            when(vehicle.getEuropeanVehicleNumber()).thenReturn(europeanVehicleNumber);
+            mockedStatic.when(() -> Vehicle.first(any())).thenReturn(vehicle);
+
+            EuropeanVehicleNumber result = formationRun.europeanVehicleNumberFirst();
+
+            assertThat(europeanVehicleNumber).isEqualTo(result);
+        }
+    }
+
+    @Test
+    void europeanVehicleNumberLast_null() {
+        FormationRun formationRun = createFormationRunWithVehicles(null);
+        try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
+            mockedStatic.when(() -> Vehicle.last(any())).thenReturn(null);
+
+            EuropeanVehicleNumber result = formationRun.europeanVehicleNumberLast();
+
+            assertThat(result).isNull();
+        }
+    }
+
+    @Test
+    void europeanVehicleNumberLast_correct() {
+        FormationRun formationRun = createFormationRunWithVehicles(null);
+        try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
+            Vehicle vehicle = mock(Vehicle.class);
+            EuropeanVehicleNumber europeanVehicleNumber = new EuropeanVehicleNumber("78", "910");
+            when(vehicle.getEuropeanVehicleNumber()).thenReturn(europeanVehicleNumber);
+            mockedStatic.when(() -> Vehicle.last(any())).thenReturn(vehicle);
+
+            EuropeanVehicleNumber result = formationRun.europeanVehicleNumberLast();
+
+            assertThat(result).isEqualTo(europeanVehicleNumber);
+        }
+    }
+
+    private FormationRun createFormationRun(Boolean inspected, String company) {
+        return FormationRun.builder()
+            .inspected(inspected)
+            .company(company)
+            .build();
+    }
+
+    private FormationRun createFormationRunWithVehicles(List<Vehicle> vehicles) {
+        return FormationRun.builder()
+            .inspected(true)
+            .vehicles(vehicles)
+            .build();
+    }
+}

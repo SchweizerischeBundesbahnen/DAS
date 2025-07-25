@@ -7,11 +7,11 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 @Component
-class PostgreSQLRuFeatureRepository implements RuFeatureRepository {
+class PersistenceRuFeatureRepository implements RuFeatureRepository {
 
     private final SpringDataJpaRuFeatureRepository ruFeatureRepository;
 
-    PostgreSQLRuFeatureRepository(SpringDataJpaRuFeatureRepository ruFeatureRepository) {
+    PersistenceRuFeatureRepository(SpringDataJpaRuFeatureRepository ruFeatureRepository) {
         this.ruFeatureRepository = ruFeatureRepository;
     }
 
