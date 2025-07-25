@@ -2,12 +2,13 @@ import 'package:app/extension/base_data_extension.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/line_speed_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/cells/speed_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/column_definition.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_config.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
+import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_row.dart';
 import 'package:collection/collection.dart';
@@ -129,7 +130,16 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
       return DASTableCell.empty();
     }
 
-    return speedCell(data.speeds);
+    return DASTableCell(
+      alignment: Alignment.center,
+      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
+      child: LineSpeedCellBody(
+        metadata: metadata,
+        config: config.settings,
+        order: data.order,
+        showSpeedBehavior: showSpeedBehavior,
+      ),
+    );
   }
 
   DASTableCell speedCell(List<TrainSeriesSpeed>? speedData) {
@@ -142,9 +152,8 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
     return DASTableCell(
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
-      child: SpeedCellBody(
+      child: SpeedDisplay(
         speed: trainSeriesSpeed?.speed,
-        rowIndex: rowIndex,
       ),
     );
   }
@@ -207,6 +216,10 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
               it.isDisplayed(metadata.nonStandardTrackEquipmentSegments),
         )
         .firstOrNull;
+  }
+
+  ShowSpeedBehavior get showSpeedBehavior {
+    return ShowSpeedBehavior.never;
   }
 
   static double rowHeightForData(BaseData data, BreakSeries? currentBreakSeries) {

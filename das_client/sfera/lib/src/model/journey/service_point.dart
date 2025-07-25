@@ -7,7 +7,6 @@ class ServicePoint extends BaseData {
     required this.name,
     required super.order,
     required super.kilometre,
-    super.speeds,
     super.localSpeeds,
     this.mandatoryStop = false,
     this.isStop = false,
@@ -67,7 +66,6 @@ class ServicePoint extends BaseData {
         ', isStop: $isStop'
         ', isStation: $isStation'
         ', bracketMainStation: $bracketMainStation'
-        ', speeds: $speeds'
         ', localSpeeds: $localSpeeds'
         ', calculatedSpeed: $calculatedSpeed'
         ', arrivalDepartureTime: $arrivalDepartureTime'
