@@ -307,11 +307,11 @@ void main() {
     final endSignaling = cabSignaling.where((signaling) => signaling.isEnd).toList();
 
     expect(endSignaling, hasLength(2));
-    expect(endSignaling[0].speeds, isNotNull);
-    expect(endSignaling[1].speeds, isNotNull);
-    final speedSignal0 = endSignaling[0].speeds!.first;
+    expect(journey.metadata.lineSpeeds[endSignaling[0].order], isNotNull);
+    expect(journey.metadata.lineSpeeds[endSignaling[1].order], isNotNull);
+    final speedSignal0 = journey.metadata.lineSpeeds[endSignaling[0].order]!.first;
     _checkTrainSeriesSpeed<SingleSpeed>(speedSignal0, expected: '55', trainSeries: TrainSeries.R, breakSeries: 115);
-    final speedSignal1 = endSignaling[1].speeds!.first;
+    final speedSignal1 = journey.metadata.lineSpeeds[endSignaling[1].order]!.first;
     _checkTrainSeriesSpeed<SingleSpeed>(speedSignal1, expected: '80', trainSeries: TrainSeries.R, breakSeries: 115);
   });
 
@@ -649,32 +649,32 @@ void main() {
     expect(journey.valid, true);
     expect(speedChanges, hasLength(2));
     expect(speedChanges[0].text, 'Zahnstangen Anfang');
-    expect(speedChanges[0].speeds!, hasLength(2));
+    expect(journey.metadata.lineSpeeds[speedChanges[0].order]!, hasLength(2));
     _checkTrainSeriesSpeed<SingleSpeed>(
-      speedChanges[0].speeds![0],
+      journey.metadata.lineSpeeds[speedChanges[0].order]!.elementAt(0),
       expected: '55',
       trainSeries: TrainSeries.R,
       reduced: true,
       breakSeries: 100,
     );
     _checkTrainSeriesSpeed<SingleSpeed>(
-      speedChanges[0].speeds![1],
+      journey.metadata.lineSpeeds[speedChanges[0].order]!.elementAt(1),
       expected: '50',
       trainSeries: TrainSeries.A,
       reduced: false,
       breakSeries: 30,
     );
     expect(speedChanges[1].text, 'Zahnstangen Ende');
-    expect(speedChanges[1].speeds!, hasLength(2));
+    expect(journey.metadata.lineSpeeds[speedChanges[1].order]!, hasLength(2));
     _checkTrainSeriesSpeed<SingleSpeed>(
-      speedChanges[1].speeds![0],
+      journey.metadata.lineSpeeds[speedChanges[1].order]!.elementAt(0),
       expected: '80',
       trainSeries: TrainSeries.R,
       reduced: false,
       breakSeries: 100,
     );
     _checkTrainSeriesSpeed<SingleSpeed>(
-      speedChanges[1].speeds![1],
+      journey.metadata.lineSpeeds[speedChanges[1].order]!.elementAt(1),
       expected: '80',
       trainSeries: TrainSeries.A,
       reduced: false,
@@ -692,21 +692,21 @@ void main() {
     expect(journey.valid, true);
     expect(connectionTracks, hasLength(3));
     expect(connectionTracks[0].text, isNull);
-    expect(connectionTracks[0].speeds, isNull);
+    expect(journey.metadata.lineSpeeds[connectionTracks[0].order], isNull);
     expect(connectionTracks[1].text, 'AnG. WITZ');
-    expect(connectionTracks[1].speeds, isNull);
+    expect(journey.metadata.lineSpeeds[connectionTracks[1].order], isNull);
     expect(connectionTracks[2].text, '22-6 Uhr');
-    expect(connectionTracks[2].speeds, isNotNull);
-    expect(connectionTracks[2].speeds!, hasLength(2));
+    expect(journey.metadata.lineSpeeds[connectionTracks[2].order], isNotNull);
+    expect(journey.metadata.lineSpeeds[connectionTracks[2].order]!, hasLength(2));
     _checkTrainSeriesSpeed<SingleSpeed>(
-      connectionTracks[2].speeds![0],
+      journey.metadata.lineSpeeds[connectionTracks[2].order]!.elementAt(0),
       expected: '45',
       trainSeries: TrainSeries.R,
       reduced: false,
       breakSeries: null,
     );
     _checkTrainSeriesSpeed<SingleSpeed>(
-      connectionTracks[2].speeds![1],
+      journey.metadata.lineSpeeds[connectionTracks[2].order]!.elementAt(1),
       expected: '40',
       trainSeries: TrainSeries.A,
       reduced: false,
@@ -742,10 +742,10 @@ void main() {
     expect(journey.metadata.availableBreakSeries, hasLength(5));
     expect(journey.metadata.availableBreakSeries.elementAt(0).trainSeries, TrainSeries.R);
     expect(journey.metadata.availableBreakSeries.elementAt(0).breakSeries, 115);
-    expect(journey.metadata.availableBreakSeries.elementAt(1).trainSeries, TrainSeries.N);
-    expect(journey.metadata.availableBreakSeries.elementAt(1).breakSeries, 50);
-    expect(journey.metadata.availableBreakSeries.elementAt(2).trainSeries, TrainSeries.R);
-    expect(journey.metadata.availableBreakSeries.elementAt(2).breakSeries, 150);
+    expect(journey.metadata.availableBreakSeries.elementAt(1).trainSeries, TrainSeries.R);
+    expect(journey.metadata.availableBreakSeries.elementAt(1).breakSeries, 150);
+    expect(journey.metadata.availableBreakSeries.elementAt(2).trainSeries, TrainSeries.N);
+    expect(journey.metadata.availableBreakSeries.elementAt(2).breakSeries, 50);
     expect(journey.metadata.availableBreakSeries.elementAt(3).trainSeries, TrainSeries.R);
     expect(journey.metadata.availableBreakSeries.elementAt(3).breakSeries, 60);
     expect(journey.metadata.availableBreakSeries.elementAt(4).trainSeries, TrainSeries.A);
@@ -765,13 +765,14 @@ void main() {
     expect(curvePoints[2].localSpeeds, isNull);
 
     final servicePoints = journey.data.where((it) => it.type == Datatype.servicePoint).cast<ServicePoint>().toList();
+
     expect(servicePoints, hasLength(3));
-    expect(servicePoints[0].speeds, isNotNull);
-    expect(servicePoints[0].speeds, hasLength(17));
-    expect(servicePoints[1].speeds, isNotNull);
-    expect(servicePoints[1].speeds, hasLength(7));
-    expect(servicePoints[2].speeds, isNotNull);
-    expect(servicePoints[2].speeds, hasLength(17));
+    expect(journey.metadata.lineSpeeds[servicePoints[0].order], isNotNull);
+    expect(journey.metadata.lineSpeeds[servicePoints[0].order], hasLength(17));
+    expect(journey.metadata.lineSpeeds[servicePoints[1].order], isNotNull);
+    expect(journey.metadata.lineSpeeds[servicePoints[1].order], hasLength(7));
+    expect(journey.metadata.lineSpeeds[servicePoints[2].order], isNotNull);
+    expect(journey.metadata.lineSpeeds[servicePoints[2].order], hasLength(17));
   });
 
   test('Test train characteristics break series is parsed correctly', () async {

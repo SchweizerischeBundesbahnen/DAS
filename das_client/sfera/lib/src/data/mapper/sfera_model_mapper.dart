@@ -98,6 +98,8 @@ class SferaModelMapper {
     );
     final trainCharacteristic = _resolveFirstTrainCharacteristics(journeyProfile, trainCharacteristics);
 
+    final lineSpeeds = SegmentProfileMapper.parseLineSpeeds(segmentProfiles);
+
     return Journey(
       metadata: Metadata(
         nextStop: _calculateNextStop(servicePoints, currentPosition),
@@ -114,7 +116,7 @@ class SferaModelMapper {
         nonStandardTrackEquipmentSegments: trackEquipmentSegments,
         bracketStationSegments: _parseBracketStationSegments(servicePoints),
         advisedSpeedSegments: SpeedMapper.advisedSpeeds(journeyProfile, segmentProfiles, journeyData),
-        availableBreakSeries: _parseAvailableBreakSeries(journeyData),
+        availableBreakSeries: _parseAvailableBreakSeries(journeyData, lineSpeeds),
         communicationNetworkChanges: _parseCommunicationNetworkChanges(segmentProfileReferences, segmentProfiles),
         breakSeries:
             trainCharacteristic?.tcFeatures.trainCategoryCode != null &&
@@ -126,7 +128,7 @@ class SferaModelMapper {
             : null,
         lineFootNoteLocations: _generateLineFootNoteLocationMap(journeyData.whereType<LineFootNote>()),
         radioContactLists: _parseContactLists(segmentProfileReferences, segmentProfiles),
-        lineSpeeds: _gatherLineSpeeds(journeyData),
+        lineSpeeds: lineSpeeds,
         calculatedSpeeds: _gatherCalculatedSpeeds(journeyData),
       ),
       data: journeyData,
@@ -354,7 +356,6 @@ class SferaModelMapper {
           isStart: false,
           order: segment.endOrder!,
           kilometre: segment.endKm,
-          speeds: speedChange?.speeds,
         ),
       );
     }
@@ -429,9 +430,14 @@ class SferaModelMapper {
         .toList();
   }
 
-  static Set<BreakSeries> _parseAvailableBreakSeries(List<BaseData> journeyData) {
-    return journeyData
-        .expand((it) => it.allStaticSpeeds)
+  static Set<BreakSeries> _parseAvailableBreakSeries(
+    List<BaseData> journeyData,
+    SplayTreeMap<int, Iterable<TrainSeriesSpeed>> lineSpeeds,
+  ) {
+    final speeds = journeyData.expand((it) => it.allStaticSpeeds).toList();
+    speeds.addAll(lineSpeeds.values.flattened);
+
+    return speeds
         .where((it) => it.breakSeries != null)
         .map((it) => BreakSeries(trainSeries: it.trainSeries, breakSeries: it.breakSeries!))
         .toSet();
@@ -583,18 +589,6 @@ class SferaModelMapper {
     final positionSpeed = relatedTrainInformation?.ownTrain.trainLocationInformation.positionSpeed;
     final location = '${positionSpeed?.spId}${positionSpeed?.location}';
     return duration != null ? Delay(value: duration, location: location) : null;
-  }
-
-  static SplayTreeMap<int, Iterable<TrainSeriesSpeed>> _gatherLineSpeeds(List<BaseData> journeyData) {
-    final SplayTreeMap<int, Iterable<TrainSeriesSpeed>> result = SplayTreeMap();
-
-    for (final data in journeyData) {
-      if (data.speeds != null) {
-        result[data.order] = data.speeds!;
-      }
-    }
-
-    return result;
   }
 
   static SplayTreeMap<int, SingleSpeed> _gatherCalculatedSpeeds(List<BaseData> journeyData) {

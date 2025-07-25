@@ -1,4 +1,5 @@
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/line_speed_cell_body.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
@@ -28,4 +29,7 @@ class CABSignalingRow extends CellRowBuilder<CABSignaling> {
       alignment: Alignment.center,
     );
   }
+
+  @override
+  ShowSpeedBehavior get showSpeedBehavior => ShowSpeedBehavior.always;
 }
