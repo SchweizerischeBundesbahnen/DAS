@@ -13,6 +13,7 @@ import 'package:app/theme/theme_util.dart';
 import 'package:app/util/text_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_text_styles.dart';
+import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
@@ -108,12 +109,11 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
                   overflow: TextOverflow.ellipsis,
                 ),
               if (speed != null && speed.reduced) _icon(context, AppAssets.iconReducedSpeed, reducedSpeedKey),
-              /*if (speed != null)
-                SpeedCellBody(
+              if (speed != null)
+                SpeedDisplay(
                   speed: speed.speed,
-                  rowIndex: rowIndex,
                   singleLine: true,
-                ),*/
+                ),
             ],
           ),
         ),
@@ -200,26 +200,30 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   @override
   DASTableCell localSpeedCell(BuildContext context) {
-    if (data.localSpeeds == null) return DASTableCell.empty();
-
     final currentBreakSeries = config.settings.resolvedBreakSeries(metadata);
+    final relevantGraduatedSpeedInfo = data.relevantGraduatedSpeedInfo(currentBreakSeries);
 
-    final trainSeriesSpeed = data.localSpeeds!.speedFor(
+    if (data.localSpeeds == null && relevantGraduatedSpeedInfo.isEmpty) return DASTableCell.empty();
+
+    final trainSeriesSpeed = data.localSpeeds?.speedFor(
       currentBreakSeries?.trainSeries,
       breakSeries: currentBreakSeries?.breakSeries,
     );
-    if (trainSeriesSpeed == null) return DASTableCell.empty();
+    if (trainSeriesSpeed == null && relevantGraduatedSpeedInfo.isEmpty) return DASTableCell.empty();
 
-    final relevantGraduatedSpeedInfo = data.relevantGraduatedSpeedInfo(currentBreakSeries);
+    Widget child = DotIndicator(child: SizedBox.shrink());
+    if (trainSeriesSpeed != null) {
+      child = SpeedDisplay(
+        speed: trainSeriesSpeed.speed,
+        hasAdditionalInformation: relevantGraduatedSpeedInfo.isNotEmpty,
+      );
+    }
 
     return DASTableCell(
       onTap: relevantGraduatedSpeedInfo.isNotEmpty ? () => _openGraduatedSpeedDetails(context) : null,
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
-      child: SpeedDisplay(
-        speed: trainSeriesSpeed.speed,
-        hasAdditionalInformation: relevantGraduatedSpeedInfo.isNotEmpty,
-      ),
+      child: child,
     );
   }
 

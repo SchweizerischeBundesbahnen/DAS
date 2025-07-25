@@ -143,7 +143,7 @@ class SegmentProfileMapper {
           bracketMainStation: _parseBracketMainStation(tafTapLocations, tafTapLocation),
           kilometre: mapperData.kilometreMap[timingPoint.location] ?? [],
           localSpeeds: SpeedMapper.fromVelocities(
-            tafTapLocation.stationSpeed?.xmlStationSpeed.element.velocities,
+            tafTapLocation.stationSpeed?.xmlStationSpeed?.element.velocities,
           ),
           graduatedSpeedInfo: SpeedMapper.fromGraduatedSpeedInfo(
             tafTapLocation.stationSpeed?.xmlGraduatedSpeedInfo?.element,
