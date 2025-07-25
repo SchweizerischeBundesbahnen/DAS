@@ -12,6 +12,7 @@ const Duration _animationDuration = Duration(milliseconds: 250);
 
 class DASChronograph extends StatelessWidget {
   static const Key punctualityTextKey = Key('punctualityTextKey');
+  static const Key currentTimeTextKey = Key('currentTimeTextKey');
 
   const DASChronograph({super.key});
 
@@ -85,7 +86,7 @@ class DASChronograph extends StatelessWidget {
 
         return Padding(
           padding: const EdgeInsets.all(sbbDefaultSpacing * 0.5),
-          child: Text(snapshot.requireData, style: DASTextStyles.xLargeBold),
+          child: Text(snapshot.requireData, key: currentTimeTextKey, style: DASTextStyles.xLargeBold),
         );
       },
     );
