@@ -8,6 +8,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/cells/track_equipm
 import 'package:app/pages/journey/train_journey/widgets/table/column_definition.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_config.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
+import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_row.dart';
 import 'package:collection/collection.dart';
@@ -151,11 +152,9 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
     return DASTableCell(
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
-      child: /*SpeedCellBody(
+      child: SpeedDisplay(
         speed: trainSeriesSpeed?.speed,
-        rowIndex: rowIndex,
-      */
-          Container(),
+      ),
     );
   }
 

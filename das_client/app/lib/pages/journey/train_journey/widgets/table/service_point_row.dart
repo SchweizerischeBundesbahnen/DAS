@@ -13,6 +13,7 @@ import 'package:app/theme/theme_util.dart';
 import 'package:app/util/text_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_text_styles.dart';
+import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
@@ -215,12 +216,10 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       onTap: relevantGraduatedSpeedInfo.isNotEmpty ? () => _openGraduatedSpeedDetails(context) : null,
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
-      child: /*SpeedCellBody(
+      child: SpeedDisplay(
         speed: trainSeriesSpeed.speed,
         hasAdditionalInformation: relevantGraduatedSpeedInfo.isNotEmpty,
-        rowIndex: rowIndex,
-      )*/
-          Container(),
+      ),
     );
   }
 
