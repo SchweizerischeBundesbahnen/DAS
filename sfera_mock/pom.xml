@@ -18,7 +18,7 @@
         <image.namespace>ghcr.io/schweizerischebundesbahnen</image.namespace>
         <image.version>${project.version}</image.version>
 
-        <spring-cloud.version>2024.0.1</spring-cloud.version>
+        <spring-cloud.version>2024.0.2</spring-cloud.version>
         <solace-spring-cloud-bom.version>4.8.0</solace-spring-cloud-bom.version>
     </properties>
 
