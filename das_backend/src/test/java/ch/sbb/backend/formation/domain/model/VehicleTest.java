@@ -16,7 +16,7 @@ class VehicleTest {
 
     @Test
     void constructor_getters() {
-        EuropeanVehicleNumber europeanVehicleNumber = new EuropeanVehicleNumber("86", "12345");
+        EuropeanVehicleNumber europeanVehicleNumber = new EuropeanVehicleNumber("89", "86", "12345", "6");
         Vehicle vehicle = new Vehicle(TractionMode.ZUGLOK, null, null, europeanVehicleNumber);
 
         assertThat(vehicle.getTractionMode()).isEqualTo(TractionMode.ZUGLOK);

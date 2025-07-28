@@ -3,6 +3,7 @@ package ch.sbb.backend.formation.infrastructure;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.backend.formation.domain.model.FormationRun;
+import ch.sbb.backend.formation.domain.model.TafTapLocationReference;
 import ch.sbb.zis.trainformation.api.model.BrakeCalculationResult;
 import ch.sbb.zis.trainformation.api.model.ConsolidatedBrakingInformation;
 import ch.sbb.zis.trainformation.api.model.FormationRunInspection;
@@ -33,8 +34,8 @@ class FormationRunFactoryTest {
 
         ch.sbb.zis.trainformation.api.model.FormationRun formationRun = new ch.sbb.zis.trainformation.api.model.FormationRun();
         formationRun.setFormationRunInspection(formationRunInspection);
-        formationRun.setStartLocationUic(new LocationUic(null, 34, 110));
-        formationRun.setEndLocationUic(new LocationUic(null, 34, 78261));
+        formationRun.setStartLocationUic(new LocationUic(null, 85, 110));
+        formationRun.setEndLocationUic(new LocationUic(null, 80, 78261));
         formationRun.setSmsEvu("2357");
         formationRun.setTrainSequence("TC");
         formationRun.setConsolidatedBrakingInformation(new ConsolidatedBrakingInformation(true, 34, 65, false, 45,
@@ -44,8 +45,8 @@ class FormationRunFactoryTest {
         FormationRun expectedFormationRun = FormationRun.builder()
             .inspected(true)
             .company("2357")
-            .tafTapLocationReferenceStart(new ch.sbb.backend.formation.domain.model.TafTapLocationReference(34, 110))
-            .tafTapLocationReferenceEnd(new ch.sbb.backend.formation.domain.model.TafTapLocationReference(34, 78261))
+            .tafTapLocationReferenceStart(new TafTapLocationReference("CH", 11))
+            .tafTapLocationReferenceEnd(new TafTapLocationReference("DE", 7826))
             .trainCategoryCode("TC")
             .brakedWeightPercentage(null)
             .tractionMaxSpeedInKmh(12)
