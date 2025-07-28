@@ -35,10 +35,6 @@ class StickyWidget extends StatefulWidget {
 class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
 
-  Widget? _stickyHeader1;
-  Widget? _stickyHeader2;
-  Widget? _stickyFooter;
-
   @override
   void initState() {
     super.initState();
@@ -67,78 +63,71 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onPanUpdate: _onPanUpdate,
-      onPanEnd: _onPanEnd,
-      child: widget.isHeader ? _buildHeaders(context) : _buildFooter(context),
-    );
-  }
+    final controller = widget.controller;
+    final indexesToBuild = controller.headerIndexes;
+    final isHeader = widget.isHeader;
 
-  Widget _buildHeaders(BuildContext context) {
-    _buildHeaderWidgets(context);
+    if (!controller.isRecalculating) {
+      if (isHeader) {
+        Widget? stickyHeader1;
+        Widget? stickyHeader2;
 
-    return Stack(
-      children: [
-        if (_stickyHeader2 != null) _stickyHeader2!,
-        if (_stickyHeader1 != null) _stickyHeader1!,
-      ],
-    );
-  }
-
-  void _buildHeaderWidgets(BuildContext context) {
-    final indexesToBuild = widget.controller.headerIndexes;
-    if (!widget.controller.isRecalculating) {
-      if (indexesToBuild[StickyLevel.first] != -1) {
-        _stickyHeader1 = Positioned(
-          left: 0,
-          top: widget.controller.headerOffsets[StickyLevel.first],
-          right: 0,
-          child: widget.widgetBuilder(context, indexesToBuild[StickyLevel.first]!),
-        );
-      } else {
-        _stickyHeader1 = null;
-      }
-
-      if (indexesToBuild[StickyLevel.second] != -1) {
-        _stickyHeader2 = Positioned(
-          left: 0,
-          top:
-              widget.controller.widgetHeight(indexesToBuild[StickyLevel.first]!) +
-              widget.controller.headerOffsets[StickyLevel.second]!,
-          right: 0,
-          child: widget.widgetBuilder(context, indexesToBuild[StickyLevel.second]!),
-        );
-      } else {
-        _stickyHeader2 = null;
-      }
-    }
-  }
-
-  void _buildFooterWidget(BuildContext context) {
-    final indexToBuild = widget.controller.footerIndex;
-    if (!widget.controller.isRecalculating) {
-      if (indexToBuild != -1) {
-        _stickyFooter = widget.widgetBuilder(context, indexToBuild);
-      } else {
-        _stickyFooter = null;
-      }
-    }
-  }
-
-  Widget _buildFooter(BuildContext context) {
-    _buildFooterWidget(context);
-
-    if (_stickyFooter != null) {
-      return Stack(
-        children: [
-          Positioned(
+        if (indexesToBuild[StickyLevel.first] != -1) {
+          stickyHeader1 = Positioned(
             left: 0,
+            top: controller.headerOffsets[StickyLevel.first],
             right: 0,
-            bottom: 0,
-            child: _stickyFooter!,
+            child: widget.widgetBuilder(context, indexesToBuild[StickyLevel.first]!),
+          );
+        }
+
+        if (indexesToBuild[StickyLevel.second] != -1) {
+          stickyHeader2 = Positioned(
+            left: 0,
+            top:
+                controller.widgetHeight(indexesToBuild[StickyLevel.first]!) +
+                controller.headerOffsets[StickyLevel.second]!,
+            right: 0,
+            child: widget.widgetBuilder(context, indexesToBuild[StickyLevel.second]!),
+          );
+        }
+
+        return GestureDetector(
+          onPanUpdate: _onPanUpdate,
+          onPanEnd: _onPanEnd,
+          child: Stack(
+            children: [
+              if (stickyHeader2 != null) stickyHeader2,
+              if (stickyHeader1 != null) stickyHeader1,
+            ],
           ),
-        ],
-      );
+        );
+      } else {
+        // Footer
+        Widget? stickyFooter;
+        final indexToBuild = controller.footerIndex;
+
+        if (indexToBuild != -1) {
+          stickyFooter = widget.widgetBuilder(context, indexToBuild);
+        }
+
+        return GestureDetector(
+          onPanUpdate: _onPanUpdate,
+          onPanEnd: _onPanEnd,
+          child: stickyFooter != null
+              ? Stack(
+                  children: [
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      child: stickyFooter,
+                    ),
+                  ],
+                )
+              : Container(),
+        );
+      }
     }
     return Container();
   }
