@@ -6,13 +6,16 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * also called StopPoint
+ */
 @AllArgsConstructor
 @EqualsAndHashCode
 @Slf4j
 public class TafTapLocationReference {
 
     /**
-     * source: <a href="https://uic.org/support-activities/it/article/country-codes">UIC Country Codes</a>
+     * @see <a href="https://uic.org/support-activities/it/article/country-codes">UIC Country Codes</a>
      */
     private static final Map<Integer, String> uicToIsoCountryCodeMap = new HashMap<>();
 
@@ -90,6 +93,9 @@ public class TafTapLocationReference {
 
     private Integer uicCode;
 
+    /**
+     * @return ISO 3166-1 value
+     */
     public static String toCountryCodeIso(Integer countryCodeUic) {
         if (countryCodeUic == null) {
             return null;
