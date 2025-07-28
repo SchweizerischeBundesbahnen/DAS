@@ -125,6 +125,7 @@ public final class VehicleFactory {
         if (europeanVehicleNumber == null) {
             return null;
         }
-        return new EuropeanVehicleNumber(europeanVehicleNumber.getCountryCodeUic(), europeanVehicleNumber.getVehicleNumber());
+        return new EuropeanVehicleNumber(europeanVehicleNumber.getTypeCode(), europeanVehicleNumber.getCountryCodeUic(), europeanVehicleNumber.getVehicleNumber(),
+            europeanVehicleNumber.getCheckDigit());
     }
 }

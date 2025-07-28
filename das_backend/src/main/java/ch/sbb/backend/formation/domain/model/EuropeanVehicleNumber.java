@@ -9,13 +9,15 @@ import lombok.ToString;
 @ToString
 public class EuropeanVehicleNumber {
 
+    private String typeCode;
     private String countryCodeUic;
     private String vehicleNumber;
+    private String checkDigit;
 
     public String toVehicleCode() {
-        if (countryCodeUic == null || vehicleNumber == null) {
+        if (typeCode == null || countryCodeUic == null || vehicleNumber == null || checkDigit == null) {
             return null;
         }
-        return countryCodeUic + vehicleNumber;
+        return typeCode + countryCodeUic + vehicleNumber + checkDigit;
     }
 }

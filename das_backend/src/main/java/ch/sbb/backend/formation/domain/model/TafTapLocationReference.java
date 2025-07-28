@@ -20,7 +20,10 @@ public class TafTapLocationReference {
             log.warn("TafTapLocationReference: countryCodeUic or uicCode is null, cannot create location code.");
             return null;
         }
-        return String.format("%02d", countryCodeUic) + String.format("%06d", uicCode);
+        return String.format("%02d", countryCodeUic) + String.format("%05d", uicCode);
     }
+
+    // todo mapping uic to iso
+    // https://uic.org/support-activities/it/article/country-codes
 
 }

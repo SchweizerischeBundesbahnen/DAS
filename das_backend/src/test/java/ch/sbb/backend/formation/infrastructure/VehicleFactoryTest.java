@@ -30,7 +30,7 @@ class VehicleFactoryTest {
         vehicle1.setVehicleEffectiveTractionData(new VehicleEffectiveTractionData(null, "STAMMLOK"));
         vehicle1.setVehicleCategory("LOKOMOTIVE");
         vehicle1.setVehicleUnits(List.of(createVehicleUnit()));
-        vehicle1.setEuropeanVehicleNumber(new ch.sbb.zis.trainformation.api.model.EuropeanVehicleNumber("1", "46", "", "334455"));
+        vehicle1.setEuropeanVehicleNumber(new ch.sbb.zis.trainformation.api.model.EuropeanVehicleNumber("1", "46", "75", "334455"));
         vehicleGroup1.setVehicles(List.of(vehicle1));
 
         ch.sbb.zis.trainformation.api.model.VehicleGroup vehicleGroup2 = new ch.sbb.zis.trainformation.api.model.VehicleGroup();
@@ -47,7 +47,7 @@ class VehicleFactoryTest {
                     .handBrakeWeightInT(12)
                     .load(new Load(List.of(new Goods(true)), List.of(new IntermodalLoadingUnit(List.of(new Goods(false))))))
                     .build()),
-            new EuropeanVehicleNumber("46", "334455"));
+            new EuropeanVehicleNumber("75", "46", "334455", "1"));
 
         Vehicle expectedOtherVehicle = new Vehicle(null, null, Collections.emptyList(), null);
 

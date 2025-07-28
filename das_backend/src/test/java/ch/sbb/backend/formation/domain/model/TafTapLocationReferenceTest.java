@@ -15,15 +15,15 @@ class TafTapLocationReferenceTest {
 
     @Test
     void toLocationCode_shouldFormatCountryAndUicCode() {
-        TafTapLocationReference reference = new TafTapLocationReference(12, 345678);
+        TafTapLocationReference reference = new TafTapLocationReference(12, 34567);
         String result = reference.toLocationCode();
-        assertThat(result).isEqualTo("12345678");
+        assertThat(result).isEqualTo("1234567");
     }
 
     @Test
     void toLocationCode_shouldFormatCountryAndUicCodeWith0() {
         TafTapLocationReference reference = new TafTapLocationReference(5, 23);
         String result = reference.toLocationCode();
-        assertThat(result).isEqualTo("05000023");
+        assertThat(result).isEqualTo("0500023");
     }
 }

@@ -8,19 +8,19 @@ class EuropeanVehicleNumberTest {
 
     @Test
     void toVehicleCode_null() {
-        EuropeanVehicleNumber europeanVehicleNumber = new EuropeanVehicleNumber(null, null);
+        EuropeanVehicleNumber europeanVehicleNumber = new EuropeanVehicleNumber(null, null, null, null);
         assertThat(europeanVehicleNumber.toVehicleCode()).isNull();
     }
 
     @Test
     void toVehicleCode_correct() {
-        EuropeanVehicleNumber europeanVehicleNumber = new EuropeanVehicleNumber("67", "462892");
-        assertThat(europeanVehicleNumber.toVehicleCode()).isEqualTo("67462892");
+        EuropeanVehicleNumber europeanVehicleNumber = new EuropeanVehicleNumber("74", "67", "462892", "5");
+        assertThat(europeanVehicleNumber.toVehicleCode()).isEqualTo("74674628925");
     }
 
     @Test
     void toVehicleCode_invalid() {
-        EuropeanVehicleNumber europeanVehicleNumber = new EuropeanVehicleNumber(null, "462892");
+        EuropeanVehicleNumber europeanVehicleNumber = new EuropeanVehicleNumber("45", null, "462892", "3");
         assertThat(europeanVehicleNumber.toVehicleCode()).isNull();
     }
 }

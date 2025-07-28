@@ -299,7 +299,7 @@ class FormationRunTest {
         FormationRun formationRun = createFormationRunWithVehicles(null);
         try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
             Vehicle vehicle = mock(Vehicle.class);
-            EuropeanVehicleNumber europeanVehicleNumber = new EuropeanVehicleNumber("12", "3456");
+            EuropeanVehicleNumber europeanVehicleNumber = new EuropeanVehicleNumber("95", "12", "3456", "4");
             when(vehicle.getEuropeanVehicleNumber()).thenReturn(europeanVehicleNumber);
             mockedStatic.when(() -> Vehicle.first(any())).thenReturn(vehicle);
 
@@ -326,7 +326,7 @@ class FormationRunTest {
         FormationRun formationRun = createFormationRunWithVehicles(null);
         try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
             Vehicle vehicle = mock(Vehicle.class);
-            EuropeanVehicleNumber europeanVehicleNumber = new EuropeanVehicleNumber("78", "910");
+            EuropeanVehicleNumber europeanVehicleNumber = new EuropeanVehicleNumber("12", "78", "910", "7");
             when(vehicle.getEuropeanVehicleNumber()).thenReturn(europeanVehicleNumber);
             mockedStatic.when(() -> Vehicle.last(any())).thenReturn(vehicle);
 

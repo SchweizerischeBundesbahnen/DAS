@@ -3,6 +3,7 @@ package ch.sbb.backend.formation.infrastructure;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.backend.formation.domain.model.FormationRun;
+import ch.sbb.backend.formation.domain.model.TafTapLocationReference;
 import ch.sbb.zis.trainformation.api.model.BrakeCalculationResult;
 import ch.sbb.zis.trainformation.api.model.ConsolidatedBrakingInformation;
 import ch.sbb.zis.trainformation.api.model.FormationRunInspection;
@@ -44,8 +45,8 @@ class FormationRunFactoryTest {
         FormationRun expectedFormationRun = FormationRun.builder()
             .inspected(true)
             .company("2357")
-            .tafTapLocationReferenceStart(new ch.sbb.backend.formation.domain.model.TafTapLocationReference(34, 110))
-            .tafTapLocationReferenceEnd(new ch.sbb.backend.formation.domain.model.TafTapLocationReference(34, 78261))
+            .tafTapLocationReferenceStart(new TafTapLocationReference(34, 11))
+            .tafTapLocationReferenceEnd(new TafTapLocationReference(34, 7826))
             .trainCategoryCode("TC")
             .brakedWeightPercentage(null)
             .tractionMaxSpeedInKmh(12)

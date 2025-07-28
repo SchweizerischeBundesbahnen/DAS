@@ -15,6 +15,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class FormationRunFactory {
 
+    private static final int UIC_CHECKDIGIT_DIVISOR = 10;
+
     public static List<FormationRun> create(List<ch.sbb.zis.trainformation.api.model.FormationRun> formationRuns) {
         return formationRuns.stream()
             .map(FormationRunFactory::create).toList();
@@ -34,7 +36,8 @@ public final class FormationRunFactory {
     }
 
     private static TafTapLocationReference toTafTapLocationReference(LocationUic locationUic) {
-        return new TafTapLocationReference(locationUic.getCountryCodeUic(), locationUic.getUicCode());
+        int uicCodeWithoutCheckdigit = locationUic.getUicCode() / UIC_CHECKDIGIT_DIVISOR;
+        return new TafTapLocationReference(locationUic.getCountryCodeUic(), uicCodeWithoutCheckdigit);
     }
 
     private static void applyFormationRunInspection(FormationRunBuilder builder, FormationRunInspection formationRunInspection) {
