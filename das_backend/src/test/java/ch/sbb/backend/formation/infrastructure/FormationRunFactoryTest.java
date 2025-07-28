@@ -34,8 +34,8 @@ class FormationRunFactoryTest {
 
         ch.sbb.zis.trainformation.api.model.FormationRun formationRun = new ch.sbb.zis.trainformation.api.model.FormationRun();
         formationRun.setFormationRunInspection(formationRunInspection);
-        formationRun.setStartLocationUic(new LocationUic(null, 34, 110));
-        formationRun.setEndLocationUic(new LocationUic(null, 34, 78261));
+        formationRun.setStartLocationUic(new LocationUic(null, 85, 110));
+        formationRun.setEndLocationUic(new LocationUic(null, 80, 78261));
         formationRun.setSmsEvu("2357");
         formationRun.setTrainSequence("TC");
         formationRun.setConsolidatedBrakingInformation(new ConsolidatedBrakingInformation(true, 34, 65, false, 45,
@@ -45,8 +45,8 @@ class FormationRunFactoryTest {
         FormationRun expectedFormationRun = FormationRun.builder()
             .inspected(true)
             .company("2357")
-            .tafTapLocationReferenceStart(new TafTapLocationReference(34, 11))
-            .tafTapLocationReferenceEnd(new TafTapLocationReference(34, 7826))
+            .tafTapLocationReferenceStart(new TafTapLocationReference("CH", 11))
+            .tafTapLocationReferenceEnd(new TafTapLocationReference("DE", 7826))
             .trainCategoryCode("TC")
             .brakedWeightPercentage(null)
             .tractionMaxSpeedInKmh(12)

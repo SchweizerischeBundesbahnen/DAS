@@ -16,8 +16,8 @@ class FormationRunTest {
 
     @Test
     void constructor_getters() {
-        TafTapLocationReference start = new TafTapLocationReference(34, 1);
-        TafTapLocationReference end = new TafTapLocationReference(34, 2);
+        TafTapLocationReference start = new TafTapLocationReference("CH", 1);
+        TafTapLocationReference end = new TafTapLocationReference("CH", 2);
 
         FormationRun result = FormationRun.builder()
             .company("1134")

@@ -15,15 +15,33 @@ class TafTapLocationReferenceTest {
 
     @Test
     void toLocationCode_shouldFormatCountryAndUicCode() {
-        TafTapLocationReference reference = new TafTapLocationReference(12, 34567);
+        TafTapLocationReference reference = new TafTapLocationReference("CH", 34567);
         String result = reference.toLocationCode();
-        assertThat(result).isEqualTo("1234567");
+        assertThat(result).isEqualTo("CH34567");
     }
 
     @Test
     void toLocationCode_shouldFormatCountryAndUicCodeWith0() {
-        TafTapLocationReference reference = new TafTapLocationReference(5, 23);
+        TafTapLocationReference reference = new TafTapLocationReference("CH", 23);
         String result = reference.toLocationCode();
-        assertThat(result).isEqualTo("0500023");
+        assertThat(result).isEqualTo("CH00023");
+    }
+
+    @Test
+    void toCountryCodeIso_null() {
+        String countryCodeIso = TafTapLocationReference.toCountryCodeIso(null);
+        assertThat(countryCodeIso).isNull();
+    }
+
+    @Test
+    void toCountryCodeIso_unknown() {
+        String countryCodeIso = TafTapLocationReference.toCountryCodeIso(69);
+        assertThat(countryCodeIso).isNull();
+    }
+
+    @Test
+    void toCountryCodeIso_correct() {
+        String countryCodeIso = TafTapLocationReference.toCountryCodeIso(85);
+        assertThat(countryCodeIso).isEqualTo("CH");
     }
 }

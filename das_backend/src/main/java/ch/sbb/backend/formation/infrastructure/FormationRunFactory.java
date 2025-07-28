@@ -37,7 +37,8 @@ public final class FormationRunFactory {
 
     private static TafTapLocationReference toTafTapLocationReference(LocationUic locationUic) {
         int uicCodeWithoutCheckdigit = locationUic.getUicCode() / UIC_CHECKDIGIT_DIVISOR;
-        return new TafTapLocationReference(locationUic.getCountryCodeUic(), uicCodeWithoutCheckdigit);
+        String countryCodeIso = TafTapLocationReference.toCountryCodeIso(locationUic.getCountryCodeUic());
+        return new TafTapLocationReference(countryCodeIso, uicCodeWithoutCheckdigit);
     }
 
     private static void applyFormationRunInspection(FormationRunBuilder builder, FormationRunInspection formationRunInspection) {
