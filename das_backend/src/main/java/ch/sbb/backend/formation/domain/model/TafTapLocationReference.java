@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 public class TafTapLocationReference {
 
     /**
-     * source: https://uic.org/support-activities/it/article/country-codes
+     * source: <a href="https://uic.org/support-activities/it/article/country-codes">UIC Country Codes</a>
      */
     private static final Map<Integer, String> uicToIsoCountryCodeMap = new HashMap<>();
 
