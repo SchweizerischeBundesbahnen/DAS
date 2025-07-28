@@ -1,4 +1,4 @@
-package ch.sbb.backend.formation.infrastructure.trainformation.model;
+package ch.sbb.backend.common;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
