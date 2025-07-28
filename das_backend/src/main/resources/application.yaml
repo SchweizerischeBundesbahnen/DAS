@@ -57,3 +57,7 @@ auth:
 splunk:
   url: ${SPLUNK_HEC_URL}
   token: ${SPLUNK_HEC_TOKEN}
+
+logging:
+  url: ${SPLUNK_HEC_URL}
+  token: ${SPLUNK_HEC_TOKEN}
