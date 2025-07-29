@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/train_journey/collapsible_rows_view_model.dart';
+import 'package:app/pages/journey/train_journey/train_journey_overview.dart';
 import 'package:app/pages/journey/train_journey/widgets/break_series_selection.dart';
 import 'package:app/pages/journey/train_journey/widgets/chevron_animation_wrapper.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
@@ -13,6 +15,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/balise_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cab_signaling_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/column_definition.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/combined_foot_note_operational_indication_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/bracket_station_render_data.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/chevron_animation_data.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/track_equipment_render_data.dart';
@@ -20,15 +23,14 @@ import 'package:app/pages/journey/train_journey/widgets/table/config/train_journ
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/connection_track_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/curve_point_row.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/foot_note_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/level_crossing_row.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/line_foot_note_row.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/op_foot_note_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/protection_section_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/signal_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/speed_change_row.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/track_foot_note_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/tram_area_row.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/uncoded_operational_indication_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/whistle_row.dart';
 import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/theme/theme_util.dart';
@@ -84,35 +86,47 @@ class TrainJourney extends StatelessWidget {
   }
 
   Widget _body(BuildContext context, Journey journey, TrainJourneySettings settings) {
-    final tableRows = _rows(context, journey, settings);
-    context.read<TrainJourneyViewModel>().automaticAdvancementController.updateRenderedRows(tableRows);
+    return StreamBuilder(
+      stream: context.read<CollapsibleRowsViewModel>().collapsedRows,
+      builder: (context, snapshot) {
+        final collapsedRows = snapshot.data ?? {};
+        final tableRows = _rows(context, journey, settings, collapsedRows);
+        context.read<TrainJourneyViewModel>().automaticAdvancementController.updateRenderedRows(tableRows);
 
-    final marginAdjustment = Platform.isIOS
-        ? tableRows.lastWhereOrNull((it) => it.stickyLevel == StickyLevel.first)?.height ?? CellRowBuilder.rowHeight
-        : 0.0;
+        final marginAdjustment = Platform.isIOS
+            ? tableRows.lastWhereOrNull((it) => it.stickyLevel == StickyLevel.first)?.height ?? CellRowBuilder.rowHeight
+            : 0.0;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
-      child: StreamBuilder<bool>(
-        stream: context.read<DetailModalViewModel>().isModalOpen,
-        builder: (context, snapshot) {
-          final isDetailModelOpen = snapshot.data ?? false;
-          return ChevronAnimationWrapper(
-            journey: journey,
-            child: DASTable(
-              key: context.read<TrainJourneyViewModel>().automaticAdvancementController.tableKey,
-              scrollController: context.read<TrainJourneyViewModel>().automaticAdvancementController.scrollController,
-              columns: _columns(context, journey.metadata, settings, isDetailModelOpen),
-              rows: tableRows.map((it) => it.build(context)).toList(),
-              bottomMarginAdjustment: marginAdjustment,
-            ),
-          );
-        },
-      ),
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: TrainJourneyOverview.horizontalPadding),
+          child: StreamBuilder<bool>(
+            stream: context.read<DetailModalViewModel>().isModalOpen,
+            builder: (context, snapshot) {
+              final isDetailModalOpen = snapshot.data ?? false;
+              final advancementController = context.read<TrainJourneyViewModel>().automaticAdvancementController;
+              return ChevronAnimationWrapper(
+                journey: journey,
+                child: DASTable(
+                  key: advancementController.tableKey,
+                  scrollController: advancementController.scrollController,
+                  columns: _columns(context, journey.metadata, settings, isDetailModalOpen),
+                  rows: tableRows.map((it) => it.build(context)).toList(),
+                  bottomMarginAdjustment: marginAdjustment,
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 
-  List<DASTableRowBuilder> _rows(BuildContext context, Journey journey, TrainJourneySettings settings) {
+  List<DASTableRowBuilder> _rows(
+    BuildContext context,
+    Journey journey,
+    TrainJourneySettings settings,
+    Map<int, CollapsedState> collapsedRows,
+  ) {
     final currentBreakSeries = settings.resolvedBreakSeries(journey.metadata);
 
     final rows = journey.data
@@ -120,7 +134,8 @@ class TrainJourney extends StatelessWidget {
         .groupBaliseAndLeveLCrossings(settings.expandedGroups)
         .hideRepeatedLineFootNotes(journey.metadata.currentPosition)
         .hideFootNotesForNotSelectedTrainSeries(currentBreakSeries?.trainSeries)
-        .toList();
+        .combineFootNoteAndOperationalIndication()
+        .sortedBy((data) => data.order);
 
     final groupedRows = rows
         .whereType<BaliseLevelCrossingGroup>()
@@ -133,10 +148,17 @@ class TrainJourney extends StatelessWidget {
 
       final trainJourneyConfig = TrainJourneyConfig(
         settings: settings,
-        trackEquipmentRenderData: TrackEquipmentRenderData.from(rows, journey.metadata, index),
+        trackEquipmentRenderData: TrackEquipmentRenderData.from(rows, journey.metadata, index, currentBreakSeries),
         bracketStationRenderData: BracketStationRenderData.from(rowData, journey.metadata),
-        chevronAnimationData: ChevronAnimationData.from(rows, journey, rowData),
+        chevronAnimationData: ChevronAnimationData.from(rows, journey, rowData, currentBreakSeries),
       );
+
+      var hasPreviousCollapsible = false;
+      if (index > 0) {
+        final previous = rows[index - 1];
+        hasPreviousCollapsible = previous.isCollapsible;
+      }
+
       switch (rowData.type) {
         case Datatype.servicePoint:
           return ServicePointRow(
@@ -144,24 +166,28 @@ class TrainJourney extends StatelessWidget {
             data: rowData as ServicePoint,
             config: trainJourneyConfig,
             context: context,
+            rowIndex: index,
           );
         case Datatype.protectionSection:
           return ProtectionSectionRow(
             metadata: journey.metadata,
             data: rowData as ProtectionSection,
             config: trainJourneyConfig,
+            rowIndex: index,
           );
         case Datatype.curvePoint:
           return CurvePointRow(
             metadata: journey.metadata,
             data: rowData as CurvePoint,
             config: trainJourneyConfig,
+            rowIndex: index,
           );
         case Datatype.signal:
           return SignalRow(
             metadata: journey.metadata,
             data: rowData as Signal,
             config: trainJourneyConfig,
+            rowIndex: index,
           );
         case Datatype.additionalSpeedRestriction:
           return AdditionalSpeedRestrictionRow(
@@ -169,24 +195,28 @@ class TrainJourney extends StatelessWidget {
             data: rowData as AdditionalSpeedRestrictionData,
             config: trainJourneyConfig,
             onTap: () => _onAdditionalSpeedRestrictionTab(context, rowData),
+            rowIndex: index,
           );
         case Datatype.connectionTrack:
           return ConnectionTrackRow(
             metadata: journey.metadata,
             data: rowData as ConnectionTrack,
             config: trainJourneyConfig,
+            rowIndex: index,
           );
         case Datatype.speedChange:
           return SpeedChangeRow(
             metadata: journey.metadata,
             data: rowData as SpeedChange,
             config: trainJourneyConfig,
+            rowIndex: index,
           );
         case Datatype.cabSignaling:
           return CABSignalingRow(
             metadata: journey.metadata,
             data: rowData as CABSignaling,
             config: trainJourneyConfig,
+            rowIndex: index,
           );
         case Datatype.balise:
           return BaliseRow(
@@ -194,12 +224,14 @@ class TrainJourney extends StatelessWidget {
             data: rowData as Balise,
             config: trainJourneyConfig,
             isGrouped: groupedRows.contains(rowData),
+            rowIndex: index,
           );
         case Datatype.whistle:
           return WhistleRow(
             metadata: journey.metadata,
             data: rowData as Whistle,
             config: trainJourneyConfig,
+            rowIndex: index,
           );
         case Datatype.levelCrossing:
           return LevelCrossingRow(
@@ -207,12 +239,14 @@ class TrainJourney extends StatelessWidget {
             data: rowData as LevelCrossing,
             config: trainJourneyConfig,
             isGrouped: groupedRows.contains(rowData),
+            rowIndex: index,
           );
         case Datatype.tramArea:
           return TramAreaRow(
             metadata: journey.metadata,
             data: rowData as TramArea,
             config: trainJourneyConfig,
+            rowIndex: index,
           );
         case Datatype.baliseLevelCrossingGroup:
           return BaliseLevelCrossingGroupRow(
@@ -220,30 +254,45 @@ class TrainJourney extends StatelessWidget {
             data: rowData as BaliseLevelCrossingGroup,
             config: trainJourneyConfig,
             onTap: () => _onBaliseLevelCrossingGroupTap(context, rowData, settings),
+            rowIndex: index,
+            context: context,
+            isExpanded: settings.expandedGroups.contains(rowData.order),
           );
-        case Datatype.opFootNote:
-          return OpFootNoteRow(
+        case Datatype.opFootNote || Datatype.lineFootNote || Datatype.trackFootNote:
+          return FootNoteRow(
             metadata: journey.metadata,
-            data: rowData as OpFootNote,
+            data: rowData as BaseFootNote,
             config: trainJourneyConfig,
-            isExpanded: !settings.collapsedFootNotes.contains(rowData.identifier),
-            accordionToggleCallback: () => _onFootNoteExpanded(context, rowData, settings),
+            isExpanded: collapsedRows.isExpanded(rowData.hashCode),
+            addTopMargin: !hasPreviousCollapsible,
+            accordionToggleCallback: () => context.read<CollapsibleRowsViewModel>().toggleRow(rowData),
+            rowIndex: index,
           );
-        case Datatype.lineFootNote:
-          return LineFootNoteRow(
+        case Datatype.uncodedOperationalIndication:
+          return UncodedOperationalIndicationRow(
             metadata: journey.metadata,
-            data: rowData as LineFootNote,
+            data: rowData as UncodedOperationalIndication,
             config: trainJourneyConfig,
-            isExpanded: !settings.collapsedFootNotes.contains(rowData.identifier),
-            accordionToggleCallback: () => _onFootNoteExpanded(context, rowData, settings),
+            expandedContent: collapsedRows.isContentExpanded(rowData.hashCode),
+            isExpanded: collapsedRows.isExpanded(rowData.hashCode),
+            addTopMargin: !hasPreviousCollapsible,
+            accordionToggleCallback: () => context.read<CollapsibleRowsViewModel>().toggleRow(rowData),
+            rowIndex: index,
           );
-        case Datatype.trackFootNote:
-          return TrackFootNoteRow(
+        case Datatype.combinedFootNoteOperationalIndication:
+          return CombinedFootNoteOperationalIndicationRow(
+            rowIndex: index,
             metadata: journey.metadata,
-            data: rowData as TrackFootNote,
-            config: trainJourneyConfig,
-            isExpanded: !settings.collapsedFootNotes.contains(rowData.identifier),
-            accordionToggleCallback: () => _onFootNoteExpanded(context, rowData, settings),
+            data: rowData as CombinedFootNoteOperationalIndication,
+            footNoteConfig: AccordionConfig(
+              isExpanded: collapsedRows.isExpanded(rowData.footNote.hashCode),
+              toggleCallback: () => context.read<CollapsibleRowsViewModel>().toggleRow(rowData.footNote),
+            ),
+            operationIndicationConfig: AccordionConfig(
+              isExpanded: collapsedRows.isExpanded(rowData.operationalIndication.hashCode),
+              isContentExpanded: collapsedRows.isContentExpanded(rowData.operationalIndication.hashCode),
+              toggleCallback: () => context.read<CollapsibleRowsViewModel>().toggleRow(rowData.operationalIndication),
+            ),
           );
       }
     });
@@ -333,17 +382,6 @@ class TrainJourney extends StatelessWidget {
     ];
   }
 
-  void _onFootNoteExpanded(BuildContext context, BaseFootNote footNote, TrainJourneySettings settings) {
-    final newList = List<String>.from(settings.collapsedFootNotes);
-    if (settings.collapsedFootNotes.contains(footNote.identifier)) {
-      newList.remove(footNote.identifier);
-    } else {
-      newList.add(footNote.identifier);
-    }
-
-    context.read<TrainJourneyViewModel>().updateCollapsedFootnotes(newList);
-  }
-
   void _onBaliseLevelCrossingGroupTap(
     BuildContext context,
     BaliseLevelCrossingGroup group,
@@ -381,7 +419,7 @@ class TrainJourney extends StatelessWidget {
     final breakSeries = settings.resolvedBreakSeries(journey.metadata);
 
     return data.type == Datatype.curvePoint &&
-        data.localSpeedData?.speedsFor(breakSeries?.trainSeries, breakSeries?.breakSeries) == null;
+        data.localSpeeds?.speedFor(breakSeries?.trainSeries, breakSeries: breakSeries?.breakSeries) == null;
   }
 
   void _onAdditionalSpeedRestrictionTab(BuildContext context, AdditionalSpeedRestrictionData data) {

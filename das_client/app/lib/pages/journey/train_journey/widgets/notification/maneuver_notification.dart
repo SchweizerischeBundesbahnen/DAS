@@ -1,4 +1,5 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/train_journey/train_journey_overview.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/widgets/das_icons.dart';
@@ -24,7 +25,7 @@ class ManeuverNotification extends StatelessWidget {
         if (!showNotification) return SizedBox.shrink();
 
         return Container(
-          margin: EdgeInsets.fromLTRB(sbbDefaultSpacing * 0.5, 0, sbbDefaultSpacing * 0.5, sbbDefaultSpacing * 0.5),
+          margin: EdgeInsets.all(TrainJourneyOverview.horizontalPadding).copyWith(top: 0),
           child: NotificationBox(
             style: NotificationBoxStyle.warning,
             text: context.l10n.w_maneuver_notification_text,

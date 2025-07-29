@@ -93,11 +93,12 @@ void main() {
 
       // wait until T2 opened
       await waitUntilExists(tester, find.descendant(of: find.byType(Header), matching: find.text('T2 SBB')));
+      await tester.pumpAndSettle();
 
       // should not display navigation buttons (autoAdvancement is active)
       final opacity = find.descendant(
         of: find.byType(JourneyNavigationButtons),
-        matching: find.byWidgetPredicate((widget) => widget is AnimatedOpacity).first,
+        matching: find.byType(AnimatedOpacity),
       );
       expect(tester.widget<AnimatedOpacity>(opacity).opacity, isZero);
 

@@ -6,7 +6,7 @@ class CABSignaling extends BaseData {
   const CABSignaling({
     required super.order,
     required super.kilometre,
-    super.speedData,
+    super.speeds,
     this.isStart = false,
   }) : super(type: Datatype.cabSignaling);
 

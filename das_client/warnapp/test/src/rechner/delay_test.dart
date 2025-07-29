@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warnapp/src/rechner/delay.dart';
 
-main() {
+void main() {
   group('Delay Tests', () {
     test('Init Length 0', () {
       expect(() => Delay(0), throwsAssertionError);

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
-                SP_ID="2266_14_Basel_SBB" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="4800" SP_Status="Valid">
+                SP_ID="2266_14_Basel_SBB" SP_VersionMajor="1" SP_VersionMinor="2" SP_Length="4800" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -66,7 +66,7 @@
 			 <NSP_GroupName>stationProperty</NSP_GroupName>
 			 <NetworkSpecificParameter name="xmlStationProperty" value="
 				  &lt;stationProperties&gt;
-					   &lt;stationProperty1 text=&quot;&lt;b&gt;4&lt;/b&gt;&quot;&gt;
+					   &lt;stationProperty text=&quot;&lt;b&gt;4&lt;/b&gt;&quot;&gt;
 							&lt;speeds&gt; 
 								&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;105&quot; speed=&quot;[60]&quot;/&gt;
 								&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;[60]&quot;/&gt;
@@ -84,7 +84,7 @@
 								&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;[60]&quot;/&gt;
 								&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;115&quot; speed=&quot;[60]&quot;/&gt;
 							&lt;/speeds&gt; 
-					   &lt;/stationProperty1&gt; 
+					   &lt;/stationProperty&gt;
 				  &lt;/stationProperties&gt;
 			  "/>
 			</TAF_TAP_Location_NSP>

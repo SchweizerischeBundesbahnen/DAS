@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 class DASTableCell {
   static const emptyCellKey = Key('DASTableCellEmptyKey');
 
+  static const Widget emptyBuilder = SizedBox.shrink(key: emptyCellKey);
+
   const DASTableCell({
     required this.child,
     this.onTap,
@@ -22,7 +24,7 @@ class DASTableCell {
 
   const DASTableCell.empty({Color? color, VoidCallback? onTap})
     : this(
-        child: const SizedBox.shrink(key: emptyCellKey),
+        child: emptyBuilder,
         color: color,
         onTap: onTap,
       );

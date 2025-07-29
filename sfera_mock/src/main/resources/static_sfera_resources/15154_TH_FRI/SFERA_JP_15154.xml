@@ -26,6 +26,16 @@
             <TC_RU_ID>1285</TC_RU_ID>
         </TrainCharacteristicsRef>
 
+        <JP_ContextInformation>
+            <!-- VPro for Thun -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="155"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="15154_2_Uttigen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -41,10 +51,20 @@
             <StoppingPointDepartureDetails departureTime="2025-05-17T14:47:00Z" plannedDepartureTime="2025-05-17T14:47:00Z"/>
         </TimingPointConstraints>
 
-		<TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="300" endLocation="450">
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="300" endLocation="450">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="140"/>
             <TemporaryConstraintReason text="Umbau" language="DE"/>
         </TemporaryConstraints>
+
+        <JP_ContextInformation>
+            <!-- VPro for Uttigen -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="160"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
 
     </SegmentProfileReference>
 
@@ -61,6 +81,16 @@
             <StoppingPointDepartureDetails departureTime="2025-05-17T14:49:00Z" plannedDepartureTime="2025-05-17T14:49:00Z"/>
         </TimingPointConstraints>
 
+        <JP_ContextInformation>
+            <!-- VPro for Kiesen -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="155"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="15154_4_Wichtrach" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -75,6 +105,16 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="2025-05-17T14:52:00Z" plannedDepartureTime="2025-05-17T14:52:00Z"/>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <!-- VPro for Wichtrach -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="155"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
 
     </SegmentProfileReference>
 
@@ -91,6 +131,16 @@
             <StoppingPointDepartureDetails departureTime="2025-05-17T14:55:00Z" plannedDepartureTime="2025-05-17T14:55:00Z"/>
         </TimingPointConstraints>
 
+        <JP_ContextInformation>
+            <!-- VPro for Muensingen -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="155"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="15154_6_Rubigen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -105,6 +155,16 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="2025-05-17T14:57:00Z" plannedDepartureTime="2025-05-17T14:57:00Z"/>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <!-- VPro for Rubigen -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="155"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
 
     </SegmentProfileReference>
 
@@ -121,10 +181,20 @@
             <StoppingPointDepartureDetails departureTime="2025-05-17T15:03:00Z" plannedDepartureTime="2025-05-17T15:03:00Z"/>
         </TimingPointConstraints>
 
-		<TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="2200">
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="2200">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
             <TemporaryConstraintReason text="Umbau" language="DE"/>
         </TemporaryConstraints>
+
+        <JP_ContextInformation>
+            <!-- VPro for Guemligen -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="135"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
 
     </SegmentProfileReference>
 
@@ -140,10 +210,20 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="2025-05-17T15:06:00Z" plannedDepartureTime="2025-05-17T15:06:00Z"/>
         </TimingPointConstraints>
-		
-		<TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="ASR" endLocation="450">
+
+        <TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="ASR" endLocation="450">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
         </TemporaryConstraints>
+
+        <JP_ContextInformation>
+            <!-- VPro for Ostermundigen -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="105"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
 
     </SegmentProfileReference>
 
@@ -158,6 +238,16 @@
                 <TP_ID_Reference TP_ID="Wankdorf"/>
             </TimingPointReference>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <!-- VPro for Wankdorf -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="95"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="15154_10_Bern_Wankdorf" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
@@ -173,6 +263,16 @@
             <StoppingPointDepartureDetails departureTime="2025-05-17T15:08:00Z" plannedDepartureTime="2025-05-17T15:08:00Z"/>
         </TimingPointConstraints>
 
+        <JP_ContextInformation>
+            <!-- VPro for Bern_Wankdorf -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="95"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="15154_11_Bern_Wyler" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -186,6 +286,16 @@
                 <TP_ID_Reference TP_ID="Bern_Wyler"/>
             </TimingPointReference>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <!-- VPro for Bern_Wyler -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="95"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="15154_12_Bern" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
@@ -201,6 +311,16 @@
             <StoppingPointDepartureDetails departureTime="2025-05-17T15:15:00Z" plannedDepartureTime="2025-05-17T15:15:00Z"/>
         </TimingPointConstraints>
 
+        <JP_ContextInformation>
+            <!-- VPro for Bern -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="70"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="15154_13_Bern_Whaus" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
@@ -214,6 +334,16 @@
                 <TP_ID_Reference TP_ID="Bern_Whaus"/>
             </TimingPointReference>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <!-- VPro for Bern_Whaus -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="135"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="15154_14_Bern_Europaplatz" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
@@ -228,6 +358,16 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="2025-05-17T15:19:00Z" plannedDepartureTime="2025-05-17T15:19:00Z"/>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <!-- VPro for Bern_Europaplatz -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="135"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
 
     </SegmentProfileReference>
 
@@ -244,6 +384,16 @@
             <StoppingPointDepartureDetails departureTime="2025-05-17T15:21:00Z" plannedDepartureTime="2025-05-17T15:21:00Z"/>
         </TimingPointConstraints>
 
+        <JP_ContextInformation>
+            <!-- VPro for Buempliz_Sued -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="135"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="15154_16_Niederwangen" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
@@ -259,6 +409,16 @@
             <StoppingPointDepartureDetails departureTime="2025-05-17T15:23:00Z" plannedDepartureTime="2025-05-17T15:23:00Z"/>
         </TimingPointConstraints>
 
+        <JP_ContextInformation>
+            <!-- VPro for Niederwangen -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="135"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="15154_17_Oberwangen" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
@@ -272,6 +432,16 @@
                 <TP_ID_Reference TP_ID="Oberwangen"/>
             </TimingPointReference>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <!-- VPro for Oberwangen -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="135"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="15154_18_Thoerishaus" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
@@ -285,6 +455,16 @@
                 <TP_ID_Reference TP_ID="Thoerishaus"/>
             </TimingPointReference>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <!-- VPro for Thoerishaus -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="90"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="15154_19_Thoerishaus_Dorf" SP_VersionMajor="1" SP_VersionMinor="3" SP_Direction="Nominal">
@@ -299,6 +479,16 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="2025-05-17T15:26:00Z" plannedDepartureTime="2025-05-17T15:26:00Z"/>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <!-- VPro for Thoerishaus_Dorf -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="105"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
 
     </SegmentProfileReference>
 
@@ -315,6 +505,16 @@
             <StoppingPointDepartureDetails departureTime="2025-05-17T15:29:00Z" plannedDepartureTime="2025-05-17T15:29:00Z"/>
         </TimingPointConstraints>
 
+        <JP_ContextInformation>
+            <!-- VPro for Flamatt -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="100"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="15154_21_Wuennewil" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -329,6 +529,16 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="2025-05-17T15:32:00Z" plannedDepartureTime="2025-05-17T15:32:00Z"/>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <!-- VPro for Wuennewil -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="100"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
 
     </SegmentProfileReference>
 
@@ -345,6 +555,16 @@
             <StoppingPointDepartureDetails departureTime="2025-05-17T15:35:00Z" plannedDepartureTime="2025-05-17T15:35:00Z"/>
         </TimingPointConstraints>
 
+        <JP_ContextInformation>
+            <!-- VPro for Schmitten -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="105"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="15154_23_Duedingen" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
@@ -359,6 +579,16 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="2025-05-17T15:40:00Z" plannedDepartureTime="2025-05-17T15:40:00Z"/>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <!-- VPro for Duedingen -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="105"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
 
     </SegmentProfileReference>
 
@@ -375,9 +605,19 @@
             <StoppingPointDepartureDetails departureTime="2025-05-17T15:44:00Z" plannedDepartureTime="2025-05-17T15:44:00Z"/>
         </TimingPointConstraints>
 
+        <JP_ContextInformation>
+            <!-- VPro for Fribourg_Freiburg_Poya -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="105"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="15154_25_Fribourg_Freiburg" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="15154_25_Fribourg_Freiburg" SP_VersionMajor="1" SP_VersionMinor="3" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -388,6 +628,16 @@
                 <TP_ID_Reference TP_ID="Fribourg_Freiburg"/>
             </TimingPointReference>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <!-- VPro for Fribourg_Freiburg -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="95"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
 
     </SegmentProfileReference>
 

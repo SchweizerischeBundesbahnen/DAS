@@ -12,13 +12,12 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
   CurvePointRow({
     required super.metadata,
     required super.data,
+    required super.rowIndex,
     super.config,
   });
 
   @override
-  DASTableCell localSpeedCell(BuildContext context) {
-    return speedCell(data.localSpeedData, DASTableCell.empty());
-  }
+  DASTableCell localSpeedCell(BuildContext context) => speedCell(data.localSpeeds);
 
   @override
   DASTableCell informationCell(BuildContext context) {

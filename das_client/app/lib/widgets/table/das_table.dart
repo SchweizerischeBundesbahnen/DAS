@@ -274,7 +274,7 @@ class _DASTableState extends State<DASTable> {
         ),
       );
     } else {
-      return (row as DASTableWidgetRow).widget;
+      return KeyedSubtree(key: DASTable.rowKey, child: (row as DASTableWidgetRow).widget);
     }
   }
 
@@ -331,7 +331,7 @@ class _DASTableState extends State<DASTable> {
 }
 
 extension _TableBorderExtension on TableBorder {
-  toBoxBorder({bool isLastCell = false}) {
+  BorderDirectional toBoxBorder({bool isLastCell = false}) {
     return BorderDirectional(bottom: horizontalInside, end: isLastCell ? BorderSide.none : verticalInside);
   }
 }

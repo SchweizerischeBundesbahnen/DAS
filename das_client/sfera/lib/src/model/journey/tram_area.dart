@@ -7,7 +7,7 @@ class TramArea extends BaseData {
     required super.kilometre,
     required this.endKilometre,
     required this.amountTramSignals,
-    super.speedData,
+    super.speeds,
   }) : super(type: Datatype.tramArea);
 
   final double endKilometre;

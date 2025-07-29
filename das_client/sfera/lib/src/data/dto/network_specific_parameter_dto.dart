@@ -1,5 +1,8 @@
 import 'package:sfera/src/data/dto/amount_tram_signals_dto.dart';
 import 'package:sfera/src/data/dto/id_nsp_dto.dart';
+import 'package:sfera/src/data/dto/new_speed_nsp_dto.dart';
+import 'package:sfera/src/data/dto/operational_indication_type_nsp_dto.dart';
+import 'package:sfera/src/data/dto/operational_indication_uncoded_text_nsp_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/speed_nsp_dto.dart';
 import 'package:sfera/src/data/dto/track_equipment_type_wrapper_dto.dart';
@@ -8,6 +11,7 @@ import 'package:sfera/src/data/dto/xml_graduated_speed_info_dto.dart';
 import 'package:sfera/src/data/dto/xml_line_foot_notes_dto.dart';
 import 'package:sfera/src/data/dto/xml_new_line_speed_dto.dart';
 import 'package:sfera/src/data/dto/xml_op_foot_notes_dto.dart';
+import 'package:sfera/src/data/dto/xml_station_property_dto.dart';
 import 'package:sfera/src/data/dto/xml_station_speed_dto.dart';
 import 'package:sfera/src/data/dto/xml_track_foot_notes_dto.dart';
 
@@ -43,6 +47,14 @@ class NetworkSpecificParameterDto extends SferaXmlElementDto {
       return IdNetworkSpecificParameterDto(attributes: attributes, children: children, value: value);
     } else if (attributes?['name'] == SpeedNetworkSpecificParameterDto.elementName) {
       return SpeedNetworkSpecificParameterDto(attributes: attributes, children: children, value: value);
+    } else if (attributes?['name'] == NewSpeedNetworkSpecificParameterDto.elementName) {
+      return NewSpeedNetworkSpecificParameterDto(attributes: attributes, children: children, value: value);
+    } else if (attributes?['name'] == XmlStationPropertyDto.elementName) {
+      return XmlStationPropertyDto(attributes: attributes, children: children, value: value);
+    } else if (attributes?['name'] == OperationalIndicationTypeNspDto.elementName) {
+      return OperationalIndicationTypeNspDto(attributes: attributes, children: children, value: value);
+    } else if (attributes?['name'] == OperationalIndicationUncodedTextNspDto.elementName) {
+      return OperationalIndicationUncodedTextNspDto(attributes: attributes, children: children, value: value);
     }
     return NetworkSpecificParameterDto(attributes: attributes, children: children, value: value);
   }

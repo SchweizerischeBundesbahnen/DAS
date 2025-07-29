@@ -1,27 +1,33 @@
+import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/foot_note_accordion.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/widget_row_builder.dart';
 import 'package:app/theme/theme_util.dart';
-import 'package:app/util/text_util.dart';
 import 'package:app/widgets/accordion/accordion.dart';
-import 'package:app/widgets/das_text_styles.dart';
+import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
-abstract class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
-  // Accordion 30 + 2x8 vertical padding
-  static const double _collapsedHeight = 46.0;
-
+class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
   FootNoteRow({
     required super.metadata,
     required super.data,
+    required super.rowIndex,
     required this.isExpanded,
+    required this.addTopMargin,
     required this.accordionToggleCallback,
-    double? height,
-    super.stickyLevel,
     super.config,
     super.identifier,
-  }) : super(height: height ?? _calculateHeight(data, isExpanded));
+  }) : super(
+         stickyLevel: data.stickyLevel,
+         height: FootNoteAccordion.calculateHeight(
+           data: data,
+           isExpanded: isExpanded,
+           addTopMargin: addTopMargin,
+         ),
+       );
 
+  final bool addTopMargin;
   final bool isExpanded;
   final AccordionToggleCallback accordionToggleCallback;
 
@@ -29,46 +35,61 @@ abstract class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
   Widget buildRowWidget(BuildContext context) {
     return Container(
       color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
-      child: SBBGroup(
-        margin: EdgeInsets.symmetric(vertical: sbbDefaultSpacing / 2),
-        child: Accordion(
-          key: ObjectKey(data.identifier),
-          title: title(context),
-          body: Padding(
-            padding: EdgeInsets.fromLTRB(
-              sbbDefaultSpacing + 24, // 24 is the width of the icon
-              sbbDefaultSpacing * 0.25,
-              sbbDefaultSpacing,
-              sbbDefaultSpacing * 0.25,
-            ),
-            child: contentText(data),
-          ),
-          isExpanded: isExpanded,
-          accordionToggleCallback: accordionToggleCallback,
-          icon: SBBIcons.form_small,
-          backgroundColor: ThemeUtil.getColor(context, SBBColors.white, SBBColors.charcoal),
-        ),
+      child: FootNoteAccordion(
+        data: data,
+        title: data.title(context, metadata),
+        addTopMargin: addTopMargin,
+        isExpanded: isExpanded,
+        accordionToggleCallback: accordionToggleCallback,
       ),
     );
   }
+}
 
-  String title(BuildContext context);
+// extension
 
-  Text contentText(BaseFootNote data) => _contentText(data);
-
-  static Text _contentText(BaseFootNote data) {
-    return Text.rich(TextUtil.parseHtmlText(data.footNote.text, DASTextStyles.smallRoman));
+extension FootNoteExtension on BaseFootNote {
+  StickyLevel get stickyLevel {
+    switch (this) {
+      case LineFootNote _:
+        return StickyLevel.second;
+      default:
+        return StickyLevel.none;
+    }
   }
 
-  static double _calculateHeight(BaseFootNote data, bool isExpanded) {
-    if (isExpanded) {
-      final content = _contentText(data);
-      final tp = TextPainter(text: content.textSpan, textDirection: TextDirection.ltr);
-      tp.layout();
-
-      return _collapsedHeight + tp.height + sbbDefaultSpacing * 0.5;
-    } else {
-      return _collapsedHeight;
+  String title(BuildContext context, Metadata metadata) {
+    switch (this) {
+      case final LineFootNote lineFootNote:
+        return _resolveTitle(context, lineFootNote, metadata);
+      default:
+        return _defaultTitle(context);
     }
+  }
+
+  String _resolveTitle(BuildContext context, LineFootNote lineFootNote, Metadata metadata) {
+    final identifier = lineFootNote.footNote.identifier;
+    if (identifier != null && metadata.lineFootNoteLocations[identifier] != null) {
+      final servicePointNames = metadata.lineFootNoteLocations[identifier]!;
+      return '${context.l10n.c_radn} ${servicePointNames.first} - ${servicePointNames.last}';
+    } else {
+      return _defaultTitle(context);
+    }
+  }
+
+  String _defaultTitle(BuildContext context) {
+    if (footNote.refText == 'SIM') {
+      return context.l10n.c_radn_sim;
+    }
+
+    return switch (footNote.type) {
+      FootNoteType.trackSpeed => '${context.l10n.c_radn} ${context.l10n.c_radn_type_track_speed}',
+      FootNoteType.decisiveGradientUp => '${context.l10n.c_radn} ${context.l10n.c_radn_type_decisive_gradient_up}',
+      FootNoteType.decisiveGradientDown => '${context.l10n.c_radn} ${context.l10n.c_radn_type_decisive_gradient_down}',
+      FootNoteType.contact => '${context.l10n.c_radn} ${context.l10n.c_radn_type_contact}',
+      FootNoteType.networkType => '${context.l10n.c_radn} ${context.l10n.c_radn_type_network_type}',
+      FootNoteType.journey => '${context.l10n.c_radn} ${context.l10n.c_radn_type_journey}',
+      null => context.l10n.c_radn,
+    };
   }
 }

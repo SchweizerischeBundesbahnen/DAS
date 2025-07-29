@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="4" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="6" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
     <TrainIdentification>
         <OTN_ID>
             <teltsi_Company>1085</teltsi_Company>
@@ -7,7 +7,7 @@
             <teltsi_StartDate>2022-01-04</teltsi_StartDate>
         </OTN_ID>
     </TrainIdentification>
-    <SegmentProfileReference SP_ID="T9999_1" SP_VersionMajor="4" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T9999_1" SP_VersionMajor="5" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -15,11 +15,19 @@
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Bahnhof_A"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="9999-01-01T00:00:02Z" plannedDepartureTime="9999-01-01T00:00:10Z"/>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:00:02Z" plannedDepartureTime="9999-01-01T00:00:01Z"/>
         </TimingPointConstraints>
-        <TrainCharacteristicsRef TC_ID="T9999_1" TC_VersionMajor="3" TC_VersionMinor="0" location="0">
+        <TrainCharacteristicsRef TC_ID="T9999_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
             <TC_RU_ID>1085</TC_RU_ID>
         </TrainCharacteristicsRef>
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="120"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="200" endLocation="200"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
     <SegmentProfileReference SP_ID="T9999_2" SP_VersionMajor="4" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
@@ -31,6 +39,14 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="9999-01-01T00:00:34Z" plannedDepartureTime="9999-01-01T00:00:40Z"/>
         </TimingPointConstraints>
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="100"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="500" endLocation="500"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
     <SegmentProfileReference SP_ID="T9999_3" SP_VersionMajor="4" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>

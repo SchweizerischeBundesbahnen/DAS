@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="1513_20_Zuerich_HB"
-                SP_VersionMajor="3" SP_VersionMinor="2" SP_Length="200" SP_Status="Valid">
+                SP_VersionMajor="3" SP_VersionMinor="3" SP_Length="200" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -37,14 +37,15 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>stationProperty</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationProperty" value="
-				&lt;stationProperty&gt; 
-					&lt;stationProperty1 text=&quot;&lt;b&gt;A&quot;&gt; sign=&quot;Q&quot;&gt;
+				&lt;stationProperties&gt;
+					&lt;stationProperty text=&quot;&lt;b&gt;A&quot; sign=&quot;Q&quot;&gt;
 						&lt;speeds&gt; 
-							&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;40-30&quot;/&gt; 
-							&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;40-30&quot;/&gt; 
-						&lt;/speeds&gt; 
-					&lt;/stationProperty1&gt; 
-				&lt;/stationProperty&gt;
+							&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;40-30/80&quot;/&gt;
+							&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;40-30/80&quot;/&gt;
+							&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;40-30/80&quot;/&gt;
+						&lt;/speeds&gt;
+					&lt;/stationProperty&gt;
+				&lt;/stationProperties&gt;
 				"/>
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>

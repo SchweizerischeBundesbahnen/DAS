@@ -1,3 +1,5 @@
+// coverage:ignore-file
+
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:logging/logging.dart';
@@ -21,7 +23,14 @@ final _log = Logger('DriftDatabaseService');
   ],
 )
 class DriftLocalDatabaseService extends _$DriftLocalDatabaseService implements SferaLocalDatabaseService {
-  DriftLocalDatabaseService() : super(driftDatabase(name: 'sfera_db'));
+  static DriftLocalDatabaseService? _instance;
+
+  static DriftLocalDatabaseService get instance {
+    _instance ??= DriftLocalDatabaseService._();
+    return _instance!;
+  }
+
+  DriftLocalDatabaseService._() : super(driftDatabase(name: 'sfera_db'));
 
   @override
   int get schemaVersion => 1;

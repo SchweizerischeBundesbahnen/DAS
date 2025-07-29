@@ -10,6 +10,7 @@ import 'package:sfera/component.dart';
 class DetailTabCommunication extends StatelessWidget {
   static const communicationTabKey = Key('communicationTab');
   static const radioChannelListKey = Key('communicationTabRadioChannelList');
+  static const simCorridorListKey = Key('simCorridorList');
 
   const DetailTabCommunication({super.key});
 
@@ -25,8 +26,46 @@ class DetailTabCommunication extends StatelessWidget {
             _communicationNetworkType(context),
             Text(context.l10n.w_service_point_modal_communication_radio_channel, style: DASTextStyles.smallRoman),
             _contactList(context),
+            _simCorridor(context),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _simCorridor(BuildContext context) {
+    final viewModel = context.read<ServicePointModalViewModel>();
+    return StreamBuilder(
+      stream: viewModel.simCorridor,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return SizedBox.shrink();
+
+        final contactList = snapshot.requireData!;
+        final simContacts = [...contactList.mainContacts, ...contactList.selectiveContacts];
+        return ListView.builder(
+          key: simCorridorListKey,
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: simContacts.length + 1,
+          itemBuilder: (context, index) => index == 0
+              ? Text(context.l10n.w_service_point_modal_communication_sim, style: DASTextStyles.smallRoman)
+              : _simContactItem(simContacts.elementAt(index - 1)),
+        );
+      },
+    );
+  }
+
+  Widget _simContactItem(Contact contact) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        spacing: 4.0,
+        children: [
+          SizedBox(width: 60.0, child: Text(contact.contactIdentifier, style: DASTextStyles.smallBold)),
+          if (contact.contactRole != null) Expanded(child: Text(contact.contactRole!, style: DASTextStyles.smallRoman)),
+        ],
       ),
     );
   }
@@ -50,7 +89,7 @@ class DetailTabCommunication extends StatelessWidget {
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemCount: contacts.length,
-          separatorBuilder: (_, __) => Divider(),
+          separatorBuilder: (_, _) => Divider(),
           itemBuilder: (context, index) => _contactItem(contacts.elementAt(index)),
         );
       },

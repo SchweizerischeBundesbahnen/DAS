@@ -1,3 +1,4 @@
+import 'package:app/extension/base_data_extension.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:app/theme/theme_util.dart';
@@ -5,8 +6,13 @@ import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
 
 class ReducedServicePointRow extends ServicePointRow {
-  ReducedServicePointRow({required super.metadata, required super.data, required this.context, super.config})
-    : super(context: context, rowColor: ThemeUtil.getDASTableColor(context));
+  ReducedServicePointRow({
+    required super.metadata,
+    required super.data,
+    required super.rowIndex,
+    required this.context,
+    super.config,
+  }) : super(context: context, rowColor: ThemeUtil.getDASTableColor(context));
 
   final BuildContext context;
 
@@ -33,6 +39,7 @@ class ReducedServicePointRow extends ServicePointRow {
         isRouteStart: metadata.routeStart == data,
         isRouteEnd: metadata.routeEnd == data,
         isStopOnRequest: !data.mandatoryStop,
+        chevronPosition: data.chevronPosition,
       ),
     );
   }

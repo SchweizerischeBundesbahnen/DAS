@@ -32,15 +32,18 @@ fvm dart run melos generate
 DAS Client has 3 distinct flavors: `dev`, `inte` and `prod`. Run them as follows:
 
 ```shell
-fvm flutter run --flavor dev -t app/lib/main_dev.dart
+cd app
+fvm flutter run --flavor dev -t lib/main_dev.dart
 ```
 
 ```shell
-fvm flutter run --flavor inte -t app/lib/main_inte.dart
+cd app
+fvm flutter run --flavor inte -t lib/main_inte.dart
 ```
 
 ```shell
-fvm flutter run --flavor prod -t app/lib/main_prod.dart
+cd app
+fvm flutter run --flavor prod -t lib/main_prod.dart
 ```
 
 ## Architecture
@@ -117,7 +120,7 @@ e.g. to create the `SFERA_JP_T1.xml` symlink, run:
 
 ```shell
 cd sfera/test_resources/T1_track_equipment
-ln -s ../../../sfera_mock/main/resources/static_sfera_resources/T1_track_equipment/SFERA_JP_T1.xml .
+ln -s ../../../../sfera_mock/src/main/resources/static_sfera_resources/T1_track_equipment/SFERA_JP_T1.xml .
 ```
 
 The resulting file structure for a test scenario looks as follows:

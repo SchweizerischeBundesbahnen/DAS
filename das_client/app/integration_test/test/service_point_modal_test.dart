@@ -1,3 +1,4 @@
+import 'package:app/di/di.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_communication.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_graduated_speeds.dart';
@@ -6,7 +7,8 @@ import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_poi
 import 'package:app/pages/journey/train_journey/widgets/header/animated_header_icon_button.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/cells/graduated_speeds_cell_body.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/speed_cell_body.dart';
+import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:flutter/material.dart';
@@ -108,15 +110,17 @@ void main() {
     });
     testWidgets('test modal closes after timeout without touch on screen', (tester) async {
       await prepareAndStartApp(tester);
+
       await loadTrainJourney(tester, trainNumber: 'T8');
 
       // open modal sheet with tap on service point name
       await _openByTapOnCellWithText(tester, 'Bern');
       _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
 
-      // wait till 10s idle time have passed
-      final timeout = DASModalSheetController.automaticCloseAfterSeconds + 1;
-      await Future.delayed(Duration(seconds: timeout));
+      final waitTime = DI.get<TimeConstants>().modalSheetAutomaticCloseAfterSeconds + 1;
+
+      // wait until waitTime reached
+      await Future.delayed(Duration(seconds: waitTime));
       await tester.pumpAndSettle();
 
       // check if modal sheet is closed
@@ -126,6 +130,7 @@ void main() {
     });
     testWidgets('test modal sheet does close after timeout with automatic advancement paused', (tester) async {
       await prepareAndStartApp(tester);
+
       await loadTrainJourney(tester, trainNumber: 'T8');
 
       // open modal sheet with tap on service point name
@@ -137,9 +142,10 @@ void main() {
       expect(pauseButton, findsOneWidget);
       await tapElement(tester, pauseButton);
 
-      // wait till 10s idle time have passed
-      final timeout = DASModalSheetController.automaticCloseAfterSeconds + 1;
-      await Future.delayed(Duration(seconds: timeout));
+      final waitTime = DI.get<TimeConstants>().modalSheetAutomaticCloseAfterSeconds + 1;
+
+      // wait until waitTime reached
+      await Future.delayed(Duration(seconds: waitTime));
       await tester.pumpAndSettle();
 
       // check if modal sheet is closed
@@ -162,12 +168,16 @@ void main() {
       await _openByTapOnCellWithText(tester, '75-70-60');
       _checkOpenModalSheet(DetailTabGraduatedSpeeds.graduatedSpeedsTabKey, 'Bern');
 
+      expect(find.text('75-70-60'), findsExactly(3));
+
       expect(find.text('Zusatzinformation A'), findsOneWidget);
 
       await selectBreakSeries(tester, breakSeries: 'N50');
 
       expect(find.text('Zusatzinformation A'), findsNothing);
-      expect(find.text('Zusatzinformation B'), findsOneWidget);
+      expect(find.text('Zusatzinformation B'), findsOne);
+      expect(find.text('70'), findsExactly(3));
+      expect(find.text('60'), findsExactly(3));
 
       await disconnect(tester);
     });
@@ -262,6 +272,61 @@ void main() {
 
       await disconnect(tester);
     });
+
+    testWidgets('test SIM corridor information', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T20');
+      await pauseAutomaticAdvancement(tester);
+
+      final scrollableFinder = find.byType(AnimatedList);
+      expect(scrollableFinder, findsOneWidget);
+
+      // check Reichenbach im Kandertal SIM information
+      await _openByTapOnCellWithText(tester, 'Reichenbach im Kandertal');
+      expect(find.byKey(DetailTabCommunication.simCorridorListKey), findsNothing);
+
+      // check Frutigen SIM information
+      await _openByTapOnCellWithText(tester, 'Frutigen');
+      expect(find.byKey(DetailTabCommunication.simCorridorListKey), findsOneWidget);
+      expect(find.text('Frutigen - Kandergrund'), findsOneWidget);
+
+      // check Domodossola FM SIM information
+      await tester.dragUntilVisible(find.text('Domodossola FM'), scrollableFinder, const Offset(0, -50));
+      await tester.pumpAndSettle();
+
+      await _openByTapOnCellWithText(tester, 'Domodossola FM');
+      expect(find.byKey(DetailTabCommunication.simCorridorListKey), findsOneWidget);
+      expect(find.text('1392'), findsOneWidget);
+      expect(find.text('Domodossola - Preglia, linkes Gleis'), findsOneWidget);
+      expect(find.text('1393'), findsOneWidget);
+      expect(find.text('Domodossola - Preglia, rechtes Gleis'), findsOneWidget);
+
+      // check Footnote header
+      expect(find.text(l10n.c_radn_sim), findsAny);
+
+      await disconnect(tester);
+    });
+  });
+
+  testWidgets('test short signal names are displayed when modal is open', (tester) async {
+    await prepareAndStartApp(tester);
+    await loadTrainJourney(tester, trainNumber: 'T9999');
+    await pauseAutomaticAdvancement(tester);
+
+    expect(find.text(l10n.c_main_signal_function_entry), findsAny);
+    expect(find.text(l10n.c_main_signal_function_exit), findsAny);
+    expect(find.text(l10n.c_main_signal_function_entry_short), findsNothing);
+    expect(find.text(l10n.c_main_signal_function_exit_short), findsNothing);
+
+    await _openByTapOnCellWithText(tester, 'Bahnhof A');
+    await tester.pumpAndSettle();
+
+    expect(find.text(l10n.c_main_signal_function_entry), findsNothing);
+    expect(find.text(l10n.c_main_signal_function_exit), findsNothing);
+    expect(find.text(l10n.c_main_signal_function_entry_short), findsAny);
+    expect(find.text(l10n.c_main_signal_function_exit_short), findsAny);
+
+    await disconnect(tester);
   });
 }
 
@@ -269,7 +334,7 @@ Future<void> _openByTapOnGraduatedSpeedOf(WidgetTester tester, String text) asyn
   final tableRow = findDASTableRowByText(text);
   final speedCell = find.descendant(
     of: tableRow,
-    matching: find.byKey(GraduatedSpeedsCellBody.incomingSpeedsKey),
+    matching: find.byKey(SpeedCellBody.incomingSpeedsKey),
   );
   await tapElement(tester, speedCell.first, warnIfMissed: false);
 }

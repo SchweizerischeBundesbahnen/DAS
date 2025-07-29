@@ -110,10 +110,10 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>stationProperty</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationProperty" value="
-				&lt;stationProperty&gt; 
-					&lt;stationProperty1 text=&quot;&lt;i&gt;via Stammlinie&quot;&gt; 
-					&lt;/stationProperty1&gt; 
-				&lt;/stationProperty&gt;
+				&lt;stationProperties&gt;
+					&lt;stationProperty text=&quot;&lt;i&gt;via Stammlinie&quot;&gt;
+					&lt;/stationProperty&gt;
+				&lt;/stationProperties&gt;
 				"/>
             </TAF_TAP_Location_NSP>
 

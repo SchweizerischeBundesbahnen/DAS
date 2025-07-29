@@ -1,8 +1,7 @@
 import 'package:meta/meta.dart';
-import 'package:sfera/src/model/journey/base_data_extension.dart';
 import 'package:sfera/src/model/journey/datatype.dart';
 import 'package:sfera/src/model/journey/order_priority.dart';
-import 'package:sfera/src/model/journey/speed_data.dart';
+import 'package:sfera/src/model/journey/train_series_speed.dart';
 
 @sealed
 @immutable
@@ -11,15 +10,15 @@ abstract class BaseData implements Comparable {
     required this.type,
     required this.order,
     required this.kilometre,
-    this.speedData,
-    this.localSpeedData,
+    this.speeds,
+    this.localSpeeds,
   });
 
   final Datatype type;
   final int order;
   final List<double> kilometre;
-  final SpeedData? speedData;
-  final SpeedData? localSpeedData;
+  final List<TrainSeriesSpeed>? speeds;
+  final List<TrainSeriesSpeed>? localSpeeds;
 
   @override
   int compareTo(other) {
@@ -43,7 +42,13 @@ abstract class BaseData implements Comparable {
   /// Used to check if the current element is allowed to be grouped with the other element
   /// Only gets checked if [canGroup] is already true
   /// Grouping is done in [BaseDataExtension]
-  bool canGroupWith(BaseData other) {
-    return false;
+  bool canGroupWith(BaseData other) => false;
+
+  /// Returns static local and line speeds. Does not return calculated or advised speed.
+  Iterable<TrainSeriesSpeed> get allStaticSpeeds {
+    return [
+      ...?speeds,
+      ...?localSpeeds,
+    ];
   }
 }

@@ -88,3 +88,7 @@ splunk:
 
 zis:
   kafka.topic: zis.inte.trafo.trainformation.operational
+
+logging:
+  url: ${SPLUNK_HEC_URL}
+  token: ${SPLUNK_HEC_TOKEN}
