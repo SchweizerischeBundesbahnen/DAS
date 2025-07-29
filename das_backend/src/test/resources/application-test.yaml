@@ -1,6 +1,9 @@
 spring:
   datasource:
     url: jdbc
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
 
 auth:
   audience:
@@ -12,5 +15,9 @@ auth:
       jwk-set-uri: https://login.microsoftonline.com/3409e798-d567-49b1-9bae-f0be66427c54/discovery/v2.0/keys
 
 splunk:
+  url: url
+  token: token
+
+logging:
   url: url
   token: token
