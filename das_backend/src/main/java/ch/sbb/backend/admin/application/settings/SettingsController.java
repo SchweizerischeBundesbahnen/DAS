@@ -1,7 +1,9 @@
 package ch.sbb.backend.admin.application.settings;
 
 import ch.sbb.backend.ApiDocumentation;
-import ch.sbb.backend.admin.application.settings.model.response.RuFeatureDto;
+import ch.sbb.backend.admin.application.settings.model.response.Logging;
+import ch.sbb.backend.admin.application.settings.model.response.RuFeature;
+import ch.sbb.backend.admin.application.settings.model.response.Settings;
 import ch.sbb.backend.admin.application.settings.model.response.SettingsResponse;
 import ch.sbb.backend.admin.domain.settings.RuFeatureService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,18 +22,21 @@ public class SettingsController {
 
     private final RuFeatureService ruFeatureService;
 
-    public SettingsController(RuFeatureService ruFeatureService) {
+    private final LoggingService loggingService;
+
+    public SettingsController(RuFeatureService ruFeatureService, LoggingService loggingService) {
         this.ruFeatureService = ruFeatureService;
+        this.loggingService = loggingService;
     }
 
     @GetMapping(API_SETTINGS)
     @Operation(summary = "Fetch all configuration settings.")
     public SettingsResponse getConfigurations() {
-        List<RuFeatureDto> allFeatures = ruFeatureService.getAll().stream()
-            .map(RuFeatureDto::new)
+        List<RuFeature> allFeatures = ruFeatureService.getAll().stream()
+            .map(RuFeature::new)
             .toList();
 
-        return new SettingsResponse(allFeatures);
-
+        Logging logging = loggingService.getLogging();
+        return new SettingsResponse(List.of(new Settings(allFeatures, logging)));
     }
 }

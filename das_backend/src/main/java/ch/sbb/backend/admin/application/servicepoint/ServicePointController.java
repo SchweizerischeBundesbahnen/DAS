@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Tag(name = "Service Points", description = "API for service points")
+@Deprecated
 public class ServicePointController {
 
     static final String PATH_SEGMENT_SERVICE_POINTS = "/service-points";
