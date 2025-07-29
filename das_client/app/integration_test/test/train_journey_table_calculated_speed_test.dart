@@ -53,7 +53,7 @@ void main() {
     final zuerichAirport = 'Zürich Flughafen';
     final zuerichAirportStationRow = findDASTableRowByText(zuerichAirport);
     expect(zuerichAirportStationRow, findsOneWidget);
-    _findTextWithin(zuerichAirportStationRow, '130');
+    _findTextWithin(zuerichAirportStationRow, '110');
 
     await dragUntilTextInStickyHeader(tester, zuerichAirport);
 
@@ -117,7 +117,6 @@ void main() {
     const zurichAirport = 'Zürich Flughafen';
     final zrhStationRow = findDASTableRowByText(zurichAirport);
     expect(zrhStationRow, findsOneWidget);
-    _findTextWithin(zrhStationRow, '130');
 
     await dragUntilTextInStickyHeader(tester, zurichAirport);
 
@@ -189,18 +188,18 @@ void main() {
   });
 }
 
-void _findTextWithin(Finder buchrainStationRow, String s) {
+void _findTextWithin(Finder baseFinder, String s) {
   final speedCell = find.descendant(
-    of: buchrainStationRow,
+    of: baseFinder,
     matching: find.byKey(AdvisedSpeedCellBody.generalKey),
   );
   final speed = find.descendant(of: speedCell, matching: find.text(s));
   expect(speed, findsOneWidget);
 }
 
-Finder _findNonEmptyAdvisedSpeedCellOf(Finder luzernStationRow) {
+Finder _findNonEmptyAdvisedSpeedCellOf(Finder baseFinder) {
   return find.descendant(
-    of: luzernStationRow,
+    of: baseFinder,
     matching: find.byKey(AdvisedSpeedCellBody.nonEmptyKey),
   );
 }

@@ -1,7 +1,7 @@
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/table/das_row_controller.dart';
-import 'package:app/widgets/table/das_row_controller_wrapper.dart' hide DASRowState;
+import 'package:app/widgets/table/das_row_controller_wrapper.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
