@@ -4,12 +4,13 @@ import ch.sbb.backend.admin.domain.servicepoint.ServicePointRepository;
 import ch.sbb.backend.admin.domain.servicepoint.ServicePointService;
 import ch.sbb.backend.admin.domain.servicepoint.ServicePointServiceImpl;
 import ch.sbb.backend.admin.domain.settings.RuFeatureRepository;
+import ch.sbb.backend.admin.domain.settings.RuFeatureService;
 import ch.sbb.backend.admin.domain.settings.RuFeatureServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ServiceBeanConfiguration {
+public class AdminServiceBeanConfiguration {
 
     @Bean
     ServicePointService servicePointService(ServicePointRepository servicePointRepository) {
@@ -17,7 +18,7 @@ public class ServiceBeanConfiguration {
     }
 
     @Bean
-    RuFeatureServiceImpl ruFeatureService(RuFeatureRepository ruFeatureRepository) {
+    RuFeatureService ruFeatureService(RuFeatureRepository ruFeatureRepository) {
         return new RuFeatureServiceImpl(ruFeatureRepository);
     }
 }

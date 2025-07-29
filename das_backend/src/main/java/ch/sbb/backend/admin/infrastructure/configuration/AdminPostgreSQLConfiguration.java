@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Configuration
 @EnableJpaAuditing(auditorAwareRef = "auditorProvider")
 @EnableJpaRepositories(basePackageClasses = {SpringDataJpaServicePointRepository.class, SpringDataJpaRuFeatureRepository.class})
-public class PostgreSQLConfiguration {
+public class AdminPostgreSQLConfiguration {
 
     @Bean
     AuditorAware<String> auditorProvider() {

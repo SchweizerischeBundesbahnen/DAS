@@ -1,5 +1,5 @@
+import 'package:app/pages/journey/train_journey/widgets/chronograph/chronograph_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/das_chronograph.dart';
-import 'package:app/pages/journey/train_journey/widgets/punctuality/punctuality_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/advised_speed_cell_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -141,16 +141,16 @@ void main() {
     await disconnect(tester);
   });
 
-  testWidgets('test do not display punctuality if no vpro speed in current position', (tester) async {
+  testWidgets('test do not display chronograph punctuality if no vpro speed in current position', (tester) async {
     await prepareAndStartApp(tester);
 
     await loadTrainJourney(tester, trainNumber: 'T23');
 
     final chronograph = find.byType(DASChronograph);
 
-    // should not display punctuality string
+    // should not display chronograph string
     expect(
-      find.descendant(of: chronograph, matching: find.text(PunctualityViewModel.trainIsPunctualString)),
+      find.descendant(of: chronograph, matching: find.text(ChronographViewModel.trainIsPunctualString)),
       findsNothing,
     );
 
