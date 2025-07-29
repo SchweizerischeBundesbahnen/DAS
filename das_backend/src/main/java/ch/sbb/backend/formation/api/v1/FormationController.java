@@ -3,7 +3,10 @@ package ch.sbb.backend.formation.api.v1;
 import ch.sbb.backend.ApiDocumentation;
 import ch.sbb.backend.common.SFERA;
 import ch.sbb.backend.common.TelTsi;
+import ch.sbb.backend.formation.api.v1.model.Formation;
 import ch.sbb.backend.formation.api.v1.model.FormationResponse;
+import ch.sbb.backend.formation.application.FormationService;
+import ch.sbb.backend.formation.infrastructure.model.TrainFormationRunEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -12,7 +15,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
-import org.springframework.http.HttpStatus;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +31,13 @@ public class FormationController {
     public static final String OPERATIONAL_DAY_DESCRIPTION = "Operational day (underlying journey-planner specific, be aware of confusion with stop-times after midnight within a journey the day before).";
     public static final String COMPANY_DESCRIPTION = "Relates to teltsi_CompanyCode (according to SFERA resp. RICS-code).";
     private static final String PATH_SEGMENT_FORMATIONS = "/formations";
-    private static final String API_FORMATIONS = ApiDocumentation.VERSION_URI_V1 + PATH_SEGMENT_FORMATIONS;
+    static final String API_FORMATIONS = ApiDocumentation.VERSION_URI_V1 + PATH_SEGMENT_FORMATIONS;
+
+    private final FormationService formationService;
+
+    public FormationController(FormationService formationService) {
+        this.formationService = formationService;
+    }
 
     // todo: cacheable
     // todo: error API responses
@@ -43,7 +53,17 @@ public class FormationController {
 
         @Parameter(description = COMPANY_DESCRIPTION)
         @SFERA @TelTsi @RequestParam @Pattern(regexp = "\\d{4}") String company) {
-        // todo: check params and implement
-        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+        List<TrainFormationRunEntity> entities = formationService.findByTrainIdentifier(operationalTrainNumber, operationalDay, company);
+        if (entities.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        List<TrainFormationRunEntity> newestPerGroup = entities.stream()
+            .collect(Collectors.toMap(
+                e -> e.getTafTapLocationReferenceStart() + e.getTafTapLocationReferenceEnd(),
+                e -> e,
+                (e1, e2) -> e1.getModifiedDateTime().isAfter(e2.getModifiedDateTime()) ? e1 : e2
+            )).values().stream().toList();
+        Formation formation = Formation.from(newestPerGroup);
+        return ResponseEntity.ok(new FormationResponse(List.of(formation)));
     }
 }
