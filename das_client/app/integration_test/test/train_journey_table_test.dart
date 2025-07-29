@@ -14,8 +14,8 @@ import 'package:app/pages/journey/train_journey/widgets/table/whistle_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:app/util/format.dart';
 import 'package:app/util/time_constants.dart';
+import 'package:app/widgets/dot_indicator.dart';
 import 'package:app/widgets/labeled_badge.dart';
-import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
@@ -846,6 +846,27 @@ void main() {
       );
       expect(oltenOutgoingSpeeds, findsNothing);
 
+      // check correct display for Aarau (only blue indicator - no local speed)
+      await dragUntilTextInStickyHeader(tester, 'Dulliken');
+      final aarauStationRow = findDASTableRowByText('Aarau');
+      expect(aarauStationRow, findsOneWidget);
+      final aarauIncomingSpeeds = find.descendant(
+        of: aarauStationRow,
+        matching: find.byKey(SpeedCellBody.incomingSpeedsKey),
+      );
+      expect(aarauIncomingSpeeds, findsNothing);
+      final aarauOutgoingSpeeds = find.descendant(
+        of: aarauStationRow,
+        matching: find.byKey(SpeedCellBody.outgoingSpeedsKey),
+      );
+      expect(aarauOutgoingSpeeds, findsNothing);
+
+      final aarauDotIndicator = find.descendant(
+        of: aarauStationRow,
+        matching: find.byKey(DotIndicator.indicatorKey),
+      );
+      expect(aarauDotIndicator, findsOneWidget);
+
       await disconnect(tester);
     });
 
@@ -854,9 +875,6 @@ void main() {
 
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T8');
-
-      final scrollableFinder = find.byType(AnimatedList);
-      expect(scrollableFinder, findsOneWidget);
 
       // now empty
       final wankdorfStationRow = findDASTableRowByText('Wankdorf');
@@ -872,12 +890,7 @@ void main() {
       );
       expect(wankdorfOutgoingSpeedsEmpty, findsNothing);
 
-      final stickyHeader = find.byKey(StickyHeader.headerKey);
-      await tester.dragUntilVisible(
-        find.descendant(of: stickyHeader, matching: find.text('Wankdorf')),
-        scrollableFinder,
-        const Offset(0, -100),
-      );
+      await dragUntilTextInStickyHeader(tester, 'Wankdorf');
 
       await tester.pumpAndSettle();
 

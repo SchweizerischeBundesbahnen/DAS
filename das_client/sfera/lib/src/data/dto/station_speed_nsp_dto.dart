@@ -7,12 +7,7 @@ class StationSpeedNspDto extends TafTapLocationNspDto {
 
   StationSpeedNspDto({super.type, super.attributes, super.children, super.value});
 
-  XmlStationSpeedDto get xmlStationSpeed => children.whereType<XmlStationSpeedDto>().first;
+  XmlStationSpeedDto? get xmlStationSpeed => children.whereType<XmlStationSpeedDto>().firstOrNull;
 
   XmlGraduatedSpeedInfoDto? get xmlGraduatedSpeedInfo => children.whereType<XmlGraduatedSpeedInfoDto>().firstOrNull;
-
-  @override
-  bool validate() {
-    return validateHasChildOfType<XmlStationSpeedDto>() && super.validate();
-  }
 }

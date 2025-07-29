@@ -912,7 +912,7 @@ void main() {
     expect(journey.valid, true);
 
     final servicePoints = journey.data.where((it) => it.type == Datatype.servicePoint).cast<ServicePoint>().toList();
-    expect(servicePoints, hasLength(7));
+    expect(servicePoints, hasLength(8));
 
     // check ServicePoint Bern
 
@@ -996,31 +996,36 @@ void main() {
     expect(aSpeedEntry4, isNotNull);
     _checkTrainSeriesSpeed<SingleSpeed>(aSpeedEntry4!, expected: '70', trainSeries: TrainSeries.A);
 
+    // check ServicePoint Aarau
+
+    final localSpeed5 = servicePoints[5].localSpeeds;
+    expect(localSpeed5, isNull);
+
     // check ServicePoint Lenzburg
-
-    final localSpeed5 = servicePoints[5].localSpeeds!;
-    expect(localSpeed5, hasLength(2));
-
-    final rSpeedEntry5 = localSpeed5.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.R);
-    expect(rSpeedEntry5, isNotNull);
-    _checkTrainSeriesSpeed<IncomingOutgoingSpeed>(rSpeedEntry5!, expected: '70-65/55', trainSeries: TrainSeries.R);
-
-    final aSpeedEntry5 = localSpeed5.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.A);
-    expect(aSpeedEntry5, isNotNull);
-    _checkTrainSeriesSpeed<SingleSpeed>(aSpeedEntry5!, expected: '75', trainSeries: TrainSeries.A);
-
-    // check ServicePoint Zuerich
 
     final localSpeed6 = servicePoints[6].localSpeeds!;
     expect(localSpeed6, hasLength(2));
 
     final rSpeedEntry6 = localSpeed6.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.R);
     expect(rSpeedEntry6, isNotNull);
-    _checkTrainSeriesSpeed<SingleSpeed>(rSpeedEntry6!, expected: '60', trainSeries: TrainSeries.R);
+    _checkTrainSeriesSpeed<IncomingOutgoingSpeed>(rSpeedEntry6!, expected: '70-65/55', trainSeries: TrainSeries.R);
 
     final aSpeedEntry6 = localSpeed6.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.A);
     expect(aSpeedEntry6, isNotNull);
-    _checkTrainSeriesSpeed<SingleSpeed>(aSpeedEntry6!, expected: '60', trainSeries: TrainSeries.A);
+    _checkTrainSeriesSpeed<SingleSpeed>(aSpeedEntry6!, expected: '75', trainSeries: TrainSeries.A);
+
+    // check ServicePoint Zuerich
+
+    final localSpeed7 = servicePoints[7].localSpeeds!;
+    expect(localSpeed7, hasLength(2));
+
+    final rSpeedEntry7 = localSpeed7.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.R);
+    expect(rSpeedEntry7, isNotNull);
+    _checkTrainSeriesSpeed<SingleSpeed>(rSpeedEntry7!, expected: '60', trainSeries: TrainSeries.R);
+
+    final aSpeedEntry7 = localSpeed7.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.A);
+    expect(aSpeedEntry7, isNotNull);
+    _checkTrainSeriesSpeed<SingleSpeed>(aSpeedEntry7!, expected: '60', trainSeries: TrainSeries.A);
   });
 
   test('Test graduated station speeds are parsed correctly', () async {
@@ -1028,7 +1033,7 @@ void main() {
     expect(journey.valid, true);
 
     final servicePoints = journey.data.where((it) => it.type == Datatype.servicePoint).cast<ServicePoint>().toList();
-    expect(servicePoints, hasLength(7));
+    expect(servicePoints, hasLength(8));
 
     // check ServicePoint Bern
 
@@ -1149,22 +1154,45 @@ void main() {
     final graduatedStationSpeeds4 = servicePoints[4].graduatedSpeedInfo!;
     expect(graduatedStationSpeeds4, hasLength(2));
 
-    final rSpeedEntry3 = graduatedStationSpeeds4.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.R);
-    expect(rSpeedEntry3, isNotNull);
+    final rSpeedEntry4 = graduatedStationSpeeds4.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.R);
+    expect(rSpeedEntry4, isNotNull);
     _checkTrainSeriesSpeed<GraduatedSpeed>(
-      rSpeedEntry3!,
+      rSpeedEntry4!,
       expected: '75-70-65',
       trainSeries: TrainSeries.R,
       text: 'Zusatzinformation D',
     );
 
-    final oSpeedEntry3 = graduatedStationSpeeds4.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.O);
-    expect(oSpeedEntry3, isNotNull);
+    final oSpeedEntry4 = graduatedStationSpeeds4.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.O);
+    expect(oSpeedEntry4, isNotNull);
     _checkTrainSeriesSpeed<GraduatedSpeed>(
-      oSpeedEntry3!,
+      oSpeedEntry4!,
       expected: '75-70-65',
       trainSeries: TrainSeries.O,
       text: 'Zusatzinformation D',
+    );
+
+    // check ServicePoint Aarau
+
+    final graduatedStationSpeeds5 = servicePoints[5].graduatedSpeedInfo!;
+    expect(graduatedStationSpeeds5, hasLength(2));
+
+    final rSpeedEntry5 = graduatedStationSpeeds5.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.R);
+    expect(rSpeedEntry5, isNotNull);
+    _checkTrainSeriesSpeed<GraduatedSpeed>(
+      rSpeedEntry5!,
+      expected: '75-70-65',
+      trainSeries: TrainSeries.R,
+      text: 'Gleis 4: Ausfahrt Richtung Lenzburg',
+    );
+
+    final oSpeedEntry5 = graduatedStationSpeeds5.firstWhereOrNull((speeds) => speeds.trainSeries == TrainSeries.O);
+    expect(oSpeedEntry5, isNotNull);
+    _checkTrainSeriesSpeed<GraduatedSpeed>(
+      oSpeedEntry5!,
+      expected: '75-70-65',
+      trainSeries: TrainSeries.O,
+      text: 'Gleis 4: Ausfahrt Richtung Lenzburg',
     );
   });
 
@@ -1470,6 +1498,29 @@ void main() {
     expect(radioContactLists[6].selectiveContacts.first.contactRole, 'Richtung Süd: Fahrdienstleiter');
     expect(radioContactLists[7].mainContacts.length, 1);
     expect(radioContactLists[7].mainContacts.first.contactIdentifier, '1407');
+  });
+
+  test('Test SIM ContactList T20 parsed correctly', () async {
+    final journey = getJourney('T20', 1);
+    expect(journey.valid, true);
+
+    final radioContactLists = journey.metadata.radioContactLists.toList();
+
+    expect(radioContactLists.length, 9);
+    expect(radioContactLists[0].mainContacts.length, 1);
+    expect(radioContactLists[0].mainContacts.first.contactIdentifier, '1305');
+    expect(radioContactLists[0].isSimCorridor, false);
+    expect(radioContactLists[1].selectiveContacts.length, 1);
+    expect(radioContactLists[1].selectiveContacts.first.contactIdentifier, '1390');
+    expect(radioContactLists[1].selectiveContacts.first.contactRole, 'Frutigen - Kandergrund');
+    expect(radioContactLists[1].isSimCorridor, true);
+    expect(radioContactLists[2].isSimCorridor, false);
+    expect(radioContactLists[3].isSimCorridor, false);
+    expect(radioContactLists[4].isSimCorridor, false);
+    expect(radioContactLists[5].isSimCorridor, true);
+    expect(radioContactLists[6].isSimCorridor, false);
+    expect(radioContactLists[7].isSimCorridor, true);
+    expect(radioContactLists[8].isSimCorridor, false);
   });
 
   test('Test DecisiveGradientArea parsed correctly', () {

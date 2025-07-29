@@ -62,6 +62,8 @@ void main() {
 
     // should show full text after tap on "show more" and no button
     await tapElement(tester, showMoreButton);
+    await tester.pumpAndSettle(Duration(milliseconds: 100));
+
     final rowWithEndOfText = _findDASTableAccordionRowByContainsText(
       'Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
     );
@@ -163,6 +165,16 @@ void main() {
     final identifier = opFootNote.hashCode;
 
     await _checkCollapsedWhenPassed(identifier, tester);
+
+    await disconnect(tester);
+  });
+
+  testWidgets('test RADN foot notes title contain type', (tester) async {
+    await prepareAndStartApp(tester);
+    await loadTrainJourney(tester, trainNumber: 'T15M');
+
+    expect(find.textContaining(l10n.c_radn_type_decisive_gradient_down), findsOneWidget);
+    expect(find.textContaining(l10n.c_radn_type_journey), findsAny);
 
     await disconnect(tester);
   });

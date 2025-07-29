@@ -54,8 +54,8 @@ class TrainFormationRunEntityTest {
         FormationRun formationRun = FormationRun.builder()
             .inspected(true)
             .company("4532")
-            .tafTapLocationReferenceStart(new TafTapLocationReference(23, 102344))
-            .tafTapLocationReferenceEnd(new TafTapLocationReference(23, 504212))
+            .tafTapLocationReferenceStart(new TafTapLocationReference("CH", 102344))
+            .tafTapLocationReferenceEnd(new TafTapLocationReference("CH", 504212))
             .trainCategoryCode("CAT")
             .brakedWeightPercentage(435)
             .tractionMaxSpeedInKmh(1)
@@ -87,7 +87,7 @@ class TrainFormationRunEntityTest {
                     .handBrakeWeightInT(90)
                     .load(new Load(List.of(new Goods(false)), List.of(new IntermodalLoadingUnit(List.of(new Goods(false))))))
                     .build()
-            ), new EuropeanVehicleNumber("23", "78931"))))
+            ), new EuropeanVehicleNumber("56", "23", "78931", "3"))))
             .build();
 
         Formation formation = new Formation(modifiedDateTime, operationalTrainNumber, operationalDay, List.of(formationRun));
@@ -101,8 +101,8 @@ class TrainFormationRunEntityTest {
         assertThat(result.getOperationalTrainNumber()).isEqualTo(operationalTrainNumber);
         assertThat(result.getOperationalDay()).isEqualTo(operationalDay);
         assertThat(result.getCompany()).isEqualTo("4532");
-        assertThat(result.getTafTapLocationReferenceStart()).isEqualTo("23102344");
-        assertThat(result.getTafTapLocationReferenceEnd()).isEqualTo("23504212");
+        assertThat(result.getTafTapLocationReferenceStart()).isEqualTo("CH102344");
+        assertThat(result.getTafTapLocationReferenceEnd()).isEqualTo("CH504212");
         assertThat(result.getTrainCategoryCode()).isEqualTo("CAT");
         assertThat(result.getBrakedWeightPercentage()).isEqualTo(435);
         assertThat(result.getTractionMaxSpeedInKmh()).isEqualTo(1);
@@ -131,8 +131,8 @@ class TrainFormationRunEntityTest {
         assertThat(result.getVehiclesWithBrakeDesignLlAndKCount()).isZero();
         assertThat(result.getVehiclesWithBrakeDesignDCount()).isZero();
         assertThat(result.getVehiclesWithDisabledBrakesCount()).isZero();
-        assertThat(result.getEuropeanVehicleNumberFirst()).isEqualTo("2378931");
-        assertThat(result.getEuropeanVehicleNumberLast()).isEqualTo("2378931");
+        assertThat(result.getEuropeanVehicleNumberFirst()).isEqualTo("5623789313");
+        assertThat(result.getEuropeanVehicleNumberLast()).isEqualTo("5623789313");
         assertThat(result.getAxleLoadMaxInKg()).isEqualTo(31);
         assertThat(result.getRouteClass()).isEqualTo("A");
         assertThat(result.getGradientUphillMaxInPermille()).isEqualTo(79);

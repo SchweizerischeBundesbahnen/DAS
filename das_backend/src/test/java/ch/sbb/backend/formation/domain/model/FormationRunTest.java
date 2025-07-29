@@ -16,8 +16,8 @@ class FormationRunTest {
 
     @Test
     void constructor_getters() {
-        TafTapLocationReference start = new TafTapLocationReference(34, 1);
-        TafTapLocationReference end = new TafTapLocationReference(34, 2);
+        TafTapLocationReference start = new TafTapLocationReference("CH", 1);
+        TafTapLocationReference end = new TafTapLocationReference("CH", 2);
 
         FormationRun result = FormationRun.builder()
             .company("1134")
@@ -299,7 +299,7 @@ class FormationRunTest {
         FormationRun formationRun = createFormationRunWithVehicles(null);
         try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
             Vehicle vehicle = mock(Vehicle.class);
-            EuropeanVehicleNumber europeanVehicleNumber = new EuropeanVehicleNumber("12", "3456");
+            EuropeanVehicleNumber europeanVehicleNumber = new EuropeanVehicleNumber("95", "12", "3456", "4");
             when(vehicle.getEuropeanVehicleNumber()).thenReturn(europeanVehicleNumber);
             mockedStatic.when(() -> Vehicle.first(any())).thenReturn(vehicle);
 
@@ -326,7 +326,7 @@ class FormationRunTest {
         FormationRun formationRun = createFormationRunWithVehicles(null);
         try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
             Vehicle vehicle = mock(Vehicle.class);
-            EuropeanVehicleNumber europeanVehicleNumber = new EuropeanVehicleNumber("78", "910");
+            EuropeanVehicleNumber europeanVehicleNumber = new EuropeanVehicleNumber("12", "78", "910", "7");
             when(vehicle.getEuropeanVehicleNumber()).thenReturn(europeanVehicleNumber);
             mockedStatic.when(() -> Vehicle.last(any())).thenReturn(vehicle);
 
