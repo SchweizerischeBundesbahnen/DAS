@@ -26,6 +26,10 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+      ZIS_SR_URL: ${{ secrets.ZIS_SR_URL }}
+      ZIS_SR_API_KEY: ${{ secrets.ZIS_SR_API_KEY }}
+      ZIS_SR_API_SECRET: ${{ secrets.ZIS_SR_API_SECRET }}
 
     steps:
       - uses: actions/checkout@v4
@@ -36,10 +40,6 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Run the Maven verify phase
-        env:
-          ZIS_SR_URL: ${{ secrets.ZIS_SR_URL }}
-          ZIS_SR_API_KEY: ${{ secrets.ZIS_SR_API_KEY }}
-          ZIS_SR_API_SECRET: ${{ secrets.ZIS_SR_API_SECRET }}
         run: mvn --batch-mode --update-snapshots verify
       - name: Login to GitHub Container Registry
         if: github.ref == 'refs/heads/main'
