@@ -5,6 +5,7 @@ import ch.sbb.backend.formation.domain.model.Formation;
 import ch.sbb.backend.formation.infrastructure.model.TrainFormationRunEntity;
 import ch.sbb.zis.trainformation.api.model.DailyFormationTrain;
 import ch.sbb.zis.trainformation.api.model.DailyFormationTrainKey;
+import java.time.Instant;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -21,10 +22,12 @@ public class TrainFormationKafkaConsumer {
         this.formationService = formationService;
     }
 
-    // todo log kafka lag
+    // todo log a warning when kafka lag too high
 
     @KafkaListener(topics = "${zis.kafka.topic}")
     void receive(ConsumerRecord<DailyFormationTrainKey, DailyFormationTrain> message) {
+        long lagInS = (Instant.now().toEpochMilli() - message.timestamp()) / 1000;
+        log.debug("lagInS={} partition={} offset={}", lagInS, message.partition(), message.offset());
         Formation formation = FormationFactory.create(message);
         List<TrainFormationRunEntity> trainFormationRunEntities = TrainFormationRunEntity.from(formation);
 

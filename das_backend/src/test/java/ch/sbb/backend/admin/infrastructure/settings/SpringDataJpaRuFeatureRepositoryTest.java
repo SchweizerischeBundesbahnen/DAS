@@ -1,11 +1,10 @@
-package ch.sbb.backend.admin.infrastructure.repositories;
+package ch.sbb.backend.admin.infrastructure.settings;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.backend.JpaAuditingConfiguration;
 import ch.sbb.backend.TestContainerConfiguration;
 import ch.sbb.backend.admin.domain.settings.model.RuFeatureKey;
-import ch.sbb.backend.admin.infrastructure.settings.SpringDataJpaRuFeatureRepository;
 import ch.sbb.backend.admin.infrastructure.settings.model.CompanyEntity;
 import ch.sbb.backend.admin.infrastructure.settings.model.RuFeatureEntity;
 import java.time.LocalDateTime;
