@@ -31,7 +31,7 @@ class AdvisedSpeedCellBody extends StatelessWidget {
       initialData: DASRowControllerWrapper.of(context)!.controller.rowStateValue,
       builder: (context, snapshot) {
         final state = snapshot.requireData;
-        final isSticky = state == DASRowState.sticky;
+        final isSticky = state == DASRowState.sticky || state == DASRowState.almostSticky;
 
         final calculatedSpeed = metadata.calculatedSpeeds[order];
 

@@ -267,6 +267,7 @@ class _DASTableState extends State<DASTable> {
         onTap: row.onTap,
         child: DASRowControllerWrapper(
           isAlwaysSticky: isSticky,
+          rowKey: row.key,
           child: _FixedHeightRow(
             height: row.height,
             children: List.generate(widget.columns.length, (index) {
