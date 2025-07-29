@@ -17,3 +17,7 @@ auth:
 splunk:
   url: url
   token: token
+
+logging:
+  url: url
+  token: token
