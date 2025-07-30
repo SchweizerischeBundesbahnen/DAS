@@ -109,9 +109,6 @@ Future<void> selectBreakSeries(WidgetTester tester, {required String breakSeries
   // Check if the bottom sheet is opened
   expect(find.text(l10n.p_train_journey_break_series), findsOneWidget);
   await tapElement(tester, find.text(breakSeries));
-
-  // confirm button
-  await tapElement(tester, find.text(l10n.c_button_confirm));
 }
 
 Future<void> pauseAutomaticAdvancement(WidgetTester tester) async {

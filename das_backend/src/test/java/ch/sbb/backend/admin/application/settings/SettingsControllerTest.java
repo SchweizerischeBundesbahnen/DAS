@@ -33,9 +33,11 @@ class SettingsControllerTest {
     void should_respond_with_settings() throws Exception {
         mockMvc.perform(get(API_SETTINGS))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("ruFeatures", hasSize(1)))
-            .andExpect(jsonPath("ruFeatures.[0].key").value(RuFeatureKey.CHECKLIST_DEPARTURE_PROCESS.name()))
-            .andExpect(jsonPath("ruFeatures.[0].companyCodeRics").value("1111"))
-            .andExpect(jsonPath("ruFeatures.[0].enabled").value(true));
+            .andExpect(jsonPath("$.data[0].ruFeatures", hasSize(1)))
+            .andExpect(jsonPath("$.data[0].ruFeatures.[0].key").value(RuFeatureKey.CHECKLIST_DEPARTURE_PROCESS.name()))
+            .andExpect(jsonPath("$.data[0].ruFeatures.[0].companyCodeRics").value("1111"))
+            .andExpect(jsonPath("$.data[0].ruFeatures.[0].enabled").value(true))
+            .andExpect(jsonPath("$.data[0].logging.url").value("url"))
+            .andExpect(jsonPath("$.data[0].logging.token").value("token"));
     }
 }

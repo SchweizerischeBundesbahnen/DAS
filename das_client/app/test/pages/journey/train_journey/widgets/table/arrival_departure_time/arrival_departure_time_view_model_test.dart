@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:app/extension/datetime_extension.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
 import 'package:app/util/time_constants.dart';
+import 'package:clock/clock.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -22,6 +24,28 @@ void main() {
     testee.dispose();
     journeyStreamController.close();
     GetIt.I.reset();
+  });
+
+  test('wallclockTimeToMinuteValue_withFixedClock_shouldReturnFixedTime', () {
+    final perseveranceTouchdown = Clock.fixed(DateTime(2021, 02, 18, 20, 55));
+    withClock(perseveranceTouchdown, () {
+      final actual = testee.wallclockTimeToMinuteValue;
+      expect(actual, equals(perseveranceTouchdown.now()));
+    });
+  });
+
+  test('wallclockTimeToMinute_withClockAtFixedOffset_shouldReturnFixedTimes', () {
+    final curiosityTouchdown = DateTime(2012, 08, 06, 05, 17, 57);
+    final testClock = Clock.fixed(curiosityTouchdown);
+    final minuteRegister = <DateTime>[];
+    fakeAsync((async) {
+      withClock(testClock, () {
+        testee.wallclockTimeToMinute.listen(minuteRegister.add);
+        async.elapse(const Duration(minutes: 5));
+        expect(minuteRegister, hasLength(1)); // only emits distinct values
+        expect(minuteRegister.first, equals(curiosityTouchdown.roundDownToMinute()));
+      });
+    });
   });
 
   test('showOperationalTimes_whenInitialized_thenReturnsTrue', () {

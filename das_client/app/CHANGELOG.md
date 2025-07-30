@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.23.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.22.0...das_client-v0.23.0) (2025-07-29)
+
+
+### Features
+
+* add uncoded operational indication ([#126](https://github.com/SchweizerischeBundesbahnen/DAS/issues/126)) ([#1092](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1092)) ([add604d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/add604d4953118be4163507e986c328c9da43646))
+* color of dot indicator in dark mode is sky ([#907](https://github.com/SchweizerischeBundesbahnen/DAS/issues/907)) ([#1082](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1082)) ([d3bede9](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d3bede9f196c18b55cd3d5a31f70d29d799b36ac))
+* empty local speed can have blue indicator ([#891](https://github.com/SchweizerischeBundesbahnen/DAS/issues/891)) ([#1110](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1110)) ([4a14575](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4a14575c31d4a47e88c75d564c43e9356a0e618f))
+* short signal names when modal is open ([#980](https://github.com/SchweizerischeBundesbahnen/DAS/issues/980)) ([#1108](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1108)) ([3143d35](https://github.com/SchweizerischeBundesbahnen/DAS/commit/3143d353bbafcf54d5cf6bc5d3796367c083ed93))
+* show sim corridor in modal sheet ([#940](https://github.com/SchweizerischeBundesbahnen/DAS/issues/940)) ([#1105](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1105)) ([40e5609](https://github.com/SchweizerischeBundesbahnen/DAS/commit/40e560917fd83851677d54b4cd890d4796a4b99d))
+
+
+### Bug Fixes
+
+* kilometreCell should show every km for balise ([#1086](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1086)) ([ae85aab](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ae85aab67c86a51cf8c677f779c7d40785f22cc6))
+* reduction of calculated speed is displayed ([#88](https://github.com/SchweizerischeBundesbahnen/DAS/issues/88)) ([#1087](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1087)) ([4fdf40d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4fdf40ded262b293a799f5f8293481b0994cc6ca))
+* update speed in speed-detail ([#1068](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1068)) ([b40ca55](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b40ca55a5bfa355e81c421efbe1ae5acb0257fde))
+
 ## [0.22.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.21.0...das_client-v0.22.0) (2025-07-08)
 
 
