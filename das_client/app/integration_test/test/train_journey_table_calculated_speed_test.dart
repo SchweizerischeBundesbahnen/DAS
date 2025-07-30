@@ -48,10 +48,10 @@ void main() {
     final zurichOerlikon = 'Zürich Oerlikon';
     final zuerichOerlikonStationRow = findDASTableRowByText(zurichOerlikon);
     expect(zuerichOerlikonStationRow, findsOneWidget);
-    final zuerichAdvisedSpeedCell = _findNonEmptyCalculatedSpeedCellOf(zuerichOerlikonStationRow);
-    expect(zuerichAdvisedSpeedCell, findsNothing);
 
     await dragUntilTextInStickyHeader(tester, zurichOerlikon);
+    final zuerichAdvisedSpeedCell = _findNonEmptyCalculatedSpeedCellOf(zuerichOerlikonStationRow);
+    expect(zuerichAdvisedSpeedCell, findsOne);
 
     final bassersdorf = 'Bassersdorf';
     final bassersdorfStationRow = findDASTableRowByText(bassersdorf);
