@@ -55,8 +55,9 @@ void main() {
 
     final bassersdorfStationRow = findDASTableRowByText('Bassersdorf');
     expect(bassersdorfStationRow, findsOneWidget);
-    final bassersdorfAdvisedSpeedCell = _findNonEmptyCalculatedSpeedCellOf(bassersdorfStationRow);
-    expect(bassersdorfAdvisedSpeedCell, findsNothing);
+
+    // Basserdorf should not yet have a calculated speed
+    expect(_findNonEmptyCalculatedSpeedCellOf(bassersdorfStationRow), findsNothing);
 
     final zuerichAirport = 'Zürich Flughafen';
     final zuerichAirportStationRow = findDASTableRowByText(zuerichAirport);
@@ -64,9 +65,10 @@ void main() {
     _findTextWithin(zuerichAirportStationRow, '110');
 
     await dragUntilTextInStickyHeader(tester, zuerichAirport);
+    await tester.pumpAndSettle();
 
-    bassersdorfAdvisedSpeedCell.reset();
-    expect(bassersdorfAdvisedSpeedCell, findsAny);
+    // Basserdorf should now have a calculated speed
+    expect(_findNonEmptyCalculatedSpeedCellOf(bassersdorfStationRow), findsAny);
 
     final winterthur = 'Winterthur';
     final winterthurStationRow = findDASTableRowByText(winterthur);

@@ -10,6 +10,9 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class ADLNotification extends StatelessWidget {
+  static const Key adlNotificationKey = Key('adlNotification');
+  static const Key adlNotificationIconKey = Key('adlNotificationIcon');
+
   const ADLNotification({super.key});
 
   @override
@@ -66,6 +69,7 @@ class ADLNotification extends StatelessWidget {
 
   Widget _adlNotificationContainer(BuildContext context, String message, {String? icon}) {
     return Container(
+      key: adlNotificationKey,
       margin: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5).copyWith(bottom: sbbDefaultSpacing * 0.5),
       decoration: BoxDecoration(
         color: SBBColors.iron,
@@ -77,6 +81,7 @@ class ADLNotification extends StatelessWidget {
           if (icon != null) ...[
             SvgPicture.asset(
               icon,
+              key: adlNotificationIconKey,
               colorFilter: ColorFilter.mode(SBBColors.white, BlendMode.srcIn),
             ),
             const SizedBox(width: sbbDefaultSpacing * 0.5),
