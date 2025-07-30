@@ -1,3 +1,4 @@
+import 'package:app/pages/journey/train_journey/widgets/header/das_chronograph.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/adl_notification.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/advised_speed_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/calculated_speed_cell_body.dart';
@@ -21,7 +22,11 @@ void main() {
 
     // 2nd ADL Message (check signal)
     await waitUntilExists(tester, _findAdlNotificationContainingText('A653'));
+    // Punctuality Hidden
+    expect(find.byKey(DASChronograph.punctualityTextKey), findsNothing);
     await waitUntilExists(tester, _findAdlNotificationContainingText(l10n.w_adl_end));
+    // Punctuality Visible
+    expect(find.byKey(DASChronograph.punctualityTextKey), findsOne);
 
     // 3rd ADL Message (check icon)
     await waitUntilExists(tester, find.byKey(ADLNotification.adlNotificationIconKey));

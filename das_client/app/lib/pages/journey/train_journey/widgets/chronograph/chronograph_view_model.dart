@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/train_journey/widgets/chronograph/punctuality_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/notification/adl_view_model.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:clock/clock.dart';
 import 'package:intl/intl.dart';
@@ -11,8 +12,9 @@ import 'package:sfera/component.dart';
 class ChronographViewModel {
   static const String trainIsPunctualString = '+00:00';
 
-  ChronographViewModel({required Stream<Journey?> journeyStream}) {
+  ChronographViewModel({required Stream<Journey?> journeyStream, required AdlViewModel adlViewModel}) {
     _initJourneyStreamSubscription(journeyStream);
+    _initAdlSubscription(adlViewModel);
     _initTimers();
   }
 
@@ -27,8 +29,10 @@ class ChronographViewModel {
   bool _isStale = false;
   bool _isHiddenDueToNoUpdates = false;
   bool _hasCalculatedSpeed = false;
+  bool _adlActive = false;
 
   StreamSubscription<Journey?>? _journeySubscription;
+  StreamSubscription<AdlState>? _adlSubscription;
 
   final _rxModel = BehaviorSubject<PunctualityModel>.seeded(PunctualityModel.hidden());
 
@@ -55,13 +59,14 @@ class ChronographViewModel {
   }
 
   void _emitState() {
-    if (!_hasCalculatedSpeed || _isHiddenDueToNoUpdates) return _rxModel.add(PunctualityModel.hidden());
+    if (!_hasCalculatedSpeed || _isHiddenDueToNoUpdates || _adlActive) return _rxModel.add(PunctualityModel.hidden());
     if (_isStale) return _rxModel.add(PunctualityModel.stale(delay: _currentDelayString));
     _rxModel.add(PunctualityModel.visible(delay: _currentDelayString));
   }
 
   void dispose() {
     _journeySubscription?.cancel();
+    _adlSubscription?.cancel();
     _rxModel.close();
     _hiddenTimer?.cancel();
     _staleTimer?.cancel();
@@ -75,6 +80,13 @@ class ChronographViewModel {
       _updateDelayRelatedStates(metadata.delay);
       _updateCalculatedSpeedRelatedStates(metadata.calculatedSpeeds[metadata.lastServicePoint?.order]);
 
+      _emitState();
+    });
+  }
+
+  void _initAdlSubscription(AdlViewModel adlViewModel) {
+    _adlSubscription = adlViewModel.adlState.listen((adlState) {
+      _adlActive = adlState == AdlState.active;
       _emitState();
     });
   }

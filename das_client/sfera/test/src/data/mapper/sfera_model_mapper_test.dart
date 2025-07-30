@@ -1209,7 +1209,21 @@ void main() {
     expect(
       servicePoints
           .whereIndexed((idx, _) => servicePointIdxWithoutCalculatedSpeed.contains(idx))
-          .every((sP) => journey.metadata.calculatedSpeeds[sP.order] == null),
+          .every(
+            (sP) => journey.metadata.calculatedSpeeds[sP.order] == null,
+          ),
+      isTrue,
+    );
+
+    final servicePointIdxWithNullSpeed = {0, 12, 13, 15};
+    expect(
+      servicePoints
+          .whereIndexed((idx, _) => servicePointIdxWithNullSpeed.contains(idx))
+          .every(
+            (sP) =>
+                journey.metadata.calculatedSpeeds.containsKey(sP.order) &&
+                journey.metadata.calculatedSpeeds[sP.order] == null,
+          ),
       isTrue,
     );
 

@@ -26,7 +26,7 @@ class Metadata {
     this.lineFootNoteLocations = const {},
     this.radioContactLists = const [],
     SplayTreeMap<int, Iterable<TrainSeriesSpeed>>? lineSpeeds,
-    SplayTreeMap<int, SingleSpeed>? calculatedSpeeds,
+    SplayTreeMap<int, SingleSpeed?>? calculatedSpeeds,
   }) : timestamp = timestamp ?? DateTime.now(),
        anyOperationalArrivalDepartureTimes = anyOperationalArrivalDepartureTimes ?? false,
        lineSpeeds = lineSpeeds ?? SplayTreeMap<int, Iterable<TrainSeriesSpeed>>(),
@@ -51,5 +51,5 @@ class Metadata {
   final Map<String, List<String>> lineFootNoteLocations;
   final Iterable<RadioContactList> radioContactLists;
   final SplayTreeMap<int, Iterable<TrainSeriesSpeed>> lineSpeeds;
-  final SplayTreeMap<int, SingleSpeed> calculatedSpeeds;
+  final SplayTreeMap<int, SingleSpeed?> calculatedSpeeds;
 }

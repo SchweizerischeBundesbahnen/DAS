@@ -128,7 +128,7 @@ class SferaModelMapper {
         lineFootNoteLocations: _generateLineFootNoteLocationMap(journeyData.whereType<LineFootNote>()),
         radioContactLists: _parseContactLists(segmentProfileReferences, segmentProfiles),
         lineSpeeds: lineSpeeds,
-        calculatedSpeeds: _parseCalculatedSpeeds(journeyProfile),
+        calculatedSpeeds: _parseCalculatedSpeeds(journeyProfile, servicePoints),
       ),
       data: journeyData,
     );
@@ -590,8 +590,14 @@ class SferaModelMapper {
     return duration != null ? Delay(value: duration, location: location) : null;
   }
 
-  static SplayTreeMap<int, SingleSpeed> _parseCalculatedSpeeds(JourneyProfileDto journeyProfile) {
-    final result = SplayTreeMap<int, SingleSpeed>();
+  static SplayTreeMap<int, SingleSpeed?> _parseCalculatedSpeeds(
+    JourneyProfileDto journeyProfile,
+    List<ServicePoint> servicePoints,
+  ) {
+    final result = SplayTreeMap<int, SingleSpeed?>();
+    for (final servicePoint in servicePoints.where((it) => it.isStop)) {
+      result[servicePoint.order] = null;
+    }
 
     journeyProfile.segmentProfileReferences.forEachIndexed((index, segmentProfileReference) {
       final contextInformationNsps = segmentProfileReference.jpContextInformation?.contextInformationNsp ?? [];

@@ -3,6 +3,7 @@ import 'dart:collection';
 
 import 'package:app/pages/journey/train_journey/widgets/chronograph/chronograph_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/chronograph/punctuality_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/notification/adl_view_model.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
@@ -57,7 +58,8 @@ void main() {
       testAsync = fakeAsync;
       formattedWallclockTimeRegister = <String>[];
       withClock(testClock, () {
-        testee = ChronographViewModel(journeyStream: journeyController.stream);
+        final adlViewModel = AdlViewModel(journeyStream: journeyController.stream);
+        testee = ChronographViewModel(journeyStream: journeyController.stream, adlViewModel: adlViewModel);
         formattedWallclockTimeSubscription = testee.formattedWallclockTime.listen(formattedWallclockTimeRegister.add);
       });
       punctualityEmitRegister = <PunctualityModel>[];

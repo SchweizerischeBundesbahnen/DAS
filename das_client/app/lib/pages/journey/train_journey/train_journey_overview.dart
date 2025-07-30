@@ -64,6 +64,7 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
   @override
   Widget build(BuildContext context) {
     final trainJourneyViewModel = context.read<TrainJourneyViewModel>();
+    final adlViewModel = AdlViewModel(journeyStream: trainJourneyViewModel.journey);
     return MultiProvider(
       providers: [
         Provider(
@@ -95,16 +96,26 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
           create: (_) => UxTestingViewModel(sferaService: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
+
         Provider(
-          create: (_) => ChronographViewModel(journeyStream: trainJourneyViewModel.journey),
-          dispose: (_, vm) => vm.dispose(),
-        ),
-        Provider(
-          create: (_) => AdlViewModel(journeyStream: trainJourneyViewModel.journey),
+          create: (_) => adlViewModel,
           dispose: (_, vm) => vm.dispose(),
         ),
       ],
-      builder: (context, child) => _body(context),
+      builder: (context, child) {
+        return MultiProvider(
+          providers: [
+            Provider(
+              create: (_) => ChronographViewModel(
+                journeyStream: trainJourneyViewModel.journey,
+                adlViewModel: context.read<AdlViewModel>(),
+              ),
+              dispose: (_, vm) => vm.dispose(),
+            ),
+          ],
+          builder: (context, child) => _body(context),
+        );
+      },
     );
   }
 

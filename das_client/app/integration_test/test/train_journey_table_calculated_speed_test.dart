@@ -53,7 +53,8 @@ void main() {
 
     await dragUntilTextInStickyHeader(tester, zurichOerlikon);
 
-    final bassersdorfStationRow = findDASTableRowByText('Bassersdorf');
+    final bassersdorf = 'Bassersdorf';
+    final bassersdorfStationRow = findDASTableRowByText(bassersdorf);
     expect(bassersdorfStationRow, findsOneWidget);
 
     // Basserdorf should not yet have a calculated speed
@@ -64,7 +65,7 @@ void main() {
     expect(zuerichAirportStationRow, findsOneWidget);
     _findTextWithin(zuerichAirportStationRow, '110');
 
-    await dragUntilTextInStickyHeader(tester, zuerichAirport);
+    await dragUntilTextInStickyHeader(tester, bassersdorf);
     await tester.pumpAndSettle(const Duration(milliseconds: 200));
 
     // Basserdorf should now have a calculated speed

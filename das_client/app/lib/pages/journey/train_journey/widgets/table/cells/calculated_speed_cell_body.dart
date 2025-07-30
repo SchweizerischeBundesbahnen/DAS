@@ -44,7 +44,7 @@ class CalculatedSpeedCellBody extends StatelessWidget {
 
         final calculatedSpeed = metadata.calculatedSpeeds[order];
 
-        final shouldResolvePrevious = _shouldResolvePrevious(state);
+        final shouldResolvePrevious = _shouldResolvePrevious(state) && !metadata.calculatedSpeeds.containsKey(order);
 
         SingleSpeed? resolvedCalculatedSpeed =
             calculatedSpeed ?? (shouldResolvePrevious ? _calculatedSpeedFromPrev : null);
