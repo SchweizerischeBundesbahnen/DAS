@@ -125,27 +125,24 @@ void main() {
 
     const zurichAirport = 'Zürich Flughafen';
     final zrhStationRow = findDASTableRowByText(zurichAirport);
-    expect(zrhStationRow, findsOneWidget);
-
-    await dragUntilTextInStickyHeader(tester, zurichAirport);
 
     // filled with line speed from Zürich HB
     expect(zrhStationRow, findsOneWidget);
     _findTextWithin(zrhStationRow, '110');
 
-    // Frauenfeld -------
+    // Bassersdorf -------
 
-    const frauenfeld = 'Frauenfeld';
-    final frauenfeldStationRow = findDASTableRowByText(frauenfeld);
-    expect(frauenfeldStationRow, findsOneWidget);
-    final frauenfeldAdvisedSpeedCell = _findNonEmptyCalculatedSpeedCellOf(frauenfeldStationRow);
-    expect(frauenfeldAdvisedSpeedCell, findsNothing);
+    const bassersdorf = 'Bassersdorf';
+    final bassersdorfStationRow = findDASTableRowByText(bassersdorf);
+    expect(bassersdorfStationRow, findsOneWidget);
+    final bassersdorfAdvisedSpeedCell = _findNonEmptyCalculatedSpeedCellOf(bassersdorfStationRow);
+    expect(bassersdorfAdvisedSpeedCell, findsNothing);
 
-    await dragUntilTextInStickyHeader(tester, frauenfeld);
+    await dragUntilTextInStickyHeader(tester, bassersdorf);
 
-    // filled with line speed from Frauenfeld
-    expect(frauenfeldStationRow, findsOneWidget);
-    _findTextWithin(frauenfeldStationRow, '70');
+    // filled with line speed from Zürich HB
+    expect(bassersdorfStationRow, findsOneWidget);
+    _findTextWithin(bassersdorfStationRow, '110');
 
     await disconnect(tester);
   });
