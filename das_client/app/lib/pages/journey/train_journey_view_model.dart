@@ -76,6 +76,7 @@ class TrainJourneyViewModel {
         case SferaRemoteRepositoryState.disconnected:
           WakelockPlus.disable();
           _disableWarnapp();
+          _resetSettings();
           if (_sferaRemoteRepo.lastError != null) {
             _rxErrorCode.add(ErrorCode.fromSfera(_sferaRemoteRepo.lastError!));
             setAutomaticAdvancement(false);
