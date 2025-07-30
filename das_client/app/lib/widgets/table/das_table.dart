@@ -29,6 +29,7 @@ class DASTable extends StatefulWidget {
     this.themeData,
     this.alignToItem = true,
     this.addBottomSpacer = true,
+    this.hasStickyWidgets = true,
   }) : assert(columns.isNotEmpty),
        scrollController = scrollController ?? ScrollController();
 
@@ -55,6 +56,9 @@ class DASTable extends StatefulWidget {
 
   /// If true, a bottom spacer is added to the table to ensure the last row can be scrolled to the top.
   final bool addBottomSpacer;
+
+  /// If the table uses sticky widgets this bool will activate the sticky widgets.
+  final bool hasStickyWidgets;
 
   @override
   State<DASTable> createState() => _DASTableState();
@@ -139,7 +143,9 @@ class _DASTableState extends State<DASTable> {
               children: [
                 _headerRow(),
                 Expanded(
-                  child: _stickyHeaderList(constraints),
+                  child: widget.hasStickyWidgets
+                      ? _stickyHeaderList(constraints)
+                      : SizedBox(key: DASTable.tableKey, child: _animatedList(constraints)),
                 ),
               ],
             ),
