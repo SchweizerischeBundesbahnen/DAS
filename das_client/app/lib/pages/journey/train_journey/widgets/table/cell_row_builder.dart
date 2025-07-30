@@ -1,9 +1,12 @@
 import 'package:app/extension/base_data_extension.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/advised_speed_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/calculated_speed_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/line_speed_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/show_speed_behaviour.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/column_definition.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_config.dart';
@@ -190,7 +193,33 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
 
   DASTableCell informationCell(BuildContext context) => DASTableCell.empty();
 
-  DASTableCell advisedSpeedCell(BuildContext context) => DASTableCell.empty();
+  DASTableCell advisedSpeedCell(BuildContext context) {
+    final advisedSpeedsSegment = metadata.advisedSpeedSegments.appliesToOrder(data.order);
+    final isLastAdvisedSpeed = advisedSpeedsSegment.firstOrNull?.endData == data;
+    if (advisedSpeedsSegment.isNotEmpty && !isLastAdvisedSpeed) {
+      final isFirst = advisedSpeedsSegment.first.startOrder == data.order;
+
+      return DASTableCell(
+        padding: EdgeInsets.all(0.0),
+        clipBehaviour: Clip.none,
+        child: AdvisedSpeedCellBody(
+          metadata: metadata,
+          settings: config.settings,
+          order: data.order,
+          showSpeedBehavior: isFirst ? ShowSpeedBehavior.always : showSpeedBehavior,
+        ),
+      );
+    } else {
+      return DASTableCell(
+        child: CalculatedSpeedCellBody(
+          metadata: metadata,
+          settings: config.settings,
+          order: data.order,
+          showSpeedBehavior: isLastAdvisedSpeed ? ShowSpeedBehavior.alwaysOrPrevious : showSpeedBehavior,
+        ),
+      );
+    }
+  }
 
   DASTableCell iconsCell1(BuildContext context) => DASTableCell.empty();
 

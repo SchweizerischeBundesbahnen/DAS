@@ -4,9 +4,8 @@ import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_poi
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/cells/advised_speed_cell_body.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/cells/line_speed_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/show_speed_behaviour.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/time_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:app/theme/theme_util.dart';
@@ -224,17 +223,6 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
       child: child,
-    );
-  }
-
-  @override
-  DASTableCell advisedSpeedCell(BuildContext context) {
-    return DASTableCell(
-      child: AdvisedSpeedCellBody(
-        metadata: metadata,
-        settings: config.settings,
-        order: data.order,
-      ),
     );
   }
 

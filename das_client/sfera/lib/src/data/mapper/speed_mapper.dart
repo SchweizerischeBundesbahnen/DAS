@@ -8,7 +8,6 @@ import 'package:sfera/src/data/dto/reason_code_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/velocity_dto.dart';
 import 'package:sfera/src/data/mapper/mapper_utils.dart';
-import 'package:sfera/src/model/journey/advised_speed_segment.dart';
 
 final _log = Logger('SpeedMapper');
 
@@ -120,6 +119,8 @@ class SpeedMapper {
           endOrder = _orderFromClosestServicePoint(endOrder, servicePoints.toList().reversed) ?? 0;
         }
 
+        final endData = journeyData.where((it) => it.order == endOrder).first;
+
         final advisedSpeed = speedConstraint.advisedSpeed!;
         SingleSpeed? speed;
         if (advisedSpeed.speed != null) speed = Speed.parse(advisedSpeed.speed!) as SingleSpeed;
@@ -130,17 +131,38 @@ class SpeedMapper {
         }
 
         if (speed == null) {
-          result.add(VelocityMaxAdvisedSpeedSegment(startOrder: startOrder, endOrder: endOrder));
+          result.add(VelocityMaxAdvisedSpeedSegment(startOrder: startOrder, endOrder: endOrder, endData: endData));
         } else {
           switch (advisedSpeed.reasonCode) {
             case ReasonCodeDto.followTrain:
-              result.add(FollowTrainAdvisedSpeedSegment(startOrder: startOrder, endOrder: endOrder, speed: speed));
+              result.add(
+                FollowTrainAdvisedSpeedSegment(
+                  startOrder: startOrder,
+                  endOrder: endOrder,
+                  speed: speed,
+                  endData: endData,
+                ),
+              );
               break;
             case ReasonCodeDto.trainFollowing:
-              result.add(TrainFollowingAdvisedSpeedSegment(startOrder: startOrder, endOrder: endOrder, speed: speed));
+              result.add(
+                TrainFollowingAdvisedSpeedSegment(
+                  startOrder: startOrder,
+                  endOrder: endOrder,
+                  speed: speed,
+                  endData: endData,
+                ),
+              );
               break;
             case ReasonCodeDto.adlFixedTime:
-              result.add(FixedTimeAdvisedSpeedSegment(startOrder: startOrder, endOrder: endOrder, speed: speed));
+              result.add(
+                FixedTimeAdvisedSpeedSegment(
+                  startOrder: startOrder,
+                  endOrder: endOrder,
+                  speed: speed,
+                  endData: endData,
+                ),
+              );
               break;
             default:
               _log.warning('Skipping AdvisedSpeed found with reasonCode that cannot be handled: $advisedSpeed');

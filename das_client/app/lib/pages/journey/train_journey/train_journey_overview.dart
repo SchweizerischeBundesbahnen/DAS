@@ -13,6 +13,8 @@ import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_moda
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/pages/journey/train_journey/widgets/journey_navigation_buttons.dart';
+import 'package:app/pages/journey/train_journey/widgets/notification/adl_notification.dart';
+import 'package:app/pages/journey/train_journey/widgets/notification/adl_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/koa_notification.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
@@ -97,6 +99,10 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
           create: (_) => ChronographViewModel(journeyStream: trainJourneyViewModel.journey),
           dispose: (_, vm) => vm.dispose(),
         ),
+        Provider(
+          create: (_) => AdlViewModel(journeyStream: trainJourneyViewModel.journey),
+          dispose: (_, vm) => vm.dispose(),
+        ),
       ],
       builder: (context, child) => _body(context),
     );
@@ -127,6 +133,7 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
     return Column(
       children: [
         Header(),
+        ADLNotification(),
         ManeuverNotification(),
         KoaNotification(),
         _warnappNotification(context),

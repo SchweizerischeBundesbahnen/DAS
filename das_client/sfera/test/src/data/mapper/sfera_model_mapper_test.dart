@@ -12,7 +12,6 @@ import 'package:sfera/src/data/dto/related_train_information_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
-import 'package:sfera/src/model/journey/advised_speed_segment.dart';
 
 void main() {
   Logger.root.level = Level.ALL;

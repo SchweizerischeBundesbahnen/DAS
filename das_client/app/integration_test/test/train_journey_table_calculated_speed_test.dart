@@ -1,6 +1,6 @@
 import 'package:app/pages/journey/train_journey/widgets/chronograph/chronograph_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/das_chronograph.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/cells/advised_speed_cell_body.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/calculated_speed_cell_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -30,7 +30,7 @@ void main() {
     final zug = 'Zug';
     final zugStationRow = findDASTableRowByText(zug);
     expect(zugStationRow, findsOneWidget);
-    _findTextWithin(zugStationRow, AdvisedSpeedCellBody.zeroSpeedContent);
+    _findTextWithin(zugStationRow, CalculatedSpeedCellBody.zeroSpeedContent);
 
     await dragUntilTextInStickyHeader(tester, zug);
 
@@ -81,7 +81,7 @@ void main() {
 
     final kreuzlingenStationRow = findDASTableRowByText('Kreuzlingen');
     expect(kreuzlingenStationRow, findsOneWidget);
-    _findTextWithin(kreuzlingenStationRow, AdvisedSpeedCellBody.zeroSpeedContent);
+    _findTextWithin(kreuzlingenStationRow, CalculatedSpeedCellBody.zeroSpeedContent);
 
     final konstanzStationRow = findDASTableRowByText('Konstanz');
     expect(konstanzStationRow, findsOneWidget);
@@ -180,7 +180,7 @@ void main() {
 
     // should be in metal
     final textWidget = tester.widget<Text>(
-      find.descendant(of: rotkreuxStationRow, matching: find.byKey(AdvisedSpeedCellBody.nonEmptyKey)),
+      find.descendant(of: rotkreuxStationRow, matching: find.byKey(CalculatedSpeedCellBody.nonEmptyKey)),
     );
     expect(textWidget.style?.color, equals(SBBColors.metal));
 
@@ -191,7 +191,7 @@ void main() {
 void _findTextWithin(Finder baseFinder, String s) {
   final speedCell = find.descendant(
     of: baseFinder,
-    matching: find.byKey(AdvisedSpeedCellBody.generalKey),
+    matching: find.byKey(CalculatedSpeedCellBody.generalKey),
   );
   final speed = find.descendant(of: speedCell, matching: find.text(s));
   expect(speed, findsOneWidget);
@@ -200,6 +200,6 @@ void _findTextWithin(Finder baseFinder, String s) {
 Finder _findNonEmptyAdvisedSpeedCellOf(Finder baseFinder) {
   return find.descendant(
     of: baseFinder,
-    matching: find.byKey(AdvisedSpeedCellBody.nonEmptyKey),
+    matching: find.byKey(CalculatedSpeedCellBody.nonEmptyKey),
   );
 }

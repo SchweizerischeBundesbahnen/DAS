@@ -8,7 +8,7 @@ class DASRowController {
   DASRowController({required bool isAlwaysSticky, required GlobalKey rowKey, this.stickyController})
     : _rowKey = rowKey,
       _isAlwaysSticky = isAlwaysSticky {
-    _rxRowState = BehaviorSubject<DASRowState>.seeded(isAlwaysSticky ? DASRowState.sticky : DASRowState.notSticky);
+    _rxRowState = BehaviorSubject<DASRowState>.seeded(isAlwaysSticky ? DASRowState.sticky : DASRowState.visible);
     _initListener();
   }
 
@@ -35,7 +35,7 @@ class DASRowController {
   void updateIsAlwaysSticky(bool isAlwaysSticky) {
     if (_isAlwaysSticky != isAlwaysSticky) {
       _isAlwaysSticky = isAlwaysSticky;
-      _rxRowState.add(isAlwaysSticky ? DASRowState.sticky : DASRowState.notSticky);
+      _rxRowState.add(isAlwaysSticky ? DASRowState.sticky : DASRowState.visible);
       _initListener();
     }
   }
@@ -57,11 +57,10 @@ class DASRowController {
     final stickyHeights = stickyController!.headerIndexes.values.map((it) => stickyController!.widgetHeight(it)).sum;
     final rowPosition = rowOffset.dy - stickyOffset.dy;
 
-    if (rowPosition < stickyHeights) {
-      // Almost sticky is set when the row starts to go under the sticky header
-      _rxRowState.add(DASRowState.almostSticky);
+    if (rowPosition <= stickyHeights) {
+      _rxRowState.add(DASRowState.firstVisibleRow);
     } else {
-      _rxRowState.add(DASRowState.notSticky);
+      _rxRowState.add(DASRowState.visible);
     }
   }
 
@@ -73,6 +72,6 @@ class DASRowController {
 
 enum DASRowState {
   sticky,
-  almostSticky,
-  notSticky,
+  firstVisibleRow,
+  visible,
 }

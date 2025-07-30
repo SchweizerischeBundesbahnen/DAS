@@ -47,4 +47,6 @@ class AppAssets {
   // audio
   static const soundKoaWaitCanceled = '$_soundsDir/koa_wait_canceled.mp3';
   static const warnappWarn = '$_soundsDir/warnapp_warn.wav';
+  static const adlStart = '$_soundsDir/adl_start.wav';
+  static const adlEnd = '$_soundsDir/adl_end.wav';
 }

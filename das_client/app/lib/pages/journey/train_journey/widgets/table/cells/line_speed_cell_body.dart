@@ -1,3 +1,4 @@
+import 'package:app/pages/journey/train_journey/widgets/table/cells/show_speed_behaviour.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_row_controller.dart';
@@ -24,6 +25,9 @@ class LineSpeedCellBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return switch (showSpeedBehavior) {
       ShowSpeedBehavior.always => SpeedDisplay(speed: _resolvedTrainSeriesSpeed()?.speed),
+      ShowSpeedBehavior.alwaysOrPrevious => SpeedDisplay(
+        speed: _resolvedTrainSeriesSpeed(resolvePrevious: true)?.speed,
+      ),
       ShowSpeedBehavior.never => DASTableCell.emptyBuilder,
       ShowSpeedBehavior.alwaysOrPreviousOnStickiness => StreamBuilder(
         stream: DASRowControllerWrapper.of(context)!.controller.rowState,
@@ -32,7 +36,7 @@ class LineSpeedCellBody extends StatelessWidget {
           final state = snapshot.requireData;
 
           final trainSeriesSpeed = _resolvedTrainSeriesSpeed(
-            resolvePrevious: state == DASRowState.sticky || state == DASRowState.almostSticky,
+            resolvePrevious: state == DASRowState.sticky || state == DASRowState.firstVisibleRow,
           );
 
           return SpeedDisplay(speed: trainSeriesSpeed?.speed);
@@ -54,5 +58,3 @@ class LineSpeedCellBody extends StatelessWidget {
     );
   }
 }
-
-enum ShowSpeedBehavior { always, alwaysOrPreviousOnStickiness, never }

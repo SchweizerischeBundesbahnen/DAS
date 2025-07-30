@@ -2,7 +2,6 @@ import 'dart:collection';
 
 import 'package:meta/meta.dart';
 import 'package:sfera/component.dart';
-import 'package:sfera/src/model/journey/advised_speed_segment.dart';
 
 @sealed
 @immutable

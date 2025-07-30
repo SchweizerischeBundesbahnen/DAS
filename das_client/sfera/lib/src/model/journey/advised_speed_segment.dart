@@ -4,6 +4,7 @@ sealed class AdvisedSpeedSegment extends Segment {
   const AdvisedSpeedSegment({
     required int startOrder,
     required int endOrder,
+    required this.endData,
   }) : super(startOrder: startOrder, endOrder: endOrder);
 
   SingleSpeed? get speed => switch (this) {
@@ -12,6 +13,8 @@ sealed class AdvisedSpeedSegment extends Segment {
     final FixedTimeAdvisedSpeedSegment aS => aS.speed,
     final VelocityMaxAdvisedSpeedSegment _ => null,
   };
+
+  final BaseData endData;
 
   @override
   String toString() {
@@ -23,6 +26,7 @@ class FollowTrainAdvisedSpeedSegment extends AdvisedSpeedSegment {
   const FollowTrainAdvisedSpeedSegment({
     required super.startOrder,
     required super.endOrder,
+    required super.endData,
     required this.speed,
   });
 
@@ -34,6 +38,7 @@ class TrainFollowingAdvisedSpeedSegment extends AdvisedSpeedSegment {
   const TrainFollowingAdvisedSpeedSegment({
     required super.startOrder,
     required super.endOrder,
+    required super.endData,
     required this.speed,
   });
 
@@ -45,6 +50,7 @@ class FixedTimeAdvisedSpeedSegment extends AdvisedSpeedSegment {
   const FixedTimeAdvisedSpeedSegment({
     required super.startOrder,
     required super.endOrder,
+    required super.endData,
     required this.speed,
   });
 
@@ -57,5 +63,6 @@ class VelocityMaxAdvisedSpeedSegment extends AdvisedSpeedSegment {
   const VelocityMaxAdvisedSpeedSegment({
     required super.startOrder,
     required super.endOrder,
+    required super.endData,
   });
 }
