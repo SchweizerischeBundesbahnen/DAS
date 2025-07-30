@@ -148,7 +148,6 @@ class SegmentProfileMapper {
           graduatedSpeedInfo: SpeedMapper.fromGraduatedSpeedInfo(
             tafTapLocation.stationSpeed?.xmlGraduatedSpeedInfo?.element,
           ),
-          calculatedSpeed: SpeedMapper.fromJourneyProfileContextInfoNsp(jpContextInfoNsp),
           decisiveGradient: _parseDecisiveGradientAtLocation(mapperData.segmentProfile, timingPoint.location),
           arrivalDepartureTime: _parseArrivalDepartureTime(tpConstraint),
           stationSign1: tafTapLocation.routeTableDataNsp?.stationSign1,

@@ -12,7 +12,6 @@ class ServicePoint extends BaseData {
     this.isStop = false,
     this.isStation = false,
     this.bracketMainStation,
-    this.calculatedSpeed,
     this.graduatedSpeedInfo,
     this.decisiveGradient,
     this.arrivalDepartureTime,
@@ -27,7 +26,6 @@ class ServicePoint extends BaseData {
   final bool isStation;
   final BracketMainStation? bracketMainStation;
   final List<TrainSeriesSpeed>? graduatedSpeedInfo;
-  final SingleSpeed? calculatedSpeed;
   final DecisiveGradient? decisiveGradient;
   final ArrivalDepartureTime? arrivalDepartureTime;
   final StationSign? stationSign1;
@@ -67,7 +65,6 @@ class ServicePoint extends BaseData {
         ', isStation: $isStation'
         ', bracketMainStation: $bracketMainStation'
         ', localSpeeds: $localSpeeds'
-        ', calculatedSpeed: $calculatedSpeed'
         ', arrivalDepartureTime: $arrivalDepartureTime'
         ', stationSign1: $stationSign1'
         ', stationSign2: $stationSign2'

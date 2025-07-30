@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:app/pages/journey/train_journey/widgets/chronograph/chronograph_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/chronograph/punctuality_model.dart';
@@ -34,15 +35,16 @@ void main() {
     ),
     data: [],
   );
+
   final delayAndCalculatedSpeedJourney = Journey(
     metadata: Metadata(
       delay: Delay(value: Duration(seconds: 10), location: 'Bern'),
       lastServicePoint: ServicePoint(
         name: 'Point 1',
-        calculatedSpeed: SingleSpeed(value: '100'),
         order: 0,
         kilometre: [],
       ),
+      calculatedSpeeds: SplayTreeMap.of({0: SingleSpeed(value: '100')}),
     ),
     data: [],
   );

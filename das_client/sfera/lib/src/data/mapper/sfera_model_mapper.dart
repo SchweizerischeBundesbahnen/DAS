@@ -128,7 +128,7 @@ class SferaModelMapper {
         lineFootNoteLocations: _generateLineFootNoteLocationMap(journeyData.whereType<LineFootNote>()),
         radioContactLists: _parseContactLists(segmentProfileReferences, segmentProfiles),
         lineSpeeds: lineSpeeds,
-        calculatedSpeeds: _gatherCalculatedSpeeds(journeyData),
+        calculatedSpeeds: _parseCalculatedSpeeds(journeyProfile),
       ),
       data: journeyData,
     );
@@ -590,14 +590,18 @@ class SferaModelMapper {
     return duration != null ? Delay(value: duration, location: location) : null;
   }
 
-  static SplayTreeMap<int, SingleSpeed> _gatherCalculatedSpeeds(List<BaseData> journeyData) {
-    final SplayTreeMap<int, SingleSpeed> result = SplayTreeMap();
+  static SplayTreeMap<int, SingleSpeed> _parseCalculatedSpeeds(JourneyProfileDto journeyProfile) {
+    final result = SplayTreeMap<int, SingleSpeed>();
 
-    for (final data in journeyData.whereType<ServicePoint>()) {
-      if (data.calculatedSpeed != null) {
-        result[data.order] = data.calculatedSpeed!;
+    journeyProfile.segmentProfileReferences.forEachIndexed((index, segmentProfileReference) {
+      final contextInformationNsps = segmentProfileReference.jpContextInformation?.contextInformationNsp ?? [];
+      for (final contextInformation in contextInformationNsps) {
+        final speedData = SpeedMapper.fromJourneyProfileContextInfoNsp(contextInformation);
+        if (speedData != null && contextInformation.constraint?.startLocation != null) {
+          result[calculateOrder(index, contextInformation.constraint!.startLocation!)] = speedData;
+        }
       }
-    }
+    });
 
     return result;
   }

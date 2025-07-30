@@ -1209,29 +1209,29 @@ void main() {
     expect(
       servicePoints
           .whereIndexed((idx, _) => servicePointIdxWithoutCalculatedSpeed.contains(idx))
-          .every((sP) => sP.calculatedSpeed == null),
+          .every((sP) => journey.metadata.calculatedSpeeds[sP.order] == null),
       isTrue,
     );
 
     // service points with calculated speed
-    expect(servicePoints[2].calculatedSpeed, isNotNull);
-    expect(servicePoints[2].calculatedSpeed, equals(Speed.parse('110')));
-    expect(servicePoints[3].calculatedSpeed, isNotNull);
-    expect(servicePoints[3].calculatedSpeed, equals(Speed.parse('135')));
-    expect(servicePoints[4].calculatedSpeed, isNotNull);
-    expect(servicePoints[4].calculatedSpeed, equals(Speed.parse('0')));
-    expect(servicePoints[5].calculatedSpeed, isNotNull);
-    expect(servicePoints[5].calculatedSpeed, equals(Speed.parse('130')));
-    expect(servicePoints[6].calculatedSpeed, isNotNull);
-    expect(servicePoints[6].calculatedSpeed, equals(Speed.parse('0')));
-    expect(servicePoints[7].calculatedSpeed, isNotNull);
-    expect(servicePoints[7].calculatedSpeed, equals(Speed.parse('90')));
-    expect(servicePoints[9].calculatedSpeed, isNotNull);
-    expect(servicePoints[9].calculatedSpeed, equals(Speed.parse('130')));
-    expect(servicePoints[11].calculatedSpeed, isNotNull);
-    expect(servicePoints[11].calculatedSpeed, equals(Speed.parse('80')));
-    expect(servicePoints[14].calculatedSpeed, isNotNull);
-    expect(servicePoints[14].calculatedSpeed, equals(Speed.parse('0')));
+    expect(journey.metadata.calculatedSpeeds[servicePoints[2].order], isNotNull);
+    expect(journey.metadata.calculatedSpeeds[servicePoints[2].order], equals(Speed.parse('110')));
+    expect(journey.metadata.calculatedSpeeds[servicePoints[3].order], isNotNull);
+    expect(journey.metadata.calculatedSpeeds[servicePoints[3].order], equals(Speed.parse('135')));
+    expect(journey.metadata.calculatedSpeeds[servicePoints[4].order], isNotNull);
+    expect(journey.metadata.calculatedSpeeds[servicePoints[4].order], equals(Speed.parse('0')));
+    expect(journey.metadata.calculatedSpeeds[servicePoints[5].order], isNotNull);
+    expect(journey.metadata.calculatedSpeeds[servicePoints[5].order], equals(Speed.parse('130')));
+    expect(journey.metadata.calculatedSpeeds[servicePoints[6].order], isNotNull);
+    expect(journey.metadata.calculatedSpeeds[servicePoints[6].order], equals(Speed.parse('0')));
+    expect(journey.metadata.calculatedSpeeds[servicePoints[7].order], isNotNull);
+    expect(journey.metadata.calculatedSpeeds[servicePoints[7].order], equals(Speed.parse('90')));
+    expect(journey.metadata.calculatedSpeeds[servicePoints[9].order], isNotNull);
+    expect(journey.metadata.calculatedSpeeds[servicePoints[9].order], equals(Speed.parse('130')));
+    expect(journey.metadata.calculatedSpeeds[servicePoints[11].order], isNotNull);
+    expect(journey.metadata.calculatedSpeeds[servicePoints[11].order], equals(Speed.parse('80')));
+    expect(journey.metadata.calculatedSpeeds[servicePoints[14].order], isNotNull);
+    expect(journey.metadata.calculatedSpeeds[servicePoints[14].order], equals(Speed.parse('0')));
   });
 
   test('Test advised speeds are parsed correctly', () async {

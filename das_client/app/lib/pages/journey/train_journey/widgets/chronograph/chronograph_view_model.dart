@@ -73,7 +73,7 @@ class ChronographViewModel {
 
       final metadata = journey.metadata;
       _updateDelayRelatedStates(metadata.delay);
-      _updateCalculatedSpeedRelatedStates(metadata.lastServicePoint?.calculatedSpeed);
+      _updateCalculatedSpeedRelatedStates(metadata.calculatedSpeeds[metadata.lastServicePoint?.order]);
 
       _emitState();
     });

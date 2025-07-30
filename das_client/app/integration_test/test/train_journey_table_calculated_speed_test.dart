@@ -65,7 +65,7 @@ void main() {
     _findTextWithin(zuerichAirportStationRow, '110');
 
     await dragUntilTextInStickyHeader(tester, zuerichAirport);
-    await tester.pumpAndSettle();
+    await tester.pumpAndSettle(const Duration(milliseconds: 200));
 
     // Basserdorf should now have a calculated speed
     expect(_findNonEmptyCalculatedSpeedCellOf(bassersdorfStationRow), findsAny);
