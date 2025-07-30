@@ -11,6 +11,7 @@ import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 void main() {
@@ -18,7 +19,7 @@ void main() {
   const testDelayString = '+00:10';
   late Clock testClock;
   late ChronographViewModel testee;
-  late StreamController<Journey?> journeyController;
+  late Subject<Journey?> journeyController;
   late StreamSubscription punctualitySubscription;
   late StreamSubscription formattedWallclockTimeSubscription;
   late List<PunctualityModel> punctualityEmitRegister;
@@ -28,6 +29,11 @@ void main() {
   final delayButNoCalculatedSpeedJourney = Journey(
     metadata: Metadata(
       delay: Delay(value: Duration(seconds: 10), location: 'Bern'),
+      currentPosition: ServicePoint(
+        name: 'Point 1',
+        order: 0,
+        kilometre: [],
+      ),
       lastServicePoint: ServicePoint(
         name: 'Point 1',
         order: 0,
@@ -40,6 +46,11 @@ void main() {
   final delayAndCalculatedSpeedJourney = Journey(
     metadata: Metadata(
       delay: Delay(value: Duration(seconds: 10), location: 'Bern'),
+      currentPosition: ServicePoint(
+        name: 'Point 1',
+        order: 0,
+        kilometre: [],
+      ),
       lastServicePoint: ServicePoint(
         name: 'Point 1',
         order: 0,
@@ -54,7 +65,7 @@ void main() {
     GetIt.I.registerSingleton<TimeConstants>(timeConstants);
     testClock = Clock.fixed(clock.now());
     fakeAsync((fakeAsync) {
-      journeyController = StreamController<Journey?>();
+      journeyController = BehaviorSubject<Journey?>();
       testAsync = fakeAsync;
       formattedWallclockTimeRegister = <String>[];
       withClock(testClock, () {
@@ -112,7 +123,6 @@ void main() {
     setUp(() {
       testAsync.run((_) {
         punctualityEmitRegister.clear();
-
         journeyController.add(delayButNoCalculatedSpeedJourney);
         _processStreamInFakeAsync(testAsync);
       });
