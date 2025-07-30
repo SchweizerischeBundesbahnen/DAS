@@ -16,7 +16,7 @@ void main() {
 
     final ebikonStationRow = findDASTableRowByText('Ebikon');
     expect(ebikonStationRow, findsOneWidget);
-    final ebikonAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(ebikonStationRow);
+    final ebikonAdvisedSpeedCell = _findNonEmptyCalculatedSpeedCellOf(ebikonStationRow);
     expect(ebikonAdvisedSpeedCell, findsNothing);
 
     final buchrainStationRow = findDASTableRowByText('Buchrain');
@@ -45,10 +45,18 @@ void main() {
 
     await dragUntilTextInStickyHeader(tester, zuerichHb);
 
-    final zuerichOerlikonStationRow = findDASTableRowByText('Zürich Oerlikon');
+    final zurichOerlikon = 'Zürich Oerlikon';
+    final zuerichOerlikonStationRow = findDASTableRowByText(zurichOerlikon);
     expect(zuerichOerlikonStationRow, findsOneWidget);
-    final zuerichAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(zuerichOerlikonStationRow);
+    final zuerichAdvisedSpeedCell = _findNonEmptyCalculatedSpeedCellOf(zuerichOerlikonStationRow);
     expect(zuerichAdvisedSpeedCell, findsNothing);
+
+    await dragUntilTextInStickyHeader(tester, zurichOerlikon);
+
+    final bassersdorfStationRow = findDASTableRowByText('Bassersdorf');
+    expect(bassersdorfStationRow, findsOneWidget);
+    final bassersdorfAdvisedSpeedCell = _findNonEmptyCalculatedSpeedCellOf(bassersdorfStationRow);
+    expect(bassersdorfAdvisedSpeedCell, findsNothing);
 
     final zuerichAirport = 'Zürich Flughafen';
     final zuerichAirportStationRow = findDASTableRowByText(zuerichAirport);
@@ -57,10 +65,8 @@ void main() {
 
     await dragUntilTextInStickyHeader(tester, zuerichAirport);
 
-    final bassersdorfStationRow = findDASTableRowByText('Bassersdorf');
-    expect(bassersdorfStationRow, findsOneWidget);
-    final bassersdorfAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(bassersdorfStationRow);
-    expect(bassersdorfAdvisedSpeedCell, findsNothing);
+    bassersdorfAdvisedSpeedCell.reset();
+    expect(bassersdorfAdvisedSpeedCell, findsAny);
 
     final winterthur = 'Winterthur';
     final winterthurStationRow = findDASTableRowByText(winterthur);
@@ -71,12 +77,12 @@ void main() {
 
     final frauenfeldStationRow = findDASTableRowByText('Frauenfeld');
     expect(frauenfeldStationRow, findsOneWidget);
-    final frauenfeldAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(frauenfeldStationRow);
+    final frauenfeldAdvisedSpeedCell = _findNonEmptyCalculatedSpeedCellOf(frauenfeldStationRow);
     expect(frauenfeldAdvisedSpeedCell, findsNothing);
 
     final weinfeldenStationRow = findDASTableRowByText('Weinfelden');
     expect(weinfeldenStationRow, findsOneWidget);
-    final weinfeldenAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(weinfeldenStationRow);
+    final weinfeldenAdvisedSpeedCell = _findNonEmptyCalculatedSpeedCellOf(weinfeldenStationRow);
     expect(weinfeldenAdvisedSpeedCell, findsNothing);
 
     final kreuzlingenStationRow = findDASTableRowByText('Kreuzlingen');
@@ -85,7 +91,7 @@ void main() {
 
     final konstanzStationRow = findDASTableRowByText('Konstanz');
     expect(konstanzStationRow, findsOneWidget);
-    final konstanzAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(konstanzStationRow);
+    final konstanzAdvisedSpeedCell = _findNonEmptyCalculatedSpeedCellOf(konstanzStationRow);
     expect(konstanzAdvisedSpeedCell, findsNothing);
 
     await disconnect(tester);
@@ -103,7 +109,7 @@ void main() {
     final oerlikon = 'Zürich Oerlikon';
     final zuerichOerlikonStationRow = findDASTableRowByText(oerlikon);
     expect(zuerichOerlikonStationRow, findsOneWidget);
-    final zuerichOerlikonAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(zuerichOerlikonStationRow);
+    final zuerichOerlikonAdvisedSpeedCell = _findNonEmptyCalculatedSpeedCellOf(zuerichOerlikonStationRow);
     expect(zuerichOerlikonAdvisedSpeedCell, findsNothing);
 
     await dragUntilTextInStickyHeader(tester, oerlikon);
@@ -129,7 +135,7 @@ void main() {
     const frauenfeld = 'Frauenfeld';
     final frauenfeldStationRow = findDASTableRowByText(frauenfeld);
     expect(frauenfeldStationRow, findsOneWidget);
-    final frauenfeldAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(frauenfeldStationRow);
+    final frauenfeldAdvisedSpeedCell = _findNonEmptyCalculatedSpeedCellOf(frauenfeldStationRow);
     expect(frauenfeldAdvisedSpeedCell, findsNothing);
 
     await dragUntilTextInStickyHeader(tester, frauenfeld);
@@ -197,7 +203,7 @@ void _findTextWithin(Finder baseFinder, String s) {
   expect(speed, findsOneWidget);
 }
 
-Finder _findNonEmptyAdvisedSpeedCellOf(Finder baseFinder) {
+Finder _findNonEmptyCalculatedSpeedCellOf(Finder baseFinder) {
   return find.descendant(
     of: baseFinder,
     matching: find.byKey(CalculatedSpeedCellBody.nonEmptyKey),

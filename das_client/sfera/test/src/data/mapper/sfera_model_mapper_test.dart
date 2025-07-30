@@ -1245,22 +1245,27 @@ void main() {
     expect(advisedSpeeds[0].speed, equals(SingleSpeed(value: '80')));
     expect(advisedSpeeds[0].startOrder, 500);
     expect(advisedSpeeds[0].endOrder, 2500);
+    expect(advisedSpeeds[0].endData, journey.data[7]);
     expect(advisedSpeeds[1], isA<FixedTimeAdvisedSpeedSegment>());
     expect(advisedSpeeds[1].speed, equals(SingleSpeed(value: '80')));
     expect(advisedSpeeds[1].startOrder, 4500);
     expect(advisedSpeeds[1].endOrder, 5000);
+    expect(advisedSpeeds[1].endData, journey.data[14]);
     expect(advisedSpeeds[2], isA<TrainFollowingAdvisedSpeedSegment>());
     expect(advisedSpeeds[2].speed, equals(SingleSpeed(value: '120')));
     expect(advisedSpeeds[2].startOrder, 5500);
     expect(advisedSpeeds[2].endOrder, 6500);
+    expect(advisedSpeeds[2].endData, journey.data[21]);
     expect(advisedSpeeds[3], isA<VelocityMaxAdvisedSpeedSegment>());
     expect(advisedSpeeds[3].speed, isNull);
     expect(advisedSpeeds[3].startOrder, 7000);
     expect(advisedSpeeds[3].endOrder, 7500);
+    expect(advisedSpeeds[3].endData, journey.data[25]);
     expect(advisedSpeeds[4], isA<VelocityMaxAdvisedSpeedSegment>());
     expect(advisedSpeeds[4].speed, isNull);
     expect(advisedSpeeds[4].startOrder, 8000);
     expect(advisedSpeeds[4].endOrder, 12000);
+    expect(advisedSpeeds[4].endData, journey.data[33]);
   });
 
   test('Test current position is start when nothing is given ', () async {
