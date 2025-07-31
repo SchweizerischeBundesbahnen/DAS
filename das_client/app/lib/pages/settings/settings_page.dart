@@ -10,6 +10,8 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 @RoutePage()
 class SettingsPage extends StatefulWidget {
+  static const Key decisiveGradientSwitchKey = Key('decisiveGradientSwitch');
+
   const SettingsPage({super.key});
 
   @override
@@ -98,6 +100,7 @@ class _SettingsPageState extends State<SettingsPage> {
             onPressed: () => _updateSettings(UserSettingKeys.showDecisiveGradient, !_userSettings.showDecisiveGradient),
             isLastElement: true,
             trailingWidget: SBBSwitch(
+              key: SettingsPage.decisiveGradientSwitchKey,
               value: _userSettings.showDecisiveGradient,
               onChanged: (value) => _updateSettings(UserSettingKeys.showDecisiveGradient, value),
             ),

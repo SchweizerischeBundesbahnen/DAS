@@ -325,20 +325,20 @@ class TrainJourney extends StatelessWidget {
             width: 64.0,
             onTap: !userSettings.showDecisiveGradient ? () => journeyViewModel.toggleKmDecisiveGradient() : null,
           ),
-        if (userSettings.showDecisiveGradient || journeyViewModel.showDecisiveGradientValue)
+        if (userSettings.showDecisiveGradient || journeyViewModel.showDecisiveGradientValue) ...[
           DASTableColumn(
             id: ColumnDefinition.gradientDownhill.index,
             child: Text('-'),
             width: 40.0,
             onTap: !userSettings.showDecisiveGradient ? () => journeyViewModel.toggleKmDecisiveGradient() : null,
           ),
-        if (userSettings.showDecisiveGradient || journeyViewModel.showDecisiveGradientValue)
           DASTableColumn(
             id: ColumnDefinition.gradientUphill.index,
             child: Text('+'),
             width: 40.0,
             onTap: !userSettings.showDecisiveGradient ? () => journeyViewModel.toggleKmDecisiveGradient() : null,
           ),
+        ],
       ],
       DASTableColumn(
         id: ColumnDefinition.time.index,
