@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.4.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.3.0...backend-v0.4.0) (2025-07-31)
+
+
+### Features
+
+* consume formation runs ([#539](https://github.com/SchweizerischeBundesbahnen/DAS/issues/539)) ([#1103](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1103)) ([07e2736](https://github.com/SchweizerischeBundesbahnen/DAS/commit/07e273682ba30b26350d7cd77b68ac60f0940db3))
+* logging settings ([#1006](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1006)) ([#1121](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1121)) ([cc75c0c](https://github.com/SchweizerischeBundesbahnen/DAS/commit/cc75c0cd455370a3f649783d866ebf0d6ed4ebf6))
+
+
+### Bug Fixes
+
+* **deps:** update dependency org.springframework.boot:spring-boot-starter-parent to v3.5.4 ([#1128](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1128)) ([6df386b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6df386b1b8e0a56acfebb777cfab8e10df8b6a1c))
+* **deps:** update dependency org.springframework.modulith:spring-modulith-bom to v1.4.2 ([#1130](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1130)) ([7191ce1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7191ce1b25a9064a0dc23c0e3c3d9338c2adff26))
+
 ## [0.3.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.2.1...backend-v0.3.0) (2025-07-10)
 
 
