@@ -145,5 +145,30 @@ void main() {
 
       await disconnect(tester);
     });
+
+    testWidgets('test journey settings are not reset when navigating ', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T5');
+      await pauseAutomaticAdvancement(tester);
+
+      final selectedBreakSeries = 'D30';
+      await selectBreakSeries(tester, breakSeries: selectedBreakSeries);
+
+      await openDrawer(tester);
+      await tapElement(tester, find.text(l10n.w_navigation_drawer_profile_title));
+
+      // Check on ProfilePage
+      expect(find.byType(ProfilePage), findsOneWidget);
+
+      await openDrawer(tester);
+      await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
+
+      // check the selected train series is still selected
+      expect(find.text(selectedBreakSeries), findsOneWidget);
+
+      await disconnect(tester);
+    });
   });
 }
