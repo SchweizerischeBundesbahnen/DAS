@@ -112,7 +112,9 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget _settingTitle(String title) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 1.5),
+      padding: const EdgeInsets.symmetric(
+        horizontal: sbbDefaultSpacing * 1.5,
+      ).copyWith(bottom: sbbDefaultSpacing * 0.5),
       child: Text(
         title,
         style: DASTextStyles.smallLight,
