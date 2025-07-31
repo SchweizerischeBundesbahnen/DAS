@@ -33,7 +33,23 @@
   "p_login_login_button_text": "Login",
   "p_login_login_button_description": "Mit Ihrem Account einloggen",
   "p_login_login_failed": "Login fehlgeschlagen",
-  "w_adl_notification_title": "ADL Meldung",
+  "w_adl_cancel": "ADL Cancel",
+  "w_adl_end": "ADL END",
+  "w_adl_vopt": "ADL VOPT: {speed}km/h fahren bis {endLocation}",
+  "@w_adl_vopt": {
+    "type": "text",
+    "placeholders": {
+      "speed": {},
+      "endLocation": {}
+    }
+  },
+  "w_adl_vmax": "ADL Vmax: fahren bis {endLocation}",
+  "@w_adl_vmax": {
+    "type": "text",
+    "placeholders": {
+      "endLocation": {}
+    }
+  },
   "w_extended_menu_title": "Weitere Funktionalitäten",
   "w_extended_menu_maneuver_mode": "Manövermodus",
   "w_extended_menu_breaking_slip_action": "Brems- und Lastzettel öffnen",

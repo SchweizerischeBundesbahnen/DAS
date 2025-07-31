@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:app/pages/journey/train_journey/widgets/chronograph/chronograph_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/chronograph/punctuality_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/notification/adl_view_model.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
@@ -9,6 +11,7 @@ import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 void main() {
@@ -16,7 +19,7 @@ void main() {
   const testDelayString = '+00:10';
   late Clock testClock;
   late ChronographViewModel testee;
-  late StreamController<Journey?> journeyController;
+  late Subject<Journey?> journeyController;
   late StreamSubscription punctualitySubscription;
   late StreamSubscription formattedWallclockTimeSubscription;
   late List<PunctualityModel> punctualityEmitRegister;
@@ -26,6 +29,11 @@ void main() {
   final delayButNoCalculatedSpeedJourney = Journey(
     metadata: Metadata(
       delay: Delay(value: Duration(seconds: 10), location: 'Bern'),
+      currentPosition: ServicePoint(
+        name: 'Point 1',
+        order: 0,
+        kilometre: [],
+      ),
       lastServicePoint: ServicePoint(
         name: 'Point 1',
         order: 0,
@@ -34,15 +42,21 @@ void main() {
     ),
     data: [],
   );
+
   final delayAndCalculatedSpeedJourney = Journey(
     metadata: Metadata(
       delay: Delay(value: Duration(seconds: 10), location: 'Bern'),
-      lastServicePoint: ServicePoint(
+      currentPosition: ServicePoint(
         name: 'Point 1',
-        calculatedSpeed: SingleSpeed(value: '100'),
         order: 0,
         kilometre: [],
       ),
+      lastServicePoint: ServicePoint(
+        name: 'Point 1',
+        order: 0,
+        kilometre: [],
+      ),
+      calculatedSpeeds: SplayTreeMap.of({0: SingleSpeed(value: '100')}),
     ),
     data: [],
   );
@@ -51,11 +65,12 @@ void main() {
     GetIt.I.registerSingleton<TimeConstants>(timeConstants);
     testClock = Clock.fixed(clock.now());
     fakeAsync((fakeAsync) {
-      journeyController = StreamController<Journey?>();
+      journeyController = BehaviorSubject<Journey?>();
       testAsync = fakeAsync;
       formattedWallclockTimeRegister = <String>[];
       withClock(testClock, () {
-        testee = ChronographViewModel(journeyStream: journeyController.stream);
+        final adlViewModel = AdlViewModel(journeyStream: journeyController.stream);
+        testee = ChronographViewModel(journeyStream: journeyController.stream, adlViewModel: adlViewModel);
         formattedWallclockTimeSubscription = testee.formattedWallclockTime.listen(formattedWallclockTimeRegister.add);
       });
       punctualityEmitRegister = <PunctualityModel>[];
@@ -108,7 +123,6 @@ void main() {
     setUp(() {
       testAsync.run((_) {
         punctualityEmitRegister.clear();
-
         journeyController.add(delayButNoCalculatedSpeedJourney);
         _processStreamInFakeAsync(testAsync);
       });

@@ -1,18 +1,15 @@
 import 'dart:ui';
 
-import 'package:flutter_test/flutter_test.dart';
 import 'package:app/util/format.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 void main() {
   late DateTime someDate;
 
-  setUpAll(() {
-    initializeDateFormatting();
-  });
-
   setUp(() {
+    initializeDateFormatting();
     someDate = DateTime(2025, 10, 1, 12, 30, 45);
   });
 

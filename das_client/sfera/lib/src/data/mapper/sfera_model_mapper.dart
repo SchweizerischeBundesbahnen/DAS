@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
@@ -13,6 +15,7 @@ import 'package:sfera/src/data/dto/temporary_constraints_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/mapper/mapper_utils.dart';
 import 'package:sfera/src/data/mapper/segment_profile_mapper.dart';
+import 'package:sfera/src/data/mapper/speed_mapper.dart';
 import 'package:sfera/src/data/mapper/track_equipment_mapper.dart';
 import 'package:sfera/src/model/journey/bracket_station.dart';
 
@@ -94,6 +97,8 @@ class SferaModelMapper {
     );
     final trainCharacteristic = _resolveFirstTrainCharacteristics(journeyProfile, trainCharacteristics);
 
+    final lineSpeeds = SegmentProfileMapper.parseLineSpeeds(segmentProfiles);
+
     return Journey(
       metadata: Metadata(
         nextStop: _calculateNextStop(servicePoints, currentPosition),
@@ -109,7 +114,8 @@ class SferaModelMapper {
         ),
         nonStandardTrackEquipmentSegments: trackEquipmentSegments,
         bracketStationSegments: _parseBracketStationSegments(servicePoints),
-        availableBreakSeries: _parseAvailableBreakSeries(journeyData),
+        advisedSpeedSegments: SpeedMapper.advisedSpeeds(journeyProfile, segmentProfiles, journeyData),
+        availableBreakSeries: _parseAvailableBreakSeries(journeyData, lineSpeeds),
         communicationNetworkChanges: _parseCommunicationNetworkChanges(segmentProfileReferences, segmentProfiles),
         breakSeries:
             trainCharacteristic?.tcFeatures.trainCategoryCode != null &&
@@ -121,6 +127,8 @@ class SferaModelMapper {
             : null,
         lineFootNoteLocations: _generateLineFootNoteLocationMap(journeyData.whereType<LineFootNote>()),
         radioContactLists: _parseContactLists(segmentProfileReferences, segmentProfiles),
+        lineSpeeds: lineSpeeds,
+        calculatedSpeeds: _parseCalculatedSpeeds(journeyProfile, servicePoints),
       ),
       data: journeyData,
     );
@@ -227,7 +235,7 @@ class SferaModelMapper {
     for (int segmentIndex = 0; segmentIndex < segmentProfilesReferences.length; segmentIndex++) {
       final segmentProfileReference = segmentProfilesReferences[segmentIndex];
 
-      for (final asrTemporaryConstrain in segmentProfileReference.asrTemporaryConstrains) {
+      for (final asrTemporaryConstrain in segmentProfileReference.asrTemporaryConstraints) {
         if (_shouldSkipAsrDueToJourneyTimes(servicePoints, asrTemporaryConstrain)) continue;
 
         final parallelAsrId = asrTemporaryConstrain.parallelAsrConstraintDto?.idNsp.id;
@@ -347,7 +355,6 @@ class SferaModelMapper {
           isStart: false,
           order: segment.endOrder!,
           kilometre: segment.endKm,
-          speeds: speedChange?.speeds,
         ),
       );
     }
@@ -422,9 +429,14 @@ class SferaModelMapper {
         .toList();
   }
 
-  static Set<BreakSeries> _parseAvailableBreakSeries(List<BaseData> journeyData) {
-    return journeyData
-        .expand((it) => it.allStaticSpeeds)
+  static Set<BreakSeries> _parseAvailableBreakSeries(
+    List<BaseData> journeyData,
+    SplayTreeMap<int, Iterable<TrainSeriesSpeed>> lineSpeeds,
+  ) {
+    final speeds = journeyData.expand((it) => it.allStaticSpeeds).toList();
+    speeds.addAll(lineSpeeds.values.flattened);
+
+    return speeds
         .where((it) => it.breakSeries != null)
         .map((it) => BreakSeries(trainSeries: it.trainSeries, breakSeries: it.breakSeries!))
         .toSet();
@@ -576,6 +588,28 @@ class SferaModelMapper {
     final positionSpeed = relatedTrainInformation?.ownTrain.trainLocationInformation.positionSpeed;
     final location = '${positionSpeed?.spId}${positionSpeed?.location}';
     return duration != null ? Delay(value: duration, location: location) : null;
+  }
+
+  static SplayTreeMap<int, SingleSpeed?> _parseCalculatedSpeeds(
+    JourneyProfileDto journeyProfile,
+    List<ServicePoint> servicePoints,
+  ) {
+    final result = SplayTreeMap<int, SingleSpeed?>();
+    for (final servicePoint in servicePoints.where((it) => it.isStop)) {
+      result[servicePoint.order] = null;
+    }
+
+    journeyProfile.segmentProfileReferences.forEachIndexed((index, segmentProfileReference) {
+      final contextInformationNsps = segmentProfileReference.jpContextInformation?.contextInformationNsp ?? [];
+      for (final contextInformation in contextInformationNsps) {
+        final speedData = SpeedMapper.fromJourneyProfileContextInfoNsp(contextInformation);
+        if (speedData != null && contextInformation.constraint?.startLocation != null) {
+          result[calculateOrder(index, contextInformation.constraint!.startLocation!)] = speedData;
+        }
+      }
+    });
+
+    return result;
   }
 }
 

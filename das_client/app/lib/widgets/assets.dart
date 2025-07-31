@@ -33,6 +33,9 @@ class AppAssets {
   static const iconNoExitSignal = '$_iconsDir/icon_no_exit_signal.svg';
   static const iconOpenLevelCrossingBeforeExitSignal = '$_iconsDir/icon_open_level_crossing_before_exit_signal.svg';
   static const iconReducedSpeed = '$_iconsDir/icon_reduced_speed.svg';
+  static const iconAdvisedSpeedFixedTime = '$_iconsDir/icon_advised_speed_fixed_time.svg';
+  static const iconAdvisedSpeedFollowTrain = '$_iconsDir/icon_advised_speed_follow_train.svg';
+  static const iconAdvisedSpeedTrainFollowing = '$_iconsDir/icon_advised_speed_train_following.svg';
 
   // others
   static const imageTypeNSignalStop = '$_othersDir/type_n_signal_stop.svg';
@@ -44,4 +47,6 @@ class AppAssets {
   // audio
   static const soundKoaWaitCanceled = '$_soundsDir/koa_wait_canceled.mp3';
   static const warnappWarn = '$_soundsDir/warnapp_warn.wav';
+  static const adlStart = '$_soundsDir/adl_start.wav';
+  static const adlEnd = '$_soundsDir/adl_end.wav';
 }

@@ -22,7 +22,7 @@ class DASTableCell {
     this.clipBehaviour = Clip.hardEdge,
   });
 
-  const DASTableCell.empty({Color? color, VoidCallback? onTap})
+  const DASTableCell.empty({Color? color, VoidCallback? onTap, EdgeInsets? padding, Clip clipBehaviour = Clip.hardEdge})
     : this(
         child: emptyBuilder,
         color: color,

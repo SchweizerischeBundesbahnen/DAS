@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
+import 'package:app/widgets/table/das_row_controller_wrapper.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_column.dart';
 import 'package:app/widgets/table/das_table_row.dart';
@@ -152,7 +153,7 @@ class _DASTableState extends State<DASTable> {
   Widget _stickyHeaderList(BoxConstraints constraints) {
     return StickyHeader(
       footerBuilder: (context, index) => _footer(index),
-      headerBuilder: (context, index) => ClipRect(child: _dataRow(widget.rows[index])),
+      headerBuilder: (context, index) => ClipRect(child: _dataRow(widget.rows[index], isSticky: true)),
       scrollController: widget.scrollController,
       rows: widget.rows,
       child: SizedBox(key: DASTable.tableKey, child: _animatedList(constraints)),
@@ -171,7 +172,7 @@ class _DASTableState extends State<DASTable> {
         ],
       ),
       child: ClipRect(
-        child: _dataRow(widget.rows[index]),
+        child: _dataRow(widget.rows[index], isSticky: true),
       ),
     );
   }
@@ -260,17 +261,21 @@ class _DASTableState extends State<DASTable> {
     );
   }
 
-  Widget _dataRow(DASTableRow row) {
+  Widget _dataRow(DASTableRow row, {bool isSticky = false}) {
     if (row is DASTableCellRow) {
       return InkWell(
         onTap: row.onTap,
-        child: _FixedHeightRow(
-          height: row.height,
-          children: List.generate(widget.columns.length, (index) {
-            final column = widget.columns[index];
-            final cell = row.cells[column.id] ?? DASTableCell.empty();
-            return _dataCell(cell, column, row, isLast: widget.columns.length - 1 == index);
-          }),
+        child: DASRowControllerWrapper(
+          isAlwaysSticky: isSticky,
+          rowKey: row.key,
+          child: _FixedHeightRow(
+            height: row.height,
+            children: List.generate(widget.columns.length, (index) {
+              final column = widget.columns[index];
+              final cell = row.cells[column.id] ?? DASTableCell.empty();
+              return _dataCell(cell, column, row, isLast: widget.columns.length - 1 == index);
+            }),
+          ),
         ),
       );
     } else {

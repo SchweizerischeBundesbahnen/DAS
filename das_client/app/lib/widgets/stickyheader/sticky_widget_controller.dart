@@ -43,6 +43,12 @@ class StickyWidgetController with ChangeNotifier {
     });
   }
 
+  void updateRowData(List<DASTableRow> rows) {
+    _rows = rows;
+    _initialize();
+    scrollListener();
+  }
+
   void scrollListener() {
     final firstVisibleIndex = _findFirstVisibleRowIndex();
     if (firstVisibleIndex == -1) {
@@ -67,8 +73,12 @@ class StickyWidgetController with ChangeNotifier {
     notifyListeners();
   }
 
+  Offset? stickyHeaderOffset() {
+    return WidgetUtil.findOffsetOfKey(stickyHeaderKey);
+  }
+
   int _findFirstVisibleRowIndex() {
-    final stickyOffset = WidgetUtil.findOffsetOfKey(stickyHeaderKey);
+    final stickyOffset = stickyHeaderOffset();
     if (stickyOffset == null) return -1;
 
     for (int i = 0; i < _rows.length; i++) {
@@ -123,7 +133,7 @@ class StickyWidgetController with ChangeNotifier {
   }
 
   double _calculateHeaderOffset(int headerIndex, StickyLevel stickyLevel, double additionalHeaderHeight) {
-    final stickyOffset = WidgetUtil.findOffsetOfKey(stickyHeaderKey);
+    final stickyOffset = stickyHeaderOffset();
     if (stickyOffset == null) return 0.0;
 
     final nextStickyIndex = _findNextStickyBelowLevel(headerIndex + 1, stickyLevel);
@@ -142,7 +152,7 @@ class StickyWidgetController with ChangeNotifier {
     var stickyFooterIndex = _findNextStickyBelowLevel(startIndex, StickyLevel.first);
 
     if (stickyFooterIndex != -1) {
-      final stickyOffset = WidgetUtil.findOffsetOfKey(stickyHeaderKey);
+      final stickyOffset = stickyHeaderOffset();
       final offset = WidgetUtil.findOffsetOfKey(_rows[stickyFooterIndex].key);
       if (offset != null &&
           (offset - stickyOffset!).dy + _rows[stickyFooterIndex].height < scrollController.position.viewportDimension) {
@@ -165,22 +175,16 @@ class StickyWidgetController with ChangeNotifier {
     return _rows[index].height;
   }
 
-  void updateRowData(List<DASTableRow> rows) {
-    _rows = rows;
-    _initialize();
-    scrollListener();
+  void _calculateNextHeaderIndex() {
+    nextHeaderIndex = {
+      StickyLevel.first: _findNextStickyBelowLevel(headerIndexes[StickyLevel.first]! + 1, StickyLevel.first),
+      StickyLevel.second: _findNextStickyBelowLevel(headerIndexes[StickyLevel.second]! + 1, StickyLevel.second),
+    };
   }
 
   @override
   void dispose() {
     scrollController.removeListener(scrollListener);
     super.dispose();
-  }
-
-  void _calculateNextHeaderIndex() {
-    nextHeaderIndex = {
-      StickyLevel.first: _findNextStickyBelowLevel(headerIndexes[StickyLevel.first]! + 1, StickyLevel.first),
-      StickyLevel.second: _findNextStickyBelowLevel(headerIndexes[StickyLevel.second]! + 1, StickyLevel.second),
-    };
   }
 }
