@@ -1,7 +1,7 @@
-package ch.sbb.backend.logging.infrastructure.config;
+package ch.sbb.backend.tenancy.infrastructure.config;
 
-import ch.sbb.backend.logging.domain.model.Tenant;
-import ch.sbb.backend.logging.domain.repository.TenantRepository;
+import ch.sbb.backend.tenancy.domain.model.Tenant;
+import ch.sbb.backend.tenancy.domain.repository.TenantRepository;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.KeySourceException;
 import com.nimbusds.jose.proc.JWSAlgorithmFamilyJWSKeySelector;
