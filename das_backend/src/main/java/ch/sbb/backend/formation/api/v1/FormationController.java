@@ -1,6 +1,7 @@
 package ch.sbb.backend.formation.api.v1;
 
-import ch.sbb.backend.ApiDocumentation;
+import ch.sbb.backend.common.ApiDocumentation;
+import ch.sbb.backend.common.ApiErrorResponses;
 import ch.sbb.backend.common.SFERA;
 import ch.sbb.backend.common.TelTsi;
 import ch.sbb.backend.formation.api.v1.model.Formation;
@@ -9,6 +10,10 @@ import ch.sbb.backend.formation.application.FormationService;
 import ch.sbb.backend.formation.infrastructure.model.TrainFormationRunEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotBlank;
@@ -16,7 +21,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +36,7 @@ public class FormationController {
     public static final String OPERATIONAL_DAY_DESCRIPTION = "Operational day (underlying journey-planner specific, be aware of confusion with stop-times after midnight within a journey the day before).";
     public static final String COMPANY_DESCRIPTION = "Relates to teltsi_CompanyCode (according to SFERA resp. RICS-code).";
     private static final String PATH_SEGMENT_FORMATIONS = "/formations";
-    static final String API_FORMATIONS = ApiDocumentation.VERSION_URI_V1 + PATH_SEGMENT_FORMATIONS;
+    public static final String API_FORMATIONS = ApiDocumentation.VERSION_URI_V1 + PATH_SEGMENT_FORMATIONS;
 
     private final FormationService formationService;
 
@@ -39,11 +44,18 @@ public class FormationController {
         this.formationService = formationService;
     }
 
-    // todo: cacheable
-    // todo: error API responses
     @Operation(summary = "Get formation by train identification")
-    @ApiResponse(responseCode = "200", description = "Formation found")
+    @ApiResponse(responseCode = "200", description = "Formation found", headers = {
+        @Header(name = ApiDocumentation.HEADER_CACHE_CONTROL, description = ApiDocumentation.HEADER_CACHE_CONTROL_RESPONSE_DESCRIPTION,
+            schema = @Schema(type = "string")),
+        @Header(name = ApiDocumentation.HEADER_CACHE_ETAG, description = ApiDocumentation.HEADER_CACHE_ETAG_RESPONSE_DESCRIPTION,
+            schema = @Schema(type = "string", example = ApiDocumentation.SAMPLE_CACHE_ETAG))
+    })
+    @ApiResponse(responseCode = "304", description = ApiDocumentation.STATUS_304, content = @Content)
+    @ApiResponse(responseCode = "404", description = ApiDocumentation.STATUS_404, content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/ErrorResponse")))
+    @ApiErrorResponses
     @GetMapping(path = API_FORMATIONS, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Parameter(name = HttpHeaders.IF_NONE_MATCH, schema = @Schema(type = "string", example = ApiDocumentation.SAMPLE_CACHE_ETAG), description = ApiDocumentation.HEADER_CACHE_IF_NONE_MATCH_DESCRIPTION, in = ParameterIn.HEADER)
     ResponseEntity<FormationResponse> getFormation(
         @Parameter(description = OPERATIONAL_TRAIN_NUMBER_DESCRIPTION, required = true)
         @SFERA @TelTsi @RequestParam @NotBlank String operationalTrainNumber,
@@ -53,17 +65,13 @@ public class FormationController {
 
         @Parameter(description = COMPANY_DESCRIPTION)
         @SFERA @TelTsi @RequestParam @Pattern(regexp = "\\d{4}") String company) {
-        List<TrainFormationRunEntity> entities = formationService.findByTrainIdentifier(operationalTrainNumber, operationalDay, company);
+        List<TrainFormationRunEntity> entities = formationService.findLatestByTrainIdentifier(operationalTrainNumber, operationalDay, company);
         if (entities.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        List<TrainFormationRunEntity> newestPerGroup = entities.stream()
-            .collect(Collectors.toMap(
-                e -> e.getTafTapLocationReferenceStart() + e.getTafTapLocationReferenceEnd(),
-                e -> e,
-                (e1, e2) -> e1.getModifiedDateTime().isAfter(e2.getModifiedDateTime()) ? e1 : e2
-            )).values().stream().toList();
-        Formation formation = Formation.from(newestPerGroup);
-        return ResponseEntity.ok(new FormationResponse(List.of(formation)));
+        Formation formation = Formation.from(entities);
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CACHE_CONTROL, "private")
+            .body(new FormationResponse(List.of(formation)));
     }
 }
