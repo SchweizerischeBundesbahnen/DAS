@@ -145,7 +145,11 @@ class _DASTableState extends State<DASTable> {
                 Expanded(
                   child: widget.hasStickyWidgets
                       ? _stickyHeaderList(constraints)
-                      : SizedBox(key: DASTable.tableKey, child: _animatedList(constraints)),
+                      : ScrollableAlign(
+                          scrollController: widget.scrollController,
+                          rows: widget.rows,
+                          child: SizedBox(key: DASTable.tableKey, child: _animatedList(constraints)),
+                        ),
                 ),
               ],
             ),
