@@ -36,8 +36,6 @@ class _BreakSeriesSelectionState extends State<BreakSeriesSelection> {
       );
     }
 
-    final canConfirm = selectedBreakSeries != null && selectedBreakSeries != widget.selectedBreakSeries;
-
     return Padding(
       padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, sbbDefaultSpacing, 21),
       child: Column(
@@ -54,14 +52,6 @@ class _BreakSeriesSelectionState extends State<BreakSeriesSelection> {
                   children: _rows(context),
                 ),
               ),
-            ),
-          ),
-          SizedBox(height: 46),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, sbbDefaultSpacing, 0),
-            child: SBBPrimaryButton(
-              label: context.l10n.c_button_confirm,
-              onPressed: canConfirm ? () => context.router.maybePop(selectedBreakSeries) : null,
             ),
           ),
         ],
@@ -104,7 +94,7 @@ class _BreakSeriesSelectionState extends State<BreakSeriesSelection> {
                 currentlySelected: breakSerie == selectedBreakSeries,
                 onTap: () {
                   setState(() {
-                    selectedBreakSeries = breakSerie;
+                    context.router.maybePop(breakSerie);
                   });
                 },
               );
