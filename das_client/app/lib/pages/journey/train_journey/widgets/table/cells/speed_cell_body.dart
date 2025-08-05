@@ -34,6 +34,7 @@ class SpeedCellBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //TODO check with hasStickyWidgets of the table, that when true, this logic gets used, and else just return _speed(speed, context);
     return rowIndex != null
         ? ListenableBuilder(
             listenable: StickyHeader.of(context)!.controller,
