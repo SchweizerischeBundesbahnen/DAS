@@ -247,9 +247,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
         .firstOrNull;
   }
 
-  ShowSpeedBehavior get showSpeedBehavior {
-    return ShowSpeedBehavior.never;
-  }
+  ShowSpeedBehavior get showSpeedBehavior => ShowSpeedBehavior.never;
 
   static double rowHeightForData(BaseData data, BreakSeries? currentBreakSeries) {
     switch (data.type) {

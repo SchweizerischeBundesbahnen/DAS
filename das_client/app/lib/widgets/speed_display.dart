@@ -12,11 +12,6 @@ class SpeedDisplay extends StatelessWidget {
   static const Key circledSpeedKey = Key('graduatedSpeedCircled');
   static const Key squaredSpeedKey = Key('graduatedSpeedSquared');
 
-  final bool hasAdditionalInformation;
-  final bool singleLine;
-  final TextStyle textStyle;
-  final Speed? speed;
-
   const SpeedDisplay({
     this.hasAdditionalInformation = false,
     this.singleLine = false,
@@ -24,6 +19,11 @@ class SpeedDisplay extends StatelessWidget {
     this.speed,
     super.key,
   });
+
+  final bool hasAdditionalInformation;
+  final bool singleLine;
+  final TextStyle textStyle;
+  final Speed? speed;
 
   @override
   Widget build(BuildContext context) {

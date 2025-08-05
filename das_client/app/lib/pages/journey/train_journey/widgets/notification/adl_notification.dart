@@ -22,13 +22,13 @@ class ADLNotification extends StatelessWidget {
     return StreamBuilder<List<dynamic>>(
       stream: CombineLatestStream.list([viewModel.activeAdl, viewModel.adlState]),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return Container();
+        if (!snapshot.hasData) return SizedBox.shrink();
 
         final adlState = snapshot.data![1] as AdlState;
         final adl = snapshot.data![0] as AdvisedSpeedSegment?;
         return switch (adlState) {
-          AdlState.active => adl != null ? _activeAdlMessage(context, adl) : Container(),
-          AdlState.inactive => Container(),
+          AdlState.active => adl != null ? _activeAdlMessage(context, adl) : SizedBox.shrink(),
+          AdlState.inactive => SizedBox.shrink(),
           AdlState.end => _adlNotificationContainer(context, context.l10n.w_adl_end),
           AdlState.cancel => _adlNotificationContainer(context, context.l10n.w_adl_cancel),
         };

@@ -35,17 +35,16 @@ class CalculatedSpeedCellBody extends StatelessWidget {
   }
 
   Widget _speedContent(BuildContext context) {
+    final rowController = DASRowControllerWrapper.of(context)!.controller;
     return StreamBuilder(
       key: generalKey,
-      stream: DASRowControllerWrapper.of(context)!.controller.rowState,
-      initialData: DASRowControllerWrapper.of(context)!.controller.rowStateValue,
+      stream: rowController.rowState,
+      initialData: rowController.rowStateValue,
       builder: (context, snapshot) {
         final state = snapshot.requireData;
 
-        final calculatedSpeed = metadata.calculatedSpeeds[order];
-
         final shouldResolvePrevious = _shouldResolvePrevious(state) && !metadata.calculatedSpeeds.containsKey(order);
-
+        final calculatedSpeed = metadata.calculatedSpeeds[order];
         SingleSpeed? resolvedCalculatedSpeed =
             calculatedSpeed ?? (shouldResolvePrevious ? _calculatedSpeedFromPrev : null);
 
@@ -55,7 +54,7 @@ class CalculatedSpeedCellBody extends StatelessWidget {
           resolvePrevious: showSpeedBehavior == ShowSpeedBehavior.alwaysOrPreviousOnStickiness,
         );
 
-        final isSpeedReducedDueToLineSpeed = _isBLargerThanA(a: resolvedLineSpeed, b: resolvedCalculatedSpeed);
+        final isSpeedReducedDueToLineSpeed = resolvedCalculatedSpeed.isLargerThan(resolvedLineSpeed);
         resolvedCalculatedSpeed = _min(resolvedLineSpeed, resolvedCalculatedSpeed);
         return Text(
           key: nonEmptyKey,
@@ -104,10 +103,14 @@ class CalculatedSpeedCellBody extends StatelessWidget {
   }
 
   String _numericMin(String a, String b) => int.parse(a) > int.parse(b) ? b : a;
+}
 
-  bool _isBLargerThanA({required SingleSpeed? a, required SingleSpeed b}) {
-    if (a == null) return false;
-    if (a.isIllegal) return false;
-    return int.parse(b.value) > int.parse(a.value);
+// extension
+
+extension _SingleSpeedExtension on SingleSpeed {
+  bool isLargerThan(SingleSpeed? other) {
+    if (other == null) return false;
+    if (other.isIllegal) return false;
+    return int.parse(value) > int.parse(other.value);
   }
 }

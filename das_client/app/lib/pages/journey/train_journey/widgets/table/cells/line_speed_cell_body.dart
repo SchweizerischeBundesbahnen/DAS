@@ -29,20 +29,25 @@ class LineSpeedCellBody extends StatelessWidget {
         speed: _resolvedTrainSeriesSpeed(resolvePrevious: true)?.speed,
       ),
       ShowSpeedBehavior.never => DASTableCell.emptyBuilder,
-      ShowSpeedBehavior.alwaysOrPreviousOnStickiness => StreamBuilder(
-        stream: DASRowControllerWrapper.of(context)!.controller.rowState,
-        initialData: DASRowControllerWrapper.of(context)!.controller.rowStateValue,
-        builder: (context, snapshot) {
-          final state = snapshot.requireData;
-
-          final trainSeriesSpeed = _resolvedTrainSeriesSpeed(
-            resolvePrevious: state == DASRowState.sticky || state == DASRowState.firstVisibleRow,
-          );
-
-          return SpeedDisplay(speed: trainSeriesSpeed?.speed);
-        },
-      ),
+      ShowSpeedBehavior.alwaysOrPreviousOnStickiness => _handledStickinessSpeedDisplay(context),
     };
+  }
+
+  Widget _handledStickinessSpeedDisplay(BuildContext context) {
+    final rowController = DASRowControllerWrapper.of(context)!.controller;
+    return StreamBuilder(
+      stream: rowController.rowState,
+      initialData: rowController.rowStateValue,
+      builder: (context, snapshot) {
+        final state = snapshot.requireData;
+
+        final trainSeriesSpeed = _resolvedTrainSeriesSpeed(
+          resolvePrevious: state == DASRowState.sticky || state == DASRowState.firstVisibleRow,
+        );
+
+        return SpeedDisplay(speed: trainSeriesSpeed?.speed);
+      },
+    );
   }
 
   TrainSeriesSpeed? _resolvedTrainSeriesSpeed({bool resolvePrevious = false}) {

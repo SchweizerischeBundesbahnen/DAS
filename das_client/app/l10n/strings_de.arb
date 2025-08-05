@@ -35,7 +35,7 @@
   "p_login_login_failed": "Login fehlgeschlagen",
   "w_adl_cancel": "ADL Cancel",
   "w_adl_end": "ADL END",
-  "w_adl_vopt": "ADL VOPT: {speed}km/h fahren bis {endLocation}",
+  "w_adl_vopt": "ADL VOpt: {speed}km/h fahren bis {endLocation}",
   "@w_adl_vopt": {
     "type": "text",
     "placeholders": {

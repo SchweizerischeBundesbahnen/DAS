@@ -39,7 +39,7 @@ class AdvisedSpeedCellBody extends StatelessWidget {
     }
 
     final inEtcsLevel2Segment = metadata.nonStandardTrackEquipmentSegments.isInEtcsLevel2Segment(order);
-    final advisedSpeed = metadata.advisedSpeedSegments.appliesToOrder(order).firstOrNull;
+    late final advisedSpeed = metadata.advisedSpeedSegments.appliesToOrder(order).firstOrNull;
     if (inEtcsLevel2Segment || advisedSpeed == null) return DASTableCell.emptyBuilder;
 
     var speed = advisedSpeed.speed;
