@@ -87,6 +87,9 @@ public class LocalRegulationRepository implements ApplicationRunner {
 
     private void importLocalRegulations() throws IOException {
         File file = new File(filePath);
+        if (!file.exists()) {
+            return;
+        }
         try (InputStream in = new FileInputStream(file)) {
             DocumentRoot documentRoot = objectMapper.readValue(in, DocumentRoot.class);
             Map<Integer, List<Version>> result = new HashMap<>();
