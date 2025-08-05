@@ -43,10 +43,7 @@ class Header extends StatelessWidget {
       ),
       child: Column(
         children: [
-          SBBGroup(
-            useShadow: false,
-            child: child,
-          ),
+          SBBGroup(child: child),
           if (information != null) _information(context),
         ],
       ),
