@@ -10,14 +10,12 @@ abstract class BaseData implements Comparable {
     required this.type,
     required this.order,
     required this.kilometre,
-    this.speeds,
     this.localSpeeds,
   });
 
   final Datatype type;
   final int order;
   final List<double> kilometre;
-  final List<TrainSeriesSpeed>? speeds;
   final List<TrainSeriesSpeed>? localSpeeds;
 
   @override
@@ -47,7 +45,6 @@ abstract class BaseData implements Comparable {
   /// Returns static local and line speeds. Does not return calculated or advised speed.
   Iterable<TrainSeriesSpeed> get allStaticSpeeds {
     return [
-      ...?speeds,
       ...?localSpeeds,
     ];
   }

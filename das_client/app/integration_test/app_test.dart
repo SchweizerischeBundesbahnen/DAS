@@ -19,6 +19,7 @@ import 'test/navigation_test.dart' as navigation_tests;
 import 'test/service_point_modal_test.dart' as service_point_modal_test;
 import 'test/train_journey_header_test.dart' as train_journey_header_tests;
 import 'test/train_journey_notification_test.dart' as train_journey_notification_tests;
+import 'test/train_journey_table_adl_test.dart' as train_journey_table_adl_tests;
 import 'test/train_journey_table_break_series_test.dart' as train_journey_table_break_series_tests;
 import 'test/train_journey_table_calculated_speed_test.dart' as train_journey_table_calculated_speed_tests;
 import 'test/train_journey_table_collapsible_rows_test.dart' as train_journey_table_collapsible_rows_test;
@@ -54,6 +55,7 @@ void main() {
   additional_speed_restriction_modal_test.main();
   warnapp_tests.main();
   train_journey_table_station_property_test.main();
+  train_journey_table_adl_tests.main();
 }
 
 Future<void> prepareAndStartApp(WidgetTester tester, {VoidCallback? onBeforeRun}) async {

@@ -1,6 +1,6 @@
 import 'package:app/pages/journey/train_journey/widgets/chronograph/chronograph_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/das_chronograph.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/cells/advised_speed_cell_body.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/calculated_speed_cell_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -16,7 +16,7 @@ void main() {
 
     final ebikonStationRow = findDASTableRowByText('Ebikon');
     expect(ebikonStationRow, findsOneWidget);
-    final ebikonAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(ebikonStationRow);
+    final ebikonAdvisedSpeedCell = _findNonEmptyCalculatedSpeedCellOf(ebikonStationRow);
     expect(ebikonAdvisedSpeedCell, findsNothing);
 
     final buchrainStationRow = findDASTableRowByText('Buchrain');
@@ -30,7 +30,7 @@ void main() {
     final zug = 'Zug';
     final zugStationRow = findDASTableRowByText(zug);
     expect(zugStationRow, findsOneWidget);
-    _findTextWithin(zugStationRow, AdvisedSpeedCellBody.zeroSpeedContent);
+    _findTextWithin(zugStationRow, CalculatedSpeedCellBody.zeroSpeedContent);
 
     await dragUntilTextInStickyHeader(tester, zug);
 
@@ -45,22 +45,31 @@ void main() {
 
     await dragUntilTextInStickyHeader(tester, zuerichHb);
 
-    final zuerichOerlikonStationRow = findDASTableRowByText('Zürich Oerlikon');
+    final zurichOerlikon = 'Zürich Oerlikon';
+    final zuerichOerlikonStationRow = findDASTableRowByText(zurichOerlikon);
     expect(zuerichOerlikonStationRow, findsOneWidget);
-    final zuerichAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(zuerichOerlikonStationRow);
-    expect(zuerichAdvisedSpeedCell, findsNothing);
+
+    await dragUntilTextInStickyHeader(tester, zurichOerlikon);
+    final zuerichAdvisedSpeedCell = _findNonEmptyCalculatedSpeedCellOf(zuerichOerlikonStationRow);
+    expect(zuerichAdvisedSpeedCell, findsOne);
+
+    final bassersdorf = 'Bassersdorf';
+    final bassersdorfStationRow = findDASTableRowByText(bassersdorf);
+    expect(bassersdorfStationRow, findsOneWidget);
+
+    // Basserdorf should not yet have a calculated speed
+    expect(_findNonEmptyCalculatedSpeedCellOf(bassersdorfStationRow), findsNothing);
 
     final zuerichAirport = 'Zürich Flughafen';
     final zuerichAirportStationRow = findDASTableRowByText(zuerichAirport);
     expect(zuerichAirportStationRow, findsOneWidget);
-    _findTextWithin(zuerichAirportStationRow, '130');
+    _findTextWithin(zuerichAirportStationRow, '110');
 
-    await dragUntilTextInStickyHeader(tester, zuerichAirport);
+    await dragUntilTextInStickyHeader(tester, bassersdorf);
+    await tester.pumpAndSettle(const Duration(milliseconds: 200));
 
-    final bassersdorfStationRow = findDASTableRowByText('Bassersdorf');
-    expect(bassersdorfStationRow, findsOneWidget);
-    final bassersdorfAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(bassersdorfStationRow);
-    expect(bassersdorfAdvisedSpeedCell, findsNothing);
+    // Basserdorf should now have a calculated speed
+    expect(_findNonEmptyCalculatedSpeedCellOf(bassersdorfStationRow), findsAny);
 
     final winterthur = 'Winterthur';
     final winterthurStationRow = findDASTableRowByText(winterthur);
@@ -71,21 +80,21 @@ void main() {
 
     final frauenfeldStationRow = findDASTableRowByText('Frauenfeld');
     expect(frauenfeldStationRow, findsOneWidget);
-    final frauenfeldAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(frauenfeldStationRow);
+    final frauenfeldAdvisedSpeedCell = _findNonEmptyCalculatedSpeedCellOf(frauenfeldStationRow);
     expect(frauenfeldAdvisedSpeedCell, findsNothing);
 
     final weinfeldenStationRow = findDASTableRowByText('Weinfelden');
     expect(weinfeldenStationRow, findsOneWidget);
-    final weinfeldenAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(weinfeldenStationRow);
+    final weinfeldenAdvisedSpeedCell = _findNonEmptyCalculatedSpeedCellOf(weinfeldenStationRow);
     expect(weinfeldenAdvisedSpeedCell, findsNothing);
 
     final kreuzlingenStationRow = findDASTableRowByText('Kreuzlingen');
     expect(kreuzlingenStationRow, findsOneWidget);
-    _findTextWithin(kreuzlingenStationRow, AdvisedSpeedCellBody.zeroSpeedContent);
+    _findTextWithin(kreuzlingenStationRow, CalculatedSpeedCellBody.zeroSpeedContent);
 
     final konstanzStationRow = findDASTableRowByText('Konstanz');
     expect(konstanzStationRow, findsOneWidget);
-    final konstanzAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(konstanzStationRow);
+    final konstanzAdvisedSpeedCell = _findNonEmptyCalculatedSpeedCellOf(konstanzStationRow);
     expect(konstanzAdvisedSpeedCell, findsNothing);
 
     await disconnect(tester);
@@ -103,7 +112,7 @@ void main() {
     final oerlikon = 'Zürich Oerlikon';
     final zuerichOerlikonStationRow = findDASTableRowByText(oerlikon);
     expect(zuerichOerlikonStationRow, findsOneWidget);
-    final zuerichOerlikonAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(zuerichOerlikonStationRow);
+    final zuerichOerlikonAdvisedSpeedCell = _findNonEmptyCalculatedSpeedCellOf(zuerichOerlikonStationRow);
     expect(zuerichOerlikonAdvisedSpeedCell, findsNothing);
 
     await dragUntilTextInStickyHeader(tester, oerlikon);
@@ -116,28 +125,24 @@ void main() {
 
     const zurichAirport = 'Zürich Flughafen';
     final zrhStationRow = findDASTableRowByText(zurichAirport);
-    expect(zrhStationRow, findsOneWidget);
-    _findTextWithin(zrhStationRow, '130');
-
-    await dragUntilTextInStickyHeader(tester, zurichAirport);
 
     // filled with line speed from Zürich HB
     expect(zrhStationRow, findsOneWidget);
     _findTextWithin(zrhStationRow, '110');
 
-    // Frauenfeld -------
+    // Bassersdorf -------
 
-    const frauenfeld = 'Frauenfeld';
-    final frauenfeldStationRow = findDASTableRowByText(frauenfeld);
-    expect(frauenfeldStationRow, findsOneWidget);
-    final frauenfeldAdvisedSpeedCell = _findNonEmptyAdvisedSpeedCellOf(frauenfeldStationRow);
-    expect(frauenfeldAdvisedSpeedCell, findsNothing);
+    const bassersdorf = 'Bassersdorf';
+    final bassersdorfStationRow = findDASTableRowByText(bassersdorf);
+    expect(bassersdorfStationRow, findsOneWidget);
+    final bassersdorfAdvisedSpeedCell = _findNonEmptyCalculatedSpeedCellOf(bassersdorfStationRow);
+    expect(bassersdorfAdvisedSpeedCell, findsNothing);
 
-    await dragUntilTextInStickyHeader(tester, frauenfeld);
+    await dragUntilTextInStickyHeader(tester, bassersdorf);
 
-    // filled with line speed from Frauenfeld
-    expect(frauenfeldStationRow, findsOneWidget);
-    _findTextWithin(frauenfeldStationRow, '70');
+    // filled with line speed from Zürich HB
+    expect(bassersdorfStationRow, findsOneWidget);
+    _findTextWithin(bassersdorfStationRow, '110');
 
     await disconnect(tester);
   });
@@ -181,7 +186,7 @@ void main() {
 
     // should be in metal
     final textWidget = tester.widget<Text>(
-      find.descendant(of: rotkreuxStationRow, matching: find.byKey(AdvisedSpeedCellBody.nonEmptyKey)),
+      find.descendant(of: rotkreuxStationRow, matching: find.byKey(CalculatedSpeedCellBody.nonEmptyKey)),
     );
     expect(textWidget.style?.color, equals(SBBColors.metal));
 
@@ -189,18 +194,18 @@ void main() {
   });
 }
 
-void _findTextWithin(Finder buchrainStationRow, String s) {
+void _findTextWithin(Finder baseFinder, String s) {
   final speedCell = find.descendant(
-    of: buchrainStationRow,
-    matching: find.byKey(AdvisedSpeedCellBody.generalKey),
+    of: baseFinder,
+    matching: find.byKey(CalculatedSpeedCellBody.generalKey),
   );
   final speed = find.descendant(of: speedCell, matching: find.text(s));
   expect(speed, findsOneWidget);
 }
 
-Finder _findNonEmptyAdvisedSpeedCellOf(Finder luzernStationRow) {
+Finder _findNonEmptyCalculatedSpeedCellOf(Finder baseFinder) {
   return find.descendant(
-    of: luzernStationRow,
-    matching: find.byKey(AdvisedSpeedCellBody.nonEmptyKey),
+    of: baseFinder,
+    matching: find.byKey(CalculatedSpeedCellBody.nonEmptyKey),
   );
 }

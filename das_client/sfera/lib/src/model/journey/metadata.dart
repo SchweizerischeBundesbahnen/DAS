@@ -1,13 +1,7 @@
+import 'dart:collection';
+
 import 'package:meta/meta.dart';
-import 'package:sfera/src/model/journey/additional_speed_restriction.dart';
-import 'package:sfera/src/model/journey/base_data.dart';
-import 'package:sfera/src/model/journey/bracket_station_segment.dart';
-import 'package:sfera/src/model/journey/break_series.dart';
-import 'package:sfera/src/model/journey/communication_network_change.dart';
-import 'package:sfera/src/model/journey/contact_list.dart';
-import 'package:sfera/src/model/journey/delay.dart';
-import 'package:sfera/src/model/journey/service_point.dart';
-import 'package:sfera/src/model/journey/track_equipment_segment.dart';
+import 'package:sfera/component.dart';
 
 @sealed
 @immutable
@@ -26,12 +20,17 @@ class Metadata {
     this.additionalSpeedRestrictions = const [],
     this.nonStandardTrackEquipmentSegments = const [],
     this.bracketStationSegments = const [],
+    this.advisedSpeedSegments = const [],
     this.availableBreakSeries = const {},
     this.communicationNetworkChanges = const [],
     this.lineFootNoteLocations = const {},
     this.radioContactLists = const [],
+    SplayTreeMap<int, Iterable<TrainSeriesSpeed>>? lineSpeeds,
+    SplayTreeMap<int, SingleSpeed?>? calculatedSpeeds,
   }) : timestamp = timestamp ?? DateTime.now(),
-       anyOperationalArrivalDepartureTimes = anyOperationalArrivalDepartureTimes ?? false;
+       anyOperationalArrivalDepartureTimes = anyOperationalArrivalDepartureTimes ?? false,
+       lineSpeeds = lineSpeeds ?? SplayTreeMap<int, Iterable<TrainSeriesSpeed>>(),
+       calculatedSpeeds = calculatedSpeeds ?? SplayTreeMap<int, SingleSpeed>();
 
   final DateTime timestamp;
   final ServicePoint? nextStop;
@@ -46,8 +45,11 @@ class Metadata {
   final List<NonStandardTrackEquipmentSegment> nonStandardTrackEquipmentSegments;
   final List<CommunicationNetworkChange> communicationNetworkChanges;
   final List<BracketStationSegment> bracketStationSegments;
+  final Iterable<AdvisedSpeedSegment> advisedSpeedSegments;
   final BreakSeries? breakSeries;
   final Set<BreakSeries> availableBreakSeries;
   final Map<String, List<String>> lineFootNoteLocations;
   final Iterable<RadioContactList> radioContactLists;
+  final SplayTreeMap<int, Iterable<TrainSeriesSpeed>> lineSpeeds;
+  final SplayTreeMap<int, SingleSpeed?> calculatedSpeeds;
 }

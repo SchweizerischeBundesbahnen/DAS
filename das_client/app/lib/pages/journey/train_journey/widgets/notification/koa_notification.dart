@@ -21,7 +21,7 @@ class KoaNotification extends StatelessWidget {
     return StreamBuilder<KoaState>(
       stream: viewModel.koaState,
       builder: (context, snapshot) {
-        if (!snapshot.hasData || snapshot.data == KoaState.waitHide) return Container();
+        if (!snapshot.hasData || snapshot.data == KoaState.waitHide) return SizedBox.shrink();
         return Container(
           margin: EdgeInsets.all(TrainJourneyOverview.horizontalPadding).copyWith(top: 0),
           child: snapshot.data == KoaState.wait ? _WaitNotification() : _WaitCancelledNotification(),
