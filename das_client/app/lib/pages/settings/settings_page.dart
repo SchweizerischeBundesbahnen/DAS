@@ -1,6 +1,7 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/das_navigation_drawer.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:app/util/user_settings.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/header.dart';
@@ -30,11 +31,7 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  SBBHeader _appBar(BuildContext context) {
-    return SBBHeader(
-      title: context.l10n.c_app_name,
-    );
-  }
+  SBBHeader _appBar(BuildContext context) => SBBHeader(title: context.l10n.c_app_name);
 
   Widget _body(BuildContext context) {
     return Column(
@@ -61,7 +58,9 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               Text(
                 context.l10n.p_settings_page_personalize,
-                style: DASTextStyles.smallLight.copyWith(color: SBBColors.granite),
+                style: DASTextStyles.smallLight.copyWith(
+                  color: ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite),
+                ),
               ),
             ],
           ),
@@ -72,53 +71,37 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget _settingsBody(BuildContext context) {
     return SingleChildScrollView(
-      child: SizedBox(
-        width: double.infinity,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _settingTitle(context.l10n.p_settings_page_decisive_gradient_title),
-            _decisiveGradientSettings(context),
-          ],
-        ),
+      padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _settingTitle(context.l10n.p_settings_page_decisive_gradient_title),
+          _decisiveGradientSettings(context),
+        ],
       ),
     );
   }
 
   Widget _decisiveGradientSettings(BuildContext context) {
     return SBBGroup(
-      margin: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
-      padding: const EdgeInsets.only(
-        top: sbbDefaultSpacing * 0.5,
-        bottom: sbbDefaultSpacing * 0.5,
-        right: sbbDefaultSpacing,
-      ),
-      child: Column(
-        children: [
-          SBBListItem.custom(
-            title: context.l10n.p_settings_page_decisive_gradient_show_setting,
-            onPressed: () => _updateSettings(UserSettingKeys.showDecisiveGradient, !_userSettings.showDecisiveGradient),
-            isLastElement: true,
-            trailingWidget: SBBSwitch(
-              key: SettingsPage.decisiveGradientSwitchKey,
-              value: _userSettings.showDecisiveGradient,
-              onChanged: (value) => _updateSettings(UserSettingKeys.showDecisiveGradient, value),
-            ),
-          ),
-        ],
+      padding: const EdgeInsets.only(right: sbbDefaultSpacing),
+      child: SBBListItem.custom(
+        title: context.l10n.p_settings_page_decisive_gradient_show_setting,
+        onPressed: () => _updateSettings(UserSettingKeys.showDecisiveGradient, !_userSettings.showDecisiveGradient),
+        isLastElement: true,
+        trailingWidget: SBBSwitch(
+          key: SettingsPage.decisiveGradientSwitchKey,
+          value: _userSettings.showDecisiveGradient,
+          onChanged: (value) => _updateSettings(UserSettingKeys.showDecisiveGradient, value),
+        ),
       ),
     );
   }
 
   Widget _settingTitle(String title) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: sbbDefaultSpacing * 1.5,
-      ).copyWith(bottom: sbbDefaultSpacing * 0.5),
-      child: Text(
-        title,
-        style: DASTextStyles.smallLight,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing).copyWith(bottom: sbbDefaultSpacing * 0.5),
+      child: Text(title, style: DASTextStyles.smallLight),
     );
   }
 

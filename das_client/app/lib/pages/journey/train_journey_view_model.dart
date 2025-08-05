@@ -144,7 +144,10 @@ class TrainJourneyViewModel {
   void dispose() {
     _rxSettings.close();
     _rxWarnapp.close();
+    _rxShowDecisiveGradient.close();
     _stateSubscription?.cancel();
+    _warnappSignalSubscription?.cancel();
+    _warnappAbfahrtSubscription?.cancel();
     automaticAdvancementController.dispose();
   }
 
@@ -160,8 +163,7 @@ class TrainJourneyViewModel {
   }
 
   void toggleKmDecisiveGradient() {
-    final showDecisiveGradient = _rxShowDecisiveGradient.value;
-    if (!showDecisiveGradient) {
+    if (!showDecisiveGradientValue) {
       _rxShowDecisiveGradient.add(true);
       _showDecisiveGradientTimer = Timer(Duration(seconds: _resetToKmAfterSeconds), () {
         if (_rxShowDecisiveGradient.value) _rxShowDecisiveGradient.add(false);
