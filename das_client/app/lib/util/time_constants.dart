@@ -12,4 +12,6 @@ class TimeConstants {
   int get arrivalDepartureOperationalResetSeconds => 10;
 
   int get adlEndDisplaySeconds => 30;
+
+  int get kmDecisiveGradientResetSeconds => 10;
 }

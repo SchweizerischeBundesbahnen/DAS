@@ -18,4 +18,7 @@ class TestTimeConstants extends TimeConstants {
 
   @override
   int get adlEndDisplaySeconds => 2;
+
+  @override
+  int get kmDecisiveGradientResetSeconds => 2;
 }

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/train_journey/train_journey_overview.dart';
@@ -34,6 +35,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/uncoded_operationa
 import 'package:app/pages/journey/train_journey/widgets/table/whistle_row.dart';
 import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/theme/theme_util.dart';
+import 'package:app/util/user_settings.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:app/widgets/table/das_table_column.dart';
@@ -55,7 +57,7 @@ class TrainJourney extends StatelessWidget {
     final viewModel = context.read<TrainJourneyViewModel>();
 
     return StreamBuilder<List<dynamic>>(
-      stream: CombineLatestStream.list([viewModel.journey, viewModel.settings]),
+      stream: CombineLatestStream.list([viewModel.journey, viewModel.settings, viewModel.showDecisiveGradient]),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data?[0] == null) {
           return SizedBox.shrink();
@@ -309,25 +311,34 @@ class TrainJourney extends StatelessWidget {
         ? '${currentBreakSeries.trainSeries.name}${currentBreakSeries.breakSeries}'
         : '??';
 
+    final journeyViewModel = context.read<TrainJourneyViewModel>();
     final timeViewModel = context.read<ArrivalDepartureTimeViewModel>();
+    final userSettings = DI.get<UserSettings>();
 
     return [
       if (!isDetailModalOpen) ...[
-        DASTableColumn(
-          id: ColumnDefinition.kilometre.index,
-          child: Text(context.l10n.p_train_journey_table_kilometre_label),
-          width: 64.0,
-        ),
-        DASTableColumn(
-          id: ColumnDefinition.gradientDownhill.index,
-          child: Text('-'),
-          width: 40.0,
-        ),
-        DASTableColumn(
-          id: ColumnDefinition.gradientUphill.index,
-          child: Text('+'),
-          width: 40.0,
-        ),
+        if (userSettings.showDecisiveGradient ||
+            (!userSettings.showDecisiveGradient && !journeyViewModel.showDecisiveGradientValue))
+          DASTableColumn(
+            id: ColumnDefinition.kilometre.index,
+            child: Text(context.l10n.p_train_journey_table_kilometre_label),
+            width: 64.0,
+            onTap: !userSettings.showDecisiveGradient ? () => journeyViewModel.toggleKmDecisiveGradient() : null,
+          ),
+        if (userSettings.showDecisiveGradient || journeyViewModel.showDecisiveGradientValue) ...[
+          DASTableColumn(
+            id: ColumnDefinition.gradientDownhill.index,
+            child: Text('-'),
+            width: 40.0,
+            onTap: !userSettings.showDecisiveGradient ? () => journeyViewModel.toggleKmDecisiveGradient() : null,
+          ),
+          DASTableColumn(
+            id: ColumnDefinition.gradientUphill.index,
+            child: Text('+'),
+            width: 40.0,
+            onTap: !userSettings.showDecisiveGradient ? () => journeyViewModel.toggleKmDecisiveGradient() : null,
+          ),
+        ],
       ],
       DASTableColumn(
         id: ColumnDefinition.time.index,
