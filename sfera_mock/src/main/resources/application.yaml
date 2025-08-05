@@ -59,3 +59,5 @@ sfera:
   company-code: '0085'
   sfera-version: '3.00'
   source-device: 'TMS'
+
+localregulations.path: ${LOCALREGULATIONS_PATH}
