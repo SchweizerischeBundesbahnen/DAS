@@ -99,7 +99,7 @@
   "c_main_signal_function_protection": "Deckungssignal",
   "c_main_signal_function_protection_short": "Deck.Sig.",
   "c_main_signal_function_laneChange": "Spurwechsel",
-  "c_main_signal_function_laneChange_short": "Spurwechsel",
+  "c_main_signal_function_laneChange_short": "Spw",
   "c_error_code": "Fehlercode",
   "c_something_went_wrong": "Da ist was schiefgegangen.",
   "c_error_connection_failed": "Verbindung fehlgeschlagen",
