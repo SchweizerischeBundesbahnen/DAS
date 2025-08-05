@@ -18,9 +18,9 @@ void main() {
   Logger.root.level = Level.FINE;
   Logger.root.onRecord.listen(LogPrinter(appName: 'DAS IntegrationTests').call);
 
+  train_journey_table_calculated_speed_tests.main();
   settings_test.main();
   warnapp_tests.main();
   train_journey_table_break_series_tests.main();
   train_journey_table_track_equipment_tests.main();
-  train_journey_table_calculated_speed_tests.main();
 }

@@ -60,7 +60,7 @@ class TrainJourney extends StatelessWidget {
       stream: CombineLatestStream.list([viewModel.journey, viewModel.settings, viewModel.showDecisiveGradient]),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data?[0] == null) {
-          return Container();
+          return SizedBox.shrink();
         }
 
         final journey = snapshot.data![0] as Journey;
