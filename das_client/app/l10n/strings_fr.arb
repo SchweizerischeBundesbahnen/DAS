@@ -83,7 +83,7 @@
   "c_main_signal_function_protection": "Signal de protection",
   "c_main_signal_function_protection_short": "S.Prot.",
   "c_main_signal_function_laneChange": "Diagonale d’échange",
-  "c_main_signal_function_laneChange_short": "Diagonale d’échange",
+  "c_main_signal_function_laneChange_short": "Diag",
   "c_error_code": "Code d’erreur",
   "c_something_went_wrong": "Un problème est survenu.",
   "c_error_connection_failed": "Échec de la connexion",

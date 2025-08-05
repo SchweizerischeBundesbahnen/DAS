@@ -5,7 +5,6 @@ import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/navigation/journey_navigation_model.dart';
 import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/train_journey/collapsible_rows_view_model.dart';
-import 'package:app/pages/journey/train_journey/das_table_speed_view_model.dart';
 import 'package:app/pages/journey/train_journey/ux_testing_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/chronograph/chronograph_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
@@ -14,6 +13,8 @@ import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_moda
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/pages/journey/train_journey/widgets/journey_navigation_buttons.dart';
+import 'package:app/pages/journey/train_journey/widgets/notification/adl_notification.dart';
+import 'package:app/pages/journey/train_journey/widgets/notification/adl_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/koa_notification.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
@@ -95,18 +96,20 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
-          create: (_) => DASTableSpeedViewModel(
-            journeyStream: trainJourneyViewModel.journey,
-            settingsStream: trainJourneyViewModel.settings,
-          ),
-          dispose: (_, vm) => vm.dispose(),
-        ),
-        Provider(
-          create: (_) => ChronographViewModel(journeyStream: trainJourneyViewModel.journey),
+          create: (_) => AdlViewModel(journeyStream: trainJourneyViewModel.journey),
           dispose: (_, vm) => vm.dispose(),
         ),
       ],
-      builder: (context, child) => _body(context),
+      builder: (context, child) {
+        return Provider(
+          create: (_) => ChronographViewModel(
+            journeyStream: trainJourneyViewModel.journey,
+            adlViewModel: context.read<AdlViewModel>(),
+          ),
+          dispose: (_, vm) => vm.dispose(),
+          builder: (context, child) => _body(context),
+        );
+      },
     );
   }
 
@@ -135,6 +138,7 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
     return Column(
       children: [
         Header(),
+        ADLNotification(),
         ManeuverNotification(),
         KoaNotification(),
         _warnappNotification(context),

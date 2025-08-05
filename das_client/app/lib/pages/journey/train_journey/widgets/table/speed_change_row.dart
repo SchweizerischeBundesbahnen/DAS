@@ -1,4 +1,5 @@
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/show_speed_behaviour.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
@@ -25,9 +26,6 @@ class SpeedChangeRow extends CellRowBuilder<SpeedChange> {
   }
 
   @override
-  DASTableCell brakedWeightSpeedCell(BuildContext context) => speedCell(data.speeds);
-
-  @override
   DASTableCell iconsCell2(BuildContext context) {
     return DASTableCell(
       padding: EdgeInsets.all(sbbDefaultSpacing * 0.25),
@@ -39,4 +37,7 @@ class SpeedChangeRow extends CellRowBuilder<SpeedChange> {
       alignment: Alignment.centerLeft,
     );
   }
+
+  @override
+  ShowSpeedBehavior get showSpeedBehavior => ShowSpeedBehavior.always;
 }

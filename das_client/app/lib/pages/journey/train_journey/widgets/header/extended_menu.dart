@@ -128,7 +128,7 @@ class ExtendedMenu extends StatelessWidget {
         child: StreamBuilder<TrainJourneySettings>(
           stream: viewModel.settings,
           builder: (context, snapshot) {
-            if (!snapshot.hasData) return Container();
+            if (!snapshot.hasData) return SizedBox.shrink();
 
             return SBBSwitch(
               key: maneuverSwitchKey,

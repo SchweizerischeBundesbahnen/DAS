@@ -1,6 +1,6 @@
 name: app
 publish_to: 'none'
-version: 0.23.0+64
+version: 0.24.0+65
 
 environment:
   sdk: ^3.8.0
@@ -66,6 +66,8 @@ dependencies:
   uuid: ^4.5.1
   # https://pub.dev/packages/package_info_plus
   package_info_plus: ^8.3.0
+  # https://pub.dev/packages/shared_preferences
+  shared_preferences: ^2.5.3
 
 dev_dependencies:
   integration_test:
