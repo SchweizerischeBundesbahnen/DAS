@@ -37,11 +37,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     super.config,
     Color? rowColor,
   }) : super(
-         rowColor:
-             rowColor ??
-             ((metadata.nextStop == data)
-                 ? ThemeUtil.getColor(context, Color(0xFFB1BED4), SBBColors.royal150)
-                 : ThemeUtil.getDASTableColor(context)),
+         rowColor: rowColor ?? ((metadata.nextStop == data) ? SBBColors.night : ThemeUtil.getDASTableColor(context)),
          stickyLevel: StickyLevel.first,
          height: calculateHeight(data, config.settings.resolvedBreakSeries(metadata)),
        );
@@ -155,6 +151,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
         isStopOnRequest: !data.mandatoryStop,
         chevronAnimationData: config.chevronAnimationData,
         chevronPosition: data.chevronPosition,
+        isNextStop: metadata.nextStop == data,
       ),
     );
   }
@@ -194,7 +191,9 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     return SvgPicture.asset(
       assetName,
       key: key,
-      colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
+      colorFilter: (metadata.nextStop == data)
+          ? ColorFilter.mode(SBBColors.white, BlendMode.srcIn)
+          : ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
     );
   }
 
