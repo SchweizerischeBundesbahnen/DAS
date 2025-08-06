@@ -43,7 +43,7 @@ class ChronographViewModel {
   Stream<String> get formattedWallclockTime => Stream.periodic(
     const Duration(milliseconds: 200),
     (_) => DateFormat('HH:mm:ss').format(clock.now()),
-  );
+  ).distinct();
 
   String get formattedWallclockTimeValue => DateFormat('HH:mm:ss').format(clock.now());
 
