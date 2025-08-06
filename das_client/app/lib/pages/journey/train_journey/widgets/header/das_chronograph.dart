@@ -20,7 +20,6 @@ class DASChronograph extends StatelessWidget {
   Widget build(BuildContext context) {
     return SBBGroup(
       padding: const EdgeInsets.all(sbbDefaultSpacing),
-      useShadow: false,
       child: SizedBox(
         width: _width,
         height: _height,

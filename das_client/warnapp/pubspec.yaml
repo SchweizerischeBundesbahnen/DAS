@@ -13,7 +13,7 @@ dependencies:
   # https://pub.dev/packages/sensors_plus
   sensors_plus: ^6.1.1
   # https://pub.dev/packages/geolocator
-  geolocator: ^14.0.1
+  geolocator: ^14.0.2
   # https://pub.dev/packages/logging
   logging: ^1.3.0
   # https://pub.dev/packages/path_provider
