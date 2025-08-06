@@ -64,7 +64,11 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
             servicePointName,
             textAlign: TextAlign.start,
             overflow: TextOverflow.ellipsis,
-            style: data.isStation
+            style: metadata.nextStop == data
+                ? data.isStation
+                      ? DASTextStyles.xLargeBold.copyWith(color: SBBColors.white)
+                      : DASTextStyles.xLargeLight.copyWith(fontStyle: FontStyle.italic, color: SBBColors.white)
+                : data.isStation
                 ? DASTextStyles.xLargeBold
                 : DASTextStyles.xLargeLight.copyWith(fontStyle: FontStyle.italic),
           ),
@@ -99,7 +103,9 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
                 Text.rich(
                   TextUtil.parseHtmlText(
                     property.text!,
-                    DASTextStyles.mediumRoman,
+                    metadata.nextStop == data
+                        ? DASTextStyles.mediumRoman.copyWith(color: SBBColors.white)
+                        : DASTextStyles.mediumRoman,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -108,6 +114,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
                 SpeedDisplay(
                   speed: speed.speed,
                   singleLine: true,
+                  isNextStop: metadata.nextStop == data,
                 ),
             ],
           ),
@@ -128,7 +135,12 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     return _wrapToBaseHeight(
       DASTableCell(
         onTap: () => viewModel.toggleOperationalTime(),
-        child: TimeCellBody(times: times, viewModel: viewModel, showTimesInBrackets: !data.isStop),
+        child: TimeCellBody(
+          times: times,
+          viewModel: viewModel,
+          showTimesInBrackets: !data.isStop,
+          isNextStop: metadata.nextStop == data,
+        ),
         alignment: defaultAlignment,
         color: specialCellColor,
       ),
@@ -214,6 +226,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       child = SpeedDisplay(
         speed: trainSeriesSpeed.speed,
         hasAdditionalInformation: relevantGraduatedSpeedInfo.isNotEmpty,
+        isNextStop: metadata.nextStop == data,
       );
     }
 
@@ -264,7 +277,9 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       color: specialCellColor,
       child: Text(
         value.round().toString(),
-        style: DASTextStyles.largeRoman,
+        style: metadata.nextStop == data
+            ? DASTextStyles.largeRoman.copyWith(color: SBBColors.white)
+            : DASTextStyles.largeRoman,
       ),
       alignment: defaultAlignment,
     );

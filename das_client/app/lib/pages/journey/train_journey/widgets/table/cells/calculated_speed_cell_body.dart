@@ -18,6 +18,7 @@ class CalculatedSpeedCellBody extends StatelessWidget {
     required this.settings,
     required this.order,
     required this.showSpeedBehavior,
+    this.isNextStop = false,
     super.key,
   });
 
@@ -25,6 +26,7 @@ class CalculatedSpeedCellBody extends StatelessWidget {
   final TrainJourneySettings settings;
   final int order;
   final ShowSpeedBehavior showSpeedBehavior;
+  final bool isNextStop;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +61,11 @@ class CalculatedSpeedCellBody extends StatelessWidget {
         return Text(
           key: nonEmptyKey,
           resolvedCalculatedSpeed.value == '0' ? zeroSpeedContent : resolvedCalculatedSpeed.value,
-          style: isSpeedReducedDueToLineSpeed ? DASTextStyles.largeLight.copyWith(color: SBBColors.metal) : null,
+          style: isSpeedReducedDueToLineSpeed
+              ? DASTextStyles.largeLight.copyWith(color: SBBColors.metal)
+              : isNextStop
+              ? DASTextStyles.largeLight.copyWith(color: SBBColors.white)
+              : null,
         );
       },
     );

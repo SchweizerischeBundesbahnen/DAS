@@ -1,4 +1,3 @@
-import 'package:app/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -22,7 +21,7 @@ class DotIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (!show) return child;
-    final resolvedDotColor = ThemeUtil.getColor(context, Theme.of(context).colorScheme.primary, SBBColors.sky);
+    final resolvedDotColor = SBBColors.sky;
 
     return Stack(
       clipBehavior: Clip.none,

@@ -11,6 +11,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/cells/track_equipm
 import 'package:app/pages/journey/train_journey/widgets/table/column_definition.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_config.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
+import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_row.dart';
@@ -78,13 +79,18 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
       return DASTableCell.empty(color: specialCellColor);
     }
 
+    final isNextStop = metadata.nextStop == data;
+
     return DASTableCell(
       color: specialCellColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(data.kilometre[0].toStringAsFixed(1)),
+          Text(
+            data.kilometre[0].toStringAsFixed(1),
+            style: isNextStop ? DASTextStyles.largeRoman.copyWith(color: SBBColors.white) : DASTextStyles.largeRoman,
+          ),
           if (data.kilometre.length > 1) Text(data.kilometre[1].toStringAsFixed(1)),
         ],
       ),
@@ -132,7 +138,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
     if (inEtcsLevel2Segment && data.type != Datatype.cabSignaling) {
       return DASTableCell.empty();
     }
-
+    metadata.nextStop == data;
     return DASTableCell(
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
@@ -141,6 +147,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
         config: config.settings,
         order: data.order,
         showSpeedBehavior: showSpeedBehavior,
+        isNextStop: metadata.nextStop == data,
       ),
     );
   }
@@ -157,6 +164,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
       child: SpeedDisplay(
         speed: trainSeriesSpeed?.speed,
+        isNextStop: metadata.nextStop == data,
       ),
     );
   }
@@ -196,6 +204,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
   DASTableCell advisedSpeedCell(BuildContext context) {
     final advisedSpeedsSegment = metadata.advisedSpeedSegments.appliesToOrder(data.order);
     final isLastAdvisedSpeed = advisedSpeedsSegment.firstOrNull?.endData == data;
+    final isNextStop = metadata.nextStop == data;
     if (advisedSpeedsSegment.isNotEmpty && !isLastAdvisedSpeed) {
       final isFirst = advisedSpeedsSegment.first.startOrder == data.order;
 
@@ -207,6 +216,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
           settings: config.settings,
           order: data.order,
           showSpeedBehavior: isFirst ? ShowSpeedBehavior.always : showSpeedBehavior,
+          isNextStop: isNextStop,
         ),
       );
     } else {
@@ -216,6 +226,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
           settings: config.settings,
           order: data.order,
           showSpeedBehavior: isLastAdvisedSpeed ? ShowSpeedBehavior.alwaysOrPrevious : showSpeedBehavior,
+          isNextStop: isNextStop,
         ),
       );
     }

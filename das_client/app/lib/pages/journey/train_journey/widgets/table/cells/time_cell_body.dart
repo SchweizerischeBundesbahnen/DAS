@@ -5,6 +5,7 @@ import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class TimeCellBody extends StatelessWidget {
@@ -14,12 +15,14 @@ class TimeCellBody extends StatelessWidget {
     required this.times,
     required this.viewModel,
     required this.showTimesInBrackets,
+    this.isNextStop = false,
     super.key,
   });
 
   final ArrivalDepartureTime times;
   final ArrivalDepartureTimeViewModel viewModel;
   final bool showTimesInBrackets;
+  final bool isNextStop;
 
   @override
   Widget build(BuildContext context) {
@@ -47,12 +50,26 @@ class TimeCellBody extends StatelessWidget {
           key: timeCellKey,
           TextSpan(
             children: [
-              TextSpan(text: arrivalTime, style: isArrivalBold ? DASTextStyles.largeBold : null),
+              TextSpan(
+                text: arrivalTime,
+                style: isNextStop
+                    ? isArrivalBold
+                          ? DASTextStyles.largeBold.copyWith(color: SBBColors.white)
+                          : DASTextStyles.largeRoman.copyWith(color: SBBColors.white)
+                    : isArrivalBold
+                    ? DASTextStyles.largeBold
+                    : null,
+              ),
               TextSpan(
                 text: departureTime,
-                style: DASTextStyles.largeBold.copyWith(
-                  decoration: isDepartureUnderlined ? TextDecoration.underline : TextDecoration.none,
-                ),
+                style: isNextStop
+                    ? DASTextStyles.largeBold.copyWith(
+                        decoration: isDepartureUnderlined ? TextDecoration.underline : TextDecoration.none,
+                        color: SBBColors.white,
+                      )
+                    : DASTextStyles.largeBold.copyWith(
+                        decoration: isDepartureUnderlined ? TextDecoration.underline : TextDecoration.none,
+                      ),
               ),
             ],
           ),

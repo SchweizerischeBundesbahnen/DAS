@@ -17,6 +17,7 @@ class SpeedDisplay extends StatelessWidget {
     this.singleLine = false,
     this.textStyle = DASTextStyles.largeRoman,
     this.speed,
+    this.isNextStop = false,
     super.key,
   });
 
@@ -24,6 +25,7 @@ class SpeedDisplay extends StatelessWidget {
   final bool singleLine;
   final TextStyle textStyle;
   final Speed? speed;
+  final bool isNextStop;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class SpeedDisplay extends StatelessWidget {
         _visualizedSpeeds(key: incomingSpeedsKey, speeds: ioSpeed.incoming),
         Text(
           ' / ',
-          style: textStyle,
+          style: isNextStop ? textStyle.copyWith(color: SBBColors.white) : textStyle,
         ),
         _visualizedSpeeds(key: outgoingSpeedsKey, speeds: ioSpeed.outgoing),
       ],
@@ -61,7 +63,7 @@ class SpeedDisplay extends StatelessWidget {
         _visualizedSpeeds(key: incomingSpeedsKey, speeds: ioSpeed.incoming),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 2.0),
-          child: Divider(color: Theme.of(context).colorScheme.onSurface, height: 1.0),
+          child: Divider(color: isNextStop ? SBBColors.white : Theme.of(context).colorScheme.onSurface, height: 1.0),
         ),
         _visualizedSpeeds(key: outgoingSpeedsKey, speeds: ioSpeed.outgoing),
       ],
@@ -81,7 +83,7 @@ class SpeedDisplay extends StatelessWidget {
         children: singleSpeeds
             .map((speed) => _speedText(speed))
             .withDivider(
-              Text('-', style: textStyle),
+              Text('-', style: isNextStop ? textStyle.copyWith(color: SBBColors.white) : textStyle),
             )
             .toList(),
       );
@@ -89,9 +91,11 @@ class SpeedDisplay extends StatelessWidget {
     return Text(
       key: key,
       singleSpeeds.toJoinedString(),
-      style: textStyle,
+      style: isNextStop ? textStyle.copyWith(color: SBBColors.white) : textStyle,
     );
   }
+
+  //TODO change the reduced overview because it is currently all white. change background color to SBBColors.night
 
   Widget _speedText(SingleSpeed speed) {
     return Builder(
@@ -102,13 +106,13 @@ class SpeedDisplay extends StatelessWidget {
           padding: EdgeInsets.all(1.0),
           decoration: squaredOrCircled
               ? BoxDecoration(
-                  border: Border.all(color: Theme.of(context).colorScheme.onSurface),
+                  border: Border.all(color: isNextStop ? SBBColors.white : Theme.of(context).colorScheme.onSurface),
                   borderRadius: speed.isCircled ? BorderRadius.circular(sbbDefaultSpacing) : BorderRadius.zero,
                 )
               : null,
           child: Text(
             speed.value,
-            style: textStyle.copyWith(height: 0),
+            style: isNextStop ? textStyle.copyWith(height: 0, color: SBBColors.white) : textStyle.copyWith(height: 0),
           ),
         );
       },
