@@ -409,7 +409,7 @@ class TrainJourney extends StatelessWidget {
   }
 
   Future<void> _onBreakSeriesTap(BuildContext context, Metadata metadata, TrainJourneySettings settings) async {
-    final trainJourneyCubit = context.read<TrainJourneyViewModel>();
+    final viewModel = context.read<TrainJourneyViewModel>();
 
     final selectedBreakSeries = await showSBBModalSheet<BreakSeries>(
       context: context,
@@ -421,9 +421,7 @@ class TrainJourney extends StatelessWidget {
       ),
     );
 
-    if (selectedBreakSeries != null) {
-      trainJourneyCubit.updateBreakSeries(selectedBreakSeries);
-    }
+    if (selectedBreakSeries != null) viewModel.updateBreakSeries(selectedBreakSeries);
   }
 
   bool _isCurvePointWithoutSpeed(BaseData data, Journey journey, TrainJourneySettings settings) {
