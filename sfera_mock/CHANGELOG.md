@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.6.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.5.1...sfera_mock-v0.6.0) (2025-08-06)
+
+
+### Features
+
+* add uncoded operational indication ([#126](https://github.com/SchweizerischeBundesbahnen/DAS/issues/126)) ([#1092](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1092)) ([add604d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/add604d4953118be4163507e986c328c9da43646))
+* added ADL Message ([#228](https://github.com/SchweizerischeBundesbahnen/DAS/issues/228)) ([#1116](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1116)) ([5fd848d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5fd848d0a1eb6fbfc46f7639ebd098858ed1bc6b))
+* departure times are underlined ([#259](https://github.com/SchweizerischeBundesbahnen/DAS/issues/259)) ([#1114](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1114)) ([736d247](https://github.com/SchweizerischeBundesbahnen/DAS/commit/736d2477ab11809d3c6320248ec6e76ebc1555a6))
+* empty local speed can have blue indicator ([#891](https://github.com/SchweizerischeBundesbahnen/DAS/issues/891)) ([#1110](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1110)) ([4a14575](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4a14575c31d4a47e88c75d564c43e9356a0e618f))
+* show sim corridor in modal sheet ([#940](https://github.com/SchweizerischeBundesbahnen/DAS/issues/940)) ([#1105](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1105)) ([40e5609](https://github.com/SchweizerischeBundesbahnen/DAS/commit/40e560917fd83851677d54b4cd890d4796a4b99d))
+
+
+### Bug Fixes
+
+* **deps:** update dependency org.springframework.boot:spring-boot-starter-parent to v3.5.4 ([#1129](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1129)) ([34d2436](https://github.com/SchweizerischeBundesbahnen/DAS/commit/34d2436610c4166603c3ca2113a959e285ee80f2))
+
 ## [0.5.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.5.0...sfera_mock-v0.5.1) (2025-07-14)
 
 
