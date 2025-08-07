@@ -1,4 +1,5 @@
 import 'package:app/extension/base_data_extension.dart';
+import 'package:app/pages/journey/train_journey/widgets/reduced_overview/cells/reduced_time_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:app/theme/theme_util.dart';
@@ -23,7 +24,14 @@ class ReducedServicePointRow extends ServicePointRow {
 
   @override
   DASTableCell timeCell(BuildContext context) {
-    return DASTableCell(child: Text('06:05'), alignment: defaultAlignment, color: specialCellColor);
+    final times = data.arrivalDepartureTime;
+    if (times == null) return DASTableCell.empty(color: specialCellColor);
+
+    return DASTableCell(
+      child: ReducedTimeCellBody(times: times, showTimesInBrackets: !data.isStop),
+      alignment: defaultAlignment,
+      color: specialCellColor,
+    );
   }
 
   @override
