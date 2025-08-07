@@ -1,5 +1,6 @@
 import 'package:app/pages/journey/train_journey/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
 import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
@@ -9,33 +10,37 @@ class ChevronAnimationData {
   const ChevronAnimationData({
     required this.startOffset,
     required this.endOffset,
-    required this.lastPosition,
     required this.currentPosition,
+    this.lastPosition,
   });
 
   final double startOffset;
   final double endOffset;
-  final BaseData lastPosition;
   final BaseData currentPosition;
+  final BaseData? lastPosition;
 
   static ChevronAnimationData? from(
     List<BaseData> rows,
-    Journey journey,
+    Metadata metadata,
     BaseData currentRow,
     BreakSeries? currentBreakSeries,
   ) {
-    // TODO: Handle chevron without position update
-    if (journey.metadata.lastPosition == null ||
-        journey.metadata.currentPosition == null ||
-        journey.metadata.lastPosition == journey.metadata.currentPosition) {
+    final currentPosition = metadata.currentPosition;
+    final lastPosition = metadata.lastPosition;
+    if (currentPosition == null || lastPosition == currentPosition) {
       return null;
     }
 
-    // Collapsible rows are not part of the animation
+    // collapsible rows are not part of the animation
     final filteredRows = rows.whereNot((it) => it.isCollapsible).toList();
 
-    final fromIndex = filteredRows.indexOf(journey.metadata.lastPosition!);
-    final toIndex = filteredRows.indexOf(journey.metadata.currentPosition!);
+    // handle no position update
+    if (lastPosition == null) {
+      return _initialAnimationData(filteredRows, currentPosition, currentRow, currentBreakSeries);
+    }
+
+    final fromIndex = filteredRows.indexOf(lastPosition);
+    final toIndex = filteredRows.indexOf(currentPosition);
     final calculateToIndex = toIndex + 1; // overlapping of next row
 
     final currentIndex = filteredRows.indexOf(currentRow);
@@ -46,7 +51,6 @@ class ChevronAnimationData {
     var startOffset = 0.0;
     var endOffset = 0.0;
 
-    // TODO: Handle chevron position for start or end of route
     // First row chevron to end of cell
     final startRow = filteredRows[fromIndex];
     final startRowHeight = CellRowBuilder.rowHeightForData(startRow, currentBreakSeries);
@@ -72,10 +76,12 @@ class ChevronAnimationData {
     // Last row cell start to chevron position
     final endRow = filteredRows[toIndex];
     final endRowHeight = CellRowBuilder.rowHeightForData(endRow, currentBreakSeries);
-    final endRowChevronPosition = RouteChevron.positionFromHeight(endRowHeight);
-    endOffset += endRowChevronPosition;
+    final chevronPosition = metadata.routeEnd == endRow
+        ? RouteCellBody.routeCirclePosition - RouteChevron.chevronHeight
+        : RouteChevron.positionFromHeight(endRowHeight);
+    endOffset += chevronPosition;
 
-    if (currentRow == journey.metadata.currentPosition) {
+    if (currentRow == currentPosition) {
       startOffset = -endOffset;
       endOffset = 0.0;
     }
@@ -91,8 +97,29 @@ class ChevronAnimationData {
     return ChevronAnimationData(
       startOffset: startOffset,
       endOffset: endOffset,
-      lastPosition: journey.metadata.lastPosition!,
-      currentPosition: journey.metadata.currentPosition!,
+      lastPosition: lastPosition,
+      currentPosition: currentPosition,
     );
+  }
+
+  /// returns static animation data for position row and next row overlapped with chevron.
+  static ChevronAnimationData? _initialAnimationData(
+    List<BaseData> filteredRows,
+    BaseData currentPosition,
+    BaseData currentRow,
+    BreakSeries? currentBreakSeries,
+  ) {
+    final positionIndex = filteredRows.indexOf(currentPosition);
+    final overlappingRowIndex = positionIndex + 1;
+    final currentIndex = filteredRows.indexOf(currentRow);
+
+    if (currentIndex == positionIndex) {
+      return ChevronAnimationData(startOffset: 0.0, endOffset: 0.0, currentPosition: currentPosition);
+    } else if (currentIndex == overlappingRowIndex) {
+      final overlappedRow = filteredRows[overlappingRowIndex];
+      final offset = -CellRowBuilder.rowHeightForData(overlappedRow, currentBreakSeries);
+      return ChevronAnimationData(startOffset: offset, endOffset: offset, currentPosition: currentPosition);
+    }
+    return null;
   }
 }

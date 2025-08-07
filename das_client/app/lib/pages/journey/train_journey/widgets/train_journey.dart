@@ -155,7 +155,7 @@ class TrainJourney extends StatelessWidget {
         settings: settings,
         trackEquipmentRenderData: TrackEquipmentRenderData.from(rows, journey.metadata, index, currentBreakSeries),
         bracketStationRenderData: BracketStationRenderData.from(rowData, journey.metadata),
-        chevronAnimationData: ChevronAnimationData.from(rows, journey, rowData, currentBreakSeries),
+        chevronAnimationData: ChevronAnimationData.from(rows, journey.metadata, rowData, currentBreakSeries),
       );
 
       var hasPreviousCollapsible = false;
