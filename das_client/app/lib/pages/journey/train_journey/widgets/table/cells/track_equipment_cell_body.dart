@@ -177,7 +177,7 @@ class TrackEquipmentCellBody extends StatelessWidget {
     if (renderData.isStart && renderData.isEnd) {
       return height * 0.25;
     } else if (renderData.isStart) {
-      return position != null ? position! : height * 0.5;
+      return position ?? height * 0.5;
     }
 
     return renderData.isConventionalExtendedSpeedBorder ? conventionalExtendedSpeedBorderSpace : 0;

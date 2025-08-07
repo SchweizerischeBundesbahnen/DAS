@@ -1,6 +1,5 @@
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:sfera/component.dart';
 
@@ -91,7 +90,7 @@ class TrackEquipmentRenderData {
         break;
       }
 
-      cumulativeHeight += _rowHeight(data, segment, rowData, currentBreakSeries);
+      cumulativeHeight += _renderHeight(data, segment, rowData, currentBreakSeries);
 
       // if is conventional extended speed border, reduce by it's height as it is not part of the dashed line.
       if (_isConventionalExtendedSpeedBorder(rowData, metadata, searchIndex)) {
@@ -104,7 +103,7 @@ class TrackEquipmentRenderData {
   }
 
   /// returns height of track equipment "line" for given row
-  static double _rowHeight(
+  static double _renderHeight(
     BaseData data,
     NonStandardTrackEquipmentSegment segment,
     List<BaseData> rowData,
@@ -115,16 +114,12 @@ class TrackEquipmentRenderData {
     final isStart = _isStart(data, segment, rowData);
     final isEnd = _isEnd(data, segment, rowData);
 
-    // TODO: handle positioning with new chevron position
     // handle positioning of stop circle on route
+    final routeCircleCenterPoint = RouteCellBody.routeCirclePosition + RouteCellBody.routeCircleSize / 2;
     if (isStart && data is ServicePoint) {
-      return rowHeight -
-          (RouteChevron.positionFromHeight(rowHeight) + RouteChevron.chevronHeight) -
-          RouteCellBody.routeCircleSize / 2;
+      return rowHeight - routeCircleCenterPoint;
     } else if (isEnd && data is ServicePoint) {
-      return RouteChevron.positionFromHeight(rowHeight) +
-          RouteChevron.chevronHeight +
-          RouteCellBody.routeCircleSize / 2;
+      return rowHeight + routeCircleCenterPoint;
     }
 
     return isStart || isEnd ? rowHeight / 2 : rowHeight;

@@ -241,13 +241,9 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       color: specialCellColor,
       padding: const EdgeInsets.all(0.0),
       alignment: null,
-      // TODO: Handle chevron position for track equipment
       child: TrackEquipmentCellBody(
         renderData: config.trackEquipmentRenderData!,
-        position:
-            RouteChevron.positionFromHeight(height) +
-            RouteChevron.chevronHeight +
-            (data.isStop ? RouteCellBody.routeCircleSize / 2 : 0.0),
+        position: RouteCellBody.routeCirclePosition + (data.isStop ? RouteCellBody.routeCircleSize * 0.5 : 0.0),
       ),
     );
   }
