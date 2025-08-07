@@ -1,32 +1,38 @@
 <sbb-table-wrapper>
-  <table sbb-table [dataSource]="dataSource">
+  <table [dataSource]="dataSource" sbb-table>
     <ng-container sbbColumnDef="direction">
-      <th sbb-header-cell *sbbHeaderCellDef>Direction</th>
-      <td sbb-cell *sbbCellDef="let element">{{ element.direction }}</td>
+      <th *sbbHeaderCellDef sbb-header-cell>Direction</th>
+      <td *sbbCellDef="let element" sbb-cell>{{ element.direction }}</td>
     </ng-container>
 
     <ng-container sbbColumnDef="topic">
-      <th sbb-header-cell *sbbHeaderCellDef>Topic</th>
-      <td sbb-cell *sbbCellDef="let element">{{ element.topic }}</td>
+      <th *sbbHeaderCellDef sbb-header-cell>Topic</th>
+      <td *sbbCellDef="let element" sbb-cell>{{ element.topic }}</td>
     </ng-container>
 
     <ng-container sbbColumnDef="type">
-      <th sbb-header-cell *sbbHeaderCellDef>Type</th>
-      <td sbb-cell *sbbCellDef="let element">{{ element.type }}</td>
+      <th *sbbHeaderCellDef sbb-header-cell>Type</th>
+      <td *sbbCellDef="let element" sbb-cell>{{ element.type }}</td>
     </ng-container>
 
     <ng-container sbbColumnDef="info">
-      <th sbb-header-cell *sbbHeaderCellDef>Info</th>
-      <td sbb-cell *sbbCellDef="let element">{{ element.info }}</td>
+      <th *sbbHeaderCellDef sbb-header-cell>Info</th>
+      <td *sbbCellDef="let element" sbb-cell>{{ element.info }}</td>
     </ng-container>
 
     <ng-container sbbColumnDef="message">
-      <th sbb-header-cell *sbbHeaderCellDef>Xml-Message</th>
-      <td sbb-cell *sbbCellDef="let element">
-        <app-simple-xml [xmlString]="element.message" [collapsed]="true"></app-simple-xml>
+      <th *sbbHeaderCellDef sbb-header-cell>Xml-Message</th>
+      <td *sbbCellDef="let element" sbb-cell>
+        <app-simple-xml [collapsed]="true" [xmlString]="element.message"></app-simple-xml>
       </td>
     </ng-container>
-    <tr sbb-header-row *sbbHeaderRowDef="displayedColumns"></tr>
-    <tr sbb-row *sbbRowDef="let row; columns: displayedColumns"></tr>
+    <ng-container sbbColumnDef="size">
+      <th *sbbHeaderCellDef sbb-header-cell>Size</th>
+      <td *sbbCellDef="let element" sbb-cell>
+        {{ element.size | fileSize }}
+      </td>
+    </ng-container>
+    <tr *sbbHeaderRowDef="displayedColumns" sbb-header-row></tr>
+    <tr *sbbRowDef="let row; columns: displayedColumns" sbb-row></tr>
   </table>
 </sbb-table-wrapper>
