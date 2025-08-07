@@ -1,6 +1,6 @@
-import 'package:app/extension/base_data_extension.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:sfera/component.dart';
 
@@ -115,11 +115,16 @@ class TrackEquipmentRenderData {
     final isStart = _isStart(data, segment, rowData);
     final isEnd = _isEnd(data, segment, rowData);
 
+    // TODO: handle positioning with new chevron position
     // handle positioning of stop circle on route
     if (isStart && data is ServicePoint) {
-      return rowHeight - (data.chevronPosition + RouteCellBody.chevronHeight) - RouteCellBody.routeCircleSize / 2;
+      return rowHeight -
+          (RouteChevron.positionFromHeight(rowHeight) + RouteChevron.chevronHeight) -
+          RouteCellBody.routeCircleSize / 2;
     } else if (isEnd && data is ServicePoint) {
-      return data.chevronPosition + RouteCellBody.chevronHeight + RouteCellBody.routeCircleSize / 2;
+      return RouteChevron.positionFromHeight(rowHeight) +
+          RouteChevron.chevronHeight +
+          RouteCellBody.routeCircleSize / 2;
     }
 
     return isStart || isEnd ? rowHeight / 2 : rowHeight;

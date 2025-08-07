@@ -1,5 +1,5 @@
-import 'package:app/extension/base_data_extension.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
@@ -39,7 +39,7 @@ class ReducedServicePointRow extends ServicePointRow {
         isRouteStart: metadata.routeStart == data,
         isRouteEnd: metadata.routeEnd == data,
         isStopOnRequest: !data.mandatoryStop,
-        chevronPosition: data.chevronPosition,
+        chevronPosition: RouteChevron.positionFromHeight(height),
       ),
     );
   }

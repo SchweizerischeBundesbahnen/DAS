@@ -1,4 +1,3 @@
-import 'package:app/extension/base_data_extension.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/advised_speed_cell_body.dart';
@@ -6,6 +5,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/cells/bracket_stat
 import 'package:app/pages/journey/train_journey/widgets/table/cells/calculated_speed_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/line_speed_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/show_speed_behaviour.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/column_definition.dart';
@@ -103,7 +103,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
         isRouteStart: metadata.routeStart == data,
         isRouteEnd: metadata.routeEnd == data,
         chevronAnimationData: config.chevronAnimationData,
-        chevronPosition: data.chevronPosition,
+        chevronPosition: RouteChevron.positionFromHeight(height),
       ),
     );
   }

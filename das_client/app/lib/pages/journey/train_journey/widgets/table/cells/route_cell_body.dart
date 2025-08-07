@@ -1,5 +1,6 @@
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/chevron_animation_data.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -11,7 +12,7 @@ class RouteCellBody extends StatelessWidget {
   static const Key routeEndKey = Key('endRouteCell');
 
   static const double routeCircleSize = 14.0;
-  static const double chevronHeight = 8.0;
+  static const double routeCirclePosition = ServicePointRow.baseRowHeight - sbbDefaultSpacing - routeCircleSize;
 
   const RouteCellBody({
     required this.chevronPosition,
@@ -40,9 +41,6 @@ class RouteCellBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final horizontalBorderWidth =
-        DASTableTheme.of(context)?.data.tableBorder?.horizontalInside.width ?? sbbDefaultSpacing;
-
     return LayoutBuilder(
       builder: (context, constraints) {
         final height = constraints.maxHeight;
@@ -52,23 +50,27 @@ class RouteCellBody extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             _routeLine(context, height, width),
-            if (isCurrentPosition || chevronAnimationData != null)
-              Positioned(
-                top: -horizontalBorderWidth,
-                bottom: -horizontalBorderWidth,
-                left: 0,
-                right: 0,
-                child: RouteChevron(
-                  chevronWidth: chevronWidth,
-                  chevronAnimationData: chevronAnimationData,
-                  chevronHeight: chevronHeight,
-                  chevronPosition: chevronPosition,
-                ),
-              ),
+            if (isCurrentPosition || chevronAnimationData != null) _chevron(context),
             if (isStop) _circle(context),
           ],
         );
       },
+    );
+  }
+
+  Widget _chevron(BuildContext context) {
+    final horizontalBorderWidth =
+        DASTableTheme.of(context)?.data.tableBorder?.horizontalInside.width ?? sbbDefaultSpacing;
+    return Positioned(
+      top: -horizontalBorderWidth,
+      bottom: -horizontalBorderWidth,
+      left: 0,
+      right: 0,
+      child: RouteChevron(
+        chevronWidth: chevronWidth,
+        chevronAnimationData: chevronAnimationData,
+        chevronPosition: isRouteEnd ? routeCirclePosition - RouteChevron.chevronHeight : chevronPosition,
+      ),
     );
   }
 
@@ -79,8 +81,8 @@ class RouteCellBody extends StatelessWidget {
         DASTableTheme.of(context)?.data.tableBorder?.horizontalInside.width ?? sbbDefaultSpacing;
     return Positioned(
       key: _routeKey(),
-      top: isRouteStart ? chevronPosition + RouteCellBody.chevronHeight : 0,
-      bottom: isRouteEnd ? height - chevronPosition - RouteCellBody.chevronHeight : -horizontalBorderWidth,
+      top: isRouteStart ? routeCirclePosition + routeCircleSize / 2 : 0,
+      bottom: isRouteEnd ? height - routeCirclePosition - routeCircleSize / 2 : -horizontalBorderWidth,
       left: (width / 2) - (lineThickness / 2),
       child: VerticalDivider(thickness: lineThickness, color: lineColor),
     );
@@ -90,7 +92,7 @@ class RouteCellBody extends StatelessWidget {
     final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
     final circleColor = isDarkTheme ? SBBColors.white : SBBColors.black;
     return Positioned(
-      top: chevronPosition + RouteCellBody.chevronHeight,
+      top: routeCirclePosition,
       child: _RouteCircle(size: routeCircleSize, color: circleColor, isStopOnRequest: isStopOnRequest),
     );
   }
@@ -131,9 +133,6 @@ class _RouteCircle extends StatelessWidget {
   BoxDecoration _stopOnRequestDecoration({required Color backgroundColor}) => BoxDecoration(
     color: backgroundColor,
     shape: BoxShape.circle,
-    border: Border.all(
-      color: color, // Set the border color
-      width: 2.0, // Set the border width
-    ),
+    border: Border.all(color: color, width: 2.0),
   );
 }

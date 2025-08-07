@@ -21,9 +21,7 @@ class ChevronAnimationController with ChangeNotifier {
       lastPosition = journey.metadata.lastPosition;
 
       animation = Tween<double>(begin: 0.0, end: 1.0).animate(animationController)
-        ..addListener(() {
-          notifyListeners();
-        });
+        ..addListener(() => notifyListeners());
       animationController.reset();
       animationController.forward();
     }
