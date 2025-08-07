@@ -19,12 +19,12 @@ public class FormationService {
         trainFormationRunRepository.saveAll(trainFormationRunEntities);
     }
 
-    public List<TrainFormationRunEntity> findByTrainIdentifier(
+    public List<TrainFormationRunEntity> findLatestByTrainIdentifier(
         String operationalTrainNumber,
         LocalDate operationalDay,
         String company
     ) {
-        return trainFormationRunRepository.findByOperationalTrainNumberAndOperationalDayAndCompany(
+        return trainFormationRunRepository.findLastModifiedByTrainIdentifier(
             operationalTrainNumber,
             operationalDay,
             company

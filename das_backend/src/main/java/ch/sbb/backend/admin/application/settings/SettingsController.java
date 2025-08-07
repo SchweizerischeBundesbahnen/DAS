@@ -1,12 +1,14 @@
 package ch.sbb.backend.admin.application.settings;
 
-import ch.sbb.backend.ApiDocumentation;
 import ch.sbb.backend.admin.application.settings.model.response.Logging;
 import ch.sbb.backend.admin.application.settings.model.response.RuFeature;
 import ch.sbb.backend.admin.application.settings.model.response.Settings;
 import ch.sbb.backend.admin.application.settings.model.response.SettingsResponse;
 import ch.sbb.backend.admin.domain.settings.RuFeatureService;
+import ch.sbb.backend.common.ApiDocumentation;
+import ch.sbb.backend.common.ApiErrorResponses;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +33,8 @@ public class SettingsController {
 
     @GetMapping(API_SETTINGS)
     @Operation(summary = "Fetch all configuration settings.")
+    @ApiResponse(responseCode = "200", description = "Settings retrieved")
+    @ApiErrorResponses
     public SettingsResponse getConfigurations() {
         List<RuFeature> allFeatures = ruFeatureService.getAll().stream()
             .map(RuFeature::new)

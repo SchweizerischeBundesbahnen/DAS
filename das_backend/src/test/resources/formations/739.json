@@ -1,0 +1,85 @@
+{
+  "data": [
+    {
+      "operationalTrainNumber": "739",
+      "operationalDay": "2025-07-20",
+      "company": "3211",
+      "formationRuns": [
+        {
+          "modifiedDateTime": "2025-07-20T16:07:09.498+02:00",
+          "tafTapLocationReferenceStart": "CH00011",
+          "tafTapLocationReferenceEnd": "CH00014",
+          "trainCategoryCode": "R",
+          "brakedWeightPercentage": 115,
+          "tractionMaxSpeedInKmh": 140,
+          "formationMaxSpeedInKmh": 140,
+          "tractionLengthInCm": 1890,
+          "hauledLoadLengthInCm": 0,
+          "formationLengthInCm": 1890,
+          "tractionWeightInT": 86,
+          "hauledLoadWeightInT": 0,
+          "formationWeightInT": 86,
+          "tractionBrakedWeightInT": 126,
+          "hauledLoadBrakedWeightInT": 0,
+          "formationBrakedWeightInT": 126,
+          "tractionHoldingForceInHectoNewton": 530,
+          "hauledLoadHoldingForceInHectoNewton": 0,
+          "formationHoldingForceInHectoNewton": 530,
+          "simTrain": false,
+          "tractionModes": [
+            "D"
+          ],
+          "carCarrierVehicle": false,
+          "dangerousGoods": false,
+          "vehiclesCount": 1,
+          "vehiclesWithBrakeDesignLlAndKCount": 0,
+          "vehiclesWithBrakeDesignDCount": 0,
+          "vehiclesWithDisabledBrakesCount": 0,
+          "europeanVehicleNumberFirst": "918544840153",
+          "europeanVehicleNumberLast": "918544840153",
+          "axleLoadMaxInKg": 0,
+          "gradientUphillMaxInPermille": 0,
+          "gradientDownhillMaxInPermille": 0,
+          "slopeMaxForHoldingForceMinInPermille": "38"
+        },
+        {
+          "modifiedDateTime": "2025-07-20T17:18:15.782+02:00",
+          "tafTapLocationReferenceStart": "CH00010",
+          "tafTapLocationReferenceEnd": "CH00011",
+          "trainCategoryCode": "R",
+          "brakedWeightPercentage": 115,
+          "tractionMaxSpeedInKmh": 100,
+          "formationMaxSpeedInKmh": 140,
+          "tractionLengthInCm": 1890,
+          "hauledLoadLengthInCm": 0,
+          "formationLengthInCm": 1890,
+          "tractionWeightInT": 86,
+          "hauledLoadWeightInT": 0,
+          "formationWeightInT": 86,
+          "tractionBrakedWeightInT": 126,
+          "hauledLoadBrakedWeightInT": 0,
+          "formationBrakedWeightInT": 126,
+          "tractionHoldingForceInHectoNewton": 530,
+          "hauledLoadHoldingForceInHectoNewton": 0,
+          "formationHoldingForceInHectoNewton": 530,
+          "simTrain": false,
+          "tractionModes": [
+            "D"
+          ],
+          "carCarrierVehicle": false,
+          "dangerousGoods": false,
+          "vehiclesCount": 1,
+          "vehiclesWithBrakeDesignLlAndKCount": 0,
+          "vehiclesWithBrakeDesignDCount": 0,
+          "vehiclesWithDisabledBrakesCount": 0,
+          "europeanVehicleNumberFirst": "918544840153",
+          "europeanVehicleNumberLast": "918544840153",
+          "axleLoadMaxInKg": 0,
+          "gradientUphillMaxInPermille": 0,
+          "gradientDownhillMaxInPermille": 0,
+          "slopeMaxForHoldingForceMinInPermille": "38"
+        }
+      ]
+    }
+  ]
+}
