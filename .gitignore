@@ -8,6 +8,7 @@ sfera_mock/src/main/java/org/w3/_2001/xmlschema/**
 /das_backend/src/main/resources/api/**
 *.p12
 *.env
+sfera_mock/src/main/resources/localregulations.json
 
 ### STS ###
 .apt_generated

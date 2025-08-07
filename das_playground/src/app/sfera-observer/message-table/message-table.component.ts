@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { SbbTableDataSource, SbbTableModule } from '@sbb-esta/angular/table';
 import { SimpleXmlComponent } from "../../simple-xml/simple-xml.component";
+import { FileSizePipe } from "../../pipes/file-size.pipe";
 
 export interface TableData {
   direction: string,
@@ -12,7 +13,7 @@ export interface TableData {
 
 @Component({
   selector: 'app-message-table',
-  imports: [SbbTableModule, SimpleXmlComponent],
+  imports: [SbbTableModule, SimpleXmlComponent, FileSizePipe],
   templateUrl: './message-table.component.html',
   styleUrl: './message-table.component.scss'
 })
@@ -26,6 +27,7 @@ export class MessageTableComponent {
     'type',
     'info',
     'message',
+    'size'
   ];
 
 }

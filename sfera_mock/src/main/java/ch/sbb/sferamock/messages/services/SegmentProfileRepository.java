@@ -1,5 +1,6 @@
 package ch.sbb.sferamock.messages.services;
 
+import ch.sbb.sferamock.adapters.sfera.model.v0201.NSPListComplexType;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SegmentProfile;
 import ch.sbb.sferamock.messages.common.XmlHelper;
 import ch.sbb.sferamock.messages.model.SegmentIdentification;
@@ -8,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -24,11 +26,13 @@ public class SegmentProfileRepository implements ApplicationRunner {
     private static final String XML_REGEX = "/([a-zA-Z0-9]+)_\\w+/SFERA_SP_(([a-zA-Z0-9]+)_\\w+)\\.xml";
 
     private final XmlHelper xmlHelper;
+    private final LocalRegulationRepository localRegulationRepository;
 
-    Map<String, SegmentProfile> segmentProfiles = new HashMap<>();
+    private final Map<String, SegmentProfile> segmentProfiles = new HashMap<>();
 
-    public SegmentProfileRepository(XmlHelper xmlHelper) {
+    public SegmentProfileRepository(XmlHelper xmlHelper, LocalRegulationRepository localRegulationRepository) {
         this.xmlHelper = xmlHelper;
+        this.localRegulationRepository = localRegulationRepository;
     }
 
     @Override
@@ -49,13 +53,14 @@ public class SegmentProfileRepository implements ApplicationRunner {
             var segmentId = extractSpId(file.getPath());
             try (InputStream in = new FileInputStream(file)) {
                 String xmlPayload = new String(in.readAllBytes());
-                var segmentProfile = xmlHelper.xmlToObject(xmlPayload);
-                segmentProfiles.put(segmentId, (SegmentProfile) segmentProfile);
+                var segmentProfile = (SegmentProfile) xmlHelper.xmlToObject(xmlPayload);
+                appendLocalRegulations(segmentProfile);
+                segmentProfiles.put(segmentId, segmentProfile);
             }
         }
     }
 
-    public static String extractSpId(String filename) {
+    private String extractSpId(String filename) {
         Pattern pattern = Pattern.compile(XML_REGEX);
         Matcher matcher = pattern.matcher(filename);
         if (matcher.find()) {
@@ -66,5 +71,12 @@ public class SegmentProfileRepository implements ApplicationRunner {
             }
         }
         throw new RuntimeException("SP id extraction failed for file: " + filename);
+    }
+
+    private void appendLocalRegulations(SegmentProfile segmentProfile) {
+        segmentProfile.getSPAreas().getTAFTAPLocation().forEach(taftapLocation -> {
+            List<NSPListComplexType> localRegulationNsps = localRegulationRepository.getLocalRegulations(taftapLocation.getTAFTAPLocationAbbreviation());
+            taftapLocation.getTAFTAPLocationNSP().addAll(localRegulationNsps);
+        });
     }
 }
