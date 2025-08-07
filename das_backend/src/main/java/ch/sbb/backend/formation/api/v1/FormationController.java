@@ -1,0 +1,77 @@
+package ch.sbb.backend.formation.api.v1;
+
+import ch.sbb.backend.common.ApiDocumentation;
+import ch.sbb.backend.common.ApiErrorResponses;
+import ch.sbb.backend.common.SFERA;
+import ch.sbb.backend.common.TelTsi;
+import ch.sbb.backend.formation.api.v1.model.Formation;
+import ch.sbb.backend.formation.api.v1.model.FormationResponse;
+import ch.sbb.backend.formation.application.FormationService;
+import ch.sbb.backend.formation.infrastructure.model.TrainFormationRunEntity;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import java.time.LocalDate;
+import java.util.List;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@Tag(name = "Formations", description = "API for Cargo train formations.")
+public class FormationController {
+
+    public static final String OPERATIONAL_TRAIN_NUMBER_DESCRIPTION = "Relates to `teltsi_OperationalTrainNumber` (according to SFERA). In CH unique on a specific `operationalDay`.";
+    public static final String OPERATIONAL_DAY_DESCRIPTION = "Operational day (underlying journey-planner specific, be aware of confusion with stop-times after midnight within a journey the day before).";
+    public static final String COMPANY_DESCRIPTION = "Relates to teltsi_CompanyCode (according to SFERA resp. RICS-code).";
+    private static final String PATH_SEGMENT_FORMATIONS = "/formations";
+    public static final String API_FORMATIONS = ApiDocumentation.VERSION_URI_V1 + PATH_SEGMENT_FORMATIONS;
+
+    private final FormationService formationService;
+
+    public FormationController(FormationService formationService) {
+        this.formationService = formationService;
+    }
+
+    @Operation(summary = "Get formation by train identification")
+    @ApiResponse(responseCode = "200", description = "Formation found", headers = {
+        @Header(name = ApiDocumentation.HEADER_CACHE_CONTROL, description = ApiDocumentation.HEADER_CACHE_CONTROL_RESPONSE_DESCRIPTION,
+            schema = @Schema(type = "string")),
+        @Header(name = ApiDocumentation.HEADER_CACHE_ETAG, description = ApiDocumentation.HEADER_CACHE_ETAG_RESPONSE_DESCRIPTION,
+            schema = @Schema(type = "string", example = ApiDocumentation.SAMPLE_CACHE_ETAG))
+    })
+    @ApiResponse(responseCode = "304", description = ApiDocumentation.STATUS_304, content = @Content)
+    @ApiResponse(responseCode = "404", description = ApiDocumentation.STATUS_404, content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/ErrorResponse")))
+    @ApiErrorResponses
+    @GetMapping(path = API_FORMATIONS, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Parameter(name = HttpHeaders.IF_NONE_MATCH, schema = @Schema(type = "string", example = ApiDocumentation.SAMPLE_CACHE_ETAG), description = ApiDocumentation.HEADER_CACHE_IF_NONE_MATCH_DESCRIPTION, in = ParameterIn.HEADER)
+    ResponseEntity<FormationResponse> getFormation(
+        @Parameter(description = OPERATIONAL_TRAIN_NUMBER_DESCRIPTION, required = true)
+        @SFERA @TelTsi @RequestParam @NotBlank String operationalTrainNumber,
+
+        @Parameter(description = OPERATIONAL_DAY_DESCRIPTION, required = true)
+        @SFERA(nsp = true) @RequestParam @NotNull LocalDate operationalDay,
+
+        @Parameter(description = COMPANY_DESCRIPTION)
+        @SFERA @TelTsi @RequestParam @Pattern(regexp = "\\d{4}") String company) {
+        List<TrainFormationRunEntity> entities = formationService.findLatestByTrainIdentifier(operationalTrainNumber, operationalDay, company);
+        if (entities.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Formation formation = Formation.from(entities);
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CACHE_CONTROL, "private")
+            .body(new FormationResponse(List.of(formation)));
+    }
+}

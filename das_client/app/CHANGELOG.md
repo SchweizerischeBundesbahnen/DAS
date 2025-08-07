@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.24.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.24.0...das_client-v0.24.1) (2025-08-07)
+
+
+### Bug Fixes
+
+* change brightness sensitivity ([#101](https://github.com/SchweizerischeBundesbahnen/DAS/issues/101)) ([#1113](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1113)) ([6d17f5d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6d17f5df5d7ea4953247c0cdc725f3db80592b1a))
+* dot indicator is moved top right in empty local speed cell ([#891](https://github.com/SchweizerischeBundesbahnen/DAS/issues/891)) ([#1143](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1143)) ([3b3a648](https://github.com/SchweizerischeBundesbahnen/DAS/commit/3b3a6482fa426ce65fcf4ce6df9b035219310d10))
+* signal names are abbreviated in all frames when modal open ([#980](https://github.com/SchweizerischeBundesbahnen/DAS/issues/980)) ([#1141](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1141)) ([26b1488](https://github.com/SchweizerischeBundesbahnen/DAS/commit/26b1488d1b92048117ddf4c71e9598bf4dd39012))
+
 ## [0.24.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.23.0...das_client-v0.24.0) (2025-08-05)
 
 
