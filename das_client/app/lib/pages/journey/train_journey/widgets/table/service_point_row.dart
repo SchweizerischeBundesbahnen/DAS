@@ -210,7 +210,12 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     );
     if (trainSeriesSpeed == null && relevantGraduatedSpeedInfo.isEmpty) return DASTableCell.empty();
 
-    Widget child = DotIndicator(child: SizedBox.shrink());
+    Widget child = Padding(
+      padding: EdgeInsets.only(top: sbbDefaultSpacing * .5, right: sbbDefaultSpacing * .25),
+      child: DotIndicator(
+        child: SizedBox.expand(),
+      ),
+    );
     if (trainSeriesSpeed != null) {
       child = SpeedDisplay(
         speed: trainSeriesSpeed.speed,
