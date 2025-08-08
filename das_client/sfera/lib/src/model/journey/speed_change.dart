@@ -1,7 +1,6 @@
-import 'package:sfera/src/model/journey/base_data.dart';
-import 'package:sfera/src/model/journey/datatype.dart';
+import 'package:sfera/component.dart';
 
-class SpeedChange extends BaseData {
+class SpeedChange extends JourneyPoint {
   const SpeedChange({required super.order, required super.kilometre, this.text}) : super(type: Datatype.speedChange);
 
   final String? text;

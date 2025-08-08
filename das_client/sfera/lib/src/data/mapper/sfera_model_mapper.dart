@@ -89,8 +89,9 @@ class SferaModelMapper {
 
     journeyData.sort();
 
+    final journeyPoints = journeyData.whereType<JourneyPoint>().toList();
     final currentPosition = _calculateCurrentPosition(
-      journeyData,
+      journeyPoints,
       segmentProfileReferences,
       relatedTrainInformation,
       lastJourney,
@@ -102,12 +103,12 @@ class SferaModelMapper {
     return Journey(
       metadata: Metadata(
         nextStop: _calculateNextStop(servicePoints, currentPosition),
-        lastPosition: journeyData.firstWhereOrNull((it) => it.order == lastJourney?.metadata.currentPosition?.order),
+        lastPosition: journeyPoints.firstWhereOrNull((it) => it.order == lastJourney?.metadata.currentPosition?.order),
         lastServicePoint: _calculateLastServicePoint(servicePoints, currentPosition),
         currentPosition: currentPosition,
         additionalSpeedRestrictions: additionalSpeedRestrictions,
-        routeStart: journeyData.firstOrNull,
-        routeEnd: journeyData.lastOrNull,
+        routeStart: journeyPoints.firstOrNull,
+        routeEnd: journeyPoints.lastOrNull,
         delay: _parseDelay(relatedTrainInformation),
         anyOperationalArrivalDepartureTimes: servicePoints.any(
           (sP) => sP.arrivalDepartureTime?.hasAnyOperationalTime ?? false,
@@ -115,7 +116,7 @@ class SferaModelMapper {
         nonStandardTrackEquipmentSegments: trackEquipmentSegments,
         bracketStationSegments: _parseBracketStationSegments(servicePoints),
         advisedSpeedSegments: SpeedMapper.advisedSpeeds(journeyProfile, segmentProfiles, journeyData),
-        availableBreakSeries: _parseAvailableBreakSeries(journeyData, lineSpeeds),
+        availableBreakSeries: _parseAvailableBreakSeries(journeyPoints, lineSpeeds),
         communicationNetworkChanges: _parseCommunicationNetworkChanges(segmentProfileReferences, segmentProfiles),
         breakSeries:
             trainCharacteristic?.tcFeatures.trainCategoryCode != null &&
@@ -134,8 +135,8 @@ class SferaModelMapper {
     );
   }
 
-  static BaseData? _calculateCurrentPosition(
-    List<BaseData> journeyData,
+  static JourneyPoint? _calculateCurrentPosition(
+    List<JourneyPoint> journeyPoints,
     List<SegmentProfileReferenceDto> segmentProfilesLists,
     RelatedTrainInformationDto? relatedTrainInformation,
     Journey? lastJourney,
@@ -144,30 +145,33 @@ class SferaModelMapper {
 
     if (relatedTrainInformation == null || positionSpeed == null) {
       // Return first element as we have no information yet
-      return journeyData.first;
+      return journeyPoints.first;
     }
 
     final positionSegmentIndex = segmentProfilesLists.indexWhere((it) => it.spId == positionSpeed.spId);
     if (positionSegmentIndex == -1) {
       _log.warning('Received position on unknown segment with spId: ${positionSpeed.spId}');
-      return journeyData.firstWhereOrNull((it) => it.order == lastJourney?.metadata.currentPosition?.order);
+      return journeyPoints.firstWhereOrNull((it) => it.order == lastJourney?.metadata.currentPosition?.order);
     } else {
       final positionOrder = calculateOrder(positionSegmentIndex, positionSpeed.location);
-      final currentPositionData = journeyData.lastWhereOrNull((it) => it.order <= positionOrder && it is! BaseFootNote);
-      return _adjustCurrentPositionToServicePoint(journeyData, currentPositionData ?? journeyData.first);
+      final currentPositionData = journeyPoints.lastWhereOrNull((it) => it.order <= positionOrder);
+      return _adjustCurrentPositionToServicePoint(journeyPoints, currentPositionData ?? journeyPoints.first);
     }
   }
 
   // TODO: Does this make sense with chevron on end of row?
   /// returns element at next position, if it is a [ServicePoint] and the current position is not already one.
-  static BaseData? _adjustCurrentPositionToServicePoint(List<BaseData> journeyData, BaseData currentPosition) {
-    final positionIndex = journeyData.indexOf(currentPosition);
+  static JourneyPoint? _adjustCurrentPositionToServicePoint(
+    List<JourneyPoint> journeyPoints,
+    JourneyPoint currentPosition,
+  ) {
+    final positionIndex = journeyPoints.indexOf(currentPosition);
     if (currentPosition is ServicePoint) {
       return currentPosition;
     }
 
-    if (journeyData.length > positionIndex + 1) {
-      final nextData = journeyData[positionIndex + 1];
+    if (journeyPoints.length > positionIndex + 1) {
+      final nextData = journeyPoints[positionIndex + 1];
       if (nextData is ServicePoint) {
         return nextData;
       }
@@ -431,10 +435,10 @@ class SferaModelMapper {
   }
 
   static Set<BreakSeries> _parseAvailableBreakSeries(
-    List<BaseData> journeyData,
+    List<JourneyPoint> journeyPoints,
     SplayTreeMap<int, Iterable<TrainSeriesSpeed>> lineSpeeds,
   ) {
-    final speeds = journeyData.expand((it) => it.allStaticSpeeds).toList();
+    final speeds = journeyPoints.whereType<JourneyPoint>().expand((it) => it.allStaticSpeeds).toList();
     speeds.addAll(lineSpeeds.values.flattened);
 
     return speeds

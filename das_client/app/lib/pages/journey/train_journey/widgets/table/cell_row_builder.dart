@@ -19,7 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
-class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
+class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   static const double rowHeight = 44.0;
 
   CellRowBuilder({

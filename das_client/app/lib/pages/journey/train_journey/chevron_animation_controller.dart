@@ -12,8 +12,8 @@ class ChevronAnimationController with ChangeNotifier {
   final AnimationController animationController;
   Animation<double>? animation;
 
-  BaseData? currentPosition;
-  BaseData? lastPosition;
+  JourneyPoint? currentPosition;
+  JourneyPoint? lastPosition;
 
   void onJourneyUpdate(Journey journey) {
     if (journey.metadata.currentPosition != journey.metadata.lastPosition) {

@@ -1,7 +1,6 @@
-import 'package:sfera/src/model/journey/base_data.dart';
-import 'package:sfera/src/model/journey/datatype.dart';
+import 'package:sfera/component.dart';
 
-class Signal extends BaseData {
+class Signal extends JourneyPoint {
   const Signal({
     required super.order,
     required super.kilometre,

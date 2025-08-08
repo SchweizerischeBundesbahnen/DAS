@@ -179,35 +179,35 @@ void main() {
     expect(journey.data, hasLength(24));
 
     // segment 1
-    expect(journey.data[0].kilometre[0], 0.2);
-    expect(journey.data[1].kilometre[0], 0.5);
-    expect(journey.data[2].kilometre[0], 0.6);
-    expect(journey.data[3].kilometre[0], 0.7);
-    expect(journey.data[4].kilometre[0], 0.8);
+    expect((journey.data[0] as JourneyPoint).kilometre[0], 0.2);
+    expect((journey.data[1] as JourneyPoint).kilometre[0], 0.5);
+    expect((journey.data[2] as JourneyPoint).kilometre[0], 0.6);
+    expect((journey.data[3] as JourneyPoint).kilometre[0], 0.7);
+    expect((journey.data[4] as JourneyPoint).kilometre[0], 0.8);
     // segment 2
-    expect(journey.data[5].kilometre[0], 1.2);
-    expect(journey.data[6].kilometre[0], 1.2);
-    expect(journey.data[7].kilometre[0], 1.5);
-    expect(journey.data[8].kilometre[0], 1.7);
-    expect(journey.data[9].kilometre[0], 1.8);
-    expect(journey.data[10].kilometre[0], 1.9);
+    expect((journey.data[5] as JourneyPoint).kilometre[0], 1.2);
+    expect((journey.data[6] as JourneyPoint).kilometre[0], 1.2);
+    expect((journey.data[7] as JourneyPoint).kilometre[0], 1.5);
+    expect((journey.data[8] as JourneyPoint).kilometre[0], 1.7);
+    expect((journey.data[9] as JourneyPoint).kilometre[0], 1.8);
+    expect((journey.data[10] as JourneyPoint).kilometre[0], 1.9);
     // segment 3
-    expect(journey.data[11].kilometre[0], 2.1);
-    expect(journey.data[12].kilometre[0], 2.2);
-    expect(journey.data[13].kilometre[0], 2.4);
-    expect(journey.data[14].kilometre[0], 2.5);
-    expect(journey.data[15].kilometre[0], 2.6);
+    expect((journey.data[11] as JourneyPoint).kilometre[0], 2.1);
+    expect((journey.data[12] as JourneyPoint).kilometre[0], 2.2);
+    expect((journey.data[13] as JourneyPoint).kilometre[0], 2.4);
+    expect((journey.data[14] as JourneyPoint).kilometre[0], 2.5);
+    expect((journey.data[15] as JourneyPoint).kilometre[0], 2.6);
     // segment 4
-    expect(journey.data[16].kilometre[0], 3.5);
-    expect(journey.data[17].kilometre[0], 3.6);
-    expect(journey.data[18].kilometre[0], 3.7);
-    expect(journey.data[18].kilometre[1], 0);
-    expect(journey.data[19].kilometre[0], 0.1);
-    expect(journey.data[20].kilometre[0], 0.2);
+    expect((journey.data[16] as JourneyPoint).kilometre[0], 3.5);
+    expect((journey.data[17] as JourneyPoint).kilometre[0], 3.6);
+    expect((journey.data[18] as JourneyPoint).kilometre[0], 3.7);
+    expect((journey.data[18] as JourneyPoint).kilometre[1], 0);
+    expect((journey.data[19] as JourneyPoint).kilometre[0], 0.1);
+    expect((journey.data[20] as JourneyPoint).kilometre[0], 0.2);
     // segment 5
-    expect(journey.data[21].kilometre[0], 0.6);
-    expect(journey.data[22].kilometre[0], 0.9);
-    expect(journey.data[23].kilometre[0], 1.1);
+    expect((journey.data[21] as JourneyPoint).kilometre[0], 0.6);
+    expect((journey.data[22] as JourneyPoint).kilometre[0], 0.9);
+    expect((journey.data[23] as JourneyPoint).kilometre[0], 1.1);
   });
 
   test('Test order is generated correctly', () async {

@@ -1,8 +1,6 @@
-import 'package:sfera/src/model/journey/additional_speed_restriction.dart';
-import 'package:sfera/src/model/journey/base_data.dart';
-import 'package:sfera/src/model/journey/datatype.dart';
+import 'package:sfera/component.dart';
 
-class AdditionalSpeedRestrictionData extends BaseData {
+class AdditionalSpeedRestrictionData extends JourneyPoint {
   AdditionalSpeedRestrictionData({required this.restrictions, required super.order, required super.kilometre})
     : assert(restrictions.isNotEmpty),
       super(type: Datatype.additionalSpeedRestriction);
