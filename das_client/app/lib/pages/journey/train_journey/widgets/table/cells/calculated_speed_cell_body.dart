@@ -1,5 +1,6 @@
 import 'package:app/pages/journey/train_journey/widgets/table/cells/show_speed_behaviour.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/table/das_row_controller.dart';
 import 'package:app/widgets/table/das_row_controller_wrapper.dart';
@@ -18,6 +19,7 @@ class CalculatedSpeedCellBody extends StatelessWidget {
     required this.settings,
     required this.order,
     required this.showSpeedBehavior,
+    this.isNextStop = false,
     super.key,
   });
 
@@ -25,6 +27,7 @@ class CalculatedSpeedCellBody extends StatelessWidget {
   final TrainJourneySettings settings;
   final int order;
   final ShowSpeedBehavior showSpeedBehavior;
+  final bool isNextStop;
 
   @override
   Widget build(BuildContext context) {
@@ -56,10 +59,14 @@ class CalculatedSpeedCellBody extends StatelessWidget {
 
         final isSpeedReducedDueToLineSpeed = resolvedCalculatedSpeed.isLargerThan(resolvedLineSpeed);
         resolvedCalculatedSpeed = _min(resolvedLineSpeed, resolvedCalculatedSpeed);
+
+        final color = isNextStop ? SBBColors.white : ThemeUtil.getColor(context, SBBColors.metal, SBBColors.white);
+
         return Text(
           key: nonEmptyKey,
           resolvedCalculatedSpeed.value == '0' ? zeroSpeedContent : resolvedCalculatedSpeed.value,
-          style: isSpeedReducedDueToLineSpeed ? DASTextStyles.largeLight.copyWith(color: SBBColors.metal) : null,
+          // TODO Currently the reduced lineSpeed color is set to SBBColors.white. After an exchange with UX this should be changed to a newly defined color.
+          style: isSpeedReducedDueToLineSpeed ? DASTextStyles.largeLight.copyWith(color: color) : null,
         );
       },
     );
