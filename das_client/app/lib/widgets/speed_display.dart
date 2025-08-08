@@ -27,6 +27,8 @@ class SpeedDisplay extends StatelessWidget {
   final Speed? speed;
   final bool isNextStop;
 
+  TextStyle get _textStyle => isNextStop ? textStyle.copyWith(color: SBBColors.white) : textStyle;
+
   @override
   Widget build(BuildContext context) {
     if (speed == null) return DASTableCell.emptyBuilder;
@@ -34,6 +36,7 @@ class SpeedDisplay extends StatelessWidget {
     return DotIndicator(
       show: hasAdditionalInformation,
       offset: _dotIndicatorOffset(speed!),
+      isNextStop: isNextStop,
       child: switch (speed!) {
         final IncomingOutgoingSpeed s => singleLine ? _rowSpeed(context, s) : _columnSpeed(context, s),
         final GraduatedSpeed _ || final SingleSpeed _ => _visualizedSpeeds(key: incomingSpeedsKey, speeds: speed!),
@@ -49,7 +52,7 @@ class SpeedDisplay extends StatelessWidget {
         _visualizedSpeeds(key: incomingSpeedsKey, speeds: ioSpeed.incoming),
         Text(
           ' / ',
-          style: isNextStop ? textStyle.copyWith(color: SBBColors.white) : textStyle,
+          style: _textStyle,
         ),
         _visualizedSpeeds(key: outgoingSpeedsKey, speeds: ioSpeed.outgoing),
       ],
@@ -83,7 +86,7 @@ class SpeedDisplay extends StatelessWidget {
         children: singleSpeeds
             .map((speed) => _speedText(speed))
             .withDivider(
-              Text('-', style: isNextStop ? textStyle.copyWith(color: SBBColors.white) : textStyle),
+              Text('-', style: _textStyle),
             )
             .toList(),
       );
@@ -91,7 +94,7 @@ class SpeedDisplay extends StatelessWidget {
     return Text(
       key: key,
       singleSpeeds.toJoinedString(),
-      style: isNextStop ? textStyle.copyWith(color: SBBColors.white) : textStyle,
+      style: _textStyle,
     );
   }
 
@@ -110,7 +113,7 @@ class SpeedDisplay extends StatelessWidget {
               : null,
           child: Text(
             speed.value,
-            style: isNextStop ? textStyle.copyWith(height: 0, color: SBBColors.white) : textStyle.copyWith(height: 0),
+            style: _textStyle.copyWith(height: 0),
           ),
         );
       },

@@ -1,3 +1,4 @@
+import 'package:app/theme/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -10,6 +11,7 @@ class DotIndicator extends StatelessWidget {
     this.show = true,
     this.offset = const Offset(0, 0),
     this.size = 8.0,
+    this.isNextStop = false,
     super.key,
   });
 
@@ -17,11 +19,14 @@ class DotIndicator extends StatelessWidget {
   final double size;
   final bool show;
   final Widget child;
+  final bool isNextStop;
 
   @override
   Widget build(BuildContext context) {
     if (!show) return child;
-    final resolvedDotColor = SBBColors.sky;
+    final resolvedDotColor = isNextStop
+        ? SBBColors.sky
+        : ThemeUtil.getColor(context, Theme.of(context).colorScheme.primary, SBBColors.sky);
 
     return Stack(
       clipBehavior: Clip.none,

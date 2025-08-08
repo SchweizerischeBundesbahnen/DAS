@@ -28,6 +28,8 @@ class TrackEquipmentCellBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = isNextStop ? SBBColors.white : ThemeUtil.getIconColor(context);
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final height = constraints.maxHeight;
@@ -36,24 +38,24 @@ class TrackEquipmentCellBody extends StatelessWidget {
           clipBehavior: Clip.none,
           alignment: Alignment.center,
           children: [
-            if (renderData.isConventionalExtendedSpeedBorder) _conventionalExtendedSpeedBorder(context),
+            if (renderData.isConventionalExtendedSpeedBorder) _conventionalExtendedSpeedBorder(context, color),
             if (trackEquipmentType == TrackEquipmentType.etcsL2ExtSpeedReversingPossible)
-              _extSpeedReversingPossible(context, height),
+              _extSpeedReversingPossible(context, height, color),
             if (trackEquipmentType == TrackEquipmentType.etcsL2ExtSpeedReversingImpossible)
-              _extSpeedReversingImpossible(context, height),
+              _extSpeedReversingImpossible(context, height, color),
             if (trackEquipmentType == TrackEquipmentType.etcsL2ConvSpeedReversingImpossible)
-              _convSpeedReversingImpossible(context, height),
+              _convSpeedReversingImpossible(context, height, color),
             if (trackEquipmentType == TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment)
-              _twoTracksWithSingleTrackEquipment(context, height),
+              _twoTracksWithSingleTrackEquipment(context, height, color),
             if (trackEquipmentType == TrackEquipmentType.etcsL1lsSingleTrackNoBlock)
-              _singleTrackNoBlock(context, height),
+              _singleTrackNoBlock(context, height, color),
           ],
         );
       },
     );
   }
 
-  Widget _extSpeedReversingPossible(BuildContext context, double height) {
+  Widget _extSpeedReversingPossible(BuildContext context, double height, Color color) {
     return Positioned(
       key: extendedSpeedReversingPossibleKey,
       top: _calculateTop(height),
@@ -62,15 +64,15 @@ class TrackEquipmentCellBody extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _extSpeedLine(context),
+          _extSpeedLine(context, color),
           SizedBox(width: 2.0),
-          _extSpeedLine(context),
+          _extSpeedLine(context, color),
         ],
       ),
     );
   }
 
-  Widget _conventionalExtendedSpeedBorder(BuildContext context) {
+  Widget _conventionalExtendedSpeedBorder(BuildContext context, Color color) {
     return Positioned(
       key: conventionalExtendedSpeedBorderKey,
       top: 0.0,
@@ -78,23 +80,23 @@ class TrackEquipmentCellBody extends StatelessWidget {
       child: CustomPaint(
         painter: _ConventionalExtendedSpeedBorderPainter(
           context: context,
-          isNextStop: isNextStop,
+          color: color,
         ),
       ),
     );
   }
 
-  Widget _extSpeedReversingImpossible(BuildContext context, double height) {
+  Widget _extSpeedReversingImpossible(BuildContext context, double height, Color color) {
     return Positioned(
       key: extendedSpeedReversingImpossibleKey,
       top: _calculateTop(height),
       bottom: _calculateBottom(context, height),
       left: 2.0,
-      child: _extSpeedLine(context),
+      child: _extSpeedLine(context, color),
     );
   }
 
-  CustomPaint _extSpeedLine(BuildContext context) {
+  CustomPaint _extSpeedLine(BuildContext context, Color color) {
     final width = 3.0;
     return CustomPaint(
       painter: _CumulativeDashedLinePainter(
@@ -103,13 +105,13 @@ class TrackEquipmentCellBody extends StatelessWidget {
         dashHeights: [7.0],
         dashSpace: 5.0,
         width: width,
-        isNextStop: isNextStop,
+        color: color,
       ),
       child: SizedBox(height: double.infinity, width: width),
     );
   }
 
-  Widget _convSpeedReversingImpossible(BuildContext context, double height) {
+  Widget _convSpeedReversingImpossible(BuildContext context, double height, Color color) {
     final width = 3.0;
     return Positioned(
       key: TrackEquipmentCellBody.conventionalSpeedReversingImpossibleKey,
@@ -123,14 +125,14 @@ class TrackEquipmentCellBody extends StatelessWidget {
           dashHeights: [3.0, 7.0],
           dashSpace: 5.0,
           width: width,
-          isNextStop: isNextStop,
+          color: color,
         ),
         child: SizedBox(height: double.infinity, width: width),
       ),
     );
   }
 
-  Widget _twoTracksWithSingleTrackEquipment(BuildContext context, double height) {
+  Widget _twoTracksWithSingleTrackEquipment(BuildContext context, double height, Color color) {
     final width = 3.0;
     final borderWidth = 1.0;
     return Positioned(
@@ -147,14 +149,14 @@ class TrackEquipmentCellBody extends StatelessWidget {
           dashSpace: 5.0,
           width: width,
           borderWidth: borderWidth,
-          isNextStop: isNextStop,
+          color: color,
         ),
         child: SizedBox(height: double.infinity, width: width + borderWidth * 2),
       ),
     );
   }
 
-  Widget _singleTrackNoBlock(BuildContext context, double height) {
+  Widget _singleTrackNoBlock(BuildContext context, double height, Color color) {
     final width = 9.0;
     return Positioned(
       key: singleTrackNoBlockKey,
@@ -166,7 +168,7 @@ class TrackEquipmentCellBody extends StatelessWidget {
         painter: _SingleTrackNoBlockPainter(
           cumulativeHeight: renderData.cumulativeHeight,
           context: context,
-          isNextStop: isNextStop,
+          color: color,
         ),
         child: SizedBox(height: double.infinity, width: width),
       ),
@@ -200,10 +202,13 @@ class TrackEquipmentCellBody extends StatelessWidget {
 }
 
 class _ConventionalExtendedSpeedBorderPainter extends CustomPainter {
-  const _ConventionalExtendedSpeedBorderPainter({required this.context, this.isNextStop = false});
+  const _ConventionalExtendedSpeedBorderPainter({
+    required this.context,
+    required this.color,
+  });
 
   final BuildContext context;
-  final bool isNextStop;
+  final Color color;
 
   static const double height = 3.0;
   static const double width = 10.0;
@@ -211,7 +216,7 @@ class _ConventionalExtendedSpeedBorderPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = isNextStop ? SBBColors.white : ThemeUtil.getIconColor(context)
+      ..color = color
       ..style = PaintingStyle.fill;
 
     final rect = Rect.fromLTWH(0, 0, width, height);
@@ -228,11 +233,11 @@ class _CumulativeDashedLinePainter extends CustomPainter {
   _CumulativeDashedLinePainter({
     required this.context,
     required this.cumulativeHeight,
+    required this.color,
     this.dashHeights = const [4.0],
     this.dashSpace = 4.0,
     this.width = 3.0,
     this.borderWidth,
-    this.isNextStop = false,
   }) : assert(dashHeights.isNotEmpty);
 
   final BuildContext context;
@@ -241,7 +246,7 @@ class _CumulativeDashedLinePainter extends CustomPainter {
   final double dashSpace;
   final double width;
   final double? borderWidth;
-  final bool isNextStop;
+  final Color color;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -250,7 +255,7 @@ class _CumulativeDashedLinePainter extends CustomPainter {
     final offsetInPattern = cumulativeHeight % dashPatternLength;
 
     final paint = Paint()
-      ..color = isNextStop ? SBBColors.white : ThemeUtil.getIconColor(context)
+      ..color = color
       ..strokeWidth = width;
 
     int dashIndex = 0;
@@ -274,7 +279,7 @@ class _CumulativeDashedLinePainter extends CustomPainter {
 
   void _drawBorder(Canvas canvas, Size size, double patternEndY) {
     final borderPaint = Paint()
-      ..color = isNextStop ? SBBColors.white : ThemeUtil.getIconColor(context)
+      ..color = color
       ..strokeWidth = borderWidth!;
 
     final endY = max(size.height, patternEndY);
@@ -298,12 +303,12 @@ class _SingleTrackNoBlockPainter extends CustomPainter {
   _SingleTrackNoBlockPainter({
     required this.cumulativeHeight,
     required this.context,
-    this.isNextStop = false,
+    required this.color,
   });
 
   final double cumulativeHeight;
   final BuildContext context;
-  final bool isNextStop;
+  final Color color;
   static const double _strokeWidth = 3.0;
   static const double _dashHeight = 6.0;
   static const double _crossSize = 9.0;
@@ -316,7 +321,7 @@ class _SingleTrackNoBlockPainter extends CustomPainter {
     final offsetInPattern = cumulativeHeight % patternLength;
 
     final paint = Paint()
-      ..color = isNextStop ? SBBColors.white : ThemeUtil.getIconColor(context)
+      ..color = color
       ..strokeWidth = _strokeWidth;
 
     var drawCross = false;

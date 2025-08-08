@@ -45,6 +45,7 @@ class TimeCellBody extends StatelessWidget {
 
         final isArrivalBold = departureTime.isEmpty && !showOperationalTime;
         final isDepartureUnderlined = currentTime.isAfterOrSameToTheMinute(times.plannedDepartureTime);
+        final color = isNextStop ? SBBColors.white : null;
 
         return Text.rich(
           key: timeCellKey,
@@ -52,24 +53,16 @@ class TimeCellBody extends StatelessWidget {
             children: [
               TextSpan(
                 text: arrivalTime,
-                style: isNextStop
-                    ? isArrivalBold
-                          ? DASTextStyles.largeBold.copyWith(color: SBBColors.white)
-                          : DASTextStyles.largeRoman.copyWith(color: SBBColors.white)
-                    : isArrivalBold
-                    ? DASTextStyles.largeBold
-                    : null,
+                style: isArrivalBold
+                    ? DASTextStyles.largeBold.copyWith(color: color)
+                    : DASTextStyles.largeRoman.copyWith(color: color),
               ),
               TextSpan(
                 text: departureTime,
-                style: isNextStop
-                    ? DASTextStyles.largeBold.copyWith(
-                        decoration: isDepartureUnderlined ? TextDecoration.underline : TextDecoration.none,
-                        color: SBBColors.white,
-                      )
-                    : DASTextStyles.largeBold.copyWith(
-                        decoration: isDepartureUnderlined ? TextDecoration.underline : TextDecoration.none,
-                      ),
+                style: DASTextStyles.largeBold.copyWith(
+                  decoration: isDepartureUnderlined ? TextDecoration.underline : TextDecoration.none,
+                  color: color,
+                ),
               ),
             ],
           ),

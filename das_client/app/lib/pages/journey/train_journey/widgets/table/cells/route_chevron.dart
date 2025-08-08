@@ -76,8 +76,9 @@ class _RouteChevronState extends State<RouteChevron> {
             key: RouteChevron.chevronKey,
             size: Size(widget.chevronWidth, widget.chevronHeight),
             painter: _ChevronPainter(
-              isNextStop: widget.isNextStop,
-              color: ThemeUtil.getColor(context, SBBColors.black, SBBColors.white),
+              color: widget.isNextStop
+                  ? SBBColors.white
+                  : ThemeUtil.getColor(context, SBBColors.black, SBBColors.white),
             ),
           ),
         ),
@@ -93,15 +94,14 @@ class _RouteChevronState extends State<RouteChevron> {
 }
 
 class _ChevronPainter extends CustomPainter {
-  _ChevronPainter({required this.isNextStop, this.color = SBBColors.black});
+  _ChevronPainter({this.color = SBBColors.black});
 
   final Color color;
-  final bool isNextStop;
 
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = isNextStop ? SBBColors.white : color
+      ..color = color
       ..style = PaintingStyle.stroke
       ..strokeWidth = 4;
 
