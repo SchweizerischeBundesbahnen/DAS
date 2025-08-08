@@ -74,7 +74,12 @@ public class FormationRun {
     }
 
     private boolean isValidCompany() {
-        return company != null && company.length() == COMPANY_CODE_LENGTH && !INVALID_COMPANY_CODE.equals(company);
+        if (company != null && company.length() == COMPANY_CODE_LENGTH && !INVALID_COMPANY_CODE.equals(company)) {
+            return true;
+        } else {
+            log.warn("No valid company code {} for formation run {} - {}", company, tafTapLocationReferenceStart.toLocationCode(), tafTapLocationReferenceEnd.toLocationCode());
+            return false;
+        }
     }
 
     public Integer getFormationGrossWeightInT() {

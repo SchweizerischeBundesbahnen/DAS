@@ -17,8 +17,10 @@ import 'test/automatic_advancement_test.dart' as automatic_advancement_tests;
 import 'test/journey_search_overlay_test.dart' as journey_search_overlay_tests;
 import 'test/navigation_test.dart' as navigation_tests;
 import 'test/service_point_modal_test.dart' as service_point_modal_test;
+import 'test/settings_test.dart' as settings_test;
 import 'test/train_journey_header_test.dart' as train_journey_header_tests;
 import 'test/train_journey_notification_test.dart' as train_journey_notification_tests;
+import 'test/train_journey_table_adl_test.dart' as train_journey_table_adl_tests;
 import 'test/train_journey_table_break_series_test.dart' as train_journey_table_break_series_tests;
 import 'test/train_journey_table_calculated_speed_test.dart' as train_journey_table_calculated_speed_tests;
 import 'test/train_journey_table_collapsible_rows_test.dart' as train_journey_table_collapsible_rows_test;
@@ -38,6 +40,7 @@ void main() {
   Logger.root.level = Level.FINE;
   Logger.root.onRecord.listen(LogPrinter(appName: 'DAS IntegrationTests').call);
 
+  settings_test.main();
   train_reduced_journey_tests.main();
   train_journey_table_tests.main();
   train_journey_header_tests.main();
@@ -54,6 +57,7 @@ void main() {
   additional_speed_restriction_modal_test.main();
   warnapp_tests.main();
   train_journey_table_station_property_test.main();
+  train_journey_table_adl_tests.main();
 }
 
 Future<void> prepareAndStartApp(WidgetTester tester, {VoidCallback? onBeforeRun}) async {

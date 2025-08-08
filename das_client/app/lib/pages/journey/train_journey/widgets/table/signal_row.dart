@@ -40,8 +40,11 @@ class SignalRow extends CellRowBuilder<Signal> {
         (function) => function != SignalFunction.laneChange && function != SignalFunction.unknown,
       );
     }
+    final detailModalViewModel = context.read<DetailModalViewModel>();
+
     return StreamBuilder(
-      stream: context.read<DetailModalViewModel>().isModalOpen,
+      stream: detailModalViewModel.isModalOpen,
+      initialData: detailModalViewModel.isModalOpenValue,
       builder: (context, asyncSnapshot) {
         final isModalOpen = asyncSnapshot.data ?? false;
 

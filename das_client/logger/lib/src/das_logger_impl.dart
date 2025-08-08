@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:logger/src/das_logger.dart';
 import 'package:logger/src/data/logger_repo.dart';
-import 'package:logger/src/log_entry.dart';
 import 'package:logger/src/log_level.dart';
 import 'package:logging/logging.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -66,7 +65,9 @@ class DasLoggerImpl extends DasLogger {
       messageBuilder.write('\n$stackTraceMessage');
     }
 
-    _loggerRepo.saveLog(LogEntry(messageBuilder.toString(), _getLogLevel(level), metadata));
+    // TODO: commented out due to issue when log endpoint not reachable (client becomes slow)
+    // add back with https://github.com/SchweizerischeBundesbahnen/DAS/issues/1007
+    // _loggerRepo.saveLog(LogEntry(messageBuilder.toString(), _getLogLevel(level), metadata));
   }
 
   LogLevel _getLogLevel(Level level) {

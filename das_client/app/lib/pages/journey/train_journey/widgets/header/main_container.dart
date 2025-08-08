@@ -39,7 +39,6 @@ class MainContainer extends StatelessWidget {
 
         return SBBGroup(
           padding: const EdgeInsets.all(sbbDefaultSpacing),
-          useShadow: false,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,

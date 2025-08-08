@@ -128,19 +128,18 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
   Widget _buildFooter(BuildContext context) {
     _buildFooterWidget(context);
 
-    if (_stickyFooter != null) {
-      return Stack(
-        children: [
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: _stickyFooter!,
-          ),
-        ],
-      );
-    }
-    return Container();
+    if (_stickyFooter == null) return SizedBox.shrink();
+
+    return Stack(
+      children: [
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: _stickyFooter!,
+        ),
+      ],
+    );
   }
 
   void _update() {

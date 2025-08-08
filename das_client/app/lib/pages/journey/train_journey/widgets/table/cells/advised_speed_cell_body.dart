@@ -1,11 +1,9 @@
-import 'package:app/pages/journey/train_journey/das_table_speed_view_model.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/show_speed_behaviour.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:app/widgets/das_text_styles.dart';
-import 'package:app/widgets/stickyheader/sticky_header.dart';
-import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
+import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
@@ -15,66 +13,81 @@ class AdvisedSpeedCellBody extends StatelessWidget {
   static const Key generalKey = Key('AdvisedSpeedCellBodyGeneralKey');
 
   const AdvisedSpeedCellBody({
-    required this.rowIndex,
-    this.calculatedSpeed,
-    this.lineSpeed,
+    required this.metadata,
+    required this.settings,
+    required this.order,
+    required this.showSpeedBehavior,
     super.key,
   });
 
-  final int rowIndex;
-  final SingleSpeed? calculatedSpeed;
-  final SingleSpeed? lineSpeed;
+  final Metadata metadata;
+  final TrainJourneySettings settings;
+  final int order;
+  final ShowSpeedBehavior showSpeedBehavior;
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-      key: generalKey,
-      listenable: StickyHeader.of(context)!.controller,
-      builder: (context, _) {
-        final isSticky = _isSticky(context);
-
-        SingleSpeed? resolvedCalculatedSpeed = calculatedSpeed ?? (isSticky ? _calculatedSpeedFromPrev(context) : null);
-        final resolvedLineSpeed = lineSpeed ?? (isSticky ? _lineSpeedFromPrev(context) : null);
-        if (resolvedCalculatedSpeed == null) return DASTableCell.emptyBuilder;
-
-        final isSpeedReducedDueToLineSpeed = _isBLargerThanA(a: resolvedLineSpeed, b: resolvedCalculatedSpeed);
-        resolvedCalculatedSpeed = _min(resolvedLineSpeed, resolvedCalculatedSpeed);
-        return Text(
-          key: nonEmptyKey,
-          resolvedCalculatedSpeed.value == '0' ? zeroSpeedContent : resolvedCalculatedSpeed.value,
-          style: isSpeedReducedDueToLineSpeed ? DASTextStyles.largeLight.copyWith(color: SBBColors.metal) : null,
-        );
-      },
+    return _backgroundStack(
+      context,
+      _content(context),
     );
   }
 
-  bool _isSticky(BuildContext context) {
-    // stickiness only relevant if any speed null
-    if (calculatedSpeed != null && lineSpeed != null) return false;
+  Widget _content(BuildContext context) {
+    if (showSpeedBehavior == ShowSpeedBehavior.never) {
+      return DASTableCell.emptyBuilder;
+    }
 
-    final stickyController = StickyHeader.of(context)!.controller;
-    return stickyController.headerIndexes[StickyLevel.first] == rowIndex ||
-        (stickyController.nextHeaderIndex[StickyLevel.first] == rowIndex &&
-            ((stickyController.headerOffsets[StickyLevel.first] ?? 0) < (-ServicePointRow.baseRowHeight * 0.33)));
+    final inEtcsLevel2Segment = metadata.nonStandardTrackEquipmentSegments.isInEtcsLevel2Segment(order);
+    late final advisedSpeed = metadata.advisedSpeedSegments.appliesToOrder(order).firstOrNull;
+    if (inEtcsLevel2Segment || advisedSpeed == null) return DASTableCell.emptyBuilder;
+
+    var speed = advisedSpeed.speed;
+    if (advisedSpeed is VelocityMaxAdvisedSpeedSegment) {
+      speed = _resolvedTrainSeriesSpeed();
+    }
+
+    return Text(
+      speed?.value ?? '',
+      key: nonEmptyKey,
+      style: DASTextStyles.largeRoman.copyWith(color: SBBColors.white),
+    );
   }
 
-  SingleSpeed? _calculatedSpeedFromPrev(BuildContext context) =>
-      context.read<DASTableSpeedViewModel>().previousCalculatedSpeed(rowIndex);
+  SingleSpeed? _resolvedTrainSeriesSpeed() {
+    var trainSeriesSpeeds = metadata.lineSpeeds[order];
+    trainSeriesSpeeds ??= metadata.lineSpeeds[metadata.lineSpeeds.lastKeyBefore(order)];
 
-  SingleSpeed? _lineSpeedFromPrev(BuildContext context) =>
-      context.read<DASTableSpeedViewModel>().previousLineSpeed(rowIndex);
-
-  SingleSpeed _min(SingleSpeed? resolvedLineSpeed, SingleSpeed resolvedCalculatedSpeed) {
-    if (resolvedLineSpeed == null) return resolvedCalculatedSpeed;
-    if (resolvedLineSpeed.isIllegal) return resolvedCalculatedSpeed;
-    return SingleSpeed(value: _numericMin(resolvedCalculatedSpeed.value, resolvedLineSpeed.value));
+    final selectedBreakSeries = settings.resolvedBreakSeries(metadata);
+    return trainSeriesSpeeds
+            .speedFor(
+              selectedBreakSeries?.trainSeries,
+              breakSeries: selectedBreakSeries?.breakSeries,
+            )
+            ?.speed
+        as SingleSpeed?;
   }
 
-  String _numericMin(String a, String b) => int.parse(a) > int.parse(b) ? b : a;
+  Widget _backgroundStack(BuildContext context, Widget child) {
+    final horizontalBorderWidth =
+        DASTableTheme.of(context)?.data.tableBorder?.horizontalInside.width ?? sbbDefaultSpacing;
 
-  bool _isBLargerThanA({required SingleSpeed? a, required SingleSpeed b}) {
-    if (a == null) return false;
-    if (a.isIllegal) return false;
-    return int.parse(b.value) > int.parse(a.value);
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Positioned(
+          top: -horizontalBorderWidth * 2,
+          bottom: -horizontalBorderWidth * 2,
+          left: 0,
+          right: 0,
+          child: Container(
+            color: SBBColors.iron,
+          ),
+        ),
+        Center(
+          child: child,
+        ),
+      ],
+    );
   }
 }

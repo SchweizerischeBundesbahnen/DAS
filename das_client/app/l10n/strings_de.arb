@@ -33,7 +33,23 @@
   "p_login_login_button_text": "Login",
   "p_login_login_button_description": "Mit Ihrem Account einloggen",
   "p_login_login_failed": "Login fehlgeschlagen",
-  "w_adl_notification_title": "ADL Meldung",
+  "w_adl_cancel": "ADL Cancel",
+  "w_adl_end": "ADL END",
+  "w_adl_vopt": "ADL VOpt: {speed}km/h fahren bis {endLocation}",
+  "@w_adl_vopt": {
+    "type": "text",
+    "placeholders": {
+      "speed": {},
+      "endLocation": {}
+    }
+  },
+  "w_adl_vmax": "ADL Vmax: fahren bis {endLocation}",
+  "@w_adl_vmax": {
+    "type": "text",
+    "placeholders": {
+      "endLocation": {}
+    }
+  },
   "w_extended_menu_title": "Weitere Funktionalitäten",
   "w_extended_menu_maneuver_mode": "Manövermodus",
   "w_extended_menu_breaking_slip_action": "Brems- und Lastzettel öffnen",
@@ -83,7 +99,7 @@
   "c_main_signal_function_protection": "Deckungssignal",
   "c_main_signal_function_protection_short": "Deck.Sig.",
   "c_main_signal_function_laneChange": "Spurwechsel",
-  "c_main_signal_function_laneChange_short": "Spurwechsel",
+  "c_main_signal_function_laneChange_short": "Spw",
   "c_error_code": "Fehlercode",
   "c_something_went_wrong": "Da ist was schiefgegangen.",
   "c_error_connection_failed": "Verbindung fehlgeschlagen",
@@ -112,5 +128,8 @@
   "w_modal_sheet_permissions_title": "DAS Client benötigt Systemberechtigungen",
   "w_modal_sheet_permission_brightness": "Um die Bildschirmhelligkeit anzupassen, benötigt der DAS Client Zugriff auf die Systemeinstellungen.",
   "w_modal_sheet_button_grant_permission": "Berechtigungen erteilen",
-  "w_journey_search_overlay_title": "Fahrordnung suchen"
+  "w_journey_search_overlay_title": "Fahrordnung suchen",
+  "p_settings_page_personalize": "Personalisieren",
+  "p_settings_page_decisive_gradient_title": "Massgebende Neigung",
+  "p_settings_page_decisive_gradient_show_setting": "Neigung einblenden"
 }
