@@ -15,46 +15,98 @@ import org.mockito.MockedStatic;
 class VehicleTest {
 
     @Test
-    void constructor_getters() {
-        EuropeanVehicleNumber europeanVehicleNumber = new EuropeanVehicleNumber("89", "86", "12345", "6");
-        Vehicle vehicle = new Vehicle(TractionMode.ZUGLOK, null, null, europeanVehicleNumber);
+    void hauledLoadCount_withEmpty() {
+        List<Vehicle> vehicles = Collections.emptyList();
 
-        assertThat(vehicle.getTractionMode()).isEqualTo(TractionMode.ZUGLOK);
-        assertThat(vehicle.getEuropeanVehicleNumber()).isEqualTo(europeanVehicleNumber);
+        int result = Vehicle.hauledLoadCount(vehicles);
+
+        assertThat(result).isZero();
     }
 
     @Test
-    void first_withMultipleVehicles() {
-        Vehicle vehicle1 = createVehicle();
-        Vehicle vehicle2 = createVehicle();
-        List<Vehicle> vehicles = List.of(vehicle1, vehicle2);
+    void hauledLoadCount_withOnlyTraction() {
+        List<Vehicle> vehicles = List.of(
+            new Vehicle(TractionMode.ZUGLOK, VehicleCategory.LOKOMOTIVE.name(), null, null),
+            new Vehicle(TractionMode.DOPPELTRAKTION, VehicleCategory.TRIEBWAGEN.name(), null, null));
 
-        Vehicle result = Vehicle.first(vehicles);
+        int result = Vehicle.hauledLoadCount(vehicles);
 
-        assertThat(result).isEqualTo(vehicle1);
+        assertThat(result).isZero();
     }
 
     @Test
-    void last_withMultipleVehicles() {
-        Vehicle vehicle1 = createVehicle();
-        Vehicle vehicle2 = createVehicle();
-        List<Vehicle> vehicles = List.of(vehicle1, vehicle2);
+    void hauledLoadCount_withTractionAndHauledLoad() {
+        List<Vehicle> vehicles = List.of(
+            new Vehicle(TractionMode.ZUGLOK, VehicleCategory.LOKOMOTIVE.name(), null, null),
+            new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, null),
+            new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, null),
+            new Vehicle(TractionMode.SCHIEBELOK, VehicleCategory.TRIEBWAGEN.name(), null, null));
 
-        Vehicle result = Vehicle.last(vehicles);
+        int result = Vehicle.hauledLoadCount(vehicles);
 
-        assertThat(result).isEqualTo(vehicle2);
+        assertThat(result).isEqualTo(2);
     }
 
     @Test
-    void firstAndLast_whenOnlyOneVehicle() {
-        Vehicle vehicle = createVehicle();
-        List<Vehicle> vehicles = List.of(vehicle);
+    void hauledLoadCount_withSchlepplok() {
+        List<Vehicle> vehicles = List.of(
+            new Vehicle(TractionMode.ZUGLOK, VehicleCategory.LOKOMOTIVE.name(), null, null),
+            new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, null),
+            new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, null),
+            new Vehicle(null, VehicleCategory.ANHAENGELAST.name(), null, null),
+            new Vehicle(TractionMode.SCHLEPPLOK, VehicleCategory.LOKOMOTIVE.name(), null, null));
 
-        Vehicle firstResult = Vehicle.first(vehicles);
-        Vehicle lastResult = Vehicle.last(vehicles);
+        int result = Vehicle.hauledLoadCount(vehicles);
 
-        assertThat(firstResult).isEqualTo(vehicle);
-        assertThat(lastResult).isEqualTo(vehicle);
+        assertThat(result).isEqualTo(4);
+    }
+
+    @Test
+    void europeanVehicleNumbers_withEmpty() {
+        List<Vehicle> vehicles = Collections.emptyList();
+
+        String first = Vehicle.europeanVehicleNumberLast(vehicles);
+        String last = Vehicle.europeanVehicleNumberFirst(vehicles);
+
+        assertThat(first).isNull();
+        assertThat(last).isNull();
+    }
+
+    @Test
+    void europeanVehicleNumbers_withMultipleVehicles() {
+        EuropeanVehicleNumber firstEvnMock = mock(EuropeanVehicleNumber.class);
+        when(firstEvnMock.toVehicleCode()).thenReturn("34562342341");
+        EuropeanVehicleNumber lastEvnMock = mock(EuropeanVehicleNumber.class);
+        when(lastEvnMock.toVehicleCode()).thenReturn("34324346134");
+
+        Vehicle vehicle1 = new Vehicle(TractionMode.ZUGLOK, VehicleCategory.LOKOMOTIVE.name(), null, null);
+        Vehicle vehicle2 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, firstEvnMock);
+        Vehicle vehicle3 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, null);
+        Vehicle vehicle4 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, lastEvnMock);
+        List<Vehicle> vehicles = List.of(vehicle1, vehicle2, vehicle3, vehicle4);
+
+        String first = Vehicle.europeanVehicleNumberFirst(vehicles);
+        String last = Vehicle.europeanVehicleNumberLast(vehicles);
+
+        assertThat(first).isEqualTo("34562342341");
+        assertThat(last).isEqualTo("34324346134");
+    }
+
+    @Test
+    void europeanVehicleNumbers_whenOnlyOneHauledLoad() {
+        EuropeanVehicleNumber evnMock = mock(EuropeanVehicleNumber.class);
+        when(evnMock.toVehicleCode()).thenReturn("425859349349");
+
+        Vehicle vehicle1 = new Vehicle(TractionMode.ZUGLOK, VehicleCategory.LOKOMOTIVE.name(), null, null);
+        Vehicle vehicle2 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, evnMock);
+        Vehicle vehicle3 = new Vehicle(TractionMode.SCHIEBELOK, VehicleCategory.LOKOMOTIVE.name(), null, null);
+        List<Vehicle> vehicles = List.of(vehicle1, vehicle2, vehicle3);
+
+        String first = Vehicle.europeanVehicleNumberFirst(vehicles);
+        String last = Vehicle.europeanVehicleNumberLast(vehicles);
+
+        assertThat(first).isEqualTo("425859349349");
+        assertThat(last).isEqualTo("425859349349");
     }
 
     @Test
@@ -72,18 +124,18 @@ class VehicleTest {
         try (MockedStatic<VehicleUnit> mockedStatic = mockStatic(VehicleUnit.class)) {
             mockedStatic.when(() -> VehicleUnit.hasDangerousGoods(any())).thenReturn(true);
 
-            assertThat(vehicle.hasDangerousGoods()).isTrue();
+            assertThat(Vehicle.hasDangerousGoods(List.of(vehicle))).isTrue();
         }
     }
 
     @Test
-    void hasDangerousGoods_withNotDangerous() {
+    void hasDangerousGoods_withoutDangerous() {
         List<Vehicle> vehicles = List.of(createVehicle());
 
         try (MockedStatic<VehicleUnit> mockedStatic = mockStatic(VehicleUnit.class)) {
-            mockedStatic.when(() -> VehicleUnit.hasDangerousGoods(any())).thenReturn(true);
+            mockedStatic.when(() -> VehicleUnit.hasDangerousGoods(any())).thenReturn(false);
 
-            assertThat(Vehicle.hasDangerousGoods(vehicles)).isTrue();
+            assertThat(Vehicle.hasDangerousGoods(vehicles)).isFalse();
         }
     }
 
@@ -133,7 +185,7 @@ class VehicleTest {
     }
 
     @Test
-    void tractionCalculateHoldingForceInHectoNewton_withMultipleVehicles() {
+    void calculateTractionHoldingForceInHectoNewton_withMultipleVehicles() {
         VehicleUnit vehicleUnit = mock(VehicleUnit.class);
         when(vehicleUnit.calculateHoldingForce(anyBoolean())).thenReturn(20);
         Vehicle vehicle1 = new Vehicle(TractionMode.ZUGLOK, VehicleCategory.LOKOMOTIVE.name(), List.of(vehicleUnit), null);
@@ -145,7 +197,7 @@ class VehicleTest {
     }
 
     @Test
-    void hauledLoadCalculateHoldingForceInHectoNewton_withMultipleVehicles() {
+    void calculateHauledLoadHoldingForceInHectoNewton_withMultipleVehicles() {
         VehicleUnit vehicleUnit = mock(VehicleUnit.class);
         when(vehicleUnit.calculateHoldingForce(anyBoolean())).thenReturn(30);
         Vehicle vehicle1 = new Vehicle(TractionMode.ZUGLOK, VehicleCategory.LOKOMOTIVE.name(), List.of(vehicleUnit), null);
@@ -157,30 +209,21 @@ class VehicleTest {
     }
 
     @Test
-    void isTraction_false() {
-        Vehicle vehicle = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, null);
+    void tractionModes_empty() {
+        List<TractionMode> result = Vehicle.tractionModes(Collections.emptyList());
 
-        boolean result = vehicle.isTraction();
-
-        assertThat(result).isFalse();
+        assertThat(result).isEmpty();
     }
 
     @Test
-    void isTraction_true() {
-        Vehicle vehicle = new Vehicle(TractionMode.DOPPELTRAKTION, VehicleCategory.TRIEBWAGEN.name(), null, null);
+    void tractionModes_withMultipleVehicles() {
+        Vehicle vehicle1 = new Vehicle(TractionMode.ZUGLOK, VehicleCategory.LOKOMOTIVE.name(), null, null);
+        Vehicle vehicle2 = new Vehicle(TractionMode.SCHIEBELOK, VehicleCategory.TRIEBWAGEN.name(), null, null);
+        Vehicle vehicle3 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, null);
 
-        boolean result = vehicle.isTraction();
+        List<TractionMode> result = Vehicle.tractionModes(List.of(vehicle1, vehicle2, vehicle3));
 
-        assertThat(result).isTrue();
-    }
-
-    @Test
-    void isTraction_withSchlepplok() {
-        Vehicle vehicle = new Vehicle(TractionMode.SCHLEPPLOK, VehicleCategory.LOKOMOTIVE.name(), null, null);
-
-        boolean result = vehicle.isTraction();
-
-        assertThat(result).isFalse();
+        assertThat(result).isEqualTo(List.of(TractionMode.ZUGLOK, TractionMode.SCHIEBELOK));
     }
 
     private Vehicle createVehicle() {
