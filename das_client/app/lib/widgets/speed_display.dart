@@ -95,8 +95,6 @@ class SpeedDisplay extends StatelessWidget {
     );
   }
 
-  //TODO change the reduced overview because it is currently all white. change background color to SBBColors.night
-
   Widget _speedText(SingleSpeed speed) {
     return Builder(
       builder: (context) {
