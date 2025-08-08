@@ -104,7 +104,7 @@
                 <NSP_GroupName>stationProperty</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationProperty" value="
 				&lt;stationProperties&gt;
-					&lt;stationProperty;&gt;
+					&lt;stationProperty&gt;
 						&lt;speeds&gt; 
 							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;35&quot; reduced=&quot;true&quot;/&gt;
 							&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;35&quot; reduced=&quot;true&quot;/&gt;
@@ -213,7 +213,7 @@
                               directionOfApplicationOnSP="Nominal"/>
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
                               gradientValue="0.0" gradientDirection="Uphill"
-                              directionOfApplicationOnSP="Nominal"/> 
+                              directionOfApplicationOnSP="Nominal"/>
 
     </SP_ContextInformation>
 

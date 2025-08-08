@@ -20,7 +20,7 @@ dependencies:
   # https://pub.dev/packages/path_provider
   path_provider: ^2.1.5
   # https://pub.dev/packages/synchronized
-  synchronized: ^3.3.1
+  synchronized: ^3.4.0
   # https://pub.dev/packages/device_info_plus
   device_info_plus: ^11.5.0
   # https://pub.dev/packages/package_info_plus
@@ -30,7 +30,7 @@ dependencies:
   # https://pub.dev/packages/path
   path: ^1.9.1
   # https://pub.dev/packages/get_it
-  get_it: ^8.0.3
+  get_it: ^8.2.0
 
 dev_dependencies:
   flutter_test:

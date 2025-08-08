@@ -99,10 +99,13 @@ class TrainJourney extends StatelessWidget {
             ? tableRows.lastWhereOrNull((it) => it.stickyLevel == StickyLevel.first)?.height ?? CellRowBuilder.rowHeight
             : 0.0;
 
+        final detailModalViewModel = context.read<DetailModalViewModel>();
+
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: TrainJourneyOverview.horizontalPadding),
           child: StreamBuilder<bool>(
-            stream: context.read<DetailModalViewModel>().isModalOpen,
+            stream: detailModalViewModel.isModalOpen,
+            initialData: detailModalViewModel.isModalOpenValue,
             builder: (context, snapshot) {
               final isDetailModalOpen = snapshot.data ?? false;
               final advancementController = context.read<TrainJourneyViewModel>().automaticAdvancementController;
