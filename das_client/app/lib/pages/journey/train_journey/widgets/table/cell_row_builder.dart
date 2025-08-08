@@ -125,6 +125,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
       alignment: null,
       child: TrackEquipmentCellBody(
         renderData: config.trackEquipmentRenderData!,
+        isNextStop: metadata.nextStop == data,
       ),
     );
   }

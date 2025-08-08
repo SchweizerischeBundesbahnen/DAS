@@ -34,6 +34,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     required super.data,
     required BuildContext context,
     required super.rowIndex,
+    this.highlightNextStop = true,
     super.config,
     Color? rowColor,
   }) : super(
@@ -41,6 +42,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
          stickyLevel: StickyLevel.first,
          height: calculateHeight(data, config.settings.resolvedBreakSeries(metadata)),
        );
+
+  final bool highlightNextStop;
 
   @override
   DASTableCell kilometreCell(BuildContext context) {
@@ -64,7 +67,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
             servicePointName,
             textAlign: TextAlign.start,
             overflow: TextOverflow.ellipsis,
-            style: metadata.nextStop == data
+            style: metadata.nextStop == data && highlightNextStop
                 ? data.isStation
                       ? DASTextStyles.xLargeBold.copyWith(color: SBBColors.white)
                       : DASTextStyles.xLargeLight.copyWith(fontStyle: FontStyle.italic, color: SBBColors.white)
@@ -103,7 +106,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
                 Text.rich(
                   TextUtil.parseHtmlText(
                     property.text!,
-                    metadata.nextStop == data
+                    metadata.nextStop == data && highlightNextStop
                         ? DASTextStyles.mediumRoman.copyWith(color: SBBColors.white)
                         : DASTextStyles.mediumRoman,
                   ),
@@ -254,6 +257,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
             data.chevronPosition +
             RouteCellBody.chevronHeight +
             (data.isStop ? RouteCellBody.routeCircleSize / 2 : 0.0),
+        isNextStop: metadata.nextStop == data,
       ),
     );
   }
