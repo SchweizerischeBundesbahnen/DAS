@@ -158,6 +158,7 @@ class SferaModelMapper {
     }
   }
 
+  // TODO: Does this make sense with chevron on end of row?
   /// returns element at next position, if it is a [ServicePoint] and the current position is not already one.
   static BaseData? _adjustCurrentPositionToServicePoint(List<BaseData> journeyData, BaseData currentPosition) {
     final positionIndex = journeyData.indexOf(currentPosition);

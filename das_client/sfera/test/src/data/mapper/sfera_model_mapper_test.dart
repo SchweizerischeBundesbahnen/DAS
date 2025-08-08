@@ -1297,17 +1297,25 @@ void main() {
     expect(journey.valid, true);
     expect(journey.metadata.currentPosition, journey.data[5]);
 
-    journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 3000);
+    journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 4000);
     expect(journey.valid, true);
     expect(journey.metadata.currentPosition, journey.data[18]);
   });
 
+  test('Test current position after hidden signal', () async {
+    final journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 2000);
+    expect(journey.valid, true);
+    // Hidden signal position is between B3 and S3 signals.
+    // Current position should be the next smaller visible element
+    expect(journey.metadata.currentPosition, journey.data[9]);
+  });
+
   test('Test current position is set to service point on last signal', () async {
-    var journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 2000);
+    var journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 3000);
     expect(journey.valid, true);
     expect(journey.metadata.currentPosition, journey.data.whereType<ServicePoint>().toList()[1]);
 
-    journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 4000);
+    journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 5000);
     expect(journey.valid, true);
     expect(journey.metadata.currentPosition, journey.data.whereType<ServicePoint>().toList()[2]);
   });
@@ -1319,7 +1327,7 @@ void main() {
   });
 
   test('Test next station is calculated correctly with related train info', () async {
-    final journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 2000);
+    final journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 3000);
     expect(journey.valid, true);
     expect(journey.metadata.nextStop, journey.data.whereType<ServicePoint>().toList()[2]);
   });
@@ -1360,7 +1368,7 @@ void main() {
   });
 
   test('Test last service point is correct with invalid position update', () async {
-    final journey1 = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 3000);
+    final journey1 = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 4000);
     expect(journey1.valid, true);
     expect(journey1.metadata.currentPosition, journey1.data[18]);
     expect(journey1.metadata.lastServicePoint, journey1.data.whereType<ServicePoint>().toList()[1]);
