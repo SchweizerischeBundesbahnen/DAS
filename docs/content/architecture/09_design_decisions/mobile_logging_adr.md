@@ -2,7 +2,7 @@
 title: Mobile Logging
 draft: true
 status: DECIDED
-result: Delivery via backend
+result: Separated delivering
 date: 2025-06-04
 issue: 209, 522
 tags:

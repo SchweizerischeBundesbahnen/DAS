@@ -91,29 +91,26 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _tmsCheckbox(BuildContext context) {
     final flavor = DI.get<Flavor>();
+    if (!flavor.isTmsEnabledForFlavor) return SizedBox.shrink();
 
-    if (flavor.isTmsEnabledForFlavor) {
-      return Padding(
-        padding: const EdgeInsets.all(sbbDefaultSpacing),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SBBCheckbox(
-              value: isTmsChecked,
-              onChanged: (value) {
-                setState(() {
-                  isTmsChecked = value ?? false;
-                  DI.resetToUnauthenticatedScope(useTms: isTmsChecked);
-                });
-              },
-            ),
-            Text(context.l10n.p_login_connect_to_tms),
-          ],
-        ),
-      );
-    } else {
-      return Container();
-    }
+    return Padding(
+      padding: const EdgeInsets.all(sbbDefaultSpacing),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SBBCheckbox(
+            value: isTmsChecked,
+            onChanged: (value) {
+              setState(() {
+                isTmsChecked = value ?? false;
+                DI.resetToUnauthenticatedScope(useTms: isTmsChecked);
+              });
+            },
+          ),
+          Text(context.l10n.p_login_connect_to_tms),
+        ],
+      ),
+    );
   }
 
   Widget _loginButton(BuildContext context) {

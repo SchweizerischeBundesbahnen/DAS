@@ -23,9 +23,14 @@ class SegmentProfileReferenceDto extends SferaXmlElementDto {
 
   Iterable<TrainCharacteristicsRefDto> get trainCharacteristicsRef => children.whereType<TrainCharacteristicsRefDto>();
 
-  Iterable<TemporaryConstraintsDto> get asrTemporaryConstrains => children.whereType<TemporaryConstraintsDto>().where(
+  Iterable<TemporaryConstraintsDto> get asrTemporaryConstraints => children.whereType<TemporaryConstraintsDto>().where(
     (it) => it.temporaryConstraintType == TemporaryConstraintTypeDto.asr,
   );
+
+  Iterable<TemporaryConstraintsDto> get advisedSpeedTemporaryConstraints =>
+      children.whereType<TemporaryConstraintsDto>().where(
+        (it) => it.temporaryConstraintType == TemporaryConstraintTypeDto.advisedSpeed,
+      );
 
   JpContextInformationDto? get jpContextInformation => children.whereType<JpContextInformationDto>().firstOrNull;
 

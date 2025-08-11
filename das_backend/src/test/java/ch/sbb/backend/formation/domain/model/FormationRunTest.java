@@ -340,6 +340,8 @@ class FormationRunTest {
         return FormationRun.builder()
             .inspected(inspected)
             .company(company)
+            .tafTapLocationReferenceStart(new TafTapLocationReference("CH", 1))
+            .tafTapLocationReferenceEnd(new TafTapLocationReference("CH", 2))
             .build();
     }
 

@@ -1,4 +1,5 @@
 import 'package:sfera/src/data/dto/additional_speed_restriction_dto.dart';
+import 'package:sfera/src/data/dto/advised_speed_dto.dart';
 import 'package:sfera/src/data/dto/b2g_event_payload_dto.dart';
 import 'package:sfera/src/data/dto/balise_dto.dart';
 import 'package:sfera/src/data/dto/balise_group_dto.dart';
@@ -43,6 +44,7 @@ import 'package:sfera/src/data/dto/other_contact_type_dto.dart';
 import 'package:sfera/src/data/dto/otn_id_dto.dart';
 import 'package:sfera/src/data/dto/own_train_dto.dart';
 import 'package:sfera/src/data/dto/position_speed_dto.dart';
+import 'package:sfera/src/data/dto/reason_text_dto.dart';
 import 'package:sfera/src/data/dto/related_train_information_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
@@ -314,6 +316,10 @@ class SferaReplyParser {
         return JpContextInformationNspDto.from(attributes: attributes, children: children, value: value);
       case JpContextInformationNspConstraintsDto.elementType:
         return JpContextInformationNspConstraintsDto(attributes: attributes, children: children, value: value);
+      case AdvisedSpeedDto.elementType:
+        return AdvisedSpeedDto(attributes: attributes, children: children, value: value);
+      case ReasonTextDto.elementType:
+        return ReasonTextDto(attributes: attributes, children: children, value: value);
       default:
         return SferaXmlElementDto(type: type, attributes: attributes, children: children, value: value);
     }

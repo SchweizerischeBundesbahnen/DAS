@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.24.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.24.0...das_client-v0.24.1) (2025-08-07)
+
+
+### Bug Fixes
+
+* change brightness sensitivity ([#101](https://github.com/SchweizerischeBundesbahnen/DAS/issues/101)) ([#1113](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1113)) ([6d17f5d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6d17f5df5d7ea4953247c0cdc725f3db80592b1a))
+* dot indicator is moved top right in empty local speed cell ([#891](https://github.com/SchweizerischeBundesbahnen/DAS/issues/891)) ([#1143](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1143)) ([3b3a648](https://github.com/SchweizerischeBundesbahnen/DAS/commit/3b3a6482fa426ce65fcf4ce6df9b035219310d10))
+* signal names are abbreviated in all frames when modal open ([#980](https://github.com/SchweizerischeBundesbahnen/DAS/issues/980)) ([#1141](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1141)) ([26b1488](https://github.com/SchweizerischeBundesbahnen/DAS/commit/26b1488d1b92048117ddf4c71e9598bf4dd39012))
+
+## [0.24.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.23.0...das_client-v0.24.0) (2025-08-05)
+
+
+### Features
+
+* add settings to show/hide decisive gradient ([#583](https://github.com/SchweizerischeBundesbahnen/DAS/issues/583)) ([#1127](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1127)) ([231c924](https://github.com/SchweizerischeBundesbahnen/DAS/commit/231c924853c3b5fe6c48bc0109085bd1f948ea4f))
+* added ADL Message ([#228](https://github.com/SchweizerischeBundesbahnen/DAS/issues/228)) ([#1116](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1116)) ([5fd848d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5fd848d0a1eb6fbfc46f7639ebd098858ed1bc6b))
+* departure times are underlined ([#259](https://github.com/SchweizerischeBundesbahnen/DAS/issues/259)) ([#1114](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1114)) ([736d247](https://github.com/SchweizerischeBundesbahnen/DAS/commit/736d2477ab11809d3c6320248ec6e76ebc1555a6))
+
+
+### Bug Fixes
+
+* take out the confirm button while choosing breakseries ([#1123](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1123)) ([e2e575b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e2e575bb47571389dbf6ea157e3d29167cc54130))
+
 ## [0.23.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.22.0...das_client-v0.23.0) (2025-07-29)
 
 

@@ -10,4 +10,8 @@ class TimeConstants {
   int get modalSheetAutomaticCloseAfterSeconds => 40;
 
   int get arrivalDepartureOperationalResetSeconds => 10;
+
+  int get adlEndDisplaySeconds => 30;
+
+  int get kmDecisiveGradientResetSeconds => 10;
 }

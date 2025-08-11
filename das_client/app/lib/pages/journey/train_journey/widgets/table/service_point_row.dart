@@ -4,9 +4,8 @@ import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_poi
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/cells/advised_speed_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/cells/speed_cell_body.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/show_speed_behaviour.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/time_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:app/theme/theme_util.dart';
@@ -14,6 +13,7 @@ import 'package:app/util/text_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/dot_indicator.dart';
+import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
@@ -109,9 +109,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
                 ),
               if (speed != null && speed.reduced) _icon(context, AppAssets.iconReducedSpeed, reducedSpeedKey),
               if (speed != null)
-                SpeedCellBody(
+                SpeedDisplay(
                   speed: speed.speed,
-                  rowIndex: rowIndex,
                   singleLine: true,
                 ),
             ],
@@ -211,12 +210,16 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     );
     if (trainSeriesSpeed == null && relevantGraduatedSpeedInfo.isEmpty) return DASTableCell.empty();
 
-    Widget child = DotIndicator(child: SizedBox.shrink());
+    Widget child = Padding(
+      padding: EdgeInsets.only(top: sbbDefaultSpacing * .5, right: sbbDefaultSpacing * .25),
+      child: DotIndicator(
+        child: SizedBox.expand(),
+      ),
+    );
     if (trainSeriesSpeed != null) {
-      child = SpeedCellBody(
+      child = SpeedDisplay(
         speed: trainSeriesSpeed.speed,
         hasAdditionalInformation: relevantGraduatedSpeedInfo.isNotEmpty,
-        rowIndex: rowIndex,
       );
     }
 
@@ -225,23 +228,6 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
       child: child,
-    );
-  }
-
-  @override
-  DASTableCell advisedSpeedCell(BuildContext context) {
-    final currentBreakSeries = config.settings.resolvedBreakSeries(metadata);
-    final trainSeriesSpeed = data.speeds?.speedFor(
-      currentBreakSeries?.trainSeries,
-      breakSeries: currentBreakSeries?.breakSeries,
-    );
-
-    return DASTableCell(
-      child: AdvisedSpeedCellBody(
-        calculatedSpeed: data.calculatedSpeed,
-        lineSpeed: trainSeriesSpeed?.speed as SingleSpeed?,
-        rowIndex: rowIndex,
-      ),
     );
   }
 
@@ -309,6 +295,9 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       ),
     );
   }
+
+  @override
+  ShowSpeedBehavior get showSpeedBehavior => ShowSpeedBehavior.alwaysOrPreviousOnStickiness;
 
   static double calculateHeight(ServicePoint data, BreakSeries? currentBreakSeries) {
     final properties = data.propertiesFor(currentBreakSeries);
