@@ -188,7 +188,8 @@ void main() {
     final textWidget = tester.widget<Text>(
       find.descendant(of: rotkreuxStationRow, matching: find.byKey(CalculatedSpeedCellBody.nonEmptyKey)),
     );
-    expect(textWidget.style?.color, equals(SBBColors.metal));
+    //TODO Currently the reduced lineSpeed color is set to SBBColors.white. After an exchange with UX this should be changed to a newly defined color.
+    expect(textWidget.style?.color, equals(SBBColors.white));
 
     await disconnect(tester);
   });
