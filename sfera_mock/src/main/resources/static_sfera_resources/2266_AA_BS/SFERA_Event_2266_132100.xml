@@ -10,12 +10,12 @@
                 </OTN_ID>
             </TrainIdentification>
             <TrainLocationInformation>
-                <PositionSpeed SP_ID="2266_6_Olten" location="16400">
+                <PositionSpeed SP_ID="2266_12_Liestal" location="4700">
                     <SP_Zone>
                         <IM_ID>1285</IM_ID>
                     </SP_Zone>
                 </PositionSpeed>
-                <Delay Delay="PT0M50S"/>
+                <Delay Delay="-PT1M10S"/>
             </TrainLocationInformation>
         </OwnTrain>
     </RelatedTrainInformation>
