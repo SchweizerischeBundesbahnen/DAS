@@ -73,6 +73,41 @@ void main() {
 
       await disconnect(tester);
     });
+
+    testWidgets('test planned timms are displayed', (tester) async {
+      await prepareAndStartApp(tester);
+
+      await loadTrainJourney(tester, trainNumber: 'T16');
+
+      await openReducedJourneyMenu(tester);
+
+      final reducedJourneyTable = _findTableOfReducedJourney();
+
+      final expectedPlannedHeaderLabel = l10n.p_train_journey_table_time_label_planned;
+
+      // GEN AEROPORT
+      expect(find.text(expectedPlannedHeaderLabel), findsOneWidget);
+      final expectedTimeGenAerPlanned = Format.plannedTime(DateTime.parse('2025-05-12T15:13:40Z'));
+      expect(find.descendant(of: reducedJourneyTable, matching: find.text(expectedTimeGenAerPlanned)), findsOneWidget);
+
+      // LAUSANNE
+      final expectedTimeLausannePlanned = '${Format.plannedTime(DateTime.parse('2025-05-12T16:07:20Z'))}\n';
+      expect(
+        find.descendant(of: reducedJourneyTable, matching: find.text(expectedTimeLausannePlanned)),
+        findsOneWidget,
+      );
+
+      // MONTREUX should have both times
+      final expectedTimeMontreuxPlanned =
+          '${Format.plannedTime(DateTime.parse('2025-05-12T16:35:12Z'))}\n'
+          '${Format.plannedTime(DateTime.parse('2025-05-12T16:36:12Z'))}';
+      expect(
+        find.descendant(of: reducedJourneyTable, matching: find.text(expectedTimeMontreuxPlanned)),
+        findsOneWidget,
+      );
+
+      await disconnect(tester);
+    });
   });
 }
 
