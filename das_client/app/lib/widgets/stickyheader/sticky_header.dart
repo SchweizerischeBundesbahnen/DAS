@@ -4,6 +4,7 @@
 // that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+import 'package:app/theme/theme_view_model.dart';
 import 'package:app/widgets/stickyheader/sticky_widget.dart';
 import 'package:app/widgets/stickyheader/sticky_widget_controller.dart';
 import 'package:app/widgets/table/das_table_row.dart';
@@ -78,12 +79,14 @@ class StickyHeaderState extends State<StickyHeader> {
           key: StickyHeader.headerKey,
           controller: controller,
           widgetBuilder: widget.headerBuilder,
+          themeModeStream: ThemeViewModel().themeMode,
         ),
         if (widget.footerBuilder != null)
           StickyWidget(
             controller: controller,
             widgetBuilder: widget.footerBuilder!,
             isHeader: false,
+            themeModeStream: ThemeViewModel().themeMode,
           ),
       ],
     );
