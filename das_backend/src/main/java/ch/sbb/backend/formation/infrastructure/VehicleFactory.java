@@ -11,6 +11,7 @@ import ch.sbb.backend.formation.domain.model.Vehicle;
 import ch.sbb.backend.formation.domain.model.VehicleUnit;
 import ch.sbb.backend.formation.domain.model.VehicleUnit.VehicleUnitBuilder;
 import ch.sbb.zis.trainformation.api.model.CargoTransport;
+import ch.sbb.zis.trainformation.api.model.DangerousGoods;
 import ch.sbb.zis.trainformation.api.model.UnitEffectiveOperationalData;
 import ch.sbb.zis.trainformation.api.model.UnitTechnicalData;
 import ch.sbb.zis.trainformation.api.model.VehicleEffectiveTractionData;
@@ -93,7 +94,7 @@ public final class VehicleFactory {
     }
 
     private static IntermodalLoadingUnit toIntermodalLoadingUnit(ch.sbb.zis.trainformation.api.model.IntermodalLoadingUnit intermodalLoadingUnit) {
-        return new IntermodalLoadingUnit(toGoodsList(intermodalLoadingUnit.getGoods()));
+        return new IntermodalLoadingUnit(isDangerous(intermodalLoadingUnit.getDangerousGoods()), toGoodsList(intermodalLoadingUnit.getGoods()));
     }
 
     private static List<Goods> toGoodsList(List<ch.sbb.zis.trainformation.api.model.Goods> goods) {
@@ -104,7 +105,11 @@ public final class VehicleFactory {
     }
 
     private static Goods toGoods(ch.sbb.zis.trainformation.api.model.Goods goods) {
-        return new Goods(!CollectionUtils.isEmpty(goods.getDangerousGoods()));
+        return new Goods(isDangerous(goods.getDangerousGoods()));
+    }
+
+    private static boolean isDangerous(List<DangerousGoods> dangerousGoods) {
+        return !CollectionUtils.isEmpty(dangerousGoods);
     }
 
     private static BrakeDesign toBrakeDesign(Integer brakeDesign) {

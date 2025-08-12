@@ -5,7 +5,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.when;
 
 import java.util.Collections;
 import java.util.List;
@@ -201,36 +200,24 @@ class FormationRunTest {
 
     @Test
     void getTractionModes_empty() {
-        FormationRun formationRun = createFormationRunWithVehicles(Collections.emptyList());
-        List<TractionMode> tractionModes = formationRun.getTractionModes();
-        assertThat(tractionModes).isEmpty();
+        FormationRun formationRun = createFormationRunWithVehicles(null);
+
+        try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
+            mockedStatic.when(() -> Vehicle.tractionModes(any())).thenReturn(Collections.emptyList());
+            List<TractionMode> tractionModes = formationRun.getTractionModes();
+            assertThat(tractionModes).isEmpty();
+        }
     }
 
     @Test
-    void getTractionModes_noGetTractionVehicle() {
-        Vehicle vehicle = mock(Vehicle.class);
-        when(vehicle.isTraction()).thenReturn(false);
-        when(vehicle.getTractionMode()).thenReturn(TractionMode.DOPPELTRAKTION);
+    void getTractionModes_withTractionModes() {
+        FormationRun formationRun = createFormationRunWithVehicles(null);
 
-        FormationRun formationRun = createFormationRunWithVehicles(List.of(vehicle));
-        List<TractionMode> tractionModes = formationRun.getTractionModes();
-        assertThat(tractionModes).isEmpty();
-    }
-
-    @Test
-    void getTractionModes_correct() {
-        Vehicle vehicle1 = mock(Vehicle.class);
-        when(vehicle1.isTraction()).thenReturn(true);
-        when(vehicle1.getTractionMode()).thenReturn(TractionMode.DOPPELTRAKTION);
-        Vehicle vehicle2 = mock(Vehicle.class);
-        when(vehicle2.isTraction()).thenReturn(false);
-        Vehicle vehicle3 = mock(Vehicle.class);
-        when(vehicle3.isTraction()).thenReturn(true);
-        when(vehicle3.getTractionMode()).thenReturn(TractionMode.SCHIEBELOK);
-
-        FormationRun formationRun = createFormationRunWithVehicles(List.of(vehicle1, vehicle2, vehicle3));
-        List<TractionMode> tractionModes = formationRun.getTractionModes();
-        assertThat(tractionModes).containsExactly(TractionMode.DOPPELTRAKTION, TractionMode.SCHIEBELOK);
+        try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
+            mockedStatic.when(() -> Vehicle.tractionModes(any())).thenReturn(List.of(TractionMode.ZUGLOK, TractionMode.SCHIEBELOK, TractionMode.DOPPELTRAKTION));
+            List<TractionMode> tractionModes = formationRun.getTractionModes();
+            assertThat(tractionModes).isEqualTo(List.of(TractionMode.ZUGLOK, TractionMode.SCHIEBELOK, TractionMode.DOPPELTRAKTION));
+        }
     }
 
     @Test
@@ -247,10 +234,10 @@ class FormationRunTest {
     }
 
     @Test
-    void vehicleCount_twoVehicles() {
+    void vehiclesCount_twoHauledLoadVehicles() {
         FormationRun formationRun = createFormationRunWithVehicles(List.of(mock(Vehicle.class), mock(Vehicle.class)));
 
-        Integer result = formationRun.vehicleCount();
+        Integer result = formationRun.hauledLoadVehiclesCount();
 
         assertThat(result).isEqualTo(2);
     }
@@ -283,14 +270,13 @@ class FormationRunTest {
     }
 
     @Test
-    void europeanVehicleNumberFirst_null() {
+    void europeanVehicleNumbers_null() {
         FormationRun formationRun = createFormationRunWithVehicles(null);
         try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
-            mockedStatic.when(() -> Vehicle.first(any())).thenReturn(null);
+            mockedStatic.when(() -> Vehicle.europeanVehicleNumberFirst(any())).thenReturn(null);
 
-            EuropeanVehicleNumber result = formationRun.europeanVehicleNumberFirst();
-
-            assertThat(result).isNull();
+            assertThat(formationRun.europeanVehicleNumberFirst()).isNull();
+            assertThat(formationRun.europeanVehicleNumberLast()).isNull();
         }
     }
 
@@ -298,26 +284,11 @@ class FormationRunTest {
     void europeanVehicleNumberFirst_correct() {
         FormationRun formationRun = createFormationRunWithVehicles(null);
         try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
-            Vehicle vehicle = mock(Vehicle.class);
-            EuropeanVehicleNumber europeanVehicleNumber = new EuropeanVehicleNumber("95", "12", "3456", "4");
-            when(vehicle.getEuropeanVehicleNumber()).thenReturn(europeanVehicleNumber);
-            mockedStatic.when(() -> Vehicle.first(any())).thenReturn(vehicle);
+            mockedStatic.when(() -> Vehicle.europeanVehicleNumberFirst(any())).thenReturn("951234564");
 
-            EuropeanVehicleNumber result = formationRun.europeanVehicleNumberFirst();
+            String result = formationRun.europeanVehicleNumberFirst();
 
-            assertThat(europeanVehicleNumber).isEqualTo(result);
-        }
-    }
-
-    @Test
-    void europeanVehicleNumberLast_null() {
-        FormationRun formationRun = createFormationRunWithVehicles(null);
-        try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
-            mockedStatic.when(() -> Vehicle.last(any())).thenReturn(null);
-
-            EuropeanVehicleNumber result = formationRun.europeanVehicleNumberLast();
-
-            assertThat(result).isNull();
+            assertThat(result).isEqualTo("951234564");
         }
     }
 
@@ -325,14 +296,11 @@ class FormationRunTest {
     void europeanVehicleNumberLast_correct() {
         FormationRun formationRun = createFormationRunWithVehicles(null);
         try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
-            Vehicle vehicle = mock(Vehicle.class);
-            EuropeanVehicleNumber europeanVehicleNumber = new EuropeanVehicleNumber("12", "78", "910", "7");
-            when(vehicle.getEuropeanVehicleNumber()).thenReturn(europeanVehicleNumber);
-            mockedStatic.when(() -> Vehicle.last(any())).thenReturn(vehicle);
+            mockedStatic.when(() -> Vehicle.europeanVehicleNumberLast(any())).thenReturn("12789107");
 
-            EuropeanVehicleNumber result = formationRun.europeanVehicleNumberLast();
+            String result = formationRun.europeanVehicleNumberLast();
 
-            assertThat(result).isEqualTo(europeanVehicleNumber);
+            assertThat(result).isEqualTo("12789107");
         }
     }
 
