@@ -94,7 +94,8 @@ public class ReplyPublisher {
 
     private void publishReplyMessage(SFERAG2BReplyMessage replyMessage, RequestContext requestContext) {
         String topic = SferaTopicHelper.getG2BTopic(publishDestination, requestContext);
-        log.info("Publishing Reply Message: {} to topic {}", xmlHelper.toString(replyMessage), topic);
+        log.info("Publishing Reply Message to topic {}", topic);
+        log.debug("message: {}", xmlHelper.toString(replyMessage));
         streamBridge.send(topic, SOLACE_BINDER, MessageBuilder
                 .withPayload(replyMessage)
                 .build(),

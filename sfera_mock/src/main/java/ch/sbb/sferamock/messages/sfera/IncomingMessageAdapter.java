@@ -68,7 +68,8 @@ public class IncomingMessageAdapter {
             case SFERAB2GRequestMessage request -> processB2GRequest(request, topic);
             case SFERAB2GEventMessage event -> {
                 var requestContext = RequestContext.fromTopic(topic, Optional.of(UUID.fromString(event.getMessageHeader().getMessageID())));
-                log.info("Received SFERAB2GEventMessage: {} on topic {}", xmlHelper.toString(event), topic);
+                log.info("Received SFERAB2GEventMessage on topic {}", topic);
+                log.debug("message: {}", xmlHelper.toString(event));
                 var validationMessage = messageHeaderValidator.validate(event.getMessageHeader(), requestContext.tid().companyCode().value());
                 if (validationMessage.isPresent()) {
                     log.warn("Reject Message with error in message header");
@@ -80,14 +81,18 @@ public class IncomingMessageAdapter {
                 }
 
             }
-            case SFERAB2GReplyMessage reply -> log.info("Received SFERAB2GReplyMessage: {} on topic {}", xmlHelper.toString(reply), topic);
+            case SFERAB2GReplyMessage reply -> {
+                log.info("Received SFERAB2GReplyMessage on topic {}", topic);
+                log.debug("message: {}", xmlHelper.toString(reply));
+            }
             default -> log.error("Unknown xml message type received: {} xml string \"{}\"", payload.getClass(), xmlString);
         }
     }
 
     private void processB2GRequest(SFERAB2GRequestMessage request, String topic) {
         var requestContext = RequestContext.fromTopic(topic, Optional.of(UUID.fromString(request.getMessageHeader().getMessageID())));
-        log.info("Received SFERAB2GRequestMessage {} on topic {}", xmlHelper.toString(request), topic);
+        log.info("Received SFERAB2GRequestMessage on topic {}", topic);
+        log.debug("message: {}", xmlHelper.toString(request));
         var validationMessage = messageHeaderValidator.validate(request.getMessageHeader(), requestContext.tid().companyCode().value());
         if (validationMessage.isPresent()) {
             log.warn("Reject Message with error in message header");
