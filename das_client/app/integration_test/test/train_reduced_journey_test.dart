@@ -74,7 +74,7 @@ void main() {
       await disconnect(tester);
     });
 
-    testWidgets('test planned timms are displayed', (tester) async {
+    testWidgets('test planned times are displayed', (tester) async {
       await prepareAndStartApp(tester);
 
       await loadTrainJourney(tester, trainNumber: 'T16');
