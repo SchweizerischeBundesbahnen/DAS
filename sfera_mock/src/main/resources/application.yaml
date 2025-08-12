@@ -60,4 +60,6 @@ sfera:
   sfera-version: '3.00'
   source-device: 'TMS'
 
-localregulations.path: ${LOCALREGULATIONS_PATH}
+localregulations:
+  train-numbers: T24
+  path: ${LOCALREGULATIONS_PATH}

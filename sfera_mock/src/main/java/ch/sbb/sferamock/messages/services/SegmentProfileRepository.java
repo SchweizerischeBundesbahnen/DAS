@@ -8,12 +8,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -29,6 +31,9 @@ public class SegmentProfileRepository implements ApplicationRunner {
     private final LocalRegulationRepository localRegulationRepository;
 
     private final Map<String, SegmentProfile> segmentProfiles = new HashMap<>();
+
+    @Value("${localregulations.train-numbers}")
+    private String[] trainNumbersWithLocalRegulations;
 
     public SegmentProfileRepository(XmlHelper xmlHelper, LocalRegulationRepository localRegulationRepository) {
         this.xmlHelper = xmlHelper;
@@ -51,10 +56,13 @@ public class SegmentProfileRepository implements ApplicationRunner {
         for (var resource : resources) {
             File file = resource.getFile();
             var segmentId = extractSpId(file.getPath());
+            var trainNumber = extractTrainNumber(file.getPath());
             try (InputStream in = new FileInputStream(file)) {
                 String xmlPayload = new String(in.readAllBytes());
                 var segmentProfile = (SegmentProfile) xmlHelper.xmlToObject(xmlPayload);
-                appendLocalRegulations(segmentProfile);
+                if (trainNumber != null && Arrays.asList(trainNumbersWithLocalRegulations).contains(trainNumber)) {
+                    appendLocalRegulations(segmentProfile);
+                }
                 segmentProfiles.put(segmentId, segmentProfile);
             }
         }
@@ -71,6 +79,15 @@ public class SegmentProfileRepository implements ApplicationRunner {
             }
         }
         throw new RuntimeException("SP id extraction failed for file: " + filename);
+    }
+
+    private String extractTrainNumber(String filename) {
+        Pattern pattern = Pattern.compile(XML_REGEX);
+        Matcher matcher = pattern.matcher(filename);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        return null;
     }
 
     private void appendLocalRegulations(SegmentProfile segmentProfile) {
