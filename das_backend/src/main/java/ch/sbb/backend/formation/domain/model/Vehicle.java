@@ -4,7 +4,6 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.springframework.util.CollectionUtils;
 
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -16,18 +15,24 @@ public class Vehicle {
     private List<VehicleUnit> vehicleUnits;
     private EuropeanVehicleNumber europeanVehicleNumber;
 
-    static Vehicle first(List<Vehicle> vehicles) {
-        if (CollectionUtils.isEmpty(vehicles)) {
-            return null;
-        }
-        return vehicles.getFirst();
+    static int hauledLoadCount(List<Vehicle> vehicles) {
+        return filterHauledLoad(vehicles).size();
     }
 
-    static Vehicle last(List<Vehicle> vehicles) {
-        if (CollectionUtils.isEmpty(vehicles)) {
+    static String europeanVehicleNumberFirst(List<Vehicle> vehicles) {
+        List<Vehicle> hauledLoadVehicles = filterHauledLoad(vehicles);
+        if (hauledLoadVehicles.isEmpty()) {
             return null;
         }
-        return vehicles.getLast();
+        return hauledLoadVehicles.getFirst().europeanVehicleNumber.toVehicleCode();
+    }
+
+    static String europeanVehicleNumberLast(List<Vehicle> vehicles) {
+        List<Vehicle> hauledLoadVehicles = filterHauledLoad(vehicles);
+        if (hauledLoadVehicles.isEmpty()) {
+            return null;
+        }
+        return hauledLoadVehicles.getLast().europeanVehicleNumber.toVehicleCode();
     }
 
     static boolean hasDangerousGoods(List<Vehicle> vehicles) {
@@ -67,22 +72,18 @@ public class Vehicle {
             .toList();
     }
 
-    boolean isTraction() {
+    static List<TractionMode> tractionModes(List<Vehicle> vehicles) {
+        return filterTraction(vehicles).stream().map(vehicle -> vehicle.tractionMode).toList();
+    }
+
+    private boolean isTraction() {
         return TractionMode.SCHLEPPLOK != this.tractionMode &&
             (VehicleCategory.LOKOMOTIVE.name().equals(this.vehicleCategory) || VehicleCategory.TRIEBWAGEN.name().equals(this.vehicleCategory) || VehicleCategory.GLIEDERFAHRZEUG.name()
                 .equals(this.vehicleCategory));
     }
 
-    boolean hasDangerousGoods() {
+    private boolean hasDangerousGoods() {
         return VehicleUnit.hasDangerousGoods(vehicleUnits);
-    }
-
-    TractionMode getTractionMode() {
-        return tractionMode;
-    }
-
-    EuropeanVehicleNumber getEuropeanVehicleNumber() {
-        return europeanVehicleNumber;
     }
 
     private boolean hasDisabledBrake() {

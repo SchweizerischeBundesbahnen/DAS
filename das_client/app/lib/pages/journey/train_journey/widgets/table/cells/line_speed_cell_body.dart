@@ -13,6 +13,7 @@ class LineSpeedCellBody extends StatelessWidget {
     required this.config,
     required this.order,
     this.showSpeedBehavior = ShowSpeedBehavior.never,
+    this.isNextStop = false,
     super.key,
   });
 
@@ -20,13 +21,18 @@ class LineSpeedCellBody extends StatelessWidget {
   final TrainJourneySettings config;
   final int order;
   final ShowSpeedBehavior showSpeedBehavior;
+  final bool isNextStop;
 
   @override
   Widget build(BuildContext context) {
     return switch (showSpeedBehavior) {
-      ShowSpeedBehavior.always => SpeedDisplay(speed: _resolvedTrainSeriesSpeed()?.speed),
+      ShowSpeedBehavior.always => SpeedDisplay(
+        speed: _resolvedTrainSeriesSpeed()?.speed,
+        isNextStop: isNextStop,
+      ),
       ShowSpeedBehavior.alwaysOrPrevious => SpeedDisplay(
         speed: _resolvedTrainSeriesSpeed(resolvePrevious: true)?.speed,
+        isNextStop: isNextStop,
       ),
       ShowSpeedBehavior.never => DASTableCell.emptyBuilder,
       ShowSpeedBehavior.alwaysOrPreviousOnStickiness => _handledStickinessSpeedDisplay(context),
@@ -45,7 +51,10 @@ class LineSpeedCellBody extends StatelessWidget {
           resolvePrevious: state == DASRowState.sticky || state == DASRowState.firstVisibleRow,
         );
 
-        return SpeedDisplay(speed: trainSeriesSpeed?.speed);
+        return SpeedDisplay(
+          speed: trainSeriesSpeed?.speed,
+          isNextStop: isNextStop,
+        );
       },
     );
   }
