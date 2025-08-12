@@ -392,7 +392,6 @@ class TrainJourney extends StatelessWidget {
         child: Text(context.l10n.p_train_journey_table_advised_speed_label),
         width: 62.0,
       ),
-      DASTableColumn(id: ColumnDefinition.actionsCell.index, width: 40.0), // actions
     ];
   }
 
