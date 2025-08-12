@@ -30,9 +30,7 @@ class ChevronAnimationData {
     }
 
     // handle no position update
-    if (lastPosition == null) {
-      return _initialAnimationData(rows, currentPosition, currentRow, currentBreakSeries);
-    }
+    if (lastPosition == null) return _handleNoPositionUpdate(rows, currentPosition, currentRow, currentBreakSeries);
 
     final fromIndex = rows.indexOf(lastPosition);
     final toIndex = rows.indexOf(currentPosition);
@@ -98,7 +96,7 @@ class ChevronAnimationData {
   }
 
   /// returns static animation data for position row and next row overlapped with chevron.
-  static ChevronAnimationData? _initialAnimationData(
+  static ChevronAnimationData? _handleNoPositionUpdate(
     List<JourneyPoint> rows,
     JourneyPoint currentPosition,
     JourneyPoint currentRow,

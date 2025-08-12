@@ -43,14 +43,9 @@ class RouteCellBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isNextStop) {
-      return ColorFiltered(
-        colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcATop),
-        child: _route(),
-      );
-    }
+    if (!isNextStop) return _route();
 
-    return _route();
+    return _invertedColors(_route());
   }
 
   Widget _route() {
@@ -68,6 +63,13 @@ class RouteCellBody extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+
+  Widget _invertedColors(Widget child) {
+    return ColorFiltered(
+      colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcATop),
+      child: child,
     );
   }
 

@@ -159,7 +159,6 @@ class SferaModelMapper {
     }
   }
 
-  // TODO: Does this make sense with chevron on end of row?
   /// returns element at next position, if it is a [ServicePoint] and the current position is not already one.
   static JourneyPoint? _adjustCurrentPositionToServicePoint(
     List<JourneyPoint> journeyPoints,
