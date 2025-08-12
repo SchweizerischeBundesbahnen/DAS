@@ -64,7 +64,7 @@ class SpeedDisplay extends StatelessWidget {
         _visualizedSpeeds(key: incomingSpeedsKey, speeds: ioSpeed.incoming),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 2.0),
-          child: Divider(color: isNextStop ? SBBColors.cement : Theme.of(context).colorScheme.onSurface, height: 1.0),
+          child: Divider(color: isNextStop ? SBBColors.white : Theme.of(context).colorScheme.onSurface, height: 1.0),
         ),
         _visualizedSpeeds(key: outgoingSpeedsKey, speeds: ioSpeed.outgoing),
       ],
@@ -105,7 +105,7 @@ class SpeedDisplay extends StatelessWidget {
           padding: EdgeInsets.all(1.0),
           decoration: squaredOrCircled
               ? BoxDecoration(
-                  border: Border.all(color: isNextStop ? SBBColors.cement : Theme.of(context).colorScheme.onSurface),
+                  border: Border.all(color: isNextStop ? SBBColors.white : Theme.of(context).colorScheme.onSurface),
                   borderRadius: speed.isCircled ? BorderRadius.circular(sbbDefaultSpacing) : BorderRadius.zero,
                 )
               : null,
@@ -123,7 +123,7 @@ class SpeedDisplay extends StatelessWidget {
     final GraduatedSpeed _ || final SingleSpeed _ => const Offset(0, -sbbDefaultSpacing * 0.5),
   };
 
-  TextStyle get _textStyle => isNextStop ? textStyle.copyWith(color: SBBColors.cement) : textStyle;
+  TextStyle get _textStyle => isNextStop ? textStyle.copyWith(color: SBBColors.white) : textStyle;
 }
 
 // extensions
