@@ -184,11 +184,11 @@ void main() {
     expect(rotkreuxStationRow, findsOneWidget);
     _findTextWithin(rotkreuxStationRow, '130');
 
-    // should be in metal
+    // should be in cement because it is in the next stop
     final textWidget = tester.widget<Text>(
       find.descendant(of: rotkreuxStationRow, matching: find.byKey(CalculatedSpeedCellBody.nonEmptyKey)),
     );
-    expect(textWidget.style?.color, equals(SBBColors.metal));
+    expect(textWidget.style?.color, equals(SBBColors.cement));
 
     await disconnect(tester);
   });

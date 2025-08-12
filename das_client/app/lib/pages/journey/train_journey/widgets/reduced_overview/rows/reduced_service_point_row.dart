@@ -13,7 +13,7 @@ class ReducedServicePointRow extends ServicePointRow {
     required super.rowIndex,
     required this.context,
     super.config,
-  }) : super(context: context, rowColor: ThemeUtil.getDASTableColor(context));
+  }) : super(context: context, rowColor: ThemeUtil.getDASTableColor(context), highlightNextStop: false);
 
   final BuildContext context;
 
@@ -48,6 +48,7 @@ class ReducedServicePointRow extends ServicePointRow {
         isRouteEnd: metadata.routeEnd == data,
         isStopOnRequest: !data.mandatoryStop,
         chevronPosition: data.chevronPosition,
+        isNextStop: false,
       ),
     );
   }

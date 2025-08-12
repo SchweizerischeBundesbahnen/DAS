@@ -69,6 +69,15 @@ public class FormationRun {
             .toList();
     }
 
+    private static Integer sum(Integer a, Integer b) {
+        if (a == null && b == null) {
+            return null;
+        }
+        int aValue = a != null ? a : 0;
+        int bValue = b != null ? b : 0;
+        return aValue + bValue;
+    }
+
     private boolean isInspected() {
         return Boolean.TRUE.equals(inspected);
     }
@@ -83,19 +92,11 @@ public class FormationRun {
     }
 
     public Integer getFormationGrossWeightInT() {
-        // todo: null cases need to be defined (by business or source systems)
-        if (tractionGrossWeightInT == null || hauledLoadGrossWeightInT == null) {
-            return null;
-        }
-        return tractionGrossWeightInT + hauledLoadGrossWeightInT;
+        return sum(tractionGrossWeightInT, hauledLoadGrossWeightInT);
     }
 
     public Integer getFormationBrakedWeightInT() {
-        // todo: null cases need to be defined (by business or source systems)
-        if (tractionBrakedWeightInT == null || hauledLoadBrakedWeightInT == null) {
-            return null;
-        }
-        return tractionBrakedWeightInT + hauledLoadBrakedWeightInT;
+        return sum(tractionBrakedWeightInT, hauledLoadBrakedWeightInT);
     }
 
     public Integer getTractionHoldingForceInHectoNewton() {
@@ -111,18 +112,15 @@ public class FormationRun {
     }
 
     public List<TractionMode> getTractionModes() {
-        return vehicles.stream()
-            .filter(Vehicle::isTraction)
-            .map(Vehicle::getTractionMode)
-            .toList();
+        return Vehicle.tractionModes(vehicles);
     }
 
     public boolean hasDangerousGoods() {
         return Vehicle.hasDangerousGoods(vehicles);
     }
 
-    public Integer vehicleCount() {
-        return vehicles.size();
+    public Integer hauledLoadVehiclesCount() {
+        return Vehicle.hauledLoadCount(vehicles);
     }
 
     public Integer vehiclesWithBrakeDesignCount(BrakeDesign... brakeDesigns) {
@@ -133,12 +131,13 @@ public class FormationRun {
         return Vehicle.countDisabledBrakes(vehicles);
     }
 
-    public EuropeanVehicleNumber europeanVehicleNumberFirst() {
-        return Vehicle.first(vehicles) != null ? Vehicle.first(vehicles).getEuropeanVehicleNumber() : null;
+    public String europeanVehicleNumberFirst() {
+        return Vehicle.europeanVehicleNumberFirst(vehicles);
+
     }
 
-    public EuropeanVehicleNumber europeanVehicleNumberLast() {
-        return Vehicle.last(vehicles) != null ? Vehicle.last(vehicles).getEuropeanVehicleNumber() : null;
+    public String europeanVehicleNumberLast() {
+        return Vehicle.europeanVehicleNumberLast(vehicles);
     }
 }
 
