@@ -1,6 +1,5 @@
 import 'package:app/pages/journey/train_journey/widgets/table/cells/show_speed_behaviour.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
-import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/table/das_row_controller.dart';
 import 'package:app/widgets/table/das_row_controller_wrapper.dart';
@@ -60,7 +59,7 @@ class CalculatedSpeedCellBody extends StatelessWidget {
         final isSpeedReducedDueToLineSpeed = resolvedCalculatedSpeed.isLargerThan(resolvedLineSpeed);
         resolvedCalculatedSpeed = _min(resolvedLineSpeed, resolvedCalculatedSpeed);
 
-        final color = isNextStop ? SBBColors.cement : ThemeUtil.getColor(context, SBBColors.metal, SBBColors.white);
+        final color = isNextStop ? SBBColors.cement : SBBColors.metal;
 
         return Text(
           key: nonEmptyKey,
