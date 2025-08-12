@@ -25,6 +25,7 @@ class RouteCellBody extends StatelessWidget {
     this.isRouteStart = false,
     this.isRouteEnd = false,
     this.chevronAnimationData,
+    this.isNextStop = false,
   });
 
   final double chevronWidth;
@@ -36,6 +37,7 @@ class RouteCellBody extends StatelessWidget {
   final bool isStopOnRequest;
   final bool isRouteStart;
   final bool isRouteEnd;
+  final bool isNextStop;
 
   final ChevronAnimationData? chevronAnimationData;
 
@@ -70,13 +72,14 @@ class RouteCellBody extends StatelessWidget {
         chevronWidth: chevronWidth,
         chevronAnimationData: chevronAnimationData,
         chevronPosition: isRouteEnd ? routeCirclePosition - RouteChevron.chevronHeight : chevronPosition,
+        isNextStop: isNextStop,
       ),
     );
   }
 
   Widget _routeLine(BuildContext context, double height, double width) {
     final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
-    final lineColor = isDarkTheme ? SBBColors.white : SBBColors.black;
+    final lineColor = isNextStop || isDarkTheme ? SBBColors.white : SBBColors.black;
     final horizontalBorderWidth =
         DASTableTheme.of(context)?.data.tableBorder?.horizontalInside.width ?? sbbDefaultSpacing;
     return Positioned(
@@ -90,7 +93,7 @@ class RouteCellBody extends StatelessWidget {
 
   Positioned _circle(BuildContext context) {
     final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
-    final circleColor = isDarkTheme ? SBBColors.white : SBBColors.black;
+    final circleColor = isNextStop || isDarkTheme ? SBBColors.white : SBBColors.black;
     return Positioned(
       top: routeCirclePosition,
       child: _RouteCircle(size: routeCircleSize, color: circleColor, isStopOnRequest: isStopOnRequest),

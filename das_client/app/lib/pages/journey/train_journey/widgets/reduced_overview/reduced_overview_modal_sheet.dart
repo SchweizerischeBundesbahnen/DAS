@@ -14,21 +14,21 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 Future<void> showReducedOverviewModalSheet(BuildContext context) async {
   final viewModel = DI.get<JourneyNavigationViewModel>();
   final model = viewModel.modelValue;
-  if (model != null) {
-    showSBBModalSheet(
-      context: context,
-      title: context.l10n.w_reduced_train_journey_title,
-      constraints: BoxConstraints(),
-      child: Provider(
-        create: (_) => ReducedOverviewViewModel(
-          sferaLocalService: DI.get(),
-          trainIdentification: model.trainIdentification,
-        ),
-        dispose: (context, vm) => vm.dispose(),
-        builder: (context, child) => _ReducedOverviewModalSheet(),
+  if (model == null) return;
+
+  return showSBBModalSheet(
+    context: context,
+    title: context.l10n.w_reduced_train_journey_title,
+    constraints: BoxConstraints(),
+    child: Provider(
+      create: (_) => ReducedOverviewViewModel(
+        sferaLocalService: DI.get(),
+        trainIdentification: model.trainIdentification,
       ),
-    );
-  }
+      dispose: (context, vm) => vm.dispose(),
+      builder: (context, child) => _ReducedOverviewModalSheet(),
+    ),
+  );
 }
 
 class _ReducedOverviewModalSheet extends StatelessWidget {

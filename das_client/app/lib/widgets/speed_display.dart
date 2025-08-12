@@ -17,6 +17,7 @@ class SpeedDisplay extends StatelessWidget {
     this.singleLine = false,
     this.textStyle = DASTextStyles.largeRoman,
     this.speed,
+    this.isNextStop = false,
     super.key,
   });
 
@@ -24,6 +25,7 @@ class SpeedDisplay extends StatelessWidget {
   final bool singleLine;
   final TextStyle textStyle;
   final Speed? speed;
+  final bool isNextStop;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +34,7 @@ class SpeedDisplay extends StatelessWidget {
     return DotIndicator(
       show: hasAdditionalInformation,
       offset: _dotIndicatorOffset(speed!),
+      isNextStop: isNextStop,
       child: switch (speed!) {
         final IncomingOutgoingSpeed s => singleLine ? _rowSpeed(context, s) : _columnSpeed(context, s),
         final GraduatedSpeed _ || final SingleSpeed _ => _visualizedSpeeds(key: incomingSpeedsKey, speeds: speed!),
@@ -47,7 +50,7 @@ class SpeedDisplay extends StatelessWidget {
         _visualizedSpeeds(key: incomingSpeedsKey, speeds: ioSpeed.incoming),
         Text(
           ' / ',
-          style: textStyle,
+          style: _textStyle,
         ),
         _visualizedSpeeds(key: outgoingSpeedsKey, speeds: ioSpeed.outgoing),
       ],
@@ -61,7 +64,7 @@ class SpeedDisplay extends StatelessWidget {
         _visualizedSpeeds(key: incomingSpeedsKey, speeds: ioSpeed.incoming),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 2.0),
-          child: Divider(color: Theme.of(context).colorScheme.onSurface, height: 1.0),
+          child: Divider(color: isNextStop ? SBBColors.white : Theme.of(context).colorScheme.onSurface, height: 1.0),
         ),
         _visualizedSpeeds(key: outgoingSpeedsKey, speeds: ioSpeed.outgoing),
       ],
@@ -81,7 +84,7 @@ class SpeedDisplay extends StatelessWidget {
         children: singleSpeeds
             .map((speed) => _speedText(speed))
             .withDivider(
-              Text('-', style: textStyle),
+              Text('-', style: _textStyle),
             )
             .toList(),
       );
@@ -89,7 +92,7 @@ class SpeedDisplay extends StatelessWidget {
     return Text(
       key: key,
       singleSpeeds.toJoinedString(),
-      style: textStyle,
+      style: _textStyle,
     );
   }
 
@@ -102,13 +105,13 @@ class SpeedDisplay extends StatelessWidget {
           padding: EdgeInsets.all(1.0),
           decoration: squaredOrCircled
               ? BoxDecoration(
-                  border: Border.all(color: Theme.of(context).colorScheme.onSurface),
+                  border: Border.all(color: isNextStop ? SBBColors.white : Theme.of(context).colorScheme.onSurface),
                   borderRadius: speed.isCircled ? BorderRadius.circular(sbbDefaultSpacing) : BorderRadius.zero,
                 )
               : null,
           child: Text(
             speed.value,
-            style: textStyle.copyWith(height: 0),
+            style: _textStyle.copyWith(height: 0),
           ),
         );
       },
@@ -119,6 +122,8 @@ class SpeedDisplay extends StatelessWidget {
     final IncomingOutgoingSpeed _ => const Offset(0, 0),
     final GraduatedSpeed _ || final SingleSpeed _ => const Offset(0, -sbbDefaultSpacing * 0.5),
   };
+
+  TextStyle get _textStyle => isNextStop ? textStyle.copyWith(color: SBBColors.white) : textStyle;
 }
 
 // extensions

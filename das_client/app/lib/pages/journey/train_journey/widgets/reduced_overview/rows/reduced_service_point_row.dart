@@ -1,3 +1,5 @@
+import 'package:app/extension/base_data_extension.dart';
+import 'package:app/pages/journey/train_journey/widgets/reduced_overview/cells/reduced_time_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
@@ -12,7 +14,7 @@ class ReducedServicePointRow extends ServicePointRow {
     required super.rowIndex,
     required this.context,
     super.config,
-  }) : super(context: context, rowColor: ThemeUtil.getDASTableColor(context));
+  }) : super(context: context, rowColor: ThemeUtil.getDASTableColor(context), highlightNextStop: false);
 
   final BuildContext context;
 
@@ -23,7 +25,14 @@ class ReducedServicePointRow extends ServicePointRow {
 
   @override
   DASTableCell timeCell(BuildContext context) {
-    return DASTableCell(child: Text('06:05'), alignment: defaultAlignment, color: specialCellColor);
+    final times = data.arrivalDepartureTime;
+    if (times == null) return DASTableCell.empty(color: specialCellColor);
+
+    return DASTableCell(
+      child: ReducedTimeCellBody(times: times, showTimesInBrackets: !data.isStop),
+      alignment: defaultAlignment,
+      color: specialCellColor,
+    );
   }
 
   @override
@@ -40,6 +49,7 @@ class ReducedServicePointRow extends ServicePointRow {
         isRouteEnd: metadata.routeEnd == data,
         isStopOnRequest: !data.mandatoryStop,
         chevronPosition: RouteChevron.positionFromHeight(height),
+        isNextStop: false,
       ),
     );
   }

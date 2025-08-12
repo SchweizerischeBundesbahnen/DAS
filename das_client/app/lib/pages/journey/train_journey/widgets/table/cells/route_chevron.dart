@@ -12,6 +12,7 @@ class RouteChevron extends StatefulWidget {
   const RouteChevron({
     required this.chevronWidth,
     required this.chevronPosition,
+    required this.isNextStop,
     this.chevronAnimationData,
     super.key,
   });
@@ -20,6 +21,7 @@ class RouteChevron extends StatefulWidget {
   final double chevronPosition;
 
   final ChevronAnimationData? chevronAnimationData;
+  final bool isNextStop;
 
   static double positionFromHeight(double height) => height - chevronHeight * 0.5;
 
@@ -74,7 +76,11 @@ class _RouteChevronState extends State<RouteChevron> {
           child: CustomPaint(
             key: RouteChevron.chevronKey,
             size: Size(widget.chevronWidth, RouteChevron.chevronHeight),
-            painter: _ChevronPainter(color: ThemeUtil.getColor(context, SBBColors.black, SBBColors.white)),
+            painter: _ChevronPainter(
+              color: widget.isNextStop
+                  ? SBBColors.white
+                  : ThemeUtil.getColor(context, SBBColors.black, SBBColors.white),
+            ),
           ),
         ),
       ],
