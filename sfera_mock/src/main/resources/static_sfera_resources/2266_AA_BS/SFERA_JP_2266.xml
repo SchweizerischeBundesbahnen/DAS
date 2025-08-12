@@ -21,24 +21,24 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="2025-05-17T09:36:50Z" plannedDepartureTime="2025-05-17T09:36:00Z"/>
         </TimingPointConstraints>
-		
+
         <TrainCharacteristicsRef TC_ID="2266_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
             <TC_RU_ID>1285</TC_RU_ID>
         </TrainCharacteristicsRef>
 
-		<!-- VPro -->
-		<JP_ContextInformation>
-			<JP_ContextInformation_NSPs>
-				<teltsi_Company>0085</teltsi_Company>
+        <!-- VPro -->
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
-				<NetworkSpecificParameter name="newSpeed" value="110"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" />                
-			</JP_ContextInformation_NSPs>
-		</JP_ContextInformation>    
-		
+                <NetworkSpecificParameter name="newSpeed" value="110"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
     </SegmentProfileReference>
 
-	<SegmentProfileReference SP_ID="2266_2_Woeschnau" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="2266_2_Woeschnau" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -49,19 +49,19 @@
                 <TP_ID_Reference TP_ID="Woeschnau"/>
             </TimingPointReference>
         </TimingPointConstraints>
-		
-		<JP_ContextInformation>
-			<JP_ContextInformation_NSPs>
-				<teltsi_Company>0085</teltsi_Company>
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
-				<NetworkSpecificParameter name="newSpeed" value="115"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" />                
-			</JP_ContextInformation_NSPs>
-		</JP_ContextInformation>
-		
+                <NetworkSpecificParameter name="newSpeed" value="115"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
     </SegmentProfileReference>
 
-	<SegmentProfileReference SP_ID="2266_3_Schoenenwerd" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="2266_3_Schoenenwerd" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -73,8 +73,8 @@
             </TimingPointReference>
         </TimingPointConstraints>
     </SegmentProfileReference>
-	
-	<SegmentProfileReference SP_ID="2266_4_Daeniken" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+
+    <SegmentProfileReference SP_ID="2266_4_Daeniken" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -86,8 +86,8 @@
             </TimingPointReference>
         </TimingPointConstraints>
     </SegmentProfileReference>
-	
-	<SegmentProfileReference SP_ID="2266_5_Dulliken" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+
+    <SegmentProfileReference SP_ID="2266_5_Dulliken" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -99,8 +99,8 @@
             </TimingPointReference>
         </TimingPointConstraints>
     </SegmentProfileReference>
-	
-	<SegmentProfileReference SP_ID="2266_6_Olten" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+
+    <SegmentProfileReference SP_ID="2266_6_Olten" SP_VersionMajor="2" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -111,36 +111,6 @@
                 <TP_ID_Reference TP_ID="Olten"/>
             </TimingPointReference>
         </TimingPointConstraints>
-		
-		<TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="7700" endLocation="8000" startTime="2025-01-15T12:00:00Z" endTime="2030-08-20T20:00:00Z">
-            <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
-            <TemporaryConstraintReason text="Umbau" language="DE"/>
-            <TemporaryConstraintReason text="Renouvellement" language="FR"/>
-            <TemporaryConstraintReason text="Ristrutturazione" language="IT"/>
-        </TemporaryConstraints>
-		
-		<!-- ADL -->
-		<TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="AdvisedSpeed" startLocation="3700" endLocation="8900">
-			<AdvisedSpeed optimalSpeed="80" reasonCode="followTrain" adviceType="ConstantspeedAdvice">
-				<ReasonText language="DE" text="ADL" />
-			</AdvisedSpeed>
-		</TemporaryConstraints>
-		
-		<JP_ContextInformation>
-			<JP_ContextInformation_NSPs>
-				<teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
-				<NetworkSpecificParameter name="newSpeed" value="90"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" />                
-			</JP_ContextInformation_NSPs>
-		</JP_ContextInformation>
-		
-    </SegmentProfileReference>
-	
-	<SegmentProfileReference SP_ID="2266_7_Technau" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
-        <SP_Zone>
-            <IM_ID>1285</IM_ID>
-        </SP_Zone>
 
         <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T09:49:40Z"
                                 TP_PlannedLatestArrivalTime="2025-05-17T09:49:00Z">
@@ -148,22 +118,6 @@
                 <TP_ID_Reference TP_ID="Technau"/>
             </TimingPointReference>
         </TimingPointConstraints>
-		
-		<JP_ContextInformation>
-			<JP_ContextInformation_NSPs>
-				<teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
-				<NetworkSpecificParameter name="newSpeed" value="115"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" />					                
-			</JP_ContextInformation_NSPs>
-		</JP_ContextInformation>
-		
-    </SegmentProfileReference>
-	
-	<SegmentProfileReference SP_ID="2266_8_Gelterkinden" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
-        <SP_Zone>
-            <IM_ID>1285</IM_ID>
-        </SP_Zone>
 
         <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T09:52:00Z"
                                 TP_PlannedLatestArrivalTime="2025-05-17T09:52:00Z">
@@ -171,22 +125,6 @@
                 <TP_ID_Reference TP_ID="Gelterkinden"/>
             </TimingPointReference>
         </TimingPointConstraints>
-		
-		<JP_ContextInformation>
-			<JP_ContextInformation_NSPs>
-				<teltsi_Company>0085</teltsi_Company>
-                <NSP_GroupName>VProSpeed</NSP_GroupName>
-				<NetworkSpecificParameter name="newSpeed" value="100"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" />                
-			</JP_ContextInformation_NSPs>
-		</JP_ContextInformation>
-		
-    </SegmentProfileReference>
-	
-	<SegmentProfileReference SP_ID="2266_9_Sissach" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
-        <SP_Zone>
-            <IM_ID>1285</IM_ID>
-        </SP_Zone>
 
         <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T09:54:20Z"
                                 TP_PlannedLatestArrivalTime="2025-05-17T09:54:00Z">
@@ -195,19 +133,52 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="2025-05-17T09:55:20Z" plannedDepartureTime="2025-05-17T09:55:00Z"/>
         </TimingPointConstraints>
-		
-		<JP_ContextInformation>
-			<JP_ContextInformation_NSPs>
-				<teltsi_Company>0085</teltsi_Company>
+
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="7700" endLocation="8000"
+                              startTime="2025-01-15T12:00:00Z" endTime="2030-08-20T20:00:00Z">
+            <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
+            <TemporaryConstraintReason text="Umbau" language="DE"/>
+            <TemporaryConstraintReason text="Renouvellement" language="FR"/>
+            <TemporaryConstraintReason text="Ristrutturazione" language="IT"/>
+        </TemporaryConstraints>
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
-				<NetworkSpecificParameter name="newSpeed" value="95"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" />                
-			</JP_ContextInformation_NSPs>
-		</JP_ContextInformation>
-		
+                <NetworkSpecificParameter name="newSpeed" value="90"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+
+            <!-- Technau -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="115"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="12000" endLocation="12000"/>
+            </JP_ContextInformation_NSPs>
+
+            <!--            Gelterkinden-->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="100"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="14000" endLocation="14000"/>
+            </JP_ContextInformation_NSPs>
+
+            <!--            Sissach-->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="95"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
+
     </SegmentProfileReference>
-	
-	<SegmentProfileReference SP_ID="2266_10_Itingen" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+
+    <SegmentProfileReference SP_ID="2266_10_Itingen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -219,8 +190,8 @@
             </TimingPointReference>
         </TimingPointConstraints>
     </SegmentProfileReference>
-	
-	<SegmentProfileReference SP_ID="2266_11_Lausen" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+
+    <SegmentProfileReference SP_ID="2266_11_Lausen" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -231,17 +202,18 @@
                 <TP_ID_Reference TP_ID="Lausen"/>
             </TimingPointReference>
         </TimingPointConstraints>
-		
-		<TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="ASR" startLocation="2000" startTime="2025-01-15T12:00:00Z" endTime="2030-08-20T20:00:00Z">
+
+        <TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="ASR" startLocation="2000" startTime="2025-01-15T12:00:00Z"
+                              endTime="2030-08-20T20:00:00Z">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
             <TemporaryConstraintReason text="Umbau" language="DE"/>
             <TemporaryConstraintReason text="Renouvellement" language="FR"/>
             <TemporaryConstraintReason text="Ristrutturazione" language="IT"/>
         </TemporaryConstraints>
-		
+
     </SegmentProfileReference>
-	
-	<SegmentProfileReference SP_ID="2266_12_Liestal" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
+
+    <SegmentProfileReference SP_ID="2266_12_Liestal" SP_VersionMajor="2" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -253,26 +225,6 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="2025-05-17T10:02:10Z" plannedDepartureTime="2025-05-17T10:02:00Z"/>
         </TimingPointConstraints>
-		
-		<TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="ASR" endLocation="550" startTime="2025-01-15T12:00:00Z" endTime="2030-08-20T20:00:00Z">
-            <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
-            <TemporaryConstraintReason text="Umbau" language="DE"/>
-            <TemporaryConstraintReason text="Renouvellement" language="FR"/>
-            <TemporaryConstraintReason text="Ristrutturazione" language="IT"/>
-        </TemporaryConstraints>
-		
-		<TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="AdvisedSpeed" startLocation="4700" >
-			<AdvisedSpeed reasonCode="trainFollowing" deltaSpeed="0" adviceType="ConstantspeedAdvice">
-				<ReasonText language="DE" text="ADL" />
-			</AdvisedSpeed>
-		</TemporaryConstraints>
-		
-    </SegmentProfileReference>
-	
-	<SegmentProfileReference SP_ID="2266_13_Muttenz" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
-        <SP_Zone>
-            <IM_ID>1285</IM_ID>
-        </SP_Zone>
 
         <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T10:08:20Z"
                                 TP_PlannedLatestArrivalTime="2025-05-17T10:08:00Z">
@@ -280,23 +232,26 @@
                 <TP_ID_Reference TP_ID="Muttenz"/>
             </TimingPointReference>
         </TimingPointConstraints>
-		
-		<TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="AdvisedSpeed" endLocation="2300">
-			<AdvisedSpeed reasonCode="trainFollowing" deltaSpeed="0" adviceType="ConstantspeedAdvice">
-				<ReasonText language="DE" text="ADL" />
-			</AdvisedSpeed>
-		</TemporaryConstraints>
-		
-		<JP_ContextInformation>
-			<JP_ContextInformation_NSPs>
-				<teltsi_Company>0085</teltsi_Company>
+
+        <TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="ASR" endLocation="550" startTime="2025-01-15T12:00:00Z"
+                              endTime="2030-08-20T20:00:00Z">
+            <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
+            <TemporaryConstraintReason text="Umbau" language="DE"/>
+            <TemporaryConstraintReason text="Renouvellement" language="FR"/>
+            <TemporaryConstraintReason text="Ristrutturazione" language="IT"/>
+        </TemporaryConstraints>
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
-				<NetworkSpecificParameter name="newSpeed" value="80"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0" />                
-			</JP_ContextInformation_NSPs>
-		</JP_ContextInformation>
-		
+                <NetworkSpecificParameter name="newSpeed" value="80"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="10000" endLocation="10000"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
     </SegmentProfileReference>
+
 
     <SegmentProfileReference SP_ID="2266_14_Basel_SBB" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
         <SP_Zone>

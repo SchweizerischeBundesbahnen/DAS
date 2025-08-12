@@ -10,6 +10,7 @@ import lombok.ToString;
 @ToString
 public class IntermodalLoadingUnit {
 
+    private boolean isDangerous;
     private List<Goods> goods;
 
     static boolean hasDangerousGoods(List<IntermodalLoadingUnit> intermodalLoadingUnits) {
@@ -21,6 +22,6 @@ public class IntermodalLoadingUnit {
     }
 
     private boolean hasDangerousGoods() {
-        return Goods.hasDangerousGoods(goods);
+        return isDangerous || Goods.hasDangerousGoods(goods);
     }
 }

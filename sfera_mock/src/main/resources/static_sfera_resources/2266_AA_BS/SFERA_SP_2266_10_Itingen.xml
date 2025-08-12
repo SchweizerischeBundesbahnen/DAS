@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
-                SP_ID="2266_10_Itingen" SP_VersionMajor="1" SP_VersionMinor="0" SP_Length="2100" SP_Status="Valid">
+                SP_ID="2266_10_Itingen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="2100" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -11,23 +11,23 @@
         <TimingPoint TP_ID="Itingen" location="0">
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
-                <teltsi_LocationPrimaryCode>26</teltsi_LocationPrimaryCode>
+                <teltsi_LocationPrimaryCode>25</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="E218" location="300"/>
             <SignalFunction>entry</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="E218"/>
         </Signal>
-		
-		<Signal>
+
+        <Signal>
             <Signal_ID signal_ID_Physical="C63" location="1400"/>
             <SignalFunction>intermediate</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="C63"/>
         </Signal>
-		
-		<NetworkSpecificPoint location="700">
+
+        <NetworkSpecificPoint location="700">
             <teltsi_Company>0085</teltsi_Company>
             <NSP_GroupName>protectionSection</NSP_GroupName>
             <NetworkSpecificParameter name="lengthType" value="long"/>
@@ -41,11 +41,11 @@
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="IT" TAF_TAP_location_type="halt">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
-                <teltsi_LocationPrimaryCode>26</teltsi_LocationPrimaryCode>
+                <teltsi_LocationPrimaryCode>25</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>Itingen</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
-			
-			<TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
@@ -65,7 +65,7 @@
 
     </SP_Areas>
 
-	<SP_Characteristics>
+    <SP_Characteristics>
         <CurrentLimitation>
             <CurrentLimitationStart maxCurValue="1023"/>
             <CurrentLimitationChange maxCurValue="0" location="700"/>
@@ -79,22 +79,22 @@
                 <OtherContactType contactIdentifier="1305"/>
             </Contact>
         </ContactList>
-		
-		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
+
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
 
         <KilometreReferencePoint location="0">
             <KM_Reference kmRef="19.1"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="300">
+        <KilometreReferencePoint location="300">
             <KM_Reference kmRef="18.8"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="700">
+        <KilometreReferencePoint location="700">
             <KM_Reference kmRef="18.4"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="701">
+        <KilometreReferencePoint location="701">
             <KM_Reference kmRef="18.4"/>
         </KilometreReferencePoint>
-		<KilometreReferencePoint location="1400">
+        <KilometreReferencePoint location="1400">
             <KM_Reference kmRef="17.7"/>
         </KilometreReferencePoint>
 
