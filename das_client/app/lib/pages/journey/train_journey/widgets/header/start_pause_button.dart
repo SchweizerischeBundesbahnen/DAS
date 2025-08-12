@@ -1,5 +1,5 @@
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/train_journey/widgets/header/animated_header_icon_button.dart';
+import 'package:app/pages/journey/train_journey/widgets/header/header_icon_button.dart';
 import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +15,7 @@ class StartPauseButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedHeaderIconButton(
+    return HeaderIconButton(
       key: automaticAdvancementActive ? pauseButtonKey : startButtonKey,
       label: automaticAdvancementActive
           ? context.l10n.p_train_journey_header_button_pause

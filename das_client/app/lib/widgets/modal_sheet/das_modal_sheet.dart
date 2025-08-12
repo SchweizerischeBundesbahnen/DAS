@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:app/di/di.dart';
+import 'package:app/util/animation.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/extended_header_container.dart';
 import 'package:extra_hittest_area/extra_hittest_area.dart';
@@ -25,14 +26,18 @@ class DASModalSheetController {
   final _automaticCloseAfterSeconds = DI.get<TimeConstants>().modalSheetAutomaticCloseAfterSeconds;
 
   DASModalSheetController({
-    this.animationDuration = const Duration(milliseconds: 150),
+    this.openAnimationDuration = const Duration(milliseconds: 350),
+    this.closeAnimationDuration = const Duration(milliseconds: 200),
     this.maxExpandedWidth = 300.0,
     this.onClose,
     this.onOpen,
   }) : _state = _ControllerState.closed;
 
-  /// defines animation duration for opening and full-width extension of modal sheet.
-  final Duration animationDuration;
+  /// defines animation duration for opening modal sheet.
+  final Duration openAnimationDuration;
+
+  /// defines animation duration for closing modal sheet.
+  final Duration closeAnimationDuration;
 
   /// sets the maximum expanded width for the non-overlapping modal sheet.
   final double maxExpandedWidth;
@@ -52,12 +57,22 @@ class DASModalSheetController {
 
   /// will be called by [DasModalSheet] to get [TickerProvider]
   void _initialize({required TickerProvider vsync, VoidCallback? onUpdate}) {
-    _controller = AnimationController(vsync: vsync, duration: animationDuration);
-    _widthAnimation = Tween<double>(begin: 0.0, end: maxExpandedWidth).animate(_controller)
-      ..addListener(() => onUpdate?.call());
+    _controller = AnimationController(
+      vsync: vsync,
+      duration: openAnimationDuration,
+      reverseDuration: closeAnimationDuration,
+    );
+    _widthAnimation = Tween<double>(
+      begin: 0.0,
+      end: maxExpandedWidth,
+    ).animate(_controller.toEmphasizedEasingAnimation())..addListener(() => onUpdate?.call());
 
-    _fullWidthController = AnimationController(vsync: vsync, duration: animationDuration);
-    _fullWidthAnimation = Tween<double>(begin: 0, end: 1).animate(_fullWidthController)
+    _fullWidthController = AnimationController(
+      vsync: vsync,
+      duration: openAnimationDuration,
+      reverseDuration: closeAnimationDuration,
+    );
+    _fullWidthAnimation = Tween<double>(begin: 0, end: 1).animate(_fullWidthController.toEmphasizedEasingAnimation())
       ..addListener(() => onUpdate?.call());
 
     _initialized = true;
