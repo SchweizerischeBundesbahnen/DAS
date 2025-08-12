@@ -45,8 +45,6 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   final bool highlightNextStop;
 
-  bool get _isNextStop => metadata.nextStop == data;
-
   @override
   DASTableCell kilometreCell(BuildContext context) {
     return _wrapToBaseHeight(super.kilometreCell(context));
@@ -322,4 +320,6 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     if (properties.isEmpty) return baseRowHeight;
     return baseRowHeight + (properties.length * propertyRowHeight);
   }
+
+  bool get _isNextStop => metadata.nextStop == data;
 }

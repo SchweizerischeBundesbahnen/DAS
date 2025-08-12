@@ -60,7 +60,7 @@ class CalculatedSpeedCellBody extends StatelessWidget {
         final isSpeedReducedDueToLineSpeed = resolvedCalculatedSpeed.isLargerThan(resolvedLineSpeed);
         resolvedCalculatedSpeed = _min(resolvedLineSpeed, resolvedCalculatedSpeed);
 
-        final color = isNextStop ? SBBColors.white : ThemeUtil.getColor(context, SBBColors.metal, SBBColors.white);
+        final color = isNextStop ? SBBColors.metal : ThemeUtil.getColor(context, SBBColors.metal, SBBColors.white);
 
         return Text(
           key: nonEmptyKey,

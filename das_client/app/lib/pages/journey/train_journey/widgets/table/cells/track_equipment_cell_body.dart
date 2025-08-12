@@ -28,8 +28,6 @@ class TrackEquipmentCellBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = isNextStop ? SBBColors.white : ThemeUtil.getIconColor(context);
-
     return LayoutBuilder(
       builder: (context, constraints) {
         final height = constraints.maxHeight;
@@ -38,24 +36,24 @@ class TrackEquipmentCellBody extends StatelessWidget {
           clipBehavior: Clip.none,
           alignment: Alignment.center,
           children: [
-            if (renderData.isConventionalExtendedSpeedBorder) _conventionalExtendedSpeedBorder(context, color),
+            if (renderData.isConventionalExtendedSpeedBorder) _conventionalExtendedSpeedBorder(context),
             if (trackEquipmentType == TrackEquipmentType.etcsL2ExtSpeedReversingPossible)
-              _extSpeedReversingPossible(context, height, color),
+              _extSpeedReversingPossible(context, height),
             if (trackEquipmentType == TrackEquipmentType.etcsL2ExtSpeedReversingImpossible)
-              _extSpeedReversingImpossible(context, height, color),
+              _extSpeedReversingImpossible(context, height),
             if (trackEquipmentType == TrackEquipmentType.etcsL2ConvSpeedReversingImpossible)
-              _convSpeedReversingImpossible(context, height, color),
+              _convSpeedReversingImpossible(context, height),
             if (trackEquipmentType == TrackEquipmentType.etcsL1ls2TracksWithSingleTrackEquipment)
-              _twoTracksWithSingleTrackEquipment(context, height, color),
+              _twoTracksWithSingleTrackEquipment(context, height),
             if (trackEquipmentType == TrackEquipmentType.etcsL1lsSingleTrackNoBlock)
-              _singleTrackNoBlock(context, height, color),
+              _singleTrackNoBlock(context, height),
           ],
         );
       },
     );
   }
 
-  Widget _extSpeedReversingPossible(BuildContext context, double height, Color color) {
+  Widget _extSpeedReversingPossible(BuildContext context, double height) {
     return Positioned(
       key: extendedSpeedReversingPossibleKey,
       top: _calculateTop(height),
@@ -64,15 +62,15 @@ class TrackEquipmentCellBody extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _extSpeedLine(context, color),
+          _extSpeedLine(context),
           SizedBox(width: 2.0),
-          _extSpeedLine(context, color),
+          _extSpeedLine(context),
         ],
       ),
     );
   }
 
-  Widget _conventionalExtendedSpeedBorder(BuildContext context, Color color) {
+  Widget _conventionalExtendedSpeedBorder(BuildContext context) {
     return Positioned(
       key: conventionalExtendedSpeedBorderKey,
       top: 0.0,
@@ -80,23 +78,23 @@ class TrackEquipmentCellBody extends StatelessWidget {
       child: CustomPaint(
         painter: _ConventionalExtendedSpeedBorderPainter(
           context: context,
-          color: color,
+          color: _lineColor(context),
         ),
       ),
     );
   }
 
-  Widget _extSpeedReversingImpossible(BuildContext context, double height, Color color) {
+  Widget _extSpeedReversingImpossible(BuildContext context, double height) {
     return Positioned(
       key: extendedSpeedReversingImpossibleKey,
       top: _calculateTop(height),
       bottom: _calculateBottom(context, height),
       left: 2.0,
-      child: _extSpeedLine(context, color),
+      child: _extSpeedLine(context),
     );
   }
 
-  CustomPaint _extSpeedLine(BuildContext context, Color color) {
+  CustomPaint _extSpeedLine(BuildContext context) {
     final width = 3.0;
     return CustomPaint(
       painter: _CumulativeDashedLinePainter(
@@ -105,13 +103,13 @@ class TrackEquipmentCellBody extends StatelessWidget {
         dashHeights: [7.0],
         dashSpace: 5.0,
         width: width,
-        color: color,
+        color: _lineColor(context),
       ),
       child: SizedBox(height: double.infinity, width: width),
     );
   }
 
-  Widget _convSpeedReversingImpossible(BuildContext context, double height, Color color) {
+  Widget _convSpeedReversingImpossible(BuildContext context, double height) {
     final width = 3.0;
     return Positioned(
       key: TrackEquipmentCellBody.conventionalSpeedReversingImpossibleKey,
@@ -125,14 +123,14 @@ class TrackEquipmentCellBody extends StatelessWidget {
           dashHeights: [3.0, 7.0],
           dashSpace: 5.0,
           width: width,
-          color: color,
+          color: _lineColor(context),
         ),
         child: SizedBox(height: double.infinity, width: width),
       ),
     );
   }
 
-  Widget _twoTracksWithSingleTrackEquipment(BuildContext context, double height, Color color) {
+  Widget _twoTracksWithSingleTrackEquipment(BuildContext context, double height) {
     final width = 3.0;
     final borderWidth = 1.0;
     return Positioned(
@@ -149,14 +147,14 @@ class TrackEquipmentCellBody extends StatelessWidget {
           dashSpace: 5.0,
           width: width,
           borderWidth: borderWidth,
-          color: color,
+          color: _lineColor(context),
         ),
         child: SizedBox(height: double.infinity, width: width + borderWidth * 2),
       ),
     );
   }
 
-  Widget _singleTrackNoBlock(BuildContext context, double height, Color color) {
+  Widget _singleTrackNoBlock(BuildContext context, double height) {
     final width = 9.0;
     return Positioned(
       key: singleTrackNoBlockKey,
@@ -168,7 +166,7 @@ class TrackEquipmentCellBody extends StatelessWidget {
         painter: _SingleTrackNoBlockPainter(
           cumulativeHeight: renderData.cumulativeHeight,
           context: context,
-          color: color,
+          color: _lineColor(context),
         ),
         child: SizedBox(height: double.infinity, width: width),
       ),
@@ -199,6 +197,8 @@ class TrackEquipmentCellBody extends StatelessWidget {
   }
 
   static double get conventionalExtendedSpeedBorderSpace => 5.0 + _ConventionalExtendedSpeedBorderPainter.height;
+
+  Color _lineColor(BuildContext context) => isNextStop ? SBBColors.white : ThemeUtil.getIconColor(context);
 }
 
 class _ConventionalExtendedSpeedBorderPainter extends CustomPainter {

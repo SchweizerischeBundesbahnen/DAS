@@ -44,8 +44,6 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
   final VoidCallback? onTap;
   final bool isGrouped;
 
-  bool get _isNextStop => metadata.nextStop == data;
-
   @override
   DASTableRow build(BuildContext context) {
     return DASTableCellRow(
@@ -268,4 +266,6 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
         return CellRowBuilder.rowHeight;
     }
   }
+
+  bool get _isNextStop => metadata.nextStop == data;
 }
