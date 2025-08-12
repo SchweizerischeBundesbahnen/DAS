@@ -32,6 +32,12 @@
         {{ element.size | fileSize }}
       </td>
     </ng-container>
+    <ng-container sbbColumnDef="timestamp">
+      <th *sbbHeaderCellDef sbb-header-cell>Timestamp</th>
+      <td *sbbCellDef="let element" sbb-cell>
+        {{ element.timestamp | date: 'HH:mm:ss.s' }}
+      </td>
+    </ng-container>
     <tr *sbbHeaderRowDef="displayedColumns" sbb-header-row></tr>
     <tr *sbbRowDef="let row; columns: displayedColumns" sbb-row></tr>
   </table>

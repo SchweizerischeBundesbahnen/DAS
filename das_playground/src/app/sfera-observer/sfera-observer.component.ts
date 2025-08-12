@@ -121,7 +121,8 @@ export class SferaObserverComponent implements OnInit, OnDestroy {
       type: this.getType(document) || '',
       info: this.getInfo(document) || '',
       message: xml,
-      size: length
+      size: length,
+      timestamp: new Date()
     }
 
     this.data.push(row);
