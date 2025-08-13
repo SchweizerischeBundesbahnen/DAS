@@ -29,8 +29,8 @@ enum CommunicationNetworkType { gsmR, gsmP, sim }
 // extensions
 
 extension CommunicationNetworkChangeListExtension on Iterable<CommunicationNetworkChange> {
-  /// Returns network type that applies to given [order].
-  CommunicationNetworkType? appliesToOrder(int order) {
+  /// Returns network type that returns last lower or equal to given [order].
+  CommunicationNetworkType? typeByLastBefore(int order) {
     final sortedList = toList()..sort();
     return sortedList.reversed.firstWhereOrNull((network) => network.order <= order)?.type;
   }

@@ -2,6 +2,7 @@ import 'package:app/di/di.dart';
 import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
+import 'package:app/pages/journey/train_journey/radio_channel/radio_channel_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/battery_status.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/departure_authorization.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/extended_menu.dart';
@@ -28,38 +29,42 @@ class MainContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.read<TrainJourneyViewModel>();
 
-    return StreamBuilder(
-      stream: CombineLatestStream.list([viewModel.journey, viewModel.settings]),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData || snapshot.data?[0] == null || snapshot.data?[1] == null) {
-          return Center(child: SBBLoadingIndicator());
-        }
-        final journey = snapshot.data![0] as Journey;
-        final settings = snapshot.data![1] as TrainJourneySettings;
+    return Provider<RadioChannelViewModel>(
+      create: (_) => RadioChannelViewModel(journeyStream: viewModel.journey),
+      dispose: (_, vm) => vm.dispose(),
+      child: StreamBuilder(
+        stream: CombineLatestStream.list([viewModel.journey, viewModel.settings]),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData || snapshot.data?[0] == null || snapshot.data?[1] == null) {
+            return Center(child: SBBLoadingIndicator());
+          }
+          final journey = snapshot.data![0] as Journey;
+          final settings = snapshot.data![1] as TrainJourneySettings;
 
-        return SBBGroup(
-          padding: const EdgeInsets.all(sbbDefaultSpacing),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _topHeaderRow(context, journey.metadata, settings),
-              _divider(),
-              _bottomHeaderRow(context, journey.metadata),
-            ],
-          ),
-        );
-      },
+          return SBBGroup(
+            padding: const EdgeInsets.all(sbbDefaultSpacing),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _topHeaderRow(context, journey.metadata, settings),
+                _divider(),
+                _bottomHeaderRow(context),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
-  Widget _bottomHeaderRow(BuildContext context, Metadata metadata) {
+  Widget _bottomHeaderRow(BuildContext context) {
     return SizedBox(
       height: 48.0,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          RadioChannel(metadata: metadata),
+          RadioChannel(),
           SizedBox(width: sbbDefaultSpacing * 0.5),
           DepartureAuthorization(),
           Spacer(),

@@ -12,12 +12,12 @@ void main() {
     ];
 
     // WHEN
-    final notGiven = networkChanges.appliesToOrder(0);
-    final gsmP1 = networkChanges.appliesToOrder(100);
-    final gsmP2 = networkChanges.appliesToOrder(150);
-    final gsmPSimIgnored = networkChanges.whereNotSim.appliesToOrder(250);
-    final gsmR1 = networkChanges.appliesToOrder(300);
-    final gsmR2 = networkChanges.appliesToOrder(350);
+    final notGiven = networkChanges.typeByLastBefore(0);
+    final gsmP1 = networkChanges.typeByLastBefore(100);
+    final gsmP2 = networkChanges.typeByLastBefore(150);
+    final gsmPSimIgnored = networkChanges.whereNotSim.typeByLastBefore(250);
+    final gsmR1 = networkChanges.typeByLastBefore(300);
+    final gsmR2 = networkChanges.typeByLastBefore(350);
 
     // THEN
     expect(notGiven, isNull);
