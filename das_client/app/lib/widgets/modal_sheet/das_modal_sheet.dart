@@ -33,10 +33,7 @@ class DASModalSheetController {
     this.onOpen,
   }) : _state = _ControllerState.closed;
 
-  /// defines animation duration for opening modal sheet.
   final Duration openAnimationDuration;
-
-  /// defines animation duration for closing modal sheet.
   final Duration closeAnimationDuration;
 
   /// sets the maximum expanded width for the non-overlapping modal sheet.

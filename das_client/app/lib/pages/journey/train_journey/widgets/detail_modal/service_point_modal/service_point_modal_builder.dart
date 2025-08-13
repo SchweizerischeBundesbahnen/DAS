@@ -54,7 +54,13 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
 
         return AnimatedSwitcher(
           duration: DASAnimation.shortDuration,
-          transitionBuilder: (child, animation) => ScaleTransition(scale: animation, child: child),
+          transitionBuilder: (child, animation) {
+            final centerLeftTween = AlignmentTween(begin: Alignment.centerLeft, end: Alignment.centerLeft);
+            return AlignTransition(
+              alignment: centerLeftTween.animate(animation),
+              child: ScaleTransition(scale: animation, child: child),
+            );
+          },
           child: Text(servicePointName, key: ValueKey(servicePointName), style: DASTextStyles.largeRoman),
         );
       },
