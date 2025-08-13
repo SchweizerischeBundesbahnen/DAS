@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/train_journey/radio_channel/radio_channel_view_model.dart';
+import 'package:app/pages/journey/train_journey/header/radio_channel/radio_channel_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';

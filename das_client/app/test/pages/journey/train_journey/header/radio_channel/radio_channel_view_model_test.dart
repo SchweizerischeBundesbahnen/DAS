@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:app/pages/journey/train_journey/header/radio_channel/radio_channel_model.dart';
+import 'package:app/pages/journey/train_journey/header/radio_channel/radio_channel_view_model.dart';
 import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
-import 'package:app/pages/journey/train_journey/radio_channel/radio_channel_model.dart';
-import 'package:app/pages/journey/train_journey/radio_channel/radio_channel_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
