@@ -1,8 +1,7 @@
-import 'package:sfera/src/model/journey/base_data.dart';
-import 'package:sfera/src/model/journey/datatype.dart';
+import 'package:sfera/component.dart';
 import 'package:sfera/src/model/journey/order_priority.dart';
 
-class CABSignaling extends BaseData {
+class CABSignaling extends JourneyPoint {
   const CABSignaling({
     required super.order,
     required super.kilometre,

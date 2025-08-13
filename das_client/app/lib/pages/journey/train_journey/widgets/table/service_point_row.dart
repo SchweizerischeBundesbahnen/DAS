@@ -1,10 +1,10 @@
-import 'package:app/extension/base_data_extension.dart';
 import 'package:app/extension/station_sign_extension.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/show_speed_behaviour.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/time_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
@@ -161,7 +161,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
         isRouteEnd: metadata.routeEnd == data,
         isStopOnRequest: !data.mandatoryStop,
         chevronAnimationData: config.chevronAnimationData,
-        chevronPosition: data.chevronPosition,
+        chevronPosition: RouteChevron.positionFromHeight(height),
         isNextStop: _isNextStop,
       ),
     );
@@ -257,10 +257,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
       alignment: null,
       child: TrackEquipmentCellBody(
         renderData: config.trackEquipmentRenderData!,
-        position:
-            data.chevronPosition +
-            RouteCellBody.chevronHeight +
-            (data.isStop ? RouteCellBody.routeCircleSize / 2 : 0.0),
+        position: RouteCellBody.routeCirclePosition + (data.isStop ? RouteCellBody.routeCircleSize * 0.5 : 0.0),
         isNextStop: _isNextStop,
       ),
     );

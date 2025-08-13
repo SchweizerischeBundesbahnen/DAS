@@ -1,7 +1,6 @@
-import 'package:sfera/src/model/journey/base_data.dart';
-import 'package:sfera/src/model/journey/datatype.dart';
+import 'package:sfera/component.dart';
 
-class ConnectionTrack extends BaseData {
+class ConnectionTrack extends JourneyPoint {
   const ConnectionTrack({required super.order, required super.kilometre, this.text})
     : super(type: Datatype.connectionTrack);
 
