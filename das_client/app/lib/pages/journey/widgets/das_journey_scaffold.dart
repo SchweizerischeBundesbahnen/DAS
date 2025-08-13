@@ -1,8 +1,7 @@
 import 'package:app/nav/das_navigation_drawer.dart';
+import 'package:app/util/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
-
-const _toolbarAnimationDuration = Duration(milliseconds: 400);
 
 /// Responsible for hiding and showing the app bar on journey related pages.
 class DASJourneyScaffold extends StatefulWidget {
@@ -31,12 +30,14 @@ class _DASJourneyScaffoldState extends State<DASJourneyScaffold> with SingleTick
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this, duration: _toolbarAnimationDuration);
-    _animation = Tween<double>(begin: kToolbarHeight, end: 0.0).animate(_controller)
+    _controller = AnimationController(
+      vsync: this,
+      duration: DASAnimation.mediumDuration,
+      reverseDuration: DASAnimation.shortDuration,
+    );
+    _animation = Tween<double>(begin: kToolbarHeight, end: 0.0).animate(_controller.toEmphasizedEasingAnimation())
       ..addListener(() {
-        setState(() {
-          _toolbarHeight = _animation.value;
-        });
+        setState(() => _toolbarHeight = _animation.value);
       });
   }
 
@@ -52,7 +53,7 @@ class _DASJourneyScaffoldState extends State<DASJourneyScaffold> with SingleTick
   Widget build(BuildContext context) {
     final double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      //Handling overflow issues in train selection when tablet is too small
+      // Handling overflow issues in train selection when tablet is too small
       resizeToAvoidBottomInset: screenHeight <= 830 ? true : null,
       appBar: _appBar(context),
       body: widget.body,

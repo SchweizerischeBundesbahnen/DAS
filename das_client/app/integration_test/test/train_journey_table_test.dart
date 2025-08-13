@@ -268,13 +268,13 @@ void main() {
         of: newLineSpeedRow,
         matching: find.byKey(DASTableCell.emptyCellKey),
       );
-      expect(emptyCellsInNewLineSpeedRow, findsNWidgets(11));
+      expect(emptyCellsInNewLineSpeedRow, findsNWidgets(10));
 
       final genevaRow = findDASTableRowByText('Genève');
       expect(genevaRow, findsOneWidget);
 
       final emptyCellsInGenevaRow = find.descendant(of: genevaRow, matching: find.byKey(DASTableCell.emptyCellKey));
-      expect(emptyCellsInGenevaRow, findsNWidgets(12));
+      expect(emptyCellsInGenevaRow, findsNWidgets(11));
 
       await disconnect(tester);
     });
@@ -348,7 +348,7 @@ void main() {
               (it.decoration as BoxDecoration).color == AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor,
         ),
       );
-      expect(coloredCells, findsNWidgets(15));
+      expect(coloredCells, findsNWidgets(14));
 
       await disconnect(tester);
     });
