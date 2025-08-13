@@ -153,15 +153,25 @@ class TrainJourney extends StatelessWidget {
 
       final trainJourneyConfig = TrainJourneyConfig(
         settings: settings,
-        trackEquipmentRenderData: TrackEquipmentRenderData.from(rows, journey.metadata, index, currentBreakSeries),
+        trackEquipmentRenderData: TrackEquipmentRenderData.from(
+          rows,
+          journey.metadata,
+          index,
+          currentBreakSeries,
+        ),
         bracketStationRenderData: BracketStationRenderData.from(rowData, journey.metadata),
-        chevronAnimationData: ChevronAnimationData.from(rows, journey, rowData, currentBreakSeries),
+        chevronAnimationData: ChevronAnimationData.from(
+          journey.journeyPoints,
+          journey.metadata,
+          rowData,
+          currentBreakSeries,
+        ),
       );
 
-      var hasPreviousCollapsible = false;
+      var hasPreviousAnnotation = false;
       if (index > 0) {
         final previous = rows[index - 1];
-        hasPreviousCollapsible = previous.isCollapsible;
+        hasPreviousAnnotation = previous is JourneyAnnotation;
       }
 
       switch (rowData.type) {
@@ -269,7 +279,7 @@ class TrainJourney extends StatelessWidget {
             data: rowData as BaseFootNote,
             config: trainJourneyConfig,
             isExpanded: collapsedRows.isExpanded(rowData.hashCode),
-            addTopMargin: !hasPreviousCollapsible,
+            addTopMargin: !hasPreviousAnnotation,
             accordionToggleCallback: () => context.read<CollapsibleRowsViewModel>().toggleRow(rowData),
             rowIndex: index,
           );
@@ -280,7 +290,7 @@ class TrainJourney extends StatelessWidget {
             config: trainJourneyConfig,
             expandedContent: collapsedRows.isContentExpanded(rowData.hashCode),
             isExpanded: collapsedRows.isExpanded(rowData.hashCode),
-            addTopMargin: !hasPreviousCollapsible,
+            addTopMargin: !hasPreviousAnnotation,
             accordionToggleCallback: () => context.read<CollapsibleRowsViewModel>().toggleRow(rowData),
             rowIndex: index,
           );
@@ -430,7 +440,7 @@ class TrainJourney extends StatelessWidget {
   bool _isCurvePointWithoutSpeed(BaseData data, Journey journey, TrainJourneySettings settings) {
     final breakSeries = settings.resolvedBreakSeries(journey.metadata);
 
-    return data.type == Datatype.curvePoint &&
+    return data is CurvePoint &&
         data.localSpeeds?.speedFor(breakSeries?.trainSeries, breakSeries: breakSeries?.breakSeries) == null;
   }
 

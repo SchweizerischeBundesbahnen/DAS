@@ -7,22 +7,21 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class RouteChevron extends StatefulWidget {
   static const Key chevronKey = Key('chevronCell');
+  static const double chevronHeight = 8.0;
 
   const RouteChevron({
     required this.chevronWidth,
-    required this.chevronHeight,
     required this.chevronPosition,
-    required this.isNextStop,
     this.chevronAnimationData,
     super.key,
   });
 
   final double chevronWidth;
-  final double chevronHeight;
   final double chevronPosition;
 
   final ChevronAnimationData? chevronAnimationData;
-  final bool isNextStop;
+
+  static double positionFromHeight(double height) => height - chevronHeight * 0.5;
 
   @override
   State<RouteChevron> createState() => _RouteChevronState();
@@ -54,7 +53,7 @@ class _RouteChevronState extends State<RouteChevron> {
       final diff = (start - end).abs();
 
       setState(() {
-        if (controller?.currentPosition == widget.chevronAnimationData?.currenPosition &&
+        if (controller?.currentPosition == widget.chevronAnimationData?.currentPosition &&
             controller?.lastPosition == widget.chevronAnimationData?.lastPosition) {
           currentOffsetValue = start + (diff * controller!.animation!.value);
         } else {
@@ -74,11 +73,9 @@ class _RouteChevronState extends State<RouteChevron> {
           top: widget.chevronPosition + currentOffsetValue,
           child: CustomPaint(
             key: RouteChevron.chevronKey,
-            size: Size(widget.chevronWidth, widget.chevronHeight),
+            size: Size(widget.chevronWidth, RouteChevron.chevronHeight),
             painter: _ChevronPainter(
-              color: widget.isNextStop
-                  ? SBBColors.white
-                  : ThemeUtil.getColor(context, SBBColors.black, SBBColors.white),
+              color: ThemeUtil.getColor(context, SBBColors.black, SBBColors.white),
             ),
           ),
         ),

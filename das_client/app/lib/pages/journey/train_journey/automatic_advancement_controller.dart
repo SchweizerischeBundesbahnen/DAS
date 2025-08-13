@@ -28,7 +28,7 @@ class AutomaticAdvancementController {
 
   final ScrollController scrollController;
   final GlobalKey tableKey;
-  BaseData? _currentPosition;
+  JourneyPoint? _currentPosition;
   List<DASTableRowBuilder> _renderedRows = [];
   Timer? _scrollTimer;
   double? _lastScrollPosition;
@@ -38,7 +38,11 @@ class AutomaticAdvancementController {
 
   void updateRenderedRows(List<DASTableRowBuilder> rows) => _renderedRows = rows;
 
-  void handleJourneyUpdate({BaseData? currentPosition, BaseData? routeStart, bool isAdvancementEnabledByUser = false}) {
+  void handleJourneyUpdate({
+    JourneyPoint? currentPosition,
+    JourneyPoint? routeStart,
+    bool isAdvancementEnabledByUser = false,
+  }) {
     _currentPosition = currentPosition;
     final isAdvancingActive = isAdvancementEnabledByUser && (currentPosition != routeStart);
 
@@ -180,7 +184,7 @@ class AutomaticAdvancementController {
     return null;
   }
 
-  double _calculateStickyHeight(BaseData data) {
+  double _calculateStickyHeight(JourneyPoint data) {
     final stickyHeaderHeights = {StickyLevel.first: 0.0, StickyLevel.second: 0.0};
 
     for (final row in _renderedRows) {

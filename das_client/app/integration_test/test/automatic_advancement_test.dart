@@ -24,7 +24,7 @@ void main() {
         findsAny,
       );
 
-      final locations = ['B2', 'Burgdorf', 'B101', 'Olten'];
+      final locations = ['B2', 'B3', 'Burgdorf', 'B101', 'Olten'];
 
       for (final location in locations) {
         await waitUntilExists(

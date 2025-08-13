@@ -1,7 +1,6 @@
-import 'package:sfera/src/model/journey/base_data.dart';
-import 'package:sfera/src/model/journey/datatype.dart';
+import 'package:sfera/component.dart';
 
-class ProtectionSection extends BaseData {
+class ProtectionSection extends JourneyPoint {
   const ProtectionSection({
     required this.isOptional,
     required this.isLong,

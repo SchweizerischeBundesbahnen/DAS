@@ -1,12 +1,11 @@
-import 'package:sfera/src/model/journey/base_data.dart';
-import 'package:sfera/src/model/journey/foot_note.dart';
+import 'package:sfera/component.dart';
 
-abstract class BaseFootNote extends BaseData {
-  BaseFootNote({
+abstract class BaseFootNote extends JourneyAnnotation {
+  const BaseFootNote({
     required super.order,
     required this.footNote,
     required super.type,
-  }) : super(kilometre: []);
+  });
 
   final FootNote footNote;
 

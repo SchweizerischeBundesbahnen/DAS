@@ -11,10 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:sfera/src/model/journey/base_data.dart';
-import 'package:sfera/src/model/journey/metadata.dart';
-import 'package:sfera/src/model/journey/service_point.dart';
-import 'package:sfera/src/model/journey/signal.dart';
+import 'package:sfera/component.dart';
 
 import 'automatic_advancement_controller_test.mocks.dart';
 
@@ -65,7 +62,7 @@ void main() {
           ),
         )
         .toList();
-    final currentPosition = journeyData[2];
+    final currentPosition = journeyData[2] as JourneyPoint;
 
     final scrollControllerMock = MockScrollController();
     final scrollPositionMock = MockScrollPosition();
@@ -108,7 +105,7 @@ void main() {
           ),
         )
         .toList();
-    final currentPosition = journeyData[2];
+    final currentPosition = journeyData[2] as JourneyPoint;
 
     final scrollControllerMock = MockScrollController();
     final scrollPositionMock = MockScrollPosition();
@@ -145,7 +142,7 @@ void main() {
           ),
         )
         .toList();
-    final currentPosition = journeyData[2];
+    final currentPosition = journeyData[2] as JourneyPoint;
 
     final scrollControllerMock = MockScrollController();
     final scrollPositionMock = MockScrollPosition();
@@ -189,7 +186,7 @@ void main() {
           ),
         )
         .toList();
-    final currentPosition = journeyData[0];
+    final currentPosition = journeyData[0] as JourneyPoint;
 
     final scrollControllerMock = MockScrollController();
     final scrollPositionMock = MockScrollPosition();
@@ -205,7 +202,7 @@ void main() {
     testee.updateRenderedRows(journeyRows);
     testee.handleJourneyUpdate(
       currentPosition: currentPosition,
-      routeStart: journeyData[0],
+      routeStart: journeyData[0] as JourneyPoint,
       isAdvancementEnabledByUser: true,
     );
 
@@ -230,7 +227,7 @@ void main() {
     final journeyRows = journeyData
         .mapIndexed((index, data) => SignalRow(metadata: Metadata(), data: data as Signal, rowIndex: index))
         .toList();
-    final currentPosition = journeyData[2];
+    final currentPosition = journeyData[2] as JourneyPoint;
 
     final scrollControllerMock = MockScrollController();
     final scrollPositionMock = MockScrollPosition();
@@ -305,7 +302,7 @@ void main() {
           ),
         )
         .toList();
-    final currentPosition = journeyData[2];
+    final currentPosition = journeyData[2] as JourneyPoint;
 
     final scrollControllerMock = MockScrollController();
     final scrollPositionMock = MockScrollPosition();
@@ -355,7 +352,7 @@ void main() {
           ),
         )
         .toList();
-    final currentPosition = journeyData[2];
+    final currentPosition = journeyData[2] as JourneyPoint;
 
     final scrollControllerMock = MockScrollController();
     final scrollPositionMock = MockScrollPosition();

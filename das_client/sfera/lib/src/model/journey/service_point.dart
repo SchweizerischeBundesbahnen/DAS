@@ -2,7 +2,7 @@ import 'package:sfera/component.dart';
 import 'package:sfera/src/model/journey/bracket_station.dart';
 import 'package:sfera/src/model/journey/decisive_gradient.dart';
 
-class ServicePoint extends BaseData {
+class ServicePoint extends JourneyPoint {
   const ServicePoint({
     required this.name,
     required super.order,

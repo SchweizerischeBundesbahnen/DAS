@@ -179,35 +179,35 @@ void main() {
     expect(journey.data, hasLength(24));
 
     // segment 1
-    expect(journey.data[0].kilometre[0], 0.2);
-    expect(journey.data[1].kilometre[0], 0.5);
-    expect(journey.data[2].kilometre[0], 0.6);
-    expect(journey.data[3].kilometre[0], 0.7);
-    expect(journey.data[4].kilometre[0], 0.8);
+    expect((journey.data[0] as JourneyPoint).kilometre[0], 0.2);
+    expect((journey.data[1] as JourneyPoint).kilometre[0], 0.5);
+    expect((journey.data[2] as JourneyPoint).kilometre[0], 0.6);
+    expect((journey.data[3] as JourneyPoint).kilometre[0], 0.7);
+    expect((journey.data[4] as JourneyPoint).kilometre[0], 0.8);
     // segment 2
-    expect(journey.data[5].kilometre[0], 1.2);
-    expect(journey.data[6].kilometre[0], 1.2);
-    expect(journey.data[7].kilometre[0], 1.5);
-    expect(journey.data[8].kilometre[0], 1.7);
-    expect(journey.data[9].kilometre[0], 1.8);
-    expect(journey.data[10].kilometre[0], 1.9);
+    expect((journey.data[5] as JourneyPoint).kilometre[0], 1.2);
+    expect((journey.data[6] as JourneyPoint).kilometre[0], 1.2);
+    expect((journey.data[7] as JourneyPoint).kilometre[0], 1.5);
+    expect((journey.data[8] as JourneyPoint).kilometre[0], 1.7);
+    expect((journey.data[9] as JourneyPoint).kilometre[0], 1.8);
+    expect((journey.data[10] as JourneyPoint).kilometre[0], 1.9);
     // segment 3
-    expect(journey.data[11].kilometre[0], 2.1);
-    expect(journey.data[12].kilometre[0], 2.2);
-    expect(journey.data[13].kilometre[0], 2.4);
-    expect(journey.data[14].kilometre[0], 2.5);
-    expect(journey.data[15].kilometre[0], 2.6);
+    expect((journey.data[11] as JourneyPoint).kilometre[0], 2.1);
+    expect((journey.data[12] as JourneyPoint).kilometre[0], 2.2);
+    expect((journey.data[13] as JourneyPoint).kilometre[0], 2.4);
+    expect((journey.data[14] as JourneyPoint).kilometre[0], 2.5);
+    expect((journey.data[15] as JourneyPoint).kilometre[0], 2.6);
     // segment 4
-    expect(journey.data[16].kilometre[0], 3.5);
-    expect(journey.data[17].kilometre[0], 3.6);
-    expect(journey.data[18].kilometre[0], 3.7);
-    expect(journey.data[18].kilometre[1], 0);
-    expect(journey.data[19].kilometre[0], 0.1);
-    expect(journey.data[20].kilometre[0], 0.2);
+    expect((journey.data[16] as JourneyPoint).kilometre[0], 3.5);
+    expect((journey.data[17] as JourneyPoint).kilometre[0], 3.6);
+    expect((journey.data[18] as JourneyPoint).kilometre[0], 3.7);
+    expect((journey.data[18] as JourneyPoint).kilometre[1], 0);
+    expect((journey.data[19] as JourneyPoint).kilometre[0], 0.1);
+    expect((journey.data[20] as JourneyPoint).kilometre[0], 0.2);
     // segment 5
-    expect(journey.data[21].kilometre[0], 0.6);
-    expect(journey.data[22].kilometre[0], 0.9);
-    expect(journey.data[23].kilometre[0], 1.1);
+    expect((journey.data[21] as JourneyPoint).kilometre[0], 0.6);
+    expect((journey.data[22] as JourneyPoint).kilometre[0], 0.9);
+    expect((journey.data[23] as JourneyPoint).kilometre[0], 1.1);
   });
 
   test('Test order is generated correctly', () async {
@@ -1297,17 +1297,25 @@ void main() {
     expect(journey.valid, true);
     expect(journey.metadata.currentPosition, journey.data[5]);
 
-    journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 3000);
+    journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 4000);
     expect(journey.valid, true);
     expect(journey.metadata.currentPosition, journey.data[18]);
   });
 
+  test('Test current position after hidden signal', () async {
+    final journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 2000);
+    expect(journey.valid, true);
+    // Hidden signal position is between B3 and S3 signals.
+    // Current position should be the next smaller visible element
+    expect(journey.metadata.currentPosition, journey.data[9]);
+  });
+
   test('Test current position is set to service point on last signal', () async {
-    var journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 2000);
+    var journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 3000);
     expect(journey.valid, true);
     expect(journey.metadata.currentPosition, journey.data.whereType<ServicePoint>().toList()[1]);
 
-    journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 4000);
+    journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 5000);
     expect(journey.valid, true);
     expect(journey.metadata.currentPosition, journey.data.whereType<ServicePoint>().toList()[2]);
   });
@@ -1319,7 +1327,7 @@ void main() {
   });
 
   test('Test next station is calculated correctly with related train info', () async {
-    final journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 2000);
+    final journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 3000);
     expect(journey.valid, true);
     expect(journey.metadata.nextStop, journey.data.whereType<ServicePoint>().toList()[2]);
   });
@@ -1360,7 +1368,7 @@ void main() {
   });
 
   test('Test last service point is correct with invalid position update', () async {
-    final journey1 = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 3000);
+    final journey1 = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 4000);
     expect(journey1.valid, true);
     expect(journey1.metadata.currentPosition, journey1.data[18]);
     expect(journey1.metadata.lastServicePoint, journey1.data.whereType<ServicePoint>().toList()[1]);
