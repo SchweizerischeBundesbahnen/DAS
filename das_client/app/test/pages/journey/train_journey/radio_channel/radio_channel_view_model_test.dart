@@ -193,7 +193,7 @@ Journey mockJourney({
   ServicePoint? servicePoint,
   Iterable<RadioContactList> radioContacts = const [],
   List<CommunicationNetworkChange> communicationNetworkChanges = const [],
-  BaseData? currentPosition,
+  JourneyPoint? currentPosition,
 }) => Journey(
   metadata: Metadata(
     lastServicePoint: servicePoint,
