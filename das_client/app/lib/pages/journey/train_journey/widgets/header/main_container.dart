@@ -2,6 +2,7 @@ import 'package:app/di/di.dart';
 import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
+import 'package:app/pages/journey/train_journey/journey_position/journey_position_view_model.dart';
 import 'package:app/pages/journey/train_journey/radio_channel/radio_channel_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/battery_status.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/departure_authorization.dart';
@@ -27,13 +28,17 @@ class MainContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<TrainJourneyViewModel>();
+    final journeyViewModel = context.read<TrainJourneyViewModel>();
+    final journeyPositionViewModel = context.read<JourneyPositionViewModel>();
 
     return Provider<RadioChannelViewModel>(
-      create: (_) => RadioChannelViewModel(journeyStream: viewModel.journey),
+      create: (_) => RadioChannelViewModel(
+        journeyStream: journeyViewModel.journey,
+        journeyPositionStream: journeyPositionViewModel.model,
+      ),
       dispose: (_, vm) => vm.dispose(),
       child: StreamBuilder(
-        stream: CombineLatestStream.list([viewModel.journey, viewModel.settings]),
+        stream: CombineLatestStream.list([journeyViewModel.journey, journeyViewModel.settings]),
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.data?[0] == null || snapshot.data?[1] == null) {
             return Center(child: SBBLoadingIndicator());

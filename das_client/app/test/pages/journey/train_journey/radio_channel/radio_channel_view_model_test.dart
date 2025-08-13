@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/train_journey/radio_channel/radio_channel_model.dart';
 import 'package:app/pages/journey/train_journey/radio_channel/radio_channel_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,13 +10,18 @@ import 'package:sfera/component.dart';
 void main() {
   group('RadioChannelViewModel', () {
     late BehaviorSubject<Journey?> rxMockJourney;
+    late BehaviorSubject<JourneyPositionModel> rxMockJourneyPosition;
     late RadioChannelViewModel testee;
     final List<dynamic> emitRegister = [];
     late StreamSubscription<RadioChannelModel> modelSubscription;
 
     setUp(() {
       rxMockJourney = BehaviorSubject<Journey?>.seeded(null);
-      testee = RadioChannelViewModel(journeyStream: rxMockJourney.stream);
+      rxMockJourneyPosition = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
+      testee = RadioChannelViewModel(
+        journeyStream: rxMockJourney.stream,
+        journeyPositionStream: rxMockJourneyPosition.stream,
+      );
       modelSubscription = testee.model.listen(emitRegister.add);
     });
 
@@ -35,7 +41,7 @@ void main() {
     test('model_whenJourneyWithLastServicePoint_thenLastServicePointIsEqual', () async {
       // ARRANGE
       final aServicePoint = ServicePoint(name: 'A', order: 0, kilometre: [0]);
-      rxMockJourney.add(mockJourney(servicePoint: aServicePoint));
+      rxMockJourneyPosition.add(JourneyPositionModel(lastServicePoint: aServicePoint));
       await _streamProcessing();
 
       // EXPECT
@@ -65,10 +71,10 @@ void main() {
         endOrder: 0,
         contacts: [MainContact(contactIdentifier: '123')],
       );
+      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: Signal(order: 5, kilometre: [0.0])));
       rxMockJourney.add(
         mockJourney(
           radioContacts: [aRadioContactList],
-          currentPosition: Signal(order: 5, kilometre: [0.0]),
         ),
       );
       await _streamProcessing();
@@ -85,10 +91,10 @@ void main() {
         endOrder: 0,
         contacts: [MainContact(contactIdentifier: '123')],
       );
+      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: Signal(order: 5, kilometre: [0.0])));
       rxMockJourney.add(
         mockJourney(
           radioContacts: [aRadioContactList],
-          currentPosition: Signal(order: 5, kilometre: [0.0]),
         ),
       );
       await _streamProcessing();
@@ -110,10 +116,10 @@ void main() {
         endOrder: 0,
         contacts: [MainContact(contactIdentifier: '123')],
       );
+      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: Signal(order: 20, kilometre: [0.0])));
       rxMockJourney.add(
         mockJourney(
           radioContacts: [aRadioContactList, bRadioContactList],
-          currentPosition: Signal(order: 20, kilometre: [0.0]),
         ),
       );
       await _streamProcessing();
@@ -139,10 +145,10 @@ void main() {
 
     test('model_whenJourneyWithCommunicationNetworkAndCurrentPositionBefore_thenHasNoNetworkType', () async {
       // ARRANGE
+      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: Signal(order: 5, kilometre: [0.0])));
       rxMockJourney.add(
         mockJourney(
           communicationNetworkChanges: [CommunicationNetworkChange(type: CommunicationNetworkType.sim, order: 10)],
-          currentPosition: Signal(order: 5, kilometre: [0.0]),
         ),
       );
       await _streamProcessing();
@@ -154,10 +160,10 @@ void main() {
 
     test('model_whenJourneyWithCommunicationNetworkAndCurrentPositionAfterOrEqual_thenHasNetworkType', () async {
       // ARRANGE
+      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: Signal(order: 15, kilometre: [0.0])));
       rxMockJourney.add(
         mockJourney(
           communicationNetworkChanges: [CommunicationNetworkChange(type: CommunicationNetworkType.sim, order: 10)],
-          currentPosition: Signal(order: 15, kilometre: [0.0]),
         ),
       );
       await _streamProcessing();
@@ -169,13 +175,13 @@ void main() {
 
     test('model_whenJourneyWithTwoCommunicationNetworksAndCurrentPosition_thenHasNetworkType', () async {
       // ARRANGE
+      rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: Signal(order: 20, kilometre: [0.0])));
       rxMockJourney.add(
         mockJourney(
           communicationNetworkChanges: [
             CommunicationNetworkChange(type: CommunicationNetworkType.sim, order: 10),
             CommunicationNetworkChange(type: CommunicationNetworkType.gsmP, order: 20),
           ],
-          currentPosition: Signal(order: 20, kilometre: [0.0]),
         ),
       );
       await _streamProcessing();

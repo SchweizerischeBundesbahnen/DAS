@@ -9,20 +9,24 @@ import 'package:sfera/component.dart';
 void main() {
   group('JourneyPositionViewModel unit test', () {
     late JourneyPositionViewModel testee;
-    final BehaviorSubject<Journey?> rxMockJourney = BehaviorSubject.seeded(null);
+    late BehaviorSubject<Journey?> rxMockJourney;
     late List<dynamic> emitRegister;
     late StreamSubscription currentPositionSub;
 
     setUp(() async {
+      rxMockJourney = BehaviorSubject<Journey?>.seeded(null);
       testee = JourneyPositionViewModel(journeyStream: rxMockJourney);
       emitRegister = <dynamic>[];
-      currentPositionSub = testee.currentPosition.listen(emitRegister.add);
+      currentPositionSub = testee.model.listen(emitRegister.add);
 
       await _streamProcessing();
     });
 
     tearDown(() {
       currentPositionSub.cancel();
+      emitRegister.clear();
+      testee.dispose();
+      rxMockJourney.close();
     });
 
     test('constructor_whenCalled_buildsSubscription', () => expect(rxMockJourney.hasListener, isTrue));
@@ -34,18 +38,18 @@ void main() {
       expect(emitRegister.first, equals(JourneyPositionModel()));
     });
 
-    test('model_whenJourneyWithNoPositions_thenIsEmpty', () async {
+    test('model_whenJourneyWithNoCurrentPosition_thenIsEmpty', () async {
       // ARRANGE
       rxMockJourney.add(Journey(metadata: Metadata(), data: []));
-
       await _streamProcessing();
+
       // ACT & EXPECT
       expect(testee.modelValue, equals(JourneyPositionModel()));
       expect(emitRegister, hasLength(1));
       expect(emitRegister.first, equals(JourneyPositionModel()));
     });
 
-    test('model_whenJourneyWithNonNullPosition_thenIsJourneyPosition', () async {
+    test('model_whenJourneyWithPosition_thenHasCurrentPosition', () async {
       // ARRANGE
       final signal = Signal(order: 0, kilometre: [0]);
       rxMockJourney.add(
@@ -54,12 +58,32 @@ void main() {
           data: [],
         ),
       );
-
       await _streamProcessing();
+
       // ACT & EXPECT
       expect(testee.modelValue, equals(JourneyPositionModel(currentPosition: signal)));
       expect(emitRegister, hasLength(2));
       expect(emitRegister, orderedEquals([JourneyPositionModel(), JourneyPositionModel(currentPosition: signal)]));
+    });
+
+    test('model_whenJourneyWithLastServicePoint_thenHasLastServicePoint', () async {
+      // ARRANGE
+      final aServicePoint = ServicePoint(name: 'a', order: 0, kilometre: []);
+      rxMockJourney.add(
+        Journey(
+          metadata: Metadata(lastServicePoint: aServicePoint),
+          data: [],
+        ),
+      );
+      await _streamProcessing();
+
+      // ACT & EXPECT
+      expect(testee.modelValue, equals(JourneyPositionModel(lastServicePoint: aServicePoint)));
+      expect(emitRegister, hasLength(2));
+      expect(
+        emitRegister,
+        orderedEquals([JourneyPositionModel(), JourneyPositionModel(lastServicePoint: aServicePoint)]),
+      );
     });
   });
 }

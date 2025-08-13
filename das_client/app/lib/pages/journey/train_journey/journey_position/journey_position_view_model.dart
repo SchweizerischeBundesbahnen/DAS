@@ -10,20 +10,25 @@ class JourneyPositionViewModel {
   }
 
   StreamSubscription<Journey?>? _journeySubscription;
-  final _rxCurrentPosition = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
+  final _rxModel = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
 
-  JourneyPositionModel get modelValue => _rxCurrentPosition.value;
+  JourneyPositionModel get modelValue => _rxModel.value;
 
-  Stream<JourneyPositionModel> get currentPosition => _rxCurrentPosition.stream.distinct();
+  Stream<JourneyPositionModel> get model => _rxModel.stream.distinct();
 
-  Future<void> dispose() async {
-    await _journeySubscription?.cancel();
+  void dispose() {
+    _journeySubscription?.cancel();
     _journeySubscription = null;
   }
 
   void _initSubscription(Stream<Journey?> journeyStream) {
     _journeySubscription = journeyStream.listen((journey) {
-      _rxCurrentPosition.add(JourneyPositionModel(currentPosition: journey?.metadata.currentPosition));
+      _rxModel.add(
+        JourneyPositionModel(
+          currentPosition: journey?.metadata.currentPosition,
+          lastServicePoint: journey?.metadata.lastServicePoint,
+        ),
+      );
     });
   }
 }
