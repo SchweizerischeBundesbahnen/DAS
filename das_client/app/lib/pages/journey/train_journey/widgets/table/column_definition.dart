@@ -11,7 +11,6 @@ enum ColumnDefinition {
   localSpeed,
   brakedWeightSpeed,
   advisedSpeed,
-  actionsCell,
   communicationNetwork,
   gradientUphill,
   gradientDownhill,

@@ -1,10 +1,11 @@
+import 'package:app/util/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:sfera/component.dart';
 
 class ChevronAnimationController with ChangeNotifier {
   ChevronAnimationController(this.tickerProvider)
     : animationController = AnimationController(
-        duration: const Duration(milliseconds: 500),
+        duration: DASAnimation.longDuration,
         vsync: tickerProvider,
       );
 

@@ -66,7 +66,6 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
         ColumnDefinition.localSpeed.index: localSpeedCell(context),
         ColumnDefinition.brakedWeightSpeed.index: brakedWeightSpeedCell(context),
         ColumnDefinition.advisedSpeed.index: advisedSpeedCell(context),
-        ColumnDefinition.actionsCell.index: actionsCell(context),
         ColumnDefinition.communicationNetwork.index: communicationNetworkCell(context),
         ColumnDefinition.gradientUphill.index: gradientUphillCell(context),
         ColumnDefinition.gradientDownhill.index: gradientDownhillCell(context),
@@ -234,8 +233,6 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   DASTableCell iconsCell2(BuildContext context) => DASTableCell.empty();
 
   DASTableCell iconsCell3(BuildContext context) => DASTableCell.empty();
-
-  DASTableCell actionsCell(BuildContext context) => DASTableCell.empty();
 
   DASTableCell gradientUphillCell(BuildContext context) => DASTableCell.empty(color: specialCellColor);
 

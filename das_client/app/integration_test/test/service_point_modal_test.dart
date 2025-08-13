@@ -4,8 +4,8 @@ import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_poi
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_graduated_speeds.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_builder.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
-import 'package:app/pages/journey/train_journey/widgets/header/animated_header_icon_button.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
+import 'package:app/pages/journey/train_journey/widgets/header/header_icon_button.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/dot_indicator.dart';
@@ -55,16 +55,16 @@ void main() {
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: 'T9999');
 
-      expect(find.byKey(AnimatedHeaderIconButton.headerIconWithLabelButtonKey), findsExactly(2));
+      expect(find.byKey(HeaderIconButton.headerIconWithLabelButtonKey), findsExactly(2));
 
       // open modal sheet and check if only icon buttons are shown
       await _openRadioChannelByHeaderTap(tester);
       expect(find.byKey(DasModalSheet.modalSheetExtendedKey), findsOneWidget);
-      expect(find.byKey(AnimatedHeaderIconButton.headerIconButtonKey), findsExactly(2));
+      expect(find.byKey(HeaderIconButton.headerIconButtonKey), findsExactly(2));
 
       // check labeled buttons after close
       await _closeModalSheet(tester);
-      expect(find.byKey(AnimatedHeaderIconButton.headerIconWithLabelButtonKey), findsExactly(2));
+      expect(find.byKey(HeaderIconButton.headerIconWithLabelButtonKey), findsExactly(2));
 
       await disconnect(tester);
     });
