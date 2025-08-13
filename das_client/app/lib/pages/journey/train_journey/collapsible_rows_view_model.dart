@@ -14,6 +14,8 @@ class CollapsibleRowsViewModel {
 
   Stream<Map<int, CollapsedState>> get collapsedRows => _rxCollapsedRows.stream;
 
+  Map<int, CollapsedState> get collapsedRowsValue => _rxCollapsedRows.value;
+
   final _rxCollapsedRows = BehaviorSubject<Map<int, CollapsedState>>.seeded({});
 
   final SferaRemoteRepo _sferaRemoteRepo;

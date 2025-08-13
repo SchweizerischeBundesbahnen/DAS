@@ -1,3 +1,4 @@
+import 'package:app/pages/journey/train_journey/journey_position/journey_position_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/advised_speed_cell_body.dart';
@@ -17,6 +18,7 @@ import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_row.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
@@ -96,17 +98,22 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   }
 
   DASTableCell routeCell(BuildContext context) {
+    final positionViewModel = context.read<JourneyPositionViewModel>();
     return DASTableCell(
       color: specialCellColor,
       padding: EdgeInsets.all(0.0),
       alignment: null,
       clipBehaviour: Clip.none,
-      child: RouteCellBody(
-        isCurrentPosition: metadata.currentPosition == data,
-        isRouteStart: metadata.routeStart == data,
-        isRouteEnd: metadata.routeEnd == data,
-        chevronAnimationData: config.chevronAnimationData,
-        chevronPosition: RouteChevron.positionFromHeight(height),
+      child: StreamBuilder(
+        stream: positionViewModel.model,
+        initialData: positionViewModel.modelValue,
+        builder: (context, snapshot) => RouteCellBody(
+          isCurrentPosition: snapshot.requireData.currentPosition == data,
+          isRouteStart: metadata.routeStart == data,
+          isRouteEnd: metadata.routeEnd == data,
+          chevronAnimationData: config.chevronAnimationData,
+          chevronPosition: RouteChevron.positionFromHeight(height),
+        ),
       ),
     );
   }

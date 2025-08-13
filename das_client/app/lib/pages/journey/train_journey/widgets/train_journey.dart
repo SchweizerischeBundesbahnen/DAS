@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/collapsible_rows_view_model.dart';
+import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
+import 'package:app/pages/journey/train_journey/journey_position/journey_position_view_model.dart';
 import 'package:app/pages/journey/train_journey/train_journey_overview.dart';
 import 'package:app/pages/journey/train_journey/widgets/break_series_selection.dart';
 import 'package:app/pages/journey/train_journey/widgets/chevron_animation_wrapper.dart';
@@ -88,11 +90,24 @@ class TrainJourney extends StatelessWidget {
   }
 
   Widget _body(BuildContext context, Journey journey, TrainJourneySettings settings) {
+    final collapsibleRowsViewModel = context.read<CollapsibleRowsViewModel>();
+    final journeyPositionViewModel = context.read<JourneyPositionViewModel>();
     return StreamBuilder(
-      stream: context.read<CollapsibleRowsViewModel>().collapsedRows,
+      stream:
+          CombineLatestStream.combine2<
+            Map<int, CollapsedState>,
+            JourneyPositionModel,
+            (Map<int, CollapsedState>, JourneyPositionModel)
+          >(
+            collapsibleRowsViewModel.collapsedRows,
+            journeyPositionViewModel.model,
+            (a, b) => (a, b),
+          ),
+      initialData: (collapsibleRowsViewModel.collapsedRowsValue, journeyPositionViewModel.modelValue),
       builder: (context, snapshot) {
-        final collapsedRows = snapshot.data ?? {};
-        final tableRows = _rows(context, journey, settings, collapsedRows);
+        final collapsedRows = snapshot.data?.$1 ?? {};
+        final currentPosition = snapshot.data?.$2.currentPosition;
+        final tableRows = _rows(context, journey, settings, collapsedRows, currentPosition);
         context.read<TrainJourneyViewModel>().automaticAdvancementController.updateRenderedRows(tableRows);
 
         final marginAdjustment = Platform.isIOS
@@ -131,13 +146,14 @@ class TrainJourney extends StatelessWidget {
     Journey journey,
     TrainJourneySettings settings,
     Map<int, CollapsedState> collapsedRows,
+    JourneyPoint? currentPosition,
   ) {
     final currentBreakSeries = settings.resolvedBreakSeries(journey.metadata);
 
     final rows = journey.data
         .whereNot((it) => _isCurvePointWithoutSpeed(it, journey, settings))
         .groupBaliseAndLeveLCrossings(settings.expandedGroups)
-        .hideRepeatedLineFootNotes(journey.metadata.currentPosition)
+        .hideRepeatedLineFootNotes(currentPosition)
         .hideFootNotesForNotSelectedTrainSeries(currentBreakSeries?.trainSeries)
         .combineFootNoteAndOperationalIndication()
         .sortedBy((data) => data.order);
