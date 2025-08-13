@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/model/journey/bracket_station.dart';
 import 'package:sfera/src/model/journey/decisive_gradient.dart';
@@ -53,6 +54,43 @@ class ServicePoint extends JourneyPoint {
       ...properties.map((it) => it.speeds).nonNulls.expand((it) => it),
     ];
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ServicePoint &&
+          runtimeType == other.runtimeType &&
+          order == other.order &&
+          ListEquality().equals(kilometre, other.kilometre) &&
+          name == other.name &&
+          mandatoryStop == other.mandatoryStop &&
+          isStop == other.isStop &&
+          isStation == other.isStation &&
+          bracketMainStation == other.bracketMainStation &&
+          DeepCollectionEquality().equals(graduatedSpeedInfo, other.graduatedSpeedInfo) &&
+          decisiveGradient == other.decisiveGradient &&
+          arrivalDepartureTime == other.arrivalDepartureTime &&
+          stationSign1 == other.stationSign1 &&
+          stationSign2 == other.stationSign2 &&
+          ListEquality().equals(properties, other.properties) &&
+          DeepCollectionEquality().equals(localSpeeds, other.localSpeeds);
+
+  @override
+  int get hashCode =>
+      order.hashCode ^
+      Object.hashAll(kilometre) ^
+      name.hashCode ^
+      mandatoryStop.hashCode ^
+      isStop.hashCode ^
+      isStation.hashCode ^
+      bracketMainStation.hashCode ^
+      Object.hashAll(graduatedSpeedInfo ?? []) ^
+      decisiveGradient.hashCode ^
+      arrivalDepartureTime.hashCode ^
+      stationSign1.hashCode ^
+      stationSign2.hashCode ^
+      Object.hashAll(properties) ^
+      Object.hashAll(localSpeeds ?? []);
 
   @override
   String toString() {

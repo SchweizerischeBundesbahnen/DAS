@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/model/journey/order_priority.dart';
 
@@ -16,7 +17,22 @@ class CABSignaling extends JourneyPoint {
   OrderPriority get orderPriority => isStart ? OrderPriority.cabSignalingStart : OrderPriority.cabSignalingEnd;
 
   @override
-  String toString() {
-    return 'CABSignaling(order: $order, kilometre: $kilometre, isStart: $isStart)';
-  }
+  String toString() =>
+      'CABSignaling('
+      'order: $order'
+      ', kilometre: $kilometre'
+      ', isStart: $isStart'
+      ')';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CABSignaling &&
+          runtimeType == other.runtimeType &&
+          order == other.order &&
+          ListEquality().equals(kilometre, other.kilometre) &&
+          isStart == other.isStart;
+
+  @override
+  int get hashCode => order.hashCode ^ Object.hashAll(kilometre) ^ isStart.hashCode;
 }

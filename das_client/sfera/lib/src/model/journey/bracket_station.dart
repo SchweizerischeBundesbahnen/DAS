@@ -14,9 +14,12 @@ class BracketMainStation {
   final String abbreviation;
 
   @override
-  String toString() {
-    return 'BracketMainStation(countryCode: $countryCode, primaryCode: $primaryCode, abbreviation: $abbreviation)';
-  }
+  String toString() =>
+      'BracketMainStation('
+      'countryCode: $countryCode'
+      ', primaryCode: $primaryCode'
+      ', abbreviation: $abbreviation'
+      ')';
 
   @override
   bool operator ==(Object other) =>
