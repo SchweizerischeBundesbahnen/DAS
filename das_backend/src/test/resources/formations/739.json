@@ -26,9 +26,6 @@
           "hauledLoadHoldingForceInHectoNewton": 0,
           "formationHoldingForceInHectoNewton": 530,
           "simTrain": false,
-          "tractionModes": [
-            "D"
-          ],
           "carCarrierVehicle": false,
           "dangerousGoods": false,
           "vehiclesCount": 1,
@@ -63,9 +60,6 @@
           "hauledLoadHoldingForceInHectoNewton": 0,
           "formationHoldingForceInHectoNewton": 530,
           "simTrain": false,
-          "tractionModes": [
-            "D"
-          ],
           "carCarrierVehicle": false,
           "dangerousGoods": false,
           "vehiclesCount": 1,
