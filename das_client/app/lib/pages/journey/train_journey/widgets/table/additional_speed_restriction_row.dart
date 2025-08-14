@@ -16,6 +16,7 @@ class AdditionalSpeedRestrictionRow extends CellRowBuilder<AdditionalSpeedRestri
     required super.metadata,
     required super.data,
     required super.rowIndex,
+    required super.journeyPosition,
     super.onTap,
     super.config,
   }) : super(rowColor: additionalSpeedRestrictionColor);

@@ -52,24 +52,24 @@ class JourneyPositionViewModel {
     return journeyPoints.lastWhereOrNull((it) => it.order <= signaledPosition.order);
   }
 
-  static JourneyPoint? _adjustCurrentPositionToServicePoint(
-    List<JourneyPoint> journeyPoints,
-    JourneyPoint currentPosition,
-  ) {
-    final positionIndex = journeyPoints.indexOf(currentPosition);
-    if (currentPosition is ServicePoint) {
-      return currentPosition;
-    }
-
-    if (journeyPoints.length > positionIndex + 1) {
-      final nextData = journeyPoints[positionIndex + 1];
-      if (nextData is ServicePoint) {
-        return nextData;
-      }
-    }
-
-    return currentPosition;
-  }
+  // static JourneyPoint? _adjustCurrentPositionToServicePoint(
+  //   List<JourneyPoint> journeyPoints,
+  //   JourneyPoint currentPosition,
+  // ) {
+  //   final positionIndex = journeyPoints.indexOf(currentPosition);
+  //   if (currentPosition is ServicePoint) {
+  //     return currentPosition;
+  //   }
+  //
+  //   if (journeyPoints.length > positionIndex + 1) {
+  //     final nextData = journeyPoints[positionIndex + 1];
+  //     if (nextData is ServicePoint) {
+  //       return nextData;
+  //     }
+  //   }
+  //
+  //   return currentPosition;
+  // }
 
   ServicePoint? _calculatePreviousServicePoint(
     JourneyPoint? updatedPosition,

@@ -14,6 +14,7 @@ class WhistleRow extends CellRowBuilder<Whistle> {
     required super.metadata,
     required super.data,
     required super.rowIndex,
+    required super.journeyPosition,
     super.config,
   });
 

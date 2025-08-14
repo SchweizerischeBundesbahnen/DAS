@@ -35,11 +35,13 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     required super.data,
     required BuildContext context,
     required super.rowIndex,
+    required super.journeyPosition,
     this.highlightNextStop = true,
     super.config,
     Color? rowColor,
   }) : super(
-         rowColor: rowColor ?? ((metadata.nextStop == data) ? SBBColors.night : ThemeUtil.getDASTableColor(context)),
+         rowColor:
+             rowColor ?? ((journeyPosition.nextStop == data) ? SBBColors.night : ThemeUtil.getDASTableColor(context)),
          stickyLevel: StickyLevel.first,
          height: calculateHeight(data, config.settings.resolvedBreakSeries(metadata)),
        );
@@ -324,5 +326,5 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     return baseRowHeight + (properties.length * propertyRowHeight);
   }
 
-  bool get _isNextStop => metadata.nextStop == data;
+  bool get _isNextStop => journeyPosition.nextStop == data;
 }

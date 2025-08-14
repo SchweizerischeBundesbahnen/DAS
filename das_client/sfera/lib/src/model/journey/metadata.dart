@@ -9,10 +9,6 @@ class Metadata {
   Metadata({
     DateTime? timestamp,
     this.signaledPosition,
-    this.nextStop,
-    this.lastPosition,
-    this.lastServicePoint,
-    this.currentPosition,
     this.journeyStart,
     this.journeyEnd,
     this.delay,
@@ -35,14 +31,10 @@ class Metadata {
 
   final DateTime timestamp;
   final SignaledPosition? signaledPosition;
-  final ServicePoint? nextStop;
-  final ServicePoint? lastServicePoint;
-  final JourneyPoint? lastPosition;
-  final JourneyPoint? currentPosition;
-  final List<AdditionalSpeedRestriction> additionalSpeedRestrictions;
   final JourneyPoint? journeyStart;
   final JourneyPoint? journeyEnd;
   final Delay? delay;
+  final List<AdditionalSpeedRestriction> additionalSpeedRestrictions;
   final bool anyOperationalArrivalDepartureTimes;
   final List<NonStandardTrackEquipmentSegment> nonStandardTrackEquipmentSegments;
   final List<CommunicationNetworkChange> communicationNetworkChanges;

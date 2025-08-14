@@ -11,6 +11,7 @@ class ReducedServicePointRow extends ServicePointRow {
     required super.metadata,
     required super.data,
     required super.rowIndex,
+    required super.journeyPosition,
     required this.context,
     super.config,
   }) : super(context: context, rowColor: ThemeUtil.getDASTableColor(context), highlightNextStop: false);

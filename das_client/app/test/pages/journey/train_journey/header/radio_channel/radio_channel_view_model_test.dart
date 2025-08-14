@@ -196,16 +196,12 @@ void main() {
 Future<void> _streamProcessing() async => Future.delayed(Duration.zero);
 
 Journey mockJourney({
-  ServicePoint? servicePoint,
   Iterable<RadioContactList> radioContacts = const [],
   List<CommunicationNetworkChange> communicationNetworkChanges = const [],
-  JourneyPoint? currentPosition,
 }) => Journey(
   metadata: Metadata(
-    lastServicePoint: servicePoint,
     radioContactLists: radioContacts,
     communicationNetworkChanges: communicationNetworkChanges,
-    currentPosition: currentPosition,
   ),
   data: [],
 );

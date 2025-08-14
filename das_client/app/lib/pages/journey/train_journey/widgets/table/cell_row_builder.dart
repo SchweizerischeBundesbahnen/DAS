@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/train_journey/journey_position/journey_position_view_model.dart';
+import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/advised_speed_cell_body.dart';
@@ -18,7 +18,6 @@ import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_row.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
@@ -29,6 +28,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     required this.metadata,
     required super.data,
     required super.rowIndex,
+    required this.journeyPosition,
     super.height = rowHeight,
     super.stickyLevel,
     super.key,
@@ -42,6 +42,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   final Alignment defaultAlignment;
   final Color? rowColor;
   final Metadata metadata;
+  final JourneyPositionModel journeyPosition;
   final TrainJourneyConfig config;
   final VoidCallback? onTap;
   final bool isGrouped;
@@ -98,22 +99,17 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   }
 
   DASTableCell routeCell(BuildContext context) {
-    final positionViewModel = context.read<JourneyPositionViewModel>();
     return DASTableCell(
       color: specialCellColor,
       padding: EdgeInsets.all(0.0),
       alignment: null,
       clipBehaviour: Clip.none,
-      child: StreamBuilder(
-        stream: positionViewModel.model,
-        initialData: positionViewModel.modelValue,
-        builder: (context, snapshot) => RouteCellBody(
-          isCurrentPosition: snapshot.requireData.currentPosition == data,
-          isRouteStart: metadata.journeyStart == data,
-          isRouteEnd: metadata.journeyEnd == data,
-          chevronAnimationData: config.chevronAnimationData,
-          chevronPosition: RouteChevron.positionFromHeight(height),
-        ),
+      child: RouteCellBody(
+        isCurrentPosition: journeyPosition.currentPosition == data,
+        isRouteStart: metadata.journeyStart == data,
+        isRouteEnd: metadata.journeyEnd == data,
+        chevronAnimationData: config.chevronAnimationData,
+        chevronPosition: RouteChevron.positionFromHeight(height),
       ),
     );
   }
@@ -270,5 +266,5 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     }
   }
 
-  bool get _isNextStop => metadata.nextStop == data;
+  bool get _isNextStop => journeyPosition.nextStop == data;
 }

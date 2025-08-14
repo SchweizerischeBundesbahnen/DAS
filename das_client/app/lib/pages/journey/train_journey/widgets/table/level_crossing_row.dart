@@ -9,6 +9,7 @@ class LevelCrossingRow extends CellRowBuilder<LevelCrossing> {
     required super.metadata,
     required super.data,
     required super.rowIndex,
+    required super.journeyPosition,
     super.config,
     super.isGrouped,
   });
