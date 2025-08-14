@@ -1,5 +1,7 @@
 package ch.sbb.sferamock.messages.services;
 
+import static ch.sbb.sferamock.messages.common.XmlHelper.MAX_MESSAGE_SIZE;
+
 import ch.sbb.sferamock.adapters.sfera.model.v0201.NSPListComplexType;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SegmentProfile;
 import ch.sbb.sferamock.messages.common.XmlHelper;
@@ -15,6 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -22,6 +25,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class SegmentProfileRepository implements ApplicationRunner {
 
     private static final String XML_RESOURCES_CLASSPATH = "classpath:static_sfera_resources/*/SFERA_SP_*.xml";
@@ -61,7 +65,7 @@ public class SegmentProfileRepository implements ApplicationRunner {
                 String xmlPayload = new String(in.readAllBytes());
                 var segmentProfile = (SegmentProfile) xmlHelper.xmlToObject(xmlPayload);
                 if (trainNumber != null && Arrays.asList(trainNumbersWithLocalRegulations).contains(trainNumber)) {
-                    appendLocalRegulations(segmentProfile);
+                    segmentProfile = appendLocalRegulations(segmentProfile);
                 }
                 segmentProfiles.put(segmentId, segmentProfile);
             }
@@ -90,10 +94,16 @@ public class SegmentProfileRepository implements ApplicationRunner {
         return null;
     }
 
-    private void appendLocalRegulations(SegmentProfile segmentProfile) {
-        segmentProfile.getSPAreas().getTAFTAPLocation().forEach(taftapLocation -> {
+    private SegmentProfile appendLocalRegulations(SegmentProfile segmentProfile) {
+        SegmentProfile spClone = xmlHelper.deepCopy(segmentProfile);
+        spClone.getSPAreas().getTAFTAPLocation().forEach(taftapLocation -> {
             List<NSPListComplexType> localRegulationNsps = localRegulationRepository.getLocalRegulations(taftapLocation.getTAFTAPLocationAbbreviation());
             taftapLocation.getTAFTAPLocationNSP().addAll(localRegulationNsps);
         });
+        if (xmlHelper.toString(spClone).length() > MAX_MESSAGE_SIZE) {
+            log.warn("SegmentProfile with id={} exceeds maximum message size, not appending local regulations.", segmentProfile.getSPID());
+            return segmentProfile;
+        }
+        return spClone;
     }
 }
