@@ -27,6 +27,7 @@ class JourneyPositionViewModel {
         JourneyPositionModel(
           currentPosition: journey?.metadata.currentPosition,
           lastServicePoint: journey?.metadata.lastServicePoint,
+          lastPosition: journey?.metadata.lastPosition,
         ),
       );
     });

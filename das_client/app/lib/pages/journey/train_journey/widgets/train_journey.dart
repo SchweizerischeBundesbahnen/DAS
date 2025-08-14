@@ -57,9 +57,15 @@ class TrainJourney extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.read<TrainJourneyViewModel>();
+    final journeyPositionViewModel = context.read<JourneyPositionViewModel>();
 
     return StreamBuilder<List<dynamic>>(
-      stream: CombineLatestStream.list([viewModel.journey, viewModel.settings, viewModel.showDecisiveGradient]),
+      stream: CombineLatestStream.list([
+        viewModel.journey,
+        viewModel.settings,
+        viewModel.showDecisiveGradient,
+        journeyPositionViewModel.model,
+      ]),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data?[0] == null) {
           return SizedBox.shrink();
@@ -67,10 +73,11 @@ class TrainJourney extends StatelessWidget {
 
         final journey = snapshot.data![0] as Journey;
         final settings = snapshot.data![1] as TrainJourneySettings;
+        final journeyPosition = snapshot.data![3] as JourneyPositionModel;
 
         WidgetsBinding.instance.addPostFrameCallback((_) {
           viewModel.automaticAdvancementController.handleJourneyUpdate(
-            currentPosition: journey.metadata.currentPosition,
+            currentPosition: journeyPosition.currentPosition,
             routeStart: journey.metadata.routeStart,
             isAdvancementEnabledByUser: settings.isAutoAdvancementEnabled,
           );
@@ -83,13 +90,18 @@ class TrainJourney extends StatelessWidget {
         return Listener(
           onPointerDown: (_) => viewModel.automaticAdvancementController.resetScrollTimer(),
           onPointerUp: (_) => viewModel.automaticAdvancementController.resetScrollTimer(),
-          child: _body(context, journey, settings),
+          child: _body(context, journey, settings, journeyPosition),
         );
       },
     );
   }
 
-  Widget _body(BuildContext context, Journey journey, TrainJourneySettings settings) {
+  Widget _body(
+    BuildContext context,
+    Journey journey,
+    TrainJourneySettings settings,
+    JourneyPositionModel journeyPosition,
+  ) {
     final collapsibleRowsViewModel = context.read<CollapsibleRowsViewModel>();
     final journeyPositionViewModel = context.read<JourneyPositionViewModel>();
     return StreamBuilder(
@@ -106,8 +118,8 @@ class TrainJourney extends StatelessWidget {
       initialData: (collapsibleRowsViewModel.collapsedRowsValue, journeyPositionViewModel.modelValue),
       builder: (context, snapshot) {
         final collapsedRows = snapshot.data?.$1 ?? {};
-        final currentPosition = snapshot.data?.$2.currentPosition;
-        final tableRows = _rows(context, journey, settings, collapsedRows, currentPosition);
+        final journeyPosition = snapshot.data?.$2;
+        final tableRows = _rows(context, journey, settings, collapsedRows, journeyPosition);
         context.read<TrainJourneyViewModel>().automaticAdvancementController.updateRenderedRows(tableRows);
 
         final marginAdjustment = Platform.isIOS
@@ -125,7 +137,7 @@ class TrainJourney extends StatelessWidget {
               final isDetailModalOpen = snapshot.data ?? false;
               final advancementController = context.read<TrainJourneyViewModel>().automaticAdvancementController;
               return ChevronAnimationWrapper(
-                journey: journey,
+                journeyPosition: journeyPosition,
                 child: DASTable(
                   key: advancementController.tableKey,
                   scrollController: advancementController.scrollController,
@@ -146,14 +158,14 @@ class TrainJourney extends StatelessWidget {
     Journey journey,
     TrainJourneySettings settings,
     Map<int, CollapsedState> collapsedRows,
-    JourneyPoint? currentPosition,
+    JourneyPositionModel? journeyPosition,
   ) {
     final currentBreakSeries = settings.resolvedBreakSeries(journey.metadata);
 
     final rows = journey.data
         .whereNot((it) => _isCurvePointWithoutSpeed(it, journey, settings))
         .groupBaliseAndLeveLCrossings(settings.expandedGroups)
-        .hideRepeatedLineFootNotes(currentPosition)
+        .hideRepeatedLineFootNotes(journeyPosition?.currentPosition)
         .hideFootNotesForNotSelectedTrainSeries(currentBreakSeries?.trainSeries)
         .combineFootNoteAndOperationalIndication()
         .sortedBy((data) => data.order);
@@ -178,6 +190,7 @@ class TrainJourney extends StatelessWidget {
         bracketStationRenderData: BracketStationRenderData.from(rowData, journey.metadata),
         chevronAnimationData: ChevronAnimationData.from(
           journey.journeyPoints,
+          journeyPosition,
           journey.metadata,
           rowData,
           currentBreakSeries,

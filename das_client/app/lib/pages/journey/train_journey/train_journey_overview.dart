@@ -66,6 +66,7 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
   @override
   Widget build(BuildContext context) {
     final trainJourneyViewModel = context.read<TrainJourneyViewModel>();
+    final journeyPositionViewModel = JourneyPositionViewModel(journeyStream: trainJourneyViewModel.journey);
     return MultiProvider(
       providers: [
         Provider(
@@ -80,7 +81,10 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
-          create: (_) => CollapsibleRowsViewModel(sferaRemoteRepo: DI.get()),
+          create: (_) => CollapsibleRowsViewModel(
+            journeyStream: trainJourneyViewModel.journey,
+            journeyPositionStream: journeyPositionViewModel.model,
+          ),
           dispose: (context, vm) => vm.dispose(),
         ),
         Provider(
@@ -102,11 +106,14 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
-          create: (_) => AdlViewModel(journeyStream: trainJourneyViewModel.journey),
+          create: (_) => AdlViewModel(
+            journeyStream: trainJourneyViewModel.journey,
+            journeyPositionStream: journeyPositionViewModel.model,
+          ),
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
-          create: (_) => JourneyPositionViewModel(journeyStream: trainJourneyViewModel.journey),
+          create: (_) => journeyPositionViewModel,
           dispose: (_, vm) => vm.dispose(),
         ),
       ],

@@ -85,6 +85,26 @@ void main() {
         orderedEquals([JourneyPositionModel(), JourneyPositionModel(lastServicePoint: aServicePoint)]),
       );
     });
+
+    test('model_whenJourneyWithLastPosition_thenHasLastPosition', () async {
+      // ARRANGE
+      final aServicePoint = ServicePoint(name: 'a', order: 0, kilometre: []);
+      rxMockJourney.add(
+        Journey(
+          metadata: Metadata(lastPosition: aServicePoint),
+          data: [],
+        ),
+      );
+      await _streamProcessing();
+
+      // ACT & EXPECT
+      expect(testee.modelValue, equals(JourneyPositionModel(lastPosition: aServicePoint)));
+      expect(emitRegister, hasLength(2));
+      expect(
+        emitRegister,
+        orderedEquals([JourneyPositionModel(), JourneyPositionModel(lastPosition: aServicePoint)]),
+      );
+    });
   });
 }
 

@@ -1,3 +1,4 @@
+import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
@@ -19,12 +20,13 @@ class ChevronAnimationData {
 
   static ChevronAnimationData? from(
     List<JourneyPoint> rows,
+    JourneyPositionModel? journeyPosition,
     Metadata metadata,
     BaseData currentRow,
     BreakSeries? currentBreakSeries,
   ) {
-    final currentPosition = metadata.currentPosition;
-    final lastPosition = metadata.lastPosition;
+    final currentPosition = journeyPosition?.currentPosition;
+    final lastPosition = journeyPosition?.lastPosition;
     if (currentPosition == null || lastPosition == currentPosition || currentRow is! JourneyPoint) {
       return null;
     }

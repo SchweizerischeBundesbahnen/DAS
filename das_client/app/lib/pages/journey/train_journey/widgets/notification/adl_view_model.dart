@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
 import 'package:app/sound/adl_end.dart';
 import 'package:app/sound/adl_start.dart';
 import 'package:app/util/time_constants.dart';
@@ -8,15 +9,15 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 class AdlViewModel {
-  AdlViewModel({required Stream<Journey?> journeyStream}) {
-    _initJourneyStreamSubscription(journeyStream);
+  AdlViewModel({required Stream<Journey?> journeyStream, required Stream<JourneyPositionModel> journeyPositionStream}) {
+    _initJourneyStreamSubscription(journeyStream, journeyPositionStream);
   }
 
   final _adlEndDisplaySeconds = DI.get<TimeConstants>().adlEndDisplaySeconds;
 
   Timer? _adlEndTimer;
 
-  StreamSubscription<Journey?>? _journeySubscription;
+  StreamSubscription<(Journey?, JourneyPositionModel)>? _journeySubscription;
 
   final _rxActiveAdl = BehaviorSubject<AdvisedSpeedSegment?>.seeded(null);
 
@@ -37,12 +38,20 @@ class AdlViewModel {
     _adlEndTimer?.cancel();
   }
 
-  void _initJourneyStreamSubscription(Stream<Journey?> journeyStream) {
-    _journeySubscription = journeyStream.listen((journey) {
-      if (journey != null && journey.metadata.currentPosition != null) {
+  void _initJourneyStreamSubscription(
+    Stream<Journey?> journeyStream,
+    Stream<JourneyPositionModel> journeyPositionStream,
+  ) {
+    _journeySubscription = CombineLatestStream.combine2(journeyStream, journeyPositionStream, (a, b) => (a, b)).listen((
+      data,
+    ) {
+      final journey = data.$1;
+      final journeyPosition = data.$2;
+
+      if (journey != null && journeyPosition.currentPosition != null) {
         final metadata = journey.metadata;
         final activeAdl = metadata.advisedSpeedSegments
-            .appliesToOrder(journey.metadata.currentPosition!.order)
+            .appliesToOrder(journeyPosition.currentPosition!.order)
             .firstOrNull;
 
         if (activeAdl != null) {
@@ -54,7 +63,7 @@ class AdlViewModel {
           _rxActiveAdl.add(activeAdl);
           _rxAdlState.add(AdlState.active);
 
-          if (activeAdl.endOrder == metadata.currentPosition!.order) {
+          if (activeAdl.endOrder == journeyPosition.currentPosition!.order) {
             // ADL ends at the last position
             _adlEnd(AdlState.end);
           }
