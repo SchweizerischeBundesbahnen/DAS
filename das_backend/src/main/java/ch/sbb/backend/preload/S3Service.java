@@ -30,7 +30,7 @@ public class S3Service {
             .build();
 
         s3Client.putObject(putObjectRequest, RequestBody.fromFile(filePath));
-        System.out.println("Datei " + filePath + " wurde unter dem Schlüssel " + key + " in den Bucket " + bucketName + " hochgeladen.");
+        System.out.println("File " + filePath + " was uploaded to the bucket " + bucketName + " with the key " + key + ".");
     }
 
     public void downloadFile(String key, Path destination) {
@@ -40,6 +40,6 @@ public class S3Service {
             .build();
 
         s3Client.getObject(getObjectRequest, ResponseTransformer.toFile(destination));
-        System.out.println("Datei mit dem Schlüssel " + key + " wurde aus dem Bucket " + bucketName + " heruntergeladen und unter " + destination + " gespeichert.");
+        System.out.println("File with key " + key + " was downloaded from bucket " + bucketName + " and saved at " + destination + ".");
     }
 }
