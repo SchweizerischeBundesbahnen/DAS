@@ -70,7 +70,7 @@ class ChronographViewModel {
   void _initJourneyPositionSubscription(Stream<JourneyPositionModel> journeyPositionStream) {
     _subscriptions.add(
       journeyPositionStream.listen((model) {
-        _lastServicePoint = model.lastServicePoint;
+        _lastServicePoint = model.previousServicePoint;
 
         _emitState();
       }),

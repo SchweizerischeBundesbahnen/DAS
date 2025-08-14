@@ -1282,42 +1282,17 @@ void main() {
     expect(advisedSpeeds[4].endData, journey.data[33]);
   });
 
-  test('Test current position is start when nothing is given ', () async {
-    var journey = getJourney('T9', 1, tcCount: 1);
+  test('Test signaled position is null when nothing is given', () async {
+    final journey = getJourney('T9', 1, tcCount: 1);
     expect(journey.valid, true);
-    expect(journey.metadata.currentPosition, journey.data.first);
-
-    journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 0);
-    expect(journey.valid, true);
-    expect(journey.metadata.currentPosition, journey.data.first);
+    expect(journey.metadata.signaledPosition, isNull);
   });
 
-  test('Test current position is set to signal', () async {
-    var journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 1000);
+  test('Test signaled position has correct order', () async {
+    final journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 1000);
     expect(journey.valid, true);
-    expect(journey.metadata.currentPosition, journey.data[5]);
-
-    journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 4000);
-    expect(journey.valid, true);
-    expect(journey.metadata.currentPosition, journey.data[18]);
-  });
-
-  test('Test current position after hidden signal', () async {
-    final journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 2000);
-    expect(journey.valid, true);
-    // Hidden signal position is between B3 and S3 signals.
-    // Current position should be the next smaller visible element
-    expect(journey.metadata.currentPosition, journey.data[9]);
-  });
-
-  test('Test current position is set to service point on last signal', () async {
-    var journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 3000);
-    expect(journey.valid, true);
-    expect(journey.metadata.currentPosition, journey.data.whereType<ServicePoint>().toList()[1]);
-
-    journey = getJourney('T9', 1, tcCount: 1, relatedTrainInfoEventId: 5000);
-    expect(journey.valid, true);
-    expect(journey.metadata.currentPosition, journey.data.whereType<ServicePoint>().toList()[2]);
+    expect(journey.metadata.signaledPosition, isNotNull);
+    expect(journey.metadata.signaledPosition?.order, equals(3000));
   });
 
   test('Test next station is calculated correctly with non position infos ', () async {

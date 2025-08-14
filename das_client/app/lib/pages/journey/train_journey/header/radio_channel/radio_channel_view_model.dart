@@ -53,7 +53,7 @@ class RadioChannelViewModel {
 
   void _handlePositionUpdate(JourneyPositionModel p) {
     _currentPosition = p.currentPosition;
-    _lastServicePoint = p.lastServicePoint;
+    _lastServicePoint = p.previousServicePoint;
 
     _emitModel();
   }

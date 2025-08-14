@@ -102,13 +102,14 @@ class SferaModelMapper {
 
     return Journey(
       metadata: Metadata(
+        signaledPosition: _signaledPosition(relatedTrainInformation, segmentProfileReferences),
         nextStop: _calculateNextStop(servicePoints, currentPosition),
         lastPosition: journeyPoints.firstWhereOrNull((it) => it.order == lastJourney?.metadata.currentPosition?.order),
         lastServicePoint: _calculateLastServicePoint(servicePoints, currentPosition),
         currentPosition: currentPosition,
         additionalSpeedRestrictions: additionalSpeedRestrictions,
-        routeStart: journeyPoints.firstOrNull,
-        routeEnd: journeyPoints.lastOrNull,
+        journeyStart: journeyPoints.firstOrNull,
+        journeyEnd: journeyPoints.lastOrNull,
         delay: _parseDelay(relatedTrainInformation),
         anyOperationalArrivalDepartureTimes: servicePoints.any(
           (sP) => sP.arrivalDepartureTime?.hasAnyOperationalTime ?? false,
@@ -133,6 +134,23 @@ class SferaModelMapper {
       ),
       data: journeyData,
     );
+  }
+
+  static SignaledPosition? _signaledPosition(
+    RelatedTrainInformationDto? relatedTrainInformation,
+    List<SegmentProfileReferenceDto> segmentProfileReferences,
+  ) {
+    final positionSpeed = relatedTrainInformation?.ownTrain.trainLocationInformation.positionSpeed;
+
+    if (positionSpeed == null) return null;
+
+    final positionSegmentIndex = segmentProfileReferences.indexWhere((it) => it.spId == positionSpeed.spId);
+    if (positionSegmentIndex == -1) {
+      _log.warning('Received position on unknown segment with spId: ${positionSpeed.spId}');
+      return null;
+    } else {
+      return SignaledPosition(order: calculateOrder(positionSegmentIndex, positionSpeed.location));
+    }
   }
 
   static JourneyPoint? _calculateCurrentPosition(

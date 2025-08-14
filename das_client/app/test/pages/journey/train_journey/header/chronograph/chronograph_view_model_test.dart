@@ -166,7 +166,7 @@ void main() {
     test('punctualityModel_HasLastServicePoint_staysHiddenAndDoesNotEmit', () {
       // ACT
       testAsync.run((_) {
-        rxMockJourneyPosition.add(JourneyPositionModel(lastServicePoint: aServicePoint));
+        rxMockJourneyPosition.add(JourneyPositionModel(previousServicePoint: aServicePoint));
       });
 
       // EXPECT
@@ -194,7 +194,7 @@ void main() {
     test('punctualityModel_ServicePointWithoutCalculatedSpeed_staysHiddenAndDoesNotEmit', () {
       // ACT
       testAsync.run((_) {
-        rxMockJourneyPosition.add(JourneyPositionModel(lastServicePoint: aServicePoint));
+        rxMockJourneyPosition.add(JourneyPositionModel(previousServicePoint: aServicePoint));
       });
       _processStreamInFakeAsync(testAsync);
 
@@ -206,7 +206,7 @@ void main() {
     test('punctualityModel_ServicePointWithCalculatedSpeed_emitsVisible', () {
       // ACT
       testAsync.run((_) {
-        rxMockJourneyPosition.add(JourneyPositionModel(lastServicePoint: bServicePoint));
+        rxMockJourneyPosition.add(JourneyPositionModel(previousServicePoint: bServicePoint));
       });
       _processStreamInFakeAsync(testAsync);
 
@@ -221,7 +221,7 @@ void main() {
         // ACT
         testAsync.run((_) {
           rxMockAdlState.add(AdlState.active);
-          rxMockJourneyPosition.add(JourneyPositionModel(lastServicePoint: bServicePoint));
+          rxMockJourneyPosition.add(JourneyPositionModel(previousServicePoint: bServicePoint));
         });
         _processStreamInFakeAsync(testAsync);
 
@@ -236,7 +236,7 @@ void main() {
       () {
         // ACT
         testAsync.run((_) {
-          rxMockJourneyPosition.add(JourneyPositionModel(lastServicePoint: bServicePoint));
+          rxMockJourneyPosition.add(JourneyPositionModel(previousServicePoint: bServicePoint));
           rxMockAdlState.add(AdlState.active);
         });
         _processStreamInFakeAsync(testAsync);
@@ -253,7 +253,7 @@ void main() {
       () {
         // ACT
         testAsync.run((_) {
-          rxMockJourneyPosition.add(JourneyPositionModel(lastServicePoint: bServicePoint));
+          rxMockJourneyPosition.add(JourneyPositionModel(previousServicePoint: bServicePoint));
           rxMockPunctuality.add(testStaleModel);
         });
         _processStreamInFakeAsync(testAsync);
@@ -270,7 +270,7 @@ void main() {
       () {
         // ACT
         testAsync.run((_) {
-          rxMockJourneyPosition.add(JourneyPositionModel(lastServicePoint: bServicePoint));
+          rxMockJourneyPosition.add(JourneyPositionModel(previousServicePoint: bServicePoint));
           rxMockPunctuality.add(testStaleModel);
           rxMockPunctuality.add(testHiddenModel);
         });

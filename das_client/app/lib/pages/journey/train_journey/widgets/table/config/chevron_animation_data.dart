@@ -71,7 +71,7 @@ class ChevronAnimationData {
     // Last row cell start to chevron position
     final endRow = rows[toIndex];
     final endRowHeight = CellRowBuilder.rowHeightForData(endRow, currentBreakSeries);
-    final chevronPosition = metadata.routeEnd == endRow
+    final chevronPosition = metadata.journeyEnd == endRow
         ? RouteCellBody.routeCirclePosition - RouteChevron.chevronHeight
         : RouteChevron.positionFromHeight(endRowHeight);
     endOffset += chevronPosition;

@@ -41,7 +41,7 @@ void main() {
     test('model_whenJourneyWithLastServicePoint_thenLastServicePointIsEqual', () async {
       // ARRANGE
       final aServicePoint = ServicePoint(name: 'A', order: 0, kilometre: [0]);
-      rxMockJourneyPosition.add(JourneyPositionModel(lastServicePoint: aServicePoint));
+      rxMockJourneyPosition.add(JourneyPositionModel(previousServicePoint: aServicePoint));
       await _streamProcessing();
 
       // EXPECT

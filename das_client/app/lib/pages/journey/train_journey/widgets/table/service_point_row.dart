@@ -162,8 +162,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
         builder: (context, snapshot) => RouteCellBody(
           isStop: data.isStop,
           isCurrentPosition: snapshot.requireData.currentPosition == data,
-          isRouteStart: metadata.routeStart == data,
-          isRouteEnd: metadata.routeEnd == data,
+          isRouteStart: metadata.journeyStart == data,
+          isRouteEnd: metadata.journeyEnd == data,
           isStopOnRequest: !data.mandatoryStop,
           chevronAnimationData: config.chevronAnimationData,
           chevronPosition: RouteChevron.positionFromHeight(height),

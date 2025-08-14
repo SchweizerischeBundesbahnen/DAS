@@ -78,7 +78,7 @@ class TrainJourney extends StatelessWidget {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           viewModel.automaticAdvancementController.handleJourneyUpdate(
             currentPosition: journeyPosition.currentPosition,
-            routeStart: journey.metadata.routeStart,
+            routeStart: journey.metadata.journeyStart,
             isAdvancementEnabledByUser: settings.isAutoAdvancementEnabled,
           );
         });

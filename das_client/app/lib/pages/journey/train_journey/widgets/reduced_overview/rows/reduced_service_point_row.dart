@@ -44,8 +44,8 @@ class ReducedServicePointRow extends ServicePointRow {
       child: RouteCellBody(
         isStop: data.isStop,
         isCurrentPosition: false,
-        isRouteStart: metadata.routeStart == data,
-        isRouteEnd: metadata.routeEnd == data,
+        isRouteStart: metadata.journeyStart == data,
+        isRouteEnd: metadata.journeyEnd == data,
         isStopOnRequest: !data.mandatoryStop,
         chevronPosition: RouteChevron.positionFromHeight(height),
         isNextStop: false,

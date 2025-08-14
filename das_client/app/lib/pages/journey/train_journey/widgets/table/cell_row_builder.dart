@@ -109,8 +109,8 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
         initialData: positionViewModel.modelValue,
         builder: (context, snapshot) => RouteCellBody(
           isCurrentPosition: snapshot.requireData.currentPosition == data,
-          isRouteStart: metadata.routeStart == data,
-          isRouteEnd: metadata.routeEnd == data,
+          isRouteStart: metadata.journeyStart == data,
+          isRouteEnd: metadata.journeyEnd == data,
           chevronAnimationData: config.chevronAnimationData,
           chevronPosition: RouteChevron.positionFromHeight(height),
         ),
