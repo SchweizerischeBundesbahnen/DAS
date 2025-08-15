@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.25.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.24.1...das_client-v0.25.0) (2025-08-15)
+
+
+### Features
+
+* added automatic advancement on invisible signals ([#662](https://github.com/SchweizerischeBundesbahnen/DAS/issues/662)) ([#1153](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1153)) ([719967e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/719967e287a5edbd00238eb3aef1b025741cd069))
+* changing colors of next stop so they stick out more ([#981](https://github.com/SchweizerischeBundesbahnen/DAS/issues/981)) ([#1134](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1134)) ([7261312](https://github.com/SchweizerischeBundesbahnen/DAS/commit/72613120c14d1506b64c74f7ab5aeb181bbe0fe1))
+
+
+### Bug Fixes
+
+* journey not found and maybe performance problem ([#1147](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1147)) ([#1159](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1159)) ([ea440d2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ea440d2b76027e9c8d30c0d618ae32ff6c33869c))
+* smaller client improvements and refactors ([#1146](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1146)) ([21d0b65](https://github.com/SchweizerischeBundesbahnen/DAS/commit/21d0b658d2f980f7c14371ba60a124ea27c33493))
+
 ## [0.24.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.24.0...das_client-v0.24.1) (2025-08-07)
 
 
