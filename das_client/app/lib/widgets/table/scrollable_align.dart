@@ -74,9 +74,9 @@ class _ScrollableAlignState extends State<ScrollableAlign> {
           stickyHeaderHeight += rowHeight - stickyOffset;
         }
       }
-    }
 
-    stickyHeaderHeight = stickyHeaderHeight.roundToDouble();
+      stickyHeaderHeight = stickyHeaderHeight.roundToDouble();
+    }
 
     final currentPosition = widget.scrollController.position.pixels;
 
