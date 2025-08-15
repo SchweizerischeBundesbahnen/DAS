@@ -62,52 +62,6 @@ class TrainJourneyViewModel {
     _listenToSferaRemoteRepo();
   }
 
-  void _listenToSferaRemoteRepo() {
-    _stateSubscription?.cancel();
-    _stateSubscription = _sferaRemoteRepo.stateStream.listen((state) {
-      switch (state) {
-        case SferaRemoteRepositoryState.connected:
-          automaticAdvancementController = AutomaticAdvancementController();
-          WakelockPlus.enable();
-          _enableWarnapp();
-          break;
-        case SferaRemoteRepositoryState.connecting:
-          break;
-        case SferaRemoteRepositoryState.disconnected:
-          WakelockPlus.disable();
-          _disableWarnapp();
-          _resetSettings();
-          if (_sferaRemoteRepo.lastError != null) {
-            _rxErrorCode.add(ErrorCode.fromSfera(_sferaRemoteRepo.lastError!));
-            setAutomaticAdvancement(false);
-          }
-          break;
-      }
-    });
-  }
-
-  void _enableWarnapp() {
-    _warnappAbfahrtSubscription = _warnappRepo.abfahrtEventStream.listen((_) => _handleAbfahrtEvent());
-    _warnappSignalSubscription = _sferaRemoteRepo.warnappEventStream.listen((_) {
-      _lastWarnappEventTimestamp = DateTime.now();
-    });
-    _warnappRepo.enable();
-  }
-
-  void _disableWarnapp() {
-    _warnappRepo.disable();
-    _warnappAbfahrtSubscription?.cancel();
-    _warnappAbfahrtSubscription = null;
-    _warnappSignalSubscription?.cancel();
-    _warnappSignalSubscription = null;
-    _lastWarnappEventTimestamp = null;
-  }
-
-  void reset() {
-    _sferaRemoteRepo.disconnect();
-    _resetSettings();
-  }
-
   void updateBreakSeries(BreakSeries selectedBreakSeries) {
     _rxSettings.add(_rxSettings.value.copyWith(selectedBreakSeries: selectedBreakSeries));
 
@@ -141,6 +95,18 @@ class TrainJourneyViewModel {
     }
   }
 
+  void toggleKmDecisiveGradient() {
+    if (!showDecisiveGradientValue) {
+      _rxShowDecisiveGradient.add(true);
+      _showDecisiveGradientTimer = Timer(Duration(seconds: _resetToKmAfterSeconds), () {
+        if (_rxShowDecisiveGradient.value) _rxShowDecisiveGradient.add(false);
+      });
+    } else {
+      _rxShowDecisiveGradient.add(false);
+      _showDecisiveGradientTimer?.cancel();
+    }
+  }
+
   void dispose() {
     _rxSettings.close();
     _rxWarnapp.close();
@@ -151,6 +117,48 @@ class TrainJourneyViewModel {
     automaticAdvancementController.dispose();
   }
 
+  void _listenToSferaRemoteRepo() {
+    _stateSubscription?.cancel();
+    _stateSubscription = _sferaRemoteRepo.stateStream.listen((state) {
+      switch (state) {
+        case SferaRemoteRepositoryState.connected:
+          automaticAdvancementController = AutomaticAdvancementController();
+          WakelockPlus.enable();
+          _enableWarnapp();
+          break;
+        case SferaRemoteRepositoryState.connecting:
+          _rxErrorCode.add(null);
+          break;
+        case SferaRemoteRepositoryState.disconnected:
+          WakelockPlus.disable();
+          _disableWarnapp();
+          _resetSettings();
+          if (_sferaRemoteRepo.lastError != null) {
+            _rxErrorCode.add(ErrorCode.fromSfera(_sferaRemoteRepo.lastError!));
+            setAutomaticAdvancement(false);
+          }
+          break;
+      }
+    });
+  }
+
+  void _enableWarnapp() {
+    _warnappAbfahrtSubscription = _warnappRepo.abfahrtEventStream.listen((_) => _handleAbfahrtEvent());
+    _warnappSignalSubscription = _sferaRemoteRepo.warnappEventStream.listen((_) {
+      _lastWarnappEventTimestamp = DateTime.now();
+    });
+    _warnappRepo.enable();
+  }
+
+  void _disableWarnapp() {
+    _warnappRepo.disable();
+    _warnappAbfahrtSubscription?.cancel();
+    _warnappAbfahrtSubscription = null;
+    _warnappSignalSubscription?.cancel();
+    _warnappSignalSubscription = null;
+    _lastWarnappEventTimestamp = null;
+  }
+
   void _resetSettings() => _rxSettings.add(TrainJourneySettings());
 
   void _handleAbfahrtEvent() {
@@ -159,18 +167,6 @@ class TrainJourneyViewModel {
         now.difference(_lastWarnappEventTimestamp!).inMilliseconds < _warnappWindowMilliseconds) {
       _log.info('Abfahrt detected while warnapp message was within $_warnappWindowMilliseconds ms -> Warning!');
       _rxWarnapp.add(WarnappEvent());
-    }
-  }
-
-  void toggleKmDecisiveGradient() {
-    if (!showDecisiveGradientValue) {
-      _rxShowDecisiveGradient.add(true);
-      _showDecisiveGradientTimer = Timer(Duration(seconds: _resetToKmAfterSeconds), () {
-        if (_rxShowDecisiveGradient.value) _rxShowDecisiveGradient.add(false);
-      });
-    } else {
-      _rxShowDecisiveGradient.add(false);
-      _showDecisiveGradientTimer?.cancel();
     }
   }
 }
