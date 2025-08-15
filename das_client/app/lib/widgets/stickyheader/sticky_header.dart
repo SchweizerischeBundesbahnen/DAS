@@ -74,13 +74,14 @@ class StickyHeaderState extends State<StickyHeader> {
           child: widget.child,
         ),
         StickyWidget(
-          key: StickyHeader.headerKey,
+          key: ValueKey(StickyHeader.headerKey.hashCode ^ ValueKey(Theme.brightnessOf(context)).hashCode),
           controller: controller,
           widgetBuilder: widget.headerBuilder,
           themeModeStream: ThemeViewModel().themeMode,
         ),
         if (widget.footerBuilder != null)
           StickyWidget(
+            key: ValueKey(Theme.brightnessOf(context)),
             controller: controller,
             widgetBuilder: widget.footerBuilder!,
             isHeader: false,

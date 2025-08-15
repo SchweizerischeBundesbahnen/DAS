@@ -7,10 +7,14 @@
 import 'dart:math';
 import 'dart:async';
 
+import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/stickyheader/sticky_widget_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
+
+final _log = Logger('StickyWidget');
 
 /// Sticky Widget.
 ///
@@ -55,6 +59,14 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
   }
 
   @override
+  void didChangeDependencies() {
+    _log.fine('didChangedDependency called');
+    _buildHeaderWidgets(context);
+    _buildFooterWidget(context);
+    super.didChangeDependencies();
+  }
+
+  @override
   void didUpdateWidget(covariant StickyWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != oldWidget.controller) {
@@ -63,7 +75,9 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
     }
     if (widget.themeModeStream != oldWidget.themeModeStream) {
       _themeSub.cancel();
-      _themeSub = widget.themeModeStream.listen((_) => _update());
+      _themeSub = widget.themeModeStream.listen((_) {
+        _update();
+      });
     }
   }
 
@@ -100,6 +114,7 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
     if (!widget.controller.isRecalculating) {
       if (indexesToBuild[StickyLevel.first] != -1) {
         _stickyHeader1 = Positioned(
+          key: ValueKey(Theme.brightnessOf(context)),
           left: 0,
           top: widget.controller.headerOffsets[StickyLevel.first],
           right: 0,
@@ -111,6 +126,7 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
 
       if (indexesToBuild[StickyLevel.second] != -1) {
         _stickyHeader2 = Positioned(
+          key: ValueKey(Theme.brightnessOf(context)),
           left: 0,
           top:
               widget.controller.widgetHeight(indexesToBuild[StickyLevel.first]!) +
@@ -143,6 +159,7 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
     return Stack(
       children: [
         Positioned(
+          key: ValueKey(Theme.brightnessOf(context)),
           left: 0,
           right: 0,
           bottom: 0,
