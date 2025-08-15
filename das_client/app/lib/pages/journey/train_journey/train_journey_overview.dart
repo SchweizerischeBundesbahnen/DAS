@@ -66,7 +66,11 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
   @override
   Widget build(BuildContext context) {
     final trainJourneyViewModel = context.read<TrainJourneyViewModel>();
-    final journeyPositionViewModel = JourneyPositionViewModel(journeyStream: trainJourneyViewModel.journey);
+    final punctualityViewModel = PunctualityViewModel(journeyStream: trainJourneyViewModel.journey);
+    final journeyPositionViewModel = JourneyPositionViewModel(
+      journeyStream: trainJourneyViewModel.journey,
+      punctualityStream: punctualityViewModel.model,
+    );
     return MultiProvider(
       providers: [
         Provider(
@@ -77,7 +81,7 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
-          create: (_) => PunctualityViewModel(journeyStream: trainJourneyViewModel.journey),
+          create: (_) => punctualityViewModel,
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
