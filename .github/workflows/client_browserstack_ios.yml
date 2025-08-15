@@ -22,52 +22,52 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        file-nr: [ 1,2,3,4,5 ]
+        file-nr: [1,2,3,4,5]
 
-    runs-on: macos-15
+    runs-on: macos-latest
     steps:
 
-      - uses: actions/checkout@v5
+    - uses: actions/checkout@v5
 
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.32.x'
-          cache: true
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.32.x'
+        cache: true
 
-      - name: Setup melos
-        uses: bluefireteam/melos-action@v3
-        with:
-          melos-version: '^6.3.0'
-          run-bootstrap: 'false'
+    - name: Setup melos
+      uses: bluefireteam/melos-action@v3
+      with:
+        melos-version: '^6.3.0'
+        run-bootstrap: 'false'
 
-      - name: Get dependencies
-        run: flutter pub get
+    - name: Get dependencies
+      run: flutter pub get
 
-      - name: Generate sources
-        run: melos generate
+    - name: Generate sources
+      run: melos generate
 
-      - name: Build ipa for integration tests
-        shell: bash
-        env:
-          MQTT_USERNAME: ${{ secrets.MQTT_USERNAME }}
-          MQTT_PASSWORD: ${{ secrets.MQTT_PASSWORD }}
-        run: |
-          flutter build ios --flavor dev --release --no-codesign -t integration_test/app_test_ios_${{ matrix.file-nr }}.dart --no-tree-shake-icons --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD
-          pushd ios
-          xcodebuild -workspace Runner.xcworkspace -scheme dev -config Flutter/Release.xcconfig -derivedDataPath ../build/ios_integration -sdk iphoneos build-for-testing CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
-          popd
-          pushd build/ios_integration/Build/Products
-          zip -r app-integrationtest-release-${{ matrix.file-nr }}.zip Release-iphoneos dev_dev_iphoneos*-arm64.xctestrun
-          popd
-        working-directory: das_client/app
+    - name: Build ipa for integration tests
+      shell: bash
+      env:
+        MQTT_USERNAME: ${{ secrets.MQTT_USERNAME }}
+        MQTT_PASSWORD: ${{ secrets.MQTT_PASSWORD }}
+      run: |
+        flutter build ios --flavor dev --release --no-codesign -t integration_test/app_test_ios_${{ matrix.file-nr }}.dart --no-tree-shake-icons --dart-define=MQTT_USERNAME=$MQTT_USERNAME --dart-define=MQTT_PASSWORD=$MQTT_PASSWORD
+        pushd ios
+        xcodebuild -workspace Runner.xcworkspace -scheme dev -config Flutter/Release.xcconfig -derivedDataPath ../build/ios_integration -sdk iphoneos build-for-testing CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+        popd
+        pushd build/ios_integration/Build/Products
+        zip -r app-integrationtest-release-${{ matrix.file-nr }}.zip Release-iphoneos dev_dev_iphoneos*-arm64.xctestrun
+        popd
+      working-directory: das_client/app
 
-      - name: Upload and Run on Browserstack
-        uses: Grodien/browserstack-flutter-action@v1.4
-        with:
-          browserstackUsername: ${{ secrets.BROWSERSTACK_USERNAME }}
-          browserstackAccessKey: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-          project: das_client
-          customId: das_client_ios
-          buildTag: das_client_ios
-          testPackagePath: ${{ github.workspace }}/das_client/app/build/ios_integration/Build/Products/app-integrationtest-release-${{ matrix.file-nr }}.zip
-          devices: iPad 9th-15
+    - name: Upload and Run on Browserstack
+      uses: Grodien/browserstack-flutter-action@v1.4
+      with:
+        browserstackUsername: ${{ secrets.BROWSERSTACK_USERNAME }}
+        browserstackAccessKey: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+        project: das_client
+        customId: das_client_ios
+        buildTag: das_client_ios
+        testPackagePath: ${{ github.workspace }}/das_client/app/build/ios_integration/Build/Products/app-integrationtest-release-${{ matrix.file-nr }}.zip
+        devices: iPad 9th-15
