@@ -97,7 +97,7 @@ class TimeCellBody extends StatelessWidget {
 extension _DateTimeExtension on DateTime {
   bool isAfterOrSameToTheMinute(DateTime? other) {
     if (other == null) return false;
-    return roundDownToMinute().isAfterOrSame(other.roundDownToMinute());
+    return roundDownToMinute.isAfterOrSame(other.roundDownToMinute);
   }
 
   bool isAfterOrSame(DateTime other) => isAtSameMomentAs(other) || isAfter(other);

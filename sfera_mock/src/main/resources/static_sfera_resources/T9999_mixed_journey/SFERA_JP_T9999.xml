@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="6" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="7" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
     <TrainIdentification>
         <OTN_ID>
             <teltsi_Company>1085</teltsi_Company>
@@ -33,7 +33,8 @@
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:00:20Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:00:25Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Haltestelle_B"/>
             </TimingPointReference>

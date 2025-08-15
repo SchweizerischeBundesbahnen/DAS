@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/extension/datetime_extension.dart';
 import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/train_journey/punctuality/punctuality_model.dart';
 import 'package:clock/clock.dart';
@@ -18,10 +19,15 @@ class JourneyPositionViewModel {
     _initSubscription(journeyStream, punctualityStream);
   }
 
-  StreamSubscription<dynamic>? _subscription;
+  StreamSubscription<PunctualityModel>? _punctualitySubscription;
+  StreamSubscription<Journey?>? _journeySubscription;
   final _rxModel = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
 
   final _rxNextServicePoint = BehaviorSubject<ServicePoint?>.seeded(null);
+
+  PunctualityModel _punctuality = PunctualityModel.hidden();
+
+  Journey? _journey;
 
   Timer? _servicePointReached;
 
@@ -31,53 +37,102 @@ class JourneyPositionViewModel {
 
   void dispose() {
     _servicePointReached?.cancel();
-    _subscription?.cancel();
+    _punctualitySubscription?.cancel();
+    _journeySubscription?.cancel();
     _servicePointReached = null;
-    _subscription = null;
+    _punctualitySubscription = null;
   }
 
   void _initSubscription(Stream<Journey?> journeyStream, Stream<PunctualityModel> punctualityStream) {
-    _subscription =
-        CombineLatestStream.combine3(
-          journeyStream,
-          punctualityStream,
-          _rxNextServicePoint,
-          (a, b, c) => (a, b, c),
-        ).listen((data) {
-          final journey = data.$1;
-          final punctuality = data.$2;
+    _journeySubscription = journeyStream.listen((journey) {
+      _servicePointReached?.cancel();
+      _journey = journey;
+      if (_journey == null) return _rxModel.add(JourneyPositionModel());
 
-          _servicePointReached?.cancel();
+      final updatedPosition = _calculateCurrentPosition(
+        _journey?.metadata.signaledPosition,
+        _journey?.journeyPoints ?? [],
+        _punctuality,
+      );
 
-          // print('Hello\n${journey?.data.length}\n$punctuality');
+      _setTimerIfNextIsServicePoint(updatedPosition, _journey?.journeyPoints ?? [], _punctuality);
 
-          if (journey == null) return _rxModel.add(JourneyPositionModel());
+      final previousModel = _rxModel.value;
+      final lastPosition = _journey?.journeyPoints.firstWhereOrNull(
+        (it) => it.order == previousModel.currentPosition?.order,
+      );
 
-          final updatedPosition = _calculateCurrentPosition(
-            journey.metadata.signaledPosition,
-            journey.journeyPoints,
-            punctuality,
-          );
+      final model = JourneyPositionModel(
+        currentPosition: updatedPosition,
+        lastPosition: lastPosition,
+        previousServicePoint: _calculatePreviousServicePoint(updatedPosition, _journey?.journeyPoints ?? []),
+        nextServicePoint: _calculateNextServicePoint(updatedPosition, _journey?.journeyPoints ?? []),
+        nextStop: _calculateNextStop(updatedPosition, _journey?.journeyPoints ?? []),
+      );
 
-          _setTimerIfNextIsServicePoint(updatedPosition, journey.journeyPoints, punctuality);
+      _log.fine('_journeySubscription: ${model.currentPosition?.order}');
+      _log.fine('_journeySubscription: ${model.lastPosition?.order}');
+      _rxModel.add(model);
+    });
 
-          final previousModel = _rxModel.value;
-          final lastPosition = journey.journeyPoints.firstWhereOrNull(
-            (it) => it.order == previousModel.currentPosition?.order,
-          );
+    _punctualitySubscription = punctualityStream.listen((punctuality) {
+      _punctuality = punctuality;
+      _servicePointReached?.cancel();
+      if (_journey == null) return _rxModel.add(JourneyPositionModel());
 
-          final model = JourneyPositionModel(
-            currentPosition: updatedPosition,
-            lastPosition: lastPosition,
-            previousServicePoint: _calculatePreviousServicePoint(updatedPosition, journey.journeyPoints),
-            nextServicePoint: _calculateNextServicePoint(updatedPosition, journey.journeyPoints),
-            nextStop: _calculateNextStop(updatedPosition, journey.journeyPoints),
-          );
+      final updatedPosition = _calculateCurrentPosition(
+        _journey?.metadata.signaledPosition,
+        _journey?.journeyPoints ?? [],
+        _punctuality,
+      );
 
-          _log.fine(model.lastPosition?.order);
+      _setTimerIfNextIsServicePoint(updatedPosition, _journey?.journeyPoints ?? [], _punctuality);
 
-          _rxModel.add(model);
-        });
+      final previousModel = _rxModel.value;
+      final lastPosition = previousModel.lastPosition;
+
+      final model = JourneyPositionModel(
+        currentPosition: updatedPosition,
+        lastPosition: lastPosition,
+        previousServicePoint: _calculatePreviousServicePoint(updatedPosition, _journey?.journeyPoints ?? []),
+        nextServicePoint: _calculateNextServicePoint(updatedPosition, _journey?.journeyPoints ?? []),
+        nextStop: _calculateNextStop(updatedPosition, _journey?.journeyPoints ?? []),
+      );
+
+      _log.fine('punctuality: ${model.currentPosition?.order}');
+      _log.fine('punctuality: ${model.lastPosition?.order}');
+      _rxModel.add(model);
+    });
+
+    _rxNextServicePoint.stream.listen((data) {
+      _servicePointReached?.cancel();
+      if (_journey == null) return _rxModel.add(JourneyPositionModel());
+
+      final updatedPosition = _calculateCurrentPosition(
+        _journey?.metadata.signaledPosition,
+        _journey?.journeyPoints ?? [],
+        _punctuality,
+      );
+
+      _setTimerIfNextIsServicePoint(updatedPosition, _journey?.journeyPoints ?? [], _punctuality);
+
+      final previousModel = _rxModel.value;
+      final lastPosition = _journey?.journeyPoints.firstWhereOrNull(
+        (it) => it.order == previousModel.currentPosition?.order,
+      );
+
+      final model = JourneyPositionModel(
+        currentPosition: updatedPosition,
+        lastPosition: lastPosition,
+        previousServicePoint: _calculatePreviousServicePoint(updatedPosition, _journey?.journeyPoints ?? []),
+        nextServicePoint: _calculateNextServicePoint(updatedPosition, _journey?.journeyPoints ?? []),
+        nextStop: _calculateNextStop(updatedPosition, _journey?.journeyPoints ?? []),
+      );
+
+      _log.fine('nextServicePoint: ${model.currentPosition?.order}');
+      _log.fine('nextServicePoint: ${model.lastPosition?.order}');
+      _rxModel.add(model);
+    });
   }
 
   JourneyPoint? _calculateCurrentPosition(
@@ -91,8 +146,8 @@ class JourneyPositionViewModel {
     final currentPositionByOrder = journeyPoints.lastWhereOrNull((it) => it.order <= signaledPosition.order);
 
     if (currentPositionByOrder is ServicePoint) return currentPositionByOrder;
-    if (punctuality is Stale || punctuality is Hidden) return currentPositionByOrder;
 
+    if (punctuality is Stale || punctuality is Hidden) return currentPositionByOrder;
     final nextPointIndex = journeyPoints.indexOf(currentPositionByOrder ?? journeyPoints.first) + 1;
 
     if (_isEndOfJourney(journeyPoints, nextPointIndex)) return currentPositionByOrder;
@@ -100,12 +155,18 @@ class JourneyPositionViewModel {
     final nextPoint = journeyPoints[nextPointIndex];
     if (nextPoint is! ServicePoint) return currentPositionByOrder;
 
-    final operationalArrivalTime = nextPoint.arrivalDepartureTime?.operationalArrivalTime;
+    final operationalArrivalTime = nextPoint.arrivalDepartureTime?.operationalArrivalTime?.roundDownToTenthOfSecond;
     if (operationalArrivalTime == null) return currentPositionByOrder;
 
     final trainTime = clock.now().add((punctuality as Visible).delay.value);
 
-    if (trainTime.isAfter(operationalArrivalTime)) return nextPoint;
+    if (trainTime.isAfter(operationalArrivalTime)) {
+      _log.fine((punctuality as Visible).delay.value);
+      _log.fine(operationalArrivalTime.toLocal());
+      _log.fine(trainTime);
+      _log.fine('Hello');
+      return nextPoint;
+    }
 
     return currentPositionByOrder;
   }
@@ -176,15 +237,18 @@ class JourneyPositionViewModel {
     final nextPoint = journeyPoints[nextPointIndex];
     if (nextPoint is! ServicePoint) return;
 
-    final operationalArrivalTime = nextPoint.arrivalDepartureTime?.operationalArrivalTime;
+    final operationalArrivalTime = nextPoint.arrivalDepartureTime?.operationalArrivalTime?.roundDownToTenthOfSecond;
     if (operationalArrivalTime == null) return;
 
     final trainTime = clock.now().add((punctuality as Visible).delay.value);
 
     if (trainTime.isAfter(operationalArrivalTime)) return;
 
+    _log.fine(
+      'Setting Timer To ${operationalArrivalTime.difference(trainTime)}',
+    );
     _servicePointReached = Timer(
-      operationalArrivalTime.difference(trainTime),
+      operationalArrivalTime.add(Duration(milliseconds: 100)).difference(trainTime),
       () => _rxNextServicePoint.add(nextPoint),
     );
   }
