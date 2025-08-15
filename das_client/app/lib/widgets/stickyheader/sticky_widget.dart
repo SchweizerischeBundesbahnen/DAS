@@ -44,7 +44,7 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
     super.initState();
     _animationController = AnimationController.unbounded(vsync: this);
     _animationController.addListener(() {
-      widget.controller.scrollController.position.jumpTo(_animationController.value);
+      _scrollController.position.jumpTo(_animationController.value);
     });
     widget.controller.addListener(_update);
   }
@@ -142,23 +142,21 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
     );
   }
 
-  void _update() {
-    setState(() {});
-  }
+  void _update() => setState(() {});
 
   /// The sticky widget should be scrollable so it feels like part of the scrolling widget.
   void _onPanUpdate(DragUpdateDetails details) {
-    if (widget.controller.scrollController.positions.isNotEmpty) {
-      widget.controller.scrollController.position.jumpTo(
-        max(widget.controller.scrollController.position.pixels - details.delta.dy, 0),
+    if (_scrollController.positions.isNotEmpty) {
+      _scrollController.position.jumpTo(
+        max(_scrollController.position.pixels - details.delta.dy, 0),
       );
     }
   }
 
   /// After the user stops dragging the sticky header widget, keep the same physics animation as the scrolling widget.
   void _onPanEnd(DragEndDetails details) {
-    if (widget.controller.scrollController.positions.isNotEmpty) {
-      final scrollPosition = widget.controller.scrollController.position;
+    if (_scrollController.positions.isNotEmpty) {
+      final scrollPosition = _scrollController.position;
       // Velocity limit.
       final velocity = details.velocity.clampMagnitude(0, 1000).pixelsPerSecond.dy;
       final simulation = scrollPosition.physics.createBallisticSimulation(scrollPosition, velocity);
@@ -169,4 +167,6 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
       }
     }
   }
+
+  ScrollController get _scrollController => widget.controller.scrollController;
 }

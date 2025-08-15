@@ -7,17 +7,17 @@ extension BaseDataExtension on Iterable<BaseData> {
 
     for (int i = 0; i < length; i++) {
       final currentElement = elementAt(i);
-      if (!currentElement.canGroup) {
+      if (!currentElement.canGroup || currentElement is! JourneyPoint) {
         // Just add elements to the result that are unable to be grouped
         resultList.add(currentElement);
         continue;
       }
 
-      final groupedElements = [currentElement];
+      final groupedElements = <JourneyPoint>[currentElement];
       // check the next elements if they can be grouped with the currentElement.
       for (int j = i + 1; j < length; j++) {
         final nextElement = elementAt(j);
-        if (nextElement.canGroup && currentElement.canGroupWith(nextElement)) {
+        if (nextElement.canGroup && currentElement.canGroupWith(nextElement) && nextElement is JourneyPoint) {
           groupedElements.add(nextElement);
         } else {
           // Stop once we reach a element that is unable to be grouped

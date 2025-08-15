@@ -4,6 +4,7 @@ import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_poi
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_local_regulations.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
+import 'package:app/util/animation.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:flutter/material.dart';
@@ -35,26 +36,45 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
 
   @override
   Widget header(BuildContext context) {
-    final viewModel = context.read<ServicePointModalViewModel>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        StreamBuilder(
-          stream: viewModel.servicePoint,
-          builder: (context, snapshot) {
-            final name = snapshot.data?.name ?? context.l10n.c_unknown;
-            return Text(name, style: DASTextStyles.largeRoman);
-          },
-        ),
-        StreamBuilder(
-          stream: viewModel.selectedTab,
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) return SizedBox.shrink();
-            final selectedTab = snapshot.data!;
-            return Text(selectedTab.localized(context), style: DASTextStyles.extraSmallRoman);
-          },
-        ),
+        _headerTitle(context),
+        _headerSubtitle(context),
       ],
+    );
+  }
+
+  Widget _headerTitle(BuildContext context) {
+    return StreamBuilder(
+      stream: context.read<ServicePointModalViewModel>().servicePoint,
+      builder: (context, snapshot) {
+        final servicePointName = snapshot.data?.name;
+        if (servicePointName == null) return Text(context.l10n.c_unknown, style: DASTextStyles.largeRoman);
+
+        return AnimatedSwitcher(
+          duration: DASAnimation.shortDuration,
+          transitionBuilder: (child, animation) {
+            final centerLeftTween = AlignmentTween(begin: Alignment.centerLeft, end: Alignment.centerLeft);
+            return AlignTransition(
+              alignment: centerLeftTween.animate(animation),
+              child: ScaleTransition(scale: animation, child: child),
+            );
+          },
+          child: Text(servicePointName, key: ValueKey(servicePointName), style: DASTextStyles.largeRoman),
+        );
+      },
+    );
+  }
+
+  Widget _headerSubtitle(BuildContext context) {
+    return StreamBuilder(
+      stream: context.read<ServicePointModalViewModel>().selectedTab,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return SizedBox.shrink();
+        final selectedTab = snapshot.data!;
+        return Text(selectedTab.localized(context), style: DASTextStyles.extraSmallRoman);
+      },
     );
   }
 

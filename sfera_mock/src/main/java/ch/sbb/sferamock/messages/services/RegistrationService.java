@@ -54,7 +54,7 @@ public class RegistrationService {
                 : existingSetWith(clientIdentifiers, clientId));
         }
 
-        if (!trainIdentification.isManualLocation()) {
+        if (!trainIdentification.isManualEvents()) {
             eventService.registerActiveTrain(requestContext);
         }
     }
@@ -95,7 +95,7 @@ public class RegistrationService {
     public void nextLocationEvent(ClientId clientId) {
         if (isRegistered(clientId)) {
             var registration = registrationMap.get(clientId);
-            if (registration.trainIdentification.isManualLocation()) {
+            if (registration.trainIdentification.isManualEvents()) {
                 eventService.nextLocationEvent(new RequestContext(registration.trainIdentification, clientId), registration.manualLoactionIndex);
                 registrationMap.put(clientId, new Registration(registration.trainIdentification, registration.operationMode, registration.timestamp, registration.manualLoactionIndex + 1));
             }

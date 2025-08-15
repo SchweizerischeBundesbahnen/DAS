@@ -93,10 +93,12 @@ class ExtendedMenu extends StatelessWidget {
   Widget _journeyOverviewItem(BuildContext context, VoidCallback hideOverlay) {
     return SBBListItem(
       title: context.l10n.w_extended_menu_journey_overview_action,
-      onPressed: () async {
+      onPressed: () {
         hideOverlay;
         if (context.mounted) {
-          showReducedOverviewModalSheet(context);
+          showReducedOverviewModalSheet(
+            context,
+          ).then((_) => Future.delayed(const Duration(milliseconds: 250), () => hideOverlay()));
         }
       },
     );

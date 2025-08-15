@@ -51,7 +51,8 @@ public class EventPublisher {
 
     private void publishEvent(SFERAG2BEventMessage eventMessage, RequestContext requestContext) {
         String topic = SferaTopicHelper.getG2BEventTopic(publishDestination, requestContext);
-        log.info("Publishing Event Message: {} to topic {}", xmlHelper.toString(eventMessage), topic);
+        log.info("Publishing Event Message to topic {}", topic);
+        log.debug("message: {}", xmlHelper.toString(eventMessage));
         streamBridge.send(topic, SOLACE_BINDER, MessageBuilder
                 .withPayload(eventMessage)
                 .build(),

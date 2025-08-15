@@ -31,10 +31,10 @@ public class EventService {
     }
 
     public void registerActiveTrain(RequestContext requestContext) {
-        if (hasActiveFutures(requestContext.clientId())) {
+        if (requestContext.tid().isManualEvents() || hasActiveFutures(requestContext.clientId())) {
             return;
         }
-        List<Event> events = this.eventRepository.events.get(requestContext.tid().operationalNumber());
+        List<Event> events = this.eventRepository.events.get(requestContext.tid().baseOperationalNumber());
         if (events == null) {
             return;
         }
