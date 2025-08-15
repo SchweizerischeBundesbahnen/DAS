@@ -14,10 +14,11 @@ auth:
       issuer-uri: https://login.microsoftonline.com/3409e798-d567-49b1-9bae-f0be66427c54/v2.0
       jwk-set-uri: https://login.microsoftonline.com/3409e798-d567-49b1-9bae-f0be66427c54/discovery/v2.0/keys
 
-splunk:
-  url: url
-  token: token
-
 logging:
   url: url
   token: token
+
+aws:
+  accessKey: accessKey
+  secretKey: secretKey
+  bucketName: bucketName

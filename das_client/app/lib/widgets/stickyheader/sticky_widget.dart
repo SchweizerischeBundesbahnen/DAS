@@ -1,4 +1,9 @@
-import 'dart:async';
+// Copyright (c) 2022, crasowas.
+//
+// Use of this source code is governed by a MIT-style license
+// that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
 import 'dart:math';
 
 import 'package:app/widgets/stickyheader/sticky_header.dart';
@@ -6,17 +11,20 @@ import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/stickyheader/sticky_widget_controller.dart';
 import 'package:flutter/material.dart';
 
+/// Sticky Widget.
+///
+/// Adjusts the position and visibility of the widget in real time according to
+/// the scrolling changes, while covering the lower widget to achieve the effect
+/// of sticky header.
 class StickyWidget extends StatefulWidget {
   final StickyWidgetController controller;
   final StickyWidgetBuilder widgetBuilder;
   final bool isHeader;
-  final Stream<ThemeMode>? themeModeStream;
 
   const StickyWidget({
     required this.controller,
     required this.widgetBuilder,
     this.isHeader = true,
-    this.themeModeStream,
     super.key,
   });
 
@@ -24,27 +32,21 @@ class StickyWidget extends StatefulWidget {
   State<StickyWidget> createState() => _StickyWidgetState();
 }
 
-class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderStateMixin, WidgetsBindingObserver {
+class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+
   Widget? _stickyHeader1;
   Widget? _stickyHeader2;
   Widget? _stickyFooter;
-  StreamSubscription<ThemeMode>? _themeSub;
-
-  int _epoch = 0;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
     _animationController = AnimationController.unbounded(vsync: this);
     _animationController.addListener(() {
-      if (widget.controller.scrollController.positions.isNotEmpty) {
-        widget.controller.scrollController.position.jumpTo(_animationController.value);
-      }
+      _scrollController.position.jumpTo(_animationController.value);
     });
     widget.controller.addListener(_update);
-    _subscribeTheme();
   }
 
   @override
@@ -54,61 +56,27 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
       oldWidget.controller.removeListener(_update);
       widget.controller.addListener(_update);
     }
-    if (widget.themeModeStream != oldWidget.themeModeStream) {
-      _unsubscribeTheme();
-      _subscribeTheme();
-    }
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
     widget.controller.removeListener(_update);
-    _unsubscribeTheme();
     _animationController.dispose();
     super.dispose();
   }
 
   @override
-  void didChangePlatformBrightness() {
-    _onThemeChanged(null);
-  }
-
-  void _subscribeTheme() {
-    final stream = widget.themeModeStream;
-    if (stream == null) return;
-    _themeSub = stream.distinct().listen(_onThemeChanged, onError: (_) {});
-  }
-
-  void _unsubscribeTheme() {
-    _themeSub?.cancel();
-    _themeSub = null;
-  }
-
-  void _onThemeChanged(ThemeMode? _) {
-    if (!mounted) return;
-    _animationController.stop();
-    _stickyHeader1 = null;
-    _stickyHeader2 = null;
-    _stickyFooter = null;
-    _epoch++;
-    setState(() {});
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return KeyedSubtree(
-      key: ValueKey(_epoch),
-      child: GestureDetector(
-        onPanUpdate: _onPanUpdate,
-        onPanEnd: _onPanEnd,
-        child: widget.isHeader ? _buildHeaders(context) : _buildFooter(context),
-      ),
+    return GestureDetector(
+      onPanUpdate: _onPanUpdate,
+      onPanEnd: _onPanEnd,
+      child: widget.isHeader ? _buildHeaders(context) : _buildFooter(context),
     );
   }
 
   Widget _buildHeaders(BuildContext context) {
     _buildHeaderWidgets(context);
+
     return Stack(
       children: [
         if (_stickyHeader2 != null) _stickyHeader2!,
@@ -130,6 +98,7 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
       } else {
         _stickyHeader1 = null;
       }
+
       if (indexesToBuild[StickyLevel.second] != -1) {
         _stickyHeader2 = Positioned(
           left: 0,
@@ -158,7 +127,9 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
 
   Widget _buildFooter(BuildContext context) {
     _buildFooterWidget(context);
-    if (_stickyFooter == null) return const SizedBox.shrink();
+
+    if (_stickyFooter == null) return SizedBox.shrink();
+
     return Stack(
       children: [
         Positioned(
@@ -171,26 +142,31 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
     );
   }
 
-  void _update() {
-    setState(() {});
-  }
+  void _update() => setState(() {});
 
+  /// The sticky widget should be scrollable so it feels like part of the scrolling widget.
   void _onPanUpdate(DragUpdateDetails details) {
-    if (widget.controller.scrollController.positions.isNotEmpty) {
-      widget.controller.scrollController.position.jumpTo(
-        max(widget.controller.scrollController.position.pixels - details.delta.dy, 0),
+    if (_scrollController.positions.isNotEmpty) {
+      _scrollController.position.jumpTo(
+        max(_scrollController.position.pixels - details.delta.dy, 0),
       );
     }
   }
 
+  /// After the user stops dragging the sticky header widget, keep the same physics animation as the scrolling widget.
   void _onPanEnd(DragEndDetails details) {
-    if (widget.controller.scrollController.positions.isNotEmpty) {
-      final scrollPosition = widget.controller.scrollController.position;
+    if (_scrollController.positions.isNotEmpty) {
+      final scrollPosition = _scrollController.position;
+      // Velocity limit.
       final velocity = details.velocity.clampMagnitude(0, 1000).pixelsPerSecond.dy;
       final simulation = scrollPosition.physics.createBallisticSimulation(scrollPosition, velocity);
+      // In some cases, physical animation is not required, for example,
+      // the velocity is already 0.0 at this time.
       if (simulation != null) {
         _animationController.animateWith(simulation);
       }
     }
   }
+
+  ScrollController get _scrollController => widget.controller.scrollController;
 }

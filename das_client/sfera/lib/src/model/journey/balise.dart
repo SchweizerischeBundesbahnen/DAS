@@ -1,8 +1,6 @@
-import 'package:sfera/src/model/journey/base_data.dart';
-import 'package:sfera/src/model/journey/datatype.dart';
-import 'package:sfera/src/model/journey/level_crossing.dart';
+import 'package:sfera/component.dart';
 
-class Balise extends BaseData {
+class Balise extends JourneyPoint {
   const Balise({
     required super.order,
     required super.kilometre,

@@ -1,10 +1,11 @@
+import 'package:app/util/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:sfera/component.dart';
 
 class ChevronAnimationController with ChangeNotifier {
   ChevronAnimationController(this.tickerProvider)
     : animationController = AnimationController(
-        duration: const Duration(milliseconds: 500),
+        duration: DASAnimation.longDuration,
         vsync: tickerProvider,
       );
 
@@ -12,8 +13,8 @@ class ChevronAnimationController with ChangeNotifier {
   final AnimationController animationController;
   Animation<double>? animation;
 
-  BaseData? currentPosition;
-  BaseData? lastPosition;
+  JourneyPoint? currentPosition;
+  JourneyPoint? lastPosition;
 
   void onJourneyUpdate(Journey journey) {
     if (journey.metadata.currentPosition != journey.metadata.lastPosition) {
@@ -21,9 +22,7 @@ class ChevronAnimationController with ChangeNotifier {
       lastPosition = journey.metadata.lastPosition;
 
       animation = Tween<double>(begin: 0.0, end: 1.0).animate(animationController)
-        ..addListener(() {
-          notifyListeners();
-        });
+        ..addListener(() => notifyListeners());
       animationController.reset();
       animationController.forward();
     }

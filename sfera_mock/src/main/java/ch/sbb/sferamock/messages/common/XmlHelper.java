@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class XmlHelper {
 
+    public static final int MAX_MESSAGE_SIZE = 10_000_000;
     private static final Logger log = LoggerFactory.getLogger(XmlHelper.class);
     private final Jaxb2Marshaller jaxb2Marshaller;
 

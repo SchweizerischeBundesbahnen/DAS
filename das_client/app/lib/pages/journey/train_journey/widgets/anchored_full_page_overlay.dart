@@ -1,4 +1,5 @@
 import 'package:app/theme/theme_util.dart';
+import 'package:app/util/animation.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,12 +10,24 @@ final _fullPageBackgroundColor = SBBColors.iron.withAlpha((255.0 * 0.6).round())
 /// Creates a widget that has two states:
 /// 1. "collapsed": a triggering widget, that can be interacted with to show the overlay and transition to the second state
 /// 2. "overlay": a full screen overlay with two "layers":
-///     1. a grayed out background accross the whole screen
+///     1. a grayed out background across the whole screen
 ///     2. a widget with the given [contentWidth] on top positioned relative to the triggering widget
 ///
 /// Implemented using an [OverlayPortal] and a [CompositedTransformTarget]. Control the relative positioning of the
 /// triggering widget and the widget in the overlay with [targetAnchor], [followerAnchor] and [offset].
 class AnchoredFullPageOverlay extends StatefulWidget {
+  const AnchoredFullPageOverlay({
+    required this.triggerBuilder,
+    required this.contentBuilder,
+    super.key,
+    this.contentWidth = 360.0,
+    this.openAnimationDuration = DASAnimation.mediumDuration,
+    this.closeAnimationDuration = DASAnimation.shortDuration,
+    this.targetAnchor = Alignment.bottomCenter,
+    this.followerAnchor = Alignment.topCenter,
+    this.offset = const Offset(0, sbbDefaultSpacing / 2),
+  });
+
   /// The builder that will display the triggering widget. Usually some form of a button.
   final Widget Function(BuildContext context, VoidCallback showOverlay) triggerBuilder;
 
@@ -26,8 +39,11 @@ class AnchoredFullPageOverlay extends StatefulWidget {
   /// Defaults to 360.
   final double contentWidth;
 
-  /// The duration of the opening and collapsing animation.
-  final Duration animationDuration;
+  /// The duration of the opening animation.
+  final Duration openAnimationDuration;
+
+  /// The duration of the collapsing animation.
+  final Duration closeAnimationDuration;
 
   /// Alignment of the trigger (where the overlay will point to)
   final Alignment targetAnchor;
@@ -37,17 +53,6 @@ class AnchoredFullPageOverlay extends StatefulWidget {
 
   /// Offset between the trigger and the overlay
   final Offset offset;
-
-  const AnchoredFullPageOverlay({
-    required this.triggerBuilder,
-    required this.contentBuilder,
-    super.key,
-    this.contentWidth = 360.0,
-    this.animationDuration = const Duration(milliseconds: 200),
-    this.targetAnchor = Alignment.bottomCenter,
-    this.followerAnchor = Alignment.topCenter,
-    this.offset = const Offset(0, sbbDefaultSpacing / 2),
-  });
 
   @override
   State<AnchoredFullPageOverlay> createState() => _AnchoredFullPageOverlayState();
@@ -65,23 +70,13 @@ class _AnchoredFullPageOverlayState extends State<AnchoredFullPageOverlay> with 
   void initState() {
     super.initState();
     _animationController = AnimationController(
-      duration: widget.animationDuration,
+      duration: widget.openAnimationDuration,
+      reverseDuration: widget.closeAnimationDuration,
       vsync: this,
     );
 
-    _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeInOut,
-      ),
-    );
-
-    _scaleAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeInOut,
-      ),
-    );
+    _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(_animationController.toEmphasizedEasingAnimation());
+    _scaleAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(_animationController.toEmphasizedEasingAnimation());
   }
 
   @override

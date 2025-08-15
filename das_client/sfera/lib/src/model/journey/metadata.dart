@@ -35,11 +35,11 @@ class Metadata {
   final DateTime timestamp;
   final ServicePoint? nextStop;
   final ServicePoint? lastServicePoint;
-  final BaseData? lastPosition;
-  final BaseData? currentPosition;
+  final JourneyPoint? lastPosition;
+  final JourneyPoint? currentPosition;
   final List<AdditionalSpeedRestriction> additionalSpeedRestrictions;
-  final BaseData? routeStart;
-  final BaseData? routeEnd;
+  final JourneyPoint? routeStart;
+  final JourneyPoint? routeEnd;
   final Delay? delay;
   final bool anyOperationalArrivalDepartureTimes;
   final List<NonStandardTrackEquipmentSegment> nonStandardTrackEquipmentSegments;

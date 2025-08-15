@@ -96,8 +96,9 @@ void main() {
   });
 
   test('formattedWallClockTime_withFixedTime_shouldEmitFixedFormattedTimes', () {
-    testAsync.elapse(const Duration(seconds: 1));
+    testAsync.elapse(const Duration(seconds: 3));
     expect(formattedWallclockTimeRegister, isNotEmpty);
+    expect(formattedWallclockTimeRegister, hasLength(1));
     expect(formattedWallclockTimeRegister.first, equals(DateFormat('HH:mm:ss').format(testClock.now())));
   });
 

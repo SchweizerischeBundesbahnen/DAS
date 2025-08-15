@@ -59,3 +59,7 @@ sfera:
   company-code: '0085'
   sfera-version: '3.00'
   source-device: 'TMS'
+
+localregulations:
+  train-numbers: T24
+  path: ${LOCALREGULATIONS_PATH}

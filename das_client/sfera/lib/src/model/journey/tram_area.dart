@@ -1,7 +1,6 @@
-import 'package:sfera/src/model/journey/base_data.dart';
-import 'package:sfera/src/model/journey/datatype.dart';
+import 'package:sfera/component.dart';
 
-class TramArea extends BaseData {
+class TramArea extends JourneyPoint {
   const TramArea({
     required super.order,
     required super.kilometre,

@@ -22,6 +22,8 @@ export 'package:sfera/src/model/journey/arrival_departure_time.dart';
 export 'package:sfera/src/model/journey/balise.dart';
 export 'package:sfera/src/model/journey/balise_level_crossing_group.dart';
 export 'package:sfera/src/model/journey/base_data.dart';
+export 'package:sfera/src/model/journey/journey_point.dart';
+export 'package:sfera/src/model/journey/journey_annotation.dart';
 export 'package:sfera/src/model/journey/base_data_extension.dart';
 export 'package:sfera/src/model/journey/base_foot_note.dart';
 export 'package:sfera/src/model/journey/bracket_station_segment.dart';

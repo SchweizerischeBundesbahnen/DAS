@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-class AnimatedHeaderIconButton extends StatelessWidget {
+class HeaderIconButton extends StatelessWidget {
   static const headerIconButtonKey = Key('headerIconButton');
   static const headerIconWithLabelButtonKey = Key('headerIconWithLabelButton');
 
-  const AnimatedHeaderIconButton({
+  const HeaderIconButton({
     required this.label,
     required this.icon,
     required this.onPressed,
@@ -21,15 +21,12 @@ class AnimatedHeaderIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.read<DetailModalViewModel>();
-    return StreamBuilder<bool>(
+    return StreamBuilder(
       initialData: viewModel.isModalOpenValue,
       stream: viewModel.isModalOpen,
       builder: (context, snapshot) {
         final isDetailModalSheetOpen = snapshot.requireData;
-        return AnimatedSwitcher(
-          duration: const Duration(milliseconds: 400),
-          child: isDetailModalSheetOpen ? _iconButton : _iconWithLabelButton,
-        );
+        return isDetailModalSheetOpen ? _iconButton : _iconWithLabelButton;
       },
     );
   }

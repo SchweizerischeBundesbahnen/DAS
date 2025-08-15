@@ -2,11 +2,11 @@ import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/model/journey/order_priority.dart';
 
-class UncodedOperationalIndication extends BaseData {
+class UncodedOperationalIndication extends JourneyAnnotation {
   const UncodedOperationalIndication({
     required super.order,
     required this.texts,
-  }) : super(type: Datatype.uncodedOperationalIndication, kilometre: const []);
+  }) : super(type: Datatype.uncodedOperationalIndication);
 
   final List<String> texts;
 

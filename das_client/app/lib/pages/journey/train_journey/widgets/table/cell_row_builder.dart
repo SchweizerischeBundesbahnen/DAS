@@ -1,4 +1,3 @@
-import 'package:app/extension/base_data_extension.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/advised_speed_cell_body.dart';
@@ -6,6 +5,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/cells/bracket_stat
 import 'package:app/pages/journey/train_journey/widgets/table/cells/calculated_speed_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/line_speed_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/show_speed_behaviour.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/track_equipment_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/column_definition.dart';
@@ -20,7 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
-class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
+class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   static const double rowHeight = 44.0;
 
   CellRowBuilder({
@@ -66,7 +66,6 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
         ColumnDefinition.localSpeed.index: localSpeedCell(context),
         ColumnDefinition.brakedWeightSpeed.index: brakedWeightSpeedCell(context),
         ColumnDefinition.advisedSpeed.index: advisedSpeedCell(context),
-        ColumnDefinition.actionsCell.index: actionsCell(context),
         ColumnDefinition.communicationNetwork.index: communicationNetworkCell(context),
         ColumnDefinition.gradientUphill.index: gradientUphillCell(context),
         ColumnDefinition.gradientDownhill.index: gradientDownhillCell(context),
@@ -107,7 +106,7 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
         isRouteStart: metadata.routeStart == data,
         isRouteEnd: metadata.routeEnd == data,
         chevronAnimationData: config.chevronAnimationData,
-        chevronPosition: data.chevronPosition,
+        chevronPosition: RouteChevron.positionFromHeight(height),
       ),
     );
   }
@@ -234,8 +233,6 @@ class CellRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
   DASTableCell iconsCell2(BuildContext context) => DASTableCell.empty();
 
   DASTableCell iconsCell3(BuildContext context) => DASTableCell.empty();
-
-  DASTableCell actionsCell(BuildContext context) => DASTableCell.empty();
 
   DASTableCell gradientUphillCell(BuildContext context) => DASTableCell.empty(color: specialCellColor);
 

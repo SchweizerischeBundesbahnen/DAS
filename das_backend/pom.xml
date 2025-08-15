@@ -22,6 +22,7 @@
         <kafka-json-schema-serializer.version>8.0.0</kafka-json-schema-serializer.version>
         <confluent.schema-registry-plugin.version>8.0.0</confluent.schema-registry-plugin.version>
         <jsonschema2pojo-maven-plugin.version>1.2.2</jsonschema2pojo-maven-plugin.version>
+        <aws.java.sdk.version>2.32.20</aws.java.sdk.version>
     </properties>
     <dependencies>
         <dependency>
@@ -141,6 +142,10 @@
             <artifactId>spring-modulith-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -149,6 +154,13 @@
                 <groupId>org.springframework.modulith</groupId>
                 <artifactId>spring-modulith-bom</artifactId>
                 <version>${spring-modulith.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>software.amazon.awssdk</groupId>
+                <artifactId>bom</artifactId>
+                <version>${aws.java.sdk.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
