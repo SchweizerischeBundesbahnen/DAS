@@ -5,6 +5,7 @@
 // https://opensource.org/licenses/MIT.
 
 import 'dart:math';
+import 'dart:async';
 
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
@@ -20,10 +21,12 @@ class StickyWidget extends StatefulWidget {
   final StickyWidgetController controller;
   final StickyWidgetBuilder widgetBuilder;
   final bool isHeader;
+  final Stream<ThemeMode> themeModeStream;
 
   const StickyWidget({
     required this.controller,
     required this.widgetBuilder,
+    required this.themeModeStream,
     this.isHeader = true,
     super.key,
   });
@@ -38,6 +41,7 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
   Widget? _stickyHeader1;
   Widget? _stickyHeader2;
   Widget? _stickyFooter;
+  late StreamSubscription<ThemeMode> _themeSub;
 
   @override
   void initState() {
@@ -47,6 +51,7 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
       _scrollController.position.jumpTo(_animationController.value);
     });
     widget.controller.addListener(_update);
+    _themeSub = widget.themeModeStream.listen((_) => _update());
   }
 
   @override
@@ -56,12 +61,17 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
       oldWidget.controller.removeListener(_update);
       widget.controller.addListener(_update);
     }
+    if (widget.themeModeStream != oldWidget.themeModeStream) {
+      _themeSub.cancel();
+      _themeSub = widget.themeModeStream.listen((_) => _update());
+    }
   }
 
   @override
   void dispose() {
     widget.controller.removeListener(_update);
     _animationController.dispose();
+    _themeSub.cancel();
     super.dispose();
   }
 
