@@ -34,6 +34,6 @@ Future<void> _initDependencyInjection(Flavor flavor) async {
   await scopeHandler.push<DASBaseScope>();
   // TODO: The problem here is that someone who still has a session with TMS authenticator
   // will not seem to be logged in anymore since we assume SferaMock as the default in app start.
-  // This is necessary to ensure that an authenticator is available for the SplashPage.
+  // This is necessary to ensure that an authenticator is available for the SplashPage
   await scopeHandler.push<SferaMockScope>();
 }
