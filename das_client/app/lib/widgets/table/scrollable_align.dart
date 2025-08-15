@@ -53,25 +53,30 @@ class _ScrollableAlignState extends State<ScrollableAlign> {
     final widgetOffset = WidgetUtil.findOffsetOfKey(key);
     final stickyHeaderState = StickyHeader.of(context);
 
-    if (widget.scrollController.positions.isEmpty || widgetOffset == null || stickyHeaderState == null) {
+    if (widget.scrollController.positions.isEmpty || widgetOffset == null) {
       return;
     }
 
     var stickyHeaderHeight = 0.0;
     var stickyHeader2Offset = 0.0;
-    final headerIndexes = stickyHeaderState.controller.headerIndexes;
-    if (headerIndexes[StickyLevel.first] != -1) {
-      stickyHeaderHeight += widget.rows[headerIndexes[StickyLevel.first]!].height;
-    }
-    if (headerIndexes[StickyLevel.second] != -1) {
-      final rowHeight = widget.rows[headerIndexes[StickyLevel.second]!].height;
-      final stickyOffset = stickyHeaderState.controller.headerOffsets[StickyLevel.second]!.abs();
-      if (rowHeight >= stickyOffset) {
-        stickyHeader2Offset = min(stickyOffset, rowHeight);
-        stickyHeaderHeight += rowHeight - stickyOffset;
+    if (stickyHeaderState != null) {
+      final headerIndexes = stickyHeaderState.controller.headerIndexes;
+
+      if (headerIndexes[StickyLevel.first] != -1) {
+        stickyHeaderHeight += widget.rows[headerIndexes[StickyLevel.first]!].height;
       }
+
+      if (headerIndexes[StickyLevel.second] != -1) {
+        final rowHeight = widget.rows[headerIndexes[StickyLevel.second]!].height;
+        final stickyOffset = stickyHeaderState.controller.headerOffsets[StickyLevel.second]!.abs();
+        if (rowHeight >= stickyOffset) {
+          stickyHeader2Offset = min(stickyOffset, rowHeight);
+          stickyHeaderHeight += rowHeight - stickyOffset;
+        }
+      }
+
+      stickyHeaderHeight = stickyHeaderHeight.roundToDouble();
     }
-    stickyHeaderHeight = stickyHeaderHeight.roundToDouble();
 
     final currentPosition = widget.scrollController.position.pixels;
 
