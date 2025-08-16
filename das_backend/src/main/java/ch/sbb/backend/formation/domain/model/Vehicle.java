@@ -4,12 +4,15 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
+@Slf4j
 public class Vehicle {
 
+    private static final List<TractionMode> SPECIAL_TRACTION_MODES = List.of(TractionMode.ZWISCHENLOK, TractionMode.SCHIEBELOK, TractionMode.UEBERFUEHRUNG);
     private TractionMode tractionMode;
     private String vehicleCategory;
     private List<VehicleUnit> vehicleUnits;
@@ -72,8 +75,36 @@ public class Vehicle {
             .toList();
     }
 
-    static List<TractionMode> tractionModes(List<Vehicle> vehicles) {
-        return filterTraction(vehicles).stream().map(vehicle -> vehicle.tractionMode).toList();
+    static TractionMode specialTractionMode(List<Vehicle> vehicles) {
+        Vehicle vehicle = specialTraction(vehicles);
+        if (vehicle == null) {
+            return null;
+        }
+        return vehicle.tractionMode;
+    }
+
+    static String specialTractionSeries(List<Vehicle> vehicles) {
+        Vehicle vehicle = specialTraction(vehicles);
+        if (vehicle == null) {
+            return null;
+        }
+        if (vehicle.vehicleUnits.size() != 1) {
+            log.error("Traction vehicle with no or more than one vehicleUnit found: {}", vehicle.vehicleUnits);
+            return null;
+        }
+        return vehicle.vehicleUnits.getFirst().getVehicleTypeIdentifier();
+    }
+
+    private static Vehicle specialTraction(List<Vehicle> vehicles) {
+        List<Vehicle> specialTractionVehicles = filterTraction(vehicles).stream().filter(vehicle -> SPECIAL_TRACTION_MODES.contains(vehicle.tractionMode)).toList();
+        if (specialTractionVehicles.isEmpty()) {
+            return null;
+        }
+        if (specialTractionVehicles.size() > 1) {
+            log.error("Multiple traction vehicles with special traction found: {}", specialTractionVehicles);
+            return null;
+        }
+        return specialTractionVehicles.getFirst();
     }
 
     private boolean isTraction() {

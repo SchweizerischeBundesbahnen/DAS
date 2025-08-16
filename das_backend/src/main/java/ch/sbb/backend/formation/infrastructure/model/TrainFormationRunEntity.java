@@ -1,14 +1,11 @@
 package ch.sbb.backend.formation.infrastructure.model;
 
 import ch.sbb.backend.common.SFERA;
-import ch.sbb.backend.common.StringListConverter;
 import ch.sbb.backend.common.TelTsi;
 import ch.sbb.backend.formation.domain.model.BrakeDesign;
 import ch.sbb.backend.formation.domain.model.Formation;
 import ch.sbb.backend.formation.domain.model.FormationRun;
-import ch.sbb.backend.formation.domain.model.TractionMode;
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -103,8 +100,9 @@ public class TrainFormationRunEntity {
 
     private Boolean simTrain;
 
-    @Convert(converter = StringListConverter.class)
-    private List<String> tractionModes;
+    private String tractionMode;
+
+    private String tractionSeries;
 
     private Boolean carCarrierVehicle;
 
@@ -174,7 +172,8 @@ public class TrainFormationRunEntity {
             .brakePositionGForBrakeUnit1to5(formationRun.getBrakePositionGForBrakeUnit1to5())
             .brakePositionGForLoadHauled(formationRun.getBrakePositionGForLoadHauled())
             .simTrain(formationRun.getSimTrain())
-            .tractionModes(mapTractionModes(formationRun.getTractionModes()))
+            .tractionMode(formationRun.getTractionMode() != null ? formationRun.getTractionMode().getKey() : null)
+            .tractionSeries(formationRun.getTractionSeries())
             .carCarrierVehicle(formationRun.getCarCarrierVehicle())
             .dangerousGoods(formationRun.hasDangerousGoods())
             .vehiclesCount(formationRun.hauledLoadVehiclesCount())
@@ -189,11 +188,5 @@ public class TrainFormationRunEntity {
             .gradientDownhillMaxInPermille(formationRun.getGradientDownhillMaxInPermille())
             .slopeMaxForHoldingForceMinInPermille(formationRun.getSlopeMaxForHoldingForceMinInPermille());
 
-    }
-
-    private static List<String> mapTractionModes(List<TractionMode> tractionModes) {
-        return tractionModes.stream()
-            .map(TractionMode::getKey)
-            .toList();
     }
 }

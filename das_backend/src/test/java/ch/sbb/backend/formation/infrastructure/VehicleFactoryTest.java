@@ -16,6 +16,7 @@ import ch.sbb.zis.trainformation.api.model.DangerousGoods;
 import ch.sbb.zis.trainformation.api.model.UnitEffectiveOperationalData;
 import ch.sbb.zis.trainformation.api.model.UnitTechnicalData;
 import ch.sbb.zis.trainformation.api.model.VehicleEffectiveTractionData;
+import ch.sbb.zis.trainformation.api.model.VehicleType;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -46,6 +47,7 @@ class VehicleFactoryTest {
                     .effectiveOperationalHoldingForceInHectoNewton(342)
                     .handBrakeWeightInT(12)
                     .load(new Load(List.of(new Goods(true)), List.of(new IntermodalLoadingUnit(false, List.of(new Goods(false))))))
+                    .vehicleTypeIdentifier("Dt43564")
                     .build()),
             new EuropeanVehicleNumber("75", "46", "334455", "1"));
 
@@ -79,6 +81,10 @@ class VehicleFactoryTest {
         unitEffectiveOperationalData.setBrakeStatus(3);
         unitEffectiveOperationalData.setHoldingForceInHectonewton(342);
         vehicleUnit.setUnitEffectiveOperationalData(unitEffectiveOperationalData);
+
+        VehicleType vehicleType = new VehicleType();
+        vehicleType.setVehicleTypeIdentifier("Dt43564");
+        vehicleUnit.setVehicleType(vehicleType);
         return vehicleUnit;
 
     }

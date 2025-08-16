@@ -27,9 +27,8 @@
           "hauledLoadHoldingForceInHectoNewton": 5980,
           "formationHoldingForceInHectoNewton": 6480,
           "simTrain": false,
-          "tractionModes": [
-            "STAMMLOK"
-          ],
+          "tractionMode": "Z",
+          "tractionSeries": "Ts532",
           "carCarrierVehicle": false,
           "dangerousGoods": false,
           "vehiclesCount": 27,
@@ -68,10 +67,8 @@
           "brakePositionGForBrakeUnit1to5": false,
           "brakePositionGForLoadHauled": false,
           "simTrain": false,
-          "tractionModes": [
-            "STAMMLOK",
-            "STAMMLOK"
-          ],
+          "tractionMode": "Z",
+          "tractionSeries": "Ts532",
           "carCarrierVehicle": false,
           "dangerousGoods": false,
           "vehiclesCount": 28,

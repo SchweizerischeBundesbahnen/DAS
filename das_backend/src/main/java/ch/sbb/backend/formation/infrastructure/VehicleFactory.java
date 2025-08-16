@@ -16,6 +16,7 @@ import ch.sbb.zis.trainformation.api.model.UnitEffectiveOperationalData;
 import ch.sbb.zis.trainformation.api.model.UnitTechnicalData;
 import ch.sbb.zis.trainformation.api.model.VehicleEffectiveTractionData;
 import ch.sbb.zis.trainformation.api.model.VehicleGroup;
+import ch.sbb.zis.trainformation.api.model.VehicleType;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
@@ -55,7 +56,15 @@ public final class VehicleFactory {
         applyUnitTechnichalData(builder, vehicleUnit.getUnitTechnicalData());
         applyUnitEffectiveOperationalData(builder, vehicleUnit.getUnitEffectiveOperationalData());
         applyCargoTransport(builder, vehicleUnit.getCargoTransport());
+        applyVehicleType(builder, vehicleUnit.getVehicleType());
         return builder.build();
+    }
+
+    private static void applyVehicleType(VehicleUnitBuilder builder, VehicleType vehicleType) {
+        if (vehicleType == null) {
+            return;
+        }
+        builder.vehicleTypeIdentifier(vehicleType.getVehicleTypeIdentifier());
     }
 
     private static void applyCargoTransport(VehicleUnitBuilder builder, CargoTransport cargoTransport) {

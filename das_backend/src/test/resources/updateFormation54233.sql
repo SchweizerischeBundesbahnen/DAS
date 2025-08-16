@@ -13,9 +13,9 @@ INSERT INTO public.train_formation_run(id, modified_date_time, operational_train
                                        formation_holding_force_in_hecto_newton,
                                        brake_position_g_for_leading_traction,
                                        brake_position_g_for_brake_unit_1_to_5,
-                                       brake_position_g_for_load_hauled, sim_train, traction_modes,
-                                       car_carrier_vehicle, dangerous_goods, vehicles_count,
-                                       vehicles_with_brake_design_ll_and_k_count,
+                                       brake_position_g_for_load_hauled, sim_train, traction_mode,
+                                       traction_series, car_carrier_vehicle, dangerous_goods,
+                                       vehicles_count, vehicles_with_brake_design_ll_and_k_count,
                                        vehicles_with_brake_design_d_count,
                                        vehicles_with_disabled_brakes_count,
                                        european_vehicle_number_first, european_vehicle_number_last,
@@ -25,5 +25,5 @@ INSERT INTO public.train_formation_run(id, modified_date_time, operational_train
                                        slope_max_for_holding_force_min_in_permille)
 VALUES (nextval('train_formation_run_id_seq'), '2025-07-25 13:43:23.120000', 54233, '2025-07-25',
         2185, 'CH00001', 'CH00002', 'A', 105, 120, 100, 140, 3080, 43142, 46222, 168, 543, 711, 210,
-        543, 753, 1000, 5980, 6980, false, false, false, false, 'STAMMLOK;STAMMLOK', false, false,
-        28, 26, 0, 0, 918544202495, 218524710439, 20290, 'C2', 40, 40, 60);
+        543, 753, 1000, 5980, 6980, false, false, false, false, 'Z', 'Ts532', false, false, 28, 26,
+        0, 0, 918544202495, 218524710439, 20290, 'C2', 40, 40, 60);
