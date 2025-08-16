@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.7.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.6.0...sfera_mock-v0.7.0) (2025-08-15)
+
+
+### Features
+
+* added automatic advancement on invisible signals ([#662](https://github.com/SchweizerischeBundesbahnen/DAS/issues/662)) ([#1153](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1153)) ([719967e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/719967e287a5edbd00238eb3aef1b025741cd069))
+* append local regulations to segment profiles ([#1033](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1033)) ([#1137](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1137)) ([f12ad49](https://github.com/SchweizerischeBundesbahnen/DAS/commit/f12ad491a966074997251882d9710cc4ed8c352e))
+
+
+### Bug Fixes
+
+* **deps:** update dependency com.solace.spring.cloud:solace-spring-cloud-bom to v4.8.1 ([#1155](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1155)) ([9eb8d86](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9eb8d865acbb5a9f36be4c1a2be73a17efe3c765))
+* **mock:** 2266 is adapted for lightweight user testings ([#1150](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1150)) ([3f5e821](https://github.com/SchweizerischeBundesbahnen/DAS/commit/3f5e82176284f25bddd79c75e56ea5829fc4173b))
+
 ## [0.6.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.5.1...sfera_mock-v0.6.0) (2025-08-06)
 
 
