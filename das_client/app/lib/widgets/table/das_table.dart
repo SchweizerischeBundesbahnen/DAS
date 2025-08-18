@@ -143,15 +143,7 @@ class _DASTableState extends State<DASTable> {
             child: Column(
               children: [
                 _headerRow(),
-                Expanded(
-                  child: widget.hasStickyWidgets
-                      ? _stickyHeaderList(constraints)
-                      : ScrollableAlign(
-                          scrollController: widget.scrollController,
-                          rows: widget.rows,
-                          child: SizedBox(key: DASTable.tableKey, child: _animatedList(constraints)),
-                        ),
-                ),
+                Expanded(child: widget.hasStickyWidgets ? _stickyHeaderList(constraints) : _nonStickyList(constraints)),
               ],
             ),
           ),
@@ -164,6 +156,14 @@ class _DASTableState extends State<DASTable> {
     return StickyHeader(
       footerBuilder: (context, index) => _footer(index),
       headerBuilder: (context, index) => ClipRect(child: _dataRow(widget.rows[index], isSticky: true)),
+      scrollController: widget.scrollController,
+      rows: widget.rows,
+      child: SizedBox(key: DASTable.tableKey, child: _animatedList(constraints)),
+    );
+  }
+
+  Widget _nonStickyList(BoxConstraints constraints) {
+    return ScrollableAlign(
       scrollController: widget.scrollController,
       rows: widget.rows,
       child: SizedBox(key: DASTable.tableKey, child: _animatedList(constraints)),
