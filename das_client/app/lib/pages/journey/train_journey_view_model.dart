@@ -29,6 +29,8 @@ class TrainJourneyViewModel {
   final SferaRemoteRepo _sferaRemoteRepo;
   final WarnappRepository _warnappRepo;
 
+  final List<void Function(Journey?)> _syncOnJourneyUpdateCallbacks = [];
+
   Stream<Journey?> get journey => _sferaRemoteRepo.journeyStream;
 
   Stream<TrainJourneySettings> get settings => _rxSettings.stream;
@@ -55,6 +57,7 @@ class TrainJourneyViewModel {
   DateTime? _lastWarnappEventTimestamp;
 
   StreamSubscription? _stateSubscription;
+  StreamSubscription? _journeySubscription;
   StreamSubscription? _warnappSignalSubscription;
   StreamSubscription? _warnappAbfahrtSubscription;
 
@@ -107,11 +110,17 @@ class TrainJourneyViewModel {
     }
   }
 
+  void onJourneyUpdated(void Function(Journey?) callback) {
+    _syncOnJourneyUpdateCallbacks.add(callback);
+  }
+
   void dispose() {
     _rxSettings.close();
     _rxWarnapp.close();
     _rxShowDecisiveGradient.close();
     _stateSubscription?.cancel();
+    _journeySubscription?.cancel();
+    _syncOnJourneyUpdateCallbacks.clear();
     _warnappSignalSubscription?.cancel();
     _warnappAbfahrtSubscription?.cancel();
     automaticAdvancementController.dispose();
@@ -138,6 +147,11 @@ class TrainJourneyViewModel {
             setAutomaticAdvancement(false);
           }
           break;
+      }
+    });
+    _journeySubscription = _sferaRemoteRepo.journeyStream.listen((journey) {
+      for (final callback in _syncOnJourneyUpdateCallbacks) {
+        callback.call(journey);
       }
     });
   }

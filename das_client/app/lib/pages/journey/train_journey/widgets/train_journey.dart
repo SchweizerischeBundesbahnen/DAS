@@ -119,6 +119,7 @@ class TrainJourney extends StatelessWidget {
       builder: (context, snapshot) {
         final collapsedRows = snapshot.data?.$1 ?? {};
         final journeyPosition = snapshot.data!.$2;
+        print('isDifferent ${journeyPosition.currentPosition?.order != journeyPosition.lastPosition?.order}');
         final tableRows = _rows(context, journey, settings, collapsedRows, journeyPosition);
         context.read<TrainJourneyViewModel>().automaticAdvancementController.updateRenderedRows(tableRows);
 
