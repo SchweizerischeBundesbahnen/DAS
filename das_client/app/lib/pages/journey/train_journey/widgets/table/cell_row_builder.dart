@@ -15,6 +15,7 @@ import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_row.dart';
+import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -78,17 +79,17 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
       return DASTableCell.empty(color: specialCellColor);
     }
 
+    final textColor = _isNextStop && specialCellColor == null ? SBBColors.white : null;
+    final defaultTextStyle = DASTableTheme.of(context)?.data.dataTextStyle;
+    final textStyle = (defaultTextStyle ?? DASTextStyles.largeRoman).copyWith(color: textColor);
     return DASTableCell(
       color: specialCellColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            data.kilometre[0].toStringAsFixed(1),
-            style: _isNextStop ? DASTextStyles.largeRoman.copyWith(color: SBBColors.white) : DASTextStyles.largeRoman,
-          ),
-          if (data.kilometre.length > 1) Text(data.kilometre[1].toStringAsFixed(1)),
+          Text(data.kilometre[0].toStringAsFixed(1), style: textStyle),
+          if (data.kilometre.length > 1) Text(data.kilometre[1].toStringAsFixed(1), style: textStyle),
         ],
       ),
       alignment: Alignment.centerLeft,
@@ -122,7 +123,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
       alignment: null,
       child: TrackEquipmentCellBody(
         renderData: config.trackEquipmentRenderData!,
-        isNextStop: _isNextStop,
+        lineColor: _isNextStop && specialCellColor == null ? SBBColors.white : null,
       ),
     );
   }

@@ -40,7 +40,7 @@ class _ScrollableAlignState extends State<ScrollableAlign> {
         onNotification: (_) {
           // Delay scroll back by 1 Frame to avoid strange behaviour
           if (!isTouching && !isAnimating) {
-            Future.delayed(Duration(milliseconds: 1), () => alignToElement());
+            Future.delayed(Duration(milliseconds: 1), () => _alignToElement());
           }
           return false;
         },
@@ -49,7 +49,7 @@ class _ScrollableAlignState extends State<ScrollableAlign> {
     );
   }
 
-  void alignToElement() async {
+  void _alignToElement() async {
     final widgetOffset = WidgetUtil.findOffsetOfKey(key);
     final stickyHeaderState = StickyHeader.of(context);
 
@@ -80,8 +80,7 @@ class _ScrollableAlignState extends State<ScrollableAlign> {
       return;
     }
 
-    for (int i = 0; i < widget.rows.length; i++) {
-      final row = widget.rows[i];
+    for (final row in widget.rows) {
       if (row.key.currentContext != null) {
         final renderObject = row.key.currentContext?.findRenderObject() as RenderBox?;
         if (renderObject != null) {

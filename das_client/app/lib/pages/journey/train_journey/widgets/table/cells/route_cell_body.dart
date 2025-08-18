@@ -25,7 +25,7 @@ class RouteCellBody extends StatelessWidget {
     this.isRouteStart = false,
     this.isRouteEnd = false,
     this.chevronAnimationData,
-    this.isNextStop = false,
+    this.routeColor,
   });
 
   final double chevronWidth;
@@ -37,15 +37,16 @@ class RouteCellBody extends StatelessWidget {
   final bool isStopOnRequest;
   final bool isRouteStart;
   final bool isRouteEnd;
-  final bool isNextStop;
+
+  final Color? routeColor;
 
   final ChevronAnimationData? chevronAnimationData;
 
   @override
   Widget build(BuildContext context) {
-    if (!isNextStop) return _route();
+    if (routeColor != null) return _coloredRoute(_route());
 
-    return _invertedColors(_route());
+    return _route();
   }
 
   Widget _route() {
@@ -66,9 +67,9 @@ class RouteCellBody extends StatelessWidget {
     );
   }
 
-  Widget _invertedColors(Widget child) {
+  Widget _coloredRoute(Widget child) {
     return ColorFiltered(
-      colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcATop),
+      colorFilter: ColorFilter.mode(routeColor!, BlendMode.srcATop),
       child: child,
     );
   }
