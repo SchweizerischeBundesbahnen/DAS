@@ -10,7 +10,7 @@
     "build:ngssc": "ng run webapp:ngsscbuild:production"
   },
   "name": "webapp",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "private": true,
   "files": [
     "dist/*"
