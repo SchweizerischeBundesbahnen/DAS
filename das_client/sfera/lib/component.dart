@@ -64,6 +64,7 @@ export 'package:sfera/src/model/journey/whistles.dart';
 export 'package:sfera/src/model/ru.dart';
 export 'package:sfera/src/model/train_identification.dart';
 export 'package:sfera/src/provider/sfera_auth_provider.dart';
+export 'package:sfera/src/model/journey/communication_network_channel.dart';
 
 class SferaComponent {
   const SferaComponent._();
