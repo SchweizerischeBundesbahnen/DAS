@@ -17,7 +17,8 @@ Capabilities:
    - by an .env file (adapt `SFERA_CUSTOM_TOPIC_PREFIX` to your local preferred name)
    - (or by run configuration)
 2. Add certificate-file to src/main/resources according to .env SOLACE_KEY_STORE_PATH
-3. Run `SferaMockApplication`
+3. Add localregulations.json to src/main/resources
+4. Run `SferaMockApplication`
 
 ## Scenarios
 

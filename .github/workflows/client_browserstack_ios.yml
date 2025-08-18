@@ -24,10 +24,14 @@ jobs:
       matrix:
         file-nr: [1,2,3,4,5]
 
-    runs-on: macos-latest
+    runs-on: macos-15
     steps:
 
-    - uses: actions/checkout@v4
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: 16.4
+
+    - uses: actions/checkout@v5
 
     - uses: subosito/flutter-action@v2
       with:
