@@ -26,59 +26,6 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey table test', () {
-    testWidgets('test time cells for journey in far future (T4) with planned times only', (tester) async {
-      await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
-      await loadTrainJourney(tester, trainNumber: 'T4');
-
-      // test if planned time header label is in table (no operational times)
-      final expectedPlannedHeaderLabel = l10n.p_train_journey_table_time_label_planned;
-      final timeHeader = find.text(expectedPlannedHeaderLabel);
-      expect(timeHeader, findsOneWidget);
-      tester.pumpAndSettle();
-
-      // two service points have empty times
-      final timeCellKey = TimeCellBody.timeCellKey;
-      expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: 'Solothurn'), findsNothing);
-      expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: 'Solothurn West'), findsNothing);
-
-      // Langendorf should have only departure
-      final langendorf = 'Langendorf';
-      final expectedTimeLangendorf = Format.plannedTime(DateTime.parse('2025-05-12T16:36:45Z'));
-
-      expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: langendorf), findsOneWidget);
-      expect(_findTextInDASTableRowByText(innerText: expectedTimeLangendorf, rowText: langendorf), findsOneWidget);
-
-      // Lommiswil has departure and arrival
-      final lommiswil = 'Lommiswil';
-      final expectedTimeLommiswil =
-          '${Format.plannedTime(DateTime.parse('2025-05-12T16:39:12Z'))}\n'
-          '${Format.plannedTime(DateTime.parse('2025-05-12T16:40:12Z'))}';
-      expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: lommiswil), findsOneWidget);
-      expect(_findTextInDASTableRowByText(innerText: expectedTimeLommiswil, rowText: lommiswil), findsOneWidget);
-
-      // Im Holz (non mandatory stop) has departure
-      final holz = 'Im Holz';
-      final expectedTimeHolz = Format.plannedTime(DateTime.parse('2025-05-12T16:46:12Z'));
-      expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: holz), findsOneWidget);
-      expect(_findTextInDASTableRowByText(innerText: expectedTimeHolz, rowText: holz), findsOneWidget);
-
-      // Oberdorf has only arrival
-      final oberdorf = 'Oberdorf SO';
-      final expectedTimeOberdorf = '${Format.plannedTime(DateTime.parse('2025-05-12T16:48:45Z'))}\n';
-      expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: oberdorf), findsOneWidget);
-      expect(_findTextInDASTableRowByText(innerText: expectedTimeOberdorf, rowText: oberdorf), findsOneWidget);
-
-      // tap header label to switch to planned times
-      await tapElement(tester, timeHeader);
-
-      // test if planned time header label is still in table (does not switch)
-      expect(find.text(expectedPlannedHeaderLabel), findsOneWidget);
-
-      await disconnect(tester);
-    });
-
     testWidgets('test up- and downhill gradient is displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
 
@@ -1022,6 +969,60 @@ void main() {
 
       final speedChangeRowSpeed = find.descendant(of: speedChangeRow, matching: find.text('50'));
       expect(speedChangeRowSpeed, findsNothing);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('test time cells for journey in far future (T4) with planned times only', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T4');
+
+      // test if planned time header label is in table (no operational times)
+      final expectedPlannedHeaderLabel = l10n.p_train_journey_table_time_label_planned;
+      final timeHeader = find.text(expectedPlannedHeaderLabel);
+      expect(timeHeader, findsOneWidget);
+      await tester.pumpAndSettle();
+
+      // two service points have empty times
+      final timeCellKey = TimeCellBody.timeCellKey;
+      expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: 'Solothurn'), findsNothing);
+
+      expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: 'Solothurn West'), findsNothing);
+
+      // Langendorf should have only departure
+      final langendorf = 'Langendorf';
+      final expectedTimeLangendorf = Format.plannedTime(DateTime.parse('2025-05-12T16:36:45Z'));
+
+      expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: langendorf), findsOneWidget);
+      expect(_findTextInDASTableRowByText(innerText: expectedTimeLangendorf, rowText: langendorf), findsOneWidget);
+
+      // Lommiswil has departure and arrival
+      final lommiswil = 'Lommiswil';
+      final expectedTimeLommiswil =
+          '${Format.plannedTime(DateTime.parse('2025-05-12T16:39:12Z'))}\n'
+          '${Format.plannedTime(DateTime.parse('2025-05-12T16:40:12Z'))}';
+      expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: lommiswil), findsOneWidget);
+      expect(_findTextInDASTableRowByText(innerText: expectedTimeLommiswil, rowText: lommiswil), findsOneWidget);
+
+      // Im Holz (non mandatory stop) has departure
+      final holz = 'Im Holz';
+      final expectedTimeHolz = Format.plannedTime(DateTime.parse('2025-05-12T16:46:12Z'));
+      expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: holz), findsOneWidget);
+      expect(_findTextInDASTableRowByText(innerText: expectedTimeHolz, rowText: holz), findsOneWidget);
+
+      // Oberdorf has only arrival
+      final oberdorf = 'Oberdorf SO';
+      final expectedTimeOberdorf = '${Format.plannedTime(DateTime.parse('2025-05-12T16:48:45Z'))}\n';
+      expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: oberdorf), findsOneWidget);
+      expect(_findTextInDASTableRowByText(innerText: expectedTimeOberdorf, rowText: oberdorf), findsOneWidget);
+
+      // tap header label to switch to planned times
+      await tapElement(tester, timeHeader);
+
+      // test if planned time header label is still in table (does not switch)
+      expect(find.text(expectedPlannedHeaderLabel), findsOneWidget);
 
       await disconnect(tester);
     });
