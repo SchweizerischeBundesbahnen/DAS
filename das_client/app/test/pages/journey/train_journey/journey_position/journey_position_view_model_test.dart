@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/train_journey/journey_position/journey_position_view_model.dart';
+import 'package:app/pages/journey/train_journey/punctuality/punctuality_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
@@ -16,12 +17,14 @@ void main() {
 
     late JourneyPositionViewModel testee;
     late BehaviorSubject<Journey?> rxMockJourney;
+    late BehaviorSubject<PunctualityModel> rxMockPunctuality;
     late List<dynamic> emitRegister;
     late StreamSubscription currentPositionSub;
 
     setUp(() async {
       rxMockJourney = BehaviorSubject<Journey?>.seeded(null);
-      testee = JourneyPositionViewModel(journeyStream: rxMockJourney);
+      rxMockPunctuality = BehaviorSubject<PunctualityModel>.seeded(PunctualityModel.hidden());
+      testee = JourneyPositionViewModel(journeyStream: rxMockJourney, punctualityStream: rxMockPunctuality);
       emitRegister = <dynamic>[];
       currentPositionSub = testee.model.listen(emitRegister.add);
 
@@ -122,6 +125,7 @@ void main() {
         data: [tenKilometreSignal],
       );
       rxMockJourney.add(aJourney);
+      await _streamProcessing();
       rxMockJourney.add(a1Journey);
       await _streamProcessing();
 
@@ -150,6 +154,49 @@ void main() {
       expect(emitRegister, hasLength(1));
     });
 
+    test('currentPosition_whenPositionBeforeServicePointWithoutPunctuality_thenReturnsPointBeforeSP', () async {
+      // ARRANGE
+      final aServicePoint = ServicePoint(name: 'a', order: 16, kilometre: []);
+      rxMockJourney.add(
+        Journey(
+          metadata: Metadata(signaledPosition: SignaledPosition(order: 15)),
+          data: [zeroSignal, tenSignal, aServicePoint, twentySignal],
+        ),
+      );
+      await _streamProcessing();
+
+      // ACT & EXPECT
+      expect(
+        testee.modelValue,
+        equals(JourneyPositionModel(currentPosition: tenSignal, nextServicePoint: aServicePoint)),
+      );
+      expect(emitRegister, hasLength(1));
+    });
+
+    test('currentPosition_whenPositionBeforeServicePointWithoutArrivalTime_thenReturnsPointBeforeSP', () async {
+      // ARRANGE
+      final aServicePoint = ServicePoint(name: 'a', order: 16, kilometre: []);
+      rxMockJourney.add(
+        Journey(
+          metadata: Metadata(signaledPosition: SignaledPosition(order: 15)),
+          data: [zeroSignal, tenSignal, aServicePoint, twentySignal],
+        ),
+      );
+      rxMockPunctuality.add(
+        PunctualityModel.visible(
+          delay: Delay(value: Duration.zero, location: ''),
+        ),
+      );
+      await _streamProcessing();
+
+      // ACT & EXPECT
+      expect(
+        testee.modelValue,
+        equals(JourneyPositionModel(currentPosition: tenSignal, nextServicePoint: aServicePoint)),
+      );
+      expect(emitRegister, hasLength(1));
+    });
+
     test('lastPosition_whenSingleJourney_thenReturnsNull', () async {
       // ARRANGE
       rxMockJourney.add(
@@ -172,6 +219,7 @@ void main() {
         data: [tenSignal],
       );
       rxMockJourney.add(aJourney);
+      await _streamProcessing();
       rxMockJourney.add(aJourney);
       await _streamProcessing();
 
@@ -198,6 +246,7 @@ void main() {
         data: [zeroSignal, tenSignal],
       );
       rxMockJourney.add(aJourney);
+      await _streamProcessing();
       rxMockJourney.add(bJourney);
       await _streamProcessing();
 
@@ -225,6 +274,7 @@ void main() {
           data: [zeroKilometreSignal, tenSignal],
         );
         rxMockJourney.add(aJourney);
+        await _streamProcessing();
         rxMockJourney.add(bJourney);
         await _streamProcessing();
 
@@ -407,4 +457,4 @@ void main() {
   });
 }
 
-Future<void> _streamProcessing() async => Future.delayed(Duration.zero);
+Future<void> _streamProcessing() async => Future.delayed(const Duration(milliseconds: 2));
