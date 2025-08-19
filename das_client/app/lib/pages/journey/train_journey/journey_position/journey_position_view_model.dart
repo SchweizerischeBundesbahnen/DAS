@@ -55,7 +55,7 @@ class JourneyPositionViewModel {
 
           final updatedPosition = _calculateCurrentPosition(
             journey.metadata.signaledPosition,
-            journey.journeyPoints ?? [],
+            journey.journeyPoints,
             punctuality,
           );
 
