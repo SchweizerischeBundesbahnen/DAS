@@ -50,13 +50,6 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
   }
 
   @override
-  void didChangeDependencies() {
-    _buildHeaderWidgets(context);
-    _buildFooterWidget(context);
-    super.didChangeDependencies();
-  }
-
-  @override
   void didUpdateWidget(covariant StickyWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != oldWidget.controller) {

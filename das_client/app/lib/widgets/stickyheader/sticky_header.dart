@@ -81,12 +81,12 @@ class StickyHeaderState extends State<StickyHeader> {
           child: widget.child,
         ),
         StickyWidget(
+          key: StickyHeader.headerKey,
           controller: controller,
           widgetBuilder: widget.headerBuilder,
         ),
         if (widget.footerBuilder != null)
           StickyWidget(
-            key: ValueKey(Theme.brightnessOf(context)),
             controller: controller,
             widgetBuilder: widget.footerBuilder!,
             isHeader: false,
