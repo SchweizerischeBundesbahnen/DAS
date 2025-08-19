@@ -30,6 +30,7 @@ class DASTable extends StatefulWidget {
     this.themeData,
     this.alignToItem = true,
     this.addBottomSpacer = true,
+    this.hasStickyRows = true,
   }) : assert(columns.isNotEmpty),
        scrollController = scrollController ?? ScrollController();
 
@@ -56,6 +57,9 @@ class DASTable extends StatefulWidget {
 
   /// If true, a bottom spacer is added to the table to ensure the last row can be scrolled to the top.
   final bool addBottomSpacer;
+
+  /// If the table uses sticky rows this bool will activate the sticky widgets.
+  final bool hasStickyRows;
 
   @override
   State<DASTable> createState() => _DASTableState();
@@ -139,9 +143,7 @@ class _DASTableState extends State<DASTable> {
             child: Column(
               children: [
                 _headerRow(),
-                Expanded(
-                  child: _stickyHeaderList(constraints),
-                ),
+                Expanded(child: widget.hasStickyRows ? _stickyHeaderList(constraints) : _nonStickyList(constraints)),
               ],
             ),
           ),
@@ -154,6 +156,14 @@ class _DASTableState extends State<DASTable> {
     return StickyHeader(
       footerBuilder: (context, index) => _footer(index),
       headerBuilder: (context, index) => ClipRect(child: _dataRow(widget.rows[index], isSticky: true)),
+      scrollController: widget.scrollController,
+      rows: widget.rows,
+      child: SizedBox(key: DASTable.tableKey, child: _animatedList(constraints)),
+    );
+  }
+
+  Widget _nonStickyList(BoxConstraints constraints) {
+    return ScrollableAlign(
       scrollController: widget.scrollController,
       rows: widget.rows,
       child: SizedBox(key: DASTable.tableKey, child: _animatedList(constraints)),
