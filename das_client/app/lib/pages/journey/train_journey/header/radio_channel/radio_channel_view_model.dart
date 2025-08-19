@@ -13,8 +13,7 @@ class RadioChannelViewModel {
     _initSubscriptions(journeyStream, journeyPositionStream);
   }
 
-  late StreamSubscription<Journey?> _journeySubscription;
-  late StreamSubscription<JourneyPositionModel> _positionSubscription;
+  late StreamSubscription<(Journey?, JourneyPositionModel)> _subscription;
 
   final BehaviorSubject<RadioChannelModel> _rxModel = BehaviorSubject.seeded(RadioChannelModel());
 
@@ -29,33 +28,28 @@ class RadioChannelViewModel {
   RadioChannelModel get modelValue => _rxModel.value;
 
   void dispose() {
-    _journeySubscription.cancel();
-    _positionSubscription.cancel();
+    _subscription.cancel();
   }
 
   void _initSubscriptions(Stream<Journey?> journeyStream, Stream<JourneyPositionModel> journeyPositionStream) {
-    _journeySubscription = journeyStream.listen((j) => _handleJourneyUpdate(j));
-    _positionSubscription = journeyPositionStream.listen((p) => _handlePositionUpdate(p));
-  }
+    _subscription = CombineLatestStream.combine2(journeyStream, journeyPositionStream, (a, b) => (a, b)).listen((snap) {
+      final journey = snap.$1;
+      final journeyPosition = snap.$2;
 
-  void _handleJourneyUpdate(Journey? journey) {
-    _radioContactLists.clear();
-    _networkChanges.clear();
+      _radioContactLists.clear();
+      _networkChanges.clear();
 
-    if (journey != null) {
-      final metadata = journey.metadata;
-      _radioContactLists.addAll(metadata.radioContactLists);
-      _networkChanges.addAll(metadata.communicationNetworkChanges);
-    }
+      _currentPosition = journeyPosition.currentPosition;
+      _lastServicePoint = journeyPosition.previousServicePoint;
 
-    _emitModel();
-  }
+      if (journey != null) {
+        final metadata = journey.metadata;
+        _radioContactLists.addAll(metadata.radioContactLists);
+        _networkChanges.addAll(metadata.communicationNetworkChanges);
+      }
 
-  void _handlePositionUpdate(JourneyPositionModel p) {
-    _currentPosition = p.currentPosition;
-    _lastServicePoint = p.previousServicePoint;
-
-    _emitModel();
+      _emitModel();
+    });
   }
 
   void _emitModel() {
