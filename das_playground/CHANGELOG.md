@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.5.1...webapp-v0.6.0) (2025-08-18)
+
+
+### Features
+
+* append local regulations to segment profiles ([#1033](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1033)) ([#1137](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1137)) ([f12ad49](https://github.com/SchweizerischeBundesbahnen/DAS/commit/f12ad491a966074997251882d9710cc4ed8c352e))
+
 ## [0.5.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.5.0...webapp-v0.5.1) (2025-06-03)
 
 
