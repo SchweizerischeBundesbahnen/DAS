@@ -22,7 +22,7 @@ public class VehicleUnit {
     private Integer effectiveOperationalHoldingForceInHectoNewton;
     private Integer handBrakeWeightInT;
     private Load load;
-    @Getter private String vehicleTypeIdentifier;
+    @Getter private String vehicleSeries;
 
     static boolean hasDisabledBrake(List<VehicleUnit> vehicleUnits) {
         if (vehicleUnits == null) {

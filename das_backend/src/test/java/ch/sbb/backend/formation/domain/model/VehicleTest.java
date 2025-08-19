@@ -209,58 +209,58 @@ class VehicleTest {
     }
 
     @Test
-    void specialTractionMode_empty() {
-        TractionMode result = Vehicle.specialTractionMode(Collections.emptyList());
+    void additionalTractionMode_empty() {
+        TractionMode result = Vehicle.additionalTractionMode(Collections.emptyList());
 
         assertThat(result).isNull();
     }
 
     @Test
-    void specialTractionMode_withMultipleVehicles() {
+    void additionalTractionMode_withMultipleVehicles() {
         Vehicle vehicle1 = new Vehicle(TractionMode.ZUGLOK, VehicleCategory.LOKOMOTIVE.name(), null, null);
         Vehicle vehicle2 = new Vehicle(TractionMode.SCHIEBELOK, VehicleCategory.LOKOMOTIVE.name(), null, null);
         Vehicle vehicle3 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, null);
 
-        TractionMode result = Vehicle.specialTractionMode(List.of(vehicle1, vehicle2, vehicle3));
+        TractionMode result = Vehicle.additionalTractionMode(List.of(vehicle1, vehicle2, vehicle3));
 
         assertThat(result).isEqualTo(TractionMode.SCHIEBELOK);
     }
 
     @Test
-    void specialTractionMode_withInconsistentData() {
+    void additionalTractionMode_withInconsistentData() {
         Vehicle vehicle1 = new Vehicle(TractionMode.SCHIEBELOK, VehicleCategory.LOKOMOTIVE.name(), null, null);
         Vehicle vehicle2 = new Vehicle(TractionMode.UEBERFUEHRUNG, VehicleCategory.LOKOMOTIVE.name(), null, null);
 
-        TractionMode result = Vehicle.specialTractionMode(List.of(vehicle1, vehicle2));
+        TractionMode result = Vehicle.additionalTractionMode(List.of(vehicle1, vehicle2));
 
         assertThat(result).isNull();
     }
 
     @Test
-    void specialTractionSeries_empty() {
-        String result = Vehicle.specialTractionSeries(Collections.emptyList());
+    void additionalTractionSeries_empty() {
+        String result = Vehicle.additionalTractionSeries(Collections.emptyList());
 
         assertThat(result).isNull();
     }
 
     @Test
-    void specialTractionSeries_withMultipleVehicles() {
+    void additionalTractionSeries_withMultipleVehicles() {
         Vehicle vehicle1 = new Vehicle(TractionMode.ZUGLOK, VehicleCategory.LOKOMOTIVE.name(), null, null);
         Vehicle vehicle2 = new Vehicle(TractionMode.ZWISCHENLOK, VehicleCategory.TRIEBWAGEN.name(), List.of(new VehicleUnit(null, null, null, null, null, null, "Rm84")), null);
         Vehicle vehicle3 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, null);
 
-        String result = Vehicle.specialTractionSeries(List.of(vehicle1, vehicle2, vehicle3));
+        String result = Vehicle.additionalTractionSeries(List.of(vehicle1, vehicle2, vehicle3));
 
         assertThat(result).isEqualTo("Rm84");
     }
 
     @Test
-    void specialTractionSeries_withMoreThanOneVehicleUnit() {
+    void additionalTractionSeries_withMoreThanOneVehicleUnit() {
         Vehicle vehicle1 = new Vehicle(TractionMode.ZUGLOK, VehicleCategory.LOKOMOTIVE.name(), null, null);
         Vehicle vehicle2 = new Vehicle(TractionMode.ZWISCHENLOK, VehicleCategory.TRIEBWAGEN.name(),
             List.of(new VehicleUnit(null, null, null, null, null, null, "Rm84"), new VehicleUnit(null, null, null, null, null, null, "Rm84")), null);
 
-        String result = Vehicle.specialTractionSeries(List.of(vehicle1, vehicle2));
+        String result = Vehicle.additionalTractionSeries(List.of(vehicle1, vehicle2));
 
         assertThat(result).isNull();
     }

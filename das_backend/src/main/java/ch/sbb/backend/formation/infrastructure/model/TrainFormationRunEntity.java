@@ -100,9 +100,9 @@ public class TrainFormationRunEntity {
 
     private Boolean simTrain;
 
-    private String tractionMode;
+    private String additionalTractionMode;
 
-    private String tractionSeries;
+    private String additionalTractionSeries;
 
     private Boolean carCarrierVehicle;
 
@@ -172,8 +172,8 @@ public class TrainFormationRunEntity {
             .brakePositionGForBrakeUnit1to5(formationRun.getBrakePositionGForBrakeUnit1to5())
             .brakePositionGForLoadHauled(formationRun.getBrakePositionGForLoadHauled())
             .simTrain(formationRun.getSimTrain())
-            .tractionMode(formationRun.getTractionMode() != null ? formationRun.getTractionMode().getKey() : null)
-            .tractionSeries(formationRun.getTractionSeries())
+            .additionalTractionMode(formationRun.getAdditionalTractionMode() != null ? formationRun.getAdditionalTractionMode().getKey() : null)
+            .additionalTractionSeries(formationRun.getAdditionalTractionSeries())
             .carCarrierVehicle(formationRun.getCarCarrierVehicle())
             .dangerousGoods(formationRun.hasDangerousGoods())
             .vehiclesCount(formationRun.hauledLoadVehiclesCount())

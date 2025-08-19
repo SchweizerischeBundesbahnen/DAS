@@ -158,7 +158,7 @@ class VehicleUnitTest {
     void getVehicleTypeIdentifier() {
         VehicleUnit vehicleUnit = new VehicleUnit(null, null, null, null, null, null, "Ld3014");
 
-        String result = vehicleUnit.getVehicleTypeIdentifier();
+        String result = vehicleUnit.getVehicleSeries();
 
         assertThat(result).isEqualTo("Ld3014");
     }

@@ -64,7 +64,7 @@ public final class VehicleFactory {
         if (vehicleType == null) {
             return;
         }
-        builder.vehicleTypeIdentifier(vehicleType.getVehicleTypeIdentifier());
+        builder.vehicleSeries(vehicleType.getVehicleTypeIdentifier());
     }
 
     private static void applyCargoTransport(VehicleUnitBuilder builder, CargoTransport cargoTransport) {

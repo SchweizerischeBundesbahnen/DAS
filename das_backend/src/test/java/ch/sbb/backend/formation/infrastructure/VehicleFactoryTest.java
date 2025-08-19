@@ -47,7 +47,7 @@ class VehicleFactoryTest {
                     .effectiveOperationalHoldingForceInHectoNewton(342)
                     .handBrakeWeightInT(12)
                     .load(new Load(List.of(new Goods(true)), List.of(new IntermodalLoadingUnit(false, List.of(new Goods(false))))))
-                    .vehicleTypeIdentifier("Dt43564")
+                    .vehicleSeries("Dt43564")
                     .build()),
             new EuropeanVehicleNumber("75", "46", "334455", "1"));
 
