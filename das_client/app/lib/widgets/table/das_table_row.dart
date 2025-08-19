@@ -4,6 +4,15 @@ import 'package:flutter/material.dart';
 
 /// Interface for a class that builds [DASTableRow]
 abstract class DASTableRowBuilder<T> {
+  static final Map<int, GlobalKey> _tableRowKeys = {};
+
+  static GlobalKey getRowKey(int identifier) {
+    if (!_tableRowKeys.containsKey(identifier)) {
+      _tableRowKeys[identifier] = GlobalKey();
+    }
+    return _tableRowKeys[identifier]!;
+  }
+
   DASTableRowBuilder({
     required this.height,
     required this.data,
@@ -11,7 +20,7 @@ abstract class DASTableRowBuilder<T> {
     this.stickyLevel = StickyLevel.none,
     this.identifier,
     GlobalKey? key,
-  }) : key = key ?? GlobalKey();
+  }) : key = key ?? getRowKey(data.hashCode ^ rowIndex);
 
   DASTableRow build(BuildContext context);
 

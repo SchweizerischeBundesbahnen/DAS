@@ -5,16 +5,11 @@
 // https://opensource.org/licenses/MIT.
 
 import 'dart:math';
-import 'dart:async';
 
-import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/stickyheader/sticky_widget_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:logging/logging.dart';
-
-final _log = Logger('StickyWidget');
 
 /// Sticky Widget.
 ///
@@ -25,12 +20,10 @@ class StickyWidget extends StatefulWidget {
   final StickyWidgetController controller;
   final StickyWidgetBuilder widgetBuilder;
   final bool isHeader;
-  final Stream<ThemeMode> themeModeStream;
 
   const StickyWidget({
     required this.controller,
     required this.widgetBuilder,
-    required this.themeModeStream,
     this.isHeader = true,
     super.key,
   });
@@ -45,7 +38,6 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
   Widget? _stickyHeader1;
   Widget? _stickyHeader2;
   Widget? _stickyFooter;
-  late StreamSubscription<ThemeMode> _themeSub;
 
   @override
   void initState() {
@@ -55,12 +47,10 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
       _scrollController.position.jumpTo(_animationController.value);
     });
     widget.controller.addListener(_update);
-    _themeSub = widget.themeModeStream.listen((_) => _update());
   }
 
   @override
   void didChangeDependencies() {
-    _log.fine('didChangedDependency called');
     _buildHeaderWidgets(context);
     _buildFooterWidget(context);
     super.didChangeDependencies();
@@ -73,19 +63,12 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
       oldWidget.controller.removeListener(_update);
       widget.controller.addListener(_update);
     }
-    if (widget.themeModeStream != oldWidget.themeModeStream) {
-      _themeSub.cancel();
-      _themeSub = widget.themeModeStream.listen((_) {
-        _update();
-      });
-    }
   }
 
   @override
   void dispose() {
     widget.controller.removeListener(_update);
     _animationController.dispose();
-    _themeSub.cancel();
     super.dispose();
   }
 
@@ -114,7 +97,6 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
     if (!widget.controller.isRecalculating) {
       if (indexesToBuild[StickyLevel.first] != -1) {
         _stickyHeader1 = Positioned(
-          key: ValueKey(Theme.brightnessOf(context)),
           left: 0,
           top: widget.controller.headerOffsets[StickyLevel.first],
           right: 0,
@@ -126,7 +108,6 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
 
       if (indexesToBuild[StickyLevel.second] != -1) {
         _stickyHeader2 = Positioned(
-          key: ValueKey(Theme.brightnessOf(context)),
           left: 0,
           top:
               widget.controller.widgetHeight(indexesToBuild[StickyLevel.first]!) +
@@ -159,7 +140,6 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
     return Stack(
       children: [
         Positioned(
-          key: ValueKey(Theme.brightnessOf(context)),
           left: 0,
           right: 0,
           bottom: 0,

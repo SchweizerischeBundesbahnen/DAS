@@ -4,7 +4,6 @@
 // that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import 'package:app/theme/theme_view_model.dart';
 import 'package:app/widgets/stickyheader/sticky_widget.dart';
 import 'package:app/widgets/stickyheader/sticky_widget_controller.dart';
 import 'package:app/widgets/table/das_table_row.dart';
@@ -55,9 +54,17 @@ class StickyHeaderState extends State<StickyHeader> {
   @override
   void didUpdateWidget(covariant StickyHeader oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.rows != oldWidget.rows) {
+    if (!_rowsEqual(oldWidget.rows, widget.rows)) {
       controller.updateRowData(widget.rows);
     }
+  }
+
+  bool _rowsEqual(List<DASTableRow> oldRows, List<DASTableRow> newRows) {
+    if (oldRows.length != newRows.length) return false;
+    for (int i = 0; i < oldRows.length; i++) {
+      if (oldRows[i].key != newRows[i].key) return false;
+    }
+    return true;
   }
 
   @override
@@ -74,10 +81,8 @@ class StickyHeaderState extends State<StickyHeader> {
           child: widget.child,
         ),
         StickyWidget(
-          key: ValueKey(StickyHeader.headerKey.hashCode ^ ValueKey(Theme.brightnessOf(context)).hashCode),
           controller: controller,
           widgetBuilder: widget.headerBuilder,
-          themeModeStream: ThemeViewModel().themeMode,
         ),
         if (widget.footerBuilder != null)
           StickyWidget(
@@ -85,7 +90,6 @@ class StickyHeaderState extends State<StickyHeader> {
             controller: controller,
             widgetBuilder: widget.footerBuilder!,
             isHeader: false,
-            themeModeStream: ThemeViewModel().themeMode,
           ),
       ],
     );
