@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/navigation/journey_navigation_model.dart';
+import 'package:app/widgets/table/das_table_row.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
@@ -32,6 +33,7 @@ class JourneyNavigationViewModel {
 
     if (!_trainIds.contains(trainId)) _trainIds.add(trainId);
 
+    DASTableRowBuilder.clearRowKeys();
     _sferaRemoteRepo.connect(trainId);
     _addToStream(trainId);
   }
@@ -44,6 +46,7 @@ class JourneyNavigationViewModel {
     _sferaRemoteRepo.disconnect();
 
     final trainId = _trainIds[updatedIdx];
+    DASTableRowBuilder.clearRowKeys();
     _sferaRemoteRepo.connect(trainId);
     _addToStream(trainId);
   }
@@ -56,6 +59,7 @@ class JourneyNavigationViewModel {
     _sferaRemoteRepo.disconnect();
 
     final trainId = _trainIds[updatedIdx];
+    DASTableRowBuilder.clearRowKeys();
     _sferaRemoteRepo.connect(trainId);
     _addToStream(trainId);
   }
