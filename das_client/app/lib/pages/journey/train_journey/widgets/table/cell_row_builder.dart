@@ -28,7 +28,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     required this.metadata,
     required super.data,
     required super.rowIndex,
-    required this.journeyPosition,
+    this.journeyPosition,
     super.height = rowHeight,
     super.stickyLevel,
     super.key,
@@ -42,7 +42,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   final Alignment defaultAlignment;
   final Color? rowColor;
   final Metadata metadata;
-  final JourneyPositionModel journeyPosition;
+  final JourneyPositionModel? journeyPosition;
   final TrainJourneyConfig config;
   final VoidCallback? onTap;
   final bool isGrouped;
@@ -105,7 +105,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
       alignment: null,
       clipBehaviour: Clip.none,
       child: RouteCellBody(
-        isCurrentPosition: journeyPosition.currentPosition == data,
+        isCurrentPosition: journeyPosition?.currentPosition == data,
         isRouteStart: metadata.journeyStart == data,
         isRouteEnd: metadata.journeyEnd == data,
         chevronAnimationData: config.chevronAnimationData,
@@ -266,5 +266,5 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     }
   }
 
-  bool get _isNextStop => journeyPosition.nextStop == data;
+  bool get _isNextStop => journeyPosition?.nextStop == data;
 }

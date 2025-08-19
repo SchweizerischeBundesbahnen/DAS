@@ -14,7 +14,7 @@ class ChronographViewModel {
 
   ChronographViewModel({
     required Stream<Journey?> journeyStream,
-    required Stream<JourneyPositionModel> journeyPositionStream,
+    required Stream<JourneyPositionModel?> journeyPositionStream,
     required Stream<PunctualityModel> punctualityStream,
     required Stream<AdlState> adlStateStream,
   }) {
@@ -67,10 +67,10 @@ class ChronographViewModel {
     );
   }
 
-  void _initJourneyPositionSubscription(Stream<JourneyPositionModel> journeyPositionStream) {
+  void _initJourneyPositionSubscription(Stream<JourneyPositionModel?> journeyPositionStream) {
     _subscriptions.add(
       journeyPositionStream.listen((model) {
-        _lastServicePoint = model.previousServicePoint;
+        _lastServicePoint = model?.previousServicePoint;
 
         _emitState();
       }),

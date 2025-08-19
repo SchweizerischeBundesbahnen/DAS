@@ -8,12 +8,12 @@ import 'package:sfera/component.dart';
 class RadioChannelViewModel {
   RadioChannelViewModel({
     required Stream<Journey?> journeyStream,
-    required Stream<JourneyPositionModel> journeyPositionStream,
+    required Stream<JourneyPositionModel?> journeyPositionStream,
   }) {
     _initSubscriptions(journeyStream, journeyPositionStream);
   }
 
-  late StreamSubscription<(Journey?, JourneyPositionModel)> _subscription;
+  late StreamSubscription<(Journey?, JourneyPositionModel?)> _subscription;
 
   final BehaviorSubject<RadioChannelModel> _rxModel = BehaviorSubject.seeded(RadioChannelModel());
 
@@ -31,7 +31,7 @@ class RadioChannelViewModel {
     _subscription.cancel();
   }
 
-  void _initSubscriptions(Stream<Journey?> journeyStream, Stream<JourneyPositionModel> journeyPositionStream) {
+  void _initSubscriptions(Stream<Journey?> journeyStream, Stream<JourneyPositionModel?> journeyPositionStream) {
     _subscription = CombineLatestStream.combine2(journeyStream, journeyPositionStream, (a, b) => (a, b)).listen((snap) {
       final journey = snap.$1;
       final journeyPosition = snap.$2;
@@ -39,8 +39,8 @@ class RadioChannelViewModel {
       _radioContactLists.clear();
       _networkChanges.clear();
 
-      _currentPosition = journeyPosition.currentPosition;
-      _lastServicePoint = journeyPosition.previousServicePoint;
+      _currentPosition = journeyPosition?.currentPosition;
+      _lastServicePoint = journeyPosition?.previousServicePoint;
 
       if (journey != null) {
         final metadata = journey.metadata;

@@ -9,7 +9,7 @@ enum CollapsedState { collapsed, openWithCollapsedContent }
 class CollapsibleRowsViewModel {
   CollapsibleRowsViewModel({
     required Stream<Journey?> journeyStream,
-    required Stream<JourneyPositionModel> journeyPositionStream,
+    required Stream<JourneyPositionModel?> journeyPositionStream,
   }) {
     _init(journeyStream, journeyPositionStream);
   }
@@ -20,9 +20,9 @@ class CollapsibleRowsViewModel {
 
   final _rxCollapsedRows = BehaviorSubject<Map<int, CollapsedState>>.seeded({});
 
-  StreamSubscription<(Journey?, JourneyPositionModel)>? _journeySubscription;
+  StreamSubscription<(Journey?, JourneyPositionModel?)>? _journeySubscription;
 
-  void _init(Stream<Journey?> journeyStream, Stream<JourneyPositionModel> journeyPositionStream) {
+  void _init(Stream<Journey?> journeyStream, Stream<JourneyPositionModel?> journeyPositionStream) {
     _journeySubscription?.cancel();
     _journeySubscription =
         CombineLatestStream.combine2(
@@ -53,9 +53,9 @@ class CollapsibleRowsViewModel {
     _rxCollapsedRows.add(newMap);
   }
 
-  void _collapsePassedAccordionRows(Journey journey, JourneyPositionModel journeyPosition) {
-    final currentPosition = journeyPosition.currentPosition;
-    final lastPosition = journeyPosition.lastPosition;
+  void _collapsePassedAccordionRows(Journey journey, JourneyPositionModel? journeyPosition) {
+    final currentPosition = journeyPosition?.currentPosition;
+    final lastPosition = journeyPosition?.lastPosition;
     if (currentPosition == lastPosition || lastPosition == null || currentPosition == null) {
       return;
     }

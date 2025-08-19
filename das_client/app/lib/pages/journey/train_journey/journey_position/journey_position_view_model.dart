@@ -18,15 +18,15 @@ class JourneyPositionViewModel {
 
   StreamSubscription<PunctualityModel>? _punctualitySubscription;
   StreamSubscription<(Journey?, PunctualityModel, ServicePoint?)>? _journeySubscription;
-  final _rxModel = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
+  final _rxModel = BehaviorSubject<JourneyPositionModel>();
 
   final _rxNextServicePoint = BehaviorSubject<ServicePoint?>.seeded(null);
 
   Timer? _servicePointReached;
 
-  JourneyPositionModel get modelValue => _rxModel.value;
+  JourneyPositionModel? get modelValue => _rxModel.valueOrNull;
 
-  Stream<JourneyPositionModel> get model => _rxModel
+  Stream<JourneyPositionModel?> get model => _rxModel
       .transform(ThrottleStreamTransformer((_) => TimerStream(null, const Duration(milliseconds: 1))))
       .distinct();
 
@@ -76,9 +76,9 @@ class JourneyPositionViewModel {
   }
 
   JourneyPoint? _calculateLastPosition(Journey? journey) {
-    final previousModel = _rxModel.value;
+    final previousModel = _rxModel.valueOrNull;
     return journey?.journeyPoints.firstWhereOrNull(
-      (it) => it.order == previousModel.currentPosition?.order,
+      (it) => it.order == previousModel?.currentPosition?.order,
     );
   }
 

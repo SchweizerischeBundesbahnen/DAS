@@ -108,8 +108,8 @@ class TrainJourney extends StatelessWidget {
       stream:
           CombineLatestStream.combine2<
             Map<int, CollapsedState>,
-            JourneyPositionModel,
-            (Map<int, CollapsedState>, JourneyPositionModel)
+            JourneyPositionModel?,
+            (Map<int, CollapsedState>, JourneyPositionModel?)
           >(
             collapsibleRowsViewModel.collapsedRows,
             journeyPositionViewModel.model,
@@ -158,14 +158,14 @@ class TrainJourney extends StatelessWidget {
     Journey journey,
     TrainJourneySettings settings,
     Map<int, CollapsedState> collapsedRows,
-    JourneyPositionModel journeyPosition,
+    JourneyPositionModel? journeyPosition,
   ) {
     final currentBreakSeries = settings.resolvedBreakSeries(journey.metadata);
 
     final rows = journey.data
         .whereNot((it) => _isCurvePointWithoutSpeed(it, journey, settings))
         .groupBaliseAndLeveLCrossings(settings.expandedGroups)
-        .hideRepeatedLineFootNotes(journeyPosition.currentPosition)
+        .hideRepeatedLineFootNotes(journeyPosition?.currentPosition)
         .hideFootNotesForNotSelectedTrainSeries(currentBreakSeries?.trainSeries)
         .combineFootNoteAndOperationalIndication()
         .sortedBy((data) => data.order);

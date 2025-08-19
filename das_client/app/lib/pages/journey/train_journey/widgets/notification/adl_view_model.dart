@@ -9,7 +9,10 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 class AdlViewModel {
-  AdlViewModel({required Stream<Journey?> journeyStream, required Stream<JourneyPositionModel> journeyPositionStream}) {
+  AdlViewModel({
+    required Stream<Journey?> journeyStream,
+    required Stream<JourneyPositionModel?> journeyPositionStream,
+  }) {
     _initJourneyStreamSubscription(journeyStream, journeyPositionStream);
   }
 
@@ -17,7 +20,7 @@ class AdlViewModel {
 
   Timer? _adlEndTimer;
 
-  StreamSubscription<(Journey?, JourneyPositionModel)>? _journeySubscription;
+  StreamSubscription<(Journey?, JourneyPositionModel?)>? _journeySubscription;
 
   final _rxActiveAdl = BehaviorSubject<AdvisedSpeedSegment?>.seeded(null);
 
@@ -40,7 +43,7 @@ class AdlViewModel {
 
   void _initJourneyStreamSubscription(
     Stream<Journey?> journeyStream,
-    Stream<JourneyPositionModel> journeyPositionStream,
+    Stream<JourneyPositionModel?> journeyPositionStream,
   ) {
     _journeySubscription = CombineLatestStream.combine2(journeyStream, journeyPositionStream, (a, b) => (a, b)).listen((
       data,
@@ -48,10 +51,10 @@ class AdlViewModel {
       final journey = data.$1;
       final journeyPosition = data.$2;
 
-      if (journey != null && journeyPosition.currentPosition != null) {
+      if (journey != null && journeyPosition?.currentPosition != null) {
         final metadata = journey.metadata;
         final activeAdl = metadata.advisedSpeedSegments
-            .appliesToOrder(journeyPosition.currentPosition!.order)
+            .appliesToOrder(journeyPosition!.currentPosition!.order)
             .firstOrNull;
 
         if (activeAdl != null) {

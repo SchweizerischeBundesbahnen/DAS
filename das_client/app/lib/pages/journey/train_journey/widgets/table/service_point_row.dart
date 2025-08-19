@@ -41,7 +41,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     Color? rowColor,
   }) : super(
          rowColor:
-             rowColor ?? ((journeyPosition.nextStop == data) ? SBBColors.night : ThemeUtil.getDASTableColor(context)),
+             rowColor ?? ((journeyPosition?.nextStop == data) ? SBBColors.night : ThemeUtil.getDASTableColor(context)),
          stickyLevel: StickyLevel.first,
          height: calculateHeight(data, config.settings.resolvedBreakSeries(metadata)),
        );
@@ -163,7 +163,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
         initialData: positionViewModel.modelValue,
         builder: (context, snapshot) => RouteCellBody(
           isStop: data.isStop,
-          isCurrentPosition: snapshot.requireData.currentPosition == data,
+          isCurrentPosition: snapshot.data?.currentPosition == data,
           isRouteStart: metadata.journeyStart == data,
           isRouteEnd: metadata.journeyEnd == data,
           isStopOnRequest: !data.mandatoryStop,
@@ -326,5 +326,5 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     return baseRowHeight + (properties.length * propertyRowHeight);
   }
 
-  bool get _isNextStop => journeyPosition.nextStop == data;
+  bool get _isNextStop => journeyPosition?.nextStop == data;
 }

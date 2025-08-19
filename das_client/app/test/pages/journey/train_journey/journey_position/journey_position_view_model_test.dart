@@ -335,7 +335,7 @@ void main() {
       _processStreamInFakeAsync(testAsync);
 
       // ACT & EXPECT
-      expect(testee.modelValue.previousServicePoint, isNull);
+      expect(testee.modelValue?.previousServicePoint, isNull);
     });
 
     test('previousServicePoint_whenNoServicePointBeforeCurrentPosition_isNull', () {
@@ -352,7 +352,7 @@ void main() {
       _processStreamInFakeAsync(testAsync);
 
       // ACT & EXPECT
-      expect(testee.modelValue.previousServicePoint, isNull);
+      expect(testee.modelValue?.previousServicePoint, isNull);
     });
 
     test('previousServicePoint_whenCurrentPositionIsServicePoint_thenIsThisServicePoint', () {
@@ -369,7 +369,7 @@ void main() {
       _processStreamInFakeAsync(testAsync);
 
       // ACT & EXPECT
-      expect(testee.modelValue.previousServicePoint, equals(aServicePoint));
+      expect(testee.modelValue?.previousServicePoint, equals(aServicePoint));
     });
 
     test('previousServicePoint_whenCurrentPositionIsAfterServicePoint_thenIsThisServicePoint', () {
@@ -387,7 +387,7 @@ void main() {
       _processStreamInFakeAsync(testAsync);
 
       // ACT & EXPECT
-      expect(testee.modelValue.previousServicePoint, equals(bServicePoint));
+      expect(testee.modelValue?.previousServicePoint, equals(bServicePoint));
     });
 
     test('nextServicePoint_whenHasNoServicePoints_thenIsNull', () {
@@ -403,7 +403,7 @@ void main() {
       _processStreamInFakeAsync(testAsync);
 
       // ACT & EXPECT
-      expect(testee.modelValue.nextServicePoint, isNull);
+      expect(testee.modelValue?.nextServicePoint, isNull);
     });
 
     test('nextServicePoint_whenIsOnServicePointAndNoOther_thenIsNull', () {
@@ -420,7 +420,7 @@ void main() {
       _processStreamInFakeAsync(testAsync);
 
       // ACT & EXPECT
-      expect(testee.modelValue.nextServicePoint, isNull);
+      expect(testee.modelValue?.nextServicePoint, isNull);
     });
 
     test('nextServicePoint_whenIsOnServicePointAndHasOther_thenIsOther', () {
@@ -438,7 +438,7 @@ void main() {
       _processStreamInFakeAsync(testAsync);
 
       // ACT & EXPECT
-      expect(testee.modelValue.nextServicePoint, equals(bServicePoint));
+      expect(testee.modelValue?.nextServicePoint, equals(bServicePoint));
     });
 
     test('nextStop_whenHasNoServicePoints_thenIsNull', () {
@@ -454,7 +454,7 @@ void main() {
       _processStreamInFakeAsync(testAsync);
 
       // ACT & EXPECT
-      expect(testee.modelValue.nextStop, isNull);
+      expect(testee.modelValue?.nextStop, isNull);
     });
 
     test('nextStop_whenIsOnServicePointAndNoOther_thenIsNull', () {
@@ -471,7 +471,7 @@ void main() {
       _processStreamInFakeAsync(testAsync);
 
       // ACT & EXPECT
-      expect(testee.modelValue.nextStop, isNull);
+      expect(testee.modelValue?.nextStop, isNull);
     });
 
     test('nextStop_whenIsOnServicePointAndHasOtherThatIsNoStop_thenIsNull', () {
@@ -489,7 +489,7 @@ void main() {
       });
 
       // ACT & EXPECT
-      expect(testee.modelValue.nextStop, isNull);
+      expect(testee.modelValue?.nextStop, isNull);
     });
 
     test('nextStop_whenIsOnServicePointAndHasOtherThatIsStop_thenIsOther', () {
@@ -507,7 +507,7 @@ void main() {
       _processStreamInFakeAsync(testAsync);
 
       // ACT & EXPECT
-      expect(testee.modelValue.nextStop, equals(bServicePoint));
+      expect(testee.modelValue?.nextStop, equals(bServicePoint));
     });
   });
 }
