@@ -98,6 +98,9 @@ jobs:
         env:
           IMAGE_ID: ghcr.io/${{ github.repository }}/backend
           VERSION: ${{ needs.release-please.outputs.das_backend--version }}
+          ZIS_SR_URL: ${{ secrets.ZIS_SR_URL }}
+          ZIS_SR_API_KEY: ${{ secrets.ZIS_SR_API_KEY }}
+          ZIS_SR_API_SECRET: ${{ secrets.ZIS_SR_API_SECRET }}
         run: |
           # Convert to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[:upper:]' '[:lower:]')

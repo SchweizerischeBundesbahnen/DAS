@@ -49,7 +49,6 @@ class ReducedServicePointRow extends ServicePointRow {
         isRouteEnd: metadata.journeyEnd == data,
         isStopOnRequest: !data.mandatoryStop,
         chevronPosition: RouteChevron.positionFromHeight(height),
-        isNextStop: false,
       ),
     );
   }

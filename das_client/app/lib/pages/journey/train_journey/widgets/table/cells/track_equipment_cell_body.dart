@@ -4,7 +4,6 @@ import 'package:app/pages/journey/train_journey/widgets/table/config/track_equip
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class TrackEquipmentCellBody extends StatelessWidget {
@@ -18,13 +17,15 @@ class TrackEquipmentCellBody extends StatelessWidget {
   const TrackEquipmentCellBody({
     this.renderData = const TrackEquipmentRenderData(),
     this.position,
-    this.isNextStop = false,
+    this.lineColor,
     super.key,
   });
 
   final TrackEquipmentRenderData renderData;
   final double? position;
-  final bool isNextStop;
+
+  /// optional line color. [ThemeUtil.getIconColor] is used otherwise
+  final Color? lineColor;
 
   @override
   Widget build(BuildContext context) {
@@ -198,7 +199,7 @@ class TrackEquipmentCellBody extends StatelessWidget {
 
   static double get conventionalExtendedSpeedBorderSpace => 5.0 + _ConventionalExtendedSpeedBorderPainter.height;
 
-  Color _lineColor(BuildContext context) => isNextStop ? SBBColors.white : ThemeUtil.getIconColor(context);
+  Color _lineColor(BuildContext context) => lineColor ?? ThemeUtil.getIconColor(context);
 }
 
 class _ConventionalExtendedSpeedBorderPainter extends CustomPainter {
