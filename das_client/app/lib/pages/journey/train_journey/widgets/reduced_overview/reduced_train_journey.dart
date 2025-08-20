@@ -65,7 +65,7 @@ class ReducedTrainJourney extends StatelessWidget {
           return ReducedServicePointRow(
             metadata: metadata,
             data: rowData as ServicePoint,
-            journeyPosition: JourneyPositionModel(),
+
             config: trainJourneyConfig,
             context: context,
             rowIndex: index,

@@ -34,6 +34,7 @@ class JourneyPositionViewModel {
     _servicePointReached?.cancel();
     _punctualitySubscription?.cancel();
     _journeySubscription?.cancel();
+    _rxModel.close();
     _servicePointReached = null;
     _punctualitySubscription = null;
   }

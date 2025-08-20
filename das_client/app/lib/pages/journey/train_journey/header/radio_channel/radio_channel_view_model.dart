@@ -29,6 +29,7 @@ class RadioChannelViewModel {
 
   void dispose() {
     _subscription.cancel();
+    _rxModel.close();
   }
 
   void _initSubscriptions(Stream<Journey?> journeyStream, Stream<JourneyPositionModel?> journeyPositionStream) {

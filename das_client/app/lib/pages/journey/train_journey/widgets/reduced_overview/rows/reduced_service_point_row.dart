@@ -1,3 +1,4 @@
+import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/reduced_overview/cells/reduced_time_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
@@ -11,10 +12,14 @@ class ReducedServicePointRow extends ServicePointRow {
     required super.metadata,
     required super.data,
     required super.rowIndex,
-    required super.journeyPosition,
     required this.context,
     super.config,
-  }) : super(context: context, rowColor: ThemeUtil.getDASTableColor(context), highlightNextStop: false);
+  }) : super(
+         context: context,
+         journeyPosition: JourneyPositionModel(),
+         rowColor: ThemeUtil.getDASTableColor(context),
+         highlightNextStop: false,
+       );
 
   final BuildContext context;
 
