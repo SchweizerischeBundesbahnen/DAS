@@ -10,7 +10,7 @@ void main() {
     // Load app widget.
     await prepareAndStartApp(tester);
     await loadTrainJourney(tester, trainNumber: 'T9999M');
-    await toggleAutomaticAdvancement(tester);
+    await stopAutomaticAdvancement(tester);
 
     // check km, up and down gradients are shown
     expect(find.text('km'), findsOneWidget);
@@ -58,7 +58,7 @@ void main() {
     await tapElement(tester, find.text(l10n.w_navigation_drawer_fahrtinfo_title));
 
     await loadTrainJourney(tester, trainNumber: 'T9999M');
-    await toggleAutomaticAdvancement(tester);
+    await stopAutomaticAdvancement(tester);
 
     // check km is shown, up and down gradients are hidden
     expect(find.text(l10n.p_train_journey_table_kilometre_label), findsOneWidget);
