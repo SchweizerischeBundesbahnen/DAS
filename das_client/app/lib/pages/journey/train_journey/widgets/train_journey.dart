@@ -241,7 +241,6 @@ class TrainJourney extends StatelessWidget {
           return AdditionalSpeedRestrictionRow(
             metadata: journey.metadata,
             data: rowData as AdditionalSpeedRestrictionData,
-            journeyPosition: journeyPosition,
             config: trainJourneyConfig,
             onTap: () => _onAdditionalSpeedRestrictionTab(context, rowData),
             rowIndex: index,
