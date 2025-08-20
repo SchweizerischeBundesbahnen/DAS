@@ -199,24 +199,46 @@ class FormationRunTest {
     }
 
     @Test
-    void getTractionModes_empty() {
+    void getAdditionalTractionMode_empty() {
         FormationRun formationRun = createFormationRunWithVehicles(null);
 
         try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
-            mockedStatic.when(() -> Vehicle.tractionModes(any())).thenReturn(Collections.emptyList());
-            List<TractionMode> tractionModes = formationRun.getTractionModes();
-            assertThat(tractionModes).isEmpty();
+            mockedStatic.when(() -> Vehicle.additionalTractionMode(any())).thenReturn(null);
+            TractionMode tractionMode = formationRun.getAdditionalTractionMode();
+            assertThat(tractionMode).isNull();
         }
     }
 
     @Test
-    void getTractionModes_withTractionModes() {
+    void getAdditionalTractionMode_withAdditionalTractionMode() {
         FormationRun formationRun = createFormationRunWithVehicles(null);
 
         try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
-            mockedStatic.when(() -> Vehicle.tractionModes(any())).thenReturn(List.of(TractionMode.ZUGLOK, TractionMode.SCHIEBELOK, TractionMode.DOPPELTRAKTION));
-            List<TractionMode> tractionModes = formationRun.getTractionModes();
-            assertThat(tractionModes).isEqualTo(List.of(TractionMode.ZUGLOK, TractionMode.SCHIEBELOK, TractionMode.DOPPELTRAKTION));
+            mockedStatic.when(() -> Vehicle.additionalTractionMode(any())).thenReturn(TractionMode.SCHIEBELOK);
+            TractionMode tractionMode = formationRun.getAdditionalTractionMode();
+            assertThat(tractionMode).isEqualTo(TractionMode.SCHIEBELOK);
+        }
+    }
+
+    @Test
+    void getAdditionalTractionSeries_empty() {
+        FormationRun formationRun = createFormationRunWithVehicles(null);
+
+        try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
+            mockedStatic.when(() -> Vehicle.additionalTractionSeries(any())).thenReturn(null);
+            String tractionSeries = formationRun.getAdditionalTractionSeries();
+            assertThat(tractionSeries).isNull();
+        }
+    }
+
+    @Test
+    void getAdditionalTractionSeries_withAdditionalTractionSeries() {
+        FormationRun formationRun = createFormationRunWithVehicles(null);
+
+        try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
+            mockedStatic.when(() -> Vehicle.additionalTractionSeries(any())).thenReturn("Oe320");
+            String tractionSeries = formationRun.getAdditionalTractionSeries();
+            assertThat(tractionSeries).isEqualTo("Oe320");
         }
     }
 

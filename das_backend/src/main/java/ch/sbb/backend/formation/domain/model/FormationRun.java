@@ -111,8 +111,12 @@ public class FormationRun {
         return Vehicle.calculateHoldingForce(vehicles);
     }
 
-    public List<TractionMode> getTractionModes() {
-        return Vehicle.tractionModes(vehicles);
+    public TractionMode getAdditionalTractionMode() {
+        return Vehicle.additionalTractionMode(vehicles);
+    }
+
+    public String getAdditionalTractionSeries() {
+        return Vehicle.additionalTractionSeries(vehicles);
     }
 
     public boolean hasDangerousGoods() {
