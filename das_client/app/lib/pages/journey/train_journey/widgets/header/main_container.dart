@@ -32,7 +32,7 @@ class MainContainer extends StatelessWidget {
       stream: CombineLatestStream.list([viewModel.journey, viewModel.settings]),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data?[0] == null || snapshot.data?[1] == null) {
-          return Center(child: SBBLoadingIndicator());
+          return Center(child: CircularProgressIndicator());
         }
         final journey = snapshot.data![0] as Journey;
         final settings = snapshot.data![1] as TrainJourneySettings;

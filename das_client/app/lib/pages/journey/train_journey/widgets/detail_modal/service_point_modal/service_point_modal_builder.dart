@@ -20,7 +20,7 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
     return StreamBuilder(
       stream: viewModel.selectedTab,
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return SBBLoadingIndicator.tiny();
+        if (!snapshot.hasData) return Center(child: CircularProgressIndicator());
 
         final selectedTab = snapshot.data!;
         return Column(

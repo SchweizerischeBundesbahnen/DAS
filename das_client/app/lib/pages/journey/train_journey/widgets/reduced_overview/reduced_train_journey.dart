@@ -12,7 +12,6 @@ import 'package:app/widgets/table/das_table_column.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class ReducedTrainJourney extends StatelessWidget {
@@ -27,7 +26,7 @@ class ReducedTrainJourney extends StatelessWidget {
       stream: CombineLatestStream.list([viewModel.journeyData, viewModel.journeyMetadata]),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return Center(child: SBBLoadingIndicator.tiny());
+          return Center(child: CircularProgressIndicator());
         }
 
         final data = snapshot.data![0] as List<BaseData>;
