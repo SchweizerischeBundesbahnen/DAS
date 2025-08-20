@@ -40,6 +40,8 @@ void main() {
     expect(find.text('km'), findsOneWidget);
     expect(find.text('+'), findsNothing);
     expect(find.text('-'), findsNothing);
+
+    await disconnect(tester);
   });
 
   testWidgets('test km header click when decisive gradient is not shown', (tester) async {
@@ -102,5 +104,7 @@ void main() {
 
     // check revert back to km after delay
     await waitUntilExists(tester, find.text(l10n.p_train_journey_table_kilometre_label));
+
+    await disconnect(tester);
   });
 }
