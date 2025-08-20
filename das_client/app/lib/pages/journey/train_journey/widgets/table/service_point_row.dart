@@ -118,15 +118,15 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
         stream: positionViewModel.model,
         initialData: positionViewModel.modelValue,
         builder: (context, snapshot) => RouteCellBody(
-            isStop: data.isStop,
-            isCurrentPosition: snapshot.data?.currentPosition == data,
-            isRouteStart: metadata.journeyStart == data,
-            isRouteEnd: metadata.journeyEnd == data,
-            isStopOnRequest: !data.mandatoryStop,
-            chevronAnimationData: config.chevronAnimationData,
-            chevronPosition: RouteChevron.positionFromHeight(height),
-            routeColor: _isNextStop && specialCellColor == null ? Colors.white : null,
-          )
+          isStop: data.isStop,
+          isCurrentPosition: snapshot.data?.currentPosition == data,
+          isRouteStart: metadata.journeyStart == data,
+          isRouteEnd: metadata.journeyEnd == data,
+          isStopOnRequest: !data.mandatoryStop,
+          chevronAnimationData: config.chevronAnimationData,
+          chevronPosition: RouteChevron.positionFromHeight(height),
+          routeColor: _isNextStop && specialCellColor == null ? Colors.white : null,
+        ),
       ),
     );
   }

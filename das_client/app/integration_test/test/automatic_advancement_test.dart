@@ -73,10 +73,7 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9');
 
-      final pauseButton = find.byKey(StartPauseButton.pauseButtonKey);
-      expect(pauseButton, findsOneWidget);
-
-      await tapElement(tester, pauseButton);
+      await toggleAutomaticAdvancement(tester);
 
       // Wait until the chevron is no longer visible
       await waitUntilNotExists(tester, find.byKey(RouteChevron.chevronKey), maxWaitSeconds: 40);

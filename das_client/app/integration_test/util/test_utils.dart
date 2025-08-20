@@ -111,7 +111,7 @@ Future<void> selectBreakSeries(WidgetTester tester, {required String breakSeries
   await tapElement(tester, find.text(breakSeries));
 }
 
-Future<void> pauseAutomaticAdvancement(WidgetTester tester) async {
+Future<void> toggleAutomaticAdvancement(WidgetTester tester) async {
   final pauseButton = find.byKey(StartPauseButton.pauseButtonKey);
   expect(pauseButton, findsOneWidget);
   await tapElement(tester, pauseButton);

@@ -151,7 +151,7 @@ void main() {
 
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T5');
-      await pauseAutomaticAdvancement(tester);
+      await toggleAutomaticAdvancement(tester);
 
       final selectedBreakSeries = 'D30';
       await selectBreakSeries(tester, breakSeries: selectedBreakSeries);
