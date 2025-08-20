@@ -983,6 +983,7 @@ void main() {
       final expectedPlannedHeaderLabel = l10n.p_train_journey_table_time_label_planned;
       final timeHeader = find.text(expectedPlannedHeaderLabel);
       expect(timeHeader, findsOneWidget);
+      await tester.pumpAndSettle();
 
       // two service points have empty times
       final timeCellKey = TimeCellBody.timeCellKey;

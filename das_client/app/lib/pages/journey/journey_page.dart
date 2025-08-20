@@ -13,6 +13,7 @@ import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
 import 'package:app/util/error_code.dart';
 import 'package:app/util/format.dart';
+import 'package:app/widgets/table/das_table_row.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -136,6 +137,8 @@ class _DismissJourneyButton extends StatelessWidget {
     key: JourneyPage.disconnectButtonKey,
     icon: const Icon(SBBIcons.train_small),
     onPressed: () async {
+      DASTableRowBuilder.clearRowKeys();
+
       await DI.get<ScopeHandler>().pop<JourneyScope>();
       await DI.get<ScopeHandler>().push<JourneyScope>();
       if (context.mounted) {

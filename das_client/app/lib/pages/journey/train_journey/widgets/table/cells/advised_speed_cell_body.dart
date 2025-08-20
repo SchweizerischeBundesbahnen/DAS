@@ -49,10 +49,11 @@ class AdvisedSpeedCellBody extends StatelessWidget {
       speed = _resolvedTrainSeriesSpeed();
     }
 
+    final defaultTextStyle = DASTableTheme.of(context)?.data.dataTextStyle ?? DASTextStyles.largeRoman;
     return Text(
       speed?.value ?? '',
       key: nonEmptyKey,
-      style: isNextStop ? DASTextStyles.largeRoman.copyWith(color: SBBColors.white) : DASTextStyles.largeRoman,
+      style: defaultTextStyle.copyWith(color: isNextStop ? SBBColors.white : null),
     );
   }
 
@@ -82,13 +83,9 @@ class AdvisedSpeedCellBody extends StatelessWidget {
           bottom: -horizontalBorderWidth * 2,
           left: 0,
           right: 0,
-          child: Container(
-            color: SBBColors.iron,
-          ),
+          child: Container(color: SBBColors.iron),
         ),
-        Center(
-          child: child,
-        ),
+        Center(child: child),
       ],
     );
   }
