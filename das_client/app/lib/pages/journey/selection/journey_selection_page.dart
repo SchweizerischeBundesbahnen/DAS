@@ -143,17 +143,23 @@ class _ContentState extends State<_Content> {
       stream: viewModel.model,
       builder: (context, snapshot) {
         final model = snapshot.data;
-        if (model == null) return SBBLoadingIndicator();
 
+        Widget wrapWithPadding(Widget child) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing * 0.5),
+          child: child,
+        );
+
+        final buttonLabel = context.l10n.c_button_confirm;
         return switch (model) {
-          final Loading _ || final Loaded _ || Error _ => SizedBox.shrink(),
+          final Loading _ => wrapWithPadding(SBBPrimaryButton(label: buttonLabel, onPressed: null, isLoading: true)),
           final Selecting s => Padding(
             padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing / 2),
             child: SBBPrimaryButton(
-              label: context.l10n.c_button_confirm,
+              label: buttonLabel,
               onPressed: s.isInputComplete ? () => viewModel.loadTrainJourney() : null,
             ),
           ),
+          _ => wrapWithPadding(SBBPrimaryButton(label: buttonLabel, onPressed: null)),
         };
       },
     );

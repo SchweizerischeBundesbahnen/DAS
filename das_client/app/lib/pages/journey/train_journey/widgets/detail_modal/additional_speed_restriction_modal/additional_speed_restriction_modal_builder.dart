@@ -36,7 +36,7 @@ class AdditionalSpeedRestrictionModalBuilder extends DASModalSheetBuilder {
       stream: viewModel.additionalSpeedRestrictions,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return SBBLoadingIndicator.tiny();
+          return Center(child: CircularProgressIndicator());
         }
 
         final restrictions = snapshot.requireData;
