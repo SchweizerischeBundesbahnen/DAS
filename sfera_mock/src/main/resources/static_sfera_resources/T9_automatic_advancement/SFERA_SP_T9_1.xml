@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T9_1" SP_VersionMajor="2"
-                SP_VersionMinor="1" SP_Length="21000" SP_Status="Valid">
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T9_1" SP_VersionMajor="3"
+                SP_VersionMinor="0" SP_Length="21000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -9,6 +9,13 @@
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>3001</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="Wankdorf" location="3300">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3002</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
@@ -32,10 +39,54 @@
             <SignalPhysicalCharacteristics visualIdentifier="B1"/>
         </Signal>
         <Signal>
+            <Signal_ID signal_ID_Physical="192" location="1100"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="B192"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="193" location="1200"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="B193"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="194" location="1300"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="B194"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="195" location="1400"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="B195"/>
+        </Signal>
+        <Signal>
             <Signal_ID signal_ID_Physical="2" location="1500"/>
             <SignalFunction>block</SignalFunction>
             <SignalFunction>laneChange</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="S1"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="214" location="1600"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalFunction>laneChange</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="S214"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="215" location="1700"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalFunction>laneChange</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="S215"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="216" location="1800"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalFunction>laneChange</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="S216"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="217" location="1900"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalFunction>laneChange</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="S217"/>
         </Signal>
         <Signal>
             <Signal_ID signal_ID_Physical="3" location="2000"/>
@@ -207,6 +258,15 @@
             </TAF_TAP_LocationIdent>
         </TAF_TAP_Location>
 
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="3300" endLocation="3300" TAF_TAP_location_abbreviation="WKD"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>3002</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Bern Wankdorf</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="10000" endLocation="10000" TAF_TAP_location_abbreviation="BDF"
                           TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
@@ -235,8 +295,40 @@
             <KM_Reference kmRef="30.7"/>
         </KilometreReferencePoint>
 
+        <KilometreReferencePoint location="1100">
+            <KM_Reference kmRef="30.8"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="1200">
+            <KM_Reference kmRef="30.9"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="1300">
+            <KM_Reference kmRef="31.0"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="1400">
+            <KM_Reference kmRef="31.1"/>
+        </KilometreReferencePoint>
+
         <KilometreReferencePoint location="1500">
             <KM_Reference kmRef="31.2"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="1600">
+            <KM_Reference kmRef="31.3"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="1700">
+            <KM_Reference kmRef="31.4"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="1800">
+            <KM_Reference kmRef="31.5"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="1900">
+            <KM_Reference kmRef="31.6"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="2000">
@@ -249,6 +341,10 @@
 
         <KilometreReferencePoint location="3000">
             <KM_Reference kmRef="32.7"/>
+        </KilometreReferencePoint>
+
+        <KilometreReferencePoint location="3300">
+            <KM_Reference kmRef="33.0"/>
         </KilometreReferencePoint>
 
         <KilometreReferencePoint location="3500">

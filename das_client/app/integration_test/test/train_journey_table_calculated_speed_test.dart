@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/train_journey/widgets/chronograph/chronograph_view_model.dart';
+import 'package:app/pages/journey/train_journey/header/chronograph/chronograph_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/das_chronograph.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/calculated_speed_cell_body.dart';
 import 'package:flutter/material.dart';

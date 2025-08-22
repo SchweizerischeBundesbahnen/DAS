@@ -1,19 +1,22 @@
+import 'package:intl/intl.dart';
+import 'package:sfera/component.dart';
+
 sealed class PunctualityModel {
   const PunctualityModel._();
 
   factory PunctualityModel.visible({
-    required String delay,
+    required Delay delay,
   }) = Visible;
 
   factory PunctualityModel.stale({
-    required String delay,
+    required Delay delay,
   }) = Stale;
 
   factory PunctualityModel.hidden() = Hidden;
 
-  String get delay => switch (this) {
-    final Visible v => v.delay,
-    final Stale s => s.delay,
+  String get formattedDelay => switch (this) {
+    final Visible v => v.delay.formatted,
+    final Stale s => s.delay.formatted,
     final Hidden _ => '',
   };
 
@@ -26,8 +29,7 @@ sealed class PunctualityModel {
 
 class Visible extends PunctualityModel {
   const Visible({required this.delay}) : super._();
-  @override
-  final String delay;
+  final Delay delay;
 
   @override
   bool operator ==(Object other) =>
@@ -39,8 +41,7 @@ class Visible extends PunctualityModel {
 
 class Stale extends PunctualityModel {
   const Stale({required this.delay}) : super._();
-  @override
-  final String delay;
+  final Delay delay;
 
   @override
   bool operator ==(Object other) =>
@@ -58,4 +59,16 @@ class Hidden extends PunctualityModel {
 
   @override
   int get hashCode => runtimeType.hashCode;
+}
+
+extension _DelayExtension on Delay? {
+  String get formatted {
+    if (this == null) return '';
+
+    final value = this!.value;
+
+    final minutes = NumberFormat('00').format(value.inMinutes.abs());
+    final seconds = NumberFormat('00').format(value.inSeconds.abs() % 60);
+    return '${value.isNegative ? '-' : '+'}$minutes:$seconds';
+  }
 }

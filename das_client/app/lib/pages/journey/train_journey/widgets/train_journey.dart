@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/collapsible_rows_view_model.dart';
+import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
+import 'package:app/pages/journey/train_journey/journey_position/journey_position_view_model.dart';
 import 'package:app/pages/journey/train_journey/train_journey_overview.dart';
 import 'package:app/pages/journey/train_journey/widgets/break_series_selection.dart';
 import 'package:app/pages/journey/train_journey/widgets/chevron_animation_wrapper.dart';
@@ -55,9 +57,15 @@ class TrainJourney extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.read<TrainJourneyViewModel>();
+    final journeyPositionViewModel = context.read<JourneyPositionViewModel>();
 
     return StreamBuilder<List<dynamic>>(
-      stream: CombineLatestStream.list([viewModel.journey, viewModel.settings, viewModel.showDecisiveGradient]),
+      stream: CombineLatestStream.list([
+        viewModel.journey,
+        viewModel.settings,
+        viewModel.showDecisiveGradient,
+        journeyPositionViewModel.model,
+      ]),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data?[0] == null) {
           return SizedBox.shrink();
@@ -65,11 +73,12 @@ class TrainJourney extends StatelessWidget {
 
         final journey = snapshot.data![0] as Journey;
         final settings = snapshot.data![1] as TrainJourneySettings;
+        final journeyPosition = snapshot.data![3] as JourneyPositionModel;
 
         WidgetsBinding.instance.addPostFrameCallback((_) {
           viewModel.automaticAdvancementController.handleJourneyUpdate(
-            currentPosition: journey.metadata.currentPosition,
-            routeStart: journey.metadata.routeStart,
+            currentPosition: journeyPosition.currentPosition,
+            routeStart: journey.metadata.journeyStart,
             isAdvancementEnabledByUser: settings.isAutoAdvancementEnabled,
           );
         });
@@ -81,18 +90,36 @@ class TrainJourney extends StatelessWidget {
         return Listener(
           onPointerDown: (_) => viewModel.automaticAdvancementController.resetScrollTimer(),
           onPointerUp: (_) => viewModel.automaticAdvancementController.resetScrollTimer(),
-          child: _body(context, journey, settings),
+          child: _body(context, journey, settings, journeyPosition),
         );
       },
     );
   }
 
-  Widget _body(BuildContext context, Journey journey, TrainJourneySettings settings) {
+  Widget _body(
+    BuildContext context,
+    Journey journey,
+    TrainJourneySettings settings,
+    JourneyPositionModel journeyPosition,
+  ) {
+    final collapsibleRowsViewModel = context.read<CollapsibleRowsViewModel>();
+    final journeyPositionViewModel = context.read<JourneyPositionViewModel>();
     return StreamBuilder(
-      stream: context.read<CollapsibleRowsViewModel>().collapsedRows,
+      stream:
+          CombineLatestStream.combine2<
+            Map<int, CollapsedState>,
+            JourneyPositionModel?,
+            (Map<int, CollapsedState>, JourneyPositionModel?)
+          >(
+            collapsibleRowsViewModel.collapsedRows,
+            journeyPositionViewModel.model,
+            (a, b) => (a, b),
+          ),
+      initialData: (collapsibleRowsViewModel.collapsedRowsValue, journeyPositionViewModel.modelValue),
       builder: (context, snapshot) {
-        final collapsedRows = snapshot.data ?? {};
-        final tableRows = _rows(context, journey, settings, collapsedRows);
+        final collapsedRows = snapshot.data?.$1 ?? {};
+        final journeyPosition = snapshot.data!.$2;
+        final tableRows = _rows(context, journey, settings, collapsedRows, journeyPosition);
         context.read<TrainJourneyViewModel>().automaticAdvancementController.updateRenderedRows(tableRows);
 
         final marginAdjustment = Platform.isIOS
@@ -110,7 +137,7 @@ class TrainJourney extends StatelessWidget {
               final isDetailModalOpen = snapshot.data ?? false;
               final advancementController = context.read<TrainJourneyViewModel>().automaticAdvancementController;
               return ChevronAnimationWrapper(
-                journey: journey,
+                journeyPosition: journeyPosition,
                 child: DASTable(
                   key: advancementController.tableKey,
                   scrollController: advancementController.scrollController,
@@ -131,13 +158,14 @@ class TrainJourney extends StatelessWidget {
     Journey journey,
     TrainJourneySettings settings,
     Map<int, CollapsedState> collapsedRows,
+    JourneyPositionModel? journeyPosition,
   ) {
     final currentBreakSeries = settings.resolvedBreakSeries(journey.metadata);
 
     final rows = journey.data
         .whereNot((it) => _isCurvePointWithoutSpeed(it, journey, settings))
         .groupBaliseAndLeveLCrossings(settings.expandedGroups)
-        .hideRepeatedLineFootNotes(journey.metadata.currentPosition)
+        .hideRepeatedLineFootNotes(journeyPosition?.currentPosition)
         .hideFootNotesForNotSelectedTrainSeries(currentBreakSeries?.trainSeries)
         .combineFootNoteAndOperationalIndication()
         .sortedBy((data) => data.order);
@@ -162,6 +190,7 @@ class TrainJourney extends StatelessWidget {
         bracketStationRenderData: BracketStationRenderData.from(rowData, journey.metadata),
         chevronAnimationData: ChevronAnimationData.from(
           journey.journeyPoints,
+          journeyPosition,
           journey.metadata,
           rowData,
           currentBreakSeries,
@@ -179,6 +208,7 @@ class TrainJourney extends StatelessWidget {
           return ServicePointRow(
             metadata: journey.metadata,
             data: rowData as ServicePoint,
+            journeyPosition: journeyPosition,
             config: trainJourneyConfig,
             context: context,
             rowIndex: index,
@@ -187,6 +217,7 @@ class TrainJourney extends StatelessWidget {
           return ProtectionSectionRow(
             metadata: journey.metadata,
             data: rowData as ProtectionSection,
+            journeyPosition: journeyPosition,
             config: trainJourneyConfig,
             rowIndex: index,
           );
@@ -194,6 +225,7 @@ class TrainJourney extends StatelessWidget {
           return CurvePointRow(
             metadata: journey.metadata,
             data: rowData as CurvePoint,
+            journeyPosition: journeyPosition,
             config: trainJourneyConfig,
             rowIndex: index,
           );
@@ -201,6 +233,7 @@ class TrainJourney extends StatelessWidget {
           return SignalRow(
             metadata: journey.metadata,
             data: rowData as Signal,
+            journeyPosition: journeyPosition,
             config: trainJourneyConfig,
             rowIndex: index,
           );
@@ -216,6 +249,7 @@ class TrainJourney extends StatelessWidget {
           return ConnectionTrackRow(
             metadata: journey.metadata,
             data: rowData as ConnectionTrack,
+            journeyPosition: journeyPosition,
             config: trainJourneyConfig,
             rowIndex: index,
           );
@@ -223,6 +257,7 @@ class TrainJourney extends StatelessWidget {
           return SpeedChangeRow(
             metadata: journey.metadata,
             data: rowData as SpeedChange,
+            journeyPosition: journeyPosition,
             config: trainJourneyConfig,
             rowIndex: index,
           );
@@ -230,6 +265,7 @@ class TrainJourney extends StatelessWidget {
           return CABSignalingRow(
             metadata: journey.metadata,
             data: rowData as CABSignaling,
+            journeyPosition: journeyPosition,
             config: trainJourneyConfig,
             rowIndex: index,
           );
@@ -237,6 +273,7 @@ class TrainJourney extends StatelessWidget {
           return BaliseRow(
             metadata: journey.metadata,
             data: rowData as Balise,
+            journeyPosition: journeyPosition,
             config: trainJourneyConfig,
             isGrouped: groupedRows.contains(rowData),
             rowIndex: index,
@@ -245,6 +282,7 @@ class TrainJourney extends StatelessWidget {
           return WhistleRow(
             metadata: journey.metadata,
             data: rowData as Whistle,
+            journeyPosition: journeyPosition,
             config: trainJourneyConfig,
             rowIndex: index,
           );
@@ -252,6 +290,7 @@ class TrainJourney extends StatelessWidget {
           return LevelCrossingRow(
             metadata: journey.metadata,
             data: rowData as LevelCrossing,
+            journeyPosition: journeyPosition,
             config: trainJourneyConfig,
             isGrouped: groupedRows.contains(rowData),
             rowIndex: index,
@@ -260,6 +299,7 @@ class TrainJourney extends StatelessWidget {
           return TramAreaRow(
             metadata: journey.metadata,
             data: rowData as TramArea,
+            journeyPosition: journeyPosition,
             config: trainJourneyConfig,
             rowIndex: index,
           );
@@ -267,6 +307,7 @@ class TrainJourney extends StatelessWidget {
           return BaliseLevelCrossingGroupRow(
             metadata: journey.metadata,
             data: rowData as BaliseLevelCrossingGroup,
+            journeyPosition: journeyPosition,
             config: trainJourneyConfig,
             onTap: () => _onBaliseLevelCrossingGroupTap(context, rowData, settings),
             rowIndex: index,

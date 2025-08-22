@@ -16,6 +16,7 @@ class SignalRow extends CellRowBuilder<Signal> {
     required super.metadata,
     required super.data,
     required super.rowIndex,
+    required super.journeyPosition,
     super.config,
     super.key,
   });

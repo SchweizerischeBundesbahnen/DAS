@@ -1,21 +1,18 @@
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:sfera/component.dart';
 
 class RadioContactChannels extends StatelessWidget {
   static const Key radioContactChannelsKey = Key('radioContactChannels');
 
   const RadioContactChannels({
-    required this.contacts,
+    required this.mainContactIdentifiers,
     super.key,
   });
 
-  final RadioContactList? contacts;
+  final String? mainContactIdentifiers;
 
   @override
-  Widget build(BuildContext context) {
-    return contacts?.mainContactsIdentifier != null
-        ? Text(key: radioContactChannelsKey, contacts!.mainContactsIdentifier!, style: DASTextStyles.xLargeRoman)
-        : SizedBox.shrink();
-  }
+  Widget build(BuildContext context) => mainContactIdentifiers != null
+      ? Text(key: radioContactChannelsKey, mainContactIdentifiers!, style: DASTextStyles.xLargeRoman)
+      : SizedBox.shrink();
 }

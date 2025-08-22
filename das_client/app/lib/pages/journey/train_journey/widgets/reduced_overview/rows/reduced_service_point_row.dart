@@ -1,3 +1,4 @@
+import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/reduced_overview/cells/reduced_time_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
@@ -13,7 +14,12 @@ class ReducedServicePointRow extends ServicePointRow {
     required super.rowIndex,
     required this.context,
     super.config,
-  }) : super(context: context, rowColor: ThemeUtil.getDASTableColor(context), highlightNextStop: false);
+  }) : super(
+         context: context,
+         rowColor: ThemeUtil.getDASTableColor(context),
+         journeyPosition: JourneyPositionModel(),
+         highlightNextStop: false,
+       );
 
   final BuildContext context;
 
@@ -44,8 +50,8 @@ class ReducedServicePointRow extends ServicePointRow {
       child: RouteCellBody(
         isStop: data.isStop,
         isCurrentPosition: false,
-        isRouteStart: metadata.routeStart == data,
-        isRouteEnd: metadata.routeEnd == data,
+        isRouteStart: metadata.journeyStart == data,
+        isRouteEnd: metadata.journeyEnd == data,
         isStopOnRequest: !data.mandatoryStop,
         chevronPosition: RouteChevron.positionFromHeight(height),
       ),

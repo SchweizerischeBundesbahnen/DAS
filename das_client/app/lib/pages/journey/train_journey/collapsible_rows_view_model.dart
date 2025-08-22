@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
@@ -7,22 +8,32 @@ enum CollapsedState { collapsed, openWithCollapsedContent }
 
 class CollapsibleRowsViewModel {
   CollapsibleRowsViewModel({
-    required SferaRemoteRepo sferaRemoteRepo,
-  }) : _sferaRemoteRepo = sferaRemoteRepo {
-    _init();
+    required Stream<Journey?> journeyStream,
+    required Stream<JourneyPositionModel?> journeyPositionStream,
+  }) {
+    _init(journeyStream, journeyPositionStream);
   }
 
   Stream<Map<int, CollapsedState>> get collapsedRows => _rxCollapsedRows.stream;
 
+  Map<int, CollapsedState> get collapsedRowsValue => _rxCollapsedRows.value;
+
   final _rxCollapsedRows = BehaviorSubject<Map<int, CollapsedState>>.seeded({});
 
-  final SferaRemoteRepo _sferaRemoteRepo;
+  StreamSubscription<(Journey?, JourneyPositionModel?)>? _journeySubscription;
 
-  final _subscriptions = <StreamSubscription>[];
-  StreamSubscription? _journeySubscription;
-
-  void _init() {
-    _listenToSferaRemoteRepo();
+  void _init(Stream<Journey?> journeyStream, Stream<JourneyPositionModel?> journeyPositionStream) {
+    _journeySubscription?.cancel();
+    _journeySubscription =
+        CombineLatestStream.combine2(
+          journeyStream,
+          journeyPositionStream,
+          (a, b) => (a, b),
+        ).listen((data) {
+          if (data.$1 != null) {
+            _collapsePassedAccordionRows(data.$1!, data.$2);
+          }
+        });
   }
 
   void toggleRow(BaseData data) {
@@ -42,36 +53,9 @@ class CollapsibleRowsViewModel {
     _rxCollapsedRows.add(newMap);
   }
 
-  void _listenToSferaRemoteRepo() {
-    final subscription = _sferaRemoteRepo.stateStream.listen((state) {
-      switch (state) {
-        case SferaRemoteRepositoryState.connected:
-          _listenToJourneyUpdates();
-          break;
-        case SferaRemoteRepositoryState.connecting:
-          break;
-        case SferaRemoteRepositoryState.disconnected:
-          if (_sferaRemoteRepo.lastError != null) {
-            _journeySubscription?.cancel();
-            break;
-          }
-      }
-    });
-    _subscriptions.add(subscription);
-  }
-
-  void _listenToJourneyUpdates() {
-    _journeySubscription?.cancel();
-    _journeySubscription = _sferaRemoteRepo.journeyStream.listen((journey) {
-      if (journey != null) {
-        _collapsePassedAccordionRows(journey);
-      }
-    });
-  }
-
-  void _collapsePassedAccordionRows(Journey journey) {
-    final currentPosition = journey.metadata.currentPosition;
-    final lastPosition = journey.metadata.lastPosition;
+  void _collapsePassedAccordionRows(Journey journey, JourneyPositionModel? journeyPosition) {
+    final currentPosition = journeyPosition?.currentPosition;
+    final lastPosition = journeyPosition?.lastPosition;
     if (currentPosition == lastPosition || lastPosition == null || currentPosition == null) {
       return;
     }
@@ -97,9 +81,6 @@ class CollapsibleRowsViewModel {
   }
 
   void dispose() {
-    for (final subscription in _subscriptions) {
-      subscription.cancel();
-    }
     _journeySubscription?.cancel();
   }
 }

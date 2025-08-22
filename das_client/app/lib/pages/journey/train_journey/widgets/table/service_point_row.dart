@@ -1,4 +1,5 @@
 import 'package:app/extension/station_sign_extension.dart';
+import 'package:app/pages/journey/train_journey/journey_position/journey_position_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
@@ -35,11 +36,13 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     required super.data,
     required BuildContext context,
     required super.rowIndex,
+    required super.journeyPosition,
     this.highlightNextStop = true,
     super.config,
     Color? rowColor,
   }) : super(
-         rowColor: rowColor ?? ((metadata.nextStop == data) ? SBBColors.night : ThemeUtil.getDASTableColor(context)),
+         rowColor:
+             rowColor ?? ((journeyPosition?.nextStop == data) ? SBBColors.night : ThemeUtil.getDASTableColor(context)),
          stickyLevel: StickyLevel.first,
          height: calculateHeight(data, config.settings.resolvedBreakSeries(metadata)),
        );
@@ -105,20 +108,25 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   @override
   DASTableCell routeCell(BuildContext context) {
+    final positionViewModel = context.read<JourneyPositionViewModel>();
     return DASTableCell(
       color: specialCellColor,
       padding: EdgeInsets.all(0.0),
       alignment: null,
       clipBehaviour: Clip.none,
-      child: RouteCellBody(
-        isStop: data.isStop,
-        isCurrentPosition: metadata.currentPosition == data,
-        isRouteStart: metadata.routeStart == data,
-        isRouteEnd: metadata.routeEnd == data,
-        isStopOnRequest: !data.mandatoryStop,
-        chevronAnimationData: config.chevronAnimationData,
-        chevronPosition: RouteChevron.positionFromHeight(height),
-        routeColor: _isNextStop && specialCellColor == null ? Colors.white : null,
+      child: StreamBuilder(
+        stream: positionViewModel.model,
+        initialData: positionViewModel.modelValue,
+        builder: (context, snapshot) => RouteCellBody(
+          isStop: data.isStop,
+          isCurrentPosition: snapshot.data?.currentPosition == data,
+          isRouteStart: metadata.journeyStart == data,
+          isRouteEnd: metadata.journeyEnd == data,
+          isStopOnRequest: !data.mandatoryStop,
+          chevronAnimationData: config.chevronAnimationData,
+          chevronPosition: RouteChevron.positionFromHeight(height),
+          routeColor: _isNextStop && specialCellColor == null ? Colors.white : null,
+        ),
       ),
     );
   }
@@ -320,5 +328,5 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     );
   }
 
-  bool get _isNextStop => metadata.nextStop == data;
+  bool get _isNextStop => journeyPosition?.nextStop == data;
 }

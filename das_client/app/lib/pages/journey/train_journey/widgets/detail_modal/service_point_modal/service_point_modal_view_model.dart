@@ -56,7 +56,7 @@ class ServicePointModalViewModel {
       _rxServicePoint.stream,
       _rxMetadata.stream,
       (servicePoint, metadata) =>
-          metadata.radioContactLists.where((it) => !it.isSimCorridor).lastLowerThan(servicePoint.order),
+          metadata.radioContactLists.where((it) => !it.isSimCorridor).lastBefore(servicePoint.order),
     ).listen(_rxRadioContactList.add, onError: _rxRadioContactList.addError);
     _subscriptions.add(subscription);
   }
@@ -93,7 +93,7 @@ class ServicePointModalViewModel {
     final subscription = Rx.combineLatest2(
       _rxServicePoint.stream,
       _rxMetadata.stream,
-      (servicePoint, metadata) => metadata.communicationNetworkChanges.whereNotSim.appliesToOrder(servicePoint.order),
+      (servicePoint, metadata) => metadata.communicationNetworkChanges.whereNotSim.typeByLastBefore(servicePoint.order),
     ).listen(_rxCommunicationNetworkType.add, onError: _rxCommunicationNetworkType.addError);
     _subscriptions.add(subscription);
   }

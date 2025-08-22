@@ -983,7 +983,7 @@ void main() {
       final expectedPlannedHeaderLabel = l10n.p_train_journey_table_time_label_planned;
       final timeHeader = find.text(expectedPlannedHeaderLabel);
       expect(timeHeader, findsOneWidget);
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(seconds: 1));
 
       // two service points have empty times
       final timeCellKey = TimeCellBody.timeCellKey;
@@ -1122,7 +1122,7 @@ void main() {
       await prepareAndStartApp(tester);
 
       // load train journey by filling out train selection page
-      await loadTrainJourney(tester, trainNumber: 'T9999');
+      await loadTrainJourney(tester, trainNumber: 'T9999M');
 
       // wait one second for underline to happen if opened last second of previous minute
       await tester.pumpAndSettle(const Duration(seconds: 1));

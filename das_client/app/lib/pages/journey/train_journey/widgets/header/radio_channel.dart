@@ -1,3 +1,4 @@
+import 'package:app/pages/journey/train_journey/header/radio_channel/radio_channel_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
@@ -10,49 +11,46 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class RadioChannel extends StatelessWidget {
-  const RadioChannel({required this.metadata, super.key});
-
-  final Metadata metadata;
+  const RadioChannel({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final communicationNetworkType = metadata.currentPosition != null
-        ? metadata.communicationNetworkChanges.appliesToOrder(metadata.currentPosition!.order)
-        : null;
-    final radioContactList = metadata.currentPosition != null
-        ? metadata.radioContactLists.lastLowerThan(metadata.currentPosition!.order)
-        : null;
+    final vm = context.read<RadioChannelViewModel>();
+    return StreamBuilder(
+      stream: vm.model,
+      initialData: vm.modelValue,
+      builder: (context, snapshot) {
+        final model = snapshot.data;
+        if (model == null) return SizedBox.shrink();
 
-    final showIndicator =
-        radioContactList != null &&
-        (radioContactList.mainContacts.length > 1 || radioContactList.selectiveContacts.isNotEmpty);
-
-    return GestureDetector(
-      onTap: () {
-        final viewModel = context.read<ServicePointModalViewModel>();
-        viewModel.open(context, tab: ServicePointModalTab.communication, servicePoint: metadata.lastServicePoint);
-      },
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(minWidth: 258.0),
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: DotIndicator(
-            show: showIndicator,
-            offset: Offset(-6.0, -8.0),
-            child: Row(
-              spacing: sbbDefaultSpacing * 0.5,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(SBBIcons.telephone_gsm_small),
-                RadioContactChannels(contacts: radioContactList),
-                if (communicationNetworkType == CommunicationNetworkType.sim) SimIdentifier(),
-                if (communicationNetworkType != null && communicationNetworkType != CommunicationNetworkType.sim)
-                  CommunicationNetworkIcon(networkType: communicationNetworkType),
-              ],
+        return GestureDetector(
+          onTap: () {
+            final viewModel = context.read<ServicePointModalViewModel>();
+            viewModel.open(context, tab: ServicePointModalTab.communication, servicePoint: model.lastServicePoint);
+          },
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minWidth: 258.0),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: DotIndicator(
+                show: model.showDotIndicator,
+                offset: Offset(-6.0, -8.0),
+                child: Row(
+                  spacing: sbbDefaultSpacing * 0.5,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(SBBIcons.telephone_gsm_small),
+                    RadioContactChannels(mainContactIdentifiers: model.mainContactsIdentifier),
+                    if (model.networkType == CommunicationNetworkType.sim) SimIdentifier(),
+                    if (model.networkType != null && model.networkType != CommunicationNetworkType.sim)
+                      CommunicationNetworkIcon(networkType: model.networkType!),
+                  ],
+                ),
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

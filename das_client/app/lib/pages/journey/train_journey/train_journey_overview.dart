@@ -5,8 +5,10 @@ import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/navigation/journey_navigation_model.dart';
 import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/train_journey/collapsible_rows_view_model.dart';
+import 'package:app/pages/journey/train_journey/header/chronograph/chronograph_view_model.dart';
+import 'package:app/pages/journey/train_journey/journey_position/journey_position_view_model.dart';
+import 'package:app/pages/journey/train_journey/punctuality/punctuality_view_model.dart';
 import 'package:app/pages/journey/train_journey/ux_testing_view_model.dart';
-import 'package:app/pages/journey/train_journey/widgets/chronograph/chronograph_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_modal.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_modal_view_model.dart';
@@ -64,6 +66,11 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
   @override
   Widget build(BuildContext context) {
     final trainJourneyViewModel = context.read<TrainJourneyViewModel>();
+    final punctualityViewModel = PunctualityViewModel(journeyStream: trainJourneyViewModel.journey);
+    final journeyPositionViewModel = JourneyPositionViewModel(
+      journeyStream: trainJourneyViewModel.journey,
+      punctualityStream: punctualityViewModel.model,
+    );
     return MultiProvider(
       providers: [
         Provider(
@@ -74,7 +81,14 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
-          create: (_) => CollapsibleRowsViewModel(sferaRemoteRepo: DI.get()),
+          create: (_) => punctualityViewModel,
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        Provider(
+          create: (_) => CollapsibleRowsViewModel(
+            journeyStream: trainJourneyViewModel.journey,
+            journeyPositionStream: journeyPositionViewModel.model,
+          ),
           dispose: (context, vm) => vm.dispose(),
         ),
         Provider(
@@ -96,7 +110,14 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
-          create: (_) => AdlViewModel(journeyStream: trainJourneyViewModel.journey),
+          create: (_) => AdlViewModel(
+            journeyStream: trainJourneyViewModel.journey,
+            journeyPositionStream: journeyPositionViewModel.model,
+          ),
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        Provider(
+          create: (_) => journeyPositionViewModel,
           dispose: (_, vm) => vm.dispose(),
         ),
       ],
@@ -104,7 +125,9 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
         return Provider(
           create: (_) => ChronographViewModel(
             journeyStream: trainJourneyViewModel.journey,
-            adlViewModel: context.read<AdlViewModel>(),
+            journeyPositionStream: context.read<JourneyPositionViewModel>().model,
+            punctualityStream: context.read<PunctualityViewModel>().model,
+            adlStateStream: context.read<AdlViewModel>().adlState,
           ),
           dispose: (_, vm) => vm.dispose(),
           builder: (context, child) => _body(context),

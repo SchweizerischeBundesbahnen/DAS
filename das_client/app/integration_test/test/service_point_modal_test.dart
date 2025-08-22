@@ -187,7 +187,7 @@ void main() {
     testWidgets('test communication network and radio channels displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: 'T12');
-      await pauseAutomaticAdvancement(tester);
+      await stopAutomaticAdvancement(tester);
 
       // check communication information for Bern
       await _openByTapOnCellWithText(tester, 'Bern');
@@ -246,7 +246,7 @@ void main() {
     testWidgets('test communication information present when opening from other tab', (tester) async {
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: '1513');
-      await pauseAutomaticAdvancement(tester);
+      await stopAutomaticAdvancement(tester);
 
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
@@ -276,7 +276,7 @@ void main() {
     testWidgets('test SIM corridor information', (tester) async {
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: 'T20');
-      await pauseAutomaticAdvancement(tester);
+      await stopAutomaticAdvancement(tester);
 
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
@@ -311,7 +311,7 @@ void main() {
   testWidgets('test short signal names are displayed when modal is open', (tester) async {
     await prepareAndStartApp(tester);
     await loadTrainJourney(tester, trainNumber: 'T9999');
-    await pauseAutomaticAdvancement(tester);
+    await stopAutomaticAdvancement(tester);
 
     expect(find.text(l10n.c_main_signal_function_entry), findsAny);
     expect(find.text(l10n.c_main_signal_function_exit), findsAny);

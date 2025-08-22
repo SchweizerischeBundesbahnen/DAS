@@ -8,12 +8,9 @@ import 'package:sfera/component.dart';
 class Metadata {
   Metadata({
     DateTime? timestamp,
-    this.nextStop,
-    this.lastPosition,
-    this.lastServicePoint,
-    this.currentPosition,
-    this.routeStart,
-    this.routeEnd,
+    this.signaledPosition,
+    this.journeyStart,
+    this.journeyEnd,
     this.delay,
     this.breakSeries,
     bool? anyOperationalArrivalDepartureTimes,
@@ -33,14 +30,11 @@ class Metadata {
        calculatedSpeeds = calculatedSpeeds ?? SplayTreeMap<int, SingleSpeed>();
 
   final DateTime timestamp;
-  final ServicePoint? nextStop;
-  final ServicePoint? lastServicePoint;
-  final JourneyPoint? lastPosition;
-  final JourneyPoint? currentPosition;
-  final List<AdditionalSpeedRestriction> additionalSpeedRestrictions;
-  final JourneyPoint? routeStart;
-  final JourneyPoint? routeEnd;
+  final SignaledPosition? signaledPosition;
+  final JourneyPoint? journeyStart;
+  final JourneyPoint? journeyEnd;
   final Delay? delay;
+  final List<AdditionalSpeedRestriction> additionalSpeedRestrictions;
   final bool anyOperationalArrivalDepartureTimes;
   final List<NonStandardTrackEquipmentSegment> nonStandardTrackEquipmentSegments;
   final List<CommunicationNetworkChange> communicationNetworkChanges;
