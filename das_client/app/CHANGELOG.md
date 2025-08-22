@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.26.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.25.0...das_client-v0.26.0) (2025-08-22)
+
+
+### Features
+
+* currentPosition and next stop are time dependent ([#766](https://github.com/SchweizerischeBundesbahnen/DAS/issues/766)) ([#1169](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1169)) ([cdf56f8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/cdf56f8b063f978fe2db9f8f6ccf184b76fa46d6))
+
+
+### Bug Fixes
+
+* change of app theme is slower on sticky header ([#874](https://github.com/SchweizerischeBundesbahnen/DAS/issues/874)) ([#1117](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1117)) ([ac4850f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ac4850f369b24a6408b067e6eed9b53653c21644))
+* color on next stop with additional speed restriction ([#1147](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1147)) ([#1167](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1167)) ([acba67b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/acba67badbe222fb2e6004cddbf53f5c775adfed))
+
 ## [0.25.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.24.1...das_client-v0.25.0) (2025-08-15)
 
 
