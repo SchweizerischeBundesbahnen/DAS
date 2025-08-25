@@ -10,6 +10,7 @@ PODS:
     - FlutterMacOS
   - battery_plus (1.0.0):
     - Flutter
+  - CocoaAsyncSocket (7.6.5)
   - device_info_plus (0.0.1):
     - Flutter
   - Flutter (1.0.0)
@@ -26,6 +27,10 @@ PODS:
   - package_info_plus (0.4.5):
     - Flutter
   - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+  - patrol (0.0.1):
+    - CocoaAsyncSocket (~> 7.6)
     - Flutter
     - FlutterMacOS
   - screen_brightness_ios (0.1.0):
@@ -73,6 +78,7 @@ DEPENDENCIES:
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - patrol (from `.symlinks/plugins/patrol/darwin`)
   - screen_brightness_ios (from `.symlinks/plugins/screen_brightness_ios/ios`)
   - sensors_plus (from `.symlinks/plugins/sensors_plus/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
@@ -83,6 +89,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - AppAuth
+    - CocoaAsyncSocket
     - sqlite3
 
 EXTERNAL SOURCES:
@@ -106,6 +113,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  patrol:
+    :path: ".symlinks/plugins/patrol/darwin"
   screen_brightness_ios:
     :path: ".symlinks/plugins/screen_brightness_ios/ios"
   sensors_plus:
@@ -121,24 +130,26 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AppAuth: 1c1a8afa7e12f2ec3a294d9882dfa5ab7d3cb063
-  audioplayers_darwin: 4f9ca89d92d3d21cec7ec580e78ca888e5fb68bd
-  battery_plus: b42253f6d2dde71712f8c36fef456d99121c5977
-  device_info_plus: 21fcca2080fbcd348be798aa36c3e5ed849eefbe
+  audioplayers_darwin: 4027b33a8f471d996c13f71cb77f0b1583b5d923
+  battery_plus: 34f72fa2afeeea83bbae306c72a25828d3ec727a
+  CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
+  device_info_plus: bf2e3232933866d73fe290f2942f2156cdd10342
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_appauth: d4abcf54856e5d8ba82ed7646ffc83245d4aa448
-  flutter_secure_storage: 1ed9476fba7e7a782b22888f956cce43e2c62f13
-  geolocator_apple: ab36aa0e8b7d7a2d7639b3b4e48308394e8cef5e
-  integration_test: 4a889634ef21a45d28d50d622cf412dc6d9f586e
-  package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
-  path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
-  screen_brightness_ios: 9953fd7da5bd480f1a93990daeec2eb42d4f3b52
-  sensors_plus: 6a11ed0c2e1d0bd0b20b4029d3bad27d96e0c65b
-  shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
+  flutter_appauth: 88fcbc27871cbedac400db9d39b1363e4850179d
+  flutter_secure_storage: d33dac7ae2ea08509be337e775f6b59f1ff45f12
+  geolocator_apple: 66b711889fd333205763b83c9dcf0a57a28c7afd
+  integration_test: 252f60fa39af5e17c3aa9899d35d908a0721b573
+  package_info_plus: c0502532a26c7662a62a356cebe2692ec5fe4ec4
+  path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
+  patrol: 5a504c6012be7a84369231475ede1fce6e777268
+  screen_brightness_ios: 6a6f7794b67f07c4f1e24f6374b2d8ad367ffb39
+  sensors_plus: 7229095999f30740798f0eeef5cd120357a8f4f2
+  shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
   sqlite3: 1d85290c3321153511f6e900ede7a1608718bbd5
-  sqlite3_flutter_libs: e7fc8c9ea2200ff3271f08f127842131746b70e2
-  volume_controller: 3657a1f65bedb98fa41ff7dc5793537919f31b12
-  wakelock_plus: e29112ab3ef0b318e58cfa5c32326458be66b556
+  sqlite3_flutter_libs: 2c48c4ee7217fd653251975e43412250d5bcbbe2
+  volume_controller: 2e3de73d6e7e81a0067310d17fb70f2f86d71ac7
+  wakelock_plus: 76957ab028e12bfa4e66813c99e46637f367fc7e
 
-PODFILE CHECKSUM: 7958c91a324bd4cb50df26517f7b71aa54160702
+PODFILE CHECKSUM: 13cf6f2060f1232ff13132355fc42d6f4d9dfced
 
 COCOAPODS: 1.16.2
