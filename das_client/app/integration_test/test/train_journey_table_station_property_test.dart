@@ -1,16 +1,17 @@
 import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:patrol/patrol.dart';
 import 'package:sfera/component.dart';
 
 import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test station signs are displayed', (tester) async {
-    await prepareAndStartApp(tester);
+  patrolTest('test station signs are displayed', (tester) async {
+    await prepareAndStartApp(tester.tester);
 
-    await loadTrainJourney(tester, trainNumber: 'T21');
+    await loadTrainJourney(tester.tester, trainNumber: 'T21');
 
     expect(find.byKey(Key(StationSign.deadendStation.name)), findsNWidgets(5));
     expect(find.byKey(Key(StationSign.noExitSignal.name)), findsNWidgets(2));
@@ -20,17 +21,17 @@ void main() {
     expect(find.byKey(Key(StationSign.openLevelCrossingBeforeExitSignal.name)), findsNWidgets(2));
 
     final scrollableFinder = find.byType(AnimatedList);
-    await tester.dragUntilVisible(find.text('Aigle'), scrollableFinder, const Offset(0, -50));
+    await tester.tester.dragUntilVisible(find.text('Aigle'), scrollableFinder, const Offset(0, -50));
 
     expect(find.byKey(Key(StationSign.entryOccupiedTrack.name)), findsNWidgets(1));
 
-    await disconnect(tester);
+    await disconnect(tester.tester);
   });
 
-  testWidgets('test station properties are displayed', (tester) async {
-    await prepareAndStartApp(tester);
+  patrolTest('test station properties are displayed', (tester) async {
+    await prepareAndStartApp(tester.tester);
 
-    await loadTrainJourney(tester, trainNumber: 'T21');
+    await loadTrainJourney(tester.tester, trainNumber: 'T21');
 
     final geneveRow = findDASTableRowByText('Genève');
     expect(find.descendant(of: geneveRow, matching: find.byKey(Key(StationSign.deadendStation.name))), findsOneWidget);
@@ -52,7 +53,7 @@ void main() {
     expect(find.descendant(of: veveyRow, matching: find.byKey(Key(StationSign.deadendStation.name))), findsOneWidget);
 
     final scrollableFinder = find.byType(AnimatedList);
-    await tester.dragUntilVisible(find.text('Aigle'), scrollableFinder, const Offset(0, -50));
+    await tester.tester.dragUntilVisible(find.text('Aigle'), scrollableFinder, const Offset(0, -50));
 
     final aigleRow = findDASTableRowByText('Aigle');
     expect(
@@ -60,13 +61,13 @@ void main() {
       findsOneWidget,
     );
 
-    await disconnect(tester);
+    await disconnect(tester.tester);
   });
 
-  testWidgets('test station properties are displayed depending on TrainSeries', (tester) async {
-    await prepareAndStartApp(tester);
+  patrolTest('test station properties are displayed depending on TrainSeries', (tester) async {
+    await prepareAndStartApp(tester.tester);
 
-    await loadTrainJourney(tester, trainNumber: 'T21');
+    await loadTrainJourney(tester.tester, trainNumber: 'T21');
 
     var geneveRow = findDASTableRowByText('Genève');
     expect(find.descendant(of: geneveRow, matching: find.byKey(Key(StationSign.deadendStation.name))), findsOneWidget);
@@ -76,7 +77,7 @@ void main() {
     expect(find.descendant(of: veveyRow, matching: find.byKey(ServicePointRow.reducedSpeedKey)), findsOneWidget);
     expect(find.descendant(of: veveyRow, matching: find.byKey(Key(StationSign.deadendStation.name))), findsOneWidget);
 
-    await selectBreakSeries(tester, breakSeries: 'R115');
+    await selectBreakSeries(tester.tester, breakSeries: 'R115');
 
     geneveRow = findDASTableRowByText('Genève');
     expect(find.descendant(of: geneveRow, matching: find.byKey(Key(StationSign.deadendStation.name))), findsNothing);
@@ -86,6 +87,6 @@ void main() {
     expect(find.descendant(of: veveyRow, matching: find.byKey(ServicePointRow.reducedSpeedKey)), findsNothing);
     expect(find.descendant(of: veveyRow, matching: find.byKey(Key(StationSign.deadendStation.name))), findsOneWidget);
 
-    await disconnect(tester);
+    await disconnect(tester.tester);
   });
 }

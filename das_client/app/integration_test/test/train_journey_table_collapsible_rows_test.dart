@@ -4,25 +4,26 @@ import 'package:app/widgets/accordion/accordion.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:patrol/patrol.dart';
 import 'package:sfera/component.dart';
 
 import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test operational indication collapsible', (tester) async {
-    await prepareAndStartApp(tester);
-    await loadTrainJourney(tester, trainNumber: 'T22M');
+  patrolTest('test operational indication collapsible', (tester) async {
+    await prepareAndStartApp(tester.tester);
+    await loadTrainJourney(tester.tester, trainNumber: 'T22M');
 
     final dataToTest = UncodedOperationalIndication(order: 0, texts: ['Renens VD: Halt an Halteort 3']);
     final identifier = dataToTest.hashCode;
-    await _checkCollapsible(identifier, tester);
+    await _checkCollapsible(identifier, tester.tester);
 
-    await disconnect(tester);
+    await disconnect(tester.tester);
   });
-  testWidgets('test RADN foot note collapsible', (tester) async {
-    await prepareAndStartApp(tester);
-    await loadTrainJourney(tester, trainNumber: 'T15M');
+  patrolTest('test RADN foot note collapsible', (tester) async {
+    await prepareAndStartApp(tester.tester);
+    await loadTrainJourney(tester.tester, trainNumber: 'T15M');
 
     final footnote = FootNote(
       type: FootNoteType.decisiveGradientDown,
@@ -31,18 +32,18 @@ void main() {
     );
     final opFootNote = OpFootNote(order: 0, footNote: footnote);
     final identifier = opFootNote.hashCode;
-    await _checkCollapsible(identifier, tester);
+    await _checkCollapsible(identifier, tester.tester);
 
-    await disconnect(tester);
+    await disconnect(tester.tester);
   });
-  testWidgets('test show more on long texts of operational indications', (tester) async {
-    await prepareAndStartApp(tester);
-    await loadTrainJourney(tester, trainNumber: 'T22M');
+  patrolTest('test show more on long texts of operational indications', (tester) async {
+    await prepareAndStartApp(tester.tester);
+    await loadTrainJourney(tester.tester, trainNumber: 'T22M');
 
     final textToSearch = 'Pully: Vorziehen bis Ende Perron.';
 
     // scroll to testable row
-    await dragUntilTextInStickyHeader(tester, 'Pully');
+    await dragUntilTextInStickyHeader(tester.tester, 'Pully');
 
     // should not be collapsed by default
     final collapsibleRow = _findDASTableAccordionRowByContainsText(textToSearch);
@@ -61,8 +62,8 @@ void main() {
     expect(showMoreButton, findsOneWidget);
 
     // should show full text after tap on "show more" and no button
-    await tapElement(tester, showMoreButton);
-    await tester.pumpAndSettle(Duration(milliseconds: 100));
+    await tapElement(tester.tester, showMoreButton);
+    await tester.tester.pumpAndSettle(Duration(milliseconds: 100));
 
     final rowWithEndOfText = _findDASTableAccordionRowByContainsText(
       'Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
@@ -74,14 +75,14 @@ void main() {
     );
     expect(showMoreButton, findsNothing);
 
-    await disconnect(tester);
+    await disconnect(tester.tester);
   });
-  testWidgets('test combined operational indications and replaced new lines with " ;"', (tester) async {
-    await prepareAndStartApp(tester);
-    await loadTrainJourney(tester, trainNumber: 'T22M');
+  patrolTest('test combined operational indications and replaced new lines with " ;"', (tester) async {
+    await prepareAndStartApp(tester.tester);
+    await loadTrainJourney(tester.tester, trainNumber: 'T22M');
 
     // scroll to testable row
-    await dragUntilTextInStickyHeader(tester, 'Lausanne');
+    await dragUntilTextInStickyHeader(tester.tester, 'Lausanne');
 
     // should have show more button and collapsed content with " ;" delimiter
     final collapsibleRow = _findDASTableAccordionRowByContainsText(
@@ -99,7 +100,7 @@ void main() {
     expect(showMoreButton, findsOneWidget);
 
     // should show full content without " ;" after tap on show more
-    await tapElement(tester, showMoreButton);
+    await tapElement(tester.tester, showMoreButton);
     final expandedRow = _findDASTableAccordionRowByContainsText(
       'Strecke INN - MR: Bahnübergangsanlagen ohne Balisenüberwachung\nStraba. = Strassenbahnbereich',
     );
@@ -112,14 +113,14 @@ void main() {
     );
     expect(combinedText, findsOneWidget);
 
-    await disconnect(tester);
+    await disconnect(tester.tester);
   });
-  testWidgets('test row combined for operational indication and foot note on same service point', (tester) async {
-    await prepareAndStartApp(tester);
-    await loadTrainJourney(tester, trainNumber: 'T22M');
+  patrolTest('test row combined for operational indication and foot note on same service point', (tester) async {
+    await prepareAndStartApp(tester.tester);
+    await loadTrainJourney(tester.tester, trainNumber: 'T22M');
 
     final scrollableFinder = find.byType(AnimatedList);
-    await tester.dragUntilVisible(
+    await tester.tester.dragUntilVisible(
       find.byKey(CombinedFootNoteOperationalIndicationRow.rowKey),
       scrollableFinder,
       const Offset(0, -100),
@@ -140,21 +141,21 @@ void main() {
     );
     expect(footNoteRow, findsOneWidget);
 
-    await disconnect(tester);
+    await disconnect(tester.tester);
   });
-  testWidgets('test operational indication collapsed when passed', (tester) async {
-    await prepareAndStartApp(tester);
-    await loadTrainJourney(tester, trainNumber: 'T22');
+  patrolTest('test operational indication collapsed when passed', (tester) async {
+    await prepareAndStartApp(tester.tester);
+    await loadTrainJourney(tester.tester, trainNumber: 'T22');
 
     final dataToTest = UncodedOperationalIndication(order: 0, texts: ['Renens VD: Halt an Halteort 3']);
     final identifier = dataToTest.hashCode;
-    await _checkCollapsedWhenPassed(identifier, tester);
+    await _checkCollapsedWhenPassed(identifier, tester.tester);
 
-    await disconnect(tester);
+    await disconnect(tester.tester);
   });
-  testWidgets('test RADN foot notes collapsed when passed', (tester) async {
-    await prepareAndStartApp(tester);
-    await loadTrainJourney(tester, trainNumber: 'T15');
+  patrolTest('test RADN foot notes collapsed when passed', (tester) async {
+    await prepareAndStartApp(tester.tester);
+    await loadTrainJourney(tester.tester, trainNumber: 'T15');
 
     final footnote = FootNote(
       type: FootNoteType.decisiveGradientDown,
@@ -164,19 +165,19 @@ void main() {
     final opFootNote = OpFootNote(order: 0, footNote: footnote);
     final identifier = opFootNote.hashCode;
 
-    await _checkCollapsedWhenPassed(identifier, tester);
+    await _checkCollapsedWhenPassed(identifier, tester.tester);
 
-    await disconnect(tester);
+    await disconnect(tester.tester);
   });
 
-  testWidgets('test RADN foot notes title contain type', (tester) async {
-    await prepareAndStartApp(tester);
-    await loadTrainJourney(tester, trainNumber: 'T15M');
+  patrolTest('test RADN foot notes title contain type', (tester) async {
+    await prepareAndStartApp(tester.tester);
+    await loadTrainJourney(tester.tester, trainNumber: 'T15M');
 
     expect(find.textContaining(l10n.c_radn_type_decisive_gradient_down), findsOneWidget);
     expect(find.textContaining(l10n.c_radn_type_journey), findsAny);
 
-    await disconnect(tester);
+    await disconnect(tester.tester);
   });
 }
 

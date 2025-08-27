@@ -3,16 +3,17 @@ import 'package:app/pages/journey/train_journey/widgets/header/das_chronograph.d
 import 'package:app/pages/journey/train_journey/widgets/table/cells/calculated_speed_cell_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:patrol/patrol.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test calculated speeds are displayed correctly', (tester) async {
-    await prepareAndStartApp(tester);
+  patrolTest('test calculated speeds are displayed correctly', (tester) async {
+    await prepareAndStartApp(tester.tester);
 
-    await loadTrainJourney(tester, trainNumber: 'T23M');
+    await loadTrainJourney(tester.tester, trainNumber: 'T23M');
 
     final ebikonStationRow = findDASTableRowByText('Ebikon');
     expect(ebikonStationRow, findsOneWidget);
@@ -32,7 +33,7 @@ void main() {
     expect(zugStationRow, findsOneWidget);
     _findTextWithin(zugStationRow, CalculatedSpeedCellBody.zeroSpeedContent);
 
-    await dragUntilTextInStickyHeader(tester, zug);
+    await dragUntilTextInStickyHeader(tester.tester, zug);
 
     final baarStationRow = findDASTableRowByText('Baar');
     expect(baarStationRow, findsOneWidget);
@@ -43,13 +44,13 @@ void main() {
     expect(zuerichHbStationRow, findsOneWidget);
     _findTextWithin(zuerichHbStationRow, '90');
 
-    await dragUntilTextInStickyHeader(tester, zuerichHb);
+    await dragUntilTextInStickyHeader(tester.tester, zuerichHb);
 
     final zurichOerlikon = 'Zürich Oerlikon';
     final zuerichOerlikonStationRow = findDASTableRowByText(zurichOerlikon);
     expect(zuerichOerlikonStationRow, findsOneWidget);
 
-    await dragUntilTextInStickyHeader(tester, zurichOerlikon);
+    await dragUntilTextInStickyHeader(tester.tester, zurichOerlikon);
     final zuerichAdvisedSpeedCell = _findNonEmptyCalculatedSpeedCellOf(zuerichOerlikonStationRow);
     expect(zuerichAdvisedSpeedCell, findsOne);
 
@@ -65,8 +66,8 @@ void main() {
     expect(zuerichAirportStationRow, findsOneWidget);
     _findTextWithin(zuerichAirportStationRow, '110');
 
-    await dragUntilTextInStickyHeader(tester, bassersdorf);
-    await tester.pumpAndSettle(const Duration(milliseconds: 200));
+    await dragUntilTextInStickyHeader(tester.tester, bassersdorf);
+    await tester.tester.pumpAndSettle(const Duration(milliseconds: 200));
 
     // Basserdorf should now have a calculated speed
     expect(_findNonEmptyCalculatedSpeedCellOf(bassersdorfStationRow), findsAny);
@@ -76,7 +77,7 @@ void main() {
     expect(winterthurStationRow, findsOneWidget);
     _findTextWithin(winterthurStationRow, '80');
 
-    await dragUntilTextInStickyHeader(tester, winterthur);
+    await dragUntilTextInStickyHeader(tester.tester, winterthur);
 
     final frauenfeldStationRow = findDASTableRowByText('Frauenfeld');
     expect(frauenfeldStationRow, findsOneWidget);
@@ -97,15 +98,15 @@ void main() {
     final konstanzAdvisedSpeedCell = _findNonEmptyCalculatedSpeedCellOf(konstanzStationRow);
     expect(konstanzAdvisedSpeedCell, findsNothing);
 
-    await disconnect(tester);
+    await disconnect(tester.tester);
   });
 
-  testWidgets('test calculated speeds are displayed correctly in sticky header', (tester) async {
-    await prepareAndStartApp(tester);
+  patrolTest('test calculated speeds are displayed correctly in sticky header', (tester) async {
+    await prepareAndStartApp(tester.tester);
 
-    await loadTrainJourney(tester, trainNumber: 'T23M');
+    await loadTrainJourney(tester.tester, trainNumber: 'T23M');
 
-    await dragUntilTextInStickyHeader(tester, 'Thalwil');
+    await dragUntilTextInStickyHeader(tester.tester, 'Thalwil');
 
     // Oerlikon ---------
 
@@ -115,7 +116,7 @@ void main() {
     final zuerichOerlikonAdvisedSpeedCell = _findNonEmptyCalculatedSpeedCellOf(zuerichOerlikonStationRow);
     expect(zuerichOerlikonAdvisedSpeedCell, findsNothing);
 
-    await dragUntilTextInStickyHeader(tester, oerlikon);
+    await dragUntilTextInStickyHeader(tester.tester, oerlikon);
 
     // filled from Zürich HB
     expect(zuerichOerlikonStationRow, findsOneWidget);
@@ -138,19 +139,19 @@ void main() {
     final bassersdorfAdvisedSpeedCell = _findNonEmptyCalculatedSpeedCellOf(bassersdorfStationRow);
     expect(bassersdorfAdvisedSpeedCell, findsNothing);
 
-    await dragUntilTextInStickyHeader(tester, bassersdorf);
+    await dragUntilTextInStickyHeader(tester.tester, bassersdorf);
 
     // filled with line speed from Zürich HB
     expect(bassersdorfStationRow, findsOneWidget);
     _findTextWithin(bassersdorfStationRow, '110');
 
-    await disconnect(tester);
+    await disconnect(tester.tester);
   });
 
-  testWidgets('test do not display chronograph punctuality if no vpro speed in current position', (tester) async {
-    await prepareAndStartApp(tester);
+  patrolTest('test do not display chronograph punctuality if no vpro speed in current position', (tester) async {
+    await prepareAndStartApp(tester.tester);
 
-    await loadTrainJourney(tester, trainNumber: 'T23');
+    await loadTrainJourney(tester.tester, trainNumber: 'T23');
 
     final chronograph = find.byType(DASChronograph);
 
@@ -161,7 +162,7 @@ void main() {
     );
 
     await waitUntilExists(
-      tester,
+      tester.tester,
       find.descendant(of: chronograph, matching: find.byKey(DASChronograph.punctualityTextKey)),
     );
 
@@ -169,15 +170,15 @@ void main() {
     const fourtySecondsDelay = '+00:40';
     expect(find.descendant(of: chronograph, matching: find.text(fourtySecondsDelay)), findsOneWidget);
 
-    await disconnect(tester);
+    await disconnect(tester.tester);
   });
 
-  testWidgets('test calculated speed is reduced to line speed and displayed in different color', (tester) async {
-    await prepareAndStartApp(tester);
+  patrolTest('test calculated speed is reduced to line speed and displayed in different color', (tester) async {
+    await prepareAndStartApp(tester.tester);
 
-    await loadTrainJourney(tester, trainNumber: 'T23M');
+    await loadTrainJourney(tester.tester, trainNumber: 'T23M');
 
-    await dragUntilTextInStickyHeader(tester, 'Buchrain');
+    await dragUntilTextInStickyHeader(tester.tester, 'Buchrain');
 
     // find reduced speed in Rotkreuz
     final rotkreuxStationRow = findDASTableRowByText('Rotkreuz');
@@ -185,12 +186,12 @@ void main() {
     _findTextWithin(rotkreuxStationRow, '130');
 
     // should be in cement because it is in the next stop
-    final textWidget = tester.widget<Text>(
+    final textWidget = tester.tester.widget<Text>(
       find.descendant(of: rotkreuxStationRow, matching: find.byKey(CalculatedSpeedCellBody.nonEmptyKey)),
     );
     expect(textWidget.style?.color, equals(SBBColors.cement));
 
-    await disconnect(tester);
+    await disconnect(tester.tester);
   });
 }
 

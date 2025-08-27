@@ -13,6 +13,7 @@ import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:patrol/patrol.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
@@ -20,177 +21,177 @@ import '../util/test_utils.dart';
 
 void main() {
   group('general service point modal sheet tests', () {
-    testWidgets('test interaction points for modal sheet', (tester) async {
+    patrolTest('test interaction points for modal sheet', (tester) async {
       // TODO: Workaround till SegmentedButton is fixed in Design System: https://github.com/SchweizerischeBundesbahnen/design_system_flutter/issues/312
       FlutterError.onError = ignoreOverflowErrors;
 
-      await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T8');
+      await prepareAndStartApp(tester.tester);
+      await loadTrainJourney(tester.tester, trainNumber: 'T8');
 
       expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
 
       // open and check modal sheet over radio channel tap in header
-      await _openRadioChannelByHeaderTap(tester);
+      await _openRadioChannelByHeaderTap(tester.tester);
       _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
 
       // close modal sheet
-      await _closeModalSheet(tester);
+      await _closeModalSheet(tester.tester);
       expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
 
       // check non-clickable graduated speeds if no details present
-      await _openByTapOnGraduatedSpeedOf(tester, 'Burgdorf');
+      await _openByTapOnGraduatedSpeedOf(tester.tester, 'Burgdorf');
       expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
 
       // open and check modal sheet with tap on graduated speeds
-      await _openByTapOnCellWithText(tester, '75-70-60');
+      await _openByTapOnCellWithText(tester.tester, '75-70-60');
       _checkOpenModalSheet(DetailTabGraduatedSpeeds.graduatedSpeedsTabKey, 'Bern');
 
       // test tap on service point name without closing modal sheet
-      await _openByTapOnCellWithText(tester, 'Olten');
+      await _openByTapOnCellWithText(tester.tester, 'Olten');
       _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Olten');
 
-      await disconnect(tester);
+      await disconnect(tester.tester);
     });
-    testWidgets('test header button collapsed if detail model sheet open', (tester) async {
-      await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T9999');
+    patrolTest('test header button collapsed if detail model sheet open', (tester) async {
+      await prepareAndStartApp(tester.tester);
+      await loadTrainJourney(tester.tester, trainNumber: 'T9999');
 
       expect(find.byKey(HeaderIconButton.headerIconWithLabelButtonKey), findsExactly(2));
 
       // open modal sheet and check if only icon buttons are shown
-      await _openRadioChannelByHeaderTap(tester);
+      await _openRadioChannelByHeaderTap(tester.tester);
       expect(find.byKey(DasModalSheet.modalSheetExtendedKey), findsOneWidget);
       expect(find.byKey(HeaderIconButton.headerIconButtonKey), findsExactly(2));
 
       // check labeled buttons after close
-      await _closeModalSheet(tester);
+      await _closeModalSheet(tester.tester);
       expect(find.byKey(HeaderIconButton.headerIconWithLabelButtonKey), findsExactly(2));
 
-      await disconnect(tester);
+      await disconnect(tester.tester);
     });
-    testWidgets('test only tabs are displayed with data', (tester) async {
-      await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T8');
+    patrolTest('test only tabs are displayed with data', (tester) async {
+      await prepareAndStartApp(tester.tester);
+      await loadTrainJourney(tester.tester, trainNumber: 'T8');
 
-      await _openByTapOnCellWithText(tester, 'Bern');
+      await _openByTapOnCellWithText(tester.tester, 'Bern');
       _checkModalSheetTabs([
         ServicePointModalTab.communication, // always displayed
         ServicePointModalTab.graduatedSpeeds,
       ]);
 
-      await _openByTapOnCellWithText(tester, 'Burgdorf');
+      await _openByTapOnCellWithText(tester.tester, 'Burgdorf');
       _checkModalSheetTabs([
         ServicePointModalTab.communication, // always displayed
       ]);
 
-      await disconnect(tester);
+      await disconnect(tester.tester);
     });
-    testWidgets('test change of service point modal page with segmented button', (tester) async {
-      await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T8');
+    patrolTest('test change of service point modal page with segmented button', (tester) async {
+      await prepareAndStartApp(tester.tester);
+      await loadTrainJourney(tester.tester, trainNumber: 'T8');
 
       // open modal with tap on service point name
-      await _openByTapOnCellWithText(tester, 'Bern');
+      await _openByTapOnCellWithText(tester.tester, 'Bern');
       _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
 
       // change tab to graduated speeds
-      await _selectTab(tester, ServicePointModalTab.graduatedSpeeds);
+      await _selectTab(tester.tester, ServicePointModalTab.graduatedSpeeds);
       _checkOpenModalSheet(DetailTabGraduatedSpeeds.graduatedSpeedsTabKey, 'Bern');
 
       // TODO: Add back test when local regulations are implemented
       // change tab to local regulations and check if full width
-      // await _selectTab(tester, ServicePointModalTab.localRegulations);
+      // await _selectTab(tester.tester, ServicePointModalTab.localRegulations);
       // _checkOpenModalSheet(DetailTabLocalRegulations.localRegulationsTabKey, 'Olten', isMaximized: true);
 
       // change back to tab radio channels
-      await _selectTab(tester, ServicePointModalTab.communication);
+      await _selectTab(tester.tester, ServicePointModalTab.communication);
       _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
 
-      await disconnect(tester);
+      await disconnect(tester.tester);
     });
-    testWidgets('test modal closes after timeout without touch on screen', (tester) async {
-      await prepareAndStartApp(tester);
+    patrolTest('test modal closes after timeout without touch on screen', (tester) async {
+      await prepareAndStartApp(tester.tester);
 
-      await loadTrainJourney(tester, trainNumber: 'T8');
+      await loadTrainJourney(tester.tester, trainNumber: 'T8');
 
       // open modal sheet with tap on service point name
-      await _openByTapOnCellWithText(tester, 'Bern');
+      await _openByTapOnCellWithText(tester.tester, 'Bern');
       _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
 
       final waitTime = DI.get<TimeConstants>().modalSheetAutomaticCloseAfterSeconds + 1;
 
       // wait until waitTime reached
       await Future.delayed(Duration(seconds: waitTime));
-      await tester.pumpAndSettle();
+      await tester.tester.pumpAndSettle();
 
       // check if modal sheet is closed
       expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
 
-      await disconnect(tester);
+      await disconnect(tester.tester);
     });
-    testWidgets('test modal sheet does close after timeout with automatic advancement paused', (tester) async {
-      await prepareAndStartApp(tester);
+    patrolTest('test modal sheet does close after timeout with automatic advancement paused', (tester) async {
+      await prepareAndStartApp(tester.tester);
 
-      await loadTrainJourney(tester, trainNumber: 'T8');
+      await loadTrainJourney(tester.tester, trainNumber: 'T8');
 
       // open modal sheet with tap on service point name
-      await _openByTapOnCellWithText(tester, 'Bern');
+      await _openByTapOnCellWithText(tester.tester, 'Bern');
       _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Bern');
 
       // pause automatic advancement
       final pauseButton = find.byKey(StartPauseButton.pauseButtonKey);
       expect(pauseButton, findsOneWidget);
-      await tapElement(tester, pauseButton);
+      await tapElement(tester.tester, pauseButton);
 
       final waitTime = DI.get<TimeConstants>().modalSheetAutomaticCloseAfterSeconds + 1;
 
       // wait until waitTime reached
       await Future.delayed(Duration(seconds: waitTime));
-      await tester.pumpAndSettle();
+      await tester.tester.pumpAndSettle();
 
       // check if modal sheet is closed
       expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
 
-      await disconnect(tester);
+      await disconnect(tester.tester);
     });
   });
 
   group('graduated speed tab tests', () {
-    testWidgets('test graduated speed info details', (tester) async {
-      await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T8');
+    patrolTest('test graduated speed info details', (tester) async {
+      await prepareAndStartApp(tester.tester);
+      await loadTrainJourney(tester.tester, trainNumber: 'T8');
 
       final tableRowBern = findDASTableRowByText('75-70-60');
       final indicator = find.descendant(of: tableRowBern, matching: find.byKey(DotIndicator.indicatorKey));
       expect(indicator, findsOneWidget);
 
       // open and check modal sheet with tap on graduated speeds
-      await _openByTapOnCellWithText(tester, '75-70-60');
+      await _openByTapOnCellWithText(tester.tester, '75-70-60');
       _checkOpenModalSheet(DetailTabGraduatedSpeeds.graduatedSpeedsTabKey, 'Bern');
 
       expect(find.text('75-70-60'), findsExactly(3));
 
       expect(find.text('Zusatzinformation A'), findsOneWidget);
 
-      await selectBreakSeries(tester, breakSeries: 'N50');
+      await selectBreakSeries(tester.tester, breakSeries: 'N50');
 
       expect(find.text('Zusatzinformation A'), findsNothing);
       expect(find.text('Zusatzinformation B'), findsOne);
       expect(find.text('70'), findsExactly(3));
       expect(find.text('60'), findsExactly(3));
 
-      await disconnect(tester);
+      await disconnect(tester.tester);
     });
   });
 
   group('communication tab tests', () {
-    testWidgets('test communication network and radio channels displayed correctly', (tester) async {
-      await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T12');
-      await stopAutomaticAdvancement(tester);
+    patrolTest('test communication network and radio channels displayed correctly', (tester) async {
+      await prepareAndStartApp(tester.tester);
+      await loadTrainJourney(tester.tester, trainNumber: 'T12');
+      await stopAutomaticAdvancement(tester.tester);
 
       // check communication information for Bern
-      await _openByTapOnCellWithText(tester, 'Bern');
+      await _openByTapOnCellWithText(tester.tester, 'Bern');
       final tabContentBern = find.byKey(DetailTabCommunication.communicationTabKey);
       expect(tabContentBern, findsOneWidget);
       final gsmPIcon = find.descendant(of: tabContentBern, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
@@ -204,7 +205,7 @@ void main() {
       expect(notFoundText, findsOneWidget);
 
       // Tab on Wankdorf -> GSM-P, 1407
-      await _openByTapOnCellWithText(tester, 'Wankdorf');
+      await _openByTapOnCellWithText(tester.tester, 'Wankdorf');
       final tabContentWankdorf = find.byKey(DetailTabCommunication.communicationTabKey);
       expect(tabContentWankdorf, findsOneWidget);
       final gsmPIconWankdorf = find.descendant(
@@ -220,7 +221,7 @@ void main() {
       _expectText(radioChannelsListWankdorf, '1407');
 
       // Tab on Olten -> GSM-R, 1102, 1103, 1104, 1105
-      await _openByTapOnCellWithText(tester, 'Olten');
+      await _openByTapOnCellWithText(tester.tester, 'Olten');
       final tabContentOlten = find.byKey(DetailTabCommunication.communicationTabKey);
       expect(tabContentOlten, findsOneWidget);
       final gsmRIconOlten = find.descendant(
@@ -241,24 +242,24 @@ void main() {
       _expectText(radioChannelsListOlten, 'Rangierbahnhof: Fahrdienstleiter Stellwerk 3');
       _expectText(radioChannelsListOlten, '1105');
 
-      await disconnect(tester);
+      await disconnect(tester.tester);
     });
-    testWidgets('test communication information present when opening from other tab', (tester) async {
-      await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: '1513');
-      await stopAutomaticAdvancement(tester);
+    patrolTest('test communication information present when opening from other tab', (tester) async {
+      await prepareAndStartApp(tester.tester);
+      await loadTrainJourney(tester.tester, trainNumber: '1513');
+      await stopAutomaticAdvancement(tester.tester);
 
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
-      await tester.dragUntilVisible(find.text('Lenzburg'), scrollableFinder, const Offset(0, -50));
+      await tester.tester.dragUntilVisible(find.text('Lenzburg'), scrollableFinder, const Offset(0, -50));
 
       // open graduated speed tab of Rupperswil
-      await _openByTapOnGraduatedSpeedOf(tester, 'Rupperswil');
+      await _openByTapOnGraduatedSpeedOf(tester.tester, 'Rupperswil');
       _checkOpenModalSheet(DetailTabGraduatedSpeeds.graduatedSpeedsTabKey, 'Rupperswil');
 
       // change to communication tab and check content
-      await _selectTab(tester, ServicePointModalTab.communication);
+      await _selectTab(tester.tester, ServicePointModalTab.communication);
       final tabContent = find.byKey(DetailTabCommunication.communicationTabKey);
       expect(tabContent, findsOneWidget);
       final gsmRIcon = find.descendant(of: tabContent, matching: find.byKey(CommunicationNetworkIcon.gsmRKey));
@@ -270,31 +271,31 @@ void main() {
       expect(radioChannels, findsOneWidget);
       _expectText(radioChannels, '1308');
 
-      await disconnect(tester);
+      await disconnect(tester.tester);
     });
 
-    testWidgets('test SIM corridor information', (tester) async {
-      await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T20');
-      await stopAutomaticAdvancement(tester);
+    patrolTest('test SIM corridor information', (tester) async {
+      await prepareAndStartApp(tester.tester);
+      await loadTrainJourney(tester.tester, trainNumber: 'T20');
+      await stopAutomaticAdvancement(tester.tester);
 
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
       // check Reichenbach im Kandertal SIM information
-      await _openByTapOnCellWithText(tester, 'Reichenbach im Kandertal');
+      await _openByTapOnCellWithText(tester.tester, 'Reichenbach im Kandertal');
       expect(find.byKey(DetailTabCommunication.simCorridorListKey), findsNothing);
 
       // check Frutigen SIM information
-      await _openByTapOnCellWithText(tester, 'Frutigen');
+      await _openByTapOnCellWithText(tester.tester, 'Frutigen');
       expect(find.byKey(DetailTabCommunication.simCorridorListKey), findsOneWidget);
       expect(find.text('Frutigen - Kandergrund'), findsOneWidget);
 
       // check Domodossola FM SIM information
-      await tester.dragUntilVisible(find.text('Domodossola FM'), scrollableFinder, const Offset(0, -50));
-      await tester.pumpAndSettle();
+      await tester.tester.dragUntilVisible(find.text('Domodossola FM'), scrollableFinder, const Offset(0, -50));
+      await tester.tester.pumpAndSettle();
 
-      await _openByTapOnCellWithText(tester, 'Domodossola FM');
+      await _openByTapOnCellWithText(tester.tester, 'Domodossola FM');
       expect(find.byKey(DetailTabCommunication.simCorridorListKey), findsOneWidget);
       expect(find.text('1392'), findsOneWidget);
       expect(find.text('Domodossola - Preglia, linkes Gleis'), findsOneWidget);
@@ -304,29 +305,29 @@ void main() {
       // check Footnote header
       expect(find.text(l10n.c_radn_sim), findsAny);
 
-      await disconnect(tester);
+      await disconnect(tester.tester);
     });
   });
 
-  testWidgets('test short signal names are displayed when modal is open', (tester) async {
-    await prepareAndStartApp(tester);
-    await loadTrainJourney(tester, trainNumber: 'T9999');
-    await stopAutomaticAdvancement(tester);
+  patrolTest('test short signal names are displayed when modal is open', (tester) async {
+    await prepareAndStartApp(tester.tester);
+    await loadTrainJourney(tester.tester, trainNumber: 'T9999');
+    await stopAutomaticAdvancement(tester.tester);
 
     expect(find.text(l10n.c_main_signal_function_entry), findsAny);
     expect(find.text(l10n.c_main_signal_function_exit), findsAny);
     expect(find.text(l10n.c_main_signal_function_entry_short), findsNothing);
     expect(find.text(l10n.c_main_signal_function_exit_short), findsNothing);
 
-    await _openByTapOnCellWithText(tester, 'Bahnhof A');
-    await tester.pumpAndSettle();
+    await _openByTapOnCellWithText(tester.tester, 'Bahnhof A');
+    await tester.tester.pumpAndSettle();
 
     expect(find.text(l10n.c_main_signal_function_entry), findsNothing);
     expect(find.text(l10n.c_main_signal_function_exit), findsNothing);
     expect(find.text(l10n.c_main_signal_function_entry_short), findsAny);
     expect(find.text(l10n.c_main_signal_function_exit_short), findsAny);
 
-    await disconnect(tester);
+    await disconnect(tester.tester);
   });
 }
 

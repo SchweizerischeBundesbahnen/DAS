@@ -1,44 +1,45 @@
 import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:patrol/patrol.dart';
 
 import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test breaking series defaults to ??', (tester) async {
-    await prepareAndStartApp(tester);
+  patrolTest('test breaking series defaults to ??', (tester) async {
+    await prepareAndStartApp(tester.tester);
 
     // load train journey by filling out train selection page
-    await loadTrainJourney(tester, trainNumber: 'T6');
+    await loadTrainJourney(tester.tester, trainNumber: 'T6');
 
     final breakingSeriesHeaderCell = find.byKey(TrainJourney.breakingSeriesHeaderKey);
     expect(breakingSeriesHeaderCell, findsOneWidget);
     expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('??')), findsOneWidget);
 
-    await disconnect(tester);
+    await disconnect(tester.tester);
   });
 
-  testWidgets('test default breaking series is taken from train characteristics (R115)', (tester) async {
-    await prepareAndStartApp(tester);
+  patrolTest('test default breaking series is taken from train characteristics (R115)', (tester) async {
+    await prepareAndStartApp(tester.tester);
 
     // load train journey by filling out train selection page
-    await loadTrainJourney(tester, trainNumber: 'T5');
+    await loadTrainJourney(tester.tester, trainNumber: 'T5');
 
     final breakingSeriesHeaderCell = find.byKey(TrainJourney.breakingSeriesHeaderKey);
     expect(breakingSeriesHeaderCell, findsOneWidget);
     expect(find.descendant(of: breakingSeriesHeaderCell, matching: find.text('R115')), findsOneWidget);
 
-    await disconnect(tester);
+    await disconnect(tester.tester);
   });
 
-  testWidgets('test all breakseries options are displayed', (tester) async {
-    await prepareAndStartApp(tester);
+  patrolTest('test all breakseries options are displayed', (tester) async {
+    await prepareAndStartApp(tester.tester);
 
     // load train journey by filling out train selection page
-    await loadTrainJourney(tester, trainNumber: 'T5');
+    await loadTrainJourney(tester.tester, trainNumber: 'T5');
 
     // Open break series bottom sheet
-    await tapElement(tester, find.byKey(TrainJourney.breakingSeriesHeaderKey));
+    await tapElement(tester.tester, find.byKey(TrainJourney.breakingSeriesHeaderKey));
 
     final expectedCategories = {'R', 'A', 'D'};
 
@@ -69,20 +70,20 @@ void main() {
       expect(find.text(entry), findsAtLeast(1));
     }
 
-    await disconnect(tester);
+    await disconnect(tester.tester);
   });
 
-  testWidgets('test message when no breakseries are defined', (tester) async {
-    await prepareAndStartApp(tester);
+  patrolTest('test message when no breakseries are defined', (tester) async {
+    await prepareAndStartApp(tester.tester);
 
     // load train journey by filling out train selection page
-    await loadTrainJourney(tester, trainNumber: 'T4');
+    await loadTrainJourney(tester.tester, trainNumber: 'T4');
 
     // Open break series bottom sheet
-    await tapElement(tester, find.byKey(TrainJourney.breakingSeriesHeaderKey));
+    await tapElement(tester.tester, find.byKey(TrainJourney.breakingSeriesHeaderKey));
 
     expect(find.text(l10n.p_train_journey_break_series_empty), findsOneWidget);
 
-    await disconnect(tester);
+    await disconnect(tester.tester);
   });
 }

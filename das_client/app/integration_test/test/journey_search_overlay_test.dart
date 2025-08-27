@@ -5,6 +5,7 @@ import 'package:app/pages/journey/train_journey/widgets/journey_navigation_butto
 import 'package:app/util/format.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:patrol/patrol.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
@@ -12,37 +13,37 @@ import '../util/test_utils.dart';
 
 void main() {
   group('Journey search overlay tests', () {
-    testWidgets('overlay can be opened and dismissed', (tester) async {
-      await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T1');
+    patrolTest('overlay can be opened and dismissed', (tester) async {
+      await prepareAndStartApp(tester.tester);
+      await loadTrainJourney(tester.tester, trainNumber: 'T1');
 
       // closed by default - should show journeySearch icon with key
       expect(find.byKey(JourneySearchOverlay.journeySearchKey), findsOneWidget);
       expect(find.byKey(JourneySearchOverlay.journeySearchCloseKey), findsNothing);
 
       // open
-      await _openJourneySearchOverlayByTap(tester);
+      await _openJourneySearchOverlayByTap(tester.tester);
 
       // opened
       expect(find.byKey(JourneySearchOverlay.journeySearchCloseKey), findsAny);
 
       // close
-      await _closeJourneySearchOverlayByTap(tester);
+      await _closeJourneySearchOverlayByTap(tester.tester);
 
       // closed
       expect(find.byKey(JourneySearchOverlay.journeySearchKey), findsOneWidget);
       expect(find.byKey(JourneySearchOverlay.journeySearchCloseKey), findsNothing);
 
-      await disconnect(tester);
+      await disconnect(tester.tester);
     });
 
-    testWidgets('input fields have defaults and validation works', (tester) async {
-      await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T1');
+    patrolTest('input fields have defaults and validation works', (tester) async {
+      await prepareAndStartApp(tester.tester);
+      await loadTrainJourney(tester.tester, trainNumber: 'T1');
       final journeySearchOverlay = find.byType(JourneySearchOverlay);
 
       // open
-      await _openJourneySearchOverlayByTap(tester);
+      await _openJourneySearchOverlayByTap(tester.tester);
 
       // Verify we have ru SBB.
       expect(find.descendant(of: journeySearchOverlay, matching: find.text(l10n.c_ru_sbb_p)), findsOneWidget);
@@ -58,66 +59,66 @@ void main() {
         of: journeySearchOverlay,
         matching: find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first,
       );
-      expect(tester.widget<SBBPrimaryButton>(primaryButton).onPressed, isNull);
+      expect(tester.tester.widget<SBBPrimaryButton>(primaryButton).onPressed, isNull);
 
       // set input
       final trainNumberText = findTextFieldByHint(l10n.p_train_selection_trainnumber_description);
       expect(trainNumberText, findsOneWidget);
-      await enterText(tester, trainNumberText, '123');
+      await enterText(tester.tester, trainNumberText, '123');
 
       // button enabled
-      expect(tester.widget<SBBPrimaryButton>(primaryButton).onPressed, isNotNull);
+      expect(tester.tester.widget<SBBPrimaryButton>(primaryButton).onPressed, isNotNull);
 
-      await disconnect(tester);
+      await disconnect(tester.tester);
     });
 
-    testWidgets('loading another train journey and displaying navigation buttons work', (tester) async {
-      await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T1');
+    patrolTest('loading another train journey and displaying navigation buttons work', (tester) async {
+      await prepareAndStartApp(tester.tester);
+      await loadTrainJourney(tester.tester, trainNumber: 'T1');
       final journeySearchOverlay = find.byType(JourneySearchOverlay);
 
       // open
-      await _openJourneySearchOverlayByTap(tester);
+      await _openJourneySearchOverlayByTap(tester.tester);
 
       // set input
       final trainNumberText = findTextFieldByHint(l10n.p_train_selection_trainnumber_description);
       expect(trainNumberText, findsOneWidget);
-      await enterText(tester, trainNumberText, 'T2');
+      await enterText(tester.tester, trainNumberText, 'T2');
 
       // load T2 Journey
       final primaryButton = find.descendant(
         of: journeySearchOverlay,
         matching: find.byWidgetPredicate((widget) => widget is SBBPrimaryButton).first,
       );
-      await tapElement(tester, primaryButton);
+      await tapElement(tester.tester, primaryButton);
 
       // wait until T2 opened
-      await waitUntilExists(tester, find.descendant(of: find.byType(Header), matching: find.text('T2 SBB')));
-      await tester.pumpAndSettle();
+      await waitUntilExists(tester.tester, find.descendant(of: find.byType(Header), matching: find.text('T2 SBB')));
+      await tester.tester.pumpAndSettle();
 
       // should not display navigation buttons (autoAdvancement is active)
       final opacity = find.descendant(
         of: find.byType(JourneyNavigationButtons),
         matching: find.byType(AnimatedOpacity),
       );
-      expect(tester.widget<AnimatedOpacity>(opacity).opacity, isZero);
+      expect(tester.tester.widget<AnimatedOpacity>(opacity).opacity, isZero);
 
       // pause auto advancement
       final pauseButton = find.byKey(StartPauseButton.pauseButtonKey);
-      await tapElement(tester, pauseButton);
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
+      await tapElement(tester.tester, pauseButton);
+      await tester.tester.pumpAndSettle(Duration(milliseconds: 300));
 
       // navigation buttons displayed
-      expect(tester.widget<AnimatedOpacity>(opacity).opacity, isNonZero);
+      expect(tester.tester.widget<AnimatedOpacity>(opacity).opacity, isNonZero);
 
       // navigate to previous journey
       final previousButton = find.byKey(JourneyNavigationButtons.journeyNavigationButtonPreviousKey);
-      await tapElement(tester, previousButton);
+      await tapElement(tester.tester, previousButton);
 
       // wait until T1 opened
-      await waitUntilExists(tester, find.descendant(of: find.byType(Header), matching: find.text('T1 SBB')));
+      await waitUntilExists(tester.tester, find.descendant(of: find.byType(Header), matching: find.text('T1 SBB')));
 
-      await disconnect(tester);
+      await disconnect(tester.tester);
     });
   });
 }

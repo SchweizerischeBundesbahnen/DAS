@@ -3,20 +3,21 @@ import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:patrol/patrol.dart';
 
 import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test details for ASR in T2 with missing from, until and reason', (tester) async {
-    await prepareAndStartApp(tester);
-    await loadTrainJourney(tester, trainNumber: 'T2');
+  patrolTest('test details for ASR in T2 with missing from, until and reason', (tester) async {
+    await prepareAndStartApp(tester.tester);
+    await loadTrainJourney(tester.tester, trainNumber: 'T2');
 
     expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
 
     // open and check modal sheet
     final asrRow = findDASTableRowByText('km 64.200 - km 47.200');
-    await tapElement(tester, asrRow, warnIfMissed: false);
+    await tapElement(tester.tester, asrRow, warnIfMissed: false);
     _checkModalSheetContent(
       testData: [
         _ASRTestData(kmText: '64.200 - 47.200', vmaxText: '60'),
@@ -24,20 +25,20 @@ void main() {
     );
 
     // close modal sheet
-    await _closeModalSheet(tester);
+    await _closeModalSheet(tester.tester);
     expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
 
-    await disconnect(tester);
+    await disconnect(tester.tester);
   });
-  testWidgets('test details for ASR in T3 with all details', (tester) async {
-    await prepareAndStartApp(tester);
-    await loadTrainJourney(tester, trainNumber: 'T3');
+  patrolTest('test details for ASR in T3 with all details', (tester) async {
+    await prepareAndStartApp(tester.tester);
+    await loadTrainJourney(tester.tester, trainNumber: 'T3');
 
     expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
 
     // open and check modal sheet
     final asrRow = findDASTableRowByText('km 64.200 - km 63.200');
-    await tapElement(tester, asrRow, warnIfMissed: false);
+    await tapElement(tester.tester, asrRow, warnIfMissed: false);
     _checkModalSheetContent(
       testData: [
         _ASRTestData(
@@ -51,25 +52,25 @@ void main() {
     );
 
     // close modal sheet
-    await _closeModalSheet(tester);
+    await _closeModalSheet(tester.tester);
     expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
 
-    await disconnect(tester);
+    await disconnect(tester.tester);
   });
-  testWidgets('test details for complex ASR in T18', (tester) async {
-    await prepareAndStartApp(tester);
-    await loadTrainJourney(tester, trainNumber: 'T18');
+  patrolTest('test details for complex ASR in T18', (tester) async {
+    await prepareAndStartApp(tester.tester);
+    await loadTrainJourney(tester.tester, trainNumber: 'T18');
 
     expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
 
     // scroll to complex ASR
     final scrollableFinder = find.byType(AnimatedList);
     final rowFinder = find.descendant(of: scrollableFinder, matching: find.text('WANZ'));
-    await tester.dragUntilVisible(rowFinder, scrollableFinder, const Offset(0, -100));
+    await tester.tester.dragUntilVisible(rowFinder, scrollableFinder, const Offset(0, -100));
 
     // open and check modal sheet
     final asrRow = findDASTableRowByText('km 83.100 - km 6.600');
-    await tapElement(tester, asrRow, warnIfMissed: false);
+    await tapElement(tester.tester, asrRow, warnIfMissed: false);
     _checkModalSheetContent(
       testData: [
         _ASRTestData(
@@ -85,7 +86,7 @@ void main() {
       ],
     );
 
-    await disconnect(tester);
+    await disconnect(tester.tester);
   });
 }
 

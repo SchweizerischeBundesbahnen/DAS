@@ -3,31 +3,32 @@ import 'package:app/pages/journey/train_journey/widgets/reduced_overview/reduced
 import 'package:app/util/format.dart';
 import 'package:app/widgets/table/das_table.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:patrol/patrol.dart';
 
 import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
   group('train reduced journey test', () {
-    testWidgets('test train information is displayed', (tester) async {
-      await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T14');
-      await openReducedJourneyMenu(tester);
+    patrolTest('test train information is displayed', (tester) async {
+      await prepareAndStartApp(tester.tester);
+      await loadTrainJourney(tester.tester, trainNumber: 'T14');
+      await openReducedJourneyMenu(tester.tester);
 
       expect(find.text('T14 ${l10n.c_ru_sbb_p}'), findsAny);
 
       final formattedDate = Format.dateWithAbbreviatedDay(DateTime.now(), deviceLocale());
       expect(find.text(formattedDate), findsOneWidget);
 
-      await disconnect(tester);
+      await disconnect(tester.tester);
     });
 
-    testWidgets('test passing and stopping points are displayed correctly', (tester) async {
-      await prepareAndStartApp(tester);
+    patrolTest('test passing and stopping points are displayed correctly', (tester) async {
+      await prepareAndStartApp(tester.tester);
 
-      await loadTrainJourney(tester, trainNumber: 'T14');
+      await loadTrainJourney(tester.tester, trainNumber: 'T14');
 
-      await openReducedJourneyMenu(tester);
+      await openReducedJourneyMenu(tester.tester);
 
       final reducedJourneyTable = _findTableOfReducedJourney();
 
@@ -36,29 +37,29 @@ void main() {
       expect(find.descendant(of: reducedJourneyTable, matching: find.text('Bern')), findsOneWidget);
       expect(find.descendant(of: reducedJourneyTable, matching: find.text('Zürich')), findsOneWidget);
 
-      await disconnect(tester);
+      await disconnect(tester.tester);
     });
 
-    testWidgets('test duplicated asr is only displayed once', (tester) async {
-      await prepareAndStartApp(tester);
+    patrolTest('test duplicated asr is only displayed once', (tester) async {
+      await prepareAndStartApp(tester.tester);
 
-      await loadTrainJourney(tester, trainNumber: 'T14');
+      await loadTrainJourney(tester.tester, trainNumber: 'T14');
 
-      await openReducedJourneyMenu(tester);
+      await openReducedJourneyMenu(tester.tester);
 
       final reducedJourneyTable = _findTableOfReducedJourney();
 
       expect(find.descendant(of: reducedJourneyTable, matching: find.text('km 31.500 - km 32.400')), findsOneWidget);
 
-      await disconnect(tester);
+      await disconnect(tester.tester);
     });
 
-    testWidgets('test network change is displayed', (tester) async {
-      await prepareAndStartApp(tester);
+    patrolTest('test network change is displayed', (tester) async {
+      await prepareAndStartApp(tester.tester);
 
-      await loadTrainJourney(tester, trainNumber: 'T14');
+      await loadTrainJourney(tester.tester, trainNumber: 'T14');
 
-      await openReducedJourneyMenu(tester);
+      await openReducedJourneyMenu(tester.tester);
 
       final reducedJourneyTable = _findTableOfReducedJourney();
 
@@ -71,15 +72,15 @@ void main() {
         findsOneWidget,
       );
 
-      await disconnect(tester);
+      await disconnect(tester.tester);
     });
 
-    testWidgets('test planned times are displayed', (tester) async {
-      await prepareAndStartApp(tester);
+    patrolTest('test planned times are displayed', (tester) async {
+      await prepareAndStartApp(tester.tester);
 
-      await loadTrainJourney(tester, trainNumber: 'T16');
+      await loadTrainJourney(tester.tester, trainNumber: 'T16');
 
-      await openReducedJourneyMenu(tester);
+      await openReducedJourneyMenu(tester.tester);
 
       final reducedJourneyTable = _findTableOfReducedJourney();
 
@@ -106,7 +107,7 @@ void main() {
         findsOneWidget,
       );
 
-      await disconnect(tester);
+      await disconnect(tester.tester);
     });
   });
 }
