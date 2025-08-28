@@ -9,7 +9,7 @@ import 'package:sfera/component.dart';
 class JourneySelectionViewModel {
   JourneySelectionViewModel({
     required SferaRemoteRepo sferaRemoteRepo,
-    required Function(TrainIdentification) onJourneySelected,
+    required Future<void> Function(TrainIdentification) onJourneySelected,
   }) : _sferaRemoteRepo = sferaRemoteRepo,
        _onJourneySelected = onJourneySelected {
     _emitSelectingWithDefaults();
@@ -18,7 +18,7 @@ class JourneySelectionViewModel {
 
   final SferaRemoteRepo _sferaRemoteRepo;
 
-  final Function(TrainIdentification) _onJourneySelected;
+  final Future<void> Function(TrainIdentification) _onJourneySelected;
 
   StreamSubscription? _sferaRemoteRepoSubscription;
 
@@ -28,7 +28,7 @@ class JourneySelectionViewModel {
 
   JourneySelectionModel get modelValue => _state.value;
 
-  void loadTrainJourney() async {
+  Future<void> loadTrainJourney() async {
     final currentState = _state.value;
     switch (currentState) {
       case Loading() || Loaded() || Error():
@@ -36,7 +36,7 @@ class JourneySelectionViewModel {
       case final Selecting s:
         if (!s.isInputComplete) return;
 
-        _onJourneySelected(_trainIdFrom(s));
+        await _onJourneySelected(_trainIdFrom(s));
     }
   }
 
