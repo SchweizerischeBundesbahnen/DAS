@@ -3,7 +3,7 @@ publish_to: 'none'
 version: 1.0.0
 
 environment:
-  sdk: ^3.8.0
+  sdk: ^3.9.0
 
 resolution: workspace
 
@@ -11,7 +11,7 @@ dependencies:
   # https://pub.dev/packages/intl
   intl: ^0.20.2
   # https://pub.dev/packages/sensors_plus
-  sensors_plus: ^6.1.1
+  sensors_plus: ^6.1.2
   # https://pub.dev/packages/geolocator
   geolocator: ^14.0.2
   # https://pub.dev/packages/logging
@@ -27,4 +27,4 @@ dev_dependencies:
     sdk: flutter
 
   # https://pub.dev/packages/build_runner
-  build_runner: ^2.5.4
+  build_runner: ^2.7.0
