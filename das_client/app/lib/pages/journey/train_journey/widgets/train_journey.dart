@@ -11,6 +11,7 @@ import 'package:app/pages/journey/train_journey/widgets/chevron_animation_wrappe
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/network_communication_channel_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/balise_level_crossing_group_row.dart';
@@ -349,6 +350,13 @@ class TrainJourney extends StatelessWidget {
               isContentExpanded: collapsedRows.isContentExpanded(rowData.operationalIndication.hashCode),
               toggleCallback: () => context.read<CollapsibleRowsViewModel>().toggleRow(rowData.operationalIndication),
             ),
+          );
+        case Datatype.networkCommunicationChannel:
+          return NetworkCommunicationChannelRow(
+            metadata: journey.metadata,
+            data: rowData as CommunicationNetworkChannel,
+            config: trainJourneyConfig,
+            rowIndex: index,
           );
       }
     });
