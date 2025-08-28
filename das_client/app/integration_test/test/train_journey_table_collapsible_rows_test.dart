@@ -64,10 +64,10 @@ void main() {
     await tapElement(tester, showMoreButton);
     await tester.pumpAndSettle(Duration(milliseconds: 100));
 
-    final rowWithEndOfText = _findDASTableAccordionRowByContainsText(
-      'Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
+    final rowWithExpandedText = _findDASTableAccordionRowByContainsText(
+      'Lorem ipsum dolor sit amet, consetetur sadipscing elitr',
     );
-    expect(rowWithEndOfText, findsOneWidget);
+    expect(rowWithExpandedText, findsOneWidget);
     showMoreButton = find.descendant(
       of: collapsibleRow,
       matching: find.byKey(UncodedOperationalIndicationAccordion.showMoreButtonKey),

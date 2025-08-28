@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/di/di.dart';
 import 'package:app/di/scope_handler.dart';
 import 'package:app/di/scopes/journey_scope.dart';
@@ -20,7 +22,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 @RoutePage()
-class JourneyPage extends StatelessWidget implements AutoRouteWrapper {
+class JourneyPage extends StatefulWidget implements AutoRouteWrapper {
   static const disconnectButtonKey = Key('disconnectButton');
 
   const JourneyPage({super.key});
@@ -30,6 +32,34 @@ class JourneyPage extends StatelessWidget implements AutoRouteWrapper {
     create: (_) => DI.get(),
     child: this,
   );
+
+  @override
+  State<JourneyPage> createState() => _JourneyPageState();
+}
+
+class _JourneyPageState extends State<JourneyPage> {
+  StreamSubscription? _errorCodeSubscription;
+
+  @override
+  void initState() {
+    final trainJourneyVM = DI.get<TrainJourneyViewModel>();
+    _errorCodeSubscription = trainJourneyVM.errorCode.listen((error) async {
+      if (error != null) {
+        await DI.get<ScopeHandler>().pop<JourneyScope>();
+        await DI.get<ScopeHandler>().push<JourneyScope>();
+        if (mounted) {
+          context.router.replace(JourneySelectionRoute());
+        }
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _errorCodeSubscription?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
