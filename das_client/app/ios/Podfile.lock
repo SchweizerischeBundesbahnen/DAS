@@ -124,7 +124,7 @@ SPEC CHECKSUMS:
   audioplayers_darwin: 4f9ca89d92d3d21cec7ec580e78ca888e5fb68bd
   battery_plus: b42253f6d2dde71712f8c36fef456d99121c5977
   device_info_plus: 21fcca2080fbcd348be798aa36c3e5ed849eefbe
-  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
   flutter_appauth: d4abcf54856e5d8ba82ed7646ffc83245d4aa448
   flutter_secure_storage: 1ed9476fba7e7a782b22888f956cce43e2c62f13
   geolocator_apple: ab36aa0e8b7d7a2d7639b3b4e48308394e8cef5e
@@ -139,6 +139,6 @@ SPEC CHECKSUMS:
   volume_controller: 3657a1f65bedb98fa41ff7dc5793537919f31b12
   wakelock_plus: e29112ab3ef0b318e58cfa5c32326458be66b556
 
-PODFILE CHECKSUM: 7958c91a324bd4cb50df26517f7b71aa54160702
+PODFILE CHECKSUM: f9eb72e89e74819a2090fc510fed667ab5bc33c4
 
 COCOAPODS: 1.16.2
