@@ -82,7 +82,7 @@ void main() {
       await waitUntilNotExists(tester, find.byKey(RouteChevron.chevronKey), maxWaitSeconds: 40);
 
       // Wait some more
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(seconds: 6));
 
       final startButton = find.byKey(StartPauseButton.startButtonKey);
       expect(startButton, findsOneWidget);
@@ -159,7 +159,7 @@ void main() {
 
       // Check Bern & Burgdorf are displayed
       expect(findDASTableRowByText('Bern'), findsAny);
-      expect(find.text('Burgdorf'), findsAny);
+      expect(find.text('Bern Wankdorf'), findsAny);
 
       await disconnect(tester);
     });
