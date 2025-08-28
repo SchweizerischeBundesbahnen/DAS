@@ -21,7 +21,8 @@ class RouteChevron extends StatefulWidget {
 
   final ChevronAnimationData? chevronAnimationData;
 
-  static double positionFromHeight(double height) => height - chevronHeight * 0.5;
+  // additional -1.5 because line overdraws a bit from rotation
+  static double positionFromHeight(double height) => height - chevronHeight - 1.5;
 
   @override
   State<RouteChevron> createState() => _RouteChevronState();
