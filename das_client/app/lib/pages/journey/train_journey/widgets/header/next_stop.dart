@@ -1,0 +1,47 @@
+import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/train_journey/journey_position/journey_position_view_model.dart';
+import 'package:app/theme/theme_util.dart';
+import 'package:app/widgets/assets.dart';
+import 'package:app/widgets/das_text_styles.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
+import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+
+class NextStop extends StatelessWidget {
+  const NextStop({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        SvgPicture.asset(
+          AppAssets.iconHeaderStop,
+          colorFilter: ColorFilter.mode(ThemeUtil.getIconColor(context), BlendMode.srcIn),
+        ),
+        Expanded(child: _servicePointName(context)),
+      ],
+    );
+  }
+
+  Widget _servicePointName(BuildContext context) {
+    final viewModel = context.read<JourneyPositionViewModel>();
+    return StreamBuilder(
+      stream: viewModel.model,
+      initialData: viewModel.modelValue,
+      builder: (context, asyncSnapshot) {
+        if (!asyncSnapshot.hasData) return SizedBox.shrink();
+        final nextStop = asyncSnapshot.data?.nextStop;
+
+        return Padding(
+          padding: const EdgeInsets.only(left: sbbDefaultSpacing * 0.5),
+          child: Text(
+            nextStop?.name ?? context.l10n.c_unknown,
+            style: DASTextStyles.xLargeLight,
+            overflow: TextOverflow.ellipsis,
+          ),
+        );
+      },
+    );
+  }
+}

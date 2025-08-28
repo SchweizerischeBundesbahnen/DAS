@@ -1,5 +1,5 @@
-import 'package:app/pages/journey/train_journey/widgets/chronograph/chronograph_view_model.dart';
-import 'package:app/pages/journey/train_journey/widgets/chronograph/punctuality_model.dart';
+import 'package:app/pages/journey/train_journey/header/chronograph/chronograph_view_model.dart';
+import 'package:app/pages/journey/train_journey/punctuality/punctuality_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +55,7 @@ class DASChronograph extends StatelessWidget {
             padding: const EdgeInsets.all(sbbDefaultSpacing * 0.5),
             child: Text(
               key: showPunctuality ? DASChronograph.punctualityTextKey : null,
-              model?.delay ?? '',
+              model?.formattedDelay ?? '',
               style: resolvedStyle,
             ),
           ),

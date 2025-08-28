@@ -111,10 +111,16 @@ Future<void> selectBreakSeries(WidgetTester tester, {required String breakSeries
   await tapElement(tester, find.text(breakSeries));
 }
 
-Future<void> pauseAutomaticAdvancement(WidgetTester tester) async {
+Future<void> stopAutomaticAdvancement(WidgetTester tester) async {
   final pauseButton = find.byKey(StartPauseButton.pauseButtonKey);
   expect(pauseButton, findsOneWidget);
   await tapElement(tester, pauseButton);
+}
+
+Future<void> startAutomaticAdvancement(WidgetTester tester) async {
+  final startButton = find.byKey(StartPauseButton.startButtonKey);
+  expect(startButton, findsOneWidget);
+  await tapElement(tester, startButton);
 }
 
 Future<void> waitUntilExists(WidgetTester tester, FinderBase<Element> element, {int maxWaitSeconds = 15}) async {

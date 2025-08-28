@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 
 class LevelCrossing extends JourneyPoint {
@@ -13,4 +14,22 @@ class LevelCrossing extends JourneyPoint {
   bool canGroupWith(BaseData other) {
     return [Datatype.balise, Datatype.levelCrossing].contains(other.type);
   }
+
+  @override
+  String toString() =>
+      'LevelCrossing('
+      'order: $order'
+      ', kilometre: $kilometre'
+      ')';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LevelCrossing &&
+          runtimeType == other.runtimeType &&
+          order == other.order &&
+          ListEquality().equals(kilometre, other.kilometre);
+
+  @override
+  int get hashCode => order.hashCode ^ Object.hashAll(kilometre);
 }

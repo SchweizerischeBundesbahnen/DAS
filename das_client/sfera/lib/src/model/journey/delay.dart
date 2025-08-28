@@ -1,5 +1,5 @@
 class Delay {
-  Delay({required this.value, required this.location});
+  const Delay({required this.value, required this.location});
 
   final Duration value;
   final String location;

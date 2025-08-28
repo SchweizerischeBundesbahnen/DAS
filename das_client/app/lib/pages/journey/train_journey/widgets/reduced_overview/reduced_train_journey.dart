@@ -47,7 +47,11 @@ class ReducedTrainJourney extends StatelessWidget {
     );
   }
 
-  List<CellRowBuilder> _rows(BuildContext context, Metadata metadata, List<BaseData> data) {
+  List<CellRowBuilder> _rows(
+    BuildContext context,
+    Metadata metadata,
+    List<BaseData> data,
+  ) {
     final List<CellRowBuilder?> builders = List.generate(data.length, (index) {
       final rowData = data[index];
       final trainJourneyConfig = TrainJourneyConfig(

@@ -19,6 +19,7 @@ class BaliseLevelCrossingGroupRow extends CellRowBuilder<BaliseLevelCrossingGrou
     required super.metadata,
     required super.data,
     required super.rowIndex,
+    required super.journeyPosition,
     required this.isExpanded,
     required this.context,
     super.config,

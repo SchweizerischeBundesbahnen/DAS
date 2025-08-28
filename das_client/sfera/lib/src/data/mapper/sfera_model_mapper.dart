@@ -90,25 +90,17 @@ class SferaModelMapper {
     journeyData.sort();
 
     final journeyPoints = journeyData.whereType<JourneyPoint>().toList();
-    final currentPosition = _calculateCurrentPosition(
-      journeyPoints,
-      segmentProfileReferences,
-      relatedTrainInformation,
-      lastJourney,
-    );
+
     final trainCharacteristic = _resolveFirstTrainCharacteristics(journeyProfile, trainCharacteristics);
 
     final lineSpeeds = SegmentProfileMapper.parseLineSpeeds(segmentProfiles);
 
     return Journey(
       metadata: Metadata(
-        nextStop: _calculateNextStop(servicePoints, currentPosition),
-        lastPosition: journeyPoints.firstWhereOrNull((it) => it.order == lastJourney?.metadata.currentPosition?.order),
-        lastServicePoint: _calculateLastServicePoint(servicePoints, currentPosition),
-        currentPosition: currentPosition,
+        signaledPosition: _signaledPosition(relatedTrainInformation, segmentProfileReferences),
         additionalSpeedRestrictions: additionalSpeedRestrictions,
-        routeStart: journeyPoints.firstOrNull,
-        routeEnd: journeyPoints.lastOrNull,
+        journeyStart: journeyPoints.firstOrNull,
+        journeyEnd: journeyPoints.lastOrNull,
         delay: _parseDelay(relatedTrainInformation),
         anyOperationalArrivalDepartureTimes: servicePoints.any(
           (sP) => sP.arrivalDepartureTime?.hasAnyOperationalTime ?? false,
@@ -135,61 +127,21 @@ class SferaModelMapper {
     );
   }
 
-  static JourneyPoint? _calculateCurrentPosition(
-    List<JourneyPoint> journeyPoints,
-    List<SegmentProfileReferenceDto> segmentProfilesLists,
+  static SignaledPosition? _signaledPosition(
     RelatedTrainInformationDto? relatedTrainInformation,
-    Journey? lastJourney,
+    List<SegmentProfileReferenceDto> segmentProfileReferences,
   ) {
     final positionSpeed = relatedTrainInformation?.ownTrain.trainLocationInformation.positionSpeed;
 
-    if (relatedTrainInformation == null || positionSpeed == null) {
-      // Return first element as we have no information yet
-      return journeyPoints.first;
-    }
+    if (positionSpeed == null) return null;
 
-    final positionSegmentIndex = segmentProfilesLists.indexWhere((it) => it.spId == positionSpeed.spId);
+    final positionSegmentIndex = segmentProfileReferences.indexWhere((it) => it.spId == positionSpeed.spId);
     if (positionSegmentIndex == -1) {
       _log.warning('Received position on unknown segment with spId: ${positionSpeed.spId}');
-      return journeyPoints.firstWhereOrNull((it) => it.order == lastJourney?.metadata.currentPosition?.order);
+      return null;
     } else {
-      final positionOrder = calculateOrder(positionSegmentIndex, positionSpeed.location);
-      final currentPositionData = journeyPoints.lastWhereOrNull((it) => it.order <= positionOrder);
-      return _adjustCurrentPositionToServicePoint(journeyPoints, currentPositionData ?? journeyPoints.first);
+      return SignaledPosition(order: calculateOrder(positionSegmentIndex, positionSpeed.location));
     }
-  }
-
-  /// returns element at next position, if it is a [ServicePoint] and the current position is not already one.
-  static JourneyPoint? _adjustCurrentPositionToServicePoint(
-    List<JourneyPoint> journeyPoints,
-    JourneyPoint currentPosition,
-  ) {
-    final positionIndex = journeyPoints.indexOf(currentPosition);
-    if (currentPosition is ServicePoint) {
-      return currentPosition;
-    }
-
-    if (journeyPoints.length > positionIndex + 1) {
-      final nextData = journeyPoints[positionIndex + 1];
-      if (nextData is ServicePoint) {
-        return nextData;
-      }
-    }
-
-    return currentPosition;
-  }
-
-  static ServicePoint? _calculateNextStop(Iterable<ServicePoint> servicePoints, BaseData? currentPosition) {
-    return servicePoints
-            .skip(1)
-            .firstWhereOrNull((sP) => sP.isStop && (currentPosition == null || sP.order > currentPosition.order)) ??
-        servicePoints.last;
-  }
-
-  static ServicePoint? _calculateLastServicePoint(Iterable<ServicePoint> servicePoints, BaseData? currentPosition) {
-    if (currentPosition == null) return servicePoints.firstOrNull;
-
-    return servicePoints.toList().reversed.firstWhereOrNull((sP) => sP.order <= currentPosition.order);
   }
 
   static List<AdditionalSpeedRestrictionData> _consolidateAdditionalSpeedRestrictions(

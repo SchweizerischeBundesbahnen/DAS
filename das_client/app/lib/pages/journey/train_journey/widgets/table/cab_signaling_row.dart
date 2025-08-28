@@ -15,6 +15,7 @@ class CABSignalingRow extends CellRowBuilder<CABSignaling> {
     required super.metadata,
     required super.data,
     required super.rowIndex,
+    required super.journeyPosition,
     super.config,
   });
 

@@ -1,3 +1,4 @@
+import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/advised_speed_cell_body.dart';
@@ -28,6 +29,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     required this.metadata,
     required super.data,
     required super.rowIndex,
+    this.journeyPosition,
     super.height = rowHeight,
     super.stickyLevel,
     super.key,
@@ -41,6 +43,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   final Alignment defaultAlignment;
   final Color? rowColor;
   final Metadata metadata;
+  final JourneyPositionModel? journeyPosition;
   final TrainJourneyConfig config;
   final VoidCallback? onTap;
   final bool isGrouped;
@@ -103,9 +106,9 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
       alignment: null,
       clipBehaviour: Clip.none,
       child: RouteCellBody(
-        isCurrentPosition: metadata.currentPosition == data,
-        isRouteStart: metadata.routeStart == data,
-        isRouteEnd: metadata.routeEnd == data,
+        isCurrentPosition: journeyPosition?.currentPosition == data,
+        isRouteStart: metadata.journeyStart == data,
+        isRouteEnd: metadata.journeyEnd == data,
         chevronAnimationData: config.chevronAnimationData,
         chevronPosition: RouteChevron.positionFromHeight(height),
       ),
@@ -264,5 +267,5 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     }
   }
 
-  bool get _isNextStop => metadata.nextStop == data;
+  bool get _isNextStop => journeyPosition?.nextStop == data;
 }

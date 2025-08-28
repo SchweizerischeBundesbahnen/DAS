@@ -73,24 +73,17 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9');
 
-      final pauseButton = find.byKey(StartPauseButton.pauseButtonKey);
-      expect(pauseButton, findsOneWidget);
-
-      await tapElement(tester, pauseButton);
+      await stopAutomaticAdvancement(tester);
 
       // Wait until the chevron is no longer visible
       await waitUntilNotExists(tester, find.byKey(RouteChevron.chevronKey), maxWaitSeconds: 40);
 
       // Wait some more
-      await Future.delayed(const Duration(seconds: 6));
+      await tester.pump(const Duration(seconds: 5));
 
-      final startButton = find.byKey(StartPauseButton.startButtonKey);
-      expect(startButton, findsOneWidget);
-
-      await tapElement(tester, startButton);
-
-      // Check if last row is visible
-      expect(findDASTableRowByText('Olten'), findsAny);
+      await startAutomaticAdvancement(tester);
+      // Check if Bern not visible anymore
+      expect(findDASTableRowByText('Bern'), findsNothing);
 
       await disconnect(tester);
     });
@@ -102,10 +95,7 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9');
 
-      final pauseButton = find.byKey(StartPauseButton.pauseButtonKey);
-      expect(pauseButton, findsOneWidget);
-
-      await tapElement(tester, pauseButton);
+      await stopAutomaticAdvancement(tester);
 
       // Check chevron at start
       expect(
@@ -134,10 +124,7 @@ void main() {
       final headerFinder = find.byType(Header);
       expect(headerFinder, findsOneWidget);
 
-      final pauseButton = find.descendant(of: headerFinder, matching: find.byKey(StartPauseButton.pauseButtonKey));
-      expect(pauseButton, findsOneWidget);
-
-      await tapElement(tester, pauseButton);
+      await stopAutomaticAdvancement(tester);
 
       expect(find.descendant(of: headerFinder, matching: find.byKey(StartPauseButton.startButtonKey)), findsOneWidget);
       expect(find.descendant(of: headerFinder, matching: find.byKey(StartPauseButton.pauseButtonKey)), findsNothing);
@@ -152,12 +139,9 @@ void main() {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9');
 
-      final pauseButton = find.byKey(StartPauseButton.pauseButtonKey);
-      expect(pauseButton, findsOneWidget);
+      await stopAutomaticAdvancement(tester);
 
-      await tapElement(tester, pauseButton);
-
-      // Check Bern & Burgdorf are displayed
+      // Check Bern & Bern Wankdorf are displayed
       expect(findDASTableRowByText('Bern'), findsAny);
       expect(find.text('Bern Wankdorf'), findsAny);
 

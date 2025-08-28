@@ -22,15 +22,15 @@ void main() {
 
     // 2nd ADL Message (check signal)
     await waitUntilExists(tester, _findAdlNotificationContainingText('A653'));
+    await tester.pumpAndSettle(const Duration(milliseconds: 100));
+
+    // 3rd ADL Message (check icon)
+    await waitUntilExists(tester, find.byKey(ADLNotification.adlNotificationIconKey));
     // Punctuality Hidden
     expect(find.byKey(DASChronograph.punctualityTextKey), findsNothing);
     await waitUntilExists(tester, _findAdlNotificationContainingText(l10n.w_adl_end));
     // Punctuality Visible
     expect(find.byKey(DASChronograph.punctualityTextKey), findsOne);
-
-    // 3rd ADL Message (check icon)
-    await waitUntilExists(tester, find.byKey(ADLNotification.adlNotificationIconKey));
-    await waitUntilExists(tester, _findAdlNotificationContainingText(l10n.w_adl_end));
 
     // 4th ADL Message (vmax, speed not in adl)
     await waitUntilExists(tester, _findAdlNotificationContainingText('A312'));

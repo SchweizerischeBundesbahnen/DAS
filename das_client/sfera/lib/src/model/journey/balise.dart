@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 
 class Balise extends JourneyPoint {
@@ -22,4 +23,24 @@ class Balise extends JourneyPoint {
       return false;
     }
   }
+
+  @override
+  String toString() =>
+      'Balise('
+      'order: $order'
+      ', kilometre: $kilometre'
+      ', amountLevelCrossings: $amountLevelCrossings'
+      ')';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Balise &&
+          runtimeType == other.runtimeType &&
+          order == other.order &&
+          amountLevelCrossings == other.amountLevelCrossings &&
+          ListEquality().equals(kilometre, other.kilometre);
+
+  @override
+  int get hashCode => order.hashCode ^ Object.hashAll(kilometre) ^ amountLevelCrossings.hashCode;
 }
