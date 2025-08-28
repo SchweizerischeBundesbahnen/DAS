@@ -15,7 +15,7 @@ workspace:
   - warnapp
 
 dev_dependencies:
-  melos: 7.0.0-dev.9
+  melos: 7.1.0
 
 # Melos Configuration
 
