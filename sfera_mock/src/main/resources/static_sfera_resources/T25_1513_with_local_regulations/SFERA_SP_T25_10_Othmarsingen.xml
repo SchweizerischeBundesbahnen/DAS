@@ -1,41 +1,29 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T24_3_Daeniken"
-                SP_VersionMajor="3" SP_VersionMinor="3" SP_Length="2400" SP_Status="Valid">
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T25_10_Othmarsingen"
+                SP_VersionMajor="3" SP_VersionMinor="3" SP_Length="1800" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
 
     <SP_Points>
 
-        <TimingPoint TP_ID="Daeniken" location="0">
+        <TimingPoint TP_ID="Othmarsingen" location="0">
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
-                <teltsi_LocationPrimaryCode>02111</teltsi_LocationPrimaryCode>
+                <teltsi_LocationPrimaryCode>2105</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
         <Signal>
-            <Signal_ID signal_ID_Physical="E4" location="200"/>
-            <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="E4"/>
+            <Signal_ID signal_ID_Physical="B3" location="100"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="B3"/>
         </Signal>
 
         <Signal>
-            <Signal_ID signal_ID_Physical="G114" location="700"/>
-            <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="G114"/>
-        </Signal>
-
-        <Signal>
-            <Signal_ID signal_ID_Physical="P856" location="1300"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="P856"/>
-        </Signal>
-
-        <Signal>
-            <Signal_ID signal_ID_Physical="A855" location="1800"/>
-            <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A855"/>
+            <Signal_ID signal_ID_Physical="K426" location="1100"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="K426"/>
         </Signal>
 
     </SP_Points>
@@ -43,11 +31,11 @@
     <SP_Areas>
 
         <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
-                          TAF_TAP_location_abbreviation="DK" TAF_TAP_location_type="station">
+                          TAF_TAP_location_abbreviation="OTH" TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
-                <teltsi_LocationPrimaryCode>02111</teltsi_LocationPrimaryCode>
-                <teltsi_PrimaryLocationName>Däniken</teltsi_PrimaryLocationName>
+                <teltsi_LocationPrimaryCode>2105</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Othmarsingen</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
 
             <TAF_TAP_Location_NSP>
@@ -69,9 +57,15 @@
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
 					&lt;lineSpeed&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;130&quot;/&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;130&quot;/&gt;
-						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;130&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;125&quot; speed=&quot;140&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;140&quot;/&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;140&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;85&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;95&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;100&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;85&quot; speed=&quot;110&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;95&quot; speed=&quot;115&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;105&quot; speed=&quot;120&quot;/&gt;
 					&lt;/lineSpeed&gt;
 				"/>
             </TAF_TAP_Location_NSP>
@@ -103,30 +97,21 @@
 
         <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
             <Contact mainContact="true">
-                <OtherContactType contactIdentifier="1307"/>
-            </Contact>
-            <Contact mainContact="true">
-                <OtherContactType contactIdentifier="(1312)"/>
+                <OtherContactType contactIdentifier="1304"/>
             </Contact>
         </ContactList>
 
         <KilometreReferencePoint location="0">
-            <KM_Reference kmRef="45.7"/>
+            <KM_Reference kmRef="27.7"/>
         </KilometreReferencePoint>
-        <KilometreReferencePoint location="200">
-            <KM_Reference kmRef="45.9"/>
+        <KilometreReferencePoint location="100">
+            <KM_Reference kmRef="27.6"/>
         </KilometreReferencePoint>
-        <KilometreReferencePoint location="700">
-            <KM_Reference kmRef="46.4"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="1300">
-            <KM_Reference kmRef="47.0"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="1800">
-            <KM_Reference kmRef="47.5"/>
+        <KilometreReferencePoint location="1100">
+            <KM_Reference kmRef="26.6"/>
         </KilometreReferencePoint>
 
-        <DecisiveGradientArea startEndQualifier="Starts" startLocation="0" endLocation="0"
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
                               gradientValue="3.0" gradientDirection="Downhill"
                               directionOfApplicationOnSP="Nominal"/>
         <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"

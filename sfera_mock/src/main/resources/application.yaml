@@ -61,5 +61,5 @@ sfera:
   source-device: 'TMS'
 
 localregulations:
-  train-numbers: T24
+  train-numbers: T25
   path: ${LOCALREGULATIONS_PATH}
