@@ -5,13 +5,13 @@ part 'settings_response_dto.g.dart';
 
 @JsonSerializable()
 class SettingsResponseDto {
-  SettingsResponseDto({required this.settings});
+  SettingsResponseDto({required this.data});
 
   factory SettingsResponseDto.fromJson(Map<String, dynamic> json) {
     return _$SettingsResponseDtoFromJson(json);
   }
 
-  final List<SettingsDto> settings;
+  final List<SettingsDto> data;
 
   Map<String, dynamic> toJson() => _$SettingsResponseDtoToJson(this);
 }

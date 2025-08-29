@@ -1,7 +1,6 @@
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/brightness/brightness_manager_impl.dart';
 import 'package:app/data/local/das_database_service.dart';
-import 'package:app/data/local/ru_feature_database_service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:app/util/user_settings.dart';
@@ -75,6 +74,6 @@ extension BaseScopeExtension on GetIt {
   void registerDatabaseServices() {
     final databaseService = DASDatabaseService.instance;
 
-    registerSingleton<RuFeatureDatabaseService>(databaseService);
+    registerSingleton<DASDatabaseService>(databaseService);
   }
 }

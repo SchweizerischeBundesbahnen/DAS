@@ -19,7 +19,7 @@ void main() {
   setUp(() {
     mockClient = MockClient();
     GetIt.I.registerSingleton<Client>(mockClient);
-    testee = LogApiService(baseUrl: baseUrl);
+    testee = LogApiService();
   });
 
   tearDown(() {

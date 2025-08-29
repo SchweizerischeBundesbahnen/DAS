@@ -10,7 +10,7 @@ class SettingsRequest {
   final String baseUrl;
 
   Future<SettingsResponse> call() async {
-    final url = Uri.https('graph.microsoft.com', 'v1.0/me/calendars');
+    final url = Uri.https(baseUrl, 'v1/settings');
     final response = await httpClient.get(url);
     return SettingsResponse.fromHttpResponse(response);
   }

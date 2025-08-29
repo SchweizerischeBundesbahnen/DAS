@@ -1,10 +1,13 @@
 import 'package:app/api/backend_api_service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
+import 'package:app/repository/das_config_repository.dart';
+import 'package:app/repository/das_config_repository_impl.dart';
 import 'package:app/util/device_id_info.dart';
 import 'package:auth/component.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http_x/component.dart';
+import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
 import 'package:sfera/component.dart';
@@ -29,6 +32,7 @@ class AuthenticatedScope extends DIScope {
     getIt.registerSferaLocalRepo();
     getIt.registerSferaRemoteRepo();
     getIt.registerBackendAPIService();
+    getIt.registerConfigRepository();
 
     await getIt.allReady();
   }
@@ -141,6 +145,12 @@ extension AuthenticatedScopeExtension on GetIt {
     }
 
     registerLazySingleton<BackendApiService>(factoryFunc);
+  }
+
+  void registerConfigRepository() {
+    final configRepository = DasConfigRepositoryImpl(apiService: DI.get(), databaseService: DI.get());
+    registerSingleton<DasConfigRepository>(configRepository);
+    registerSingleton<LogEndpoint>(configRepository);
   }
 }
 
