@@ -1,3 +1,4 @@
+import 'package:app/api/backend_api_service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
 import 'package:app/util/device_id_info.dart';
@@ -27,6 +28,7 @@ class AuthenticatedScope extends DIScope {
     getIt.registerMqttService();
     getIt.registerSferaLocalRepo();
     getIt.registerSferaRemoteRepo();
+    getIt.registerBackendAPIService();
 
     await getIt.allReady();
   }
@@ -128,6 +130,17 @@ extension AuthenticatedScopeExtension on GetIt {
     }
 
     registerLazySingleton<SferaLocalRepo>(factoryFunc);
+  }
+
+  void registerBackendAPIService() {
+    factoryFunc() {
+      _log.fine('Register backend api service');
+
+      final flavor = DI.get<Flavor>();
+      return BackendApiService(baseUrl: flavor.backendUrl, httpClient: DI.get());
+    }
+
+    registerLazySingleton<BackendApiService>(factoryFunc);
   }
 }
 
