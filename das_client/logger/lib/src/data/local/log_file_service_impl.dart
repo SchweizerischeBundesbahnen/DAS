@@ -7,8 +7,7 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
 class LogFileServiceImpl implements LogFileService {
-  /// TODO: currently set below 8kb. See: https://github.com/SchweizerischeBundesbahnen/DAS/issues/850
-  static const _maxFileSize = 7 * 1024;
+  static const _maxFileSize = 40 * 1024;
   static const _filePrefix = 'das-log';
   static const _lastSavedFileName = '$_filePrefix-lastSavedFile.json';
 

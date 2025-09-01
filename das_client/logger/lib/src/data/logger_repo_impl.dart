@@ -56,7 +56,7 @@ class LoggerRepoImpl implements LoggerRepo {
         await _sendLogsSync(file);
       } catch (ex) {
         _log.severe('Connection error while sending logs to remote.', ex);
-        _stopSendingUntil = clock.now().add(Duration(seconds: _retryDelayAfterFailedSendMinutes));
+        _stopSendingUntil = clock.now().add(Duration(minutes: _retryDelayAfterFailedSendMinutes));
         break;
       }
       await _tryDelete(file);
