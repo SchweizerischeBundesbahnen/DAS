@@ -1,7 +1,7 @@
+import 'dart:io';
+
 import 'package:clock/clock.dart';
 import 'package:logger/src/data/api/log_api_service.dart';
-import 'package:logger/src/data/dto/log_entry_dto.dart';
-import 'package:logger/src/data/dto/log_file_dto.dart';
 import 'package:logger/src/data/local/log_file_service.dart';
 import 'package:logger/src/data/logger_repo.dart';
 import 'package:logger/src/data/mappers.dart';
@@ -53,7 +53,7 @@ class LoggerRepoImpl implements LoggerRepo {
     _log.fine('Found completedLogFiles: ${completedLogFiles.length}');
     for (final file in completedLogFiles) {
       try {
-        await _sendLogsSync(file.logEntries);
+        await _sendLogsSync(file);
       } catch (ex) {
         _log.severe('Connection error while sending logs to remote.', ex);
         _stopSendingUntil = clock.now().add(Duration(minutes: _retryDelayAfterFailedSendMinutes));
@@ -63,17 +63,17 @@ class LoggerRepoImpl implements LoggerRepo {
     }
   }
 
-  Future<void> _tryDelete(LogFileDto file) async {
+  Future<void> _tryDelete(File file) async {
     try {
       await fileService.deleteLogFile(file);
     } catch (ex) {
-      _log.severe('Send and clear logs from ${file.file.path} failed.', ex);
+      _log.severe('Send and clear logs from ${file.path} failed.', ex);
     }
   }
 
-  Future<void> _sendLogsSync(Iterable<LogEntryDto> logs) async {
+  Future<void> _sendLogsSync(File logFile) async {
     await _senderLock.synchronized(() async {
-      await apiService.sendLogs(logs);
+      await apiService.sendLogs(logFile);
       _log.fine('Successfully sent logs to backend');
     });
   }

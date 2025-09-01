@@ -2,10 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:logger/src/data/dto/log_entry_dto.dart';
-import 'package:logger/src/data/dto/log_file_dto.dart';
 import 'package:logger/src/data/local/log_file_service.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 
 class LogFileServiceImpl implements LogFileService {
   /// TODO: currently set below 8kb. See: https://github.com/SchweizerischeBundesbahnen/DAS/issues/850
@@ -25,21 +24,15 @@ class LogFileServiceImpl implements LogFileService {
   }
 
   @override
-  Future<Iterable<LogFileDto>> get completedLogFiles async {
+  Future<Iterable<File>> get completedLogFiles async {
     final logDir = await _logDir;
     final logFiles = logDir.listSync();
-    final completedLogFiles = logFiles.where((file) => _isCompletedLogFile(file)).cast<File>();
 
-    final List<LogFileDto> result = [];
-    for (final file in completedLogFiles) {
-      final logs = await _getLogEntriesFrom(file);
-      result.add(LogFileDto(logEntries: logs, file: file));
-    }
-    return result;
+    return logFiles.where((file) => _isCompletedLogFile(file)).cast<File>();
   }
 
   @override
-  Future<void> deleteLogFile(LogFileDto file) => file.file.delete();
+  Future<void> deleteLogFile(File file) => file.delete();
 
   @override
   Future<void> completeCurrentFile() async {
@@ -91,8 +84,11 @@ class LogFileServiceImpl implements LogFileService {
   }
 
   Future<void> _appendToCurrentFile(LogEntryDto log) async {
-    final logAsJsonStringWithComma = '${log.toJsonString()},';
+    var logString = log.toJsonString();
     final newCacheFile = await _currentCacheFile;
-    newCacheFile.writeAsStringSync(logAsJsonStringWithComma, mode: FileMode.append);
+    if (await newCacheFile.length() > 0) {
+      logString = ',$logString';
+    }
+    newCacheFile.writeAsStringSync(logString, mode: FileMode.append);
   }
 }

@@ -1,8 +1,9 @@
+import 'dart:io';
+
 import 'package:logger/src/data/dto/log_entry_dto.dart';
-import 'package:logger/src/data/dto/log_file_dto.dart';
 
 abstract class LogFileService {
-  Future<Iterable<LogFileDto>> get completedLogFiles;
+  Future<Iterable<File>> get completedLogFiles;
 
   Future<void> writeLog(LogEntryDto log);
 
@@ -10,5 +11,5 @@ abstract class LogFileService {
 
   Future<bool> get hasCompletedLogFiles;
 
-  Future<void> deleteLogFile(LogFileDto file);
+  Future<void> deleteLogFile(File file);
 }

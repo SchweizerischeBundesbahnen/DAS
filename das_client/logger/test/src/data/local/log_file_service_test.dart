@@ -4,8 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/src/data/dto/log_entry_dto.dart';
 import 'package:logger/src/data/local/log_file_service.dart';
 import 'package:logger/src/data/local/log_file_service_impl.dart';
-import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:path/path.dart' as p;
+import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 
 import 'path_provider_platform.fake.dart';
 
@@ -49,7 +49,7 @@ void main() {
     PathProviderPlatform.instance = originalPlatform;
   });
 
-  test('writeLog_whenCalledOnce_shouldWriteJsonToFileWithComma', () async {
+  test('writeLog_whenCalledOnce_shouldWriteJsonToFileWithoutComma', () async {
     // act
     await testee.writeLog(simpleLogFile);
 
@@ -57,7 +57,7 @@ void main() {
     expect(await cacheFile.exists(), isTrue);
 
     final content = cacheFile.readAsStringSync();
-    expect(content, equals('${simpleLogFile.toJsonString()},'));
+    expect(content, equals(simpleLogFile.toJsonString()));
   });
 
   test('writeLog_whenCalledTwiceWithSimpleFile_shouldAppendToPrevious', () async {
@@ -69,7 +69,7 @@ void main() {
     expect(await cacheFile.exists(), isTrue);
 
     final content = cacheFile.readAsStringSync();
-    expect(content, equals('${simpleLogFile.toJsonString()},${simpleLogFile.toJsonString()},'));
+    expect(content, equals('${simpleLogFile.toJsonString()},${simpleLogFile.toJsonString()}'));
   });
 
   test('writeLog_whenSingleLargeLogEntry_shouldWriteSingleFile', () async {
@@ -83,7 +83,7 @@ void main() {
     expect(await cacheFile.exists(), isTrue);
 
     final content = cacheFile.readAsStringSync();
-    expect(content, equals('${fourKiloBytesLog.toJsonString()},'));
+    expect(content, equals(fourKiloBytesLog.toJsonString()));
   });
 
   test('writeLog_whenLogSizeTooLarge_shouldWriteToNewFileAndHaveCompletedLog', () async {
@@ -156,8 +156,8 @@ void main() {
     final actual = await testee.completedLogFiles;
 
     // expect
-    final actualLogEntry = actual.first.logEntries.first;
-    expect(actualLogEntry.toJsonString(), fourKiloBytesLog.toJsonString());
+    final actualLogEntry = actual.first.readAsStringSync();
+    expect(actualLogEntry, fourKiloBytesLog.toJsonString());
   });
 
   test('deleteLogFile_whenFileGiven_shouldDeleteIt', () async {

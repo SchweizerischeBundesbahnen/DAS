@@ -1,25 +1,34 @@
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http_x/component.dart';
+import 'package:logger/component.dart';
 import 'package:logger/src/data/api/log_api_service.dart';
 import 'package:logger/src/data/dto/log_entry_dto.dart';
 import 'package:logger/src/data/mappers.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-@GenerateNiceMocks([MockSpec<Client>(), MockSpec<Response>()])
 import 'log_api_service_test.mocks.dart';
 import 'response.fake.dart';
 
+@GenerateNiceMocks([MockSpec<Client>(), MockSpec<Response>(), MockSpec<File>(), MockSpec<LogEndpoint>()])
 void main() {
   const baseUrl = 'example.com';
   late MockClient mockClient;
   late LogApiService testee;
+  final mockLogEndpoint = MockLogEndpoint();
+  final mockUrl = 'https://splunk.sbb.ch/';
+  final mockToken = 'https://splunk.sbb.ch/';
+  when(mockLogEndpoint.url).thenReturn(mockUrl);
+  when(mockLogEndpoint.token).thenReturn(mockToken);
 
   setUp(() {
     mockClient = MockClient();
     GetIt.I.registerSingleton<Client>(mockClient);
-    testee = LogApiService();
+    testee = LogApiService(httpClient: mockClient);
+    GetIt.I.registerSingleton<LogEndpoint>(mockLogEndpoint);
   });
 
   tearDown(() {
@@ -29,6 +38,8 @@ void main() {
   test('sendLogs_whenCalledWithSuccess_makesPostAndHasExpectedHeaders', () async {
     // ARRANGE
     final logEntries = _createDummyLogEntries();
+    final mockFile = MockFile();
+    when(mockFile.readAsStringSync()).thenAnswer((_) => logEntries.toJsonString());
 
     final expectedHeaders = {'Content-Type': 'application/json'};
 
@@ -48,16 +59,16 @@ void main() {
     ).thenAnswer((inv) async => successResponse(Request('post', inv.positionalArguments[0])));
 
     // ACT
-    final response = await testee.sendLogs(logEntries);
+    final response = await testee.sendLogs(mockFile);
 
     // EXPECT
     expect(response.headers, equals(expectedHeaders));
 
-    final expectedUrl = Uri.https(baseUrl, '/v1/logging/logs');
+    final expectedUrl = Uri.parse(mockUrl);
     verify(
       mockClient.post(
         expectedUrl,
-        headers: {'Content-Type': 'application/json'},
+        headers: {'Content-Type': 'application/json', 'Authorization': 'Splunk $mockToken'},
         body: logEntries.toJsonString(),
       ),
     ).called(1);
@@ -66,6 +77,8 @@ void main() {
   test('sendLogs_whenResponseIsInvalid_shouldThrowHttpException', () async {
     // ARRANGE
     final logEntries = _createDummyLogEntries();
+    final mockFile = MockFile();
+    when(mockFile.readAsStringSync()).thenAnswer((_) => logEntries.toJsonString());
 
     badRequestResponse(Request request) => FakeResponse(
       statusCode: 400,
@@ -84,7 +97,7 @@ void main() {
 
     // ACT & EXPECT
     try {
-      await testee.sendLogs(logEntries);
+      await testee.sendLogs(mockFile);
       fail('Expected a BadRequestException to be thrown.');
     } catch (e) {
       expect(e, isA<BadRequestException>());

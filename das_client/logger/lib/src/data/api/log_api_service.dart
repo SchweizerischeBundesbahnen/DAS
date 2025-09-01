@@ -4,9 +4,9 @@ import 'package:logger/component.dart';
 import 'package:logger/src/data/api/endpoint/send_logs.dart';
 
 class LogApiService {
-  LogApiService();
+  LogApiService({Client? httpClient}) : _httpClient = httpClient ?? HttpXComponent.createHttpClient();
 
-  final Client _httpClient = HttpXComponent.createHttpClient();
+  final Client _httpClient;
 
   SendLogsRequest get sendLogs =>
       SendLogsRequest(httpClient: _httpClient, url: _logEndpoint?.url, token: _logEndpoint?.token);
