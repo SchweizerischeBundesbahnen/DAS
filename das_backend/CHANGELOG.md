@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.5.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.4.1...backend-v0.5.0) (2025-09-01)
+
+
+### Features
+
+* formation additional traction mode and series ([#539](https://github.com/SchweizerischeBundesbahnen/DAS/issues/539)) ([#1161](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1161)) ([9f98661](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9f98661f0f619eb70a952811eebe8174a9a9b537))
+
+
+### Bug Fixes
+
+* **deps:** update dependency org.springdoc:springdoc-openapi-starter-webmvc-ui to v2.8.10 ([#1178](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1178)) ([b892be8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b892be8acde0d3bc0712819a38ac040904f46902))
+* **deps:** update dependency org.springdoc:springdoc-openapi-starter-webmvc-ui to v2.8.11 ([#1188](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1188)) ([31eadc0](https://github.com/SchweizerischeBundesbahnen/DAS/commit/31eadc0b04f0ac16aadc680af1406dda2e994233))
+* **deps:** update dependency org.springframework.boot:spring-boot-starter-parent to v3.5.5 ([#1189](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1189)) ([b348b11](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b348b11303479fd1e5f1eb2ebea8e4fe2a014e7d))
+* **deps:** update dependency org.springframework.modulith:spring-modulith-bom to v1.4.3 ([#1191](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1191)) ([a8a79f0](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a8a79f01dea9f5fd4678717086941cfcd21b47f1))
+* **deps:** update dependency software.amazon.awssdk:bom to v2.32.27 ([#1179](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1179)) ([df67cd4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/df67cd4183da9f7ebf57192c32d5ee41c1d2085d))
+* **deps:** update dependency software.amazon.awssdk:bom to v2.33.0 ([#1192](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1192)) ([1e87212](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1e87212535e28d48b776c26b25c4a4884bf6fb19))
+
 ## [0.4.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.4.0...backend-v0.4.1) (2025-08-19)
 
 
