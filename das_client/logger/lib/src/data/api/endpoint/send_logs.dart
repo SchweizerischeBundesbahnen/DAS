@@ -1,23 +1,26 @@
+import 'dart:io';
+
 import 'package:http_x/component.dart';
-import 'package:logger/src/data/dto/log_entry_dto.dart';
-import 'package:logger/src/data/mappers.dart';
 
 class SendLogsRequest {
-  const SendLogsRequest({required this.baseUrl, required this.httpClient});
+  const SendLogsRequest({required this.httpClient, this.url, this.token});
 
-  final String baseUrl;
-  final Client? httpClient;
+  final Client httpClient;
+  final String? url;
+  final String? token;
 
-  Future<SendLogsResponse> call(Iterable<LogEntryDto> logEntries) async {
-    if (httpClient == null) {
-      return Future.error('HTTP client is not initialized');
+  Future<SendLogsResponse> call(File logFile) async {
+    if (this.url == null || token == null) {
+      return Future.error('logging url or token not configured');
     }
 
-    final url = Uri.https(baseUrl, '/v1/logging/logs');
-    final response = await httpClient!.post(
+    final logFileContent = logFile.readAsStringSync();
+
+    final url = Uri.parse(this.url!);
+    final response = await httpClient.post(
       url,
-      headers: {'Content-Type': 'application/json'},
-      body: logEntries.toJsonString(),
+      headers: {'Content-Type': 'application/json', 'Authorization': 'Splunk $token'},
+      body: '[$logFileContent]',
     );
     return SendLogsResponse.fromHttpResponse(response);
   }

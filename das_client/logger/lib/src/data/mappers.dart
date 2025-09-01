@@ -1,22 +1,21 @@
 import 'dart:convert';
 
 import 'package:logger/component.dart';
-import 'package:logger/src/data/dto/log_entry_dto.dart';
+import 'package:logger/src/data/dto/splunk_log_entry_dto.dart';
 
 extension LogEntryX on LogEntry {
-  LogEntryDto toDto() => LogEntryDto(
+  SplunkLogEntryDto toDto() => SplunkLogEntryDto(
     time: time,
-    source: source,
-    message: message,
+    event: message,
     level: level.name,
-    metadata: metadata,
+    fields: metadata,
   );
 }
 
-extension LogEntryDtoListX on Iterable<LogEntryDto> {
+extension SplunkLogEntryDtoIterableX on Iterable<SplunkLogEntryDto> {
   String toJsonString({bool pretty = false}) {
     final jsonList = map((entry) => entry.toJson()).toList();
-    final encoder = JsonEncoder.withIndent(pretty ? LogEntryDto.jsonIndent : null);
+    final encoder = JsonEncoder.withIndent(pretty ? SplunkLogEntryDto.jsonIndent : null);
     return encoder.convert(jsonList);
   }
 }
