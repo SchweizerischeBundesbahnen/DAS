@@ -1,18 +1,18 @@
-import 'package:app/api/backend_api_service.dart';
-import 'package:app/api/dto/logging_setting_dto.dart';
-import 'package:app/data/local/das_database_service.dart';
-import 'package:app/repository/das_config_repository.dart';
 import 'package:logging/logging.dart';
+import 'package:settings/src/api/dto/logging_setting_dto.dart';
+import 'package:settings/src/api/settings_api_service.dart';
+import 'package:settings/src/data/local/ru_feature_database_service.dart';
+import 'package:settings/src/repository/settings_config_repository.dart';
 
 final _log = Logger('DasConfigRepositoryImpl');
 
-class DasConfigRepositoryImpl implements DasConfigRepository {
-  DasConfigRepositoryImpl({required this.apiService, required this.databaseService}) {
+class SettingsConfigRepositoryImpl implements SettingsConfigRepository {
+  SettingsConfigRepositoryImpl({required this.apiService, required this.databaseService}) {
     init();
   }
 
-  final BackendApiService apiService;
-  final DASDatabaseService databaseService;
+  final SettingsApiService apiService;
+  final RuFeatureDatabaseService databaseService;
 
   LoggingSettingDto? _loggingSetting;
 

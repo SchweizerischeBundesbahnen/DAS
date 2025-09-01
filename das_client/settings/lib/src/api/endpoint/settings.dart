@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:app/api/dto/settings_response_dto.dart';
 import 'package:http_x/component.dart';
+import 'package:settings/src/api/dto/settings_response_dto.dart';
 
 class SettingsRequest {
   const SettingsRequest({required this.httpClient, required this.baseUrl});

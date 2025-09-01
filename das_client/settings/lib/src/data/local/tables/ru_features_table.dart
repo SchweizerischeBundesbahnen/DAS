@@ -1,8 +1,8 @@
 // coverage:ignore-file
 
-import 'package:app/api/dto/ru_feature_dto.dart';
-import 'package:app/data/local/das_database_service.dart';
 import 'package:drift/drift.dart';
+import 'package:settings/src/api/dto/ru_feature_dto.dart';
+import 'package:settings/src/data/local/settings_database_service.dart';
 
 class RuFeaturesTable extends Table {
   TextColumn get companyCodeRics => text()();

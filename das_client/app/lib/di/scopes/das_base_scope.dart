@@ -1,6 +1,5 @@
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/brightness/brightness_manager_impl.dart';
-import 'package:app/data/local/das_database_service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:app/util/user_settings.dart';
@@ -9,6 +8,7 @@ import 'package:battery_plus/battery_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
 import 'package:screen_brightness/screen_brightness.dart';
+import 'package:settings/component.dart';
 import 'package:warnapp/component.dart';
 
 final _log = Logger('DASBaseScope');
@@ -72,8 +72,6 @@ extension BaseScopeExtension on GetIt {
   }
 
   void registerDatabaseServices() {
-    final databaseService = DASDatabaseService.instance;
-
-    registerSingleton<DASDatabaseService>(databaseService);
+    registerSingleton<RuFeatureDatabaseService>(SettingsComponent.databaseService());
   }
 }

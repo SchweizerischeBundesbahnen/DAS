@@ -1,28 +1,28 @@
 // coverage:ignore-file
 
-import 'package:app/api/dto/ru_feature_dto.dart';
-import 'package:app/data/local/ru_feature_database_service.dart';
-import 'package:app/data/local/tables/ru_features_table.dart';
-import 'package:app/model/ru_feature_keys.dart';
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
+import 'package:settings/src/api/dto/ru_feature_dto.dart';
+import 'package:settings/src/data/local/ru_feature_database_service.dart';
+import 'package:settings/src/data/local/tables/ru_features_table.dart';
+import 'package:settings/src/model/ru_feature_keys.dart';
 
-part 'das_database_service.g.dart';
+part 'settings_database_service.g.dart';
 
 @DriftDatabase(
   tables: [
     RuFeaturesTable,
   ],
 )
-class DASDatabaseService extends _$DASDatabaseService implements RuFeatureDatabaseService {
-  static DASDatabaseService? _instance;
+class SettingsDatabaseService extends _$SettingsDatabaseService implements RuFeatureDatabaseService {
+  static SettingsDatabaseService? _instance;
 
-  static DASDatabaseService get instance {
-    _instance ??= DASDatabaseService._();
+  static SettingsDatabaseService get instance {
+    _instance ??= SettingsDatabaseService._();
     return _instance!;
   }
 
-  DASDatabaseService._() : super(driftDatabase(name: 'das_db'));
+  SettingsDatabaseService._() : super(driftDatabase(name: 'das_db'));
 
   @override
   int get schemaVersion => 1;

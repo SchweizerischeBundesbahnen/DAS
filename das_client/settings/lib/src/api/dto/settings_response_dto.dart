@@ -1,5 +1,5 @@
-import 'package:app/api/dto/settings_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:settings/src/api/dto/settings_dto.dart';
 
 part 'settings_response_dto.g.dart';
 

@@ -13,6 +13,7 @@ workspace:
   - logger
   - sfera
   - warnapp
+  - settings
 
 dev_dependencies:
   melos: 7.1.0

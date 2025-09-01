@@ -1,8 +1,5 @@
-import 'package:app/api/backend_api_service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
-import 'package:app/repository/das_config_repository.dart';
-import 'package:app/repository/das_config_repository_impl.dart';
 import 'package:app/util/device_id_info.dart';
 import 'package:auth/component.dart';
 import 'package:get_it/get_it.dart';
@@ -10,6 +7,7 @@ import 'package:http_x/component.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
+import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 
 final _log = Logger('AuthenticatedScope');
@@ -31,8 +29,8 @@ class AuthenticatedScope extends DIScope {
     getIt.registerMqttService();
     getIt.registerSferaLocalRepo();
     getIt.registerSferaRemoteRepo();
-    getIt.registerBackendAPIService();
-    getIt.registerConfigRepository();
+    getIt.registerSettingsAPIService();
+    getIt.registerSettingsRepository();
 
     await getIt.allReady();
   }
@@ -136,20 +134,20 @@ extension AuthenticatedScopeExtension on GetIt {
     registerLazySingleton<SferaLocalRepo>(factoryFunc);
   }
 
-  void registerBackendAPIService() {
+  void registerSettingsAPIService() {
     factoryFunc() {
       _log.fine('Register backend api service');
 
       final flavor = DI.get<Flavor>();
-      return BackendApiService(baseUrl: flavor.backendUrl, httpClient: DI.get());
+      return SettingsComponent.createApiService(baseUrl: flavor.backendUrl, client: DI.get());
     }
 
-    registerLazySingleton<BackendApiService>(factoryFunc);
+    registerLazySingleton<SettingsApiService>(factoryFunc);
   }
 
-  void registerConfigRepository() {
-    final configRepository = DasConfigRepositoryImpl(apiService: DI.get(), databaseService: DI.get());
-    registerSingleton<DasConfigRepository>(configRepository);
+  void registerSettingsRepository() {
+    final configRepository = SettingsComponent.createRepository(apiService: DI.get());
+    registerSingleton<SettingsConfigRepository>(configRepository);
     registerSingleton<LogEndpoint>(configRepository);
   }
 }
