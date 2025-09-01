@@ -20,7 +20,7 @@ class SendLogsRequest {
     final response = await httpClient.post(
       url,
       headers: {'Content-Type': 'application/json', 'Authorization': 'Splunk $token'},
-      body: logFileContent,
+      body: '[$logFileContent]',
     );
     return SendLogsResponse.fromHttpResponse(response);
   }

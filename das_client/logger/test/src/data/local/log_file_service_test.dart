@@ -1,9 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:logger/src/data/dto/log_entry_dto.dart';
+import 'package:logger/src/data/dto/splunk_log_entry_dto.dart';
 import 'package:logger/src/data/local/log_file_service.dart';
 import 'package:logger/src/data/local/log_file_service_impl.dart';
+import 'package:logger/src/log_level.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 
@@ -15,26 +16,24 @@ void main() {
   late LogFileService testee;
   late PathProviderPlatform originalPlatform;
 
-  final simpleLogFile = LogEntryDto(
+  final simpleLogFile = SplunkLogEntryDto(
     time: 1624046400.0,
-    source: 'test-source',
-    message: 'A simple log message',
-    level: 'INFO',
-    metadata: {'key': 'value'},
+    event: 'A simple log message',
+    level: LogLevel.info.name,
+    fields: {'key': 'value'},
   );
 
-  final fourKiloBytesLog = LogEntryDto(
+  final fourKiloBytesLog = SplunkLogEntryDto(
     time: 0,
-    source: '',
     // metadata takes 60 bytes
-    message: 'A' * 3940,
-    level: '',
-    metadata: {},
+    event: 'A' * 3940,
+    level: LogLevel.info.name,
+    fields: {},
   );
 
   setUp(() async {
     tempDir = await Directory.systemTemp.createTemp('logger_cache_test');
-    logDir = Directory(p.join(tempDir.path, fakeApplicationSupportPath, 'logs'));
+    logDir = Directory(p.join(tempDir.path, fakeApplicationSupportPath, 'splunk-logs'));
 
     originalPlatform = PathProviderPlatform.instance;
     PathProviderPlatform.instance = FakePathProviderPlatform(tempDir.path);

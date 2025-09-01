@@ -5,8 +5,9 @@ import 'package:get_it/get_it.dart';
 import 'package:http_x/component.dart';
 import 'package:logger/component.dart';
 import 'package:logger/src/data/api/log_api_service.dart';
-import 'package:logger/src/data/dto/log_entry_dto.dart';
+import 'package:logger/src/data/dto/splunk_log_entry_dto.dart';
 import 'package:logger/src/data/mappers.dart';
+import 'package:logger/src/log_level.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -15,12 +16,11 @@ import 'response.fake.dart';
 
 @GenerateNiceMocks([MockSpec<Client>(), MockSpec<Response>(), MockSpec<File>(), MockSpec<LogEndpoint>()])
 void main() {
-  const baseUrl = 'example.com';
   late MockClient mockClient;
   late LogApiService testee;
   final mockLogEndpoint = MockLogEndpoint();
   final mockUrl = 'https://splunk.sbb.ch/';
-  final mockToken = 'https://splunk.sbb.ch/';
+  final mockToken = 'dummyToken';
   when(mockLogEndpoint.url).thenReturn(mockUrl);
   when(mockLogEndpoint.token).thenReturn(mockToken);
 
@@ -69,7 +69,7 @@ void main() {
       mockClient.post(
         expectedUrl,
         headers: {'Content-Type': 'application/json', 'Authorization': 'Splunk $mockToken'},
-        body: logEntries.toJsonString(),
+        body: '[${logEntries.toJsonString()}]',
       ),
     ).called(1);
   });
@@ -105,14 +105,13 @@ void main() {
   });
 }
 
-List<LogEntryDto> _createDummyLogEntries() {
-  return <LogEntryDto>[
-    LogEntryDto(
-      source: 'DummySource',
+List<SplunkLogEntryDto> _createDummyLogEntries() {
+  return <SplunkLogEntryDto>[
+    SplunkLogEntryDto(
       time: 100,
-      level: 'warn',
-      message: 'Dummy log entry',
-      metadata: {},
+      level: LogLevel.warning.name,
+      event: 'Dummy log entry',
+      fields: {},
     ),
   ];
 }

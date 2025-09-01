@@ -56,7 +56,7 @@ class LoggerRepoImpl implements LoggerRepo {
         await _sendLogsSync(file);
       } catch (ex) {
         _log.severe('Connection error while sending logs to remote.', ex);
-        _stopSendingUntil = clock.now().add(Duration(minutes: _retryDelayAfterFailedSendMinutes));
+        _stopSendingUntil = clock.now().add(Duration(seconds: _retryDelayAfterFailedSendMinutes));
         break;
       }
       await _tryDelete(file);
@@ -73,8 +73,9 @@ class LoggerRepoImpl implements LoggerRepo {
 
   Future<void> _sendLogsSync(File logFile) async {
     await _senderLock.synchronized(() async {
+      _log.fine('Sending logs from file: ${logFile.path}');
       await apiService.sendLogs(logFile);
-      _log.fine('Successfully sent logs to backend');
+      _log.fine('Successfully sent logs to splunk');
     });
   }
 
