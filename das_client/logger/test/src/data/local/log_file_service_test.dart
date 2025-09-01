@@ -23,10 +23,10 @@ void main() {
     fields: {'key': 'value'},
   );
 
-  final fourKiloBytesLog = SplunkLogEntryDto(
+  final twentyKiloBytesLog = SplunkLogEntryDto(
     time: 0,
     // metadata takes 60 bytes
-    event: 'A' * 3940,
+    event: 'A' * 20420,
     level: LogLevel.info.name,
     fields: {},
   );
@@ -73,7 +73,7 @@ void main() {
 
   test('writeLog_whenSingleLargeLogEntry_shouldWriteSingleFile', () async {
     // act
-    await testee.writeLog(fourKiloBytesLog);
+    await testee.writeLog(twentyKiloBytesLog);
 
     // assert
     expect(logDir.listSync().length, equals(1));
@@ -82,13 +82,13 @@ void main() {
     expect(await cacheFile.exists(), isTrue);
 
     final content = cacheFile.readAsStringSync();
-    expect(content, equals(fourKiloBytesLog.toJsonString()));
+    expect(content, equals(twentyKiloBytesLog.toJsonString()));
   });
 
   test('writeLog_whenLogSizeTooLarge_shouldWriteToNewFileAndHaveCompletedLog', () async {
     // act
-    await testee.writeLog(fourKiloBytesLog);
-    await testee.writeLog(fourKiloBytesLog);
+    await testee.writeLog(twentyKiloBytesLog);
+    await testee.writeLog(twentyKiloBytesLog);
 
     expect(logDir.listSync().length, equals(2));
   });
@@ -109,7 +109,7 @@ void main() {
   test('hasCompletedLogFiles_whenSimpleAndLargeLogEntryWritten_shouldBeFalse', () async {
     // arrange
     await testee.writeLog(simpleLogFile);
-    await testee.writeLog(fourKiloBytesLog);
+    await testee.writeLog(twentyKiloBytesLog);
 
     // act + expect
     expect(await testee.hasCompletedLogFiles, false);
@@ -117,8 +117,8 @@ void main() {
 
   test('hasCompletedLogFiles_whenTwoLargeLogEntryWritten_shouldBeTrue', () async {
     // arrange
-    await testee.writeLog(fourKiloBytesLog);
-    await testee.writeLog(fourKiloBytesLog);
+    await testee.writeLog(twentyKiloBytesLog);
+    await testee.writeLog(twentyKiloBytesLog);
 
     // act + expect
     expect(await testee.hasCompletedLogFiles, true);
@@ -139,8 +139,8 @@ void main() {
 
   test('completedLogFiles_whenTwoLargeLogWritten_shouldHaveLengthOne', () async {
     // arrange
-    await testee.writeLog(fourKiloBytesLog);
-    await testee.writeLog(fourKiloBytesLog);
+    await testee.writeLog(twentyKiloBytesLog);
+    await testee.writeLog(twentyKiloBytesLog);
 
     // act + expect
     expect((await testee.completedLogFiles).length, 1);
@@ -148,21 +148,21 @@ void main() {
 
   test('completedLogFiles_whenTwoLargeLogWritten_shouldHaveContentFromLargeLogEntry', () async {
     // arrange
-    await testee.writeLog(fourKiloBytesLog);
-    await testee.writeLog(fourKiloBytesLog);
+    await testee.writeLog(twentyKiloBytesLog);
+    await testee.writeLog(twentyKiloBytesLog);
 
     // act
     final actual = await testee.completedLogFiles;
 
     // expect
     final actualLogEntry = actual.first.readAsStringSync();
-    expect(actualLogEntry, fourKiloBytesLog.toJsonString());
+    expect(actualLogEntry, twentyKiloBytesLog.toJsonString());
   });
 
   test('deleteLogFile_whenFileGiven_shouldDeleteIt', () async {
     // arrange
-    await testee.writeLog(fourKiloBytesLog);
-    await testee.writeLog(fourKiloBytesLog);
+    await testee.writeLog(twentyKiloBytesLog);
+    await testee.writeLog(twentyKiloBytesLog);
     // check whether two files exist (one completed)
     expect(logDir.listSync().length, equals(2));
 
