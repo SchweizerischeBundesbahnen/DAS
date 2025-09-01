@@ -22,7 +22,7 @@ class SettingsDatabaseService extends _$SettingsDatabaseService implements RuFea
     return _instance!;
   }
 
-  SettingsDatabaseService._() : super(driftDatabase(name: 'das_db'));
+  SettingsDatabaseService._() : super(driftDatabase(name: 'settings_db'));
 
   @override
   int get schemaVersion => 1;

@@ -9,7 +9,7 @@ class LogApiService {
   final Client _httpClient;
 
   SendLogsRequest get sendLogs =>
-      SendLogsRequest(httpClient: _httpClient, url: _logEndpoint?.url, token: _logEndpoint?.token);
+      SendLogsRequest(httpClient: _httpClient, url: _logEndpoint?.loggingUrl, token: _logEndpoint?.loggingToken);
 
   LogEndpoint? get _logEndpoint => _getOrNull<LogEndpoint>();
 

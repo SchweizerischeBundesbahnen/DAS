@@ -11,6 +11,8 @@ class SettingsConfigRepositoryImpl implements SettingsConfigRepository {
     init();
   }
 
+  static const retryDelay = Duration(minutes: 1);
+
   final SettingsApiService apiService;
   final RuFeatureDatabaseService databaseService;
 
@@ -19,7 +21,7 @@ class SettingsConfigRepositoryImpl implements SettingsConfigRepository {
   void init() async {
     final success = await loadSettings();
     if (!success) {
-      Future.delayed(Duration(minutes: 1)).then((value) {
+      Future.delayed(retryDelay).then((value) {
         init();
       });
     }
@@ -44,8 +46,8 @@ class SettingsConfigRepositoryImpl implements SettingsConfigRepository {
   }
 
   @override
-  String? get token => _loggingSetting?.token;
+  String? get loggingToken => _loggingSetting?.token;
 
   @override
-  String? get url => _loggingSetting?.url;
+  String? get loggingUrl => _loggingSetting?.url;
 }

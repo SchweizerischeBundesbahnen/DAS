@@ -1,5 +1,5 @@
 abstract class LogEndpoint {
-  String? get url;
+  String? get loggingUrl;
 
-  String? get token;
+  String? get loggingToken;
 }

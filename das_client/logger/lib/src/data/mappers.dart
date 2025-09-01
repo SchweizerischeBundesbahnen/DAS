@@ -12,7 +12,7 @@ extension LogEntryX on LogEntry {
   );
 }
 
-extension LogEntryDtoListX on Iterable<SplunkLogEntryDto> {
+extension SplunkLogEntryDtoIterableX on Iterable<SplunkLogEntryDto> {
   String toJsonString({bool pretty = false}) {
     final jsonList = map((entry) => entry.toJson()).toList();
     final encoder = JsonEncoder.withIndent(pretty ? SplunkLogEntryDto.jsonIndent : null);

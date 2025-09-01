@@ -29,7 +29,6 @@ class AuthenticatedScope extends DIScope {
     getIt.registerMqttService();
     getIt.registerSferaLocalRepo();
     getIt.registerSferaRemoteRepo();
-    getIt.registerSettingsAPIService();
     getIt.registerSettingsRepository();
 
     await getIt.allReady();
@@ -134,19 +133,9 @@ extension AuthenticatedScopeExtension on GetIt {
     registerLazySingleton<SferaLocalRepo>(factoryFunc);
   }
 
-  void registerSettingsAPIService() {
-    factoryFunc() {
-      _log.fine('Register backend api service');
-
-      final flavor = DI.get<Flavor>();
-      return SettingsComponent.createApiService(baseUrl: flavor.backendUrl, client: DI.get());
-    }
-
-    registerLazySingleton<SettingsApiService>(factoryFunc);
-  }
-
   void registerSettingsRepository() {
-    final configRepository = SettingsComponent.createRepository(apiService: DI.get());
+    final flavor = DI.get<Flavor>();
+    final configRepository = SettingsComponent.createRepository(baseUrl: flavor.backendUrl, client: DI.get());
     registerSingleton<SettingsConfigRepository>(configRepository);
     registerSingleton<LogEndpoint>(configRepository);
   }

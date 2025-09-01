@@ -21,8 +21,8 @@ void main() {
   final mockLogEndpoint = MockLogEndpoint();
   final mockUrl = 'https://splunk.sbb.ch/';
   final mockToken = 'dummyToken';
-  when(mockLogEndpoint.url).thenReturn(mockUrl);
-  when(mockLogEndpoint.token).thenReturn(mockToken);
+  when(mockLogEndpoint.loggingUrl).thenReturn(mockUrl);
+  when(mockLogEndpoint.loggingToken).thenReturn(mockToken);
 
   setUp(() {
     mockClient = MockClient();

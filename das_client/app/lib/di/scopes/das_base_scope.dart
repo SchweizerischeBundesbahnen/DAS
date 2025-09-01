@@ -8,7 +8,6 @@ import 'package:battery_plus/battery_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
 import 'package:screen_brightness/screen_brightness.dart';
-import 'package:settings/component.dart';
 import 'package:warnapp/component.dart';
 
 final _log = Logger('DASBaseScope');
@@ -29,7 +28,6 @@ class DASBaseScope extends DIScope {
     getIt.registerWarnapp();
     getIt.registerTimeConstants();
     getIt.registerUserSettings();
-    getIt.registerDatabaseServices();
     await getIt.allReady();
   }
 }
@@ -69,9 +67,5 @@ extension BaseScopeExtension on GetIt {
 
   void registerUserSettings() {
     registerSingleton<UserSettings>(UserSettings());
-  }
-
-  void registerDatabaseServices() {
-    registerSingleton<RuFeatureDatabaseService>(SettingsComponent.databaseService());
   }
 }
