@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.8.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.7.0...sfera_mock-v0.8.0) (2025-09-01)
+
+
+### Features
+
+* currentPosition and next stop are time dependent ([#766](https://github.com/SchweizerischeBundesbahnen/DAS/issues/766)) ([#1169](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1169)) ([cdf56f8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/cdf56f8b063f978fe2db9f8f6ccf184b76fa46d6))
+
+
+### Bug Fixes
+
+* **deps:** update dependency org.springframework.boot:spring-boot-starter-parent to v3.5.5 ([#1190](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1190)) ([e56d468](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e56d468ed336f76480376adfa9561589930be05e))
+* used T25 for local regulation test journey as T24 was already used ([#1198](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1198)) ([2732a82](https://github.com/SchweizerischeBundesbahnen/DAS/commit/2732a828536f9d0a149028ca6b6a28c112db2635))
+
 ## [0.7.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.6.0...sfera_mock-v0.7.0) (2025-08-15)
 
 
