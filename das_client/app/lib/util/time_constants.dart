@@ -14,4 +14,6 @@ class TimeConstants {
   int get adlEndDisplaySeconds => 30;
 
   int get kmDecisiveGradientResetSeconds => 10;
+
+  int get connectivityLostNotificationDelay => 30;
 }

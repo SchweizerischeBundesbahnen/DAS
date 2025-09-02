@@ -3,6 +3,7 @@ import 'package:app/di/di.dart';
 import 'package:app/pages/journey/journey_page.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/battery_status.dart';
+import 'package:app/pages/journey/train_journey/widgets/header/connectivity_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/das_chronograph.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/extended_menu.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
@@ -15,6 +16,7 @@ import 'package:app/util/format.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/dot_indicator.dart';
 import 'package:battery_plus/battery_plus.dart';
+import 'package:connectivity_x/component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
@@ -24,10 +26,77 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 import '../app_test.dart';
 import '../mocks/mock_battery.dart';
 import '../mocks/mock_brightness_manager.dart';
+import '../mocks/mock_connectivity_manager.dart';
 import '../util/test_utils.dart';
 
 Future<void> main() async {
   group('train journey header test', () {
+    testWidgets('test connectivity state shown correctly', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // simulate connectivity
+      final connectivityManager = DI.get<ConnectivityManager>() as MockConnectivityManager;
+      connectivityManager.lastConnectedTime = DateTime.now();
+      connectivityManager.connectivitySubject.add(true);
+      connectivityManager.wifiActive = false;
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T9999M');
+
+      // Find the header and check if it is existent
+      final header = find.byType(Header);
+      expect(header, findsOneWidget);
+
+      expect(find.descendant(of: header, matching: find.byKey(ConnectivityIcon.disconnectedKey)), findsNothing);
+      expect(find.descendant(of: header, matching: find.byKey(ConnectivityIcon.disconnectedWifiKey)), findsNothing);
+
+      // simulate connectivity lost
+      connectivityManager.lastConnectedTime = DateTime.now();
+      connectivityManager.connectivitySubject.add(false);
+      await tester.pumpAndSettle();
+
+      // should still fine nothing, because of delay
+      expect(find.descendant(of: header, matching: find.byKey(ConnectivityIcon.disconnectedKey)), findsNothing);
+      expect(find.descendant(of: header, matching: find.byKey(ConnectivityIcon.disconnectedWifiKey)), findsNothing);
+
+      // should show disconnected after delay of 2 seconds
+      await waitUntilExists(
+        tester,
+        find.descendant(of: header, matching: find.byKey(ConnectivityIcon.disconnectedKey)),
+      );
+
+      await tapElement(tester, find.byKey(ConnectivityIcon.disconnectedKey));
+      expect(find.text(l10n.w_modal_sheet_disconnected_message_title), findsOneWidget);
+      await findAndDismissModalSheet(tester);
+
+      // simulate wifi active
+      connectivityManager.wifiActive = true;
+      connectivityManager.connectivitySubject.add(false);
+      await tester.pumpAndSettle();
+
+      // should show disconnected wifi icon
+      await waitUntilExists(
+        tester,
+        find.descendant(of: header, matching: find.byKey(ConnectivityIcon.disconnectedWifiKey)),
+      );
+
+      await tapElement(tester, find.byKey(ConnectivityIcon.disconnectedWifiKey));
+      expect(find.text(l10n.w_modal_sheet_disconnected_wifi_message_title), findsOneWidget);
+      await findAndDismissModalSheet(tester);
+
+      // simulate connectivity restored
+      connectivityManager.connectivitySubject.add(false);
+
+      // should hide icon again
+      await waitUntilNotExists(
+        tester,
+        find.descendant(of: header, matching: find.byKey(ConnectivityIcon.disconnectedWifiKey)),
+      );
+      expect(find.descendant(of: header, matching: find.byKey(ConnectivityIcon.disconnectedKey)), findsNothing);
+
+      await disconnect(tester);
+    });
+
     testWidgets('test chronograph punctuality display hides when no updates come', (tester) async {
       await prepareAndStartApp(tester);
 
@@ -453,7 +522,7 @@ Future<void> main() async {
       final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 
       // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
-      await findAndDismissBrightnessModalSheet(tester);
+      await findAndDismissModalSheet(tester);
 
       mockBrightnessManager.writeSettingsPermission = true;
 
@@ -485,7 +554,7 @@ Future<void> main() async {
       final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 
       // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
-      await findAndDismissBrightnessModalSheet(tester);
+      await findAndDismissModalSheet(tester);
 
       mockBrightnessManager.writeSettingsPermission = true;
       mockBrightnessManager.currentBrightness = 0.5;
@@ -515,7 +584,7 @@ Future<void> main() async {
       final mockBrightnessManager = DI.get<BrightnessManager>() as MockBrightnessManager;
 
       // automatically opening modal sheet if write permissions not given (in tests hasWritePermissions is always false)
-      await findAndDismissBrightnessModalSheet(tester);
+      await findAndDismissModalSheet(tester);
 
       mockBrightnessManager.writeSettingsPermission = true;
       mockBrightnessManager.currentBrightness = 0.5;
@@ -538,13 +607,13 @@ Future<void> main() async {
   });
 }
 
-Future<void> findAndDismissBrightnessModalSheet(WidgetTester tester) async {
+Future<void> findAndDismissModalSheet(WidgetTester tester) async {
   // find brightness modal sheet
-  final brightnessModalSheet = find.byType(SBBModalSheet);
-  expect(brightnessModalSheet, findsOneWidget);
+  final modalSheet = find.byType(SBBModalSheet);
+  expect(modalSheet, findsOneWidget);
 
   //find close button
-  final closeButton = find.descendant(of: brightnessModalSheet, matching: find.byType(SBBIconButtonSmall));
+  final closeButton = find.descendant(of: modalSheet, matching: find.byType(SBBIconButtonSmall));
   expect(closeButton, findsOneWidget);
 
   //tap close button
