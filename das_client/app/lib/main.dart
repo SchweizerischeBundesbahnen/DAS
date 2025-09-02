@@ -20,7 +20,7 @@ Future<void> runDasApp() async => runApp(App());
 Future<void> _initDASLogging(Flavor flavor) async {
   final deviceId = await DeviceIdInfo.getDeviceId();
   final logPrinter = LogPrinter(appName: 'DAS ${flavor.displayName}', isDebugMode: kDebugMode);
-  final dasLogger = LoggerComponent.createDasLogger(deviceId: deviceId, backendUrl: flavor.backendUrl);
+  final dasLogger = LoggerComponent.createDasLogger(deviceId: deviceId);
 
   Logger.root.level = flavor.logLevel;
   Logger.root.onRecord.listen(logPrinter.call);

@@ -1,11 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:logger/src/data/dto/log_entry_dto.dart';
+import 'package:logger/src/data/dto/splunk_log_entry_dto.dart';
 import 'package:logger/src/data/local/log_file_service.dart';
 import 'package:logger/src/data/local/log_file_service_impl.dart';
-import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
+import 'package:logger/src/log_level.dart';
 import 'package:path/path.dart' as p;
+import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 
 import 'path_provider_platform.fake.dart';
 
@@ -15,26 +16,24 @@ void main() {
   late LogFileService testee;
   late PathProviderPlatform originalPlatform;
 
-  final simpleLogFile = LogEntryDto(
+  final simpleLogFile = SplunkLogEntryDto(
     time: 1624046400.0,
-    source: 'test-source',
-    message: 'A simple log message',
-    level: 'INFO',
-    metadata: {'key': 'value'},
+    event: 'A simple log message',
+    level: LogLevel.info.name,
+    fields: {'key': 'value'},
   );
 
-  final fourKiloBytesLog = LogEntryDto(
+  final twentyKiloBytesLog = SplunkLogEntryDto(
     time: 0,
-    source: '',
     // metadata takes 60 bytes
-    message: 'A' * 3940,
-    level: '',
-    metadata: {},
+    event: 'A' * 20420,
+    level: LogLevel.info.name,
+    fields: {},
   );
 
   setUp(() async {
     tempDir = await Directory.systemTemp.createTemp('logger_cache_test');
-    logDir = Directory(p.join(tempDir.path, fakeApplicationSupportPath, 'logs'));
+    logDir = Directory(p.join(tempDir.path, fakeApplicationSupportPath, 'splunk-logs'));
 
     originalPlatform = PathProviderPlatform.instance;
     PathProviderPlatform.instance = FakePathProviderPlatform(tempDir.path);
@@ -49,7 +48,7 @@ void main() {
     PathProviderPlatform.instance = originalPlatform;
   });
 
-  test('writeLog_whenCalledOnce_shouldWriteJsonToFileWithComma', () async {
+  test('writeLog_whenCalledOnce_shouldWriteJsonToFileWithoutComma', () async {
     // act
     await testee.writeLog(simpleLogFile);
 
@@ -57,7 +56,7 @@ void main() {
     expect(await cacheFile.exists(), isTrue);
 
     final content = cacheFile.readAsStringSync();
-    expect(content, equals('${simpleLogFile.toJsonString()},'));
+    expect(content, equals(simpleLogFile.toJsonString()));
   });
 
   test('writeLog_whenCalledTwiceWithSimpleFile_shouldAppendToPrevious', () async {
@@ -69,12 +68,12 @@ void main() {
     expect(await cacheFile.exists(), isTrue);
 
     final content = cacheFile.readAsStringSync();
-    expect(content, equals('${simpleLogFile.toJsonString()},${simpleLogFile.toJsonString()},'));
+    expect(content, equals('${simpleLogFile.toJsonString()},${simpleLogFile.toJsonString()}'));
   });
 
   test('writeLog_whenSingleLargeLogEntry_shouldWriteSingleFile', () async {
     // act
-    await testee.writeLog(fourKiloBytesLog);
+    await testee.writeLog(twentyKiloBytesLog);
 
     // assert
     expect(logDir.listSync().length, equals(1));
@@ -83,13 +82,13 @@ void main() {
     expect(await cacheFile.exists(), isTrue);
 
     final content = cacheFile.readAsStringSync();
-    expect(content, equals('${fourKiloBytesLog.toJsonString()},'));
+    expect(content, equals(twentyKiloBytesLog.toJsonString()));
   });
 
   test('writeLog_whenLogSizeTooLarge_shouldWriteToNewFileAndHaveCompletedLog', () async {
     // act
-    await testee.writeLog(fourKiloBytesLog);
-    await testee.writeLog(fourKiloBytesLog);
+    await testee.writeLog(twentyKiloBytesLog);
+    await testee.writeLog(twentyKiloBytesLog);
 
     expect(logDir.listSync().length, equals(2));
   });
@@ -110,7 +109,7 @@ void main() {
   test('hasCompletedLogFiles_whenSimpleAndLargeLogEntryWritten_shouldBeFalse', () async {
     // arrange
     await testee.writeLog(simpleLogFile);
-    await testee.writeLog(fourKiloBytesLog);
+    await testee.writeLog(twentyKiloBytesLog);
 
     // act + expect
     expect(await testee.hasCompletedLogFiles, false);
@@ -118,8 +117,8 @@ void main() {
 
   test('hasCompletedLogFiles_whenTwoLargeLogEntryWritten_shouldBeTrue', () async {
     // arrange
-    await testee.writeLog(fourKiloBytesLog);
-    await testee.writeLog(fourKiloBytesLog);
+    await testee.writeLog(twentyKiloBytesLog);
+    await testee.writeLog(twentyKiloBytesLog);
 
     // act + expect
     expect(await testee.hasCompletedLogFiles, true);
@@ -140,8 +139,8 @@ void main() {
 
   test('completedLogFiles_whenTwoLargeLogWritten_shouldHaveLengthOne', () async {
     // arrange
-    await testee.writeLog(fourKiloBytesLog);
-    await testee.writeLog(fourKiloBytesLog);
+    await testee.writeLog(twentyKiloBytesLog);
+    await testee.writeLog(twentyKiloBytesLog);
 
     // act + expect
     expect((await testee.completedLogFiles).length, 1);
@@ -149,21 +148,21 @@ void main() {
 
   test('completedLogFiles_whenTwoLargeLogWritten_shouldHaveContentFromLargeLogEntry', () async {
     // arrange
-    await testee.writeLog(fourKiloBytesLog);
-    await testee.writeLog(fourKiloBytesLog);
+    await testee.writeLog(twentyKiloBytesLog);
+    await testee.writeLog(twentyKiloBytesLog);
 
     // act
     final actual = await testee.completedLogFiles;
 
     // expect
-    final actualLogEntry = actual.first.logEntries.first;
-    expect(actualLogEntry.toJsonString(), fourKiloBytesLog.toJsonString());
+    final actualLogEntry = actual.first.readAsStringSync();
+    expect(actualLogEntry, twentyKiloBytesLog.toJsonString());
   });
 
   test('deleteLogFile_whenFileGiven_shouldDeleteIt', () async {
     // arrange
-    await testee.writeLog(fourKiloBytesLog);
-    await testee.writeLog(fourKiloBytesLog);
+    await testee.writeLog(twentyKiloBytesLog);
+    await testee.writeLog(twentyKiloBytesLog);
     // check whether two files exist (one completed)
     expect(logDir.listSync().length, equals(2));
 
