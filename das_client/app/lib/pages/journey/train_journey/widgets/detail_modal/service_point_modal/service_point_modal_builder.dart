@@ -18,6 +18,7 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
   Widget body(BuildContext context) {
     final viewModel = context.read<ServicePointModalViewModel>();
     return StreamBuilder(
+      initialData: viewModel.selectedTabValue,
       stream: viewModel.selectedTab,
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Center(child: CircularProgressIndicator());
@@ -89,7 +90,7 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
         return SBBSegmentedButton.icon(
           key: segmentedButtonKey,
           icons: {for (final tab in tabs) tab.icon: tab.localized(context)},
-          selectedStateIndex: selectedTab.index,
+          selectedStateIndex: tabs.indexOf(selectedTab),
           selectedIndexChanged: (index) => viewModel.open(context, tab: tabs[index]),
         );
       },

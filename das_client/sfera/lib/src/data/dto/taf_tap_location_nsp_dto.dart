@@ -1,4 +1,5 @@
 import 'package:sfera/src/data/dto/line_foot_notes_nsp_dto.dart';
+import 'package:sfera/src/data/dto/local_regulation_nsp_dto.dart';
 import 'package:sfera/src/data/dto/new_line_speed_taf_tap_location_dto.dart';
 import 'package:sfera/src/data/dto/nsp_dto.dart';
 import 'package:sfera/src/data/dto/op_foot_notes_nsp_dto.dart';
@@ -30,6 +31,8 @@ class TafTapLocationNspDto extends NspDto {
       return StationPropertyNspDto(attributes: attributes, children: children, value: value);
     } else if (groupName?.value == TafTapRouteTableDataNspDto.elementName) {
       return TafTapRouteTableDataNspDto(attributes: attributes, children: children, value: value);
+    } else if (groupName?.value?.startsWith(LocalRegulationNspDto.elementNameStart) == true) {
+      return LocalRegulationNspDto(attributes: attributes, children: children, value: value);
     }
     return TafTapLocationNspDto(attributes: attributes, children: children, value: value);
   }
