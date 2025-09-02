@@ -60,6 +60,7 @@ class ConnectivityViewModel {
 
   void dispose() {
     _rxModel.close();
+    _timer?.cancel();
     _connectivitySubscription?.cancel();
     _connectivitySubscription = null;
   }

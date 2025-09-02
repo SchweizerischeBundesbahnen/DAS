@@ -85,7 +85,8 @@ Future<void> main() async {
       await findAndDismissModalSheet(tester);
 
       // simulate connectivity restored
-      connectivityManager.connectivitySubject.add(false);
+      connectivityManager.connectivitySubject.add(true);
+      await tester.pumpAndSettle();
 
       // should hide icon again
       await waitUntilNotExists(

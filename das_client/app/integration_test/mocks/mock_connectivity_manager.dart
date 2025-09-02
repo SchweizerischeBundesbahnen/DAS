@@ -6,7 +6,7 @@ class MockConnectivityManager implements ConnectivityManager {
 
   bool wifiActive = false;
   DateTime lastConnectedTime = DateTime.now();
-  BehaviorSubject<bool> connectivitySubject = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> connectivitySubject = BehaviorSubject.seeded(true);
 
   @override
   bool isConnected() {
