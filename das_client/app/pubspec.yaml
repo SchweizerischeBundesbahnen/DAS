@@ -21,6 +21,7 @@ dependencies:
   http_x: 1.0.0
   warnapp: 1.0.0
   settings: 1.0.0
+  connectivity_x: 1.0.0
 
   # https://pub.dev/packages/audioplayers
   audioplayers: ^6.5.0

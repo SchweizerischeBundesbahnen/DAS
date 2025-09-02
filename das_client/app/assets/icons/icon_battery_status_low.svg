@@ -1,7 +1,5 @@
-<svg width="45" height="40" viewBox="0 0 45 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect y="8" width="32" height="32" rx="8" fill="#E5E5E5"/>
-    <path fill-rule="evenodd" clip-rule="evenodd" d="M14 15.9995H14.5H17.5H18V16.4995V16.9995H19.5H20V17.4995V31.4995V31.9995H19.5H12.5H12V31.4995V17.4995V16.9995H12.5H14V16.4995V15.9995ZM15 16.9995V17.4995V17.9995H14.5H13V30.9995H19V17.9995H17.5H17V17.4995V16.9995H15ZM18 29.9995H14V28.9995H18V29.9995ZM14 27.9995H18V26.9995H14V27.9995Z" fill="black"/>
-    <rect x="25.5" y="0.5" width="19" height="19" rx="9.5" fill="#FCBB00"/>
-    <rect x="25.5" y="0.5" width="19" height="19" rx="9.5" stroke="white"/>
-    <path fill-rule="evenodd" clip-rule="evenodd" d="M35.6786 8.19415V5.07715H34.3353V8.19415L34.6698 12.7174H35.3306L35.6786 8.19415ZM35.7484 15.2502H34.2522V13.8169H35.7484V15.2502Z" fill="black"/>
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+        d="M14 4.99951H16V19.9995H8V4.99951H10V3.99951H14V4.99951ZM11 5.99951H9V18.9995H15V5.99951H13V4.99951H11V5.99951ZM14 17.9995H10V16.9995H14V17.9995ZM14 15.9995H10V14.9995H14V15.9995Z"
+        fill="black"/>
 </svg>

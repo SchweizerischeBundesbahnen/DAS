@@ -5,6 +5,7 @@ import 'package:app/util/time_constants.dart';
 import 'package:app/util/user_settings.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:battery_plus/battery_plus.dart';
+import 'package:connectivity_x/component.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
 import 'package:screen_brightness/screen_brightness.dart';
@@ -28,6 +29,7 @@ class DASBaseScope extends DIScope {
     getIt.registerWarnapp();
     getIt.registerTimeConstants();
     getIt.registerUserSettings();
+    getIt.registerConnecvitiyManager();
     await getIt.allReady();
   }
 }
@@ -67,5 +69,9 @@ extension BaseScopeExtension on GetIt {
 
   void registerUserSettings() {
     registerSingleton<UserSettings>(UserSettings());
+  }
+
+  void registerConnecvitiyManager() {
+    registerSingleton<ConnectivityManager>(ConnectivityComponent.connectivityManager());
   }
 }
