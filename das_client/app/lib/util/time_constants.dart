@@ -15,5 +15,5 @@ class TimeConstants {
 
   int get kmDecisiveGradientResetSeconds => 10;
 
-  int get connectivityLostNotificationDelay => 30;
+  int get connectivityLostNotificationDelay => 60;
 }
