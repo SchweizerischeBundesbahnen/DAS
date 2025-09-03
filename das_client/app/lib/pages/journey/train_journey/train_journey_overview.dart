@@ -1,6 +1,7 @@
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/train_journey/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/train_journey/header/chronograph/chronograph_view_model.dart';
+import 'package:app/pages/journey/train_journey/header/connectivity/connectivity_view_model.dart';
 import 'package:app/pages/journey/train_journey/journey_position/journey_position_view_model.dart';
 import 'package:app/pages/journey/train_journey/punctuality/punctuality_view_model.dart';
 import 'package:app/pages/journey/train_journey/ux_testing_view_model.dart';
@@ -85,6 +86,10 @@ class TrainJourneyOverview extends StatelessWidget {
         ),
         Provider(
           create: (_) => journeyPositionViewModel,
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        Provider(
+          create: (_) => ConnectivityViewModel(connectivityManager: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
       ],
