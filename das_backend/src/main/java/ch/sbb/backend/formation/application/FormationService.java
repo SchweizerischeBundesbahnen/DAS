@@ -19,15 +19,17 @@ public class FormationService {
         trainFormationRunRepository.saveAll(trainFormationRunEntities);
     }
 
-    public List<TrainFormationRunEntity> findLatestByTrainIdentifier(
-        String operationalTrainNumber,
+    public List<TrainFormationRunEntity> findByTrainIdentifier(String operationalTrainNumber,
         LocalDate operationalDay,
-        String company
-    ) {
-        return trainFormationRunRepository.findLastModifiedByTrainIdentifier(
+        String company) {
+        return trainFormationRunRepository.findByOperationalTrainNumberAndOperationalDayAndCompanyOrderByInspectionDateTime(
             operationalTrainNumber,
             operationalDay,
             company
         );
+    }
+
+    public void deleteByTrassenIdAndOperationalDay(String trassenId, LocalDate operationalDay) {
+        trainFormationRunRepository.deleteByTrassenIdAndOperationalDay(trassenId, operationalDay);
     }
 }

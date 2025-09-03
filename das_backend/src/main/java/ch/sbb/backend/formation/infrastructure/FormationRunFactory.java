@@ -46,6 +46,7 @@ public final class FormationRunFactory {
             return;
         }
         builder.inspected(formationRunInspection.getInspected());
+        builder.inspectionDateTime(formationRunInspection.getInspectionTime());
         applyBrakeCalculationResult(builder, formationRunInspection.getBrakeCalculationResult());
     }
 
