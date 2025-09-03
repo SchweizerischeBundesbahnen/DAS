@@ -73,6 +73,24 @@ class VehicleTest {
     }
 
     @Test
+    void europeanVehicleNumbers_withNull() {
+        EuropeanVehicleNumber firstEvnMock = mock(EuropeanVehicleNumber.class);
+        when(firstEvnMock.toVehicleCode()).thenReturn("34562342341");
+        EuropeanVehicleNumber lastEvnMock = mock(EuropeanVehicleNumber.class);
+        when(lastEvnMock.toVehicleCode()).thenReturn("34324346134");
+
+        Vehicle vehicle1 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, null);
+        Vehicle vehicle2 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, null);
+        List<Vehicle> vehicles = List.of(vehicle1, vehicle2);
+
+        String first = Vehicle.europeanVehicleNumberFirst(vehicles);
+        String last = Vehicle.europeanVehicleNumberLast(vehicles);
+
+        assertThat(first).isNull();
+        assertThat(last).isNull();
+    }
+
+    @Test
     void europeanVehicleNumbers_withMultipleVehicles() {
         EuropeanVehicleNumber firstEvnMock = mock(EuropeanVehicleNumber.class);
         when(firstEvnMock.toVehicleCode()).thenReturn("34562342341");
