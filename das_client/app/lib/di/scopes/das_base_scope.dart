@@ -29,7 +29,7 @@ class DASBaseScope extends DIScope {
     getIt.registerWarnapp();
     getIt.registerTimeConstants();
     getIt.registerUserSettings();
-    getIt.registerConnecvitiyManager();
+    getIt.registerConnectivityManager();
     await getIt.allReady();
   }
 }
@@ -71,7 +71,7 @@ extension BaseScopeExtension on GetIt {
     registerSingleton<UserSettings>(UserSettings());
   }
 
-  void registerConnecvitiyManager() {
+  void registerConnectivityManager() {
     registerSingleton<ConnectivityManager>(ConnectivityComponent.connectivityManager());
   }
 }

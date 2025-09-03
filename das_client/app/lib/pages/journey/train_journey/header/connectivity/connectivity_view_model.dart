@@ -18,6 +18,8 @@ class ConnectivityViewModel {
     _init();
   }
 
+  static const timerTickDuration = Duration(seconds: 1);
+
   final _connectivityLostNotificationDelay = DI.get<TimeConstants>().connectivityLostNotificationDelay;
   final BehaviorSubject<ConnectivityDisplayStatus> _rxModel = BehaviorSubject.seeded(
     ConnectivityDisplayStatus.connected,
@@ -39,7 +41,7 @@ class ConnectivityViewModel {
         _timer?.cancel();
       } else {
         _timer?.cancel();
-        _timer = Timer.periodic(Duration(seconds: 1), _checkConnectivityState);
+        _timer = Timer.periodic(timerTickDuration, _checkConnectivityState);
       }
     });
   }
