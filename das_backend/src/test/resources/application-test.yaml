@@ -22,3 +22,7 @@ aws:
   accessKey: accessKey
   secretKey: secretKey
   bucketName: bucketName
+
+zis:
+  kafka:
+    topic: test
