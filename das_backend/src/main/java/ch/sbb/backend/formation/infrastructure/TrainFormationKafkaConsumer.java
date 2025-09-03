@@ -31,6 +31,7 @@ public class TrainFormationKafkaConsumer {
         Formation formation = FormationFactory.create(message);
         List<TrainFormationRunEntity> trainFormationRunEntities = TrainFormationRunEntity.from(formation);
 
+        formationService.deleteByTrassenIdAndOperationalDay(formation.getTrassenId(), formation.getOperationalDay());
         formationService.save(trainFormationRunEntities);
         log.debug("Train formation runs saved from kafka message partition={}, offset={}", message.partition(), message.offset());
     }
