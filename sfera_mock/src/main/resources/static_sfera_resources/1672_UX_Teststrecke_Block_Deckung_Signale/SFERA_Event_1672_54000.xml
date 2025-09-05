@@ -5,13 +5,12 @@
             <TrainIdentification>
                 <OTN_ID>
                     <teltsi_Company>1285</teltsi_Company>
-                    <teltsi_OperationalTrainNumber>1672</teltsi_OperationalTrainNumber>
+                    <teltsi_OperationalTrainNumber>1671</teltsi_OperationalTrainNumber>
                     <teltsi_StartDate>2025-05-17</teltsi_StartDate>
                 </OTN_ID>
             </TrainIdentification>
             <TrainLocationInformation>
-                <!--Deckungssignal B1-->
-                <PositionSpeed SP_ID="1672_1" location="20400">
+                <PositionSpeed SP_ID="1671_1" location="29120">
                     <SP_Zone>
                         <IM_ID>1285</IM_ID>
                     </SP_Zone>
