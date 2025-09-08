@@ -48,7 +48,8 @@ jobs:
         run: |
           # Convert to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[:upper:]' '[:lower:]')
-          export SOURCE_DATE_EPOCH=$(date +%s)
+          SOURCE_DATE_EPOCH=$(date +%s)
+          export SOURCE_DATE_EPOCH
           
           mvn spring-boot:build-image \
             -Dmaven.test.skip=true \
