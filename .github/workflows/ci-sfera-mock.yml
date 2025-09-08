@@ -37,6 +37,8 @@ jobs:
           cache: maven
       - name: Run the Maven verify phase
         run: mvn --batch-mode --update-snapshots verify
+      - name: Get Git commit timestamps
+        run: echo "TIMESTAMP=$(git log -1 --pretty=%ct)" >> $GITHUB_ENV
       - name: Login to GitHub Container Registry
         if: github.ref == 'refs/heads/main'
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
@@ -45,11 +47,10 @@ jobs:
         env:
           IMAGE_ID: ghcr.io/${{ github.repository }}/sfera-mock
           VERSION: main
+          SOURCE_DATE_EPOCH: ${{ env.TIMESTAMP }}
         run: |
           # Convert to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[:upper:]' '[:lower:]')
-          SOURCE_DATE_EPOCH=$(date +%s)
-          export SOURCE_DATE_EPOCH
           
           mvn spring-boot:build-image \
             -Dmaven.test.skip=true \
