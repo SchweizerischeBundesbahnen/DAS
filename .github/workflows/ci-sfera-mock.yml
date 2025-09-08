@@ -45,6 +45,7 @@ jobs:
         env:
           IMAGE_ID: ghcr.io/${{ github.repository }}/sfera-mock
           VERSION: main
+          SOURCE_DATE_EPOCH: ${{ github.run_started_at }}
         run: |
           # Convert to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[:upper:]' '[:lower:]')
