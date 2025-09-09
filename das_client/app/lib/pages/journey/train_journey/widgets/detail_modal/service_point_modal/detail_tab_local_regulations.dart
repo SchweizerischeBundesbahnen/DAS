@@ -3,7 +3,6 @@ import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_poi
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
-import 'package:sfera/component.dart';
 
 class DetailTabLocalRegulations extends StatelessWidget {
   static const localRegulationsTabKey = Key('localRegulationsTabKey');
@@ -12,36 +11,27 @@ class DetailTabLocalRegulations extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SBBGroup(
-      color: SBBColors.white,
-      child: StreamBuilder(
-        stream: context.read<ServicePointModalViewModel>().localRegulationSections,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) return _loading();
+    final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
+    if (isDarkTheme) {
+      return SBBGroup(
+        color: SBBColors.white,
+        padding: EdgeInsets.all(sbbDefaultSpacing),
+        child: _htmlView(context),
+      );
+    }
 
-          final localRegulationSections = snapshot.requireData;
-          return _content(localRegulationSections);
-        },
-      ),
-    );
+    return _htmlView(context);
   }
 
-  Widget _content(List<LocalRegulationSection> localRegulationSections) {
-    return SingleChildScrollView(
-      child: SBBAccordion(
-        accordionCallback: (int index, bool isExpanded) {
-          // TODO:
-          print('$index, $isExpanded');
-        },
-        children: localRegulationSections.map<SBBAccordionItem>((section) {
-          return SBBAccordionItem(
-            title: section.title.localized,
-            body: LocalRegulationHtmlView(html: section.content.localized),
-            // TODO:
-            isExpanded: true,
-          );
-        }).toList(),
-      ),
+  StreamBuilder<String> _htmlView(BuildContext context) {
+    return StreamBuilder(
+      stream: context.read<ServicePointModalViewModel>().localRegulationHtml,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return _loading();
+
+        final localRegulationHtml = snapshot.requireData;
+        return LocalRegulationHtmlView(html: localRegulationHtml);
+      },
     );
   }
 

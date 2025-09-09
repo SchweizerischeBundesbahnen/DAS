@@ -63,6 +63,7 @@ export 'package:sfera/src/model/journey/uncoded_operational_indication.dart';
 export 'package:sfera/src/model/journey/ux_testing_event.dart';
 export 'package:sfera/src/model/journey/warnapp_event.dart';
 export 'package:sfera/src/model/journey/whistles.dart';
+export 'package:sfera/src/model/localized_string.dart';
 export 'package:sfera/src/model/ru.dart';
 export 'package:sfera/src/model/train_identification.dart';
 export 'package:sfera/src/provider/sfera_auth_provider.dart';

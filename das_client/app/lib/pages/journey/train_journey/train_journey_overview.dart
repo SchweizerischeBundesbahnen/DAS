@@ -59,7 +59,7 @@ class TrainJourneyOverview extends StatelessWidget {
           dispose: (context, vm) => vm.dispose(),
         ),
         Provider(
-          create: (_) => ServicePointModalViewModel(),
+          create: (_) => ServicePointModalViewModel(localRegulationHtmlGenerator: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
