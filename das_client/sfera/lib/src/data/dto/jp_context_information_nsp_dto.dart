@@ -1,4 +1,5 @@
 import 'package:sfera/src/data/dto/jp_context_information_nsp_constraints_dto.dart';
+import 'package:sfera/src/data/dto/kilometre_reference_point_nsp_dto.dart';
 import 'package:sfera/src/data/dto/nsp_dto.dart';
 import 'package:sfera/src/data/dto/operational_indication_nsp_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
@@ -16,6 +17,8 @@ class JpContextInformationNspDto extends NspDto {
     final groupName = children?.where((it) => it.type == NspDto.groupNameElement).firstOrNull;
     if (groupName?.value == OperationalIndicationNspDto.elementType) {
       return OperationalIndicationNspDto(attributes: attributes, children: children, value: value);
+    } else if (groupName?.value == KilometreReferencePointNspDto.elementType) {
+      return KilometreReferencePointNspDto(attributes: attributes, children: children, value: value);
     }
     return JpContextInformationNspDto(attributes: attributes, children: children, value: value);
   }

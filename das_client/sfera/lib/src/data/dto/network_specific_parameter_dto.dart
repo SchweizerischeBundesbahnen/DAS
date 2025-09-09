@@ -1,5 +1,6 @@
 import 'package:sfera/src/data/dto/amount_tram_signals_dto.dart';
 import 'package:sfera/src/data/dto/id_nsp_dto.dart';
+import 'package:sfera/src/data/dto/km_ref_nsp_dto.dart';
 import 'package:sfera/src/data/dto/new_speed_nsp_dto.dart';
 import 'package:sfera/src/data/dto/operational_indication_type_nsp_dto.dart';
 import 'package:sfera/src/data/dto/operational_indication_uncoded_text_nsp_dto.dart';
@@ -55,6 +56,8 @@ class NetworkSpecificParameterDto extends SferaXmlElementDto {
       return OperationalIndicationTypeNspDto(attributes: attributes, children: children, value: value);
     } else if (attributes?['name'] == OperationalIndicationUncodedTextNspDto.elementName) {
       return OperationalIndicationUncodedTextNspDto(attributes: attributes, children: children, value: value);
+    } else if (attributes?['name'] == KmRefNspDto.elementName) {
+      return KmRefNspDto(attributes: attributes, children: children, value: value);
     }
     return NetworkSpecificParameterDto(attributes: attributes, children: children, value: value);
   }
