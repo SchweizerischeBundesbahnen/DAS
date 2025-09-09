@@ -1,4 +1,5 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/train_journey/widgets/reduced_overview/reduced_communication_network_change_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/reduced_overview/reduced_overview_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/reduced_overview/rows/reduced_service_point_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
@@ -76,6 +77,14 @@ class ReducedTrainJourney extends StatelessWidget {
             data: rowData as AdditionalSpeedRestrictionData,
             config: trainJourneyConfig,
             rowIndex: index,
+          );
+        case Datatype.communicationNetworkChannel:
+          return ReducedCommunicationNetworkChannelRow(
+            key: GlobalKey(),
+            metadata: metadata,
+            data: rowData as CommunicationNetworkChannel,
+            rowIndex: index,
+            context: context,
           );
         default:
           return null;
