@@ -191,6 +191,8 @@ class SferaModelMapper {
     for (int segmentIndex = 0; segmentIndex < segmentProfilesReferences.length; segmentIndex++) {
       final segmentProfileReference = segmentProfilesReferences[segmentIndex];
 
+      final kmReferencePoints = segmentProfileReference.jpContextInformation?.kilometreReferencePoint;
+
       for (final asrTemporaryConstrain in segmentProfileReference.asrTemporaryConstraints) {
         if (_shouldSkipAsrDueToJourneyTimes(servicePoints, asrTemporaryConstrain)) continue;
 
@@ -202,33 +204,38 @@ class SferaModelMapper {
           case StartEndQualifierDto.starts:
             segmentData.startLocation = asrTemporaryConstrain.startLocation;
             segmentData.startIndex = segmentIndex;
+            segmentData.startKmRef = kmReferencePoints
+                ?.firstWhereOrNull((it) => it.constraint?.startLocation == asrTemporaryConstrain.startLocation)
+                ?.kmRef;
             break;
           case StartEndQualifierDto.startsEnds:
             segmentData.startLocation = asrTemporaryConstrain.startLocation;
             segmentData.startIndex = segmentIndex;
+            segmentData.startKmRef = kmReferencePoints
+                ?.firstWhereOrNull((it) => it.constraint?.startLocation == asrTemporaryConstrain.startLocation)
+                ?.kmRef;
             continue next;
           next:
           case StartEndQualifierDto.ends:
             segmentData.endLocation = asrTemporaryConstrain.endLocation;
             segmentData.endIndex = segmentIndex;
+            segmentData.endKmRef = kmReferencePoints
+                ?.firstWhereOrNull((it) => it.constraint?.endLocation == asrTemporaryConstrain.endLocation)
+                ?.kmRef;
             break;
           case StartEndQualifierDto.wholeSp:
             break;
         }
 
         if (segmentData.isComplete) {
-          final startSegment = segmentProfiles.firstMatch(segmentProfilesReferences[segmentData.startIndex!]);
-          final endSegment = segmentProfiles.firstMatch(segmentProfilesReferences[segmentData.endIndex!]);
-          final startKilometreMap = parseKilometre(startSegment);
-          final endKilometreMap = parseKilometre(endSegment);
           final speed =
               asrTemporaryConstrain.additionalSpeedRestriction?.asrSpeed ??
               asrTemporaryConstrain.parallelAsrConstraintDto?.speedNsp.speed;
 
           result.add(
             AdditionalSpeedRestriction(
-              kmFrom: startKilometreMap[segmentData.startLocation]!.first,
-              kmTo: endKilometreMap[segmentData.endLocation]!.first,
+              kmFrom: segmentData.startKmRef!,
+              kmTo: segmentData.endKmRef!,
               orderFrom: segmentData.startOrder!,
               orderTo: segmentData.endOrder!,
               restrictionFrom: asrTemporaryConstrain.startTime,
@@ -574,6 +581,8 @@ class _SegmentMapperData {
   int? endIndex;
   double? startLocation;
   double? endLocation;
+  double? startKmRef;
+  double? endKmRef;
 
   int? get startOrder => _calculateOrder(startIndex, startLocation);
 
@@ -593,10 +602,12 @@ class _SegmentMapperData {
     endIndex = null;
     startLocation = null;
     endLocation = null;
+    startKmRef = null;
+    endKmRef = null;
   }
 
   @override
   String toString() {
-    return '_SegmentMapperData{startSegmentIndex: $startIndex, endSegmentIndex: $endIndex, startLocation: $startLocation, endLocation: $endLocation}';
+    return '_SegmentMapperData{startSegmentIndex: $startIndex, endSegmentIndex: $endIndex, startLocation: $startLocation, endLocation: $endLocation, startKmRef: $startKmRef, endKmRef: $endKmRef}';
   }
 }
