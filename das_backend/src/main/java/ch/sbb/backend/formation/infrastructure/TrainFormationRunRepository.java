@@ -2,6 +2,7 @@ package ch.sbb.backend.formation.infrastructure;
 
 import ch.sbb.backend.formation.infrastructure.model.TrainFormationRunEntity;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.List;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.stereotype.Repository;
@@ -12,4 +13,6 @@ public interface TrainFormationRunRepository extends ListCrudRepository<TrainFor
     List<TrainFormationRunEntity> findByOperationalTrainNumberAndOperationalDayAndCompanyOrderByInspectionDateTime(String operationalTrainNumber, LocalDate operationalDay, String company);
 
     void deleteByTrainPathIdAndOperationalDay(String trainPathId, LocalDate operationalDay);
+
+    void deleteByInspectionDateTimeBefore(OffsetDateTime before);
 }
