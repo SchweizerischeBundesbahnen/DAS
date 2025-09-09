@@ -65,8 +65,8 @@ class VehicleTest {
     void europeanVehicleNumbers_withEmpty() {
         List<Vehicle> vehicles = Collections.emptyList();
 
-        String first = Vehicle.europeanVehicleNumberLast(vehicles);
-        String last = Vehicle.europeanVehicleNumberFirst(vehicles);
+        String first = Vehicle.getEuropeanVehicleNumberLast(vehicles);
+        String last = Vehicle.getEuropeanVehicleNumberFirst(vehicles);
 
         assertThat(first).isNull();
         assertThat(last).isNull();
@@ -74,17 +74,12 @@ class VehicleTest {
 
     @Test
     void europeanVehicleNumbers_withNull() {
-        EuropeanVehicleNumber firstEvnMock = mock(EuropeanVehicleNumber.class);
-        when(firstEvnMock.toVehicleCode()).thenReturn("34562342341");
-        EuropeanVehicleNumber lastEvnMock = mock(EuropeanVehicleNumber.class);
-        when(lastEvnMock.toVehicleCode()).thenReturn("34324346134");
-
         Vehicle vehicle1 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, null);
         Vehicle vehicle2 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, null);
         List<Vehicle> vehicles = List.of(vehicle1, vehicle2);
 
-        String first = Vehicle.europeanVehicleNumberFirst(vehicles);
-        String last = Vehicle.europeanVehicleNumberLast(vehicles);
+        String first = Vehicle.getEuropeanVehicleNumberFirst(vehicles);
+        String last = Vehicle.getEuropeanVehicleNumberLast(vehicles);
 
         assertThat(first).isNull();
         assertThat(last).isNull();
@@ -92,19 +87,17 @@ class VehicleTest {
 
     @Test
     void europeanVehicleNumbers_withMultipleVehicles() {
-        EuropeanVehicleNumber firstEvnMock = mock(EuropeanVehicleNumber.class);
-        when(firstEvnMock.toVehicleCode()).thenReturn("34562342341");
-        EuropeanVehicleNumber lastEvnMock = mock(EuropeanVehicleNumber.class);
-        when(lastEvnMock.toVehicleCode()).thenReturn("34324346134");
+        EuropeanVehicleNumber firstEvn = new EuropeanVehicleNumber("34", "56", "234234", "1");
+        EuropeanVehicleNumber lastEvn = new EuropeanVehicleNumber("34", "32", "434613", "4");
 
         Vehicle vehicle1 = new Vehicle(TractionMode.ZUGLOK, VehicleCategory.LOKOMOTIVE.name(), null, null);
-        Vehicle vehicle2 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, firstEvnMock);
+        Vehicle vehicle2 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, firstEvn);
         Vehicle vehicle3 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, null);
-        Vehicle vehicle4 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, lastEvnMock);
+        Vehicle vehicle4 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, lastEvn);
         List<Vehicle> vehicles = List.of(vehicle1, vehicle2, vehicle3, vehicle4);
 
-        String first = Vehicle.europeanVehicleNumberFirst(vehicles);
-        String last = Vehicle.europeanVehicleNumberLast(vehicles);
+        String first = Vehicle.getEuropeanVehicleNumberFirst(vehicles);
+        String last = Vehicle.getEuropeanVehicleNumberLast(vehicles);
 
         assertThat(first).isEqualTo("34562342341");
         assertThat(last).isEqualTo("34324346134");
@@ -112,16 +105,15 @@ class VehicleTest {
 
     @Test
     void europeanVehicleNumbers_whenOnlyOneHauledLoad() {
-        EuropeanVehicleNumber evnMock = mock(EuropeanVehicleNumber.class);
-        when(evnMock.toVehicleCode()).thenReturn("425859349349");
+        EuropeanVehicleNumber evn = new EuropeanVehicleNumber("42", "58", "5934934", "9");
 
         Vehicle vehicle1 = new Vehicle(TractionMode.ZUGLOK, VehicleCategory.LOKOMOTIVE.name(), null, null);
-        Vehicle vehicle2 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, evnMock);
+        Vehicle vehicle2 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, evn);
         Vehicle vehicle3 = new Vehicle(TractionMode.SCHIEBELOK, VehicleCategory.LOKOMOTIVE.name(), null, null);
         List<Vehicle> vehicles = List.of(vehicle1, vehicle2, vehicle3);
 
-        String first = Vehicle.europeanVehicleNumberFirst(vehicles);
-        String last = Vehicle.europeanVehicleNumberLast(vehicles);
+        String first = Vehicle.getEuropeanVehicleNumberFirst(vehicles);
+        String last = Vehicle.getEuropeanVehicleNumberLast(vehicles);
 
         assertThat(first).isEqualTo("425859349349");
         assertThat(last).isEqualTo("425859349349");

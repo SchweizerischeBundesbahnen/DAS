@@ -19,7 +19,7 @@ public class Vehicle {
         return filterHauledLoad(vehicles).size();
     }
 
-    static String europeanVehicleNumberFirst(List<Vehicle> vehicles) {
+    static String getEuropeanVehicleNumberFirst(List<Vehicle> vehicles) {
         List<Vehicle> hauledLoadVehicles = filterHauledLoad(vehicles);
         if (hauledLoadVehicles.isEmpty() || hauledLoadVehicles.getFirst().europeanVehicleNumber == null) {
             return null;
@@ -27,7 +27,7 @@ public class Vehicle {
         return hauledLoadVehicles.getFirst().europeanVehicleNumber.toVehicleCode();
     }
 
-    static String europeanVehicleNumberLast(List<Vehicle> vehicles) {
+    static String getEuropeanVehicleNumberLast(List<Vehicle> vehicles) {
         List<Vehicle> hauledLoadVehicles = filterHauledLoad(vehicles);
         if (hauledLoadVehicles.isEmpty() || hauledLoadVehicles.getLast().europeanVehicleNumber == null) {
             return null;
