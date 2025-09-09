@@ -35,10 +35,10 @@ class TrainFormationRunEntityTest {
     @Test
     void from_empty() {
         String operationalTrainNumber = "7889";
-        String trassenId = "7889-023";
+        String trainPathId = "7889-023";
         LocalDate operationalDay = LocalDate.of(2023, 10, 1);
 
-        Formation formation = new Formation(operationalTrainNumber, trassenId, operationalDay, Collections.emptyList());
+        Formation formation = new Formation(operationalTrainNumber, trainPathId, operationalDay, Collections.emptyList());
 
         List<TrainFormationRunEntity> entities = TrainFormationRunEntity.from(formation);
 
@@ -49,7 +49,7 @@ class TrainFormationRunEntityTest {
     void from_correct() {
         OffsetDateTime inspectionDateTime = OffsetDateTime.now();
         String operationalTrainNumber = "6599";
-        String trassenId = "6599-002";
+        String trainPathId = "6599-002";
         LocalDate operationalDay = LocalDate.of(2025, 9, 23);
 
         FormationRun formationRun = FormationRun.builder()
@@ -92,7 +92,7 @@ class TrainFormationRunEntityTest {
             ), new EuropeanVehicleNumber("56", "23", "78931", "3"))))
             .build();
 
-        Formation formation = new Formation(operationalTrainNumber, trassenId, operationalDay, List.of(formationRun));
+        Formation formation = new Formation(operationalTrainNumber, trainPathId, operationalDay, List.of(formationRun));
 
         List<TrainFormationRunEntity> entities = TrainFormationRunEntity.from(formation);
 
@@ -101,7 +101,7 @@ class TrainFormationRunEntityTest {
         assertThat(result.getId()).isNull();
         assertThat(result.getInspectionDateTime()).isEqualTo(inspectionDateTime);
         assertThat(result.getOperationalTrainNumber()).isEqualTo(operationalTrainNumber);
-        assertThat(result.getTrassenId()).isEqualTo(trassenId);
+        assertThat(result.getTrainPathId()).isEqualTo(trainPathId);
         assertThat(result.getOperationalDay()).isEqualTo(operationalDay);
         assertThat(result.getCompany()).isEqualTo("4532");
         assertThat(result.getTafTapLocationReferenceStart()).isEqualTo("CH102344");

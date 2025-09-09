@@ -57,7 +57,7 @@ class FormationIntegrationTest {
                 assertThat(actual.getId()).isEqualTo(1);
                 assertThat(actual.getInspectionDateTime()).isEqualTo(OffsetDateTime.parse("2025-08-01T16:23:27Z"));
                 assertThat(actual.getOperationalTrainNumber()).isEqualTo("71237");
-                assertThat(actual.getTrassenId()).isEqualTo("71237-001");
+                assertThat(actual.getTrainPathId()).isEqualTo("71237-001");
                 assertThat(actual.getOperationalDay()).isEqualTo(LocalDate.parse("2025-08-01"));
                 assertThat(actual.getCompany()).isEqualTo("2687");
                 assertThat(actual.getTafTapLocationReferenceStart()).isEqualTo("CH05699");

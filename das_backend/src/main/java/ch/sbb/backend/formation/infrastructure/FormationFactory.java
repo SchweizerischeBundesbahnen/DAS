@@ -14,8 +14,8 @@ public final class FormationFactory {
     public static Formation create(ConsumerRecord<DailyFormationTrainKey, DailyFormationTrain> message) {
         LocalDate operationalDay = message.key().getBetriebstag();
         String operationalTrainNumber = message.key().getZugnummer().toString();
-        String trassenId = message.key().getTrassenId();
+        String trainPathId = message.key().getTrassenId();
         DailyFormationTrain dailyFormationTrain = message.value();
-        return new Formation(operationalTrainNumber, trassenId, operationalDay, FormationRunFactory.create(dailyFormationTrain.getFormationRuns()));
+        return new Formation(operationalTrainNumber, trainPathId, operationalDay, FormationRunFactory.create(dailyFormationTrain.getFormationRuns()));
     }
 }

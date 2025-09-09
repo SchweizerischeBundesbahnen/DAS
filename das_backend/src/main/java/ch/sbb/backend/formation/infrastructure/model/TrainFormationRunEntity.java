@@ -33,7 +33,7 @@ public class TrainFormationRunEntity {
     @SequenceGenerator(name = "train_formation_run_id_seq", allocationSize = 1)
     private Integer id;
 
-    private String trassenId;
+    private String trainPathId;
 
     private OffsetDateTime inspectionDateTime;
 
@@ -141,7 +141,7 @@ public class TrainFormationRunEntity {
                 applyFormationRun(builder, formationRun);
                 builder
                     .operationalTrainNumber(formation.getOperationalTrainNumber())
-                    .trassenId(formation.getTrassenId())
+                    .trainPathId(formation.getTrainPathId())
                     .operationalDay(formation.getOperationalDay());
                 return builder.build();
             })

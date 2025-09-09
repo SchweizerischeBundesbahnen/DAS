@@ -3,7 +3,7 @@ TRUNCATE TABLE train_formation_run;
 ALTER SEQUENCE train_formation_run_id_seq RESTART WITH 1;
 
 INSERT INTO public.train_formation_run(id, inspection_date_time, operational_train_number,
-                                       trassen_id, operational_day, company,
+                                       train_path_id, operational_day, company,
                                        taf_tap_location_reference_start,
                                        taf_tap_location_reference_end, train_category_code,
                                        braked_weight_percentage, traction_max_speed_in_kmh,

@@ -29,7 +29,7 @@ public class FormationService {
         );
     }
 
-    public void deleteByTrassenIdAndOperationalDay(String trassenId, LocalDate operationalDay) {
-        trainFormationRunRepository.deleteByTrassenIdAndOperationalDay(trassenId, operationalDay);
+    public void deleteByTrainPathIdAndOperationalDay(String trainPathId, LocalDate operationalDay) {
+        trainFormationRunRepository.deleteByTrainPathIdAndOperationalDay(trainPathId, operationalDay);
     }
 }

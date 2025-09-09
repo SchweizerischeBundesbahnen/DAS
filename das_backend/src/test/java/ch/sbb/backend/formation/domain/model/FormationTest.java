@@ -16,10 +16,10 @@ class FormationTest {
     @Test
     void constructor_getters() {
         String operationalTrainNumber = "12345";
-        String trassenId = "12345-001";
+        String trainPathId = "12345-001";
         LocalDate operationalDay = LocalDate.now();
 
-        Formation formation = new Formation(operationalTrainNumber, trassenId, operationalDay, Collections.emptyList());
+        Formation formation = new Formation(operationalTrainNumber, trainPathId, operationalDay, Collections.emptyList());
 
         assertThat(formation.getOperationalTrainNumber()).isEqualTo(operationalTrainNumber);
         assertThat(formation.getOperationalDay()).isEqualTo(operationalDay);

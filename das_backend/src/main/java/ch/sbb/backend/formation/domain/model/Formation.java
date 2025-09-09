@@ -9,7 +9,7 @@ import lombok.Getter;
 public class Formation {
 
     @Getter private String operationalTrainNumber;
-    @Getter private String trassenId;
+    @Getter private String trainPathId;
     @Getter private LocalDate operationalDay;
     private List<FormationRun> formationRuns;
 
