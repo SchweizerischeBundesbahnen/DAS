@@ -55,7 +55,7 @@ public class RegistrationService {
         }
 
         if (!trainIdentification.isManualEvents()) {
-            eventService.registerActiveTrain(requestContext);
+            eventService.registerActiveTrain(requestContext, registration.timestamp());
         }
     }
 

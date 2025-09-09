@@ -36,6 +36,9 @@ class AppAssets {
   static const iconAdvisedSpeedFixedTime = '$_iconsDir/icon_advised_speed_fixed_time.svg';
   static const iconAdvisedSpeedFollowTrain = '$_iconsDir/icon_advised_speed_follow_train.svg';
   static const iconAdvisedSpeedTrainFollowing = '$_iconsDir/icon_advised_speed_train_following.svg';
+  static const iconWifi = '$_iconsDir/icon_wifi.svg';
+  static const iconWifiDisabled = '$_iconsDir/icon_wifi_disabled.svg';
+  static const iconExclamationPoint = '$_iconsDir/icon_exclamation_point.svg';
 
   // others
   static const imageTypeNSignalStop = '$_othersDir/type_n_signal_stop.svg';

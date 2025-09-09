@@ -1,6 +1,6 @@
 name: app
 publish_to: 'none'
-version: 0.25.0+67
+version: 0.26.0+68
 
 environment:
   sdk: ^3.9.0
@@ -21,6 +21,7 @@ dependencies:
   http_x: 1.0.0
   warnapp: 1.0.0
   settings: 1.0.0
+  connectivity_x: 1.0.0
   local_regulations: 1.0.0
 
   # https://pub.dev/packages/audioplayers

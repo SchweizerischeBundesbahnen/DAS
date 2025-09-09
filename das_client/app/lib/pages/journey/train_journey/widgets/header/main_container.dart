@@ -1,6 +1,7 @@
 import 'package:app/pages/journey/train_journey/header/radio_channel/radio_channel_view_model.dart';
 import 'package:app/pages/journey/train_journey/journey_position/journey_position_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/battery_status.dart';
+import 'package:app/pages/journey/train_journey/widgets/header/connectivity_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/departure_authorization.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/extended_menu.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/journey_identifier.dart';
@@ -54,6 +55,7 @@ class MainContainer extends StatelessWidget {
         Spacer(),
         JourneyIdentifier(),
         BatteryStatus(),
+        ConnectivityIcon(),
       ],
     ),
   );
