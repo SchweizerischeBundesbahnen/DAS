@@ -295,32 +295,32 @@ class FormationRunTest {
     void europeanVehicleNumbers_null() {
         FormationRun formationRun = createFormationRunWithVehicles(null);
         try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
-            mockedStatic.when(() -> Vehicle.europeanVehicleNumberFirst(any())).thenReturn(null);
+            mockedStatic.when(() -> Vehicle.getEuropeanVehicleNumberFirst(any())).thenReturn(null);
 
-            assertThat(formationRun.europeanVehicleNumberFirst()).isNull();
-            assertThat(formationRun.europeanVehicleNumberLast()).isNull();
+            assertThat(formationRun.getEuropeanVehicleNumberFirst()).isNull();
+            assertThat(formationRun.getEuropeanVehicleNumberLast()).isNull();
         }
     }
 
     @Test
-    void europeanVehicleNumberFirst_correct() {
+    void getEuropeanVehicleNumberFirst_correct() {
         FormationRun formationRun = createFormationRunWithVehicles(null);
         try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
-            mockedStatic.when(() -> Vehicle.europeanVehicleNumberFirst(any())).thenReturn("951234564");
+            mockedStatic.when(() -> Vehicle.getEuropeanVehicleNumberFirst(any())).thenReturn("951234564");
 
-            String result = formationRun.europeanVehicleNumberFirst();
+            String result = formationRun.getEuropeanVehicleNumberFirst();
 
             assertThat(result).isEqualTo("951234564");
         }
     }
 
     @Test
-    void europeanVehicleNumberLast_correct() {
+    void getEuropeanVehicleNumberLast_correct() {
         FormationRun formationRun = createFormationRunWithVehicles(null);
         try (MockedStatic<Vehicle> mockedStatic = mockStatic(Vehicle.class)) {
-            mockedStatic.when(() -> Vehicle.europeanVehicleNumberLast(any())).thenReturn("12789107");
+            mockedStatic.when(() -> Vehicle.getEuropeanVehicleNumberLast(any())).thenReturn("12789107");
 
-            String result = formationRun.europeanVehicleNumberLast();
+            String result = formationRun.getEuropeanVehicleNumberLast();
 
             assertThat(result).isEqualTo("12789107");
         }
