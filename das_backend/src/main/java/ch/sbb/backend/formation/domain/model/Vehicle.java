@@ -44,11 +44,11 @@ public class Vehicle {
     }
 
     static Integer countBrakeDesigns(List<Vehicle> vehicles, BrakeDesign... brakeDesigns) {
-        return (int) vehicles.stream().filter(vehicle -> vehicle.hasBrakeDesign(brakeDesigns)).count();
+        return (int) filterHauledLoad(vehicles).stream().filter(vehicle -> vehicle.hasBrakeDesign(brakeDesigns)).count();
     }
 
     static Integer countDisabledBrakes(List<Vehicle> vehicles) {
-        return (int) vehicles.stream().filter(Vehicle::hasDisabledBrake).count();
+        return (int) filterHauledLoad(vehicles).stream().filter(Vehicle::hasDisabledBrake).count();
     }
 
     static Integer calculateHoldingForce(List<Vehicle> vehicles) {
