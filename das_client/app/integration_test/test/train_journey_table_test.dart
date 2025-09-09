@@ -1082,7 +1082,6 @@ void main() {
         scrollableFinder,
         const Offset(0, -50),
       );
-
       await tester.pumpAndSettle();
 
       final expectedTimeVevey = '(${Format.operationalTime(DateTime.parse('2025-05-12T17:28:56Z'))})\n';
