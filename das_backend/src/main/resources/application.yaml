@@ -78,7 +78,7 @@ auth:
       issuer-uri: https://login.microsoftonline.com/a64ce5df-4ad8-40b9-91ee-54bac2bb8326/v2.0
       jwk-set-uri: https://login.microsoftonline.com/a64ce5df-4ad8-40b9-91ee-54bac2bb8326/discovery/v2.0/keys
 zis:
-  kafka.topic: zis.inte.trafo.trainformation.operational
+  kafka.topic: ${ZIS_TOPIC}
 logging:
   url: ${SPLUNK_HEC_URL}
   token: ${SPLUNK_HEC_TOKEN}

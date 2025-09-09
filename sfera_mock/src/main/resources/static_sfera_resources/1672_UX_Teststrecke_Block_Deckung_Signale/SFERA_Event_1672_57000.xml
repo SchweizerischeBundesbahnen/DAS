@@ -10,8 +10,7 @@
                 </OTN_ID>
             </TrainIdentification>
             <TrainLocationInformation>
-                <!--Deckungssignal B1-->
-                <PositionSpeed SP_ID="1672_1" location="20400">
+                <PositionSpeed SP_ID="1672_1" location="33030">
                     <SP_Zone>
                         <IM_ID>1285</IM_ID>
                     </SP_Zone>

@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.26.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.25.0...das_client-v0.26.0) (2025-09-09)
+
+
+### Features
+
+* add connection state display ([#119](https://github.com/SchweizerischeBundesbahnen/DAS/issues/119)) ([#1202](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1202)) ([a5342f4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a5342f4460a761c0d67307e9ca0fe7ef4a342c41))
+* add logging to splunk ([#1007](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1007)) ([#1200](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1200)) ([9593a98](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9593a98490c243f8db827ee2291de7cc5d36170b))
+* currentPosition and next stop are time dependent ([#766](https://github.com/SchweizerischeBundesbahnen/DAS/issues/766)) ([#1169](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1169)) ([cdf56f8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/cdf56f8b063f978fe2db9f8f6ccf184b76fa46d6))
+
+
+### Bug Fixes
+
+* change of app theme is slower on sticky header ([#874](https://github.com/SchweizerischeBundesbahnen/DAS/issues/874)) ([#1117](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1117)) ([ac4850f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ac4850f369b24a6408b067e6eed9b53653c21644))
+* color on next stop with additional speed restriction ([#1147](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1147)) ([#1167](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1167)) ([acba67b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/acba67badbe222fb2e6004cddbf53f5c775adfed))
+
 ## [0.25.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.24.1...das_client-v0.25.0) (2025-08-15)
 
 

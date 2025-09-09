@@ -21,4 +21,7 @@ class TestTimeConstants extends TimeConstants {
 
   @override
   int get kmDecisiveGradientResetSeconds => 2;
+
+  @override
+  int get connectivityLostNotificationDelay => 2;
 }
