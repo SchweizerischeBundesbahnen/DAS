@@ -7,7 +7,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class DetailTabLocalRegulations extends StatelessWidget {
   static const localRegulationsTabKey = Key('localRegulationsTabKey');
 
-  const DetailTabLocalRegulations({super.key});
+  const DetailTabLocalRegulations({super.key = localRegulationsTabKey});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class DetailTabLocalRegulations extends StatelessWidget {
     return _htmlView(context);
   }
 
-  StreamBuilder<String> _htmlView(BuildContext context) {
+  Widget _htmlView(BuildContext context) {
     return StreamBuilder(
       stream: context.read<ServicePointModalViewModel>().localRegulationHtml,
       builder: (context, snapshot) {

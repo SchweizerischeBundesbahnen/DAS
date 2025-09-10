@@ -11,14 +11,13 @@ import 'package:sfera/component.dart';
 class DetailTabGraduatedSpeeds extends StatelessWidget {
   static const graduatedSpeedsTabKey = Key('graduatedSpeedsTabKey');
 
-  const DetailTabGraduatedSpeeds({super.key});
+  const DetailTabGraduatedSpeeds({super.key = graduatedSpeedsTabKey});
 
   @override
   Widget build(BuildContext context) {
     final viewModel = context.read<ServicePointModalViewModel>();
 
     return StreamBuilder(
-      key: graduatedSpeedsTabKey,
       stream: CombineLatestStream.list([viewModel.breakSeries, viewModel.relevantSpeedInfo]),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return _loading();
