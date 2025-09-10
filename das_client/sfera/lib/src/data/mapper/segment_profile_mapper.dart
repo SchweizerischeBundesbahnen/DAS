@@ -9,6 +9,9 @@ import 'package:sfera/src/data/dto/enums/stop_skip_pass_dto.dart';
 import 'package:sfera/src/data/dto/enums/taf_tap_location_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 import 'package:sfera/src/data/dto/foot_note_dto.dart';
+import 'package:sfera/src/data/dto/local_regulation_content_nsp_dto.dart';
+import 'package:sfera/src/data/dto/local_regulation_nsp_dto.dart';
+import 'package:sfera/src/data/dto/local_regulation_title_nsp_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_parameter_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
@@ -144,6 +147,7 @@ class SegmentProfileMapper {
           stationSign1: tafTapLocation.routeTableDataNsp?.stationSign1,
           stationSign2: tafTapLocation.routeTableDataNsp?.stationSign2,
           properties: _parseStationProperties(tafTapLocation.property?.xmlStationProperty.element.properties),
+          localRegulationSections: _parseLocalRegulationSegments(tafTapLocation.localRegulations),
         ),
       );
     }
@@ -421,6 +425,15 @@ class SegmentProfileMapper {
         text: property.text,
         sign: StationSign.fromOptional(property.sign),
         speeds: SpeedMapper.fromVelocities(property.speeds?.velocities),
+      );
+    }).toList();
+  }
+
+  static List<LocalRegulationSection> _parseLocalRegulationSegments(Iterable<LocalRegulationNspDto> localRegulations) {
+    return localRegulations.map((dto) {
+      return LocalRegulationSection(
+        title: dto.titles.toLocalizedString,
+        content: dto.contents.toLocalizedString,
       );
     }).toList();
   }

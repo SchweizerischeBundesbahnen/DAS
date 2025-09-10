@@ -5,14 +5,18 @@ import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_poi
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:flutter/material.dart';
+import 'package:local_regulations/component.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
 class ServicePointModalViewModel {
-  ServicePointModalViewModel() {
+  ServicePointModalViewModel({required LocalRegulationHtmlGenerator localRegulationHtmlGenerator})
+    : _localRegulationHtmlGenerator = localRegulationHtmlGenerator {
     _init();
   }
+
+  final LocalRegulationHtmlGenerator _localRegulationHtmlGenerator;
 
   final _rxCommunicationNetworkType = BehaviorSubject<CommunicationNetworkType?>();
   final _rxRadioContactList = BehaviorSubject<RadioContactList?>();
@@ -22,9 +26,13 @@ class ServicePointModalViewModel {
   final _rxSelectedTab = BehaviorSubject<ServicePointModalTab?>();
   final _rxSettings = BehaviorSubject<TrainJourneySettings>();
   final _rxRelevantSpeedInfo = BehaviorSubject.seeded(<TrainSeriesSpeed>[]);
+  final _rxLocalRegulationSections = BehaviorSubject.seeded(<LocalRegulationSection>[]);
+  final _rxLocalRegulationHtml = BehaviorSubject<String>();
   final _rxBreakSeries = BehaviorSubject<BreakSeries?>();
   final _rxTabs = BehaviorSubject.seeded(<ServicePointModalTab>[]);
   final _subscriptions = <StreamSubscription>[];
+
+  ServicePointModalTab? get selectedTabValue => _rxSelectedTab.value;
 
   Stream<ServicePointModalTab?> get selectedTab => _rxSelectedTab.distinct();
 
@@ -42,6 +50,10 @@ class ServicePointModalViewModel {
 
   Stream<List<ServicePointModalTab>> get tabs => _rxTabs.distinct();
 
+  Stream<List<LocalRegulationSection>> get localRegulationSections => _rxLocalRegulationSections.distinct();
+
+  Stream<String> get localRegulationHtml => _rxLocalRegulationHtml.distinct();
+
   void _init() {
     _initRadioContacts();
     _initSimCorridor();
@@ -49,6 +61,8 @@ class ServicePointModalViewModel {
     _initRelevantSpeedInfo();
     _initTabs();
     _initSelectedTab();
+    _initLocalRegulationSection();
+    _initLocalRegulationHtml();
   }
 
   void _initRadioContacts() {
@@ -99,14 +113,20 @@ class ServicePointModalViewModel {
   }
 
   void _initTabs() {
-    final subscription = Rx.combineLatest2(
+    final subscription = Rx.combineLatest3(
       _rxBreakSeries.stream,
       _rxRelevantSpeedInfo.stream,
-      (breakSeries, relevantSpeedData) {
+      _rxLocalRegulationSections.stream,
+      (breakSeries, relevantSpeedData, localRegulations) {
         final tabsWithData = <ServicePointModalTab>[ServicePointModalTab.communication];
         if (breakSeries != null && relevantSpeedData.isNotEmpty) {
           tabsWithData.add(ServicePointModalTab.graduatedSpeeds);
         }
+
+        if (localRegulations.isNotEmpty) {
+          tabsWithData.add(ServicePointModalTab.localRegulations);
+        }
+
         return tabsWithData;
       },
     ).listen(_rxTabs.add, onError: _rxTabs.addError);
@@ -119,6 +139,20 @@ class ServicePointModalViewModel {
         _rxSelectedTab.add(tabs.first);
       }
     });
+    _subscriptions.add(subscription);
+  }
+
+  void _initLocalRegulationSection() {
+    final subscription = _rxServicePoint
+        .map((servicePoint) => servicePoint.localRegulationSections)
+        .listen(_rxLocalRegulationSections.add, onError: _rxLocalRegulationSections.addError);
+    _subscriptions.add(subscription);
+  }
+
+  void _initLocalRegulationHtml() {
+    final subscription = _rxLocalRegulationSections
+        .asyncMap((sections) => _localRegulationHtmlGenerator.generate(sections: sections))
+        .listen(_rxLocalRegulationHtml.add, onError: _rxLocalRegulationHtml.addError);
     _subscriptions.add(subscription);
   }
 
@@ -152,6 +186,8 @@ class ServicePointModalViewModel {
     _rxSettings.close();
     _rxRelevantSpeedInfo.close();
     _rxBreakSeries.close();
+    _rxLocalRegulationSections.close();
+    _rxLocalRegulationHtml.close();
     _rxTabs.close();
   }
 }
