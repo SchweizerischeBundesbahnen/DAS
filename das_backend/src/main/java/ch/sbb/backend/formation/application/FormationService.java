@@ -26,6 +26,7 @@ public class FormationService {
         this.trainFormationRunRepository = trainFormationRunRepository;
     }
 
+    @Transactional
     public void save(List<TrainFormationRunEntity> trainFormationRunEntities) {
         trainFormationRunRepository.saveAll(trainFormationRunEntities);
     }
@@ -40,6 +41,7 @@ public class FormationService {
         );
     }
 
+    @Transactional
     public void deleteByTrainPathIdAndOperationalDay(String trainPathId, LocalDate operationalDay) {
         trainFormationRunRepository.deleteByTrainPathIdAndOperationalDay(trainPathId, operationalDay);
     }
