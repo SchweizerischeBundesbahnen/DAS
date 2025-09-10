@@ -10,10 +10,4 @@ class LocalRegulationNspDto extends TafTapLocationNspDto {
   Iterable<LocalRegulationTitleNspDto> get titles => children.whereType<LocalRegulationTitleNspDto>();
 
   Iterable<LocalRegulationContentNspDto> get contents => children.whereType<LocalRegulationContentNspDto>();
-
-  // TODO: Validate: Are titles and contents required?
-  @override
-  bool validate() {
-    return super.validate();
-  }
 }

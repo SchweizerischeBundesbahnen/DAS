@@ -1687,6 +1687,44 @@ void main() {
       hasLength(2),
     );
   });
+
+  test('Test local regulations are parsed correctly', () {
+    final journey = getJourney('T26', 1);
+    expect(journey.valid, true);
+
+    final servicePoints = journey.data.whereType<ServicePoint>().toList();
+    expect(servicePoints, hasLength(3));
+
+    // Genève-Aéroport
+    final geneveAirport = servicePoints[0];
+    final geneveAirportRegulations = geneveAirport.localRegulationSections;
+    expect(geneveAirportRegulations, hasLength(1));
+    final geneveAirportTitle = geneveAirportRegulations.first.title;
+    expect(geneveAirportTitle.de, 'GEAP Genf Flughafen');
+    expect(geneveAirportTitle.fr, 'GEAP Genève Aéroport');
+    expect(geneveAirportTitle.it, 'GEAP Aeroporto di Ginevra');
+    final geneveAirportContent = geneveAirportRegulations.first.content;
+    expect(geneveAirportContent.de, '<div>Inhalt</div>');
+    expect(geneveAirportContent.fr, '<div>Contenu</div>');
+    expect(geneveAirportContent.it, '<div>Contenuto</div>');
+
+    // Genève
+    final geneve = servicePoints[1];
+    final geneveRegulations = geneve.localRegulationSections;
+    expect(geneveRegulations, hasLength(1));
+    final geneveTitle = geneveRegulations.first.title;
+    expect(geneveTitle.de, 'ZR Titel');
+    expect(geneveTitle.fr, isNull);
+    expect(geneveTitle.it, isNull);
+    final geneveContent = geneveRegulations.first.content;
+    expect(geneveContent.de, '<div>Test</div>');
+    expect(geneveContent.fr, isNull);
+    expect(geneveContent.it, isNull);
+
+    // Coppet
+    final coppet = servicePoints[2];
+    expect(coppet.localRegulationSections, isEmpty);
+  });
 }
 
 void _checkTrainSeriesSpeed<T extends Speed>(
