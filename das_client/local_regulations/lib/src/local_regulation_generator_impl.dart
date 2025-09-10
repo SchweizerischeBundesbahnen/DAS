@@ -6,8 +6,8 @@ import 'package:local_regulations/src/template/css_style.dart';
 import 'package:local_regulations/src/template/html_template.dart';
 import 'package:sfera/component.dart';
 
-const String _htmlTemplateString = '{{HTML_BODY}}';
-const String _cssTemplateString = '{{CSS_STYLE}}';
+const String htmlTemplateString = '{{HTML_BODY}}';
+const String cssTemplateString = '{{CSS_STYLE}}';
 
 class LocalRegulationHtmlGeneratorImpl implements LocalRegulationHtmlGenerator {
   @override
@@ -19,10 +19,10 @@ class LocalRegulationHtmlGeneratorImpl implements LocalRegulationHtmlGenerator {
 // extensions
 
 extension _StringExtension on String {
-  String appendCSS() => replaceAll(_cssTemplateString, cssStyle);
+  String appendCSS() => replaceAll(cssTemplateString, cssStyle);
 
   String appendSections(List<LocalRegulationSection> sections) {
     final sectionsAsHtml = sections.map((section) => section.toHtml()).join();
-    return replaceAll(_htmlTemplateString, sectionsAsHtml);
+    return replaceAll(htmlTemplateString, sectionsAsHtml);
   }
 }
