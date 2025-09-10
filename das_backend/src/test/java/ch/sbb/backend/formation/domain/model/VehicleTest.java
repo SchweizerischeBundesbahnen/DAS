@@ -1,5 +1,7 @@
 package ch.sbb.backend.formation.domain.model;
 
+import static ch.sbb.backend.formation.domain.model.VehicleUnitTest.createVehicleUnitWithBrakeDesign;
+import static ch.sbb.backend.formation.domain.model.VehicleUnitTest.createVehicleUnitWithDisabledBrake;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
@@ -151,35 +153,42 @@ class VehicleTest {
 
     @Test
     void countBrakeDesigns_hasTwo() {
-        List<Vehicle> vehicles = List.of(createVehicle(), createVehicle());
+        List<Vehicle> vehicles = List.of(
+            new Vehicle(null, VehicleCategory.LOKOMOTIVE.name(), List.of(createVehicleUnitWithBrakeDesign(BrakeDesign.EINLOESIGE_BREMSE)), null),
+            new Vehicle(null, null, List.of(createVehicleUnitWithBrakeDesign(BrakeDesign.EINLOESIGE_BREMSE)), null),
+            new Vehicle(null, null, List.of(createVehicleUnitWithBrakeDesign(BrakeDesign.EINLOESIGE_BREMSE)), null));
 
-        try (MockedStatic<VehicleUnit> mockedStatic = mockStatic(VehicleUnit.class)) {
-            mockedStatic.when(() -> VehicleUnit.hasBrakeDesign(any(), any())).thenReturn(true);
+        assertThat(Vehicle.countBrakeDesigns(vehicles, BrakeDesign.EINLOESIGE_BREMSE)).isEqualTo(2);
+    }
 
-            assertThat(Vehicle.countBrakeDesigns(vehicles, BrakeDesign.EINLOESIGE_BREMSE)).isEqualTo(2);
-        }
+    @Test
+    void countBrakeDesigns_withMultipleBrakeDesigns() {
+        List<Vehicle> vehicles = List.of(
+            new Vehicle(null, VehicleCategory.LOKOMOTIVE.name(), List.of(createVehicleUnitWithBrakeDesign(BrakeDesign.KUNSTSTOFF_BREMSKLOETZE)), null),
+            new Vehicle(null, null, List.of(createVehicleUnitWithBrakeDesign(BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE)), null),
+            new Vehicle(null, null, List.of(createVehicleUnitWithBrakeDesign(BrakeDesign.KUNSTSTOFF_BREMSKLOETZE)), null));
+
+        assertThat(Vehicle.countBrakeDesigns(vehicles, BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE, BrakeDesign.KUNSTSTOFF_BREMSKLOETZE)).isEqualTo(2);
     }
 
     @Test
     void countBrakeDesigns_hasNone() {
-        List<Vehicle> vehicles = List.of(createVehicle(), createVehicle());
+        List<Vehicle> vehicles = List.of(
+            new Vehicle(null, null, List.of(createVehicleUnitWithBrakeDesign(BrakeDesign.SCHEIBENBREMSEN)), null),
+            new Vehicle(null, null, List.of(createVehicleUnitWithBrakeDesign(BrakeDesign.NICHT_KODIERT)), null)
+        );
 
-        try (MockedStatic<VehicleUnit> mockedStatic = mockStatic(VehicleUnit.class)) {
-            mockedStatic.when(() -> VehicleUnit.hasBrakeDesign(any(), any())).thenReturn(false);
-
-            assertThat(Vehicle.countBrakeDesigns(vehicles, BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE)).isZero();
-        }
+        assertThat(Vehicle.countBrakeDesigns(vehicles, BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE)).isZero();
     }
 
     @Test
     void countDisabledBrakes_hasOne() {
-        List<Vehicle> vehicles = List.of(createVehicle());
+        List<Vehicle> vehicles = List.of(
+            new Vehicle(null, VehicleCategory.LOKOMOTIVE.name(), List.of(createVehicleUnitWithDisabledBrake()), null),
+            new Vehicle(null, null, List.of(createVehicleUnitWithDisabledBrake()), null)
+        );
 
-        try (MockedStatic<VehicleUnit> mockedStatic = mockStatic(VehicleUnit.class)) {
-            mockedStatic.when(() -> VehicleUnit.hasDisabledBrake(any())).thenReturn(true);
-
-            assertThat(Vehicle.countDisabledBrakes(vehicles)).isEqualTo(1);
-        }
+        assertThat(Vehicle.countDisabledBrakes(vehicles)).isEqualTo(1);
     }
 
     @Test
