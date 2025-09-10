@@ -35,7 +35,7 @@ public class SessionsActuator {
     }
 
     @WriteOperation
-    public void nextLocation(String clientId, String operationalNumber, LocalDate date, String companyCode) {
-        registrationService.nextLocationEvent(new ClientId(clientId));
+    public void nextEvent(String clientId, String operationalNumber, LocalDate date, String companyCode) {
+        registrationService.nextEvent(new ClientId(clientId));
     }
 }

@@ -52,12 +52,12 @@ public class EventService {
         scheduledTasks.put(requestContext.clientId(), futures);
     }
 
-    public void nextLocationEvent(RequestContext requestContext, int manualLocationIndex) {
+    public void nextEvent(RequestContext requestContext, int manualEventIndex, ZonedDateTime registrationTime) {
         var event = this.eventRepository.events.get(requestContext.tid().baseOperationalNumber()).stream()
             .sorted(Comparator.comparingInt(Event::offsetMs))
             .toList()
-            .get(manualLocationIndex);
-        eventPublisher.publishRelatedTrainInformation(event.payload(), requestContext);
+            .get(manualEventIndex);
+        processEvent(event.payload(), requestContext, registrationTime);
     }
 
     public void deregisterActiveTrain(ClientId clientId) {
