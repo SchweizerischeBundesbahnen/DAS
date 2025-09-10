@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * <a href="https://confluence.sbb.ch/spaces/DASBP/pages/3037422329/Cargo+Formation+ZIS-Formation">Business rules</a>
@@ -15,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 @Builder
 @EqualsAndHashCode
 @ToString
-@Slf4j
 public class FormationRun {
 
     /**
@@ -88,8 +86,8 @@ public class FormationRun {
         if (company != null && company.length() == COMPANY_CODE_LENGTH && !INVALID_COMPANY_CODE.equals(company)) {
             return true;
         } else {
-            log.warn("No valid company code {} for formation run {} - {}", company, tafTapLocationReferenceStart.toLocationCode(), tafTapLocationReferenceEnd.toLocationCode());
-            return false;
+            throw new IllegalStateException(
+                "Invalid company code: " + company + " for formation run " + tafTapLocationReferenceStart.toLocationCode() + " - " + tafTapLocationReferenceEnd.toLocationCode());
         }
     }
 

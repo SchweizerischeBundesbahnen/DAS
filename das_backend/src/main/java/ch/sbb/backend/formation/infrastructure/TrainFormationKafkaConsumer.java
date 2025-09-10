@@ -28,11 +28,16 @@ public class TrainFormationKafkaConsumer {
     void receive(ConsumerRecord<DailyFormationTrainKey, DailyFormationTrain> message) {
         long lagInS = (Instant.now().toEpochMilli() - message.timestamp()) / 1000;
         log.debug("lagInS={} partition={} offset={}", lagInS, message.partition(), message.offset());
-        Formation formation = FormationFactory.create(message);
-        List<TrainFormationRunEntity> trainFormationRunEntities = TrainFormationRunEntity.from(formation);
+        try {
+            Formation formation = FormationFactory.create(message);
+            List<TrainFormationRunEntity> trainFormationRunEntities = TrainFormationRunEntity.from(formation);
 
-        formationService.deleteByTrainPathIdAndOperationalDay(formation.getTrainPathId(), formation.getOperationalDay());
-        formationService.save(trainFormationRunEntities);
-        log.debug("Train formation runs saved from kafka message partition={}, offset={}", message.partition(), message.offset());
+            formationService.deleteByTrainPathIdAndOperationalDay(formation.getTrainPathId(), formation.getOperationalDay());
+            formationService.save(trainFormationRunEntities);
+            log.debug("Train formation runs saved from kafka message partition={}, offset={}", message.partition(), message.offset());
+        } catch (Exception e) {
+            log.error("Error processing kafka message partition={}, offset={}, operationalTrainNumber={}, operationalDay={}", message.partition(), message.offset(), message.key().getZugnummer(),
+                message.key().getBetriebstag(), e);
+        }
     }
 }
