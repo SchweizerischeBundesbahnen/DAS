@@ -1,5 +1,6 @@
 package ch.sbb.backend.formation.domain.model;
 
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import lombok.Builder;
@@ -24,6 +25,7 @@ public class FormationRun {
     public static final int COMPANY_CODE_LENGTH = 4;
 
     private Boolean inspected;
+    @Getter private OffsetDateTime inspectionDateTime;
     @Getter private String company;
     @Getter private TafTapLocationReference tafTapLocationReferenceStart;
     @Getter private TafTapLocationReference tafTapLocationReferenceEnd;

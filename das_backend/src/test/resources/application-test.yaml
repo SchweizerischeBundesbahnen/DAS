@@ -3,8 +3,14 @@ spring:
     url: jdbc
   kafka:
     consumer:
-      bootstrap-servers: localhost:9092
-
+      group-id: test
+      key-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+    producer:
+      key-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 auth:
   audience:
     service-name: test
@@ -25,4 +31,4 @@ aws:
 
 zis:
   kafka:
-    topic: test
+    topic: "formation-test"
