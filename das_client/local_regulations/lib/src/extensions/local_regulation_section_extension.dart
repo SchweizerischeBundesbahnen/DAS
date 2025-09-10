@@ -6,8 +6,8 @@ extension LocalRegulationSectionExtension on LocalRegulationSection {
     final relevance = LocalRegulationRelevance.from(title.localized);
     if (relevance == null) {
       return '''
-      <h3>${title.localized}</h3>
-      <div>${content.localized}</div>
+      ${title.hasTranslation ? '<h3>${title.localized}</h3>' : ''}
+      ${content.hasTranslation ? '<div>${content.localized}</div>' : ''}
       ''';
     }
 
@@ -17,7 +17,7 @@ extension LocalRegulationSectionExtension on LocalRegulationSection {
         <div class="col-relevance">${relevance.abbreviation}</div>
         <div class="col-content">
           <div class="title">$titleWithoutAbbreviation</div>
-          <div>${content.localized}</div>
+          ${content.hasTranslation ? '<div>${content.localized}</div>' : ''}
         </div>
       </div>
       ''';

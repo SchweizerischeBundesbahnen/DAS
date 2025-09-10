@@ -12,12 +12,30 @@ void main() {
 
     // ACT & EXPECT
     final html = section.toHtml();
-    expect(html, '''
+    expectIgnoreNewLines(html, '''
       <div class="base-row">
         <div class="col-relevance">R</div>
         <div class="col-content">
           <div class="title">Profil EBV O2</div>
           <div><div>This is a text</div></div>
+        </div>
+      </div>
+      ''');
+  });
+  test('toHtml_whenWithAbbreviationNoContent_thenRowTemplateWithoutContent', () {
+    // ARRANGE
+    final section = LocalRegulationSection(
+      title: LocalizedString(de: 'R Profil EBV O2'),
+      content: LocalizedString(),
+    );
+
+    // ACT & EXPECT
+    final html = section.toHtml();
+    expectIgnoreNewLines(html, '''
+      <div class="base-row">
+        <div class="col-relevance">R</div>
+        <div class="col-content">
+          <div class="title">Profil EBV O2</div>
         </div>
       </div>
       ''');
@@ -31,9 +49,43 @@ void main() {
 
     // ACT & EXPECT
     final html = section.toHtml();
-    expect(html, '''
+    expectIgnoreNewLines(html, '''
       <h3>ZUE Zürich</h3>
       <div><div>This is a text</div></div>
       ''');
   });
+  test('toHtml_whenWithoutAbbreviationAndContent_thenStandardTemplateWithoutContent', () {
+    // ARRANGE
+    final section = LocalRegulationSection(
+      title: LocalizedString(de: 'ZUE Zürich'),
+      content: LocalizedString(),
+    );
+
+    // ACT & EXPECT
+    final html = section.toHtml();
+    expectIgnoreNewLines(html, '''
+      <h3>ZUE Zürich</h3>
+      ''');
+  });
+  test('toHtml_whenWithoutTitleAndContent_thenEmptyString', () {
+    // ARRANGE
+    final section = LocalRegulationSection(
+      title: LocalizedString(),
+      content: LocalizedString(),
+    );
+
+    // ACT & EXPECT
+    final html = section.toHtml();
+    expectIgnoreNewLines(html, '');
+  });
+}
+
+void expectIgnoreNewLines(String actual, String expected) {
+  expect(actual.removeWhitespacesNewLines(), expected.removeWhitespacesNewLines());
+}
+
+// extensions
+
+extension _StringExtension on String {
+  String removeWhitespacesNewLines() => replaceAll(RegExp(r'\s+'), '').replaceAll('/n', '');
 }

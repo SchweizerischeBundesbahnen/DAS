@@ -24,6 +24,8 @@ class LocalizedString {
     }
   }
 
+  bool get hasTranslation => de != null || fr != null || it != null;
+
   @override
   String toString() {
     return "LocalizedString(de: '$de', fr: '$fr', it: '$it')";
