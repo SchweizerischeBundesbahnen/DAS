@@ -9,6 +9,8 @@ import java.time.Instant;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.slf4j.event.Level;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
@@ -18,16 +20,17 @@ public class TrainFormationKafkaConsumer {
 
     private final FormationService formationService;
 
+    @Value("${zis.lag-alert-threshold-seconds}")
+    private long lagAlertThresholdSeconds;
+
     public TrainFormationKafkaConsumer(FormationService formationService) {
         this.formationService = formationService;
     }
 
-    // todo log a warning when kafka lag too high
-
     @KafkaListener(topics = "${zis.kafka.topic}")
     void receive(ConsumerRecord<DailyFormationTrainKey, DailyFormationTrain> message) {
         long lagInS = (Instant.now().toEpochMilli() - message.timestamp()) / 1000;
-        log.debug("lagInS={} partition={} offset={}", lagInS, message.partition(), message.offset());
+        log.atLevel(lagInS > lagAlertThresholdSeconds ? Level.WARN : Level.DEBUG).log("lagInS={} partition={} offset={}", lagInS, message.partition(), message.offset());
         try {
             Formation formation = FormationFactory.create(message);
             List<TrainFormationRunEntity> trainFormationRunEntities = TrainFormationRunEntity.from(formation);
