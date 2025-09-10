@@ -107,6 +107,30 @@
                 <NetworkSpecificParameter name="uncodedText" value="Lüthisberg: Halt an Halteort 2"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="23900" endLocation="23900"/>
             </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="31.983"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="10117" endLocation="10117"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="31.789"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="10311" endLocation="10311"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="18.05"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="24050" endLocation="24050"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="16.85"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="26140" endLocation="26140"/>
+            </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
 
     </SegmentProfileReference>

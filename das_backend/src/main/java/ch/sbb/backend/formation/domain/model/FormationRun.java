@@ -137,13 +137,12 @@ public class FormationRun {
         return Vehicle.countDisabledBrakes(vehicles);
     }
 
-    public String europeanVehicleNumberFirst() {
-        return Vehicle.europeanVehicleNumberFirst(vehicles);
-
+    public String getEuropeanVehicleNumberFirst() {
+        return Vehicle.getEuropeanVehicleNumberFirst(vehicles);
     }
 
-    public String europeanVehicleNumberLast() {
-        return Vehicle.europeanVehicleNumberLast(vehicles);
+    public String getEuropeanVehicleNumberLast() {
+        return Vehicle.getEuropeanVehicleNumberLast(vehicles);
     }
 }
 

@@ -1,5 +1,7 @@
 package ch.sbb.backend.formation.domain.model;
 
+import static ch.sbb.backend.formation.domain.model.VehicleUnitTest.createVehicleUnitWithBrakeDesign;
+import static ch.sbb.backend.formation.domain.model.VehicleUnitTest.createVehicleUnitWithDisabledBrake;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
@@ -65,8 +67,21 @@ class VehicleTest {
     void europeanVehicleNumbers_withEmpty() {
         List<Vehicle> vehicles = Collections.emptyList();
 
-        String first = Vehicle.europeanVehicleNumberLast(vehicles);
-        String last = Vehicle.europeanVehicleNumberFirst(vehicles);
+        String first = Vehicle.getEuropeanVehicleNumberLast(vehicles);
+        String last = Vehicle.getEuropeanVehicleNumberFirst(vehicles);
+
+        assertThat(first).isNull();
+        assertThat(last).isNull();
+    }
+
+    @Test
+    void europeanVehicleNumbers_withNull() {
+        Vehicle vehicle1 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, null);
+        Vehicle vehicle2 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, null);
+        List<Vehicle> vehicles = List.of(vehicle1, vehicle2);
+
+        String first = Vehicle.getEuropeanVehicleNumberFirst(vehicles);
+        String last = Vehicle.getEuropeanVehicleNumberLast(vehicles);
 
         assertThat(first).isNull();
         assertThat(last).isNull();
@@ -74,19 +89,17 @@ class VehicleTest {
 
     @Test
     void europeanVehicleNumbers_withMultipleVehicles() {
-        EuropeanVehicleNumber firstEvnMock = mock(EuropeanVehicleNumber.class);
-        when(firstEvnMock.toVehicleCode()).thenReturn("34562342341");
-        EuropeanVehicleNumber lastEvnMock = mock(EuropeanVehicleNumber.class);
-        when(lastEvnMock.toVehicleCode()).thenReturn("34324346134");
+        EuropeanVehicleNumber firstEvn = new EuropeanVehicleNumber("34", "56", "234234", "1");
+        EuropeanVehicleNumber lastEvn = new EuropeanVehicleNumber("34", "32", "434613", "4");
 
         Vehicle vehicle1 = new Vehicle(TractionMode.ZUGLOK, VehicleCategory.LOKOMOTIVE.name(), null, null);
-        Vehicle vehicle2 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, firstEvnMock);
+        Vehicle vehicle2 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, firstEvn);
         Vehicle vehicle3 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, null);
-        Vehicle vehicle4 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, lastEvnMock);
+        Vehicle vehicle4 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, lastEvn);
         List<Vehicle> vehicles = List.of(vehicle1, vehicle2, vehicle3, vehicle4);
 
-        String first = Vehicle.europeanVehicleNumberFirst(vehicles);
-        String last = Vehicle.europeanVehicleNumberLast(vehicles);
+        String first = Vehicle.getEuropeanVehicleNumberFirst(vehicles);
+        String last = Vehicle.getEuropeanVehicleNumberLast(vehicles);
 
         assertThat(first).isEqualTo("34562342341");
         assertThat(last).isEqualTo("34324346134");
@@ -94,16 +107,15 @@ class VehicleTest {
 
     @Test
     void europeanVehicleNumbers_whenOnlyOneHauledLoad() {
-        EuropeanVehicleNumber evnMock = mock(EuropeanVehicleNumber.class);
-        when(evnMock.toVehicleCode()).thenReturn("425859349349");
+        EuropeanVehicleNumber evn = new EuropeanVehicleNumber("42", "58", "5934934", "9");
 
         Vehicle vehicle1 = new Vehicle(TractionMode.ZUGLOK, VehicleCategory.LOKOMOTIVE.name(), null, null);
-        Vehicle vehicle2 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, evnMock);
+        Vehicle vehicle2 = new Vehicle(null, VehicleCategory.GUETERWAGEN.name(), null, evn);
         Vehicle vehicle3 = new Vehicle(TractionMode.SCHIEBELOK, VehicleCategory.LOKOMOTIVE.name(), null, null);
         List<Vehicle> vehicles = List.of(vehicle1, vehicle2, vehicle3);
 
-        String first = Vehicle.europeanVehicleNumberFirst(vehicles);
-        String last = Vehicle.europeanVehicleNumberLast(vehicles);
+        String first = Vehicle.getEuropeanVehicleNumberFirst(vehicles);
+        String last = Vehicle.getEuropeanVehicleNumberLast(vehicles);
 
         assertThat(first).isEqualTo("425859349349");
         assertThat(last).isEqualTo("425859349349");
@@ -141,35 +153,42 @@ class VehicleTest {
 
     @Test
     void countBrakeDesigns_hasTwo() {
-        List<Vehicle> vehicles = List.of(createVehicle(), createVehicle());
+        List<Vehicle> vehicles = List.of(
+            new Vehicle(null, VehicleCategory.LOKOMOTIVE.name(), List.of(createVehicleUnitWithBrakeDesign(BrakeDesign.EINLOESIGE_BREMSE)), null),
+            new Vehicle(null, null, List.of(createVehicleUnitWithBrakeDesign(BrakeDesign.EINLOESIGE_BREMSE)), null),
+            new Vehicle(null, null, List.of(createVehicleUnitWithBrakeDesign(BrakeDesign.EINLOESIGE_BREMSE)), null));
 
-        try (MockedStatic<VehicleUnit> mockedStatic = mockStatic(VehicleUnit.class)) {
-            mockedStatic.when(() -> VehicleUnit.hasBrakeDesign(any(), any())).thenReturn(true);
+        assertThat(Vehicle.countBrakeDesigns(vehicles, BrakeDesign.EINLOESIGE_BREMSE)).isEqualTo(2);
+    }
 
-            assertThat(Vehicle.countBrakeDesigns(vehicles, BrakeDesign.EINLOESIGE_BREMSE)).isEqualTo(2);
-        }
+    @Test
+    void countBrakeDesigns_withMultipleBrakeDesigns() {
+        List<Vehicle> vehicles = List.of(
+            new Vehicle(null, VehicleCategory.LOKOMOTIVE.name(), List.of(createVehicleUnitWithBrakeDesign(BrakeDesign.KUNSTSTOFF_BREMSKLOETZE)), null),
+            new Vehicle(null, null, List.of(createVehicleUnitWithBrakeDesign(BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE)), null),
+            new Vehicle(null, null, List.of(createVehicleUnitWithBrakeDesign(BrakeDesign.KUNSTSTOFF_BREMSKLOETZE)), null));
+
+        assertThat(Vehicle.countBrakeDesigns(vehicles, BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE, BrakeDesign.KUNSTSTOFF_BREMSKLOETZE)).isEqualTo(2);
     }
 
     @Test
     void countBrakeDesigns_hasNone() {
-        List<Vehicle> vehicles = List.of(createVehicle(), createVehicle());
+        List<Vehicle> vehicles = List.of(
+            new Vehicle(null, null, List.of(createVehicleUnitWithBrakeDesign(BrakeDesign.SCHEIBENBREMSEN)), null),
+            new Vehicle(null, null, List.of(createVehicleUnitWithBrakeDesign(BrakeDesign.NICHT_KODIERT)), null)
+        );
 
-        try (MockedStatic<VehicleUnit> mockedStatic = mockStatic(VehicleUnit.class)) {
-            mockedStatic.when(() -> VehicleUnit.hasBrakeDesign(any(), any())).thenReturn(false);
-
-            assertThat(Vehicle.countBrakeDesigns(vehicles, BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE)).isZero();
-        }
+        assertThat(Vehicle.countBrakeDesigns(vehicles, BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE)).isZero();
     }
 
     @Test
     void countDisabledBrakes_hasOne() {
-        List<Vehicle> vehicles = List.of(createVehicle());
+        List<Vehicle> vehicles = List.of(
+            new Vehicle(null, VehicleCategory.LOKOMOTIVE.name(), List.of(createVehicleUnitWithDisabledBrake()), null),
+            new Vehicle(null, null, List.of(createVehicleUnitWithDisabledBrake()), null)
+        );
 
-        try (MockedStatic<VehicleUnit> mockedStatic = mockStatic(VehicleUnit.class)) {
-            mockedStatic.when(() -> VehicleUnit.hasDisabledBrake(any())).thenReturn(true);
-
-            assertThat(Vehicle.countDisabledBrakes(vehicles)).isEqualTo(1);
-        }
+        assertThat(Vehicle.countDisabledBrakes(vehicles)).isEqualTo(1);
     }
 
     @Test
