@@ -14,7 +14,7 @@ import lombok.Builder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record FormationRun(
     @Schema(description = "Last modification date and time of the formation run.", requiredMode = Schema.RequiredMode.REQUIRED)
-    OffsetDateTime modifiedDateTime,
+    OffsetDateTime inspectionDateTime,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     String tafTapLocationReferenceStart,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
@@ -96,7 +96,7 @@ public record FormationRun(
     private static FormationRun from(TrainFormationRunEntity trainFormationRunEntity) {
         //      todo  consider use mapper (cause of testing effort)
         return FormationRun.builder()
-            .modifiedDateTime(trainFormationRunEntity.getModifiedDateTime())
+            .inspectionDateTime(trainFormationRunEntity.getInspectionDateTime())
             .tafTapLocationReferenceStart(trainFormationRunEntity.getTafTapLocationReferenceStart())
             .tafTapLocationReferenceEnd(trainFormationRunEntity.getTafTapLocationReferenceEnd())
             .trainCategoryCode(trainFormationRunEntity.getTrainCategoryCode())
