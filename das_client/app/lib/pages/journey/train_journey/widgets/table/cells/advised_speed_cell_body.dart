@@ -17,7 +17,6 @@ class AdvisedSpeedCellBody extends StatelessWidget {
     required this.settings,
     required this.order,
     required this.showSpeedBehavior,
-    this.isNextStop = false,
     super.key,
   });
 
@@ -25,7 +24,6 @@ class AdvisedSpeedCellBody extends StatelessWidget {
   final TrainJourneySettings settings;
   final int order;
   final ShowSpeedBehavior showSpeedBehavior;
-  final bool isNextStop;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +51,7 @@ class AdvisedSpeedCellBody extends StatelessWidget {
     return Text(
       speed?.value ?? '',
       key: nonEmptyKey,
-      style: defaultTextStyle.copyWith(color: isNextStop ? SBBColors.white : null),
+      style: defaultTextStyle.copyWith(color: SBBColors.white),
     );
   }
 
