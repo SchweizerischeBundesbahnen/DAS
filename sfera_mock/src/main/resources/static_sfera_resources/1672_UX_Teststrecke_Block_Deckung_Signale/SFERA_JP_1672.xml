@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 
-<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="4" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="5" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
     <TrainIdentification>
         <OTN_ID>
             <teltsi_Company>1285</teltsi_Company>
@@ -59,12 +59,11 @@
             <StoppingPointDepartureDetails departureTime="9999-01-01T00:17:00Z" plannedDepartureTime="9999-01-01T00:17:00Z"/>
         </TimingPointConstraints>
 
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:20:20Z"
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:20:20Z"
                                 TP_PlannedLatestArrivalTime="9999-01-01T00:20:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Sennbach"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="9999-01-01T00:21:00Z" plannedDepartureTime="9999-01-01T00:21:00Z"/>
         </TimingPointConstraints>
 
         <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:23:00Z"
@@ -75,11 +74,12 @@
             <StoppingPointDepartureDetails departureTime="9999-01-01T00:24:00Z" plannedDepartureTime="9999-01-01T00:24:00Z"/>
         </TimingPointConstraints>
 
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:27:20Z"
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:27:20Z"
                                 TP_PlannedLatestArrivalTime="9999-01-01T00:27:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Helmaiche"/>
             </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:27:00Z" plannedDepartureTime="9999-01-01T00:27:00Z"/>
         </TimingPointConstraints>
 
         <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:29:30Z"
