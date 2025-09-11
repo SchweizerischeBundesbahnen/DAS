@@ -207,8 +207,8 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     final isLastAdvisedSpeed = advisedSpeedsSegment.firstOrNull?.endData == data;
     final showAdvisedSpeed =
         advisedSpeedsSegment.isNotEmpty &&
-        metadata.signaledPosition != null &&
-        advisedSpeedsSegment.first.appliesToOrder(metadata.signaledPosition!.order);
+        journeyPosition?.currentPosition != null &&
+        advisedSpeedsSegment.first.appliesToOrder(journeyPosition!.currentPosition!.order);
 
     if (showAdvisedSpeed && !isLastAdvisedSpeed) {
       final isFirst = advisedSpeedsSegment.first.startOrder == data.order;

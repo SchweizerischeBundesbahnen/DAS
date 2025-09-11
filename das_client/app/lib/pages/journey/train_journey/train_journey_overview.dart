@@ -74,7 +74,7 @@ class TrainJourneyOverview extends StatelessWidget {
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
-          create: (_) => UxTestingViewModel(sferaService: DI.get()),
+          create: (_) => UxTestingViewModel(sferaService: DI.get(), ruFeatureProvider: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider(

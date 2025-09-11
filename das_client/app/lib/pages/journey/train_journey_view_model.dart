@@ -3,11 +3,13 @@ import 'dart:async';
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/train_journey/automatic_advancement_controller.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
+import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/util/error_code.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:warnapp/component.dart';
@@ -18,8 +20,10 @@ class TrainJourneyViewModel {
   TrainJourneyViewModel({
     required SferaRemoteRepo sferaRemoteRepo,
     required WarnappRepository warnappRepo,
+    required RuFeatureProvider ruFeatureProvider,
   }) : _sferaRemoteRepo = sferaRemoteRepo,
-       _warnappRepo = warnappRepo {
+       _warnappRepo = warnappRepo,
+       _ruFeatureProvider = ruFeatureProvider {
     _init();
   }
 
@@ -28,6 +32,7 @@ class TrainJourneyViewModel {
 
   final SferaRemoteRepo _sferaRemoteRepo;
   final WarnappRepository _warnappRepo;
+  final RuFeatureProvider _ruFeatureProvider;
 
   final List<void Function(Journey?)> _syncOnJourneyUpdateCallbacks = [];
 
@@ -44,6 +49,8 @@ class TrainJourneyViewModel {
   Stream<bool> get showDecisiveGradient => _rxShowDecisiveGradient.distinct();
 
   bool get showDecisiveGradientValue => _rxShowDecisiveGradient.value;
+
+  bool get isWarnappEnabled => _warnappRepo.isEnabled;
 
   AutomaticAdvancementController automaticAdvancementController = AutomaticAdvancementController();
 
@@ -156,12 +163,16 @@ class TrainJourneyViewModel {
     });
   }
 
-  void _enableWarnapp() {
-    _warnappAbfahrtSubscription = _warnappRepo.abfahrtEventStream.listen((_) => _handleAbfahrtEvent());
-    _warnappSignalSubscription = _sferaRemoteRepo.warnappEventStream.listen((_) {
-      _lastWarnappEventTimestamp = DateTime.now();
-    });
-    _warnappRepo.enable();
+  void _enableWarnapp() async {
+    final isWarnappEnabled = await _ruFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.warnapp);
+    _log.info('Warnapp is ${isWarnappEnabled ? 'enabled' : 'disabled'} for active train');
+    if (isWarnappEnabled) {
+      _warnappAbfahrtSubscription = _warnappRepo.abfahrtEventStream.listen((_) => _handleAbfahrtEvent());
+      _warnappSignalSubscription = _sferaRemoteRepo.warnappEventStream.listen((_) {
+        _lastWarnappEventTimestamp = DateTime.now();
+      });
+      _warnappRepo.enable();
+    }
   }
 
   void _disableWarnapp() {

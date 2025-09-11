@@ -2,7 +2,10 @@
 
 import 'package:app/di/di.dart';
 import 'package:app/di/scopes/authenticated_scope.dart';
+import 'package:app/provider/ru_feature_provider.dart';
 import 'package:logging/logging.dart';
+
+import 'mock_ru_feature_provider.dart';
 
 final _log = Logger('MockAuthenticatedScope');
 
@@ -23,7 +26,13 @@ class MockAuthenticatedScope extends AuthenticatedScope {
     getIt.registerSferaAuthService();
     getIt.registerSferaLocalRepo();
     getIt.registerSferaRemoteRepo();
+    getIt.registerSettingsRepository();
+    _registerMockRuFeaturesProvider();
 
     return getIt.allReady();
+  }
+
+  void _registerMockRuFeaturesProvider() {
+    getIt.registerSingleton<RuFeatureProvider>(MockRuFeatureProvider());
   }
 }

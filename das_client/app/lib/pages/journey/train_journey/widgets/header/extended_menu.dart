@@ -41,7 +41,7 @@ class ExtendedMenu extends StatelessWidget {
                       _breakSlipItem(context),
                       _transportDocumentItem(context),
                       _journeyOverviewItem(context, hideOverlay),
-                      _maneuverItem(context, hideOverlay),
+                      if (viewModel.isWarnappEnabled) _maneuverItem(context, hideOverlay),
                       _waraItem(context),
                     ],
                   ),
