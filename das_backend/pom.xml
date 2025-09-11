@@ -22,7 +22,7 @@
         <kafka-json-schema-serializer.version>8.0.0</kafka-json-schema-serializer.version>
         <confluent.schema-registry-plugin.version>8.0.0</confluent.schema-registry-plugin.version>
         <jsonschema2pojo-maven-plugin.version>1.2.2</jsonschema2pojo-maven-plugin.version>
-        <aws.java.sdk.version>2.33.4</aws.java.sdk.version>
+        <aws.java.sdk.version>2.33.6</aws.java.sdk.version>
         <shedlock.version>6.10.0</shedlock.version>
     </properties>
     <dependencies>
