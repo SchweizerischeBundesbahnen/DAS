@@ -50,7 +50,7 @@ class TrainJourneyViewModel {
 
   bool get showDecisiveGradientValue => _rxShowDecisiveGradient.value;
 
-  bool get isWarnappEnabled => _warnappRepo.isEnabled;
+  Future<bool> get isWarnappEnabled => _ruFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.warnapp);
 
   AutomaticAdvancementController automaticAdvancementController = AutomaticAdvancementController();
 

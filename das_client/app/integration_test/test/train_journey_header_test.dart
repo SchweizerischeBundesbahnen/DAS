@@ -254,26 +254,6 @@ Future<void> main() async {
       await disconnect(tester);
     });
 
-    testWidgets('test extended menu maneuver mode not present when warnapp is disabled', (tester) async {
-      await prepareAndStartApp(tester);
-
-      final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
-      featureProvider.disableFeature(RuFeatureKeys.warnapp);
-
-      // load train journey by filling out train selection page
-      await loadTrainJourney(tester, trainNumber: 'T9999');
-
-      await openExtendedMenu(tester);
-
-      expect(find.byKey(ExtendedMenu.maneuverSwitchKey), findsNothing);
-
-      await dismissExtendedMenu(tester);
-
-      expect(find.byKey(ExtendedMenu.menuButtonCloseKey), findsNothing);
-
-      await disconnect(tester);
-    });
-
     testWidgets('test extended maneuver mode', (tester) async {
       await prepareAndStartApp(tester);
 
@@ -314,6 +294,26 @@ Future<void> main() async {
       await tapElement(tester, find.byKey(ManeuverNotification.maneuverNotificationSwitchKey));
 
       expect(find.text(l10n.w_maneuver_notification_text), findsNothing);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('test extended menu maneuver mode not present when warnapp is disabled', (tester) async {
+      await prepareAndStartApp(tester);
+
+      final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
+      featureProvider.disableFeature(RuFeatureKeys.warnapp);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T9999');
+
+      await openExtendedMenu(tester);
+
+      expect(find.byKey(ExtendedMenu.maneuverSwitchKey), findsNothing);
+
+      await dismissExtendedMenu(tester);
+
+      expect(find.byKey(ExtendedMenu.menuButtonCloseKey), findsNothing);
 
       await disconnect(tester);
     });
