@@ -27,8 +27,9 @@
           "hauledLoadHoldingForceInHectoNewton": 5980,
           "formationHoldingForceInHectoNewton": 6480,
           "simTrain": false,
-          "additionalTractionMode": "Z",
-          "additionalTractionSeries": "Ts532",
+          "additionalTractions": [
+            "Z (Ts532)"
+          ],
           "carCarrierVehicle": false,
           "dangerousGoods": false,
           "vehiclesCount": 27,
@@ -67,8 +68,9 @@
           "brakePositionGForBrakeUnit1to5": false,
           "brakePositionGForLoadHauled": false,
           "simTrain": false,
-          "additionalTractionMode": "Z",
-          "additionalTractionSeries": "Ts532",
+          "additionalTractions": [
+            "Z (Ts532)"
+          ],
           "carCarrierVehicle": false,
           "dangerousGoods": false,
           "vehiclesCount": 28,

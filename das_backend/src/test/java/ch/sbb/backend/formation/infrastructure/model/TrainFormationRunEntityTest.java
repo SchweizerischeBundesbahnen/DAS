@@ -127,8 +127,7 @@ class TrainFormationRunEntityTest {
         assertThat(result.getBrakePositionGForBrakeUnit1to5()).isFalse();
         assertThat(result.getBrakePositionGForLoadHauled()).isFalse();
         assertThat(result.getSimTrain()).isFalse();
-        assertThat(result.getAdditionalTractionMode()).isNull();
-        assertThat(result.getAdditionalTractionSeries()).isNull();
+        assertThat(result.getAdditionalTractions()).isEmpty();
         assertThat(result.getCarCarrierVehicle()).isFalse();
         assertThat(result.getDangerousGoods()).isFalse();
         assertThat(result.getVehiclesCount()).isEqualTo(1);
