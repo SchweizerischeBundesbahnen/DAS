@@ -392,6 +392,15 @@ class SferaRemoteRepoImpl implements SferaRemoteRepo {
       disconnect();
     }
   }
+
+  @override
+  TrainIdentification? get connectedTrain => _otnId != null
+      ? TrainIdentification(
+          ru: RailwayUndertaking.fromCompanyCode(_otnId!.company),
+          trainNumber: _otnId!.operationalTrainNumber,
+          date: _otnId!.startDate,
+        )
+      : null;
 }
 
 enum SferaRemoteRepositoryInternalState {

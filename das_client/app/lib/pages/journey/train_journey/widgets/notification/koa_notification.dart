@@ -116,8 +116,18 @@ class _KoaTrailingButton extends StatelessWidget {
   const _KoaTrailingButton();
 
   @override
-  Widget build(BuildContext context) => SBBTertiaryButtonSmall(
-    label: context.l10n.w_koa_notification_departure_process,
-    onPressed: () => showDepartureProcessModalSheet(context),
-  );
+  Widget build(BuildContext context) {
+    final viewModel = context.read<UxTestingViewModel>();
+    return FutureBuilder(
+      future: viewModel.isDepartueProcessEnabled,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData || snapshot.data == false) return SizedBox.shrink();
+
+        return SBBTertiaryButtonSmall(
+          label: context.l10n.w_koa_notification_departure_process,
+          onPressed: () => showDepartureProcessModalSheet(context),
+        );
+      },
+    );
+  }
 }

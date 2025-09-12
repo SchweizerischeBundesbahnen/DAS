@@ -38,13 +38,12 @@ class SettingsDatabaseService extends _$SettingsDatabaseService implements RuFea
 
   @override
   Future<RuFeatureDto?> findRuFeature(String companyCodeRics, RuFeatureKeys featureKey) async {
-    final tableData =
+    final featureData =
         await (select(ruFeaturesTable)
               ..where((tbl) => tbl.companyCodeRics.equals(companyCodeRics))
               ..where((tbl) => tbl.key.equals(featureKey.key)))
-            .get();
-
-    return tableData.map((it) => it.toDomain()).firstOrNull;
+            .getSingleOrNull();
+    return featureData?.toDomain();
   }
 
   @override
