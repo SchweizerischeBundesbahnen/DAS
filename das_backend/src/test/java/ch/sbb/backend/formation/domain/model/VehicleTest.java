@@ -3,6 +3,7 @@ package ch.sbb.backend.formation.domain.model;
 import static ch.sbb.backend.formation.domain.model.VehicleUnitTest.createVehicleUnitWithBrakeDesign;
 import static ch.sbb.backend.formation.domain.model.VehicleUnitTest.createVehicleUnitWithDisabledBrake;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.mock;
@@ -250,9 +251,7 @@ class VehicleTest {
         Vehicle vehicle1 = new Vehicle(TractionMode.SCHIEBELOK, VehicleCategory.LOKOMOTIVE.name(), null, null);
         Vehicle vehicle2 = new Vehicle(TractionMode.UEBERFUEHRUNG, VehicleCategory.LOKOMOTIVE.name(), null, null);
 
-        TractionMode result = Vehicle.additionalTractionMode(List.of(vehicle1, vehicle2));
-
-        assertThat(result).isNull();
+        assertThatIllegalStateException().isThrownBy(() -> Vehicle.additionalTractionMode(List.of(vehicle1, vehicle2)));
     }
 
     @Test
@@ -279,9 +278,7 @@ class VehicleTest {
         Vehicle vehicle2 = new Vehicle(TractionMode.ZWISCHENLOK, VehicleCategory.TRIEBWAGEN.name(),
             List.of(new VehicleUnit(null, null, null, null, null, null, "Rm84"), new VehicleUnit(null, null, null, null, null, null, "Rm84")), null);
 
-        String result = Vehicle.additionalTractionSeries(List.of(vehicle1, vehicle2));
-
-        assertThat(result).isNull();
+        assertThatIllegalStateException().isThrownBy(() -> Vehicle.additionalTractionSeries(List.of(vehicle1, vehicle2)));
     }
 
     private Vehicle createVehicle() {

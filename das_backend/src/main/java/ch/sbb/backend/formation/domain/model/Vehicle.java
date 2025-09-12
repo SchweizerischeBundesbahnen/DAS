@@ -4,12 +4,10 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
 
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-@Slf4j
 public class Vehicle {
 
     private static final List<TractionMode> ADDITIONAL_TRACTION_MODES = List.of(TractionMode.ZWISCHENLOK, TractionMode.SCHIEBELOK, TractionMode.UEBERFUEHRUNG);
@@ -89,8 +87,7 @@ public class Vehicle {
             return null;
         }
         if (vehicle.vehicleUnits.size() != 1) {
-            log.error("Traction vehicle with no or more than one vehicleUnit found: {}", vehicle.vehicleUnits);
-            return null;
+            throw new IllegalStateException("Additional traction vehicle must have exactly one vehicle unit");
         }
         return vehicle.vehicleUnits.getFirst().getVehicleSeries();
     }
@@ -101,8 +98,7 @@ public class Vehicle {
             return null;
         }
         if (additionalTractionVehicles.size() > 1) {
-            log.error("Multiple additional traction vehicles found: {}", additionalTractionVehicles);
-            return null;
+            throw new IllegalStateException("More than one additional traction vehicle");
         }
         return additionalTractionVehicles.getFirst();
     }

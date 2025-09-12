@@ -1,30 +1,38 @@
 package ch.sbb.backend.formation;
 
+import static ch.sbb.backend.formation.api.v1.FormationController.API_FORMATIONS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.backend.TestContainerConfiguration;
-import ch.sbb.backend.formation.infrastructure.TrainFormationRunRepository;
-import ch.sbb.backend.formation.infrastructure.model.TrainFormationRunEntity;
 import ch.sbb.zis.trainformation.api.model.DailyFormationTrain;
 import ch.sbb.zis.trainformation.api.model.DailyFormationTrainKey;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.OffsetDateTime;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpHeaders;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.json.JsonCompareMode;
+import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @Import({TestContainerConfiguration.class})
+@AutoConfigureMockMvc
 @ActiveProfiles("test")
 class FormationIntegrationTest {
 
@@ -35,68 +43,149 @@ class FormationIntegrationTest {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private TrainFormationRunRepository repository;
+    private MockMvc mockMvc;
 
     @Value("${zis.kafka.topic}")
     private String topic;
 
     @Test
-    void listen_whenFormationMessage_shouldBeStored() throws IOException {
-        DailyFormationTrainKey key = this.objectMapper.readValue(new File("src/test/resources/kafka/key.json"), DailyFormationTrainKey.class);
-        DailyFormationTrain value = this.objectMapper.readValue(new File("src/test/resources/kafka/value.json"), DailyFormationTrain.class);
+    void whenNewInspectedFormationMessage_shouldBeAvailabe() throws IOException {
+        DailyFormationTrainKey key = this.objectMapper.readValue(new File("src/test/resources/kafka/71237/key.json"), DailyFormationTrainKey.class);
+        DailyFormationTrain value = this.objectMapper.readValue(new File("src/test/resources/kafka/71237/value.json"), DailyFormationTrain.class);
+
+        kafkaTemplate.send(topic, key, value);
+
+        String expectedJson = Files.readString(Paths.get("src/test/resources/formations/71237.json"));
+
+        await()
+            .atMost(1, TimeUnit.SECONDS)
+            .untilAsserted(() -> {
+                mockMvc.perform(get(API_FORMATIONS)
+                        .param("operationalTrainNumber", "71237").param("operationalDay", "2025-08-01").param("company", "2687")
+                        .with(user("any").roles("observer")))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(expectedJson, JsonCompareMode.STRICT));
+            });
+    }
+
+    @Test
+    void whenUpdatedFormationMessage_shouldBeAvailabe() throws Exception {
+        DailyFormationTrainKey key = this.objectMapper.readValue(new File("src/test/resources/kafka/71237/key.json"), DailyFormationTrainKey.class);
+        DailyFormationTrain value = this.objectMapper.readValue(new File("src/test/resources/kafka/71237/value.json"), DailyFormationTrain.class);
+
+        kafkaTemplate.send(topic, key, value);
+
+        DailyFormationTrain updatedValue = this.objectMapper.readValue(new File("src/test/resources/kafka/71237/value_update.json"), DailyFormationTrain.class);
+
+        kafkaTemplate.send(topic, key, updatedValue);
+
+        String expectedJson = Files.readString(Paths.get("src/test/resources/formations/71237_update.json"));
+
+        await()
+            .atMost(1, TimeUnit.SECONDS)
+            .untilAsserted(() -> {
+                mockMvc.perform(get(API_FORMATIONS)
+                        .param("operationalTrainNumber", "71237").param("operationalDay", "2025-08-01").param("company", "2687")
+                        .with(user("any").roles("observer")))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(expectedJson, JsonCompareMode.STRICT));
+            });
+    }
+
+    @Test
+    void whenUpdatedNonInpsectedFormationMessage_shouldNotHaveUpdateByEtag() throws Exception {
+        DailyFormationTrainKey key = this.objectMapper.readValue(new File("src/test/resources/kafka/71237/key.json"), DailyFormationTrainKey.class);
+        DailyFormationTrain value = this.objectMapper.readValue(new File("src/test/resources/kafka/71237/value.json"), DailyFormationTrain.class);
+
+        kafkaTemplate.send(topic, key, value);
+
+        String expectedJson = Files.readString(Paths.get("src/test/resources/formations/71237.json"));
+        AtomicReference<String> eTag = new AtomicReference<>();
+
+        await()
+            .atMost(1, TimeUnit.SECONDS)
+            .untilAsserted(() -> {
+                mockMvc.perform(get(API_FORMATIONS)
+                        .param("operationalTrainNumber", "71237").param("operationalDay", "2025-08-01").param("company", "2687")
+                        .with(user("any").roles("observer")))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(expectedJson, JsonCompareMode.STRICT))
+                    .andDo(result -> {
+                        eTag.set(result.getResponse().getHeader(HttpHeaders.ETAG));
+                        assertThat(eTag.get()).isNotNull();
+                    });
+            });
+
+        mockMvc.perform(get(API_FORMATIONS)
+                .param("operationalTrainNumber", "71237").param("operationalDay", "2025-08-01").param("company", "2687")
+                .header(HttpHeaders.IF_NONE_MATCH, eTag.get())
+                .with(user("any").roles("observer")))
+            .andExpect(status().isNotModified());
+
+        DailyFormationTrain updatedValue = this.objectMapper.readValue(new File("src/test/resources/kafka/71237/value_update_non_inspected.json"), DailyFormationTrain.class);
+
+        kafkaTemplate.send(topic, key, updatedValue);
+
+        await()
+            .atMost(1, TimeUnit.SECONDS)
+            .untilAsserted(() -> {
+                mockMvc.perform(get(API_FORMATIONS)
+                        .param("operationalTrainNumber", "71237").param("operationalDay", "2025-08-01").param("company", "2687")
+                        .header(HttpHeaders.IF_NONE_MATCH, eTag.get())
+                        .with(user("any").roles("observer")))
+                    .andExpect(status().isNotModified());
+            });
+
+    }
+
+    @Test
+    void whenNonInspectedFormationMessage_shouldNotBeAvailabe() throws IOException {
+        DailyFormationTrainKey key = this.objectMapper.readValue(new File("src/test/resources/kafka/11/key.json"), DailyFormationTrainKey.class);
+        DailyFormationTrain value = this.objectMapper.readValue(new File("src/test/resources/kafka/11/value.json"), DailyFormationTrain.class);
 
         kafkaTemplate.send(topic, key, value);
 
         await()
-            .atMost(5, TimeUnit.SECONDS)
+            .atMost(1, TimeUnit.SECONDS)
             .untilAsserted(() -> {
-                List<TrainFormationRunEntity> saved = repository.findAll();
-                assertThat(saved).hasSize(1);
-                TrainFormationRunEntity actual = saved.getFirst();
+                mockMvc.perform(get(API_FORMATIONS)
+                        .param("operationalTrainNumber", "11").param("operationalDay", "2025-08-01").param("company", "1111")
+                        .with(user("any").roles("observer")))
+                    .andExpect(status().isNotFound());
+            });
+    }
 
-                assertThat(actual.getId()).isEqualTo(1);
-                assertThat(actual.getInspectionDateTime()).isEqualTo(OffsetDateTime.parse("2025-08-01T16:23:27Z"));
-                assertThat(actual.getOperationalTrainNumber()).isEqualTo("71237");
-                assertThat(actual.getTrainPathId()).isEqualTo("71237-001");
-                assertThat(actual.getOperationalDay()).isEqualTo(LocalDate.parse("2025-08-01"));
-                assertThat(actual.getCompany()).isEqualTo("2687");
-                assertThat(actual.getTafTapLocationReferenceStart()).isEqualTo("CH05699");
-                assertThat(actual.getTafTapLocationReferenceEnd()).isEqualTo("CH05683");
-                assertThat(actual.getTrainCategoryCode()).isEqualTo("D");
-                assertThat(actual.getBrakedWeightPercentage()).isEqualTo(75);
-                assertThat(actual.getTractionMaxSpeedInKmh()).isEqualTo(100);
-                assertThat(actual.getHauledLoadMaxSpeedInKmh()).isEqualTo(100);
-                assertThat(actual.getFormationMaxSpeedInKmh()).isEqualTo(140);
-                assertThat(actual.getTractionLengthInCm()).isEqualTo(1540);
-                assertThat(actual.getHauledLoadLengthInCm()).isEqualTo(18800);
-                assertThat(actual.getFormationLengthInCm()).isEqualTo(20340);
-                assertThat(actual.getTractionWeightInT()).isEqualTo(84);
-                assertThat(actual.getHauledLoadWeightInT()).isEqualTo(619);
-                assertThat(actual.getFormationWeightInT()).isEqualTo(703);
-                assertThat(actual.getTractionBrakedWeightInT()).isEqualTo(61);
-                assertThat(actual.getHauledLoadBrakedWeightInT()).isEqualTo(482);
-                assertThat(actual.getFormationBrakedWeightInT()).isEqualTo(543);
-                assertThat(actual.getTractionHoldingForceInHectoNewton()).isEqualTo(500);
-                assertThat(actual.getHauledLoadHoldingForceInHectoNewton()).isEqualTo(1852);
-                assertThat(actual.getFormationHoldingForceInHectoNewton()).isEqualTo(2352);
-                assertThat(actual.getBrakePositionGForLeadingTraction()).isNull();
-                assertThat(actual.getBrakePositionGForBrakeUnit1to5()).isNull();
-                assertThat(actual.getBrakePositionGForLoadHauled()).isNull();
-                assertThat(actual.getSimTrain()).isFalse();
-                assertThat(actual.getAdditionalTractionMode()).isNull();
-                assertThat(actual.getCarCarrierVehicle()).isFalse();
-                assertThat(actual.getDangerousGoods()).isFalse();
-                assertThat(actual.getVehiclesCount()).isEqualTo(11);
-                assertThat(actual.getVehiclesWithBrakeDesignLlAndKCount()).isEqualTo(10);
-                assertThat(actual.getVehiclesWithBrakeDesignDCount()).isEqualTo(0);
-                assertThat(actual.getVehiclesWithDisabledBrakesCount()).isEqualTo(0);
-                assertThat(actual.getEuropeanVehicleNumberFirst()).isEqualTo("338522222225");
-                assertThat(actual.getEuropeanVehicleNumberLast()).isEqualTo("338514444445");
-                assertThat(actual.getAxleLoadMaxInKg()).isEqualTo(22125);
-                assertThat(actual.getRouteClass()).isEqualTo("");
-                assertThat(actual.getGradientUphillMaxInPermille()).isEqualTo(0);
-                assertThat(actual.getGradientDownhillMaxInPermille()).isEqualTo(0);
-                assertThat(actual.getSlopeMaxForHoldingForceMinInPermille()).isEqualTo("21");
+    @Test
+    void whenUpdatedFormationRunsMessage_shouldBeAvailabe() throws Exception {
+        DailyFormationTrainKey key = this.objectMapper.readValue(new File("src/test/resources/kafka/87389/key.json"), DailyFormationTrainKey.class);
+        DailyFormationTrain value = this.objectMapper.readValue(new File("src/test/resources/kafka/87389/value.json"), DailyFormationTrain.class);
+
+        kafkaTemplate.send(topic, key, value);
+
+        String expectedJson = Files.readString(Paths.get("src/test/resources/formations/87389.json"));
+        await()
+            .atMost(1, TimeUnit.SECONDS)
+            .untilAsserted(() -> {
+                mockMvc.perform(get(API_FORMATIONS)
+                        .param("operationalTrainNumber", "87389").param("operationalDay", "2025-08-05").param("company", "6382")
+                        .with(user("any").roles("observer")))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(expectedJson, JsonCompareMode.STRICT));
+            });
+
+        DailyFormationTrain updatedValue = this.objectMapper.readValue(new File("src/test/resources/kafka/87389/value_update.json"), DailyFormationTrain.class);
+
+        kafkaTemplate.send(topic, key, updatedValue);
+
+        String expectedUpdatedJson = Files.readString(Paths.get("src/test/resources/formations/87389_update.json"));
+        await()
+            .atMost(1, TimeUnit.SECONDS)
+            .untilAsserted(() -> {
+                mockMvc.perform(get(API_FORMATIONS)
+                        .param("operationalTrainNumber", "87389").param("operationalDay", "2025-08-05").param("company", "6382")
+                        .with(user("any").roles("observer")))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(expectedUpdatedJson, JsonCompareMode.STRICT));
             });
     }
 }

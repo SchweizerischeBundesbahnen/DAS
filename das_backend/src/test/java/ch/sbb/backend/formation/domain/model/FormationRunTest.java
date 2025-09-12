@@ -1,6 +1,7 @@
 package ch.sbb.backend.formation.domain.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -102,9 +103,7 @@ class FormationRunTest {
     void isInspected_withUnknownCompany() {
         List<FormationRun> formationRuns = List.of(createFormationRun(true, "0000"), createFormationRun(true, null));
 
-        List<FormationRun> result = FormationRun.filterValid(formationRuns);
-
-        assertThat(result).isEmpty();
+        assertThatIllegalStateException().isThrownBy(() -> FormationRun.filterValid(formationRuns));
     }
 
     @Test
