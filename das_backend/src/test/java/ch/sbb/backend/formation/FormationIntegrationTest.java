@@ -83,7 +83,7 @@ class FormationIntegrationTest {
                 assertThat(actual.getBrakePositionGForBrakeUnit1to5()).isNull();
                 assertThat(actual.getBrakePositionGForLoadHauled()).isNull();
                 assertThat(actual.getSimTrain()).isFalse();
-                assertThat(actual.getAdditionalTractionMode()).isNull();
+                assertThat(actual.getAdditionalTractions()).isEqualTo(List.of(""));
                 assertThat(actual.getCarCarrierVehicle()).isFalse();
                 assertThat(actual.getDangerousGoods()).isFalse();
                 assertThat(actual.getVehiclesCount()).isEqualTo(11);

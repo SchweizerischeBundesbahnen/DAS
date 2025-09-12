@@ -1,6 +1,7 @@
 package ch.sbb.backend.formation.domain.model;
 
 import java.util.List;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -75,36 +76,20 @@ public class Vehicle {
             .toList();
     }
 
-    static TractionMode additionalTractionMode(List<Vehicle> vehicles) {
-        Vehicle vehicle = additionalTraction(vehicles);
-        if (vehicle == null) {
-            return null;
-        }
-        return vehicle.tractionMode;
+    static List<String> additionalTractions(List<Vehicle> vehicles) {
+        return additionalTractionVehicles(vehicles).stream().map(Vehicle::getAdditionalTraction).filter(Objects::nonNull).toList();
     }
 
-    static String additionalTractionSeries(List<Vehicle> vehicles) {
-        Vehicle vehicle = additionalTraction(vehicles);
-        if (vehicle == null) {
-            return null;
-        }
-        if (vehicle.vehicleUnits.size() != 1) {
-            log.error("Traction vehicle with no or more than one vehicleUnit found: {}", vehicle.vehicleUnits);
-            return null;
-        }
-        return vehicle.vehicleUnits.getFirst().getVehicleSeries();
+    private static List<Vehicle> additionalTractionVehicles(List<Vehicle> vehicles) {
+        return filterTraction(vehicles).stream().filter(vehicle -> ADDITIONAL_TRACTION_MODES.contains(vehicle.tractionMode)).toList();
     }
 
-    private static Vehicle additionalTraction(List<Vehicle> vehicles) {
-        List<Vehicle> additionalTractionVehicles = filterTraction(vehicles).stream().filter(vehicle -> ADDITIONAL_TRACTION_MODES.contains(vehicle.tractionMode)).toList();
-        if (additionalTractionVehicles.isEmpty()) {
+    private String getAdditionalTraction() {
+        if (vehicleUnits.size() != 1) {
+            log.error("Traction vehicle with no or more than one vehicleUnit found: {}", vehicleUnits);
             return null;
         }
-        if (additionalTractionVehicles.size() > 1) {
-            log.error("Multiple additional traction vehicles found: {}", additionalTractionVehicles);
-            return null;
-        }
-        return additionalTractionVehicles.getFirst();
+        return String.format("%s (%s)", tractionMode.getKey(), vehicleUnits.getFirst().getVehicleSeries());
     }
 
     private boolean isTraction() {
