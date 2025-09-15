@@ -10,6 +10,14 @@ import org.junit.jupiter.api.Test;
 
 class VehicleUnitTest {
 
+    static VehicleUnit createVehicleUnitWithBrakeDesign(BrakeDesign brakeDesign) {
+        return new VehicleUnit(brakeDesign, null, null, null, null, null, null);
+    }
+
+    static VehicleUnit createVehicleUnitWithDisabledBrake() {
+        return new VehicleUnit(null, new BrakeStatus(0), null, null, null, null, null);
+    }
+
     @Test
     void hasDisabledBrake_true() {
         BrakeStatus disabledBrakestatus = mock(BrakeStatus.class);

@@ -19,6 +19,7 @@ class ServicePoint extends JourneyPoint {
     this.stationSign1,
     this.stationSign2,
     this.properties = const [],
+    this.localRegulationSections = const [],
   }) : super(type: Datatype.servicePoint);
 
   final String name;
@@ -32,6 +33,7 @@ class ServicePoint extends JourneyPoint {
   final StationSign? stationSign1;
   final StationSign? stationSign2;
   final List<StationProperty> properties;
+  final List<LocalRegulationSection> localRegulationSections;
 
   List<TrainSeriesSpeed> relevantGraduatedSpeedInfo(BreakSeries? breakSeries) {
     final speedInfo = graduatedSpeedInfo ?? [];

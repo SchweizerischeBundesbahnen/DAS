@@ -173,6 +173,19 @@
                 <NetworkSpecificParameter name="newSpeed" value="95"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
+
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="31.6"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="7700" endLocation="7700"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="31.3"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="8000" endLocation="8000"/>
+            </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
 
 
@@ -211,6 +224,15 @@
             <TemporaryConstraintReason text="Ristrutturazione" language="IT"/>
         </TemporaryConstraints>
 
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="15.0"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="2000" endLocation="2000"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="2266_12_Liestal" SP_VersionMajor="2" SP_VersionMinor="0" SP_Direction="Nominal">
@@ -247,6 +269,13 @@
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="80"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="10000" endLocation="10000"/>
+            </JP_ContextInformation_NSPs>
+
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="13.850"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="550" endLocation="550"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
 

@@ -22,6 +22,7 @@ dependencies:
   warnapp: 1.0.0
   settings: 1.0.0
   connectivity_x: 1.0.0
+  local_regulations: 1.0.0
 
   # https://pub.dev/packages/audioplayers
   audioplayers: ^6.5.0
@@ -70,6 +71,8 @@ dependencies:
   package_info_plus: ^8.3.1
   # https://pub.dev/packages/shared_preferences
   shared_preferences: ^2.5.3
+  # https://pub.dev/packages/webview_flutter
+  webview_flutter: ^4.13.0
 
 dev_dependencies:
   integration_test:

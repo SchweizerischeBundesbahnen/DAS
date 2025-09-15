@@ -12,12 +12,11 @@ class DetailTabCommunication extends StatelessWidget {
   static const radioChannelListKey = Key('communicationTabRadioChannelList');
   static const simCorridorListKey = Key('simCorridorList');
 
-  const DetailTabCommunication({super.key});
+  const DetailTabCommunication({super.key = communicationTabKey});
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      key: communicationTabKey,
       child: SizedBox(
         width: double.maxFinite,
         child: Column(

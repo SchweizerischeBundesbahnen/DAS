@@ -15,6 +15,7 @@ workspace:
   - warnapp
   - settings
   - connectivity_x
+  - local_regulations
 
 dev_dependencies:
   melos: 7.1.0

@@ -28,7 +28,7 @@ class AdditionalSpeedRestriction {
   final LocalizedString? reason;
 
   bool needsEndMarker(List<BaseData> journeyData) =>
-      journeyData.where((it) => it.order >= orderFrom && it.order <= orderTo).length > 1;
+      journeyData.where((it) => it.order >= orderFrom && it.order <= orderTo).isNotEmpty;
 
   /// Checks if this ASR should be displayed in the train journey.
   ///

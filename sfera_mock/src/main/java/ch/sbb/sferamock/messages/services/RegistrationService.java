@@ -55,7 +55,7 @@ public class RegistrationService {
         }
 
         if (!trainIdentification.isManualEvents()) {
-            eventService.registerActiveTrain(requestContext, registration.timestamp());
+            eventService.registerActiveTrain(requestContext, registration.timestamp);
         }
     }
 
@@ -92,12 +92,12 @@ public class RegistrationService {
         activeTrains.clear();
     }
 
-    public void nextLocationEvent(ClientId clientId) {
+    public void nextEvent(ClientId clientId) {
         if (isRegistered(clientId)) {
             var registration = registrationMap.get(clientId);
             if (registration.trainIdentification.isManualEvents()) {
-                eventService.nextLocationEvent(new RequestContext(registration.trainIdentification, clientId), registration.manualLoactionIndex);
-                registrationMap.put(clientId, new Registration(registration.trainIdentification, registration.operationMode, registration.timestamp, registration.manualLoactionIndex + 1));
+                eventService.nextEvent(new RequestContext(registration.trainIdentification, clientId), registration.manualEventIndex, registration.timestamp);
+                registrationMap.put(clientId, new Registration(registration.trainIdentification, registration.operationMode, registration.timestamp, registration.manualEventIndex + 1));
             }
         }
     }
@@ -106,7 +106,7 @@ public class RegistrationService {
         return registrationMap.get(clientId).timestamp;
     }
 
-    public record Registration(TrainIdentification trainIdentification, OperationMode operationMode, ZonedDateTime timestamp, int manualLoactionIndex) {
+    public record Registration(TrainIdentification trainIdentification, OperationMode operationMode, ZonedDateTime timestamp, int manualEventIndex) {
 
         public Registration(TrainIdentification trainIdentification, OperationMode operationMode) {
             this(trainIdentification, operationMode, ZonedDateTime.now(), 0);

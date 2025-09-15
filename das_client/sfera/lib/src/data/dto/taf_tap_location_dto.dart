@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:sfera/src/data/dto/enums/taf_tap_location_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 import 'package:sfera/src/data/dto/line_foot_notes_nsp_dto.dart';
+import 'package:sfera/src/data/dto/local_regulation_nsp_dto.dart';
 import 'package:sfera/src/data/dto/new_line_speed_taf_tap_location_dto.dart';
 import 'package:sfera/src/data/dto/op_foot_notes_nsp_dto.dart';
 import 'package:sfera/src/data/dto/sfera_segment_xml_element_dto.dart';
@@ -26,6 +27,8 @@ class TafTapLocationDto extends SferaSegmentXmlElementDto {
   Iterable<TafTapLocationNspDto> get nsp => children.whereType<TafTapLocationNspDto>();
 
   StationSpeedNspDto? get stationSpeed => children.whereType<StationSpeedNspDto>().firstOrNull;
+
+  Iterable<LocalRegulationNspDto> get localRegulations => children.whereType<LocalRegulationNspDto>();
 
   NewLineSpeedTafTapLocationDto? get newLineSpeed => children.whereType<NewLineSpeedTafTapLocationDto>().firstOrNull;
 
