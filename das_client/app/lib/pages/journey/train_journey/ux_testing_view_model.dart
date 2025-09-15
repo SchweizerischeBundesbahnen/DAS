@@ -25,7 +25,8 @@ class UxTestingViewModel {
 
   Stream<UxTestingEvent> get uxTestingEvents => _rxUxTestingEvents.stream;
 
-  Future<bool> get isDepartueProcessEnabled => _ruFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.departureProcess);
+  Future<bool> get isDepartueProcessFeatureEnabled =>
+      _ruFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.departureProcess);
 
   void _init() {
     _eventSubscription = _sferaService.uxTestingEventStream.listen((data) async {

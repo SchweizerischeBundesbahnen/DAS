@@ -50,7 +50,7 @@ class TrainJourneyViewModel {
 
   bool get showDecisiveGradientValue => _rxShowDecisiveGradient.value;
 
-  Future<bool> get isWarnappEnabled => _ruFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.warnapp);
+  Future<bool> get isWarnappFeatureEnabled => _ruFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.warnapp);
 
   AutomaticAdvancementController automaticAdvancementController = AutomaticAdvancementController();
 
@@ -164,9 +164,9 @@ class TrainJourneyViewModel {
   }
 
   void _enableWarnapp() async {
-    final isWarnappEnabled = await _ruFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.warnapp);
-    _log.info('Warnapp is ${isWarnappEnabled ? 'enabled' : 'disabled'} for active train');
-    if (isWarnappEnabled) {
+    final isWarnappFeatEnabled = await _ruFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.warnapp);
+    _log.info('Warnapp feature is ${isWarnappFeatEnabled ? 'enabled' : 'disabled'} for active train');
+    if (isWarnappFeatEnabled) {
       _warnappAbfahrtSubscription = _warnappRepo.abfahrtEventStream.listen((_) => _handleAbfahrtEvent());
       _warnappSignalSubscription = _sferaRemoteRepo.warnappEventStream.listen((_) {
         _lastWarnappEventTimestamp = DateTime.now();

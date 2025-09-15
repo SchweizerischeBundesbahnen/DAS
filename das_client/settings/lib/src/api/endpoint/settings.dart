@@ -25,7 +25,6 @@ class SettingsResponse {
     if (isSuccess) {
       final body = utf8.decode(response.bodyBytes);
       final json = jsonDecode(body);
-      print(json);
       final settings = SettingsResponseDto.fromJson(json);
       return SettingsResponse(
         headers: response.headers,

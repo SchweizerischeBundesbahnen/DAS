@@ -121,7 +121,7 @@ class ExtendedMenu extends StatelessWidget {
     final viewModel = context.read<TrainJourneyViewModel>();
 
     return FutureBuilder(
-      future: viewModel.isWarnappEnabled,
+      future: viewModel.isWarnappFeatureEnabled,
       builder: (context, asyncSnapshot) {
         if (!asyncSnapshot.hasData || asyncSnapshot.data == false) return SizedBox.shrink();
 

@@ -119,7 +119,7 @@ class _KoaTrailingButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.read<UxTestingViewModel>();
     return FutureBuilder(
-      future: viewModel.isDepartueProcessEnabled,
+      future: viewModel.isDepartueProcessFeatureEnabled,
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data == false) return SizedBox.shrink();
 
