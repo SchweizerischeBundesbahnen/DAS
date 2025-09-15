@@ -16,19 +16,19 @@ void main() {
 
       final reducedTable = _findTableOfReducedJourney();
 
-      //find gsm-R-Icons
+      // find gsm-R-Icons
       final gsmRKey = find.descendant(of: reducedTable, matching: find.byKey(CommunicationNetworkIcon.gsmRKey));
       expect(gsmRKey, findsNWidgets(2));
 
-      //find gsm-P-Icons
+      // find gsm-P-Icons
       final gsmPKey = find.descendant(of: reducedTable, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
       expect(gsmPKey, findsNWidgets(2));
 
-      //find first communication network change row by text km 33.5
+      // find first communication network change row by text km 33.5
       final firstCommunicationNetworkChangeRow = find.descendant(of: reducedTable, matching: find.text('km 33.5'));
       expect(firstCommunicationNetworkChangeRow, findsOneWidget);
 
-      //find second communication network change row by text km 84.9
+      // find second communication network change row by text km 84.9
       final secondCommunicationNetworkChangeRow = find.descendant(of: reducedTable, matching: find.text('km 84.9'));
       expect(secondCommunicationNetworkChangeRow, findsOneWidget);
     });
