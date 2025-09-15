@@ -20,7 +20,6 @@ class Metadata {
     this.advisedSpeedSegments = const [],
     this.availableBreakSeries = const {},
     this.communicationNetworkChanges = const [],
-    this.communicationNetworkChannel = const [],
     this.lineFootNoteLocations = const {},
     this.radioContactLists = const [],
     SplayTreeMap<int, Iterable<TrainSeriesSpeed>>? lineSpeeds,
@@ -39,7 +38,6 @@ class Metadata {
   final bool anyOperationalArrivalDepartureTimes;
   final List<NonStandardTrackEquipmentSegment> nonStandardTrackEquipmentSegments;
   final List<CommunicationNetworkChange> communicationNetworkChanges;
-  final List<CommunicationNetworkChannel> communicationNetworkChannel;
   final List<BracketStationSegment> bracketStationSegments;
   final Iterable<AdvisedSpeedSegment> advisedSpeedSegments;
   final BreakSeries? breakSeries;

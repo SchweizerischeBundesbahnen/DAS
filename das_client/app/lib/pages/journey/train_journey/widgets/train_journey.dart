@@ -19,7 +19,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/cab_signaling_row.
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/column_definition.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/combined_foot_note_operational_indication_row.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/communication_network_change_row.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/communication_network_channel_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/bracket_station_render_data.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/chevron_animation_data.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/track_equipment_render_data.dart';
@@ -352,12 +352,11 @@ class TrainJourney extends StatelessWidget {
             ),
           );
         case Datatype.communicationNetworkChannel:
-          print('in here');
-          return CommunicationNetworkChangeRow(
+          return CommunicationNetworkChannelRow(
             metadata: journey.metadata,
             data: rowData as CommunicationNetworkChannel,
             rowIndex: index,
-            journeyPosition: journeyPosition,
+            context: context,
           );
       }
     });

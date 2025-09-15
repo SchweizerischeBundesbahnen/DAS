@@ -110,7 +110,6 @@ class SferaModelMapper {
         advisedSpeedSegments: SpeedMapper.advisedSpeeds(journeyProfile, segmentProfiles, journeyData),
         availableBreakSeries: _parseAvailableBreakSeries(journeyPoints, lineSpeeds),
         communicationNetworkChanges: _parseCommunicationNetworkChanges(segmentProfileReferences, segmentProfiles),
-        communicationNetworkChannel: _parseCommunicationNetworkChannel(segmentProfileReferences, segmentProfiles),
         breakSeries:
             trainCharacteristic?.tcFeatures.trainCategoryCode != null &&
                 trainCharacteristic?.tcFeatures.brakedWeightPercentage != null
@@ -341,33 +340,6 @@ class SferaModelMapper {
 
             return CommunicationNetworkChange(
               type: element.communicationNetworkType.communicationNetworkType,
-              order: calculateOrder(index, element.startLocation),
-            );
-          });
-        })
-        .nonNulls
-        .flattened
-        .toList();
-  }
-
-  static List<CommunicationNetworkChannel> _parseCommunicationNetworkChannel(
-    List<SegmentProfileReferenceDto> segmentProfileReferences,
-    List<SegmentProfileDto> segmentProfiles,
-  ) {
-    return segmentProfileReferences
-        .mapIndexed((index, reference) {
-          final segmentProfile = segmentProfiles.firstMatch(reference);
-          final communicationNetworks = segmentProfile.contextInformation?.communicationNetworks;
-          return communicationNetworks?.map((element) {
-            if (element.startLocation != element.endLocation) {
-              _log.warning(
-                'CommunicationNetwork found without identical location (start=${element.startLocation} end=${element.endLocation}).',
-              );
-            }
-
-            return CommunicationNetworkChannel(
-              communicationNetworkType: element.communicationNetworkType.communicationNetworkType,
-              kilometre: List.empty(),
               order: calculateOrder(index, element.startLocation),
             );
           });
