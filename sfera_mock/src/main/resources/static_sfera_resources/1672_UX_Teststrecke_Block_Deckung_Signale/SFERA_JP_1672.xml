@@ -14,83 +14,83 @@
             <IM_ID>1285</IM_ID>
         </SP_Zone>
 
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:01:00Z"
-                                TP_PlannedLatestArrivalTime="9999-01-01T00:01:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:02:00Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:02:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Graftal"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="9999-01-01T00:01:00Z" plannedDepartureTime="9999-01-01T00:01:00Z"/>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:02:00Z" plannedDepartureTime="9999-01-01T00:02:00Z"/>
         </TimingPointConstraints>
 
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:05:20Z"
-                                TP_PlannedLatestArrivalTime="9999-01-01T00:05:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:06:20Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:06:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Fischerz"/>
             </TimingPointReference>
         </TimingPointConstraints>
 
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:08:00Z"
-                                TP_PlannedLatestArrivalTime="9999-01-01T00:08:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:09:00Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:09:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Twinn"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="9999-01-01T00:08:30Z" plannedDepartureTime="9999-01-01T00:08:00Z"/>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:09:30Z" plannedDepartureTime="9999-01-01T00:09:00Z"/>
         </TimingPointConstraints>
 
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:09:40Z"
-                                TP_PlannedLatestArrivalTime="9999-01-01T00:09:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:10:40Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:10:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Hoferz"/>
             </TimingPointReference>
         </TimingPointConstraints>
 
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:12:20Z"
-                                TP_PlannedLatestArrivalTime="9999-01-01T00:12:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:13:20Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:13:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Schonberg"/>
             </TimingPointReference>
         </TimingPointConstraints>
 
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:15:10Z"
-                                TP_PlannedLatestArrivalTime="9999-01-01T00:15:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:16:10Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:16:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Baumen"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="9999-01-01T00:17:00Z" plannedDepartureTime="9999-01-01T00:17:00Z"/>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:18:00Z" plannedDepartureTime="9999-01-01T00:18:00Z"/>
         </TimingPointConstraints>
 
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:20:20Z"
-                                TP_PlannedLatestArrivalTime="9999-01-01T00:20:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:21:20Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:21:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Sennbach"/>
             </TimingPointReference>
         </TimingPointConstraints>
 
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:23:00Z"
-                                TP_PlannedLatestArrivalTime="9999-01-01T00:23:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:24:00Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:24:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Luethisberg"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="9999-01-01T00:24:00Z" plannedDepartureTime="9999-01-01T00:24:00Z"/>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:25:00Z" plannedDepartureTime="9999-01-01T00:25:00Z"/>
         </TimingPointConstraints>
 
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:27:20Z"
-                                TP_PlannedLatestArrivalTime="9999-01-01T00:27:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:28:20Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:28:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Helmaiche"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="9999-01-01T00:27:00Z" plannedDepartureTime="9999-01-01T00:27:00Z"/>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:28:00Z" plannedDepartureTime="9999-01-01T00:28:00Z"/>
         </TimingPointConstraints>
 
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:29:30Z"
-                                TP_PlannedLatestArrivalTime="9999-01-01T00:29:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:30:30Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:30:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Haenniez"/>
             </TimingPointReference>
         </TimingPointConstraints>
 
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="End_of_Journey" TP_latestArrivalTime="9999-01-01T00:34:00Z"
-                                TP_PlannedLatestArrivalTime="9999-01-01T00:34:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="End_of_Journey" TP_latestArrivalTime="9999-01-01T00:35:00Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:35:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Schmidigen"/>
             </TimingPointReference>
@@ -101,13 +101,6 @@
             <TemporaryConstraintReason text="Umbau" language="DE"/>
             <TemporaryConstraintReason text="Renouvellement" language="FR"/>
             <TemporaryConstraintReason text="Ristrutturazione" language="IT"/>
-        </TemporaryConstraints>
-
-        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="24050" endLocation="26140" startTime="2025-04-10T18:00:00Z" endTime="2025-12-10T06:00:00Z">
-            <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="50"/>
-            <TemporaryConstraintReason text="Schutz Personal" language="DE"/>
-            <TemporaryConstraintReason text="Protection du personnel" language="FR"/>
-            <TemporaryConstraintReason text="Protezione del personale" language="IT"/>
         </TemporaryConstraints>
 
         <!--ADL Graftal-->
