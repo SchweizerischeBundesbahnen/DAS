@@ -86,7 +86,7 @@ public class FormationRun {
         if (company != null && company.length() == COMPANY_CODE_LENGTH && !INVALID_COMPANY_CODE.equals(company)) {
             return true;
         } else {
-            throw new IllegalStateException(
+            throw new UnexpectedProviderData(
                 "Invalid company code: " + company + " for formation run " + tafTapLocationReferenceStart.toLocationCode() + " - " + tafTapLocationReferenceEnd.toLocationCode());
         }
     }

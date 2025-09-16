@@ -10,6 +10,9 @@ import lombok.ToString;
 @ToString
 public class Vehicle {
 
+    /**
+     * Additional traction modes that are not considered as main traction.
+     */
     private static final List<TractionMode> ADDITIONAL_TRACTION_MODES = List.of(TractionMode.ZWISCHENLOK, TractionMode.SCHIEBELOK, TractionMode.UEBERFUEHRUNG);
     private TractionMode tractionMode;
     private String vehicleCategory;
@@ -74,7 +77,7 @@ public class Vehicle {
     }
 
     static TractionMode additionalTractionMode(List<Vehicle> vehicles) {
-        Vehicle vehicle = additionalTraction(vehicles);
+        Vehicle vehicle = findAdditionalTractionVehicle(vehicles);
         if (vehicle == null) {
             return null;
         }
@@ -82,23 +85,23 @@ public class Vehicle {
     }
 
     static String additionalTractionSeries(List<Vehicle> vehicles) {
-        Vehicle vehicle = additionalTraction(vehicles);
+        Vehicle vehicle = findAdditionalTractionVehicle(vehicles);
         if (vehicle == null) {
             return null;
         }
         if (vehicle.vehicleUnits.size() != 1) {
-            throw new IllegalStateException("Additional traction vehicle must have exactly one vehicle unit");
+            throw new UnexpectedProviderData("Additional traction vehicle must have exactly one vehicle unit");
         }
         return vehicle.vehicleUnits.getFirst().getVehicleSeries();
     }
 
-    private static Vehicle additionalTraction(List<Vehicle> vehicles) {
+    private static Vehicle findAdditionalTractionVehicle(List<Vehicle> vehicles) {
         List<Vehicle> additionalTractionVehicles = filterTraction(vehicles).stream().filter(vehicle -> ADDITIONAL_TRACTION_MODES.contains(vehicle.tractionMode)).toList();
         if (additionalTractionVehicles.isEmpty()) {
             return null;
         }
         if (additionalTractionVehicles.size() > 1) {
-            throw new IllegalStateException("More than one additional traction vehicle");
+            throw new UnexpectedProviderData("More than one additional traction vehicle");
         }
         return additionalTractionVehicles.getFirst();
     }

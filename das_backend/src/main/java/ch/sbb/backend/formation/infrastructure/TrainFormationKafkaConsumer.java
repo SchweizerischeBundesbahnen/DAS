@@ -20,7 +20,7 @@ public class TrainFormationKafkaConsumer {
 
     private final FormationService formationService;
 
-    @Value("${zis.lag-alert-threshold-seconds}")
+    @Value("${zis.lag-alert-threshold-seconds:60}")
     private long lagAlertThresholdSeconds;
 
     public TrainFormationKafkaConsumer(FormationService formationService) {

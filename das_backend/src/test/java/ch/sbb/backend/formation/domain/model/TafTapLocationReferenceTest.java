@@ -1,6 +1,7 @@
 package ch.sbb.backend.formation.domain.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 import org.junit.jupiter.api.Test;
@@ -26,6 +27,19 @@ class TafTapLocationReferenceTest {
         TafTapLocationReference reference = new TafTapLocationReference("CH", 23);
         String result = reference.toLocationCode();
         assertThat(result).isEqualTo("CH00023");
+    }
+
+    @Test
+    void toLocationCode_shouldFormatCountryAndUicCodeWithOtherCountry() {
+        TafTapLocationReference reference = new TafTapLocationReference("DE", 75985);
+        String result = reference.toLocationCode();
+        assertThat(result).isEqualTo("DE75985");
+    }
+
+    @Test
+    void toLocationCode_shouldFormatCountryAndUicCodeWithTooLongUicCode() {
+        TafTapLocationReference reference = new TafTapLocationReference("CH", 25675673);
+        assertThatExceptionOfType(UnexpectedProviderData.class).isThrownBy(() -> reference.toLocationCode());
     }
 
     @Test
