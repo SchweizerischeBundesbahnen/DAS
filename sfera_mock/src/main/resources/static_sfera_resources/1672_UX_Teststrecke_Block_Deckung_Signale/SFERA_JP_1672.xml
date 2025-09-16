@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 
-<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="6" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="7" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
     <TrainIdentification>
         <OTN_ID>
             <teltsi_Company>1285</teltsi_Company>
@@ -9,7 +9,7 @@
         </OTN_ID>
     </TrainIdentification>
 
-    <SegmentProfileReference SP_ID="1672_1" SP_VersionMajor="2" SP_VersionMinor="5" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="1672_1" SP_VersionMajor="2" SP_VersionMinor="6" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -110,7 +110,7 @@
                 </AdvisedSpeed>
         </TemporaryConstraints>
 
-        <TrainCharacteristicsRef TC_ID="1672_1" TC_VersionMajor="1" TC_VersionMinor="1" location="0">
+        <TrainCharacteristicsRef TC_ID="1672_1" TC_VersionMajor="1" TC_VersionMinor="2" location="0">
             <TC_RU_ID>1285</TC_RU_ID>
         </TrainCharacteristicsRef>
 
@@ -120,7 +120,7 @@
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>operationalIndication</NSP_GroupName>
                 <NetworkSpecificParameter name="type" value="uncoded"/>
-                <NetworkSpecificParameter name="uncodedText" value="Lüthisberg: Halt an Halteort 2"/>
+                <NetworkSpecificParameter name="uncodedText" value="Perron kurz und Achtung keine Haltetafeln"/>
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="23900" endLocation="23900"/>
             </JP_ContextInformation_NSPs>
 
