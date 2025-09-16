@@ -17,6 +17,8 @@ abstract class SferaRemoteRepo {
 
   SferaError? get lastError;
 
+  TrainIdentification? get connectedTrain;
+
   /// Connect to the SFERA broker with the given train identification
   Future<void> connect(TrainIdentification otnId);
 

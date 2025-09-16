@@ -1,5 +1,7 @@
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
+import 'package:app/provider/ru_feature_provider.dart';
+import 'package:app/provider/ru_feature_provider_impl.dart';
 import 'package:app/util/device_id_info.dart';
 import 'package:auth/component.dart';
 import 'package:get_it/get_it.dart';
@@ -30,6 +32,7 @@ class AuthenticatedScope extends DIScope {
     getIt.registerSferaLocalRepo();
     getIt.registerSferaRemoteRepo();
     getIt.registerSettingsRepository();
+    getIt.registerRuFeatureProvider();
 
     await getIt.allReady();
   }
@@ -136,8 +139,16 @@ extension AuthenticatedScopeExtension on GetIt {
   void registerSettingsRepository() {
     final flavor = DI.get<Flavor>();
     final configRepository = SettingsComponent.createRepository(baseUrl: flavor.backendUrl, client: DI.get());
-    registerSingleton<SettingsConfigRepository>(configRepository);
+    registerSingleton<SettingsRepository>(configRepository);
     registerSingleton<LogEndpoint>(configRepository);
+  }
+
+  void registerRuFeatureProvider() {
+    factoryFunc() {
+      return RuFeatureProviderImpl(sferaRemoteRepo: DI.get(), settingsRepository: DI.get());
+    }
+
+    registerLazySingleton<RuFeatureProvider>(factoryFunc);
   }
 }
 

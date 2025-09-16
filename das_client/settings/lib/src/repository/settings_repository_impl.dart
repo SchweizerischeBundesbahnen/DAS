@@ -2,12 +2,13 @@ import 'package:logging/logging.dart';
 import 'package:settings/src/api/dto/logging_setting_dto.dart';
 import 'package:settings/src/api/settings_api_service.dart';
 import 'package:settings/src/data/local/ru_feature_database_service.dart';
-import 'package:settings/src/repository/settings_config_repository.dart';
+import 'package:settings/src/model/ru_feature_keys.dart';
+import 'package:settings/src/repository/settings_repository.dart';
 
-final _log = Logger('DasConfigRepositoryImpl');
+final _log = Logger('SettingsRepositoryImpl');
 
-class SettingsConfigRepositoryImpl implements SettingsConfigRepository {
-  SettingsConfigRepositoryImpl({required this.apiService, required this.databaseService}) {
+class SettingsRepositoryImpl implements SettingsRepository {
+  SettingsRepositoryImpl({required this.apiService, required this.databaseService}) {
     init();
   }
 
@@ -50,4 +51,10 @@ class SettingsConfigRepositoryImpl implements SettingsConfigRepository {
 
   @override
   String? get loggingUrl => _loggingSetting?.url;
+
+  @override
+  Future<bool> isRuFeatureEnabled(RuFeatureKeys featureKey, String companyCode) async {
+    final ruFeature = await databaseService.findRuFeature(companyCode, featureKey);
+    return ruFeature?.enabled ?? false;
+  }
 }

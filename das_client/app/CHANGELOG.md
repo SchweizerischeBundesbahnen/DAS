@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.27.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.26.0...das_client-v0.27.0) (2025-09-16)
+
+
+### Features
+
+* activate / deactivate ru features ([#445](https://github.com/SchweizerischeBundesbahnen/DAS/issues/445)) ([#1233](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1233)) ([925756e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/925756e66c0c518b581313ee70287562312d7529))
+* added local regulations ([#95](https://github.com/SchweizerischeBundesbahnen/DAS/issues/95)) ([#1225](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1225)) ([40fc074](https://github.com/SchweizerischeBundesbahnen/DAS/commit/40fc074f94856911aaef85ff0fefa1bb188ba0cc))
+
 ## [0.26.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.25.0...das_client-v0.26.0) (2025-09-09)
 
 
