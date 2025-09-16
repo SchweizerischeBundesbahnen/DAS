@@ -205,7 +205,12 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   DASTableCell advisedSpeedCell(BuildContext context) {
     final advisedSpeedsSegment = metadata.advisedSpeedSegments.appliesToOrder(data.order);
     final isLastAdvisedSpeed = advisedSpeedsSegment.firstOrNull?.endData == data;
-    if (advisedSpeedsSegment.isNotEmpty && !isLastAdvisedSpeed) {
+    final showAdvisedSpeed =
+        advisedSpeedsSegment.isNotEmpty &&
+        journeyPosition?.currentPosition != null &&
+        advisedSpeedsSegment.first.appliesToOrder(journeyPosition!.currentPosition!.order);
+
+    if (showAdvisedSpeed && !isLastAdvisedSpeed) {
       final isFirst = advisedSpeedsSegment.first.startOrder == data.order;
 
       return DASTableCell(
@@ -216,7 +221,6 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
           settings: config.settings,
           order: data.order,
           showSpeedBehavior: isFirst ? ShowSpeedBehavior.always : showSpeedBehavior,
-          isNextStop: _isNextStop,
         ),
       );
     } else {
@@ -225,7 +229,9 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
           metadata: metadata,
           settings: config.settings,
           order: data.order,
-          showSpeedBehavior: isLastAdvisedSpeed ? ShowSpeedBehavior.alwaysOrPrevious : showSpeedBehavior,
+          showSpeedBehavior: showAdvisedSpeed && isLastAdvisedSpeed
+              ? ShowSpeedBehavior.alwaysOrPrevious
+              : showSpeedBehavior,
           isNextStop: _isNextStop,
         ),
       );
