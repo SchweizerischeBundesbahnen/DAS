@@ -52,9 +52,6 @@ public class RegistrationService {
             activeTrains.compute(trainIdentification, (key, clientIdentifiers) -> clientIdentifiers == null
                 ? newSetWith(clientId)
                 : existingSetWith(clientIdentifiers, clientId));
-        }
-
-        if (!trainIdentification.isManualEvents()) {
             eventService.registerActiveTrain(requestContext, registration.timestamp);
         }
     }
@@ -72,7 +69,7 @@ public class RegistrationService {
     private void deregisterTrainIfLastClient(ClientId clientId) {
         if (registrationMap.containsKey(clientId)) {
             var currentTrainIdentification = registrationMap.get(clientId).trainIdentification();
-            activeTrains.compute(currentTrainIdentification, (tid, clientIdentifiers) -> {
+            activeTrains.computeIfPresent(currentTrainIdentification, (tid, clientIdentifiers) -> {
                 if (clientIdentifiers.remove(clientId)) {
                     if (clientIdentifiers.isEmpty()) {
                         return null;
