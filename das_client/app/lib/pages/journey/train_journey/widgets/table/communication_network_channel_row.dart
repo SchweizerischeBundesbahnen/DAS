@@ -16,6 +16,7 @@ class CommunicationNetworkChannelRow extends CellRowBuilder<CommunicationNetwork
     required super.data,
     required super.rowIndex,
     required this.context,
+    super.config,
   }) : super(rowColor: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black));
 
   @override
