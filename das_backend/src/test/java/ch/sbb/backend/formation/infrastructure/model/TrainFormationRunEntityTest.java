@@ -56,8 +56,8 @@ class TrainFormationRunEntityTest {
             .inspected(true)
             .inspectionDateTime(inspectionDateTime)
             .company("4532")
-            .tafTapLocationReferenceStart(new TafTapLocationReference("CH", 102344))
-            .tafTapLocationReferenceEnd(new TafTapLocationReference("CH", 504212))
+            .tafTapLocationReferenceStart(new TafTapLocationReference("CH", 52344))
+            .tafTapLocationReferenceEnd(new TafTapLocationReference("CH", 4212))
             .trainCategoryCode("CAT")
             .brakedWeightPercentage(435)
             .tractionMaxSpeedInKmh(1)
@@ -104,8 +104,8 @@ class TrainFormationRunEntityTest {
         assertThat(result.getTrainPathId()).isEqualTo(trainPathId);
         assertThat(result.getOperationalDay()).isEqualTo(operationalDay);
         assertThat(result.getCompany()).isEqualTo("4532");
-        assertThat(result.getTafTapLocationReferenceStart()).isEqualTo("CH102344");
-        assertThat(result.getTafTapLocationReferenceEnd()).isEqualTo("CH504212");
+        assertThat(result.getTafTapLocationReferenceStart()).isEqualTo("CH52344");
+        assertThat(result.getTafTapLocationReferenceEnd()).isEqualTo("CH04212");
         assertThat(result.getTrainCategoryCode()).isEqualTo("CAT");
         assertThat(result.getBrakedWeightPercentage()).isEqualTo(435);
         assertThat(result.getTractionMaxSpeedInKmh()).isEqualTo(1);

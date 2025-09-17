@@ -1,0 +1,42 @@
+{
+  "formationRuns": [
+    {
+      "brakeSequence": 75,
+      "endLocation": {
+        "countryCodeIso": "CH",
+        "locationPrimaryCode": 5683
+      },
+      "endLocationUic": {
+        "bpZusatzId": 0,
+        "countryCodeUic": 85,
+        "uicCode": 56831
+      },
+      "formationRunInspection": {
+        "inspected": false
+      },
+      "smsEvu": "1111",
+      "startLocation": {
+        "countryCodeIso": "CH",
+        "locationPrimaryCode": 5699
+      },
+      "startLocationUic": {
+        "bpZusatzId": 0,
+        "countryCodeUic": 85,
+        "uicCode": 56992
+      },
+      "vehicleGroups": [
+        {
+          "vehicles": [
+            {
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "key": {
+    "betriebstag": "2025-08-01",
+    "trassenId": "11-001",
+    "zugnummer": 11
+  }
+}
