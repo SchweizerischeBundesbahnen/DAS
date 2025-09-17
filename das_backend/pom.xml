@@ -145,6 +145,20 @@
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>s3</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+            <version>2.17.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-oxm</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -245,6 +259,27 @@
                             </sourcePaths>
                             <targetPackage>ch.sbb.zis.trainformation.api.model</targetPackage>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <sources>
+                        <source>${basedir}/src/main/resources/SFERA_v3.00.xsd</source>
+                    </sources>
+                    <xjbSources>
+                        <xjbSource>${basedir}/src/main/resources/jaxb-bindings.xjb</xjbSource>
+                    </xjbSources>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>xjc</id>
+                        <goals>
+                            <goal>xjc</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
