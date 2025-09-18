@@ -44,31 +44,33 @@ public class PreloadStorageService {
         this.s3Service = s3Service;
     }
 
-    public void save(List<JourneyProfile> journeyProfiles, List<SegmentProfile> segmentProfiles, List<TrainCharacteristics> trainCharacteristics) {
+    public void save(List<JourneyProfile> journeyProfiles,
+        List<SegmentProfile> segmentProfiles,
+        List<TrainCharacteristics> trainCharacteristics) {
 
         Path tempRoot = null;
         Path zipFile = null;
 
         try {
-            // 1) Temp-Struktur
+            // 1) Temp-Verzeichnisstruktur
             tempRoot = Files.createTempDirectory("preload_");
             Path jpDir = Files.createDirectories(tempRoot.resolve("jp"));
             Path spDir = Files.createDirectories(tempRoot.resolve("sp"));
             Path tcDir = Files.createDirectories(tempRoot.resolve("tc"));
 
-            // 2) XML-Dateien schreiben
+            // 2) XML-Dateien erzeugen (falls Listen nicht leer sind)
             writeXmlFiles(journeyProfiles, jpDir, "jp");
             writeXmlFiles(segmentProfiles, spDir, "sp");
             writeXmlFiles(trainCharacteristics, tcDir, "tc");
 
-            // 3) ZIP-Dateiname wie 2025-01-19T13:20.00.zip (Sekunden auf 00)
+            // 3) ZIP-Dateiname wie 2025-01-19T13:20.00.zip (Sekunden=00)
             ZonedDateTime now = ZonedDateTime.now(ZoneId.of(timestampZone))
                 .withSecond(0).withNano(0);
             String zipName = ZIP_NAME_FMT.format(now) + ".zip";
 
-            // 4) ZIP erzeugen
+            // 4) ZIP erzeugen (inkl. Ordner-Einträgen)
             zipFile = tempRoot.resolve(zipName);
-            createZip(tempRoot, zipFile);
+            createZipWithFolders(tempRoot, zipFile);
 
             // 5) Nach S3 hochladen
             String key = (s3Prefix == null || s3Prefix.isEmpty()) ? zipName : s3Prefix + zipName;
@@ -76,7 +78,7 @@ public class PreloadStorageService {
         } catch (Exception e) {
             throw new RuntimeException("Preload save failed", e);
         } finally {
-            // 6) Lokale Temps aufräumen
+            // 6) Temporäres Aufräumen (Best Effort)
             try {
                 if (zipFile != null) Files.deleteIfExists(zipFile);
                 if (tempRoot != null) {
@@ -114,17 +116,28 @@ public class PreloadStorageService {
         }
     }
 
-    private void createZip(Path root, Path zipFile) throws IOException {
+    private void createZipWithFolders(Path root, Path zipFile) throws IOException {
         try (OutputStream os = Files.newOutputStream(zipFile, StandardOpenOption.CREATE_NEW);
             ZipOutputStream zos = new ZipOutputStream(os)) {
 
-            addFolder(zos, root.resolve("jp"), root);
-            addFolder(zos, root.resolve("sp"), root);
-            addFolder(zos, root.resolve("tc"), root);
+            // Ordner-Einträge explizit hinzufügen (sichtbar im ZIP, auch wenn leer)
+            addDirectoryEntry(zos, "jp/");
+            addDirectoryEntry(zos, "sp/");
+            addDirectoryEntry(zos, "tc/");
+
+            addFolderFiles(zos, root.resolve("jp"), root);
+            addFolderFiles(zos, root.resolve("sp"), root);
+            addFolderFiles(zos, root.resolve("tc"), root);
         }
     }
 
-    private void addFolder(ZipOutputStream zos, Path folder, Path root) throws IOException {
+    private void addDirectoryEntry(ZipOutputStream zos, String name) throws IOException {
+        ZipEntry dirEntry = new ZipEntry(name);
+        zos.putNextEntry(dirEntry);
+        zos.closeEntry();
+    }
+
+    private void addFolderFiles(ZipOutputStream zos, Path folder, Path root) throws IOException {
         if (!Files.exists(folder)) return;
         try (var stream = Files.walk(folder)) {
             stream.filter(Files::isRegularFile).forEach(file -> {

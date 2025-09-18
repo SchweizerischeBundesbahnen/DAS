@@ -44,7 +44,6 @@ public class S3Service {
         System.out.println("Downloaded s3://" + bucketName + "/" + key + " to " + destination);
     }
 
-    // Für Swagger-Download als Bytes
     public byte[] getObjectBytes(String key) {
         GetObjectRequest req = GetObjectRequest.builder()
             .bucket(bucketName)
@@ -54,7 +53,6 @@ public class S3Service {
         return bytes.asByteArray();
     }
 
-    // Objekte unter Prefix auflisten (Paginator)
     public List<S3Object> listObjects(String prefix) {
         List<S3Object> out = new ArrayList<>();
         ListObjectsV2Request req = ListObjectsV2Request.builder()

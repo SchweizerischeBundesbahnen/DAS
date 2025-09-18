@@ -1,5 +1,6 @@
 package ch.sbb.backend.preload;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -12,7 +13,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @RestController
-@Tag(name = "Preload", description = "API for preloading SFERA datas and S3 utilities.")
+@Tag(name = "Preload", description = "API for preloading SFERA data and S3 utilities.")
 public class FileController {
 
     private final S3Service s3Service;
@@ -26,28 +27,30 @@ public class FileController {
     @Value("${preload.s3Prefix:}")
     private String s3Prefix;
 
-    // Bestehend: generischer Upload einer lokalen Datei nach S3
+    // Bestehende generische Endpunkte (optional weiterhin nützlich)
+    @Operation(summary = "Lokale Datei nach S3 hochladen (Generisch)")
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestParam String key, @RequestParam String filePath) {
         s3Service.uploadFile(key, Paths.get(filePath));
         return new ResponseEntity<>("Upload erfolgreich!", HttpStatus.OK);
     }
 
-    // Bestehend: generischer Download aus S3 in lokalen Pfad
+    @Operation(summary = "Datei aus S3 in lokalen Pfad speichern (Generisch)")
     @GetMapping("/download")
     public ResponseEntity<String> downloadFile(@RequestParam String key, @RequestParam String destinationPath) {
         s3Service.downloadFile(key, Paths.get(destinationPath));
         return new ResponseEntity<>("Download erfolgreich!", HttpStatus.OK);
     }
 
-    // Neu: erzeugt leeres ZIP (jp/sp/tc) und lädt es nach S3 – ideal für Swagger-Test
+    // Swagger-Test: ZIP erzeugen (Ordner jp/sp/tc enthalten, ggf. ohne Dateien) und nach S3 hochladen
+    @Operation(summary = "Preload-ZIP erzeugen (leer) und nach S3 laden")
     @PostMapping("/preload/save-empty")
     public ResponseEntity<String> preloadSaveEmpty() {
         preloadStorageService.save(List.of(), List.of(), List.of());
         return ResponseEntity.ok("Preload ZIP erzeugt und nach S3 hochgeladen (leer).");
     }
 
-    // Neu: S3-Keys (ZIPs) unter Prefix anzeigen
+    @Operation(summary = "Preload-ZIPs auflisten")
     @GetMapping("/preload/list")
     public ResponseEntity<List<S3ObjectDto>> preloadList(@RequestParam(name = "prefix", required = false) String prefix) {
         String p = (prefix != null) ? prefix : (s3Prefix == null ? "" : s3Prefix);
@@ -59,7 +62,7 @@ public class FileController {
         return ResponseEntity.ok(out);
     }
 
-    // Neu: ZIP direkt aus S3 herunterladen (Swagger -> Datei speichern)
+    @Operation(summary = "Preload-ZIP aus S3 herunterladen")
     @GetMapping("/preload/download")
     public ResponseEntity<byte[]> preloadDownload(@RequestParam String key) {
         byte[] data = s3Service.getObjectBytes(key);
@@ -72,7 +75,7 @@ public class FileController {
         return new ResponseEntity<>(data, headers, HttpStatus.OK);
     }
 
-    // Neu: Cleanup auslösen (löscht alte ZIPs gemäss retentionHours)
+    @Operation(summary = "Alte Preload-ZIPs in S3 löschen (gemäss retentionHours)")
     @PostMapping("/preload/cleanup")
     public ResponseEntity<String> preloadCleanup() {
         preloadStorageService.cleanUp();

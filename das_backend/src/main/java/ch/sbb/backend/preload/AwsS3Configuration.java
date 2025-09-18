@@ -24,7 +24,7 @@ public class AwsS3Configuration {
     @Value("${aws.region:eu-central-1}")
     private String region;
 
-    // optional: z. B. http://localhost:4566 für LocalStack
+    // Optional: z. B. http://localhost:4566 (LocalStack). Für echtes AWS leer lassen.
     @Value("${aws.endpointOverride:}")
     private String endpointOverride;
 
