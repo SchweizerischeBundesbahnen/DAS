@@ -1,6 +1,6 @@
 import 'package:app/pages/journey/train_journey/chevron_animation_controller.dart';
 import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class ChevronAnimationWrapper extends StatefulWidget {
   const ChevronAnimationWrapper({
@@ -19,7 +19,7 @@ class ChevronAnimationWrapper extends StatefulWidget {
       context?.dependOnInheritedWidgetOfExactType<_ChevronAnimationWrapper>()?.controller;
 }
 
-class _ChevronAnimationWrapperState extends State<ChevronAnimationWrapper> with TickerProviderStateMixin {
+class _ChevronAnimationWrapperState extends State<ChevronAnimationWrapper> with SingleTickerProviderStateMixin {
   late final ChevronAnimationController _controller;
 
   @override

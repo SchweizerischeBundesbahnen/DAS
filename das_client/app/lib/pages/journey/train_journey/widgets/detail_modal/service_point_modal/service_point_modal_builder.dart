@@ -10,6 +10,7 @@ import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class ServicePointModalBuilder extends DASModalSheetBuilder {
   static const segmentedButtonKey = Key('servicePointModalSegmentedButton');
@@ -21,7 +22,8 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
       initialData: viewModel.selectedTabValue,
       stream: viewModel.selectedTab,
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return Center(child: CircularProgressIndicator());
+        if (!snapshot.hasData) return SizedBox.shrink();
+        print('viewModel.selectedTabValue ${snapshot.data}');
 
         final selectedTab = snapshot.data!;
         return Column(
@@ -51,7 +53,12 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
       stream: context.read<ServicePointModalViewModel>().servicePoint,
       builder: (context, snapshot) {
         final servicePointName = snapshot.data?.name;
-        if (servicePointName == null) return Text(context.l10n.c_unknown, style: DASTextStyles.largeRoman);
+        if (servicePointName == null) {
+          return Skeletonizer(
+            enabled: !snapshot.hasData,
+            child: Text(context.l10n.c_unknown, style: DASTextStyles.largeRoman),
+          );
+        }
 
         return AnimatedSwitcher(
           duration: DASAnimation.shortDuration,
@@ -62,7 +69,11 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
               child: ScaleTransition(scale: animation, child: child),
             );
           },
-          child: Text(servicePointName, key: ValueKey(servicePointName), style: DASTextStyles.largeRoman),
+          child: Text(
+            servicePointName,
+            key: ValueKey(servicePointName),
+            style: DASTextStyles.largeRoman,
+          ),
         );
       },
     );
@@ -72,9 +83,11 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
     return StreamBuilder(
       stream: context.read<ServicePointModalViewModel>().selectedTab,
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return SizedBox.shrink();
-        final selectedTab = snapshot.data!;
-        return Text(selectedTab.localized(context), style: DASTextStyles.extraSmallRoman);
+        final tabSubtitle = snapshot.data?.localized(context) ?? BoneMock.subtitle;
+        return Skeletonizer(
+          enabled: !snapshot.hasData,
+          child: Text(tabSubtitle, style: DASTextStyles.extraSmallRoman),
+        );
       },
     );
   }
@@ -84,7 +97,12 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
     return StreamBuilder(
       stream: viewModel.tabs,
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return SizedBox.shrink();
+        if (!snapshot.hasData) {
+          return Skeletonizer(
+            enabled: true,
+            child: SBBSegmentedButton(values: [BoneMock.title], selectedStateIndex: 0, selectedIndexChanged: (_) {}),
+          );
+        }
 
         final tabs = snapshot.requireData;
         return SBBSegmentedButton.icon(
