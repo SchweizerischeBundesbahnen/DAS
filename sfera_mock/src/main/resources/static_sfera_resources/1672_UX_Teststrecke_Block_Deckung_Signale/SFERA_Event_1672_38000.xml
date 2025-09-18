@@ -10,8 +10,8 @@
                 </OTN_ID>
             </TrainIdentification>
             <TrainLocationInformation>
-                <!--Deckungssignal P15-->
-                <PositionSpeed SP_ID="1672_1" location="10120">
+                <!--nach Sennbach-->
+                <PositionSpeed SP_ID="1672_1" location="20610">
                     <SP_Zone>
                         <IM_ID>1285</IM_ID>
                     </SP_Zone>
