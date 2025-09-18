@@ -221,9 +221,7 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
       children: [
         _keyIdentifier(),
         _header(),
-        SizedBox(
-          height: sbbDefaultSpacing * 0.5,
-        ),
+        SizedBox(height: sbbDefaultSpacing * 0.5),
         Expanded(child: widget.builder.body(context)),
       ],
     );
@@ -255,7 +253,7 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
   }
 
   /// separate widget as otherwise the whole sheet will be redrawn after animation because the key changes
-  SizedBox _keyIdentifier() {
+  Widget _keyIdentifier() {
     return SizedBox.shrink(
       key: widget.controller.isExpanded ? DasModalSheet.modalSheetExtendedKey : DasModalSheet.modalSheetMaximizedKey,
     );
