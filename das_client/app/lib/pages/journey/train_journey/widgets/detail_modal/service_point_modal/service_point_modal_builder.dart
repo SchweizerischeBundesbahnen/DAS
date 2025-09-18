@@ -23,7 +23,6 @@ class ServicePointModalBuilder extends DASModalSheetBuilder {
       stream: viewModel.selectedTab,
       builder: (context, snapshot) {
         if (!snapshot.hasData) return SizedBox.shrink();
-        print('viewModel.selectedTabValue ${snapshot.data}');
 
         final selectedTab = snapshot.data!;
         return Column(
