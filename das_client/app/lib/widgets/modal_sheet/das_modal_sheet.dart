@@ -94,8 +94,11 @@ class DASModalSheetController {
   Future<void> maximize() async {
     if (!_initialized) return;
 
-    if (_state != _ControllerState.maximized) {
+    if (_state == _ControllerState.closed) {
       onOpen?.call();
+    }
+
+    if (_state != _ControllerState.maximized) {
       await _fullWidthController.forward();
       _state = _ControllerState.maximized;
     }
@@ -214,9 +217,9 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
 
   Widget _body() {
     return Column(
-      key: widget.controller.isExpanded ? DasModalSheet.modalSheetExtendedKey : DasModalSheet.modalSheetMaximizedKey,
       mainAxisSize: MainAxisSize.max,
       children: [
+        _keyIdentifier(),
         _header(),
         SizedBox(height: sbbDefaultSpacing * 0.5),
         Expanded(child: widget.builder.body(context)),
@@ -247,5 +250,12 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
     final maxWidth = MediaQuery.sizeOf(context).width - widget.leftMargin;
     final animatedWidthOfController = widget.controller.width + (widget.controller.fullWidth * maxWidth);
     return min(animatedWidthOfController, maxWidth);
+  }
+
+  /// separate widget as otherwise the whole sheet will be redrawn after animation because the key changes
+  Widget _keyIdentifier() {
+    return SizedBox.shrink(
+      key: widget.controller.isExpanded ? DasModalSheet.modalSheetExtendedKey : DasModalSheet.modalSheetMaximizedKey,
+    );
   }
 }

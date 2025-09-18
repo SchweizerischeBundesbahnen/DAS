@@ -28,6 +28,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/connection_track_r
 import 'package:app/pages/journey/train_journey/widgets/table/curve_point_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/foot_note_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/level_crossing_row.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/loading_table.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/protection_section_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/signal_row.dart';
@@ -68,7 +69,7 @@ class TrainJourney extends StatelessWidget {
       ]),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data?[0] == null) {
-          return SizedBox.shrink();
+          return TrainJourneyLoadingTable(columns: _columns(context, null, null, false));
         }
 
         final journey = snapshot.data![0] as Journey;
@@ -356,11 +357,11 @@ class TrainJourney extends StatelessWidget {
 
   List<DASTableColumn> _columns(
     BuildContext context,
-    Metadata metadata,
-    TrainJourneySettings settings,
+    Metadata? metadata,
+    TrainJourneySettings? settings,
     bool isDetailModalOpen,
   ) {
-    final currentBreakSeries = settings.resolvedBreakSeries(metadata);
+    final currentBreakSeries = settings?.resolvedBreakSeries(metadata);
     final speedLabel = currentBreakSeries != null
         ? '${currentBreakSeries.trainSeries.name}${currentBreakSeries.breakSeries}'
         : '??';
@@ -461,7 +462,7 @@ class TrainJourney extends StatelessWidget {
     context.read<TrainJourneyViewModel>().updateExpandedGroups(newList);
   }
 
-  Future<void> _onBreakSeriesTap(BuildContext context, Metadata metadata, TrainJourneySettings settings) async {
+  Future<void> _onBreakSeriesTap(BuildContext context, Metadata? metadata, TrainJourneySettings? settings) async {
     final viewModel = context.read<TrainJourneyViewModel>();
 
     final selectedBreakSeries = await showSBBModalSheet<BreakSeries>(
@@ -469,8 +470,8 @@ class TrainJourney extends StatelessWidget {
       title: context.l10n.p_train_journey_break_series,
       constraints: BoxConstraints(),
       child: BreakSeriesSelection(
-        availableBreakSeries: metadata.availableBreakSeries,
-        selectedBreakSeries: settings.resolvedBreakSeries(metadata),
+        availableBreakSeries: metadata?.availableBreakSeries ?? {},
+        selectedBreakSeries: settings?.resolvedBreakSeries(metadata),
       ),
     );
 
