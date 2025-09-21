@@ -1,6 +1,8 @@
 package ch.sbb.backend.formation.domain.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 import org.junit.jupiter.api.Test;
 
@@ -9,8 +11,8 @@ class TafTapLocationReferenceTest {
     @Test
     void toLocationCode_null() {
         TafTapLocationReference reference = new TafTapLocationReference(null, null);
-        String result = reference.toLocationCode();
-        assertThat(result).isNull();
+
+        assertThatIllegalStateException().isThrownBy(() -> reference.toLocationCode());
     }
 
     @Test
@@ -28,6 +30,19 @@ class TafTapLocationReferenceTest {
     }
 
     @Test
+    void toLocationCode_shouldFormatCountryAndUicCodeWithOtherCountry() {
+        TafTapLocationReference reference = new TafTapLocationReference("DE", 75985);
+        String result = reference.toLocationCode();
+        assertThat(result).isEqualTo("DE75985");
+    }
+
+    @Test
+    void toLocationCode_shouldFormatCountryAndUicCodeWithTooLongUicCode() {
+        TafTapLocationReference reference = new TafTapLocationReference("CH", 25675673);
+        assertThatExceptionOfType(UnexpectedProviderData.class).isThrownBy(() -> reference.toLocationCode());
+    }
+
+    @Test
     void toCountryCodeIso_null() {
         String countryCodeIso = TafTapLocationReference.toCountryCodeIso(null);
         assertThat(countryCodeIso).isNull();
@@ -35,8 +50,8 @@ class TafTapLocationReferenceTest {
 
     @Test
     void toCountryCodeIso_unknown() {
-        String countryCodeIso = TafTapLocationReference.toCountryCodeIso(69);
-        assertThat(countryCodeIso).isNull();
+        assertThatIllegalStateException().isThrownBy(() -> TafTapLocationReference.toCountryCodeIso(69));
+
     }
 
     @Test

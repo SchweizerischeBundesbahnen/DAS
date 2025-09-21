@@ -59,12 +59,13 @@ class CalculatedSpeedCellBody extends StatelessWidget {
         final isSpeedReducedDueToLineSpeed = resolvedCalculatedSpeed.isLargerThan(resolvedLineSpeed);
         resolvedCalculatedSpeed = _min(resolvedLineSpeed, resolvedCalculatedSpeed);
 
-        final color = isNextStop ? SBBColors.cement : SBBColors.metal;
+        final reducedColor = isNextStop ? SBBColors.cement : SBBColors.metal;
+        final color = isNextStop ? SBBColors.white : null;
 
         return Text(
           key: nonEmptyKey,
           resolvedCalculatedSpeed.value == '0' ? zeroSpeedContent : resolvedCalculatedSpeed.value,
-          style: isSpeedReducedDueToLineSpeed ? DASTextStyles.largeLight.copyWith(color: color) : null,
+          style: DASTextStyles.largeLight.copyWith(color: isSpeedReducedDueToLineSpeed ? reducedColor : color),
         );
       },
     );

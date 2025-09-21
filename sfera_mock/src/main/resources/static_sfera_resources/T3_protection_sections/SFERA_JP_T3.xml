@@ -118,6 +118,7 @@
                 <TP_ID_Reference TP_ID="Flughafen"/>
             </TimingPointReference>
         </TimingPointConstraints>
+
         <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="700" endLocation="800"
                               startTime="2022-01-01T00:00:00Z" endTime="2060-01-01T00:00:00Z">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="60"/>
@@ -163,5 +164,116 @@
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="60"/>
             <TemporaryConstraintReason text="ASR not parsed - starts 30 min after JourneyEnd" language="de"/>
         </TemporaryConstraints>
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="64.2"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="700" endLocation="700"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="63.2"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="800" endLocation="800"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="58.2"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="1100" endLocation="1100"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="56.1"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="1200" endLocation="1200"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="49.5"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="1300" endLocation="1300"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="41.1"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="1400" endLocation="1400"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="33.2"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="1550" endLocation="1550"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="32.8"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="1575" endLocation="1575"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="26.2"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="2200" endLocation="2200"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="19.7"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="2400" endLocation="2400"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="46.2"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="3300" endLocation="3300"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="47.2"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="3400" endLocation="3400"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="80.3"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="5600" endLocation="5600"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="78.3"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="5800" endLocation="5800"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="75.1"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="6200" endLocation="6200"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="70.4"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="6400" endLocation="6400"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="39.9"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="7800" endLocation="7800"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="40.7"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="7900" endLocation="7900"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 </JourneyProfile>

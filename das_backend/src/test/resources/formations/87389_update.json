@@ -1,0 +1,37 @@
+{
+  "data": [
+    {
+      "operationalTrainNumber": "87389",
+      "operationalDay": "2025-08-05",
+      "company": "6382",
+      "formationRuns": [
+        {
+          "inspectionDateTime": "2025-08-05T18:56:12+02:00",
+          "tafTapLocationReferenceStart": "BA08332",
+          "tafTapLocationReferenceEnd": "LA06384",
+          "tractionHoldingForceInHectoNewton": 0,
+          "hauledLoadHoldingForceInHectoNewton": 0,
+          "formationHoldingForceInHectoNewton": 0,
+          "dangerousGoods": false,
+          "vehiclesCount": 0,
+          "vehiclesWithBrakeDesignLlAndKCount": 0,
+          "vehiclesWithBrakeDesignDCount": 0,
+          "vehiclesWithDisabledBrakesCount": 0
+        },
+        {
+          "inspectionDateTime": "2025-08-05T19:26:33+02:00",
+          "tafTapLocationReferenceStart": "BY09344",
+          "tafTapLocationReferenceEnd": "BA08332",
+          "tractionHoldingForceInHectoNewton": 0,
+          "hauledLoadHoldingForceInHectoNewton": 0,
+          "formationHoldingForceInHectoNewton": 0,
+          "dangerousGoods": false,
+          "vehiclesCount": 0,
+          "vehiclesWithBrakeDesignLlAndKCount": 0,
+          "vehiclesWithBrakeDesignDCount": 0,
+          "vehiclesWithDisabledBrakesCount": 0
+        }
+      ]
+    }
+  ]
+}

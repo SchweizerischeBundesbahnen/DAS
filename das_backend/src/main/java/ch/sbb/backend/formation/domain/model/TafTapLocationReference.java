@@ -4,16 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * also called StopPoint
  */
 @AllArgsConstructor
 @EqualsAndHashCode
-@Slf4j
 public class TafTapLocationReference {
 
+    private static final int MAX_UIC_CODE = 99999;
     /**
      * @see <a href="https://uic.org/support-activities/it/article/country-codes">UIC Country Codes</a>
      */
@@ -102,7 +101,7 @@ public class TafTapLocationReference {
         }
         String countryCode = uicToIsoCountryCodeMap.get(countryCodeUic);
         if (countryCode == null) {
-            log.warn("No ISO country code found for UIC country code {}", countryCodeUic);
+            throw new UnexpectedProviderData("ISO country code " + countryCodeUic + " not found");
         }
         return countryCode;
     }
@@ -112,8 +111,10 @@ public class TafTapLocationReference {
      */
     public String toLocationCode() {
         if (countryCodeIso == null || uicCode == null) {
-            log.warn("TafTapLocationReference: countryCodeUic or uicCode is null, cannot create location code.");
-            return null;
+            throw new UnexpectedProviderData("countryCodeUic or uicCode is null");
+        }
+        if (uicCode > MAX_UIC_CODE) {
+            throw new UnexpectedProviderData("uicCode is larger than expected 5 digits");
         }
         return countryCodeIso + String.format("%05d", uicCode);
     }

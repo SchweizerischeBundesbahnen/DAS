@@ -24,7 +24,7 @@ void main() {
         findsAny,
       );
 
-      final locations = ['B2', 'B3', 'Burgdorf', 'B101', 'Olten'];
+      final locations = ['B2', 'B3', 'Burgdorf', 'B101', 'A104'];
 
       for (final location in locations) {
         await waitUntilExists(
@@ -79,7 +79,7 @@ void main() {
       await waitUntilNotExists(tester, find.byKey(RouteChevron.chevronKey), maxWaitSeconds: 40);
 
       // Wait some more
-      await tester.pump(const Duration(seconds: 4));
+      await tester.pump(const Duration(seconds: 5));
 
       await startAutomaticAdvancement(tester);
       // Check if Bern not visible anymore

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="1672_1"
-                SP_VersionMajor="2" SP_VersionMinor="5" SP_Length="36000" SP_Status="Valid">
+                SP_VersionMajor="2" SP_VersionMinor="6" SP_Length="36000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -554,6 +554,18 @@
                 <NSP_GroupName>departureAuth</NSP_GroupName>
                 <NetworkSpecificParameter name="departureAuth" value="false"/>
             </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>oPFootNotes</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlOPFootNotes" value="
+				&lt;oPFootNotes&gt; 
+					&lt;footNote type=&quot;contact&quot; refText=&quot;SIM&quot;&gt; 
+						&lt;text&gt;Korridor linkes Gleis: Anmeldenummer 1394 Korridor rechtes Gleis: Anmeldenummer 1395&lt;/text&gt; 
+					&lt;/footNote&gt; 
+				&lt;/oPFootNotes&gt;
+				"/>
+            </TAF_TAP_Location_NSP> 
 
         </TAF_TAP_Location>
 
