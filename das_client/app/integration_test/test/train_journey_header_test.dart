@@ -51,7 +51,7 @@ Future<void> main() async {
       expect(header, findsOneWidget);
 
       expect(find.descendant(of: header, matching: find.byKey(ConnectivityIcon.disconnectedKey)), findsNothing);
-      expect(find.descendant(of: header, matching: find.byKey(ConnectivityIcon.disconnectedWifiKey)), findsNothing);
+      expect(find.descendant(of: header, matching: find.byKey(ConnectivityIcon.connectedWifiKey)), findsNothing);
 
       // simulate connectivity lost
       connectivityManager.lastConnectedTime = DateTime.now();
@@ -60,7 +60,7 @@ Future<void> main() async {
 
       // should still fine nothing, because of delay
       expect(find.descendant(of: header, matching: find.byKey(ConnectivityIcon.disconnectedKey)), findsNothing);
-      expect(find.descendant(of: header, matching: find.byKey(ConnectivityIcon.disconnectedWifiKey)), findsNothing);
+      expect(find.descendant(of: header, matching: find.byKey(ConnectivityIcon.connectedWifiKey)), findsNothing);
 
       // should show disconnected after delay of 2 seconds
       await waitUntilExists(
@@ -80,10 +80,10 @@ Future<void> main() async {
       // should show disconnected wifi icon
       await waitUntilExists(
         tester,
-        find.descendant(of: header, matching: find.byKey(ConnectivityIcon.disconnectedWifiKey)),
+        find.descendant(of: header, matching: find.byKey(ConnectivityIcon.connectedWifiKey)),
       );
 
-      await tapElement(tester, find.byKey(ConnectivityIcon.disconnectedWifiKey));
+      await tapElement(tester, find.byKey(ConnectivityIcon.connectedWifiKey));
       expect(find.text(l10n.w_modal_sheet_disconnected_wifi_message_title), findsOneWidget);
       await findAndDismissModalSheet(tester);
 
@@ -94,7 +94,7 @@ Future<void> main() async {
       // should hide icon again
       await waitUntilNotExists(
         tester,
-        find.descendant(of: header, matching: find.byKey(ConnectivityIcon.disconnectedWifiKey)),
+        find.descendant(of: header, matching: find.byKey(ConnectivityIcon.connectedWifiKey)),
       );
       expect(find.descendant(of: header, matching: find.byKey(ConnectivityIcon.disconnectedKey)), findsNothing);
 

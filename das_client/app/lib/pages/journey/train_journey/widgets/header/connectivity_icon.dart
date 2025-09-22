@@ -8,7 +8,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class ConnectivityIcon extends StatelessWidget {
   static const Key disconnectedKey = Key('disconnectedKey');
-  static const Key disconnectedWifiKey = Key('disconnectedWifiKey');
+  static const Key connectedWifiKey = Key('connectedWifiKey');
 
   const ConnectivityIcon({super.key});
 
@@ -24,9 +24,9 @@ class ConnectivityIcon extends StatelessWidget {
 
         final isDisconnected = snapshot.data == ConnectivityDisplayStatus.disconnected;
 
-        final icon = isDisconnected ? AppAssets.iconWifi : AppAssets.iconWifiDisabled;
-        final onTap = isDisconnected ? () => _onDisconnectedTap(context) : () => _onDisconnectedWifiTap(context);
-        final key = isDisconnected ? disconnectedKey : disconnectedWifiKey;
+        final icon = isDisconnected ? AppAssets.iconWifiDisabled : AppAssets.iconWifi;
+        final onTap = isDisconnected ? () => _onDisconnectedTap(context) : () => _onConnectedWifiTap(context);
+        final key = isDisconnected ? disconnectedKey : connectedWifiKey;
 
         return Padding(
           padding: const EdgeInsets.only(left: 20),
@@ -36,7 +36,7 @@ class ConnectivityIcon extends StatelessWidget {
     );
   }
 
-  void _onDisconnectedWifiTap(BuildContext context) {
+  void _onConnectedWifiTap(BuildContext context) {
     showSBBModalSheet(
       context: context,
       title: '',
