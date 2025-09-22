@@ -61,7 +61,7 @@ void main() {
 
       // open modal sheet and check if only icon buttons are shown
       await _openRadioChannelByHeaderTap(tester);
-      expect(find.byKey(DasModalSheet.modalSheetExtendedKey), findsOneWidget);
+      expect(find.byKey(DasModalSheet.modalSheetExpandedKey), findsOneWidget);
       expect(find.byKey(HeaderIconButton.headerIconButtonKey), findsExactly(2));
 
       // check labeled buttons after close
@@ -412,7 +412,7 @@ Future<void> _selectTab(WidgetTester tester, ServicePointModalTab tab) async {
 }
 
 void _checkOpenModalSheet(Key tabContentKey, String servicePointName, {bool isMaximized = false}) {
-  final modalSheetStateKey = isMaximized ? DasModalSheet.modalSheetMaximizedKey : DasModalSheet.modalSheetExtendedKey;
+  final modalSheetStateKey = isMaximized ? DasModalSheet.modalSheetMaximizedKey : DasModalSheet.modalSheetExpandedKey;
   final modalSheetState = find.byKey(modalSheetStateKey);
   expect(modalSheetState, findsOneWidget);
 

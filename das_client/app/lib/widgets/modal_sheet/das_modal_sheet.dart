@@ -133,7 +133,8 @@ class DASModalSheetController {
     }
   }
 
-  void dispose() {
+  /// will be called by [_DASModalSheetState.dispose()]
+  void _dispose() {
     _idleTimer?.cancel();
     _controller.dispose();
     _fullWidthController.dispose();
@@ -156,7 +157,7 @@ class DASModalSheetController {
 class DasModalSheet extends StatefulWidget {
   static const Key modalSheetKey = Key('dasModalSheet');
   static const Key modalSheetClosedKey = Key('dasModalSheetClosed');
-  static const Key modalSheetExtendedKey = Key('dasModalSheetExtended');
+  static const Key modalSheetExpandedKey = Key('dasModalSheetExpanded');
   static const Key modalSheetMaximizedKey = Key('dasModalSheetMaximized');
   static const Key modalSheetCloseButtonKey = Key('dasModalSheetCloseButton');
 
@@ -199,6 +200,12 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
     );
   }
 
+  @override
+  void dispose() {
+    widget.controller._dispose();
+    super.dispose();
+  }
+
   Widget _modalSheet(double width) {
     final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
     return ExtendedAppBarWrapper(
@@ -221,7 +228,7 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
       key: DasModalSheet.modalSheetKey,
       mainAxisSize: MainAxisSize.max,
       children: [
-        _keyIdentifier(),
+        _integrationTestKey(),
         _header(),
         SizedBox(height: sbbDefaultSpacing * 0.5),
         Expanded(child: widget.builder.body(context)),
@@ -255,9 +262,9 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
   }
 
   /// separate widget as otherwise the whole sheet will be redrawn after animation because the key changes
-  Widget _keyIdentifier() {
+  Widget _integrationTestKey() {
     return SizedBox.shrink(
-      key: widget.controller.isExpanded ? DasModalSheet.modalSheetExtendedKey : DasModalSheet.modalSheetMaximizedKey,
+      key: widget.controller.isExpanded ? DasModalSheet.modalSheetExpandedKey : DasModalSheet.modalSheetMaximizedKey,
     );
   }
 }
