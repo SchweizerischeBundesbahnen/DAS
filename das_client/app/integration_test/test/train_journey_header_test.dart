@@ -74,10 +74,10 @@ Future<void> main() async {
 
       // simulate wifi active
       connectivityManager.wifiActive = true;
-      connectivityManager.connectivitySubject.add(false);
+      connectivityManager.connectivitySubject.add(true);
       await tester.pumpAndSettle();
 
-      // should show disconnected wifi icon
+      // should show connected wifi icon
       await waitUntilExists(
         tester,
         find.descendant(of: header, matching: find.byKey(ConnectivityIcon.connectedWifiKey)),
@@ -89,6 +89,7 @@ Future<void> main() async {
 
       // simulate connectivity restored
       connectivityManager.connectivitySubject.add(true);
+      connectivityManager.wifiActive = false;
       await tester.pumpAndSettle();
 
       // should hide icon again
