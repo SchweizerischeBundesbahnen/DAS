@@ -53,7 +53,7 @@ extension JourneyScopeExtension on GetIt {
 
   void registerTrainJourneyViewModel() {
     registerSingleton(
-      TrainJourneyViewModel(sferaRemoteRepo: DI.get(), warnappRepo: DI.get()),
+      TrainJourneyViewModel(sferaRemoteRepo: DI.get(), warnappRepo: DI.get(), ruFeatureProvider: DI.get()),
       dispose: (vm) => vm.dispose(),
     );
   }

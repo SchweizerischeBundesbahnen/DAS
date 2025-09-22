@@ -58,17 +58,17 @@ class AdlViewModel {
             .firstOrNull;
 
         if (activeAdl != null) {
-          if (activeAdlValue == null) {
-            // Start of ADL
-            AdlStart().play();
-          }
-
-          _rxActiveAdl.add(activeAdl);
-          _rxAdlState.add(AdlState.active);
-
           if (activeAdl.endOrder == journeyPosition.currentPosition!.order) {
             // ADL ends at the last position
             _adlEnd(AdlState.end);
+          } else {
+            if (activeAdlValue == null) {
+              // Start of ADL
+              AdlStart().play();
+            }
+
+            _rxActiveAdl.add(activeAdl);
+            _rxAdlState.add(AdlState.active);
           }
         } else if (activeAdlValue != null) {
           // ADL Cancel
@@ -79,6 +79,8 @@ class AdlViewModel {
   }
 
   void _adlEnd(AdlState adlState) {
+    if (_rxAdlState.value != AdlState.active) return;
+
     // End of ADL
     _rxActiveAdl.add(null);
     _rxAdlState.add(adlState);

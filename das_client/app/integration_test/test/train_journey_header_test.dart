@@ -11,6 +11,7 @@ import 'package:app/pages/journey/train_journey/widgets/header/radio_channel.dar
 import 'package:app/pages/journey/train_journey/widgets/header/radio_contact.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/sim_identifier.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
+import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/format.dart';
 import 'package:app/util/time_constants.dart';
@@ -21,12 +22,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:settings/component.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../app_test.dart';
 import '../mocks/mock_battery.dart';
 import '../mocks/mock_brightness_manager.dart';
 import '../mocks/mock_connectivity_manager.dart';
+import '../mocks/mock_ru_feature_provider.dart';
 import '../util/test_utils.dart';
 
 Future<void> main() async {
@@ -291,6 +294,26 @@ Future<void> main() async {
       await tapElement(tester, find.byKey(ManeuverNotification.maneuverNotificationSwitchKey));
 
       expect(find.text(l10n.w_maneuver_notification_text), findsNothing);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('test extended menu maneuver mode not present when warnapp is disabled', (tester) async {
+      await prepareAndStartApp(tester);
+
+      final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
+      featureProvider.disableFeature(RuFeatureKeys.warnapp);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T9999');
+
+      await openExtendedMenu(tester);
+
+      expect(find.byKey(ExtendedMenu.maneuverSwitchKey), findsNothing);
+
+      await dismissExtendedMenu(tester);
+
+      expect(find.byKey(ExtendedMenu.menuButtonCloseKey), findsNothing);
 
       await disconnect(tester);
     });

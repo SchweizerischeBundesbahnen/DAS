@@ -4,14 +4,15 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
 
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-@Slf4j
 public class Vehicle {
 
+    /**
+     * Additional traction modes that are not considered as main traction.
+     */
     private static final List<TractionMode> ADDITIONAL_TRACTION_MODES = List.of(TractionMode.ZWISCHENLOK, TractionMode.SCHIEBELOK, TractionMode.UEBERFUEHRUNG);
     private TractionMode tractionMode;
     private String vehicleCategory;
@@ -76,7 +77,7 @@ public class Vehicle {
     }
 
     static TractionMode additionalTractionMode(List<Vehicle> vehicles) {
-        Vehicle vehicle = additionalTraction(vehicles);
+        Vehicle vehicle = findAdditionalTractionVehicle(vehicles);
         if (vehicle == null) {
             return null;
         }
@@ -84,25 +85,23 @@ public class Vehicle {
     }
 
     static String additionalTractionSeries(List<Vehicle> vehicles) {
-        Vehicle vehicle = additionalTraction(vehicles);
+        Vehicle vehicle = findAdditionalTractionVehicle(vehicles);
         if (vehicle == null) {
             return null;
         }
         if (vehicle.vehicleUnits.size() != 1) {
-            log.error("Traction vehicle with no or more than one vehicleUnit found: {}", vehicle.vehicleUnits);
-            return null;
+            throw new UnexpectedProviderData("Additional traction vehicle must have exactly one vehicle unit");
         }
         return vehicle.vehicleUnits.getFirst().getVehicleSeries();
     }
 
-    private static Vehicle additionalTraction(List<Vehicle> vehicles) {
+    private static Vehicle findAdditionalTractionVehicle(List<Vehicle> vehicles) {
         List<Vehicle> additionalTractionVehicles = filterTraction(vehicles).stream().filter(vehicle -> ADDITIONAL_TRACTION_MODES.contains(vehicle.tractionMode)).toList();
         if (additionalTractionVehicles.isEmpty()) {
             return null;
         }
         if (additionalTractionVehicles.size() > 1) {
-            log.error("Multiple additional traction vehicles found: {}", additionalTractionVehicles);
-            return null;
+            throw new UnexpectedProviderData("More than one additional traction vehicle");
         }
         return additionalTractionVehicles.getFirst();
     }

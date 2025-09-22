@@ -1,5 +1,5 @@
 enum RailwayUndertaking {
-  sbbP(companyCode: '1085'),
+  sbbP(companyCode: '1185'),
   sbbC(companyCode: '2185'),
   blsP(companyCode: '1163'),
   blsC(companyCode: '3356'),
@@ -10,4 +10,8 @@ enum RailwayUndertaking {
   });
 
   final String companyCode;
+
+  static RailwayUndertaking fromCompanyCode(String companyCode) {
+    return RailwayUndertaking.values.firstWhere((e) => e.companyCode == companyCode);
+  }
 }

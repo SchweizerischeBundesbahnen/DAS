@@ -10,7 +10,7 @@ class Format {
   }
 
   static String sferaTimestamp(DateTime date) {
-    final localDate = date.toLocal();
+    final localDate = date.toUtc();
     final dateFormat = DateFormat("yyyy-MM-ddTHH:mm:ss'Z'");
     return dateFormat.format(localDate);
   }

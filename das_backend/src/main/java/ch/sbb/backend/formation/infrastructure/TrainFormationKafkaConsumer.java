@@ -9,6 +9,7 @@ import java.time.Instant;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
@@ -18,21 +19,27 @@ public class TrainFormationKafkaConsumer {
 
     private final FormationService formationService;
 
+    @Value("${zis.lag-alert-threshold-seconds:60}")
+    private long lagAlertThresholdSeconds;
+
     public TrainFormationKafkaConsumer(FormationService formationService) {
         this.formationService = formationService;
     }
 
-    // todo log a warning when kafka lag too high
-
     @KafkaListener(topics = "${zis.kafka.topic}")
     void receive(ConsumerRecord<DailyFormationTrainKey, DailyFormationTrain> message) {
         long lagInS = (Instant.now().toEpochMilli() - message.timestamp()) / 1000;
-        log.debug("lagInS={} partition={} offset={}", lagInS, message.partition(), message.offset());
-        Formation formation = FormationFactory.create(message);
-        List<TrainFormationRunEntity> trainFormationRunEntities = TrainFormationRunEntity.from(formation);
+        log.trace("lagInS={} partition={} offset={}", lagInS, message.partition(), message.offset());
+        try {
+            Formation formation = FormationFactory.create(message);
+            List<TrainFormationRunEntity> trainFormationRunEntities = TrainFormationRunEntity.from(formation);
 
-        formationService.deleteByTrainPathIdAndOperationalDay(formation.getTrainPathId(), formation.getOperationalDay());
-        formationService.save(trainFormationRunEntities);
-        log.debug("Train formation runs saved from kafka message partition={}, offset={}", message.partition(), message.offset());
+            formationService.deleteByTrainPathIdAndOperationalDay(formation.getTrainPathId(), formation.getOperationalDay());
+            formationService.save(trainFormationRunEntities);
+            log.debug("Train formation runs saved from kafka message partition={}, offset={}", message.partition(), message.offset());
+        } catch (Exception e) {
+            log.error("Error processing kafka message partition={}, offset={}, operationalTrainNumber={}, operationalDay={}", message.partition(), message.offset(), message.key().getZugnummer(),
+                message.key().getBetriebstag(), e);
+        }
     }
 }
