@@ -27,9 +27,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.mqttv5.common.MqttException;
 import org.eclipse.paho.mqttv5.common.MqttMessage;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -42,7 +45,7 @@ public class PreloadService {
     private static final String clientId = "das_preload"; // UUID.randomUUID()
     private static final String sferaVersion = "2";
     private static final List<String> TRAIN_NUMBERS = List.of("1513", "1670", "1671", "1672", "1809", "2266", "7318", "15154", "19240", "T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10",
-        "T11", "T12", "T13", "T14", "T15", "T16", "T17", "T18", "T20", "T21", "T22", "T23", "T24", "T24", "T9999");
+        "T11", "T12", "T13", "T14", "T15", "T16", "T17", "T18", "T20", "T21", "T22", "T23", "T24", "T25", "T9999");
     private final PahoMqttClient mqttService;
     private final SferaMessageCreator sferaMessageCreator;
     private final XmlHelper xmlHelper;
@@ -59,6 +62,11 @@ public class PreloadService {
         this.sferaMessageCreator = sferaMessageCreator;
         this.xmlHelper = xmlHelper;
         this.storageService = storageService;
+    }
+
+    public static <T> Predicate<T> distinctByTcId(Function<? super T, ?> keyExtractor) {
+        java.util.Set<Object> seen = java.util.concurrent.ConcurrentHashMap.newKeySet();
+        return t -> seen.add(keyExtractor.apply(t));
     }
 
     //    every 5 minutes
@@ -86,7 +94,6 @@ public class PreloadService {
     }
 
     private void preload(String companyCode, String operationalTrainnumber, LocalDate startDate) throws ExecutionException, InterruptedException {
-
         mqttService.subscribe(g2bTopic(companyCode, operationalTrainnumber, startDate), (topic, message) -> receive(message));
         String b2gTopic = b2gTopic(companyCode, operationalTrainnumber, startDate);
 
@@ -101,8 +108,8 @@ public class PreloadService {
         List<JourneyProfile> journeyProfiles = jpResponse.getG2BReplyPayload().getJourneyProfile();
         jps.addAll(journeyProfiles);
 
-        List<SegmentProfileReference> spReferences = journeyProfiles.stream().flatMap(jp -> jp.getSegmentProfileReference().stream()).toList();
-        List<TrainCharacteristicsRef> tcReferences = spReferences.stream().flatMap(spRef -> spRef.getTrainCharacteristicsRef().stream()).toList();
+        List<SegmentProfileReference> spReferences = getSpReferences(journeyProfiles);
+        List<TrainCharacteristicsRef> tcReferences = getTcReferences(spReferences);
 
         CompletableFuture<Void> spRequest;
         if (!spReferences.isEmpty()) {
@@ -131,9 +138,35 @@ public class PreloadService {
         }
         // when sp and tc are done terminate session
         CompletableFuture.allOf(spRequest, tcRequest).get();
-        log.info("Preload for train {} completed: jps={}, sps={}, tcs={}", operationalTrainnumber, jps.size(), sps.size(), tcs.size());
-        //        todo
-        //        sendRequest(b2gTopic, createTermination(), MAX_MQTT_REPLY_TIMEOUT_MS);
+        log.info("Preload for train {} completed", operationalTrainnumber);
+        sendRequest(b2gTopic, createTermination(), MAX_MQTT_REPLY_TIMEOUT_MS);
+    }
+
+    private List<TrainCharacteristicsRef> getTcReferences(List<SegmentProfileReference> spReferences) {
+        return spReferences.stream()
+            .flatMap(spRef -> spRef.getTrainCharacteristicsRef().stream())
+            .filter(tcRef -> tcs.stream().noneMatch(tc ->
+                Objects.equals(tc.getTCID(), tcRef.getTCID())
+                    && Objects.equals(tc.getTCVersionMajor(), tcRef.getTCVersionMajor())
+                    && Objects.equals(tc.getTCVersionMinor(), tcRef.getTCVersionMinor())
+                    && Objects.equals(tc.getTCRUID(), tcRef.getTCRUID())
+            ))
+            .filter(distinctByTcId(tcRef -> List.of(tcRef.getTCID(), tcRef.getTCVersionMajor(), tcRef.getTCVersionMinor(), tcRef.getTCRUID())))
+            .toList();
+    }
+
+    @NotNull
+    private List<SegmentProfileReference> getSpReferences(List<JourneyProfile> journeyProfiles) {
+        return journeyProfiles.stream()
+            .flatMap(jp -> jp.getSegmentProfileReference().stream())
+            .filter(spRef -> sps.stream().noneMatch(sp ->
+                Objects.equals(sp.getSPID(), spRef.getSPID())
+                    && Objects.equals(sp.getSPVersionMajor(), spRef.getSPVersionMajor())
+                    && Objects.equals(sp.getSPVersionMinor(), spRef.getSPVersionMinor())
+                    //            todo check if needed and what when missing
+                    && Objects.equals(sp.getSPZone().getIMID(), spRef.getSPZone().getIMID())
+            ))
+            .toList();
     }
 
     private String g2bTopic(String companyCode, String operationalTrainNumber, LocalDate startDate) {

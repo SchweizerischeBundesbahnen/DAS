@@ -1,6 +1,7 @@
 package ch.sbb.backend.preload;
 
 import ch.sbb.backend.adapters.sfera.model.v0201.JourneyProfile;
+import ch.sbb.backend.adapters.sfera.model.v0201.OTNIDComplexType;
 import ch.sbb.backend.adapters.sfera.model.v0201.SegmentProfile;
 import ch.sbb.backend.adapters.sfera.model.v0201.TrainCharacteristics;
 import ch.sbb.backend.preload.xml.XmlHelper;
@@ -17,7 +18,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,9 +57,9 @@ public class PreloadStorageService {
             Path tcDir = Files.createDirectories(tempRoot.resolve("tc"));
 
             // 2) XML-Dateien erzeugen (falls Listen nicht leer sind)
-            writeXmlFiles(journeyProfiles, jpDir, "jp");
-            writeXmlFiles(segmentProfiles, spDir, "sp");
-            writeXmlFiles(trainCharacteristics, tcDir, "tc");
+            writeJps(journeyProfiles, jpDir);
+            writeSps(segmentProfiles, spDir);
+            writeTcs(trainCharacteristics, tcDir);
 
             // 3) ZIP-Dateiname wie 2025-01-19T13:20.00.zip (Sekunden=00)
             ZonedDateTime now = ZonedDateTime.now(ZoneId.of(timestampZone))
@@ -112,16 +112,37 @@ public class PreloadStorageService {
         }
     }
 
-    private <T> void writeXmlFiles(List<T> items, Path dir, String prefix) throws IOException {
-        if (items == null || items.isEmpty()) {
+    private void writeJps(List<JourneyProfile> jps, Path dir) throws IOException {
+        for (JourneyProfile jp : jps) {
+            OTNIDComplexType otnid = jp.getTrainIdentification().getOTNID();
+            // todo: version minor not required
+            String filename = String.format("JP_%s_%s_%s_%s.xml", otnid.getTeltsiCompany(), otnid.getTeltsiOperationalTrainNumber(), otnid.getTeltsiStartDate(), jp.getJPVersion());
+            writeXmlFile(jp, dir.resolve(filename));
+        }
+    }
+
+    private void writeSps(List<SegmentProfile> sps, Path dir) throws IOException {
+        for (SegmentProfile sp : sps) {
+            // todo: version minor not required
+            String filename = String.format("SP_%s_%s_%s_%s.xml", sp.getSPID(), sp.getSPVersionMajor(), sp.getSPVersionMinor(), sp.getSPZone().getIMID());
+            writeXmlFile(sp, dir.resolve(filename));
+        }
+    }
+
+    private void writeTcs(List<TrainCharacteristics> tcs, Path dir) throws IOException {
+        for (TrainCharacteristics tc : tcs) {
+            String filename = String.format("TC_%s_%s_%s_%s.xml", tc.getTCID(), tc.getTCVersionMajor(), tc.getTCVersionMinor(), tc.getTCRUID());
+            writeXmlFile(tc, dir.resolve(filename));
+        }
+    }
+
+    private void writeXmlFile(Object item, Path path) throws IOException {
+        if (item == null) {
             return;
         }
-        AtomicInteger idx = new AtomicInteger(1);
-        for (T item : items) {
-            String xml = xmlHelper.toString(item);
-            String filename = String.format("%s_%04d.xml", prefix, idx.getAndIncrement());
-            Files.writeString(dir.resolve(filename), xml, StandardCharsets.UTF_8, StandardOpenOption.CREATE_NEW);
-        }
+
+        String xml = xmlHelper.toString(item);
+        Files.writeString(path, xml, StandardCharsets.UTF_8, StandardOpenOption.CREATE_NEW);
     }
 
     private void createZipWithFolders(Path root, Path zipFile) throws IOException {

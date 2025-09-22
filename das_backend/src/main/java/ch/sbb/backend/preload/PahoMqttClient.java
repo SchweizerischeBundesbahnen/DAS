@@ -50,7 +50,7 @@ public class PahoMqttClient {
         try {
             client.publish(topic, message);
         } catch (MqttException e) {
-            log.error("Got exception while publishing message ", e);
+            log.error("Got exception while publishing message to topic={} message={}.... ", topic, content.substring(0, 100), e);
         }
     }
 
