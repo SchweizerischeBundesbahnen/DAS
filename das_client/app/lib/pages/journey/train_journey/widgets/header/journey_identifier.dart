@@ -22,7 +22,7 @@ class JourneyIdentifier extends StatelessWidget {
 
         final model = snapshot.data!;
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5),
+          padding: const EdgeInsets.only(left: sbbDefaultSpacing * 0.5),
           child: Text(model.formattedIdentifier(context), style: _resolvedTextStyle(context)),
         );
       },

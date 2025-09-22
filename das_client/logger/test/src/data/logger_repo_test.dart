@@ -63,8 +63,8 @@ void main() {
     final logFile = LogFileDto(logEntries: [simpleLogFile.toDto()], file: File('fakeFile.json'));
     when(fileService.writeLog(any)).thenAnswer((_) async {});
     when(fileService.hasCompletedLogFiles).thenAnswer((_) async => true);
-    when(fileService.completedLogFiles).thenAnswer((_) async => [logFile]);
-    when(fileService.deleteLogFile(logFile)).thenAnswer((_) async {});
+    when(fileService.completedLogFiles).thenAnswer((_) async => [logFile.file]);
+    when(fileService.deleteLogFile(logFile.file)).thenAnswer((_) async {});
     when(mockSendLogsRequest.call(any)).thenAnswer((_) async => mockSendLogsResponse);
     when(apiService.sendLogs).thenReturn(mockSendLogsRequest);
 
@@ -76,7 +76,7 @@ void main() {
     verify(fileService.hasCompletedLogFiles).called(1);
     verify(fileService.completedLogFiles).called(1);
     verify(apiService.sendLogs).called(1);
-    verify(fileService.deleteLogFile(logFile)).called(1);
+    verify(fileService.deleteLogFile(logFile.file)).called(1);
   });
 
   test('saveLog_whenHasMultipleCompletedLogFiles_shouldWriteAndRolloverAndDelete', () async {
@@ -84,8 +84,8 @@ void main() {
     final logFile = LogFileDto(logEntries: [simpleLogFile.toDto()], file: File('fakeFile.json'));
     when(fileService.writeLog(any)).thenAnswer((_) async {});
     when(fileService.hasCompletedLogFiles).thenAnswer((_) async => true);
-    when(fileService.completedLogFiles).thenAnswer((_) async => [logFile, logFile, logFile]);
-    when(fileService.deleteLogFile(logFile)).thenAnswer((_) async {});
+    when(fileService.completedLogFiles).thenAnswer((_) async => [logFile.file, logFile.file, logFile.file]);
+    when(fileService.deleteLogFile(logFile.file)).thenAnswer((_) async {});
     when(mockSendLogsRequest.call(any)).thenAnswer((_) async => mockSendLogsResponse);
     when(apiService.sendLogs).thenReturn(mockSendLogsRequest);
 
@@ -97,7 +97,7 @@ void main() {
     verify(fileService.hasCompletedLogFiles).called(1);
     verify(fileService.completedLogFiles).called(1);
     verify(apiService.sendLogs).called(3);
-    verify(fileService.deleteLogFile(logFile)).called(3);
+    verify(fileService.deleteLogFile(logFile.file)).called(3);
   });
 
   test('saveLog_whenSendFails_shouldNotDeleteLogFile', () async {
@@ -105,8 +105,8 @@ void main() {
     final logFile = LogFileDto(logEntries: [simpleLogFile.toDto()], file: File('fakeFile.json'));
     when(fileService.writeLog(any)).thenAnswer((_) async {});
     when(fileService.hasCompletedLogFiles).thenAnswer((_) async => true);
-    when(fileService.completedLogFiles).thenAnswer((_) async => [logFile]);
-    when(fileService.deleteLogFile(logFile)).thenAnswer((_) async {});
+    when(fileService.completedLogFiles).thenAnswer((_) async => [logFile.file]);
+    when(fileService.deleteLogFile(logFile.file)).thenAnswer((_) async {});
     when(mockSendLogsRequest.call(any)).thenThrow(HttpException('fakeException'));
     when(apiService.sendLogs).thenReturn(mockSendLogsRequest);
 
@@ -123,8 +123,8 @@ void main() {
     final logFile = LogFileDto(logEntries: [simpleLogFile.toDto()], file: File('fakeFile.json'));
     when(fileService.writeLog(any)).thenAnswer((_) async {});
     when(fileService.hasCompletedLogFiles).thenAnswer((_) async => false);
-    when(fileService.completedLogFiles).thenAnswer((_) async => [logFile]);
-    when(fileService.deleteLogFile(logFile)).thenAnswer((_) async {});
+    when(fileService.completedLogFiles).thenAnswer((_) async => [logFile.file]);
+    when(fileService.deleteLogFile(logFile.file)).thenAnswer((_) async {});
     when(mockSendLogsRequest.call(any)).thenAnswer((_) async => mockSendLogsResponse);
     when(apiService.sendLogs).thenReturn(mockSendLogsRequest);
     final sixMinutesFromNow = DateTime.now().add(const Duration(minutes: 6));
@@ -137,7 +137,7 @@ void main() {
     // expect
     verify(fileService.completedLogFiles).called(1);
     verify(apiService.sendLogs).called(1);
-    verify(fileService.deleteLogFile(logFile)).called(1);
+    verify(fileService.deleteLogFile(logFile.file)).called(1);
   });
 
   test('saveLog_whenSendFails_shouldNotResendUntilAfterDelay', () async {
@@ -145,8 +145,8 @@ void main() {
     final logFile = LogFileDto(logEntries: [simpleLogFile.toDto()], file: File('fakeFile.json'));
     when(fileService.writeLog(any)).thenAnswer((_) async {});
     when(fileService.hasCompletedLogFiles).thenAnswer((_) async => true);
-    when(fileService.completedLogFiles).thenAnswer((_) async => [logFile]);
-    when(fileService.deleteLogFile(logFile)).thenAnswer((_) async {});
+    when(fileService.completedLogFiles).thenAnswer((_) async => [logFile.file]);
+    when(fileService.deleteLogFile(logFile.file)).thenAnswer((_) async {});
     when(mockSendLogsRequest.call(any)).thenThrow(HttpException('fakeException'));
     when(apiService.sendLogs).thenReturn(mockSendLogsRequest);
     final fiveMinutesFromNow = DateTime.now().add(const Duration(minutes: 5));

@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.8.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.7.0...sfera_mock-v0.8.0) (2025-09-18)
+
+
+### Features
+
+* currentPosition and next stop are time dependent ([#766](https://github.com/SchweizerischeBundesbahnen/DAS/issues/766)) ([#1169](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1169)) ([cdf56f8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/cdf56f8b063f978fe2db9f8f6ccf184b76fa46d6))
+* dynamic timestamps in JP updates ([#1213](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1213)) ([#1214](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1214)) ([ddc7f7a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ddc7f7a5b1f58916b1c808630dbed93fe0f26d82))
+
+
+### Bug Fixes
+
+* asr parsing from journey profile ([#1054](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1054)) ([#1220](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1220)) ([b70b319](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b70b3193e86a1aa961646f4565d8db84e5802f27))
+* **deps:** update dependency com.solace.spring.cloud:solace-spring-cloud-bom to v4.10.0 ([#1229](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1229)) ([4dbf99a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4dbf99a6973f026c828864c90917db294d29eee7))
+* **deps:** update dependency org.springframework.boot:spring-boot-starter-parent to v3.5.5 ([#1190](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1190)) ([e56d468](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e56d468ed336f76480376adfa9561589930be05e))
+* **deps:** update dependency org.springframework.cloud:spring-cloud-dependencies to v2025 ([#1234](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1234)) ([4c0542a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4c0542a199aae71729550f9c7e920785abed365f))
+* next manual event to include all event payload ([#1224](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1224)) ([ca8005f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ca8005fac8f75aed748fb13ea8434d935c9853c5))
+* used T25 for local regulation test journey as T24 was already used ([#1198](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1198)) ([2732a82](https://github.com/SchweizerischeBundesbahnen/DAS/commit/2732a828536f9d0a149028ca6b6a28c112db2635))
+
+
+### Documentation
+
+* change ux testdata ([#1212](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1212)) ([2cf6b13](https://github.com/SchweizerischeBundesbahnen/DAS/commit/2cf6b1358d608024575000a0e75ae322a594ac62))
+* change ux testdata ([#1248](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1248)) ([37a3822](https://github.com/SchweizerischeBundesbahnen/DAS/commit/37a3822e9f4fd5380fe5d9d2358a464acd862776))
+* fix 1672 ([#1232](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1232)) ([498c88f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/498c88fe5ae454391710a145d0cc2a10765bfc10))
+* fix 1672 jp update ([#1252](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1252)) ([dab4336](https://github.com/SchweizerischeBundesbahnen/DAS/commit/dab4336910c8acb9774e525f7aefc0c47a6d9fc5))
+* minor fixes testdata ([#1246](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1246)) ([cc1fecd](https://github.com/SchweizerischeBundesbahnen/DAS/commit/cc1fecd966b29a56a88ab3ca3120c3d37dc5f2f4))
+
 ## [0.7.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.6.0...sfera_mock-v0.7.0) (2025-08-15)
 
 

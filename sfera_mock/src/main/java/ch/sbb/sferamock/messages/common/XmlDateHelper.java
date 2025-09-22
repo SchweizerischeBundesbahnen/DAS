@@ -1,5 +1,9 @@
 package ch.sbb.sferamock.messages.common;
 
+import ch.sbb.sferamock.adapters.sfera.model.v0201.JourneyProfile;
+import ch.sbb.sferamock.adapters.sfera.model.v0201.StoppingPointDepartureDetails;
+import ch.sbb.sferamock.adapters.sfera.model.v0201.TimingPointConstraints;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -9,6 +13,9 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 public final class XmlDateHelper {
+    
+    private static final ZonedDateTime MINUS_TIMESTAMP = ZonedDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneId.of("UTC"));
+    private static final ZonedDateTime PLUS_TIMESTAMP = ZonedDateTime.of(9999, 1, 1, 0, 0, 0, 0, ZoneId.of("UTC"));
 
     private XmlDateHelper() {
     }
@@ -42,4 +49,38 @@ public final class XmlDateHelper {
     public static LocalDate toLocalDate(XMLGregorianCalendar calendar) {
         return LocalDate.of(calendar.getYear(), calendar.getMonth(), calendar.getDay());
     }
+
+    public static void replaceDateTimes(JourneyProfile journeyProfile, ZonedDateTime registrationTime) {
+        journeyProfile.getSegmentProfileReference().forEach(segmentProfileReference ->
+            segmentProfileReference.getTimingPointConstraints().forEach(timingPointConstraint -> updateTimingPointConstraint(timingPointConstraint, registrationTime))
+        );
+    }
+
+    private static void updateTimingPointConstraint(TimingPointConstraints timingPointConstraint, ZonedDateTime startTime) {
+        timingPointConstraint.setTPPlannedLatestArrivalTime(replaceDateTime(timingPointConstraint.getTPPlannedLatestArrivalTime(), startTime));
+        timingPointConstraint.setTPLatestArrivalTime(replaceDateTime(timingPointConstraint.getTPLatestArrivalTime(), startTime));
+
+        StoppingPointDepartureDetails stoppingPointDepartureDetails = timingPointConstraint.getStoppingPointDepartureDetails();
+        if (stoppingPointDepartureDetails != null) {
+            stoppingPointDepartureDetails.setDepartureTime(replaceDateTime(stoppingPointDepartureDetails.getDepartureTime(), startTime));
+            stoppingPointDepartureDetails.setPlannedDepartureTime(replaceDateTime(stoppingPointDepartureDetails.getPlannedDepartureTime(), startTime));
+        }
+    }
+
+    private static XMLGregorianCalendar replaceDateTime(XMLGregorianCalendar xmlGregorianCalendar, ZonedDateTime startTime) {
+        if (xmlGregorianCalendar == null) {
+            return null;
+        }
+
+        if (xmlGregorianCalendar.getYear() == MINUS_TIMESTAMP.getYear()) {
+            var duration = Duration.between(MINUS_TIMESTAMP, XmlDateHelper.toZonedDateTime(xmlGregorianCalendar));
+            return XmlDateHelper.toGregorianCalender(startTime.minus(duration));
+        }
+        if (xmlGregorianCalendar.getYear() == PLUS_TIMESTAMP.getYear()) {
+            var duration = Duration.between(PLUS_TIMESTAMP, XmlDateHelper.toZonedDateTime(xmlGregorianCalendar));
+            return XmlDateHelper.toGregorianCalender(startTime.plus(duration));
+        }
+        return xmlGregorianCalendar;
+    }
+
 }

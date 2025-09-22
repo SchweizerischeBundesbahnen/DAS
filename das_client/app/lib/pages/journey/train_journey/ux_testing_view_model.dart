@@ -1,14 +1,19 @@
 import 'dart:async';
 
+import 'package:app/provider/ru_feature_provider.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 
 class UxTestingViewModel {
-  UxTestingViewModel({required SferaRemoteRepo sferaService}) : _sferaService = sferaService {
+  UxTestingViewModel({required SferaRemoteRepo sferaService, required RuFeatureProvider ruFeatureProvider})
+    : _sferaService = sferaService,
+      _ruFeatureProvider = ruFeatureProvider {
     _init();
   }
 
   final SferaRemoteRepo _sferaService;
+  final RuFeatureProvider _ruFeatureProvider;
 
   StreamSubscription? _eventSubscription;
   StreamSubscription? _sferaStateSubscription;
@@ -20,11 +25,17 @@ class UxTestingViewModel {
 
   Stream<UxTestingEvent> get uxTestingEvents => _rxUxTestingEvents.stream;
 
+  Future<bool> get isDepartueProcessFeatureEnabled =>
+      _ruFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.departureProcess);
+
   void _init() {
-    _eventSubscription = _sferaService.uxTestingEventStream.listen((data) {
+    _eventSubscription = _sferaService.uxTestingEventStream.listen((data) async {
       if (data != null) {
         if (data.isKoa) {
-          _rxKoaState.add(KoaState.from(data.value));
+          final koaEnabled = await _ruFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.koa);
+          if (koaEnabled) {
+            _rxKoaState.add(KoaState.from(data.value));
+          }
         }
         _rxUxTestingEvents.add(data);
       }

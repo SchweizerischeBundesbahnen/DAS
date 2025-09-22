@@ -36,10 +36,9 @@ class ChevronAnimationData {
 
     final fromIndex = rows.indexOf(lastPosition);
     final toIndex = rows.indexOf(currentPosition);
-    final calculateToIndex = toIndex + 1; // overlapping of next row
 
     final currentIndex = rows.indexOf(currentRow);
-    if (currentIndex < fromIndex || currentIndex > calculateToIndex) {
+    if (currentIndex < fromIndex || currentIndex > toIndex) {
       return null;
     }
 
@@ -79,14 +78,6 @@ class ChevronAnimationData {
     if (currentRow == currentPosition) {
       startOffset = -endOffset;
       endOffset = 0.0;
-    }
-
-    // show end of overlapping chevron on row after current position
-    if (currentIndex == calculateToIndex) {
-      final overlappedRow = rows[calculateToIndex];
-      final overlappedRowHeight = CellRowBuilder.rowHeightForData(overlappedRow, currentBreakSeries);
-      startOffset = -endOffset - overlappedRowHeight;
-      endOffset = -overlappedRowHeight;
     }
 
     return ChevronAnimationData(

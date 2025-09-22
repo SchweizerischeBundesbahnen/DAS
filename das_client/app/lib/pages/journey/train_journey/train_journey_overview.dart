@@ -1,11 +1,7 @@
-import 'dart:async';
-
 import 'package:app/di/di.dart';
-import 'package:app/nav/app_router.dart';
-import 'package:app/pages/journey/navigation/journey_navigation_model.dart';
-import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/train_journey/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/train_journey/header/chronograph/chronograph_view_model.dart';
+import 'package:app/pages/journey/train_journey/header/connectivity/connectivity_view_model.dart';
 import 'package:app/pages/journey/train_journey/journey_position/journey_position_view_model.dart';
 import 'package:app/pages/journey/train_journey/punctuality/punctuality_view_model.dart';
 import 'package:app/pages/journey/train_journey/ux_testing_view_model.dart';
@@ -25,43 +21,15 @@ import 'package:app/pages/journey/train_journey/widgets/warn_function_modal_shee
 import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/sound/koa_sound.dart';
 import 'package:app/sound/warn_app_sound.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
-class TrainJourneyOverview extends StatefulWidget {
+class TrainJourneyOverview extends StatelessWidget {
   static const double horizontalPadding = sbbDefaultSpacing * 0.5;
 
   const TrainJourneyOverview({super.key});
-
-  @override
-  State<TrainJourneyOverview> createState() => _TrainJourneyOverviewState();
-}
-
-class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
-  TrainIdentification? _currentTrainIdentification;
-  StreamSubscription<JourneyNavigationModel?>? _journeySubscription;
-
-  @override
-  void initState() {
-    final journeyNavigationVM = DI.get<JourneyNavigationViewModel>();
-    _currentTrainIdentification = journeyNavigationVM.modelValue?.trainIdentification;
-
-    _journeySubscription = journeyNavigationVM.model.listen((model) {
-      if (model?.trainIdentification != _currentTrainIdentification) {
-        if (mounted) context.router.replace(JourneySelectionRoute());
-      }
-    });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _journeySubscription?.cancel();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +60,7 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
           dispose: (context, vm) => vm.dispose(),
         ),
         Provider(
-          create: (_) => ServicePointModalViewModel(),
+          create: (_) => ServicePointModalViewModel(localRegulationHtmlGenerator: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
@@ -106,7 +74,7 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
-          create: (_) => UxTestingViewModel(sferaService: DI.get()),
+          create: (_) => UxTestingViewModel(sferaService: DI.get(), ruFeatureProvider: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
@@ -118,6 +86,10 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
         ),
         Provider(
           create: (_) => journeyPositionViewModel,
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        Provider(
+          create: (_) => ConnectivityViewModel(connectivityManager: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
       ],

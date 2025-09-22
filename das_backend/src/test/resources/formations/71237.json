@@ -1,0 +1,52 @@
+{
+  "data": [
+    {
+      "operationalTrainNumber": "71237",
+      "operationalDay": "2025-08-01",
+      "company": "2687",
+      "formationRuns": [
+        {
+          "inspectionDateTime": "2025-08-01T18:23:27+02:00",
+          "tafTapLocationReferenceStart": "CH05699",
+          "tafTapLocationReferenceEnd": "CH05683",
+          "trainCategoryCode": "D",
+          "brakedWeightPercentage": 75,
+          "tractionMaxSpeedInKmh": 100,
+          "hauledLoadMaxSpeedInKmh": 100,
+          "formationMaxSpeedInKmh": 140,
+          "tractionLengthInCm": 1540,
+          "hauledLoadLengthInCm": 18800,
+          "formationLengthInCm": 20340,
+          "tractionWeightInT": 84,
+          "hauledLoadWeightInT": 619,
+          "formationWeightInT": 703,
+          "tractionBrakedWeightInT": 61,
+          "hauledLoadBrakedWeightInT": 482,
+          "formationBrakedWeightInT": 543,
+          "tractionHoldingForceInHectoNewton": 800,
+          "hauledLoadHoldingForceInHectoNewton": 1852,
+          "formationHoldingForceInHectoNewton": 2652,
+          "brakePositionGForLeadingTraction": true,
+          "brakePositionGForBrakeUnit1to5": false,
+          "brakePositionGForLoadHauled": true,
+          "simTrain": false,
+          "additionalTractionMode": "Z",
+          "additionalTractionSeries": "Re420-C",
+          "carCarrierVehicle": false,
+          "dangerousGoods": true,
+          "vehiclesCount": 11,
+          "vehiclesWithBrakeDesignLlAndKCount": 6,
+          "vehiclesWithBrakeDesignDCount": 2,
+          "vehiclesWithDisabledBrakesCount": 3,
+          "europeanVehicleNumberFirst": "338522222225",
+          "europeanVehicleNumberLast": "338514444445",
+          "axleLoadMaxInKg": 22125,
+          "routeClass": "J4",
+          "gradientUphillMaxInPermille": 74,
+          "gradientDownhillMaxInPermille": 31,
+          "slopeMaxForHoldingForceMinInPermille": "24.3"
+        }
+      ]
+    }
+  ]
+}

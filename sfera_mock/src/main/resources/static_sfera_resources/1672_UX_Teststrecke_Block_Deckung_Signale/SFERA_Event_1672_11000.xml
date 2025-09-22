@@ -1,0 +1,230 @@
+<?xml version="1.0"?>
+<G2B_EventPayload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+
+    <JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="7" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+        <TrainIdentification>
+            <OTN_ID>
+                <teltsi_Company>1285</teltsi_Company>
+                <teltsi_OperationalTrainNumber>1672</teltsi_OperationalTrainNumber>
+                <teltsi_StartDate>2025-05-17</teltsi_StartDate>
+            </OTN_ID>
+        </TrainIdentification>
+
+        <SegmentProfileReference SP_ID="1672_1" SP_VersionMajor="2" SP_VersionMinor="6" SP_Direction="Nominal">
+            <SP_Zone>
+                <IM_ID>1285</IM_ID>
+            </SP_Zone>
+
+            <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:02:00Z"
+                                    TP_PlannedLatestArrivalTime="9999-01-01T00:02:00Z">
+                <TimingPointReference>
+                    <TP_ID_Reference TP_ID="Graftal"/>
+                </TimingPointReference>
+                <StoppingPointDepartureDetails departureTime="9999-01-01T00:02:00Z" plannedDepartureTime="9999-01-01T00:02:00Z"/>
+            </TimingPointConstraints>
+
+            <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:06:20Z"
+                                    TP_PlannedLatestArrivalTime="9999-01-01T00:06:00Z">
+                <TimingPointReference>
+                    <TP_ID_Reference TP_ID="Fischerz"/>
+                </TimingPointReference>
+            </TimingPointConstraints>
+
+            <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:09:00Z"
+                                    TP_PlannedLatestArrivalTime="9999-01-01T00:09:00Z">
+                <TimingPointReference>
+                    <TP_ID_Reference TP_ID="Twinn"/>
+                </TimingPointReference>
+                <StoppingPointDepartureDetails departureTime="9999-01-01T00:09:30Z" plannedDepartureTime="9999-01-01T00:09:00Z"/>
+            </TimingPointConstraints>
+
+            <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:10:40Z"
+                                    TP_PlannedLatestArrivalTime="9999-01-01T00:10:00Z">
+                <TimingPointReference>
+                    <TP_ID_Reference TP_ID="Hoferz"/>
+                </TimingPointReference>
+            </TimingPointConstraints>
+
+            <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:13:20Z"
+                                    TP_PlannedLatestArrivalTime="9999-01-01T00:13:00Z">
+                <TimingPointReference>
+                    <TP_ID_Reference TP_ID="Schonberg"/>
+                </TimingPointReference>
+            </TimingPointConstraints>
+
+            <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:16:10Z"
+                                    TP_PlannedLatestArrivalTime="9999-01-01T00:16:00Z">
+                <TimingPointReference>
+                    <TP_ID_Reference TP_ID="Baumen"/>
+                </TimingPointReference>
+                <StoppingPointDepartureDetails departureTime="9999-01-01T00:18:00Z" plannedDepartureTime="9999-01-01T00:18:00Z"/>
+            </TimingPointConstraints>
+
+            <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:21:20Z"
+                                    TP_PlannedLatestArrivalTime="9999-01-01T00:21:00Z">
+                <TimingPointReference>
+                    <TP_ID_Reference TP_ID="Sennbach"/>
+                </TimingPointReference>
+            </TimingPointConstraints>
+
+            <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:24:00Z"
+                                    TP_PlannedLatestArrivalTime="9999-01-01T00:24:00Z">
+                <TimingPointReference>
+                    <TP_ID_Reference TP_ID="Luethisberg"/>
+                </TimingPointReference>
+                <StoppingPointDepartureDetails departureTime="9999-01-01T00:25:00Z" plannedDepartureTime="9999-01-01T00:25:00Z"/>
+            </TimingPointConstraints>
+
+            <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:28:20Z"
+                                    TP_PlannedLatestArrivalTime="9999-01-01T00:28:00Z">
+                <TimingPointReference>
+                    <TP_ID_Reference TP_ID="Helmaiche"/>
+                </TimingPointReference>
+                <StoppingPointDepartureDetails departureTime="9999-01-01T00:28:00Z" plannedDepartureTime="9999-01-01T00:28:00Z"/>
+            </TimingPointConstraints>
+
+            <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:30:30Z"
+                                    TP_PlannedLatestArrivalTime="9999-01-01T00:30:00Z">
+                <TimingPointReference>
+                    <TP_ID_Reference TP_ID="Haenniez"/>
+                </TimingPointReference>
+            </TimingPointConstraints>
+
+            <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="End_of_Journey" TP_latestArrivalTime="9999-01-01T00:35:00Z"
+                                    TP_PlannedLatestArrivalTime="9999-01-01T00:35:00Z">
+                <TimingPointReference>
+                    <TP_ID_Reference TP_ID="Schmidigen"/>
+                </TimingPointReference>
+            </TimingPointConstraints>
+
+            <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="10117" endLocation="10311" startTime="2025-01-15T12:00:00Z" endTime="2026-08-20T20:00:00Z">
+                <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="50"/>
+                <TemporaryConstraintReason text="Umbau" language="DE"/>
+                <TemporaryConstraintReason text="Renouvellement" language="FR"/>
+                <TemporaryConstraintReason text="Ristrutturazione" language="IT"/>
+            </TemporaryConstraints>
+
+            <!--ADL Twinn-->
+            <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="AdvisedSpeed" startLocation="10120" endLocation="11310">
+                    <AdvisedSpeed optimalSpeed="40" reasonCode="followTrain" adviceType="ConstantspeedAdvice">
+                        <ReasonText language="DE" text="ADL"/>
+                    </AdvisedSpeed>
+            </TemporaryConstraints>
+
+            <TrainCharacteristicsRef TC_ID="1672_1" TC_VersionMajor="1" TC_VersionMinor="2" location="0">
+                <TC_RU_ID>1285</TC_RU_ID>
+            </TrainCharacteristicsRef>
+
+            <JP_ContextInformation>
+                <!--Arbeitsanweisung-->
+                <JP_ContextInformation_NSPs>
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>operationalIndication</NSP_GroupName>
+                    <NetworkSpecificParameter name="type" value="uncoded"/>
+                    <NetworkSpecificParameter name="uncodedText" value="Perron kurz und Achtung keine Haltetafeln"/>
+                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="23900" endLocation="23900"/>
+                </JP_ContextInformation_NSPs>
+
+                <!--VPro Graftal-->
+                <JP_ContextInformation_NSPs>
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>VProSpeed</NSP_GroupName>
+                    <NetworkSpecificParameter name="newSpeed" value="90"/>
+                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+                </JP_ContextInformation_NSPs>
+
+                <!--VPro Fischerz-->
+                <JP_ContextInformation_NSPs>
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>VProSpeed</NSP_GroupName>
+                    <NetworkSpecificParameter name="newSpeed" value="130"/>
+                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="5300" endLocation="5300"/>
+                </JP_ContextInformation_NSPs>
+
+                <!--VPro Twinn-->
+                <JP_ContextInformation_NSPs>
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>VProSpeed</NSP_GroupName>
+                    <NetworkSpecificParameter name="newSpeed" value="90"/>
+                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="9100" endLocation="9100"/>
+                </JP_ContextInformation_NSPs>
+
+                <!--VPro Hoferz-->
+                <JP_ContextInformation_NSPs>
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>VProSpeed</NSP_GroupName>
+                    <NetworkSpecificParameter name="newSpeed" value="100"/>
+                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="11200" endLocation="11200"/>
+                </JP_ContextInformation_NSPs>
+
+                <!--VPro Schonberg-->
+                <JP_ContextInformation_NSPs>
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>VProSpeed</NSP_GroupName>
+                    <NetworkSpecificParameter name="newSpeed" value="85"/>
+                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="14700" endLocation="14700"/>
+                </JP_ContextInformation_NSPs>
+
+                <!--VPro Baumen-->
+                <JP_ContextInformation_NSPs>
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>VProSpeed</NSP_GroupName>
+                    <NetworkSpecificParameter name="newSpeed" value="85"/>
+                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="17600" endLocation="17600"/>
+                </JP_ContextInformation_NSPs>
+
+                <!--VPro Sennbach-->
+                <JP_ContextInformation_NSPs>
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>VProSpeed</NSP_GroupName>
+                    <NetworkSpecificParameter name="newSpeed" value="85"/>
+                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="20600" endLocation="20600"/>
+                </JP_ContextInformation_NSPs>
+
+                <!--VPro Lüthisberg-->
+                <JP_ContextInformation_NSPs>
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>VProSpeed</NSP_GroupName>
+                    <NetworkSpecificParameter name="newSpeed" value="90"/>
+                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="23900" endLocation="23900"/>
+                </JP_ContextInformation_NSPs>
+
+                <!--VPro Helmaiche-->
+                <JP_ContextInformation_NSPs>
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>VProSpeed</NSP_GroupName>
+                    <NetworkSpecificParameter name="newSpeed" value="90"/>
+                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="28800" endLocation="28800"/>
+                </JP_ContextInformation_NSPs>
+
+                <JP_ContextInformation_NSPs>
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                    <NetworkSpecificParameter name="kmRef" value="31.983"/>
+                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="10117" endLocation="10117"/>
+                </JP_ContextInformation_NSPs>
+                <JP_ContextInformation_NSPs>
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                    <NetworkSpecificParameter name="kmRef" value="31.789"/>
+                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="10311" endLocation="10311"/>
+                </JP_ContextInformation_NSPs>
+                <JP_ContextInformation_NSPs>
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                    <NetworkSpecificParameter name="kmRef" value="18.05"/>
+                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="24050" endLocation="24050"/>
+                </JP_ContextInformation_NSPs>
+                <JP_ContextInformation_NSPs>
+                    <teltsi_Company>0085</teltsi_Company>
+                    <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                    <NetworkSpecificParameter name="kmRef" value="16.85"/>
+                    <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="26140" endLocation="26140"/>
+                </JP_ContextInformation_NSPs>
+            </JP_ContextInformation>
+
+        </SegmentProfileReference>
+
+    </JourneyProfile>
+
+</G2B_EventPayload>

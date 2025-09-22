@@ -14,7 +14,7 @@ void main() {
 
   setUp(() {
     mockSferaRemoteRepo = MockSferaRemoteRepo();
-    testee = JourneySelectionViewModel(sferaRemoteRepo: mockSferaRemoteRepo, onJourneySelected: (_) {});
+    testee = JourneySelectionViewModel(sferaRemoteRepo: mockSferaRemoteRepo, onJourneySelected: (_) async {});
   });
 
   tearDown(() {
@@ -27,7 +27,7 @@ void main() {
     final clock = Clock.fixed(backInTheSeventies);
     withClock(clock, () {
       // seventies testee
-      testee = JourneySelectionViewModel(sferaRemoteRepo: mockSferaRemoteRepo, onJourneySelected: (_) {});
+      testee = JourneySelectionViewModel(sferaRemoteRepo: mockSferaRemoteRepo, onJourneySelected: (_) async {});
     });
     // ACT
     final state = testee.modelValue;

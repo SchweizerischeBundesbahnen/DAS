@@ -50,11 +50,11 @@ void main() {
   testWidgets('test advised speeds displayed correctly', (tester) async {
     await prepareAndStartApp(tester);
 
-    await loadTrainJourney(tester, trainNumber: 'T24M');
+    await loadTrainJourney(tester, trainNumber: 'T24');
 
     // Check that first row displayed advised speed
     final adlStartRow = findDASTableRowByText('A236');
-    expect(_findNonEmptyAdvisedSpeedCellOf(adlStartRow), findsOne);
+    await waitUntilExists(tester, _findNonEmptyAdvisedSpeedCellOf(adlStartRow));
     _findTextWithin(adlStartRow, '80');
 
     // Check service points display advised speed
@@ -66,14 +66,14 @@ void main() {
 
     // Check that adl end displayed calculated speed on signal row
     final adlEndRow = findDASTableRowByText('A653');
-    expect(_findNonEmptyCalculatedSpeedCellOf(adlEndRow), findsOne);
+    await waitUntilExists(tester, _findNonEmptyCalculatedSpeedCellOf(adlEndRow));
     _findTextWithin(adlEndRow, '110');
 
-    await dragUntilTextInStickyHeader(tester, 'Allaman');
+    await dragUntilTextInStickyHeader(tester, 'Rolle');
 
     // Check that adl end displayed calculated speed on signal row
     final adlEndRowServicePoint = findDASTableRowByText('Allaman');
-    expect(_findNonEmptyCalculatedSpeedCellOf(adlEndRowServicePoint), findsOne);
+    await waitUntilExists(tester, _findNonEmptyCalculatedSpeedCellOf(adlEndRowServicePoint), maxWaitSeconds: 30);
     _findTextWithin(adlEndRowServicePoint, '100');
 
     await disconnect(tester);

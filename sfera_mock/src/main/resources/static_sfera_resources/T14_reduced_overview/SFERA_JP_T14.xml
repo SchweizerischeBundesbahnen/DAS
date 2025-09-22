@@ -37,11 +37,28 @@
                 <TP_ID_Reference TP_ID="Zuerich"/>
             </TimingPointReference>
         </TimingPointConstraints>
+
         <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="ASR" startLocation="600" endLocation="700">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="60"/>
         </TemporaryConstraints>
+
         <TrainCharacteristicsRef TC_ID="T14_1" TC_VersionMajor="1" TC_VersionMinor="1" location="0">
             <TC_RU_ID>1185</TC_RU_ID>
         </TrainCharacteristicsRef>
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="31.5"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="600" endLocation="600"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="32.4"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="700" endLocation="700"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 </JourneyProfile>

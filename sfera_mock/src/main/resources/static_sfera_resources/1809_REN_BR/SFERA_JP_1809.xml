@@ -255,6 +255,14 @@
             <TemporaryConstraintReason text="Umbau" language="DE"/>
         </TemporaryConstraints>
 
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="24.4"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="500" endLocation="500"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="1809_19_Montreux" SP_VersionMajor="2" SP_VersionMinor="3" SP_Direction="Nominal">
@@ -270,10 +278,18 @@
             <StoppingPointDepartureDetails departureTime="2025-05-17T08:10:30Z" plannedDepartureTime="2025-05-17T08:10:00Z"/>
         </TimingPointConstraints>
 
-        <TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="ASR" startLocation="50">
+        <TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="ASR" endLocation="50">
             <AdditionalSpeedRestriction ASR_Front="false" ASR_Speed="80"/>
         </TemporaryConstraints>
 
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="24.55"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="50" endLocation="50"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="1809_20_Territet" SP_VersionMajor="2" SP_VersionMinor="2" SP_Direction="Nominal">
@@ -606,6 +622,20 @@
             <TemporaryConstraintReason text="Umbau" language="DE"/>
         </TemporaryConstraints>
 
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="121.333"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="3733" endLocation="3733"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="121.449"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="3849" endLocation="3849"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="1809_43_Turtmann" SP_VersionMajor="2" SP_VersionMinor="2" SP_Direction="Nominal">

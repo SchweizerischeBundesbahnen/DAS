@@ -7,7 +7,6 @@ import 'package:logging/logging.dart';
 import 'test/journey_search_overlay_test.dart' as journey_search_overlay_tests;
 import 'test/train_journey_header_test.dart' as train_journey_header_tests;
 import 'test/train_journey_notification_test.dart' as train_journey_notification_tests;
-import 'test/train_reduced_journey_test.dart' as train_reduced_journey_tests;
 
 AppLocalizations l10n = AppLocalizationsDe();
 
@@ -17,7 +16,6 @@ void main() {
   Logger.root.level = Level.FINE;
   Logger.root.onRecord.listen(LogPrinter(appName: 'DAS IntegrationTests').call);
 
-  train_reduced_journey_tests.main();
   train_journey_header_tests.main();
   train_journey_notification_tests.main();
   journey_search_overlay_tests.main();

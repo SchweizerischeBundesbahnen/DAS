@@ -2,6 +2,8 @@ import 'package:app/di/di.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_communication.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_graduated_speeds.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_local_regulations.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/local_regulation_html_view.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_builder.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
@@ -96,11 +98,6 @@ void main() {
       // change tab to graduated speeds
       await _selectTab(tester, ServicePointModalTab.graduatedSpeeds);
       _checkOpenModalSheet(DetailTabGraduatedSpeeds.graduatedSpeedsTabKey, 'Bern');
-
-      // TODO: Add back test when local regulations are implemented
-      // change tab to local regulations and check if full width
-      // await _selectTab(tester, ServicePointModalTab.localRegulations);
-      // _checkOpenModalSheet(DetailTabLocalRegulations.localRegulationsTabKey, 'Olten', isMaximized: true);
 
       // change back to tab radio channels
       await _selectTab(tester, ServicePointModalTab.communication);
@@ -303,6 +300,59 @@ void main() {
 
       // check Footnote header
       expect(find.text(l10n.c_radn_sim), findsAny);
+
+      await disconnect(tester);
+    });
+  });
+
+  group('local regulation tab tests', () {
+    testWidgets('test local regulation tab is shown', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T25');
+      final scrollableFinder = find.byType(AnimatedList);
+
+      await _openByTapOnCellWithText(tester, 'Olten');
+      _checkModalSheetTabs([
+        ServicePointModalTab.communication, // always displayed
+        ServicePointModalTab.localRegulations,
+      ]);
+
+      await tester.dragUntilVisible(find.text('Dulliken'), scrollableFinder, const Offset(0, -50));
+      await _openByTapOnCellWithText(tester, 'Dulliken');
+      _checkModalSheetTabs([
+        ServicePointModalTab.communication, // always displayed
+      ]);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('test tab change from local regulation', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T25');
+
+      await _openByTapOnCellWithText(tester, 'Olten');
+
+      // change tab to local regulations and check if full width
+      await _selectTab(tester, ServicePointModalTab.localRegulations);
+      _checkOpenModalSheet(DetailTabLocalRegulations.localRegulationsTabKey, 'Olten', isMaximized: true);
+
+      // change back to tab radio channels
+      await _selectTab(tester, ServicePointModalTab.communication);
+      _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Olten');
+
+      await disconnect(tester);
+    });
+
+    testWidgets('test local regulation webview is shown', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T25');
+
+      await _openByTapOnCellWithText(tester, 'Olten');
+
+      // change tab to local regulations and check if web view is loaded
+      await _selectTab(tester, ServicePointModalTab.localRegulations);
+      _checkOpenModalSheet(DetailTabLocalRegulations.localRegulationsTabKey, 'Olten', isMaximized: true);
+      await waitUntilNotExists(tester, find.byKey(LocalRegulationHtmlView.webViewKey), maxWaitSeconds: 5);
 
       await disconnect(tester);
     });
