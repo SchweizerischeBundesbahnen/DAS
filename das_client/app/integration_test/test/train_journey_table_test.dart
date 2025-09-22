@@ -1,4 +1,6 @@
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
+import 'package:app/pages/journey/train_journey/widgets/header/sim_identifier.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/balise_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
@@ -26,6 +28,27 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey table test', () {
+    testWidgets('test displays kilometer and communication network changes correctly', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T14');
+
+      // find gsmP-Icon
+      final gsmPKey = find.byKey(CommunicationNetworkIcon.gsmPKey);
+      expect(gsmPKey, findsOneWidget);
+
+      // find gsmR-Icon
+      final gsmRKey = find.byKey(CommunicationNetworkIcon.gsmRKey);
+      expect(gsmRKey, findsOneWidget);
+
+      // find SIM-Key
+      final simKey = find.byKey(SimIdentifier.simKey);
+      expect(simKey, findsOneWidget);
+
+      await disconnect(tester);
+    });
+
     testWidgets('test up- and downhill gradient is displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
 
