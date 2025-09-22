@@ -4,7 +4,7 @@ import 'package:settings/src/api/settings_api_service.dart';
 import 'package:settings/src/data/local/ru_feature_database_service.dart';
 import 'package:settings/src/repository/settings_config_repository.dart';
 
-final _log = Logger('DasConfigRepositoryImpl');
+final _log = Logger('SettingsConfigRepositoryImpl');
 
 class SettingsConfigRepositoryImpl implements SettingsConfigRepository {
   SettingsConfigRepositoryImpl({required this.apiService, required this.databaseService}) {

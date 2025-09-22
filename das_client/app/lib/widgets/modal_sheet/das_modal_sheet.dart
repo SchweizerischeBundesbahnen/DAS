@@ -154,6 +154,7 @@ class DASModalSheetController {
 ///
 /// Modal sheet is controlled by [DASModalSheetController]
 class DasModalSheet extends StatefulWidget {
+  static const Key modalSheetKey = Key('dasModalSheet');
   static const Key modalSheetClosedKey = Key('dasModalSheetClosed');
   static const Key modalSheetExtendedKey = Key('dasModalSheetExtended');
   static const Key modalSheetMaximizedKey = Key('dasModalSheetMaximized');
@@ -217,6 +218,7 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
 
   Widget _body() {
     return Column(
+      key: DasModalSheet.modalSheetKey,
       mainAxisSize: MainAxisSize.max,
       children: [
         _keyIdentifier(),
