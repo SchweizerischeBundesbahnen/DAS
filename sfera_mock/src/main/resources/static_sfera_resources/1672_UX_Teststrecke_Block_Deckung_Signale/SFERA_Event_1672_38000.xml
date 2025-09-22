@@ -11,7 +11,7 @@
             </TrainIdentification>
             <TrainLocationInformation>
                 <!--nach Sennbach-->
-                <PositionSpeed SP_ID="1672_1" location="20610">
+                <PositionSpeed SP_ID="1672_1" location="20601">
                     <SP_Zone>
                         <IM_ID>1285</IM_ID>
                     </SP_Zone>
