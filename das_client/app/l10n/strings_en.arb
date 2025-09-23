@@ -33,7 +33,23 @@
   "p_login_login_button_text": "Login",
   "p_login_login_button_description": "Log in with your account",
   "p_login_login_failed": "Login failed",
-  "w_adl_notification_title": "Adaptive control message",
+  "w_adl_cancel": "ADL Cancel",
+  "w_adl_end": "ADL END",
+  "w_adl_vopt": "ADL VOpt: drive at {speed}km/h until {endLocation}",
+  "@w_adl_vopt": {
+    "type": "text",
+    "placeholders": {
+      "speed": {},
+      "endLocation": {}
+    }
+  },
+  "w_adl_vmax": "ADL Vmax: drive until {endLocation}",
+  "@w_adl_vmax": {
+    "type": "text",
+    "placeholders": {
+      "endLocation": {}
+    }
+  },
   "w_extended_menu_title": "Other functionalities",
   "w_extended_menu_maneuver_mode": "Manoeuvring mode",
   "w_extended_menu_breaking_slip_action": "Open brake and load slip",

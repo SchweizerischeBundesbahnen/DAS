@@ -58,12 +58,14 @@ class _ScrollableAlignState extends State<ScrollableAlign> {
     }
 
     var stickyHeaderHeight = 0.0;
+    var stickyHeaderOffset = 0.0;
     var stickyHeader2Offset = 0.0;
     if (stickyHeaderState != null) {
       final headerIndexes = stickyHeaderState.controller.headerIndexes;
 
       if (headerIndexes[StickyLevel.first] != -1) {
         stickyHeaderHeight += widget.rows[headerIndexes[StickyLevel.first]!].height;
+        stickyHeaderOffset = stickyHeaderState.controller.headerOffsets[StickyLevel.first]!.abs();
       }
 
       if (headerIndexes[StickyLevel.second] != -1) {
@@ -82,6 +84,11 @@ class _ScrollableAlignState extends State<ScrollableAlign> {
 
     if (stickyHeader2Offset > 0) {
       _scrollToTarget((currentPosition - stickyHeader2Offset).roundToDouble());
+      return;
+    }
+
+    if (stickyHeaderOffset > 0) {
+      _scrollToTarget((currentPosition - stickyHeaderOffset).roundToDouble());
       return;
     }
 

@@ -5,11 +5,7 @@ import 'package:app/util/time_constants.dart';
 import 'package:connectivity_x/component.dart';
 import 'package:rxdart/rxdart.dart';
 
-enum ConnectivityDisplayStatus {
-  connected,
-  disconnected,
-  disconnectedWifi,
-}
+enum ConnectivityDisplayStatus { connected, connectedWifi, disconnected }
 
 class ConnectivityViewModel {
   ConnectivityViewModel({
@@ -37,7 +33,11 @@ class ConnectivityViewModel {
   void _init() {
     _connectivitySubscription = _connectivityManager.onConnectivityChanged.listen((connected) {
       if (connected) {
-        _rxModel.add(ConnectivityDisplayStatus.connected);
+        if (_connectivityManager.isWifiActive()) {
+          _rxModel.add(ConnectivityDisplayStatus.connectedWifi);
+        } else {
+          _rxModel.add(ConnectivityDisplayStatus.connected);
+        }
         _timer?.cancel();
       } else {
         _timer?.cancel();
@@ -51,11 +51,7 @@ class ConnectivityViewModel {
     final lastConnected = _connectivityManager.lastConnected;
     if (lastConnected == null ||
         now.difference(lastConnected) > Duration(seconds: _connectivityLostNotificationDelay)) {
-      if (_connectivityManager.isWifiActive()) {
-        _rxModel.add(ConnectivityDisplayStatus.disconnectedWifi);
-      } else {
-        _rxModel.add(ConnectivityDisplayStatus.disconnected);
-      }
+      _rxModel.add(ConnectivityDisplayStatus.disconnected);
       _timer?.cancel();
     }
   }
