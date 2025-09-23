@@ -31,9 +31,7 @@ class GlobalErrorWidget extends StatelessWidget {
                   description: context.l10n.w_global_error_widget_description,
                   messageCode: details.exceptionAsString(),
                   interactionIcon: SBBIcons.speech_bubble_exclamation_point_small,
-                  onInteraction: () {
-                    showReducedOverviewModalSheet(context, details);
-                  },
+                  onInteraction: () => _showErrorDetailsModalSheet(context, details),
                 ),
               ),
             ),
@@ -46,7 +44,7 @@ class GlobalErrorWidget extends StatelessWidget {
   SBBHeader _appBar(BuildContext context) => SBBHeader(title: context.l10n.c_app_name);
 }
 
-Future<void> showReducedOverviewModalSheet(BuildContext context, FlutterErrorDetails details) async {
+Future<void> _showErrorDetailsModalSheet(BuildContext context, FlutterErrorDetails details) async {
   final errorDetails = details.toString(minLevel: DiagnosticLevel.debug);
   return showSBBModalSheet(
     context: context,
