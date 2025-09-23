@@ -53,6 +53,7 @@ import 'package:sfera/component.dart';
 class TrainJourney extends StatelessWidget {
   const TrainJourney({super.key});
 
+  static const Key loadedTrainJourneyTableKey = Key('loadedTrainJourneyTable');
   static const Key breakingSeriesHeaderKey = Key('breakingSeriesHeader');
 
   @override
@@ -88,10 +89,13 @@ class TrainJourney extends StatelessWidget {
         servicePointModalViewModel.updateMetadata(journey.metadata);
         servicePointModalViewModel.updateSettings(settings);
 
-        return Listener(
-          onPointerDown: (_) => viewModel.automaticAdvancementController.resetScrollTimer(),
-          onPointerUp: (_) => viewModel.automaticAdvancementController.resetScrollTimer(),
-          child: _body(context, journey, settings, journeyPosition),
+        return KeyedSubtree(
+          key: loadedTrainJourneyTableKey,
+          child: Listener(
+            onPointerDown: (_) => viewModel.automaticAdvancementController.resetScrollTimer(),
+            onPointerUp: (_) => viewModel.automaticAdvancementController.resetScrollTimer(),
+            child: _body(context, journey, settings, journeyPosition),
+          ),
         );
       },
     );
@@ -106,16 +110,11 @@ class TrainJourney extends StatelessWidget {
     final collapsibleRowsViewModel = context.read<CollapsibleRowsViewModel>();
     final journeyPositionViewModel = context.read<JourneyPositionViewModel>();
     return StreamBuilder(
-      stream:
-          CombineLatestStream.combine2<
-            Map<int, CollapsedState>,
-            JourneyPositionModel?,
-            (Map<int, CollapsedState>, JourneyPositionModel?)
-          >(
-            collapsibleRowsViewModel.collapsedRows,
-            journeyPositionViewModel.model,
-            (a, b) => (a, b),
-          ),
+      stream: CombineLatestStream.combine2(
+        collapsibleRowsViewModel.collapsedRows,
+        journeyPositionViewModel.model,
+        (a, b) => (a, b),
+      ),
       initialData: (collapsibleRowsViewModel.collapsedRowsValue, journeyPositionViewModel.modelValue),
       builder: (context, snapshot) {
         final collapsedRows = snapshot.data?.$1 ?? {};
