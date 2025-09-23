@@ -75,13 +75,13 @@ void main() {
       await loadTrainJourney(tester, trainNumber: 'T8');
 
       await _openByTapOnCellWithText(tester, 'Bern');
-      _checkModalSheetTabs([
+      await _checkModalSheetTabs(tester, [
         ServicePointModalTab.communication, // always displayed
         ServicePointModalTab.graduatedSpeeds,
       ]);
 
       await _openByTapOnCellWithText(tester, 'Burgdorf');
-      _checkModalSheetTabs([
+      await _checkModalSheetTabs(tester, [
         ServicePointModalTab.communication, // always displayed
       ]);
 
@@ -312,14 +312,14 @@ void main() {
       final scrollableFinder = find.byType(AnimatedList);
 
       await _openByTapOnCellWithText(tester, 'Olten');
-      _checkModalSheetTabs([
+      await _checkModalSheetTabs(tester, [
         ServicePointModalTab.communication, // always displayed
         ServicePointModalTab.localRegulations,
       ]);
 
       await tester.dragUntilVisible(find.text('Dulliken'), scrollableFinder, const Offset(0, -50));
       await _openByTapOnCellWithText(tester, 'Dulliken');
-      _checkModalSheetTabs([
+      await _checkModalSheetTabs(tester, [
         ServicePointModalTab.communication, // always displayed
       ]);
 
@@ -423,7 +423,8 @@ void _checkOpenModalSheet(Key tabContentKey, String servicePointName, {bool isMa
   expect(servicePointLabel, findsOneWidget);
 }
 
-void _checkModalSheetTabs(List<ServicePointModalTab> displayedTabs) {
+Future<void> _checkModalSheetTabs(WidgetTester tester, List<ServicePointModalTab> displayedTabs) async {
+  await tester.pumpAndSettle();
   final modalSheet = find.byKey(DasModalSheet.modalSheetKey);
   for (final tab in displayedTabs) {
     final tabIcon = find.descendant(of: modalSheet, matching: find.byIcon(tab.icon));
