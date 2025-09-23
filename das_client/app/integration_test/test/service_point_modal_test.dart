@@ -317,7 +317,7 @@ void main() {
         ServicePointModalTab.localRegulations,
       ]);
 
-      await tester.dragUntilVisible(find.text('Dulliken'), scrollableFinder, const Offset(0, -50));
+      await tester.dragUntilVisible(find.text('A604'), scrollableFinder, const Offset(0, -50));
       await _openByTapOnCellWithText(tester, 'Dulliken');
       await _checkModalSheetTabs(tester, [
         ServicePointModalTab.communication, // always displayed
