@@ -7,7 +7,7 @@ import 'package:volume_controller/volume_controller.dart';
 class KoaSound extends Sound {
   const KoaSound();
 
-  static const _volume = 0.5;
+  static const _volume = 1.0;
 
   @override
   Future<void> play() async {
