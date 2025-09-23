@@ -4,6 +4,7 @@ import 'package:app/nav/app_router.dart';
 import 'package:app/theme/theme_view_model.dart';
 import 'package:app/theme/themes.dart';
 import 'package:app/widgets/flavor_banner.dart';
+import 'package:app/widgets/global_error_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
@@ -20,6 +21,8 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
+    throw Exception('oh no, an error');
+    return GlobalErrorWidget(details: FlutterErrorDetails(exception: Exception('Failed')));
     return Provider(
       create: (_) => ThemeViewModel(),
       dispose: (context, vm) => vm.dispose(),
