@@ -5,10 +5,6 @@ import ch.sbb.backend.adapters.sfera.model.v0201.OTNIDComplexType;
 import ch.sbb.backend.adapters.sfera.model.v0201.SegmentProfile;
 import ch.sbb.backend.adapters.sfera.model.v0201.TrainCharacteristics;
 import ch.sbb.backend.preload.xml.XmlHelper;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.JourneyProfile;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.SegmentProfile;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.Train;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.TrainCharacteristics;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -46,9 +42,9 @@ public class PreloadStorageService {
         this.s3Service = s3Service;
     }
 
-    public void save(List<ch.sbb.sferamock.adapters.sfera.model.v0201.JourneyProfile> journeyProfiles,
-        List<ch.sbb.sferamock.adapters.sfera.model.v0201.SegmentProfile> segmentProfiles,
-        List<ch.sbb.sferamock.adapters.sfera.model.v0201.TrainCharacteristics> trainCharacteristics) {
+    public void save(List<JourneyProfile> journeyProfiles,
+        List<SegmentProfile> segmentProfiles,
+        List<TrainCharacteristics> trainCharacteristics) {
 
         Path tempRoot = null;
         Path zipFile = null;
