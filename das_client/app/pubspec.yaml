@@ -73,6 +73,8 @@ dependencies:
   shared_preferences: ^2.5.3
   # https://pub.dev/packages/webview_flutter
   webview_flutter: ^4.13.0
+  # https://pub.dev/packages/skeletonizer
+  skeletonizer: ^2.1.0+1
 
 dev_dependencies:
   integration_test:

@@ -61,7 +61,7 @@ void main() {
 
       // open modal sheet and check if only icon buttons are shown
       await _openRadioChannelByHeaderTap(tester);
-      expect(find.byKey(DasModalSheet.modalSheetExtendedKey), findsOneWidget);
+      expect(find.byKey(DasModalSheet.modalSheetExpandedKey), findsOneWidget);
       expect(find.byKey(HeaderIconButton.headerIconButtonKey), findsExactly(2));
 
       // check labeled buttons after close
@@ -75,13 +75,13 @@ void main() {
       await loadTrainJourney(tester, trainNumber: 'T8');
 
       await _openByTapOnCellWithText(tester, 'Bern');
-      _checkModalSheetTabs([
+      await _checkModalSheetTabs(tester, [
         ServicePointModalTab.communication, // always displayed
         ServicePointModalTab.graduatedSpeeds,
       ]);
 
       await _openByTapOnCellWithText(tester, 'Burgdorf');
-      _checkModalSheetTabs([
+      await _checkModalSheetTabs(tester, [
         ServicePointModalTab.communication, // always displayed
       ]);
 
@@ -312,14 +312,14 @@ void main() {
       final scrollableFinder = find.byType(AnimatedList);
 
       await _openByTapOnCellWithText(tester, 'Olten');
-      _checkModalSheetTabs([
+      await _checkModalSheetTabs(tester, [
         ServicePointModalTab.communication, // always displayed
         ServicePointModalTab.localRegulations,
       ]);
 
-      await tester.dragUntilVisible(find.text('Dulliken'), scrollableFinder, const Offset(0, -50));
+      await tester.dragUntilVisible(find.text('A604'), scrollableFinder, const Offset(0, -50));
       await _openByTapOnCellWithText(tester, 'Dulliken');
-      _checkModalSheetTabs([
+      await _checkModalSheetTabs(tester, [
         ServicePointModalTab.communication, // always displayed
       ]);
 
@@ -412,18 +412,20 @@ Future<void> _selectTab(WidgetTester tester, ServicePointModalTab tab) async {
 }
 
 void _checkOpenModalSheet(Key tabContentKey, String servicePointName, {bool isMaximized = false}) {
-  final modalSheetKey = isMaximized ? DasModalSheet.modalSheetMaximizedKey : DasModalSheet.modalSheetExtendedKey;
-  final modalSheet = find.byKey(modalSheetKey);
-  expect(modalSheet, findsOneWidget);
+  final modalSheetStateKey = isMaximized ? DasModalSheet.modalSheetMaximizedKey : DasModalSheet.modalSheetExpandedKey;
+  final modalSheetState = find.byKey(modalSheetStateKey);
+  expect(modalSheetState, findsOneWidget);
+
+  final modalSheet = find.byKey(DasModalSheet.modalSheetKey);
   final tabContent = find.descendant(of: modalSheet, matching: find.byKey(tabContentKey));
   expect(tabContent, findsOneWidget);
   final servicePointLabel = find.descendant(of: modalSheet, matching: find.text(servicePointName));
   expect(servicePointLabel, findsOneWidget);
 }
 
-void _checkModalSheetTabs(List<ServicePointModalTab> displayedTabs, {bool isMaximized = false}) {
-  final modalSheetKey = isMaximized ? DasModalSheet.modalSheetMaximizedKey : DasModalSheet.modalSheetExtendedKey;
-  final modalSheet = find.byKey(modalSheetKey);
+Future<void> _checkModalSheetTabs(WidgetTester tester, List<ServicePointModalTab> displayedTabs) async {
+  await tester.pumpAndSettle();
+  final modalSheet = find.byKey(DasModalSheet.modalSheetKey);
   for (final tab in displayedTabs) {
     final tabIcon = find.descendant(of: modalSheet, matching: find.byIcon(tab.icon));
     expect(tabIcon, findsOneWidget);

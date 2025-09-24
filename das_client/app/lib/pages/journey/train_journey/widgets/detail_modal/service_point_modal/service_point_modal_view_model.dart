@@ -32,7 +32,7 @@ class ServicePointModalViewModel {
   final _rxTabs = BehaviorSubject.seeded(<ServicePointModalTab>[]);
   final _subscriptions = <StreamSubscription>[];
 
-  ServicePointModalTab? get selectedTabValue => _rxSelectedTab.value;
+  ServicePointModalTab? get selectedTabValue => _rxSelectedTab.valueOrNull;
 
   Stream<ServicePointModalTab?> get selectedTab => _rxSelectedTab.distinct();
 

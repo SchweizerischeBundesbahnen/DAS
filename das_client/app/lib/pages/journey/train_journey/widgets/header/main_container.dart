@@ -14,6 +14,7 @@ import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class MainContainer extends StatelessWidget {
   const MainContainer({super.key});
@@ -23,23 +24,36 @@ class MainContainer extends StatelessWidget {
     final journeyViewModel = context.read<TrainJourneyViewModel>();
     final journeyPositionViewModel = context.read<JourneyPositionViewModel>();
 
-    return Provider<RadioChannelViewModel>(
+    return Provider(
       create: (_) => RadioChannelViewModel(
         journeyStream: journeyViewModel.journey,
         journeyPositionStream: journeyPositionViewModel.model,
       ),
       dispose: (_, vm) => vm.dispose(),
-      child: SBBGroup(
-        padding: const EdgeInsets.all(sbbDefaultSpacing),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _topHeaderRow(),
-            _divider(),
-            _bottomHeaderRow(),
-          ],
-        ),
+      child: StreamBuilder(
+        stream: journeyViewModel.journey,
+        builder: (context, snapshot) {
+          final isLoading = !snapshot.hasData;
+          return Skeletonizer(
+            enabled: isLoading,
+            child: _content(),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _content() {
+    return SBBGroup(
+      padding: const EdgeInsets.all(sbbDefaultSpacing),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _topHeaderRow(),
+          _divider(),
+          _bottomHeaderRow(),
+        ],
       ),
     );
   }
@@ -78,8 +92,9 @@ class MainContainer extends StatelessWidget {
   Widget _buttons() => Row(
     spacing: sbbDefaultSpacing * 0.5,
     children: [
-      ThemeButton(),
-      StartPauseButton(),
+      // marked as leaf as default draws a border
+      Skeleton.leaf(child: ThemeButton()),
+      Skeleton.leaf(child: StartPauseButton()),
       ExtendedMenu(),
       JourneySearchOverlay(),
     ],

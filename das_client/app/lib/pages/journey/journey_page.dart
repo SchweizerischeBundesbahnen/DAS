@@ -11,7 +11,6 @@ import 'package:app/pages/journey/train_journey/train_journey_overview.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
-import 'package:app/util/error_code.dart';
 import 'package:app/util/format.dart';
 import 'package:app/widgets/table/das_table_row.dart';
 import 'package:auto_route/auto_route.dart';
@@ -73,7 +72,7 @@ class _JourneyPageState extends State<JourneyPage> {
         final model = snapshot.data?[1] as JourneyNavigationModel?;
 
         return DASJourneyScaffold(
-          body: _Content(),
+          body: TrainJourneyOverview(),
           appBarTitle: _appBarTitle(context, model?.trainIdentification),
           hideAppBar: settings?.isAutoAdvancementEnabled == true,
           appBarTrailingAction: _DismissJourneyButton(),
@@ -90,44 +89,6 @@ class _JourneyPageState extends State<JourneyPage> {
     final locale = Localizations.localeOf(context);
     final date = Format.dateWithAbbreviatedDay(trainIdentification.date, locale);
     return '${context.l10n.p_train_journey_appbar_text} - $date';
-  }
-}
-
-class _Content extends StatelessWidget {
-  const _Content();
-
-  @override
-  Widget build(BuildContext context) {
-    final viewModel = context.read<TrainJourneyViewModel>();
-    return StreamBuilder(
-      stream: CombineLatestStream.list([
-        viewModel.journey,
-        viewModel.errorCode,
-      ]),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        final journey = snapshot.data?[0] as Journey?;
-        final errorCode = snapshot.data?[1] as ErrorCode?;
-
-        if (errorCode != null) {
-          return Center(
-            child: SBBMessage(
-              illustration: MessageIllustration.Display,
-              title: context.l10n.c_something_went_wrong,
-              description: errorCode.displayText(context),
-              messageCode: '${context.l10n.c_error_code}: ${errorCode.code.toString()}',
-            ),
-          );
-        } else if (journey != null) {
-          return const TrainJourneyOverview();
-        }
-
-        return const Center(child: CircularProgressIndicator());
-      },
-    );
   }
 }
 

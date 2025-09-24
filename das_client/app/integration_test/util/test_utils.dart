@@ -76,6 +76,7 @@ Future<void> loadTrainJourney(WidgetTester tester, {required String trainNumber}
   await tester.tap(primaryButton);
 
   // wait for train journey to load
+  await waitUntilExists(tester, find.byKey(TrainJourney.loadedTrainJourneyTableKey));
   await tester.pumpAndSettle();
 }
 

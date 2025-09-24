@@ -4,13 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:sfera/component.dart';
 
 class ChevronAnimationController with ChangeNotifier {
-  ChevronAnimationController(this.tickerProvider)
+  ChevronAnimationController(TickerProvider tickerProvider)
     : animationController = AnimationController(
         duration: DASAnimation.longDuration,
         vsync: tickerProvider,
       );
 
-  final TickerProvider tickerProvider;
   final AnimationController animationController;
   Animation<double>? animation;
 
