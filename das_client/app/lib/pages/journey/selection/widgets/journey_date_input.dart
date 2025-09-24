@@ -1,6 +1,7 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
+import 'package:app/pages/journey/selection/widgets/journey_date_picker.dart';
 import 'package:app/util/format.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -62,24 +63,11 @@ class _JourneyDateInputState extends State<JourneyDateInput> {
       () => showSBBModalSheet(
         context: context,
         title: context.l10n.p_train_selection_choose_date,
-        child: _datePickerWidget(context, selectedDate),
-      );
-
-  Widget _datePickerWidget(BuildContext context, DateTime selectedDate) {
-    final now = DateTime.now();
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        SBBDatePicker(
-          initialDate: selectedDate,
-          minimumDate: now.add(Duration(days: -1)),
-          maximumDate: now.add(Duration(hours: 4)),
-          onDateChanged: (value) => context.read<JourneySelectionViewModel>().updateDate(value),
+        child: Provider.value(
+          value: context.read<JourneySelectionViewModel>(),
+          builder: (_, _) => JourneyDatePicker(selectedDate: selectedDate),
         ),
-      ],
-    );
-  }
+      );
 
   @override
   void dispose() {
