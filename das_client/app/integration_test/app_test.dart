@@ -1,11 +1,10 @@
-import 'dart:ui';
-
 import 'package:app/di/scope_handler.dart';
 import 'package:app/di/scopes/das_base_scope.dart';
 import 'package:app/di/scopes/sfera_mock_scope.dart';
 import 'package:app/flavor.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/main.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:logger/component.dart';
@@ -73,6 +72,11 @@ Future<void> prepareAndStartApp(WidgetTester tester, {VoidCallback? onBeforeRun}
 
   l10n = await deviceLocalizations();
   onBeforeRun?.call();
+  final originalOnError = FlutterError.onError;
+
   runDasApp();
   await tester.pumpAndSettle(const Duration(milliseconds: 500));
+
+  // flutter test framework needs original error handler to work correctly
+  FlutterError.onError = originalOnError;
 }
