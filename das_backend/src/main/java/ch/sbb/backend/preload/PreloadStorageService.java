@@ -27,7 +27,6 @@ import software.amazon.awssdk.services.s3.model.S3Object;
 @Service
 public class PreloadStorageService {
 
-    private static final DateTimeFormatter ZIP_NAME_FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm.ss");
     private final XmlHelper xmlHelper;
     private final S3Service s3Service;
     @Value("${preload.s3Prefix:}")
@@ -63,9 +62,10 @@ public class PreloadStorageService {
             writeTcs(trainCharacteristics, tcDir);
 
             // 3) ZIP-Dateiname wie 2025-01-19T13:20.00.zip (Sekunden=00)
-            ZonedDateTime now = ZonedDateTime.now(ZoneId.of(timestampZone))
-                .withSecond(0).withNano(0);
-            String zipName = ZIP_NAME_FMT.format(now) + ".zip";
+            ZonedDateTime now = ZonedDateTime.now(ZoneId.of(timestampZone)).withNano(0);
+            String iso = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(now); // z. B. 2025-01-19T13:20:00
+            String zipName = iso.replace(':', '-') + ".zip";                // 2025-01-19T13-20-00.zip
+
 
             // 4) ZIP erzeugen (inkl. Ordner-Einträgen)
             zipFile = tempRoot.resolve(zipName);

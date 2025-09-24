@@ -95,3 +95,8 @@ sfera:
   username: ${SFERA_USERNAME}
   password: ${SFERA_PASSWORD}
   topic-prefix: dev/
+preload:
+  fetchIntervalMs: ${PRELOAD_FETCH_INTERVAL_MS:300000}
+  cleanupIntervalMs: ${PRELOAD_CLEANUP_INTERVAL_MS:3600000}
+  cleanupInitialDelayMs: ${PRELOAD_CLEANUP_INITIAL_DELAY_MS:60000}
+
