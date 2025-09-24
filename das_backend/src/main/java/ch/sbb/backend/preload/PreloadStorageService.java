@@ -13,7 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
@@ -27,15 +27,11 @@ import software.amazon.awssdk.services.s3.model.S3Object;
 @Service
 public class PreloadStorageService {
 
-    private static final DateTimeFormatter ZIP_NAME_FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm.ss");
     private final XmlHelper xmlHelper;
     private final S3Service s3Service;
-    @Value("${preload.s3Prefix:}")
-    private String s3Prefix;
-    @Value("${preload.retentionHours:24}")
-    private int retentionHours;
-    @Value("${preload.timestampZone:Europe/Zurich}")
-    private String timestampZone;
+
+    @Value("${preload.cleanup-retention-hours}")
+    private int cleanupRetentionHours;
 
     public PreloadStorageService(XmlHelper xmlHelper, S3Service s3Service) {
         this.xmlHelper = xmlHelper;
@@ -61,53 +57,41 @@ public class PreloadStorageService {
             writeSps(segmentProfiles, spDir);
             writeTcs(trainCharacteristics, tcDir);
 
-            // 3) ZIP-Dateiname wie 2025-01-19T13:20.00.zip (Sekunden=00)
-            ZonedDateTime now = ZonedDateTime.now(ZoneId.of(timestampZone))
-                .withSecond(0).withNano(0);
-            String zipName = ZIP_NAME_FMT.format(now) + ".zip";
+            // 3) ZIP-Dateiname im ISO-Format
+            // Hinweis: Doppelpunkte durch '-' ersetzen, damit der Name auch auf Windows valide ist
+            ZonedDateTime nowUtc = Instant.now().atZone(ZoneOffset.UTC).withNano(0);
+            String iso = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(nowUtc); // 2025-01-19T12:20:00
+            String zipName = iso.replace(':', '-') + ".zip";                   // 2025-01-19T12-20-00.zip
 
             // 4) ZIP erzeugen (inkl. Ordner-Einträgen)
             zipFile = tempRoot.resolve(zipName);
             createZipWithFolders(tempRoot, zipFile);
 
-            // 5) Nach S3 hochladen
-            String key = (s3Prefix == null || s3Prefix.isEmpty()) ? zipName : s3Prefix + zipName;
-            s3Service.uploadFile(key, zipFile);
+            // 5) In S3 ins Bucket-Root hochladen
+            s3Service.uploadFile(zipName, zipFile);
         } catch (Exception e) {
             throw new RuntimeException("Preload save failed", e);
         } finally {
             // 6) Temporäres Aufräumen (Best Effort)
             try {
-                if (zipFile != null) {
-                    Files.deleteIfExists(zipFile);
-                }
+                if (zipFile != null) Files.deleteIfExists(zipFile);
                 if (tempRoot != null) {
                     try (var walk = Files.walk(tempRoot)) {
                         walk.sorted(Comparator.reverseOrder()).forEach(p -> {
-                            try {
-                                Files.deleteIfExists(p);
-                            } catch (IOException ignore) {
-                            }
+                            try { Files.deleteIfExists(p); } catch (IOException ignore) {}
                         });
                     }
                 }
-            } catch (IOException ignore) {
-            }
+            } catch (IOException ignore) {}
         }
     }
 
     public void cleanUp() {
-        String prefix = (s3Prefix == null) ? "" : s3Prefix;
-        Instant threshold = Instant.now().minus(Duration.ofHours(retentionHours));
-
-        List<S3Object> objects = s3Service.listObjects(prefix);
+        Instant threshold = Instant.now().minus(Duration.ofHours(cleanupRetentionHours));
+        List<S3Object> objects = s3Service.listObjects("");
         for (S3Object obj : objects) {
-            String key = obj.key();
-            if (!key.endsWith(".zip")) {
-                continue;
-            }
-            if (obj.lastModified().isBefore(threshold)) {
-                s3Service.deleteObject(key);
+            if (obj.key().endsWith(".zip") && obj.lastModified().isBefore(threshold)) {
+                s3Service.deleteObject(obj.key());
             }
         }
     }
