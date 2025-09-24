@@ -14,23 +14,19 @@ import 'package:logging/logging.dart';
 final logger = Logger('main');
 
 Future<void> start(Flavor flavor) async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await _initDASLogging(flavor);
-  await _initDependencyInjection(flavor);
-  runDasApp();
-}
-
-void runDasApp() {
-  runZonedGuarded(
-    () {
-      FlutterError.onError = (details) => _logUnexpectedError(details.exception, details.stack);
-      ErrorWidget.builder = (details) =>
-          kDebugMode ? ErrorWidget(details.exception) : GlobalErrorWidget(details: details);
-      runApp(App());
+  await runZonedGuarded(
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
+      await _initDASLogging(flavor);
+      await _initDependencyInjection(flavor);
+      _setupFlutterErrorHandling();
+      runDasApp();
     },
     (error, stackTrace) => _logUnexpectedError(error, stackTrace),
   );
 }
+
+void runDasApp() => runApp(App());
 
 Future<void> _initDASLogging(Flavor flavor) async {
   final deviceId = await DeviceIdInfo.getDeviceId();
@@ -51,6 +47,11 @@ Future<void> _initDependencyInjection(Flavor flavor) async {
   // will not seem to be logged in anymore since we assume SferaMock as the default in app start.
   // This is necessary to ensure that an authenticator is available for the SplashPage
   await scopeHandler.push<SferaMockScope>();
+}
+
+void _setupFlutterErrorHandling() {
+  FlutterError.onError = (details) => _logUnexpectedError(details.exception, details.stack);
+  ErrorWidget.builder = (details) => false ? ErrorWidget(details.exception) : GlobalErrorWidget(details: details);
 }
 
 void _logUnexpectedError([Object? error, StackTrace? stackTrace]) {

@@ -23,16 +23,10 @@ class GlobalErrorWidget extends StatelessWidget {
       home: Builder(
         builder: (context) {
           return Scaffold(
-            appBar: _appBar(context),
+            appBar: SBBHeader(title: context.l10n.c_app_name),
             body: SafeArea(
               child: Center(
-                child: SBBMessage.error(
-                  title: context.l10n.w_global_error_widget_title,
-                  description: context.l10n.w_global_error_widget_description,
-                  messageCode: details.exceptionAsString(),
-                  interactionIcon: SBBIcons.speech_bubble_exclamation_point_small,
-                  onInteraction: () => _showErrorDetailsModalSheet(context, details),
-                ),
+                child: _errorMessage(context),
               ),
             ),
           );
@@ -41,7 +35,15 @@ class GlobalErrorWidget extends StatelessWidget {
     );
   }
 
-  SBBHeader _appBar(BuildContext context) => SBBHeader(title: context.l10n.c_app_name);
+  Widget _errorMessage(BuildContext context) {
+    return SBBMessage.error(
+      title: context.l10n.w_global_error_widget_title,
+      description: context.l10n.w_global_error_widget_description,
+      messageCode: details.exceptionAsString(),
+      interactionIcon: SBBIcons.speech_bubble_exclamation_point_small,
+      onInteraction: () => _showErrorDetailsModalSheet(context, details),
+    );
+  }
 }
 
 Future<void> _showErrorDetailsModalSheet(BuildContext context, FlutterErrorDetails details) async {

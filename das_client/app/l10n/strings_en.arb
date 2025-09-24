@@ -122,5 +122,5 @@
   "w_modal_sheet_button_grant_permission": "Grant permissions",
   "w_journey_search_overlay_title": "Search Timetable",
   "w_global_error_widget_title": "Unexpected Error",
-  "w_global_error_widget_description": "We are sorry for the inconvenience. Try restarting the app..."
+  "w_global_error_widget_description": "An unexpected error has occurred, the error message will be sent to the developers. Try restarting the app."
 }

@@ -1,6 +1,6 @@
 import 'package:app/flavor.dart';
 import 'package:app/main.dart';
 
-void main() async {
+void main() {
   start(Flavor.dev());
 }
