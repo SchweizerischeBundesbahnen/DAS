@@ -72,6 +72,8 @@ Future<void> prepareAndStartApp(WidgetTester tester, {VoidCallback? onBeforeRun}
 
   l10n = await deviceLocalizations();
   onBeforeRun?.call();
+
+  final originalErrorWidget = ErrorWidget.builder;
   final originalOnError = FlutterError.onError;
 
   runDasApp();
@@ -79,4 +81,5 @@ Future<void> prepareAndStartApp(WidgetTester tester, {VoidCallback? onBeforeRun}
 
   // flutter test framework needs original error handler to work correctly
   FlutterError.onError = originalOnError;
+  ErrorWidget.builder = originalErrorWidget;
 }
