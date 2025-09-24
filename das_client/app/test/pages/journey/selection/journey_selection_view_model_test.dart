@@ -11,13 +11,23 @@ import 'journey_selection_view_model_test.mocks.dart';
 void main() {
   late SferaRemoteRepo mockSferaRemoteRepo;
   late JourneySelectionViewModel testee;
+  final List<TrainIdentification> callRegister = [];
+  final fixedClock = Clock.fixed(DateTime(2025, 1, 1));
 
   setUp(() {
     mockSferaRemoteRepo = MockSferaRemoteRepo();
-    testee = JourneySelectionViewModel(sferaRemoteRepo: mockSferaRemoteRepo, onJourneySelected: (_) async {});
+    withClock(fixedClock, () {
+      testee = JourneySelectionViewModel(
+        sferaRemoteRepo: mockSferaRemoteRepo,
+        onJourneySelected: (trainIdentification) async {
+          callRegister.add(trainIdentification);
+        },
+      );
+    });
   });
 
   tearDown(() {
+    callRegister.clear();
     testee.dispose();
   });
 
@@ -91,5 +101,64 @@ void main() {
     expect(state, isA<Selecting>());
     final selecting = state as Selecting;
     expect(selecting.railwayUndertaking, newRU);
+  });
+
+  test('loadTrainJourney_whenIncomplete_thenDoesNotCallOnJourneySelected', () {
+    // ACT
+    testee.loadTrainJourney();
+
+    // EXPECT
+    expect(callRegister.isEmpty, isTrue);
+  });
+
+  test('loadTrainJourney_whenComplete_thenAddsTrainIdentificationToRegister', () {
+    // ARRANGE
+    testee.updateTrainNumber('123');
+    final aTrainId = TrainIdentification(
+      ru: RailwayUndertaking.sbbP,
+      trainNumber: '123',
+      date: fixedClock.now(),
+    );
+
+    // ACT
+    testee.loadTrainJourney();
+
+    // EXPECT
+    expect(callRegister, hasLength(1));
+    expect(callRegister.first, equals(aTrainId));
+  });
+
+  test('loadTrainJourney_whenCompleteAndWhitespace_thenAddsCleanedTrainIdentificationToRegister', () {
+    // ARRANGE
+    testee.updateTrainNumber('  123  ');
+    final aTrainId = TrainIdentification(
+      ru: RailwayUndertaking.sbbP,
+      trainNumber: '123',
+      date: fixedClock.now(),
+    );
+
+    // ACT
+    testee.loadTrainJourney();
+
+    // EXPECT
+    expect(callRegister, hasLength(1));
+    expect(callRegister.first, equals(aTrainId));
+  });
+
+  test('loadTrainJourney_whenLowercase_thenAddsTrainIdentificationWithUppercase', () {
+    // ARRANGE
+    testee.updateTrainNumber('lowercase123a');
+    final aTrainId = TrainIdentification(
+      ru: RailwayUndertaking.sbbP,
+      trainNumber: 'LOWERCASE123A',
+      date: fixedClock.now(),
+    );
+
+    // ACT
+    testee.loadTrainJourney();
+
+    // EXPECT
+    expect(callRegister, hasLength(1));
+    expect(callRegister.first, equals(aTrainId));
   });
 }

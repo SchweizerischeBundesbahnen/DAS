@@ -131,7 +131,7 @@ class JourneySelectionViewModel {
 
   TrainIdentification _trainIdFrom(Selecting selectingState) => TrainIdentification(
     ru: selectingState.railwayUndertaking,
-    trainNumber: selectingState.operationalTrainNumber.trim(),
+    trainNumber: selectingState.operationalTrainNumber.trim().toUpperCase(),
     date: selectingState.startDate,
   );
 }
