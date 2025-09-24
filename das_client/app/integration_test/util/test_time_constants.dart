@@ -5,7 +5,7 @@ class TestTimeConstants extends TimeConstants {
   int get punctualityStaleSeconds => 2;
 
   @override
-  int get punctualityDisappearSeconds => 4;
+  int get punctualityDisappearSeconds => 5;
 
   @override
   int get automaticAdvancementIdleTimeAutoScroll => 2;
