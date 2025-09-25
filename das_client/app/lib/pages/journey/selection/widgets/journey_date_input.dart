@@ -37,7 +37,8 @@ class _JourneyDateInputState extends State<JourneyDateInput> {
         _controller.text = Format.date(date);
 
         return switch (model) {
-          final Selecting _ || final Error _ => _dateInput(context, onTap: _showDatePicker(context, date)),
+          final Selecting _ ||
+          final Error _ => _dateInput(context, onTap: _showDatePicker(context, date, model.availableStartDates)),
           _ => _dateInput(context),
         };
       },
@@ -59,13 +60,13 @@ class _JourneyDateInputState extends State<JourneyDateInput> {
     );
   }
 
-  VoidCallback _showDatePicker(BuildContext context, DateTime selectedDate) =>
+  VoidCallback _showDatePicker(BuildContext context, DateTime selectedDate, List<DateTime> availableStartDates) =>
       () => showSBBModalSheet(
         context: context,
         title: context.l10n.p_train_selection_choose_date,
         child: Provider.value(
           value: context.read<JourneySelectionViewModel>(),
-          builder: (_, _) => JourneyDatePicker(selectedDate: selectedDate),
+          builder: (_, _) => JourneyDatePicker(selectedDate: selectedDate, availableStartDates: availableStartDates),
         ),
       );
 

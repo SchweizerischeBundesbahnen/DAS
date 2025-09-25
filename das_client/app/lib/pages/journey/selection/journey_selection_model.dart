@@ -1,5 +1,6 @@
 import 'package:app/util/error_code.dart';
 import 'package:clock/clock.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:sfera/component.dart';
 
@@ -10,6 +11,7 @@ sealed class JourneySelectionModel {
   factory JourneySelectionModel.selecting({
     required DateTime startDate,
     required RailwayUndertaking railwayUndertaking,
+    required List<DateTime> availableStartDates,
     String? trainNumber,
   }) = Selecting;
 
@@ -19,6 +21,7 @@ sealed class JourneySelectionModel {
 
   factory JourneySelectionModel.error({
     required TrainIdentification trainIdentification,
+    required List<DateTime> availableStartDates,
     required ErrorCode errorCode,
   }) = Error;
 
@@ -36,6 +39,13 @@ sealed class JourneySelectionModel {
     final Loading l => l.trainIdentification.date,
     final Loaded l => l.trainIdentification.date,
     final Error e => e.trainIdentification.date,
+  };
+
+  List<DateTime> get availableStartDates => switch (this) {
+    final Selecting s => s.availableStartDates,
+    final Loading _ => [],
+    final Loaded _ => [],
+    final Error e => e.availableStartDates,
   };
 
   RailwayUndertaking get railwayUndertaking => switch (this) {
@@ -56,11 +66,14 @@ class Selecting extends JourneySelectionModel {
   const Selecting({
     required this.startDate,
     required this.railwayUndertaking,
+    required this.availableStartDates,
     this.trainNumber,
     this.isInputComplete = false,
   }) : super._();
   @override
   final DateTime startDate;
+  @override
+  final List<DateTime> availableStartDates;
   @override
   final RailwayUndertaking railwayUndertaking;
   final String? trainNumber;
@@ -73,21 +86,31 @@ class Selecting extends JourneySelectionModel {
           runtimeType == other.runtimeType &&
           trainNumber == other.trainNumber &&
           startDate == other.startDate &&
+          ListEquality().equals(availableStartDates, other.availableStartDates) &&
           railwayUndertaking == other.railwayUndertaking &&
           isInputComplete == other.isInputComplete;
 
   @override
-  int get hashCode => Object.hash(runtimeType, trainNumber, startDate, railwayUndertaking, isInputComplete);
+  int get hashCode => Object.hash(
+    runtimeType,
+    trainNumber,
+    startDate,
+    availableStartDates,
+    railwayUndertaking,
+    isInputComplete,
+  );
 
   Selecting copyWith({
     String? operationalTrainNumber,
     DateTime? startDate,
+    List<DateTime>? availableStartDates,
     RailwayUndertaking? railwayUndertaking,
     bool? isInputComplete,
   }) {
     return Selecting(
       trainNumber: operationalTrainNumber ?? trainNumber,
       startDate: startDate ?? this.startDate,
+      availableStartDates: availableStartDates ?? this.availableStartDates,
       railwayUndertaking: railwayUndertaking ?? this.railwayUndertaking,
       isInputComplete: isInputComplete ?? this.isInputComplete,
     );
@@ -130,8 +153,11 @@ class Error extends JourneySelectionModel {
   const Error({
     required this.trainIdentification,
     required this.errorCode,
+    required this.availableStartDates,
   }) : super._();
   final TrainIdentification trainIdentification;
+  @override
+  final List<DateTime> availableStartDates;
   final ErrorCode errorCode;
 
   @override
@@ -140,8 +166,9 @@ class Error extends JourneySelectionModel {
       other is Error &&
           runtimeType == other.runtimeType &&
           trainIdentification == other.trainIdentification &&
+          ListEquality().equals(availableStartDates, other.availableStartDates) &&
           errorCode == other.errorCode;
 
   @override
-  int get hashCode => Object.hash(runtimeType, trainIdentification, errorCode);
+  int get hashCode => Object.hash(runtimeType, trainIdentification, errorCode, availableStartDates);
 }

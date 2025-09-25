@@ -17,6 +17,12 @@ class Format {
     return dateFormat.format(localDate);
   }
 
+  static String dateWithTextMonth(DateTime date, Locale locale) {
+    final localDate = date.toLocal();
+    final dateFormat = DateFormat.yMMMMd(locale.toLanguageTag());
+    return dateFormat.format(localDate);
+  }
+
   static String plannedTime(DateTime? date) => _formatLocal(date, DateFormat.HOUR24_MINUTE);
 
   static String operationalTime(DateTime? date) {
