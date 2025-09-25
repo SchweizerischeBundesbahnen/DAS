@@ -76,10 +76,21 @@ void main() {
 
       await tapElement(tester, todayDateTextFinder);
 
-      final sbbDatePickerFinder = find.byWidgetPredicate((widget) => widget is SBBDatePicker);
+      final sbbPickerFinder = find.byWidgetPredicate((widget) => widget is SBBPicker);
+
+      // finds localized 'Today'
+      final todayFinder = find.descendant(
+        of: sbbPickerFinder,
+        matching: find.byWidgetPredicate((widget) => widget is Text && widget.data == l10n.c_today),
+      );
+      expect(todayFinder, findsOne);
+
+      // find yesterday date and select it
       final yesterdayFinder = find.descendant(
-        of: sbbDatePickerFinder,
-        matching: find.byWidgetPredicate((widget) => widget is Text && widget.data == '${(yesterday.day)}.'),
+        of: sbbPickerFinder,
+        matching: find.byWidgetPredicate(
+          (widget) => widget is Text && widget.data == Format.dateWithTextMonth(yesterday, deviceLocale()),
+        ),
       );
       await tapElement(tester, yesterdayFinder);
 
@@ -87,6 +98,7 @@ void main() {
       await tester.tapAt(Offset(200, 200));
       await tester.pumpAndSettle();
 
+      // expect yesterday is selected with warning
       expect(todayDateTextFinder, findsNothing);
       expect(yesterdayDateTextFinder, findsOneWidget);
       final warningMessage = find.text(l10n.p_train_selection_date_not_today_warning);
@@ -98,40 +110,32 @@ void main() {
       await prepareAndStartApp(tester);
 
       final today = DateTime.now();
-
-      // if the current day is the first or second of the month skip test
-      if (today.day == 1 || today.day == 2) {
-        return;
-      }
-
-      final yesterday = today.add(Duration(days: -1));
       final dayBeforeYesterday = today.add(Duration(days: -2));
 
       final todayDateTextFinder = find.text(Format.date(today));
-      final yesterdayDateTextFinder = find.text(Format.date(yesterday));
       final dayBeforeYesterdayDateTextFinder = find.text(Format.date(dayBeforeYesterday));
 
       // Verify that today is preselected
       expect(todayDateTextFinder, findsOneWidget);
-      expect(yesterdayDateTextFinder, findsNothing);
+      expect(dayBeforeYesterdayDateTextFinder, findsNothing);
 
       await tapElement(tester, todayDateTextFinder);
 
-      final sbbDatePickerFinder = find.byWidgetPredicate((widget) => widget is SBBDatePicker);
-      final yesterdayFinder = find.descendant(
+      final sbbDatePickerFinder = find.byWidgetPredicate((widget) => widget is SBBPicker);
+      final dayBeforeYesterdayFinder = find.descendant(
         of: sbbDatePickerFinder,
-        matching: find.byWidgetPredicate((widget) => widget is Text && widget.data == '${(dayBeforeYesterday.day)}.'),
+        matching: find.byWidgetPredicate(
+          (widget) => widget is Text && widget.data == Format.dateWithTextMonth(dayBeforeYesterday, deviceLocale()),
+        ),
       );
-      await tapElement(tester, yesterdayFinder);
+      expect(dayBeforeYesterdayFinder, findsNothing);
 
       // tap outside dialog
       await tester.tapAt(Offset(200, 200));
       await tester.pumpAndSettle();
 
-      expect(todayDateTextFinder, findsNothing);
-      expect(yesterdayDateTextFinder, findsOneWidget);
-      final warningMessage = find.text(l10n.p_train_selection_date_not_today_warning);
-      expect(warningMessage, findsOneWidget);
+      // Verify that today is still selected
+      expect(todayDateTextFinder, findsOneWidget);
       expect(dayBeforeYesterdayDateTextFinder, findsNothing);
     });
 
