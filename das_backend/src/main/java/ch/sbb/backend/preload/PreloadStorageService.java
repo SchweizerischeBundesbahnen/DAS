@@ -1,3 +1,4 @@
+
 package ch.sbb.backend.preload;
 
 import ch.sbb.backend.adapters.sfera.model.v0201.JourneyProfile;
@@ -27,14 +28,31 @@ import software.amazon.awssdk.services.s3.model.S3Object;
 @Service
 public class PreloadStorageService {
 
+    private static final String DIR_JP = "jp";
+    private static final String DIR_SP = "sp";
+    private static final String DIR_TC = "tc";
+    private static final String ZIP_DIR_JP = DIR_JP + "/";
+    private static final String ZIP_DIR_SP = DIR_SP + "/";
+    private static final String ZIP_DIR_TC = DIR_TC + "/";
+
     private final XmlHelper xmlHelper;
     private final S3Service s3Service;
-    @Value("${preload.s3Prefix:}")
-    private String s3Prefix;
-    @Value("${preload.retentionHours:24}")
-    private int retentionHours;
-    @Value("${preload.timestampZone:Europe/Zurich}")
+
+    // Konfigurierbarer Zeitstempel (z. B. Europe/Zurich)
+    @Value("${preload.timestamp-zone}")
     private String timestampZone;
+
+    // Cleanup-Retention in Stunden
+    @Value("${preload.cleanup-retention-hours}")
+    private int cleanupRetentionHours;
+
+    // Konfigurierbarer Parent-Ordner für Temp-Verzeichnisse (Default: <system tmp>/das-preload)
+    @Value("${preload.temp-parent:}")
+    private String tempParent;
+
+    // Präfix für Temp-Verzeichnisnamen (Default: run-)
+    @Value("${preload.temp-prefix:run-}")
+    private String tempPrefix;
 
     public PreloadStorageService(XmlHelper xmlHelper, S3Service s3Service) {
         this.xmlHelper = xmlHelper;
@@ -49,66 +67,54 @@ public class PreloadStorageService {
         Path zipFile = null;
 
         try {
-            // 1) Temp-Verzeichnisstruktur
-            tempRoot = Files.createTempDirectory("preload_");
-            Path jpDir = Files.createDirectories(tempRoot.resolve("jp"));
-            Path spDir = Files.createDirectories(tempRoot.resolve("sp"));
-            Path tcDir = Files.createDirectories(tempRoot.resolve("tc"));
+            // 1) Temp-Verzeichnisstruktur (konfigurierbarer Parent + Präfix)
+            Path parent = resolveTempParent();
+            Files.createDirectories(parent);
+            tempRoot = Files.createTempDirectory(parent, tempPrefix); // z. B. /tmp/das-preload/run-123456
 
+            Path jpDir = Files.createDirectories(tempRoot.resolve(DIR_JP));
+            Path spDir = Files.createDirectories(tempRoot.resolve(DIR_SP));
+            Path tcDir = Files.createDirectories(tempRoot.resolve(DIR_TC));
 
             // 2) XML-Dateien erzeugen (falls Listen nicht leer sind)
             writeJps(journeyProfiles, jpDir);
             writeSps(segmentProfiles, spDir);
             writeTcs(trainCharacteristics, tcDir);
 
-            // 3) ZIP-Dateiname wie 2025-01-19T13:20.00.zip (Sekunden=00)
+            // 3) ZIP-Dateiname im ISO-Format (lokale Zone), Windows-safe (':' -> '-')
             ZonedDateTime now = ZonedDateTime.now(ZoneId.of(timestampZone)).withNano(0);
-            String iso = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(now); // z. B. 2025-01-19T13:20:00
-            String zipName = iso.replace(':', '-') + ".zip";                // 2025-01-19T13-20-00.zip
-
+            String iso = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(now); // 2025-01-19T12:20:00
+            String zipName = iso.replace(':', '-') + ".zip"; // 2025-01-19T12-20-00.zip
 
             // 4) ZIP erzeugen (inkl. Ordner-Einträgen)
             zipFile = tempRoot.resolve(zipName);
             createZipWithFolders(tempRoot, zipFile);
 
-            // 5) Nach S3 hochladen
-            String key = (s3Prefix == null || s3Prefix.isEmpty()) ? zipName : s3Prefix + zipName;
-            s3Service.uploadFile(key, zipFile);
+            // 5) In S3 ins Bucket-Root hochladen
+            s3Service.uploadFile(zipName, zipFile);
         } catch (Exception e) {
             throw new RuntimeException("Preload save failed", e);
         } finally {
             // 6) Temporäres Aufräumen (Best Effort)
             try {
-                if (zipFile != null) {
-                    Files.deleteIfExists(zipFile);
-                }
+                if (zipFile != null) Files.deleteIfExists(zipFile);
                 if (tempRoot != null) {
                     try (var walk = Files.walk(tempRoot)) {
                         walk.sorted(Comparator.reverseOrder()).forEach(p -> {
-                            try {
-                                Files.deleteIfExists(p);
-                            } catch (IOException ignore) {
-                            }
+                            try { Files.deleteIfExists(p); } catch (IOException ignore) {}
                         });
                     }
                 }
-            } catch (IOException ignore) {
-            }
+            } catch (IOException ignore) {}
         }
     }
 
     public void cleanUp() {
-        String prefix = (s3Prefix == null) ? "" : s3Prefix;
-        Instant threshold = Instant.now().minus(Duration.ofHours(retentionHours));
-
-        List<S3Object> objects = s3Service.listObjects(prefix);
+        Instant threshold = Instant.now().minus(Duration.ofHours(cleanupRetentionHours));
+        List<S3Object> objects = s3Service.listObjects("");
         for (S3Object obj : objects) {
-            String key = obj.key();
-            if (!key.endsWith(".zip")) {
-                continue;
-            }
-            if (obj.lastModified().isBefore(threshold)) {
-                s3Service.deleteObject(key);
+            if (obj.key().endsWith(".zip") && obj.lastModified().isBefore(threshold)) {
+                s3Service.deleteObject(obj.key());
             }
         }
     }
@@ -117,7 +123,11 @@ public class PreloadStorageService {
         for (JourneyProfile jp : jps) {
             OTNIDComplexType otnid = jp.getTrainIdentification().getOTNID();
             // todo: version minor not required
-            String filename = String.format("JP_%s_%s_%s_%s.xml", otnid.getTeltsiCompany(), otnid.getTeltsiOperationalTrainNumber(), otnid.getTeltsiStartDate(), jp.getJPVersion());
+            String filename = String.format("JP_%s_%s_%s_%s.xml",
+                otnid.getTeltsiCompany(),
+                otnid.getTeltsiOperationalTrainNumber(),
+                otnid.getTeltsiStartDate(),
+                jp.getJPVersion());
             writeXmlFile(jp, dir.resolve(filename));
         }
     }
@@ -125,23 +135,28 @@ public class PreloadStorageService {
     private void writeSps(List<SegmentProfile> sps, Path dir) throws IOException {
         for (SegmentProfile sp : sps) {
             // todo: version minor not required
-            String filename = String.format("SP_%s_%s_%s_%s.xml", sp.getSPID(), sp.getSPVersionMajor(), sp.getSPVersionMinor(), sp.getSPZone().getIMID());
+            String filename = String.format("SP_%s_%s_%s_%s.xml",
+                sp.getSPID(),
+                sp.getSPVersionMajor(),
+                sp.getSPVersionMinor(),
+                sp.getSPZone().getIMID());
             writeXmlFile(sp, dir.resolve(filename));
         }
     }
 
     private void writeTcs(List<TrainCharacteristics> tcs, Path dir) throws IOException {
         for (TrainCharacteristics tc : tcs) {
-            String filename = String.format("TC_%s_%s_%s_%s.xml", tc.getTCID(), tc.getTCVersionMajor(), tc.getTCVersionMinor(), tc.getTCRUID());
+            String filename = String.format("TC_%s_%s_%s_%s.xml",
+                tc.getTCID(),
+                tc.getTCVersionMajor(),
+                tc.getTCVersionMinor(),
+                tc.getTCRUID());
             writeXmlFile(tc, dir.resolve(filename));
         }
     }
 
     private void writeXmlFile(Object item, Path path) throws IOException {
-        if (item == null) {
-            return;
-        }
-
+        if (item == null) return;
         String xml = xmlHelper.toString(item);
         Files.writeString(path, xml, StandardCharsets.UTF_8, StandardOpenOption.CREATE_NEW);
     }
@@ -151,13 +166,13 @@ public class PreloadStorageService {
             ZipOutputStream zos = new ZipOutputStream(os)) {
 
             // Ordner-Einträge explizit hinzufügen (sichtbar im ZIP, auch wenn leer)
-            addDirectoryEntry(zos, "jp/");
-            addDirectoryEntry(zos, "sp/");
-            addDirectoryEntry(zos, "tc/");
+            addDirectoryEntry(zos, ZIP_DIR_JP);
+            addDirectoryEntry(zos, ZIP_DIR_SP);
+            addDirectoryEntry(zos, ZIP_DIR_TC);
 
-            addFolderFiles(zos, root.resolve("jp"), root);
-            addFolderFiles(zos, root.resolve("sp"), root);
-            addFolderFiles(zos, root.resolve("tc"), root);
+            addFolderFiles(zos, root.resolve(DIR_JP), root);
+            addFolderFiles(zos, root.resolve(DIR_SP), root);
+            addFolderFiles(zos, root.resolve(DIR_TC), root);
         }
     }
 
@@ -168,9 +183,7 @@ public class PreloadStorageService {
     }
 
     private void addFolderFiles(ZipOutputStream zos, Path folder, Path root) throws IOException {
-        if (!Files.exists(folder)) {
-            return;
-        }
+        if (!Files.exists(folder)) return;
         try (var stream = Files.walk(folder)) {
             stream.filter(Files::isRegularFile).forEach(file -> {
                 String entryName = root.relativize(file).toString().replace('\\', '/');
@@ -183,5 +196,13 @@ public class PreloadStorageService {
                 }
             });
         }
+    }
+
+    private Path resolveTempParent() {
+        if (tempParent == null || tempParent.isBlank()) {
+            // Default: <system tmp>/das-preload
+            return Path.of(System.getProperty("java.io.tmpdir")).resolve("das-preload");
+        }
+        return Path.of(tempParent);
     }
 }

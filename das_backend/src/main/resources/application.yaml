@@ -13,6 +13,16 @@ spring:
           jwk-set-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/discovery/v2.0/keys
           issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
       authorizationUrl: https://login.microsoftonline.com/common/oauth2/v2.0
+      client:
+        registration:
+          azure:
+            client-id: 69a47b50-ad91-4bfc-b4cd-d6b7f9144063
+            client-secret: ${SFERA_OAUTH_SECRET}
+            authorization-grant-type: client_credentials
+            scope: api://8f16d52b-c6df-4a94-a132-da4956579a48/.default
+        provider:
+          azure:
+            token-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0/token
   jackson:
     mapper:
       accept-case-insensitive-enums: true
@@ -78,7 +88,11 @@ auth:
       issuer-uri: https://login.microsoftonline.com/a64ce5df-4ad8-40b9-91ee-54bac2bb8326/v2.0
       jwk-set-uri: https://login.microsoftonline.com/a64ce5df-4ad8-40b9-91ee-54bac2bb8326/discovery/v2.0/keys
 zis:
-  kafka.topic: zis.inte.trafo.trainformation.operational
+  kafka.topic: ${ZIS_TOPIC}
+  lag-alert-threshold-seconds: 60 # 1 minute
+  clean-up:
+    cron: 0 0 3 * * ?  # every day at 3am
+    older-than-days: 100
 logging:
   url: ${SPLUNK_HEC_URL}
   token: ${SPLUNK_HEC_TOKEN}
@@ -86,6 +100,7 @@ aws:
   accessKey: ${AWS_ACCESS_KEY}
   secretKey: ${AWS_SECRET_KEY}
   bucketName: ${AWS_BUCKET_NAME}
+
 sfera:
   company-code: '1085'
   sfera-version: '3.00'
@@ -95,8 +110,12 @@ sfera:
   username: ${SFERA_USERNAME}
   password: ${SFERA_PASSWORD}
   topic-prefix: dev/
-preload:
-  fetchIntervalMs: ${PRELOAD_FETCH_INTERVAL_MS:300000}
-  cleanupIntervalMs: ${PRELOAD_CLEANUP_INTERVAL_MS:3600000}
-  cleanupInitialDelayMs: ${PRELOAD_CLEANUP_INITIAL_DELAY_MS:60000}
 
+preload:
+  cleanup-retention-hours: 24
+  fetch-interval-ms: 300000
+  cleanup-interval-ms: 3600000
+  cleanup-initial-delay-ms: 60000
+  timestamp-zone: Europe/Zurich
+  temp-parent: /tmp/das-preload
+  temp-prefix: run-

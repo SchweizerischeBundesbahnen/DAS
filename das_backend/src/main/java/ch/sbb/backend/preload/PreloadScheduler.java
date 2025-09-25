@@ -17,8 +17,7 @@ public class PreloadScheduler {
         this.storageService = storageService;
     }
 
-    // Alle 5 Minuten (Default). Holt Daten
-    @Scheduled(fixedDelayString = "${preload.fetchIntervalMs}")
+    @Scheduled(fixedDelayString = "${preload.fetch-interval-ms}")
     public void fetchAndStore() {
         // TODO: TMS-VAD anbinden und echte Deltas holen
         List<JourneyProfile> jps = List.of();
@@ -30,8 +29,10 @@ public class PreloadScheduler {
         }
     }
 
-    // Cleanup z. B. stündlich
-    @Scheduled(fixedDelayString = "${preload.cleanupIntervalMs}", initialDelayString = "${preload.cleanupInitialDelayMs}")
+    @Scheduled(
+        fixedDelayString = "${preload.cleanup-interval-ms}",
+        initialDelayString = "${preload.cleanup-initial-delay-ms}"
+    )
     public void cleanupOldZips() {
         storageService.cleanUp();
     }
