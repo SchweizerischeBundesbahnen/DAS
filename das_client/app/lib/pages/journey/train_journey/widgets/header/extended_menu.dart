@@ -95,12 +95,10 @@ class ExtendedMenu extends StatelessWidget {
     return SBBListItem(
       title: context.l10n.w_extended_menu_journey_overview_action,
       onPressed: () {
-        hideOverlay;
+        hideOverlay();
         if (context.mounted) {
           DASTableRowBuilder.clearRowKeys();
-          showReducedOverviewModalSheet(
-            context,
-          ).then((_) => Future.delayed(const Duration(milliseconds: 250), () => hideOverlay()));
+          showReducedOverviewModalSheet(context);
         }
       },
     );
