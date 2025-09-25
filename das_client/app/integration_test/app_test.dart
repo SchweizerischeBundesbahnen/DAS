@@ -9,6 +9,7 @@ import 'package:app/main.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:integration_test/integration_test.dart';
 import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 
@@ -36,7 +37,7 @@ import 'util/test_utils.dart';
 late AppLocalizations l10n;
 
 void main() async {
-  final binding = TestWidgetsFlutterBinding.ensureInitialized();
+  final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   await _useFullyLivePolicyOnAndroidEmulator(binding);
 
   Logger.root.level = Level.FINE;
@@ -87,7 +88,7 @@ Future<void> prepareAndStartApp(WidgetTester tester, {VoidCallback? onBeforeRun}
 /// delay can improve stability on Android emulator
 Future<void> _delayOnAndroidEmulator() async {
   if (await _isAndroidEmulator()) {
-    await Future.delayed(const Duration(milliseconds: 1000));
+    await Future.delayed(const Duration(milliseconds: 500));
   }
 }
 
