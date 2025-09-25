@@ -460,7 +460,7 @@ void main() {
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
-      final stopRouteRow = findDASTableRowByText('Bahnhof A');
+      final stopRouteRow = findDASTableRowByText('(Bahnhof A)');
       expect(stopRouteRow, findsOneWidget);
 
       await tester.dragUntilVisible(findDASTableRowByText('Haltestelle B'), scrollableFinder, const Offset(0, -50));
@@ -1128,7 +1128,7 @@ void main() {
       await tester.pumpAndSettle(const Duration(seconds: 1));
 
       // check Bahnhof A has underlined departure time
-      final stationARow = findDASTableRowByText('Bahnhof A');
+      final stationARow = findDASTableRowByText('(Bahnhof A)');
       expect(stationARow, findsOneWidget);
 
       final stationATimeText = tester.widget<Text>(

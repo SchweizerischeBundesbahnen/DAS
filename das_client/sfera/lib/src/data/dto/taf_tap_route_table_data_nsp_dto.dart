@@ -18,4 +18,12 @@ class TafTapRouteTableDataNspDto extends TafTapLocationNspDto {
       .where((it) => it.name == 'stationSign2')
       .map((it) => StationSign.from(it.nspValue))
       .firstOrNull;
+
+  bool get betweenBrackets =>
+      children
+          .whereType<NetworkSpecificParameterDto>()
+          .where((it) => it.name == 'betweenBrackets')
+          .map((it) => bool.tryParse(it.nspValue))
+          .firstOrNull ??
+      false;
 }

@@ -1725,6 +1725,20 @@ void main() {
     final coppet = servicePoints[2];
     expect(coppet.localRegulationSections, isEmpty);
   });
+
+  test('Test between brackets is parsed correctly', () {
+    final journey = getJourney('T9999', 5);
+    expect(journey.valid, true);
+
+    final servicePoints = journey.data.whereType<ServicePoint>().toList();
+    expect(servicePoints, hasLength(6));
+    expect(servicePoints[0].betweenBrackets, isTrue);
+    expect(servicePoints[1].betweenBrackets, isFalse);
+    expect(servicePoints[2].betweenBrackets, isFalse);
+    expect(servicePoints[3].betweenBrackets, isFalse);
+    expect(servicePoints[4].betweenBrackets, isFalse);
+    expect(servicePoints[5].betweenBrackets, isFalse);
+  });
 }
 
 void _checkTrainSeriesSpeed<T extends Speed>(
