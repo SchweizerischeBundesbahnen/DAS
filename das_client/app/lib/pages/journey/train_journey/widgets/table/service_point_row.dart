@@ -56,7 +56,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   @override
   DASTableCell informationCell(BuildContext context) {
-    final servicePointName = data.name;
+    final servicePointName = data.betweenBrackets ? '(${data.name})' : data.name;
     final color = _isNextStop && highlightNextStop ? SBBColors.white : null;
     return DASTableCell(
       onTap: () {

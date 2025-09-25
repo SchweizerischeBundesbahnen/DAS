@@ -12,6 +12,7 @@ class ServicePoint extends JourneyPoint {
     this.mandatoryStop = false,
     this.isStop = false,
     this.isStation = false,
+    this.betweenBrackets = false,
     this.bracketMainStation,
     this.graduatedSpeedInfo,
     this.decisiveGradient,
@@ -26,6 +27,7 @@ class ServicePoint extends JourneyPoint {
   final bool mandatoryStop;
   final bool isStop;
   final bool isStation;
+  final bool betweenBrackets;
   final BracketMainStation? bracketMainStation;
   final List<TrainSeriesSpeed>? graduatedSpeedInfo;
   final DecisiveGradient? decisiveGradient;
