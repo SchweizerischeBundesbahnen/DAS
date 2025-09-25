@@ -51,7 +51,7 @@ Future<void> _initDependencyInjection(Flavor flavor) async {
 
 void _setupFlutterErrorHandling() {
   FlutterError.onError = (details) => _logUnexpectedError(details.exception, details.stack);
-  ErrorWidget.builder = (details) => false ? ErrorWidget(details.exception) : GlobalErrorWidget(details: details);
+  ErrorWidget.builder = (details) => kDebugMode ? ErrorWidget(details.exception) : GlobalErrorWidget(details: details);
 }
 
 void _logUnexpectedError([Object? error, StackTrace? stackTrace]) {
