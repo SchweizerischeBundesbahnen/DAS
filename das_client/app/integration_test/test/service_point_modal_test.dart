@@ -368,7 +368,7 @@ void main() {
     expect(find.text(l10n.c_main_signal_function_entry_short), findsNothing);
     expect(find.text(l10n.c_main_signal_function_exit_short), findsNothing);
 
-    await _openByTapOnCellWithText(tester, 'Bahnhof A');
+    await _openByTapOnCellWithText(tester, '(Bahnhof A)');
     await tester.pumpAndSettle();
 
     expect(find.text(l10n.c_main_signal_function_entry), findsNothing);

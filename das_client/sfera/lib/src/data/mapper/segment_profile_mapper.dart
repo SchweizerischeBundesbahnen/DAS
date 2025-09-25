@@ -134,6 +134,7 @@ class SegmentProfileMapper {
           mandatoryStop: tpConstraint.stoppingPointInformation?.stopType?.mandatoryStop ?? true,
           isStop: tpConstraint.stopSkipPass == StopSkipPassDto.stoppingPoint,
           isStation: tafTapLocation.locationType != TafTapLocationTypeDto.halt,
+          betweenBrackets: tafTapLocation.routeTableDataNsp?.betweenBrackets ?? false,
           bracketMainStation: _parseBracketMainStation(tafTapLocations, tafTapLocation),
           kilometre: mapperData.kilometreMap[timingPoint.location] ?? [],
           localSpeeds: SpeedMapper.fromVelocities(
