@@ -74,14 +74,14 @@ void main() {
       expect(todayDateTextFinder, findsOneWidget);
       expect(yesterdayDateTextFinder, findsNothing);
 
-      await tapElement(tester, todayDateTextFinder);
+      await tapElement(tester, todayDateTextFinder, warnIfMissed: false);
 
       final sbbDatePickerFinder = find.byWidgetPredicate((widget) => widget is SBBDatePicker);
       final yesterdayFinder = find.descendant(
         of: sbbDatePickerFinder,
         matching: find.byWidgetPredicate((widget) => widget is Text && widget.data == '${(yesterday.day)}.'),
       );
-      await tapElement(tester, yesterdayFinder);
+      await tapElement(tester, yesterdayFinder, warnIfMissed: false);
 
       // tap outside dialog
       await tester.tapAt(Offset(200, 200));
@@ -115,14 +115,14 @@ void main() {
       expect(todayDateTextFinder, findsOneWidget);
       expect(yesterdayDateTextFinder, findsNothing);
 
-      await tapElement(tester, todayDateTextFinder);
+      await tapElement(tester, todayDateTextFinder, warnIfMissed: false);
 
       final sbbDatePickerFinder = find.byWidgetPredicate((widget) => widget is SBBDatePicker);
       final yesterdayFinder = find.descendant(
         of: sbbDatePickerFinder,
         matching: find.byWidgetPredicate((widget) => widget is Text && widget.data == '${(dayBeforeYesterday.day)}.'),
       );
-      await tapElement(tester, yesterdayFinder);
+      await tapElement(tester, yesterdayFinder, warnIfMissed: false);
 
       // tap outside dialog
       await tester.tapAt(Offset(200, 200));

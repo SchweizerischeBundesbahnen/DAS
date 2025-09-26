@@ -98,6 +98,16 @@ Run the following command in the `app` directory.
 fvm flutter test --flavor dev --dart-define=MQTT_USERNAME=${MQTT_USERNAME} --dart-define=MQTT_PASSWORD=${MQTT_PASSWORD} integration_test/app_test.dart
 ```
 
+#### Integration tests on Android emulator
+
+The Android emulator has trouble handling a lot of integration tests. Try the following to increase stability:
+
+* Start the emulator with a cold boot before each run
+* Use hardware acceleration and enough RAM (4GB recommended)
+* Check if emulator time matches the host time
+
+Try running the tests in multiple batches if none of the above work.
+
 ### Test resources
 
 In general, the same test resources are used both for unit testing and integration testing in order to avoid confusion
