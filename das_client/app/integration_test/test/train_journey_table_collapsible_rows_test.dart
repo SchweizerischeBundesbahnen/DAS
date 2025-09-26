@@ -61,7 +61,8 @@ void main() {
     expect(showMoreButton, findsOneWidget);
 
     // should show full text after tap on "show more" and no button
-    await tester.tapAt(tester.getCenter(showMoreButton));
+    await tester.pumpAndSettle();
+    await tapElement(tester, showMoreButton);
     await tester.pumpAndSettle();
 
     final rowWithExpandedText = _findDASTableAccordionRowByContainsText(
@@ -99,7 +100,8 @@ void main() {
     expect(showMoreButton, findsOneWidget);
 
     // should show full content without " ;" after tap on show more
-    await tester.tapAt(tester.getCenter(showMoreButton));
+    await tester.pumpAndSettle();
+    await tapElement(tester, showMoreButton);
     final expandedRow = _findDASTableAccordionRowByContainsText(
       'Strecke INN - MR: Bahnübergangsanlagen ohne Balisenüberwachung\nStraba. = Strassenbahnbereich',
     );
