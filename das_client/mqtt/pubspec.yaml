@@ -8,6 +8,9 @@ environment:
 resolution: workspace
 
 dependencies:
+
+  connectivity_x: 1.0.0
+
   # https://pub.dev/packages/mqtt_client
   mqtt_client: ^10.11.0
   # https://pub.dev/packages/logging
