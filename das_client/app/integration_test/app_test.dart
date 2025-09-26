@@ -36,18 +36,18 @@ import 'util/test_utils.dart';
 
 late AppLocalizations l10n;
 
-void main() async {
-  print('START INTEGRATION TEST');
+void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-  _useFullyLivePolicyOnAndroidEmulator(binding);
 
   Logger.root.level = Level.FINE;
   Logger.root.onRecord.listen(LogPrinter(appName: 'DAS IntegrationTests').call);
 
+  setUpAll(() async {
+    await _useFullyLivePolicyOnAndroidEmulator(binding);
+  });
+
   tearDown(() async {
-    print('tearDown called');
     await _delayOnAndroidEmulator();
-    print('tearDown finished');
   });
 
   settings_test.main();
@@ -96,18 +96,14 @@ Future<void> _delayOnAndroidEmulator() async {
 }
 
 Future<void> _useFullyLivePolicyOnAndroidEmulator(TestWidgetsFlutterBinding binding) async {
-  print('_useFullyLivePolicyOnAndroidEmulator: $binding');
   if (binding is LiveTestWidgetsFlutterBinding && await _isAndroidEmulator()) {
-    binding.framePolicy = LiveTestWidgetsFlutterBindingFramePolicy.fadePointers;
+    binding.framePolicy = LiveTestWidgetsFlutterBindingFramePolicy.fullyLive;
   }
 }
 
 Future<bool> _isAndroidEmulator() async {
-  print('_isAndroidEmulator called');
   if (Platform.isAndroid) {
-    print('isAndroid: true');
     final androidInfo = await DeviceInfoPlugin().androidInfo;
-    print('isPhysicalDevice: ${androidInfo.isPhysicalDevice}');
     return !androidInfo.isPhysicalDevice;
   }
   return false;
