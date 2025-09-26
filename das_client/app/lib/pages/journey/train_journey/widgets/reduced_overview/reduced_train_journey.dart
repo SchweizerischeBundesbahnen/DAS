@@ -42,11 +42,12 @@ class ReducedTrainJourney extends StatelessWidget {
       key: reducedJourneyTableKey,
       columns: _columns(context),
       rows: _rows(context, metadata, data).map((it) => it.build(context)).toList(),
-      alignToItem: false,
       hasStickyRows: false,
+      addBottomSpacer: false,
     );
   }
 
+  /// GlobalKey needs to be set for rows on reduced overview. Otherwise it would collide with default key generated in [DASTableRowBuilder].
   List<CellRowBuilder> _rows(
     BuildContext context,
     Metadata metadata,
@@ -61,6 +62,7 @@ class ReducedTrainJourney extends StatelessWidget {
       switch (rowData.type) {
         case Datatype.servicePoint:
           return ReducedServicePointRow(
+            key: GlobalKey(),
             metadata: metadata,
             data: rowData as ServicePoint,
             config: trainJourneyConfig,
@@ -69,6 +71,7 @@ class ReducedTrainJourney extends StatelessWidget {
           );
         case Datatype.additionalSpeedRestriction:
           return AdditionalSpeedRestrictionRow(
+            key: GlobalKey(),
             metadata: metadata,
             data: rowData as AdditionalSpeedRestrictionData,
             config: trainJourneyConfig,

@@ -2,6 +2,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/combined_foot_note
 import 'package:app/pages/journey/train_journey/widgets/table/uncoded_operational_indication_accordion.dart';
 import 'package:app/widgets/accordion/accordion.dart';
 import 'package:app/widgets/table/das_table.dart';
+import 'package:app/widgets/table/scrollable_align.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';
@@ -61,8 +62,9 @@ void main() {
     expect(showMoreButton, findsOneWidget);
 
     // should show full text after tap on "show more" and no button
+    await tester.pumpAndSettle(ScrollableAlign.alignScrollDuration);
     await tapElement(tester, showMoreButton);
-    await tester.pumpAndSettle(Duration(milliseconds: 100));
+    await tester.pumpAndSettle();
 
     final rowWithExpandedText = _findDASTableAccordionRowByContainsText(
       'Lorem ipsum dolor sit amet, consetetur sadipscing elitr',
@@ -99,6 +101,7 @@ void main() {
     expect(showMoreButton, findsOneWidget);
 
     // should show full content without " ;" after tap on show more
+    await tester.pumpAndSettle(ScrollableAlign.alignScrollDuration);
     await tapElement(tester, showMoreButton);
     final expandedRow = _findDASTableAccordionRowByContainsText(
       'Strecke INN - MR: Bahnübergangsanlagen ohne Balisenüberwachung\nStraba. = Strassenbahnbereich',
