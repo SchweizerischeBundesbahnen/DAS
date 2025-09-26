@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.28.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.27.0...das_client-v0.28.0) (2025-09-26)
+
+
+### Features
+
+* add betweenBrackets to service points ([#600](https://github.com/SchweizerischeBundesbahnen/DAS/issues/600)) ([#1279](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1279)) ([602e934](https://github.com/SchweizerischeBundesbahnen/DAS/commit/602e934a56766070afcac93a4cb008a04d0879b8))
+* added global error handling ([#687](https://github.com/SchweizerischeBundesbahnen/DAS/issues/687)) ([#1272](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1272)) ([90b0540](https://github.com/SchweizerischeBundesbahnen/DAS/commit/90b054050a47fc769db9940eb92af1ab95f4ddff))
+* reworked loading animation for DAS ([#514](https://github.com/SchweizerischeBundesbahnen/DAS/issues/514)) ([#1258](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1258)) ([cf576b0](https://github.com/SchweizerischeBundesbahnen/DAS/commit/cf576b0a52b5b5ac527b304b0a44cdf85399ff06))
+
+
+### Bug Fixes
+
+* increase volume for ADL and KOA ([#1270](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1270)) ([4628cf8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4628cf8d0a4ffc49fbd79d929418a53b708cfc7d))
+* scrollable align and connectivity fixes, some translations ([#1268](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1268)) ([87af873](https://github.com/SchweizerischeBundesbahnen/DAS/commit/87af873d7e87614b81429c0c2abf7a2e47a55bff))
+* timed advancement fixes ([#939](https://github.com/SchweizerischeBundesbahnen/DAS/issues/939)) ([#1261](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1261)) ([fa021b0](https://github.com/SchweizerischeBundesbahnen/DAS/commit/fa021b0cd6047b42df7efa27481c9783388c9633))
+
 ## [0.27.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.26.0...das_client-v0.27.0) (2025-09-16)
 
 
