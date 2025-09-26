@@ -25,7 +25,7 @@ class DASTable extends StatefulWidget {
     super.key,
     this.rows = const [],
     ScrollController? scrollController,
-    this.minBottomMargin = 64.0,
+    this.minBottomMargin = 128.0,
     this.bottomMarginAdjustment = 0,
     this.themeData,
     this.alignToItem = true,
