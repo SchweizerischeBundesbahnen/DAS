@@ -13,6 +13,8 @@ import 'package:rxdart/rxdart.dart';
 final _log = Logger('MqttServiceImpl');
 
 class MqttServiceImpl implements MqttService {
+  static const _keepAlivePeriodSeconds = 15;
+
   MqttServiceImpl({
     required String mqttUrl,
     required MqttClientConnector mqttClientConnector,
@@ -46,7 +48,18 @@ class MqttServiceImpl implements MqttService {
     _client.useWebSocket = true;
     _client.autoReconnect = true;
     _client.resubscribeOnAutoReconnect = true;
-    _client.keepAlivePeriod = 15;
+    _client.keepAlivePeriod = _keepAlivePeriodSeconds;
+    _logClientChanges();
+
+    _connectivitySubscription = _connectivityManager.onConnectivityChanged.distinct().listen((connected) {
+      if (_connected && connected) {
+        _log.info('Reconnecting to MQTT broker due to connectivity change');
+        _client.doAutoReconnect(force: true);
+      }
+    });
+  }
+
+  void _logClientChanges() {
     _client.onConnected = () {
       _log.fine('Connected to MQTT broker');
     };
@@ -59,13 +72,6 @@ class MqttServiceImpl implements MqttService {
     _client.onDisconnected = () {
       _log.fine('Disconnected from MQTT broker');
     };
-
-    _connectivitySubscription = _connectivityManager.onConnectivityChanged.distinct().listen((connected) {
-      if (_connected && connected) {
-        _log.info('Reconnecting to MQTT broker due to connectivity change');
-        _client.doAutoReconnect(force: true);
-      }
-    });
   }
 
   @override
