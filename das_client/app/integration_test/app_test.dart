@@ -98,7 +98,7 @@ Future<void> _delayOnAndroidEmulator() async {
 Future<void> _useFullyLivePolicyOnAndroidEmulator(TestWidgetsFlutterBinding binding) async {
   print('_useFullyLivePolicyOnAndroidEmulator: $binding');
   if (binding is LiveTestWidgetsFlutterBinding && await _isAndroidEmulator()) {
-    binding.framePolicy = LiveTestWidgetsFlutterBindingFramePolicy.fullyLive;
+    binding.framePolicy = LiveTestWidgetsFlutterBindingFramePolicy.fadePointers;
   }
 }
 
