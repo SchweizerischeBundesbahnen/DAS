@@ -38,7 +38,7 @@ late AppLocalizations l10n;
 
 void main() async {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-  await _useFullyLivePolicyOnAndroidEmulator(binding);
+  // await _useFullyLivePolicyOnAndroidEmulator(binding);
 
   Logger.root.level = Level.FINE;
   Logger.root.onRecord.listen(LogPrinter(appName: 'DAS IntegrationTests').call);
