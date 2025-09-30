@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<G2B_EventPayload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+    <RelatedTrainInformation>
+        <OwnTrain>
+            <TrainIdentification>
+                <OTN_ID>
+                    <teltsi_Company>1285</teltsi_Company>
+                    <teltsi_OperationalTrainNumber>2029</teltsi_OperationalTrainNumber>
+                    <teltsi_StartDate>2025-05-17</teltsi_StartDate>
+                </OTN_ID>
+            </TrainIdentification>
+            <TrainLocationInformation>
+                <PositionSpeed SP_ID="2029_11_Schindellegi_F" location="195">
+                    <SP_Zone>
+                        <IM_ID>1285</IM_ID>
+                    </SP_Zone>
+                </PositionSpeed>
+                <Delay Delay="PT0M40S"/>
+            </TrainLocationInformation>
+        </OwnTrain>
+    </RelatedTrainInformation>
+</G2B_EventPayload>
