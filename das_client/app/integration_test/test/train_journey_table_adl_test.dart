@@ -1,7 +1,6 @@
 import 'package:app/pages/journey/train_journey/widgets/header/das_chronograph.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/adl_notification.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/advised_speed_cell_body.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/cells/calculated_speed_cell_body.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
@@ -66,15 +65,13 @@ void main() {
 
     // Check that adl end displayed calculated speed on signal row
     final adlEndRow = findDASTableRowByText('A653');
-    await waitUntilExists(tester, _findNonEmptyCalculatedSpeedCellOf(adlEndRow));
-    _findTextWithin(adlEndRow, '110');
+    await waitUntilExists(tester, _findCalculatedSpeedCellOf(adlEndRow, '110'));
 
     await dragUntilTextInStickyHeader(tester, 'Rolle');
 
     // Check that adl end displayed calculated speed on signal row
     final adlEndRowServicePoint = findDASTableRowByText('Allaman');
-    await waitUntilExists(tester, _findNonEmptyCalculatedSpeedCellOf(adlEndRowServicePoint), maxWaitSeconds: 30);
-    _findTextWithin(adlEndRowServicePoint, '100');
+    await waitUntilExists(tester, _findCalculatedSpeedCellOf(adlEndRowServicePoint, '100'), maxWaitSeconds: 30);
 
     await disconnect(tester);
   });
@@ -99,9 +96,9 @@ Finder _findNonEmptyAdvisedSpeedCellOf(Finder baseFinder) {
   );
 }
 
-Finder _findNonEmptyCalculatedSpeedCellOf(Finder baseFinder) {
+Finder _findCalculatedSpeedCellOf(Finder baseFinder, String speed) {
   return find.descendant(
     of: baseFinder,
-    matching: find.byKey(CalculatedSpeedCellBody.nonEmptyKey),
+    matching: find.textContaining(speed),
   );
 }
