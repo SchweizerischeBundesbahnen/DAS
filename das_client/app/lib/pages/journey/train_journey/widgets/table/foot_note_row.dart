@@ -2,7 +2,6 @@ import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/foot_note_accordion.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/widget_row_builder.dart';
 import 'package:app/theme/theme_util.dart';
-import 'package:app/widgets/accordion/accordion.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -15,7 +14,6 @@ class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
     required super.rowIndex,
     required this.isExpanded,
     required this.addTopMargin,
-    required this.accordionToggleCallback,
     super.config,
     super.identifier,
   }) : super(
@@ -29,7 +27,6 @@ class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
 
   final bool addTopMargin;
   final bool isExpanded;
-  final AccordionToggleCallback accordionToggleCallback;
 
   @override
   Widget buildRowWidget(BuildContext context) {
@@ -40,7 +37,6 @@ class FootNoteRow<T extends BaseFootNote> extends WidgetRowBuilder<T> {
         title: data.title(context, metadata),
         addTopMargin: addTopMargin,
         isExpanded: isExpanded,
-        accordionToggleCallback: accordionToggleCallback,
       ),
     );
   }
