@@ -1,0 +1,693 @@
+<?xml version="1.0" ?>
+
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="1" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+    <TrainIdentification>
+        <OTN_ID>
+            <teltsi_Company>1285</teltsi_Company>
+            <teltsi_OperationalTrainNumber>2029</teltsi_OperationalTrainNumber>
+            <teltsi_StartDate>2025-05-17</teltsi_StartDate>
+        </OTN_ID>
+    </TrainIdentification>
+
+    <SegmentProfileReference SP_ID="2029_1_Arth_Goldau" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T15:11:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T15:11:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Arth_Goldau"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T15:16:00Z" plannedDepartureTime="2025-05-17T15:16:00Z"/>
+        </TimingPointConstraints>
+
+        <TrainCharacteristicsRef TC_ID="2029_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
+            <TC_RU_ID>1285</TC_RU_ID>
+        </TrainCharacteristicsRef>
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="60"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
+    </SegmentProfileReference>
+
+    <SegmentProfileReference SP_ID="2029_2_Eidg_Magazine" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T15:18:40Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T15:18:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Eidg_Magazine"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+
+    </SegmentProfileReference>
+
+    <SegmentProfileReference SP_ID="2029_3_Steinerberg" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T15:20:50Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T15:20:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Steinerberg"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+		
+		<JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="70"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
+    </SegmentProfileReference>
+	
+    <SegmentProfileReference SP_ID="2029_4_Sattel_Aegeri" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T15:24:30Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T15:24:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Sattel_Aegeri"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+		
+		<JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="60"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
+    </SegmentProfileReference>	
+
+    <SegmentProfileReference SP_ID="2029_5_Sattel" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T15:25:10Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T15:25:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Sattel"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+		
+		<JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="75"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
+    </SegmentProfileReference>
+
+    <SegmentProfileReference SP_ID="2029_6_Biberegg" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T15:28:10Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T15:28:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Biberegg"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+		
+		<JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="80"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
+    </SegmentProfileReference>	
+
+	<SegmentProfileReference SP_ID="2029_7_Rothenturm" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T15:29:40Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T15:29:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Rothenturm"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T15:30:20Z" plannedDepartureTime="2025-05-17T15:29:00Z"/>
+        </TimingPointConstraints>
+		
+		<JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="75"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
+    </SegmentProfileReference>	
+
+    <SegmentProfileReference SP_ID="2029_8_Altmatt" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T15:34:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T15:33:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Altmatt"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+		
+		<JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="70"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
+    </SegmentProfileReference>
+
+	<SegmentProfileReference SP_ID="2029_9_Biberbrugg" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T15:37:50Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T15:37:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Biberbrugg"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T15:38:20Z" plannedDepartureTime="2025-05-17T15:38:00Z"/>
+        </TimingPointConstraints>
+		
+		<JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="60"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
+    </SegmentProfileReference>	
+	
+    <SegmentProfileReference SP_ID="2029_10_Kaltenboden" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T15:41:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T15:41:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Kaltenboden"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+
+    </SegmentProfileReference>	
+
+    <SegmentProfileReference SP_ID="2029_11_Schindellegi_F" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T15:42:40Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T15:42:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Schindellegi_F"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+
+    </SegmentProfileReference>	
+
+    <SegmentProfileReference SP_ID="2029_12_Samstagern" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T15:45:30Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T15:45:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Samstagern"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+
+    </SegmentProfileReference>
+	
+    <SegmentProfileReference SP_ID="2029_13_Riedmatt" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T15:48:40Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T15:48:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Riedmatt"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+		
+		<JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="65"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
+    </SegmentProfileReference>
+
+    <SegmentProfileReference SP_ID="2029_14_Wollerau" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T15:49:40Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T15:49:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Wollerau"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+
+    </SegmentProfileReference>
+	
+    <SegmentProfileReference SP_ID="2029_15_Wilen_bei_Wollerau" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T15:50:20Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T15:50:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Wilen_bei_Wollerau"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+
+    </SegmentProfileReference>
+
+	<SegmentProfileReference SP_ID="2029_16_Freienbach_SOB" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T15:52:20Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T15:52:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Freienbach_SOB"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+
+    </SegmentProfileReference>
+
+	<SegmentProfileReference SP_ID="2029_17_Pfaeffikon_SZ" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T15:54:40Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T15:54:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Pfaeffikon_SZ"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T15:54:00Z" plannedDepartureTime="2025-05-17T15:54:00Z"/>
+        </TimingPointConstraints>
+		
+		<JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="40"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
+    </SegmentProfileReference>	
+
+	<SegmentProfileReference SP_ID="2029_18_Hurden" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T15:59:30Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T16:00:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Hurden"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+
+    </SegmentProfileReference>
+	
+	<SegmentProfileReference SP_ID="2029_19_Rapperswil" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T16:02:30Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T16:03:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Rapperswil"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T16:07:00Z" plannedDepartureTime="2025-05-17T16:07:00Z"/>
+        </TimingPointConstraints>
+		
+		<JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="95"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
+    </SegmentProfileReference>
+	
+	<SegmentProfileReference SP_ID="2029_20_Blumenau" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T16:09:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T16:09:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Blumenau"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+
+    </SegmentProfileReference>	
+
+	<SegmentProfileReference SP_ID="2029_21_Bollingen" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T16:10:50Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T16:11:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Bollingen"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+		
+		<JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="100"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
+    </SegmentProfileReference>
+	
+	<SegmentProfileReference SP_ID="2029_22_Schmerikon" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T16:14:20Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T16:14:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Schmerikon"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+		
+		<JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="95"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
+    </SegmentProfileReference>
+
+	<SegmentProfileReference SP_ID="2029_23_Uznach" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T16:16:50Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T16:17:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Uznach"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T16:17:20Z" plannedDepartureTime="2025-05-17T16:17:00Z"/>
+        </TimingPointConstraints>
+		
+		<JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="90"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
+    </SegmentProfileReference>	
+	
+	<SegmentProfileReference SP_ID="2029_24_Kaltbrunn" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T16:20:30Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T16:20:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Kaltbrunn"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+		
+		<JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="125"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
+    </SegmentProfileReference>	
+	
+	<SegmentProfileReference SP_ID="2029_25_Wattwil" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T16:27:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T16:27:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Wattwil"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T16:27:40Z" plannedDepartureTime="2025-05-17T16:27:00Z"/>
+        </TimingPointConstraints>
+		
+		<JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="85"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
+    </SegmentProfileReference>	
+	
+	<SegmentProfileReference SP_ID="2029_26_Lichtensteig" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T16:30:10Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T16:30:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Lichtensteig"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+
+    </SegmentProfileReference>	
+
+	<SegmentProfileReference SP_ID="2029_27_Brunnadern_N" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T16:33:20Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T16:33:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Brunnadern_N"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+
+    </SegmentProfileReference>
+
+	<SegmentProfileReference SP_ID="2029_28_Mogelsberg" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T16:36:10Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T16:36:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Mogelsberg"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+
+    </SegmentProfileReference>	
+
+	<SegmentProfileReference SP_ID="2029_29_Degersheim_West" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T16:38:30Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T16:38:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Degersheim_West"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+
+    </SegmentProfileReference>	
+
+	<SegmentProfileReference SP_ID="2029_30_Degersheim" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T16:40:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T16:40:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Degersheim"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+
+    </SegmentProfileReference>	
+
+	<SegmentProfileReference SP_ID="2029_31_Schachen" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T16:42:40Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T16:42:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Schachen"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+		
+		<JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="80"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
+    </SegmentProfileReference>	
+
+	<SegmentProfileReference SP_ID="2029_32_Herisau" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T16:46:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T16:46:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Herisau"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T16:47:00Z" plannedDepartureTime="2025-05-17T16:47:00Z"/>
+        </TimingPointConstraints>
+		
+		<JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="85"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
+    </SegmentProfileReference>
+	
+	<SegmentProfileReference SP_ID="2029_33_Guebsensee" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T16:50:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T16:50:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Guebsensee"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+		
+		<JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="75"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
+    </SegmentProfileReference>	
+
+	<SegmentProfileReference SP_ID="2029_34_St_Gallen_Haggen" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T16:51:50Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T16:52:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="St_Gallen_Haggen"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+		
+		<JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="60"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
+    </SegmentProfileReference>
+
+    <SegmentProfileReference SP_ID="2029_35_St_Gallen" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>1285</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="End_of_Journey" TP_latestArrivalTime="2025-05-17T16:55:10Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T16:55:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="St_Gallen"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+    </SegmentProfileReference>
+
+</JourneyProfile>
