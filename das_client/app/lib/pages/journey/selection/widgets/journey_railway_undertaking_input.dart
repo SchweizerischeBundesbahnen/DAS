@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
-const _inputPadding = EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, 0, sbbDefaultSpacing);
+const _inputPadding = EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, 0, sbbDefaultSpacing / 2);
 
 class JourneyRailwayUndertakingInput extends StatelessWidget {
   const JourneyRailwayUndertakingInput({super.key, this.isModalVersion = false});
@@ -26,8 +26,14 @@ class JourneyRailwayUndertakingInput extends StatelessWidget {
         final currentRu = model.railwayUndertaking;
 
         return switch (model) {
-          final Selecting _ || final Error _ => _RailwayUndertakingTextField(selectedRailwayUndertaking: currentRu),
-          _ => _RailwayUndertakingTextField(selectedRailwayUndertaking: currentRu, enabled: false),
+          final Selecting _ || final Error _ => _RailwayUndertakingTextField(
+            selectedRailwayUndertaking: currentRu,
+            isModalVersion: isModalVersion,
+          ),
+          _ => _RailwayUndertakingTextField(
+            selectedRailwayUndertaking: currentRu,
+            isModalVersion: isModalVersion,
+          ),
         };
       },
     );
@@ -38,13 +44,10 @@ class _RailwayUndertakingTextField extends StatefulWidget {
   const _RailwayUndertakingTextField({
     required this.selectedRailwayUndertaking,
     this.isModalVersion = false,
-    this.enabled = true,
-    super.key,
   });
 
   final RailwayUndertaking selectedRailwayUndertaking;
   final bool isModalVersion;
-  final bool enabled;
 
   @override
   State<_RailwayUndertakingTextField> createState() => _RailwayUndertakingTextFieldState();
@@ -96,13 +99,11 @@ class _RailwayUndertakingTextFieldState extends State<_RailwayUndertakingTextFie
     return Padding(
       padding: widget.isModalVersion ? EdgeInsets.zero : _inputPadding,
       child: SBBTextField(
-        enabled: widget.enabled,
         focusNode: focusNode,
         controller: controller.textEditingController,
         labelText: widget.isModalVersion ? null : context.l10n.p_train_selection_ru_description,
         hintText: widget.isModalVersion ? context.l10n.p_train_selection_ru_description : null,
         keyboardType: TextInputType.text,
-        isLastElement: true,
       ),
     );
   }

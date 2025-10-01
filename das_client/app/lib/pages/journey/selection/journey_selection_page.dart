@@ -105,9 +105,9 @@ class _ContentState extends State<_Content> {
           information: !model.isStartDateSameAsToday ? context.l10n.p_train_selection_date_not_today_warning : null,
           child: Column(
             children: [
-              JourneyTrainNumberInput(),
               JourneyDateInput(),
               JourneyRailwayUndertakingInput(),
+              JourneyTrainNumberInput(),
             ],
           ),
         );
