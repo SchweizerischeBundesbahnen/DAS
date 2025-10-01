@@ -34,11 +34,12 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   ServicePointRow({
     required super.metadata,
     required super.data,
-    required BuildContext context,
     required super.rowIndex,
     required super.journeyPosition,
+    required BuildContext context,
     this.highlightNextStop = true,
     super.config,
+    super.key,
     Color? rowColor,
   }) : super(
          rowColor:

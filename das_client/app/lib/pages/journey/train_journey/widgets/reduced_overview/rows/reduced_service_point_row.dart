@@ -12,16 +12,14 @@ class ReducedServicePointRow extends ServicePointRow {
     required super.metadata,
     required super.data,
     required super.rowIndex,
-    required this.context,
+    required super.context,
     super.config,
+    super.key,
   }) : super(
-         context: context,
          rowColor: ThemeUtil.getDASTableColor(context),
          journeyPosition: JourneyPositionModel(),
          highlightNextStop: false,
        );
-
-  final BuildContext context;
 
   @override
   DASTableCell localSpeedCell(BuildContext context) {

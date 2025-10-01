@@ -31,11 +31,13 @@ void runDasApp() => runApp(App());
 Future<void> _initDASLogging(Flavor flavor) async {
   final deviceId = await DeviceIdInfo.getDeviceId();
   final logPrinter = LogPrinter(appName: 'DAS ${flavor.displayName}', isDebugMode: kDebugMode);
-  final dasLogger = LoggerComponent.createDasLogger(deviceId: deviceId);
-
   Logger.root.level = flavor.logLevel;
   Logger.root.onRecord.listen(logPrinter.call);
-  Logger.root.onRecord.listen(dasLogger.call);
+
+  if (!kDebugMode) {
+    final dasLogger = LoggerComponent.createDasLogger(deviceId: deviceId);
+    Logger.root.onRecord.listen(dasLogger.call);
+  }
 }
 
 Future<void> _initDependencyInjection(Flavor flavor) async {
@@ -50,8 +52,10 @@ Future<void> _initDependencyInjection(Flavor flavor) async {
 }
 
 void _setupFlutterErrorHandling() {
-  FlutterError.onError = (details) => _logUnexpectedError(details.exception, details.stack);
-  ErrorWidget.builder = (details) => false ? ErrorWidget(details.exception) : GlobalErrorWidget(details: details);
+  if (!kDebugMode) {
+    FlutterError.onError = (details) => _logUnexpectedError(details.exception, details.stack);
+    ErrorWidget.builder = (details) => GlobalErrorWidget(details: details);
+  }
 }
 
 void _logUnexpectedError([Object? error, StackTrace? stackTrace]) {

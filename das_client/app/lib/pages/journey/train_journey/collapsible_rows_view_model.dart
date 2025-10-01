@@ -4,7 +4,14 @@ import 'package:app/pages/journey/train_journey/journey_position/journey_positio
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-enum CollapsedState { collapsed, openWithCollapsedContent }
+enum CollapsedState {
+  collapsed,
+  expandedWithCollapsedContent,
+  expanded;
+
+  static CollapsedState defaultOf(BaseData data) =>
+      data is UncodedOperationalIndication ? CollapsedState.expandedWithCollapsedContent : CollapsedState.expanded;
+}
 
 class CollapsibleRowsViewModel {
   CollapsibleRowsViewModel({
@@ -36,20 +43,17 @@ class CollapsibleRowsViewModel {
         });
   }
 
-  void toggleRow(BaseData data) {
+  void toggleRow(BaseData data, {bool isContentExpandable = false}) {
     final newMap = Map<int, CollapsedState>.from(_rxCollapsedRows.value);
-    if (!newMap.isExpanded(data.hashCode)) {
-      newMap.remove(data.hashCode);
+    final currentState = newMap.stateOf(data);
+    if (currentState == CollapsedState.collapsed) {
+      newMap[data.hashCode] = CollapsedState.defaultOf(data);
+    } else if (currentState == CollapsedState.expandedWithCollapsedContent && isContentExpandable) {
+      newMap[data.hashCode] = CollapsedState.expanded;
     } else {
       newMap[data.hashCode] = CollapsedState.collapsed;
     }
 
-    _rxCollapsedRows.add(newMap);
-  }
-
-  void openWithCollapsedContent(BaseData data) {
-    final newMap = Map<int, CollapsedState>.from(_rxCollapsedRows.value);
-    newMap[data.hashCode] = CollapsedState.openWithCollapsedContent;
     _rxCollapsedRows.add(newMap);
   }
 
@@ -82,6 +86,7 @@ class CollapsibleRowsViewModel {
 
   void dispose() {
     _journeySubscription?.cancel();
+    _rxCollapsedRows.close();
   }
 }
 
@@ -92,7 +97,5 @@ extension BaseDataExtension on BaseData {
 }
 
 extension CollapsedStateMap on Map<int, CollapsedState> {
-  bool isContentExpanded(int key) => this[key] == CollapsedState.openWithCollapsedContent;
-
-  bool isExpanded(int key) => !containsKey(key) || this[key] == CollapsedState.openWithCollapsedContent;
+  CollapsedState stateOf(BaseData data) => this[data.hashCode] ?? CollapsedState.defaultOf(data);
 }

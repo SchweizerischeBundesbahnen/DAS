@@ -10,6 +10,8 @@ import 'package:logging/logging.dart';
 final _log = Logger('ScrollableAlign');
 
 class ScrollableAlign extends StatefulWidget {
+  static const Duration alignScrollDuration = Duration(milliseconds: 300);
+
   const ScrollableAlign({required this.rows, required this.scrollController, required this.child, super.key});
 
   final Widget child;
@@ -21,7 +23,6 @@ class ScrollableAlign extends StatefulWidget {
 }
 
 class _ScrollableAlignState extends State<ScrollableAlign> {
-  static const Duration alignScrollDuration = Duration(milliseconds: 300);
   final GlobalKey key = GlobalKey();
   bool isTouching = false;
   bool isAnimating = false;
@@ -30,18 +31,15 @@ class _ScrollableAlignState extends State<ScrollableAlign> {
   Widget build(BuildContext context) {
     return Listener(
       key: key,
-      onPointerDown: (_) {
-        isTouching = true;
-      },
-      onPointerUp: (_) {
-        isTouching = false;
-      },
+      onPointerDown: (_) => isTouching = true,
+      onPointerUp: (_) => isTouching = false,
       child: NotificationListener<ScrollEndNotification>(
         onNotification: (_) {
-          // Delay scroll back by 1 Frame to avoid strange behaviour
           if (!isTouching && !isAnimating) {
+            // Delay scroll back by 1 Frame to avoid strange behaviour
             Future.delayed(Duration(milliseconds: 1), () => _alignToElement());
           }
+
           return false;
         },
         child: widget.child,
@@ -50,6 +48,8 @@ class _ScrollableAlignState extends State<ScrollableAlign> {
   }
 
   void _alignToElement() async {
+    if (!mounted) return;
+
     final widgetOffset = WidgetUtil.findOffsetOfKey(key);
     final stickyHeaderState = StickyHeader.of(context);
 
@@ -118,7 +118,11 @@ class _ScrollableAlignState extends State<ScrollableAlign> {
         'Scrolling to targetPosition=$targetPosition, currentPosition=${widget.scrollController.position.pixels}',
       );
       isAnimating = true;
-      await widget.scrollController.animateTo(targetPosition, duration: alignScrollDuration, curve: Curves.easeInOut);
+      await widget.scrollController.animateTo(
+        targetPosition,
+        duration: ScrollableAlign.alignScrollDuration,
+        curve: Curves.easeInOut,
+      );
       isAnimating = false;
     }
   }

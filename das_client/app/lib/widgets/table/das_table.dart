@@ -25,7 +25,7 @@ class DASTable extends StatefulWidget {
     super.key,
     this.rows = const [],
     ScrollController? scrollController,
-    this.minBottomMargin = 32.0,
+    this.minBottomMargin = 128.0,
     this.bottomMarginAdjustment = 0,
     this.themeData,
     this.alignToItem = true,
@@ -125,48 +125,36 @@ class _DASTableState extends State<DASTable> {
   @override
   Widget build(BuildContext context) {
     final tableThemeData = widget.themeData ?? _defaultThemeData(context);
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return DASTableTheme(
-          data: tableThemeData,
-          child: Container(
-            decoration: BoxDecoration(
-              color: tableThemeData.backgroundColor,
-              borderRadius: tableThemeData.tableBorder?.borderRadius,
-              border: BorderDirectional(
-                top: tableThemeData.tableBorder?.top ?? BorderSide.none,
-                start: tableThemeData.tableBorder?.left ?? BorderSide.none,
-                end: tableThemeData.tableBorder?.right ?? BorderSide.none,
-                bottom: tableThemeData.tableBorder?.bottom ?? BorderSide.none,
-              ),
-            ),
-            child: Column(
-              children: [
-                _headerRow(),
-                Expanded(child: widget.hasStickyRows ? _stickyHeaderList(constraints) : _nonStickyList(constraints)),
-              ],
-            ),
+    return DASTableTheme(
+      data: tableThemeData,
+      child: Container(
+        decoration: BoxDecoration(
+          color: tableThemeData.backgroundColor,
+          borderRadius: tableThemeData.tableBorder?.borderRadius,
+          border: BorderDirectional(
+            top: tableThemeData.tableBorder?.top ?? BorderSide.none,
+            start: tableThemeData.tableBorder?.left ?? BorderSide.none,
+            end: tableThemeData.tableBorder?.right ?? BorderSide.none,
+            bottom: tableThemeData.tableBorder?.bottom ?? BorderSide.none,
           ),
-        );
-      },
+        ),
+        child: Column(
+          children: [
+            _headerRow(),
+            Expanded(child: widget.hasStickyRows ? _stickyHeaderList() : _animatedList()),
+          ],
+        ),
+      ),
     );
   }
 
-  Widget _stickyHeaderList(BoxConstraints constraints) {
+  Widget _stickyHeaderList() {
     return StickyHeader(
       footerBuilder: (context, index) => _footer(index),
       headerBuilder: (context, index) => ClipRect(child: _dataRow(widget.rows[index], isSticky: true)),
       scrollController: widget.scrollController,
       rows: widget.rows,
-      child: SizedBox(key: DASTable.tableKey, child: _animatedList(constraints)),
-    );
-  }
-
-  Widget _nonStickyList(BoxConstraints constraints) {
-    return ScrollableAlign(
-      scrollController: widget.scrollController,
-      rows: widget.rows,
-      child: SizedBox(key: DASTable.tableKey, child: _animatedList(constraints)),
+      child: _animatedList(),
     );
   }
 
@@ -187,29 +175,38 @@ class _DASTableState extends State<DASTable> {
     );
   }
 
-  Widget _animatedList(BoxConstraints constraints) {
-    final list = AnimatedList(
-      physics: ClampingScrollPhysics(),
-      key: _animatedListKey,
-      controller: widget.scrollController,
-      initialItemCount: widget.rows.length + (widget.addBottomSpacer ? 1 : 0),
-      itemBuilder: (context, index, animation) {
-        if (index == widget.rows.length && widget.addBottomSpacer) {
-          final bottomMargin =
-              constraints.maxHeight - DASTable.headerRowHeight - widget.bottomMarginAdjustment - sbbDefaultSpacing;
-          return SizedBox(height: max(bottomMargin, widget.minBottomMargin));
-        }
-        return SizeTransition(
-          key: widget.rows[index].key,
-          sizeFactor: animation,
-          child: _dataRow(widget.rows[index]),
-        );
-      },
+  Widget _animatedList() {
+    final list = KeyedSubtree(
+      key: DASTable.tableKey,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return AnimatedList(
+            physics: ClampingScrollPhysics(),
+            key: _animatedListKey,
+            controller: widget.scrollController,
+            initialItemCount: widget.rows.length + 1,
+            itemBuilder: (context, index, animation) {
+              if (index == widget.rows.length) return _bottomMargin(constraints);
+
+              return SizeTransition(
+                key: widget.rows[index].key,
+                sizeFactor: animation,
+                child: _dataRow(widget.rows[index]),
+              );
+            },
+          );
+        },
+      ),
     );
 
     return widget.alignToItem
         ? ScrollableAlign(scrollController: widget.scrollController, rows: widget.rows, child: list)
         : list;
+  }
+
+  Widget _bottomMargin(BoxConstraints constraints) {
+    final bottomMargin = widget.addBottomSpacer ? constraints.maxHeight - widget.bottomMarginAdjustment : 0.0;
+    return SizedBox(height: max(bottomMargin, widget.minBottomMargin));
   }
 
   DASTableThemeData _defaultThemeData(BuildContext context) {
@@ -272,25 +269,25 @@ class _DASTableState extends State<DASTable> {
   }
 
   Widget _dataRow(DASTableRow row, {bool isSticky = false}) {
-    if (row is DASTableCellRow) {
-      return InkWell(
-        onTap: row.onTap,
-        child: DASRowControllerWrapper(
-          isAlwaysSticky: isSticky,
-          rowKey: row.key,
-          child: _FixedHeightRow(
-            height: row.height,
-            children: List.generate(widget.columns.length, (index) {
-              final column = widget.columns[index];
-              final cell = row.cells[column.id] ?? DASTableCell.empty();
-              return _dataCell(cell, column, row, isLast: widget.columns.length - 1 == index);
-            }),
-          ),
-        ),
-      );
-    } else {
+    if (row is! DASTableCellRow) {
       return KeyedSubtree(key: DASTable.rowKey, child: (row as DASTableWidgetRow).widget);
     }
+
+    return InkWell(
+      onTap: row.onTap,
+      child: DASRowControllerWrapper(
+        isAlwaysSticky: isSticky,
+        rowKey: row.key,
+        child: _FixedHeightRow(
+          height: row.height,
+          children: List.generate(widget.columns.length, (index) {
+            final column = widget.columns[index];
+            final cell = row.cells[column.id] ?? DASTableCell.empty();
+            return _dataCell(cell, column, row, isLast: widget.columns.length - 1 == index);
+          }),
+        ),
+      ),
+    );
   }
 
   Widget _dataCell(DASTableCell cell, DASTableColumn column, DASTableCellRow row, {isLast = false}) {

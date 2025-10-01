@@ -13,9 +13,7 @@ abstract class DASTableRowBuilder<T> {
     return _tableRowKeys[identifier]!;
   }
 
-  static void clearRowKeys() {
-    _tableRowKeys.clear();
-  }
+  static void clearRowKeys() => _tableRowKeys.clear();
 
   DASTableRowBuilder({
     required this.height,
