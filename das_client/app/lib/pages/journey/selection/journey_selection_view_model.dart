@@ -4,8 +4,11 @@ import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/util/error_code.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
+
+final _log = Logger('JourneySelectionViewModel');
 
 class JourneySelectionViewModel {
   JourneySelectionViewModel({
@@ -34,10 +37,12 @@ class JourneySelectionViewModel {
     switch (currentState) {
       case Loading() || Loaded() || Error():
         break;
-      case final Selecting s:
-        if (!s.isInputComplete) return;
+      case final Selecting state:
+        if (!state.isInputComplete) return;
+        final trainIdToLoad = _trainIdFrom(state);
 
-        await _onJourneySelected(_trainIdFrom(s));
+        _log.fine('Start loading train journey: $trainIdToLoad');
+        await _onJourneySelected(trainIdToLoad);
     }
   }
 

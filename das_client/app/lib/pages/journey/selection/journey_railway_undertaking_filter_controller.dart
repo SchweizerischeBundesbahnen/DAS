@@ -2,7 +2,10 @@ import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
+
+final _log = Logger('JourneyRailwayUndertakingFilterController');
 
 /// This controller is responsible for filtering **localized** names of railway undertakings.
 /// Thus it must access the AppLocalizations.
@@ -86,8 +89,12 @@ class JourneyRailwayUndertakingFilterController {
   void _filterAvailableRailwayUndertakings() {
     final filter = _textController.text.toLowerCase().trim();
 
-    updateAvailableRailwayUndertakings.call(
-      _localizedToRailwayUndertaking.where((ruPair) => ruPair.$1.startsWith(filter)).map((e) => e.$2).toList(),
-    );
+    final filteredResult = _localizedToRailwayUndertaking
+        .where((ruPair) => ruPair.$1.startsWith(filter))
+        .map((e) => e.$2)
+        .toList();
+
+    _log.finer('Filtered RailwayUndertakings with $filter to $filteredResult.');
+    updateAvailableRailwayUndertakings.call(filteredResult);
   }
 }
