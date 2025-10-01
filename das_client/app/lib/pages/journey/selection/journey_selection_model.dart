@@ -12,7 +12,9 @@ sealed class JourneySelectionModel {
     required DateTime startDate,
     required RailwayUndertaking railwayUndertaking,
     required List<DateTime> availableStartDates,
+    required List<RailwayUndertaking> availableRailwayUndertakings,
     String? trainNumber,
+    String? railwayUndertakingFilter,
   }) = Selecting;
 
   factory JourneySelectionModel.loading({required TrainIdentification trainIdentification}) = Loading;
@@ -22,6 +24,7 @@ sealed class JourneySelectionModel {
   factory JourneySelectionModel.error({
     required TrainIdentification trainIdentification,
     required List<DateTime> availableStartDates,
+    required List<RailwayUndertaking> availableRailwayUndertakings,
     required ErrorCode errorCode,
   }) = Error;
 
@@ -48,11 +51,25 @@ sealed class JourneySelectionModel {
     final Error e => e.availableStartDates,
   };
 
+  List<RailwayUndertaking> get availableRailwayUndertakings => switch (this) {
+    final Selecting s => s.availableRailwayUndertakings,
+    final Loading _ => [],
+    final Loaded _ => [],
+    final Error e => e.availableRailwayUndertakings,
+  };
+
   RailwayUndertaking get railwayUndertaking => switch (this) {
     final Selecting s => s.railwayUndertaking,
     final Loading l => l.trainIdentification.ru,
     final Loaded l => l.trainIdentification.ru,
     final Error e => e.trainIdentification.ru,
+  };
+
+  String? get railwayUndertakingFilter => switch (this) {
+    final Selecting s => s.railwayUndertakingFilter,
+    final Loading l => l.trainIdentification.ru.companyCode,
+    final Loaded l => l.trainIdentification.ru.companyCode,
+    final Error e => e.trainIdentification.ru.companyCode,
   };
 
   @override
@@ -67,7 +84,9 @@ class Selecting extends JourneySelectionModel {
     required this.startDate,
     required this.railwayUndertaking,
     required this.availableStartDates,
+    required this.availableRailwayUndertakings,
     this.trainNumber,
+    this.railwayUndertakingFilter,
     this.isInputComplete = false,
   }) : super._();
   @override
@@ -76,7 +95,11 @@ class Selecting extends JourneySelectionModel {
   final List<DateTime> availableStartDates;
   @override
   final RailwayUndertaking railwayUndertaking;
+  @override
+  final List<RailwayUndertaking> availableRailwayUndertakings;
   final String? trainNumber;
+  @override
+  final String? railwayUndertakingFilter;
   final bool isInputComplete;
 
   @override
@@ -88,6 +111,8 @@ class Selecting extends JourneySelectionModel {
           startDate == other.startDate &&
           ListEquality().equals(availableStartDates, other.availableStartDates) &&
           railwayUndertaking == other.railwayUndertaking &&
+          ListEquality().equals(availableRailwayUndertakings, other.availableRailwayUndertakings) &&
+          railwayUndertakingFilter == other.railwayUndertakingFilter &&
           isInputComplete == other.isInputComplete;
 
   @override
@@ -97,6 +122,8 @@ class Selecting extends JourneySelectionModel {
     startDate,
     availableStartDates,
     railwayUndertaking,
+    railwayUndertakingFilter,
+    availableRailwayUndertakings,
     isInputComplete,
   );
 
@@ -105,6 +132,8 @@ class Selecting extends JourneySelectionModel {
     DateTime? startDate,
     List<DateTime>? availableStartDates,
     RailwayUndertaking? railwayUndertaking,
+    String? railwayUndertakingFilter,
+    List<RailwayUndertaking>? availableRailwayUndertakings,
     bool? isInputComplete,
   }) {
     return Selecting(
@@ -112,6 +141,8 @@ class Selecting extends JourneySelectionModel {
       startDate: startDate ?? this.startDate,
       availableStartDates: availableStartDates ?? this.availableStartDates,
       railwayUndertaking: railwayUndertaking ?? this.railwayUndertaking,
+      railwayUndertakingFilter: railwayUndertakingFilter ?? this.railwayUndertakingFilter,
+      availableRailwayUndertakings: availableRailwayUndertakings ?? this.availableRailwayUndertakings,
       isInputComplete: isInputComplete ?? this.isInputComplete,
     );
   }
@@ -154,10 +185,13 @@ class Error extends JourneySelectionModel {
     required this.trainIdentification,
     required this.errorCode,
     required this.availableStartDates,
+    required this.availableRailwayUndertakings,
   }) : super._();
   final TrainIdentification trainIdentification;
   @override
   final List<DateTime> availableStartDates;
+  @override
+  final List<RailwayUndertaking> availableRailwayUndertakings;
   final ErrorCode errorCode;
 
   @override
@@ -167,8 +201,15 @@ class Error extends JourneySelectionModel {
           runtimeType == other.runtimeType &&
           trainIdentification == other.trainIdentification &&
           ListEquality().equals(availableStartDates, other.availableStartDates) &&
+          ListEquality().equals(availableRailwayUndertakings, other.availableRailwayUndertakings) &&
           errorCode == other.errorCode;
 
   @override
-  int get hashCode => Object.hash(runtimeType, trainIdentification, errorCode, availableStartDates);
+  int get hashCode => Object.hash(
+    runtimeType,
+    trainIdentification,
+    errorCode,
+    availableStartDates,
+    availableRailwayUndertakings,
+  );
 }

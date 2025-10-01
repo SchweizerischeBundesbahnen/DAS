@@ -53,6 +53,7 @@ void main() {
     expect(selecting.availableStartDates, hasLength(2));
     expect(selecting.availableStartDates.first, equals(DateTime.utc(1969, 12, 31)));
     expect(selecting.availableStartDates[1], equals(newYears1970));
+    expect(selecting.availableRailwayUndertakings, equals(RailwayUndertaking.values));
   });
 
   test('modelValue_whenThreeHoursBeforeNextDay_thenIsSelectingWithMoreAvailableDates', () {
@@ -140,6 +141,20 @@ void main() {
     expect(state, isA<Selecting>());
     final selecting = state as Selecting;
     expect(selecting.railwayUndertaking, newRU);
+  });
+
+  test('updateAvailableRailwayUndertakings_whenCalled_thenUpdatesAvailableRailwayUndertakings', () {
+    // ARRANGE
+    final newRUs = [RailwayUndertaking.blsP, RailwayUndertaking.blsC];
+
+    // ACT
+    testee.updateAvailableRailwayUndertakings(newRUs);
+
+    // EXPECT
+    final state = testee.modelValue;
+    expect(state, isA<Selecting>());
+    final selecting = state as Selecting;
+    expect(selecting.availableRailwayUndertakings, newRUs);
   });
 
   test('loadTrainJourney_whenIncomplete_thenDoesNotCallOnJourneySelected', () {
