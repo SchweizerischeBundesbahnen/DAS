@@ -7,6 +7,7 @@ import 'package:app/pages/journey/train_journey/widgets/header/start_pause_butto
 import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/table/das_table.dart';
+import 'package:app/widgets/table/scrollable_align.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -189,7 +190,7 @@ Future<void> dragUntilTextInStickyHeader(WidgetTester tester, String textToSearc
     const Offset(0, -50),
     maxIteration: 100,
   );
-  await tester.pumpAndSettle();
+  await tester.pumpAndSettle(ScrollableAlign.alignScrollDuration);
 }
 
 extension _FlutterErrorExtension on FlutterError {

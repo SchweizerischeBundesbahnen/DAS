@@ -1,9 +1,11 @@
+import 'package:app/pages/journey/train_journey/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/train_journey/train_journey_overview.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/text_util.dart';
 import 'package:app/widgets/accordion/accordion.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
@@ -15,7 +17,6 @@ class FootNoteAccordion extends StatelessWidget {
     required this.title,
     required this.addTopMargin,
     required this.isExpanded,
-    required this.accordionToggleCallback,
     super.key,
   });
 
@@ -23,7 +24,6 @@ class FootNoteAccordion extends StatelessWidget {
   final String title;
   final bool addTopMargin;
   final bool isExpanded;
-  final AccordionToggleCallback accordionToggleCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class FootNoteAccordion extends StatelessWidget {
       title: title,
       body: contentText(data),
       isExpanded: isExpanded,
-      toggleCallback: accordionToggleCallback,
+      toggleCallback: () => context.read<CollapsibleRowsViewModel>().toggleRow(data),
       icon: SBBIcons.form_small,
       margin: EdgeInsets.only(
         bottom: _verticalMargin,

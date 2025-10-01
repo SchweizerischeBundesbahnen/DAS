@@ -31,11 +31,13 @@ void runDasApp() => runApp(App());
 Future<void> _initDASLogging(Flavor flavor) async {
   final deviceId = await DeviceIdInfo.getDeviceId();
   final logPrinter = LogPrinter(appName: 'DAS ${flavor.displayName}', isDebugMode: kDebugMode);
-  final dasLogger = LoggerComponent.createDasLogger(deviceId: deviceId);
-
   Logger.root.level = flavor.logLevel;
   Logger.root.onRecord.listen(logPrinter.call);
-  Logger.root.onRecord.listen(dasLogger.call);
+
+  if (!kDebugMode) {
+    final dasLogger = LoggerComponent.createDasLogger(deviceId: deviceId);
+    Logger.root.onRecord.listen(dasLogger.call);
+  }
 }
 
 Future<void> _initDependencyInjection(Flavor flavor) async {

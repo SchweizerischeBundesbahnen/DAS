@@ -319,9 +319,8 @@ class TrainJourney extends StatelessWidget {
             metadata: journey.metadata,
             data: rowData as BaseFootNote,
             config: trainJourneyConfig,
-            isExpanded: collapsedRows.isExpanded(rowData.hashCode),
+            isExpanded: collapsedRows.stateOf(rowData) != CollapsedState.collapsed,
             addTopMargin: !hasPreviousAnnotation,
-            accordionToggleCallback: () => context.read<CollapsibleRowsViewModel>().toggleRow(rowData),
             rowIndex: index,
           );
         case Datatype.uncodedOperationalIndication:
@@ -329,10 +328,8 @@ class TrainJourney extends StatelessWidget {
             metadata: journey.metadata,
             data: rowData as UncodedOperationalIndication,
             config: trainJourneyConfig,
-            expandedContent: collapsedRows.isContentExpanded(rowData.hashCode),
-            isExpanded: collapsedRows.isExpanded(rowData.hashCode),
+            collapsedState: collapsedRows.stateOf(rowData),
             addTopMargin: !hasPreviousAnnotation,
-            accordionToggleCallback: () => context.read<CollapsibleRowsViewModel>().toggleRow(rowData),
             rowIndex: index,
           );
         case Datatype.combinedFootNoteOperationalIndication:
@@ -340,15 +337,8 @@ class TrainJourney extends StatelessWidget {
             rowIndex: index,
             metadata: journey.metadata,
             data: rowData as CombinedFootNoteOperationalIndication,
-            footNoteConfig: AccordionConfig(
-              isExpanded: collapsedRows.isExpanded(rowData.footNote.hashCode),
-              toggleCallback: () => context.read<CollapsibleRowsViewModel>().toggleRow(rowData.footNote),
-            ),
-            operationIndicationConfig: AccordionConfig(
-              isExpanded: collapsedRows.isExpanded(rowData.operationalIndication.hashCode),
-              isContentExpanded: collapsedRows.isContentExpanded(rowData.operationalIndication.hashCode),
-              toggleCallback: () => context.read<CollapsibleRowsViewModel>().toggleRow(rowData.operationalIndication),
-            ),
+            footNoteState: collapsedRows.stateOf(rowData.footNote),
+            operationIndicationState: collapsedRows.stateOf(rowData.operationalIndication),
           );
       }
     });

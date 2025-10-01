@@ -31,18 +31,15 @@ class _ScrollableAlignState extends State<ScrollableAlign> {
   Widget build(BuildContext context) {
     return Listener(
       key: key,
-      onPointerDown: (_) {
-        isTouching = true;
-      },
-      onPointerUp: (_) {
-        isTouching = false;
-      },
+      onPointerDown: (_) => isTouching = true,
+      onPointerUp: (_) => isTouching = false,
       child: NotificationListener<ScrollEndNotification>(
         onNotification: (_) {
-          // Delay scroll back by 1 Frame to avoid strange behaviour
           if (!isTouching && !isAnimating) {
+            // Delay scroll back by 1 Frame to avoid strange behaviour
             Future.delayed(Duration(milliseconds: 1), () => _alignToElement());
           }
+
           return false;
         },
         child: widget.child,
@@ -51,6 +48,8 @@ class _ScrollableAlignState extends State<ScrollableAlign> {
   }
 
   void _alignToElement() async {
+    if (!mounted) return;
+
     final widgetOffset = WidgetUtil.findOffsetOfKey(key);
     final stickyHeaderState = StickyHeader.of(context);
 
