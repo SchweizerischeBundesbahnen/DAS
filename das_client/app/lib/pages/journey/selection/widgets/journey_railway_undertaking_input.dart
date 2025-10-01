@@ -1,5 +1,5 @@
-import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/selection/journey_railway_undertaking_filter_controller.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:flutter/material.dart';
@@ -26,28 +26,82 @@ class JourneyRailwayUndertakingInput extends StatelessWidget {
         final currentRu = model.railwayUndertaking;
 
         return switch (model) {
-          final Selecting _ || final Error _ => _railwayUndertakingInput(
-            context,
-            currentRu,
-            onChanged: (value) => viewModel.updateRailwayUndertaking(value),
-          ),
-          _ => _railwayUndertakingInput(context, currentRu),
+          final Selecting _ || final Error _ => _RailwayUndertakingTextField(selectedRailwayUndertaking: currentRu),
+          _ => _RailwayUndertakingTextField(selectedRailwayUndertaking: currentRu, enabled: false),
         };
       },
     );
   }
+}
 
-  Widget _railwayUndertakingInput(BuildContext context, value, {Function(RailwayUndertaking)? onChanged}) {
+class _RailwayUndertakingTextField extends StatefulWidget {
+  const _RailwayUndertakingTextField({
+    required this.selectedRailwayUndertaking,
+    this.isModalVersion = false,
+    this.enabled = true,
+    super.key,
+  });
+
+  final RailwayUndertaking selectedRailwayUndertaking;
+  final bool isModalVersion;
+  final bool enabled;
+
+  @override
+  State<_RailwayUndertakingTextField> createState() => _RailwayUndertakingTextFieldState();
+}
+
+class _RailwayUndertakingTextFieldState extends State<_RailwayUndertakingTextField> {
+  late JourneyRailwayUndertakingFilterController controller;
+  late FocusNode focusNode;
+
+  @override
+  void initState() {
+    focusNode = FocusNode();
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant _RailwayUndertakingTextField oldWidget) {
+    if (widget.selectedRailwayUndertaking != oldWidget.selectedRailwayUndertaking) {
+      controller.selectedRailwayUndertaking = widget.selectedRailwayUndertaking;
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void didChangeDependencies() {
+    final localizations = AppLocalizations.of(context)!;
+    final onAvailableRailwayUndertakingsChanged = context
+        .read<JourneySelectionViewModel>()
+        .updateAvailableRailwayUndertakings;
+
+    controller = JourneyRailwayUndertakingFilterController(
+      localizations: localizations,
+      focusNode: focusNode,
+      updateAvailableRailwayUndertakings: onAvailableRailwayUndertakingsChanged,
+      initialRailwayUndertaking: widget.selectedRailwayUndertaking,
+    );
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
-      padding: isModalVersion ? EdgeInsets.zero : _inputPadding,
-      child: SBBSelect<RailwayUndertaking>(
-        label: isModalVersion ? null : context.l10n.p_train_selection_ru_description,
-        hint: isModalVersion ? context.l10n.p_train_selection_ru_description : null,
-        value: value,
-        items: RailwayUndertaking.values
-            .map((ru) => SelectMenuItem<RailwayUndertaking>(value: ru, label: ru.displayText(context)))
-            .toList(),
-        onChanged: onChanged != null ? (value) => value != null ? onChanged(value) : null : null,
+      padding: widget.isModalVersion ? EdgeInsets.zero : _inputPadding,
+      child: SBBTextField(
+        enabled: widget.enabled,
+        focusNode: focusNode,
+        controller: controller.textEditingController,
+        labelText: widget.isModalVersion ? null : context.l10n.p_train_selection_ru_description,
+        hintText: widget.isModalVersion ? context.l10n.p_train_selection_ru_description : null,
+        keyboardType: TextInputType.text,
         isLastElement: true,
       ),
     );
