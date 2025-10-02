@@ -58,11 +58,20 @@ class JourneySelectionViewModel {
   }
 
   void updateRailwayUndertaking(RailwayUndertaking ru) {
-    _ifInSelectingOrErrorEmitSelectingWith((model) => model.copyWith(railwayUndertaking: ru));
+    _ifInSelectingOrErrorEmitSelectingWith(
+      (model) => model.copyWith(
+        railwayUndertaking: ru,
+        isSelectingRailwayUndertaking: false,
+      ),
+    );
   }
 
   void updateAvailableRailwayUndertakings(List<RailwayUndertaking> newRUs) {
     _ifInSelectingOrErrorEmitSelectingWith((model) => model.copyWith(availableRailwayUndertakings: newRUs));
+  }
+
+  void updateIsSelectingRailwayUndertaking(bool update) {
+    _ifInSelectingOrErrorEmitSelectingWith((model) => model.copyWith(isSelectingRailwayUndertaking: update));
   }
 
   void dismissSelection() {

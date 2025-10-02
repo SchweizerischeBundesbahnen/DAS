@@ -13,6 +13,7 @@ sealed class JourneySelectionModel {
     required RailwayUndertaking railwayUndertaking,
     required List<DateTime> availableStartDates,
     required List<RailwayUndertaking> availableRailwayUndertakings,
+    bool isSelectingRailwayUndertaking,
     String? trainNumber,
   }) = Selecting;
 
@@ -64,6 +65,13 @@ sealed class JourneySelectionModel {
     final Error e => e.trainIdentification.ru,
   };
 
+  bool get isSelectingRailwayUndertaking => switch (this) {
+    final Selecting s => s.isSelectingRailwayUndertaking,
+    final Loading l => false,
+    final Loaded l => false,
+    final Error e => false,
+  };
+
   @override
   bool operator ==(Object other) => runtimeType == other.runtimeType;
 
@@ -78,6 +86,7 @@ class Selecting extends JourneySelectionModel {
     required this.availableStartDates,
     required this.availableRailwayUndertakings,
     this.trainNumber,
+    this.isSelectingRailwayUndertaking = false,
     this.isInputComplete = false,
   }) : super._();
   @override
@@ -89,6 +98,8 @@ class Selecting extends JourneySelectionModel {
   @override
   final List<RailwayUndertaking> availableRailwayUndertakings;
   final String? trainNumber;
+  @override
+  final bool isSelectingRailwayUndertaking;
   final bool isInputComplete;
 
   @override
@@ -101,6 +112,7 @@ class Selecting extends JourneySelectionModel {
           ListEquality().equals(availableStartDates, other.availableStartDates) &&
           railwayUndertaking == other.railwayUndertaking &&
           ListEquality().equals(availableRailwayUndertakings, other.availableRailwayUndertakings) &&
+          isSelectingRailwayUndertaking == other.isSelectingRailwayUndertaking &&
           isInputComplete == other.isInputComplete;
 
   @override
@@ -111,6 +123,7 @@ class Selecting extends JourneySelectionModel {
     availableStartDates,
     railwayUndertaking,
     availableRailwayUndertakings,
+    isSelectingRailwayUndertaking,
     isInputComplete,
   );
 
@@ -120,6 +133,7 @@ class Selecting extends JourneySelectionModel {
     List<DateTime>? availableStartDates,
     RailwayUndertaking? railwayUndertaking,
     List<RailwayUndertaking>? availableRailwayUndertakings,
+    bool? isSelectingRailwayUndertaking,
     bool? isInputComplete,
   }) {
     return Selecting(
@@ -128,6 +142,7 @@ class Selecting extends JourneySelectionModel {
       availableStartDates: availableStartDates ?? this.availableStartDates,
       railwayUndertaking: railwayUndertaking ?? this.railwayUndertaking,
       availableRailwayUndertakings: availableRailwayUndertakings ?? this.availableRailwayUndertakings,
+      isSelectingRailwayUndertaking: isSelectingRailwayUndertaking ?? this.isSelectingRailwayUndertaking,
       isInputComplete: isInputComplete ?? this.isInputComplete,
     );
   }
