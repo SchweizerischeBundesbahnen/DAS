@@ -1,7 +1,12 @@
+import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/selection/journey_railway_undertaking_filter_controller.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
+import 'package:app/util/device_screen.dart';
+import 'package:app/widgets/header.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -55,6 +60,7 @@ class _RailwayUndertakingTextField extends StatefulWidget {
 
 class _RailwayUndertakingTextFieldState extends State<_RailwayUndertakingTextField> {
   late JourneyRailwayUndertakingFilterController controller;
+  late TextEditingController baseTextEditingController;
   late FocusNode focusNode;
 
   @override
@@ -67,6 +73,7 @@ class _RailwayUndertakingTextFieldState extends State<_RailwayUndertakingTextFie
   void didUpdateWidget(covariant _RailwayUndertakingTextField oldWidget) {
     if (widget.selectedRailwayUndertaking != oldWidget.selectedRailwayUndertaking) {
       controller.selectedRailwayUndertaking = widget.selectedRailwayUndertaking;
+      baseTextEditingController.text = widget.selectedRailwayUndertaking.displayText(context);
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -78,6 +85,7 @@ class _RailwayUndertakingTextFieldState extends State<_RailwayUndertakingTextFie
     final onAvailableRailwayUndertakingsChanged = vm.updateAvailableRailwayUndertakings;
     final updateIsSelectingRailwayUndertaking = vm.updateIsSelectingRailwayUndertaking;
 
+    baseTextEditingController = TextEditingController(text: widget.selectedRailwayUndertaking.displayText(context));
     controller = JourneyRailwayUndertakingFilterController(
       localizations: localizations,
       focusNode: focusNode,
@@ -99,12 +107,102 @@ class _RailwayUndertakingTextFieldState extends State<_RailwayUndertakingTextFie
   Widget build(BuildContext context) {
     return Padding(
       padding: widget.isModalVersion ? EdgeInsets.zero : _inputPadding,
-      child: SBBTextField(
-        focusNode: focusNode,
-        controller: controller.textEditingController,
-        labelText: widget.isModalVersion ? null : context.l10n.p_train_selection_ru_description,
-        hintText: widget.isModalVersion ? context.l10n.p_train_selection_ru_description : null,
-        keyboardType: TextInputType.text,
+      child: GestureDetector(
+        child: SBBTextField(
+          enabled: false,
+          controller: baseTextEditingController,
+          labelText: context.l10n.p_train_selection_ru_description,
+        ),
+        onTap: () {
+          showModalBottomSheet(
+            isScrollControlled: true,
+            backgroundColor: SBBColors.cloud,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(sbbDefaultSpacing))),
+            constraints: BoxConstraints(
+              maxWidth: DeviceScreen.size.width - Header.padding.vertical,
+              maxHeight: DeviceScreen.size.height - kToolbarHeight - DeviceScreen.systemStatusBarHeight,
+            ),
+            context: context,
+            builder: (context) {
+              final mediaQuery = MediaQuery.of(context);
+              final bottom = mediaQuery.viewInsets.bottom;
+              return Padding(
+                padding: EdgeInsets.only(top: sbbDefaultSpacing, bottom: bottom),
+                child: CustomScrollView(
+                  shrinkWrap: true,
+                  physics: ClampingScrollPhysics(),
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: SBBTextField(
+                                  controller: controller.textEditingController,
+                                  labelText: widget.isModalVersion
+                                      ? null
+                                      : context.l10n.p_train_selection_ru_description,
+                                  hintText: widget.isModalVersion
+                                      ? context.l10n.p_train_selection_ru_description
+                                      : null,
+                                  keyboardType: TextInputType.text,
+                                  autofocus: true,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing),
+                                child: SBBIconButtonSmall(
+                                  icon: SBBIcons.cross_medium,
+                                  onPressed: () {
+                                    context.router.pop();
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    SliverPadding(
+                      padding: EdgeInsetsGeometry.symmetric(vertical: sbbDefaultSpacing),
+                      sliver: SliverList.list(
+                        children: RailwayUndertaking.values
+                            .mapIndexed(
+                              (idx, e) => Material(
+                                color: SBBColors.milk,
+                                child: Column(
+                                  children: [
+                                    SBBRadioListItem(
+                                      value: e,
+                                      groupValue: RailwayUndertaking.sbbP,
+                                      label: e.displayText(context),
+                                      isLastElement: idx == RailwayUndertaking.values.length,
+                                      onChanged: (_) {},
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+            // header: SBBTextField(
+            //   controller: controller.textEditingController,
+            //   labelText: widget.isModalVersion ? null : context.l10n.p_train_selection_ru_description,
+            //   hintText: widget.isModalVersion ? context.l10n.p_train_selection_ru_description : null,
+            //   keyboardType: TextInputType.text,
+            //   autofocus: true,
+            // ),
+            // child: ,
+            // showCloseButton: false,
+          );
+        },
       ),
     );
   }
