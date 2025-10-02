@@ -74,14 +74,15 @@ class _RailwayUndertakingTextFieldState extends State<_RailwayUndertakingTextFie
   @override
   void didChangeDependencies() {
     final localizations = AppLocalizations.of(context)!;
-    final onAvailableRailwayUndertakingsChanged = context
-        .read<JourneySelectionViewModel>()
-        .updateAvailableRailwayUndertakings;
+    final vm = context.read<JourneySelectionViewModel>();
+    final onAvailableRailwayUndertakingsChanged = vm.updateAvailableRailwayUndertakings;
+    final updateIsSelectingRailwayUndertaking = vm.updateIsSelectingRailwayUndertaking;
 
     controller = JourneyRailwayUndertakingFilterController(
       localizations: localizations,
       focusNode: focusNode,
       updateAvailableRailwayUndertakings: onAvailableRailwayUndertakingsChanged,
+      updateIsSelectingRailwayUndertaking: updateIsSelectingRailwayUndertaking,
       initialRailwayUndertaking: widget.selectedRailwayUndertaking,
     );
     super.didChangeDependencies();

@@ -173,23 +173,6 @@ void main() {
     expect(selecting.isSelectingRailwayUndertaking, isTrue);
   });
 
-  test('isSelectingRailwayUndertaking_whenRailwayUndertakingSelected_thenIsSetToFalse', () {
-    // ARRANGE
-    testee.updateIsSelectingRailwayUndertaking(true);
-    final stateA = testee.modelValue;
-    expect(stateA, isA<Selecting>());
-    expect(stateA.isSelectingRailwayUndertaking, isTrue);
-
-    // ACT
-    testee.updateRailwayUndertaking(RailwayUndertaking.sob);
-
-    // EXPECT
-    final stateB = testee.modelValue;
-    expect(stateB, isA<Selecting>());
-    final selecting = stateB as Selecting;
-    expect(selecting.isSelectingRailwayUndertaking, isFalse);
-  });
-
   test('loadTrainJourney_whenIncomplete_thenDoesNotCallOnJourneySelected', () {
     // ACT
     testee.loadTrainJourney();

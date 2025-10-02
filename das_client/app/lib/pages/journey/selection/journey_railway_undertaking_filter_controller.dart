@@ -22,6 +22,7 @@ class JourneyRailwayUndertakingFilterController {
     required this.localizations,
     required FocusNode focusNode,
     required this.updateAvailableRailwayUndertakings,
+    required this.updateIsSelectingRailwayUndertaking,
     required RailwayUndertaking initialRailwayUndertaking,
   }) {
     _selectedRailwayUndertaking = initialRailwayUndertaking;
@@ -32,6 +33,7 @@ class JourneyRailwayUndertakingFilterController {
 
   final AppLocalizations localizations;
   final void Function(List<RailwayUndertaking>) updateAvailableRailwayUndertakings;
+  final void Function(bool) updateIsSelectingRailwayUndertaking;
 
   late FocusNode _focusNode;
   bool _hasFocus = false;
@@ -78,8 +80,14 @@ class JourneyRailwayUndertakingFilterController {
     final gainedFocus = _focusNode.hasFocus && !_hasFocus;
     _hasFocus = _focusNode.hasFocus;
 
-    if (gainedFocus) _filterAvailableRailwayUndertakings();
-    if (lostFocus) _resetToSelectedRailwayUndertaking();
+    if (gainedFocus) {
+      _filterAvailableRailwayUndertakings();
+      updateIsSelectingRailwayUndertaking.call(true);
+    }
+    if (lostFocus) {
+      _resetToSelectedRailwayUndertaking();
+      updateIsSelectingRailwayUndertaking.call(false);
+    }
   }
 
   void _resetToSelectedRailwayUndertaking() {

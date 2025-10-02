@@ -14,6 +14,7 @@ void main() {
   late AppLocalizations localizations;
   late FakeFocusNode fakeFocusNode;
   final mockUpdateAvailableRuFunction = MockUpdateAvailableRuFunction();
+  final mockUpdateIsSelectingRailwayUndertaking = MockUpdateIsSelectingRailwayUndertaking();
 
   setUp(() {
     localizations = lookupAppLocalizations(const Locale('en'));
@@ -21,6 +22,7 @@ void main() {
     testee = JourneyRailwayUndertakingFilterController(
       localizations: localizations,
       updateAvailableRailwayUndertakings: mockUpdateAvailableRuFunction.call,
+      updateIsSelectingRailwayUndertaking: mockUpdateIsSelectingRailwayUndertaking.call,
       initialRailwayUndertaking: RailwayUndertaking.sbbP,
       focusNode: fakeFocusNode,
     );
@@ -93,7 +95,7 @@ void main() {
       verifyNever(mockUpdateAvailableRuFunction(any));
     });
 
-    test('updateAvailableRu_FilterChanged_thenIsCalledWithUpdatedFilter', () {
+    test('updateAvailableRu_whenFilterChanged_thenIsCalledWithUpdatedFilter', () {
       // ACT
       testee.textEditingController.text = 'sob';
 
@@ -111,6 +113,30 @@ void main() {
       // EXPECT
       verify(mockUpdateAvailableRuFunction(_sortedRailwayValues(localizations))).called(1);
     });
+
+    test('updateIsSelectingRailwayUndertaking_whenFocusUnchanged_thenDoesNotCall', () {
+      // ARRANGE
+      fakeFocusNode.hasFocus = true;
+      reset(mockUpdateIsSelectingRailwayUndertaking);
+
+      // ACT
+      fakeFocusNode.hasFocus = true;
+
+      // EXPECT
+      verifyNever(mockUpdateIsSelectingRailwayUndertaking(any));
+    });
+
+    test('updateIsSelectingRailwayUndertaking_whenFocusNodeFocusLost_thenDoesCallWithCorrectValue', () {
+      // ARRANGE
+      fakeFocusNode.hasFocus = true;
+      reset(mockUpdateIsSelectingRailwayUndertaking);
+
+      // ACT
+      fakeFocusNode.hasFocus = false;
+
+      // EXPECT
+      verify(mockUpdateIsSelectingRailwayUndertaking(false)).called(1);
+    });
   });
 }
 
@@ -124,4 +150,8 @@ List<RailwayUndertaking> _sortedRailwayValues(AppLocalizations localizations) {
 
 class MockUpdateAvailableRuFunction extends Mock {
   void call(List<RailwayUndertaking>? railwayUndertakings);
+}
+
+class MockUpdateIsSelectingRailwayUndertaking extends Mock {
+  void call(bool? update);
 }
