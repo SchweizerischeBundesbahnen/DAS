@@ -122,6 +122,9 @@
 		<KilometreReferencePoint location="1248">
             <KM_Reference kmRef="37.452"/>
         </KilometreReferencePoint>
+        <KilometreReferencePoint location="1500">
+            <KM_Reference kmRef="37.2"/>
+        </KilometreReferencePoint>
 		<KilometreReferencePoint location="1600">
             <KM_Reference kmRef="37.1"/>
         </KilometreReferencePoint>

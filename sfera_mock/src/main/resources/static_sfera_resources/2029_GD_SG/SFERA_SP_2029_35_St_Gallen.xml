@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
-                SP_ID="2029_35_St_Gallen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="2400" SP_Status="Valid">
+                SP_ID="2029_35_St_Gallen" SP_VersionMajor="1" SP_VersionMinor="2" SP_Length="2400" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>1285</IM_ID>
     </SP_Zone>
@@ -11,7 +11,7 @@
         <TimingPoint TP_ID="St_Gallen" location="0">
             <TAF_TAP_LocationReference>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
-                <teltsi_LocationPrimaryCode>6392</teltsi_LocationPrimaryCode>
+                <teltsi_LocationPrimaryCode>6302</teltsi_LocationPrimaryCode>
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
@@ -19,10 +19,10 @@
 
     <SP_Areas>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="SGHA" TAF_TAP_location_type="station">
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="SG" TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
-                <teltsi_LocationPrimaryCode>6392</teltsi_LocationPrimaryCode>
+                <teltsi_LocationPrimaryCode>6302</teltsi_LocationPrimaryCode>
                 <teltsi_PrimaryLocationName>St. Gallen</teltsi_PrimaryLocationName>
             </TAF_TAP_LocationIdent>
 
