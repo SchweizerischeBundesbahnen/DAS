@@ -1,6 +1,6 @@
 import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/gen/app_localizations.dart';
-import 'package:app/pages/journey/selection/railway_undertaking/journey_railway_undertaking_modal_view_model.dart';
+import 'package:app/pages/journey/selection/railway_undertaking/select_railway_undertaking_modal_controller.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,14 +10,14 @@ import 'package:sfera/component.dart';
 import '../../../../test_util.dart';
 
 void main() {
-  late JourneyRailwayUndertakingModalViewModel testee;
+  late SelectRailwayUndertakingModalController testee;
   late AppLocalizations localizations;
   final mockUpdateAvailableRuFunction = MockUpdateRailwayUndertaking();
   final List<RailwayUndertaking> emitRegister = [];
 
   setUp(() async {
     localizations = lookupAppLocalizations(const Locale('en'));
-    testee = JourneyRailwayUndertakingModalViewModel(
+    testee = SelectRailwayUndertakingModalController(
       localizations: localizations,
       initialRailwayUndertaking: RailwayUndertaking.sbbP,
       updateRailwayUndertaking: mockUpdateAvailableRuFunction.call,
@@ -35,7 +35,7 @@ void main() {
 
   String englishLocalized(RailwayUndertaking ru) => ru.localizedText(localizations);
 
-  group('JourneyRailwayUndertakingModalViewModel Unit Test', () {
+  group('SelectRailwayUndertakingModalController Unit Test', () {
     test('filterValue_whenInstantiatedWithDefault_isLocalizedString', () {
       expect(testee.filterValue, equals(englishLocalized(RailwayUndertaking.sbbP)));
     });
@@ -61,7 +61,7 @@ void main() {
 
     test('availableRailwayUndertakings_whenInitialized_thenIsEmittedWithAllUndertakingsSortedCorrectly', () async {
       // ACT
-      testee = JourneyRailwayUndertakingModalViewModel(
+      testee = SelectRailwayUndertakingModalController(
         localizations: localizations,
         initialRailwayUndertaking: RailwayUndertaking.sbbP,
         updateRailwayUndertaking: mockUpdateAvailableRuFunction.call,

@@ -6,7 +6,7 @@ import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
-import 'package:app/pages/journey/selection/railway_undertaking/widgets/journey_railway_undertaking_input.dart';
+import 'package:app/pages/journey/selection/railway_undertaking/widgets/select_railway_undertaking_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_train_number_input.dart';
 import 'package:app/pages/journey/selection/widgets/logout_button.dart';
@@ -106,7 +106,7 @@ class _ContentState extends State<_Content> {
           child: Column(
             children: [
               JourneyDateInput(),
-              JourneyRailwayUndertakingInput(),
+              SelectRailwayUndertakingInput(),
               JourneyTrainNumberInput(),
             ],
           ),
