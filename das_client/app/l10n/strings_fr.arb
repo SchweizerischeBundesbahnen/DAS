@@ -88,6 +88,7 @@
   "c_ru_sob": "SOB",
   "c_unknown": "Inconnu",
   "c_train_number": "Numéro de train",
+  "c_today": "Aujourd’hui",
   "c_main_signal_function_entry": "Signal d’entrée",
   "c_main_signal_function_entry_short": "S.Entrée",
   "c_main_signal_function_exit": "Signal de sortie",

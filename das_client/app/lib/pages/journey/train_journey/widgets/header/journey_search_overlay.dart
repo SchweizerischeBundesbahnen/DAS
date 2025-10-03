@@ -2,8 +2,8 @@ import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
+import 'package:app/pages/journey/selection/railway_undertaking/widgets/select_railway_undertaking_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_input.dart';
-import 'package:app/pages/journey/selection/widgets/journey_railway_undertaking_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_train_number_input.dart';
 import 'package:app/pages/journey/train_journey/widgets/anchored_full_page_overlay.dart';
 import 'package:app/widgets/das_text_styles.dart';
@@ -56,9 +56,9 @@ class JourneySearchOverlay extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        JourneyTrainNumberInput(isModalVersion: true),
         JourneyDateInput(isModalVersion: true),
-        JourneyRailwayUndertakingInput(isModalVersion: true),
+        SelectRailwayUndertakingInput(isModalVersion: true),
+        JourneyTrainNumberInput(isModalVersion: true),
       ],
     );
   }

@@ -1,12 +1,13 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
+import 'package:app/pages/journey/selection/widgets/journey_date_picker.dart';
 import 'package:app/util/format.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-const _inputPadding = EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, 0, sbbDefaultSpacing / 2);
+const _inputPadding = EdgeInsets.fromLTRB(sbbDefaultSpacing, sbbDefaultSpacing, 0, sbbDefaultSpacing / 2);
 
 class JourneyDateInput extends StatefulWidget {
   const JourneyDateInput({
@@ -36,7 +37,8 @@ class _JourneyDateInputState extends State<JourneyDateInput> {
         _controller.text = Format.date(date);
 
         return switch (model) {
-          final Selecting _ || final Error _ => _dateInput(context, onTap: _showDatePicker(context, date)),
+          final Selecting _ ||
+          final Error _ => _dateInput(context, onTap: _showDatePicker(context, date, model.availableStartDates)),
           _ => _dateInput(context),
         };
       },
@@ -58,28 +60,16 @@ class _JourneyDateInputState extends State<JourneyDateInput> {
     );
   }
 
-  VoidCallback _showDatePicker(BuildContext context, DateTime selectedDate) =>
+  VoidCallback _showDatePicker(BuildContext context, DateTime selectedDate, List<DateTime> availableStartDates) =>
       () => showSBBModalSheet(
         context: context,
         title: context.l10n.p_train_selection_choose_date,
-        child: _datePickerWidget(context, selectedDate),
-      );
-
-  Widget _datePickerWidget(BuildContext context, DateTime selectedDate) {
-    final now = DateTime.now();
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        SBBDatePicker(
-          initialDate: selectedDate,
-          minimumDate: now.add(Duration(days: -1)),
-          maximumDate: now.add(Duration(hours: 4)),
-          onDateChanged: (value) => context.read<JourneySelectionViewModel>().updateDate(value),
+        constraints: BoxConstraints(maxWidth: 450),
+        child: Provider.value(
+          value: context.read<JourneySelectionViewModel>(),
+          builder: (_, _) => JourneyDatePicker(selectedDate: selectedDate, availableStartDates: availableStartDates),
         ),
-      ],
-    );
-  }
+      );
 
   @override
   void dispose() {
