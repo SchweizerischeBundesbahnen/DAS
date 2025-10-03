@@ -56,9 +56,9 @@ class JourneySearchOverlay extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        JourneyTrainNumberInput(isModalVersion: true),
         JourneyDateInput(isModalVersion: true),
         SelectRailwayUndertakingInput(isModalVersion: true),
+        JourneyTrainNumberInput(isModalVersion: true),
       ],
     );
   }

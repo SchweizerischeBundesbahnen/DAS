@@ -2,7 +2,7 @@ import 'package:app/util/screen_dimensions.dart';
 import 'package:flutter/material.dart';
 
 class DeviceScreen {
-  DeviceScreen._();
+  const DeviceScreen._();
 
   static double get systemStatusBarHeight {
     final view = WidgetsBinding.instance.platformDispatcher.views.first;

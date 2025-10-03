@@ -12,7 +12,6 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 const _inputPadding = EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, 0, sbbDefaultSpacing / 2);
-const _minModalHeight = sbbDefaultSpacing * 15;
 
 class SelectRailwayUndertakingInput extends StatelessWidget {
   const SelectRailwayUndertakingInput({super.key, this.isModalVersion = false});
@@ -96,17 +95,9 @@ class _RailwayUndertakingTextFieldState extends State<_RailwayUndertakingTextFie
         onTap: () {
           showModalBottomSheet(
             isScrollControlled: true,
-            backgroundColor: ThemeUtil.getColor(
-              context,
-              SBBColors.cloud,
-              SBBColors.charcoal,
-            ),
+            backgroundColor: _modalBackgroundColor(context),
             shape: SelectRailwayUndertakingModal.shapeBorder,
-            constraints: BoxConstraints(
-              maxWidth: DeviceScreen.size.width - Header.padding.vertical,
-              maxHeight: DeviceScreen.size.height - kToolbarHeight - DeviceScreen.systemStatusBarHeight,
-              minHeight: _minModalHeight,
-            ),
+            constraints: _modalConstraints,
             context: context,
             builder: (_) => Provider.value(
               value: context.read<JourneySelectionViewModel>(),
@@ -116,5 +107,23 @@ class _RailwayUndertakingTextFieldState extends State<_RailwayUndertakingTextFie
         },
       ),
     );
+  }
+
+  Color _modalBackgroundColor(BuildContext context) => ThemeUtil.getColor(
+    context,
+    SBBColors.cloud,
+    SBBColors.charcoal,
+  );
+
+  BoxConstraints get _modalConstraints => BoxConstraints(
+    maxWidth: DeviceScreen.size.width - Header.padding.vertical,
+    maxHeight: _maxModalHeight,
+  );
+
+  double get _maxModalHeight {
+    final topModalMargin = widget.isModalVersion
+        ? DeviceScreen.systemStatusBarHeight
+        : kToolbarHeight + DeviceScreen.systemStatusBarHeight;
+    return DeviceScreen.size.height - topModalMargin;
   }
 }
