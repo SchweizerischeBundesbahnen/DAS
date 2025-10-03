@@ -61,14 +61,6 @@ class JourneySelectionViewModel {
     _ifInSelectingOrErrorEmitSelectingWith((model) => model.copyWith(railwayUndertaking: ru));
   }
 
-  void updateAvailableRailwayUndertakings(List<RailwayUndertaking> newRUs) {
-    _ifInSelectingOrErrorEmitSelectingWith((model) => model.copyWith(availableRailwayUndertakings: newRUs));
-  }
-
-  void updateIsSelectingRailwayUndertaking(bool update) {
-    _ifInSelectingOrErrorEmitSelectingWith((model) => model.copyWith(isSelectingRailwayUndertaking: update));
-  }
-
   void dismissSelection() {
     final currentState = _state.value;
     if (currentState is Loading) return;
@@ -103,7 +95,6 @@ class JourneySelectionViewModel {
                 trainIdentification: l.trainIdentification,
                 errorCode: ErrorCode.fromSfera(_sferaRemoteRepo.lastError!),
                 availableStartDates: _availableStartDates(),
-                availableRailwayUndertakings: RailwayUndertaking.values,
               ),
             ),
             final Selecting s => _state.add(
@@ -111,7 +102,6 @@ class JourneySelectionViewModel {
                 trainIdentification: _trainIdFrom(s),
                 errorCode: ErrorCode.fromSfera(_sferaRemoteRepo.lastError!),
                 availableStartDates: s.availableStartDates,
-                availableRailwayUndertakings: s.availableRailwayUndertakings,
               ),
             ),
             _ => null,
@@ -126,7 +116,6 @@ class JourneySelectionViewModel {
         startDate: _midnightToday(),
         railwayUndertaking: RailwayUndertaking.sbbP,
         availableStartDates: _availableStartDates(),
-        availableRailwayUndertakings: RailwayUndertaking.values,
       ),
     );
   }
@@ -145,7 +134,6 @@ class JourneySelectionViewModel {
             railwayUndertaking: e.railwayUndertaking,
             trainNumber: e.operationalTrainNumber,
             availableStartDates: e.availableStartDates,
-            availableRailwayUndertakings: e.availableRailwayUndertakings,
           ),
         );
         _state.add(updatedModel.copyWith(isInputComplete: _validateInput(updatedModel)));

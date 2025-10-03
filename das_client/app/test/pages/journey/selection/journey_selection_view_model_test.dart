@@ -53,7 +53,6 @@ void main() {
     expect(selecting.availableStartDates, hasLength(2));
     expect(selecting.availableStartDates.first, equals(DateTime.utc(1969, 12, 31)));
     expect(selecting.availableStartDates[1], equals(newYears1970));
-    expect(selecting.availableRailwayUndertakings, equals(RailwayUndertaking.values));
   });
 
   test('modelValue_whenThreeHoursBeforeNextDay_thenIsSelectingWithMoreAvailableDates', () {
@@ -141,36 +140,6 @@ void main() {
     expect(state, isA<Selecting>());
     final selecting = state as Selecting;
     expect(selecting.railwayUndertaking, newRU);
-  });
-
-  test('updateAvailableRailwayUndertakings_whenCalled_thenUpdatesAvailableRailwayUndertakings', () {
-    // ARRANGE
-    final newRUs = [RailwayUndertaking.blsP, RailwayUndertaking.blsC];
-
-    // ACT
-    testee.updateAvailableRailwayUndertakings(newRUs);
-
-    // EXPECT
-    final state = testee.modelValue;
-    expect(state, isA<Selecting>());
-    final selecting = state as Selecting;
-    expect(selecting.availableRailwayUndertakings, newRUs);
-  });
-
-  test('updateIsSelectingRailwayUndertaking_whenCalled_thenUpdatesSelectingState', () {
-    // ARRANGE
-    final stateA = testee.modelValue;
-    expect(stateA, isA<Selecting>());
-    expect(stateA.isSelectingRailwayUndertaking, isFalse);
-
-    // ACT
-    testee.updateIsSelectingRailwayUndertaking(true);
-
-    // EXPECT
-    final stateB = testee.modelValue;
-    expect(stateB, isA<Selecting>());
-    final selecting = stateB as Selecting;
-    expect(selecting.isSelectingRailwayUndertaking, isTrue);
   });
 
   test('loadTrainJourney_whenIncomplete_thenDoesNotCallOnJourneySelected', () {

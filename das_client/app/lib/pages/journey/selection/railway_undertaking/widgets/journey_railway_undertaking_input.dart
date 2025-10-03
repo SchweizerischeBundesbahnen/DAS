@@ -1,8 +1,8 @@
 import 'package:app/extension/ru_extension.dart';
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/selection/journey_railway_undertaking_filter_controller.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
+import 'package:app/pages/journey/selection/railway_undertaking/journey_railway_undertaking_modal_view_model.dart';
 import 'package:app/util/device_screen.dart';
 import 'package:app/widgets/header.dart';
 import 'package:auto_route/auto_route.dart';
@@ -59,7 +59,9 @@ class _RailwayUndertakingTextField extends StatefulWidget {
 }
 
 class _RailwayUndertakingTextFieldState extends State<_RailwayUndertakingTextField> {
-  late JourneyRailwayUndertakingFilterController controller;
+  late JourneyRailwayUndertakingModalViewModel controller;
+
+  // prevents the user from being distracted by changes in the view under the modal sheet
   late TextEditingController baseTextEditingController;
   late FocusNode focusNode;
 
@@ -82,15 +84,12 @@ class _RailwayUndertakingTextFieldState extends State<_RailwayUndertakingTextFie
   void didChangeDependencies() {
     final localizations = AppLocalizations.of(context)!;
     final vm = context.read<JourneySelectionViewModel>();
-    final onAvailableRailwayUndertakingsChanged = vm.updateAvailableRailwayUndertakings;
-    final updateIsSelectingRailwayUndertaking = vm.updateIsSelectingRailwayUndertaking;
+    final updateRailwayUndertaking = vm.updateRailwayUndertaking;
 
     baseTextEditingController = TextEditingController(text: widget.selectedRailwayUndertaking.displayText(context));
-    controller = JourneyRailwayUndertakingFilterController(
+    controller = JourneyRailwayUndertakingModalViewModel(
       localizations: localizations,
-      focusNode: focusNode,
-      updateAvailableRailwayUndertakings: onAvailableRailwayUndertakingsChanged,
-      updateIsSelectingRailwayUndertaking: updateIsSelectingRailwayUndertaking,
+      updateRailwayUndertaking: updateRailwayUndertaking,
       initialRailwayUndertaking: widget.selectedRailwayUndertaking,
     );
     super.didChangeDependencies();
