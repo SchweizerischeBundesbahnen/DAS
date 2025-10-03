@@ -64,6 +64,7 @@ class _JourneyDateInputState extends State<JourneyDateInput> {
       () => showSBBModalSheet(
         context: context,
         title: context.l10n.p_train_selection_choose_date,
+        constraints: BoxConstraints(maxWidth: 450),
         child: Provider.value(
           value: context.read<JourneySelectionViewModel>(),
           builder: (_, _) => JourneyDatePicker(selectedDate: selectedDate, availableStartDates: availableStartDates),
