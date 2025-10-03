@@ -11,6 +11,9 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class SelectRailwayUndertakingModal extends StatefulWidget {
+  static ShapeBorder get shapeBorder =>
+      RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(sbbDefaultSpacing)));
+
   const SelectRailwayUndertakingModal({
     required this.selectedRailwayUndertaking,
     super.key,
@@ -67,19 +70,24 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
       stream: controller?.availableRailwayUndertakings,
       builder: (context, snap) {
         final localizedFilteredRus = snap.data ?? [];
-
+        final resolvedForegroundColor = ThemeUtil.getColor(
+          context,
+          SBBColors.milk,
+          SBBColors.midnight,
+        );
         return Padding(
-          padding: EdgeInsets.only(top: sbbDefaultSpacing, bottom: bottom),
+          padding: EdgeInsets.only(bottom: bottom),
           child: CustomScrollView(
             controller: scrollController,
-            shrinkWrap: true,
             physics: ClampingScrollPhysics(),
             slivers: [
-              SliverToBoxAdapter(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
+              PinnedHeaderSliver(
+                child: Material(
+                  shape: SelectRailwayUndertakingModal.shapeBorder,
+                  color: resolvedForegroundColor,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing),
+                    child: Row(
                       children: [
                         Expanded(
                           child: SBBTextField(
@@ -100,7 +108,7 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
                         ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
               ),
               SliverPadding(
@@ -109,11 +117,7 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
                   children: localizedFilteredRus
                       .mapIndexed(
                         (idx, e) => Material(
-                          color: ThemeUtil.getColor(
-                            context,
-                            SBBColors.milk,
-                            SBBColors.midnight,
-                          ),
+                          color: resolvedForegroundColor,
                           child: Column(
                             children: [
                               SBBRadioListItem(
