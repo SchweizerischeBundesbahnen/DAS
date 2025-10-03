@@ -388,7 +388,6 @@ Future<void> main() async {
         tester,
         find.descendant(of: header, matching: find.byKey(DASChronograph.punctualityTextKey)),
       );
-      await tester.pumpAndSettle(Duration(seconds: 1));
 
       expect(find.descendant(of: header, matching: find.text('+00:30')), findsOneWidget);
 

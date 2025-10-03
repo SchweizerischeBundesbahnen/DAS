@@ -282,8 +282,12 @@ void main() {
       await _openByTapOnCellWithText(tester, 'Reichenbach im Kandertal');
       expect(find.byKey(DetailTabCommunication.simCorridorListKey), findsNothing);
 
-      // check Frutigen SIM information
-      await _openByTapOnCellWithText(tester, 'Frutigen');
+      // close modal
+      final icon = find.byKey(DasModalSheet.modalSheetCloseButtonKey);
+      await tester.tap(icon);
+
+      //check Frutigen for SIM information
+      await tapRowEvenIfBehindFooter(tester, rowText: 'Frutigen', scrollable: scrollableFinder);
       expect(find.byKey(DetailTabCommunication.simCorridorListKey), findsOneWidget);
       expect(find.text('Frutigen - Kandergrund'), findsOneWidget);
 
@@ -364,11 +368,26 @@ void main() {
     await stopAutomaticAdvancement(tester);
 
     expect(find.text(l10n.c_main_signal_function_entry), findsAny);
+
+    final scrollableFinder = find.byType(AnimatedList);
+    await tester.dragUntilVisible(find.text(l10n.c_main_signal_function_exit), scrollableFinder, const Offset(0, -50));
+    await tester.pumpAndSettle();
+
     expect(find.text(l10n.c_main_signal_function_exit), findsAny);
     expect(find.text(l10n.c_main_signal_function_entry_short), findsNothing);
     expect(find.text(l10n.c_main_signal_function_exit_short), findsNothing);
 
+    await tester.dragUntilVisible(findDASTableRowByText('(Bahnhof A)'), scrollableFinder, const Offset(0, 50));
+    await tester.pumpAndSettle();
+
     await _openByTapOnCellWithText(tester, '(Bahnhof A)');
+    await tester.pumpAndSettle();
+
+    await tester.dragUntilVisible(
+      find.text(l10n.c_main_signal_function_entry_short),
+      scrollableFinder,
+      const Offset(0, -50),
+    );
     await tester.pumpAndSettle();
 
     expect(find.text(l10n.c_main_signal_function_entry), findsNothing);
@@ -436,6 +455,33 @@ Future<void> _checkModalSheetTabs(WidgetTester tester, List<ServicePointModalTab
   for (final tab in notShownTabs) {
     final tabIcon = find.descendant(of: modalSheet, matching: find.byIcon(tab.icon));
     expect(tabIcon, findsNothing);
+  }
+}
+
+Future<void> tapRowEvenIfBehindFooter(
+  WidgetTester tester, {
+  required String rowText,
+  required Finder scrollable,
+}) async {
+  final rowFinder = find.text(rowText);
+
+  final frutigenRow = rowFinder.hitTestable();
+  if (tester.any(frutigenRow)) {
+    await tester.tap(frutigenRow);
+    await tester.pumpAndSettle();
+    return;
+  }
+
+  final count = tester.widgetList(rowFinder).length;
+  if (count > 1) {
+    await tester.drag(scrollable, const Offset(0, 30));
+
+    final tappableAfterNudge = rowFinder.hitTestable();
+    if (tester.any(tappableAfterNudge)) {
+      await tester.tap(tappableAfterNudge);
+      await tester.pumpAndSettle();
+      return;
+    }
   }
 }
 
