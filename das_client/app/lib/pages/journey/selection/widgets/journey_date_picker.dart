@@ -36,6 +36,9 @@ class JourneyDatePicker extends StatelessWidget {
     final unselectedTextStyle = SBBTextStyles.extraLargeLight.romanStyle.copyWith(
       color: ThemeUtil.getColor(context, SBBColors.storm, SBBColors.graphite),
     );
+    final selectedTextStyle = SBBTextStyles.extraLargeLight.romanStyle.copyWith(
+      color: ThemeUtil.getColor(context, SBBColors.black, SBBColors.white),
+    );
     return GestureDetector(
       onTap: () => onChanged.call(d),
       child: AnimatedContainer(
@@ -48,11 +51,9 @@ class JourneyDatePicker extends StatelessWidget {
           color: isSelected ? ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.iron) : SBBColors.transparent,
         ),
         child: Center(
-          child: AnimatedDefaultTextStyle(
-            duration: Duration(milliseconds: 200),
-            curve: Curves.easeInOut,
-            style: isSelected ? SBBTextStyles.extraLargeLight.romanStyle : unselectedTextStyle,
-            child: Text(_formattedDate(d, context)),
+          child: Text(
+            _formattedDate(d, context),
+            style: isSelected ? selectedTextStyle : unselectedTextStyle,
           ),
         ),
       ),
