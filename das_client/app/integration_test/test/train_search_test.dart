@@ -1,3 +1,5 @@
+import 'package:app/pages/journey/selection/railway_undertaking/widgets/select_railway_undertaking_modal.dart';
+import 'package:app/pages/journey/selection/widgets/journey_date_picker.dart';
 import 'package:app/util/error_code.dart';
 import 'package:app/util/format.dart';
 import 'package:flutter/material.dart';
@@ -27,10 +29,14 @@ void main() {
       // Verify we have ru SBB.
       expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
 
-      await tapElement(tester, find.text(l10n.c_ru_sbb_p));
+      await tapElement(tester, find.text(l10n.c_ru_sbb_p), warnIfMissed: false);
+
+      // Verify modal is opened
+      final modal = find.byKey(SelectRailwayUndertakingModal.modalKey);
+      expect(modal, findsOneWidget);
 
       expect(find.text(l10n.c_ru_sbb_c), findsOneWidget);
-      expect(find.text(l10n.c_ru_bls_p), findsOneWidget);
+      expect(find.descendant(of: modal, matching: find.text(l10n.c_ru_bls_p)), findsOneWidget);
       expect(find.text(l10n.c_ru_bls_c), findsOneWidget);
       expect(find.text(l10n.c_ru_sob), findsOneWidget);
 
@@ -38,6 +44,31 @@ void main() {
 
       expect(find.text(l10n.c_ru_sob), findsOneWidget);
       expect(find.text(l10n.c_ru_sbb_p), findsNothing);
+    });
+
+    testWidgets('test filter ru values', (tester) async {
+      // Load app widget.
+      await prepareAndStartApp(tester);
+
+      // Verify we have ru SBB.
+      expect(find.text(l10n.c_ru_sbb_p), findsOneWidget);
+
+      await tapElement(tester, find.text(l10n.c_ru_sbb_p), warnIfMissed: false);
+
+      // Verify modal is opened
+      final modal = find.byKey(SelectRailwayUndertakingModal.modalKey);
+      expect(modal, findsOneWidget);
+
+      // Enter filter 'SO'
+      final filterField = find.byKey(SelectRailwayUndertakingModal.filterFieldKey);
+      expect(filterField, findsOneWidget);
+      await enterText(tester, filterField, 'SO');
+      await tester.pumpAndSettle();
+
+      // Verify results are filtered
+      expect(find.descendant(of: modal, matching: find.text(l10n.c_ru_sbb_p)), findsNothing);
+      expect(find.descendant(of: modal, matching: find.text(l10n.c_ru_bls_p)), findsNothing);
+      expect(find.text(l10n.c_ru_sob), findsOneWidget);
     });
 
     testWidgets('test load button disabled when validation fails', (tester) async {
@@ -50,6 +81,7 @@ void main() {
       // Verify that today is preselected
       expect(find.text(Format.date(DateTime.now())), findsOneWidget);
 
+      // Verify that no train number is there
       final trainNumberText = findTextFieldByLabel(l10n.p_train_selection_trainnumber_description);
       expect(trainNumberText, findsOneWidget);
 
@@ -76,26 +108,24 @@ void main() {
 
       await tapElement(tester, todayDateTextFinder, warnIfMissed: false);
 
-      final sbbPickerFinder = find.byWidgetPredicate((widget) => widget is SBBPicker);
+      final datePicker = find.byKey(JourneyDatePicker.datePickerKey);
 
       // finds localized 'Today'
       final todayFinder = find.descendant(
-        of: sbbPickerFinder,
+        of: datePicker,
         matching: find.byWidgetPredicate((widget) => widget is Text && widget.data == l10n.c_today),
       );
       expect(todayFinder, findsOne);
 
       // find yesterday date and select it
       final yesterdayFinder = find.descendant(
-        of: sbbPickerFinder,
+        of: datePicker,
         matching: find.byWidgetPredicate(
           (widget) => widget is Text && widget.data == Format.dateWithTextMonth(yesterday, deviceLocale()),
         ),
       );
       await tapElement(tester, yesterdayFinder, warnIfMissed: false);
 
-      // tap outside dialog
-      await tester.tapAt(Offset(200, 200));
       await tester.pumpAndSettle();
 
       // expect yesterday is selected with warning
@@ -121,17 +151,15 @@ void main() {
 
       await tapElement(tester, todayDateTextFinder, warnIfMissed: false);
 
-      final sbbDatePickerFinder = find.byWidgetPredicate((widget) => widget is SBBPicker);
+      final datePicker = find.byKey(JourneyDatePicker.datePickerKey);
       final dayBeforeYesterdayFinder = find.descendant(
-        of: sbbDatePickerFinder,
+        of: datePicker,
         matching: find.byWidgetPredicate(
           (widget) => widget is Text && widget.data == Format.dateWithTextMonth(dayBeforeYesterday, deviceLocale()),
         ),
       );
       expect(dayBeforeYesterdayFinder, findsNothing);
 
-      // tap outside dialog
-      await tester.tapAt(Offset(200, 200));
       await tester.pumpAndSettle();
 
       // Verify that today is still selected

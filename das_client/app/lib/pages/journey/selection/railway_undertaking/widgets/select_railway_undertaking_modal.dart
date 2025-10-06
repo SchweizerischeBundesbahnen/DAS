@@ -11,6 +11,10 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class SelectRailwayUndertakingModal extends StatefulWidget {
+  static Key get modalKey => Key('SelectRailwayUndertakingModal');
+
+  static Key get filterFieldKey => Key('SelectRailwayUndertakingModalFilterField');
+
   static ShapeBorder get shapeBorder =>
       RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(sbbDefaultSpacing)));
 
@@ -78,6 +82,7 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
         return Padding(
           padding: EdgeInsets.only(bottom: bottom),
           child: CustomScrollView(
+            key: SelectRailwayUndertakingModal.modalKey,
             controller: scrollController,
             physics: ClampingScrollPhysics(),
             slivers: [
@@ -91,6 +96,7 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
                       children: [
                         Expanded(
                           child: SBBTextField(
+                            key: SelectRailwayUndertakingModal.filterFieldKey,
                             controller: controller?.textEditingController,
                             labelText: context.l10n.p_train_selection_ru_description,
                             keyboardType: TextInputType.text,
