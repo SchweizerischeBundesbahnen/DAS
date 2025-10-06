@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="2"
+                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+    <TrainIdentification>
+        <OTN_ID>
+            <teltsi_Company>1085</teltsi_Company>
+            <teltsi_OperationalTrainNumber>T27</teltsi_OperationalTrainNumber>
+            <teltsi_StartDate>2025-01-01</teltsi_StartDate>
+        </OTN_ID>
+    </TrainIdentification>
+    <SegmentProfileReference SP_ID="T27_1" SP_VersionMajor="3" SP_VersionMinor="1" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>0085</IM_ID>
+        </SP_Zone>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Bern_Depot"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Bern"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Olten"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Olten_Ost"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Olten_VL"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Olten_Nord"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Olten_Tunnel"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Dulliken"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="Dulliken_Depot"/>
+            </TimingPointReference>
+        </TimingPointConstraints>
+
+        <!-- ADL segment that should ignore additional service points -->
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="AdvisedSpeed" startLocation="1700" endLocation="2900">
+            <AdvisedSpeed optimalSpeed="80" reasonCode="followTrain" adviceType="ConstantspeedAdvice">
+                <ReasonText language="DE" text="ADL"/>
+            </AdvisedSpeed>
+        </TemporaryConstraints>
+
+        <TrainCharacteristicsRef TC_ID="T27_1" TC_VersionMajor="1" TC_VersionMinor="1" location="0">
+            <TC_RU_ID>1185</TC_RU_ID>
+        </TrainCharacteristicsRef>
+
+        <JP_ContextInformation>
+            <!-- VPro for Olten Ost -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="110"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="1500" endLocation="1500"/>
+            </JP_ContextInformation_NSPs>
+
+            <!-- VPro for Olten Tunnel -->
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="130"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="3000" endLocation="3000"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+    </SegmentProfileReference>
+</JourneyProfile>

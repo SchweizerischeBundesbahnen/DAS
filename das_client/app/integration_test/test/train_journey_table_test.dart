@@ -11,6 +11,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/signal_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/tram_area_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/whistle_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
+import 'package:app/theme/themes.dart';
 import 'package:app/util/format.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/dot_indicator.dart';
@@ -339,14 +340,9 @@ void main() {
       expect(asrSpeed, findsOneWidget);
 
       // check all cells are colored
-      final coloredCells = find.descendant(
+      final coloredCells = findColoredRowCells(
         of: asrRow,
-        matching: find.byWidgetPredicate(
-          (it) =>
-              it is Container &&
-              it.decoration is BoxDecoration &&
-              (it.decoration as BoxDecoration).color == AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor,
-        ),
+        color: AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor,
       );
       expect(coloredCells, findsNWidgets(14));
 
@@ -413,14 +409,9 @@ void main() {
         expect(testRow, findsOneWidget);
 
         // check first 3 cells are colored
-        final coloredCells = find.descendant(
+        final coloredCells = findColoredRowCells(
           of: testRow,
-          matching: find.byWidgetPredicate(
-            (it) =>
-                it is Container &&
-                it.decoration is BoxDecoration &&
-                (it.decoration as BoxDecoration).color == AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor,
-          ),
+          color: AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor,
         );
         expect(coloredCells, findsNWidgets(6));
       }
@@ -1151,7 +1142,37 @@ void main() {
 
       await disconnect(tester);
     });
+    testWidgets('test additional service points displayed correctly', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T27');
+
+      final scrollableFinder = find.byType(AnimatedList);
+      expect(scrollableFinder, findsOneWidget);
+
+      // check if all additional service points are displayed correctly
+      await _checkAdditionalServicePoint(tester, scrollableFinder, 'Bern (Depot)');
+      await _checkAdditionalServicePoint(tester, scrollableFinder, 'Olten Ost (Abzw)');
+      await _checkAdditionalServicePoint(tester, scrollableFinder, 'Olten Tunnel (Spw)');
+      await _checkAdditionalServicePoint(tester, scrollableFinder, 'Dulliken (Depot)');
+
+      await disconnect(tester);
+    });
   });
+}
+
+Future<void> _checkAdditionalServicePoint(WidgetTester tester, Finder scrollableFinder, String servicePointName) async {
+  await tester.dragUntilVisible(find.text(servicePointName).first, scrollableFinder, const Offset(0, -50));
+  final servicePointRow = findDASTableRowByText(servicePointName);
+  expect(servicePointRow, findsOneWidget);
+
+  // check all cells are colored
+  final coloredCells = findColoredRowCells(
+    of: servicePointRow,
+    color: DASTheme.light().scaffoldBackgroundColor,
+  );
+  expect(coloredCells, findsAtLeast(3));
 }
 
 bool _hasAnyUnderlinedTextSpans(Text stationATimeText) {
