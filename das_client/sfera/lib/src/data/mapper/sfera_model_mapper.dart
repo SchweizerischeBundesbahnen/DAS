@@ -122,6 +122,7 @@ class SferaModelMapper {
         radioContactLists: _parseContactLists(segmentProfileReferences, segmentProfiles),
         lineSpeeds: lineSpeeds,
         calculatedSpeeds: _parseCalculatedSpeeds(journeyProfile, servicePoints),
+        levelCrossingGroups: _parseLevelCrossingAndBaliseGroups(journeyPoints),
       ),
       data: journeyData,
     );
@@ -571,6 +572,63 @@ class SferaModelMapper {
         }
       }
     });
+
+    return result;
+  }
+
+  static List<LevelCrossingGroup> _parseLevelCrossingAndBaliseGroups(List<JourneyPoint> journeyPoints) {
+    final List<LevelCrossingGroup> result = [];
+
+    for (int i = 0; i < journeyPoints.length; i++) {
+      final currentElement = journeyPoints[i];
+      if (currentElement is Balise) {
+        final levelCrossings = <LevelCrossing>[];
+        final otherPoints = <JourneyPoint>[];
+
+        for (int j = i + 1; j < journeyPoints.length; j++) {
+          final nextElement = journeyPoints[j];
+          if (nextElement is LevelCrossing) {
+            levelCrossings.add(nextElement);
+
+            if (levelCrossings.length >= currentElement.amountLevelCrossings) {
+              i = j;
+              break;
+            }
+          } else if (nextElement is Balise) {
+            _log.warning(
+              'Failed to find the amount of level crossings (${levelCrossings.length}/${currentElement.localSpeeds}) expected for balise.',
+            );
+            i = j - 1;
+            break;
+          } else {
+            otherPoints.add(nextElement);
+          }
+        }
+
+        result.add(
+          SupervisedLevelCrossingGroup(
+            balise: currentElement,
+            levelCrossings: levelCrossings,
+            pointsBetween: otherPoints,
+          ),
+        );
+      }
+      if (currentElement is LevelCrossing) {
+        final levelCrossings = [currentElement];
+        for (int j = i + 1; j < journeyPoints.length; j++) {
+          final nextElement = journeyPoints[j];
+          if (nextElement is LevelCrossing) {
+            levelCrossings.add(nextElement);
+          } else {
+            i = j - 1;
+            break;
+          }
+        }
+        if (levelCrossings.length > 1) {
+          result.add(UnsupervisedLevelCrossingGroup(levelCrossings: levelCrossings));
+        }
+      }
+    }
 
     return result;
   }
