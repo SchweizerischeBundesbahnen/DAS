@@ -17,7 +17,9 @@ import 'package:sfera/src/data/mapper/mapper_utils.dart';
 import 'package:sfera/src/data/mapper/segment_profile_mapper.dart';
 import 'package:sfera/src/data/mapper/speed_mapper.dart';
 import 'package:sfera/src/data/mapper/track_equipment_mapper.dart';
+import 'package:sfera/src/model/journey/balise_group.dart';
 import 'package:sfera/src/model/journey/bracket_station.dart';
+import 'package:sfera/src/model/journey/level_crossing_group.dart';
 
 final _log = Logger('SferaModelMapper');
 
@@ -122,6 +124,7 @@ class SferaModelMapper {
         radioContactLists: _parseContactLists(segmentProfileReferences, segmentProfiles),
         lineSpeeds: lineSpeeds,
         calculatedSpeeds: _parseCalculatedSpeeds(journeyProfile, servicePoints),
+        levelCrossingGroups: _parseLevelCrossingAndBaliseGroups(journeyPoints),
       ),
       data: journeyData,
     );
@@ -571,6 +574,57 @@ class SferaModelMapper {
         }
       }
     });
+
+    return result;
+  }
+
+  static List<LevelCrossingGroup> _parseLevelCrossingAndBaliseGroups(List<JourneyPoint> journeyPoints) {
+    final List<LevelCrossingGroup> result = [];
+
+    for (int i = 0; i < journeyPoints.length; i++) {
+      final currentElement = journeyPoints[i];
+      if (currentElement is Balise) {
+        final levelCrossings = <LevelCrossing>[];
+        final otherPoints = <JourneyPoint>[];
+
+        for (int j = i + 1; j < journeyPoints.length; j++) {
+          final nextElement = journeyPoints[j];
+          if (nextElement is LevelCrossing) {
+            levelCrossings.add(nextElement);
+
+            if (levelCrossings.length >= currentElement.amountLevelCrossings) {
+              i = j;
+              break;
+            }
+          } else if (nextElement is Balise) {
+            _log.warning(
+              'Failed to find the amount of level crossings (${levelCrossings.length}/${currentElement.localSpeeds}) expected for balise.',
+            );
+            i = j - 1;
+            break;
+          } else {
+            otherPoints.add(nextElement);
+          }
+        }
+
+        result.add(BaliseGroup(balise: currentElement, levelCrossings: levelCrossings, otherPoints: otherPoints));
+      }
+      if (currentElement is LevelCrossing) {
+        final levelCrossings = [currentElement];
+        for (int j = i + 1; j < journeyPoints.length; j++) {
+          final nextElement = journeyPoints[j];
+          if (nextElement is LevelCrossing) {
+            levelCrossings.add(nextElement);
+          } else {
+            i = j - 1;
+            break;
+          }
+        }
+        if (levelCrossings.length > 1) {
+          result.add(LevelCrossingGroup(levelCrossings: levelCrossings));
+        }
+      }
+    }
 
     return result;
   }

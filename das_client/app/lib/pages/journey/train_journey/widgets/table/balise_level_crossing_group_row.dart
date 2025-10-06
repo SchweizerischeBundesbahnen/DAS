@@ -28,14 +28,22 @@ class BaliseLevelCrossingGroupRow extends CellRowBuilder<BaliseLevelCrossingGrou
 
   @override
   DASTableCell informationCell(BuildContext context) {
-    if (_baliseCount == 0) {
+    final firstBalise = data.groupedElements.whereType<Balise>().firstOrNull;
+    final baliseGroup = metadata.levelCrossingGroups.whereType<BaliseGroup>().firstWhere(
+      (element) => element.balise == firstBalise,
+    );
+    final shownLevelCrossingsCount = baliseGroup.shownLevelCrossingsCount();
+
+    if (firstBalise == null) {
       return DASTableCell(
         child: Text('$_levelCrossingCount ${context.l10n.p_train_journey_table_level_crossing}'),
         alignment: Alignment.centerLeft,
       );
-    } else if (_baliseCount == 1 && _levelCrossingCount > 1) {
+    } else if (shownLevelCrossingsCount > 1) {
       return DASTableCell(
-        child: Text('($_levelCrossingCount ${context.l10n.p_train_journey_table_level_crossing})'),
+        child: Text(
+          '($shownLevelCrossingsCount ${context.l10n.p_train_journey_table_level_crossing})',
+        ),
         alignment: Alignment.centerRight,
       );
     } else {

@@ -9,14 +9,28 @@ void main() {
       Balise(order: 200, kilometre: [0.2], amountLevelCrossings: 1),
       LevelCrossing(order: 202, kilometre: [0.22]),
     ];
+    final metadata = Metadata(
+      levelCrossingGroups: [
+        BaliseGroup(
+          balise: originalRows[0] as Balise,
+          levelCrossings: [originalRows[1] as LevelCrossing],
+          otherPoints: [],
+        ),
+        BaliseGroup(
+          balise: originalRows[2] as Balise,
+          levelCrossings: [originalRows[3] as LevelCrossing],
+          otherPoints: [],
+        ),
+      ],
+    );
 
-    final groupedRowsNotExpanded = originalRows.groupBaliseAndLeveLCrossings([]).toList();
+    final groupedRowsNotExpanded = originalRows.groupBaliseAndLeveLCrossings([], metadata).toList();
 
     expect(groupedRowsNotExpanded, hasLength(1));
     expect(groupedRowsNotExpanded[0], isA<BaliseLevelCrossingGroup>());
     expect((groupedRowsNotExpanded[0] as BaliseLevelCrossingGroup).groupedElements, hasLength(4));
 
-    final groupedRowsExpanded = originalRows.groupBaliseAndLeveLCrossings([100]).toList();
+    final groupedRowsExpanded = originalRows.groupBaliseAndLeveLCrossings([100], metadata).toList();
 
     expect(groupedRowsExpanded, hasLength(5));
     expect(groupedRowsExpanded[0], isA<BaliseLevelCrossingGroup>());
@@ -35,8 +49,22 @@ void main() {
       LevelCrossing(order: 202, kilometre: [0.22]),
       LevelCrossing(order: 203, kilometre: [0.23]),
     ];
+    final metadata = Metadata(
+      levelCrossingGroups: [
+        BaliseGroup(
+          balise: originalRows[0] as Balise,
+          levelCrossings: [originalRows[1] as LevelCrossing],
+          otherPoints: [],
+        ),
+        BaliseGroup(
+          balise: originalRows[2] as Balise,
+          levelCrossings: [originalRows[3] as LevelCrossing, originalRows[4] as LevelCrossing],
+          otherPoints: [],
+        ),
+      ],
+    );
 
-    final groupedRowsNotExpanded = originalRows.groupBaliseAndLeveLCrossings([]).toList();
+    final groupedRowsNotExpanded = originalRows.groupBaliseAndLeveLCrossings([], metadata).toList();
 
     expect(groupedRowsNotExpanded, hasLength(2));
     expect(groupedRowsNotExpanded[0], isA<BaliseLevelCrossingGroup>());
@@ -44,7 +72,7 @@ void main() {
     expect(groupedRowsNotExpanded[1], isA<BaliseLevelCrossingGroup>());
     expect((groupedRowsNotExpanded[1] as BaliseLevelCrossingGroup).groupedElements, hasLength(3));
 
-    final groupedRowsExpanded = originalRows.groupBaliseAndLeveLCrossings([200]).toList();
+    final groupedRowsExpanded = originalRows.groupBaliseAndLeveLCrossings([200], metadata).toList();
 
     expect(groupedRowsExpanded, hasLength(5));
     expect(groupedRowsExpanded[0], isA<BaliseLevelCrossingGroup>());
@@ -64,8 +92,22 @@ void main() {
       Balise(order: 200, kilometre: [0.2], amountLevelCrossings: 1),
       LevelCrossing(order: 202, kilometre: [0.22]),
     ];
+    final metadata = Metadata(
+      levelCrossingGroups: [
+        BaliseGroup(
+          balise: originalRows[0] as Balise,
+          levelCrossings: [originalRows[1] as LevelCrossing],
+          otherPoints: [],
+        ),
+        BaliseGroup(
+          balise: originalRows[3] as Balise,
+          levelCrossings: [originalRows[4] as LevelCrossing],
+          otherPoints: [],
+        ),
+      ],
+    );
 
-    final groupedRowsNotExpanded = originalRows.groupBaliseAndLeveLCrossings([]).toList();
+    final groupedRowsNotExpanded = originalRows.groupBaliseAndLeveLCrossings([], metadata).toList();
 
     expect(groupedRowsNotExpanded, hasLength(3));
     expect(groupedRowsNotExpanded[0], isA<BaliseLevelCrossingGroup>());
@@ -81,8 +123,15 @@ void main() {
       LevelCrossing(order: 202, kilometre: [0.22]),
       LevelCrossing(order: 303, kilometre: [0.33]),
     ];
+    final metadata = Metadata(
+      levelCrossingGroups: [
+        LevelCrossingGroup(
+          levelCrossings: originalRows.whereType<LevelCrossing>().toList(),
+        ),
+      ],
+    );
 
-    final groupedRowsNotExpanded = originalRows.groupBaliseAndLeveLCrossings([]).toList();
+    final groupedRowsNotExpanded = originalRows.groupBaliseAndLeveLCrossings([], metadata).toList();
 
     expect(groupedRowsNotExpanded, hasLength(1));
     expect(groupedRowsNotExpanded[0], isA<BaliseLevelCrossingGroup>());
