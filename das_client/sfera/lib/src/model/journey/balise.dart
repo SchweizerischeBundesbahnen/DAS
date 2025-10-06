@@ -11,20 +11,6 @@ class Balise extends JourneyPoint {
   final int amountLevelCrossings;
 
   @override
-  bool get canGroup => true;
-
-  @override
-  bool canGroupWith(BaseData other) {
-    if (other is LevelCrossing) {
-      return true;
-    } else if (other is Balise) {
-      return amountLevelCrossings == 1 && other.amountLevelCrossings == 1;
-    } else {
-      return false;
-    }
-  }
-
-  @override
   String toString() =>
       'Balise('
       'order: $order'

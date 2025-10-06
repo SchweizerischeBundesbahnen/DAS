@@ -8,14 +8,6 @@ class LevelCrossing extends JourneyPoint {
   }) : super(type: Datatype.levelCrossing);
 
   @override
-  bool get canGroup => true;
-
-  @override
-  bool canGroupWith(BaseData other) {
-    return [Datatype.balise, Datatype.levelCrossing].contains(other.type);
-  }
-
-  @override
   String toString() =>
       'LevelCrossing('
       'order: $order'
@@ -32,4 +24,14 @@ class LevelCrossing extends JourneyPoint {
 
   @override
   int get hashCode => order.hashCode ^ Object.hashAll(kilometre);
+
+  LevelCrossing copyWith({
+    int? order,
+    List<double>? kilometre,
+  }) {
+    return LevelCrossing(
+      order: order ?? this.order,
+      kilometre: kilometre ?? this.kilometre,
+    );
+  }
 }
