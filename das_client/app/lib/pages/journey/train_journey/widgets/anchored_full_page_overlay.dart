@@ -57,6 +57,8 @@ class AnchoredFullPageOverlay extends StatefulWidget {
 
   final bool isClosableOnBackgroundTap;
 
+  static double get defaultContentWidget => 360.0;
+
   @override
   State<AnchoredFullPageOverlay> createState() => _AnchoredFullPageOverlayState();
 }
