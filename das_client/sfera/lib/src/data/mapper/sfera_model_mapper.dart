@@ -17,9 +17,7 @@ import 'package:sfera/src/data/mapper/mapper_utils.dart';
 import 'package:sfera/src/data/mapper/segment_profile_mapper.dart';
 import 'package:sfera/src/data/mapper/speed_mapper.dart';
 import 'package:sfera/src/data/mapper/track_equipment_mapper.dart';
-import 'package:sfera/src/model/journey/balise_group.dart';
 import 'package:sfera/src/model/journey/bracket_station.dart';
-import 'package:sfera/src/model/journey/level_crossing_group.dart';
 
 final _log = Logger('SferaModelMapper');
 
@@ -607,7 +605,7 @@ class SferaModelMapper {
           }
         }
 
-        result.add(BaliseGroup(balise: currentElement, levelCrossings: levelCrossings, otherPoints: otherPoints));
+        result.add(BaliseGroup(balise: currentElement, levelCrossings: levelCrossings, pointsBetween: otherPoints));
       }
       if (currentElement is LevelCrossing) {
         final levelCrossings = [currentElement];

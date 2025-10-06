@@ -164,14 +164,14 @@ class TrainJourney extends StatelessWidget {
 
     final rows = journey.data
         .whereNot((it) => _isCurvePointWithoutSpeed(it, journey, settings))
-        .groupBaliseAndLeveLCrossings(settings.expandedGroups, journey.metadata)
+        .groupBaliseAndLevelCrossings(settings.expandedGroups, journey.metadata)
         .hideRepeatedLineFootNotes(journeyPosition?.currentPosition)
         .hideFootNotesForNotSelectedTrainSeries(currentBreakSeries?.trainSeries)
         .combineFootNoteAndOperationalIndication()
         .sorted((a1, a2) => a1.compareTo(a2));
 
     final groupedRows = rows
-        .whereType<BaliseLevelCrossingGroup>()
+        .whereType<BaliseLevelCrossingGroupJourneyPoint>()
         .map((it) => it.groupedElements)
         .expand((it) => it)
         .toList();
@@ -306,7 +306,7 @@ class TrainJourney extends StatelessWidget {
         case Datatype.baliseLevelCrossingGroup:
           return BaliseLevelCrossingGroupRow(
             metadata: journey.metadata,
-            data: rowData as BaliseLevelCrossingGroup,
+            data: rowData as BaliseLevelCrossingGroupJourneyPoint,
             journeyPosition: journeyPosition,
             config: trainJourneyConfig,
             onTap: () => _onBaliseLevelCrossingGroupTap(context, rowData, settings),
@@ -438,7 +438,7 @@ class TrainJourney extends StatelessWidget {
 
   void _onBaliseLevelCrossingGroupTap(
     BuildContext context,
-    BaliseLevelCrossingGroup group,
+    BaliseLevelCrossingGroupJourneyPoint group,
     TrainJourneySettings settings,
   ) {
     final newList = List<int>.from(settings.expandedGroups);

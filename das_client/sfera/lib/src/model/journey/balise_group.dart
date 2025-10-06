@@ -8,22 +8,22 @@ class BaliseGroup extends LevelCrossingGroup {
   const BaliseGroup({
     required this.balise,
     required super.levelCrossings,
-    required this.otherPoints,
+    required this.pointsBetween,
   });
 
   final Balise balise;
-  final List<JourneyPoint> otherPoints;
+  final List<JourneyPoint> pointsBetween;
 
   bool canGroupWith(BaliseGroup other) {
     return balise.amountLevelCrossings == 1 &&
         levelCrossings.isNotEmpty &&
-        otherPoints.isEmpty &&
+        pointsBetween.isEmpty &&
         other.balise.amountLevelCrossings == 1 &&
         other.levelCrossings.isNotEmpty;
   }
 
   bool shouldShowBaliseIconForLevelCrossing(LevelCrossing levelCrossing) {
-    final servicePoint = otherPoints.whereType<ServicePoint>().firstOrNull;
+    final servicePoint = pointsBetween.whereType<ServicePoint>().firstOrNull;
     return servicePoint != null && servicePoint.order < levelCrossing.order;
   }
 

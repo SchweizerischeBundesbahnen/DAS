@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 
 extension BaseDataExtension on Iterable<BaseData> {
-  Iterable<BaseData> groupBaliseAndLeveLCrossings(List<int> expandedGroups, Metadata metadata) {
+  Iterable<BaseData> groupBaliseAndLevelCrossings(List<int> expandedGroups, Metadata metadata) {
     final List<BaseData> resultList = toList();
 
     final baliseGroups = <BaliseGroup>[];
@@ -12,7 +12,7 @@ extension BaseDataExtension on Iterable<BaseData> {
       for (final baliseGroup in baliseGroups) {
         groupedElements.add(baliseGroup.balise);
 
-        final servicePoint = baliseGroup.otherPoints.firstWhereOrNull((it) => it is ServicePoint);
+        final servicePoint = baliseGroup.pointsBetween.firstWhereOrNull((it) => it is ServicePoint);
 
         for (final levelCrossing in baliseGroup.levelCrossings) {
           // Adjust order of level crossing if it is before the service point or if there is no service point
@@ -25,7 +25,7 @@ extension BaseDataExtension on Iterable<BaseData> {
         }
       }
 
-      final group = BaliseLevelCrossingGroup(
+      final group = BaliseLevelCrossingGroupJourneyPoint(
         order: baliseGroups.first.balise.order,
         kilometre: baliseGroups.first.balise.kilometre,
         groupedElements: groupedElements,
@@ -74,7 +74,7 @@ extension BaseDataExtension on Iterable<BaseData> {
 
     // Add group header
     resultList.add(
-      BaliseLevelCrossingGroup(
+      BaliseLevelCrossingGroupJourneyPoint(
         order: firstLevelCrossing.order,
         kilometre: firstLevelCrossing.kilometre,
         groupedElements: group.levelCrossings,

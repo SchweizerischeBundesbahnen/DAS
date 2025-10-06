@@ -28,7 +28,6 @@ class LevelCrossing extends JourneyPoint {
   LevelCrossing copyWith({
     int? order,
     List<double>? kilometre,
-    List<TrainSeriesSpeed>? localSpeeds,
   }) {
     return LevelCrossing(
       order: order ?? this.order,

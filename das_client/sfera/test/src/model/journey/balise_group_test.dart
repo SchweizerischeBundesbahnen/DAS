@@ -8,7 +8,7 @@ void main() {
       levelCrossings: [
         LevelCrossing(order: 101, kilometre: [0.11]),
       ],
-      otherPoints: [],
+      pointsBetween: [],
     );
 
     expect(baliseGroup.shownLevelCrossingsCount(), 1);
@@ -22,7 +22,7 @@ void main() {
         LevelCrossing(order: 101, kilometre: [0.11]),
         LevelCrossing(order: 102, kilometre: [0.12]),
       ],
-      otherPoints: [],
+      pointsBetween: [],
     );
 
     expect(baliseGroup.shownLevelCrossingsCount(), 2);
@@ -37,7 +37,7 @@ void main() {
         LevelCrossing(order: 101, kilometre: [0.11]),
         LevelCrossing(order: 105, kilometre: [0.14]),
       ],
-      otherPoints: [
+      pointsBetween: [
         ServicePoint(name: 'Dummy', order: 103, kilometre: [0.12]),
       ],
     );
@@ -54,7 +54,7 @@ void main() {
         LevelCrossing(order: 101, kilometre: [0.11]),
         LevelCrossing(order: 105, kilometre: [0.14]),
       ],
-      otherPoints: [
+      pointsBetween: [
         Signal(order: 103, kilometre: [0.12]),
       ],
     );

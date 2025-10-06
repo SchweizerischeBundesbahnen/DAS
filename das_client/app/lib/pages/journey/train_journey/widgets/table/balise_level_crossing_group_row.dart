@@ -11,7 +11,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
-class BaliseLevelCrossingGroupRow extends CellRowBuilder<BaliseLevelCrossingGroup> {
+class BaliseLevelCrossingGroupRow extends CellRowBuilder<BaliseLevelCrossingGroupJourneyPoint> {
   static const Key baliseIconKey = Key('baliseIcon');
 
   BaliseLevelCrossingGroupRow({

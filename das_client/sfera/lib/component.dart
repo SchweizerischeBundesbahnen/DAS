@@ -21,7 +21,7 @@ export 'package:sfera/src/model/journey/advised_speed_segment.dart';
 export 'package:sfera/src/model/journey/arrival_departure_time.dart';
 export 'package:sfera/src/model/journey/balise.dart';
 export 'package:sfera/src/model/journey/balise_group.dart';
-export 'package:sfera/src/model/journey/balise_level_crossing_group.dart';
+export 'package:sfera/src/model/journey/balise_level_crossing_group_journey_point.dart';
 export 'package:sfera/src/model/journey/base_data.dart';
 export 'package:sfera/src/model/journey/base_data_extension.dart';
 export 'package:sfera/src/model/journey/base_foot_note.dart';
