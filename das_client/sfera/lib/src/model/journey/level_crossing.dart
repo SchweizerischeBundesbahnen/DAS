@@ -8,17 +8,6 @@ class LevelCrossing extends JourneyPoint {
   }) : super(type: Datatype.levelCrossing);
 
   @override
-  bool get canGroup => true;
-
-  @override
-  bool canGroupWith(BaseData other) {
-    if (other is LevelCrossing) return true;
-    if (other is Balise) return other.order <= order;
-
-    return false;
-  }
-
-  @override
   String toString() =>
       'LevelCrossing('
       'order: $order'
