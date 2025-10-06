@@ -44,9 +44,6 @@ class CommunicationNetworkChannelRow extends CellRowBuilder<CommunicationNetwork
     final networkType = data.communicationNetworkType;
     return DASTableCell(
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
         children: [
           if (networkType == CommunicationNetworkType.sim)
             Flexible(

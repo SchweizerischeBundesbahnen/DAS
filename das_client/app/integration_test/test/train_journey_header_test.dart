@@ -384,12 +384,15 @@ Future<void> main() async {
       final header = find.byType(Header);
       expect(header, findsOneWidget);
 
+      final delayText = '+00:30';
+      final delay = find.descendant(of: header, matching: find.text(delayText));
+
       await waitUntilExists(
         tester,
-        find.descendant(of: header, matching: find.byKey(DASChronograph.punctualityTextKey)),
+        delay,
       );
 
-      expect(find.descendant(of: header, matching: find.text('+00:30')), findsOneWidget);
+      expect(delay, findsOneWidget);
 
       await disconnect(tester);
     });

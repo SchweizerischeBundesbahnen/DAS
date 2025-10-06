@@ -25,9 +25,9 @@ class CommunicationNetworkChannel extends JourneyPoint {
   @override
   String toString() {
     return 'CommunicationNetworkChannel('
-        'order: $order '
-        'kilometre: $kilometre '
-        'communicationNetworkType: $communicationNetworkType'
+        'order: $order'
+        ' kilometre: $kilometre'
+        ' communicationNetworkType: $communicationNetworkType'
         ')';
   }
 }

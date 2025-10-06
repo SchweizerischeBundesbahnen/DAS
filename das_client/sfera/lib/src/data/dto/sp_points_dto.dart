@@ -10,7 +10,6 @@ import 'package:sfera/src/data/dto/timing_point_dto.dart';
 import 'package:sfera/src/data/dto/track_foot_notes_nsp_dto.dart';
 import 'package:sfera/src/data/dto/virtual_balise_dto.dart';
 import 'package:sfera/src/data/dto/whistle_network_specific_point_dto.dart';
-import 'package:sfera/src/data/dto/communication_network_channel_dto.dart';
 
 class SpPointsDto extends SferaXmlElementDto {
   static const String elementType = 'SP_Points';
@@ -27,9 +26,6 @@ class SpPointsDto extends SferaXmlElementDto {
   Iterable<BaliseGroupDto> get baliseGroupes => children.whereType<BaliseGroupDto>();
 
   Iterable<BaliseDto> get balises => baliseGroupes.map((group) => group.balise).flattened;
-
-  Iterable<CommunicationNetworkChannelDto> get communicationNetworkChannels =>
-      children.whereType<CommunicationNetworkChannelDto>();
 
   Iterable<NetworkSpecificPointDto> get protectionSectionNsp =>
       children.whereType<NetworkSpecificPointDto>().where((it) => it.groupName == _protectionSectionNspName);

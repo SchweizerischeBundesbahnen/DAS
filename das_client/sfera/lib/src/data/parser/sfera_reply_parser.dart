@@ -92,7 +92,6 @@ import 'package:sfera/src/data/dto/train_location_information_dto.dart';
 import 'package:sfera/src/data/dto/velocity_dto.dart';
 import 'package:sfera/src/data/dto/virtual_balise_dto.dart';
 import 'package:sfera/src/data/dto/virtual_balise_position_dto.dart';
-import 'package:sfera/src/data/dto/communication_network_channel_dto.dart';
 import 'package:xml/xml.dart';
 
 class SferaReplyParser {
@@ -273,8 +272,6 @@ class SferaReplyParser {
         return GraduatedSpeedInfoDto(type: type, attributes: attributes, children: children, value: value);
       case BaliseDto.elementType:
         return BaliseDto(type: type, attributes: attributes, children: children, value: value);
-      case CommunicationNetworkChannelDto.elementType:
-        return CommunicationNetworkChannelDto(type: type, attributes: attributes, children: children, value: value);
       case LevelCrossingAreaDto.elementType:
         return LevelCrossingAreaDto(type: type, attributes: attributes, children: children, value: value);
       case PositionSpeedDto.elementType:
