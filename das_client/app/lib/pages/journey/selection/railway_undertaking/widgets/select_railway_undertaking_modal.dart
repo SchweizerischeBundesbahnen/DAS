@@ -107,9 +107,7 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
                           padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing),
                           child: SBBIconButtonSmall(
                             icon: SBBIcons.cross_medium,
-                            onPressed: () {
-                              context.router.pop();
-                            },
+                            onPressed: () => controller?.textEditingController.clear(),
                           ),
                         ),
                       ],
