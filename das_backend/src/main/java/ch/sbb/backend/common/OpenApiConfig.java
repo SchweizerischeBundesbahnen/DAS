@@ -53,9 +53,10 @@ public class OpenApiConfig {
 
     private SecurityScheme addOAuthSecurityScheme() {
         final Scopes scopes = new Scopes().addString("api://" + serviceName + "/.default", "Global access");
-
-        final OAuthFlows flowAuthorizationCode = new OAuthFlows().authorizationCode(
-            new OAuthFlow().authorizationUrl(authorizationUrl + "/authorize").tokenUrl(authorizationUrl + "/token").scopes(scopes));
+        
+        final OAuthFlows flowAuthorizationCode = new OAuthFlows()
+            .authorizationCode(new OAuthFlow().authorizationUrl(authorizationUrl + "/authorize").tokenUrl(authorizationUrl + "/token").scopes(scopes))
+            .clientCredentials(new OAuthFlow().tokenUrl(authorizationUrl + "/token").scopes(scopes));
 
         return new SecurityScheme().name(OAUTH_2).type(Type.OAUTH2).flows(flowAuthorizationCode);
     }
