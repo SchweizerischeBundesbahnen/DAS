@@ -6,8 +6,8 @@ import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
+import 'package:app/pages/journey/selection/railway_undertaking/widgets/select_railway_undertaking_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_input.dart';
-import 'package:app/pages/journey/selection/widgets/journey_railway_undertaking_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_train_number_input.dart';
 import 'package:app/pages/journey/selection/widgets/logout_button.dart';
 import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
@@ -105,9 +105,9 @@ class _ContentState extends State<_Content> {
           information: !model.isStartDateSameAsToday ? context.l10n.p_train_selection_date_not_today_warning : null,
           child: Column(
             children: [
-              JourneyTrainNumberInput(),
               JourneyDateInput(),
-              JourneyRailwayUndertakingInput(),
+              SelectRailwayUndertakingInput(),
+              JourneyTrainNumberInput(),
             ],
           ),
         );

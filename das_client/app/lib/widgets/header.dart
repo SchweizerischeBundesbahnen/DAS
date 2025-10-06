@@ -11,6 +11,13 @@ class Header extends StatelessWidget {
   /// information text is shown below header card if given.
   final String? information;
 
+  static EdgeInsetsGeometry get padding => const EdgeInsetsDirectional.fromSTEB(
+    sbbDefaultSpacing * 0.5,
+    0,
+    sbbDefaultSpacing * 0.5,
+    sbbDefaultSpacing,
+  );
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -31,12 +38,7 @@ class Header extends StatelessWidget {
 
   Widget _container(BuildContext context) {
     return Container(
-      margin: const EdgeInsetsDirectional.fromSTEB(
-        sbbDefaultSpacing * 0.5,
-        0,
-        sbbDefaultSpacing * 0.5,
-        sbbDefaultSpacing,
-      ),
+      margin: padding,
       decoration: BoxDecoration(
         color: ThemeUtil.getColor(context, SBBColors.cloud, SBBColors.granite),
         borderRadius: BorderRadius.all(Radius.circular(sbbDefaultSpacing)),
