@@ -41,6 +41,80 @@ void main() {
     expect(groupedRowsExpanded[4], isA<LevelCrossing>());
   });
 
+  test('Test balise and level crossing grouping with element between balise and level Crossing', () {
+    final originalRows = <JourneyPoint>[
+      Balise(order: 100, kilometre: [0.1], amountLevelCrossings: 1),
+      LevelCrossing(order: 101, kilometre: [0.11]),
+      Balise(order: 200, kilometre: [0.2], amountLevelCrossings: 1),
+      Signal(order: 201, kilometre: [0.22]),
+      LevelCrossing(order: 202, kilometre: [0.22]),
+    ];
+    final metadata = Metadata(
+      levelCrossingGroups: [
+        BaliseGroup(
+          balise: originalRows[0] as Balise,
+          levelCrossings: [originalRows[1] as LevelCrossing],
+          otherPoints: [],
+        ),
+        BaliseGroup(
+          balise: originalRows[2] as Balise,
+          levelCrossings: [originalRows[4] as LevelCrossing],
+          otherPoints: [originalRows[3]],
+        ),
+      ],
+    );
+
+    final groupedRowsNotExpanded = originalRows.groupBaliseAndLeveLCrossings([], metadata).toList();
+
+    expect(groupedRowsNotExpanded, hasLength(2));
+    expect(groupedRowsNotExpanded[0], isA<BaliseLevelCrossingGroup>());
+    expect((groupedRowsNotExpanded[0] as BaliseLevelCrossingGroup).groupedElements, hasLength(4));
+
+    final groupedRowsExpanded = originalRows.groupBaliseAndLeveLCrossings([100], metadata).toList();
+
+    expect(groupedRowsExpanded, hasLength(6));
+    expect(groupedRowsExpanded[0], isA<BaliseLevelCrossingGroup>());
+    expect((groupedRowsExpanded[0] as BaliseLevelCrossingGroup).groupedElements, hasLength(4));
+    expect(groupedRowsExpanded[1], isA<Balise>());
+    expect(groupedRowsExpanded[2], isA<LevelCrossing>());
+    expect(groupedRowsExpanded[3], isA<Balise>());
+    expect(groupedRowsExpanded[4], isA<LevelCrossing>());
+    expect(groupedRowsExpanded[5], isA<Signal>());
+  });
+
+  test('Test balise and level crossing not grouping after item between', () {
+    final originalRows = <JourneyPoint>[
+      Balise(order: 100, kilometre: [0.1], amountLevelCrossings: 1),
+      Signal(order: 101, kilometre: [0.22]),
+      LevelCrossing(order: 102, kilometre: [0.11]),
+      Balise(order: 200, kilometre: [0.2], amountLevelCrossings: 1),
+      LevelCrossing(order: 202, kilometre: [0.22]),
+    ];
+    final metadata = Metadata(
+      levelCrossingGroups: [
+        BaliseGroup(
+          balise: originalRows[0] as Balise,
+          levelCrossings: [originalRows[2] as LevelCrossing],
+          otherPoints: [originalRows[1]],
+        ),
+        BaliseGroup(
+          balise: originalRows[3] as Balise,
+          levelCrossings: [originalRows[4] as LevelCrossing],
+          otherPoints: [],
+        ),
+      ],
+    );
+
+    final groupedRowsNotExpanded = originalRows.groupBaliseAndLeveLCrossings([], metadata).toList();
+
+    expect(groupedRowsNotExpanded, hasLength(3));
+    expect(groupedRowsNotExpanded[0], isA<BaliseLevelCrossingGroup>());
+    expect((groupedRowsNotExpanded[0] as BaliseLevelCrossingGroup).groupedElements, hasLength(2));
+    expect(groupedRowsNotExpanded[1], isA<Signal>());
+    expect(groupedRowsNotExpanded[2], isA<BaliseLevelCrossingGroup>());
+    expect((groupedRowsNotExpanded[2] as BaliseLevelCrossingGroup).groupedElements, hasLength(2));
+  });
+
   test('Test balise and level crossing grouping with different amounts', () {
     final originalRows = <BaseData>[
       Balise(order: 100, kilometre: [0.1], amountLevelCrossings: 1),
