@@ -605,7 +605,13 @@ class SferaModelMapper {
           }
         }
 
-        result.add(BaliseGroup(balise: currentElement, levelCrossings: levelCrossings, pointsBetween: otherPoints));
+        result.add(
+          SupervisedLevelCrossingGroup(
+            balise: currentElement,
+            levelCrossings: levelCrossings,
+            pointsBetween: otherPoints,
+          ),
+        );
       }
       if (currentElement is LevelCrossing) {
         final levelCrossings = [currentElement];
@@ -619,7 +625,7 @@ class SferaModelMapper {
           }
         }
         if (levelCrossings.length > 1) {
-          result.add(LevelCrossingGroup(levelCrossings: levelCrossings));
+          result.add(UnsupervisedLevelCrossingGroup(levelCrossings: levelCrossings));
         }
       }
     }

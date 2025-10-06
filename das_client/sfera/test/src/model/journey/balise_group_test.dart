@@ -3,7 +3,7 @@ import 'package:sfera/component.dart';
 
 void main() {
   test('Test balise group without other points', () {
-    final baliseGroup = BaliseGroup(
+    final baliseGroup = SupervisedLevelCrossingGroup(
       balise: Balise(order: 100, kilometre: [0.1], amountLevelCrossings: 1),
       levelCrossings: [
         LevelCrossing(order: 101, kilometre: [0.11]),
@@ -16,7 +16,7 @@ void main() {
   });
 
   test('Test balise group with multiple level crossings without other points', () {
-    final baliseGroup = BaliseGroup(
+    final baliseGroup = SupervisedLevelCrossingGroup(
       balise: Balise(order: 100, kilometre: [0.1], amountLevelCrossings: 2),
       levelCrossings: [
         LevelCrossing(order: 101, kilometre: [0.11]),
@@ -31,7 +31,7 @@ void main() {
   });
 
   test('Test balise group with multiple level crossings with service point between', () {
-    final baliseGroup = BaliseGroup(
+    final baliseGroup = SupervisedLevelCrossingGroup(
       balise: Balise(order: 100, kilometre: [0.1], amountLevelCrossings: 2),
       levelCrossings: [
         LevelCrossing(order: 101, kilometre: [0.11]),
@@ -48,7 +48,7 @@ void main() {
   });
 
   test('Test balise group with multiple level crossings with none service point between', () {
-    final baliseGroup = BaliseGroup(
+    final baliseGroup = SupervisedLevelCrossingGroup(
       balise: Balise(order: 100, kilometre: [0.1], amountLevelCrossings: 2),
       levelCrossings: [
         LevelCrossing(order: 101, kilometre: [0.11]),

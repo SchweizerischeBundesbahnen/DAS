@@ -1,11 +1,12 @@
 import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
+import 'package:sfera/src/model/journey/balise_level_crossing_group.dart';
 
 extension BaseDataExtension on Iterable<BaseData> {
   Iterable<BaseData> groupBaliseAndLevelCrossings(List<int> expandedGroups, Metadata metadata) {
     final List<BaseData> resultList = toList();
 
-    final baliseGroups = <BaliseGroup>[];
+    final baliseGroups = <SupervisedLevelCrossingGroup>[];
 
     void addBaliseLevelCrossingGroup() {
       final groupedElements = <BaseData>[];
@@ -25,7 +26,7 @@ extension BaseDataExtension on Iterable<BaseData> {
         }
       }
 
-      final group = BaliseLevelCrossingGroupJourneyPoint(
+      final group = BaliseLevelCrossingGroup(
         order: baliseGroups.first.balise.order,
         kilometre: baliseGroups.first.balise.kilometre,
         groupedElements: groupedElements,
@@ -42,7 +43,7 @@ extension BaseDataExtension on Iterable<BaseData> {
     }
 
     for (final group in metadata.levelCrossingGroups) {
-      if (group is BaliseGroup) {
+      if (group is SupervisedLevelCrossingGroup) {
         if (baliseGroups.isEmpty) {
           baliseGroups.add(group);
         } else {
@@ -74,7 +75,7 @@ extension BaseDataExtension on Iterable<BaseData> {
 
     // Add group header
     resultList.add(
-      BaliseLevelCrossingGroupJourneyPoint(
+      BaliseLevelCrossingGroup(
         order: firstLevelCrossing.order,
         kilometre: firstLevelCrossing.kilometre,
         groupedElements: group.levelCrossings,

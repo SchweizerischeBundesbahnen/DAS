@@ -171,7 +171,7 @@ class TrainJourney extends StatelessWidget {
         .sorted((a1, a2) => a1.compareTo(a2));
 
     final groupedRows = rows
-        .whereType<BaliseLevelCrossingGroupJourneyPoint>()
+        .whereType<BaliseLevelCrossingGroup>()
         .map((it) => it.groupedElements)
         .expand((it) => it)
         .toList();
@@ -306,7 +306,7 @@ class TrainJourney extends StatelessWidget {
         case Datatype.baliseLevelCrossingGroup:
           return BaliseLevelCrossingGroupRow(
             metadata: journey.metadata,
-            data: rowData as BaliseLevelCrossingGroupJourneyPoint,
+            data: rowData as BaliseLevelCrossingGroup,
             journeyPosition: journeyPosition,
             config: trainJourneyConfig,
             onTap: () => _onBaliseLevelCrossingGroupTap(context, rowData, settings),
@@ -438,7 +438,7 @@ class TrainJourney extends StatelessWidget {
 
   void _onBaliseLevelCrossingGroupTap(
     BuildContext context,
-    BaliseLevelCrossingGroupJourneyPoint group,
+    BaliseLevelCrossingGroup group,
     TrainJourneySettings settings,
   ) {
     final newList = List<int>.from(settings.expandedGroups);

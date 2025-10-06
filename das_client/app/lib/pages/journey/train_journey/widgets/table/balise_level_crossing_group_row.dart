@@ -11,7 +11,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
-class BaliseLevelCrossingGroupRow extends CellRowBuilder<BaliseLevelCrossingGroupJourneyPoint> {
+class BaliseLevelCrossingGroupRow extends CellRowBuilder<BaliseLevelCrossingGroup> {
   static const Key baliseIconKey = Key('baliseIcon');
 
   BaliseLevelCrossingGroupRow({
@@ -30,7 +30,7 @@ class BaliseLevelCrossingGroupRow extends CellRowBuilder<BaliseLevelCrossingGrou
   @override
   DASTableCell informationCell(BuildContext context) {
     final firstBalise = data.groupedElements.whereType<Balise>().firstOrNull;
-    final baliseGroup = metadata.levelCrossingGroups.whereType<BaliseGroup>().firstWhereOrNull(
+    final baliseGroup = metadata.levelCrossingGroups.whereType<SupervisedLevelCrossingGroup>().firstWhereOrNull(
       (element) => element.balise == firstBalise,
     );
     final shownLevelCrossingsCount = baliseGroup?.shownLevelCrossingsCount() ?? 0;

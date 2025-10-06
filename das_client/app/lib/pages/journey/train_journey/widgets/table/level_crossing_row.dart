@@ -53,7 +53,7 @@ class LevelCrossingRow extends CellRowBuilder<LevelCrossing> {
 
   @override
   DASTableCell iconsCell2(BuildContext context) {
-    final group = metadata.levelCrossingGroups.whereType<BaliseGroup>().firstWhereOrNull(
+    final group = metadata.levelCrossingGroups.whereType<SupervisedLevelCrossingGroup>().firstWhereOrNull(
       (element) => element.levelCrossings.contains(data),
     );
 

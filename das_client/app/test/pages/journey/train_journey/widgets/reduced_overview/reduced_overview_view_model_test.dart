@@ -60,7 +60,7 @@ void main() {
     final speedChange = SpeedChange(order: 800, kilometre: []);
     final balise = Balise(order: 900, kilometre: [], amountLevelCrossings: 0);
     final levelCrossing = LevelCrossing(order: 1000, kilometre: []);
-    final baliseLevelCrossingGroup = BaliseLevelCrossingGroupJourneyPoint(
+    final baliseLevelCrossingGroup = BaliseLevelCrossingGroup(
       order: 1100,
       kilometre: [],
       groupedElements: [],

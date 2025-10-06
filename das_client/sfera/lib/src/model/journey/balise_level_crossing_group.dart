@@ -2,8 +2,8 @@ import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/model/journey/order_priority.dart';
 
-class BaliseLevelCrossingGroupJourneyPoint extends JourneyPoint {
-  const BaliseLevelCrossingGroupJourneyPoint({
+class BaliseLevelCrossingGroup extends JourneyPoint {
+  const BaliseLevelCrossingGroup({
     required super.order,
     required super.kilometre,
     required this.groupedElements,
@@ -22,7 +22,7 @@ class BaliseLevelCrossingGroupJourneyPoint extends JourneyPoint {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is BaliseLevelCrossingGroupJourneyPoint &&
+      other is BaliseLevelCrossingGroup &&
           runtimeType == other.runtimeType &&
           order == other.order &&
           ListEquality().equals(kilometre, other.kilometre) &&
