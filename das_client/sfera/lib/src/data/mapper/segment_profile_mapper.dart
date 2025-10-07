@@ -134,6 +134,7 @@ class SegmentProfileMapper {
           mandatoryStop: tpConstraint.stoppingPointInformation?.stopType?.mandatoryStop ?? true,
           isStop: tpConstraint.stopSkipPass == StopSkipPassDto.stoppingPoint,
           isStation: tafTapLocation.locationType != TafTapLocationTypeDto.halt,
+          isAdditional: tafTapLocation.routeTableDataNsp?.routeTableDataRelevant?.isAdditional ?? false,
           betweenBrackets: tafTapLocation.routeTableDataNsp?.betweenBrackets ?? false,
           bracketMainStation: _parseBracketMainStation(tafTapLocations, tafTapLocation),
           kilometre: mapperData.kilometreMap[timingPoint.location] ?? [],
@@ -169,31 +170,30 @@ class SegmentProfileMapper {
   }
 
   static List<ProtectionSection> _parseProtectionSections(_MapperData mapperData) {
-    final protectionSections = <ProtectionSection>[];
     final currentLimitation = mapperData.segmentProfile.characteristics?.currentLimitation;
-    if (currentLimitation != null) {
-      final protectionSectionNsps = mapperData.segmentProfile.points?.protectionSectionNsp ?? [];
+    if (currentLimitation == null) return List.empty();
 
-      for (final currentLimitationChange in currentLimitation.currentLimitationChanges) {
-        if (currentLimitationChange.maxCurValue == '0') {
-          final protectionSectionNsp = protectionSectionNsps
-              .where((it) => it.location == currentLimitationChange.location)
-              .firstOrNull;
+    final protectionSections = <ProtectionSection>[];
+    final protectionSectionNsps = mapperData.segmentProfile.points?.protectionSectionNsp ?? [];
+    for (final currentLimitationChange in currentLimitation.currentLimitationChanges) {
+      if (currentLimitationChange.maxCurValue == '0') {
+        final protectionSectionNsp = protectionSectionNsps
+            .where((it) => it.location == currentLimitationChange.location)
+            .firstOrNull;
 
-          final isOptional = protectionSectionNsp?.parameters.withName(_protectionSectionNspFacultativeName);
-          final isLong = protectionSectionNsp?.parameters.withName(_protectionSectionNspLengthTypeName);
+        final isOptional = protectionSectionNsp?.parameters.withName(_protectionSectionNspFacultativeName);
+        final isLong = protectionSectionNsp?.parameters.withName(_protectionSectionNspLengthTypeName);
 
-          protectionSections.add(
-            ProtectionSection(
-              isOptional: isOptional != null ? bool.parse(isOptional.nspValue) : false,
-              isLong: isLong != null
-                  ? XmlEnum.valueOf(LengthTypeDto.values, isLong.nspValue) == LengthTypeDto.long
-                  : false,
-              order: calculateOrder(mapperData.segmentIndex, currentLimitationChange.location),
-              kilometre: mapperData.kilometreMap[currentLimitationChange.location]!,
-            ),
-          );
-        }
+        protectionSections.add(
+          ProtectionSection(
+            isOptional: isOptional != null ? bool.parse(isOptional.nspValue) : false,
+            isLong: isLong != null
+                ? XmlEnum.valueOf(LengthTypeDto.values, isLong.nspValue) == LengthTypeDto.long
+                : false,
+            order: calculateOrder(mapperData.segmentIndex, currentLimitationChange.location),
+            kilometre: mapperData.kilometreMap[currentLimitationChange.location]!,
+          ),
+        );
       }
     }
     return protectionSections;

@@ -242,7 +242,7 @@ class _FlappyGameState extends State<FlappyScreen> with SingleTickerProviderStat
               AnimatedContainer(
                 alignment: Alignment(0, birdY),
                 duration: const Duration(milliseconds: 0),
-                color: ThemeUtil.getBackgroundColor(context),
+                color: SBBBaseStyle.of(context).themeValue(SBBColors.white, SBBColors.black),
                 child: Bird(evu: chosenEVU),
               ),
               ...barriers.expand(

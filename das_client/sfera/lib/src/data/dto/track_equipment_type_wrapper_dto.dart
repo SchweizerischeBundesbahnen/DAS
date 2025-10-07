@@ -7,7 +7,7 @@ class TrackEquipmentTypeWrapperDto extends NetworkSpecificParameterDto {
 
   TrackEquipmentTypeWrapperDto({super.type, super.attributes, super.children, super.value});
 
-  SferaTrackEquipmentTypeDto get unwrapped => XmlEnum.valueOf(SferaTrackEquipmentTypeDto.values, attributes['value']!)!;
+  SferaTrackEquipmentTypeDto get unwrapped => XmlEnum.valueOf(SferaTrackEquipmentTypeDto.values, nspValue)!;
 
   @override
   bool validate() {

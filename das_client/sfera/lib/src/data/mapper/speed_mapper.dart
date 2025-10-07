@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/graduated_speed_info_dto.dart';
@@ -107,7 +108,7 @@ class SpeedMapper {
         }
 
         final journeyOrders = journeyData.map((it) => it.order);
-        final servicePoints = journeyData.whereType<ServicePoint>();
+        final servicePoints = journeyData.whereType<ServicePoint>().whereNot((sp) => sp.isAdditional);
 
         int startOrder = calculateOrder(segmentIndex, speedConstraint.startLocation ?? 0);
         if (!journeyOrders.contains(startOrder)) {
