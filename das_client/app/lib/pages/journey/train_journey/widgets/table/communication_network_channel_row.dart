@@ -43,6 +43,7 @@ class CommunicationNetworkChannelRow extends CellRowBuilder<CommunicationNetwork
   DASTableCell informationCell(BuildContext context) {
     final networkType = data.communicationNetworkType;
     return DASTableCell(
+      alignment: Alignment.centerLeft,
       child: Row(
         children: [
           if (networkType == CommunicationNetworkType.sim)
@@ -64,7 +65,6 @@ class CommunicationNetworkChannelRow extends CellRowBuilder<CommunicationNetwork
           ],
         ],
       ),
-      alignment: Alignment.centerLeft,
     );
   }
 }
