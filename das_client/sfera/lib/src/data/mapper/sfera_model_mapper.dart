@@ -57,9 +57,12 @@ class SferaModelMapper {
 
     final segmentProfileReferences = journeyProfile.segmentProfileReferences.toList();
 
-    final segmentJourneyData = segmentProfileReferences
+    var segmentJourneyData = segmentProfileReferences
         .mapIndexed((index, reference) => SegmentProfileMapper.parseSegmentProfile(reference, index, segmentProfiles))
-        .flattenedToList;
+        .flattened;
+
+    final calculatedSpeeds = _parseCalculatedSpeeds(journeyProfile, segmentJourneyData.whereType<ServicePoint>());
+    segmentJourneyData = segmentJourneyData.removeIrrelevantServicePoints(calculatedSpeeds);
     journeyData.addAll(segmentJourneyData);
 
     final uncodedOperationalIndications = segmentProfileReferences
@@ -121,7 +124,7 @@ class SferaModelMapper {
         lineFootNoteLocations: _generateLineFootNoteLocationMap(journeyData.whereType<LineFootNote>()),
         radioContactLists: _parseContactLists(segmentProfileReferences, segmentProfiles),
         lineSpeeds: lineSpeeds,
-        calculatedSpeeds: _parseCalculatedSpeeds(journeyProfile, servicePoints),
+        calculatedSpeeds: calculatedSpeeds,
         levelCrossingGroups: _parseLevelCrossingAndBaliseGroups(journeyPoints),
       ),
       data: journeyData,
@@ -556,7 +559,7 @@ class SferaModelMapper {
 
   static SplayTreeMap<int, SingleSpeed?> _parseCalculatedSpeeds(
     JourneyProfileDto journeyProfile,
-    List<ServicePoint> servicePoints,
+    Iterable<ServicePoint> servicePoints,
   ) {
     final result = SplayTreeMap<int, SingleSpeed?>();
     for (final servicePoint in servicePoints.where((it) => it.isStop)) {
@@ -667,5 +670,21 @@ class _SegmentMapperData {
   @override
   String toString() {
     return '_SegmentMapperData{startSegmentIndex: $startIndex, endSegmentIndex: $endIndex, startLocation: $startLocation, endLocation: $endLocation, startKmRef: $startKmRef, endKmRef: $endKmRef}';
+  }
+}
+
+// extensions
+
+extension _BaseDataIterableExtension on Iterable<BaseData> {
+  /// removes all additional service points that are not at the route start/end and have no speed change.
+  Iterable<BaseData> removeIrrelevantServicePoints(SplayTreeMap<int, SingleSpeed?> calculatedSpeeds) {
+    final servicePoints = whereType<ServicePoint>().toList()..sort();
+    return whereNot((data) {
+      final isNotStartOrEndServicePoint = data != servicePoints.first && data != servicePoints.last;
+      return data is ServicePoint &&
+          data.isAdditional &&
+          isNotStartOrEndServicePoint &&
+          calculatedSpeeds[data.order] == null;
+    });
   }
 }

@@ -23,7 +23,7 @@ class ThemeUtil {
   }
 
   static Color getBackgroundColor(BuildContext context) {
-    return SBBBaseStyle.of(context).themeValue(SBBColors.white, SBBColors.black);
+    return Theme.of(context).scaffoldBackgroundColor;
   }
 
   static bool isDarkMode(BuildContext context) {

@@ -1739,6 +1739,29 @@ void main() {
     expect(servicePoints[4].betweenBrackets, isFalse);
     expect(servicePoints[5].betweenBrackets, isFalse);
   });
+
+  test('Test additional service points are parsed correctly', () {
+    final journey = getJourney('T27', 1);
+    expect(journey.valid, true);
+
+    final servicePoints = journey.data.whereType<ServicePoint>().toList();
+    expect(servicePoints, hasLength(7));
+    final additionalServicePoints = servicePoints.where((point) => point.isAdditional).toList();
+    expect(additionalServicePoints, hasLength(4));
+
+    // Olten Nord (Abzw) should not be listed as it is not at start/end of route or speed relevant
+    // Olten VL should be ignored as ADL is not applied to additional service points
+    expect(additionalServicePoints[0].name, 'Bern (Depot)');
+    expect(additionalServicePoints[1].name, 'Olten Ost (Abzw)');
+    expect(additionalServicePoints[2].name, 'Olten Tunnel (Spw)');
+    expect(additionalServicePoints[3].name, 'Dulliken (Depot)');
+
+    // ADL speed update should be on nearest non-additional service point
+    final advisedSpeedSegments = journey.metadata.advisedSpeedSegments.toList();
+    expect(advisedSpeedSegments, hasLength(1));
+    expect(advisedSpeedSegments[0].startOrder, 1000);
+    expect(advisedSpeedSegments[0].endOrder, 3500);
+  });
 }
 
 void _checkTrainSeriesSpeed<T extends Speed>(
