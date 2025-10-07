@@ -11,7 +11,7 @@ dependencies:
   # https://pub.dev/packages/meta
   meta: ^1.16.0
   # https://pub.dev/packages/sbb_oidc
-  sbb_oidc: ^4.2.0
+  sbb_oidc: ^4.3.0
   # https://pub.dev/packages/collection
   collection: ^1.19.1
   # https://pub.dev/packages/logging
