@@ -102,7 +102,7 @@ class _ContentState extends State<_Content> {
 
         return SBBHeaderbox.custom(
           padding: EdgeInsets.zero,
-          flap: model.isStartDateSameAsToday
+          flap: !model.isStartDateSameAsToday
               ? SBBHeaderboxFlap(
                   title: context.l10n.p_train_selection_date_not_today_warning,
                   leadingIcon: SBBIcons.circle_information_small,
