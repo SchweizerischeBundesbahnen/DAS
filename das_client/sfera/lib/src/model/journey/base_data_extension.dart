@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
-import 'package:sfera/src/model/journey/balise_level_crossing_group.dart';
 
 extension BaseDataExtension on Iterable<BaseData> {
   Iterable<BaseData> groupBaliseAndLevelCrossings(List<int> expandedGroups, Metadata metadata) {
@@ -24,6 +23,12 @@ extension BaseDataExtension on Iterable<BaseData> {
             groupedElements.add(adjustedLevelCrossing);
           }
         }
+      }
+
+      // No grouping if only one element
+      if (groupedElements.length <= 1) {
+        baliseGroups.clear();
+        return;
       }
 
       final group = BaliseLevelCrossingGroup(
