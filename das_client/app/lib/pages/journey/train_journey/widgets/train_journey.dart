@@ -165,11 +165,11 @@ class TrainJourney extends StatelessWidget {
 
     final rows = journey.data
         .whereNot((it) => _isCurvePointWithoutSpeed(it, journey, settings))
-        .groupBaliseAndLeveLCrossings(settings.expandedGroups)
+        .groupBaliseAndLevelCrossings(settings.expandedGroups, journey.metadata)
         .hideRepeatedLineFootNotes(journeyPosition?.currentPosition)
         .hideFootNotesForNotSelectedTrainSeries(currentBreakSeries?.trainSeries)
         .combineFootNoteAndOperationalIndication()
-        .sortedBy((data) => data.order);
+        .sorted((a1, a2) => a1.compareTo(a2));
 
     final groupedRows = rows
         .whereType<BaliseLevelCrossingGroup>()

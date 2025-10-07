@@ -87,6 +87,7 @@
   "c_ru_bls_c": "BLS Cargo",
   "c_ru_sob": "SOB",
   "c_unknown": "Unknown",
+  "c_today": "Today",
   "c_train_number": "Train number",
   "c_main_signal_function_entry": "Entry signal",
   "c_main_signal_function_entry_short": "Entry.S",

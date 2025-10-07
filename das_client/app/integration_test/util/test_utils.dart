@@ -62,6 +62,15 @@ Finder findDASTableRowByText(String text) {
   );
 }
 
+Finder findColoredRowCells({required FinderBase<Element> of, required Color color}) {
+  return find.descendant(
+    of: of,
+    matching: find.byWidgetPredicate(
+      (it) => it is Container && it.decoration is BoxDecoration && (it.decoration as BoxDecoration).color == color,
+    ),
+  );
+}
+
 /// Verifies, that SBB is selected and loads train journey with [trainNumber]
 Future<void> loadTrainJourney(WidgetTester tester, {required String trainNumber}) async {
   // verify we have ru SBB selected.

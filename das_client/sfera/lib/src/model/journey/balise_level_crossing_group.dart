@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
+import 'package:sfera/src/model/journey/order_priority.dart';
 
 class BaliseLevelCrossingGroup extends JourneyPoint {
   const BaliseLevelCrossingGroup({
@@ -14,6 +15,9 @@ class BaliseLevelCrossingGroup extends JourneyPoint {
   String toString() {
     return 'BaliseLevelCrossingGroup(order: $order, kilometre: $kilometre, groupedElements: $groupedElements)';
   }
+
+  @override
+  OrderPriority get orderPriority => OrderPriority.group;
 
   @override
   bool operator ==(Object other) =>

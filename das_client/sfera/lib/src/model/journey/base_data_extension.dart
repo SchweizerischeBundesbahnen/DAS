@@ -1,52 +1,93 @@
 import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
+import 'package:sfera/src/model/journey/balise_level_crossing_group.dart';
 
 extension BaseDataExtension on Iterable<BaseData> {
-  Iterable<BaseData> groupBaliseAndLeveLCrossings(List<int> expandedGroups) {
-    final List<BaseData> resultList = [];
+  Iterable<BaseData> groupBaliseAndLevelCrossings(List<int> expandedGroups, Metadata metadata) {
+    final List<BaseData> resultList = toList();
 
-    for (int i = 0; i < length; i++) {
-      final currentElement = elementAt(i);
-      if (!currentElement.canGroup || currentElement is! JourneyPoint) {
-        // Just add elements to the result that are unable to be grouped
-        resultList.add(currentElement);
-        continue;
-      }
+    final baliseGroups = <SupervisedLevelCrossingGroup>[];
 
-      final groupedElements = <JourneyPoint>[currentElement];
-      // check the next elements if they can be grouped with the currentElement.
-      for (int j = i + 1; j < length; j++) {
-        final nextElement = elementAt(j);
-        if (nextElement.canGroup && currentElement.canGroupWith(nextElement) && nextElement is JourneyPoint) {
-          groupedElements.add(nextElement);
-        } else {
-          // Stop once we reach a element that is unable to be grouped
-          break;
+    void addBaliseLevelCrossingGroup() {
+      final groupedElements = <BaseData>[];
+      for (final baliseGroup in baliseGroups) {
+        groupedElements.add(baliseGroup.balise);
+
+        final servicePoint = baliseGroup.pointsBetween.firstWhereOrNull((it) => it is ServicePoint);
+
+        for (final levelCrossing in baliseGroup.levelCrossings) {
+          // Adjust order of level crossing if it is before the service point or if there is no service point
+          if (servicePoint == null || servicePoint.order > levelCrossing.order) {
+            final adjustedLevelCrossing = levelCrossing.copyWith(order: baliseGroup.balise.order);
+            resultList.remove(levelCrossing);
+            resultList.add(adjustedLevelCrossing);
+            groupedElements.add(adjustedLevelCrossing);
+          }
         }
       }
 
-      if (groupedElements.length > 1 && [Datatype.balise, Datatype.levelCrossing].contains(currentElement.type)) {
-        // Add a group header if we have more then 1 element
-        final group = BaliseLevelCrossingGroup(
-          order: groupedElements[0].order,
-          kilometre: groupedElements[0].kilometre,
-          groupedElements: groupedElements,
-        );
-        resultList.add(group);
+      final group = BaliseLevelCrossingGroup(
+        order: baliseGroups.first.balise.order,
+        kilometre: baliseGroups.first.balise.kilometre,
+        groupedElements: groupedElements,
+      );
+      resultList.add(group);
+      baliseGroups.clear();
 
-        // Add all the elements if the group is currently expanded
-        if (expandedGroups.contains(group.order)) {
-          resultList.addAll(groupedElements);
+      // Remove elements if not expanded
+      if (!expandedGroups.contains(group.order)) {
+        for (final element in group.groupedElements) {
+          resultList.remove(element);
         }
-
-        // skip already checked elements
-        i += groupedElements.length - 1;
-      } else {
-        resultList.add(currentElement);
       }
     }
 
+    for (final group in metadata.levelCrossingGroups) {
+      if (group is SupervisedLevelCrossingGroup) {
+        if (baliseGroups.isEmpty) {
+          baliseGroups.add(group);
+        } else {
+          final previousBaliseGroup = baliseGroups.last;
+
+          if (!previousBaliseGroup.canGroupWith(group) ||
+              resultList.indexOf(previousBaliseGroup.levelCrossings.last) + 1 != resultList.indexOf(group.balise)) {
+            // Finish group, if we can't group with the previous, or are not directly after
+            addBaliseLevelCrossingGroup();
+          }
+
+          baliseGroups.add(group);
+        }
+      } else {
+        _handleLevelCrossingGroups(resultList, expandedGroups, group);
+      }
+    }
+
+    if (baliseGroups.isNotEmpty) {
+      addBaliseLevelCrossingGroup();
+    }
+
+    resultList.sort();
     return resultList;
+  }
+
+  void _handleLevelCrossingGroups(List<BaseData> resultList, List<int> expandedGroups, LevelCrossingGroup group) {
+    final firstLevelCrossing = group.levelCrossings[0];
+
+    // Add group header
+    resultList.add(
+      BaliseLevelCrossingGroup(
+        order: firstLevelCrossing.order,
+        kilometre: firstLevelCrossing.kilometre,
+        groupedElements: group.levelCrossings,
+      ),
+    );
+
+    // Remove elements if not expanded
+    if (!expandedGroups.contains(firstLevelCrossing.order)) {
+      for (final levelCrossing in group.levelCrossings) {
+        resultList.remove(levelCrossing);
+      }
+    }
   }
 
   Iterable<BaseData> hideRepeatedLineFootNotes(BaseData? position) {
