@@ -20,6 +20,7 @@ class ReducedCommunicationNetworkChannelRow extends CellRowBuilder<Communication
   @override
   DASTableCell informationCell(BuildContext context) {
     return DASTableCell(
+      alignment: Alignment.centerLeft,
       child: Row(
         children: [
           Text(
@@ -28,7 +29,6 @@ class ReducedCommunicationNetworkChannelRow extends CellRowBuilder<Communication
           ),
         ],
       ),
-      alignment: Alignment.centerLeft,
     );
   }
 }
