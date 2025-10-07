@@ -1155,7 +1155,16 @@ void main() {
       await _checkAdditionalServicePoint(tester, scrollableFinder, 'Bern (Depot)');
       await _checkAdditionalServicePoint(tester, scrollableFinder, 'Olten Ost (Abzw)');
       await _checkAdditionalServicePoint(tester, scrollableFinder, 'Olten Tunnel (Spw)');
-      await _checkAdditionalServicePoint(tester, scrollableFinder, 'Dulliken (Depot)');
+
+      final dulikenDepotRowText = 'Dulliken (Depot)';
+
+      await tester.dragUntilVisible(
+        findDASTableRowByText(dulikenDepotRowText),
+        scrollableFinder,
+        const Offset(0, -50),
+      );
+
+      await _checkAdditionalServicePoint(tester, scrollableFinder, dulikenDepotRowText);
 
       await disconnect(tester);
     });
