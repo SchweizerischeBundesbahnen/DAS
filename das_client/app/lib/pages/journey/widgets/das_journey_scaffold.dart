@@ -1,6 +1,7 @@
 import 'package:app/nav/das_navigation_drawer.dart';
 import 'package:app/util/animation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 /// Responsible for hiding and showing the app bar on journey related pages.
@@ -67,6 +68,7 @@ class _DASJourneyScaffoldState extends State<DASJourneyScaffold> with SingleTick
       child: SBBHeader(
         title: widget.appBarTitle,
         actions: widget.appBarTrailingAction != null ? [widget.appBarTrailingAction!] : null,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
     );
   }

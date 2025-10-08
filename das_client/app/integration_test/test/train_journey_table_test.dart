@@ -1234,8 +1234,8 @@ void main() {
 }
 
 Future<void> _checkAdditionalServicePoint(WidgetTester tester, Finder scrollableFinder, String servicePointName) async {
-  await tester.dragUntilVisible(find.text(servicePointName).first, scrollableFinder, const Offset(0, -50));
   final servicePointRow = findDASTableRowByText(servicePointName);
+  await tester.dragUntilVisible(servicePointRow, scrollableFinder, const Offset(0, -50));
   expect(servicePointRow, findsOneWidget);
 
   // check all cells are colored

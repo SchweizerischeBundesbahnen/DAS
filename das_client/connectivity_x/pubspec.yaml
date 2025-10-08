@@ -9,7 +9,7 @@ resolution: workspace
 
 dependencies:
   # https://pub.dev/packages/logging
-  connectivity_plus: ^6.1.5
+  connectivity_plus: ^7.0.0
   # https://pub.dev/packages/logging
   logging: ^1.3.0
   # https://pub.dev/packages/rxdart

@@ -1,0 +1,96 @@
+<?xml version="1.0" ?>
+
+<JourneyProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" JP_Status="Valid" JP_Version="1" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd">
+    <TrainIdentification>
+        <OTN_ID>
+            <teltsi_Company>1285</teltsi_Company>
+            <teltsi_OperationalTrainNumber>T28</teltsi_OperationalTrainNumber>
+            <teltsi_StartDate>2025-06-17</teltsi_StartDate>
+        </OTN_ID>
+    </TrainIdentification>
+
+    <SegmentProfileReference SP_ID="T28_1" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>0085</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:00:15Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:00:20Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="GEAP"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:01:00Z" plannedDepartureTime="9999-01-01T00:01:10Z"/>
+        </TimingPointConstraints>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:08:20Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:08:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="GE"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:10:10Z" plannedDepartureTime="9999-01-01T00:10:00Z"/>
+        </TimingPointConstraints>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="COP"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:16:30Z" plannedDepartureTime="9999-01-01T00:16:00Z"/>
+        </TimingPointConstraints>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:22:50Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:22:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="NY"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:24:00Z" plannedDepartureTime="9999-01-01T00:24:00Z"/>
+        </TimingPointConstraints>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="GLA"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:26:20Z" plannedDepartureTime="9999-01-01T00:26:00Z"/>
+        </TimingPointConstraints>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="ROL"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:29:30Z" plannedDepartureTime="9999-01-01T00:29:00Z"/>
+        </TimingPointConstraints>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="ALL"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:34:10Z" plannedDepartureTime="9999-01-01T00:34:00Z"/>
+        </TimingPointConstraints>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:40:20Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:40:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="MOR"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:42:00Z" plannedDepartureTime="9999-01-01T00:42:00Z"/>
+        </TimingPointConstraints>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="REN"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:51:40Z" plannedDepartureTime="9999-01-01T00:51:50Z"/>
+        </TimingPointConstraints>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:53:20Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:53:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="LS"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:55:40Z" plannedDepartureTime="9999-01-01T00:56:00Z"/>
+        </TimingPointConstraints>
+
+        <TrainCharacteristicsRef TC_ID="T28_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
+            <TC_RU_ID>1285</TC_RU_ID>
+        </TrainCharacteristicsRef>
+    </SegmentProfileReference>
+</JourneyProfile>

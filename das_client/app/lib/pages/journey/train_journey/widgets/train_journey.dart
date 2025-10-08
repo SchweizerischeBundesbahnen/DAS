@@ -83,6 +83,7 @@ class TrainJourney extends StatelessWidget {
             currentPosition: journeyPosition.currentPosition,
             routeStart: journey.metadata.journeyStart,
             isAdvancementEnabledByUser: settings.isAutoAdvancementEnabled,
+            firstServicePoint: journey.data.whereType<ServicePoint>().firstOrNull,
           );
         });
 

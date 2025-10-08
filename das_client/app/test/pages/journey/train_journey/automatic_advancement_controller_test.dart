@@ -400,6 +400,50 @@ void main() {
 
     verifyNever(scrollControllerMock.animateTo(any, duration: anyNamed('duration'), curve: anyNamed('curve')));
   });
+
+  test('test does not scroll when before first service point', () async {
+    final List<BaseData> journeyData = [
+      Signal(order: 0, kilometre: []),
+      Signal(order: 100, kilometre: []),
+      Signal(order: 200, kilometre: []),
+      Signal(order: 300, kilometre: []),
+      Signal(order: 400, kilometre: []),
+    ];
+
+    final journeyRows = journeyData
+        .mapIndexed(
+          (index, data) => SignalRow(
+            metadata: Metadata(),
+            data: data as Signal,
+            journeyPosition: JourneyPositionModel(),
+            rowIndex: index,
+            key: mockGlobalKeyOffset(Offset(0, 0)),
+          ),
+        )
+        .toList();
+    final currentPosition = journeyData[2] as JourneyPoint;
+    final firstServicePoint = ServicePoint(order: 500, kilometre: [], name: ''); // after current position
+
+    final scrollControllerMock = MockScrollController();
+    final scrollPositionMock = MockScrollPosition();
+    when(scrollControllerMock.positions).thenReturn([scrollPositionMock]);
+    when(scrollControllerMock.position).thenReturn(scrollPositionMock);
+    when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
+
+    final testee = AutomaticAdvancementController(
+      controller: scrollControllerMock,
+      tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)),
+    );
+
+    testee.updateRenderedRows(journeyRows);
+    testee.handleJourneyUpdate(
+      currentPosition: currentPosition,
+      isAdvancementEnabledByUser: true,
+      firstServicePoint: firstServicePoint,
+    );
+
+    verifyNever(scrollControllerMock.animateTo(any, duration: anyNamed('duration'), curve: anyNamed('curve')));
+  });
 }
 
 ServicePointRow mockServicePointRow(ServicePoint data, Offset offset) {

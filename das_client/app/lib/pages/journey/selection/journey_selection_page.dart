@@ -12,7 +12,6 @@ import 'package:app/pages/journey/selection/widgets/journey_train_number_input.d
 import 'package:app/pages/journey/selection/widgets/logout_button.dart';
 import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
 import 'package:app/util/error_code.dart';
-import 'package:app/widgets/header.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -101,8 +100,14 @@ class _ContentState extends State<_Content> {
       builder: (context, snapshot) {
         final model = snapshot.requireData;
 
-        return Header(
-          information: !model.isStartDateSameAsToday ? context.l10n.p_train_selection_date_not_today_warning : null,
+        return SBBHeaderbox.custom(
+          padding: EdgeInsets.zero,
+          flap: !model.isStartDateSameAsToday
+              ? SBBHeaderboxFlap(
+                  title: context.l10n.p_train_selection_date_not_today_warning,
+                  leadingIcon: SBBIcons.circle_information_small,
+                )
+              : null,
           child: Column(
             children: [
               JourneyDateInput(),

@@ -41,10 +41,16 @@ class AutomaticAdvancementController {
   void handleJourneyUpdate({
     JourneyPoint? currentPosition,
     JourneyPoint? routeStart,
+    ServicePoint? firstServicePoint,
     bool isAdvancementEnabledByUser = false,
   }) {
     _currentPosition = currentPosition;
-    final isAdvancingActive = isAdvancementEnabledByUser && (currentPosition != routeStart);
+
+    final firstServicePointOrder = firstServicePoint?.order ?? 0;
+    final currentPositionOrder = currentPosition?.order ?? 0;
+
+    final isAdvancingActive =
+        isAdvancementEnabledByUser && (currentPosition != routeStart) && currentPositionOrder >= firstServicePointOrder;
 
     _rxIsAutomaticAdvancementActive.add(isAdvancingActive);
     if (!isAdvancingActive) {
