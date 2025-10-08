@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
+import 'package:sfera/src/model/journey/order_priority.dart';
 
 class Balise extends JourneyPoint {
   const Balise({
@@ -9,6 +10,9 @@ class Balise extends JourneyPoint {
   }) : super(type: Datatype.balise);
 
   final int amountLevelCrossings;
+
+  @override
+  OrderPriority get orderPriority => OrderPriority.balise;
 
   @override
   String toString() =>
