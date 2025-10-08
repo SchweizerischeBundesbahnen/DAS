@@ -7,6 +7,10 @@ void main() {
       _expectSingleSpeed(Speed.parse('80'), '80');
     });
 
+    test('parse_whenPlainDigitsWithWhitespace_thenCreatesSpeedWithNoDecorations', () {
+      _expectSingleSpeed(Speed.parse('80 '), '80');
+    });
+
     test('parse_whenSquareBrackets_thenCreatesSpeedWithSquaredTrue', () {
       _expectSingleSpeed(Speed.parse('[90]'), '90', isSquared: true);
     });
@@ -15,8 +19,20 @@ void main() {
       _expectSingleSpeed(Speed.parse('{100}'), '100', isCircled: true);
     });
 
+    test('parse_whenCurlyBracketsWithWhitespace_thenCreatesSpeedWithCircledTrue', () {
+      _expectSingleSpeed(Speed.parse('{100 }'), '100', isCircled: true);
+    });
+
+    test('parse_whenCurlyBracketsWithTrailingWhitespace_thenCreatesSpeedWithCircledTrue', () {
+      _expectSingleSpeed(Speed.parse('{100} '), '100', isCircled: true);
+    });
+
     test('parse_whenXX_thenCreatesSpeedWithXXValue', () {
       _expectSingleSpeed(Speed.parse('XX'), 'XX');
+    });
+
+    test('parse_whenXXWithWhitespace_thenCreatesSpeedWithXXValue', () {
+      _expectSingleSpeed(Speed.parse('X X'), 'XX');
     });
 
     test('parse_whenXXWithSquareBrackets_thenCreatesSpeedWithXXValueAndSquaredTrue', () {
@@ -29,6 +45,10 @@ void main() {
 
     test('parse_whenInvalidFormat_thenThrowsFormatException', () {
       expect(() => Speed.parse('5a0'), throwsFormatException);
+    });
+
+    test('parse_whenInvalidFormat_thenThrowsFormatException', () {
+      expect(() => Speed.parse('5a0 '), throwsFormatException);
     });
 
     test('parse_whenEmptyString_thenThrowsFormatException', () {
