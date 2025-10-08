@@ -24,7 +24,7 @@ jobs:
 
       - uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: 16.4
+          xcode-version: ~20.0
 
       - uses: actions/checkout@v5
 
@@ -82,7 +82,7 @@ jobs:
 
       - uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: 16.4
+          xcode-version: ~20.0
 
       - uses: actions/checkout@v5
 
