@@ -7,6 +7,7 @@ import 'package:sfera/src/data/dto/jp_context_information_nsp_dto.dart';
 import 'package:sfera/src/data/dto/new_speed_nsp_dto.dart';
 import 'package:sfera/src/data/dto/reason_code_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
+import 'package:sfera/src/data/dto/temporary_constraints_dto.dart';
 import 'package:sfera/src/data/dto/velocity_dto.dart';
 import 'package:sfera/src/data/mapper/mapper_utils.dart';
 
@@ -102,10 +103,7 @@ class SpeedMapper {
       final segmentProfile = segmentProfiles.where((sP) => sP.id == segmentProfileReference.spId).first;
 
       for (final speedConstraint in segmentProfileReference.advisedSpeedTemporaryConstraints) {
-        if (speedConstraint.advisedSpeed == null) {
-          _log.warning('AdvisedSpeedTemporaryConstraint found with no advised speeds.');
-          continue;
-        }
+        if (_invalidAdvisedSpeed(speedConstraint)) continue;
 
         final journeyOrders = journeyData.map((it) => it.order);
         final servicePoints = journeyData.whereType<ServicePoint>().whereNot((sp) => sp.isAdditional);
@@ -187,5 +185,35 @@ class SpeedMapper {
       }
     }
     return champion?.order;
+  }
+
+  static bool _invalidAdvisedSpeed(TemporaryConstraintsDto speedConstraint) {
+    if (speedConstraint.advisedSpeed == null) {
+      _log.warning('AdvisedSpeedTemporaryConstraint found with no advised speeds.');
+      return true;
+    }
+    final hasStartOrEnd = speedConstraint.startLocation != null || speedConstraint.endLocation != null;
+    if (hasStartOrEnd && speedConstraint.startLocation == speedConstraint.endLocation) {
+      _log.warning('AdvisedSpeedTemporaryConstraint found with same start and end location. Skipping.');
+      return true;
+    }
+    final hasStartAndEnd = speedConstraint.startLocation != null && speedConstraint.endLocation != null;
+    if (hasStartAndEnd && (speedConstraint.startLocation! > speedConstraint.endLocation!)) {
+      _log.warning('AdvisedSpeedTemporaryConstraint found with end before start location. Skipping.');
+      return true;
+    }
+    if (!hasStartAndEnd) {
+      _log.info(
+        'AdvisedSpeedTemporaryConstraint found without start and end location. Will map onto first and last service point of Segment Profile!',
+      );
+      return false;
+    }
+    if (!hasStartOrEnd) {
+      _log.info(
+        'AdvisedSpeedTemporaryConstraint found without start or end location. Will map to a service point!',
+      );
+    }
+
+    return false;
   }
 }

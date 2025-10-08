@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T24_3" SP_VersionMajor="1"
+                SP_VersionMinor="0" SP_Length="1600" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>0085</IM_ID>
+    </SP_Zone>
+    <SP_Points>
+
+        <TimingPoint TP_ID="GLA" location="1000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01031</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        
+        <!--Entry Exit Signals-->
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E198" location="950"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E198"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E642" location="1050"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E642"/>
+        </Signal>
+
+
+        <!--ADL Signals-->
+
+        <!--FixedSpeed-->
+        <!--First Signal is in previous Segment-->
+        <Signal>
+            <Signal_ID signal_ID_Physical="A653" location="1500"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A653"/>
+        </Signal>
+
+
+        <!--Filler Signals-->
+        <Signal>
+            <Signal_ID signal_ID_Physical="F625" location="1100"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="F625"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="F874" location="1200"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="F874"/>
+        </Signal>
+
+
+        <!--Segment End Signals-->
+        <Signal>
+            <Signal_ID signal_ID_Physical="S3" location="1600"/>
+            <SignalFunction>protection</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="S3"/>
+        </Signal>
+
+
+    </SP_Points>
+
+    <SP_Areas>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1000" endLocation="1000" TAF_TAP_location_abbreviation="GLA"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01031</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Gland</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+    </SP_Areas>
+
+    <SP_ContextInformation>
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-P"/>
+        <KilometreReferencePoint location="950">
+            <KM_Reference kmRef="40.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1000">
+            <KM_Reference kmRef="39.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1050">
+            <KM_Reference kmRef="38.8"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1100">
+            <KM_Reference kmRef="38.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1200">
+            <KM_Reference kmRef="38.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1500">
+            <KM_Reference kmRef="38.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1600">
+            <KM_Reference kmRef="37.0"/>
+        </KilometreReferencePoint>
+    </SP_ContextInformation>
+</SegmentProfile>

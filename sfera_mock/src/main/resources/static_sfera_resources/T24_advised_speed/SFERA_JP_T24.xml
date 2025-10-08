@@ -9,7 +9,7 @@
         </OTN_ID>
     </TrainIdentification>
 
-    <SegmentProfileReference SP_ID="T24_1" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T24_1" SP_VersionMajor="2" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>0085</IM_ID>
         </SP_Zone>
@@ -27,28 +27,6 @@
                 <TP_ID_Reference TP_ID="GE"/>
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="9999-01-01T00:10:10Z" plannedDepartureTime="9999-01-01T00:10:00Z"/>
-        </TimingPointConstraints>
-
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
-            <TimingPointReference>
-                <TP_ID_Reference TP_ID="COP"/>
-            </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="9999-01-01T00:16:30Z" plannedDepartureTime="9999-01-01T00:16:00Z"/>
-        </TimingPointConstraints>
-
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:22:50Z"
-                                TP_PlannedLatestArrivalTime="9999-01-01T00:22:00Z">
-            <TimingPointReference>
-                <TP_ID_Reference TP_ID="NY"/>
-            </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="9999-01-01T00:24:00Z" plannedDepartureTime="9999-01-01T00:24:00Z"/>
-        </TimingPointConstraints>
-
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
-            <TimingPointReference>
-                <TP_ID_Reference TP_ID="GLA"/>
-            </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="9999-01-01T00:26:20Z" plannedDepartureTime="9999-01-01T00:26:00Z"/>
         </TimingPointConstraints>
 
         <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
@@ -123,30 +101,84 @@
             <TC_RU_ID>1285</TC_RU_ID>
         </TrainCharacteristicsRef>
 
+
+    </SegmentProfileReference>
+
+    <SegmentProfileReference SP_ID="T24_2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>0085</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="COP"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:16:30Z" plannedDepartureTime="9999-01-01T00:16:00Z"/>
+        </TimingPointConstraints>
+
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="9999-01-01T00:22:50Z"
+                                TP_PlannedLatestArrivalTime="9999-01-01T00:22:00Z">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="NY"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:24:00Z" plannedDepartureTime="9999-01-01T00:24:00Z"/>
+        </TimingPointConstraints>
+
+        <!-- second ADL - fixedTime BEGIN -->
+        <TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="AdvisedSpeed" startLocation="1500">
+            <AdvisedSpeed speed="80" reasonCode="nationalUse1" adviceType="ConstantspeedAdvice">
+                <ReasonText language="DE" text="ADL"/>
+            </AdvisedSpeed>
+        </TemporaryConstraints>
+
         <JP_ContextInformation>
             <!-- VPro for COP -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="110"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="4000" endLocation="4000"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="1000" endLocation="1000"/>
             </JP_ContextInformation_NSPs>
             <!-- VPro for NY -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="120"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="6000" endLocation="6000"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="3000" endLocation="3000"/>
             </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
+
+
+    </SegmentProfileReference>
+
+    <SegmentProfileReference SP_ID="T24_3" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+        <SP_Zone>
+            <IM_ID>0085</IM_ID>
+        </SP_Zone>
+
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None">
+            <TimingPointReference>
+                <TP_ID_Reference TP_ID="GLA"/>
+            </TimingPointReference>
+            <StoppingPointDepartureDetails departureTime="9999-01-01T00:26:20Z" plannedDepartureTime="9999-01-01T00:26:00Z"/>
+        </TimingPointConstraints>
+
+        <!-- second ADL - fixedTime END -->
+        <TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="AdvisedSpeed" endLocation="1500">
+            <AdvisedSpeed speed="80" reasonCode="nationalUse1" adviceType="ConstantspeedAdvice">
+                <ReasonText language="DE" text="ADL"/>
+            </AdvisedSpeed>
+        </TemporaryConstraints>
+
+        <JP_ContextInformation>
             <!-- VPro for GLA -->
             <JP_ContextInformation_NSPs>
                 <teltsi_Company>0085</teltsi_Company>
                 <NSP_GroupName>VProSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="newSpeed" value="100"/>
-                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="8000" endLocation="8000"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="1000" endLocation="1000"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-
 
     </SegmentProfileReference>
 </JourneyProfile>

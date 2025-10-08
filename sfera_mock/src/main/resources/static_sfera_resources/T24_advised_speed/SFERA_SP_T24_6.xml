@@ -1,0 +1,539 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T24_6" SP_VersionMajor="1"
+                SP_VersionMinor="0" SP_Length="18000" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>0085</IM_ID>
+    </SP_Zone>
+    <SP_Points>
+
+        <TimingPoint TP_ID="GEAP" location="0">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01026</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="GE" location="2000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01008</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="COP" location="4000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01023</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="NY" location="6000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01030</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="GLA" location="8000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01031</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="ROL" location="10000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01033</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="ALL" location="12000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01035</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="MOR" location="14000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01037</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="REN" location="16000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01118</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="LS" location="18000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01120</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <!--Entry and exit signals-->
+        <Signal>
+            <Signal_ID signal_ID_Physical="E409" location="50"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E409"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E350" location="1950"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E350"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E550" location="2050"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E550"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E721" location="3950"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E721"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E305" location="4050"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E305"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E864" location="5950"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E864"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E271" location="6050"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E271"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E198" location="7950"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E198"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E642" location="8050"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E642"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E537" location="9950"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E537"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E912" location="10050"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E912"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E376" location="11950"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E376"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E423" location="12050"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E423"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E185" location="13950"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E185"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E749" location="14050"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E749"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E591" location="15950"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E591"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E824" location="16050"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E824"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E367" location="17950"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E367"/>
+        </Signal>
+
+        <!--ADL Signals-->
+        <!--FollowTrain-->
+        <Signal>
+            <Signal_ID signal_ID_Physical="A236" location="500"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A236"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="A829" location="2500"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A829"/>
+        </Signal>
+
+        <!--FixedSpeed-->
+        <Signal>
+            <Signal_ID signal_ID_Physical="A136" location="4500"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A136"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="A653" location="5000"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A653"/>
+        </Signal>
+
+        <!--TrainFollowing-->
+        <Signal>
+            <Signal_ID signal_ID_Physical="A329" location="5500"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A329"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="A972" location="6500"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A972"/>
+        </Signal>
+
+        <!--VMax TrainFollowing-->
+        <Signal>
+            <Signal_ID signal_ID_Physical="A572" location="7000"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A572"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="A312" location="7500"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A312"/>
+        </Signal>
+
+        <!--Filler Signals-->
+        <Signal>
+            <Signal_ID signal_ID_Physical="F129" location="600"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="F129"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="F419" location="4600"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="F419"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="F115" location="4700"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="F115"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="F865" location="5400"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="F865"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="F295" location="5800"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="F295"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="F625" location="6600"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="F625"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="F874" location="7100"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="F874"/>
+        </Signal>
+
+
+    </SP_Points>
+
+    <SP_Areas>
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="GEAP"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01026</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Genève-Aéroport</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+					&lt;lineSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;80&quot;/&gt;
+					&lt;/lineSpeed&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
+
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="2000" endLocation="2000" TAF_TAP_location_abbreviation="GE"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01008</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Genève</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+					&lt;lineSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;120&quot;/&gt;
+					&lt;/lineSpeed&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="4000" endLocation="4000" TAF_TAP_location_abbreviation="COP"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01023</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Coppet</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="6000" endLocation="6000" TAF_TAP_location_abbreviation="NY"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01030</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Nyon</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+					&lt;lineSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;80&quot;/&gt;
+					&lt;/lineSpeed&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="8000" endLocation="8000" TAF_TAP_location_abbreviation="GLA"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01031</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Gland</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="10000" endLocation="10000" TAF_TAP_location_abbreviation="ROL"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01033</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Rolle</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="12000" endLocation="12000" TAF_TAP_location_abbreviation="ALL"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01035</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Allaman</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="14000" endLocation="14000" TAF_TAP_location_abbreviation="MOR"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01037</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Morges</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="16000" endLocation="16000" TAF_TAP_location_abbreviation="REN"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01118</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Renens VD</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="18000" endLocation="18000" TAF_TAP_location_abbreviation="LS"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01120</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Lausanne</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+    </SP_Areas>
+
+    <SP_ContextInformation>
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-P"/>
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="66.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="50">
+            <KM_Reference kmRef="66.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="500">
+            <KM_Reference kmRef="62.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="600">
+            <KM_Reference kmRef="61.7"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1950">
+            <KM_Reference kmRef="60.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2000">
+            <KM_Reference kmRef="60.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2050">
+            <KM_Reference kmRef="60.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2500">
+            <KM_Reference kmRef="58.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="3950">
+            <KM_Reference kmRef="47.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="4000">
+            <KM_Reference kmRef="47.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="4050">
+            <KM_Reference kmRef="46.7"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="4500">
+            <KM_Reference kmRef="45.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="4600">
+            <KM_Reference kmRef="44.8"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="4700">
+            <KM_Reference kmRef="44.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="5000">
+            <KM_Reference kmRef="43.8"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="5400">
+            <KM_Reference kmRef="43.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="5500">
+            <KM_Reference kmRef="40.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="5800">
+            <KM_Reference kmRef="39.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="5950">
+            <KM_Reference kmRef="38.8"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="6000">
+            <KM_Reference kmRef="38.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="6050">
+            <KM_Reference kmRef="38.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="6500">
+            <KM_Reference kmRef="38.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="6600">
+            <KM_Reference kmRef="37.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="7000">
+            <KM_Reference kmRef="36.8"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="7100">
+            <KM_Reference kmRef="36.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="7500">
+            <KM_Reference kmRef="35.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="7950">
+            <KM_Reference kmRef="34.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="8000">
+            <KM_Reference kmRef="33.8"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="8050">
+            <KM_Reference kmRef="33.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="9000">
+            <KM_Reference kmRef="30.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="9950">
+            <KM_Reference kmRef="27.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="10000">
+            <KM_Reference kmRef="26.7"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="10050">
+            <KM_Reference kmRef="26.4"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="11000">
+            <KM_Reference kmRef="22.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="11950">
+            <KM_Reference kmRef="21.7"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="12000">
+            <KM_Reference kmRef="21.4"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="12050">
+            <KM_Reference kmRef="21.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="13950">
+            <KM_Reference kmRef="12.9"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="14000">
+            <KM_Reference kmRef="12.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="14050">
+            <KM_Reference kmRef="12.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="15950">
+            <KM_Reference kmRef="4.8"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="16000">
+            <KM_Reference kmRef="4.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="16050">
+            <KM_Reference kmRef="4.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="17950">
+            <KM_Reference kmRef="0.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="18000">
+            <KM_Reference kmRef="0.0"/>
+        </KilometreReferencePoint>
+    </SP_ContextInformation>
+</SegmentProfile>

@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T24_2" SP_VersionMajor="1"
+                SP_VersionMinor="0" SP_Length="3100" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>0085</IM_ID>
+    </SP_Zone>
+    <SP_Points>
+
+        <TimingPoint TP_ID="COP" location="1000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01023</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="NY" location="3000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01030</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <!--Entry and exit signals-->
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E721" location="950"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E721"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E305" location="1050"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E305"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E864" location="2950"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E864"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E271" location="3050"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E271"/>
+        </Signal>
+
+
+        <!--ADL Signals-->
+
+        <!--FixedSpeed-->
+        <Signal>
+            <Signal_ID signal_ID_Physical="A136" location="1500"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A136"/>
+        </Signal>
+        <!-- End signal is in next SP-->
+
+
+        <!--Filler Signals-->
+        <Signal>
+            <Signal_ID signal_ID_Physical="F419" location="1100"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="F419"/>
+        </Signal>
+        <Signal>
+            <Signal_ID signal_ID_Physical="F115" location="1200"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="F115"/>
+        </Signal>
+
+        
+        <!-- Segment End Signal-->
+        <Signal>
+            <Signal_ID signal_ID_Physical="S2" location="3100"/>
+            <SignalFunction>protection</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="S2"/>
+        </Signal>
+
+    </SP_Points>
+
+    <SP_Areas>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="1000" endLocation="1000" TAF_TAP_location_abbreviation="COP"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01023</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Coppet</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="3000" endLocation="3000" TAF_TAP_location_abbreviation="NY"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01030</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Nyon</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+					&lt;lineSpeed&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;80&quot;/&gt;
+					&lt;/lineSpeed&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
+        </TAF_TAP_Location>
+
+    </SP_Areas>
+
+    <SP_ContextInformation>
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-P"/>
+        <KilometreReferencePoint location="950">
+            <KM_Reference kmRef="45.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1000">
+            <KM_Reference kmRef="45.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1050">
+            <KM_Reference kmRef="44.8"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1100">
+            <KM_Reference kmRef="44.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1200">
+            <KM_Reference kmRef="44.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1500">
+            <KM_Reference kmRef="43.8"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2950">
+            <KM_Reference kmRef="43.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="3000">
+            <KM_Reference kmRef="43.4"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="3050">
+            <KM_Reference kmRef="43.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="3100">
+            <KM_Reference kmRef="43.2"/>
+        </KilometreReferencePoint>
+    </SP_ContextInformation>
+</SegmentProfile>
