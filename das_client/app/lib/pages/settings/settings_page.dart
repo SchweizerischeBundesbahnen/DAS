@@ -1,12 +1,11 @@
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/das_navigation_drawer.dart';
-import 'package:app/theme/theme_util.dart';
 import 'package:app/util/user_settings.dart';
 import 'package:app/widgets/das_text_styles.dart';
-import 'package:app/widgets/header.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 @RoutePage()
@@ -31,10 +30,14 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  SBBHeader _appBar(BuildContext context) => SBBHeader(title: context.l10n.c_app_name);
+  SBBHeader _appBar(BuildContext context) => SBBHeader(
+    title: context.l10n.c_app_name,
+    systemOverlayStyle: SystemUiOverlayStyle.light,
+  );
 
   Widget _body(BuildContext context) {
     return Column(
+      spacing: sbbDefaultSpacing,
       children: [
         _settingsHeader(context),
         _settingsBody(context),
@@ -43,29 +46,9 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Widget _settingsHeader(BuildContext context) {
-    return Header(
-      child: SizedBox(
-        width: double.infinity,
-        child: Padding(
-          padding: const EdgeInsets.all(sbbDefaultSpacing),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: sbbDefaultSpacing * 0.25,
-            children: [
-              Text(
-                context.l10n.w_navigation_drawer_settings_title,
-                style: DASTextStyles.mediumBold,
-              ),
-              Text(
-                context.l10n.p_settings_page_personalize,
-                style: DASTextStyles.smallLight.copyWith(
-                  color: ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+    return SBBHeaderbox(
+      title: context.l10n.w_navigation_drawer_settings_title,
+      secondaryLabel: context.l10n.p_settings_page_personalize,
     );
   }
 

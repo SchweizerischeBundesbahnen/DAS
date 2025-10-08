@@ -2,6 +2,7 @@ import 'package:app/i18n/i18n.dart';
 import 'package:app/theme/themes.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 /// Widget that is provided by [ErrorWidget.builder] and displayed when an unexpected error happened during build time.
@@ -23,7 +24,10 @@ class GlobalErrorWidget extends StatelessWidget {
       home: Builder(
         builder: (context) {
           return Scaffold(
-            appBar: SBBHeader(title: context.l10n.c_app_name),
+            appBar: SBBHeader(
+              title: context.l10n.c_app_name,
+              systemOverlayStyle: SystemUiOverlayStyle.light,
+            ),
             body: SafeArea(
               child: Center(
                 child: _errorMessage(context),
