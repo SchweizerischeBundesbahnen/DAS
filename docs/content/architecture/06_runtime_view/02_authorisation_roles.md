@@ -26,13 +26,13 @@ Administrators at a Railway Undertaking (de:EVU) managing their users/roles for 
 ### Admin
 DAS Administrator with global rights for `DAS-Admin` (DAS own admin-tool) settings.
 
-## DAS Role comparison to TMS::VAD Roles
+## DAS Role comparison to TMS-VAD Roles
 Roles within DAS remain consistent over all vehicle-journeys. However, per train instance the currently active driver is needed additionally:
 
-| Role DAS                                       | Role assigned to TMS::VAD        |
-|------------------------------------------------|----------------------------------|
-| `Driver` - active person on train nr: 1234     | active `Driver` on train nr: 1234|  
-| `Driver` - NOT active person on train nr: 1234 | `Observer` on train nr: 1234     |  
-| `Observer`                                     | `Observer` on train nr: 1234     |  
+| Role DAS                                       | Role assigned to TMS-VAD          |
+|------------------------------------------------|-----------------------------------|
+| `Driver` - active person on train nr: 1234     | active `Driver` on train nr: 1234 |  
+| `Driver` - NOT active person on train nr: 1234 | `Observer` on train nr: 1234      |  
+| `Observer`                                     | `Observer` on train nr: 1234      |  
 
 A `Driver` is also an `Observer`, therefore an explicite distinction for non-active `Driver` is not necessary.
