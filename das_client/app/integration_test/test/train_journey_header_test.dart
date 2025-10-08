@@ -512,7 +512,7 @@ Future<void> main() async {
       // check mainContacts for Wankdorf (nextStop: Burgdorf)
       await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Burgdorf')));
       final mainContactWankdorf = find.descendant(of: radioChannel, matching: find.text('1407'));
-      expect(mainContactWankdorf, findsOneWidget);
+      await waitUntilExists(tester, mainContactWankdorf, maxWaitSeconds: 2);
       final wankdorfIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));
       expect(wankdorfIndicator, findsNothing);
       final wankdorfSim = find.descendant(of: radioChannel, matching: find.byKey(SimIdentifier.simKey));
@@ -521,7 +521,7 @@ Future<void> main() async {
       // check mainContacts for Burgdorf (nextStop: Olten)
       await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Olten')));
       final mainContactsBurgdorf = find.descendant(of: radioChannel, matching: find.text('1608 (1609)'));
-      expect(mainContactsBurgdorf, findsOneWidget);
+      await waitUntilExists(tester, mainContactsBurgdorf, maxWaitSeconds: 2);
       final burgdorfIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));
       expect(burgdorfIndicator, findsOneWidget);
       final burgdorfSim = find.descendant(of: radioChannel, matching: find.byKey(SimIdentifier.simKey));
@@ -530,7 +530,7 @@ Future<void> main() async {
       // check mainContacts for Olten (nextStop: Zürich)
       await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Zürich')));
       final mainContactsOlten = find.descendant(of: radioChannel, matching: find.text('1102'));
-      expect(mainContactsOlten, findsOneWidget);
+      await waitUntilExists(tester, mainContactsOlten, maxWaitSeconds: 2);
       final oltenIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));
       expect(oltenIndicator, findsOneWidget);
       final oltenSim = find.descendant(of: radioChannel, matching: find.byKey(SimIdentifier.simKey));
