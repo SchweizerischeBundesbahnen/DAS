@@ -244,6 +244,8 @@
                 <artifactId>jsonschema2pojo-maven-plugin</artifactId>
                 <version>${jsonschema2pojo-maven-plugin.version}</version>
                 <configuration>
+                    <sourceDirectory>${project.build.directory}/schema_registry</sourceDirectory>
+                    <targetPackage>ch.sbb.zis.trainformation.api.model</targetPackage>
                     <includeConstructors>true</includeConstructors>
                     <useJakartaValidation>true</useJakartaValidation>
                     <dateType>java.time.LocalDate</dateType>
@@ -255,12 +257,6 @@
                             <goal>generate</goal>
                         </goals>
                         <phase>generate-sources</phase>
-                        <configuration>
-                            <sourcePaths>
-                                <sourcePath>${project.build.directory}/schema_registry</sourcePath>
-                            </sourcePaths>
-                            <targetPackage>ch.sbb.zis.trainformation.api.model</targetPackage>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
