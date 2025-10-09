@@ -3,36 +3,26 @@ import 'dart:async';
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/train_journey/automatic_advancement_controller.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
-import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/util/error_code.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
-import 'package:warnapp/component.dart';
 
 final _log = Logger('TrainJourneyViewModel');
 
 class TrainJourneyViewModel {
   TrainJourneyViewModel({
     required SferaRemoteRepo sferaRemoteRepo,
-    required WarnappRepository warnappRepo,
-    required RuFeatureProvider ruFeatureProvider,
-  }) : _sferaRemoteRepo = sferaRemoteRepo,
-       _warnappRepo = warnappRepo,
-       _ruFeatureProvider = ruFeatureProvider {
+  }) : _sferaRemoteRepo = sferaRemoteRepo {
     _init();
   }
 
   final _resetToKmAfterSeconds = DI.get<TimeConstants>().kmDecisiveGradientResetSeconds;
-  static const _warnappWindowMilliseconds = 1250;
 
   final SferaRemoteRepo _sferaRemoteRepo;
-  final WarnappRepository _warnappRepo;
-  final RuFeatureProvider _ruFeatureProvider;
 
   final List<void Function(Journey?)> _syncOnJourneyUpdateCallbacks = [];
 
@@ -44,29 +34,20 @@ class TrainJourneyViewModel {
 
   Stream<ErrorCode?> get errorCode => _rxErrorCode.stream;
 
-  Stream<WarnappEvent> get warnappEvents => _rxWarnapp.stream;
-
   Stream<bool> get showDecisiveGradient => _rxShowDecisiveGradient.distinct();
 
   bool get showDecisiveGradientValue => _rxShowDecisiveGradient.value;
-
-  Future<bool> get isWarnappFeatureEnabled => _ruFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.warnapp);
 
   AutomaticAdvancementController automaticAdvancementController = AutomaticAdvancementController();
 
   final _rxSettings = BehaviorSubject<TrainJourneySettings>.seeded(TrainJourneySettings());
   final _rxErrorCode = BehaviorSubject<ErrorCode?>.seeded(null);
-  final _rxWarnapp = PublishSubject<WarnappEvent>();
 
   final _rxShowDecisiveGradient = BehaviorSubject<bool>.seeded(false);
   Timer? _showDecisiveGradientTimer;
 
-  DateTime? _lastWarnappEventTimestamp;
-
   StreamSubscription? _stateSubscription;
   StreamSubscription? _journeySubscription;
-  StreamSubscription? _warnappSignalSubscription;
-  StreamSubscription? _warnappAbfahrtSubscription;
 
   void _init() {
     _listenToSferaRemoteRepo();
@@ -94,17 +75,6 @@ class TrainJourneyViewModel {
     _rxSettings.add(_rxSettings.value.copyWith(isAutoAdvancementEnabled: active));
   }
 
-  void setManeuverMode(bool active) {
-    _log.info('Maneuver mode state changed to active=$active');
-    _rxSettings.add(_rxSettings.value.copyWith(isManeuverModeEnabled: active));
-
-    if (active) {
-      _warnappRepo.disable();
-    } else {
-      _warnappRepo.enable();
-    }
-  }
-
   void toggleKmDecisiveGradient() {
     if (!showDecisiveGradientValue) {
       _rxShowDecisiveGradient.add(true);
@@ -123,13 +93,10 @@ class TrainJourneyViewModel {
 
   void dispose() {
     _rxSettings.close();
-    _rxWarnapp.close();
     _rxShowDecisiveGradient.close();
     _stateSubscription?.cancel();
     _journeySubscription?.cancel();
     _syncOnJourneyUpdateCallbacks.clear();
-    _warnappSignalSubscription?.cancel();
-    _warnappAbfahrtSubscription?.cancel();
     automaticAdvancementController.dispose();
   }
 
@@ -140,14 +107,12 @@ class TrainJourneyViewModel {
         case SferaRemoteRepositoryState.connected:
           automaticAdvancementController = AutomaticAdvancementController();
           WakelockPlus.enable();
-          _enableWarnapp();
           break;
         case SferaRemoteRepositoryState.connecting:
           _rxErrorCode.add(null);
           break;
         case SferaRemoteRepositoryState.disconnected:
           WakelockPlus.disable();
-          _disableWarnapp();
           _resetSettings();
           if (_sferaRemoteRepo.lastError != null) {
             _rxErrorCode.add(ErrorCode.fromSfera(_sferaRemoteRepo.lastError!));
@@ -163,35 +128,5 @@ class TrainJourneyViewModel {
     });
   }
 
-  void _enableWarnapp() async {
-    final isWarnappFeatEnabled = await _ruFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.warnapp);
-    _log.info('Warnapp feature is ${isWarnappFeatEnabled ? 'enabled' : 'disabled'} for active train');
-    if (isWarnappFeatEnabled) {
-      _warnappAbfahrtSubscription = _warnappRepo.abfahrtEventStream.listen((_) => _handleAbfahrtEvent());
-      _warnappSignalSubscription = _sferaRemoteRepo.warnappEventStream.listen((_) {
-        _lastWarnappEventTimestamp = DateTime.now();
-      });
-      _warnappRepo.enable();
-    }
-  }
-
-  void _disableWarnapp() {
-    _warnappRepo.disable();
-    _warnappAbfahrtSubscription?.cancel();
-    _warnappAbfahrtSubscription = null;
-    _warnappSignalSubscription?.cancel();
-    _warnappSignalSubscription = null;
-    _lastWarnappEventTimestamp = null;
-  }
-
   void _resetSettings() => _rxSettings.add(TrainJourneySettings());
-
-  void _handleAbfahrtEvent() {
-    final now = DateTime.now();
-    if (_lastWarnappEventTimestamp != null &&
-        now.difference(_lastWarnappEventTimestamp!).inMilliseconds < _warnappWindowMilliseconds) {
-      _log.info('Abfahrt detected while warnapp message was within $_warnappWindowMilliseconds ms -> Warning!');
-      _rxWarnapp.add(WarnappEvent());
-    }
-  }
 }
