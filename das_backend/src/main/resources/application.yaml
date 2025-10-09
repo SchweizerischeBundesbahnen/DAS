@@ -51,6 +51,9 @@ spring:
         credentials.source: USER_INFO
         user.info: ${ZIS_SR_API_KEY}:${ZIS_SR_API_SECRET}
       schema.registry.url: ${ZIS_SR_URL}
+  jpa:
+    hibernate:
+      ddl-auto: validate
 management:
   endpoint:
     health:

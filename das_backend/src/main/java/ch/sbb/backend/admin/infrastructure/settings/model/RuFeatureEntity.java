@@ -32,7 +32,7 @@ public class RuFeatureEntity {
     @JoinColumn(name = "company_id")
     private CompanyEntity company;
 
-    private String key;
+    private String keyValue;
 
     private boolean enabled;
 
@@ -43,6 +43,6 @@ public class RuFeatureEntity {
     private LocalDateTime lastModifiedAt;
 
     public RuFeature toRuFeature() {
-        return new RuFeature(company.toCompany(), RuFeatureKey.valueOf(key), enabled);
+        return new RuFeature(company.toCompany(), RuFeatureKey.valueOf(keyValue), enabled);
     }
 }
