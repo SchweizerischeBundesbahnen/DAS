@@ -82,7 +82,7 @@ class ReducedTrainJourney extends StatelessWidget {
           return ReducedCommunicationNetworkChannelRow(
             key: GlobalKey(),
             metadata: metadata,
-            data: rowData as CommunicationNetworkChannel,
+            data: rowData as CommunicationNetworkChange,
             rowIndex: index,
             context: context,
           );

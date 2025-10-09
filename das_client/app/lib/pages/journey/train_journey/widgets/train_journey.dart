@@ -345,7 +345,7 @@ class TrainJourney extends StatelessWidget {
         case Datatype.communicationNetworkChannel:
           return CommunicationNetworkChannelRow(
             metadata: journey.metadata,
-            data: rowData as CommunicationNetworkChannel,
+            data: rowData as CommunicationNetworkChange,
             config: trainJourneyConfig,
             rowIndex: index,
             context: context,

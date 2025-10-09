@@ -143,7 +143,7 @@ void main() {
 
     // segment 1
     expect(journey.data[0], TypeMatcher<ServicePoint>());
-    expect(journey.data[1], TypeMatcher<CommunicationNetworkChannel>());
+    expect(journey.data[1], TypeMatcher<CommunicationNetworkChange>());
     expect(journey.data[2], TypeMatcher<Signal>());
     expect(journey.data[3], TypeMatcher<CurvePoint>());
     expect(journey.data[4], TypeMatcher<Signal>());
@@ -1308,21 +1308,21 @@ void main() {
     final networkChanges = journey.metadata.communicationNetworkChanges;
     expect(networkChanges, hasLength(8));
     expect(networkChanges[0].order, 1000);
-    expect(networkChanges[0].type, CommunicationNetworkType.gsmP);
+    expect(networkChanges[0].communicationNetworkType, CommunicationNetworkType.gsmP);
     expect(networkChanges[1].order, 1500);
-    expect(networkChanges[1].type, CommunicationNetworkType.sim);
+    expect(networkChanges[1].communicationNetworkType, CommunicationNetworkType.sim);
     expect(networkChanges[2].order, 2000);
-    expect(networkChanges[2].type, CommunicationNetworkType.gsmR);
+    expect(networkChanges[2].communicationNetworkType, CommunicationNetworkType.gsmR);
     expect(networkChanges[3].order, 100100);
-    expect(networkChanges[3].type, CommunicationNetworkType.gsmP);
+    expect(networkChanges[3].communicationNetworkType, CommunicationNetworkType.gsmP);
     expect(networkChanges[4].order, 100500);
-    expect(networkChanges[4].type, CommunicationNetworkType.sim);
+    expect(networkChanges[4].communicationNetworkType, CommunicationNetworkType.sim);
     expect(networkChanges[5].order, 200300);
-    expect(networkChanges[5].type, CommunicationNetworkType.sim);
+    expect(networkChanges[5].communicationNetworkType, CommunicationNetworkType.sim);
     expect(networkChanges[6].order, 300100);
-    expect(networkChanges[6].type, CommunicationNetworkType.sim);
+    expect(networkChanges[6].communicationNetworkType, CommunicationNetworkType.sim);
     expect(networkChanges[7].order, 300500);
-    expect(networkChanges[7].type, CommunicationNetworkType.gsmR);
+    expect(networkChanges[7].communicationNetworkType, CommunicationNetworkType.gsmR);
   });
 
   test('Test opFootNote parsed correctly', () async {

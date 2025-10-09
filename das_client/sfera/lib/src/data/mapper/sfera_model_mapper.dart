@@ -350,7 +350,7 @@ class SferaModelMapper {
             }
 
             return CommunicationNetworkChange(
-              type: element.communicationNetworkType.communicationNetworkType,
+              communicationNetworkType: element.communicationNetworkType.communicationNetworkType,
               order: calculateOrder(index, element.startLocation),
             );
           });
