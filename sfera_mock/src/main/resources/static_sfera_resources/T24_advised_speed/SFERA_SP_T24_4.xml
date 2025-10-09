@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T24_1" SP_VersionMajor="2"
-                SP_VersionMinor="0" SP_Length="18000" SP_Status="Valid">
+                SP_VersionMinor="0" SP_Length="5100" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -71,7 +71,7 @@
         <!--ADL Signals-->
         <!--TrainFollowing-->
 
-        <!-- has no exact signals, will be mapped to Service Points-->
+        <!-- has unknown signal locations, will be mapped to Service Points-->
 
 
         <!--Filler Signals-->
@@ -90,6 +90,13 @@
             <Signal_ID signal_ID_Physical="F374" location="3500"/>
             <SignalFunction>block</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="F374"/>
+        </Signal>
+
+        <!--Segment End Signals-->
+        <Signal>
+            <Signal_ID signal_ID_Physical="S4" location="5100"/>
+            <SignalFunction>protection</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="S4"/>
         </Signal>
 
 
@@ -128,75 +135,7 @@
 
     <SP_ContextInformation>
         <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-P"/>
-        <KilometreReferencePoint location="0">
-            <KM_Reference kmRef="66.2"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="50">
-            <KM_Reference kmRef="66.1"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="500">
-            <KM_Reference kmRef="62.1"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="600">
-            <KM_Reference kmRef="61.7"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="1950">
-            <KM_Reference kmRef="60.5"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="2000">
-            <KM_Reference kmRef="60.3"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="2050">
-            <KM_Reference kmRef="60.0"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="2500">
-            <KM_Reference kmRef="58.1"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="3950">
-            <KM_Reference kmRef="47.3"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="4000">
-            <KM_Reference kmRef="47.0"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="4050">
-            <KM_Reference kmRef="46.7"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="4500">
-            <KM_Reference kmRef="45.2"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="4600">
-            <KM_Reference kmRef="44.8"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="4700">
-            <KM_Reference kmRef="44.2"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="5000">
-            <KM_Reference kmRef="43.8"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="5400">
-            <KM_Reference kmRef="43.2"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="5500">
-            <KM_Reference kmRef="40.1"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="5800">
-            <KM_Reference kmRef="39.2"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="5950">
-            <KM_Reference kmRef="38.8"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="6000">
-            <KM_Reference kmRef="38.5"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="6050">
-            <KM_Reference kmRef="38.2"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="6500">
-            <KM_Reference kmRef="38.1"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="6600">
-            <KM_Reference kmRef="37.0"/>
-        </KilometreReferencePoint>
+
         <KilometreReferencePoint location="500">
             <KM_Reference kmRef="36.8"/>
         </KilometreReferencePoint>
@@ -232,6 +171,9 @@
         </KilometreReferencePoint>
         <KilometreReferencePoint location="5050">
             <KM_Reference kmRef="26.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="5100">
+            <KM_Reference kmRef="25.3"/>
         </KilometreReferencePoint>
     </SP_ContextInformation>
 </SegmentProfile>

@@ -140,17 +140,8 @@
         <KilometreReferencePoint location="2500">
             <KM_Reference kmRef="58.1"/>
         </KilometreReferencePoint>
-        <KilometreReferencePoint location="3950">
-            <KM_Reference kmRef="47.3"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="4000">
-            <KM_Reference kmRef="47.0"/>
-        </KilometreReferencePoint>
-        <KilometreReferencePoint location="4050">
-            <KM_Reference kmRef="46.7"/>
-        </KilometreReferencePoint>
         <KilometreReferencePoint location="2600">
-            <KM_Reference kmRef="46.4"/>
+            <KM_Reference kmRef="57.1"/>
         </KilometreReferencePoint>
     </SP_ContextInformation>
 </SegmentProfile>
