@@ -1,0 +1,27 @@
+#localhost only: no need for Podman running instance nor PostgreSQL connection
+spring:
+  docker:
+    compose:
+      enabled: false # docker-environment not a pre-condition
+      #file: ./das_backend/compose.yaml
+  config:
+    import: optional:file:./das_backend/.env[.properties]
+  datasource:
+    #url: jdbc:postgresql://localhost:5432/driver_advisory_system
+    url: jdbc:h2:mem:mydb;MODE=PostgreSQL # jdbc:h2:file:/data/mydb
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    #database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      # validate assumes flyway executes DDL! Use create/create-drop for local H2 generation only
+      # doc: https://docs.spring.io/spring-boot/docs/3.2.2/reference/html/howto.html#howto.data-initialization.using-hibernate
+      ddl-auto: validate #validate #update #create-drop #none
+    show-sql: true
+  h2:
+    console:
+      path: /h2-console
+      settings.trace: false
+      settings.web-allow-others: false
+      enabled: false # turn it on only locally/temporarily -> http://localhost:8080/h2-console
