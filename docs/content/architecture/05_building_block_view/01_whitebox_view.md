@@ -31,7 +31,7 @@ The mode at handshake time between `IM-DAS-TS` and `RU DAS-OB` is of type **C-DA
 The architecture of the SBB implementation of `DAS-Client` and `SFERA protocol` keeps exactly to the blueprint variant **IM-Train setup** by IRS-90940 above, where the following naming is used:  
 | IRS Component | SBB Component |  
 | ------------- | ------------- |  
-| IM DAS-TS     | TMS::VAD      |  
+| IM DAS-TS     | TMS-VAD      |  
 | RU DAS-OB     | DAS-Client    |  
 
 Other blue components represent a best known goal in the near future and may be concretised over time:
