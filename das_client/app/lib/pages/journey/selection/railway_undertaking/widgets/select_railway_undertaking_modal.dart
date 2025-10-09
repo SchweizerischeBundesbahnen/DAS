@@ -91,7 +91,7 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
                   shape: SelectRailwayUndertakingModal.shapeBorder,
                   color: resolvedForegroundColor,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing),
+                    padding: const EdgeInsets.all(sbbDefaultSpacing).copyWith(left: 0),
                     child: Row(
                       children: [
                         Expanded(
@@ -100,14 +100,11 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
                             controller: controller?.textEditingController,
                             labelText: context.l10n.p_train_selection_ru_description,
                             keyboardType: TextInputType.text,
+                            suffixIcon: IconButton(
+                              icon: Icon(SBBIcons.cross_small),
+                              onPressed: () => controller?.textEditingController.clear(),
+                            ),
                             autofocus: true,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing),
-                          child: SBBIconButtonSmall(
-                            icon: SBBIcons.cross_medium,
-                            onPressed: () => controller?.textEditingController.clear(),
                           ),
                         ),
                       ],

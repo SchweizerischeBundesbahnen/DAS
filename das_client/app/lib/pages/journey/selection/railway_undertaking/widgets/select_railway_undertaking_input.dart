@@ -5,7 +5,6 @@ import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
 import 'package:app/pages/journey/selection/railway_undertaking/widgets/select_railway_undertaking_modal.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/device_screen.dart';
-import 'package:app/widgets/header.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -116,7 +115,7 @@ class _RailwayUndertakingTextFieldState extends State<_RailwayUndertakingTextFie
   );
 
   BoxConstraints get _modalConstraints => BoxConstraints(
-    maxWidth: DeviceScreen.size.width - Header.padding.vertical,
+    maxWidth: DeviceScreen.size.width - sbbDefaultSpacing,
     maxHeight: _maxModalHeight,
   );
 
