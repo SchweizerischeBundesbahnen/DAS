@@ -112,10 +112,4 @@ sfera:
   topic-prefix: dev/
 
 preload:
-  cleanup-retention-hours: 24
-  fetch-interval-ms: 300000
-  cleanup-interval-ms: 3600000
-  cleanup-initial-delay-ms: 60000
-  timestamp-zone: Europe/Zurich
-  temp-parent: /tmp/das-preload
-  temp-prefix: run-
+  fetch-interval-ms: 10000

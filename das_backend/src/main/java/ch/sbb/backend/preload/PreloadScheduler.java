@@ -24,16 +24,6 @@ public class PreloadScheduler {
         List<SegmentProfile> sps = List.of();
         List<TrainCharacteristics> tcs = List.of();
 
-        if (!jps.isEmpty() || !sps.isEmpty() || !tcs.isEmpty()) {
-            storageService.save(jps, sps, tcs);
-        }
-    }
-
-    @Scheduled(
-        fixedDelayString = "${preload.cleanup-interval-ms}",
-        initialDelayString = "${preload.cleanup-initial-delay-ms}"
-    )
-    public void cleanupOldZips() {
-        storageService.cleanUp();
+        storageService.save(jps, sps, tcs);
     }
 }
