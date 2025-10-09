@@ -2,7 +2,6 @@ import 'package:app/di/di.dart';
 import 'package:app/sound/sound.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:volume_controller/volume_controller.dart';
 
 class AdlStart extends Sound {
   const AdlStart();
@@ -11,7 +10,7 @@ class AdlStart extends Sound {
 
   @override
   Future<void> play() async {
-    await VolumeController.instance.setVolume(_volume);
+    await Sound.volumeController.setVolume(_volume);
     final audioPlayer = DI.get<AudioPlayer>();
     await audioPlayer.stop();
     await audioPlayer.play(AssetSource(AppAssets.adlStart));

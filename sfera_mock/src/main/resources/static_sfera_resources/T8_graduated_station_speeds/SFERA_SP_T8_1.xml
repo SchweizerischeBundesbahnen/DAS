@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T8_1" SP_VersionMajor="3"
-                SP_VersionMinor="0" SP_Length="3500" SP_Status="Valid">
+                SP_VersionMinor="1" SP_Length="3500" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -121,15 +121,15 @@
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
                     &lt;stationSpeed&gt;
-                    &lt;v trainSeries=&quot;R&quot; speed=&quot;75-70-60&quot;/&gt;
-                    &lt;v trainSeries=&quot;O&quot; speed=&quot;75-70-60&quot;/&gt;
-                    &lt;v trainSeries=&quot;S&quot; speed=&quot;70-60/50&quot;/&gt;
-                    &lt;v trainSeries=&quot;N&quot; speed=&quot;70/60&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; speed=&quot;75-70 -60&quot;/&gt;
+                    &lt;v trainSeries=&quot;O&quot; speed=&quot;75-70 -60&quot;/&gt;
+                    &lt;v trainSeries=&quot;S&quot; speed=&quot;70-60 / 50&quot;/&gt;
+                    &lt;v trainSeries=&quot;N&quot; speed=&quot;70 / 60&quot;/&gt;
                     &lt;/stationSpeed&gt;
                 "/>
                 <NetworkSpecificParameter name="xmlGraduatedSpeedInfo" value="
                     &lt;entries&gt;
-                    &lt;entry roSpeed=&quot;75-70-60&quot; sSpeed=&quot;70-60/50&quot; text=&quot;Zusatzinformation A&quot;/&gt;
+                    &lt;entry roSpeed=&quot;75-70-60&quot; sSpeed=&quot;70-60 / 50&quot; text=&quot;Zusatzinformation A&quot;/&gt;
                     &lt;entry nSpeed=&quot;70/60&quot; text=&quot;Zusatzinformation B&quot;/&gt;
                     &lt;/entries&gt;
                 "/>
@@ -157,7 +157,7 @@
                 <NSP_GroupName>newLineSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlNewLineSpeed" value="
                     &lt;lineSpeed&gt;
-                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;80&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot; 80&quot;/&gt;
                     &lt;/lineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
@@ -166,10 +166,10 @@
                 <NSP_GroupName>stationSpeed</NSP_GroupName>
                 <NetworkSpecificParameter name="xmlStationSpeed" value="
                     &lt;stationSpeed&gt;
-                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;75-{70}/[60]&quot;/&gt;
-                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;80-75/[65]&quot;/&gt;
-                    &lt;v trainSeries=&quot;R&quot; speed=&quot;70-{65}/[55]&quot;/&gt;
-                    &lt;v trainSeries=&quot;O&quot; speed=&quot;75-{70}/[60]&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;75-{70} / [60]&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;80-75 / [65]&quot;/&gt;
+                    &lt;v trainSeries=&quot;R&quot; speed=&quot;70-{65} / [55]&quot;/&gt;
+                    &lt;v trainSeries=&quot;O&quot; speed=&quot;75-{70} / [60]&quot;/&gt;
                     &lt;v trainSeries=&quot;A&quot; speed=&quot;70&quot;/&gt;
                     &lt;v trainSeries=&quot;D&quot; speed=&quot;70&quot;/&gt;
                     &lt;v trainSeries=&quot;N&quot; speed=&quot;75-{XX}/[XX]&quot;/&gt;
