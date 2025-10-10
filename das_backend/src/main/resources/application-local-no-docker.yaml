@@ -22,4 +22,4 @@ spring:
       settings.trace: false
       settings.web-allow-others: false
       # https://www.baeldung.com/spring-boot-h2-console-error -> if true: adapt WebSecurityConfig::filterChain
-      enabled: false # turn it on only for temporary debugging -> http://localhost:8080/h2-console
+      enabled: true # turn it on only for temporary debugging -> http://localhost:8080/h2-console

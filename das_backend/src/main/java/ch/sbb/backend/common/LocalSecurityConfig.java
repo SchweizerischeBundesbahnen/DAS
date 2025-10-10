@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -25,12 +25,14 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
- * Production security.
+ * Use for local testing by H2 only.
+ *
+ * @see WebSecurityConfig
  */
+@Profile("local-no-docker")
 @Configuration
-@Profile("!local-no-docker")
 @EnableWebSecurity
-public class WebSecurityConfig {
+public class LocalSecurityConfig {
 
     private static final String ROLES_KEY = "roles";
     private static final String ROLE_PREFIX = "ROLE_";
@@ -41,13 +43,17 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        // H2 local debug security for http://localhost:8080/h2-console
+        final String h2Console = "/h2-console/**";
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/swagger-ui/**").permitAll()
                 .requestMatchers("/v3/api-docs/**").permitAll()
                 .requestMatchers("/actuator/health/**").permitAll()
+                .requestMatchers(h2Console).permitAll()
                 .anyRequest().authenticated()
             )
-            .csrf(AbstractHttpConfigurer::disable)
+            .csrf(csrf -> csrf.ignoringRequestMatchers(h2Console))
+            .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
             .oauth2ResourceServer(oauth2 -> oauth2
                 .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
             );
