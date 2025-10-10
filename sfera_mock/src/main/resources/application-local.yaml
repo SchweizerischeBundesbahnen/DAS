@@ -1,3 +1,6 @@
+server:
+  port: 8081
+
 spring:
   config:
     import: optional:file:./sfera_mock/.env[.properties]
