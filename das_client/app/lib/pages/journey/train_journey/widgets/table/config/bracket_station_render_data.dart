@@ -17,7 +17,7 @@ class BracketStationRenderData {
 
     return BracketStationRenderData(
       stationAbbreviation: segment.mainStationAbbreviation,
-      isStart: data.order == segment.startOrder,
+      isStart: data.order == segment.startOrder && data is ServicePoint,
     );
   }
 }

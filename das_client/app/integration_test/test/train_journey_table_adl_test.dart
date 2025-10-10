@@ -1,6 +1,7 @@
 import 'package:app/pages/journey/train_journey/widgets/header/das_chronograph.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/adl_notification.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/advised_speed_cell_body.dart';
+import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';
@@ -67,11 +68,15 @@ void main() {
     final adlEndRow = findDASTableRowByText('A653');
     await waitUntilExists(tester, _findCalculatedSpeedCellOf(adlEndRow, '110'));
 
-    await dragUntilTextInStickyHeader(tester, 'Rolle');
+    await waitUntilExists(
+      tester,
+      find.descendant(of: find.byKey(StickyHeader.headerKey), matching: find.text('Rolle')),
+      maxWaitSeconds: 30,
+    );
 
     // Check that adl end displayed calculated speed on signal row
     final adlEndRowServicePoint = findDASTableRowByText('Allaman');
-    await waitUntilExists(tester, _findCalculatedSpeedCellOf(adlEndRowServicePoint, '100'), maxWaitSeconds: 30);
+    expect(_findCalculatedSpeedCellOf(adlEndRowServicePoint, '100'), findsOne);
 
     await disconnect(tester);
   });

@@ -282,8 +282,16 @@ void main() {
       await _openByTapOnCellWithText(tester, 'Reichenbach im Kandertal');
       expect(find.byKey(DetailTabCommunication.simCorridorListKey), findsNothing);
 
-      // check Frutigen SIM information
-      await _openByTapOnCellWithText(tester, 'Frutigen');
+      // scroll down so that if Frutigen is in the stickyFooter it can be seen as a single row
+      final secondBlockSignal = find.text('P112');
+      await tester.drag(secondBlockSignal, const Offset(0, -100));
+      await tester.pumpAndSettle();
+
+      // check Frutigen for SIM information
+      final frutigenRow = find.text('Frutigen');
+      expect(frutigenRow, findsOneWidget);
+      await tester.tap(frutigenRow);
+      await tester.pumpAndSettle();
       expect(find.byKey(DetailTabCommunication.simCorridorListKey), findsOneWidget);
       expect(find.text('Frutigen - Kandergrund'), findsOneWidget);
 
@@ -364,11 +372,26 @@ void main() {
     await stopAutomaticAdvancement(tester);
 
     expect(find.text(l10n.c_main_signal_function_entry), findsAny);
+
+    final scrollableFinder = find.byType(AnimatedList);
+    await tester.dragUntilVisible(find.text(l10n.c_main_signal_function_exit), scrollableFinder, const Offset(0, -50));
+    await tester.pumpAndSettle();
+
     expect(find.text(l10n.c_main_signal_function_exit), findsAny);
     expect(find.text(l10n.c_main_signal_function_entry_short), findsNothing);
     expect(find.text(l10n.c_main_signal_function_exit_short), findsNothing);
 
+    await tester.dragUntilVisible(findDASTableRowByText('(Bahnhof A)'), scrollableFinder, const Offset(0, 50));
+    await tester.pumpAndSettle();
+
     await _openByTapOnCellWithText(tester, '(Bahnhof A)');
+    await tester.pumpAndSettle();
+
+    await tester.dragUntilVisible(
+      find.text(l10n.c_main_signal_function_entry_short),
+      scrollableFinder,
+      const Offset(0, -50),
+    );
     await tester.pumpAndSettle();
 
     expect(find.text(l10n.c_main_signal_function_entry), findsNothing);

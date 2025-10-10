@@ -32,7 +32,9 @@ void main() {
     final withoutStopWithNetworkChange = ServicePoint(name: '', order: 400, kilometre: [], isStop: false);
     final data = <BaseData>[stop1, withoutStop, stop2, withoutStopWithNetworkChange];
 
-    final communicationNetworkChanges = [CommunicationNetworkChange(type: CommunicationNetworkType.gsmR, order: 400)];
+    final communicationNetworkChanges = [
+      CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.gsmR, order: 400),
+    ];
     final metadata = Metadata(communicationNetworkChanges: communicationNetworkChanges);
 
     final sferaServiceMock = _setupSferaLocalRepoMock(metadata, data);
