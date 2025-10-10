@@ -19,9 +19,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    private static final String ROLES_KEY = "roles";
-    private static final String ROLE_PREFIX = "ROLE_";
-    private static final String PRINCIPAL_CLAIM_NAME = "preferred_username";
+    static final String ROLES_KEY = "roles";
+    static final String ROLE_PREFIX = "ROLE_";
+    static final String PRINCIPAL_CLAIM_NAME = "preferred_username";
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

@@ -20,10 +20,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class LocalSecurityConfig {
 
-    private static final String ROLES_KEY = "roles";
-    private static final String ROLE_PREFIX = "ROLE_";
-    private static final String PRINCIPAL_CLAIM_NAME = "preferred_username";
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // H2 local debug security for http://localhost:8080/h2-console
@@ -49,12 +45,12 @@ public class LocalSecurityConfig {
         // We define a custom role converter to extract the roles from the Entra ID's JWT token and convert them to granted authorities.
         // This allows us to do role-based access control on our endpoints.
         JwtGrantedAuthoritiesConverter roleConverter = new JwtGrantedAuthoritiesConverter();
-        roleConverter.setAuthoritiesClaimName(ROLES_KEY);
-        roleConverter.setAuthorityPrefix(ROLE_PREFIX);
+        roleConverter.setAuthoritiesClaimName(WebSecurityConfig.ROLES_KEY);
+        roleConverter.setAuthorityPrefix(WebSecurityConfig.ROLE_PREFIX);
 
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(roleConverter);
-        jwtAuthenticationConverter.setPrincipalClaimName(PRINCIPAL_CLAIM_NAME);
+        jwtAuthenticationConverter.setPrincipalClaimName(WebSecurityConfig.PRINCIPAL_CLAIM_NAME);
 
         return jwtAuthenticationConverter;
     }
