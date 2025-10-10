@@ -8,10 +8,10 @@ import 'package:sfera/component.dart';
 import 'package:flutter/material.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 
-class CommunicationNetworkChannelRow extends CellRowBuilder<CommunicationNetworkChange> {
+class CommunicationNetworkChangeRow extends CellRowBuilder<CommunicationNetworkChange> {
   final BuildContext context;
 
-  CommunicationNetworkChannelRow({
+  CommunicationNetworkChangeRow({
     required super.metadata,
     required super.data,
     required super.rowIndex,

@@ -282,9 +282,13 @@ void main() {
       await _openByTapOnCellWithText(tester, 'Reichenbach im Kandertal');
       expect(find.byKey(DetailTabCommunication.simCorridorListKey), findsNothing);
 
-      //check Frutigen for SIM information
+      // scroll down so that if Frutigen is in the stickyFooter it can be seen as a single row
+      final secondBlockSignal = find.text('P112');
+      await tester.drag(secondBlockSignal, const Offset(0, -100));
+      await tester.pumpAndSettle();
+
+      // check Frutigen for SIM information
       final frutigenRow = find.text('Frutigen');
-      await tester.dragUntilVisible(frutigenRow, scrollableFinder, const Offset(0, -50));
       expect(frutigenRow, findsOneWidget);
       await tester.tap(frutigenRow);
       await tester.pumpAndSettle();

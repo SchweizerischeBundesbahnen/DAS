@@ -341,6 +341,7 @@ class SferaModelMapper {
     return segmentProfileReferences
         .mapIndexed((index, reference) {
           final segmentProfile = segmentProfiles.firstMatch(reference);
+          final kilometreMap = parseKilometre(segmentProfile);
           final communicationNetworks = segmentProfile.contextInformation?.communicationNetworks;
           return communicationNetworks?.map((element) {
             if (element.startLocation != element.endLocation) {
@@ -352,6 +353,7 @@ class SferaModelMapper {
             return CommunicationNetworkChange(
               communicationNetworkType: element.communicationNetworkType.communicationNetworkType,
               order: calculateOrder(index, element.startLocation),
+              kilometre: kilometreMap[element.startLocation] ?? const [],
             );
           });
         })

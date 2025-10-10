@@ -288,19 +288,18 @@ class SegmentProfileMapper {
             ?.map((element) {
               if (element.startLocation != element.endLocation) {
                 _log.warning(
-                  'CommunicationNetwork without identical locations '
-                  '(start=${element.startLocation} end=${element.endLocation}).',
+                  'CommunicationNetwork found without identical location (start=${element.startLocation} end=${element.endLocation}).',
                 );
               }
               return CommunicationNetworkChange(
                 communicationNetworkType: element.communicationNetworkType.communicationNetworkType,
+                kilometre: mapperData.kilometreMap[element.startLocation] ?? [],
                 order: calculateOrder(mapperData.segmentIndex, element.startLocation),
-                kilometre: mapperData.kilometreMap[element.startLocation] ?? const [],
               );
             })
             .nonNulls
             .toList() ??
-        <CommunicationNetworkChange>[];
+        [];
   }
 
   static Iterable<Whistle> _parseWhistle(_MapperData mapperData) {

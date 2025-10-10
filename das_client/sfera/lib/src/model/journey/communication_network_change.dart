@@ -4,26 +4,14 @@ import 'package:sfera/component.dart';
 
 @sealed
 @immutable
-class CommunicationNetworkChange extends JourneyPoint implements Comparable {
+class CommunicationNetworkChange extends JourneyPoint {
   const CommunicationNetworkChange({
     required this.communicationNetworkType,
     required super.order,
     super.kilometre = const [],
-  }) : super(
-         type: Datatype.communicationNetworkChannel,
-       );
+  }) : super(type: Datatype.communicationNetworkChannel);
 
   final CommunicationNetworkType communicationNetworkType;
-
-  /// Marks the start from where this communication network applies.
-  /// No start and end order is given, as RADN delivers network only for specific point.
-  int get order => super.order;
-
-  @override
-  int compareTo(other) {
-    if (other is! CommunicationNetworkChange) return -1;
-    return order.compareTo(other.order);
-  }
 
   @override
   bool operator ==(Object other) =>
