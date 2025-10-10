@@ -21,13 +21,9 @@ class ReducedCommunicationNetworkChannelRow extends CellRowBuilder<Communication
   DASTableCell informationCell(BuildContext context) {
     return DASTableCell(
       alignment: Alignment.centerLeft,
-      child: Row(
-        children: [
-          Text(
-            '${context.l10n.p_train_journey_table_kilometre_label} ${data.kilometre[0].toStringAsFixed(1)}',
-            style: DASTextStyles.largeRoman,
-          ),
-        ],
+      child: Text(
+        '${context.l10n.p_train_journey_table_kilometre_label} ${data.kilometre[0].toStringAsFixed(1)}',
+        style: DASTextStyles.largeRoman,
       ),
     );
   }
