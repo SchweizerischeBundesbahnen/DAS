@@ -18,7 +18,7 @@ sealed class AdvisedSpeedSegment extends Segment {
 
   @override
   String toString() {
-    return '$runtimeType(startOrder: $startOrder, endOrder: $endOrder, speed: $speed)';
+    return ' (startOrder: $startOrder, endOrder: $endOrder, speed: $speed)';
   }
 }
 
