@@ -100,73 +100,80 @@ class SpeedMapper {
 
     for (int segmentIndex = 0; segmentIndex < segmentProfileReferences.length; segmentIndex++) {
       final segmentProfileReference = segmentProfileReferences[segmentIndex];
-      final segmentProfile = segmentProfiles.where((sP) => sP.id == segmentProfileReference.spId).first;
+      final segmentProfile = segmentProfiles.firstWhere((sP) => sP.id == segmentProfileReference.spId);
 
       for (final speedConstraint in segmentProfileReference.advisedSpeedTemporaryConstraints) {
         if (_invalidAdvisedSpeed(speedConstraint)) continue;
 
         final journeyOrders = journeyData.map((it) => it.order);
-        final servicePoints = journeyData.whereType<ServicePoint>().whereNot((sp) => sp.isAdditional);
+        Iterable<ServicePoint>? servicePoints = journeyData.whereType<ServicePoint>().whereNot((sp) => sp.isAdditional);
 
         int startOrder = calculateOrder(segmentIndex, speedConstraint.startLocation ?? 0);
-        if (!journeyOrders.contains(startOrder)) {
-          startOrder = _orderFromClosestServicePoint(startOrder, servicePoints) ?? 0;
-        }
         int endOrder = calculateOrder(segmentIndex, speedConstraint.endLocation ?? double.parse(segmentProfile.length));
-        if (!journeyOrders.contains(endOrder)) {
-          // reversed since the advised speed segment should be as big as possible if two closest service points
-          endOrder = _orderFromClosestServicePoint(endOrder, servicePoints.toList().reversed) ?? 0;
+
+        final startUnknown = (!journeyOrders.contains(startOrder) || speedConstraint.startLocation == null);
+        final endUnknown = (!journeyOrders.contains(endOrder) || speedConstraint.endLocation == null);
+
+        if (startUnknown) {
+          final possibleStartingServicePoints = endUnknown
+              ? servicePoints.take(servicePoints.length - 1)
+              : servicePoints.where((sP) => sP.order < endOrder);
+          startOrder = _orderFromClosestServicePoint(startOrder, possibleStartingServicePoints) ?? endOrder;
+        }
+        if (endUnknown) {
+          final possibleEndingServicePoints = servicePoints.where((sP) => sP.order > startOrder).toList();
+          endOrder = _orderFromClosestServicePoint(endOrder, possibleEndingServicePoints.reversed) ?? startOrder;
         }
 
-        final endData = journeyData.where((it) => it.order == endOrder).first;
+        if (startOrder >= endOrder) {
+          _log.warning('AdvisedSpeedSegment mapped to unfeasible range. Skipping! $speedConstraint');
+          continue;
+        }
+
+        final endData = journeyData.firstWhere((it) => it.order == endOrder);
 
         final advisedSpeed = speedConstraint.advisedSpeed!;
         SingleSpeed? speed;
         if (advisedSpeed.speed != null) speed = Speed.parse(advisedSpeed.speed!) as SingleSpeed;
 
-        if (speed == null && advisedSpeed.deltaSpeed == null) {
-          _log.warning('AdvisedSpeed found with no speed and no deltaSpeed. Skipping');
-          continue;
-        }
-
         if (speed == null) {
           result.add(VelocityMaxAdvisedSpeedSegment(startOrder: startOrder, endOrder: endOrder, endData: endData));
-        } else {
-          switch (advisedSpeed.reasonCode) {
-            case ReasonCodeDto.followTrain:
-              result.add(
-                FollowTrainAdvisedSpeedSegment(
-                  startOrder: startOrder,
-                  endOrder: endOrder,
-                  speed: speed,
-                  endData: endData,
-                ),
-              );
-              break;
-            case ReasonCodeDto.trainFollowing:
-              result.add(
-                TrainFollowingAdvisedSpeedSegment(
-                  startOrder: startOrder,
-                  endOrder: endOrder,
-                  speed: speed,
-                  endData: endData,
-                ),
-              );
-              break;
-            case ReasonCodeDto.adlFixedTime:
-              result.add(
-                FixedTimeAdvisedSpeedSegment(
-                  startOrder: startOrder,
-                  endOrder: endOrder,
-                  speed: speed,
-                  endData: endData,
-                ),
-              );
-              break;
-            default:
-              _log.warning('Skipping AdvisedSpeed found with reasonCode that cannot be handled: $advisedSpeed');
-              continue;
-          }
+          continue;
+        }
+        switch (advisedSpeed.reasonCode) {
+          case ReasonCodeDto.followTrain:
+            result.add(
+              FollowTrainAdvisedSpeedSegment(
+                startOrder: startOrder,
+                endOrder: endOrder,
+                speed: speed,
+                endData: endData,
+              ),
+            );
+            break;
+          case ReasonCodeDto.trainFollowing:
+            result.add(
+              TrainFollowingAdvisedSpeedSegment(
+                startOrder: startOrder,
+                endOrder: endOrder,
+                speed: speed,
+                endData: endData,
+              ),
+            );
+            break;
+          case ReasonCodeDto.adlFixedTime:
+            result.add(
+              FixedTimeAdvisedSpeedSegment(
+                startOrder: startOrder,
+                endOrder: endOrder,
+                speed: speed,
+                endData: endData,
+              ),
+            );
+            break;
+          default:
+            _log.warning('Skipping AdvisedSpeed found with reasonCode that cannot be handled: $advisedSpeed');
+            continue;
         }
       }
     }
@@ -189,7 +196,11 @@ class SpeedMapper {
 
   static bool _invalidAdvisedSpeed(TemporaryConstraintsDto speedConstraint) {
     if (speedConstraint.advisedSpeed == null) {
-      _log.warning('AdvisedSpeedTemporaryConstraint found with no advised speeds.');
+      _log.warning('AdvisedSpeedTemporaryConstraint found with no advised speeds. Skipping');
+      return true;
+    }
+    if (speedConstraint.advisedSpeed?.speed == null && speedConstraint.advisedSpeed?.deltaSpeed == null) {
+      _log.warning('AdvisedSpeedTemporaryConstraint found with no speed and no deltaSpeed. Skipping');
       return true;
     }
     final hasStartOrEnd = speedConstraint.startLocation != null || speedConstraint.endLocation != null;
