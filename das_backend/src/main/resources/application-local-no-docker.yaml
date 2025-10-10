@@ -1,0 +1,25 @@
+#localhost only: no need for Podman running instance nor PostgreSQL connection
+spring:
+  docker:
+    compose:
+      enabled: false # docker-environment not a pre-condition
+      #file: ./das_backend/compose.yaml
+  config:
+    import: optional:file:./das_backend/.env[.properties]
+  datasource:
+    url: jdbc:h2:mem:db;MODE=PostgreSQL
+    username: sa
+    password: h2secret
+    driverClassName: org.h2.Driver
+  jpa:
+    #database-platform: org.hibernate.dialect.H2Dialect
+    #hibernate:
+    #  ddl-auto: validate #update #create-drop #none
+    show-sql: true
+  h2:
+    console:
+      path: /h2-console
+      settings.trace: false
+      settings.web-allow-others: false
+      # https://www.baeldung.com/spring-boot-h2-console-error -> if true: adapt WebSecurityConfig::filterChain
+      enabled: true # turn it on only for temporary debugging -> http://localhost:8080/h2-console
