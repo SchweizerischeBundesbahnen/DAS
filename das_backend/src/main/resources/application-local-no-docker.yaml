@@ -7,21 +7,19 @@ spring:
   config:
     import: optional:file:./das_backend/.env[.properties]
   datasource:
-    #url: jdbc:postgresql://localhost:5432/driver_advisory_system
-    url: jdbc:h2:mem:mydb;MODE=PostgreSQL # jdbc:h2:file:/data/mydb
+    url: jdbc:h2:mem:db;MODE=PostgreSQL
     username: sa
-    password: password
+    password: h2secret
     driverClassName: org.h2.Driver
   jpa:
     #database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      # validate assumes flyway executes DDL! Use create/create-drop for local H2 generation only
-      # doc: https://docs.spring.io/spring-boot/docs/3.2.2/reference/html/howto.html#howto.data-initialization.using-hibernate
-      ddl-auto: validate #validate #update #create-drop #none
+    #hibernate:
+    #  ddl-auto: validate #update #create-drop #none
     show-sql: true
   h2:
     console:
       path: /h2-console
       settings.trace: false
       settings.web-allow-others: false
-      enabled: false # turn it on only locally/temporarily -> http://localhost:8080/h2-console
+      # https://www.baeldung.com/spring-boot-h2-console-error -> if true: adapt WebSecurityConfig::filterChain
+      enabled: false # turn it on only for temporary debugging -> http://localhost:8080/h2-console

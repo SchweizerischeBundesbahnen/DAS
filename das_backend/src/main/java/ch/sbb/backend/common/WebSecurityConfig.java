@@ -36,8 +36,8 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .authorizeHttpRequests(authorize -> authorize
+        // production security
+        http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/swagger-ui/**").permitAll()
                 .requestMatchers("/v3/api-docs/**").permitAll()
                 .requestMatchers("/actuator/health/**").permitAll()
@@ -47,6 +47,24 @@ public class WebSecurityConfig {
             .oauth2ResourceServer(oauth2 -> oauth2
                 .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
             );
+
+        /*
+        // H2 local debug security for http://localhost:8080/h2-console
+        final String h2Console = "/h2-console/**";
+        http.authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/swagger-ui/**").permitAll()
+                .requestMatchers("/v3/api-docs/**").permitAll()
+                .requestMatchers("/actuator/health/**").permitAll()
+                .requestMatchers(h2Console).permitAll()
+                .anyRequest().authenticated()
+            )
+            .csrf(csrf -> csrf.ignoringRequestMatchers(h2Console))
+            .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
+            .oauth2ResourceServer(oauth2 -> oauth2
+                .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
+            );
+         */
+
         return http.build();
     }
 
