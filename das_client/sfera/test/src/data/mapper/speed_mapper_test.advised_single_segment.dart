@@ -295,27 +295,21 @@ void main() {
         });
       });
 
-      /// 1. When both exactly midway between to SP ----> max range
-      /// 3. Between known location and adjacent calculated SP
-      /// 4. Between known location and non-adjacent calculated SP
-      /// 5. When both locations unknown with leading / trailing SP ---> between two calculated SPs (both directions)
-      /// 6. When one location is SP ---> between SP and calculated SP (both directions)
-      ///
       /// One location is known, the other unknown. Here, multiple cases can be differentiated:
       ///
-      /// In principal, known locations could be either on SP or non SP. The algo does not differentiate,
-      /// hence we leave out some cases for simplicity.
+      /// Known locations can be either on a service point (SP) or non SP. We abbreviate all possible cases to:
       ///
-      /// 1. start is known, on non SP
+      /// 1. start is known, on **non SP**
       ///   i. end is close to adjacent SP
       ///   ii. end is close to non-adjacent SP (SP in between)
       ///   iii. end is midway between adjacent SP and next SP
       ///   iv. end is midway between non adjacent SP and next SP
-      /// 2. end is known, on SP
+      /// 2. end is known, **on SP**
       ///   i. start is close to adjacent SP
       ///   ii. start is close to non-adjacent SP (SP in between)
       ///   iii. start is midway between adjacent SP and next SP
       ///   iv. start is midway between non adjacent SP and next SP
+      /// 3. both end up being close to the **same SP** --> skipped
       group('One location is known', () {
         /// start known on first signal
         test('whenEndCloseFirstSP_thenIsBetweenFirstSignalAndFirstSP', () {
@@ -398,7 +392,7 @@ void main() {
         test('whenStartCloseAdjacentSP_thenIsBetweenSecondSPAndLastSP', () {
           // ARRANGE
           when(mockTemporaryConstraint.startLocation).thenReturn(2999.0);
-          when(mockTemporaryConstraint.endLocation).thenReturn(calculateOrderInverse(0, servicePoints.last.order));
+          when(mockTemporaryConstraint.endLocation).thenReturn(5000.0);
 
           // ACT & EXPECT
           expect(
@@ -416,7 +410,7 @@ void main() {
         test('whenStartCloseNonAdjacentSP_thenIsBetweenFirstSPAndLastSP', () {
           // ARRANGE
           when(mockTemporaryConstraint.startLocation).thenReturn(999.0);
-          when(mockTemporaryConstraint.endLocation).thenReturn(calculateOrderInverse(0, servicePoints.last.order));
+          when(mockTemporaryConstraint.endLocation).thenReturn(5000.0);
 
           // ACT & EXPECT
           expect(
@@ -434,7 +428,7 @@ void main() {
         test('whenStartMidwayBetweenAdjacentSPs_thenIsBetweenSecondSPAndLastSP', () {
           // ARRANGE
           when(mockTemporaryConstraint.startLocation).thenReturn(4000.0);
-          when(mockTemporaryConstraint.endLocation).thenReturn(calculateOrderInverse(0, servicePoints.last.order));
+          when(mockTemporaryConstraint.endLocation).thenReturn(5000.0);
 
           // ACT & EXPECT
           expect(
@@ -452,7 +446,7 @@ void main() {
         test('whenStartMidwayBetweenNonAdjacentSPs_thenIsBetweenFirstSPAndLastSP', () {
           // ARRANGE
           when(mockTemporaryConstraint.startLocation).thenReturn(2000.0);
-          when(mockTemporaryConstraint.endLocation).thenReturn(calculateOrderInverse(0, servicePoints.last.order));
+          when(mockTemporaryConstraint.endLocation).thenReturn(5000.0);
 
           // ACT & EXPECT
           expect(
@@ -467,25 +461,7 @@ void main() {
           );
         });
 
-        test('whenStartFirstSPAndEndCloseFirstSP_thenIsBetweenFirstSPAndSecondSP', () {
-          // ARRANGE
-          final firstServicePointLocation = calculateOrderInverse(0, servicePoints.first.order);
-          when(mockTemporaryConstraint.startLocation).thenReturn(firstServicePointLocation);
-          when(mockTemporaryConstraint.endLocation).thenReturn(firstServicePointLocation + 10);
-
-          // ACT & EXPECT
-          expect(
-            testee.call(mockJourneyProfile, [mockSegmentProfile], journey),
-            orderedEquals([
-              VelocityMaxAdvisedSpeedSegment(
-                startOrder: servicePoints.first.order,
-                endOrder: servicePoints[1].order,
-                endData: servicePoints[1],
-              ),
-            ]),
-          );
-        });
-
+        // one test for end not being on a SP
         test('whenEndOnLastSignalAndStartCloseSecondSP_thenIsBetweenSecondSPAndLastSignal', () {
           // ARRANGE
           final lastSignalOrder = journey.last.order;
@@ -505,37 +481,75 @@ void main() {
           );
         });
 
-        test('whenEndIsLastSPAndStartCloseLastSP_thenIsBetweenSecondSPAndLastSP', () {
+        /// close to same service point
+        test('whenStartFirstSPAndEndCloseFirstSP_thenIsSkipped', () {
           // ARRANGE
-          final lastServicePointLocation = calculateOrderInverse(0, servicePoints.last.order);
+          final firstServicePointLocation = 1000.0;
+          when(mockTemporaryConstraint.startLocation).thenReturn(firstServicePointLocation);
+          when(mockTemporaryConstraint.endLocation).thenReturn(firstServicePointLocation + 10);
+
+          // ACT & EXPECT
+          expect(testee.call(mockJourneyProfile, [mockSegmentProfile], journey), isEmpty);
+        });
+
+        test('whenEndSecondSPAndStartCloseSecondSP_thenIsSkipped', () {
+          // ARRANGE
+          final midServicePoint = 3000.0;
+          when(mockTemporaryConstraint.startLocation).thenReturn(midServicePoint - 10);
+          when(mockTemporaryConstraint.endLocation).thenReturn(midServicePoint);
+
+          // ACT & EXPECT
+          expect(testee.call(mockJourneyProfile, [mockSegmentProfile], journey), isEmpty);
+        });
+
+        test('whenEndLastSPAndStartCloseLastSP_thenIsSkipped', () {
+          // ARRANGE
+          final lastServicePointLocation = 5000.0;
           when(mockTemporaryConstraint.startLocation).thenReturn(lastServicePointLocation - 10);
           when(mockTemporaryConstraint.endLocation).thenReturn(lastServicePointLocation);
 
           // ACT & EXPECT
-          expect(
-            testee.call(mockJourneyProfile, [mockSegmentProfile], journey),
-            orderedEquals([
-              VelocityMaxAdvisedSpeedSegment(
-                startOrder: servicePoints[1].order,
-                endOrder: servicePoints.last.order,
-                endData: servicePoints.last,
-              ),
-            ]),
-          );
+          expect(testee.call(mockJourneyProfile, [mockSegmentProfile], journey), isEmpty);
         });
       });
 
-      /// 1. Locations are close to the same service point (all three service points)
-      ///    A deliberate choice is made here: both close to SP surrounded by other SPs will map
-      ///    start to mid SP and end to last SP (could also map start to first SP and end to mid SP)
-      /// 2. Locations are close to different service points
-      /// 3. Locations are midway between SPs (in different intervals, since they need to be different)
+      /// 1. Locations are close to the same service point (all three service points) --> They are skipped
+      /// 2. Locations are close to different service points (pairs: 1 - 2, 2 - 3, 1 - 3)
+      /// 3. Locations are midway between SPs (in different intervals, since they need to be absolutely different)
       group('Both locations unknown', () {
         /// Same Service point
-        test('whenCloseFirstSP_thenIsBetweenFirstSPAndSecondSP', () {
+        test('whenCloseFirstSP_thenIsSkipped', () {
           // ARRANGE
           when(mockTemporaryConstraint.startLocation).thenReturn(999.0);
           when(mockTemporaryConstraint.endLocation).thenReturn(1001.0);
+
+          // ACT & EXPECT
+          expect(testee.call(mockJourneyProfile, [mockSegmentProfile], journey), isEmpty);
+        });
+
+        test('whenCloseLastSP_thenIsSkipped', () {
+          // ARRANGE
+          when(mockTemporaryConstraint.startLocation).thenReturn(4999.0);
+          when(mockTemporaryConstraint.endLocation).thenReturn(5001.0);
+
+          // ACT & EXPECT
+          expect(testee.call(mockJourneyProfile, [mockSegmentProfile], journey), isEmpty);
+        });
+
+        test('whenCloseToSecondSP_thenIsSkipped', () {
+          // ARRANGE
+          when(mockTemporaryConstraint.startLocation).thenReturn(2999.0);
+          when(mockTemporaryConstraint.endLocation).thenReturn(3001.0);
+
+          // ACT & EXPECT
+          expect(testee.call(mockJourneyProfile, [mockSegmentProfile], journey), isEmpty);
+        });
+
+        /// Different Service points
+        test('whenStartCloseToFirstSPAndEndCloseSecondSP_thenIsBetweenFirstSPAndSecondSP (1 - 2)', () {
+          // ARRANGE
+          when(mockTemporaryConstraint.startLocation).thenReturn(1001.0);
+          when(mockTemporaryConstraint.endLocation).thenReturn(2999.0);
 
           // ACT & EXPECT
           expect(
@@ -550,9 +564,9 @@ void main() {
           );
         });
 
-        test('whenCloseLastSP_thenIsBetweenSecondSPAndLastSP', () {
+        test('whenStartCloseToSecondSPAndEndCloseSecondSP_thenIsBetweenSecondSPAndLastSP (2 - 3)', () {
           // ARRANGE
-          when(mockTemporaryConstraint.startLocation).thenReturn(4999.0);
+          when(mockTemporaryConstraint.startLocation).thenReturn(2999.0);
           when(mockTemporaryConstraint.endLocation).thenReturn(5001.0);
 
           // ACT & EXPECT
@@ -568,26 +582,7 @@ void main() {
           );
         });
 
-        test('whenCloseToSecondSP_thenIsBetweenSecondSPAndLastSP', () {
-          // ARRANGE
-          when(mockTemporaryConstraint.startLocation).thenReturn(2999.0);
-          when(mockTemporaryConstraint.endLocation).thenReturn(3001.0);
-
-          // ACT & EXPECT
-          expect(
-            testee.call(mockJourneyProfile, [mockSegmentProfile], journey),
-            orderedEquals([
-              VelocityMaxAdvisedSpeedSegment(
-                startOrder: servicePoints[1].order,
-                endOrder: servicePoints.last.order,
-                endData: servicePoints.last,
-              ),
-            ]),
-          );
-        });
-
-        /// Different Service points
-        test('whenStartCloseToFirstSPAndEndCloseLastSP_thenIsBetweenFirstSPAndLastSP', () {
+        test('whenStartCloseToFirstSPAndEndCloseLastSP_thenIsBetweenFirstSPAndLastSP (1 - 3)', () {
           // ARRANGE
           final servicePoints = journey.whereType<ServicePoint>().toList();
           when(

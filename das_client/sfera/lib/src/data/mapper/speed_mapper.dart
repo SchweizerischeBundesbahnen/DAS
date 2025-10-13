@@ -106,7 +106,7 @@ class SpeedMapper {
         if (_invalidAdvisedSpeed(speedConstraint)) continue;
 
         final journeyOrders = journeyData.map((it) => it.order);
-        Iterable<ServicePoint>? servicePoints = journeyData.whereType<ServicePoint>().whereNot((sp) => sp.isAdditional);
+        final servicePoints = journeyData.whereType<ServicePoint>().whereNot((sp) => sp.isAdditional);
 
         int startOrder = calculateOrder(segmentIndex, speedConstraint.startLocation ?? 0);
         int endOrder = calculateOrder(segmentIndex, speedConstraint.endLocation ?? double.parse(segmentProfile.length));
@@ -115,14 +115,10 @@ class SpeedMapper {
         final endUnknown = (!journeyOrders.contains(endOrder) || speedConstraint.endLocation == null);
 
         if (startUnknown) {
-          final possibleStartingServicePoints = endUnknown
-              ? servicePoints.take(servicePoints.length - 1)
-              : servicePoints.where((sP) => sP.order < endOrder);
-          startOrder = _orderFromClosestServicePoint(startOrder, possibleStartingServicePoints) ?? endOrder;
+          startOrder = _orderFromClosestServicePoint(startOrder, servicePoints) ?? endOrder;
         }
         if (endUnknown) {
-          final possibleEndingServicePoints = servicePoints.where((sP) => sP.order > startOrder).toList();
-          endOrder = _orderFromClosestServicePoint(endOrder, possibleEndingServicePoints.reversed) ?? startOrder;
+          endOrder = _orderFromClosestServicePoint(endOrder, servicePoints.toList().reversed) ?? startOrder;
         }
 
         if (startOrder >= endOrder) {
