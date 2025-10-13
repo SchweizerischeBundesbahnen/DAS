@@ -15,12 +15,12 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class PahoMqttClient {
 
-    public static final String USER_NAME = "JWT";
-    public static final String SECRET_PREFIX = "OAUTH";
-    public static final String SECRET_DELIMITER = "~";
+    private static final String USER_NAME = "JWT";
+    private static final String SECRET_PREFIX = "OAUTH";
+    private static final String SECRET_DELIMITER = "~";
+    private static final int QOS_EXACTLY_ONCE = 2;
 
     private final SferaAuthService sferaAuthService;
-    private final int qos = 2;
 
     @Value("${sfera.broker-url}")
     String broker;
@@ -37,47 +37,51 @@ public class PahoMqttClient {
         this.sferaAuthService = sferaAuthService;
     }
 
-    public void subscribe(final String topicFilter, final IMqttMessageListener messageListener) {
-        try {
-            final MqttSubscription[] subscriptions = {new MqttSubscription(topicFilter, qos)};
-            IMqttMessageListener[] messageListeners = {messageListener};
-            client.subscribe(subscriptions, messageListeners);
-        } catch (final MqttException mqttException) {
-            log.error("Error subscribing to topic: {}", topicFilter, mqttException);
-        }
-    }
-
-    void connect() throws MqttException {
+    void connect() {
         OAuth2AccessToken accessToken = sferaAuthService.getAccessToken();
         if (accessToken == null) {
-            log.error("Cannot connect to MQTT broker, could not obtain access token");
+            log.error("connecting failed, could not obtain access token");
             return;
         }
-        String password = SECRET_PREFIX + SECRET_DELIMITER + oauthProfile + SECRET_DELIMITER + accessToken.getTokenValue();
-        this.client = new MqttClient(broker, clientId);
+        final String password = SECRET_PREFIX + SECRET_DELIMITER + oauthProfile + SECRET_DELIMITER + accessToken.getTokenValue();
         MqttConnectionOptions connOpts = new MqttConnectionOptions();
         connOpts.setCleanStart(true);
         connOpts.setUserName(USER_NAME);
         connOpts.setPassword(password.getBytes());
-        client.connect(connOpts);
+        try {
+            this.client = new MqttClient(broker, clientId);
+            client.connect(connOpts);
+        } catch (MqttException e) {
+            log.error("connecting failed ", e);
+        }
+    }
+
+    void subscribe(String topic, IMqttMessageListener messageListener) {
+        try {
+            final MqttSubscription[] subscriptions = {new MqttSubscription(topic, QOS_EXACTLY_ONCE)};
+            IMqttMessageListener[] messageListeners = {messageListener};
+            client.subscribe(subscriptions, messageListeners);
+        } catch (MqttException e) {
+            log.error("subscribing failed to topic: {}", topic, e);
+        }
     }
 
     void publish(String topic, String content) {
         MqttMessage message = new MqttMessage(content.getBytes());
-        message.setQos(qos);
+        message.setQos(QOS_EXACTLY_ONCE);
         try {
             client.publish(topic, message);
         } catch (MqttException e) {
-            log.error("Got exception while publishing message to topic={} message={}.... ", topic, content.substring(0, 100), e);
+            log.error("publishing failed message={}... to topic={}", content.substring(0, 100), topic, e);
         }
     }
 
-    public void disconnect() {
+    void disconnect() {
         try {
             client.disconnect();
             client.close();
-        } catch (final MqttException mqttException) {
-            log.error("Got exception while closing connection ", mqttException);
+        } catch (MqttException e) {
+            log.error("closing failed ", e);
         }
     }
 }

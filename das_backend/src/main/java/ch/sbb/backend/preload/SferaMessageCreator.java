@@ -1,28 +1,28 @@
 package ch.sbb.backend.preload;
 
-import ch.sbb.backend.adapters.sfera.model.v0201.B2GEventPayload;
-import ch.sbb.backend.adapters.sfera.model.v0201.B2GRequest;
-import ch.sbb.backend.adapters.sfera.model.v0201.DASModesComplexType;
-import ch.sbb.backend.adapters.sfera.model.v0201.HandshakeRequest;
-import ch.sbb.backend.adapters.sfera.model.v0201.JPRequest;
-import ch.sbb.backend.adapters.sfera.model.v0201.MessageHeader;
-import ch.sbb.backend.adapters.sfera.model.v0201.OTNIDComplexType;
-import ch.sbb.backend.adapters.sfera.model.v0201.Recipient;
-import ch.sbb.backend.adapters.sfera.model.v0201.ReportedDASDrivingMode.DASDrivingMode;
-import ch.sbb.backend.adapters.sfera.model.v0201.SFERAB2GEventMessage;
-import ch.sbb.backend.adapters.sfera.model.v0201.SFERAB2GRequestMessage;
-import ch.sbb.backend.adapters.sfera.model.v0201.SPRequest;
-import ch.sbb.backend.adapters.sfera.model.v0201.SegmentProfileReference;
-import ch.sbb.backend.adapters.sfera.model.v0201.Sender;
-import ch.sbb.backend.adapters.sfera.model.v0201.SessionTermination;
-import ch.sbb.backend.adapters.sfera.model.v0201.TCRequest;
-import ch.sbb.backend.adapters.sfera.model.v0201.TrainCharacteristicsRef;
-import ch.sbb.backend.adapters.sfera.model.v0201.TrainIdentificationComplexType;
-import ch.sbb.backend.adapters.sfera.model.v0201.UnavailableDASOperatingModes.DASArchitecture;
-import ch.sbb.backend.adapters.sfera.model.v0201.UnavailableDASOperatingModes.DASConnectivity;
+import ch.sbb.backend.preload.sfera.model.v0201.B2GEventPayload;
+import ch.sbb.backend.preload.sfera.model.v0201.B2GRequest;
+import ch.sbb.backend.preload.sfera.model.v0201.DASModesComplexType;
+import ch.sbb.backend.preload.sfera.model.v0201.HandshakeRequest;
+import ch.sbb.backend.preload.sfera.model.v0201.JPRequest;
+import ch.sbb.backend.preload.sfera.model.v0201.MessageHeader;
+import ch.sbb.backend.preload.sfera.model.v0201.OTNIDComplexType;
+import ch.sbb.backend.preload.sfera.model.v0201.Recipient;
+import ch.sbb.backend.preload.sfera.model.v0201.ReportedDASDrivingMode.DASDrivingMode;
+import ch.sbb.backend.preload.sfera.model.v0201.SFERAB2GEventMessage;
+import ch.sbb.backend.preload.sfera.model.v0201.SFERAB2GRequestMessage;
+import ch.sbb.backend.preload.sfera.model.v0201.SPRequest;
+import ch.sbb.backend.preload.sfera.model.v0201.SegmentProfileReference;
+import ch.sbb.backend.preload.sfera.model.v0201.Sender;
+import ch.sbb.backend.preload.sfera.model.v0201.SessionTermination;
+import ch.sbb.backend.preload.sfera.model.v0201.TCRequest;
+import ch.sbb.backend.preload.sfera.model.v0201.TrainCharacteristicsRef;
+import ch.sbb.backend.preload.sfera.model.v0201.TrainIdentificationComplexType;
+import ch.sbb.backend.preload.sfera.model.v0201.UnavailableDASOperatingModes.DASArchitecture;
+import ch.sbb.backend.preload.sfera.model.v0201.UnavailableDASOperatingModes.DASConnectivity;
 import ch.sbb.backend.preload.xml.XmlDateHelper;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,7 +41,7 @@ public class SferaMessageCreator {
     String sourceDevice;
 
     public JPRequest createJPRequest(String companyCode, String operationalTrainNumber, LocalDate startDate) {
-        var result = new JPRequest();
+        JPRequest result = new JPRequest();
         TrainIdentificationComplexType trainIdentification = new TrainIdentificationComplexType();
         OTNIDComplexType otnid = new OTNIDComplexType();
         otnid.setTeltsiCompany(companyCode);
@@ -55,7 +55,7 @@ public class SferaMessageCreator {
     public List<TCRequest> createTcRequests(List<TrainCharacteristicsRef> tcRefs) {
         return tcRefs.stream()
             .map(tcRef -> {
-                var result = new TCRequest();
+                TCRequest result = new TCRequest();
                 result.setTCID(tcRef.getTCID());
                 result.setTCVersionMajor(tcRef.getTCVersionMajor());
                 result.setTCVersionMinor(tcRef.getTCVersionMinor());
@@ -67,7 +67,7 @@ public class SferaMessageCreator {
     }
 
     HandshakeRequest createSferaHandshakeRequest() {
-        var result = new HandshakeRequest();
+        HandshakeRequest result = new HandshakeRequest();
         DASModesComplexType dasMode = new DASModesComplexType();
         dasMode.setDASArchitecture(DASArchitecture.BOARD_ADVICE_CALCULATION);
         dasMode.setDASConnectivity(DASConnectivity.STANDALONE);
@@ -77,18 +77,18 @@ public class SferaMessageCreator {
     }
 
     public MessageHeader createMessageHeader(UUID messageId) {
-        var sender = new Sender();
+        Sender sender = new Sender();
         sender.setValue(companyCode);
-        var recipient = new Recipient();
+        Recipient recipient = new Recipient();
         recipient.setValue("0085");
 
-        var result = new MessageHeader();
+        MessageHeader result = new MessageHeader();
         result.setSFERAVersion(sferaVersion);
         result.setSourceDevice(sourceDevice);
         result.setMessageID(messageId.toString());
         result.setSender(sender);
         result.setRecipient(recipient);
-        result.setTimestamp(XmlDateHelper.toGregorianCalender(ZonedDateTime.now()));
+        result.setTimestamp(XmlDateHelper.toGregorianCalender(OffsetDateTime.now()));
         return result;
     }
 
@@ -111,7 +111,7 @@ public class SferaMessageCreator {
     }
 
     SFERAB2GRequestMessage createSferaHsRequestMessage(MessageHeader header, HandshakeRequest handshakeRequest) {
-        var result = new SFERAB2GRequestMessage();
+        SFERAB2GRequestMessage result = new SFERAB2GRequestMessage();
         result.setMessageHeader(header);
         result.setHandshakeRequest(handshakeRequest);
         return result;
@@ -140,7 +140,7 @@ public class SferaMessageCreator {
     }
 
     public SFERAB2GEventMessage createSferaSessionTerminationEventMessage(MessageHeader header) {
-        var result = new SFERAB2GEventMessage();
+        SFERAB2GEventMessage result = new SFERAB2GEventMessage();
         result.setMessageHeader(header);
         B2GEventPayload eventPayload = new B2GEventPayload();
         eventPayload.setSessionTermination(new SessionTermination());
