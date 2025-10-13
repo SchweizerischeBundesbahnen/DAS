@@ -4,7 +4,7 @@
 <dict>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>ch.sbb.tms.iad.ShasMobile</string>
+		<string>ch.sbb.tms.iad.shasmobile</string>
 	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>

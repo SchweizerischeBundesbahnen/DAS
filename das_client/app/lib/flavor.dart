@@ -105,7 +105,7 @@ class _DevFlavor extends Flavor {
          mqttOauthProfile: 'azureAdDev',
          logLevel: Level.FINE,
          waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
-         waraIOSUrlScheme: 'ch.sbb.tms.iad.ShasMobile',
+         waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
        );
 }
 
@@ -122,7 +122,7 @@ class _InteFlavor extends Flavor {
          showBanner: true,
          mqttOauthProfile: 'azureAdInt',
          waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
-         waraIOSUrlScheme: 'ch.sbb.tms.iad.ShasMobile',
+         waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
        );
 }
 
@@ -139,7 +139,7 @@ class _ProdFlavor extends Flavor {
          showBanner: false,
          mqttOauthProfile: 'azureAdInt',
          waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
-         waraIOSUrlScheme: 'ch.sbb.tms.iad.ShasMobile',
+         waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
        );
 }
 

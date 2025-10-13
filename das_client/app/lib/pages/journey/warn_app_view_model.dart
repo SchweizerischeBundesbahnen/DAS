@@ -56,7 +56,13 @@ class WarnAppViewModel {
 
   Future<bool> get isWaraAppInstalled => _appCheck.isAppInstalled(_waraAppId);
 
-  Future<void> openWaraApp() => _appCheck.launchApp(_waraAppId);
+  Future<void> openWaraApp() async {
+    try {
+      await _appCheck.launchApp(_waraAppId);
+    } catch (_) {
+      _log.info('Opening Wara app failed or was canceled by user');
+    }
+  }
 
   void toggleManeuverMode() => setManeuverMode(!_rxManeuverModeEnabled.value);
 
@@ -73,7 +79,7 @@ class WarnAppViewModel {
     _warnappAbfahrtSubscription?.cancel();
   }
 
-  String get _waraAppId => Platform.isAndroid ? flavor.waraAndroidPackageName : flavor.waraIOSUrlScheme;
+  String get _waraAppId => Platform.isAndroid ? flavor.waraAndroidPackageName : '${flavor.waraIOSUrlScheme}://';
 
   void _listenToSferaRemoteRepo() {
     _stateSubscription?.cancel();

@@ -42,7 +42,7 @@ class ExtendedMenu extends StatelessWidget {
                       _transportDocumentItem(context),
                       _journeyOverviewItem(context, hideOverlay),
                       _maneuverItem(context, hideOverlay),
-                      _waraItem(context),
+                      _waraItem(context, hideOverlay),
                     ],
                   ),
                 ),
@@ -103,7 +103,7 @@ class ExtendedMenu extends StatelessWidget {
     );
   }
 
-  Widget _waraItem(BuildContext context) {
+  Widget _waraItem(BuildContext context, VoidCallback hideOverlay) {
     final warnAppViewModel = context.read<WarnAppViewModel>();
     return FutureBuilder(
       future: warnAppViewModel.isWaraAppInstalled,
@@ -116,7 +116,10 @@ class ExtendedMenu extends StatelessWidget {
           title: context.l10n.w_extended_menu_journey_wara_action,
           trailingIcon: SBBIcons.link_external_medium,
           isLastElement: true,
-          onPressed: () => warnAppViewModel.openWaraApp(),
+          onPressed: () async {
+            await warnAppViewModel.openWaraApp();
+            hideOverlay();
+          },
         );
       },
     );
