@@ -18,7 +18,7 @@ sealed class Speed {
   /// or a well formatted combination of those, e.g. 'XX/40-[30]-20'.
   /// All whitespaces are ignored.
   static Speed parse(String input) {
-    final strippedString = input.whitespaceRemoved;
+    final strippedString = input.whitespaceRemoved.convertedInvalidSpeed;
     if (!isValid(strippedString)) throw FormatException('Invalid speed: $input');
 
     if (IncomingOutgoingSpeed._hasMatch(strippedString)) return IncomingOutgoingSpeed._parse(strippedString);
@@ -27,7 +27,20 @@ sealed class Speed {
   }
 
   /// Returns true if the [input] can be parsed into a Speed instance, false otherwise.
-  static bool isValid(String input) => _speedRegex.hasMatch(input.whitespaceRemoved);
+  static bool isValid(String input) => _speedRegex.hasMatch(input.whitespaceRemoved.convertedInvalidSpeed);
+
+  bool get isIllegal {
+    if (this is SingleSpeed) {
+      return (this as SingleSpeed).isIllegal;
+    } else if (this is GraduatedSpeed) {
+      return (this as GraduatedSpeed).speeds.any((speed) => speed.isIllegal);
+    } else if (this is IncomingOutgoingSpeed) {
+      final inc = (this as IncomingOutgoingSpeed).incoming;
+      final out = (this as IncomingOutgoingSpeed).outgoing;
+      return inc.isIllegal || out.isIllegal;
+    }
+    return false;
+  }
 }
 
 /// A speed comprised of either [SingleSpeed] or [GraduatedSpeed] values, combined by a single '/'.
@@ -135,4 +148,6 @@ class SingleSpeed extends Speed {
 
 extension _StringX on String {
   String get whitespaceRemoved => replaceAll(RegExp(r'\s*'), '');
+
+  String get convertedInvalidSpeed => replaceAll('-1000', 'XX');
 }
