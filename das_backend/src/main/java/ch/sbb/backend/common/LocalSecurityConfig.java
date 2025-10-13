@@ -1,5 +1,6 @@
 package ch.sbb.backend.common;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -7,12 +8,14 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
-import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
- * Use for local testing by H2 only.
+ * Use for local testing by H2-Console only.
  *
+ * (An embedded in-memory H2 db is established inside JVM and cannot be accessed by IntelliJ for e.g.)
+ *
+ * @see <a her="http://localhost:8080/h2-console">H2 SQL-Console</a>
  * @see WebSecurityConfig
  */
 @Profile("local-no-docker")
@@ -20,9 +23,12 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class LocalSecurityConfig {
 
+    @Autowired
+    JwtAuthenticationConverter jwtAuthenticationConverter;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // H2 local debug security for http://localhost:8080/h2-console
+        // H2 local debug security for
         final String h2Console = "/h2-console/**";
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/swagger-ui/**").permitAll()
@@ -34,25 +40,10 @@ public class LocalSecurityConfig {
             .csrf(csrf -> csrf.ignoringRequestMatchers(h2Console))
             .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
             .oauth2ResourceServer(oauth2 -> oauth2
-                .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
+                .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter))
             );
 
         return http.build();
-    }
-
-    @Bean
-    public JwtAuthenticationConverter jwtAuthenticationConverter() {
-        // We define a custom role converter to extract the roles from the Entra ID's JWT token and convert them to granted authorities.
-        // This allows us to do role-based access control on our endpoints.
-        JwtGrantedAuthoritiesConverter roleConverter = new JwtGrantedAuthoritiesConverter();
-        roleConverter.setAuthoritiesClaimName(WebSecurityConfig.ROLES_KEY);
-        roleConverter.setAuthorityPrefix(WebSecurityConfig.ROLE_PREFIX);
-
-        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
-        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(roleConverter);
-        jwtAuthenticationConverter.setPrincipalClaimName(WebSecurityConfig.PRINCIPAL_CLAIM_NAME);
-
-        return jwtAuthenticationConverter;
     }
 }
 

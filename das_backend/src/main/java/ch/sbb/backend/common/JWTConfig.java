@@ -16,12 +16,19 @@ import org.springframework.security.oauth2.jwt.JwtClaimValidator;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtValidators;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 
 /**
  * @see WebSecurityConfig
+ * @see LocalSecurityConfig
  */
 @Configuration
 public class JWTConfig {
+
+    private static final String ROLES_KEY = "roles";
+    private static final String ROLE_PREFIX = "ROLE_";
+    private static final String PRINCIPAL_CLAIM_NAME = "preferred_username";
 
     @Value("${auth.audience.service-name}")
     private String serviceName;
@@ -40,6 +47,21 @@ public class JWTConfig {
         OAuth2TokenValidator<Jwt> validator = new DelegatingOAuth2TokenValidator<>(JwtValidators.createDefault(), audienceValidator);
         decoder.setJwtValidator(validator);
         return decoder;
+    }
+
+    @Bean
+    public JwtAuthenticationConverter jwtAuthenticationConverter() {
+        // We define a custom role converter to extract the roles from the Entra ID's JWT token and convert them to granted authorities.
+        // This allows us to do role-based access control on our endpoints.
+        JwtGrantedAuthoritiesConverter roleConverter = new JwtGrantedAuthoritiesConverter();
+        roleConverter.setAuthoritiesClaimName(ROLES_KEY);
+        roleConverter.setAuthorityPrefix(ROLE_PREFIX);
+
+        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(roleConverter);
+        jwtAuthenticationConverter.setPrincipalClaimName(PRINCIPAL_CLAIM_NAME);
+
+        return jwtAuthenticationConverter;
     }
 }
 

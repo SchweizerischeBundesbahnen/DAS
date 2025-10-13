@@ -1,5 +1,6 @@
 package ch.sbb.backend.common;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -7,7 +8,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
-import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -19,9 +19,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    static final String ROLES_KEY = "roles";
-    static final String ROLE_PREFIX = "ROLE_";
-    static final String PRINCIPAL_CLAIM_NAME = "preferred_username";
+    @Autowired
+    JwtAuthenticationConverter jwtAuthenticationConverter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -33,25 +32,12 @@ public class WebSecurityConfig {
             )
             .csrf(AbstractHttpConfigurer::disable)
             .oauth2ResourceServer(oauth2 -> oauth2
-                .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
+                .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter))
             );
 
         return http.build();
     }
 
-    @Bean
-    public JwtAuthenticationConverter jwtAuthenticationConverter() {
-        // We define a custom role converter to extract the roles from the Entra ID's JWT token and convert them to granted authorities.
-        // This allows us to do role-based access control on our endpoints.
-        JwtGrantedAuthoritiesConverter roleConverter = new JwtGrantedAuthoritiesConverter();
-        roleConverter.setAuthoritiesClaimName(ROLES_KEY);
-        roleConverter.setAuthorityPrefix(ROLE_PREFIX);
 
-        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
-        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(roleConverter);
-        jwtAuthenticationConverter.setPrincipalClaimName(PRINCIPAL_CLAIM_NAME);
-
-        return jwtAuthenticationConverter;
-    }
 }
 
