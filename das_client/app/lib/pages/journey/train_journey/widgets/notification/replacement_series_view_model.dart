@@ -85,9 +85,13 @@ class ReplacementSeriesViewModel {
       // Show notification for replacement series
       _rxModel.add(ReplacementSeriesModel.replacement(segment: activeSegment));
     } else if (currentModelValue is ReplacementSeriesSelected &&
-        currentPosition.order == currentModelValue.segment.end.order) {
+        currentPosition.order >= currentModelValue.segment.end.order) {
       // Show notification that user reached the end of the segment
       _rxModel.add(ReplacementSeriesModel.original(segment: currentModelValue.segment));
+    } else if (currentModelValue is ReplacementSeriesAvailable &&
+        currentPosition.order >= currentModelValue.segment.end.order) {
+      // User did not select the replacement series and reached the end of the segment, clear notification
+      _rxModel.add(null);
     }
   }
 
@@ -101,7 +105,7 @@ class ReplacementSeriesViewModel {
 
   IllegalSpeedSegment? _activeIllegalSpeedSegment(BreakSeries? currentBreakSeries, JourneyPoint currentPosition) =>
       _illegalSpeedSegments.firstWhereOrNull(
-        (it) => it.start.order <= currentPosition.order && it.end.order >= currentPosition.order,
+        (it) => it.start.order <= currentPosition.order && it.end.order > currentPosition.order,
       );
 
   List<IllegalSpeedSegment> _findIllegalSpeedSegments(Journey journey, BreakSeries currentBreakSeries) {
