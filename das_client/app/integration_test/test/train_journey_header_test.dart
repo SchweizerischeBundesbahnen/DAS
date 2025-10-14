@@ -458,7 +458,7 @@ Future<void> main() async {
       // check network type for Wankdorf
       final wankdorf = find.descendant(of: header, matching: find.text('Wankdorf'));
       expect(wankdorf, findsOneWidget);
-      tester.pumpAndSettle(const Duration(milliseconds: 5));
+      await tester.pumpAndSettle(const Duration(milliseconds: 5));
       final wankdorfGsmRIcon = find.descendant(of: header, matching: find.byKey(CommunicationNetworkIcon.gsmRKey));
       expect(wankdorfGsmRIcon, findsNothing);
       final wankdorfGsmPIcon = find.descendant(of: header, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
@@ -473,10 +473,8 @@ Future<void> main() async {
 
       // check network type for Olten (SIM displayed)
       await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Olten')));
-      await waitUntilExists(
-        tester,
-        find.descendant(of: header, matching: find.byKey(CommunicationNetworkIcon.gsmPKey)),
-      );
+      final oltenGsmPIcon = find.descendant(of: header, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
+      expect(oltenGsmPIcon, findsNothing);
 
       // check network type for Zürich
       await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Zürich')));
