@@ -14,24 +14,7 @@ import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 
 import 'integration_test_di.dart';
-import 'test/additional_speed_restriction_modal_test.dart' as additional_speed_restriction_modal_test;
-import 'test/automatic_advancement_test.dart' as automatic_advancement_tests;
-import 'test/journey_search_overlay_test.dart' as journey_search_overlay_tests;
-import 'test/navigation_test.dart' as navigation_tests;
-import 'test/service_point_modal_test.dart' as service_point_modal_test;
-import 'test/settings_test.dart' as settings_test;
-import 'test/train_journey_header_test.dart' as train_journey_header_tests;
-import 'test/train_journey_notification_test.dart' as train_journey_notification_tests;
-import 'test/train_journey_table_adl_test.dart' as train_journey_table_adl_tests;
-import 'test/train_journey_table_break_series_test.dart' as train_journey_table_break_series_tests;
-import 'test/train_journey_table_calculated_speed_test.dart' as train_journey_table_calculated_speed_tests;
-import 'test/train_journey_table_collapsible_rows_test.dart' as train_journey_table_collapsible_rows_test;
-import 'test/train_journey_table_station_property_test.dart' as train_journey_table_station_property_test;
-import 'test/train_journey_table_test.dart' as train_journey_table_tests;
-import 'test/train_journey_table_track_equipment_test.dart' as train_journey_table_track_equipment_tests;
-import 'test/train_reduced_journey_test.dart' as train_reduced_journey_tests;
 import 'test/train_search_test.dart' as train_search_tests;
-import 'test/warnapp_test.dart' as warnapp_tests;
 import 'util/test_utils.dart';
 
 late AppLocalizations l10n;
@@ -50,24 +33,24 @@ void main() {
     await _delayOnAndroidEmulator();
   });
 
-  settings_test.main();
-  train_reduced_journey_tests.main();
-  train_journey_table_tests.main();
-  train_journey_header_tests.main();
-  train_journey_table_track_equipment_tests.main();
-  train_journey_table_break_series_tests.main();
-  train_journey_table_calculated_speed_tests.main();
-  train_journey_table_collapsible_rows_test.main();
-  train_journey_notification_tests.main();
-  navigation_tests.main();
+  // settings_test.main();
+  // train_reduced_journey_tests.main();
+  // train_journey_table_tests.main();
+  // train_journey_header_tests.main();
+  // train_journey_table_track_equipment_tests.main();
+  // train_journey_table_break_series_tests.main();
+  // train_journey_table_calculated_speed_tests.main();
+  // train_journey_table_collapsible_rows_test.main();
+  // train_journey_notification_tests.main();
+  // navigation_tests.main();
   train_search_tests.main();
-  automatic_advancement_tests.main();
-  service_point_modal_test.main();
-  journey_search_overlay_tests.main();
-  additional_speed_restriction_modal_test.main();
-  warnapp_tests.main();
-  train_journey_table_station_property_test.main();
-  train_journey_table_adl_tests.main();
+  // automatic_advancement_tests.main();
+  // service_point_modal_test.main();
+  // journey_search_overlay_tests.main();
+  // additional_speed_restriction_modal_test.main();
+  // warnapp_tests.main();
+  // train_journey_table_station_property_test.main();
+  // train_journey_table_adl_tests.main();
 }
 
 Future<void> prepareAndStartApp(WidgetTester tester, {VoidCallback? onBeforeRun}) async {

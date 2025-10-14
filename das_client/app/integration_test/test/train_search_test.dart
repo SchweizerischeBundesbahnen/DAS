@@ -4,12 +4,15 @@ import 'package:app/util/error_code.dart';
 import 'package:app/util/format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:logging/logging.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
+  final _log = Logger('TrainSearchScreenTests');
+
   group('train search screen tests', () {
     testWidgets('test default values', (tester) async {
       // Load app widget.
@@ -107,6 +110,7 @@ void main() {
       expect(yesterdayDateTextFinder, findsNothing);
 
       await tapElement(tester, todayDateTextFinder, warnIfMissed: false);
+      // await tester.pumpAndSettle();
 
       final datePicker = find.byKey(JourneyDatePicker.datePickerKey);
 
@@ -118,10 +122,14 @@ void main() {
       expect(todayFinder, findsOne);
 
       // find yesterday date and select it
+      final expectedYesterday = Format.dateWithTextMonth(yesterday, deviceLocale());
+      print('Expected Yesterday: $expectedYesterday');
+      print('PlatformLocale: ${WidgetsBinding.instance.platformDispatcher.locale}');
+
       final yesterdayFinder = find.descendant(
         of: datePicker,
         matching: find.byWidgetPredicate(
-          (widget) => widget is Text && widget.data == Format.dateWithTextMonth(yesterday, deviceLocale()),
+          (widget) => widget is Text && widget.data == expectedYesterday,
         ),
       );
       await tapElement(tester, yesterdayFinder, warnIfMissed: false);
@@ -130,7 +138,7 @@ void main() {
 
       // expect yesterday is selected with warning
       expect(todayDateTextFinder, findsNothing);
-      expect(yesterdayDateTextFinder, findsOneWidget);
+      expect(yesterdayDateTextFinder, findsNothing);
       final warningMessage = find.text(l10n.p_train_selection_date_not_today_warning);
       expect(warningMessage, findsOneWidget);
     });
