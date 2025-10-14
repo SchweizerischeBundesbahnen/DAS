@@ -1,12 +1,12 @@
 package ch.sbb.backend.formation.domain.model;
 
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * <a href="https://confluence.sbb.ch/spaces/DASBP/pages/3037422329/Cargo+Formation+ZIS-Formation">Business rules</a>
@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 @Builder
 @EqualsAndHashCode
 @ToString
-@Slf4j
 public class FormationRun {
 
     /**
@@ -24,6 +23,7 @@ public class FormationRun {
     public static final int COMPANY_CODE_LENGTH = 4;
 
     private Boolean inspected;
+    @Getter private OffsetDateTime inspectionDateTime;
     @Getter private String company;
     @Getter private TafTapLocationReference tafTapLocationReferenceStart;
     @Getter private TafTapLocationReference tafTapLocationReferenceEnd;
@@ -86,8 +86,8 @@ public class FormationRun {
         if (company != null && company.length() == COMPANY_CODE_LENGTH && !INVALID_COMPANY_CODE.equals(company)) {
             return true;
         } else {
-            log.warn("No valid company code {} for formation run {} - {}", company, tafTapLocationReferenceStart.toLocationCode(), tafTapLocationReferenceEnd.toLocationCode());
-            return false;
+            throw new UnexpectedProviderData(
+                "Invalid company code: " + company + " for formation run " + tafTapLocationReferenceStart.toLocationCode() + " - " + tafTapLocationReferenceEnd.toLocationCode());
         }
     }
 
@@ -135,13 +135,12 @@ public class FormationRun {
         return Vehicle.countDisabledBrakes(vehicles);
     }
 
-    public String europeanVehicleNumberFirst() {
-        return Vehicle.europeanVehicleNumberFirst(vehicles);
-
+    public String getEuropeanVehicleNumberFirst() {
+        return Vehicle.getEuropeanVehicleNumberFirst(vehicles);
     }
 
-    public String europeanVehicleNumberLast() {
-        return Vehicle.europeanVehicleNumberLast(vehicles);
+    public String getEuropeanVehicleNumberLast() {
+        return Vehicle.getEuropeanVehicleNumberLast(vehicles);
     }
 }
 

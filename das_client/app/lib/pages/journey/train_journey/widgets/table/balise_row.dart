@@ -37,6 +37,7 @@ class BaliseRow extends CellRowBuilder<Balise> {
           ),
         ),
         clipBehaviour: Clip.none,
+        alignment: Alignment.centerLeft,
       );
     }
   }

@@ -1,5 +1,7 @@
 enum OrderPriority {
   cabSignalingStart,
+  group,
+  balise,
   baseData,
   uncodedOperationalIndication,
   lineFootNotes,

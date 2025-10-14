@@ -4,24 +4,25 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.4</version>
+        <version>3.5.6</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ch.sbb</groupId>
     <artifactId>das_backend</artifactId>
-    <version>0.4.2-SNAPSHOT</version>
+    <version>0.5.0</version>
     <name>DAS-Backend</name>
     <description>DAS-Backend</description>
     <properties>
         <java.version>21</java.version>
-        <spring-modulith.version>1.4.2</spring-modulith.version>
+        <spring-modulith.version>1.4.3</spring-modulith.version>
         <archunit-junit5.version>1.4.1</archunit-junit5.version>
-        <springdoc-openapi-starter-webmvc-ui.version>2.8.10</springdoc-openapi-starter-webmvc-ui.version>
+        <springdoc-openapi-starter-webmvc-ui.version>2.8.13</springdoc-openapi-starter-webmvc-ui.version>
         <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
         <kafka-json-schema-serializer.version>8.0.0</kafka-json-schema-serializer.version>
-        <confluent.schema-registry-plugin.version>8.0.0</confluent.schema-registry-plugin.version>
+        <confluent.schema-registry-plugin.version>8.0.1</confluent.schema-registry-plugin.version>
         <jsonschema2pojo-maven-plugin.version>1.2.2</jsonschema2pojo-maven-plugin.version>
-        <aws.java.sdk.version>2.32.27</aws.java.sdk.version>
+        <aws.java.sdk.version>2.35.2</aws.java.sdk.version>
+        <shedlock.version>6.10.0</shedlock.version>
     </properties>
     <dependencies>
         <dependency>
@@ -39,6 +40,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <!--  needed only for application-local-no-docker.yaml -->
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -137,6 +144,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>kafka</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.modulith</groupId>
             <artifactId>spring-modulith-starter-test</artifactId>
             <scope>test</scope>
@@ -146,10 +158,19 @@
             <artifactId>s3</artifactId>
         </dependency>
         <dependency>
+            <groupId>net.javacrumbs.shedlock</groupId>
+            <artifactId>shedlock-spring</artifactId>
+            <version>${shedlock.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.javacrumbs.shedlock</groupId>
+            <artifactId>shedlock-provider-jdbc-template</artifactId>
+            <version>${shedlock.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.glassfish.jaxb</groupId>
             <artifactId>jaxb-runtime</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-oxm</artifactId>
@@ -237,6 +258,8 @@
                 <artifactId>jsonschema2pojo-maven-plugin</artifactId>
                 <version>${jsonschema2pojo-maven-plugin.version}</version>
                 <configuration>
+                    <sourceDirectory>${project.build.directory}/schema_registry</sourceDirectory>
+                    <targetPackage>ch.sbb.zis.trainformation.api.model</targetPackage>
                     <includeConstructors>true</includeConstructors>
                     <useJakartaValidation>true</useJakartaValidation>
                     <dateType>java.time.LocalDate</dateType>
@@ -248,12 +271,6 @@
                             <goal>generate</goal>
                         </goals>
                         <phase>generate-sources</phase>
-                        <configuration>
-                            <sourcePaths>
-                                <sourcePath>${project.build.directory}/schema_registry</sourcePath>
-                            </sourcePaths>
-                            <targetPackage>ch.sbb.zis.trainformation.api.model</targetPackage>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

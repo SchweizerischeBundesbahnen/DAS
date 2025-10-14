@@ -4,7 +4,6 @@ import 'package:app/pages/journey/train_journey/widgets/reduced_overview/reduced
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/widgets/das_text_styles.dart';
-import 'package:app/widgets/table/das_table_row.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -95,12 +94,9 @@ class ExtendedMenu extends StatelessWidget {
     return SBBListItem(
       title: context.l10n.w_extended_menu_journey_overview_action,
       onPressed: () {
-        hideOverlay;
+        hideOverlay();
         if (context.mounted) {
-          DASTableRowBuilder.clearRowKeys();
-          showReducedOverviewModalSheet(
-            context,
-          ).then((_) => Future.delayed(const Duration(milliseconds: 250), () => hideOverlay()));
+          showReducedOverviewModalSheet(context);
         }
       },
     );
@@ -120,31 +116,38 @@ class ExtendedMenu extends StatelessWidget {
   Widget _maneuverItem(BuildContext context, VoidCallback hideOverlay) {
     final viewModel = context.read<TrainJourneyViewModel>();
 
-    return SBBListItem.custom(
-      title: context.l10n.w_extended_menu_maneuver_mode,
-      onPressed: () {
-        hideOverlay();
-        final maneuverModeToggled = !viewModel.settingsValue.isManeuverModeEnabled;
-        viewModel.setManeuverMode(maneuverModeToggled);
-      },
-      trailingWidget: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 0, sbbDefaultSpacing * 0.5, 0),
-        child: StreamBuilder<TrainJourneySettings>(
-          stream: viewModel.settings,
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) return SizedBox.shrink();
+    return FutureBuilder(
+      future: viewModel.isWarnappFeatureEnabled,
+      builder: (context, asyncSnapshot) {
+        if (!asyncSnapshot.hasData || asyncSnapshot.data == false) return SizedBox.shrink();
 
-            return SBBSwitch(
-              key: maneuverSwitchKey,
-              value: snapshot.data?.isManeuverModeEnabled ?? false,
-              onChanged: (value) {
-                hideOverlay();
-                viewModel.setManeuverMode(value);
-              },
-            );
+        return SBBListItem.custom(
+          title: context.l10n.w_extended_menu_maneuver_mode,
+          onPressed: () {
+            hideOverlay();
+            final maneuverModeToggled = !viewModel.settingsValue.isManeuverModeEnabled;
+            viewModel.setManeuverMode(maneuverModeToggled);
           },
-        ),
-      ),
+          trailingWidget: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, sbbDefaultSpacing * 0.5, 0),
+            child: StreamBuilder<TrainJourneySettings>(
+              stream: viewModel.settings,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) return SizedBox.shrink();
+
+                return SBBSwitch(
+                  key: maneuverSwitchKey,
+                  value: snapshot.data?.isManeuverModeEnabled ?? false,
+                  onChanged: (value) {
+                    hideOverlay();
+                    viewModel.setManeuverMode(value);
+                  },
+                );
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 }

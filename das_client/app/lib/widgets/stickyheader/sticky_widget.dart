@@ -4,11 +4,10 @@
 // that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import 'dart:math';
-
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:app/widgets/stickyheader/sticky_widget_controller.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 /// Sticky Widget.
@@ -34,6 +33,7 @@ class StickyWidget extends StatefulWidget {
 
 class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+  Drag? _activeDrag;
 
   Widget? _stickyHeader1;
   Widget? _stickyHeader2;
@@ -68,8 +68,10 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onPanUpdate: _onPanUpdate,
-      onPanEnd: _onPanEnd,
+      onVerticalDragStart: _onVerticalDragStart,
+      onVerticalDragUpdate: _onVerticalDragUpdate,
+      onVerticalDragEnd: _onVerticalDragEnd,
+      onVerticalDragCancel: _onVerticalDragCancel,
       child: widget.isHeader ? _buildHeaders(context) : _buildFooter(context),
     );
   }
@@ -144,28 +146,22 @@ class _StickyWidgetState extends State<StickyWidget> with SingleTickerProviderSt
 
   void _update() => setState(() {});
 
-  /// The sticky widget should be scrollable so it feels like part of the scrolling widget.
-  void _onPanUpdate(DragUpdateDetails details) {
-    if (_scrollController.positions.isNotEmpty) {
-      _scrollController.position.jumpTo(
-        max(_scrollController.position.pixels - details.delta.dy, 0),
-      );
+  void _onVerticalDragStart(DragStartDetails details) {
+    if (_scrollController.hasClients && _activeDrag == null) {
+      _activeDrag = _scrollController.position.drag(details, () => _activeDrag = null);
     }
   }
 
-  /// After the user stops dragging the sticky header widget, keep the same physics animation as the scrolling widget.
-  void _onPanEnd(DragEndDetails details) {
-    if (_scrollController.positions.isNotEmpty) {
-      final scrollPosition = _scrollController.position;
-      // Velocity limit.
-      final velocity = details.velocity.clampMagnitude(0, 1000).pixelsPerSecond.dy;
-      final simulation = scrollPosition.physics.createBallisticSimulation(scrollPosition, velocity);
-      // In some cases, physical animation is not required, for example,
-      // the velocity is already 0.0 at this time.
-      if (simulation != null) {
-        _animationController.animateWith(simulation);
-      }
-    }
+  void _onVerticalDragUpdate(DragUpdateDetails details) => _activeDrag?.update(details);
+
+  void _onVerticalDragEnd(DragEndDetails details) {
+    _activeDrag?.end(details);
+    _activeDrag = null;
+  }
+
+  void _onVerticalDragCancel() {
+    _activeDrag?.cancel();
+    _activeDrag = null;
   }
 
   ScrollController get _scrollController => widget.controller.scrollController;

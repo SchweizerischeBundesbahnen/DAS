@@ -1,12 +1,11 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
-const _inputPadding = EdgeInsets.fromLTRB(sbbDefaultSpacing, sbbDefaultSpacing, 0, sbbDefaultSpacing / 2);
+const _inputPadding = EdgeInsets.fromLTRB(sbbDefaultSpacing, 0, 0, sbbDefaultSpacing);
 
 class JourneyTrainNumberInput extends StatefulWidget {
   const JourneyTrainNumberInput({super.key, this.isModalVersion = false});
@@ -53,6 +52,7 @@ class _JourneyTrainNumberInputState extends State<JourneyTrainNumberInput> {
         controller: _controller,
         keyboardType: TextInputType.text,
         onSubmitted: onSubmitted,
+        isLastElement: true,
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/combined_foot_note
 import 'package:app/pages/journey/train_journey/widgets/table/uncoded_operational_indication_accordion.dart';
 import 'package:app/widgets/accordion/accordion.dart';
 import 'package:app/widgets/table/das_table.dart';
+import 'package:app/widgets/table/scrollable_align.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';
@@ -45,32 +46,33 @@ void main() {
     await dragUntilTextInStickyHeader(tester, 'Pully');
 
     // should not be collapsed by default
-    final collapsibleRow = _findDASTableAccordionRowByContainsText(textToSearch);
-    _checkCollapsibleRow(isCollapsed: false, collapsibleRow: collapsibleRow);
+    final accordion = _findDASTableAccordionByContainsText(textToSearch, UncodedOperationalIndicationAccordion);
+    _checkCollapsibleRow(isCollapsed: false, collapsibleRow: accordion);
 
     // should have show more button and collapsed content
     final collapsedContent = find.descendant(
-      of: collapsibleRow,
+      of: accordion,
       matching: find.byKey(UncodedOperationalIndicationAccordion.collapsedContentKey),
     );
     expect(collapsedContent, findsOneWidget);
     var showMoreButton = find.descendant(
-      of: collapsibleRow,
-      matching: find.byKey(UncodedOperationalIndicationAccordion.showMoreButtonKey),
+      of: accordion,
+      matching: find.byKey(UncodedOperationalIndicationAccordion.showMoreTextKey),
     );
     expect(showMoreButton, findsOneWidget);
 
-    // should show full text after tap on "show more" and no button
+    // should show full text after tap on row and no button
     await tapElement(tester, showMoreButton);
-    await tester.pumpAndSettle(Duration(milliseconds: 100));
+    await tester.pumpAndSettle(ScrollableAlign.alignScrollDuration);
 
-    final rowWithEndOfText = _findDASTableAccordionRowByContainsText(
-      'Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
+    final rowWithExpandedText = _findDASTableAccordionByContainsText(
+      'Lorem ipsum dolor sit amet, consetetur sadipscing elitr',
+      UncodedOperationalIndicationAccordion,
     );
-    expect(rowWithEndOfText, findsOneWidget);
+    expect(rowWithExpandedText, findsOneWidget);
     showMoreButton = find.descendant(
-      of: collapsibleRow,
-      matching: find.byKey(UncodedOperationalIndicationAccordion.showMoreButtonKey),
+      of: rowWithExpandedText,
+      matching: find.byKey(UncodedOperationalIndicationAccordion.showMoreTextKey),
     );
     expect(showMoreButton, findsNothing);
 
@@ -84,24 +86,26 @@ void main() {
     await dragUntilTextInStickyHeader(tester, 'Lausanne');
 
     // should have show more button and collapsed content with " ;" delimiter
-    final collapsibleRow = _findDASTableAccordionRowByContainsText(
+    final accordion = _findDASTableAccordionByContainsText(
       'Strecke INN - MR: Bahnübergangsanlagen ohne Balisenüberwachung; Straba. = Strassenbahnbereich;',
+      UncodedOperationalIndicationAccordion,
     );
     final collapsedContent = find.descendant(
-      of: collapsibleRow,
+      of: accordion,
       matching: find.byKey(UncodedOperationalIndicationAccordion.collapsedContentKey),
     );
     expect(collapsedContent, findsOneWidget);
     final showMoreButton = find.descendant(
-      of: collapsibleRow,
-      matching: find.byKey(UncodedOperationalIndicationAccordion.showMoreButtonKey),
+      of: accordion,
+      matching: find.byKey(UncodedOperationalIndicationAccordion.showMoreTextKey),
     );
     expect(showMoreButton, findsOneWidget);
 
     // should show full content without " ;" after tap on show more
-    await tapElement(tester, showMoreButton);
-    final expandedRow = _findDASTableAccordionRowByContainsText(
+    await tapElement(tester, accordion);
+    final expandedRow = _findDASTableAccordionByContainsText(
       'Strecke INN - MR: Bahnübergangsanlagen ohne Balisenüberwachung\nStraba. = Strassenbahnbereich',
+      UncodedOperationalIndicationAccordion,
     );
     expect(expandedRow, findsOneWidget);
 
@@ -222,9 +226,9 @@ Finder _findDASTableAccordionRowByKey(Object identifier) {
   );
 }
 
-Finder _findDASTableAccordionRowByContainsText(String text) {
+Finder _findDASTableAccordionByContainsText(String text, Type accordion) {
   return find.descendant(
     of: find.byKey(DASTable.tableKey),
-    matching: find.ancestor(of: find.textContaining(text, findRichText: true), matching: find.byKey(DASTable.rowKey)),
+    matching: find.ancestor(of: find.textContaining(text, findRichText: true), matching: find.byType(accordion)),
   );
 }

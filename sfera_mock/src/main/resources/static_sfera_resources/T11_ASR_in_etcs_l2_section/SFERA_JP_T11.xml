@@ -100,5 +100,56 @@
         <TrainCharacteristicsRef TC_ID="T11_1" TC_VersionMajor="1" TC_VersionMinor="1" location="0">
             <TC_RU_ID>1185</TC_RU_ID>
         </TrainCharacteristicsRef>
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="9.0"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="900" endLocation="900"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="26.0"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="2600" endLocation="2600"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="29.0"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="2900" endLocation="2900"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="39.0"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="3900" endLocation="3900"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="41.0"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="4100" endLocation="4100"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="46.0"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="4600" endLocation="4600"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="51.0"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="5100" endLocation="5100"/>
+            </JP_ContextInformation_NSPs>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>kilometreReferencePoint</NSP_GroupName>
+                <NetworkSpecificParameter name="kmRef" value="59.0"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="5900" endLocation="5900"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 </JourneyProfile>

@@ -9,6 +9,9 @@ import 'package:sfera/src/data/dto/enums/stop_skip_pass_dto.dart';
 import 'package:sfera/src/data/dto/enums/taf_tap_location_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 import 'package:sfera/src/data/dto/foot_note_dto.dart';
+import 'package:sfera/src/data/dto/local_regulation_content_nsp_dto.dart';
+import 'package:sfera/src/data/dto/local_regulation_nsp_dto.dart';
+import 'package:sfera/src/data/dto/local_regulation_title_nsp_dto.dart';
 import 'package:sfera/src/data/dto/network_specific_parameter_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
@@ -131,6 +134,8 @@ class SegmentProfileMapper {
           mandatoryStop: tpConstraint.stoppingPointInformation?.stopType?.mandatoryStop ?? true,
           isStop: tpConstraint.stopSkipPass == StopSkipPassDto.stoppingPoint,
           isStation: tafTapLocation.locationType != TafTapLocationTypeDto.halt,
+          isAdditional: tafTapLocation.routeTableDataNsp?.routeTableDataRelevant?.isAdditional ?? false,
+          betweenBrackets: tafTapLocation.routeTableDataNsp?.betweenBrackets ?? false,
           bracketMainStation: _parseBracketMainStation(tafTapLocations, tafTapLocation),
           kilometre: mapperData.kilometreMap[timingPoint.location] ?? [],
           localSpeeds: SpeedMapper.fromVelocities(
@@ -144,6 +149,7 @@ class SegmentProfileMapper {
           stationSign1: tafTapLocation.routeTableDataNsp?.stationSign1,
           stationSign2: tafTapLocation.routeTableDataNsp?.stationSign2,
           properties: _parseStationProperties(tafTapLocation.property?.xmlStationProperty.element.properties),
+          localRegulationSections: _parseLocalRegulationSegments(tafTapLocation.localRegulations),
         ),
       );
     }
@@ -164,31 +170,30 @@ class SegmentProfileMapper {
   }
 
   static List<ProtectionSection> _parseProtectionSections(_MapperData mapperData) {
-    final protectionSections = <ProtectionSection>[];
     final currentLimitation = mapperData.segmentProfile.characteristics?.currentLimitation;
-    if (currentLimitation != null) {
-      final protectionSectionNsps = mapperData.segmentProfile.points?.protectionSectionNsp ?? [];
+    if (currentLimitation == null) return List.empty();
 
-      for (final currentLimitationChange in currentLimitation.currentLimitationChanges) {
-        if (currentLimitationChange.maxCurValue == '0') {
-          final protectionSectionNsp = protectionSectionNsps
-              .where((it) => it.location == currentLimitationChange.location)
-              .firstOrNull;
+    final protectionSections = <ProtectionSection>[];
+    final protectionSectionNsps = mapperData.segmentProfile.points?.protectionSectionNsp ?? [];
+    for (final currentLimitationChange in currentLimitation.currentLimitationChanges) {
+      if (currentLimitationChange.maxCurValue == '0') {
+        final protectionSectionNsp = protectionSectionNsps
+            .where((it) => it.location == currentLimitationChange.location)
+            .firstOrNull;
 
-          final isOptional = protectionSectionNsp?.parameters.withName(_protectionSectionNspFacultativeName);
-          final isLong = protectionSectionNsp?.parameters.withName(_protectionSectionNspLengthTypeName);
+        final isOptional = protectionSectionNsp?.parameters.withName(_protectionSectionNspFacultativeName);
+        final isLong = protectionSectionNsp?.parameters.withName(_protectionSectionNspLengthTypeName);
 
-          protectionSections.add(
-            ProtectionSection(
-              isOptional: isOptional != null ? bool.parse(isOptional.nspValue) : false,
-              isLong: isLong != null
-                  ? XmlEnum.valueOf(LengthTypeDto.values, isLong.nspValue) == LengthTypeDto.long
-                  : false,
-              order: calculateOrder(mapperData.segmentIndex, currentLimitationChange.location),
-              kilometre: mapperData.kilometreMap[currentLimitationChange.location]!,
-            ),
-          );
-        }
+        protectionSections.add(
+          ProtectionSection(
+            isOptional: isOptional != null ? bool.parse(isOptional.nspValue) : false,
+            isLong: isLong != null
+                ? XmlEnum.valueOf(LengthTypeDto.values, isLong.nspValue) == LengthTypeDto.long
+                : false,
+            order: calculateOrder(mapperData.segmentIndex, currentLimitationChange.location),
+            kilometre: mapperData.kilometreMap[currentLimitationChange.location]!,
+          ),
+        );
       }
     }
     return protectionSections;
@@ -421,6 +426,15 @@ class SegmentProfileMapper {
         text: property.text,
         sign: StationSign.fromOptional(property.sign),
         speeds: SpeedMapper.fromVelocities(property.speeds?.velocities),
+      );
+    }).toList();
+  }
+
+  static List<LocalRegulationSection> _parseLocalRegulationSegments(Iterable<LocalRegulationNspDto> localRegulations) {
+    return localRegulations.map((dto) {
+      return LocalRegulationSection(
+        title: dto.titles.toLocalizedString,
+        content: dto.contents.toLocalizedString,
       );
     }).toList();
   }

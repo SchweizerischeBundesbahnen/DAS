@@ -33,7 +33,9 @@ public class TrainFormationRunEntity {
     @SequenceGenerator(name = "train_formation_run_id_seq", allocationSize = 1)
     private Integer id;
 
-    private OffsetDateTime modifiedDateTime;
+    private String trainPathId;
+
+    private OffsetDateTime inspectionDateTime;
 
     @SFERA @TelTsi
     private String operationalTrainNumber;
@@ -138,8 +140,8 @@ public class TrainFormationRunEntity {
                 TrainFormationRunEntityBuilder builder = TrainFormationRunEntity.builder();
                 applyFormationRun(builder, formationRun);
                 builder
-                    .modifiedDateTime(formation.getModifiedDateTime())
                     .operationalTrainNumber(formation.getOperationalTrainNumber())
+                    .trainPathId(formation.getTrainPathId())
                     .operationalDay(formation.getOperationalDay());
                 return builder.build();
             })
@@ -148,6 +150,7 @@ public class TrainFormationRunEntity {
 
     private static void applyFormationRun(TrainFormationRunEntityBuilder builder, FormationRun formationRun) {
         builder
+            .inspectionDateTime(formationRun.getInspectionDateTime())
             .company(formationRun.getCompany())
             .tafTapLocationReferenceStart(formationRun.getTafTapLocationReferenceStart().toLocationCode())
             .tafTapLocationReferenceEnd(formationRun.getTafTapLocationReferenceEnd().toLocationCode())
@@ -180,8 +183,8 @@ public class TrainFormationRunEntity {
             .vehiclesWithBrakeDesignLlAndKCount(formationRun.vehiclesWithBrakeDesignCount(BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE, BrakeDesign.KUNSTSTOFF_BREMSKLOETZE))
             .vehiclesWithBrakeDesignDCount(formationRun.vehiclesWithBrakeDesignCount(BrakeDesign.NORMALE_BREMSAUSRUESTUNG_KEINE_MERKMALE))
             .vehiclesWithDisabledBrakesCount(formationRun.vehiclesWithDisabledBrakeCount())
-            .europeanVehicleNumberFirst(formationRun.europeanVehicleNumberFirst())
-            .europeanVehicleNumberLast(formationRun.europeanVehicleNumberLast())
+            .europeanVehicleNumberFirst(formationRun.getEuropeanVehicleNumberFirst())
+            .europeanVehicleNumberLast(formationRun.getEuropeanVehicleNumberLast())
             .axleLoadMaxInKg(formationRun.getAxleLoadMaxInKg())
             .routeClass(formationRun.getRouteClass())
             .gradientUphillMaxInPermille(formationRun.getGradientUphillMaxInPermille())

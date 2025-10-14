@@ -1,25 +1,25 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:logger/src/data/dto/log_entry_dto.dart';
+import 'package:logger/src/data/dto/splunk_log_entry_dto.dart';
+import 'package:logger/src/log_level.dart';
 
 void main() {
-  late LogEntryDto testee;
+  late SplunkLogEntryDto testee;
 
   setUp(() {
-    testee = LogEntryDto(
+    testee = SplunkLogEntryDto(
       time: 1624046400.0,
-      source: 'test-source',
-      message: 'A test log message',
-      level: 'INFO',
-      metadata: {'key1': 'value1', 'key2': 2},
+      event: 'A test log message',
+      level: LogLevel.info.name,
+      fields: {'key1': 'value1', 'key2': 2},
     );
   });
 
   test('returns compact JSON string by default', () {
     // arrange
     const expectedEncodedString =
-        '{"time":1624046400.0,"source":"test-source","message":"A test log message","level":"INFO","metadata":{"key1":"value1","key2":2}}';
+        '{"time":1624046400.0,"source":"das-client","event":"A test log message","fields":{"key1":"value1","key2":2,"level":"info"}}';
 
     // act
     final actual = testee.toJsonString();
@@ -32,13 +32,12 @@ void main() {
     // arrange
     final expectedDecodedMap = {
       'time': 1624046400.0,
-      'source': 'test-source',
-      'message': 'A test log message',
-      'level': 'INFO',
-      'metadata': {'key1': 'value1', 'key2': 2},
+      'source': 'das-client',
+      'event': 'A test log message',
+      'fields': {'key1': 'value1', 'key2': 2, 'level': 'info'},
     };
 
-    final prettyEncoder = JsonEncoder.withIndent(LogEntryDto.jsonIndent);
+    final prettyEncoder = JsonEncoder.withIndent(SplunkLogEntryDto.jsonIndent);
     final expectedPrettyString = prettyEncoder.convert(expectedDecodedMap);
 
     // Act: Get JSON string with pretty printing.

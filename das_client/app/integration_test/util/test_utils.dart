@@ -7,6 +7,7 @@ import 'package:app/pages/journey/train_journey/widgets/header/start_pause_butto
 import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/table/das_table.dart';
+import 'package:app/widgets/table/scrollable_align.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -61,6 +62,15 @@ Finder findDASTableRowByText(String text) {
   );
 }
 
+Finder findColoredRowCells({required FinderBase<Element> of, required Color color}) {
+  return find.descendant(
+    of: of,
+    matching: find.byWidgetPredicate(
+      (it) => it is Container && it.decoration is BoxDecoration && (it.decoration as BoxDecoration).color == color,
+    ),
+  );
+}
+
 /// Verifies, that SBB is selected and loads train journey with [trainNumber]
 Future<void> loadTrainJourney(WidgetTester tester, {required String trainNumber}) async {
   // verify we have ru SBB selected.
@@ -76,6 +86,7 @@ Future<void> loadTrainJourney(WidgetTester tester, {required String trainNumber}
   await tester.tap(primaryButton);
 
   // wait for train journey to load
+  await waitUntilExists(tester, find.byKey(TrainJourney.loadedTrainJourneyTableKey));
   await tester.pumpAndSettle();
 }
 
@@ -188,7 +199,7 @@ Future<void> dragUntilTextInStickyHeader(WidgetTester tester, String textToSearc
     const Offset(0, -50),
     maxIteration: 100,
   );
-  await tester.pumpAndSettle();
+  await tester.pumpAndSettle(ScrollableAlign.alignScrollDuration);
 }
 
 extension _FlutterErrorExtension on FlutterError {

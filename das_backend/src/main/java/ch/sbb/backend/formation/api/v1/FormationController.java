@@ -65,7 +65,7 @@ public class FormationController {
 
         @Parameter(description = COMPANY_DESCRIPTION)
         @SFERA @TelTsi @RequestParam @Pattern(regexp = "\\d{4}") String company) {
-        List<TrainFormationRunEntity> entities = formationService.findLatestByTrainIdentifier(operationalTrainNumber, operationalDay, company);
+        List<TrainFormationRunEntity> entities = formationService.findByTrainIdentifier(operationalTrainNumber, operationalDay, company);
         if (entities.isEmpty()) {
             return ResponseEntity.notFound().build();
         }

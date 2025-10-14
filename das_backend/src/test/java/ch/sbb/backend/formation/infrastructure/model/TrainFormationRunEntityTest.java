@@ -34,11 +34,11 @@ class TrainFormationRunEntityTest {
 
     @Test
     void from_empty() {
-        OffsetDateTime modifiedDateTime = OffsetDateTime.now();
         String operationalTrainNumber = "7889";
+        String trainPathId = "7889-023";
         LocalDate operationalDay = LocalDate.of(2023, 10, 1);
 
-        Formation formation = new Formation(modifiedDateTime, operationalTrainNumber, operationalDay, Collections.emptyList());
+        Formation formation = new Formation(operationalTrainNumber, trainPathId, operationalDay, Collections.emptyList());
 
         List<TrainFormationRunEntity> entities = TrainFormationRunEntity.from(formation);
 
@@ -47,15 +47,17 @@ class TrainFormationRunEntityTest {
 
     @Test
     void from_correct() {
-        OffsetDateTime modifiedDateTime = OffsetDateTime.now();
+        OffsetDateTime inspectionDateTime = OffsetDateTime.now();
         String operationalTrainNumber = "6599";
+        String trainPathId = "6599-002";
         LocalDate operationalDay = LocalDate.of(2025, 9, 23);
 
         FormationRun formationRun = FormationRun.builder()
             .inspected(true)
+            .inspectionDateTime(inspectionDateTime)
             .company("4532")
-            .tafTapLocationReferenceStart(new TafTapLocationReference("CH", 102344))
-            .tafTapLocationReferenceEnd(new TafTapLocationReference("CH", 504212))
+            .tafTapLocationReferenceStart(new TafTapLocationReference("CH", 52344))
+            .tafTapLocationReferenceEnd(new TafTapLocationReference("CH", 4212))
             .trainCategoryCode("CAT")
             .brakedWeightPercentage(435)
             .tractionMaxSpeedInKmh(1)
@@ -90,19 +92,20 @@ class TrainFormationRunEntityTest {
             ), new EuropeanVehicleNumber("56", "23", "78931", "3"))))
             .build();
 
-        Formation formation = new Formation(modifiedDateTime, operationalTrainNumber, operationalDay, List.of(formationRun));
+        Formation formation = new Formation(operationalTrainNumber, trainPathId, operationalDay, List.of(formationRun));
 
         List<TrainFormationRunEntity> entities = TrainFormationRunEntity.from(formation);
 
         assertThat(entities).first().isNotNull();
         TrainFormationRunEntity result = entities.getFirst();
         assertThat(result.getId()).isNull();
-        assertThat(result.getModifiedDateTime()).isEqualTo(modifiedDateTime);
+        assertThat(result.getInspectionDateTime()).isEqualTo(inspectionDateTime);
         assertThat(result.getOperationalTrainNumber()).isEqualTo(operationalTrainNumber);
+        assertThat(result.getTrainPathId()).isEqualTo(trainPathId);
         assertThat(result.getOperationalDay()).isEqualTo(operationalDay);
         assertThat(result.getCompany()).isEqualTo("4532");
-        assertThat(result.getTafTapLocationReferenceStart()).isEqualTo("CH102344");
-        assertThat(result.getTafTapLocationReferenceEnd()).isEqualTo("CH504212");
+        assertThat(result.getTafTapLocationReferenceStart()).isEqualTo("CH52344");
+        assertThat(result.getTafTapLocationReferenceEnd()).isEqualTo("CH04212");
         assertThat(result.getTrainCategoryCode()).isEqualTo("CAT");
         assertThat(result.getBrakedWeightPercentage()).isEqualTo(435);
         assertThat(result.getTractionMaxSpeedInKmh()).isEqualTo(1);

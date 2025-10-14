@@ -12,6 +12,8 @@ class ServicePoint extends JourneyPoint {
     this.mandatoryStop = false,
     this.isStop = false,
     this.isStation = false,
+    this.betweenBrackets = false,
+    this.isAdditional = false,
     this.bracketMainStation,
     this.graduatedSpeedInfo,
     this.decisiveGradient,
@@ -19,12 +21,15 @@ class ServicePoint extends JourneyPoint {
     this.stationSign1,
     this.stationSign2,
     this.properties = const [],
+    this.localRegulationSections = const [],
   }) : super(type: Datatype.servicePoint);
 
   final String name;
   final bool mandatoryStop;
   final bool isStop;
   final bool isStation;
+  final bool isAdditional;
+  final bool betweenBrackets;
   final BracketMainStation? bracketMainStation;
   final List<TrainSeriesSpeed>? graduatedSpeedInfo;
   final DecisiveGradient? decisiveGradient;
@@ -32,6 +37,7 @@ class ServicePoint extends JourneyPoint {
   final StationSign? stationSign1;
   final StationSign? stationSign2;
   final List<StationProperty> properties;
+  final List<LocalRegulationSection> localRegulationSections;
 
   List<TrainSeriesSpeed> relevantGraduatedSpeedInfo(BreakSeries? breakSeries) {
     final speedInfo = graduatedSpeedInfo ?? [];
@@ -66,6 +72,8 @@ class ServicePoint extends JourneyPoint {
           mandatoryStop == other.mandatoryStop &&
           isStop == other.isStop &&
           isStation == other.isStation &&
+          isAdditional == other.isAdditional &&
+          betweenBrackets == other.betweenBrackets &&
           bracketMainStation == other.bracketMainStation &&
           DeepCollectionEquality().equals(graduatedSpeedInfo, other.graduatedSpeedInfo) &&
           decisiveGradient == other.decisiveGradient &&
@@ -83,6 +91,8 @@ class ServicePoint extends JourneyPoint {
       mandatoryStop.hashCode ^
       isStop.hashCode ^
       isStation.hashCode ^
+      isAdditional.hashCode ^
+      betweenBrackets.hashCode ^
       bracketMainStation.hashCode ^
       Object.hashAll(graduatedSpeedInfo ?? []) ^
       decisiveGradient.hashCode ^
@@ -101,6 +111,8 @@ class ServicePoint extends JourneyPoint {
         ', mandatoryStop: $mandatoryStop'
         ', isStop: $isStop'
         ', isStation: $isStation'
+        ', isAdditional: $isAdditional'
+        ', betweenBrackets: $betweenBrackets'
         ', bracketMainStation: $bracketMainStation'
         ', localSpeeds: $localSpeeds'
         ', arrivalDepartureTime: $arrivalDepartureTime'

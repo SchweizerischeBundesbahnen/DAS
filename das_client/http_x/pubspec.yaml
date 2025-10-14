@@ -3,13 +3,13 @@ publish_to: 'none'
 version: 1.0.0
 
 environment:
-  sdk: ^3.8.0
+  sdk: ^3.9.0
 
 resolution: workspace
 
 dependencies:
   # https://pub.dev/packages/http
-  http: ^1.4.0
+  http: ^1.5.0
   # https://pub.dev/packages/http_interceptor
   http_interceptor: ^2.0.0
   # https://pub.dev/packages/logging

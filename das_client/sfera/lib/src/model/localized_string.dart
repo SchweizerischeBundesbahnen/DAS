@@ -1,15 +1,15 @@
 import 'dart:io';
 
 class LocalizedString {
-  LocalizedString({
+  const LocalizedString({
     this.de,
     this.fr,
     this.it,
   });
 
-  late String? de;
-  late String? fr;
-  late String? it;
+  final String? de;
+  final String? fr;
+  final String? it;
 
   String get localized {
     final localeName = Platform.localeName;
@@ -23,6 +23,8 @@ class LocalizedString {
       return de ?? fr ?? it ?? '<Missing translation>';
     }
   }
+
+  bool get hasTranslation => de != null || fr != null || it != null;
 
   @override
   String toString() {

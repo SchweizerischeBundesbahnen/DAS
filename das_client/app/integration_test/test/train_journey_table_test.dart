@@ -1,4 +1,6 @@
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
+import 'package:app/pages/journey/train_journey/widgets/header/sim_identifier.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/balise_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
@@ -11,6 +13,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/signal_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/tram_area_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/whistle_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
+import 'package:app/theme/themes.dart';
 import 'package:app/util/format.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/dot_indicator.dart';
@@ -26,6 +29,27 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey table test', () {
+    testWidgets('test displays kilometer and communication network changes correctly', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T14');
+
+      // find gsmP-Icon
+      final gsmPKey = find.byKey(CommunicationNetworkIcon.gsmPKey);
+      expect(gsmPKey, findsOneWidget);
+
+      // find gsmR-Icon
+      final gsmRKey = find.byKey(CommunicationNetworkIcon.gsmRKey);
+      expect(gsmRKey, findsOneWidget);
+
+      // find SIM-Key
+      final simKey = find.byKey(SimIdentifier.simKey);
+      expect(simKey, findsOneWidget);
+
+      await disconnect(tester);
+    });
+
     testWidgets('test up- and downhill gradient is displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
 
@@ -339,14 +363,9 @@ void main() {
       expect(asrSpeed, findsOneWidget);
 
       // check all cells are colored
-      final coloredCells = find.descendant(
+      final coloredCells = findColoredRowCells(
         of: asrRow,
-        matching: find.byWidgetPredicate(
-          (it) =>
-              it is Container &&
-              it.decoration is BoxDecoration &&
-              (it.decoration as BoxDecoration).color == AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor,
-        ),
+        color: AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor,
       );
       expect(coloredCells, findsNWidgets(14));
 
@@ -413,14 +432,9 @@ void main() {
         expect(testRow, findsOneWidget);
 
         // check first 3 cells are colored
-        final coloredCells = find.descendant(
+        final coloredCells = findColoredRowCells(
           of: testRow,
-          matching: find.byWidgetPredicate(
-            (it) =>
-                it is Container &&
-                it.decoration is BoxDecoration &&
-                (it.decoration as BoxDecoration).color == AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor,
-          ),
+          color: AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor,
         );
         expect(coloredCells, findsNWidgets(6));
       }
@@ -460,7 +474,7 @@ void main() {
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
-      final stopRouteRow = findDASTableRowByText('Bahnhof A');
+      final stopRouteRow = findDASTableRowByText('(Bahnhof A)');
       expect(stopRouteRow, findsOneWidget);
 
       await tester.dragUntilVisible(findDASTableRowByText('Haltestelle B'), scrollableFinder, const Offset(0, -50));
@@ -1038,6 +1052,9 @@ void main() {
       final timeHeader = find.text(expectedCalculatedHeaderLabel);
       expect(timeHeader, findsOneWidget);
 
+      final scrollableFinder = find.byType(AnimatedList);
+      expect(scrollableFinder, findsOneWidget);
+
       // test if times are displayed correctly
       final timeCellKey = TimeCellBody.timeCellKey;
       // Geneve Aeroport should have only departure operational time
@@ -1050,6 +1067,14 @@ void main() {
       expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: morges), findsNothing);
       // vevey should have single operational arrival in brackets since it's a passing point
       final vevey = 'Vevey';
+
+      await tester.dragUntilVisible(
+        findDASTableRowByText(vevey),
+        scrollableFinder,
+        const Offset(0, -50),
+      );
+      await tester.pumpAndSettle();
+
       final expectedTimeVevey = '(${Format.operationalTime(DateTime.parse('2025-05-12T17:28:56Z'))})\n';
       expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: vevey), findsOneWidget);
       expect(_findTextInDASTableRowByText(innerText: expectedTimeVevey, rowText: vevey), findsOneWidget);
@@ -1062,12 +1087,27 @@ void main() {
       expect(find.text(expectedPlannedHeaderLabel), findsOneWidget);
       // test if time switched (aeroport)
       final geneveAerPlanned = 'Genève-Aéroport';
+
+      await tester.dragUntilVisible(
+        findDASTableRowByText(geneveAerPlanned),
+        scrollableFinder,
+        const Offset(0, 50),
+      );
+
+      await tester.pumpAndSettle();
+
       final expectedTimeGenAerPlanned = Format.plannedTime(DateTime.parse('2025-05-12T15:13:40Z'));
+
+      if (!tester.any(find.text(expectedPlannedHeaderLabel))) {
+        await tapElement(tester, timeHeader);
+      }
+
       expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: geneveAerPlanned), findsOneWidget);
       expect(
         _findTextInDASTableRowByText(innerText: expectedTimeGenAerPlanned, rowText: geneveAerPlanned),
         findsOneWidget,
       );
+
       // morges
       final morgesPlanned = 'Morges';
       final expectedTimeMorgesPlanned = '(${Format.plannedTime(DateTime.parse('2025-05-12T15:55:23Z'))})\n';
@@ -1078,6 +1118,19 @@ void main() {
       );
       // vevey should have both times in brackets since it's a passing point
       final veveyPlanned = 'Vevey';
+
+      await tester.dragUntilVisible(
+        findDASTableRowByText(veveyPlanned),
+        scrollableFinder,
+        const Offset(0, -50),
+      );
+
+      await tester.pumpAndSettle();
+
+      if (!tester.any(find.text(expectedPlannedHeaderLabel))) {
+        await tapElement(tester, timeHeader);
+      }
+
       final expectedTimeVeveyPlanned =
           '(${Format.plannedTime(DateTime.parse('2025-05-12T16:28:12Z'))})\n'
           '(${Format.plannedTime(DateTime.parse('2025-05-12T16:29:12Z'))})';
@@ -1128,7 +1181,7 @@ void main() {
       await tester.pumpAndSettle(const Duration(seconds: 1));
 
       // check Bahnhof A has underlined departure time
-      final stationARow = findDASTableRowByText('Bahnhof A');
+      final stationARow = findDASTableRowByText('(Bahnhof A)');
       expect(stationARow, findsOneWidget);
 
       final stationATimeText = tester.widget<Text>(
@@ -1151,7 +1204,37 @@ void main() {
 
       await disconnect(tester);
     });
+    testWidgets('test additional service points displayed correctly', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T27');
+
+      final scrollableFinder = find.byType(AnimatedList);
+      expect(scrollableFinder, findsOneWidget);
+
+      // check if all additional service points are displayed correctly
+      await _checkAdditionalServicePoint(tester, scrollableFinder, 'Bern (Depot)');
+      await _checkAdditionalServicePoint(tester, scrollableFinder, 'Olten Ost (Abzw)');
+      await _checkAdditionalServicePoint(tester, scrollableFinder, 'Olten Tunnel (Spw)');
+      await _checkAdditionalServicePoint(tester, scrollableFinder, 'Dulliken (Depot)');
+
+      await disconnect(tester);
+    });
   });
+}
+
+Future<void> _checkAdditionalServicePoint(WidgetTester tester, Finder scrollableFinder, String servicePointName) async {
+  final servicePointRow = findDASTableRowByText(servicePointName);
+  await tester.dragUntilVisible(servicePointRow, scrollableFinder, const Offset(0, -50));
+  expect(servicePointRow, findsOneWidget);
+
+  // check all cells are colored
+  final coloredCells = findColoredRowCells(
+    of: servicePointRow,
+    color: DASTheme.light().scaffoldBackgroundColor,
+  );
+  expect(coloredCells, findsAtLeast(3));
 }
 
 bool _hasAnyUnderlinedTextSpans(Text stationATimeText) {

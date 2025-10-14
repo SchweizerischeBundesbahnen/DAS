@@ -43,7 +43,7 @@ android {
 
     defaultConfig {
         applicationId "ch.sbb.das.client"
-        minSdkVersion 23
+        minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

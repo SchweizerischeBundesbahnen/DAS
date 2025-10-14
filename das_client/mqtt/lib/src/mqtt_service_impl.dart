@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
 
+import 'package:connectivity_x/component.dart';
 import 'package:logging/logging.dart';
 import 'package:mqtt/src/mqtt_client_connector.dart';
 import 'package:mqtt/src/mqtt_service.dart';
@@ -12,6 +13,8 @@ import 'package:rxdart/rxdart.dart';
 final _log = Logger('MqttServiceImpl');
 
 class MqttServiceImpl implements MqttService {
+  static const _keepAlivePeriodSeconds = 15;
+
   MqttServiceImpl({
     required String mqttUrl,
     required MqttClientConnector mqttClientConnector,
@@ -21,6 +24,10 @@ class MqttServiceImpl implements MqttService {
        _mqttClientConnector = mqttClientConnector {
     _init();
   }
+
+  final _connectivityManager = ConnectivityComponent.connectivityManager();
+  StreamSubscription? _connectivitySubscription;
+  var _connected = false;
 
   final String _mqttUrl;
   final MqttClientConnector _mqttClientConnector;
@@ -39,18 +46,45 @@ class MqttServiceImpl implements MqttService {
   void _init() async {
     _client = MqttServerClient.withPort(_mqttUrl, deviceId, 8443);
     _client.useWebSocket = true;
+    _client.autoReconnect = true;
+    _client.resubscribeOnAutoReconnect = true;
+    _client.keepAlivePeriod = _keepAlivePeriodSeconds;
+    _logClientChanges();
+
+    _connectivitySubscription = _connectivityManager.onConnectivityChanged.distinct().listen((connected) {
+      if (_connected && connected) {
+        _log.info('Reconnecting to MQTT broker due to connectivity change');
+        _client.doAutoReconnect(force: true);
+      }
+    });
+  }
+
+  void _logClientChanges() {
+    _client.onConnected = () {
+      _log.fine('Connected to MQTT broker');
+    };
+    _client.onAutoReconnect = () {
+      _log.fine('Reconnecting to MQTT broker');
+    };
+    _client.onAutoReconnected = () {
+      _log.fine('Reconnected to MQTT broker');
+    };
+    _client.onDisconnected = () {
+      _log.fine('Disconnected from MQTT broker');
+    };
   }
 
   @override
   void disconnect() {
     _log.info('Disconnecting from MQTT broker');
+    _connected = false;
     _client.disconnect();
   }
 
   @override
   Future<bool> connect(String company, String train) async {
     if (_client.connectionStatus?.state != MqttConnectionState.disconnected) {
-      _client.disconnect();
+      disconnect();
     }
     if (await _mqttClientConnector.connect(_client, company, train)) {
       _client.subscribe('${prefix}90940/2/event/$company/$train', MqttQos.exactlyOnce);
@@ -58,6 +92,7 @@ class MqttServiceImpl implements MqttService {
       _client.subscribe('${prefix}90940/2/G2B/$company/$train/$deviceId', MqttQos.exactlyOnce);
       _log.info("Subscribed to topic with prefix='$prefix'...");
       _startUpdateListener();
+      _connected = true;
       return true;
     }
 
@@ -103,5 +138,12 @@ class MqttServiceImpl implements MqttService {
         _log.warning('received mqtt update with messageList=null');
       }
     });
+  }
+
+  void dispose() {
+    _connectivitySubscription?.cancel();
+    _updateSubscription?.cancel();
+    _messageSubject.close();
+    _client.disconnect();
   }
 }

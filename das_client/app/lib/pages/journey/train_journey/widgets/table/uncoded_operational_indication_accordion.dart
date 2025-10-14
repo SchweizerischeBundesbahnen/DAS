@@ -11,7 +11,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class UncodedOperationalIndicationAccordion extends StatelessWidget {
-  static const Key showMoreButtonKey = Key('operationalIndicationShowMoreButton');
+  static const Key showMoreTextKey = Key('operationalIndicationShowMoreText');
   static const Key expandedContentKey = Key('operationalIndicationExpandedContent');
   static const Key collapsedContentKey = Key('operationalIndicationCollapsedContent');
 
@@ -19,19 +19,15 @@ class UncodedOperationalIndicationAccordion extends StatelessWidget {
   static const TextStyle _textStyle = DASTextStyles.largeRoman;
 
   const UncodedOperationalIndicationAccordion({
-    required this.isExpanded,
-    required this.expandedContent,
+    required this.collapsedState,
     required this.addTopMargin,
-    required this.accordionToggleCallback,
     required this.data,
     super.key,
   });
 
   final UncodedOperationalIndication data;
-  final bool isExpanded;
-  final bool expandedContent;
+  final CollapsedState collapsedState;
   final bool addTopMargin;
-  final AccordionToggleCallback accordionToggleCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +35,9 @@ class UncodedOperationalIndicationAccordion extends StatelessWidget {
       key: ObjectKey(data.hashCode),
       title: context.l10n.c_uncoded_operational_indication,
       body: _body(context),
-      isExpanded: isExpanded,
-      toggleCallback: accordionToggleCallback,
+      isExpanded: collapsedState != CollapsedState.collapsed,
+      toggleCallback: () =>
+          context.read<CollapsibleRowsViewModel>().toggleRow(data, isContentExpandable: _hasTextOverflow),
       icon: SBBIcons.form_small,
       margin: EdgeInsets.only(
         bottom: _verticalMargin,
@@ -51,33 +48,32 @@ class UncodedOperationalIndicationAccordion extends StatelessWidget {
   }
 
   Widget _body(BuildContext context) {
-    if (expandedContent) return _contentText(data.combinedText);
-
-    final textWithoutLineBreaks = TextUtil.replaceLineBreaks(data.combinedText);
-    final hasOverflow = TextUtil.hasTextOverflow(textWithoutLineBreaks, _accordionContentWidth, _textStyle);
-    if (hasOverflow) {
+    if (collapsedState == CollapsedState.expandedWithCollapsedContent && _hasTextOverflow) {
+      final textWithoutLineBreaks = TextUtil.replaceLineBreaks(data.combinedText);
       return Row(
         children: [
           Expanded(child: _contentText(textWithoutLineBreaks, maxLines: 1)),
-          _showMoreButton(context),
+          _showMoreText(context),
         ],
       );
     }
     return _contentText(data.combinedText);
   }
 
-  Widget _showMoreButton(BuildContext context) {
-    return GestureDetector(
-      key: showMoreButtonKey,
-      onTap: () => context.read<CollapsibleRowsViewModel>().openWithCollapsedContent(data),
-      child: Text(
-        context.l10n.c_show_more,
-        style: _textStyle.copyWith(
-          color: ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite),
-          decoration: TextDecoration.underline,
-        ),
+  Widget _showMoreText(BuildContext context) {
+    return Text(
+      key: showMoreTextKey,
+      context.l10n.c_show_more,
+      style: _textStyle.copyWith(
+        color: ThemeUtil.getColor(context, SBBColors.granite, SBBColors.graphite),
+        decoration: TextDecoration.underline,
       ),
     );
+  }
+
+  bool get _hasTextOverflow {
+    final textWithoutLineBreak = TextUtil.replaceLineBreaks(data.combinedText);
+    return TextUtil.hasTextOverflow(textWithoutLineBreak, _accordionContentWidth, _textStyle);
   }
 
   static Text _contentText(String text, {int? maxLines}) {
@@ -91,17 +87,17 @@ class UncodedOperationalIndicationAccordion extends StatelessWidget {
 
   static double calculateHeight(
     String text, {
-    required bool isExpanded,
-    required bool expandedContent,
+    required CollapsedState collapsedState,
     required bool addTopMargin,
   }) {
     final margin = _verticalMargin * (addTopMargin ? 2 : 1);
-    if (!isExpanded) {
+    if (collapsedState == CollapsedState.collapsed) {
       return Accordion.defaultCollapsedHeight + margin;
     }
 
     final content = _contentText(text);
-    final tp = TextPainter(text: content.textSpan, textDirection: TextDirection.ltr)
+    final maxLines = collapsedState == CollapsedState.expandedWithCollapsedContent ? 1 : null;
+    final tp = TextPainter(text: content.textSpan, textDirection: TextDirection.ltr, maxLines: maxLines)
       ..layout(maxWidth: _accordionContentWidth);
     return Accordion.defaultExpandedHeight + tp.height + margin;
   }

@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
+import 'package:sfera/src/model/journey/order_priority.dart';
 
 class Balise extends JourneyPoint {
   const Balise({
@@ -11,18 +12,7 @@ class Balise extends JourneyPoint {
   final int amountLevelCrossings;
 
   @override
-  bool get canGroup => true;
-
-  @override
-  bool canGroupWith(BaseData other) {
-    if (other is LevelCrossing) {
-      return true;
-    } else if (other is Balise) {
-      return amountLevelCrossings == 1 && other.amountLevelCrossings == 1;
-    } else {
-      return false;
-    }
-  }
+  OrderPriority get orderPriority => OrderPriority.balise;
 
   @override
   String toString() =>

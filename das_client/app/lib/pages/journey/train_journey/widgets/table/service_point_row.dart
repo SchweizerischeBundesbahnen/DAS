@@ -1,4 +1,5 @@
 import 'package:app/extension/station_sign_extension.dart';
+import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/train_journey/journey_position/journey_position_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
@@ -31,18 +32,30 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
   static const double baseRowHeight = 64.0;
   static const double propertyRowHeight = 28.0;
 
+  static double calculateHeight(ServicePoint data, BreakSeries? currentBreakSeries) {
+    final properties = data.propertiesFor(currentBreakSeries);
+
+    if (properties.isEmpty) return baseRowHeight;
+    return baseRowHeight + (properties.length * propertyRowHeight);
+  }
+
+  static Color _resolveRowColor(BuildContext context, JourneyPositionModel? position, ServicePoint data) {
+    if (position?.nextStop == data) return SBBColors.night;
+    return data.isAdditional ? ThemeUtil.getBackgroundColor(context) : ThemeUtil.getDASTableColor(context);
+  }
+
   ServicePointRow({
     required super.metadata,
     required super.data,
-    required BuildContext context,
     required super.rowIndex,
     required super.journeyPosition,
+    required BuildContext context,
     this.highlightNextStop = true,
     super.config,
+    super.key,
     Color? rowColor,
   }) : super(
-         rowColor:
-             rowColor ?? ((journeyPosition?.nextStop == data) ? SBBColors.night : ThemeUtil.getDASTableColor(context)),
+         rowColor: rowColor ?? _resolveRowColor(context, journeyPosition, data),
          stickyLevel: StickyLevel.first,
          height: calculateHeight(data, config.settings.resolvedBreakSeries(metadata)),
        );
@@ -56,7 +69,7 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   @override
   DASTableCell informationCell(BuildContext context) {
-    final servicePointName = data.name;
+    final servicePointName = data.betweenBrackets ? '(${data.name})' : data.name;
     final color = _isNextStop && highlightNextStop ? SBBColors.white : null;
     return DASTableCell(
       onTap: () {
@@ -227,13 +240,6 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   @override
   ShowSpeedBehavior get showSpeedBehavior => ShowSpeedBehavior.alwaysOrPreviousOnStickiness;
-
-  static double calculateHeight(ServicePoint data, BreakSeries? currentBreakSeries) {
-    final properties = data.propertiesFor(currentBreakSeries);
-
-    if (properties.isEmpty) return baseRowHeight;
-    return baseRowHeight + (properties.length * propertyRowHeight);
-  }
 
   DASTableCell _gradientCell(BuildContext context, double? value) {
     if (value == null) {

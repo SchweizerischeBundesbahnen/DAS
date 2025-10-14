@@ -29,13 +29,13 @@ jobs:
 
     - uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: 16.4
+        xcode-version: ~26.0
 
     - uses: actions/checkout@v5
 
     - uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.32.x'
+        flutter-version: '3.35.x'
         cache: true
 
     - name: Setup melos

@@ -7,7 +7,7 @@ import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:collection/collection.dart';
 import 'package:fake_async/fake_async.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
@@ -397,6 +397,50 @@ void main() {
 
       fakeAsync.elapse(const Duration(seconds: 11));
     });
+
+    verifyNever(scrollControllerMock.animateTo(any, duration: anyNamed('duration'), curve: anyNamed('curve')));
+  });
+
+  test('test does not scroll when before first service point', () async {
+    final List<BaseData> journeyData = [
+      Signal(order: 0, kilometre: []),
+      Signal(order: 100, kilometre: []),
+      Signal(order: 200, kilometre: []),
+      Signal(order: 300, kilometre: []),
+      Signal(order: 400, kilometre: []),
+    ];
+
+    final journeyRows = journeyData
+        .mapIndexed(
+          (index, data) => SignalRow(
+            metadata: Metadata(),
+            data: data as Signal,
+            journeyPosition: JourneyPositionModel(),
+            rowIndex: index,
+            key: mockGlobalKeyOffset(Offset(0, 0)),
+          ),
+        )
+        .toList();
+    final currentPosition = journeyData[2] as JourneyPoint;
+    final firstServicePoint = ServicePoint(order: 500, kilometre: [], name: ''); // after current position
+
+    final scrollControllerMock = MockScrollController();
+    final scrollPositionMock = MockScrollPosition();
+    when(scrollControllerMock.positions).thenReturn([scrollPositionMock]);
+    when(scrollControllerMock.position).thenReturn(scrollPositionMock);
+    when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
+
+    final testee = AutomaticAdvancementController(
+      controller: scrollControllerMock,
+      tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)),
+    );
+
+    testee.updateRenderedRows(journeyRows);
+    testee.handleJourneyUpdate(
+      currentPosition: currentPosition,
+      isAdvancementEnabledByUser: true,
+      firstServicePoint: firstServicePoint,
+    );
 
     verifyNever(scrollControllerMock.animateTo(any, duration: anyNamed('duration'), curve: anyNamed('curve')));
   });

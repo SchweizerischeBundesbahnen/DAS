@@ -1,0 +1,47 @@
+{
+  "formationRuns": [
+    {
+      "startLocationUic": {
+        "bpZusatzId": 0,
+        "countryCodeUic": 21,
+        "uicCode": 93445
+      },
+      "endLocationUic": {
+        "bpZusatzId": 0,
+        "countryCodeUic": 44,
+        "uicCode": 83323
+      },
+      "formationRunInspection": {
+        "inspected": true,
+        "inspectionTime": "2025-08-05T17:26:33Z"
+      },
+      "smsEvu": "6382",
+      "vehicleGroups": [
+      ]
+    },
+    {
+      "startLocationUic": {
+        "bpZusatzId": 0,
+        "countryCodeUic": 44,
+        "uicCode": 83323
+      },
+      "endLocationUic": {
+        "bpZusatzId": 0,
+        "countryCodeUic": 34,
+        "uicCode": 63849
+      },
+      "formationRunInspection": {
+        "inspected": true,
+        "inspectionTime": "2025-08-05T16:56:12Z"
+      },
+      "smsEvu": "6382",
+      "vehicleGroups": [
+      ]
+    }
+  ],
+  "key": {
+    "betriebstag": "2025-08-05",
+    "trassenId": "87389-001",
+    "zugnummer": 87389
+  }
+}
