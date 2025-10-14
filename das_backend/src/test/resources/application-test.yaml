@@ -34,6 +34,8 @@ zis:
     topic: "formation-test"
 
 sfera:
+  company-code: '1033'
+  sfera-version: '3.00'
+  source-device: 'TEST'
+  recipient: '0033'
   broker-url:
-  username:
-  password:

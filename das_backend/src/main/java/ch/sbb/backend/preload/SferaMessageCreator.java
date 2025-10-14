@@ -40,6 +40,9 @@ public class SferaMessageCreator {
     @Value("${sfera.source-device}")
     String sourceDevice;
 
+    @Value("${sfera.recipient}")
+    String sferaRecipient;
+
     public JPRequest createJPRequest(String companyCode, String operationalTrainNumber, LocalDate startDate) {
         JPRequest result = new JPRequest();
         TrainIdentificationComplexType trainIdentification = new TrainIdentificationComplexType();
@@ -80,7 +83,7 @@ public class SferaMessageCreator {
         Sender sender = new Sender();
         sender.setValue(companyCode);
         Recipient recipient = new Recipient();
-        recipient.setValue("0085");
+        recipient.setValue(sferaRecipient);
 
         MessageHeader result = new MessageHeader();
         result.setSFERAVersion(sferaVersion);
