@@ -28,9 +28,7 @@ class NextStop extends StatelessWidget {
   Widget _tappableNextStopIdentifier(BuildContext context) {
     return GestureDetector(
       key: tappableAreaKey,
-      onTap: () {
-        if (context.mounted) showReducedOverviewModalSheet(context);
-      },
+      onTap: () => showReducedOverviewModalSheet(context),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
