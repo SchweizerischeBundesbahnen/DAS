@@ -7,7 +7,6 @@ import ch.sbb.backend.adapters.sfera.model.v0201.SegmentProfile;
 import ch.sbb.backend.adapters.sfera.model.v0201.TrainCharacteristics;
 import ch.sbb.backend.preload.xml.XmlHelper;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +20,10 @@ import java.util.zip.ZipOutputStream;
 @Service
 public class PreloadStorageService {
 
-    private static final String DIR_JP = "jp";
-    private static final String DIR_SP = "sp";
-    private static final String DIR_TC = "tc";
-    private static final String ZIP_DIR_JP = DIR_JP + "/";
-    private static final String ZIP_DIR_SP = DIR_SP + "/";
-    private static final String ZIP_DIR_TC = DIR_TC + "/";
+    private static final String DIR_JP = "jp/";
+    private static final String DIR_SP = "sp/";
+    private static final String DIR_TC = "tc/";
 
-    private static final ZoneId ZONE_BERN = ZoneId.of("Europe/Zurich");
     private static final DateTimeFormatter FILENAME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ssXX");
 
     private final XmlHelper xmlHelper;
@@ -49,9 +44,9 @@ public class PreloadStorageService {
             ByteArrayOutputStream baos = new ByteArrayOutputStream(64 * 1024);
             try (ZipOutputStream zos = new ZipOutputStream(baos, StandardCharsets.UTF_8)) {
 
-                addDirectoryEntry(zos, ZIP_DIR_JP);
-                addDirectoryEntry(zos, ZIP_DIR_SP);
-                addDirectoryEntry(zos, ZIP_DIR_TC);
+                addDirectoryEntry(zos, DIR_JP);
+                addDirectoryEntry(zos, DIR_SP);
+                addDirectoryEntry(zos, DIR_TC);
 
                 writeJps(journeyProfiles, zos);
                 writeSps(segmentProfiles, zos);
@@ -66,7 +61,7 @@ public class PreloadStorageService {
     }
 
     private String buildZipName() {
-        OffsetDateTime nowOffset = OffsetDateTime.now(ZONE_BERN).withNano(0);
+        OffsetDateTime nowOffset = OffsetDateTime.now();
         return FILENAME_FORMATTER.format(nowOffset) + ".zip";
     }
 
