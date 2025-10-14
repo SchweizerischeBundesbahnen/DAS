@@ -1,27 +1,33 @@
 import 'package:collection/collection.dart';
 import 'package:meta/meta.dart';
+import 'package:sfera/component.dart';
 
 @sealed
 @immutable
-class CommunicationNetworkChange implements Comparable {
-  const CommunicationNetworkChange({required this.type, required this.order});
+class CommunicationNetworkChange extends JourneyPoint {
+  const CommunicationNetworkChange({
+    required this.communicationNetworkType,
+    required super.order,
+    super.kilometre = const [],
+  }) : super(type: Datatype.communicationNetworkChannel);
 
-  final CommunicationNetworkType type;
-
-  /// Marks the start from where this communication network applies.
-  /// No start and end order is given, as RADN delivers network only for specific point.
-  final int order;
-
-  @override
-  int compareTo(other) {
-    if (other is! CommunicationNetworkChange) return -1;
-    return order.compareTo(other.order);
-  }
+  final CommunicationNetworkType communicationNetworkType;
 
   @override
-  String toString() {
-    return 'CommunicationNetworkChange(type: $type, order: $order)';
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CommunicationNetworkChange &&
+          runtimeType == other.runtimeType &&
+          order == other.order &&
+          communicationNetworkType == other.communicationNetworkType &&
+          const ListEquality<double>().equals(kilometre, other.kilometre);
+
+  @override
+  int get hashCode => Object.hash(order, communicationNetworkType, Object.hashAll(kilometre));
+
+  @override
+  String toString() =>
+      'CommunicationNetworkChange(communicationNetworkType: $communicationNetworkType, order: $order, kilometre: $kilometre)';
 }
 
 enum CommunicationNetworkType { gsmR, gsmP, sim }
@@ -32,22 +38,24 @@ extension CommunicationNetworkChangeListExtension on Iterable<CommunicationNetwo
   /// Returns network type that returns last lower or equal to given [order].
   CommunicationNetworkType? typeByLastBefore(int order) {
     final sortedList = toList()..sort();
-    return sortedList.reversed.firstWhereOrNull((network) => network.order <= order)?.type;
+    return sortedList.reversed.firstWhereOrNull((network) => network.order <= order)?.communicationNetworkType;
   }
 
   /// Return the network type that changes at given [order].
   CommunicationNetworkType? changeAtOrder(int order) {
-    final sortedList = where((it) => it.type != CommunicationNetworkType.sim).toList()..sort();
+    final sortedList = where((it) => it.communicationNetworkType != CommunicationNetworkType.sim).toList()..sort();
     final change = sortedList.firstWhereOrNull((it) => it.order == order);
     if (change == null) return null;
     final index = sortedList.indexOf(change);
     if (index == 0) {
-      return change.type;
+      return change.communicationNetworkType;
     } else {
-      return sortedList[index - 1].type != change.type ? change.type : null;
+      return sortedList[index - 1].communicationNetworkType != change.communicationNetworkType
+          ? change.communicationNetworkType
+          : null;
     }
   }
 
   Iterable<CommunicationNetworkChange> get whereNotSim =>
-      whereNot((change) => change.type == CommunicationNetworkType.sim);
+      whereNot((change) => change.communicationNetworkType == CommunicationNetworkType.sim);
 }

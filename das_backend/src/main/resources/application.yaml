@@ -13,6 +13,16 @@ spring:
           jwk-set-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/discovery/v2.0/keys
           issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
       authorizationUrl: https://login.microsoftonline.com/common/oauth2/v2.0
+      client:
+        registration:
+          azure:
+            client-id: e5a57b3b-6bcb-4afe-a787-a7796f08b5ac
+            client-secret: ${SFERA_OAUTH_SECRET}
+            authorization-grant-type: client_credentials
+            scope: api://8f16d52b-c6df-4a94-a132-da4956579a48/.default
+        provider:
+          azure:
+            token-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0/token
   jackson:
     mapper:
       accept-case-insensitive-enums: true
@@ -51,6 +61,9 @@ spring:
         credentials.source: USER_INFO
         user.info: ${ZIS_SR_API_KEY}:${ZIS_SR_API_SECRET}
       schema.registry.url: ${ZIS_SR_URL}
+  jpa:
+    hibernate:
+      ddl-auto: validate
 management:
   endpoint:
     health:
@@ -90,3 +103,16 @@ aws:
   accessKey: ${AWS_ACCESS_KEY}
   secretKey: ${AWS_SECRET_KEY}
   bucketName: ${AWS_BUCKET_NAME}
+
+sfera:
+  company-code: '1085'
+  sfera-version: '3.00'
+  source-device: 'BACKEND'
+  recipient: '0085'
+  broker-url: ${SFERA_BROKER_URL}
+  clientId: das_backend
+  oauth-profile: preload
+  topic-prefix: dev/
+
+preload:
+  fetch-interval-ms: 10000
