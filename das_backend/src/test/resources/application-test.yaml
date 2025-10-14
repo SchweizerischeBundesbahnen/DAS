@@ -32,3 +32,8 @@ aws:
 zis:
   kafka:
     topic: "formation-test"
+
+sfera:
+  broker-url:
+  username:
+  password:

@@ -16,7 +16,7 @@ spring:
       client:
         registration:
           azure:
-            client-id: 69a47b50-ad91-4bfc-b4cd-d6b7f9144063
+            client-id: e5a57b3b-6bcb-4afe-a787-a7796f08b5ac
             client-secret: ${SFERA_OAUTH_SECRET}
             authorization-grant-type: client_credentials
             scope: api://8f16d52b-c6df-4a94-a132-da4956579a48/.default
@@ -110,8 +110,7 @@ sfera:
   source-device: 'BACKEND'
   broker-url: ${SFERA_BROKER_URL}
   clientId: das_backend
-  username: ${SFERA_USERNAME}
-  password: ${SFERA_PASSWORD}
+  oauth-profile: preload
   topic-prefix: dev/
 
 preload:
