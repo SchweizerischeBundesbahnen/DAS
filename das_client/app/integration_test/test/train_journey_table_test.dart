@@ -1,4 +1,6 @@
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
+import 'package:app/pages/journey/train_journey/widgets/header/sim_identifier.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/balise_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
@@ -27,6 +29,27 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey table test', () {
+    testWidgets('test displays kilometer and communication network changes correctly', (tester) async {
+      await prepareAndStartApp(tester);
+
+      // load train journey by filling out train selection page
+      await loadTrainJourney(tester, trainNumber: 'T14');
+
+      // find gsmP-Icon
+      final gsmPKey = find.byKey(CommunicationNetworkIcon.gsmPKey);
+      expect(gsmPKey, findsOneWidget);
+
+      // find gsmR-Icon
+      final gsmRKey = find.byKey(CommunicationNetworkIcon.gsmRKey);
+      expect(gsmRKey, findsOneWidget);
+
+      // find SIM-Key
+      final simKey = find.byKey(SimIdentifier.simKey);
+      expect(simKey, findsOneWidget);
+
+      await disconnect(tester);
+    });
+
     testWidgets('test up- and downhill gradient is displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
 
@@ -1029,6 +1052,9 @@ void main() {
       final timeHeader = find.text(expectedCalculatedHeaderLabel);
       expect(timeHeader, findsOneWidget);
 
+      final scrollableFinder = find.byType(AnimatedList);
+      expect(scrollableFinder, findsOneWidget);
+
       // test if times are displayed correctly
       final timeCellKey = TimeCellBody.timeCellKey;
       // Geneve Aeroport should have only departure operational time
@@ -1041,6 +1067,14 @@ void main() {
       expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: morges), findsNothing);
       // vevey should have single operational arrival in brackets since it's a passing point
       final vevey = 'Vevey';
+
+      await tester.dragUntilVisible(
+        findDASTableRowByText(vevey),
+        scrollableFinder,
+        const Offset(0, -50),
+      );
+      await tester.pumpAndSettle();
+
       final expectedTimeVevey = '(${Format.operationalTime(DateTime.parse('2025-05-12T17:28:56Z'))})\n';
       expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: vevey), findsOneWidget);
       expect(_findTextInDASTableRowByText(innerText: expectedTimeVevey, rowText: vevey), findsOneWidget);
@@ -1053,12 +1087,27 @@ void main() {
       expect(find.text(expectedPlannedHeaderLabel), findsOneWidget);
       // test if time switched (aeroport)
       final geneveAerPlanned = 'Genève-Aéroport';
+
+      await tester.dragUntilVisible(
+        findDASTableRowByText(geneveAerPlanned),
+        scrollableFinder,
+        const Offset(0, 50),
+      );
+
+      await tester.pumpAndSettle();
+
       final expectedTimeGenAerPlanned = Format.plannedTime(DateTime.parse('2025-05-12T15:13:40Z'));
+
+      if (!tester.any(find.text(expectedPlannedHeaderLabel))) {
+        await tapElement(tester, timeHeader);
+      }
+
       expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: geneveAerPlanned), findsOneWidget);
       expect(
         _findTextInDASTableRowByText(innerText: expectedTimeGenAerPlanned, rowText: geneveAerPlanned),
         findsOneWidget,
       );
+
       // morges
       final morgesPlanned = 'Morges';
       final expectedTimeMorgesPlanned = '(${Format.plannedTime(DateTime.parse('2025-05-12T15:55:23Z'))})\n';
@@ -1069,6 +1118,19 @@ void main() {
       );
       // vevey should have both times in brackets since it's a passing point
       final veveyPlanned = 'Vevey';
+
+      await tester.dragUntilVisible(
+        findDASTableRowByText(veveyPlanned),
+        scrollableFinder,
+        const Offset(0, -50),
+      );
+
+      await tester.pumpAndSettle();
+
+      if (!tester.any(find.text(expectedPlannedHeaderLabel))) {
+        await tapElement(tester, timeHeader);
+      }
+
       final expectedTimeVeveyPlanned =
           '(${Format.plannedTime(DateTime.parse('2025-05-12T16:28:12Z'))})\n'
           '(${Format.plannedTime(DateTime.parse('2025-05-12T16:29:12Z'))})';
