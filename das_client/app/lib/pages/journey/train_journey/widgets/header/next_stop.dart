@@ -31,12 +31,14 @@ class NextStop extends StatelessWidget {
       initialData: viewModel.modelValue,
       builder: (context, asyncSnapshot) {
         if (!asyncSnapshot.hasData) return SizedBox.shrink();
-        final nextStop = asyncSnapshot.data?.nextStop;
+        final model = asyncSnapshot.data!;
+
+        final displayedStop = model.nextStop ?? model.previousStop; // if at last stop, show previous one
 
         return Padding(
           padding: const EdgeInsets.only(left: sbbDefaultSpacing * 0.5),
           child: Text(
-            nextStop?.name ?? context.l10n.c_unknown,
+            displayedStop?.name ?? context.l10n.c_unknown,
             style: DASTextStyles.xLargeLight,
             overflow: TextOverflow.ellipsis,
           ),
