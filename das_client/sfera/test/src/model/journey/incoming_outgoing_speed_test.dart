@@ -15,6 +15,10 @@ void main() {
       _expectIncomingOutgoingSpeed(Speed.parse('XX/70-60-50'), 'XX/70-60-50');
     });
 
+    test('parse_whenXXWithWhitespaces_thenCreatesSpeedWithXXValue', () {
+      _expectIncomingOutgoingSpeed(Speed.parse('XX / 70-60-50'), 'XX/70-60-50');
+    });
+
     test('parse_whenInvalidFormat_thenThrowsFormatException', () {
       expect(() => Speed.parse('50-5gj'), throwsFormatException);
     });
