@@ -121,6 +121,7 @@ class SingleSpeed extends Speed {
     );
   }
 
+  @override
   bool get isIllegal => value == 'XX';
 
   /// The value of this or 'XX'.

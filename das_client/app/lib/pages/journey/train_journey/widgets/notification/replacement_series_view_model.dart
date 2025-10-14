@@ -217,6 +217,7 @@ class ReplacementSeriesViewModel {
       it.cancel();
     }
     _subscriptions.clear();
+    _rxModel.close();
   }
 }
 
