@@ -441,6 +441,92 @@ void main() {
       expect(testee.modelValue?.nextServicePoint, equals(bServicePoint));
     });
 
+    test('previousStop_whenHasNoServicePoints_thenIsNull', () {
+      // ARRANGE
+      testAsync.run((_) {
+        rxMockJourney.add(
+          Journey(
+            metadata: Metadata(signaledPosition: SignaledPosition(order: 20)),
+            data: [zeroSignal, twentySignal],
+          ),
+        );
+      });
+      _processStreamInFakeAsync(testAsync);
+
+      // ACT & EXPECT
+      expect(testee.modelValue?.previousStop, isNull);
+    });
+
+    test('previousStop_whenIsOnServicePointThatIsNoStop_thenIsNull', () {
+      // ARRANGE
+      final aServicePoint = ServicePoint(name: 'a', order: 20, kilometre: []);
+      testAsync.run((_) {
+        rxMockJourney.add(
+          Journey(
+            metadata: Metadata(signaledPosition: SignaledPosition(order: 20)),
+            data: [zeroSignal, tenSignal, aServicePoint],
+          ),
+        );
+      });
+      _processStreamInFakeAsync(testAsync);
+
+      // ACT & EXPECT
+      expect(testee.modelValue?.previousStop, isNull);
+    });
+
+    test('previousStop_whenIsOnServicePointThatIsStopAndNoOther_thenIsThisServicePoint', () {
+      // ARRANGE
+      final aServicePoint = ServicePoint(name: 'a', order: 20, kilometre: [], isStop: true);
+      testAsync.run((_) {
+        rxMockJourney.add(
+          Journey(
+            metadata: Metadata(signaledPosition: SignaledPosition(order: 20)),
+            data: [zeroSignal, tenSignal, aServicePoint],
+          ),
+        );
+      });
+      _processStreamInFakeAsync(testAsync);
+
+      // ACT & EXPECT
+      expect(testee.modelValue?.previousStop, equals(aServicePoint));
+    });
+
+    test('previousStop_whenIsOnServicePointAndFutureOtherThatIsStop_thenIsCurrentOne', () {
+      // ARRANGE
+      final aServicePoint = ServicePoint(name: 'a', order: 20, kilometre: [], isStop: true);
+      final bServicePoint = ServicePoint(name: 'b', order: 25, kilometre: [], isStop: true);
+      testAsync.run((_) {
+        rxMockJourney.add(
+          Journey(
+            metadata: Metadata(signaledPosition: SignaledPosition(order: 20)),
+            data: [zeroSignal, tenSignal, aServicePoint, bServicePoint],
+          ),
+        );
+      });
+      _processStreamInFakeAsync(testAsync);
+
+      // ACT & EXPECT
+      expect(testee.modelValue?.previousStop, equals(aServicePoint));
+    });
+
+    test('previousStop_whenIsOnServicePointAndHasPastOtherThatIsStop_thenIsCurrentOne', () {
+      // ARRANGE
+      final aServicePoint = ServicePoint(name: 'a', order: 20, kilometre: [], isStop: true);
+      final bServicePoint = ServicePoint(name: 'b', order: 25, kilometre: [], isStop: true);
+      testAsync.run((_) {
+        rxMockJourney.add(
+          Journey(
+            metadata: Metadata(signaledPosition: SignaledPosition(order: 25)),
+            data: [zeroSignal, tenSignal, aServicePoint, bServicePoint],
+          ),
+        );
+      });
+      _processStreamInFakeAsync(testAsync);
+
+      // ACT & EXPECT
+      expect(testee.modelValue?.previousStop, equals(bServicePoint));
+    });
+
     test('nextStop_whenHasNoServicePoints_thenIsNull', () {
       // ARRANGE
       testAsync.run((_) {
