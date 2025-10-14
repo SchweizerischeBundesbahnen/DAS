@@ -4,8 +4,11 @@ import 'package:app/pages/journey/train_journey/journey_position/journey_positio
 import 'package:app/pages/journey/train_journey/widgets/notification/replacement_series_model.dart';
 import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:collection/collection.dart';
+import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
+
+final _log = Logger('ReplacementSeriesViewModel');
 
 class ReplacementSeriesViewModel {
   ReplacementSeriesViewModel({
@@ -58,10 +61,15 @@ class ReplacementSeriesViewModel {
         );
 
         final currentModelValue = modelValue;
-        if (currentModelValue is ReplacementSeriesAvailable &&
-            settings.selectedBreakSeries == currentModelValue.segment.replacement) {
-          // User selected the replacement series, clear notification
-          _rxModel.add(ReplacementSeriesModel.selected(segment: currentModelValue.segment));
+        if (currentModelValue is ReplacementSeriesAvailable) {
+          if (settings.selectedBreakSeries == currentModelValue.segment.replacement) {
+            _rxModel.add(ReplacementSeriesModel.selected(segment: currentModelValue.segment));
+            _log.info('User selected replacement series ${currentModelValue.segment.replacement.toString()}');
+          } else if (settings.selectedBreakSeries != currentModelValue.segment.original) {
+            _rxModel.add(null);
+            _log.info('User selected a different break series, clearing replacement series notification');
+            _handleActiveSegment();
+          }
         } else if (currentModelValue is OriginalSeriesAvailable &&
             settings.selectedBreakSeries != currentModelValue.segment.replacement) {
           _rxModel.add(null);
@@ -81,17 +89,25 @@ class ReplacementSeriesViewModel {
     final currentModelValue = modelValue;
 
     final activeSegment = _activeIllegalSpeedSegment(currentBreakSeries, currentPosition);
+
     if (activeSegment != null && activeSegment.replacement != null) {
       // Show notification for replacement series
       _rxModel.add(ReplacementSeriesModel.replacement(segment: activeSegment));
+      _log.info(
+        'Suggesting replacement series ${activeSegment.replacement.toString()} from ${activeSegment.start.name} to ${activeSegment.end.name}',
+      );
     } else if (currentModelValue is ReplacementSeriesSelected &&
         currentPosition.order >= currentModelValue.segment.end.order) {
       // Show notification that user reached the end of the segment
       _rxModel.add(ReplacementSeriesModel.original(segment: currentModelValue.segment));
+      _log.info(
+        'User reached end of replacement segment, suggesting original series ${currentModelValue.segment.original.toString()}',
+      );
     } else if (currentModelValue is ReplacementSeriesAvailable &&
         currentPosition.order >= currentModelValue.segment.end.order) {
       // User did not select the replacement series and reached the end of the segment, clear notification
       _rxModel.add(null);
+      _log.info('User reached end of segment without selecting replacement series');
     }
   }
 
@@ -101,6 +117,7 @@ class ReplacementSeriesViewModel {
     }
 
     _illegalSpeedSegments = _findIllegalSpeedSegments(journey, breakSeries);
+    _log.fine('Found ${_illegalSpeedSegments.length} IllegalSpeedSegments for $breakSeries');
   }
 
   IllegalSpeedSegment? _activeIllegalSpeedSegment(BreakSeries? currentBreakSeries, JourneyPoint currentPosition) =>
