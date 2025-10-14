@@ -108,6 +108,10 @@ class ReplacementSeriesViewModel {
       // User did not select the replacement series and reached the end of the segment, clear notification
       _rxModel.add(null);
       _log.info('User reached end of segment without selecting replacement series');
+    } else if (currentModelValue is ReplacementSeriesAvailable && activeSegment == null) {
+      // No active segment anymore, clear notification
+      _rxModel.add(null);
+      _log.info('No active segment, clearing replacement series notification');
     }
   }
 
