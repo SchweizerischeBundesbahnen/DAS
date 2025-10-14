@@ -1,8 +1,8 @@
 package ch.sbb.backend.preload;
 
-import ch.sbb.backend.adapters.sfera.model.v0201.JourneyProfile;
-import ch.sbb.backend.adapters.sfera.model.v0201.SegmentProfile;
-import ch.sbb.backend.adapters.sfera.model.v0201.TrainCharacteristics;
+import ch.sbb.backend.preload.sfera.model.v0201.JourneyProfile;
+import ch.sbb.backend.preload.sfera.model.v0201.SegmentProfile;
+import ch.sbb.backend.preload.sfera.model.v0201.TrainCharacteristics;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
