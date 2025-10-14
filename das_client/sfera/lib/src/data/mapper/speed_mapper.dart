@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
@@ -90,13 +92,37 @@ class SpeedMapper {
     return SingleSpeed(value: nsp.speed);
   }
 
+  /// Parse advised speed segments.
+  ///
+  ///
+  ///
+  /// O(n<sup>2</sup>)
+  ///
+  /// if start / end is null (or wholeSP => start == null && end == null), set mergeLocationStart and -end to next SegmentStart / previousSegmentEnd
+  /// calculate hashCode of type & speed & "group"
+  /// sort group by mergeLocationStart
+  /// iterate through and compare end nth to start nth + 1
+  /// merge if overlap
+  ///
+  /// do the whole unknown locations thing and set flag if unknown location mapped
+  ///
+  /// iterate through again
+  /// warn / error if multiple adl in same part of the journey
+  /// shrink mapped segments if hits a non mapped segment
   static Iterable<AdvisedSpeedSegment> advisedSpeeds(
     JourneyProfileDto journeyProfile,
     List<SegmentProfileDto> segmentProfiles,
     List<BaseData> journeyData,
   ) {
-    final List<AdvisedSpeedSegment> result = [];
     final segmentProfileReferences = journeyProfile.segmentProfileReferences.toList();
+
+    final List<DraftAdvisedSpeedSegment> drafts = [];
+
+    final journeyOrders = journeyData.map((it) => it.order);
+    final servicePoints = journeyData.whereType<ServicePoint>().whereNot((sp) => sp.isAdditional);
+
+    int previousSegmentEndOrder = 0;
+    int nextSegmentStartOrder = 0;
 
     for (int segmentIndex = 0; segmentIndex < segmentProfileReferences.length; segmentIndex++) {
       final segmentProfileReference = segmentProfileReferences[segmentIndex];
@@ -105,65 +131,67 @@ class SpeedMapper {
       for (final speedConstraint in segmentProfileReference.advisedSpeedTemporaryConstraints) {
         if (_invalidAdvisedSpeed(speedConstraint)) continue;
 
-        final journeyOrders = journeyData.map((it) => it.order);
-        final servicePoints = journeyData.whereType<ServicePoint>().whereNot((sp) => sp.isAdditional);
+        final startOrder = speedConstraint.startLocation != null
+            ? calculateOrder(segmentIndex, speedConstraint.startLocation!)
+            : null;
+        final endOrder = speedConstraint.endLocation != null
+            ? calculateOrder(segmentIndex, speedConstraint.endLocation!)
+            : null;
 
-        int startOrder = calculateOrder(segmentIndex, speedConstraint.startLocation ?? 0);
-        int endOrder = calculateOrder(segmentIndex, speedConstraint.endLocation ?? double.parse(segmentProfile.length));
-
-        final startUnknown = (!journeyOrders.contains(startOrder) || speedConstraint.startLocation == null);
-        final endUnknown = (!journeyOrders.contains(endOrder) || speedConstraint.endLocation == null);
-
-        if (startUnknown) {
-          startOrder = _orderFromClosestServicePoint(startOrder, servicePoints) ?? endOrder;
-        }
-        if (endUnknown) {
-          endOrder = _orderFromClosestServicePoint(endOrder, servicePoints.toList().reversed) ?? startOrder;
-        }
-
-        if (startOrder >= endOrder) {
-          _log.warning('AdvisedSpeedSegment mapped to unfeasible range. Skipping! $speedConstraint');
-          continue;
-        }
-
-        final endData = journeyData.firstWhere((it) => it.order == endOrder);
+        nextSegmentStartOrder = segmentIndex + 1 < segmentProfileReferences.length
+            ? calculateOrder(segmentIndex + 1, 0)
+            : calculateOrder(segmentIndex, double.parse(segmentProfile.length));
 
         final advisedSpeed = speedConstraint.advisedSpeed!;
         SingleSpeed? speed;
         if (advisedSpeed.speed != null) speed = Speed.parse(advisedSpeed.speed!) as SingleSpeed;
 
         if (speed == null) {
-          result.add(VelocityMaxAdvisedSpeedSegment(startOrder: startOrder, endOrder: endOrder, endData: endData));
+          drafts.add(
+            DraftAdvisedSpeedSegment(
+              nextSegmentStartOrder: nextSegmentStartOrder,
+              previousSegmentEndOrder: previousSegmentEndOrder,
+              type: DraftAdvisedSpeedType.velocityMax,
+              startOrder: startOrder,
+              endOrder: endOrder,
+            ),
+          );
           continue;
         }
         switch (advisedSpeed.reasonCode) {
           case ReasonCodeDto.followTrain:
-            result.add(
-              FollowTrainAdvisedSpeedSegment(
+            drafts.add(
+              DraftAdvisedSpeedSegment(
+                nextSegmentStartOrder: nextSegmentStartOrder,
+                previousSegmentEndOrder: previousSegmentEndOrder,
+                type: DraftAdvisedSpeedType.followTrain,
+                speed: speed,
                 startOrder: startOrder,
                 endOrder: endOrder,
-                speed: speed,
-                endData: endData,
               ),
             );
             break;
           case ReasonCodeDto.trainFollowing:
-            result.add(
-              TrainFollowingAdvisedSpeedSegment(
+            drafts.add(
+              DraftAdvisedSpeedSegment(
+                nextSegmentStartOrder: nextSegmentStartOrder,
+                previousSegmentEndOrder: previousSegmentEndOrder,
+                type: DraftAdvisedSpeedType.trainFollowing,
+                speed: speed,
                 startOrder: startOrder,
                 endOrder: endOrder,
-                speed: speed,
-                endData: endData,
               ),
             );
             break;
           case ReasonCodeDto.adlFixedTime:
-            result.add(
-              FixedTimeAdvisedSpeedSegment(
+            drafts.add(
+              DraftAdvisedSpeedSegment(
+                nextSegmentStartOrder: nextSegmentStartOrder,
+                previousSegmentEndOrder: previousSegmentEndOrder,
+                type: DraftAdvisedSpeedType.fixedTime,
+                speed: speed,
                 startOrder: startOrder,
                 endOrder: endOrder,
-                speed: speed,
-                endData: endData,
               ),
             );
             break;
@@ -171,6 +199,59 @@ class SpeedMapper {
             _log.warning('Skipping AdvisedSpeed found with reasonCode that cannot be handled: $advisedSpeed');
             continue;
         }
+        previousSegmentEndOrder = calculateOrder(segmentIndex, double.parse(segmentProfile.length));
+      }
+    }
+
+    final groupedAdvisedSpeedSegments = drafts.groupListsBy((draft) => draft.advisedSpeedGroupKey);
+
+    groupedAdvisedSpeedSegments.updateAll((key, drafts) {
+      drafts.sort();
+      final mergedDrafts = <DraftAdvisedSpeedSegment>[];
+
+      DraftAdvisedSpeedSegment currentDraft = drafts.first;
+
+      int idx = 1;
+      while (idx <= drafts.length) {
+        if (idx == drafts.length) {
+          mergedDrafts.add(currentDraft);
+          break;
+        }
+        final nextDraft = drafts[idx];
+        if (currentDraft.endOrder >= nextDraft.startOrder) {
+          currentDraft = currentDraft.merge(nextDraft);
+        } else {
+          mergedDrafts.add(currentDraft);
+          currentDraft = nextDraft;
+        }
+
+        idx++;
+      }
+
+      return mergedDrafts;
+    });
+
+    final List<DraftAdvisedSpeedSegment> allDrafts = groupedAdvisedSpeedSegments.values.flattened
+        .toList(growable: false)
+        .sorted();
+
+    final result = <AdvisedSpeedSegment>[];
+    for (int idx = 0; idx < allDrafts.length; idx++) {
+      final draft = allDrafts[idx];
+
+      final startUnknown = (!journeyOrders.contains(draft.startOrder) || draft.startsWithSegment);
+      final endUnknown = (!journeyOrders.contains(draft.endOrder) || draft.endsWithSegment);
+
+      if (startUnknown) {
+        draft.startOrder = _orderFromClosestServicePoint(draft.startOrder, servicePoints) ?? draft.endOrder;
+      }
+      if (endUnknown) {
+        draft.endOrder = _orderFromClosestServicePoint(draft.endOrder, servicePoints.toList().reversed) ?? 0;
+      }
+
+      if (draft.endOrder > draft.startOrder && draft.endsWithSegment == false && draft.startsWithSegment == false) {
+        draft.endData = journeyData.firstWhere((it) => it.order == draft.endOrder);
+        result.add(draft.toAdvisedSegment());
       }
     }
 
@@ -223,4 +304,130 @@ class SpeedMapper {
 
     return false;
   }
+}
+
+class DraftAdvisedSpeedSegment implements Comparable<DraftAdvisedSpeedSegment> {
+  DraftAdvisedSpeedSegment({
+    required this.type,
+    required int previousSegmentEndOrder,
+    required int nextSegmentStartOrder,
+    this.speed,
+    int? startOrder,
+    int? endOrder,
+  }) : _startOrder = startOrder,
+       _endOrder = endOrder,
+       _nextSegmentStartOrder = nextSegmentStartOrder,
+       _previousSegmentEndOrder = previousSegmentEndOrder;
+
+  int? _startOrder;
+  int? _endOrder;
+
+  final int _previousSegmentEndOrder;
+  final int _nextSegmentStartOrder;
+
+  final DraftAdvisedSpeedType type;
+
+  final SingleSpeed? speed;
+
+  bool _isStartAmended = false;
+  bool _isEndAmended = false;
+
+  bool get startsWithSegment => _startOrder == null;
+
+  bool get endsWithSegment => _endOrder == null;
+
+  bool get isStartAmended => _isStartAmended;
+
+  bool get isEndAmended => _isEndAmended;
+
+  BaseData? endData;
+
+  set startOrder(int value) {
+    _startOrder = value;
+    _isStartAmended = true;
+  }
+
+  set endOrder(int value) {
+    _endOrder = value;
+    _isEndAmended = true;
+  }
+
+  int get startOrder => _startOrder ?? _previousSegmentEndOrder;
+
+  int get endOrder => _endOrder ?? _nextSegmentStartOrder;
+
+  int get advisedSpeedGroupKey => Object.hash(speed, type);
+
+  @override
+  String toString() =>
+      'DraftAdvisedSpeedSegment: ('
+      'type: $type'
+      ', previousSegmentEndOrder: $_previousSegmentEndOrder'
+      ', nextSegmentStartOrder: $_nextSegmentStartOrder'
+      ', speed: $speed'
+      ', startOrder: $startOrder'
+      ', endOrder: $endOrder'
+      ')';
+
+  @override
+  int compareTo(DraftAdvisedSpeedSegment other) => startOrder.compareTo(other.startOrder);
+
+  DraftAdvisedSpeedSegment merge(DraftAdvisedSpeedSegment other) {
+    return DraftAdvisedSpeedSegment(
+      type: type,
+      previousSegmentEndOrder: min(_previousSegmentEndOrder, other._previousSegmentEndOrder),
+      nextSegmentStartOrder: max(_nextSegmentStartOrder, other._nextSegmentStartOrder),
+      speed: speed,
+      startOrder: _startOrder == null && other._startOrder == null
+          ? min(startOrder, other.startOrder)
+          : _startOrder == null
+          ? other._startOrder
+          : other._endOrder == null
+          ? _startOrder
+          : min(_startOrder!, other._startOrder!),
+      endOrder: _endOrder == null && other._endOrder == null
+          ? max(startOrder, other.startOrder)
+          : _endOrder == null
+          ? other._endOrder
+          : other._endOrder == null
+          ? _endOrder
+          : max(_endOrder!, other._endOrder!),
+    );
+  }
+
+  AdvisedSpeedSegment toAdvisedSegment() {
+    if (endData == null) throw FormatException('Cannot map to advisedSegment without having endData set!');
+    return switch (type) {
+      DraftAdvisedSpeedType.velocityMax => VelocityMaxAdvisedSpeedSegment(
+        startOrder: startOrder,
+        endOrder: endOrder,
+        endData: endData!,
+      ),
+      DraftAdvisedSpeedType.followTrain => FollowTrainAdvisedSpeedSegment(
+        startOrder: startOrder,
+        endOrder: endOrder,
+        speed: speed!,
+        endData: endData!,
+      ),
+      DraftAdvisedSpeedType.trainFollowing => TrainFollowingAdvisedSpeedSegment(
+        startOrder: startOrder,
+        endOrder: endOrder,
+        speed: speed!,
+        endData: endData!,
+      ),
+      DraftAdvisedSpeedType.fixedTime => FixedTimeAdvisedSpeedSegment(
+        startOrder: startOrder,
+        endOrder: endOrder,
+        speed: speed!,
+        endData: endData!,
+      ),
+    };
+  }
+}
+
+enum DraftAdvisedSpeedType {
+  velocityMax,
+  followTrain,
+  trainFollowing,
+  fixedTime,
 }

@@ -19,7 +19,6 @@ import 'package:sfera/src/data/mapper/speed_mapper.dart';
 ])
 import 'speed_mapper_test.advised_single_segment.mocks.dart';
 import 'speed_mapper_test.fixtures.dart';
-import 'util.dart';
 
 const _veryLargeDouble = 1_000_000_000_000.0;
 
@@ -122,10 +121,9 @@ void main() {
 
       test('whenNoSpeedNorDeltaSpeed_thenSkipsParsing', () {
         // ARRANGE
-        final endOrder = SpeedMapperTestFixtures.twoSignalJourney.last.order;
         when(mockTemporaryConstraint.advisedSpeed).thenReturn(mockAdvisedSpeed);
         when(mockTemporaryConstraint.startLocation).thenReturn(0);
-        when(mockTemporaryConstraint.endLocation).thenReturn(calculateOrderInverse(0, endOrder));
+        when(mockTemporaryConstraint.endLocation).thenReturn(100.0);
         // ACT & EXPECT
         expect(
           testee.call(mockJourneyProfile, [mockSegmentProfile], SpeedMapperTestFixtures.twoSignalJourney),
@@ -135,10 +133,10 @@ void main() {
 
       test('whenHasSpeedButUnknownReasonCode_thenSkipsParsing', () {
         // ARRANGE
-        final endOrder = SpeedMapperTestFixtures.twoSignalJourney.last.order;
+        when(mockSegmentProfile.length).thenReturn('100');
         when(mockTemporaryConstraint.advisedSpeed).thenReturn(mockAdvisedSpeed);
         when(mockTemporaryConstraint.startLocation).thenReturn(0);
-        when(mockTemporaryConstraint.endLocation).thenReturn(calculateOrderInverse(0, endOrder));
+        when(mockTemporaryConstraint.endLocation).thenReturn(100.0);
         when(mockAdvisedSpeed.speed).thenReturn('80');
         when(mockAdvisedSpeed.reasonCode).thenReturn(ReasonCodeDto.nationalUse10);
         // ACT & EXPECT
@@ -150,10 +148,10 @@ void main() {
 
       test('whenHasSpeedButEmptyReasonCode_thenSkipsParsing', () {
         // ARRANGE
-        final endOrder = SpeedMapperTestFixtures.twoSignalJourney.last.order;
+        when(mockSegmentProfile.length).thenReturn('100');
         when(mockTemporaryConstraint.advisedSpeed).thenReturn(mockAdvisedSpeed);
         when(mockTemporaryConstraint.startLocation).thenReturn(0);
-        when(mockTemporaryConstraint.endLocation).thenReturn(calculateOrderInverse(0, endOrder));
+        when(mockTemporaryConstraint.endLocation).thenReturn(100.0);
         when(mockAdvisedSpeed.speed).thenReturn('80');
         // ACT & EXPECT
         expect(
@@ -169,10 +167,11 @@ void main() {
         when(mockJourneyProfile.segmentProfileReferences).thenReturn([mockSegmentProfileReference]);
         when(mockSegmentProfileReference.spId).thenReturn('id');
         when(mockSegmentProfile.id).thenReturn('id');
+        when(mockSegmentProfile.length).thenReturn('100');
         when(mockSegmentProfileReference.advisedSpeedTemporaryConstraints).thenReturn([mockTemporaryConstraint]);
         when(mockTemporaryConstraint.advisedSpeed).thenReturn(mockAdvisedSpeed);
-        when(mockTemporaryConstraint.startLocation).thenReturn(calculateOrderInverse(0, twoSignalJourney.first.order));
-        when(mockTemporaryConstraint.endLocation).thenReturn(calculateOrderInverse(0, twoSignalJourney.last.order));
+        when(mockTemporaryConstraint.startLocation).thenReturn(0.0);
+        when(mockTemporaryConstraint.endLocation).thenReturn(100.0);
       });
 
       test('whenHasNoSpeed_thenIsVelocityMaxAdvisedSpeedSegment', () {
@@ -276,8 +275,7 @@ void main() {
       group('Invalid start / end location -> AdvisedSpeed is skipped', () {
         test('whenStartOnLastSignal_thenEndCannotBeDeterminedAndIsSkipped', () {
           // ARRANGE
-          final lastSignalOrder = journey.last.order;
-          when(mockTemporaryConstraint.startLocation).thenReturn(calculateOrderInverse(0, lastSignalOrder));
+          when(mockTemporaryConstraint.startLocation).thenReturn(5050.0);
           when(mockTemporaryConstraint.endLocation).thenReturn(_veryLargeDouble);
 
           // ACT & EXPECT
@@ -286,9 +284,8 @@ void main() {
 
         test('whenEndOnFirstSignal_thenStartCannotBeDeterminedAndIsSkipped', () {
           // ARRANGE
-          final firstSignalOrder = journey.first.order;
-          when(mockTemporaryConstraint.startLocation).thenReturn(calculateOrderInverse(0, firstSignalOrder) - 10);
-          when(mockTemporaryConstraint.endLocation).thenReturn(calculateOrderInverse(0, firstSignalOrder));
+          when(mockTemporaryConstraint.startLocation).thenReturn(940.0);
+          when(mockTemporaryConstraint.endLocation).thenReturn(950.0);
 
           // ACT & EXPECT
           expect(testee.call(mockJourneyProfile, [mockSegmentProfile], journey), isEmpty);
@@ -315,8 +312,8 @@ void main() {
         test('whenEndCloseFirstSP_thenIsBetweenFirstSignalAndFirstSP', () {
           // ARRANGE
           final firstSignalOrder = journey.first.order;
-          when(mockTemporaryConstraint.startLocation).thenReturn(calculateOrderInverse(0, firstSignalOrder));
-          when(mockTemporaryConstraint.endLocation).thenReturn(calculateOrderInverse(0, firstSignalOrder) + 10);
+          when(mockTemporaryConstraint.startLocation).thenReturn(950.0);
+          when(mockTemporaryConstraint.endLocation).thenReturn(960.0);
 
           // ACT & EXPECT
           expect(
@@ -334,8 +331,8 @@ void main() {
         test('whenEndCloseSecondSP_thenIsBetweenFirstSignalAndSecondSP', () {
           // ARRANGE
           final firstSignalOrder = journey.first.order;
-          when(mockTemporaryConstraint.startLocation).thenReturn(calculateOrderInverse(0, firstSignalOrder));
-          when(mockTemporaryConstraint.endLocation).thenReturn(calculateOrderInverse(0, servicePoints[1].order) + 1);
+          when(mockTemporaryConstraint.startLocation).thenReturn(950.0);
+          when(mockTemporaryConstraint.endLocation).thenReturn(3001.0);
 
           // ACT & EXPECT
           expect(
@@ -353,7 +350,7 @@ void main() {
         test('whenEndMidwayAdjacentSP_thenIsBetweenFirstSignalAndSecondSP', () {
           // ARRANGE
           final firstSignalOrder = journey.first.order;
-          when(mockTemporaryConstraint.startLocation).thenReturn(calculateOrderInverse(0, firstSignalOrder));
+          when(mockTemporaryConstraint.startLocation).thenReturn(950.0);
           when(mockTemporaryConstraint.endLocation).thenReturn(2000);
 
           // ACT & EXPECT
@@ -372,7 +369,7 @@ void main() {
         test('whenEndMidwayNonAdjacentSPs_thenIsBetweenFirstSignalAndLastSP', () {
           // ARRANGE
           final firstSignalOrder = journey.first.order;
-          when(mockTemporaryConstraint.startLocation).thenReturn(calculateOrderInverse(0, firstSignalOrder));
+          when(mockTemporaryConstraint.startLocation).thenReturn(950.0);
           when(mockTemporaryConstraint.endLocation).thenReturn(4000.0);
 
           // ACT & EXPECT
@@ -465,8 +462,8 @@ void main() {
         test('whenEndOnLastSignalAndStartCloseSecondSP_thenIsBetweenSecondSPAndLastSignal', () {
           // ARRANGE
           final lastSignalOrder = journey.last.order;
-          when(mockTemporaryConstraint.startLocation).thenReturn(calculateOrderInverse(0, servicePoints[1].order) - 10);
-          when(mockTemporaryConstraint.endLocation).thenReturn(calculateOrderInverse(0, lastSignalOrder));
+          when(mockTemporaryConstraint.startLocation).thenReturn(2990.0);
+          when(mockTemporaryConstraint.endLocation).thenReturn(5050.0);
 
           // ACT & EXPECT
           expect(
@@ -585,10 +582,8 @@ void main() {
         test('whenStartCloseToFirstSPAndEndCloseLastSP_thenIsBetweenFirstSPAndLastSP (1 - 3)', () {
           // ARRANGE
           final servicePoints = journey.whereType<ServicePoint>().toList();
-          when(
-            mockTemporaryConstraint.startLocation,
-          ).thenReturn(calculateOrderInverse(0, servicePoints.first.order) + 1);
-          when(mockTemporaryConstraint.endLocation).thenReturn(calculateOrderInverse(0, servicePoints.last.order) + 1);
+          when(mockTemporaryConstraint.startLocation).thenReturn(1001.0);
+          when(mockTemporaryConstraint.endLocation).thenReturn(5001.0);
 
           // ACT & EXPECT
           expect(
