@@ -4,15 +4,12 @@ import 'package:app/util/error_code.dart';
 import 'package:app/util/format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:logging/logging.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  final _log = Logger('TrainSearchScreenTests');
-
   group('train search screen tests', () {
     testWidgets('test default values', (tester) async {
       // Load app widget.
@@ -138,7 +135,7 @@ void main() {
 
       // expect yesterday is selected with warning
       expect(todayDateTextFinder, findsNothing);
-      expect(yesterdayDateTextFinder, findsNothing);
+      expect(yesterdayDateTextFinder, findsOneWidget);
       final warningMessage = find.text(l10n.p_train_selection_date_not_today_warning);
       expect(warningMessage, findsOneWidget);
     });
