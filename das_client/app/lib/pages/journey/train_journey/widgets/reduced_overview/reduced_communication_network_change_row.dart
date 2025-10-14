@@ -6,10 +6,10 @@ import 'package:sfera/component.dart';
 import 'package:flutter/material.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 
-class ReducedCommunicationNetworkChannelRow extends CellRowBuilder<CommunicationNetworkChange> {
+class ReducedCommunicationNetworkChangeRow extends CellRowBuilder<CommunicationNetworkChange> {
   final BuildContext context;
 
-  ReducedCommunicationNetworkChannelRow({
+  ReducedCommunicationNetworkChangeRow({
     required super.key,
     required super.metadata,
     required super.data,

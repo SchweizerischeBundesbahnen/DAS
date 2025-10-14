@@ -62,7 +62,6 @@ class SegmentProfileMapper {
     journeyData.addAll(_parseLineFootNotes(mapperData));
     journeyData.addAll(_parseTrackFootNotes(mapperData));
     journeyData.addAll(_parseServicePoint(mapperData, segmentProfiles, segmentProfileReference));
-    journeyData.addAll(_parseCommunicationNetworkChange(mapperData));
 
     final curvePoints = _parseCurvePoints(mapperData);
     final curveBeginPoints = curvePoints.where((curve) => curve.curvePointType == CurvePointType.begin);
@@ -279,27 +278,6 @@ class SegmentProfileMapper {
         amountLevelCrossings: balise.amountLevelCrossings,
       );
     });
-  }
-
-  static List<CommunicationNetworkChange> _parseCommunicationNetworkChange(_MapperData mapperData) {
-    final segmentProfile = mapperData.segmentProfile;
-    final communicationNetworks = segmentProfile.contextInformation?.communicationNetworks;
-    return communicationNetworks
-            ?.map((element) {
-              if (element.startLocation != element.endLocation) {
-                _log.warning(
-                  'CommunicationNetwork found without identical location (start=${element.startLocation} end=${element.endLocation}).',
-                );
-              }
-              return CommunicationNetworkChange(
-                communicationNetworkType: element.communicationNetworkType.communicationNetworkType,
-                kilometre: mapperData.kilometreMap[element.startLocation] ?? [],
-                order: calculateOrder(mapperData.segmentIndex, element.startLocation),
-              );
-            })
-            .nonNulls
-            .toList() ??
-        [];
   }
 
   static Iterable<Whistle> _parseWhistle(_MapperData mapperData) {

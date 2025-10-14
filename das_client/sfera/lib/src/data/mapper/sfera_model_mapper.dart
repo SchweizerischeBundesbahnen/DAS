@@ -90,6 +90,8 @@ class SferaModelMapper {
     final consolidatedASRs = _consolidateAdditionalSpeedRestrictions(journeyData, displayedSpeedRestrictions);
     journeyData.addAll(consolidatedASRs);
 
+    journeyData.addAll(_parseCommunicationNetworkChanges(segmentProfileReferences, segmentProfiles));
+
     journeyData.sort();
 
     final journeyPoints = journeyData.whereType<JourneyPoint>().toList();

@@ -79,7 +79,7 @@ class ReducedTrainJourney extends StatelessWidget {
             rowIndex: index,
           );
         case Datatype.communicationNetworkChannel:
-          return ReducedCommunicationNetworkChannelRow(
+          return ReducedCommunicationNetworkChangeRow(
             key: GlobalKey(),
             metadata: metadata,
             data: rowData as CommunicationNetworkChange,
