@@ -16,6 +16,10 @@ void main() {
       _expectGraduatedSpeed(Speed.parse('{100}-80'), '{100}-80');
     });
 
+    test('parse_whenTwoSpeedsWithCurlyBracketsAndWhitespace_thenCreatesCorrectSpeeds', () {
+      _expectGraduatedSpeed(Speed.parse(' {100 }- 80'), '{100}-80');
+    });
+
     test('parse_whenXX_thenCreatesSpeedWithXXValue', () {
       _expectGraduatedSpeed(Speed.parse('XX-70-60'), 'XX-70-60');
     });

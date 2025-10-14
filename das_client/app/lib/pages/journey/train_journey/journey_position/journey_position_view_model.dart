@@ -71,6 +71,7 @@ class JourneyPositionViewModel {
             lastPosition: _calculateLastPosition(journey),
             previousServicePoint: _calculatePreviousServicePoint(updatedPosition, journey.journeyPoints),
             nextServicePoint: _calculateNextServicePoint(updatedPosition, journey.journeyPoints),
+            previousStop: _calculatePreviousStop(updatedPosition, journey.journeyPoints),
             nextStop: _calculateNextStop(updatedPosition, journey.journeyPoints),
           );
 
@@ -125,6 +126,14 @@ class JourneyPositionViewModel {
 
     return journeyPoints.whereType<ServicePoint>().toList().firstWhereOrNull(
       (sP) => sP.order > updatedPosition.order,
+    );
+  }
+
+  ServicePoint? _calculatePreviousStop(JourneyPoint? updatedPosition, List<JourneyPoint> journeyPoints) {
+    if (updatedPosition == null) return null;
+
+    return journeyPoints.whereType<ServicePoint>().toList().reversed.firstWhereOrNull(
+      (sP) => sP.order <= updatedPosition.order && sP.isStop,
     );
   }
 

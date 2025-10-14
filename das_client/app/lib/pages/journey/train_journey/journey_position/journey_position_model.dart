@@ -6,6 +6,7 @@ class JourneyPositionModel {
     this.lastPosition,
     this.previousServicePoint,
     this.nextServicePoint,
+    this.previousStop,
     this.nextStop,
   });
 
@@ -22,6 +23,9 @@ class JourneyPositionModel {
   /// This is the service point closest to [currentPosition] that is still ahead.
   final ServicePoint? nextServicePoint;
 
+  /// This is service point closest to [currentPosition] that has already been passed and is a stop.
+  final ServicePoint? previousStop;
+
   /// This is service point closest to [currentPosition] that is still ahead and is a stop.
   final ServicePoint? nextStop;
 
@@ -33,6 +37,7 @@ class JourneyPositionModel {
           lastPosition == other.lastPosition &&
           previousServicePoint == other.previousServicePoint &&
           nextServicePoint == other.nextServicePoint &&
+          previousStop == other.previousStop &&
           nextStop == other.nextStop);
 
   @override
@@ -41,6 +46,7 @@ class JourneyPositionModel {
       lastPosition.hashCode ^
       previousServicePoint.hashCode ^
       nextServicePoint.hashCode ^
+      previousStop.hashCode ^
       nextStop.hashCode;
 
   @override
@@ -50,6 +56,7 @@ class JourneyPositionModel {
       ', lastPosition: $lastPosition'
       ', lastServicePoint: $previousServicePoint'
       ', nextServicePoint: $nextServicePoint'
+      ', previousStop: $previousStop'
       ', nextStop: $nextStop'
       ')';
 }

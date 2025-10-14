@@ -133,7 +133,9 @@ void main() {
       // ARRANGE
       rxMockJourney.add(
         mockJourney(
-          communicationNetworkChanges: [CommunicationNetworkChange(type: CommunicationNetworkType.sim, order: 0)],
+          communicationNetworkChanges: [
+            CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.sim, order: 0),
+          ],
         ),
       );
       await _streamProcessing();
@@ -148,7 +150,9 @@ void main() {
       rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: Signal(order: 5, kilometre: [0.0])));
       rxMockJourney.add(
         mockJourney(
-          communicationNetworkChanges: [CommunicationNetworkChange(type: CommunicationNetworkType.sim, order: 10)],
+          communicationNetworkChanges: [
+            CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.sim, order: 10),
+          ],
         ),
       );
       await _streamProcessing();
@@ -163,7 +167,9 @@ void main() {
       rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: Signal(order: 15, kilometre: [0.0])));
       rxMockJourney.add(
         mockJourney(
-          communicationNetworkChanges: [CommunicationNetworkChange(type: CommunicationNetworkType.sim, order: 10)],
+          communicationNetworkChanges: [
+            CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.sim, order: 10),
+          ],
         ),
       );
       await _streamProcessing();
@@ -179,8 +185,8 @@ void main() {
       rxMockJourney.add(
         mockJourney(
           communicationNetworkChanges: [
-            CommunicationNetworkChange(type: CommunicationNetworkType.sim, order: 10),
-            CommunicationNetworkChange(type: CommunicationNetworkType.gsmP, order: 20),
+            CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.sim, order: 10),
+            CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.gsmP, order: 20),
           ],
         ),
       );

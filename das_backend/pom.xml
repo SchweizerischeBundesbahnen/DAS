@@ -21,7 +21,7 @@
         <kafka-json-schema-serializer.version>8.0.0</kafka-json-schema-serializer.version>
         <confluent.schema-registry-plugin.version>8.0.1</confluent.schema-registry-plugin.version>
         <jsonschema2pojo-maven-plugin.version>1.2.2</jsonschema2pojo-maven-plugin.version>
-        <aws.java.sdk.version>2.35.0</aws.java.sdk.version>
+        <aws.java.sdk.version>2.35.2</aws.java.sdk.version>
         <shedlock.version>6.10.0</shedlock.version>
     </properties>
     <dependencies>
@@ -40,6 +40,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <!--  needed only for application-local-no-docker.yaml -->
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
