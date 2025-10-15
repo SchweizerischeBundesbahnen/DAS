@@ -107,7 +107,6 @@ void main() {
       expect(yesterdayDateTextFinder, findsNothing);
 
       await tapElement(tester, todayDateTextFinder, warnIfMissed: false);
-      // await tester.pumpAndSettle();
 
       final datePicker = find.byKey(JourneyDatePicker.datePickerKey);
 
@@ -119,12 +118,10 @@ void main() {
       expect(todayFinder, findsOne);
 
       // find yesterday date and select it
-      final expectedYesterday = Format.dateWithTextMonth(yesterday, appLocale());
-
       final yesterdayFinder = find.descendant(
         of: datePicker,
         matching: find.byWidgetPredicate(
-          (widget) => widget is Text && widget.data == expectedYesterday,
+          (widget) => widget is Text && widget.data == Format.dateWithTextMonth(yesterday, appLocale()),
         ),
       );
       await tapElement(tester, yesterdayFinder, warnIfMissed: false);
