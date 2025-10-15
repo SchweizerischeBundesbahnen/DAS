@@ -11,6 +11,7 @@ import 'package:app/pages/journey/train_journey/widgets/header/radio_channel.dar
 import 'package:app/pages/journey/train_journey/widgets/header/radio_contact.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/sim_identifier.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
+import 'package:app/pages/journey/warn_app_view_model.dart';
 import 'package:app/provider/ru_feature_provider.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/format.dart';
@@ -30,6 +31,7 @@ import '../mocks/mock_battery.dart';
 import '../mocks/mock_brightness_manager.dart';
 import '../mocks/mock_connectivity_manager.dart';
 import '../mocks/mock_ru_feature_provider.dart';
+import '../mocks/mock_warn_app_view_model.dart';
 import '../util/test_utils.dart';
 
 Future<void> main() async {
@@ -257,22 +259,12 @@ Future<void> main() async {
 
     testWidgets('test extended maneuver mode', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999');
 
-      await openExtendedMenu(tester);
-
-      expect(find.byKey(ExtendedMenu.menuButtonCloseKey), findsAny);
-
-      await tapElement(tester, find.byKey(ExtendedMenu.maneuverSwitchKey));
-
+      await _toggleExtendedMenuManeuverMode(tester);
       expect(find.text(l10n.w_maneuver_notification_text), findsOneWidget);
 
-      await openExtendedMenu(tester);
-
-      await tapElement(tester, find.byKey(ExtendedMenu.maneuverSwitchKey));
-
+      await _toggleExtendedMenuManeuverMode(tester);
       expect(find.text(l10n.w_maneuver_notification_text), findsNothing);
 
       await disconnect(tester);
@@ -280,21 +272,31 @@ Future<void> main() async {
 
     testWidgets('test maneuver mode notification switch button', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999');
 
-      await openExtendedMenu(tester);
+      await _toggleExtendedMenuManeuverMode(tester);
 
-      expect(find.byKey(ExtendedMenu.menuButtonCloseKey), findsAny);
+      await tapElement(tester, find.byKey(ManeuverNotification.maneuverNotificationSwitchKey));
+      expect(find.text(l10n.w_maneuver_notification_text), findsNothing);
 
-      await tapElement(tester, find.byKey(ExtendedMenu.maneuverSwitchKey));
+      await disconnect(tester);
+    });
 
-      expect(find.text(l10n.w_maneuver_notification_text), findsOneWidget);
+    testWidgets('test maneuver mode notification link to Wara app', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T9999');
+
+      final mockWarnAppVM = DI.get<WarnAppViewModel>() as MockWarnAppViewModel;
+
+      mockWarnAppVM.setWaraAppInstalled(false);
+      await _toggleExtendedMenuManeuverMode(tester);
+      expect(find.byKey(ManeuverNotification.openWaraAppButtonKey), findsNothing);
 
       await tapElement(tester, find.byKey(ManeuverNotification.maneuverNotificationSwitchKey));
 
-      expect(find.text(l10n.w_maneuver_notification_text), findsNothing);
+      mockWarnAppVM.setWaraAppInstalled(true);
+      await _toggleExtendedMenuManeuverMode(tester);
+      expect(find.byKey(ManeuverNotification.openWaraAppButtonKey), findsOne);
 
       await disconnect(tester);
     });
@@ -315,6 +317,27 @@ Future<void> main() async {
       await dismissExtendedMenu(tester);
 
       expect(find.byKey(ExtendedMenu.menuButtonCloseKey), findsNothing);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('test extended menu item to open Wara app is shown if installed', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T9999');
+
+      final mockWarnAppVM = DI.get<WarnAppViewModel>() as MockWarnAppViewModel;
+
+      // check if item not shown when app not installed
+      mockWarnAppVM.setWaraAppInstalled(false);
+      await openExtendedMenu(tester);
+      expect(find.byKey(ExtendedMenu.openWaraAppMenuItemKey), findsNothing);
+      await dismissExtendedMenu(tester);
+
+      // check if item not shown when app not installed
+      mockWarnAppVM.setWaraAppInstalled(true);
+      await openExtendedMenu(tester);
+      expect(find.byKey(ExtendedMenu.openWaraAppMenuItemKey), findsOne);
+      await dismissExtendedMenu(tester);
 
       await disconnect(tester);
     });
@@ -632,6 +655,12 @@ Future<void> main() async {
       await disconnect(tester);
     });
   });
+}
+
+Future<void> _toggleExtendedMenuManeuverMode(WidgetTester tester) async {
+  await openExtendedMenu(tester);
+  expect(find.byKey(ExtendedMenu.menuButtonCloseKey), findsAny);
+  await tapElement(tester, find.byKey(ExtendedMenu.maneuverSwitchKey));
 }
 
 Future<void> findAndDismissModalSheet(WidgetTester tester) async {

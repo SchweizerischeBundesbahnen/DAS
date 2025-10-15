@@ -21,6 +21,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_
 import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:app/pages/journey/train_journey/widgets/warn_function_modal_sheet.dart';
 import 'package:app/pages/journey/train_journey_view_model.dart';
+import 'package:app/pages/journey/warn_app_view_model.dart';
 import 'package:app/sound/koa_sound.dart';
 import 'package:app/sound/warn_app_sound.dart';
 import 'package:flutter/material.dart';
@@ -161,7 +162,7 @@ class TrainJourneyOverview extends StatelessWidget {
 
   Widget _warnappNotification(BuildContext context) {
     return StreamBuilder(
-      stream: context.read<TrainJourneyViewModel>().warnappEvents,
+      stream: context.read<WarnAppViewModel>().warnappEvents,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           _triggerWarnappNotification(context);
@@ -177,7 +178,7 @@ class TrainJourneyOverview extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       showWarnFunctionModalSheet(
         context,
-        onManeuverButtonPressed: () => context.read<TrainJourneyViewModel>().setManeuverMode(true),
+        onManeuverButtonPressed: () => context.read<WarnAppViewModel>().setManeuverMode(true),
       );
     });
   }

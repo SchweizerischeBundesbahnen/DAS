@@ -1,21 +1,19 @@
-
 package ch.sbb.backend.preload;
 
-import ch.sbb.backend.preload.sfera.model.v0201.JourneyProfile;
-import ch.sbb.backend.preload.sfera.model.v0201.OTNIDComplexType;
-import ch.sbb.backend.preload.sfera.model.v0201.SegmentProfile;
-import ch.sbb.backend.preload.sfera.model.v0201.TrainCharacteristics;
+import ch.sbb.backend.preload.sfera.model.v0300.JourneyProfile;
+import ch.sbb.backend.preload.sfera.model.v0300.OTNIDComplexType;
+import ch.sbb.backend.preload.sfera.model.v0300.SegmentProfile;
+import ch.sbb.backend.preload.sfera.model.v0300.TrainCharacteristics;
 import ch.sbb.backend.preload.xml.XmlHelper;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import org.springframework.stereotype.Service;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PreloadStorageService {
@@ -83,7 +81,7 @@ public class PreloadStorageService {
                 sp.getSPID(),
                 sp.getSPVersionMajor(),
                 sp.getSPVersionMinor());
-            writeXmlEntry(zos,  filename, sp);
+            writeXmlEntry(zos, filename, sp);
         }
     }
 
@@ -98,7 +96,9 @@ public class PreloadStorageService {
     }
 
     private void writeXmlEntry(ZipOutputStream zos, String entryName, Object obj) throws IOException {
-        if (obj == null) return;
+        if (obj == null) {
+            return;
+        }
         String xml = xmlHelper.toString(obj);
         ZipEntry entry = new ZipEntry(entryName);
         zos.putNextEntry(entry);
