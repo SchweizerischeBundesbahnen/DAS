@@ -97,6 +97,11 @@ class JourneyPositionViewModel {
     if (signaledPosition == null) return _rxTimedServicePointReached.value ?? journeyPoints.first;
 
     var currentPosition = journeyPoints.lastWhereOrNull((it) => it.order <= signaledPosition.order);
+    if (currentPosition != null) {
+      // Select first element that has the given order
+      currentPosition = journeyPoints.where((it) => it.order == currentPosition!.order).first;
+    }
+
     final timeServicePointValue = _rxTimedServicePointReached.value;
 
     if (timeServicePointValue != null &&
