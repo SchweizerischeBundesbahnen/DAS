@@ -140,8 +140,7 @@ class ReplacementSeriesViewModel {
     final List<Iterable<TrainSeriesSpeed>> relevantSpeeds = [];
 
     final journeyPoints = journey.journeyPoints;
-    for (int i = 0; i < journeyPoints.length - 1; i++) {
-      final point = journeyPoints[i];
+    for (final point in journeyPoints) {
       if (point is ServicePoint) {
         // Remember last ServicePoint
         lastServicePoint = point;
@@ -205,15 +204,7 @@ class ReplacementSeriesViewModel {
     Set<BreakSeries> availableBreakSeries,
   ) {
     final validReplacementSeries = availableBreakSeries.validReplacementSeries(currentBreakSeries);
-
-    for (final replacement in validReplacementSeries) {
-      final hasIllegalSpeed = _hasIllegalSpeedForAny(speeds, replacement);
-      if (!hasIllegalSpeed) {
-        return replacement;
-      }
-    }
-
-    return null;
+    return validReplacementSeries.firstWhereOrNull((it) => !_hasIllegalSpeedForAny(speeds, it));
   }
 
   void dispose() {

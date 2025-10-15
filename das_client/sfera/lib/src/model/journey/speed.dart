@@ -29,18 +29,7 @@ sealed class Speed {
   /// Returns true if the [input] can be parsed into a Speed instance, false otherwise.
   static bool isValid(String input) => _speedRegex.hasMatch(input.whitespaceRemoved.convertedInvalidSpeed);
 
-  bool get isIllegal {
-    if (this is SingleSpeed) {
-      return (this as SingleSpeed).isIllegal;
-    } else if (this is GraduatedSpeed) {
-      return (this as GraduatedSpeed).speeds.any((speed) => speed.isIllegal);
-    } else if (this is IncomingOutgoingSpeed) {
-      final inc = (this as IncomingOutgoingSpeed).incoming;
-      final out = (this as IncomingOutgoingSpeed).outgoing;
-      return inc.isIllegal || out.isIllegal;
-    }
-    return false;
-  }
+  bool get isIllegal => false;
 }
 
 /// A speed comprised of either [SingleSpeed] or [GraduatedSpeed] values, combined by a single '/'.
@@ -57,6 +46,11 @@ class IncomingOutgoingSpeed extends Speed {
     final (inStr, outStr) = (speedParts[0], speedParts[1]);
 
     return IncomingOutgoingSpeed(incoming: Speed.parse(inStr), outgoing: Speed.parse(outStr));
+  }
+
+  @override
+  bool get isIllegal {
+    return incoming.isIllegal || outgoing.isIllegal;
   }
 
   @override
@@ -83,6 +77,9 @@ class GraduatedSpeed extends Speed {
 
   static GraduatedSpeed _parse(String formattedString) =>
       GraduatedSpeed(speeds: formattedString.split('-').map(SingleSpeed._parse).toList());
+
+  @override
+  bool get isIllegal => speeds.any((speed) => speed.isIllegal);
 
   @override
   String toString() {
