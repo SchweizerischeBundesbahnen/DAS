@@ -61,14 +61,18 @@ The app is separated into the following components:
 
 ![UML component diagram](components.svg)
 
-| Component  | Description                                                                            |
-|------------|----------------------------------------------------------------------------------------|
-| **app**    | UI implementation with Flutter components                                              |
-| **auth**   | User authentication and authentication state management.                               |
-| **http_x** | Extension for http package that supports authorization and log requests and responses. |
-| **mqtt**   | Handles MQTT client auth and communication                                             |
-| **sfera**  | SFERA api integration with local database for caching                                  |
-| **logger** | Handles app logs caching and rollover to remote for monitoring                         |
+| Component             | Description                                                                            |
+|-----------------------|----------------------------------------------------------------------------------------|
+| **app**               | UI implementation with Flutter components                                              |
+| **auth**              | User authentication and authentication state management.                               |
+| **connectivity_x**    | Provides device connectivity handling                                                  |
+| **http_x**            | Extension for http package that supports authorization and log requests and responses. |
+| **local_regulations** | Handles generation of HTML for local regulations                                       |
+| **logger**            | Handles app logs caching and rollover to remote for monitoring                         |
+| **mqtt**              | Handles MQTT client auth and communication                                             |
+| **settings**          | Provides settings like enabled RU features                                             |
+| **sfera**             | SFERA api integration with local database for caching                                  |
+| **warnapp**           | Alogrithm to detect start and stop of train                                            |
 
 ### Component Naming
 

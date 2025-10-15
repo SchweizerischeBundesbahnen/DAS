@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:logger/component.dart';
-import 'package:logging/logging.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mqtt/component.dart';
@@ -22,9 +20,6 @@ import 'sfera_remote_repo_impl_test.mocks.dart';
   MockSpec<SferaAuthProvider>(),
 ])
 void main() {
-  Logger.root.level = Level.ALL;
-  Logger.root.onRecord.listen(LogPrinter(appName: 'DAS Tests', isDebugMode: true).call);
-
   final TrainIdentification trainId = TrainIdentification(
     ru: RailwayUndertaking.sbbP,
     trainNumber: '12345',
