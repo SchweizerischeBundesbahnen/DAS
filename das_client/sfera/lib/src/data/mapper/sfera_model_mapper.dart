@@ -90,6 +90,8 @@ class SferaModelMapper {
     final consolidatedASRs = _consolidateAdditionalSpeedRestrictions(journeyData, displayedSpeedRestrictions);
     journeyData.addAll(consolidatedASRs);
 
+    journeyData.addAll(_parseCommunicationNetworkChanges(segmentProfileReferences, segmentProfiles));
+
     journeyData.sort();
 
     final journeyPoints = journeyData.whereType<JourneyPoint>().toList();
@@ -341,6 +343,7 @@ class SferaModelMapper {
     return segmentProfileReferences
         .mapIndexed((index, reference) {
           final segmentProfile = segmentProfiles.firstMatch(reference);
+          final kilometreMap = parseKilometre(segmentProfile);
           final communicationNetworks = segmentProfile.contextInformation?.communicationNetworks;
           return communicationNetworks?.map((element) {
             if (element.startLocation != element.endLocation) {
@@ -350,8 +353,9 @@ class SferaModelMapper {
             }
 
             return CommunicationNetworkChange(
-              type: element.communicationNetworkType.communicationNetworkType,
+              communicationNetworkType: element.communicationNetworkType.communicationNetworkType,
               order: calculateOrder(index, element.startLocation),
+              kilometre: kilometreMap[element.startLocation] ?? const [],
             );
           });
         })

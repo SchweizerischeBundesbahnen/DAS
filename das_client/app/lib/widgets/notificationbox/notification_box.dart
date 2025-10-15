@@ -1,3 +1,4 @@
+import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -5,11 +6,12 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 part 'notification_box_style.dart';
 
 class NotificationBox extends StatelessWidget {
-  const NotificationBox({required this.style, required this.text, this.action, super.key});
+  const NotificationBox({required this.style, required this.title, this.action, this.text, super.key});
 
   final NotificationBoxStyle style;
-  final String text;
+  final String title;
   final Widget? action;
+  final String? text;
 
   @override
   Widget build(BuildContext context) {
@@ -40,22 +42,30 @@ class NotificationBox extends StatelessWidget {
   }
 
   Widget _content(BuildContext context) {
-    final brightness = Theme.of(context).brightness;
-
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(
-          style.icon,
-          color: brightness == Brightness.light ? style.iconColor : style.iconColorDark,
+        Row(
+          children: [
+            Icon(
+              style.icon,
+              color: ThemeUtil.getColor(context, style.iconColor, style.iconColorDark),
+            ),
+            const SizedBox(width: sbbDefaultSpacing / 2),
+            Expanded(
+              child: Text(
+                title,
+                style: DASTextStyles.mediumBold,
+              ),
+            ),
+            if (action != null) action!,
+          ],
         ),
-        const SizedBox(width: sbbDefaultSpacing / 2),
-        Expanded(
-          child: Text(
-            text,
-            style: DASTextStyles.mediumBold,
+        if (text != null)
+          Text(
+            text!,
+            style: DASTextStyles.smallLight,
           ),
-        ),
-        if (action != null) action!,
       ],
     );
   }

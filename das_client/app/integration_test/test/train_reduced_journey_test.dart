@@ -9,6 +9,30 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train reduced journey test', () {
+    testWidgets('test network change with km is displayed', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T14');
+      await openReducedJourneyMenu(tester);
+
+      final reducedTable = _findTableOfReducedJourney();
+
+      // find gsm-R-Icons
+      final gsmRKey = find.descendant(of: reducedTable, matching: find.byKey(CommunicationNetworkIcon.gsmRKey));
+      expect(gsmRKey, findsNWidgets(2));
+
+      // find gsm-P-Icons
+      final gsmPKey = find.descendant(of: reducedTable, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
+      expect(gsmPKey, findsNWidgets(2));
+
+      // find first communication network change row by text km 33.5
+      final firstCommunicationNetworkChangeRow = find.descendant(of: reducedTable, matching: find.text('km 33.5'));
+      expect(firstCommunicationNetworkChangeRow, findsOneWidget);
+
+      // find second communication network change row by text km 84.9
+      final secondCommunicationNetworkChangeRow = find.descendant(of: reducedTable, matching: find.text('km 84.9'));
+      expect(secondCommunicationNetworkChangeRow, findsOneWidget);
+    });
+
     testWidgets('test train information is displayed', (tester) async {
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: 'T14');
@@ -16,7 +40,7 @@ void main() {
 
       expect(find.text('T14 ${l10n.c_ru_sbb_p}'), findsAny);
 
-      final formattedDate = Format.dateWithAbbreviatedDay(DateTime.now(), deviceLocale());
+      final formattedDate = Format.dateWithAbbreviatedDay(DateTime.now(), appLocale());
       expect(find.text(formattedDate), findsOneWidget);
 
       await disconnect(tester);
@@ -49,27 +73,6 @@ void main() {
       final reducedJourneyTable = _findTableOfReducedJourney();
 
       expect(find.descendant(of: reducedJourneyTable, matching: find.text('km 31.500 - km 32.400')), findsOneWidget);
-
-      await disconnect(tester);
-    });
-
-    testWidgets('test network change is displayed', (tester) async {
-      await prepareAndStartApp(tester);
-
-      await loadTrainJourney(tester, trainNumber: 'T14');
-
-      await openReducedJourneyMenu(tester);
-
-      final reducedJourneyTable = _findTableOfReducedJourney();
-
-      expect(
-        find.descendant(of: reducedJourneyTable, matching: find.byKey(CommunicationNetworkIcon.gsmPKey)),
-        findsOneWidget,
-      );
-      expect(
-        find.descendant(of: reducedJourneyTable, matching: find.byKey(CommunicationNetworkIcon.gsmRKey)),
-        findsOneWidget,
-      );
 
       await disconnect(tester);
     });

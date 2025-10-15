@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:logger/component.dart';
-import 'package:logging/logging.dart';
 import 'package:sfera/src/data/dto/enums/das_architecture_dto.dart';
 import 'package:sfera/src/data/dto/enums/das_connectivity_dto.dart';
 import 'package:sfera/src/data/dto/enums/handshake_reject_reason_dto.dart';
@@ -11,9 +9,6 @@ import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/parser/sfera_reply_parser.dart';
 
 void main() {
-  Logger.root.level = Level.ALL;
-  Logger.root.onRecord.listen(LogPrinter(appName: 'DAS Tests', isDebugMode: true).call);
-
   test('Test child elements are unmodifiable', () async {
     final file = File('test_resources/SFERA_G2B_Reply_JP_request_9232.xml');
 

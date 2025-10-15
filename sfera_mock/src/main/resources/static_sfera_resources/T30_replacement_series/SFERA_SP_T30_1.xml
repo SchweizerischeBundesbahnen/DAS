@@ -1,0 +1,416 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T30_1" SP_VersionMajor="1"
+                SP_VersionMinor="3" SP_Length="18000" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>0085</IM_ID>
+    </SP_Zone>
+    <SP_Points>
+
+        <TimingPoint TP_ID="GEAP" location="0">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01026</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="GE" location="2000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01008</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="COP" location="4000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01023</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="NY" location="6000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01030</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="GLA" location="8000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01031</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="ROL" location="10000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01033</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="ALL" location="12000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01035</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="MOR" location="14000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01037</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="REN" location="16000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01118</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <TimingPoint TP_ID="LS" location="18000">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01120</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <NetworkSpecificPoint location="11000" identifier="1">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
+            <NetworkSpecificParameter name="curvePointType" value="begin"/>
+            <NetworkSpecificParameter name="curveType" value="curve"/>
+            <NetworkSpecificParameter name="xmlCurveSpeed" value="
+                &lt;curveSpeed text=&quot;Kurve 1&quot; comment=&quot;Kurve 1 comment&quot;&gt;
+                    &lt;speeds&gt;
+                        &lt;v trainSeries=&quot;R&quot; speed=&quot;XX&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; speed=&quot;55&quot;/&gt;
+                        &lt;v trainSeries=&quot;D&quot; speed=&quot;XX&quot;/&gt;
+                        &lt;v trainSeries=&quot;N&quot; speed=&quot;XX&quot;/&gt;
+                    &lt;/speeds&gt;
+                &lt;/curveSpeed&gt;
+            "/>
+        </NetworkSpecificPoint>
+    </SP_Points>
+
+    <SP_Areas>
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="GEAP"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01026</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Genève-Aéroport</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                    &lt;lineSpeed&gt;
+                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;80&quot;/&gt;
+                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;160&quot; speed=&quot;75&quot;/&gt;
+                        &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;70&quot;/&gt;
+                        &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;65&quot;/&gt;
+                        &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;150&quot; speed=&quot;100&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;160&quot; speed=&quot;100&quot;/&gt;
+                    &lt;/lineSpeed&gt;
+                "/>
+            </TAF_TAP_Location_NSP>
+
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="2000" endLocation="2000" TAF_TAP_location_abbreviation="GE"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01008</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Genève</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                    &lt;lineSpeed&gt;
+                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;-1000&quot;/&gt;
+                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;160&quot; speed=&quot;-1000&quot;/&gt;
+                        &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;70&quot;/&gt;
+                        &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;65&quot;/&gt;
+                        &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;150&quot; speed=&quot;-1000&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;160&quot; speed=&quot;100&quot;/&gt;
+                    &lt;/lineSpeed&gt;
+                "/>
+            </TAF_TAP_Location_NSP>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="4000" endLocation="4000" TAF_TAP_location_abbreviation="COP"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01023</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Coppet</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="6000" endLocation="6000" TAF_TAP_location_abbreviation="NY"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01030</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Nyon</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                    &lt;lineSpeed&gt;
+                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;-1000&quot;/&gt;
+                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;160&quot; speed=&quot;75&quot;/&gt;
+                        &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;70&quot;/&gt;
+                        &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;65&quot;/&gt;
+                        &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;150&quot; speed=&quot;100&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;160&quot; speed=&quot;100&quot;/&gt;
+                    &lt;/lineSpeed&gt;
+                "/>
+            </TAF_TAP_Location_NSP>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="8000" endLocation="8000" TAF_TAP_location_abbreviation="GLA"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01031</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Gland</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                    &lt;lineSpeed&gt;
+                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;80&quot;/&gt;
+                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;160&quot; speed=&quot;75&quot;/&gt;
+                        &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;70&quot;/&gt;
+                        &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;65&quot;/&gt;
+                        &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;150&quot; speed=&quot;100&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;160&quot; speed=&quot;100&quot;/&gt;
+                    &lt;/lineSpeed&gt;
+                "/>
+            </TAF_TAP_Location_NSP>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="10000" endLocation="10000" TAF_TAP_location_abbreviation="ROL"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01033</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Rolle</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                    &lt;lineSpeed&gt;
+                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;80&quot;/&gt;
+                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;160&quot; speed=&quot;75&quot;/&gt;
+                        &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;70&quot;/&gt;
+                        &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;65&quot;/&gt;
+                        &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;150&quot; speed=&quot;100&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;160&quot; speed=&quot;100&quot;/&gt;
+                    &lt;/lineSpeed&gt;
+                "/>
+            </TAF_TAP_Location_NSP>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="12000" endLocation="12000" TAF_TAP_location_abbreviation="ALL"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01035</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Allaman</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="14000" endLocation="14000" TAF_TAP_location_abbreviation="MOR"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01037</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Morges</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+                    &lt;lineSpeed&gt;
+                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;80&quot;/&gt;
+                        &lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;160&quot; speed=&quot;75&quot;/&gt;
+                        &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;70&quot;/&gt;
+                        &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;65&quot;/&gt;
+                        &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;150&quot; speed=&quot;100&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;160&quot; speed=&quot;100&quot;/&gt;
+                    &lt;/lineSpeed&gt;
+                "/>
+            </TAF_TAP_Location_NSP>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="16000" endLocation="16000" TAF_TAP_location_abbreviation="REN"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01118</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Renens VD</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="18000" endLocation="18000" TAF_TAP_location_abbreviation="LS"
+                          TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>01120</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Lausanne</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+        </TAF_TAP_Location>
+
+    </SP_Areas>
+
+    <SP_ContextInformation>
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-P"/>
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="66.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="500">
+            <KM_Reference kmRef="62.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="600">
+            <KM_Reference kmRef="61.7"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1950">
+            <KM_Reference kmRef="60.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2000">
+            <KM_Reference kmRef="60.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2050">
+            <KM_Reference kmRef="60.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2500">
+            <KM_Reference kmRef="58.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="3950">
+            <KM_Reference kmRef="47.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="4000">
+            <KM_Reference kmRef="47.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="4050">
+            <KM_Reference kmRef="46.7"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="4500">
+            <KM_Reference kmRef="45.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="4600">
+            <KM_Reference kmRef="44.8"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="4700">
+            <KM_Reference kmRef="44.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="5000">
+            <KM_Reference kmRef="43.8"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="5400">
+            <KM_Reference kmRef="43.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="5500">
+            <KM_Reference kmRef="40.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="5800">
+            <KM_Reference kmRef="39.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="5950">
+            <KM_Reference kmRef="38.8"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="6000">
+            <KM_Reference kmRef="38.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="6050">
+            <KM_Reference kmRef="38.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="6500">
+            <KM_Reference kmRef="38.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="6600">
+            <KM_Reference kmRef="37.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="7000">
+            <KM_Reference kmRef="36.8"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="7100">
+            <KM_Reference kmRef="36.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="7500">
+            <KM_Reference kmRef="35.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="7950">
+            <KM_Reference kmRef="34.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="8000">
+            <KM_Reference kmRef="33.8"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="8050">
+            <KM_Reference kmRef="33.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="9000">
+            <KM_Reference kmRef="30.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="9950">
+            <KM_Reference kmRef="27.0"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="10000">
+            <KM_Reference kmRef="26.7"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="10050">
+            <KM_Reference kmRef="26.4"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="11000">
+            <KM_Reference kmRef="22.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="11950">
+            <KM_Reference kmRef="21.7"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="12000">
+            <KM_Reference kmRef="21.4"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="12050">
+            <KM_Reference kmRef="21.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="13950">
+            <KM_Reference kmRef="12.9"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="14000">
+            <KM_Reference kmRef="12.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="14050">
+            <KM_Reference kmRef="12.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="15950">
+            <KM_Reference kmRef="4.8"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="16000">
+            <KM_Reference kmRef="4.5"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="16050">
+            <KM_Reference kmRef="4.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="17950">
+            <KM_Reference kmRef="0.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="18000">
+            <KM_Reference kmRef="0.0"/>
+        </KilometreReferencePoint>
+    </SP_ContextInformation>
+</SegmentProfile>
