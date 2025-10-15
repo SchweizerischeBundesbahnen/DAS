@@ -133,7 +133,7 @@ class ReplacementSeriesViewModel {
     final illegalSegments = <IllegalSpeedSegment>[];
 
     final List<ServicePoint> servicePoints = journey.journeyPoints.whereType<ServicePoint>().toList();
-    ServicePoint? lastServicePoint;
+    ServicePoint? latestServicePoint;
 
     ServicePoint? startServicePoint;
     var hasIllegalLineSpeed = false;
@@ -143,7 +143,7 @@ class ReplacementSeriesViewModel {
     for (final point in journeyPoints) {
       if (point is ServicePoint) {
         // Remember last ServicePoint
-        lastServicePoint = point;
+        latestServicePoint = point;
       }
 
       // Check line speed
@@ -159,7 +159,7 @@ class ReplacementSeriesViewModel {
       final hasIllegalSpeed = hasIllegalLineSpeed || hasIllegalLocalSpeed;
 
       if (hasIllegalSpeed) {
-        startServicePoint ??= lastServicePoint;
+        startServicePoint ??= latestServicePoint;
 
         if (point.localSpeeds != null) {
           relevantSpeeds.add(point.localSpeeds!);
