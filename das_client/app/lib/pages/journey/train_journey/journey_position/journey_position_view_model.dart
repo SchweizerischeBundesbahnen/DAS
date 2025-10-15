@@ -99,7 +99,7 @@ class JourneyPositionViewModel {
     final possiblePositions = journeyPoints.where((it) => it.order == order).toList();
     // Prefer Signals over other elements
     position ??= possiblePositions.whereType<Signal>().firstOrNull;
-    position ??= possiblePositions.first;
+    position ??= possiblePositions.firstOrNull;
     return position;
   }
 
