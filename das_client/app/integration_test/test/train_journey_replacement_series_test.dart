@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/train_journey/widgets/notification/replacement_series_notification.dart';
+import 'package:app/pages/journey/train_journey/widgets/notification/replacement_series/replacement_series_notification.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../app_test.dart';

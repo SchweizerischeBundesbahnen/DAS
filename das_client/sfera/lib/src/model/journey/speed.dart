@@ -14,7 +14,7 @@ sealed class Speed {
   ///
   /// Throws a FormatException if the input string cannot be parsed.
   ///
-  /// The formattedString is expected to be something like '50', '{60}' or '&#91;XX&#93;'
+  /// The formattedString is expected to be something like '50', '{60}', '-1000' or '&#91;XX&#93;'
   /// or a well formatted combination of those, e.g. 'XX/40-[30]-20'.
   /// All whitespaces are ignored.
   static Speed parse(String input) {
@@ -108,7 +108,7 @@ class SingleSpeed extends Speed {
   ///
   /// Throws a FormatException if the input string cannot be parsed.
   ///
-  /// The formattedString is expected to be something like '50', '{60}' or '&#91;XX&#93;'
+  /// The formattedString is expected to be something like '50', '{60}', '-1000 or '&#91;XX&#93;'
   static SingleSpeed _parse(String formattedString) {
     final speedValue = _speedValueRegex.stringMatch(formattedString);
     return SingleSpeed(

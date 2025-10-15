@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/train_journey/journey_position/journey_position_view_model.dart';
-import 'package:app/pages/journey/train_journey/widgets/notification/replacement_series_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/notification/replacement_series/illegal_speed_segment.dart';
+import 'package:app/pages/journey/train_journey/widgets/notification/replacement_series/replacement_series_model.dart';
 import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
@@ -31,15 +32,15 @@ class ReplacementSeriesViewModel {
   ReplacementSeriesModel? get modelValue => _rxModel.value;
 
   List<IllegalSpeedSegment> _illegalSpeedSegments = [];
-  Journey? latestJourney;
+  Journey? _latestJourney;
 
   void _initJourneySubscription() {
     _subscriptions.add(
       _trainJourneyViewModel.journey.listen((data) {
-        latestJourney = data;
-        final currentBreakSeries = _trainJourneyViewModel.settingsValue.resolvedBreakSeries(latestJourney?.metadata);
-        _calculateIllegalSpeedSegments(latestJourney, currentBreakSeries);
-        _handleActiveSegment();
+        _latestJourney = data;
+        final currentBreakSeries = _trainJourneyViewModel.settingsValue.resolvedBreakSeries(_latestJourney?.metadata);
+        _calculateIllegalSpeedSegments(currentBreakSeries);
+        _calculateActiveSegmentAndUpdateState();
       }),
     );
   }
@@ -47,7 +48,7 @@ class ReplacementSeriesViewModel {
   void _initJourneyPositionSubscription() {
     _subscriptions.add(
       _journeyPositionViewModel.model.listen((position) {
-        _handleActiveSegment();
+        _calculateActiveSegmentAndUpdateState();
       }),
     );
   }
@@ -56,8 +57,7 @@ class ReplacementSeriesViewModel {
     _subscriptions.add(
       _trainJourneyViewModel.settings.listen((settings) {
         _calculateIllegalSpeedSegments(
-          latestJourney,
-          settings.resolvedBreakSeries(latestJourney?.metadata),
+          settings.resolvedBreakSeries(_latestJourney?.metadata),
         );
 
         final currentModelValue = modelValue;
@@ -68,24 +68,24 @@ class ReplacementSeriesViewModel {
           } else if (settings.selectedBreakSeries != currentModelValue.segment.original) {
             _rxModel.add(null);
             _log.info('User selected a different break series, clearing replacement series notification');
-            _handleActiveSegment();
+            _calculateActiveSegmentAndUpdateState();
           }
         } else if (currentModelValue is OriginalSeriesAvailable &&
             settings.selectedBreakSeries != currentModelValue.segment.replacement) {
           _rxModel.add(null);
         } else {
-          _handleActiveSegment();
+          _calculateActiveSegmentAndUpdateState();
         }
       }),
     );
   }
 
-  void _handleActiveSegment() {
+  void _calculateActiveSegmentAndUpdateState() {
     final position = _journeyPositionViewModel.modelValue;
     if (position?.currentPosition == null) return;
 
     final currentPosition = position!.currentPosition!;
-    final currentBreakSeries = _trainJourneyViewModel.settingsValue.resolvedBreakSeries(latestJourney?.metadata);
+    final currentBreakSeries = _trainJourneyViewModel.settingsValue.resolvedBreakSeries(_latestJourney?.metadata);
     final currentModelValue = modelValue;
 
     final activeSegment = _activeIllegalSpeedSegment(currentBreakSeries, currentPosition);
@@ -115,22 +115,23 @@ class ReplacementSeriesViewModel {
     }
   }
 
-  void _calculateIllegalSpeedSegments(Journey? journey, BreakSeries? breakSeries) {
-    if (journey == null || breakSeries == null) {
-      return;
-    }
-
-    _illegalSpeedSegments = _findIllegalSpeedSegments(journey, breakSeries);
-    _log.fine('Found ${_illegalSpeedSegments.length} IllegalSpeedSegments for $breakSeries');
-  }
-
   IllegalSpeedSegment? _activeIllegalSpeedSegment(BreakSeries? currentBreakSeries, JourneyPoint currentPosition) =>
       _illegalSpeedSegments.firstWhereOrNull(
         (it) => it.start.order <= currentPosition.order && it.end.order > currentPosition.order,
       );
 
-  List<IllegalSpeedSegment> _findIllegalSpeedSegments(Journey journey, BreakSeries currentBreakSeries) {
-    final illegalSegments = <IllegalSpeedSegment>[];
+  ///
+  /// Checks every journey point for illegal speeds in either line speeds or local speeds.
+  /// If an illegal speed is found, a new [IllegalSpeedSegment] is started.
+  /// [IllegalSpeedSegment] are always constructed from [ServicePoint] to [ServicePoint].
+  /// A Replacement [BreakSeries] that is valid for all journey points is calculated.
+  ///
+  void _calculateIllegalSpeedSegments(BreakSeries? breakSeries) {
+    final journey = _latestJourney;
+    _illegalSpeedSegments = [];
+    if (journey == null || breakSeries == null) {
+      return;
+    }
 
     final List<ServicePoint> servicePoints = journey.journeyPoints.whereType<ServicePoint>().toList();
     ServicePoint? latestServicePoint;
@@ -141,20 +142,16 @@ class ReplacementSeriesViewModel {
 
     final journeyPoints = journey.journeyPoints;
     for (final point in journeyPoints) {
-      if (point is ServicePoint) {
-        // Remember last ServicePoint
-        latestServicePoint = point;
-      }
+      if (point is ServicePoint) latestServicePoint = point;
 
       // Check line speed
-      final lineSpeed = journey.metadata.lineSpeeds[point.order];
-      if (lineSpeed != null) {
-        hasIllegalLineSpeed = _hasIllegalSpeedFor(lineSpeed, currentBreakSeries);
+      final lineSpeeds = journey.metadata.lineSpeeds[point.order];
+      if (lineSpeeds != null) {
+        hasIllegalLineSpeed = _hasIllegalSpeedFor(lineSpeeds, breakSeries);
       }
 
       // Check local speed
-      final hasIllegalLocalSpeed =
-          point.localSpeeds != null && _hasIllegalSpeedFor(point.localSpeeds!, currentBreakSeries);
+      final hasIllegalLocalSpeed = point.localSpeeds != null && _hasIllegalSpeedFor(point.localSpeeds!, breakSeries);
 
       final hasIllegalSpeed = hasIllegalLineSpeed || hasIllegalLocalSpeed;
 
@@ -164,23 +161,23 @@ class ReplacementSeriesViewModel {
         if (point.localSpeeds != null) {
           relevantSpeeds.add(point.localSpeeds!);
         }
-        if (lineSpeed != null) {
-          relevantSpeeds.add(lineSpeed);
+        if (lineSpeeds != null) {
+          relevantSpeeds.add(lineSpeeds);
         }
       } else if (startServicePoint != null) {
         // end of illegal segment
         final endServicePoint = servicePoints.firstWhereOrNull((it) => it.order >= point.order) ?? servicePoints.last;
-        final replacement = _possibleReplacementSeriesFor(
+        final replacement = _replacementSeriesFor(
           relevantSpeeds,
-          currentBreakSeries,
+          breakSeries,
           journey.metadata.availableBreakSeries,
         );
 
-        illegalSegments.add(
+        _illegalSpeedSegments.add(
           IllegalSpeedSegment(
             start: startServicePoint,
             end: endServicePoint,
-            original: currentBreakSeries,
+            original: breakSeries,
             replacement: replacement,
           ),
         );
@@ -188,7 +185,8 @@ class ReplacementSeriesViewModel {
         relevantSpeeds.clear();
       }
     }
-    return illegalSegments;
+
+    _log.fine('Found ${_illegalSpeedSegments.length} IllegalSpeedSegments for $breakSeries');
   }
 
   bool _hasIllegalSpeedForAny(List<Iterable<TrainSeriesSpeed>> speeds, BreakSeries breakSeries) => speeds.any(
@@ -198,7 +196,7 @@ class ReplacementSeriesViewModel {
   bool _hasIllegalSpeedFor(Iterable<TrainSeriesSpeed> speeds, BreakSeries breakSeries) =>
       speeds.speedFor(breakSeries.trainSeries, breakSeries: breakSeries.breakSeries)?.speed.isIllegal == true;
 
-  BreakSeries? _possibleReplacementSeriesFor(
+  BreakSeries? _replacementSeriesFor(
     List<Iterable<TrainSeriesSpeed>> speeds,
     BreakSeries currentBreakSeries,
     Set<BreakSeries> availableBreakSeries,

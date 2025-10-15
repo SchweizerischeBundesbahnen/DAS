@@ -2,8 +2,9 @@ import 'dart:collection';
 
 import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/train_journey/journey_position/journey_position_view_model.dart';
-import 'package:app/pages/journey/train_journey/widgets/notification/replacement_series_model.dart';
-import 'package:app/pages/journey/train_journey/widgets/notification/replacement_series_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/notification/replacement_series/illegal_speed_segment.dart';
+import 'package:app/pages/journey/train_journey/widgets/notification/replacement_series/replacement_series_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/notification/replacement_series/replacement_series_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -153,6 +154,17 @@ void main() {
       ServicePoint(name: 'C', order: 2, kilometre: []),
       ServicePoint(name: 'D', order: 3, kilometre: []),
       ServicePoint(name: 'E', order: 4, kilometre: []),
+      CurvePoint(
+        order: 5,
+        kilometre: [],
+        localSpeeds: [
+          TrainSeriesSpeed(
+            trainSeries: TrainSeries.N,
+            speed: SingleSpeed(value: 'XX'),
+          ),
+        ],
+      ),
+      ServicePoint(name: 'F', order: 6, kilometre: []),
     ],
   );
 
@@ -357,6 +369,32 @@ void main() {
     await emitObjectToStream(
       journeyPositionSubject,
       JourneyPositionModel(currentPosition: journey.data[3] as JourneyPoint),
+    );
+
+    testee.dispose();
+  });
+
+  test('test provides replacement series on invalid localSpeed', () async {
+    expectLater(
+      testee.model,
+      emitsInOrder([
+        null,
+        ReplacementSeriesAvailable(
+          segment: IllegalSpeedSegment(
+            start: journey.data[4] as ServicePoint,
+            end: journey.data[6] as ServicePoint,
+            original: BreakSeries(trainSeries: TrainSeries.N, breakSeries: 180),
+            replacement: BreakSeries(trainSeries: TrainSeries.R, breakSeries: 120),
+          ),
+        ),
+      ]),
+    );
+
+    journeySubject.add(journey);
+
+    await emitObjectToStream(
+      journeyPositionSubject,
+      JourneyPositionModel(currentPosition: journey.data[4] as JourneyPoint),
     );
 
     testee.dispose();

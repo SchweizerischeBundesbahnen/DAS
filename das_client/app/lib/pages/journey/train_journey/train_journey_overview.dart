@@ -15,8 +15,8 @@ import 'package:app/pages/journey/train_journey/widgets/notification/adl_notific
 import 'package:app/pages/journey/train_journey/widgets/notification/adl_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/koa_notification.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
-import 'package:app/pages/journey/train_journey/widgets/notification/replacement_series_notification.dart';
-import 'package:app/pages/journey/train_journey/widgets/notification/replacement_series_view_model.dart';
+import 'package:app/pages/journey/train_journey/widgets/notification/replacement_series/replacement_series_notification.dart';
+import 'package:app/pages/journey/train_journey/widgets/notification/replacement_series/replacement_series_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:app/pages/journey/train_journey/widgets/warn_function_modal_sheet.dart';
