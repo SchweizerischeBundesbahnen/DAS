@@ -230,21 +230,68 @@ class SegmentProfileMapper {
   }
 
   static List<CurvePoint> _parseCurvePoints(_MapperData mapperData) {
-    final curvePointsNsp = mapperData.segmentProfile.points?.curvePointsNsp ?? [];
-    return curvePointsNsp.map<CurvePoint>((curvePointNsp) {
-      final curveSpeed = curvePointNsp.xmlCurveSpeed?.element;
-      return CurvePoint(
-        order: calculateOrder(mapperData.segmentIndex, curvePointNsp.location),
-        kilometre: mapperData.kilometreMap[curvePointNsp.location] ?? [],
-        curvePointType: curvePointNsp.curvePointType != null
-            ? CurvePointType.from(curvePointNsp.curvePointType!)
-            : null,
-        curveType: curvePointNsp.curveType != null ? CurveType.from(curvePointNsp.curveType!) : null,
-        text: curveSpeed?.text,
-        comment: curveSpeed?.comment,
-        localSpeeds: SpeedMapper.fromVelocities(curveSpeed?.speeds?.velocities),
-      );
-    }).toList();
+    final raw = mapperData.segmentProfile.points?.curvePointsNsp ?? [];
+    final points = raw
+        .map<CurvePoint>((curvePointNsp) {
+          final curveSpeed = curvePointNsp.xmlCurveSpeed?.element;
+          return CurvePoint(
+            order: calculateOrder(mapperData.segmentIndex, curvePointNsp.location),
+            kilometre: mapperData.kilometreMap[curvePointNsp.location] ?? [],
+            curvePointType: curvePointNsp.curvePointType != null
+                ? CurvePointType.from(curvePointNsp.curvePointType!)
+                : null,
+            curveType: curvePointNsp.curveType != null ? CurveType.from(curvePointNsp.curveType!) : null,
+            text: curveSpeed?.text,
+            comment: curveSpeed?.comment,
+            localSpeeds: SpeedMapper.fromVelocities(curveSpeed?.speeds?.velocities),
+          );
+        })
+        .sortedBy((p) => p.order)
+        .toList();
+
+    final segments = <MapEntry<CurvePoint, CurvePoint>>[];
+    CurvePoint? open;
+    for (final p in points) {
+      if (p.curvePointType == CurvePointType.begin) {
+        open = p;
+      } else if (p.curvePointType == CurvePointType.end) {
+        if (open != null) {
+          segments.add(MapEntry(open, p));
+          open = null;
+        }
+      }
+    }
+
+    if (segments.isEmpty) {
+      return points.where((p) => p.curvePointType == CurvePointType.begin).toList();
+    }
+
+    final merged = <MapEntry<CurvePoint, CurvePoint>>[];
+    var current = segments.first;
+    for (var i = 1; i < segments.length; i++) {
+      final next = segments[i];
+      if (current.value.order == next.key.order) {
+        current = MapEntry(current.key, next.value);
+      } else {
+        merged.add(current);
+        current = next;
+      }
+    }
+    merged.add(current);
+
+    return merged
+        .map(
+          (s) => CurvePoint(
+            order: s.key.order,
+            kilometre: s.key.kilometre,
+            localSpeeds: s.key.localSpeeds,
+            curvePointType: CurvePointType.begin,
+            curveType: s.key.curveType,
+            text: s.key.text,
+            comment: s.key.comment,
+          ),
+        )
+        .toList();
   }
 
   static List<ConnectionTrack> _parseConnectionTrack(_MapperData mapperData, List<SpeedChange> newLineSpeeds) {

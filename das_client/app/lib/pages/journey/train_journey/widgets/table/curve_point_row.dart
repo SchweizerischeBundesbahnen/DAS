@@ -17,14 +17,23 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
     super.config,
   });
 
+  late final isSummarizedCurve = data.curvePointType == CurvePointType.summarized;
+
   @override
-  DASTableCell localSpeedCell(BuildContext context) => speedCell(data.localSpeeds);
+  DASTableCell localSpeedCell(BuildContext context) {
+    return speedCell(data.localSpeeds);
+  }
 
   @override
   DASTableCell informationCell(BuildContext context) {
+    //TODO currently takes every curve which im not sure why... look for problem in segment_profile_mapper
+    final text = isSummarizedCurve
+        ? '${data.curveType?.localizedName(context)} km 34 - km 56'
+        : data.curveType?.localizedName(context) ?? '';
+
     return DASTableCell(
       child: Text(
-        data.curveType?.localizedName(context) ?? '',
+        text,
         overflow: TextOverflow.ellipsis,
       ),
     );
