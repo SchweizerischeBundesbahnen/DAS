@@ -83,9 +83,24 @@ class JourneyPositionViewModel {
 
   JourneyPoint? _calculateLastPosition(Journey? journey) {
     final previousModel = _rxModel.valueOrNull;
-    return journey?.journeyPoints.firstWhereOrNull(
-      (it) => it.order == previousModel?.currentPosition?.order,
-    );
+    final previousPosition = previousModel?.currentPosition;
+    if (journey == null || previousPosition == null) return null;
+
+    final previousJourneyPointIndex = journey.journeyPoints.indexOf(previousPosition);
+    if (previousJourneyPointIndex != -1) {
+      return journey.journeyPoints.elementAt(previousJourneyPointIndex);
+    } else {
+      return _calculatePositionByOrder(journey.journeyPoints, previousPosition.order);
+    }
+  }
+
+  JourneyPoint? _calculatePositionByOrder(List<JourneyPoint> journeyPoints, int order) {
+    JourneyPoint? position;
+    final possiblePositions = journeyPoints.where((it) => it.order == order).toList();
+    // Prefer Signals over other elements
+    position ??= possiblePositions.whereType<Signal>().firstOrNull;
+    position ??= possiblePositions.first;
+    return position;
   }
 
   JourneyPoint? _calculateCurrentPosition(
@@ -96,10 +111,10 @@ class JourneyPositionViewModel {
     if (journeyPoints.isEmpty) return null;
     if (signaledPosition == null) return _rxTimedServicePointReached.value ?? journeyPoints.first;
 
-    var currentPosition = journeyPoints.lastWhereOrNull((it) => it.order <= signaledPosition.order);
-    if (currentPosition != null) {
-      // Select first element that has the given order
-      currentPosition = journeyPoints.where((it) => it.order == currentPosition!.order).first;
+    JourneyPoint? currentPosition;
+    final currentPositionOrder = journeyPoints.lastWhereOrNull((it) => it.order <= signaledPosition.order)?.order;
+    if (currentPositionOrder != null) {
+      currentPosition = _calculatePositionByOrder(journeyPoints, currentPositionOrder);
     }
 
     final timeServicePointValue = _rxTimedServicePointReached.value;
