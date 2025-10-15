@@ -3,8 +3,8 @@ package ch.sbb.backend.preload;
 import static org.xmlunit.assertj3.XmlAssert.assertThat;
 
 import ch.sbb.backend.TestContainerConfiguration;
-import ch.sbb.backend.preload.sfera.model.v0201.JPRequest;
-import ch.sbb.backend.preload.sfera.model.v0201.MessageHeader;
+import ch.sbb.backend.preload.sfera.model.v0300.JPRequest;
+import ch.sbb.backend.preload.sfera.model.v0300.MessageHeader;
 import ch.sbb.backend.preload.xml.XmlHelper;
 import java.time.LocalDate;
 import java.util.UUID;
