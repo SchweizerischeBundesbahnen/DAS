@@ -40,7 +40,7 @@ void main() {
 
       expect(find.text('T14 ${l10n.c_ru_sbb_p}'), findsAny);
 
-      final formattedDate = Format.dateWithAbbreviatedDay(DateTime.now(), deviceLocale());
+      final formattedDate = Format.dateWithAbbreviatedDay(DateTime.now(), appLocale());
       expect(find.text(formattedDate), findsOneWidget);
 
       await disconnect(tester);

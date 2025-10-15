@@ -16,16 +16,18 @@ import 'package:sfera/component.dart';
 
 import '../app_test.dart';
 
-Locale deviceLocale() {
+Locale appLocale() => Locale(l10n.localeName);
+
+Future<AppLocalizations> deviceLocalizations() async {
+  return AppLocalizations.delegate.load(_deviceLocale());
+}
+
+Locale _deviceLocale() {
   if (Platform.localeName.contains('_')) {
     final localeWithCountry = Platform.localeName.split('_');
     return Locale(localeWithCountry[0], localeWithCountry[1]);
   }
   return Locale(Platform.localeName);
-}
-
-Future<AppLocalizations> deviceLocalizations() async {
-  return AppLocalizations.delegate.load(deviceLocale());
 }
 
 Future<void> openDrawer(WidgetTester tester) async {

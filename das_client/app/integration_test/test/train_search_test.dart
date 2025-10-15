@@ -119,9 +119,7 @@ void main() {
       expect(todayFinder, findsOne);
 
       // find yesterday date and select it
-      final expectedYesterday = Format.dateWithTextMonth(yesterday, deviceLocale());
-      print('Expected Yesterday: $expectedYesterday');
-      print('PlatformLocale: ${WidgetsBinding.instance.platformDispatcher.locale}');
+      final expectedYesterday = Format.dateWithTextMonth(yesterday, appLocale());
 
       final yesterdayFinder = find.descendant(
         of: datePicker,
@@ -160,7 +158,7 @@ void main() {
       final dayBeforeYesterdayFinder = find.descendant(
         of: datePicker,
         matching: find.byWidgetPredicate(
-          (widget) => widget is Text && widget.data == Format.dateWithTextMonth(dayBeforeYesterday, deviceLocale()),
+          (widget) => widget is Text && widget.data == Format.dateWithTextMonth(dayBeforeYesterday, appLocale()),
         ),
       );
       expect(dayBeforeYesterdayFinder, findsNothing);
