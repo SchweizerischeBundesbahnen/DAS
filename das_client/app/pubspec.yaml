@@ -75,6 +75,8 @@ dependencies:
   webview_flutter: ^4.13.0
   # https://pub.dev/packages/skeletonizer
   skeletonizer: ^2.1.0+1
+  # https://pub.dev/packages/skeletonizer
+  appcheck: ^1.5.4+1
 
 dev_dependencies:
   integration_test:
