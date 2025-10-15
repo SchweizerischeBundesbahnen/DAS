@@ -121,7 +121,7 @@ void main() {
       final yesterdayFinder = find.descendant(
         of: datePicker,
         matching: find.byWidgetPredicate(
-          (widget) => widget is Text && widget.data == Format.dateWithTextMonth(yesterday, deviceLocale()),
+          (widget) => widget is Text && widget.data == Format.dateWithTextMonth(yesterday, appLocale()),
         ),
       );
       await tapElement(tester, yesterdayFinder, warnIfMissed: false);
@@ -155,7 +155,7 @@ void main() {
       final dayBeforeYesterdayFinder = find.descendant(
         of: datePicker,
         matching: find.byWidgetPredicate(
-          (widget) => widget is Text && widget.data == Format.dateWithTextMonth(dayBeforeYesterday, deviceLocale()),
+          (widget) => widget is Text && widget.data == Format.dateWithTextMonth(dayBeforeYesterday, appLocale()),
         ),
       );
       expect(dayBeforeYesterdayFinder, findsNothing);

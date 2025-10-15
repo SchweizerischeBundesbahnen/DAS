@@ -196,7 +196,7 @@ Future<void> main() async {
       // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999');
 
-      final date = Format.dateWithAbbreviatedDay(DateTime.now(), deviceLocale());
+      final date = Format.dateWithAbbreviatedDay(DateTime.now(), appLocale());
       final appbarText = '${l10n.p_train_journey_appbar_text} - $date';
 
       expect(find.text(appbarText).hitTestable(), findsNothing);
