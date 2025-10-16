@@ -110,7 +110,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
         isRouteStart: metadata.journeyStart == data,
         isRouteEnd: metadata.journeyEnd == data,
         chevronAnimationData: config.chevronAnimationData,
-        chevronPosition: RouteChevron.positionFromHeight(height),
+        chevronPosition: chevronPosition,
       ),
     );
   }
@@ -264,6 +264,8 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
   ShowSpeedBehavior get showSpeedBehavior => ShowSpeedBehavior.never;
 
+  bool get _isNextStop => journeyPosition?.nextStop == data;
+
   static double rowHeightForData(BaseData data, BreakSeries? currentBreakSeries) {
     switch (data.type) {
       case Datatype.servicePoint:
@@ -273,5 +275,20 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     }
   }
 
-  bool get _isNextStop => journeyPosition?.nextStop == data;
+  double get chevronPosition => CellRowBuilder.calculateChevronPosition(data, height);
+
+  static double calculateChevronPosition(BaseData data, double height) {
+    switch (data.type) {
+      case Datatype.servicePoint:
+        final servicePoint = data as ServicePoint;
+        if (servicePoint.isStop) {
+          return RouteCellBody.routeCirclePosition - RouteChevron.chevronHeight;
+        } else {
+          return RouteCellBody.routeCirclePosition + RouteChevron.chevronHeight;
+        }
+      default:
+        // additional -1.5 because line overdraws a bit from rotation
+        return height - RouteChevron.chevronHeight - 1.5;
+    }
+  }
 }
