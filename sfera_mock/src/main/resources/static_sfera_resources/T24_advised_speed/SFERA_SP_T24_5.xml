@@ -32,18 +32,6 @@
         <!-- VMax TrainFollowing-->
         <!-- Will be WholeSP for this segment -->
 
-        <!--Filler Signals-->
-        <Signal>
-            <Signal_ID signal_ID_Physical="F132" location="600"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="F132"/>
-        </Signal>
-        <Signal>
-            <Signal_ID signal_ID_Physical="F452" location="1100"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="F452"/>
-        </Signal>
-
 
         <!--Segment End Signal-->
         <Signal>

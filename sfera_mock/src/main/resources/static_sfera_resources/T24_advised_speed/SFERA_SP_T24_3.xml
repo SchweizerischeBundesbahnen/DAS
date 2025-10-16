@@ -13,7 +13,7 @@
             </TAF_TAP_LocationReference>
         </TimingPoint>
 
-        
+
         <!--Entry Exit Signals-->
 
         <Signal>
@@ -37,19 +37,6 @@
             <Signal_ID signal_ID_Physical="A653" location="1500"/>
             <SignalFunction>intermediate</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="A653"/>
-        </Signal>
-
-
-        <!--Filler Signals-->
-        <Signal>
-            <Signal_ID signal_ID_Physical="F625" location="1100"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="F625"/>
-        </Signal>
-        <Signal>
-            <Signal_ID signal_ID_Physical="F874" location="1200"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="F874"/>
         </Signal>
 
 

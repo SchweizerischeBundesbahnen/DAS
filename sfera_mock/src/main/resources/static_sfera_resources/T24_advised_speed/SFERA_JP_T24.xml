@@ -158,8 +158,8 @@
         </TemporaryConstraints>
 
         <!-- fourth ADL - Vmax -->
-        <!-- will be in total from exit signal MOR to signal in SP_T24_6 -->
-        <TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="AdvisedSpeed" startLocation="5050">
+        <!-- will be in total from signal after MOR to signal in SP_T24_6 -->
+        <TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="AdvisedSpeed" startLocation="5100">
             <AdvisedSpeed deltaSpeed="0" adviceType="ConstantspeedAdvice">
                 <ReasonText language="DE" text="ADL"/>
             </AdvisedSpeed>
@@ -210,6 +210,7 @@
         </TemporaryConstraints>
 
         <!-- fifth ADL - followTrain - start is directly after fourth ADL -->
+        <!-- will be canceled in JP update event -->
         <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="AdvisedSpeed" startLocation="500" endLocation="1000">
             <AdvisedSpeed optimalSpeed="80" reasonCode="followTrain" adviceType="ConstantspeedAdvice">
                 <ReasonText language="DE" text="ADL"/>

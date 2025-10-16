@@ -58,19 +58,6 @@
         <!-- End signal is in next SP-->
 
 
-        <!--Filler Signals-->
-        <Signal>
-            <Signal_ID signal_ID_Physical="F419" location="1100"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="F419"/>
-        </Signal>
-        <Signal>
-            <Signal_ID signal_ID_Physical="F115" location="1200"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="F115"/>
-        </Signal>
-
-        
         <!-- Segment End Signal-->
         <Signal>
             <Signal_ID signal_ID_Physical="S2" location="3100"/>

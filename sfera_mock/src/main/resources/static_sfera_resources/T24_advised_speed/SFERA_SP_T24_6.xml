@@ -28,18 +28,6 @@
             <SignalPhysicalCharacteristics visualIdentifier="A312"/>
         </Signal>
 
-        <!--Filler Signals-->
-        <Signal>
-            <Signal_ID signal_ID_Physical="F299" location="600"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="F299"/>
-        </Signal>
-        <Signal>
-            <Signal_ID signal_ID_Physical="F109" location="800"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="F109"/>
-        </Signal>
-
 
     </SP_Points>
 

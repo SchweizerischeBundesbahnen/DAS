@@ -71,30 +71,16 @@
         <!--ADL Signals-->
         <!--TrainFollowing-->
 
-        <!-- has unknown signal locations, will be mapped to Service Points-->
-
-
-        <!--Filler Signals-->
-
         <Signal>
-            <Signal_ID signal_ID_Physical="F195" location="500"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="F195"/>
+            <Signal_ID signal_ID_Physical="A243" location="5100"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A243"/>
         </Signal>
-        <Signal>
-            <Signal_ID signal_ID_Physical="F435" location="1500"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="F435"/>
-        </Signal>
-        <Signal>
-            <Signal_ID signal_ID_Physical="F374" location="3500"/>
-            <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="F374"/>
-        </Signal>
+
 
         <!--Segment End Signals-->
         <Signal>
-            <Signal_ID signal_ID_Physical="S4" location="5100"/>
+            <Signal_ID signal_ID_Physical="S4" location="5200"/>
             <SignalFunction>protection</SignalFunction>
             <SignalPhysicalCharacteristics visualIdentifier="S4"/>
         </Signal>
@@ -173,6 +159,9 @@
             <KM_Reference kmRef="26.1"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="5100">
+            <KM_Reference kmRef="25.9"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="5200">
             <KM_Reference kmRef="25.3"/>
         </KilometreReferencePoint>
     </SP_ContextInformation>
