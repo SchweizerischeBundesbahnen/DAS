@@ -288,6 +288,8 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
         } else {
           return RouteCellBody.routeCirclePosition + RouteChevron.chevronHeight;
         }
+      case Datatype.baliseLevelCrossingGroup:
+        return height * 0.5;
       default:
         // additional -1.5 because line overdraws a bit from rotation
         return height - RouteChevron.chevronHeight - 1.5;

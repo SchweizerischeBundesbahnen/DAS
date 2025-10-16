@@ -29,20 +29,15 @@ class ChevronAnimationData {
   ) {
     final currentPosition = journeyPosition?.currentPosition;
     final lastPosition = journeyPosition?.lastPosition;
-    if (currentPosition == null || lastPosition == currentPosition || currentRow is! JourneyPoint) {
+    if (currentPosition == null ||
+        lastPosition == null ||
+        lastPosition == currentPosition ||
+        currentRow is! JourneyPoint) {
       return null;
     }
 
     var toIndex = rows.indexOfElementOrGroup(currentPosition, expandedGroups);
     final currentIndex = rows.indexOf(currentRow);
-
-    if (lastPosition == null) {
-      if (toIndex == currentIndex) {
-        return ChevronAnimationData(startOffset: 0.0, endOffset: 0.0, currentPosition: currentPosition);
-      } else {
-        return null;
-      }
-    }
 
     var fromIndex = rows.indexOfElementOrGroup(lastPosition, expandedGroups);
 
