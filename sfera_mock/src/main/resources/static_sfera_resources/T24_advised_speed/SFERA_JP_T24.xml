@@ -37,13 +37,6 @@
             </AdvisedSpeed>
         </TemporaryConstraints>
 
-        <!-- third ADL - trainFollowing -->
-        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="AdvisedSpeed" startLocation="5500" endLocation="6500">
-            <AdvisedSpeed optimalSpeed="120" reasonCode="trainFollowing" adviceType="ConstantspeedAdvice">
-                <ReasonText language="DE" text="ADL"/>
-            </AdvisedSpeed>
-        </TemporaryConstraints>
-
         <TrainCharacteristicsRef TC_ID="T24_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
             <TC_RU_ID>1285</TC_RU_ID>
         </TrainCharacteristicsRef>
@@ -164,6 +157,14 @@
             </AdvisedSpeed>
         </TemporaryConstraints>
 
+        <!-- fourth ADL - Vmax -->
+        <!-- will be in total from exit signal MOR to signal in SP_T24_6 -->
+        <TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="AdvisedSpeed" startLocation="5050">
+            <AdvisedSpeed deltaSpeed="0" adviceType="ConstantspeedAdvice">
+                <ReasonText language="DE" text="ADL"/>
+            </AdvisedSpeed>
+        </TemporaryConstraints>
+
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="T24_5" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
@@ -178,8 +179,7 @@
             <StoppingPointDepartureDetails departureTime="9999-01-01T00:51:40Z" plannedDepartureTime="9999-01-01T00:51:50Z"/>
         </TimingPointConstraints>
 
-        <!-- fourth ADL - Vmax - trainFollowing still valid from last reasonCode-->
-        <!-- This ADL is for the whole SP and will be mapped from REN to next Segment -->
+        <!-- fourth ADL - Vmax WholeSP -->
         <TemporaryConstraints startEndQualifier="WholeSP" temporaryConstraintType="AdvisedSpeed">
             <AdvisedSpeed deltaSpeed="0" adviceType="ConstantspeedAdvice">
                 <ReasonText language="DE" text="ADL"/>
@@ -201,7 +201,7 @@
             <StoppingPointDepartureDetails departureTime="9999-01-01T00:55:40Z" plannedDepartureTime="9999-01-01T00:56:00Z"/>
         </TimingPointConstraints>
 
-        <!-- fourth ADL - Vmax - trainFollowing still valid from last reasonCode-->
+        <!-- fourth ADL - Vmax-->
         <!-- END -->
         <TemporaryConstraints startEndQualifier="Ends" temporaryConstraintType="AdvisedSpeed" endLocation="500">
             <AdvisedSpeed deltaSpeed="0" adviceType="ConstantspeedAdvice">
@@ -209,14 +209,14 @@
             </AdvisedSpeed>
         </TemporaryConstraints>
 
-        <!-- fifth ADL - Vmax - start is directly after fourth ADL, end unknown - will be mapped to LS -->
-        <TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="AdvisedSpeed" startLocation="500">
-            <AdvisedSpeed deltaSpeed="0" adviceType="ConstantspeedAdvice">
+        <!-- fifth ADL - followTrain - start is directly after fourth ADL -->
+        <TemporaryConstraints startEndQualifier="StartsEnds" temporaryConstraintType="AdvisedSpeed" startLocation="500" endLocation="1000">
+            <AdvisedSpeed optimalSpeed="80" reasonCode="followTrain" adviceType="ConstantspeedAdvice">
                 <ReasonText language="DE" text="ADL"/>
             </AdvisedSpeed>
         </TemporaryConstraints>
 
-        <!-- sixth (invalid) ADL - Vmax - start is on last SP, end unknown - will not be displayed -->
+        <!-- sixth (invalid) ADL - Vmax - start is on last SP, end unknown on last segment profile - will not be displayed -->
         <TemporaryConstraints startEndQualifier="Starts" temporaryConstraintType="AdvisedSpeed" startLocation="1000">
             <AdvisedSpeed deltaSpeed="0" adviceType="ConstantspeedAdvice">
                 <ReasonText language="DE" text="ADL"/>

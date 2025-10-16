@@ -61,6 +61,7 @@ void main() {
       when(mockTemporaryConstraintB1.advisedSpeed).thenReturn(mockAdvisedSpeedB1);
       when(mockTemporaryConstraintC1.advisedSpeed).thenReturn(mockAdvisedSpeedC1);
 
+      /// Varying type cases are handled in single segment case
       when(mockAdvisedSpeedA1.deltaSpeed).thenReturn('Irrelevant');
       when(mockAdvisedSpeedA2.deltaSpeed).thenReturn('Irrelevant');
       when(mockAdvisedSpeedB1.deltaSpeed).thenReturn('Irrelevant');
@@ -86,7 +87,7 @@ void main() {
     });
 
     group('Single segment A', () {
-      final journey = SpeedMapperTestFixtures.threeServicePointsWithSurroundingSignalsJourney;
+      final journey = ThreeServicePointsWithSurroundingSignalsJourneyFixture.overOneSegment;
       final segmentProfiles = [mockSegmentProfileOne];
       setUp(() {
         when(mockJourneyProfile.segmentProfileReferences).thenReturn([mockSegmentProfileReferenceOne]);
@@ -282,7 +283,7 @@ void main() {
     });
 
     group('two segment profiles A & B', () {
-      final journey = SpeedMapperTestFixtures.threeServicePointsWithSurroundingSignalsJourneyTwoSegments;
+      final journey = ThreeServicePointsWithSurroundingSignalsJourneyFixture.overTwoSegments;
       final segmentProfiles = [mockSegmentProfileOne, mockSegmentProfileTwo];
       setUp(() {
         when(
@@ -339,7 +340,7 @@ void main() {
     });
 
     group('three segment profiles A & B & C', () {
-      final journey = SpeedMapperTestFixtures.threeServicePointsWithSurroundingSignalsJourneyThreeSegments;
+      final journey = ThreeServicePointsWithSurroundingSignalsJourneyFixture.overThreeSegments;
       final segmentProfiles = [mockSegmentProfileOne, mockSegmentProfileTwo, mockSegmentProfileThree];
       setUp(() {
         when(

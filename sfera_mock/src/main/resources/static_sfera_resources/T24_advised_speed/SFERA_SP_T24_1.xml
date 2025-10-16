@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
-<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T24_1" SP_VersionMajor="2"
-                SP_VersionMinor="0" SP_Length="2600" SP_Status="Valid">
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T24_1" SP_VersionMajor="2"
+    SP_VersionMinor="0" SP_Length="2600" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -22,58 +23,58 @@
 
         <!--Entry and exit signals-->
         <Signal>
-            <Signal_ID signal_ID_Physical="E409" location="50"/>
+            <Signal_ID signal_ID_Physical="E409" location="50" />
             <SignalFunction>exit</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="E409"/>
+            <SignalPhysicalCharacteristics visualIdentifier="E409" />
         </Signal>
 
         <Signal>
-            <Signal_ID signal_ID_Physical="E350" location="1950"/>
+            <Signal_ID signal_ID_Physical="E350" location="1950" />
             <SignalFunction>entry</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="E350"/>
+            <SignalPhysicalCharacteristics visualIdentifier="E350" />
         </Signal>
 
         <Signal>
-            <Signal_ID signal_ID_Physical="E550" location="2050"/>
+            <Signal_ID signal_ID_Physical="E550" location="2050" />
             <SignalFunction>exit</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="E550"/>
+            <SignalPhysicalCharacteristics visualIdentifier="E550" />
         </Signal>
 
 
         <!--ADL Signals-->
         <!--FollowTrain-->
         <Signal>
-            <Signal_ID signal_ID_Physical="A236" location="500"/>
+            <Signal_ID signal_ID_Physical="A236" location="500" />
             <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A236"/>
+            <SignalPhysicalCharacteristics visualIdentifier="A236" />
         </Signal>
         <Signal>
-            <Signal_ID signal_ID_Physical="A829" location="2500"/>
+            <Signal_ID signal_ID_Physical="A829" location="2500" />
             <SignalFunction>intermediate</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="A829"/>
+            <SignalPhysicalCharacteristics visualIdentifier="A829" />
         </Signal>
 
 
         <!--Filler Signals-->
         <Signal>
-            <Signal_ID signal_ID_Physical="F129" location="600"/>
+            <Signal_ID signal_ID_Physical="F129" location="600" />
             <SignalFunction>block</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="F129"/>
+            <SignalPhysicalCharacteristics visualIdentifier="F129" />
         </Signal>
 
 
         <!-- Segment End Signal-->
         <Signal>
-            <Signal_ID signal_ID_Physical="S1" location="2600"/>
+            <Signal_ID signal_ID_Physical="S1" location="2600" />
             <SignalFunction>protection</SignalFunction>
-            <SignalPhysicalCharacteristics visualIdentifier="S1"/>
+            <SignalPhysicalCharacteristics visualIdentifier="S1" />
         </Signal>
 
     </SP_Points>
 
     <SP_Areas>
-        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="GEAP"
-                          TAF_TAP_location_type="station">
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
+            TAF_TAP_location_abbreviation="GEAP" TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>01026</teltsi_LocationPrimaryCode>
@@ -87,13 +88,13 @@
 					&lt;lineSpeed&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;80&quot;/&gt;
 					&lt;/lineSpeed&gt;
-				"/>
+				" />
             </TAF_TAP_Location_NSP>
 
         </TAF_TAP_Location>
 
-        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="2000" endLocation="2000" TAF_TAP_location_abbreviation="GE"
-                          TAF_TAP_location_type="station">
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="2000" endLocation="2000"
+            TAF_TAP_location_abbreviation="GE" TAF_TAP_location_type="station">
             <TAF_TAP_LocationIdent>
                 <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
                 <teltsi_LocationPrimaryCode>01008</teltsi_LocationPrimaryCode>
@@ -107,7 +108,7 @@
 					&lt;lineSpeed&gt;
 						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;115&quot; speed=&quot;120&quot;/&gt;
 					&lt;/lineSpeed&gt;
-				"/>
+				" />
             </TAF_TAP_Location_NSP>
         </TAF_TAP_Location>
 
@@ -115,33 +116,34 @@
     </SP_Areas>
 
     <SP_ContextInformation>
-        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-P"/>
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
+            communicationNetworkType="GSM-P" />
         <KilometreReferencePoint location="0">
-            <KM_Reference kmRef="66.2"/>
+            <KM_Reference kmRef="66.2" />
         </KilometreReferencePoint>
         <KilometreReferencePoint location="50">
-            <KM_Reference kmRef="66.1"/>
+            <KM_Reference kmRef="66.1" />
         </KilometreReferencePoint>
         <KilometreReferencePoint location="500">
-            <KM_Reference kmRef="62.1"/>
+            <KM_Reference kmRef="62.1" />
         </KilometreReferencePoint>
         <KilometreReferencePoint location="600">
-            <KM_Reference kmRef="61.7"/>
+            <KM_Reference kmRef="61.7" />
         </KilometreReferencePoint>
         <KilometreReferencePoint location="1950">
-            <KM_Reference kmRef="60.5"/>
+            <KM_Reference kmRef="60.5" />
         </KilometreReferencePoint>
         <KilometreReferencePoint location="2000">
-            <KM_Reference kmRef="60.3"/>
+            <KM_Reference kmRef="60.3" />
         </KilometreReferencePoint>
         <KilometreReferencePoint location="2050">
-            <KM_Reference kmRef="60.0"/>
+            <KM_Reference kmRef="60.0" />
         </KilometreReferencePoint>
         <KilometreReferencePoint location="2500">
-            <KM_Reference kmRef="58.1"/>
+            <KM_Reference kmRef="58.1" />
         </KilometreReferencePoint>
         <KilometreReferencePoint location="2600">
-            <KM_Reference kmRef="57.1"/>
+            <KM_Reference kmRef="57.1" />
         </KilometreReferencePoint>
     </SP_ContextInformation>
 </SegmentProfile>

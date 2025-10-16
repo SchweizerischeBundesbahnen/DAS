@@ -203,8 +203,6 @@ class SpeedMapper {
       previousSegmentEndOrder = calculateOrder(segmentIndex, double.parse(segmentProfile.length));
     }
 
-    print(drafts);
-
     final groupedAdvisedSpeedSegments = drafts.groupListsBy((draft) => draft.advisedSpeedGroupKey);
 
     groupedAdvisedSpeedSegments.updateAll((key, drafts) {

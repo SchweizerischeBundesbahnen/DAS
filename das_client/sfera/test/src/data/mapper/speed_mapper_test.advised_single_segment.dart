@@ -258,7 +258,7 @@ void main() {
     /// 2. One known location, one unknown location
     /// 3. Both unknown locations
     group('Unknown locations', () {
-      final journey = SpeedMapperTestFixtures.threeServicePointsWithSurroundingSignalsJourney;
+      final journey = ThreeServicePointsWithSurroundingSignalsJourneyFixture.overOneSegment;
       final servicePoints = journey.whereType<ServicePoint>().toList();
       setUp(() {
         when(mockJourneyProfile.segmentProfileReferences).thenReturn([mockSegmentProfileReference]);
@@ -267,9 +267,7 @@ void main() {
         when(mockSegmentProfileReference.advisedSpeedTemporaryConstraints).thenReturn([mockTemporaryConstraint]);
         when(mockTemporaryConstraint.advisedSpeed).thenReturn(mockAdvisedSpeed);
         when(mockAdvisedSpeed.deltaSpeed).thenReturn('Irrelevant');
-        when(
-          mockSegmentProfile.length,
-        ).thenReturn(ThreeServicePointsWithSurroundingSignalsJourneyFixture.length);
+        when(mockSegmentProfile.length).thenReturn('5050');
       });
 
       group('Invalid start / end location -> AdvisedSpeed is skipped', () {

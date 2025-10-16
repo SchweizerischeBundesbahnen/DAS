@@ -7,21 +7,12 @@ class SpeedMapperTestFixtures {
     Signal(order: 0, kilometre: []),
     Signal(order: 100, kilometre: []),
   ];
-
-  static List<JourneyPoint> get threeServicePointsWithSurroundingSignalsJourney =>
-      ThreeServicePointsWithSurroundingSignalsJourneyFixture.data;
-
-  static List<JourneyPoint> get threeServicePointsWithSurroundingSignalsJourneyTwoSegments =>
-      ThreeServicePointsWithSurroundingSignalsJourneyFixtureTwoSegments.data;
-
-  static List<JourneyPoint> get threeServicePointsWithSurroundingSignalsJourneyThreeSegments =>
-      ThreeServicePointsWithSurroundingSignalsJourneyFixtureThreeSegments.data;
 }
 
 class ThreeServicePointsWithSurroundingSignalsJourneyFixture {
   const ThreeServicePointsWithSurroundingSignalsJourneyFixture._();
 
-  static List<JourneyPoint> get data => [
+  static List<JourneyPoint> get overOneSegment => [
     Signal(order: 950, kilometre: [], functions: [SignalFunction.entry]),
     ServicePoint(name: 'a', order: 1000, kilometre: []),
     Signal(order: 1050, kilometre: [], functions: [SignalFunction.exit]),
@@ -32,12 +23,8 @@ class ThreeServicePointsWithSurroundingSignalsJourneyFixture {
     ServicePoint(name: 'c', order: 5000, kilometre: []),
     Signal(order: 5050, kilometre: [], functions: [SignalFunction.exit]),
   ];
-}
 
-class ThreeServicePointsWithSurroundingSignalsJourneyFixtureTwoSegments {
-  const ThreeServicePointsWithSurroundingSignalsJourneyFixtureTwoSegments._();
-
-  static List<JourneyPoint> get data => [
+  static List<JourneyPoint> get overTwoSegments => [
     Signal(order: 950, kilometre: [], functions: [SignalFunction.entry]),
     ServicePoint(name: 'a', order: 1000, kilometre: []),
     Signal(order: 1050, kilometre: [], functions: [SignalFunction.exit]),
@@ -48,12 +35,8 @@ class ThreeServicePointsWithSurroundingSignalsJourneyFixtureTwoSegments {
     ServicePoint(name: 'c', order: 101000, kilometre: []),
     Signal(order: 101050, kilometre: [], functions: [SignalFunction.exit]),
   ];
-}
 
-class ThreeServicePointsWithSurroundingSignalsJourneyFixtureThreeSegments {
-  const ThreeServicePointsWithSurroundingSignalsJourneyFixtureThreeSegments._();
-
-  static List<JourneyPoint> get data => [
+  static List<JourneyPoint> get overThreeSegments => [
     Signal(order: 950, kilometre: [], functions: [SignalFunction.entry]),
     ServicePoint(name: 'a', order: 1000, kilometre: []),
     Signal(order: 1050, kilometre: [], functions: [SignalFunction.exit]),
