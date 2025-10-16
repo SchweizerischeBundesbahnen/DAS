@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:sfera/component.dart';
 
 abstract class WidgetRowBuilder<T extends BaseData> extends DASTableRowBuilder<T> {
+  static const double rowHeight = 44.0;
+
   WidgetRowBuilder({
     required this.metadata,
     required super.data,
-    required super.height,
     required super.rowIndex,
+    super.height = rowHeight,
     super.stickyLevel,
     super.identifier,
     this.config = const TrainJourneyConfig(),

@@ -5,6 +5,7 @@ import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/enums/operational_indication_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/start_end_qualifier_dto.dart';
+import 'package:sfera/src/data/dto/enums/train_run_type_dto.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/multilingual_text_dto.dart';
 import 'package:sfera/src/data/dto/operational_indication_nsp_dto.dart';
@@ -65,17 +66,7 @@ class SferaModelMapper {
     segmentJourneyData = segmentJourneyData.removeIrrelevantServicePoints(calculatedSpeeds);
     journeyData.addAll(segmentJourneyData);
 
-    final uncodedOperationalIndications = segmentProfileReferences
-        .mapIndexed((index, reference) => _parseUncodedOperationalIndication(index, reference))
-        .flattenedToList;
-    journeyData.addAll(uncodedOperationalIndications);
-
-    final tramAreas = _parseTramAreas(segmentProfiles);
-    journeyData.addAll(tramAreas);
-
     final trackEquipmentSegments = TrackEquipmentMapper.parseSegments(segmentProfileReferences, segmentProfiles);
-    journeyData.addAll(_cabSignalingStart(trackEquipmentSegments));
-    journeyData.addAll(_cabSignalingEnd(trackEquipmentSegments, journeyData));
 
     final servicePoints = journeyData.whereType<ServicePoint>().sortedBy((sP) => sP.order);
 
@@ -87,11 +78,14 @@ class SferaModelMapper {
     final displayedSpeedRestrictions = additionalSpeedRestrictions
         .where((asr) => asr.isDisplayed(trackEquipmentSegments))
         .toList();
-    final consolidatedASRs = _consolidateAdditionalSpeedRestrictions(journeyData, displayedSpeedRestrictions);
-    journeyData.addAll(consolidatedASRs);
 
+    journeyData.addAll(_consolidateAdditionalSpeedRestrictions(journeyData, displayedSpeedRestrictions));
+    journeyData.addAll(_cabSignalingStart(trackEquipmentSegments));
+    journeyData.addAll(_cabSignalingEnd(trackEquipmentSegments, journeyData));
+    journeyData.addAll(_parseUncodedOperationalIndications(segmentProfileReferences));
+    journeyData.addAll(_parseTramAreas(segmentProfiles));
     journeyData.addAll(_parseCommunicationNetworkChanges(segmentProfileReferences, segmentProfiles));
-
+    journeyData.addAll(_parseShuntingMovementMarkings(segmentProfileReferences, segmentProfiles));
     journeyData.sort();
 
     final journeyPoints = journeyData.whereType<JourneyPoint>().toList();
@@ -102,6 +96,7 @@ class SferaModelMapper {
 
     return Journey(
       metadata: Metadata(
+        trainIdentification: journeyProfile.trainIdentification.toTrainIdentification(),
         signaledPosition: _signaledPosition(relatedTrainInformation, segmentProfileReferences),
         additionalSpeedRestrictions: additionalSpeedRestrictions,
         journeyStart: journeyPoints.firstOrNull,
@@ -423,31 +418,54 @@ class SferaModelMapper {
     return trainCharacteristics.firstWhereGivenOrNull(firstTrainRef);
   }
 
-  static List<UncodedOperationalIndication> _parseUncodedOperationalIndication(
-    int segmentIndex,
-    SegmentProfileReferenceDto segmentProfileReference,
+  static List<UncodedOperationalIndication> _parseUncodedOperationalIndications(
+    Iterable<SegmentProfileReferenceDto> segmentProfileReferences,
   ) {
-    final indications = segmentProfileReference.jpContextInformation?.operationalIndications;
-    if (indications == null) return [];
+    return segmentProfileReferences.mapIndexed((index, reference) {
+      final indications = reference.jpContextInformation?.operationalIndications;
+      if (indications == null) return <UncodedOperationalIndication>[];
 
-    mapToModel(OperationalIndicationNspDto uncoded) {
-      final startLocation = uncoded.constraint?.startLocation;
-      if (startLocation == null) {
-        _log.warning('Uncoded operational indication without location found: $uncoded');
-        return null;
+      mapToModel(OperationalIndicationNspDto uncoded) {
+        final startLocation = uncoded.constraint?.startLocation;
+        if (startLocation == null) {
+          _log.warning('Uncoded operational indication without location found: $uncoded');
+          return null;
+        }
+        return UncodedOperationalIndication(
+          order: calculateOrder(index, startLocation),
+          texts: [uncoded.uncodedText],
+        );
       }
-      return UncodedOperationalIndication(
-        order: calculateOrder(segmentIndex, startLocation),
-        texts: [uncoded.uncodedText],
-      );
+
+      return indications
+          .where((indication) => indication.operationalIndicationType == OperationalIndicationTypeDto.uncoded)
+          .map(mapToModel)
+          .nonNulls
+          .mergeOnSameLocation();
+    }).flattenedToList;
+  }
+
+  static List<ShuntingMovementMarking> _parseShuntingMovementMarkings(
+    List<SegmentProfileReferenceDto> segmentProfilesReferences,
+    List<SegmentProfileDto> segmentProfiles,
+  ) {
+    final List<ShuntingMovementMarking> result = [];
+
+    for (final reference in segmentProfilesReferences) {
+      final nonStandardIndications = reference.jpContextInformation?.nonStandardIndications.firstOrNull;
+      if (nonStandardIndications?.trainRunType == TrainRunTypeDto.shuntingOnOpenTrack) {
+        final segmentProfile = segmentProfiles.firstMatch(reference);
+        final segmentIndex = segmentProfiles.indexOf(segmentProfile);
+        final segmentStartLocation = calculateOrder(segmentIndex, 0);
+        final segmentEndLocation = calculateOrder(segmentIndex, segmentProfile.length);
+        result.add(ShuntingMovementMarking(order: segmentStartLocation, isStart: true));
+        if (segmentProfile != segmentProfiles.last) {
+          result.add(ShuntingMovementMarking(order: segmentEndLocation, isStart: false));
+        }
+      }
     }
 
-    return indications
-        .where((indication) => indication.operationalIndicationType == OperationalIndicationTypeDto.uncoded)
-        .map(mapToModel)
-        .nonNulls
-        .mergeOnSameLocation()
-        .toList();
+    return result;
   }
 
   static List<TramArea> _parseTramAreas(List<SegmentProfileDto> segmentProfiles) {

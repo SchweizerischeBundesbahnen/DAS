@@ -49,6 +49,7 @@ export 'package:sfera/src/model/journey/op_foot_note.dart';
 export 'package:sfera/src/model/journey/protection_section.dart';
 export 'package:sfera/src/model/journey/segment.dart';
 export 'package:sfera/src/model/journey/service_point.dart';
+export 'package:sfera/src/model/journey/shunting_movement_marking.dart';
 export 'package:sfera/src/model/journey/signal.dart';
 export 'package:sfera/src/model/journey/signaled_position.dart';
 export 'package:sfera/src/model/journey/speed.dart';

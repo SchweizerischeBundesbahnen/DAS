@@ -32,6 +32,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/level_crossing_row
 import 'package:app/pages/journey/train_journey/widgets/table/loading_table.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/protection_section_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
+import 'package:app/pages/journey/train_journey/widgets/table/shunting_movement_marking_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/signal_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/speed_change_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/tram_area_row.dart';
@@ -349,6 +350,12 @@ class TrainJourney extends StatelessWidget {
             config: trainJourneyConfig,
             rowIndex: index,
             context: context,
+          );
+        case Datatype.shuntingMovementMarking:
+          return ShuntingMovementMarkingRow(
+            metadata: journey.metadata,
+            data: rowData as ShuntingMovementMarking,
+            rowIndex: index,
           );
       }
     });
