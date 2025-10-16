@@ -178,6 +178,8 @@ class TrainJourney extends StatelessWidget {
         .expand((it) => it)
         .toList();
 
+    final journeyPoints = rows.whereType<JourneyPoint>().toList();
+
     return List.generate(rows.length, (index) {
       final rowData = rows[index];
 
@@ -191,11 +193,12 @@ class TrainJourney extends StatelessWidget {
         ),
         bracketStationRenderData: BracketStationRenderData.from(rowData, journey.metadata),
         chevronAnimationData: ChevronAnimationData.from(
-          journey.journeyPoints,
+          journeyPoints,
           journeyPosition,
           journey.metadata,
           rowData,
           currentBreakSeries,
+          settings.expandedGroups,
         ),
       );
 

@@ -48,21 +48,29 @@ class _RouteChevronState extends State<RouteChevron> {
     if (widget.chevronAnimationData != null && controller?.animation != null) {
       final start = widget.chevronAnimationData!.startOffset;
       final end = widget.chevronAnimationData!.endOffset;
+      final reversed = start > end;
       final diff = (start - end).abs();
 
       setState(() {
         if (controller?.currentPosition == widget.chevronAnimationData?.currentPosition &&
             controller?.lastPosition == widget.chevronAnimationData?.lastPosition) {
-          currentOffsetValue = start + (diff * controller!.animation!.value);
+          currentOffsetValue =
+              start + (reversed ? -(diff * controller!.animation!.value) : (diff * controller!.animation!.value));
         } else {
           currentOffsetValue = end;
         }
+      });
+    } else {
+      setState(() {
+        print('resetting offset to 0');
+        currentOffsetValue = 0;
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    print('$hashCode: position ${widget.chevronPosition + currentOffsetValue}');
     return Stack(
       clipBehavior: Clip.hardEdge,
       alignment: Alignment.center,

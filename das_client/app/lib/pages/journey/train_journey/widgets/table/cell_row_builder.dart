@@ -106,7 +106,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
       alignment: null,
       clipBehaviour: Clip.none,
       child: RouteCellBody(
-        isCurrentPosition: journeyPosition?.currentPosition == data,
+        isCurrentPosition: isCurrentPosition,
         isRouteStart: metadata.journeyStart == data,
         isRouteEnd: metadata.journeyEnd == data,
         chevronAnimationData: config.chevronAnimationData,
@@ -114,6 +114,8 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
       ),
     );
   }
+
+  bool get isCurrentPosition => journeyPosition?.currentPosition == data;
 
   DASTableCell trackEquipment(BuildContext context) {
     if (config.trackEquipmentRenderData == null) {

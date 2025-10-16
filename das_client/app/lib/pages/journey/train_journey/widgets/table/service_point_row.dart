@@ -1,6 +1,5 @@
 import 'package:app/extension/station_sign_extension.dart';
 import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
-import 'package:app/pages/journey/train_journey/journey_position/journey_position_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
@@ -120,25 +119,20 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
 
   @override
   DASTableCell routeCell(BuildContext context) {
-    final positionViewModel = context.read<JourneyPositionViewModel>();
     return DASTableCell(
       color: specialCellColor,
       padding: EdgeInsets.all(0.0),
       alignment: null,
       clipBehaviour: Clip.none,
-      child: StreamBuilder(
-        stream: positionViewModel.model,
-        initialData: positionViewModel.modelValue,
-        builder: (context, snapshot) => RouteCellBody(
-          isStop: data.isStop,
-          isCurrentPosition: snapshot.data?.currentPosition == data,
-          isRouteStart: metadata.journeyStart == data,
-          isRouteEnd: metadata.journeyEnd == data,
-          isStopOnRequest: !data.mandatoryStop,
-          chevronAnimationData: config.chevronAnimationData,
-          chevronPosition: chevronPosition,
-          routeColor: _isNextStop && specialCellColor == null ? Colors.white : null,
-        ),
+      child: RouteCellBody(
+        isStop: data.isStop,
+        isCurrentPosition: isCurrentPosition,
+        isRouteStart: metadata.journeyStart == data,
+        isRouteEnd: metadata.journeyEnd == data,
+        isStopOnRequest: !data.mandatoryStop,
+        chevronAnimationData: config.chevronAnimationData,
+        chevronPosition: chevronPosition,
+        routeColor: _isNextStop && specialCellColor == null ? Colors.white : null,
       ),
     );
   }
