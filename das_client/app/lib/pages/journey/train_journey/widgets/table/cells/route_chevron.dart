@@ -60,17 +60,11 @@ class _RouteChevronState extends State<RouteChevron> {
           currentOffsetValue = end;
         }
       });
-    } else {
-      setState(() {
-        print('resetting offset to 0');
-        currentOffsetValue = 0;
-      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    print('$hashCode: position ${widget.chevronPosition + currentOffsetValue}');
     return Stack(
       clipBehavior: Clip.hardEdge,
       alignment: Alignment.center,
