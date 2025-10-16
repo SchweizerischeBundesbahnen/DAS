@@ -183,7 +183,7 @@ class SpeedMapper {
               ),
             );
             break;
-          case ReasonCodeDto.adlFixedTime:
+          case ReasonCodeDto.adaptiveSteeringFixedTime:
             drafts.add(
               DraftAdvisedSpeedSegment(
                 nextSegmentStartOrder: nextSegmentStartOrder,

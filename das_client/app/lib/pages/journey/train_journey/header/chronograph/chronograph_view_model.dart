@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'package:app/pages/journey/train_journey/adaptive_steering/adaptive_steering_state.dart';
 import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/train_journey/punctuality/punctuality_model.dart';
-import 'package:app/pages/journey/train_journey/widgets/notification/adl_view_model.dart';
 import 'package:clock/clock.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
@@ -16,7 +16,7 @@ class ChronographViewModel {
     required Stream<Journey?> journeyStream,
     required Stream<JourneyPositionModel?> journeyPositionStream,
     required Stream<PunctualityModel> punctualityStream,
-    required Stream<AdlState> adlStateStream,
+    required Stream<AdaptiveSteeringState> adlStateStream,
   }) {
     _initJourneySubscription(journeyStream);
     _initJourneyPositionSubscription(journeyPositionStream);
@@ -87,10 +87,10 @@ class ChronographViewModel {
     );
   }
 
-  void _initAdlSubscription(Stream<AdlState> adlStateStream) {
+  void _initAdlSubscription(Stream<AdaptiveSteeringState> adlStateStream) {
     _subscriptions.add(
       adlStateStream.listen((adlState) {
-        _isAdlActive = adlState == AdlState.active;
+        _isAdlActive = adlState == AdaptiveSteeringState.active;
 
         _emitState();
       }),

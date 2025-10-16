@@ -17,7 +17,7 @@ class TestTimeConstants extends TimeConstants {
   int get arrivalDepartureOperationalResetSeconds => 2;
 
   @override
-  int get adlEndDisplaySeconds => 2;
+  int get adaptiveSteeringEndDisplaySeconds => 2;
 
   @override
   int get kmDecisiveGradientResetSeconds => 2;

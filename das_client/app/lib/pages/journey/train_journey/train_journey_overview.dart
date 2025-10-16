@@ -1,4 +1,6 @@
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/train_journey/adaptive_steering/adaptive_steering_notification.dart';
+import 'package:app/pages/journey/train_journey/adaptive_steering/adaptive_steering_view_model.dart';
 import 'package:app/pages/journey/train_journey/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/train_journey/header/chronograph/chronograph_view_model.dart';
 import 'package:app/pages/journey/train_journey/header/connectivity/connectivity_view_model.dart';
@@ -11,8 +13,6 @@ import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_moda
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/pages/journey/train_journey/widgets/journey_navigation_buttons.dart';
-import 'package:app/pages/journey/train_journey/widgets/notification/adl_notification.dart';
-import 'package:app/pages/journey/train_journey/widgets/notification/adl_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/koa_notification.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/replacement_series/replacement_series_notification.dart';
@@ -81,7 +81,7 @@ class TrainJourneyOverview extends StatelessWidget {
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
-          create: (_) => AdlViewModel(
+          create: (_) => AdaptiveSteeringViewModel(
             journeyStream: trainJourneyViewModel.journey,
             journeyPositionStream: journeyPositionViewModel.model,
           ),
@@ -109,7 +109,7 @@ class TrainJourneyOverview extends StatelessWidget {
             journeyStream: trainJourneyViewModel.journey,
             journeyPositionStream: context.read<JourneyPositionViewModel>().model,
             punctualityStream: context.read<PunctualityViewModel>().model,
-            adlStateStream: context.read<AdlViewModel>().adlState,
+            adlStateStream: context.read<AdaptiveSteeringViewModel>().adaptiveSteeringState,
           ),
           dispose: (_, vm) => vm.dispose(),
           builder: (context, child) => _body(context),
@@ -143,7 +143,7 @@ class TrainJourneyOverview extends StatelessWidget {
     return Column(
       children: [
         Header(),
-        ADLNotification(),
+        AdaptiveSteeringNotification(),
         ManeuverNotification(),
         KoaNotification(),
         ReplacementSeriesNotification(),

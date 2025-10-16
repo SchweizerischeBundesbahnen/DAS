@@ -1,5 +1,5 @@
+import 'package:app/pages/journey/train_journey/adaptive_steering/adaptive_steering_notification.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/das_chronograph.dart';
-import 'package:app/pages/journey/train_journey/widgets/notification/adl_notification.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/advised_speed_cell_body.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -14,7 +14,7 @@ void main() {
     await loadTrainJourney(tester, trainNumber: 'T24');
 
     // Check that there is no ADL notification
-    expect(find.byKey(ADLNotification.adlNotificationKey), findsNothing);
+    expect(find.byKey(AdaptiveSteeringNotification.adaptiveSteeringNotificationKey), findsNothing);
 
     // 1st ADL Message (check speed)
     await waitUntilExists(tester, _findAdlNotificationContainingText('80'));
@@ -25,7 +25,7 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 100));
 
     // 3rd ADL Message (check icon)
-    await waitUntilExists(tester, find.byKey(ADLNotification.adlNotificationIconKey));
+    await waitUntilExists(tester, find.byKey(AdaptiveSteeringNotification.adaptiveSteeringNotificationIconKey));
     // Punctuality Hidden
     expect(find.byKey(DASChronograph.punctualityTextKey), findsNothing);
     await waitUntilExists(tester, _findAdlNotificationContainingText(l10n.w_adl_end));
@@ -89,7 +89,7 @@ void _findTextWithin(Finder baseFinder, String s) {
 
 Finder _findAdlNotificationContainingText(String text) {
   return find.descendant(
-    of: find.byKey(ADLNotification.adlNotificationKey),
+    of: find.byKey(AdaptiveSteeringNotification.adaptiveSteeringNotificationKey),
     matching: find.textContaining(text),
   );
 }

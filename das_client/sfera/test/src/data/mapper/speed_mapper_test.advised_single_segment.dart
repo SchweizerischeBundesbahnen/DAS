@@ -231,7 +231,7 @@ void main() {
       test('whenHasSpeedAndFixedTime_thenIsFixedTimeAdvisedSpeedSegment', () {
         // ARRANGE
         when(mockAdvisedSpeed.speed).thenReturn('90');
-        when(mockAdvisedSpeed.reasonCode).thenReturn(ReasonCodeDto.adlFixedTime);
+        when(mockAdvisedSpeed.reasonCode).thenReturn(ReasonCodeDto.adaptiveSteeringFixedTime);
 
         // ACT & EXPECT
         expect(

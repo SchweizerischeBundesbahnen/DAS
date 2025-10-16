@@ -1,43 +1,44 @@
 import 'dart:async';
 
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/train_journey/adaptive_steering/adaptive_steering_state.dart';
 import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
-import 'package:app/sound/adl_end.dart';
-import 'package:app/sound/adl_start.dart';
+import 'package:app/sound/adaptive_steering_end.dart';
+import 'package:app/sound/adaptive_steering_start.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-class AdlViewModel {
-  AdlViewModel({
+class AdaptiveSteeringViewModel {
+  AdaptiveSteeringViewModel({
     required Stream<Journey?> journeyStream,
     required Stream<JourneyPositionModel?> journeyPositionStream,
   }) {
     _initJourneyStreamSubscription(journeyStream, journeyPositionStream);
   }
 
-  final _adlEndDisplaySeconds = DI.get<TimeConstants>().adlEndDisplaySeconds;
+  final _adlEndDisplaySeconds = DI.get<TimeConstants>().adaptiveSteeringEndDisplaySeconds;
 
   Timer? _adlEndTimer;
 
   StreamSubscription<(Journey?, JourneyPositionModel?)>? _journeySubscription;
 
-  final _rxActiveAdl = BehaviorSubject<AdvisedSpeedSegment?>.seeded(null);
+  final _rxActiveAdaptiveSteering = BehaviorSubject<AdvisedSpeedSegment?>.seeded(null);
 
-  Stream<AdvisedSpeedSegment?> get activeAdl => _rxActiveAdl.distinct();
+  Stream<AdvisedSpeedSegment?> get activeAdl => _rxActiveAdaptiveSteering.distinct();
 
-  AdvisedSpeedSegment? get activeAdlValue => _rxActiveAdl.value;
+  AdvisedSpeedSegment? get activeAdlValue => _rxActiveAdaptiveSteering.value;
 
-  final _rxAdlState = BehaviorSubject<AdlState>.seeded(AdlState.inactive);
+  final _rxAdaptiveSteeringState = BehaviorSubject<AdaptiveSteeringState>.seeded(AdaptiveSteeringState.inactive);
 
-  Stream<AdlState> get adlState => _rxAdlState.distinct();
+  Stream<AdaptiveSteeringState> get adaptiveSteeringState => _rxAdaptiveSteeringState.distinct();
 
-  AdlState get adlStateValue => _rxAdlState.value;
+  AdaptiveSteeringState get adaptiveSteeringStateValue => _rxAdaptiveSteeringState.value;
 
   void dispose() {
     _journeySubscription?.cancel();
-    _rxActiveAdl.close();
-    _rxAdlState.close();
+    _rxActiveAdaptiveSteering.close();
+    _rxAdaptiveSteeringState.close();
     _adlEndTimer?.cancel();
   }
 
@@ -60,31 +61,31 @@ class AdlViewModel {
         if (activeAdl != null) {
           if (activeAdl.endOrder == journeyPosition.currentPosition!.order) {
             // ADL ends at the last position
-            _adlEnd(AdlState.end);
+            _adlEnd(AdaptiveSteeringState.end);
           } else {
             if (activeAdlValue == null) {
               // Start of ADL
-              AdlStart().play();
+              AdaptiveSteeringStart().play();
             }
 
-            _rxActiveAdl.add(activeAdl);
-            _rxAdlState.add(AdlState.active);
+            _rxActiveAdaptiveSteering.add(activeAdl);
+            _rxAdaptiveSteeringState.add(AdaptiveSteeringState.active);
           }
         } else if (activeAdlValue != null) {
           // ADL Cancel
-          _adlEnd(AdlState.cancel);
+          _adlEnd(AdaptiveSteeringState.cancel);
         }
       }
     });
   }
 
-  void _adlEnd(AdlState adlState) {
-    if (_rxAdlState.value != AdlState.active) return;
+  void _adlEnd(AdaptiveSteeringState adlState) {
+    if (_rxAdaptiveSteeringState.value != AdaptiveSteeringState.active) return;
 
     // End of ADL
-    _rxActiveAdl.add(null);
-    _rxAdlState.add(adlState);
-    AdlEnd().play();
+    _rxActiveAdaptiveSteering.add(null);
+    _rxAdaptiveSteeringState.add(adlState);
+    AdaptiveSteeringEnd().play();
     _startAdlEndTimer();
   }
 
@@ -92,15 +93,8 @@ class AdlViewModel {
     _adlEndTimer?.cancel();
     _adlEndTimer = Timer(Duration(seconds: _adlEndDisplaySeconds), () {
       if (activeAdlValue == null) {
-        _rxAdlState.add(AdlState.inactive);
+        _rxAdaptiveSteeringState.add(AdaptiveSteeringState.inactive);
       }
     });
   }
-}
-
-enum AdlState {
-  active,
-  inactive,
-  end,
-  cancel,
 }
