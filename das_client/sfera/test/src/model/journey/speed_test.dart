@@ -9,6 +9,11 @@ void main() {
     );
 
     test(
+      'isValid_whenSingleSpeedMinusOneThousand_thenReturnsTrue',
+      () => expect(Speed.isValid('-1000'), isTrue),
+    );
+
+    test(
       'isValid_whenSingleSpeedWithWhitespace_thenReturnsTrue',
       () => expect(Speed.isValid(' 80 '), isTrue),
     );
@@ -57,6 +62,11 @@ void main() {
         expect(Speed.isValid(input), isFalse, reason: 'Should be invalid: $input');
       }
     });
+
+    test(
+      'isIllegal_whenSingleSpeedMinusOneThousand_thenReturnsTrue',
+      () => expect(Speed.parse('-1000').isIllegal, isTrue),
+    );
 
     test('parse_whenSingleSpeedFormat_thenReturnsSingleSpeedType', () {
       // ARRANGE

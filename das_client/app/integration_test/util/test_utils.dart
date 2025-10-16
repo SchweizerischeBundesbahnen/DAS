@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/extended_menu.dart';
+import 'package:app/pages/journey/train_journey/widgets/header/next_stop.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
 import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
@@ -15,16 +16,18 @@ import 'package:sfera/component.dart';
 
 import '../app_test.dart';
 
-Locale deviceLocale() {
+Locale appLocale() => Locale(l10n.localeName);
+
+Future<AppLocalizations> deviceLocalizations() async {
+  return AppLocalizations.delegate.load(_deviceLocale());
+}
+
+Locale _deviceLocale() {
   if (Platform.localeName.contains('_')) {
     final localeWithCountry = Platform.localeName.split('_');
     return Locale(localeWithCountry[0], localeWithCountry[1]);
   }
   return Locale(Platform.localeName);
-}
-
-Future<AppLocalizations> deviceLocalizations() async {
-  return AppLocalizations.delegate.load(deviceLocale());
 }
 
 Future<void> openDrawer(WidgetTester tester) async {
@@ -102,9 +105,8 @@ Future<void> openExtendedMenu(WidgetTester tester) async {
 }
 
 Future<void> openReducedJourneyMenu(WidgetTester tester) async {
-  await openExtendedMenu(tester);
-  await tapElement(tester, find.text(l10n.w_extended_menu_journey_overview_action));
-  await Future.delayed(const Duration(milliseconds: 100));
+  await tapElement(tester, find.byKey(NextStop.tappableAreaKey));
+  await Future.delayed(const Duration(milliseconds: 50));
 }
 
 Future<void> dismissExtendedMenu(WidgetTester tester) async {

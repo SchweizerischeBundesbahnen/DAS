@@ -15,6 +15,8 @@ import 'package:app/pages/journey/train_journey/widgets/notification/adl_notific
 import 'package:app/pages/journey/train_journey/widgets/notification/adl_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/koa_notification.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
+import 'package:app/pages/journey/train_journey/widgets/notification/replacement_series/replacement_series_notification.dart';
+import 'package:app/pages/journey/train_journey/widgets/notification/replacement_series/replacement_series_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:app/pages/journey/train_journey/widgets/warn_function_modal_sheet.dart';
@@ -93,6 +95,13 @@ class TrainJourneyOverview extends StatelessWidget {
           create: (_) => ConnectivityViewModel(connectivityManager: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
+        Provider(
+          create: (_) => ReplacementSeriesViewModel(
+            trainJourneyViewModel: trainJourneyViewModel,
+            journeyPositionViewModel: journeyPositionViewModel,
+          ),
+          dispose: (_, vm) => vm.dispose(),
+        ),
       ],
       builder: (context, child) {
         return Provider(
@@ -137,6 +146,7 @@ class TrainJourneyOverview extends StatelessWidget {
         ADLNotification(),
         ManeuverNotification(),
         KoaNotification(),
+        ReplacementSeriesNotification(),
         _warnappNotification(context),
         Expanded(
           child: Stack(

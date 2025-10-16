@@ -28,7 +28,7 @@ class ManeuverNotification extends StatelessWidget {
           margin: EdgeInsets.all(TrainJourneyOverview.horizontalPadding).copyWith(top: 0),
           child: NotificationBox(
             style: NotificationBoxStyle.warning,
-            text: context.l10n.w_maneuver_notification_text,
+            title: context.l10n.w_maneuver_notification_text,
             action: Row(
               children: [
                 _openWaraButton(viewModel),
