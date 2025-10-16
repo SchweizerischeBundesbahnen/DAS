@@ -128,6 +128,10 @@ class SpeedMapper {
       final segmentProfileReference = segmentProfileReferences[segmentIndex];
       final segmentProfile = segmentProfiles.firstWhere((sP) => sP.id == segmentProfileReference.spId);
 
+      nextSegmentStartOrder = segmentIndex + 1 < segmentProfileReferences.length
+          ? calculateOrder(segmentIndex + 1, 0)
+          : calculateOrder(segmentIndex, double.parse(segmentProfile.length));
+
       for (final speedConstraint in segmentProfileReference.advisedSpeedTemporaryConstraints) {
         if (_invalidAdvisedSpeed(speedConstraint)) continue;
 
@@ -137,10 +141,6 @@ class SpeedMapper {
         final endOrder = speedConstraint.endLocation != null
             ? calculateOrder(segmentIndex, speedConstraint.endLocation!)
             : null;
-
-        nextSegmentStartOrder = segmentIndex + 1 < segmentProfileReferences.length
-            ? calculateOrder(segmentIndex + 1, 0)
-            : calculateOrder(segmentIndex, double.parse(segmentProfile.length));
 
         final advisedSpeed = speedConstraint.advisedSpeed!;
         SingleSpeed? speed;
@@ -199,9 +199,11 @@ class SpeedMapper {
             _log.warning('Skipping AdvisedSpeed found with reasonCode that cannot be handled: $advisedSpeed');
             continue;
         }
-        previousSegmentEndOrder = calculateOrder(segmentIndex, double.parse(segmentProfile.length));
       }
+      previousSegmentEndOrder = calculateOrder(segmentIndex, double.parse(segmentProfile.length));
     }
+
+    print(drafts);
 
     final groupedAdvisedSpeedSegments = drafts.groupListsBy((draft) => draft.advisedSpeedGroupKey);
 
@@ -228,7 +230,7 @@ class SpeedMapper {
         idx++;
       }
 
-      return mergedDrafts;
+      return _filterOpenSegments(mergedDrafts);
     });
 
     final List<DraftAdvisedSpeedSegment> allDrafts = groupedAdvisedSpeedSegments.values.flattened
@@ -255,6 +257,15 @@ class SpeedMapper {
       }
     }
 
+    return result;
+  }
+
+  static List<DraftAdvisedSpeedSegment> _filterOpenSegments(List<DraftAdvisedSpeedSegment> mergedDrafts) {
+    final result = mergedDrafts.whereNot((d) => d.startsWithSegment || d.endsWithSegment).toList();
+    if (result.length != mergedDrafts.length) {
+      final openSegments = mergedDrafts.where((d) => d.startsWithSegment || d.endsWithSegment).toList();
+      _log.warning('Advised Speed Segments found that could not be closed. Skipping: $openSegments');
+    }
     return result;
   }
 
@@ -365,8 +376,10 @@ class DraftAdvisedSpeedSegment implements Comparable<DraftAdvisedSpeedSegment> {
       ', previousSegmentEndOrder: $_previousSegmentEndOrder'
       ', nextSegmentStartOrder: $_nextSegmentStartOrder'
       ', speed: $speed'
-      ', startOrder: $startOrder'
-      ', endOrder: $endOrder'
+      ', startOrder: $_startOrder'
+      ', endOrder: $_endOrder'
+      ', isStartAmended: $isStartAmended'
+      ', isEndAmended: $isEndAmended'
       ')';
 
   @override
@@ -378,21 +391,15 @@ class DraftAdvisedSpeedSegment implements Comparable<DraftAdvisedSpeedSegment> {
       previousSegmentEndOrder: min(_previousSegmentEndOrder, other._previousSegmentEndOrder),
       nextSegmentStartOrder: max(_nextSegmentStartOrder, other._nextSegmentStartOrder),
       speed: speed,
-      startOrder: _startOrder == null && other._startOrder == null
-          ? min(startOrder, other.startOrder)
-          : _startOrder == null
-          ? other._startOrder
-          : other._endOrder == null
-          ? _startOrder
-          : min(_startOrder!, other._startOrder!),
-      endOrder: _endOrder == null && other._endOrder == null
-          ? max(startOrder, other.startOrder)
-          : _endOrder == null
-          ? other._endOrder
-          : other._endOrder == null
-          ? _endOrder
-          : max(_endOrder!, other._endOrder!),
+      startOrder: _mergeOrder(_startOrder, other._startOrder, min),
+      endOrder: _mergeOrder(_endOrder, other._endOrder, max),
     );
+  }
+
+  int? _mergeOrder(int? order, int? otherOrder, T Function<T extends num>(T a, T b) func) {
+    if (order != null && otherOrder != null) return func(order, otherOrder);
+    if (order == null && otherOrder == null) return null;
+    return order ?? otherOrder;
   }
 
   AdvisedSpeedSegment toAdvisedSegment() {

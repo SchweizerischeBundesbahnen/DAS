@@ -3,6 +3,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/advised_speed_dto.dart';
+import 'package:sfera/src/data/dto/enums/start_end_qualifier_dto.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/reason_code_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
@@ -19,8 +20,6 @@ import 'package:sfera/src/data/mapper/speed_mapper.dart';
 ])
 import 'speed_mapper_test.advised_multi_segment.mocks.dart';
 import 'speed_mapper_test.fixtures.dart';
-
-const _veryLargeDouble = 1_000_000_000_000.0;
 
 void main() {
   /// Three segments:
@@ -57,12 +56,6 @@ void main() {
       when(mockSegmentProfileReferenceThree.spId).thenReturn('id3');
       when(mockSegmentProfileThree.id).thenReturn('id3');
 
-      when(
-        mockSegmentProfileReferenceOne.advisedSpeedTemporaryConstraints,
-      ).thenReturn([mockTemporaryConstraintA1, mockTemporaryConstraintA2]);
-      when(mockSegmentProfileReferenceTwo.advisedSpeedTemporaryConstraints).thenReturn([mockTemporaryConstraintB1]);
-      when(mockSegmentProfileReferenceThree.advisedSpeedTemporaryConstraints).thenReturn([mockTemporaryConstraintC1]);
-
       when(mockTemporaryConstraintA1.advisedSpeed).thenReturn(mockAdvisedSpeedA1);
       when(mockTemporaryConstraintA2.advisedSpeed).thenReturn(mockAdvisedSpeedA2);
       when(mockTemporaryConstraintB1.advisedSpeed).thenReturn(mockAdvisedSpeedB1);
@@ -97,9 +90,16 @@ void main() {
       final segmentProfiles = [mockSegmentProfileOne];
       setUp(() {
         when(mockJourneyProfile.segmentProfileReferences).thenReturn([mockSegmentProfileReferenceOne]);
+        when(
+          mockSegmentProfileReferenceOne.advisedSpeedTemporaryConstraints,
+        ).thenReturn([
+          mockTemporaryConstraintA1,
+          mockTemporaryConstraintA2,
+        ]);
         when(mockSegmentProfileOne.length).thenReturn('5050');
       });
 
+      /// closed segments means they have start and end location (regardless whether they're unknown)
       group('closed segments', () {
         test('whenSegmentsDoNotOverlap_returnTwoSegments', () {
           // ARRANGE
@@ -213,6 +213,35 @@ void main() {
             ]),
           );
         });
+      });
+
+      /// segments that have either only startLocation / endLocation or are 'WholeSP'
+      ///
+      /// a sequence of open segments must end up closed, otherwise they are skipped
+      group('open segments', () {
+        test('whenHasOnlyEndAndNoStart_thenReturnsEmpty', () {
+          // ARRANGE
+          when(mockTemporaryConstraintA1.endLocation).thenReturn(3000.0);
+
+          // ACT & EXPECT
+          expect(testee.call(mockJourneyProfile, segmentProfiles, journey), isEmpty);
+        });
+
+        test('whenHasOnlyStartAndNoEnd_thenReturnsEmpty', () {
+          // ARRANGE
+          when(mockTemporaryConstraintA1.startLocation).thenReturn(1000.0);
+
+          // ACT & EXPECT
+          expect(testee.call(mockJourneyProfile, segmentProfiles, journey), isEmpty);
+        });
+
+        test('whenHasOnlyWholeSP_thenReturnsEmpty', () {
+          // ARRANGE
+          when(mockTemporaryConstraintA1.startEndQualifier).thenReturn(StartEndQualifierDto.wholeSp);
+
+          // ACT & EXPECT
+          expect(testee.call(mockJourneyProfile, segmentProfiles, journey), isEmpty);
+        });
 
         test('whenOneSegmentStartsOtherSegmentEnds_thenReturnsCorrectSegment', () {
           // ARRANGE
@@ -232,13 +261,172 @@ void main() {
           );
         });
 
-        test('whenOneSegmentStartsOtherSegmentEnds_thenReturnsCorrectSegment', () {
+        test('whenOneSegmentStartsOtherSegmentEndsUnknown_thenReturnsCorrectSegment', () {
           // ARRANGE
-          when(mockTemporaryConstraintA2.endLocation).thenReturn(3000.0);
+          when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
+          when(mockTemporaryConstraintA2.endLocation).thenReturn(3010.0);
 
           // ACT & EXPECT
-          expect(testee.call(mockJourneyProfile, segmentProfiles, journey), isEmpty);
+          expect(
+            testee.call(mockJourneyProfile, segmentProfiles, journey),
+            orderedEquals([
+              VelocityMaxAdvisedSpeedSegment(
+                startOrder: journey.first.order,
+                endOrder: journey[4].order,
+                endData: journey[4],
+              ),
+            ]),
+          );
         });
+      });
+    });
+
+    group('two segment profiles A & B', () {
+      final journey = SpeedMapperTestFixtures.threeServicePointsWithSurroundingSignalsJourneyTwoSegments;
+      final segmentProfiles = [mockSegmentProfileOne, mockSegmentProfileTwo];
+      setUp(() {
+        when(
+          mockJourneyProfile.segmentProfileReferences,
+        ).thenReturn([mockSegmentProfileReferenceOne, mockSegmentProfileReferenceTwo]);
+        when(mockSegmentProfileReferenceOne.advisedSpeedTemporaryConstraints).thenReturn([mockTemporaryConstraintA1]);
+        when(mockSegmentProfileReferenceTwo.advisedSpeedTemporaryConstraints).thenReturn([mockTemporaryConstraintB1]);
+        when(mockSegmentProfileOne.length).thenReturn('3050');
+        when(mockSegmentProfileTwo.length).thenReturn('1050');
+      });
+
+      test('whenDoNotOverlap_returnTwoSegments', () {
+        // ARRANGE
+        when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
+        when(mockTemporaryConstraintA1.endLocation).thenReturn(2950.0);
+        when(mockTemporaryConstraintB1.startLocation).thenReturn(950.0);
+        when(mockTemporaryConstraintB1.endLocation).thenReturn(1050.0);
+
+        // ACT & EXPECT
+        expect(
+          testee.call(mockJourneyProfile, segmentProfiles, journey),
+          orderedEquals([
+            VelocityMaxAdvisedSpeedSegment(
+              startOrder: journey.first.order,
+              endOrder: journey[3].order,
+              endData: journey[3],
+            ),
+            VelocityMaxAdvisedSpeedSegment(
+              startOrder: journey[6].order,
+              endOrder: journey[8].order,
+              endData: journey[8],
+            ),
+          ]),
+        );
+      });
+
+      test('whenOneStartsInFirstSegmentOtherEndsInNext_returnOneSegment', () {
+        // ARRANGE
+        when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
+        when(mockTemporaryConstraintB1.endLocation).thenReturn(1050.0);
+
+        // ACT & EXPECT
+        expect(
+          testee.call(mockJourneyProfile, segmentProfiles, journey),
+          orderedEquals([
+            VelocityMaxAdvisedSpeedSegment(
+              startOrder: journey.first.order,
+              endOrder: journey[8].order,
+              endData: journey[8],
+            ),
+          ]),
+        );
+      });
+    });
+
+    group('three segment profiles A & B & C', () {
+      final journey = SpeedMapperTestFixtures.threeServicePointsWithSurroundingSignalsJourneyThreeSegments;
+      final segmentProfiles = [mockSegmentProfileOne, mockSegmentProfileTwo, mockSegmentProfileThree];
+      setUp(() {
+        when(
+          mockJourneyProfile.segmentProfileReferences,
+        ).thenReturn([
+          mockSegmentProfileReferenceOne,
+          mockSegmentProfileReferenceTwo,
+          mockSegmentProfileReferenceThree,
+        ]);
+
+        when(mockSegmentProfileReferenceOne.advisedSpeedTemporaryConstraints).thenReturn([mockTemporaryConstraintA1]);
+        when(mockSegmentProfileReferenceTwo.advisedSpeedTemporaryConstraints).thenReturn([mockTemporaryConstraintB1]);
+        when(mockSegmentProfileReferenceThree.advisedSpeedTemporaryConstraints).thenReturn([mockTemporaryConstraintC1]);
+
+        when(mockSegmentProfileOne.length).thenReturn('1050');
+        when(mockSegmentProfileTwo.length).thenReturn('1050');
+        when(mockSegmentProfileThree.length).thenReturn('1050');
+      });
+
+      test('whenDoNotOverlap_returnThreeSegments', () {
+        // ARRANGE
+        when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
+        when(mockTemporaryConstraintA1.endLocation).thenReturn(1050.0);
+        when(mockTemporaryConstraintB1.startLocation).thenReturn(950.0);
+        when(mockTemporaryConstraintB1.endLocation).thenReturn(1050.0);
+        when(mockTemporaryConstraintC1.startLocation).thenReturn(950.0);
+        when(mockTemporaryConstraintC1.endLocation).thenReturn(1050.0);
+
+        // ACT & EXPECT
+        expect(
+          testee.call(mockJourneyProfile, segmentProfiles, journey),
+          orderedEquals([
+            VelocityMaxAdvisedSpeedSegment(
+              startOrder: journey.first.order,
+              endOrder: journey[2].order,
+              endData: journey[2],
+            ),
+            VelocityMaxAdvisedSpeedSegment(
+              startOrder: journey[3].order,
+              endOrder: journey[5].order,
+              endData: journey[5],
+            ),
+            VelocityMaxAdvisedSpeedSegment(
+              startOrder: journey[6].order,
+              endOrder: journey[8].order,
+              endData: journey[8],
+            ),
+          ]),
+        );
+      });
+
+      test('whenOneStartsInFirstSegmentOtherEndsInLastSegment_thenSkip', () {
+        // ARRANGE
+        when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
+        when(mockSegmentProfileReferenceTwo.advisedSpeedTemporaryConstraints).thenReturn([]);
+        when(mockTemporaryConstraintC1.endLocation).thenReturn(1050.0);
+
+        // ACT & EXPECT
+        expect(testee.call(mockJourneyProfile, segmentProfiles, journey), isEmpty);
+      });
+
+      test('whenOneStartsInFirstSegmentOtherIsWholeSP_thenSkip', () {
+        // ARRANGE
+        when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
+        when(mockTemporaryConstraintB1.startEndQualifier).thenReturn(StartEndQualifierDto.wholeSp);
+
+        // ACT & EXPECT
+        expect(testee.call(mockJourneyProfile, segmentProfiles, journey), isEmpty);
+      });
+
+      test('whenOneStartsInFirstSegmentOtherIsWholeSPAndHasEndInLast_thenReturnCorrectSegment', () {
+        // ARRANGE
+        when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
+        when(mockTemporaryConstraintB1.startEndQualifier).thenReturn(StartEndQualifierDto.wholeSp);
+        when(mockTemporaryConstraintC1.endLocation).thenReturn(1050.0);
+
+        // ACT & EXPECT
+        expect(
+          testee.call(mockJourneyProfile, segmentProfiles, journey),
+          orderedEquals([
+            VelocityMaxAdvisedSpeedSegment(
+              startOrder: journey.first.order,
+              endOrder: journey.last.order,
+              endData: journey.last,
+            ),
+          ]),
+        );
       });
     });
   });
