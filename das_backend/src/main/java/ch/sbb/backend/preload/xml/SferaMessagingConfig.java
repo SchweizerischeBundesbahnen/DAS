@@ -1,6 +1,6 @@
 package ch.sbb.backend.preload.xml;
 
-import ch.sbb.backend.preload.sfera.model.v0201.ObjectFactory;
+import ch.sbb.backend.preload.sfera.model.v0300.ObjectFactory;
 import jakarta.xml.bind.Marshaller;
 import java.util.Map;
 import org.springframework.context.annotation.Bean;

@@ -4,7 +4,7 @@ const cssStyle = '''
 /* CSS FOR BASE STRUCTURE */
 
 html, body {
-  padding: 0;
+  padding: 6px;
   margin: 0 auto;
   height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans", system-ui, sans-serif;

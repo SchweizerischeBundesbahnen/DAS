@@ -1,4 +1,3 @@
-import 'package:app/i18n/gen/app_localizations_de.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:logger/component.dart';
@@ -10,7 +9,7 @@ import 'test/train_journey_table_calculated_speed_test.dart' as train_journey_ta
 import 'test/train_journey_table_track_equipment_test.dart' as train_journey_table_track_equipment_tests;
 import 'test/warnapp_test.dart' as warnapp_tests;
 
-AppLocalizations l10n = AppLocalizationsDe();
+late AppLocalizations l10n;
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();

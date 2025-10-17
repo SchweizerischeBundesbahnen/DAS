@@ -1,12 +1,10 @@
 package ch.sbb.backend.preload;
 
-import ch.sbb.backend.preload.sfera.model.v0201.JourneyProfile;
-import ch.sbb.backend.preload.sfera.model.v0201.SegmentProfile;
-import ch.sbb.backend.preload.sfera.model.v0201.TrainCharacteristics;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-
+import ch.sbb.backend.preload.sfera.model.v0300.JourneyProfile;
+import ch.sbb.backend.preload.sfera.model.v0300.SegmentProfile;
+import ch.sbb.backend.preload.sfera.model.v0300.TrainCharacteristics;
 import java.util.List;
+import org.springframework.stereotype.Component;
 
 @Component
 public class PreloadScheduler {
@@ -17,7 +15,8 @@ public class PreloadScheduler {
         this.storageService = storageService;
     }
 
-    @Scheduled(fixedDelayString = "${preload.fetch-interval-ms}")
+    //    TODO: deactivated for now
+    //    @Scheduled(fixedDelayString = "${preload.fetch-interval-ms}")
     public void fetchAndStore() {
         // TODO: TMS-VAD anbinden und echte Deltas holen
         List<JourneyProfile> jps = List.of();

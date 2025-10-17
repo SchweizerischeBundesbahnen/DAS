@@ -18,13 +18,15 @@
         <spring-modulith.version>1.4.3</spring-modulith.version>
         <archunit-junit5.version>1.4.1</archunit-junit5.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.8.13</springdoc-openapi-starter-webmvc-ui.version>
-        <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
-        <kafka-json-schema-serializer.version>8.0.0</kafka-json-schema-serializer.version>
-        <confluent.schema-registry-plugin.version>8.0.1</confluent.schema-registry-plugin.version>
+        <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
+        <kafka-json-schema-serializer.version>8.1.0</kafka-json-schema-serializer.version>
+        <confluent.schema-registry-plugin.version>8.1.0</confluent.schema-registry-plugin.version>
         <jsonschema2pojo-maven-plugin.version>1.2.2</jsonschema2pojo-maven-plugin.version>
-        <aws.java.sdk.version>2.35.2</aws.java.sdk.version>
+        <aws.java.sdk.version>2.35.8</aws.java.sdk.version>
         <shedlock.version>6.10.0</shedlock.version>
         <xmlunit.version>2.10.4</xmlunit.version>
+        <jaxb2-maven-plugin.version>3.3.0</jaxb2-maven-plugin.version>
+        <paho.mqttv5.client.version>1.2.5</paho.mqttv5.client.version>
     </properties>
     <dependencies>
         <dependency>
@@ -94,7 +96,7 @@
         <dependency>
             <groupId>org.eclipse.paho</groupId>
             <artifactId>org.eclipse.paho.mqttv5.client</artifactId>
-            <version>1.2.5</version>
+            <version>${paho.mqttv5.client.version}</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jaxb</groupId>
@@ -301,7 +303,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxb2-maven-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>${jaxb2-maven-plugin.version}</version>
                 <configuration>
                     <sources>
                         <source>${basedir}/src/main/resources/SFERA_v3.00.xsd</source>

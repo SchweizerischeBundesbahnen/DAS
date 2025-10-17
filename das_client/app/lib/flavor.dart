@@ -13,6 +13,8 @@ sealed class Flavor {
     required this.mqttTopicPrefix,
     required this.backendUrl,
     required this.mqttOauthProfile,
+    required this.waraAndroidPackageName,
+    required this.waraIOSUrlScheme,
     this.color = SBBColors.transparent,
     this.showBanner = false,
     this.isTmsEnabledForFlavor = false,
@@ -30,6 +32,8 @@ sealed class Flavor {
   final Color color;
   final bool isTmsEnabledForFlavor;
   final Level logLevel;
+  final String waraAndroidPackageName;
+  final String waraIOSUrlScheme;
 
   factory Flavor.dev() = _DevFlavor;
 
@@ -100,6 +104,8 @@ class _DevFlavor extends Flavor {
          isTmsEnabledForFlavor: true,
          mqttOauthProfile: 'azureAdDev',
          logLevel: Level.FINE,
+         waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
+         waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
        );
 }
 
@@ -115,6 +121,8 @@ class _InteFlavor extends Flavor {
          color: SBBColors.black,
          showBanner: true,
          mqttOauthProfile: 'azureAdInt',
+         waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
+         waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
        );
 }
 
@@ -130,6 +138,8 @@ class _ProdFlavor extends Flavor {
          color: SBBColors.transparent,
          showBanner: false,
          mqttOauthProfile: 'azureAdInt',
+         waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
+         waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
        );
 }
 
