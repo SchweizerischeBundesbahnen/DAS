@@ -36,10 +36,10 @@ class ChevronAnimationData {
       return null;
     }
 
-    var toIndex = rows.indexOfElementOrGroup(currentPosition, expandedGroups);
+    var toIndex = rows.indexOfElementOrCollapsedGroup(currentPosition, expandedGroups);
     final currentIndex = rows.indexOf(currentRow);
 
-    var fromIndex = rows.indexOfElementOrGroup(lastPosition, expandedGroups);
+    var fromIndex = rows.indexOfElementOrCollapsedGroup(lastPosition, expandedGroups);
 
     bool reversed = false;
     if (fromIndex > toIndex) {

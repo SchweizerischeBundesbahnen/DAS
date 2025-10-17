@@ -23,12 +23,13 @@ class GroupedJourneyPoint extends JourneyPoint {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is BaliseLevelCrossingGroup &&
+      other is GroupedJourneyPoint &&
           runtimeType == other.runtimeType &&
           order == other.order &&
           ListEquality().equals(kilometre, other.kilometre) &&
           ListEquality().equals(groupedElements, other.groupedElements);
 
   @override
-  int get hashCode => type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ Object.hashAll(groupedElements);
+  int get hashCode =>
+      type.hashCode ^ type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ Object.hashAll(groupedElements);
 }

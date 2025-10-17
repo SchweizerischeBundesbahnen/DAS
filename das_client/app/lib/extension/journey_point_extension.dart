@@ -1,7 +1,7 @@
 import 'package:sfera/component.dart';
 
 extension JourneyPointListExtension on List<JourneyPoint> {
-  int indexOfElementOrGroup(JourneyPoint point, List<int> expandedGroups) {
+  int indexOfElementOrCollapsedGroup(JourneyPoint point, List<int> expandedGroups) {
     for (int i = 0; i < length; i++) {
       final current = this[i];
       if (current == point) {

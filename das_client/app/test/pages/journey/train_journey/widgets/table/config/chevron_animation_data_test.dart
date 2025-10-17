@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';
 
 void main() {
-  test('test animation data forward', () {
+  test('test animation data calculates offsets correctly when moving forward', () {
     // GIVEN
     final journey = Journey(
       metadata: Metadata(),
@@ -67,7 +67,7 @@ void main() {
     expect(animationData4, isNull);
   });
 
-  test('test animation data backwards', () {
+  test('test animation data calculates offsets correctly when moving backwards', () {
     // GIVEN
     final journey = Journey(
       metadata: Metadata(),
@@ -130,7 +130,7 @@ void main() {
     expect(animationData4, isNull);
   });
 
-  test('test animation to collapsed group', () {
+  test('test animation data calculates offsets correctly when target position is in a collapsed group', () {
     // GIVEN
     final journey = Journey(
       metadata: Metadata(),
@@ -192,7 +192,7 @@ void main() {
     expect(animationData3.endOffset, 0.0);
   });
 
-  test('test animation to expanded group', () {
+  test('test animation data calculates offsets correctly when target position is in a expanded group', () {
     // GIVEN
     final journey = Journey(
       metadata: Metadata(),
@@ -278,7 +278,7 @@ void main() {
     expect(animationData5.endOffset, 0.0);
   });
 
-  test('test animation data no position change', () {
+  test('test animation data is null when current position is the same as last position', () {
     // GIVEN
     final journey = Journey(
       metadata: Metadata(),
@@ -335,7 +335,7 @@ void main() {
     expect(animationData4, isNull);
   });
 
-  test('test animation data last position null', () {
+  test('test animation data is null when last position is null', () {
     // GIVEN
     final journey = Journey(
       metadata: Metadata(),
