@@ -183,12 +183,12 @@ void main() {
     // THEN
     expect(animationData1, isNotNull);
     expect(animationData1!.startOffset, 0.0);
-    expect(animationData1.endOffset, 88.0);
+    expect(animationData1.endOffset, 75.5);
     expect(animationData2, isNotNull);
     expect(animationData2!.startOffset, -44.0);
-    expect(animationData2.endOffset, 44.0);
+    expect(animationData2.endOffset, 31.5);
     expect(animationData3, isNotNull);
-    expect(animationData3!.startOffset, -88.0);
+    expect(animationData3!.startOffset, -75.5);
     expect(animationData3.endOffset, 0.0);
   });
 
@@ -268,8 +268,8 @@ void main() {
     expect(animationData2!.startOffset, -44.0);
     expect(animationData2.endOffset, 132.0);
     expect(animationData3, isNotNull);
-    expect(animationData3!.startOffset, -88.0);
-    expect(animationData3.endOffset, 88.0);
+    expect(animationData3!.startOffset, -75.5);
+    expect(animationData3.endOffset, 100.5);
     expect(animationData4, isNotNull);
     expect(animationData4!.startOffset, -132.0);
     expect(animationData4.endOffset, 44.0);
