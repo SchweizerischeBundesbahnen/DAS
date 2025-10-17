@@ -38,7 +38,7 @@ void main() {
       expect(find.text(l10n.c_ru_sbb_c), findsOneWidget);
       expect(find.descendant(of: modal, matching: find.text(l10n.c_ru_bls_p)), findsOneWidget);
       expect(find.text(l10n.c_ru_bls_c), findsOneWidget);
-      final sobI = find.text(l10n.c_ru_sob_i);
+      final sobI = find.text(l10n.c_ru_sob_infra);
       await tester.dragUntilVisible(sobI, modal, const Offset(0, -50));
       expect(sobI, findsOneWidget);
       await tapElement(tester, sobI, warnIfMissed: false);
@@ -67,7 +67,7 @@ void main() {
       // Verify results are filtered
       expect(find.descendant(of: modal, matching: find.text(l10n.c_ru_sbb_p)), findsNothing);
       expect(find.descendant(of: modal, matching: find.text(l10n.c_ru_bls_p)), findsNothing);
-      expect(find.text(l10n.c_ru_sob_i), findsOneWidget);
+      expect(find.text(l10n.c_ru_sob_infra), findsOneWidget);
     });
 
     testWidgets('test load button disabled when validation fails', (tester) async {

@@ -92,26 +92,17 @@ class _RailwayUndertakingTextFieldState extends State<_RailwayUndertakingTextFie
           hintText: widget.isModalVersion ? context.l10n.p_train_selection_ru_description : null,
         ),
         onTap: () {
-          final radius = Radius.circular(16);
           showModalBottomSheet(
             context: context,
             isScrollControlled: true,
+            clipBehavior: Clip.hardEdge,
             backgroundColor: _modalBackgroundColor(context),
             shape: SelectRailwayUndertakingModal.shapeBorder,
             constraints: _modalConstraints,
-            builder: (_) => ClipRRect(
-              borderRadius: BorderRadius.only(
-                topLeft: radius,
-                topRight: radius,
-              ),
-              child: Material(
-                color: _modalBackgroundColor(context),
-                child: Provider.value(
-                  value: context.read<JourneySelectionViewModel>(),
-                  child: SelectRailwayUndertakingModal(
-                    selectedRailwayUndertaking: widget.selectedRailwayUndertaking,
-                  ),
-                ),
+            builder: (_) => Provider.value(
+              value: context.read<JourneySelectionViewModel>(),
+              child: SelectRailwayUndertakingModal(
+                selectedRailwayUndertaking: widget.selectedRailwayUndertaking,
               ),
             ),
           );
