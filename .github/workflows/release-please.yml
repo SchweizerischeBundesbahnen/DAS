@@ -125,7 +125,7 @@ jobs:
         working-directory: das_playground
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v6
         with:
           node-version-file: 'das_playground/.nvmrc'
           cache: 'npm'
