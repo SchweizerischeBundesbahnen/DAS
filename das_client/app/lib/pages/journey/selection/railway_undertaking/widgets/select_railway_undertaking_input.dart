@@ -100,7 +100,10 @@ class _RailwayUndertakingTextFieldState extends State<_RailwayUndertakingTextFie
             shape: SelectRailwayUndertakingModal.shapeBorder,
             constraints: _modalConstraints,
             builder: (_) => ClipRRect(
-              borderRadius: BorderRadius.only(topLeft: radius, topRight: radius),
+              borderRadius: BorderRadius.only(
+                topLeft: radius,
+                topRight: radius,
+              ),
               child: Material(
                 color: _modalBackgroundColor(context),
                 child: Provider.value(
