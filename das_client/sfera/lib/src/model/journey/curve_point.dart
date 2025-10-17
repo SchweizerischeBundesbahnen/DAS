@@ -47,6 +47,7 @@ class CurvePoint extends JourneyPoint {
 
   @override
   int get hashCode =>
+      type.hashCode ^
       order.hashCode ^
       Object.hashAll(kilometre) ^
       curvePointType.hashCode ^

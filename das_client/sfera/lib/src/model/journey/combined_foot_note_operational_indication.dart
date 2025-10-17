@@ -25,5 +25,5 @@ class CombinedFootNoteOperationalIndication extends JourneyAnnotation {
           order == other.order);
 
   @override
-  int get hashCode => Object.hash(order, footNote, operationalIndication);
+  int get hashCode => Object.hash(type, order, footNote, operationalIndication);
 }

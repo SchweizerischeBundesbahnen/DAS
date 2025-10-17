@@ -23,7 +23,7 @@ class CommunicationNetworkChange extends JourneyPoint {
           const ListEquality<double>().equals(kilometre, other.kilometre);
 
   @override
-  int get hashCode => Object.hash(order, communicationNetworkType, Object.hashAll(kilometre));
+  int get hashCode => Object.hash(type, order, communicationNetworkType, Object.hashAll(kilometre));
 
   @override
   String toString() =>

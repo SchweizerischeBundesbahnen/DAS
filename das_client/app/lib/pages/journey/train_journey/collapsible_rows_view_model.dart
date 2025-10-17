@@ -66,6 +66,8 @@ class CollapsibleRowsViewModel {
 
     final fromIndex = journey.data.indexOf(lastPosition);
     final toIndex = journey.data.indexOf(currentPosition);
+    if (fromIndex > toIndex) return;
+
     final passedCollapsibleData = journey.data.sublist(fromIndex, toIndex).where((data) => data.isCollapsible);
 
     final collapsedRows = _rxCollapsedRows.value;

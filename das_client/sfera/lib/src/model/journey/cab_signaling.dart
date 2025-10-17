@@ -34,5 +34,5 @@ class CABSignaling extends JourneyPoint {
           isStart == other.isStart;
 
   @override
-  int get hashCode => order.hashCode ^ Object.hashAll(kilometre) ^ isStart.hashCode;
+  int get hashCode => type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ isStart.hashCode;
 }

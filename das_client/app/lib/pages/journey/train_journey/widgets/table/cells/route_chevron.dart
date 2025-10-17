@@ -21,9 +21,6 @@ class RouteChevron extends StatefulWidget {
 
   final ChevronAnimationData? chevronAnimationData;
 
-  // additional -1.5 because line overdraws a bit from rotation
-  static double positionFromHeight(double height) => height - chevronHeight - 1.5;
-
   @override
   State<RouteChevron> createState() => _RouteChevronState();
 }
@@ -51,12 +48,14 @@ class _RouteChevronState extends State<RouteChevron> {
     if (widget.chevronAnimationData != null && controller?.animation != null) {
       final start = widget.chevronAnimationData!.startOffset;
       final end = widget.chevronAnimationData!.endOffset;
+      final reversed = start > end;
       final diff = (start - end).abs();
 
       setState(() {
         if (controller?.currentPosition == widget.chevronAnimationData?.currentPosition &&
             controller?.lastPosition == widget.chevronAnimationData?.lastPosition) {
-          currentOffsetValue = start + (diff * controller!.animation!.value);
+          currentOffsetValue =
+              start + (reversed ? -(diff * controller!.animation!.value) : (diff * controller!.animation!.value));
         } else {
           currentOffsetValue = end;
         }

@@ -21,7 +21,7 @@ class UncodedOperationalIndication extends JourneyAnnotation {
           order == other.order;
 
   @override
-  int get hashCode => Object.hash(order, const ListEquality().hash(texts));
+  int get hashCode => Object.hash(type, order, const ListEquality().hash(texts));
 
   @override
   OrderPriority get orderPriority => OrderPriority.uncodedOperationalIndication;

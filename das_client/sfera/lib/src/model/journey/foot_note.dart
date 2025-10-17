@@ -26,7 +26,7 @@ class FootNote {
           identifier == other.identifier;
 
   @override
-  int get hashCode => text.hashCode ^ type.hashCode ^ refText.hashCode ^ identifier.hashCode;
+  int get hashCode => type.hashCode ^ text.hashCode ^ type.hashCode ^ refText.hashCode ^ identifier.hashCode;
 }
 
 enum FootNoteType { trackSpeed, decisiveGradientUp, decisiveGradientDown, contact, networkType, journey }

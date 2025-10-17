@@ -78,6 +78,12 @@ class BaliseLevelCrossingGroupRow extends CellRowBuilder<BaliseLevelCrossingGrou
     }
   }
 
+  @override
+  bool get isCurrentPosition {
+    final isGroupPosition = !isExpanded && data.groupedElements.contains(journeyPosition?.currentPosition);
+    return super.isCurrentPosition || isGroupPosition;
+  }
+
   int get _baliseCount => data.groupedElements.whereType<Balise>().length;
 
   int get _levelCrossingCount => data.groupedElements.whereType<LevelCrossing>().length;

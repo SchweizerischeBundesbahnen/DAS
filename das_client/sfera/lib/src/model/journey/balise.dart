@@ -32,5 +32,5 @@ class Balise extends JourneyPoint {
           ListEquality().equals(kilometre, other.kilometre);
 
   @override
-  int get hashCode => order.hashCode ^ Object.hashAll(kilometre) ^ amountLevelCrossings.hashCode;
+  int get hashCode => type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ amountLevelCrossings.hashCode;
 }

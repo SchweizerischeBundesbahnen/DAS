@@ -8,7 +8,7 @@ extension BaseDataExtension on Iterable<BaseData> {
     final baliseGroups = <SupervisedLevelCrossingGroup>[];
 
     void addBaliseLevelCrossingGroup() {
-      final groupedElements = <BaseData>[];
+      final groupedElements = <JourneyPoint>[];
       for (final baliseGroup in baliseGroups) {
         groupedElements.add(baliseGroup.balise);
 

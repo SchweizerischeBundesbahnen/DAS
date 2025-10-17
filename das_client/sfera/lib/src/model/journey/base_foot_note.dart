@@ -17,5 +17,5 @@ abstract class BaseFootNote extends JourneyAnnotation {
       other is BaseFootNote && runtimeType == other.runtimeType && footNote == other.footNote && order == other.order;
 
   @override
-  int get hashCode => footNote.hashCode ^ order.hashCode;
+  int get hashCode => type.hashCode ^ footNote.hashCode ^ order.hashCode;
 }

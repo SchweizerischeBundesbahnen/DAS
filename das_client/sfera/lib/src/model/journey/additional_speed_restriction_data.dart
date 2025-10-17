@@ -52,5 +52,5 @@ class AdditionalSpeedRestrictionData extends JourneyPoint {
           ListEquality().equals(restrictions, other.restrictions);
 
   @override
-  int get hashCode => order.hashCode ^ Object.hashAll(kilometre) ^ Object.hashAll(restrictions);
+  int get hashCode => type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ Object.hashAll(restrictions);
 }

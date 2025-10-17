@@ -1,7 +1,6 @@
 import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/reduced_overview/cells/reduced_time_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
@@ -51,7 +50,7 @@ class ReducedServicePointRow extends ServicePointRow {
         isRouteStart: metadata.journeyStart == data,
         isRouteEnd: metadata.journeyEnd == data,
         isStopOnRequest: !data.mandatoryStop,
-        chevronPosition: RouteChevron.positionFromHeight(height),
+        chevronPosition: chevronPosition,
       ),
     );
   }

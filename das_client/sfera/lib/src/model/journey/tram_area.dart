@@ -32,5 +32,6 @@ class TramArea extends JourneyPoint {
           amountTramSignals == other.amountTramSignals;
 
   @override
-  int get hashCode => order.hashCode ^ Object.hashAll(kilometre) ^ endKilometre.hashCode ^ amountTramSignals.hashCode;
+  int get hashCode =>
+      type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ endKilometre.hashCode ^ amountTramSignals.hashCode;
 }
