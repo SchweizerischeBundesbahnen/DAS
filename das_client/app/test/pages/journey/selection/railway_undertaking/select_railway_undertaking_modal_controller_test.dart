@@ -87,7 +87,16 @@ void main() {
       // EXPECT
       expect(
         emitRegister,
-        orderedEquals([RailwayUndertaking.sbbC, RailwayUndertaking.sbbP]),
+        orderedEquals([
+          RailwayUndertaking.sbbC,
+          RailwayUndertaking.sbbP,
+          RailwayUndertaking.sbb,
+          RailwayUndertaking.sbbCInt,
+          RailwayUndertaking.sbbD,
+          RailwayUndertaking.sbbInfraBuildLog,
+          RailwayUndertaking.sbbInfraPath,
+          RailwayUndertaking.sbbEPA,
+        ]),
       );
     });
 
@@ -139,7 +148,7 @@ void main() {
 
     test('updateIsSelectingRailwayUndertaking_whenSetSelectedRuCalled_thenIsCalled', () {
       // ARRANGE
-      final newRu = RailwayUndertaking.sob;
+      final newRu = RailwayUndertaking.sobT;
       reset(mockUpdateAvailableRuFunction);
 
       // ACT
