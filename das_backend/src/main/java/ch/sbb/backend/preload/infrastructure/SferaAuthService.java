@@ -1,4 +1,4 @@
-package ch.sbb.backend.preload;
+package ch.sbb.backend.preload.infrastructure;
 
 import java.time.Instant;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package ch.sbb.backend.preload.xml;
+package ch.sbb.backend.preload.infrastructure.xml;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;

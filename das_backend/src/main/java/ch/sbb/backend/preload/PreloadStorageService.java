@@ -1,16 +1,17 @@
 package ch.sbb.backend.preload;
 
+import ch.sbb.backend.preload.infrastructure.S3Service;
+import ch.sbb.backend.preload.infrastructure.xml.XmlHelper;
 import ch.sbb.backend.preload.sfera.model.v0300.JourneyProfile;
 import ch.sbb.backend.preload.sfera.model.v0300.OTNIDComplexType;
 import ch.sbb.backend.preload.sfera.model.v0300.SegmentProfile;
 import ch.sbb.backend.preload.sfera.model.v0300.TrainCharacteristics;
-import ch.sbb.backend.preload.xml.XmlHelper;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import org.springframework.stereotype.Service;
@@ -32,9 +33,9 @@ public class PreloadStorageService {
         this.s3Service = s3Service;
     }
 
-    public void save(List<JourneyProfile> journeyProfiles,
-        List<SegmentProfile> segmentProfiles,
-        List<TrainCharacteristics> trainCharacteristics) {
+    public void save(Set<JourneyProfile> journeyProfiles,
+        Set<SegmentProfile> segmentProfiles,
+        Set<TrainCharacteristics> trainCharacteristics) {
 
         try {
             String zipName = buildZipName();
@@ -59,7 +60,7 @@ public class PreloadStorageService {
         return FILENAME_FORMATTER.format(nowOffset) + ".zip";
     }
 
-    private void writeJps(List<JourneyProfile> jps, ZipOutputStream zos) throws IOException {
+    private void writeJps(Set<JourneyProfile> jps, ZipOutputStream zos) throws IOException {
         for (JourneyProfile jp : jps) {
             OTNIDComplexType otnid = jp.getTrainIdentification().getOTNID();
             String filename = String.format("JP_%s_%s_%s_%s.xml",
@@ -71,7 +72,7 @@ public class PreloadStorageService {
         }
     }
 
-    private void writeSps(List<SegmentProfile> sps, ZipOutputStream zos) throws IOException {
+    private void writeSps(Set<SegmentProfile> sps, ZipOutputStream zos) throws IOException {
         for (SegmentProfile sp : sps) {
             String filename = String.format("SP_%s_%s_%s.xml",
                 sp.getSPID(),
@@ -81,7 +82,7 @@ public class PreloadStorageService {
         }
     }
 
-    private void writeTcs(List<TrainCharacteristics> tcs, ZipOutputStream zos) throws IOException {
+    private void writeTcs(Set<TrainCharacteristics> tcs, ZipOutputStream zos) throws IOException {
         for (TrainCharacteristics tc : tcs) {
             String filename = String.format("TC_%s_%s_%s.xml",
                 tc.getTCID(),

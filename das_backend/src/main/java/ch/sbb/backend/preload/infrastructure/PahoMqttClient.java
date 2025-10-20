@@ -1,4 +1,4 @@
-package ch.sbb.backend.preload;
+package ch.sbb.backend.preload.infrastructure;
 
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.mqttv5.client.IMqttMessageListener;
@@ -37,7 +37,7 @@ public class PahoMqttClient {
         this.sferaAuthService = sferaAuthService;
     }
 
-    void connect() {
+    public void connect() {
         OAuth2AccessToken accessToken = sferaAuthService.getAccessToken();
         if (accessToken == null) {
             log.error("connecting failed, could not obtain access token");
@@ -56,7 +56,7 @@ public class PahoMqttClient {
         }
     }
 
-    void subscribe(String topic, IMqttMessageListener messageListener) {
+    public void subscribe(String topic, IMqttMessageListener messageListener) {
         try {
             final MqttSubscription[] subscriptions = {new MqttSubscription(topic, QOS_EXACTLY_ONCE)};
             IMqttMessageListener[] messageListeners = {messageListener};
@@ -66,7 +66,7 @@ public class PahoMqttClient {
         }
     }
 
-    void publish(String topic, String content) {
+    public void publish(String topic, String content) {
         MqttMessage message = new MqttMessage(content.getBytes());
         message.setQos(QOS_EXACTLY_ONCE);
         try {
@@ -76,7 +76,7 @@ public class PahoMqttClient {
         }
     }
 
-    void disconnect() {
+    public void disconnect() {
         try {
             client.disconnect();
             client.close();

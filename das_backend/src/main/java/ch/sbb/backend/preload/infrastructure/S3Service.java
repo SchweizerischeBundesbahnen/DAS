@@ -1,4 +1,4 @@
-package ch.sbb.backend.preload;
+package ch.sbb.backend.preload.infrastructure;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
