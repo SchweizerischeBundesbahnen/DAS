@@ -61,14 +61,27 @@ class LineSpeedCellBody extends StatelessWidget {
 
   TrainSeriesSpeed? _resolvedTrainSeriesSpeed({bool resolvePrevious = false}) {
     var trainSeriesSpeeds = metadata.lineSpeeds[order];
-    if (trainSeriesSpeeds == null && resolvePrevious) {
-      trainSeriesSpeeds = metadata.lineSpeeds[metadata.lineSpeeds.lastKeyBefore(order)];
+    final selectedBreakSeries = config.resolvedBreakSeries(metadata);
+
+    if (!hasSpeed(trainSeriesSpeeds, selectedBreakSeries) && resolvePrevious) {
+      var lastKey = metadata.lineSpeeds.lastKeyBefore(order);
+      while (!hasSpeed(trainSeriesSpeeds, selectedBreakSeries) && lastKey != null) {
+        trainSeriesSpeeds = metadata.lineSpeeds[lastKey];
+        lastKey = metadata.lineSpeeds.lastKeyBefore(lastKey);
+      }
     }
 
-    final selectedBreakSeries = config.resolvedBreakSeries(metadata);
     return trainSeriesSpeeds.speedFor(
       selectedBreakSeries?.trainSeries,
       breakSeries: selectedBreakSeries?.breakSeries,
     );
+  }
+
+  bool hasSpeed(Iterable<TrainSeriesSpeed>? speeds, BreakSeries? selectedBreakSeries) {
+    return speeds?.speedFor(
+          selectedBreakSeries?.trainSeries,
+          breakSeries: selectedBreakSeries?.breakSeries,
+        ) !=
+        null;
   }
 }

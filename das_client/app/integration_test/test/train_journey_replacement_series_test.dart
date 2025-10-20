@@ -7,8 +7,6 @@ import '../util/test_utils.dart';
 void main() {
   testWidgets('test replacement series is suggested, selected and returned to original', (tester) async {
     await prepareAndStartApp(tester);
-
-    // load train journey by filling out train selection page
     await loadTrainJourney(tester, trainNumber: 'T30');
 
     final expectedReplacementSeries = 'R150';
@@ -41,8 +39,6 @@ void main() {
 
   testWidgets('test does not suggest replacement when there is none', (tester) async {
     await prepareAndStartApp(tester);
-
-    // load train journey by filling out train selection page
     await loadTrainJourney(tester, trainNumber: 'T30');
 
     final expectedReplacementSeries = 'R150';
@@ -68,8 +64,6 @@ void main() {
 
   testWidgets('test message disappears when end of segment is reached even if user does nothing', (tester) async {
     await prepareAndStartApp(tester);
-
-    // load train journey by filling out train selection page
     await loadTrainJourney(tester, trainNumber: 'T30');
 
     await selectBreakSeries(tester, breakSeries: 'N160');

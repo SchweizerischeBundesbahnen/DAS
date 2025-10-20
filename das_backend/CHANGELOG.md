@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.6.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.5.0...backend-v0.6.0) (2025-10-20)
+
+
+### Features
+
+* preload mqtt connection and sfera xml ([#914](https://github.com/SchweizerischeBundesbahnen/DAS/issues/914)) ([#1265](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1265)) ([4e5d5fe](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4e5d5fefbf97e69928d4fccdaa4e99dda59ae0b7))
+* preload storage services ([#915](https://github.com/SchweizerischeBundesbahnen/DAS/issues/915)) ([#1254](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1254)) ([2a1fc1a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/2a1fc1a54484c94694447150b3c583a3f171e785))
+
+
+### Bug Fixes
+
+* add clientCredentials flow to OpenApiConfig ([#1296](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1296)) ([2484183](https://github.com/SchweizerischeBundesbahnen/DAS/commit/248418329d81e74d9c3745afaae6f4ba685abb5c))
+* conflicting key in sql ([#1312](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1312)) ([1bd278e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1bd278ef0242b0a1c9d0b642d79674437b83b9ba))
+* **deps:** update dependency io.confluent:kafka-json-schema-serializer to v8.1.0 ([#1335](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1335)) ([0b811e5](https://github.com/SchweizerischeBundesbahnen/DAS/commit/0b811e5dca9b0efbda6ed1f8eec4ba0acd573e90))
+* **deps:** update dependency org.springframework.boot:spring-boot-starter-parent to v3.5.6 ([#1276](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1276)) ([1c54423](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1c54423367e92bb30f367db0af0eeecbc3e85099))
+* **deps:** update dependency software.amazon.awssdk:bom to v2.35.0 ([#1278](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1278)) ([fabb18d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/fabb18dd6ef4be0f921f2c40e2b77d9c19623017))
+* **deps:** update dependency software.amazon.awssdk:bom to v2.35.2 ([#1307](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1307)) ([92ffd90](https://github.com/SchweizerischeBundesbahnen/DAS/commit/92ffd90226e607eba18ff70553e043071e685822))
+* **deps:** update dependency software.amazon.awssdk:bom to v2.35.8 ([#1332](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1332)) ([0d1b0b8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/0d1b0b81c70546727a0301ad3c126b7cd76ea675))
+* localhost profile without docker ([#1311](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1311)) ([105eb76](https://github.com/SchweizerischeBundesbahnen/DAS/commit/105eb76ba92d7613e97bbfca5440c2ea08d11392))
+* missing modulith pre-requisite table added ([#1310](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1310)) ([c149ace](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c149ace19fb9818369ae07761d98eaf222895c3b))
+* preload env variables and config ([#1325](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1325)) ([d5cfebb](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d5cfebb34ff1cdb706bbf183fbeed9db642be7ae))
+
+
+### Documentation
+
+* readme updated ([#1309](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1309)) ([ae0b833](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ae0b833bb922acea6fcf017e21451c547340d348))
+
 ## [0.5.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.4.1...backend-v0.5.0) (2025-09-18)
 
 

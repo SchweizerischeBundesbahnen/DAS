@@ -26,7 +26,9 @@ class TrainJourneyViewModel {
 
   final List<void Function(Journey?)> _syncOnJourneyUpdateCallbacks = [];
 
-  Stream<Journey?> get journey => _sferaRemoteRepo.journeyStream;
+  Stream<Journey?> get journey => _rxJourney.stream;
+
+  Journey? get journeyValue => _rxJourney.value;
 
   Stream<TrainJourneySettings> get settings => _rxSettings.stream;
 
@@ -42,6 +44,7 @@ class TrainJourneyViewModel {
 
   final _rxSettings = BehaviorSubject<TrainJourneySettings>.seeded(TrainJourneySettings());
   final _rxErrorCode = BehaviorSubject<ErrorCode?>.seeded(null);
+  final _rxJourney = BehaviorSubject<Journey?>.seeded(null);
 
   final _rxShowDecisiveGradient = BehaviorSubject<bool>.seeded(false);
   Timer? _showDecisiveGradientTimer;
@@ -92,8 +95,10 @@ class TrainJourneyViewModel {
   }
 
   void dispose() {
+    _rxJourney.close();
     _rxSettings.close();
     _rxShowDecisiveGradient.close();
+    _rxErrorCode.close();
     _stateSubscription?.cancel();
     _journeySubscription?.cancel();
     _syncOnJourneyUpdateCallbacks.clear();
@@ -122,10 +127,11 @@ class TrainJourneyViewModel {
       }
     });
     _journeySubscription = _sferaRemoteRepo.journeyStream.listen((journey) {
+      _rxJourney.add(journey);
       for (final callback in _syncOnJourneyUpdateCallbacks) {
         callback.call(journey);
       }
-    });
+    }, onError: _rxJourney.addError);
   }
 
   void _resetSettings() => _rxSettings.add(TrainJourneySettings());

@@ -46,6 +46,16 @@ void main() {
       await disconnect(tester);
     });
 
+    testWidgets('test train information of shunting movement journey is displayed', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T29');
+      await openReducedJourneyMenu(tester);
+
+      expect(find.text('T29R / T29 ${l10n.c_ru_sbb_p}'), findsAny);
+
+      await disconnect(tester);
+    });
+
     testWidgets('test passing and stopping points are displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
 

@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
@@ -130,7 +129,7 @@ class SpeedMapper {
 
       nextSegmentStartOrder = segmentIndex + 1 < segmentProfileReferences.length
           ? calculateOrder(segmentIndex + 1, 0)
-          : calculateOrder(segmentIndex, double.parse(segmentProfile.length));
+          : calculateOrder(segmentIndex, segmentProfile.length);
 
       for (final speedConstraint in segmentProfileReference.advisedSpeedTemporaryConstraints) {
         if (_invalidAdvisedSpeed(speedConstraint)) continue;
@@ -200,7 +199,7 @@ class SpeedMapper {
             continue;
         }
       }
-      previousSegmentEndOrder = calculateOrder(segmentIndex, double.parse(segmentProfile.length));
+      previousSegmentEndOrder = calculateOrder(segmentIndex, segmentProfile.length);
     }
 
     final groupedAdvisedSpeedSegments = drafts.groupListsBy((draft) => draft.advisedSpeedGroupKey);
