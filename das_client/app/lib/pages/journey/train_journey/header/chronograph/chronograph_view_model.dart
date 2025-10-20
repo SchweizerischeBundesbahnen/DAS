@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 
-import 'package:app/pages/journey/train_journey/advised_speed/advised_speed_state.dart';
+import 'package:app/pages/journey/train_journey/advised_speed/advised_speed_model.dart';
 import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/train_journey/punctuality/punctuality_model.dart';
 import 'package:clock/clock.dart';
@@ -16,12 +16,12 @@ class ChronographViewModel {
     required Stream<Journey?> journeyStream,
     required Stream<JourneyPositionModel?> journeyPositionStream,
     required Stream<PunctualityModel> punctualityStream,
-    required Stream<AdvisedSpeedState> adlStateStream,
+    required Stream<AdvisedSpeedModel> advisedSpeedModelStream,
   }) {
     _initJourneySubscription(journeyStream);
     _initJourneyPositionSubscription(journeyPositionStream);
     _initPunctualitySubscription(punctualityStream);
-    _initAdlSubscription(adlStateStream);
+    _initAdvisedSpeedSubscription(advisedSpeedModelStream);
   }
 
   bool _isAdlActive = false;
@@ -87,10 +87,10 @@ class ChronographViewModel {
     );
   }
 
-  void _initAdlSubscription(Stream<AdvisedSpeedState> adlStateStream) {
+  void _initAdvisedSpeedSubscription(Stream<AdvisedSpeedModel> modelStream) {
     _subscriptions.add(
-      adlStateStream.listen((adlState) {
-        _isAdlActive = adlState == AdvisedSpeedState.active;
+      modelStream.listen((model) {
+        _isAdlActive = model is Active;
 
         _emitState();
       }),

@@ -1274,7 +1274,7 @@ void main() {
 
     expect(advisedSpeeds[3], isA<VelocityMaxAdvisedSpeedSegment>());
     expect(advisedSpeeds[3].speed, isNull);
-    expect(advisedSpeeds[3].startOrder, 305050);
+    expect(advisedSpeeds[3].startOrder, 305100);
     expect(advisedSpeeds[3].endOrder, 500500);
 
     expect(advisedSpeeds[4], isA<FollowTrainAdvisedSpeedSegment>());

@@ -22,8 +22,7 @@ import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:app/pages/journey/train_journey/widgets/warn_function_modal_sheet.dart';
 import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/pages/journey/warn_app_view_model.dart';
-import 'package:app/sound/koa_sound.dart';
-import 'package:app/sound/warn_app_sound.dart';
+import 'package:app/sound/das_sounds.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -109,7 +108,7 @@ class TrainJourneyOverview extends StatelessWidget {
             journeyStream: trainJourneyViewModel.journey,
             journeyPositionStream: context.read<JourneyPositionViewModel>().model,
             punctualityStream: context.read<PunctualityViewModel>().model,
-            adlStateStream: context.read<AdvisedSpeedViewModel>().advisedSpeedState,
+            advisedSpeedModelStream: context.read<AdvisedSpeedViewModel>().model,
           ),
           dispose: (_, vm) => vm.dispose(),
           builder: (context, child) => _body(context),
@@ -174,7 +173,7 @@ class TrainJourneyOverview extends StatelessWidget {
   }
 
   void _triggerWarnappNotification(BuildContext context) {
-    WarnAppSound().play();
+    DI.get<DASSounds>().warnApp.play();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       showWarnFunctionModalSheet(
         context,
@@ -189,7 +188,7 @@ class TrainJourneyOverview extends StatelessWidget {
     if (event.isWarn) {
       _triggerWarnappNotification(context);
     } else if (event.isKoa && event.value == KoaState.waitCancelled.name) {
-      KoaSound().play();
+      DI.get<DASSounds>().koa.play();
     }
   }
 }

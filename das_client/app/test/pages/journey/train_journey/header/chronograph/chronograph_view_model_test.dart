@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 
-import 'package:app/pages/journey/train_journey/advised_speed/advised_speed_state.dart';
+import 'package:app/pages/journey/train_journey/advised_speed/advised_speed_model.dart';
 import 'package:app/pages/journey/train_journey/header/chronograph/chronograph_view_model.dart';
 import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/train_journey/punctuality/punctuality_model.dart';
@@ -24,7 +24,7 @@ void main() {
   late Clock testClock;
   late ChronographViewModel testee;
   late BehaviorSubject<Journey?> rxMockJourney;
-  late BehaviorSubject<AdvisedSpeedState> rxMockAdlState;
+  late BehaviorSubject<AdvisedSpeedModel> rxMockAdvisedSpeedModel;
   late BehaviorSubject<JourneyPositionModel> rxMockJourneyPosition;
   late BehaviorSubject<PunctualityModel> rxMockPunctuality;
   late StreamSubscription punctualitySubscription;
@@ -32,6 +32,14 @@ void main() {
   late List<PunctualityModel> punctualityEmitRegister;
   late List<String> formattedWallclockTimeRegister;
   late FakeAsync testAsync;
+
+  final activeAdvisedSpeedModel = AdvisedSpeedModel.active(
+    segment: VelocityMaxAdvisedSpeedSegment(
+      startOrder: 0,
+      endOrder: 1,
+      endData: Signal(order: 1, kilometre: []),
+    ),
+  );
 
   final journeyWithoutSpeed = Journey(
     metadata: Metadata(),
@@ -49,7 +57,7 @@ void main() {
     testClock = Clock.fixed(clock.now());
     fakeAsync((fakeAsync) {
       rxMockJourney = BehaviorSubject<Journey?>();
-      rxMockAdlState = BehaviorSubject<AdvisedSpeedState>.seeded(AdvisedSpeedState.inactive);
+      rxMockAdvisedSpeedModel = BehaviorSubject<AdvisedSpeedModel>.seeded(AdvisedSpeedModel.inactive());
       rxMockJourneyPosition = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
       rxMockPunctuality = BehaviorSubject<PunctualityModel>.seeded(PunctualityModel.hidden());
       testAsync = fakeAsync;
@@ -59,7 +67,7 @@ void main() {
           journeyPositionStream: rxMockJourneyPosition.stream,
           punctualityStream: rxMockPunctuality.stream,
           journeyStream: rxMockJourney.stream,
-          adlStateStream: rxMockAdlState.stream,
+          advisedSpeedModelStream: rxMockAdvisedSpeedModel.stream,
         );
         formattedWallclockTimeSubscription = testee.formattedWallclockTime.listen(formattedWallclockTimeRegister.add);
       });
@@ -75,7 +83,7 @@ void main() {
     punctualityEmitRegister.clear();
     testee.dispose();
     rxMockJourney.close();
-    rxMockAdlState.close();
+    rxMockAdvisedSpeedModel.close();
     rxMockPunctuality.close();
     rxMockJourneyPosition.close();
     GetIt.I.reset();
@@ -153,8 +161,8 @@ void main() {
     test('punctualityModel_AdlIsInactive_staysHiddenAndDoesNotEmit', () {
       // ACT
       testAsync.run((_) {
-        rxMockAdlState.add(AdvisedSpeedState.active);
-        rxMockAdlState.add(AdvisedSpeedState.inactive);
+        rxMockAdvisedSpeedModel.add(activeAdvisedSpeedModel);
+        rxMockAdvisedSpeedModel.add(AdvisedSpeedModel.inactive());
       });
       _processStreamInFakeAsync(testAsync);
 
@@ -220,7 +228,7 @@ void main() {
       () {
         // ACT
         testAsync.run((_) {
-          rxMockAdlState.add(AdvisedSpeedState.active);
+          rxMockAdvisedSpeedModel.add(activeAdvisedSpeedModel);
           rxMockJourneyPosition.add(JourneyPositionModel(previousServicePoint: bServicePoint));
         });
         _processStreamInFakeAsync(testAsync);
@@ -237,7 +245,7 @@ void main() {
         // ACT
         testAsync.run((_) {
           rxMockJourneyPosition.add(JourneyPositionModel(previousServicePoint: bServicePoint));
-          rxMockAdlState.add(AdvisedSpeedState.active);
+          rxMockAdvisedSpeedModel.add(activeAdvisedSpeedModel);
         });
         _processStreamInFakeAsync(testAsync);
 

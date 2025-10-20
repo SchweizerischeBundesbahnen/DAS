@@ -3,8 +3,8 @@ import 'package:app/sound/sound.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:audioplayers/audioplayers.dart';
 
-class AdvisedSpeedStart extends Sound {
-  const AdvisedSpeedStart();
+class AdvisedSpeedStartSound extends Sound {
+  const AdvisedSpeedStartSound();
 
   static const _volume = 1.0;
 

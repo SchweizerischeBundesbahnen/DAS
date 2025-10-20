@@ -1,6 +1,7 @@
 import 'package:app/brightness/brightness_manager.dart';
 import 'package:app/brightness/brightness_manager_impl.dart';
 import 'package:app/di/di.dart';
+import 'package:app/sound/das_sounds.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:app/util/user_settings.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -24,6 +25,7 @@ class DASBaseScope extends DIScope {
     getIt.pushNewScope(scopeName: scopeName);
     getIt.registerBrightnessManager();
     getIt.registerAudioPlayer();
+    getIt.registerSounds();
     getIt.registerBattery();
     getIt.registerMotionDataService();
     getIt.registerWarnapp();
@@ -53,6 +55,10 @@ extension BaseScopeExtension on GetIt {
       _log.fine('Register AudioPlayer');
       return AudioPlayer();
     });
+  }
+
+  void registerSounds() {
+    registerSingleton<DASSounds>(DASSounds());
   }
 
   void registerMotionDataService() {
