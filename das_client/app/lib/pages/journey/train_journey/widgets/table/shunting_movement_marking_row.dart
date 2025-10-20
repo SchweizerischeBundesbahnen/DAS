@@ -14,7 +14,7 @@ class ShuntingMovementMarkingRow extends WidgetRowBuilder<ShuntingMovementMarkin
     required super.rowIndex,
     required super.metadata,
     required super.data,
-  });
+  }) : super(height: 44.0);
 
   @override
   Widget buildRowWidget(BuildContext context) {
