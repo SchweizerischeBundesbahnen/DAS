@@ -1,44 +1,51 @@
 import 'dart:async';
 
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/train_journey/adaptive_steering/adaptive_steering_state.dart';
+import 'package:app/pages/journey/train_journey/advised_speed/advised_speed_model.dart';
+import 'package:app/pages/journey/train_journey/advised_speed/advised_speed_state.dart';
 import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
-import 'package:app/sound/adaptive_steering_end.dart';
-import 'package:app/sound/adaptive_steering_start.dart';
+import 'package:app/sound/advised_speed_end.dart';
+import 'package:app/sound/advised_speed_start.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
-class AdaptiveSteeringViewModel {
-  AdaptiveSteeringViewModel({
+class AdvisedSpeedViewModel {
+  AdvisedSpeedViewModel({
     required Stream<Journey?> journeyStream,
     required Stream<JourneyPositionModel?> journeyPositionStream,
   }) {
     _initJourneyStreamSubscription(journeyStream, journeyPositionStream);
   }
 
-  final _adlEndDisplaySeconds = DI.get<TimeConstants>().adaptiveSteeringEndDisplaySeconds;
+  final _adlEndDisplaySeconds = DI.get<TimeConstants>().advisedSpeedEndDisplaySeconds;
 
   Timer? _adlEndTimer;
 
   StreamSubscription<(Journey?, JourneyPositionModel?)>? _journeySubscription;
 
-  final _rxActiveAdaptiveSteering = BehaviorSubject<AdvisedSpeedSegment?>.seeded(null);
+  final _rxActiveAdvisedSpeed = BehaviorSubject<AdvisedSpeedSegment?>.seeded(null);
 
-  Stream<AdvisedSpeedSegment?> get activeAdl => _rxActiveAdaptiveSteering.distinct();
+  final _rxModel = BehaviorSubject<AdvisedSpeedModel>.seeded(AdvisedSpeedModel.inactive());
 
-  AdvisedSpeedSegment? get activeAdlValue => _rxActiveAdaptiveSteering.value;
+  Stream<AdvisedSpeedSegment?> get activeAdl => _rxActiveAdvisedSpeed.distinct();
 
-  final _rxAdaptiveSteeringState = BehaviorSubject<AdaptiveSteeringState>.seeded(AdaptiveSteeringState.inactive);
+  AdvisedSpeedSegment? get activeAdlValue => _rxActiveAdvisedSpeed.value;
 
-  Stream<AdaptiveSteeringState> get adaptiveSteeringState => _rxAdaptiveSteeringState.distinct();
+  final _rxAdvisedSpeedState = BehaviorSubject<AdvisedSpeedState>.seeded(AdvisedSpeedState.inactive);
 
-  AdaptiveSteeringState get adaptiveSteeringStateValue => _rxAdaptiveSteeringState.value;
+  Stream<AdvisedSpeedState> get advisedSpeedState => _rxAdvisedSpeedState.distinct();
+
+  Stream<AdvisedSpeedModel> get model => _rxModel.distinct();
+
+  AdvisedSpeedModel get modelValue => _rxModel.value;
+
+  AdvisedSpeedState get advisedSpeedStateValue => _rxAdvisedSpeedState.value;
 
   void dispose() {
     _journeySubscription?.cancel();
-    _rxActiveAdaptiveSteering.close();
-    _rxAdaptiveSteeringState.close();
+    _rxActiveAdvisedSpeed.close();
+    _rxAdvisedSpeedState.close();
     _adlEndTimer?.cancel();
   }
 
@@ -61,31 +68,31 @@ class AdaptiveSteeringViewModel {
         if (activeAdl != null) {
           if (activeAdl.endOrder == journeyPosition.currentPosition!.order) {
             // ADL ends at the last position
-            _adlEnd(AdaptiveSteeringState.end);
+            _adlEnd(AdvisedSpeedState.end);
           } else {
             if (activeAdlValue == null) {
               // Start of ADL
-              AdaptiveSteeringStart().play();
+              AdvisedSpeedStart().play();
             }
 
-            _rxActiveAdaptiveSteering.add(activeAdl);
-            _rxAdaptiveSteeringState.add(AdaptiveSteeringState.active);
+            _rxActiveAdvisedSpeed.add(activeAdl);
+            _rxAdvisedSpeedState.add(AdvisedSpeedState.active);
           }
         } else if (activeAdlValue != null) {
           // ADL Cancel
-          _adlEnd(AdaptiveSteeringState.cancel);
+          _adlEnd(AdvisedSpeedState.cancel);
         }
       }
     });
   }
 
-  void _adlEnd(AdaptiveSteeringState adlState) {
-    if (_rxAdaptiveSteeringState.value != AdaptiveSteeringState.active) return;
+  void _adlEnd(AdvisedSpeedState adlState) {
+    if (_rxAdvisedSpeedState.value != AdvisedSpeedState.active) return;
 
     // End of ADL
-    _rxActiveAdaptiveSteering.add(null);
-    _rxAdaptiveSteeringState.add(adlState);
-    AdaptiveSteeringEnd().play();
+    _rxActiveAdvisedSpeed.add(null);
+    _rxAdvisedSpeedState.add(adlState);
+    AdvisedSpeedEnd().play();
     _startAdlEndTimer();
   }
 
@@ -93,7 +100,7 @@ class AdaptiveSteeringViewModel {
     _adlEndTimer?.cancel();
     _adlEndTimer = Timer(Duration(seconds: _adlEndDisplaySeconds), () {
       if (activeAdlValue == null) {
-        _rxAdaptiveSteeringState.add(AdaptiveSteeringState.inactive);
+        _rxAdvisedSpeedState.add(AdvisedSpeedState.inactive);
       }
     });
   }

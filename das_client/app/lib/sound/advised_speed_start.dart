@@ -3,8 +3,8 @@ import 'package:app/sound/sound.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:audioplayers/audioplayers.dart';
 
-class AdaptiveSteeringStart extends Sound {
-  const AdaptiveSteeringStart();
+class AdvisedSpeedStart extends Sound {
+  const AdvisedSpeedStart();
 
   static const _volume = 1.0;
 
@@ -13,6 +13,6 @@ class AdaptiveSteeringStart extends Sound {
     await Sound.volumeController.setVolume(_volume);
     final audioPlayer = DI.get<AudioPlayer>();
     await audioPlayer.stop();
-    await audioPlayer.play(AssetSource(AppAssets.adaptiveSteeringStart));
+    await audioPlayer.play(AssetSource(AppAssets.AdvisedSpeedStart));
   }
 }

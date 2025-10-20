@@ -1,6 +1,6 @@
 import 'package:app/di/di.dart';
-import 'package:app/pages/journey/train_journey/adaptive_steering/adaptive_steering_notification.dart';
-import 'package:app/pages/journey/train_journey/adaptive_steering/adaptive_steering_view_model.dart';
+import 'package:app/pages/journey/train_journey/advised_speed/advised_speed_notification.dart';
+import 'package:app/pages/journey/train_journey/advised_speed/advised_speed_view_model.dart';
 import 'package:app/pages/journey/train_journey/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/train_journey/header/chronograph/chronograph_view_model.dart';
 import 'package:app/pages/journey/train_journey/header/connectivity/connectivity_view_model.dart';
@@ -81,7 +81,7 @@ class TrainJourneyOverview extends StatelessWidget {
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
-          create: (_) => AdaptiveSteeringViewModel(
+          create: (_) => AdvisedSpeedViewModel(
             journeyStream: trainJourneyViewModel.journey,
             journeyPositionStream: journeyPositionViewModel.model,
           ),
@@ -109,7 +109,7 @@ class TrainJourneyOverview extends StatelessWidget {
             journeyStream: trainJourneyViewModel.journey,
             journeyPositionStream: context.read<JourneyPositionViewModel>().model,
             punctualityStream: context.read<PunctualityViewModel>().model,
-            adlStateStream: context.read<AdaptiveSteeringViewModel>().adaptiveSteeringState,
+            adlStateStream: context.read<AdvisedSpeedViewModel>().advisedSpeedState,
           ),
           dispose: (_, vm) => vm.dispose(),
           builder: (context, child) => _body(context),
@@ -143,7 +143,7 @@ class TrainJourneyOverview extends StatelessWidget {
     return Column(
       children: [
         Header(),
-        AdaptiveSteeringNotification(),
+        AdvisedSpeedNotification(),
         ManeuverNotification(),
         KoaNotification(),
         ReplacementSeriesNotification(),

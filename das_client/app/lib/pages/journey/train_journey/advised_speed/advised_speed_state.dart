@@ -1,4 +1,4 @@
-enum AdaptiveSteeringState {
+enum AdvisedSpeedState {
   active,
   inactive,
   end,

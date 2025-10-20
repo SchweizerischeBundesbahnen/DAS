@@ -3,8 +3,8 @@ import 'package:app/sound/sound.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:audioplayers/audioplayers.dart';
 
-class AdaptiveSteeringEnd extends Sound {
-  const AdaptiveSteeringEnd();
+class AdvisedSpeedEnd extends Sound {
+  const AdvisedSpeedEnd();
 
   static const _volume = 1.0;
 
@@ -13,6 +13,6 @@ class AdaptiveSteeringEnd extends Sound {
     await Sound.volumeController.setVolume(_volume);
     final audioPlayer = DI.get<AudioPlayer>();
     await audioPlayer.stop();
-    await audioPlayer.play(AssetSource(AppAssets.adaptiveSteeringEnd));
+    await audioPlayer.play(AssetSource(AppAssets.AdvisedSpeedEnd));
   }
 }

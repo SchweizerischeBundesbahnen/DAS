@@ -11,7 +11,7 @@ class TimeConstants {
 
   int get arrivalDepartureOperationalResetSeconds => 10;
 
-  int get adaptiveSteeringEndDisplaySeconds => 30;
+  int get advisedSpeedEndDisplaySeconds => 30;
 
   int get kmDecisiveGradientResetSeconds => 10;
 

@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/train_journey/adaptive_steering/adaptive_steering_notification.dart';
+import 'package:app/pages/journey/train_journey/advised_speed/advised_speed_notification.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/das_chronograph.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/advised_speed_cell_body.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
@@ -8,41 +8,41 @@ import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
-  testWidgets('test adl notification displayed correctly', (tester) async {
+  testWidgets('test advised speed notification displayed correctly', (tester) async {
     await prepareAndStartApp(tester);
 
     await loadTrainJourney(tester, trainNumber: 'T24');
 
-    // Check that there is no ADL notification
-    expect(find.byKey(AdaptiveSteeringNotification.adaptiveSteeringNotificationKey), findsNothing);
+    // Check that there is no advised speed notification
+    expect(find.byKey(AdvisedSpeedNotification.advisedSpeedNotificationKey), findsNothing);
 
-    // 1st ADL Message (check speed)
-    await waitUntilExists(tester, _findAdlNotificationContainingText('80'));
-    await waitUntilExists(tester, _findAdlNotificationContainingText(l10n.w_adl_end));
+    // 1st advised speed Message (check speed)
+    await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('80'));
+    await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText(l10n.w_advised_speed_end));
 
-    // 2nd ADL Message (check signal)
-    await waitUntilExists(tester, _findAdlNotificationContainingText('A653'));
+    // 2nd advised speed Message (check signal)
+    await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('A653'));
     await tester.pumpAndSettle(const Duration(milliseconds: 100));
 
-    // 3rd ADL Message (check icon)
-    await waitUntilExists(tester, find.byKey(AdaptiveSteeringNotification.adaptiveSteeringNotificationIconKey));
+    // 3rd advised speed Message (check icon)
+    await waitUntilExists(tester, find.byKey(AdvisedSpeedNotification.advisedSpeedNotificationIconKey));
     // Punctuality Hidden
     expect(find.byKey(DASChronograph.punctualityTextKey), findsNothing);
-    await waitUntilExists(tester, _findAdlNotificationContainingText(l10n.w_adl_end));
+    await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText(l10n.w_advised_speed_end));
     // Punctuality Visible
     expect(find.byKey(DASChronograph.punctualityTextKey), findsOne);
 
-    // 4th ADL Message (vmax, speed not in adl)
-    await waitUntilExists(tester, _findAdlNotificationContainingText('A312'));
-    expect(_findAdlNotificationContainingText('80'), findsNothing);
-    await waitUntilExists(tester, _findAdlNotificationContainingText(l10n.w_adl_end));
+    // 4th advised speed Message (vmax, speed not in adl)
+    await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('A312'));
+    expect(_findAdvisedSpeedNotificationContainingText('80'), findsNothing);
+    await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText(l10n.w_advised_speed_end));
 
-    // 5th ADL Message (check service point & cancel)
-    await waitUntilExists(tester, _findAdlNotificationContainingText('Allaman'));
-    await waitUntilExists(tester, _findAdlNotificationContainingText(l10n.w_adl_cancel));
+    // 5th advised speed Message (check service point & cancel)
+    await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('Allaman'));
+    await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText(l10n.w_advised_speed_cancel));
 
     // Check that cancel message disappears after some time
-    await waitUntilNotExists(tester, _findAdlNotificationContainingText(l10n.w_adl_cancel));
+    await waitUntilNotExists(tester, _findAdvisedSpeedNotificationContainingText(l10n.w_advised_speed_cancel));
 
     await disconnect(tester);
   });
@@ -53,9 +53,9 @@ void main() {
     await loadTrainJourney(tester, trainNumber: 'T24');
 
     // Check that first row displayed advised speed
-    final adlStartRow = findDASTableRowByText('A236');
-    await waitUntilExists(tester, _findNonEmptyAdvisedSpeedCellOf(adlStartRow));
-    _findTextWithin(adlStartRow, '80');
+    final advisedSpeedStartRow = findDASTableRowByText('A236');
+    await waitUntilExists(tester, _findNonEmptyAdvisedSpeedCellOf(advisedSpeedStartRow));
+    _findTextWithin(advisedSpeedStartRow, '80');
 
     // Check service points display advised speed
     final geneveRow = findDASTableRowByText('Genève');
@@ -64,9 +64,9 @@ void main() {
 
     await dragUntilTextInStickyHeader(tester, 'Coppet');
 
-    // Check that adl end displayed calculated speed on signal row
-    final adlEndRow = findDASTableRowByText('A653');
-    await waitUntilExists(tester, _findCalculatedSpeedCellOf(adlEndRow, '110'));
+    // Check that advised speed end displayed calculated speed on signal row
+    final advisedSpeedEndRow = findDASTableRowByText('A653');
+    await waitUntilExists(tester, _findCalculatedSpeedCellOf(advisedSpeedEndRow, '110'));
 
     await waitUntilExists(
       tester,
@@ -74,9 +74,9 @@ void main() {
       maxWaitSeconds: 30,
     );
 
-    // Check that adl end displayed calculated speed on signal row
-    final adlEndRowServicePoint = findDASTableRowByText('Allaman');
-    expect(_findCalculatedSpeedCellOf(adlEndRowServicePoint, '100'), findsOne);
+    // Check that advisedSpeed end displayed calculated speed on signal row
+    final advisedSpeedEndRowServicePoint = findDASTableRowByText('Allaman');
+    expect(_findCalculatedSpeedCellOf(advisedSpeedEndRowServicePoint, '100'), findsOne);
 
     await disconnect(tester);
   });
@@ -87,9 +87,9 @@ void _findTextWithin(Finder baseFinder, String s) {
   expect(speed, findsOneWidget);
 }
 
-Finder _findAdlNotificationContainingText(String text) {
+Finder _findAdvisedSpeedNotificationContainingText(String text) {
   return find.descendant(
-    of: find.byKey(AdaptiveSteeringNotification.adaptiveSteeringNotificationKey),
+    of: find.byKey(AdvisedSpeedNotification.advisedSpeedNotificationKey),
     matching: find.textContaining(text),
   );
 }

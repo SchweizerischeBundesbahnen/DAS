@@ -24,18 +24,18 @@
   "p_train_journey_table_level_crossing": "Pl",
   "p_train_journey_table_tram_area": "TS",
   "p_train_journey_appbar_text": "Informazioni sulla corsa",
-  "w_adaptive_steering_cancel": "ADL Cancel",
-  "w_adaptive_steering_end": "ADL END",
-  "w_adaptive_steering_vopt": "ADL VOpt: viaggiare a {speed}km/h fino a {endLocation}",
-  "@w_adaptive_steering_vopt": {
+  "w_advised_speed_cancel": "ADL Cancel",
+  "w_advised_speed_end": "ADL END",
+  "w_advised_speed_vopt": "ADL VOpt: viaggiare a {speed}km/h fino a {endLocation}",
+  "@w_advised_speed_vopt": {
     "type": "text",
     "placeholders": {
       "speed": {},
       "endLocation": {}
     }
   },
-  "w_adaptive_steering_vmax": "ADL Vmax: viaggare fino a {endLocation}",
-  "@w_adaptive_steering_vmax": {
+  "w_advised_speed_vmax": "ADL Vmax: viaggare fino a {endLocation}",
+  "@w_advised_speed_vmax": {
     "type": "text",
     "placeholders": {
       "endLocation": {}
@@ -50,7 +50,7 @@
   "p_login_login_button_text": "Login",
   "p_login_login_button_description": "Accedi con il tuo account",
   "p_login_login_failed": "Login non riuscito",
-  "w_adaptive_steering_notification_title": "Annuncio ADL",
+  "w_advised_speed_notification_title": "Annuncio ADL",
   "w_extended_menu_title": "Altre funzionalità",
   "w_extended_menu_maneuver_mode": "Modalità di manovra",
   "w_extended_menu_breaking_slip_action": "Apri il bollettino di frenatura e peso treno",

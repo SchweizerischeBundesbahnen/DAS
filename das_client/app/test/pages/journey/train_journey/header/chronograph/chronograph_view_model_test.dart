@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 
-import 'package:app/pages/journey/train_journey/adaptive_steering/adaptive_steering_state.dart';
+import 'package:app/pages/journey/train_journey/advised_speed/advised_speed_state.dart';
 import 'package:app/pages/journey/train_journey/header/chronograph/chronograph_view_model.dart';
 import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/train_journey/punctuality/punctuality_model.dart';
@@ -24,7 +24,7 @@ void main() {
   late Clock testClock;
   late ChronographViewModel testee;
   late BehaviorSubject<Journey?> rxMockJourney;
-  late BehaviorSubject<AdaptiveSteeringState> rxMockAdlState;
+  late BehaviorSubject<AdvisedSpeedState> rxMockAdlState;
   late BehaviorSubject<JourneyPositionModel> rxMockJourneyPosition;
   late BehaviorSubject<PunctualityModel> rxMockPunctuality;
   late StreamSubscription punctualitySubscription;
@@ -49,7 +49,7 @@ void main() {
     testClock = Clock.fixed(clock.now());
     fakeAsync((fakeAsync) {
       rxMockJourney = BehaviorSubject<Journey?>();
-      rxMockAdlState = BehaviorSubject<AdaptiveSteeringState>.seeded(AdaptiveSteeringState.inactive);
+      rxMockAdlState = BehaviorSubject<AdvisedSpeedState>.seeded(AdvisedSpeedState.inactive);
       rxMockJourneyPosition = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
       rxMockPunctuality = BehaviorSubject<PunctualityModel>.seeded(PunctualityModel.hidden());
       testAsync = fakeAsync;
@@ -153,8 +153,8 @@ void main() {
     test('punctualityModel_AdlIsInactive_staysHiddenAndDoesNotEmit', () {
       // ACT
       testAsync.run((_) {
-        rxMockAdlState.add(AdaptiveSteeringState.active);
-        rxMockAdlState.add(AdaptiveSteeringState.inactive);
+        rxMockAdlState.add(AdvisedSpeedState.active);
+        rxMockAdlState.add(AdvisedSpeedState.inactive);
       });
       _processStreamInFakeAsync(testAsync);
 
@@ -220,7 +220,7 @@ void main() {
       () {
         // ACT
         testAsync.run((_) {
-          rxMockAdlState.add(AdaptiveSteeringState.active);
+          rxMockAdlState.add(AdvisedSpeedState.active);
           rxMockJourneyPosition.add(JourneyPositionModel(previousServicePoint: bServicePoint));
         });
         _processStreamInFakeAsync(testAsync);
@@ -237,7 +237,7 @@ void main() {
         // ACT
         testAsync.run((_) {
           rxMockJourneyPosition.add(JourneyPositionModel(previousServicePoint: bServicePoint));
-          rxMockAdlState.add(AdaptiveSteeringState.active);
+          rxMockAdlState.add(AdvisedSpeedState.active);
         });
         _processStreamInFakeAsync(testAsync);
 

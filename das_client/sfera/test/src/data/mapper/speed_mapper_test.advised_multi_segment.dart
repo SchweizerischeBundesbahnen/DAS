@@ -132,7 +132,7 @@ void main() {
           when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
           when(mockTemporaryConstraintA1.endLocation).thenReturn(3050.0);
           when(mockAdvisedSpeedA1.speed).thenReturn('80');
-          when(mockAdvisedSpeedA1.reasonCode).thenReturn(ReasonCodeDto.adaptiveSteeringFixedTime);
+          when(mockAdvisedSpeedA1.reasonCode).thenReturn(ReasonCodeDto.AdvisedSpeedFixedTime);
           when(mockTemporaryConstraintA2.startLocation).thenReturn(2950.0);
           when(mockTemporaryConstraintA2.endLocation).thenReturn(3050.0);
 

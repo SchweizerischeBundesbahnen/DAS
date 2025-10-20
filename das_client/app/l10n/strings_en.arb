@@ -33,18 +33,18 @@
   "p_login_login_button_text": "Login",
   "p_login_login_button_description": "Log in with your account",
   "p_login_login_failed": "Login failed",
-  "w_adaptive_steering_cancel": "ADL Cancel",
-  "w_adaptive_steering_end": "ADL END",
-  "w_adaptive_steering_vopt": "ADL VOpt: drive at {speed}km/h until {endLocation}",
-  "@w_adaptive_steering_vopt": {
+  "w_advised_speed_cancel": "ADL Cancel",
+  "w_advised_speed_end": "ADL END",
+  "w_advised_speed_vopt": "ADL VOpt: drive at {speed}km/h until {endLocation}",
+  "@w_advised_speed_vopt": {
     "type": "text",
     "placeholders": {
       "speed": {},
       "endLocation": {}
     }
   },
-  "w_adaptive_steering_vmax": "ADL Vmax: drive until {endLocation}",
-  "@w_adaptive_steering_vmax": {
+  "w_advised_speed_vmax": "ADL Vmax: drive until {endLocation}",
+  "@w_advised_speed_vmax": {
     "type": "text",
     "placeholders": {
       "endLocation": {}
