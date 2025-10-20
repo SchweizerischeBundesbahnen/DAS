@@ -9,6 +9,7 @@ extension RuExtension on RailwayUndertaking {
     RailwayUndertaking.blsP => context.l10n.c_ru_bls_p,
     RailwayUndertaking.blsC => context.l10n.c_ru_bls_c,
     RailwayUndertaking.sob => context.l10n.c_ru_sob,
+    RailwayUndertaking.unknown => context.l10n.c_unknown,
   };
 
   String localizedText(AppLocalizations localizations) => switch (this) {
@@ -17,5 +18,6 @@ extension RuExtension on RailwayUndertaking {
     RailwayUndertaking.blsP => localizations.c_ru_bls_p,
     RailwayUndertaking.blsC => localizations.c_ru_bls_c,
     RailwayUndertaking.sob => localizations.c_ru_sob,
+    RailwayUndertaking.unknown => localizations.c_unknown,
   };
 }

@@ -14,6 +14,7 @@ import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
 import 'package:sfera/src/data/dto/temporary_constraints_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
+import 'package:sfera/src/data/dto/train_identification_dto.dart';
 import 'package:sfera/src/data/mapper/mapper_utils.dart';
 import 'package:sfera/src/data/mapper/segment_profile_mapper.dart';
 import 'package:sfera/src/data/mapper/speed_mapper.dart';
@@ -79,9 +80,9 @@ class SferaModelMapper {
         .where((asr) => asr.isDisplayed(trackEquipmentSegments))
         .toList();
 
-    journeyData.addAll(_consolidateAdditionalSpeedRestrictions(journeyData, displayedSpeedRestrictions));
     journeyData.addAll(_cabSignalingStart(trackEquipmentSegments));
     journeyData.addAll(_cabSignalingEnd(trackEquipmentSegments, journeyData));
+    journeyData.addAll(_consolidateAdditionalSpeedRestrictions(journeyData, displayedSpeedRestrictions));
     journeyData.addAll(_parseUncodedOperationalIndications(segmentProfileReferences));
     journeyData.addAll(_parseTramAreas(segmentProfiles));
     journeyData.addAll(_parseCommunicationNetworkChanges(segmentProfileReferences, segmentProfiles));
@@ -451,18 +452,50 @@ class SferaModelMapper {
   ) {
     final List<ShuntingMovementMarking> result = [];
 
+    final segmentData = _SegmentMapperData();
+
     for (final reference in segmentProfilesReferences) {
-      final nonStandardIndications = reference.jpContextInformation?.nonStandardIndications.firstOrNull;
-      if (nonStandardIndications?.trainRunType == TrainRunTypeDto.shuntingOnOpenTrack) {
+      final nonStandardIndication = reference.jpContextInformation?.nonStandardIndications.firstOrNull;
+      if (nonStandardIndication?.trainRunType == TrainRunTypeDto.shuntingOnOpenTrack) {
         final segmentProfile = segmentProfiles.firstMatch(reference);
         final segmentIndex = segmentProfiles.indexOf(segmentProfile);
-        final segmentStartLocation = calculateOrder(segmentIndex, 0);
-        final segmentEndLocation = calculateOrder(segmentIndex, segmentProfile.length);
-        result.add(ShuntingMovementMarking(order: segmentStartLocation, isStart: true));
-        if (segmentProfile != segmentProfiles.last) {
-          result.add(ShuntingMovementMarking(order: segmentEndLocation, isStart: false));
+
+        final constraint = nonStandardIndication!.constraint;
+        if (constraint == null) {
+          _log.warning('Found non standard indications $nonStandardIndication without constraint');
+          break;
+        }
+
+        switch (constraint.startEndQualifier) {
+          case StartEndQualifierDto.starts:
+            segmentData.startLocation = constraint.startLocation;
+            segmentData.startIndex = segmentIndex;
+            break;
+          case StartEndQualifierDto.startsEnds:
+            segmentData.startLocation = constraint.startLocation;
+            segmentData.startIndex = segmentIndex;
+            continue next;
+          next:
+          case StartEndQualifierDto.ends:
+            segmentData.endLocation = constraint.endLocation;
+            segmentData.endIndex = segmentIndex;
+            break;
+          case StartEndQualifierDto.wholeSp:
+            break;
+        }
+
+        if (segmentData.isComplete) {
+          result.add(ShuntingMovementMarking(order: segmentData.startOrder!, isStart: true));
+          result.add(ShuntingMovementMarking(order: segmentData.endOrder!, isStart: false));
+          segmentData.reset();
         }
       }
+    }
+
+    if (segmentData.isIncomplete && segmentData.startOrder != null) {
+      result.add(ShuntingMovementMarking(order: segmentData.startOrder!, isStart: true));
+    } else if (segmentData.isIncomplete) {
+      _log.warning('Incomplete non standard indication found: $segmentData');
     }
 
     return result;

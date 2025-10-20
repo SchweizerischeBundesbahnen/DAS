@@ -7,7 +7,6 @@ import '../util/test_utils.dart';
 
 void main() {
   testWidgets('test show decisive gradient setting', (tester) async {
-    // Load app widget.
     await prepareAndStartApp(tester);
     await loadTrainJourney(tester, trainNumber: 'T9999M');
     await stopAutomaticAdvancement(tester);
@@ -45,7 +44,6 @@ void main() {
   });
 
   testWidgets('test km header click when decisive gradient is not shown', (tester) async {
-    // Load app widget.
     await prepareAndStartApp(tester);
 
     // Navigate to settings page

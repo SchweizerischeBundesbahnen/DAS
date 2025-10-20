@@ -1,4 +1,3 @@
-import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/enums/jp_status_dto.dart';
 import 'package:sfera/src/data/dto/enums/xml_enum.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
@@ -27,17 +26,5 @@ class JourneyProfileDto extends SferaXmlElementDto {
   @override
   bool validate() {
     return validateHasChildOfType<TrainIdentificationDto>() && super.validate();
-  }
-}
-
-// extensions
-
-extension TrainIdentificationMapperExtension on TrainIdentificationDto {
-  TrainIdentification toTrainIdentification() {
-    return TrainIdentification(
-      ru: RailwayUndertaking.fromCompanyCode(otnId.company),
-      trainNumber: otnId.operationalTrainNumber,
-      date: otnId.startDate,
-    );
   }
 }
