@@ -20,6 +20,8 @@ class ReducedOverviewViewModel {
   final _rxJourneyMetadata = BehaviorSubject<Metadata>();
   final _subscriptions = <StreamSubscription>[];
 
+  Stream<Journey> get journey => _rxJourney.stream;
+
   Stream<List<BaseData>> get journeyData => _rxJourneyData.stream;
 
   Stream<Metadata> get journeyMetadata => _rxJourneyMetadata.stream;
@@ -36,11 +38,8 @@ class ReducedOverviewViewModel {
     final date = trainIdentification.date;
     final subscription = _sferaLocalService
         .journeyStream(company: company, trainNumber: trainNumber, startDate: date)
-        .listen((data) {
-          if (data != null) {
-            _rxJourney.add(data);
-          }
-        }, onError: _rxJourney.addError);
+        .whereNotNull()
+        .listen(_rxJourney.add, onError: _rxJourney.addError);
     _subscriptions.add(subscription);
   }
 

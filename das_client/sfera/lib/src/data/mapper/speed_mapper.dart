@@ -114,7 +114,7 @@ class SpeedMapper {
         if (!journeyOrders.contains(startOrder)) {
           startOrder = _orderFromClosestServicePoint(startOrder, servicePoints) ?? 0;
         }
-        int endOrder = calculateOrder(segmentIndex, speedConstraint.endLocation ?? double.parse(segmentProfile.length));
+        int endOrder = calculateOrder(segmentIndex, speedConstraint.endLocation ?? segmentProfile.length);
         if (!journeyOrders.contains(endOrder)) {
           // reversed since the advised speed segment should be as big as possible if two closest service points
           endOrder = _orderFromClosestServicePoint(endOrder, servicePoints.toList().reversed) ?? 0;

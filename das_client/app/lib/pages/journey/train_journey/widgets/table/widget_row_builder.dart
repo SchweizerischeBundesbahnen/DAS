@@ -7,8 +7,8 @@ abstract class WidgetRowBuilder<T extends BaseData> extends DASTableRowBuilder<T
   WidgetRowBuilder({
     required this.metadata,
     required super.data,
-    required super.height,
     required super.rowIndex,
+    required super.height,
     super.stickyLevel,
     super.identifier,
     this.config = const TrainJourneyConfig(),

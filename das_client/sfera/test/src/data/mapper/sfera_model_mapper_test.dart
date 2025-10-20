@@ -1763,6 +1763,21 @@ void main() {
     expect(advisedSpeedSegments[0].startOrder, 1000);
     expect(advisedSpeedSegments[0].endOrder, 3500);
   });
+
+  test('Test shunting movement markers are parsed correctly', () {
+    final journey = getJourney('T29', 6);
+    expect(journey.valid, true);
+
+    final markers = journey.data.whereType<ShuntingMovement>().toList();
+    expect(markers, hasLength(3));
+
+    expect(markers[0].isStart, true);
+    expect(markers[0].order, 0);
+    expect(markers[1].isStart, false);
+    expect(markers[1].order, 200000);
+    expect(markers[2].isStart, true);
+    expect(markers[2].order, 400000);
+  });
 }
 
 void _checkTrainSeriesSpeed<T extends Speed>(

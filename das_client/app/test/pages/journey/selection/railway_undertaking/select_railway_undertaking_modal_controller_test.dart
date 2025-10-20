@@ -155,7 +155,7 @@ List<RailwayUndertaking> _sortedRailwayValues(
   AppLocalizations localizations, {
   selectedRailwayUndertaking = RailwayUndertaking.sbbP,
 }) {
-  return RailwayUndertaking.values
+  return RailwayUndertaking.knownRUs
       .map((ru) => (ru.localizedText(localizations).toLowerCase().trim(), ru))
       .sortedBy((pair) => pair.$2 == selectedRailwayUndertaking ? '' : pair.$1)
       .map((ruPair) => ruPair.$2)

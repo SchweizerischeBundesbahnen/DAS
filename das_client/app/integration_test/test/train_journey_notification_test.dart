@@ -7,8 +7,6 @@ void main() {
   group('train journey notification test', () {
     testWidgets('test koa notifications are displayed properly', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T13');
 
       await waitUntilExists(tester, find.text(l10n.w_koa_notification_wait));
@@ -22,8 +20,6 @@ void main() {
 
     testWidgets('test departure process modal sheet is displayed', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T13');
 
       await waitUntilExists(tester, find.text(l10n.w_koa_notification_wait));

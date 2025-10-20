@@ -67,7 +67,7 @@ class SelectRailwayUndertakingModalController {
   }
 
   void _initRuToLocalizedMap() {
-    _localizedToRailwayUndertaking = RailwayUndertaking.values
+    _localizedToRailwayUndertaking = RailwayUndertaking.knownRUs
         .map((ru) => (ru.localizedText(localizations).toLowerCase().trim(), ru))
         .sorted((a, b) => a.$1.compareTo(b.$1));
   }
