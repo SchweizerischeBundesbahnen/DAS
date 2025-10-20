@@ -1,12 +1,11 @@
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/train_journey/advised_speed/advised_speed_state.dart';
+import 'package:app/pages/journey/train_journey/advised_speed/advised_speed_model.dart';
 import 'package:app/pages/journey/train_journey/advised_speed/advised_speed_view_model.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
@@ -20,26 +19,24 @@ class AdvisedSpeedNotification extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.read<AdvisedSpeedViewModel>();
 
-    return StreamBuilder<List<dynamic>>(
-      stream: CombineLatestStream.list([viewModel.activeAdl, viewModel.advisedSpeedState]),
+    return StreamBuilder<AdvisedSpeedModel>(
+      stream: viewModel.model,
       builder: (context, snapshot) {
         if (!snapshot.hasData) return SizedBox.shrink();
 
-        final adlState = snapshot.data![1] as AdvisedSpeedState;
-        final adl = snapshot.data![0] as AdvisedSpeedSegment?;
-        return switch (adlState) {
-          AdvisedSpeedState.active => adl != null ? _activeAdlMessage(context, adl) : SizedBox.shrink(),
-          AdvisedSpeedState.inactive => SizedBox.shrink(),
-          AdvisedSpeedState.end => _adlNotificationContainer(context, context.l10n.w_advised_speed_end),
-          AdvisedSpeedState.cancel => _adlNotificationContainer(context, context.l10n.w_advised_speed_cancel),
+        final model = snapshot.requireData;
+        return switch (model) {
+          Active() => _activeAdlMessage(context, model.segment),
+          End() => _adlNotificationContainer(context, context.l10n.w_advised_speed_end),
+          Cancel() => _adlNotificationContainer(context, context.l10n.w_advised_speed_cancel),
+          Inactive() => SizedBox.shrink(),
         };
       },
     );
   }
 
-  Widget _activeAdlMessage(BuildContext context, AdvisedSpeedSegment adl) {
-    return _adlNotificationContainer(context, _adlMessageText(context, adl), icon: _adlIcon(adl));
-  }
+  Widget _activeAdlMessage(BuildContext context, AdvisedSpeedSegment segment) =>
+      _adlNotificationContainer(context, _adlMessageText(context, segment), icon: segment.displayIcon());
 
   String _adlMessageText(BuildContext context, AdvisedSpeedSegment adl) {
     return switch (adl) {
@@ -62,16 +59,7 @@ class AdvisedSpeedNotification extends StatelessWidget {
     };
   }
 
-  String? _adlIcon(AdvisedSpeedSegment adl) {
-    return switch (adl) {
-      FollowTrainAdvisedSpeedSegment() => AppAssets.iconAdvisedSpeedFollowTrain,
-      TrainFollowingAdvisedSpeedSegment() => AppAssets.iconAdvisedSpeedTrainFollowing,
-      FixedTimeAdvisedSpeedSegment() => AppAssets.iconAdvisedSpeedFixedTime,
-      _ => null,
-    };
-  }
-
-  Widget _adlNotificationContainer(BuildContext context, String message, {String? icon}) {
+  Widget _adlNotificationContainer(BuildContext context, String message, {Widget? icon}) {
     return Container(
       key: advisedSpeedNotificationKey,
       margin: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5).copyWith(bottom: sbbDefaultSpacing * 0.5),
@@ -83,11 +71,7 @@ class AdvisedSpeedNotification extends StatelessWidget {
       child: Row(
         children: [
           if (icon != null) ...[
-            SvgPicture.asset(
-              icon,
-              key: advisedSpeedNotificationIconKey,
-              colorFilter: ColorFilter.mode(SBBColors.white, BlendMode.srcIn),
-            ),
+            icon,
             const SizedBox(width: sbbDefaultSpacing * 0.5),
           ],
           Text(
@@ -97,5 +81,23 @@ class AdvisedSpeedNotification extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+extension _AdvisedSpeedSegmentX on AdvisedSpeedSegment {
+  SvgPicture? displayIcon() {
+    final String? iconName = switch (this) {
+      FollowTrainAdvisedSpeedSegment() => AppAssets.iconAdvisedSpeedFollowTrain,
+      TrainFollowingAdvisedSpeedSegment() => AppAssets.iconAdvisedSpeedTrainFollowing,
+      FixedTimeAdvisedSpeedSegment() => AppAssets.iconAdvisedSpeedFixedTime,
+      _ => null,
+    };
+    return iconName != null
+        ? SvgPicture.asset(
+            iconName,
+            key: AdvisedSpeedNotification.advisedSpeedNotificationIconKey,
+            colorFilter: ColorFilter.mode(SBBColors.white, BlendMode.srcIn),
+          )
+        : null;
   }
 }
