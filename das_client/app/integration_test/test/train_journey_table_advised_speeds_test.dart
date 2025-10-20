@@ -24,8 +24,9 @@ void main() {
     await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('A653'));
     await tester.pumpAndSettle(const Duration(milliseconds: 100));
 
-    // 3rd advised speed Message (check icon)
+    // 3rd advised speed Message (check icon & service point)
     await waitUntilExists(tester, find.byKey(AdvisedSpeedNotification.advisedSpeedNotificationIconKey));
+    await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('Morges'));
     // Punctuality Hidden
     expect(find.byKey(DASChronograph.punctualityTextKey), findsNothing);
     await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText(l10n.w_advised_speed_end));
@@ -38,7 +39,7 @@ void main() {
     await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText(l10n.w_advised_speed_end));
 
     // 5th advised speed Message (check service point & cancel)
-    await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('Allaman'));
+    await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('Lausanne'));
     await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText(l10n.w_advised_speed_cancel));
 
     // Check that cancel message disappears after some time
