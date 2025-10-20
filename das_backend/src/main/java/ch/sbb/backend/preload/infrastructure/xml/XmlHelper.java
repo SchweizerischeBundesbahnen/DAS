@@ -1,4 +1,4 @@
-package ch.sbb.backend.preload.xml;
+package ch.sbb.backend.preload.infrastructure.xml;
 
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
