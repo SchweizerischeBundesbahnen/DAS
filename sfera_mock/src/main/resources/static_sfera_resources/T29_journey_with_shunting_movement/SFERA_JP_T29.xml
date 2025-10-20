@@ -10,7 +10,7 @@
         </OTN_ID>
     </TrainIdentification>
 
-    <SegmentProfileReference SP_ID="T29_1_Dietikon" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T29_1" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -40,7 +40,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T29_2_Glanzenberg" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T29_2" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -70,7 +70,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T29_3_Schlieren" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T29_3" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -100,7 +100,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T29_4_Altstetten" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T29_4" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -124,7 +124,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T29_5_Hardbruecke" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T29_5" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>
@@ -155,7 +155,7 @@
         </JP_ContextInformation>
     </SegmentProfileReference>
 
-    <SegmentProfileReference SP_ID="T29_6_Zuerich_HB" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
+    <SegmentProfileReference SP_ID="T29_6" SP_VersionMajor="1" SP_VersionMinor="0" SP_Direction="Nominal">
         <SP_Zone>
             <IM_ID>1285</IM_ID>
         </SP_Zone>

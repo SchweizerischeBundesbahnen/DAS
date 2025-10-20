@@ -1163,6 +1163,35 @@ void main() {
 
       await disconnect(tester);
     });
+
+    testWidgets('test shunting movement markers are displayed correctly', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T29');
+
+      final scrollableFinder = find.byType(AnimatedList);
+      expect(scrollableFinder, findsOneWidget);
+
+      // start marking of first shunting movement segment
+      final firstStartMarking = findDASTableRowByText(l10n.w_shunting_movement_marking_start('T29R'));
+      expect(firstStartMarking, findsOneWidget);
+
+      // end marking of first shunting movement segment
+      final firstEndMarking = findDASTableRowByText(l10n.w_shunting_movement_marking_end('T29R'));
+      await tester.dragUntilVisible(firstEndMarking, scrollableFinder, const Offset(0, -50));
+      expect(firstEndMarking, findsOneWidget);
+
+      await dragUntilTextInStickyHeader(tester, 'Zürich Altstetten');
+
+      // start marking of second shunting movement segment
+      final secondStartMarking = findDASTableRowByText(l10n.w_shunting_movement_marking_start('T29R'));
+      expect(secondStartMarking, findsOneWidget);
+
+      // finds no end marking as it is outside of journey
+      final secondEndMarking = findDASTableRowByText(l10n.w_shunting_movement_marking_end('T29R'));
+      expect(secondEndMarking, findsNothing);
+
+      await disconnect(tester);
+    });
   });
 }
 
