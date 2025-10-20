@@ -1768,7 +1768,7 @@ void main() {
     final journey = getJourney('T29', 6);
     expect(journey.valid, true);
 
-    final markers = journey.data.whereType<ShuntingMovementMarking>().toList();
+    final markers = journey.data.whereType<ShuntingMovement>().toList();
     expect(markers, hasLength(3));
 
     expect(markers[0].isStart, true);

@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
-class ShuntingMovementMarkingRow extends WidgetRowBuilder<ShuntingMovementMarking> {
-  static const Key startMarkingKey = Key('startShuntingMovementMarkingKey');
-  static const Key endMarkingKey = Key('endShuntingMovementMarkingKey');
+class ShuntingMovementRow extends WidgetRowBuilder<ShuntingMovement> {
+  static const Key shuntingMovementStartKey = Key('shuntingMovementStart');
+  static const Key shuntingMovementEndKey = Key('shuntingMovementEnd');
 
-  ShuntingMovementMarkingRow({
+  ShuntingMovementRow({
     required super.rowIndex,
     required super.metadata,
     required super.data,
@@ -20,7 +20,7 @@ class ShuntingMovementMarkingRow extends WidgetRowBuilder<ShuntingMovementMarkin
   Widget buildRowWidget(BuildContext context) {
     return Container(
       width: double.infinity,
-      key: data.isStart ? startMarkingKey : endMarkingKey,
+      key: data.isStart ? shuntingMovementStartKey : shuntingMovementEndKey,
       color: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black),
       padding: EdgeInsets.all(sbbDefaultSpacing).copyWith(left: 24.0),
       child: Text(_labelText(context), style: DASTextStyles.mediumBold),
@@ -30,7 +30,7 @@ class ShuntingMovementMarkingRow extends WidgetRowBuilder<ShuntingMovementMarkin
   String _labelText(BuildContext context) {
     final trainNumber = metadata.trainIdentification?.trainNumber ?? '';
     return data.isStart
-        ? context.l10n.w_shunting_movement_marking_start('${trainNumber}R')
-        : context.l10n.w_shunting_movement_marking_end(trainNumber);
+        ? context.l10n.w_shunting_movement_start('${trainNumber}R')
+        : context.l10n.w_shunting_movement_end(trainNumber);
   }
 }

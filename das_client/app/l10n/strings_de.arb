@@ -162,15 +162,15 @@
   "p_settings_page_decisive_gradient_show_setting": "Neigung einblenden",
   "w_global_error_widget_title": "Unerwarteter Fehler",
   "w_global_error_widget_description": "Es ist ein unerwarteter Fehler aufgetreten, die Fehlermeldung wird an die Entwickler geschickt. Versuche, die App neu zu starten.",
-  "w_shunting_movement_marking_start": "Rangierfahrt {trainNumber}",
-  "@w_shunting_movement_marking_start": {
+  "w_shunting_movement_start": "Rangierfahrt {trainNumber}",
+  "@w_shunting_movement_start": {
     "type": "text",
     "placeholders": {
       "trainNumber": {}
     }
   },
-  "w_shunting_movement_marking_end": "Fahrt nach Streckensignalen {trainNumber}",
-  "@w_shunting_movement_marking_end": {
+  "w_shunting_movement_end": "Fahrt nach Streckensignalen {trainNumber}",
+  "@w_shunting_movement_end": {
     "type": "text",
     "placeholders": {
       "trainNumber": {}

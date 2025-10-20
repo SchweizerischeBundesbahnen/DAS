@@ -14,6 +14,8 @@ enum RailwayUndertaking {
 
   final String companyCode;
 
+  static Iterable<RailwayUndertaking> get knownRUs => values.whereNot((ru) => ru == unknown);
+
   static RailwayUndertaking fromCompanyCode(String companyCode) {
     return RailwayUndertaking.values.firstWhereOrNull((e) => e.companyCode == companyCode) ?? unknown;
   }

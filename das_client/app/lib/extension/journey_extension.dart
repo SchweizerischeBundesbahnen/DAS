@@ -14,5 +14,5 @@ extension JourneyExtension on Journey {
     return '$displayedTrainNumber ${trainIdentification.ru.displayText(context)}';
   }
 
-  bool _hasShuntingMovement() => data.any((data) => data is ShuntingMovementMarking);
+  bool _hasShuntingMovement() => data.any((data) => data is ShuntingMovement);
 }

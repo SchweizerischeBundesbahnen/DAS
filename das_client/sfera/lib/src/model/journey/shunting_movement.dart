@@ -1,11 +1,11 @@
 import 'package:sfera/component.dart';
 import 'package:sfera/src/model/journey/order_priority.dart';
 
-class ShuntingMovementMarking extends JourneyAnnotation {
-  const ShuntingMovementMarking({
+class ShuntingMovement extends JourneyAnnotation {
+  const ShuntingMovement({
     required super.order,
     this.isStart = true,
-  }) : super(type: Datatype.shuntingMovementMarking);
+  }) : super(type: Datatype.shuntingMovement);
 
   final bool isStart;
 

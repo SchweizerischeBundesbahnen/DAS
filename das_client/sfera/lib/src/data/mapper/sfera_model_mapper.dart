@@ -86,7 +86,7 @@ class SferaModelMapper {
     journeyData.addAll(_parseUncodedOperationalIndications(segmentProfileReferences));
     journeyData.addAll(_parseTramAreas(segmentProfiles));
     journeyData.addAll(_parseCommunicationNetworkChanges(segmentProfileReferences, segmentProfiles));
-    journeyData.addAll(_parseShuntingMovementMarkings(segmentProfileReferences, segmentProfiles));
+    journeyData.addAll(_parseShuntingMovements(segmentProfileReferences, segmentProfiles));
     journeyData.sort();
 
     final journeyPoints = journeyData.whereType<JourneyPoint>().toList();
@@ -446,11 +446,11 @@ class SferaModelMapper {
     }).flattenedToList;
   }
 
-  static List<ShuntingMovementMarking> _parseShuntingMovementMarkings(
+  static List<ShuntingMovement> _parseShuntingMovements(
     List<SegmentProfileReferenceDto> segmentProfilesReferences,
     List<SegmentProfileDto> segmentProfiles,
   ) {
-    final List<ShuntingMovementMarking> result = [];
+    final List<ShuntingMovement> result = [];
 
     final segmentData = _SegmentMapperData();
 
@@ -485,15 +485,15 @@ class SferaModelMapper {
         }
 
         if (segmentData.isComplete) {
-          result.add(ShuntingMovementMarking(order: segmentData.startOrder!, isStart: true));
-          result.add(ShuntingMovementMarking(order: segmentData.endOrder!, isStart: false));
+          result.add(ShuntingMovement(order: segmentData.startOrder!, isStart: true));
+          result.add(ShuntingMovement(order: segmentData.endOrder!, isStart: false));
           segmentData.reset();
         }
       }
     }
 
     if (segmentData.isIncomplete && segmentData.startOrder != null) {
-      result.add(ShuntingMovementMarking(order: segmentData.startOrder!, isStart: true));
+      result.add(ShuntingMovement(order: segmentData.startOrder!, isStart: true));
     } else if (segmentData.isIncomplete) {
       _log.warning('Incomplete non standard indication found: $segmentData');
     }
