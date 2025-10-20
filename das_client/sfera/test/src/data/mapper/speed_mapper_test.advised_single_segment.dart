@@ -133,7 +133,7 @@ void main() {
 
       test('whenHasSpeedButUnknownReasonCode_thenSkipsParsing', () {
         // ARRANGE
-        when(mockSegmentProfile.length).thenReturn('100');
+        when(mockSegmentProfile.length).thenReturn(100.0);
         when(mockTemporaryConstraint.advisedSpeed).thenReturn(mockAdvisedSpeed);
         when(mockTemporaryConstraint.startLocation).thenReturn(0);
         when(mockTemporaryConstraint.endLocation).thenReturn(100.0);
@@ -148,7 +148,7 @@ void main() {
 
       test('whenHasSpeedButEmptyReasonCode_thenSkipsParsing', () {
         // ARRANGE
-        when(mockSegmentProfile.length).thenReturn('100');
+        when(mockSegmentProfile.length).thenReturn(100.0);
         when(mockTemporaryConstraint.advisedSpeed).thenReturn(mockAdvisedSpeed);
         when(mockTemporaryConstraint.startLocation).thenReturn(0);
         when(mockTemporaryConstraint.endLocation).thenReturn(100.0);
@@ -167,7 +167,7 @@ void main() {
         when(mockJourneyProfile.segmentProfileReferences).thenReturn([mockSegmentProfileReference]);
         when(mockSegmentProfileReference.spId).thenReturn('id');
         when(mockSegmentProfile.id).thenReturn('id');
-        when(mockSegmentProfile.length).thenReturn('100');
+        when(mockSegmentProfile.length).thenReturn(100.0);
         when(mockSegmentProfileReference.advisedSpeedTemporaryConstraints).thenReturn([mockTemporaryConstraint]);
         when(mockTemporaryConstraint.advisedSpeed).thenReturn(mockAdvisedSpeed);
         when(mockTemporaryConstraint.startLocation).thenReturn(0.0);
@@ -267,7 +267,7 @@ void main() {
         when(mockSegmentProfileReference.advisedSpeedTemporaryConstraints).thenReturn([mockTemporaryConstraint]);
         when(mockTemporaryConstraint.advisedSpeed).thenReturn(mockAdvisedSpeed);
         when(mockAdvisedSpeed.deltaSpeed).thenReturn('Irrelevant');
-        when(mockSegmentProfile.length).thenReturn('5050');
+        when(mockSegmentProfile.length).thenReturn(5050.0);
       });
 
       group('Invalid start / end location -> AdvisedSpeed is skipped', () {

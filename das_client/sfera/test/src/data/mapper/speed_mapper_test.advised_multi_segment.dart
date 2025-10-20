@@ -97,7 +97,7 @@ void main() {
           mockTemporaryConstraintA1,
           mockTemporaryConstraintA2,
         ]);
-        when(mockSegmentProfileOne.length).thenReturn('5050');
+        when(mockSegmentProfileOne.length).thenReturn(5050.0);
       });
 
       /// closed segments means they have start and end location (regardless whether they're unknown)
@@ -291,8 +291,8 @@ void main() {
         ).thenReturn([mockSegmentProfileReferenceOne, mockSegmentProfileReferenceTwo]);
         when(mockSegmentProfileReferenceOne.advisedSpeedTemporaryConstraints).thenReturn([mockTemporaryConstraintA1]);
         when(mockSegmentProfileReferenceTwo.advisedSpeedTemporaryConstraints).thenReturn([mockTemporaryConstraintB1]);
-        when(mockSegmentProfileOne.length).thenReturn('3050');
-        when(mockSegmentProfileTwo.length).thenReturn('1050');
+        when(mockSegmentProfileOne.length).thenReturn(3050.0);
+        when(mockSegmentProfileTwo.length).thenReturn(1050.0);
       });
 
       test('whenDoNotOverlap_returnTwoSegments', () {
@@ -355,9 +355,9 @@ void main() {
         when(mockSegmentProfileReferenceTwo.advisedSpeedTemporaryConstraints).thenReturn([mockTemporaryConstraintB1]);
         when(mockSegmentProfileReferenceThree.advisedSpeedTemporaryConstraints).thenReturn([mockTemporaryConstraintC1]);
 
-        when(mockSegmentProfileOne.length).thenReturn('1050');
-        when(mockSegmentProfileTwo.length).thenReturn('1050');
-        when(mockSegmentProfileThree.length).thenReturn('1050');
+        when(mockSegmentProfileOne.length).thenReturn(1050.0);
+        when(mockSegmentProfileTwo.length).thenReturn(1050.0);
+        when(mockSegmentProfileThree.length).thenReturn(1050.0);
       });
 
       test('whenDoNotOverlap_returnThreeSegments', () {
