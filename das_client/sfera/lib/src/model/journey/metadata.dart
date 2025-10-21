@@ -7,16 +7,12 @@ import 'package:sfera/component.dart';
 @immutable
 class Metadata {
   Metadata({
-    DateTime? timestamp,
-    this.nextStop,
-    this.lastPosition,
-    this.lastServicePoint,
-    this.currentPosition,
-    this.routeStart,
-    this.routeEnd,
+    this.trainIdentification,
+    this.signaledPosition,
+    this.journeyStart,
+    this.journeyEnd,
     this.delay,
     this.breakSeries,
-    bool? anyOperationalArrivalDepartureTimes,
     this.additionalSpeedRestrictions = const [],
     this.nonStandardTrackEquipmentSegments = const [],
     this.bracketStationSegments = const [],
@@ -25,6 +21,9 @@ class Metadata {
     this.communicationNetworkChanges = const [],
     this.lineFootNoteLocations = const {},
     this.radioContactLists = const [],
+    this.levelCrossingGroups = const [],
+    DateTime? timestamp,
+    bool? anyOperationalArrivalDepartureTimes,
     SplayTreeMap<int, Iterable<TrainSeriesSpeed>>? lineSpeeds,
     SplayTreeMap<int, SingleSpeed?>? calculatedSpeeds,
   }) : timestamp = timestamp ?? DateTime.now(),
@@ -32,15 +31,13 @@ class Metadata {
        lineSpeeds = lineSpeeds ?? SplayTreeMap<int, Iterable<TrainSeriesSpeed>>(),
        calculatedSpeeds = calculatedSpeeds ?? SplayTreeMap<int, SingleSpeed>();
 
+  final TrainIdentification? trainIdentification;
   final DateTime timestamp;
-  final ServicePoint? nextStop;
-  final ServicePoint? lastServicePoint;
-  final JourneyPoint? lastPosition;
-  final JourneyPoint? currentPosition;
-  final List<AdditionalSpeedRestriction> additionalSpeedRestrictions;
-  final JourneyPoint? routeStart;
-  final JourneyPoint? routeEnd;
+  final SignaledPosition? signaledPosition;
+  final JourneyPoint? journeyStart;
+  final JourneyPoint? journeyEnd;
   final Delay? delay;
+  final List<AdditionalSpeedRestriction> additionalSpeedRestrictions;
   final bool anyOperationalArrivalDepartureTimes;
   final List<NonStandardTrackEquipmentSegment> nonStandardTrackEquipmentSegments;
   final List<CommunicationNetworkChange> communicationNetworkChanges;
@@ -52,4 +49,5 @@ class Metadata {
   final Iterable<RadioContactList> radioContactLists;
   final SplayTreeMap<int, Iterable<TrainSeriesSpeed>> lineSpeeds;
   final SplayTreeMap<int, SingleSpeed?> calculatedSpeeds;
+  final List<LevelCrossingGroup> levelCrossingGroups;
 }

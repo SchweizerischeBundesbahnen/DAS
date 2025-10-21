@@ -11,8 +11,8 @@ class RadioContactList implements Comparable {
 
   final int order;
   final int endOrder;
-  final Iterable<Contact> mainContacts;
-  final Iterable<Contact> selectiveContacts;
+  final Iterable<MainContact> mainContacts;
+  final Iterable<SelectiveContact> selectiveContacts;
 
   @override
   int compareTo(other) {
@@ -24,11 +24,37 @@ class RadioContactList implements Comparable {
       mainContacts.isNotEmpty ? mainContacts.map((c) => c.contactIdentifier).take(2).join(' ') : null;
 
   bool get isSimCorridor => order != endOrder;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is RadioContactList &&
+          runtimeType == other.runtimeType &&
+          order == other.order &&
+          endOrder == other.endOrder &&
+          IterableEquality().equals(mainContacts, other.mainContacts) &&
+          IterableEquality().equals(selectiveContacts, other.selectiveContacts);
+
+  @override
+  int get hashCode =>
+      order.hashCode ^
+      endOrder.hashCode ^
+      IterableEquality().hash(mainContacts) ^
+      IterableEquality().hash(selectiveContacts);
+
+  @override
+  String toString() =>
+      'RadioContactList('
+      'order: $order'
+      ', endOrder: $endOrder'
+      ', mainContacts: $mainContacts'
+      ', selectiveContacts: $selectiveContacts'
+      ')';
 }
 
 extension RadioContactListExtension on Iterable<RadioContactList> {
   /// Returns last RadioContactList that has lower ordering than given [order].
-  RadioContactList? lastLowerThan(int order) {
+  RadioContactList? lastBefore(int order) {
     final sortedList = toList()..sort();
     return sortedList.reversed.firstWhereOrNull((contactList) => contactList.order <= order);
   }

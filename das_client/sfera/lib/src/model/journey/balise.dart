@@ -1,4 +1,6 @@
+import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
+import 'package:sfera/src/model/journey/order_priority.dart';
 
 class Balise extends JourneyPoint {
   const Balise({
@@ -10,16 +12,25 @@ class Balise extends JourneyPoint {
   final int amountLevelCrossings;
 
   @override
-  bool get canGroup => true;
+  OrderPriority get orderPriority => OrderPriority.balise;
 
   @override
-  bool canGroupWith(BaseData other) {
-    if (other is LevelCrossing) {
-      return true;
-    } else if (other is Balise) {
-      return amountLevelCrossings == 1 && other.amountLevelCrossings == 1;
-    } else {
-      return false;
-    }
-  }
+  String toString() =>
+      'Balise('
+      'order: $order'
+      ', kilometre: $kilometre'
+      ', amountLevelCrossings: $amountLevelCrossings'
+      ')';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Balise &&
+          runtimeType == other.runtimeType &&
+          order == other.order &&
+          amountLevelCrossings == other.amountLevelCrossings &&
+          ListEquality().equals(kilometre, other.kilometre);
+
+  @override
+  int get hashCode => type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ amountLevelCrossings.hashCode;
 }

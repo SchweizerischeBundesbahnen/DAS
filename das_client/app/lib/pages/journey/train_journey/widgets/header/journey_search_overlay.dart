@@ -2,8 +2,8 @@ import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
+import 'package:app/pages/journey/selection/railway_undertaking/widgets/select_railway_undertaking_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_input.dart';
-import 'package:app/pages/journey/selection/widgets/journey_railway_undertaking_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_train_number_input.dart';
 import 'package:app/pages/journey/train_journey/widgets/anchored_full_page_overlay.dart';
 import 'package:app/widgets/das_text_styles.dart';
@@ -21,7 +21,7 @@ class JourneySearchOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = DI.get<JourneySelectionViewModel>();
     return AnchoredFullPageOverlay(
-      triggerBuilder: (context, showOverlay) {
+      triggerBuilder: (_, showOverlay) {
         return SBBIconButtonLarge(
           key: JourneySearchOverlay.journeySearchKey,
           icon: SBBIcons.magnifying_glass_small,
@@ -31,7 +31,7 @@ class JourneySearchOverlay extends StatelessWidget {
           },
         );
       },
-      contentBuilder: (context, hideOverlay) {
+      contentBuilder: (_, hideOverlay) {
         return Provider(
           create: (_) => DI.get<JourneySelectionViewModel>(),
           child: Builder(
@@ -56,14 +56,15 @@ class JourneySearchOverlay extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        JourneyTrainNumberInput(isModalVersion: true),
         JourneyDateInput(isModalVersion: true),
-        JourneyRailwayUndertakingInput(isModalVersion: true),
+        SelectRailwayUndertakingInput(isModalVersion: true),
+        JourneyTrainNumberInput(isModalVersion: true),
       ],
     );
   }
 
   Widget _header(BuildContext context, VoidCallback hideOverlay) {
+    final viewModel = context.read<JourneySelectionViewModel>();
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -73,10 +74,16 @@ class JourneySearchOverlay extends StatelessWidget {
             style: DASTextStyles.largeLight,
           ),
         ),
-        SBBIconButtonSmall(
-          key: JourneySearchOverlay.journeySearchCloseKey,
-          onPressed: () => hideOverlay(),
-          icon: SBBIcons.cross_small,
+        StreamBuilder(
+          stream: viewModel.model,
+          builder: (context, snapshot) {
+            final isLoading = snapshot.data is Loading;
+            return SBBIconButtonSmall(
+              key: JourneySearchOverlay.journeySearchCloseKey,
+              onPressed: isLoading ? null : () => hideOverlay(),
+              icon: SBBIcons.cross_small,
+            );
+          },
         ),
       ],
     );
@@ -88,14 +95,18 @@ class JourneySearchOverlay extends StatelessWidget {
       stream: viewModel.model,
       builder: (context, snapshot) {
         final model = snapshot.data;
-        if (model == null) return SBBLoadingIndicator();
 
+        Widget wrapWithPadding(Widget child) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing * 0.5),
+          child: child,
+        );
+
+        final buttonLabel = context.l10n.c_button_confirm;
         return switch (model) {
-          final Loading _ || final Loaded _ || Error _ => SizedBox.shrink(),
-          final Selecting s => Padding(
-            padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing / 2),
-            child: SBBPrimaryButton(
-              label: context.l10n.c_button_confirm,
+          final Loading _ => wrapWithPadding(SBBPrimaryButton(label: buttonLabel, onPressed: null, isLoading: true)),
+          final Selecting s => wrapWithPadding(
+            SBBPrimaryButton(
+              label: buttonLabel,
               onPressed: s.isInputComplete
                   ? () {
                       hideOverlay();
@@ -104,6 +115,7 @@ class JourneySearchOverlay extends StatelessWidget {
                   : null,
             ),
           ),
+          _ => wrapWithPadding(SBBPrimaryButton(label: buttonLabel, onPressed: null)),
         };
       },
     );

@@ -1,4 +1,4 @@
-import 'package:app/pages/journey/train_journey/widgets/chronograph/chronograph_view_model.dart';
+import 'package:app/pages/journey/train_journey/header/chronograph/chronograph_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/das_chronograph.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/calculated_speed_cell_body.dart';
 import 'package:flutter/material.dart';
@@ -180,13 +180,13 @@ void main() {
     await dragUntilTextInStickyHeader(tester, 'Buchrain');
 
     // find reduced speed in Rotkreuz
-    final rotkreuxStationRow = findDASTableRowByText('Rotkreuz');
-    expect(rotkreuxStationRow, findsOneWidget);
-    _findTextWithin(rotkreuxStationRow, '130');
+    final rotkreuzStationRow = findDASTableRowByText('Rotkreuz');
+    expect(rotkreuzStationRow, findsOneWidget);
+    _findTextWithin(rotkreuzStationRow, '130');
 
     // should be in cement because it is in the next stop
     final textWidget = tester.widget<Text>(
-      find.descendant(of: rotkreuxStationRow, matching: find.byKey(CalculatedSpeedCellBody.nonEmptyKey)),
+      find.descendant(of: rotkreuzStationRow, matching: find.byKey(CalculatedSpeedCellBody.nonEmptyKey)),
     );
     expect(textWidget.style?.color, equals(SBBColors.cement));
 

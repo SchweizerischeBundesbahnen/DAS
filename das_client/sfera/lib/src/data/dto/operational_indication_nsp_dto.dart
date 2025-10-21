@@ -4,9 +4,9 @@ import 'package:sfera/src/data/dto/operational_indication_type_nsp_dto.dart';
 import 'package:sfera/src/data/dto/operational_indication_uncoded_text_nsp_dto.dart';
 
 class OperationalIndicationNspDto extends JpContextInformationNspDto {
-  static const String elementType = 'operationalIndication';
+  static const String elementName = 'operationalIndication';
 
-  OperationalIndicationNspDto({super.type = elementType, super.attributes, super.children, super.value});
+  OperationalIndicationNspDto({super.type, super.attributes, super.children, super.value});
 
   OperationalIndicationTypeDto get operationalIndicationType =>
       children.whereType<OperationalIndicationTypeNspDto>().first.operationalIndicationType;

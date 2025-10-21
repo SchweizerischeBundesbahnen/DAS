@@ -1,4 +1,5 @@
 import 'package:app/pages/journey/train_journey/automatic_advancement_controller.dart';
+import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/signal_row.dart';
@@ -6,7 +7,7 @@ import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/stickyheader/sticky_level.dart';
 import 'package:collection/collection.dart';
 import 'package:fake_async/fake_async.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
@@ -58,6 +59,7 @@ void main() {
             metadata: Metadata(),
             data: data as Signal,
             rowIndex: index,
+            journeyPosition: JourneyPositionModel(),
             key: mockGlobalKeyOffset(Offset(0, 0)),
           ),
         )
@@ -100,6 +102,7 @@ void main() {
           (index, data) => SignalRow(
             metadata: Metadata(),
             data: data as Signal,
+            journeyPosition: JourneyPositionModel(),
             rowIndex: index,
             key: mockGlobalKeyOffset(Offset(0, 0)),
           ),
@@ -137,6 +140,7 @@ void main() {
           (index, data) => SignalRow(
             metadata: Metadata(),
             data: data as Signal,
+            journeyPosition: JourneyPositionModel(),
             rowIndex: index,
             key: mockGlobalKeyOffset(Offset(0, 0)),
           ),
@@ -181,6 +185,7 @@ void main() {
           (index, data) => SignalRow(
             metadata: Metadata(),
             data: data as Signal,
+            journeyPosition: JourneyPositionModel(),
             rowIndex: index,
             key: mockGlobalKeyOffset(Offset(0, 0)),
           ),
@@ -225,7 +230,14 @@ void main() {
       Signal(order: 400, kilometre: []),
     ];
     final journeyRows = journeyData
-        .mapIndexed((index, data) => SignalRow(metadata: Metadata(), data: data as Signal, rowIndex: index))
+        .mapIndexed(
+          (index, data) => SignalRow(
+            metadata: Metadata(),
+            data: data as Signal,
+            journeyPosition: JourneyPositionModel(),
+            rowIndex: index,
+          ),
+        )
         .toList();
     final currentPosition = journeyData[2] as JourneyPoint;
 
@@ -253,11 +265,11 @@ void main() {
 
     final List<CellRowBuilder> rows = [
       mockServicePointRow(servicePointData, Offset(0, 0)),
-      SignalRow(metadata: Metadata(), data: signalData, rowIndex: 1),
-      SignalRow(metadata: Metadata(), data: signalData, rowIndex: 2),
-      SignalRow(metadata: Metadata(), data: signalData, rowIndex: 3),
+      SignalRow(metadata: Metadata(), data: signalData, journeyPosition: JourneyPositionModel(), rowIndex: 1),
+      SignalRow(metadata: Metadata(), data: signalData, journeyPosition: JourneyPositionModel(), rowIndex: 2),
+      SignalRow(metadata: Metadata(), data: signalData, journeyPosition: JourneyPositionModel(), rowIndex: 3),
       mockServicePointRow(servicePointData, Offset(0, 196)),
-      SignalRow(metadata: Metadata(), data: targetSignalData, rowIndex: 5),
+      SignalRow(metadata: Metadata(), data: targetSignalData, journeyPosition: JourneyPositionModel(), rowIndex: 5),
     ];
 
     final scrollControllerMock = MockScrollController();
@@ -297,6 +309,7 @@ void main() {
           (index, data) => SignalRow(
             metadata: Metadata(),
             data: data as Signal,
+            journeyPosition: JourneyPositionModel(),
             rowIndex: index,
             key: mockGlobalKeyOffset(Offset(0, 0)),
           ),
@@ -347,6 +360,7 @@ void main() {
           (index, data) => SignalRow(
             metadata: Metadata(),
             data: data as Signal,
+            journeyPosition: JourneyPositionModel(),
             rowIndex: index,
             key: mockGlobalKeyOffset(Offset(0, 0)),
           ),
@@ -383,6 +397,50 @@ void main() {
 
       fakeAsync.elapse(const Duration(seconds: 11));
     });
+
+    verifyNever(scrollControllerMock.animateTo(any, duration: anyNamed('duration'), curve: anyNamed('curve')));
+  });
+
+  test('test does not scroll when before first service point', () async {
+    final List<BaseData> journeyData = [
+      Signal(order: 0, kilometre: []),
+      Signal(order: 100, kilometre: []),
+      Signal(order: 200, kilometre: []),
+      Signal(order: 300, kilometre: []),
+      Signal(order: 400, kilometre: []),
+    ];
+
+    final journeyRows = journeyData
+        .mapIndexed(
+          (index, data) => SignalRow(
+            metadata: Metadata(),
+            data: data as Signal,
+            journeyPosition: JourneyPositionModel(),
+            rowIndex: index,
+            key: mockGlobalKeyOffset(Offset(0, 0)),
+          ),
+        )
+        .toList();
+    final currentPosition = journeyData[2] as JourneyPoint;
+    final firstServicePoint = ServicePoint(order: 500, kilometre: [], name: ''); // after current position
+
+    final scrollControllerMock = MockScrollController();
+    final scrollPositionMock = MockScrollPosition();
+    when(scrollControllerMock.positions).thenReturn([scrollPositionMock]);
+    when(scrollControllerMock.position).thenReturn(scrollPositionMock);
+    when(scrollPositionMock.maxScrollExtent).thenReturn(CellRowBuilder.rowHeight * 4);
+
+    final testee = AutomaticAdvancementController(
+      controller: scrollControllerMock,
+      tableKey: mockGlobalKeyOffset(Offset(0, dasTableHeaderOffset)),
+    );
+
+    testee.updateRenderedRows(journeyRows);
+    testee.handleJourneyUpdate(
+      currentPosition: currentPosition,
+      isAdvancementEnabledByUser: true,
+      firstServicePoint: firstServicePoint,
+    );
 
     verifyNever(scrollControllerMock.animateTo(any, duration: anyNamed('duration'), curve: anyNamed('curve')));
   });

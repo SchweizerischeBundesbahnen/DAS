@@ -6,7 +6,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -16,13 +15,12 @@ class FormationTest {
 
     @Test
     void constructor_getters() {
-        OffsetDateTime modifiedDateTime = OffsetDateTime.now();
         String operationalTrainNumber = "12345";
+        String trainPathId = "12345-001";
         LocalDate operationalDay = LocalDate.now();
 
-        Formation formation = new Formation(modifiedDateTime, operationalTrainNumber, operationalDay, Collections.emptyList());
+        Formation formation = new Formation(operationalTrainNumber, trainPathId, operationalDay, Collections.emptyList());
 
-        assertThat(formation.getModifiedDateTime()).isEqualTo(modifiedDateTime);
         assertThat(formation.getOperationalTrainNumber()).isEqualTo(operationalTrainNumber);
         assertThat(formation.getOperationalDay()).isEqualTo(operationalDay);
         assertThat(formation.validFormationRuns()).isEqualTo(Collections.emptyList());
@@ -30,7 +28,7 @@ class FormationTest {
 
     @Test
     void inspectedFormationRuns_empty() {
-        Formation formation = new Formation(OffsetDateTime.now(), "12345", LocalDate.now(), Collections.emptyList());
+        Formation formation = new Formation("12345", "12345-001", LocalDate.now(), Collections.emptyList());
         assertThat(formation.validFormationRuns()).isEqualTo(Collections.emptyList());
     }
 
@@ -42,8 +40,8 @@ class FormationTest {
             mockedStatic.when(() -> FormationRun.filterValid(any())).thenReturn(inspectedRuns);
 
             Formation formation = new Formation(
-                OffsetDateTime.now(),
                 "12345",
+                "12345-001",
                 LocalDate.now(),
                 null // mocked
             );

@@ -3,13 +3,17 @@ import 'dart:async';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/util/error_code.dart';
 import 'package:clock/clock.dart';
+import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
+
+final _log = Logger('JourneySelectionViewModel');
 
 class JourneySelectionViewModel {
   JourneySelectionViewModel({
     required SferaRemoteRepo sferaRemoteRepo,
-    required Function(TrainIdentification) onJourneySelected,
+    required Future<void> Function(TrainIdentification) onJourneySelected,
   }) : _sferaRemoteRepo = sferaRemoteRepo,
        _onJourneySelected = onJourneySelected {
     _emitSelectingWithDefaults();
@@ -18,7 +22,7 @@ class JourneySelectionViewModel {
 
   final SferaRemoteRepo _sferaRemoteRepo;
 
-  final Function(TrainIdentification) _onJourneySelected;
+  final Future<void> Function(TrainIdentification) _onJourneySelected;
 
   StreamSubscription? _sferaRemoteRepoSubscription;
 
@@ -28,20 +32,25 @@ class JourneySelectionViewModel {
 
   JourneySelectionModel get modelValue => _state.value;
 
-  void loadTrainJourney() async {
+  Future<void> loadTrainJourney() async {
     final currentState = _state.value;
     switch (currentState) {
       case Loading() || Loaded() || Error():
         break;
-      case final Selecting s:
-        if (!s.isInputComplete) return;
+      case final Selecting state:
+        if (!state.isInputComplete) return;
+        final trainIdToLoad = _trainIdFrom(state);
 
-        _onJourneySelected(_trainIdFrom(s));
+        _log.fine('Start loading train journey: $trainIdToLoad');
+        await _onJourneySelected(trainIdToLoad);
     }
   }
 
   void updateDate(DateTime date) {
-    _ifInSelectingOrErrorEmitSelectingWith((model) => model.copyWith(startDate: date));
+    _ifInSelectingOrErrorEmitSelectingWith((model) {
+      if (!model.availableStartDates.contains(date)) return model;
+      return model.copyWith(startDate: date);
+    });
   }
 
   void updateTrainNumber(String? trainNumber) {
@@ -85,12 +94,14 @@ class JourneySelectionViewModel {
               JourneySelectionModel.error(
                 trainIdentification: l.trainIdentification,
                 errorCode: ErrorCode.fromSfera(_sferaRemoteRepo.lastError!),
+                availableStartDates: _availableStartDates(),
               ),
             ),
             final Selecting s => _state.add(
               JourneySelectionModel.error(
                 trainIdentification: _trainIdFrom(s),
                 errorCode: ErrorCode.fromSfera(_sferaRemoteRepo.lastError!),
+                availableStartDates: s.availableStartDates,
               ),
             ),
             _ => null,
@@ -99,12 +110,15 @@ class JourneySelectionViewModel {
     });
   }
 
-  void _emitSelectingWithDefaults() => _state.add(
-    JourneySelectionModel.selecting(
-      startDate: clock.now(),
-      railwayUndertaking: RailwayUndertaking.sbbP,
-    ),
-  );
+  void _emitSelectingWithDefaults() {
+    _state.add(
+      JourneySelectionModel.selecting(
+        startDate: _midnightToday(),
+        railwayUndertaking: RailwayUndertaking.sbbP,
+        availableStartDates: _availableStartDates(),
+      ),
+    );
+  }
 
   void _ifInSelectingOrErrorEmitSelectingWith(Selecting Function(Selecting model) updateFunc) {
     switch (modelValue) {
@@ -119,6 +133,7 @@ class JourneySelectionViewModel {
             startDate: e.startDate,
             railwayUndertaking: e.railwayUndertaking,
             trainNumber: e.operationalTrainNumber,
+            availableStartDates: e.availableStartDates,
           ),
         );
         _state.add(updatedModel.copyWith(isInputComplete: _validateInput(updatedModel)));
@@ -131,7 +146,27 @@ class JourneySelectionViewModel {
 
   TrainIdentification _trainIdFrom(Selecting selectingState) => TrainIdentification(
     ru: selectingState.railwayUndertaking,
-    trainNumber: selectingState.operationalTrainNumber.trim(),
+    trainNumber: selectingState.operationalTrainNumber.trim().toUpperCase(),
     date: selectingState.startDate,
   );
+
+  List<DateTime> _availableStartDates() {
+    final today = _midnightToday();
+    return [
+      today.subtract(Duration(days: 1)),
+      today,
+      if (_isNextDayInFourHours()) today.add(Duration(days: 1)),
+    ];
+  }
+
+  bool _isNextDayInFourHours() {
+    final now = clock.now().toLocal();
+    final inFourHours = now.add(Duration(hours: 4));
+    return !DateUtils.isSameDay(now, inFourHours);
+  }
+
+  DateTime _midnightToday() {
+    final now = clock.now().toLocal();
+    return DateTime.utc(now.year, now.month, now.day);
+  }
 }

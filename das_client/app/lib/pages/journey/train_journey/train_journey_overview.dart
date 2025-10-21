@@ -1,12 +1,10 @@
-import 'dart:async';
-
 import 'package:app/di/di.dart';
-import 'package:app/nav/app_router.dart';
-import 'package:app/pages/journey/navigation/journey_navigation_model.dart';
-import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/train_journey/collapsible_rows_view_model.dart';
+import 'package:app/pages/journey/train_journey/header/chronograph/chronograph_view_model.dart';
+import 'package:app/pages/journey/train_journey/header/connectivity/connectivity_view_model.dart';
+import 'package:app/pages/journey/train_journey/journey_position/journey_position_view_model.dart';
+import 'package:app/pages/journey/train_journey/punctuality/punctuality_view_model.dart';
 import 'package:app/pages/journey/train_journey/ux_testing_view_model.dart';
-import 'package:app/pages/journey/train_journey/widgets/chronograph/chronograph_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_modal.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_modal_view_model.dart';
@@ -17,53 +15,33 @@ import 'package:app/pages/journey/train_journey/widgets/notification/adl_notific
 import 'package:app/pages/journey/train_journey/widgets/notification/adl_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/koa_notification.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
+import 'package:app/pages/journey/train_journey/widgets/notification/replacement_series/replacement_series_notification.dart';
+import 'package:app/pages/journey/train_journey/widgets/notification/replacement_series/replacement_series_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/arrival_departure_time/arrival_departure_time_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:app/pages/journey/train_journey/widgets/warn_function_modal_sheet.dart';
 import 'package:app/pages/journey/train_journey_view_model.dart';
+import 'package:app/pages/journey/warn_app_view_model.dart';
 import 'package:app/sound/koa_sound.dart';
 import 'package:app/sound/warn_app_sound.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
-class TrainJourneyOverview extends StatefulWidget {
+class TrainJourneyOverview extends StatelessWidget {
   static const double horizontalPadding = sbbDefaultSpacing * 0.5;
 
   const TrainJourneyOverview({super.key});
 
   @override
-  State<TrainJourneyOverview> createState() => _TrainJourneyOverviewState();
-}
-
-class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
-  TrainIdentification? _currentTrainIdentification;
-  StreamSubscription<JourneyNavigationModel?>? _journeySubscription;
-
-  @override
-  void initState() {
-    final journeyNavigationVM = DI.get<JourneyNavigationViewModel>();
-    _currentTrainIdentification = journeyNavigationVM.modelValue?.trainIdentification;
-
-    _journeySubscription = journeyNavigationVM.model.listen((model) {
-      if (model?.trainIdentification != _currentTrainIdentification) {
-        if (mounted) context.router.replace(JourneySelectionRoute());
-      }
-    });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _journeySubscription?.cancel();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final trainJourneyViewModel = context.read<TrainJourneyViewModel>();
+    final punctualityViewModel = PunctualityViewModel(journeyStream: trainJourneyViewModel.journey);
+    final journeyPositionViewModel = JourneyPositionViewModel(
+      journeyStream: trainJourneyViewModel.journey,
+      punctualityStream: punctualityViewModel.model,
+    );
     return MultiProvider(
       providers: [
         Provider(
@@ -74,11 +52,18 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
-          create: (_) => CollapsibleRowsViewModel(sferaRemoteRepo: DI.get()),
+          create: (_) => punctualityViewModel,
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        Provider(
+          create: (_) => CollapsibleRowsViewModel(
+            journeyStream: trainJourneyViewModel.journey,
+            journeyPositionStream: journeyPositionViewModel.model,
+          ),
           dispose: (context, vm) => vm.dispose(),
         ),
         Provider(
-          create: (_) => ServicePointModalViewModel(),
+          create: (_) => ServicePointModalViewModel(localRegulationHtmlGenerator: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
@@ -92,11 +77,29 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
-          create: (_) => UxTestingViewModel(sferaService: DI.get()),
+          create: (_) => UxTestingViewModel(sferaService: DI.get(), ruFeatureProvider: DI.get()),
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
-          create: (_) => AdlViewModel(journeyStream: trainJourneyViewModel.journey),
+          create: (_) => AdlViewModel(
+            journeyStream: trainJourneyViewModel.journey,
+            journeyPositionStream: journeyPositionViewModel.model,
+          ),
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        Provider(
+          create: (_) => journeyPositionViewModel,
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        Provider(
+          create: (_) => ConnectivityViewModel(connectivityManager: DI.get()),
+          dispose: (_, vm) => vm.dispose(),
+        ),
+        Provider(
+          create: (_) => ReplacementSeriesViewModel(
+            trainJourneyViewModel: trainJourneyViewModel,
+            journeyPositionViewModel: journeyPositionViewModel,
+          ),
           dispose: (_, vm) => vm.dispose(),
         ),
       ],
@@ -104,7 +107,9 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
         return Provider(
           create: (_) => ChronographViewModel(
             journeyStream: trainJourneyViewModel.journey,
-            adlViewModel: context.read<AdlViewModel>(),
+            journeyPositionStream: context.read<JourneyPositionViewModel>().model,
+            punctualityStream: context.read<PunctualityViewModel>().model,
+            adlStateStream: context.read<AdlViewModel>().adlState,
           ),
           dispose: (_, vm) => vm.dispose(),
           builder: (context, child) => _body(context),
@@ -141,6 +146,7 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
         ADLNotification(),
         ManeuverNotification(),
         KoaNotification(),
+        ReplacementSeriesNotification(),
         _warnappNotification(context),
         Expanded(
           child: Stack(
@@ -156,7 +162,7 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
 
   Widget _warnappNotification(BuildContext context) {
     return StreamBuilder(
-      stream: context.read<TrainJourneyViewModel>().warnappEvents,
+      stream: context.read<WarnAppViewModel>().warnappEvents,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           _triggerWarnappNotification(context);
@@ -172,7 +178,7 @@ class _TrainJourneyOverviewState extends State<TrainJourneyOverview> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       showWarnFunctionModalSheet(
         context,
-        onManeuverButtonPressed: () => context.read<TrainJourneyViewModel>().setManeuverMode(true),
+        onManeuverButtonPressed: () => context.read<WarnAppViewModel>().setManeuverMode(true),
       );
     });
   }

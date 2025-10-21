@@ -9,8 +9,6 @@ import '../util/test_utils.dart';
 void main() {
   testWidgets('test if CAB signaling is displayed correctly', (tester) async {
     await prepareAndStartApp(tester);
-
-    // load train journey by filling out train selection page
     await loadTrainJourney(tester, trainNumber: 'T1');
 
     final scrollableFinder = find.byType(AnimatedList);
@@ -71,8 +69,6 @@ void main() {
 
   testWidgets('test if track equipment is displayed correctly', (tester) async {
     await prepareAndStartApp(tester);
-
-    // load train journey by filling out train selection page
     await loadTrainJourney(tester, trainNumber: 'T1');
 
     final scrollableFinder = find.byType(AnimatedList);
@@ -158,8 +154,6 @@ void main() {
 
   testWidgets('test if single track without block track equipment is displayed correctly', (tester) async {
     await prepareAndStartApp(tester);
-
-    // load train journey by filling out train selection page
     await loadTrainJourney(tester, trainNumber: 'T10');
 
     final scrollableFinder = find.byType(AnimatedList);

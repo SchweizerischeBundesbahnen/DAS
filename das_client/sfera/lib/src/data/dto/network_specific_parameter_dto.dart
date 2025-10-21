@@ -1,11 +1,16 @@
 import 'package:sfera/src/data/dto/amount_tram_signals_dto.dart';
 import 'package:sfera/src/data/dto/id_nsp_dto.dart';
+import 'package:sfera/src/data/dto/km_ref_nsp_dto.dart';
+import 'package:sfera/src/data/dto/local_regulation_content_nsp_dto.dart';
+import 'package:sfera/src/data/dto/local_regulation_title_nsp_dto.dart';
 import 'package:sfera/src/data/dto/new_speed_nsp_dto.dart';
 import 'package:sfera/src/data/dto/operational_indication_type_nsp_dto.dart';
 import 'package:sfera/src/data/dto/operational_indication_uncoded_text_nsp_dto.dart';
+import 'package:sfera/src/data/dto/route_table_data_relevant_wrapper_dto.dart';
 import 'package:sfera/src/data/dto/sfera_xml_element_dto.dart';
 import 'package:sfera/src/data/dto/speed_nsp_dto.dart';
 import 'package:sfera/src/data/dto/track_equipment_type_wrapper_dto.dart';
+import 'package:sfera/src/data/dto/train_run_type_nsp_dto.dart';
 import 'package:sfera/src/data/dto/xml_curve_speed_dto.dart';
 import 'package:sfera/src/data/dto/xml_graduated_speed_info_dto.dart';
 import 'package:sfera/src/data/dto/xml_line_foot_notes_dto.dart';
@@ -25,36 +30,47 @@ class NetworkSpecificParameterDto extends SferaXmlElementDto {
     List<SferaXmlElementDto>? children,
     String? value,
   }) {
-    if (attributes?['name'] == XmlNewLineSpeedDto.elementName) {
+    final attributeName = attributes?['name'];
+    if (attributeName == XmlNewLineSpeedDto.elementName) {
       return XmlNewLineSpeedDto(attributes: attributes, children: children, value: value);
-    } else if (attributes?['name'] == TrackEquipmentTypeWrapperDto.elementName) {
+    } else if (attributeName == TrackEquipmentTypeWrapperDto.elementName) {
       return TrackEquipmentTypeWrapperDto(attributes: attributes, children: children, value: value);
-    } else if (attributes?['name'] == XmlCurveSpeedDto.elementName) {
+    } else if (attributeName == XmlCurveSpeedDto.elementName) {
       return XmlCurveSpeedDto(attributes: attributes, children: children, value: value);
-    } else if (attributes?['name'] == XmlStationSpeedDto.elementName) {
+    } else if (attributeName == XmlStationSpeedDto.elementName) {
       return XmlStationSpeedDto(attributes: attributes, children: children, value: value);
-    } else if (attributes?['name'] == XmlGraduatedSpeedInfoDto.elementName) {
+    } else if (attributeName == XmlGraduatedSpeedInfoDto.elementName) {
       return XmlGraduatedSpeedInfoDto(attributes: attributes, children: children, value: value);
-    } else if (attributes?['name'] == AmountTramSignalsDto.elementName) {
+    } else if (attributeName == AmountTramSignalsDto.elementName) {
       return AmountTramSignalsDto(attributes: attributes, children: children, value: value);
-    } else if (attributes?['name'] == XmlLineFootNotesDto.elementName) {
+    } else if (attributeName == XmlLineFootNotesDto.elementName) {
       return XmlLineFootNotesDto(attributes: attributes, children: children, value: value);
-    } else if (attributes?['name'] == XmlOpFootNotesDto.elementName) {
+    } else if (attributeName == XmlOpFootNotesDto.elementName) {
       return XmlOpFootNotesDto(attributes: attributes, children: children, value: value);
-    } else if (attributes?['name'] == XmlTrackFootNotesDto.elementName) {
+    } else if (attributeName == XmlTrackFootNotesDto.elementName) {
       return XmlTrackFootNotesDto(attributes: attributes, children: children, value: value);
-    } else if (attributes?['name'] == IdNetworkSpecificParameterDto.elementName) {
+    } else if (attributeName == IdNetworkSpecificParameterDto.elementName) {
       return IdNetworkSpecificParameterDto(attributes: attributes, children: children, value: value);
-    } else if (attributes?['name'] == SpeedNetworkSpecificParameterDto.elementName) {
+    } else if (attributeName == SpeedNetworkSpecificParameterDto.elementName) {
       return SpeedNetworkSpecificParameterDto(attributes: attributes, children: children, value: value);
-    } else if (attributes?['name'] == NewSpeedNetworkSpecificParameterDto.elementName) {
+    } else if (attributeName == NewSpeedNetworkSpecificParameterDto.elementName) {
       return NewSpeedNetworkSpecificParameterDto(attributes: attributes, children: children, value: value);
-    } else if (attributes?['name'] == XmlStationPropertyDto.elementName) {
+    } else if (attributeName == XmlStationPropertyDto.elementName) {
       return XmlStationPropertyDto(attributes: attributes, children: children, value: value);
-    } else if (attributes?['name'] == OperationalIndicationTypeNspDto.elementName) {
+    } else if (attributeName == OperationalIndicationTypeNspDto.elementName) {
       return OperationalIndicationTypeNspDto(attributes: attributes, children: children, value: value);
-    } else if (attributes?['name'] == OperationalIndicationUncodedTextNspDto.elementName) {
+    } else if (attributeName == OperationalIndicationUncodedTextNspDto.elementName) {
       return OperationalIndicationUncodedTextNspDto(attributes: attributes, children: children, value: value);
+    } else if (attributeName != null && LocalRegulationTitleNspDto.matchesElementName(attributeName)) {
+      return LocalRegulationTitleNspDto(attributes: attributes, children: children, value: value);
+    } else if (attributeName != null && LocalRegulationContentNspDto.matchesElementName(attributeName)) {
+      return LocalRegulationContentNspDto(attributes: attributes, children: children, value: value);
+    } else if (attributeName == KmRefNspDto.elementName) {
+      return KmRefNspDto(attributes: attributes, children: children, value: value);
+    } else if (attributeName == RouteTableDataRelevantWrapperDto.elementName) {
+      return RouteTableDataRelevantWrapperDto(attributes: attributes, children: children, value: value);
+    } else if (attributeName == TrainRunTypeNspDto.elementName) {
+      return TrainRunTypeNspDto(attributes: attributes, children: children, value: value);
     }
     return NetworkSpecificParameterDto(attributes: attributes, children: children, value: value);
   }

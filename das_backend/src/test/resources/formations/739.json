@@ -6,7 +6,7 @@
       "company": "3211",
       "formationRuns": [
         {
-          "modifiedDateTime": "2025-07-20T16:07:09.498+02:00",
+          "inspectionDateTime": "2025-07-20T16:07:09.498+02:00",
           "tafTapLocationReferenceStart": "CH00011",
           "tafTapLocationReferenceEnd": "CH00014",
           "trainCategoryCode": "R",
@@ -26,9 +26,6 @@
           "hauledLoadHoldingForceInHectoNewton": 0,
           "formationHoldingForceInHectoNewton": 530,
           "simTrain": false,
-          "tractionModes": [
-            "D"
-          ],
           "carCarrierVehicle": false,
           "dangerousGoods": false,
           "vehiclesCount": 1,
@@ -43,7 +40,7 @@
           "slopeMaxForHoldingForceMinInPermille": "38"
         },
         {
-          "modifiedDateTime": "2025-07-20T17:18:15.782+02:00",
+          "inspectionDateTime": "2025-07-20T17:18:15.782+02:00",
           "tafTapLocationReferenceStart": "CH00010",
           "tafTapLocationReferenceEnd": "CH00011",
           "trainCategoryCode": "R",
@@ -63,9 +60,6 @@
           "hauledLoadHoldingForceInHectoNewton": 0,
           "formationHoldingForceInHectoNewton": 530,
           "simTrain": false,
-          "tractionModes": [
-            "D"
-          ],
           "carCarrierVehicle": false,
           "dangerousGoods": false,
           "vehiclesCount": 1,

@@ -6,7 +6,7 @@
       "company": "2185",
       "formationRuns": [
         {
-          "modifiedDateTime": "2025-07-25T07:41:04.841+02:00",
+          "inspectionDateTime": "2025-07-25T07:41:04.841+02:00",
           "tafTapLocationReferenceStart": "CH00002",
           "tafTapLocationReferenceEnd": "CH00003",
           "trainCategoryCode": "A",
@@ -27,9 +27,8 @@
           "hauledLoadHoldingForceInHectoNewton": 5980,
           "formationHoldingForceInHectoNewton": 6480,
           "simTrain": false,
-          "tractionModes": [
-            "STAMMLOK"
-          ],
+          "additionalTractionMode": "Z",
+          "additionalTractionSeries": "Ts532",
           "carCarrierVehicle": false,
           "dangerousGoods": false,
           "vehiclesCount": 27,
@@ -44,7 +43,7 @@
           "slopeMaxForHoldingForceMinInPermille": "70"
         },
         {
-          "modifiedDateTime": "2025-07-25T13:30:43.895+02:00",
+          "inspectionDateTime": "2025-07-25T13:30:43.895+02:00",
           "tafTapLocationReferenceStart": "CH00001",
           "tafTapLocationReferenceEnd": "CH00002",
           "trainCategoryCode": "A",
@@ -68,10 +67,8 @@
           "brakePositionGForBrakeUnit1to5": false,
           "brakePositionGForLoadHauled": false,
           "simTrain": false,
-          "tractionModes": [
-            "STAMMLOK",
-            "STAMMLOK"
-          ],
+          "additionalTractionMode": "Z",
+          "additionalTractionSeries": "Ts532",
           "carCarrierVehicle": false,
           "dangerousGoods": false,
           "vehiclesCount": 28,

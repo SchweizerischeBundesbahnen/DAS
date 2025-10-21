@@ -43,11 +43,14 @@ android {
 
     defaultConfig {
         applicationId "ch.sbb.das.client"
-        minSdkVersion 23
+        minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders += [
+                'waraPackageName': 'ch.sbb.tms.iad.shas_mobile'
+        ]
     }
 
     flavorDimensions = ['env']

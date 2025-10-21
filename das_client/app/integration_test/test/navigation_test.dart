@@ -11,7 +11,6 @@ import '../util/test_utils.dart';
 void main() {
   group('navigation drawer tests', () {
     testWidgets('should show navigation drawer', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
 
       // check that there is a drawer
@@ -34,7 +33,6 @@ void main() {
     });
 
     testWidgets('test navigate to links', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
 
       await openDrawer(tester);
@@ -53,7 +51,6 @@ void main() {
     });
 
     testWidgets('test navigate to settings', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
 
       await openDrawer(tester);
@@ -72,7 +69,6 @@ void main() {
     });
 
     testWidgets('test navigate to profile', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
 
       await openDrawer(tester);
@@ -94,7 +90,6 @@ void main() {
     });
 
     testWidgets('test navigate to train journey', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
 
       await openDrawer(tester);
@@ -124,8 +119,6 @@ void main() {
 
     testWidgets('test if train journey stays loaded after navigation', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T6');
 
       // check first train station
@@ -148,10 +141,8 @@ void main() {
 
     testWidgets('test journey settings are not reset when navigating ', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T5');
-      await pauseAutomaticAdvancement(tester);
+      await stopAutomaticAdvancement(tester);
 
       final selectedBreakSeries = 'D30';
       await selectBreakSeries(tester, breakSeries: selectedBreakSeries);

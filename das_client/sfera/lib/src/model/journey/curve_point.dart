@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/model/journey/order_priority.dart';
 
@@ -21,9 +22,39 @@ class CurvePoint extends JourneyPoint {
   OrderPriority get orderPriority => OrderPriority.curve;
 
   @override
-  String toString() {
-    return "CurvePoint(order: $order, kilometre: $kilometre, curvePointType: $curvePointType, curveType: $curveType, text: '$text', comment: '$comment')";
-  }
+  String toString() =>
+      'CurvePoint('
+      'order: $order'
+      ', kilometre: $kilometre'
+      ', curvePointType: $curvePointType'
+      ', curveType: $curveType'
+      ', text: $text'
+      ', comment: $comment'
+      ')';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CurvePoint &&
+          runtimeType == other.runtimeType &&
+          order == other.order &&
+          ListEquality().equals(kilometre, other.kilometre) &&
+          curvePointType == other.curvePointType &&
+          curveType == other.curveType &&
+          text == other.text &&
+          comment == other.comment &&
+          DeepCollectionEquality().equals(localSpeeds, other.localSpeeds);
+
+  @override
+  int get hashCode =>
+      type.hashCode ^
+      order.hashCode ^
+      Object.hashAll(kilometre) ^
+      curvePointType.hashCode ^
+      curveType.hashCode ^
+      text.hashCode ^
+      comment.hashCode ^
+      Object.hashAll(localSpeeds ?? []);
 }
 
 /// marks the beginning and the end of a curve

@@ -10,6 +10,14 @@ import org.junit.jupiter.api.Test;
 
 class VehicleUnitTest {
 
+    static VehicleUnit createVehicleUnitWithBrakeDesign(BrakeDesign brakeDesign) {
+        return new VehicleUnit(brakeDesign, null, null, null, null, null, null);
+    }
+
+    static VehicleUnit createVehicleUnitWithDisabledBrake() {
+        return new VehicleUnit(null, new BrakeStatus(0), null, null, null, null, null);
+    }
+
     @Test
     void hasDisabledBrake_true() {
         BrakeStatus disabledBrakestatus = mock(BrakeStatus.class);
@@ -20,8 +28,8 @@ class VehicleUnitTest {
 
         List<VehicleUnit> vehicleUnits = new ArrayList<>();
 
-        vehicleUnits.add(new VehicleUnit(null, disabledBrakestatus, null, null, null, null));
-        vehicleUnits.add(new VehicleUnit(null, nonDisabledBrakestatus, null, null, null, null));
+        vehicleUnits.add(new VehicleUnit(null, disabledBrakestatus, null, null, null, null, null));
+        vehicleUnits.add(new VehicleUnit(null, nonDisabledBrakestatus, null, null, null, null, null));
 
         boolean result = VehicleUnit.hasDisabledBrake(vehicleUnits);
 
@@ -35,8 +43,8 @@ class VehicleUnitTest {
 
         List<VehicleUnit> vehicleUnits = new ArrayList<>();
 
-        vehicleUnits.add(new VehicleUnit(null, nonDisabledBrakestatus, null, null, null, null));
-        vehicleUnits.add(new VehicleUnit(null, nonDisabledBrakestatus, null, null, null, null));
+        vehicleUnits.add(new VehicleUnit(null, nonDisabledBrakestatus, null, null, null, null, null));
+        vehicleUnits.add(new VehicleUnit(null, nonDisabledBrakestatus, null, null, null, null, null));
 
         boolean result = VehicleUnit.hasDisabledBrake(vehicleUnits);
 
@@ -53,8 +61,8 @@ class VehicleUnitTest {
 
         List<VehicleUnit> vehicleUnits = new ArrayList<>();
 
-        vehicleUnits.add(new VehicleUnit(null, null, null, null, null, dangerousGoodsLoad));
-        vehicleUnits.add(new VehicleUnit(null, null, null, null, null, nonDangerousGoodsLoad));
+        vehicleUnits.add(new VehicleUnit(null, null, null, null, null, dangerousGoodsLoad, null));
+        vehicleUnits.add(new VehicleUnit(null, null, null, null, null, nonDangerousGoodsLoad, null));
 
         boolean result = VehicleUnit.hasDangerousGoods(vehicleUnits);
 
@@ -68,8 +76,8 @@ class VehicleUnitTest {
 
         List<VehicleUnit> vehicleUnits = new ArrayList<>();
 
-        vehicleUnits.add(new VehicleUnit(null, null, null, null, null, nonDangerousGoodsLoad));
-        vehicleUnits.add(new VehicleUnit(null, null, null, null, null, nonDangerousGoodsLoad));
+        vehicleUnits.add(new VehicleUnit(null, null, null, null, null, nonDangerousGoodsLoad, null));
+        vehicleUnits.add(new VehicleUnit(null, null, null, null, null, nonDangerousGoodsLoad, null));
 
         boolean result = VehicleUnit.hasDangerousGoods(vehicleUnits);
 
@@ -79,8 +87,8 @@ class VehicleUnitTest {
     @Test
     void hasBrakeDesign_true() {
         List<VehicleUnit> vehicleUnits = new ArrayList<>();
-        vehicleUnits.add(new VehicleUnit(BrakeDesign.EINLOESIGE_BREMSE, null, null, null, null, null));
-        vehicleUnits.add(new VehicleUnit(BrakeDesign.SCHEIBENBREMSEN, null, null, null, null, null));
+        vehicleUnits.add(new VehicleUnit(BrakeDesign.EINLOESIGE_BREMSE, null, null, null, null, null, null));
+        vehicleUnits.add(new VehicleUnit(BrakeDesign.SCHEIBENBREMSEN, null, null, null, null, null, null));
 
         boolean result = VehicleUnit.hasBrakeDesign(vehicleUnits, BrakeDesign.EINLOESIGE_BREMSE);
 
@@ -90,8 +98,8 @@ class VehicleUnitTest {
     @Test
     void hasBrakeDesign_false() {
         List<VehicleUnit> vehicleUnits = new ArrayList<>();
-        vehicleUnits.add(new VehicleUnit(BrakeDesign.L_KUNSTSTOFF_LEISE, null, null, null, null, null));
-        vehicleUnits.add(new VehicleUnit(BrakeDesign.NICHT_KODIERT, null, null, null, null, null));
+        vehicleUnits.add(new VehicleUnit(BrakeDesign.L_KUNSTSTOFF_LEISE, null, null, null, null, null, null));
+        vehicleUnits.add(new VehicleUnit(BrakeDesign.NICHT_KODIERT, null, null, null, null, null, null));
 
         boolean result = VehicleUnit.hasBrakeDesign(vehicleUnits, BrakeDesign.SCHEIBENBREMSEN);
 
@@ -101,8 +109,8 @@ class VehicleUnitTest {
     @Test
     void hasBrakeDesign_multipleBrakeDesign() {
         List<VehicleUnit> vehicleUnits = new ArrayList<>();
-        vehicleUnits.add(new VehicleUnit(BrakeDesign.L_KUNSTSTOFF_LEISE, null, null, null, null, null));
-        vehicleUnits.add(new VehicleUnit(BrakeDesign.NICHT_KODIERT, null, null, null, null, null));
+        vehicleUnits.add(new VehicleUnit(BrakeDesign.L_KUNSTSTOFF_LEISE, null, null, null, null, null, null));
+        vehicleUnits.add(new VehicleUnit(BrakeDesign.NICHT_KODIERT, null, null, null, null, null, null));
 
         assertThat(VehicleUnit.hasBrakeDesign(vehicleUnits, BrakeDesign.SCHEIBENBREMSEN, BrakeDesign.NICHT_KODIERT)).isTrue();
         assertThat(VehicleUnit.hasBrakeDesign(vehicleUnits, BrakeDesign.NICHT_KODIERT, BrakeDesign.L_KUNSTSTOFF_LEISE)).isTrue();
@@ -111,7 +119,7 @@ class VehicleUnitTest {
 
     @Test
     void calculateCalculateHoldingForce_null() {
-        VehicleUnit vehicleUnit = new VehicleUnit(null, null, null, null, null, null);
+        VehicleUnit vehicleUnit = new VehicleUnit(null, null, null, null, null, null, null);
 
         Integer result = vehicleUnit.calculateHoldingForce(true);
 
@@ -120,7 +128,7 @@ class VehicleUnitTest {
 
     @Test
     void calculateCalculateHoldingForce_whenTraction() {
-        VehicleUnit vehicleUnit = new VehicleUnit(null, null, 13, 22, 10, null);
+        VehicleUnit vehicleUnit = new VehicleUnit(null, null, 13, 22, 10, null, null);
 
         Integer result = vehicleUnit.calculateHoldingForce(true);
 
@@ -129,7 +137,7 @@ class VehicleUnitTest {
 
     @Test
     void holdingForce_whenTractionNoCalculateCalculateHoldingForce() {
-        VehicleUnit vehicleUnit = new VehicleUnit(null, null, null, 22, 10, null);
+        VehicleUnit vehicleUnit = new VehicleUnit(null, null, null, 22, 10, null, null);
 
         Integer result = vehicleUnit.calculateHoldingForce(true);
 
@@ -138,7 +146,7 @@ class VehicleUnitTest {
 
     @Test
     void calculateCalculateHoldingForce_whenNotTraction() {
-        VehicleUnit vehicleUnit = new VehicleUnit(null, null, 34, 12, 7, null);
+        VehicleUnit vehicleUnit = new VehicleUnit(null, null, 34, 12, 7, null, null);
 
         Integer result = vehicleUnit.calculateHoldingForce(false);
 
@@ -147,10 +155,19 @@ class VehicleUnitTest {
 
     @Test
     void holdingForce_whenNotTractionNoCalculateCalculateHoldingForce() {
-        VehicleUnit vehicleUnit = new VehicleUnit(null, null, 34, null, 9, null);
+        VehicleUnit vehicleUnit = new VehicleUnit(null, null, 34, null, 9, null, null);
 
         Integer result = vehicleUnit.calculateHoldingForce(false);
 
         assertThat(result).isEqualTo(90);
+    }
+
+    @Test
+    void getVehicleTypeIdentifier() {
+        VehicleUnit vehicleUnit = new VehicleUnit(null, null, null, null, null, null, "Ld3014");
+
+        String result = vehicleUnit.getVehicleSeries();
+
+        assertThat(result).isEqualTo("Ld3014");
     }
 }

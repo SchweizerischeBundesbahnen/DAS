@@ -53,4 +53,21 @@ class ArrivalDepartureTime {
         ', plannedArrivalTime: $plannedArrivalTime'
         ')';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ArrivalDepartureTime &&
+          runtimeType == other.runtimeType &&
+          _ambiguousDepartureTime == other._ambiguousDepartureTime &&
+          _ambiguousArrivalTime == other._ambiguousArrivalTime &&
+          _plannedDepartureTime == other._plannedDepartureTime &&
+          _plannedArrivalTime == other._plannedArrivalTime;
+
+  @override
+  int get hashCode =>
+      _ambiguousDepartureTime.hashCode ^
+      _ambiguousArrivalTime.hashCode ^
+      _plannedDepartureTime.hashCode ^
+      _plannedArrivalTime.hashCode;
 }

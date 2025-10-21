@@ -6,13 +6,12 @@ import 'package:app/i18n/i18n.dart';
 import 'package:app/nav/app_router.dart';
 import 'package:app/pages/journey/selection/journey_selection_model.dart';
 import 'package:app/pages/journey/selection/journey_selection_view_model.dart';
+import 'package:app/pages/journey/selection/railway_undertaking/widgets/select_railway_undertaking_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_date_input.dart';
-import 'package:app/pages/journey/selection/widgets/journey_railway_undertaking_input.dart';
 import 'package:app/pages/journey/selection/widgets/journey_train_number_input.dart';
 import 'package:app/pages/journey/selection/widgets/logout_button.dart';
 import 'package:app/pages/journey/widgets/das_journey_scaffold.dart';
 import 'package:app/util/error_code.dart';
-import 'package:app/widgets/header.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -101,13 +100,19 @@ class _ContentState extends State<_Content> {
       builder: (context, snapshot) {
         final model = snapshot.requireData;
 
-        return Header(
-          information: !model.isStartDateSameAsToday ? context.l10n.p_train_selection_date_not_today_warning : null,
+        return SBBHeaderbox.custom(
+          padding: EdgeInsets.zero,
+          flap: !model.isStartDateSameAsToday
+              ? SBBHeaderboxFlap(
+                  title: context.l10n.p_train_selection_date_not_today_warning,
+                  leadingIcon: SBBIcons.circle_information_small,
+                )
+              : null,
           child: Column(
             children: [
-              JourneyTrainNumberInput(),
               JourneyDateInput(),
-              JourneyRailwayUndertakingInput(),
+              SelectRailwayUndertakingInput(),
+              JourneyTrainNumberInput(),
             ],
           ),
         );
@@ -143,17 +148,23 @@ class _ContentState extends State<_Content> {
       stream: viewModel.model,
       builder: (context, snapshot) {
         final model = snapshot.data;
-        if (model == null) return SBBLoadingIndicator();
 
+        Widget wrapWithPadding(Widget child) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing * 0.5),
+          child: child,
+        );
+
+        final buttonLabel = context.l10n.c_button_confirm;
         return switch (model) {
-          final Loading _ || final Loaded _ || Error _ => SizedBox.shrink(),
+          final Loading _ => wrapWithPadding(SBBPrimaryButton(label: buttonLabel, onPressed: null, isLoading: true)),
           final Selecting s => Padding(
             padding: const EdgeInsets.symmetric(vertical: sbbDefaultSpacing, horizontal: sbbDefaultSpacing / 2),
             child: SBBPrimaryButton(
-              label: context.l10n.c_button_confirm,
+              label: buttonLabel,
               onPressed: s.isInputComplete ? () => viewModel.loadTrainJourney() : null,
             ),
           ),
+          _ => wrapWithPadding(SBBPrimaryButton(label: buttonLabel, onPressed: null)),
         };
       },
     );

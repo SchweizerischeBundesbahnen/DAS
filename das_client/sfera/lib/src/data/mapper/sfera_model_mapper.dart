@@ -5,6 +5,7 @@ import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/enums/operational_indication_type_dto.dart';
 import 'package:sfera/src/data/dto/enums/start_end_qualifier_dto.dart';
+import 'package:sfera/src/data/dto/enums/train_run_type_dto.dart';
 import 'package:sfera/src/data/dto/journey_profile_dto.dart';
 import 'package:sfera/src/data/dto/multilingual_text_dto.dart';
 import 'package:sfera/src/data/dto/operational_indication_nsp_dto.dart';
@@ -13,6 +14,7 @@ import 'package:sfera/src/data/dto/segment_profile_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
 import 'package:sfera/src/data/dto/temporary_constraints_dto.dart';
 import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
+import 'package:sfera/src/data/dto/train_identification_dto.dart';
 import 'package:sfera/src/data/mapper/mapper_utils.dart';
 import 'package:sfera/src/data/mapper/segment_profile_mapper.dart';
 import 'package:sfera/src/data/mapper/speed_mapper.dart';
@@ -57,22 +59,15 @@ class SferaModelMapper {
 
     final segmentProfileReferences = journeyProfile.segmentProfileReferences.toList();
 
-    final segmentJourneyData = segmentProfileReferences
+    var segmentJourneyData = segmentProfileReferences
         .mapIndexed((index, reference) => SegmentProfileMapper.parseSegmentProfile(reference, index, segmentProfiles))
-        .flattenedToList;
+        .flattened;
+
+    final calculatedSpeeds = _parseCalculatedSpeeds(journeyProfile, segmentJourneyData.whereType<ServicePoint>());
+    segmentJourneyData = segmentJourneyData.removeIrrelevantServicePoints(calculatedSpeeds);
     journeyData.addAll(segmentJourneyData);
 
-    final uncodedOperationalIndications = segmentProfileReferences
-        .mapIndexed((index, reference) => _parseUncodedOperationalIndication(index, reference))
-        .flattenedToList;
-    journeyData.addAll(uncodedOperationalIndications);
-
-    final tramAreas = _parseTramAreas(segmentProfiles);
-    journeyData.addAll(tramAreas);
-
     final trackEquipmentSegments = TrackEquipmentMapper.parseSegments(segmentProfileReferences, segmentProfiles);
-    journeyData.addAll(_cabSignalingStart(trackEquipmentSegments));
-    journeyData.addAll(_cabSignalingEnd(trackEquipmentSegments, journeyData));
 
     final servicePoints = journeyData.whereType<ServicePoint>().sortedBy((sP) => sP.order);
 
@@ -84,31 +79,29 @@ class SferaModelMapper {
     final displayedSpeedRestrictions = additionalSpeedRestrictions
         .where((asr) => asr.isDisplayed(trackEquipmentSegments))
         .toList();
-    final consolidatedASRs = _consolidateAdditionalSpeedRestrictions(journeyData, displayedSpeedRestrictions);
-    journeyData.addAll(consolidatedASRs);
 
+    journeyData.addAll(_cabSignalingStart(trackEquipmentSegments));
+    journeyData.addAll(_cabSignalingEnd(trackEquipmentSegments, journeyData));
+    journeyData.addAll(_consolidateAdditionalSpeedRestrictions(journeyData, displayedSpeedRestrictions));
+    journeyData.addAll(_parseUncodedOperationalIndications(segmentProfileReferences));
+    journeyData.addAll(_parseTramAreas(segmentProfiles));
+    journeyData.addAll(_parseCommunicationNetworkChanges(segmentProfileReferences, segmentProfiles));
+    journeyData.addAll(_parseShuntingMovements(segmentProfileReferences, segmentProfiles));
     journeyData.sort();
 
     final journeyPoints = journeyData.whereType<JourneyPoint>().toList();
-    final currentPosition = _calculateCurrentPosition(
-      journeyPoints,
-      segmentProfileReferences,
-      relatedTrainInformation,
-      lastJourney,
-    );
+
     final trainCharacteristic = _resolveFirstTrainCharacteristics(journeyProfile, trainCharacteristics);
 
     final lineSpeeds = SegmentProfileMapper.parseLineSpeeds(segmentProfiles);
 
     return Journey(
       metadata: Metadata(
-        nextStop: _calculateNextStop(servicePoints, currentPosition),
-        lastPosition: journeyPoints.firstWhereOrNull((it) => it.order == lastJourney?.metadata.currentPosition?.order),
-        lastServicePoint: _calculateLastServicePoint(servicePoints, currentPosition),
-        currentPosition: currentPosition,
+        trainIdentification: journeyProfile.trainIdentification.toTrainIdentification(),
+        signaledPosition: _signaledPosition(relatedTrainInformation, segmentProfileReferences),
         additionalSpeedRestrictions: additionalSpeedRestrictions,
-        routeStart: journeyPoints.firstOrNull,
-        routeEnd: journeyPoints.lastOrNull,
+        journeyStart: journeyPoints.firstOrNull,
+        journeyEnd: journeyPoints.lastOrNull,
         delay: _parseDelay(relatedTrainInformation),
         anyOperationalArrivalDepartureTimes: servicePoints.any(
           (sP) => sP.arrivalDepartureTime?.hasAnyOperationalTime ?? false,
@@ -129,67 +122,28 @@ class SferaModelMapper {
         lineFootNoteLocations: _generateLineFootNoteLocationMap(journeyData.whereType<LineFootNote>()),
         radioContactLists: _parseContactLists(segmentProfileReferences, segmentProfiles),
         lineSpeeds: lineSpeeds,
-        calculatedSpeeds: _parseCalculatedSpeeds(journeyProfile, servicePoints),
+        calculatedSpeeds: calculatedSpeeds,
+        levelCrossingGroups: _parseLevelCrossingAndBaliseGroups(journeyPoints),
       ),
       data: journeyData,
     );
   }
 
-  static JourneyPoint? _calculateCurrentPosition(
-    List<JourneyPoint> journeyPoints,
-    List<SegmentProfileReferenceDto> segmentProfilesLists,
+  static SignaledPosition? _signaledPosition(
     RelatedTrainInformationDto? relatedTrainInformation,
-    Journey? lastJourney,
+    List<SegmentProfileReferenceDto> segmentProfileReferences,
   ) {
     final positionSpeed = relatedTrainInformation?.ownTrain.trainLocationInformation.positionSpeed;
 
-    if (relatedTrainInformation == null || positionSpeed == null) {
-      // Return first element as we have no information yet
-      return journeyPoints.first;
-    }
+    if (positionSpeed == null) return null;
 
-    final positionSegmentIndex = segmentProfilesLists.indexWhere((it) => it.spId == positionSpeed.spId);
+    final positionSegmentIndex = segmentProfileReferences.indexWhere((it) => it.spId == positionSpeed.spId);
     if (positionSegmentIndex == -1) {
       _log.warning('Received position on unknown segment with spId: ${positionSpeed.spId}');
-      return journeyPoints.firstWhereOrNull((it) => it.order == lastJourney?.metadata.currentPosition?.order);
+      return null;
     } else {
-      final positionOrder = calculateOrder(positionSegmentIndex, positionSpeed.location);
-      final currentPositionData = journeyPoints.lastWhereOrNull((it) => it.order <= positionOrder);
-      return _adjustCurrentPositionToServicePoint(journeyPoints, currentPositionData ?? journeyPoints.first);
+      return SignaledPosition(order: calculateOrder(positionSegmentIndex, positionSpeed.location));
     }
-  }
-
-  /// returns element at next position, if it is a [ServicePoint] and the current position is not already one.
-  static JourneyPoint? _adjustCurrentPositionToServicePoint(
-    List<JourneyPoint> journeyPoints,
-    JourneyPoint currentPosition,
-  ) {
-    final positionIndex = journeyPoints.indexOf(currentPosition);
-    if (currentPosition is ServicePoint) {
-      return currentPosition;
-    }
-
-    if (journeyPoints.length > positionIndex + 1) {
-      final nextData = journeyPoints[positionIndex + 1];
-      if (nextData is ServicePoint) {
-        return nextData;
-      }
-    }
-
-    return currentPosition;
-  }
-
-  static ServicePoint? _calculateNextStop(Iterable<ServicePoint> servicePoints, BaseData? currentPosition) {
-    return servicePoints
-            .skip(1)
-            .firstWhereOrNull((sP) => sP.isStop && (currentPosition == null || sP.order > currentPosition.order)) ??
-        servicePoints.last;
-  }
-
-  static ServicePoint? _calculateLastServicePoint(Iterable<ServicePoint> servicePoints, BaseData? currentPosition) {
-    if (currentPosition == null) return servicePoints.firstOrNull;
-
-    return servicePoints.toList().reversed.firstWhereOrNull((sP) => sP.order <= currentPosition.order);
   }
 
   static List<AdditionalSpeedRestrictionData> _consolidateAdditionalSpeedRestrictions(
@@ -239,6 +193,8 @@ class SferaModelMapper {
     for (int segmentIndex = 0; segmentIndex < segmentProfilesReferences.length; segmentIndex++) {
       final segmentProfileReference = segmentProfilesReferences[segmentIndex];
 
+      final kmReferencePoints = segmentProfileReference.jpContextInformation?.kilometreReferencePoint;
+
       for (final asrTemporaryConstrain in segmentProfileReference.asrTemporaryConstraints) {
         if (_shouldSkipAsrDueToJourneyTimes(servicePoints, asrTemporaryConstrain)) continue;
 
@@ -250,33 +206,38 @@ class SferaModelMapper {
           case StartEndQualifierDto.starts:
             segmentData.startLocation = asrTemporaryConstrain.startLocation;
             segmentData.startIndex = segmentIndex;
+            segmentData.startKmRef = kmReferencePoints
+                ?.firstWhereOrNull((it) => it.constraint?.startLocation == asrTemporaryConstrain.startLocation)
+                ?.kmRef;
             break;
           case StartEndQualifierDto.startsEnds:
             segmentData.startLocation = asrTemporaryConstrain.startLocation;
             segmentData.startIndex = segmentIndex;
+            segmentData.startKmRef = kmReferencePoints
+                ?.firstWhereOrNull((it) => it.constraint?.startLocation == asrTemporaryConstrain.startLocation)
+                ?.kmRef;
             continue next;
           next:
           case StartEndQualifierDto.ends:
             segmentData.endLocation = asrTemporaryConstrain.endLocation;
             segmentData.endIndex = segmentIndex;
+            segmentData.endKmRef = kmReferencePoints
+                ?.firstWhereOrNull((it) => it.constraint?.endLocation == asrTemporaryConstrain.endLocation)
+                ?.kmRef;
             break;
           case StartEndQualifierDto.wholeSp:
             break;
         }
 
         if (segmentData.isComplete) {
-          final startSegment = segmentProfiles.firstMatch(segmentProfilesReferences[segmentData.startIndex!]);
-          final endSegment = segmentProfiles.firstMatch(segmentProfilesReferences[segmentData.endIndex!]);
-          final startKilometreMap = parseKilometre(startSegment);
-          final endKilometreMap = parseKilometre(endSegment);
           final speed =
               asrTemporaryConstrain.additionalSpeedRestriction?.asrSpeed ??
               asrTemporaryConstrain.parallelAsrConstraintDto?.speedNsp.speed;
 
           result.add(
             AdditionalSpeedRestriction(
-              kmFrom: startKilometreMap[segmentData.startLocation]!.first,
-              kmTo: endKilometreMap[segmentData.endLocation]!.first,
+              kmFrom: segmentData.startKmRef!,
+              kmTo: segmentData.endKmRef!,
               orderFrom: segmentData.startOrder!,
               orderTo: segmentData.endOrder!,
               restrictionFrom: asrTemporaryConstrain.startTime,
@@ -378,6 +339,7 @@ class SferaModelMapper {
     return segmentProfileReferences
         .mapIndexed((index, reference) {
           final segmentProfile = segmentProfiles.firstMatch(reference);
+          final kilometreMap = parseKilometre(segmentProfile);
           final communicationNetworks = segmentProfile.contextInformation?.communicationNetworks;
           return communicationNetworks?.map((element) {
             if (element.startLocation != element.endLocation) {
@@ -387,8 +349,9 @@ class SferaModelMapper {
             }
 
             return CommunicationNetworkChange(
-              type: element.communicationNetworkType.communicationNetworkType,
+              communicationNetworkType: element.communicationNetworkType.communicationNetworkType,
               order: calculateOrder(index, element.startLocation),
+              kilometre: kilometreMap[element.startLocation] ?? const [],
             );
           });
         })
@@ -456,31 +419,86 @@ class SferaModelMapper {
     return trainCharacteristics.firstWhereGivenOrNull(firstTrainRef);
   }
 
-  static List<UncodedOperationalIndication> _parseUncodedOperationalIndication(
-    int segmentIndex,
-    SegmentProfileReferenceDto segmentProfileReference,
+  static List<UncodedOperationalIndication> _parseUncodedOperationalIndications(
+    Iterable<SegmentProfileReferenceDto> segmentProfileReferences,
   ) {
-    final indications = segmentProfileReference.jpContextInformation?.operationalIndications;
-    if (indications == null) return [];
+    return segmentProfileReferences.mapIndexed((index, reference) {
+      final indications = reference.jpContextInformation?.operationalIndications;
+      if (indications == null) return <UncodedOperationalIndication>[];
 
-    mapToModel(OperationalIndicationNspDto uncoded) {
-      final startLocation = uncoded.constraint?.startLocation;
-      if (startLocation == null) {
-        _log.warning('Uncoded operational indication without location found: $uncoded');
-        return null;
+      mapToModel(OperationalIndicationNspDto uncoded) {
+        final startLocation = uncoded.constraint?.startLocation;
+        if (startLocation == null) {
+          _log.warning('Uncoded operational indication without location found: $uncoded');
+          return null;
+        }
+        return UncodedOperationalIndication(
+          order: calculateOrder(index, startLocation),
+          texts: [uncoded.uncodedText],
+        );
       }
-      return UncodedOperationalIndication(
-        order: calculateOrder(segmentIndex, startLocation),
-        texts: [uncoded.uncodedText],
-      );
+
+      return indications
+          .where((indication) => indication.operationalIndicationType == OperationalIndicationTypeDto.uncoded)
+          .map(mapToModel)
+          .nonNulls
+          .mergeOnSameLocation();
+    }).flattenedToList;
+  }
+
+  static List<ShuntingMovement> _parseShuntingMovements(
+    List<SegmentProfileReferenceDto> segmentProfilesReferences,
+    List<SegmentProfileDto> segmentProfiles,
+  ) {
+    final List<ShuntingMovement> result = [];
+
+    final segmentData = _SegmentMapperData();
+
+    for (final reference in segmentProfilesReferences) {
+      final nonStandardIndication = reference.jpContextInformation?.nonStandardIndications.firstOrNull;
+      if (nonStandardIndication?.trainRunType == TrainRunTypeDto.shuntingOnOpenTrack) {
+        final segmentProfile = segmentProfiles.firstMatch(reference);
+        final segmentIndex = segmentProfiles.indexOf(segmentProfile);
+
+        final constraint = nonStandardIndication!.constraint;
+        if (constraint == null) {
+          _log.warning('Found non standard indications $nonStandardIndication without constraint');
+          break;
+        }
+
+        switch (constraint.startEndQualifier) {
+          case StartEndQualifierDto.starts:
+            segmentData.startLocation = constraint.startLocation;
+            segmentData.startIndex = segmentIndex;
+            break;
+          case StartEndQualifierDto.startsEnds:
+            segmentData.startLocation = constraint.startLocation;
+            segmentData.startIndex = segmentIndex;
+            continue next;
+          next:
+          case StartEndQualifierDto.ends:
+            segmentData.endLocation = constraint.endLocation;
+            segmentData.endIndex = segmentIndex;
+            break;
+          case StartEndQualifierDto.wholeSp:
+            break;
+        }
+
+        if (segmentData.isComplete) {
+          result.add(ShuntingMovement(order: segmentData.startOrder!, isStart: true));
+          result.add(ShuntingMovement(order: segmentData.endOrder!, isStart: false));
+          segmentData.reset();
+        }
+      }
     }
 
-    return indications
-        .where((indication) => indication.operationalIndicationType == OperationalIndicationTypeDto.uncoded)
-        .map(mapToModel)
-        .nonNulls
-        .mergeOnSameLocation()
-        .toList();
+    if (segmentData.isIncomplete && segmentData.startOrder != null) {
+      result.add(ShuntingMovement(order: segmentData.startOrder!, isStart: true));
+    } else if (segmentData.isIncomplete) {
+      _log.warning('Incomplete non standard indication found: $segmentData');
+    }
+
+    return result;
   }
 
   static List<TramArea> _parseTramAreas(List<SegmentProfileDto> segmentProfiles) {
@@ -596,7 +614,7 @@ class SferaModelMapper {
 
   static SplayTreeMap<int, SingleSpeed?> _parseCalculatedSpeeds(
     JourneyProfileDto journeyProfile,
-    List<ServicePoint> servicePoints,
+    Iterable<ServicePoint> servicePoints,
   ) {
     final result = SplayTreeMap<int, SingleSpeed?>();
     for (final servicePoint in servicePoints.where((it) => it.isStop)) {
@@ -615,6 +633,63 @@ class SferaModelMapper {
 
     return result;
   }
+
+  static List<LevelCrossingGroup> _parseLevelCrossingAndBaliseGroups(List<JourneyPoint> journeyPoints) {
+    final List<LevelCrossingGroup> result = [];
+
+    for (int i = 0; i < journeyPoints.length; i++) {
+      final currentElement = journeyPoints[i];
+      if (currentElement is Balise) {
+        final levelCrossings = <LevelCrossing>[];
+        final otherPoints = <JourneyPoint>[];
+
+        for (int j = i + 1; j < journeyPoints.length; j++) {
+          final nextElement = journeyPoints[j];
+          if (nextElement is LevelCrossing) {
+            levelCrossings.add(nextElement);
+
+            if (levelCrossings.length >= currentElement.amountLevelCrossings) {
+              i = j;
+              break;
+            }
+          } else if (nextElement is Balise) {
+            _log.warning(
+              'Failed to find the amount of level crossings (${levelCrossings.length}/${currentElement.localSpeeds}) expected for balise.',
+            );
+            i = j - 1;
+            break;
+          } else {
+            otherPoints.add(nextElement);
+          }
+        }
+
+        result.add(
+          SupervisedLevelCrossingGroup(
+            balise: currentElement,
+            levelCrossings: levelCrossings,
+            pointsBetween: otherPoints,
+          ),
+        );
+      }
+      if (currentElement is LevelCrossing) {
+        final levelCrossings = [currentElement];
+        for (int j = i + 1; j < journeyPoints.length; j++) {
+          final nextElement = journeyPoints[j];
+          if (nextElement is LevelCrossing) {
+            levelCrossings.add(nextElement);
+          } else {
+            i = j - 1;
+            break;
+          }
+        }
+        if (levelCrossings.length > 1) {
+          result.add(UnsupervisedLevelCrossingGroup(levelCrossings: levelCrossings));
+        }
+      }
+    }
+
+    return result;
+  }
 }
 
 class _SegmentMapperData {
@@ -622,6 +697,8 @@ class _SegmentMapperData {
   int? endIndex;
   double? startLocation;
   double? endLocation;
+  double? startKmRef;
+  double? endKmRef;
 
   int? get startOrder => _calculateOrder(startIndex, startLocation);
 
@@ -641,10 +718,28 @@ class _SegmentMapperData {
     endIndex = null;
     startLocation = null;
     endLocation = null;
+    startKmRef = null;
+    endKmRef = null;
   }
 
   @override
   String toString() {
-    return '_SegmentMapperData{startSegmentIndex: $startIndex, endSegmentIndex: $endIndex, startLocation: $startLocation, endLocation: $endLocation}';
+    return '_SegmentMapperData{startSegmentIndex: $startIndex, endSegmentIndex: $endIndex, startLocation: $startLocation, endLocation: $endLocation, startKmRef: $startKmRef, endKmRef: $endKmRef}';
+  }
+}
+
+// extensions
+
+extension _BaseDataIterableExtension on Iterable<BaseData> {
+  /// removes all additional service points that are not at the route start/end and have no speed change.
+  Iterable<BaseData> removeIrrelevantServicePoints(SplayTreeMap<int, SingleSpeed?> calculatedSpeeds) {
+    final servicePoints = whereType<ServicePoint>().toList()..sort();
+    return whereNot((data) {
+      final isNotStartOrEndServicePoint = data != servicePoints.first && data != servicePoints.last;
+      return data is ServicePoint &&
+          data.isAdditional &&
+          isNotStartOrEndServicePoint &&
+          calculatedSpeeds[data.order] == null;
+    });
   }
 }

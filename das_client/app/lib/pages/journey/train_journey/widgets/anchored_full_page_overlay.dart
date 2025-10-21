@@ -26,6 +26,7 @@ class AnchoredFullPageOverlay extends StatefulWidget {
     this.targetAnchor = Alignment.bottomCenter,
     this.followerAnchor = Alignment.topCenter,
     this.offset = const Offset(0, sbbDefaultSpacing / 2),
+    this.isClosableOnBackgroundTap = true,
   });
 
   /// The builder that will display the triggering widget. Usually some form of a button.
@@ -54,13 +55,17 @@ class AnchoredFullPageOverlay extends StatefulWidget {
   /// Offset between the trigger and the overlay
   final Offset offset;
 
+  final bool isClosableOnBackgroundTap;
+
+  static double get defaultContentWidth => 360.0;
+
   @override
   State<AnchoredFullPageOverlay> createState() => _AnchoredFullPageOverlayState();
 }
 
 class _AnchoredFullPageOverlayState extends State<AnchoredFullPageOverlay> with SingleTickerProviderStateMixin {
-  final OverlayPortalController _overlayController = OverlayPortalController();
-  final LayerLink _layerLink = LayerLink();
+  final _overlayController = OverlayPortalController();
+  final _layerLink = LayerLink();
 
   late AnimationController _animationController;
   late Animation<double> _opacityAnimation;
@@ -93,7 +98,7 @@ class _AnchoredFullPageOverlayState extends State<AnchoredFullPageOverlay> with 
         children: [
           // Fullscreen background
           GestureDetector(
-            onTap: () => _removeOverlay(),
+            onTap: widget.isClosableOnBackgroundTap ? () => _removeOverlay() : null,
             child: Container(
               color: _fullPageBackgroundColor,
             ),

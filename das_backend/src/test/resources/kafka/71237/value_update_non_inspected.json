@@ -1,0 +1,654 @@
+{
+  "formationRuns": [
+    {
+      "brakeSequence": 75,
+      "consolidatedBrakingInformation": {
+        "carCarrierWagon": false,
+        "formationMaxSpeedInKilometerPerHour": 140,
+        "hauledLoadMaxSpeedInKilometerPerHour": 100,
+        "isSimZug": false,
+        "maxAxleLoadInKilogrammes": 22125,
+        "maxUphillDownhillGradients": {
+          "maxDownhillGradientInPermille": 31,
+          "maxUphillGradientInPermille": 74
+        },
+        "maximumSlopeForMinimumHoldingForceInPermille": "24.3",
+        "routeClass": "J4",
+        "tractionMaxSpeedInKilometerPerHour": 100
+      },
+      "endLocation": {
+        "countryCodeIso": "CH",
+        "locationPrimaryCode": 5683
+      },
+      "endLocationUic": {
+        "bpZusatzId": 0,
+        "countryCodeUic": 85,
+        "uicCode": 56831
+      },
+      "formationRunInspection": {
+        "brakeCalculationResult": {
+          "brakeCalculationType": 0,
+          "brakeSequence": 75,
+          "brakedWeightPercentage": 77,
+          "hauledLoadBrakedWeightInTonne": 482,
+          "hauledLoadBrakedWeightType": "P",
+          "hauledLoadInTonne": 619,
+          "hauledLoadLengthInCentimeter": 18800,
+          "hauledLoadNumberOfAxles": 44,
+          "totalLengthInCentimeter": 20340,
+          "tractionBrakedWeightInTonne": 61,
+          "tractionBrakedWeightType": "G",
+          "tractionGrossWeightInTonne": 84,
+          "tractionLengthInCentimeter": 1540,
+          "tractionNumberOfAxles": 4,
+          "trainBrakeType": 1,
+          "trainSequence": "D",
+          "brakePositionGForBrakeUnit1to5": false,
+          "brakePositionGForLeadingTraction": true,
+          "brakePositionGForLoadHauled": true
+        },
+        "inspected": true,
+        "inspectionTime": "2025-08-01T16:23:27Z"
+      },
+      "smsEvu": "2687",
+      "startLocation": {
+        "countryCodeIso": "CH",
+        "locationPrimaryCode": 5699
+      },
+      "startLocationUic": {
+        "bpZusatzId": 0,
+        "countryCodeUic": 85,
+        "uicCode": 56992
+      },
+      "trainSequence": "D",
+      "vehicleGroups": [
+        {
+          "vehicles": [
+            {
+              "europeanVehicleNumber": {
+                "checkDigit": "5",
+                "countryCodeUic": "85",
+                "typeCode": "91",
+                "vehicleNumber": "1111111"
+              },
+              "vehicleCategory": "LOKOMOTIVE",
+              "vehicleEffectiveTractionData": {
+                "tractionMode": "STAMMLOK",
+                "providesTraction": false
+              },
+              "vehicleUnits": [
+                {
+                  "cargoTransport": {
+                    "shipment": {
+                    }
+                  },
+                  "unitEffectiveOperationalData": {
+                    "brakePosition": "G",
+                    "brakeStatus": 1,
+                    "effectiveMaxSpeedInKilometerPerHour": 140,
+                    "holdingForceInHectonewton": 200
+                  },
+                  "unitTechnicalData": {
+                    "brakeDesign": 9,
+                    "handBrakeWeightInTonne": 50,
+                    "maxSpeedInKilometerPerHour": 140,
+                    "tareWeightInKilogramm": 84000
+                  },
+                  "vehicleType": {
+                    "vehicleTypeIdentifier": "Re420-C",
+                    "ru": "0000"
+                  },
+                  "tractionEnergy": ""
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "vehicles": [
+            {
+              "europeanVehicleNumber": {
+                "checkDigit": "5",
+                "countryCodeUic": "85",
+                "typeCode": "91",
+                "vehicleNumber": "1111112"
+              },
+              "vehicleCategory": "LOKOMOTIVE",
+              "vehicleEffectiveTractionData": {
+                "tractionMode": "Z",
+                "providesTraction": true
+              },
+              "vehicleUnits": [
+                {
+                  "cargoTransport": {
+                    "shipment": {
+                    }
+                  },
+                  "unitEffectiveOperationalData": {
+                    "brakePosition": "G",
+                    "brakeStatus": 1,
+                    "effectiveMaxSpeedInKilometerPerHour": 140,
+                    "holdingForceInHectonewton": 300
+                  },
+                  "unitTechnicalData": {
+                    "holdingForceInHectonewton": 300,
+                    "brakeDesign": 9,
+                    "handBrakeWeightInTonne": 50,
+                    "maxSpeedInKilometerPerHour": 140,
+                    "tareWeightInKilogramm": 84000
+                  },
+                  "vehicleType": {
+                    "vehicleTypeIdentifier": "Re420-C",
+                    "ru": "0000"
+                  },
+                  "tractionEnergy": ""
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "vehicles": [
+            {
+              "europeanVehicleNumber": {
+                "checkDigit": "5",
+                "countryCodeUic": "85",
+                "typeCode": "33",
+                "vehicleNumber": "2222222"
+              },
+              "vehicleCategory": "GUETERWAGEN",
+              "vehicleUnits": [
+                {
+                  "cargoTransport": {
+                    "load": {
+                      "goods": [
+                        {
+                          "dangerousGoods": [
+                            {
+                              "technicalName": "dangerous"
+                            }
+                          ],
+                          "weightInKilogramme": 0
+                        }
+                      ],
+                      "intermodalLoadingUnits": []
+                    },
+                    "shipment": {
+                    }
+                  },
+                  "unitEffectiveOperationalData": {
+                    "brakePosition": "P",
+                    "brakeStatus": 1,
+                    "effectiveMaxSpeedInKilometerPerHour": 100,
+                    "handBrakeStatus": "1",
+                    "holdingForceInHectonewton": 270
+                  },
+                  "unitTechnicalData": {
+                    "brakeDesign": 0,
+                    "handBrakeType": 2,
+                    "handBrakeWeightInTonne": 22,
+                    "holdingForceInHectonewton": 270,
+                    "maxSpeedInKilometerPerHour": 120
+                  },
+                  "tractionEnergy": ""
+                }
+              ]
+            },
+            {
+              "europeanVehicleNumber": {
+                "checkDigit": "6",
+                "countryCodeUic": "85",
+                "typeCode": "33",
+                "vehicleNumber": "3333333"
+              },
+              "vehicleCategory": "GUETERWAGEN",
+              "vehicleUnits": [
+                {
+                  "cargoTransport": {
+                    "load": {
+                      "goods": [
+                        {
+                          "dangerousGoods": []
+                        }
+                      ],
+                      "intermodalLoadingUnits": []
+                    }
+                  },
+                  "unitEffectiveOperationalData": {
+                    "brakePosition": "P",
+                    "brakeStatus": 1,
+                    "handBrakeStatus": "1",
+                    "holdingForceInHectonewton": 270
+                  },
+                  "unitTechnicalData": {
+                    "brakeDesign": 9,
+                    "handBrakeType": 2,
+                    "handBrakeWeightInTonne": 22,
+                    "holdingForceInHectonewton": 270,
+                    "maxSpeedInKilometerPerHour": 120
+                  }
+                }
+              ]
+            },
+            {
+              "europeanVehicleNumber": {
+                "checkDigit": "6",
+                "countryCodeUic": "85",
+                "typeCode": "33",
+                "vehicleNumber": "4444444"
+              },
+              "vehicleCategory": "GUETERWAGEN",
+              "vehicleUnits": [
+                {
+                  "cargoTransport": {
+                    "load": {
+                      "goods": [
+                        {
+                          "dangerousGoods": []
+                        }
+                      ],
+                      "intermodalLoadingUnits": []
+                    }
+                  },
+                  "unitEffectiveOperationalData": {
+                    "brakePosition": "P",
+                    "brakeStatus": 0,
+                    "handBrakeStatus": "1",
+                    "holdingForceInHectonewton": 220
+                  },
+                  "unitTechnicalData": {
+                    "handBrakeType": 2,
+                    "handBrakeWeightInTonne": 22,
+                    "holdingForceInHectonewton": 220,
+                    "maxSpeedInKilometerPerHour": 120
+                  }
+                }
+              ]
+            },
+            {
+              "europeanVehicleNumber": {
+                "checkDigit": "1",
+                "countryCodeUic": "85",
+                "typeCode": "33",
+                "vehicleNumber": "5555555"
+              },
+              "vehicleCategory": "GUETERWAGEN",
+              "vehicleUnits": [
+                {
+                  "cargoTransport": {
+                    "load": {
+                      "goods": [
+                        {
+                          "dangerousGoods": []
+                        }
+                      ],
+                      "intermodalLoadingUnits": []
+                    }
+                  },
+                  "unitEffectiveOperationalData": {
+                    "brakePosition": "P",
+                    "brakeStatus": 0,
+                    "effectiveMaxSpeedInKilometerPerHour": 100,
+                    "handBrakeStatus": "1",
+                    "holdingForceInHectonewton": 222
+                  },
+                  "unitTechnicalData": {
+                    "airBrakeType": 3,
+                    "brakeDesign": 2,
+                    "handBrakeType": 2,
+                    "handBrakeWeightInTonne": 22,
+                    "holdingForceInHectonewton": 222,
+                    "maxSpeedInKilometerPerHour": 120
+                  }
+                }
+              ]
+            },
+            {
+              "europeanVehicleNumber": {
+                "checkDigit": "9",
+                "countryCodeUic": "85",
+                "typeCode": "33",
+                "vehicleNumber": "6666666"
+              },
+              "vehicleCategory": "GUETERWAGEN",
+              "vehicleUnits": [
+                {
+                  "cargoTransport": {
+                    "load": {
+                      "goods": [
+                        {
+                          "dangerousGoods": []
+                        }
+                      ],
+                      "intermodalLoadingUnits": [],
+                      "maxSpeedInKilometerPerHour": 120,
+                      "totalWeightInKilogramme": 52550
+                    }
+                  },
+                  "unitEffectiveOperationalData": {
+                    "brakePosition": "P",
+                    "brakeStatus": 0,
+                    "effectiveMaxSpeedInKilometerPerHour": 120,
+                    "handBrakeStatus": "1",
+                    "holdingForceInHectonewton": 200
+                  },
+                  "unitTechnicalData": {
+                    "handBrakeType": 2,
+                    "handBrakeWeightInTonne": 20,
+                    "holdingForceInHectonewton": 200,
+                    "maxSpeedInKilometerPerHour": 120
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "vehicles": [
+            {
+              "europeanVehicleNumber": {
+                "checkDigit": "0",
+                "countryCodeUic": "85",
+                "typeCode": "31",
+                "vehicleNumber": "7777777"
+              },
+              "vehicleCategory": "GUETERWAGEN",
+              "vehicleUnits": [
+                {
+                  "cargoTransport": {
+                    "load": {
+                      "goods": [],
+                      "intermodalLoadingUnits": [
+                        {
+                          "dangerousGoods": [],
+                          "goods": [
+                            {
+                              "dangerousGoods": []
+                            }
+                          ]
+                        }
+                      ],
+                      "maxSpeedInKilometerPerHour": 120,
+                      "totalWeightInKilogramme": 18860
+                    }
+                  },
+                  "unitEffectiveOperationalData": {
+                    "brakePosition": "P",
+                    "brakeStatus": 1,
+                    "effectiveMaxSpeedInKilometerPerHour": 120,
+                    "handBrakeStatus": "1",
+                    "holdingForceInHectonewton": 220
+                  },
+                  "unitTechnicalData": {
+                    "brakeDesign": 2,
+                    "handBrakeType": 1,
+                    "handBrakeWeightInTonne": 22,
+                    "holdingForceInHectonewton": 220,
+                    "maxSpeedInKilometerPerHour": 120
+                  }
+                }
+              ]
+            },
+            {
+              "europeanVehicleNumber": {
+                "checkDigit": "4",
+                "countryCodeUic": "85",
+                "typeCode": "31",
+                "vehicleNumber": "8888888"
+              },
+              "vehicleCategory": "GUETERWAGEN",
+              "vehicleUnits": [
+                {
+                  "cargoTransport": {
+                    "load": {
+                      "goods": [],
+                      "intermodalLoadingUnits": [
+                        {
+                          "dangerousGoods": [],
+                          "goods": [
+                            {
+                              "dangerousGoods": []
+                            }
+                          ]
+                        }
+                      ],
+                      "maxSpeedInKilometerPerHour": 100,
+                      "totalWeightInKilogramme": 21420
+                    }
+                  },
+                  "unitEffectiveOperationalData": {
+                    "brakePosition": "P",
+                    "brakeStatus": 1,
+                    "effectiveMaxSpeedInKilometerPerHour": 100,
+                    "handBrakeStatus": "1",
+                    "holdingForceInHectonewton": 250
+                  },
+                  "unitTechnicalData": {
+                    "brakeDesign": 2,
+                    "handBrakeType": 1,
+                    "handBrakeWeightInTonne": 20,
+                    "holdingForceInHectonewton": 250,
+                    "maxSpeedInKilometerPerHour": 120
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "vehicles": [
+            {
+              "europeanVehicleNumber": {
+                "checkDigit": "4",
+                "countryCodeUic": "85",
+                "typeCode": "31",
+                "vehicleNumber": "9999999"
+              },
+              "vehicleCategory": "GUETERWAGEN",
+              "vehicleUnits": [
+                {
+                  "cargoTransport": {
+                    "load": {
+                      "goods": [
+                        {
+                          "dangerousGoods": []
+                        }
+                      ],
+                      "intermodalLoadingUnits": []
+                    }
+                  },
+                  "unitEffectiveOperationalData": {
+                    "brakePosition": "P",
+                    "brakeStatus": 1,
+                    "effectiveMaxSpeedInKilometerPerHour": 120,
+                    "handBrakeStatus": "1",
+                    "holdingForceInHectonewton": 200
+                  },
+                  "unitTechnicalData": {
+                    "brakeDesign": 2,
+                    "handBrakeType": 1,
+                    "handBrakeWeightInTonne": 20,
+                    "holdingForceInHectonewton": 200,
+                    "maxSpeedInKilometerPerHour": 120
+                  }
+                }
+              ]
+            },
+            {
+              "europeanVehicleNumber": {
+                "checkDigit": "8",
+                "countryCodeUic": "87",
+                "typeCode": "33",
+                "vehicleNumber": "1222222"
+              },
+              "vehicleCategory": "GUETERWAGEN",
+              "vehicleUnits": [
+                {
+                  "cargoTransport": {
+                    "load": {
+                      "goods": [
+                        {
+                          "dangerousGoods": []
+                        }
+                      ],
+                      "intermodalLoadingUnits": []
+                    }
+                  },
+                  "unitEffectiveOperationalData": {
+                    "brakePosition": "P",
+                    "brakeStatus": 1,
+                    "holdingForceInHectonewton": 0
+                  },
+                  "unitTechnicalData": {
+                    "brakeDesign": 6,
+                    "handBrakeType": 0,
+                    "maxSpeedInKilometerPerHour": 100
+                  }
+                }
+              ]
+            },
+            {
+              "europeanVehicleNumber": {
+                "checkDigit": "6",
+                "countryCodeUic": "87",
+                "typeCode": "33",
+                "vehicleNumber": "1333333"
+              },
+              "vehicleCategory": "GUETERWAGEN",
+              "vehicleUnits": [
+                {
+                  "cargoTransport": {
+                    "load": {
+                      "goods": [
+                        {
+                          "dangerousGoods": []
+                        }
+                      ],
+                      "intermodalLoadingUnits": []
+                    }
+                  },
+                  "unitEffectiveOperationalData": {
+                    "brakePosition": "P",
+                    "brakeStatus": 1,
+                    "effectiveMaxSpeedInKilometerPerHour": 100,
+                    "holdingForceInHectonewton": 0
+                  },
+                  "unitTechnicalData": {
+                    "brakeDesign": 6,
+                    "handBrakeType": 0,
+                    "maxSpeedInKilometerPerHour": 100
+                  }
+                }
+              ]
+            },
+            {
+              "europeanVehicleNumber": {
+                "checkDigit": "5",
+                "countryCodeUic": "85",
+                "typeCode": "33",
+                "vehicleNumber": "1444444"
+              },
+              "vehicleCategory": "GUETERWAGEN",
+              "vehicleUnits": [
+                {
+                  "cargoTransport": {
+                    "load": {
+                      "goods": [
+                        {
+                          "dangerousGoods": []
+                        }
+                      ],
+                      "intermodalLoadingUnits": [],
+                      "maxSpeedInKilometerPerHour": 120
+                    }
+                  },
+                  "unitEffectiveOperationalData": {
+                    "brakePosition": "P",
+                    "brakeStatus": 1,
+                    "effectiveMaxSpeedInKilometerPerHour": 120,
+                    "holdingForceInHectonewton": 0
+                  },
+                  "unitTechnicalData": {
+                    "brakeDesign": 0,
+                    "maxSpeedInKilometerPerHour": 12
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "brakeSequence": 75,
+      "endLocation": {
+        "countryCodeIso": "CH",
+        "locationPrimaryCode": 1233
+      },
+      "endLocationUic": {
+        "bpZusatzId": 0,
+        "countryCodeUic": 85,
+        "uicCode": 12335
+      },
+      "formationRunInspection": {
+        "inspected": false
+      },
+      "smsEvu": "2687",
+      "startLocation": {
+        "countryCodeIso": "CH",
+        "locationPrimaryCode": 5683
+      },
+      "startLocationUic": {
+        "bpZusatzId": 0,
+        "countryCodeUic": 85,
+        "uicCode": 56835
+      },
+      "trainSequence": "D",
+      "vehicleGroups": [
+        {
+          "vehicles": [
+            {
+              "europeanVehicleNumber": {
+                "checkDigit": "5",
+                "countryCodeUic": "85",
+                "typeCode": "91",
+                "vehicleNumber": "1111111"
+              },
+              "vehicleCategory": "LOKOMOTIVE",
+              "vehicleEffectiveTractionData": {
+                "tractionMode": "STAMMLOK",
+                "providesTraction": false
+              },
+              "vehicleUnits": [
+                {
+                  "unitEffectiveOperationalData": {
+                    "brakePosition": "G",
+                    "brakeStatus": 1,
+                    "effectiveMaxSpeedInKilometerPerHour": 140,
+                    "holdingForceInHectonewton": 200
+                  },
+                  "unitTechnicalData": {
+                    "brakeDesign": 9,
+                    "handBrakeWeightInTonne": 50,
+                    "maxSpeedInKilometerPerHour": 140,
+                    "tareWeightInKilogramm": 84000
+                  },
+                  "vehicleType": {
+                    "vehicleTypeIdentifier": "Re420-C",
+                    "ru": "0000"
+                  },
+                  "tractionEnergy": ""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "key": {
+    "betriebstag": "2025-08-01",
+    "trassenId": "71237-001",
+    "zugnummer": 71237
+  }
+}

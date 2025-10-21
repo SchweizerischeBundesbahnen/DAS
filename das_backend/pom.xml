@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.4</version>
+        <version>3.5.6</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ch.sbb</groupId>
     <artifactId>das_backend</artifactId>
-    <version>0.3.1-SNAPSHOT</version>
+    <version>0.6.1-SNAPSHOT</version>
     <name>DAS-Backend</name>
     <description>DAS-Backend</description>
     <properties>
         <java.version>21</java.version>
-        <spring-modulith.version>1.4.2</spring-modulith.version>
+        <spring-modulith.version>1.4.3</spring-modulith.version>
         <archunit-junit5.version>1.4.1</archunit-junit5.version>
-        <springdoc-openapi-starter-webmvc-ui.version>2.8.9</springdoc-openapi-starter-webmvc-ui.version>
-        <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
-        <kafka-json-schema-serializer.version>8.0.0</kafka-json-schema-serializer.version>
-        <confluent.schema-registry-plugin.version>8.0.0</confluent.schema-registry-plugin.version>
+        <springdoc-openapi-starter-webmvc-ui.version>2.8.13</springdoc-openapi-starter-webmvc-ui.version>
+        <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
+        <kafka-json-schema-serializer.version>8.1.0</kafka-json-schema-serializer.version>
+        <confluent.schema-registry-plugin.version>8.1.0</confluent.schema-registry-plugin.version>
         <jsonschema2pojo-maven-plugin.version>1.2.2</jsonschema2pojo-maven-plugin.version>
-        <aws.java.sdk.version>2.32.20</aws.java.sdk.version>
+        <aws.java.sdk.version>2.35.8</aws.java.sdk.version>
+        <shedlock.version>6.10.0</shedlock.version>
+        <xmlunit.version>2.10.4</xmlunit.version>
+        <jaxb2-maven-plugin.version>3.3.0</jaxb2-maven-plugin.version>
+        <paho.mqttv5.client.version>1.2.5</paho.mqttv5.client.version>
     </properties>
     <dependencies>
         <dependency>
@@ -35,11 +38,21 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <!--  needed only for application-local-no-docker.yaml -->
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -79,6 +92,21 @@
             <artifactId>kafka-json-schema-serializer</artifactId>
             <version>${kafka-json-schema-serializer.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.paho</groupId>
+            <artifactId>org.eclipse.paho.mqttv5.client</artifactId>
+            <version>${paho.mqttv5.client.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-oxm</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-docker-compose</artifactId>
@@ -138,13 +166,38 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>kafka</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.modulith</groupId>
             <artifactId>spring-modulith-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.xmlunit</groupId>
+            <artifactId>xmlunit-core</artifactId>
+            <version>${xmlunit.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.xmlunit</groupId>
+            <artifactId>xmlunit-assertj3</artifactId>
+            <version>${xmlunit.version}</version>
+        </dependency>
+        <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>s3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.javacrumbs.shedlock</groupId>
+            <artifactId>shedlock-spring</artifactId>
+            <version>${shedlock.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.javacrumbs.shedlock</groupId>
+            <artifactId>shedlock-provider-jdbc-template</artifactId>
+            <version>${shedlock.version}</version>
         </dependency>
     </dependencies>
 
@@ -229,6 +282,8 @@
                 <artifactId>jsonschema2pojo-maven-plugin</artifactId>
                 <version>${jsonschema2pojo-maven-plugin.version}</version>
                 <configuration>
+                    <sourceDirectory>${project.build.directory}/schema_registry</sourceDirectory>
+                    <targetPackage>ch.sbb.zis.trainformation.api.model</targetPackage>
                     <includeConstructors>true</includeConstructors>
                     <useJakartaValidation>true</useJakartaValidation>
                     <dateType>java.time.LocalDate</dateType>
@@ -240,17 +295,34 @@
                             <goal>generate</goal>
                         </goals>
                         <phase>generate-sources</phase>
-                        <configuration>
-                            <sourcePaths>
-                                <sourcePath>${project.build.directory}/schema_registry</sourcePath>
-                            </sourcePaths>
-                            <targetPackage>ch.sbb.zis.trainformation.api.model</targetPackage>
-                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
+                <version>${jaxb2-maven-plugin.version}</version>
+                <configuration>
+                    <sources>
+                        <source>${basedir}/src/main/resources/SFERA_v3.00.xsd</source>
+                    </sources>
+                    <xjbSources>
+                        <xjbSource>${basedir}/src/main/resources/jaxb-bindings.xjb</xjbSource>
+                    </xjbSources>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>xjc</id>
+                        <goals>
+                            <goal>xjc</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
     </build>
+
     <pluginRepositories>
         <pluginRepository>
             <id>confluent</id>

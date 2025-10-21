@@ -3,8 +3,14 @@ spring:
     url: jdbc
   kafka:
     consumer:
-      bootstrap-servers: localhost:9092
-
+      group-id: test
+      key-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+    producer:
+      key-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 auth:
   audience:
     service-name: test
@@ -22,3 +28,17 @@ aws:
   accessKey: accessKey
   secretKey: secretKey
   bucketName: bucketName
+
+zis:
+  kafka:
+    topic: "formation-test"
+
+sfera:
+  company-code: '1033'
+  sfera-version: '3.00'
+  source-device: 'TEST'
+  recipient: '0033'
+  broker-url: test
+  clientId: test
+  oauth-profile: test
+  topic-prefix: test/

@@ -94,8 +94,11 @@ class DASModalSheetController {
   Future<void> maximize() async {
     if (!_initialized) return;
 
-    if (_state != _ControllerState.maximized) {
+    if (_state == _ControllerState.closed) {
       onOpen?.call();
+    }
+
+    if (_state != _ControllerState.maximized) {
       await _fullWidthController.forward();
       _state = _ControllerState.maximized;
     }
@@ -130,7 +133,8 @@ class DASModalSheetController {
     }
   }
 
-  void dispose() {
+  /// will be called by [_DASModalSheetState.dispose()]
+  void _dispose() {
     _idleTimer?.cancel();
     _controller.dispose();
     _fullWidthController.dispose();
@@ -151,8 +155,9 @@ class DASModalSheetController {
 ///
 /// Modal sheet is controlled by [DASModalSheetController]
 class DasModalSheet extends StatefulWidget {
+  static const Key modalSheetKey = Key('dasModalSheet');
   static const Key modalSheetClosedKey = Key('dasModalSheetClosed');
-  static const Key modalSheetExtendedKey = Key('dasModalSheetExtended');
+  static const Key modalSheetExpandedKey = Key('dasModalSheetExpanded');
   static const Key modalSheetMaximizedKey = Key('dasModalSheetMaximized');
   static const Key modalSheetCloseButtonKey = Key('dasModalSheetCloseButton');
 
@@ -195,6 +200,12 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
     );
   }
 
+  @override
+  void dispose() {
+    widget.controller._dispose();
+    super.dispose();
+  }
+
   Widget _modalSheet(double width) {
     final isDarkTheme = SBBBaseStyle.of(context).brightness == Brightness.dark;
     return ExtendedAppBarWrapper(
@@ -214,9 +225,10 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
 
   Widget _body() {
     return Column(
-      key: widget.controller.isExpanded ? DasModalSheet.modalSheetExtendedKey : DasModalSheet.modalSheetMaximizedKey,
+      key: DasModalSheet.modalSheetKey,
       mainAxisSize: MainAxisSize.max,
       children: [
+        _integrationTestKey(),
         _header(),
         SizedBox(height: sbbDefaultSpacing * 0.5),
         Expanded(child: widget.builder.body(context)),
@@ -247,5 +259,12 @@ class _DASModalSheetState extends State<DasModalSheet> with TickerProviderStateM
     final maxWidth = MediaQuery.sizeOf(context).width - widget.leftMargin;
     final animatedWidthOfController = widget.controller.width + (widget.controller.fullWidth * maxWidth);
     return min(animatedWidthOfController, maxWidth);
+  }
+
+  /// separate widget as otherwise the whole sheet will be redrawn after animation because the key changes
+  Widget _integrationTestKey() {
+    return SizedBox.shrink(
+      key: widget.controller.isExpanded ? DasModalSheet.modalSheetExpandedKey : DasModalSheet.modalSheetMaximizedKey,
+    );
   }
 }

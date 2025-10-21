@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 
 @Builder
@@ -19,6 +20,7 @@ public class VehicleUnit {
     private Integer effectiveOperationalHoldingForceInHectoNewton;
     private Integer handBrakeWeightInT;
     private Load load;
+    @Getter private String vehicleSeries;
 
     static boolean hasDisabledBrake(List<VehicleUnit> vehicleUnits) {
         if (vehicleUnits == null) {

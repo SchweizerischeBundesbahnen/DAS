@@ -1,6 +1,6 @@
+import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/reduced_overview/cells/reduced_time_cell_body.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/route_cell_body.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/cells/route_chevron.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/service_point_row.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
@@ -11,11 +11,14 @@ class ReducedServicePointRow extends ServicePointRow {
     required super.metadata,
     required super.data,
     required super.rowIndex,
-    required this.context,
+    required super.context,
     super.config,
-  }) : super(context: context, rowColor: ThemeUtil.getDASTableColor(context), highlightNextStop: false);
-
-  final BuildContext context;
+    super.key,
+  }) : super(
+         rowColor: ThemeUtil.getDASTableColor(context),
+         journeyPosition: JourneyPositionModel(),
+         highlightNextStop: false,
+       );
 
   @override
   DASTableCell localSpeedCell(BuildContext context) {
@@ -44,11 +47,10 @@ class ReducedServicePointRow extends ServicePointRow {
       child: RouteCellBody(
         isStop: data.isStop,
         isCurrentPosition: false,
-        isRouteStart: metadata.routeStart == data,
-        isRouteEnd: metadata.routeEnd == data,
+        isRouteStart: metadata.journeyStart == data,
+        isRouteEnd: metadata.journeyEnd == data,
         isStopOnRequest: !data.mandatoryStop,
-        chevronPosition: RouteChevron.positionFromHeight(height),
-        isNextStop: false,
+        chevronPosition: chevronPosition,
       ),
     );
   }

@@ -1,5 +1,88 @@
 # Changelog
 
+## [0.6.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.5.0...backend-v0.6.0) (2025-10-20)
+
+
+### Features
+
+* preload mqtt connection and sfera xml ([#914](https://github.com/SchweizerischeBundesbahnen/DAS/issues/914)) ([#1265](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1265)) ([4e5d5fe](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4e5d5fefbf97e69928d4fccdaa4e99dda59ae0b7))
+* preload storage services ([#915](https://github.com/SchweizerischeBundesbahnen/DAS/issues/915)) ([#1254](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1254)) ([2a1fc1a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/2a1fc1a54484c94694447150b3c583a3f171e785))
+
+
+### Bug Fixes
+
+* add clientCredentials flow to OpenApiConfig ([#1296](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1296)) ([2484183](https://github.com/SchweizerischeBundesbahnen/DAS/commit/248418329d81e74d9c3745afaae6f4ba685abb5c))
+* conflicting key in sql ([#1312](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1312)) ([1bd278e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1bd278ef0242b0a1c9d0b642d79674437b83b9ba))
+* **deps:** update dependency io.confluent:kafka-json-schema-serializer to v8.1.0 ([#1335](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1335)) ([0b811e5](https://github.com/SchweizerischeBundesbahnen/DAS/commit/0b811e5dca9b0efbda6ed1f8eec4ba0acd573e90))
+* **deps:** update dependency org.springframework.boot:spring-boot-starter-parent to v3.5.6 ([#1276](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1276)) ([1c54423](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1c54423367e92bb30f367db0af0eeecbc3e85099))
+* **deps:** update dependency software.amazon.awssdk:bom to v2.35.0 ([#1278](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1278)) ([fabb18d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/fabb18dd6ef4be0f921f2c40e2b77d9c19623017))
+* **deps:** update dependency software.amazon.awssdk:bom to v2.35.2 ([#1307](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1307)) ([92ffd90](https://github.com/SchweizerischeBundesbahnen/DAS/commit/92ffd90226e607eba18ff70553e043071e685822))
+* **deps:** update dependency software.amazon.awssdk:bom to v2.35.8 ([#1332](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1332)) ([0d1b0b8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/0d1b0b81c70546727a0301ad3c126b7cd76ea675))
+* localhost profile without docker ([#1311](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1311)) ([105eb76](https://github.com/SchweizerischeBundesbahnen/DAS/commit/105eb76ba92d7613e97bbfca5440c2ea08d11392))
+* missing modulith pre-requisite table added ([#1310](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1310)) ([c149ace](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c149ace19fb9818369ae07761d98eaf222895c3b))
+* preload env variables and config ([#1325](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1325)) ([d5cfebb](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d5cfebb34ff1cdb706bbf183fbeed9db642be7ae))
+
+
+### Documentation
+
+* readme updated ([#1309](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1309)) ([ae0b833](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ae0b833bb922acea6fcf017e21451c547340d348))
+
+## [0.5.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.4.1...backend-v0.5.0) (2025-09-18)
+
+
+### Features
+
+* consume by inspectionDateTime and update related logic with trainPathId ([#1176](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1176)) ([#1204](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1204)) ([2137ade](https://github.com/SchweizerischeBundesbahnen/DAS/commit/2137adee53c75c86c78bb5dbfaded22bb4ef5d09))
+* formation additional traction mode and series ([#539](https://github.com/SchweizerischeBundesbahnen/DAS/issues/539)) ([#1161](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1161)) ([9f98661](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9f98661f0f619eb70a952811eebe8174a9a9b537))
+* formation monitoring and integration tests ([#1176](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1176)) ([#1235](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1235)) ([926bbd1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/926bbd1c769299a4d512ad91f0c801ee1cf98830))
+* scheduled clean-up for formation runs ([#1176](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1176)) ([#1222](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1222)) ([cdbb46e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/cdbb46e7da98a1afd5421af00c46c0ae759d5c95))
+
+
+### Bug Fixes
+
+* brake design count only on hauled load ([#1176](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1176)) ([#1221](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1221)) ([0eecacc](https://github.com/SchweizerischeBundesbahnen/DAS/commit/0eecaccd03753aced3ffab09d8320b617b761412))
+* db transaction ([#1226](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1226)) ([f1daf49](https://github.com/SchweizerischeBundesbahnen/DAS/commit/f1daf49eab7768a9c841451da75df325b6904730))
+* **deps:** update dependency org.springdoc:springdoc-openapi-starter-webmvc-ui to v2.8.10 ([#1178](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1178)) ([b892be8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b892be8acde0d3bc0712819a38ac040904f46902))
+* **deps:** update dependency org.springdoc:springdoc-openapi-starter-webmvc-ui to v2.8.11 ([#1188](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1188)) ([31eadc0](https://github.com/SchweizerischeBundesbahnen/DAS/commit/31eadc0b04f0ac16aadc680af1406dda2e994233))
+* **deps:** update dependency org.springdoc:springdoc-openapi-starter-webmvc-ui to v2.8.13 ([#1206](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1206)) ([780df3a](https://github.com/SchweizerischeBundesbahnen/DAS/commit/780df3a4d08bf409cb0c6f9372dcbaaf9a7af85a))
+* **deps:** update dependency org.springframework.boot:spring-boot-starter-parent to v3.5.5 ([#1189](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1189)) ([b348b11](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b348b11303479fd1e5f1eb2ebea8e4fe2a014e7d))
+* **deps:** update dependency org.springframework.modulith:spring-modulith-bom to v1.4.3 ([#1191](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1191)) ([a8a79f0](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a8a79f01dea9f5fd4678717086941cfcd21b47f1))
+* **deps:** update dependency software.amazon.awssdk:bom to v2.32.27 ([#1179](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1179)) ([df67cd4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/df67cd4183da9f7ebf57192c32d5ee41c1d2085d))
+* **deps:** update dependency software.amazon.awssdk:bom to v2.33.0 ([#1192](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1192)) ([1e87212](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1e87212535e28d48b776c26b25c4a4884bf6fb19))
+* **deps:** update dependency software.amazon.awssdk:bom to v2.33.11 ([#1253](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1253)) ([a13178c](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a13178ca11301ac3594596108a3cffe91a9f192d))
+* **deps:** update dependency software.amazon.awssdk:bom to v2.33.4 ([#1207](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1207)) ([3ef76db](https://github.com/SchweizerischeBundesbahnen/DAS/commit/3ef76dbe4f353268a1bf769070fd032cf7e95b1d))
+* **deps:** update dependency software.amazon.awssdk:bom to v2.33.6 ([#1228](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1228)) ([c02f8be](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c02f8be0141a53c3a4bdce242668226d3efd668b))
+* handle null european vehicle numbers ([#1176](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1176)) ([#1203](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1203)) ([b58b0bd](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b58b0bd2f2b19b82fac53f9f0dbd406d7752d6d6))
+* kafka topic configuration with env variable ([#1205](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1205)) ([a945e7b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a945e7b257ba23cfee9c7605421b63ed11ea4868))
+* logging level in consumer ([#1255](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1255)) ([4c40d03](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4c40d0365c18882ff6934eae55b322f573ef3c68))
+
+## [0.4.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.4.0...backend-v0.4.1) (2025-08-19)
+
+
+### Bug Fixes
+
+* force backend release  ([#1172](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1172)) ([13f9fb9](https://github.com/SchweizerischeBundesbahnen/DAS/commit/13f9fb9d11a93ad30bdf40e92bc20e7c71be5790))
+
+## [0.4.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.3.0...backend-v0.4.0) (2025-08-18)
+
+
+### Features
+
+* api logging remove ([#769](https://github.com/SchweizerischeBundesbahnen/DAS/issues/769)) ([#1133](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1133)) ([6c2c0a5](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6c2c0a5f7f13c8487262235a8c0853b14f852b76))
+* aws s3 storage ([#915](https://github.com/SchweizerischeBundesbahnen/DAS/issues/915)) ([#1158](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1158)) ([a26091d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a26091d1e398cce4026256f3f6d9da197273da1e))
+* consume formation runs ([#539](https://github.com/SchweizerischeBundesbahnen/DAS/issues/539)) ([#1103](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1103)) ([07e2736](https://github.com/SchweizerischeBundesbahnen/DAS/commit/07e273682ba30b26350d7cd77b68ac60f0940db3))
+* formation api ([#541](https://github.com/SchweizerischeBundesbahnen/DAS/issues/541)) ([#1106](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1106)) ([5d6fda4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5d6fda4b0cea15677c3e9beada38d9386499fe4f))
+* logging settings ([#1006](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1006)) ([#1121](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1121)) ([cc75c0c](https://github.com/SchweizerischeBundesbahnen/DAS/commit/cc75c0cd455370a3f649783d866ebf0d6ed4ebf6))
+
+
+### Bug Fixes
+
+* **deps:** update dependency io.confluent:kafka-json-schema-serializer to v7.9.2 ([#1131](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1131)) ([c09878d](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c09878d3a0fd34326dccc8e9b2546bc30a42afd0))
+* **deps:** update dependency io.confluent:kafka-json-schema-serializer to v8 ([#1132](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1132)) ([6db1bc9](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6db1bc977bf29bb818cff2c1d2ca89ad7be0ad3c))
+* **deps:** update dependency org.springframework.boot:spring-boot-starter-parent to v3.5.4 ([#1128](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1128)) ([6df386b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6df386b1b8e0a56acfebb777cfab8e10df8b6a1c))
+* **deps:** update dependency org.springframework.modulith:spring-modulith-bom to v1.4.2 ([#1130](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1130)) ([7191ce1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/7191ce1b25a9064a0dc23c0e3c3d9338c2adff26))
+* formation dangerous and consider only traction vehicles ([#539](https://github.com/SchweizerischeBundesbahnen/DAS/issues/539)) ([#1149](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1149)) ([300d1b2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/300d1b226df5194d6ad8cd807ef8963c53ff2d93))
+
 ## [0.3.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.2.1...backend-v0.3.0) (2025-07-10)
 
 

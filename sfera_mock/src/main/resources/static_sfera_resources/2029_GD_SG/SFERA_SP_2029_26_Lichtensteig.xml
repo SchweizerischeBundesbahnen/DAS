@@ -1,0 +1,160 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd"
+                SP_ID="2029_26_Lichtensteig" SP_VersionMajor="1" SP_VersionMinor="1" SP_Length="4300" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>1285</IM_ID>
+    </SP_Zone>
+
+    <SP_Points>
+
+        <TimingPoint TP_ID="Lichtensteig" location="0">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>6201</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+		
+		<Signal>
+            <Signal_ID signal_ID_Physical="C3" location="52"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="C3"/>
+        </Signal>
+		
+		<Signal>
+            <Signal_ID signal_ID_Physical="D334" location="3583"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="D334"/>
+        </Signal>
+		
+		<NetworkSpecificPoint location="52" identifier="1234">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
+            <NetworkSpecificParameter name="curvePointType" value="begin"/>
+            <NetworkSpecificParameter name="curveType" value="stationExitCurve"/>
+            <NetworkSpecificParameter name="xmlCurveSpeed" value="
+                &lt;curveSpeed &gt;
+					&lt;speeds&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;&quot; speed=&quot;105&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;&quot; speed=&quot;95&quot;/&gt;
+						&lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;&quot; speed=&quot;95&quot;/&gt;
+					&lt;/speeds&gt;
+                &lt;/curveSpeed&gt;
+            "/>
+        </NetworkSpecificPoint>
+
+        <NetworkSpecificPoint location="100" identifier="1234">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
+            <NetworkSpecificParameter name="curvePointType" value="end"/>
+        </NetworkSpecificPoint>
+		
+		<NetworkSpecificPoint location="3600" identifier="5678">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
+            <NetworkSpecificParameter name="curvePointType" value="begin"/>
+            <NetworkSpecificParameter name="curveType" value="curve"/>
+            <NetworkSpecificParameter name="xmlCurveSpeed" value="
+                &lt;curveSpeed &gt;
+					&lt;speeds&gt;
+						&lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;&quot; speed=&quot;95&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;&quot; speed=&quot;90&quot;/&gt;
+						&lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;&quot; speed=&quot;90&quot;/&gt;
+					&lt;/speeds&gt;
+                &lt;/curveSpeed&gt;
+            "/>
+        </NetworkSpecificPoint>
+
+        <NetworkSpecificPoint location="3700" identifier="5678">
+            <teltsi_Company>0085</teltsi_Company>
+            <NSP_GroupName>curvePoint</NSP_GroupName>
+            <NetworkSpecificParameter name="curvePointType" value="end"/>
+        </NetworkSpecificPoint>
+
+    </SP_Points>
+
+    <SP_Areas>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0" TAF_TAP_location_abbreviation="LSG" TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>6201</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Lichtensteig</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+			
+			<TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>stationSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlStationSpeed" value="
+					&lt;stationSpeed&gt;					
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;55&quot; speed=&quot;80&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;90&quot; speed=&quot;80&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;100&quot; speed=&quot;80&quot;/&gt;
+						&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;150&quot; speed=&quot;80&quot;/&gt;
+						&lt;v trainSeries=&quot;N&quot; brakeSeries=&quot;180&quot; speed=&quot;80&quot;/&gt;
+					&lt;/stationSpeed&gt;
+				"/>
+            </TAF_TAP_Location_NSP>	
+			
+			<TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+					&lt;lineSpeed&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;85&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;90&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;95&quot;/&gt;
+					&lt;/lineSpeed&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>departureAuth</NSP_GroupName>
+                <NetworkSpecificParameter name="departureAuth" value="false"/>
+            </TAF_TAP_Location_NSP>
+
+        </TAF_TAP_Location>
+
+    </SP_Areas>
+
+    <SP_ContextInformation>
+		
+		<ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1301"/>
+            </Contact>
+        </ContactList>
+		
+		<CommunicationNetwork startEndQualifier="StartsEnds" startLocation="0" endLocation="0" communicationNetworkType="GSM-R"/>
+
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="17.5"/>
+        </KilometreReferencePoint>
+		<KilometreReferencePoint location="0">
+            <KM_Reference kmRef="50.7"/>
+        </KilometreReferencePoint>
+		<KilometreReferencePoint location="52">
+            <KM_Reference kmRef="50.648"/>
+        </KilometreReferencePoint>
+		<KilometreReferencePoint location="100">
+            <KM_Reference kmRef="50.6"/>
+        </KilometreReferencePoint>
+		<KilometreReferencePoint location="3583">
+            <KM_Reference kmRef="47.117"/>
+        </KilometreReferencePoint>
+		<KilometreReferencePoint location="3600">
+            <KM_Reference kmRef="47.1"/>
+        </KilometreReferencePoint>
+		<KilometreReferencePoint location="3700">
+            <KM_Reference kmRef="47.0"/>
+        </KilometreReferencePoint>
+		
+		<DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="0.0" gradientDirection="Downhill"
+                              directionOfApplicationOnSP="Nominal"/>
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0" gradientValue="10.0" gradientDirection="Uphill"
+                              directionOfApplicationOnSP="Nominal"/> 
+
+    </SP_ContextInformation>
+
+</SegmentProfile>

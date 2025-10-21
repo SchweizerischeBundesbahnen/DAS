@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/navigation/journey_navigation_model.dart';
+import 'package:app/widgets/table/das_table_row.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
@@ -25,38 +26,41 @@ class JourneyNavigationViewModel {
 
   TrainIdentification? get _currentTrainId => _rxModel.value?.trainIdentification;
 
-  void push(TrainIdentification trainId) {
+  Future<void> push(TrainIdentification trainId) async {
     if (_currentTrainId == trainId) return;
 
     if (_trainIds.isNotEmpty) _sferaRemoteRepo.disconnect();
 
     if (!_trainIds.contains(trainId)) _trainIds.add(trainId);
 
-    _sferaRemoteRepo.connect(trainId);
+    DASTableRowBuilder.clearRowKeys();
+    await _sferaRemoteRepo.connect(trainId);
     _addToStream(trainId);
   }
 
-  void next() {
+  Future<void> next() async {
     if (_trainIds.isEmpty) return;
     final updatedIdx = _currentTrainIdIndex + 1;
     if (_isOutOfTrainIdsRange(updatedIdx)) return;
 
-    _sferaRemoteRepo.disconnect();
+    await _sferaRemoteRepo.disconnect();
 
     final trainId = _trainIds[updatedIdx];
-    _sferaRemoteRepo.connect(trainId);
+    DASTableRowBuilder.clearRowKeys();
+    await _sferaRemoteRepo.connect(trainId);
     _addToStream(trainId);
   }
 
-  void previous() {
+  Future<void> previous() async {
     if (_trainIds.isEmpty) return;
     final updatedIdx = _currentTrainIdIndex - 1;
     if (_isOutOfTrainIdsRange(updatedIdx)) return;
 
-    _sferaRemoteRepo.disconnect();
+    await _sferaRemoteRepo.disconnect();
 
     final trainId = _trainIds[updatedIdx];
-    _sferaRemoteRepo.connect(trainId);
+    DASTableRowBuilder.clearRowKeys();
+    await _sferaRemoteRepo.connect(trainId);
     _addToStream(trainId);
   }
 

@@ -1,4 +1,5 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/train_journey/widgets/reduced_overview/reduced_communication_network_change_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/reduced_overview/reduced_overview_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/reduced_overview/rows/reduced_service_point_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
@@ -12,7 +13,6 @@ import 'package:app/widgets/table/das_table_column.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class ReducedTrainJourney extends StatelessWidget {
@@ -27,7 +27,7 @@ class ReducedTrainJourney extends StatelessWidget {
       stream: CombineLatestStream.list([viewModel.journeyData, viewModel.journeyMetadata]),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return Center(child: SBBLoadingIndicator.tiny());
+          return Center(child: CircularProgressIndicator());
         }
 
         final data = snapshot.data![0] as List<BaseData>;
@@ -43,12 +43,17 @@ class ReducedTrainJourney extends StatelessWidget {
       key: reducedJourneyTableKey,
       columns: _columns(context),
       rows: _rows(context, metadata, data).map((it) => it.build(context)).toList(),
+      hasStickyRows: false,
       addBottomSpacer: false,
-      alignToItem: false,
     );
   }
 
-  List<CellRowBuilder> _rows(BuildContext context, Metadata metadata, List<BaseData> data) {
+  /// GlobalKey needs to be set for rows on reduced overview. Otherwise it would collide with default key generated in [DASTableRowBuilder].
+  List<CellRowBuilder> _rows(
+    BuildContext context,
+    Metadata metadata,
+    List<BaseData> data,
+  ) {
     final List<CellRowBuilder?> builders = List.generate(data.length, (index) {
       final rowData = data[index];
       final trainJourneyConfig = TrainJourneyConfig(
@@ -58,6 +63,7 @@ class ReducedTrainJourney extends StatelessWidget {
       switch (rowData.type) {
         case Datatype.servicePoint:
           return ReducedServicePointRow(
+            key: GlobalKey(),
             metadata: metadata,
             data: rowData as ServicePoint,
             config: trainJourneyConfig,
@@ -66,10 +72,19 @@ class ReducedTrainJourney extends StatelessWidget {
           );
         case Datatype.additionalSpeedRestriction:
           return AdditionalSpeedRestrictionRow(
+            key: GlobalKey(),
             metadata: metadata,
             data: rowData as AdditionalSpeedRestrictionData,
             config: trainJourneyConfig,
             rowIndex: index,
+          );
+        case Datatype.communicationNetworkChannel:
+          return ReducedCommunicationNetworkChangeRow(
+            key: GlobalKey(),
+            metadata: metadata,
+            data: rowData as CommunicationNetworkChange,
+            rowIndex: index,
+            context: context,
           );
         default:
           return null;

@@ -22,20 +22,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        file-nr: [1,2,3,4,5]
+        file-nr: [1,2,3,4,5,6]
 
     runs-on: macos-15
     steps:
 
     - uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: 16.4
+        xcode-version: ~26.0
 
     - uses: actions/checkout@v5
 
     - uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.32.x'
+        flutter-version: '3.35.x'
         cache: true
 
     - name: Setup melos
@@ -66,7 +66,7 @@ jobs:
       working-directory: das_client/app
 
     - name: Upload and Run on Browserstack
-      uses: Grodien/browserstack-flutter-action@v1.4
+      uses: Grodien/browserstack-flutter-action@v1.5
       with:
         browserstackUsername: ${{ secrets.BROWSERSTACK_USERNAME }}
         browserstackAccessKey: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
@@ -74,4 +74,4 @@ jobs:
         customId: das_client_ios
         buildTag: das_client_ios
         testPackagePath: ${{ github.workspace }}/das_client/app/build/ios_integration/Build/Products/app-integrationtest-release-${{ matrix.file-nr }}.zip
-        devices: iPad 9th-15
+        devices: iPad 9th-18

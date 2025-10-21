@@ -1,5 +1,71 @@
 # Changelog
 
+## [0.29.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.28.0...das_client-v0.29.0) (2025-10-20)
+
+
+### Features
+
+* add interaction with WaRA app ([#242](https://github.com/SchweizerischeBundesbahnen/DAS/issues/242)) ([#1323](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1323)) ([70abdf3](https://github.com/SchweizerischeBundesbahnen/DAS/commit/70abdf37b7cbcb1f4f2fc952855bc0471ec42cd2))
+* add replacement series notification ([#507](https://github.com/SchweizerischeBundesbahnen/DAS/issues/507)) ([#1324](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1324)) ([49aa770](https://github.com/SchweizerischeBundesbahnen/DAS/commit/49aa7702821e6da4c554bc6180f250ba2730fea5))
+* journeys with shunting movement ([#264](https://github.com/SchweizerischeBundesbahnen/DAS/issues/264)) ([#1346](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1346)) ([246bc09](https://github.com/SchweizerischeBundesbahnen/DAS/commit/246bc092163d021d8151ddf438fb5f20cbd9184f))
+* open reduced overview by tapping next stop ([#1249](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1249)) ([#1318](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1318)) ([9e109e0](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9e109e0576d83a4fe21f904840a745c0be6805d6))
+* precise network and communication channel ([#356](https://github.com/SchweizerischeBundesbahnen/DAS/issues/356)) ([#1165](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1165)) ([a63de11](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a63de11336fdc18afcb370ec0b1387980edcbdb4))
+* show previous stop in header when on final stop of journey ([#1231](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1231)) ([#1319](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1319)) ([ab2b177](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ab2b177cfc4d913d6d713bf4aee30f9102ac5563))
+
+
+### Bug Fixes
+
+* add order priority for service points and signals ([#1316](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1316)) ([#1326](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1326)) ([54956ba](https://github.com/SchweizerischeBundesbahnen/DAS/commit/54956ba79985e973e443b4c463fdf59df8a408f9))
+* sticky speed display ([#1100](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1100)) ([#1347](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1347)) ([47404af](https://github.com/SchweizerischeBundesbahnen/DAS/commit/47404af583d542f30598fe91a1fa20472ffe620c))
+* various adjustments to chevron positioning ([#1238](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1238)) ([#1338](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1338)) ([e86dbb8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e86dbb8b10f0d5a282eb31ce9b5c5039a9e0b18f))
+
+## [0.28.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.27.0...das_client-v0.28.0) (2025-10-13)
+
+
+### Features
+
+* add additional service points ([#258](https://github.com/SchweizerischeBundesbahnen/DAS/issues/258)) ([#1295](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1295)) ([e5bc6f1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e5bc6f12f5219b8d54ffe7a823e50bc1a080c178))
+* add AutoComplete to railway undertaking selection [#596](https://github.com/SchweizerischeBundesbahnen/DAS/issues/596) ([#1291](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1291)) ([af3acf1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/af3acf162a025e9ae2c974128d0bd64f3085ac2b))
+* add betweenBrackets to service points ([#600](https://github.com/SchweizerischeBundesbahnen/DAS/issues/600)) ([#1279](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1279)) ([602e934](https://github.com/SchweizerischeBundesbahnen/DAS/commit/602e934a56766070afcac93a4cb008a04d0879b8))
+* added global error handling ([#687](https://github.com/SchweizerischeBundesbahnen/DAS/issues/687)) ([#1272](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1272)) ([90b0540](https://github.com/SchweizerischeBundesbahnen/DAS/commit/90b054050a47fc769db9940eb92af1ab95f4ddff))
+* adjust display for balise with level crossings before and after service point ([#579](https://github.com/SchweizerischeBundesbahnen/DAS/issues/579)) ([#1292](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1292)) ([c2fefdd](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c2fefdd22e3dee4b3bbf0dad67cb1ec01a68a952))
+* date picker is restricted to yesterday, today and maybe tomorrow [#596](https://github.com/SchweizerischeBundesbahnen/DAS/issues/596) ([#1291](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1291)) ([af3acf1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/af3acf162a025e9ae2c974128d0bd64f3085ac2b))
+* handle elements before first service point ([#498](https://github.com/SchweizerischeBundesbahnen/DAS/issues/498)) ([#1297](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1297)) ([a9a85e9](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a9a85e913ddec25c351d1d1d74e7780c11a901b0))
+* operationalTrainNumber is converted to uppercase when loading train journey [#596](https://github.com/SchweizerischeBundesbahnen/DAS/issues/596) ([#1291](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1291)) ([af3acf1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/af3acf162a025e9ae2c974128d0bd64f3085ac2b))
+* reworked loading animation for DAS ([#514](https://github.com/SchweizerischeBundesbahnen/DAS/issues/514)) ([#1258](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1258)) ([cf576b0](https://github.com/SchweizerischeBundesbahnen/DAS/commit/cf576b0a52b5b5ac527b304b0a44cdf85399ff06))
+
+
+### Bug Fixes
+
+* increase volume for ADL and KOA ([#1270](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1270)) ([4628cf8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4628cf8d0a4ffc49fbd79d929418a53b708cfc7d))
+* overlapping volume control on ADL sound ([#1305](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1305)) ([#1308](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1308)) ([4eb38ce](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4eb38ce719588bb1bef0bcd6580af257c5074e7e))
+* scrollable align and connectivity fixes, some translations ([#1268](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1268)) ([87af873](https://github.com/SchweizerischeBundesbahnen/DAS/commit/87af873d7e87614b81429c0c2abf7a2e47a55bff))
+* scrolling problems with reduced overview ([#1247](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1247)) ([#1282](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1282)) ([9b7b1a4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9b7b1a46bf5eb97877971592a1edbfe420220a50))
+* timed advancement fixes ([#939](https://github.com/SchweizerischeBundesbahnen/DAS/issues/939)) ([#1261](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1261)) ([fa021b0](https://github.com/SchweizerischeBundesbahnen/DAS/commit/fa021b0cd6047b42df7efa27481c9783388c9633))
+
+## [0.27.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.26.0...das_client-v0.27.0) (2025-09-16)
+
+
+### Features
+
+* activate / deactivate ru features ([#445](https://github.com/SchweizerischeBundesbahnen/DAS/issues/445)) ([#1233](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1233)) ([925756e](https://github.com/SchweizerischeBundesbahnen/DAS/commit/925756e66c0c518b581313ee70287562312d7529))
+* added local regulations ([#95](https://github.com/SchweizerischeBundesbahnen/DAS/issues/95)) ([#1225](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1225)) ([40fc074](https://github.com/SchweizerischeBundesbahnen/DAS/commit/40fc074f94856911aaef85ff0fefa1bb188ba0cc))
+
+## [0.26.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.25.0...das_client-v0.26.0) (2025-09-09)
+
+
+### Features
+
+* add connection state display ([#119](https://github.com/SchweizerischeBundesbahnen/DAS/issues/119)) ([#1202](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1202)) ([a5342f4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a5342f4460a761c0d67307e9ca0fe7ef4a342c41))
+* add logging to splunk ([#1007](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1007)) ([#1200](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1200)) ([9593a98](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9593a98490c243f8db827ee2291de7cc5d36170b))
+* currentPosition and next stop are time dependent ([#766](https://github.com/SchweizerischeBundesbahnen/DAS/issues/766)) ([#1169](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1169)) ([cdf56f8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/cdf56f8b063f978fe2db9f8f6ccf184b76fa46d6))
+
+
+### Bug Fixes
+
+* change of app theme is slower on sticky header ([#874](https://github.com/SchweizerischeBundesbahnen/DAS/issues/874)) ([#1117](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1117)) ([ac4850f](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ac4850f369b24a6408b067e6eed9b53653c21644))
+* color on next stop with additional speed restriction ([#1147](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1147)) ([#1167](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1167)) ([acba67b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/acba67badbe222fb2e6004cddbf53f5c775adfed))
+
 ## [0.25.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.24.1...das_client-v0.25.0) (2025-08-15)
 
 

@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T25_2_Dulliken"
+                SP_VersionMajor="3" SP_VersionMinor="3" SP_Length="3600" SP_Status="Valid">
+    <SP_Zone>
+        <IM_ID>1285</IM_ID>
+    </SP_Zone>
+
+    <SP_Points>
+
+        <TimingPoint TP_ID="Dulliken" location="0">
+            <TAF_TAP_LocationReference>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>02110</teltsi_LocationPrimaryCode>
+            </TAF_TAP_LocationReference>
+        </TimingPoint>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="E1" location="200"/>
+            <SignalFunction>exit</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="E1"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="P603" location="800"/>
+            <SignalFunction>block</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="P603"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="A604" location="1400"/>
+            <SignalFunction>entry</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="A604"/>
+        </Signal>
+
+        <Signal>
+            <Signal_ID signal_ID_Physical="C44" location="2100"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="C44"/>
+        </Signal>
+
+
+    </SP_Points>
+
+    <SP_Areas>
+
+        <TAF_TAP_Location startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
+                          TAF_TAP_location_abbreviation="DU" TAF_TAP_location_type="station">
+            <TAF_TAP_LocationIdent>
+                <teltsi_CountryCodeISO>CH</teltsi_CountryCodeISO>
+                <teltsi_LocationPrimaryCode>02110</teltsi_LocationPrimaryCode>
+                <teltsi_PrimaryLocationName>Dulliken</teltsi_PrimaryLocationName>
+            </TAF_TAP_LocationIdent>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>newLineSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlNewLineSpeed" value="
+					&lt;lineSpeed&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;50&quot; speed=&quot;65&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;60&quot; speed=&quot;85&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;65&quot; speed=&quot;90&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;70&quot; speed=&quot;90&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;75&quot; speed=&quot;90&quot;/&gt;
+						&lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;80&quot; speed=&quot;95&quot;/&gt;
+					&lt;/lineSpeed&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>departureAuth</NSP_GroupName>
+                <NetworkSpecificParameter name="departureAuth" value="false"/>
+            </TAF_TAP_Location_NSP>
+
+            <TAF_TAP_Location_NSP>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>lineFootNotes</NSP_GroupName>
+                <NetworkSpecificParameter name="xmlLineFootNotes" value="
+				&lt;lineFootNotes&gt;
+					&lt;footNote identifier=&quot;DF1B0A0060F74EE0B874B2180359406B&quot;&gt;
+						&lt;text&gt;Zugelassen nur für&lt;b&gt; RABDe 500&lt;/b&gt;&lt;/text&gt;
+						&lt;trainSeries>N&lt;/trainSeries&gt;
+					&lt;/footNote&gt;
+				&lt;/lineFootNotes&gt;
+				"/>
+            </TAF_TAP_Location_NSP>
+
+        </TAF_TAP_Location>
+
+    </SP_Areas>
+
+    <SP_ContextInformation>
+
+        <ContactList startEndQualifier="StartsEnds" startLocation="0" endLocation="0">
+            <Contact mainContact="true">
+                <OtherContactType contactIdentifier="1307"/>
+            </Contact>
+        </ContactList>
+
+        <KilometreReferencePoint location="0">
+            <KM_Reference kmRef="42.9"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="200">
+            <KM_Reference kmRef="43.1"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="800">
+            <KM_Reference kmRef="43.7"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="1400">
+            <KM_Reference kmRef="44.3"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="2100">
+            <KM_Reference kmRef="45.0"/>
+        </KilometreReferencePoint>
+
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
+                              gradientValue="6.0" gradientDirection="Downhill"
+                              directionOfApplicationOnSP="Nominal"/>
+        <DecisiveGradientArea startEndQualifier="StartsEnds" startLocation="0" endLocation="0"
+                              gradientValue="0.0" gradientDirection="Uphill"
+                              directionOfApplicationOnSP="Nominal"/>
+
+    </SP_ContextInformation>
+
+</SegmentProfile>

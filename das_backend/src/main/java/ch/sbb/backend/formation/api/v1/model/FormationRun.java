@@ -14,7 +14,7 @@ import lombok.Builder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record FormationRun(
     @Schema(description = "Last modification date and time of the formation run.", requiredMode = Schema.RequiredMode.REQUIRED)
-    OffsetDateTime modifiedDateTime,
+    OffsetDateTime inspectionDateTime,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     String tafTapLocationReferenceStart,
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
@@ -61,8 +61,10 @@ public record FormationRun(
     Boolean brakePositionGForLoadHauled,
     @Schema(requiredMode = RequiredMode.REQUIRED)
     Boolean simTrain,
-    @Schema(requiredMode = RequiredMode.REQUIRED)
-    List<String> tractionModes,
+    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
+    String additionalTractionMode,
+    @Schema(requiredMode = RequiredMode.NOT_REQUIRED)
+    String additionalTractionSeries,
     @Schema(requiredMode = RequiredMode.REQUIRED)
     Boolean carCarrierVehicle,
     @Schema(requiredMode = RequiredMode.REQUIRED)
@@ -94,7 +96,7 @@ public record FormationRun(
     private static FormationRun from(TrainFormationRunEntity trainFormationRunEntity) {
         //      todo  consider use mapper (cause of testing effort)
         return FormationRun.builder()
-            .modifiedDateTime(trainFormationRunEntity.getModifiedDateTime())
+            .inspectionDateTime(trainFormationRunEntity.getInspectionDateTime())
             .tafTapLocationReferenceStart(trainFormationRunEntity.getTafTapLocationReferenceStart())
             .tafTapLocationReferenceEnd(trainFormationRunEntity.getTafTapLocationReferenceEnd())
             .trainCategoryCode(trainFormationRunEntity.getTrainCategoryCode())
@@ -118,7 +120,8 @@ public record FormationRun(
             .brakePositionGForBrakeUnit1to5(trainFormationRunEntity.getBrakePositionGForBrakeUnit1to5())
             .brakePositionGForLoadHauled(trainFormationRunEntity.getBrakePositionGForLoadHauled())
             .simTrain(trainFormationRunEntity.getSimTrain())
-            .tractionModes(trainFormationRunEntity.getTractionModes())
+            .additionalTractionMode(trainFormationRunEntity.getAdditionalTractionMode())
+            .additionalTractionSeries(trainFormationRunEntity.getAdditionalTractionSeries())
             .carCarrierVehicle(trainFormationRunEntity.getCarCarrierVehicle())
             .dangerousGoods(trainFormationRunEntity.getDangerousGoods())
             .vehiclesCount(trainFormationRunEntity.getVehiclesCount())

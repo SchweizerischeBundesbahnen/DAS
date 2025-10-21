@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/widgets/assets.dart';
+import 'package:app/widgets/exlamation_icon_button.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:logging/logging.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
@@ -58,11 +58,12 @@ class _BatteryStatusState extends State<BatteryStatus> {
   }
 
   Widget _batteryIcon() {
-    return GestureDetector(
-      onTap: () => _openBatteryBottomSheet(context),
-      child: SvgPicture.asset(
+    return Padding(
+      padding: const EdgeInsets.only(left: 20),
+      child: ExclamationIconButton(
+        icon: AppAssets.iconBatteryStatusLow,
         key: BatteryStatus.batteryLevelLowIconKey,
-        AppAssets.iconBatteryStatusLow,
+        onTap: () => _openBatteryBottomSheet(context),
       ),
     );
   }

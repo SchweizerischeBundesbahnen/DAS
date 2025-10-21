@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:app/di/di.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/extended_menu.dart';
+import 'package:app/pages/journey/train_journey/widgets/header/next_stop.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
 import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:app/widgets/stickyheader/sticky_header.dart';
 import 'package:app/widgets/table/das_table.dart';
+import 'package:app/widgets/table/scrollable_align.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -14,16 +16,18 @@ import 'package:sfera/component.dart';
 
 import '../app_test.dart';
 
-Locale deviceLocale() {
+Locale appLocale() => Locale(l10n.localeName);
+
+Future<AppLocalizations> deviceLocalizations() async {
+  return AppLocalizations.delegate.load(_deviceLocale());
+}
+
+Locale _deviceLocale() {
   if (Platform.localeName.contains('_')) {
     final localeWithCountry = Platform.localeName.split('_');
     return Locale(localeWithCountry[0], localeWithCountry[1]);
   }
   return Locale(Platform.localeName);
-}
-
-Future<AppLocalizations> deviceLocalizations() async {
-  return AppLocalizations.delegate.load(deviceLocale());
 }
 
 Future<void> openDrawer(WidgetTester tester) async {
@@ -61,6 +65,15 @@ Finder findDASTableRowByText(String text) {
   );
 }
 
+Finder findColoredRowCells({required FinderBase<Element> of, required Color color}) {
+  return find.descendant(
+    of: of,
+    matching: find.byWidgetPredicate(
+      (it) => it is Container && it.decoration is BoxDecoration && (it.decoration as BoxDecoration).color == color,
+    ),
+  );
+}
+
 /// Verifies, that SBB is selected and loads train journey with [trainNumber]
 Future<void> loadTrainJourney(WidgetTester tester, {required String trainNumber}) async {
   // verify we have ru SBB selected.
@@ -76,6 +89,7 @@ Future<void> loadTrainJourney(WidgetTester tester, {required String trainNumber}
   await tester.tap(primaryButton);
 
   // wait for train journey to load
+  await waitUntilExists(tester, find.byKey(TrainJourney.loadedTrainJourneyTableKey));
   await tester.pumpAndSettle();
 }
 
@@ -91,9 +105,8 @@ Future<void> openExtendedMenu(WidgetTester tester) async {
 }
 
 Future<void> openReducedJourneyMenu(WidgetTester tester) async {
-  await openExtendedMenu(tester);
-  await tapElement(tester, find.text(l10n.w_extended_menu_journey_overview_action));
-  await Future.delayed(const Duration(milliseconds: 100));
+  await tapElement(tester, find.byKey(NextStop.tappableAreaKey));
+  await Future.delayed(const Duration(milliseconds: 50));
 }
 
 Future<void> dismissExtendedMenu(WidgetTester tester) async {
@@ -111,10 +124,16 @@ Future<void> selectBreakSeries(WidgetTester tester, {required String breakSeries
   await tapElement(tester, find.text(breakSeries));
 }
 
-Future<void> pauseAutomaticAdvancement(WidgetTester tester) async {
+Future<void> stopAutomaticAdvancement(WidgetTester tester) async {
   final pauseButton = find.byKey(StartPauseButton.pauseButtonKey);
   expect(pauseButton, findsOneWidget);
   await tapElement(tester, pauseButton);
+}
+
+Future<void> startAutomaticAdvancement(WidgetTester tester) async {
+  final startButton = find.byKey(StartPauseButton.startButtonKey);
+  expect(startButton, findsOneWidget);
+  await tapElement(tester, startButton);
 }
 
 Future<void> waitUntilExists(WidgetTester tester, FinderBase<Element> element, {int maxWaitSeconds = 15}) async {
@@ -182,7 +201,7 @@ Future<void> dragUntilTextInStickyHeader(WidgetTester tester, String textToSearc
     const Offset(0, -50),
     maxIteration: 100,
   );
-  await tester.pumpAndSettle();
+  await tester.pumpAndSettle(ScrollableAlign.alignScrollDuration);
 }
 
 extension _FlutterErrorExtension on FlutterError {

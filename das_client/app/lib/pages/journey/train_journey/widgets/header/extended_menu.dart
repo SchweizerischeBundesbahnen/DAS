@@ -1,8 +1,8 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/anchored_full_page_overlay.dart';
 import 'package:app/pages/journey/train_journey/widgets/reduced_overview/reduced_overview_modal_sheet.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:app/pages/journey/train_journey_view_model.dart';
+import 'package:app/pages/journey/warn_app_view_model.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,6 +12,7 @@ class ExtendedMenu extends StatelessWidget {
   static const Key menuButtonKey = Key('extendedMenuButton');
   static const Key menuButtonCloseKey = Key('closeExtendedMenuButton');
   static const Key maneuverSwitchKey = Key('maneuverSwitch');
+  static const Key openWaraAppMenuItemKey = Key('openWaraAppMenuItem');
 
   const ExtendedMenu({super.key});
 
@@ -19,12 +20,12 @@ class ExtendedMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.read<TrainJourneyViewModel>();
     return AnchoredFullPageOverlay(
-      triggerBuilder: (context, showOverlay) => SBBIconButtonLarge(
+      triggerBuilder: (_, showOverlay) => SBBIconButtonLarge(
         key: menuButtonKey,
         icon: SBBIcons.context_menu_small,
         onPressed: () => showOverlay(),
       ),
-      contentBuilder: (context, hideOverlay) {
+      contentBuilder: (_, hideOverlay) {
         return Provider(
           create: (_) => viewModel,
           child: Builder(
@@ -41,7 +42,7 @@ class ExtendedMenu extends StatelessWidget {
                       _transportDocumentItem(context),
                       _journeyOverviewItem(context, hideOverlay),
                       _maneuverItem(context, hideOverlay),
-                      _waraItem(context),
+                      _waraItem(context, hideOverlay),
                     ],
                   ),
                 ),
@@ -94,55 +95,71 @@ class ExtendedMenu extends StatelessWidget {
     return SBBListItem(
       title: context.l10n.w_extended_menu_journey_overview_action,
       onPressed: () {
-        hideOverlay;
+        hideOverlay();
         if (context.mounted) {
-          showReducedOverviewModalSheet(
-            context,
-          ).then((_) => Future.delayed(const Duration(milliseconds: 250), () => hideOverlay()));
+          showReducedOverviewModalSheet(context);
         }
       },
     );
   }
 
-  Widget _waraItem(BuildContext context) {
-    return SBBListItem(
-      title: context.l10n.w_extended_menu_journey_wara_action,
-      trailingIcon: SBBIcons.link_external_medium,
-      isLastElement: true,
-      onPressed: () {
-        // Placeholder
+  Widget _waraItem(BuildContext context, VoidCallback hideOverlay) {
+    final warnAppViewModel = context.read<WarnAppViewModel>();
+    return FutureBuilder(
+      future: warnAppViewModel.isWaraAppInstalled,
+      builder: (context, snapshot) {
+        final isWaraAppInstalled = snapshot.data ?? false;
+        if (!isWaraAppInstalled) return SizedBox.shrink();
+
+        return SBBListItem(
+          key: openWaraAppMenuItemKey,
+          title: context.l10n.w_extended_menu_journey_wara_action,
+          trailingIcon: SBBIcons.link_external_medium,
+          isLastElement: true,
+          onPressed: () async {
+            await warnAppViewModel.openWaraApp();
+            hideOverlay();
+          },
+        );
       },
     );
   }
 
   Widget _maneuverItem(BuildContext context, VoidCallback hideOverlay) {
-    final viewModel = context.read<TrainJourneyViewModel>();
+    final viewModel = context.read<WarnAppViewModel>();
 
-    return SBBListItem.custom(
-      title: context.l10n.w_extended_menu_maneuver_mode,
-      onPressed: () {
-        hideOverlay();
-        final maneuverModeToggled = !viewModel.settingsValue.isManeuverModeEnabled;
-        viewModel.setManeuverMode(maneuverModeToggled);
-      },
-      trailingWidget: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 0, sbbDefaultSpacing * 0.5, 0),
-        child: StreamBuilder<TrainJourneySettings>(
-          stream: viewModel.settings,
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) return SizedBox.shrink();
+    return FutureBuilder(
+      future: viewModel.isWarnappFeatureEnabled,
+      builder: (context, asyncSnapshot) {
+        if (!asyncSnapshot.hasData || asyncSnapshot.data == false) return SizedBox.shrink();
 
-            return SBBSwitch(
-              key: maneuverSwitchKey,
-              value: snapshot.data?.isManeuverModeEnabled ?? false,
-              onChanged: (value) {
-                hideOverlay();
-                viewModel.setManeuverMode(value);
-              },
-            );
+        return SBBListItem.custom(
+          title: context.l10n.w_extended_menu_maneuver_mode,
+          onPressed: () {
+            hideOverlay();
+            viewModel.toggleManeuverMode();
           },
-        ),
-      ),
+          trailingWidget: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, sbbDefaultSpacing * 0.5, 0),
+            child: StreamBuilder(
+              stream: viewModel.isManeuverModeEnabled,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) return SizedBox.shrink();
+
+                final isManeuverModeEnabled = snapshot.requireData;
+                return SBBSwitch(
+                  key: maneuverSwitchKey,
+                  value: isManeuverModeEnabled,
+                  onChanged: (value) {
+                    hideOverlay();
+                    viewModel.setManeuverMode(value);
+                  },
+                );
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 }

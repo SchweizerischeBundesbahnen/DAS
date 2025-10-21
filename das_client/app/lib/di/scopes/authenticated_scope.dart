@@ -1,11 +1,15 @@
 import 'package:app/di/di.dart';
 import 'package:app/flavor.dart';
+import 'package:app/provider/ru_feature_provider.dart';
+import 'package:app/provider/ru_feature_provider_impl.dart';
 import 'package:app/util/device_id_info.dart';
 import 'package:auth/component.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http_x/component.dart';
+import 'package:logger/component.dart';
 import 'package:logging/logging.dart';
 import 'package:mqtt/component.dart';
+import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
 
 final _log = Logger('AuthenticatedScope');
@@ -27,6 +31,8 @@ class AuthenticatedScope extends DIScope {
     getIt.registerMqttService();
     getIt.registerSferaLocalRepo();
     getIt.registerSferaRemoteRepo();
+    getIt.registerSettingsRepository();
+    getIt.registerRuFeatureProvider();
 
     await getIt.allReady();
   }
@@ -128,6 +134,21 @@ extension AuthenticatedScopeExtension on GetIt {
     }
 
     registerLazySingleton<SferaLocalRepo>(factoryFunc);
+  }
+
+  void registerSettingsRepository() {
+    final flavor = DI.get<Flavor>();
+    final configRepository = SettingsComponent.createRepository(baseUrl: flavor.backendUrl, client: DI.get());
+    registerSingleton<SettingsRepository>(configRepository);
+    registerSingleton<LogEndpoint>(configRepository);
+  }
+
+  void registerRuFeatureProvider() {
+    factoryFunc() {
+      return RuFeatureProviderImpl(sferaRemoteRepo: DI.get(), settingsRepository: DI.get());
+    }
+
+    registerLazySingleton<RuFeatureProvider>(factoryFunc);
   }
 }
 

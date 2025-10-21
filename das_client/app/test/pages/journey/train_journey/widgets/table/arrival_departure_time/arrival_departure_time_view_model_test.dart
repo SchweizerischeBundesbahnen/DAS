@@ -43,7 +43,7 @@ void main() {
         testee.wallclockTimeToMinute.listen(minuteRegister.add);
         async.elapse(const Duration(minutes: 5));
         expect(minuteRegister, hasLength(1)); // only emits distinct values
-        expect(minuteRegister.first, equals(curiosityTouchdown.roundDownToMinute()));
+        expect(minuteRegister.first, equals(curiosityTouchdown.roundDownToMinute));
       });
     });
   });

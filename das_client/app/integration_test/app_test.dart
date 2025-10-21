@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'dart:io';
 
 import 'package:app/di/scope_handler.dart';
 import 'package:app/di/scopes/das_base_scope.dart';
@@ -6,6 +6,8 @@ import 'package:app/di/scopes/sfera_mock_scope.dart';
 import 'package:app/flavor.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/main.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:logger/component.dart';
@@ -20,6 +22,7 @@ import 'test/service_point_modal_test.dart' as service_point_modal_test;
 import 'test/settings_test.dart' as settings_test;
 import 'test/train_journey_header_test.dart' as train_journey_header_tests;
 import 'test/train_journey_notification_test.dart' as train_journey_notification_tests;
+import 'test/train_journey_replacement_series_test.dart' as train_journey_replacement_series_test;
 import 'test/train_journey_table_adl_test.dart' as train_journey_table_adl_tests;
 import 'test/train_journey_table_break_series_test.dart' as train_journey_table_break_series_tests;
 import 'test/train_journey_table_calculated_speed_test.dart' as train_journey_table_calculated_speed_tests;
@@ -35,10 +38,18 @@ import 'util/test_utils.dart';
 late AppLocalizations l10n;
 
 void main() {
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   Logger.root.level = Level.FINE;
   Logger.root.onRecord.listen(LogPrinter(appName: 'DAS IntegrationTests').call);
+
+  setUpAll(() async {
+    await _useFullyLivePolicyOnAndroidEmulator(binding);
+  });
+
+  tearDown(() async {
+    await _delayOnAndroidEmulator();
+  });
 
   settings_test.main();
   train_reduced_journey_tests.main();
@@ -58,6 +69,7 @@ void main() {
   warnapp_tests.main();
   train_journey_table_station_property_test.main();
   train_journey_table_adl_tests.main();
+  train_journey_replacement_series_test.main();
 }
 
 Future<void> prepareAndStartApp(WidgetTester tester, {VoidCallback? onBeforeRun}) async {
@@ -73,6 +85,28 @@ Future<void> prepareAndStartApp(WidgetTester tester, {VoidCallback? onBeforeRun}
 
   l10n = await deviceLocalizations();
   onBeforeRun?.call();
+
   runDasApp();
   await tester.pumpAndSettle(const Duration(milliseconds: 500));
+}
+
+/// delay can improve stability on Android emulator
+Future<void> _delayOnAndroidEmulator() async {
+  if (await _isAndroidEmulator()) {
+    await Future.delayed(const Duration(milliseconds: 500));
+  }
+}
+
+Future<void> _useFullyLivePolicyOnAndroidEmulator(TestWidgetsFlutterBinding binding) async {
+  if (binding is LiveTestWidgetsFlutterBinding && await _isAndroidEmulator()) {
+    binding.framePolicy = LiveTestWidgetsFlutterBindingFramePolicy.fullyLive;
+  }
+}
+
+Future<bool> _isAndroidEmulator() async {
+  if (Platform.isAndroid) {
+    final androidInfo = await DeviceInfoPlugin().androidInfo;
+    return !androidInfo.isPhysicalDevice;
+  }
+  return false;
 }

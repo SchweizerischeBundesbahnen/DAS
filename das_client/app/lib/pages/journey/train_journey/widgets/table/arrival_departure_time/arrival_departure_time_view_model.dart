@@ -22,10 +22,10 @@ class ArrivalDepartureTimeViewModel {
 
   Stream<DateTime> get wallclockTimeToMinute => Stream.periodic(
     const Duration(milliseconds: 500),
-    (_) => clock.now().roundDownToMinute(),
+    (_) => clock.now().roundDownToMinute,
   ).distinct();
 
-  DateTime get wallclockTimeToMinuteValue => clock.now().roundDownToMinute();
+  DateTime get wallclockTimeToMinuteValue => clock.now().roundDownToMinute;
 
   late StreamSubscription<Journey?> _journeySubscription;
   bool? _hasJourneyOperationalTimes;

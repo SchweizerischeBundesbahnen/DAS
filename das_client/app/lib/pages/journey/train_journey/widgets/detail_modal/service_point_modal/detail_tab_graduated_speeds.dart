@@ -11,48 +11,50 @@ import 'package:sfera/component.dart';
 class DetailTabGraduatedSpeeds extends StatelessWidget {
   static const graduatedSpeedsTabKey = Key('graduatedSpeedsTabKey');
 
-  const DetailTabGraduatedSpeeds({super.key});
+  const DetailTabGraduatedSpeeds({super.key = graduatedSpeedsTabKey});
 
   @override
   Widget build(BuildContext context) {
     final viewModel = context.read<ServicePointModalViewModel>();
 
     return StreamBuilder(
-      key: graduatedSpeedsTabKey,
       stream: CombineLatestStream.list([viewModel.breakSeries, viewModel.relevantSpeedInfo]),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
+        if (!snapshot.hasData) return _loading();
 
         final breakSeries = snapshot.requireData[0] as BreakSeries?;
         final relevantSpeeds = snapshot.requireData[1] as List<TrainSeriesSpeed>;
 
-        if (breakSeries == null || relevantSpeeds.isEmpty) {
-          return Center(
-            child: Text(
-              context.l10n.w_service_point_modal_graduated_speed_no_information,
-              style: DASTextStyles.mediumRoman,
-            ),
-          );
-        } else {
-          final breakSeriesLabel = '${breakSeries.trainSeries.name}${breakSeries.breakSeries}';
+        if (breakSeries == null || relevantSpeeds.isEmpty) return _emptyInformation(context);
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                '${context.l10n.w_service_point_modal_graduated_speed_break_series_title}: $breakSeriesLabel',
-                style: DASTextStyles.smallBold,
-              ),
-              Expanded(child: _buildSpeedInfoList(context, relevantSpeeds)),
-            ],
-          );
-        }
+        final breakSeriesLabel = '${breakSeries.trainSeries.name}${breakSeries.breakSeries}';
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              '${context.l10n.w_service_point_modal_graduated_speed_break_series_title}: $breakSeriesLabel',
+              style: DASTextStyles.smallBold,
+            ),
+            Expanded(child: _buildSpeedInfoList(context, relevantSpeeds)),
+          ],
+        );
       },
+    );
+  }
+
+  Widget _emptyInformation(BuildContext context) {
+    return Center(
+      child: Text(
+        context.l10n.w_service_point_modal_graduated_speed_no_information,
+        style: DASTextStyles.mediumRoman,
+      ),
+    );
+  }
+
+  Widget _loading() {
+    return const Center(
+      child: CircularProgressIndicator(),
     );
   }
 

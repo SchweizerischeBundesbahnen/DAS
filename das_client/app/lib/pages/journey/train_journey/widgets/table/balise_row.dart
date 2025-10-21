@@ -15,6 +15,7 @@ class BaliseRow extends CellRowBuilder<Balise> {
     required super.metadata,
     required super.data,
     required super.rowIndex,
+    required super.journeyPosition,
     super.config,
     super.isGrouped,
   });
@@ -36,6 +37,7 @@ class BaliseRow extends CellRowBuilder<Balise> {
           ),
         ),
         clipBehaviour: Clip.none,
+        alignment: Alignment.centerLeft,
       );
     }
   }

@@ -33,6 +33,7 @@ class AutomaticAdvancementController {
   Timer? _scrollTimer;
   double? _lastScrollPosition;
   DateTime? _lastTouch;
+  bool _isDisposed = false;
 
   final _rxIsAutomaticAdvancementActive = BehaviorSubject.seeded(false);
 
@@ -41,10 +42,18 @@ class AutomaticAdvancementController {
   void handleJourneyUpdate({
     JourneyPoint? currentPosition,
     JourneyPoint? routeStart,
+    ServicePoint? firstServicePoint,
     bool isAdvancementEnabledByUser = false,
   }) {
+    if (_isDisposed) return;
+
     _currentPosition = currentPosition;
-    final isAdvancingActive = isAdvancementEnabledByUser && (currentPosition != routeStart);
+
+    final firstServicePointOrder = firstServicePoint?.order ?? 0;
+    final currentPositionOrder = currentPosition?.order ?? 0;
+
+    final isAdvancingActive =
+        isAdvancementEnabledByUser && (currentPosition != routeStart) && currentPositionOrder >= firstServicePointOrder;
 
     _rxIsAutomaticAdvancementActive.add(isAdvancingActive);
     if (!isAdvancingActive) {
@@ -57,6 +66,43 @@ class AutomaticAdvancementController {
         (_lastTouch == null || _lastTouch!.add(Duration(seconds: _idleTimeAutoScroll)).compareTo(clock.now()) < 0)) {
       _scrollToPosition(targetScrollPosition);
     }
+  }
+
+  void resetScrollTimer() {
+    if (_isDisposed) return;
+
+    _lastTouch = clock.now();
+    if (_rxIsAutomaticAdvancementActive.value) {
+      _scrollTimer?.cancel();
+      _scrollTimer = Timer(Duration(seconds: _idleTimeAutoScroll), () {
+        if (_rxIsAutomaticAdvancementActive.value) {
+          _log.fine(
+            'Screen idle time of $_idleTimeAutoScroll seconds reached. Scrolling to current position',
+          );
+          scrollToCurrentPosition();
+        }
+      });
+    }
+  }
+
+  /// Scrolls to current position. If [resetAutomaticAdvancementTimer] is true, automatic advancement is started. Otherwise it waits till idle time is over.
+  void scrollToCurrentPosition({bool resetAutomaticAdvancementTimer = false}) {
+    if (_isDisposed) return;
+
+    if (resetAutomaticAdvancementTimer) {
+      _lastTouch = null;
+    }
+
+    final targetScrollPosition = _calculateScrollPosition();
+    if (targetScrollPosition != null) {
+      _scrollToPosition(targetScrollPosition);
+    }
+  }
+
+  void dispose() {
+    _rxIsAutomaticAdvancementActive.close();
+    _scrollTimer?.cancel();
+    _isDisposed = true;
   }
 
   double? _calculateScrollPosition() {
@@ -113,18 +159,6 @@ class AutomaticAdvancementController {
     return scrollController.position.pixels + renderedDiff + scrollDiff - stickyHeight;
   }
 
-  /// Scrolls to current position. If [resetAutomaticAdvancementTimer] is true, automatic advancement is started. Otherwise it waits till idle time is over.
-  void scrollToCurrentPosition({bool resetAutomaticAdvancementTimer = false}) {
-    if (resetAutomaticAdvancementTimer) {
-      _lastTouch = null;
-    }
-
-    final targetScrollPosition = _calculateScrollPosition();
-    if (targetScrollPosition != null) {
-      _scrollToPosition(targetScrollPosition);
-    }
-  }
-
   void _scrollToPosition(double targetScrollPosition) {
     _lastScrollPosition = targetScrollPosition;
 
@@ -134,26 +168,6 @@ class AutomaticAdvancementController {
       duration: _calculateDuration(targetScrollPosition, 1),
       curve: Curves.easeInOut,
     );
-  }
-
-  void resetScrollTimer() {
-    _lastTouch = clock.now();
-    if (_rxIsAutomaticAdvancementActive.value) {
-      _scrollTimer?.cancel();
-      _scrollTimer = Timer(Duration(seconds: _idleTimeAutoScroll), () {
-        if (_rxIsAutomaticAdvancementActive.value) {
-          _log.fine(
-            'Screen idle time of $_idleTimeAutoScroll seconds reached. Scrolling to current position',
-          );
-          scrollToCurrentPosition();
-        }
-      });
-    }
-  }
-
-  void dispose() {
-    _rxIsAutomaticAdvancementActive.close();
-    _scrollTimer?.cancel();
   }
 
   Stream<bool> get isActiveStream => _rxIsAutomaticAdvancementActive.distinct();

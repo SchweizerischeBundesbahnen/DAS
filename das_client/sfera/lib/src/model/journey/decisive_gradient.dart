@@ -3,4 +3,18 @@ class DecisiveGradient {
 
   final double? uphill;
   final double? downhill;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || (other is DecisiveGradient && uphill == other.uphill && downhill == other.downhill);
+
+  @override
+  int get hashCode => Object.hash(uphill, downhill);
+
+  @override
+  String toString() =>
+      'DecisiveGradient('
+      'uphill: $uphill'
+      ', downhill: $downhill'
+      ')';
 }

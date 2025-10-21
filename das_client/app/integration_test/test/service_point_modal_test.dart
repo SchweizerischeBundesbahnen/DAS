@@ -2,6 +2,8 @@ import 'package:app/di/di.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_communication.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_graduated_speeds.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/detail_tab_local_regulations.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/local_regulation_html_view.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_builder.dart';
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_tab.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
@@ -59,7 +61,7 @@ void main() {
 
       // open modal sheet and check if only icon buttons are shown
       await _openRadioChannelByHeaderTap(tester);
-      expect(find.byKey(DasModalSheet.modalSheetExtendedKey), findsOneWidget);
+      expect(find.byKey(DasModalSheet.modalSheetExpandedKey), findsOneWidget);
       expect(find.byKey(HeaderIconButton.headerIconButtonKey), findsExactly(2));
 
       // check labeled buttons after close
@@ -73,13 +75,13 @@ void main() {
       await loadTrainJourney(tester, trainNumber: 'T8');
 
       await _openByTapOnCellWithText(tester, 'Bern');
-      _checkModalSheetTabs([
+      await _checkModalSheetTabs(tester, [
         ServicePointModalTab.communication, // always displayed
         ServicePointModalTab.graduatedSpeeds,
       ]);
 
       await _openByTapOnCellWithText(tester, 'Burgdorf');
-      _checkModalSheetTabs([
+      await _checkModalSheetTabs(tester, [
         ServicePointModalTab.communication, // always displayed
       ]);
 
@@ -96,11 +98,6 @@ void main() {
       // change tab to graduated speeds
       await _selectTab(tester, ServicePointModalTab.graduatedSpeeds);
       _checkOpenModalSheet(DetailTabGraduatedSpeeds.graduatedSpeedsTabKey, 'Bern');
-
-      // TODO: Add back test when local regulations are implemented
-      // change tab to local regulations and check if full width
-      // await _selectTab(tester, ServicePointModalTab.localRegulations);
-      // _checkOpenModalSheet(DetailTabLocalRegulations.localRegulationsTabKey, 'Olten', isMaximized: true);
 
       // change back to tab radio channels
       await _selectTab(tester, ServicePointModalTab.communication);
@@ -187,7 +184,7 @@ void main() {
     testWidgets('test communication network and radio channels displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: 'T12');
-      await pauseAutomaticAdvancement(tester);
+      await stopAutomaticAdvancement(tester);
 
       // check communication information for Bern
       await _openByTapOnCellWithText(tester, 'Bern');
@@ -246,7 +243,7 @@ void main() {
     testWidgets('test communication information present when opening from other tab', (tester) async {
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: '1513');
-      await pauseAutomaticAdvancement(tester);
+      await stopAutomaticAdvancement(tester);
 
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
@@ -276,7 +273,7 @@ void main() {
     testWidgets('test SIM corridor information', (tester) async {
       await prepareAndStartApp(tester);
       await loadTrainJourney(tester, trainNumber: 'T20');
-      await pauseAutomaticAdvancement(tester);
+      await stopAutomaticAdvancement(tester);
 
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
@@ -285,8 +282,16 @@ void main() {
       await _openByTapOnCellWithText(tester, 'Reichenbach im Kandertal');
       expect(find.byKey(DetailTabCommunication.simCorridorListKey), findsNothing);
 
-      // check Frutigen SIM information
-      await _openByTapOnCellWithText(tester, 'Frutigen');
+      // scroll down so that if Frutigen is in the stickyFooter it can be seen as a single row
+      final secondBlockSignal = find.text('P112');
+      await tester.drag(secondBlockSignal, const Offset(0, -100));
+      await tester.pumpAndSettle();
+
+      // check Frutigen for SIM information
+      final frutigenRow = find.text('Frutigen');
+      expect(frutigenRow, findsOneWidget);
+      await tester.tap(frutigenRow);
+      await tester.pumpAndSettle();
       expect(find.byKey(DetailTabCommunication.simCorridorListKey), findsOneWidget);
       expect(find.text('Frutigen - Kandergrund'), findsOneWidget);
 
@@ -308,17 +313,85 @@ void main() {
     });
   });
 
+  group('local regulation tab tests', () {
+    testWidgets('test local regulation tab is shown', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T25');
+      final scrollableFinder = find.byType(AnimatedList);
+
+      await _openByTapOnCellWithText(tester, 'Olten');
+      await _checkModalSheetTabs(tester, [
+        ServicePointModalTab.communication, // always displayed
+        ServicePointModalTab.localRegulations,
+      ]);
+
+      await tester.dragUntilVisible(find.text('A604'), scrollableFinder, const Offset(0, -50));
+      await _openByTapOnCellWithText(tester, 'Dulliken');
+      await _checkModalSheetTabs(tester, [
+        ServicePointModalTab.communication, // always displayed
+      ]);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('test tab change from local regulation', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T25');
+
+      await _openByTapOnCellWithText(tester, 'Olten');
+
+      // change tab to local regulations and check if full width
+      await _selectTab(tester, ServicePointModalTab.localRegulations);
+      _checkOpenModalSheet(DetailTabLocalRegulations.localRegulationsTabKey, 'Olten', isMaximized: true);
+
+      // change back to tab radio channels
+      await _selectTab(tester, ServicePointModalTab.communication);
+      _checkOpenModalSheet(DetailTabCommunication.communicationTabKey, 'Olten');
+
+      await disconnect(tester);
+    });
+
+    testWidgets('test local regulation webview is shown', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T25');
+
+      await _openByTapOnCellWithText(tester, 'Olten');
+
+      // change tab to local regulations and check if web view is loaded
+      await _selectTab(tester, ServicePointModalTab.localRegulations);
+      _checkOpenModalSheet(DetailTabLocalRegulations.localRegulationsTabKey, 'Olten', isMaximized: true);
+      await waitUntilNotExists(tester, find.byKey(LocalRegulationHtmlView.webViewKey), maxWaitSeconds: 5);
+
+      await disconnect(tester);
+    });
+  });
+
   testWidgets('test short signal names are displayed when modal is open', (tester) async {
     await prepareAndStartApp(tester);
     await loadTrainJourney(tester, trainNumber: 'T9999');
-    await pauseAutomaticAdvancement(tester);
+    await stopAutomaticAdvancement(tester);
 
     expect(find.text(l10n.c_main_signal_function_entry), findsAny);
+
+    final scrollableFinder = find.byType(AnimatedList);
+    await tester.dragUntilVisible(find.text(l10n.c_main_signal_function_exit), scrollableFinder, const Offset(0, -50));
+    await tester.pumpAndSettle();
+
     expect(find.text(l10n.c_main_signal_function_exit), findsAny);
     expect(find.text(l10n.c_main_signal_function_entry_short), findsNothing);
     expect(find.text(l10n.c_main_signal_function_exit_short), findsNothing);
 
-    await _openByTapOnCellWithText(tester, 'Bahnhof A');
+    await tester.dragUntilVisible(findDASTableRowByText('(Bahnhof A)'), scrollableFinder, const Offset(0, 50));
+    await tester.pumpAndSettle();
+
+    await _openByTapOnCellWithText(tester, '(Bahnhof A)');
+    await tester.pumpAndSettle();
+
+    await tester.dragUntilVisible(
+      find.text(l10n.c_main_signal_function_entry_short),
+      scrollableFinder,
+      const Offset(0, -50),
+    );
     await tester.pumpAndSettle();
 
     expect(find.text(l10n.c_main_signal_function_entry), findsNothing);
@@ -362,18 +435,20 @@ Future<void> _selectTab(WidgetTester tester, ServicePointModalTab tab) async {
 }
 
 void _checkOpenModalSheet(Key tabContentKey, String servicePointName, {bool isMaximized = false}) {
-  final modalSheetKey = isMaximized ? DasModalSheet.modalSheetMaximizedKey : DasModalSheet.modalSheetExtendedKey;
-  final modalSheet = find.byKey(modalSheetKey);
-  expect(modalSheet, findsOneWidget);
+  final modalSheetStateKey = isMaximized ? DasModalSheet.modalSheetMaximizedKey : DasModalSheet.modalSheetExpandedKey;
+  final modalSheetState = find.byKey(modalSheetStateKey);
+  expect(modalSheetState, findsOneWidget);
+
+  final modalSheet = find.byKey(DasModalSheet.modalSheetKey);
   final tabContent = find.descendant(of: modalSheet, matching: find.byKey(tabContentKey));
   expect(tabContent, findsOneWidget);
   final servicePointLabel = find.descendant(of: modalSheet, matching: find.text(servicePointName));
   expect(servicePointLabel, findsOneWidget);
 }
 
-void _checkModalSheetTabs(List<ServicePointModalTab> displayedTabs, {bool isMaximized = false}) {
-  final modalSheetKey = isMaximized ? DasModalSheet.modalSheetMaximizedKey : DasModalSheet.modalSheetExtendedKey;
-  final modalSheet = find.byKey(modalSheetKey);
+Future<void> _checkModalSheetTabs(WidgetTester tester, List<ServicePointModalTab> displayedTabs) async {
+  await tester.pumpAndSettle();
+  final modalSheet = find.byKey(DasModalSheet.modalSheetKey);
   for (final tab in displayedTabs) {
     final tabIcon = find.descendant(of: modalSheet, matching: find.byIcon(tab.icon));
     expect(tabIcon, findsOneWidget);

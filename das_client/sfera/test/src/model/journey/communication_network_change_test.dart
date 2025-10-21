@@ -6,18 +6,18 @@ void main() {
   test('test appliesToOrder of CommunicationNetworkChange list', () {
     // GIVEN
     final networkChanges = [
-      CommunicationNetworkChange(type: CommunicationNetworkType.gsmP, order: 100),
-      CommunicationNetworkChange(type: CommunicationNetworkType.sim, order: 200),
-      CommunicationNetworkChange(type: CommunicationNetworkType.gsmR, order: 300),
+      CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.gsmP, order: 100),
+      CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.sim, order: 200),
+      CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.gsmR, order: 300),
     ];
 
     // WHEN
-    final notGiven = networkChanges.appliesToOrder(0);
-    final gsmP1 = networkChanges.appliesToOrder(100);
-    final gsmP2 = networkChanges.appliesToOrder(150);
-    final gsmPSimIgnored = networkChanges.whereNotSim.appliesToOrder(250);
-    final gsmR1 = networkChanges.appliesToOrder(300);
-    final gsmR2 = networkChanges.appliesToOrder(350);
+    final notGiven = networkChanges.typeByLastBefore(0);
+    final gsmP1 = networkChanges.typeByLastBefore(100);
+    final gsmP2 = networkChanges.typeByLastBefore(150);
+    final gsmPSimIgnored = networkChanges.whereNotSim.typeByLastBefore(250);
+    final gsmR1 = networkChanges.typeByLastBefore(300);
+    final gsmR2 = networkChanges.typeByLastBefore(350);
 
     // THEN
     expect(notGiven, isNull);
@@ -31,10 +31,10 @@ void main() {
   test('test changeAtOrder of CommunicationNetworkChange list', () {
     // GIVEN
     final networkChanges = [
-      CommunicationNetworkChange(type: CommunicationNetworkType.gsmP, order: 100),
-      CommunicationNetworkChange(type: CommunicationNetworkType.gsmP, order: 200),
-      CommunicationNetworkChange(type: CommunicationNetworkType.sim, order: 300),
-      CommunicationNetworkChange(type: CommunicationNetworkType.gsmR, order: 400),
+      CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.gsmP, order: 100),
+      CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.gsmP, order: 200),
+      CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.sim, order: 300),
+      CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.gsmR, order: 400),
     ];
 
     // WHEN
@@ -55,9 +55,9 @@ void main() {
   test('whereNotSim_whenHasNoSim_shouldNotChangeList', () {
     // GIVEN
     final networkChanges = [
-      CommunicationNetworkChange(type: CommunicationNetworkType.gsmP, order: 100),
-      CommunicationNetworkChange(type: CommunicationNetworkType.gsmR, order: 200),
-      CommunicationNetworkChange(type: CommunicationNetworkType.gsmR, order: 300),
+      CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.gsmP, order: 100),
+      CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.gsmR, order: 200),
+      CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.gsmR, order: 300),
     ];
 
     // WHEN
@@ -70,11 +70,13 @@ void main() {
   test('whereNotSim_whenHasSim_shouldRemoveSimEntries', () {
     // GIVEN
     final networkChanges = [
-      CommunicationNetworkChange(type: CommunicationNetworkType.gsmP, order: 100),
-      CommunicationNetworkChange(type: CommunicationNetworkType.sim, order: 200),
-      CommunicationNetworkChange(type: CommunicationNetworkType.gsmR, order: 300),
+      CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.gsmP, order: 100),
+      CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.sim, order: 200),
+      CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.gsmR, order: 300),
     ];
-    final expected = networkChanges.where((change) => change.type != CommunicationNetworkType.sim).toList();
+    final expected = networkChanges
+        .where((change) => change.communicationNetworkType != CommunicationNetworkType.sim)
+        .toList();
 
     // WHEN
     final actual = networkChanges.whereNotSim.toList();

@@ -15,6 +15,7 @@ class TramAreaRow extends CellRowBuilder<TramArea> {
     required super.metadata,
     required super.data,
     required super.rowIndex,
+    required super.journeyPosition,
     super.config,
   });
 

@@ -90,7 +90,7 @@ void main() {
 }
 
 void _checkModalSheetContent({required List<_ASRTestData> testData}) {
-  final modalSheet = find.byKey(DasModalSheet.modalSheetExtendedKey);
+  final modalSheet = find.byKey(DasModalSheet.modalSheetKey);
   expect(modalSheet, findsOneWidget);
 
   // check header

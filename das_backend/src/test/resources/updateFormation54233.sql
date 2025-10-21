@@ -1,29 +1,8 @@
-INSERT INTO public.train_formation_run(id, modified_date_time, operational_train_number,
-                                       operational_day, company, taf_tap_location_reference_start,
-                                       taf_tap_location_reference_end, train_category_code,
-                                       braked_weight_percentage, traction_max_speed_in_kmh,
-                                       hauled_load_max_speed_in_kmh, formation_max_speed_in_kmh,
-                                       traction_length_in_cm, hauled_load_length_in_cm,
-                                       formation_length_in_cm, traction_weight_in_t,
-                                       hauled_load_weight_in_t, formation_weight_in_t,
-                                       traction_braked_weight_in_t, hauled_load_braked_weight_in_t,
-                                       formation_braked_weight_in_t,
-                                       traction_holding_force_in_hecto_newton,
-                                       hauled_load_holding_force_in_hecto_newton,
-                                       formation_holding_force_in_hecto_newton,
-                                       brake_position_g_for_leading_traction,
-                                       brake_position_g_for_brake_unit_1_to_5,
-                                       brake_position_g_for_load_hauled, sim_train, traction_modes,
-                                       car_carrier_vehicle, dangerous_goods, vehicles_count,
-                                       vehicles_with_brake_design_ll_and_k_count,
-                                       vehicles_with_brake_design_d_count,
-                                       vehicles_with_disabled_brakes_count,
-                                       european_vehicle_number_first, european_vehicle_number_last,
-                                       axle_load_max_in_kg, route_class,
-                                       gradient_uphill_max_in_permille,
-                                       gradient_downhill_max_in_permille,
-                                       slope_max_for_holding_force_min_in_permille)
-VALUES (nextval('train_formation_run_id_seq'), '2025-07-25 13:43:23.120000', 54233, '2025-07-25',
-        2185, 'CH00001', 'CH00002', 'A', 105, 120, 100, 140, 3080, 43142, 46222, 168, 543, 711, 210,
-        543, 753, 1000, 5980, 6980, false, false, false, false, 'STAMMLOK;STAMMLOK', false, false,
-        28, 26, 0, 0, 918544202495, 218524710439, 20290, 'C2', 40, 40, 60);
+UPDATE public.train_formation_run
+SET inspection_date_time         = '2025-07-25 13:43:23.120000',
+    hauled_load_max_speed_in_kmh = 100
+WHERE operational_train_number = '54233'
+  AND operational_day = '2025-07-25'
+  AND company = '2185'
+  AND taf_tap_location_reference_start = 'CH00001'
+  AND taf_tap_location_reference_end = 'CH00002';

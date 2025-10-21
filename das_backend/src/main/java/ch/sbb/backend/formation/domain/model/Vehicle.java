@@ -10,6 +10,10 @@ import lombok.ToString;
 @ToString
 public class Vehicle {
 
+    /**
+     * Additional traction modes that are not considered as main traction.
+     */
+    private static final List<TractionMode> ADDITIONAL_TRACTION_MODES = List.of(TractionMode.ZWISCHENLOK, TractionMode.SCHIEBELOK, TractionMode.UEBERFUEHRUNG);
     private TractionMode tractionMode;
     private String vehicleCategory;
     private List<VehicleUnit> vehicleUnits;
@@ -19,17 +23,17 @@ public class Vehicle {
         return filterHauledLoad(vehicles).size();
     }
 
-    static String europeanVehicleNumberFirst(List<Vehicle> vehicles) {
+    static String getEuropeanVehicleNumberFirst(List<Vehicle> vehicles) {
         List<Vehicle> hauledLoadVehicles = filterHauledLoad(vehicles);
-        if (hauledLoadVehicles.isEmpty()) {
+        if (hauledLoadVehicles.isEmpty() || hauledLoadVehicles.getFirst().europeanVehicleNumber == null) {
             return null;
         }
         return hauledLoadVehicles.getFirst().europeanVehicleNumber.toVehicleCode();
     }
 
-    static String europeanVehicleNumberLast(List<Vehicle> vehicles) {
+    static String getEuropeanVehicleNumberLast(List<Vehicle> vehicles) {
         List<Vehicle> hauledLoadVehicles = filterHauledLoad(vehicles);
-        if (hauledLoadVehicles.isEmpty()) {
+        if (hauledLoadVehicles.isEmpty() || hauledLoadVehicles.getLast().europeanVehicleNumber == null) {
             return null;
         }
         return hauledLoadVehicles.getLast().europeanVehicleNumber.toVehicleCode();
@@ -41,11 +45,11 @@ public class Vehicle {
     }
 
     static Integer countBrakeDesigns(List<Vehicle> vehicles, BrakeDesign... brakeDesigns) {
-        return (int) vehicles.stream().filter(vehicle -> vehicle.hasBrakeDesign(brakeDesigns)).count();
+        return (int) filterHauledLoad(vehicles).stream().filter(vehicle -> vehicle.hasBrakeDesign(brakeDesigns)).count();
     }
 
     static Integer countDisabledBrakes(List<Vehicle> vehicles) {
-        return (int) vehicles.stream().filter(Vehicle::hasDisabledBrake).count();
+        return (int) filterHauledLoad(vehicles).stream().filter(Vehicle::hasDisabledBrake).count();
     }
 
     static Integer calculateHoldingForce(List<Vehicle> vehicles) {
@@ -72,8 +76,34 @@ public class Vehicle {
             .toList();
     }
 
-    static List<TractionMode> tractionModes(List<Vehicle> vehicles) {
-        return filterTraction(vehicles).stream().map(vehicle -> vehicle.tractionMode).toList();
+    static TractionMode additionalTractionMode(List<Vehicle> vehicles) {
+        Vehicle vehicle = findAdditionalTractionVehicle(vehicles);
+        if (vehicle == null) {
+            return null;
+        }
+        return vehicle.tractionMode;
+    }
+
+    static String additionalTractionSeries(List<Vehicle> vehicles) {
+        Vehicle vehicle = findAdditionalTractionVehicle(vehicles);
+        if (vehicle == null) {
+            return null;
+        }
+        if (vehicle.vehicleUnits.size() != 1) {
+            throw new UnexpectedProviderData("Additional traction vehicle must have exactly one vehicle unit");
+        }
+        return vehicle.vehicleUnits.getFirst().getVehicleSeries();
+    }
+
+    private static Vehicle findAdditionalTractionVehicle(List<Vehicle> vehicles) {
+        List<Vehicle> additionalTractionVehicles = filterTraction(vehicles).stream().filter(vehicle -> ADDITIONAL_TRACTION_MODES.contains(vehicle.tractionMode)).toList();
+        if (additionalTractionVehicles.isEmpty()) {
+            return null;
+        }
+        if (additionalTractionVehicles.size() > 1) {
+            throw new UnexpectedProviderData("More than one additional traction vehicle");
+        }
+        return additionalTractionVehicles.getFirst();
     }
 
     private boolean isTraction() {

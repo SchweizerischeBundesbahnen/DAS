@@ -61,14 +61,18 @@ The app is separated into the following components:
 
 ![UML component diagram](components.svg)
 
-| Component  | Description                                                                            |
-|------------|----------------------------------------------------------------------------------------|
-| **app**    | UI implementation with Flutter components                                              |
-| **auth**   | User authentication and authentication state management.                               |
-| **http_x** | Extension for http package that supports authorization and log requests and responses. |
-| **mqtt**   | Handles MQTT client auth and communication                                             |
-| **sfera**  | SFERA api integration with local database for caching                                  |
-| **logger** | Handles app logs caching and rollover to remote for monitoring                         |
+| Component             | Description                                                                            |
+|-----------------------|----------------------------------------------------------------------------------------|
+| **app**               | UI implementation with Flutter components                                              |
+| **auth**              | User authentication and authentication state management.                               |
+| **connectivity_x**    | Provides device connectivity handling                                                  |
+| **http_x**            | Extension for http package that supports authorization and log requests and responses. |
+| **local_regulations** | Handles generation of HTML for local regulations                                       |
+| **logger**            | Handles app logs caching and rollover to remote for monitoring                         |
+| **mqtt**              | Handles MQTT client auth and communication                                             |
+| **settings**          | Provides settings like enabled RU features                                             |
+| **sfera**             | SFERA api integration with local database for caching                                  |
+| **warnapp**           | Alogrithm to detect start and stop of train                                            |
 
 ### Component Naming
 
@@ -97,6 +101,16 @@ Run the following command in the `app` directory.
 ```shell
 fvm flutter test --flavor dev --dart-define=MQTT_USERNAME=${MQTT_USERNAME} --dart-define=MQTT_PASSWORD=${MQTT_PASSWORD} integration_test/app_test.dart
 ```
+
+#### Integration tests on Android emulator
+
+The Android emulator has trouble handling a lot of integration tests. Try the following to increase stability:
+
+* Start the emulator with a cold boot before each run
+* Use hardware acceleration and enough RAM (4GB recommended)
+* Check if emulator time matches the host time
+
+Try running the tests in multiple batches if none of the above work.
 
 ### Test resources
 

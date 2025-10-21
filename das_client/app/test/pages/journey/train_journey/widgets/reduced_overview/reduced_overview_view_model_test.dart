@@ -32,7 +32,9 @@ void main() {
     final withoutStopWithNetworkChange = ServicePoint(name: '', order: 400, kilometre: [], isStop: false);
     final data = <BaseData>[stop1, withoutStop, stop2, withoutStopWithNetworkChange];
 
-    final communicationNetworkChanges = [CommunicationNetworkChange(type: CommunicationNetworkType.gsmR, order: 400)];
+    final communicationNetworkChanges = [
+      CommunicationNetworkChange(communicationNetworkType: CommunicationNetworkType.gsmR, order: 400),
+    ];
     final metadata = Metadata(communicationNetworkChanges: communicationNetworkChanges);
 
     final sferaServiceMock = _setupSferaLocalRepoMock(metadata, data);
@@ -60,7 +62,11 @@ void main() {
     final speedChange = SpeedChange(order: 800, kilometre: []);
     final balise = Balise(order: 900, kilometre: [], amountLevelCrossings: 0);
     final levelCrossing = LevelCrossing(order: 1000, kilometre: []);
-    final baliseLevelCrossingGroup = BaliseLevelCrossingGroup(order: 1100, kilometre: [], groupedElements: []);
+    final baliseLevelCrossingGroup = BaliseLevelCrossingGroup(
+      order: 1100,
+      kilometre: [],
+      groupedElements: [],
+    );
     final cabSignaling = CABSignaling(order: 1200, kilometre: []);
     final asr = AdditionalSpeedRestriction(kmFrom: 0.0, kmTo: 0.0, orderFrom: 1300, orderTo: 1400);
     final asrData = AdditionalSpeedRestrictionData(restrictions: [asr], order: 1300, kilometre: []);

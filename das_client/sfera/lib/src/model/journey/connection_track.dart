@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 
 class ConnectionTrack extends JourneyPoint {
@@ -7,7 +8,22 @@ class ConnectionTrack extends JourneyPoint {
   final String? text;
 
   @override
-  String toString() {
-    return 'ConnectionTrack(text: $text)';
-  }
+  String toString() =>
+      'ConnectionTrack('
+      'order: $order'
+      ', kilometre: $kilometre'
+      ', text: $text'
+      ')';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ConnectionTrack &&
+          runtimeType == other.runtimeType &&
+          order == other.order &&
+          ListEquality().equals(kilometre, other.kilometre) &&
+          text == other.text;
+
+  @override
+  int get hashCode => type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ text.hashCode;
 }

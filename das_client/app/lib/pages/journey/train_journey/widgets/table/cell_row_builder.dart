@@ -1,3 +1,4 @@
+import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/advised_speed_cell_body.dart';
@@ -15,6 +16,7 @@ import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/speed_display.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_row.dart';
+import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -32,6 +34,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     super.key,
     this.config = const TrainJourneyConfig(),
     this.defaultAlignment = Alignment.bottomCenter,
+    this.journeyPosition,
     this.rowColor,
     this.onTap,
     this.isGrouped = false,
@@ -40,6 +43,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   final Alignment defaultAlignment;
   final Color? rowColor;
   final Metadata metadata;
+  final JourneyPositionModel? journeyPosition;
   final TrainJourneyConfig config;
   final VoidCallback? onTap;
   final bool isGrouped;
@@ -78,17 +82,17 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
       return DASTableCell.empty(color: specialCellColor);
     }
 
+    final textColor = _isNextStop && specialCellColor == null ? SBBColors.white : null;
+    final defaultTextStyle = DASTableTheme.of(context)?.data.dataTextStyle;
+    final textStyle = (defaultTextStyle ?? DASTextStyles.largeRoman).copyWith(color: textColor);
     return DASTableCell(
       color: specialCellColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            data.kilometre[0].toStringAsFixed(1),
-            style: _isNextStop ? DASTextStyles.largeRoman.copyWith(color: SBBColors.white) : DASTextStyles.largeRoman,
-          ),
-          if (data.kilometre.length > 1) Text(data.kilometre[1].toStringAsFixed(1)),
+          Text(data.kilometre[0].toStringAsFixed(1), style: textStyle),
+          if (data.kilometre.length > 1) Text(data.kilometre[1].toStringAsFixed(1), style: textStyle),
         ],
       ),
       alignment: Alignment.centerLeft,
@@ -102,14 +106,16 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
       alignment: null,
       clipBehaviour: Clip.none,
       child: RouteCellBody(
-        isCurrentPosition: metadata.currentPosition == data,
-        isRouteStart: metadata.routeStart == data,
-        isRouteEnd: metadata.routeEnd == data,
+        isCurrentPosition: isCurrentPosition,
+        isRouteStart: metadata.journeyStart == data,
+        isRouteEnd: metadata.journeyEnd == data,
         chevronAnimationData: config.chevronAnimationData,
-        chevronPosition: RouteChevron.positionFromHeight(height),
+        chevronPosition: chevronPosition,
       ),
     );
   }
+
+  bool get isCurrentPosition => journeyPosition?.currentPosition == data;
 
   DASTableCell trackEquipment(BuildContext context) {
     if (config.trackEquipmentRenderData == null) {
@@ -122,7 +128,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
       alignment: null,
       child: TrackEquipmentCellBody(
         renderData: config.trackEquipmentRenderData!,
-        isNextStop: _isNextStop,
+        lineColor: _isNextStop && specialCellColor == null ? SBBColors.white : null,
       ),
     );
   }
@@ -201,7 +207,12 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   DASTableCell advisedSpeedCell(BuildContext context) {
     final advisedSpeedsSegment = metadata.advisedSpeedSegments.appliesToOrder(data.order);
     final isLastAdvisedSpeed = advisedSpeedsSegment.firstOrNull?.endData == data;
-    if (advisedSpeedsSegment.isNotEmpty && !isLastAdvisedSpeed) {
+    final showAdvisedSpeed =
+        advisedSpeedsSegment.isNotEmpty &&
+        journeyPosition?.currentPosition != null &&
+        advisedSpeedsSegment.first.appliesToOrder(journeyPosition!.currentPosition!.order);
+
+    if (showAdvisedSpeed && !isLastAdvisedSpeed) {
       final isFirst = advisedSpeedsSegment.first.startOrder == data.order;
 
       return DASTableCell(
@@ -212,7 +223,6 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
           settings: config.settings,
           order: data.order,
           showSpeedBehavior: isFirst ? ShowSpeedBehavior.always : showSpeedBehavior,
-          isNextStop: _isNextStop,
         ),
       );
     } else {
@@ -221,7 +231,9 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
           metadata: metadata,
           settings: config.settings,
           order: data.order,
-          showSpeedBehavior: isLastAdvisedSpeed ? ShowSpeedBehavior.alwaysOrPrevious : showSpeedBehavior,
+          showSpeedBehavior: showAdvisedSpeed && isLastAdvisedSpeed
+              ? ShowSpeedBehavior.alwaysOrPrevious
+              : showSpeedBehavior,
           isNextStop: _isNextStop,
         ),
       );
@@ -254,6 +266,8 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
   ShowSpeedBehavior get showSpeedBehavior => ShowSpeedBehavior.never;
 
+  bool get _isNextStop => journeyPosition?.nextStop == data;
+
   static double rowHeightForData(BaseData data, BreakSeries? currentBreakSeries) {
     switch (data.type) {
       case Datatype.servicePoint:
@@ -263,5 +277,22 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     }
   }
 
-  bool get _isNextStop => metadata.nextStop == data;
+  double get chevronPosition => CellRowBuilder.calculateChevronPosition(data, height);
+
+  static double calculateChevronPosition(BaseData data, double height) {
+    switch (data.type) {
+      case Datatype.servicePoint:
+        final servicePoint = data as ServicePoint;
+        if (servicePoint.isStop) {
+          return RouteCellBody.routeCirclePosition - RouteChevron.chevronHeight;
+        } else {
+          return RouteCellBody.routeCirclePosition + RouteChevron.chevronHeight;
+        }
+      case Datatype.baliseLevelCrossingGroup:
+        return height * 0.5;
+      default:
+        // additional -1.5 because line overdraws a bit from rotation
+        return height - RouteChevron.chevronHeight - 1.5;
+    }
+  }
 }

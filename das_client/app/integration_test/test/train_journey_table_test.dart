@@ -1,4 +1,6 @@
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/train_journey/widgets/communication_network_icon.dart';
+import 'package:app/pages/journey/train_journey/widgets/header/sim_identifier.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/additional_speed_restriction_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/balise_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/bracket_station_cell_body.dart';
@@ -11,6 +13,7 @@ import 'package:app/pages/journey/train_journey/widgets/table/signal_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/tram_area_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/whistle_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
+import 'package:app/theme/themes.dart';
 import 'package:app/util/format.dart';
 import 'package:app/util/time_constants.dart';
 import 'package:app/widgets/dot_indicator.dart';
@@ -26,10 +29,27 @@ import '../util/test_utils.dart';
 
 void main() {
   group('train journey table test', () {
+    testWidgets('test displays kilometer and communication network changes correctly', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T14');
+
+      // find gsmP-Icon
+      final gsmPKey = find.byKey(CommunicationNetworkIcon.gsmPKey);
+      expect(gsmPKey, findsOneWidget);
+
+      // find gsmR-Icon
+      final gsmRKey = find.byKey(CommunicationNetworkIcon.gsmRKey);
+      expect(gsmRKey, findsOneWidget);
+
+      // find SIM-Key
+      final simKey = find.byKey(SimIdentifier.simKey);
+      expect(simKey, findsOneWidget);
+
+      await disconnect(tester);
+    });
+
     testWidgets('test up- and downhill gradient is displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T15M');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -65,8 +85,6 @@ void main() {
 
     testWidgets('test find one curve is found when breakingSeries A50 is chosen', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T5');
 
       // change breakseries to A50
@@ -91,8 +109,6 @@ void main() {
 
     testWidgets('test find two curves when breakingSeries R115 is chosen', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T5');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -114,8 +130,6 @@ void main() {
 
     testWidgets('test balise multiple level crossings', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T7');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -132,8 +146,6 @@ void main() {
 
     testWidgets('test whistle and tram area', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T7');
 
       final whistleRow = findDASTableRowByText('39.6');
@@ -156,8 +168,6 @@ void main() {
 
     testWidgets('test balise and level crossing groups expand / collapse', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T7');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -210,8 +220,6 @@ void main() {
 
     testWidgets('test speed values of default breakSeries (R115)', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T5');
 
       final expectedSpeeds = {
@@ -281,8 +289,6 @@ void main() {
 
     testWidgets('test connection track is displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -319,8 +325,6 @@ void main() {
 
     testWidgets('test additional speed restriction row is displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T2');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -339,14 +343,9 @@ void main() {
       expect(asrSpeed, findsOneWidget);
 
       // check all cells are colored
-      final coloredCells = find.descendant(
+      final coloredCells = findColoredRowCells(
         of: asrRow,
-        matching: find.byWidgetPredicate(
-          (it) =>
-              it is Container &&
-              it.decoration is BoxDecoration &&
-              (it.decoration as BoxDecoration).color == AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor,
-        ),
+        color: AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor,
       );
       expect(coloredCells, findsNWidgets(14));
 
@@ -355,8 +354,6 @@ void main() {
 
     testWidgets('test complex additional speed restriction row is displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T18');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -392,8 +389,6 @@ void main() {
 
     testWidgets('test other rows are displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T2');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -413,14 +408,9 @@ void main() {
         expect(testRow, findsOneWidget);
 
         // check first 3 cells are colored
-        final coloredCells = find.descendant(
+        final coloredCells = findColoredRowCells(
           of: testRow,
-          matching: find.byWidgetPredicate(
-            (it) =>
-                it is Container &&
-                it.decoration is BoxDecoration &&
-                (it.decoration as BoxDecoration).color == AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor,
-          ),
+          color: AdditionalSpeedRestrictionRow.additionalSpeedRestrictionColor,
         );
         expect(coloredCells, findsNWidgets(6));
       }
@@ -430,8 +420,6 @@ void main() {
 
     testWidgets('check if all table columns with header are present', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T6');
 
       // List of expected column headers
@@ -453,14 +441,12 @@ void main() {
 
     testWidgets('test route is displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999');
 
       final scrollableFinder = find.byType(AnimatedList);
       expect(scrollableFinder, findsOneWidget);
 
-      final stopRouteRow = findDASTableRowByText('Bahnhof A');
+      final stopRouteRow = findDASTableRowByText('(Bahnhof A)');
       expect(stopRouteRow, findsOneWidget);
 
       await tester.dragUntilVisible(findDASTableRowByText('Haltestelle B'), scrollableFinder, const Offset(0, -50));
@@ -495,8 +481,6 @@ void main() {
 
     testWidgets('test protection sections are displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T3');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -564,8 +548,6 @@ void main() {
 
     testWidgets('test both kilometres are displayed', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T6');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -581,8 +563,6 @@ void main() {
 
     testWidgets('test bracket stations is displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -632,8 +612,6 @@ void main() {
 
     testWidgets('test halt on request is displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -663,8 +641,6 @@ void main() {
 
     testWidgets('test halt is displayed italic', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T6');
 
       final glanzenbergText = find.byWidgetPredicate(
@@ -708,8 +684,6 @@ void main() {
 
     testWidgets('test signals are displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -761,8 +735,6 @@ void main() {
 
     testWidgets('test if station speeds are displayed correctly', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T8');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -872,8 +844,6 @@ void main() {
 
     testWidgets('test line speed always displayed in sticky header', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T8');
 
       // now empty
@@ -913,8 +883,6 @@ void main() {
       tester,
     ) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T11');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -955,8 +923,6 @@ void main() {
 
     testWidgets('test line speed is hidden on ETCS level 2 section', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T11');
 
       final scrollableFinder = find.byType(AnimatedList);
@@ -975,14 +941,13 @@ void main() {
 
     testWidgets('test time cells for journey in far future (T4) with planned times only', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T4');
 
       // test if planned time header label is in table (no operational times)
       final expectedPlannedHeaderLabel = l10n.p_train_journey_table_time_label_planned;
       final timeHeader = find.text(expectedPlannedHeaderLabel);
       expect(timeHeader, findsOneWidget);
+      await tester.pumpAndSettle(const Duration(seconds: 1));
 
       // two service points have empty times
       final timeCellKey = TimeCellBody.timeCellKey;
@@ -1028,14 +993,15 @@ void main() {
 
     testWidgets('test time cells for journey in near future (T16) with operational and planned times', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T16');
 
       // test if operational time header label is in table
       final expectedCalculatedHeaderLabel = l10n.p_train_journey_table_time_label_new;
       final timeHeader = find.text(expectedCalculatedHeaderLabel);
       expect(timeHeader, findsOneWidget);
+
+      final scrollableFinder = find.byType(AnimatedList);
+      expect(scrollableFinder, findsOneWidget);
 
       // test if times are displayed correctly
       final timeCellKey = TimeCellBody.timeCellKey;
@@ -1049,6 +1015,14 @@ void main() {
       expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: morges), findsNothing);
       // vevey should have single operational arrival in brackets since it's a passing point
       final vevey = 'Vevey';
+
+      await tester.dragUntilVisible(
+        findDASTableRowByText(vevey),
+        scrollableFinder,
+        const Offset(0, -50),
+      );
+      await tester.pumpAndSettle();
+
       final expectedTimeVevey = '(${Format.operationalTime(DateTime.parse('2025-05-12T17:28:56Z'))})\n';
       expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: vevey), findsOneWidget);
       expect(_findTextInDASTableRowByText(innerText: expectedTimeVevey, rowText: vevey), findsOneWidget);
@@ -1061,12 +1035,27 @@ void main() {
       expect(find.text(expectedPlannedHeaderLabel), findsOneWidget);
       // test if time switched (aeroport)
       final geneveAerPlanned = 'Genève-Aéroport';
+
+      await tester.dragUntilVisible(
+        findDASTableRowByText(geneveAerPlanned),
+        scrollableFinder,
+        const Offset(0, 50),
+      );
+
+      await tester.pumpAndSettle();
+
       final expectedTimeGenAerPlanned = Format.plannedTime(DateTime.parse('2025-05-12T15:13:40Z'));
+
+      if (!tester.any(find.text(expectedPlannedHeaderLabel))) {
+        await tapElement(tester, timeHeader);
+      }
+
       expect(_findByKeyInDASTableRowByText(key: timeCellKey, rowText: geneveAerPlanned), findsOneWidget);
       expect(
         _findTextInDASTableRowByText(innerText: expectedTimeGenAerPlanned, rowText: geneveAerPlanned),
         findsOneWidget,
       );
+
       // morges
       final morgesPlanned = 'Morges';
       final expectedTimeMorgesPlanned = '(${Format.plannedTime(DateTime.parse('2025-05-12T15:55:23Z'))})\n';
@@ -1077,6 +1066,19 @@ void main() {
       );
       // vevey should have both times in brackets since it's a passing point
       final veveyPlanned = 'Vevey';
+
+      await tester.dragUntilVisible(
+        findDASTableRowByText(veveyPlanned),
+        scrollableFinder,
+        const Offset(0, -50),
+      );
+
+      await tester.pumpAndSettle();
+
+      if (!tester.any(find.text(expectedPlannedHeaderLabel))) {
+        await tapElement(tester, timeHeader);
+      }
+
       final expectedTimeVeveyPlanned =
           '(${Format.plannedTime(DateTime.parse('2025-05-12T16:28:12Z'))})\n'
           '(${Format.plannedTime(DateTime.parse('2025-05-12T16:29:12Z'))})';
@@ -1090,8 +1092,6 @@ void main() {
       'test auto switch behavior for time cells journey in near future (T9999) with operational and planned times',
       (tester) async {
         await prepareAndStartApp(tester);
-
-        // load train journey by filling out train selection page
         await loadTrainJourney(tester, trainNumber: 'T9999');
 
         // test if operational time header label is in table
@@ -1119,15 +1119,13 @@ void main() {
     );
     testWidgets('test departure time is underlined when time reached', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
-      await loadTrainJourney(tester, trainNumber: 'T9999');
+      await loadTrainJourney(tester, trainNumber: 'T9999M');
 
       // wait one second for underline to happen if opened last second of previous minute
       await tester.pumpAndSettle(const Duration(seconds: 1));
 
       // check Bahnhof A has underlined departure time
-      final stationARow = findDASTableRowByText('Bahnhof A');
+      final stationARow = findDASTableRowByText('(Bahnhof A)');
       expect(stationARow, findsOneWidget);
 
       final stationATimeText = tester.widget<Text>(
@@ -1150,7 +1148,64 @@ void main() {
 
       await disconnect(tester);
     });
+    testWidgets('test additional service points displayed correctly', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T27');
+
+      final scrollableFinder = find.byType(AnimatedList);
+      expect(scrollableFinder, findsOneWidget);
+
+      // check if all additional service points are displayed correctly
+      await _checkAdditionalServicePoint(tester, scrollableFinder, 'Bern (Depot)');
+      await _checkAdditionalServicePoint(tester, scrollableFinder, 'Olten Ost (Abzw)');
+      await _checkAdditionalServicePoint(tester, scrollableFinder, 'Olten Tunnel (Spw)');
+      await _checkAdditionalServicePoint(tester, scrollableFinder, 'Dulliken (Depot)');
+
+      await disconnect(tester);
+    });
+
+    testWidgets('test shunting movement markers are displayed correctly', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T29');
+
+      final scrollableFinder = find.byType(AnimatedList);
+      expect(scrollableFinder, findsOneWidget);
+
+      // start marking of first shunting movement segment
+      final firstStartMarking = findDASTableRowByText(l10n.w_shunting_movement_start('T29R'));
+      expect(firstStartMarking, findsOneWidget);
+
+      // end marking of first shunting movement segment
+      final firstEndMarking = findDASTableRowByText(l10n.w_shunting_movement_end('T29R'));
+      await tester.dragUntilVisible(firstEndMarking, scrollableFinder, const Offset(0, -50));
+      expect(firstEndMarking, findsOneWidget);
+
+      await dragUntilTextInStickyHeader(tester, 'Zürich Altstetten');
+
+      // start marking of second shunting movement segment
+      final secondStartMarking = findDASTableRowByText(l10n.w_shunting_movement_start('T29R'));
+      expect(secondStartMarking, findsOneWidget);
+
+      // finds no end marking as it is outside of journey
+      final secondEndMarking = findDASTableRowByText(l10n.w_shunting_movement_end('T29R'));
+      expect(secondEndMarking, findsNothing);
+
+      await disconnect(tester);
+    });
   });
+}
+
+Future<void> _checkAdditionalServicePoint(WidgetTester tester, Finder scrollableFinder, String servicePointName) async {
+  final servicePointRow = findDASTableRowByText(servicePointName);
+  await tester.dragUntilVisible(servicePointRow, scrollableFinder, const Offset(0, -50));
+  expect(servicePointRow, findsOneWidget);
+
+  // check all cells are colored
+  final coloredCells = findColoredRowCells(
+    of: servicePointRow,
+    color: DASTheme.light().scaffoldBackgroundColor,
+  );
+  expect(coloredCells, findsAtLeast(3));
 }
 
 bool _hasAnyUnderlinedTextSpans(Text stationATimeText) {

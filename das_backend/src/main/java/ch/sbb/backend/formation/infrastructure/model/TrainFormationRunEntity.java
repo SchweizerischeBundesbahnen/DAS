@@ -1,14 +1,11 @@
 package ch.sbb.backend.formation.infrastructure.model;
 
 import ch.sbb.backend.common.SFERA;
-import ch.sbb.backend.common.StringListConverter;
 import ch.sbb.backend.common.TelTsi;
 import ch.sbb.backend.formation.domain.model.BrakeDesign;
 import ch.sbb.backend.formation.domain.model.Formation;
 import ch.sbb.backend.formation.domain.model.FormationRun;
-import ch.sbb.backend.formation.domain.model.TractionMode;
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -36,7 +33,9 @@ public class TrainFormationRunEntity {
     @SequenceGenerator(name = "train_formation_run_id_seq", allocationSize = 1)
     private Integer id;
 
-    private OffsetDateTime modifiedDateTime;
+    private String trainPathId;
+
+    private OffsetDateTime inspectionDateTime;
 
     @SFERA @TelTsi
     private String operationalTrainNumber;
@@ -103,8 +102,9 @@ public class TrainFormationRunEntity {
 
     private Boolean simTrain;
 
-    @Convert(converter = StringListConverter.class)
-    private List<String> tractionModes;
+    private String additionalTractionMode;
+
+    private String additionalTractionSeries;
 
     private Boolean carCarrierVehicle;
 
@@ -140,8 +140,8 @@ public class TrainFormationRunEntity {
                 TrainFormationRunEntityBuilder builder = TrainFormationRunEntity.builder();
                 applyFormationRun(builder, formationRun);
                 builder
-                    .modifiedDateTime(formation.getModifiedDateTime())
                     .operationalTrainNumber(formation.getOperationalTrainNumber())
+                    .trainPathId(formation.getTrainPathId())
                     .operationalDay(formation.getOperationalDay());
                 return builder.build();
             })
@@ -150,6 +150,7 @@ public class TrainFormationRunEntity {
 
     private static void applyFormationRun(TrainFormationRunEntityBuilder builder, FormationRun formationRun) {
         builder
+            .inspectionDateTime(formationRun.getInspectionDateTime())
             .company(formationRun.getCompany())
             .tafTapLocationReferenceStart(formationRun.getTafTapLocationReferenceStart().toLocationCode())
             .tafTapLocationReferenceEnd(formationRun.getTafTapLocationReferenceEnd().toLocationCode())
@@ -174,26 +175,21 @@ public class TrainFormationRunEntity {
             .brakePositionGForBrakeUnit1to5(formationRun.getBrakePositionGForBrakeUnit1to5())
             .brakePositionGForLoadHauled(formationRun.getBrakePositionGForLoadHauled())
             .simTrain(formationRun.getSimTrain())
-            .tractionModes(mapTractionModes(formationRun.getTractionModes()))
+            .additionalTractionMode(formationRun.getAdditionalTractionMode() != null ? formationRun.getAdditionalTractionMode().getKey() : null)
+            .additionalTractionSeries(formationRun.getAdditionalTractionSeries())
             .carCarrierVehicle(formationRun.getCarCarrierVehicle())
             .dangerousGoods(formationRun.hasDangerousGoods())
             .vehiclesCount(formationRun.hauledLoadVehiclesCount())
             .vehiclesWithBrakeDesignLlAndKCount(formationRun.vehiclesWithBrakeDesignCount(BrakeDesign.LL_KUNSTSTOFF_LEISE_LEISE, BrakeDesign.KUNSTSTOFF_BREMSKLOETZE))
             .vehiclesWithBrakeDesignDCount(formationRun.vehiclesWithBrakeDesignCount(BrakeDesign.NORMALE_BREMSAUSRUESTUNG_KEINE_MERKMALE))
             .vehiclesWithDisabledBrakesCount(formationRun.vehiclesWithDisabledBrakeCount())
-            .europeanVehicleNumberFirst(formationRun.europeanVehicleNumberFirst())
-            .europeanVehicleNumberLast(formationRun.europeanVehicleNumberLast())
+            .europeanVehicleNumberFirst(formationRun.getEuropeanVehicleNumberFirst())
+            .europeanVehicleNumberLast(formationRun.getEuropeanVehicleNumberLast())
             .axleLoadMaxInKg(formationRun.getAxleLoadMaxInKg())
             .routeClass(formationRun.getRouteClass())
             .gradientUphillMaxInPermille(formationRun.getGradientUphillMaxInPermille())
             .gradientDownhillMaxInPermille(formationRun.getGradientDownhillMaxInPermille())
             .slopeMaxForHoldingForceMinInPermille(formationRun.getSlopeMaxForHoldingForceMinInPermille());
 
-    }
-
-    private static List<String> mapTractionModes(List<TractionMode> tractionModes) {
-        return tractionModes.stream()
-            .map(TractionMode::getKey)
-            .toList();
     }
 }
