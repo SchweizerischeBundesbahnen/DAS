@@ -1,4 +1,3 @@
-
 package ch.sbb.backend.preload;
 
 import ch.sbb.backend.preload.sfera.model.v0201.JourneyProfile;
@@ -6,16 +5,15 @@ import ch.sbb.backend.preload.sfera.model.v0201.OTNIDComplexType;
 import ch.sbb.backend.preload.sfera.model.v0201.SegmentProfile;
 import ch.sbb.backend.preload.sfera.model.v0201.TrainCharacteristics;
 import ch.sbb.backend.preload.xml.XmlHelper;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import org.springframework.stereotype.Service;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PreloadStorageService {
@@ -41,12 +39,8 @@ public class PreloadStorageService {
         try {
             String zipName = buildZipName();
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream(64 * 1024);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
             try (ZipOutputStream zos = new ZipOutputStream(baos, StandardCharsets.UTF_8)) {
-
-                addDirectoryEntry(zos, DIR_JP);
-                addDirectoryEntry(zos, DIR_SP);
-                addDirectoryEntry(zos, DIR_TC);
 
                 writeJps(journeyProfiles, zos);
                 writeSps(segmentProfiles, zos);
@@ -73,7 +67,7 @@ public class PreloadStorageService {
                 otnid.getTeltsiOperationalTrainNumber(),
                 otnid.getTeltsiStartDate(),
                 jp.getJPVersion());
-            writeXmlEntry(zos, filename, jp);
+            writeXmlEntry(zos, DIR_JP + filename, jp);
         }
     }
 
@@ -83,7 +77,7 @@ public class PreloadStorageService {
                 sp.getSPID(),
                 sp.getSPVersionMajor(),
                 sp.getSPVersionMinor());
-            writeXmlEntry(zos,  filename, sp);
+            writeXmlEntry(zos, DIR_SP + filename, sp);
         }
     }
 
@@ -93,22 +87,18 @@ public class PreloadStorageService {
                 tc.getTCID(),
                 tc.getTCVersionMajor(),
                 tc.getTCVersionMinor());
-            writeXmlEntry(zos, filename, tc);
+            writeXmlEntry(zos, DIR_TC + filename, tc);
         }
     }
 
     private void writeXmlEntry(ZipOutputStream zos, String entryName, Object obj) throws IOException {
-        if (obj == null) return;
+        if (obj == null) {
+            return;
+        }
         String xml = xmlHelper.toString(obj);
         ZipEntry entry = new ZipEntry(entryName);
         zos.putNextEntry(entry);
         zos.write(xml.getBytes(StandardCharsets.UTF_8));
-        zos.closeEntry();
-    }
-
-    private void addDirectoryEntry(ZipOutputStream zos, String name) throws IOException {
-        ZipEntry dirEntry = new ZipEntry(name);
-        zos.putNextEntry(dirEntry);
         zos.closeEntry();
     }
 }

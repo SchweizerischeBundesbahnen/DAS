@@ -39,3 +39,6 @@ sfera:
   source-device: 'TEST'
   recipient: '0033'
   broker-url:
+
+preload:
+  fetch-interval-ms: 60000
