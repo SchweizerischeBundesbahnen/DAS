@@ -1176,7 +1176,7 @@ void main() {
       expect(firstStartMarking, findsOneWidget);
 
       // end marking of first shunting movement segment
-      final firstEndMarking = findDASTableRowByText(l10n.w_shunting_movement_end('T29R'));
+      final firstEndMarking = findDASTableRowByText(l10n.w_shunting_movement_end('T29'));
       await tester.dragUntilVisible(firstEndMarking, scrollableFinder, const Offset(0, -50));
       expect(firstEndMarking, findsOneWidget);
 
@@ -1187,7 +1187,7 @@ void main() {
       expect(secondStartMarking, findsOneWidget);
 
       // finds no end marking as it is outside of journey
-      final secondEndMarking = findDASTableRowByText(l10n.w_shunting_movement_end('T29R'));
+      final secondEndMarking = findDASTableRowByText(l10n.w_shunting_movement_end('T29'));
       expect(secondEndMarking, findsNothing);
 
       await disconnect(tester);
