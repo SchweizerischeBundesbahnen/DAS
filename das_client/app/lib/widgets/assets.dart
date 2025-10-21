@@ -49,7 +49,7 @@ class AppAssets {
 
   // audio
   static const soundKoaWaitCanceled = '$_soundsDir/koa_wait_canceled.mp3';
-  static const warnappWarn = '$_soundsDir/warnapp_warn.wav';
-  static const AdvisedSpeedStart = '$_soundsDir/advised_speed_start.wav';
-  static const AdvisedSpeedEnd = '$_soundsDir/advised_speed_end.wav';
+  static const soundWarnappWarn = '$_soundsDir/warnapp_warn.wav';
+  static const soundAdvisedSpeedStart = '$_soundsDir/advised_speed_start.wav';
+  static const soundAdvisedSpeedEnd = '$_soundsDir/advised_speed_end.wav';
 }

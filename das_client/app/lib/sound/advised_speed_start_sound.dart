@@ -13,6 +13,6 @@ class AdvisedSpeedStartSound extends Sound {
     await Sound.volumeController.setVolume(_volume);
     final audioPlayer = DI.get<AudioPlayer>();
     await audioPlayer.stop();
-    await audioPlayer.play(AssetSource(AppAssets.AdvisedSpeedStart));
+    await audioPlayer.play(AssetSource(AppAssets.soundAdvisedSpeedStart));
   }
 }

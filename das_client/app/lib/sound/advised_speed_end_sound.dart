@@ -13,6 +13,6 @@ class AdvisedSpeedEndSound extends Sound {
     await Sound.volumeController.setVolume(_volume);
     final audioPlayer = DI.get<AudioPlayer>();
     await audioPlayer.stop();
-    await audioPlayer.play(AssetSource(AppAssets.AdvisedSpeedEnd));
+    await audioPlayer.play(AssetSource(AppAssets.soundAdvisedSpeedEnd));
   }
 }
