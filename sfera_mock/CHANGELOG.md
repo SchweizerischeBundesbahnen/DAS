@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.9.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.8.0...sfera_mock-v0.9.0) (2025-10-21)
+
+
+### Features
+
+* add additional service points ([#258](https://github.com/SchweizerischeBundesbahnen/DAS/issues/258)) ([#1295](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1295)) ([e5bc6f1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e5bc6f12f5219b8d54ffe7a823e50bc1a080c178))
+* add betweenBrackets to service points ([#600](https://github.com/SchweizerischeBundesbahnen/DAS/issues/600)) ([#1279](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1279)) ([602e934](https://github.com/SchweizerischeBundesbahnen/DAS/commit/602e934a56766070afcac93a4cb008a04d0879b8))
+* add replacement series notification ([#507](https://github.com/SchweizerischeBundesbahnen/DAS/issues/507)) ([#1324](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1324)) ([49aa770](https://github.com/SchweizerischeBundesbahnen/DAS/commit/49aa7702821e6da4c554bc6180f250ba2730fea5))
+* handle elements before first service point ([#498](https://github.com/SchweizerischeBundesbahnen/DAS/issues/498)) ([#1297](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1297)) ([a9a85e9](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a9a85e913ddec25c351d1d1d74e7780c11a901b0))
+* ignore whitespaces in speeds from TMS VAD [#1243](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1243) ([#1304](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1304)) ([817bf64](https://github.com/SchweizerischeBundesbahnen/DAS/commit/817bf642c5e93684cd416cf99db2ad59fb75bd47))
+* journeys with shunting movement ([#264](https://github.com/SchweizerischeBundesbahnen/DAS/issues/264)) ([#1346](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1346)) ([246bc09](https://github.com/SchweizerischeBundesbahnen/DAS/commit/246bc092163d021d8151ddf438fb5f20cbd9184f))
+* preload mqtt connection and sfera xml ([#914](https://github.com/SchweizerischeBundesbahnen/DAS/issues/914)) ([#1265](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1265)) ([4e5d5fe](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4e5d5fefbf97e69928d4fccdaa4e99dda59ae0b7))
+
+
+### Bug Fixes
+
+* **deps:** update dependency com.solace.spring.cloud:solace-spring-cloud-bom to v4.11.0 ([#1334](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1334)) ([b61ada4](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b61ada461d9889f5912cfef198bbb07ff60e50a6))
+* **deps:** update dependency org.springframework.boot:spring-boot-starter-parent to v3.5.6 ([#1277](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1277)) ([38332dc](https://github.com/SchweizerischeBundesbahnen/DAS/commit/38332dc3320357c265eac32a2fb0dabe2c1a9b5c))
+* fix journey update in 2266 ([#1269](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1269)) ([4fd3b08](https://github.com/SchweizerischeBundesbahnen/DAS/commit/4fd3b0882d737c773b1c1728484b2444cc54e329))
+* support standalone mode correctly ([#1299](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1299)) ([679030b](https://github.com/SchweizerischeBundesbahnen/DAS/commit/679030b3199909ed4b027bc0794249220336559c))
+* various adjustments to chevron positioning ([#1238](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1238)) ([#1338](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1338)) ([e86dbb8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e86dbb8b10f0d5a282eb31ce9b5c5039a9e0b18f))
+
+
+### Documentation
+
+* add events and change puea ([#1260](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1260)) ([9ea9a2c](https://github.com/SchweizerischeBundesbahnen/DAS/commit/9ea9a2c0688fe13ba2ee3fa53a73262215258a6e))
+* add testdata 2029 ([#1286](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1286)) ([b8f0e37](https://github.com/SchweizerischeBundesbahnen/DAS/commit/b8f0e37b39de19302f6b1eeea9357079628845e5))
+* fix event 1672 ([#1262](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1262)) ([8c6eb42](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8c6eb422e4a33e92716d6f40298bff3693dd590d))
+
 ## [0.9.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.8.0...sfera_mock-v0.9.0) (2025-10-20)
 
 
