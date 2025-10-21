@@ -10,8 +10,8 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
 class AdvisedSpeedNotification extends StatelessWidget {
-  static const Key advisedSpeedNotificationKey = Key('adlNotification');
-  static const Key advisedSpeedNotificationIconKey = Key('adlNotificationIcon');
+  static const Key advisedSpeedNotificationKey = Key('advisedSpeedNotification');
+  static const Key advisedSpeedNotificationIconKey = Key('advisedSpeedNotificationIcon');
 
   const AdvisedSpeedNotification({super.key});
 
@@ -65,23 +65,27 @@ class AdvisedSpeedNotification extends StatelessWidget {
 
   Widget _notification(BuildContext context, String message, {Widget? icon}) => Container(
     key: advisedSpeedNotificationKey,
-    margin: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5).copyWith(bottom: sbbDefaultSpacing * 0.5),
+    margin: const EdgeInsets.all(sbbDefaultSpacing * 0.5).copyWith(top: 0),
     decoration: BoxDecoration(
       color: SBBColors.iron,
       borderRadius: BorderRadius.circular(sbbDefaultSpacing),
     ),
-    padding: const EdgeInsets.symmetric(vertical: 14.0).copyWith(left: sbbDefaultSpacing, right: 4.0),
-    child: Row(
-      children: [
-        if (icon != null) ...[
-          icon,
-          const SizedBox(width: sbbDefaultSpacing * 0.5),
+    constraints: BoxConstraints(minHeight: 50.0),
+    padding: EdgeInsets.only(left: 22.0),
+    child: Align(
+      alignment: Alignment.centerLeft,
+      child: Row(
+        children: [
+          if (icon != null) ...[
+            icon,
+            const SizedBox(width: sbbDefaultSpacing * 0.5),
+          ],
+          Text(
+            message,
+            style: DASTextStyles.mediumBold.copyWith(color: SBBColors.white),
+          ),
         ],
-        Text(
-          message,
-          style: DASTextStyles.mediumBold.copyWith(color: SBBColors.white),
-        ),
-      ],
+      ),
     ),
   );
 }
