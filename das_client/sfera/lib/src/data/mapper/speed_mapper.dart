@@ -176,12 +176,15 @@ class SpeedMapper {
         case ReasonCodeDto.advisedSpeedFixedTime:
           segmentType = DraftAdvisedSpeedType.fixedTime;
         default:
-          _log.warning('Skipping AdvisedSpeed found with reasonCode that cannot be handled: $advisedSpeed');
+          break;
       }
     }
-    if (segmentType == null) return null;
+    if (segmentType == null) {
+      _log.warning('Skipping AdvisedSpeed found with reasonCode that cannot be handled: $advisedSpeed')
+      return null;
+    }
 
-    final result = DraftAdvisedSpeedSegment(
+    return DraftAdvisedSpeedSegment(
       nextSegmentStartOrder: nextSegmentStartOrder,
       previousSegmentEndOrder: previousSegmentEndOrder,
       type: segmentType,
@@ -189,7 +192,6 @@ class SpeedMapper {
       startOrder: startOrder,
       endOrder: endOrder,
     );
-    return result;
   }
 
   static List<DraftAdvisedSpeedSegment> _mergeAdvisedSegments(List<DraftAdvisedSpeedSegment> drafts) {
