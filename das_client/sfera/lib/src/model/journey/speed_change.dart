@@ -24,5 +24,5 @@ class SpeedChange extends JourneyPoint {
           text == other.text;
 
   @override
-  int get hashCode => order.hashCode ^ Object.hashAll(kilometre) ^ text.hashCode;
+  int get hashCode => type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ text.hashCode;
 }

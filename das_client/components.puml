@@ -5,22 +5,40 @@ component auth
 component logger
 component sfera
 component mqtt
+component connectivity_x
+component local_regulations
+component settings
+component warnapp
 component mqtt_client #4DB1FF
 component http_x
 component http #4DB1FF
+component connectivity_plus #4DB1FF
 
 app --> auth
 app --> sfera
-app --> logger
 app --> mqtt
+app --> connectivity_x
+app --> local_regulations
+app --> settings
+app --> warnapp
+app --> logger
 app --> http_x
+
+settings --> http_x
+settings --> logger
 
 logger --> http_x
 
 sfera --> mqtt
+sfera --> http_x
+
+local_regulations --> sfera
 
 http_x *-- http
 
+mqtt --> connectivity_x
 mqtt *-- mqtt_client
+
+connectivity_x *-- connectivity_plus
 
 @enduml

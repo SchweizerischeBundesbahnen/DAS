@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:logger/component.dart';
-import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/delay_dto.dart';
 import 'package:sfera/src/data/dto/g2b_event_payload_dto.dart';
@@ -14,9 +12,6 @@ import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
 import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
 
 void main() {
-  Logger.root.level = Level.ALL;
-  Logger.root.onRecord.listen(LogPrinter(appName: 'DAS Tests', isDebugMode: true).call);
-
   List<File> getFilesForSp(String path, String baseName, int count) {
     final files = <File>[];
     for (var i = 1; i <= count; i++) {
@@ -1767,6 +1762,21 @@ void main() {
     expect(advisedSpeedSegments, hasLength(1));
     expect(advisedSpeedSegments[0].startOrder, 1000);
     expect(advisedSpeedSegments[0].endOrder, 3500);
+  });
+
+  test('Test shunting movement markers are parsed correctly', () {
+    final journey = getJourney('T29', 6);
+    expect(journey.valid, true);
+
+    final markers = journey.data.whereType<ShuntingMovement>().toList();
+    expect(markers, hasLength(3));
+
+    expect(markers[0].isStart, true);
+    expect(markers[0].order, 0);
+    expect(markers[1].isStart, false);
+    expect(markers[1].order, 200000);
+    expect(markers[2].isStart, true);
+    expect(markers[2].order, 400000);
   });
 }
 

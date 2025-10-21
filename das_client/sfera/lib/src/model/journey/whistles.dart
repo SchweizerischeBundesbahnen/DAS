@@ -20,5 +20,5 @@ class Whistle extends JourneyPoint {
           ListEquality().equals(kilometre, other.kilometre);
 
   @override
-  int get hashCode => order.hashCode ^ Object.hashAll(kilometre);
+  int get hashCode => type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre);
 }

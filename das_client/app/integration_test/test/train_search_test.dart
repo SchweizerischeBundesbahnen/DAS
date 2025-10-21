@@ -12,7 +12,6 @@ import '../util/test_utils.dart';
 void main() {
   group('train search screen tests', () {
     testWidgets('test default values', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
 
       // Verify we have ru SBB.
@@ -23,7 +22,6 @@ void main() {
     });
 
     testWidgets('test selecting ru values', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
 
       // Verify we have ru SBB.
@@ -47,7 +45,6 @@ void main() {
     });
 
     testWidgets('test filter ru values', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
 
       // Verify we have ru SBB.
@@ -72,7 +69,6 @@ void main() {
     });
 
     testWidgets('test load button disabled when validation fails', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
 
       // Verify we have ru SBB.
@@ -93,7 +89,6 @@ void main() {
     });
 
     testWidgets('test can select yesterday', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
 
       final today = DateTime.now();
@@ -121,7 +116,7 @@ void main() {
       final yesterdayFinder = find.descendant(
         of: datePicker,
         matching: find.byWidgetPredicate(
-          (widget) => widget is Text && widget.data == Format.dateWithTextMonth(yesterday, deviceLocale()),
+          (widget) => widget is Text && widget.data == Format.dateWithTextMonth(yesterday, appLocale()),
         ),
       );
       await tapElement(tester, yesterdayFinder, warnIfMissed: false);
@@ -136,7 +131,6 @@ void main() {
     });
 
     testWidgets('test can not select day before yesterday', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
 
       final today = DateTime.now();
@@ -155,7 +149,7 @@ void main() {
       final dayBeforeYesterdayFinder = find.descendant(
         of: datePicker,
         matching: find.byWidgetPredicate(
-          (widget) => widget is Text && widget.data == Format.dateWithTextMonth(dayBeforeYesterday, deviceLocale()),
+          (widget) => widget is Text && widget.data == Format.dateWithTextMonth(dayBeforeYesterday, appLocale()),
         ),
       );
       expect(dayBeforeYesterdayFinder, findsNothing);
@@ -168,7 +162,6 @@ void main() {
     });
 
     testWidgets('test error if JP unavailable', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
 
       // Verify we have ru SBB.

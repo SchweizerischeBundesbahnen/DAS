@@ -18,4 +18,5 @@ enum Datatype {
   uncodedOperationalIndication,
   combinedFootNoteOperationalIndication,
   communicationNetworkChannel,
+  shuntingMovement,
 }

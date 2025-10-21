@@ -8,7 +8,7 @@ environment:
 resolution: workspace
 
 dependencies:
-
+  # workspaces
   connectivity_x: 1.0.0
 
   # https://pub.dev/packages/mqtt_client

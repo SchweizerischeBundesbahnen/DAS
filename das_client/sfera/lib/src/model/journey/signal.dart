@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
+import 'package:sfera/src/model/journey/order_priority.dart';
 
 class Signal extends JourneyPoint {
   const Signal({
@@ -11,6 +12,9 @@ class Signal extends JourneyPoint {
 
   final List<SignalFunction> functions;
   final String? visualIdentifier;
+
+  @override
+  OrderPriority get orderPriority => OrderPriority.signal;
 
   @override
   bool operator ==(Object other) =>

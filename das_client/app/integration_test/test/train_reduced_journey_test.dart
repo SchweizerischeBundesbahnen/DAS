@@ -40,8 +40,18 @@ void main() {
 
       expect(find.text('T14 ${l10n.c_ru_sbb_p}'), findsAny);
 
-      final formattedDate = Format.dateWithAbbreviatedDay(DateTime.now(), deviceLocale());
+      final formattedDate = Format.dateWithAbbreviatedDay(DateTime.now(), appLocale());
       expect(find.text(formattedDate), findsOneWidget);
+
+      await disconnect(tester);
+    });
+
+    testWidgets('test train information of shunting movement journey is displayed', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T29');
+      await openReducedJourneyMenu(tester);
+
+      expect(find.text('T29R / T29 ${l10n.c_ru_sbb_p}'), findsAny);
 
       await disconnect(tester);
     });

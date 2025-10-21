@@ -63,6 +63,29 @@
   "w_koa_notification_wait": "Warten eingelegt.",
   "w_koa_notification_wait_canceled": "Warten aufgehoben.",
   "w_koa_notification_departure_process": "Abfahrprozess anzeigen",
+  "w_replacement_series_notification_available_title": "Ersatzreihe von {fromStation} bis {toStation}",
+  "@w_replacement_series_notification_available_title": {
+    "type": "text",
+    "placeholders": {
+      "fromStation": {},
+      "toStation": {}
+    }
+  },
+  "w_replacement_series_notification_available_text": "Für einen Teil der Fahrordnung ist die Zug-/Bremsreihe {replacementSeries} verfügbar.",
+  "@w_replacement_series_notification_available_text": {
+    "type": "text",
+    "placeholders": {
+      "replacementSeries": {}
+    }
+  },
+  "w_replacement_series_notification_original_title": "Zugreihe {originalSeries} ab {station} wieder verfügbar",
+  "@w_replacement_series_notification_original_title": {
+    "type": "text",
+    "placeholders": {
+      "station": {},
+      "originalSeries": {}
+    }
+  },
   "w_departure_process_modal_sheet_title": "Checkliste Abfahrprozess.",
   "w_departure_process_modal_sheet_content": "1. Zustimmung\n2. Zugbeeinflussung\n3. Abfahrtszeit\n4. Türverriegelung\n5. Zustimmung",
   "w_service_point_modal_communication_label": "Netzart und Funkkanal",
@@ -138,5 +161,19 @@
   "p_settings_page_decisive_gradient_title": "Massgebende Neigung",
   "p_settings_page_decisive_gradient_show_setting": "Neigung einblenden",
   "w_global_error_widget_title": "Unerwarteter Fehler",
-  "w_global_error_widget_description": "Es ist ein unerwarteter Fehler aufgetreten, die Fehlermeldung wird an die Entwickler geschickt. Versuche, die App neu zu starten."
+  "w_global_error_widget_description": "Es ist ein unerwarteter Fehler aufgetreten, die Fehlermeldung wird an die Entwickler geschickt. Versuche, die App neu zu starten.",
+  "w_shunting_movement_start": "Rangierfahrt {trainNumber}",
+  "@w_shunting_movement_start": {
+    "type": "text",
+    "placeholders": {
+      "trainNumber": {}
+    }
+  },
+  "w_shunting_movement_end": "Fahrt nach Streckensignalen {trainNumber}",
+  "@w_shunting_movement_end": {
+    "type": "text",
+    "placeholders": {
+      "trainNumber": {}
+    }
+  }
 }

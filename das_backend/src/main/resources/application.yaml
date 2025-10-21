@@ -16,10 +16,10 @@ spring:
       client:
         registration:
           azure:
-            client-id: e5a57b3b-6bcb-4afe-a787-a7796f08b5ac
+            client-id: ${SFERA_OAUTH_CLIENTID}
             client-secret: ${SFERA_OAUTH_SECRET}
             authorization-grant-type: client_credentials
-            scope: api://8f16d52b-c6df-4a94-a132-da4956579a48/.default
+            scope: ${SFERA_OAUTH_SCOPE}
         provider:
           azure:
             token-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0/token
@@ -110,9 +110,9 @@ sfera:
   source-device: 'BACKEND'
   recipient: '0085'
   broker-url: ${SFERA_BROKER_URL}
-  clientId: das_backend
-  oauth-profile: preload
-  topic-prefix: dev/
+  clientId: ${SFERA_BROKER_CLIENTID}
+  oauth-profile: ${SFERA_BROKER_OAUTH_PROFILE}
+  topic-prefix: ${SFERA_BROKER_TOPIC_PREFIX}
 
 preload:
   fetch-cron: '-'

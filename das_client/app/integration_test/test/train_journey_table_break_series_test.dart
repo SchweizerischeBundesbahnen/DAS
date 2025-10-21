@@ -7,8 +7,6 @@ import '../util/test_utils.dart';
 void main() {
   testWidgets('test breaking series defaults to ??', (tester) async {
     await prepareAndStartApp(tester);
-
-    // load train journey by filling out train selection page
     await loadTrainJourney(tester, trainNumber: 'T6');
 
     final breakingSeriesHeaderCell = find.byKey(TrainJourney.breakingSeriesHeaderKey);
@@ -20,8 +18,6 @@ void main() {
 
   testWidgets('test default breaking series is taken from train characteristics (R115)', (tester) async {
     await prepareAndStartApp(tester);
-
-    // load train journey by filling out train selection page
     await loadTrainJourney(tester, trainNumber: 'T5');
 
     final breakingSeriesHeaderCell = find.byKey(TrainJourney.breakingSeriesHeaderKey);
@@ -33,8 +29,6 @@ void main() {
 
   testWidgets('test all breakseries options are displayed', (tester) async {
     await prepareAndStartApp(tester);
-
-    // load train journey by filling out train selection page
     await loadTrainJourney(tester, trainNumber: 'T5');
 
     // Open break series bottom sheet
@@ -74,8 +68,6 @@ void main() {
 
   testWidgets('test message when no breakseries are defined', (tester) async {
     await prepareAndStartApp(tester);
-
-    // load train journey by filling out train selection page
     await loadTrainJourney(tester, trainNumber: 'T4');
 
     // Open break series bottom sheet

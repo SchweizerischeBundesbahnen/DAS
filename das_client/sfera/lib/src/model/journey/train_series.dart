@@ -2,10 +2,10 @@ import 'package:collection/collection.dart';
 
 enum TrainSeries {
   A,
-  D,
-  N,
-  O,
   R,
+  N,
+  D,
+  O,
   W,
   S;
 
@@ -16,4 +16,12 @@ enum TrainSeries {
   static TrainSeries? fromOptional(String? value) => values.firstWhereOrNull(
     (e) => e.name.toLowerCase() == value?.toLowerCase(),
   );
+
+  bool canReplace(TrainSeries other) {
+    if (this == other) return true;
+    if (this == TrainSeries.R && other == TrainSeries.N) return true;
+    if (this == TrainSeries.A && other == TrainSeries.N) return true;
+    if (this == TrainSeries.A && other == TrainSeries.R) return true;
+    return false;
+  }
 }

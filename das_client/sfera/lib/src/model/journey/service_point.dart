@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/model/journey/bracket_station.dart';
 import 'package:sfera/src/model/journey/decisive_gradient.dart';
+import 'package:sfera/src/model/journey/order_priority.dart';
 
 class ServicePoint extends JourneyPoint {
   const ServicePoint({
@@ -62,6 +63,9 @@ class ServicePoint extends JourneyPoint {
   }
 
   @override
+  OrderPriority get orderPriority => OrderPriority.servicePoint;
+
+  @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is ServicePoint &&
@@ -85,6 +89,7 @@ class ServicePoint extends JourneyPoint {
 
   @override
   int get hashCode =>
+      type.hashCode ^
       order.hashCode ^
       Object.hashAll(kilometre) ^
       name.hashCode ^
