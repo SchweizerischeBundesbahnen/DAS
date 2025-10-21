@@ -231,7 +231,7 @@ void main() {
       test('whenHasSpeedAndFixedTime_thenIsFixedTimeAdvisedSpeedSegment', () {
         // ARRANGE
         when(mockAdvisedSpeed.speed).thenReturn('90');
-        when(mockAdvisedSpeed.reasonCode).thenReturn(ReasonCodeDto.AdvisedSpeedFixedTime);
+        when(mockAdvisedSpeed.reasonCode).thenReturn(ReasonCodeDto.advisedSpeedFixedTime);
 
         // ACT & EXPECT
         expect(
@@ -512,7 +512,7 @@ void main() {
       /// 2. Locations are close to different service points (pairs: 1 - 2, 2 - 3, 1 - 3)
       /// 3. Locations are midway between SPs (in different intervals, since they need to be absolutely different)
       group('Both locations unknown', () {
-        /// Same Service point
+        /// 1. Same Service point
         test('whenCloseFirstSP_thenIsSkipped', () {
           // ARRANGE
           when(mockTemporaryConstraint.startLocation).thenReturn(999.0);
@@ -540,7 +540,7 @@ void main() {
           expect(testee.call(mockJourneyProfile, [mockSegmentProfile], journey), isEmpty);
         });
 
-        /// Different Service points
+        /// 2. Different Service points
         test('whenStartCloseToFirstSPAndEndCloseSecondSP_thenIsBetweenFirstSPAndSecondSP (1 - 2)', () {
           // ARRANGE
           when(mockTemporaryConstraint.startLocation).thenReturn(1001.0);
@@ -596,7 +596,7 @@ void main() {
           );
         });
 
-        /// Midway Service points
+        /// 3. Midway Service points
         test('whenStartMidwayInBetweenFirstTwoAndEndMidwayInBetweenLatterTwo_thenIsBetweenFirstSPAndLastSP', () {
           // ARRANGE
           when(mockTemporaryConstraint.startLocation).thenReturn(2000);

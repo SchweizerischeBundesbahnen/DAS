@@ -132,7 +132,7 @@ void main() {
           when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
           when(mockTemporaryConstraintA1.endLocation).thenReturn(3050.0);
           when(mockAdvisedSpeedA1.speed).thenReturn('80');
-          when(mockAdvisedSpeedA1.reasonCode).thenReturn(ReasonCodeDto.AdvisedSpeedFixedTime);
+          when(mockAdvisedSpeedA1.reasonCode).thenReturn(ReasonCodeDto.advisedSpeedFixedTime);
           when(mockTemporaryConstraintA2.startLocation).thenReturn(2950.0);
           when(mockTemporaryConstraintA2.endLocation).thenReturn(3050.0);
 
@@ -155,7 +155,7 @@ void main() {
           );
         });
 
-        test('whenSegmentsDoOverlap_returnSingleSegment', () {
+        test('whenSegmentsWithSameValuesDoOverlap_returnSingleSegment', () {
           // ARRANGE
           when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
           when(mockTemporaryConstraintA1.endLocation).thenReturn(3000.0);
@@ -175,7 +175,7 @@ void main() {
           );
         });
 
-        test('whenSegmentsContainEachOther_returnSingleSegment', () {
+        test('whenSegmentAContainsSegmentB_returnSingleSegment', () {
           // ARRANGE
           when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
           when(mockTemporaryConstraintA1.endLocation).thenReturn(3050.0);
@@ -195,7 +195,7 @@ void main() {
           );
         });
 
-        test('whenSegmentsContainWithFuzzyEndingsToLastSP_returnSingleSegmentEndingOnLastSP', () {
+        test('whenSegmentsContainWithUnknownLocationCloseToLastSP_returnSingleSegmentEndingOnLastSP', () {
           // ARRANGE
           when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);
           when(mockTemporaryConstraintA1.endLocation).thenReturn(3001.0);
@@ -216,10 +216,14 @@ void main() {
         });
       });
 
-      /// segments that have either only startLocation / endLocation or are 'WholeSP'
+      /// open segments: either only startLocation / endLocation or are 'WholeSP'
       ///
-      /// a sequence of open segments must end up closed, otherwise they are skipped
+      /// a sequence of open segments must end up closed, otherwise they are skipped, e.g.
+      /// 1. S -> & -> E             is good (well formed)
+      /// 2. S -> & WholeSP & -> E   is good (well formed)
+      /// 3. S ->                    is not good (not well formed)
       group('open segments', () {
+        /// 1. not well formed
         test('whenHasOnlyEndAndNoStart_thenReturnsEmpty', () {
           // ARRANGE
           when(mockTemporaryConstraintA1.endLocation).thenReturn(3000.0);
@@ -244,6 +248,7 @@ void main() {
           expect(testee.call(mockJourneyProfile, segmentProfiles, journey), isEmpty);
         });
 
+        /// 2. well formed
         test('whenOneSegmentStartsOtherSegmentEnds_thenReturnsCorrectSegment', () {
           // ARRANGE
           when(mockTemporaryConstraintA1.startLocation).thenReturn(950.0);

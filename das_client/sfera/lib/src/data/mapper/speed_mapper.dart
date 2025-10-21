@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 import 'package:sfera/component.dart';
@@ -8,6 +9,7 @@ import 'package:sfera/src/data/dto/jp_context_information_nsp_dto.dart';
 import 'package:sfera/src/data/dto/new_speed_nsp_dto.dart';
 import 'package:sfera/src/data/dto/reason_code_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
+import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
 import 'package:sfera/src/data/dto/temporary_constraints_dto.dart';
 import 'package:sfera/src/data/dto/velocity_dto.dart';
 import 'package:sfera/src/data/mapper/mapper_utils.dart';
@@ -93,21 +95,13 @@ class SpeedMapper {
 
   /// Parse advised speed segments.
   ///
+  /// O(n)
   ///
+  /// Skips invalid speed segments (e.g. endLocation before startLocation or startLocation == endLocation)
   ///
-  /// O(n<sup>2</sup>)
-  ///
-  /// if start / end is null (or wholeSP => start == null && end == null), set mergeLocationStart and -end to next SegmentStart / previousSegmentEnd
-  /// calculate hashCode of type & speed & "group"
-  /// sort group by mergeLocationStart
-  /// iterate through and compare end nth to start nth + 1
-  /// merge if overlap
-  ///
-  /// do the whole unknown locations thing and set flag if unknown location mapped
-  ///
-  /// iterate through again
-  /// warn / error if multiple adl in same part of the journey
-  /// shrink mapped segments if hits a non mapped segment
+  /// 1. iteration parses all as DraftAdvisedSpeedSegments
+  /// 2. try to merge DraftAdvisedSpeedSegments and skip open segments
+  /// 3. segments with unknown locations are mapped to the closest service points
   static Iterable<AdvisedSpeedSegment> advisedSpeeds(
     JourneyProfileDto journeyProfile,
     List<SegmentProfileDto> segmentProfiles,
@@ -115,11 +109,23 @@ class SpeedMapper {
   ) {
     final segmentProfileReferences = journeyProfile.segmentProfileReferences.toList();
 
+    final drafts = _parseAllSegmentsToDrafts(segmentProfileReferences, segmentProfiles);
+
+    final List<DraftAdvisedSpeedSegment> mergedDrafts = _mergeAdvisedSegments(drafts);
+
+    final result = _mapUnknownLocationsToClosestServicePoints(
+      mergedDrafts,
+      journeyData,
+    );
+
+    return result;
+  }
+
+  static List<DraftAdvisedSpeedSegment> _parseAllSegmentsToDrafts(
+    List<SegmentProfileReferenceDto> segmentProfileReferences,
+    List<SegmentProfileDto> segmentProfiles,
+  ) {
     final List<DraftAdvisedSpeedSegment> drafts = [];
-
-    final journeyOrders = journeyData.map((it) => it.order);
-    final servicePoints = journeyData.whereType<ServicePoint>().whereNot((sp) => sp.isAdditional);
-
     int previousSegmentEndOrder = 0;
     int nextSegmentStartOrder = 0;
 
@@ -134,74 +140,67 @@ class SpeedMapper {
       for (final speedConstraint in segmentProfileReference.advisedSpeedTemporaryConstraints) {
         if (_invalidAdvisedSpeed(speedConstraint)) continue;
 
-        final startOrder = speedConstraint.startLocation != null
-            ? calculateOrder(segmentIndex, speedConstraint.startLocation!)
-            : null;
-        final endOrder = speedConstraint.endLocation != null
-            ? calculateOrder(segmentIndex, speedConstraint.endLocation!)
-            : null;
+        final draft = _mapToDraftAdvisedSpeedSegment(
+          speedConstraint,
+          segmentIndex,
+          nextSegmentStartOrder,
+          previousSegmentEndOrder,
+        );
 
-        final advisedSpeed = speedConstraint.advisedSpeed!;
-        SingleSpeed? speed;
-        if (advisedSpeed.speed != null) speed = Speed.parse(advisedSpeed.speed!) as SingleSpeed;
-
-        if (speed == null) {
-          drafts.add(
-            DraftAdvisedSpeedSegment(
-              nextSegmentStartOrder: nextSegmentStartOrder,
-              previousSegmentEndOrder: previousSegmentEndOrder,
-              type: DraftAdvisedSpeedType.velocityMax,
-              startOrder: startOrder,
-              endOrder: endOrder,
-            ),
-          );
-          continue;
-        }
-        switch (advisedSpeed.reasonCode) {
-          case ReasonCodeDto.followTrain:
-            drafts.add(
-              DraftAdvisedSpeedSegment(
-                nextSegmentStartOrder: nextSegmentStartOrder,
-                previousSegmentEndOrder: previousSegmentEndOrder,
-                type: DraftAdvisedSpeedType.followTrain,
-                speed: speed,
-                startOrder: startOrder,
-                endOrder: endOrder,
-              ),
-            );
-            break;
-          case ReasonCodeDto.trainFollowing:
-            drafts.add(
-              DraftAdvisedSpeedSegment(
-                nextSegmentStartOrder: nextSegmentStartOrder,
-                previousSegmentEndOrder: previousSegmentEndOrder,
-                type: DraftAdvisedSpeedType.trainFollowing,
-                speed: speed,
-                startOrder: startOrder,
-                endOrder: endOrder,
-              ),
-            );
-            break;
-          case ReasonCodeDto.AdvisedSpeedFixedTime:
-            drafts.add(
-              DraftAdvisedSpeedSegment(
-                nextSegmentStartOrder: nextSegmentStartOrder,
-                previousSegmentEndOrder: previousSegmentEndOrder,
-                type: DraftAdvisedSpeedType.fixedTime,
-                speed: speed,
-                startOrder: startOrder,
-                endOrder: endOrder,
-              ),
-            );
-            break;
-          default:
-            _log.warning('Skipping AdvisedSpeed found with reasonCode that cannot be handled: $advisedSpeed');
-            continue;
-        }
+        if (draft != null) drafts.add(draft);
       }
       previousSegmentEndOrder = calculateOrder(segmentIndex, segmentProfile.length);
     }
+    return drafts;
+  }
 
+  static DraftAdvisedSpeedSegment? _mapToDraftAdvisedSpeedSegment(
+    TemporaryConstraintsDto speedConstraint,
+    int segmentIndex,
+    int nextSegmentStartOrder,
+    int previousSegmentEndOrder,
+  ) {
+    final startOrder = speedConstraint.startLocation != null
+        ? calculateOrder(segmentIndex, speedConstraint.startLocation!)
+        : null;
+    final endOrder = speedConstraint.endLocation != null
+        ? calculateOrder(segmentIndex, speedConstraint.endLocation!)
+        : null;
+
+    final advisedSpeed = speedConstraint.advisedSpeed!;
+    SingleSpeed? speed;
+    if (advisedSpeed.speed != null) speed = Speed.parse(advisedSpeed.speed!) as SingleSpeed;
+
+    DraftAdvisedSpeedType? segmentType;
+
+    if (speed == null) {
+      segmentType = DraftAdvisedSpeedType.velocityMax;
+    } else {
+      switch (advisedSpeed.reasonCode) {
+        case ReasonCodeDto.followTrain:
+          segmentType = DraftAdvisedSpeedType.followTrain;
+        case ReasonCodeDto.trainFollowing:
+          segmentType = DraftAdvisedSpeedType.trainFollowing;
+        case ReasonCodeDto.advisedSpeedFixedTime:
+          segmentType = DraftAdvisedSpeedType.fixedTime;
+        default:
+          _log.warning('Skipping AdvisedSpeed found with reasonCode that cannot be handled: $advisedSpeed');
+      }
+    }
+    if (segmentType == null) return null;
+
+    final result = DraftAdvisedSpeedSegment(
+      nextSegmentStartOrder: nextSegmentStartOrder,
+      previousSegmentEndOrder: previousSegmentEndOrder,
+      type: segmentType,
+      speed: speed,
+      startOrder: startOrder,
+      endOrder: endOrder,
+    );
+    return result;
+  }
+
+  static List<DraftAdvisedSpeedSegment> _mergeAdvisedSegments(List<DraftAdvisedSpeedSegment> drafts) {
     final groupedAdvisedSpeedSegments = drafts.groupListsBy((draft) => draft.advisedSpeedGroupKey);
 
     groupedAdvisedSpeedSegments.updateAll((key, drafts) {
@@ -230,13 +229,19 @@ class SpeedMapper {
       return _filterOpenSegments(mergedDrafts);
     });
 
-    final List<DraftAdvisedSpeedSegment> allDrafts = groupedAdvisedSpeedSegments.values.flattened
-        .toList(growable: false)
-        .sorted();
+    return groupedAdvisedSpeedSegments.values.flattened.toList(growable: false).sorted();
+  }
+
+  static List<AdvisedSpeedSegment> _mapUnknownLocationsToClosestServicePoints(
+    List<DraftAdvisedSpeedSegment> mergedDrafts,
+    List<BaseData> journeyData,
+  ) {
+    final journeyOrders = journeyData.map((d) => d.order);
+    final servicePoints = journeyData.whereType<ServicePoint>().where((sP) => !sP.isAdditional);
 
     final result = <AdvisedSpeedSegment>[];
-    for (int idx = 0; idx < allDrafts.length; idx++) {
-      final draft = allDrafts[idx];
+    for (int idx = 0; idx < mergedDrafts.length; idx++) {
+      final draft = mergedDrafts[idx];
 
       final startUnknown = (!journeyOrders.contains(draft.startOrder) || draft.startsWithSegment);
       final endUnknown = (!journeyOrders.contains(draft.endOrder) || draft.endsWithSegment);
@@ -248,12 +253,11 @@ class SpeedMapper {
         draft.endOrder = _orderFromClosestServicePoint(draft.endOrder, servicePoints.toList().reversed) ?? 0;
       }
 
-      if (draft.endOrder > draft.startOrder && draft.endsWithSegment == false && draft.startsWithSegment == false) {
+      if (draft.isValid) {
         draft.endData = journeyData.firstWhere((it) => it.order == draft.endOrder);
         result.add(draft.toAdvisedSegment());
       }
     }
-
     return result;
   }
 
@@ -365,6 +369,8 @@ class DraftAdvisedSpeedSegment implements Comparable<DraftAdvisedSpeedSegment> {
   int get endOrder => _endOrder ?? _nextSegmentStartOrder;
 
   int get advisedSpeedGroupKey => Object.hash(speed, type);
+
+  bool get isValid => endOrder > startOrder && endsWithSegment == false && startsWithSegment == false;
 
   @override
   String toString() =>
