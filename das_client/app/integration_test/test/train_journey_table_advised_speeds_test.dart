@@ -33,10 +33,10 @@ void main() {
     // Punctuality Visible
     expect(find.byKey(DASChronograph.punctualityTextKey), findsOne);
 
-    // 4th advised speed Message (vmax, speed not in adl)
+    // 4th advised speed Message (vmax, speed not in advised speed notification)
+    // end is never displayed since goes directly to next segment
     await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('A312'));
     expect(_findAdvisedSpeedNotificationContainingText('80'), findsNothing);
-    await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText(l10n.w_advised_speed_end));
 
     // 5th advised speed Message (check service point & cancel)
     await waitUntilExists(tester, _findAdvisedSpeedNotificationContainingText('Lausanne'));
@@ -67,7 +67,7 @@ void main() {
 
     // Check that advised speed end displayed calculated speed on signal row
     final advisedSpeedEndRow = findDASTableRowByText('A653');
-    await waitUntilExists(tester, _findCalculatedSpeedCellOf(advisedSpeedEndRow, '110'));
+    await waitUntilExists(tester, _findCalculatedSpeedCellOf(advisedSpeedEndRow, '100'));
 
     await waitUntilExists(
       tester,
@@ -76,8 +76,8 @@ void main() {
     );
 
     // Check that advisedSpeed end displayed calculated speed on signal row
-    final advisedSpeedEndRowServicePoint = findDASTableRowByText('Allaman');
-    expect(_findCalculatedSpeedCellOf(advisedSpeedEndRowServicePoint, '100'), findsOne);
+    final advisedSpeedEndRowServicePoint = findDASTableRowByText('Morges');
+    expect(_findCalculatedSpeedCellOf(advisedSpeedEndRowServicePoint, '110'), findsOne);
 
     await disconnect(tester);
   });
