@@ -28,6 +28,13 @@
             <SignalPhysicalCharacteristics visualIdentifier="A312"/>
         </Signal>
 
+        <!-- Filler Signal -->
+        <Signal>
+            <Signal_ID signal_ID_Physical="F862" location="600"/>
+            <SignalFunction>intermediate</SignalFunction>
+            <SignalPhysicalCharacteristics visualIdentifier="F862"/>
+        </Signal>
+
 
     </SP_Points>
 

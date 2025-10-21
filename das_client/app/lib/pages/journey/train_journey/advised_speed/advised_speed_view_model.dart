@@ -67,40 +67,49 @@ class AdvisedSpeedViewModel {
     final activeSegments = advisedSpeedSegments.appliesToOrder(currentPositionOrder).toList();
 
     if (activeSegments.length > 1) return _handleMultipleSegments(activeSegments, currentPositionOrder);
+    _handleSingleSegment(activeSegments.firstOrNull, currentPositionOrder);
+  }
 
-    final currentModel = modelValue;
-    final activeSegment = activeSegments.firstOrNull;
+  void _handleMultipleSegments(List<AdvisedSpeedSegment> activeSegments, int currentPositionOrder) {
+    // idea is to reduce multi segment case to single case
+    final nonEndingSegments = activeSegments.where((segment) => segment.endOrder != currentPositionOrder);
+    if (nonEndingSegments.isEmpty) return;
+    if (nonEndingSegments.length == 1) return _maybeStartAdvisedSpeed(nonEndingSegments.first);
 
+    _log.warning('Received multiple advised speed segments for same position. Displaying first one!');
+    _handleSingleSegment(nonEndingSegments.sorted((a, b) => a.compareTo(b)).first, currentPositionOrder);
+  }
+
+  void _handleSingleSegment(AdvisedSpeedSegment? activeSegment, int currentPositionOrder) {
     // 1st priority: if we're active and on the end of the current segment => end AdvisedSpeed
     // 2nd priority: if active segment is null and we're in active state => cancel AdvisedSpeed
     // 3rd priority: if the activeSegment is not null => start or keep AdvisedSpeed
-    if (currentModel is Active && currentModel.segment.endOrder == currentPositionOrder) return _endAdvisedSpeed();
-    if (currentModel is Active && activeSegment == null) return _cancelAdvisedSpeed();
-    if (activeSegment != null) return _startOrKeepAdvisedSpeed(activeSegment);
+    _log.info(modelValue);
+    _log.info(currentPositionOrder);
+    _log.info(activeSegment);
+    if (activeSegment != null && activeSegment.endOrder == currentPositionOrder) return _endAdvisedSpeed();
+    if (activeSegment == null) return _cancelAdvisedSpeed();
+    _maybeStartAdvisedSpeed(activeSegment);
   }
 
-  void _endAdvisedSpeed() => _emitModelWithTimerAndSounds(AdvisedSpeedModel.end());
+  void _endAdvisedSpeed() {
+    if (modelValue is! Active) return;
+    _emitModelWithTimerAndSounds(AdvisedSpeedModel.end());
+  }
 
-  void _cancelAdvisedSpeed() => _emitModelWithTimerAndSounds(AdvisedSpeedModel.cancel());
+  void _cancelAdvisedSpeed() {
+    if (modelValue is! Active) return;
+    _emitModelWithTimerAndSounds(AdvisedSpeedModel.cancel());
+  }
 
-  void _startOrKeepAdvisedSpeed(AdvisedSpeedSegment activeSegment) =>
+  void _maybeStartAdvisedSpeed(AdvisedSpeedSegment activeSegment) =>
       _emitModelWithTimerAndSounds(AdvisedSpeedModel.active(segment: activeSegment));
-
-  void _handleMultipleSegments(List<AdvisedSpeedSegment> activeSegments, int currentPositionOrder) {
-    final nonEndingSegments = activeSegments.where((segment) => segment.endOrder != currentPositionOrder);
-    if (nonEndingSegments.isEmpty) return;
-    if (nonEndingSegments.length == 1) return _startOrKeepAdvisedSpeed(nonEndingSegments.first);
-
-    _log.warning('Received multiple advised speed segments for same position. Displaying first one!');
-    _emitModelWithTimerAndSounds(
-      AdvisedSpeedModel.active(segment: nonEndingSegments.sorted((a, b) => a.compareTo(b)).first),
-    );
-  }
 
   void _emitModelWithTimerAndSounds(AdvisedSpeedModel updatedModel) {
     _playSoundsIfNecessary(updatedModel);
     _resetTimerIfNecessary(updatedModel);
 
+    _log.info(updatedModel);
     _rxModel.add(updatedModel);
   }
 
@@ -119,11 +128,13 @@ class AdvisedSpeedViewModel {
   }
 
   void _resetTimerIfNecessary(AdvisedSpeedModel updatedModel) {
+    if (updatedModel == modelValue) return;
+
     _setToInactiveTimer?.cancel();
-    if (updatedModel is Cancel || updatedModel is End) _startResetToInactiveTimer();
+    if (updatedModel is Cancel || updatedModel is End) _startSetToInactiveTimer();
   }
 
-  void _startResetToInactiveTimer() {
+  void _startSetToInactiveTimer() {
     _setToInactiveTimer?.cancel();
     _setToInactiveTimer = Timer(Duration(seconds: _endOrCancelDisplaySeconds), () {
       _rxModel.add(AdvisedSpeedModel.inactive());
