@@ -26,32 +26,36 @@ class AdvisedSpeedNotification extends StatelessWidget {
 
         final model = snapshot.requireData;
         return switch (model) {
-          Active() => _activeAdlMessage(context, model.segment),
-          End() => _adlNotificationContainer(context, context.l10n.w_advised_speed_end),
-          Cancel() => _adlNotificationContainer(context, context.l10n.w_advised_speed_cancel),
+          Active() => _activeSegmentNotification(context, model.segment),
+          End() => _notification(context, context.l10n.w_advised_speed_end),
+          Cancel() => _notification(context, context.l10n.w_advised_speed_cancel),
           Inactive() => SizedBox.shrink(),
         };
       },
     );
   }
 
-  Widget _activeAdlMessage(BuildContext context, AdvisedSpeedSegment segment) =>
-      _adlNotificationContainer(context, _adlMessageText(context, segment), icon: segment.displayIcon());
+  Widget _activeSegmentNotification(BuildContext context, AdvisedSpeedSegment segment) =>
+      _notification(context, _activeSegmentTitle(context, segment), icon: segment.displayIcon());
 
-  String _adlMessageText(BuildContext context, AdvisedSpeedSegment adl) {
-    return switch (adl) {
-      FollowTrainAdvisedSpeedSegment() => context.l10n.w_advised_speed_vopt(adl.speed.value, _adlEndPoint(adl) ?? ''),
-      TrainFollowingAdvisedSpeedSegment() => context.l10n.w_advised_speed_vopt(
-        adl.speed.value,
-        _adlEndPoint(adl) ?? '',
-      ),
-      FixedTimeAdvisedSpeedSegment() => context.l10n.w_advised_speed_vopt(adl.speed.value, _adlEndPoint(adl) ?? ''),
-      VelocityMaxAdvisedSpeedSegment() => context.l10n.w_advised_speed_vmax(_adlEndPoint(adl) ?? ''),
-    };
-  }
+  String _activeSegmentTitle(BuildContext context, AdvisedSpeedSegment adl) => switch (adl) {
+    FollowTrainAdvisedSpeedSegment() => context.l10n.w_advised_speed_vopt(
+      adl.speed.value,
+      _advisedSegmentEndPoint(adl) ?? '',
+    ),
+    TrainFollowingAdvisedSpeedSegment() => context.l10n.w_advised_speed_vopt(
+      adl.speed.value,
+      _advisedSegmentEndPoint(adl) ?? '',
+    ),
+    FixedTimeAdvisedSpeedSegment() => context.l10n.w_advised_speed_vopt(
+      adl.speed.value,
+      _advisedSegmentEndPoint(adl) ?? '',
+    ),
+    VelocityMaxAdvisedSpeedSegment() => context.l10n.w_advised_speed_vmax(_advisedSegmentEndPoint(adl) ?? ''),
+  };
 
-  String? _adlEndPoint(AdvisedSpeedSegment adl) {
-    final end = adl.endData;
+  String? _advisedSegmentEndPoint(AdvisedSpeedSegment advisedSpeedSegment) {
+    final end = advisedSpeedSegment.endData;
     return switch (end) {
       Signal() => end.visualIdentifier,
       ServicePoint() => end.name,
@@ -59,29 +63,27 @@ class AdvisedSpeedNotification extends StatelessWidget {
     };
   }
 
-  Widget _adlNotificationContainer(BuildContext context, String message, {Widget? icon}) {
-    return Container(
-      key: advisedSpeedNotificationKey,
-      margin: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5).copyWith(bottom: sbbDefaultSpacing * 0.5),
-      decoration: BoxDecoration(
-        color: SBBColors.iron,
-        borderRadius: BorderRadius.circular(sbbDefaultSpacing),
-      ),
-      padding: const EdgeInsets.symmetric(vertical: 14.0).copyWith(left: sbbDefaultSpacing, right: 4.0),
-      child: Row(
-        children: [
-          if (icon != null) ...[
-            icon,
-            const SizedBox(width: sbbDefaultSpacing * 0.5),
-          ],
-          Text(
-            message,
-            style: DASTextStyles.mediumBold.copyWith(color: SBBColors.white),
-          ),
+  Widget _notification(BuildContext context, String message, {Widget? icon}) => Container(
+    key: advisedSpeedNotificationKey,
+    margin: const EdgeInsets.symmetric(horizontal: sbbDefaultSpacing * 0.5).copyWith(bottom: sbbDefaultSpacing * 0.5),
+    decoration: BoxDecoration(
+      color: SBBColors.iron,
+      borderRadius: BorderRadius.circular(sbbDefaultSpacing),
+    ),
+    padding: const EdgeInsets.symmetric(vertical: 14.0).copyWith(left: sbbDefaultSpacing, right: 4.0),
+    child: Row(
+      children: [
+        if (icon != null) ...[
+          icon,
+          const SizedBox(width: sbbDefaultSpacing * 0.5),
         ],
-      ),
-    );
-  }
+        Text(
+          message,
+          style: DASTextStyles.mediumBold.copyWith(color: SBBColors.white),
+        ),
+      ],
+    ),
+  );
 }
 
 extension _AdvisedSpeedSegmentX on AdvisedSpeedSegment {

@@ -24,7 +24,7 @@ class ChronographViewModel {
     _initAdvisedSpeedSubscription(advisedSpeedModelStream);
   }
 
-  bool _isAdlActive = false;
+  bool _isAdvisedSpeedActive = false;
   ServicePoint? _lastServicePoint;
   SplayTreeMap<int, SingleSpeed?>? _calculatedSpeeds;
 
@@ -90,7 +90,7 @@ class ChronographViewModel {
   void _initAdvisedSpeedSubscription(Stream<AdvisedSpeedModel> modelStream) {
     _subscriptions.add(
       modelStream.listen((model) {
-        _isAdlActive = model is Active;
+        _isAdvisedSpeedActive = model is Active;
 
         _emitState();
       }),
@@ -98,7 +98,7 @@ class ChronographViewModel {
   }
 
   void _emitState() {
-    if (!_hasLastServicePointCalculatedSpeed || _isAdlActive) return _rxModel.add(PunctualityModel.hidden());
+    if (!_hasLastServicePointCalculatedSpeed || _isAdvisedSpeedActive) return _rxModel.add(PunctualityModel.hidden());
     _rxModel.add(_punctualityModel);
   }
 
