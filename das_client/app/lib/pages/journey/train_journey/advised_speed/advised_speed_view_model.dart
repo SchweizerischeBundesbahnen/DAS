@@ -66,8 +66,11 @@ class AdvisedSpeedViewModel {
     final advisedSpeedSegments = journey!.metadata.advisedSpeedSegments;
     final activeSegments = advisedSpeedSegments.appliesToOrder(currentPositionOrder).toList();
 
-    if (activeSegments.length > 1) return _handleMultipleSegments(activeSegments, currentPositionOrder);
-    _handleSingleSegment(activeSegments.firstOrNull, currentPositionOrder);
+    if (activeSegments.length > 1) {
+      _handleMultipleSegments(activeSegments, currentPositionOrder);
+    } else {
+      _handleSingleSegment(activeSegments.firstOrNull, currentPositionOrder);
+    }
   }
 
   void _handleMultipleSegments(List<AdvisedSpeedSegment> activeSegments, int currentPositionOrder) {
@@ -133,7 +136,6 @@ class AdvisedSpeedViewModel {
   }
 
   void _startSetToInactiveTimer() {
-    _setToInactiveTimer?.cancel();
     _setToInactiveTimer = Timer(Duration(seconds: _endOrCancelDisplaySeconds), () {
       _log.fine('Timer reached: Setting AdvisedSpeedModel to inactive.');
       _rxModel.add(AdvisedSpeedModel.inactive());
