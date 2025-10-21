@@ -84,9 +84,6 @@ class AdvisedSpeedViewModel {
     // 1st priority: if we're active and on the end of the current segment => end AdvisedSpeed
     // 2nd priority: if active segment is null and we're in active state => cancel AdvisedSpeed
     // 3rd priority: if the activeSegment is not null => start or keep AdvisedSpeed
-    _log.info(modelValue);
-    _log.info(currentPositionOrder);
-    _log.info(activeSegment);
     if (activeSegment != null && activeSegment.endOrder == currentPositionOrder) return _endAdvisedSpeed();
     if (activeSegment == null) return _cancelAdvisedSpeed();
     _maybeStartAdvisedSpeed(activeSegment);
@@ -94,11 +91,13 @@ class AdvisedSpeedViewModel {
 
   void _endAdvisedSpeed() {
     if (modelValue is! Active) return;
+    _log.fine('Setting AdvisedSpeedModel to end.');
     _emitModelWithTimerAndSounds(AdvisedSpeedModel.end());
   }
 
   void _cancelAdvisedSpeed() {
     if (modelValue is! Active) return;
+    _log.fine('Setting AdvisedSpeedModel to cancel.');
     _emitModelWithTimerAndSounds(AdvisedSpeedModel.cancel());
   }
 
@@ -109,7 +108,6 @@ class AdvisedSpeedViewModel {
     _playSoundsIfNecessary(updatedModel);
     _resetTimerIfNecessary(updatedModel);
 
-    _log.info(updatedModel);
     _rxModel.add(updatedModel);
   }
 
@@ -137,6 +135,7 @@ class AdvisedSpeedViewModel {
   void _startSetToInactiveTimer() {
     _setToInactiveTimer?.cancel();
     _setToInactiveTimer = Timer(Duration(seconds: _endOrCancelDisplaySeconds), () {
+      _log.fine('Timer reached: Setting AdvisedSpeedModel to inactive.');
       _rxModel.add(AdvisedSpeedModel.inactive());
     });
   }
