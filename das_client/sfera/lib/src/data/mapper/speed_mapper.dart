@@ -180,7 +180,7 @@ class SpeedMapper {
       }
     }
     if (segmentType == null) {
-      _log.warning('Skipping AdvisedSpeed found with reasonCode that cannot be handled: $advisedSpeed')
+      _log.warning('Skipping AdvisedSpeed found with reasonCode that cannot be handled: $advisedSpeed');
       return null;
     }
 
