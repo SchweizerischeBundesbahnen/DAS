@@ -19,9 +19,7 @@ void main() {
     expect(findDASTableColumnByText(kilometreLabel), findsOne);
     expect(findDASTableColumnByText(timeLabel), findsOne);
 
-    // open ASR modal
-    final asrRow = findDASTableRowByText('km 64.200 - km 47.200');
-    await tapElement(tester, asrRow, warnIfMissed: false);
+    await _openASRModalByTapOnRow(tester, 'km 64.200 - km 47.200');
 
     // time column should be hidden
     expect(findDASTableColumnByText(kilometreLabel), findsOne);
@@ -36,8 +34,7 @@ void main() {
     expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
 
     // open and check modal sheet
-    final asrRow = findDASTableRowByText('km 64.200 - km 47.200');
-    await tapElement(tester, asrRow, warnIfMissed: false);
+    await _openASRModalByTapOnRow(tester, 'km 64.200 - km 47.200');
     _checkModalSheetContent(
       testData: [
         _ASRTestData(kmText: '64.200 - 47.200', vmaxText: '60'),
@@ -57,8 +54,7 @@ void main() {
     expect(find.byKey(DasModalSheet.modalSheetClosedKey), findsOneWidget);
 
     // open and check modal sheet
-    final asrRow = findDASTableRowByText('km 64.200 - km 63.200');
-    await tapElement(tester, asrRow, warnIfMissed: false);
+    await _openASRModalByTapOnRow(tester, 'km 64.200 - km 63.200');
     _checkModalSheetContent(
       testData: [
         _ASRTestData(
@@ -89,8 +85,7 @@ void main() {
     await tester.dragUntilVisible(rowFinder, scrollableFinder, const Offset(0, -100));
 
     // open and check modal sheet
-    final asrRow = findDASTableRowByText('km 83.100 - km 6.600');
-    await tapElement(tester, asrRow, warnIfMissed: false);
+    await _openASRModalByTapOnRow(tester, 'km 83.100 - km 6.600');
     _checkModalSheetContent(
       testData: [
         _ASRTestData(
@@ -108,6 +103,11 @@ void main() {
 
     await disconnect(tester);
   });
+}
+
+Future<void> _openASRModalByTapOnRow(WidgetTester tester, String text) async {
+  final asrRow = findDASTableRowByText(text);
+  await tapElement(tester, asrRow, warnIfMissed: false);
 }
 
 void _checkModalSheetContent({required List<_ASRTestData> testData}) {
