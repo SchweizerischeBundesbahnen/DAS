@@ -4,3 +4,6 @@ spring:
       file: ./das_backend/compose.yaml
   config:
     import: optional:file:./das_backend/.env[.properties]
+  # disable kafka per default
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
