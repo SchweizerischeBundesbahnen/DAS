@@ -46,6 +46,7 @@ public class PahoMqttClient {
         final String password = SECRET_PREFIX + SECRET_DELIMITER + oauthProfile + SECRET_DELIMITER + accessToken.getTokenValue();
         MqttConnectionOptions connOpts = new MqttConnectionOptions();
         connOpts.setCleanStart(true);
+        connOpts.setAutomaticReconnect(true);
         connOpts.setUserName(USER_NAME);
         connOpts.setPassword(password.getBytes());
         try {

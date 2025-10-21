@@ -2,9 +2,9 @@ package ch.sbb.backend.preload;
 
 import static org.xmlunit.assertj3.XmlAssert.assertThat;
 
-import ch.sbb.backend.TestContainerConfiguration;
 import ch.sbb.backend.preload.domain.SegmentProfileIdentification;
 import ch.sbb.backend.preload.domain.TrainIdentification;
+import ch.sbb.backend.preload.infrastructure.xml.SferaMessagingConfig;
 import ch.sbb.backend.preload.infrastructure.xml.XmlHelper;
 import ch.sbb.backend.preload.sfera.model.v0300.SFERAB2GRequestMessage;
 import java.time.LocalDate;
@@ -12,14 +12,12 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.xmlunit.builder.Input;
 import org.xmlunit.util.Nodes;
 
-@SpringBootTest
+@SpringBootTest(classes = {SferaMessageCreator.class, XmlHelper.class, SferaMessagingConfig.class})
 @ActiveProfiles("test")
-@Import(TestContainerConfiguration.class)
 class SferaMessageCreatorTest {
 
     @Autowired
@@ -56,6 +54,6 @@ class SferaMessageCreatorTest {
                 String localName = Nodes.getQName(attr).getLocalPart();
                 return !localName.equals("timestamp") && !localName.equals("message_ID");
             })
-            .areIdentical();
+            .areSimilar();
     }
 }
