@@ -42,3 +42,6 @@ sfera:
   clientId: test
   oauth-profile: test
   topic-prefix: test/
+
+preload:
+  fetch-cron: '-'

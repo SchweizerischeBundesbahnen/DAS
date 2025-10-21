@@ -115,4 +115,4 @@ sfera:
   topic-prefix: ${SFERA_BROKER_TOPIC_PREFIX}
 
 preload:
-  fetch-interval-ms: 10000
+  fetch-cron: '-'
