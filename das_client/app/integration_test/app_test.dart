@@ -29,6 +29,7 @@ import 'test/train_journey_table_calculated_speed_test.dart' as train_journey_ta
 import 'test/train_journey_table_collapsible_rows_test.dart' as train_journey_table_collapsible_rows_test;
 import 'test/train_journey_table_station_property_test.dart' as train_journey_table_station_property_test;
 import 'test/train_journey_table_test.dart' as train_journey_table_tests;
+import 'test/train_journey_table_time_test.dart' as train_journey_table_time_tests;
 import 'test/train_journey_table_track_equipment_test.dart' as train_journey_table_track_equipment_tests;
 import 'test/train_reduced_journey_test.dart' as train_reduced_journey_tests;
 import 'test/train_search_test.dart' as train_search_tests;
@@ -54,6 +55,7 @@ void main() {
   settings_test.main();
   train_reduced_journey_tests.main();
   train_journey_table_tests.main();
+  train_journey_table_time_tests.main();
   train_journey_header_tests.main();
   train_journey_table_track_equipment_tests.main();
   train_journey_table_break_series_tests.main();

@@ -22,6 +22,26 @@ import '../util/test_utils.dart';
 
 void main() {
   group('general service point modal sheet tests', () {
+    testWidgets('test displayed columns on open service point modal', (tester) async {
+      await prepareAndStartApp(tester);
+      await loadTrainJourney(tester, trainNumber: 'T8');
+
+      final kilometreLabel = l10n.p_train_journey_table_kilometre_label;
+      final timeLabel = l10n.p_train_journey_table_time_label_planned;
+
+      // columns should be visible when modal is closed
+      expect(findDASTableColumnByText(kilometreLabel), findsOne);
+      expect(findDASTableColumnByText(timeLabel), findsOne);
+
+      // open service point modal
+      await _openByTapOnCellWithText(tester, 'Olten');
+
+      // kilometre column should be hidden
+      expect(findDASTableColumnByText(kilometreLabel), findsNothing);
+      expect(findDASTableColumnByText(timeLabel), findsOne);
+
+      await disconnect(tester);
+    });
     testWidgets('test interaction points for modal sheet', (tester) async {
       // TODO: Workaround till SegmentedButton is fixed in Design System: https://github.com/SchweizerischeBundesbahnen/design_system_flutter/issues/312
       FlutterError.onError = ignoreOverflowErrors;

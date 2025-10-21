@@ -65,6 +65,10 @@ Finder findDASTableRowByText(String text) {
   );
 }
 
+Finder findDASTableColumnByText(String text) {
+  return find.ancestor(of: find.text(text), matching: find.byKey(DASTable.columnHeaderKey));
+}
+
 Finder findColoredRowCells({required FinderBase<Element> of, required Color color}) {
   return find.descendant(
     of: of,
