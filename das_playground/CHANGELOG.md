@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.7.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.6.1...webapp-v0.7.0) (2025-10-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* upgrade to SFERA v3 ([#578](https://github.com/SchweizerischeBundesbahnen/DAS/issues/578)) (#577)
+
+### Features
+
+* append local regulations to segment profiles ([#1033](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1033)) ([#1137](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1137)) ([f12ad49](https://github.com/SchweizerischeBundesbahnen/DAS/commit/f12ad491a966074997251882d9710cc4ed8c352e))
+* dynamic timestamps in JP ([#512](https://github.com/SchweizerischeBundesbahnen/DAS/issues/512)) ([#664](https://github.com/SchweizerischeBundesbahnen/DAS/issues/664)) ([8d19230](https://github.com/SchweizerischeBundesbahnen/DAS/commit/8d19230f989d53ae835da85bfb5a306ec86f5694))
+* manual triggers ([#622](https://github.com/SchweizerischeBundesbahnen/DAS/issues/622)) ([#650](https://github.com/SchweizerischeBundesbahnen/DAS/issues/650)) ([87e4811](https://github.com/SchweizerischeBundesbahnen/DAS/commit/87e48115803e36542bbdd2329de6c709a38415db))
+* upgrade to SFERA v3 ([#578](https://github.com/SchweizerischeBundesbahnen/DAS/issues/578)) ([#577](https://github.com/SchweizerischeBundesbahnen/DAS/issues/577)) ([df1d74c](https://github.com/SchweizerischeBundesbahnen/DAS/commit/df1d74c614f8ca16d1abbef9e9a52c55e3a3f689))
+* use apim auth client ([#832](https://github.com/SchweizerischeBundesbahnen/DAS/issues/832)) ([#937](https://github.com/SchweizerischeBundesbahnen/DAS/issues/937)) ([831f865](https://github.com/SchweizerischeBundesbahnen/DAS/commit/831f8654a1b15415d64ede5038cf20e5ff75478a))
+
+
+### Bug Fixes
+
+* Dockerfile dist directory ([e6273e2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e6273e2a0e0043f797858cb681fa314d50498e9a))
+* release actions ([#975](https://github.com/SchweizerischeBundesbahnen/DAS/issues/975)) ([5f7fbd2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/5f7fbd285abffd6f1e889dd26d9464a9de0ac88f))
+* session sort ([0dde3e6](https://github.com/SchweizerischeBundesbahnen/DAS/commit/0dde3e6574de27569ea858a89d7c8d05265e3ad3))
+* update angular ([#740](https://github.com/SchweizerischeBundesbahnen/DAS/issues/740)) ([a4e48e0](https://github.com/SchweizerischeBundesbahnen/DAS/commit/a4e48e09a77cd54ec020fc6c54026199ffab388f))
+* update angular v19 ([#667](https://github.com/SchweizerischeBundesbahnen/DAS/issues/667)) ([e2e7ed2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/e2e7ed2571e0b1b28c7727f7ee17c35f548ace69))
+
 ## [0.6.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.6.0...webapp-v0.6.1) (2025-10-21)
 
 
