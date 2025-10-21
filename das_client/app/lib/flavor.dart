@@ -69,7 +69,7 @@ sealed class Flavor {
       case _DevFlavor():
         return _DevFlavor(
           tokenExchangeUrl:
-          'https://imts-token-provider-tms-vad-imtrackside-dev.apps.halon-ocp1-1-t.sbb-aws-test.net/token/exchange',
+              'https://imts-token-provider-tms-vad-imtrackside-dev.apps.halon-ocp1-1-t.sbb-aws-test.net/token/exchange',
           mqttUrl: 'wss://tms-vad-imtrackside-dev-mobile.messaging.solace.cloud',
           authenticatorConfig: _authenticatorConfigTmsDev,
           mqttTopicPrefix: '',
@@ -94,19 +94,19 @@ class _DevFlavor extends Flavor {
   const _DevFlavor({
     super.tokenExchangeUrl = '',
     super.mqttUrl = '',
-    super.mqttTopicPrefix = 'localnico/',
+    super.mqttTopicPrefix = 'dev/',
     super.authenticatorConfig = _emptyAuthenticatorConfig,
   }) : super(
-    displayName: 'Dev',
-    backendUrl: 'das-dev-int.api.sbb.ch',
-    color: SBBColors.peach,
-    showBanner: true,
-    isTmsEnabledForFlavor: true,
-    mqttOauthProfile: 'azureAdDev',
-    logLevel: Level.FINE,
-    waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
-    waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
-  );
+         displayName: 'Dev',
+         backendUrl: 'das-dev-int.api.sbb.ch',
+         color: SBBColors.peach,
+         showBanner: true,
+         isTmsEnabledForFlavor: true,
+         mqttOauthProfile: 'azureAdDev',
+         logLevel: Level.FINE,
+         waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
+         waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
+       );
 }
 
 class _InteFlavor extends Flavor {
@@ -116,14 +116,14 @@ class _InteFlavor extends Flavor {
     super.mqttTopicPrefix = '',
     super.authenticatorConfig = _emptyAuthenticatorConfig,
   }) : super(
-    displayName: 'Inte',
-    backendUrl: 'das-int.api.sbb.ch',
-    color: SBBColors.black,
-    showBanner: true,
-    mqttOauthProfile: 'azureAdInt',
-    waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
-    waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
-  );
+         displayName: 'Inte',
+         backendUrl: 'das-int.api.sbb.ch',
+         color: SBBColors.black,
+         showBanner: true,
+         mqttOauthProfile: 'azureAdInt',
+         waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
+         waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
+       );
 }
 
 class _ProdFlavor extends Flavor {
@@ -133,34 +133,28 @@ class _ProdFlavor extends Flavor {
     super.mqttTopicPrefix = '',
     super.authenticatorConfig = _emptyAuthenticatorConfig,
   }) : super(
-    displayName: 'Prod',
-    backendUrl: 'das-backend-dev.app.sbb.ch',
-    color: SBBColors.transparent,
-    showBanner: false,
-    mqttOauthProfile: 'azureAdInt',
-    waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
-    waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
-  );
+         displayName: 'Prod',
+         backendUrl: 'das-backend-dev.app.sbb.ch',
+         color: SBBColors.transparent,
+         showBanner: false,
+         mqttOauthProfile: 'azureAdInt',
+         waraAndroidPackageName: 'ch.sbb.tms.iad.shas_mobile',
+         waraIOSUrlScheme: 'ch.sbb.tms.iad.shasmobile',
+       );
 }
 
 const _emptyAuthenticatorConfig = AuthenticatorConfig.empty();
 
 const _authenticatorConfigTmsDev = AuthenticatorConfig(
   discoveryUrl:
-  'https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0/.well-known/openid-configuration',
+      'https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0/.well-known/openid-configuration',
   clientId: '8af8281c-4f1d-47b5-ad77-526b1da61b2b',
   redirectUrl: 'ch.sbb.das://sbbauth/redirect',
   tokenSpecs: TokenSpecProvider([
     TokenSpec(
       id: TokenSpec.defaultTokenId,
       displayName: 'User Token',
-      scopes: [
-        'openid',
-        'profile',
-        'email',
-        'offline_access',
-        '8af8281c-4f1d-47b5-ad77-526b1da61b2b/.default'
-      ],
+      scopes: ['openid', 'profile', 'email', 'offline_access', '8af8281c-4f1d-47b5-ad77-526b1da61b2b/.default'],
     ),
   ]),
 );
@@ -173,13 +167,7 @@ const _authenticatorConfigMockDev = AuthenticatorConfig(
     TokenSpec(
       id: TokenSpec.defaultTokenId,
       displayName: 'User Token',
-      scopes: [
-        'openid',
-        'profile',
-        'email',
-        'offline_access',
-        'api://8f16d52b-c6df-4a94-a132-da4956579a48/.default'
-      ],
+      scopes: ['openid', 'profile', 'email', 'offline_access', 'api://8f16d52b-c6df-4a94-a132-da4956579a48/.default'],
     ),
   ]),
 );
@@ -192,13 +180,7 @@ const _authenticatorConfigInte = AuthenticatorConfig(
     TokenSpec(
       id: TokenSpec.defaultTokenId,
       displayName: 'User Token',
-      scopes: [
-        'openid',
-        'profile',
-        'email',
-        'offline_access',
-        'api://c46d2363-2b94-439a-a84d-f71a76a70f45/.default'
-      ],
+      scopes: ['openid', 'profile', 'email', 'offline_access', 'api://c46d2363-2b94-439a-a84d-f71a76a70f45/.default'],
     ),
   ]),
 );
@@ -211,13 +193,7 @@ const _authenticatorConfigProd = AuthenticatorConfig(
     TokenSpec(
       id: TokenSpec.defaultTokenId,
       displayName: 'User Token',
-      scopes: [
-        'openid',
-        'profile',
-        'email',
-        'offline_access',
-        'api://c46d2363-2b94-439a-a84d-f71a76a70f45/.default'
-      ],
+      scopes: ['openid', 'profile', 'email', 'offline_access', 'api://c46d2363-2b94-439a-a84d-f71a76a70f45/.default'],
     ),
   ]),
 );
