@@ -41,4 +41,4 @@ sfera:
   broker-url:
 
 preload:
-  fetch-interval-ms: 60000
+  fetch-cron: '-'

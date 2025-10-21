@@ -1,17 +1,15 @@
 package ch.sbb.backend.preload;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import ch.sbb.backend.TestContainerConfiguration;
 import ch.sbb.backend.preload.sfera.model.v0201.JourneyProfile;
 import ch.sbb.backend.preload.sfera.model.v0201.OTNIDComplexType;
 import ch.sbb.backend.preload.sfera.model.v0201.TrainIdentificationComplexType;
+import ch.sbb.backend.preload.xml.SferaMessagingConfig;
 import ch.sbb.backend.preload.xml.XmlDateHelper;
+import ch.sbb.backend.preload.xml.XmlHelper;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -19,18 +17,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-@SpringBootTest
+@SpringBootTest(classes = {PreloadStorageService.class, XmlHelper.class, SferaMessagingConfig.class})
 @ActiveProfiles("test")
-@Import(TestContainerConfiguration.class)
 class PreloadStorageServiceTest {
 
     @MockitoBean
@@ -64,12 +59,6 @@ class PreloadStorageServiceTest {
         return journeyProfile;
     }
 
-    @BeforeEach
-    void resetAndStubS3Service() {
-        reset(s3Service);
-        doNothing().when(s3Service).uploadZip(any(String.class), any(byte[].class));
-    }
-
     @Test
     void test_doesNotCreateEmptyDirectoriesWhenNoFiles() throws Exception {
         underTest.save(List.of(), List.of(), List.of());
@@ -81,13 +70,10 @@ class PreloadStorageServiceTest {
         String zipName = zipNameCaptor.getValue();
         byte[] zipBytes = uploadDataCaptor.getValue();
 
-        assertThat(zipName).endsWith(".zip");
-
         List<String> entries = listZipEntries(zipBytes);
 
+        assertThat(zipName).endsWith(".zip");
         assertThat(entries).isEmpty();
-        //        assertThat(entries).containsExactly("jp/", "sp/", "tc/");
-
     }
 
     @Test

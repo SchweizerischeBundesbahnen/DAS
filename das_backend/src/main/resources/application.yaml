@@ -115,4 +115,4 @@ sfera:
   topic-prefix: dev/
 
 preload:
-  fetch-interval-ms: 10000
+  fetch-cron: '-'

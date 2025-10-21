@@ -4,14 +4,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.*;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @Service
 public class S3Service {
 
-    private final S3Client s3Client;
-
     private static final String CONTENT_TYPE_ZIP = "application/zip";
+
+    private final S3Client s3Client;
 
     @Value("${aws.bucketName}")
     private String bucketName;
