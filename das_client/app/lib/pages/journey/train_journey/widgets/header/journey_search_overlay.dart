@@ -12,20 +12,23 @@ import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 
 class JourneySearchOverlay extends StatelessWidget {
-  static const Key journeySearchKey = Key('journeySearchButton');
+  static const Key journeySearchWidgetKey = Key('journeySearchWidget');
   static const Key journeySearchCloseKey = Key('closeJourneySearchButton');
 
-  const JourneySearchOverlay({super.key});
+  const JourneySearchOverlay({required this.child, super.key});
+
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
     final viewModel = DI.get<JourneySelectionViewModel>();
     return AnchoredFullPageOverlay(
       triggerBuilder: (_, showOverlay) {
-        return SBBIconButtonLarge(
-          key: JourneySearchOverlay.journeySearchKey,
-          icon: SBBIcons.magnifying_glass_small,
-          onPressed: () {
+        return InkWell(
+          key: journeySearchWidgetKey,
+          borderRadius: BorderRadius.circular(sbbDefaultSpacing * 0.5),
+          child: child,
+          onTap: () {
             viewModel.dismissSelection();
             showOverlay();
           },
