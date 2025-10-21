@@ -1,9 +1,9 @@
 package ch.sbb.backend.preload;
 
-import ch.sbb.backend.preload.sfera.model.v0201.JourneyProfile;
-import ch.sbb.backend.preload.sfera.model.v0201.OTNIDComplexType;
-import ch.sbb.backend.preload.sfera.model.v0201.SegmentProfile;
-import ch.sbb.backend.preload.sfera.model.v0201.TrainCharacteristics;
+import ch.sbb.backend.preload.sfera.model.v0300.JourneyProfile;
+import ch.sbb.backend.preload.sfera.model.v0300.OTNIDComplexType;
+import ch.sbb.backend.preload.sfera.model.v0300.SegmentProfile;
+import ch.sbb.backend.preload.sfera.model.v0300.TrainCharacteristics;
 import ch.sbb.backend.preload.xml.XmlHelper;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

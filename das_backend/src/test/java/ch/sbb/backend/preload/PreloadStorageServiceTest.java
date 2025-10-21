@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import ch.sbb.backend.preload.sfera.model.v0201.JourneyProfile;
-import ch.sbb.backend.preload.sfera.model.v0201.OTNIDComplexType;
-import ch.sbb.backend.preload.sfera.model.v0201.TrainIdentificationComplexType;
+import ch.sbb.backend.preload.sfera.model.v0300.JourneyProfile;
+import ch.sbb.backend.preload.sfera.model.v0300.OTNIDComplexType;
+import ch.sbb.backend.preload.sfera.model.v0300.TrainIdentificationComplexType;
 import ch.sbb.backend.preload.xml.SferaMessagingConfig;
 import ch.sbb.backend.preload.xml.XmlDateHelper;
 import ch.sbb.backend.preload.xml.XmlHelper;
