@@ -8,6 +8,27 @@ import '../app_test.dart';
 import '../util/test_utils.dart';
 
 void main() {
+  testWidgets('test displayed columns on open ASR modal', (tester) async {
+    await prepareAndStartApp(tester);
+    await loadTrainJourney(tester, trainNumber: 'T2');
+
+    final kilometreLabel = l10n.p_train_journey_table_kilometre_label;
+    final timeLabel = l10n.p_train_journey_table_time_label_planned;
+
+    // columns should be visible when modal is closed
+    expect(findDASTableColumnByText(kilometreLabel), findsOne);
+    expect(findDASTableColumnByText(timeLabel), findsOne);
+
+    // open ASR modal
+    final asrRow = findDASTableRowByText('km 64.200 - km 47.200');
+    await tapElement(tester, asrRow, warnIfMissed: false);
+
+    // time column should be hidden
+    expect(findDASTableColumnByText(kilometreLabel), findsOne);
+    expect(findDASTableColumnByText(timeLabel), findsNothing);
+
+    await disconnect(tester);
+  });
   testWidgets('test details for ASR in T2 with missing from, until and reason', (tester) async {
     await prepareAndStartApp(tester);
     await loadTrainJourney(tester, trainNumber: 'T2');

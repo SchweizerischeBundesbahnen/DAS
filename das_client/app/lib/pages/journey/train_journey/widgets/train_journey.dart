@@ -72,7 +72,7 @@ class TrainJourney extends StatelessWidget {
       ]),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data?[0] == null) {
-          return TrainJourneyLoadingTable(columns: _columns(context, null, null, false));
+          return TrainJourneyLoadingTable(columns: _columns(context, null, null, null));
         }
 
         final journey = snapshot.data![0] as Journey;
@@ -133,18 +133,17 @@ class TrainJourney extends StatelessWidget {
 
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: TrainJourneyOverview.horizontalPadding),
-          child: StreamBuilder<bool>(
-            stream: detailModalViewModel.isModalOpen,
-            initialData: detailModalViewModel.isModalOpenValue,
+          child: StreamBuilder(
+            stream: detailModalViewModel.openModalType,
             builder: (context, snapshot) {
-              final isDetailModalOpen = snapshot.data ?? false;
+              final openModalType = snapshot.data;
               final advancementController = context.read<TrainJourneyViewModel>().automaticAdvancementController;
               return ChevronAnimationWrapper(
                 journeyPosition: journeyPosition,
                 child: DASTable(
                   key: advancementController.tableKey,
                   scrollController: advancementController.scrollController,
-                  columns: _columns(context, journey.metadata, settings, isDetailModalOpen),
+                  columns: _columns(context, journey.metadata, settings, openModalType),
                   rows: tableRows.map((it) => it.build(context)).toList(),
                   bottomMarginAdjustment: marginAdjustment,
                 ),
@@ -368,7 +367,7 @@ class TrainJourney extends StatelessWidget {
     BuildContext context,
     Metadata? metadata,
     TrainJourneySettings? settings,
-    bool isDetailModalOpen,
+    DetailModalType? openModalType,
   ) {
     final currentBreakSeries = settings?.resolvedBreakSeries(metadata);
     final speedLabel = currentBreakSeries != null
@@ -380,7 +379,7 @@ class TrainJourney extends StatelessWidget {
     final userSettings = DI.get<UserSettings>();
 
     return [
-      if (!isDetailModalOpen) ...[
+      if (openModalType == null || openModalType == DetailModalType.additionalSpeedRestriction) ...[
         if (userSettings.showDecisiveGradient ||
             (!userSettings.showDecisiveGradient && !journeyViewModel.showDecisiveGradientValue))
           DASTableColumn(
@@ -404,22 +403,23 @@ class TrainJourney extends StatelessWidget {
           ),
         ],
       ],
-      DASTableColumn(
-        id: ColumnDefinition.time.index,
-        child: StreamBuilder(
-          stream: timeViewModel.showOperationalTime,
-          builder: (context, showCalcTimeSnap) => Text(
-            showCalcTimeSnap.data ?? false
-                ? context.l10n.p_train_journey_table_time_label_new
-                : context.l10n.p_train_journey_table_time_label_planned,
+      if (openModalType == null || openModalType != DetailModalType.additionalSpeedRestriction)
+        DASTableColumn(
+          id: ColumnDefinition.time.index,
+          child: StreamBuilder(
+            stream: timeViewModel.showOperationalTime,
+            builder: (context, showCalcTimeSnap) => Text(
+              showCalcTimeSnap.data ?? false
+                  ? context.l10n.p_train_journey_table_time_label_new
+                  : context.l10n.p_train_journey_table_time_label_planned,
+            ),
           ),
+          width: 100.0,
+          onTap: () {
+            final viewModel = context.read<ArrivalDepartureTimeViewModel>();
+            viewModel.toggleOperationalTime();
+          },
         ),
-        width: 100.0,
-        onTap: () {
-          final viewModel = context.read<ArrivalDepartureTimeViewModel>();
-          viewModel.toggleOperationalTime();
-        },
-      ),
       DASTableColumn(id: ColumnDefinition.route.index, width: 48.0), // route column
       DASTableColumn(id: ColumnDefinition.trackEquipment.index, width: 20.0), // track equipment column
       DASTableColumn(id: ColumnDefinition.icons1.index, width: 64.0), // icons column

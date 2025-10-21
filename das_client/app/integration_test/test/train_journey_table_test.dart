@@ -433,7 +433,7 @@ void main() {
 
       // Check if each header is present in the widget tree
       for (final header in expectedHeaders) {
-        expect(find.text(header), findsOneWidget);
+        expect(findDASTableColumnByText(header), findsOneWidget);
       }
 
       await disconnect(tester);

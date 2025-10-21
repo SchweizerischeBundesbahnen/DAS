@@ -18,6 +18,7 @@ import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 class DASTable extends StatefulWidget {
   static const Key tableKey = Key('dasTable');
   static const Key rowKey = Key('dasTableRow');
+  static const Key columnHeaderKey = Key('dasTableColumnHeader');
   static const double headerRowHeight = 40.0;
 
   DASTable({
@@ -238,24 +239,27 @@ class _DASTableState extends State<DASTable> {
     return Builder(
       builder: (context) {
         final tableThemeData = DASTableTheme.of(context)?.data;
-        final headerCell = _TableCellWrapper(
-          expanded: column.expanded,
-          width: column.width,
-          child: Container(
-            key: column.headerKey,
-            decoration: BoxDecoration(
-              border: tableThemeData?.headingRowBorder ?? column.border,
-              color: column.color ?? tableThemeData?.headingRowColor,
+        final headerCell = KeyedSubtree(
+          key: DASTable.columnHeaderKey,
+          child: _TableCellWrapper(
+            expanded: column.expanded,
+            width: column.width,
+            child: Container(
+              key: column.headerKey,
+              decoration: BoxDecoration(
+                border: tableThemeData?.headingRowBorder ?? column.border,
+                color: column.color ?? tableThemeData?.headingRowColor,
+              ),
+              padding: column.padding,
+              child: column.child == null
+                  ? SizedBox.shrink()
+                  : DefaultTextStyle(
+                      style: DefaultTextStyle.of(context).style.merge(tableThemeData?.headingTextStyle),
+                      child: column.alignment != null
+                          ? Align(alignment: column.alignment!, child: column.child)
+                          : column.child!,
+                    ),
             ),
-            padding: column.padding,
-            child: column.child == null
-                ? SizedBox.shrink()
-                : DefaultTextStyle(
-                    style: DefaultTextStyle.of(context).style.merge(tableThemeData?.headingTextStyle),
-                    child: column.alignment != null
-                        ? Align(alignment: column.alignment!, child: column.child)
-                        : column.child!,
-                  ),
           ),
         );
         return column.onTap != null
