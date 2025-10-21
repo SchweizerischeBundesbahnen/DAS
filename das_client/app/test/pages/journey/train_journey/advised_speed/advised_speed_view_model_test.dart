@@ -161,7 +161,7 @@ void main() {
         verify(mockEndSound.play()).called(1);
         verify(mockStartSound.play()).called(1);
       });
-      
+
       test('whenExitsAdvisedSpeedSegmentAndTimerReached_isInactive', () {
         // ARRANGE
         testAsync.run((testAsync) {
