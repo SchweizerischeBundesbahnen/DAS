@@ -77,7 +77,7 @@ void main() {
 
     // Check that advisedSpeed end displayed calculated speed on signal row
     final advisedSpeedEndRowServicePoint = findDASTableRowByText('Morges');
-    expect(_findCalculatedSpeedCellOf(advisedSpeedEndRowServicePoint, '110'), findsOne);
+    expect(_findCalculatedSpeedCellOf(advisedSpeedEndRowServicePoint, '100'), findsOne);
 
     await disconnect(tester);
   });
