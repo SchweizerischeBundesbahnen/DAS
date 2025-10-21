@@ -7,7 +7,6 @@ import 'package:sfera/src/data/dto/jp_context_information_nsp_dto.dart';
 import 'package:sfera/src/data/dto/new_speed_nsp_dto.dart';
 import 'package:sfera/src/data/dto/reason_code_dto.dart';
 import 'package:sfera/src/data/dto/segment_profile_dto.dart';
-import 'package:sfera/src/data/dto/segment_profile_list_dto.dart';
 import 'package:sfera/src/data/dto/temporary_constraints_dto.dart';
 import 'package:sfera/src/data/dto/velocity_dto.dart';
 import 'package:sfera/src/data/mapper/draft_advised_speed_segment.dart';
@@ -106,24 +105,18 @@ class SpeedMapper {
     List<SegmentProfileDto> segmentProfiles,
     List<BaseData> journeyData,
   ) {
-    final segmentProfileReferences = journeyProfile.segmentProfileReferences.toList();
-
-    final drafts = _parseAllSegmentsToDrafts(segmentProfileReferences, segmentProfiles);
-
+    final drafts = _parseAllSegmentsToDrafts(journeyProfile, segmentProfiles);
     final List<DraftAdvisedSpeedSegment> mergedDrafts = _mergeAdvisedSegments(drafts);
-
-    final result = _mapUnknownLocationsToClosestServicePoints(
-      mergedDrafts,
-      journeyData,
-    );
+    final result = _mapUnknownLocationsToClosestServicePoints(mergedDrafts, journeyData);
 
     return result;
   }
 
   static List<DraftAdvisedSpeedSegment> _parseAllSegmentsToDrafts(
-    List<SegmentProfileReferenceDto> segmentProfileReferences,
+    JourneyProfileDto journeyProfile,
     List<SegmentProfileDto> segmentProfiles,
   ) {
+    final segmentProfileReferences = journeyProfile.segmentProfileReferences.toList();
     final List<DraftAdvisedSpeedSegment> drafts = [];
     int previousSegmentEndOrder = 0;
     int nextSegmentStartOrder = 0;
