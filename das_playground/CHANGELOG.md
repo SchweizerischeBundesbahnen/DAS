@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.6.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.6.0...webapp-v0.6.1) (2025-10-21)
+
+
+* update dependencies
+
 ## [0.6.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.5.1...webapp-v0.6.0) (2025-08-18)
 
 
