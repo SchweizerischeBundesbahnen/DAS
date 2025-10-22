@@ -86,6 +86,14 @@
       "originalSeries": {}
     }
   },
+  "w_replacement_series_notification_none_title": "Zug- und Bremsreihe ab {fromStation} nicht zugelassen",
+  "@w_replacement_series_notification_none_title": {
+    "type": "text",
+    "placeholders": {
+      "fromStation": {}
+    }
+  },
+  "w_replacement_series_notification_none_text": "Ein Teil der Strecke darf mit der ausgewählten Zug- und Bremsreihe nicht befahren werden.",
   "w_departure_process_modal_sheet_title": "Checkliste Abfahrprozess.",
   "w_departure_process_modal_sheet_content": "1. Zustimmung\n2. Zugbeeinflussung\n3. Abfahrtszeit\n4. Türverriegelung\n5. Zustimmung",
   "w_service_point_modal_communication_label": "Netzart und Funkkanal",

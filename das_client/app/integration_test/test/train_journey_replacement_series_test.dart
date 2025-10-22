@@ -81,4 +81,26 @@ void main() {
 
     await disconnect(tester);
   });
+
+  testWidgets('test shows no replacement available notification', (
+    tester,
+  ) async {
+    await prepareAndStartApp(tester);
+    await loadTrainJourney(tester, trainNumber: 'T30M');
+
+    final replacementSeriesFinder = find.byKey(ReplacementSeriesNotification.noReplacementSeriesAvailableKey);
+    expect(replacementSeriesFinder, findsNothing);
+
+    await selectBreakSeries(tester, breakSeries: 'D150');
+
+    replacementSeriesFinder.reset();
+    expect(replacementSeriesFinder, findsOneWidget);
+
+    await selectBreakSeries(tester, breakSeries: 'R150');
+
+    replacementSeriesFinder.reset();
+    expect(replacementSeriesFinder, findsNothing);
+
+    await disconnect(tester);
+  });
 }

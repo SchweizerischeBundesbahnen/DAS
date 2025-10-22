@@ -82,12 +82,25 @@ class ReplacementSeriesViewModel {
 
   void _calculateActiveSegmentAndUpdateState() {
     final position = _journeyPositionViewModel.modelValue;
-    if (position?.currentPosition == null) return;
 
-    final currentPosition = position!.currentPosition!;
     final currentBreakSeries = _trainJourneyViewModel.settingsValue.resolvedBreakSeries(_latestJourney?.metadata);
     final currentModelValue = modelValue;
 
+    final segmentWithoutReplacement = _illegalSpeedSegments.firstWhereOrNull((it) => it.replacement == null);
+
+    if (segmentWithoutReplacement != null) {
+      _rxModel.add(ReplacementSeriesModel.none(segment: segmentWithoutReplacement));
+      _log.info(
+        'Found illegal speed segment for ${segmentWithoutReplacement.original.toString()} without replacement series starting from ${segmentWithoutReplacement.start.name}',
+      );
+      return;
+    } else if (currentModelValue is NoReplacementSeries) {
+      _rxModel.add(null);
+    }
+
+    if (position?.currentPosition == null) return;
+
+    final currentPosition = position!.currentPosition!;
     final activeSegment = _activeIllegalSpeedSegment(currentBreakSeries, currentPosition);
 
     if (activeSegment != null && activeSegment.replacement != null) {
