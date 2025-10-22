@@ -50,7 +50,7 @@ on the device, one needs to add at least the following path and query parameters
 
 Remarks about parameter-values (derived from [SFERA xsd](../../../../../sfera_mock/src/main/resources/SFERA_v3.00.xsd) copy):
 * `returnUrl`: The return URL of the calling system. This can either be a web url or custom app schema.
-* `journeys`: The list allows passing a whole tour [1..*] of the very same train driver. The list should be ordered where the first element is the first train of the tour.
+* `journeys`: The list allows passing a whole tour [1..*] of the very same train driver. Entries must be provided in ascending chronological order (by departure time). The first entry represents the immediate/next train journey and is the one that will be opened.
 * `operationalTrainNumber`: Source NeTS-FPS, which represents an operational train-number (for e.g. as in "IC 1 **625**"). In the near future 2031 this may change with TMS::CM1. 
 * `tafTapLocationReferenceStart/End`: Represents operational stop-points (de:Betriebspunkte), considered by a train journey and consists of an ISO Country Code ([ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)) and the primary location code (the format within this specification is proprietary and derived from the underlying SFERA service-contract, for e.g. Bern "CH07000").
 * `company`: As defined by [RICS company code](https://uic.org/support-activities/it/rics), for e.g. BLS P "1163", BLS C "3356".
