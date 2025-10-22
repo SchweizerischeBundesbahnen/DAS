@@ -10,7 +10,9 @@
                 </OTN_ID>
             </TrainIdentification>
             <TrainLocationInformation>
-                <PositionSpeed SP_ID="T24_1" location="14000">
+                <!-- will end fourth ADL message -->
+                <!-- AND trigger fifth ADL message -->
+                <PositionSpeed SP_ID="T24_6" location="500">
                     <SP_Zone>
                         <IM_ID>1285</IM_ID>
                     </SP_Zone>

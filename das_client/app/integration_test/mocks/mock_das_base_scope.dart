@@ -30,6 +30,7 @@ class MockDASBaseScope extends DASBaseScope {
     _registerMockBrightnessManager();
 
     _registerIntegrationTestAudioPlayer();
+    getIt.registerSounds();
     _registerMockBattery();
     _registerMockMotionDataService();
     getIt.registerWarnapp();

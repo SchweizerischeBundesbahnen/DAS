@@ -1251,7 +1251,7 @@ void main() {
   });
 
   test('Test advised speeds are parsed correctly', () async {
-    final journey = getJourney('T24', 1);
+    final journey = getJourney('T24', 6);
     expect(journey.valid, isTrue);
 
     final advisedSpeeds = journey.metadata.advisedSpeedSegments.toList();
@@ -1264,23 +1264,23 @@ void main() {
 
     expect(advisedSpeeds[1], isA<FixedTimeAdvisedSpeedSegment>());
     expect(advisedSpeeds[1].speed, equals(SingleSpeed(value: '80')));
-    expect(advisedSpeeds[1].startOrder, 4500);
-    expect(advisedSpeeds[1].endOrder, 5000);
+    expect(advisedSpeeds[1].startOrder, 101500);
+    expect(advisedSpeeds[1].endOrder, 201500);
 
     expect(advisedSpeeds[2], isA<TrainFollowingAdvisedSpeedSegment>());
     expect(advisedSpeeds[2].speed, equals(SingleSpeed(value: '120')));
-    expect(advisedSpeeds[2].startOrder, 5500);
-    expect(advisedSpeeds[2].endOrder, 6500);
+    expect(advisedSpeeds[2].startOrder, 301000);
+    expect(advisedSpeeds[2].endOrder, 305000);
 
     expect(advisedSpeeds[3], isA<VelocityMaxAdvisedSpeedSegment>());
     expect(advisedSpeeds[3].speed, isNull);
-    expect(advisedSpeeds[3].startOrder, 7000);
-    expect(advisedSpeeds[3].endOrder, 7500);
+    expect(advisedSpeeds[3].startOrder, 305100);
+    expect(advisedSpeeds[3].endOrder, 500500);
 
-    expect(advisedSpeeds[4], isA<VelocityMaxAdvisedSpeedSegment>());
-    expect(advisedSpeeds[4].speed, isNull);
-    expect(advisedSpeeds[4].startOrder, 8000);
-    expect(advisedSpeeds[4].endOrder, 12000);
+    expect(advisedSpeeds[4], isA<FollowTrainAdvisedSpeedSegment>());
+    expect(advisedSpeeds[4].speed, SingleSpeed(value: '80'));
+    expect(advisedSpeeds[4].startOrder, 500500);
+    expect(advisedSpeeds[4].endOrder, 501000);
   });
 
   test('Test signaled position is null when nothing is given', () async {

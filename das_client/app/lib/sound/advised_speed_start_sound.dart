@@ -3,8 +3,8 @@ import 'package:app/sound/sound.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:audioplayers/audioplayers.dart';
 
-class AdlStart extends Sound {
-  const AdlStart();
+class AdvisedSpeedStartSound extends Sound {
+  const AdvisedSpeedStartSound();
 
   static const _volume = 1.0;
 
@@ -13,6 +13,6 @@ class AdlStart extends Sound {
     await Sound.volumeController.setVolume(_volume);
     final audioPlayer = DI.get<AudioPlayer>();
     await audioPlayer.stop();
-    await audioPlayer.play(AssetSource(AppAssets.adlStart));
+    await audioPlayer.play(AssetSource(AppAssets.soundAdvisedSpeedStart));
   }
 }

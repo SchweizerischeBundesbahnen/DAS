@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'package:app/pages/journey/train_journey/advised_speed/advised_speed_model.dart';
 import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/train_journey/punctuality/punctuality_model.dart';
-import 'package:app/pages/journey/train_journey/widgets/notification/adl_view_model.dart';
 import 'package:clock/clock.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
@@ -16,15 +16,15 @@ class ChronographViewModel {
     required Stream<Journey?> journeyStream,
     required Stream<JourneyPositionModel?> journeyPositionStream,
     required Stream<PunctualityModel> punctualityStream,
-    required Stream<AdlState> adlStateStream,
+    required Stream<AdvisedSpeedModel> advisedSpeedModelStream,
   }) {
     _initJourneySubscription(journeyStream);
     _initJourneyPositionSubscription(journeyPositionStream);
     _initPunctualitySubscription(punctualityStream);
-    _initAdlSubscription(adlStateStream);
+    _initAdvisedSpeedSubscription(advisedSpeedModelStream);
   }
 
-  bool _isAdlActive = false;
+  bool _isAdvisedSpeedActive = false;
   ServicePoint? _lastServicePoint;
   SplayTreeMap<int, SingleSpeed?>? _calculatedSpeeds;
 
@@ -87,10 +87,10 @@ class ChronographViewModel {
     );
   }
 
-  void _initAdlSubscription(Stream<AdlState> adlStateStream) {
+  void _initAdvisedSpeedSubscription(Stream<AdvisedSpeedModel> modelStream) {
     _subscriptions.add(
-      adlStateStream.listen((adlState) {
-        _isAdlActive = adlState == AdlState.active;
+      modelStream.listen((model) {
+        _isAdvisedSpeedActive = model is Active;
 
         _emitState();
       }),
@@ -98,7 +98,7 @@ class ChronographViewModel {
   }
 
   void _emitState() {
-    if (!_hasLastServicePointCalculatedSpeed || _isAdlActive) return _rxModel.add(PunctualityModel.hidden());
+    if (!_hasLastServicePointCalculatedSpeed || _isAdvisedSpeedActive) return _rxModel.add(PunctualityModel.hidden());
     _rxModel.add(_punctualityModel);
   }
 

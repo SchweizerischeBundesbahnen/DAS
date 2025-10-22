@@ -18,7 +18,7 @@ sealed class AdvisedSpeedSegment extends Segment {
 
   @override
   String toString() {
-    return '$runtimeType(startOrder: $startOrder, endOrder: $endOrder, speed: $speed)';
+    return 'AdvisedSpeedSegment(startOrder: $startOrder, endOrder: $endOrder, speed: $speed)';
   }
 }
 
@@ -32,6 +32,20 @@ class FollowTrainAdvisedSpeedSegment extends AdvisedSpeedSegment {
 
   @override
   final SingleSpeed speed;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FollowTrainAdvisedSpeedSegment &&
+          other.startOrder == startOrder &&
+          other.endOrder == endOrder &&
+          other.endData == endData &&
+          other.speed == speed;
+
+  @override
+  int get hashCode {
+    return Object.hash(startOrder, endOrder, endData, speed);
+  }
 }
 
 class TrainFollowingAdvisedSpeedSegment extends AdvisedSpeedSegment {
@@ -44,6 +58,20 @@ class TrainFollowingAdvisedSpeedSegment extends AdvisedSpeedSegment {
 
   @override
   final SingleSpeed speed;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TrainFollowingAdvisedSpeedSegment &&
+          other.startOrder == startOrder &&
+          other.endOrder == endOrder &&
+          other.endData == endData &&
+          other.speed == speed;
+
+  @override
+  int get hashCode {
+    return Object.hash(startOrder, endOrder, endData, speed);
+  }
 }
 
 class FixedTimeAdvisedSpeedSegment extends AdvisedSpeedSegment {
@@ -56,6 +84,20 @@ class FixedTimeAdvisedSpeedSegment extends AdvisedSpeedSegment {
 
   @override
   final SingleSpeed speed;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FixedTimeAdvisedSpeedSegment &&
+          other.startOrder == startOrder &&
+          other.endOrder == endOrder &&
+          other.endData == endData &&
+          other.speed == speed;
+
+  @override
+  int get hashCode {
+    return Object.hash(startOrder, endOrder, endData, speed);
+  }
 }
 
 /// If deltaSpeed equal to zero is provided, train driver should drive as fast as possible.
@@ -65,4 +107,17 @@ class VelocityMaxAdvisedSpeedSegment extends AdvisedSpeedSegment {
     required super.endOrder,
     required super.endData,
   });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is VelocityMaxAdvisedSpeedSegment &&
+          other.startOrder == startOrder &&
+          other.endOrder == endOrder &&
+          other.endData == endData;
+
+  @override
+  int get hashCode {
+    return Object.hash(startOrder, endOrder, endData);
+  }
 }

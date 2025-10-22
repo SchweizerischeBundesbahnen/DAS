@@ -1,4 +1,6 @@
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/train_journey/advised_speed/advised_speed_notification.dart';
+import 'package:app/pages/journey/train_journey/advised_speed/advised_speed_view_model.dart';
 import 'package:app/pages/journey/train_journey/collapsible_rows_view_model.dart';
 import 'package:app/pages/journey/train_journey/header/chronograph/chronograph_view_model.dart';
 import 'package:app/pages/journey/train_journey/header/connectivity/connectivity_view_model.dart';
@@ -11,8 +13,6 @@ import 'package:app/pages/journey/train_journey/widgets/detail_modal/detail_moda
 import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
 import 'package:app/pages/journey/train_journey/widgets/journey_navigation_buttons.dart';
-import 'package:app/pages/journey/train_journey/widgets/notification/adl_notification.dart';
-import 'package:app/pages/journey/train_journey/widgets/notification/adl_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/koa_notification.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/maneuver_notification.dart';
 import 'package:app/pages/journey/train_journey/widgets/notification/replacement_series/replacement_series_notification.dart';
@@ -22,8 +22,7 @@ import 'package:app/pages/journey/train_journey/widgets/train_journey.dart';
 import 'package:app/pages/journey/train_journey/widgets/warn_function_modal_sheet.dart';
 import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/pages/journey/warn_app_view_model.dart';
-import 'package:app/sound/koa_sound.dart';
-import 'package:app/sound/warn_app_sound.dart';
+import 'package:app/sound/das_sounds.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
@@ -81,7 +80,7 @@ class TrainJourneyOverview extends StatelessWidget {
           dispose: (_, vm) => vm.dispose(),
         ),
         Provider(
-          create: (_) => AdlViewModel(
+          create: (_) => AdvisedSpeedViewModel(
             journeyStream: trainJourneyViewModel.journey,
             journeyPositionStream: journeyPositionViewModel.model,
           ),
@@ -109,7 +108,7 @@ class TrainJourneyOverview extends StatelessWidget {
             journeyStream: trainJourneyViewModel.journey,
             journeyPositionStream: context.read<JourneyPositionViewModel>().model,
             punctualityStream: context.read<PunctualityViewModel>().model,
-            adlStateStream: context.read<AdlViewModel>().adlState,
+            advisedSpeedModelStream: context.read<AdvisedSpeedViewModel>().model,
           ),
           dispose: (_, vm) => vm.dispose(),
           builder: (context, child) => _body(context),
@@ -143,7 +142,7 @@ class TrainJourneyOverview extends StatelessWidget {
     return Column(
       children: [
         Header(),
-        ADLNotification(),
+        AdvisedSpeedNotification(),
         ManeuverNotification(),
         KoaNotification(),
         ReplacementSeriesNotification(),
@@ -174,7 +173,7 @@ class TrainJourneyOverview extends StatelessWidget {
   }
 
   void _triggerWarnappNotification(BuildContext context) {
-    WarnAppSound().play();
+    DI.get<DASSounds>().warnApp.play();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       showWarnFunctionModalSheet(
         context,
@@ -189,7 +188,7 @@ class TrainJourneyOverview extends StatelessWidget {
     if (event.isWarn) {
       _triggerWarnappNotification(context);
     } else if (event.isKoa && event.value == KoaState.waitCancelled.name) {
-      KoaSound().play();
+      DI.get<DASSounds>().koa.play();
     }
   }
 }

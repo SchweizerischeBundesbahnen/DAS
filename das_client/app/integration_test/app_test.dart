@@ -23,7 +23,7 @@ import 'test/settings_test.dart' as settings_test;
 import 'test/train_journey_header_test.dart' as train_journey_header_tests;
 import 'test/train_journey_notification_test.dart' as train_journey_notification_tests;
 import 'test/train_journey_replacement_series_test.dart' as train_journey_replacement_series_test;
-import 'test/train_journey_table_adl_test.dart' as train_journey_table_adl_tests;
+import 'test/train_journey_table_advised_speeds_test.dart' as train_journey_table_adl_tests;
 import 'test/train_journey_table_break_series_test.dart' as train_journey_table_break_series_tests;
 import 'test/train_journey_table_calculated_speed_test.dart' as train_journey_table_calculated_speed_tests;
 import 'test/train_journey_table_collapsible_rows_test.dart' as train_journey_table_collapsible_rows_test;
