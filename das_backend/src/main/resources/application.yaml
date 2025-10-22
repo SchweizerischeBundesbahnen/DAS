@@ -75,6 +75,9 @@ springdoc:
       clientId: ${AUTH_SWAGGER_CLIENT_ID}
       use-pkce-with-authorization-code-grant: true
 auth:
+  client:
+    key: ${CLIENT_AUTH_KEY}
+    secret: ${CLIENT_AUTH_SECRET}
   audience:
     service-name: ${AUTH_SERVICE_NAME}
   tenants:

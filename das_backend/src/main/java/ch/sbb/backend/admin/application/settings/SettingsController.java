@@ -1,5 +1,6 @@
 package ch.sbb.backend.admin.application.settings;
 
+import ch.sbb.backend.admin.application.settings.model.response.ClientAuth;
 import ch.sbb.backend.admin.application.settings.model.response.Logging;
 import ch.sbb.backend.admin.application.settings.model.response.RuFeature;
 import ch.sbb.backend.admin.application.settings.model.response.Settings;
@@ -26,9 +27,12 @@ public class SettingsController {
 
     private final LoggingService loggingService;
 
-    public SettingsController(RuFeatureService ruFeatureService, LoggingService loggingService) {
+    private final ClientAuthService clientAuthService;
+
+    public SettingsController(RuFeatureService ruFeatureService, LoggingService loggingService, ClientAuthService clientAuthService) {
         this.ruFeatureService = ruFeatureService;
         this.loggingService = loggingService;
+        this.clientAuthService = clientAuthService;
     }
 
     @GetMapping(API_SETTINGS)
@@ -41,6 +45,8 @@ public class SettingsController {
             .toList();
 
         Logging logging = loggingService.getLogging();
-        return new SettingsResponse(List.of(new Settings(allFeatures, logging)));
+        ClientAuth clientAuth = clientAuthService.getAuth();
+
+        return new SettingsResponse(List.of(new Settings(allFeatures, logging, clientAuth)));
     }
 }
