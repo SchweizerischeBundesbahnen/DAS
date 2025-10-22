@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.7.0...webapp-v0.7.1) (2025-10-22)
+
+
+### Bug Fixes
+
+* auth issuer check ([#1373](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1373)) ([ce0baff](https://github.com/SchweizerischeBundesbahnen/DAS/commit/ce0baffeb33253dce6bebcf7d19f9ed093166779))
+
 ## [0.7.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/webapp-v0.6.1...webapp-v0.7.0) (2025-10-21)
 
 
