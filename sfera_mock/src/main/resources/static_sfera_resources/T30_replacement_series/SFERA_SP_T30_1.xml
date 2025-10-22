@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SegmentProfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../SFERA_v3.00.xsd" SP_ID="T30_1" SP_VersionMajor="1"
-                SP_VersionMinor="3" SP_Length="18000" SP_Status="Valid">
+                SP_VersionMinor="4" SP_Length="18000" SP_Status="Valid">
     <SP_Zone>
         <IM_ID>0085</IM_ID>
     </SP_Zone>
@@ -113,7 +113,7 @@
                         &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;70&quot;/&gt;
                         &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;65&quot;/&gt;
                         &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;150&quot; speed=&quot;100&quot;/&gt;
-                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;160&quot; speed=&quot;100&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;120&quot; speed=&quot;100&quot;/&gt;
                     &lt;/lineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
@@ -138,7 +138,7 @@
                         &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;70&quot;/&gt;
                         &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;65&quot;/&gt;
                         &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;150&quot; speed=&quot;-1000&quot;/&gt;
-                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;160&quot; speed=&quot;100&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;120&quot; speed=&quot;100&quot;/&gt;
                     &lt;/lineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
@@ -171,7 +171,7 @@
                         &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;70&quot;/&gt;
                         &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;65&quot;/&gt;
                         &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;150&quot; speed=&quot;100&quot;/&gt;
-                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;160&quot; speed=&quot;100&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;120&quot; speed=&quot;100&quot;/&gt;
                     &lt;/lineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
@@ -195,7 +195,7 @@
                         &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;70&quot;/&gt;
                         &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;65&quot;/&gt;
                         &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;150&quot; speed=&quot;100&quot;/&gt;
-                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;160&quot; speed=&quot;100&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;120&quot; speed=&quot;100&quot;/&gt;
                     &lt;/lineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
@@ -219,7 +219,7 @@
                         &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;70&quot;/&gt;
                         &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;65&quot;/&gt;
                         &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;150&quot; speed=&quot;100&quot;/&gt;
-                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;160&quot; speed=&quot;100&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;120&quot; speed=&quot;100&quot;/&gt;
                     &lt;/lineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>
@@ -252,7 +252,7 @@
                         &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;150&quot; speed=&quot;70&quot;/&gt;
                         &lt;v trainSeries=&quot;R&quot; brakeSeries=&quot;135&quot; speed=&quot;65&quot;/&gt;
                         &lt;v trainSeries=&quot;D&quot; brakeSeries=&quot;150&quot; speed=&quot;100&quot;/&gt;
-                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;160&quot; speed=&quot;100&quot;/&gt;
+                        &lt;v trainSeries=&quot;A&quot; brakeSeries=&quot;120&quot; speed=&quot;100&quot;/&gt;
                     &lt;/lineSpeed&gt;
                 "/>
             </TAF_TAP_Location_NSP>

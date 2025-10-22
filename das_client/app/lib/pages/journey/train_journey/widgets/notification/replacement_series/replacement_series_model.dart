@@ -17,6 +17,10 @@ sealed class ReplacementSeriesModel {
     required IllegalSpeedSegment segment,
   }) = ReplacementSeriesSelected;
 
+  factory ReplacementSeriesModel.none({
+    required IllegalSpeedSegment segment,
+  }) = NoReplacementSeries;
+
   final IllegalSpeedSegment segment;
 
   @override
@@ -37,4 +41,8 @@ class OriginalSeriesAvailable extends ReplacementSeriesModel {
 
 class ReplacementSeriesSelected extends ReplacementSeriesModel {
   const ReplacementSeriesSelected({required super.segment}) : super._();
+}
+
+class NoReplacementSeries extends ReplacementSeriesModel {
+  const NoReplacementSeries({required super.segment}) : super._();
 }

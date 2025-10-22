@@ -162,6 +162,10 @@ void main() {
             trainSeries: TrainSeries.N,
             speed: SingleSpeed(value: 'XX'),
           ),
+          TrainSeriesSpeed(
+            trainSeries: TrainSeries.D,
+            speed: SingleSpeed(value: 'XX'),
+          ),
         ],
       ),
       ServicePoint(name: 'F', order: 6, kilometre: []),
@@ -395,6 +399,42 @@ void main() {
     await emitObjectToStream(
       journeyPositionSubject,
       JourneyPositionModel(currentPosition: journey.data[4] as JourneyPoint),
+    );
+
+    testee.dispose();
+  });
+
+  test('test emits no replacement when there is a illegal segment without replacement available', () async {
+    expectLater(
+      testee.model,
+      emitsInOrder([
+        null,
+        NoReplacementSeries(
+          segment: IllegalSpeedSegment(
+            start: journey.data[4] as ServicePoint,
+            end: journey.data[6] as ServicePoint,
+            original: BreakSeries(trainSeries: TrainSeries.D, breakSeries: 100),
+            replacement: null,
+          ),
+        ),
+        null,
+      ]),
+    );
+
+    journeySubject.add(journey);
+
+    await emitObjectToStream(
+      trainJourneySettingsSubject,
+      TrainJourneySettings(
+        selectedBreakSeries: BreakSeries(trainSeries: TrainSeries.D, breakSeries: 100),
+      ),
+    );
+
+    await emitObjectToStream(
+      trainJourneySettingsSubject,
+      TrainJourneySettings(
+        selectedBreakSeries: BreakSeries(trainSeries: TrainSeries.R, breakSeries: 120),
+      ),
     );
 
     testee.dispose();
