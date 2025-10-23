@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.30.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.29.0...das_client-v0.30.0) (2025-10-23)
+
+
+### Features
+
+* advised speeds over multiple segment profiles ([#1285](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1285)) ([#1364](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1364)) ([61a9be2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/61a9be2675dfbe6e6cc528b0e6372b692742d2de))
+* hide time column for additional speed restriction modal ([#1219](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1219)) ([#1365](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1365)) ([61ce9bc](https://github.com/SchweizerischeBundesbahnen/DAS/commit/61ce9bcfba48f3289b2b08dfa3175a4b706b3393))
+* implement no replacement series available notification ([#938](https://github.com/SchweizerischeBundesbahnen/DAS/issues/938)) ([#1368](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1368)) ([c6338c1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c6338c10f68b50bccd23ec372b489f6aa3f87b1f))
+* open search with tap on train number ([#1250](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1250)) ([#1366](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1366)) ([6441ce8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6441ce83604508699ccda07011995d205e96162a))
+
+
+### Bug Fixes
+
+* conjunct advised speed will not signal END but only play start sound ([#1364](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1364)) ([61a9be2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/61a9be2675dfbe6e6cc528b0e6372b692742d2de))
+
 ## [0.29.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.28.0...das_client-v0.29.0) (2025-10-20)
 
 
