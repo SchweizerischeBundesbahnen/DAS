@@ -1,6 +1,7 @@
 package ch.sbb.backend.admin.application.settings;
 
 import ch.sbb.backend.admin.application.settings.model.response.Logging;
+import ch.sbb.backend.admin.application.settings.model.response.Preload;
 import ch.sbb.backend.admin.application.settings.model.response.RuFeature;
 import ch.sbb.backend.admin.application.settings.model.response.Settings;
 import ch.sbb.backend.admin.application.settings.model.response.SettingsResponse;
@@ -24,11 +25,11 @@ public class SettingsController {
 
     private final RuFeatureService ruFeatureService;
 
-    private final LoggingService loggingService;
+    private final ConfigService configService;
 
-    public SettingsController(RuFeatureService ruFeatureService, LoggingService loggingService) {
+    public SettingsController(RuFeatureService ruFeatureService, ConfigService configService) {
         this.ruFeatureService = ruFeatureService;
-        this.loggingService = loggingService;
+        this.configService = configService;
     }
 
     @GetMapping(API_SETTINGS)
@@ -40,7 +41,9 @@ public class SettingsController {
             .map(RuFeature::new)
             .toList();
 
-        Logging logging = loggingService.getLogging();
-        return new SettingsResponse(List.of(new Settings(allFeatures, logging)));
+        Logging logging = configService.getLogging();
+        Preload preload = configService.getPreload();
+
+        return new SettingsResponse(List.of(new Settings(allFeatures, logging, preload)));
     }
 }
