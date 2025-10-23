@@ -92,7 +92,6 @@ auth:
       jwk-set-uri: https://login.microsoftonline.com/a64ce5df-4ad8-40b9-91ee-54bac2bb8326/discovery/v2.0/keys
 zis:
   kafka.topic: ${ZIS_TOPIC}
-  lag-alert-threshold-seconds: 60 # 1 minute
   clean-up:
     cron: 0 0 3 * * ?  # every day at 3am
     older-than-days: 100
