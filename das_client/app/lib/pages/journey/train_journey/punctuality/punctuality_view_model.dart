@@ -8,7 +8,6 @@ import 'package:sfera/component.dart';
 
 class PunctualityViewModel {
   PunctualityViewModel({required Stream<Journey?> journeyStream}) {
-    print('init PunctualityViewModel');
     _initJourneyStreamSubscription(journeyStream);
     _initTimers();
   }

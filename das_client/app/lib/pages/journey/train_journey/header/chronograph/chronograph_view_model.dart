@@ -105,6 +105,6 @@ class ChronographViewModel {
   bool get _hasLastServicePointCalculatedSpeed {
     if (_currentPositionOrder == null) return false;
     final calculatedSpeed = _calculatedSpeedViewModel.getCalculatedSpeedForOrder(_currentPositionOrder!);
-    return calculatedSpeed.speed != null && calculatedSpeed.speed!.value != '0';
+    return calculatedSpeed.speed != null;
   }
 }

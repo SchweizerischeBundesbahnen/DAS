@@ -30,7 +30,11 @@ class CalculatedSpeedViewModel {
     final metadata = _lastJourney?.metadata;
     if (metadata == null) return CalculatedSpeed.none();
 
-    final calculatedSpeed = metadata.calculatedSpeeds[order];
+    var key = order;
+    if (!metadata.calculatedSpeeds.containsKey(key)) {
+      key = metadata.calculatedSpeeds.lastKeyBefore(order) ?? order;
+    }
+    final calculatedSpeed = metadata.calculatedSpeeds[key];
 
     if (calculatedSpeed == null) return CalculatedSpeed.none();
 
