@@ -3,8 +3,8 @@ import 'package:sfera/component.dart';
 class CalculatedSpeed {
   CalculatedSpeed({
     required this.speed,
-    this.sameAsPrevious = false,
-    this.reducedDueToLineSpeed = false,
+    this.isSameAsPrevious = false,
+    this.isReducedDueToLineSpeed = false,
   });
 
   factory CalculatedSpeed.none() {
@@ -14,6 +14,6 @@ class CalculatedSpeed {
   }
 
   final SingleSpeed? speed;
-  final bool sameAsPrevious;
-  final bool reducedDueToLineSpeed;
+  final bool isSameAsPrevious;
+  final bool isReducedDueToLineSpeed;
 }

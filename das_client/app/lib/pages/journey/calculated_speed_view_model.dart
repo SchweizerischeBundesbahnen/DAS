@@ -34,7 +34,7 @@ class CalculatedSpeedViewModel {
 
     if (calculatedSpeed == null) return CalculatedSpeed.none();
 
-    final lastKey = metadata.lineSpeeds.lastKeyBefore(order);
+    final lastKey = metadata.calculatedSpeeds.lastKeyBefore(order);
     final lastCalculatedSpeed = lastKey != null ? metadata.calculatedSpeeds[lastKey] : null;
     final sameAsPrevious = calculatedSpeed == lastCalculatedSpeed;
 
@@ -43,8 +43,8 @@ class CalculatedSpeedViewModel {
 
     return CalculatedSpeed(
       speed: reducedDueToLineSpeed ? resolvedLineSpeed!.speed as SingleSpeed : calculatedSpeed,
-      sameAsPrevious: sameAsPrevious,
-      reducedDueToLineSpeed: reducedDueToLineSpeed,
+      isSameAsPrevious: sameAsPrevious,
+      isReducedDueToLineSpeed: reducedDueToLineSpeed,
     );
   }
 

@@ -48,9 +48,9 @@ class CalculatedSpeedCellBody extends StatelessWidget {
         final speed = calculatedSpeed.speed!;
 
         final shouldShowPrevious = _shouldShowPrevious(state);
-        if (calculatedSpeed.sameAsPrevious && !shouldShowPrevious) return DASTableCell.emptyBuilder;
+        if (calculatedSpeed.isSameAsPrevious && !shouldShowPrevious) return DASTableCell.emptyBuilder;
 
-        final isSpeedReducedDueToLineSpeed = calculatedSpeed.reducedDueToLineSpeed;
+        final isSpeedReducedDueToLineSpeed = calculatedSpeed.isReducedDueToLineSpeed;
 
         final reducedColor = isNextStop ? SBBColors.cement : SBBColors.metal;
         final color = isNextStop ? SBBColors.white : null;
