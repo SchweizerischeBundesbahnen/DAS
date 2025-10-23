@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'package:app/pages/journey/calculated_speed.dart';
+import 'package:app/pages/journey/calculated_speed_view_model.dart';
 import 'package:app/pages/journey/train_journey/advised_speed/advised_speed_model.dart';
 import 'package:app/pages/journey/train_journey/header/chronograph/chronograph_view_model.dart';
 import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
@@ -10,9 +12,16 @@ import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sfera/component.dart';
 
+import 'chronograph_view_model_test.mocks.dart';
+
+@GenerateNiceMocks([
+  MockSpec<CalculatedSpeedViewModel>(),
+])
 void main() {
   const testDelay = Delay(value: Duration(seconds: 10), location: 'Bern');
   const aServicePoint = ServicePoint(name: 'A', order: 0, kilometre: []);
@@ -32,6 +41,7 @@ void main() {
   late List<PunctualityModel> punctualityEmitRegister;
   late List<String> formattedWallclockTimeRegister;
   late FakeAsync testAsync;
+  late CalculatedSpeedViewModel mockCalculatedSpeedViewModel;
 
   final activeAdvisedSpeedModel = AdvisedSpeedModel.active(
     segment: VelocityMaxAdvisedSpeedSegment(
@@ -55,6 +65,14 @@ void main() {
 
   setUp(() {
     testClock = Clock.fixed(clock.now());
+    mockCalculatedSpeedViewModel = MockCalculatedSpeedViewModel();
+    when(
+      mockCalculatedSpeedViewModel.getCalculatedSpeedForOrder(bServicePoint.order),
+    ).thenReturn(CalculatedSpeed(speed: SingleSpeed(value: '100')));
+    when(
+      mockCalculatedSpeedViewModel.getCalculatedSpeedForOrder(aServicePoint.order),
+    ).thenReturn(CalculatedSpeed.none());
+
     fakeAsync((fakeAsync) {
       rxMockJourney = BehaviorSubject<Journey?>();
       rxMockAdvisedSpeedModel = BehaviorSubject<AdvisedSpeedModel>.seeded(AdvisedSpeedModel.inactive());
@@ -68,6 +86,7 @@ void main() {
           punctualityStream: rxMockPunctuality.stream,
           journeyStream: rxMockJourney.stream,
           advisedSpeedModelStream: rxMockAdvisedSpeedModel.stream,
+          calculatedSpeedViewModel: mockCalculatedSpeedViewModel,
         );
         formattedWallclockTimeSubscription = testee.formattedWallclockTime.listen(formattedWallclockTimeRegister.add);
       });
@@ -174,7 +193,7 @@ void main() {
     test('punctualityModel_HasLastServicePoint_staysHiddenAndDoesNotEmit', () {
       // ACT
       testAsync.run((_) {
-        rxMockJourneyPosition.add(JourneyPositionModel(previousServicePoint: aServicePoint));
+        rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: aServicePoint));
       });
 
       // EXPECT
@@ -202,7 +221,7 @@ void main() {
     test('punctualityModel_ServicePointWithoutCalculatedSpeed_staysHiddenAndDoesNotEmit', () {
       // ACT
       testAsync.run((_) {
-        rxMockJourneyPosition.add(JourneyPositionModel(previousServicePoint: aServicePoint));
+        rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: aServicePoint));
       });
       _processStreamInFakeAsync(testAsync);
 
@@ -214,7 +233,7 @@ void main() {
     test('punctualityModel_ServicePointWithCalculatedSpeed_emitsVisible', () {
       // ACT
       testAsync.run((_) {
-        rxMockJourneyPosition.add(JourneyPositionModel(previousServicePoint: bServicePoint));
+        rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: bServicePoint));
       });
       _processStreamInFakeAsync(testAsync);
 
@@ -229,7 +248,7 @@ void main() {
         // ACT
         testAsync.run((_) {
           rxMockAdvisedSpeedModel.add(activeAdvisedSpeedModel);
-          rxMockJourneyPosition.add(JourneyPositionModel(previousServicePoint: bServicePoint));
+          rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: bServicePoint));
         });
         _processStreamInFakeAsync(testAsync);
 
@@ -244,7 +263,7 @@ void main() {
       () {
         // ACT
         testAsync.run((_) {
-          rxMockJourneyPosition.add(JourneyPositionModel(previousServicePoint: bServicePoint));
+          rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: bServicePoint));
           rxMockAdvisedSpeedModel.add(activeAdvisedSpeedModel);
         });
         _processStreamInFakeAsync(testAsync);
@@ -261,7 +280,7 @@ void main() {
       () {
         // ACT
         testAsync.run((_) {
-          rxMockJourneyPosition.add(JourneyPositionModel(previousServicePoint: bServicePoint));
+          rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: bServicePoint));
           rxMockPunctuality.add(testStaleModel);
         });
         _processStreamInFakeAsync(testAsync);
@@ -278,7 +297,7 @@ void main() {
       () {
         // ACT
         testAsync.run((_) {
-          rxMockJourneyPosition.add(JourneyPositionModel(previousServicePoint: bServicePoint));
+          rxMockJourneyPosition.add(JourneyPositionModel(currentPosition: bServicePoint));
           rxMockPunctuality.add(testStaleModel);
           rxMockPunctuality.add(testHiddenModel);
         });

@@ -1,4 +1,6 @@
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/calculated_speed_view_model.dart';
+import 'package:app/pages/journey/line_speed_view_model.dart';
 import 'package:app/pages/journey/train_journey/advised_speed/advised_speed_notification.dart';
 import 'package:app/pages/journey/train_journey/advised_speed/advised_speed_view_model.dart';
 import 'package:app/pages/journey/train_journey/collapsible_rows_view_model.dart';
@@ -101,19 +103,31 @@ class TrainJourneyOverview extends StatelessWidget {
           ),
           dispose: (_, vm) => vm.dispose(),
         ),
+        Provider(
+          create: (_) => LineSpeedViewModel(
+            trainJourneyViewModel: trainJourneyViewModel,
+          ),
+          dispose: (_, vm) => vm.dispose(),
+        ),
       ],
-      builder: (context, child) {
-        return Provider(
+      builder: (context, child) => Provider(
+        create: (_) => CalculatedSpeedViewModel(
+          trainJourneyViewModel: trainJourneyViewModel,
+          lineSpeedViewModel: context.read<LineSpeedViewModel>(),
+        ),
+        dispose: (_, vm) => vm.dispose(),
+        builder: (context, child) => Provider(
           create: (_) => ChronographViewModel(
             journeyStream: trainJourneyViewModel.journey,
             journeyPositionStream: context.read<JourneyPositionViewModel>().model,
             punctualityStream: context.read<PunctualityViewModel>().model,
             advisedSpeedModelStream: context.read<AdvisedSpeedViewModel>().model,
+            calculatedSpeedViewModel: context.read<CalculatedSpeedViewModel>(),
           ),
           dispose: (_, vm) => vm.dispose(),
-          builder: (context, child) => _body(context),
-        );
-      },
+          child: _body(context),
+        ),
+      ),
     );
   }
 

@@ -16,6 +16,7 @@ class JourneyPositionViewModel {
     required Stream<Journey?> journeyStream,
     required Stream<PunctualityModel> punctualityStream,
   }) {
+    print('init JourneyPositionViewModel');
     _initSubscription(journeyStream, punctualityStream);
   }
 

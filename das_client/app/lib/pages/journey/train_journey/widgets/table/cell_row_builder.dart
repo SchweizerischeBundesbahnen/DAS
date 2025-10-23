@@ -146,8 +146,6 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: sbbDefaultSpacing * 0.5),
       child: LineSpeedCellBody(
-        metadata: metadata,
-        config: config.settings,
         order: data.order,
         showSpeedBehavior: showSpeedBehavior,
         isNextStop: _isNextStop,
@@ -228,8 +226,6 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     } else {
       return DASTableCell(
         child: CalculatedSpeedCellBody(
-          metadata: metadata,
-          settings: config.settings,
           order: data.order,
           showSpeedBehavior: showAdvisedSpeed && isLastAdvisedSpeed
               ? ShowSpeedBehavior.alwaysOrPrevious

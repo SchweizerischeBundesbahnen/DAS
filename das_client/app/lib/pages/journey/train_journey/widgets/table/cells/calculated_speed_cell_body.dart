@@ -1,12 +1,12 @@
+import 'package:app/pages/journey/calculated_speed_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/show_speed_behaviour.dart';
-import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/table/das_row_controller.dart';
 import 'package:app/widgets/table/das_row_controller_wrapper.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
-import 'package:sfera/component.dart';
 
 class CalculatedSpeedCellBody extends StatelessWidget {
   static const String zeroSpeedContent = '\u{2013}'; // en dash '–'
@@ -14,16 +14,12 @@ class CalculatedSpeedCellBody extends StatelessWidget {
   static const Key generalKey = Key('CalculatedSpeedCellBodyGeneralKey');
 
   const CalculatedSpeedCellBody({
-    required this.metadata,
-    required this.settings,
     required this.order,
     required this.showSpeedBehavior,
     this.isNextStop = false,
     super.key,
   });
 
-  final Metadata metadata;
-  final TrainJourneySettings settings;
   final int order;
   final ShowSpeedBehavior showSpeedBehavior;
   final bool isNextStop;
@@ -45,86 +41,35 @@ class CalculatedSpeedCellBody extends StatelessWidget {
       builder: (context, snapshot) {
         final state = snapshot.requireData;
 
-        final shouldResolvePrevious = _shouldResolvePrevious(state) && !metadata.calculatedSpeeds.containsKey(order);
-        final calculatedSpeed = metadata.calculatedSpeeds[order];
-        SingleSpeed? resolvedCalculatedSpeed =
-            calculatedSpeed ?? (shouldResolvePrevious ? _calculatedSpeedFromPrev : null);
-        final previousSpeed = _calculatedSpeedFromPrev;
+        final calculatedSpeedViewModel = context.read<CalculatedSpeedViewModel>();
+        final calculatedSpeed = calculatedSpeedViewModel.getCalculatedSpeedForOrder(order);
 
-        if (resolvedCalculatedSpeed == null ||
-            // Only repeat previous speed for sticky rows
-            (previousSpeed == resolvedCalculatedSpeed &&
-                state == DASRowState.visible &&
-                showSpeedBehavior != ShowSpeedBehavior.alwaysOrPrevious &&
-                showSpeedBehavior != ShowSpeedBehavior.always)) {
-          return DASTableCell.emptyBuilder;
-        }
+        if (calculatedSpeed.speed == null) return DASTableCell.emptyBuilder;
+        final speed = calculatedSpeed.speed!;
 
-        final resolvedLineSpeed = _resolvedTrainSeriesSpeed(
-          resolvePrevious: showSpeedBehavior == ShowSpeedBehavior.alwaysOrPreviousOnStickiness,
-        );
+        final shouldShowPrevious = _shouldShowPrevious(state);
+        if (calculatedSpeed.sameAsPrevious && !shouldShowPrevious) return DASTableCell.emptyBuilder;
 
-        final isSpeedReducedDueToLineSpeed = resolvedCalculatedSpeed.isLargerThan(resolvedLineSpeed);
-        resolvedCalculatedSpeed = _min(resolvedLineSpeed, resolvedCalculatedSpeed);
+        final isSpeedReducedDueToLineSpeed = calculatedSpeed.reducedDueToLineSpeed;
 
         final reducedColor = isNextStop ? SBBColors.cement : SBBColors.metal;
         final color = isNextStop ? SBBColors.white : null;
 
         return Text(
           key: nonEmptyKey,
-          resolvedCalculatedSpeed.value == '0' ? zeroSpeedContent : resolvedCalculatedSpeed.value,
+          speed.value == '0' ? zeroSpeedContent : speed.value,
           style: DASTextStyles.largeLight.copyWith(color: isSpeedReducedDueToLineSpeed ? reducedColor : color),
         );
       },
     );
   }
 
-  bool _shouldResolvePrevious(DASRowState state) {
+  bool _shouldShowPrevious(DASRowState state) {
     return switch (showSpeedBehavior) {
       ShowSpeedBehavior.alwaysOrPreviousOnStickiness =>
         state == DASRowState.sticky || state == DASRowState.firstVisibleRow,
       ShowSpeedBehavior.alwaysOrPrevious => true,
       _ => false,
     };
-  }
-
-  SingleSpeed? _resolvedTrainSeriesSpeed({bool resolvePrevious = false}) {
-    final inEtcsLevel2Segment = metadata.nonStandardTrackEquipmentSegments.isInEtcsLevel2Segment(order);
-    if (inEtcsLevel2Segment) return null;
-
-    var trainSeriesSpeeds = metadata.lineSpeeds[order];
-    if (trainSeriesSpeeds == null && resolvePrevious) {
-      trainSeriesSpeeds = metadata.lineSpeeds[metadata.lineSpeeds.lastKeyBefore(order)];
-    }
-
-    final selectedBreakSeries = settings.resolvedBreakSeries(metadata);
-    return trainSeriesSpeeds
-            .speedFor(
-              selectedBreakSeries?.trainSeries,
-              breakSeries: selectedBreakSeries?.breakSeries,
-            )
-            ?.speed
-        as SingleSpeed?;
-  }
-
-  SingleSpeed? get _calculatedSpeedFromPrev =>
-      metadata.calculatedSpeeds[metadata.calculatedSpeeds.lastKeyBefore(order)];
-
-  SingleSpeed _min(SingleSpeed? resolvedLineSpeed, SingleSpeed resolvedCalculatedSpeed) {
-    if (resolvedLineSpeed == null) return resolvedCalculatedSpeed;
-    if (resolvedLineSpeed.isIllegal) return resolvedCalculatedSpeed;
-    return SingleSpeed(value: _numericMin(resolvedCalculatedSpeed.value, resolvedLineSpeed.value));
-  }
-
-  String _numericMin(String a, String b) => int.parse(a) > int.parse(b) ? b : a;
-}
-
-// extension
-
-extension _SingleSpeedExtension on SingleSpeed {
-  bool isLargerThan(SingleSpeed? other) {
-    if (other == null) return false;
-    if (other.isIllegal) return false;
-    return int.parse(value) > int.parse(other.value);
   }
 }
