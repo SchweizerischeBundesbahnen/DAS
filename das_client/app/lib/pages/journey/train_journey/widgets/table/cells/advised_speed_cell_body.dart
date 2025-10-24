@@ -1,9 +1,11 @@
+import 'package:app/pages/journey/line_speed_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cells/show_speed_behaviour.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/config/train_journey_settings.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:app/widgets/table/das_table_cell.dart';
 import 'package:app/widgets/table/das_table_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
 
@@ -44,7 +46,8 @@ class AdvisedSpeedCellBody extends StatelessWidget {
 
     var speed = advisedSpeed.speed;
     if (advisedSpeed is VelocityMaxAdvisedSpeedSegment) {
-      speed = _resolvedTrainSeriesSpeed();
+      final lineSpeedViewModel = context.read<LineSpeedViewModel>();
+      speed = lineSpeedViewModel.getResolvedSpeedForOrder(order).speed?.speed as SingleSpeed?;
     }
 
     final defaultTextStyle = DASTableTheme.of(context)?.data.dataTextStyle ?? DASTextStyles.largeRoman;
@@ -53,20 +56,6 @@ class AdvisedSpeedCellBody extends StatelessWidget {
       key: nonEmptyKey,
       style: defaultTextStyle.copyWith(color: SBBColors.white),
     );
-  }
-
-  SingleSpeed? _resolvedTrainSeriesSpeed() {
-    var trainSeriesSpeeds = metadata.lineSpeeds[order];
-    trainSeriesSpeeds ??= metadata.lineSpeeds[metadata.lineSpeeds.lastKeyBefore(order)];
-
-    final selectedBreakSeries = settings.resolvedBreakSeries(metadata);
-    return trainSeriesSpeeds
-            .speedFor(
-              selectedBreakSeries?.trainSeries,
-              breakSeries: selectedBreakSeries?.breakSeries,
-            )
-            ?.speed
-        as SingleSpeed?;
   }
 
   Widget _backgroundStack(BuildContext context, Widget child) {

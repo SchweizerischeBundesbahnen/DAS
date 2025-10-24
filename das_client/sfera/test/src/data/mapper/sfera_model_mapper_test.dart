@@ -1207,7 +1207,7 @@ void main() {
     expect(servicePoints, hasLength(16));
 
     // service points without calculated speed
-    final servicePointIdxWithoutCalculatedSpeed = {0, 1, 8, 10, 12, 13, 15};
+    final servicePointIdxWithoutCalculatedSpeed = {0, 1, 12, 13, 15};
     expect(
       servicePoints
           .whereIndexed((idx, _) => servicePointIdxWithoutCalculatedSpeed.contains(idx))

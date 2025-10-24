@@ -617,7 +617,7 @@ class SferaModelMapper {
     Iterable<ServicePoint> servicePoints,
   ) {
     final result = SplayTreeMap<int, SingleSpeed?>();
-    for (final servicePoint in servicePoints.where((it) => it.isStop)) {
+    for (final servicePoint in servicePoints) {
       result[servicePoint.order] = null;
     }
 
