@@ -31,25 +31,44 @@ class CalculatedSpeedViewModel {
     if (metadata == null) return CalculatedSpeed.none();
 
     var key = order;
+    var isPrevious = false;
     if (!metadata.calculatedSpeeds.containsKey(key)) {
       key = metadata.calculatedSpeeds.lastKeyBefore(order) ?? order;
+      isPrevious = true;
     }
     final calculatedSpeed = metadata.calculatedSpeeds[key];
 
     if (calculatedSpeed == null) return CalculatedSpeed.none();
 
-    final lastKey = metadata.calculatedSpeeds.lastKeyBefore(order);
+    final reducedToLineSpeedResult = _calculateReducedDueToLineSpeed(order, calculatedSpeed);
+    final finalSpeed = reducedToLineSpeedResult.$2;
+
+    final lastKey = metadata.calculatedSpeeds.lastKeyBefore(key);
     final lastCalculatedSpeed = lastKey != null ? metadata.calculatedSpeeds[lastKey] : null;
-    final sameAsPrevious = calculatedSpeed == lastCalculatedSpeed;
+    final previousReducedToLineSpeedResult = _calculateReducedDueToLineSpeed(lastKey, lastCalculatedSpeed);
+    final previousFinalSpeed = previousReducedToLineSpeedResult.$2;
+
+    final sameAsPrevious = finalSpeed == previousFinalSpeed;
+
+    return CalculatedSpeed(
+      speed: finalSpeed,
+      isPrevious: isPrevious,
+      isSameAsPrevious: sameAsPrevious,
+      isReducedDueToLineSpeed: reducedToLineSpeedResult.$1,
+    );
+  }
+
+  (bool reducedDueToLineSpeed, SingleSpeed? speed) _calculateReducedDueToLineSpeed(
+    int? order,
+    SingleSpeed? calculatedSpeed,
+  ) {
+    if (order == null || calculatedSpeed == null) {
+      return (false, calculatedSpeed);
+    }
 
     final resolvedLineSpeed = _lineSpeedViewModel.getResolvedSpeedForOrder(order).speed;
     final reducedDueToLineSpeed = calculatedSpeed.isLargerThan(resolvedLineSpeed?.speed);
-
-    return CalculatedSpeed(
-      speed: reducedDueToLineSpeed ? resolvedLineSpeed!.speed as SingleSpeed : calculatedSpeed,
-      isSameAsPrevious: sameAsPrevious,
-      isReducedDueToLineSpeed: reducedDueToLineSpeed,
-    );
+    return (reducedDueToLineSpeed, reducedDueToLineSpeed ? resolvedLineSpeed!.speed as SingleSpeed : calculatedSpeed);
   }
 
   void dispose() {

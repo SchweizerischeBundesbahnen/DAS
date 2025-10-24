@@ -41,9 +41,11 @@ class LineSpeedViewModel {
       }
     }
 
+    final speed = trainSeriesSpeeds?.speedFor(breakSeries?.trainSeries, breakSeries: breakSeries?.breakSeries);
+
     return ResolvedTrainSeriesSpeed(
-      speed: trainSeriesSpeeds?.speedFor(breakSeries?.trainSeries, breakSeries: breakSeries?.breakSeries),
-      isPrevious: isPrevious,
+      speed: speed,
+      isPrevious: speed != null ? isPrevious : false,
     );
   }
 
