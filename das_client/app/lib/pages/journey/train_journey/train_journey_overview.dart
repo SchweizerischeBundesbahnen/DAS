@@ -1,4 +1,6 @@
 import 'package:app/di/di.dart';
+import 'package:app/pages/journey/calculated_speed_view_model.dart';
+import 'package:app/pages/journey/line_speed_view_model.dart';
 import 'package:app/pages/journey/train_journey/advised_speed/advised_speed_notification.dart';
 import 'package:app/pages/journey/train_journey/advised_speed/advised_speed_view_model.dart';
 import 'package:app/pages/journey/train_journey/collapsible_rows_view_model.dart';
@@ -36,84 +38,94 @@ class TrainJourneyOverview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final trainJourneyViewModel = context.read<TrainJourneyViewModel>();
-    final punctualityViewModel = PunctualityViewModel(journeyStream: trainJourneyViewModel.journey);
-    final journeyPositionViewModel = JourneyPositionViewModel(
-      journeyStream: trainJourneyViewModel.journey,
-      punctualityStream: punctualityViewModel.model,
-    );
-    return MultiProvider(
-      providers: [
-        Provider(
-          create: (context) {
-            final controller = trainJourneyViewModel.automaticAdvancementController;
-            return DetailModalViewModel(automaticAdvancementController: controller);
-          },
-          dispose: (_, vm) => vm.dispose(),
+    return Provider(
+      create: (context) => PunctualityViewModel(journeyStream: trainJourneyViewModel.journey),
+      dispose: (_, vm) => vm.dispose(),
+      builder: (context, child) => Provider(
+        create: (context) => JourneyPositionViewModel(
+          journeyStream: trainJourneyViewModel.journey,
+          punctualityStream: context.read<PunctualityViewModel>().model,
         ),
-        Provider(
-          create: (_) => punctualityViewModel,
-          dispose: (_, vm) => vm.dispose(),
-        ),
-        Provider(
-          create: (_) => CollapsibleRowsViewModel(
-            journeyStream: trainJourneyViewModel.journey,
-            journeyPositionStream: journeyPositionViewModel.model,
+        dispose: (_, vm) => vm.dispose(),
+        builder: (context, child) => MultiProvider(
+          providers: [
+            Provider(
+              create: (context) {
+                final controller = trainJourneyViewModel.automaticAdvancementController;
+                return DetailModalViewModel(automaticAdvancementController: controller);
+              },
+              dispose: (_, vm) => vm.dispose(),
+            ),
+            Provider(
+              create: (_) => CollapsibleRowsViewModel(
+                journeyStream: trainJourneyViewModel.journey,
+                journeyPositionStream: context.read<JourneyPositionViewModel>().model,
+              ),
+              dispose: (context, vm) => vm.dispose(),
+            ),
+            Provider(
+              create: (_) => ServicePointModalViewModel(localRegulationHtmlGenerator: DI.get()),
+              dispose: (_, vm) => vm.dispose(),
+            ),
+            Provider(
+              create: (_) => AdditionalSpeedRestrictionModalViewModel(),
+              dispose: (_, vm) => vm.dispose(),
+            ),
+            Provider(
+              create: (_) => ArrivalDepartureTimeViewModel(
+                journeyStream: trainJourneyViewModel.journey,
+              ),
+              dispose: (_, vm) => vm.dispose(),
+            ),
+            Provider(
+              create: (_) => UxTestingViewModel(sferaService: DI.get(), ruFeatureProvider: DI.get()),
+              dispose: (_, vm) => vm.dispose(),
+            ),
+            Provider(
+              create: (_) => AdvisedSpeedViewModel(
+                journeyStream: trainJourneyViewModel.journey,
+                journeyPositionStream: context.read<JourneyPositionViewModel>().model,
+              ),
+              dispose: (_, vm) => vm.dispose(),
+            ),
+            Provider(
+              create: (_) => ConnectivityViewModel(connectivityManager: DI.get()),
+              dispose: (_, vm) => vm.dispose(),
+            ),
+            Provider(
+              create: (_) => ReplacementSeriesViewModel(
+                trainJourneyViewModel: trainJourneyViewModel,
+                journeyPositionViewModel: context.read<JourneyPositionViewModel>(),
+              ),
+              dispose: (_, vm) => vm.dispose(),
+            ),
+            Provider(
+              create: (_) => LineSpeedViewModel(
+                trainJourneyViewModel: trainJourneyViewModel,
+              ),
+              dispose: (_, vm) => vm.dispose(),
+            ),
+          ],
+          builder: (context, child) => Provider(
+            create: (_) => CalculatedSpeedViewModel(
+              trainJourneyViewModel: trainJourneyViewModel,
+              lineSpeedViewModel: context.read<LineSpeedViewModel>(),
+            ),
+            dispose: (_, vm) => vm.dispose(),
+            builder: (context, child) => Provider(
+              create: (_) => ChronographViewModel(
+                journeyStream: trainJourneyViewModel.journey,
+                journeyPositionStream: context.read<JourneyPositionViewModel>().model,
+                punctualityStream: context.read<PunctualityViewModel>().model,
+                advisedSpeedModelStream: context.read<AdvisedSpeedViewModel>().model,
+                calculatedSpeedViewModel: context.read<CalculatedSpeedViewModel>(),
+              ),
+              dispose: (_, vm) => vm.dispose(),
+              child: _body(context),
+            ),
           ),
-          dispose: (context, vm) => vm.dispose(),
         ),
-        Provider(
-          create: (_) => ServicePointModalViewModel(localRegulationHtmlGenerator: DI.get()),
-          dispose: (_, vm) => vm.dispose(),
-        ),
-        Provider(
-          create: (_) => AdditionalSpeedRestrictionModalViewModel(),
-          dispose: (_, vm) => vm.dispose(),
-        ),
-        Provider(
-          create: (_) => ArrivalDepartureTimeViewModel(
-            journeyStream: trainJourneyViewModel.journey,
-          ),
-          dispose: (_, vm) => vm.dispose(),
-        ),
-        Provider(
-          create: (_) => UxTestingViewModel(sferaService: DI.get(), ruFeatureProvider: DI.get()),
-          dispose: (_, vm) => vm.dispose(),
-        ),
-        Provider(
-          create: (_) => AdvisedSpeedViewModel(
-            journeyStream: trainJourneyViewModel.journey,
-            journeyPositionStream: journeyPositionViewModel.model,
-          ),
-          dispose: (_, vm) => vm.dispose(),
-        ),
-        Provider(
-          create: (_) => journeyPositionViewModel,
-          dispose: (_, vm) => vm.dispose(),
-        ),
-        Provider(
-          create: (_) => ConnectivityViewModel(connectivityManager: DI.get()),
-          dispose: (_, vm) => vm.dispose(),
-        ),
-        Provider(
-          create: (_) => ReplacementSeriesViewModel(
-            trainJourneyViewModel: trainJourneyViewModel,
-            journeyPositionViewModel: journeyPositionViewModel,
-          ),
-          dispose: (_, vm) => vm.dispose(),
-        ),
-      ],
-      builder: (context, child) {
-        return Provider(
-          create: (_) => ChronographViewModel(
-            journeyStream: trainJourneyViewModel.journey,
-            journeyPositionStream: context.read<JourneyPositionViewModel>().model,
-            punctualityStream: context.read<PunctualityViewModel>().model,
-            advisedSpeedModelStream: context.read<AdvisedSpeedViewModel>().model,
-          ),
-          dispose: (_, vm) => vm.dispose(),
-          builder: (context, child) => _body(context),
-        );
-      },
+      ),
     );
   }
 

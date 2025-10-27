@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:collection';
 
+import 'package:app/pages/journey/calculated_speed_view_model.dart';
 import 'package:app/pages/journey/train_journey/advised_speed/advised_speed_model.dart';
 import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/train_journey/punctuality/punctuality_model.dart';
@@ -17,16 +17,18 @@ class ChronographViewModel {
     required Stream<JourneyPositionModel?> journeyPositionStream,
     required Stream<PunctualityModel> punctualityStream,
     required Stream<AdvisedSpeedModel> advisedSpeedModelStream,
-  }) {
+    required CalculatedSpeedViewModel calculatedSpeedViewModel,
+  }) : _calculatedSpeedViewModel = calculatedSpeedViewModel {
     _initJourneySubscription(journeyStream);
     _initJourneyPositionSubscription(journeyPositionStream);
     _initPunctualitySubscription(punctualityStream);
     _initAdvisedSpeedSubscription(advisedSpeedModelStream);
   }
 
+  final CalculatedSpeedViewModel _calculatedSpeedViewModel;
+
   bool _isAdvisedSpeedActive = false;
-  ServicePoint? _lastServicePoint;
-  SplayTreeMap<int, SingleSpeed?>? _calculatedSpeeds;
+  int? _currentPositionOrder;
 
   PunctualityModel _punctualityModel = PunctualityModel.hidden();
 
@@ -59,18 +61,14 @@ class ChronographViewModel {
 
   void _initJourneySubscription(Stream<Journey?> journeyStream) {
     _subscriptions.add(
-      journeyStream.listen((journey) {
-        _calculatedSpeeds = journey?.metadata.calculatedSpeeds;
-
-        _emitState();
-      }),
+      journeyStream.listen((_) => _emitState()),
     );
   }
 
   void _initJourneyPositionSubscription(Stream<JourneyPositionModel?> journeyPositionStream) {
     _subscriptions.add(
       journeyPositionStream.listen((model) {
-        _lastServicePoint = model?.previousServicePoint;
+        _currentPositionOrder = model?.currentPosition?.order;
 
         _emitState();
       }),
@@ -103,9 +101,8 @@ class ChronographViewModel {
   }
 
   bool get _hasLastServicePointCalculatedSpeed {
-    final lastServicePointOrder = _lastServicePoint?.order;
-    return lastServicePointOrder != null &&
-        _calculatedSpeeds != null &&
-        _calculatedSpeeds![lastServicePointOrder] != null;
+    if (_currentPositionOrder == null) return false;
+    final calculatedSpeed = _calculatedSpeedViewModel.getCalculatedSpeedForOrder(_currentPositionOrder!);
+    return calculatedSpeed.speed != null;
   }
 }

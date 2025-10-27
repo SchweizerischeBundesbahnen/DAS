@@ -117,7 +117,7 @@ void main() {
 
     await dragUntilTextInStickyHeader(tester, oerlikon);
 
-    // filled from Zürich HB
+    // only show once in sticky header
     expect(zuerichOerlikonStationRow, findsOneWidget);
     _findTextWithin(zuerichOerlikonStationRow, '90');
 

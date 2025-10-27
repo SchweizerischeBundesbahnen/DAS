@@ -67,7 +67,7 @@ void main() {
 
     // Check that advised speed end displayed calculated speed on signal row
     final advisedSpeedEndRow = findDASTableRowByText('A653');
-    await waitUntilExists(tester, _findCalculatedSpeedCellOf(advisedSpeedEndRow, '100'));
+    await waitUntilExists(tester, _findCalculatedSpeedCellOf(advisedSpeedEndRow, '80'));
 
     await waitUntilExists(
       tester,
@@ -77,7 +77,7 @@ void main() {
 
     // Check that advisedSpeed end displayed calculated speed on signal row
     final advisedSpeedEndRowServicePoint = findDASTableRowByText('Morges');
-    expect(_findCalculatedSpeedCellOf(advisedSpeedEndRowServicePoint, '100'), findsOne);
+    expect(_findCalculatedSpeedCellOf(advisedSpeedEndRowServicePoint, '80'), findsOne);
 
     await disconnect(tester);
   });
