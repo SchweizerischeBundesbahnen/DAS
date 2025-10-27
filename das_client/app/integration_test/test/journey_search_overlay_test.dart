@@ -93,7 +93,10 @@ void main() {
       await tapElement(tester, primaryButton);
 
       // wait until T2 opened
-      await waitUntilExists(tester, find.descendant(of: find.byType(Header), matching: find.text('T2 SBB')));
+      await waitUntilExists(
+        tester,
+        find.descendant(of: find.byType(Header), matching: find.text('T2 ${l10n.c_ru_sbb_p}')),
+      );
       await tester.pumpAndSettle();
 
       // should not display navigation buttons (autoAdvancement is active)
@@ -116,7 +119,10 @@ void main() {
       await tapElement(tester, previousButton);
 
       // wait until T1 opened
-      await waitUntilExists(tester, find.descendant(of: find.byType(Header), matching: find.text('T1 SBB')));
+      await waitUntilExists(
+        tester,
+        find.descendant(of: find.byType(Header), matching: find.text('T1 ${l10n.c_ru_sbb_p}')),
+      );
 
       await disconnect(tester);
     });
