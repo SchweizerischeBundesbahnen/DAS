@@ -26,7 +26,6 @@ extension RuExtension on RailwayUndertaking {
     RailwayUndertaking.mbc => context.l10n.c_ru_mbc,
     RailwayUndertaking.unknown => context.l10n.c_unknown,
   };
-
   String localizedText(AppLocalizations localizations) => switch (this) {
     RailwayUndertaking.blsN => localizations.c_ru_bls_n,
     RailwayUndertaking.blsP => localizations.c_ru_bls_p,
