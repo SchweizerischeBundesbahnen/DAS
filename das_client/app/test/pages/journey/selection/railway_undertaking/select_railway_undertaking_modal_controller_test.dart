@@ -89,13 +89,12 @@ void main() {
         emitRegister,
         orderedEquals([
           RailwayUndertaking.sbbC,
-          RailwayUndertaking.sbbP,
           RailwayUndertaking.sbb,
-          RailwayUndertaking.sbbCInt,
+          RailwayUndertaking.sbbP,
           RailwayUndertaking.sbbD,
+          RailwayUndertaking.sbbInfra,
           RailwayUndertaking.sbbInfraBuildLog,
-          RailwayUndertaking.sbbInfraPath,
-          RailwayUndertaking.sbbEPA,
+          RailwayUndertaking.sbbCInt,
         ]),
       );
     });
