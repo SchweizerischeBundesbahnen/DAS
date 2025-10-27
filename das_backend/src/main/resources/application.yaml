@@ -116,6 +116,7 @@ sfera:
   topic-prefix: ${SFERA_BROKER_TOPIC_PREFIX}
 
 preload:
+  # deactivated for now
   fetch-cron: '-'
   bucket:
     bucketUrl: ${PRELOAD_BUCKET_URL}

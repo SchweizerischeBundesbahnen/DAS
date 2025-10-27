@@ -1,8 +1,7 @@
-package ch.sbb.backend.preload;
+package ch.sbb.backend.preload.application;
 
 import static org.xmlunit.assertj3.XmlAssert.assertThat;
 
-import ch.sbb.backend.preload.application.SferaMessageCreator;
 import ch.sbb.backend.preload.domain.SegmentProfileIdentification;
 import ch.sbb.backend.preload.domain.TrainIdentification;
 import ch.sbb.backend.preload.infrastructure.xml.SferaMessagingConfig;

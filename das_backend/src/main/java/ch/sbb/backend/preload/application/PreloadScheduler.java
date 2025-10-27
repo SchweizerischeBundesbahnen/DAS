@@ -10,6 +10,7 @@ import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -28,8 +29,7 @@ public class PreloadScheduler {
         this.storageService = storageService;
     }
 
-    //    TODO: deactivated for now
-    //    @Scheduled(fixedDelayString = "${preload.fetch-interval-ms:30000}")
+    @Scheduled(cron = "${preload.fetch-cron}")
     public void scheduledPreload() {
         log.info("Preload started");
         long startTime = System.currentTimeMillis();
@@ -41,6 +41,7 @@ public class PreloadScheduler {
         // todo timestamp from s3 or cache to get only new trains
         for (TrainIdentification trainIdentification : trainIdentificationsService.getNewTrainIdentifications(OffsetDateTime.now())) {
             try {
+                // todo: "InterruptedException" and "ThreadDeath" should not be ignored
                 PreloadResult preload = sferaService.preload(trainIdentification);
                 jps.addAll(preload.jps());
                 sps.addAll(preload.sps());

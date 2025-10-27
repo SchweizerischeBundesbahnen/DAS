@@ -1,20 +1,22 @@
-package ch.sbb.backend.preload;
+package ch.sbb.backend.preload.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import ch.sbb.backend.preload.infrastructure.S3Service;
+import ch.sbb.backend.preload.infrastructure.xml.SferaMessagingConfig;
+import ch.sbb.backend.preload.infrastructure.xml.XmlDateHelper;
+import ch.sbb.backend.preload.infrastructure.xml.XmlHelper;
 import ch.sbb.backend.preload.sfera.model.v0300.JourneyProfile;
 import ch.sbb.backend.preload.sfera.model.v0300.OTNIDComplexType;
 import ch.sbb.backend.preload.sfera.model.v0300.TrainIdentificationComplexType;
-import ch.sbb.backend.preload.xml.SferaMessagingConfig;
-import ch.sbb.backend.preload.xml.XmlDateHelper;
-import ch.sbb.backend.preload.xml.XmlHelper;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import org.junit.jupiter.api.Test;
@@ -24,15 +26,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-@SpringBootTest(classes = {PreloadStorageService.class, XmlHelper.class, SferaMessagingConfig.class})
+@SpringBootTest(classes = {StorageService.class, XmlHelper.class, SferaMessagingConfig.class})
 @ActiveProfiles("test")
-class PreloadStorageServiceTest {
+class StorageServiceTest {
 
     @MockitoBean
     S3Service s3Service;
 
     @Autowired
-    PreloadStorageService underTest;
+    StorageService underTest;
 
     private static List<String> listZipEntries(byte[] zipBytes) throws IOException {
         List<String> names = new ArrayList<>();
@@ -61,7 +63,7 @@ class PreloadStorageServiceTest {
 
     @Test
     void test_doesNotCreateEmptyDirectoriesWhenNoFiles() throws Exception {
-        underTest.save(List.of(), List.of(), List.of());
+        underTest.save(Set.of(), Set.of(), Set.of());
 
         ArgumentCaptor<String> zipNameCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<byte[]> uploadDataCaptor = ArgumentCaptor.forClass(byte[].class);
@@ -78,7 +80,7 @@ class PreloadStorageServiceTest {
 
     @Test
     void test_createsZipWithOneJp() throws Exception {
-        underTest.save(List.of(createJp()), List.of(), List.of());
+        underTest.save(Set.of(createJp()), Set.of(), Set.of());
 
         ArgumentCaptor<String> zipNameCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<byte[]> uploadDataCaptor = ArgumentCaptor.forClass(byte[].class);
