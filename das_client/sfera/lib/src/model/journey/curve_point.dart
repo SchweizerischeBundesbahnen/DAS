@@ -1,4 +1,3 @@
-// lib/src/model/journey/curve_point.dart
 import 'package:collection/collection.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/model/journey/order_priority.dart';

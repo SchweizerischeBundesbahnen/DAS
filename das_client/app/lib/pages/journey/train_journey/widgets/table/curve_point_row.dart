@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/widgets/assets.dart';
@@ -17,19 +18,33 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
     super.config,
   });
 
-  late final isSummarizedCurve = data.curvePointType == CurvePointType.summarized;
+  @override
+  DASTableCell localSpeedCell(BuildContext context) => speedCell(data.localSpeeds);
 
   @override
-  DASTableCell localSpeedCell(BuildContext context) {
-    return speedCell(data.localSpeeds);
+  DASTableCell kilometreCell(BuildContext context) {
+    if (data.kilometre.isEmpty) {
+      return DASTableCell.empty(color: specialCellColor);
+    } else {
+      return DASTableCell(
+        color: specialCellColor,
+        padding: const EdgeInsets.all(8.0),
+        alignment: Alignment.centerLeft,
+        clipBehaviour: Clip.none,
+        child: Text(
+          data.kilometre[0].toStringAsFixed(1),
+        ),
+      );
+    }
   }
 
   @override
   DASTableCell informationCell(BuildContext context) {
-    //TODO currently takes every curve which im not sure why... look for problem in segment_profile_mapper
-    final text = isSummarizedCurve
-        ? '${data.curveType?.localizedName(context)} km 34 - km 56'
-        : data.curveType?.localizedName(context) ?? '';
+    final typeText = data.curveType?.localizedName(context) ?? '';
+    final startKm = _stringifyKm(data.kilometre.firstOrNull);
+    final endKm = _stringifyKm(data.kilometre.length > 1 ? data.kilometre.last : null);
+
+    final text = endKm.isNotEmpty ? '$typeText km $startKm - $endKm' : (startKm.isNotEmpty ? typeText : typeText);
 
     return DASTableCell(
       child: Text(
@@ -48,6 +63,12 @@ class CurvePointRow extends CellRowBuilder<CurvePoint> {
       ),
       alignment: Alignment.center,
     );
+  }
+
+  String _stringifyKm(Object? km) {
+    if (km == null) return '';
+    final s = km.toString().trim();
+    return s.isEmpty ? '' : s;
   }
 }
 

@@ -33,7 +33,6 @@ class _MapperData {
 
 final _log = Logger('SegmentProfileMapper');
 
-/// Used to map journey data from a SFERA segment profile.
 class SegmentProfileMapper {
   SegmentProfileMapper._();
 
@@ -64,13 +63,11 @@ class SegmentProfileMapper {
     journeyData.addAll(_parseServicePoint(mapperData, segmentProfiles, segmentProfileReference));
 
     final curvePoints = _parseCurvePoints(mapperData);
-    final curveBeginPoints = curvePoints.where((curve) => curve.curvePointType == CurvePointType.begin);
-    journeyData.addAll(curveBeginPoints);
+    journeyData.addAll(curvePoints);
 
     final newLineSpeeds = _parseNewLineSpeed(mapperData);
     final connectionTracks = _parseConnectionTrack(mapperData, newLineSpeeds);
 
-    // Remove new line speeds that are already present as connection tracks
     newLineSpeeds.removeWhere(
       (speedChange) =>
           connectionTracks.firstWhereOrNull((connectionTrack) => connectionTrack.order == speedChange.order) != null,
@@ -249,49 +246,36 @@ class SegmentProfileMapper {
         .sortedBy((p) => p.order)
         .toList();
 
-    final segments = <MapEntry<CurvePoint, CurvePoint>>[];
-    CurvePoint? open;
-    for (final p in points) {
-      if (p.curvePointType == CurvePointType.begin) {
-        open = p;
-      } else if (p.curvePointType == CurvePointType.end) {
-        if (open != null) {
-          segments.add(MapEntry(open, p));
-          open = null;
-        }
+    final summarized = <CurvePoint>[];
+    CurvePoint? temporary;
+
+    for (final point in points) {
+      if (point.curvePointType == CurvePointType.begin) {
+        temporary = point;
+        continue;
       }
-    }
-
-    if (segments.isEmpty) {
-      return points.where((p) => p.curvePointType == CurvePointType.begin).toList();
-    }
-
-    final merged = <MapEntry<CurvePoint, CurvePoint>>[];
-    var current = segments.first;
-    for (var i = 1; i < segments.length; i++) {
-      final next = segments[i];
-      if (current.value.order == next.key.order) {
-        current = MapEntry(current.key, next.value);
-      } else {
-        merged.add(current);
-        current = next;
-      }
-    }
-    merged.add(current);
-
-    return merged
-        .map(
-          (s) => CurvePoint(
-            order: s.key.order,
-            kilometre: s.key.kilometre,
-            localSpeeds: s.key.localSpeeds,
-            curvePointType: CurvePointType.begin,
-            curveType: s.key.curveType,
-            text: s.key.text,
-            comment: s.key.comment,
+      if (point.curvePointType == CurvePointType.end && temporary != null) {
+        final startKm = temporary.kilometre.firstOrNull;
+        final endKm = point.kilometre.firstOrNull;
+        summarized.add(
+          CurvePoint(
+            order: temporary.order,
+            kilometre: [
+              if (startKm != null) startKm,
+              if (endKm != null) endKm,
+            ],
+            localSpeeds: temporary.localSpeeds,
+            curvePointType: CurvePointType.summarized,
+            curveType: temporary.curveType,
+            text: temporary.text,
+            comment: temporary.comment,
           ),
-        )
-        .toList();
+        );
+        temporary = null;
+      }
+    }
+
+    return summarized;
   }
 
   static List<ConnectionTrack> _parseConnectionTrack(_MapperData mapperData, List<SpeedChange> newLineSpeeds) {
