@@ -47,8 +47,7 @@ class CalculatedSpeedCellBody extends StatelessWidget {
         if (calculatedSpeed.speed == null) return DASTableCell.emptyBuilder;
         final speed = calculatedSpeed.speed!;
 
-        final shouldShowPrevious = _shouldShowPrevious(state);
-        if (!shouldShowPrevious && (calculatedSpeed.isSameAsPrevious || calculatedSpeed.isPrevious)) {
+        if (!_shouldShowPrevious(state) && (calculatedSpeed.isSameAsPrevious || calculatedSpeed.isPrevious)) {
           return DASTableCell.emptyBuilder;
         }
 

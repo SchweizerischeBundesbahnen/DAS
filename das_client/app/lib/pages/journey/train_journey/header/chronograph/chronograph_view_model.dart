@@ -61,9 +61,7 @@ class ChronographViewModel {
 
   void _initJourneySubscription(Stream<Journey?> journeyStream) {
     _subscriptions.add(
-      journeyStream.listen((journey) {
-        _emitState();
-      }),
+      journeyStream.listen((_) => _emitState()),
     );
   }
 

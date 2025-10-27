@@ -8,11 +8,7 @@ class CalculatedSpeed {
     this.isReducedDueToLineSpeed = false,
   });
 
-  factory CalculatedSpeed.none() {
-    return CalculatedSpeed(
-      speed: null,
-    );
-  }
+  factory CalculatedSpeed.none() => CalculatedSpeed(speed: null);
 
   final SingleSpeed? speed;
   final bool isPrevious;

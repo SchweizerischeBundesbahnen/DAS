@@ -12,18 +12,18 @@ class LineSpeedViewModel {
   }
 
   final TrainJourneyViewModel _trainJourneyViewModel;
-  Journey? _lastJourney;
+  Metadata? _lastMetadata;
 
   StreamSubscription? _journeySubscription;
 
   void _init() {
     _journeySubscription = _trainJourneyViewModel.journey.listen((journey) {
-      _lastJourney = journey;
+      _lastMetadata = journey?.metadata;
     });
   }
 
   ResolvedTrainSeriesSpeed getResolvedSpeedForOrder(int order) {
-    final metadata = _lastJourney?.metadata;
+    final metadata = _lastMetadata;
     if (metadata == null) return ResolvedTrainSeriesSpeed.none();
 
     final settings = _trainJourneyViewModel.settingsValue;

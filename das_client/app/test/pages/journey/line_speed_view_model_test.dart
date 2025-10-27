@@ -178,4 +178,4 @@ void main() {
   });
 }
 
-Future<void> processStreams() async => await Future.delayed(const Duration(milliseconds: 10));
+Future<void> processStreams() async => await Future.delayed(Duration.zero);

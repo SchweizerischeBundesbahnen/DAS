@@ -16,18 +16,18 @@ class CalculatedSpeedViewModel {
 
   final TrainJourneyViewModel _trainJourneyViewModel;
   final LineSpeedViewModel _lineSpeedViewModel;
-  Journey? _lastJourney;
+  Metadata? _lastMetadata;
 
   StreamSubscription? _journeySubscription;
 
   void _init() {
     _journeySubscription = _trainJourneyViewModel.journey.listen((journey) {
-      _lastJourney = journey;
+      _lastMetadata = journey?.metadata;
     });
   }
 
   CalculatedSpeed getCalculatedSpeedForOrder(int order) {
-    final metadata = _lastJourney?.metadata;
+    final metadata = _lastMetadata;
     if (metadata == null) return CalculatedSpeed.none();
 
     var key = order;
