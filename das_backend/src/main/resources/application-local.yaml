@@ -4,3 +4,8 @@ spring:
       file: ./das_backend/compose.yaml
   config:
     import: optional:file:./das_backend/.env[.properties]
+zis:
+  clean-up:
+    cron: '-'
+  kafka:
+    enabled: false

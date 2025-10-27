@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart';
+
 enum RailwayUndertaking {
   blsN(companyCode: '0063'),
   blsP(companyCode: '1163'),
@@ -18,7 +20,8 @@ enum RailwayUndertaking {
   tpfInfra(companyCode: '5234'),
   tpfTrafic(companyCode: '5495'),
   tmr(companyCode: '5429'),
-  mbc(companyCode: '5230');
+  mbc(companyCode: '5230'),
+  unknown(companyCode: '-1');
 
   const RailwayUndertaking({
     required this.companyCode,
@@ -26,7 +29,9 @@ enum RailwayUndertaking {
 
   final String companyCode;
 
+  static Iterable<RailwayUndertaking> get knownRUs => values.whereNot((ru) => ru == unknown);
+
   static RailwayUndertaking fromCompanyCode(String companyCode) {
-    return RailwayUndertaking.values.firstWhere((e) => e.companyCode == companyCode);
+    return RailwayUndertaking.values.firstWhereOrNull((e) => e.companyCode == companyCode) ?? unknown;
   }
 }

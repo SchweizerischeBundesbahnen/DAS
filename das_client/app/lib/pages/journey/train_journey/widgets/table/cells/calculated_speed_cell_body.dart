@@ -49,8 +49,16 @@ class CalculatedSpeedCellBody extends StatelessWidget {
         final calculatedSpeed = metadata.calculatedSpeeds[order];
         SingleSpeed? resolvedCalculatedSpeed =
             calculatedSpeed ?? (shouldResolvePrevious ? _calculatedSpeedFromPrev : null);
+        final previousSpeed = _calculatedSpeedFromPrev;
 
-        if (resolvedCalculatedSpeed == null) return DASTableCell.emptyBuilder;
+        if (resolvedCalculatedSpeed == null ||
+            // Only repeat previous speed for sticky rows
+            (previousSpeed == resolvedCalculatedSpeed &&
+                state == DASRowState.visible &&
+                showSpeedBehavior != ShowSpeedBehavior.alwaysOrPrevious &&
+                showSpeedBehavior != ShowSpeedBehavior.always)) {
+          return DASTableCell.emptyBuilder;
+        }
 
         final resolvedLineSpeed = _resolvedTrainSeriesSpeed(
           resolvePrevious: showSpeedBehavior == ShowSpeedBehavior.alwaysOrPreviousOnStickiness,

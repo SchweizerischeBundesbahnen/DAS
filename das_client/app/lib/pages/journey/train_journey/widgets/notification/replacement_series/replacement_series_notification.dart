@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 class ReplacementSeriesNotification extends StatelessWidget {
   static const Key replacementSeriesAvailableKey = Key('replacementSeriesAvailable');
   static const Key originalSeriesAvailableKey = Key('originalSeriesAvailable');
+  static const Key noReplacementSeriesAvailableKey = Key('noReplacementSeriesAvailable');
 
   const ReplacementSeriesNotification({super.key});
 
@@ -29,6 +30,10 @@ class ReplacementSeriesNotification extends StatelessWidget {
             context,
             snapshot.data as OriginalSeriesAvailable,
           ),
+          NoReplacementSeries() => _noReplacementSeriesAvailableNotification(
+            context,
+            snapshot.data as NoReplacementSeries,
+          ),
           ReplacementSeriesSelected() => SizedBox.shrink(),
           null => SizedBox.shrink(),
         };
@@ -36,9 +41,21 @@ class ReplacementSeriesNotification extends StatelessWidget {
     );
   }
 
+  Widget _noReplacementSeriesAvailableNotification(BuildContext context, NoReplacementSeries model) {
+    return _notification(
+      key: noReplacementSeriesAvailableKey,
+      style: NotificationBoxStyle.information,
+      title: context.l10n.w_replacement_series_notification_none_title(
+        model.segment.start.name,
+      ),
+      text: context.l10n.w_replacement_series_notification_none_text,
+    );
+  }
+
   Widget _replacementSeriesAvailableNotification(BuildContext context, ReplacementSeriesAvailable model) {
     return _notification(
       key: replacementSeriesAvailableKey,
+      style: NotificationBoxStyle.warning,
       title: context.l10n.w_replacement_series_notification_available_title(
         model.segment.start.name,
         model.segment.end.name,
@@ -52,6 +69,7 @@ class ReplacementSeriesNotification extends StatelessWidget {
   Widget _replacementSeriesOriginalNotification(BuildContext context, OriginalSeriesAvailable model) {
     return _notification(
       key: originalSeriesAvailableKey,
+      style: NotificationBoxStyle.warning,
       title: context.l10n.w_replacement_series_notification_original_title(
         model.segment.end.name,
         model.segment.original.toString(),
@@ -59,12 +77,12 @@ class ReplacementSeriesNotification extends StatelessWidget {
     );
   }
 
-  Widget _notification({required String title, String? text, Key? key}) {
+  Widget _notification({required String title, required NotificationBoxStyle style, String? text, Key? key}) {
     return Container(
       key: key,
       margin: EdgeInsets.all(TrainJourneyOverview.horizontalPadding).copyWith(top: 0),
       child: NotificationBox(
-        style: NotificationBoxStyle.warning,
+        style: style,
         title: title,
         text: text,
       ),

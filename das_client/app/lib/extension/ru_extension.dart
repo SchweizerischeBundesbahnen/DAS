@@ -24,6 +24,7 @@ extension RuExtension on RailwayUndertaking {
     RailwayUndertaking.tpfTrafic => context.l10n.c_ru_tpf_trafic,
     RailwayUndertaking.tmr => context.l10n.c_ru_tmr,
     RailwayUndertaking.mbc => context.l10n.c_ru_mbc,
+    RailwayUndertaking.unknown => context.l10n.c_unknown,
   };
 
   String localizedText(AppLocalizations localizations) => switch (this) {
@@ -47,5 +48,6 @@ extension RuExtension on RailwayUndertaking {
     RailwayUndertaking.tpfTrafic => localizations.c_ru_tpf_trafic,
     RailwayUndertaking.tmr => localizations.c_ru_tmr,
     RailwayUndertaking.mbc => localizations.c_ru_mbc,
+    RailwayUndertaking.unknown => localizations.c_unknown,
   };
 }

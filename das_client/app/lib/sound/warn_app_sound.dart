@@ -14,6 +14,6 @@ class WarnAppSound extends Sound {
     final audioPlayer = DI.get<AudioPlayer>();
     await audioPlayer.stop();
     await audioPlayer.setReleaseMode(ReleaseMode.loop);
-    await audioPlayer.play(AssetSource(AppAssets.warnappWarn));
+    await audioPlayer.play(AssetSource(AppAssets.soundWarnappWarn));
   }
 }

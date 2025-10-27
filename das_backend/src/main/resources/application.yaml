@@ -92,7 +92,6 @@ auth:
       jwk-set-uri: https://login.microsoftonline.com/a64ce5df-4ad8-40b9-91ee-54bac2bb8326/discovery/v2.0/keys
 zis:
   kafka.topic: ${ZIS_TOPIC}
-  lag-alert-threshold-seconds: 60 # 1 minute
   clean-up:
     cron: 0 0 3 * * ?  # every day at 3am
     older-than-days: 100
@@ -115,4 +114,8 @@ sfera:
   topic-prefix: ${SFERA_BROKER_TOPIC_PREFIX}
 
 preload:
-  fetch-interval-ms: 10000
+  fetch-cron: '-'
+  bucket:
+    bucketUrl: ${PRELOAD_BUCKET_URL}
+    accessKey: ${PRELOAD_BUCKET_KEY}
+    accessSecret: ${PRELOAD_BUCKET_SECRET}

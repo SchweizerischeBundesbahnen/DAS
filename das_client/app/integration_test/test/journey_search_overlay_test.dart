@@ -1,4 +1,5 @@
 import 'package:app/pages/journey/train_journey/widgets/header/header.dart';
+import 'package:app/pages/journey/train_journey/widgets/header/journey_identifier.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/journey_search_overlay.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
 import 'package:app/pages/journey/train_journey/widgets/journey_navigation_buttons.dart';
@@ -17,7 +18,7 @@ void main() {
       await loadTrainJourney(tester, trainNumber: 'T1');
 
       // closed by default - should show journeySearch icon with key
-      expect(find.byKey(JourneySearchOverlay.journeySearchKey), findsOneWidget);
+      expect(find.byKey(JourneySearchOverlay.journeySearchWidgetKey), findsOneWidget);
       expect(find.byKey(JourneySearchOverlay.journeySearchCloseKey), findsNothing);
 
       // open
@@ -30,7 +31,7 @@ void main() {
       await _closeJourneySearchOverlayByTap(tester);
 
       // closed
-      expect(find.byKey(JourneySearchOverlay.journeySearchKey), findsOneWidget);
+      expect(find.byKey(JourneySearchOverlay.journeySearchWidgetKey), findsOneWidget);
       expect(find.byKey(JourneySearchOverlay.journeySearchCloseKey), findsNothing);
 
       await disconnect(tester);
@@ -129,11 +130,11 @@ void main() {
 }
 
 Future<void> _openJourneySearchOverlayByTap(WidgetTester tester) async {
-  final icon = find.descendant(
+  final journeyIdentifier = find.descendant(
     of: find.byType(JourneySearchOverlay),
-    matching: find.byIcon(SBBIcons.magnifying_glass_small),
+    matching: find.byKey(JourneyIdentifier.journeyIdentifierKey),
   );
-  await tapElement(tester, icon, warnIfMissed: false);
+  await tapElement(tester, journeyIdentifier, warnIfMissed: false);
   await Future.delayed(const Duration(milliseconds: 250));
 }
 

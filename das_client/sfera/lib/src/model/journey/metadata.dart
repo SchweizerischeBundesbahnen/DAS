@@ -2,19 +2,17 @@ import 'dart:collection';
 
 import 'package:meta/meta.dart';
 import 'package:sfera/component.dart';
-import 'package:sfera/src/model/journey/level_crossing_group.dart';
 
 @sealed
 @immutable
 class Metadata {
   Metadata({
-    DateTime? timestamp,
+    this.trainIdentification,
     this.signaledPosition,
     this.journeyStart,
     this.journeyEnd,
     this.delay,
     this.breakSeries,
-    bool? anyOperationalArrivalDepartureTimes,
     this.additionalSpeedRestrictions = const [],
     this.nonStandardTrackEquipmentSegments = const [],
     this.bracketStationSegments = const [],
@@ -24,6 +22,8 @@ class Metadata {
     this.lineFootNoteLocations = const {},
     this.radioContactLists = const [],
     this.levelCrossingGroups = const [],
+    DateTime? timestamp,
+    bool? anyOperationalArrivalDepartureTimes,
     SplayTreeMap<int, Iterable<TrainSeriesSpeed>>? lineSpeeds,
     SplayTreeMap<int, SingleSpeed?>? calculatedSpeeds,
   }) : timestamp = timestamp ?? DateTime.now(),
@@ -31,6 +31,7 @@ class Metadata {
        lineSpeeds = lineSpeeds ?? SplayTreeMap<int, Iterable<TrainSeriesSpeed>>(),
        calculatedSpeeds = calculatedSpeeds ?? SplayTreeMap<int, SingleSpeed>();
 
+  final TrainIdentification? trainIdentification;
   final DateTime timestamp;
   final SignaledPosition? signaledPosition;
   final JourneyPoint? journeyStart;

@@ -7,8 +7,6 @@ import '../util/test_utils.dart';
 void main() {
   testWidgets('test replacement series is suggested, selected and returned to original', (tester) async {
     await prepareAndStartApp(tester);
-
-    // load train journey by filling out train selection page
     await loadTrainJourney(tester, trainNumber: 'T30');
 
     final expectedReplacementSeries = 'R150';
@@ -41,8 +39,6 @@ void main() {
 
   testWidgets('test does not suggest replacement when there is none', (tester) async {
     await prepareAndStartApp(tester);
-
-    // load train journey by filling out train selection page
     await loadTrainJourney(tester, trainNumber: 'T30');
 
     final expectedReplacementSeries = 'R150';
@@ -68,8 +64,6 @@ void main() {
 
   testWidgets('test message disappears when end of segment is reached even if user does nothing', (tester) async {
     await prepareAndStartApp(tester);
-
-    // load train journey by filling out train selection page
     await loadTrainJourney(tester, trainNumber: 'T30');
 
     await selectBreakSeries(tester, breakSeries: 'N160');
@@ -84,6 +78,28 @@ void main() {
 
     replacementSeriesFinder.reset();
     await waitUntilNotExists(tester, replacementSeriesFinder);
+
+    await disconnect(tester);
+  });
+
+  testWidgets('test shows no replacement available notification', (
+    tester,
+  ) async {
+    await prepareAndStartApp(tester);
+    await loadTrainJourney(tester, trainNumber: 'T30M');
+
+    final replacementSeriesFinder = find.byKey(ReplacementSeriesNotification.noReplacementSeriesAvailableKey);
+    expect(replacementSeriesFinder, findsNothing);
+
+    await selectBreakSeries(tester, breakSeries: 'D150');
+
+    replacementSeriesFinder.reset();
+    expect(replacementSeriesFinder, findsOneWidget);
+
+    await selectBreakSeries(tester, breakSeries: 'R150');
+
+    replacementSeriesFinder.reset();
+    expect(replacementSeriesFinder, findsNothing);
 
     await disconnect(tester);
   });

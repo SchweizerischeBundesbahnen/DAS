@@ -5,7 +5,6 @@ import 'package:app/pages/journey/train_journey/widgets/header/connectivity_icon
 import 'package:app/pages/journey/train_journey/widgets/header/departure_authorization.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/extended_menu.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/journey_identifier.dart';
-import 'package:app/pages/journey/train_journey/widgets/header/journey_search_overlay.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/next_stop.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/radio_channel.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/start_pause_button.dart';
@@ -96,7 +95,6 @@ class MainContainer extends StatelessWidget {
       Skeleton.leaf(child: ThemeButton()),
       Skeleton.leaf(child: StartPauseButton()),
       ExtendedMenu(),
-      JourneySearchOverlay(),
     ],
   );
 }

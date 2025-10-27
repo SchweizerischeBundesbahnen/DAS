@@ -54,12 +54,12 @@ class _BatteryStatusState extends State<BatteryStatus> {
 
   @override
   Widget build(BuildContext context) {
-    return _batteryLevel != null && _batteryLevel! <= 15 ? _batteryIcon() : Container();
+    return _batteryLevel != null && _batteryLevel! <= 15 ? _batteryIcon() : SizedBox();
   }
 
   Widget _batteryIcon() {
     return Padding(
-      padding: const EdgeInsets.only(left: 20),
+      padding: const EdgeInsets.only(right: 20),
       child: ExclamationIconButton(
         icon: AppAssets.iconBatteryStatusLow,
         key: BatteryStatus.batteryLevelLowIconKey,

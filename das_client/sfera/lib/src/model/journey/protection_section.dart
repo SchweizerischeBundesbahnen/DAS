@@ -32,5 +32,6 @@ class ProtectionSection extends JourneyPoint {
           isLong == other.isLong;
 
   @override
-  int get hashCode => order.hashCode ^ Object.hashAll(kilometre) ^ isOptional.hashCode ^ isLong.hashCode;
+  int get hashCode =>
+      type.hashCode ^ order.hashCode ^ Object.hashAll(kilometre) ^ isOptional.hashCode ^ isLong.hashCode;
 }

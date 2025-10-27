@@ -1,20 +1,21 @@
 import 'package:app/di/di.dart';
-import 'package:app/extension/ru_extension.dart';
+import 'package:app/extension/journey_extension.dart';
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/navigation/journey_navigation_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/reduced_overview/reduced_overview_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/reduced_overview/reduced_train_journey.dart';
+import 'package:app/pages/journey/train_journey_view_model.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/util/format.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
+import 'package:sfera/component.dart';
 
 Future<void> showReducedOverviewModalSheet(BuildContext context) async {
-  final viewModel = DI.get<JourneyNavigationViewModel>();
-  final model = viewModel.modelValue;
-  if (model == null) return;
+  final viewModel = DI.get<TrainJourneyViewModel>();
+  final trainIdentification = viewModel.journeyValue?.metadata.trainIdentification;
+  if (trainIdentification == null) return;
 
   return showSBBModalSheet(
     context: context,
@@ -23,7 +24,7 @@ Future<void> showReducedOverviewModalSheet(BuildContext context) async {
     child: Provider(
       create: (_) => ReducedOverviewViewModel(
         sferaLocalService: DI.get(),
-        trainIdentification: model.trainIdentification,
+        trainIdentification: trainIdentification,
       ),
       dispose: (context, vm) => vm.dispose(),
       builder: (context, child) => _ReducedOverviewModalSheet(),
@@ -50,27 +51,41 @@ class _ReducedOverviewModalSheet extends StatelessWidget {
   }
 
   Widget _header(BuildContext context) {
-    final locale = Localizations.localeOf(context);
-    final trainIdentification = context.read<ReducedOverviewViewModel>().trainIdentification;
-    return SBBGroup(
-      padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: sbbDefaultSpacing),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Text(Format.dateWithAbbreviatedDay(trainIdentification.date, locale), style: DASTextStyles.largeRoman),
-          Spacer(),
-          Text(
-            '${trainIdentification.trainNumber} ${trainIdentification.ru.displayText(context)}',
-            style: DASTextStyles.mediumRoman.copyWith(
-              color: ThemeUtil.getColor(
-                context,
-                SBBColors.granite,
-                SBBColors.white,
+    return StreamBuilder(
+      stream: context.read<ReducedOverviewViewModel>().journey,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return SizedBox.shrink();
+
+        final journey = snapshot.requireData;
+        return SBBGroup(
+          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: sbbDefaultSpacing),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Text(_formattedJourneyDate(context, journey), style: DASTextStyles.largeRoman),
+              Spacer(),
+              Text(
+                journey.formattedTrainIdentifier(context),
+                style: DASTextStyles.mediumRoman.copyWith(
+                  color: ThemeUtil.getColor(
+                    context,
+                    SBBColors.granite,
+                    SBBColors.white,
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
+  }
+
+  String _formattedJourneyDate(BuildContext context, Journey journey) {
+    final trainIdentification = journey.metadata.trainIdentification;
+    if (trainIdentification == null) return context.l10n.c_unknown;
+
+    final locale = Localizations.localeOf(context);
+    return Format.dateWithAbbreviatedDay(trainIdentification.date, locale);
   }
 }

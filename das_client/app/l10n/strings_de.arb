@@ -33,18 +33,18 @@
   "p_login_login_button_text": "Login",
   "p_login_login_button_description": "Mit Ihrem Account einloggen",
   "p_login_login_failed": "Login fehlgeschlagen",
-  "w_adl_cancel": "ADL Cancel",
-  "w_adl_end": "ADL END",
-  "w_adl_vopt": "ADL VOpt: {speed}km/h fahren bis {endLocation}",
-  "@w_adl_vopt": {
+  "w_advised_speed_cancel": "ADL Cancel",
+  "w_advised_speed_end": "ADL END",
+  "w_advised_speed_vopt": "ADL VOpt: {speed}km/h fahren bis {endLocation}",
+  "@w_advised_speed_vopt": {
     "type": "text",
     "placeholders": {
       "speed": {},
       "endLocation": {}
     }
   },
-  "w_adl_vmax": "ADL Vmax: fahren bis {endLocation}",
-  "@w_adl_vmax": {
+  "w_advised_speed_vmax": "ADL Vmax: fahren bis {endLocation}",
+  "@w_advised_speed_vmax": {
     "type": "text",
     "placeholders": {
       "endLocation": {}
@@ -86,6 +86,14 @@
       "originalSeries": {}
     }
   },
+  "w_replacement_series_notification_none_title": "Zug- und Bremsreihe ab {fromStation} nicht zugelassen",
+  "@w_replacement_series_notification_none_title": {
+    "type": "text",
+    "placeholders": {
+      "fromStation": {}
+    }
+  },
+  "w_replacement_series_notification_none_text": "Ein Teil der Strecke darf mit der ausgewählten Zug- und Bremsreihe nicht befahren werden.",
   "w_departure_process_modal_sheet_title": "Checkliste Abfahrprozess.",
   "w_departure_process_modal_sheet_content": "1. Zustimmung\n2. Zugbeeinflussung\n3. Abfahrtszeit\n4. Türverriegelung\n5. Zustimmung",
   "w_service_point_modal_communication_label": "Netzart und Funkkanal",
@@ -176,5 +184,19 @@
   "p_settings_page_decisive_gradient_title": "Massgebende Neigung",
   "p_settings_page_decisive_gradient_show_setting": "Neigung einblenden",
   "w_global_error_widget_title": "Unerwarteter Fehler",
-  "w_global_error_widget_description": "Es ist ein unerwarteter Fehler aufgetreten, die Fehlermeldung wird an die Entwickler geschickt. Versuche, die App neu zu starten."
+  "w_global_error_widget_description": "Es ist ein unerwarteter Fehler aufgetreten, die Fehlermeldung wird an die Entwickler geschickt. Versuche, die App neu zu starten.",
+  "w_shunting_movement_start": "Rangierfahrt {trainNumber}",
+  "@w_shunting_movement_start": {
+    "type": "text",
+    "placeholders": {
+      "trainNumber": {}
+    }
+  },
+  "w_shunting_movement_end": "Fahrt nach Streckensignalen {trainNumber}",
+  "@w_shunting_movement_end": {
+    "type": "text",
+    "placeholders": {
+      "trainNumber": {}
+    }
+  }
 }

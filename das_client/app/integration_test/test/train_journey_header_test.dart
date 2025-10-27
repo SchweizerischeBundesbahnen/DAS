@@ -45,7 +45,6 @@ Future<void> main() async {
       connectivityManager.connectivitySubject.add(true);
       connectivityManager.wifiActive = false;
 
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999M');
 
       // Find the header and check if it is existent
@@ -192,8 +191,6 @@ Future<void> main() async {
 
     testWidgets('test app bar is hiding while train is active', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999');
 
       final date = Format.dateWithAbbreviatedDay(DateTime.now(), appLocale());
@@ -213,8 +210,6 @@ Future<void> main() async {
 
     testWidgets('test check if switch theme is possible', (tester) async {
       await prepareAndStartApp(tester);
-
-      // Load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999');
 
       final header = find.byType(Header);
@@ -242,8 +237,6 @@ Future<void> main() async {
 
     testWidgets('test extended menu opening', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999');
 
       await openExtendedMenu(tester);
@@ -307,7 +300,6 @@ Future<void> main() async {
       final featureProvider = DI.get<RuFeatureProvider>() as MockRuFeatureProvider;
       featureProvider.disableFeature(RuFeatureKeys.warnapp);
 
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999');
 
       await openExtendedMenu(tester);
@@ -344,23 +336,15 @@ Future<void> main() async {
 
     testWidgets('test battery over 15% and not show icon', (tester) async {
       await prepareAndStartApp(tester);
-
-      // Set Battery to a mocked version
       final battery = DI.get<Battery>() as MockBattery;
-
-      // Set current Battery-Level to 80 % so it is over 15%
       battery.currentBatteryLevel = 80;
 
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T7');
 
-      // Find the header and check if it is existent
-      final header = find.byType(Header);
-      expect(header, findsOneWidget);
-
-      expect(battery.currentBatteryLevel, 80);
-
-      final batteryIcon = find.descendant(of: header, matching: find.byKey(BatteryStatus.batteryLevelLowIconKey));
+      final batteryIcon = find.descendant(
+        of: find.byType(Header),
+        matching: find.byKey(BatteryStatus.batteryLevelLowIconKey),
+      );
       expect(batteryIcon, findsNothing);
 
       await disconnect(tester);
@@ -368,27 +352,18 @@ Future<void> main() async {
 
     testWidgets('test battery under 15% icon and modal are showing or opening', (tester) async {
       await prepareAndStartApp(tester);
-
-      // Set Battery to a mocked version
       final battery = DI.get<Battery>() as MockBattery;
-
-      // Set current Battery-Level to 10% so it is under 15%
       battery.currentBatteryLevel = 10;
 
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T7');
 
-      // Find the header and check if it is existent
-      final header = find.byType(Header);
-      expect(header, findsOneWidget);
-
-      expect(battery.currentBatteryLevel, 10);
-
-      final batteryIcon = find.descendant(of: header, matching: find.byKey(BatteryStatus.batteryLevelLowIconKey));
+      final batteryIcon = find.descendant(
+        of: find.byType(Header),
+        matching: find.byKey(BatteryStatus.batteryLevelLowIconKey),
+      );
       expect(batteryIcon, findsOneWidget);
 
       await tester.tap(batteryIcon);
-
       await tester.pumpAndSettle();
 
       expect(find.text(l10n.w_modal_sheet_battery_status_battery_almost_empty), findsOneWidget);
@@ -397,10 +372,7 @@ Future<void> main() async {
     });
 
     testWidgets('check if punctuality update sent is correct', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T9999');
 
       // Find the header and check if it is existent
@@ -410,10 +382,7 @@ Future<void> main() async {
       final delayText = '+00:30';
       final delay = find.descendant(of: header, matching: find.text(delayText));
 
-      await waitUntilExists(
-        tester,
-        delay,
-      );
+      await waitUntilExists(tester, delay);
 
       expect(delay, findsOneWidget);
 
@@ -421,10 +390,7 @@ Future<void> main() async {
     });
 
     testWidgets('chronograph punctuality display is hidden when no calculated speed', (tester) async {
-      // Load app widget.
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T6');
 
       // find the header and check if it is existent
@@ -472,8 +438,6 @@ Future<void> main() async {
 
     testWidgets('test display of communication network in header', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T12');
 
       // find the header and check if it is existent
@@ -508,8 +472,6 @@ Future<void> main() async {
 
     testWidgets('test display of radio contactList channels in header', (tester) async {
       await prepareAndStartApp(tester);
-
-      // load train journey by filling out train selection page
       await loadTrainJourney(tester, trainNumber: 'T12');
 
       // find the header and check if it is existent
@@ -668,11 +630,11 @@ Future<void> findAndDismissModalSheet(WidgetTester tester) async {
   final modalSheet = find.byType(SBBModalSheet);
   expect(modalSheet, findsOneWidget);
 
-  //find close button
+  // find close button
   final closeButton = find.descendant(of: modalSheet, matching: find.byType(SBBIconButtonSmall));
   expect(closeButton, findsOneWidget);
 
-  //tap close button
+  // tap close button
   await tester.tap(closeButton);
   await tester.pumpAndSettle();
 }

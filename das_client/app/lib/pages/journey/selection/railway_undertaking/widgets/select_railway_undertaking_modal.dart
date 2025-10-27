@@ -74,11 +74,7 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
       stream: controller?.availableRailwayUndertakings,
       builder: (context, snap) {
         final localizedFilteredRus = snap.data ?? [];
-        final resolvedForegroundColor = ThemeUtil.getColor(
-          context,
-          SBBColors.milk,
-          SBBColors.midnight,
-        );
+        final resolvedForegroundColor = ThemeUtil.getColor(context, SBBColors.milk, SBBColors.midnight);
         return Padding(
           padding: EdgeInsets.only(bottom: bottom),
           child: CustomScrollView(
@@ -126,7 +122,7 @@ class _SelectRailwayUndertakingModalState extends State<SelectRailwayUndertaking
                                 value: e,
                                 groupValue: widget.selectedRailwayUndertaking,
                                 label: e.displayText(context),
-                                isLastElement: idx == RailwayUndertaking.values.length,
+                                isLastElement: idx == localizedFilteredRus.length - 1,
                                 onChanged: (selectedRu) {
                                   if (selectedRu != null) controller?.selectedRailwayUndertaking = selectedRu;
                                   context.router.pop(selectedRu);

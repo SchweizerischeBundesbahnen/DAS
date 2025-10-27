@@ -1,8 +1,12 @@
 import 'dart:async';
 
 import 'package:app/pages/journey/train_journey/automatic_advancement_controller.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/additional_speed_restriction_modal/additional_speed_restriction_modal_builder.dart';
+import 'package:app/pages/journey/train_journey/widgets/detail_modal/service_point_modal/service_point_modal_builder.dart';
 import 'package:app/widgets/modal_sheet/das_modal_sheet.dart';
 import 'package:rxdart/rxdart.dart';
+
+enum DetailModalType { servicePointModal, additionalSpeedRestriction }
 
 class DetailModalViewModel {
   DetailModalViewModel({required this.automaticAdvancementController}) {
@@ -13,11 +17,13 @@ class DetailModalViewModel {
   late DASModalSheetController controller;
 
   final _rxContentBuilder = BehaviorSubject<DASModalSheetBuilder?>();
-  final _rxIsModalOpen = BehaviorSubject.seeded(false);
+  final _rxOpenModalType = BehaviorSubject<DetailModalType?>.seeded(null);
 
-  bool get isModalOpenValue => _rxIsModalOpen.value;
+  bool get isModalOpenValue => _rxOpenModalType.value != null;
 
-  Stream<bool> get isModalOpen => _rxIsModalOpen.distinct();
+  Stream<DetailModalType?> get openModalType => _rxOpenModalType.distinct();
+
+  Stream<bool> get isModalOpen => _rxOpenModalType.map((type) => type != null);
 
   Stream<DASModalSheetBuilder?> get contentBuilder => _rxContentBuilder.distinct();
 
@@ -27,9 +33,8 @@ class DetailModalViewModel {
 
   void _initController() {
     controller = DASModalSheetController(
-      onClose: () => _rxIsModalOpen.add(false),
+      onClose: () => _rxOpenModalType.add(null),
       onOpen: () {
-        _rxIsModalOpen.add(true);
         if (automaticAdvancementController.isActive) {
           automaticAdvancementController.scrollToCurrentPosition(resetAutomaticAdvancementTimer: true);
         }
@@ -38,6 +43,13 @@ class DetailModalViewModel {
   }
 
   void open(DASModalSheetBuilder builder, {bool maximize = false}) {
+    switch (builder) {
+      case AdditionalSpeedRestrictionModalBuilder():
+        _rxOpenModalType.add(DetailModalType.additionalSpeedRestriction);
+      case ServicePointModalBuilder():
+        _rxOpenModalType.add(DetailModalType.servicePointModal);
+    }
+
     _rxContentBuilder.add(builder);
     if (maximize) {
       controller.maximize();
@@ -52,7 +64,7 @@ class DetailModalViewModel {
   }
 
   void dispose() {
-    _rxIsModalOpen.close();
+    _rxOpenModalType.close();
     _rxContentBuilder.close();
   }
 }

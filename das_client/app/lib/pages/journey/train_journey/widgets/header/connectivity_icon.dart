@@ -28,10 +28,7 @@ class ConnectivityIcon extends StatelessWidget {
         final onTap = isDisconnected ? () => _onDisconnectedTap(context) : () => _onConnectedWifiTap(context);
         final key = isDisconnected ? disconnectedKey : connectedWifiKey;
 
-        return Padding(
-          padding: const EdgeInsets.only(left: 20),
-          child: ExclamationIconButton(icon: icon, onTap: onTap, key: key),
-        );
+        return ExclamationIconButton(icon: icon, onTap: onTap, key: key);
       },
     );
   }

@@ -39,12 +39,8 @@ public class PreloadStorageService {
         try {
             String zipName = buildZipName();
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream(64 * 1024);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
             try (ZipOutputStream zos = new ZipOutputStream(baos, StandardCharsets.UTF_8)) {
-
-                addDirectoryEntry(zos, DIR_JP);
-                addDirectoryEntry(zos, DIR_SP);
-                addDirectoryEntry(zos, DIR_TC);
 
                 writeJps(journeyProfiles, zos);
                 writeSps(segmentProfiles, zos);
@@ -71,7 +67,7 @@ public class PreloadStorageService {
                 otnid.getTeltsiOperationalTrainNumber(),
                 otnid.getTeltsiStartDate(),
                 jp.getJPVersion());
-            writeXmlEntry(zos, filename, jp);
+            writeXmlEntry(zos, DIR_JP + filename, jp);
         }
     }
 
@@ -81,7 +77,7 @@ public class PreloadStorageService {
                 sp.getSPID(),
                 sp.getSPVersionMajor(),
                 sp.getSPVersionMinor());
-            writeXmlEntry(zos, filename, sp);
+            writeXmlEntry(zos, DIR_SP + filename, sp);
         }
     }
 
@@ -91,7 +87,7 @@ public class PreloadStorageService {
                 tc.getTCID(),
                 tc.getTCVersionMajor(),
                 tc.getTCVersionMinor());
-            writeXmlEntry(zos, filename, tc);
+            writeXmlEntry(zos, DIR_TC + filename, tc);
         }
     }
 
@@ -103,12 +99,6 @@ public class PreloadStorageService {
         ZipEntry entry = new ZipEntry(entryName);
         zos.putNextEntry(entry);
         zos.write(xml.getBytes(StandardCharsets.UTF_8));
-        zos.closeEntry();
-    }
-
-    private void addDirectoryEntry(ZipOutputStream zos, String name) throws IOException {
-        ZipEntry dirEntry = new ZipEntry(name);
-        zos.putNextEntry(dirEntry);
         zos.closeEntry();
     }
 }

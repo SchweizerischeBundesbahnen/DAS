@@ -42,3 +42,10 @@ sfera:
   clientId: test
   oauth-profile: test
   topic-prefix: test/
+
+preload:
+  fetch-cron: '-'
+  bucket:
+    bucketUrl: bucketUrl
+    accessKey: accessKey
+    accessSecret: accessSecret
