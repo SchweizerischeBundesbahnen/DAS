@@ -1,4 +1,4 @@
-package ch.sbb.backend.preload;
+package ch.sbb.backend.preload.application;
 
 import ch.sbb.backend.preload.domain.SegmentProfileIdentification;
 import ch.sbb.backend.preload.domain.TrainCharacteristicsIdentification;
