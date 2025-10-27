@@ -1,4 +1,4 @@
-package ch.sbb.backend.preload;
+package ch.sbb.backend.preload.application;
 
 import ch.sbb.backend.preload.infrastructure.S3Service;
 import ch.sbb.backend.preload.infrastructure.xml.XmlHelper;
@@ -17,7 +17,7 @@ import java.util.zip.ZipOutputStream;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PreloadStorageService {
+public class StorageService {
 
     private static final String DIR_JP = "jp/";
     private static final String DIR_SP = "sp/";
@@ -28,15 +28,12 @@ public class PreloadStorageService {
     private final XmlHelper xmlHelper;
     private final S3Service s3Service;
 
-    public PreloadStorageService(XmlHelper xmlHelper, S3Service s3Service) {
+    public StorageService(XmlHelper xmlHelper, S3Service s3Service) {
         this.xmlHelper = xmlHelper;
         this.s3Service = s3Service;
     }
 
-    public void save(Set<JourneyProfile> journeyProfiles,
-        Set<SegmentProfile> segmentProfiles,
-        Set<TrainCharacteristics> trainCharacteristics) {
-
+    public void save(Set<JourneyProfile> journeyProfiles, Set<SegmentProfile> segmentProfiles, Set<TrainCharacteristics> trainCharacteristics) {
         try {
             String zipName = buildZipName();
 

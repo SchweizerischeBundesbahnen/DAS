@@ -67,6 +67,14 @@ public class PahoMqttClient {
         }
     }
 
+    public void unsubscribe(String topic) {
+        try {
+            client.unsubscribe(topic);
+        } catch (MqttException e) {
+            log.error("unsubscribing failed to topic: {}", topic, e);
+        }
+    }
+
     public void publish(String topic, String content) {
         MqttMessage message = new MqttMessage(content.getBytes());
         message.setQos(QOS_EXACTLY_ONCE);
