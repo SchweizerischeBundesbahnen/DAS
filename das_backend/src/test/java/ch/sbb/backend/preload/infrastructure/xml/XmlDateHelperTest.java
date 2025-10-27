@@ -2,6 +2,7 @@ package ch.sbb.backend.preload.infrastructure.xml;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.backend.preload.infrastructure.xml.XmlDateHelper;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
