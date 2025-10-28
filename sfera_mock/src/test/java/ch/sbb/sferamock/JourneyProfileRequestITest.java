@@ -1,12 +1,12 @@
-package ch.sbb.sferamock.integrationtest;
+package ch.sbb.sferamock;
 
-import static ch.sbb.sferamock.integrationtest.IntegrationTestData.IM_COMPANY_CODE_SBB_INFRA;
-import static ch.sbb.sferamock.integrationtest.IntegrationTestData.OPERATIONAL_NUMBER_T9999;
-import static ch.sbb.sferamock.integrationtest.IntegrationTestData.RU_COMPANY_CODE_SBB_AG;
-import static ch.sbb.sferamock.integrationtest.IntegrationTestData.SFERA_INCOMING_TOPIC;
-import static ch.sbb.sferamock.integrationtest.IntegrationTestData.START_DATE;
-import static ch.sbb.sferamock.integrationtest.IntegrationTestHelper.async;
-import static ch.sbb.sferamock.integrationtest.IntegrationTestHelper.registerClient;
+import static ch.sbb.sferamock.IntegrationTestData.IM_COMPANY_CODE_SBB_INFRA;
+import static ch.sbb.sferamock.IntegrationTestData.OPERATIONAL_NUMBER_T9999;
+import static ch.sbb.sferamock.IntegrationTestData.RU_COMPANY_CODE_SBB_AG;
+import static ch.sbb.sferamock.IntegrationTestData.SFERA_INCOMING_TOPIC;
+import static ch.sbb.sferamock.IntegrationTestData.START_DATE;
+import static ch.sbb.sferamock.IntegrationTestHelper.async;
+import static ch.sbb.sferamock.IntegrationTestHelper.registerClient;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SFERAG2BReplyMessage;
@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
-class JourneyProfileRequestIT {
+class JourneyProfileRequestITest {
 
     public static final UUID REQUEST_MESSAGE_ID = UUID.randomUUID();
 

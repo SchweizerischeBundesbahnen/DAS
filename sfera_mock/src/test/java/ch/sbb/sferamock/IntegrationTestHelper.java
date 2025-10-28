@@ -1,11 +1,11 @@
-package ch.sbb.sferamock.integrationtest;
+package ch.sbb.sferamock;
 
-import static ch.sbb.sferamock.integrationtest.IntegrationTestData.IM_COMPANY_CODE_SBB_INFRA;
-import static ch.sbb.sferamock.integrationtest.IntegrationTestData.OPERATIONAL_NUMBER_T9999;
-import static ch.sbb.sferamock.integrationtest.IntegrationTestData.RU_COMPANY_CODE_SBB_AG;
-import static ch.sbb.sferamock.integrationtest.IntegrationTestData.SFERA_INCOMING_TOPIC;
-import static ch.sbb.sferamock.integrationtest.IntegrationTestData.START_DATE;
-import static ch.sbb.sferamock.integrationtest.SferaIntegrationTestData.READONLY_CONNECTED_BOARDCALCULATION;
+import static ch.sbb.sferamock.IntegrationTestData.IM_COMPANY_CODE_SBB_INFRA;
+import static ch.sbb.sferamock.IntegrationTestData.OPERATIONAL_NUMBER_T9999;
+import static ch.sbb.sferamock.IntegrationTestData.RU_COMPANY_CODE_SBB_AG;
+import static ch.sbb.sferamock.IntegrationTestData.SFERA_INCOMING_TOPIC;
+import static ch.sbb.sferamock.IntegrationTestData.START_DATE;
+import static ch.sbb.sferamock.SferaIntegrationTestData.READONLY_CONNECTED_BOARDCALCULATION;
 
 import ch.sbb.sferamock.adapters.sfera.model.v0201.JourneyProfile;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.SFERAG2BReplyMessage;

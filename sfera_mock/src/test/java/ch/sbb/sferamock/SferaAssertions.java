@@ -1,4 +1,4 @@
-package ch.sbb.sferamock.integrationtest;
+package ch.sbb.sferamock;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 

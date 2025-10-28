@@ -1,4 +1,4 @@
-package ch.sbb.sferamock.integrationtest;
+package ch.sbb.sferamock;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

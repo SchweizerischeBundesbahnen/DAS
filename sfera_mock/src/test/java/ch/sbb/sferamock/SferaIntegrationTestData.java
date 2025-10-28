@@ -1,5 +1,7 @@
-package ch.sbb.sferamock.integrationtest;
+package ch.sbb.sferamock;
 
+import static ch.sbb.sferamock.IntegrationTestData.IM_COMPANY_CODE_SBB_INFRA;
+import static ch.sbb.sferamock.IntegrationTestData.RU_COMPANY_CODE_SBB_AG;
 import static ch.sbb.sferamock.adapters.sfera.model.v0201.ReportedDASDrivingMode.DASDrivingMode.DAS_NOT_CONNECTED_TO_ATP;
 import static ch.sbb.sferamock.adapters.sfera.model.v0201.ReportedDASDrivingMode.DASDrivingMode.INACTIVE;
 import static ch.sbb.sferamock.adapters.sfera.model.v0201.ReportedDASDrivingMode.DASDrivingMode.READ_ONLY;
@@ -7,8 +9,6 @@ import static ch.sbb.sferamock.adapters.sfera.model.v0201.UnavailableDASOperatin
 import static ch.sbb.sferamock.adapters.sfera.model.v0201.UnavailableDASOperatingModes.DASArchitecture.GROUND_ADVICE_CALCULATION;
 import static ch.sbb.sferamock.adapters.sfera.model.v0201.UnavailableDASOperatingModes.DASConnectivity.CONNECTED;
 import static ch.sbb.sferamock.adapters.sfera.model.v0201.UnavailableDASOperatingModes.DASConnectivity.STANDALONE;
-import static ch.sbb.sferamock.integrationtest.IntegrationTestData.IM_COMPANY_CODE_SBB_INFRA;
-import static ch.sbb.sferamock.integrationtest.IntegrationTestData.RU_COMPANY_CODE_SBB_AG;
 
 import ch.sbb.sferamock.adapters.sfera.model.v0201.B2GRequest;
 import ch.sbb.sferamock.adapters.sfera.model.v0201.DASModesComplexType;

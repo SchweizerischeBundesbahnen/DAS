@@ -1,4 +1,4 @@
-package ch.sbb.sferamock.integrationtest;
+package ch.sbb.sferamock;
 
 import ch.sbb.sferamock.messages.model.CompanyCode;
 import com.solacesystems.jcsmp.Topic;
