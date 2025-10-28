@@ -1,5 +1,6 @@
 package ch.sbb.sferamock;
 
+import ch.sbb.sferamock.messages.common.Resettable;
 import ch.sbb.sferamock.messages.common.XmlHelper;
 import com.solacesystems.jcsmp.Topic;
 import java.io.StringReader;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class TestMessageAdapter {
+public class TestMessageAdapter implements Resettable {
 
     // message channels / timeouts
     private static final int RECEIVE_TIMEOUT_MS = 2000;
@@ -48,6 +49,11 @@ public class TestMessageAdapter {
         return extractXmlPayload(output.receive(RECEIVE_TIMEOUT_MS), type);
     }
 
+    @Override
+    public void reset() {
+        output.clear();
+    }
+
     private <T> T extractXmlPayload(Message<byte[]> message, Class<T> clazz) {
         try {
             if (message == null) {
@@ -59,5 +65,4 @@ public class TestMessageAdapter {
             throw new IllegalArgumentException(String.format("payload cannot be unmarshalled as type %s", clazz), e);
         }
     }
-
 }
