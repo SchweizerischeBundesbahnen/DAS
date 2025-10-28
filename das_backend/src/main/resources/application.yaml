@@ -105,8 +105,7 @@ aws:
 
 sfera:
   company-code: '1085'
-  # todo: migrate to 3
-  sfera-major-version: '2'
+  sfera-major-version: '3'
   sfera-version: '3.00'
   source-device: 'BACKEND'
   recipient: '0085'
