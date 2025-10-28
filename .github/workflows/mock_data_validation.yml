@@ -1,0 +1,43 @@
+# This workflow runs the parsing and mapping located in the DAS client
+# against all sfera static resources in the following dirs:
+# * sfera_mock/src/main/resources/static_sfera_resources/**
+# * das_client/sfera/test_resources/**
+#
+# Will fail if any journey is invalid.
+name: Mock Data Validation
+
+defaults:
+  run:
+    working-directory: das_client/sfera
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    paths:
+      - 'sfera_mock/src/main/resources/static_sfera_resources/**'
+      - 'das_client/sfera/test_resources/**'
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v5
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.x'
+          cache: true
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate sources
+        run: dart run build_runner build
+
+      - name: Test mock data
+        run: flutter test --tags sfera-mock-data-validator
