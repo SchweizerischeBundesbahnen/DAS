@@ -2,8 +2,8 @@ package ch.sbb.sferamock.messages.sfera;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_XML;
 
-import ch.sbb.sferamock.adapters.sfera.model.v0201.G2BEventPayload;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.SFERAG2BEventMessage;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.G2BEventPayload;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.SFERAG2BEventMessage;
 import ch.sbb.sferamock.messages.common.XmlHelper;
 import ch.sbb.sferamock.messages.model.RequestContext;
 import java.util.UUID;

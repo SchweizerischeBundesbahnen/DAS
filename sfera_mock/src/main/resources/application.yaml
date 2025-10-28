@@ -29,13 +29,16 @@ spring:
     stream:
       bindings:
         processB2GMessage-in-0:
+          #          todo v3
           destination: ${application.topic.sfera-custom-prefix}90940/2/B2G/>
           binder: solace
         publishG2BReply-out-0:
           binder: solace
+          #          todo v3
           destination: ${application.topic.sfera-custom-prefix}90940/2/G2B/
         publishEvent-out-0:
           binder: solace
+          #          todo v3
           destination: ${application.topic.sfera-custom-prefix}90940/2/event/
       binders:
         solace:
