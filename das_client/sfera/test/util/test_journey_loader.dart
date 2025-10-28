@@ -48,7 +48,6 @@ class TestJourneyLoader {
 
       if (jpFiles.isEmpty || spFiles.isEmpty || jpFiles.length > 1) continue;
 
-
       final jpFile = jpFiles.first;
       final nameRegEx = RegExp('(?<=SFERA_JP_).*(?=.xml)');
       final journeyName = nameRegEx.firstMatch(jpFile.path)?[0];
