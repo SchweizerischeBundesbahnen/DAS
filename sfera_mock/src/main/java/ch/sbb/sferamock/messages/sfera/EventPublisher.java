@@ -23,7 +23,7 @@ public class EventPublisher {
     private final StreamBridge streamBridge;
     private final SferaMessageCreator sferaMessageCreator;
     @Value("${spring.cloud.stream.bindings.publishEvent-out-0.destination}")
-    private String publishDestination;
+    private String[] publishDestinations;
 
     public EventPublisher(XmlHelper xmlHelper, StreamBridge streamBridge, SferaMessageCreator sferaMessageCreator) {
         this.xmlHelper = xmlHelper;
@@ -50,7 +50,7 @@ public class EventPublisher {
     }
 
     private void publishEvent(SFERAG2BEventMessage eventMessage, RequestContext requestContext) {
-        String topic = SferaTopicHelper.getG2BEventTopic(publishDestination, requestContext);
+        String topic = SferaTopicHelper.getG2BEventTopic(publishDestinations, requestContext);
         log.info("Publishing Event Message to topic {}", topic);
         log.debug("message: {}", xmlHelper.toString(eventMessage));
         streamBridge.send(topic, SOLACE_BINDER, MessageBuilder

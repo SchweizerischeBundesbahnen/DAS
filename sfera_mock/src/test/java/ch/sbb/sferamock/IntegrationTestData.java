@@ -20,7 +20,7 @@ public class IntegrationTestData {
 
     public static final UUID CLIENT_ID = UUID.randomUUID();
 
-    public static final String B2G_TOPIC_PREFIX = "90940/2/B2G/";
+    public static final String B2G_TOPIC_PREFIX = "90940/3/B2G/";
     public static final String TRAIN_AND_CLIENT_ID_TOPIC_ELEMENTS = "/" + OPERATIONAL_NUMBER_T9999 + "_" + START_DATE.format(DateTimeFormatter.ISO_DATE) + "/" + CLIENT_ID;
 
     public static final Topic SFERA_INCOMING_TOPIC = TopicImpl.createFastNoValidation(B2G_TOPIC_PREFIX + RU_COMPANY_CODE_SBB_AG.value() + TRAIN_AND_CLIENT_ID_TOPIC_ELEMENTS);

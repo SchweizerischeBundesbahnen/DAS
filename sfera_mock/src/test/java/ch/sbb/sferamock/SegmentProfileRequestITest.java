@@ -8,8 +8,8 @@ import static ch.sbb.sferamock.IntegrationTestHelper.firstSpRef;
 import static ch.sbb.sferamock.IntegrationTestHelper.registerClient;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.sferamock.adapters.sfera.model.v0201.SFERAG2BReplyMessage;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.SegmentProfileReference;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.SFERAG2BReplyMessage;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.SegmentProfileReference;
 import ch.sbb.sferamock.messages.common.SferaErrorCodes;
 import java.util.UUID;
 import lombok.val;

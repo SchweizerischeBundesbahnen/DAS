@@ -30,7 +30,7 @@ public class ReplyPublisher {
     private final StreamBridge streamBridge;
     private final SferaMessageCreator sferaMessageCreator;
     @Value("${spring.cloud.stream.bindings.publishG2BReply-out-0.destination}")
-    private String publishDestination;
+    private String[] publishDestinations;
 
     public ReplyPublisher(XmlHelper xmlHelper, StreamBridge streamBridge, SferaMessageCreator sferaMessageCreator) {
         this.xmlHelper = xmlHelper;
@@ -93,7 +93,7 @@ public class ReplyPublisher {
     }
 
     private void publishReplyMessage(SFERAG2BReplyMessage replyMessage, RequestContext requestContext) {
-        String topic = SferaTopicHelper.getG2BTopic(publishDestination, requestContext);
+        String topic = SferaTopicHelper.getG2BTopic(publishDestinations, requestContext);
         log.info("Publishing Reply Message to topic {}", topic);
         log.debug("message: {}", xmlHelper.toString(replyMessage));
         streamBridge.send(topic, SOLACE_BINDER, MessageBuilder

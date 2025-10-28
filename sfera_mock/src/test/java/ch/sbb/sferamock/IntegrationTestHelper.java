@@ -7,9 +7,9 @@ import static ch.sbb.sferamock.IntegrationTestData.SFERA_INCOMING_TOPIC;
 import static ch.sbb.sferamock.IntegrationTestData.START_DATE;
 import static ch.sbb.sferamock.SferaIntegrationTestData.READONLY_CONNECTED_BOARDCALCULATION;
 
-import ch.sbb.sferamock.adapters.sfera.model.v0201.JourneyProfile;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.SFERAG2BReplyMessage;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.SegmentProfileReference;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.JourneyProfile;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.SFERAG2BReplyMessage;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.SegmentProfileReference;
 import java.util.UUID;
 import lombok.experimental.UtilityClass;
 import lombok.val;

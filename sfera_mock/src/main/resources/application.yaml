@@ -29,17 +29,17 @@ spring:
     stream:
       bindings:
         processB2GMessage-in-0:
-          #          todo v3
-          destination: ${application.topic.sfera-custom-prefix}90940/2/B2G/>
+          # todo: remove v2 when clients migrated
+          destination: ${application.topic.sfera-custom-prefix}90940/2/B2G/>,${application.topic.sfera-custom-prefix}90940/3/B2G/>
           binder: solace
         publishG2BReply-out-0:
           binder: solace
-          #          todo v3
-          destination: ${application.topic.sfera-custom-prefix}90940/2/G2B/
+          # todo: remove v2 when clients migrated
+          destination: ${application.topic.sfera-custom-prefix}90940/2/G2B/,${application.topic.sfera-custom-prefix}90940/3/G2B/
         publishEvent-out-0:
           binder: solace
-          #          todo v3
-          destination: ${application.topic.sfera-custom-prefix}90940/2/event/
+          # todo: remove v2 when clients migrated
+          destination: ${application.topic.sfera-custom-prefix}90940/2/event/,${application.topic.sfera-custom-prefix}90940/3/event/
       binders:
         solace:
           type: solace
