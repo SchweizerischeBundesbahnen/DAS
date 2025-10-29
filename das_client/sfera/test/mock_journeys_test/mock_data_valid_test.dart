@@ -20,25 +20,15 @@ void main() {
         print('${record.level.name}: ${record.time}: ${record.message}');
       });
     });
-  });
 
-  group('whenLoadingAllJourneysFromSferaTestResourcesDir_thenShould', () {
-    for (final testJourney in TestJourneyLoader.fromStaticSferaResources()) {
-      final journeyName = [testJourney.name, testJourney.eventName].join('-');
-      test('whenParsingJourney_${journeyName}_thenShouldBeValid', tags: 'sfera-mock-data-validator', () {
-        expect(testJourney.validate(), isTrue);
-        expect(testJourney.journey.valid, isTrue);
-      });
-    }
-  });
-
-  group('whenLoadingAllJourneysFromClientTestResourcesDir_thenShouldAllBeValid', () {
-    for (final testJourney in TestJourneyLoader.fromClientTestResources()) {
-      final journeyName = [testJourney.name, testJourney.eventName].nonNulls.join('-');
-      test('whenParsingJourney_${journeyName}_thenShouldBeValid', tags: 'sfera-mock-data-validator', () {
-        expect(testJourney.validate(), isTrue);
-        expect(testJourney.journey.valid, isTrue);
-      });
-    }
+    group('whenLoadingAllUniqueJourneysAndValidating_thenShouldAllBeValid', () {
+      for (final testJourney in TestJourneyRepository.getAllUniqueJourneysByName()) {
+        final journeyName = [testJourney.name, testJourney.eventName].nonNulls.join('-');
+        test('whenParsingJourney_${journeyName}_thenShouldBeValid', tags: 'sfera-mock-data-validator', () {
+          expect(testJourney.validate(), isTrue, reason: 'Expected $journeyName to be valid!');
+          expect(testJourney.journey.valid, isTrue, reason: 'Expected $journeyName to be valid!');
+        });
+      }
+    });
   });
 }
