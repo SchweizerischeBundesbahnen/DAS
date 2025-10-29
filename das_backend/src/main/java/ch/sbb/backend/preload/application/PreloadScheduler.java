@@ -1,7 +1,7 @@
 package ch.sbb.backend.preload.application;
 
 import ch.sbb.backend.preload.domain.PreloadResult;
-import ch.sbb.backend.preload.domain.TrainIdentification;
+import ch.sbb.backend.preload.domain.TrainId;
 import ch.sbb.backend.preload.infrastructure.PahoMqttClient;
 import ch.sbb.backend.preload.sfera.model.v0300.JourneyProfile;
 import ch.sbb.backend.preload.sfera.model.v0300.SegmentProfile;
@@ -38,16 +38,16 @@ public class PreloadScheduler {
         Set<TrainCharacteristics> tcs = new HashSet<>();
 
         mqttService.connect();
-        // todo timestamp from s3 or cache to get only new trains
-        for (TrainIdentification trainIdentification : trainIdentificationsService.getNewTrainIdentifications(OffsetDateTime.now())) {
+        // todo timestamp from s3 or cache to get only new trains (#1393)
+        for (TrainId trainId : trainIdentificationsService.getNewTrainIdentifications(OffsetDateTime.now())) {
             try {
-                // todo: "InterruptedException" and "ThreadDeath" should not be ignored
-                PreloadResult preload = sferaService.preload(trainIdentification);
+                // todo: "InterruptedException" and "ThreadDeath" should not be ignored (#1393)
+                PreloadResult preload = sferaService.preload(trainId);
                 jps.addAll(preload.jps());
                 sps.addAll(preload.sps());
                 tcs.addAll(preload.tcs());
             } catch (Exception e) {
-                log.error("Preload for train {} failed", trainIdentification, e);
+                log.error("Preload for train {} failed", trainId, e);
             }
         }
         mqttService.disconnect();

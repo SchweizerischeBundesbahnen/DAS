@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 
 public class SferaStore {
 
-    // when concurrency is needed, replace HashMap with ConcurrentHashMap
     private final Map<SegmentProfileIdentification, SegmentProfile> segmentProfiles = new HashMap<>();
     private final Map<TrainCharacteristicsIdentification, TrainCharacteristics> trainCharacteristics = new HashMap<>();
 
@@ -23,18 +22,10 @@ public class SferaStore {
         trainCharacteristics.putAll(map);
     }
 
-    public List<SegmentProfile> getSps(List<SegmentProfileIdentification> spIds) {
-        return spIds.stream().map(this::getSp).collect(Collectors.toList());
-    }
-
     public SegmentProfile getSp(SegmentProfileIdentification segmentProfileIdentification) {
         return segmentProfiles.get(segmentProfileIdentification);
     }
-
-    public List<TrainCharacteristics> getTcs(List<TrainCharacteristicsIdentification> tcIds) {
-        return tcIds.stream().map(this::getTc).collect(Collectors.toList());
-    }
-
+    
     public TrainCharacteristics getTc(TrainCharacteristicsIdentification trainCharacteristicsIdentification) {
         return trainCharacteristics.get(trainCharacteristicsIdentification);
     }

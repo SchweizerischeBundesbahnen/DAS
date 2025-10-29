@@ -2,7 +2,7 @@ package ch.sbb.backend.preload.application;
 
 import ch.sbb.backend.preload.domain.SegmentProfileIdentification;
 import ch.sbb.backend.preload.domain.TrainCharacteristicsIdentification;
-import ch.sbb.backend.preload.domain.TrainIdentification;
+import ch.sbb.backend.preload.domain.TrainId;
 import ch.sbb.backend.preload.infrastructure.xml.XmlDateHelper;
 import ch.sbb.backend.preload.sfera.model.v0300.B2GEventPayload;
 import ch.sbb.backend.preload.sfera.model.v0300.B2GRequest;
@@ -26,13 +26,16 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+/**
+ * @see <a href="https://uic.org/events/uic-irs-90940-edition-2-sfera-protocol">IRS 90940 - Ed. 2</a>
+ */
 @Service
 public class SferaMessageCreator {
 
     @Value("${sfera.company-code}")
     String companyCode;
 
-    @Value("${sfera.sfera-version}")
+    @Value("${sfera.version}")
     String sferaVersion;
 
     @Value("${sfera.source-device}")
@@ -50,19 +53,19 @@ public class SferaMessageCreator {
 
     private HandshakeRequest createHandshakeRequest() {
         HandshakeRequest handshakeRequest = new HandshakeRequest();
-        DASModesComplexType dasMode = new DASModesComplexType();
-        dasMode.setDASArchitecture(DASArchitecture.BOARD_ADVICE_CALCULATION);
-        dasMode.setDASConnectivity(DASConnectivity.STANDALONE);
-        dasMode.setDASDrivingMode(DASDrivingMode.INACTIVE);
-        handshakeRequest.getDASOperatingModesSupported().add(dasMode);
+        DASModesComplexType dasModes = new DASModesComplexType();
+        dasModes.setDASArchitecture(DASArchitecture.BOARD_ADVICE_CALCULATION);
+        dasModes.setDASConnectivity(DASConnectivity.STANDALONE);
+        dasModes.setDASDrivingMode(DASDrivingMode.INACTIVE);
+        handshakeRequest.getDASOperatingModesSupporteds().add(dasModes);
         return handshakeRequest;
     }
 
-    public SFERAB2GRequestMessage createJpRequestMessage(TrainIdentification trainIdentification) {
+    public SFERAB2GRequestMessage createJpRequestMessage(TrainId trainId) {
         SFERAB2GRequestMessage message = new SFERAB2GRequestMessage();
         message.setMessageHeader(createMessageHeader());
         B2GRequest b2GRequest = new B2GRequest();
-        b2GRequest.getJPRequest().add(trainIdentification.toJpRequest());
+        b2GRequest.getJPRequests().add(trainId.toJpRequest());
         message.setB2GRequest(b2GRequest);
         return message;
     }
@@ -72,7 +75,7 @@ public class SferaMessageCreator {
         message.setMessageHeader(createMessageHeader());
         B2GRequest b2GRequest = new B2GRequest();
         List<SPRequest> spRequests = spIds.stream().map(SegmentProfileIdentification::toSpRequest).toList();
-        b2GRequest.getSPRequest().addAll(spRequests);
+        b2GRequest.getSPRequests().addAll(spRequests);
         message.setB2GRequest(b2GRequest);
         return message;
     }
@@ -82,7 +85,7 @@ public class SferaMessageCreator {
         message.setMessageHeader(createMessageHeader());
         B2GRequest b2GRequest = new B2GRequest();
         List<TCRequest> tcRequests = tcIds.stream().map(TrainCharacteristicsIdentification::toTcRequest).toList();
-        b2GRequest.getTCRequest().addAll(tcRequests);
+        b2GRequest.getTCRequests().addAll(tcRequests);
         message.setB2GRequest(b2GRequest);
         return message;
     }

@@ -4,7 +4,7 @@ import ch.sbb.backend.preload.domain.PreloadResult;
 import ch.sbb.backend.preload.domain.SegmentProfileIdentification;
 import ch.sbb.backend.preload.domain.SferaStore;
 import ch.sbb.backend.preload.domain.TrainCharacteristicsIdentification;
-import ch.sbb.backend.preload.domain.TrainIdentification;
+import ch.sbb.backend.preload.domain.TrainId;
 import ch.sbb.backend.preload.infrastructure.PahoMqttClient;
 import ch.sbb.backend.preload.infrastructure.xml.XmlHelper;
 import ch.sbb.backend.preload.sfera.model.v0300.JourneyProfile;
@@ -47,8 +47,8 @@ public class SferaService {
     private final ConcurrentMap<String, CompletableFuture<SFERAG2BReplyMessage>> pending = new ConcurrentHashMap<>();
     private final SferaStore sferaStore;
 
-    @Value("${sfera.sfera-major-version}")
-    private String sferaVersion;
+    @Value("${sfera.major-version}")
+    private String sferaMajorVersion;
 
     @Value("${sfera.topic-prefix}")
     private String topicPrefix;
@@ -61,36 +61,36 @@ public class SferaService {
     }
 
     @Retryable
-    PreloadResult preload(TrainIdentification trainIdentification) throws ExecutionException, InterruptedException {
+    PreloadResult preload(TrainId trainId) throws ExecutionException, InterruptedException {
         // todo unsubscribe in recovery or finally
-        mqttClient.subscribe(topic(G2B, trainIdentification), (topic, message) -> receive(message));
+        mqttClient.subscribe(createTopic(G2B, trainId), (topic, message) -> receive(message));
 
-        SFERAG2BReplyMessage handshakeReply = sendRequest(trainIdentification, sferaMessageCreator.createHandshakeRequestMessage()).get();
+        SFERAG2BReplyMessage handshakeReply = sendRequest(trainId, sferaMessageCreator.createHandshakeRequestMessage()).get();
         if (handshakeReply.getHandshakeAcknowledgement() == null) {
             throw new IllegalStateException("Handshake not acknowledged!");
         }
-        SFERAG2BReplyMessage jpResponse = sendRequest(trainIdentification, sferaMessageCreator.createJpRequestMessage(trainIdentification)).get();
-        if (jpResponse.getG2BReplyPayload() == null || jpResponse.getG2BReplyPayload().getJourneyProfile() == null) {
+        SFERAG2BReplyMessage jpResponse = sendRequest(trainId, sferaMessageCreator.createJpRequestMessage(trainId)).get();
+        if (jpResponse.getG2BReplyPayload() == null || jpResponse.getG2BReplyPayload().getJourneyProfiles() == null) {
             throw new IllegalStateException("No Journey Profile received!");
         }
-        Set<JourneyProfile> journeyProfiles = new HashSet<>(jpResponse.getG2BReplyPayload().getJourneyProfile());
+        Set<JourneyProfile> journeyProfiles = new HashSet<>(jpResponse.getG2BReplyPayload().getJourneyProfiles());
 
         Set<SegmentProfileReference> spRefs = journeyProfiles.stream()
-            .flatMap(jp -> jp.getSegmentProfileReference().stream()).collect(Collectors.toSet());
+            .flatMap(jp -> jp.getSegmentProfileReferences().stream()).collect(Collectors.toSet());
 
-        CompletableFuture<Set<SegmentProfile>> futureSps = requestSps(trainIdentification, spRefs);
+        CompletableFuture<Set<SegmentProfile>> futureSps = requestSps(trainId, spRefs);
 
-        CompletableFuture<Set<TrainCharacteristics>> futureTcs = requestTcs(trainIdentification, spRefs);
+        CompletableFuture<Set<TrainCharacteristics>> futureTcs = requestTcs(trainId, spRefs);
 
         Set<SegmentProfile> segmentProfiles = futureSps.get();
         Set<TrainCharacteristics> trainCharacteristics = futureTcs.get();
-        sendRequest(trainIdentification, sferaMessageCreator.createSessionTermination()).get();
-        mqttClient.unsubscribe(topic(G2B, trainIdentification));
+        sendRequest(trainId, sferaMessageCreator.createSessionTermination()).get();
+        mqttClient.unsubscribe(createTopic(G2B, trainId));
 
         return new PreloadResult(journeyProfiles, segmentProfiles, trainCharacteristics);
     }
 
-    private CompletableFuture<Set<SegmentProfile>> requestSps(TrainIdentification trainId, Set<SegmentProfileReference> spRefs) {
+    private CompletableFuture<Set<SegmentProfile>> requestSps(TrainId trainId, Set<SegmentProfileReference> spRefs) {
         Set<SegmentProfile> segmentProfiles = new HashSet<>();
         Set<SegmentProfileIdentification> segmentProfilesToFetch = new HashSet<>();
 
@@ -110,10 +110,10 @@ public class SferaService {
         if (!segmentProfilesToFetch.isEmpty()) {
             return sendRequest(trainId, sferaMessageCreator.createSpRequestMessage(segmentProfilesToFetch))
                 .thenApply(reply -> {
-                    if (reply.getG2BReplyPayload() == null || reply.getG2BReplyPayload().getSegmentProfile() == null) {
+                    if (reply.getG2BReplyPayload() == null || reply.getG2BReplyPayload().getSegmentProfiles() == null) {
                         throw new IllegalStateException("No Segment Profile received!");
                     }
-                    List<SegmentProfile> fetched = reply.getG2BReplyPayload().getSegmentProfile();
+                    List<SegmentProfile> fetched = reply.getG2BReplyPayload().getSegmentProfiles();
                     sferaStore.addSps(fetched);
                     segmentProfiles.addAll(fetched);
                     return segmentProfiles;
@@ -123,12 +123,12 @@ public class SferaService {
         }
     }
 
-    private CompletableFuture<Set<TrainCharacteristics>> requestTcs(TrainIdentification trainId, Set<SegmentProfileReference> spRefs) {
+    private CompletableFuture<Set<TrainCharacteristics>> requestTcs(TrainId trainId, Set<SegmentProfileReference> spRefs) {
         Set<TrainCharacteristics> trainCharacteristics = new HashSet<>();
         Set<TrainCharacteristicsIdentification> trainCharacteristicsToFetch = new HashSet<>();
 
         Set<TrainCharacteristicsIdentification> allTcIds = spRefs.stream()
-            .flatMap(spRef -> spRef.getTrainCharacteristicsRef().stream())
+            .flatMap(spRef -> spRef.getTrainCharacteristicsReves().stream())
             .map(TrainCharacteristicsIdentification::from)
             .collect(Collectors.toSet());
 
@@ -158,9 +158,9 @@ public class SferaService {
         }
     }
 
-    private String topic(String direction, TrainIdentification trainIdentification) {
-        return String.format("%s90940/%s/%s/%s/%s_%s/%s", topicPrefix, sferaVersion, direction, trainIdentification.companyCode(), trainIdentification.operationalTrainNumber(),
-            trainIdentification.startDate(),
+    private String createTopic(String direction, TrainId trainId) {
+        return String.format("%s90940/%s/%s/%s/%s_%s/%s", topicPrefix, sferaMajorVersion, direction, trainId.companyCode(), trainId.operationalTrainNumber(),
+            trainId.startDate(),
             CLIENT_ID);
     }
 
@@ -176,7 +176,7 @@ public class SferaService {
         }
     }
 
-    private CompletableFuture<SFERAG2BReplyMessage> sendRequest(TrainIdentification trainId, Object payload) {
+    private CompletableFuture<SFERAG2BReplyMessage> sendRequest(TrainId trainId, Object payload) {
         String messageId = switch (payload) {
             case SFERAB2GRequestMessage msg -> msg.getMessageHeader().getMessageID();
             case SFERAB2GEventMessage msg -> msg.getMessageHeader().getMessageID();
@@ -185,12 +185,12 @@ public class SferaService {
 
         CompletableFuture<SFERAG2BReplyMessage> future = new CompletableFuture<>();
         pending.put(messageId, future);
-        mqttClient.publish(topic(B2G, trainId), xmlHelper.toString(payload));
+        mqttClient.publish(createTopic(B2G, trainId), xmlHelper.toString(payload));
         ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
         ses.schedule(() -> {
-            CompletableFuture<SFERAG2BReplyMessage> f = pending.remove(messageId);
-            if (f != null && !f.isDone()) {
-                f.completeExceptionally(new TimeoutException("No reply within " + MAX_MQTT_REPLY_TIMEOUT_MS + "ms"));
+            CompletableFuture<SFERAG2BReplyMessage> pendingFuture = pending.remove(messageId);
+            if (pendingFuture != null && !pendingFuture.isDone()) {
+                pendingFuture.completeExceptionally(new TimeoutException("No reply within " + MAX_MQTT_REPLY_TIMEOUT_MS + "ms"));
             }
             ses.shutdown();
         }, MAX_MQTT_REPLY_TIMEOUT_MS, TimeUnit.MILLISECONDS);

@@ -9,8 +9,8 @@ import ch.sbb.backend.preload.infrastructure.xml.SferaMessagingConfig;
 import ch.sbb.backend.preload.infrastructure.xml.XmlDateHelper;
 import ch.sbb.backend.preload.infrastructure.xml.XmlHelper;
 import ch.sbb.backend.preload.sfera.model.v0300.JourneyProfile;
-import ch.sbb.backend.preload.sfera.model.v0300.OTNIDComplexType;
-import ch.sbb.backend.preload.sfera.model.v0300.TrainIdentificationComplexType;
+import ch.sbb.backend.preload.sfera.model.v0300.OTNID;
+import ch.sbb.backend.preload.sfera.model.v0300.TrainIdentification;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -50,8 +50,8 @@ class StorageServiceTest {
     private static JourneyProfile createJp() {
         JourneyProfile journeyProfile = new JourneyProfile();
 
-        TrainIdentificationComplexType trainId = new TrainIdentificationComplexType();
-        OTNIDComplexType otnid = new OTNIDComplexType();
+        TrainIdentification trainId = new TrainIdentification();
+        OTNID otnid = new OTNID();
         otnid.setTeltsiCompany("9353");
         otnid.setTeltsiOperationalTrainNumber("234");
         otnid.setTeltsiStartDate(XmlDateHelper.toGregorianCalender(LocalDate.of(2025, 10, 17)));
@@ -62,7 +62,7 @@ class StorageServiceTest {
     }
 
     @Test
-    void test_doesNotCreateEmptyDirectoriesWhenNoFiles() throws Exception {
+    void save_doesNotCreateEmptyDirectoriesWhenNoFiles() throws Exception {
         underTest.save(Set.of(), Set.of(), Set.of());
 
         ArgumentCaptor<String> zipNameCaptor = ArgumentCaptor.forClass(String.class);
@@ -79,7 +79,7 @@ class StorageServiceTest {
     }
 
     @Test
-    void test_createsZipWithOneJp() throws Exception {
+    void save_createsZipWithOneJp() throws Exception {
         underTest.save(Set.of(createJp()), Set.of(), Set.of());
 
         ArgumentCaptor<String> zipNameCaptor = ArgumentCaptor.forClass(String.class);

@@ -1,7 +1,7 @@
 package ch.sbb.backend.preload.domain;
 
 import ch.sbb.backend.preload.sfera.model.v0300.SPRequest;
-import ch.sbb.backend.preload.sfera.model.v0300.SPZoneComplexType;
+import ch.sbb.backend.preload.sfera.model.v0300.SPZone;
 import ch.sbb.backend.preload.sfera.model.v0300.SegmentProfile;
 import ch.sbb.backend.preload.sfera.model.v0300.SegmentProfileReference;
 
@@ -28,7 +28,7 @@ public record SegmentProfileIdentification(String spid, String spVersionMajor, S
         spRequest.setSPID(spid);
         spRequest.setSPVersionMajor(spVersionMajor);
         spRequest.setSPVersionMinor(spVersionMinor);
-        SPZoneComplexType spZone = new SPZoneComplexType();
+        SPZone spZone = new SPZone();
         spZone.setIMID(imid);
         spZone.setNIDC(nidc);
         spRequest.setSPZone(spZone);

@@ -1,12 +1,15 @@
 package ch.sbb.backend.preload.application;
 
-import ch.sbb.backend.preload.domain.TrainIdentification;
+import ch.sbb.backend.preload.domain.TrainId;
 import java.time.OffsetDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-// todo train number api (#535)
+/**
+ * @deprecated todo train number api (#535)
+ */
+@Deprecated
 @Service
 public class MockTrainIdentificationService {
 
@@ -16,7 +19,7 @@ public class MockTrainIdentificationService {
     @Value("${sfera.company-code}")
     private String companyCode;
 
-    public List<TrainIdentification> getNewTrainIdentifications(OffsetDateTime since) {
-        return SFERA_MOCK_TRAIN_NUMBERS.stream().map(trainNumber -> new TrainIdentification(companyCode, trainNumber, since.toLocalDate())).toList();
+    public List<TrainId> getNewTrainIdentifications(OffsetDateTime since) {
+        return SFERA_MOCK_TRAIN_NUMBERS.stream().map(trainNumber -> new TrainId(companyCode, trainNumber, since.toLocalDate())).toList();
     }
 }

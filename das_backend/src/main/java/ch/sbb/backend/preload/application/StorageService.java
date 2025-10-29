@@ -3,7 +3,7 @@ package ch.sbb.backend.preload.application;
 import ch.sbb.backend.preload.infrastructure.S3Service;
 import ch.sbb.backend.preload.infrastructure.xml.XmlHelper;
 import ch.sbb.backend.preload.sfera.model.v0300.JourneyProfile;
-import ch.sbb.backend.preload.sfera.model.v0300.OTNIDComplexType;
+import ch.sbb.backend.preload.sfera.model.v0300.OTNID;
 import ch.sbb.backend.preload.sfera.model.v0300.SegmentProfile;
 import ch.sbb.backend.preload.sfera.model.v0300.TrainCharacteristics;
 import java.io.ByteArrayOutputStream;
@@ -59,7 +59,7 @@ public class StorageService {
 
     private void writeJps(Set<JourneyProfile> jps, ZipOutputStream zos) throws IOException {
         for (JourneyProfile jp : jps) {
-            OTNIDComplexType otnid = jp.getTrainIdentification().getOTNID();
+            OTNID otnid = jp.getTrainIdentification().getOTNID();
             String filename = String.format("JP_%s_%s_%s_%s.xml",
                 otnid.getTeltsiCompany(),
                 otnid.getTeltsiOperationalTrainNumber(),
