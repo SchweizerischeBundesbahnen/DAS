@@ -1,8 +1,10 @@
-# DAS Client
+# DAS-Client
 
 DAS (Driver Advisory System) is a mobile application that provides all the required journey data to the train driver.
 
 ## Supported platforms
+
+The UI/UX of the DAS-Client is optimized for **tablet** usage only!
 
 <div id="supported_platforms">
   <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android"/>
@@ -21,11 +23,20 @@ mono-repos support.
 
 ### Generate code
 
+Hint:
+
+* [Android Studio](https://developer.android.com/studio) is recommended as an IDE (Flutter Plugin,
+  tablet emulator, etc).
+
 Use the following Melos command to generate the necessary code for all the components:
 
 ```shell
 fvm dart run melos generate
 ```
+
+Remark:
+
+* if `sky_engine` could not be resolved, try the next command below to download it.
 
 ### Run Application
 
