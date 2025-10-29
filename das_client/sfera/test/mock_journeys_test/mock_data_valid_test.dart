@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logging/logging.dart';
 
-import '../util/test_journey_loader.dart';
+import '../util/test_journey/test_journey_repository.dart';
 
 void main() {
   const sferaStaticResourcesDirectoryPath = '../../sfera_mock/src/main/resources/static_sfera_resources';

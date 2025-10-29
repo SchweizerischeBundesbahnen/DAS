@@ -8,7 +8,7 @@ import '../../../util/test_util.dart';
 void main() {
   late List<TestJourney> allTestJourneys;
   setUpAll(() {
-    allTestJourneys = TestJourneyLoader.fromClientTestResources().toList(growable: false);
+    allTestJourneys = TestJourneyRepository.getFromClientTestResources().toList(growable: false);
   });
 
   Journey getJourney(
@@ -47,7 +47,7 @@ void main() {
   });
 
   test('Test invalid journey on SP missing', () async {
-    final journey = TestJourneyLoader.partialJourney('T9999', maxSpCount: 4).journey;
+    final journey = TestJourneyRepository.partialJourney('T9999', maxSpCount: 4).journey;
 
     expect(journey.valid, false);
   });
@@ -237,7 +237,7 @@ void main() {
   });
 
   test('Test speed change on CAB signaling end is generated correctly', () async {
-    final journey = TestJourneyLoader.partialJourney('T1').journey;
+    final journey = TestJourneyRepository.partialJourney('T1').journey;
 
     expect(journey.valid, true);
 
@@ -375,7 +375,7 @@ void main() {
   });
 
   test('Test protection section is parsed correctly', () async {
-    final journey = TestJourneyLoader.partialJourney('T3').journey;
+    final journey = TestJourneyRepository.partialJourney('T3').journey;
     final protectionSections = journey.data
         .where((it) => it.type == Datatype.protectionSection)
         .cast<ProtectionSection>()
@@ -581,7 +581,7 @@ void main() {
   });
 
   test('Test speed change is parsed correctly', () async {
-    final journey = TestJourneyLoader.partialJourney('T9999').journey;
+    final journey = TestJourneyRepository.partialJourney('T9999').journey;
     final speedChanges = journey.data.where((it) => it.type == Datatype.speedChange).cast<SpeedChange>().toList();
 
     expect(journey.valid, true);
@@ -621,7 +621,7 @@ void main() {
   });
 
   test('Test connection tracks are parsed correctly', () async {
-    final journey = TestJourneyLoader.partialJourney('T9999').journey;
+    final journey = TestJourneyRepository.partialJourney('T9999').journey;
     final connectionTracks = journey.data
         .where((it) => it.type == Datatype.connectionTrack)
         .cast<ConnectionTrack>()
@@ -1702,7 +1702,7 @@ void main() {
   });
 
   test('Test shunting movement markers are parsed correctly', () {
-    final journey = TestJourneyLoader.partialJourney('T29').journey;
+    final journey = TestJourneyRepository.partialJourney('T29').journey;
     expect(journey.valid, true);
 
     final markers = journey.data.whereType<ShuntingMovement>().toList();

@@ -14,3 +14,15 @@ class TestJourney {
 
   bool validate() => skeleton.validate();
 }
+
+extension TestJourneyIterableX on Iterable<TestJourney> {
+  Iterable<TestJourney> get uniqueNames {
+    final Set<String> previousNames = {};
+    return where((j) {
+      final name = j.name + (j.eventName ?? '');
+      if (previousNames.contains(name)) return false;
+      previousNames.add(name);
+      return true;
+    });
+  }
+}

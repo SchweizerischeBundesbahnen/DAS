@@ -27,7 +27,7 @@ import 'test_journey_skeleton.dart';
 /// and at least one SFERA_TC_* file.
 ///
 /// In case there are event files with JP updates, will create multiple journeys, one for each JP update event.
-class TestJourneyLoader {
+class TestJourneyRepository {
   static const _sferaStaticResourcesDirPath = '../../sfera_mock/src/main/resources/static_sfera_resources';
   static const _clientTestResourcesDirPath = './test_resources';
 
@@ -35,9 +35,12 @@ class TestJourneyLoader {
 
   static Directory get _sferaStaticResourcesDir => Directory(_sferaStaticResourcesDirPath);
 
-  static Iterable<TestJourney> fromStaticSferaResources() => fromRootDir(_sferaStaticResourcesDir);
+  static Iterable<TestJourney> getAllUniqueJourneysByName() =>
+      getFromStaticSferaResources().followedBy(getFromClientTestResources()).uniqueNames;
 
-  static Iterable<TestJourney> fromClientTestResources() => fromRootDir(_clientTestResourcesDir);
+  static Iterable<TestJourney> getFromStaticSferaResources() => fromRootDir(_sferaStaticResourcesDir);
+
+  static Iterable<TestJourney> getFromClientTestResources() => fromRootDir(_clientTestResourcesDir);
 
   /// Loads journeys ignoring train characteristics and limiting the number of segment profiles considered.
   ///
@@ -141,21 +144,6 @@ class TestJourneyLoader {
 }
 
 extension _TestJourneySkeletonX on TestJourneySkeleton {
-  TestJourney toTestJourney() {
-    final journey = SferaModelMapper.mapToJourney(
-      journeyProfile: journeyProfile,
-      segmentProfiles: segmentProfiles,
-      trainCharacteristics: trainCharacteristics,
-      relatedTrainInformation: journeyEvent?.payload.relatedTrainInformation,
-    );
-    return TestJourney(
-      journey: journey,
-      name: journeyName,
-      eventName: journeyEvent?.name,
-      skeleton: this,
-    );
-  }
-
   TestJourneySkeleton withoutTrainCharacteristics() => TestJourneySkeleton(
     journeyName: journeyName,
     journeyProfile: journeyProfile,
