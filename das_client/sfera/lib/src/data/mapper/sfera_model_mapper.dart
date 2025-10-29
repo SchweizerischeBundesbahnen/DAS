@@ -70,6 +70,7 @@ class SferaModelMapper {
     final trackEquipmentSegments = TrackEquipmentMapper.parseSegments(segmentProfileReferences, segmentProfiles);
 
     final servicePoints = journeyData.whereType<ServicePoint>().sortedBy((sP) => sP.order);
+    final spOrders = servicePoints.map((s) => s.order).toSet();
 
     final additionalSpeedRestrictions = _parseAdditionalSpeedRestrictions(
       journeyProfile,
@@ -80,12 +81,18 @@ class SferaModelMapper {
         .where((asr) => asr.isDisplayed(trackEquipmentSegments))
         .toList();
 
+    final communicationNetworkChanges = _parseCommunicationNetworkChanges(
+      segmentProfileReferences,
+      segmentProfiles,
+      servicePointOrders: spOrders,
+    );
+
     journeyData.addAll(_cabSignalingStart(trackEquipmentSegments));
     journeyData.addAll(_cabSignalingEnd(trackEquipmentSegments, journeyData));
     journeyData.addAll(_consolidateAdditionalSpeedRestrictions(journeyData, displayedSpeedRestrictions));
     journeyData.addAll(_parseUncodedOperationalIndications(segmentProfileReferences));
     journeyData.addAll(_parseTramAreas(segmentProfiles));
-    journeyData.addAll(_parseCommunicationNetworkChanges(segmentProfileReferences, segmentProfiles));
+    journeyData.addAll(communicationNetworkChanges);
     journeyData.addAll(_parseShuntingMovements(segmentProfileReferences, segmentProfiles));
     journeyData.sort();
 
@@ -110,7 +117,7 @@ class SferaModelMapper {
         bracketStationSegments: _parseBracketStationSegments(servicePoints),
         advisedSpeedSegments: SpeedMapper.advisedSpeeds(journeyProfile, segmentProfiles, journeyData),
         availableBreakSeries: _parseAvailableBreakSeries(journeyPoints, lineSpeeds),
-        communicationNetworkChanges: _parseCommunicationNetworkChanges(segmentProfileReferences, segmentProfiles),
+        communicationNetworkChanges: communicationNetworkChanges,
         breakSeries:
             trainCharacteristic?.tcFeatures.trainCategoryCode != null &&
                 trainCharacteristic?.tcFeatures.brakedWeightPercentage != null
@@ -273,14 +280,12 @@ class SferaModelMapper {
     final journeyStartMinusBuffer = journeyStartTime?.subtract(timeBuffer);
     final journeyEndPlusBuffer = journeyEndTime?.add(timeBuffer);
 
-    // Skip ASR if it ends before the journey start time minus timeBuffer
     if (asrTemporaryConstrain.endTime != null &&
         journeyStartMinusBuffer != null &&
         asrTemporaryConstrain.endTime!.isBefore(journeyStartMinusBuffer)) {
       return true;
     }
 
-    // Skip ASR if it starts after the journey end time plus timeBuffer
     if (asrTemporaryConstrain.startTime != null &&
         journeyEndPlusBuffer != null &&
         asrTemporaryConstrain.startTime!.isAfter(journeyEndPlusBuffer)) {
@@ -324,7 +329,6 @@ class SferaModelMapper {
       );
     }
 
-    // remove SpeedChange that were used for CAB signaling end
     for (final speedChange in cabEndSpeedChanges) {
       journeyData.remove(speedChange);
     }
@@ -334,8 +338,9 @@ class SferaModelMapper {
 
   static List<CommunicationNetworkChange> _parseCommunicationNetworkChanges(
     List<SegmentProfileReferenceDto> segmentProfileReferences,
-    List<SegmentProfileDto> segmentProfiles,
-  ) {
+    List<SegmentProfileDto> segmentProfiles, {
+    Set<int>? servicePointOrders,
+  }) {
     return segmentProfileReferences
         .mapIndexed((index, reference) {
           final segmentProfile = segmentProfiles.firstMatch(reference);
@@ -348,15 +353,21 @@ class SferaModelMapper {
               );
             }
 
+            final order = calculateOrder(index, element.startLocation);
+            if (servicePointOrders != null && servicePointOrders.contains(order)) {
+              return null;
+            }
+
             return CommunicationNetworkChange(
               communicationNetworkType: element.communicationNetworkType.communicationNetworkType,
-              order: calculateOrder(index, element.startLocation),
+              order: order,
               kilometre: kilometreMap[element.startLocation] ?? const [],
             );
           });
         })
         .nonNulls
         .flattened
+        .nonNulls
         .toList();
   }
 
