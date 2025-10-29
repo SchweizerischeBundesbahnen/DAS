@@ -10,14 +10,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class RegistrationService implements Resettable {
 
-    private static final Logger log = LogManager.getLogger(RegistrationService.class);
     private final Map<TrainIdentification, Set<ClientId>> activeTrains = new ConcurrentHashMap<>();
     private final Map<ClientId, Registration> registrationMap = new ConcurrentHashMap<>();
 

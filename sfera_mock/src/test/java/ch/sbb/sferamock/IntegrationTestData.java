@@ -16,7 +16,7 @@ public class IntegrationTestData {
 
     public static final String OPERATIONAL_NUMBER_T9999 = "T9999";
 
-    public static final LocalDate START_DATE = LocalDate.of(2024, 8, 15);
+    public static final LocalDate START_DATE = LocalDate.of(2025, 10, 29);
 
     public static final UUID CLIENT_ID = UUID.randomUUID();
 
