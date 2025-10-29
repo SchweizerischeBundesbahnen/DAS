@@ -7,7 +7,6 @@ import static ch.sbb.sferamock.IntegrationTestData.SFERA_INCOMING_TOPIC;
 import static ch.sbb.sferamock.IntegrationTestData.START_DATE;
 import static ch.sbb.sferamock.IntegrationTestHelper.async;
 import static ch.sbb.sferamock.IntegrationTestHelper.registerClient;
-import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.sferamock.adapters.sfera.model.v0300.SFERAG2BReplyMessage;
 import java.util.UUID;
@@ -21,23 +20,23 @@ class JourneyProfileRequestITest {
     public static final UUID REQUEST_MESSAGE_ID = UUID.randomUUID();
 
     @Autowired
-    private TestMessageAdapter testMessageAdapter;
+    private TestMessageAdapter messageAdapter;
 
     @Test
     void handleJourneyProfileRequest_journeyProfileReceived_journeyProfilePublished() {
         // Given
-        registerClient(testMessageAdapter);
+        registerClient(messageAdapter);
         val sferaJourneyProfileRequest = SferaIntegrationTestData
             .createSferaJpRequest(REQUEST_MESSAGE_ID,
                 RU_COMPANY_CODE_SBB_AG, IM_COMPANY_CODE_SBB_INFRA,
                 OPERATIONAL_NUMBER_T9999, START_DATE);
         // When
         // a client sends us the sfera journey profile request
-        async(() -> testMessageAdapter.sendXml(sferaJourneyProfileRequest, SFERA_INCOMING_TOPIC));
+        async(() -> messageAdapter.sendXml(sferaJourneyProfileRequest, SFERA_INCOMING_TOPIC));
 
         // Then
         // assert that we published a sfera journey profile to the client
-        val sferaReply = testMessageAdapter.receiveXml(SFERAG2BReplyMessage.class);
+        val sferaReply = messageAdapter.receiveXml(SFERAG2BReplyMessage.class);
         assertThat(sferaReply.getMessageHeader().getCorrelationID()).isEqualTo(REQUEST_MESSAGE_ID.toString());
         val messageHeader = sferaReply.getMessageHeader();
         assertThat(messageHeader.getMessageID()).isNotNull();

@@ -6,7 +6,6 @@ import static ch.sbb.sferamock.IntegrationTestData.SFERA_INCOMING_TOPIC;
 import static ch.sbb.sferamock.IntegrationTestHelper.async;
 import static ch.sbb.sferamock.IntegrationTestHelper.firstSpRef;
 import static ch.sbb.sferamock.IntegrationTestHelper.registerClient;
-import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.sferamock.adapters.sfera.model.v0300.SFERAG2BReplyMessage;
 import ch.sbb.sferamock.adapters.sfera.model.v0300.SegmentProfileReference;
@@ -22,17 +21,17 @@ class SegmentProfileRequestITest {
     public static final UUID REQUEST_MESSAGE_ID = UUID.randomUUID();
 
     @Autowired
-    private TestMessageAdapter testMessageAdapter;
+    private TestMessageAdapter messageAdapter;
 
     @Test
     void handleSegmentProfileRequest_notRegistered_errorPublished() {
         // Given
         val sferaSegmentProfileRequest = SferaIntegrationTestData.createSferaSpRequest(REQUEST_MESSAGE_ID, RU_COMPANY_CODE_SBB_AG, IM_COMPANY_CODE_SBB_INFRA, "0", "0", "SPID");
         // When
-        testMessageAdapter.sendXml(sferaSegmentProfileRequest, SFERA_INCOMING_TOPIC);
+        messageAdapter.sendXml(sferaSegmentProfileRequest, SFERA_INCOMING_TOPIC);
 
         // Then
-        val sferaReply = testMessageAdapter.receiveXml(SFERAG2BReplyMessage.class);
+        val sferaReply = messageAdapter.receiveXml(SFERAG2BReplyMessage.class);
         SferaAssertions.assertReplyError(sferaReply, SferaErrorCodes.COULD_NOT_PROCESS_DATA);
         assertThat(sferaReply.getMessageHeader().getCorrelationID()).isEqualTo(REQUEST_MESSAGE_ID.toString());
     }
@@ -40,17 +39,17 @@ class SegmentProfileRequestITest {
     @Test
     void handleSegmentProfileRequest_SegmentProfileReceived_SegmentProfilePublished() {
         // Given
-        registerClient(testMessageAdapter);
-        SegmentProfileReference spRef = firstSpRef(testMessageAdapter);
+        registerClient(messageAdapter);
+        SegmentProfileReference spRef = firstSpRef(messageAdapter);
         val sferaSegmentProfileRequest = SferaIntegrationTestData.createSferaSpRequest(REQUEST_MESSAGE_ID, RU_COMPANY_CODE_SBB_AG, IM_COMPANY_CODE_SBB_INFRA, spRef.getSPVersionMajor(),
             spRef.getSPVersionMinor(), spRef.getSPID());
 
         // When
         // a client sends us the sfera segment profile request
-        async(() -> testMessageAdapter.sendXml(sferaSegmentProfileRequest, SFERA_INCOMING_TOPIC));
+        async(() -> messageAdapter.sendXml(sferaSegmentProfileRequest, SFERA_INCOMING_TOPIC));
 
         // Then
-        val sferaReply = testMessageAdapter.receiveXml(SFERAG2BReplyMessage.class);
+        val sferaReply = messageAdapter.receiveXml(SFERAG2BReplyMessage.class);
         val payload = sferaReply.getG2BReplyPayload();
         assertThat(payload.getSegmentProfile()).hasSize(1);
         val sp = payload.getSegmentProfile().getFirst();

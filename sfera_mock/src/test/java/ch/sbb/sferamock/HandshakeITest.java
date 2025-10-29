@@ -24,7 +24,7 @@ class HandshakeITest {
     static final UUID MESSAGE_ID = UUID.randomUUID();
 
     @Autowired
-    private TestMessageAdapter testMessageAdapter;
+    private TestMessageAdapter nessageAdapter;
 
     @Test
     void handleHandshakeRequest_drivingModeInactiveAndStandalone_handshakeAcknowledge() {
@@ -34,10 +34,10 @@ class HandshakeITest {
             INACTIVE_STANDALONE_BOARDCALCULATION);
 
         // When
-        testMessageAdapter.sendXml(handshakeRequest, SFERA_INCOMING_TOPIC);
+        nessageAdapter.sendXml(handshakeRequest, SFERA_INCOMING_TOPIC);
 
         // Then
-        SFERAG2BReplyMessage replyMessage = testMessageAdapter.receiveXml(SFERAG2BReplyMessage.class);
+        SFERAG2BReplyMessage replyMessage = nessageAdapter.receiveXml(SFERAG2BReplyMessage.class);
         SferaAssertions.assertMessageIdAndCorrelationId(replyMessage, MESSAGE_ID);
         SferaAssertions.assertHandshakeAcknowledgement(replyMessage, STANDALONE);
     }
@@ -50,10 +50,10 @@ class HandshakeITest {
             READONLY_CONNECTED_GROUNDCALCULATION);
 
         // When
-        testMessageAdapter.sendXml(handshakeRequest, SFERA_INCOMING_TOPIC);
+        nessageAdapter.sendXml(handshakeRequest, SFERA_INCOMING_TOPIC);
 
         // Then
-        SFERAG2BReplyMessage replyMessage = testMessageAdapter.receiveXml(SFERAG2BReplyMessage.class);
+        SFERAG2BReplyMessage replyMessage = nessageAdapter.receiveXml(SFERAG2BReplyMessage.class);
         SferaAssertions.assertMessageIdAndCorrelationId(replyMessage, MESSAGE_ID);
         SferaAssertions.assertHandshakeReject(replyMessage, List.of(ARCHITECTURE_NOT_SUPPORTED));
     }
@@ -67,10 +67,10 @@ class HandshakeITest {
         handshakeRequest.getHandshakeRequest().setStatusReportsEnabled(true);
 
         // When
-        testMessageAdapter.sendXml(handshakeRequest, SFERA_INCOMING_TOPIC);
+        nessageAdapter.sendXml(handshakeRequest, SFERA_INCOMING_TOPIC);
 
         // Then
-        SFERAG2BReplyMessage replyMessage = testMessageAdapter.receiveXml(SFERAG2BReplyMessage.class);
+        SFERAG2BReplyMessage replyMessage = nessageAdapter.receiveXml(SFERAG2BReplyMessage.class);
         SferaAssertions.assertMessageIdAndCorrelationId(replyMessage, MESSAGE_ID);
         SferaAssertions.assertHandshakeAcknowledgement(replyMessage, CONNECTED);
     }
@@ -84,10 +84,10 @@ class HandshakeITest {
         handshakeRequest.getHandshakeRequest().setStatusReportsEnabled(true);
 
         // When
-        testMessageAdapter.sendXml(handshakeRequest, SFERA_INCOMING_TOPIC);
+        nessageAdapter.sendXml(handshakeRequest, SFERA_INCOMING_TOPIC);
 
         // Then
-        SFERAG2BReplyMessage replyMessage = testMessageAdapter.receiveXml(SFERAG2BReplyMessage.class);
+        SFERAG2BReplyMessage replyMessage = nessageAdapter.receiveXml(SFERAG2BReplyMessage.class);
         SferaAssertions.assertMessageIdAndCorrelationId(replyMessage, MESSAGE_ID);
         SferaAssertions.assertHandshakeAcknowledgement(replyMessage, CONNECTED);
     }
@@ -95,10 +95,10 @@ class HandshakeITest {
     @Test
     void handleHandshakeRequest_drivingModeReadOnly_handshakeAcknowledge() {
         // When
-        testMessageAdapter.sendXml(SferaIntegrationTestData.createHandshakeRequest(MESSAGE_ID), SFERA_INCOMING_TOPIC);
+        nessageAdapter.sendXml(SferaIntegrationTestData.createHandshakeRequest(MESSAGE_ID), SFERA_INCOMING_TOPIC);
 
         // Then
-        SFERAG2BReplyMessage replyMessage = testMessageAdapter.receiveXml(SFERAG2BReplyMessage.class);
+        SFERAG2BReplyMessage replyMessage = nessageAdapter.receiveXml(SFERAG2BReplyMessage.class);
         SferaAssertions.assertMessageIdAndCorrelationId(replyMessage, MESSAGE_ID);
         SferaAssertions.assertHandshakeAcknowledgement(replyMessage, CONNECTED);
     }
