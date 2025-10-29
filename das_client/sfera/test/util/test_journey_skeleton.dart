@@ -9,14 +9,20 @@ class TestJourneySkeleton {
     required this.journeyProfile,
     required this.segmentProfiles,
     required this.trainCharacteristics,
-    required this.journeyEvents,
+    this.journeyEvent,
   });
 
   final String journeyName;
   final JourneyProfileDto journeyProfile;
   final List<SegmentProfileDto> segmentProfiles;
   final List<TrainCharacteristicsDto> trainCharacteristics;
-  final List<TestJourneyEvent> journeyEvents;
+  final TestJourneyEvent? journeyEvent;
+
+  bool validate() =>
+      journeyProfile.validate() &&
+      segmentProfiles.every((sP) => sP.validate()) &&
+      trainCharacteristics.every((tC) => tC.validate()) &&
+      (journeyEvent?.payload.validate() ?? true);
 }
 
 class TestJourneyEvent {

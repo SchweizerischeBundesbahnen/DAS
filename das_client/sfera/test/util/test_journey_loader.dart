@@ -46,27 +46,28 @@ class TestJourneyLoader {
     final journeyDir = _getTestDirWithJourney(journeyName);
     if (journeyDir == null) throw Exception('No journey with $journeyName found!');
 
-    TestJourneySkeleton journeySkeleton = _parseTestJourneyFilesToSkeleton(journeyDir)!;
+    final journeySkeletons = _parseTestJourneyFilesToSkeletons(journeyDir).nonNulls;
 
-    journeySkeleton = journeySkeleton.withoutTrainCharacteristics();
+    TestJourneySkeleton? baseSkeleton = journeySkeletons.firstWhereOrNull((skeleton) => skeleton.journeyEvent == null);
+    if (baseSkeleton == null) throw Exception('No journey without events found for $journeyName');
 
-    if (maxSpCount != null) journeySkeleton = journeySkeleton.limitedNumberOfSegmentProfiles(maxSpCount);
-    return _skeletonToTestJourneys(journeySkeleton).first;
+    baseSkeleton = baseSkeleton.withoutTrainCharacteristics();
+
+    if (maxSpCount != null) baseSkeleton = baseSkeleton.limitedNumberOfSegmentProfiles(maxSpCount);
+    return baseSkeleton.toTestJourney();
   }
 
   static Iterable<TestJourney> fromRootDir(Directory rootDir) sync* {
     final subdirs = rootDir.listSync(recursive: true).whereType<Directory>();
 
     for (final dir in subdirs) {
-      final testJourneySkeleton = _parseTestJourneyFilesToSkeleton(dir);
-      if (testJourneySkeleton == null) continue;
+      final testJourneySkeletons = _parseTestJourneyFilesToSkeletons(dir);
 
-      yield* _skeletonToTestJourneys(testJourneySkeleton);
+      yield* testJourneySkeletons.map((skeleton) => skeleton.toTestJourney());
     }
-    return;
   }
 
-  static TestJourneySkeleton? _parseTestJourneyFilesToSkeleton(Directory dir) {
+  static Iterable<TestJourneySkeleton> _parseTestJourneyFilesToSkeletons(Directory dir) sync* {
     final files = dir.listSync().whereType<File>();
 
     final List<File> jpFiles = files.where((f) => f.path.contains('SFERA_JP_')).toList();
@@ -76,10 +77,10 @@ class TestJourneyLoader {
     final List<File> tcFiles = files.where((f) => f.path.contains('SFERA_TC_')).toList();
     final eventFiles = files.where((f) => f.path.contains('SFERA_Event_')).toList();
 
-    if (jpFiles.isEmpty || spFiles.isEmpty || jpFiles.length > 1) return null;
+    if (jpFiles.isEmpty || spFiles.isEmpty || jpFiles.length > 1) return;
 
     final journeyName = _getJourneyName(jpFiles.first);
-    if (journeyName == null) return null;
+    if (journeyName == null) return;
 
     final baseJourneyProfile = SferaReplyParser.parse<JourneyProfileDto>(jpFiles.first.readAsStringSync());
 
@@ -91,64 +92,41 @@ class TestJourneyLoader {
         .map((f) => SferaReplyParser.parse<TrainCharacteristicsDto>(f.readAsStringSync()))
         .toList();
 
-    final List<TestJourneyEvent> testEvents = [];
+    yield TestJourneySkeleton(
+      journeyName: journeyName,
+      journeyProfile: baseJourneyProfile,
+      segmentProfiles: segmentProfiles,
+      trainCharacteristics: trainCharacteristics,
+    );
+
     for (final file in eventFiles) {
       final nameRegEx = RegExp('(?<=SFERA_Event_${journeyName}_).*(?=.xml)');
       final eventName = nameRegEx.firstMatch(file.path)?[0];
       if (eventName == null) continue;
 
-      final event = SferaReplyParser.parse<G2bEventPayloadDto>(file.readAsStringSync());
+      final eventPayload = SferaReplyParser.parse<G2bEventPayloadDto>(file.readAsStringSync());
 
-      testEvents.add(TestJourneyEvent(name: eventName, payload: event));
+      final eventJourneyProfiles = eventPayload.journeyProfiles;
+      final eventRelatedTrainInformation = eventPayload.relatedTrainInformation;
+
+      if (eventJourneyProfiles.isEmpty && eventRelatedTrainInformation == null) continue;
+
+      JourneyProfileDto journeyProfile = baseJourneyProfile;
+      if (eventPayload.journeyProfiles.isNotEmpty) journeyProfile = eventPayload.journeyProfiles.first;
+
+      yield TestJourneySkeleton(
+        journeyName: journeyName,
+        journeyProfile: journeyProfile,
+        segmentProfiles: segmentProfiles,
+        trainCharacteristics: trainCharacteristics,
+        journeyEvent: TestJourneyEvent(name: eventName, payload: eventPayload),
+      );
     }
-
-    return TestJourneySkeleton(
-      journeyName: journeyName,
-      journeyProfile: baseJourneyProfile,
-      segmentProfiles: segmentProfiles,
-      trainCharacteristics: trainCharacteristics,
-      journeyEvents: testEvents,
-    );
   }
 
   static String? _getJourneyName(File jpFile) {
     final nameRegEx = RegExp('(?<=SFERA_JP_).*(?=.xml)');
     return nameRegEx.firstMatch(jpFile.path)?[0];
-  }
-
-  static Iterable<TestJourney> _skeletonToTestJourneys(TestJourneySkeleton testJourneySkeleton) sync* {
-    final journey = SferaModelMapper.mapToJourney(
-      journeyProfile: testJourneySkeleton.journeyProfile,
-      segmentProfiles: testJourneySkeleton.segmentProfiles,
-      trainCharacteristics: testJourneySkeleton.trainCharacteristics,
-    );
-    yield TestJourney(journey: journey, name: testJourneySkeleton.journeyName);
-
-    for (final event in testJourneySkeleton.journeyEvents) {
-      final eventJourneyProfile = event.payload.journeyProfiles.firstOrNull;
-      final relatedTrainInformation = event.payload.relatedTrainInformation;
-
-      if (eventJourneyProfile != null) {
-        final journey = SferaModelMapper.mapToJourney(
-          journeyProfile: eventJourneyProfile,
-          segmentProfiles: testJourneySkeleton.segmentProfiles,
-          trainCharacteristics: testJourneySkeleton.trainCharacteristics,
-          relatedTrainInformation: relatedTrainInformation,
-        );
-        yield TestJourney(journey: journey, name: testJourneySkeleton.journeyName, eventName: event.name);
-      }
-
-      if (relatedTrainInformation != null && eventJourneyProfile == null) {
-        final journey = SferaModelMapper.mapToJourney(
-          journeyProfile: testJourneySkeleton.journeyProfile,
-          segmentProfiles: testJourneySkeleton.segmentProfiles,
-          trainCharacteristics: testJourneySkeleton.trainCharacteristics,
-          relatedTrainInformation: relatedTrainInformation,
-        );
-        yield TestJourney(journey: journey, name: testJourneySkeleton.journeyName, eventName: event.name);
-      }
-    }
-    return;
   }
 
   static Directory? _getTestDirWithJourney(String journeyName) {
@@ -163,19 +141,34 @@ class TestJourneyLoader {
 }
 
 extension _TestJourneySkeletonX on TestJourneySkeleton {
+  TestJourney toTestJourney() {
+    final journey = SferaModelMapper.mapToJourney(
+      journeyProfile: journeyProfile,
+      segmentProfiles: segmentProfiles,
+      trainCharacteristics: trainCharacteristics,
+      relatedTrainInformation: journeyEvent?.payload.relatedTrainInformation,
+    );
+    return TestJourney(
+      journey: journey,
+      name: journeyName,
+      eventName: journeyEvent?.name,
+      skeleton: this,
+    );
+  }
+
   TestJourneySkeleton withoutTrainCharacteristics() => TestJourneySkeleton(
     journeyName: journeyName,
     journeyProfile: journeyProfile,
-    segmentProfiles: List.from(segmentProfiles),
+    segmentProfiles: segmentProfiles,
     trainCharacteristics: const [],
-    journeyEvents: List.from(journeyEvents),
+    journeyEvent: journeyEvent,
   );
 
   TestJourneySkeleton limitedNumberOfSegmentProfiles(int maxSpCount) => TestJourneySkeleton(
     journeyName: journeyName,
     journeyProfile: journeyProfile,
     segmentProfiles: segmentProfiles.take(maxSpCount).toList(),
-    trainCharacteristics: List.from(trainCharacteristics),
-    journeyEvents: List.from(journeyEvents),
+    trainCharacteristics: trainCharacteristics,
+    journeyEvent: journeyEvent,
   );
 }

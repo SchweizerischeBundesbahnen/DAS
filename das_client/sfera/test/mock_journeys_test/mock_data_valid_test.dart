@@ -12,7 +12,7 @@ void main() {
     expect(testResourcesDir.existsSync(), isTrue);
   });
 
-  group('whenLoadingAllJourneysFromSferaTestResourcesDir_thenShouldAllBeValid', () {
+  group('whenLoadingAllJourneysFromSferaTestResourcesDir_thenShould', () {
     for (final testJourney in TestJourneyLoader.fromStaticSferaResources()) {
       final journeyName = [testJourney.name, testJourney.eventName].join('-');
       test('whenParsingJourney_${journeyName}_thenShouldBeValid', tags: 'sfera-mock-data-validator', () {
