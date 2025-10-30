@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.10.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.9.0...sfera_mock-v0.10.0) (2025-10-30)
+
+
+### Features
+
+* advised speeds over multiple segment profiles ([#1285](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1285)) ([#1364](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1364)) ([61a9be2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/61a9be2675dfbe6e6cc528b0e6372b692742d2de))
+* implement no replacement series available notification ([#938](https://github.com/SchweizerischeBundesbahnen/DAS/issues/938)) ([#1368](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1368)) ([c6338c1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c6338c10f68b50bccd23ec372b489f6aa3f87b1f))
+
+
+### Bug Fixes
+
+* conjunct advised speed will not signal END but only play start sound ([#1364](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1364)) ([61a9be2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/61a9be2675dfbe6e6cc528b0e6372b692742d2de))
+* refactor line- and calculated speed ([#1317](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1317)) ([#1382](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1382)) ([1907f30](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1907f302f67065fff01b5d1e1ffa89f349fb7af0))
+
+
+### Documentation
+
+* fix calculated speed location of Sissach in 2266 ([#1317](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1317)) ([#1380](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1380)) ([2611fce](https://github.com/SchweizerischeBundesbahnen/DAS/commit/2611fce85f534bb7b947a65b84e8f4c212551d2c))
+
 ## [0.9.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/sfera_mock-v0.8.0...sfera_mock-v0.9.0) (2025-10-21)
 
 
