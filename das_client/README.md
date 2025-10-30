@@ -36,7 +36,8 @@ fvm dart run melos generate
 
 Remark:
 
-* if `sky_engine` could not be resolved, try the next command below to download it.
+* if `sky_engine` could not be resolved, try the next command below to download it and rerun this
+  statement again.
 
 ### Run Application
 
