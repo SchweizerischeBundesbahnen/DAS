@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.7.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.6.0...backend-v0.7.0) (2025-10-30)
+
+
+### Features
+
+* extend settings api with preload config ([#915](https://github.com/SchweizerischeBundesbahnen/DAS/issues/915)) ([#1376](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1376)) ([aa3f2c6](https://github.com/SchweizerischeBundesbahnen/DAS/commit/aa3f2c68fecaa8864eed6c94b016ad659bc6114b))
+
+
+### Bug Fixes
+
+* **deps:** update dependency software.amazon.awssdk:bom to v2.36.0 ([#1377](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1377)) ([d6b7ae1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/d6b7ae19261a08c8a4ad75920669e6a3cb7d826a))
+
 ## [0.6.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/backend-v0.5.0...backend-v0.6.0) (2025-10-20)
 
 
