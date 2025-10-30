@@ -45,10 +45,10 @@ public class SferaMessageCreator {
     String sferaRecipient;
 
     public SFERAB2GRequestMessage createHandshakeRequestMessage() {
-        SFERAB2GRequestMessage message = new SFERAB2GRequestMessage();
-        message.setMessageHeader(createMessageHeader());
-        message.setHandshakeRequest(createHandshakeRequest());
-        return message;
+        SFERAB2GRequestMessage b2gRequestMessage = new SFERAB2GRequestMessage();
+        b2gRequestMessage.setMessageHeader(createMessageHeader());
+        b2gRequestMessage.setHandshakeRequest(createHandshakeRequest());
+        return b2gRequestMessage;
     }
 
     private HandshakeRequest createHandshakeRequest() {
@@ -62,42 +62,42 @@ public class SferaMessageCreator {
     }
 
     public SFERAB2GRequestMessage createJpRequestMessage(TrainId trainId) {
-        SFERAB2GRequestMessage message = new SFERAB2GRequestMessage();
-        message.setMessageHeader(createMessageHeader());
-        B2GRequest b2GRequest = new B2GRequest();
-        b2GRequest.getJPRequests().add(trainId.toJpRequest());
-        message.setB2GRequest(b2GRequest);
-        return message;
+        SFERAB2GRequestMessage b2gRequestMessage = new SFERAB2GRequestMessage();
+        b2gRequestMessage.setMessageHeader(createMessageHeader());
+        B2GRequest b2gRequest = new B2GRequest();
+        b2gRequest.getJPRequests().add(trainId.toJpRequest());
+        b2gRequestMessage.setB2GRequest(b2gRequest);
+        return b2gRequestMessage;
     }
 
     public SFERAB2GRequestMessage createSpRequestMessage(Set<SegmentProfileIdentification> spIds) {
-        SFERAB2GRequestMessage message = new SFERAB2GRequestMessage();
-        message.setMessageHeader(createMessageHeader());
-        B2GRequest b2GRequest = new B2GRequest();
+        SFERAB2GRequestMessage b2gRequestMessage = new SFERAB2GRequestMessage();
+        b2gRequestMessage.setMessageHeader(createMessageHeader());
+        B2GRequest b2gRequest = new B2GRequest();
         List<SPRequest> spRequests = spIds.stream().map(SegmentProfileIdentification::toSpRequest).toList();
-        b2GRequest.getSPRequests().addAll(spRequests);
-        message.setB2GRequest(b2GRequest);
-        return message;
+        b2gRequest.getSPRequests().addAll(spRequests);
+        b2gRequestMessage.setB2GRequest(b2gRequest);
+        return b2gRequestMessage;
     }
 
     public SFERAB2GRequestMessage createTcRequest(Set<TrainCharacteristicsIdentification> tcIds) {
-        SFERAB2GRequestMessage message = new SFERAB2GRequestMessage();
-        message.setMessageHeader(createMessageHeader());
-        B2GRequest b2GRequest = new B2GRequest();
+        SFERAB2GRequestMessage b2gRequestMessage = new SFERAB2GRequestMessage();
+        b2gRequestMessage.setMessageHeader(createMessageHeader());
+        B2GRequest b2gRequest = new B2GRequest();
         List<TCRequest> tcRequests = tcIds.stream().map(TrainCharacteristicsIdentification::toTcRequest).toList();
-        b2GRequest.getTCRequests().addAll(tcRequests);
-        message.setB2GRequest(b2GRequest);
-        return message;
+        b2gRequest.getTCRequests().addAll(tcRequests);
+        b2gRequestMessage.setB2GRequest(b2gRequest);
+        return b2gRequestMessage;
     }
 
     public SFERAB2GEventMessage createSessionTermination() {
         MessageHeader header = createMessageHeader();
-        SFERAB2GEventMessage result = new SFERAB2GEventMessage();
-        result.setMessageHeader(header);
-        B2GEventPayload eventPayload = new B2GEventPayload();
-        eventPayload.setSessionTermination(new SessionTermination());
-        result.setB2GEventPayload(eventPayload);
-        return result;
+        SFERAB2GEventMessage b2gEventMessage = new SFERAB2GEventMessage();
+        b2gEventMessage.setMessageHeader(header);
+        B2GEventPayload b2gEventPayload = new B2GEventPayload();
+        b2gEventPayload.setSessionTermination(new SessionTermination());
+        b2gEventMessage.setB2GEventPayload(b2gEventPayload);
+        return b2gEventMessage;
     }
 
     private MessageHeader createMessageHeader() {
