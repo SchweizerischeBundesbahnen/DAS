@@ -1,7 +1,7 @@
 package ch.sbb.sferamock;
 
-import static ch.sbb.sferamock.IntegrationTestData.IM_COMPANY_CODE_SBB_INFRA;
-import static ch.sbb.sferamock.IntegrationTestData.RU_COMPANY_CODE_SBB_AG;
+import static ch.sbb.sferamock.IntegrationTestData.IM_COMPANY_CODE_SBB_I;
+import static ch.sbb.sferamock.IntegrationTestData.RU_COMPANY_CODE_SBB_P;
 import static ch.sbb.sferamock.adapters.sfera.model.v0300.ReportedDASDrivingMode.DASDrivingMode.DAS_NOT_CONNECTED_TO_ATP;
 import static ch.sbb.sferamock.adapters.sfera.model.v0300.ReportedDASDrivingMode.DASDrivingMode.INACTIVE;
 import static ch.sbb.sferamock.adapters.sfera.model.v0300.ReportedDASDrivingMode.DASDrivingMode.READ_ONLY;
@@ -44,7 +44,7 @@ class SferaIntegrationTestData {
     static final DASModesComplexType READONLY_CONNECTED_GROUNDCALCULATION = createDASModes(READ_ONLY, CONNECTED, GROUND_ADVICE_CALCULATION);
 
     static SFERAB2GRequestMessage createHandshakeRequest(UUID messageId) {
-        return createHandshakeRequest(messageId, RU_COMPANY_CODE_SBB_AG, IM_COMPANY_CODE_SBB_INFRA, READONLY_CONNECTED_BOARDCALCULATION);
+        return createHandshakeRequest(messageId, RU_COMPANY_CODE_SBB_P, IM_COMPANY_CODE_SBB_I, READONLY_CONNECTED_BOARDCALCULATION);
     }
 
     static SFERAB2GRequestMessage createHandshakeRequest(UUID messageId, CompanyCode ruCompanyCode, CompanyCode imCompanyCode,

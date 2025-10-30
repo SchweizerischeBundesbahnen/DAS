@@ -1,89 +1,26 @@
-import 'dart:io';
-
 import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sfera/component.dart';
 import 'package:sfera/src/data/dto/delay_dto.dart';
-import 'package:sfera/src/data/dto/g2b_event_payload_dto.dart';
-import 'package:sfera/src/data/dto/journey_profile_dto.dart';
-import 'package:sfera/src/data/dto/related_train_information_dto.dart';
-import 'package:sfera/src/data/dto/segment_profile_dto.dart';
-import 'package:sfera/src/data/dto/train_characteristics_dto.dart';
-import 'package:sfera/src/data/mapper/sfera_model_mapper.dart';
+
+import '../../../util/test_util.dart';
 
 void main() {
-  List<File> getFilesForSp(String path, String baseName, int count) {
-    final files = <File>[];
-    for (var i = 1; i <= count; i++) {
-      files.add(File('$path/${baseName}_$i.xml'));
-    }
-    return files;
-  }
-
-  List<File> getFilesForTc(String path, String baseName, int count) {
-    final files = <File>[];
-    for (var i = 1; i <= count; i++) {
-      files.add(File('$path/${baseName}_$i.xml'));
-    }
-    return files;
-  }
+  late List<TestJourney> allTestJourneys;
+  setUpAll(() {
+    allTestJourneys = TestJourneyRepository.getFromClientTestResources().toList(growable: false);
+  });
 
   Journey getJourney(
     String trainNumber,
     int spCount, {
-    String? spPostfix,
-    String? jpPostfix,
-    String? tcPostfix,
     int tcCount = 0,
     int? relatedTrainInfoEventId,
-    Journey? lastJourney,
   }) {
-    final resourceDir = Directory('test_resources');
-    expect(resourceDir.existsSync(), true);
+    bool journeyNameAndEventMatches(TestJourney journey) =>
+        journey.name == trainNumber && relatedTrainInfoEventId?.toString() == journey.eventName;
 
-    // Filter files that match the regex
-    final directoryRegex = RegExp('${trainNumber}_.+');
-    final testDirectory = resourceDir.listSync().firstWhereOrNull((entry) {
-      final baseName = entry.path.split(Platform.pathSeparator).last;
-      return entry is Directory && directoryRegex.hasMatch(baseName);
-    });
-    expect(testDirectory, isNotNull);
-
-    final baseJPFileName = 'SFERA_JP_$trainNumber${jpPostfix != null ? '_$jpPostfix' : ''}';
-    final journeyFile = File('${testDirectory!.path}/$baseJPFileName.xml');
-    final journeyProfile = SferaReplyParser.parse<JourneyProfileDto>(journeyFile.readAsStringSync());
-    expect(journeyProfile.validate(), true);
-
-    final List<SegmentProfileDto> segmentProfiles = [];
-    final baseSPFileName = 'SFERA_SP_$trainNumber${spPostfix != null ? '_$spPostfix' : ''}';
-    for (final File file in getFilesForSp(testDirectory.path, baseSPFileName, spCount)) {
-      final segmentProfile = SferaReplyParser.parse<SegmentProfileDto>(file.readAsStringSync());
-      expect(segmentProfile.validate(), true);
-      segmentProfiles.add(segmentProfile);
-    }
-
-    final List<TrainCharacteristicsDto> trainCharacteristics = [];
-    final baseTCFileName = 'SFERA_TC_$trainNumber${tcPostfix != null ? '_$tcPostfix' : ''}';
-    for (final File file in getFilesForTc(testDirectory.path, baseTCFileName, tcCount)) {
-      final trainCharacteristic = SferaReplyParser.parse<TrainCharacteristicsDto>(file.readAsStringSync());
-      expect(trainCharacteristic.validate(), true);
-      trainCharacteristics.add(trainCharacteristic);
-    }
-
-    RelatedTrainInformationDto? relatedTrainInformation;
-    if (relatedTrainInfoEventId != null) {
-      final file = File('${testDirectory.path}/SFERA_Event_${trainNumber}_$relatedTrainInfoEventId.xml');
-      final g2bEventPayload = SferaReplyParser.parse<G2bEventPayloadDto>(file.readAsStringSync());
-      relatedTrainInformation = g2bEventPayload.relatedTrainInformation;
-    }
-
-    return SferaModelMapper.mapToJourney(
-      journeyProfile: journeyProfile,
-      segmentProfiles: segmentProfiles,
-      trainCharacteristics: trainCharacteristics,
-      relatedTrainInformation: relatedTrainInformation,
-      lastJourney: lastJourney,
-    );
+    return allTestJourneys.where(journeyNameAndEventMatches).first.journey;
   }
 
   test('returns null delay when delay is missing in event', () {
@@ -110,7 +47,7 @@ void main() {
   });
 
   test('Test invalid journey on SP missing', () async {
-    final journey = getJourney('T9999', 4);
+    final journey = TestJourneyRepository.partialJourney('T9999', maxSpCount: 4).journey;
 
     expect(journey.valid, false);
   });
@@ -300,7 +237,7 @@ void main() {
   });
 
   test('Test speed change on CAB signaling end is generated correctly', () async {
-    final journey = getJourney('T1', 5);
+    final journey = TestJourneyRepository.partialJourney('T1').journey;
 
     expect(journey.valid, true);
 
@@ -438,7 +375,7 @@ void main() {
   });
 
   test('Test protection section is parsed correctly', () async {
-    final journey = getJourney('T3', 1);
+    final journey = TestJourneyRepository.partialJourney('T3').journey;
     final protectionSections = journey.data
         .where((it) => it.type == Datatype.protectionSection)
         .cast<ProtectionSection>()
@@ -644,7 +581,7 @@ void main() {
   });
 
   test('Test speed change is parsed correctly', () async {
-    final journey = getJourney('T9999', 5);
+    final journey = TestJourneyRepository.partialJourney('T9999').journey;
     final speedChanges = journey.data.where((it) => it.type == Datatype.speedChange).cast<SpeedChange>().toList();
 
     expect(journey.valid, true);
@@ -684,7 +621,7 @@ void main() {
   });
 
   test('Test connection tracks are parsed correctly', () async {
-    final journey = getJourney('T9999', 5);
+    final journey = TestJourneyRepository.partialJourney('T9999').journey;
     final connectionTracks = journey.data
         .where((it) => it.type == Datatype.connectionTrack)
         .cast<ConnectionTrack>()
@@ -1765,7 +1702,7 @@ void main() {
   });
 
   test('Test shunting movement markers are parsed correctly', () {
-    final journey = getJourney('T29', 6);
+    final journey = TestJourneyRepository.partialJourney('T29').journey;
     expect(journey.valid, true);
 
     final markers = journey.data.whereType<ShuntingMovement>().toList();

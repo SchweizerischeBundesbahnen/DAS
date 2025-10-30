@@ -1,7 +1,7 @@
 package ch.sbb.sferamock;
 
-import static ch.sbb.sferamock.IntegrationTestData.IM_COMPANY_CODE_SBB_INFRA;
-import static ch.sbb.sferamock.IntegrationTestData.RU_COMPANY_CODE_SBB_AG;
+import static ch.sbb.sferamock.IntegrationTestData.IM_COMPANY_CODE_SBB_I;
+import static ch.sbb.sferamock.IntegrationTestData.RU_COMPANY_CODE_SBB_P;
 import static ch.sbb.sferamock.IntegrationTestData.SFERA_INCOMING_TOPIC;
 import static ch.sbb.sferamock.IntegrationTestHelper.async;
 import static ch.sbb.sferamock.IntegrationTestHelper.firstSpRef;
@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
-class SegmentProfileRequestITest {
+class SegmentProfileRequestTest {
 
     public static final UUID REQUEST_MESSAGE_ID = UUID.randomUUID();
 
@@ -27,7 +27,7 @@ class SegmentProfileRequestITest {
     @Test
     void handleSegmentProfileRequest_notRegistered_errorPublished() {
         // Given
-        val sferaSegmentProfileRequest = SferaIntegrationTestData.createSferaSpRequest(REQUEST_MESSAGE_ID, RU_COMPANY_CODE_SBB_AG, IM_COMPANY_CODE_SBB_INFRA, "0", "0", "SPID");
+        val sferaSegmentProfileRequest = SferaIntegrationTestData.createSferaSpRequest(REQUEST_MESSAGE_ID, RU_COMPANY_CODE_SBB_P, IM_COMPANY_CODE_SBB_I, "0", "0", "SPID");
         // When
         messageAdapter.sendXml(sferaSegmentProfileRequest, SFERA_INCOMING_TOPIC);
 
@@ -42,7 +42,7 @@ class SegmentProfileRequestITest {
         // Given
         registerClient(messageAdapter);
         SegmentProfileReference spRef = firstSpRef(messageAdapter);
-        val sferaSegmentProfileRequest = SferaIntegrationTestData.createSferaSpRequest(REQUEST_MESSAGE_ID, RU_COMPANY_CODE_SBB_AG, IM_COMPANY_CODE_SBB_INFRA, spRef.getSPVersionMajor(),
+        val sferaSegmentProfileRequest = SferaIntegrationTestData.createSferaSpRequest(REQUEST_MESSAGE_ID, RU_COMPANY_CODE_SBB_P, IM_COMPANY_CODE_SBB_I, spRef.getSPVersionMajor(),
             spRef.getSPVersionMinor(), spRef.getSPID());
 
         // When

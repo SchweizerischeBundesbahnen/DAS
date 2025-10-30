@@ -1,7 +1,7 @@
 package ch.sbb.sferamock;
 
-import static ch.sbb.sferamock.IntegrationTestData.IM_COMPANY_CODE_SBB_INFRA;
-import static ch.sbb.sferamock.IntegrationTestData.RU_COMPANY_CODE_SBB_AG;
+import static ch.sbb.sferamock.IntegrationTestData.IM_COMPANY_CODE_SBB_I;
+import static ch.sbb.sferamock.IntegrationTestData.RU_COMPANY_CODE_SBB_P;
 import static ch.sbb.sferamock.IntegrationTestData.SFERA_INCOMING_TOPIC;
 import static ch.sbb.sferamock.SferaIntegrationTestData.DRIVER_CONNECTED_BOARDCALCULATION;
 import static ch.sbb.sferamock.SferaIntegrationTestData.INACTIVE_STANDALONE_BOARDCALCULATION;
@@ -19,25 +19,25 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
-class HandshakeITest {
+class HandshakeTest {
 
     static final UUID MESSAGE_ID = UUID.randomUUID();
 
     @Autowired
-    private TestMessageAdapter nessageAdapter;
+    private TestMessageAdapter messageAdapter;
 
     @Test
     void handleHandshakeRequest_drivingModeInactiveAndStandalone_handshakeAcknowledge() {
         // Given
         SFERAB2GRequestMessage handshakeRequest = SferaIntegrationTestData.createHandshakeRequest(
-            MESSAGE_ID, RU_COMPANY_CODE_SBB_AG, IM_COMPANY_CODE_SBB_INFRA,
+            MESSAGE_ID, RU_COMPANY_CODE_SBB_P, IM_COMPANY_CODE_SBB_I,
             INACTIVE_STANDALONE_BOARDCALCULATION);
 
         // When
-        nessageAdapter.sendXml(handshakeRequest, SFERA_INCOMING_TOPIC);
+        messageAdapter.sendXml(handshakeRequest, SFERA_INCOMING_TOPIC);
 
         // Then
-        SFERAG2BReplyMessage replyMessage = nessageAdapter.receiveXml(SFERAG2BReplyMessage.class);
+        SFERAG2BReplyMessage replyMessage = messageAdapter.receiveXml(SFERAG2BReplyMessage.class);
         SferaAssertions.assertMessageIdAndCorrelationId(replyMessage, MESSAGE_ID);
         SferaAssertions.assertHandshakeAcknowledgement(replyMessage, STANDALONE);
     }
@@ -46,14 +46,14 @@ class HandshakeITest {
     void handleHandshakeRequest_wrongArchitecture_handshakeReject() {
         // Given
         SFERAB2GRequestMessage handshakeRequest = SferaIntegrationTestData.createHandshakeRequest(
-            MESSAGE_ID, RU_COMPANY_CODE_SBB_AG, IM_COMPANY_CODE_SBB_INFRA,
+            MESSAGE_ID, RU_COMPANY_CODE_SBB_P, IM_COMPANY_CODE_SBB_I,
             READONLY_CONNECTED_GROUNDCALCULATION);
 
         // When
-        nessageAdapter.sendXml(handshakeRequest, SFERA_INCOMING_TOPIC);
+        messageAdapter.sendXml(handshakeRequest, SFERA_INCOMING_TOPIC);
 
         // Then
-        SFERAG2BReplyMessage replyMessage = nessageAdapter.receiveXml(SFERAG2BReplyMessage.class);
+        SFERAG2BReplyMessage replyMessage = messageAdapter.receiveXml(SFERAG2BReplyMessage.class);
         SferaAssertions.assertMessageIdAndCorrelationId(replyMessage, MESSAGE_ID);
         SferaAssertions.assertHandshakeReject(replyMessage, List.of(ARCHITECTURE_NOT_SUPPORTED));
     }
@@ -62,15 +62,15 @@ class HandshakeITest {
     void handleHandshakeRequest_drivingModeDriverAndReadOnly_handshakeAcknowledge() {
         // Given
         SFERAB2GRequestMessage handshakeRequest = SferaIntegrationTestData.createHandshakeRequest(
-            MESSAGE_ID, RU_COMPANY_CODE_SBB_AG, IM_COMPANY_CODE_SBB_INFRA,
+            MESSAGE_ID, RU_COMPANY_CODE_SBB_P, IM_COMPANY_CODE_SBB_I,
             DRIVER_CONNECTED_BOARDCALCULATION, READONLY_CONNECTED_BOARDCALCULATION);
         handshakeRequest.getHandshakeRequest().setStatusReportsEnabled(true);
 
         // When
-        nessageAdapter.sendXml(handshakeRequest, SFERA_INCOMING_TOPIC);
+        messageAdapter.sendXml(handshakeRequest, SFERA_INCOMING_TOPIC);
 
         // Then
-        SFERAG2BReplyMessage replyMessage = nessageAdapter.receiveXml(SFERAG2BReplyMessage.class);
+        SFERAG2BReplyMessage replyMessage = messageAdapter.receiveXml(SFERAG2BReplyMessage.class);
         SferaAssertions.assertMessageIdAndCorrelationId(replyMessage, MESSAGE_ID);
         SferaAssertions.assertHandshakeAcknowledgement(replyMessage, CONNECTED);
     }
@@ -79,15 +79,15 @@ class HandshakeITest {
     void handleHandshakeRequest_drivingModeReadOnlyAndDriver_handshakeAcknowledge() {
         // Given
         SFERAB2GRequestMessage handshakeRequest = SferaIntegrationTestData.createHandshakeRequest(
-            MESSAGE_ID, RU_COMPANY_CODE_SBB_AG, IM_COMPANY_CODE_SBB_INFRA,
+            MESSAGE_ID, RU_COMPANY_CODE_SBB_P, IM_COMPANY_CODE_SBB_I,
             READONLY_CONNECTED_BOARDCALCULATION, DRIVER_CONNECTED_BOARDCALCULATION);
         handshakeRequest.getHandshakeRequest().setStatusReportsEnabled(true);
 
         // When
-        nessageAdapter.sendXml(handshakeRequest, SFERA_INCOMING_TOPIC);
+        messageAdapter.sendXml(handshakeRequest, SFERA_INCOMING_TOPIC);
 
         // Then
-        SFERAG2BReplyMessage replyMessage = nessageAdapter.receiveXml(SFERAG2BReplyMessage.class);
+        SFERAG2BReplyMessage replyMessage = messageAdapter.receiveXml(SFERAG2BReplyMessage.class);
         SferaAssertions.assertMessageIdAndCorrelationId(replyMessage, MESSAGE_ID);
         SferaAssertions.assertHandshakeAcknowledgement(replyMessage, CONNECTED);
     }
@@ -95,10 +95,10 @@ class HandshakeITest {
     @Test
     void handleHandshakeRequest_drivingModeReadOnly_handshakeAcknowledge() {
         // When
-        nessageAdapter.sendXml(SferaIntegrationTestData.createHandshakeRequest(MESSAGE_ID), SFERA_INCOMING_TOPIC);
+        messageAdapter.sendXml(SferaIntegrationTestData.createHandshakeRequest(MESSAGE_ID), SFERA_INCOMING_TOPIC);
 
         // Then
-        SFERAG2BReplyMessage replyMessage = nessageAdapter.receiveXml(SFERAG2BReplyMessage.class);
+        SFERAG2BReplyMessage replyMessage = messageAdapter.receiveXml(SFERAG2BReplyMessage.class);
         SferaAssertions.assertMessageIdAndCorrelationId(replyMessage, MESSAGE_ID);
         SferaAssertions.assertHandshakeAcknowledgement(replyMessage, CONNECTED);
     }
