@@ -13,6 +13,7 @@ import 'package:warnapp/component.dart';
 final _log = Logger('WarnAppViewModel');
 
 class WarnAppViewModel {
+  // TODO: disable WarnApp for Android
   WarnAppViewModel({
     required this.flavor,
     required SferaRemoteRepo sferaRemoteRepo,
@@ -125,6 +126,7 @@ class WarnAppViewModel {
         now.difference(_lastWarnappEventTimestamp!).inMilliseconds < _warnappWindowMilliseconds) {
       _log.info('Abfahrt detected while warnapp message was within $_warnappWindowMilliseconds ms -> Warning!');
       _rxWarnapp.add(WarnappEvent());
+      // TODO: play sound here not in TrainJourneyOverview
     }
   }
 }

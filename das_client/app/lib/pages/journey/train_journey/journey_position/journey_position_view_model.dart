@@ -21,6 +21,8 @@ class JourneyPositionViewModel {
 
   StreamSubscription<PunctualityModel>? _punctualitySubscription;
   StreamSubscription<(Journey?, PunctualityModel, ServicePoint?)>? _journeySubscription;
+
+  // TODO: make non nullable with seeded
   final _rxModel = BehaviorSubject<JourneyPositionModel>();
 
   final _rxTimedServicePointReached = BehaviorSubject<ServicePoint?>.seeded(null);

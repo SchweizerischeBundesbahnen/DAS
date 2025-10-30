@@ -35,6 +35,7 @@ class UxTestingViewModel {
           final koaEnabled = await _ruFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.koa);
           if (koaEnabled) {
             _rxKoaState.add(KoaState.from(data.value));
+            // TODO: play KOA sound here only for correct event and KOA enabled
           }
         }
         _rxUxTestingEvents.add(data);

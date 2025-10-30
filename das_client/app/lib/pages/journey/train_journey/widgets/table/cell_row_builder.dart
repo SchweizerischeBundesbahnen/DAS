@@ -34,6 +34,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     super.key,
     this.config = const TrainJourneyConfig(),
     this.defaultAlignment = Alignment.bottomCenter,
+    // TODO: make required
     this.journeyPosition,
     this.rowColor,
     this.onTap,
