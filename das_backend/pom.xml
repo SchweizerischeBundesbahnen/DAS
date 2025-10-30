@@ -23,7 +23,7 @@
         <jsonschema2pojo-maven-plugin.version>1.2.2</jsonschema2pojo-maven-plugin.version>
         <aws.java.sdk.version>2.36.0</aws.java.sdk.version>
         <shedlock.version>6.10.0</shedlock.version>
-        <xmlunit.version>2.10.4</xmlunit.version>
+        <xmlunit.version>2.11.0</xmlunit.version>
         <jaxb2-maven-plugin.version>4.0.0</jaxb2-maven-plugin.version>
         <paho.mqttv5.client.version>1.2.5</paho.mqttv5.client.version>
     </properties>
