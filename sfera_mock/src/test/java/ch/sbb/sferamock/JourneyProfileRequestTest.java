@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
-class JourneyProfileRequestITest {
+class JourneyProfileRequestTest {
 
     public static final UUID REQUEST_MESSAGE_ID = UUID.randomUUID();
 
@@ -36,8 +36,8 @@ class JourneyProfileRequestITest {
         async(() -> testMessageAdapter.sendXml(sferaJourneyProfileRequest, SFERA_INCOMING_TOPIC));
 
         // Then
-        // assert that we published a sfera journey profile to the client
         val sferaReply = testMessageAdapter.receiveXml(SFERAG2BReplyMessage.class);
+        assertThat(sferaReply).as("SFERA published JourneyProfile to the client").isNotNull();
         assertThat(sferaReply.getMessageHeader().getCorrelationID()).isEqualTo(REQUEST_MESSAGE_ID.toString());
         val messageHeader = sferaReply.getMessageHeader();
         assertThat(messageHeader.getMessageID()).isNotNull();

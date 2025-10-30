@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
-class SegmentProfileRequestITest {
+class SegmentProfileRequestTest {
 
     public static final UUID REQUEST_MESSAGE_ID = UUID.randomUUID();
 

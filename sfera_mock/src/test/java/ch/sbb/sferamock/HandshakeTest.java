@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
-class HandshakeITest {
+class HandshakeTest {
 
     static final UUID MESSAGE_ID = UUID.randomUUID();
 
