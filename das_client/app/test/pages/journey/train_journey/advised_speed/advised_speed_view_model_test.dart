@@ -19,7 +19,7 @@ void main() {
   group('Unit Test Advised Speed View Model', () {
     late AdvisedSpeedViewModel testee;
     late BehaviorSubject<Journey?> journeySubject;
-    late BehaviorSubject<JourneyPositionModel?> journeyPositionSubject;
+    late BehaviorSubject<JourneyPositionModel> journeyPositionSubject;
     late FakeAsync testAsync;
     late DASSounds mockDasSounds;
     late List<AdvisedSpeedModel> modelRegister;
@@ -51,7 +51,7 @@ void main() {
 
       fakeAsync((fakeAsync) {
         journeySubject = BehaviorSubject<Journey?>.seeded(null);
-        journeyPositionSubject = BehaviorSubject<JourneyPositionModel?>.seeded(null);
+        journeyPositionSubject = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
         testAsync = fakeAsync;
 
         testee = AdvisedSpeedViewModel(

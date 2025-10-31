@@ -21,14 +21,14 @@ class ChevronAnimationData {
 
   static ChevronAnimationData? from(
     List<JourneyPoint> rows,
-    JourneyPositionModel? journeyPosition,
+    JourneyPositionModel journeyPosition,
     Metadata metadata,
     BaseData currentRow,
     BreakSeries? currentBreakSeries,
     List<int> expandedGroups,
   ) {
-    final currentPosition = journeyPosition?.currentPosition;
-    final lastPosition = journeyPosition?.lastPosition;
+    final currentPosition = journeyPosition.currentPosition;
+    final lastPosition = journeyPosition.lastPosition;
     if (currentPosition == null ||
         lastPosition == null ||
         lastPosition == currentPosition ||

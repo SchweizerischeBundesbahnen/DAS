@@ -199,8 +199,6 @@ class TrainJourneyOverview extends StatelessWidget {
 
     if (event.isWarn) {
       _triggerWarnappNotification(context);
-    } else if (event.isKoa && event.value == KoaState.waitCancelled.name) {
-      DI.get<DASSounds>().koa.play();
     }
   }
 }

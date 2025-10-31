@@ -3,10 +3,10 @@ import 'package:app/pages/journey/train_journey/widgets/header/sim_identifier.da
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/das_text_styles.dart';
+import 'package:app/widgets/table/das_table_cell.dart';
+import 'package:flutter/material.dart';
 import 'package:sbb_design_system_mobile/sbb_design_system_mobile.dart';
 import 'package:sfera/component.dart';
-import 'package:flutter/material.dart';
-import 'package:app/widgets/table/das_table_cell.dart';
 
 class CommunicationNetworkChangeRow extends CellRowBuilder<CommunicationNetworkChange> {
   final BuildContext context;
@@ -16,6 +16,7 @@ class CommunicationNetworkChangeRow extends CellRowBuilder<CommunicationNetworkC
     required super.data,
     required super.rowIndex,
     required this.context,
+    required super.journeyPosition,
     super.config,
   }) : super(rowColor: ThemeUtil.getColor(context, SBBColors.milk, SBBColors.black));
 
