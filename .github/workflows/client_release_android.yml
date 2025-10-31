@@ -41,7 +41,7 @@ jobs:
         run: melos generate
 
       - name: Upload generated srcs  # saves around 40 sec
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: gen_srcs_android
           path: |
@@ -92,7 +92,7 @@ jobs:
         run: flutter pub get
 
       - name: Download gen srcs
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: gen_srcs_android
 
