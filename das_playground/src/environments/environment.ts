@@ -2,7 +2,7 @@ import {Environment} from "./environment.model";
 import {PassedInitialConfig} from "angular-auth-oidc-client";
 import {IMqttServiceOptions} from "ngx-mqtt";
 
-const backendUrl = 'http://localhost:8080';
+const backendUrl = 'http://localhost:8081';
 const customTopicPrefix = 'dev/';
 
 const authConfig: PassedInitialConfig = {

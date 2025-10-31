@@ -1,7 +1,7 @@
 package ch.sbb.sferamock.messages.services;
 
-import ch.sbb.sferamock.adapters.sfera.model.v0201.NSPListComplexType;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.NetworkSpecificParameter;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.NSPListComplexType;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.NetworkSpecificParameter;
 import ch.sbb.sferamock.messages.model.localregulations.DocumentNode;
 import ch.sbb.sferamock.messages.model.localregulations.DocumentRoot;
 import ch.sbb.sferamock.messages.model.localregulations.Version;

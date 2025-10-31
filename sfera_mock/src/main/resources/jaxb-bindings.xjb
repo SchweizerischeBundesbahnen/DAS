@@ -6,7 +6,7 @@
 
     <jxb:bindings schemaLocation="SFERA_v3.00.xsd" node="//xsd:schema">
         <jxb:schemaBindings>
-            <jxb:package name="ch.sbb.sferamock.adapters.sfera.model.v0201"/>
+            <jxb:package name="ch.sbb.sferamock.adapters.sfera.model.v0300"/>
         </jxb:schemaBindings>
         <jxb:bindings node="//xs:attribute[@name='DAS_connectivity']/xs:simpleType">
             <jxb:typesafeEnumClass name="DASConnectivity"/>

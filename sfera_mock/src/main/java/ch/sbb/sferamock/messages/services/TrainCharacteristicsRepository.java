@@ -1,6 +1,6 @@
 package ch.sbb.sferamock.messages.services;
 
-import ch.sbb.sferamock.adapters.sfera.model.v0201.TrainCharacteristics;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.TrainCharacteristics;
 import ch.sbb.sferamock.messages.common.XmlHelper;
 import ch.sbb.sferamock.messages.model.TrainCharacteristicsIdentification;
 import java.io.File;

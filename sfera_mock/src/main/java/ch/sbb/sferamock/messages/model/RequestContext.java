@@ -4,12 +4,12 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.NonNull;
 
-public record RequestContext(@NonNull TrainIdentification tid, @NonNull ClientId clientId, @NonNull Optional<UUID> incomingMessageId) {
+public record RequestContext(@NonNull TrainIdentification tid, @NonNull ClientId clientId, @NonNull Version version, @NonNull Optional<UUID> incomingMessageId) {
 
     private static final int MINIMAL_TOPIC_ELEMENTS = 6;
 
-    public RequestContext(@NonNull TrainIdentification tid, @NonNull ClientId clientId) {
-        this(tid, clientId, Optional.empty());
+    public RequestContext(@NonNull TrainIdentification tid, @NonNull ClientId clientId, @NonNull Version version) {
+        this(tid, clientId, version, Optional.empty());
     }
 
     public static RequestContext fromTopic(String topic) {
@@ -25,6 +25,6 @@ public record RequestContext(@NonNull TrainIdentification tid, @NonNull ClientId
 
         var tid = TrainIdentification.fromString(elements[length - 2], elements[length - 3]);
 
-        return new RequestContext(tid, new ClientId(elements[length - 1]), incomingMessageId);
+        return new RequestContext(tid, new ClientId(elements[length - 1]), new Version(elements[length - 5]), incomingMessageId);
     }
 }
