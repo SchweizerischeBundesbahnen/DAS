@@ -9,7 +9,7 @@ cascade:
 Some abbreviations from the Specification:
 * C-DAS-O: Connected DAS with OnBoard intelligence
 * S-DAS: Standalone DAS
-* DAS-OB: DAS OnBoard
+* DAS-OB: DAS On-Board
 * DAS-TS: DAS Trackside
 * G2B: Ground to Board
 * B2G: Board to Ground

@@ -33,9 +33,9 @@ melos:
         flutter: true
 
     generate:
-      run: |
-        melos run generate:build_runner --no-select &&
-        melos run generate:intl
+      steps:
+        - melos run generate:build_runner --no-select
+        - melos run generate:intl
 
     generate:build_runner:
       run: dart run build_runner build --delete-conflicting-outputs

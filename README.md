@@ -1,31 +1,54 @@
 # Driver Advisory System
 
+## Normative scope
+
+This project covers mainly the **DAS On-Board** (aka **DAS**, **DAS OB**) railway undertaking (RU)
+component
+according to [UIC IRS 90940:Ed2](https://uic.org/events/uic-irs-90940-edition-2-sfera-protocol),
+also
+see [high-level system architecture](./docs/content/architecture/05_building_block_view/01_whitebox_view.md).
+
+Out of Scope:
+
+* The Traffic Management System **IM DAS-TS** is not part of this project.
+* Operating aspects to national data-sources involved (for e.g. the Swiss IM DAS-TS instance
+  TMS-VAD).
+
 ## Introduction
 
-Driver Advisory System is an innovative tool designed to assist train drivers in the delivery of
+Driver Advisory System (DAS) is an innovative tool designed to assist train drivers in the delivery
+of
 efficient and punctual train services. By integrating a wide range of data sources, including live
 positioning, infrastructure characteristics, and real-time transport plans, the system calculates
 and presents the ideal driving profile for each journey.
 
-This repository is dedicated to the railway undertaking (RU) component of the DAS, encompassing all
-aspects necessary for RU implementation and integration.
+RUs and countries might have its own additional legal requirements and specialities, therefore this
+repository
+is initially dedicated to RUs of Switzerland covering encompassing aspects necessary for
+implementation and integration.
+Anyway thanks to the SFERA protocol, best effort is invested to make it reusable for international
+train
+traffic and usage in the future.
 
 ## Structure
 
 This repository is structured into several key modules, each dedicated to a specific aspect of the
-system
+system.
 
 ### Mobile App
 
-DAS-OB
+DAS-OB (aka **DAS-Client** within this project)
 
 - [das_client](das_client/README.md)
     - [Dart](https://dart.dev/)
     - [Flutter](https://flutter.dev/)
 
-### Backend
+### Backend (aka **DAS-Backend** within this project)
 
-RU DAS-TS
+Important:
+
+* This component is strictly not a **RU DAS-TS** implementation, it offers other valued added
+  services but SFERA related.
 
 - [das_backend](das_backend/README.md)
     - [Java](https://www.java.com/de/), [openJDK](https://openjdk.org/)

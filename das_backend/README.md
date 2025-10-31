@@ -1,4 +1,4 @@
-# Backend
+# DAS-Backend
 
 ## Introduction
 SpringBoot application (needs PostgreSQL DB dockerized, s. [Database handling](Database.md))
