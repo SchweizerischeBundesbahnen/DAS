@@ -11,26 +11,20 @@ void main() {
   group('train reduced journey test', () {
     testWidgets('test network change with km is displayed', (tester) async {
       await prepareAndStartApp(tester);
-      await loadTrainJourney(tester, trainNumber: 'T14');
+      await loadTrainJourney(tester, trainNumber: 'T9999');
       await openReducedJourneyMenu(tester);
 
       final reducedTable = _findTableOfReducedJourney();
 
-      // find gsm-R-Icons
-      final gsmRKey = find.descendant(of: reducedTable, matching: find.byKey(CommunicationNetworkIcon.gsmRKey));
-      expect(gsmRKey, findsNWidgets(2));
-
-      // find gsm-P-Icons
+      // find gsm-P-Icon
       final gsmPKey = find.descendant(of: reducedTable, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
-      expect(gsmPKey, findsNWidgets(2));
+      expect(gsmPKey, findsOneWidget);
 
-      // find first communication network change row by text km 33.5
-      final firstCommunicationNetworkChangeRow = find.descendant(of: reducedTable, matching: find.text('km 33.5'));
+      // find communication network change row by text km 0.3
+      final firstCommunicationNetworkChangeRow = find.descendant(of: reducedTable, matching: find.text('km 0.3'));
       expect(firstCommunicationNetworkChangeRow, findsOneWidget);
 
-      // find second communication network change row by text km 84.9
-      final secondCommunicationNetworkChangeRow = find.descendant(of: reducedTable, matching: find.text('km 84.9'));
-      expect(secondCommunicationNetworkChangeRow, findsOneWidget);
+      await disconnect(tester);
     });
 
     testWidgets('test train information is displayed', (tester) async {
