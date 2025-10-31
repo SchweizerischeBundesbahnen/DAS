@@ -16,10 +16,10 @@ class ChevronAnimationController with ChangeNotifier {
   JourneyPoint? currentPosition;
   JourneyPoint? lastPosition;
 
-  void onPositionUpdate(JourneyPositionModel? journeyPosition) {
-    if (journeyPosition?.currentPosition != journeyPosition?.lastPosition) {
-      currentPosition = journeyPosition?.currentPosition;
-      lastPosition = journeyPosition?.lastPosition;
+  void onPositionUpdate(JourneyPositionModel journeyPosition) {
+    if (journeyPosition.currentPosition != journeyPosition.lastPosition) {
+      currentPosition = journeyPosition.currentPosition;
+      lastPosition = journeyPosition.lastPosition;
 
       animation = Tween<double>(begin: 0.0, end: 1.0).animate(animationController)
         ..addListener(() => notifyListeners());

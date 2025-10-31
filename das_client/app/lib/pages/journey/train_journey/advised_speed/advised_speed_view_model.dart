@@ -16,7 +16,7 @@ final _log = Logger('AdvisedSpeedViewModel');
 class AdvisedSpeedViewModel {
   AdvisedSpeedViewModel({
     required Stream<Journey?> journeyStream,
-    required Stream<JourneyPositionModel?> journeyPositionStream,
+    required Stream<JourneyPositionModel> journeyPositionStream,
   }) {
     _initJourneyStreamSubscription(journeyStream, journeyPositionStream);
   }
@@ -29,7 +29,7 @@ class AdvisedSpeedViewModel {
 
   Timer? _setToInactiveTimer;
 
-  StreamSubscription<(Journey?, JourneyPositionModel?)>? _journeySubscription;
+  StreamSubscription<(Journey?, JourneyPositionModel)>? _journeySubscription;
 
   final _rxModel = BehaviorSubject<AdvisedSpeedModel>.seeded(AdvisedSpeedModel.inactive());
 
@@ -45,7 +45,7 @@ class AdvisedSpeedViewModel {
 
   void _initJourneyStreamSubscription(
     Stream<Journey?> journeyStream,
-    Stream<JourneyPositionModel?> journeyPositionStream,
+    Stream<JourneyPositionModel> journeyPositionStream,
   ) {
     _journeySubscription = CombineLatestStream.combine2(journeyStream, journeyPositionStream, (a, b) => (a, b)).listen((
       data,
@@ -58,11 +58,11 @@ class AdvisedSpeedViewModel {
     });
   }
 
-  bool _cannotDetermineAdvisedSpeed(Journey? journey, JourneyPositionModel? journeyPosition) =>
-      journey == null || journeyPosition?.currentPosition == null;
+  bool _cannotDetermineAdvisedSpeed(Journey? journey, JourneyPositionModel journeyPosition) =>
+      journey == null || journeyPosition.currentPosition == null;
 
-  void _handleJourneyUpdate(Journey? journey, JourneyPositionModel? journeyPosition) {
-    final currentPositionOrder = journeyPosition!.currentPosition!.order;
+  void _handleJourneyUpdate(Journey? journey, JourneyPositionModel journeyPosition) {
+    final currentPositionOrder = journeyPosition.currentPosition!.order;
     final advisedSpeedSegments = journey!.metadata.advisedSpeedSegments;
     final activeSegments = advisedSpeedSegments.appliesToOrder(currentPositionOrder).toList();
 

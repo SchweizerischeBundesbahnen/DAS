@@ -10,7 +10,7 @@ class ChevronAnimationWrapper extends StatefulWidget {
   });
 
   final Widget child;
-  final JourneyPositionModel? journeyPosition;
+  final JourneyPositionModel journeyPosition;
 
   @override
   State<ChevronAnimationWrapper> createState() => _ChevronAnimationWrapperState();

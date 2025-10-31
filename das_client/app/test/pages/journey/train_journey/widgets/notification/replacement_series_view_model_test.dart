@@ -24,7 +24,7 @@ void main() {
   late MockTrainJourneyViewModel mockTrainJourneyViewModel;
   late MockJourneyPositionViewModel mockJourneyPositionViewModel;
   late BehaviorSubject<Journey?> journeySubject;
-  late BehaviorSubject<JourneyPositionModel?> journeyPositionSubject;
+  late BehaviorSubject<JourneyPositionModel> journeyPositionSubject;
   late BehaviorSubject<TrainJourneySettings> trainJourneySettingsSubject;
 
   final journey = Journey(
@@ -176,7 +176,7 @@ void main() {
     mockJourneyPositionViewModel = MockJourneyPositionViewModel();
     mockTrainJourneyViewModel = MockTrainJourneyViewModel();
     journeySubject = BehaviorSubject<Journey?>.seeded(null);
-    journeyPositionSubject = BehaviorSubject<JourneyPositionModel?>.seeded(null);
+    journeyPositionSubject = BehaviorSubject<JourneyPositionModel>.seeded(JourneyPositionModel());
     trainJourneySettingsSubject = BehaviorSubject<TrainJourneySettings>.seeded(TrainJourneySettings());
     when(mockTrainJourneyViewModel.journey).thenAnswer((_) => journeySubject.stream);
     when(mockJourneyPositionViewModel.model).thenAnswer((_) => journeyPositionSubject.stream);

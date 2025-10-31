@@ -98,9 +98,9 @@ class ReplacementSeriesViewModel {
       _rxModel.add(null);
     }
 
-    if (position?.currentPosition == null) return;
+    if (position.currentPosition == null) return;
 
-    final currentPosition = position!.currentPosition!;
+    final currentPosition = position.currentPosition!;
     final activeSegment = _activeIllegalSpeedSegment(currentBreakSeries, currentPosition);
 
     if (activeSegment != null && activeSegment.replacement != null) {

@@ -1,5 +1,4 @@
 import 'package:app/i18n/i18n.dart';
-import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/labeled_badge.dart';
@@ -17,10 +16,11 @@ class AdditionalSpeedRestrictionRow extends CellRowBuilder<AdditionalSpeedRestri
     required super.metadata,
     required super.data,
     required super.rowIndex,
+    required super.journeyPosition,
     super.key,
     super.onTap,
     super.config,
-  }) : super(rowColor: additionalSpeedRestrictionColor, journeyPosition: JourneyPositionModel());
+  }) : super(rowColor: additionalSpeedRestrictionColor);
 
   @override
   DASTableCell informationCell(BuildContext context) {

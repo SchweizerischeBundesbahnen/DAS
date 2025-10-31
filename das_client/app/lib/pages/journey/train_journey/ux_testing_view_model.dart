@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:app/di/di.dart';
 import 'package:app/provider/ru_feature_provider.dart';
+import 'package:app/sound/das_sounds.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:settings/component.dart';
 import 'package:sfera/component.dart';
@@ -34,7 +36,11 @@ class UxTestingViewModel {
         if (data.isKoa) {
           final koaEnabled = await _ruFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.koa);
           if (koaEnabled) {
-            _rxKoaState.add(KoaState.from(data.value));
+            final koaState = KoaState.from(data.value);
+            _rxKoaState.add(koaState);
+            if (koaState == KoaState.waitCancelled) {
+              DI.get<DASSounds>().koa.play();
+            }
           }
         }
         _rxUxTestingEvents.add(data);

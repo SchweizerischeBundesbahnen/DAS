@@ -29,12 +29,12 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     required this.metadata,
     required super.data,
     required super.rowIndex,
+    required this.journeyPosition,
     super.height = rowHeight,
     super.stickyLevel,
     super.key,
     this.config = const TrainJourneyConfig(),
     this.defaultAlignment = Alignment.bottomCenter,
-    this.journeyPosition,
     this.rowColor,
     this.onTap,
     this.isGrouped = false,
@@ -43,7 +43,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
   final Alignment defaultAlignment;
   final Color? rowColor;
   final Metadata metadata;
-  final JourneyPositionModel? journeyPosition;
+  final JourneyPositionModel journeyPosition;
   final TrainJourneyConfig config;
   final VoidCallback? onTap;
   final bool isGrouped;
@@ -115,7 +115,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     );
   }
 
-  bool get isCurrentPosition => journeyPosition?.currentPosition == data;
+  bool get isCurrentPosition => journeyPosition.currentPosition == data;
 
   DASTableCell trackEquipment(BuildContext context) {
     if (config.trackEquipmentRenderData == null) {
@@ -207,8 +207,8 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
     final isLastAdvisedSpeed = advisedSpeedsSegment.firstOrNull?.endData == data;
     final showAdvisedSpeed =
         advisedSpeedsSegment.isNotEmpty &&
-        journeyPosition?.currentPosition != null &&
-        advisedSpeedsSegment.first.appliesToOrder(journeyPosition!.currentPosition!.order);
+        journeyPosition.currentPosition != null &&
+        advisedSpeedsSegment.first.appliesToOrder(journeyPosition.currentPosition!.order);
 
     if (showAdvisedSpeed && !isLastAdvisedSpeed) {
       final isFirst = advisedSpeedsSegment.first.startOrder == data.order;
@@ -262,7 +262,7 @@ class CellRowBuilder<T extends JourneyPoint> extends DASTableRowBuilder<T> {
 
   ShowSpeedBehavior get showSpeedBehavior => ShowSpeedBehavior.never;
 
-  bool get _isNextStop => journeyPosition?.nextStop == data;
+  bool get _isNextStop => journeyPosition.nextStop == data;
 
   static double rowHeightForData(BaseData data, BreakSeries? currentBreakSeries) {
     switch (data.type) {

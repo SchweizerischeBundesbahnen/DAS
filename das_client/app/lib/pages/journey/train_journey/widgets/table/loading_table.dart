@@ -1,3 +1,4 @@
+import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/train_journey/train_journey_overview.dart';
 import 'package:app/pages/journey/train_journey/widgets/table/cell_row_builder.dart';
 import 'package:app/widgets/table/das_table.dart';
@@ -36,6 +37,7 @@ class _EmptyLoadingRow extends CellRowBuilder<JourneyPoint> {
     : super(
         metadata: Metadata(),
         data: CABSignaling(order: 0, kilometre: []),
+        journeyPosition: JourneyPositionModel(),
       );
 
   @override

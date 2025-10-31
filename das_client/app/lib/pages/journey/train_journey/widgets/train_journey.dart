@@ -160,14 +160,14 @@ class TrainJourney extends StatelessWidget {
     Journey journey,
     TrainJourneySettings settings,
     Map<int, CollapsedState> collapsedRows,
-    JourneyPositionModel? journeyPosition,
+    JourneyPositionModel journeyPosition,
   ) {
     final currentBreakSeries = settings.resolvedBreakSeries(journey.metadata);
 
     final rows = journey.data
         .whereNot((it) => _isCurvePointWithoutSpeed(it, journey, settings))
         .groupBaliseAndLevelCrossings(settings.expandedGroups, journey.metadata)
-        .hideRepeatedLineFootNotes(journeyPosition?.currentPosition)
+        .hideRepeatedLineFootNotes(journeyPosition.currentPosition)
         .hideFootNotesForNotSelectedTrainSeries(currentBreakSeries?.trainSeries)
         .combineFootNoteAndOperationalIndication()
         .sorted((a1, a2) => a1.compareTo(a2));
@@ -246,6 +246,7 @@ class TrainJourney extends StatelessWidget {
           return AdditionalSpeedRestrictionRow(
             metadata: journey.metadata,
             data: rowData as AdditionalSpeedRestrictionData,
+            journeyPosition: journeyPosition,
             config: trainJourneyConfig,
             onTap: () => _onAdditionalSpeedRestrictionTab(context, rowData),
             rowIndex: index,
@@ -349,6 +350,7 @@ class TrainJourney extends StatelessWidget {
           return CommunicationNetworkChangeRow(
             metadata: journey.metadata,
             data: rowData as CommunicationNetworkChange,
+            journeyPosition: journeyPosition,
             config: trainJourneyConfig,
             rowIndex: index,
             context: context,
