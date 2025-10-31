@@ -452,8 +452,6 @@ Future<void> main() async {
       final wankdorfGsmPIcon = find.descendant(of: header, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
       expect(wankdorfGsmPIcon, findsNothing);
 
-      //TODO hat sehr warscheinlich kein km wechsel mehr
-
       // check network type for Burgdorf
       await waitUntilExists(tester, find.descendant(of: header, matching: find.text('Burgdorf')));
       final burgdorfGsmPIcon = find.descendant(of: header, matching: find.byKey(CommunicationNetworkIcon.gsmPKey));
@@ -510,7 +508,6 @@ Future<void> main() async {
       final mainContactsBurgdorf = find.descendant(of: radioChannel, matching: find.text('1608 (1609)'));
       await waitUntilExists(tester, mainContactsBurgdorf, maxWaitSeconds: 2);
       final burgdorfIndicator = find.descendant(of: radioChannel, matching: find.byKey(DotIndicator.indicatorKey));
-      //TODO idk what fails here
       expect(burgdorfIndicator, findsOneWidget);
       final burgdorfSim = find.descendant(of: radioChannel, matching: find.byKey(SimIdentifier.simKey));
       expect(burgdorfSim, findsOneWidget);

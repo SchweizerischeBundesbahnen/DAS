@@ -228,7 +228,6 @@ void main() {
         of: tabContentWankdorf,
         matching: find.byKey(CommunicationNetworkIcon.gsmPKey),
       );
-      //todo Probably not there anymore
       expect(gsmPIconWankdorf, findsOneWidget);
       final radioChannelsListWankdorf = find.descendant(
         of: tabContentBern,
@@ -279,7 +278,6 @@ void main() {
       await _selectTab(tester, ServicePointModalTab.communication);
       final tabContent = find.byKey(DetailTabCommunication.communicationTabKey);
       expect(tabContent, findsOneWidget);
-      //todo probably not here anymore
       final gsmRIcon = find.descendant(of: tabContent, matching: find.byKey(CommunicationNetworkIcon.gsmRKey));
       expect(gsmRIcon, findsOneWidget);
       final radioChannels = find.descendant(
