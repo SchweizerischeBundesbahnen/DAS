@@ -8,4 +8,5 @@ zis:
   clean-up:
     cron: '-'
   kafka:
+    # disable kafka per default
     enabled: false

@@ -105,7 +105,8 @@ aws:
 
 sfera:
   company-code: '1085'
-  sfera-version: '3.00'
+  major-version: '3'
+  version: '3.00'
   source-device: 'BACKEND'
   recipient: '0085'
   broker-url: ${SFERA_BROKER_URL}
@@ -114,6 +115,7 @@ sfera:
   topic-prefix: ${SFERA_BROKER_TOPIC_PREFIX}
 
 preload:
+  # deactivated for now
   fetch-cron: '-'
   bucket:
     bucketUrl: ${PRELOAD_BUCKET_URL}

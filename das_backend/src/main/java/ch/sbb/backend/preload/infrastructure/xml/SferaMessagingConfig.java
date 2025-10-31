@@ -1,4 +1,4 @@
-package ch.sbb.backend.preload.xml;
+package ch.sbb.backend.preload.infrastructure.xml;
 
 import ch.sbb.backend.preload.sfera.model.v0300.ObjectFactory;
 import jakarta.xml.bind.Marshaller;

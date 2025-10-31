@@ -1,0 +1,19 @@
+<SFERA_B2G_RequestMessage>
+    <MessageHeader SFERA_version="3.00" message_ID="bd325e51-c95d-486b-b14c-5a03b3425203" sourceDevice="TEST" timestamp="2025-10-20T13:19:29Z">
+        <Sender>1033</Sender>
+        <Recipient>0033</Recipient>
+    </MessageHeader>
+    <B2G_Request>
+        <SP_Request SP_ID="234" SP_VersionMajor="3" SP_VersionMinor="2">
+            <SP_Zone>
+                <IM_ID>1200</IM_ID>
+            </SP_Zone>
+        </SP_Request>
+        <SP_Request SP_ID="41" SP_VersionMajor="1" SP_VersionMinor="0">
+            <SP_Zone>
+                <IM_ID>1300</IM_ID>
+                <NID_C>810</NID_C>
+            </SP_Zone>
+        </SP_Request>
+    </B2G_Request>
+</SFERA_B2G_RequestMessage>
