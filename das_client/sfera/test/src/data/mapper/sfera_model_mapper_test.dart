@@ -176,7 +176,7 @@ void main() {
 
     // segment 1
     expect((journey.data[0] as JourneyPoint).kilometre[0], 0.2);
-    expect((journey.data[1] as JourneyPoint).kilometre[0], 0.2);
+    expect((journey.data[1] as JourneyPoint).kilometre[0], 0.35);
     expect((journey.data[2] as JourneyPoint).kilometre[0], 0.5);
     expect((journey.data[3] as JourneyPoint).kilometre[0], 0.6);
     expect((journey.data[4] as JourneyPoint).kilometre[0], 0.7);
@@ -219,7 +219,7 @@ void main() {
 
     // segment 1
     expect(journey.data[0].order, 000200);
-    expect(journey.data[1].order, 000200);
+    expect(journey.data[1].order, 000300);
     expect(journey.data[2].order, 000500);
     expect(journey.data[3].order, 000600);
     expect(journey.data[4].order, 000700);

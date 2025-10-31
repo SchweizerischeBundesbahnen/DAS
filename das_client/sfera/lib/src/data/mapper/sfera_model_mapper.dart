@@ -353,14 +353,9 @@ class SferaModelMapper {
               );
             }
 
-            final order = calculateOrder(index, element.startLocation);
-            if (servicePointOrders != null && servicePointOrders.contains(order)) {
-              return null;
-            }
-
             return CommunicationNetworkChange(
               communicationNetworkType: element.communicationNetworkType.communicationNetworkType,
-              order: order,
+              order: calculateOrder(index, element.startLocation),
               kilometre: kilometreMap[element.startLocation] ?? const [],
             );
           });

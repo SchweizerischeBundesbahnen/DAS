@@ -97,9 +97,12 @@
 
     <SP_ContextInformation>
         <ConnectionTrack location="800" connectionTrackType="Unknown"/>
-        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="200" endLocation="200" communicationNetworkType="GSM-P"/>
+        <CommunicationNetwork startEndQualifier="StartsEnds" startLocation="300" endLocation="300" communicationNetworkType="GSM-P"/>
         <KilometreReferencePoint location="200">
             <KM_Reference kmRef="0.2"/>
+        </KilometreReferencePoint>
+        <KilometreReferencePoint location="300">
+            <KM_Reference kmRef="0.35"/>
         </KilometreReferencePoint>
         <KilometreReferencePoint location="500">
             <KM_Reference kmRef="0.5"/>
