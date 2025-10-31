@@ -1,5 +1,6 @@
 package ch.sbb.sferamock.messages.services;
 
+import ch.sbb.sferamock.messages.common.Resettable;
 import ch.sbb.sferamock.messages.model.ClientId;
 import ch.sbb.sferamock.messages.model.OperationMode;
 import ch.sbb.sferamock.messages.model.RequestContext;
@@ -9,14 +10,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RegistrationService {
+@Slf4j
+public class RegistrationService implements Resettable {
 
-    private static final Logger log = LogManager.getLogger(RegistrationService.class);
     private final Map<TrainIdentification, Set<ClientId>> activeTrains = new ConcurrentHashMap<>();
     private final Map<ClientId, Registration> registrationMap = new ConcurrentHashMap<>();
 
@@ -84,6 +84,7 @@ public class RegistrationService {
         return registrationMap.containsKey(clientId);
     }
 
+    @Override
     public void reset() {
         registrationMap.clear();
         activeTrains.clear();

@@ -36,6 +36,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Run the Maven verify phase
+        if: github.ref != 'refs/heads/main'
         run: mvn --batch-mode --update-snapshots verify
       - name: Login to GitHub Container Registry
         if: github.ref == 'refs/heads/main'
