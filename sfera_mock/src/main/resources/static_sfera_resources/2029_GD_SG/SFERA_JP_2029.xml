@@ -34,7 +34,6 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="2029_2_Eidg_Magazine" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -49,6 +48,14 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="60"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="2029_3_Steinerberg" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -71,7 +78,6 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-
     </SegmentProfileReference>
 	
     <SegmentProfileReference SP_ID="2029_4_Sattel_Aegeri" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -94,7 +100,6 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-
     </SegmentProfileReference>	
 
     <SegmentProfileReference SP_ID="2029_5_Sattel" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -117,7 +122,6 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="2029_6_Biberegg" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -140,7 +144,6 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-
     </SegmentProfileReference>	
 
 	<SegmentProfileReference SP_ID="2029_7_Rothenturm" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -164,7 +167,6 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-
     </SegmentProfileReference>	
 
     <SegmentProfileReference SP_ID="2029_8_Altmatt" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -187,7 +189,6 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-
     </SegmentProfileReference>
 
 	<SegmentProfileReference SP_ID="2029_9_Biberbrugg" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -211,7 +212,6 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-
     </SegmentProfileReference>	
 	
     <SegmentProfileReference SP_ID="2029_10_Kaltenboden" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -226,6 +226,14 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="60"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>	
 
     <SegmentProfileReference SP_ID="2029_11_Schindellegi_F" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -240,6 +248,14 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="60"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>	
 
     <SegmentProfileReference SP_ID="2029_12_Samstagern" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -254,6 +270,14 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="60"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 	
     <SegmentProfileReference SP_ID="2029_13_Riedmatt" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -276,7 +300,6 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="2029_14_Wollerau" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -291,6 +314,14 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="65"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 	
     <SegmentProfileReference SP_ID="2029_15_Wilen_bei_Wollerau" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -305,6 +336,14 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="65"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 
 	<SegmentProfileReference SP_ID="2029_16_Freienbach_SOB" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -319,6 +358,14 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="65"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 
 	<SegmentProfileReference SP_ID="2029_17_Pfaeffikon_SZ" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -342,7 +389,6 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-
     </SegmentProfileReference>	
 
 	<SegmentProfileReference SP_ID="2029_18_Hurden" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -357,6 +403,14 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="40"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 	
 	<SegmentProfileReference SP_ID="2029_19_Rapperswil" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -380,7 +434,6 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-
     </SegmentProfileReference>
 	
 	<SegmentProfileReference SP_ID="2029_20_Blumenau" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -395,6 +448,14 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="95"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>	
 
 	<SegmentProfileReference SP_ID="2029_21_Bollingen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -417,7 +478,6 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-
     </SegmentProfileReference>
 	
 	<SegmentProfileReference SP_ID="2029_22_Schmerikon" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -440,7 +500,6 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-
     </SegmentProfileReference>
 
 	<SegmentProfileReference SP_ID="2029_23_Uznach" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -464,7 +523,6 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-
     </SegmentProfileReference>	
 	
 	<SegmentProfileReference SP_ID="2029_24_Kaltbrunn" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -487,7 +545,6 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-
     </SegmentProfileReference>	
 	
 	<SegmentProfileReference SP_ID="2029_25_Wattwil" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -511,7 +568,6 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-
     </SegmentProfileReference>	
 	
 	<SegmentProfileReference SP_ID="2029_26_Lichtensteig" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -526,6 +582,14 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="85"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>	
 
 	<SegmentProfileReference SP_ID="2029_27_Brunnadern_N" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -540,6 +604,14 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="85"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 
 	<SegmentProfileReference SP_ID="2029_28_Mogelsberg" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -554,6 +626,14 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="85"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>	
 
 	<SegmentProfileReference SP_ID="2029_29_Degersheim_West" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -568,6 +648,14 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="85"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>	
 
 	<SegmentProfileReference SP_ID="2029_30_Degersheim" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -582,6 +670,14 @@
             </TimingPointReference>
         </TimingPointConstraints>
 
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="85"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>	
 
 	<SegmentProfileReference SP_ID="2029_31_Schachen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -604,7 +700,6 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-
     </SegmentProfileReference>	
 
 	<SegmentProfileReference SP_ID="2029_32_Herisau" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -628,7 +723,6 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-
     </SegmentProfileReference>
 	
 	<SegmentProfileReference SP_ID="2029_33_Guebsensee" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -651,7 +745,6 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-
     </SegmentProfileReference>	
 
 	<SegmentProfileReference SP_ID="2029_34_St_Gallen_Haggen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -674,7 +767,6 @@
                 <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
             </JP_ContextInformation_NSPs>
         </JP_ContextInformation>
-
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="2029_35_St_Gallen" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
