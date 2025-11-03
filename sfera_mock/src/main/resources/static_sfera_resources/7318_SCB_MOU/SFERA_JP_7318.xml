@@ -25,6 +25,15 @@
         <TrainCharacteristicsRef TC_ID="7318_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
             <TC_RU_ID>1285</TC_RU_ID>
         </TrainCharacteristicsRef>
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="70"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="7318_2_Tavannes" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -39,6 +48,15 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="2025-05-17T12:46:00Z" plannedDepartureTime="2025-05-17T12:46:00Z"/>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="75"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>	
 
     <SegmentProfileReference SP_ID="7318_3_Reconvilier" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -53,6 +71,15 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="2025-05-17T12:49:00Z" plannedDepartureTime="2025-05-17T12:49:00Z"/>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="75"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>	
 	
     <SegmentProfileReference SP_ID="7318_4_Pontenet" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -67,6 +94,15 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="2025-05-17T12:52:00Z" plannedDepartureTime="2025-05-17T12:52:00Z"/>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="70"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>		
 
     <SegmentProfileReference SP_ID="7318_5_Malleray_Bevilard" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -81,6 +117,15 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="2025-05-17T12:57:00Z" plannedDepartureTime="2025-05-17T12:57:00Z"/>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="80"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>	
 
     <SegmentProfileReference SP_ID="7318_6_Sorvilier" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -95,6 +140,15 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="2025-05-17T13:00:00Z" plannedDepartureTime="2025-05-17T13:00:00Z"/>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="80"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="7318_7_Court" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -109,6 +163,15 @@
             </TimingPointReference>
             <StoppingPointDepartureDetails departureTime="2025-05-17T13:03:00Z" plannedDepartureTime="2025-05-17T13:03:00Z"/>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="70"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="7318_8_Moutier" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
