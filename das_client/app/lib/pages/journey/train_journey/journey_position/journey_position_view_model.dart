@@ -76,7 +76,7 @@ class JourneyPositionViewModel {
           );
 
           // makes sure the value is added to the stream before other events received
-          await Future.delayed(Duration.zero);
+          await Future.delayed(Duration(milliseconds: 2));
           _rxModel.add(model);
         });
   }
