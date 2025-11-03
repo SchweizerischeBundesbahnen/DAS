@@ -4,7 +4,7 @@ DAS (Driver Advisory System) is a mobile application that provides all the requi
 
 ## Supported platforms
 
-The UI/UX of the DAS-Client is optimized for **tablet** usage only!
+The UI/UX of the DAS-Client is optimized for **tablet** (at least 11") usage only!
 
 <div id="supported_platforms">
   <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android"/>
@@ -33,11 +33,6 @@ Use the following Melos command to generate the necessary code for all the compo
 ```shell
 fvm dart run melos generate
 ```
-
-Remark:
-
-* if `sky_engine` could not be resolved, try the next command below to download it and rerun this
-  statement again.
 
 ### Run Application
 
@@ -106,7 +101,8 @@ fvm dart run melos test
 
 ### Running integration tests
 
-Instrumentation tests do not use user authentication. Therefore the credentials must be provided as environment
+Instrumentation tests do not use user authentication. Therefore, the credentials must be provided as
+environment
 variables.
 Run the following command in the `app` directory.
 

@@ -17,18 +17,16 @@ Out of Scope:
 ## Introduction
 
 Driver Advisory System (DAS) is an innovative tool designed to assist train drivers in the delivery
-of
-efficient and punctual train services. By integrating a wide range of data sources, including live
-positioning, infrastructure characteristics, and real-time transport plans, the system calculates
-and presents the ideal driving profile for each journey.
+of efficient and punctual train services. By integrating a wide range of data sources, including
+live positioning, infrastructure characteristics, and real-time transport plans, the system
+calculatesand presents the ideal driving profile for each journey.
 
 RUs and countries might have its own additional legal requirements and specialities, therefore this
-repository
-is initially dedicated to RUs of Switzerland covering encompassing aspects necessary for
+repository is initially dedicated to RUs of Switzerland covering encompassing aspects necessary for
 implementation and integration.
-Anyway thanks to the SFERA protocol, best effort is invested to make it reusable for international
-train
-traffic and usage in the future.
+
+SFERA Protocol is used for some international compatibility, but may also contain country
+specific extensions (NSPs).
 
 ## Structure
 
@@ -47,8 +45,7 @@ DAS-OB (aka **DAS-Client** within this project)
 
 Important:
 
-* This component is strictly not a **RU DAS-TS** implementation, it offers other valued added
-  services but SFERA related.
+* This component is not a **RU DAS-TS** implementation, but offers additional related services.
 
 - [das_backend](das_backend/README.md)
     - [Java](https://www.java.com/de/), [openJDK](https://openjdk.org/)

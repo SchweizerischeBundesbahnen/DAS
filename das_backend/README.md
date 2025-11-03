@@ -17,5 +17,5 @@ SpringBoot application (needs PostgreSQL DB dockerized, s. [Database handling](D
 Hints for Windows-Users:
 
 * Enable podman-compose during installation
-* If "docker compose" is not found,
-  `Set-Alias -Name docker -Value "C:\Program Files\RedHat\Podman\podman.exe"`.
+* If "docker compose" is not found:
+  `Set-Alias -Name docker -Value "C:\Program Files\RedHat\Podman\podman.exe"`
