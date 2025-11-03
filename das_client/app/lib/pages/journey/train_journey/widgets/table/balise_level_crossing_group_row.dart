@@ -80,7 +80,7 @@ class BaliseLevelCrossingGroupRow extends CellRowBuilder<BaliseLevelCrossingGrou
 
   @override
   bool get isCurrentPosition {
-    final isGroupPosition = !isExpanded && data.groupedElements.contains(journeyPosition?.currentPosition);
+    final isGroupPosition = !isExpanded && data.groupedElements.contains(journeyPosition.currentPosition);
     return super.isCurrentPosition || isGroupPosition;
   }
 
