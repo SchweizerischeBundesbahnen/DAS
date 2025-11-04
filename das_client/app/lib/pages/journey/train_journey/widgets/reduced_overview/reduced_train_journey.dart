@@ -1,4 +1,5 @@
 import 'package:app/i18n/i18n.dart';
+import 'package:app/pages/journey/train_journey/journey_position/journey_position_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/reduced_overview/reduced_communication_network_change_row.dart';
 import 'package:app/pages/journey/train_journey/widgets/reduced_overview/reduced_overview_view_model.dart';
 import 'package:app/pages/journey/train_journey/widgets/reduced_overview/rows/reduced_service_point_row.dart';
@@ -75,6 +76,7 @@ class ReducedTrainJourney extends StatelessWidget {
             key: GlobalKey(),
             metadata: metadata,
             data: rowData as AdditionalSpeedRestrictionData,
+            journeyPosition: JourneyPositionModel(),
             config: trainJourneyConfig,
             rowIndex: index,
           );

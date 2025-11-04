@@ -14,7 +14,7 @@ class ChronographViewModel {
 
   ChronographViewModel({
     required Stream<Journey?> journeyStream,
-    required Stream<JourneyPositionModel?> journeyPositionStream,
+    required Stream<JourneyPositionModel> journeyPositionStream,
     required Stream<PunctualityModel> punctualityStream,
     required Stream<AdvisedSpeedModel> advisedSpeedModelStream,
     required CalculatedSpeedViewModel calculatedSpeedViewModel,
@@ -65,10 +65,10 @@ class ChronographViewModel {
     );
   }
 
-  void _initJourneyPositionSubscription(Stream<JourneyPositionModel?> journeyPositionStream) {
+  void _initJourneyPositionSubscription(Stream<JourneyPositionModel> journeyPositionStream) {
     _subscriptions.add(
       journeyPositionStream.listen((model) {
-        _currentPositionOrder = model?.currentPosition?.order;
+        _currentPositionOrder = model.currentPosition?.order;
 
         _emitState();
       }),

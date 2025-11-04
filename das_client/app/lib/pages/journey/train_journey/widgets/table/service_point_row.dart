@@ -37,8 +37,8 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     return baseRowHeight + (properties.length * propertyRowHeight);
   }
 
-  static Color _resolveRowColor(BuildContext context, JourneyPositionModel? position, ServicePoint data) {
-    if (position?.nextStop == data) return SBBColors.night;
+  static Color _resolveRowColor(BuildContext context, JourneyPositionModel position, ServicePoint data) {
+    if (position.nextStop == data) return SBBColors.night;
     return data.isAdditional ? ThemeUtil.getBackgroundColor(context) : ThemeUtil.getDASTableColor(context);
   }
 
@@ -327,5 +327,5 @@ class ServicePointRow extends CellRowBuilder<ServicePoint> {
     );
   }
 
-  bool get _isNextStop => journeyPosition?.nextStop == data;
+  bool get _isNextStop => journeyPosition.nextStop == data;
 }

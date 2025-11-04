@@ -69,7 +69,10 @@ class WarnAppViewModel {
   void setManeuverMode(bool active) {
     _log.info('Maneuver mode state changed to active=$active');
     _rxManeuverModeEnabled.add(active);
-    active ? _warnappRepo.disable() : _warnappRepo.enable();
+
+    if (Platform.isIOS) {
+      active ? _warnappRepo.disable() : _warnappRepo.enable();
+    }
   }
 
   void dispose() {
@@ -99,8 +102,8 @@ class WarnAppViewModel {
   }
 
   void _enableWarnapp() async {
-    final isWarnappFeatEnabled = await _ruFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.warnapp);
-    _log.info('Warnapp feature is ${isWarnappFeatEnabled ? 'enabled' : 'disabled'} for active train');
+    final isWarnappFeatEnabled = await _ruFeatureProvider.isRuFeatureEnabled(RuFeatureKeys.warnapp) && Platform.isIOS;
+    _log.info('Warnapp is ${isWarnappFeatEnabled ? 'enabled' : 'disabled'} for active train');
     if (isWarnappFeatEnabled) {
       _warnappAbfahrtSubscription = _warnappRepo.abfahrtEventStream.listen((_) => _handleAbfahrtEvent());
       _warnappSignalSubscription = _sferaRemoteRepo.warnappEventStream.listen((_) {

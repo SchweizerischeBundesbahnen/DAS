@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:app/di/di.dart';
 import 'package:app/pages/journey/train_journey/widgets/header/extended_menu.dart';
 import 'package:app/pages/journey/train_journey/widgets/warn_function_modal_sheet.dart';
@@ -9,6 +11,9 @@ import '../data/warnapp_data.dart';
 import '../util/test_utils.dart';
 
 void main() {
+  // Disable warnapp test for android as it is not supported
+  if (Platform.isAndroid) return;
+
   group('warnapp test', () {
     testWidgets('test warnapp gets triggered when signal is red', (tester) async {
       await prepareAndStartApp(tester);
