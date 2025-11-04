@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.30.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.29.0...das_client-v0.30.0) (2025-11-04)
+
+
+### Features
+
+* add all companies to the evu picker ([#482](https://github.com/SchweizerischeBundesbahnen/DAS/issues/482)) ([#1341](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1341)) ([dada212](https://github.com/SchweizerischeBundesbahnen/DAS/commit/dada212a5194e9f3a0df8854370110ec0b9c955e))
+* advised speeds over multiple segment profiles ([#1285](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1285)) ([#1364](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1364)) ([61a9be2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/61a9be2675dfbe6e6cc528b0e6372b692742d2de))
+* hide time column for additional speed restriction modal ([#1219](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1219)) ([#1365](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1365)) ([61ce9bc](https://github.com/SchweizerischeBundesbahnen/DAS/commit/61ce9bcfba48f3289b2b08dfa3175a4b706b3393))
+* implement no replacement series available notification ([#938](https://github.com/SchweizerischeBundesbahnen/DAS/issues/938)) ([#1368](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1368)) ([c6338c1](https://github.com/SchweizerischeBundesbahnen/DAS/commit/c6338c10f68b50bccd23ec372b489f6aa3f87b1f))
+* open search with tap on train number ([#1250](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1250)) ([#1366](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1366)) ([6441ce8](https://github.com/SchweizerischeBundesbahnen/DAS/commit/6441ce83604508699ccda07011995d205e96162a))
+
+
+### Bug Fixes
+
+* conjunct advised speed will not signal END but only play start sound ([#1364](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1364)) ([61a9be2](https://github.com/SchweizerischeBundesbahnen/DAS/commit/61a9be2675dfbe6e6cc528b0e6372b692742d2de))
+* refactor line- and calculated speed ([#1317](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1317)) ([#1382](https://github.com/SchweizerischeBundesbahnen/DAS/issues/1382)) ([1907f30](https://github.com/SchweizerischeBundesbahnen/DAS/commit/1907f302f67065fff01b5d1e1ffa89f349fb7af0))
+
 ## [0.29.0](https://github.com/SchweizerischeBundesbahnen/DAS/compare/das_client-v0.28.0...das_client-v0.29.0) (2025-10-20)
 
 
