@@ -14,17 +14,26 @@
             <IM_ID>1285</IM_ID>
         </SP_Zone>
 
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T10:18:00Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T10:18:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:18:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T08:18:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Wil"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="2025-05-17T10:18:00Z" plannedDepartureTime="2025-05-17T10:18:00Z"/>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T08:18:00Z" plannedDepartureTime="2025-05-17T08:18:00Z"/>
         </TimingPointConstraints>
 
         <TrainCharacteristicsRef TC_ID="19240_1" TC_VersionMajor="1" TC_VersionMinor="0" location="0">
             <TC_RU_ID>1285</TC_RU_ID>
         </TrainCharacteristicsRef>
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="95"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 	
 	<SegmentProfileReference SP_ID="19240_2_Sirnach" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -32,13 +41,22 @@
             <IM_ID>1285</IM_ID>
         </SP_Zone>
 
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T10:21:00Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T10:21:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:21:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T08:21:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Sirnach"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="2025-05-17T10:21:00Z" plannedDepartureTime="2025-05-17T10:21:00Z"/>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T08:21:00Z" plannedDepartureTime="2025-05-17T08:21:00Z"/>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="95"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 	
 	<SegmentProfileReference SP_ID="19240_3_Eschlikon" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -46,13 +64,22 @@
             <IM_ID>1285</IM_ID>
         </SP_Zone>
 
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T10:25:00Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T10:25:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:25:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T08:25:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Eschlikon"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="2025-05-17T10:25:00Z" plannedDepartureTime="2025-05-17T10:25:00Z"/>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T08:25:00Z" plannedDepartureTime="2025-05-17T08:25:00Z"/>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="95"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 	
 	<SegmentProfileReference SP_ID="19240_4_Guntershausen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -60,13 +87,22 @@
             <IM_ID>1285</IM_ID>
         </SP_Zone>
 
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T10:28:00Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T10:28:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:28:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T08:28:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Guntershausen"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="2025-05-17T10:28:00Z" plannedDepartureTime="2025-05-17T10:28:00Z"/>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T08:28:00Z" plannedDepartureTime="2025-05-17T08:28:00Z"/>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="105"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 	
 	<SegmentProfileReference SP_ID="19240_5_Aadorf" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
@@ -74,13 +110,22 @@
             <IM_ID>1285</IM_ID>
         </SP_Zone>
 
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T10:31:00Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T10:31:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:31:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T08:31:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Aadorf"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="2025-05-17T10:31:00Z" plannedDepartureTime="2025-05-17T10:31:00Z"/>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T08:31:00Z" plannedDepartureTime="2025-05-17T08:31:00Z"/>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="105"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 	
 	<SegmentProfileReference SP_ID="19240_6_Elgg" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -88,13 +133,22 @@
             <IM_ID>1285</IM_ID>
         </SP_Zone>
 
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T10:34:00Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T10:34:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:34:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T08:34:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Elgg"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="2025-05-17T10:34:00Z" plannedDepartureTime="2025-05-17T10:34:00Z"/>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T08:34:00Z" plannedDepartureTime="2025-05-17T08:34:00Z"/>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="105"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 	
 	<SegmentProfileReference SP_ID="19240_7_Schneit" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -102,12 +156,21 @@
             <IM_ID>1285</IM_ID>
         </SP_Zone>
 
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T10:36:00Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T10:36:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:36:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T08:36:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Schneit"/>
             </TimingPointReference>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="100"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 	
 	<SegmentProfileReference SP_ID="19240_8_Schottikon" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -115,13 +178,22 @@
             <IM_ID>1285</IM_ID>
         </SP_Zone>
 
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T10:37:00Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T10:37:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:37:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T08:37:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Schottikon"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="2025-05-17T10:37:00Z" plannedDepartureTime="2025-05-17T10:37:00Z"/>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T08:37:00Z" plannedDepartureTime="2025-05-17T08:37:00Z"/>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="75"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 	
 	<SegmentProfileReference SP_ID="19240_9_Raeterschen" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -129,13 +201,22 @@
             <IM_ID>1285</IM_ID>
         </SP_Zone>
 
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T10:39:00Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T10:39:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:39:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T08:39:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Raeterschen"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="2025-05-17T10:39:00Z" plannedDepartureTime="2025-05-17T10:39:00Z"/>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T08:39:00Z" plannedDepartureTime="2025-05-17T08:39:00Z"/>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="70"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 	
 	<SegmentProfileReference SP_ID="19240_10_Winterthur_Hegi" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -143,13 +224,22 @@
             <IM_ID>1285</IM_ID>
         </SP_Zone>
 
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T10:41:00Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T10:41:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:41:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T08:41:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Winterthur_Hegi"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="2025-05-17T10:41:00Z" plannedDepartureTime="2025-05-17T10:41:00Z"/>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T08:41:00Z" plannedDepartureTime="2025-05-17T08:41:00Z"/>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="70"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 	
 	<SegmentProfileReference SP_ID="19240_11_Winterthur_Grueze" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
@@ -157,13 +247,22 @@
             <IM_ID>1285</IM_ID>
         </SP_Zone>
 
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T10:44:00Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T10:44:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:44:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T08:44:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Winterthur_Grueze"/>
             </TimingPointReference>
-            <StoppingPointDepartureDetails departureTime="2025-05-17T10:44:00Z" plannedDepartureTime="2025-05-17T10:44:00Z"/>
+            <StoppingPointDepartureDetails departureTime="2025-05-17T08:44:00Z" plannedDepartureTime="2025-05-17T08:44:00Z"/>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="70"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 	
 	<SegmentProfileReference SP_ID="19240_12_Schwalmenacker" SP_VersionMajor="1" SP_VersionMinor="1" SP_Direction="Nominal">
@@ -171,12 +270,21 @@
             <IM_ID>1285</IM_ID>
         </SP_Zone>
 
-        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T10:46:00Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T10:46:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Passing_Point" TP_Information="None" TP_latestArrivalTime="2025-05-17T08:46:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T08:46:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Schwalmenacker"/>
             </TimingPointReference>
         </TimingPointConstraints>
+
+        <JP_ContextInformation>
+            <JP_ContextInformation_NSPs>
+                <teltsi_Company>0085</teltsi_Company>
+                <NSP_GroupName>VProSpeed</NSP_GroupName>
+                <NetworkSpecificParameter name="newSpeed" value="70"/>
+                <JP_ContextInformation_NSP_Constraints startEndQualifier="StartsEnds" startLocation="0" endLocation="0"/>
+            </JP_ContextInformation_NSPs>
+        </JP_ContextInformation>
     </SegmentProfileReference>
 
     <SegmentProfileReference SP_ID="19240_13_Winterthur" SP_VersionMajor="1" SP_VersionMinor="2" SP_Direction="Nominal">
@@ -184,8 +292,8 @@
             <IM_ID>1285</IM_ID>
         </SP_Zone>
 
-        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="End_of_Journey" TP_latestArrivalTime="2025-05-17T10:49:00Z"
-                                TP_PlannedLatestArrivalTime="2025-05-17T10:49:00Z">
+        <TimingPointConstraints TP_StopSkipPass="Stopping_Point" TP_Information="End_of_Journey" TP_latestArrivalTime="2025-05-17T08:49:00Z"
+                                TP_PlannedLatestArrivalTime="2025-05-17T08:49:00Z">
             <TimingPointReference>
                 <TP_ID_Reference TP_ID="Winterthur"/>
             </TimingPointReference>
