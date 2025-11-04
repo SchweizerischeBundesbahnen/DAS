@@ -22,14 +22,9 @@ class TrainSeriesSpeed {
   final bool reduced;
 
   @override
-  String toString() =>
-      'TrainSeriesSpeed('
-      'trainSeries: $trainSeries, '
-      'speed: $speed, '
-      'breakSeries: $breakSeries, '
-      'text: $text, '
-      'reduced: $reduced'
-      ')';
+  String toString() {
+    return 'TrainSeriesSpeed{trainSeries: $trainSeries, speed: $speed, breakSeries: $breakSeries, text: $text, reduced: $reduced}';
+  }
 
   @override
   bool operator ==(Object other) {

@@ -13,4 +13,9 @@ class ShuntingMovement extends JourneyAnnotation {
 
   @override
   OrderPriority get orderPriority => isStart ? OrderPriority.shuntingMovementStart : OrderPriority.shuntingMovementEnd;
+
+  @override
+  String toString() {
+    return 'ShuntingMovement{order: $order, isStart: $isStart}';
+  }
 }

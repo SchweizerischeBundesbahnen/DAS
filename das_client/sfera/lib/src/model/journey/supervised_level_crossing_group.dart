@@ -30,4 +30,9 @@ class SupervisedLevelCrossingGroup extends LevelCrossingGroup {
   int shownLevelCrossingsCount() {
     return balise.amountLevelCrossings - levelCrossings.where((lc) => shouldShowBaliseIconForLevelCrossing(lc)).length;
   }
+
+  @override
+  String toString() {
+    return 'SupervisedLevelCrossingGroup{balise: $balise, pointsBetween: $pointsBetween, levelCrossings: $levelCrossings}';
+  }
 }

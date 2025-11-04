@@ -32,7 +32,7 @@ class Signal extends JourneyPoint {
 
   @override
   String toString() {
-    return 'Signal(order: $order, kilometre: $kilometre, functions: $functions, visualIdentifier: $visualIdentifier)';
+    return 'Signal{order: $order, kilometre: $kilometre, functions: $functions, visualIdentifier: $visualIdentifier}';
   }
 }
 

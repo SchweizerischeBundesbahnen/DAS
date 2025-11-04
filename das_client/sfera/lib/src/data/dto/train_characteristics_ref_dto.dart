@@ -41,6 +41,6 @@ class TrainCharacteristicsRefDto extends SferaXmlElementDto {
 
   @override
   String toString() {
-    return 'TrainCharacteristicsRef(tcId: $tcId, versionMajor: $versionMajor, versionMinor: $versionMinor, ruId: $ruId)';
+    return 'TrainCharacteristicsRefDto{tcId: $tcId, versionMajor: $versionMajor, versionMinor: $versionMinor, ruId: $ruId}';
   }
 }

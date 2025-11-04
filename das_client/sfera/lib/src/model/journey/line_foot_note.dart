@@ -13,4 +13,9 @@ class LineFootNote extends BaseFootNote {
 
   @override
   OrderPriority get orderPriority => OrderPriority.lineFootNotes;
+
+  @override
+  String toString() {
+    return 'LineFootNote{order: $order, footNote: $footNote, locationName: $locationName}';
+  }
 }

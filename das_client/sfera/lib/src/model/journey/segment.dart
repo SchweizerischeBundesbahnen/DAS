@@ -39,7 +39,7 @@ abstract class Segment implements Comparable {
 
   @override
   String toString() {
-    return 'Segment(startOrder: $startOrder, endOrder: $endOrder)';
+    return 'Segment{startOrder: $startOrder, endOrder: $endOrder}';
   }
 }
 

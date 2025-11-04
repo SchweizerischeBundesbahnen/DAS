@@ -15,12 +15,9 @@ class Balise extends JourneyPoint {
   OrderPriority get orderPriority => OrderPriority.balise;
 
   @override
-  String toString() =>
-      'Balise('
-      'order: $order'
-      ', kilometre: $kilometre'
-      ', amountLevelCrossings: $amountLevelCrossings'
-      ')';
+  String toString() {
+    return 'Balise{order: $order, kilometre: $kilometre, amountLevelCrossings: $amountLevelCrossings}';
+  }
 
   @override
   bool operator ==(Object other) =>

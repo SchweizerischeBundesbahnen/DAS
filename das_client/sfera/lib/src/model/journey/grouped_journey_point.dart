@@ -14,7 +14,7 @@ class GroupedJourneyPoint extends JourneyPoint {
 
   @override
   String toString() {
-    return 'GroupedJourneyPoint(order: $order, kilometre: $kilometre, groupedElements: $groupedElements)';
+    return 'GroupedJourneyPoint{order: $order, kilometre: $kilometre, groupedElements: $groupedElements}';
   }
 
   @override

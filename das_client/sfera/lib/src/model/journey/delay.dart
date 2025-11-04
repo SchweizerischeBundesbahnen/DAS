@@ -11,4 +11,9 @@ class Delay {
 
   @override
   int get hashCode => value.hashCode ^ location.hashCode;
+
+  @override
+  String toString() {
+    return 'Delay{value: $value, location: $location}';
+  }
 }

@@ -8,12 +8,9 @@ class ConnectionTrack extends JourneyPoint {
   final String? text;
 
   @override
-  String toString() =>
-      'ConnectionTrack('
-      'order: $order'
-      ', kilometre: $kilometre'
-      ', text: $text'
-      ')';
+  String toString() {
+    return 'ConnectionTrack{order: $order, kilometre: $kilometre, text: $text}';
+  }
 
   @override
   bool operator ==(Object other) =>

@@ -13,11 +13,7 @@ class StationProperty {
 
   @override
   String toString() {
-    return 'StationProperty('
-        'text: $text'
-        ', sign: $sign'
-        ', speeds: $speeds'
-        ')';
+    return 'StationProperty{text: $text, sign: $sign, speeds: $speeds}';
   }
 
   @override

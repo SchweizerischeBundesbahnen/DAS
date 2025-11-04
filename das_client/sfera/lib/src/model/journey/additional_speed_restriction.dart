@@ -48,7 +48,7 @@ class AdditionalSpeedRestriction {
 
   @override
   String toString() {
-    return 'AdditionalSpeedRestriction(kmFrom: $kmFrom, kmTo: $kmTo, orderFrom: $orderFrom, orderTo: $orderTo, restrictionFrom: $restrictionFrom, restrictionUntil: $restrictionUntil, speed: $speed, reason: $reason)';
+    return 'AdditionalSpeedRestriction{kmFrom: $kmFrom, kmTo: $kmTo, orderFrom: $orderFrom, orderTo: $orderTo, restrictionFrom: $restrictionFrom, restrictionUntil: $restrictionUntil, speed: $speed, reason: $reason}';
   }
 
   @override

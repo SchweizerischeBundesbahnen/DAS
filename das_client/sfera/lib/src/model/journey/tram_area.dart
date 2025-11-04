@@ -13,13 +13,9 @@ class TramArea extends JourneyPoint {
   final int amountTramSignals;
 
   @override
-  String toString() =>
-      'TramArea('
-      'order: $order'
-      ', kilometre: $kilometre'
-      ', endKilometre: $endKilometre'
-      ', amountTramSignals: $amountTramSignals'
-      ')';
+  String toString() {
+    return 'TramArea{order: $order, kilometre: $kilometre, endKilometre: $endKilometre, amountTramSignals: $amountTramSignals}';
+  }
 
   @override
   bool operator ==(Object other) =>
