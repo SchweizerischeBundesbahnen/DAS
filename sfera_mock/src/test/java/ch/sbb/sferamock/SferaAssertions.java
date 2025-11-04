@@ -2,10 +2,10 @@ package ch.sbb.sferamock;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-import ch.sbb.sferamock.adapters.sfera.model.v0201.B2GMessageResponse;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.HandshakeRejectReason;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.SFERAG2BReplyMessage;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.UnavailableDASOperatingModes;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.B2GMessageResponse;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.HandshakeRejectReason;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.SFERAG2BReplyMessage;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.UnavailableDASOperatingModes;
 import ch.sbb.sferamock.messages.common.SferaErrorCodes;
 import java.util.List;
 import java.util.UUID;

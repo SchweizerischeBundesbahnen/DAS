@@ -1,29 +1,29 @@
 package ch.sbb.sferamock;
 
-import static ch.sbb.sferamock.IntegrationTestData.IM_COMPANY_CODE_SBB_INFRA;
-import static ch.sbb.sferamock.IntegrationTestData.RU_COMPANY_CODE_SBB_AG;
-import static ch.sbb.sferamock.adapters.sfera.model.v0201.ReportedDASDrivingMode.DASDrivingMode.DAS_NOT_CONNECTED_TO_ATP;
-import static ch.sbb.sferamock.adapters.sfera.model.v0201.ReportedDASDrivingMode.DASDrivingMode.INACTIVE;
-import static ch.sbb.sferamock.adapters.sfera.model.v0201.ReportedDASDrivingMode.DASDrivingMode.READ_ONLY;
-import static ch.sbb.sferamock.adapters.sfera.model.v0201.UnavailableDASOperatingModes.DASArchitecture.BOARD_ADVICE_CALCULATION;
-import static ch.sbb.sferamock.adapters.sfera.model.v0201.UnavailableDASOperatingModes.DASArchitecture.GROUND_ADVICE_CALCULATION;
-import static ch.sbb.sferamock.adapters.sfera.model.v0201.UnavailableDASOperatingModes.DASConnectivity.CONNECTED;
-import static ch.sbb.sferamock.adapters.sfera.model.v0201.UnavailableDASOperatingModes.DASConnectivity.STANDALONE;
+import static ch.sbb.sferamock.IntegrationTestData.IM_COMPANY_CODE_SBB_I;
+import static ch.sbb.sferamock.IntegrationTestData.RU_COMPANY_CODE_SBB_P;
+import static ch.sbb.sferamock.adapters.sfera.model.v0300.ReportedDASDrivingMode.DASDrivingMode.DAS_NOT_CONNECTED_TO_ATP;
+import static ch.sbb.sferamock.adapters.sfera.model.v0300.ReportedDASDrivingMode.DASDrivingMode.INACTIVE;
+import static ch.sbb.sferamock.adapters.sfera.model.v0300.ReportedDASDrivingMode.DASDrivingMode.READ_ONLY;
+import static ch.sbb.sferamock.adapters.sfera.model.v0300.UnavailableDASOperatingModes.DASArchitecture.BOARD_ADVICE_CALCULATION;
+import static ch.sbb.sferamock.adapters.sfera.model.v0300.UnavailableDASOperatingModes.DASArchitecture.GROUND_ADVICE_CALCULATION;
+import static ch.sbb.sferamock.adapters.sfera.model.v0300.UnavailableDASOperatingModes.DASConnectivity.CONNECTED;
+import static ch.sbb.sferamock.adapters.sfera.model.v0300.UnavailableDASOperatingModes.DASConnectivity.STANDALONE;
 
-import ch.sbb.sferamock.adapters.sfera.model.v0201.B2GRequest;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.DASModesComplexType;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.HandshakeRequest;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.JPRequest;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.MessageHeader;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.OTNIDComplexType;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.Recipient;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.ReportedDASDrivingMode;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.SFERAB2GRequestMessage;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.SPRequest;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.SPZoneComplexType;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.Sender;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.TrainIdentificationComplexType;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.UnavailableDASOperatingModes;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.B2GRequest;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.DASModesComplexType;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.HandshakeRequest;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.JPRequest;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.MessageHeader;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.OTNIDComplexType;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.Recipient;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.ReportedDASDrivingMode;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.SFERAB2GRequestMessage;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.SPRequest;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.SPZoneComplexType;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.Sender;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.TrainIdentificationComplexType;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.UnavailableDASOperatingModes;
 import ch.sbb.sferamock.messages.common.XmlDateHelper;
 import ch.sbb.sferamock.messages.model.CompanyCode;
 import java.time.LocalDate;
@@ -44,7 +44,7 @@ class SferaIntegrationTestData {
     static final DASModesComplexType READONLY_CONNECTED_GROUNDCALCULATION = createDASModes(READ_ONLY, CONNECTED, GROUND_ADVICE_CALCULATION);
 
     static SFERAB2GRequestMessage createHandshakeRequest(UUID messageId) {
-        return createHandshakeRequest(messageId, RU_COMPANY_CODE_SBB_AG, IM_COMPANY_CODE_SBB_INFRA, READONLY_CONNECTED_BOARDCALCULATION);
+        return createHandshakeRequest(messageId, RU_COMPANY_CODE_SBB_P, IM_COMPANY_CODE_SBB_I, READONLY_CONNECTED_BOARDCALCULATION);
     }
 
     static SFERAB2GRequestMessage createHandshakeRequest(UUID messageId, CompanyCode ruCompanyCode, CompanyCode imCompanyCode,

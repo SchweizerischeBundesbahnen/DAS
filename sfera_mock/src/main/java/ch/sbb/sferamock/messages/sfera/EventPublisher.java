@@ -2,8 +2,8 @@ package ch.sbb.sferamock.messages.sfera;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_XML;
 
-import ch.sbb.sferamock.adapters.sfera.model.v0201.G2BEventPayload;
-import ch.sbb.sferamock.adapters.sfera.model.v0201.SFERAG2BEventMessage;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.G2BEventPayload;
+import ch.sbb.sferamock.adapters.sfera.model.v0300.SFERAG2BEventMessage;
 import ch.sbb.sferamock.messages.common.XmlHelper;
 import ch.sbb.sferamock.messages.model.RequestContext;
 import java.util.UUID;
@@ -23,7 +23,7 @@ public class EventPublisher {
     private final StreamBridge streamBridge;
     private final SferaMessageCreator sferaMessageCreator;
     @Value("${spring.cloud.stream.bindings.publishEvent-out-0.destination}")
-    private String publishDestination;
+    private String[] publishDestinations;
 
     public EventPublisher(XmlHelper xmlHelper, StreamBridge streamBridge, SferaMessageCreator sferaMessageCreator) {
         this.xmlHelper = xmlHelper;
@@ -50,7 +50,7 @@ public class EventPublisher {
     }
 
     private void publishEvent(SFERAG2BEventMessage eventMessage, RequestContext requestContext) {
-        String topic = SferaTopicHelper.getG2BEventTopic(publishDestination, requestContext);
+        String topic = SferaTopicHelper.getG2BEventTopic(publishDestinations, requestContext);
         log.info("Publishing Event Message to topic {}", topic);
         log.debug("message: {}", xmlHelper.toString(eventMessage));
         streamBridge.send(topic, SOLACE_BINDER, MessageBuilder
