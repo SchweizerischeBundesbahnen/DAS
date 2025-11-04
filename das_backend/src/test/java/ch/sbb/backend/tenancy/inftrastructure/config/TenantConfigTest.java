@@ -2,19 +2,16 @@ package ch.sbb.backend.tenancy.inftrastructure.config;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.backend.TestContainerConfiguration;
 import ch.sbb.backend.tenancy.domain.model.Tenant;
 import ch.sbb.backend.tenancy.infrastructure.config.TenantConfig;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest
+@SpringBootTest(classes = TenantConfig.class)
 @ActiveProfiles("test")
-@Import(TestContainerConfiguration.class)
 class TenantConfigTest {
 
     @Autowired

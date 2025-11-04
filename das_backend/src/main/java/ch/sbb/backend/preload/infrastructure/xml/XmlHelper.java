@@ -1,10 +1,5 @@
-package ch.sbb.backend.preload.xml;
+package ch.sbb.backend.preload.infrastructure.xml;
 
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Marshaller;
-import jakarta.xml.bind.Unmarshaller;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import javax.xml.transform.stream.StreamResult;
@@ -36,19 +31,5 @@ public class XmlHelper {
 
     public Object xmlToObject(String xml) {
         return jaxb2Marshaller.unmarshal(new StreamSource(new StringReader(xml)));
-    }
-
-    public <T> T deepCopy(T original) {
-        try {
-            Marshaller marshaller = jaxb2Marshaller.createMarshaller();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            marshaller.marshal(original, baos);
-
-            Unmarshaller unmarshaller = jaxb2Marshaller.createUnmarshaller();
-            ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-            return (T) unmarshaller.unmarshal(bais);
-        } catch (JAXBException e) {
-            throw new RuntimeException("Failed to create deep copy", e);
-        }
     }
 }

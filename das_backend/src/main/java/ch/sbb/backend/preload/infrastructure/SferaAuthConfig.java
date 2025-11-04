@@ -1,4 +1,4 @@
-package ch.sbb.backend.preload;
+package ch.sbb.backend.preload.infrastructure;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
