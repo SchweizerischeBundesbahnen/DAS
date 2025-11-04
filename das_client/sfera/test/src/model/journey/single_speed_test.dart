@@ -82,7 +82,7 @@ void main() {
     test('toString_whenCalled_thenReturnsFormattedString', () {
       // ARRANGE
       final speed = SingleSpeed(value: '120', isSquared: true, isCircled: false);
-      final expectedString = 'SingleSpeed(value: 120, isSquared: true, isCircled: false)';
+      final expectedString = 'SingleSpeed{value: 120, isSquared: true, isCircled: false}';
 
       // ACT & EXPECT
       expect(speed.toString(), equals(expectedString));

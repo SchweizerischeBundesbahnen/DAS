@@ -144,7 +144,7 @@ void main() {
       // ACT & EXPECT
       expect(
         testeeA.toString(),
-        equals('TrainIdentification(ru: ${testeeA.ru}, trainNumber: ${testeeA.trainNumber}, date: ${testeeA.date})'),
+        equals('TrainIdentification{ru: ${testeeA.ru}, trainNumber: ${testeeA.trainNumber}, date: ${testeeA.date}}'),
       );
     });
   });

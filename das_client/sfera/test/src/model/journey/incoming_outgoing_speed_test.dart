@@ -39,9 +39,9 @@ void main() {
       // ARRANGE
       final speed = Speed.parse('90/80');
       final expectedString =
-          'IncomingOutgoingSpeed('
-          'incoming: SingleSpeed(value: 90, isSquared: false, isCircled: false), '
-          'outgoing: SingleSpeed(value: 80, isSquared: false, isCircled: false))';
+          'IncomingOutgoingSpeed{'
+          'incoming: SingleSpeed{value: 90, isSquared: false, isCircled: false}, '
+          'outgoing: SingleSpeed{value: 80, isSquared: false, isCircled: false}}';
 
       // ACT & EXPECT
       expect(speed.toString(), equals(expectedString));
