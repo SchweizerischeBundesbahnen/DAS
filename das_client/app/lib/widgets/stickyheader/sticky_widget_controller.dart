@@ -46,7 +46,6 @@ class StickyWidgetController with ChangeNotifier {
   void updateRowData(List<DASTableRow> rows) {
     _rows = rows;
     _initialize();
-    scrollListener();
   }
 
   void scrollListener() {
