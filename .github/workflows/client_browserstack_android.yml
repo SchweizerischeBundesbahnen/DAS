@@ -84,4 +84,4 @@ jobs:
         buildTag: das_client_android
         appFilePath: ${{ github.workspace }}/das_client/app/build/app/outputs/flutter-apk/app-dev-debug.apk
         testFilePath: ${{ github.workspace }}/das_client/app/build/app/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk
-        devices: Samsung Galaxy Tab S9-13.0,Samsung Galaxy Tab S11-16.0
+        devices: Samsung Galaxy Tab S9-13.0
