@@ -15,10 +15,10 @@ class ReducedServicePointRow extends ServicePointRow {
     super.config,
     super.key,
   }) : super(
-    rowColor: ThemeUtil.getDASTableColor(context),
-    journeyPosition: JourneyPositionModel(),
-    highlightNextStop: false,
-  );
+         rowColor: ThemeUtil.getDASTableColor(context),
+         journeyPosition: JourneyPositionModel(),
+         highlightNextStop: false,
+       );
 
   @override
   DASTableCell localSpeedCell(BuildContext context) {
