@@ -21,6 +21,7 @@ class ServicePoint extends JourneyPoint {
     this.arrivalDepartureTime,
     this.stationSign1,
     this.stationSign2,
+    this.trackGroup,
     this.properties = const [],
     this.localRegulationSections = const [],
   }) : super(type: Datatype.servicePoint);
@@ -37,6 +38,7 @@ class ServicePoint extends JourneyPoint {
   final ArrivalDepartureTime? arrivalDepartureTime;
   final StationSign? stationSign1;
   final StationSign? stationSign2;
+  final String? trackGroup;
   final List<StationProperty> properties;
   final List<LocalRegulationSection> localRegulationSections;
 
@@ -84,6 +86,7 @@ class ServicePoint extends JourneyPoint {
           arrivalDepartureTime == other.arrivalDepartureTime &&
           stationSign1 == other.stationSign1 &&
           stationSign2 == other.stationSign2 &&
+          trackGroup == other.trackGroup &&
           ListEquality().equals(properties, other.properties) &&
           DeepCollectionEquality().equals(localSpeeds, other.localSpeeds);
 
@@ -104,6 +107,7 @@ class ServicePoint extends JourneyPoint {
       arrivalDepartureTime.hashCode ^
       stationSign1.hashCode ^
       stationSign2.hashCode ^
+      trackGroup.hashCode ^
       Object.hashAll(properties) ^
       Object.hashAll(localSpeeds ?? []);
 
@@ -125,6 +129,7 @@ class ServicePoint extends JourneyPoint {
         'arrivalDepartureTime: $arrivalDepartureTime, '
         'stationSign1: $stationSign1, '
         'stationSign2: $stationSign2, '
+        'trackGroup: $trackGroup, '
         'properties: $properties, '
         'localRegulationSections: $localRegulationSections'
         '}';

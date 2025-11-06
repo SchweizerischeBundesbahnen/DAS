@@ -1547,6 +1547,17 @@ void main() {
     expect(servicePoints[7].stationSign2, isNull);
   });
 
+  test('whenTafTapLocationHasNSPWithTrackGroup_thenServicePointHasNonNullTrackGroup', () {
+    final journey = getJourney('T6', 2);
+    expect(journey.valid, true);
+
+    final servicePoints = journey.data.whereType<ServicePoint>().toList(growable: false);
+    expect(servicePoints[0].trackGroup, isNull);
+    expect(servicePoints[1].name, equals('Hardbrücke'));
+    expect(servicePoints[1].trackGroup, equals('3'));
+    expect(servicePoints[6].trackGroup, equals('N'));
+  });
+
   test('Test stations properties are parsed correctly', () {
     final journey = getJourney('T21', 1);
     expect(journey.valid, true);

@@ -20,6 +20,8 @@ class TafTapRouteTableDataNspDto extends TafTapLocationNspDto {
 
   bool get betweenBrackets =>
       children.whereNspWithName('betweenBrackets').map((it) => bool.tryParse(it.nspValue)).firstOrNull ?? false;
+
+  String? get trackGroup => children.whereNspWithName('trackGroup').firstOrNull?.nspValue;
 }
 
 extension _SferaXmlElementDtoIterableExtension on Iterable<SferaXmlElementDto> {
