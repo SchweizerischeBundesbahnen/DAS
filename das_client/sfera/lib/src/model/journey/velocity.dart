@@ -15,4 +15,9 @@ class Velocity {
   final int? breakSeries;
   final String? speed;
   final bool reduced;
+
+  @override
+  String toString() {
+    return 'Velocity{trainSeries: $trainSeries, breakSeries: $breakSeries, speed: $speed, reduced: $reduced}';
+  }
 }

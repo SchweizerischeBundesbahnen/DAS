@@ -28,6 +28,6 @@ class LocalizedString {
 
   @override
   String toString() {
-    return "LocalizedString(de: '$de', fr: '$fr', it: '$it')";
+    return 'LocalizedString{de: $de, fr: $fr, it: $it}';
   }
 }

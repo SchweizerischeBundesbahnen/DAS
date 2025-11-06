@@ -22,15 +22,9 @@ class CurvePoint extends JourneyPoint {
   OrderPriority get orderPriority => OrderPriority.curve;
 
   @override
-  String toString() =>
-      'CurvePoint('
-      'order: $order'
-      ', kilometre: $kilometre'
-      ', curvePointType: $curvePointType'
-      ', curveType: $curveType'
-      ', text: $text'
-      ', comment: $comment'
-      ')';
+  String toString() {
+    return 'CurvePoint{order: $order, kilometre: $kilometre, curvePointType: $curvePointType, curveType: $curveType, text: $text, comment: $comment}';
+  }
 
   @override
   bool operator ==(Object other) =>

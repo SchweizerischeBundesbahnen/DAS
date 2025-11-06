@@ -16,6 +16,11 @@ class FootNote {
   final List<TrainSeries> trainSeries;
 
   @override
+  String toString() {
+    return 'FootNote{text: $text, type: $type, refText: $refText, identifier: $identifier, trainSeries: $trainSeries}';
+  }
+
+  @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is FootNote &&

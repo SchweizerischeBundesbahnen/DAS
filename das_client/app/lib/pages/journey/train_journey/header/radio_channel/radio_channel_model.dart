@@ -33,6 +33,6 @@ class RadioChannelModel {
 
   @override
   String toString() {
-    return 'RadioChannelModel{networkType: $networkType, lastServicePoint: $lastServicePoint, _radioContacts: $_radioContacts}';
+    return 'RadioChannelModel{networkType: $networkType, lastServicePoint: $lastServicePoint, radioContacts: $_radioContacts}';
   }
 }

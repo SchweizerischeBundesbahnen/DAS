@@ -27,5 +27,7 @@ class TrainIdentification {
   int get hashCode => Object.hash(ru, trainNumber, date);
 
   @override
-  String toString() => 'TrainIdentification(ru: $ru, trainNumber: $trainNumber, date: $date)';
+  String toString() {
+    return 'TrainIdentification{ru: $ru, trainNumber: $trainNumber, date: $date}';
+  }
 }

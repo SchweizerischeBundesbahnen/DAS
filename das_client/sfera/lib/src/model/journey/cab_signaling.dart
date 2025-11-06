@@ -17,12 +17,9 @@ class CABSignaling extends JourneyPoint {
   OrderPriority get orderPriority => isStart ? OrderPriority.cabSignalingStart : OrderPriority.cabSignalingEnd;
 
   @override
-  String toString() =>
-      'CABSignaling('
-      'order: $order'
-      ', kilometre: $kilometre'
-      ', isStart: $isStart'
-      ')';
+  String toString() {
+    return 'CABSignaling{order: $order, kilometre: $kilometre, isStart: $isStart}';
+  }
 
   @override
   bool operator ==(Object other) =>

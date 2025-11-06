@@ -86,7 +86,7 @@ class NetworkSpecificParameterDto extends SferaXmlElementDto {
 
   @override
   String toString() {
-    return 'NetworkSpecificParameter{name: $name, nspValue: $nspValue}';
+    return 'NetworkSpecificParameterDto{name: $name, nspValue: $nspValue}';
   }
 }
 

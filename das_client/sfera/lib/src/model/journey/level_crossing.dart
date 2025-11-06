@@ -12,7 +12,9 @@ class LevelCrossing extends JourneyPoint {
   final int _originalOrder;
 
   @override
-  String toString() => 'LevelCrossing(order: $order, kilometre: $kilometre, originalOrder: $_originalOrder)';
+  String toString() {
+    return 'LevelCrossing{order: $order, kilometre: $kilometre, originalOrder: $_originalOrder}';
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -25,9 +27,7 @@ class LevelCrossing extends JourneyPoint {
   @override
   int get hashCode => type.hashCode ^ _originalOrder.hashCode ^ Object.hashAll(kilometre);
 
-  LevelCrossing copyWith({
-    int? order,
-  }) {
+  LevelCrossing copyWith({int? order}) {
     return LevelCrossing(
       order: order ?? this.order,
       kilometre: kilometre,

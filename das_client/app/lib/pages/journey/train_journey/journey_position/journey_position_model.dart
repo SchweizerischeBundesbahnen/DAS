@@ -50,13 +50,14 @@ class JourneyPositionModel {
       nextStop.hashCode;
 
   @override
-  String toString() =>
-      'JourneyPositionModel('
-      'currentPosition: $currentPosition'
-      ', lastPosition: $lastPosition'
-      ', lastServicePoint: $previousServicePoint'
-      ', nextServicePoint: $nextServicePoint'
-      ', previousStop: $previousStop'
-      ', nextStop: $nextStop'
-      ')';
+  String toString() {
+    return 'JourneyPositionModel{'
+        'currentPosition: $currentPosition, '
+        'lastPosition: $lastPosition, '
+        'previousServicePoint: $previousServicePoint, '
+        'nextServicePoint: $nextServicePoint, '
+        'previousStop: $previousStop, '
+        'nextStop: $nextStop'
+        '}';
+  }
 }

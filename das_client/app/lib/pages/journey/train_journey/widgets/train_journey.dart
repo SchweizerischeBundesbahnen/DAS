@@ -372,9 +372,6 @@ class TrainJourney extends StatelessWidget {
     DetailModalType? openModalType,
   ) {
     final currentBreakSeries = settings?.resolvedBreakSeries(metadata);
-    final speedLabel = currentBreakSeries != null
-        ? '${currentBreakSeries.trainSeries.name}${currentBreakSeries.breakSeries}'
-        : '??';
 
     final journeyViewModel = context.read<TrainJourneyViewModel>();
     final timeViewModel = context.read<ArrivalDepartureTimeViewModel>();
@@ -445,7 +442,7 @@ class TrainJourney extends StatelessWidget {
       ),
       DASTableColumn(
         id: ColumnDefinition.brakedWeightSpeed.index,
-        child: Text(speedLabel),
+        child: Text(currentBreakSeries?.name ?? '??'),
         width: 62.0,
         onTap: () => _onBreakSeriesTap(context, metadata, settings),
         headerKey: breakingSeriesHeaderKey,

@@ -20,11 +20,9 @@ class MainContact extends Contact {
   int get hashCode => contactIdentifier.hashCode ^ contactRole.hashCode;
 
   @override
-  String toString() =>
-      'MainContact('
-      'contactIdentifier: $contactIdentifier'
-      ', contactRole: $contactRole'
-      ')';
+  String toString() {
+    return 'MainContact{contactIdentifier: $contactIdentifier, contactRole: $contactRole}';
+  }
 }
 
 class SelectiveContact extends Contact {
@@ -42,9 +40,7 @@ class SelectiveContact extends Contact {
   int get hashCode => contactIdentifier.hashCode ^ contactRole.hashCode;
 
   @override
-  String toString() =>
-      'SelectiveContact('
-      'contactIdentifier: $contactIdentifier'
-      ', contactRole: $contactRole'
-      ')';
+  String toString() {
+    return 'SelectiveContact{contactIdentifier: $contactIdentifier, contactRole: $contactRole}';
+  }
 }

@@ -23,7 +23,7 @@ class NonStandardTrackEquipmentSegment extends Segment implements Comparable {
 
   @override
   String toString() {
-    return 'NonStandardTrackEquipmentSegment(startKm: $startKm, endKm: $endKm, startOrder: $startOrder, endOrder: $endOrder, type: $type)';
+    return 'NonStandardTrackEquipmentSegment{startKm: $startKm, endKm: $endKm, startOrder: $startOrder, endOrder: $endOrder, type: $type}';
   }
 }
 
