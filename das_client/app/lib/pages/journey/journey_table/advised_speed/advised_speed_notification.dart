@@ -1,6 +1,7 @@
 import 'package:app/i18n/i18n.dart';
 import 'package:app/pages/journey/journey_table/advised_speed/advised_speed_model.dart';
 import 'package:app/pages/journey/journey_table/advised_speed/advised_speed_view_model.dart';
+import 'package:app/theme/theme_util.dart';
 import 'package:app/widgets/assets.dart';
 import 'package:app/widgets/das_text_styles.dart';
 import 'package:flutter/material.dart';
@@ -35,8 +36,11 @@ class AdvisedSpeedNotification extends StatelessWidget {
     );
   }
 
-  Widget _activeSegmentNotification(BuildContext context, AdvisedSpeedSegment segment) =>
-      _notification(context, _activeSegmentTitle(context, segment), icon: segment.displayIcon());
+  Widget _activeSegmentNotification(BuildContext context, AdvisedSpeedSegment segment) => _notification(
+    context,
+    _activeSegmentTitle(context, segment),
+    icon: segment.displayIcon(ThemeUtil.isDarkMode(context)),
+  );
 
   String _activeSegmentTitle(BuildContext context, AdvisedSpeedSegment adl) => switch (adl) {
     FollowTrainAdvisedSpeedSegment() => context.l10n.w_advised_speed_vopt(
@@ -63,35 +67,40 @@ class AdvisedSpeedNotification extends StatelessWidget {
     };
   }
 
-  Widget _notification(BuildContext context, String message, {Widget? icon}) => Container(
-    key: advisedSpeedNotificationKey,
-    margin: const EdgeInsets.all(sbbDefaultSpacing * 0.5).copyWith(top: 0),
-    decoration: BoxDecoration(
-      color: SBBColors.iron,
-      borderRadius: BorderRadius.circular(sbbDefaultSpacing),
-    ),
-    constraints: BoxConstraints(minHeight: 50.0),
-    padding: EdgeInsets.only(left: 22.0),
-    child: Align(
-      alignment: Alignment.centerLeft,
-      child: Row(
-        children: [
-          if (icon != null) ...[
-            icon,
-            const SizedBox(width: sbbDefaultSpacing * 0.5),
-          ],
-          Text(
-            message,
-            style: DASTextStyles.mediumBold.copyWith(color: SBBColors.white),
-          ),
-        ],
+  Widget _notification(BuildContext context, String message, {Widget? icon}) {
+    final resolvedBackgroundColor = ThemeUtil.getColor(context, SBBColors.iron, SBBColors.platinum);
+    final resolvedForegroundColor = ThemeUtil.getColor(context, SBBColors.white, SBBColors.black);
+
+    return Container(
+      key: advisedSpeedNotificationKey,
+      margin: const EdgeInsets.all(sbbDefaultSpacing * 0.5).copyWith(top: 0),
+      decoration: BoxDecoration(
+        color: resolvedBackgroundColor,
+        borderRadius: BorderRadius.circular(sbbDefaultSpacing),
       ),
-    ),
-  );
+      constraints: BoxConstraints(minHeight: 54.0),
+      padding: EdgeInsets.only(left: 22.0),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Row(
+          children: [
+            if (icon != null) ...[
+              icon,
+              const SizedBox(width: sbbDefaultSpacing * 0.5),
+            ],
+            Text(
+              message,
+              style: DASTextStyles.largeBold.copyWith(color: resolvedForegroundColor),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 extension _AdvisedSpeedSegmentX on AdvisedSpeedSegment {
-  SvgPicture? displayIcon() {
+  SvgPicture? displayIcon(bool isDarkMode) {
     final String? iconName = switch (this) {
       FollowTrainAdvisedSpeedSegment() => AppAssets.iconAdvisedSpeedFollowTrain,
       TrainFollowingAdvisedSpeedSegment() => AppAssets.iconAdvisedSpeedTrainFollowing,
@@ -102,7 +111,7 @@ extension _AdvisedSpeedSegmentX on AdvisedSpeedSegment {
         ? SvgPicture.asset(
             iconName,
             key: AdvisedSpeedNotification.advisedSpeedNotificationIconKey,
-            colorFilter: ColorFilter.mode(SBBColors.white, BlendMode.srcIn),
+            colorFilter: ColorFilter.mode(isDarkMode ? SBBColors.black : SBBColors.white, BlendMode.srcIn),
           )
         : null;
   }
